@@ -8657,3 +8657,50 @@ mechanism failure.
 - **Uncertainty.** No image run measures the trim; the claim is that the host's pieces are
   the image's, each already checked against its listing. A defect inside `009329C0`'s
   buoyancy term would move every ship's trim on every row alike.
+
+## 112. Handoff (cc9-gunnery25, 2026-10-05, at about 65% context)
+
+### 112.1 Landed on agent/cc9-gunnery25
+
+| item | commits | state |
+| --- | --- | --- |
+| GUNNERY 109: the avoid-zone draft bodies (glass walls) | `a19b96497`, `0ccf286f1`, `c7ee8aea5`, `0caa95a64`; wiring on main as the lead's `3c058695b`; flip `3ef3d9e99` | `kAvoidZoneDraftBodiesBound` ON |
+| GUNNERY 110: 97.2's trail is the stepper's soft approach | `1dfef7cf1` | closed, no defect |
+| GUNNERY 111: 100.4's trim is the static waterline | `904b92f6d` | closed, no defect found |
+| Reference y (GAME_EXECUTABLE "2026-10-05 y"), base `409ad51a6` | `87d96dcca`, `19180d81b`, `0a8dd82df` | `reports/cc9_reference_rebaseline_25.json` |
+
+### 112.2 Left as labelled substitutions (the lead's call, 2026-10-05: skip both)
+
+- **91.2's SAP pair start.** The image walks one SAP active list over every body (terrain tile
+  bodies, hulls, forts, draft bodies) in box-overlap creation order; body A is the lower proxy.
+  The host walks terrain per hull, then hull pairs in index order, then forts, then draft bodies,
+  each behind a 0.1 m widened world-box test. Only the narrow-phase order differs, hence the
+  manifold creation order and the solver's row order: knife-edge numeric moves, no new contact.
+  **Cost:** driving the reconstructed `NativeDynSapRuntime` (`00C4C320` and the endpoint routines,
+  `src/native_dyn_sap_processing.cpp`) with real proxies for every body, the terrain tiles
+  included, and walking its active list in `world_step`: about one worker context. A cheap partial
+  (order new manifolds by the step their 0.02-widened boxes first met, ties in host order) is
+  about a quarter of that and leaves the intra-step order labelled.
+- **99.4** (debris in the shell sweep): no hosted debris producers; low value.
+
+### 112.3 Next
+
+- **Reference z** when the lead asks: cc9-lua37's gates and loadout arm, plus anything flipped
+  after `409ad51a6` (`local\g25_switches.py 409ad51a6 <base>`).
+- **From y:** JM08 long (46 -> 148) is mostly `pla` (`kOrderAttackNoMemberIssueBound`,
+  `kTerrainAvoidForwardSpeedBound`, `kDialogSequencerBound`; 66 with them OFF); splitting `pla`
+  would name which.
+- **From 109:** the two JM05 PT boats spawn aground inside a draft wall (110 m deep), and Pearl
+  Harbor's moored hulls overlap their walls at spawn. Whether the image's spawn poses overlap the
+  same way is not known.
+
+### 112.4 Tools (`local\` in the cc9-gunnery25 tree, prefix `g25_`)
+
+- `g25_runs.ps1 -V <prefix> -Only <rows> [-Exe]`: the reference launch form.
+- `g25_lane.ps1 -Lane -Variants 'short=kA+kB' -Rows [-Commit] [-Prefix]`: export + build + run
+  per variant (an empty switch list is a control); a `!` prefix flips a switch back ON.
+- `g25_cmp.py <a> <b> [rows]`: pair_diff exit and headlines per row.
+- `g25_loosum.py <variants>`: leave-one-out rounds against y; `g25_table.py <prefix>`: table rows;
+  `g25_report25.py`: the report; `g25_switches.py <a> <b>`: the switch diff.
+- `g25_census.py <prefix>`: the draft-body build and contact census per row.
+- `g25_trimdiag.py <export>`: the uncommitted pitch diagnostic of 111.
