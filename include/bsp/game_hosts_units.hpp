@@ -507,6 +507,12 @@ public:
     // 1 bomb, 0 nothing carried or no squadron. With the reader switch off it
     // answers the leader-class stand-in. docs/SQUADRON_ORDNANCE_STATE.md.
     int squadron_ammo_type_007edad0(std::size_t unit_index);
+    // Packet cc9_ai_plane_loadout_arm. 007B9140(plane, 1) as 00A04560 asks it
+    // at 00A0463F, without its kind-17h arm: some rack (+974h, 006E3FE0
+    // vtable[210h](2Ah, 1)) holds an attached round. Every rack ordnance class
+    // answers 2Ah, and the flag-1 arm needs [00E17BF2], 0 in single player, so
+    // this is squadron_ammo_type's per-plane rack test. False for a non-plane.
+    bool plane_holds_rack_round_007b9140(std::size_t unit_index);
     // `returntobase` (00E08F98) for the squadron of unit_index through the same
     // path a Lua returntobase takes: each member plane through
     // issue_script_command, which runs 007F16D0's resolution and 0077D600's

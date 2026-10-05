@@ -14321,6 +14321,17 @@ int GameUnitsHost::squadron_ammo_type_007edad0(std::size_t unit_index) {
     }
 }
 
+bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    GameUnitSlot& s = *host.slots[unit_index];
+    // 007B915B-007B918F: the first part answering stops the walk.
+    for (const PlaneOrdnanceRack& r : host.ordnance_racks(s)) {
+        if (r.class_id != 0 && host.rack_holds_round(s, r)) return true;
+    }
+    return false;
+}
+
 std::size_t GameUnitsHost::issue_return_to_base_007f16d0(std::size_t unit_index,
     const std::string& source) {
     Impl& host = *impl_;
