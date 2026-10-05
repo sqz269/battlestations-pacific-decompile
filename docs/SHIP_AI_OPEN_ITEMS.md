@@ -10254,3 +10254,43 @@ emptying behind one switch in `src/game_hosts_ship_ai.cpp`, near line 5898.
 
 The `+11DCh` building heading (mode 2) and the `+11FCh` arm (modes 2/4) remain records with no
 reach.
+
+### 125.6 The pairs, and the flip
+
+- **OFF:** this tree at `de6bd3e49`, main `4aa2f6d1f` plus the seven parts applied unchanged
+  (`local\s28_p0_<row>.log`).
+- **ON:** `pair_export --commit de6bd3e49 --flip kLocalPartyFromSceneBound=true`
+  (`local\s28_p125on`, SHA-256 prefix `E9B53DA3E46D`, `local\s28_p5_<row>.log`).
+- Reference launch form.
+
+| row | `pair_diff` | controlled unit OFF | controlled unit ON |
+| --- | --- | --- | --- |
+| smoke (USN01) | 0 | Dunlap (Mahan, party 0) | Dunlap (party 0) |
+| USN13 (control) | 1 | DD_1 (Fletcher, party 0) | DD_1 (party 0) |
+| USN04 (control) | 1 | Fletcher-class01 (Sims, party 0) | Fletcher-class01 (party 0) |
+| JM05 | 3 | USS Phelps (Benham, party 0) | **Fubuki-class 01** (Mutsuki, party 1); the script later selects Mogami-class 01 |
+| JM06 | 3 | Fletcher-class 08 (Farragut, party 0) | **PlayerSub 01** (TypeB_Jake submarine, party 1) |
+| JM08 | 3 | Auilick (Fletcher, party 0) | **Japanese Patrolboat 01** (JapPT, party 1); the script later selects Headquarter 01, which OFF rejected (`SetSelectedUnit ... rejected by 00645060`) |
+| IJN01 | 3 | Downes (Mahan, party 0) | **A7M_1** (Zero squadron, party 1) |
+| IJN11 | 3 | Fletch1 (Fletcher, party 0) | **Kita1** (Kitakaze, party 1); later Zao |
+
+- **Mechanism.** Every IJN row's controlled unit is now a party-1 unit, and the US controls are
+  gameplay-identical: only the `ship ai free` search noise moved. The script's own selections now
+  land on Japanese units, because the HUD's selectable test (b) accepts them; on JM08 the OFF log
+  showed them rejected.
+- **The death moves follow the swap:**
+  - **JM05** (11 -> 15 rows): Mogami-class 01, the script's controlled cruiser ON, no longer
+    dies. The base assault is retimed: four more base objects die, and several die earlier.
+  - **JM06** (1 -> 2): the idle player's submarine PlayerSub 01 sinks USTroopTransport 02 at
+    93.85 s. Fletcher-class 08, no longer the player's, deals 0.
+  - **JM08** (22 = 22 deaths, 6 rows flip each way): 36 more unit-table rows ON, which come from
+    the scripted selection of Japanese units.
+  - **IJN01** (5 -> 3): the controlled Zero squadron A7M; two of its members survive, and the AA
+    retargets.
+  - **IJN11** (2 = 2): retimed.
+
+  Not every row was traced to a single cause. Each moved row involves the swapped controlled
+  units or the units they fight. None moves on a US row.
+- **Verdict:** the mechanism matches every prediction of 125.4, so the switch is **flipped ON**.
+  Every IJN row's baseline moves with it; the next reference build should re-baseline JM05,
+  JM05 long, JM06, JM08, JM08 long, IJN01 and IJN11.
