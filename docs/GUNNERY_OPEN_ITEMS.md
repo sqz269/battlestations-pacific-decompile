@@ -8631,3 +8631,29 @@ mechanism failure.
   image's, a turning hull's guns hold fire above 1 deg/s of turn in the image too. 97.2 is
   closed. `0085ABA0` stores the wrapped pair after the arc and speed tests and has no
   arithmetic of its own on this path.
+
+## 111. 100.4's trim is the hull's static waterline, not the stopped-on-rudder state (108 item 4, cc9-gunnery25)
+
+- **The measurement.** A diagnostic export of `3ef3d9e99` (`local\g25_d2`, never committed: a
+  line in the units world phase logging each USTroopTransport's pitch every 100 motion ticks)
+  on JM08 3200: 180 samples of the six transports, at speeds from 1 to 15 m/s, turning and
+  straight. The pitch (asin of the forward axis's y) is **+0.86 .. +0.97 deg, bow up / stern
+  down, at every speed**; the one sample under 5 m/s reads 0.862.
+- **So the 0.92 deg of 100.2 is the class's trim at rest**, not a product of `dir=stopped
+  throttle=0 rudder=-1`: a turn or a stop does not move it by more than 0.1 deg.
+- **Where it comes from** (by construction, not separately measured): `0082D040` builds two
+  elements per `Hull.Segments` station from the model's own Aux `deckline`/`bottomline`, each
+  with the waterline `deck * (1 - ratio) + bottom * ratio` and a coefficient that makes every
+  station carry an equal share of `10 * Mass` when the water stands at its waterline
+  (docs/SHIP_BUOYANCY_ELEMENTS.md, "Why the hull floats"). The hull therefore floats where its
+  station waterlines meet the water. On `US_Troop_Transporter.mmod` the bottom line rises to
+  y = -1.87 at the stern against -6.74 at the bow (100.3), so the stern stations' waterlines sit
+  higher and the hull settles stern down until they reach the water.
+- **Verdict: no host divergence found.** Every input of the trim is the image's: the element
+  list from `0082D040` on the class's own model lines, the force law `009329C0`
+  (`src/ship_hydro_forces.cpp`, listing-cited at each step), the body at the model origin with
+  no centre-of-mass offset (`00937C90`), and the ocean height `0078CF20`. 100.4 is closed; the
+  stern keel touching at UST 04's grounding point (100.1) follows from the class's static trim.
+- **Uncertainty.** No image run measures the trim; the claim is that the host's pieces are
+  the image's, each already checked against its listing. A defect inside `009329C0`'s
+  buoyancy term would move every ship's trim on every row alike.
