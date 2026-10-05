@@ -10907,3 +10907,10 @@ The switch `kShipAiStateEnterBytesBound` is committed OFF. Its census line is
   neighbours.
 - **Verdict rule:** flip ON when the controls are identical and every moved row traces to a
   stopping ship. A control that moves is a mechanism failure.
+
+**Pairs.**
+- OFF is `0ff8212e5` (`local\s29_s0_<row>.log`). ON is `pair_export --flip kShipAiStateEnterBytesBound=true` (`local\s29_s137on`, SHA-256 prefix `D4B8F954DE78`, `local\s29_s1_<row>.log`).
+- Smoke, USN04, USN13, USNOS and USN02 are all `pair_diff` 1.
+- The mechanism shows in the native table. On USN13 and USNOS the coasting arm's avoidance requests add searches: `ShipAiAvoidSearch::query_refresh` +432 and +981, and `director_land` rises. On USN02 one avoid-search `clear` (`004158A0`, 3 calls) goes away.
+- No position, death or unit row moves. The coasting ships' avoidance does not change their deceleration on these rows.
+- **Flipped ON** by the verdict rule.

@@ -159,7 +159,7 @@ inline constexpr bool kShipAiPathLimitDefaultBound = true;
 // `stop` sets its state+8h making-way byte (009DAC70) and entering `moveonpath`
 // clears its announce byte (009DB040), as the leaf vtables' slot 4 do. False:
 // neither enter runs (the byte starts false and is only cleared by the steps).
-inline constexpr bool kShipAiStateEnterBytesBound = false;
+inline constexpr bool kShipAiStateEnterBytesBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
