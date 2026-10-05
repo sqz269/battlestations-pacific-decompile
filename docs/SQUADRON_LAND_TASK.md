@@ -10242,3 +10242,54 @@ the brief's condition.**
 **Recommendation to the lead:** flip the gates with the plane arm, as the image's rule, and
 accept that the slot-4 brain's air groups target their own side on US rows. 5ch is not
 re-tested here.
+## 5cw. Item 3: USNRM01's scripted Kates never close; they turn in place and mush into the sea (cc9-lua35, 2026-10-05)
+
+5ct item 2: with the gates ON, KateSpawn1-5 keep West Virginia and Oklahoma (5cr). Why is there
+no release and no battleship damage? This is read from `local\l35_g_usnrm01.log` (export
+`l35_g`, gates ON, forced weights OFF), and is static otherwise.
+
+**What the aircraft do** (KateSpawn1|.-2; its wingmen and the other four squadrons log the same):
+
+| step | evidence |
+| --- | --- |
+| spawned at (4000, 180, -5000), heading 180 deg | the authored `localframe`, `usn_1_pearl.scn` line 8266, this installation, mtime 2024-10-29; velocity seeded (0, -0.02, -61.11) along it |
+| turned 140 deg to face West Virginia | `EntityTurnToEntity` (`usn_1_pearl.lua` `luaSpawnKates`): `3 member(s) re-posed, forward (-0.628 0.000 0.778)`, through `007C9540` per member |
+| straight into `aim` | the range, 3451.9 m, is already inside `Pilot/Torpedo/AttackDist` (`task+484h` = 3749.4), so there is no approach leg |
+| aim tick 1 | heading error 0.0056 rad (the body faces the target); velocity 58.7 m/s at 140.8 deg to it, `body_fwd` = -45.5 (flying backwards); altitude 180 |
+| aim tick 51 | range 3461.9 m (not closing); velocity 41.3 m/s at 72 deg; altitude 89.7 |
+| about t = 126 s | `surface probe ... alt=4.3 vy=-43.7 spd=46.9`, then `plane depth kill` |
+
+- `aim gates`: `ticks=83 lead=0 ... min_f14=3419.4`. The lead gate needs the envelope (an
+  aspect interpolation times speed) to exceed the range, which never happens at 3.4 km.
+
+**Why this is the image's behaviour as read (no binding):**
+- **The turn writes no velocity.** `007C9540` (plane `vtable[88h]`) copies the matrix to `+74h`
+  and `+674h` and re-derives attachments only; `007BEEE0` likewise (decompiled).
+- **The world velocity is the state.**
+  - `007D9C10` rebuilds the world-to-body matrix `ctl+0B0h` from `unit+74h` and derives the body
+    velocity `ctl+3Ch` from the world velocity `ctl+18h`. The core law `007DB680` calls it.
+  - `007D7C00` then loads both into the step's `dyn` (docs/PLANE_FLIGHT_CORE_LAW.md 2).
+  - So after a re-pose the old world velocity is re-expressed in the new body frame, here as
+    negative forward speed.
+- **The spawn seed precedes the turn.**
+  - `GenerateObject` runs `00925F20` InitAll inside the call (`0046DBE8`).
+  - Pass C `007F4BA0` -> `007F2920` -> `007C6340` seeds `vtable[3Ch](TravelSpeed)` =
+    `007D9E80`, body (0, 0, 61.1) at the authored heading.
+  - `EntityTurnToEntity` comes afterwards in the script.
+- **Backwards flight is the free-flight stall regime** (docs/FREEFLIGHT_STALL_LAW.md 2).
+  - Lift scales with `(forward / StallSpd)^2`.
+  - Body damping is `007D92B0(forward / StallSpd)`, which is 0 at or below DragRangeMin.
+  - So nothing turns the velocity onto the nose, and the aircraft sinks.
+
+**Uncertainty:**
+- Not every writer of `ctl+18h` / `ctl+3Ch` was censused. A re-pose consumer that rotates the
+  world velocity would change this.
+- `007F2920` itself is unread past its call list.
+- The original executable is never run, so this is not observed.
+
+**What it means.**
+- The scripted torpedo strike at Battleship Row cannot release from these spawns, as read.
+- Under the image's forced weights (5cu.1, now ON) the close pass sends the Kates to Pennsylvania
+  and the Navy Yard anyway.
+- Either way no battleship dies, in all four builds.
+- Item 3 is closed with no host divergence found.
