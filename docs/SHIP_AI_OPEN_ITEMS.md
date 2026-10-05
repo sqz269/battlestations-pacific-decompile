@@ -10234,3 +10234,23 @@ Both were applied to copies and compiled for both values of the switch (exit 0).
   building stays neutral (slot 8). Watch the `command building capture: ... flipped to` lines:
   IJN11's Allied retakes go to the first Allied slot, not slot 0. JM06's side-0 flip, if any, would
   be slot 2.
+
+## 127. Section 124's three bookkeeping call sites, read (cc9-ships28, 2026-10-05)
+
+Read-only, from the `disasm-raw 009F1BC0` dump.
+
+| site | read | host | reach |
+| --- | --- | --- | --- |
+| `009F2844-009F28B4` (`CALL EAX` `009F2858`, `00414DB0` `009F2876`, `007B4E90` `009F28A9`) | runs only when mode `+1234h` == 2 and two flag bytes are clear (`009F282D..009F2842`). With the target `+0B20h` (kept only if `IsKindOf(1Ch)`, else ESI = 0), it refreshes the pose, takes the compass heading (`007B4E90`, reconstructed as `ship_ai_compass_heading_007b4e90`) from the unit to the building, and stores it in `nested+11DCh` (`009F28AE`) | not modelled | none: mode 2 never occurs on the reference rows (section 126) |
+| `009F2DB7` `00415550` | `max(300.0 [00CE3AE8], curve sample)` inside the torpedo standoff, multiplied by `[ESP+20h]`, then compared with `+12B4h` (`009F2DC8`) | inside `run_torpedo_standoff` (`kTorpedoStandoffBound`); the site is simply not cited by address | as the standoff |
+| `009F2F16-009F2FD3` (`CALL EAX` `009F2F40`, `009523B0` `009F2F95`/`009F2FC6`) | the target-curve refill. **No target:** `009523B0` empties the curve at `+13B0h` and `+1224h` = -1.0, so it is retried next frame. **A target failing `IsKindOf(5)`:** jumps to `009F2FDB`; no refill, and `+1224h` is not written. **An `IsKindOf(5)` target:** stores `+1250h`, `+125Ch`, `+1278h`/`+1279h` = 0, then refills only in mode 0 with `+1224h` < 0 (`009F2F84`): `009523B0`, `0095F080` over the `+1238h` block, `+1224h` = `[00CE3958]` | `GameShipAiHost` refills on `timer_1224 <= 0` for any present target, stands in "a target is present" for the `IsKindOf(5)` probe (`ShipAiApproach::curve_target_kind_005c`, a record), never empties the curve on target loss, and re-arms the timer to 2.0 even without a target | **possible.** The approach latch census counts `other` targets (neither ship nor building): USNOS long 566 frames, USNOS 553, USN13 1114. If those fail `IsKindOf(5)` (a squadron, `18h`, is not a vehicle root), the image keeps the last target curve or an emptied one, while the host refills it from the new target. On null targets (`no_target` = 0 on every row) there is no reach |
+
+**The next packet from this list:** bind `009F2F3C`'s `IsKindOf(5)` probe and the no-target
+emptying behind one switch in `src/game_hosts_ship_ai.cpp`, near line 5898.
+- The units host already answers `unit_is_kind_of`.
+- Census both ways: the kinds of the `other` targets, and the refills skipped.
+- Predictions: USNOS, USNOS long and USN13 move only where an `other` target is not a vehicle.
+  The standoff choice reads the target curve (`009E71A5`), so ranges and positions can move.
+
+The `+11DCh` building heading (mode 2) and the `+11FCh` arm (modes 2/4) remain records with no
+reach.
