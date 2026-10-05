@@ -12328,3 +12328,88 @@ StartLanding was a second producer, and single player never builds it (section 1
 
 **The HQ still does not flip in 36000 frames**: it is neutralized at 1052.00 s, and `flips=0`.
 Section 109.6 needed a 76000-frame run for the HQ to flip to party 0.
+
+
+## 154. The steering setters reset the path plan on every call (packet `cc9_setter_path_reset`, `kShipAiSetterPathResetBound`, cc9-ships33, 2026-10-05)
+
+### 154.1 The correction
+
+**Section 152.1's small item turned out to be a misread of both setters.**
+- `009DFFB0` (rudder) and `009E0040` (heading) test the mode. When it differs they clear `+360h`
+  and `+368h` and store the mode.
+- Then both **join** (`009DFFDC` / `009E006C`) and call `009DA4E0` with `ECX = blk`, at `009DFFDE` /
+  `009E006E`. So the call runs **on every pass**, not only on a mode change.
+- `009E0040` also stores `+1CCh = 0` at `009E0088`, after `00605070`.
+- `009DE1B0` (`009DE1D9`) has the same shape as `009DFFB0`.
+- `009DE050` (`009DE082`) does call it only on entering Navigate. That one was read right.
+
+**What 009DA4E0 clears.** It was modelled on `ShipAiPathPlan`, a struct that nothing in
+`src/` reads (section 136). Its offsets from `blk` are the two 68h plan blocks of
+`bsp/ship_ai_path_planner.hpp` (`kShipAiPathPlanSlotA` = `+224h`, slot B = `+28Ch`). For each
+block, at `+1Ch / +20h / +24h / +2Ch / +30h / +34h / +38h`:
+- `search_state`, `head` (released through its vtable[0](1)), `goal_node`, `+2Ch`;
+- `goal_clearance`, set to `1.0e7` from `[00CF58EC]`;
+- `node_count`, `zone_layer`.
+
+It also clears the bytes `+2FCh` (computing), `+2FDh` and `+2FEh` (`009DA569..009DA575`).
+
+`+250h` / `+2B8h` (block `+2Ch`) are stored as float 0.0 (`009DA57B` / `009DA583`). These are the
+fields the approach writes as "brain+258h / +2C0h" (section 139), so that reading of their meaning
+is open.
+
+`009DA4E0` callers (rel32 census): `009DE082`, `009DE1D9`, `009DE253`, `009DFF0C`, `009DFF6C`,
+`009DFFDE`, `009E006E`, `009E00E5`, `009E1D9F` (land), `009E2365` (kamikaze).
+
+### 154.2 The binding (committed OFF)
+
+`kShipAiSetterPathResetBound` (`include/bsp/ship_ai_states.hpp`):
+- The two setters call the host on every pass, and `009E0040` stores `+1CCh` = Stopped.
+- `reset_live_path_plan_009da4e0` (`src/game_hosts_ship_ai.cpp`) clears `plan_a` / `plan_b`, the
+  computing byte, and both copies of `+2FDh` / `+2FEh`.
+- It is reached from `SetterBinding` (now holding the controller), `GoalBinding` (`009DE082`),
+  `HeadingHoldBinding` (`009DFF6C` / `009E00E5`) and `LandStepBinding` (`009E1D9F`).
+- The kamikaze (`009E2365`) and the three unread callers are not bound.
+
+Census line: `summary mission ship ai setter path reset resets= live= from_setters=`.
+
+### 154.3 Predictions (written before any ON run)
+
+- **Mechanism:**
+  - `from_setters` is about the cruise, stop and heading-sub-state steps. That is many per step,
+    against 257 mode-change records OFF.
+  - `live > 0` wherever a ship leaves Navigate for a heading or rudder state with a plan in hand:
+    a stop after a moveto, and the attackmove sub-states.
+- **Spread:**
+  - A ship that returns to Navigate now reseeds its plan instead of reusing the stale one, so path
+    seeds rise.
+  - Ships with the hold `+1C8h` set from navigation lose their requested direction on a heading
+    set.
+  - Expect `pair_diff` 3 on JM08 long, USNOS and USN13, through retimed paths and RNG coupling.
+  - BSM01 (no navigation orders, section 150.5 control) may be 1.
+
+### 154.4 Pairs; verdict ON (spread miss, mechanism matching)
+
+- **Runs:** OFF is `6f9d6672f` (`local\s33_off2_<row>.log`). ON is `pair_export --flip
+  kShipAiSetterPathResetBound=true` (`local\s33_pr_on`, `local\s33_on2_<row>.log`).
+- **Smoke:** `local\s33_smoke2.log`, USNOS 300, OFF. Clean.
+- **Baseline check:** OFF against section 152's ON logs is `pair_diff` 1 on USNOS and JM08 long.
+
+| row | `pair_diff` | `resets` / `live` / `from_setters` (ON) |
+| --- | --- | --- |
+| JM08 long 36000 | 1 | 45106 / 15 / 24315 |
+| USNOS 3000 | 1 | 15073 / 0 / 15003 |
+| USN13 3000 | 1 | 36947 / 0 / 36900 |
+| BSM01 3000 | 1 | 17035 / 2 / 17028 |
+
+**Reading.**
+- **The mechanism matches.** The setters now reach `009DA4E0` on every pass, against 257
+  mode-change records across ten rows before.
+- **Live resets are rare.** There are 15 on JM08 long and 2 on BSM01, and none of them moves
+  gameplay: a ship that re-enters Navigate goes through `009DE082` and the planner's goal-drift
+  revalidation anyway.
+- The `+1CCh` store moves nothing on these rows either.
+- **The predicted `pair_diff` 3 was a miss.** Every row is gameplay-identical.
+
+**Verdict: ON**, recorded as a spread miss with the mechanism matching. It is the image's rule,
+read from the listing. The kamikaze caller (`009E2365`) and the unread `009DE1D9` / `009DE253` /
+`009DFF0C` callers stay unbound.

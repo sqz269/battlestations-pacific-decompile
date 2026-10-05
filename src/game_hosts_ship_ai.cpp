@@ -1412,6 +1412,11 @@ struct GameShipAiHost::Impl {
     unsigned long long lander_accept_asks{0};
     unsigned long long lander_accept_true{0};
     unsigned long long lander_evade_gain_frames{0};
+    // Packet cc9_setter_path_reset: 009DA4E0 calls, and those that found a live
+    // plan (a head node, a non-zero search state or the computing byte).
+    unsigned long long path_resets{0};
+    unsigned long long path_resets_live{0};
+    unsigned long long path_resets_setter{0};
     std::map<int, GameUnitsHost::VehicleClassLaunchKeys> launch_keys;
     const GameUnitsHost::VehicleClassLaunchKeys& class_launch_keys(int type_id) {
         auto found = launch_keys.find(type_id);
@@ -2529,11 +2534,52 @@ private:
 // bsp::ShipAiSetterHost, the two callees of 009DFFB0 and 009E0040
 // ---------------------------------------------------------------------------
 
+// Packet cc9_setter_path_reset (SHIP_AI 154). 009DA4E0 with ECX = blk = nav: the
+// fields it clears are the two 68h plan blocks at nav+224h (kShipAiPathPlanSlotA)
+// and nav+28Ch (slot B), seen from blk:
+//   +240h/+2A8h block+1Ch search_state = 0   +244h/+2ACh block+20h head (released
+//   +248h/+2B0h block+24h goal_node = 0       through its vtable[0](1), then 0)
+//   +250h/+2B8h block+2Ch search_context = 0  +254h/+2BCh block+30h clearance = 1.0e7
+//   +258h/+2C0h block+34h node_count = 0      +25Ch/+2C4h block+38h zone_layer = 0
+// and the bytes +2FCh (computing), +2FDh and +2FEh. ShipAiPathPlan (ctl.path) is
+// an older copy of the same span that nothing reads; these are the live fields.
+// The nodes live in the controller's deque, so the release frees nothing.
+void reset_live_path_plan_009da4e0(GameShipAiHost::Impl& owner,
+                                   GameShipAiHost::Impl::Controller& ctl) {
+    ++owner.path_resets;
+    if (ctl.plan_a.head != nullptr || ctl.plan_b.head != nullptr
+        || ctl.plan_a.search_state != 0 || ctl.plan_b.search_state != 0
+        || ctl.plan_computing_2fc) {
+        ++owner.path_resets_live;
+    }
+    for (bsp::ShipAiPathPlanBlock* plan : {&ctl.plan_a, &ctl.plan_b}) {
+        plan->search_state = 0;
+        plan->head = nullptr;
+        plan->goal_node = nullptr;
+        plan->search_context = 0;
+        plan->goal_clearance = bsp::kShipAiPathNoClearance; // [00CF58EC]
+        plan->node_count = 0;
+        plan->zone_layer = 0;
+    }
+    ctl.plan_computing_2fc = false; // 009DA56F; +2FDh 009DA569, +2FEh 009DA575
+    ctl.goal.flag_2fd = false;
+    ctl.goal.flag_2fe = false;
+    ctl.tail.parked_2fd = false;
+    ctl.tail.goal_reached_2fe = false;
+    owner.done("ShipAiPath::reset_live_plan_009da4e0", 0x009da4e0u);
+}
+
 class SetterBinding final : public bsp::ShipAiSetterHost {
 public:
-    explicit SetterBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
+    SetterBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl)
+        : owner_(owner), ctl_(ctl) {}
     void on_steering_mode_change_009da4e0() override {
-        owner_.record("ShipAiControls::steering_mode_changed", 0x009da4e0u);
+        if (!bsp::kShipAiSetterPathResetBound) {
+            owner_.record("ShipAiControls::steering_mode_changed", 0x009da4e0u);
+            return;
+        }
+        ++owner_.path_resets_setter;
+        reset_live_path_plan_009da4e0(owner_, ctl_);
     }
     void after_heading_stored_00605070(float heading) override {
         owner_.count_heading_wrap_store(heading);
@@ -2542,6 +2588,7 @@ public:
 
 private:
     GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
 };
 
 // ---------------------------------------------------------------------------
@@ -2587,6 +2634,7 @@ public:
     void clear_path_plan_009da4e0() override {
         PathPlanBinding path(owner_);
         bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        if (bsp::kShipAiSetterPathResetBound) reset_live_path_plan_009da4e0(owner_, ctl_);
         owner_.done("ShipAiGoal::clear_path_plan", 0x009da4e0u);
     }
     float planar_length_00414c60(float dx, float dz) override {
@@ -2611,6 +2659,7 @@ public:
     void clear_path_plan_009da4e0() override {
         PathPlanBinding path(owner_);
         bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        if (bsp::kShipAiSetterPathResetBound) reset_live_path_plan_009da4e0(owner_, ctl_);
         owner_.done("ShipAiHold::clear_path_plan", 0x009da4e0u);
     }
     void after_heading_stored_00605070(float heading) override {
@@ -2655,7 +2704,7 @@ public:
         return owner_.units.unit_heading_radians(index_);
     }
     void set_desired_heading_009e0040(float heading) override {
-        SetterBinding setters(owner_);
+        SetterBinding setters(owner_, ctl_);
         bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
         owner_.done("ShipAiStop::set_desired_heading", 0x009e0040u);
     }
@@ -3355,7 +3404,7 @@ public:
         return bsp::wrapped_angle_add_00438aa0(a, b);
     }
     void set_desired_heading_009e0040(float heading) override {
-        SetterBinding setters(owner_);
+        SetterBinding setters(owner_, ctl_);
         bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
         owner_.done("ShipAiLead::set_desired_heading", 0x009e0040u);
     }
@@ -3598,7 +3647,7 @@ public:
     }
     void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
     void set_desired_heading_009e0040(float heading) override {
-        SetterBinding setters(owner_);
+        SetterBinding setters(owner_, ctl_);
         bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
         owner_.done("ShipAiTangent::set_desired_heading", 0x009e0040u);
     }
@@ -9274,7 +9323,7 @@ public:
         owner_.done("ShipAiSubAttack::hold_heading_and_stop", 0x009e00a0u);
     }
     void set_desired_heading_009e0040(float heading) override {
-        SetterBinding setters(owner_);
+        SetterBinding setters(owner_, ctl_);
         bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
         owner_.done("ShipAiSubAttack::set_desired_heading", 0x009e0040u);
     }
@@ -9431,6 +9480,7 @@ public:
     void clear_path_plan_009da4e0() override {
         PathPlanBinding path(owner_);
         bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        if (bsp::kShipAiSetterPathResetBound) reset_live_path_plan_009da4e0(owner_, ctl_);
         owner_.done("ShipAiLand::clear_path_plan", 0x009da4e0u);
     }
     void wrap_blk_desired_heading_00605070() override {
@@ -9636,7 +9686,7 @@ public:
         ++owner_.summary.replans;
         const StateDescriptor* state = state_for_ai_offset(ctl_.active_state_ai_offset);
         if (state != nullptr && state->step_concrete) {
-            SetterBinding setters(owner_);
+            SetterBinding setters(owner_, ctl_);
             bsp::ShipAiCruiseAvoidanceInputs inputs;
             if (!owner_.cruise_avoidance_inputs(index_, inputs)) {
                 ++owner_.avoidance_role_unavailable;
@@ -13188,6 +13238,11 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission ship ai setter path reset resets=%llu live=%llu "
+            "from_setters=%llu bound=%d (009DA4E0 at 009DFFDE / 009E006E every pass, "
+            "+1CCh at 009E0088; packet cc9_setter_path_reset)",
+            host.path_resets, host.path_resets_live, host.path_resets_setter,
+            bsp::kShipAiSetterPathResetBound ? 1 : 0);
         host.log.notef("summary mission ship ai backoff countdown held_steps=%llu units=%zu "
             "expiries=%llu bound=%d (009F3F89..009F3FE3, packet cc9_ship_ai_backoff_countdown)",
             host.summary.backoff_held_steps, held_units, host.summary.backoff_expiries,
