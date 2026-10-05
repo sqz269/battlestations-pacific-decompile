@@ -1105,15 +1105,19 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
     state.timer_121c = static_cast<float>(
         static_cast<double>(state.timer_121c) - seconds); // 009F1E1E
 
-    // 009F1E36..009F1F45, the approach point. Without a target zone, or when
-    // the unit's own avoid-zone group is at or above the target's, the point is
-    // the brain's goal vector copied verbatim.
+    // 009F1E36..009F1F45, the approach point. `has_zone` is "the ship target's
+    // [target+740h] bot exists". 009F1E60 `CMP EAX,EBX` / `JGE 009F1F10`: when
+    // the target's vtable[2Ch]() (its position layer) is at or above this
+    // class's +570h, the point is the brain's goal vector copied verbatim.
+    // Below it, 00417B10 pushes the goal (the slot at [ESP+70h], 009F1CF6) out
+    // of the +570h zone group (packet cc9_approach_target_layer_push; the
+    // earlier reading had the compare reversed and passed the unit position).
     bool displaced = false;
     if (has_target && has_zone &&
-        host.unit_zone_group_0570() < host.target_zone_group_vtable_002c()) {
-        host.unit_avoid_radius_0082adc0(); // 009F1E77, result unused by the call below
+        host.target_zone_group_vtable_002c() < host.unit_zone_group_0570()) {
+        host.unit_avoid_radius_0082adc0(); // 009F1E77, the zone group for 00417B10's ECX
         const ShipAiAttackMoveXZ exit =
-            host.zone_exit_point_00417b10(unit_pos, kApproachZoneQueryRadius);
+            host.zone_exit_point_00417b10(goal, kApproachZoneQueryRadius);
         state.point_1228.x = exit.x; // 009F1EA2
         state.point_1228.y = 0.0f;   // 009F1EAD
         state.point_1228.z = exit.z; // 009F1EB5
@@ -1128,7 +1132,7 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
     } else {
         state.point_1228 = goal; // 009F1F2D..009F1F3D
     }
-    (void)displaced; // 009F1F65 feeds the mode latch, which is outside this range
+    state.point_displaced = displaced; // 009F1F65 feeds the mode latch
 
     // 009F27C6..009F27CB, the arc centre. 009E46F0 is called with the unit's
     // world x and z and returns the bearing to the next path point; the store

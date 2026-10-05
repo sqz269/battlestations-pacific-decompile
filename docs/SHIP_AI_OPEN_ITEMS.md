@@ -10564,3 +10564,75 @@ flags.
   switch is **flipped ON**.
   - USNOS long falls by a little more than a seventh (184 -> 144). Its approach passes come in
     shorter runs. This was not traced further.
+
+## 132. The approach point's target-layer push (`009F1E36..009F1F07`) (packet `cc9_approach_target_layer_push`, `kShipAiApproachTargetLayerPushBound`, cc9-ships29, 2026-10-05)
+
+This was found while re-ranking: the `ShipAiApproach::target_zone_object_0740` row (5010 calls
+on USN13, USNOS and USNOS long). Its label said "the target's own zone object, no producer".
+That label was wrong, and so was the reconstruction behind it.
+
+### 132.1 The image
+
+The listing is `disasm-raw 009F1DC0` / `009F1E20`.
+
+- `009F1DCE..009F1DDB`: `ESI` is the target, `[brain+0B20h]`, when it answers `IsKindOf(6)`; otherwise
+  `ESI` = 0. When there is no ship, `009F1E30 JE 009F2003` takes the no-ship hold.
+- `009F1E36 MOV ECX,[ESI+740h]` reads the target ship's **bot**. `00810DF7 MOV [ESI+740h],EAX`
+  (`BSP_Ship_EnsureAiOwners`, docs/GENERATED_SHIP_AI.md) stores the `0x2268`-byte object
+  `009F3F20` allocates. Its final vtable is `00D21AE8` (`009F3BEA`), whose slot `2Ch`
+  (`00D21B14`) is `009F3C80 MOV EAX,[ECX+1C4h] / RET`. The base slot `0072BCD0` answers 0.
+  - The ship brain is at `bot+58h` (`009F3BD7 LEA EDI,[ESI+58h]`, `CALL 009F39C0`), and
+    `blk` = brain+8h. So `bot+1C4h` = brain+16Ch = **`blk+164h`, the position layer** that
+    `009ECA20` keeps (`ShipAiLayerSelectionView::position_layer_164`, the host's
+    `nav_block.value_164`).
+- `009F1E4D..009F1E55`: `EBX` = `[[unit+538h]+570h]`, this class's `+570h`.
+- **`009F1E60 CMP EAX,EBX` / `JGE 009F1F10`.** When the target's layer is at or above this
+  class's `+570h`, `009F1F10..009F1F3D` copies the brain goal (`+B2Ch..+B34h`) verbatim.
+- **Below it**, `009F1E77 CALL 0082ADC0` (ECX = the class) answers the zone group of
+  `[class+570h]` in `EAX` (section 123.1). `009F1E94 CALL 00417B10` then runs with ECX = that
+  group and the arguments `(&out, &goal, 25.0f [00CE89CC], 1)`. The goal is the slot
+  `[ESP+70h]` that `009F1CF6` / `009F1CFC` fill from `+B2Ch` / `+B34h`; at the `LEA EDX,[ESP+78h]`
+  two pushes are outstanding, so `78h` addresses the same slot.
+  - The result is stored as the approach point `(x, 0, z)`.
+  - `BL` is set when the squared distance from the goal is > 1 (`009F1EFD..009F1F09`). It is
+    cleared on the verbatim arm (`009F1F45`).
+- **`009F1F65 TEST BL`:** a displaced point skips the submarine target's mode-1 hold.
+
+### 132.2 What was wrong
+
+`ship_ai_approach_frame_state_009f1bc0` had this arm, but it was never reached because the host
+passed `has_zone` = false. It also had two errors:
+- the compare was reversed (`own < target`);
+- it passed the unit's position, not the goal, to `00417B10`.
+
+The host answered 0 for both layers and returned the input point. The mode latch's
+`point_displaced` input was never set.
+
+### 132.3 The binding (committed OFF)
+
+- `kShipAiApproachTargetLayerPushBound` (`src/game_hosts_ship_ai.cpp`).
+- The pure routine's compare and input are corrected. Behaviour is unchanged while the switch is
+  OFF, because `has_zone` stays false.
+- `has_zone` = a ship target with a controller.
+- vtable `2Ch` = the target controller's `nav_block.value_164`. `+570h` = `class_reference_0570`.
+- `00417B10` = `zones.offset(group_for_layer(+570h), goal, 25.0, true)`.
+- `ShipAiApproachState::point_displaced` carries `BL` into the latch's `point_displaced`.
+- **Census, both ways:** `summary mission ship ai approach target layer push ship_passes= below=
+  moved= min_target_layer= max_own_0570=`.
+
+### 132.4 The OFF census, and the predictions (written before any ON run)
+
+| row | ship-target passes | below | moved | lowest target layer | highest own `+570h` |
+| --- | --- | --- | --- | --- | --- |
+| USN13 | 49 | 0 | 0 | 86 | 0 |
+| USNOS | 640 | 0 | 0 | 86 | 0 |
+| USNOS long | 2108 | 0 | 0 | not logged (first census build) | not logged |
+| smoke, USN04 | 0 | | | | |
+
+Every ship that approaches a ship target on these rows has `+570h` = 0, and every target
+position layer is at least 86. **So the push never fires here.**
+- **Prediction:** `pair_diff` exit 0 or 1 on smoke, USN04, USN13, USNOS and USNOS long, with
+  `below=0 moved=0` ON.
+- **Verdict rule:** flip ON when every row is identical. Any moved row is a mechanism failure.
+- **Uncertainty:** the brain-at-`bot+58h` / `blk` = brain+8h chain (132.1). The host's
+  `blk+164h` is filled only while `kShipAvoidZoneEscapeBound` runs `009ECA20`.

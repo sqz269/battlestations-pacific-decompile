@@ -749,6 +749,12 @@ struct GameShipAiSummary {
     // Packet cc9_own_curve_refill_gate: due own refills the bound gates refuse.
     unsigned long long own_curve_mode_skips{0};    // 009F2EE2
     unsigned long long own_curve_flag_skips{0};    // 009F2EEB
+    // Packet cc9_approach_target_layer_push (009F1E36..009F1F07), both ways.
+    unsigned long long target_layer_ship_passes{0}; // a ship target with a bot
+    unsigned long long target_layer_below{0};       // its layer < own class+570h
+    unsigned long long target_layer_moved{0};       // 00417B10 moves the goal > 1
+    int target_layer_min{2147483647};               // lowest target position layer
+    int target_layer_own_max{-2147483647 - 1};      // highest own class+570h
     // Packet cc9_torpedo_standoff: the exits of 009F2AC9..009F2E9B in the order
     // of bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.
     unsigned long long torpedo_standoff_frames{0};

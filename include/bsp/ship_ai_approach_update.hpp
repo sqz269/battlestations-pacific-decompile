@@ -111,6 +111,9 @@ struct ShipAiApproachState {
     float timer_1220{0.0f};           // nested+1220h, 009F1C07
     float timer_1224{0.0f};           // nested+1224h, 009F1C13
     ShipAiApproachPoint point_1228{}; // nested+1228h..1230h, the approach point
+    // BL at 009F1F09 / 009F1F45: this pass displaced the point (frame-local in
+    // the image, kept here for the mode latch at 009F1F65).
+    bool point_displaced{false};
     ShipAiApproachMode mode_1234{ShipAiApproachMode::free_0}; // nested+1234h
     // nested+12B4h, word 14 of the frame-state query block: the torpedo
     // standoff clearance. 009F1BC0 writes it every frame (009F2A10, 009F2D8C,
