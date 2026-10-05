@@ -11972,3 +11972,53 @@ packet's pair since (sections 60-149).
     `SetSelectedUnit` moves control to PT. ON, West Virginia is never sunk, so control stays on it.
   - USNRM01's 82 -> 15 tasks should be checked against the script's own strike orders, to confirm
     that the remaining launches are the script's.
+
+### 150.6 Per-row launch classification (lead request)
+
+**Every writer of `game+61Ch`.** `BSP_Game_SetGameMode` stores its second argument there at entry
+(`004BC890 MOV AL,[ESP+8]` / `004BC894 MOV [ECX+61Ch],AL`). A rel32 census of the PE
+(`local\s32_refs.py`) finds 24 calls; their arguments come from `local\s32_sgm.py` and the listings.
+
+| call site(s) | caller | (mode, flag) | when |
+| --- | --- | --- | --- |
+| `004E35BB..004E3844` (16) | `004E27E0`, the command-line parser from `BSP_Game_OnInit` | (6 / ESI / ..., **1**) | only after a `004C2DF0` match on a developer switch: `siege`, `duel`, `DD_/CL_/CA_/BB_/PT_/Sub_/fighter_duel`, `competitive`, `escort`, `ic1..ic4` (strings at `00CE7FF8..00CE8080`) |
+| `0046B99B` | `0046B730`, from `0045F600` (the `luaStageInit` / `luaStageInitMulti` entry) | (8, **0**) | every mission's stage init. EBP is cleared at `0046B8EB` on the loop exit, and at `0046B768` on the empty-list path (`0046B78F JZ 0046B8ED`); no later write, since `0046B998 PUSH EBP` |
+| `005D54F8`, `005D567F`, `005D62C8`, `005E519A`, `005E5E6E` | the front-end screens | (`[00E19564]` or `[00E19568]`, **0**) | `PUSH 0` before `PUSH EAX` at every site |
+| `004D548E` | | (9, **0**) | |
+| `004C6AF2` | `004C6890` SelectSceneRecord | (`game+614h`, **0**) | only when `game+1FE4h != 0` |
+| `0076FEA4` | `BSP_Session_SetMode` | (`game+618h`, EBX) | only when the new session mode is 1 (`0076FE7F CMP EDI,1 / JNE`), i.e. hosting |
+
+**So `61Ch` is 1 only after a developer command-line mode switch.** The front-end screens never set
+it; they clear it. Every mission's stage init clears it too, through `SetGameMode(8, 0)`, which is
+also why the host reads mode 8.
+
+**How each row is entered.** All 23 rows (the 22 reference rows and USNRM01) are mission-tree
+entries: the harness log prints `mission tree selection: group=.. mission=.. id=..` for each. In
+the image the mission tree's start (`0058BDF0`, docs/MISSION_BRIEFING_START.md) calls neither
+`SetGameMode` nor `Session_SetMode`. The tree's page rule `00580940` runs only when
+`game+1FE4h == 0`.
+- ESMP08 is "ESMP - Battle off Cape Engano" (group 3, `IJN/ESMP/08_engano.scn`).
+- LOMP06 is "LOMP - Crucial Cargo" and LOMP10 "LOMP - San Jose Skirmish" (group 4,
+  `USN/LOMP/..`).
+- E2 is USN04 at 9000 frames.
+
+These are mission-tree packs, not lobby modes. **Every row: session word 0, `61Ch` 0, so no
+coordinator.** Only a developer command line, or a hosted multiplayer session, creates one.
+
+**The slot condition, for completeness.** With a scene record, `004BB160` gives the records
+`i < MaxPlayerNum` `+8h/+9h/+0Ah` = 1 and the rest `+8h` = 0. `004DFD5C..` repoints slot 0 to the
+player record, whose `+9h` is 0.
+- So in single player, slots 1..7 pass `+8h && +9h && +0Ah` on a `MaxPlayerNum = 8` scene (every
+  reference scene).
+- `chg_5_tulagi.scn` is the only installed scene with `MaxPlayerNum = 4`.
+- The slot gate would pass; the session/forced gate is what fails.
+
+**The per-row rule** is therefore the switch as committed: coordinator present iff
+`game+1FE4h == 1 || game+61Ch`, both 0 on every mission-tree launch.
+`kAiCoordinatorCreatedAtLoad = false` is that rule's value for every row this harness runs (it has
+no command-line mode switch and no session). The 150.5 pairs stand as the per-row pairs; no
+re-pair is needed.
+
+**USNRM01's remaining strike tasks are the script's.** No AI-planner order exists ON. The
+script's `PilotSetTarget` calls are 453 OFF and 431 ON. The ON torpedo tasks follow the
+script-spawned waves (`KateSpawn1` first, the same draws as OFF).
