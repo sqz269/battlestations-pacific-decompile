@@ -304,6 +304,44 @@ constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_
 constexpr bool kAiWeightBarrelGatesBound = false;
 constexpr bool kAiPlaneAttackerWeightBound = false;
 
+// Packet cc9_ai_plane_loadout_arm, docs/SQUADRON_LAND_TASK.md 5df. True: the
+// key's +4h is 00A04560's record+10h as the image forms it (00A04608..00A0464E):
+// X = the plane (kind 0Fh) or a squadron's leader ([entity+3D0h], kind 18h);
+// [X+C54h] when 007B9140(X, 1) holds (kind 17h, or a rack holding a round),
+// else 0. [X+C54h] is the plane's Equipment index; LABELLED: this process keeps
+// no authored per-squadron Equipment, so it is the generator's default
+// (0094BD34: 1 when the class authors any Equipments, else 0). And 00A08460's
+// loadout arm 00A08655..00A08A8E builds its option from that loadout. This
+// supersedes kAiPlaneAttackerWeightBound's record+10h = 0. False: as before.
+constexpr bool kAiPlaneLoadoutArmBound = false;
+
+// One census line for the loadout arm (no native counterpart).
+struct AiLoadoutArmCensus {
+    unsigned long long records{0};          // plane records formed
+    unsigned long long records_loadout{0};  // ... with +10h > 0
+    unsigned long long visits{0};           // loadout-arm visits
+    unsigned long long no_rack{0};          // no list, or no rack with a bullet
+    unsigned long long refused{0};          // a rack, but no option
+    unsigned long long options[6]{};        // torpedo, dive, level, DC, rocket, kamikaze
+    unsigned long long positive[6]{};
+    double value_sum[6]{};
+};
+AiLoadoutArmCensus& ai_loadout_arm_census() {
+    static AiLoadoutArmCensus c;
+    return c;
+}
+int ai_loadout_descriptor_slot(std::uint32_t d) {
+    switch (d) {
+    case bsp::kAiPlaneOptionTorpedo: return 0;
+    case bsp::kAiPlaneOptionDiveBomb: return 1;
+    case bsp::kAiPlaneOptionLevelBomb: return 2;
+    case bsp::kAiPlaneOptionDepthCharge: return 3;
+    case bsp::kAiPlaneOptionRocket: return 4;
+    case bsp::kAiPlaneOptionKamikaze: return 5;
+    default: return -1;
+    }
+}
+
 // Packet cc9_forced_target_weights, docs/SQUADRON_LAND_TASK.md 5cu. True:
 // 00A08460's forced-rule lookup 00A31DB0 (at 00A08540, after the memo) scans
 // the current mode's ForcedTargetWeightValues table and a match answers the
@@ -777,6 +815,13 @@ public:
         return block_.at(offset);
     }
     void note_plane_option(std::uint32_t descriptor, float value) override {
+        const int loadout_slot = ai_loadout_descriptor_slot(descriptor);
+        if (loadout_slot >= 0 && loadout_slot < 5) {
+            AiLoadoutArmCensus& l = ai_loadout_arm_census();
+            if (value > 0.0f) ++l.positive[loadout_slot];
+            l.value_sum[loadout_slot] += value;
+            return;
+        }
         AiPlaneWeightCensus& c = ai_plane_weight_census();
         const int slot = descriptor == bsp::kAiPlaneOptionKamikaze ? 0
                          : descriptor == bsp::kAiPlaneOptionStrafe ? 1 : 2;
@@ -826,6 +871,34 @@ private:
     TargetGroupFn group_;
     KindFn kind_;
     ClassFn class_id_;
+
+public:
+    // Packet cc9_ai_plane_loadout_arm: the attacker's VehicleClass index
+    // (record+0h's class, [entity+538h]), set by the two key sites.
+    void set_vehicle_class(ClassFn fn) { vehicle_class_ = std::move(fn); }
+    bool plane_loadout_arm_bound() override { return kAiPlaneLoadoutArmBound; }
+    bool plane_loadout(const void* attacker, int loadout,
+                       std::vector<bsp::AiPlaneLoadoutEntryFacts>& out) override {
+        if (!vehicle_class_) return false;
+        return game_ai_plane_loadout(vehicle_class_(index_of(attacker)), loadout, out);
+    }
+    void note_loadout_arm(int sub_type, std::uint32_t descriptor) override {
+        AiLoadoutArmCensus& c = ai_loadout_arm_census();
+        ++c.visits;
+        if (sub_type == 0) {
+            ++c.no_rack;
+            return;
+        }
+        const int slot = ai_loadout_descriptor_slot(descriptor);
+        if (slot < 0) {
+            ++c.refused;
+            return;
+        }
+        ++c.options[slot];
+    }
+
+private:
+    ClassFn vehicle_class_;
 };
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -1355,6 +1428,26 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record.strafe_params_3 = 16.0f;
         record.tail_gun_params_1 = 15.0f;
         record.tail_gun_params_2 = 8.0f;
+        // Packet cc9_ai_plane_loadout_arm: the loadout arm's record +9Ch..+D0h
+        // (tuning +4Ch..+80h) and the Paratroopers accuracy +14Ch. The same
+        // script authors per mode (lines 58-62 of the first table): the three
+        // IslandCapture tables Torpedo {80, 3}, Divebomb {60, 3}, Levelbomb
+        // {200, 4}, DC {60, 4}, BigRocket {120, 2}; Duel, Escort, Siege and
+        // Competitive {25, 3}, {25, 3}, {30, 12}, {25, 4}, {20, 2}.
+        const bool island = tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        record.torpedo_params_1 = island ? 80.0f : 25.0f;
+        record.torpedo_params_2 = 3.0f;
+        record.divebomb_params_1 = island ? 60.0f : 25.0f;
+        record.divebomb_params_2 = 3.0f;
+        record.levelbomb_params_1 = island ? 200.0f : 30.0f;
+        record.levelbomb_params_2 = island ? 4.0f : 12.0f;
+        record.d_c_params_1 = island ? 60.0f : 25.0f;
+        record.d_c_params_2 = 4.0f;
+        record.big_rocket_params_1 = island ? 120.0f : 20.0f;
+        record.big_rocket_params_2 = 2.0f;
+        record.paratroopers = tuning.at(0x14Cu);
         return record;
     }
 
@@ -2113,7 +2206,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.attacker = handle(attacker_unit);
             // 00A0F83C reads record+10h, which 00A04560 always leaves 0; only
             // the plane arm reads it (packet cc9_plane_attacker_weight).
-            key.attacker_class = kAiPlaneAttackerWeightBound ? 0
+            key.attacker_class = kAiPlaneLoadoutArmBound
+                                     ? record_loadout_00a04560(attacker_unit)
+                                 : kAiPlaneAttackerWeightBound ? 0
                                  : units.unit_class_id(attacker_unit);
             key.target = handle(target);
             // Target record +1Ch, 00A04568's side >= 2. Only the gates read it,
@@ -2125,6 +2220,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
                 [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
                 [this](std::size_t unit) { return units.unit_class_id(unit); });
+            model.set_vehicle_class([this](std::size_t unit) { return unit_vehicle_class(unit); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().close_weight_sum += in.base_weight;
             ++summary.weight_model_runs;
@@ -4987,6 +5083,29 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, 39.0f);
     }
 
+    // 00A04560's record+10h (00A04608..00A0464E) for X = proxy(member): the
+    // plane itself, or a squadron's leader ([entity+3D0h]). [X+C54h] when
+    // 007B9140(X, 1) holds, else 0 (a ship's record: 00A04650).
+    int record_loadout_00a04560(std::size_t x) {
+        if (!units.unit_is_kind_of(x, 0x0F)) return 0;
+        AiLoadoutArmCensus& c = ai_loadout_arm_census();
+        ++c.records;
+        const bool holds = units.unit_is_kind_of(x, 0x17) ||   // 007B914A
+                           units.plane_holds_rack_round_007b9140(x);
+        if (!holds) return 0;
+        // [X+C54h]: LABELLED, the generator's default (0094BD34).
+        const GameUnitRow* row = units.unit_row(x);
+        const int equipment =
+            row != nullptr && game_ai_plane_equipment_count(row->type_id) > 0 ? 1 : 0;
+        if (equipment > 0) ++c.records_loadout;
+        return equipment;
+    }
+    // The VehicleClass index the loadout reader keys on.
+    int unit_vehicle_class(std::size_t unit) {
+        const GameUnitRow* row = units.unit_row(unit);
+        return row != nullptr ? row->type_id : -1;
+    }
+
     // 00A04560 BSP_Ai_EntityRecordBuild, __fastcall(ECX = out, EDX = entity),
     // RET 4, called from 00A07E40 with 1.
     GroupValueRecord group_value_record_00a04560(std::size_t member) {
@@ -5033,7 +5152,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.attacker = handle(a.unit);
             // a+10h: 0 for a ship record (00A04650); the model reads it only
             // as a memo key, and this binding keeps no memo.
-            key.attacker_class = kAiPlaneAttackerWeightBound ? 0   // record+10h
+            key.attacker_class = kAiPlaneLoadoutArmBound ? record_loadout_00a04560(a.unit)
+                                 : kAiPlaneAttackerWeightBound ? 0   // record+10h
                                  : units.unit_class_id(a.unit);
             key.target = handle(t.unit);
             key.target_is_neutral = t.third_party ? 1 : 0;
@@ -5042,6 +5162,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
                 [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
                 [this](std::size_t unit) { return units.unit_class_id(unit); });
+            model.set_vehicle_class([this](std::size_t unit) { return unit_vehicle_class(unit); });
             weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().group_weight_sum += weight;
             ++group_value_census.model_pairs;
@@ -6156,6 +6277,20 @@ void GameAiCoordinatorHost::report() {
                 c.positive_options[1], c.options[1], c.option_value_sum[1],
                 c.positive_options[2], c.options[2], c.option_value_sum[2], c.gate_admits,
                 c.platform_refusals);
+            {
+                const AiLoadoutArmCensus& l = ai_loadout_arm_census();
+                host.log.notef("summary mission ai loadout arm bound=%d records=%llu "
+                    "records_loadout=%llu visits=%llu no_rack=%llu refused=%llu "
+                    "torpedo=%llu/%llu(%.1f) dive=%llu/%llu(%.1f) level=%llu/%llu(%.1f) "
+                    "dc=%llu/%llu(%.1f) rocket=%llu/%llu(%.1f) kamikaze=%llu (00A04560 "
+                    "record+10h, 00A08655..00A08A8E; options positive/all(sum); packet "
+                    "cc9_ai_plane_loadout_arm)",
+                    kAiPlaneLoadoutArmBound ? 1 : 0, l.records, l.records_loadout, l.visits,
+                    l.no_rack, l.refused, l.positive[0], l.options[0], l.value_sum[0],
+                    l.positive[1], l.options[1], l.value_sum[1], l.positive[2], l.options[2],
+                    l.value_sum[2], l.positive[3], l.options[3], l.value_sum[3], l.positive[4],
+                    l.options[4], l.value_sum[4], l.options[5]);
+            }
             {
                 const AiForcedRuleCensus& f = ai_forced_rule_census();
                 std::string hits;

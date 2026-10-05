@@ -344,6 +344,7 @@ inline constexpr int kAiTypeTorpedoBoat = 0x0E;   // 00A0926B
 inline constexpr int kAiTypeKamikazePlane = 0x17; // 00A08AAE
 inline constexpr int kAiTypeGunDevice = 0x20;     // 00A08BA0 / 00A09391, a device class
 inline constexpr int kAiTypeBombPlatform = 0x25;  // 00A08BB3 / 00A093A4, a device class
+inline constexpr int kAiTypeLevelBomber = 0x10;   // 00A08980, the attacker (loadout arm)
 
 // The non-plane walk's per-target gates, 00A0924C..00A0932B. All five are false
 // for a neutral target ([ESP+1Eh], target_is_neutral == 1).
@@ -361,15 +362,31 @@ AiBarrelTargetGates ai_barrel_target_gates(bool neutral, bool plane, bool torped
 // sub-type (bomb 9, 0Ch-0Fh, kamikaze 11h, 13h) is skipped.
 bool ai_barrel_gate_admits(const AiBarrelTargetGates& gates, int bullet_sub_type) noexcept;
 
-// The type-0Fh attacker branch 00A0861F..00A09222, the arm with no loadout
-// (attacker key +4h <= 0, 00A0864F JLE 00A08A93), which is the only arm the
-// 00A04560 record path reaches because record+10h is always 0. The option
-// record is 14h bytes (00A08D7A's divide by 5 over a 4-byte stride).
+// The type-0Fh attacker branch 00A0861F..00A09222. Attacker key +4h <= 0
+// (00A0864F JLE 00A08A93) takes the arm with no loadout; above 0 the loadout arm
+// 00A08655..00A08A8E, which 00A04560 reaches with record+10h = [plane+C54h]
+// while the plane holds a rack round (00A04619..00A0464E, 007B9140(plane, 1)).
+// The option record is 14h bytes (00A08D7A's divide by 5 over a 4-byte stride).
 inline constexpr std::uint32_t kAiPlaneOptionKamikaze = 0x00E08F50u;  // 00A08B0C
 inline constexpr std::uint32_t kAiPlaneOptionStrafe = 0x00E08F40u;    // 00A08C6C
 inline constexpr std::uint32_t kAiPlaneOptionDogfight = 0x00E08F58u;  // 00A08C38, 00A08D1C
 // device +80h, the Function category AAMACHINEGUN (00A08CA0 CMP [EDI+80h],1).
 inline constexpr int kAiPlaneTailGunFunction = 1;
+
+// Packet cc9_ai_plane_loadout_arm (docs/SQUADRON_LAND_TASK.md 5df). The loadout
+// arm 00A08655..00A08A8E builds at most one option from the rack ordnance of the
+// attacker class's loadout record+10h. Names are hypotheses from the arm that
+// stores each descriptor; the kamikaze one (00E08F50) is shared with the
+// no-loadout arm.
+inline constexpr std::uint32_t kAiPlaneOptionTorpedo = 0x00E08F18u;     // 00A08743, sub-type 0Ah
+inline constexpr std::uint32_t kAiPlaneOptionDiveBomb = 0x00E08F20u;    // 00A089E2, sub-type 9
+inline constexpr std::uint32_t kAiPlaneOptionLevelBomb = 0x00E08F28u;   // 00A089A8 (9), 00A08826 (0Fh)
+inline constexpr std::uint32_t kAiPlaneOptionDepthCharge = 0x00E08F38u; // 00A08787, sub-type 0Bh
+inline constexpr std::uint32_t kAiPlaneOptionRocket = 0x00E08F48u;      // 00A088D7, 00A08926, sub-type 12h
+// [00CE4C04] 9999.0f, the reload minimum's seed (00A08662); [00D7A280] 0.5,
+// the attack-pass half weight the arm multiplies Params [1] by (00A08754).
+inline constexpr float kAiLoadoutReloadSeed = 9999.0f;
+inline constexpr double kAiLoadoutParamsHalf = 0.5;
 
 // A bullet class record as the plane arm reads it.
 struct AiPlaneBulletFacts {
@@ -379,6 +396,35 @@ struct AiPlaneBulletFacts {
     float damage_max{0.0f};  // +B0h, 00A08F20
     float blast_min{0.0f};   // +B4h, 00A08E10
     float blast_max{0.0f};   // +B8h, 00A08E06
+    // Loadout arm only. MRocket IgnitionDelay +E0h (006E3260 answers +E0h <= 0,
+    // the small-rocket test at 00A08870) and AntiAir +E4h (007B80A0 / 007B80C0).
+    float ignition_delay{0.0f};
+    bool anti_air{false};
+    // MParatrooper +D8h, +F8h and +FCh, read by the 0Fh scoring at 00A08EBA..
+    // 00A08ED9. Their reader 007AC780 is contract: unread, so a host that has
+    // not read them leaves this false and the option scores 0.
+    bool paratrooper_terms_known{false};
+    float paratrooper_d8{0.0f};
+    float paratrooper_f8{0.0f};
+    float paratrooper_fc{0.0f};
+    // MDummyKamikazePlane: the 0Dh option scores the blast pair of [bullet+DCh]'s
+    // class +210h (00A08DE4). The +DCh reader 006FF170 is contract: unread.
+    bool carried_kamikaze_known{false};
+    float carried_blast_min{0.0f};
+    float carried_blast_max{0.0f};
+    int carried_sub_type{0};
+};
+// One entry of 009552E0's loadout record (+4h list, node +4h next, +8h entry),
+// as the loadout arm reads it (00A08686..00A086F3).
+struct AiPlaneLoadoutEntryFacts {
+    int ammo{0};                  // entry +8h, summed over rack entries (00A086EA)
+    float reload{0.0f};           // entry +0Ch, minimum over rack entries (00A086C6)
+    bool device_is_rack{false};   // 00443490(entry +4h) answers vtable[+18h](25h)
+    // Device class +F4h (00A08720), compared with 0.0 [00D7A218]: above it a
+    // torpedo may score against a submarine. A BombPlatform class is an E8h
+    // allocation (00443273), so the read lies past the object; no producer.
+    float device_f4{0.0f};
+    AiPlaneBulletFacts bullet;    // 00731040: [class+74h] entry 0's +34h, absent when +78h is 0
 };
 // One entry of the attacker class's platform vector +94h/+98h (00A08B60).
 struct AiPlanePlatformFacts {
@@ -544,6 +590,23 @@ struct AiTargetWeightModelHost {
         (void)out;
         return false;
     }
+    // Packet cc9_ai_plane_loadout_arm. False keeps the earlier behaviour: a key
+    // with +4h > 0 builds no option at all.
+    virtual bool plane_loadout_arm_bound() { return false; }
+    // 009552E0(ECX = attacker class, loadout) at 00A0865A: the class's
+    // Equipments[loadout] entries (class +128h count, 00954DF0 index loadout-1),
+    // in list order. False when 009552E0 answers null (loadout past the count).
+    virtual bool plane_loadout(const void* attacker, int loadout,
+                               std::vector<AiPlaneLoadoutEntryFacts>& out) {
+        (void)attacker;
+        (void)loadout;
+        (void)out;
+        return false;
+    }
+    // [00F874FD], read by 007B80A0 / 007B80C0: set by the Lua binding
+    // SetRocketAirGroundTypeDifferent(false) (008C172D), cleared at mission load
+    // (004DFBE5). No reference-row script calls it.
+    virtual bool rocket_air_ground_same() { return false; }
     // 009FE270(ECX = attacker, EDX = bullet, target) for a bullet sub-type.
     virtual float bullet_accuracy(const void* attacker, int sub_type, const void* target) {
         (void)attacker;
@@ -565,21 +628,32 @@ struct AiTargetWeightModelHost {
         (void)loadout_arm;
         (void)no_options;
     }
+    // One call per bound loadout-arm visit: the rack bullet sub-type it found
+    // (0 for no list or no rack) and the descriptor it built (0 for none).
+    virtual void note_loadout_arm(int bullet_sub_type, std::uint32_t descriptor) {
+        (void)bullet_sub_type;
+        (void)descriptor;
+    }
     virtual void note_barrel_gate(int bullet_sub_type, bool admitted) {
         (void)bullet_sub_type;
         (void)admitted;
     }
 };
 
-// The plane arm's option list for one (attacker, target): 00A08A93..00A08D5F.
+// The plane arm's option list for one (attacker, target): 00A0861F..00A08D5F.
+// `equipment_penalty` receives [ESP+2Bh]: key +4h > 0, cleared by the small
+// rocket arm (00A08882). Coverage: complete with the loadout arm bound; unbound,
+// the loadout arm (00A08655..00A08A8E) builds nothing.
 std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host,
                                                    const AiTargetWeightKey& key,
-                                                   const AiModeTuning& tuning);
-// 00A0861F..00A09222 with no loadout: the options scored and summed (00A08D70..
-// 00A0921D). Returns the total 00A09737's epilogue normalises.
+                                                   const AiModeTuning& tuning,
+                                                   bool* equipment_penalty = nullptr);
+// 00A0861F..00A09222: the options scored and summed (00A08D70..00A0921D).
+// Returns the total 00A09737's epilogue normalises. `target_underwater_armour`
+// is [ESP+48h] (00A085F8), which the torpedo and depth-charge options read.
 float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightKey& key,
                             const AiModeTuning& tuning, float target_hit_points,
-                            float target_armour);
+                            float target_armour, float target_underwater_armour);
 
 // 009FE200 (__stdcall, RET 10h, body 009FE200-009FE26A): the expected damage one
 // hit deals above the armour when the damage is uniform on [low, high], capped

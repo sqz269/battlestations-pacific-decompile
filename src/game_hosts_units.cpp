@@ -314,6 +314,10 @@ struct PlaneOrdnanceRack {
     bool multi{false};
     int single_index{-1};
     int authored_ammo{-1};   // Equipments[DefaultEquipment][key].Ammo, -1 absent
+    // Packet cc9_ai_plane_loadout_arm: Equipments[1][key].Ammo, -1 absent. The
+    // scene generator writes Equipment 1 when a squadron authors none and the
+    // class lists any (0094BD34), so this is a scene squadron's loadout.
+    int generator_ammo{-1};
 };
 
 struct GameUnitSlot {
@@ -3405,15 +3409,23 @@ struct GameUnitsHost::Impl {
     // Platform, Ammo and ReloadTime per entry). -1 when any level is absent.
     // ASSUMED: the aircraft carries its DefaultEquipment; a mission that picks
     // another equipment is not modelled.
-    int read_equipment_ammo(int class_id, int platform_key) {
+    // `equipment` 0 keeps the default above; packet cc9_ai_plane_loadout_arm
+    // passes 1 for the scene generator's loadout.
+    int read_equipment_ammo(int class_id, int platform_key, int equipment = 0) {
         if (platform_key < 0) return -1;
         char chunk[512];
+        char index[48];
+        if (equipment > 0) {
+            std::snprintf(index, sizeof(index), "%d", equipment);
+        } else {
+            std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
+        }
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
-            "local e = c.Equipments[c.DefaultEquipment or 1]\n"
+            "local e = c.Equipments[%s]\n"
             "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
-            "return tonumber(e[%d].Ammo) or -1\n", class_id, platform_key, platform_key);
+            "return tonumber(e[%d].Ammo) or -1\n", class_id, index, platform_key, platform_key);
         const int top = lua.lua_gettop();
         int value = -1;
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
@@ -3479,8 +3491,9 @@ struct GameUnitsHost::Impl {
             PlaneOrdnanceRack r;
             r.class_id = read_device_bullet_class_id(dev);
             std::snprintf(key, sizeof(key), "p%d_key", p);
-            r.authored_ammo = read_equipment_ammo(type_id,
-                lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1));
+            const int platform_key = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            r.authored_ammo = read_equipment_ammo(type_id, platform_key);
+            r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
                 r.single_index = singles++;
             } else if (type == "MultiBombPlatform") {
@@ -14319,6 +14332,25 @@ int GameUnitsHost::squadron_ammo_type_007edad0(std::size_t unit_index) {
         host.record("PlaneSquadron::ammo_type_007edad0", 0x007edad0u);
         return host.squadron_ammo_type_stand_in(*sq);
     }
+}
+
+bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
+    GameUnitSlot& s = *host.slots[unit_index];
+    // 007B915B-007B918F: the first part answering stops the walk.
+    for (const PlaneOrdnanceRack& r : host.ordnance_racks(s)) {
+        if (r.class_id == 0) continue;
+        // LABELLED: rack_holds_round's unseeded fallback is the DefaultEquipment
+        // Ammo. A scene squadron with no authored Equipment flies Equipments[1]
+        // (0094BD34), so a rack the default leaves empty (a Zero's, whose class
+        // has DefaultEquipment 0) takes that loadout's Ammo until the release
+        // issue seeds the host's own count.
+        PlaneOrdnanceRack g = r;
+        if (g.authored_ammo < 0) g.authored_ammo = g.generator_ammo;
+        if (host.rack_holds_round(s, g)) return true;
+    }
+    return false;
 }
 
 std::size_t GameUnitsHost::issue_return_to_base_007f16d0(std::size_t unit_index,

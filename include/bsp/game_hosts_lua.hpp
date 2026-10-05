@@ -33,6 +33,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/ai_target_weights.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/air_operations.hpp"
@@ -1472,5 +1473,19 @@ private:
     unsigned spawn_requeue_logged_{0};
     GameMissionLuaSummary summary_;
 };
+
+// Packet cc9_ai_plane_loadout_arm (docs/SQUADRON_LAND_TASK.md 5df). 00A08460's
+// loadout arm reads 009552E0's loadout record, which this process keeps only as
+// the authored table, and the AI coordinator holds no Lua host, so the live
+// GameMissionLuaHost answers through these process-wide reads (null host: no
+// list). VehicleClass[class_id].Equipments[equipment] as 00961F57 stores it:
+// per entry Ammo (+8h), ReloadTime (+0Ch) and Platform (+4h), the device class
+// DeviceClass[Platform] answering 25h when its Type is BombPlatform or
+// MultiBombPlatform (00442C70 / 00442D00), and that class's first bullet
+// (00731040) from Bullets[DeviceClass[...].Bullet[1].Bullet]. Cached per pair.
+bool game_ai_plane_loadout(int class_id, int equipment,
+                           std::vector<bsp::AiPlaneLoadoutEntryFacts>& out);
+// The size of VehicleClass[class_id].Equipments (class +128h, read by 00951F10).
+int game_ai_plane_equipment_count(int class_id);
 
 }  // namespace bsp::game
