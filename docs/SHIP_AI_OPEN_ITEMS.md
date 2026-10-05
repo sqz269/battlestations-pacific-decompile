@@ -11830,3 +11830,101 @@ cc9-gunnery25's `g25_runs.ps1`). OFF is the commit `53143a846` build; ON is
 
 **Next:** the idle formation shape `00A11070` (IDLE's tail, census row
 `AiCommand::idle_formation_00a11070`) is unbound.
+
+## 150. Does the image build a slot-4 brain on USN13? No coordinator at all in single player (packet `cc9_ai_coordinator_load_gate`, cc9-ships32, 2026-10-05)
+
+The lead's question, moved from cc9-lua38. Ghidra was read-only.
+
+### 150.1 The lazy construct `00A1838C` and its gates
+
+`00A182C0 BSP_AiParties_Think` (body `00A182C0-00A18402`) walks the eight party records
+`00F8A8C8 + p*1Ch`. On a due think it builds the brain (`operator new(28h)`, `00A15A70(p)`) when
+both hold:
+- the record's byte `+0h` is set (`00A1834F`);
+- `009FFE50` admits the slot.
+
+Otherwise it frees any brain.
+
+The record byte has three writers (Ghidra xrefs):
+- `00A163D0`, the init: it clears all eight;
+- the `AIEnable` binding (`00A374D1..00A37515`): no script calls it;
+- `00A32DF0`, slot `+A0h` of the coordinator vtable `00D231A0`, which `00A32350` calls right after
+  placing the controller. It sets `byte = slot+8h && slot+9h && slot+0Ah`.
+  - Its `+0Ah` loop (modes below 4 only) gives each side (slots 0-3, 4-7) one AI slot when the
+    side has no human slot (`+8h` set, `+9h` clear).
+  - Under `004BB160` the records `i < MaxPlayerNum` (scene `+988h`) get `+8h/+9h/+0Ah` = 1, and
+    the rest get `+8h` = 0.
+  - `usn_13_truk.scn` authors `MaxPlayerNum = 8`, so slot 4 would be enabled, if `00A32DF0` ran.
+
+### 150.2 But the coordinator is never constructed in a single-player campaign
+
+**Who constructs it.** `00A182C0` is called only from `00A32D50` (`00A32D5E`), the tick element of
+the coordinator (vtable `00D23168` slot `+8h`), together with the compose pass `00A2E720`
+(`00A32D59`). That element is installed only by the constructor `00A31730`, and `00A31730` is
+called only from `00A32350` (`00A32397`). `00A32350` has two callers. This is a rel32 and abs32
+census of the PE on disk (`local\s32_refs.py`); the census found every positive, including the
+vtable stores:
+- `004E1838` in `BSP_Game_LoadMissionScene`;
+- `00A373AF`, the `AICreate` binding.
+
+**The load arm** (`004E17FD..004E1838`, listing):
+
+```
+004E17FD  CMP [ESI+1FE4h],1 / JE 004E180F      ; hosted session
+004E1806  CMP byte [ESI+61Ch],0 / JE 004E183D  ; forced mode, else skip the create
+004E180F  for i in 0..7: slot [ESI+18CCh+i*4]: +8h && +9h && +0Ah -> 004E1838 CALL 00A32350
+```
+
+- `game+1FE4h` is the session word: 0 in single player, 1 for a host, 2 for a client
+  (CONSTRUCT_WORLD; this process's `LobbySettings` line).
+- `game+61Ch` is the forced-mode byte. It is set only by `004BC890` from the `004E27E0`
+  command-line switches (section 60), so it is 0 in a campaign.
+- **So a campaign mission skips the create.**
+
+**`AICreate` is never called.**
+- None of the 621 `.lua` files of this installation calls it.
+- Nor do they call `AIEnable`, `AISetCommand` or `AIGetGroupInfo`.
+- The string `AICreate` occurs in the image only in the binding table (`00D0E8C0`/`00D0E900`,
+  referenced from `00E0C898`/`00E0C8B8`), so no native script string runs it.
+
+**Answer.** On USN13, as on every single-player row of this installation, the image has no AI
+coordinator. That means:
+- no slot-4 brain and no other brain;
+- no planner and no AI group (no compose pass, no `entity+16Ch`);
+- no group command tick (NONCONTROL, IDLE, CLOSEATTACK, ...).
+
+The Japanese groups get no planner orders, because no planner exists. The planner kinds (Siege,
+Duel, Escort, Competitive, IslandCapture tuning) are the skirmish modes, which fits.
+
+**The host** creates the coordinator unconditionally after `create_units`
+(`game_hosts_units.cpp`, `host.ai->create_00a32350()`) and ticks it every fixed step. Everything the
+coordinator orders is therefore host-only on these rows. That includes the planner
+`attackmove`s, the close-attack orders and the follower moves. It also includes every coordinator
+packet's pair since (sections 60-149).
+
+### 150.3 The binding
+
+`kAiCoordinatorLoadGateBound` (`src/game_hosts_ai.cpp`), committed OFF, with
+`kAiCoordinatorCreatedAtLoad = false` (the gate's answer here).
+- ON: `GameAiCoordinatorHost::fixed_step` returns before `00A32D50`'s work, so there is no
+  compose and no party think, and `steps_absent` counts the skipped steps.
+- `create_00a32350` still builds the host's tables (squadron records, party rows, tuning), which no
+  other host reads for gameplay.
+- Summary line: `summary mission ai coordinator load gate ...`.
+
+### 150.4 Predictions (written before any run)
+
+- **OFF:** identical to the base.
+- **ON:**
+  - `groups_created=0` and `tick_orders=0` on every row.
+  - Every row where the coordinator issued orders moves, which is all of them. The coordinator's
+    planner and close-attack orders reach planes and ships on every reference row.
+  - The largest moves are where `aiw` / `pla` / the planner moved rows: USN04 (deaths may return
+    toward the pre-`aiw` 73), E2, USNRM01, USN13 long and JM08 long.
+  - USN13's Japanese strike groups lose the slot-4 planner orders entirely, which is the lead's
+    divergence. Their behaviour falls back to the units' own AI (directors, ship AI, squadron
+    orders from the scripts).
+  - **The weakest calls:**
+    - BSM01 and LOMP06 may stay gameplay-identical, since few or no AI groups order anything there.
+    - Mission scripts that issue `PilotSetTarget` / `NavigatorAttack` keep driving their units in
+      both builds.
