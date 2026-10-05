@@ -8313,3 +8313,106 @@ side on `0246b0946`, which adds only the arm census, gives the census below.
   the righting threshold, and I assumed some ordered boost would occur.
 - **Flipped ON** (`kShipTorpedoBoatKindBound = true`), as a mechanism match with the spread miss
   recorded. Section 101.2's labelled substitution is closed.
+
+## 106. A hull's shape chain runs last to first (91.2's shape-order substitution; packet `cc9_hull_shape_chain_order`, cc9-gunnery24)
+
+### 106.1 The read
+
+- **The walk.** `00C44090` walks body A's shape chain from `B+70h` (next at `+208h`) and, for each
+  of those shapes, body B's chain (live decompile; `src/native_dyn_narrow_phase.cpp`).
+- **The order.** `00C5C940` (`dyn_body_attach_convex_shape_00c5c940`, reconstructed and compared
+  with the original) prepends: `shape+208h = old head`, `old+20Ch = shape`, `B+70h = shape`.
+  - `00C5D580` `Dyn_World_CreateBody` attaches the descriptors in array order.
+  - `00937C90` builds a hull through it from the 48h-record vector (`00931A10` at `009391BD`), and
+    `007482B0` builds a fort the same way.
+  - **So the chain runs from the last descriptor to the first.** The host walked a hull's shapes
+    first to last.
+- **The rest of 91.2's order substitutions, read with it:**
+  - **The pair list** (`00C32B10` / `00C32AF0`) is the SAP manager's doubly linked active list.
+    `00C3FFE0` appends at the tail (`+C8h`, sentinel `+C0h`), so it is in creation order, and an
+    erased pair is unlinked (`00C4BCD0`). Its slots come from a 1000-slot page pool with a free
+    list, and pointer order plays no part in the walk.
+  - **Body A** is the pair's lower proxy address (`00C3FFE0`: `first < second` puts `first` at
+    `+0`). A body registers one proxy, at its first shape (`00C50470`). A unit created earlier
+    therefore has the lower proxy, as the host's "lower unit" assumes, unless a recycled proxy
+    slot breaks the order (uncertain; not traced).
+  - **The manifold list** (`00C3F4D0`): a new manifold is appended at the tail (`pool+1C8h`,
+    sentinel `pool+F0h`). That is creation order, as the host keeps it (`serial`).
+  - **The SAP pairs start at box overlap**, the manifolds at the first hit. The host's world-box
+    test widened by 0.1 m stands in for both; its pair order is the hull index order. This stays
+    labelled.
+  - **Parallelism, uncertain:** `00C44090` runs per `IntersectTask2` range under `00C33140`'s
+    fork/join. With more than one task, manifold creation order across ranges depends on thread
+    timing.
+
+### 106.2 The binding (`kHullShapeChainOrderBound`, `include/bsp/hull_terrain_contact.hpp`, committed OFF)
+
+- `shape_chain_order(n)` gives `n-1..0` under the switch.
+- It applies in the terrain narrow phase (the tile is body A, the hull body B), the hull-pair
+  narrow phase (both chains), and the fort narrow phase.
+- Only hulls with two or more shapes are affected.
+
+### 106.3 OFF census and predictions (written before any ON run)
+
+Contacts that involve a hull with two or more shapes (`local\g24_multishape.py` on OFF logs: the
+`g24_d0_*` exports of `9c2320ede`, and cc9-gunnery23's `g23_f1_*` for the long rows):
+
+| row | hull pairs (multi-shape / all) | pair steps (multi / all) | terrain units (multi / all) | terrain steps (multi / all) |
+| --- | --- | --- | --- | --- |
+| USNOS | 3 / 14 | 278 / 2915 | 0 / 6 | 0 / 6650 |
+| JM08 | 3 / 4 | 131 / 301 | 0 / 0 | 0 / 0 |
+| JM05 long | 2 / 23 | 1728 / 11875 | 1 / 6 | 5561 / 9328 |
+| IJN01 | 4 / 35 | 860 / 8103 | 1 / 14 | 32 / 4086 |
+| USNRM01 | 1 / 2 | 310 / 343 | 1 / 4 | 64 / 7849 |
+| JM08 long | 11 / 37 | 1472 / 6613 | 2 / 22 | 1979 / 72353 |
+| USN13 long | 1 / 42 | 2328 / 24299 | 1 / 12 | 265 / 38397 |
+| E2 | 0 / 7 | 0 / 366 | 0 / 0 | 0 / 0 |
+
+**Predictions:**
+- **Mechanism:**
+  - single-shape contacts are untouched;
+  - each pair whose `first_step` precedes every multi-shape contact keeps its census line;
+  - the first moved per-pair or per-unit census line involves a hull with two or more shapes.
+- **Moved rows:** the reversed order changes the order of the points in a manifold, and so the
+  sequential solver's order. Expected exit 3 on every row with multi-shape contacts (all but E2);
+  direction not predicted. JM08 long, the knife edge, is expected to move most.
+- **E2:** exit 0 or 1.
+
+### 106.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `8c23c32f9`
+(SHA-256 prefixes `9C97C59FAACD` / `456D851DC9CA`), x's launch form. The 300-frame smoke ON is
+clean.
+
+| row | exit | deaths OFF -> ON | moved pair census lines |
+| --- | --- | --- | --- |
+| USNOS | 3 | 97 / 97 (identical rows) | 9; the first is Convoy1/Convoy2 (multi-shape), from step 211 |
+| JM05 long | 3 | 17 / 17 (1 row re-timed) | 6 |
+| USNRM01 | 3 | 191 -> 190 (14 only OFF, 13 only ON) | 2; Medusa (5 shapes) / Cachalot stays in contact for 9000 steps instead of 310 |
+| JM08 long | 3 | 140 -> 148 (7 only OFF, 15 only ON) | 37; the first four are all multi-shape (USTroopTransport / LSM / LST) |
+| USN13 long | 3 | 119 -> 116 | 11 |
+| JM08, IJN01 | 1 | identical | 0 |
+| E2 | 1 | identical | 0 |
+
+**Mechanism: matches.**
+- `local\g24_chaincheck.py` finds no pair whose `first_step` moved before the row's first
+  multi-shape contact.
+- Where the first moved pair line is a hull pair, it involves a multi-shape hull (USNOS, USNRM01,
+  JM08 long).
+- On JM05 long and USN13 long, two single-shape pairs that began earlier change only their later
+  totals (`steps`). Their first steps are identical, and the rows' multi-shape terrain contacts
+  can move them afterwards.
+
+**Spread.**
+- Five of the seven predicted rows moved.
+- JM08 and IJN01 are exit 1: their multi-shape contacts reached at most one shape at a time, so
+  the order made no difference. That is a spread miss.
+
+**USNRM01's Medusa/Cachalot.**
+- The pair overlaps 14 m from step 1 (a moored spawn).
+- OFF it separated after 310 steps. ON it never separates (depth 10.4 m at most).
+- With the image's walk the solver does not push the two apart. This is recorded as the image's
+  order; whether the image's spawn overlaps the same way is not known.
+
+**Flipped ON** (`kHullShapeChainOrderBound = true`), as a mechanism match with the JM08/IJN01
+spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
