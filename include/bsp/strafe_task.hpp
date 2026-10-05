@@ -100,7 +100,7 @@ void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
 // U(0, 1) >= the goaway state's +18h, else "flikflak" (009BC0A0 -> 009BB910,
 // tick 009B99E0, ends at 00996300). The strafe arm is suspended while one
 // runs and resumes when it ends. False: the gate is only counted.
-inline constexpr bool kStrafeBreakoffBound = false;
+inline constexpr bool kStrafeBreakoffBound = true;   // ON: SQUADRON_LAND_TASK 5cm.1
 
 // 009BAFC0's pitch reference for tightturn (009BB018-009BB12B, read from the
 // listing). altitude = unit+100h, speed = unit vtable[38h], pitch = unit+C64h,

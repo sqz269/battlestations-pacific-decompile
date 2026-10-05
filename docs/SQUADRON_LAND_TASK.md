@@ -9198,3 +9198,49 @@ is about 0.7 km on. The host flies the straight line. That is the likeliest caus
     simply too dense for the break-off to matter, and the switch flips on the mechanism alone.
 - **ESMP08 9200/9000, USNOS 3200/3000, USN02 3200/3000 (controls):** pair_diff 0 or 1. ESMP08
   short and USNOS never enter goaway (`goaway=0` in 5ck.2's ON logs), and USN02 has no strafe.
+
+### 5cm.1 Measured (OFF `local\l33_off`, SHA-256 `68CB1B2C2040`; ON `local\l33_on`, `38CCABFD6904`; both from `a14bb33f1`), and the verdict: **flip ON**
+
+Run in the launch form of reference v, with `BSP_STRAFE_GOAWAY_TRACE=1` on both sides
+(`local\l33_runs.ps1 -Tag b`). The trace leaves gameplay unchanged: the OFF log against 5cl's
+trace run exits 1. The ON smoke (USN01, 300 frames) finished cleanly.
+
+| row | pair_diff | notes |
+| --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 23 tightturns, 34 flikflaks, 1477 manoeuvre ticks |
+| ESMP08 9200/9000 | 1 | no goaway |
+| USNOS 3200/3000 | 1 | strafes, no goaway |
+| USN02 3200/3000 | 1 | no strafe |
+
+**The mechanism, measured against the reading** (`local\l33_mv_analyze.py`):
+- **Pushes.** There are 57: 52 from the tick and 5 from the enter. 23 of 57 are tightturns,
+  which is 40%, the predicted `1 - E[+18h]`.
+- **The end conditions.**
+  - All 23 tightturns end at their condition after **0.09-1.40 s (median 0.10 s, two
+    ticks)**. This is the image's own condition, not a host artefact. A plane in goaway flies away
+    from the target, so the aim point is already behind it (`z < 0`). `00996510` answers at once,
+    and the tightturn holds the knife-edge bank for a tick or two. The prediction of 1-3 s
+    assumed the target ahead and was wrong.
+  - 21 flikflaks end at their distance after 0.10-15.09 s (median 1.90 s), and 10 end with the
+    plane's death.
+  - 3 pushes were overwritten. Where the enter pushes, the state tick of the same think
+    (`009CD1C7`) sees `+44h` still below 1 and pushes again: in the image a second task lands on
+    top of the first. **SUBSTITUTION, labelled:** the host keeps the second only.
+- **Census artefact.** `evasive_gaps` falls from 43 to 32. That counter takes rising edges, and
+  the edge state is held across the suspension. It is not a change in the gate.
+
+**The hypothesis, tested.** The goaway episodes that end in a death fall from 17 of 21 to 12 of
+20. The total does not move (46 deaths on both sides), but the strafers live longer:
+- across the 21 Corsair death rows, the median death is 5.6 s later (all 43 changed rows: median
+  +0.5 s; 18 later and 16 earlier by more than 1 s);
+- Zuikaku takes 89 -> 1269 damage, and Zuiho sinks 8.7 s earlier (548.7 -> 540.0 s);
+- hits rise 6462 -> 7374, damage 14996 -> 17044, torpedo releases 4/33 -> 5/27 and dive
+  releases 0/37 -> 3/36.
+
+So the break-off protects the strafers in the image's sense: the flikflak's climbing jink keeps
+them alive after a hit. It does not change how many die by the end of the row, because the
+carrier group's AA still gets them on their next pass.
+
+The mechanism matches, and the controls are exit 1, so the switch flips ON
+(`kStrafeBreakoffBound = true`). Corrected prediction: a tightturn from goaway lasts one or two
+ticks.
