@@ -11079,3 +11079,68 @@ change: the term only reorders candidates whose weights are already close. This 
 and the mechanism matches.
 
 **Verdict: ON.** `kAiTargetWeightHealthBound = true`.
+
+**ESMP08 long, the 22nd row.** OFF `0C97FEC1DE63` (`local\s30_on`, re-exported with the flip at
+`false` on `c7962d5e1`), ON this tree's `build\`. `pair_diff` exits 1 and `damaged_targets=0`:
+the row makes no weight query.
+
+**The big movers, by entity.**
+- **USN04 and E2.** The death-table changes are the air battle. In the ON run, six B5N Kate #8.1
+  and Yorktown squadron planes die that survive OFF. On the rows that changed, the killer moves
+  between Zero sections. This is the fighters' close-attack choice moving onto planes that
+  already took damage.
+- **USN02.** No death changes. The fire is redistributed: John2 takes 66 -> 2308 and ends at 739
+  health instead of 2500, DeRuyter takes 3178 -> 3918, and Electra's hits rise 49 -> 308.
+- **USNRM01.** The death count is the same (201). 14 Japanese planes and cranes swap between
+  the two runs, and the unit table loses four Pearl buildings and two BBRow piers that OFF
+  destroyed.
+- **USN13 long.** The Japanese planes (`bruh #2.*`, `#4.*`) differ: 4 die only OFF, 2 only ON.
+- **IJN01.** Three shots and 0.1 damage.
+
+## 140. `clear_37c` reads 9999.0 or FLT_MAX between builds (lead item (a), cc9-ships30, 2026-10-05)
+
+**The field.** `blk+37Ch` (`ShipAiClearanceBlock::clearance_37c`):
+- the host's block is born with the sentinel 9999.0 (`kShipAiClearanceSentinel`);
+- `009EF96F` re-stores the sentinel at every refresh, before anything can lower it.
+
+No path leaves it uninitialised. The ring-scan table prints the value left by the last refresh
+(`row_.clearance_37c`).
+
+**Where FLT_MAX comes from.** Only `009EFD4F`, `00415D70`, which answers FLT_MAX (`00D7A248`) when
+no static segment survives the wedge. That arm runs only while the static avoid-zone list head
+`blk+0A3Ch` is non-null (`009EFCC9`), i.e. `static_zone_present_a3c`.
+
+**Why it differs between builds and runs.** The list is filled by `009D7050` from the searcher
+cache. The cache's four bounds are not initialised, in the image either. The image's
+`009E4330` writes only `+0A24h`, `+0A38h`, `+0A3Ch` and `+0A40h`, so the first refill can keep a
+heap-garbage extent. A ship whose cache is that large selects segments it would not otherwise
+select, so `+0A3Ch` is non-null and the static test runs and returns FLT_MAX.
+docs/AVOIDANCE_REFILL_DETERMINISM.md measured this as the image's own behaviour and kept it.
+
+**Measured** with a diagnostic build. `local\s30_diag` logs Maru10 and Maru2 every refresh and
+is not committed. Two same-binary USN13 3000 runs (`local\s30_dg1_usn13.log`,
+`local\s30_dg2_usn13.log`):
+- `refills` is 732 and 725: the heap noise;
+- `a3c=0` on all 3000 refreshes of both units in both runs, so the value is 9999.0 in both.
+
+In reference x (`g23_rx_usn13.log`), Maru10 reads FLT_MAX: in that run its last refresh had a
+non-null list.
+
+**Verdict: no fix.** Zeroing the bounds, or reporting FLT_MAX as 9999, would make the host differ
+from the image (the same verdict as AVOIDANCE_REFILL_DETERMINISM section 3). Both values ramp
+the danger level to zero (the comment at `009EFD4F` in `src/ship_ai_clearance_profile.cpp`), so
+the column is diagnostic only.
+
+`pair_diff` already masks the clearance counters (memory: the JM08/USN13 ShipAiClearance
+counters). The `clear_37c` column of the ring-scan table should be masked the same way.
+Routed to the lead for tooling.
+
+**Uncertainty.** A run that shows FLT_MAX was not captured under the diagnostic. The link
+"FLT_MAX <= a non-null `+0A3Ch` <= a garbage cache" rests on the code path, not on a trace. The
+other way to get `+0A3Ch` non-null is a real segment near the ship, which a gameplay difference
+between the two builds could also produce.
+
+**Also, a refresh-phase note.** `refresh_timer_374` reaches `7.45e-9` after five 0.05 s
+subtractions from 0.25, so the refresh fires every sixth frame, not every fifth. The image does
+the same: `009EF91D FLD` / `009EF924 FSUB` / `009EF927 FSTP` to a float slot, so each step is
+rounded to single precision. This is deterministic.
