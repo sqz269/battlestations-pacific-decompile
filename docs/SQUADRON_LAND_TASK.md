@@ -9477,3 +9477,278 @@ and `l33_ga_analyze.py` / `l33_mv_analyze.py` (goaway and manoeuvre episodes).
 5. 5cj's remaining items.
 
 **5ch is now OFF** (`kAiTickMovetoRetasksPlaneBound = false`, 5co). ESMP08's promotion to `CLOSEATTACK`, through which 5ck and 5cm reached their row, may no longer happen; the successor re-pairs ESMP08 14200 for 5ck and 5cm.
+
+## 5cq. What feeds the 5ch stall, and 00A08460's type queries and plane arm bound OFF (packet `cc9_plane_attacker_weight`, cc9-lua34, 2026-10-05)
+
+Queue item 1 of the cc9-lua34 brief: what feeds 5co's USN13 stall, then bind the host value that
+is the artefact.
+
+### (1) The CB2 order is the slot-4 brain's Capture think, not a weight
+
+- **CB2 is a Japanese group.** In `l33_don_usn13` the end-of-run table has `team=1 party=4
+  command=DEFENDPOSITION leader=CB2`. The bruh groups are `team=1 party=4` too.
+- **Where the order comes from.** A traced OFF run of this tree logs every `00A0F970` call whose
+  own group is plane-led (`BSP_AI_GROUP_VALUE_TRACE=1`, `local\l34_tr_usn13.log`).
+  - It has no line. The attack planner `00A1CB80` never scores a bruh group.
+  - The bruh orders come from the Capture think `00A29FD0`: `capture path thinks=40
+    assignments=560 attack=560`.
+  - That think's targets are list-28 CommandBuildings whose side differs from `planner+30h`
+    (`00A2A13B`). `planner+30h` is `brain+24h` = 0 (Allied), so the Japanese CBs are its targets,
+    and CB2 is one of them.
+- **5co's "group weight 1.000" is not the target value.** It is the `ai group ... weight=` column of
+  the end-of-run census: `unit_leader_weight` of the group's front member
+  (`src/game_hosts_ai.cpp`, the summary loop). No `00A0F970` value of 1.0 exists.
+- **The brain's team, re-checked from the disk bytes** (SHIP_AI 60.4-60.6 read the same chain):
+  - **Filing.** `009FFD20` files a unit not on the local team in slot 4 (`009FFD4B SUB / NEG /
+    SBB / AND EAX,4`). It is keyed on the unit's `+54h` side, not its party, so every Japanese
+    unit and group, generated or not, sits in slot 4 (`00A2E03C`).
+  - **Brain team.** `00A15A70` stores the slot at `brain+20h` and `009FFD60(slot)` at `brain+24h`
+    (`00A15A97`). `009FFD60` is `[[game+18CCh+4*slot]]+28h`.
+  - **Planner.** `00A1EE50` stores `planner+30h = brain+24h` (`00A1EEA9`) and `planner+34h =
+    (brain+24h == 0)` (`00A1EEB2..00A1EEC1`, `EBX` zeroed at `00A1EE67`).
+  - **The authored team.** USN13's scene authors `Player5 Party = Allied`, as every `MultiPlay`
+    block does: `universe/scenes/missions/usn/usn_13_truk.scn` lines 419-421 (this installation,
+    mtime 2024-10-29).
+
+  So, as far as the listings go, the slot-4 brain is Allied-team while commanding the Japanese
+  side. Its Attack planner walks team 1 and its Capture planner targets the Japanese CBs.
+- **SHIP_AI 60.6 confirmed this exact chain.** It covered the writer census of `+28h` and the
+  local slot, and `00A1CB80`'s list without an enemy filter. It did not play-validate it. It
+  names an original-exe observation as the remaining cross-check, and that is still the open item.
+- **5ch's other two inputs are the image's:**
+  - The torpedo head's `vtable[40h]` is `009D3EF0` (vtable `00D213C8`, `009D3EF0`-`009D3F5A`,
+    plain `RET`). It keeps the head only for `00E08F18` or `00E08F78` on the head's own target
+    (`+4C4h`), so a tick `moveto` retires it, as 5ch assumed for the strafe head.
+  - A generated squadron is adopted live by `00A2E835`'s walk (GENERATED_SHIP_AI section 7).
+
+**Answer to 5co.** 5ch strands USN13's strike because the slot-4 brain's Capture think sends the
+Japanese strike at the Japanese CB2, and the close attack then has no hostile candidate. That is
+the image's rule as read. Whether the image really plans the Japanese side under an Allied team is
+an in-play question this lane cannot settle.
+
+### (2) The host stub in `00A08460`: the type queries
+
+`AiWeightModelBinding::entity_is_type` (`src/game_hosts_ai.cpp`) answered false to every
+`vtable[+18h]` query. The listing (`00A08460`-`00A09809`, read whole) asks these:
+
+| code | asked of | sites | what it decides |
+| --- | --- | --- | --- |
+| `0Fh` | attacker | `00A085AD`, `00A09754` | the plane branch at `00A08619`; the x3 bonus |
+| `14h` | attacker | `00A08D4F`, `00A09763` | a recon class keeps no option; no bonus |
+| `17h` | attacker | `00A08AAE` | the kamikaze option |
+| `06h` | attacker | `00A085CD` (unused), `00A0967F` | the capture tail |
+| `0Ch` | attacker | `00A09232` | the capture tail's landing-ship flag |
+| `06h` | target | `00A085E9`, `00A08712`, `00A0898F`, `00A092EF` | underwater armour; the torpedo gate |
+| `08h` | target | `00A08637`, `00A092CD`, `00A092FE`, `00A09320` | the submarine gates |
+| `0Ch`, `0Eh` | target | `00A0927A`, `00A0926B` | the machine-gun gate |
+| `0Fh` | target | `00A08628`, `00A0925C`, `00A0929C`, `00A092BE` | the plane gates; dogfight against strafe |
+| `1Ch` | target | `00A08802` | the paratrooper arm (loadout only) |
+| `10h` | attacker | `00A08980` | the level-bomb arm (loadout only) |
+| `20h`, `25h` | device class | `00A08BA0`/`00A08BB3`, `00A09391`/`00A093A4` | gun device, not a bomb platform |
+
+What the stub did:
+- **Planes never took the plane branch.** A squadron or plane walked its MG barrels like a ship
+  (no x3, no Strafe/Dogfight/TailGun params).
+- **The non-plane walk had no target gates.** The image scores a barrel only when its bullet
+  sub-type suits the target (`00A0924C`-`00A0943D`):
+
+  | sub-type | gate |
+  | --- | --- |
+  | 1-3 (bullet, MG) | plane, `0Eh` or `0Ch` |
+  | 10h (flak) | plane |
+  | 4-7, 12h (artillery, rocket) | not a plane, or `08h` |
+  | 0Ah (torpedo) | `06h` and not `08h` |
+  | 0Bh (depth charge) | `08h` |
+  | anything else | never |
+
+  A neutral target clears every gate.
+- **Platform filters.** The walk also requires each platform's `+38h != -1`, `+18h == 1` and a
+  `20h`-not-`25h` device (`00A09362`-`00A093A8`). The host walked every gun row.
+
+### (3) The plane arm, `00A0861F`-`00A09222` (no-loadout arm)
+
+On the `00A04560` record path the key's `+4h` is `record+10h` = 0 (AI_TARGET_WEIGHT_TERMS term 3),
+so `00A0864F JLE` takes `00A08A93`:
+
+- **Options.**
+  - A submarine target (`08h`) gets none.
+  - A `17h` class against a non-plane target gets one kamikaze option (`00E08F50`, factor 1.0).
+  - Otherwise, for a non-neutral target, the attacker class's platforms are walked in slot order
+    with the filters above. A `PilotFires` platform (`+0Ch`) gives a dogfight option (`00E08F58`)
+    against a plane and a strafe option (`00E08F40`) otherwise. The factor is DamageCalcTime /
+    Params[1] x Params[2] / the bullet entry's `+2Ch` reload, with DogfightParams (`+28h`/`+2Ch`)
+    or StrafeParams (`+34h`/`+38h`) (tuning `+10h`, `00A08C3F`-`00A08C98`).
+  - An AAMACHINEGUN platform (device `+80h` = 1) sets a tail flag. Against a plane, when no pilot
+    option exists yet, it adds a dogfight option with TailGunParams (`+40h`/`+44h`).
+  - A later pilot option after the tail flag rewrites from slot 0 (`00A08BF3 CMOVNZ EBX,[ESP+14h]`).
+  - A `14h` class keeps none (`00A08D4F`).
+- **Scores.**
+  - Kamikaze: class `+210h`'s blast pair through `009FE200`, x `009FE270`, x factor.
+  - Strafe and dogfight: `009FE200(DamageMin, DamageMax, Armour, HP)` x `009FE270` x factor.
+  - The sum goes to the common epilogue (x3 for `0Fh` and not `14h`, / HP, clamped).
+- **Tuning** (this installation's `highlvlaiglobals.lua`, all seven tables): DamageCalcTime 60,
+  DogfightParams {8, 3}, StrafeParams {18, 8}, TailGunParams {15, 8}.
+- **Not projected:** the loadout arm `00A08655`-`00A08A8E` (torpedo, bomb, depth charge,
+  paratrooper, rocket). Nothing on these paths reaches it. The capture tail `00A0966A`-`00A09733`
+  stays unprojected as before.
+
+**What it gives on USN13.** A Kate (`VehicleClass[162]`, two `PilotFires` .30 cal guns, device 93,
+bullet 84 DamageMin 14 / DamageMax 16, and an AAMACHINEGUN tail, device 110):
+- 0 against every ship (Armour 50) and against CB2 (`VehicleClass[6]` CommandBuilding,
+  Armour 30);
+- above 0 only against targets with armour below 16, such as planes (TBM 6, F6F 6, SB2C 5; Kate
+  unauthored, so 0).
+
+### The binding, committed OFF
+
+Two switches, `src/game_hosts_ai.cpp`:
+- **`kAiWeightBarrelGatesBound`**
+  - The type queries answer through the unit's own kind test, `bsp::unit_is_kind_of`.
+    LABELLED: the class descriptor's `vtable[+18h]` is asked of the unit's `vtable[5Ch]` id space.
+  - The walk applies the gates and the platform filters.
+  - The close weight's `target_is_neutral` is the target's side >= 2. It was 0 with no producer.
+- **`kAiPlaneAttackerWeightBound`**
+  - A `0Fh` attacker takes the plane arm.
+  - The key's `+4h` is 0 (`record+10h`).
+
+The model is in `src/ai_target_weights.cpp` (`ai_barrel_target_gates`, `ai_barrel_gate_admits`,
+`ai_plane_attack_options`, `ai_plane_attack_total`). The gunnery host publishes per row:
+`PilotFires`, the Gun-list size, the bomb-platform type, the unmaxed DamageMin/Max, the Function
+category and class `+210h`'s KamikazeBulletClass (`src/game_hosts_gunnery.cpp`, the class
+flatten and `publish_ai_weapon_facts`).
+
+LABELLED:
+- a platform with no Function category or no resolved bullet has no row;
+- the kamikaze sub-type is the Type string's mapping before `006E9968`'s rewrite;
+- the walk still scores only each device's first `Bullet` entry.
+
+Census, both states:
+- `summary mission ai plane weight ... stub_divergences=...`: each false the kind test would answer
+  true;
+- per-code `type query` lines, the options by kind, and the gate refusals by sub-type.
+
+### Predictions, written before any ON run
+
+Pair A is both switches ON against OFF, with 5ch OFF. Pair B, run on the A-ON build, is 5ch ON
+against OFF.
+
+- **Census.** OFF reports `stub_divergences > 0` on every row. ON reports `plane_arm_calls > 0`
+  wherever a plane is scored. Every `strafe` option of a Kate or Val against a ship or a CB scores
+  0 (MG <= Armour).
+- **USN13 3200 and 9200, pair A:**
+  - the bruh groups still go to CB2, because the Capture think's choice does not depend on these
+    weights reaching above 0;
+  - the ship planners' choices move through the gates (MG barrels no longer score against ships),
+    so deaths move. No direction is predicted.
+- **USN04, E2, USNOS, ESMP08 14200, pair A:** moved (`pair_diff` 3).
+  - Plane groups' values against own-side plane groups rise (x3, Dogfight params).
+  - Ship groups lose MG value against ships and artillery value against planes.
+- **USN02, USN12 (controls), pair A:** gameplay-identical, exit 0 or 1, if neither has a party-4
+  planner or close attack scoring a candidate. **Weakest call:** both have Japanese ship groups
+  under the slot-4 brain, so the gates may move their orders (exit 3).
+- **Pair B, USN13:** the strike still orbits CB2 with no torpedo release, so 5ch stays OFF
+  (5co's mechanism is unchanged).
+- **Pair B, USN04:** 45 -> 71-like. The Japanese plane groups target their own groups; a tick
+  `moveto` to their own leader point (`dist=0.0`) retires 22 attack heads; the planes loiter and
+  die to US AA machine guns. In `l33_don_usn04` the Japanese plane deaths by AAMACHINEGUN (cat 1)
+  rise from 10 to 26 and Japanese deaths overall by 19; US deaths rise by 7.
+
+### 5cq.1 Two corrections made before the pairs
+
+- **The plane arm's params.** `mode_tuning_record` carried only DamageCalcTime and
+  MaxTargetKillRatio. The plane arm's Dogfight, Strafe and TailGun params were therefore 0 and
+  every gun option's factor was infinite (census `factor_nonfinite` = every option, on a debug
+  build). `4bc3073bc` fills them from this installation's authored values, which are identical in
+  all seven tables (`highlvlaiglobals.lua`, mtime 2024-07-13). The first build `50bc6765e` was not
+  paired.
+- **The type id space is verified, no longer only labelled.** A class descriptor's `vtable[+18h]`
+  uses the entity id space:
+  - the MDestroyer descriptor (vtable `00D1ACF8`, slot `00D1AD10` -> `00963B70`) accepts 7, 6,
+    5, 4;
+  - the MPlaneFighter descriptor (`00D19C30` + 18h -> `00953650`) accepts 13h, 0Fh, 5, 4.
+
+  Every code `00A08460` asks (6 to 1Ch) is above the chain's root 4, so the unit's own `5Ch` test
+  answers the same.
+
+### 5cq.2 Measured, and the verdict: **both stay OFF**
+
+All builds are from `4bc3073bc`, in reference V's launch form, with `BSP_GUNNERY_RNG_STREAMS`,
+`BSP_DEATH_TABLE` and `BSP_AI_SQUAD_TICK_TRACE` set:
+- `local\l34_off`: both switches OFF;
+- `local\l34_gates`: `kAiWeightBarrelGatesBound` only;
+- `local\l34_on`: both switches;
+- `local\l34_on5`: both switches plus 5ch.
+
+E2 is USN04 9200/9000. A USN01 500/300 smoke on `l34_on5` finished cleanly.
+
+**Pair A: OFF against ON (5ch OFF). Deaths, shots and torpedo drops.**
+
+| row | pair_diff | deaths | shots | torpedo drops | gates only |
+| --- | --- | --- | --- | --- | --- |
+| USN13 3200 | moved | 22 -> 8 | 4189 -> 914 | 0 -> 0 | 8, 914 |
+| USN13 9200 | moved | 116 -> 55 | 40517 -> 10579 | 3 -> 0 | 55, 10709 |
+| USN04 4700 | moved | 45 -> 55 | 17447 -> 17469 | 0 -> 0 | 55, 17469 |
+| E2 (USN04 9200) | moved | 85 -> 83 | 31532 -> 24619 | 0 -> 0 | 83, 24619 |
+| USNOS 3200 | moved | 98 -> 56 | 6179 -> 2399 | 0 -> 0 | 56, 2399 |
+| ESMP08 14200 | moved | 47 -> 47 | 16091 -> 16916 | 4 -> 0 | 47, 16916 |
+| USN02 (control) | identical | 1 -> 1 | 1055 | 0 | - |
+| USN12 (control) | moved | 5 -> 3 | 144 -> 112 | 0 | 3, 112 |
+
+- **The gates carry the whole move.** The gates-only build gives the same headline as ON on
+  every row except USN13 long, where shots differ by 130. So the plane arm, as projected, changes
+  nothing visible on these rows. Its options do run: USN13 3200 counts `dogfight=47359/47359`
+  positive, and every strafe option scores 0 because MG accuracy against a ship group is 0.
+- **USN13 (the prediction missed).**
+  - The bruh groups do NOT stay on CB2. With the gates, the Capture think stops assigning them;
+    they are released to the Attack planner, which scores a Kate group's MG against its own Kates
+    above 0 (Armour unauthored, 0) and picks the group itself.
+  - The trace reads `cmd=CLOSEATTACK leader=bruh #1.1 ... target=bruh #1.1 dist=0.0`: 502
+    CLOSEATTACK and 29 MOVETOATTACK squad ticks, against 222 MOVETOATTACK and none OFF.
+  - The close pass then serves the bruh squadrons: the fallback bridge counts 294 calls, 162 of
+    them squadrons, against 116 calls and none for squadrons OFF.
+  - The strike leaves its torpedo runs. Every death the ON side does not have is a Kate (17 at
+    3200, 69 at 9200, `bruh` only). Torpedo drops fall 3 -> 0 on the long row, and the US AA shots
+    fall with them.
+- **USNOS.** Twelve `plane` deaths and nine ground objects (containers, a static Jill) are
+  OFF-only.
+- **ESMP08 14200.** The four TBF drops are lost, and the deaths are three Avengers either way.
+- **USN04 / E2.** Both sides' plane deaths are re-dealt (Zero, Val, Kate, Lexington and Yorktown
+  squadrons), and US squadron deaths fall on E2 (16 OFF-only against 9 ON-only).
+- **USN12 moved.** Only two ground objects (a barrel, a watchhouse) are lost OFF. Its Japanese
+  ship groups' MG barrels no longer score against ships. The control call was the weakest one,
+  and it missed.
+
+**Pair B: ON against ON + 5ch.**
+
+| row | deaths | shots | torpedo drops |
+| --- | --- | --- | --- |
+| USN13 3200 | 8 -> 0 | 914 -> 0 | 0 -> 0 |
+| USN13 9200 | 55 -> 11 | 10579 -> 509 | 0 -> 0 |
+| USN04 4700 | 55 -> 65 | 17469 -> 25686 | 0 -> 0 |
+| E2 | 83 -> 85 | 24619 -> 34447 | 0 -> 0 |
+| USNOS | 56 -> 56 | 2399 -> 1995 | 0 -> 0 |
+| ESMP08 14200 | 47 -> 30 | 16916 -> 12941 | 0 -> 0 |
+| USN02, USN12 | identical | | |
+
+- 5ch still strands USN13's strike: no torpedo release, and every Kate death goes away (36 on the
+  long row).
+- On ESMP08, 20 US strike deaths (TBF, SB2C, TBM) go away. Those planes fly their group's
+  points instead of attacking.
+
+**Verdict: both switches stay OFF.**
+- The mechanism matches the listing: the gates, the platform filters and the plane arm, with the
+  id space verified above.
+- The outcome rides on the Allied-team slot-4 brain (5cq (1)): with the image's gates, the
+  Japanese air groups target themselves.
+- USN13 3200 and the USN12 control are prediction misses.
+- So the binding is recorded and held OFF until the brain-team chain is settled in play. Flipping
+  it now would move every reference row for a reason that one open question decides.
+
+**5ch stays OFF.** With the weight ON, USN13's strike still never attacks under 5ch.
+
+**USN04 45 -> 71 under 5ch** (5co's pair, `l33_doff_usn04` / `l33_don_usn04`):
+- Japanese deaths +19 and US deaths +7.
+- Japanese planes killed by US AAMACHINEGUN fire (cat 1) rise 10 -> 26.
+- The Japanese plane groups target themselves (`target=B5N Kate #2.1 dist=0.0`). Each tick
+  `moveto` to their own leader point retires their scripted attack heads (`replaced_other=22`),
+  and the flights loiter under the US fleet's AA instead of completing their passes.

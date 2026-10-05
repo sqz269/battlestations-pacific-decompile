@@ -202,6 +202,26 @@ struct GameAiWeaponFacts {
         float damage_low{0.0f};
         float damage_high{0.0f};
         float water_damage{0.0f};
+        // Packet cc9_plane_attacker_weight (docs/SQUADRON_LAND_TASK.md 5cq).
+        // DamageMin +ACh and DamageMax +B0h unmaxed, for the plane arm.
+        float damage_min{0.0f};
+        float damage_max{0.0f};
+        // The platform this row was built from: the device's Function (+80h,
+        // 0..0Bh), PilotFires (+0Ch), the Gun list's size (+18h) and whether
+        // the device answers 25h (a bomb platform).
+        int category{-1};
+        bool platform_pilot_fires{false};
+        int platform_gun_count{1};
+        bool device_bomb_platform{false};
+    };
+    // class+210h KamikazeBulletClass, the plane arm's kamikaze option.
+    struct KamikazeBullet {
+        bool present{false};
+        int sub_type{0};
+        float damage_min{0.0f};
+        float damage_max{0.0f};
+        float blast_min{0.0f};   // +B4h
+        float blast_max{0.0f};   // +B8h
     };
     struct Unit {
         bool known{false};
@@ -219,6 +239,7 @@ struct GameAiWeaponFacts {
         // ship class serves with UnderwaterArmour (009635D0); otherwise Armour.
         float underwater_armour{0.0f};
         std::vector<Barrel> barrels; // flattened over the attacker's subsystems
+        KamikazeBullet kamikaze;
     };
     std::vector<Unit> units;
     // 00424C40 +3B0h at 00A09624, ShipGlobals.WaterTickDamage.
