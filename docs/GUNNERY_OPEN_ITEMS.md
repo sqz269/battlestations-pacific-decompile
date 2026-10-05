@@ -8530,3 +8530,60 @@ spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
 - Pairs were run as `pair_export --no-build` into `local\g24_d0` / `local\g24_d1`, then each
   tree's `scripts/build.ps1`. An export can carry a lane edit applied by script for a
   diagnostic pair without touching the leased file.
+## 109. The avoid-zone draft bodies: the glass walls (108 item 2; packet `cc9_avoid_zone_draft_bodies`, cc9-gunnery25)
+
+### 109.1 The read
+
+- **What they are.** This installation's `scripts/datatables/shipglobals.lua` (mtime 2024-07-13)
+  says it in its own comment on `AvoidZoneDepthsSingle/Multi`: the first value of each class is
+  the depth of the "uvegfal" (glass wall) zone the ship **physically collides with**; the second
+  is the zone the path search avoids. Single gives every class 0, so the tail of `00424D00`
+  reduces to one pair `{layer 0, mask 3EF0h}` (docs/AVOID_ZONE_DRAFT_LAYERS.md).
+- **The build** (`00424DDF..00425487`, then `00423C50(layer, mask)` per pair): the exact layer
+  group (a fallback group is refused at `00423C81`), each zone with three or more corners,
+  `004F6F20`'s pieces in order, each piece extruded to y = -500..+500 and centred on its mean,
+  the `00C5DEB0` hull, refused when `00C32D20` < 4 (`0042415F..0042416B`), and one static body
+  per piece (`00424472`) at (meanX, 0, meanZ) with one kind-4 shape. Its descriptor
+  (`00424204..004243DB`, at ESP+F8h): +00h 0, +04h 0, +08h the class mask, +0Ch 0, +10h 4,
+  +14h the retained hull. The fort descriptor has its friction 1.0 at the same +04h
+  (`007486DD`), so a draft shape has **friction 0, restitution 0, group = the class mask,
+  mask 0**.
+- **The hull side.** `00937C90` stores each hull descriptor's group 1 (`009394DD`) and mask
+  0Dh (`009394A9`), then ORs the class bit into the mask (`009395E2`). The bit comes from the
+  class kind through the jump table `00939C90` (`009394FB`): 7 `40h`, 8 `2000h`, 9 `20h`, 0Ah
+  `800h` or `1000h` with class `+808h`, 0Bh `400h`, 0Ch `100h` or `200h` with `+808h`, 0Dh
+  `10h`, 0Eh `80h`, anything else 0. `00C44104` admits a (draft, hull) pair when the draft
+  group holds that bit; only a small landing ship (`100h`) is outside `3EF0h`.
+- **`0092BD70(0)`** (section 107) at the landing ship's land enter clears the bit on every hull
+  shape, so a landing ship passes its wall onto the beach.
+
+### 109.2 The host (committed OFF: `kAvoidZoneDraftBodiesBound`)
+
+- `src/avoid_zone_draft_bodies.cpp`: the build over the reconstructed reduction, partition,
+  extrusion and hull (`avoid_zone_draft_bodies_00424ddf`), and the class bit
+  (`hull_class_bit_009394fb`).
+- `src/hull_terrain_contact.cpp`: the draft bodies as static kind-4 records; each (draft, hull)
+  pair through `00C44104` with the hull mask 0Dh | class bit, then `00C535E0` as the fort pairs
+  (LABELLED as there: a 0.1 m widened world-box test for the SAP list, the static body as A);
+  one manifold per body pair, friction combine(0, hull), restitution 0, in the hull's group and
+  solve. A hull whose bit is cleared retires its draft manifolds. No contact report: the draft
+  body has no listener and no owner. OFF runs the narrow phase as a census.
+- Host wiring (units, the Lua host's nine depth reads, the ship AI's accessor and the land
+  enter's `0092BD70(0)`): **LABELLED** substitutions: the bodies are built at the first world
+  contact phase after the zones load, not inside `00424D00` (they are static); a cruiser's
+  `+808h` (HeavyCruiser) is read as 0 (both cruiser bits are in `3EF0h`).
+
+### 109.3 Predictions (from the OFF census, `local\g25_d0_*`, base `0ccf286f1`)
+
+| row | draft bodies | (draft, hull) pairs with a hit on the OFF track | prediction |
+| --- | --- | --- | --- |
+| usn01, usn02, usn04, e2, esmp08l | 0 (no layer-0 zone) | none | identical |
+| ijn11, jm06, lomp06, lomp10, lomp10l, usn12, usn13, usn13l, usnos, usnosl, jm08 | 2..125 | none | identical |
+| jm08l | 187 | none admitted; 712221 near pairs refused by the filter (19 land enters cleared the landing ships' bits) | identical |
+| bsm01 | 148 | Raleigh 16.2 m, Cassin 8.4 m, Medusa 2.9 m, all from step 1 for all 3000 steps (moored) | moved: the three are pushed off the walls at start |
+| usnrm01 | 146 | Pennsylvania 4.0 m and Cassin 8.5 m from step 1, Medusa from step 544 | moved: as bsm01 |
+| ijn01 | 146 | 15 pairs: moored Pennsylvania and Cassin from step 1; Oglala, Sacramento, Solace, Tennessee, Lexington, Tautog, LST9, Downes, Curtiss later (up to 33.7 m) | moved: moored hulls pushed at start, later contacts stop drifting and sinking hulls at the walls |
+| jm05, jm05l | 233 | PT Boat 80' Elco 01 and 02 inside draft 130 from step 1 (110.8 m and 85.5 m), already aground (hull terrain contact at t = 0.05, 7.4 m) | moved: the two PT boats are forced out through the nearest wall face; a mechanism check, since 110 m is far beyond one step's correction |
+
+The rows without an admitted pair must come back pair_diff 0 or 1; any other movement there is a
+mechanism failure.
