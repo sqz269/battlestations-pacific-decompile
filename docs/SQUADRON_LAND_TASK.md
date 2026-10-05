@@ -8979,3 +8979,12 @@ The work paused before the bind landed (lead's pause, 2026-10-01). The plan for
 - **JM06 3200/3000:** moved, with one PBY.
 - **USN02 and USN12 (controls):** pair_diff 0 or 1, with no `settarget` to a squadron.
 - **USNOS:** identical apart from the census, since it has no AI `settarget`.
+
+### 5ck.1 The binding, committed OFF (cc9-lua33, 2026-10-04)
+
+cc9-lua33 applied cc9-lua32's prepared patch and `close_issue_order` hook unchanged (reviewed:
+the hook takes the squadron path only for `settarget`/`attackmove` from `close_issue_order`, keeps
+`issue_order`'s repeat test, and uses the same `GameUnitsHost` index space as the script-orders
+host). `kAiSquadronSetTargetIntakeBound = false` is in `include/bsp/game_hosts_script_orders.hpp`;
+the census line is `summary mission script squadron intake`. The predictions above stand as
+written; the pairs follow in 5ck.2.
