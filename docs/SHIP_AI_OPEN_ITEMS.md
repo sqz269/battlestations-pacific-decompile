@@ -10800,3 +10800,27 @@ The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
   - flip ON when IJN01's hand-backs stop, Enterprise's state stays `attackmove`, and every moved
     death row traces to Enterprise's group or its attackers;
   - a hand-back still logged ON is a mechanism failure.
+
+### 134.5 The pairs, and the flip
+
+- **OFF:** this tree at `5f0cc6fc0` (`local\s29_h0_<row>.log`).
+- **ON:** `pair_export --commit 5f0cc6fc0 --flip kShipAiAttackMoveGroupHandBackBound=true`
+  (`local\s29_h134on`, SHA-256 prefix `BA3F38ED2033`, `local\s29_h1_<row>.log`).
+- smoke and USN13 are `pair_diff` 1. **IJN01 is 3.**
+- **The mechanism held.**
+  - **End of run:** `end_commands` 26 -> 0, and the `0071E430` / `009E86E0` / `007B3DC0` rows are
+    gone.
+  - **Enterprise's state:** `attackmove` against `A7M_1` ON, against `stop` OFF.
+  - **Asks:** 26 -> 307, because the step now runs every think instead of ending at once.
+  - **Position:** Enterprise finishes at (588.8, -5178.2) ON against (299.0, -1778.0) OFF. OFF it
+    stopped and touched terrain at t=74.00 (`hull terrain contact`); ON it does not.
+  - The `attackmove hand back:` diagnostic is census, so it is printed both ways. My verdict rule
+    was wrong to name it as a failure sign; `end_commands` is the sign.
+- **The moves:** deaths 3 = 3, and one death row changed. **A7M_5** is shot down 0.35 s earlier,
+  by PT3 instead of Zeilin. Hits 128 -> 130, shots 3687 -> 3709. Thirteen unit-table rows moved:
+  - the AA ships' shots and damage dealt: Curtiss, Zeilin, LST1 and PT1-3;
+  - the A7M_3 and A7M_5 members' hits.
+  All of them are the AA exchange with the Japanese squadrons attacking Enterprise's group, now
+  on Enterprise's new track.
+- **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
+  so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).

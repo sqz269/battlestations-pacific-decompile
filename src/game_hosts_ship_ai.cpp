@@ -146,7 +146,7 @@ inline constexpr bool kShipAiApproachLandingSweepBound = true;
 // 009E8852's [unit+284h] is the unit's formation group, so a kind-9 unit hands
 // its attackmove back to the director (009E88C1) only when every other member
 // is kind 9 too (009E8867..009E889C). False: no group, always hand back.
-inline constexpr bool kShipAiAttackMoveGroupHandBackBound = false;
+inline constexpr bool kShipAiAttackMoveGroupHandBackBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
