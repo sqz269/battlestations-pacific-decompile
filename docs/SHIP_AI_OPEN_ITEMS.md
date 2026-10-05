@@ -12239,3 +12239,51 @@ Census line: `summary mission ship ai approach lander terms ...`.
   - USNOS (mode 0 only): the only new act is `+11FCh = -1.0` on a value that is already -1.0.
     Expect gameplay identical (0 or 1).
   - USN13 (no approach frames): identical.
+
+### 152.5 Smoke and pairs; verdict ON
+
+- **Runs:** OFF is this tree at `3c01cf701`. ON is `pair_export.py --flip
+  kShipAiApproachLanderTermsBound=true --out local\s33_lt_on`. Both use reference y's launch form
+  (`local\s33_rows.ps1`).
+- **Smoke:** `local\s33_smoke1.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` | notes |
+| --- | --- | --- |
+| USNOS 3000 | 1 | the census line only (`bound=1`, all counters 0) |
+| USN13 3000 | 1 | the census line only |
+| JM08 long 36000 | 3 | below |
+
+**JM08 long, the mechanism (ON census):**
+- `side_writes` is 52848, which equals the mode 1-4 frames (19598 + 564 + 32686);
+- `mode2_bearings` is 19598, equal to the mode 2 frames, and `mode2_no_target=0`;
+- `hold_positive=14761` over `held_transports=6`, and `evade_gain_frames=13825`;
+- `range_reads=17916`, `accept_asks=10590`, `accept_true=40`.
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| craft launches (transports) | 4 (355, 354, 353, 358), first at 1156.95 s | 6 (all), first at 774.65 s (353, 8 crafts) |
+| crafts | 8 | 13 |
+| launch `depth_rejects` / `refused` | 4971 / 413 | 0 / 0 |
+| launch positions | z -2507 .. -3848, 2.2 to 3.5 km past the landing navpoints (z = -300) | z -688 .. -1334, 0.4 to 1.0 km past them |
+| ramp lowers / unloads | 11 / 11 | 14 / 14 |
+| troop transports sunk | 4 (1312.00 to 1499.89 s) | 0 |
+| HQ neutralized | 1047.85 s | 1052.00 s; no flip either way |
+| death rows | 207 | 179 |
+
+**Reading.**
+- Under OFF, a mode-4 transport crept in on the host's reference of -300 m. It drove 2-3.5 km past
+  its navpoint toward Headquarter 01, where most pad candidates failed the ground probe and four
+  transports were sunk.
+- Under the image's terms it stops once it is within LandingRange - 250 (about 3750 m) of its
+  approach point. It takes the accepted throttle while a pad is free, launches from there, and
+  holds at 0 once `+1128h` is 15.0.
+- **Every prediction in 152.4 held in direction:** further offshore, fewer depth rejects, shifted
+  landings, fewer transport deaths, and both controls gameplay-identical.
+
+**Verdict: ON.**
+- **Not game-validated:** the parked distance is the image's rule as read, not an observation of
+  the original game.
+- **The 40 s evade swing** (bearing + 30 slots at gain 5) runs on the six held transports. With a
+  throttle limit of 0 they only turn in place.

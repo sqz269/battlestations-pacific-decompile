@@ -634,7 +634,8 @@ inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = true;
 //   - 009E6C86: unit->vtable[234h](target), 008128E0.
 // False: +1204h keeps the ring scan's last value, +11DCh the arc centre,
 // +11FCh its -1.0f, and the three 009E6A90 reads answer 0, 0 and false.
-inline constexpr bool kShipAiApproachLanderTermsBound = false;
+// ON by section 152.5: the mechanism and every predicted direction held.
+inline constexpr bool kShipAiApproachLanderTermsBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
