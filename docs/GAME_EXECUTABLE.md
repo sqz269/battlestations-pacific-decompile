@@ -14571,3 +14571,46 @@ they are inert on single-player rows. No leave-one-out was run for them.
 - **Missed** on USN02 and USN12. Both have `tick_orders=0` in y, yet they move against y.
   The coordinator reaches gameplay there without a tick order: through group creation and its
   target choice, not through orders. That path was not traced.
+
+## Mission reference baselines, 2026-10-05 aa (main 13fd2978e)
+
+Packet `cc9_reference_rebaseline_27`, worker cc9-gunnery27, report `reports/cc9_reference_rebaseline_27.json`.
+The base is main `13fd2978e` (2026-10-05 23:15 UTC). The previous reference is z (`c8c69f5ab`).
+Anything flipped on main during these runs belongs to the next reference.
+
+### The switch diff and the plan
+
+`local\g27_switches.py c8c69f5ab 13fd2978e` lists five switches newly ON and two new OFF ones
+(`kAiPlaneBagEquipmentBound`, `kAiRocketAccuracyBound`):
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `pse` | `kPlaneSceneEquipmentBound` | SQUADRON_LAND_TASK 5dk-5dk.4 | live: LOMP10, LOMP10 long; default arm on USN13 long |
+| `bdv` | `kBombDropVelocityBound` | SQUADRON_LAND_TASK 5do, 5do.1 | live: USN01 (scout bomb hits Convoy1), USNRM01, LOMP10 |
+| `alt` | `kShipAiApproachLanderTermsBound` | SHIP_AI 152 | live: JM08 long |
+| `ld` | `kAiLoadoutCarriedTermsBound` | SQUADRON_LAND_TASK 5dl | inert |
+| `spr` | `kShipAiSetterPathResetBound` | SHIP_AI 154 | `pair_diff` 1 on four rows |
+| `ics` | `kShipAiInitialCruiseStateBound` | SHIP_AI 155 | `pair_diff` 1 on three rows |
+
+The leave-one-out sets `pse`, `bdv` and `alt` OFF one at a time, two rounds each, on the rows
+AA moves against z. One row set (USN01, LOMP10) sets `ld` + `spr` + `ics` OFF to confirm that
+they are inert.
+
+**Rows:** z's twenty-two (USNRM01 among them), in z's launch form (`local\g27_lane.ps1`, copied
+from g26's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player).
+
+### Predictions (written before the runs)
+
+- **Anchor** (all six OFF at `13fd2978e`): gameplay-identical to z on all twenty-two rows.
+- **AA against z.** Moves (exit 3) on:
+  - the rows with a dive-bomb release in z (`bdv`): USN01, LOMP10, LOMP10 long, JM05 long,
+    USN13 long, USNRM01;
+  - LOMP10 and LOMP10 long also through `pse`, USN13 long also through the default arm;
+  - JM08 long through `alt` (more landing craft, launched nearer the navpoints).
+  - Every other row (USN04, E2, USN02, JM06, JM08, USN13, BSM01, LOMP06, JM05, USN12, USNOS,
+    USNOS long, IJN01, ESMP08 long, IJN11) is gameplay-identical. A miss there would mean that
+    a torpedo or level-bomb release shares the drop-velocity path, or that a scene squadron
+    elsewhere carries a non-default `Equipment`.
+- **Leave-one-out.** A moved row comes back to its z history (exit 0/1 against z) only when every
+  switch that reaches it is OFF; for a row reached by one switch, that switch alone OFF restores
+  z. `ld` + `spr` + `ics` OFF is gameplay-identical to AA.
