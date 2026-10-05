@@ -4497,8 +4497,11 @@ public:
     bool torpedo_category_enabled() override { return state_.category.torpedo_enable; }
     bool torpedo_may_take_fire_target() override {
         // pass+7Dh (0086581C), 1 from the constructor; 00863780 stores it.
-        if constexpr (bsp::kGunneryPassByte7dBound) return state_.torpedo_takes_fire_target_7d;
-        return true;
+        if constexpr (bsp::kGunneryPassByte7dBound) {
+            return state_.torpedo_takes_fire_target_7d;
+        } else {
+            return true;
+        }
     }
     bool category_gate_slot4(int) override {
         // 008636A0 installs the default gate 00D0D31C on a unit that is not
@@ -12039,14 +12042,15 @@ void GameGunneryHost::set_pass_byte_7d_00863780(std::size_t unit_index, bool val
         for (const std::size_t slot : s.category_guns[bsp::kUnitGunneryTorpedoCategory]) {
             if (slot >= d.guns.size()) continue;
             ++d.byte_7d_gun_clears;
-            if constexpr (!bsp::kGunneryPassByte7dBound) continue;
-            GameGunRow& row = d.guns[slot];
-            ++row.clears;
-            ++s.row.clears;
-            ++d.summary.clears;
-            row.target_unit = 0;
-            row.target_name.clear();
-            row.target_is_fire_target = false;
+            if constexpr (bsp::kGunneryPassByte7dBound) {
+                GameGunRow& row = d.guns[slot];
+                ++row.clears;
+                ++s.row.clears;
+                ++d.summary.clears;
+                row.target_unit = 0;
+                row.target_name.clear();
+                row.target_is_fire_target = false;
+            }
         }
     }
     mark();
