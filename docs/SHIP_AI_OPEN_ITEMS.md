@@ -10824,3 +10824,20 @@ The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
   on Enterprise's new track.
 - **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
   so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).
+
+## 135. The approach's other two leader reads (packet `cc9_approach_leader_answers`, `kShipAiApproachLeaderAnswersBound`, cc9-ships29, 2026-10-05)
+
+Sections 133 and 134 replaced two stale "no group" answers. Two more `00778890` reads in the
+approach still answered "not a leader", by record:
+- the mode-4 speed limit `009E6B90` at `009E6C45` / `009E6C4F` (the stop radius);
+- the standoff choice `009E6E80` at `009E6FA0` (mode 4) and `009E70A7` (mode 2), for a
+  building target.
+
+`kShipAiApproachLeaderAnswersBound` (committed OFF) answers both from the host's formation group,
+as the arm-final binding (`ShipAiArmFinal::unit_leads_controller_00778890`) does. The census line
+is `summary mission ship ai approach leader answers asks=`.
+
+**Predictions (written before any run).** Section 132's fifth census of all 20 reference rows
+shows neither record with a call: no row has a mode-4 or mode-2 approach pass against a building.
+Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when identical. The
+switch has no reach on the reference rows; it is a correctness fix.
