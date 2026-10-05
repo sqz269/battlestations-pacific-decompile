@@ -8175,3 +8175,56 @@ prefixes `C165A922CA84` / `6195DC5FB115`). x's launch form; every run has `lost_
     plus 50 m. Per ship, the ON zero frames run from 140 (Samidare) to 958 (Haguro).
 - **Flipped ON** (`kGunneryPassByte7dBound = true`): a mechanism match with every prediction met.
   It has an effect only together with the ship-AI edit, which must land with it or after it.
+
+## 104. Frame order: the hull pose against `0085AD80` and `0085ABA0` (97.2, 100.4; cc9-gunnery24)
+
+97.2 left open whether the image's guns trail a turning hull by the host's two ticks, which
+depends on where the hull's pose moves relative to the gun's stepper `0085AD80` and the bot's
+command `0085ABA0` within a fixed step. This is a reading; no switch.
+
+### 104.1 The image's order in one fixed step
+
+- **Wave 1** (`008750A0`, element `+4h` then `+0Ch`):
+  - The ship unit's `+4h` is `00811AB0`. It copies the committed matrix `unit+674h` into
+    `unit+74h`, then calls `0092F930` on `unit+1018h` with 0.05f.
+  - `0092F930` (live decompile) takes the pose from the physics body: `DYN_physics_00C43EA0(..,
+    t / [00D0DE84])` with alpha 0.05 / 0.05 = 1, then `Dyn_Transform_Expand3x4To4x4`.
+  - `+0Ch` (`006D1FC0`) commits it. So the pose the rest of the step reads is the body's pose
+    after the **previous** step's `DYN_PhysicsWorld_Simulate`.
+  - The gun element's `+4h` is `0085AD80`: it steps the angles toward the command the bot set on
+    the previous step (GUN_SHOT_CADENCE 10.7).
+- **Wave 2** (`00875B90` -> `008759B0`): the bot sub-list. `006DF520` sets the new command
+  (`0085ABA0`, `006DFB54`) from the pose wave 1 committed, and tests settle against the angles
+  wave 1 has already stepped (`006DFB83`, `006DFBAD`, `006DEE40`).
+- **Wave 3**: the ship unit's `+8h` is `00825F20` `BSP_UnitInstance_UpdateShipMotion`, the forces
+  (TICK_ELEMENT_OVERRIDES).
+- **Fan-out row 1** (`00875E0C`): `00C5C540` `DYN_PhysicsWorld_Simulate`, where the hull pose
+  actually moves. Row 2 is buoyancy, `004462D0` (FIXED_STEP_FANOUT).
+- **So within a step the image runs** stepper, then command and settle test, then hull motion. Both
+  gun calls see the pose of the end of the previous step.
+
+### 104.2 The host's order
+
+`src/game_hosts_units.cpp` (the fixed step near line 14970) runs:
+1. the ship AI `controller_step`;
+2. the AI `fixed_step`;
+3. `gunnery->fixed_step`. With `kGunWaveOrderBound` ON this is `0085AD80`, then `0085ABA0` and
+   the settle test (`src/game_hosts_gunnery.cpp`, the `kGunWaveOrderBound` block);
+4. the motion pass that moves the hull.
+
+The guns therefore read the pose the previous step's motion pass left, as in the image.
+
+### 104.3 Verdict
+
+- **The order is the image's.** The hull moves after both gun calls in both programs, and
+  `0085AD80` precedes `0085ABA0` in both. Shimotsuke's two-tick trail during a 1.4 deg/s turn
+  (97.2) does not come from frame order.
+- **Uncertainty.** If the trail differs from the image's, the cause is the stepper's or the
+  command's arithmetic (`0085AD80` speeds, `0085ABA0` arc routing), not their order. That is
+  not read here.
+- **Not covered.** The ship AI controller `009F50E0` has no caller in the call graph. Its place
+  in the image's step is unknown, so section 103.2's same-frame toggle of `+7Dh` stays open.
+- **100.4's trim is not a frame-order question.** A stopped hull's trim is the equilibrium of
+  the buoyancy elements (`004462D0`) against the body's mass properties. At rest it does not
+  depend on the order of the calls within a step. Settling it needs a hydrostatics audit of
+  the class's buoyancy elements and centre of mass against the image. **Still open.**
