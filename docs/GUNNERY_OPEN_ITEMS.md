@@ -8587,3 +8587,23 @@ spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
 
 The rows without an admitted pair must come back pair_diff 0 or 1; any other movement there is a
 mechanism failure.
+
+### 109.4 The pairs (`local\g25_d0` OFF / `local\g25_d1` ON, base `0ccf286f1` with the wiring applied by script)
+
+- **The 18 rows predicted identical** came back pair_diff 1 with gameplay identical: only the
+  bound line and the known ship-avoidance refill noise moved. No admitted pair on any of them,
+  jm08l included (its landing ships' near pairs are all refused after the land-enter clears).
+- **bsm01** (pair_diff 1, no combat on the row): Raleigh leaves its wall after 262 steps and
+  Cassin after 207 (OFF: in contact all 3000); Medusa stays at 2.9 m against hers.
+- **usnrm01** (3): Pennsylvania (3.4 m) and Cassin (8.5 m) stay pressed to their walls for all
+  9000 steps; the deaths 202 -> 198 and the plane rows move through the shared RNG stream (one
+  ship's fire stagger shifts every later draw), not per kill.
+- **ijn01** (3): 16 pairs ON against 15 OFF, the deepest 33.7 m OFF -> 8.5 m ON (the moored
+  Cassin at start): the drifting and sinking hulls (Oglala, Sacramento, Solace, Tennessee...)
+  now stop at the walls (ON depths under 0.3 m). Two A7M deaths only ON, RNG-coupled as above.
+- **jm05 / jm05l** (3): the two PT boats spawned aground inside draft 130 stay in contact on
+  every step (still aground on the terrain as well); three death rows' nearest distances move
+  by 6..25 m.
+- **Verdict:** the mechanism matches the predictions on every row: no reach where the census
+  had no pair, and the moved rows are exactly the four with a pair. **Flip ON**, with the
+  wiring commit.
