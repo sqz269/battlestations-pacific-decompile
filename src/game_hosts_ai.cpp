@@ -2649,7 +2649,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // section 36 and is bound as rtb_exclusion_arm below (section 40,
         // kAiSquadronRtbExclusionBound). With the switch OFF the answer is
         // 007EDA90's, the stand-in used before the arm was read.
-        record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        // The census marks the site once per entry: done() when the arm is bound,
+        // record() while the stand-in answers (docs/SHIP_AI_OPEN_ITEMS.md section 146).
+        if (kAiSquadronRtbExclusionBound) {
+            done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        } else {
+            record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        }
         if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
         rtb_exclusion_census(member);
         const bool stand_in = tick_squadron_excluded_007eda90(member);
@@ -2671,7 +2677,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // index lies past units.count(), so the head plane names the record.
         if (units.squadron_ammo_type_007edad0(head) != 0) return false;   // 009FFED3
         if (cls != 0x10 && cls != 0x11 && cls != 0x12) return false;      // 009FFEDC..
-        done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         const std::size_t placed =
             units.issue_return_to_base_007f16d0(head, "ai squadron rtb exclusion 009FFF09");
         ++rtb_exclusion_issues;
