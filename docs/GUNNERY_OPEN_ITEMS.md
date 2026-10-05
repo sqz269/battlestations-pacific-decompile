@@ -8416,3 +8416,117 @@ clean.
 
 **Flipped ON** (`kHullShapeChainOrderBound = true`), as a mechanism match with the JM08/IJN01
 spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
+
+## 107. The landing ship's class-bit clear `0092BD70(0)` (SHIP_AI 139; packet `cc9_landing_class_bit`, cc9-gunnery24)
+
+### 107.1 The read (listing)
+
+- **The call.** `BSP_ShipAiLand_Enter` (`009E18D0`) at `009E193C..009E1945` pushes 0, takes
+  `0080E490` (`mov eax,[ecx+1018h]; ret`, the controller), and calls `0092BD70(0)`. The other
+  caller is `00816CC7` in `BSP_UnitInstance_ApplyShipSyncMessage`; `tools/callsite_census.py`
+  finds 2.
+- **`0092BD70`** (`__thiscall(controller, char on)`, `RET 4`) takes the class bit from the class
+  kind `[[ctl+1Ch]+538h]->vtable[1Ch]()`:
+
+  | kind | bit |
+  | --- | --- |
+  | 7 | `40h` |
+  | 8 | `2000h` |
+  | 9 | `20h` |
+  | 0Ah | `800h`, or `1000h` with `+808h` |
+  | 0Bh | `400h` |
+  | 0Ch (landing ship) | `100h`, or `200h` with `+808h` |
+  | 0Dh | `10h` |
+  | 0Eh | `80h` |
+
+  - It then walks the hull's shape chain (`00C31DC0`, next `+208h`).
+  - With 0 it calls `00C47F60(bit)` on each shape (`shape+30h &= ~bit`, section 101.1); with 1 it
+    calls `00C47F90(bit)` (`00C47F97 OR [ESI+30h],EAX`).
+  - So land enter removes the ship's class bit from its hulls' **mask**.
+- **What the bit selects.** A hull's mask is `0Dh | class bit` (section 89.1), and the bit
+  matches only a body whose **group** carries it. Among the Dyn body creators (89.1 table) those
+  are the avoid-zone **draft bodies**.
+  - `00423C50` creates static extruded zone bodies with shape descriptor `+08h = mask` (the group)
+    and `+0Ch = 0`. The masks come from `00424D00`'s tail: BattleShip `10h`, MotherShip `20h`,
+    Destroyer `40h`, TBoat `80h`, LargeLandingShip `200h`, CargoShip `400h`, LightCruiser
+    `800h`, HeavyCruiser `1000h`, Submarine `2000h` (AVOID_ZONE_DRAFT_LAYERS). No `100h` layer
+    is built.
+  - **Reading:** a draft zone is a wall for the classes too deep for it. Land enter drops the
+    landing ship's bit so that it can drive through its own draft wall onto the beach.
+  - Terrain (group 8), other hulls and forts (group 1) and debris (group 4) are all selected by
+    `0Dh`, which the clear never touches. **Lander-terrain, lander-hull and lander-fort pairs are
+    unchanged.**
+
+### 107.2 The host
+
+- **No draft bodies.** `src/game_hosts_ready.cpp` records `MissionLoad::avoid_zone_draft_layers`
+  (`00424DDF..00425487`) as unimplemented. The reconstructions in `src/avoid_zone_draft_layers.cpp`
+  build no world bodies.
+- **The filter honours masks, but only with the constant base.** `src/hull_terrain_contact.cpp`
+  tests `dyn_shapes_overlap_filter` with `0Dh` for the terrain, hull-pair and fort phases, and
+  `0Dh & ~8` for a wreck. A class bit could only change a pair against a body grouped by class
+  bits, and the host has none.
+
+### 107.3 Verdict
+
+- **No switch.** Bound now, the clear would be inert on every row, JM08 long included: no host
+  pair has a class-bit group. A pair would be identity by construction, so none was run.
+- **The real gap is the draft bodies.** Hosting `00424DDF..00425487` and `00423C50`'s static
+  bodies, with hull-vs-draft-zone pairs in `world_step`, would stop every deep-draft class at its
+  depth layer on every row. Only then does this clear matter: it lets a large landing ship reach
+  the beach. That is a large packet with reach on many rows, and it should be bound together with
+  the class bits in the hull mask and this clear.
+- **Uncertainty:** whether other bodies carry class-bit groups. `008509F0`'s group and the plane
+  body `007D5D20` are unread (89.1).
+
+## 108. Handoff (cc9-gunnery24, 2026-10-05, at about 65% context)
+
+### 108.1 Landed on agent/cc9-gunnery24
+
+| item | commits | state |
+| --- | --- | --- |
+| GUNNERY 103: the pass byte `+7Dh` (`00863780`) | `68b2a5285`, `ec896b7f0`, `9d15cdd37`, `abdc6c13e`; ship-AI calls on main as the lead's `f6f996abd` | `kGunneryPassByte7dBound` ON; USN02 Houston 22.80 -> 66.10 s |
+| GUNNERY 104: frame order (97.2, 100.4) | `7be72fc28` | reading; the order is the image's |
+| GUNNERY 105: IsKindOf(0Eh) at the motion tick | `9c2320ede`, `1c841b1c3`, `0246b0946`, `1b95f297e` | `kShipTorpedoBoatKindBound` ON; reach only JM08's sunk PT |
+| KillBinding `local_player_side` (cc9-ships29's edit) | `d5b3b7792` | landed; pair_diff 0 |
+| GUNNERY 106: the hull shape chain order | `8c23c32f9`, `26052ab23`, `aaa9fef64` | `kHullShapeChainOrderBound` ON |
+| GUNNERY 107: `0092BD70(0)` | `f4133a7d6` | no switch; needs the draft bodies |
+
+### 108.2 The queue, in order
+
+1. **Reference y, first, but only when the lead says so.** It waits for cc9-ships30's health term
+   and cc9-lua36's gates flip.
+   - Flips since x's base (`1590ec097`): `kDialogSequencerBound`, `kShipAiOwnCurveRefillGateBound`,
+     `kShipAiTargetCurveRefillBound`, `kShipAiApproachTargetLayerPushBound`,
+     `kShipAiApproachLandingSweepBound`, `kAiForcedTargetWeightRulesBound`,
+     `kSunkHullTerrainMaskBound`, `kGunneryPassByte7dBound`, `kShipTorpedoBoatKindBound`,
+     `kHullShapeChainOrderBound`.
+   - `rg` the docs for any later ones.
+   - cc9-gunnery23's `g23_lane*.ps1` and `g23_report24.py` are the templates.
+2. **The draft-zone bodies (107.3).**
+   - Host `00424DDF..00425487` and `00423C50`'s static extruded bodies (AVOID_ZONE_DRAFT_LAYERS;
+     `src/avoid_zone_draft_layers.cpp` has the pieces).
+   - Give the hull mask its class bit (`009394A9`, `009395E2`).
+   - Add hull-vs-draft-zone pairs to `world_step`, then the `0092BD70` clear/set.
+   - This has reach on every row with deep-draft ships near shallows.
+3. **97.2's trail arithmetic.** Frame order is ruled out (104); `0085AD80`'s speeds and
+   `0085ABA0`'s routing against the image are what is left.
+4. **100.4's trim.** A hydrostatics audit of a stopped transport's buoyancy elements against its
+   mass properties.
+5. **91.2's last order substitution.** The SAP pairs begin at box overlap (0.02-widened shape
+   boxes), while the host's begin at the first hit in hull-index order. Emulating it means a SAP
+   over hull boxes (`src/native_dyn_sap_*.cpp` has the reconstruction).
+6. **99.4** (debris in the shell sweep) needs hosted debris producers; low value.
+
+### 108.3 Tools (`local\` in the cc9-gunnery24 tree, prefix `g24_`)
+
+- `g24_runs.ps1 -V <prefix> -Only <rows> [-Exe]`: the reference launch form, copied from g23.
+- `g24_exp.ps1 -Commit -Out [-Flip]`: a detached pair export.
+- `g24_byte7d.py`: the byte-access census of `[reg+7Dh]`; edit the offset for another field.
+- `g24_shipai_7d.py`: the anchor-checked 103 ship-AI edit; it is on main and must not be re-applied.
+- `g24_tb_units.py`: the anchor-checked 105 units edit; on main.
+- `g24_multishape.py <logs>`: contacts that involve multi-shape hulls.
+- `g24_chaincheck.py <off> <on>`: per-pair first-step check for an order switch.
+- Pairs were run as `pair_export --no-build` into `local\g24_d0` / `local\g24_d1`, then each
+  tree's `scripts/build.ps1`. An export can carry a lane edit applied by script for a
+  diagnostic pair without touching the leased file.
