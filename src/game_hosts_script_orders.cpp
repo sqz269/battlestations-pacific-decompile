@@ -258,6 +258,11 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"StartDialog", 0x008b0540u},
     {"KillDialog", 0x008b0940u},
     {"GetActDialogIDs", 0x008cb730u},
+    // Packet cc9_lua_countdown: the countdown at [game+21E8h]. Handled only with
+    // kLuaCountdownBound.
+    {"Countdown", 0x008b16e0u},
+    {"CountdownCancel", 0x008b19a0u},
+    {"CountdownTimeLeft", 0x008b1b40u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -539,6 +544,11 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
+    if (std::strcmp(binding->name, "Countdown") == 0 ||
+        std::strcmp(binding->name, "CountdownCancel") == 0 ||
+        std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
+        return kLuaCountdownBound;
+    }
     return true;
 }
 
@@ -3021,6 +3031,52 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         } else {
             results = 0;
         }
+    } else if (std::strcmp(binding->name, "Countdown") == 0) {
+        // 008B17B2-008B17C3: 00887120(-1, 4) reads the frame into 14h-byte
+        // variants: the text +8h (argument 0), +1Ch (1), +30h (2), and the name
+        // +44h (3) only when there are more than three (008B17D2); arguments 4..n
+        // go to a new vector (008B1846-008B185E).
+        const std::string text = get_string(0);
+        const float level = static_cast<float>(get_number(1));
+        const float seconds = static_cast<float>(get_number(2));
+        // 008B18B8: 0052B9B0 on [[00E198C4]+C8h] with the text and the seconds,
+        // and 00733FF0's first call 005BCA70 on [[00E198C4]+58h]: the HUD.
+        log_.unimplemented("HudCountdown::show_text", "0052b9b0");
+        log_.unimplemented("HudCountdown::begin", "005bca70");
+        for (const int ref : countdown_.argument_refs_54) {
+            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+        }
+        countdown_.argument_refs_54.clear();   // 0073405E-00734083
+        // 00733FF0 (RET 14h) at 008B18F7.
+        countdown_.active_3c = true;           // 00734022
+        countdown_.level_40 = level;           // 00734012
+        countdown_.duration_44 = seconds;      // 00734026
+        countdown_.started_48 = mission_clock_;  // 0073402B-00734033
+        countdown_.callback_4c = count() > 3 ? get_string(3) : std::string();
+        for (int index = 4; index < count(); ++index) {
+            lua_pushvalue(state_, stack_slot(index));
+            countdown_.argument_refs_54.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+        }
+        ++countdown_starts_;
+        log_.notef("  Countdown(\"%s\", %.0f, %.2f, \"%s\") at %.2f s, %zu more argument(s)",
+            text.c_str(), static_cast<double>(level), static_cast<double>(seconds),
+            countdown_.callback_4c.c_str(), static_cast<double>(mission_clock_),
+            countdown_.argument_refs_54.size());
+        results = 0;  // 008B1990, nothing pushed
+    } else if (std::strcmp(binding->name, "CountdownCancel") == 0) {
+        // 008B19A0: two 0052AB90 HUD calls, then 007340A0(&left) and
+        // 00B66480(left).
+        log_.unimplemented("HudCountdown::clear_text", "0052ab90");
+        const float left = countdown_time_left();
+        countdown_stop_007340a0();
+        ++countdown_cancels_;
+        push_number_float_00b66480(left);
+        results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
+        // 008B1B40 computes the time left without testing +3Ch.
+        ++countdown_time_left_reads_;
+        push_number_float_00b66480(countdown_time_left());
+        results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "Blackout") == 0) {
         // 008D142F..008D1612 reads the frame; the marshalling stays here and the
         // decode, the arm and the immediate step are src/mission_blackout.cpp.
@@ -3694,6 +3750,8 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     const int outer_argument_count = argument_count_;
     state_ = machine_state_;
     argument_count_ = 0;
+    // 005BC920 runs 00735100 on [game+21E8h] (005BC9EF) before 005B9800.
+    if constexpr (kLuaCountdownBound) run_countdown_update_00735100();
     const bsp::MissionBlackoutStep record
         = bsp::mission_blackout_update_005b9800(blackout_, step, *this);
     ++blackout_summary_.updates;
@@ -3702,6 +3760,83 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     blackout_summary_.remaining = blackout_.remaining;
     state_ = outer_state;
     argument_count_ = outer_argument_count;
+}
+
+float GameScriptOrdersHost::countdown_time_left() const noexcept {
+    // 007340AC-007340D5 and 008B1B40: +44h - (clock - +48h), each FSUB on a
+    // float operand, stored as a float, then 0 when it is below zero.
+    const float left = static_cast<float>(static_cast<double>(countdown_.duration_44)
+        - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    return left < 0.0f ? 0.0f : left;
+}
+
+void GameScriptOrdersHost::countdown_stop_007340a0() {
+    log_.unimplemented("HudCountdown::end", "005bcab0");  // 007340E1
+    countdown_.active_3c = false;                           // 007340EF
+    countdown_.callback_4c.clear();                         // 007340F3-0073410D
+    for (const int ref : countdown_.argument_refs_54) {     // 00734110-0073412E
+        if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+    }
+    countdown_.argument_refs_54.clear();
+}
+
+void GameScriptOrdersHost::run_countdown_update_00735100() {
+    if (!countdown_.active_3c) return;  // 0073514E
+    // 00735161-0073517D: the remaining time, rounded to a float.
+    const float left = static_cast<float>(static_cast<double>(countdown_.duration_44)
+        - (static_cast<double>(mission_clock_) - static_cast<double>(countdown_.started_48)));
+    // 00735181-00735194: expire when 0 > left, or when left <= [00D7A218] = 0.0f.
+    if (left > 0.0f) {
+        // 00735196-007351B3: 005BCA80(left / +44h, left) on [[00E198C4]+58h].
+        log_.unimplemented("HudCountdown::update", "005bca80");
+        return;
+    }
+    countdown_.active_3c = false;                          // 007351C6
+    log_.unimplemented("HudCountdown::end", "005bcab0");   // 007351D7
+    ++countdown_expiries_;
+    if (countdown_.callback_4c.empty()) return;            // 007351E1
+    // 007351E5-0073520A: copy the name, assign "" to +4Ch, take +54h and zero it.
+    const std::string name = countdown_.callback_4c;
+    countdown_.callback_4c.clear();
+    std::vector<int> refs;
+    refs.swap(countdown_.argument_refs_54);
+    // 0073521F: 00887E50(self 0, &name, arguments, 0, -1) on [game+1A08h], then
+    // 00733D50 on a local (contract: unread); the references are released here.
+    ++countdown_callbacks_;
+    countdown_last_callback_ = name;
+    log_.implemented("MissionLuaHost::call_named", "00887e50");
+    lua_State* const machine = machine_state_;
+    if (machine == nullptr) return;
+    const int base = lua_gettop(machine);
+    lua_getfield(machine, LUA_GLOBALSINDEX, name.c_str());
+    if (!lua_isfunction(machine, -1)) {
+        log_.notef("  countdown callback %s is not a global function", name.c_str());
+    } else {
+        for (const int ref : refs) lua_rawgeti(machine, LUA_REGISTRYINDEX, ref);
+        // The same HUD step as the blackout callback, so orders it posts are
+        // after row 9 as well.
+        lua_State* const outer_state = state_;
+        const std::string outer_poster = after_row9_poster_;
+        if constexpr (kAfterRow9OrderQueueBound) after_row9_poster_ = name;
+        state_ = machine;
+        const int call_status = lua_pcall(machine, static_cast<int>(refs.size()), 0, 0);
+        state_ = outer_state;
+        after_row9_poster_ = outer_poster;
+        if (call_status != 0) {
+            ++timers_.call_failures;
+            const char* message = lua_tolstring(machine, -1, nullptr);
+            if (timers_.first_error.empty() && message != nullptr) {
+                timers_.first_error = message;
+            }
+            log_.notef("  countdown callback %s failed: %s", name.c_str(),
+                message != nullptr ? message : "(no message)");
+        } else {
+            log_.notef("  countdown callback %s ran at %.2f s", name.c_str(),
+                static_cast<double>(mission_clock_));
+        }
+    }
+    lua_settop(machine, base);
+    for (const int ref : refs) luaL_unref(machine, LUA_REGISTRYINDEX, ref);
 }
 
 // Packet cc9_entity_dead, docs/ENTITY_DEAD_FLAG.md. In the image a damage
@@ -4349,6 +4484,15 @@ void GameScriptOrdersHost::report() {
             static_cast<double>(blackout_summary_.level),
             static_cast<double>(blackout_summary_.remaining),
             blackout_configured_duration_used_ ? 1 : 0);
+    }
+    if (countdown_starts_ != 0 || countdown_cancels_ != 0 || countdown_time_left_reads_ != 0) {
+        log_.notef("summary mission countdown bound=%d starts=%zu cancels=%zu time_left_reads=%zu "
+            "expiries=%zu callbacks=%zu last_callback=%s active_at_end=%d (008B16E0 / "
+            "008B19A0 / 008B1B40 / 00735100, packet cc9_lua_countdown)",
+            kLuaCountdownBound ? 1 : 0, countdown_starts_, countdown_cancels_,
+            countdown_time_left_reads_, countdown_expiries_, countdown_callbacks_,
+            countdown_last_callback_.empty() ? "(none)" : countdown_last_callback_.c_str(),
+            countdown_.active_3c ? 1 : 0);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "

@@ -420,6 +420,25 @@ inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
 // bsm_04_vengance_at_luzon.lua:1718 indexes nil and luaStartMission fails on
 // every think.
 inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TASK 5cn.1
+
+// Packet cc9_lua_countdown (docs/SQUADRON_LAND_TASK.md 5dr). True: the three
+// countdown natives run on the countdown object at [game+21E8h] (constructed by
+// 00735030 at 004DFA75):
+// - `Countdown(text, level, seconds, callback, ...)` 008B16E0 -> 00733FF0 at
+//   008B18F7: +3Ch = 1, +40h = level, +44h = seconds, +48h = the clock 00F876A4,
+//   +4Ch = the callback name (argument 3, read only when there are more than
+//   three), +54h = the arguments past the fourth (freeing any older ones);
+// - `CountdownCancel()` 008B19A0 -> 007340A0: pushes max(0, +44h - (clock -
+//   +48h)), clears +3Ch and the name and frees the arguments;
+// - `CountdownTimeLeft()` 008B1B40: pushes the same max(0, ...), whether or not
+//   the countdown is running.
+// The HUD narrative screen's update 005BC920 steps it through 00735100 (on
+// [game+21E8h], before the blackout fade 005B9800): while +3Ch is set and the
+// remaining time is not above zero (0073517D-00735194, [00D7A218] = 0.0f), it
+// clears +3Ch and the name and calls `_G[name](...)` through 00887E50 with the
+// stored arguments (0073521F). False: the three natives stay unimplemented
+// records that push nothing, so no countdown callback ever runs.
+inline constexpr bool kLuaCountdownBound = false;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
@@ -651,6 +670,12 @@ private:
 
     // The 004C40F0 step at 004C429A: one 005B9800 pass with the frame delta.
     void run_blackout_update(float step);
+    // Packet cc9_lua_countdown: the countdown arm of 00735100 (00735151-0073524F).
+    void run_countdown_update_00735100();
+    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
+    float countdown_time_left() const noexcept;
+    // 007340A0 past the time-left store: clear +3Ch and +4Ch, free +54h.
+    void countdown_stop_007340a0();
     // One 00929460 walk with its delay updates, the body run_script_timers repeats.
     void run_script_think_pass(float step);
 
@@ -903,6 +928,25 @@ private:
     bsp::MissionBlackoutFade blackout_{};
     bsp::BlackoutFillColour blackout_colour_{};
     GameBlackoutSummary blackout_summary_{};
+    // Packet cc9_lua_countdown: the countdown object at [game+21E8h]. 00735030
+    // writes +4Ch..+54h and leaves +3Ch..+48h unwritten; ASSUMPTION: they start
+    // at zero (inactive, no time), which only CountdownTimeLeft before any
+    // Countdown can observe. The arguments +54h are registry references.
+    struct Countdown {
+        bool active_3c{false};
+        float level_40{0.0f};
+        float duration_44{0.0f};
+        float started_48{0.0f};
+        std::string callback_4c;
+        std::vector<int> argument_refs_54;
+    };
+    Countdown countdown_{};
+    std::size_t countdown_starts_{0};
+    std::size_t countdown_cancels_{0};
+    std::size_t countdown_time_left_reads_{0};
+    std::size_t countdown_expiries_{0};
+    std::size_t countdown_callbacks_{0};
+    std::string countdown_last_callback_;
     // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
     std::string after_row9_poster_;
     struct DeferredOrder {

@@ -11660,3 +11660,105 @@ Scripts in `local\` (prefix `l38_`):
    keep the legacy `DefaultEquipment` read.
 4. **The air-ops scene `Arm` per slot** (`006CB277`) is taken as authored. A slot authored `none`
    launches unarmed, which matches the image as read; not measured.
+
+## 5dr. Census: what the plane, bot-task, air-ops and Lua-host paths still hit on the coordinator-gate-ON rows (cc9-lua39, 2026-10-05)
+
+**Input.** cc9-lua38's 23 `l38_d1_<row>` logs (main `5a8bb5d92` with `kAiCoordinatorLoadGateBound`
+ON, the Z state). `local\l39_census.py <prefix> <name-regex> <status>` sums each host-method row
+over the logs and counts the rows that reach it; `local\l39_sumgrep.py` and `local\l39_rows.py`
+group summary lines.
+
+**The `UNIMPLEMENTED` status in `src/game_hosts_units.cpp` is not evidence of a gap.** That host's
+`record()` (line 3023) always logs `unimplemented`, also after a modelled body. Read at their
+sites, the top aircraft rows are modelled, and their status is a stale label:
+- `PilotBot::plan_controls` 0099D300 (20 rows, 1.98 M calls): recorded after the throttle and
+  air-brake slots are written (`28314`).
+- `PilotBot::queue_release_order` 0099AF53 (11 rows, 328 k): the arming loop's
+  "no order queued" arm; the order count is written by `write_release_order_count` (007BCBFD).
+- `BotStateMoveTo::refresh_ranges` 009BDE80 (11 rows, 330 k): the three-store setter that
+  DIVE_BOMB_APPROACH marks "read whole, bound".
+- `Bot::hit_task_notify_*` 009D3270 / 009C7900 / 009CC400 (8 / 9 / 5 rows): the clock resets are
+  done (`14591`).
+- `BotStateDiveBombDone::station_keeping` (6 rows): the station law runs (`21430`).
+- `Plane::water_contact_007cb7f0` (15 rows): the contact is applied (`16206`).
+- `TorpedoApproach::run_profile_record_14h` (11 rows): the skill row is selected
+  (`22214`); only the comment above it is stale.
+
+**The rows that are real gaps, ranked by reach on the 23 rows:**
+
+| # | row | rows | calls | lane | what is missing | gameplay reach |
+| ---: | --- | ---: | ---: | --- | --- | --- |
+| 1 | `Rack::drop_dispersion_006e4f91` (006E4D50) | 6: JM05 long, LOMP10, LOMP10 long, USN01, USN13 long, USNRM01 | 95 | units (shared) + gunnery | the drop's four scatter draws from the shared stream, and the rack+DCh offset (RELEASE_ISSUE_STAGE) | every scripted dive-bomb drop; the draws also shift the shared stream |
+| 2 | `MissionLuaNative::Countdown` 008B16E0 (+ `CountdownTimeLeft` 008B1B40, `CountdownCancel` 008B19A0) | 5: JM05 long, JM08, JM08 long, LOMP10, LOMP10 long (TimeLeft: JM05 long, 83) | 5 | Lua host (script orders) | the countdown never runs, so its callback never fires | **JM08 long:** `SpawnHoshoFleet` (prcpjm08.lua:890, 180 s after `HoshoTime` at 111.15 s) never spawns the Hosho group; JM05 long: the event timer never expires; LOMP10 long: `TimeLimit` |
+| 3 | `MissionLuaNative::AddAirBaseStock` 00896A90 | 3: ESMP08 long, ESMP08 14200, USN13 long | 56 | Lua host | the add `006CA770` is reconstructed (`air_base_stock_add_006ca770`) but not routed | refills (`006C0510`) read the stock; no refill runs on these rows (`refills_3_4_to_5=0`), so the reach is the GetProperty `stock` reads |
+| 4 | `MissionLuaNative::GetCapturePercentage` 0089B840 | 2: JM05, JM05 long | 196 | Lua host | pushes nothing | `nil * 100` at JM05.lua:5216 fails `luaTimetable` 196 times; the failing timer is the score display `luaJM5Sec1Score` (presentation), which then never re-arms |
+| 5 | `MissionLuaNative::SetCatapultStock` 00892C30 | 1: USNRM01 | 10 | Lua host | unit+638h is not written | catapult launches, if any run there |
+| 6 | `MissionLuaNative::PilotRetreat` 008A4300 | 1: JM05 long | 3 | Lua host | the order is not issued (pieces exist in `src/pilot_order_bindings.cpp`) | three Allied planes out of ammo keep their tasks |
+
+Everything else on the list is presentation (`IsGUIActive`, `DisplayScores`, `BlackBars`, hints,
+narrative, `SetGuiName`, `Loading_*`), a load-time record, or the side-AI scheduler passes
+(`BotScheduler::*`, 23 rows), whose outputs have no consumer on a single-player row.
+
+**Taken in this order:** item 2 (5ds), then item 1 (needs the gunnery lane's bomb spawn), then
+items 3, 5 and 6.
+
+## 5ds. The countdown natives (packet `cc9_lua_countdown`, cc9-lua39, 2026-10-05)
+
+### What the image does (read whole; Ghidra was read-only)
+
+- **The object.** `[game+21E8h]`, constructed by `00735030` at `004DFA75` in
+  `BSP_Game_ConstructWorld`; cleared at `004D2D5E` in `BSP_Game_DestroyWorld`. `00735030` writes
+  `+4Ch..+54h` (the name and the argument vector) and leaves `+3Ch..+48h` unwritten.
+- **`Countdown` `008B16E0`** (`lua_CFunction`, returns 0). `00887120(-1, 4)` (`008B17B7`-`008B17C3`)
+  reads the frame into 14h-byte variants: text `+8h` (argument 0), `+1Ch` (1), `+30h` (2), and
+  the callback name `+44h` (3) only when the count is above 3 (`008B17D2`). Arguments 4..n go to a
+  new vector (`008B1846`-`008B185E`). Then:
+  - `0052B9B0` on `[[00E198C4]+C8h]` with the text and argument 2 (`008B18B8`), the HUD;
+  - `00733FF0` on `[game+21E8h]` (`008B18F7`), `__thiscall(text*, level, seconds, name*, args*)`,
+    `RET 14h`: `005BCA70` (HUD), `+40h` = level, `+3Ch` = 1, `+44h` = seconds, `+48h` = the clock
+    `[00F876A4]`, `+4Ch` = name, and `+54h` = args after freeing the old vector
+    (`0073405E`-`0073409D`);
+  - in a hosted session only (`game+1FE4h == 1`), the replication `00772B30`.
+- **The step `00735100`**, on `[game+21E8h]` from `005BC920` (the HUD narrative screen's update,
+  only while `game+21F0h > 0`), before the blackout fade `005B9800`
+  (`00735151`-`0073524F`):
+  - with `+3Ch` set, left = `+44h - (clock - +48h)`, stored as a float (`00735179`);
+  - `0 > left` (`00735183 FCOMIP` / `JA`) or `left <= [00D7A218]` (= 0.0f, `0073518D COMISS` /
+    `JBE`): clear `+3Ch`, `005BCAB0` (HUD), and when the name is not empty, copy it, assign "" to
+    `+4Ch`, take `+54h` and zero it, and call `00887E50(self 0, &name, args, 0, -1)` on
+    `[game+1A08h]` (`0073521F`), then `00733D50` on a local (`00735228`, contract: unread; the
+    host releases the arguments there);
+  - otherwise `005BCA80(left / +44h, left)` (HUD).
+- **`CountdownCancel` `008B19A0`:** two `0052AB90` (HUD), then `007340A0(&left)`, which stores
+  max(0, `+44h - (clock - +48h)`) (`007340AC`-`007340D5`), clears `+3Ch` and `+4Ch` and frees `+54h`;
+  then `00B66480(left)`: one result.
+- **`CountdownTimeLeft` `008B1B40`:** `00B66480(max(0, +44h - (clock - +48h)))`, one result, without
+  testing `+3Ch`.
+
+### The binding (`kLuaCountdownBound`, `include/bsp/game_hosts_script_orders.hpp`, committed OFF)
+
+The three rows join the script-orders binding table and are handled only when the switch is ON.
+The countdown state is a member of `GameScriptOrdersHost`. The step runs inside
+`run_blackout_update`, ahead of the fade, as `005BC920` orders them. The clock is the host's
+`mission_clock_` (00F876A4). The callback is run like the blackout's, as an after-row-9 poster.
+- **ASSUMPTION:** `+3Ch..+48h` start at zero. Only `CountdownTimeLeft` before any `Countdown` can
+  observe that.
+- **Records** (render-side): `HudCountdown::show_text` 0052B9B0, `begin` 005BCA70, `update`
+  005BCA80, `end` 005BCAB0, `clear_text` 0052AB90.
+
+### Predictions (written before the runs)
+
+- **JM08 long** (36000 frames): `HoshoTime` runs at 111.15 s, so the countdown expires at about
+  291.2 s. `SpawnHoshoFleet` then generates the Hosho and two escorts, joins them in formation,
+  sets the Hosho's speed and starts `HoshoMovie`. The row **moves** (exit 3): three more
+  Japanese hulls in the fight. Deaths and hits move with no predicted direction.
+- **JM05 long** (9000 frames): the event timer is 400 s (JM05.lua:931 and on). The callback
+  `luaJM5EventTimerExpired` runs only if an event started before about 50 s. `CountdownTimeLeft`
+  now answers a number, so the reminder arm (JM05.lua:3712-3724) runs; it is presentation.
+  Expected: the timer does not expire inside the window, and the row is gameplay-identical
+  (exit 1).
+- **LOMP10 long** (9000 frames): `TimeLimit` runs at about 180 s after `luaIntroMovieEnd`. Every
+  call it makes is a record or a dialog: `AddAirBaseStock`, `AddShipyardStock`, `SetGuiName`, and
+  a `luaMonitorAF` that finds no Allied airfield squadron. The row is gameplay-identical (exit 1).
+- **JM08, LOMP10** (3000 frames): no expiry inside 150 s; gameplay-identical (exit 1).
+- **Every other row:** identical (exit 0) or gameplay-identical.
