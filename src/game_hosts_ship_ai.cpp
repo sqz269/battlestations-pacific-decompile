@@ -141,7 +141,7 @@ inline constexpr bool kShipAiApproachTargetLayerPushBound = true;
 // leader, members, reference speed, LandingRange and 008128E0 as the image does
 // both ways. True: its 94h (StartLanding) reaches the candidate's vt+238h,
 // 0074A4C0 or 008206F0, as the transport move's 94h does. False: counted.
-inline constexpr bool kShipAiApproachLandingSweepBound = false;
+inline constexpr bool kShipAiApproachLandingSweepBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target

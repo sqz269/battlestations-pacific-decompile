@@ -10737,3 +10737,14 @@ The OFF runs are this tree's build (`local\s29_w0_<row>.log`):
 - **Verdict rule:** flip ON when they are identical. A moved row is a mechanism failure.
 - **Reach:** a scene where a group containing transports or LSTs attackmoves onto an enemy
   building.
+
+### 133.5 The pairs, and the flip
+
+- **OFF:** this tree at `063550d13` (`local\s29_w0_<row>.log`).
+- **ON:** `pair_export --commit 063550d13 --flip kShipAiApproachLandingSweepBound=true`
+  (`local\s29_w133on`, SHA-256 prefix `BE5664B7886B`, `local\s29_w1_<row>.log`).
+- Smoke, LOMP10 and JM08 are all `pair_diff` 1, with identical death rows and no native counts
+  moved. On JM08 the only other lines are the `ship ai free` noise and the never-moving
+  `clear_37c` split of section 132.5 (LSM 02).
+- **Verdict:** as predicted, the switch is **flipped ON**. It has no reach on the reference rows,
+  where the sweep finds no troop-landing candidate.
