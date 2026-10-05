@@ -10293,3 +10293,57 @@ no release and no battleship damage? This is read from `local\l35_g_usnrm01.log`
   and the Navy Yard anyway.
 - Either way no battleship dies, in all four builds.
 - Item 3 is closed with no host divergence found.
+## 5cx. Item 4: the 5cm break-off follow-ups have no reach on current main; the manoeuvre drop read statically (cc9-lua35, 2026-10-05)
+
+**No reach.** On this branch (forced weights ON, 5ch OFF) every row logs `summary mission strafe
+breakoff bound=1 tightturns=0 flikflaks=0 manoeuvre_ticks=0`.
+- That holds in all 20 logs of 5cu.1 (`l35_f_*`, `l35_gf_*`).
+- A traced ESMP08 14200/14000 run on the tree build (`local\l35_tr_esmp08x.log`,
+  `BSP_STRAFE_GOAWAY_TRACE=1`) sums `aim=460 attackrun=576 goaway=0` over its strafe rows, with
+  no goaway enter, gate or push line.
+- So since 5ch went OFF (5co), the strike never enters goaway and `kStrafeBreakoffBound` (ON)
+  changes nothing on the reference rows. None of 5cm's three follow-ups can be validated by a
+  pair today.
+
+**The manoeuvre on a command change, read for the record** (5cm's "`0099A4C0` would ask the
+head's `vt[40h]` `0099C2C0`"):
+- **`0099A4C0` runs every pilot tick** (`0099AE7E`, `src/pilot_command_path.cpp`). It pops the
+  front task while all of these hold:
+  - the head is non-null;
+  - `vt[38h]` is true;
+  - `vt[34h]` is false;
+  - it is not the case that the stack has fewer than 2 entries and `vt[40h]` answers 1.
+
+  It installs a command task (`0099A170`) only when the stack ends empty.
+- **The manoeuvre vtables:**
+  - tightturn, vtable `00D205E0` (its name string `tightturn` follows at `00D2064C`);
+  - flikflak, vtable `00D20748`.
+
+  LABELLED for flikflak: its vtable is identified only by the `flikflak` string that follows it, as tightturn's does. Tightturn's own tick `009BA020` sits in its vtable at `00D20644`.
+  Both have `vt[34h]` = `009BA810` (`MOV AL,1 / RET`), `vt[38h]` = `0099B710` (`MOV AL,1 /
+  RET`) and `vt[40h]` = `0099C2C0`.
+- **So a manoeuvre head is never popped by `0099A4C0`.** The scan stops before `vt[40h]` is
+  asked, and nothing is installed.
+- **A new command's task does not displace it either.** `0099A170` installs through `0099A020`,
+  which appends at the end of the vector (`+58h` base, `+5Ch` count, `+60h` capacity, grown
+  x2+2).
+- **In the image, a running tightturn or flikflak survives a command change** and ends on its own
+  conditions. The new command's task then waits behind it.
+- **The host differs.** `src/game_hosts_units.cpp`'s strafe install clears `st_mv_kind` (the
+  LABELLED "a re-install drops a running manoeuvre"). That is a real divergence, with no reach
+  today, so it is recorded and not bound.
+- `0099C2C0` itself:
+  - answers 2 when the task has no `+2FCh` owner or no `vt[3Ch]` target;
+  - answers 0 when the director's command is neither the task's own target class nor an
+    `00E08F78` attack with a class-1/2 target;
+  - answers 0 when the active target's offset length is at or above `[00D7A220]`;
+  - answers 1 otherwise.
+
+  It matters only for single-entry stacks whose head has `vt[34h]` false.
+
+**Not done:**
+- the stacked second push;
+- tightturn's `009BA1C8 +2E4h &= ~4`.
+
+Both are behind the same goaway reach. 5cj's remaining items (the `settarget` delivery and the
+script-dogfight rows) were superseded by 5ck, 5cn and 5cr-5cw.
