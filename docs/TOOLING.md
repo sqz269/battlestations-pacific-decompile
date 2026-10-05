@@ -587,3 +587,9 @@ working directory.
   filters, then `00647300`'s body (`00645060`, `00645600`, the 20h push). A rejection is printed.
 - `stop R` re-takes the route at throttle 0 once the helm unit is within R metres of its point.
 - The labels are in docs/SCRIPTED_HELM.md section 10.
+
+**Added by packet `cc9_player_attack_row`:** `<frame> attack <unit> <target...> [repeat <s>]`,
+the order screen's attack (`005FAAE0`): refused unless the unit is the controlled ship; it gives
+back role 1 (`0077C470(unit, 2, 0)`) and issues `attackmove` on the named target through
+`0077D600`. The target is the rest of the line, so names with spaces work. Labels:
+docs/SCRIPTED_HELM.md section 11.

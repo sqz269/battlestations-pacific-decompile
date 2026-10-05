@@ -786,3 +786,63 @@ In run B, SaltLakeCity's death at 1120.22 s is credited to McCall's gun 6 (categ
 **Verdict:** no host bug; the attribution is the image's rule. **Not done:** a per-shell trace
 (`BSP_AA_TRACE_UNIT=McCall`) could not run, because all three run slots stayed busy for the
 launcher's 2400 s wait.
+
+## 11. `attack` (packet `cc9_player_attack_row`)
+
+Worker cc9-ships31, 2026-10-05, commit `5818eb685`. Harness code only; no image switch. The
+design is docs/SHIP_AI_OPEN_ITEMS.md section 147.
+
+```
+<frame> attack <unit> <target...> [repeat <seconds>]
+```
+
+It mirrors the order screen's page-1 attack, `005FAAE0`'s ship arm (`005FAAF5-005FABA6`).
+1. The unit must be the controlled unit (`[00E188D8]`) and a ship (`005FAB05`); otherwise the line
+   is refused, with the reason printed.
+2. `0077C470(unit, 2, 0)` gives back role 1 (`005FAB38`), through
+   `GameUnitsHost::role_request_0077c470`.
+3. `attackmove` (`00E08F78`) on the named target goes into `0077D600` with flags 1 (`005FABA1`),
+   through `issue_player_command`. Its entity form resolves through `0046AAB0`, which uses the
+   same `00465080` descriptor helper.
+4. `repeat` re-issues the line while the unit is alive and accepted. A refused issue ends the
+   repeat.
+
+**LABELLED differences from the image:**
+- The image attacks the director's fire target (`director->vtable[2Ch]`, `+238h`). The path by
+  which the player picks it is unread, so the file names the target.
+- Message 57h, the session echo, is not reproduced.
+
+**Smoke** (`local\s31_smoke_attack.log`, IJN05 600 frames, orders `local\s31_smoke_attack.txt`):
+- These lines were refused, each with its reason:
+  - a non-controlled unit (Zao);
+  - an unknown unit;
+  - a negative repeat.
+- `attack Yugu1 HQ2 repeat 10` was applied at frames 50 and 250. At frame 450 it was refused,
+  because the script had selected Yamato in the meantime.
+**Identity** (USN04 4700/4500):
+- No file against an empty file gives `pair_diff` exit 1. The only moved line is the refill-noise
+  counter, 445 against 441.
+- The base build `9d82c2240` (no option) against this build (no option) gives **exit 0**.
+### 11.1 The IJN05 capture runs (36000 and 48000 frames)
+
+| run | orders | outcome |
+| --- | --- | --- |
+| idle `local\s31_ijn05_idle.log` | none | CB1 and HQ2 are never damaged: neutralized 0. The fleet sinks the British force by 773 s. |
+| tune 1 `local\s31_ijn05_t1.log` | `local\s31_ijn05_orders1.txt`: `select Yamato`, `attack Yamato HQ2 repeat 30` at 16000 | **HQ2 neutralized at 1309.40 s.** Yamato's attackmove holds a 1.8-2.4 km standoff. No ship in range. |
+| tune 2 `local\s31_ijn05_t2.log` | `local\s31_ijn05_orders2.txt`: Zao and Yamato attack HQ2, then Mogami1 `takehelm 0.5` at HQ2 | **HQ2 neutralized at 1221.85 s** (countdown fires 1179). Mogami1 grounds 330.6 m south of HQ2, at (-7192.6, -2400.8). No tick. |
+
+- **The attack line works.** A player's attack order on a building neutralizes it, which no idle
+  row does.
+- **IJN05 still cannot flip.**
+  - HQ2's five landing pads (Airfield2LandingPoint 10-14) lie 214-330 m south of it. The shore
+    keeps every hull centre outside the 100 m range.
+  - The mission's capture is by landing craft on those pads. The only transports present, Maru1
+    and Maru2 (class 224, "IJN Troop Transport"), author `CapturePower = 0` and no
+    `LandedCapturePower` in this installation's `vehicleclasses.lua`.
+  - The script spawns no landers. Buying them needs the shipyard UI, which the harness does not
+    drive.
+  - CB1 is similar: its four pads are about 250 m away, and the British PT boats moor 225-283 m
+    from it.
+
+The final run was not spent. The handoff in docs/SHIP_AI_OPEN_ITEMS.md section 148 names the next
+candidate: USN01 phase 3 with the new attack line.
