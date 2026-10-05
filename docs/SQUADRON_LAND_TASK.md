@@ -10144,3 +10144,101 @@ Why the trace misled:
 
 **Rule for later readers:** judge a callback by its callees' bindings in the log, not by its name
 in the trace.
+### 5cu.1 Measured, and the verdicts: **forced weights ON; the gates stay OFF**
+
+Four exports of `5e6f83c8b` in reference V's launch form, with `BSP_GUNNERY_RNG_STREAMS`,
+`BSP_DEATH_TABLE` and `BSP_AI_SQUAD_TICK_TRACE` set:
+
+| export | switches | SHA-256 |
+| --- | --- | --- |
+| `local\l35_off` | as committed | `63FF59FD8220` |
+| `local\l35_f` | forced ON | `FDCF594B9F39` |
+| `local\l35_g` | gates ON | `F9F05D67B3C3` |
+| `local\l35_gf` | gates and forced ON | `9B694E94FEF2` |
+
+USN01 500/300 smokes on `f` and `gf` finished cleanly. The census reads `mode=0` on every row. The
+matches are rule 8 (`CARGO` vs `COMMANDBUILDING`) and rule 15 (`TORPEDOBOMBER` vs `SHIP`).
+
+**Pair F (OFF -> forced) and pair G (gates -> gates + forced): deaths, shots and torpedo drops.**
+
+| row | F exit | F deaths | F shots | F drops | G exit | G deaths | G shots | G drops |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN13 3200 | 3 | 22 -> 22 | 4189 -> 4189 | 0 -> 0 | 3 | 8 -> 22 | 914 -> 4189 | 0 -> 0 |
+| USN13 9200 | 3 | 116 -> 115 | 40517 -> 40899 | 3 -> 3 | 3 | 55 -> 154 | 10709 -> 48636 | 0 -> 3 |
+| USN04 4700 | 3 | 45 -> 46 | 17447 -> 12587 | 0 -> 1 | 3 | 55 -> 46 | 17469 -> 12587 | 0 -> 1 |
+| E2 | 3 | 85 -> 88 | 31532 -> 24172 | 0 -> 1 | 3 | 83 -> 86 | 24619 -> 24924 | 0 -> 1 |
+| USNOS 3200 | 3 | 98 -> 97 | 6179 -> 5930 | 0 -> 0 | 3 | 56 -> 67 | 2399 -> 5926 | 0 -> 0 |
+| USNRM01 9200 | 3 | 156 -> 180 | 49013 -> 71931 | 49 -> 54 | 3 | 159 -> 171 | 78264 -> 59391 | 30 -> 53 |
+| ESMP08 14200 | 3 | 51 -> 53 | 11259 -> 11235 | 0 -> 2 | 3 | 48 -> 53 | 10228 -> 11235 | 0 -> 2 |
+| USN02 (control) | 1 | identical | | | 1 | identical | | |
+| USN12 (control) | 1 | identical | | | 1 | identical | | |
+
+**USNRM01: do the Kates stay on the battleships? No, not with the image's forced weights.**
+Kate command-target tokens over the run:
+
+| build | KateSpawn1, 2, 4 | KateSpawn3, 5 |
+| --- | --- | --- |
+| `off` | Downes 4911 (after West Virginia / Oklahoma 30) | Downes, Curtiss, Cassin, Helm, Mona |
+| `f` | Pennsylvania 4410 | Curtiss, Pennsylvania, Mona, Utah, Detroit, Clemson-class 01 |
+| `g` | West Virginia / Oklahoma 3687 (5cr's result) | Oklahoma 2220, PT 1467 |
+| `gf` | Pennsylvania 3867 | Clemson-class 01, Curtiss, Pennsylvania, Detroit, Utah |
+
+- Under the rules, a Kate's close weight against every ship is the same 4.5. The close pass's
+  other factors then pick Pennsylvania, which is in the Navy Yard's dry dock, over the script's
+  battleships.
+- So the gates-only result of 5cr (script targets kept) holds only while the forced weights are
+  stubbed. With both switches, USNRM01 no longer argues for the gates.
+- No battleship dies in any of the four builds. Downes dies in `off` only.
+- Pair F's +24 deaths are mostly Japanese planes (22 ON-only `Jap #` rows against 16 OFF-only)
+  and ground objects.
+
+**USN13: what the air groups pick.**
+
+| build | bruh-led squad ticks (9200), top targets |
+| --- | --- |
+| `off` | MOVETOATTACK CB2 264, CLOSEATTACK CB2 16 |
+| `f` | MOVETOATTACK CB2 164, CLOSEATTACK CB2 18 |
+| `g` | CLOSEATTACK bruh #1.1 1151, MOVETOATTACK bruh #1.1 29 |
+| `gf` | CLOSEATTACK bruh #1.1 229, MOVETOATTACK bruh #1.1 116, MOVETOATTACK CB2 82, CLOSEATTACK bruh #3.1 70, #1.4 27, #1.8 24 |
+
+- **The prediction missed.** With gates and forced weights the Kates do not move to the Maru
+  groups. They still pick Kate groups (their own or another), and part of the time CB2.
+  - At distance 0 a Kate group's MG value against itself, times the range factor 1.0, still beats
+    4.5 x the Marus' far range factor.
+- **Gates + forced weights capture more:** the capture assignments rise from 309 to 1510. Rule 8
+  (`CARGO` vs `COMMANDBUILDING` 1.0) gives the Maru groups a capture weight against the
+  Japanese CBs. Spawns rise from 1 to 4 and units from 373 to 499.
+  - That accounts for the 9200 row's +99 deaths: 28 more `bruh` Kates die (ON-only rows), and
+    the extra generated groups re-deal the ground objects.
+- Without the gates (`off`, `f`), the bruh groups stay on CB2, as in 5cq.
+
+**Correction to 5cq (3):** the Kate is not unauthored. `VehicleClass[162]` (B5N Kate) has
+`Armour = 6` (`vehicleclasses.lua` line 54674, this installation). Its .30 cal MG (14-16) still
+beats it, so the self-scoring conclusion stands.
+
+**The other moved rows** re-deal plane deaths on both sides; no ship row flips:
+- USN04 pair G: Val, Zero, Kate and the Lexington/Yorktown squadrons;
+- ESMP08: Avengers, Corsairs and Helldivers;
+- USNOS pair G: 22 ON-only `plane #` rows.
+
+With forced weights ON, the gates matter much less: `f` and `gf` give the same headline on
+USN13 3200, USN04 and ESMP08.
+
+**Verdict on `kAiForcedTargetWeightRulesBound`: flip ON.**
+- The mechanism matches the listing (`00A31DB0`, the loader tail and the shipped tables).
+- The controls are identical in both pairs.
+- USNRM01's predicted move happened.
+- USN13's target prediction missed, but the miss is a spread miss within the image's rule: no
+  own-side filter exists.
+
+**Verdict on the gates (`kAiWeightBarrelGatesBound`, and the plane arm with it): stay OFF, by
+the brief's condition.**
+- USN13 does not behave sanely under them, with or without the forced weights.
+- USNRM01's Kates leave the battleships once the forced weights are in.
+- But the friendly targeting is the image's rule as read (5cu (1)). It is no longer a host
+  divergence that blocks the switch; it is a decision about matching a self-targeting image. The
+  mechanism matches the listing.
+
+**Recommendation to the lead:** flip the gates with the plane arm, as the image's rule, and
+accept that the slot-4 brain's air groups target their own side on US rows. 5ch is not
+re-tested here.

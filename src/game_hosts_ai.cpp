@@ -312,7 +312,7 @@ constexpr bool kAiPlaneAttackerWeightBound = false;
 // +70h). The global table (AISetTargetWeight) is not consulted: no campaign
 // script calls it. False: the lookup answers no match, the earlier stub. The
 // census line counts the matches in both states.
-constexpr bool kAiForcedTargetWeightRulesBound = false;
+constexpr bool kAiForcedTargetWeightRulesBound = true;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
