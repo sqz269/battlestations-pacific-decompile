@@ -8772,3 +8772,68 @@ about 67 m inside a hill. No host divergence was found, so nothing is bound and 
   01. Coastal Guns 02 and 03, on the same hill at 34-36 m, are on the ground and are the
   attackable forts. A player's manual aim has no `00864680` gate; the harness does not drive it.
 - **No code change.** `src/game_hosts_gunnery.cpp` is unchanged; the diagnostic was local only.
+
+## 114. Why SaltLakeCity now dies at 644.17 s on USN01 (cc9-gunnery26, 2026-10-05, lead queue item 2)
+
+The question: cc9-ships32's USN01 runs at main `4950ab838` (docs/SCRIPTED_HELM.md 11.2) lose
+SaltLakeCity at 644.17 s to a Katori torpedo at 113 m. cc9-ships31's runs had it alive until 932.6 s
+(run A) and 1120.2 s (run B). Which switch moved it?
+
+**Answer:**
+- The cause is two of reference z's switches acting together: `kAiWeightBarrelGatesBound` and
+  `kAiPlaneAttackerWeightBound` (SQUADRON_LAND_TASK 5df.1, `2086291cc`).
+- It is neither a regression nor a fidelity gain of its own. It is a downstream, chaotic consequence
+  of a fidelity flip whose verdict was already made.
+
+### 114.1 The baseline and the switch diff
+
+- Every order in those runs starts at frame 13200 (660 s), so up to 644 s each run is an idle USN01.
+- ships31's runs were built at `94c5c61c3`.
+  - `local\g26_slc_base94.log` is a control export of `94c5c61c3`, run in the reference launch form.
+  - Its death rows equal ships31's `s31_capA_usn01.log` through 700 s, row for row (`local\g26_deaths.py`).
+- This tree's tip `82fa35ace` (`local\g26_diag1.log`) equals ships32's `s32_r1.log` through 700 s.
+- `local\g26_switches.py 94c5c61c3 4950ab838` (from g25) lists three switches:
+  - `kAiWeightBarrelGatesBound` (flipped ON);
+  - `kAiPlaneAttackerWeightBound` (flipped ON);
+  - `kAiPlaneLoadoutArmBound` (new, ON).
+
+  The non-switch code between the two commits is the loadout record wiring and the `attack`
+  harness line.
+- **Expectation before the runs** (not committed first, because nothing was bound): all three OFF restores the `94c5c61c3` rows; the attacker
+  weight alone carries the move.
+
+### 114.2 Leave-one-out at the tip (USN01, 13500 frames, `local\g26_lane.ps1`)
+
+| switches set OFF at `82fa35ace` | death rows through 700 s | SaltLakeCity |
+| --- | --- | --- |
+| none (tip, `g26_diag1`) | = s32_r1 | dies 644.17 s (Katori torpedo) |
+| all three (`g26_slc_off3`) | **= `94c5c61c3` = s31 capA** | alive at 675 s |
+| `kAiPlaneAttackerWeightBound` (`slc_att`) | = tip | 644.17 s |
+| `kAiPlaneLoadoutArmBound` (`slc_load`) | = tip | 644.17 s |
+| `kAiWeightBarrelGatesBound` (`slc_bar`) | a third history | dies 599.28 s (Katori torpedo) |
+| barrel gates + loadout (`slc_barload`) | = `slc_bar` | 599.28 s |
+| attacker + loadout (`slc_attload`) | = tip | 644.17 s |
+| **barrel gates + attacker (`slc_baratt`)** | **= `94c5c61c3`** | alive |
+
+- **Loadout arm.** Inert on USN01 up to 700 s.
+- **Attacker weight alone.** Inert while the barrel gates are ON.
+- **Barrel gates.** These carry the move. With the gates OFF, the attacker weight still moves the
+  rows (`slc_bar` differs from base). With both OFF, the base comes back.
+- **Expectation:** right on "all three"; wrong on "the attacker weight alone".
+
+### 114.3 Where the histories part, and the verdict
+
+- The first difference is at death row 11. In the base, Mav4 is shot down at 43.85 s; at the tip,
+  Mav1-Mav5 die 13-22 s later.
+- The Mavs are the Japanese flying boats. 00A08460's plane-attacker weights change their target
+  picks, so they fly different paths through the US AA.
+- Everything after that is the shared-stream chain (memory: the shared RNG stream couples pairs).
+- At about 640 s Katori torpedoes whichever US hull is closest. That hull is:
+  - in the base, Dunlap, at 636.52 s;
+  - at the tip, SaltLakeCity, at 644.17 s;
+  - with the gates OFF alone, SaltLakeCity again, at 599.28 s.
+- SaltLakeCity's survival to 932 s is a property of one trajectory, not of the image. Two of the
+  three histories here lose it before phase 3.
+- **Verdict.** The two switches stay ON, on their own 5df.1 verdicts. Nothing in this chain is a
+  host defect. SaltLakeCity's death time is not a fidelity measure. A USN01 capture plan should not
+  rely on SaltLakeCity reaching phase 3.
