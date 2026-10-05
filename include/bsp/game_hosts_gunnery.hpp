@@ -88,7 +88,8 @@ namespace bsp {
 // (the formation-follower arm of 009F4DA0, 1). True: the pass reads the stored
 // byte and a change to 0 clears the torpedo guns. False: the pass answers the
 // constructor's 1; the byte is tracked and the clears counted, nothing else.
-inline constexpr bool kGunneryPassByte7dBound = false;
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 103.4).
+inline constexpr bool kGunneryPassByte7dBound = true;
 class ReconSensorPassState;
 }
 

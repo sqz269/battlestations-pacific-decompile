@@ -8152,3 +8152,26 @@ OFF census on a diagnostic build of `68b2a5285` with the ship-AI edit applied
 - **USNOS, USN13, JM08:** no ship tube is ever targeted (`torpedo_gate targeted=0`) and no
   fire-target assignment is refused, so the clears touch empty tubes: exit 0 or 1.
 - **E2 and the smoke:** no approach frames: exit 0.
+### 103.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `9d15cdd37`
+with `local\g24_shipai_7d.py` applied to the export's `src/game_hosts_ship_ai.cpp` (SHA-256
+prefixes `C165A922CA84` / `6195DC5FB115`). x's launch form; every run has `lost_polls=0`. The
+300-frame smoke ON: `tail=0 follower=963`, no change.
+
+| row | exit | deaths | torpedo shots OFF -> ON | fire-target assigns at 0 OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN02 (9000) | 3 | 1 -> 3 | 262 -> 203 (targeted 129186 -> 66368) | 2696 -> 0 |
+| USNOS, USN13, JM08, E2 | 1 | identical | 0 / 0 | 0 / 0 |
+
+- **Mechanism: matches.** `fire_target_assigns_at_0` is 0 on every ON row, and the store
+  counts of USNOS, USN13, JM08 and E2 are identical both ways.
+- **USN02** (prediction met: exit 3, torpedo shots down).
+  - The first hit moves from 19.25 s to 36.75 s.
+  - Houston, whose loss is the row's `Game Over`, sinks at 66.10 s instead of 22.80 s
+    (killer range 2828 -> 2015 m). The mission ends at 69.35 s instead of 29.75 s.
+  - Kawakaze and Yamakaze now also die before the end.
+  - The Japanese tubes now take the fire target only while the goal is within the clearance
+    plus 50 m. Per ship, the ON zero frames run from 140 (Samidare) to 958 (Haguro).
+- **Flipped ON** (`kGunneryPassByte7dBound = true`): a mechanism match with every prediction met.
+  It has an effect only together with the ship-AI edit, which must land with it or after it.
