@@ -146,7 +146,8 @@ inline constexpr bool kSunkHullTerrainMaskBound = true;
 // 00C535E0 as the fort pairs do (the draft body as A, one manifold per body pair, the static
 // frame), and the manifold joins the hull's group and solve. False: the narrow phase runs as a
 // census only; hulls pass through the draft walls as before.
-inline constexpr bool kAvoidZoneDraftBodiesBound = false;
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 109.4).
+inline constexpr bool kAvoidZoneDraftBodiesBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
