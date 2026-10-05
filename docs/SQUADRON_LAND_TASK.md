@@ -10408,3 +10408,69 @@ The remaining candidates, none read here:
 3. **The aim tick's throttle and pitch** at a 140-degree velocity error.
 
 All three are plane-lane reads (planes or gunnery owners), not Lua-host ones.
+## 5cy. USN13 plausibility read: nothing found that stops the Japanese brain planning its own side (cc9-lua35, 2026-10-05)
+
+The lead's three questions, asked because "Japanese air groups target themselves" is
+implausible in a shipped campaign:
+
+1. **Does the script re-issue orders often enough to mask the planner? No.**
+   - The strike is `luaSpawnAttackWave` (`usn_13_truk.lua` 1257, `SpawnNew`, `PARTY_JAPANESE`,
+     Type 162 named `bruh`; this installation, mtime 2024-08-13).
+   - Each squadron gets exactly one `PilotSetTarget(unit, luaPickRnd(Mission.USCV))`, in
+     `luaAttackWaveSpawned` (1645). No later line re-targets `Mission.AttackWave` (`rg` over the
+     script: 801, 982, 996, 998 only count or film it).
+   - So any AI order to these squadrons is the last word.
+   - In the gates build (`l35_g_usn13l`) the squadrons' own command targets still name US units
+     on most lines (Hill, Monterey, Cowpens, Intrepid, Essex and their squadrons). The friendly
+     group orders show up as:
+     - 303 `ai:close_attack` dogfight task rows and 690 `ai_command_tick` moveto rows for
+       bruh #1.1;
+     - 64 `attackmove arm ... target not hostile` refusals.
+2. **Does `009FFD20`'s slot-4 filing apply to script-spawned groups? Yes, as read.**
+   - `unit+180h` is written only through `vtable[144h]` (docs/AI_BRAIN_PLAYER_EXEMPTION.md).
+   - On activation (`0077F0E0`) it is the `OwnerPlayer` property, or 9 when that is absent
+     (`0077F1F1`). The `SpawnNew` table carries no `OwnerPlayer`.
+   - So these units take the side test, `+54h` = 1 against slot 0's party 0, giving slot 4.
+3. **Is `brain+24h` ever set from the members? No.**
+   - The brain is built lazily in `BSP_AiParties_Think` (`00A1836A`-`00A1838C`,
+     `operator new(28h)`, `00A15A70(slot)`), with the slot from the think's own loop.
+   - A sweep of `00A15950`-`00A18850` finds one store to `[reg+24h]` that is not a stack slot:
+     `00A15A97` in the constructor.
+   - None of the 10 references to the brain array `00F8A89C` is followed by a `+24h` store.
+     LABELLED: brain methods outside that range were not swept.
+
+**Record:** `kAiWeightBarrelGatesBound` and `kAiPlaneAttackerWeightBound` are the image as read,
+held OFF on a plausibility prior (the lead's decision of 2026-10-05). Revisit with reference Y.
+## 5cz. Handoff (cc9-lua35, 2026-10-05)
+
+Branch `agent/cc9-lua35`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua35`. No lease
+is held. The `src/game_hosts_ai.cpp` loan is handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_forced_target_weights` | `a3721808a`, `5e6f83c8b`, `538ad0d7a` | `kAiForcedTargetWeightRulesBound` | **ON** | 5cu, 5cu.1 |
+| BSM04 `luaIntroMovieEnd` | `a3721808a` | - | answered: it runs | 5cv |
+| USNRM01 Kates | `cb01db717`, `4ed9feb3f` | - | open (plausibility) | 5cw, 5cw.1 |
+| break-off follow-ups | `61ad1d802`, `689c85caf` | - | no reach | 5cx |
+| USN13 plausibility | `5f59f863f` | gates / plane arm | held OFF on a prior | 5cy |
+
+Census: `summary mission ai forced target weight bound= mode= queries= matches= rules:`.
+
+Scripts in `local\`:
+- `l35_runs.ps1 -Sides a,b -Only rows` (two sides in parallel through the slots);
+- `l35_edit_ai.py` (the applied binding edit);
+- `l35_kinds.py <log> <needle>` (line-kind census);
+- `l35_dispscan.py <disp...>` (disp32 census);
+- `l35_nextcall.py`, `l35_vcall.py <disp> <lo> <hi>` (`mov r,[r+disp] / call r` sites);
+- `l35_slots.py` (vtable slots), `l35_brain24.py`.
+
+### Next, in order
+
+1. **USNRM01's Kates mush into the sea about 8 s after spawning** (5cw.1), while the script films
+   `TorpTable[1]` for about 45 s. Candidates for the planes lane:
+   - the free-flight law at negative forward speed (`007DB875` lift, `007D92B0` damping);
+   - the depth kill `007CE3A7` against `SetInvincible`;
+   - the aim tick at a 140-degree velocity error.
+2. **The gates and plane arm:** image as read, held OFF (5cy). Revisit with reference Y.
+3. **Unbound but read:** a running tightturn or flikflak survives a command change in the image
+   (5cx). Bind it only once goaway is reached again.
