@@ -14423,3 +14423,85 @@ from g25's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idl
 - **`gate` OFF alone** is gameplay-identical to y's history with `aml` and `wts` live. It carries
   every move of Z against y.
 - **USN04 with `aml` + `wts` OFF** is gameplay-identical to Z.
+
+**Binaries:**
+- z: `local\g26_lane_za` (SHA-256 prefix `F3159889AE44`);
+- anchor: `local\g26_lane_zb` (`E9EA6472C39C`);
+- `gate` OFF: `local\g26_lane_zc` (`2AEFCFF6C6E3`, both rounds);
+- `aml` + `wts` OFF: `local\g26_lane_zd` (`07987144EBAC`).
+
+**Environment:** the console session was Active and every run completed.
+
+### The anchor: the five OFF
+
+`g26_z_anc_<row>` is **gameplay-identical to y on all twenty-two rows**: exit 1 against
+`g25_y_base_<row>` (cc9-gunnery25's tree), with deaths, hull hits and shots equal on every row.
+Nothing else that landed since y moves a row.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12822.0 | 48 | 1036 (153) | 14785 | 98.70 s | 3 of 16 / 0 of 19 | 15 | Lexington-class01 3353.44 | none (Mission.EndMission never true) | 481 | `local\g26_z_base_usn04.log` |
+| USN01 | 3000 | 33939.4 | 29 | 1278 (229) | 2030 | 12.90 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 4346.27 | none (Mission.EndMission never true) | 486 | `local\g26_z_base_usn01.log` |
+| USN04 (E2) | 9000 | 13094.2 | 52 | 1055 (153) | 15137 | 98.70 s | 3 of 16 / 0 of 19 | 19 | Lexington-class01 5761.17 | none (Mission.EndMission never true) | 482 | `local\g26_z_base_e2.log` |
+| USN02 | 9000 | 42491.2 | 3 | 5299 (366) | 4418 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.EndMission) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side) | 488 | `local\g26_z_base_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 451 | `local\g26_z_base_jm06.log` |
+| JM08 (smoke) | 3000 | 10057.1 | 22 | 482 (157) | 2794 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 453 | `local\g26_z_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 468 | `local\g26_z_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 448 | `local\g26_z_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.74 | none (Mission.EndMission never true) | 442 | `local\g26_z_base_lomp06.log` |
+| LOMP10 | 3000 | 2156.6 | 2 | 182 (103) | 3423 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none (Mission.EndMission never true) | 470 | `local\g26_z_base_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 3 / 0 of 6 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 509 | `local\g26_z_base_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 440 | `local\g26_z_base_usn12.log` |
+| LOMP10 (long) | 9000 | 2764.2 | 5 | 193 (107) | 3623 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none (Mission.EndMission never true) | 482 | `local\g26_z_base_lomp10l.log` |
+| USNOS | 3000 | 43048.0 | 87 | 1409 (177) | 5668 | 5.00 s | - | 11 | NH 1497.26 | none (Mission.EndMission never true) | 497 | `local\g26_z_base_usnos.log` |
+| USNOS (long) | 9000 | 48691.3 | 105 | 3059 (294) | 19805 | 5.00 s | - | 13 | NH 4492.07 | none (Mission.EndMission never true) | 497 | `local\g26_z_base_usnosl.log` |
+| IJN01 | 3000 | 1707.7 | 1 | 163 (151) | 4846 | 89.35 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 435 | `local\g26_z_base_ijn01.log` |
+| JM05 (long) | 9000 | 30083.6 | 38 | 1022 (312) | 15341 | 5.85 s | 2 of 6 / 1 of 16 | 19 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 539 | `local\g26_z_base_jm05l.log` |
+| JM08 (long) | 36000 | 125857.6 | 207 | 8284 (754) | 8693 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 485 | `local\g26_z_base_jm08l.log` |
+| USN13 (long) | 9000 | 42530.4 | 102 | 2871 (1766) | 35863 | 98.90 s | 3 of 80 / 3 of 50 | 38 | Enterprise 2777.59 | none (Mission.EndMission never true) | 493 | `local\g26_z_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 362 (96) | 3189 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 461 | `local\g26_z_base_esmp08l.log` |
+| USNRM01 | 9000 | 26261.0 | 129 | 1999 (1351) | 62883 | 166.56 s | 6 of 15 / 36 of 51 | 99944 | West Virginia 0.00 | none (Mission.EndMission never true) | 506 | `local\g26_z_base_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 140 (31) | 805 | 65.25 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 501 | `local\g26_z_base_ijn11.log` |
+
+**Against y: nineteen rows move** (exit 3). BSM01, LOMP10 and LOMP10 long are gameplay-identical.
+
+Headline moves (y -> z):
+- **USN04:** deaths 44 -> 48; hull hits 801 -> 153.
+- **E2:** deaths 74 -> 52; hull hits 1147 -> 153.
+- **USNRM01:** deaths 192 -> 129; hull hits 1742 -> 1351.
+- **JM08 long:** deaths 148 -> 207.
+- **JM05 long:** deaths 17 -> 38; shots 415 -> 15341.
+- **USN13 long:** deaths 117 -> 102.
+- **USNOS:** deaths 97 -> 87. **USNOS long:** deaths 114 -> 105.
+- **IJN11:** deaths 2 -> 6. **ESMP08 long:** deaths 7 -> 12. **USN12:** deaths 5 -> 3. **IJN01:** deaths 2 -> 1.
+- **USN01:** deaths 28 -> 29. **JM05:** deaths 15 -> 16.
+- USN02, JM06, JM08, USN13 and LOMP06 keep their deaths.
+
+### Leave-one-out
+
+**`gate` OFF alone, two rounds** (logs `local\g26_z{1,2}_gate_<row>.log`, on the nineteen moved rows):
+- The two rounds agree on every row: exit 0 or 1, with deaths, hull hits and shots equal.
+- **Against z, all nineteen move** (exit 3). Setting `gate` OFF puts the coordinator back on every one.
+  So **`gate` carries every move of z against y.**
+- **Against y**, `gate` OFF is a different history, because `aml` and `wts` are live with a
+  coordinator:
+  - LOMP06, JM05 and IJN11 come back gameplay-identical.
+  - JM05 long and ESMP08 long keep y's headlines.
+  - The rest move, for example JM08 long 148 -> 83 and USNOS 97 -> 67.
+  - This is the `aml` / `wts` effect on a coordinator launch (a hosted session). It does not
+    reach single-player rows any more.
+
+**`aml` + `wts` OFF with `gate` ON** (USN04 and E2, `local\g26_z1_inert_<row>.log`):
+gameplay-identical to z (exit 1, deaths 48 and 52). This confirms SHIP_AI 150.7's census that
+they are inert on single-player rows. No leave-one-out was run for them.
+
+**Predictions:**
+- Right on the anchor (= y everywhere).
+- Right on `gate` carrying every move.
+- Right on the inert check.
+- Right on BSM01, LOMP10 and LOMP10 long being identical.
+- **Missed** on USN02 and USN12. Both have `tick_orders=0` in y, yet they move against y.
+  The coordinator reaches gameplay there without a tick order: through group creation and its
+  target choice, not through orders. That path was not traced.
