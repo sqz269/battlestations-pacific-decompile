@@ -9115,6 +9115,8 @@ launches (10 crafts) -> four launches (11).
   Bristol, 165 m), UST 02 (by UST 03, 180 m) and UST 01 (by Bristol, 62 m). These are friendly
   hull contacts among ships converging on the same area, outside `00A11B80`'s point choice.
   Recorded as the next item.
+  **Correction (section 110):** they are not contacts. Every one is friendly gunfire (shell hits
+  and blast), and the host's friendly-fire rules match the image as read.
 - **UST 04 still grounds by t=1500** (ground -13.4 m, `contact=1`), on an order not traced here.
 - **USNOS stayed gameplay identical.** 191 convoy points moved, but no convoy reached its `CB2`
   point within the window. The prediction was "exit 3 likely".
@@ -9124,3 +9126,74 @@ launches (10 crafts) -> four launches (11).
 **Verdict: `kAiTransportMovesOrderBridgeBound` ON.** The mechanism matches (the bridge and the
 offset points; the transports hold in deep water where OFF grounds them). The rams and UST 04's
 late grounding are recorded misses with their own causes.
+
+## 110. JM08's "friendly rams" are friendly gunfire, and the host's rules for it match the image (packet `cc9_friendly_transport_deaths`, cc9-ships27, 2026-10-04)
+
+Section 107.5 recorded seven transport deaths on JM08 36000 (OFF 4, ON 3) as hull contacts. **None of
+them is a contact.** Every death row names a gun, and the hits are shell hits:
+
+| run | victim | t | killer | gun | category | blast | range (m) | hits c6 | dmg c6 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `s26_e0` | UST 05 | 941.39 | LST 01 | 197 | 2 | 1 | 83 | 32 | 1750 |
+| `s26_e0` | UST 02 | 1394.59 | LST 03 | 205 | 2 | 1 | 63 | 38 | 1960 |
+| `s26_e0` | UST 04 | 1404.80 | Macomb | 258 | 6 | 0 | 188 | 55 | 2810 |
+| `s26_e0` | UST 06 | 1492.88 | LST 01 | 197 | 2 | 1 | 117 | 29 | 1384 |
+| `s26_e1` | UST 05 | 1052.35 | Bristol | 243 | 6 | 1 | 165 | 50 | 2643 |
+| `s26_e1` | UST 02 | 1362.05 | UST 03 | 121 | 6 | 1 | 180 | 60 | 3091 |
+| `s26_e1` | UST 01 | 1572.36 | Bristol | 240 | 6 | 1 | 62 | 42 | 2150 |
+
+(`death row:` lines of `s26_e0_jm08x.log` / `s26_e1_jm08x.log` in the cc9-ships26 tree; "range" is
+the killer-victim distance at death, `src/game_hosts_gunnery.cpp`'s death-row emitter.) In `s26_e1`,
+UST 05 takes 25 `impact blast` lines with `nearest=0.0`, each about 130 health (a direct hit plus
+30.5 of blast), from t=867 while Bristol is on `attackmove` at `Japanese AA truck 01`. The shells
+strike the transport that lies between the shooter and its shore target. Its 3 `hull pair contact
+census` lines with other transports and 4 with landing craft cost it nothing.
+
+### 110.1 The image's friendly-fire rules, and the host's
+
+- **A shell or blast has no side exemption.** GUNNERY_OPEN_ITEMS 63 (heavy artillery on USNOS) and 78
+  (`0084BAD0`, `00904470`, `009239A0`, `008777D0`): only the shooter itself is excluded. The host
+  matches.
+- **The only friendly test is the line-of-fire memo, and only for weapon kinds 1, 5 and 6.**
+  `00729560` installs the predicate at `gun+42Ch` for kinds 1, 5, 6 (`00729588..00729595`); kinds 2,
+  3, 4 have none, so `0072F6E0` answers 1 for them (`0072F6E6..0072F6F2`). **The LST kills (category
+  2) are therefore outside any image test.**
+- **Kind 6 reaches the test against a surface target, too.** `00729BC0` (sole caller `008657F7` in
+  `BSP_UnitGunneryAi_Tick`, by a rel32 scan of `.text`) sends a first-ammunition sub-type 4..7 to the
+  `ArtilleryGunnerBot` at `gun+398h` (`00729C8C..00729CA3`). That bot's slot `1Ch` is `006DEF30`
+  (vtable `00CFE000+1Ch` = `006DEF30`, no Ghidra function; `RET 4` at `006DEFEA`), which ends with
+  `gun->vtable[1D4h](target)` (`006DEFD1..006DEFDC`), the memo. The host's `bind_aa_acceptance` runs
+  `line_of_fire_refuses()` for category 6 against any target, so it matches. The other `1D4h`
+  callers are `008FBE00` (AAGunnerBot), `008FBFC0` (AAFlakBot), `008FBF70` (TailGunnerBot, vtable
+  `00D18140+1Ch`) and `008FC010` (TorpedoBot), found by scanning `8B ?? D4 01 00 00`.
+- **The memo never expires: corrected field name, same conclusion.** The record's third field is
+  `U(0.8, 1.2) x GlobalConfig+8Ch` (`0072F743..0072F77E`). `+8Ch` is `SafeToFireCacheTimeOut`
+  (`kGlobalConfigOffSafeToFireCacheTimeOut`, `include/bsp/gunnery_tables.hpp:184`), so the field was
+  meant as a lifetime. But nothing reads it:
+  - `0072F6E0` returns a cached byte without testing it (`0072F821`);
+  - the record vector `gun+430h/+434h/+438h` has no other access in `.text`: `?? ?? 30|34|38 04 00 00`
+    finds only `BSP_Gun_Construct` (`0072E5B6`, `0072E5C2`) in gun code;
+  - the decision object `gun+424h` is reached only by `0072E702` (setup), `0072DB62` (destructor
+    `0072D950` -> `00729600`) and the thunk `00730A20`: scans of `8D ?? 24 04 00 00`,
+    `81 C? 24 04 00 00` and `05 24 04 00 00`;
+  - of the 77 rel32 calls to `BSP_GlobalConfig_GetSingleton 00432650`, only `0072F743` reads `+8Ch`
+    within 64 bytes (`local\s27_callscan.py`).
+  - **Uncertainty:** a reader that holds the singleton pointer longer, or reaches the vector through
+    a pointer stored elsewhere, would escape these scans.
+  So a (gun, target) answer is kept for the gun's life in the image, and `line_of_fire_cache` does the
+  same. A transport that moves into the line after the first ask is shot through in both.
+- **The run agrees that the memo is asked rarely:** `s26_e1` has `aa line of fire queries=394 blocked=50
+  refusals=395` over 36000 frames.
+
+**Verdict: no host divergence in the friendly-fire rules.** Nothing is bound. Hull-hull contact
+(cc9-gunnery23's lane) kills nothing on this row, so whether the image's contact damages friendlies at
+that closing speed does not decide these deaths.
+
+### 110.2 What is left: the geometry, not a rule
+
+The deaths need a friendly to sit within 62-188 m of a ship firing at the shore, on the line to its
+target. Both runs have it; they differ in which transport and which shooter. The open question is
+whether the image's escorts and LSTs close to that range while the transports hold off the beach:
+Bristol's `attackmove` on shore targets (`mode=navigate_astern`, `d32c` about 1000 m at t=900), and the
+LSTs firing over the transports they lead in. That is a positioning question, for item (2)'s order
+trace and section 105's queue, not a gunnery rule.
