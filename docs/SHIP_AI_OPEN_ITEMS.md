@@ -11709,3 +11709,435 @@ unreached.
 - The orders files are `s31_cap_orders*.txt` (USN01) and `s31_ijn05_orders*.txt`.
 
 All leases are released after this commit.
+
+## 149. The auto-merge leave pass `00A10EC0` (packet `cc9_ai_auto_merge_leave`, cc9-ships32, 2026-10-05)
+
+Lead item 2 of section 148. Ghidra was read-only.
+
+### 149.1 The census fix (item a)
+
+Commit `e10ebe571`: `tick_squadron_excluded_009ffeb0` marks `done()` at entry when
+`kAiSquadronRtbExclusionBound` is ON and `record()` otherwise; the second `done()` in the issuing arm
+is gone. Census only.
+
+### 149.2 The image (read whole)
+
+**`00A10EC0`** (`00A10EC0-00A1106B`, `RET` at `00A1106A` then `INT3`; `__fastcall` ECX = the command,
+the group is `[ECX+4]`). It is NONCONTROL's whole `vt+0Ch` (a bare `JMP`) and IDLE's first call
+(`00A12433`, before `00A10DC0` at `00A1243A` and `JMP 00A11070` at `00A12442`).
+- `group+5648h` (grouping-enabled) clear: return.
+- While `group+5644h` (population) is above 1: walk the `+563Ch` list from the node after the
+  leader. For each follower, refresh its pose (`00414DB0` / `00413920` / `004134F0` when `+C8h` is
+  clear) and compare the planar distance to the leader's `+FCh` with `AiTuning+20Ch`,
+  `AutoMerge_LeaveDist` (1200). The x87 (`00A10FDA..00A11038`) rounds both `dx*dx + dz*dz` and
+  `L*L` to float before `FCOMI`; `JA` to the removal.
+- The first follower past the distance: `00A2D9D0(ECX = group)(entity, 1)` (`00A1104B..00A11055`),
+  then the walk restarts (`00A1105E JMP 00A10EE0`). A walk that finds every follower inside
+  returns.
+
+**`00A2D9D0` `BSP_AiGroup_RemoveEntity`** (`00A2D9D0-00A2DA53`, `RET 8` at `00A2DA51`), the tail now
+read: `0077BEA0` unlinks the entity from `+563Ch`; `entity+16Ch` is cleared when it names this group;
+`006956A0` (EDX = `group+10h`) unregisters the observer pair; then, when the population is 0 and the
+flag is set, the group is appended to the emptied list `00F8AA78/00F8AA7C` (`00A16AB0`, `00A172A0`).
+From `00A10EC0` the population is at least 1 after the removal, so that arm is never taken.
+
+**`+5648h` is always set in this process.** The constructor stores 1. Its only clears are the
+`AIEnableGrouping` (`00A37731`), `AIMergeGroups` (`00A37875`) and `AICreateGroup` (`00A38D04`)
+bindings (docs/LUA_BINDING_AI.md), and no mission script of this installation calls any of them
+(the 454 `.lua` files under `scripts\`, searched recursively).
+
+**A removed entity has no group** (`+16Ch` = 0). The next group think seeds it into a group of its
+own (phase 3, `00A2E835..`), which the per-party auto-merge (`AutoMerge_MergeDist`) may then join
+to another group.
+
+**`00A11070`** (IDLE's tail) is the idle formation shape: on a ship leader with a `+284h`
+formation it calls `BSP_UnitGroup_ApplyFormationShape(0)` with `AiTuning+210h` and a static table
+of offsets (`00F8A7B0..`, guarded by `00F8A870` bit 0). It stays unbound, with its own census row
+`AiCommand::idle_formation_00a11070`.
+
+### 149.3 The binding
+
+`kAiAutoMergeLeaveBound` (`src/game_hosts_ai.cpp`), committed OFF.
+- Both builds run the census before every NONCONTROL/IDLE tick: `passes` (population above 1),
+  `passes_beyond` and `followers_beyond` (followers past the distance), printed as
+  `summary mission ai auto-merge leave ...`, with the first 40 events as
+  `ai auto-merge leave: t=... leader=... beyond=...`.
+- ON: the image's restarted walk. The follower is erased from `members`, `group_of_unit` is cleared
+  when it names this group, and `removals` counts it. `006956A0`'s observer pair is not modelled,
+  as in the eviction and the splits (LABELLED).
+- The leader and follower positions are `tick_member_position` (a squadron reads its lead plane,
+  as every other pass in this file does).
+
+### 149.4 Predictions (written before any run)
+
+- **OFF:** gameplay identical to the base (the census reads positions only).
+- **Reach:** `tick_000c` runs on every reference row (306 to 11434 calls on reference y). Most
+  NONCONTROL/IDLE groups are fresh singletons or formation-bound ships within a few hundred metres,
+  so I expect `followers_beyond` = 0 on most short rows, and non-zero on the long rows where groups
+  scatter after a fight (USN13 long, USNOS long, JM05 long).
+- **ON, where reached:** the far follower leaves, gets its own group next think, and may be
+  re-merged only when within `AutoMerge_MergeDist` of another group. Groups get smaller; planner
+  claims (capture, attack) can change; death rows can move on those rows. Rows with
+  `followers_beyond` = 0 must stay gameplay-identical.
+
+### 149.5 Smoke, census and pairs; flipped ON
+
+All runs on this tree, in reference y's launch form (`local\s32_rows.ps1`, the table of
+cc9-gunnery25's `g25_runs.ps1`). OFF is the commit `53143a846` build; ON is
+`pair_export.py --commit 53143a846 --flip kAiAutoMergeLeaveBound=true --out local\s32_aml_on`.
+**Smoke** (`local\s32_smoke.log`, USN04 300 frames): clean exit, `passes=11 passes_beyond=0`.
+
+| row | OFF census: passes / passes beyond / followers beyond | ON removals | `pair_diff` | deaths OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 177 / 35 / 49 | 3 | 3 | 44 -> 43 |
+| E2 (USN04 9000) | 405 / 43 / 57 | 4 | 3 | 74 -> 73 |
+| USN02 9000 | 625 / 152 / 250 | 4 | 3 | 3 -> 3, rows identical; damage 66185.9 -> 67078.4 |
+| JM08 3000 | 545 / 14 / 20 | 3 | 3 | 22 -> 22, 3 rows retimed |
+| IJN11 3000 | 58 / 0 / 0 | 0 | **1** | identical |
+| USN13 long 9000 | 1920 / 429 / 585 | 16 | 3 | 133 -> 121 |
+| USNOS long 9000 | 1942 / 0 / 0 | 0 | **1** | identical |
+| JM05 long 9000 | 516 / 63 / 313 | 6 | 3 | 17 rows identical |
+| ESMP08 long 9000 | 157 / 125 / 523 | 6 | 3 | 7 rows identical |
+| USNRM01 9000 | 2171 / 76 / 76 | 4 | **1** | 192 rows identical |
+
+**The mechanism matches the image.**
+- The OFF counts repeat each tick while a far follower stays in the group. ON, each such follower
+  is removed once, and the walk restarts.
+- The leavers are what the reading predicts:
+  - USN04: York-class01 at 117.10 s and York-class02 at 139.70 s leave Lexington-class01's group
+    (population 6, then 5).
+  - USN13: Wood_sqn03, Cabot_sqn06 and Monterey_sqn09 leave their carrier squadrons' groups at
+    98.6-104.9 s.
+  - ESMP08: Hyuga and Chiyoda leave Zuikaku's group at 72.00 s and 112.65 s. Zuikaku's group is
+    back to 6 at 164.16 s, which shows the re-seed and the `AutoMerge_MergeDist` re-merge.
+  - JM08: Mavis 02, Oscar 01 and Gekko 01 leave the Mavis groups.
+- The rows with no follower past the distance stay gameplay-identical (IJN11, USNOS long), as
+  predicted. USNRM01's four removals change nothing that gameplay reads.
+
+**What moves.**
+- The moved deaths are aircraft and ground structures: dogfight partners, the bombing targets of
+  the US squadrons, and storage and containers on USN13 long. The plane deaths are RNG-coupled
+  through the shared stream (memory note, gunnery's RNG stream).
+- USN13 long loses 12 deaths (133 -> 121): 19 rows only OFF, 7 only ON, all aircraft or
+  structures (`local\s32_deaths.py`). No ship flips; the only ship row that changes is Maru10,
+  sunk earlier (376.08 -> 368.03 s, by `bruh #2.4` instead of `#2.6`). USN04, E2 and JM08 change no
+  ship row.
+- USN04 and E2 gain one dive-bomb task (0 of 19 -> 0 of 20).
+
+**Verdict: flipped ON** (mechanism matching, spread recorded). **LABELLED:**
+- `006956A0`'s observer pair is not modelled.
+- A squadron's position is its lead plane's, as in the rest of the file.
+
+**Next:** the idle formation shape `00A11070` (IDLE's tail, census row
+`AiCommand::idle_formation_00a11070`) is unbound.
+
+## 150. Does the image build a slot-4 brain on USN13? No coordinator at all in single player (packet `cc9_ai_coordinator_load_gate`, cc9-ships32, 2026-10-05)
+
+The lead's question, moved from cc9-lua38. Ghidra was read-only.
+
+### 150.1 The lazy construct `00A1838C` and its gates
+
+`00A182C0 BSP_AiParties_Think` (body `00A182C0-00A18402`) walks the eight party records
+`00F8A8C8 + p*1Ch`. On a due think it builds the brain (`operator new(28h)`, `00A15A70(p)`) when
+both hold:
+- the record's byte `+0h` is set (`00A1834F`);
+- `009FFE50` admits the slot.
+
+Otherwise it frees any brain.
+
+The record byte has three writers (Ghidra xrefs):
+- `00A163D0`, the init: it clears all eight;
+- the `AIEnable` binding (`00A374D1..00A37515`): no script calls it;
+- `00A32DF0`, slot `+A0h` of the coordinator vtable `00D231A0`, which `00A32350` calls right after
+  placing the controller. It sets `byte = slot+8h && slot+9h && slot+0Ah`.
+  - Its `+0Ah` loop (modes below 4 only) gives each side (slots 0-3, 4-7) one AI slot when the
+    side has no human slot (`+8h` set, `+9h` clear).
+  - Under `004BB160` the records `i < MaxPlayerNum` (scene `+988h`) get `+8h/+9h/+0Ah` = 1, and
+    the rest get `+8h` = 0.
+  - `usn_13_truk.scn` authors `MaxPlayerNum = 8`, so slot 4 would be enabled, if `00A32DF0` ran.
+
+### 150.2 But the coordinator is never constructed in a single-player campaign
+
+**Who constructs it.** `00A182C0` is called only from `00A32D50` (`00A32D5E`), the tick element of
+the coordinator (vtable `00D23168` slot `+8h`), together with the compose pass `00A2E720`
+(`00A32D59`). That element is installed only by the constructor `00A31730`, and `00A31730` is
+called only from `00A32350` (`00A32397`). `00A32350` has two callers. This is a rel32 and abs32
+census of the PE on disk (`local\s32_refs.py`); the census found every positive, including the
+vtable stores:
+- `004E1838` in `BSP_Game_LoadMissionScene`;
+- `00A373AF`, the `AICreate` binding.
+
+**The load arm** (`004E17FD..004E1838`, listing):
+
+```
+004E17FD  CMP [ESI+1FE4h],1 / JE 004E180F      ; hosted session
+004E1806  CMP byte [ESI+61Ch],0 / JE 004E183D  ; forced mode, else skip the create
+004E180F  for i in 0..7: slot [ESI+18CCh+i*4]: +8h && +9h && +0Ah -> 004E1838 CALL 00A32350
+```
+
+- `game+1FE4h` is the session word: 0 in single player, 1 for a host, 2 for a client
+  (CONSTRUCT_WORLD; this process's `LobbySettings` line).
+- `game+61Ch` is the forced-mode byte. It is set only by `004BC890` from the `004E27E0`
+  command-line switches (section 60), so it is 0 in a campaign.
+- **So a campaign mission skips the create.**
+
+**`AICreate` is never called.**
+- None of the 621 `.lua` files of this installation calls it.
+- Nor do they call `AIEnable`, `AISetCommand` or `AIGetGroupInfo`.
+- The string `AICreate` occurs in the image only in the binding table (`00D0E8C0`/`00D0E900`,
+  referenced from `00E0C898`/`00E0C8B8`), so no native script string runs it.
+
+**Answer.** On USN13, as on every single-player row of this installation, the image has no AI
+coordinator. That means:
+- no slot-4 brain and no other brain;
+- no planner and no AI group (no compose pass, no `entity+16Ch`);
+- no group command tick (NONCONTROL, IDLE, CLOSEATTACK, ...).
+
+The Japanese groups get no planner orders, because no planner exists. The planner kinds (Siege,
+Duel, Escort, Competitive, IslandCapture tuning) are the skirmish modes, which fits.
+
+**The host** creates the coordinator unconditionally after `create_units`
+(`game_hosts_units.cpp`, `host.ai->create_00a32350()`) and ticks it every fixed step. Everything the
+coordinator orders is therefore host-only on these rows. That includes the planner
+`attackmove`s, the close-attack orders and the follower moves. It also includes every coordinator
+packet's pair since (sections 60-149).
+
+### 150.3 The binding
+
+`kAiCoordinatorLoadGateBound` (`src/game_hosts_ai.cpp`), committed OFF, with
+`kAiCoordinatorCreatedAtLoad = false` (the gate's answer here).
+- ON: `GameAiCoordinatorHost::fixed_step` returns before `00A32D50`'s work, so there is no
+  compose and no party think, and `steps_absent` counts the skipped steps.
+- `create_00a32350` still builds the host's tables (squadron records, party rows, tuning), which no
+  other host reads for gameplay.
+- Summary line: `summary mission ai coordinator load gate ...`.
+
+### 150.4 Predictions (written before any run)
+
+- **OFF:** identical to the base.
+- **ON:**
+  - `groups_created=0` and `tick_orders=0` on every row.
+  - Every row where the coordinator issued orders moves, which is all of them. The coordinator's
+    planner and close-attack orders reach planes and ships on every reference row.
+  - The largest moves are where `aiw` / `pla` / the planner moved rows: USN04 (deaths may return
+    toward the pre-`aiw` 73), E2, USNRM01, USN13 long and JM08 long.
+  - USN13's Japanese strike groups lose the slot-4 planner orders entirely, which is the lead's
+    divergence. Their behaviour falls back to the units' own AI (directors, ship AI, squadron
+    orders from the scripts).
+  - **The weakest calls:**
+    - BSM01 and LOMP06 may stay gameplay-identical, since few or no AI groups order anything there.
+    - Mission scripts that issue `PilotSetTarget` / `NavigatorAttack` keep driving their units in
+      both builds.
+
+### 150.5 Smoke and pairs (flip held for the lead)
+
+- **Runs:** OFF is this tree at `8221f5ca9` (the ON-arm fix 56a20c62f, which compiles OFF to the same
+  code). ON is `pair_export.py --flip kAiCoordinatorLoadGateBound=true --out local\s32_cg_on`.
+  Rows are in reference y's launch form (`local\s32_rows.ps1`).
+- **Smoke** (`local\s32_cgsmoke.log`, USN13 300 frames, ON): clean exit, `steps_absent=300
+  groups_created=0 tick_orders=0`.
+- **Mechanism:** on every ON row, `steps_absent` equals the mission frames, and
+  `groups_created=0 tick_orders=0`.
+
+| row | OFF groups / tick orders | `pair_diff` | deaths OFF -> ON | hull hits | other |
+| --- | --- | --- | --- | --- | --- |
+| USN13 3000 | 167 / 1161 | 3 | 22 -> 22 | 129 -> 129 | shots identical; RNG-coupled retimes |
+| USN13 long 9000 | 209 / 2488 | 3 | 121 -> 102 | 2545 -> 1766 | dive-bomb tasks 1 -> 3 of 50 |
+| USN04 4500 | 47 / 14 | 3 | 43 -> 48 | 791 -> 153 | torpedo tasks 2 -> 3 of 16 |
+| E2 (USN04 9000) | 57 / 14 | 3 | 73 -> 52 | 1130 -> 153 | |
+| USNOS 3000 | 391 / 1023 | 3 | 67 -> 87 | 186 -> 177 | |
+| IJN01 3000 | 90 / 152 | 3 | 1 -> 1 | 82 -> 151 | shots 3011 -> 4846 |
+| JM08 long 36000 | 201 / 2081 | 3 | 83 -> 207 | 837 -> 754 | |
+| USNRM01 9000 | 154 / 464 | 3 | 192 -> 129 | 1694 -> 1351 | torpedo tasks 52 of 82 -> 6 of 15, dive-bomb tasks 116 of 174 -> 36 of 51; the controlled unit is West Virginia (0 m), not PT |
+| LOMP06 1000 (control) | 72 / 16 | 3 | 0 -> 0 | 0 -> 0 | shots 6 -> 9 |
+| BSM01 3000 (control) | 65 / 0 | **1** | 0 -> 0 | 0 -> 0 | |
+
+**Reading.**
+- **The mechanism matches the read:** no coordinator, no group, no planner, no group tick.
+- Every row with coordinator orders moves, as predicted. BSM01, whose groups issue no tick order,
+  is gameplay-identical. LOMP06's 16 orders move its shots only.
+- The spread is the largest of any switch so far:
+  - On USN04 and E2, hull hits fall about 80% (791 -> 153).
+  - On USNRM01, far fewer strike tasks are created (82 -> 15 torpedo tasks): the host's carrier
+    strikes there were planner launches.
+  - JM08 long's deaths go from 83 to 207.
+
+**Verdict:**
+- The mechanism matches, and the predictions held on direction and reach.
+- **The flip is held for the lead.** It removes every coordinator behaviour bound in sections
+  60-149 from all single-player rows, and the next reference would be re-based on it.
+- **Open before a flip:**
+  - USNRM01's controlled-unit change is now read: it is a script consequence. OFF, West Virginia
+    is sunk at 304.65 s by `Jap #16.1` (killer_cat 10, 147 m) and the script's second
+    `SetSelectedUnit` moves control to PT. ON, West Virginia is never sunk, so control stays on it.
+  - USNRM01's 82 -> 15 tasks should be checked against the script's own strike orders, to confirm
+    that the remaining launches are the script's.
+
+### 150.6 Per-row launch classification (lead request)
+
+**Every writer of `game+61Ch`.** `BSP_Game_SetGameMode` stores its second argument there at entry
+(`004BC890 MOV AL,[ESP+8]` / `004BC894 MOV [ECX+61Ch],AL`). A rel32 census of the PE
+(`local\s32_refs.py`) finds 24 calls; their arguments come from `local\s32_sgm.py` and the listings.
+
+| call site(s) | caller | (mode, flag) | when |
+| --- | --- | --- | --- |
+| `004E35BB..004E3844` (16) | `004E27E0`, the command-line parser from `BSP_Game_OnInit` | (6 / ESI / ..., **1**) | only after a `004C2DF0` match on a developer switch: `siege`, `duel`, `DD_/CL_/CA_/BB_/PT_/Sub_/fighter_duel`, `competitive`, `escort`, `ic1..ic4` (strings at `00CE7FF8..00CE8080`) |
+| `0046B99B` | `0046B730`, from `0045F600` (the `luaStageInit` / `luaStageInitMulti` entry) | (8, **0**) | every mission's stage init. EBP is cleared at `0046B8EB` on the loop exit, and at `0046B768` on the empty-list path (`0046B78F JZ 0046B8ED`); no later write, since `0046B998 PUSH EBP` |
+| `005D54F8`, `005D567F`, `005D62C8`, `005E519A`, `005E5E6E` | the front-end screens | (`[00E19564]` or `[00E19568]`, **0**) | `PUSH 0` before `PUSH EAX` at every site |
+| `004D548E` | | (9, **0**) | |
+| `004C6AF2` | `004C6890` SelectSceneRecord | (`game+614h`, **0**) | only when `game+1FE4h != 0` |
+| `0076FEA4` | `BSP_Session_SetMode` | (`game+618h`, EBX) | only when the new session mode is 1 (`0076FE7F CMP EDI,1 / JNE`), i.e. hosting |
+
+**So `61Ch` is 1 only after a developer command-line mode switch.** The front-end screens never set
+it; they clear it. Every mission's stage init clears it too, through `SetGameMode(8, 0)`, which is
+also why the host reads mode 8.
+
+**How each row is entered.** All 23 rows (the 22 reference rows and USNRM01) are mission-tree
+entries: the harness log prints `mission tree selection: group=.. mission=.. id=..` for each. In
+the image the mission tree's start (`0058BDF0`, docs/MISSION_BRIEFING_START.md) calls neither
+`SetGameMode` nor `Session_SetMode`. The tree's page rule `00580940` runs only when
+`game+1FE4h == 0`.
+- ESMP08 is "ESMP - Battle off Cape Engano" (group 3, `IJN/ESMP/08_engano.scn`).
+- LOMP06 is "LOMP - Crucial Cargo" and LOMP10 "LOMP - San Jose Skirmish" (group 4,
+  `USN/LOMP/..`).
+- E2 is USN04 at 9000 frames.
+
+These are mission-tree packs, not lobby modes. **Every row: session word 0, `61Ch` 0, so no
+coordinator.** Only a developer command line, or a hosted multiplayer session, creates one.
+
+**The slot condition, for completeness.** With a scene record, `004BB160` gives the records
+`i < MaxPlayerNum` `+8h/+9h/+0Ah` = 1 and the rest `+8h` = 0. `004DFD5C..` repoints slot 0 to the
+player record, whose `+9h` is 0.
+- So in single player, slots 1..7 pass `+8h && +9h && +0Ah` on a `MaxPlayerNum = 8` scene (every
+  reference scene).
+- `chg_5_tulagi.scn` is the only installed scene with `MaxPlayerNum = 4`.
+- The slot gate would pass; the session/forced gate is what fails.
+
+**The per-row rule** is therefore the switch as committed: coordinator present iff
+`game+1FE4h == 1 || game+61Ch`, both 0 on every mission-tree launch.
+`kAiCoordinatorCreatedAtLoad = false` is that rule's value for every row this harness runs (it has
+no command-line mode switch and no session). The 150.5 pairs stand as the per-row pairs; no
+re-pair is needed.
+
+**USNRM01's remaining strike tasks are the script's.** No AI-planner order exists ON. The
+script's `PilotSetTarget` calls are 453 OFF and 431 ON. The ON torpedo tasks follow the
+script-spawned waves (`KateSpawn1` first, the same draws as OFF).
+
+### 150.7 Flipped ON; what is now inert on single-player rows
+
+**Commit and smoke.** `kAiCoordinatorLoadGateBound` is ON in this commit (lead's go after 150.6).
+Smoke: USN13 300 frames, `steps_absent=300 groups_created=0 tick_orders=0`, clean exit.
+
+**Inert on every mission-tree launch.** These switches are read only by the coordinator's files
+(`game_hosts_ai.cpp`, `ai_command_tick.cpp`, `ai_group_think.cpp`, `ai_planners.cpp`,
+`ai_command_object.cpp`, `ai_close_attack_tick.cpp`), so they no longer change a single-player row.
+This is a name census (`local\s32_inert.py`), not a call-graph proof: a reconstructed `ai_*`
+function that another host calls directly would stay live.
+- **Group think and commands** (SHIP_AI 60-149, the AI group sections):
+  - `kAiPartyGateUnforcedBound`, `kAiOwnerPlayerSlotBound`, `kAiGroupSeedPerEntityBound`;
+  - `kAiAutoMergeLeaveBound`, `kAiGroupScoreListReleaseBound`, `kAiTargetGroupDestroyedIdleBound`;
+  - `kAiOrderReissueBound`, `kAiPartyReplanFlagBound`, `kAiLeaderOrderKeyBound`;
+  - `kAiCommandAvoidZonePointBound`, `kAiTickMovetoRetasksPlaneBound`;
+  - `kPlannerJoinLoopbackBound`, `kPlannerRangeInterpBound`, `kPlannerGroupTargetValueBound`;
+  - `kAiPlannerSlotKindsBound`, `kAiGroupTransportMovesBound`, `kAiTransportMovesOrderBridgeBound`;
+  - `kCloseFallbackOrderBridgeBound`, `kCloseAttackFallbackOffsetBound`;
+  - `kCautiousRouteBound`, `kCautiousMoveRouteBound`, `kCautiousAttackTickBound`, `kCautiousWedgeBound`.
+- **Planners:**
+  - `kAiCaptureThinkBound`, `kAiCaptureTargetPathBound`, `kCaptureAccessorsBound`,
+    `kCaptureGroupValueBound`;
+  - `kAiDefendThinkBound`, `kAiDefendRecordsPathBound`;
+  - `kAiSellThinkBound`, `kSellingTickBound`;
+  - `kLandingShipStartLandingBound`.
+- **Target weights** (5cu/5df):
+  - `kAiTargetWeightHealthBound`, `kAiForcedTargetWeightRulesBound`;
+  - `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound`, `kAiPlaneLoadoutArmBound`.
+- **SQUADRON_LAND_TASK's AI-group switches:**
+  - `kGeneratedSquadronBrainBound`, `kAiSquadronRtbExclusionBound`, `kAiSquadronLeaderPointBound`;
+  - `kOrderAttackNoMemberIssueBound`.
+
+**Still live through other hosts** (read outside the coordinator files):
+- `kAiSquadronSetTargetIntakeBound` (script orders);
+- `kAiTargetWeightDamageTermsBound` (gunnery);
+- `kLandingCraftLaunchBound`, `kShipAiBigLandingShipBound` and `kTroopLandingTraitBound` (ship
+  AI, script orders);
+- `kObjectiveKindBound` (Lua);
+- `kPlaneSquadronLeaveOnDeathBound` (units);
+- `kShipDirectorEnablesBound` (gunnery, script orders, ship AI).
+
+Their coordinator arms are inert; their other arms are not.
+
+**They stay correct, and reachable, for the launches that build a coordinator:** a hosted session
+(`game+1FE4h == 1`) or a developer command-line mode (`game+61Ch` = 1). This harness has neither.
+Should one be added, `kAiCoordinatorCreatedAtLoad` becomes a per-run value.
+
+## 151. Handoff (cc9-ships32, 2026-10-05, at about 65% context)
+
+### Landed on this branch (all merged by the lead)
+
+| section | what | switch | evidence |
+| --- | --- | --- | --- |
+| SCRIPTED_HELM 11.2 | USN01 phase 3 with the attack line, three runs. No side-0 capture. Katori is `SetInvincible(0.1)`. SaltLakeCity dies at 644.17 s on current main. The attack line lands 0 hits on Coastal Gun 01 | harness only | `local\s32_r1..r3.log` |
+| GAME_EXECUTABLE, last section | the first scripted player-input row: USN01, side-1 capture to no slot (party 2, neutral) at 1558.90 s | - | `local\s32_r3.log`, `s32_orders3.txt` |
+| 149.1 | the `squadron_excluded_009ffeb0` census fix | census only | - |
+| 149 | the auto-merge leave pass `00A10EC0` | `kAiAutoMergeLeaveBound` ON | 10 pairs |
+| 150 | **the image builds no AI coordinator on a mission-tree launch** (`004E17FD..004E1838`: session word 1 or `game+61Ch`) | `kAiCoordinatorLoadGateBound` ON (`a8404d451`) | 10 pairs (150.5), launch classification (150.6), inert list (150.7) |
+
+**The state the successor starts from.**
+- On every reference row the coordinator never ticks: no AI group, no brain, no planner, no group
+  command tick.
+- Section 150.7 lists the 42 switches this makes inert and the 8 whose other arms stay live.
+- The next reference (z or later) is rebased on this. Expect large moves against y: USN04 and E2
+  hull hits fall about 80%, USNRM01's strike tasks drop from 82 to 15, and JM08 long's deaths go
+  from 83 to 207 (150.5).
+
+### Open, in order (the lead's queue)
+
+1. **What still drives ships on single-player rows.** With no coordinator, what remains is:
+   - the per-unit ship AI (brain, approach, navigator, `src/game_hosts_ship_ai.cpp`);
+   - the script orders (`game_hosts_script_orders.cpp`, cc9-lua's lane);
+   - the controlled unit's AI.
+
+   Steps:
+   - On the reference rows with the gate ON, census which ship-AI host paths still run (the
+     unimplemented and concrete call counts in each log's host-method table, and the ship-AI
+     summary lines).
+   - Rank the remaining non-concrete rows by reach on the new state. Rows whose reach came through
+     planner orders are expected to drop.
+   - Tools: `tools/pair_diff.py`, and the `host methods` table at the end of each log.
+2. **JM08's troop landing.** The planner's StartLanding (`kLandingShipStartLandingBound`) is now
+   inert, but `kLandingCraftLaunchBound`, `kShipAiBigLandingShipBound` and
+   `kTroopLandingTraitBound` stay live in `game_hosts_ship_ai.cpp`.
+   - JM08's scene is `universe/Scenes/missions/COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn`.
+     Find its Lua (the lead calls it `prcpjm08.lua`; search `scripts\` for the scene's mission
+     script).
+   - Read whether the script orders its landers itself: `NavigatorMoveTo`, `StartLanding` /
+     `LandingCraft*` bindings, `PilotSetTarget` on the LSTs.
+   - Run JM08 long (36000 frames) on main and read the ramp lines. Section 86 had ramps lowering at
+     836.50 s and 898.35 s under the coordinator.
+   - If the landing chain no longer runs, decide whether that is the image's behaviour (no
+     script order) or a missing script-order binding.
+3. **A scripted capture row against Coastal Guns 02 and 03** (SCRIPTED_HELM 11.2, leads 1-2).
+   - Coastal Guns 01-03 sit at (3265-3372, -3740..-3776), 830-900 m south-west of CB2.
+   - The attack line landed 0 hits on Gun 01 (`current=0 latched=0`). First compare that command
+     row with IJN05's HQ2 attack, which did neutralize its target.
+   - Then try `attack` on Guns 02 and 03.
+   - SaltLakeCity's 644.17 s sinking: the three candidates are 5df.1's plane-weight switches. Those
+     are now inert (150.7), so re-check the death on current main first; it may already have moved.
+   - With no coordinator, Katori's behaviour may also differ, so re-run r1's prefix
+     (`local\s32_gen_orders.py`, `s32_orders3.txt`) before tuning.
+
+### Tools (`local\`, `s32_` prefix, this worktree)
+
+- `s32_run.ps1` runs one mission. Arguments: `-Name -Mission -Frames [-Orders] [-Traj]
+  [-Exe]`.
+- `s32_rows.ps1` launches reference rows detached: `-Prefix -Only <row keys> [-Exe]`.
+- Order-file and trajectory tools:
+  - `s32_gen_orders.py` writes USN01 order files;
+  - `s32_pos.py` and `s32_track.py` are trajectory CSV readers, with distances to CB2;
+  - `s32_deaths.py` lists the ship-like death-row changes between two logs.
+- `s32_refs.py <hex...>` is the rel32 + abs32 reference census of the PE on disk. It found every
+  caller that Ghidra's xrefs missed for `00A32350`.
+- `s32_sgm.py` prints the arguments pushed at a call site.
+- `s32_inert.py` is the switch census for 150.7.
+
+All leases are released after this commit.

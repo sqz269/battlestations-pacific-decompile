@@ -937,6 +937,43 @@ constexpr bool kAiPartyGateUnforcedBound = true;
 // USNOS, JM08, USN04 and USN13 gameplay-identical (section 71.3).
 constexpr bool kAiOwnerPlayerSlotBound = true;
 
+// Packet cc9_ai_auto_merge_leave, docs/SHIP_AI_OPEN_ITEMS.md section 149.
+// 00A10EC0 (00A10EC0-00A1106B, __fastcall ECX = command, group = [ECX+4]) is
+// NONCONTROL's whole vt+0Ch (a bare JMP) and IDLE's first call (00A12433). With
+// the group's grouping-enabled byte +5648h set (1 from the constructor; only
+// the AIEnableGrouping / AIMergeGroups / AICreateGroup bindings clear it, and
+// no mission script of this installation calls them) and population +5644h
+// above 1, it walks the followers after the leader. The first whose planar
+// distance from the leader's +FCh exceeds AiTuning+20Ch, AutoMerge_LeaveDist
+// (x87 at 00A10FDA..00A11038: both squares rounded to float, FCOMI, JA), is
+// removed by 00A2D9D0(entity, 1) (0077BEA0 unlinks it from +563Ch, its +16Ch
+// is cleared, 006956A0 drops the observer pair) and the walk restarts; it
+// returns once every follower is inside. The removed entity is seeded into a
+// group of its own by the next group think. False: the pass is not run and
+// only its census is taken. ON (2026-10-05): USN04, E2, USN02, JM08, USN13 long,
+// JM05 long and ESMP08 long moved; IJN11, USNOS long and USNRM01 gameplay-
+// identical (section 149.5).
+constexpr bool kAiAutoMergeLeaveBound = true;
+
+// Packet cc9_ai_coordinator_load_gate, docs/SHIP_AI_OPEN_ITEMS.md section 150.
+// The coordinator (00A31730, whose tick element 00A32D50 runs the compose pass
+// 00A2E720 and the party think 00A182C0) is constructed only by 00A32350, and
+// 00A32350 has two callers (rel32 and abs32 census of the PE on disk):
+// BSP_Game_LoadMissionScene at 004E1838 and the AICreate binding at 00A373AF.
+// The load arm (004E17FD..004E1838) runs only when the session word game+1FE4h
+// is 1 (a hosted session) or the forced-mode byte game+61Ch is set, and then
+// only if some slot record has +8h, +9h and +0Ah all set. In a single-player
+// campaign both are 0, and none of the 621 .lua files of this installation
+// calls AICreate (nor does any native string: the name occurs only in the
+// binding table). So the image runs no coordinator on these rows: no AI group,
+// no party brain, no planner. True: the host's coordinator never ticks.
+// False: it ticks every fixed step, as before. ON (2026-10-05): every reference
+// row is a mission-tree launch (session word 0, 61Ch 0), so none has a
+// coordinator; all rows but BSM01 moved (sections 150.5, 150.6).
+constexpr bool kAiCoordinatorLoadGateBound = true;
+// The 004E17FD gate's answer in this process: session word 0, forced byte 0.
+constexpr bool kAiCoordinatorCreatedAtLoad = false;
+
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
 // group's record from a group's candidate score list (up to 128 records of
@@ -1074,6 +1111,14 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // Read only with kAiPartyGateUnforcedBound; OFF walks by_team as before.
     std::array<std::vector<Group*>, bsp::kAiGroupPartySlotCount> by_party;
     std::vector<Group*> emptied;                   // 00F8AA7C / 00F8AA80
+    // Packet cc9_ai_auto_merge_leave: the census of 00A10EC0, both builds.
+    unsigned long long leave_passes{0};           // NONCONTROL/IDLE ticks, population > 1
+    unsigned long long leave_passes_beyond{0};    // ... with a follower past the distance
+    unsigned long long leave_followers_beyond{0}; // followers past it, summed per pass
+    unsigned long long leave_removals{0};         // 00A2D9D0 calls (bound only)
+    unsigned long long leave_logged{0};
+    // Packet cc9_ai_coordinator_load_gate: fixed steps with no coordinator (ON only).
+    unsigned long long coordinator_steps_absent{0};
     std::array<std::unique_ptr<Brain>, bsp::kAiGroupPartySlotCount> brains{};
     std::array<float, bsp::kAiGroupPartySlotCount> next_think{};
     std::array<bool, bsp::kAiGroupPartySlotCount> party_record{};
@@ -1995,6 +2040,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 }
             }
         }
+        // 00A10EC0 runs first: NONCONTROL's whole tick, IDLE's 00A12433 call.
+        if (cmd->type == bsp::AiCommandType::NonControl ||
+            cmd->type == bsp::AiCommandType::Idle) {
+            auto_merge_leave_00a10ec0(group_at(cmd->owner_group));
+        }
         bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
         if (tick.route_ran) {
             // Packet cc9_director_moveonpath_route: the census of 00A14DD0.
@@ -2104,7 +2154,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (tick.promoted) ++summary.command_promotions;
         if (cmd->type == bsp::AiCommandType::NonControl ||
             cmd->type == bsp::AiCommandType::Idle) {
-            record("AiCommand::tick_000c", 0x00a10ec0u);
+            if (kAiAutoMergeLeaveBound) done("AiCommand::tick_000c", 0x00a10ec0u);
+            else record("AiCommand::tick_000c", 0x00a10ec0u);
+            // IDLE's tail, JMP 00A11070 (00A12442): the idle formation shape, unbound.
+            if (cmd->type == bsp::AiCommandType::Idle) {
+                record("AiCommand::idle_formation_00a11070", 0x00a11070u);
+            }
         } else {
             done("AiCommand::tick_000c", 0x00a02020u);
         }
@@ -2649,7 +2704,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // section 36 and is bound as rtb_exclusion_arm below (section 40,
         // kAiSquadronRtbExclusionBound). With the switch OFF the answer is
         // 007EDA90's, the stand-in used before the arm was read.
-        record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        // The census marks the site once per entry: done() when the arm is bound,
+        // record() while the stand-in answers (docs/SHIP_AI_OPEN_ITEMS.md section 146).
+        if (kAiSquadronRtbExclusionBound) {
+            done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        } else {
+            record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        }
         if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
         rtb_exclusion_census(member);
         const bool stand_in = tick_squadron_excluded_007eda90(member);
@@ -2671,7 +2732,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // index lies past units.count(), so the head plane names the record.
         if (units.squadron_ammo_type_007edad0(head) != 0) return false;   // 009FFED3
         if (cls != 0x10 && cls != 0x11 && cls != 0x12) return false;      // 009FFEDC..
-        done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         const std::size_t placed =
             units.issue_return_to_base_007f16d0(head, "ai squadron rtb exclusion 009FFF09");
         ++rtb_exclusion_issues;
@@ -5453,6 +5513,68 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return flags;
     }
 
+    // 00A10EC0, the auto-merge leave pass (kAiAutoMergeLeaveBound). The census
+    // counts, on entry, every follower past the distance; the bound arm then
+    // removes them one at a time as the image's restarted walk does.
+    bool leave_follower_beyond(Group* g, std::size_t i, float leave_sq) {
+        float leader[3];
+        float member[3];
+        tick_member_position(handle(g->members.front()), leader);
+        tick_member_position(handle(g->members[i]), member);
+        const float dx = member[0] - leader[0];
+        const float dz = member[2] - leader[2];
+        const float d2 = dx * dx + dz * dz;   // 00A1101C stored as a float
+        return d2 > leave_sq;                 // 00A11034 FCOMI, 00A11038 JA
+    }
+    void auto_merge_leave_00a10ec0(Group* g) {
+        if (g == nullptr || g->members.size() <= 1u) return;   // +5648h is always 1 here
+        const float leave = tuning.at(bsp::kAiTuningAutoMergeLeaveDist);
+        const float leave_sq = leave * leave;                    // 00A1102A stored as a float
+        ++leave_passes;
+        std::size_t beyond = 0;
+        for (std::size_t i = 1; i < g->members.size(); ++i) {
+            if (leave_follower_beyond(g, i, leave_sq)) ++beyond;
+        }
+        if (beyond == 0) return;
+        ++leave_passes_beyond;
+        leave_followers_beyond += beyond;
+        if (leave_logged < 40) {
+            ++leave_logged;
+            log.notef("  ai auto-merge leave: t=%.2f leader=%s population=%zu beyond=%zu "
+                "leave_dist=%.0f bound=%d (00A10EC0)", static_cast<double>(clock_seconds),
+                unit_name(g->members.front()).c_str(), g->members.size(), beyond,
+                static_cast<double>(leave), kAiAutoMergeLeaveBound ? 1 : 0);
+        }
+        if constexpr (kAiAutoMergeLeaveBound) {
+            // 00A10EE0: while the population is above 1, restart the walk after
+            // every removal; return when a walk finds every follower inside.
+            bool removed = true;
+            while (removed && g->members.size() > 1u) {
+                removed = false;
+                for (std::size_t i = 1; i < g->members.size(); ++i) {
+                    if (!leave_follower_beyond(g, i, leave_sq)) continue;
+                    const std::size_t unit = g->members[i];
+                    // 00A2D9D0(entity, 1): 0077BEA0, +16Ch cleared when it names
+                    // this group. 006956A0's observer pair is not modelled (as in
+                    // the eviction and the splits); the population stays >= 1, so
+                    // the emptied-list arm (00A2DA09) is never taken here.
+                    g->members.erase(g->members.begin() + static_cast<std::ptrdiff_t>(i));
+                    if (unit < group_of_unit.size() && group_of_unit[unit] == g) {
+                        group_of_unit[unit] = nullptr;
+                    }
+                    ++leave_removals;
+                    if (leave_logged < 80) {
+                        ++leave_logged;
+                        log.notef("  ai auto-merge leave: %s leaves %s's group (00A2D9D0)",
+                            unit_name(unit).c_str(), unit_name(g->members.front()).c_str());
+                    }
+                    removed = true;
+                    break;
+                }
+            }
+        }
+    }
+
     void attach(Group* g, std::size_t unit) {
         if (unit >= candidate_count()) return;
         if (std::find(g->members.begin(), g->members.end(), unit) != g->members.end()) return;
@@ -5957,13 +6079,20 @@ void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
-    if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
-    host.clock_seconds += step_seconds;
-    ++host.summary.compose_passes;
-    ++host.summary.party_think_calls;
-    // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
-    bsp::ai_coordinator_fixed_step_00a32d50(host);
-    host.done("AiController::fixed_step", 0x00a32d50u);
+    if constexpr (kAiCoordinatorLoadGateBound && !kAiCoordinatorCreatedAtLoad) {
+        // 004E17FD..004E1838: the mission load creates the coordinator only for a
+        // hosted session or a forced mode; AICreate is the only other caller.
+        ++host.coordinator_steps_absent;
+        (void)step_seconds;
+    } else {
+        if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
+        host.clock_seconds += step_seconds;
+        ++host.summary.compose_passes;
+        ++host.summary.party_think_calls;
+        // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
+        bsp::ai_coordinator_fixed_step_00a32d50(host);
+        host.done("AiController::fixed_step", 0x00a32d50u);
+    }
 }
 
 const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
@@ -6013,6 +6142,17 @@ void GameAiCoordinatorHost::report() {
         s.close_fallback_movetos, s.close_candidates_scored,
         s.ship_members_not_ordered, s.target_group_releases,
         s.target_group_releases_non_idle_birth, kAiTargetGroupDestroyedIdleBound ? 1 : 0);
+    host.log.notef("summary mission ai coordinator load gate bound=%d created_at_load=%d "
+        "steps_absent=%llu groups_created=%llu tick_orders=%llu (004E17FD..004E1838, packet "
+        "cc9_ai_coordinator_load_gate)", kAiCoordinatorLoadGateBound ? 1 : 0,
+        kAiCoordinatorCreatedAtLoad ? 1 : 0, host.coordinator_steps_absent,
+        s.groups_created, s.tick_orders);
+    host.log.notef("summary mission ai auto-merge leave passes=%llu passes_beyond=%llu "
+        "followers_beyond=%llu removals=%llu leave_dist=%.1f bound=%d (00A10EC0, packet "
+        "cc9_ai_auto_merge_leave)", host.leave_passes, host.leave_passes_beyond,
+        host.leave_followers_beyond, host.leave_removals,
+        static_cast<double>(host.tuning.at(bsp::kAiTuningAutoMergeLeaveDist)),
+        kAiAutoMergeLeaveBound ? 1 : 0);
     host.log.notef("summary mission ai troop landing trait close_landers=%llu cargo_landers=%llu "
         "bound=%d (00A1443D, 00A03510 Cargo arm; packet cc9_close_member_class_trait)",
         s.close_troop_landers, s.cargo_troop_landers, bsp::game::kTroopLandingTraitBound ? 1 : 0);

@@ -14275,7 +14275,7 @@ for `lps` only. Deaths are x -> variant.
 
 ## Mission reference baselines, 2026-10-05 y (main 409ad51a6)
 
-Packet `cc9_reference_rebaseline_25`, worker cc9-gunnery25. The base is main `409ad51a6`
+Packet `cc9_reference_rebaseline_25`, worker cc9-gunnery25, report `reports/cc9_reference_rebaseline_25.json`. The base is main `409ad51a6`
 (2026-10-05 15:10 UTC). Anything flipped on main during these runs belongs to z (cc9-lua37's gates
 and loadout arm among them).
 
@@ -14358,3 +14358,100 @@ Each group back OFF alone, against y, on the fifteen moved rows; three lanes, tw
 - `aiw` carries most of USN04, E2, USN13 long and USNRM01's hull-hit and shot moves.
 - `hsc` and `wrk` move JM08 long; `azd` moves IJN01, JM05, JM05 long and part of USNRM01.
 - `sai` and `pla` move little; whatever they move comes through the shared RNG stream.
+
+### What moved each row (leave-one-out, two rounds)
+
+Each group set back OFF alone, against y, on the fifteen moved rows: three lanes, two rounds
+(`local\g25_lane.ps1`, lanes `la` = `p7d`, `hsc`, `wrk`; `lb` = `azd`, `aiw`; `lc` = `pla`, `sai`;
+logs `local\g25_y{1,2}_<v>_<row>.log`). **Both rounds agree on every row** (exit codes and death
+counts identical); one round-2 run (`pla` USNOS long) did not launch and has round 1 only.
+Deaths are y -> variant.
+
+| variant (back OFF) | rows that move against y (exit 3) |
+| --- | --- |
+| `p7d` | USN02 (3 -> 1) only |
+| `hsc` | JM08 long (148 -> 140), USNRM01 (192 -> 194), USN13 long (hull hits 2698 -> 2604), USN13, USNOS, USNOS long, JM05, JM05 long (deaths unchanged on the last five) |
+| `wrk` | JM08 long (148 -> 143) only |
+| `azd` | IJN01 (2 -> 0), USNRM01 (192 -> 190; hull hits 1742 -> 2145), JM05, JM05 long (deaths unchanged) |
+| `aiw` | USN04 (44 -> 73), E2 (74 -> 80), USNRM01 (192 -> 162), USN13 long (117 -> 121), USN01 (28 -> 27), IJN01 (2 -> 3), USNOS (97 -> 98), USNOS long (114 -> 115), USN02, USN13, LOMP06 |
+| `pla` | JM08 long (148 -> 66), USN04 (44 -> 50), E2 (74 -> 78), USNRM01 (192 -> 193), USN13 long (117 -> 116), USN01, JM08, JM05, JM05 long, USNOS long |
+| `sai` | USN13 long (117 -> 115), USN02, JM08, IJN01, JM08 long (deaths unchanged on the last four) |
+
+**Attribution:**
+- **`aiw` is the largest mover**, as its own pairs found: USN04's hull hits (1324 with it OFF
+  against 801) and shots (25945 against 12108), USNRM01's 30 deaths, E2.
+- **JM08 long's 46 -> 148 is mostly `pla`** (66 with it OFF), the plane-order switches; `hsc`
+  and `wrk` move it by 5-8 each. It stays the knife edge.
+- **`p7d` alone carries USN02** (the Houston kept alive, the late failure).
+- **`azd` carries IJN01's two deaths** and part of USNRM01, as GUNNERY 109.4 found.
+- **`sai`** moves no row's deaths except USN13 long by 2; RNG-coupled moves elsewhere.
+
+**Predictions:** right on `p7d` (USN02 only), `aiw` (USN04, E2, USN13 long, USNRM01) and `azd`
+(IJN01, JM05, JM05 long, USNRM01). **Missed:** JM08 long's mover is `pla`, not `hsc` / `wrk`;
+`pla` moves several plane rows (USN04, E2) where "little" was predicted.
+
+## Scripted player-input row: USN01 scripted, side-1 capture to no slot (2026-10-05, cc9-ships32)
+
+**This is the first row with scripted player input, and the first run that reaches a capture
+completion and its flip arm.** It is not an idle reference: the orders are a harness file
+(docs/SCRIPTED_HELM.md sections 10, 11 and 11.2).
+- **Build:** `agent/cc9-ships32` at main `4950ab838`, with no code of its own. Every switch is as on
+  that main. `kAiAutoMergeLeaveBound` (SHIP_AI 149) was not yet ON.
+- **Environment:** `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, the console
+  session Active.
+
+**Launch** (run from the worker tree):
+
+```
+./tools/run_game.ps1 -Log local\s32_r3.log -- --frames 36200 --press-start-frame 30 --menu-select USN01 --mission-frames 36000 --mission-frame-seconds 0.05 --helm-orders <tree>\local\s32_orders3.txt --trajectory-csv <tree>\local\s32_traj_r3.csv
+```
+
+`--trajectory-csv` does not change gameplay; r1 and r3 share their prefix exactly.
+
+**The order file `s32_orders3.txt`** (47 lines, written by `local\s32_gen_orders.py`):
+- Every 600 frames, for f = 13200, 13800, ..., 18600:
+  - `f select Northampton`, `f+1 attack Northampton T`;
+  - `f+2 select SaltLakeCity`, `f+3 attack SaltLakeCity T`.
+  - T is `Katori` for f < 15600, and `Coastal Gun 01` from 15600.
+- Then:
+
+```
+19200 select SaltLakeCity
+19201 moveto SaltLakeCity 3910 -3225 repeat 5
+19202 select Northampton
+19203 takehelm Northampton 0.5 3734 -3576 stop 60
+21000 takehelm Northampton 0.5 3845 -3368 stop 50
+21800 takehelm Northampton 0.25 3896 -3276 stop 20
+22500 takehelm Northampton 0.25 3905 -3191 stop 15
+```
+
+- 26 lines are applied and 21 refused. Every SaltLakeCity line is refused, because it is sunk at
+  644.17 s.
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN01 scripted | 36000 | 64358.2 | 66 | 2605 (784) | 11295 | 12.90 s | 9 of 17 / 17 of 19 | 18 | (none) 2523.76 | none (Mission.EndMission never true) | `local\s32_r3.log` (cc9-ships32 tree) |
+
+**The capture chain (CB2: party 1, CaptureRange 100, CaptureValue 10000):**
+- **Neutralized** at 32.90 s (`006F3270 -> 006F2940 -> D3h slot 9`).
+- **Side 0:** no tick. Northampton is held 135 m out at (3845.4, -3231.6), then sunk at 1256.95 s
+  by Coastal Gun 01.
+- **Side 1:** Katori parks 95-103 m from CB2 at (3911.5, -3103.5). Its ticks (`s1=40`) run from
+  1309.90 s.
+- **Completion at 1558.90 s:** `flipped to party=2 side=1 slot=8 repair=0 (006F6760 -> D3h
+  006F4D10)`.
+  - The first-slot pick (`kLocalPartyFromSceneBound`, `006F7100..006F711C`) finds no USN01 slot
+    with Party 1, because every `Player1..8` is Party 0.
+  - So slot 8 is chosen, the party becomes 2, and the building stays neutral (SHIP_AI 125.5's
+    prediction). There is no repair.
+  - Progress restarts from 0. The next completion would fall after 1800 s.
+- **Counters:** neutralized 1, countdown fires 1768, progress messages 491, flips 1 (the no-slot
+  completion), player flips 0.
+- **Not exercised:**
+  - The retake exemption: the host passes prior slot -1, and the owner is neutral anyway.
+  - A flip that changes the owner.
+  - The `+7C0h` stagger.
+
+**Determinism:** every scripted run on this build that shares the prefix to frame 19202 (r1, r2,
+r3) gives the same SaltLakeCity death (644.17 s); r2 and r3 give Northampton the same first damage
+(803.18 s).
