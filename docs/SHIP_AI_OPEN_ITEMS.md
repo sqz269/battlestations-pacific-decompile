@@ -11309,3 +11309,163 @@ bodies `00423C50` (GUNNERY 109).
 - `local\s30_diag` is an uncommitted diagnostic export (clearance per refresh for Maru2/Maru10).
 
 No lease is held after this commit.
+
+## 144. A scripted player-input capture row: design (lead item 1, cc9-ships31, 2026-10-05)
+
+A read and a proposal; nothing is built. Ghidra was read-only. Names are hypotheses.
+
+### 144.1 How a player's order reaches a unit in the image
+
+**Every HUD order goes to the controlled unit.** The in-game order screen's input routine
+`005FB080` (body `005FB080-005FC5FB`) dispatches its pages to small issuers. Each issuer loads
+`ECX = [00E188D8]` and calls `0077D600 BSP_Entity_IssueCommand` with flags 1 (listings read):
+
+| issuer | body | command object | what it sends |
+| --- | --- | --- | --- |
+| `005F9B20` (page 1, call `005FC329`) | `005F9B20-005F9BA2` | `00E08F68` `moveto` | the position of `00927880([00E188D8])` (that unit's `vtable[114h]` then `vtable[18h]`), kind 0, position_valid 1 |
+| `005F9AA0` (page 4, call `005FC534`) | `005F9AA0-005F9B12` | `00E08F98` `returntobase` | the `00F87574` triple; then `[[00E198C4]+68h]+190h = 1` |
+| `005F9BB0` (page 4, call `005FC4F2`) | `005F9BB0-005F9C37` | `00E08F98` | first `0077C470([00E188D8], 1FFh, 0)`: every role given back |
+| `005F9C40` (page 4, call `005FC442`) | `005F9C40-005F9CE2` | `00E08FB0` `Leave` or another, by `007788B0`/`00778890` | - |
+
+The other issuers, `005FAAE0` (page 1, `005FC342`), `005FA9F0` (page 2, `005FC3DD`) and `005FACB0` (page 4, `005FC4B8`), were not read. There is **no
+command object for capture** (the 26-entry registry, docs/SCENE_COMMAND_TYPES.md). A building
+is taken by being near it: the capture tick `006F6760` counts the ships in CaptureRange.
+
+The other `0077D600` sites are not a player's selected-units path:
+- `00525250` is in the debug-console segment (keywords `attackmove`, `showboundings`).
+- `00675C40`'s two sites (`0067A7CD`, `0067AAA2`) are the spawn-manager screen
+  (`returntobase`/`land`, `SMPERMANENTPLANE`).
+- The rest are Lua bindings, AI and shipyard sites (docs/ENTITY_ORDER_MESSAGE.md).
+
+**A player orders a different ship by making it the controlled unit first.** The HUD root
+update `00649860` holds a pending unit handle at `this+78h` (docs/HUD_CENTRAL_UPDATES.md):
+- `0064A00E-0064A07F`: resolve the word handle, then require `+5Ch` set and `+5Dh`, `+60h`
+  and `+5Eh` clear;
+- `0064A08F`: `00645060` (the selectable test, team in EDX, literal 1);
+- `0064A09B`: `00645600(hudRoot, unit)`, the controlled-unit switch (docs/CONTROLLED_UNIT.md);
+- `0064A0C5-0064A0FC`: `0059DA80`, `005251C0`, then interface request 20h with the unit's
+  `vtable[140h]`;
+- `0064A101`: `+78h` cleared.
+
+That is `00647300`'s body (SetSelectedUnit), which `GameHudHost::set_selected_unit_00647300`
+already runs (`kSetSelectedUnitBound`). The writer of `+78h` (the unit-list or minimap click)
+was not read.
+
+**The helm.** A player who holds role 1 steers the controlled unit every frame through
+`00816A40` (docs/SCRIPTED_HELM.md sections 2 and 3). `unit+184h` then forces the ship AI into
+`cruise` (`009F3DF3`). So an AI order cannot steer that ship. A HUD `moveto` without the helm is
+replaced by the next AI order (docs/AI_BRAIN_PLAYER_EXEMPTION.md: no player exemption on the
+brain's path). **To hold a ship inside CaptureRange, the player must hold its helm.**
+
+### 144.2 What the harness already has
+
+`--helm-orders <file>` (docs/SCRIPTED_HELM.md sections 8 and 9, src/game_hosts_mission_frame.cpp):
+- `<frame> moveto <unit> <x> <z>|<navpoint> [repeat <s>]` runs the `005F9B20` triple
+  through `0077D600`. It is labelled for sending to a named unit, not to `[00E188D8]`.
+- `<frame> takehelm <unit> <throttle> <x> <z>|<navpoint>` is refused unless the unit is the
+  controlled one. It opens EROLF_PILOT, takes role 1 through `0077C470(unit, 2, 1)` and the 4Bh
+  arm, and issues the helm every step. The rudder is the image's AI law `009DA250` (labelled).
+- A no-file run and an empty-file run are identical (`pair_diff` 0, section 9.4).
+
+Two things are missing for a capture row:
+1. **No way to switch the controlled unit.** A `takehelm` on any ship but the one the script
+   selected is refused.
+2. **No way to stop.** The route keeps the line's throttle forever. `helm route arrived`
+   only prints, so the ship drives through the point.
+
+### 144.3 Proposal: two new line forms, frame host only
+
+```
+<frame> select <unit>
+<frame> takehelm <unit> <throttle> <x> <z>|<navpoint> stop <metres>
+```
+
+- **`select`** is the player's click. It applies the `0064A00E` filters first: the unit must be
+  alive and visible, `+5Ch` set and `+5Dh/+5Eh/+60h` clear (`unit_alive_and_visible`). Then it
+  calls `bsp::game::hud_set_selected_unit_00647300(unit, reached)`, the same host path Lua's
+  SetSelectedUnit uses. That path is `00645060`, `00645600` and the 20h push, which is the arm's
+  body.
+
+  It prints `helm order applied: ... select <unit> accepted|rejected` with `00645060`'s refusal
+  reasons. A rejection is printed, not forced.
+
+  LABELLED: there is no click and no `+78h` handle. The arm runs from the frame host before the
+  fixed step, not from the HUD pump.
+- **`stop R`** is the player pulling the lever back. On the first step on which the controlled
+  helm unit is within R metres (x/z) of the point, the frame host calls
+  `helm_route_take(unit, 0.0, x, z)` once and prints `helm route stop`. The existing method
+  re-sets the throttle and keeps role 1, so the rudder law keeps the bow on the point while the
+  hull coasts down.
+
+  LABELLED: a player's stop is a hand on the lever. The radius is the harness's.
+- **Nothing else changes.** No file means no change, and an empty file means no change; the
+  identity is checked by `pair_diff` as in 9.4. No image switch is added and no units-host,
+  ship-AI or gunnery file is touched. The edit is about 80 lines in
+  `src/game_hosts_mission_frame.cpp` (the `--helm-orders` parser and its per-step pass) plus
+  docs/SCRIPTED_HELM.md section 10 and docs/TOOLING.md section 10. The harness is shared
+  tooling, so this needs the lead's go.
+
+### 144.4 The first row: USN01, Northampton takes CB2 in phase 3
+
+**Why USN01 and why phase 3** (this installation's `usn_1_marshall.lua`, `usn_1_marshall.scn`,
+mtimes 2024-07-13):
+- CB2 is a Japanese CommandBuilding at (973, 818), CaptureRange 100, CaptureValue 10000. It is
+  neutralized at 32.90 s on every idle run (`s30_cap_usn01x.log`).
+- Phase 3 (`luaMoveToPh3`, line 787) sets every BmdGroup and CVGroup role to PLAYER_ANY (lines
+  797 and 803). So `00645060` and the role-1 transfer both accept Northampton, and the helm can
+  be taken as in section 9. In the idle run, phase 3 begins at fixed step ~12991 (649.5 s), and
+  `luaPh3MovieEnd` selects Enterprise at step ~13092. No later SetSelectedUnit exists in phase
+  3, so nothing takes the controlled unit back.
+- Phases 1 and 2 do not work.
+  - Phase 1 ends at about 65 s.
+  - `luaMoveToPh2` (line 697) moves control to ScoutDauntless and sets BmdGroup to PLAYER_AI.
+  - A route started in phase 1 would lose its controlled unit long before it arrives.
+- **Capture power.** Northampton (class 19, "Northampton 1945") authors `CapturePower = 50`
+  in this installation's `vehicleclasses.lua` (mtime 2026-05-09, the locally modified file). The
+  tick adds class+804h per ship per 1 s countdown. So one cruiser alone fills 10000 in about
+  200 s. Pensacola (SaltLakeCity, class 297) also authors 50. Mahan (Dunlap, class 309) authors
+  20, and Dunlap dies at 636.52 s idle.
+
+**The orders file** (frames are mission frames at 0.05 s):
+
+```
+13200 select Northampton
+13201 takehelm Northampton 1.0 973 818 stop 400
+```
+
+The point is CB2 itself. Where the shore lets a cruiser come within 100 m is not known. In the
+idle run four Japanese ships passed within 100 m between 1430.9 s and 1448.9 s, so there is water
+that close. The first run measures this, and the point and radius are then tuned (step 3 below).
+
+**Predictions, before any build.**
+- `select` is accepted at 660 s.
+- The role-1 transfer succeeds: `+184h=1`.
+- Northampton's route lines show it closing at about 15-16 m/s. Its start position in phase 3 is
+  not logged by the idle run; it was at (6300, -3200) when phase 2 joined it to Enterprise's
+  formation.
+- Arrival is between about 1000 s and 1300 s, then `command building capture tick: unit=CB2 ...
+  s0=50`. A flip to party 0 follows about 200 s later, unless side-1 ships contest it. They
+  were inside the range at 1430-1449 s idle, with s1=40.
+- **Risks.**
+  - Phase 3 ends the mission when the six Nells die. Idle, they do not by 1800 s.
+  - Coastal guns and Heavy AA near CB2 fire on the cruiser.
+  - The helm keeps 009DA1D0 shut, so there is no torpedo evasion (section 9.3).
+  - Grounding: hull-terrain contact is the gunnery lane's.
+
+### 144.5 Steps and cost
+
+| step | what | runs | wall clock (estimate) |
+| --- | --- | --- | --- |
+| 1 | build the two line forms, one 300-frame smoke with every refusal | 1 smoke | about 1 h with the build |
+| 2 | identity: USN04 4700/4500, no file against an empty file, `pair_diff` 0 | 2 short | about 20 min |
+| 3 | USN01 36000 frames with the file above; read the closest approach, then tune the point/radius | 1-2 long | about 25-30 min each |
+| 4 | the capture row: the same file at 36000 frames, on its own tree's OFF build; becomes `cap_usn01` in the next reference | 1 long | about 30 min |
+| 5 | pair the capture chain's labelled stand-ins that the row reaches: the retake exemption (`006F4FBA..006F5017`, the host passes -1), the flip slot pick (section 125's first-slot rule) and the `+7C0h` stagger | 2 long per switch | about 1 h per switch, each its own packet |
+
+Steps 1-4 fit one worker turn. Step 5 is later packets, and each needs its own read of the site
+first.
+
+**What the row cannot claim.** The levers are the AI's rudder law and the harness's stop, so
+the ship's track is not a player's track. The row validates the capture chain once ships are
+in range; it does not validate player steering. The selection is the image's path, and the
+helm transfer is the image's path. The point, the radius and the timing are the harness's.
