@@ -45,6 +45,16 @@ struct alignas(16) NativeBody {
 
 float f32(double v) { return static_cast<float>(v); }
 
+// A hull body's shape chain as 00C44090 walks it (B+70h, next +208h): 00C5C940 prepends,
+// so under kHullShapeChainOrderBound the last shape comes first.
+std::vector<std::size_t> shape_chain_order(std::size_t count) {
+    std::vector<std::size_t> order(count);
+    for (std::size_t k = 0; k < count; ++k) {
+        order[k] = kHullShapeChainOrderBound ? count - 1 - k : k;
+    }
+    return order;
+}
+
 }  // namespace
 
 // The native manifold: points at +08h (30h each, four), count +0C8h, body A +0CCh, body B
@@ -284,7 +294,7 @@ HullTerrainContactStepResult HullTerrainContactSolver::native_narrow_phase(
                         f32(static_cast<double>(t.origin_z) + static_cast<float>(300 * tz))) + t.node_z);
                 }
                 const TerrainTile& tile = *slot;
-                for (std::size_t s = 0; s < hulls.size(); ++s) {
+                for (const std::size_t s : shape_chain_order(hulls.size())) {
                     alignas(16) std::uint8_t result[4 + 8 * 36]{};
                     const bool hit = intersect_native_dyn_terrain_convex_00c53630(
                         result, tile.shape, tile.frame, hulls[s]->shape, hull_frame, crt);
@@ -785,10 +795,10 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
             body_frame(*eb.body, frame_b);
             int pair_hits = 0;
             float pair_depth = -3.402823466e+38f;
-            for (std::size_t sa = 0; sa < ea.shapes->size(); ++sa) {
+            for (const std::size_t sa : shape_chain_order(ea.shapes->size())) {
                 HullShape* ha = hull_convex(ea.unit, sa, (*ea.shapes)[sa], ea.friction, *ea.body);
                 if (ha == nullptr) continue;
-                for (std::size_t sb = 0; sb < eb.shapes->size(); ++sb) {
+                for (const std::size_t sb : shape_chain_order(eb.shapes->size())) {
                     HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction,
                                                  *eb.body);
                     if (hb == nullptr) continue;
@@ -1030,10 +1040,11 @@ void HullTerrainContactSolver::hull_fort_narrow_phase(std::vector<HullWorldEntry
             const float* frame_b = hull_frames[j].data();
             int pair_hits = 0;
             float pair_depth = -3.402823466e+38f;
-            for (std::size_t sa = 0; sa < fort.shapes->size(); ++sa) {
+            // 007482B0 builds the fort through 00C5D580 as well, so its chain is reversed too.
+            for (const std::size_t sa : shape_chain_order(fort.shapes->size())) {
                 HullShape* ha = fort_convex(fort.unit, sa, (*fort.shapes)[sa], fort.frame);
                 if (ha == nullptr) continue;
-                for (std::size_t sb = 0; sb < eb.shapes->size(); ++sb) {
+                for (const std::size_t sb : shape_chain_order(eb.shapes->size())) {
                     HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction,
                                                 *eb.body);
                     if (hb == nullptr) continue;
