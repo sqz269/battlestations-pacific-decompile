@@ -129,7 +129,7 @@ inline constexpr bool kShipAiTargetCurveRefillBound = true;
 // Packet cc9_own_curve_refill_gate, SHIP_AI_OPEN_ITEMS section 131. True: the own
 // curve refill (009F2EC1..009F2F16) runs only while +1220h < 0, in mode 0 and
 // with the byte +1208h clear. False: whenever +1220h <= 0.
-inline constexpr bool kShipAiOwnCurveRefillGateBound = false;
+inline constexpr bool kShipAiOwnCurveRefillGateBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target

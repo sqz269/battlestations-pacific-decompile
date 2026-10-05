@@ -10538,3 +10538,29 @@ refill gate` counts the due refills that the mode and the byte refuse.
   falls on the changed pass.
 - **Verdict rule:** flip ON if the skips are 0 and the refill counts fall by the predicted
   fraction. A moved row stays ON only if its moved deaths trace to ships in the approach state.
+
+### 131.4 The pairs, and the flip
+
+- **OFF:** this tree at `2d7dd709e`, `build\win32\Release` (`local\s29_o0_<row>.log`). It is
+  gameplay-identical to section 130's ON build: `pair_diff s29_t1_usn13 s29_o0_usn13` = 1, with
+  no counts moved.
+- **ON:** `pair_export --commit 2d7dd709e --flip kShipAiOwnCurveRefillGateBound=true`
+  (`local\s29_o131on`, SHA-256 prefix `F5235E01BC07`, `local\s29_o1_<row>.log`).
+
+| row | `pair_diff` | own refills OFF -> ON (predicted) | skips ON |
+| --- | --- | --- | --- |
+| smoke (USN01) | 1 | 0 -> 0 | 0 / 0 |
+| USN04 (control) | 1 | 0 -> 0 | 0 / 0 |
+| USN13 | 1 | 180 -> 155 (about 155) | 0 / 0 |
+| USNOS | 1 | 171 -> 144 (about 147) | 0 / 0 |
+| USNOS long | 1 | 184 -> 144 | 0 / 0 |
+
+Every row is gameplay-identical, with identical death rows and unit tables. The `ShipAiFirepower`
+callee counts fall with the refills. The other moves are the `ship ai free` noise and the bound
+flags.
+
+- **Verdict:** the mechanism matches the prediction on every row. Both gates (mode and `+1208h`)
+  refuse nothing, and the refill count falls by the seventh that the `< 0` test predicts. The
+  switch is **flipped ON**.
+  - USNOS long falls by a little more than a seventh (184 -> 144). Its approach passes come in
+    shorter runs. This was not traced further.
