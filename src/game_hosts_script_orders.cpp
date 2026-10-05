@@ -690,6 +690,9 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     // `Party` is the owner's +54h, which for this process is the owner unit's own
     // party rather than the deck's unfilled field.
     record.party = owner_row->party;
+    // Packet cc9_plane_scene_equipment: 006C5232..006C523E push `Equipment` into
+    // the bag only when positive; otherwise the key is absent (0).
+    record.bag_equipment = equipment > 0 ? equipment : 0;
     record.created = true;
     // The world 4x4 create_units reads: rows 0..2 the body axes, row 3 the
     // position. The native places the squadron through 004F03C0's deferral with

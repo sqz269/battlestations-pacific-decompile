@@ -42,6 +42,15 @@ inline constexpr std::size_t kPlaneSquadronNoUnit = static_cast<std::size_t>(-1)
 // live array.
 inline constexpr bool kPlaneSquadronLeaveOnDeathBound = true;
 
+// Packet cc9_plane_scene_equipment (docs/SQUADRON_LAND_TASK.md 5dk). A plane's
+// equipment index [plane+C54h] is its scene bag's `Equipment` (007CDF20: 007CDFD2
+// stores it, 007CDFDE..007CDFF8 hand Equipments[n] to 0095A880, a null entry when
+// n <= 0 or absent, so the racks get no round). A squadron's planes clone the
+// squadron's bag (007F48FD -> 00922DE0). With this ON the units host loads a rack
+// from that index (GameSceneEntityRecord::bag_equipment) instead of the class's
+// `DefaultEquipment or 1`; a record that carries none keeps the old default.
+inline constexpr bool kPlaneSceneEquipmentBound = false;
+
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
 // which the scene pass already resolves onto its record). Each is verified from
 // the bytes at the literal's address, not from a name.

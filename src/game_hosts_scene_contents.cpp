@@ -1059,6 +1059,7 @@ static void queue_plane_squadron_wing_007f4580(GameSceneContentsHost::Impl& owne
         wing_record.type_id = stored.type_id;
         wing_record.party_symbol = stored.party_symbol;
         wing_record.party = stored.party;
+        wing_record.bag_equipment = stored.bag_equipment;   // the cloned bag, 00922DE0
         wing_record.generated = true;
         wing_record.created = true;
         // 007F48D2's no-parent arm places the plane with the squadron's own
@@ -1572,6 +1573,24 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 name = name.substr(1, name.size() - 2);
             }
             record.home_base = name;
+        }
+        // Packet cc9_plane_scene_equipment: 007CDF8C/007CDFBA ask the bag for
+        // `Equipment`; an enum symbol resolves through EquipmentIndex
+        // ("none" = 0). Absent reads as 0, the arm 007CDFF0 takes.
+        record.bag_equipment = 0;
+        if (const SceneProperty* prop = bag.find("Equipment")) {
+            int equipment = 0;
+            if (prop->type_letter == "I") {
+                std::int32_t v = 0;
+                if (!prop->values.empty() && scene_scan_int(prop->values.back(), v)) {
+                    record.bag_equipment = static_cast<int>(v);
+                }
+            } else {
+                const SceneEnumProperty e = scene_enum_property(bag, "Equipment");
+                if (e.present && owner.library.resolve_symbol(e.table, e.symbol, equipment)) {
+                    record.bag_equipment = equipment;
+                }
+            }
         }
     }
     record.generated = gate.generate;

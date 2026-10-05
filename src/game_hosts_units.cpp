@@ -1371,6 +1371,9 @@ struct GameUnitSlot {
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
     int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
+    // Packet cc9_plane_scene_equipment: the record's bag `Equipment`, which
+    // 007CDF20 stores at [unit+C54h]; -1 when the creator carried none.
+    int bag_equipment{-1};
     // Packet cc9_mavis_rack_drops: each single rack's own ammo +484h, in census
     // order (the child-list order is unread), and the rack the last issue fired.
     std::vector<int> rack_authored_per_rack;  // authored Ammo per single rack, -1 absent
@@ -3438,6 +3441,30 @@ struct GameUnitsHost::Impl {
         return value;
     }
 
+    // Packet cc9_plane_scene_equipment (kPlaneSceneEquipmentBound): a rack's
+    // authored Ammo from the plane's own equipment index. 007CDFDE..007CDFF8:
+    // Equipments[n] for n > 0, else a null entry, so 0095A880 attaches nothing
+    // and the rack holds no round (-1). A slot whose record carried no bag
+    // value keeps the class's `DefaultEquipment or 1` (LABELLED, as before).
+    int rack_equipment_ammo(const GameUnitSlot& s, int class_id, int platform_key) {
+        if constexpr (bsp::kPlaneSceneEquipmentBound) {
+            if (s.bag_equipment >= 0) {
+                ++plane_equipment_reads;
+                if (s.bag_equipment == 0) {
+                    ++plane_equipment_none;
+                    return -1;
+                }
+                return read_equipment_ammo(class_id, platform_key, s.bag_equipment);
+            }
+            ++plane_equipment_default;
+        }
+        return read_equipment_ammo(class_id, platform_key);
+    }
+    unsigned long long plane_equipment_reads{0};
+    unsigned long long plane_equipment_none{0};
+    unsigned long long plane_equipment_default{0};
+    unsigned long long plane_equipment_squadrons{0};
+
     // Packet cc9_squadron_ordnance_state (kSquadronOrdnanceReaderBound). The
     // projectile class a rack carries: DeviceClass[dev].Bullet[1].Bullet ->
     // Bullets[b].Type, as the entity class id the descriptor answers
@@ -3492,7 +3519,7 @@ struct GameUnitsHost::Impl {
             r.class_id = read_device_bullet_class_id(dev);
             std::snprintf(key, sizeof(key), "p%d_key", p);
             const int platform_key = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
-            r.authored_ammo = read_equipment_ammo(type_id, platform_key);
+            r.authored_ammo = rack_equipment_ammo(s, type_id, platform_key);
             r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
                 r.single_index = singles++;
@@ -14023,6 +14050,17 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // 006D3CF0, 00748383, 007D65AA, 00849D71), which stores unit+390h. This
         // host kept the constructor's 1 (0095CCCC) until a script call. The line
         // prints in both builds for every unit whose bag gives other than 1.
+        slot->bag_equipment = entity.bag_equipment;
+        if (entity.class_id == 0x18 && entity.bag_equipment >= 0) {
+            ++host.plane_equipment_squadrons;
+            if (host.plane_equipment_squadrons <= 40) {
+                host.log.notef("plane equipment: unit=%zu name=%s type=%d bag=%d "
+                               "applied=%d (007CDF20 [unit+C54h], packet "
+                               "cc9_plane_scene_equipment)",
+                               slot->process_index, entity.name.c_str(), entity.type_id,
+                               entity.bag_equipment, bsp::kPlaneSceneEquipmentBound ? 1 : 0);
+            }
+        }
         if (entity.bag_skill != 1) {
             host.log.notef("scene skill: unit=%zu name=%s class=%s source=%s level=%d "
                            "applied=%d (00927A80, packet cc9_scene_unit_skill)",
@@ -14347,7 +14385,10 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
         // has DefaultEquipment 0) takes that loadout's Ammo until the release
         // issue seeds the host's own count.
         PlaneOrdnanceRack g = r;
-        if (g.authored_ammo < 0) g.authored_ammo = g.generator_ammo;
+        // With kPlaneSceneEquipmentBound and a carried index, authored_ammo is
+        // already the plane's own loadout and an empty one stays empty.
+        const bool own_index = bsp::kPlaneSceneEquipmentBound && s.bag_equipment >= 0;
+        if (g.authored_ammo < 0 && !own_index) g.authored_ammo = g.generator_ammo;
         if (host.rack_holds_round(s, g)) return true;
     }
     return false;
@@ -22709,7 +22750,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 std::snprintf(key, sizeof(key), "p%d_key", p);
                                 const int pkey = owner_.lua.read_vehicle_class_integer(
                                     type_id, "BSPGun", key, -1);
-                                const int ammo = owner_.read_equipment_ammo(type_id, pkey);
+                                const int ammo = owner_.rack_equipment_ammo(unit_, type_id, pkey);
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
                                 unit_.rack_authored_per_rack.push_back(ammo);
                             } else if (type == "MultiBombPlatform") {
@@ -31784,6 +31825,11 @@ void GameUnitsHost::report() {
             "(create_units -> set_squadron_scene_home_base, packet "
             "cc9_scene_home_base_contract)", kSceneHomeBaseContractBound ? 1 : 0,
             host.scene_home_contract_calls);
+        host.log.notef("summary plane scene equipment bound=%d squadrons=%llu reads=%llu "
+            "none=%llu default=%llu (007CDF20 [unit+C54h], packet cc9_plane_scene_equipment)",
+            bsp::kPlaneSceneEquipmentBound ? 1 : 0, host.plane_equipment_squadrons,
+            host.plane_equipment_reads, host.plane_equipment_none,
+            host.plane_equipment_default);
         host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
             "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
             host.construction_pushes);
