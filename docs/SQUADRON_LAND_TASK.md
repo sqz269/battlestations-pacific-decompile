@@ -10319,6 +10319,7 @@ head's `vt[40h]` `0099C2C0`"):
   - tightturn, vtable `00D205E0` (its name string `tightturn` follows at `00D2064C`);
   - flikflak, vtable `00D20748`.
 
+  LABELLED for flikflak: its vtable is identified only by the `flikflak` string that follows it, as tightturn's does. Tightturn's own tick `009BA020` sits in its vtable at `00D20644`.
   Both have `vt[34h]` = `009BA810` (`MOV AL,1 / RET`), `vt[38h]` = `0099B710` (`MOV AL,1 /
   RET`) and `vt[40h]` = `0099C2C0`.
 - **So a manoeuvre head is never popped by `0099A4C0`.** The scan stops before `vt[40h]` is
