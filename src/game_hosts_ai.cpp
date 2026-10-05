@@ -314,6 +314,15 @@ constexpr bool kAiPlaneAttackerWeightBound = false;
 // census line counts the matches in both states.
 constexpr bool kAiForcedTargetWeightRulesBound = true;
 
+// Packet cc9_order_attack_member_issue, docs/SQUADRON_LAND_TASK.md 5db. True:
+// order_attack (00A2CBD0) issues no member command, as in the image, whose
+// callees carry neither 0077D600 nor 00A02020; members are ordered only by the
+// installed command's tick (00A02020 moveto, 00A13B60 settarget/attackmove, whose
+// collection admits only the other party, 00A13C2F). False: the labelled
+// stand-in sends every non-ship member a scene token at the target group's
+// first member, which is how an own-group plan reached 60 directors on USN13.
+constexpr bool kOrderAttackNoMemberIssueBound = false;
+
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
 // leader's class weight out of the tuning block, read at 00A2EB97/00A2EBA2
@@ -3069,6 +3078,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     int diag_planner_lines{0};
     int diag_member_lines{0};
     int diag_order_lines{0};
+    unsigned long long order_attack_member_issue_skips{0};   // packet cc9_order_attack_member_issue
     int diag_moveto_lines{0};
     long long diag_moveto_ticks{0};
     // Packet cc8_ship_follow: what 0077C8D0's first question now answers.
@@ -5500,6 +5510,10 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     // the 26-row registry has no single "attack", so the member's own weapon
     // kind is still the labelled substitution for the token
     // (docs/ENTITY_LUA_ORDER_PATH.md) - a stand-in, and named as one.
+    if constexpr (kOrderAttackNoMemberIssueBound) {
+        ++order_attack_member_issue_skips;
+        return;   // 00A2CCE8: the image returns after installing the command
+    }
     const std::string target_name = t->members.empty() ? std::string()
         : unit_name(t->members.front());
     const bool target_is_air = !t->members.empty() &&
@@ -5863,6 +5877,9 @@ void GameAiCoordinatorHost::report() {
     host.log.notef("summary mission ai troop landing trait close_landers=%llu cargo_landers=%llu "
         "bound=%d (00A1443D, 00A03510 Cargo arm; packet cc9_close_member_class_trait)",
         s.close_troop_landers, s.cargo_troop_landers, bsp::game::kTroopLandingTraitBound ? 1 : 0);
+    host.log.notef("summary mission ai order attack member issue bound=%d skips=%llu (00A2CBD0 "
+        "issues no member command; packet cc9_order_attack_member_issue)",
+        kOrderAttackNoMemberIssueBound ? 1 : 0, host.order_attack_member_issue_skips);
     // Packet cc8_ship_follow: 0077C8D0's first question, 008162B0 -> 00779D50.
     host.log.notef("summary mission ai follow requests=%llu available=%llu refused=%llu "
         "joins=%llu (00779D50: a live ship may follow a live ship of its own side; the "

@@ -446,7 +446,7 @@ order.
 - unit+B04h is taken as zero, so the frame is the inverse pose.
 - The class+50h model box is Width/Height/Length, symmetric about the origin, and class+500h is
   derived from it.
-- unit vtable[38h] and [204h] are |velocity|.
+- unit vtable[38h] is |velocity| (`007B8E60`, unit+B1Ch = ctl+6Ch, `|ctl+18h|` from `007D807C`), as the image has it. **Corrected (cc9-lua36, docs/SQUADRON_LAND_TASK.md 5da):** vtable[204h] is NOT |velocity|. It is `007B8E70`, unit+B2Ch = ctl+7Ch, the body forward speed `007D80C0` copies from ctl+44h after each core step. AvoidTerrain (`0099F27E`, `0099CC98`) now reads it behind `kTerrainAvoidForwardSpeedBound` (ON). The other image readers (`007CB858`, `007CBAEF`, `007CBD87` in the water-surface code, and `009AF15A` in the kamikaze cruise profile) have no host model.
 - unit+C7Ch is the velocity's elevation angle.
 - **Water surface for the missing heights.** Both the avoid-zone layer height and the ground under
   unit+9B4h are taken as the water surface. The layer's cell is taken as the scene's 100 m.
