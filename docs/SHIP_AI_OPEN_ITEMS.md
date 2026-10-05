@@ -9377,3 +9377,74 @@ row is `killer=USTroopTransport 04 killer_gun=126 killer_cat=6 killer_blast=0 ki
 took 48 category-6 hits for 2569 damage: a dual-purpose gun at 76 m, the same pattern as section
 110's seven. `s25_b1` and `s25_e1` have UST 05 killed the same way, by UST 06's gun 136 at 123 m.
 Nothing in section 105 remains open.
+
+## 114. The fourth ranking (packet `cc9_ship_ai_open_ranking_4`, cc9-ships27, 2026-10-04)
+
+**It replaces section 28's table.**
+
+**Source.** Reference v's nineteen logs (cc9-gunnery20 tree, `local\g20_rv_<row>.log`, base main
+`16d01094e`). Reference W's runs were not yet in the cc9-gunnery23 tree. Since v, the lane's flips
+are sections 96-111. None of them removes a host row ranked below. Section 112's switch is still
+OFF and waiting for its pairs.
+- `local\s27_census.py g20_rv rows <regex>` (with `S27_ROOT` set to the log directory; the
+  cc9-ships10 census script, re-rooted) sums the non-concrete host rows.
+- **Lane switches:** only `kShipAiObstacleBackoffCountdownBound` is OFF (section 104.1: no row arms
+  it). `kNavigatorForceTorpedoBound` belongs to the script-orders lane.
+
+### Closed since section 28
+
+Sections 29-113 closed the old ranks:
+- **Rank 1:** the retarget ring, `kShipAiApproachRetargetRingBound` ON.
+- **Rank 5:** the kamikaze fields, section 29.
+- **Rank 6:** BigLandingShip.
+- **Also closed:** the landing, capture, formation and transport-move items of sections 91-111.
+
+What follows is what is left.
+
+### The ranking
+
+| rank | item | image | host label | calls on v | reach, in one line |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the planners' quick-spawn arms** | Capture `00A2B400-00A2B7EB` and Defend `00A29B8E-00A29E2A`, both into `00A25B90` | `AiPlanners::capture_spawn_arm_00a2b400`, `defend_spawn_tail_00a29b8e`: records | due: capture 633 (JM08 long 436, USNOSl 102, USNOS 25, JM08 24, USN01 23, USN13 23); defend 364 (USNOSl 119, JM05l 115, JM05 42, USNOS 42, USN13 40, USN01 6) | **units created** on 7 rows if the budget opens: deaths, captures and objectives can all move. The gate after "due" is unread (below) |
+| 2 | the close-attack fallback's order bridge | `00A14D48 CALL 00A02020` | `close_issue_moveto` issues the tail | fallback 2,495 on 9 rows | section 112; the edit is with cc9-lua33, and the pairs wait for its sha |
+| 3 | the SELLING tick's per-member message 51h | `00A123A0..00A123F8`: `005F98F0`, then `0077C2A0` | `AiCommand::selling_sell_message_00a123f8` | 1584 (JM05l 1191, JM05 393) | contract unread. If 51h releases or "sells" units, JM05's populations move |
+| 4 | the engage gate's avoid-zone test | `009E864C 0082ADC0`, then `009E8658 004178F0` | `ShipAiEngageGate::avoid_zone_list` answers "no zone" | 266 (USNOS 133, USNOS long 133) | **its label is stale**: "the singleton is not built", but `GameAvoidZoneRuntime` now is. A brain destination inside a zone would close the gate: USNOS's attack runs near Ada |
+| 5 | the surface-target set branch | `008DDF90` in `00922C80` | `ShipAiGoal::target_is_surface_set_branch` takes the tail | 916 (JM08 long 804, USNOS long 95, USNOS 17) | 3 only if the set holds one of those targets; the set's producer is unread |
+| 6 | the sunk hull's shape flag | `00826410` | `ShipMotion::sunk_hull_shape_flag8` | 130250 on 8 rows | units host (shared lane); a wreck's collision shape. Routed to the lead, not ranked for this lane's packets |
+| 7 | the back-off countdown | `009F47A7` | `kShipAiObstacleBackoffCountdownBound` OFF | - | 0: no row arms it (104.1) |
+
+**Rank 1's gate, as far as read here** (`disasm-raw 00A2B3F0..00A2B507`):
+- **First gate:** `00A2B488 CALL 00946970` with `ECX = [00F89B3C]` and the party (`brain+1Ch -> +20h`).
+  It must answer <= 0 (`00A2B495 JA 00A2B7A6`). `[00F89B3C]` is the records manager the host
+  labels at `kCaptureAvailableResources` (`src/game_hosts_ai.cpp`, "never creates").
+- **Second gate:** the due byte `[ESP+4Fh]`.
+- **The budget:**
+  - `00942130(party)` (a walk of `[00E188A8]+18CCh`'s per-party list) is multiplied by
+    `1 - [00F8A8BC + 4 x 009FFC80()]` (the game-mode index);
+  - `00A1C900(planner)` is subtracted;
+  - below 1.0 the arm goes to `00A2B4F4`, otherwise to `00A2B5AB`.
+- **Unread:** what `00942130` counts on a single-player row, and whether `00A25B90` finds a unit
+  pool to spawn from there. The AI party's available resources are 1200 on a campaign row (the
+  host's own reading of `00946FC0`), so the budget is not obviously zero. That is the rank-1 packet.
+
+**Not ranked, and why:**
+- **Structure:**
+  - `ShipAi::unit_weapon_director`, `drive_heading_vtable50`, `ShipAiOrder::slot_to_order_ring`
+    and `ShipAiObstacle::backoff_countdown` (3.6 M each);
+  - `ShipMotion::rigid_body_substep_schedule`;
+  - `AiGroups::seed_collection` and `AiCommand::tick_000c`, as in section 28.
+- **The AutoTarget slot labels** (`command_slot_kind`, `director_command_state`,
+  `candidate_owner_vtable140`, 1.4 M each) name structure the recon-candidate binding already
+  replaces (`kAutoTargetReconCandidatesBound`).
+- **The submarine sub-state rows** (`ShipAiApproach::sub_*`, `unit_depth_reference`,
+  `target_kind_probe_005c`, 45285 each), as in section 28.
+- `brain_leg_scale_0308` is a store with no reader. `torpedo_bot_accuracy_008fb530` is labelled
+  with this installation's values. The random stand-ins stay unbound (the RNG-stream rule).
+- `ShipAiApproach::frame_state_unread_spans` (47039) is the label kept on `009F1BC0` after section 28's
+  rank 1 landed. Its remaining spans are not itemised here; a later ranking should list them.
+- `AiCommand::squadron_excluded_009ffeb0` (107846) is the carrier arm sections 36 and 40 bound
+  as `rtb_exclusion_arm`.
+
+**Top item.** Rank 1 is the next packet: read `00942130`, `00946970` and `00A25B90`'s pool far
+enough to say whether any reference row spawns. If none does, it closes as a record with no
+reach. If one does, bind it OFF with predictions. Rank 4 is a small free packet after it.
