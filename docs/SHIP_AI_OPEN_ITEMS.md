@@ -10748,3 +10748,55 @@ The OFF runs are this tree's build (`local\s29_w0_<row>.log`):
   `clear_37c` split of section 132.5 (LSM 02).
 - **Verdict:** as predicted, the switch is **flipped ON**. It has no reach on the reference rows,
   where the sweep finds no troop-landing candidate.
+
+## 134. The attackmove's carrier hand-back and the formation group (packet `cc9_attackmove_group_hand_back`, `kShipAiAttackMoveGroupHandBackBound`, cc9-ships29, 2026-10-05)
+
+Found on the fifth census: `ShipAiAttack::unit_group_0284` (26 calls, IJN01 only). Its label was
+"no AI group object exists (milestone 2m)", stale like section 133's. The host has kept the
+`entity+284h` formation groups since packet `cc8_ship_follow`.
+
+### 134.1 The image: `009E8820` (body `009E8820..009E88F9`, `RET 4`; `ship_ai_attackmove_step_009e8820`)
+
+- `009E883F`: the unit answers `IsKindOf(9)`, a mothership (`MMothership`, a carrier;
+  `kUnitKindQueryCarrier`).
+- `009E8852 MOV EDI,[unit+284h]`: its group. With no group it hands back.
+- With a group, `009E8861..009E889C` walk `+4F8h` members through `0070D060`. Any member other
+  than the unit that is not a mothership clears the flag (`009E8892`).
+- With the flag set, `009E88BD..009E88C1` hand the command back to the director (`0071E430` with
+  the attackmove command object `00E08F78`) and return. Otherwise the step goes on to steer the
+  attackmove (`009E88CE`).
+
+**So a carrier keeps an attackmove only when its group has escorts.**
+
+### 134.2 The host before
+
+`unit_group_0284` answered 0, so every carrier handed its attackmove back at once.
+
+### 134.3 The binding (committed OFF)
+
+- `kShipAiAttackMoveGroupHandBackBound`: the group is `unit_formation_group_0284`, the members
+  are `formation_member_count` / `formation_member_unit`, both one-based for the pure routine.
+- **Census, both ways:** `summary mission ship ai attackmove group hand back asks= grouped=
+  mixed=`, plus one `attackmove hand back:` line per mixed ask.
+
+### 134.4 The OFF census, and the predictions (written before the ON run)
+
+The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
+- **IJN01:** `asks=26 grouped=26 mixed=26`. The unit is always **Enterprise**, leader of group 0
+  with Mona / Solace (3-4 members), from t=73.30 to t=149.80, about every 3 s. The director's
+  idle tail re-issues the attackmove after each hand-back (26 `end_commands`, 26 asks).
+- smoke and USN13: `asks=0`.
+
+**Predictions:**
+- **IJN01: exit 3.**
+  - Enterprise keeps its attackmove from t=73.30 and steers it: the selector `009E86F0`, the
+    approach and engage sub-states.
+  - `end_commands` falls from 26 to at most 1. Enterprise's path, and its group's through the
+    follow station, move.
+  - Moved deaths are expected only among units near Enterprise's new track, including the AA
+    exchange with the Japanese air groups.
+- **smoke and USN13: exit 0 or 1.**
+- **Verdict rule:**
+  - flip ON when IJN01's hand-backs stop, Enterprise's state stays `attackmove`, and every moved
+    death row traces to Enterprise's group or its attackers;
+  - a hand-back still logged ON is a mechanism failure.
