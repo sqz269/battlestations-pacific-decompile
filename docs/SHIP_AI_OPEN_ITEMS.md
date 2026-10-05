@@ -12022,3 +12022,50 @@ re-pair is needed.
 **USNRM01's remaining strike tasks are the script's.** No AI-planner order exists ON. The
 script's `PilotSetTarget` calls are 453 OFF and 431 ON. The ON torpedo tasks follow the
 script-spawned waves (`KateSpawn1` first, the same draws as OFF).
+
+### 150.7 Flipped ON; what is now inert on single-player rows
+
+**Commit and smoke.** `kAiCoordinatorLoadGateBound` is ON in this commit (lead's go after 150.6).
+Smoke: USN13 300 frames, `steps_absent=300 groups_created=0 tick_orders=0`, clean exit.
+
+**Inert on every mission-tree launch.** These switches are read only by the coordinator's files
+(`game_hosts_ai.cpp`, `ai_command_tick.cpp`, `ai_group_think.cpp`, `ai_planners.cpp`,
+`ai_command_object.cpp`, `ai_close_attack_tick.cpp`), so they no longer change a single-player row.
+This is a name census (`local\s32_inert.py`), not a call-graph proof: a reconstructed `ai_*`
+function that another host calls directly would stay live.
+- **Group think and commands** (SHIP_AI 60-149, the AI group sections):
+  - `kAiPartyGateUnforcedBound`, `kAiOwnerPlayerSlotBound`, `kAiGroupSeedPerEntityBound`;
+  - `kAiAutoMergeLeaveBound`, `kAiGroupScoreListReleaseBound`, `kAiTargetGroupDestroyedIdleBound`;
+  - `kAiOrderReissueBound`, `kAiPartyReplanFlagBound`, `kAiLeaderOrderKeyBound`;
+  - `kAiCommandAvoidZonePointBound`, `kAiTickMovetoRetasksPlaneBound`;
+  - `kPlannerJoinLoopbackBound`, `kPlannerRangeInterpBound`, `kPlannerGroupTargetValueBound`;
+  - `kAiPlannerSlotKindsBound`, `kAiGroupTransportMovesBound`, `kAiTransportMovesOrderBridgeBound`;
+  - `kCloseFallbackOrderBridgeBound`, `kCloseAttackFallbackOffsetBound`;
+  - `kCautiousRouteBound`, `kCautiousMoveRouteBound`, `kCautiousAttackTickBound`, `kCautiousWedgeBound`.
+- **Planners:**
+  - `kAiCaptureThinkBound`, `kAiCaptureTargetPathBound`, `kCaptureAccessorsBound`,
+    `kCaptureGroupValueBound`;
+  - `kAiDefendThinkBound`, `kAiDefendRecordsPathBound`;
+  - `kAiSellThinkBound`, `kSellingTickBound`;
+  - `kLandingShipStartLandingBound`.
+- **Target weights** (5cu/5df):
+  - `kAiTargetWeightHealthBound`, `kAiForcedTargetWeightRulesBound`;
+  - `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound`, `kAiPlaneLoadoutArmBound`.
+- **SQUADRON_LAND_TASK's AI-group switches:**
+  - `kGeneratedSquadronBrainBound`, `kAiSquadronRtbExclusionBound`, `kAiSquadronLeaderPointBound`;
+  - `kOrderAttackNoMemberIssueBound`.
+
+**Still live through other hosts** (read outside the coordinator files):
+- `kAiSquadronSetTargetIntakeBound` (script orders);
+- `kAiTargetWeightDamageTermsBound` (gunnery);
+- `kLandingCraftLaunchBound`, `kShipAiBigLandingShipBound` and `kTroopLandingTraitBound` (ship
+  AI, script orders);
+- `kObjectiveKindBound` (Lua);
+- `kPlaneSquadronLeaveOnDeathBound` (units);
+- `kShipDirectorEnablesBound` (gunnery, script orders, ship AI).
+
+Their coordinator arms are inert; their other arms are not.
+
+**They stay correct, and reachable, for the launches that build a coordinator:** a hosted session
+(`game+1FE4h == 1`) or a developer command-line mode (`game+61Ch` = 1). This harness has neither.
+Should one be added, `kAiCoordinatorCreatedAtLoad` becomes a per-run value.
