@@ -129,11 +129,11 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
 // ---------------------------------------------------------------------------
 // 009F3240, the approach sub-state
 // ---------------------------------------------------------------------------
-float ship_ai_attackmove_approach_throttle_009f3240(float depth_ref, float bias) {
+float ship_ai_attackmove_approach_throttle_009f3240(float max_weapon_range, float bias) {
     // 009F32A6 FLD +494h, 009F32AC FADD double 500.0, 009F32B2 FSUB bias,
     // 009F32B6 FADD ST0,ST0, 009F32B8 store to a float slot.
     const float doubled = static_cast<float>(
-        2.0 * ((static_cast<double>(depth_ref) + kAttackMoveApproachDepthOffset) -
+        2.0 * ((static_cast<double>(max_weapon_range) + kAttackMoveApproachRangeOffset) -
                static_cast<double>(bias)));
     // 009F32C2 FCOMIP with 0.0 on top: the JBE side is `0.0 <= doubled`.
     if (!(0.0f <= doubled)) {
@@ -188,7 +188,7 @@ void ship_ai_attackmove_approach_step_009f3240(float seconds,
     host.nested_update_009f3090(seconds); // 009F328F
 
     const float throttle = ship_ai_attackmove_approach_throttle_009f3240(
-        host.unit_depth_reference_0494(), host.sub_throttle_bias_11e8());
+        host.unit_max_weapon_range_0494(), host.sub_throttle_bias_11e8());
 
     ShipAiAttackMoveXZ goal{};
     host.sub_goal_1230(goal.x, goal.z);                     // 009F3300, 009F32EB

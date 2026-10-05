@@ -11469,3 +11469,30 @@ first.
 the ship's track is not a player's track. The row validates the capture chain once ships are
 in range; it does not validate player steering. The selection is the image's path, and the
 helm transfer is the image's path. The point, the radius and the timing are the harness's.
+
+## 145. Section 143's cosmetic items (lead item 2, cc9-ships31, 2026-10-05)
+
+These are label changes only. No switch was added, and the build and tests pass.
+
+- **`unit+494h` renamed and answered.** `ShipAiApproach::unit_depth_reference` is now
+  `unit_max_weapon_range_0494`:
+  - `009F32A0 MOV EAX,[ECX+0AA8h]` / `009F32A6 FLD [EAX+494h]`; the field is the unit's maximum
+    weapon range (`00956C20`), and it is not a depth;
+  - the binding returns `FirepowerBinding::unit_max_weapon_range` and is marked done;
+  - in the header, `depth_ref` and `kAttackMoveApproachDepthOffset` become `max_weapon_range` and
+    `kAttackMoveApproachRangeOffset` (same value, `00CE3840`).
+
+  The term only feeds the throttle stored at `009F337B`/`009F3383`. That is
+  `[ESI+250h]`/`[ESI+2B8h]` with `ESI = brain+8h` (`009F32F7 LEA ESI,[ECX+8]`), so the "blk" and
+  "brain" offsets in 139 and 143 name the same two fields. The host keeps that store in a member
+  that nothing reads, so gameplay cannot move.
+
+  A USN02 smoke at 3000 frames (`local\s31_smoke_usn02.log`) shows the host method concrete with
+  7478 calls. No pair was run: the claim that nothing reads the value is static, by the
+  `brain_throttle_0258_` census.
+- **Stale comments corrected in `src/game_hosts_ship_ai.cpp`:**
+  - the landing ground contact: the `+1011h` latch has served the ramp since section 87;
+  - the firepower query's target fields: `kShipAiOwnCurveTargetBound` fills them;
+  - the `sub_throttle_command` 9999 guard: `009E6A90` runs on every pass, at `009F30DD`.
+- **Not done.** Section 139's `game_hosts_ai.cpp:5273` "nothing creates a PlaneSquadronGen"
+  comment is still stale. The file is on loan to cc9-lua37.

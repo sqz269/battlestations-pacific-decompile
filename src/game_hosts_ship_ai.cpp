@@ -6096,9 +6096,10 @@ private:
         query.ready_horizon_seconds = 30.0f; // 009F2EB1, 00CE38C8
         // 009F2A44's arm reads the four target fields off the target entity;
         // 009F2A91..009F2AC1 is the arm with no target, and these are its
-        // constants. Packet cc8_ship_ai_firepower_inputs uses them on both arms
-        // because [target+370h] and [[target+538h]+4Ch/+0A0h] have no producer
-        // in this process. LABELLED SUBSTITUTION, recorded below.
+        // constants. Packet cc8_ship_ai_firepower_inputs used them on both
+        // arms; with kShipAiOwnCurveTargetBound (below) fill_own_block_target_127ch
+        // supplies the target arm's fields, so these stand only for the
+        // no-target arm, as in the image.
         query.damage_cap = 10000.0f;   // 009F2AA9, 00CE3D64
         query.target_length = 100.0f;  // 009F2AC1, 00CE3D08
         query.armour = 0.0f;           // 009F2A91
@@ -6275,10 +6276,15 @@ public:
         bsp::ship_ai_approach_update_009f3090(update, seconds);
         owner_.done("ShipAiApproach::nested_update", 0x009f3090u);
     }
-    float unit_depth_reference_0494() override {
-        // 009F32A0 / 009F32A6, [unit+494h]. No producer in this process.
-        owner_.record("ShipAiApproach::unit_depth_reference", 0x009f32a0u);
-        return 0.0f;
+    float unit_max_weapon_range_0494() override {
+        // 009F32A0 / 009F32A6, [[brain+0AA8h]+494h]: the unit's maximum weapon
+        // range, which 00956C20 writes at 00956E59 (docs/GUNNERY_TABLES.md) and
+        // FirepowerBinding already answers (section 139). Its only consumer is
+        // the throttle stored at 009F337B/009F3383, which has no reader, so
+        // this changes no gameplay (section 145).
+        FirepowerBinding firepower(owner_, index_);
+        owner_.done("ShipAiApproach::unit_max_weapon_range", 0x009f32a0u);
+        return firepower.unit_max_weapon_range();
     }
     float sub_throttle_bias_11e8() override {
         // 009F3294, sub+11E8h = nested+11E0h, the planar range from the unit to
@@ -6304,12 +6310,11 @@ public:
     float sub_throttle_command_1218() override {
         // 009F339A, sub+1218h = nested+1210h. 009F1BF7 seeds this field with
         // the 9999.0f sentinel at 00CE4C04 on every frame and 009E6A90 is the
-        // only routine that replaces it. 009E6A90 is recorded here, so the
-        // sentinel is still in the field, and 009F3635's clamp to [-1, +1]
-        // would turn it into full ahead - a number that looks like an order and
-        // is only the marker for "the producer has not run". The read is
-        // recorded and the neutral zero is used instead, which is what every
-        // other unproduced value in this file answers with.
+        // only routine that replaces it. 009F3090 calls 009E6A90 at 009F30DD on
+        // every pass, after the 009F1BF7 store (section 139), so in the image
+        // the sentinel never reaches this read. The guard below is a host
+        // safety net for a pass that did not produce the field; section 139
+        // found the value identical with it.
         owner_.record("ShipAiApproach::sub_throttle_command", 0x009f339au);
         if (static_cast<double>(ctl_.approach.commanded_throttle_1210) > 1000.0) {
             return 0.0f;
@@ -6358,8 +6363,11 @@ public:
         ctl_.blk.throttle_hold_1c8 = value;
     }
     void set_brain_throttle_0258(float throttle) override {
-        // 009F337B and 009F3383, brain+258h and brain+2C0h. Neither field has a
-        // reader in the recovered chain, so this is where the approach's own
+        // 009F337B and 009F3383, brain+258h and brain+2C0h: [ESI+250h] and
+        // [ESI+2B8h] with ESI = blk = brain+8h (009F32F7 LEA ESI,[ECX+8],
+        // ECX = [sub+4h]). A displacement scan of 009D8000-009F6060 and a .text
+        // co-occurrence scan find no reader of either field (section 139), so
+        // this is where the approach's own
         // throttle stops: it is NOT blk+1D0h, the desired throttle the ring
         // hop carries.
         brain_throttle_0258_ = throttle;
@@ -11842,8 +11850,10 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
 bool GameShipAiHost::Impl::landing_ship_ground_contact(std::size_t unit, float ground[3]) const {
     // SUBSTITUTION, labelled (section 86): +1010h is set by the physics library's
     // contact callback 009377E0 on a kind-8 contact (contact+2Ch == 8), the one the
-    // HUD's grounding warning (006830A5) also reads; this process has no hull
-    // contacts. The hull is taken to touch the ground when the terrain height
+    // HUD's grounding warning (006830A5) also reads. Since section 87 the units
+    // host keeps that latch (+1011h, kLandingShipRampHullContactBound ON), and
+    // this stand-in serves only the OFF arm and the diagnostic line. The hull
+    // is taken to touch the ground when the terrain height
     // (00903860) under its bow, centre or stern (+-half the hull length +9C8h on
     // the heading) rises above the waterline less the keel depth.
     float x = 0.0f, y = 0.0f, z = 0.0f;
