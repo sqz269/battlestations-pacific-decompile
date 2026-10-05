@@ -8228,3 +8228,56 @@ The guns therefore read the pose the previous step's motion pass left, as in the
   the buoyancy elements (`004462D0`) against the body's mass properties. At rest it does not
   depend on the order of the calls within a step. Settling it needs a hydrostatics audit of
   the class's buoyancy elements and centre of mass against the image. **Still open.**
+
+## 105. IsKindOf(0Eh) at the ship motion tick (101's open 20 s arm; packet `cc9_torpedo_boat_kind`, cc9-gunnery24)
+
+101.2 labelled the 20 s sink arm a substitution because the units host's `unit_trait_0e`
+answered false. That answer also feeds two other probes, and it is wrong for one class.
+
+### 105.1 The read
+
+- **Kind 0Eh is `TorpedoBoat`** (`include/bsp/vehicle_class.hpp`, `00857F40` `MTorpedoBoat`). A ship
+  leaf answers `{0,1,2,4,5,6,7}` plus its own class id, so only a torpedo boat answers 0Eh.
+- **The ship motion tick probes it three times** (`vtable[5Ch]`, `PUSH 0Eh`, listing):
+  - `008263F0..008263FD`, when `sinkTime` is not above 60.0: with 0Eh and `sinkTime > 20.0`
+    (`00CE3930`), take `00826410`'s mask clear (section 101);
+  - `00826A6F..00826A7A`: the boost block `00826A6F..00826B04` (`ship_boost_step_00826a6f`). With an
+    order kind set and reserve left, it replaces the commanded speed with
+    `reference * BoostSpeedScale` and drains the reserve; otherwise it refills the reserve;
+  - `0092E9D2..0092E9D7`: the righting term `0092E9D7..0092EA73` (`ship_righting_rate_0092e9e1`),
+    which pulls the pitch rate back by the hull's pitch angle.
+- **The host's answer was false for every unit** (`src/game_hosts_units.cpp`, `ShipMotionBinding`:
+  "the same holds for every ship leaf this mission creates"). That is untrue on any row with PT
+  boats: Jap_PT, PT_Boat_Camo and Suicide_boat hulls appear on IJN01, JM05, JM08, USNRM01 and USNOS.
+
+### 105.2 The binding (`kShipTorpedoBoatKindBound`, `include/bsp/ship_motion.hpp`, committed OFF)
+
+- `unit_trait_0e` answers `bsp::unit_is_kind_of(class_id, 0Eh)` when ON. The sink block takes the
+  20 s arm under the same switch.
+- **Census:** `summary torpedo boat kind bound units trait_queries sink_20s_steps`. `trait_queries`
+  counts the motion-tick probes a torpedo boat answers true (both ways). `sink_20s_steps` counts
+  the steps a sinking torpedo boat spends between 20 s and 60 s.
+
+### 105.3 OFF census and predictions (written before any ON run)
+
+OFF, an export of `9c2320ede` (`local\g24_d0`), x's launch form:
+
+| row | torpedo boats | trait queries | sink steps 20..60 s |
+| --- | --- | --- | --- |
+| IJN01 | 4 | 12000 | 0 |
+| JM05 long | 4 | 36000 | 0 |
+| JM08 | 1 | 3000 | 800 |
+| USNRM01 | 1 | 3462 | 0 |
+| USNOS | 9 | 19755 | 0 |
+| E2 | 0 | 0 | 0 |
+
+**Predictions:**
+- **Mechanism:** the ON counts match OFF up to the first divergence, and every torpedo boat takes
+  the boost block and the righting term.
+- **Moved rows:** IJN01, JM05 long, JM08, USNRM01 and USNOS exit 3. The first divergence is on a
+  torpedo boat's pose (the righting term changes its pitch rate from the first motion step) or its
+  speed (the boost, where its order kind is set).
+- **JM08:** its sinking torpedo boat clears the terrain mask at 20 s instead of 60 s.
+- **Deaths:** they move on the rows where torpedo boats fight (USNOS, IJN01); direction not
+  predicted.
+- **E2** (no torpedo boat): exit 0 or 1.
