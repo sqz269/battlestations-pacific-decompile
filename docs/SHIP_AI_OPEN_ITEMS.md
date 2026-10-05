@@ -11709,3 +11709,73 @@ unreached.
 - The orders files are `s31_cap_orders*.txt` (USN01) and `s31_ijn05_orders*.txt`.
 
 All leases are released after this commit.
+
+## 149. The auto-merge leave pass `00A10EC0` (packet `cc9_ai_auto_merge_leave`, cc9-ships32, 2026-10-05)
+
+Lead item 2 of section 148. Ghidra was read-only.
+
+### 149.1 The census fix (item a)
+
+Commit `e10ebe571`: `tick_squadron_excluded_009ffeb0` marks `done()` at entry when
+`kAiSquadronRtbExclusionBound` is ON and `record()` otherwise; the second `done()` in the issuing arm
+is gone. Census only.
+
+### 149.2 The image (read whole)
+
+**`00A10EC0`** (`00A10EC0-00A1106B`, `RET` at `00A1106A` then `INT3`; `__fastcall` ECX = the command,
+the group is `[ECX+4]`). It is NONCONTROL's whole `vt+0Ch` (a bare `JMP`) and IDLE's first call
+(`00A12433`, before `00A10DC0` at `00A1243A` and `JMP 00A11070` at `00A12442`).
+- `group+5648h` (grouping-enabled) clear: return.
+- While `group+5644h` (population) is above 1: walk the `+563Ch` list from the node after the
+  leader. For each follower, refresh its pose (`00414DB0` / `00413920` / `004134F0` when `+C8h` is
+  clear) and compare the planar distance to the leader's `+FCh` with `AiTuning+20Ch`,
+  `AutoMerge_LeaveDist` (1200). The x87 (`00A10FDA..00A11038`) rounds both `dx*dx + dz*dz` and
+  `L*L` to float before `FCOMI`; `JA` to the removal.
+- The first follower past the distance: `00A2D9D0(ECX = group)(entity, 1)` (`00A1104B..00A11055`),
+  then the walk restarts (`00A1105E JMP 00A10EE0`). A walk that finds every follower inside
+  returns.
+
+**`00A2D9D0` `BSP_AiGroup_RemoveEntity`** (`00A2D9D0-00A2DA53`, `RET 8` at `00A2DA51`), the tail now
+read: `0077BEA0` unlinks the entity from `+563Ch`; `entity+16Ch` is cleared when it names this group;
+`006956A0` (EDX = `group+10h`) unregisters the observer pair; then, when the population is 0 and the
+flag is set, the group is appended to the emptied list `00F8AA78/00F8AA7C` (`00A16AB0`, `00A172A0`).
+From `00A10EC0` the population is at least 1 after the removal, so that arm is never taken.
+
+**`+5648h` is always set in this process.** The constructor stores 1. Its only clears are the
+`AIEnableGrouping` (`00A37731`), `AIMergeGroups` (`00A37875`) and `AICreateGroup` (`00A38D04`)
+bindings (docs/LUA_BINDING_AI.md), and no mission script of this installation calls any of them
+(the 454 `.lua` files under `scripts\`, searched recursively).
+
+**A removed entity has no group** (`+16Ch` = 0). The next group think seeds it into a group of its
+own (phase 3, `00A2E835..`), which the per-party auto-merge (`AutoMerge_MergeDist`) may then join
+to another group.
+
+**`00A11070`** (IDLE's tail) is the idle formation shape: on a ship leader with a `+284h`
+formation it calls `BSP_UnitGroup_ApplyFormationShape(0)` with `AiTuning+210h` and a static table
+of offsets (`00F8A7B0..`, guarded by `00F8A870` bit 0). It stays unbound, with its own census row
+`AiCommand::idle_formation_00a11070`.
+
+### 149.3 The binding
+
+`kAiAutoMergeLeaveBound` (`src/game_hosts_ai.cpp`), committed OFF.
+- Both builds run the census before every NONCONTROL/IDLE tick: `passes` (population above 1),
+  `passes_beyond` and `followers_beyond` (followers past the distance), printed as
+  `summary mission ai auto-merge leave ...`, with the first 40 events as
+  `ai auto-merge leave: t=... leader=... beyond=...`.
+- ON: the image's restarted walk. The follower is erased from `members`, `group_of_unit` is cleared
+  when it names this group, and `removals` counts it. `006956A0`'s observer pair is not modelled,
+  as in the eviction and the splits (LABELLED).
+- The leader and follower positions are `tick_member_position` (a squadron reads its lead plane,
+  as every other pass in this file does).
+
+### 149.4 Predictions (written before any run)
+
+- **OFF:** gameplay identical to the base (the census reads positions only).
+- **Reach:** `tick_000c` runs on every reference row (306 to 11434 calls on reference y). Most
+  NONCONTROL/IDLE groups are fresh singletons or formation-bound ships within a few hundred metres,
+  so I expect `followers_beyond` = 0 on most short rows, and non-zero on the long rows where groups
+  scatter after a fight (USN13 long, USNOS long, JM05 long).
+- **ON, where reached:** the far follower leaves, gets its own group next think, and may be
+  re-merged only when within `AutoMerge_MergeDist` of another group. Groups get smaller; planner
+  claims (capture, attack) can change; death rows can move on those rows. Rows with
+  `followers_beyond` = 0 must stay gameplay-identical.
