@@ -304,6 +304,16 @@ constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_
 constexpr bool kAiWeightBarrelGatesBound = false;
 constexpr bool kAiPlaneAttackerWeightBound = false;
 
+// Packet cc9_forced_target_weights, docs/SQUADRON_LAND_TASK.md 5cu. True:
+// 00A08460's forced-rule lookup 00A31DB0 (at 00A08540, after the memo) scans
+// the current mode's ForcedTargetWeightValues table and a match answers the
+// rule's weight outright (00A08556). The selectors ask the unit's own kind test
+// and its +C4h class id (LABELLED: the class descriptor's vtable[+18h] and
+// +70h). The global table (AISetTargetWeight) is not consulted: no campaign
+// script calls it. False: the lookup answers no match, the earlier stub. The
+// census line counts the matches in both states.
+constexpr bool kAiForcedTargetWeightRulesBound = true;
+
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
 // leader's class weight out of the tuning block, read at 00A2EB97/00A2EBA2
@@ -497,6 +507,19 @@ AiPlaneWeightCensus& ai_plane_weight_census() {
     return census;
 }
 
+// Packet cc9_forced_target_weights: 00A31DB0 queries and matches per rule of
+// the current mode's table, counted whether or not the switch uses them.
+struct AiForcedRuleCensus {
+    unsigned long long queries{0};
+    unsigned long long matches{0};
+    unsigned long long rule_hits[32]{};
+    int mode{-1};
+};
+AiForcedRuleCensus& ai_forced_rule_census() {
+    static AiForcedRuleCensus census;
+    return census;
+}
+
 // 0099A170's inputs for a plane the AI tick has just ordered, answered from
 // GameUnitsHost as ScriptOrderAttackCommandHost does for the script orders.
 class AiTickMovetoBotHost final : public bsp::AttackCommandHost {
@@ -548,19 +571,50 @@ public:
     // The unit's own kind test (vtable[5Ch]), standing in for the class
     // descriptor's vtable[+18h] (packet cc9_plane_attacker_weight).
     using KindFn = std::function<bool(std::size_t, int)>;
+    // The unit's +C4h class id, standing in for the class descriptor's +70h
+    // in 00A31DB0's exact selectors (packet cc9_forced_target_weights).
+    using ClassFn = std::function<int(std::size_t)>;
     AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning,
                          const bsp::AiTuningBlock& block, TargetGroupFn group,
-                         KindFn kind = KindFn())
+                         KindFn kind = KindFn(), ClassFn class_id = ClassFn())
         : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)),
-          kind_(std::move(kind)) {}
+          kind_(std::move(kind)), class_id_(std::move(class_id)) {}
 
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
     bool memo_lookup(const bsp::AiTargetWeightKey&, float&) override { return false; }
     void memo_store(const bsp::AiTargetWeightKey&, float) override {}
-    // 00A31DB0 at 00A08540. The forced rules come from the globals loader's
-    // ForcedTargetWeightValues tail, which this process does not run.
-    bool forced_rule_weight(const bsp::AiTargetWeightKey&, float&) override { return false; }
+    // 00A31DB0 at 00A08540, over the current mode's shipped table
+    // (bsp::ai_shipped_forced_rules). Scanned in both states for the census;
+    // the answer is used only with kAiForcedTargetWeightRulesBound.
+    bool forced_rule_weight(const bsp::AiTargetWeightKey& key, float& weight) override {
+        if (!kind_ || !class_id_) return false;
+        struct Subject final : bsp::AiForcedRuleSubject {
+            const AiWeightModelBinding* b;
+            std::size_t unit;
+            Subject(const AiWeightModelBinding* binding, std::size_t u) : b(binding), unit(u) {}
+            int class_id() const override { return b->class_id_(unit); }
+            bool is_type(int code) const override { return code >= 0 && b->kind_(unit, code); }
+        };
+        const int mode = static_cast<int>(block_.mode);
+        const Subject attacker(this, index_of(key.attacker));
+        const Subject target(this, index_of(key.target));
+        float w = 0.0f;
+        int matched = -1;
+        const bool hit = bsp::ai_forced_rule_scan_00a31db0(bsp::ai_shipped_forced_rules(mode),
+                                                           attacker, target,
+                                                           key.target_is_neutral != 0, w, matched);
+        AiForcedRuleCensus& c = ai_forced_rule_census();
+        c.mode = mode;
+        ++c.queries;
+        if (hit) {
+            ++c.matches;
+            if (matched >= 0 && matched < 32) ++c.rule_hits[matched];
+        }
+        if (!kAiForcedTargetWeightRulesBound || !hit) return false;
+        weight = w;
+        return true;
+    }
     const bsp::AiModeTuning& mode_tuning() override { return tuning_; }
     // Entity vtable +18h and +1Ch. +18h is the class descriptor's type query;
     // packet cc9_plane_attacker_weight answers it with the unit's own kind test
@@ -761,6 +815,7 @@ private:
     const bsp::AiTuningBlock& block_;
     TargetGroupFn group_;
     KindFn kind_;
+    ClassFn class_id_;
 };
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -2058,7 +2113,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, tuning,
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
-                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); });
+                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
+                [this](std::size_t unit) { return units.unit_class_id(unit); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().close_weight_sum += in.base_weight;
             ++summary.weight_model_runs;
@@ -4956,7 +5012,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, tuning,
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
-                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); });
+                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
+                [this](std::size_t unit) { return units.unit_class_id(unit); });
             weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().group_weight_sum += weight;
             ++group_value_census.model_pairs;
@@ -6063,6 +6120,19 @@ void GameAiCoordinatorHost::report() {
                 c.positive_options[1], c.options[1], c.option_value_sum[1],
                 c.positive_options[2], c.options[2], c.option_value_sum[2], c.gate_admits,
                 c.platform_refusals);
+            {
+                const AiForcedRuleCensus& f = ai_forced_rule_census();
+                std::string hits;
+                for (int i = 0; i < 32; ++i) {
+                    if (f.rule_hits[i] == 0) continue;
+                    hits += " r" + std::to_string(i) + "=" + std::to_string(f.rule_hits[i]);
+                }
+                host.log.notef("summary mission ai forced target weight bound=%d mode=%d "
+                    "queries=%llu matches=%llu rules:%s (00A31DB0 over the shipped "
+                    "ForcedTargetWeightValues; packet cc9_forced_target_weights)",
+                    kAiForcedTargetWeightRulesBound ? 1 : 0, f.mode, f.queries, f.matches,
+                    hits.empty() ? " none" : hits.c_str());
+            }
             host.log.notef("  ai plane weight platforms seen=%llu pilot=%llu tail=%llu "
                 "zero_reload=%llu no_bullet=%llu | gun option terms factor_nonfinite=%llu "
                 "accuracy_zero=%llu damage_zero=%llu", c.plane_platforms,
