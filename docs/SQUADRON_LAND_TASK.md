@@ -10441,3 +10441,36 @@ implausible in a shipped campaign:
 
 **Record:** `kAiWeightBarrelGatesBound` and `kAiPlaneAttackerWeightBound` are the image as read,
 held OFF on a plausibility prior (the lead's decision of 2026-10-05). Revisit with reference Y.
+## 5cz. Handoff (cc9-lua35, 2026-10-05)
+
+Branch `agent/cc9-lua35`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua35`. No lease
+is held. The `src/game_hosts_ai.cpp` loan is handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_forced_target_weights` | `a3721808a`, `5e6f83c8b`, `538ad0d7a` | `kAiForcedTargetWeightRulesBound` | **ON** | 5cu, 5cu.1 |
+| BSM04 `luaIntroMovieEnd` | `a3721808a` | - | answered: it runs | 5cv |
+| USNRM01 Kates | `cb01db717`, `4ed9feb3f` | - | open (plausibility) | 5cw, 5cw.1 |
+| break-off follow-ups | `61ad1d802`, `689c85caf` | - | no reach | 5cx |
+| USN13 plausibility | `5f59f863f` | gates / plane arm | held OFF on a prior | 5cy |
+
+Census: `summary mission ai forced target weight bound= mode= queries= matches= rules:`.
+
+Scripts in `local\`:
+- `l35_runs.ps1 -Sides a,b -Only rows` (two sides in parallel through the slots);
+- `l35_edit_ai.py` (the applied binding edit);
+- `l35_kinds.py <log> <needle>` (line-kind census);
+- `l35_dispscan.py <disp...>` (disp32 census);
+- `l35_nextcall.py`, `l35_vcall.py <disp> <lo> <hi>` (`mov r,[r+disp] / call r` sites);
+- `l35_slots.py` (vtable slots), `l35_brain24.py`.
+
+### Next, in order
+
+1. **USNRM01's Kates mush into the sea about 8 s after spawning** (5cw.1), while the script films
+   `TorpTable[1]` for about 45 s. Candidates for the planes lane:
+   - the free-flight law at negative forward speed (`007DB875` lift, `007D92B0` damping);
+   - the depth kill `007CE3A7` against `SetInvincible`;
+   - the aim tick at a 140-degree velocity error.
+2. **The gates and plane arm:** image as read, held OFF (5cy). Revisit with reference Y.
+3. **Unbound but read:** a running tightturn or flikflak survives a command change in the image
+   (5cx). Bind it only once goaway is reached again.
