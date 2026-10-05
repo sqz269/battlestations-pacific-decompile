@@ -517,9 +517,8 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
     // 00A085AD. Packet cc9_plane_attacker_weight: the branch at 00A08619 is
     // taken only while the plane arm is bound; unbound, a plane attacker keeps
     // the earlier substitution and walks its barrels like a ship.
-    const bool attacker_model_type =
-        host.plane_arm_bound() &&
-        host.entity_is_type(key.attacker, kAiTypeQueryAttackerModel);
+    const bool attacker_is_plane = host.entity_is_type(key.attacker, kAiTypeQueryAttackerModel);
+    const bool attacker_model_type = host.plane_arm_bound() && attacker_is_plane;
 
     // 00A085A8 +4Ch into two frame slots; 00A085F8 overwrites one of them with
     // vtable[+24h] when the target class answers vtable[+18h](6).
@@ -531,17 +530,17 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
     if (!attacker_model_type) {
         // 00A09228..00A09733. The barrel loop and the water terms.
         // 00A0924C..00A0932B, the per-target gates, bound with the type queries.
+        // The queries are asked in both states (the image asks them), so an
+        // unbound host's census still sees each one; only the bound host uses
+        // the answers.
         const bool gated = host.barrel_target_gates_bound();
-        AiBarrelTargetGates gates;
-        if (gated) {
-            gates = ai_barrel_target_gates(
-                key.target_is_neutral == 1,
-                host.entity_is_type(key.target, kAiTypeQueryAttackerModel),
-                host.entity_is_type(key.target, kAiTypeTorpedoBoat),
-                host.entity_is_type(key.target, kAiTypeLandingShip),
-                host.entity_is_type(key.target, kAiTypeShip),
-                host.entity_is_type(key.target, kAiTypeSubmarine));
-        }
+        const AiBarrelTargetGates gates = ai_barrel_target_gates(
+            key.target_is_neutral == 1,
+            host.entity_is_type(key.target, kAiTypeQueryAttackerModel),
+            host.entity_is_type(key.target, kAiTypeTorpedoBoat),
+            host.entity_is_type(key.target, kAiTypeLandingShip),
+            host.entity_is_type(key.target, kAiTypeShip),
+            host.entity_is_type(key.target, kAiTypeSubmarine));
         float capture_accumulator = 0.0f;
         const int subsystems = host.subsystem_count(key.attacker);
         for (int index = 0; index < subsystems; ++index) {

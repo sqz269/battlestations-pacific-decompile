@@ -483,6 +483,11 @@ struct AiPlaneWeightCensus {
     unsigned long long gate_refusals[0x14]{};
     unsigned long long gate_admits{0};
     unsigned long long platform_refusals{0};
+    unsigned long long plane_platforms{0};
+    unsigned long long plane_platforms_pilot{0};
+    unsigned long long plane_platforms_tail{0};
+    unsigned long long plane_platforms_zero_reload{0};
+    unsigned long long plane_platforms_no_bullet{0};
 };
 AiPlaneWeightCensus& ai_plane_weight_census() {
     static AiPlaneWeightCensus census;
@@ -676,6 +681,12 @@ public:
         out.bullet.sub_type = b->bullet_sub_type;
         out.bullet.damage_min = b->damage_min;
         out.bullet.damage_max = b->damage_max;
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        ++c.plane_platforms;
+        if (out.pilot_fires) ++c.plane_platforms_pilot;
+        if (out.device_function == bsp::kAiPlaneTailGunFunction) ++c.plane_platforms_tail;
+        if (!(out.reload > 0.0f)) ++c.plane_platforms_zero_reload;
+        if (!out.bullet.present) ++c.plane_platforms_no_bullet;
         return true;
     }
     bool kamikaze_bullet(const void* attacker, bsp::AiPlaneBulletFacts& out) override {
@@ -6021,6 +6032,10 @@ void GameAiCoordinatorHost::report() {
                 c.positive_options[1], c.options[1], c.option_value_sum[1],
                 c.positive_options[2], c.options[2], c.option_value_sum[2], c.gate_admits,
                 c.platform_refusals);
+            host.log.notef("  ai plane weight platforms seen=%llu pilot=%llu tail=%llu "
+                "zero_reload=%llu no_bullet=%llu", c.plane_platforms, c.plane_platforms_pilot,
+                c.plane_platforms_tail, c.plane_platforms_zero_reload,
+                c.plane_platforms_no_bullet);
             for (int code = 0; code < 0x30; ++code) {
                 if (c.queries[code] == 0) continue;
                 host.log.notef("  ai plane weight type query code=%02Xh queries=%llu "
