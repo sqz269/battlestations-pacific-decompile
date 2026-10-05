@@ -12464,3 +12464,53 @@ the cruise not-driven arm. That is the prediction's caveat, and gameplay is iden
 
 **Verdict: ON.** Whether the commands host's decline is the image's `009E1170` for a null
 command is open. That host is the commands lane's.
+
+## 156. USN01 with the gate ON: phase 2 never ends (lead item 3, cc9-ships33, 2026-10-05, runs and reads only)
+
+**The re-check of SCRIPTED_HELM 11.2's r3 on current main.** Run `local\s33_r3a.log`:
+`agent/cc9-ships33` at `be747c382`, USN01 36000 frames, `s32_orders3.txt` (as
+`local\s33_orders_r3.txt`), reference y's launch form with `--trajectory-csv`.
+- **SaltLakeCity survives the whole run.** Its 644.17 s sinking is gone, and so is the Katori
+  torpedo that caused it.
+- **Coastal Guns 02 and 03** are killed by SaltLakeCity's own AI fire, at 619.47 s and 619.92 s,
+  at about 2.1 km, with no order.
+- **No convoy ship dies**, and every phase-3 `select` and `takehelm` is refused (`00645060`).
+  Northampton is sunk at 1087.34 s, credited to SaltLakeCity gun 46 at 58 m. That is probably a
+  friendly-fire attribution, as in 10.5. Not followed.
+
+**The phase gate** (this installation's `usn_1_marshall.lua`, mtime 2024-07-13):
+- Phase 2 (`luaMoveToPh2`, line 697):
+  - it generates `ScoutDauntless` with `PilotSetTarget(ScoutBomba, ConLeader)`;
+  - `luaPh2MovieEnd` selects the scout and arms `ConLeadListener`, a `hit` listener on the convoy
+    leader filtered to `TORPEDO`, `BOMB` and `ROCKET` (lines 875-889).
+- Until it fires, the convoy is invincible. `luaConLeadHit` / `luaConHitMovieEnd` (893-946) then:
+  - generate `MainAttack` (ConTBD1-3, ConSBD1-3);
+  - clear the convoy's invincibility;
+  - add objective primary 2.
+- Phase 3 (`luaPh2FadeOut` from line 535) needs every convoy ship dead.
+
+**What breaks it with the gate ON.** The convoy leader's steering, gate OFF against gate ON:
+
+| | gate OFF (`local\s33_u1cgoff.log`, `pair_export --flip kAiCoordinatorLoadGateBound=false`, USN01 3000) | gate ON (`local\s33_u1on.log`) |
+| --- | --- | --- |
+| Convoy1 `movetopos` step 1530 | target 1.8241 rad, d 6921.6 | target 2.8335 rad, d 11542.9 |
+| scout bombs | t about 122.5 s, predicted impacts (-2791, -1563) / (-2874, -1528) | t = 133.2 s, (-3397, -1449) / (-3405, -1462) |
+| hit | `impact blast bullet=71 on Convoy1 dist=10.4`, `luaConLeadHit` at 126.85 s | no blast on Convoy1, hit listener `fires=0` |
+
+- With the coordinator, the convoy's move had another goal.
+- With the gate ON it follows the script's own `NavigatorMoveToRange(Convoy[1], ConvoyGoTo)`.
+- The AI-flown scout's two bombs then land about 15-20 m off the moving oiler: Convoy1 is at
+  (-3396, -1418), heading 162 degrees at 8.1 m/s, at 133.0 s (`local\s33_traj_r3a.csv`).
+- In the image a player flies that scout, so an AI miss there is not shown wrong. **USN01 stalls
+  in phase 2 for an idle player on current main.**
+- The miss is routed to cc9-lua38 (plane aim).
+
+**The player's plane `attack` (`005FAAE0`'s squadron arm, read for the lead).**
+- **What it does:** for a controlled unit that fails `IsKindOf(6)` and passes `IsKindOf(18h)`,
+  `005FABCE PUSH 0BCh` builds a `GUI_order` message (vtable `00CF3BB8`, `+1Ch` = 0, `+20h` = 1).
+  `005FAC12` routes it to the squadron through `0077C2A0`. TORPEDO_ATTACK_MODE.md (2)'s arm
+  `007F005B` then sets `ctl+370h` = 2.
+- **What it does not do:** there is no target and no role hand-back.
+- **It closes a contract.** This is the producer of message `BCh` that TORPEDO_ATTACK_MODE.md
+  listed as `contract: unread`.
+- **It would not fix USN01.** The scout already attacks in mode 2 and drops; it misses.
