@@ -692,6 +692,11 @@ struct GameShipAiSummary {
     float heading_wrap_max_abs{0.0f};
     unsigned long long approach_troop_landers{0};
     unsigned long long arm_final_area_key_differs{0};
+    // Packet cc9_surface_set_branch: 00922D54's 008DDF90 asks, counted both ways.
+    unsigned long long surface_set_queries{0};
+    unsigned long long surface_set_nonempty{0};
+    unsigned long long surface_set_vehicles{0};
+    unsigned long long surface_set_hits{0};
     unsigned long long autotarget_follower_leaves{0};
     // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and
     // what the bound query did (ON only).

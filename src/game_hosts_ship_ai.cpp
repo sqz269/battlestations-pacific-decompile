@@ -233,6 +233,12 @@ inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 // step, so a per-step write between replans lasts one step. False: both are
 // records and such writes persist.
 inline constexpr bool kShipAiSnapshotBound = true;
+// Packet cc9_surface_set_branch, docs/SHIP_AI_OPEN_ITEMS.md section 118. True:
+// 00922C80's set test (00922D3F..00922D5B) answers through 008DDF90 on the local
+// slot's objective set, and a member is a surface target. False: the branch is a
+// record and the allow_far tail always answers. The lookup is counted both ways.
+// ON: the USNOS and smoke pairs were gameplay-identical (section 118.6).
+inline constexpr bool kShipAiSurfaceSetBranchBound = true;
 // Packet cc9_ship_ai_neighbour_count, docs/SHIP_AI_TAILS.md section 13. True:
 // the traffic setback walk of 009EEAAB reads world list 6 ([[00E188A8]+19CCh]
 // +60h, 009EEB8B) through 009DBBC0, tests vtable+5Ch(6) (009EEBC8), skips the
@@ -6837,11 +6843,31 @@ public:
         const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
         bool surface = answer == bsp::SurfaceTargetAnswer::kYes;
         if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
-            // 008DDF90 BSP_SzurkeNyil_ContainsUnit over a set this process does
-            // not build. The tail 00922C80 runs when the set does not hold the
-            // entity is answerable, so take that and record the branch.
-            owner_.record("ShipAiGoal::target_is_surface_set_branch", 0x008ddf90u);
-            surface = bsp::entity_surface_target_tail_00922c80(tf, true);
+            // 00922D3F..00922D5B: 008DDF90 BSP_SzurkeNyil_ContainsUnit with ECX =
+            // [00E188A8]+21A4h+[+18ECh]*4, the local slot's set (slot 0 here).
+            // 008DDF93: an empty set answers 0. 008DDFA9: an IsKindOf(5) entity
+            // is looked up as itself; the IsKindOf(18h) arm (+3D0h) cannot run,
+            // because 00922C80 rejected 18h first. 008DDF00 is the tree find.
+            ++owner_.summary.surface_set_queries;
+            bool in_set = false;
+            const std::vector<std::size_t> set =
+                bsp::game::game_objective_sets().units_in_slot(0);
+            if (!set.empty()) {
+                ++owner_.summary.surface_set_nonempty;
+                if (owner_.units.unit_is_kind_of(other, 0x05)) {
+                    ++owner_.summary.surface_set_vehicles;
+                    in_set = std::find(set.begin(), set.end(), other) != set.end();
+                }
+            }
+            if (in_set) ++owner_.summary.surface_set_hits;
+            if constexpr (kShipAiSurfaceSetBranchBound) {
+                owner_.done("ShipAiGoal::target_is_surface_set_branch", 0x008ddf90u);
+                surface = in_set || bsp::entity_surface_target_tail_00922c80(tf, true);
+            } else {
+                // The tail 00922C80 runs when the set does not hold the entity.
+                owner_.record("ShipAiGoal::target_is_surface_set_branch", 0x008ddf90u);
+                surface = bsp::entity_surface_target_tail_00922c80(tf, true);
+            }
         }
         if (index_ < owner_.rows.size() && surface) ++owner_.rows[index_].goal_visible_surface;
         return surface;
@@ -12650,6 +12676,12 @@ void GameShipAiHost::report() {
             row.unit.c_str(), row.traffic_scans, row.traffic_steps,
             static_cast<double>(row.traffic_setback_max));
     }
+    host.log.notef("summary mission ship ai surface set branch queries=%llu nonempty=%llu "
+        "vehicles=%llu hits=%llu bound=%d (00922D54 -> 008DDF90 on the local slot's "
+        "objective set, packet cc9_surface_set_branch)",
+        host.summary.surface_set_queries, host.summary.surface_set_nonempty,
+        host.summary.surface_set_vehicles, host.summary.surface_set_hits,
+        kShipAiSurfaceSetBranchBound ? 1 : 0);
     host.log.notef("summary mission ship ai goal vector prepasses=%llu refreshes=%llu "
         "nonzero_goals=%zu brain_targets=%zu path_plan_refreshes=%llu path_picks=%llu "
         "path_publishes=%llu station_keeping=%llu sector_refreshes=%llu middle_runs=%llu "

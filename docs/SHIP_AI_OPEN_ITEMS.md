@@ -9648,3 +9648,92 @@ Rank 3 of section 114. **What 51h does, read:**
   - `s27_census.py` (`S27_ROOT=<log dir>`, the non-concrete host rows);
   - `s27_cc.ps1` (compile-check one TU against copied headers).
 - No lease is held after this commit.
+
+## 118. Rank 5 of section 114, the surface-target set branch (packet `cc9_surface_set_branch`, `kShipAiSurfaceSetBranchBound`, cc9-ships28, 2026-10-05)
+
+### 118.1 The image
+
+`00922C80 BSP_Entity_IsSurfaceTarget` (`__fastcall`, ECX entity, DL allow_far, `RET 0`) reaches the
+set test only after the ship family (`IsKindOf(6)`), `45h`, `46h` and `1Ch` arms have all failed:
+```
+00922D3F  MOV EAX,[00E188A8]
+00922D44  MOV ECX,[EAX+18ECh]            ; the local player's slot
+00922D4A  MOV EAX,[EAX+ECX*4+21A4h]      ; that slot's SzurkeNyil set
+00922D51  PUSH ESI                        ; the entity
+00922D54  CALL 008DDF90                   ; __thiscall, RET 4
+00922D59  TEST AL,AL / JNZ 00922D0E       ; in the set: true
+00922D5D  TEST BL,BL / JE 00922DB1        ; then the allow_far tail
+```
+`008DDF90..008DDFD5` (`disasm-raw`): `[this+20h]` = 0 answers 0 (`008DDF93`); otherwise an
+`IsKindOf(5)` entity is looked up as itself, an `IsKindOf(18h)` one as `[entity+3D0h]`, anything
+else answers 0 (`008DDFC0`); the lookup is `008DDF00` over the tree at `+18h`. The squadron arm
+cannot run from `00922C80`, which rejected `IsKindOf(18h)` at its start. So the branch turns the
+answer from the tail's to `true` only for a **non-ship vehicle that is a unit of one of the local
+slot's objectives**: a fort, a gun, a building of a kind other than `45h/46h/1Ch`, a land vehicle.
+
+### 118.2 The producer, and what it holds on the three rows
+
+The sets are filled only by the mission Lua (`008CD440 Objectives_Add`, `008CDD60
+Objectives_AddUnit`, `008CE510 Objectives_RemoveUnit`; docs/MISSION_OBJECTIVES.md). This
+installation's `scripts/global/commandhelpers.lua` (mtime 2024-10-29) wraps them as `luaObj_Add`
+(`Objectives_Add(party, nil, ID, Text, level[, true], trg)`, 5763-5798) and `luaObj_AddUnit`.
+
+| row | calls on v | objectives the run adds (`objective binding` lines, v and W logs) | their targets in the script | non-ship vehicles |
+| --- | --- | --- | --- | --- |
+| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | `ijn/JM/jm08.lua` (mtime 2024-07-13) 464-516: no `luaObj_Add` has a target; primary 2's `luaObj_AddUnit` takes `Mission.USNLsts` / `USNCargos`, ships | none |
+| USNOS long, USNOS | 95, 17 | `Troop` only | `COTP-USN/us_osumi.lua` 1320: `Mission.Trgs` = Enterprise and TroopTrans1-6 (524-531), all ships | none |
+
+USNOS's later objectives (1650-1654: `JapHQs`, `Forts`, `RadioTowers`; 1760 `FinalTrgs`) would
+put land units in the set, but no reference run adds them. **So on every reference row the image's
+set holds no unit that `00922C80` can ask about, and the branch answers false: no reach.**
+
+### 118.3 A host gap found on the way (lua lane, routed to the lead)
+
+`008CD440` starts its target walk at **index 5**, and at 6 only when argument 5 is a boolean:
+`008CD753 MOV ESI,5` (straight line); `008CD7C6 CMP EAX,5 / JLE 008CD7FB` (no argument 5);
+`008CD7ED` `IsBoolean`; `008CD841 MOV ESI,6` only on the boolean arm; the walk is
+`008CD87D CMP ESI,EAX / JGE` then `008CD890 PUSH ESI`. Each target is an entity handle
+(`008889C0`) or a vector3 table (`0088B840`) pushed whole (`008CD942`), or otherwise a table whose
+elements are walked (`008CD96F..`, `IterateFirst`/`IterateNext`). The host
+(`src/game_hosts_lua.cpp`, `first_target = is_add ? 6 : ...`; `objective_argument_unit` accepts
+only a table with an `ID`) reads from 6 always and does not walk a list. A non-quiet
+`luaObj_Add(level, n, trg)` therefore adds no unit: `Troop` logs `units=0` where the image holds
+seven ships. Its consumers are `00A2C450` (world sets), `00A0F810`'s objective multiplier and the
+HUD, not `00922C80` on these rows.
+
+### 118.4 The binding
+
+`kShipAiSurfaceSetBranchBound` (`src/game_hosts_ship_ai.cpp`), committed OFF. Both ways the branch
+asks the slot-0 objective table (`game+18ECh` is 0 in this process, as the HUD's binding of the
+same call says) the way `008DDF90` does, and counts; ON, a hit answers true instead of the tail.
+Census: `summary mission ship ai surface set branch queries= nonempty= vehicles= hits= bound=`.
+
+### 118.5 Predictions (written before any run)
+
+- `queries` equals the old `target_is_surface_set_branch` count (on v: JM08 long 804, USNOS long
+  95, USNOS 17).
+- `hits` = 0 on every row; `nonempty` = 0 on the three rows while 118.3 stands.
+- **Pairs: exit 0 or 1 on every row.** The ON pair runs on USNOS (with the smoke); `hits` > 0
+  anywhere is a prediction failure to explain before flipping.
+
+### 118.6 The pairs, and the flip
+
+OFF is this tree at `6dbb63f27` (`local\s28_off_<row>.log`); ON is `pair_export --commit 6dbb63f27
+--flip kShipAiSurfaceSetBranchBound=true` (`local\s28_on`, SHA-256 prefix `428EFD44A61E`), both in
+the reference launch form.
+
+| row | queries | nonempty | vehicles | hits | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke (USN01, 300 frames) | 0 | 0 | 0 | 0 | exit 1 |
+| USNOS | 13 (v: 17) | 0 | 0 | 0 | exit 1 |
+
+The only moved lines are the census's own `bound=` and the `ship ai free` search counters
+(`empty`, `refills`), the known noise of a same-binary pair. Every prediction of 118.5 held:
+`queries` equals the old record count, the set is empty whenever the branch is asked, and the
+pair is gameplay-identical. **Verdict: mechanism matches, no reach; flipped ON.** JM08 long and
+USNOS long were not paired: the census shows the branch asks an empty set, and the scripts'
+objective adds on those rows (118.2) are the same as USNOS's or have no targets.
+
+Reach returns only with 118.3's fix and a row whose objectives name land units (USNOS past
+`us_osumi.lua` 1650). Then `hits` counts the forts, HQs and radio towers the ship AI's goal
+vector starts treating as surface targets, as the image does.
