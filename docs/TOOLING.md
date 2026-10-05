@@ -580,3 +580,10 @@ working directory.
   rudder law `009DA250`.
 - `repeat` re-issues the moveto every N seconds while the unit is alive.
 - The labels are in docs/SCRIPTED_HELM.md section 9.2.
+
+**Added by packet `cc9_player_order_capture_row`:** `<frame> select <unit>` and an optional
+`stop <metres>` at the end of `takehelm`.
+- `select` is the player's unit click, as the HUD root commits it (`0064A00E`): the four byte
+  filters, then `00647300`'s body (`00645060`, `00645600`, the 20h push). A rejection is printed.
+- `stop R` re-takes the route at throttle 0 once the helm unit is within R metres of its point.
+- The labels are in docs/SCRIPTED_HELM.md section 10.
