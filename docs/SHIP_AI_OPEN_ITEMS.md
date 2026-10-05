@@ -9851,3 +9851,50 @@ OFF is this tree at `5d2e16934` (`local\s28_o0_<row>.log`). ON is `pair_export -
 - **Verdict.** Every count matches and every pair is exit 0 or 1, so the switch is **flipped ON**.
   JM08 long, USN13 and E2, which also add targets, were not paired; their reach goes through the
   same readers.
+
+## 121. The IJN11 stock scene as the spawn row (section 117 item 3): reached, but nothing spawns (cc9-ships28, 2026-10-05)
+
+**The run.** IJN11 for 36000 mission frames (36200 total) in the reference launch form, with this
+tree at `d68f656d1` (`local\s28_i_ijn11l.log`). Section 52's 3000-frame run had
+`spawn_due=0`. This run reaches the arm:
+```
+summary mission ai capture thinks=431 ... attack_thinks=446
+summary mission ai capture path thinks=15 assignments=0 ... spawn_due=7
+AiPlanners::capture_spawn_arm_00a2b400   00a2b400   UNIMPLEMENTED calls=7
+summary mission ai defend records thinks=0 records=0 ... spawn_arms=0
+```
+
+**Why the target path runs only late.** The scene (`universe\scenes\missions\ijn\
+ijn_11_operation_to.scn`, mtime 2024-07-13) has exactly one list-28 entity:
+- `"Siege - Headquarter"` (CommandBuilding, `OwnerPlayer = "AI control"`, `Race = USA`, loaded
+  as `party=Allied(0)`).
+- The stock lists (`AlliedList` / `JapanList`, `Stock 1..40`) belong to three SpawnPoint children
+  of `"Multi AirField1"`. That is an AirField with `CommandBuildingInferior`, not a list-28 entity.
+
+The capture think's target path needs a list-28 entity not on the planner's side (`00A2A13B`).
+The thinking planner is the HQ's own side, since a planner on the other side would have had the
+HQ as a target from t = 0. So the path runs only while the HQ is **neutral**:
+- `command building capture: ... neutralized (prior party=0) at t=1501.60`, then
+  `flipped to party=0 ... at t=1532.60`;
+- `neutralized ... at t=1661.65`, then `flipped to party=0 ... at t=1693.65`.
+
+About 62 s neutral in all, and 15 path thinks, 7 of them due.
+
+**Why the image would spawn nothing there.** It follows section 115.1's route:
+- Gate 1 (`00946970` <= 0) and the budget (>= 1 in mode 0) pass.
+- `00A25A30` then builds its sites from `0066E590 -> 0066E510 -> 0066DD00`: list 28, kept to the
+  planner's team by `0066E2B0`, with `+78Ch` != 0.
+- While the arm is due, the only list-28 entity is neutral, so the planner's team owns none.
+  The vector is empty and `00A25A30` returns false (`00A25AB7 JE 00A25B5C`) before
+  `00A23980` reads any stock.
+- The Defend arm stays at budget 0 (115.2: `Defend_ResourcePercent` 0.0, mode 0).
+
+**Verdict: no spawn on IJN11 in 36000 frames; the host's record is the right model there.**
+- The spawn needs a team that owns a list-28 entity while an enemy one exists. No reference row
+  and no IJN11 timeline seen here has that.
+- `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0` and `0094B600` stay unread: nothing reaches them.
+- **Uncertain:**
+  - Which side the thinking planner is on is inferred from the counts (15 path thinks, only in
+    the neutral windows), not from a per-think diagnostic. `BSP_CAPTURE_DIAG=1` would print it.
+  - The two neutral windows come from the host's capture binding (`cc9_command_building_capture_bind`).
+  - That the HQ's `+78Ch` points at a SpawnPoint is not read; the verdict does not need it.
