@@ -9680,7 +9680,7 @@ installation's `scripts/global/commandhelpers.lua` (mtime 2024-10-29) wraps them
 
 | row | calls on v | objectives the run adds (`objective binding` lines, v and W logs) | their targets in the script | non-ship vehicles |
 | --- | --- | --- | --- | --- |
-| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | `ijn/JM/jm08.lua` (mtime 2024-07-13) 464-516: no `luaObj_Add` has a target; primary 2's `luaObj_AddUnit` takes `Mission.USNLsts` / `USNCargos`, ships | none |
+| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | **corrected in section 120.4:** the row runs `COTP-IJN/PRCPIJN/jm08.lua` (mtime 2024-07-13), not `ijn/JM/jm08.lua`. Its 630-631 add `Mission.Flagship` (Missouri) and `Mission.LandShips` (11 US troop transports), all ships | none |
 | USNOS long, USNOS | 95, 17 | `Troop` only | `COTP-USN/us_osumi.lua` 1320: `Mission.Trgs` = Enterprise and TroopTrans1-6 (524-531), all ships | none |
 
 USNOS's later objectives (1650-1654: `JapHQs`, `Forts`, `RadioTowers`; 1760 `FinalTrgs`) would
@@ -9820,3 +9820,34 @@ This installation's scripts, against the `objective binding` lines of the OFF lo
   side 0, `objective_hits` > 0 and targeting moves: exit 3.
 - **Verdict rule.** Flip ON when the `units=` counts match the scripts' target lists and the
   controls hold. A move is accepted when it is traceable to one of 120.2's readers.
+
+### 120.4 The pairs, and the flip
+
+OFF is this tree at `5d2e16934` (`local\s28_o0_<row>.log`). ON is `pair_export --commit 5d2e16934
+--flip kObjectiveAddTargetWalkBound=true` (`local\s28_o120on`, SHA-256 prefix `6BB9C4D60430`,
+`local\s28_o5_<row>.log`). Both use the reference launch form.
+
+| row | `units=` OFF -> ON | world-set `objective_units` | target-weight `objective_hits` | 118's set branch ON (queries / nonempty / hits) | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke | - | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| LOMP06 (control) | `us_pri_obj_1` 0 -> 0 | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| USNOS | `Troop` 0 -> 7 | 0 -> 7 | 0 | 13 / 13 / 0 | 1 |
+| USNOS long | `Troop` 0 -> 7 | 0 -> 7 | 0 | 132 / 132 / 0 | 1 |
+| JM06 | `Ambush` 0 -> 3 | 0 -> 3 | 0 | 0 / 0 / 0 | 1 |
+| JM08 | `Missouri` 0 -> 1, `landingships` 0 -> 11 | 0 -> 12 | 0 (no queries) | 0 / 0 / 0 | 1 |
+
+- **The units.** Every `units=` count matches the script's target list. `Troop` is Enterprise
+  and TroopTrans1-6. `landingships` is `Mission.LandShips`.
+- **A correction to 120.1 and 118.2.** JM08 was meant to be a control. It is not: the JM08 row
+  runs `COTP-IJN/PRCPIJN/jm08.lua`, whose `luaObj_Add("primary",2,Mission.Flagship)` and
+  `luaObj_Add("primary",1,Mission.LandShips)` (630-631) carry targets. Its targets are ships, so
+  118's no-reach verdict stands.
+- **JM06.** I predicted exit 3 if the IJN attackers are side 0. `objective_hits` stays 0, so they
+  are not: the target-weight test asks set 4 for them (`local_party` is the host's constant 0).
+  Whether that constant is right on an IJN row is a separate question for the AI lane, recorded
+  here and not chased.
+- **No reader moved gameplay on these rows.** `00A2C450` hits stay 0. 118's branch now finds a
+  non-empty set on USNOS but no member, because only ships are in it.
+- **Verdict.** Every count matches and every pair is exit 0 or 1, so the switch is **flipped ON**.
+  JM08 long, USN13 and E2, which also add targets, were not paired; their reach goes through the
+  same readers.

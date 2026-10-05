@@ -171,8 +171,9 @@ bool objective_argument_unit(lua_State* state, int index, std::size_t& unit) {
 // IsBoolean, 008CD841 MOV ESI,6); a target that is neither an entity handle
 // (008889C0) nor a vector3 table (0088B840) is a table whose elements are
 // walked (008CD96F.., IterateFirst/IterateNext), as in 008CDD60 and 008CE510.
-// False: Add's walk starts at 6 and a list table adds nothing.
-inline constexpr bool kObjectiveAddTargetWalkBound = false;
+// False: Add's walk starts at 6 and a list table adds nothing. ON: section 120.4
+// (USNOS, USNOS long, JM06, JM08 gameplay-identical; LOMP06 control).
+inline constexpr bool kObjectiveAddTargetWalkBound = true;
 
 // The units argument `index` names: an entity table itself, or, while
 // kObjectiveAddTargetWalkBound, every entity-table element of a list table.
