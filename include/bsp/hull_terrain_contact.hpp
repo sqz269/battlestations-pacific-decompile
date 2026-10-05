@@ -137,6 +137,16 @@ inline constexpr bool kHullShapeChainOrderBound = true;
 // terrain manifolds are retired; it sinks through the seabed. False: wrecks keep resting on it.
 // ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 101.4).
 inline constexpr bool kSunkHullTerrainMaskBound = true;
+// Packet cc9_avoid_zone_draft_bodies (docs/GUNNERY_OPEN_ITEMS.md section 109). The avoid-zone
+// draft bodies (bsp/avoid_zone_draft_bodies.hpp): static, one kind-4 shape each with group =
+// the layer's class mask and mask 0, friction 0, restitution 0. A hull shape's mask is
+// 0Dh | its class bit (009395E2), so 00C44104 admits a (draft, hull) pair exactly when the
+// draft group holds the hull's class bit; the landing ship's land enter clears that bit
+// (0092BD70(0), section 107). True: every admitted pair whose world boxes meet goes through
+// 00C535E0 as the fort pairs do (the draft body as A, one manifold per body pair, the static
+// frame), and the manifold joins the hull's group and solve. False: the narrow phase runs as a
+// census only; hulls pass through the draft walls as before.
+inline constexpr bool kAvoidZoneDraftBodiesBound = false;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
@@ -173,6 +183,19 @@ struct HullWorldEntry {
     HullTerrainContactStepResult result{};
     // kSunkHullTerrainMaskBound: the hull's shapes lost mask bit 8 (00826410..0082643B).
     bool terrain_mask_cleared{false};
+    // Packet cc9_avoid_zone_draft_bodies: the class bit the hull shapes' mask carries beside 0Dh
+    // (009395E2), 0 once 0092BD70(0) has cleared it.
+    std::uint32_t class_bit{0};
+};
+
+// Packet cc9_avoid_zone_draft_bodies. One draft body: its creation index (the manager's +5Ch
+// order), group (the class mask), 3x4 frame and the retained 00C5DEB0 hull of its piece.
+struct DraftWorldEntry {
+    std::size_t index{0};
+    std::int32_t layer{0};
+    std::uint32_t group{0};
+    float frame[12]{};
+    std::shared_ptr<AvoidZoneDynHullHandle> hull;
 };
 
 // Packet cc9_hull_fort_contact. One fort's static body: the world frame at creation (rows,
@@ -205,6 +228,10 @@ public:
     // `hull_fort` false their pairs run as a census only.
     void world_step(std::vector<HullWorldEntry>& hulls, const std::vector<FortWorldEntry>& forts,
                     float dt, bool hull_hull, bool hull_fort);
+    // Packet cc9_avoid_zone_draft_bodies: the draft bodies, set once; every later world_step
+    // runs their pairs (with `apply` false as a census only).
+    void set_draft_bodies(std::vector<DraftWorldEntry> drafts, bool apply);
+    bool draft_bodies_set() const noexcept { return drafts_set_; }
     // The hull-pair narrow phase as a census only (no manifold, no state): the OFF build's
     // record of which hulls would touch.
     void hull_hull_census(std::vector<HullWorldEntry>& hulls);
@@ -229,6 +256,11 @@ public:
         unsigned long long forts{0}, fort_shapes{0}, fort_pairs_near{0}, fort_shape_tests{0};
         unsigned long long fort_hits{0}, fort_hit_steps{0}, forts_over_reserve{0};
         float fort_max_depth{0.0f};
+        // Packet cc9_avoid_zone_draft_bodies: draft bodies, (draft, hull) pairs refused by the
+        // filter, pairs whose boxes met, shape tests, hits, pairs with a hit, the deepest hit.
+        unsigned long long drafts{0}, draft_pairs_filtered{0}, draft_pairs_near{0};
+        unsigned long long draft_shape_tests{0}, draft_hits{0}, draft_hit_steps{0};
+        float draft_max_depth{0.0f};
     };
     const Census& census() const noexcept { return census_; }
     // Per hull pair (lower unit first): the first census step with a hit, the steps with one
@@ -243,6 +275,10 @@ public:
     // Per (fort, hull) pair with a hit: the first world step, the steps with one, the deepest.
     const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& fort_pairs() const noexcept {
         return fort_pairs_;
+    }
+    // Per (draft index, hull unit) pair with a hit: the first world step, the steps, the deepest.
+    const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& draft_pairs() const noexcept {
+        return draft_pairs_;
     }
     // The hull-pair contact events of the last world step (kHullHullContactBound).
     const std::vector<HullContactEvent>& contact_events() const noexcept { return events_; }
@@ -275,6 +311,13 @@ private:
                            const float frame[12]);
     void hull_fort_narrow_phase(std::vector<HullWorldEntry>& hulls,
                                 const std::vector<FortWorldEntry>& forts, bool apply);
+    // Packet cc9_avoid_zone_draft_bodies.
+    struct DraftShape;
+    void hull_draft_narrow_phase(std::vector<HullWorldEntry>& hulls);
+    std::vector<std::unique_ptr<DraftShape>> drafts_;
+    bool drafts_set_{false}, drafts_apply_{false};
+    std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> draft_manifolds_;
+    std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> draft_pairs_;
     std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> fort_manifolds_;
     std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> fort_pairs_;
     std::map<std::size_t, bool> forts_seen_;

@@ -111,6 +111,10 @@ void HullTerrainContactSolver::forget(std::size_t unit) {
         else ++it;
     }
     fort_boxes_.erase(unit);
+    for (auto it = draft_manifolds_.begin(); it != draft_manifolds_.end();) {
+        if (it->first.second == unit) it = draft_manifolds_.erase(it);
+        else ++it;
+    }
 }
 
 
@@ -1106,6 +1110,180 @@ void HullTerrainContactSolver::hull_fort_narrow_phase(std::vector<HullWorldEntry
     }
 }
 
+// Packet cc9_avoid_zone_draft_bodies. One draft body's kind-4 record as 00C57F50 builds it from
+// 00423C50's descriptor (00424204..004243DB): +24h restitution 0 (desc +00h), +28h friction 0
+// (desc +04h; the fort's 1.0 is at the same +04h, 007486DD), +2Ch group = the class mask
+// (desc +08h), +30h mask 0 (desc +0Ch), +34h an identity frame with a zero translation, +210h
+// the retained hull (desc +14h). +4 is the static body's 3x4.
+struct HullTerrainContactSolver::DraftShape {
+    alignas(16) std::uint8_t convex[0x240]{};
+    std::uint8_t body[0x40]{};
+    float lo[3]{}, hi[3]{};
+    DraftWorldEntry entry;
+    // Win32: 280h + 18h + 44h = 2DCh; filled to a 16-byte multiple so C4324 has no padding.
+    std::uint8_t fill[4]{};
+};
+
+void HullTerrainContactSolver::set_draft_bodies(std::vector<DraftWorldEntry> drafts, bool apply) {
+    drafts_.clear();
+    draft_manifolds_.clear();
+    drafts_set_ = true;
+    drafts_apply_ = apply;
+    game::GameNativeDynProcess& process =
+        game::game_native_dyn_process(game::application_camera_axes_crt());
+    for (DraftWorldEntry& e : drafts) {
+        if (!e.hull || !e.hull->data) continue;
+        auto d = std::make_unique<DraftShape>();
+        d->entry = std::move(e);
+        d->entry.index = drafts_.size();
+        const void* table = process.body_creation().convex_shape_vtable;
+        const std::uint32_t kind = 4, group = d->entry.group, mask = 0;
+        const float restitution = 0.0f, friction = 0.0f;
+        const void* mesh = d->entry.hull->data;
+        const float local[12] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                                 0.0f, 0.0f, 0.0f};
+        std::memcpy(d->convex + 0x00, &table, sizeof(table));
+        std::memcpy(d->convex + 0x08, &kind, 4);
+        std::memcpy(d->convex + 0x24, &restitution, 4);
+        std::memcpy(d->convex + 0x28, &friction, 4);
+        std::memcpy(d->convex + 0x2C, &group, 4);
+        std::memcpy(d->convex + 0x30, &mask, 4);
+        std::memcpy(d->convex + 0x34, local, sizeof(local));
+        std::memcpy(d->convex + 0x210, &mesh, sizeof(mesh));
+        dyn_convex_shape_local_bounds_00c57c40(*reinterpret_cast<DynConvexShapeStorage*>(d->convex));
+        const float* f = d->entry.frame;
+        std::memcpy(d->body + 0x08, f + 0, 12);
+        std::memcpy(d->body + 0x14, f + 3, 12);
+        std::memcpy(d->body + 0x20, f + 6, 12);
+        std::memcpy(d->body + 0x2C, f + 9, 12);
+        const void* owner = d->body;
+        std::memcpy(d->convex + 0x04, &owner, sizeof(owner));
+        for (int k = 0; k < 3; ++k) { d->lo[k] = 3.402823466e+38f; d->hi[k] = -3.402823466e+38f; }
+        const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(*d->entry.hull);
+        for (std::uint32_t i = 0; i < n; ++i) {
+            const OceanVec3& v = d->entry.hull->data->vertices[i].point;
+            for (int k = 0; k < 3; ++k) {
+                const float w = f32(static_cast<double>(f[9 + k]) + f[k] * v.x + f[3 + k] * v.y +
+                                    f[6 + k] * v.z);
+                if (w < d->lo[k]) d->lo[k] = w;
+                if (w > d->hi[k]) d->hi[k] = w;
+            }
+        }
+        drafts_.push_back(std::move(d));
+        ++census_.drafts;
+    }
+}
+
+// 00C44090 for every (draft, hull) pair, with the fort pairs' LABELLED substitutions (a world
+// box test widened by 0.1 m instead of the SAP list; the static body as A). The filter is
+// 00C44104 on the draft shape (group = class mask, mask 0) and the hull shape (group 1, mask
+// 0Dh | class bit). No contact event: the draft body has no listener and no owner (desc zeros).
+void HullTerrainContactSolver::hull_draft_narrow_phase(std::vector<HullWorldEntry>& hulls) {
+    if (drafts_.empty() || hulls.empty()) return;
+    struct Box { float lo[3], hi[3]; bool ok; };
+    std::vector<Box> boxes(hulls.size());
+    std::vector<std::array<float, 12>> frames(hulls.size());
+    for (std::size_t i = 0; i < hulls.size(); ++i) {
+        Box& b = boxes[i];
+        b.ok = false;
+        for (int k = 0; k < 3; ++k) { b.lo[k] = 3.402823466e+38f; b.hi[k] = -3.402823466e+38f; }
+        body_frame(*hulls[i].body, frames[i].data());
+        const float* f = frames[i].data();
+        for (std::size_t s = 0; s < hulls[i].shapes->size(); ++s) {
+            for (const OceanVec3& v : hull_shape(hulls[i].unit, s, (*hulls[i].shapes)[s]).vertices) {
+                for (int k = 0; k < 3; ++k) {
+                    const float w = f32(static_cast<double>(f[9 + k]) + f[k] * v.x +
+                                        f[3 + k] * v.y + f[6 + k] * v.z);
+                    if (w < b.lo[k]) b.lo[k] = w;
+                    if (w > b.hi[k]) b.hi[k] = w;
+                    b.ok = true;
+                }
+            }
+        }
+    }
+    game::GameNativeDynProcess& process =
+        game::game_native_dyn_process(game::application_camera_axes_crt());
+    DynGeneralConvexIntersectStorage& owner = process.general_convex_owner();
+    const CameraAxesCrtAccess& crt = game::application_camera_axes_crt();
+    for (const std::unique_ptr<DraftShape>& dp : drafts_) {
+        DraftShape& d = *dp;
+        const float* fa = d.entry.frame;
+        for (std::size_t j = 0; j < hulls.size(); ++j) {
+            const Box& b = boxes[j];
+            if (!b.ok) continue;
+            bool overlap = true;
+            for (int k = 0; k < 3 && overlap; ++k) {
+                overlap = d.lo[k] - 0.1f <= b.hi[k] && b.lo[k] - 0.1f <= d.hi[k];
+            }
+            if (!overlap) continue;
+            HullWorldEntry& eb = hulls[j];
+            if (!dyn_shapes_overlap_filter(d.entry.group, 0u, 1u, 0x0Du | eb.class_bit)) {
+                ++census_.draft_pairs_filtered;
+                continue;
+            }
+            ++census_.draft_pairs_near;
+            const float* frame_b = frames[j].data();
+            int pair_hits = 0;
+            float pair_depth = -3.402823466e+38f;
+            for (const std::size_t sb : shape_chain_order(eb.shapes->size())) {
+                HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction, *eb.body);
+                if (hb == nullptr) continue;
+                ++census_.draft_shape_tests;
+                alignas(16) std::uint8_t result[4 + 8 * 36]{};
+                if (!dispatch_native_dyn_general_convex_00c535e0(owner, result, d.convex, fa,
+                        hb->convex, frame_b, crt)) {
+                    continue;
+                }
+                std::int32_t n = 0;
+                std::memcpy(&n, result, 4);
+                const float* c = reinterpret_cast<const float*>(result + 4);
+                for (std::int32_t k = 0; k < n; ++k, c += 9) {
+                    ++census_.draft_hits;
+                    ++pair_hits;
+                    double wa[3], wb[3];
+                    for (int q = 0; q < 3; ++q) {
+                        wa[q] = static_cast<double>(fa[9 + q]) + fa[q] * c[0] + fa[3 + q] * c[1] +
+                                fa[6 + q] * c[2];
+                        wb[q] = static_cast<double>(frame_b[9 + q]) + frame_b[q] * c[3] +
+                                frame_b[3 + q] * c[4] + frame_b[6 + q] * c[5];
+                    }
+                    const float depth = f32((wa[0] - wb[0]) * c[6] + (wa[1] - wb[1]) * c[7] +
+                                            (wa[2] - wb[2]) * c[8]);
+                    if (depth > pair_depth) pair_depth = depth;
+                    if (!drafts_apply_) continue;
+                    auto& slot = draft_manifolds_[{d.entry.index, eb.unit}];
+                    if (!slot) {
+                        slot = std::make_unique<Manifold>();
+                        slot->unit_a = Manifold::kStatic;
+                        slot->unit_b = eb.unit;
+                        slot->serial = ++manifold_serial_;
+                        slot->static_frame = true;
+                        std::memcpy(slot->frame_a, fa, sizeof(slot->frame_a));
+                        slot->terrain.set_pose(fa + 0, fa + 3, fa + 6, fa + 9);
+                    }
+                    Manifold& m = *slot;
+                    m.friction = dyn_combine_friction(0.0f, eb.friction);
+                    m.restitution = dyn_combine_restitution(0.0f, 0.0f);
+                    m.hull.set_pose(eb.body->row0, eb.body->row1, eb.body->row2,
+                                    eb.body->position);
+                    if (!dyn_contact_normal_is_unit(c + 6)) ++census_.rejected_normal;
+                    float in[9];
+                    std::memcpy(in, c, sizeof(in));
+                    insert_native_dyn_contact_00c3f760(m.bytes, in);
+                }
+            }
+            if (pair_hits > 0) {
+                ++census_.draft_hit_steps;
+                if (pair_depth > census_.draft_max_depth) census_.draft_max_depth = pair_depth;
+                HullPairCensus& pc = draft_pairs_[{d.entry.index, eb.unit}];
+                if (pc.steps == 0) pc.first_step = census_.world_steps;
+                ++pc.steps;
+                if (pair_depth > pc.max_depth) pc.max_depth = pair_depth;
+            }
+        }
+    }
+}
+
 void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, float dt,
                                           bool hull_hull) {
     world_step(hulls, {}, dt, hull_hull, false);
@@ -1178,6 +1356,28 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
             ++it;
         }
     }
+    // Packet cc9_avoid_zone_draft_bodies: the draft manifolds (draft, hull); a hull whose class
+    // bit was cleared (0092BD70(0)) fails the filter and its manifolds go with the pair.
+    for (auto it = draft_manifolds_.begin(); it != draft_manifolds_.end();) {
+        const auto fh = by_unit.find(it->first.second);
+        Manifold& m = *it->second;
+        bool live = fh != by_unit.end() && it->first.first < drafts_.size();
+        if (live) {
+            live = dyn_shapes_overlap_filter(drafts_[it->first.first]->entry.group, 0u, 1u,
+                                             0x0Du | fh->second->class_bit);
+        }
+        if (live) {
+            const DynBody& b = *fh->second->body;
+            m.hull.set_pose(b.row0, b.row1, b.row2, b.position);
+            refresh_native_dyn_manifold_00c4b9b0(m.bytes);
+        }
+        if (!live || m.count() <= 0) {
+            ++census_.retired;
+            it = draft_manifolds_.erase(it);
+        } else {
+            ++it;
+        }
+    }
     // The narrow phase: terrain per hull (section 87), then the hull pairs.
     for (HullWorldEntry& e : hulls) {
         ++census_.steps;
@@ -1198,6 +1398,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     pending_events_.clear();
     if (hull_hull) hull_hull_narrow_phase(hulls, true);
     hull_fort_narrow_phase(hulls, forts, hull_fort);
+    hull_draft_narrow_phase(hulls);
     // 00C35480 (the collision pass's last step, 00C57827), per queued hull-pair event: the
     // manifold's point 0 on A in world space (00C354E6..00C35542; the listener reads the first
     // of the transformed points at record+8h), then each listener in turn, A with (A, B) and B
@@ -1244,6 +1445,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     }
     for (auto& [key, m] : pair_manifolds_) list.push_back(m.get());
     for (auto& [key, m] : fort_manifolds_) list.push_back(m.get());
+    for (auto& [key, m] : draft_manifolds_) list.push_back(m.get());
     std::sort(list.begin(), list.end(),
               [](const Manifold* a, const Manifold* b) { return a->serial < b->serial; });
 
