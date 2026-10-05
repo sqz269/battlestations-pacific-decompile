@@ -3403,6 +3403,10 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
         }
         record.type_id = member.type_class_id;
         record.party = request.party;
+        // Packet cc9_plane_scene_equipment: 00944210's 0043D8F0 merges the member
+        // table over the seeded bag, so an authored `Equipment` is the bag's and
+        // an absent one leaves the key unset (read as 0, 007CDFF0's arm).
+        record.bag_equipment = member.equipment;
         record.created = true;
         record.world[0] = 1.0f;
         record.world[5] = 1.0f;

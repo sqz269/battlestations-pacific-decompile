@@ -11161,3 +11161,102 @@ SHIP_AI 125, cc9-ships28's lane). With a Japanese-team brain:
 Nothing in the Capture think is a host artefact that a switch could correct.
 `kAiTickMovetoRetasksPlaneBound` therefore stays OFF. Its USN13 stall follows from the team
 reading, not from a missing plane filter. No pairs were run for this item, because nothing was bound.
+
+## 5dk. Item 2: a plane's equipment is its bag's `Equipment` (packet `cc9_plane_scene_equipment`, cc9-lua38, 2026-10-05)
+
+5di item 3 said that the units host's release path reads `Equipments[DefaultEquipment or 1]`, while
+"the image's scene squadrons fly the generator's Equipment (`0094BD34`)". The second half is wrong
+for every plane this host makes.
+
+### The image
+
+- **`007CDF20`** (`__fastcall(plane)`) is a plane's attach. Its creation context is `[plane+C0h]`.
+  - **Kind 2** (`007CDF40`-`007CDF87`): `[plane+C54h]` = the creating record's `+124h`. The racks are
+    not loaded here.
+  - **Kind 1, a scene bag** (`007CDF89`-`007CDFF8`):
+    - `0048E9F0("Equipment")` (`00CF69AC`) tests whether the key exists.
+    - If it does, `[plane+C54h]` = its `+0Ch` integer (`007CDFD2`). For n > 0, `009552E0(class, n)`
+      gives `Equipments[n]`.
+    - `0095A880(plane, entry, 1, 0)` then runs (`007CDFF8`). With the key absent, n <= 0 or no
+      such entry, the entry pushed is 0 (`007CDFF0`/`007CDFF6`).
+- **`0095A880`**:
+  - With an entry, it builds each entry platform's device and hands it Ammo (`vtable[1BCh]`) and
+    ReloadTime (`vtable[1C0h]`).
+  - With a null entry, only the third-argument pass runs. That pass adds default devices
+    (`vtable[5Ch](1Eh)` slots missing a device) and loads no rack round.
+  - So **a plane whose bag has no positive `Equipment` carries nothing.** `007BCB30`
+    (`PlaneChangeAmmoType`) is the only later writer, and it reloads through the same `0095A880`.
+- **A squadron's planes share the squadron's bag.** `007F48FD` builds each plane's context with
+  `00922DE0`, which copies the kind and clones a kind-1 bag (`BSP_ScenePropertyBag_Clone`).
+- **The writers of the bag's `Equipment`** (a byte scan for `PUSH 00CF69AC` gives 11 sites):
+  - the scene row as authored (`plane.props`: `Equipment = E EquipmentIndex : none`, where `"none"` = 0
+    in `global.enums`; this installation, mtime 2024-10-29);
+  - `SpawnNew`'s member table, merged over the seeded bag by `00944210`'s `0043D8F0`;
+  - air ops `006C5050`, only when positive (`006C5232` `JLE`);
+  - the catapult `006ECA21` and the shipyard `0084525D`;
+  - the generator `0094B600`: an authored list, else `(Equipments count > 0)` at `0094BD34`. Its
+    callers are `0094C830`, reached from `0094C900` and the planner spawn arm `00A23980`, which
+    this host does not model;
+  - the support generator `0094BFF0` (caller `008EADA0`).
+
+So `0094BD34`'s "1 when the class lists any Equipments" applies to none of the planes this host
+creates. The AI side's `[X+C54h]` (5df) and the holds test's `generator_ammo` fallback are labelled
+substitutions of the same kind.
+
+### Where the host diverges (this installation's data)
+
+`local\l38_rowequip.py`, `l38_luaequip.py` and `l38_de.py`. The legacy index is the class's
+`DefaultEquipment`, or 1 when it is absent; its 0 reads nil.
+
+| row | source | squadrons | bag | legacy |
+| --- | --- | --- | --- | --- |
+| USN04/E2 (`usn_19_coralus.scn`) | scene | 1 Kingfisher (121) | 0 | 1 |
+| USNOS (`us_osumi.scn`) | scene | 1 AD-2 (339), 3 F2G (810) | 0 | 1 |
+| BSM01 | scene | 3 FlyingFortress (116) | 0 | 1 |
+| IJN01 | scene | 1 Dauntless (108) | 0 | 1 |
+| ESMP08 | SpawnNew | 1 TBM Avenger (16) | 2 | 1 |
+
+Every other scene row and `SpawnNew` member on these rows agrees (USN13's script authors
+`Equipment = 1` on its Kates, Bettys, Helldivers and Dauntlesses). The AI side's holds test changes
+more widely: every fighter whose bag is 0 is affected (Zero 150/350, Hellcat, Wildcat, Warhawk),
+including air-ops launches, which carry `DefaultEquipment` 0. Under 5df.1 those planes passed the
+holds test through the `Equipments[1]` fallback and scored the loadout arm's bomb option. With
+their own index they hold nothing, record+10h is 0, and they keep only the gun arm.
+
+### The binding (`kPlaneSceneEquipmentBound`, `include/bsp/plane_squadron_host.hpp`), committed OFF
+
+- `GameSceneEntityRecord::bag_equipment` (-1 means not carried) is set by:
+  - the scene build for a class-18h row (an enum symbol through the library, absent = 0);
+  - the `SpawnNew` member (`member.equipment`, 0 when absent);
+  - the air-ops request (`equipment > 0 ? equipment : 0`).
+  Wing records copy it, and `create_units` copies it to the slot.
+- `rack_equipment_ammo` (units host) feeds both rack censuses: Equipments[n] for n > 0, none for 0,
+  and the legacy read for -1. The holds test drops the `generator_ammo` fallback for a slot with a
+  carried index.
+- **Not covered:**
+  - The AI side's record+10h value (`game_hosts_ai.cpp:5096`, cc9-ships32's file) still reads
+    `Equipments[1]`. Its holds test is the units host's, so a plane with no rounds already scores 0.
+    Only a loaded plane with an index other than 1 (ESMP08's Avenger, Equipment 2) keeps the
+    `Equipments[1]` option list. A loan has been asked for.
+  - The kind-2 path (`+124h`: catapult and shipyard launches) is not carried.
+- Census lines:
+  - `plane equipment: unit=... bag=...`, once per squadron row, the first 40;
+  - `summary plane scene equipment bound=... squadrons= reads= none= default=`.
+
+### Predictions, written before any ON run
+
+Pairs from the commit that lands this OFF: `l38_a0` (OFF) against `l38_a1` (ON).
+- **USN02:** identical (no squadron).
+- **BSM01:** B-17s are a weak forecast, because they may not reach a target in 3200 frames. Expect
+  the three B-17 squadrons to drop nothing, and the Warhawks' AI option list to lose the bomb option.
+  Exit 1 or 3.
+- **IJN01** (if run): Dauntless1 drops nothing. The 8 Zero squadrons lose the bomb option in AI
+  scoring.
+- **USN13 and USN13 long:** the strike's loadouts are unchanged (Equipment 1 = DefaultEquipment 1).
+  The US Hellcats and the Japanese Zeros lose the bomb option, so the plane AI's target choice moves.
+  Expect moved rows, deaths within the noise of the fighter re-pick; the strike stays stranded (5dj).
+- **USN04 and E2:** the Kingfisher stops carrying its depth charge or bomb. The Zeros (SpawnNew
+  Equipment 0, and air-ops) lose the bomb option. Expect a move; Lexington's fate is not predicted.
+- **USNOS:** AD-2 and F2G drop nothing (F2G's bombs or rockets). Expect fewer US releases.
+- **ESMP08 14200:** the Avenger releases `Equipments[2]`'s ordnance. Its count and kind are as
+  authored; the release census names them.

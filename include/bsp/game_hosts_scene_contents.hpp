@@ -86,6 +86,11 @@ struct GameSceneEntityRecord {
     // on the pool entry) to the squadron's creation.
     std::string home_base;
     bool home_base_carried{false};
+    // Packet cc9_plane_scene_equipment: the bag's `Equipment` (00CF69AC) that
+    // 007CDF20 stores at [plane+C54h], 0 when absent ("none" in plane.props);
+    // -1 when this record's creator carries no bag value (the units host then
+    // keeps the class default). Wing records copy their squadron's.
+    int bag_equipment{-1};
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};
