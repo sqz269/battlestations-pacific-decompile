@@ -11144,3 +11144,28 @@ between the two builds could also produce.
 subtractions from 0.25, so the refresh fires every sixth frame, not every fifth. The image does
 the same: `009EF91D FLD` / `009EF924 FSUB` / `009EF927 FSTP` to a float slot, so each step is
 rounded to single precision. This is deterministic.
+
+## 141. The landing and capture sweep: nothing with reach (cc9-ships30, 2026-10-05)
+
+The sweep looked for bindings that answer a constant where the image reads a live structure. It
+covered the land step (`LandStepBinding`, `009E1950`), the landing-ship ramp and unload, and the
+command-building capture (`capture_step`, `006F6760` / `006F4D10` / `006F3270`). Reach is taken
+from this tree's 21 ON logs (`local\s30_on_<row>.log`).
+
+**Which rows reach it.** Every row prints the two landing-ship summary lines. JM08 long prints 41 landing-ship lines, the ramp and unload events among them.
+- One building per row is neutralized on JM05 long, JM08 long and USN01. JM05 long's RadarStation
+  01 goes at 70.65 s, JM08 long's Headquarter 01 at 1105.60 s and USN01's CB2 at 32.90 s.
+- **No row flips a building.** JM08 long's HQ ticks at s0=400 per second against a CaptureValue
+  of 2000000, so it would need 5000 s, and the run ends first.
+
+| label | site | finding | reach |
+| --- | --- | --- | --- |
+| "+2D8h has no producer here, so the old owner's retake exemption never applies" | `capture_step`, the flip | Half stale. `006F3270` stores `+7B4h` from `[unit+2D8h]` at `006F328A`/`006F3290`. `006F4FC2..006F4FDF` then reads `[[00E188A8]+18CCh+[+7B4h]*4]+28h`, the slot record's Party. That is the same table `scene_slot_party` reads now (section 125). `+2D8h` itself is the `+2B0h` record's `+28h`, which `006F4FEB` resets to -1; its writer was not traced | none: the exemption acts only at a flip, and no reference row flips |
+| `008E6430(10, unit)` "the list is empty here" | capture arm 1 | correct. GAMEPLAY_MODIFIERS.md closed it: no item grant happens in any measured mission | none |
+| `0082ADC0` "LABELLED: the same group_for_layer" | `LandStepBinding` | not a substitution. The body is `004218E0()` then `004120D0([class+570h])`, which is exactly `group_for_layer` | - |
+| Arm 3 "the paratrooper list +7DCh: always empty" | capture tick | no reference row drops paratroopers (no payload-5 release in any log) | none |
+| `+7C0h` phase stagger not drawn | `build_capture_buildings` | the RNG-stream rule; it moves only where a neutral building's ticks fall within the first second | - |
+
+**Verdict.** No binding. The capture path's next reach would be a row where a building actually
+flips. That needs either an authored CaptureValue small enough for a landing to complete, or the
+`BSP_CB_FORCE_ZERO` diagnostic.
