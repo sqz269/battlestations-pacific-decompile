@@ -11967,7 +11967,8 @@ packet's pair since (sections 60-149).
 - **The flip is held for the lead.** It removes every coordinator behaviour bound in sections
   60-149 from all single-player rows, and the next reference would be re-based on it.
 - **Open before a flip:**
-  - USNRM01's controlled-unit change (West Virginia) is a mission-script consequence that was not
-    read.
+  - USNRM01's controlled-unit change is now read: it is a script consequence. OFF, West Virginia
+    is sunk at 304.65 s by `Jap #16.1` (killer_cat 10, 147 m) and the script's second
+    `SetSelectedUnit` moves control to PT. ON, West Virginia is never sunk, so control stays on it.
   - USNRM01's 82 -> 15 tasks should be checked against the script's own strike orders, to confirm
     that the remaining launches are the script's.
