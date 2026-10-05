@@ -717,3 +717,43 @@ The flip, the slot pick and the retake exemption were not reached.
 - approach the last leg at a low throttle so that the coast ends inside the range;
 - bring a second ship, SaltLakeCity (Pensacola, CapturePower 50), so that the flip completes in
   about 100 s, before Katori arrives.
+### 10.4 Two more runs, and what blocks a USN01 flip
+
+The lead allowed up to three more runs. These two show the block, so the third was not spent.
+
+| run | orders | outcome |
+| --- | --- | --- |
+| A `local\s31_capA_usn01.log` | `local\s31_cap_ordersA.txt` | No side-0 tick at all. |
+| B `local\s31_capB_usn01.log` | `local\s31_cap_ordersB.txt` | One destroyer (CapturePower 20) is in range at 954.9-963.9 s, progress to 200. Then progress decays. |
+
+**Run A's orders:**
+- Northampton: leg 1 as in 10.3, then a throttle-0.25 leg aimed straight at CB2.
+- SaltLakeCity: `moveto ... repeat 5` to Katori's end point.
+
+**Run A's outcome:**
+- Northampton at 4.2 m/s is held at 146.8 m from CB2, at (3841.7, -3247.1). The land south-west of CB2 blocks the straight line; the water into the range is the corridor from the south-southwest that 10.3's track used.
+- SaltLakeCity is sunk by Katori at 932.60 s. Northampton is sunk by Coastal Gun 01 at 1073.47 s.
+
+**Run B's orders:**
+- Northampton: legs along the southern corridor at throttle 0.25.
+- SaltLakeCity, Ralph, McCall and Blue: `moveto ... repeat 5` to (3923, -3169), a point 52 m from CB2 on 10.3's track.
+
+**Run B's deaths:**
+- Northampton at 772.23 s (Katori torpedo, 1531 m);
+- SaltLakeCity at 1120.22 s (credited to McCall's gun 6 at 729 m: a friendly-fire attribution, not followed up);
+- Blue at 1161.36 s (Coastal Gun 01);
+- McCall at 1269.91 s (Katori).
+
+**What blocks it.**
+- CB2 needs 10000 points. A cruiser gives 50 a second, so it must hold for about 200 s; a Mahan gives 20, so about 500 s.
+- In phase 3 the only water into range is a corridor south of the island. It is covered by Coastal Gun 01, and Katori (Agano) shadows the US ships from 660 s.
+- Every run loses the ships that reach the island before 200 s of presence can build up.
+
+In the image, a player would have to fight Katori and the coastal guns first. That needs scripted gunnery input, which the harness does not have. USN01 is therefore closed as a capture row.
+
+**Counters (run B):** neutralized 1, countdown fires 1768, progress messages 128, flips 0.
+
+A capture row needs a mission where:
+- the player's capture force is not outgunned at the building; or
+- a building has a small CaptureValue; or
+- landing craft with LandedCapturePower (LST 150, Higgins 100) can reach a pad (JM08's ramps lowered at 836.50 s and 898.35 s, section 86).
