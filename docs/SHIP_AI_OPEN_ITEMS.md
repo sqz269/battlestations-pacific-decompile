@@ -10294,3 +10294,48 @@ reach.
 - **Verdict:** the mechanism matches every prediction of 125.4, so the switch is **flipped ON**.
   Every IJN row's baseline moves with it; the next reference build should re-baseline JM05,
   JM05 long, JM06, JM08, JM08 long, IJN01 and IJN11.
+
+## 128. Handoff (cc9-ships28, 2026-10-05, at about 75% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 118 | `008DDF90` in `00922C80` (the surface-target set branch); no reach | `kShipAiSurfaceSetBranchBound` ON |
+| 119 | the close-attack fallback through `00A02020` (section 112's edit) | `kCloseFallbackOrderBridgeBound` ON |
+| 120 | `Objectives_Add`'s target walk (starts at argument 5, walks list tables) | `kObjectiveAddTargetWalkBound` ON |
+| 121 | IJN11's stock scene: the capture spawn arm is due 7 times, nothing spawns | none |
+| 122 | `00A0F87E`'s local party (superseded by 125) | none |
+| 123 | the engage gate's avoid-zone test | `kShipAiEngageGateAvoidZoneBound` ON |
+| 124, 126, 127 | `009F1BC0`'s remaining spans, the `+1204h` side byte (no reach), the bookkeeping sites | none |
+| 125 | **the local player's party from the scene**: the world host's triple and the initial controlled unit, the HUD's selectable test, `slot_party`, `00A0F87E`, the objective mask's party arm, the capture slot | `kLocalPartyFromSceneBound` ON |
+
+### The next packets, in order
+
+1. **Re-baseline the IJN rows.** 125 moves JM05, JM05 long, JM06, JM08, JM08 long, IJN01 and
+   IJN11: every IJN row now controls a Japanese unit. Reference W predates it. Take IJN OFF bases
+   only from a tree with `070e01150`.
+2. **Section 127's target-curve refill** (`009F2F16..009F2FD3`, `src/game_hosts_ship_ai.cpp` near
+   `curve_target_kind_005c`, line ~5898).
+   - The image: an `IsKindOf(5)` probe; refill only in mode 0 with `+1224h` < 0; no target empties
+     the curve and sets `+1224h` = -1; a non-vehicle target skips without writing `+1224h`.
+   - Bind it OFF behind one switch, with census both ways (the `other` targets' kinds, skipped
+     refills).
+   - Pair USNOS, USNOS long and USN13: 553, 566 and 1114 `other` approach frames.
+3. **Open questions from 125** (read-first):
+   - The writer of `game+1FE4h` is unidentified: 124 displacement hits, all `CMP`. "0 in single
+     player" rests on earlier docs. If single player sets it, `004BC890` rewrites slots 0-3 to
+     party 0 and 4-7 to 1, which would answer cc9-lua34's USN13 slot-4 question differently.
+   - `KillBinding::local_player_side` (-1, `game_hosts_gunnery.cpp`, scoring) is still a
+     stand-in. Gunnery lane.
+4. Routed elsewhere: the frame state's tail `00863780` / `+7Dh` byte (to cc9-gunnery23).
+
+### Notes
+
+- **Tools** (`local\`, `s28_` prefix):
+  - `s28_runs.ps1 -V <tag> -Exe <exe> -Only <rows>`: the reference rows plus `ijn11`;
+  - `s28_callcover.py <disasm dump> [lo] [hi]`: call sites cited or not in src/include;
+  - `s28_scn_strings.py <scn> <pattern>`: strings around scene hits;
+  - `s28_cc.ps1` / `s28_cc2.ps1` / `s28_cc3.ps1`: compile one TU against copied headers.
+- `pair_export --flip` finds a switch in a header (`include/bsp/...`) too.
+- No lease is held after this commit.
