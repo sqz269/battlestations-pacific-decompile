@@ -10467,10 +10467,12 @@ Scripts in `local\`:
 ### Next, in order
 
 1. **USNRM01's Kates mush into the sea about 8 s after spawning** (5cw.1), while the script films
-   `TorpTable[1]` for about 45 s. Candidates for the planes lane:
-   - the free-flight law at negative forward speed (`007DB875` lift, `007D92B0` damping);
-   - the depth kill `007CE3A7` against `SetInvincible`;
-   - the aim tick at a 140-degree velocity error.
+   `TorpTable[1]` for about 45 s. Candidates, in the lead's order:
+   1. the depth kill `007CE3A7` (`BSP_MissionEntity_Kill(unit, 1)`, gated on `unit+61h`)
+      against `SetInvincible` (`unit+150h`), which the script sets on all five squadrons. This
+      one is cheap to check;
+   2. the free-flight law at negative forward speed (`007DB875` lift, `007D92B0` damping);
+   3. the aim tick at a 140-degree velocity error.
 2. **The gates and plane arm:** image as read, held OFF (5cy). Revisit with reference Y.
 3. **Unbound but read:** a running tightturn or flikflak survives a command change in the image
    (5cx). Bind it only once goaway is reached again.
