@@ -11544,3 +11544,112 @@ is authored.
 **The USN01 capture row** is closed without a flip (docs/SCRIPTED_HELM.md sections 10.3 and
 10.4). In phase 3, Katori and Coastal Gun 01 sink the player's ships before they can hold CB2's
 100 m for the 200 s that 10000 points needs.
+## 147. Scripted player attack orders: design (lead item, cc9-ships31, 2026-10-05)
+
+A read and a proposal; nothing is built. Ghidra was read-only.
+
+### 147.1 How a player's attack order reaches a ship in the image
+
+The order screen's page 1 calls **`005FAAE0`** at `005FC342` (in `005FB080`). For a controlled ship
+it runs this arm (listing `005FAAF5-005FABA6`):
+
+```
+005FAB05  [00E188D8]->vtable[5Ch](6)               ; a ship
+005FAB16  ECX = [[00E188D8]+738h]                  ; the weapon director
+005FAB21  target = director->vtable[2Ch]()         ; 008364E0: the fire target, director+238h
+005FAB29  null -> return (no order)
+005FAB38  0077C470([00E188D8], 2, 0)               ; give back role 1, the helm
+005FAB43  message 57h (0075B430), routed by 0077C2A0 ; the session echo, not read
+005FAB90  00465080(&desc, target, 0.0f)            ; BSP_CommandTarget_FromEntity
+005FABA1  0077D600(00E08F78 attackmove, &desc, 1)  ; BSP_Entity_IssueCommand
+```
+
+Its squadron arm (`vtable[5Ch](18h)`) instead sends message BCh and plays the `"attack"` voice.
+`005FA9F0` (page 2, `005FC3DD`) sends message BCh and plays a voice for any unit (not read
+further).
+
+**The player attacks whatever the director already targets.** The order carries no target of its
+own:
+- The fire target `director+238h` is written only by `00836240` (DIRECTOR_UPDATE_ARMS.md). It is
+  reached through `00835860 BSP_WeaponDirector_SetFireTarget`.
+- `00835860`'s callers are the Lua binding, the director's auto-target tick `009F5DA0`, the
+  command paths `00816E30`, `008358D0` and `00835C70`, and the entity-order appliers. **None of
+  them is a HUD routine.**
+- So how the player's own target pick reaches `+238h` (the HUD target cycler, possibly
+  `007A84D0`, RECON_SLOT_OBJECT.md) was not found. **Contract: unread.**
+
+**The ship's guns follow the director.**
+- The gun bots' fire-target policy `00863640` reads `director->vtable[2Ch]` (UNIT_GUNNERY_PASS.md).
+- `attackmove` itself reaches `00835860` through `008358D0` / `00835C70` when it becomes current.
+- So after the order, the AI gunners fire at the attack target.
+- Giving back role 1 also hands the steering back to the ship AI (`+184h` clear), which then
+  manoeuvres for the `attackmove`.
+
+### 147.2 Proposal: one line form, frame host only
+
+```
+<frame> attack <unit> <target> [repeat <seconds>]
+```
+
+1. **Refuse** unless `<unit>` is the controlled unit and a ship. `005FAAE0` reads `[00E188D8]`,
+   and `select` (section 10 of docs/SCRIPTED_HELM.md) is how a player gets there.
+2. **Give back the helm:** `GameUnitsHost::role_request_0077c470(unit, 2, false)`, the 4Bh take-0
+   arm (`+184h` clear). It already exists.
+3. **Issue the order:** `GameUnitsHost::issue_player_command("attackmove", <target>, <unit>)`.
+   The entity form resolves through `0046AAB0`, whose descriptor helper is the same `00465080`.
+   It sends `00E08F78` with flags 1 into `0077D600`, the order screen's own triple.
+4. **`repeat`** re-issues it, as `moveto ... repeat` does. The AI brain re-tasks a player's ship
+   (docs/AI_BRAIN_PLAYER_EXEMPTION.md), so a player clicks again.
+
+**LABELLED differences:**
+- The target is named in the file. In the image it is whatever `director+238h` holds when the
+  key is pressed, and the player's pick path is unread.
+- Message 57h is not reproduced.
+
+**Cost.** About 40 lines in `src/game_hosts_mission_frame.cpp`, with no other file touched. A
+smoke run covers the refusals, and the identity check is no file against an empty file.
+
+### 147.3 A better row than USN01: IJN05
+
+**Why IJN05.** "Invasion of the Andaman Islands" (`ijn_5_adamans.scn` / `.lua`, mtimes
+2024-07-13) is a capture mission by design.
+- Primary 2 is "Capture all bases!".
+- The script only counts `unit.Party == PARTY_JAPANESE` over HQ2 and CB1 (lines 789-830), so the
+  capture is the native one.
+- Both buildings are 100/10000.
+
+**The idle run** (`local\s31_ijn05_idle.log`, 36000 frames, this tree's build; positions from
+`--trajectory-csv`):
+- The player is Japanese. The controlled unit is Yugu1, then Yamato by the script.
+- CB1 is at world (-718, -1114) and HQ2 at (-7264, -2078). Both are party 0 (Allied).
+- **Neither is ever damaged:** neutralized 0, countdown fires 0. The capture tick runs only on a
+  neutral building (section 141), so a building must be shot to health 0 first.
+- The Japanese fleet (Yamato, Zao, Mogami, eight Yugumo, two carriers) sails west. It sinks the
+  British force by 773 s: Hood1, Leander1/2, Clemson1-5, all at 1.9-2.9 km. It ends near
+  (-6077, -5302), about 3.4 km from HQ2.
+- **Unlike USN01, the player's force wins the sea fight on its own.** The missing step is
+  shooting a building.
+
+**The row** (frames to be tuned; the same harness forms):
+
+```
+16000 select Yamato
+16001 attack Yamato HQ2 repeat 30             # guns on HQ2 until neutralized
+<tuned> takehelm Yamato 0.25 <water point within 100 m of HQ2> stop <m>
+```
+
+Optionally also select Zao and `attack Zao CB1`.
+
+**What to read in the log:**
+- `command building capture: unit=HQ2 neutralized`;
+- the side-0 ticks;
+- the flip, with its slot and the retake exemption.
+
+**Unknowns, settled by the first tuning run:**
+- whether an `attackmove` on a CommandBuilding makes the director fire at it, since the
+  auto-target may prefer ships;
+- Yamato's CapturePower;
+- where the water near HQ2 lies (read from the CSV, as on USN01).
+
+**Cost:** the build and smoke; then two tuning runs and one row run at 36000 frames (about 5-10
+min each when the slots are free).
