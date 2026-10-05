@@ -14107,3 +14107,55 @@ JM08 long ran only for `land`, `goa`, `hh`, `neo`, `tmb` and `rtk`.
   - newly ON: `kAiSquadronSetTargetIntakeBound`, `kCloseFallbackOrderBridgeBound`,
     `kGetSquadronPlanesBound`, `kObjectiveAddTargetWalkBound`, `kShipAiEngageGateAvoidZoneBound`,
     `kShipAiSurfaceSetBranchBound`, `kStrafeBreakoffBound`.
+
+## Mission reference baselines, 2026-10-05 x (main 1590ec097)
+
+Packet `cc9_reference_rebaseline_24`, worker cc9-gunnery23. The base is main `1590ec097`
+(2026-10-05 08:20 UTC). The report will be `reports/cc9_reference_rebaseline_24.json`. Anything
+flipped on main during these runs belongs to y.
+
+### Predictions (written before any run)
+
+**The switch diff** over `85f60f0a5..1590ec097` (`local\g23_switches.py` and the loose diff, which
+agree): eight newly ON, one newly OFF. Two new names are committed OFF
+(`kAiPlaneAttackerWeightBound`, `kAiWeightBarrelGatesBound`) and are not part of x.
+
+| short | switch | record | rows the pair moved |
+| --- | --- | --- | --- |
+| `lps` | `kLocalPartyFromSceneBound` | SHIP_AI 125 | every IJN row: the player now controls a Japanese unit |
+| `sti` | `kAiSquadronSetTargetIntakeBound` | SQUADRON_LAND_TASK 5ck | USNRM01 (GUNNERY 98: the scripted Kates go to Downes), ESMP08 long, USNOS |
+| `cfb` | `kCloseFallbackOrderBridgeBound` | 5cl | ESMP08 long |
+| `gsp` | `kGetSquadronPlanesBound` | 5cn.1 | scripted squadron rows |
+| `sbo` | `kStrafeBreakoffBound` | 5cm.1 | USNOS, USNOS long, ESMP08 long (the strafe rows) |
+| `oat` | `kObjectiveAddTargetWalkBound` | Lua host | objective rows |
+| `ssb` | `kShipAiSurfaceSetBranchBound` | SHIP_AI | submarine / surface rows |
+| `egz` | `kShipAiEngageGateAvoidZoneBound` | SHIP_AI | formation rows |
+| `rtk` (newly OFF) | `kAiTickMovetoRetasksPlaneBound` | 5co | USN13, USN13 long, USN04, E2, USNOS, USNOS long, ESMP08 long, USNRM01 (GUNNERY w's leave-one-out) |
+
+**Rows:** w's twenty-one in w's launch form, plus **IJN11** (3200/3000). For each row the controlled
+unit's name and party are recorded.
+
+**Predicted moved against w:** every IJN row (JM05, JM05 long, JM06, JM08, JM08 long, IJN01), and
+the `rtk` rows. From w's leave-one-out with `rtk` OFF:
+- USN13: about 22 (w 0);
+- USN04: about 47; E2: about 50;
+- USNOS: about 98;
+- USN13 long: about 124;
+- ESMP08 long: about 6;
+- USNRM01: about 130, then moved again by `sti`.
+
+**Predicted gameplay-identical (exit 0 or 1):** BSM01, LOMP06, USN02 and USN12. This is weak: the
+SHIP_AI switches reach formation rows.
+
+**All-OFF anchor:** with the eight OFF and `rtk` back ON (`local\g23_rx0`), `1590ec097` is
+gameplay-identical to w (exit 0 or 1 against `g23_rw_<row>`) on all twenty-one rows.
+
+**Leave-one-out:** six variants back to their w values, against x on the rows x moves: three lanes,
+two rounds. The variants are `lps`, `rtk` (back ON), `sti`, `pln` = `cfb` + `gsp` + `sbo`, `oat`, and
+`sai` = `ssb` + `egz`. Predicted:
+- `lps` attributes the IJN rows;
+- `rtk` the plane rows above;
+- `sti` USNRM01.
+
+**Run parameters:** as w (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player); a 300-frame USN01 smoke first.
