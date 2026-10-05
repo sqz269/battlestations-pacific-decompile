@@ -814,6 +814,19 @@ public:
         if (!resolved || offset == 0u) return 0.0f;
         return block_.at(offset);
     }
+    // Packet cc9_ai_rocket_accuracy: 009FE4F1 read whole. EBP is the attacker
+    // (vtable[18h](0Fh) at 009FE4FB), EDI the bullet (006E3260 IgnitionDelay
+    // <= 0; 007B80A0 / 007B80C0 AntiAir with [00F874FD]), ESI the target.
+    float rocket_accuracy(const void* attacker, const bsp::AiPlaneBulletFacts& bullet,
+                          const void* target) override {
+        if (!group_) return 0.0f;
+        const bool same = rocket_air_ground_same();
+        const std::uint32_t offset = bsp::ai_rocket_accuracy_offset_009fe4f1(
+            entity_is_type(attacker, 0x0F), bullet.ignition_delay <= 0.0f,
+            bullet.anti_air || same, !bullet.anti_air || same,
+            static_cast<int>(group_(index_of(target))));
+        return offset == 0u ? 0.0f : block_.at(offset);
+    }
     void note_plane_option(std::uint32_t descriptor, float value) override {
         const int loadout_slot = ai_loadout_descriptor_slot(descriptor);
         if (loadout_slot >= 0 && loadout_slot < 5) {
@@ -5153,10 +5166,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const bool holds = units.unit_is_kind_of(x, 0x17) ||   // 007B914A
                            units.plane_holds_rack_round_007b9140(x);
         if (!holds) return 0;
-        // [X+C54h]: LABELLED, the generator's default (0094BD34).
+        // [X+C54h]: the bag's `Equipment` 007CDF20 stored (packet
+        // cc9_plane_scene_equipment, kAiPlaneBagEquipmentBound); without a
+        // carried value, LABELLED, the generator's default (0094BD34).
         const GameUnitRow* row = units.unit_row(x);
-        const int equipment =
-            row != nullptr && game_ai_plane_equipment_count(row->type_id) > 0 ? 1 : 0;
+        const int carried = bsp::kAiPlaneBagEquipmentBound ? units.plane_bag_equipment(x) : -1;
+        const int equipment = carried >= 0 ? carried
+            : row != nullptr && game_ai_plane_equipment_count(row->type_id) > 0 ? 1 : 0;
         if (equipment > 0) ++c.records_loadout;
         return equipment;
     }

@@ -14394,6 +14394,12 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
     return false;
 }
 
+int GameUnitsHost::plane_bag_equipment(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || !host.slots[unit_index]) return -1;
+    return host.slots[unit_index]->bag_equipment;
+}
+
 std::size_t GameUnitsHost::issue_return_to_base_007f16d0(std::size_t unit_index,
     const std::string& source) {
     Impl& host = *impl_;

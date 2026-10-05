@@ -11431,3 +11431,17 @@ USNOS, USNOS long, IJN11, USN13 and USN02 are gameplay-identical (exit 1, noise 
 exit 0. No Ohka Betty spawns inside USNOS long's 9000 frames, and every row's census reads
 `kamikaze=0`, so the binding is unexercised on the reference rows. The readers are the image's as
 read, and nothing moves, so the switch is ON.
+
+## 5dn. The AI-side lines, landed OFF (cc9-lua38, 2026-10-05)
+
+`src/game_hosts_ai.cpp` (a short window after cc9-ships32 released it):
+- `rocket_accuracy` overrides the host virtual from 5dm. It calls `bsp::ai_rocket_accuracy_offset_009fe4f1`
+  with the attacker's plane base, IgnitionDelay <= 0, and AntiAir or `[00F874FD]` for each of the two
+  rocket tests. It is reached only with `kAiRocketAccuracyBound` (OFF).
+- `record_loadout_00a04560` reads `units.plane_bag_equipment(x)` (new, `GameUnitsHost`) for
+  `[X+C54h]` behind the new `kAiPlaneBagEquipmentBound` (OFF, `include/bsp/plane_squadron_host.hpp`).
+  Otherwise it keeps the generator default.
+
+Both are inert on every single-player reference row now that `kAiCoordinatorLoadGateBound` is ON
+(SHIP_AI 150.6: no AI coordinator on a mission-tree launch). They stay committed OFF, for the
+developer and session paths; no pairs were run.

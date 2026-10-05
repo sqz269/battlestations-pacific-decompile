@@ -51,6 +51,12 @@ inline constexpr bool kPlaneSquadronLeaveOnDeathBound = true;
 // `DefaultEquipment or 1`; a record that carries none keeps the old default.
 inline constexpr bool kPlaneSceneEquipmentBound = true;   // ON: SQUADRON_LAND_TASK 5dk.2
 
+// The AI side of the same field: 00A04560's record+10h reads [X+C54h]
+// (00A04608..00A0464E), so with this ON the AI host takes the slot's carried
+// bag `Equipment` instead of the generator default 1 (0094BD34). Committed
+// OFF (5dn): inert on single-player rows while no AI coordinator exists.
+inline constexpr bool kAiPlaneBagEquipmentBound = false;
+
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
 // which the scene pass already resolves onto its record). Each is verified from
 // the bytes at the literal's address, not from a name.
