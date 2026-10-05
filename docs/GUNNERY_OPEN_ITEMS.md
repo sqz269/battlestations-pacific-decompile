@@ -8837,3 +8837,70 @@ SaltLakeCity at 644.17 s to a Katori torpedo at 113 m. cc9-ships31's runs had it
 - **Verdict.** The two switches stay ON, on their own 5df.1 verdicts. Nothing in this chain is a
   host defect. SaltLakeCity's death time is not a fidelity measure. A USN01 capture plan should not
   rely on SaltLakeCity reaching phase 3.
+
+## 115. Three lead items: the `pla` split, the draft-wall spawns, and SaltLakeCity on main (cc9-gunnery26, 2026-10-05)
+
+### 115.1 JM08 long's 46 -> 148 is `kDialogSequencerBound` alone
+
+Each of `pla`'s three switches was set OFF alone at reference y's base `409ad51a6`. JM08 long,
+36000 frames, in the reference launch form (`local\g26_lane.ps1`). `pair_diff` against
+`g25_y_base_jm08l.log`:
+
+| switch OFF alone | log | against y |
+| --- | --- | --- |
+| `kOrderAttackNoMemberIssueBound` | `local\g26_pla_oan_jm08l.log` | gameplay identical (148) |
+| `kTerrainAvoidForwardSpeedBound` | `local\g26_pla_tav_jm08l.log` | gameplay identical (148) |
+| `kDialogSequencerBound` | `local\g26_pla_dlg_jm08l.log` | **148 -> 66** |
+
+The `kDialogSequencerBound` run is gameplay identical to cc9-gunnery25's all-three-OFF run
+`g25_y1_pla_jm08l.log`: 66 deaths, 2709 hit records, 950 hull hits, 5802 shots.
+
+**The mechanism.**
+- With the sequencer ON, y's summary reads `dialog sequencer bound=1 messages=22 callbacks=1`,
+  and the log has `dialog callback HoshoTime t=111.15`.
+- This installation's `scripts\missions\COTP-IJN\PRCPIJN\jm08.lua` (mtime 2024-07-13) defines
+  `HoshoTime` at line 889. It starts a 180 s countdown to `SpawnHoshoFleet`, which generates Hosho
+  and two escorts and stocks 51 aircraft. It also delays `SpawnNevadaFleet` by 20 s.
+- Without the sequencer the dialog's callback never runs, so neither fleet ever enters.
+
+**Verdict:** a fidelity gain. The extra deaths are the scripted reinforcements the image brings in.
+
+### 115.2 The draft-wall spawns are the authored poses (109's open question)
+
+- **The host spawns these hulls at the scene's frames exactly.** Two short runs on this tree's tip
+  (60 mission frames, `--trajectory-csv`, `local\g26_spawn_<mission>.<unit>.csv`) give these step-0
+  poses:
+
+  | hull | step-0 pose | scene file | the frame's other rows |
+  | --- | --- | --- | --- |
+  | JM05 PT Boat 80' Elco 01 | (1149.44, -0.555, 7122.90) | `ijn\JM\ijn_05_invasion_of_port_moresby.scn` | pitched about 2.3 degrees |
+  | JM05 Elco 02 | (1132.03, -0.446, 7088.65) | the same | |
+  | BSM01 Raleigh | (1500, 0, -3350) | `bsm\bsm_01_stationed_at_pearl.scn` | |
+  | BSM01 Cassin | (442.38, -0.760, -3637.93) | the same | |
+  | BSM01 Medusa | (2541.39, -0.843, -2854.76) | the same | |
+
+  Each pose is that file's top-level `localframe` translation. The entities have no parent frame.
+  The scene files are dated 2024-07-13.
+- **What the authoring says.**
+  - The JM05 boats are set dressing. Each is Party Neutral with `FireStance HoldFire`,
+    `Navigator false`, `LandCollAvoid false` and `ShipCollAvoid false`.
+  - Cassin and Medusa also have `Navigator false`, with tilted frames.
+- **The image applies the same frames.**
+  - The only placement-legality routine found, `BSP_SpawnRequest_MemberPlacementLegal`
+    `00941D30`, is on the `SpawnNew` queue. Its callers are `00949300` and `00942CB0`.
+  - None of the 19 callers of `00903860` is a scene-placement routine (section 113).
+  - The walls come from the same scene's avoid zones.
+- **Answer:** yes. The image builds the same hulls at the same poses, inside or across the same
+  draft walls.
+- **Uncertainty:** the scene record loader of the ship creators was not read end to end for a pose
+  correction.
+
+### 115.3 SaltLakeCity on main after `kAiCoordinatorLoadGateBound` ON (section 114 recheck)
+
+Main `720f37936` (with `a8404d451`, the coordinator gate ON), control export, USN01 13500 frames:
+`local\g26_slc_main720.log`.
+- **SaltLakeCity does not die by 675 s.** No death row names it or Dunlap.
+- The history differs from both earlier builds from death row 11 on. It has 35 death rows by
+  700 s, against 59 for `94c5c61c3` and 65 for `82fa35ace`.
+- The coordinator gate turns off the weight paths of section 114 on single-player rows, so the
+  early death has gone. It goes the same way section 114's chain did.
