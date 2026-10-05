@@ -122,6 +122,13 @@ inline constexpr bool kHullHullContactBound = true;
 // the narrow phase runs as a census only; hulls pass through forts.
 // ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 96.4).
 inline constexpr bool kHullFortContactBound = true;
+// Packet cc9_hull_shape_chain_order (docs/GUNNERY_OPEN_ITEMS.md section 106). 00C44090 walks
+// each body's shape chain (B+70h, next +208h); 00C5C940 PREPENDS every shape it attaches
+// (shape+208h = old head, B+70h = shape), and 00937C90 builds a hull through 00C5D580, which
+// attaches the descriptors in vector order. So the chain runs from the last hull shape to
+// the first. True: the terrain, hull-pair and fort narrow phases walk a hull's shapes last to
+// first. False: first to last (the host's list order, a labelled substitution).
+inline constexpr bool kHullShapeChainOrderBound = false;
 // Packet cc9_sunk_hull_shape_flag8 (docs/GUNNERY_OPEN_ITEMS.md section 101). 00825F20 at
 // 00826410..0082643B: once a wreck's sinkTime (+828h) passes 60 s, each hull shape loses mask
 // bit 8 (00C47F60), the terrain's group, so 00C44104's filter refuses every hull-terrain pair
