@@ -11395,3 +11395,39 @@ The a-pair census reads `rocket=0/0` on every row that runs the loadout arm (USN
 E2, USNOS, ESMP08 14200, IJN01). So **every reference row stays identical** when the switch is
 flipped with the override in place. The arm is verified by reading only. A row with a rocket
 loadout (a Corsair or Avenger with HVARs) is needed to measure it.
+
+### 5dk.2 Re-paired (`l38_c0` against `l38_c1`, commit `6a6ec6ade`): **ON** (cc9-lua38, 2026-10-05)
+
+| row | c0 -> c1 |
+| --- | --- |
+| USN02, BSM01, IJN01, USN04, E2, USNOS, USN13, ESMP08 14200 | gameplay identical (exit 1: census lines and the known ship-avoidance refill noise) |
+| USN13 long | deaths 133 -> **148**, shots 43333 -> 48071, hull hits 2755 -> 3509, dive-bomb releases 1 -> 0 |
+
+- **The LaunchSquadron fix works.** The airfield Kates and Bettys are armed again:
+  `squadron ordnance Airfield5_sqn13 ... -> 2`, and likewise JapAF_sqn14 through 18. Census:
+  `reads=653 none=316`.
+- **The remaining move is the Zeros.** The airfield Zeros (Airfield5_sqn11 and JapAF_sqn12, class
+  350, `DefaultEquipment` 0) carry nothing in both builds (`squadron ordnance ... -> 0`). Under
+  c0's `Equipments[1]` fallback the AI still credited them a bomb: `dive` options 12349 positive in
+  c0, 0 in c1. Without it they keep only the gun arm, so they score planes. The planes in reach
+  are the `bruh` Kates, and the slot-4 brain counts those as enemies (5cq, 5dj).
+- **From the per-death table** (`l37_deaths.py`; 29 deaths only in c1, 14 only in c0):
+  - only-ON victims are almost all `bruh` Kates, killed by `Airfield5_sqn11` (7), `JapAF_sqn`/`JapAF_sqn12`
+    (3), other `bruh` (4) and `CB` (3);
+  - in return, `bruh #2.9` kills `Airfield5_sqn11` and a JapAF Zero.
+  - The only-OFF victims are Agano's targets (storage and containers) and a few `bruh` losses to Marus.
+  - So the extra deaths are Japanese planes fighting Japanese planes, which is the team-reading
+    artefact, not this binding.
+
+**Verdict: ON.** The mechanism is the image's as read: `007CDF20`'s bag Equipment, and
+`LaunchSquadron`'s `DefaultEquipment` default. Every row but USN13 long is identical. USN13 long's
+move comes from removing a labelled substitution (the generator-default fallback that gave unarmed
+fighters a bomb option). The friendly dogfights it exposes belong to SHIP_AI 125, the slot-4
+brain's team.
+
+## 5dl.1 Measured (`l38_b0` against `l38_b1`, commit `27f74feb3`): **ON** (cc9-lua38, 2026-10-05)
+
+USNOS, USNOS long, IJN11, USN13 and USN02 are gameplay-identical (exit 1, noise only), and IJN11 is
+exit 0. No Ohka Betty spawns inside USNOS long's 9000 frames, and every row's census reads
+`kamikaze=0`, so the binding is unexercised on the reference rows. The readers are the image's as
+read, and nothing moves, so the switch is ON.

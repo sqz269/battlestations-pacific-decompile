@@ -49,7 +49,7 @@ inline constexpr bool kPlaneSquadronLeaveOnDeathBound = true;
 // squadron's bag (007F48FD -> 00922DE0). With this ON the units host loads a rack
 // from that index (GameSceneEntityRecord::bag_equipment) instead of the class's
 // `DefaultEquipment or 1`; a record that carries none keeps the old default.
-inline constexpr bool kPlaneSceneEquipmentBound = false;
+inline constexpr bool kPlaneSceneEquipmentBound = true;   // ON: SQUADRON_LAND_TASK 5dk.2
 
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
 // which the scene pass already resolves onto its record). Each is verified from

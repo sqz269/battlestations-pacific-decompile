@@ -392,7 +392,7 @@ inline constexpr double kAiLoadoutParamsHalf = 0.5;
 // fills the paratrooper fields (007AC780) and the carried kamikaze's class
 // (006FF170) of AiPlaneBulletFacts only with this ON; OFF they stay unknown and
 // both options score 0, as before.
-inline constexpr bool kAiLoadoutCarriedTermsBound = false;
+inline constexpr bool kAiLoadoutCarriedTermsBound = true;   // ON: SQUADRON_LAND_TASK 5dl.1
 
 // Packet cc9_ai_rocket_accuracy (docs/SQUADRON_LAND_TASK.md 5dm): the loadout
 // arm's rocket option asks the host's rocket_accuracy (009FE4F1 read whole)
