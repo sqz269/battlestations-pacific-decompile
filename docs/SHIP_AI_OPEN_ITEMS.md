@@ -10035,3 +10035,36 @@ kShipAiEngageGateAvoidZoneBound=true` (`local\s28_e123on`, SHA-256 prefix `B3C53
   class's group on these rows.
 - **Verdict:** every prediction held, so the switch is **flipped ON**. Section 114's rank 4 is
   closed.
+
+## 124. `009F1BC0`'s remaining unread spans, listed (section 114's `frame_state_unread_spans`, cc9-ships28, 2026-10-05)
+
+**Method.** `disasm-raw 009F1BC0 --length 0x14C3` (body `009F1BC0..009F3083`, `ghidra proto`).
+Every `CALL` in the body was checked for a citation of its site or callee in `src/` and
+`include/` (`local\s28_callcover.py`), and every address of the body for a citation in `docs/`.
+Covered by earlier packets, and not listed again:
+- `009F1BC0-009F2124`: the head and the mode latch (section 26ff.);
+- `009F2124-009F272D`: the retarget arm (sections 27-29);
+- `009F2795-009F28F1`: the ring winner and the committed slot;
+- `009F28F1-009F2AC9`: the target curve, own curve and ring query;
+- `009F2AC9-009F2E9B`: the torpedo standoff and the two cache blocks;
+- `009F2F11` and `009F2FB1`: the curve refills.
+
+**What is left:**
+
+| span | what it does | host | reach on the reference rows |
+| --- | --- | --- | --- |
+| `009F272D-009F2795` | writes `nested+1204h` from the mode `+1234h`. Modes 1 and 3: 0. Modes 2 and 4: 1. Mode 0: 2 when `+1208h` is set, else 0 when `009E5E30(nested)` is true or the byte `[00E0E2FC]` is set, else **1** | not modelled. `speed_gate_1204` is written only by the ring scan's side choice (`009E73E8` 0 / `009E73F4` 2), so it never holds 1 | **every approach frame**: modes are 0 on all rows (USNOS long 2655 frames, USN13 1159, USNOS 1197). Between ring-scan refreshes the image holds this span's value, and the host holds the last scan's. Value 1 arms `009E6D24`'s range gate: the limit drops to 0 when the standoff is past (range - `kApproachGateRange`) |
+| `009F2858-009F28B4` | inside the committed-slot block. `CALL EAX` at `009F2858`, then a pose refresh (`00414DB0` at `009F2876`) and `007B4E90` at `009F28A9` | sites not cited (SHIP_AI_COMMITTED_SLOT.md cites the neighbours `009F2842` and `009F28B4`) | to check: probably the ring winner's pose read |
+| `009F2DB7` | `00415550` inside the torpedo standoff | site not cited; the standoff is bound (`kTorpedoStandoffBound`) | to check against the standoff's reconstruction |
+| `009F2F40`, `009F2F95`, `009F2FC6` | `CALL EAX` and two `009523B0` calls between the curve refills | SHIP_AI_BEARING_RATING.md cites `009F2F9A` only | to check: likely the curve objects' own reset |
+| `009F2FCB-009F3069` (the tail) | `+1224h` = -1.0 (`00D7A260`). If `[unit+6DCh]` is set: `00863780([unit+6DCh])(+12BAh && +12B4h + 50.0 > +127Ch)`, the gunnery pass byte `+7Dh`. `+11FCh`: modes 2 and 4 arm it to `[00D7A24C]` when it is negative; every other mode resets it to -1.0. Mode 3: `brain+308h` = `[00D7A24C]` | `+11FCh`, the evade timer, is read by `009E7502` but this reset/arm is not modelled. The `+7Dh` byte is the gunnery host's constant 1 (`torpedo_may_take_fire_target`). `brain+308h` is section 114's "store with no reader" | modes 2 and 4 never occur on the reference rows, so `+11FCh` stays at -1.0 both ways. The `00863780` call writes a gunnery byte every approach frame: 0 (the gun walk runs) unless the clearance condition holds. That belongs to the gunnery lane |
+
+**The next packet from this list:**
+1. **`009F272D-009F2795`, the `+1204h` side byte.** It is the only span with reach on every
+   approach frame. Read `009E5E30` and `[00E0E2FC]`, and check the order: does the ring scan's
+   side choice run after `009F2733` on every frame, or only on refresh frames? Then bind it OFF
+   with predictions (USNOS, USNOS long, USN13).
+2. **The tail's `00863780` call:** route it to the gunnery lane. It turns the host's constant `+7Dh`
+   into a per-frame value.
+3. The three "to check" rows are bookkeeping. Check each site against the existing
+   reconstruction before ranking it.
