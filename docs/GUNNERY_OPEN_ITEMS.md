@@ -8704,3 +8704,71 @@ mechanism failure.
   `g25_report25.py`: the report; `g25_switches.py <a> <b>`: the switch diff.
 - `g25_census.py <prefix>`: the draft-body build and contact census per row.
 - `g25_trimdiag.py <export>`: the uncommitted pitch diagnostic of 111.
+
+## 113. The scripted attack on Coastal Gun 01: the fort is buried, the director is not at fault (cc9-gunnery26, 2026-10-05)
+
+Question (lead queue item 1): in cc9-ships32's USN01 runs (docs/SCRIPTED_HELM.md 11.2),
+`attack Northampton Coastal Gun 01` gives `current=0 latched=0` and 0 impacts on the gun. Does
+the image's director accept a land fort as a fire target, and does the host latch it?
+
+**Answer: the director accepts and latches it. The gunnery pass then refuses it at the
+line-of-sight test `00864680`, every time, because this installation's scene places Coastal Gun 01
+about 67 m inside a hill. No host divergence was found, so nothing is bound and no pair was run.**
+
+### 113.1 What was established
+
+- **`current=0 latched=0` is not the fire target.** The fields are the command row's
+  `0071BE40 answers this command` and the `00835C70` cruise-arm latch
+  (`include/bsp/game_hosts_commands.hpp:108-109`). An attackmove writes no helm latch.
+- **The fire target is latched.** In ships32's `s32_r1.log`, the ship-AI rows after the attack
+  read `state=attackmove ... fire=Coastal Gun 01`. The end-of-run unit table reads
+  `Northampton ... Coastal Gun 01 0071dfc2 slot 0 category 2`. `00835860` gates only on force,
+  `+23Ch` and `+238h` (`src/weapon_director.cpp:157`), never on the target's class.
+- **The pass scores it.** Diagnostic run `local\g26_diag1.log` (this tree, `s32_orders1.txt`, USN01
+  20000 frames, `BSP_AA_TRACE_UNIT=Northampton`, `BSP_AA_TRACE_TARGET=Coastal Gun 01`):
+  - `summary mission aa target Coastal Gun 01 scored=3163 accepted=309 range_rejects=2854
+    gun_range_rejects=0 assigns=0 min_dist=208 (by Northampton cat 3)`.
+  - Class 1Bh (MLandFort) has rank 10 in MEDIUMARTILLERY (`00E09754`, `src/gunnery_tables.cpp`).
+  - So the target passes `00863990` and the range gate whenever Northampton is within 2300 m.
+  - `gun_range_rejects=0` with `assigns=0` means no gun ever evaluated it (`00729BC0` was never
+    reached). The only refusal between them in `00864FE0` (steps 8.5 and 8.7) is
+    `00864D90` -> `00864680`.
+- **The LOS refuses it.** Diagnostic `local\g26_diag3.log` used an uncommitted log line in
+  `line_of_sight_00864680` (now reverted). It logged 23 Northampton -> gun casts within 1400 m,
+  all from the west, south and east. Every one hits the Landscape (kind 44h, shape 0Ah) 110-175 m
+  short of the gun's point (3371.9, 11.5, -3753.9), at y 10.6-12.0. Each is more than 25 m from
+  the target, so each is blocked.
+- **Why: the gun is under the ground.** `local\g26_diag4.log` cast a near-vertical ray under each
+  land unit:
+  - Every building and fort sits within 0.5 m of the terrain:
+    - CB2: 3.00 on 2.99;
+    - Coastal Gun 02: 34.32 on 34.76;
+    - Coastal Gun 03: 36.48 on 36.87;
+    - Heavy AA 01-03: 39-43 m on 39-43 m.
+  - **Coastal Gun 01 is the exception: pose y 3.04, terrain 70.22 m.** Four probes 15 m around it
+    read 60-78 m.
+  - The pose is the authored one. This installation's `universe\scenes\missions\usn\usn_1_marshall.scn`
+    (mtime 2024-07-13, the bulk date) gives `localframe ... 371.8990 3.0411 246.1221`, while
+    Coastal Gun 02 has `34.3185`.
+  - Both entities carry `__SnapToTerrain = B true`. That is an editor property: the string
+    `SnapToTerrain` occurs nowhere in `battlestationspacific.exe` (ASCII or UTF-16), in the
+    installation's DLLs or in its Lua.
+  - The land-fort path does not snap either. `00747000` calls only `00745940`, `009553D0`,
+    `operator_new` and `_memset`. `00745940` calls only `00809270` and `0095CC90`. None of the
+    19 callers of `BSP_World_GroundHeightAt` `00903860` is a placement routine.
+  - So the image builds the gun at y 3.04 as well.
+- **The terrain trace is the image's.** `kTerrainSegmentQuadtreeBound`, `kGunneryLineOfSightBound`,
+  `kGunneryLosRoleSwapBound` and `kLandscapeSpatialAttachBound` are all ON. The cast is
+  `00ADA240`'s quadtree walk (`src/game_hosts_scene_contents.cpp`, packet
+  `cc9_terrain_segment_quadtree`). Its labelled substitution is only the hit fraction.
+
+### 113.2 Consequences
+
+- **The gun can still fire at Northampton (179 shots, 14 hits).** Its own casts start inside the
+  hill and are not blocked. That is the same walk's answer for a ray that starts below the
+  surface; it is not a separate host rule. Whether the image's `00AEA2B0` answers it identically
+  was not bit-checked. **Uncertainty: medium.** The walk is reconstructed but not bit-verified.
+- **For the capture row (SHIP_AI 148, SCRIPTED_HELM 11.2):** no AI director can engage Coastal Gun
+  01. Coastal Guns 02 and 03, on the same hill at 34-36 m, are on the ground and are the
+  attackable forts. A player's manual aim has no `00864680` gate; the harness does not drive it.
+- **No code change.** `src/game_hosts_gunnery.cpp` is unchanged; the diagnostic was local only.
