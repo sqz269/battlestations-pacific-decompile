@@ -10684,3 +10684,48 @@ With the own-group attack-move gone, the gates no longer produce any friendly sc
 refusals). What they still change is the planner's choice, which 5cu read as the image's. A fresh
 plausibility read of the gates (and of 5ch) is now meaningful. These numbers are its starting point,
 not a verdict.
+
+## 5dc. The six Kates that still stall nose-up: the image's repair and authority, as read (cc9-lua36, 2026-10-05)
+
+The lead's follow-up to 5da.1. A diagnostic export of `45004bc4d` (never committed;
+`local\l36_diag2.py` over `local\l36_diag`, log `local\l36_diag_usnrm01.log`) logged KateSpawn1, 3
+and 4 every 0.5 s from 118 to 150 s, and every pitch rewrite by `0099BF30`.
+
+**KateSpawn3, which reaches the sea at 148.5 s:**
+
+| t (s) | alt (m) | nose (rad) | planner pitch slot | command after `0099BF30` | what happens |
+| --- | --- | --- | --- | --- | --- |
+| 118.8-121.3 | 180-170 | 0.00 | desired -1.0 | -0.23 to +0.67 | the slip from the spawn (5da); sinking 17 m/s |
+| 121.8-129.3 | 160 -> 117 | 0.00 -> 0.89 | desired -1.0 | **+1.0** (a repair every think) | AvoidTerrain's pitch bands leave no admissible pitch, and the repair pulls up |
+| 129.8-138.3 | 125 -> 140 | 0.90 -> 0.75 | desired -1.0 | -1.0 (no repair) | full nose-down command, but the nose falls only about 0.02 rad/s |
+| 138.8-143.8 | 134 -> 55 | 0.74 -> 0.68 | desired -1.0 | -0.98 -> -0.26 | the deep stall: forward 14 m/s, body vy -33 m/s |
+| 144.3-148.3 | 47 -> -26 | 0.68 -> 0.75 | desired -1.0 | **+1.0** again | the repair near the sea; depth kill |
+
+**Each link is the image's:**
+- **The repair.** `0099BF30`: when `0099B940` finds no pitch band for the command, the command
+  becomes `[00CE6448]` = +1.1 if `|bank| <= [00CE3830]` (pi/2), else `[00D06BB0]` = -1.1
+  (`0099BFAA`-`0099BFE1`, disk bytes). That is `gunfire_repair_0099bf30`. The planner itself never
+  asks for nose-up here.
+- **The bands' pitch input** is the velocity elevation (`unit+C7Ch`, written at `007C1CA8` from
+  ctl+18h). At -0.6 rad of sink the fan sees the surface ahead and blocks the low pitches. As of
+  5da the look-ahead speed is the image's forward speed.
+- **Why the nose will not come down.** `007D9A70` scales every rotation rate by `max(a, r)^2`:
+  - `a` = interp(3 -> 0, 6 -> 0.25; airborne time) is 0.25 in the air;
+  - `r` = interp(ControlRangeMin -> 0, ControlRangeMax -> 1; forward / StallSpd) is 0 at
+    14 m/s forward;
+  - so the authority is 0.0625. The host's `control_authority` and
+    docs/PLANE_CONTROL_AUTHORITY.md agree.
+  - With PitchSpd about 0.5 rad/s that allows about 0.03 rad/s, as measured.
+- **The law has no nose drop.** docs/FREEFLIGHT_STALL_LAW.md 2 (and docs/CLIMBOUT_SPEED_GATE.md 2)
+  found no aerodynamic pitching moment and no stall guard on the pilot side.
+
+**Verdict:** no divergence, nothing bound. These six enter the slip later in their own geometry and
+spend the pull-up in the stall. The three flights that fly (5da.1) left the slip with more height
+and speed.
+
+**Open, recorded (planes lane):**
+- `007CBA50` `BSP_Plane_WaterSurfaceStep` compares `vtable[204h]` (the forward speed) with
+  `desc+19Ch` at `007CBAEF`. `007CB858` (`BSP_Plane_OnWaterContact`, kind 14h) compares it with 8.0.
+  Neither compare is in the host's water law. Whether the image ditches a slow aircraft on the
+  water instead of letting it sink to the depth kill is unread.
+- `009AF15A` (`009AF0A0`, the kamikaze cruise profile) also reads it. It is unmodelled.
