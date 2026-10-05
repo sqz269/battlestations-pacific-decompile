@@ -12514,3 +12514,22 @@ command is open. That host is the commands lane's.
 - **It closes a contract.** This is the producer of message `BCh` that TORPEDO_ATTACK_MODE.md
   listed as `contract: unread`.
 - **It would not fix USN01.** The scout already attacks in mode 2 and drops; it misses.
+
+### 156.1 Addenda to sections 152 and 154
+
+- **152, JM08 3000 (lead request).**
+  - OFF is `pair_export --flip kShipAiApproachLanderTermsBound=false` at `254134207`; ON is the
+    tree (`local\s33_off5_jm08.log` / `local\s33_on5_jm08.log`).
+  - `pair_diff` 1. JM08's first 150 s has 77 approach frames, all in mode 0, so every lander-terms
+    counter is 0 both ways.
+  - The switch's reach is the long row only. Judge it by 152.5's mechanism census (side writes =
+    mode 1-4 frames, mode-2 bearings, the launch hold on six transports, evade gain frames), not by
+    its death counts.
+- **154, the kamikaze `009E2365`.**
+  - It is `009DFF40`'s body inlined (mode 1, the timers, `009DA4E0`, `+1D8h`, `00605070`,
+    `+1CCh` = 0, `009E233A..009E2387`).
+  - The host routes it through `HeadingHoldBinding` (`set_heading_and_drop_path_009dff40`), so it
+    already resets the live plan under 154. Nothing more to bind.
+  - `009DE1B0` (`009DE1D9`), `009DE210` (`009DE253`) and `009DFEE0` (`009DFF0C`) have no rel32
+    caller and no absolute reference in the PE on disk (`s32_refs.py`). Every live `009DA4E0`
+    caller is now covered.
