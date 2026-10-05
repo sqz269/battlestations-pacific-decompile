@@ -9244,3 +9244,129 @@ carrier group's AA still gets them on their next pass.
 The mechanism matches, and the controls are exit 1, so the switch flips ON
 (`kStrafeBreakoffBound = true`). Corrected prediction: a tightturn from goaway lasts one or two
 ticks.
+
+## 5cn. Where the two script-dogfight chains stop; `GetSquadronPlanes` bound OFF (packet `cc9_script_dogfight_rows`, cc9-lua33, 2026-10-04)
+
+A new env-gated trace, `BSP_LUA_CALLBACK_TRACE=1` (`src/game_hosts_script_orders.cpp`), puts a
+Lua call hook on the mission state. It records the first mission-clock time and the call count of
+two kinds of function:
+- every Lua function its caller names `lua*`;
+- every unnamed Lua function, keyed `source:line`. These are callbacks the host or a C binding
+  calls.
+
+The trace changes no Lua behaviour; `report()` prints it. Runs, on main `eb373327c` plus this
+packet: USNRM01 9200/9000 (`local\l33_tr_usnrm01.log`) and BSM04 3200/3000
+(`local\l33_tr_bsm04.log`). Script files in this installation: `usn_1_pearl.lua` is dated
+2024-10-29 (locally modified, not the bulk 2024-07-13), and `bsm_04_vengance_at_luzon.lua`
+2024-07-13.
+
+### USNRM01: phase 1 never ends, because the West Virginia never takes damage
+
+The chain to the Welch squadron (`luaPh3Start`, line 1327) runs through phase 1's end.
+1. `luaIn` (1006) registers `Listener_WVDead` (1048-1054).
+2. When the West Virginia dies, that listener calls `luaWVSunk` (1456).
+3. `luaWVSunk` runs the WV movie, then `luaWV_MovieEnd` (1090), then `luaBombingMovie` (1111).
+4. Phase 2 follows.
+
+The trace shows how far the run gets:
+- `luaIn` runs at t = 186.9 s (as `?usn_1_pearl.lua:1006`), then `luaAddFirstObjs`,
+  `luaGenerateJapTraffic`, the targeting loop (`luaGetJapTrg` 389 calls), and at 276.9 s
+  `luaInitFirstRunners` / `luaInitSecondRunners`;
+- `luaWVSunk`, `luaWV_MovieEnd` and everything after them never run.
+
+**The West Virginia ends the 450 s mission at 10000 of 10000 health, with `taken` 0.**
+- The impact census shows bomb blasts on it doing `took=0.0` (base 35 against armour 130).
+- No battleship of `Mission.BBRowGang` takes damage except Pennsylvania (22). The script's bombers
+  and torpedo planes are aimed at that gang (`luaGetJapTrg(2)`, 2228, and 177 `command target`
+  lines name the West Virginia).
+- What the attacks do sink is destroyers and auxiliaries: Downes 290 s, Neosho 363 s, Rescue 386
+  s, Tautog 400 s, Medusa 444 s.
+- The gunnery summary has `swims_started=13` against the 40 aircraft torpedo drops of 5ck.2.
+
+This is the gunnery and damage lane (how an aircraft torpedo or AP bomb damages a moored
+battleship). It is routed to the lead, not chased here. Until the West Virginia can die, phases
+2 and 3, and with them the Welch dogfight, cannot be reached on any run length.
+
+### BSM04: `luaStartMission` fails on every think at `GetSquadronPlanes`
+
+- The trace has `luaStartMission` ×49, `luaIntroMovieA` ×49 and no `luaDelay`.
+- The log has 49 `script call lua_Think failed: ...:1718: attempt to index local 'camTrg'
+  (a nil value)`.
+- `luaIntroMovieA` (1715) calls `GetSquadronPlanes(Mission.Cat)`. This host left that native
+  unimplemented, so it returned nothing.
+- So `luaStartMission` (1403) dies at line 1447 before `luaDelay(luaIntroDia, 2)` (1449), and
+  `Mission.Started` is never set (`lua_Think`, 592-596). The mission restarts its opening every
+  think.
+
+**`0089CC50` `GetSquadronPlanes`** (`__fastcall(lua_State)`, one result; listing `0089CD75`-`0089CE00`):
+- argument 0 goes through `BSP_ObjectHandle_FromLuaTable` with no kind check;
+- a new table (`00B67930`);
+- for `i` = 1..`[sq+3CCh]`, the member `[sq+3D0h + 4(i-1)]`'s u16 `+174h` as a string
+  (`004260B0`), stored at index `i` (`00B672F0`);
+- past five members `0089CD98` substitutes a null pointer, so the image would fault.
+
+The strings are the `thisTable` keys, which is how the script reads them back:
+`thisTable[tostring(camTrg[1])]`.
+
+**The next blocker, from reading the host:** after the opening, `luaIntroDia` calls
+`luaStartDialog("INTRO")` -> `StartDialog` `008B0540`. This host only registers the id: "nothing
+here plays a dialog to its end". The INTRO sequence's `callback` entries (`luaIntroMovieB`,
+`luaIntroMovieC`, `luaZekesDia`, lines 164-180) are played by the image's dialog panel
+`00451A90`, so they never fire, and `luaIntroMovieEnd`'s `PilotSetTarget` (1909) stays out of
+reach. Binding the dialog sequencer's callback entries is a packet of its own.
+
+### The binding, behind `kGetSquadronPlanesBound` (`include/bsp/game_hosts_script_orders.hpp`, committed OFF)
+
+- In `GameScriptOrdersHost::dispatch`, the new table holds the member planes of the registry
+  record that contains the argument's unit. Each entry is the unit index plus one as a string
+  (`kMissionLuaEntityKeyFormat`, the `thisTable` key, as `+174h` is in this host). It stops at
+  five entries.
+- Census line: `summary mission script squadron planes bound calls entries unresolved`.
+- **SUBSTITUTION, labelled:** the squadron is the registry record, as in `PilotSetTarget`.
+- No reference row calls this native: there are no `GetSquadronPlanes` rows in the 37 reference
+  logs in the cc9-gunnery20 tree.
+
+### Predictions, written before any ON run
+
+- **BSM04 3200/3000: moved.**
+  - `luaStartMission` runs once and `luaIntroMovieA` once. The 49 `lua_Think failed` lines go to 0.
+  - `luaDelay`, `luaIntroDia` (about t = 5 s) and `StartDialog("INTRO")` appear.
+  - The census shows `calls=2`, with entries of 2-3 per call (Mission.Cat and FortressRed).
+  - The chain then stops at the INTRO dialog: `luaIntroMovieB` never runs.
+  - The opening's orders (`PilotSetTarget` FortressRed -> Airfield, `PilotMoveToRange`,
+    `NavigatorMoveOnPath`) are issued once instead of re-issued every think. So the B-17 and
+    Catalina tasks are no longer rebuilt every 3 s, and the bomb run timing moves.
+  - **Weakest call:** whether a single issue changes the bombing outcome or only its timing.
+- **USN02 3200/3000 and BSM01 3200/3000 (controls):** pair_diff 0 or 1, since neither calls the
+  native.
+
+### 5cn.1 Measured (OFF `local\l33_off`, SHA-256 `E47DDC22ECFD`; ON `local\l33_on`, `A94D5BA28C7C`; both from `8d319feb2`), and the verdict: **flip ON**
+
+The launch form is reference v's (`local\l33_runs.ps1 -Tag c`), and the ON smoke (USN01, 300
+frames) finished cleanly.
+
+| row | pair_diff | census (ON) |
+| --- | --- | --- |
+| BSM04 3200/3000 | 3 | `calls=2 entries=8 unresolved=0` |
+| USN02 3200/3000 | 1 | `calls=0` |
+| BSM01 3200/3000 | 1 | `calls=0` |
+
+**BSM04, against the predictions:**
+- **The mechanism holds.** The 49 `lua_Think failed ... :1718` lines drop to 0. There are two calls,
+  `Mission.Cat` and `FortressRed`, with 8 entries in all. `StartDialog("INTRO")` appears once.
+  The chain then stops at the INTRO dialog as predicted, because this host does not play a
+  sequence's callback entries.
+- **Larger than predicted.** I expected only re-timings. The move is bigger because OFF never ran
+  any of `lua_Think` past line 596: `Mission.Started = true` (598) and everything after it in
+  every think were unreachable. With the switch ON the script's opening phase runs.
+  - The airfield launches its interceptors: `IsReadyToSendPlanes` -> `LaunchSquadron` spawns
+    `AirField_sqn01` and `AirField_sqn02`, 6 new units (39 -> 45).
+  - They fight the B-17s, Donald and the Wildcat. Deaths go 0 -> 5: B-17|.-2, B-17|.-5 and three
+    of AirField_sqn01. Shots go 299 -> 3792 and damage 140 -> 1270.
+  - The first hit comes 46 s earlier (123.7 -> 77.5 s).
+  - The controlled B-17 flies 7238 -> 9300 m.
+- **The controls held:** USN02 and BSM01 do not call the native, and both exit 1.
+
+The mechanism matches, so the switch flips ON (`kGetSquadronPlanesBound = true`). BSM04's
+script dogfight (1909) now waits on the dialog sequencer: the INTRO and ZEKES `callback`
+entries.

@@ -34,6 +34,10 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include <algorithm>
+#include <cstdlib>
+#include <cstring>
+#include <map>
+#include <string>
 
 extern "C" {
 #include "lua.h"
@@ -196,6 +200,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
     {"PutTo", 0x008a9f90u},
+    // Packet cc9_get_squadron_planes: bsm_04_vengance_at_luzon.lua:1717 and
+    // 1720 (luaIntroMovieA). Handled only with kGetSquadronPlanesBound.
+    {"GetSquadronPlanes", 0x0089cc50u},
     // Packet cc9_navigator_force_torpedo: jm06.lua:2582 (the two submarine
     // shots after the convoy movie) and competitive12/14. Handled only with
     // kNavigatorForceTorpedoBound.
@@ -375,6 +382,49 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept {
 
 namespace {
 GameScriptOrdersHost* g_live_script_orders = nullptr;
+
+// DIAGNOSTIC, env-gated (BSP_LUA_CALLBACK_TRACE=1, cc9-lua33, docs/
+// SQUADRON_LAND_TASK.md 5cn): a Lua call hook on the mission state that
+// records the first mission-clock time of every Lua function named lua* by its
+// caller, and of every unnamed Lua function (a callback the host or a C
+// binding calls, keyed by source:line), with a call count. Reported once by
+// report(). Prints nothing when unset; no Lua behaviour changes.
+struct LuaCallbackTrace {
+    std::vector<std::pair<std::string, float>> firsts;
+    std::map<std::string, unsigned long long> counts;
+    const float* clock = nullptr;
+    bool installed = false;
+};
+LuaCallbackTrace g_lua_callback_trace;
+
+bool lua_callback_trace_enabled() {
+    static const bool on = [] {
+        char* v = nullptr;
+        std::size_t n = 0;
+        const bool set = _dupenv_s(&v, &n, "BSP_LUA_CALLBACK_TRACE") == 0 && v != nullptr;
+        std::free(v);
+        return set;
+    }();
+    return on;
+}
+
+void lua_callback_trace_hook(lua_State* state, lua_Debug* ar) {
+    if (ar->event != LUA_HOOKCALL) return;
+    if (lua_getinfo(state, "nS", ar) == 0) return;
+    if (ar->what == nullptr || std::strcmp(ar->what, "Lua") != 0) return;
+    std::string key;
+    if (ar->name != nullptr) {
+        if (std::strncmp(ar->name, "lua", 3) != 0) return;
+        key = ar->name;
+    } else {
+        key = std::string("?") + ar->short_src + ":" + std::to_string(ar->linedefined);
+    }
+    unsigned long long& count = g_lua_callback_trace.counts[key];
+    if (count++ == 0) {
+        g_lua_callback_trace.firsts.emplace_back(
+            key, g_lua_callback_trace.clock != nullptr ? *g_lua_callback_trace.clock : -1.0f);
+    }
+}
 }  // namespace
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
@@ -466,6 +516,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) return kGetSquadronPlanesBound;
     if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         return kSubmarineDepthLevelBound;
     }
@@ -2490,6 +2541,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     state_ = state;
     machine_state_ = state;
     argument_count_ = argument_count;
+    if (!g_lua_callback_trace.installed && lua_callback_trace_enabled()) {
+        g_lua_callback_trace.installed = true;
+        g_lua_callback_trace.clock = &mission_clock_;
+        lua_sethook(state, lua_callback_trace_hook, LUA_MASKCALL, 0);
+    }
     // Packet cc9_recon_level_table: bring the unit tables' `reconlevel` up to
     // the last recon pass before the native reads anything.
     if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
@@ -2714,6 +2770,39 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         }
         depth_level_last_ = static_cast<int>(level);
         push_number(static_cast<int>(level));
+        results = 1;
+    } else if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) {
+        // 0089CC50: argument 0 through BSP_ObjectHandle_FromLuaTable (no kind
+        // check), a new table (00B67930), then for i = 1..[sq+3CCh] the member
+        // [sq+3D0h + 4(i-1)]'s u16 +174h as a string at index i (0089CD75-
+        // 0089CE00); one result. SUBSTITUTION, labelled: the squadron is the
+        // registry record holding the argument's unit, and a plane's +174h is
+        // its unit index plus one, the `thisTable` key (kMissionLuaEntityKeyFormat).
+        resolve_plane_squadron_members();
+        void* entity = argument_ptr_field(0);
+        if (entity == nullptr) entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        ++squadron_planes_calls_;
+        lua_createtable(state_, 0, 0);
+        const bsp::PlaneSquadronHostRecord* record =
+            index < units_.count() ? bsp::plane_squadron_registry().find_by_member_unit(index)
+                                   : nullptr;
+        int slot = 0;
+        if (record != nullptr) {
+            for (const std::size_t member : record->member_units) {
+                if (member == bsp::kPlaneSquadronNoUnit || member >= units_.count()) continue;
+                if (slot >= 5) break;   // 0089CD98: past five the image faults
+                ++slot;
+                char key[16];
+                std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+                              static_cast<int>(member + 1));
+                lua_pushstring(state_, key);
+                lua_rawseti(state_, -2, slot);
+            }
+        } else {
+            ++squadron_planes_unresolved_;
+        }
+        squadron_planes_entries_ += static_cast<unsigned long long>(slot);
         results = 1;
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
@@ -4072,6 +4161,14 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    if (g_lua_callback_trace.installed) {
+        for (const auto& first : g_lua_callback_trace.firsts) {
+            log_.notef("lua callback trace first t=%.2f %s calls=%llu",
+                static_cast<double>(first.second), first.first.c_str(),
+                g_lua_callback_trace.counts[first.first]);
+        }
+        g_lua_callback_trace.clock = nullptr;
+    }
     {
         std::string per;
         for (const auto& entry : deferred_by_poster_) {
@@ -4108,6 +4205,10 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script squadron planes bound=%d calls=%llu entries=%llu "
+        "unresolved=%llu (0089CC50, packet cc9_get_squadron_planes)",
+        kGetSquadronPlanesBound ? 1 : 0, squadron_planes_calls_, squadron_planes_entries_,
+        squadron_planes_unresolved_);
     log_.notef("summary mission script squadron intake bound=%d calls=%llu declined=%llu "
         "member_orders=%llu tasks=%llu (007F1940 settarget arm, packet "
         "cc9_ai_squadron_settarget_intake)", kAiSquadronSetTargetIntakeBound ? 1 : 0,
