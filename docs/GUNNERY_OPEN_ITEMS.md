@@ -8011,3 +8011,61 @@ OFF census on this tree (`local\g23_sc_<row>.log`):
   - JM08's one wreck does not reach -200 within 3000 frames.
 - **Flipped ON** (`kSunkHullTerrainMaskBound = true`). It is a mechanism match with recorded spread
   misses; JM08 long's death count is the knife edge's.
+
+## 102. Handoff (cc9-gunnery23, 2026-10-05, at about 73% context)
+
+### 102.1 Landed on agent/cc9-gunnery23
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference w (GAME_EXECUTABLE "2026-10-05 w"), base `85f60f0a5` | `45f09a18d`, `e9006b322`, `1973202a0` | landed (5ch rows flagged) |
+| GUNNERY 98: USNRM01's battleship row takes no damage | `3209f4d15` | landed; routed to the lua lane |
+| GUNNERY 99: debris `00447510` is inert | `d77b7de4b` | landed; `00935540` named on main |
+| GUNNERY 100: UST 04's hull-terrain contact | `4e3b8e4bb` | no switch |
+| Reference x (GAME_EXECUTABLE "2026-10-05 x"), base `1590ec097` | `004f3c85d`, `53b577519` | reports/cc9_reference_rebaseline_24.json |
+| GUNNERY 101: the sunk hull's terrain mask | `ca07508a6` (OFF), `4ca2d635a` (ON) | `kSunkHullTerrainMaskBound` ON; it belongs to reference y |
+
+### 102.2 The queue, in the lead's order
+
+1. **The gunnery pass byte `+7Dh` (SHIP_AI 124.2).**
+   - Every approach frame, the frame_state tail (`009F2FCB..009F3069`) calls
+     `00863780([unit+6DCh])(cond)`, which sets `+7Dh`.
+   - The host's gunnery treats `+7Dh` as a constant 1.
+   - Read what `00863780` computes and where `+7Dh` gates fire, then bind by the contract.
+   - `src/game_hosts_gunnery.cpp` and `include/bsp/game_hosts_gunnery.hpp` were on loan to
+     cc9-lua34 (lead note, 2026-10-05). Ask the lead before editing them.
+2. **97.2's frame-order question:** the hull tick against `0085ABA0` and `0085AD80` within a
+   frame, if it is a contained read.
+3. **Section 94's remaining items** (94.2 items 3-5).
+4. **Open from 99:**
+   - whether wreck nodes are in `0098ADD0`'s sweep;
+   - the plane caller `007CAAD0` and `BSP_UnitParts_DetachPart` (`00934150`), which may make
+     turret-sized pieces.
+5. **Open from 100:** whether the image trims a stopped, full-rudder transport 0.9 deg stern-down.
+6. **Open from 101:** the IsKindOf(0Eh) 20 s arm (the host's `unit_trait_0e` answers false).
+7. **Reference y** when the lead asks. Since x's base, main has `kDialogSequencerBound`,
+   `kShipAiOwnCurveRefillGateBound`, `kShipAiTargetCurveRefillBound` and now
+   `kSunkHullTerrainMaskBound` newly ON.
+
+### 102.3 Tools (`local\` in the cc9-gunnery23 tree, prefix `g23_`)
+
+- **Reference runs:**
+  - `g23_runs.ps1 -V <prefix> -Only <rows> [-Exe <path>]`, the reference launch form, 22 rows
+    including IJN11;
+  - `g23_exp.ps1 -Commit -Out [-Flip]`, a detached pair export;
+  - `g23_lane.ps1` (a `!` prefix flips a switch back ON) with `g23_lanes.ps1` (w),
+    `g23_lanesx.ps1` (x) and `g23_lanesj.ps1` (JM08 long).
+- **Diffs and tables:**
+  - `g23_cmp.py <a> <b> [rows] [--json]`, `pair_diff` plus headlines (a `g20_` prefix resolves to
+    the cc9-gunnery20 tree);
+  - `g23_table.py <prefix>` (reference table rows);
+  - `g23_loosum.py` / `g23_loosumx.py` (leave-one-out rows);
+  - `g23_report23.py` / `g23_report24.py` (the report JSONs);
+  - `g23_switches.py <a> <b>` (the switch diff);
+  - `g23_lines.py <a> <b> [regex]` (line-kind diff of two logs).
+- **Ordnance:** `g23_tdrops.py` (per-torpedo drop, heading, bearing and exit), `g23_ttrace.py`,
+  `g23_targets.py` (command-target tally), `g23_bombs.py`.
+- **Hull and ground:**
+  - `g23_diag.patch`, the uncommitted `BSP_HULL_GROUND_PROFILE` / `BSP_GROUND_SAMPLE`
+    diagnostic for `src/hull_terrain_contact.cpp`;
+  - `g23_pts.py` and `g23_clear.py` (sample points and hull-vertex clearance).
