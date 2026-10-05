@@ -9032,3 +9032,93 @@ Against the predictions:
 The mechanism matches on every row, so the switch flips ON (`kAiSquadronSetTargetIntakeBound =
 true`). The OFF base predates reference w (not yet published when these pairs ran), and w's
 base must carry this flip.
+
+## 5cl. The goaway row: ESMP08 long's goaway follows the image's rules; the break-off is two manoeuvres the host does not fly (packet `cc9_strafe_goaway_row`, cc9-lua33, 2026-10-04)
+
+The run is ESMP08 14200/14000 on main `ee5672bf2` plus the trace commit `ab54ae37b`, with
+`BSP_STRAFE_GOAWAY_TRACE=1` (`local\l33_ga_esmp08x.log`). Analysis is `local\l33_ga_analyze.py`.
+The trace moves no gameplay: pair_diff against 5ck.2's ON log exits 1.
+
+### The goaway ticks against `009CBB30` (listing `009CBB30`-`009CBE74`, read whole)
+
+| rule (image) | measured (host) | holds |
+| --- | --- | --- |
+| bank re-plan `009CB780` when `+30h` < 0, re-armed `U(2, 5)` (`009CBB4C`-`009CBB93`) | 46 re-plans; the interval between two in one episode is 2.10-4.90 s (n = 27) | yes |
+| pitch re-plan `009CB650` when `+3Ch` < 0, re-armed `U(2, 5)` (`009CBB9C`-`009CBBD5`) | 43 re-plans; 2.00-4.90 s (n = 24) | yes |
+| done `+24h` = horizontal > approach `+34h`, tested once per `+40h` = 1 s (`009CBC47`-`009CBC88`) | 183 tests in 21 episodes; 4 come true, and each is followed by `goaway -> gotowards` (Corsairs #1.3, #1.6\|.-2, #1.8 and #2.3, at h = 1124-1230 m) | yes |
+| evasive gate: not kind 10h/16h and approach `+44h` < 1.0 (`009CBC96`-`009CBCCA`) | 36 gate openings in the tick; time since hit at the gate is at most 0.30 s | yes |
+| the enter's gate `009CB8B0`: `U(10, 16)` > `+44h` (`009CB93C`-`009CB95E`) | 7 of 21 entries open the gate (the census tests `< 16`, without the draw) | census only |
+
+The episodes: 20 planes enter goaway 21 times. **17 episodes end in a death inside goaway**,
+0.05-9.1 s after entry, under the carrier group's AA. The other 4 finish and turn back to
+gotowards. Those planes die later too, Corsair #1.8 in its second goaway.
+The strafe summary's `evasive_gaps=43` is these 36 + 7 openings. At every one of them the image
+front-pushes a manoeuvre that the host does not fly. Instead the host plane keeps the goaway
+state's bank and pitch, so it holds a steady escape line under fire.
+
+### What the image does at each opening (listing `009CBCD0`-`009CBE27` and the callees)
+
+`r = U(0, 1)` is compared with the goaway state's `+18h` (drawn `U(0.3, 0.9)` by the constructor
+`009CB500`):
+
+- **`r >= +18h`: "tightturn"** (the name string at `00D2064C`; factory `009BC030`, `40Ch` bytes,
+  vtable `00D205E0`, tick `009BA020` at `vt+64h`).
+  - Side byte `+408h` = `U(0, 1) < 0.5` (`[00CE3800]`), so left or right with even odds.
+  - The end condition is `007B5D30` (vtable `00D05870`, test `00996510`). It holds the approach's
+    point `+74h..+7Ch` at the moment of the hit, read through approach `vt[0]` = `009CA680`. It
+    answers when that point, in the plane's own frame, has `|x| > z`, i.e. it lies more than 45
+    degrees off the nose or behind.
+  - The tick first waits for `009B9680` to answer (latched in `+404h`; not read). It then writes:
+    - a bank of +-pi/2 (`[00CE3830]`, plan `+2C8h`, mode 1);
+    - `+2A0h` = `clamp(2.0 - e / 10 deg, 0, 1)`, where `e` is the wrapped error between unit
+      `+C68h` (the roll, provisional) and that bank (`[00D7A308]` 2.0, `[00D05850]` 0.17453);
+    - `+288h` = `00419010`-interpolated from `+3FCh - unit+C64h` (the pitch held since
+      `009BAFC0`), times the side.
+  - **Reading:** a hard 90-degree bank turn away until the target is off the nose.
+- **`r < +18h`: "flikflak"** (`00D207B0`; factory `009BC0A0`, `404h` bytes, constructor
+  `009BB910`, vtable `00D20748`, tick `009B99E0` at `vt+64h`).
+  - The constructor sets side `+400h` = `U(0, 1) > 0.5` and the timer `+3FCh` = `U(0, 1) + 2.0`.
+  - The tick: when the timer runs out, it flips the side and re-arms `U(0, 1) + 2.0`. It writes:
+    - bank `+2C8h` = `[+2F8h]+25Ch` (the class, provisional) times +-1, mode 1;
+    - pitch target `+2C0h` = `[+2F8h]+1ECh` (the climb angle), mode 2;
+    - `+27Ch` = 1.0 (`[00D7A24C]`), as the tightturn tick also writes.
+  - The end condition is `007B5E20` (vtable `00D05880`, test `00996300`, read from the disk
+    bytes `00996300`-`00996385`). It answers when the horizontal distance from the plane to the
+    point captured at the hit reaches `U(0.5, 0.7) * approach+34h` (`[00CE3800]`, `[00CE3E18]`):
+    about 0.55-0.85 km on this row.
+  - **Reading:** a climbing jink, banking left and right every 2-3 s.
+- **Either push** sets approach `+44h` = 25.0 (`[00CE89CC]`) and front-pushes through
+  `00999F50`. The strafe task stays underneath, and goaway resumes after `0099B690` retires the
+  manoeuvre. The push draws the RNG once or twice more than the host does today (`r`, then the
+  side or the flikflak constructor's two draws).
+
+So on ESMP08 long, a Corsair that is hit while leaving the carrier group does one of two things in
+the image. With probability `1 - +18h` (0.1-0.7) it turns hard 90 degrees away; otherwise it
+jinks while climbing. It goes back to the goaway line only after the target is off the nose or it
+is about 0.7 km on. The host flies the straight line. That is the likeliest cause of 17 of
+21 episodes ending in a death, a hypothesis that the bind's pair will test.
+
+### Open (for the bind packet)
+
+- **Who receives a hit during the manoeuvre.** The strafe task's notice `009CC400` zeroes
+  `+44h`, but while a manoeuvre is head, its own notice slot may take the hit instead. Read the
+  image's hit dispatch to the task vector (the caller of the task's `vt+2Ch`; the host's is
+  `hit_task_notify` in `src/game_hosts_units.cpp`) before binding the re-push.
+- **`009B9680`** (tightturn's heading and its start flag `+404h`) is not read.
+- **Host labels.** The host has no front-push of a manoeuvre over the strafe arm. The bind can
+  model the two ticks inside the strafe arm as a sub-state, with the goaway tick suspended while
+  a manoeuvre runs. That is a labelled substitution for `00999F50`'s task vector.
+- **Ghidra (for the lead).** All of these are Ghidra functions now (`FUN_`), with Ghidra body
+  ends exclusive:
+  - `009BC030`-`009BC0A0` `BSP_BotTask_MakeTightTurn`
+  - `009BC0A0`-`009BC106` `BSP_BotTask_MakeFlikFlak`
+  - `009BB910`-`009BB9CF` `BSP_BotTaskFlikFlak_Construct`
+  - `009B99E0`-`009B9AE8` `BSP_BotTaskFlikFlak_Tick`
+  - `009BA020`-`009BA1DC` `BSP_BotTaskTightTurn_Tick`
+  - `007B5D30`-`007B5D6A` `BSP_BotCondition_PointOffNose_Construct`
+  - `007B5E20`-`007B5E57` `BSP_BotCondition_PointDistance_Construct`
+  - `00996510`-`009965C6` `BSP_BotCondition_PointOffNose_Test`
+
+  One is not a function yet: `00996300`-`00996385`, `BSP_BotCondition_PointDistance_Test`
+  (`__fastcall(cond)`, ends `RET` at `00996384`, INT3 at `00996385`). The names are hypotheses
+  from the name strings and the bodies.
