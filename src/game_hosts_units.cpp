@@ -5613,6 +5613,12 @@ struct GameUnitsHost::Impl {
     // boat spent between 20 s and 60 s (the arm OFF never takes).
     unsigned long long torpedo_boat_trait_queries = 0;
     unsigned long long torpedo_boat_sink_20s_steps = 0;
+    // The arms the probe opens: boost steps (and those with an order kind), and
+    // the righting steps with the summed |row-0 rate change|.
+    unsigned long long torpedo_boat_boost_steps = 0;
+    unsigned long long torpedo_boat_boost_ordered_steps = 0;
+    unsigned long long torpedo_boat_righting_steps = 0;
+    double torpedo_boat_righting_abs = 0.0;
     void ship_terrain_contact(GameUnitSlot& slot, const float before[3]);
     unsigned long long terrain_contact_steps = 0;
     unsigned long long terrain_contact_stops = 0;
@@ -28949,6 +28955,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const bsp::ShipMotionStepResult result
             = bsp::ship_motion_step_00825f20(slot.motion, slot.motion_class, motion,
                 step_seconds);
+        // Packet cc9_torpedo_boat_kind: the boost and righting arms the 0Eh probe opened.
+        if (result.boost.applied) {
+            ++host.torpedo_boat_boost_steps;
+            if (result.boost.kind_mirror != 0) ++host.torpedo_boat_boost_ordered_steps;
+        }
+        if (result.steering_applied && result.steering.righting_applied) {
+            ++host.torpedo_boat_righting_steps;
+            host.torpedo_boat_righting_abs += std::fabs(result.steering.righting_delta);
+        }
         // 00826CEE, the motion TAIL: 00810190(unit+0BD0h, &unit+0FCh, heading,
         // yaw_rate). It runs after the pose is written, which is why it is here
         // and not inside the step. The heading is unit+1050h, what vtable slot
@@ -31776,6 +31791,11 @@ void GameUnitsHost::report() {
             "sink_20s_steps=%llu (00826A78 / 0092E9D1 / 008263F0, packet "
             "cc9_torpedo_boat_kind)", bsp::kShipTorpedoBoatKindBound ? 1 : 0, torpedo_boats,
             host.torpedo_boat_trait_queries, host.torpedo_boat_sink_20s_steps);
+        host.log.notef("summary torpedo boat arms boost_steps=%llu boost_ordered_steps=%llu "
+            "righting_steps=%llu righting_abs=%.4f (00826A6F / 0092E9D7, packet "
+            "cc9_torpedo_boat_kind)", host.torpedo_boat_boost_steps,
+            host.torpedo_boat_boost_ordered_steps, host.torpedo_boat_righting_steps,
+            host.torpedo_boat_righting_abs);
     }
     host.log.notef("summary mission hydrodynamics calls=%llu element_steps=%llu "
         "submerged_steps=%llu add_force=%llu add_torque=%llu gravity_y=%.1f "

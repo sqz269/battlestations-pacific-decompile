@@ -88,7 +88,10 @@ ShipSteeringStep ship_apply_steering_0092e8c0(const ShipSteeringInputs& in) noex
     // 0092E9D7..0092EA73: the righting term, only for units answering IsKindOf(0Eh).
     if (in.righting_active) {
         const float angle = camera_asin_clamped_0042cf10(in.basis.row2[1]); // 0092E9E9
+        const float before = rate0;
         rate0 = ship_righting_rate_0092e9e1(rate0, angle, in.dt);
+        out.righting_applied = true;
+        out.righting_delta = rate0 - before;
     }
 
     // 0092EA75..0092EACF: the row-1 component slews toward the commanded yaw rate with
