@@ -288,7 +288,7 @@ constexpr bool kAiSquadronLeaderPointBound = true;
 // 3.2-4 km off Zuikaku. The install runs at the delivery, one bot tick early,
 // as PilotMoveTo's does (SENTITY_INIT_ATTACH_ORDER 22.7). docs/SQUADRON_LAND_TASK.md 5ch.
 // ON (2026-09-30): controls identical; ESMP08 now promotes to CLOSEATTACK (5ch).
-constexpr bool kAiTickMovetoRetasksPlaneBound = true;
+constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_LAND_TASK 5co
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group

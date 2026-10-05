@@ -9475,3 +9475,5 @@ and `l33_ga_analyze.py` / `l33_mv_analyze.py` (goaway and manoeuvre episodes).
    - the manoeuvre head's `vt[40h]` `0099C2C0` on a command change;
    - tightturn's `+2E4h &= ~4`.
 5. 5cj's remaining items.
+
+**5ch is now OFF** (`kAiTickMovetoRetasksPlaneBound = false`, 5co). ESMP08's promotion to `CLOSEATTACK`, through which 5ck and 5cm reached their row, may no longer happen; the successor re-pairs ESMP08 14200 for 5ck and 5cm.
