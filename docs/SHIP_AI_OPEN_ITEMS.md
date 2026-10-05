@@ -10662,3 +10662,165 @@ position layer is at least 86. **So the push never fires here.**
 - **Verdict:** the prediction held (no push on any row), so the switch is **flipped ON**. The arm
   has no reach on the reference rows: every approaching ship's `+570h` is 0, and every target layer
   is at least 86. A row whose approaching class has a non-zero `+570h` would exercise it.
+
+## 133. The approach's warn sweep is the StartLanding (94h) producer (packet `cc9_approach_landing_sweep`, `kShipAiApproachLandingSweepBound`, cc9-ships29, 2026-10-05)
+
+I found this while re-ranking. On the fifth census, the `ShipAiApproach::unit_is_group_leader`
+row (`00778890`, 488 calls: LOMP10 120, LOMP10 long 360, JM08 4, JM08 long 4) still answered
+false. Its label was "no AI group object exists (milestone 2m)", which is stale: the host has
+kept the `entity+284h` formation groups since packet `cc8_ship_follow`.
+
+### 133.1 The image: `009F33E2..009F35F5` in `009F3240`
+
+It runs when the sweep timer `+14B4h` is negative and the target is a building (`IsKindOf(1Ch)`)
+of another side. The timer is then re-armed to 1.0.
+- **Candidates.**
+  - **A leader** (`009F3429 00778890`) walks its group's members (`009F3444` count `+4F8h`,
+    `009F3457 0070D060`) and keeps the ships (`IsKindOf(6)`) whose class answers the troop-landing
+    trait (`[member+538h]->vtable[2Ch]`).
+  - **Otherwise** the unit keeps itself when it has the trait (`009F35E3`).
+- **For each candidate:**
+  - the speed gate: body speed `0092D730` / reference speed `0080FC30` < 0.4 (`009F350C`);
+  - the range gate: planar distance to the building < its `+7C4h` LandingRange (`009F3585`,
+    integer square);
+  - **vtable `234h`** (`009F358F`), which is `008128E0` on the cruiser (`00CFB96C`),
+    troop-transport (`00CFA9AC`) and landing-ship (`00CFFC64`) vtables alike. With the target
+    passed it needs, in order: the trait, `+1124h` <= 0.0 (`008128FC` against `[00D7A218]` = 0.0),
+    and `006F2A50(target, 0)`, a pad of the building with no occupant.
+  - Then `009F359C 0064A820` builds message **94h** (`PUSH 94h` at `0064A821`, the StartLanding
+    of section 97), and `009F35B3 0077C2A0(msg, 2, 0)` routes it to the candidate. The handler is
+    `00821F61` -> vt+238h: `0074A4C0` on a landing ship (`00CFFC68`), `008206F0` on a troop
+    transport (`00CFA9B0`).
+
+So it is the image's second StartLanding producer. The first is the transport move `00A11B80`
+(sections 97 and 100). It asks the AI's own landers near an enemy building to land.
+
+### 133.2 The host before
+
+- The leader answered false, and the member reads answered 0.
+- The reference speed was a 1.0 record.
+- The LandingRange answered 0, so the range gate always failed.
+- vtable `234h` answered false, and the route was a record.
+
+### 133.3 The binding
+
+- **The reads run both ways:**
+  - the leader: `unit_formation_group_0284` / `formation_leader_0014`;
+  - the members: `formation_member_count` / `formation_member_unit`;
+  - the reference speed: `throttle_ceiling_inputs().reference_speed`;
+  - the LandingRange: `command_building_landing_range_07c4`;
+  - `008128E0`'s target arm: the trait, the `transport_cooldown_1124` map, and a free pad in
+    `building_pad_model()`.
+- **`kShipAiApproachLandingSweepBound`**, committed OFF, gates only the delivery. ON delivers 94h
+  as the AI host's transport move does: `landing_ship_request_landing_0074a4c0` for kind 0Ch,
+  `transport_launch_craft_008206f0` otherwise.
+- **Census, both ways:** `summary mission ship ai approach landing sweep entries= leaders=
+  candidates= slow= in_range= messages= begun= launched=`.
+
+### 133.4 The OFF census, and the predictions (written before any ON run)
+
+The OFF runs are this tree's build (`local\s29_w0_<row>.log`):
+
+| row | entries | leaders | candidates | messages |
+| --- | --- | --- | --- | --- |
+| LOMP10 | 120 | 120 | 0 | 0 |
+| LOMP10 long | 360 | 360 | 0 | 0 |
+| JM08 | 4 | 4 | 0 | 0 |
+| JM08 long | 4 | 4 | 0 | 0 |
+| smoke, USN13, USNOS | 0 | | | |
+
+- Every sweep on these rows belongs to a group leader whose members are warships without the
+  troop-landing trait. JM08's transports and LSTs land through the transport move (JM08 long:
+  `94h=5 begun=2`, `craft launch calls=6`), not through an attackmove on the building.
+- **Prediction:** with `messages=0` the switch cannot act, so `pair_diff` exits 0 or 1 on smoke,
+  LOMP10 and JM08.
+- **Verdict rule:** flip ON when they are identical. A moved row is a mechanism failure.
+- **Reach:** a scene where a group containing transports or LSTs attackmoves onto an enemy
+  building.
+
+### 133.5 The pairs, and the flip
+
+- **OFF:** this tree at `063550d13` (`local\s29_w0_<row>.log`).
+- **ON:** `pair_export --commit 063550d13 --flip kShipAiApproachLandingSweepBound=true`
+  (`local\s29_w133on`, SHA-256 prefix `BE5664B7886B`, `local\s29_w1_<row>.log`).
+- Smoke, LOMP10 and JM08 are all `pair_diff` 1, with identical death rows and no native counts
+  moved. On JM08 the only other lines are the `ship ai free` noise and the never-moving
+  `clear_37c` split of section 132.5 (LSM 02).
+- **Verdict:** as predicted, the switch is **flipped ON**. It has no reach on the reference rows,
+  where the sweep finds no troop-landing candidate.
+
+## 134. The attackmove's carrier hand-back and the formation group (packet `cc9_attackmove_group_hand_back`, `kShipAiAttackMoveGroupHandBackBound`, cc9-ships29, 2026-10-05)
+
+Found on the fifth census: `ShipAiAttack::unit_group_0284` (26 calls, IJN01 only). Its label was
+"no AI group object exists (milestone 2m)", stale like section 133's. The host has kept the
+`entity+284h` formation groups since packet `cc8_ship_follow`.
+
+### 134.1 The image: `009E8820` (body `009E8820..009E88F9`, `RET 4`; `ship_ai_attackmove_step_009e8820`)
+
+- `009E883F`: the unit answers `IsKindOf(9)`, a mothership (`MMothership`, a carrier;
+  `kUnitKindQueryCarrier`).
+- `009E8852 MOV EDI,[unit+284h]`: its group. With no group it hands back.
+- With a group, `009E8861..009E889C` walk `+4F8h` members through `0070D060`. Any member other
+  than the unit that is not a mothership clears the flag (`009E8892`).
+- With the flag set, `009E88BD..009E88C1` hand the command back to the director (`0071E430` with
+  the attackmove command object `00E08F78`) and return. Otherwise the step goes on to steer the
+  attackmove (`009E88CE`).
+
+**So a carrier keeps an attackmove only when its group has escorts.**
+
+### 134.2 The host before
+
+`unit_group_0284` answered 0, so every carrier handed its attackmove back at once.
+
+### 134.3 The binding (committed OFF)
+
+- `kShipAiAttackMoveGroupHandBackBound`: the group is `unit_formation_group_0284`, the members
+  are `formation_member_count` / `formation_member_unit`, both one-based for the pure routine.
+- **Census, both ways:** `summary mission ship ai attackmove group hand back asks= grouped=
+  mixed=`, plus one `attackmove hand back:` line per mixed ask.
+
+### 134.4 The OFF census, and the predictions (written before the ON run)
+
+The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
+- **IJN01:** `asks=26 grouped=26 mixed=26`. The unit is always **Enterprise**, leader of group 0
+  with Mona / Solace (3-4 members), from t=73.30 to t=149.80, about every 3 s. The director's
+  idle tail re-issues the attackmove after each hand-back (26 `end_commands`, 26 asks).
+- smoke and USN13: `asks=0`.
+
+**Predictions:**
+- **IJN01: exit 3.**
+  - Enterprise keeps its attackmove from t=73.30 and steers it: the selector `009E86F0`, the
+    approach and engage sub-states.
+  - `end_commands` falls from 26 to at most 1. Enterprise's path, and its group's through the
+    follow station, move.
+  - Moved deaths are expected only among units near Enterprise's new track, including the AA
+    exchange with the Japanese air groups.
+- **smoke and USN13: exit 0 or 1.**
+- **Verdict rule:**
+  - flip ON when IJN01's hand-backs stop, Enterprise's state stays `attackmove`, and every moved
+    death row traces to Enterprise's group or its attackers;
+  - a hand-back still logged ON is a mechanism failure.
+
+### 134.5 The pairs, and the flip
+
+- **OFF:** this tree at `5f0cc6fc0` (`local\s29_h0_<row>.log`).
+- **ON:** `pair_export --commit 5f0cc6fc0 --flip kShipAiAttackMoveGroupHandBackBound=true`
+  (`local\s29_h134on`, SHA-256 prefix `BA3F38ED2033`, `local\s29_h1_<row>.log`).
+- smoke and USN13 are `pair_diff` 1. **IJN01 is 3.**
+- **The mechanism held.**
+  - **End of run:** `end_commands` 26 -> 0, and the `0071E430` / `009E86E0` / `007B3DC0` rows are
+    gone.
+  - **Enterprise's state:** `attackmove` against `A7M_1` ON, against `stop` OFF.
+  - **Asks:** 26 -> 307, because the step now runs every think instead of ending at once.
+  - **Position:** Enterprise finishes at (588.8, -5178.2) ON against (299.0, -1778.0) OFF. OFF it
+    stopped and touched terrain at t=74.00 (`hull terrain contact`); ON it does not.
+  - The `attackmove hand back:` diagnostic is census, so it is printed both ways. My verdict rule
+    was wrong to name it as a failure sign; `end_commands` is the sign.
+- **The moves:** deaths 3 = 3, and one death row changed. **A7M_5** is shot down 0.35 s earlier,
+  by PT3 instead of Zeilin. Hits 128 -> 130, shots 3687 -> 3709. Thirteen unit-table rows moved:
+  - the AA ships' shots and damage dealt: Curtiss, Zeilin, LST1 and PT1-3;
+  - the A7M_3 and A7M_5 members' hits.
+  All of them are the AA exchange with the Japanese squadrons attacking Enterprise's group, now
+  on Enterprise's new track.
+- **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
+  so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).

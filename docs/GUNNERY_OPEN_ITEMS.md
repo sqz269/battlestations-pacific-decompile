@@ -7916,3 +7916,156 @@ At t=1437.53 (unit 356 is UST 04):
   host's buoyancy elements and hydro forces with the ship stopped on full rudder
   (`dir=stopped throttle=0 rudder=-1`). Level, the stern keel would be at -9.96 m, 1.1 m above the
   ground at -11.06 m, so it would not touch at this point. No image run settles the trim.
+
+## 101. A wreck stops colliding with the seabed after 60 s: `00826410` (packet `cc9_sunk_hull_shape_flag8`, cc9-gunnery23)
+
+SHIP_AI 114 ranked `ShipMotion::sunk_hull_shape_flag8` sixth among the host substitutions
+(130250 hits on 8 rows).
+
+### 101.1 The read (`008263CE..0082645A`, `00C47F60`, listing)
+
+- `008263CE..008263DC`: `sinkTime` (`[EDI+518h]`, unit+828h) += dt while `+5Dh` is set.
+- **The trigger.**
+  - `008263E2..008263EE`: when `sinkTime > 60.0` (double `00CE3D68`), jump to `00826410`.
+  - Otherwise `008263F0..0082640E`: when `IsKindOf(0Eh)` (`vtable[5Ch]`, push 0Eh) and
+    `sinkTime > 20.0` (`00CE3930`), also go there.
+- **`00826410..0082643B`.** Take the hull body (`[[EDI+D08h]+2Ch]`) and its first shape
+  (`00C31DC0`), then walk `shape+208h`. Each shape with `shape+30h & 8` gets `00C47F60(shape, 8)`.
+- **`00C47F60`** (`00C47F60..00C47F8F`) is `shape+30h &= ~bits`, then the filter-change notify
+  (`[00CE2218]` with `0109ECD8`) and `00C43AA0(shape+4)`.
+- **What bit 8 means.** `shape+30h` is the shape's collision mask. `00C44104..00C44110` passes a
+  pair when either shape's mask holds the other's group. A hull's mask is `0Dh` | class bit
+  (GUNNERY 89, 96); the terrain's group is 8 and its mask is 0 (`00882AC0`).
+- **So after 60 s the wreck's hull-terrain pairs fail the filter.** The wreck sinks through the
+  seabed toward KillDepth (-200, section 4 of CONSTRUCT_WORLD's sink table), where `00826628`
+  kills it. Hull-hull and hull-fort pairs are unaffected: the other shape's mask still selects
+  group 1.
+- This corrects PROJECTILE_IMPACT's reading that flag 8 is the broadphase registration
+  (`00C50470`'s flag is a body flag, not the shape mask).
+
+### 101.2 The binding (`kSunkHullTerrainMaskBound`, committed OFF)
+
+- **`src/game_hosts_units.cpp`.** The sink block sets `slot.sunk_terrain_mask_cleared` once
+  `sink_time_828 > 60`. The world entry carries it (`HullWorldEntry::terrain_mask_cleared`) when
+  the switch is ON.
+- **`src/hull_terrain_contact.cpp` `world_step`.** Such a hull gets no terrain narrow phase (the
+  filter `dyn_shapes_overlap_filter(1, 0Dh & ~8, 8, 0)` fails), and its terrain manifolds are
+  retired.
+- **SUBSTITUTION, labelled:** the 20 s arm for IsKindOf(0Eh) is not taken. The host's
+  `unit_trait_0e` answers false.
+- **Census:** `summary sunk hull terrain mask bound=%d cleared_units=%zu wreck_terrain_steps=%llu`.
+  `wreck_terrain_steps` counts the hull-terrain contact steps of cleared wrecks, which can only
+  occur OFF.
+
+### 101.3 OFF census and predictions (written before any ON run)
+
+OFF census on this tree (`local\g23_sc_<row>.log`):
+
+| row | wrecks | cleared | wreck terrain steps after 60 s | kills at -200 |
+| --- | --- | --- | --- | --- |
+| USNOS | 1 | 1 | 1202 | 0 |
+| USNOS long | 7 | 7 | 7175 | 6 |
+| JM08 | 1 | 1 | 462 | 0 |
+| USNRM01 | 4 | 1 | 1643 | 0 |
+| E2, IJN01, JM05 long, USN13 long | 0 | 0 | 0 | 0 |
+
+**Predictions for the pair:**
+- **Mechanism:** ON, `wreck_terrain_steps` = 0 on every row.
+- **Kills:** on USNOS, USNOS long, JM08 and USNRM01, every wreck that rested on the seabed past
+  60 s falls through and is killed at -200. Kills rise by the resting wrecks: USNOS 0 -> 1,
+  USNOS long 6 -> 7, JM08 0 -> 1, USNRM01 0 -> 1, if the window leaves time for the fall.
+- **Exits:** those four rows exit 3, through the kill and destroy lines and any hit on a wreck.
+  Death tables are identical, since the victims are already dead; a re-timed row is possible
+  where a wreck had blocked a live hull or a round. E2, IJN01, JM05 long and USN13 long are
+  exit 0 or 1.
+- **JM08 long** (shallow, many sinkings) is expected to move.
+
+### 101.4 The pair, and the flip
+
+**Setup.** `local\g23_f1` (the flip) against `local\g23_f0` (OFF), both exports of `ca07508a6`
+(SHA-256 prefixes `95B29211355D` / `AF1B48A01969`). x's launch form; every run has
+`lost_polls=0`.
+
+| row | exit | deaths | wreck terrain steps OFF -> ON | kills at -200 OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USNOS | 1 | 98 / 98 | 1202 -> 0 | 0 -> 1 |
+| USNOS long | 1 | 115 / 115 | 7175 -> 0 | 6 -> 7 |
+| JM08 | 1 | 22 / 22 | 462 -> 0 | 0 -> 0 |
+| USNRM01 | 3 | 156 / 156 (identical) | 1643 -> 0 | 0 -> 1 |
+| JM08 long | 3 | **46 -> 68** (26 only ON, 4 only OFF) | 242144 -> 0 | 0 -> 18 |
+| E2, IJN01, JM05 long, USN13 long | 1 | identical | 0 | 0 |
+
+- **Mechanism: matches.** `wreck_terrain_steps` is 0 on every ON row, and every resting wreck
+  that has time to fall is killed at KillDepth.
+- **JM08 long's landing is a cascade.**
+  - The 15-18 wrecks along the approach and beach no longer rest on the seabed, where they had
+    been in the way of live hulls (hull-hull pairs) and of the landing crafts.
+  - The crafts now launch 6 times against 4 and lower 15 ramps against 12.
+  - The three `LandingShip` deaths move 50-70 s later.
+  - Bristol and LSM 02 survive; containers, a barracks and tents die.
+  - It is the row's known knife edge (x's leave-one-out: 34-204 across single switches).
+- **USNRM01 exit 3** is damage 36563.8 -> 36559.4 and shots -4, with identical death rows.
+- **Prediction: spread misses.**
+  - USNOS, USNOS long and JM08 are exit 1, not 3: the kill and destroy lines are not gameplay
+    lines, and no round or hull met the resting wreck.
+  - JM08's one wreck does not reach -200 within 3000 frames.
+- **Flipped ON** (`kSunkHullTerrainMaskBound = true`). It is a mechanism match with recorded spread
+  misses; JM08 long's death count is the knife edge's.
+
+## 102. Handoff (cc9-gunnery23, 2026-10-05, at about 73% context)
+
+### 102.1 Landed on agent/cc9-gunnery23
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference w (GAME_EXECUTABLE "2026-10-05 w"), base `85f60f0a5` | `45f09a18d`, `e9006b322`, `1973202a0` | landed (5ch rows flagged) |
+| GUNNERY 98: USNRM01's battleship row takes no damage | `3209f4d15` | landed; routed to the lua lane |
+| GUNNERY 99: debris `00447510` is inert | `d77b7de4b` | landed; `00935540` named on main |
+| GUNNERY 100: UST 04's hull-terrain contact | `4e3b8e4bb` | no switch |
+| Reference x (GAME_EXECUTABLE "2026-10-05 x"), base `1590ec097` | `004f3c85d`, `53b577519` | reports/cc9_reference_rebaseline_24.json |
+| GUNNERY 101: the sunk hull's terrain mask | `ca07508a6` (OFF), `4ca2d635a` (ON) | `kSunkHullTerrainMaskBound` ON; it belongs to reference y |
+
+### 102.2 The queue, in the lead's order
+
+1. **The gunnery pass byte `+7Dh` (SHIP_AI 124.2).**
+   - Every approach frame, the frame_state tail (`009F2FCB..009F3069`) calls
+     `00863780([unit+6DCh])(cond)`, which sets `+7Dh`.
+   - The host's gunnery treats `+7Dh` as a constant 1.
+   - Read what `00863780` computes and where `+7Dh` gates fire, then bind by the contract.
+   - `src/game_hosts_gunnery.cpp` and `include/bsp/game_hosts_gunnery.hpp` were on loan to
+     cc9-lua34 (lead note, 2026-10-05). Ask the lead before editing them.
+2. **97.2's frame-order question:** the hull tick against `0085ABA0` and `0085AD80` within a
+   frame, if it is a contained read.
+3. **Section 94's remaining items** (94.2 items 3-5).
+4. **Open from 99:**
+   - whether wreck nodes are in `0098ADD0`'s sweep;
+   - the plane caller `007CAAD0` and `BSP_UnitParts_DetachPart` (`00934150`), which may make
+     turret-sized pieces.
+5. **Open from 100:** whether the image trims a stopped, full-rudder transport 0.9 deg stern-down.
+6. **Open from 101:** the IsKindOf(0Eh) 20 s arm (the host's `unit_trait_0e` answers false).
+7. **Reference y** when the lead asks. Since x's base, main has `kDialogSequencerBound`,
+   `kShipAiOwnCurveRefillGateBound`, `kShipAiTargetCurveRefillBound` and now
+   `kSunkHullTerrainMaskBound` newly ON.
+
+### 102.3 Tools (`local\` in the cc9-gunnery23 tree, prefix `g23_`)
+
+- **Reference runs:**
+  - `g23_runs.ps1 -V <prefix> -Only <rows> [-Exe <path>]`, the reference launch form, 22 rows
+    including IJN11;
+  - `g23_exp.ps1 -Commit -Out [-Flip]`, a detached pair export;
+  - `g23_lane.ps1` (a `!` prefix flips a switch back ON) with `g23_lanes.ps1` (w),
+    `g23_lanesx.ps1` (x) and `g23_lanesj.ps1` (JM08 long).
+- **Diffs and tables:**
+  - `g23_cmp.py <a> <b> [rows] [--json]`, `pair_diff` plus headlines (a `g20_` prefix resolves to
+    the cc9-gunnery20 tree);
+  - `g23_table.py <prefix>` (reference table rows);
+  - `g23_loosum.py` / `g23_loosumx.py` (leave-one-out rows);
+  - `g23_report23.py` / `g23_report24.py` (the report JSONs);
+  - `g23_switches.py <a> <b>` (the switch diff);
+  - `g23_lines.py <a> <b> [regex]` (line-kind diff of two logs).
+- **Ordnance:** `g23_tdrops.py` (per-torpedo drop, heading, bearing and exit), `g23_ttrace.py`,
+  `g23_targets.py` (command-target tally), `g23_bombs.py`.
+- **Hull and ground:**
+  - `g23_diag.patch`, the uncommitted `BSP_HULL_GROUND_PROFILE` / `BSP_GROUND_SAMPLE`
+    diagnostic for `src/hull_terrain_contact.cpp`;
+  - `g23_pts.py` and `g23_clear.py` (sample points and hull-vertex clearance).

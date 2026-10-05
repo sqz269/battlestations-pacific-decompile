@@ -749,6 +749,21 @@ struct GameShipAiSummary {
     // Packet cc9_own_curve_refill_gate: due own refills the bound gates refuse.
     unsigned long long own_curve_mode_skips{0};    // 009F2EE2
     unsigned long long own_curve_flag_skips{0};    // 009F2EEB
+    // Packet cc9_attackmove_group_hand_back (009E8852..009E889C), both ways.
+    unsigned long long attack_hand_back_asks{0};
+    unsigned long long attack_hand_back_grouped{0};
+    unsigned long long attack_hand_back_mixed{0};
+    // Packet cc9_approach_landing_sweep (009F33E2..009F35F5), both ways: sweep
+    // entries, leaders, candidates timed, those slow enough (ratio < 0.4),
+    // those in LandingRange, the 94h messages, and the bound deliveries.
+    unsigned long long landing_sweep_entries{0};
+    unsigned long long landing_sweep_leaders{0};
+    unsigned long long landing_sweep_candidates{0};
+    unsigned long long landing_sweep_slow{0};
+    unsigned long long landing_sweep_in_range{0};
+    unsigned long long landing_sweep_messages{0};
+    unsigned long long landing_sweep_begun{0};
+    unsigned long long landing_sweep_launched{0};
     // Packet cc9_approach_target_layer_push (009F1E36..009F1F07), both ways.
     unsigned long long target_layer_ship_passes{0}; // a ship target with a bot
     unsigned long long target_layer_below{0};       // its layer < own class+570h
