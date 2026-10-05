@@ -136,6 +136,12 @@ inline constexpr bool kShipAiOwnCurveRefillGateBound = true;
 // the brain goal pushed out of the +570h zone group by 25.0 (00417B10). False:
 // the goal is always copied verbatim.
 inline constexpr bool kShipAiApproachTargetLayerPushBound = true;
+// Packet cc9_approach_landing_sweep, SHIP_AI_OPEN_ITEMS section 133. The
+// attackmove approach's warn sweep (009F33E2..009F35F5) reads the formation
+// leader, members, reference speed, LandingRange and 008128E0 as the image does
+// both ways. True: its 94h (StartLanding) reaches the candidate's vt+238h,
+// 0074A4C0 or 008206F0, as the transport move's 94h does. False: counted.
+inline constexpr bool kShipAiApproachLandingSweepBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -6287,20 +6293,34 @@ public:
         return owner_.units.unit_side_0054(index_)
             == owner_.units.unit_side_0054(static_cast<std::size_t>(target - 1u));
     }
+    // Packet cc9_approach_landing_sweep (section 133): the warn sweep's reads.
+    // 00778890: MOV EAX,[ECX+284h] then [group+14h] == unit; the formation
+    // group the host keeps for entity+284h (packet cc8_ship_follow).
     bool unit_is_group_leader_00778890() override {
-        // 00778890's body was read: MOV EAX,[ECX+284h] then [group+14h] == unit.
-        // No AI group object exists in this process (milestone 2m reports
-        // ai_groups=0), so the group pointer is null and the answer is false,
-        // which takes the non-leader arm at 009F35D8.
-        owner_.record("ShipAiApproach::unit_is_group_leader", 0x00778890u);
-        return false;
+        ++owner_.summary.landing_sweep_entries;
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        owner_.done("ShipAiApproach::unit_is_group_leader", 0x00778890u);
+        const bool leader = g >= 0 && owner_.units.formation_leader_0014(g) == index_;
+        if (leader) ++owner_.summary.landing_sweep_leaders;
+        return leader;
     }
-    int group_member_count_04f8() override { return 0; }
-    std::uint32_t group_member_at_0070d060(int) override {
-        owner_.record("ShipAiApproach::group_member_at", 0x0070d060u);
-        return 0u;
+    // group+4F8h (009F3444).
+    int group_member_count_04f8() override {
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        return g >= 0 ? owner_.units.formation_member_count(g) : 0;
     }
-    bool member_is_kind_vtable_005c(std::uint32_t, int) override { return false; }
+    // 0070D060(i): the member record's unit, [group+18h + i*34h].
+    std::uint32_t group_member_at_0070d060(int i) override {
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        owner_.done("ShipAiApproach::group_member_at", 0x0070d060u);
+        const std::size_t m = g >= 0 ? owner_.units.formation_member_unit(g, i)
+                                     : static_cast<std::size_t>(-1);
+        return m < owner_.units.count() ? static_cast<std::uint32_t>(m) + 1u : 0u;
+    }
+    bool member_is_kind_vtable_005c(std::uint32_t member, int kind) override {
+        if (member == 0u) return false;
+        return owner_.units.unit_is_kind_of(static_cast<std::size_t>(member - 1u), kind);
+    }
     bool member_lands_troops_vtable_002c(std::uint32_t member) override {
         // 009F3473 / 009F347E, [member+538h]->vtable[2Ch](), the troop-landing trait.
         return lands_troops(member == 0u ? static_cast<std::size_t>(-1)
@@ -6338,9 +6358,14 @@ public:
         return owner_.units.unit_forward_speed_0092d730(
             static_cast<std::size_t>(candidate - 1u));
     }
-    float candidate_reference_speed_0080fc30(std::uint32_t) override {
-        owner_.record("ShipAiApproach::candidate_reference_speed", 0x0080fc30u);
-        return 1.0f;
+    // 009F34FD, 0080FC30 on the candidate: its +9C0h times the empty modifier
+    // list's 1.0f, as the follow binding answers it.
+    float candidate_reference_speed_0080fc30(std::uint32_t candidate) override {
+        ++owner_.summary.landing_sweep_candidates;
+        if (candidate == 0u) return 1.0f;
+        owner_.done("ShipAiApproach::candidate_reference_speed", 0x0080fc30u);
+        return owner_.units.throttle_ceiling_inputs(
+            static_cast<std::size_t>(candidate - 1u)).reference_speed;
     }
     bool candidate_pose_valid_00c8(std::uint32_t candidate) override {
         if (candidate == 0u) return true;
@@ -6356,16 +6381,64 @@ public:
         if (candidate == 0u) return;
         owner_.units.unit_position_00fc(static_cast<std::size_t>(candidate - 1u), x, y, z);
     }
-    std::int32_t target_warn_radius_07c4(std::uint32_t) override {
-        owner_.record("ShipAiApproach::target_warn_radius", 0x009f3534u);
-        return 0;
+    // 009F3534, FILD [target+7C4h]: the building's LandingRange. Reaching it
+    // means the candidate passed the speed gate (ratio < 0.4).
+    std::int32_t target_warn_radius_07c4(std::uint32_t target) override {
+        ++owner_.summary.landing_sweep_slow;
+        if (target == 0u) return 0;
+        owner_.done("ShipAiApproach::target_warn_radius", 0x009f3534u);
+        return static_cast<std::int32_t>(owner_.units.command_building_landing_range_07c4(
+            static_cast<std::size_t>(target - 1u)));
     }
-    bool candidate_accepts_warning_vtable_0234(std::uint32_t, std::uint32_t) override {
-        owner_.record_slot("ShipAiApproach::candidate_accepts_warning", "00cfc3d0+vtable234");
+    // 009F358F, candidate vtable[234h](target): 008128E0 on the cruiser, troop
+    // transport (00CFA9ACh) and landing ship (00CFFC64h) vtables alike. The
+    // trait (008128E4..008128F3), the +1124h cooldown (008128FC, above 0.0 is
+    // not ready), and with a target 006F2A50(target, 0): a pad of +794h with a
+    // null occupant. Reaching it means the range gate passed.
+    bool candidate_accepts_warning_vtable_0234(std::uint32_t candidate,
+                                               std::uint32_t target) override {
+        ++owner_.summary.landing_sweep_in_range;
+        if (candidate == 0u || target == 0u) return false;
+        const std::size_t c = static_cast<std::size_t>(candidate - 1u);
+        owner_.done("ShipAiApproach::candidate_accepts_warning_008128e0", 0x008128e0u);
+        if (!owner_.units.unit_class_lands_troops_vtable_2c(c)) return false;
+        // Written only by 008206F0's launch, which runs while the AI host's
+        // kLandingCraftLaunchBound delivers it.
+        const auto it = owner_.transport_cooldown_1124.find(c);
+        if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
+        const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+        for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
+            const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+            if (p != nullptr && p->occupant < 0) return true;
+        }
         return false;
     }
-    void route_warning_message_0077c2a0(std::uint32_t) override {
-        owner_.record("ShipAiApproach::route_warning_message", 0x0077c2a0u);
+    // 009F3598..009F35B3: 0064A820 builds message 94h (StartLanding) and
+    // 0077C2A0(msg, 2, 0) routes it to the candidate: 00821F61 -> vt+238h,
+    // 0074A4C0 on a landing ship (kind 0Ch), 008206F0 on a troop transport,
+    // delivered as the transport move's 94h is (game_hosts_ai.cpp, section 97).
+    void route_warning_message_0077c2a0(std::uint32_t candidate) override {
+        ++owner_.summary.landing_sweep_messages;
+        if (!kShipAiApproachLandingSweepBound || candidate == 0u) {
+            owner_.record("ShipAiApproach::route_warning_message", 0x0077c2a0u);
+            return;
+        }
+        owner_.done("ShipAiApproach::route_start_landing_94h", 0x0077c2a0u);
+        const std::size_t c = static_cast<std::size_t>(candidate - 1u);
+        GameShipAiHost* host = owner_.units.ship_ai();
+        if (host == nullptr) return;
+        const GameUnitRow* row = owner_.units.unit_row(c);
+        if (owner_.units.unit_is_kind_of(c, 0x0c)) {
+            const int answer = host->landing_ship_request_landing_0074a4c0(c);
+            if (answer == 1) ++owner_.summary.landing_sweep_begun;
+            owner_.log.notef("approach landing sweep: t=%.2f unit=%s 94h -> 0074A4C0 answer=%d",
+                owner_.capture_clock, row != nullptr ? row->name.c_str() : "?", answer);
+        } else {
+            const int answer = host->transport_launch_craft_008206f0(c);
+            if (answer > 0) ++owner_.summary.landing_sweep_launched;
+            owner_.log.notef("approach landing sweep: t=%.2f unit=%s 94h -> 008206F0 answer=%d",
+                owner_.capture_clock, row != nullptr ? row->name.c_str() : "?", answer);
+        }
     }
     void set_brain_command_01d8(float command) override {
         // 009F3635, brain+1D8h. That is blk+1D0h - brain+8h is blk, so
@@ -12547,6 +12620,14 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai approach landing sweep entries=%llu "
+            "leaders=%llu candidates=%llu slow=%llu in_range=%llu messages=%llu begun=%llu "
+            "launched=%llu bound=%d (009f33e2..009f35f5, 94h; packet "
+            "cc9_approach_landing_sweep)", host.summary.landing_sweep_entries,
+            host.summary.landing_sweep_leaders, host.summary.landing_sweep_candidates,
+            host.summary.landing_sweep_slow, host.summary.landing_sweep_in_range,
+            host.summary.landing_sweep_messages, host.summary.landing_sweep_begun,
+            host.summary.landing_sweep_launched, kShipAiApproachLandingSweepBound ? 1 : 0);
         host.log.notef("summary mission ship ai approach target layer push ship_passes=%llu "
             "below=%llu moved=%llu min_target_layer=%d max_own_0570=%d bound=%d (009f1e36..009f1f07, 00417b10; packet "
             "cc9_approach_target_layer_push)", host.summary.target_layer_ship_passes,
