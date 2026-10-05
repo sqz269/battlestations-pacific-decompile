@@ -46,6 +46,13 @@
 
 namespace bsp {
 
+// Packet cc9_torpedo_boat_kind, docs/GUNNERY_OPEN_ITEMS.md section 105. The ship
+// motion tick asks vtable[5Ch](0Eh) (TorpedoBoat) at 00826A78 (the boost block),
+// 0092E9D1 (the righting term) and 008263F5 (the 20 s sink arm before the 60 s
+// one). True: the units host answers the class kinds, so a TorpedoBoat leaf takes
+// all three. False: every unit answers false, as the host did before.
+inline constexpr bool kShipTorpedoBoatKindBound = false;
+
 // ---------------------------------------------------------------------------
 // Class-descriptor fields the motion path reads
 // ---------------------------------------------------------------------------
