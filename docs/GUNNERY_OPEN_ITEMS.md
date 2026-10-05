@@ -8069,3 +8069,247 @@ OFF census on this tree (`local\g23_sc_<row>.log`):
   - `g23_diag.patch`, the uncommitted `BSP_HULL_GROUND_PROFILE` / `BSP_GROUND_SAMPLE`
     diagnostic for `src/hull_terrain_contact.cpp`;
   - `g23_pts.py` and `g23_clear.py` (sample points and hull-vertex clearance).
+
+## 103. The gunnery pass byte `+7Dh`: `00863780` (packet `cc9_gunnery_pass_byte_7d`, cc9-gunnery24)
+
+SHIP_AI 124.2 routed the frame-state tail's `00863780` call here: the host's gunnery answered
+`+7Dh` as the constructor's constant 1 (`torpedo_may_take_fire_target`).
+
+### 103.1 The read
+
+- **`00863780`** (`__thiscall(pass)(char v)`, `RET 4`, listing `00863780..008637C3`):
+  - `00863784..0086378B`: if `pass+7Dh != v`, store `v`; otherwise return.
+  - `0086378E..008637BE`, only for a change to 0: the owner `[pass+50h]`, when it answers
+    `vtable[5Ch](5)`, has `00728000` (`BSP_Gun_ClearBotFireTarget`) called on `[node+8]` for each
+    node of `[owner+3ECh]` (next at `+4h`). `owner+3ECh` is `owner+3D0h + 7*4`, the category-7
+    (torpedo) list `0080DF40` and `00814350` walk (SENTITY_INIT_PASSES section 9).
+- **Readers of `+7Dh`.** A Capstone sweep of every byte access `[reg+7Dh]` in
+  `00860000..00867000` (`local\g24_byte7d.py`) finds the constructor store `008645D6` (1), the two
+  accesses in `00863780` and one reader, `0086581C`. No byte access to `+7Dh` follows a `+6DCh`
+  load anywhere in `.text` within 12 instructions. **Uncertainty:** a reader that reaches the
+  pass through another pointer than `unit+6DCh` would not be caught.
+- **`0086581C`** (in `BSP_UnitGunneryAi_Tick`, `00865809..00865820`): for category 7, a candidate
+  that is the director's fire target (`[ESP+18h]`) is skipped unless `+7Dh` is set
+  (GUNNERY_CANDIDATE_ORDER section 7). A gun left with no candidate takes `0086586A`'s
+  `00728000`.
+- **The callers** (`tools/callsite_census.py 00863780`: 3, all rel32 CALLs):
+
+| site | in | argument |
+| --- | --- | --- |
+| `009F3016` | `009F1BC0` frame state, tail `009F2FDB..009F301B`, reached on every path past `009F2F26` | `+12BAh && +12B4h + 50.0 > +127Ch` when `[unit+6DCh]` is set |
+| `009E6491` | `009E6480`, the attackmove approach member's exit | 1 |
+| `009F4F2B` | `009F4DA0`, the `007788B0` (formation follower) arm | 1; no null test on the pass |
+
+- **The tail's condition** (`009F2FEE..009F3013`): `FLD +127Ch; FLD +12B4h; FADD qword [00CE3938]`
+  (50.0, bytes `00 00 00 00 00 00 49 40`); `FCOMIP; JBE` to 0. `+127Ch` is `+11E0h` (the planar
+  range to the approach goal), copied at `009F2A0A`; `tools/store_census.py 0x11e0` finds one
+  ship-AI writer, `009F1CDE`, earlier in the same body. `+12BAh`/`+12B4h` are the torpedo gate
+  and clearance of SENTITY_INIT_PASSES section 9.
+- **So:** an approaching ship's torpedo tubes may take its fire target only while the torpedo
+  gate is set and the goal lies within the clearance plus 50 m. Elsewhere in the approach the
+  tubes are left to the command-target arm, and the drop to 0 clears every tube once.
+
+### 103.2 The binding (`kGunneryPassByte7dBound`, committed OFF)
+
+- `GameGunneryHost::set_pass_byte_7d_00863780(unit, value, site)` (`src/game_hosts_gunnery.cpp`)
+  is `00863780` on the unit's pass state (`torpedo_takes_fire_target_7d`, 1 at creation). The byte
+  is tracked both ways. ON, the pass answers it at `0086581C` and a drop clears the unit's
+  category-7 guns as `00728000` does in the host. OFF, the pass answers 1 and the clears are
+  counted only.
+- The three callers are in `src/game_hosts_ship_ai.cpp` (cc9-ships29's lane; the edit is
+  `local\g24_shipai_7d.py`, routed through the lead). The calls are unconditional; the switch
+  lives on the gunnery side.
+- **Census:** `summary mission gunnery pass byte 7d bound tail exit follower other zero one drops
+  raises gun_clears fire_target_assigns_at_0`, and per unit `zero_frames`,
+  `fire_target_assigns_at_0` and the final byte. `fire_target_assigns_at_0` counts torpedo
+  fire-target assignments made while the byte is 0, which only the OFF pass can make.
+- **Uncertainty (frame order):** where one unit is both a formation follower (`009F4F2B`, 1) and
+  approaching (`009F3016`, often 0), the byte toggles every frame. Which value the gunnery tick
+  reads depends on the order of the ship AI and the gunnery tick within a frame. The host runs
+  the ship AI first.
+
+### 103.3 OFF census and predictions (written before any ON run)
+
+OFF census on a diagnostic build of `68b2a5285` with the ship-AI edit applied
+(`local\g24_d0`, x's launch form; logs `local\g24_d0_<row>.log`):
+
+| row | tail calls | zero stores | drops | tube clears | torpedo fire-target assigns at 0 | torpedo shots |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 (9000) | 25112 | 10016 | 51 | 120 | 2696 (14 Japanese ships) | 262 |
+| USNOS | 1040 | 1003 | 186 | 211 | 0 | 0 |
+| USN13 | 690 | 640 | 52 | 104 | 0 | 0 |
+| JM08 | 132 | 132 | 15 | 0 | 0 | 0 |
+| E2 | 0 | 0 | 0 | 0 | 0 | 0 |
+| smoke (USN01 300) | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**Predictions for the pairs:**
+- **Mechanism:** ON, `fire_target_assigns_at_0` = 0 on every row; the store counts (`tail`,
+  `zero`, `drops`, `raises`) match OFF up to the first gameplay divergence.
+- **USN02:** exit 3. The first divergence is one of the 14 Japanese tube ships in the census
+  (Haguro, Jintsu and the destroyers Murasame, Minegumo, Asagumo, Yukikaze and others) whose tubes no longer take the fire target outside its
+  clearance. Torpedo shots fall from 262 (direction predicted: down); deaths and per-ship kills
+  move, direction not predicted.
+- **USNOS, USN13, JM08:** no ship tube is ever targeted (`torpedo_gate targeted=0`) and no
+  fire-target assignment is refused, so the clears touch empty tubes: exit 0 or 1.
+- **E2 and the smoke:** no approach frames: exit 0.
+### 103.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `9d15cdd37`
+with `local\g24_shipai_7d.py` applied to the export's `src/game_hosts_ship_ai.cpp` (SHA-256
+prefixes `C165A922CA84` / `6195DC5FB115`). x's launch form; every run has `lost_polls=0`. The
+300-frame smoke ON: `tail=0 follower=963`, no change.
+
+| row | exit | deaths | torpedo shots OFF -> ON | fire-target assigns at 0 OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN02 (9000) | 3 | 1 -> 3 | 262 -> 203 (targeted 129186 -> 66368) | 2696 -> 0 |
+| USNOS, USN13, JM08, E2 | 1 | identical | 0 / 0 | 0 / 0 |
+
+- **Mechanism: matches.** `fire_target_assigns_at_0` is 0 on every ON row, and the store
+  counts of USNOS, USN13, JM08 and E2 are identical both ways.
+- **USN02** (prediction met: exit 3, torpedo shots down).
+  - The first hit moves from 19.25 s to 36.75 s.
+  - Houston, whose loss is the row's `Game Over`, sinks at 66.10 s instead of 22.80 s
+    (killer range 2828 -> 2015 m). The mission ends at 69.35 s instead of 29.75 s.
+  - Kawakaze and Yamakaze now also die before the end.
+  - The Japanese tubes now take the fire target only while the goal is within the clearance
+    plus 50 m. Per ship, the ON zero frames run from 140 (Samidare) to 958 (Haguro).
+- **Flipped ON** (`kGunneryPassByte7dBound = true`): a mechanism match with every prediction met.
+  It has an effect only together with the ship-AI edit, which must land with it or after it.
+
+## 104. Frame order: the hull pose against `0085AD80` and `0085ABA0` (97.2, 100.4; cc9-gunnery24)
+
+97.2 left open whether the image's guns trail a turning hull by the host's two ticks, which
+depends on where the hull's pose moves relative to the gun's stepper `0085AD80` and the bot's
+command `0085ABA0` within a fixed step. This is a reading; no switch.
+
+### 104.1 The image's order in one fixed step
+
+- **Wave 1** (`008750A0`, element `+4h` then `+0Ch`):
+  - The ship unit's `+4h` is `00811AB0`. It copies the committed matrix `unit+674h` into
+    `unit+74h`, then calls `0092F930` on `unit+1018h` with 0.05f.
+  - `0092F930` (live decompile) takes the pose from the physics body: `DYN_physics_00C43EA0(..,
+    t / [00D0DE84])` with alpha 0.05 / 0.05 = 1, then `Dyn_Transform_Expand3x4To4x4`.
+  - `+0Ch` (`006D1FC0`) commits it. So the pose the rest of the step reads is the body's pose
+    after the **previous** step's `DYN_PhysicsWorld_Simulate`.
+  - The gun element's `+4h` is `0085AD80`: it steps the angles toward the command the bot set on
+    the previous step (GUN_SHOT_CADENCE 10.7).
+- **Wave 2** (`00875B90` -> `008759B0`): the bot sub-list. `006DF520` sets the new command
+  (`0085ABA0`, `006DFB54`) from the pose wave 1 committed, and tests settle against the angles
+  wave 1 has already stepped (`006DFB83`, `006DFBAD`, `006DEE40`).
+- **Wave 3**: the ship unit's `+8h` is `00825F20` `BSP_UnitInstance_UpdateShipMotion`, the forces
+  (TICK_ELEMENT_OVERRIDES).
+- **Fan-out row 1** (`00875E0C`): `00C5C540` `DYN_PhysicsWorld_Simulate`, where the hull pose
+  actually moves. Row 2 is buoyancy, `004462D0` (FIXED_STEP_FANOUT).
+- **So within a step the image runs** stepper, then command and settle test, then hull motion. Both
+  gun calls see the pose of the end of the previous step.
+
+### 104.2 The host's order
+
+`src/game_hosts_units.cpp` (the fixed step near line 14970) runs:
+1. the ship AI `controller_step`;
+2. the AI `fixed_step`;
+3. `gunnery->fixed_step`. With `kGunWaveOrderBound` ON this is `0085AD80`, then `0085ABA0` and
+   the settle test (`src/game_hosts_gunnery.cpp`, the `kGunWaveOrderBound` block);
+4. the motion pass that moves the hull.
+
+The guns therefore read the pose the previous step's motion pass left, as in the image.
+
+### 104.3 Verdict
+
+- **The order is the image's.** The hull moves after both gun calls in both programs, and
+  `0085AD80` precedes `0085ABA0` in both. Shimotsuke's two-tick trail during a 1.4 deg/s turn
+  (97.2) does not come from frame order.
+- **Uncertainty.** If the trail differs from the image's, the cause is the stepper's or the
+  command's arithmetic (`0085AD80` speeds, `0085ABA0` arc routing), not their order. That is
+  not read here.
+- **Not covered.** The ship AI controller `009F50E0` has no caller in the call graph. Its place
+  in the image's step is unknown, so section 103.2's same-frame toggle of `+7Dh` stays open.
+- **100.4's trim is not a frame-order question.** A stopped hull's trim is the equilibrium of
+  the buoyancy elements (`004462D0`) against the body's mass properties. At rest it does not
+  depend on the order of the calls within a step. Settling it needs a hydrostatics audit of
+  the class's buoyancy elements and centre of mass against the image. **Still open.**
+
+## 105. IsKindOf(0Eh) at the ship motion tick (101's open 20 s arm; packet `cc9_torpedo_boat_kind`, cc9-gunnery24)
+
+101.2 labelled the 20 s sink arm a substitution because the units host's `unit_trait_0e`
+answered false. That answer also feeds two other probes, and it is wrong for one class.
+
+### 105.1 The read
+
+- **Kind 0Eh is `TorpedoBoat`** (`include/bsp/vehicle_class.hpp`, `00857F40` `MTorpedoBoat`). A ship
+  leaf answers `{0,1,2,4,5,6,7}` plus its own class id, so only a torpedo boat answers 0Eh.
+- **The ship motion tick probes it three times** (`vtable[5Ch]`, `PUSH 0Eh`, listing):
+  - `008263F0..008263FD`, when `sinkTime` is not above 60.0: with 0Eh and `sinkTime > 20.0`
+    (`00CE3930`), take `00826410`'s mask clear (section 101);
+  - `00826A6F..00826A7A`: the boost block `00826A6F..00826B04` (`ship_boost_step_00826a6f`). With an
+    order kind set and reserve left, it replaces the commanded speed with
+    `reference * BoostSpeedScale` and drains the reserve; otherwise it refills the reserve;
+  - `0092E9D2..0092E9D7`: the righting term `0092E9D7..0092EA73` (`ship_righting_rate_0092e9e1`),
+    which pulls the pitch rate back by the hull's pitch angle.
+- **The host's answer was false for every unit** (`src/game_hosts_units.cpp`, `ShipMotionBinding`:
+  "the same holds for every ship leaf this mission creates"). That is untrue on any row with PT
+  boats: Jap_PT, PT_Boat_Camo and Suicide_boat hulls appear on IJN01, JM05, JM08, USNRM01 and USNOS.
+
+### 105.2 The binding (`kShipTorpedoBoatKindBound`, `include/bsp/ship_motion.hpp`, committed OFF)
+
+- `unit_trait_0e` answers `bsp::unit_is_kind_of(class_id, 0Eh)` when ON. The sink block takes the
+  20 s arm under the same switch.
+- **Census:** `summary torpedo boat kind bound units trait_queries sink_20s_steps`. `trait_queries`
+  counts the motion-tick probes a torpedo boat answers true (both ways). `sink_20s_steps` counts
+  the steps a sinking torpedo boat spends between 20 s and 60 s.
+
+### 105.3 OFF census and predictions (written before any ON run)
+
+OFF, an export of `9c2320ede` (`local\g24_d0`), x's launch form:
+
+| row | torpedo boats | trait queries | sink steps 20..60 s |
+| --- | --- | --- | --- |
+| IJN01 | 4 | 12000 | 0 |
+| JM05 long | 4 | 36000 | 0 |
+| JM08 | 1 | 3000 | 800 |
+| USNRM01 | 1 | 3462 | 0 |
+| USNOS | 9 | 19755 | 0 |
+| E2 | 0 | 0 | 0 |
+
+**Predictions:**
+- **Mechanism:** the ON counts match OFF up to the first divergence, and every torpedo boat takes
+  the boost block and the righting term.
+- **Moved rows:** IJN01, JM05 long, JM08, USNRM01 and USNOS exit 3. The first divergence is on a
+  torpedo boat's pose (the righting term changes its pitch rate from the first motion step) or its
+  speed (the boost, where its order kind is set).
+- **JM08:** its sinking torpedo boat clears the terrain mask at 20 s instead of 60 s.
+- **Deaths:** they move on the rows where torpedo boats fight (USNOS, IJN01); direction not
+  predicted.
+- **E2** (no torpedo boat): exit 0 or 1.
+
+### 105.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `9c2320ede`,
+x's launch form. Every run has `lost_polls=0`; the 300-frame smoke ON is clean. A re-run of the ON
+side on `0246b0946`, which adds only the arm census, gives the census below.
+
+| row | exit | deaths | note |
+| --- | --- | --- | --- |
+| IJN01, JM05 long, USNRM01, USNOS | 1 | identical | the torpedo boats' `hull tilt` summaries are identical to two decimals |
+| JM08 | 1 | 22 / 22, identical | its sunk torpedo boat clears the mask at 20 s: `sunk_hull_shape_flag8` 584 -> 1384 steps, lowest end -78.55 -> -75.91, tilt 74.20 -> 71.38 deg; no kill at -200 within the window |
+| E2 | 1 | identical | no torpedo boat |
+
+**Arm census ON** (`summary torpedo boat arms`):
+- IJN01: `boost_steps=12000 boost_ordered_steps=0 righting_steps=12000 righting_abs=0.0000`.
+- USNOS: 19755 / 0 / 19755 / 0.0000.
+
+**Reading.**
+- **The boost block runs on every torpedo-boat step but only refills**, because no order kind
+  (`unit+988h`) is ever set on these rows.
+- **The righting term runs but changes nothing.** `0092E9E1` acts only when the pitch angle is
+  past the 15-degree threshold (`kShipMotionRightingThreshold`), and the live torpedo boats stay
+  under 3.7 degrees.
+- **So the reach on the reference rows is JM08's wreck alone**, which drops through 40 s earlier.
+
+**Verdict.**
+- **Mechanism: matches.** Every torpedo boat answers 0Eh ON, the three arms run, and the 20 s
+  arm clears the JM08 wreck's mask at 20 s.
+- **Spread missed:** I predicted exit 3 on five rows and every row is exit 1. I had not checked
+  the righting threshold, and I assumed some ordered boost would occur.
+- **Flipped ON** (`kShipTorpedoBoatKindBound = true`), as a mechanism match with the spread miss
+  recorded. Section 101.2's labelled substitution is closed.

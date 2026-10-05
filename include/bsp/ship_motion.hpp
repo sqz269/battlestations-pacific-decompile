@@ -46,6 +46,14 @@
 
 namespace bsp {
 
+// Packet cc9_torpedo_boat_kind, docs/GUNNERY_OPEN_ITEMS.md section 105. The ship
+// motion tick asks vtable[5Ch](0Eh) (TorpedoBoat) at 00826A78 (the boost block),
+// 0092E9D1 (the righting term) and 008263F5 (the 20 s sink arm before the 60 s
+// one). True: the units host answers the class kinds, so a TorpedoBoat leaf takes
+// all three. False: every unit answers false, as the host did before.
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 105.4).
+inline constexpr bool kShipTorpedoBoatKindBound = true;
+
 // ---------------------------------------------------------------------------
 // Class-descriptor fields the motion path reads
 // ---------------------------------------------------------------------------
@@ -137,6 +145,8 @@ struct ShipSteeringStep {
     float rate_row1{0.0f};        // the row-1 component, after the slew limiter
     float rate_row2{0.0f};        // the row-2 component, untouched
     OceanVec3 angular_velocity{}; // what reaches 00C37E20
+    bool righting_applied{false}; // 0092E9D7 took the IsKindOf(0Eh) arm (census only)
+    float righting_delta{0.0f};   // the change the term made to the row-0 rate
 };
 
 // 0092E9E1..0092EA73. Active only above the threshold; the rate is pushed by the gap
