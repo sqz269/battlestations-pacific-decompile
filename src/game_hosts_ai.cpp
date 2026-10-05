@@ -83,8 +83,9 @@ inline constexpr bool kAiTransportMovesOrderBridgeBound = true;
 // EDX = the 0.4/0.6 point) passes the order bridge as 00A11B80's move does: the
 // class gate (a squadron unless 007EDA90, else IsKindOf(6)), the 80 m gate and
 // a ship's 00417B10 avoid-zone point (30 m margin, y = 0). False: the point is
-// issued directly, as before. Counted both ways.
-inline constexpr bool kCloseFallbackOrderBridgeBound = false;
+// issued directly, as before. Counted both ways. ON: section 119 (USN13 moves
+// paths only; the other pairs are gameplay-identical).
+inline constexpr bool kCloseFallbackOrderBridgeBound = true;
 
 // Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). The 94h
 // that 00A11B80 routes for a ready member reaches 00821F61 -> vt+238h: on an

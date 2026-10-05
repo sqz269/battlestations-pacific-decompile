@@ -9737,3 +9737,36 @@ objective adds on those rows (118.2) are the same as USNOS's or have no targets.
 Reach returns only with 118.3's fix and a row whose objectives name land units (USNOS past
 `us_osumi.lua` 1650). Then `hits` counts the forts, HQs and radio towers the ship AI's goal
 vector starts treating as surface targets, as the image does.
+
+## 119. Section 112's pairs, and the flip (packet `cc9_close_fallback_order_bridge`, cc9-ships28, 2026-10-05)
+
+cc9-lua33 released `src/game_hosts_ai.cpp` without applying 112.3's edit, so this lane applied
+it. After merging main `ee5672bf2` (which carries `kAiSquadronSetTargetIntakeBound` ON in
+`close_issue_order`), `local\s27_edit_ai_112.py` matched every anchor and was applied unchanged:
+`d0558a62c`, OFF.
+
+OFF is this tree at `d0558a62c` (`local\s28_c0_<row>.log`). ON is `pair_export --commit d0558a62c
+--flip kCloseFallbackOrderBridgeBound=true` (`local\s28_c112on`, SHA-256 prefix `6347B6065C2C`,
+`local\s28_c5_<row>.log`). Both use the reference launch form.
+
+| row | calls OFF/ON | class_refused | near_refused | ships | zone_moved ON | zone point asks OFF -> ON | `pair_diff` | 112.4 said |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| smoke | 0/0 | 0 | 0 | 0 | 0 | 1 -> 1 | 1 | - |
+| E2 (control) | 36/36 | 0 | 0 | 0 | 0 | 0 -> 0 | 1 | 1 |
+| JM06 | 256/256 | 0 | 0 | 256 | 0 | 20 -> 276 | 1 | 1 |
+| LOMP06 | 143/143 | 0 | 0 | 143 | 0 | 16 -> 159 | 1 | 3 |
+| USNOS long | 737/737 | 0 | 0 | 707 | 0 | 3130 -> 3837 | 1 | 3 |
+| USN13 | 429/413 | 0 | 0 | 226/225 | 128 | 1081 -> 1316 | 3 | 1 or 3 |
+
+- **Mechanism, every row:**
+  - `near_refused` = 0 (112.1's 240 m floor);
+  - `class_refused` = 0 (no non-ship, non-squadron member reaches the fallback on these rows);
+  - ON, the zone point asks rise by exactly `ships` wherever the run did not diverge
+    (JM06 +256, LOMP06 +143, USNOS long +707). USN13 rises by 235 against `ships` 225, because the
+    run diverges after the first moved point.
+- **USN13** is the only row where a fallback point lands in an avoid zone (`zone_moved` 128).
+  The gameplay move is paths only: no deaths on either side, three `nearest` distances move by
+  2-15 m, and about 30 fewer orders are issued (`issue_command` 4125 -> 4094).
+- **Spread miss:** LOMP06 and USNOS long were predicted to move zone points (exit 3). No fallback
+  point there lies in a zone (`zone_moved` 0), so both are gameplay-identical.
+- **Verdict:** the mechanism matches and the miss is in spread only, so **flipped ON**.
