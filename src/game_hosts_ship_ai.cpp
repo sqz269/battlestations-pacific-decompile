@@ -126,6 +126,10 @@ inline constexpr bool kShipAiTargetCurveBound = true;
 // +1224h < 0. False: any present target refills it when +1224h <= 0, in every
 // mode, and the timer re-arms to 2.0f even without a target.
 inline constexpr bool kShipAiTargetCurveRefillBound = true;
+// Packet cc9_own_curve_refill_gate, SHIP_AI_OPEN_ITEMS section 131. True: the own
+// curve refill (009F2EC1..009F2F16) runs only while +1220h < 0, in mode 0 and
+// with the byte +1208h clear. False: whenever +1220h <= 0.
+inline constexpr bool kShipAiOwnCurveRefillGateBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -5971,7 +5975,21 @@ private:
         }
         FirepowerBinding firepower(owner_, index_);
 
-        if (ctl_.approach.timer_1220 <= 0.0f) {
+        // Packet cc9_own_curve_refill_gate: 009F2EC1 COMISS 0,[+1220h] / JBE
+        // (refill only while +1220h < 0), 009F2EDB mode +1234h == 0, 009F2EE4
+        // byte +1208h clear.
+        bool own_due = ctl_.approach.timer_1220 <= 0.0f;
+        if (kShipAiOwnCurveRefillGateBound) {
+            own_due = ctl_.approach.timer_1220 < 0.0f;
+            if (own_due && ctl_.approach.mode_1234 != bsp::ShipAiApproachMode::free_0) {
+                own_due = false;
+                ++owner_.summary.own_curve_mode_skips;
+            } else if (own_due && ctl_.approach.flag_1208) {
+                own_due = false;
+                ++owner_.summary.own_curve_flag_skips;
+            }
+        }
+        if (own_due) {
             bsp::ship_ai_firepower_range_profile_0095f080(query,
                 ctl_.approach_curve_own.samples, true, firepower);
             ctl_.approach.timer_1220 = 1.5f;
@@ -12460,6 +12478,10 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai own curve refill gate mode_skips=%llu "
+            "flag_skips=%llu bound=%d (009f2ec1..009f2eeb, packet cc9_own_curve_refill_gate)",
+            host.summary.own_curve_mode_skips, host.summary.own_curve_flag_skips,
+            kShipAiOwnCurveRefillGateBound ? 1 : 0);
     }
     // Packet cc9_torpedo_standoff: 009F2AC9..009F2E9B's exits in the order of
     // bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.

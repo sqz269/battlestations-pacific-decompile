@@ -10504,3 +10504,63 @@ The own refill's gates (`009F2EC1..009F2EEB`) are not bound. The host is missing
 1.5 / 0.25 = 6 passes exactly), mode 0, and `+1208h` clear. The `+1208h` byte is
 `unit->vtable[22Ch]()` at the approach enter (`009F31F3`), `006DFDB0` `XOR AL,AL` for the
 classes read so far. One switch would cover all three.
+
+## 131. The own curve refill's gates (packet `cc9_own_curve_refill_gate`, `kShipAiOwnCurveRefillGateBound`, cc9-ships29, 2026-10-05)
+
+### 131.1 The image
+
+`009F2EC1 XORPS` / `009F2EC4 COMISS XMM0,[EBP+1220h]` / `009F2ED9 JBE 009F2F26`: the own refill
+runs only while `+1220h` < 0. Then `009F2EDB CMP [EBP+1234h],0` / `JNE` (mode 0 only) and
+`009F2EE4 CMP BYTE [EBP+1208h],0` / `JNE` (the byte clear). The refill is at `009F2F11`
+(`0095F080` over the `+127Ch` block into `+12C0h`), with `+1220h` = 1.5f (`[00CE380C]`) at `009F2F16`.
+The two flag stores `009F2ECB` / `009F2ED2` (`+12BCh` = 0, `+12BDh` = 1) come before the test, and
+the host's query already sets them every pass.
+
+### 131.2 The host and the switch
+
+The host refills whenever `timer_1220 <= 0`, in any mode. `kShipAiOwnCurveRefillGateBound`
+(committed OFF) applies the three gates. The census line `summary mission ship ai own curve
+refill gate` counts the due refills that the mode and the byte refuse.
+
+### 131.3 Predictions (written before the ON run)
+
+- **Mode and byte: no reach.** Section 130's census found every approach pass in mode 0. The
+  byte `+1208h` is `false` from the approach enter on (`006DFDB0` `XOR AL,AL` in both ship vtables
+  read). So `mode_skips=0 flag_skips=0` on every row.
+- **The timer splits.** At about 0.25 s per pass (130.5), 1.5f reaches exactly 0.0f after 6
+  passes. The host refills on the 6th pass; the image refills on the 7th.
+  - `curve_refreshes` (own refills) falls by about a seventh: USN13 180 -> about 155, USNOS 171
+    -> about 147.
+- **Rows:** smoke and USN04 have no approach passes, so exit 0 or 1. On USN13, USNOS and USNOS
+  long the own curve feeds `009E6E80`'s standoff choice and the range scan (`009E71B9`). Its
+  values are refreshed one pass later, so a standoff range can differ for a pass. **Exit 1 is the
+  expectation, as with section 130's target curve. Exit 3 is possible** if a standoff choice
+  falls on the changed pass.
+- **Verdict rule:** flip ON if the skips are 0 and the refill counts fall by the predicted
+  fraction. A moved row stays ON only if its moved deaths trace to ships in the approach state.
+
+### 131.4 The pairs, and the flip
+
+- **OFF:** this tree at `2d7dd709e`, `build\win32\Release` (`local\s29_o0_<row>.log`). It is
+  gameplay-identical to section 130's ON build: `pair_diff s29_t1_usn13 s29_o0_usn13` = 1, with
+  no counts moved.
+- **ON:** `pair_export --commit 2d7dd709e --flip kShipAiOwnCurveRefillGateBound=true`
+  (`local\s29_o131on`, SHA-256 prefix `F5235E01BC07`, `local\s29_o1_<row>.log`).
+
+| row | `pair_diff` | own refills OFF -> ON (predicted) | skips ON |
+| --- | --- | --- | --- |
+| smoke (USN01) | 1 | 0 -> 0 | 0 / 0 |
+| USN04 (control) | 1 | 0 -> 0 | 0 / 0 |
+| USN13 | 1 | 180 -> 155 (about 155) | 0 / 0 |
+| USNOS | 1 | 171 -> 144 (about 147) | 0 / 0 |
+| USNOS long | 1 | 184 -> 144 | 0 / 0 |
+
+Every row is gameplay-identical, with identical death rows and unit tables. The `ShipAiFirepower`
+callee counts fall with the refills. The other moves are the `ship ai free` noise and the bound
+flags.
+
+- **Verdict:** the mechanism matches the prediction on every row. Both gates (mode and `+1208h`)
+  refuse nothing, and the refill count falls by the seventh that the `< 0` test predicts. The
+  switch is **flipped ON**.
+  - USNOS long falls by a little more than a seventh (184 -> 144). Its approach passes come in
+    shorter runs. This was not traced further.
