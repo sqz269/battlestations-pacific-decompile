@@ -410,7 +410,7 @@ inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
 // stops at five, labelled. False: an unimplemented record that returns nothing, so
 // bsm_04_vengance_at_luzon.lua:1718 indexes nil and luaStartMission fails on
 // every think.
-inline constexpr bool kGetSquadronPlanesBound = false;
+inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TASK 5cn.1
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

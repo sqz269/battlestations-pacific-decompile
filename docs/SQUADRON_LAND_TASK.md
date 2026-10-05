@@ -9339,3 +9339,34 @@ reach. Binding the dialog sequencer's callback entries is a packet of its own.
   - **Weakest call:** whether a single issue changes the bombing outcome or only its timing.
 - **USN02 3200/3000 and BSM01 3200/3000 (controls):** pair_diff 0 or 1, since neither calls the
   native.
+
+### 5cn.1 Measured (OFF `local\l33_off`, SHA-256 `E47DDC22ECFD`; ON `local\l33_on`, `A94D5BA28C7C`; both from `8d319feb2`), and the verdict: **flip ON**
+
+The launch form is reference v's (`local\l33_runs.ps1 -Tag c`), and the ON smoke (USN01, 300
+frames) finished cleanly.
+
+| row | pair_diff | census (ON) |
+| --- | --- | --- |
+| BSM04 3200/3000 | 3 | `calls=2 entries=8 unresolved=0` |
+| USN02 3200/3000 | 1 | `calls=0` |
+| BSM01 3200/3000 | 1 | `calls=0` |
+
+**BSM04, against the predictions:**
+- **The mechanism holds.** The 49 `lua_Think failed ... :1718` lines drop to 0. There are two calls,
+  `Mission.Cat` and `FortressRed`, with 8 entries in all. `StartDialog("INTRO")` appears once.
+  The chain then stops at the INTRO dialog as predicted, because this host does not play a
+  sequence's callback entries.
+- **Larger than predicted.** I expected only re-timings. The move is bigger because OFF never ran
+  any of `lua_Think` past line 596: `Mission.Started = true` (598) and everything after it in
+  every think were unreachable. With the switch ON the script's opening phase runs.
+  - The airfield launches its interceptors: `IsReadyToSendPlanes` -> `LaunchSquadron` spawns
+    `AirField_sqn01` and `AirField_sqn02`, 6 new units (39 -> 45).
+  - They fight the B-17s, Donald and the Wildcat. Deaths go 0 -> 5: B-17|.-2, B-17|.-5 and three
+    of AirField_sqn01. Shots go 299 -> 3792 and damage 140 -> 1270.
+  - The first hit comes 46 s earlier (123.7 -> 77.5 s).
+  - The controlled B-17 flies 7238 -> 9300 m.
+- **The controls held:** USN02 and BSM01 do not call the native, and both exit 1.
+
+The mechanism matches, so the switch flips ON (`kGetSquadronPlanesBound = true`). BSM04's
+script dogfight (1909) now waits on the dialog sequencer: the INTRO and ZEKES `callback`
+entries.
