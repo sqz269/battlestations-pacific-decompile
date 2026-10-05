@@ -11317,3 +11317,117 @@ resolved carried bullet gets `carried_kamikaze_known`. This installation's
   option against surface targets: the class 156 blast pair x Kamikaze accuracy x the factor. Expect
   the census `kamikaze=` count to rise above 0. The Bettys' target pick may move, and with it the US
   AA engagement. Exit 1 or 3.
+
+### 5dk.1 Measured (`l38_a0` against `l38_a1`, commit `7e43d04d4`), and the LaunchSquadron default arm (cc9-lua38, 2026-10-05)
+
+| row | a0 -> a1 | |
+| --- | --- | --- |
+| USN02, BSM01, IJN01, USN04, E2, USNOS, USN13, ESMP08 14200 | gameplay identical | |
+| USN13 long | deaths 133 -> **159**, shots 43333 -> 49139, dive-bomb releases 1 -> 0 | moved |
+
+- **The census matches the prediction where the data reaches it.**
+  - USN04: `squadrons=26 reads=216 none=172`.
+  - The AI side's `records_loadout` falls 10516 -> 4142, and its `dive` options 1631 -> 0. The Zeros
+    lose the `Equipments[1]` fallback.
+  - ESMP08: the Avengers carry bag 2 and read it (`reads=196`).
+- **USN13 long moved for a reason the prediction missed: air-ops launches got Equipment 0.** The
+  airfield squadrons log `air ops squadron: Airfield5_sqn13 class=162 ... equipment=0` (and JapAF
+  Bettys, class 167). `squadron ordnance` turns from type 2 (torpedo) to 0 for Airfield5_sqn13,
+  JapAF_sqn14 and Airfield5_sqn15. With a 0 bag they carry nothing, so they fly as gun planes. The
+  only-ON deaths are those Kates and Bettys in dogfights; under the slot-4 team reading (5cq, 5dj)
+  that includes the `bruh` groups.
+- **The cause is a host misreading, not the binding.** `run_launch_squadron_0089e3c0` takes the
+  default arm (class+134h) as 0: "class+134h is not authored under any key". It is `DefaultEquipment`.
+  - `00961F0A` pushes `"DefaultEquipment"` (`00D1AB10`), and `00961F45` stores its integer at `+134h`
+    (0 when nil, `00961F30`). `include/bsp/vehicle_class_fields.hpp` already names it.
+  - So `LaunchSquadron(unit, class, count)` with no fourth argument arms the slot with the class's
+    `DefaultEquipment`: 1 for Kate and Betty, 0 for Zero and Hellcat.
+  - The legacy release path read `DefaultEquipment` itself, which masked the 0.
+  - Fixed behind the same switch (`src/game_hosts_lua.cpp`). With it, the airfield Kates and Bettys
+    keep their torpedoes, the Zeros and Hellcats stay at 0, and nothing changes OFF.
+
+**Predictions for the re-pair (`l38_c0`/`l38_c1`):**
+- The rows identical in a1 stay identical.
+- USN13 long returns to near a0. The airfield Kates and Bettys are armed again (`squadron ordnance`
+  type 2). The residual move comes from the Zeros' and Hellcats' lost fallback option (AI side
+  only). Expect deaths within about 10 of 133.
+
+## 5dm. Item 3: rocket accuracy, `009FE4F1` read whole (packet `cc9_ai_rocket_accuracy`, cc9-lua38, 2026-10-05)
+
+The last open arm of `009FE270`: the sub-type 12h test that splits SmallRocket from BigRocket. A
+prior note called it "target-state predicates". It is actually attacker and bullet tests.
+
+### The image (`009FE4F1`-`009FE645`, disk bytes)
+
+Registers at the arm (prologue `009FE270`-`009FE29B`):
+- `EBP` = ECX, the attacker (`009FE282`);
+- `EDI` = EDX, the bullet class (`009FE27A`);
+- `ESI` = the stack argument, the target (`009FE273`).
+
+So `009FE270` does dereference its first argument, in this arm only.
+
+| test | site | then | else |
+| --- | --- | --- | --- |
+| attacker `vtable[18h](0Fh)` (plane base) | `009FE4F7`-`009FE4FF` | next row | `009FE632`: target plane -> `009FE322` (`+120h`), else `009FE334` (`+124h`/`+128h`/`+12Ch`), the **Artillery** row |
+| `006E3260(bullet)`, IgnitionDelay <= 0 (small) | `009FE505`-`009FE50E` | next row | `009FE5C1`: **BigRocket** `+170h`, `+174h`/`+178h` by `00827F70`, `+17Ch` |
+| `007B80A0(bullet)` and target plane | `009FE514`-`009FE52C` | `009FE550`: `+160h` | the next row |
+| `007B80C0(bullet)` and target not plane | `009FE52E`-`009FE54A` | `009FE550`: `+164h`/`+168h`/`+16Ch` | `009FE6BB`, 0 |
+
+`007B80A0` answers AntiAir or `[00F874FD]`, and `007B80C0` answers !AntiAir or `[00F874FD]` (5df).
+A submarine is ship-based and not small surface, so it reads the big-ship column, as in every
+four-entry arm.
+
+### The binding (`kAiRocketAccuracyBound`, `include/bsp/ai_target_weights.hpp`), committed OFF
+
+- `bsp::ai_rocket_accuracy_offset_009fe4f1` (`src/ai_target_weights.cpp`) is the table above as a
+  pure function.
+- The loadout arm's rocket option asks a new host virtual, `rocket_accuracy(attacker, bullet, target)`.
+  Its default keeps `bullet_accuracy` (0 for 12h).
+- **Not landed:** the AI host's override, which needs `src/game_hosts_ai.cpp` (cc9-ships32's lease).
+  The prepared edit is `local\l38_ai_patch.py` in the cc9-lua38 tree.
+- **Not covered:** the barrel path. `barrel_accuracy` (`game_hosts_ai.cpp`) still answers 0 for
+  sub-type 12h, because `GameAiWeaponFacts::Barrel` (gunnery lane) carries no IgnitionDelay or
+  AntiAir. A non-plane attacker needs neither: its rocket barrel reads the Artillery row.
+
+### Predictions
+
+The a-pair census reads `rocket=0/0` on every row that runs the loadout arm (USN13, USN13 long,
+E2, USNOS, ESMP08 14200, IJN01). So **every reference row stays identical** when the switch is
+flipped with the override in place. The arm is verified by reading only. A row with a rocket
+loadout (a Corsair or Avenger with HVARs) is needed to measure it.
+
+### 5dk.2 Re-paired (`l38_c0` against `l38_c1`, commit `6a6ec6ade`): **ON** (cc9-lua38, 2026-10-05)
+
+| row | c0 -> c1 |
+| --- | --- |
+| USN02, BSM01, IJN01, USN04, E2, USNOS, USN13, ESMP08 14200 | gameplay identical (exit 1: census lines and the known ship-avoidance refill noise) |
+| USN13 long | deaths 133 -> **148**, shots 43333 -> 48071, hull hits 2755 -> 3509, dive-bomb releases 1 -> 0 |
+
+- **The LaunchSquadron fix works.** The airfield Kates and Bettys are armed again:
+  `squadron ordnance Airfield5_sqn13 ... -> 2`, and likewise JapAF_sqn14 through 18. Census:
+  `reads=653 none=316`.
+- **The remaining move is the Zeros.** The airfield Zeros (Airfield5_sqn11 and JapAF_sqn12, class
+  350, `DefaultEquipment` 0) carry nothing in both builds (`squadron ordnance ... -> 0`). Under
+  c0's `Equipments[1]` fallback the AI still credited them a bomb: `dive` options 12349 positive in
+  c0, 0 in c1. Without it they keep only the gun arm, so they score planes. The planes in reach
+  are the `bruh` Kates, and the slot-4 brain counts those as enemies (5cq, 5dj).
+- **From the per-death table** (`l37_deaths.py`; 29 deaths only in c1, 14 only in c0):
+  - only-ON victims are almost all `bruh` Kates, killed by `Airfield5_sqn11` (7), `JapAF_sqn`/`JapAF_sqn12`
+    (3), other `bruh` (4) and `CB` (3);
+  - in return, `bruh #2.9` kills `Airfield5_sqn11` and a JapAF Zero.
+  - The only-OFF victims are Agano's targets (storage and containers) and a few `bruh` losses to Marus.
+  - So the extra deaths are Japanese planes fighting Japanese planes, which is the team-reading
+    artefact, not this binding.
+
+**Verdict: ON.** The mechanism is the image's as read: `007CDF20`'s bag Equipment, and
+`LaunchSquadron`'s `DefaultEquipment` default. Every row but USN13 long is identical. USN13 long's
+move comes from removing a labelled substitution (the generator-default fallback that gave unarmed
+fighters a bomb option). The friendly dogfights it exposes belong to SHIP_AI 125, the slot-4
+brain's team.
+
+## 5dl.1 Measured (`l38_b0` against `l38_b1`, commit `27f74feb3`): **ON** (cc9-lua38, 2026-10-05)
+
+USNOS, USNOS long, IJN11, USN13 and USN02 are gameplay-identical (exit 1, noise only), and IJN11 is
+exit 0. No Ohka Betty spawns inside USNOS long's 9000 frames, and every row's census reads
+`kamikaze=0`, so the binding is unexercised on the reference rows. The readers are the image's as
+read, and nothing moves, so the switch is ON.
