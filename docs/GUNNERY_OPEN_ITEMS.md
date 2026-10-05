@@ -8069,3 +8069,86 @@ OFF census on this tree (`local\g23_sc_<row>.log`):
   - `g23_diag.patch`, the uncommitted `BSP_HULL_GROUND_PROFILE` / `BSP_GROUND_SAMPLE`
     diagnostic for `src/hull_terrain_contact.cpp`;
   - `g23_pts.py` and `g23_clear.py` (sample points and hull-vertex clearance).
+
+## 103. The gunnery pass byte `+7Dh`: `00863780` (packet `cc9_gunnery_pass_byte_7d`, cc9-gunnery24)
+
+SHIP_AI 124.2 routed the frame-state tail's `00863780` call here: the host's gunnery answered
+`+7Dh` as the constructor's constant 1 (`torpedo_may_take_fire_target`).
+
+### 103.1 The read
+
+- **`00863780`** (`__thiscall(pass)(char v)`, `RET 4`, listing `00863780..008637C3`):
+  - `00863784..0086378B`: if `pass+7Dh != v`, store `v`; otherwise return.
+  - `0086378E..008637BE`, only for a change to 0: the owner `[pass+50h]`, when it answers
+    `vtable[5Ch](5)`, has `00728000` (`BSP_Gun_ClearBotFireTarget`) called on `[node+8]` for each
+    node of `[owner+3ECh]` (next at `+4h`). `owner+3ECh` is `owner+3D0h + 7*4`, the category-7
+    (torpedo) list `0080DF40` and `00814350` walk (SENTITY_INIT_PASSES section 9).
+- **Readers of `+7Dh`.** A Capstone sweep of every byte access `[reg+7Dh]` in
+  `00860000..00867000` (`local\g24_byte7d.py`) finds the constructor store `008645D6` (1), the two
+  accesses in `00863780` and one reader, `0086581C`. No byte access to `+7Dh` follows a `+6DCh`
+  load anywhere in `.text` within 12 instructions. **Uncertainty:** a reader that reaches the
+  pass through another pointer than `unit+6DCh` would not be caught.
+- **`0086581C`** (in `BSP_UnitGunneryAi_Tick`, `00865809..00865820`): for category 7, a candidate
+  that is the director's fire target (`[ESP+18h]`) is skipped unless `+7Dh` is set
+  (GUNNERY_CANDIDATE_ORDER section 7). A gun left with no candidate takes `0086586A`'s
+  `00728000`.
+- **The callers** (`tools/callsite_census.py 00863780`: 3, all rel32 CALLs):
+
+| site | in | argument |
+| --- | --- | --- |
+| `009F3016` | `009F1BC0` frame state, tail `009F2FDB..009F301B`, reached on every path past `009F2F26` | `+12BAh && +12B4h + 50.0 > +127Ch` when `[unit+6DCh]` is set |
+| `009E6491` | `009E6480`, the attackmove approach member's exit | 1 |
+| `009F4F2B` | `009F4DA0`, the `007788B0` (formation follower) arm | 1; no null test on the pass |
+
+- **The tail's condition** (`009F2FEE..009F3013`): `FLD +127Ch; FLD +12B4h; FADD qword [00CE3938]`
+  (50.0, bytes `00 00 00 00 00 00 49 40`); `FCOMIP; JBE` to 0. `+127Ch` is `+11E0h` (the planar
+  range to the approach goal), copied at `009F2A0A`; `tools/store_census.py 0x11e0` finds one
+  ship-AI writer, `009F1CDE`, earlier in the same body. `+12BAh`/`+12B4h` are the torpedo gate
+  and clearance of SENTITY_INIT_PASSES section 9.
+- **So:** an approaching ship's torpedo tubes may take its fire target only while the torpedo
+  gate is set and the goal lies within the clearance plus 50 m. Elsewhere in the approach the
+  tubes are left to the command-target arm, and the drop to 0 clears every tube once.
+
+### 103.2 The binding (`kGunneryPassByte7dBound`, committed OFF)
+
+- `GameGunneryHost::set_pass_byte_7d_00863780(unit, value, site)` (`src/game_hosts_gunnery.cpp`)
+  is `00863780` on the unit's pass state (`torpedo_takes_fire_target_7d`, 1 at creation). The byte
+  is tracked both ways. ON, the pass answers it at `0086581C` and a drop clears the unit's
+  category-7 guns as `00728000` does in the host. OFF, the pass answers 1 and the clears are
+  counted only.
+- The three callers are in `src/game_hosts_ship_ai.cpp` (cc9-ships29's lane; the edit is
+  `local\g24_shipai_7d.py`, routed through the lead). The calls are unconditional; the switch
+  lives on the gunnery side.
+- **Census:** `summary mission gunnery pass byte 7d bound tail exit follower other zero one drops
+  raises gun_clears fire_target_assigns_at_0`, and per unit `zero_frames`,
+  `fire_target_assigns_at_0` and the final byte. `fire_target_assigns_at_0` counts torpedo
+  fire-target assignments made while the byte is 0, which only the OFF pass can make.
+- **Uncertainty (frame order):** where one unit is both a formation follower (`009F4F2B`, 1) and
+  approaching (`009F3016`, often 0), the byte toggles every frame. Which value the gunnery tick
+  reads depends on the order of the ship AI and the gunnery tick within a frame. The host runs
+  the ship AI first.
+
+### 103.3 OFF census and predictions (written before any ON run)
+
+OFF census on a diagnostic build of `68b2a5285` with the ship-AI edit applied
+(`local\g24_d0`, x's launch form; logs `local\g24_d0_<row>.log`):
+
+| row | tail calls | zero stores | drops | tube clears | torpedo fire-target assigns at 0 | torpedo shots |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 (9000) | 25112 | 10016 | 51 | 120 | 2696 (14 Japanese ships) | 262 |
+| USNOS | 1040 | 1003 | 186 | 211 | 0 | 0 |
+| USN13 | 690 | 640 | 52 | 104 | 0 | 0 |
+| JM08 | 132 | 132 | 15 | 0 | 0 | 0 |
+| E2 | 0 | 0 | 0 | 0 | 0 | 0 |
+| smoke (USN01 300) | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**Predictions for the pairs:**
+- **Mechanism:** ON, `fire_target_assigns_at_0` = 0 on every row; the store counts (`tail`,
+  `zero`, `drops`, `raises`) match OFF up to the first gameplay divergence.
+- **USN02:** exit 3. The first divergence is one of the 14 Japanese tube ships in the census
+  (Haguro, Jintsu and the destroyers Murasame, Minegumo, Asagumo, Yukikaze and others) whose tubes no longer take the fire target outside its
+  clearance. Torpedo shots fall from 262 (direction predicted: down); deaths and per-ship kills
+  move, direction not predicted.
+- **USNOS, USN13, JM08:** no ship tube is ever targeted (`torpedo_gate targeted=0`) and no
+  fire-target assignment is refused, so the clears touch empty tubes: exit 0 or 1.
+- **E2 and the smoke:** no approach frames: exit 0.
