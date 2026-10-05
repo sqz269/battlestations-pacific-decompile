@@ -10166,3 +10166,41 @@ recorded, not edited.
 - **Verdict rule:** flip when every IJN row's controlled unit is Japanese, the US controls hold,
   and every moved death traces to the controlled-unit swap or (e). **A US unit staying
   controlled on an IJN row is a mechanism failure.**
+
+## 126. The `+1204h` side byte (`009F272D-009F2795`): no reach; a correction to section 124 (cc9-ships28, 2026-10-05)
+
+**`009E5E30`** (`009E5E30..009E5E4E`, `RET 0`, read whole) answers whether the brain's target
+`[[nested]+0B20h]` is non-null and `IsKindOf(6)`, a ship. So in mode 0 the span writes:
+- 2 when `+1208h` is set;
+- 0 for a ship target, or when `[00E0E2FC]` is set;
+- 1 otherwise.
+
+**The order inside `009F3090`** (`disasm-raw 009F3090..009F30E3`):
+```
+009F309B  CALL 009F1BC0      ; the frame state: 009F2746/2753/2764/2783/278B write +1204h
+009F30A2  CALL 009E7FC0      ; does not touch +1204h
+009F30A9  CALL 009E6E80      ; the standoff choice: 009E73E8 (0) / 009E73F4 (2)
+...
+009F30DD  CALL 009E6A90      ; 009E6CFD, the only read of +1204h among the three
+```
+- `009E6E80` has no early return. Its common tail reaches the side choice on every call, and it
+  rewrites `+1204h` whenever `+1208h` is clear and the mode is 0 (`ship_ai_approach_choose_standoff_009e6e80`
+  as reconstructed).
+- `+1208h` is always clear: `009F31F3..009F3207` stores `unit->vtable[22Ch]()`, and that slot is
+  `006DFDB0` (`XOR AL,AL; RET`) in both ship vtables.
+- So **in mode 0 the frame state's value is overwritten before its only reader runs**. The span
+  matters only in modes 2 and 4, where `009E6E80` does not write. Those modes need a same-side
+  building or a troop lander on a building, and they occur on no reference row (the approach latch
+  census: modes `N/0/0/0/0` on USNOS, USNOS long and USN13).
+- `disasm-raw` scans of `009E7FC0`, `009E6E80` and `009E6A90` for `0x1204]` find only the two
+  writes and the one read above. Readers outside those three routines were not scanned.
+
+**Correction to section 124, row 1 and "the next packet" item 1.** Its claim that the span "has
+reach on every approach frame" is wrong for mode 0. The span is a record with no reach on the
+reference rows. It becomes relevant with a mode 2 or mode 4 frame, which would also need
+`006F2D90` and `[target+7C4h]` (section 26's labelled lander inputs). **Closed, no binding.**
+
+**What is left from section 124:**
+- the tail's `00863780` call, the gunnery byte `+7Dh` (gunnery lane, routed);
+- the three bookkeeping call sites;
+- the `+11FCh` arm and reset, which has no reach for the same reason: modes 2 and 4 only.
