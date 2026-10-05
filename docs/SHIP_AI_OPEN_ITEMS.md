@@ -10748,3 +10748,113 @@ The OFF runs are this tree's build (`local\s29_w0_<row>.log`):
   `clear_37c` split of section 132.5 (LSM 02).
 - **Verdict:** as predicted, the switch is **flipped ON**. It has no reach on the reference rows,
   where the sweep finds no troop-landing candidate.
+
+## 134. The attackmove's carrier hand-back and the formation group (packet `cc9_attackmove_group_hand_back`, `kShipAiAttackMoveGroupHandBackBound`, cc9-ships29, 2026-10-05)
+
+Found on the fifth census: `ShipAiAttack::unit_group_0284` (26 calls, IJN01 only). Its label was
+"no AI group object exists (milestone 2m)", stale like section 133's. The host has kept the
+`entity+284h` formation groups since packet `cc8_ship_follow`.
+
+### 134.1 The image: `009E8820` (body `009E8820..009E88F9`, `RET 4`; `ship_ai_attackmove_step_009e8820`)
+
+- `009E883F`: the unit answers `IsKindOf(9)`, a mothership (`MMothership`, a carrier;
+  `kUnitKindQueryCarrier`).
+- `009E8852 MOV EDI,[unit+284h]`: its group. With no group it hands back.
+- With a group, `009E8861..009E889C` walk `+4F8h` members through `0070D060`. Any member other
+  than the unit that is not a mothership clears the flag (`009E8892`).
+- With the flag set, `009E88BD..009E88C1` hand the command back to the director (`0071E430` with
+  the attackmove command object `00E08F78`) and return. Otherwise the step goes on to steer the
+  attackmove (`009E88CE`).
+
+**So a carrier keeps an attackmove only when its group has escorts.**
+
+### 134.2 The host before
+
+`unit_group_0284` answered 0, so every carrier handed its attackmove back at once.
+
+### 134.3 The binding (committed OFF)
+
+- `kShipAiAttackMoveGroupHandBackBound`: the group is `unit_formation_group_0284`, the members
+  are `formation_member_count` / `formation_member_unit`, both one-based for the pure routine.
+- **Census, both ways:** `summary mission ship ai attackmove group hand back asks= grouped=
+  mixed=`, plus one `attackmove hand back:` line per mixed ask.
+
+### 134.4 The OFF census, and the predictions (written before the ON run)
+
+The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
+- **IJN01:** `asks=26 grouped=26 mixed=26`. The unit is always **Enterprise**, leader of group 0
+  with Mona / Solace (3-4 members), from t=73.30 to t=149.80, about every 3 s. The director's
+  idle tail re-issues the attackmove after each hand-back (26 `end_commands`, 26 asks).
+- smoke and USN13: `asks=0`.
+
+**Predictions:**
+- **IJN01: exit 3.**
+  - Enterprise keeps its attackmove from t=73.30 and steers it: the selector `009E86F0`, the
+    approach and engage sub-states.
+  - `end_commands` falls from 26 to at most 1. Enterprise's path, and its group's through the
+    follow station, move.
+  - Moved deaths are expected only among units near Enterprise's new track, including the AA
+    exchange with the Japanese air groups.
+- **smoke and USN13: exit 0 or 1.**
+- **Verdict rule:**
+  - flip ON when IJN01's hand-backs stop, Enterprise's state stays `attackmove`, and every moved
+    death row traces to Enterprise's group or its attackers;
+  - a hand-back still logged ON is a mechanism failure.
+
+### 134.5 The pairs, and the flip
+
+- **OFF:** this tree at `5f0cc6fc0` (`local\s29_h0_<row>.log`).
+- **ON:** `pair_export --commit 5f0cc6fc0 --flip kShipAiAttackMoveGroupHandBackBound=true`
+  (`local\s29_h134on`, SHA-256 prefix `BA3F38ED2033`, `local\s29_h1_<row>.log`).
+- smoke and USN13 are `pair_diff` 1. **IJN01 is 3.**
+- **The mechanism held.**
+  - **End of run:** `end_commands` 26 -> 0, and the `0071E430` / `009E86E0` / `007B3DC0` rows are
+    gone.
+  - **Enterprise's state:** `attackmove` against `A7M_1` ON, against `stop` OFF.
+  - **Asks:** 26 -> 307, because the step now runs every think instead of ending at once.
+  - **Position:** Enterprise finishes at (588.8, -5178.2) ON against (299.0, -1778.0) OFF. OFF it
+    stopped and touched terrain at t=74.00 (`hull terrain contact`); ON it does not.
+  - The `attackmove hand back:` diagnostic is census, so it is printed both ways. My verdict rule
+    was wrong to name it as a failure sign; `end_commands` is the sign.
+- **The moves:** deaths 3 = 3, and one death row changed. **A7M_5** is shot down 0.35 s earlier,
+  by PT3 instead of Zeilin. Hits 128 -> 130, shots 3687 -> 3709. Thirteen unit-table rows moved:
+  - the AA ships' shots and damage dealt: Curtiss, Zeilin, LST1 and PT1-3;
+  - the A7M_3 and A7M_5 members' hits.
+  All of them are the AA exchange with the Japanese squadrons attacking Enterprise's group, now
+  on Enterprise's new track.
+- **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
+  so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).
+
+## 135. The approach's other two leader reads (packet `cc9_approach_leader_answers`, `kShipAiApproachLeaderAnswersBound`, cc9-ships29, 2026-10-05)
+
+Sections 133 and 134 replaced two stale "no group" answers. Two more `00778890` reads in the
+approach still answered "not a leader", by record:
+- the mode-4 speed limit `009E6B90` at `009E6C45` / `009E6C4F` (the stop radius);
+- the standoff choice `009E6E80` at `009E6FA0` (mode 4) and `009E70A7` (mode 2), for a
+  building target.
+
+`kShipAiApproachLeaderAnswersBound` (committed OFF) answers both from the host's formation group,
+as the arm-final binding (`ShipAiArmFinal::unit_leads_controller_00778890`) does. The census line
+is `summary mission ship ai approach leader answers asks=`.
+
+**Predictions (written before any run).** Section 132's fifth census of all 20 reference rows
+shows neither record with a call: no row has a mode-4 or mode-2 approach pass against a building.
+Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when identical. The
+switch has no reach on the reference rows; it is a correctness fix.
+
+**Pairs.** OFF is `72f533d68` (`local\s29_a0_<row>.log`). ON is `pair_export --flip kShipAiApproachLeaderAnswersBound=true` (`local\s29_a135on`, SHA-256 prefix `55BE5E2878F4`, `local\s29_a1_<row>.log`). Smoke, LOMP10 and USN13 are all `pair_diff` 1, with `asks=0` and no native counts moved. **Flipped ON** as predicted.
+
+## 136. `009DA4E0`'s path limit default is an image constant (packet `cc9_path_limit_default`, `kShipAiPathLimitDefaultBound`, cc9-ships29, 2026-10-05)
+
+`ShipAiPath::limit_default` (28672 calls on the fifth census; JM08 long has 24679) was labelled
+"no producer in this process". In fact `009DA4F8 MOVSS XMM0,[00CF58EC]` reads `.rdata`, whose
+bytes on disk are `4B189680h`, which is 1.0e7f. `009DA518` stores it into `blk+254h` and
+`009DA538..` into `+2BCh`. The host stored 0.
+
+`kShipAiPathLimitDefaultBound` (committed OFF) answers the constant's bits. No reader of
+`ShipAiPathPlan::limit_254` / `limit_2bc` exists in `src/` or `include/` (`rg limit_254|limit_2bc`),
+so **the prediction is `pair_diff` 0 or 1 on every row**. The pairs are smoke, JM08 and USN13.
+Flip when they are identical. The constant matters once a reader of `+254h` / `+2BCh` is
+reconstructed.
+
+**Pairs.** OFF is `a2046f5a2` (`local\s29_p0_<row>.log`). ON is `pair_export --flip kShipAiPathLimitDefaultBound=true` (`local\s29_p136on`, SHA-256 prefix `81B7B7D8E6EA`, `local\s29_p1_<row>.log`). Smoke, JM08 and USN13 are all `pair_diff` 1: only the row's status moved, plus the `ship ai free` noise. **Flipped ON** as predicted.
