@@ -749,6 +749,8 @@ struct GameShipAiSummary {
     // Packet cc9_own_curve_refill_gate: due own refills the bound gates refuse.
     unsigned long long own_curve_mode_skips{0};    // 009F2EE2
     unsigned long long own_curve_flag_skips{0};    // 009F2EEB
+    // Packet cc9_approach_leader_answers: 00778890 asks at 009E6C45 / 009E6FA0 / 009E70A7.
+    unsigned long long approach_leader_asks{0};
     // Packet cc9_attackmove_group_hand_back (009E8852..009E889C), both ways.
     unsigned long long attack_hand_back_asks{0};
     unsigned long long attack_hand_back_grouped{0};

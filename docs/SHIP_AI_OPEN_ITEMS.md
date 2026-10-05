@@ -10824,3 +10824,37 @@ The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
   on Enterprise's new track.
 - **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
   so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).
+
+## 135. The approach's other two leader reads (packet `cc9_approach_leader_answers`, `kShipAiApproachLeaderAnswersBound`, cc9-ships29, 2026-10-05)
+
+Sections 133 and 134 replaced two stale "no group" answers. Two more `00778890` reads in the
+approach still answered "not a leader", by record:
+- the mode-4 speed limit `009E6B90` at `009E6C45` / `009E6C4F` (the stop radius);
+- the standoff choice `009E6E80` at `009E6FA0` (mode 4) and `009E70A7` (mode 2), for a
+  building target.
+
+`kShipAiApproachLeaderAnswersBound` (committed OFF) answers both from the host's formation group,
+as the arm-final binding (`ShipAiArmFinal::unit_leads_controller_00778890`) does. The census line
+is `summary mission ship ai approach leader answers asks=`.
+
+**Predictions (written before any run).** Section 132's fifth census of all 20 reference rows
+shows neither record with a call: no row has a mode-4 or mode-2 approach pass against a building.
+Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when identical. The
+switch has no reach on the reference rows; it is a correctness fix.
+
+**Pairs.** OFF is `72f533d68` (`local\s29_a0_<row>.log`). ON is `pair_export --flip kShipAiApproachLeaderAnswersBound=true` (`local\s29_a135on`, SHA-256 prefix `55BE5E2878F4`, `local\s29_a1_<row>.log`). Smoke, LOMP10 and USN13 are all `pair_diff` 1, with `asks=0` and no native counts moved. **Flipped ON** as predicted.
+
+## 136. `009DA4E0`'s path limit default is an image constant (packet `cc9_path_limit_default`, `kShipAiPathLimitDefaultBound`, cc9-ships29, 2026-10-05)
+
+`ShipAiPath::limit_default` (28672 calls on the fifth census; JM08 long has 24679) was labelled
+"no producer in this process". In fact `009DA4F8 MOVSS XMM0,[00CF58EC]` reads `.rdata`, whose
+bytes on disk are `4B189680h`, which is 1.0e7f. `009DA518` stores it into `blk+254h` and
+`009DA538..` into `+2BCh`. The host stored 0.
+
+`kShipAiPathLimitDefaultBound` (committed OFF) answers the constant's bits. No reader of
+`ShipAiPathPlan::limit_254` / `limit_2bc` exists in `src/` or `include/` (`rg limit_254|limit_2bc`),
+so **the prediction is `pair_diff` 0 or 1 on every row**. The pairs are smoke, JM08 and USN13.
+Flip when they are identical. The constant matters once a reader of `+254h` / `+2BCh` is
+reconstructed.
+
+**Pairs.** OFF is `a2046f5a2` (`local\s29_p0_<row>.log`). ON is `pair_export --flip kShipAiPathLimitDefaultBound=true` (`local\s29_p136on`, SHA-256 prefix `81B7B7D8E6EA`, `local\s29_p1_<row>.log`). Smoke, JM08 and USN13 are all `pair_diff` 1: only the row's status moved, plus the `ship ai free` noise. **Flipped ON** as predicted.
