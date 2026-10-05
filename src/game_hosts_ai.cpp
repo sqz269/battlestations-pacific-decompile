@@ -488,6 +488,9 @@ struct AiPlaneWeightCensus {
     unsigned long long plane_platforms_tail{0};
     unsigned long long plane_platforms_zero_reload{0};
     unsigned long long plane_platforms_no_bullet{0};
+    unsigned long long term_factor_nonfinite{0};
+    unsigned long long term_accuracy_zero{0};
+    unsigned long long term_damage_zero{0};
 };
 AiPlaneWeightCensus& ai_plane_weight_census() {
     static AiPlaneWeightCensus census;
@@ -716,6 +719,12 @@ public:
         ++c.options[slot];
         if (value > 0.0f) ++c.positive_options[slot];
         c.option_value_sum[slot] += value;
+    }
+    void note_plane_option_terms(float factor, double accuracy, float damage) override {
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        if (!std::isfinite(factor)) ++c.term_factor_nonfinite;
+        if (!(accuracy > 0.0)) ++c.term_accuracy_zero;
+        if (!(damage > 0.0f)) ++c.term_damage_zero;
     }
     void note_plane_arm(bool loadout_arm, bool no_options) override {
         AiPlaneWeightCensus& c = ai_plane_weight_census();
@@ -1260,6 +1269,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiModeTuning record{};
         record.max_target_kill_ratio = tuning.at(0x05Cu);
         record.damage_calc_time = tuning.at(0x060u);
+        // Packet cc9_plane_attacker_weight: the plane arm's record +58h and
+        // +78h..+94h. The tuning block carries none of them, and this
+        // installation's highlvlaiglobals.lua (mtime 2024-07-13) authors the
+        // same values in all seven mode tables (lines 35 and 55-57 of the first;
+        // seven identical rows each): DogfightEquipmentPenalty 0.6,
+        // DogfightParams {8, 3, 4}, StrafeParams {18, 8, 16}, TailGunParams {15, 8}.
+        record.dogfight_equipment_penalty = 0.6f;
+        record.dogfight_params_1 = 8.0f;
+        record.dogfight_params_2 = 3.0f;
+        record.dogfight_params_3 = 4.0f;
+        record.strafe_params_1 = 18.0f;
+        record.strafe_params_2 = 8.0f;
+        record.strafe_params_3 = 16.0f;
+        record.tail_gun_params_1 = 15.0f;
+        record.tail_gun_params_2 = 8.0f;
         return record;
     }
 
@@ -6033,9 +6057,11 @@ void GameAiCoordinatorHost::report() {
                 c.positive_options[2], c.options[2], c.option_value_sum[2], c.gate_admits,
                 c.platform_refusals);
             host.log.notef("  ai plane weight platforms seen=%llu pilot=%llu tail=%llu "
-                "zero_reload=%llu no_bullet=%llu", c.plane_platforms, c.plane_platforms_pilot,
-                c.plane_platforms_tail, c.plane_platforms_zero_reload,
-                c.plane_platforms_no_bullet);
+                "zero_reload=%llu no_bullet=%llu | gun option terms factor_nonfinite=%llu "
+                "accuracy_zero=%llu damage_zero=%llu", c.plane_platforms,
+                c.plane_platforms_pilot, c.plane_platforms_tail, c.plane_platforms_zero_reload,
+                c.plane_platforms_no_bullet, c.term_factor_nonfinite, c.term_accuracy_zero,
+                c.term_damage_zero);
             for (int code = 0; code < 0x30; ++code) {
                 if (c.queries[code] == 0) continue;
                 host.log.notef("  ai plane weight type query code=%02Xh queries=%llu "

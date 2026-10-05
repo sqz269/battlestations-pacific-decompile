@@ -523,6 +523,11 @@ struct AiTargetWeightModelHost {
         (void)descriptor;
         (void)value;
     }
+    virtual void note_plane_option_terms(float factor, double accuracy, float damage) {
+        (void)factor;
+        (void)accuracy;
+        (void)damage;
+    }
     virtual void note_plane_arm(bool loadout_arm, bool no_options) {
         (void)loadout_arm;
         (void)no_options;

@@ -423,6 +423,7 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
             const float damage = ai_expected_hit_damage_009fe200(
                 o.bullet.damage_min, o.bullet.damage_max, target_armour, target_hit_points);
             value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            host.note_plane_option_terms(o.factor, accuracy, damage);
             if (loadout) {
                 // 00A08F97 x tuning+8h, DogfightEquipmentPenalty.
                 value = static_cast<float>(static_cast<double>(value) *
