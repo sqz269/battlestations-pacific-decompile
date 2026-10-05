@@ -11508,3 +11508,66 @@ loadout changes:
 This is the direction 5dk predicts for an authored `Equipment` on a fighter class.
 
 **Verdict:** `kPlaneSceneEquipmentBound` stays **ON**.
+## 5do. USN01's scout dive-bomb miss: the image does not lead a moving target, but it does kick the bomb down 3 m/s (packet `cc9_bomb_drop_velocity`, cc9-lua38, 2026-10-05)
+
+Routed from cc9-ships33. On main with the coordinator gate ON, USN01's controlled ScoutDauntless
+drops both bombs at about 133 s, short of moving Convoy1. Measured in this tree with
+`BSP_SHELL_FATE=ScoutDauntless|Convoy1` (`local\l38_usn01_fate.log`, identical to ships33's
+`s33_r3a`):
+- the leader's bomb is predicted to land at (-3405, -1462);
+- it ends at (-3418.4, -1473.6), 4.00 s after release;
+- the target is then at (-3383.4, -1456.7).
+
+The miss therefore has two parts: 17.5 m of the bomb flying past its own predicted point, and
+22 m between that point and where the oiler went.
+
+### The image's aim law for the glide: no target lead (read, not changed)
+
+- The aim point is approach `+4Ch/+50h/+54h` (`009C40A0`). It is written per tick by `009FADA0`
+  (target world matrix x body offset, no velocity or time term), as `cc9_hull_turndown` established.
+- The impact point is `009C7D71`: own position + (`007BCC80` fall time + 0.1) x **own** velocity.
+- The aimglide tick `009C5180`-`009C580B` makes no target-velocity call. Its only virtual calls
+  are the approach's `vtable[0]`, at `009C51D3`, `009C5232` and `009C5278`.
+- Only the fly-above (`009C62D1`-`009C63E6`) takes a three-second lead point.
+
+So the image also releases at the target's present position, and a target moving at 8.09 m/s
+(`aim lead ... v=8.09`) gains about 32 m during a 4 s fall. The 22 m part is the image's, given how
+the convoy moves.
+
+### The divergence: the bomb's initial velocity
+
+- The host (`src/game_hosts_gunnery.cpp`, bomb drop) launches the bomb along the plane's forward
+  axis at its forward speed (0092D730).
+- The image launches it through the bullet's `vtable[190h]`. `006E1F00` calls it at
+  `006E1F3D`-`006E1F4D` with the kind-5 ancestor (`00922E90(5)`) and a flight block. For MBomb
+  (vtable `00CF9438`, written by `BSP_BombProjectile_Construct` at `006E26D8`) that slot is
+  `006E0A70`, `RET 8`:
+  - if the owner answers `vtable[5Ch](0Fh)` (a plane) and its `vtable[38h]` speed is > `[00CF8AAC]`
+    = 1.3888889 (5 km/h), the bomb's velocity `+318h/+31Ch/+320h` (and flight `+20h..+28h`) is the
+    owner's `vtable[34h]` world velocity, with **3.0 (`00E08E54`) taken off y** (`006E0AB3`). It
+    also orients the bomb along that velocity (`0085DC80`).
+  - otherwise, the velocity is copied unchanged (`006E0B01`-`006E0B24`).
+  - The same function sits in nine bullet vtables.
+- `00E08E54` is the very float `007BCC80` subtracts from the vertical velocity when it predicts the
+  fall. The prediction assumes the 3 m/s kick, and the host's bomb lacks it, so the bomb falls
+  longer and flies past its own predicted point.
+  - In the host, `life` is 4.00 s against a predicted 3.83 + 0.1 s.
+  - The census also reads a 1.6 deg angle between the nose and the velocity, which the forward-axis
+    launch ignores.
+
+### The binding (`kBombDropVelocityBound`, in the gunnery lane's file; measured from an export tree)
+
+The bomb takes `unit_linear_velocity` (unit+AC8h, the `vtable[34h]` copy), minus 3.0 on y when the
+forward speed is > 1.3888889. LABELLED: `vtable[38h]` is taken as the 0092D730 forward speed.
+Measured on export trees `l38_e0` (false) and `l38_e1` (true) of `20450d20a`, patched by
+`local\l38_bombvel_patch.py`. `game_hosts_gunnery.cpp` is cc9-gunnery's file; the exact edit is that
+script.
+
+**Predictions, written before the runs:**
+- **USN01:** the bomb lands near its predicted point, within about 5 m instead of 17.5 m. It still
+  falls about 22 m behind the moving oiler along its track (the image's no-lead law), so no hit is
+  predicted, and the phase stays where it is.
+- **LOMP10, LOMP10 long, USNRM01, USN13 long, JM05 long** (the rows that drop bombs): the hits move,
+  with no direction predicted. Each bomb's along-track overshoot shrinks by about 0.15 s x the
+  aircraft's speed.
+- **Rows with no bomb drop:** identical.
