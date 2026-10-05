@@ -9862,7 +9862,9 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
         int session_mode() override { return 0; }
         bool skip_friendly_losses() override { return false; }
-        int local_player_side() override { return -1; }
+        // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
+        // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
+        int local_player_side() override { return bsp::game::local_player_party(); }
         bool root_entity_already_scored() override { return false; }
         void add_loss(int, bool, const std::string&) override { ++losses; }
         void add_type_kill(int, std::size_t, int) override { ++type_kills; }
