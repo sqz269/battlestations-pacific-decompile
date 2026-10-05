@@ -11002,3 +11002,56 @@ Read from the listing, nothing bound.
 - A live AI aircraft with non-zero MinWaterSpd (every Kate, Val and Zero in this installation) never
   reaches state 6, so neither compare applies to it. It stays in free flight into the depth kill
   (`007CE040`), as the host does. **The image does not ditch a slow aircraft.**
+
+## 5dh. Item 2: 5ch (`kAiTickMovetoRetasksPlaneBound`) re-paired under 5df.1 (cc9-lua37, 2026-10-05)
+
+Pairs from `2086291cc` (the gates and the loadout arm ON): `l37_j0` (5ch OFF) against `l37_j1` (5ch ON).
+Rows: USN13, USN13 long, USN04, E2, USNOS, ESMP08 14200/14000, and the controls USN02 and BSM01.
+
+**Predictions, written before any ON run:**
+- **Controls.** USN02 and BSM01 stay identical.
+- **USN13 and USN13 long.** 5co's stall was the close attack finding no candidate with weight > 0
+  against the LandFort CB2. With the loadout arm, a loaded dive or level bomber now scores against
+  a non-ship, non-plane target (dive and level options admit anything but planes and subs). The
+  `bruh` Kates carry torpedoes, though, and a torpedo option needs target 6, so they still have
+  nothing against CB2's members.
+  - Expect USN13 to stay stranded or nearly so (deaths far below OFF), unless the planner now
+    picks ships for the torpedo wave. The planner's group values for a torpedo wave against a
+    LandFort now read 0 from the members' weights.
+- **ESMP08 14200.** 5ch's original case: the leader stops circling the script's random fleet ship
+  and flies the tick's moveto. Expect the strike to close Zuikaku.
+- **USN04, E2 and USNOS.** They move with the re-tasking, direction unpredicted.
+
+### 5dh.1 Measured: 5ch still strands USN13; **stays OFF** (cc9-lua37, 2026-10-05)
+
+| row | j0 -> j1 (5ch ON) | |
+| --- | --- | --- |
+| USN02, BSM01 | identical | controls |
+| USN13 | deaths 22 -> **0**, shots 4189 -> **0** | as 5co |
+| USN13 long | deaths 133 -> **2**, shots 43333 -> 82 | as 5co (116 -> 6 then) |
+| ESMP08 14200 | deaths 50 -> 46; torpedo releases 0/24 -> **5/30** | 5ch's own case: the strike now drops on the fleet |
+| USN04 | 44 -> 37 | |
+| E2 | 74 -> 84 | |
+| USNOS | 67 -> 55; shots 5916 -> 813 | as the 5ch addendum |
+
+**USN13 is stranded by the same mechanism as 5co.** The census reads
+`script squadron intake calls=0`, `close fallback bridge calls=1193` and
+`tick plane retask replaced_other=60`. The `bruh` groups (Kates, torpedo loadout 1) take
+MOVETOATTACK on CB2, promote inside CollectDist (8 promotions) and orbit; no member is ever given a
+target.
+- The loadout arm does not rescue them. A torpedo option needs target kind 6, and CB2's members
+  (LandFort, coastal guns) are not ships, so every per-member weight is 0. A zero weight cannot beat
+  the close attack's seed (`00A149A8`).
+- The forced rules match on this row (`r8=6396`, `r15=5682`). Which rule makes the planner's group
+  pick of CB2 for a torpedo wave is the unverified link 5co (3) named.
+
+**Verdict:** the re-tasking is the image's (5ch), but the assignment that feeds it still produces a
+stall that 5co could not attribute. That is a mechanism question, not a spread, so
+`kAiTickMovetoRetasksPlaneBound` **stays OFF**. Next: trace the planner pick for the `bruh` groups
+(which planner kind, which forced rule) and whether the image's group value for a torpedo wave
+against a LandFort group is non-zero.
+- In the IslandCapture Rookie table (`ai_shipped_forced_rules`), the matched rules are:
+  - `r8` = Cargo vs CommandBuilding 1.0 (the Marus' pick of CB2);
+  - `r15` = TorpedoBomber vs Ship 4.5, with record `+1Ch` clear.
+  No rule rates a torpedo bomber against CB2's members. So the `bruh` groups' CB2 order does not come
+  from a forced rule, and which planner assigns it is the open link.
