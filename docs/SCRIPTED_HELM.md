@@ -912,3 +912,26 @@ at (3911.5, -3103.5), from 1300 s.
 
 Any further side-0 attempt here also has to survive Katori and the coastal battery for those
 200 s, which none of the five earlier runs (10.3, 10.4) or these three did.
+
+r3 is recorded as the scripted row in docs/GAME_EXECUTABLE.md ("Scripted player-input row: USN01
+scripted").
+
+**Two leads, not followed:**
+1. **The `attackmove` on Coastal Gun 01 lands 0 impacts**, and every issue prints `current=0
+   latched=0`. Two explanations are possible:
+   - the director refuses a land fort (kind 27) as a fire target;
+   - the host's `attackmove` on a building does not latch.
+
+   The same line on IJN05's HQ2 did neutralize it (11.1), so compare the two issues' command rows
+   first.
+2. **SaltLakeCity dies at 644.17 s, before phase 3,** on this build. Under cc9-ships31's build it
+   died at 932.60 s (run A) and 1120.22 s (run B).
+   - Reference y's leave-one-out cannot place this. Its USN01 row is 3000 frames (150 s); `aiw`
+     (28 -> 27) and `pla` move that row.
+   - The switch diff from the build of runs A and B (`c96adbecd`, also `5818eb685`) to this one
+     (`4950ab838`, `g25_switches.py`) is exactly three switches, all flipped ON by 5df.1
+     (`2086291cc`): `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound` and
+     `kAiPlaneLoadoutArmBound` (`src/game_hosts_ai.cpp` 304-316).
+   - The torpedo that sinks it is Katori's (killer_gun 217, category 7), so check first whether
+     the plane-weight switches change which target Katori engages.
+   - Non-switch code also changed over that range, and no bisect was run.
