@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 #include "bsp/lua_binding_ai.hpp"
 
@@ -299,6 +300,70 @@ inline constexpr int kAiTypeQueryAttackerModel = 0x0F; // 00A085AD, the branch
 inline constexpr int kAiTypeQueryAttackerNoBonus = 0x14; // 00A09763
 inline constexpr int kAiTypeCommandBuildingTarget = 0x1C; // CMP at 00A0966A
 
+// Packet cc9_plane_attacker_weight (docs/SQUADRON_LAND_TASK.md 5cq). The other
+// vtable[+18h] codes 00A08460 pushes, read from the listing; the meanings are
+// docs/ENTITY_CLASS_IDS.md's id space (a hypothesis for the class descriptor's
+// slot, which this process answers with the unit's own kind test).
+inline constexpr int kAiTypeShip = 0x06;          // 00A085E9, 00A08712, 00A092EF
+inline constexpr int kAiTypeSubmarine = 0x08;     // 00A08637, 00A092CD, 00A09320
+inline constexpr int kAiTypeLandingShip = 0x0C;   // 00A0927A (target), 00A09232 (attacker)
+inline constexpr int kAiTypeTorpedoBoat = 0x0E;   // 00A0926B
+inline constexpr int kAiTypeKamikazePlane = 0x17; // 00A08AAE
+inline constexpr int kAiTypeGunDevice = 0x20;     // 00A08BA0 / 00A09391, a device class
+inline constexpr int kAiTypeBombPlatform = 0x25;  // 00A08BB3 / 00A093A4, a device class
+
+// The non-plane walk's per-target gates, 00A0924C..00A0932B. All five are false
+// for a neutral target ([ESP+1Eh], target_is_neutral == 1).
+struct AiBarrelTargetGates {
+    bool soft{false};       // [ESP+2Bh]: plane, 0Eh or 0Ch (bullet sub-types 1-3)
+    bool flak{false};       // [ESP+13h]: plane (sub-type 10h)
+    bool artillery{false};  // [ESP+11h]: not a plane, or 08h (4-7, 12h)
+    bool torpedo{false};    // [ESP+1Fh]: 06h and not 08h (0Ah)
+    bool depth{false};      // [ESP+12h]: 08h (0Bh)
+};
+AiBarrelTargetGates ai_barrel_target_gates(bool neutral, bool plane, bool torpedo_boat,
+                                           bool landing_ship, bool ship,
+                                           bool submarine) noexcept;
+// 00A093E1..00A0943D: whether a bullet sub-type passes those gates. Any other
+// sub-type (bomb 9, 0Ch-0Fh, kamikaze 11h, 13h) is skipped.
+bool ai_barrel_gate_admits(const AiBarrelTargetGates& gates, int bullet_sub_type) noexcept;
+
+// The type-0Fh attacker branch 00A0861F..00A09222, the arm with no loadout
+// (attacker key +4h <= 0, 00A0864F JLE 00A08A93), which is the only arm the
+// 00A04560 record path reaches because record+10h is always 0. The option
+// record is 14h bytes (00A08D7A's divide by 5 over a 4-byte stride).
+inline constexpr std::uint32_t kAiPlaneOptionKamikaze = 0x00E08F50u;  // 00A08B0C
+inline constexpr std::uint32_t kAiPlaneOptionStrafe = 0x00E08F40u;    // 00A08C6C
+inline constexpr std::uint32_t kAiPlaneOptionDogfight = 0x00E08F58u;  // 00A08C38, 00A08D1C
+// device +80h, the Function category AAMACHINEGUN (00A08CA0 CMP [EDI+80h],1).
+inline constexpr int kAiPlaneTailGunFunction = 1;
+
+// A bullet class record as the plane arm reads it.
+struct AiPlaneBulletFacts {
+    bool present{false};
+    int sub_type{0};         // +8h, 009FE270's selector
+    float damage_min{0.0f};  // +ACh, 00A08F35
+    float damage_max{0.0f};  // +B0h, 00A08F20
+    float blast_min{0.0f};   // +B4h, 00A08E10
+    float blast_max{0.0f};   // +B8h, 00A08E06
+};
+// One entry of the attacker class's platform vector +94h/+98h (00A08B60).
+struct AiPlanePlatformFacts {
+    bool present{false};          // the slot is non-null (00A08B69)
+    bool has_default_gun{false};  // +38h != -1 (00A08B71)
+    int gun_count{0};             // +18h, the Gun list's size; must be 1 (00A08B7B)
+    bool device_is_gun{false};    // first device answers 20h and not 25h (00A08BA0/00A08BB3)
+    int device_function{-1};      // device +80h (00A08CA0)
+    bool pilot_fires{false};      // +0Ch PilotFires (00A08BE0)
+    float reload{0.0f};           // the device's first bullet entry +2Ch (00A08C54)
+    AiPlaneBulletFacts bullet;    // that entry's +34h; absent fails 00A08BC6/00A08BD5
+};
+struct AiPlaneOption {
+    std::uint32_t descriptor{0};  // +0Ch
+    AiPlaneBulletFacts bullet;    // +4h (null for the kamikaze option)
+    float factor{0.0f};           // +10h
+};
+
 // Per barrel: DamageCalcTime / reload, or 1.0 when the reload is at or below the
 // epsilon (00A0950B..00A09533).
 float ai_barrel_time_factor(float damage_calc_time, float barrel_reload) noexcept;
@@ -415,7 +480,68 @@ struct AiTargetWeightModelHost {
         (void)refused;
         (void)per_hit;
     }
+    // Packet cc9_plane_attacker_weight. Defaults keep a host that does not
+    // implement them on the earlier behaviour: no gates, no plane arm.
+    // True: the non-plane walk applies 00A0924C..00A0943D's target gates and
+    // its platform filters (00A09362..00A093A8).
+    virtual bool barrel_target_gates_bound() { return false; }
+    // 00A09362..00A093A8 for the platform the flattened barrel came from:
+    // +38h != -1, +18h == 1, device 20h and not 25h.
+    virtual bool barrel_platform_admitted(const void* subsystem, int barrel) {
+        (void)subsystem;
+        (void)barrel;
+        return true;
+    }
+    // True: an attacker answering 0Fh takes the plane arm (00A08619) and the
+    // 00A09771 bonus test asks the real type; false keeps both off.
+    virtual bool plane_arm_bound() { return false; }
+    virtual int plane_platform_count(const void* attacker) {
+        (void)attacker;
+        return 0;
+    }
+    virtual bool plane_platform(const void* attacker, int index, AiPlanePlatformFacts& out) {
+        (void)attacker;
+        (void)index;
+        (void)out;
+        return false;
+    }
+    // class+210h, the KamikazeBulletClass record 00A08DEE reads.
+    virtual bool kamikaze_bullet(const void* attacker, AiPlaneBulletFacts& out) {
+        (void)attacker;
+        (void)out;
+        return false;
+    }
+    // 009FE270(ECX = attacker, EDX = bullet, target) for a bullet sub-type.
+    virtual float bullet_accuracy(const void* attacker, int sub_type, const void* target) {
+        (void)attacker;
+        (void)sub_type;
+        (void)target;
+        return 0.0f;
+    }
+    // Census hooks, no native counterpart.
+    virtual void note_plane_option(std::uint32_t descriptor, float value) {
+        (void)descriptor;
+        (void)value;
+    }
+    virtual void note_plane_arm(bool loadout_arm, bool no_options) {
+        (void)loadout_arm;
+        (void)no_options;
+    }
+    virtual void note_barrel_gate(int bullet_sub_type, bool admitted) {
+        (void)bullet_sub_type;
+        (void)admitted;
+    }
 };
+
+// The plane arm's option list for one (attacker, target): 00A08A93..00A08D5F.
+std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host,
+                                                   const AiTargetWeightKey& key,
+                                                   const AiModeTuning& tuning);
+// 00A0861F..00A09222 with no loadout: the options scored and summed (00A08D70..
+// 00A0921D). Returns the total 00A09737's epilogue normalises.
+float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightKey& key,
+                            const AiModeTuning& tuning, float target_hit_points,
+                            float target_armour);
 
 // 009FE200 (__stdcall, RET 10h, body 009FE200-009FE26A): the expected damage one
 // hit deals above the armour when the damage is uniform on [low, high], capped
