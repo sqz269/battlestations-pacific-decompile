@@ -10852,3 +10852,90 @@ Scripts in `local\`:
 3. **The water-surface `vtable[204h]` compares (5dc).** `007CBAEF` against `desc+19Ch`, and
    `007CB858` against 8.0: does the image ditch a slow aircraft?
 4. 5cx's manoeuvre-survives-command item still has no reach.
+
+## 5df. The loadout arm of `00A08460` and record+10h (packet `cc9_ai_plane_loadout_arm`, cc9-lua37, 2026-10-05)
+
+5dd.1 failed on mechanism: with the type queries real, a loaded plane scored 0 against every ship,
+because the loadout arm `00A08655`-`00A08A8E` was unprojected and record+10h was never formed.
+Both are now read from the listing and bound behind `kAiPlaneLoadoutArmBound` (`src/game_hosts_ai.cpp`),
+committed OFF (`b6b6c52f1` model, `5adb64812` binding).
+
+### record+10h (`00A04560`, `00A04608`-`00A0464E`)
+
+- X = `[entity+3D0h]` for kind 18h (a squadron's first plane), the entity itself for kind 0Fh, else none.
+- record+10h = `[X+C54h]` when `007B9140(X, [ESP+28h])` answers true, else 0. Every caller but
+  `00A07E7D` pushes 1 (`00A07E13`, `00A0F819`, `00A248FD`).
+- `007B9140(unit, flag)` (`RET 4`): kind 17h answers at once; otherwise each part at `unit+974h`
+  (count `+994h`) is asked `vtable[210h](2Ah, flag)`. For a single rack that is `006E3FE0` (vtable
+  `00CF96A8`, entry `00CF98B8`). It walks the attached rounds (`[rack+48h]`, next `+44h`, `vtable[5Ch](2Ah)`).
+  With the flag set it also tests the configured class, but only behind `[rack+3F0h]->vtable[1E4h]`,
+  which needs `[00E17BF2]` (0 in single player; see the units host note on `006E4060`). So in this
+  process it means "a rack holds an attached round", and every rack ordnance class answers 2Ah
+  (docs/ORDNANCE_KIND_IDENTITY.md). Host: `GameUnitsHost::plane_holds_rack_round_007b9140`, the per-plane
+  test `squadron_ammo_type_007edad0` already uses.
+- `[unit+C54h]` is the plane's equipment index. Its property name is `originalEquipmentIndex`
+  (`007D67E7`, string `00D05DE0`). Its writers:
+  - `007CDF49` copies it from the squadron's `+124h`;
+  - `007CDFD2` from the scene property `Equipment` (`00CF69AC`);
+  - `007BCB74` from the Lua `PlaneChangeAmmoType` (`0089F1F0` -> `007ED690`).
+  - The generator `0094B600` writes `Equipment` per plane. With no authored list (`0094BD34`) it writes
+    1 when the class's Equipments count (`00951F10`, class `+128h`) is above 0, else 0.
+  - **LABELLED:** this process keeps no authored Equipment, so `[X+C54h]` is that default. A Zero
+    (`VehicleClass[150]`, DefaultEquipment 0, one bomb loadout) gets 1. USNRM01's Kates author
+    Equipment 1, which agrees.
+- `009552E0(class, n)` (`RET 4`): for 0 < n <= class `+128h`, `00954DF0(class+128h, n-1)`; n = 0 is null.
+  The entry layout (from `0095A880`) is `+0h` platform slot, `+4h` Platform (device class id), `+8h` Ammo,
+  `+0Ch` ReloadTime.
+
+### The loadout arm (`00A08655`-`00A08A8E`)
+
+- Over the list entries whose device class (`00443490`) answers `25h` (BombPlatform `00442C70`,
+  MultiBombPlatform `00442D00`):
+  - the minimum ReloadTime, seeded with 9999.0 (`00CE4C04`);
+  - the summed Ammo;
+  - the first one whose `00731040` gives a bullet keeps its device and bullet.
+  - No such rack: no option, and the gun walk keeps `[ESP+11h]`.
+- One option, by the bullet's sub-type. T is the mode tuning record, Params as AiModeTuning names them.
+  The rate is ammo / (P1 x 0.5 + reload min), the cap is P2 / P1, and the factor is
+  min(rate, cap) x DamageCalcTime. A built option clears the gun walk unless noted.
+
+| sub-type | gate | params | descriptor |
+| --- | --- | --- | --- |
+| `0Ah` torpedo | target 6; a submarine only when device `+F4h` > 0 | Torpedo | `00E08F18` |
+| `0Bh` depth charge | target 8 | DC | `00E08F38` |
+| `0Dh` carried kamikaze | not plane, not sub | rate 1 / reload min, cap 1 / Levelbomb[1] | `00E08F50` |
+| `0Fh` paratroopers | target 1Ch | ammo + max(0, DCT - Levelbomb[1] x 0.5) x ammo / (reload min + Levelbomb[1] x 0.5) | `00E08F28` |
+| `12h`, IgnitionDelay <= 0 | AA rocket vs plane, or non-AA vs surface (`007B80A0`/`C0`, `[00F874FD]`) | rate ammo / reload min; cap Dogfight[3]/[1] or Strafe[3]/[1]; **gun walk continues**, the equipment penalty is cleared | `00E08F48` |
+| `12h`, IgnitionDelay > 0 | not plane, not sub | BigRocket | `00E08F48` |
+| `09h`, attacker 10h | not plane, not sub, target 6 | DCT x trunc(min(ammo, Levelbomb[2])) / (Levelbomb[1] x 0.5 + reload min) | `00E08F28` |
+| `09h`, otherwise | not plane, not sub | Divebomb | `00E08F20` |
+
+- A target with record `+1Ch` = 1 admits only the paratrooper option (`00A08A23`).
+- Scores:
+  - `00E08F20`, `00E08F48` and non-paratrooper `00E08F28`: `009FE200(max(DamageMin, BlastMin),
+    max(DamageMax, BlastMax), Armour, HP)` x accuracy x factor.
+  - `00E08F18` and `00E08F38`: the same against the **underwater** armour `[ESP+48h]`.
+  - Paratroopers: Paratroopers accuracy (`+14Ch`) x factor x (`+1Ch` ? `+D8h` : `+FCh`) x `+F8h`.
+  - A carried kamikaze: the blast pair of `[bullet+DCh]`'s class `+210h`.
+- Two fixes to the existing projection:
+  - The gun walk's slot base is EBX (`00A08B41`), so a pilot option after a tail gun rewrites from 1
+    when a loadout option exists.
+  - The equipment penalty follows `[ESP+2Bh]`, which the small-rocket arm clears.
+- **Not covered (score 0, counted):**
+  - Rocket accuracy (`009FE270` sub-type 12h, still unresolved).
+  - The paratrooper fields `+D8h`/`+F8h`/`+FCh` (reader `007AC780` unread).
+  - The carried kamikaze's class (`006FF170` unread).
+  - Device class `+F4h`: a BombPlatform class is an E8h allocation (`00443273`), so the read lies past
+    the object and no producer exists. Taken as 0.
+
+### Predictions, written before any ON run
+
+Pairs from `5adb64812`: `l37_g0` (all OFF) against `l37_g1` (both gates + `kAiPlaneLoadoutArmBound`).
+- **Unchanged rows.** The 11 rows that were identical under 5dd.1's gx1 stay identical.
+- **Loaded bombers.** They score their torpedo or dive option against ships again, so the 5dd.1
+  collapse reverses. USNRM01 dive releases recover to near gx0 (115; at least ~100). USN01's KatSBD
+  keep releasing (about 4).
+- **After the drop.** A plane takes the gun arm (strafe only) and scores ~0 against ships. Spent
+  bombers therefore lose ship value earlier than in gx0, which may move squadron retargeting.
+- **USNOS neutral objects.** The ~31 container and crate deaths stay gone. They come from the barrel
+  gates (side >= 2 targets), not from planes.
