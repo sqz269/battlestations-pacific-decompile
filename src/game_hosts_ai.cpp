@@ -1428,6 +1428,26 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record.strafe_params_3 = 16.0f;
         record.tail_gun_params_1 = 15.0f;
         record.tail_gun_params_2 = 8.0f;
+        // Packet cc9_ai_plane_loadout_arm: the loadout arm's record +9Ch..+D0h
+        // (tuning +4Ch..+80h) and the Paratroopers accuracy +14Ch. The same
+        // script authors per mode (lines 58-62 of the first table): the three
+        // IslandCapture tables Torpedo {80, 3}, Divebomb {60, 3}, Levelbomb
+        // {200, 4}, DC {60, 4}, BigRocket {120, 2}; Duel, Escort, Siege and
+        // Competitive {25, 3}, {25, 3}, {30, 12}, {25, 4}, {20, 2}.
+        const bool island = tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        record.torpedo_params_1 = island ? 80.0f : 25.0f;
+        record.torpedo_params_2 = 3.0f;
+        record.divebomb_params_1 = island ? 60.0f : 25.0f;
+        record.divebomb_params_2 = 3.0f;
+        record.levelbomb_params_1 = island ? 200.0f : 30.0f;
+        record.levelbomb_params_2 = island ? 4.0f : 12.0f;
+        record.d_c_params_1 = island ? 60.0f : 25.0f;
+        record.d_c_params_2 = 4.0f;
+        record.big_rocket_params_1 = island ? 120.0f : 20.0f;
+        record.big_rocket_params_2 = 2.0f;
+        record.paratroopers = tuning.at(0x14Cu);
         return record;
     }
 
