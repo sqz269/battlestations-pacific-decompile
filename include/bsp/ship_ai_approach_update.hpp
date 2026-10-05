@@ -97,7 +97,10 @@ struct ShipAiApproachState {
     float turn_radius_11f0{0.0f};     // nested+11F0h, 009F1D6D
     float avoid_refresh_11f4{0.0f};   // nested+11F4h, 009E91DC, reseeded in [2,3)
     float selected_bearing_11f8{0.0f}; // nested+11F8h, 009E7C28 / 009E7EA6
-    float evade_timer_11fc{0.0f};     // nested+11FCh, 009E7534 / 009E75BC
+    // nested+11FCh, 009E7534 / 009E75BC. 009E5647 constructs it at -1.0f
+    // ([00D7A260], loaded at 009E55E9); every reader tests > 0, so the earlier
+    // 0.0f default behaved the same until 009F3035's arm (armed while negative).
+    float evade_timer_11fc{-1.0f};
     int   evade_slot_1200{60};        // nested+1200h, 60 is the idle sentinel
     int   speed_gate_1204{0};         // nested+1204h, 0/2 from 009E73E8/009E73F4
     bool  flag_1208{false};           // nested+1208h
