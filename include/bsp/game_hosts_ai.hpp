@@ -267,7 +267,8 @@ inline constexpr bool kAiTargetWeightDamageTermsBound = true;
 // the candidate's live health: 00923BE0 calls vtable[110h] = 00876260 (FLD [+370h],
 // FDIV [+36Ch]) and clamps it into [0, 1], so a damaged target weighs up to 2.0. The
 // gunnery host keeps both halves per unit. False: a live candidate answers 1.0.
-inline constexpr bool kAiTargetWeightHealthBound = false;
+// ON: section 139 (USN02, USN04, E2, USN13 long, IJN01, USNRM01 move; the rest identical).
+inline constexpr bool kAiTargetWeightHealthBound = true;
 
 class GameHostLog;
 class GameUnitsHost;

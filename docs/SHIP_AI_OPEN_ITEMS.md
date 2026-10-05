@@ -11034,3 +11034,48 @@ carry the NaN through both clamps. The torn-down arm stays the scene node's `+5D
 - The new `damaged_targets` count is nonzero on every moving row.
 - Fort targets carry the 0.01 multiplier, so the rows dominated by fort candidates (JM08 long,
   USN12) move the least among the moving rows.
+
+**The pairs.** Both binaries were built from `c2f347ba0`, which is main `4bc2309ac` merged:
+- OFF: this tree's build, `5989A27ABDC9`;
+- ON: `local\s30_on`, built by `pair_export --flip kAiTargetWeightHealthBound=true`, `CE46A1F3D96B`.
+
+The runs used reference v's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+lockstep 0.05) through `local\s30_runs.ps1`. The console session was Active and the 300-frame
+USN01 smoke was clean. Logs are `local\s30_<off|on>_<row>.log` and the diffs are
+`local\s30_pd_<row>.txt`.
+
+| row | pair_diff | `damaged_targets` (ON) | moved |
+| --- | --- | --- | --- |
+| BSM01, IJN11, JM05, LOMP06, LOMP10, USN13, JM05 long | 1 | 0 | - |
+| JM08 | 1 | 18 | - |
+| USN01 | 1 | 180 | - |
+| JM06 | 1 | 336 | - |
+| USNOS | 1 | 2163 | - |
+| USN12 | 1 | 7028 | - |
+| USNOS long | 1 | 9369 | - |
+| JM08 long | 1 | 389467 | - (the fort candidates carry the 0.01 multiplier) |
+| USN02 | 3 | 9867 | hit records 6017 -> 6080, shots 4724 -> 4493; Destroyer chosen 1020 -> 1209 |
+| USN04 | 3 | 440 | deaths 38 -> 44, damage 9832 -> 11924, plane water contacts 14 -> 18 |
+| E2 | 3 | 1118 | deaths 69 -> 74, shots 16871 -> 22897 |
+| USN13 long | 3 | 43545 | deaths 119 -> 117, hull hits 2661 -> 2604 |
+| IJN01 | 3 | 4909 | damage 1246.7 -> 1246.6, shots 2912 -> 2909 |
+| USNRM01 | 3 | 13042 | hull hits 1896 -> 1539, shots 71137 -> 65552; deaths 201 both ways |
+
+**Mechanism.** The ON logs' `ai target choice` rows carry weights above the class base when the
+candidate is damaged. On USN04 the Cruiser runner-up weighs 60.0 against the 54.0 base, which is
+a term of 1.111, i.e. health 0.889. On USNRM01 the first divergent choice is a damaged Cargo
+(weight 1.155) where OFF chose a Cruiser. `local\s30_firstdiff.py` finds the first differing choice
+row on each moved row. Every row with no weight query is identical. Every row that moved has
+damaged candidates.
+
+**Against the predictions.** These held:
+- the zero-query rows are identical;
+- `damaged_targets` is nonzero wherever a damaged candidate was scored;
+- the fort-dominated rows (JM08 long, USN12) move least, and in fact do not move.
+
+The prediction that "every row with queries moves" missed six rows: USN01, USN12, USN13 (0
+damaged), USNOS, USNOS long and JM06. Those rows score damaged candidates but the choice does not
+change: the term only reorders candidates whose weights are already close. This is a spread miss,
+and the mechanism matches.
+
+**Verdict: ON.** `kAiTargetWeightHealthBound = true`.
