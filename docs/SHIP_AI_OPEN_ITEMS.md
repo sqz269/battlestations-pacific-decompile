@@ -11223,3 +11223,40 @@ section 51.3's list: `00A23980` with the tail Ghidra drops, `00A236F0`, `00A21D9
 `00A24870`/`00A07D40`, and `0094C830`/`0094B600`. Then re-run USN01, JM05, USN13 and JM08 at
 36000 frames: these are the rows where the arm falls due and a building is neutralized. The
 first one that flips becomes the capture reference row.
+
+### 142.1 Reconciled with sections 52, 115 and 121: the proposal is withdrawn
+
+Section 142's proposal to bind the capture spawn arm is withdrawn. Sections 52.2, 115.1 and 121
+already showed that the arm buys nothing on these rows, in the image as in the host, and the
+checks below confirm it.
+- **The stock reader.** `0084D170`'s "Stock %d" lookup reads from the `JapanList` sub-bag:
+  - `0084D238 PUSH 00CE56D0` / `CALL 008F2260` finds the sub-bag, and `0084D24F` keeps it in
+    `[ESP+14h]`;
+  - `0084D27E MOV ECX,[ESP+18h]` (the same slot after the push) is the bag the `0084D282` Find
+    searches for `"Stock %d"` (`00CE56DC`);
+  - the `AlliedList` arm follows.
+
+  So only `"Stock N"` bags inside `JapanList` / `AlliedList` count.
+- **JM05 does author stock, but not where it counts.** JM05's scene
+  (`COTP-IJN/PRCPIJN/ijn_05_invasion_of_port_moresby.scn`) has root-level `"Stock 1..4"` bags on
+  `MainShipyardEntity 01` (Fletchers and US troop transports, from line 33221). They are not in a
+  list bag, so `0084D170` never reads them. The other xrefs to `00CE56DC` are
+  `BSP_SceneEntity_RegisterMultiplayerStock` (`0046C215..0046C42F`) and `004EA080`.
+- **Only four scenes author the list bags.** A fresh search of this installation's non-multi
+  scenes (mtimes 2024-07-13) finds `"JapanList"` / `"AlliedList"` in exactly section 52.2's four
+  files. Of these, missiontree loads only `ijn/ijn_11_operation_to.scn` (IJN11). The three
+  `ijn_02_force_z.scn` copies have no id: JM02 loads `prcpijn_02_force_z.scn`. Section 121 found
+  IJN11's arm due but its site list empty.
+
+**Verdict.** On every reachable single-player row, the image has no AI capture force either. A
+building can change hands only through ships or landers already on the map. In 1800 s with an
+idle player that does not happen on any row tried here. USN01 comes closest: progress reaches -760
+of 10000 at 1448.9 s, then decays.
+
+**No capture reference row exists.** The capture-chain switches with no reach stay unpaired:
+- the retake exemption;
+- the flip slot pick;
+- the `+7C0h` stagger.
+
+A flip needs player input (a scripted helm or orders), and that is outside the idle-reference
+contract.
