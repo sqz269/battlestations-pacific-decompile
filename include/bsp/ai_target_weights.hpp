@@ -275,6 +275,39 @@ bool ai_forced_rule_flag_applies(bool rule_target_is_neutral, bool query_flag) n
 // that yields any match returns (00A31EEB, 00A32024).
 enum class AiForcedRuleTable { Global, PerMode };
 
+// Packet cc9_forced_target_weights (docs/SQUADRON_LAND_TASK.md 5cu). The
+// per-mode tables the loader tail inserts (00A36FD5 -> 00A32500, DL = 0, the
+// mode table at 00F8AB08 + mode*0Ch, appended in script order; 00A32500's
+// identity test replaces an identical rule, and the shipped tables hold none).
+// A string selector is its index in the 97-entry name table 00E0CD80 (the
+// entity type-query id space, 00A36BE4) with +1Dh/+1Eh clear; a number is an
+// exact vehicle class id with the byte set (00A36C7A, 00A36E34). These are
+// this installation's ForcedTargetWeightValues (highlvlaiglobals.lua, mtime
+// 2024-07-13): Rookie lines 165-183, Regular 353-369, Veteran 539-555, Escort
+// 866-880; Duel, Siege and Competitive are empty. No shipped row is relative.
+// LABELLED: transcribed from the script, not read from a running loader.
+const std::vector<AiForcedTargetWeightRule>& ai_shipped_forced_rules(int mode) noexcept;
+
+// One side of a 00A31DB0 query: the class descriptor's +70h class id and its
+// vtable[+18h] type query.
+struct AiForcedRuleSubject {
+    virtual ~AiForcedRuleSubject() = default;
+    virtual int class_id() const = 0;
+    virtual bool is_type(int type_code) const = 0;
+};
+
+// 00A31DB0's scan of one table (00A31E14..00A31EE5): a rule whose neutral byte
+// agrees with the flag scores its two selectors; a zero on either side skips it;
+// a strictly higher sum takes the rule's weight (+0Ch, added to the zeroed out
+// slot at 00A31E9E); 4 stops the scan. Answers whether any rule matched, and
+// the matched rule's index. A relative rule (+10h) recurses without end in the
+// image (docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md 3); it is not projected and is
+// skipped here.
+bool ai_forced_rule_scan_00a31db0(const std::vector<AiForcedTargetWeightRule>& table,
+                                  const AiForcedRuleSubject& attacker,
+                                  const AiForcedRuleSubject& target, bool query_flag,
+                                  float& weight, int& matched_index);
+
 // ---------------------------------------------------------------------------
 // The target-weight model 00A08460
 // ---------------------------------------------------------------------------

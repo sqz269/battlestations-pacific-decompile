@@ -214,6 +214,112 @@ bool ai_forced_rule_flag_applies(bool rule_target_is_neutral, bool query_flag) n
     return rule_target_is_neutral == query_flag;
 }
 
+namespace {
+
+// Type ids from the name table 00E0CD80.
+constexpr int kFtShip = 0x06;
+constexpr int kFtSubmarine = 0x08;
+constexpr int kFtCargo = 0x0B;
+constexpr int kFtLandingShip = 0x0C;
+constexpr int kFtBattleship = 0x0D;
+constexpr int kFtTorpedoBoat = 0x0E;
+constexpr int kFtPlane = 0x0F;
+constexpr int kFtTorpedoBomber = 0x11;
+constexpr int kFtDiveBomber = 0x12;
+constexpr int kFtFighter = 0x13;
+constexpr int kFtLandFort = 0x1B;
+constexpr int kFtCommandBuilding = 0x1C;
+
+AiForcedTargetWeightRule forced_pair(int attacker, int target, bool target_class_id,
+                                     bool neutral, float weight) {
+    AiForcedTargetWeightRule r;
+    r.attacker_selector = attacker;
+    r.target_selector = target;
+    r.target_is_neutral = neutral;
+    r.weight = weight;
+    r.target_selector_is_class_id = target_class_id;
+    return r;
+}
+
+// Each script row in order; the script lists most pairs as false then true.
+void add_rows(std::vector<AiForcedTargetWeightRule>& t, int attacker, int target,
+              bool target_class_id, bool true_first, float weight) {
+    t.push_back(forced_pair(attacker, target, target_class_id, true_first, weight));
+    t.push_back(forced_pair(attacker, target, target_class_id, !true_first, weight));
+}
+
+std::vector<AiForcedTargetWeightRule> island_capture_rules(bool rookie) {
+    std::vector<AiForcedTargetWeightRule> t;
+    add_rows(t, kFtBattleship, 88, true, false, 0.0f);   // VehicleClass[88], Command Post
+    add_rows(t, kFtTorpedoBoat, kFtCommandBuilding, false, false, 0.0f);
+    add_rows(t, kFtSubmarine, kFtCommandBuilding, false, false, 0.0f);
+    add_rows(t, kFtLandingShip, kFtCommandBuilding, false, false, rookie ? 0.18f : 0.12f);
+    if (rookie) add_rows(t, kFtCargo, kFtCommandBuilding, false, false, 1.0f);
+    add_rows(t, kFtTorpedoBoat, kFtPlane, false, true, 0.0f);
+    add_rows(t, kFtTorpedoBoat, kFtShip, false, true, 0.0f);
+    add_rows(t, kFtTorpedoBomber, kFtShip, false, true, 4.5f);
+    add_rows(t, kFtDiveBomber, kFtShip, false, true, 5.0f);
+    return t;
+}
+
+std::vector<AiForcedTargetWeightRule> escort_rules() {
+    std::vector<AiForcedTargetWeightRule> t;
+    add_rows(t, kFtFighter, kFtShip, false, true, 0.0f);
+    add_rows(t, kFtFighter, kFtTorpedoBoat, false, true, 5.0f);
+    add_rows(t, kFtTorpedoBomber, kFtFighter, false, true, 0.0f);
+    add_rows(t, kFtTorpedoBomber, kFtTorpedoBomber, false, true, 0.0f);
+    add_rows(t, kFtDiveBomber, kFtFighter, false, true, 0.0f);
+    add_rows(t, kFtDiveBomber, kFtDiveBomber, false, true, 0.0f);
+    add_rows(t, kFtFighter, kFtLandFort, false, true, 0.0f);
+    return t;
+}
+
+} // namespace
+
+const std::vector<AiForcedTargetWeightRule>& ai_shipped_forced_rules(int mode) noexcept {
+    static const std::vector<AiForcedTargetWeightRule> rookie = island_capture_rules(true);
+    static const std::vector<AiForcedTargetWeightRule> regular = island_capture_rules(false);
+    static const std::vector<AiForcedTargetWeightRule> escort = escort_rules();
+    static const std::vector<AiForcedTargetWeightRule> none;
+    switch (mode) {
+    case 0: return rookie;
+    case 1:
+    case 2: return regular;   // Regular and Veteran are identical
+    case 4: return escort;
+    default: return none;
+    }
+}
+
+bool ai_forced_rule_scan_00a31db0(const std::vector<AiForcedTargetWeightRule>& table,
+                                  const AiForcedRuleSubject& attacker,
+                                  const AiForcedRuleSubject& target, bool query_flag,
+                                  float& weight, int& matched_index) {
+    int best = 0;   // [ESP+14h], zeroed at 00A31DFF
+    matched_index = -1;
+    for (std::size_t i = 0; i < table.size(); ++i) {
+        const AiForcedTargetWeightRule& r = table[i];
+        if (!ai_forced_rule_flag_applies(r.target_is_neutral, query_flag)) continue;
+        if (r.relative) continue;   // not projected
+        // 00A31E31..00A31E5E: attacker+70h equality scores 2, the type query 1.
+        const int a = ai_forced_rule_selector_score(
+            r.attacker_selector_is_class_id,
+            r.attacker_selector_is_class_id ? r.attacker_selector == attacker.class_id()
+                                            : attacker.is_type(r.attacker_selector));
+        if (a == 0) continue;
+        const int t = ai_forced_rule_selector_score(
+            r.target_selector_is_class_id,
+            r.target_selector_is_class_id ? r.target_selector == target.class_id()
+                                          : target.is_type(r.target_selector));
+        const int score = ai_forced_rule_score(a, t);
+        if (score <= best) continue;   // 00A31E95 JLE
+        weight = r.weight;
+        matched_index = static_cast<int>(i);
+        best = score;
+        if (score == kAiForcedRuleBestScore) break;   // 00A31EBF
+    }
+    return best != 0;   // 00A31EEB
+}
+
 float ai_barrel_time_factor(float damage_calc_time, float barrel_reload) noexcept {
     // 00A0950B COMISS against 00D7A218, JBE to the FLD1 at 00A09531.
     if (barrel_reload <= kAiBarrelReloadEpsilon) {

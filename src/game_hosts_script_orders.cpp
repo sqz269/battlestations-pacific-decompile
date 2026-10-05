@@ -2961,6 +2961,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_enable_messages(*this, core);
     } else if (std::strcmp(binding->name, "LoadMessageMap") == 0) {
         SetThinkCoreHost core(*this);
+        // Packet cc9_dialog_sequencer: the map the message records resolve in.
+        message_map_name_ = get_string(0);
+        message_map_index_ = get_integer(1);
         results = bsp::lua_binding_load_message_map(*this, core);
     } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
         SetThinkCoreHost core(*this);
@@ -2975,12 +2978,27 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::string id = get_string(0);
         if (!id.empty()) active_dialogs_[id] = mission_clock_;
         ++dialog_starts_;
+        if (kDialogSequencerBound && !id.empty() && state_ != nullptr &&
+            lua_type(state_, stack_slot(1)) == LUA_TTABLE) {
+            // 00451A90: 00451920 looks the id up or inserts it, and 004507D0
+            // rebuilds the entry from the table.
+            DialogEntry entry;
+            dialog_parse_entry(stack_slot(1), entry);
+            dialog_entries_[id] = entry;
+            log_.notef("  dialog entry \"%s\" commands=%zu priority=%.1f default_pause=%.2f",
+                id.c_str(), entry.commands.size(), static_cast<double>(entry.priority),
+                static_cast<double>(entry.default_pause));
+        }
         log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 -> 00451A90)", id.c_str(),
             active_dialogs_.size());
         results = 0;
     } else if (kMissionEndBound && std::strcmp(binding->name, "KillDialog") == 0) {
         const std::string id = get_string(0);
         active_dialogs_.erase(id);
+        if (kDialogSequencerBound) {
+            dialog_entries_.erase(id);   // 004514A0
+            if (_stricmp(dialog_current_.c_str(), id.c_str()) == 0) dialog_current_.clear();
+        }
         ++dialog_kills_;
         log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 -> 004514A0)", id.c_str(),
             active_dialogs_.size());
@@ -3972,6 +3990,7 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
     argument_count_ = 0;
     if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
     mission_clock_ += step;
+    if (kDialogSequencerBound) dialog_tick(step);
     // Packet cc9_script_entity_pool, diagnostic only: BSP_ORIGIN_DIAG=1 logs, every
     // 30 s of mission time, the nearest live unit of each party to (0,0,0), the
     // point JM08's CheckInvasion polls with a 300 m radius (prcpjm08.lua line 758).
@@ -4240,6 +4259,12 @@ void GameScriptOrdersHost::report() {
         // reached through the narrative callback this host does not fire.
         log_.notef("summary mission dialogs starts=%llu kills=%llu queries=%llu active_at_end=%zu",
             dialog_starts_, dialog_kills_, dialog_queries_, active_dialogs_.size());
+        log_.notef("summary mission dialog sequencer bound=%d messages=%llu callbacks=%llu "
+            "pauses=%llu finished=%llu missing_voice=%llu entries_at_end=%zu map=%s/%d "
+            "(004527F0 on 005BBF10's tail timers, packet cc9_dialog_sequencer)",
+            kDialogSequencerBound ? 1 : 0, dialog_messages_, dialog_callbacks_, dialog_pauses_,
+            dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
+            message_map_name_.c_str(), message_map_index_);
         if (mission_end_.seen) {
             log_.notef("summary mission end: %s at %.2f s (Mission.EndMission) text=\"%s\" "
                 "entity=\"%s\" objectives=%zu; EndScene 008B01B0 not reached (the narrative "
@@ -4339,6 +4364,246 @@ void GameScriptOrdersHost::report() {
         summary_.move_tos, summary_.issued, summary_.reached_director,
         summary_.units_ordered, summary_.formations_requested - summary_.formations_refused,
         summary_.formations_requested, summary_.skills, summary_.repairs, summary_.roles);
+}
+
+}  // namespace bsp::game
+
+namespace bsp::game {
+
+// ---------------------------------------------------------------------------
+// Packet cc9_dialog_sequencer (docs/SQUADRON_LAND_TASK.md 5cs)
+// ---------------------------------------------------------------------------
+
+void GameScriptOrdersHost::dialog_parse_entry(int table_slot, DialogEntry& entry) {
+    // 004507D0: priority (+4h), requestTime (+8h, default [00F876A4]),
+    // defaultPause (+Ch, default owner+30h, DialogDefaultPauseTime = 1.0 in this
+    // installation's dialogglobals.lua), then `sequence`, one 0044BE50 command
+    // per element. suppressInterruptMsg, nextUnit, breakRequested, lastPanel and
+    // panelStates are read too and carry no timing; they are not kept.
+    lua_State* L = state_;
+    const int top = lua_gettop(L);
+    auto number = [L, table_slot](const char* key, float fallback) {
+        lua_getfield(L, table_slot, key);
+        const float v = lua_type(L, -1) == LUA_TNUMBER
+            ? static_cast<float>(lua_tonumber(L, -1)) : fallback;
+        lua_settop(L, lua_gettop(L) - 1);
+        return v;
+    };
+    entry.priority = number("priority", 0.0f);
+    entry.request_time = number("requestTime", mission_clock_);
+    entry.default_pause = number("defaultPause", 1.0f);
+    lua_getfield(L, table_slot, "sequence");
+    const int seq = lua_gettop(L);
+    if (lua_type(L, seq) == LUA_TTABLE) {
+        for (int i = 1;; ++i) {
+            lua_rawgeti(L, seq, i);
+            if (lua_type(L, -1) != LUA_TTABLE) break;
+            const int el = lua_gettop(L);
+            // 0044BE79..0044BF99: `type`, default "msg", compared without case.
+            lua_getfield(L, el, "type");
+            std::string type = lua_type(L, -1) == LUA_TSTRING ? lua_tostring(L, -1) : "msg";
+            lua_settop(L, el);
+            DialogCommand cmd;
+            auto text_of = [L, el](const char* key) {
+                lua_getfield(L, el, key);
+                std::string t = lua_type(L, -1) == LUA_TSTRING ? lua_tostring(L, -1) : "";
+                lua_settop(L, el);
+                return t;
+            };
+            if (_stricmp(type.c_str(), "msg") == 0) {
+                cmd.kind = 0;
+                cmd.text = text_of("message");                 // 0044A440
+            } else if (_stricmp(type.c_str(), "setpanel") == 0) {
+                cmd.kind = 1;
+            } else if (_stricmp(type.c_str(), "hidepanel") == 0) {
+                cmd.kind = 2;
+            } else if (_stricmp(type.c_str(), "pause") == 0) {
+                cmd.kind = 3;
+                lua_getfield(L, el, "time");                   // 0044A570, 00CE37A8
+                cmd.value = lua_type(L, -1) == LUA_TNUMBER
+                    ? static_cast<float>(lua_tonumber(L, -1)) : 0.0f;
+                lua_settop(L, el);
+            } else if (_stricmp(type.c_str(), "callback") == 0) {
+                cmd.kind = 4;
+                cmd.text = text_of("callback");                // 0044A5B0
+            } else {
+                lua_settop(L, seq);
+                continue;   // 0044BFB7: no command object
+            }
+            entry.commands.push_back(cmd);
+            lua_settop(L, seq);
+        }
+    }
+    lua_settop(L, top);
+}
+
+std::pair<float, float> GameScriptOrdersHost::dialog_message_timing(const std::string& message) {
+    // 00705E00 resolves the message record in the loaded message map, and
+    // 005BBF10 holds a row until its clip's slot polls complete (key end 0) or
+    // until the last key's end. LABELLED: the clip's playback length is the
+    // streamed FSB4 header's sample count over its default frequency, read from
+    // sound/messages/authentic/streamed_dialogs/<voice>.fsb (voice_dir authentic,
+    // docs/APP_INIT_LOCALE.md); this process plays no voice.
+    const auto cached = dialog_message_cache_.find(message);
+    if (cached != dialog_message_cache_.end()) return cached->second;
+    std::pair<float, float> timing{0.0f, 0.0f};
+    std::string voice;
+    if (state_ != nullptr && !message_map_name_.empty()) {
+        std::string text;
+        const std::string path = "scripts/datatables/messagemaps/" + message_map_name_ + ".lua";
+        FILE* f = nullptr;
+        if (fopen_s(&f, path.c_str(), "rb") == 0 && f != nullptr) {
+            char buffer[4096];
+            std::size_t n = 0;
+            while ((n = std::fread(buffer, 1, sizeof(buffer), f)) > 0) text.append(buffer, n);
+            std::fclose(f);
+        }
+        static const char kChunk[] =
+            "local src, idx, msg = ... "
+            "local f = loadstring(src) if not f then return nil end "
+            "local env = {} setfenv(f, env) f() "
+            "local m = env.Messages and env.Messages[idx] and env.Messages[idx][msg] "
+            "if not m then return nil end "
+            "local last = 0 "
+            "if type(m.subtitles) == 'table' then for _, k in ipairs(m.subtitles) do "
+            "if type(k[3]) == 'number' and k[3] > last then last = k[3] end end end "
+            "return m.voice, last";
+        const int top = lua_gettop(state_);
+        if (!text.empty() &&
+            luaL_loadbuffer(state_, kChunk, sizeof(kChunk) - 1, "dialog_message") == 0) {
+            lua_pushlstring(state_, text.data(), text.size());
+            lua_pushnumber(state_, static_cast<lua_Number>(message_map_index_));
+            lua_pushstring(state_, message.c_str());
+            if (lua_pcall(state_, 3, 2, 0) == 0) {
+                if (lua_type(state_, -2) == LUA_TSTRING) voice = lua_tostring(state_, -2);
+                if (lua_type(state_, -1) == LUA_TNUMBER) {
+                    timing.second = static_cast<float>(lua_tonumber(state_, -1));
+                }
+            }
+        }
+        lua_settop(state_, top);
+    }
+    if (!voice.empty()) {
+        const std::string path = "sound/messages/authentic/streamed_dialogs/" + voice + ".fsb";
+        FILE* f = nullptr;
+        if (fopen_s(&f, path.c_str(), "rb") == 0 && f != nullptr) {
+            unsigned char head[0x68] = {};
+            if (std::fread(head, 1, sizeof(head), f) == sizeof(head) &&
+                std::memcmp(head, "FSB4", 4) == 0) {
+                auto u32 = [&head](std::size_t at) {
+                    return static_cast<std::uint32_t>(head[at]) |
+                           (static_cast<std::uint32_t>(head[at + 1]) << 8) |
+                           (static_cast<std::uint32_t>(head[at + 2]) << 16) |
+                           (static_cast<std::uint32_t>(head[at + 3]) << 24);
+                };
+                const std::uint32_t samples = u32(0x50);   // first sample header +20h
+                const std::uint32_t frequency = u32(0x64); // +34h, default frequency
+                if (frequency != 0) timing.first = static_cast<float>(samples) / frequency;
+            }
+            std::fclose(f);
+        }
+    }
+    if (timing.first <= 0.0f) ++dialog_missing_voice_;
+    log_.notef("  dialog message %s voice=%s clip=%.3f key_end=%.3f", message.c_str(),
+        voice.empty() ? "-" : voice.c_str(), static_cast<double>(timing.first),
+        static_cast<double>(timing.second));
+    dialog_message_cache_[message] = timing;
+    return timing;
+}
+
+void GameScriptOrdersHost::dialog_step_00452740(const std::string& name) {
+    // 00452360 first: setpanel / hidepanel / callback in order from the cursor.
+    // A callback may start or kill dialogs, so the entry is looked up again
+    // after each one (LABELLED: the image retains its entry pointer across the
+    // callbacks, docs/PANEL_SEQUENCE.md).
+    for (;;) {
+        auto it = dialog_entries_.find(name);
+        if (it == dialog_entries_.end()) return;
+        DialogEntry& entry = it->second;
+        if (entry.cursor >= entry.commands.size()) break;
+        const DialogCommand cmd = entry.commands[entry.cursor];
+        if (cmd.kind != 1 && cmd.kind != 2 && cmd.kind != 4) break;
+        ++entry.cursor;
+        if (cmd.kind == 4) {
+            // 00E17BFA = 1, 00887E50 with no argument, 00E17BFA = 0.
+            ++dialog_callbacks_;
+            log_.notef("  dialog callback %s t=%.2f", cmd.text.c_str(),
+                static_cast<double>(mission_clock_));
+            mission_lua_call_named_00887e50(cmd.text);
+        }
+    }
+    // Then the command at the cursor: a message starts its row (005B94D0 with
+    // the entry's +Ch as the delay), a pause sets +88h to time - entry +Ch.
+    auto found = dialog_entries_.find(name);
+    if (found == dialog_entries_.end()) return;
+    DialogEntry& entry = found->second;
+    if (entry.cursor >= entry.commands.size()) return;
+    const DialogCommand cmd = entry.commands[entry.cursor];
+    if (cmd.kind == 0) {
+        ++entry.cursor;
+        ++dialog_messages_;
+        const std::pair<float, float> timing = dialog_message_timing(cmd.text);
+        dialog_row_selected_ = true;
+        dialog_voice_left_ = timing.first;
+        dialog_hold_8c_ = timing.second;
+        dialog_delay_88_ = entry.default_pause;
+        log_.notef("  dialog message %s starts t=%.2f clip=%.3f", cmd.text.c_str(),
+            static_cast<double>(mission_clock_), static_cast<double>(timing.first));
+    } else if (cmd.kind == 3) {
+        ++entry.cursor;
+        ++dialog_pauses_;
+        dialog_delay_88_ = cmd.value - entry.default_pause;
+    }
+}
+
+void GameScriptOrdersHost::dialog_advance_004527f0() {
+    // State 1: an exhausted current entry is erased (00451020) and leaves the
+    // active set. LABELLED: state 2's row reset on a name change is GUI-only and
+    // folded into this call.
+    if (!dialog_current_.empty()) {
+        auto it = dialog_entries_.find(dialog_current_);
+        if (it == dialog_entries_.end()) {
+            dialog_current_.clear();
+        } else if (it->second.cursor >= it->second.commands.size()) {
+            log_.notef("  dialog \"%s\" finished t=%.2f", dialog_current_.c_str(),
+                static_cast<double>(mission_clock_));
+            active_dialogs_.erase(dialog_current_);
+            dialog_entries_.erase(it);
+            dialog_current_.clear();
+            ++dialog_finished_;
+        }
+    }
+    // 0044C390: keep the current one, else the larger priority, then the
+    // smaller request time.
+    if (dialog_current_.empty()) {
+        const DialogEntry* best = nullptr;
+        for (const auto& e : dialog_entries_) {
+            if (best == nullptr || e.second.priority > best->priority ||
+                (e.second.priority == best->priority &&
+                 e.second.request_time < best->request_time)) {
+                best = &e.second;
+                dialog_current_ = e.first;
+            }
+        }
+        if (best == nullptr) return;
+    }
+    dialog_step_00452740(dialog_current_);
+}
+
+void GameScriptOrdersHost::dialog_tick(float step) {
+    // 005BBF10 steps 3 and 7. LABELLED: the image runs it in the frame update
+    // with the frame delta; this process runs it once per script think step.
+    if (dialog_row_selected_) {
+        dialog_voice_left_ -= step;
+        dialog_hold_8c_ -= step;
+        if (dialog_voice_left_ > 0.0f || dialog_hold_8c_ > 0.0f) return;
+        dialog_row_selected_ = false;   // selection FFFFFFFF
+    }
+    if (dialog_entries_.empty() && dialog_current_.empty()) return;
+    dialog_delay_88_ -= step;
+    if (dialog_delay_88_ > 0.0f) return;
+    dialog_delay_88_ = 0.0f;
+    dialog_advance_004527f0();
 }
 
 }  // namespace bsp::game

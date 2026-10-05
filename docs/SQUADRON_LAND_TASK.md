@@ -9811,3 +9811,336 @@ when the close weight is positive, and for a torpedo bomber against a ship it is
 artefact is the ungated barrel walk that `kAiWeightBarrelGatesBound` replaces (5cq). USNRM01 is
 the row where that switch matches the script's intent. The switch stays OFF for the reason in
 5cq.2: the slot-4 brain-team question is still pending static evidence.
+
+## 5cs. BSM04's dialog sequencer bound OFF (packet `cc9_dialog_sequencer`, cc9-lua34, 2026-10-05)
+
+5cn found that BSM04's opening never reaches its script dogfight (`bsm_04:1909`):
+- the `INTRO` sequence's callbacks (`luaIntroMovieB`, `luaIntroMovieC`, `luaZekesDia`) never fire;
+- nor does `ZEKES`'s (`luaIntroMovieD`).
+
+`StartDialog` `008B0540` only registered the id in this host.
+
+### The image's sequencer, from the reconstructed pieces and the listing
+
+- **Building the entry.** `00451A90` looks the id up or inserts it (`00451920`), and `004507D0`
+  builds the entry from the table:
+  - `priority` `+4h`;
+  - `requestTime` `+8h`, default the mission clock `[00F876A4]`;
+  - `defaultPause` `+Ch`, default owner `+30h`. That is `DialogDefaultPauseTime`, 1.0 in this
+    installation's `scripts/datatables/dialogglobals.lua` (mtime 2024-07-13; DIALOG_CONFIG);
+  - `sequence`: one command per element from `0044BE50`, typed by `type` (default `"msg"`, compared
+    without case at `0044BE79`-`0044BF99`).
+
+  | type | kind | vtable | field read |
+  | --- | --- | --- | --- |
+  | msg | 0 | `00CE49CC` | `message` (`0044A440`) |
+  | setpanel | 1 | `00CE49DC` | panel fields, no timing |
+  | hidepanel | 2 | `00CE4950` | none |
+  | pause | 3 | `00CE4960` | `time` (`0044A570`, string `00CE37A8`) |
+  | callback | 4 | `00CE49EC` | `callback` (`0044A5B0`) |
+
+- **Playing it.** Each frame `005BBF10` (VOICE_UPDATE_INTEGRATION step 7) waits for the selected
+  row:
+  - A row with key end 0 holds until its clip's slot reports completion (step 3); otherwise it holds
+    until the last key's end.
+  - Then it clears the selection, counts down `+88h` and calls `004527F0` once `+88h` is not
+    positive.
+  - `004527F0` erases an exhausted current entry, selects by priority (`0044C390`) and steps
+    (`00452740`).
+  - The step first runs `00452360`: setpanel, hidepanel and callback commands in order. A callback
+    is `00887E50` with no argument, inside `00E17BFA` = 1.
+  - It then handles the command at the cursor. A message selects its row through `005B94D0` and
+    stores the entry's `+Ch` as the `+88h` delay. A pause stores `time - entry +Ch` in `+88h`.
+    (PANEL_SEQUENCE.)
+- **BSM04's message timing.** `LoadMessageMap("bsmdlg", 4)` (`bsm_04:41`) selects map 4 of
+  `scripts/datatables/messagemaps/bsmdlg.lua` (mtime 2024-07-13).
+  - Its `INTRO1` record has one subtitle key ending at 0.0 and the voice
+    `CAMPAIGN/BSM04/INTRO1`.
+  - So each message lasts its clip plus the 1.0 s default pause, and each callback fires at the
+    start of the following step.
+
+### The binding, committed OFF
+
+`kDialogSequencerBound`, `include/bsp/game_hosts_script_orders.hpp`, with the code in
+`src/game_hosts_script_orders.cpp` (`dialog_*`):
+- `StartDialog` parses the table into the entry above, and `KillDialog` erases it.
+- `LoadMessageMap` records the map name and index.
+- The script think pass runs the tail timers and the advance.
+- A finished entry leaves `GetActDialogIDs`.
+
+LABELLED:
+- The clip length is the streamed file's FSB4 header: sample count over default frequency, from
+  `sound/messages/authentic/streamed_dialogs/<voice>.fsb` (`voice_dir authentic`,
+  APP_INIT_LOCALE). For `INTRO1` that is 194368 / 41100 = 4.73 s. This process plays no voice, so
+  it takes no stream latency.
+- The message record is read by running the map file in a private environment.
+- The timers run once per script think step rather than per frame.
+- State 2's row reset is folded into the advance.
+- A callback's own `StartDialog` or `KillDialog` is seen by looking the entry up again.
+
+Census:
+- `summary mission dialog sequencer ...`;
+- `dialog callback <name> t=...`, `dialog message ... starts`, `dialog "<id>" finished`.
+
+### Predictions, written before any ON run
+
+- **BSM04 3200/3000:**
+  - `INTRO` plays INTRO1, INTRO2 and INTRO3, firing `luaIntroMovieB`, `luaIntroMovieC` and
+    `luaZekesDia` at about +5.7 s each after its start (clip about 4.7 s plus 1.0 s);
+  - `ZEKES` then plays and fires `luaIntroMovieD`;
+  - `luaIntroMovieEnd` follows 8 s later (`bsm_04:1896`), reaching the 1909 dogfight;
+  - `pair_diff` moved.
+
+  **Weakest call:** whether `luaIntroMovieB`/`C`/`D` (movie callbacks) need a movie end the host
+  never sends.
+- **USN04 4700/4500:** its `INTRO` now finishes and leaves the active set, so the failure path's
+  `KillDialog` finds less. Gameplay identical or moved only through any callback it carries.
+- **USN02, USN12 (controls):** gameplay-identical unless their dialogs carry callbacks. The census
+  names any that fire.
+
+### 5cs.1 Measured (OFF `local\l34_doff`, ON `local\l34_don`, both from the OFF commit), and the verdict: **flip ON**
+
+Reference V's launch form with `BSP_LUA_CALLBACK_TRACE=1`. A USN01 500/300 smoke on the ON build
+finished cleanly.
+
+| row | pair_diff | deaths | shots | sequencer (ON) |
+| --- | --- | --- | --- | --- |
+| BSM04 3200/3000 | moved | 5 -> 5 (re-dealt) | 3792 -> 9396 | messages 7, callbacks 4, finished 4 |
+| USN04 4700/4500 | identical | 45 | 17447 | messages 5, callbacks 0, finished 1 |
+| USN02 3200/3000 | identical | 1 | 1055 | messages 6, pauses 2, finished 1 |
+| USN12 3200/3000 | identical | 5 | 144 | messages 2, pauses 1, finished 1 |
+
+**BSM04's opening, from the ON log (`l34_don_bsm04`).**
+
+| t (s) | event | clip |
+| --- | --- | --- |
+| 5.10 | INTRO1 | 4.729 |
+| 10.80 | `luaIntroMovieB`, then INTRO2 | 4.717 |
+| 16.50 | `luaIntroMovieC`, then INTRO3 | 6.092 |
+| 23.55 | `luaZekesDia` starts ZEKES | |
+| 23.60 | INTRO finishes; ZEKES1 | 6.092 |
+| 30.65 | `luaIntroMovieD`, then ZEKES2 | |
+| 37.45 | ZEKES finishes | |
+
+- Each step lands at clip + 1.0 s plus one think step, as predicted.
+- `luaIntroMovieD` spawns the two Zero flights (`luaSpawnFirstZeros`, SpawnNew serials 1 and 2).
+  That is the death and shot movement: Jap #1.1 and #2.1 die, the B-17s are re-dealt, and
+  `AirField_sqn01` is no longer killed.
+- RESPOND and UNDERATTACK also play and finish.
+
+**Open: `luaIntroMovieEnd` never runs.**
+- `luaIntroMovieD` ends with `luaDelay(luaIntroMovieEnd, 8)` (`bsm_04:1896`). The callback
+  "ran" without an error.
+- Yet the run counts no further `luaDelay` call (`calls=3`, all before) and no fourth timer
+  entity (`CreateScript calls=4`).
+- So the 1909 dogfight is still not reached. Next read: why a `luaDelay` inside a callback that
+  the sequencer fires from the script think pass creates no timer entity. Suspects are the think
+  pass's re-entrancy and the hook's count.
+
+**Controls.** USN02 and USN12 are identical; USN04 is identical too. Their dialogs carry no
+callbacks, and finishing them only empties the active set earlier.
+
+**Verdict: ON.** The mechanism matches the prediction step by step, the controls are identical,
+and the moved row is the predicted one. The `luaIntroMovieEnd` miss is a separate host question,
+recorded above.
+
+## 5ct. Handoff (cc9-lua34, 2026-10-05)
+
+Branch `agent/cc9-lua34`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua34`. Lease
+`cc9_dialog_sequencer` is released at this commit.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_plane_attacker_weight` | `50bc6765e`, `97587c288`, `4bc3073bc`, `73838cc6b`, `5124a2894` | `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound` | OFF (held: slot-4 team, static evidence pending) | 5cq |
+| USNRM01 script target | `b9e603db4` | (the gates switch) | answered | 5cr |
+| `cc9_dialog_sequencer` | this branch | `kDialogSequencerBound` | **ON** | 5cs |
+
+Traces:
+- `BSP_AI_GROUP_VALUE_TRACE=1` (`src/game_hosts_ai.cpp`): every `00A0F970` call of a plane-led
+  group.
+- The census line `summary mission ai plane weight ...`.
+- `summary mission dialog sequencer ...`.
+
+Scripts in `local\`:
+- `l34_runs.ps1 -Sides <s> -Only <rows> [-Exe] [-Trace]`;
+- `l34_pairs.ps1 -SideA -SideB -Rows`;
+- `l34_gv.py`, `l34_killers.py`, `l34_dsum.py`, `l34_deaths.py`.
+
+Next, in order:
+0. **Why the Japanese air groups target themselves under `kAiWeightBarrelGatesBound`** (the last blocker for that switch; SHIP_AI 129 settles slot 4 = Allied as the image's).
+   - Read `00A1CB80`'s candidate list and look for an own-group, party or side filter not read yet: `00A0F970`, `00A0C650` (`a1` = 0 zeroes the penalties on this path), `00A0F810` and the candidate builder. SHIP_AI 60.6 says the loop head `00A1CC3B`-`00A1CC65` has none.
+   - Check how the gates take `target_is_neutral`: the image uses record `+1Ch` = side `+54h` >= 2; the host uses `units.unit_side_0054` (close weight) and `t.third_party` (group value). Compare team against party `+54h` in both.
+   - A Kate's MG against an own-side Kate (Armour unauthored, 0) scores above 0 in both the image and the host, so the self-pick holds unless a filter is found.
+1. **BSM04: why `luaIntroMovieEnd`'s `luaDelay` makes no timer** (5cs.1).
+2. **USNRM01 (c): the Kates' torpedo run-in and release gates at Pearl Harbor.**
+   - The `009D3420` sector scan and the release conditions.
+   - With the gates ON the Kates keep West Virginia and Oklahoma (5cr), yet neither dies.
+3. **5ch, the weight switches and the slot-4 team:** wait for cc9-ships28's static evidence
+   (`game+1FE4h` writers, SetGameMode callers).
+4. The 5cm break-off follow-ups and 5cj's remaining items (5cp).
+
+## 5cu. Item 1: no own-side filter on the Attack path; the forced target weights bound OFF (packet `cc9_forced_target_weights`, cc9-lua35, 2026-10-05)
+
+The question (cc9-lua35 brief, item 1): SHIP_AI 129 settled that USN13's slot-4 brain is
+Allied-team in the image. Why then do the gates make USN13's Japanese air groups target
+themselves? Is there an own-group or own-side exclusion that the host lacks?
+
+### (1) The Attack path has no own-side or own-group filter (read from the disk bytes)
+
+- **Candidate list.** `00A1CB80` walks `g_aiGroupsByTeam[planner+34h]`
+  (`00A1CBF5 MOV EAX,[ESI+34h]`, list `00F8AA48 + t*0Ch`).
+  - `planner+34h` is `brain+24h == 0` (`00A1EEB2 CMP [EAX+24h],EBX / 00A1EEB8 SETE DL /
+    00A1EEC1 MOV [ESI+34h],EDX`).
+  - `brain+24h` is `009FFD60(slot)` = `[[game+18CCh+slot*4]]+28h` (`00A15A90`/`00A15A97`).
+  - The slot record's `+28h` is the scene's `PlayerN.Party`. `004C6890` copies it
+    unconditionally (`004C6A44`-`004C6AA8`, scene block `+4h` -> record `+28h`). Its only
+    rewrite, `004BC890`, is skipped at `004BC8B3` while `game+1FE4h` = 0 (SHIP_AI 129).
+- **The loop body** (`00A1CC3B`-`00A1CEC4`):
+  - It tests only the candidate's `+5644h` member count.
+  - It calls `00A0F970` with `ECX` = own group (`00A1CC63`) and `EDX` = candidate (`00A1CC51`).
+  - It never compares the candidate with the own group. The own group is in the list, and its
+    range factor is the largest because the distance is 0.
+- **The value chain carries no side either.**
+  - `00A0F970` gates only on the two member counts.
+  - `00A0C650` composes the pair values.
+  - `00A0C3C0` applies the distance multipliers.
+  - `00A0C330` calls `00A08460(attacker class, record+10h, target class, target record+1Ch)` and
+    applies the `1Ch` paratrooper zero.
+  - The record's `+1Ch` is the target's side >= 2 (neutral), not a comparison of two sides.
+- **Unit filing.** `009FFD20` (`009FFD26`-`009FFD2E`) keeps a unit's own `+180h` slot when it is
+  0..7. The side test applies only otherwise. Both arms give the same answer on USN13, because
+  `usn_13_truk.scn` authors all eight `PlayerN.Party = Allied` (lines 402-433, this installation,
+  mtime 2024-10-29).
+
+So the image's Attack planner on a US row scores the slot-4 brain's own Japanese groups,
+including the own group, exactly as the host does. **No host divergence on the side, party or
+team chain.** The friendly targeting itself is the image's rule as read. USN13's OFF table
+already shows it for the Japanese ships: the Maru groups hold `CAUTIOUSATTACK`/`MOVETOATTACK`
+orders with `target=1` (`l34_gates_usn13.log`).
+
+### (2) The divergence that does exist: `00A31DB0`'s forced weights are stubbed
+
+What the image does:
+- `00A08460` asks `00A31DB0` at `00A08540`, straight after the memo miss.
+- A match is stored in the memo and returned raw (`00A08549`-`00A0856F`). It skips the barrel
+  walk, the plane arm, the gates and the epilogue.
+- The rules come from each mode table's `ForcedTargetWeightValues`, inserted by the loader tail:
+  - `00A36FD5 CALL 00A32500` with `DL` = 0 and the loop's mode pushed. The insert's mode arm
+    (`00A3265F`) appends to `00F8AB08 + mode*0Ch` and replaces only an identical rule.
+  - A **string** selector is its index in the 97-entry name table `00E0CD80` (`00A36BE4`-
+    `00A36C23`). That is the entity type-query id space (`SHIP` 6, `TORPEDOBOMBER` 11h,
+    `COMMANDBUILDING` 1Ch, ...), with `+1Dh`/`+1Eh` clear.
+  - A **number** is an exact class id with the byte set (`00A36C7A`, `00A36E34`).
+- **The match** (`00A31E14`-`00A31EE5`; the per-mode copy is `00A31F34`-`00A32013`):
+  - the rule's neutral byte must agree with the query flag;
+  - an exact selector scores 2 on `selector == class+70h`;
+  - a group selector scores 1 on `class->vtable[+18h](selector)`;
+  - a zero on either side skips the rule;
+  - a strictly higher sum takes the rule's weight (ties keep the first rule), and 4 stops the
+    scan.
+
+The global table `00F8AB5C` is scanned first, and only `AISetTargetWeight` fills it. No campaign
+script calls that; `competitive05.lua` does.
+
+What the host does: `AiWeightModelBinding::forced_rule_weight` answered "no match" because "this
+process does not run" the loader tail (`src/game_hosts_ai.cpp`).
+
+The shipped tables (`highlvlaiglobals.lua`, this installation, mtime 2024-07-13):
+
+| mode | rows |
+| --- | --- |
+| 0 IslandCapture Rookie (the mode every reference row runs: `summary mission ai tuning mode=0`) | `BATTLESHIP` vs class 88 (Command Post) 0; `TORPEDOBOAT` vs `COMMANDBUILDING` 0; `SUBMARINE` vs `COMMANDBUILDING` 0; `LANDINGSHIP` vs `COMMANDBUILDING` 0.18; `CARGO` vs `COMMANDBUILDING` 1; `TORPEDOBOAT` vs `PLANE` 0; `TORPEDOBOAT` vs `SHIP` 0; **`TORPEDOBOMBER` vs `SHIP` 4.5; `DIVEBOMBER` vs `SHIP` 5.0** (each row twice, neutral true and false) |
+| 1, 2 Regular, Veteran | the same without `CARGO`, and `LANDINGSHIP` 0.12 |
+| 4 Escort | `FIGHTER` vs `SHIP` 0, vs `TORPEDOBOAT` 5, vs `LANDFORT` 0; `TORPEDOBOMBER` vs `FIGHTER` 0 and vs `TORPEDOBOMBER` 0; `DIVEBOMBER` vs `FIGHTER` 0 and vs `DIVEBOMBER` 0 |
+| 3, 5, 6 | empty |
+
+Why the effective mode is 0 in single player: `004BCA50` answers `game+614h` forced to 8
+(`004C6962`). `009FFC80` sends any value above 7 to `009FFCF4`, which answers 0.
+
+**What this changes:**
+- A torpedo bomber's weight against any ship is 4.5 in the image, and a dive bomber's is 5.0,
+  whatever its guns are.
+- With the gates ON and no forced rules, the host scored a Kate against a ship at 0 (5cq).
+- 5cr's argument ("a Kate's close weight against a ship is 0, so the script's target stands")
+  therefore does not hold for the image.
+- No Rookie rule covers a plane against a plane, so the self-scoring of 5cq.2 keeps its computed
+  value.
+
+### The binding, committed OFF
+
+The pieces:
+- **`kAiForcedTargetWeightRulesBound`** (`src/game_hosts_ai.cpp`).
+- **The tables and the scan** (`src/ai_target_weights.cpp`): `ai_shipped_forced_rules(mode)`
+  (LABELLED: transcribed from the script) and `ai_forced_rule_scan_00a31db0`.
+- **How the binding answers.** It asks the unit's own kind test and its `+C4h` class id.
+  LABELLED: the image asks the class descriptor's `vtable[+18h]` and `+70h`. 5cq.1 verified the
+  id space; the class id equivalence is unverified.
+- **What is not projected:** the global table, and relative rules (none shipped).
+- **Where the lookup sits.** It runs inside the weight model only where the host runs the model.
+  The 1.0 stand-in for incomplete rows is unchanged.
+- **The census, in both states:** `summary mission ai forced target weight bound= mode=
+  queries= matches= rules: r<i>=<hits>`.
+
+### Predictions, written before any ON run
+
+Pairs, all from one commit:
+- **Pair F:** forced ON against OFF, every other switch as committed (gates OFF).
+- **Pair G:** gates ON against gates + forced ON.
+
+Rows: USN13 3200, USN13 9200, USN04 4700, E2, USNOS 3200, USNRM01 9200, ESMP08 14200. Controls:
+USN02, USN12.
+
+- **Census.** `mode=0` on every row. Matches are counted on every row with torpedo or dive
+  bombers, and on rows with Japanese cargo ships against a CommandBuilding (USN13: r8/r9). USN02
+  and USN12 have few or no bombers, so few or no matches.
+- **Pair F:**
+  - Moved (exit 3) on every bomber row.
+  - USNRM01: the Kates' close weight becomes 4.5 against every ship, so the close pass's choice
+    rides on `00A0F810`'s other factors and the Kates change targets. No direction is predicted
+    for battleship deaths.
+  - Controls: exit 0 or 1, if no bomber group is scored.
+- **Pair G, USN13:**
+  - The bruh Kate groups still leave the Capture think, because no rule covers a torpedo bomber
+    against a CommandBuilding.
+  - In the Attack planner they now pick a Japanese Maru (ship) group at 4.5 per pair over
+    themselves. The trace's `target=` names a Maru rather than `bruh`.
+  - **That is still friendly targeting, so the gates stay OFF and 5ch is not re-tested**
+    (the brief's condition, "USN13 behaves sanely", cannot be met by this binding).
+- **Pair G, USNRM01:** the Kates no longer keep West Virginia and Oklahoma throughout (5cr's gates
+  result), unless those battleships win the close pass's other factors (the objective x10 of
+  `00A0F8C6` is the likely one).
+
+## 5cv. Item 2: `luaIntroMovieEnd` does run; 5cs.1's open item was a trace misreading (cc9-lua35, 2026-10-05)
+
+5cs.1 left this open: `luaIntroMovieD`'s `luaDelay(luaIntroMovieEnd, 8)` (`bsm_04:1896`) seemed to
+create no timer. Its evidence was `luaDelay calls=3` and no `luaIntroMovieEnd` line in the
+callback trace.
+
+**The same log (`cc9-lua34\local\l34_don_bsm04.log`) shows the body running at mission frame
+771, t = 38.60 s.** That is the callback's 30.65 s plus 8 s, within one think step.
+- The trace's firsts at t=38.60 are `luaSetScriptTarget`, `luaAddFirstObjs` and
+  `luaAddSecondZeroListener`. All three are called only from `luaIntroMovieEnd`
+  (`bsm_04:1908`, `1912`, `1914`; `luaAddFirstObjs` has no other caller in the script, which is
+  `bsm_04_vengance_at_luzon.lua`, this installation, mtime 2024-07-13).
+- The bindings run in order at the same frame:
+  - `SetInvincible "B-17" value=0.000`;
+  - `SetSelectedUnit` moves control from the B-17 to Donald;
+  - `UnitSetFireStance: squadron Donald stance=1`;
+  - `PilotSetTarget: unit=Wildcat target_object_id=43 ... ISSUED`, which is the `bsm_04:1909`
+    dogfight order;
+  - `Objectives_Add` for B17, Donald and DD.
+
+So the 1909 dogfight **is** reached on the ON build, and nothing about the sequencer or the
+think pass needs fixing.
+
+Why the trace misled:
+- `lua_callback_trace_hook` keys a call by `ar->name` when Lua can name it, and otherwise by
+  `?<src>:<linedefined>`.
+- A function reached through a table slot (the timer's `luaDoTimeTable` calling `timer[2][1]`)
+  has no name, so `luaIntroMovieEnd` would be listed as `?...:1900`, if at all.
+- Why the fourth `luaDelay` call is not counted (`calls=3`) is not established. The hook is set
+  on the first state that dispatches a binding, and Lua 5.0 hooks are per thread. LABELLED as a
+  diagnostic-hook limitation, not run-time behaviour.
+
+**Rule for later readers:** judge a callback by its callees' bindings in the log, not by its name
+in the trace.
