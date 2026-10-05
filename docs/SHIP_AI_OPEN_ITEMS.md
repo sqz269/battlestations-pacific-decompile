@@ -9448,3 +9448,75 @@ What follows is what is left.
 **Top item.** Rank 1 is the next packet: read `00942130`, `00946970` and `00A25B90`'s pool far
 enough to say whether any reference row spawns. If none does, it closes as a record with no
 reach. If one does, bind it OFF with predictions. Rank 4 is a small free packet after it.
+
+## 115. Rank 1 of section 114, the quick-spawn arms: closed, no reference row spawns (packet `cc9_quick_spawn_reach`, cc9-ships27, 2026-10-04)
+
+**Correction to section 114.** Its rank 1 was already settled for the Capture arm by sections
+51-52 (cc9-ships15), which the ranking missed:
+- the single-player gates pass;
+- but the spawn buys only from a site's authored stock list (`JapanList` / `AlliedList`,
+  `"Stock %d"`), and no reference row's scene has one.
+
+This section re-checks that against the bodies, and closes the Defend arm, which 52 left unread.
+
+### 115.1 The Capture arm (`00A2B477..00A2B7A6`)
+
+- **Gate 1:** `00A2B488 CALL 00946970` (ECX = `[00F89B3C]`, the team) must answer <= 0
+  (`00A2B495 JA 00A2B7A6`).
+  - `00946970` (body `00946970..009469E1`, `RET 4`) is a float sum of `00946870(record, team)`
+    over the `std::list` at `[00F89B3C]+4`.
+  - No record exists until a spawn request does, so it answers 0.
+- **Gate 2:** the due byte `[ESP+4Fh]`.
+- **The budget:**
+  - `00942130(team)` (body `00942130..00942205`) counts the bound player slots (`+8h` set, and
+    `+9h` clear or `+0Ah` set) of `slot[team]`'s party over the eight slots at `[00E188A8]+18CCh`.
+    It answers `[00E0CFB4] x 0.5 / count`, or 0 with no bound slot.
+  - That is multiplied by `1 - [00F8A8BC + 4 x 009FFC80()]` and reduced by `00A1C900(planner)`.
+    `00A1C900` is the sum of `00A2C530` over the owned groups, the `ResourceUsage` sum, which is 0
+    here.
+  - With the mode-0 percent at 0.0 (below), the budget is `1200 / count`, so >= 1. That agrees
+    with 51.
+- **The spawn:** `00A25A30(planner)(target+FCh, budget, &records, "[capture]"+id, 0)` at `00A2B758`.
+  - `00A25A30` refuses a weight below `[00CE3800]` = 0.5 or an empty record vector.
+  - It then takes `0066E590` -> `0066E510` -> `0066DD00`: world list 28
+    (`[[00E188A8]+19CCh]+16Ch`), the CommandBuildings with `+78Ch` != 0. `0066E2B0` keeps the
+    team's, and `0066E590` drops `+14h == 0`.
+  - With an empty list it returns false (`00A25AB7 JE 00A25B5C`). Section 52.2: every site's
+    class list comes from its authored stock, and no reference scene authors one.
+  - **So no capture spawn on any reference row.**
+
+### 115.2 The Defend arm (`00A29BE7..00A29C79`)
+
+- **Gate 1:** the same `00946970` test (`00A29BF8`; `00A29C05 JBE 00A29C33` when <= 0).
+- **The budget** (`00A29C33..00A29C77`):
+
+  `[00F8A8BC + 4 x 009FFC80()] x 00942130(team) - 00A1C900(planner)`
+
+  `00A29C71 FLD1; FCOMIP; JBE 00A29CA5` takes the spawn path only when the budget is >= 1.0;
+  below it falls to `00A29C79`, the exit.
+- **The percent is 0.0 on every reference row.**
+  - Every row runs mode 0: the host's `summary mission ai tuning mode=0
+    (IslandCaptureParams_Rookie)` on all nineteen reference-v logs.
+  - This installation's `scripts/datatables/highlvlaiglobals.lua` (2024-07-13) authors
+    `["Defend_ResourcePercent"] = 0.0` in `IslandCaptureParams_Rookie` (line 110), `_Regular`
+    (298) and `_Veteran` (484).
+  - `00A360FA..00A36126` stores it for modes 0-2 (AI_GLOBALS_AND_TARGET_WEIGHTS section 2).
+  - So the budget is `0 x 1200 / count - 0` = 0 < 1, and **the Defend arm never reaches
+    `00A25A30` on these rows.**
+- **Correction to section 51 item 3:** it took the percent "at its 0.35 default" and so had the
+  defend budget pass (w >= 97.5). The authored value is 0.0. 0.35 is only `GetFloatOrDefault`'s
+  fallback (`00CF6560`).
+
+### 115.3 Verdict
+
+**Both arms stay records, correctly.**
+- Capture: no stock list on any reference scene (52.2).
+- Defend: an authored resource percent of 0.0 on the mode-0 tables.
+- The host's `spawn_due` / `defend_spawn_arms` counts are planner-side "due" counts, not spawns.
+- **Rows that could reach the spawn:**
+  - a scene with a stock list (IJN11 `ijn_11_operation_to`, or the `ijn_02_force_z` copies; 52.2);
+  - a script calling `AISetDefendResourcePercent` with a non-zero value (only
+    `islandcapture01.lua:1744`, multiplayer);
+  - a mode 3+ session.
+- **Section 114's ranking moves up:** the close-attack fallback bridge (section 112, pending) is
+  now first, and the SELLING message 51h (rank 3) is the next free read.
