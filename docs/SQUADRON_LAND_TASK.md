@@ -11050,3 +11050,8 @@ stall that 5co could not attribute. That is a mechanism question, not a spread, 
 `kAiTickMovetoRetasksPlaneBound` **stays OFF**. Next: trace the planner pick for the `bruh` groups
 (which planner kind, which forced rule) and whether the image's group value for a torpedo wave
 against a LandFort group is non-zero.
+- In the IslandCapture Rookie table (`ai_shipped_forced_rules`), the matched rules are:
+  - `r8` = Cargo vs CommandBuilding 1.0 (the Marus' pick of CB2);
+  - `r15` = TorpedoBomber vs Ship 4.5, with record `+1Ch` clear.
+  No rule rates a torpedo bomber against CB2's members. So the `bruh` groups' CB2 order does not come
+  from a forced rule, and which planner assigns it is the open link.
