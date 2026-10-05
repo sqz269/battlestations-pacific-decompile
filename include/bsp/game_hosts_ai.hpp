@@ -299,6 +299,12 @@ struct GameAiSummary {
     unsigned long long close_attack_move_orders{0};  // 00E08F78 attackmove
     unsigned long long close_set_target_orders{0};   // 00E08EF8 settarget
     unsigned long long close_fallback_movetos{0};    // the no-candidate arm
+    // SHIP_AI 112: the no-candidate arm's 00A14D48 CALL 00A02020, counted both ways.
+    unsigned long long close_bridge_calls{0};
+    unsigned long long close_bridge_class_refused{0};  // 00A02052: the class gate
+    unsigned long long close_bridge_near_refused{0};   // 00A0206E: within 80 m
+    unsigned long long close_bridge_ships{0};          // 00A020E8: a ship's zone point
+    unsigned long long close_bridge_zone_moved{0};     // ON: the point moved
     unsigned long long close_candidates_scored{0};
     unsigned long long party_think_calls{0};
     unsigned long long parties_thought{0};
