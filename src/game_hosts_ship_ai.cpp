@@ -142,6 +142,11 @@ inline constexpr bool kShipAiApproachTargetLayerPushBound = true;
 // both ways. True: its 94h (StartLanding) reaches the candidate's vt+238h,
 // 0074A4C0 or 008206F0, as the transport move's 94h does. False: counted.
 inline constexpr bool kShipAiApproachLandingSweepBound = true;
+// Packet cc9_attackmove_group_hand_back, SHIP_AI_OPEN_ITEMS section 134. True:
+// 009E8852's [unit+284h] is the unit's formation group, so a kind-9 unit hands
+// its attackmove back to the director (009E88C1) only when every other member
+// is kind 9 too (009E8867..009E889C). False: no group, always hand back.
+inline constexpr bool kShipAiAttackMoveGroupHandBackBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -6478,20 +6483,56 @@ public:
         if (entity == 0u) return false;
         return owner_.units.unit_is_kind_of(static_cast<std::size_t>(entity - 1u), kind);
     }
+    // Packet cc9_attackmove_group_hand_back (section 134). 009E8852, [unit+284h]:
+    // the formation group the host keeps for entity+284h (packet cc8_ship_follow),
+    // as a one-based handle. Census both ways: how many kind-9 units have a group,
+    // and how many of those have a member that is not kind 9 (009E8892).
     std::uint32_t unit_group_0284() override {
-        // 009E8852, [unit+284h]. No AI group object exists in this process
-        // (milestone 2m: ai_groups=0), so the null arm runs and the member walk
-        // at 009E8867..009E889C is not reached.
-        owner_.record("ShipAiAttack::unit_group_0284", 0x009e8852u);
-        return 0u;
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        ++owner_.summary.attack_hand_back_asks;
+        if (g >= 0) {
+            ++owner_.summary.attack_hand_back_grouped;
+            const std::int32_t n = owner_.units.formation_member_count(g);
+            std::size_t other = static_cast<std::size_t>(-1);
+            for (std::int32_t i = 0; i < n; ++i) {
+                const std::size_t m = owner_.units.formation_member_unit(g, i);
+                if (m < owner_.units.count() && m != index_
+                    && !owner_.units.unit_is_kind_of(m, 9)) {
+                    other = m;
+                    break;
+                }
+            }
+            if (other != static_cast<std::size_t>(-1)) {
+                ++owner_.summary.attack_hand_back_mixed;
+                const GameUnitRow* u = owner_.units.unit_row(index_);
+                const GameUnitRow* o = owner_.units.unit_row(other);
+                owner_.log.notef("attackmove hand back: t=%.2f unit=%s group=%d members=%d "
+                    "first_non_kind9=%s leader=%d", owner_.capture_clock,
+                    u != nullptr ? u->name.c_str() : "?", g, n,
+                    o != nullptr ? o->name.c_str() : "?",
+                    owner_.units.formation_leader_0014(g) == index_ ? 1 : 0);
+            }
+        }
+        if (!kShipAiAttackMoveGroupHandBackBound) {
+            owner_.record("ShipAiAttack::unit_group_0284", 0x009e8852u);
+            return 0u;
+        }
+        owner_.done("ShipAiAttack::unit_group_0284", 0x009e8852u);
+        return g >= 0 ? static_cast<std::uint32_t>(g) + 1u : 0u;
     }
-    int group_member_count_04f8(std::uint32_t) override {
-        owner_.record("ShipAiAttack::group_member_count", 0x009e8861u);
-        return 0;
+    // group+4F8h (009E8861).
+    int group_member_count_04f8(std::uint32_t group) override {
+        owner_.done("ShipAiAttack::group_member_count", 0x009e8861u);
+        return group == 0u ? 0 : owner_.units.formation_member_count(
+            static_cast<std::int32_t>(group - 1u));
     }
-    std::uint32_t group_member_at_0070d060(std::uint32_t, int) override {
-        owner_.record("ShipAiAttack::group_member_at", 0x0070d060u);
-        return 0u;
+    // 0070D060(i) (009E8873): the member record's unit, one-based.
+    std::uint32_t group_member_at_0070d060(std::uint32_t group, int i) override {
+        owner_.done("ShipAiAttack::group_member_at", 0x0070d060u);
+        if (group == 0u) return 0u;
+        const std::size_t m = owner_.units.formation_member_unit(
+            static_cast<std::int32_t>(group - 1u), i);
+        return m < owner_.units.count() ? static_cast<std::uint32_t>(m) + 1u : 0u;
     }
     std::uint32_t unit_director_vtable_0114() override {
         owner_.record_slot("ShipAiAttack::unit_director", "00cfc3d0+vtable114");
@@ -12620,6 +12661,11 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai attackmove group hand back asks=%llu "
+            "grouped=%llu mixed=%llu bound=%d (009e8852..009e889c, packet "
+            "cc9_attackmove_group_hand_back)", host.summary.attack_hand_back_asks,
+            host.summary.attack_hand_back_grouped, host.summary.attack_hand_back_mixed,
+            kShipAiAttackMoveGroupHandBackBound ? 1 : 0);
         host.log.notef("summary mission ship ai approach landing sweep entries=%llu "
             "leaders=%llu candidates=%llu slow=%llu in_range=%llu messages=%llu begun=%llu "
             "launched=%llu bound=%d (009f33e2..009f35f5, 94h; packet "
