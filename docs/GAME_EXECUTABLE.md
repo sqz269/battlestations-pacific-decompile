@@ -14159,3 +14159,116 @@ two rounds. The variants are `lps`, `rtk` (back ON), `sti`, `pln` = `cfb` + `gsp
 
 **Run parameters:** as w (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
 player); a 300-frame USN01 smoke first.
+
+- **Binaries:** `local\g23_rx\build\win32\Release\bsp_game.exe` (SHA-256 prefix `616D1FAC27E7`) and
+  the anchor `local\g23_rx0` (`1B18AB0397BE`); the full hashes are in the report.
+- **Environment:** the console session was Active. The 300-frame USN01 smoke was clean. Every run
+  used below has `lost_polls=0`.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12486.1 | 45 | 1599 (1144) | 17447 | 91.50 s | 0 of 16 / 0 of 21 | 17 | Lexington-class01 3361.25 | none | 490 | `local\g23_rx_usn04.log` |
+| USN01 | 3000 | 33321.3 | 28 | 1273 (248) | 3322 | 12.90 s | 0 of 17 / 5 of 19 | 3 | ConTBD1 2447.97 | none | 515 | `local\g23_rx_usn01.log` |
+| USN04 (E2) | 9000 | 22244.7 | 85 | 2625 (1743) | 31532 | 91.50 s | 0 of 16 / 0 of 25 | 34 | Lexington-class01 5792.75 | none | 504 | `local\g23_rx_e2.log` |
+| USN02 | 9000 | 67220.2 | 1 | 5368 (343) | 4535 | 19.25 s | - | - | Kortenaer 6764.92 | **failed at 29.75 s** (as w) | 486 | `local\g23_rx_usn02.log` |
+| JM06 (smoke) | 3000 | 5994.7 | 2 | 311 (240) | 409 | 9.85 s | - | - | PlayerSub 01 0.00 | none | 470 | `local\g23_rx_jm06.log` |
+| JM08 (smoke) | 3000 | 12254.5 | 22 | 743 (432) | 3993 | 5.25 s | - | 1 | Headquarter 01 0.00 | none | 458 | `local\g23_rx_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none | 515 | `local\g23_rx_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 453 | `local\g23_rx_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 456 | `local\g23_rx_lomp06.log` |
+| LOMP10 | 3000 | 2156.6 | 2 | 182 (103) | 3423 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 482 | `local\g23_rx_lomp10.log` |
+| JM05 | 3000 | 17671.0 | 15 | 498 (64) | 341 | 5.85 s | - | - | Mogami-class 01 1522.75 | none | 531 | `local\g23_rx_jm05.log` |
+| USN12 | 3000 | 4759.8 | 5 | 219 (12) | 144 | 7.55 s | - | - | Montpelier 1499.41 | none | 474 | `local\g23_rx_usn12.log` |
+| LOMP10 (long) | 9000 | 2764.2 | 5 | 193 (107) | 3623 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 495 | `local\g23_rx_lomp10l.log` |
+| USNOS | 3000 | 45345.9 | 98 | 1392 (190) | 6179 | 5.00 s | - | 11 | NH 1497.26 | none | 508 | `local\g23_rx_usnos.log` |
+| USNOS (long) | 9000 | 50961.8 | 115 | 2134 (300) | 17161 | 5.00 s | - | 13 | NH 4492.07 | none | 518 | `local\g23_rx_usnosl.log` |
+| IJN01 | 3000 | 1380.7 | 3 | 128 (118) | 3687 | 88.45 s | - | - | A7M_1 8712.78 | none | 473 | `local\g23_rx_ijn01.log` |
+| JM05 (long) | 9000 | 19746.1 | 17 | 539 (72) | 415 | 5.85 s | - | 3 | Mogami-class 01 4566.94 | none | 537 | `local\g23_rx_jm05l.log` |
+| JM08 (long) | 36000 | 57400.4 | 46 | 2092 (770) | 5869 | 5.25 s | - | 2 | Headquarter 01 0.00 | none | 496 | `local\g23_rx_jm08l.log` |
+| USN13 (long) | 9000 | 51465.5 | 116 | 3545 (2020) | 40517 | 98.90 s | 3 of 79 / 2 of 50 | 51 | Enterprise 2777.59 | none | 544 | `local\g23_rx_usn13l.log` |
+| ESMP08 (long) | 9000 | 2729.0 | 7 | 151 (65) | 3005 | 420.32 s | 0 of 18 / 0 of 18 | 2 | Zuikaku 4599.38 | none | 493 | `local\g23_rx_esmp08l.log` |
+| USNRM01 | 9000 | 36563.8 | 156 | 1498 (923) | 49013 | 99.90 s | 49 of 83 / 127 of 178 | 104940 | West Virginia 0.00 | none | 522 | `local\g23_rx_usnrm01.log` |
+| IJN11 | 3000 | 560.0 | 2 | 81 (2) | 809 | 77.50 s | - | 2 | Zao 1497.27 | none | 505 | `local\g23_rx_ijn11.log` |
+
+**Controlled unit and party.** Under `kLocalPartyFromSceneBound` the local slot takes the scene's
+party. On every IJN row the local-player list (`game+1970h`) now holds the Japanese units, and the
+controlled unit is Japanese:
+
+| row | w (controlled, party) | x (controlled, party) |
+| --- | --- | --- |
+| JM05, JM05 long | USS Phelps, US | Mogami-class 01, Japan |
+| JM06 | Fletcher-class 08, US | PlayerSub 01, Japan |
+| JM08, JM08 long | Auilick, US | Headquarter 01, Japan |
+| IJN01 | Downes, US | A7M_1, Japan |
+| IJN11 | (no w row) | Zao, Japan (Fletch1 on the anchor) |
+| ESMP08 long | Cummings, US | Zuikaku, Japan |
+
+The US rows keep their units (Lexington-class01, ConTBD1, Kortenaer, Enterprise, HenryPT, Narwhal,
+Montpelier, NH, West Virginia).
+
+**Against w** (`pair_diff` against `g23_rw_<row>`): **fifteen of w's twenty-one rows move**
+(exit 3). **USN02, BSM01, LOMP06, LOMP10, USN12 and LOMP10 long are gameplay-identical** (exit 1).
+IJN11 moves against the anchor.
+
+Headline moves:
+- **JM08 long:** 183 -> 46. The controlled unit is `Headquarter 01`, a structure.
+- **E2:** 42 -> 85 (hull hits 135 -> 1743). **USN04:** 34 -> 45.
+- **USN13:** 0 -> 22 (`rtk` off). **USN13 long:** 14 -> 116.
+- **USNOS:** 86 -> 98. **USNOS long:** 100 -> 115.
+- **ESMP08 long:** 0 -> 7.
+- **USNRM01:** 156 deaths both; 41 rows only on each side.
+- **JM05:** 11 -> 15. **JM05 long:** 16 -> 17. **IJN01:** 5 -> 3. **JM06:** 1 -> 2.
+- **JM08:** 22 both, with six rows changed each way.
+
+### The anchor: the eight OFF, `rtk` ON
+
+`g23_rx0` is **gameplay-identical to w on all twenty-one rows** (exit 1 against `g23_rw_<row>`,
+death tables identical; JM08 long included). Nothing else that landed since w moves a row.
+
+### What moved each row
+
+Each variant was set back to its w value alone, against x, on the fourteen moved w rows (JM08 long aside) plus IJN11. That was
+three lanes, two rounds (`local\g23_lanesx.ps1`; logs `local\g23_x_<v>_<row>.log`), plus JM08 long
+for `lps` only. Deaths are x -> variant.
+
+| variant (back to w) | rows that move against x (exit 3) |
+| --- | --- |
+| `lps` | ESMP08 long (7 -> 6), JM06 (2 -> 1), JM08, JM05 (15 -> 11), IJN01 (3 -> 5), JM05 long (17 -> 16), IJN11, JM08 long (46 -> 125) |
+| `rtk` | USN04 (45 -> 71), E2, USN13 (22 -> 0), USNOS (98 -> 86), USN13 long (116 -> 6), USNOS long (115 -> 100), ESMP08 long (7 -> 0), USNRM01 (156 -> 159), USN01 (28 -> 27), JM06, JM08, JM05, IJN01 (3 -> 12), JM05 long |
+| `sti` | USN04 (45 -> 47), E2 (85 -> 50), USN13 long (116 -> 127), USNRM01 (156 -> 130), USN01 (28 -> 29) |
+| `pln` | USN13, USN13 long (116 -> 113) |
+| `oat` | IJN01 |
+| `sai` | none |
+
+**Attribution:**
+- **`lps` carries the IJN rows and ESMP08 long.** JM08 long goes 46 -> 125 with it OFF (w had 183),
+  so the row stays a knife edge.
+- **`rtk` OFF is the largest mover**, as w's leave-one-out found: USN13 22 (0 ON), USN13 long 116
+  (6 ON), USNOS +12, USNOS long +15, ESMP08 long 7 (0 ON).
+  - With it ON under x, IJN01 goes to 12 and USN04 to 71. Both interact with `sti`: w's
+    USN04 under `rtk` ON was 34.
+- **`sti` carries E2's rise** (85 -> 50 with it OFF) and USNRM01's moved rows (156 -> 130). That
+  is GUNNERY 98's retarget of the scripted Kates to the dry dock.
+- **USN04's 34 -> 45 is a two-switch interaction:** `rtk` alone gives 71 and `sti` alone 47.
+- **`pln`** (the close fallback bridge, GetSquadronPlanes and the strafe break-off) moves only
+  USN13 / USN13 long (116 -> 113). **`oat`** moves IJN01's hit records. **`sai`** (the two SHIP_AI
+  gates) moves nothing.
+
+**Prediction check:**
+- **Held:**
+  - the anchor on all twenty-one rows;
+  - `lps` attributing the IJN rows;
+  - `rtk` attributing USN13 (22), USNOS (98), USN13 long (116 against about 124) and ESMP08 long
+    (7 against about 6);
+  - `sti` moving USNRM01;
+  - BSM01, LOMP06, USN02 and USN12 identical (and LOMP10 / LOMP10 long too).
+- **Missed:**
+  - **E2 85** (predicted about 50) and **USN04 45** (about 47, a near miss by an interaction):
+    `sti` adds about 35 deaths on E2;
+  - **USNRM01** keeps 156 deaths, not about 130: `rtk` OFF and `sti` ON move it in opposite
+    directions;
+  - **JM08 long 46**: no number was predicted; it moves the most.
+- **Flipped on main during these runs (for y, main `0d4b298d7`):** `kDialogSequencerBound`,
+  `kShipAiOwnCurveRefillGateBound` and `kShipAiTargetCurveRefillBound` newly ON.
