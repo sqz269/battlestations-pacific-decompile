@@ -10841,3 +10841,5 @@ is `summary mission ship ai approach leader answers asks=`.
 shows neither record with a call: no row has a mode-4 or mode-2 approach pass against a building.
 Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when identical. The
 switch has no reach on the reference rows; it is a correctness fix.
+
+**Pairs.** OFF is `72f533d68` (`local\s29_a0_<row>.log`). ON is `pair_export --flip kShipAiApproachLeaderAnswersBound=true` (`local\s29_a135on`, SHA-256 prefix `55BE5E2878F4`, `local\s29_a1_<row>.log`). Smoke, LOMP10 and USN13 are all `pair_diff` 1, with `asks=0` and no native counts moved. **Flipped ON** as predicted.
