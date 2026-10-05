@@ -155,7 +155,8 @@ struct ShipAiSetterHost {
 // 009DA4E0 on every pass and 009E0040 clears +1CCh; the host's 009DA4E0 resets
 // the live plan blocks (nav+224h / +28Ch) and +2FCh..+2FEh. False: 009DA4E0 on
 // a mode change only, no +1CCh store, and the reset touches a copy nothing reads.
-inline constexpr bool kShipAiSetterPathResetBound = false;
+// ON by section 154.4: gameplay identical on JM08 long, USNOS, USN13 and BSM01.
+inline constexpr bool kShipAiSetterPathResetBound = true;
 
 void ship_ai_set_desired_steering_009dffb0(ShipAiControlBlock& blk, float rudder,
                                            ShipAiSetterHost& host);

@@ -12386,3 +12386,30 @@ Census line: `summary mission ship ai setter path reset resets= live= from_sette
     set.
   - Expect `pair_diff` 3 on JM08 long, USNOS and USN13, through retimed paths and RNG coupling.
   - BSM01 (no navigation orders, section 150.5 control) may be 1.
+
+### 154.4 Pairs; verdict ON (spread miss, mechanism matching)
+
+- **Runs:** OFF is `6f9d6672f` (`local\s33_off2_<row>.log`). ON is `pair_export --flip
+  kShipAiSetterPathResetBound=true` (`local\s33_pr_on`, `local\s33_on2_<row>.log`).
+- **Smoke:** `local\s33_smoke2.log`, USNOS 300, OFF. Clean.
+- **Baseline check:** OFF against section 152's ON logs is `pair_diff` 1 on USNOS and JM08 long.
+
+| row | `pair_diff` | `resets` / `live` / `from_setters` (ON) |
+| --- | --- | --- |
+| JM08 long 36000 | 1 | 45106 / 15 / 24315 |
+| USNOS 3000 | 1 | 15073 / 0 / 15003 |
+| USN13 3000 | 1 | 36947 / 0 / 36900 |
+| BSM01 3000 | 1 | 17035 / 2 / 17028 |
+
+**Reading.**
+- **The mechanism matches.** The setters now reach `009DA4E0` on every pass, against 257
+  mode-change records across ten rows before.
+- **Live resets are rare.** There are 15 on JM08 long and 2 on BSM01, and none of them moves
+  gameplay: a ship that re-enters Navigate goes through `009DE082` and the planner's goal-drift
+  revalidation anyway.
+- The `+1CCh` store moves nothing on these rows either.
+- **The predicted `pair_diff` 3 was a miss.** Every row is gameplay-identical.
+
+**Verdict: ON**, recorded as a spread miss with the mechanism matching. It is the image's rule,
+read from the listing. The kamikaze caller (`009E2365`) and the unread `009DE1D9` / `009DE253` /
+`009DFF0C` callers stay unbound.
