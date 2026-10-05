@@ -63,8 +63,10 @@ void ship_ai_set_desired_steering_009dffb0(ShipAiControlBlock& blk, float rudder
         blk.timer_360 = 0.0f;
         blk.timer_368 = 0.0f;
         blk.mode = ShipAiSteeringMode::Rudder;
-        host.on_steering_mode_change_009da4e0();
+        if (!kShipAiSetterPathResetBound) host.on_steering_mode_change_009da4e0();
     }
+    // 009DFFDC is the join: 009DFFDE calls 009DA4E0 whatever the mode was.
+    if (kShipAiSetterPathResetBound) host.on_steering_mode_change_009da4e0();
     blk.desired_rudder = clamp_unit_interval_comiss(rudder);
 }
 
@@ -74,10 +76,15 @@ void ship_ai_set_desired_heading_009e0040(ShipAiControlBlock& blk, float heading
         blk.timer_360 = 0.0f;
         blk.timer_368 = 0.0f;
         blk.mode = ShipAiSteeringMode::Heading;
-        host.on_steering_mode_change_009da4e0();
+        if (!kShipAiSetterPathResetBound) host.on_steering_mode_change_009da4e0();
     }
+    // 009E006C is the join: 009E006E calls 009DA4E0 whatever the mode was.
+    if (kShipAiSetterPathResetBound) host.on_steering_mode_change_009da4e0();
     blk.desired_heading = heading; // stored unclamped
     host.after_heading_stored_00605070(blk.desired_heading);
+    if (kShipAiSetterPathResetBound) {
+        blk.requested_direction = ShipAiThrottleDirection::Stopped; // 009E0088, +1CCh
+    }
 }
 
 // ---------------------------------------------------------------------------

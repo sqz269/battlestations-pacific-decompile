@@ -137,21 +137,34 @@ void ship_ai_set_desired_throttle_009dbf90(ShipAiControlBlock& blk, float thrott
 
 struct ShipAiSetterHost {
     virtual ~ShipAiSetterHost() = default;
-    // 009DFFE3 and 009E0069, 009DA4E0(blk) on every mode change. Body unread.
+    // 009DFFDE and 009E006E, 009DA4E0(blk), the path-plan reset (body in
+    // bsp/ship_ai_state_steps.hpp). Correction (SHIP_AI 154): both calls sit
+    // after the mode switch's join (009DFFDC / 009E006C), so the image makes
+    // them on EVERY call, not only on a mode change. kShipAiSetterPathResetBound
+    // selects the image's rule; OFF keeps the mode-change-only call.
     virtual void on_steering_mode_change_009da4e0() = 0;
     // 009E008D, 00605070(heading) after the heading is stored. Body unread.
     virtual void after_heading_stored_00605070(float heading) = 0;
 };
 
 // 009DFFB0: __thiscall(&state->owner)(float), RET 4, body 009DFFB0-009E0011.
-// When the mode is not already Rudder it clears +360h and +368h, sets the mode
-// and calls 009DA4E0; then stores the argument clamped to [-1,+1] at +1D4h.
+// When the mode is not already Rudder it clears +360h and +368h and sets the
+// mode; then (009DFFDC, the join) it calls 009DA4E0 and stores the argument
+// clamped to [-1,+1] at +1D4h.
+// Packet cc9_setter_path_reset (SHIP_AI 154). True: 009DFFB0 and 009E0040 call
+// 009DA4E0 on every pass and 009E0040 clears +1CCh; the host's 009DA4E0 resets
+// the live plan blocks (nav+224h / +28Ch) and +2FCh..+2FEh. False: 009DA4E0 on
+// a mode change only, no +1CCh store, and the reset touches a copy nothing reads.
+inline constexpr bool kShipAiSetterPathResetBound = false;
+
 void ship_ai_set_desired_steering_009dffb0(ShipAiControlBlock& blk, float rudder,
                                            ShipAiSetterHost& host);
 
 // 009E0040: __thiscall(&state->owner)(float), RET 4, body 009E0040-009E0095.
-// The same mode switch to Heading, then stores the argument unclamped at +1D8h
-// and calls 00605070 on it.
+// The same mode switch to Heading, then (009E006C, the join) 009DA4E0, the
+// argument stored unclamped at +1D8h, 00605070 on it, and +1CCh = 0 (009E0088).
+// The 009DA4E0 call on every pass and the +1CCh store are under
+// kShipAiSetterPathResetBound.
 void ship_ai_set_desired_heading_009e0040(ShipAiControlBlock& blk, float heading,
                                           ShipAiSetterHost& host);
 
