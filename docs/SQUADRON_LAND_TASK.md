@@ -9122,3 +9122,125 @@ is about 0.7 km on. The host flies the straight line. That is the likeliest caus
   One is not a function yet: `00996300`-`00996385`, `BSP_BotCondition_PointDistance_Test`
   (`__fastcall(cond)`, ends `RET` at `00996384`, INT3 at `00996385`). The names are hypotheses
   from the name strings and the bodies.
+
+## 5cm. The break-off manoeuvres bound OFF (packet `cc9_strafe_breakoff`, cc9-lua33, 2026-10-04)
+
+### The two reads 5cl left open
+
+- **The start gate `009B9680` is never asked on this path.** Its body:
+  - it answers 1 when `+400h - unit+C64h < 0` and `|unit+C68h| < 20 deg` (`[00CE398C]`);
+  - otherwise it levels the wings (`+2C8h` = 0, mode 1) and pulls `+2A0h` =
+    `-(|roll| - 60 deg) / 50 deg` (`[00D03DD0]`, `[00D20330]`), and answers 0.
+
+  But `009BC030` stores `+404h` = 1 after the base constructor, and `009BA020` asks the gate only
+  while `+404h` is 0. So a tightturn from goaway starts at once. The gate serves the other users
+  of the base `009BAFC0` (`009BB380`, unread).
+- **The base constructor `009BAFC0`** (listing `009BB018`-`009BB12B`) sets tightturn's pitch
+  reference.
+  - With `f` = altitude (`unit+100h`) - 250 (`[00CF8850]`):
+    - when `f <= 0`, `+400h` = desc `+1ECh`;
+    - otherwise `r = (f / 10) / speed` (unit `vtable[38h]`), and `+400h` = `-acos(r)`. It is 0
+      for `r > 1` and -pi for `r < -1`.
+  - `00BF9940` is taken as `acos`, because `math_acos` `00A617C0` calls it and the clamps match
+    acos's ends (provisional).
+  - Then `+3FCh` = `max(+400h, pitch)` and `+404h` = pitch > `+400h`. The tick's yaw input reads
+    `+3FCh`.
+- **A hit during a manoeuvre still reaches the strafe task.** The walker `00999AA0` calls each
+  task's `vt[2Ch]` from the head down until one answers true. Both manoeuvres' slot is
+  `007B4110`, `XOR AL,AL / RET 4`, so the strafe task's `009CC400` zeroes `+44h` underneath.
+  `+44h` does not advance during the manoeuvre, because `009CCED0` runs only while the strafe task
+  is the head. So a plane hit during its manoeuvre opens goaway's gate again at its first goaway
+  tick after the retire.
+- **The enter's push differs from the tick's** (listing `009CB964`-`009CBB19`):
+  - flikflak is chosen only when also `altitude < approach+40h - 50` (`[00CE3938]`);
+  - the tightturn condition is built inline (`007B5C70`, then vtable `00D05870` and the point);
+  - **it does not set `+44h` = 25**.
+
+### What is bound, behind `kStrafeBreakoffBound` (`include/bsp/strafe_task.hpp`, committed OFF)
+
+- Pure functions in `src/strafe_task.cpp`:
+  - `tight_turn_pitch_ref_009bafc0`;
+  - `tight_turn_tick_009ba020`: bank `+-pi/2`; pitch `clamp(2 - |wrap(roll - bank)| / 10 deg, 0, 1)`
+    direct; yaw `00419010(-2 deg, 0, 2 deg, 1, ref - pitch) * side` direct;
+  - `point_off_nose_00996510`;
+  - `point_distance_reached_00996300`.
+- In the units host's strafe arm (`src/game_hosts_units.cpp`):
+  - the push from goaway's enter (the `U(10, 16)` window, drawn only ON) and from its tick;
+  - the draws `r`, side, distance, flikflak side and timer, all on the keyed stream;
+  - the two manoeuvre ticks with their plan writes (task offsets minus 4), the end conditions and
+    the retire.
+- Census line: `summary mission strafe breakoff bound tightturns flikflaks manoeuvre_ticks`.
+  The goaway trace adds `push_enter`, `push_tick` and `manoeuvre_done`.
+- **SUBSTITUTIONS, labelled:**
+  - `00999F50`'s front push is one manoeuvre slot per plane. The strafe arm (`009CCED0`, the rule
+    and the state tick) is suspended while it runs, as `0099ACD0` ticks only the head.
+  - A strafe re-install, or a class change, drops a running manoeuvre. `0099A4C0` would ask the
+    head's `vt[40h]` `0099C2C0`, which is not read.
+  - `009BA1C8`'s `+2E4h &= ~4` is not modelled.
+- OFF is byte-identical in behaviour: every new draw and write is under the switch. The census
+  line reads `bound=0` with zeros.
+
+### Predictions, written before any ON run (pairs on the OFF commit)
+
+- **ESMP08 14200/14000: moved.** OFF has 43 gate openings, so ON has at least that many pushes.
+  - **Mechanism:**
+    - `tightturns + flikflaks` is at least 36 tick pushes plus the enter pushes. It rises if planes
+      live longer and are hit again;
+    - on the tick pushes, tightturns are about 40% (`1 - E[+18h]`, with `+18h` = `U(0.3, 0.9)` per
+      plane);
+    - every push is followed by `manoeuvre_done` or by the plane's death;
+    - a flikflak ends after 0.55-0.85 km of horizontal travel, about 4-7 s;
+    - a tightturn ends when the target is 45 degrees off the nose, about 1-3 s at the TurnRoll
+      rates.
+  - **Hypothesis to test, not a prediction to hit:** fewer of the 21 goaway episodes end in a
+    death than OFF's 17. The plane spends the seconds after a hit turning or jinking instead of
+    flying a straight line under the carrier group's AA. If the deaths do not fall, the AA is
+    simply too dense for the break-off to matter, and the switch flips on the mechanism alone.
+- **ESMP08 9200/9000, USNOS 3200/3000, USN02 3200/3000 (controls):** pair_diff 0 or 1. ESMP08
+  short and USNOS never enter goaway (`goaway=0` in 5ck.2's ON logs), and USN02 has no strafe.
+
+### 5cm.1 Measured (OFF `local\l33_off`, SHA-256 `68CB1B2C2040`; ON `local\l33_on`, `38CCABFD6904`; both from `a14bb33f1`), and the verdict: **flip ON**
+
+Run in the launch form of reference v, with `BSP_STRAFE_GOAWAY_TRACE=1` on both sides
+(`local\l33_runs.ps1 -Tag b`). The trace leaves gameplay unchanged: the OFF log against 5cl's
+trace run exits 1. The ON smoke (USN01, 300 frames) finished cleanly.
+
+| row | pair_diff | notes |
+| --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 23 tightturns, 34 flikflaks, 1477 manoeuvre ticks |
+| ESMP08 9200/9000 | 1 | no goaway |
+| USNOS 3200/3000 | 1 | strafes, no goaway |
+| USN02 3200/3000 | 1 | no strafe |
+
+**The mechanism, measured against the reading** (`local\l33_mv_analyze.py`):
+- **Pushes.** There are 57: 52 from the tick and 5 from the enter. 23 of 57 are tightturns,
+  which is 40%, the predicted `1 - E[+18h]`.
+- **The end conditions.**
+  - All 23 tightturns end at their condition after **0.09-1.40 s (median 0.10 s, two
+    ticks)**. This is the image's own condition, not a host artefact. A plane in goaway flies away
+    from the target, so the aim point is already behind it (`z < 0`). `00996510` answers at once,
+    and the tightturn holds the knife-edge bank for a tick or two. The prediction of 1-3 s
+    assumed the target ahead and was wrong.
+  - 21 flikflaks end at their distance after 0.10-15.09 s (median 1.90 s), and 10 end with the
+    plane's death.
+  - 3 pushes were overwritten. Where the enter pushes, the state tick of the same think
+    (`009CD1C7`) sees `+44h` still below 1 and pushes again: in the image a second task lands on
+    top of the first. **SUBSTITUTION, labelled:** the host keeps the second only.
+- **Census artefact.** `evasive_gaps` falls from 43 to 32. That counter takes rising edges, and
+  the edge state is held across the suspension. It is not a change in the gate.
+
+**The hypothesis, tested.** The goaway episodes that end in a death fall from 17 of 21 to 12 of
+20. The total does not move (46 deaths on both sides), but the strafers live longer:
+- across the 21 Corsair death rows, the median death is 5.6 s later (all 43 changed rows: median
+  +0.5 s; 18 later and 16 earlier by more than 1 s);
+- Zuikaku takes 89 -> 1269 damage, and Zuiho sinks 8.7 s earlier (548.7 -> 540.0 s);
+- hits rise 6462 -> 7374, damage 14996 -> 17044, torpedo releases 4/33 -> 5/27 and dive
+  releases 0/37 -> 3/36.
+
+So the break-off protects the strafers in the image's sense: the flikflak's climbing jink keeps
+them alive after a hit. It does not change how many die by the end of the row, because the
+carrier group's AA still gets them on their next pass.
+
+The mechanism matches, and the controls are exit 1, so the switch flips ON
+(`kStrafeBreakoffBound = true`). Corrected prediction: a tightturn from goaway lasts one or two
+ticks.
