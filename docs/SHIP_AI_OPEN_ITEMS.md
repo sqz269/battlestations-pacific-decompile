@@ -12533,3 +12533,39 @@ command is open. That host is the commands lane's.
   - `009DE1B0` (`009DE1D9`), `009DE210` (`009DE253`) and `009DFEE0` (`009DFF0C`) have no rel32
     caller and no absolute reference in the PE on disk (`s32_refs.py`). Every live `009DA4E0`
     caller is now covered.
+### 156.2 After the bomb-velocity fix (main `3b466d2aa`): run 1 of 3 (`local\s33_c1.log`)
+
+**The setup.** `agent/cc9-ships33` at `ac51fbc3d` (main merged), USN01 36000 frames, r3's orders,
+`--trajectory-csv`.
+
+**Phase 2 now progresses.**
+- The scout hits Convoy1 and `luaConLeadHit` fires.
+- The AI attack planes sink five convoy ships:
+  - Convoy1 at 173.06 s (ScoutDauntless);
+  - Convoy3 at 184.46 s (ConTBD2);
+  - Convoy6 at 185.81 s (ConTBD3|.-3);
+  - Convoy2 at 212.41 s (ConSBD1|.-4);
+  - Convoy5 at 217.81 s (ConSBD3|.-3).
+
+**Convoy4 survives the run.**
+- It is dead in the water at (-2985, -1543) from about 300 s.
+- Its attacker, ConSBD2, missed with two bombs (predicted impacts (-3168, -964) and (-3135, -1099)).
+- No plane re-attacks, and no ship comes near it.
+
+**So phase 3 never starts.**
+- `luaPh2FadeOut` needs every convoy ship dead, and `luaMoveToPh3` never runs.
+- Every `select` of the cruisers is refused (`00645060`, `role=0`). The CVGroup ships are
+  `SetRoleAvailable(..., PLAYER_AI)` until `luaMoveToPh3` (lines 326 and 797-803).
+- The controlled unit in phase 2 is ConTBD1, which logs `IsKindOf(18h)=0`. So `005FAAE0`'s
+  plane arm would not fire for it either. Phase 2 needs a flown plane.
+
+**Unchanged:** SaltLakeCity and Northampton survive. Coastal Guns 02 and 03 die to SaltLakeCity at
+619.47 s and 619.92 s.
+
+**Runs 2-3 are held:** the runs are deterministic, and they would stall at the same point.
+
+**The plane `attack` line** (156; the lead's decision: not built, recorded for later).
+- Syntax: `<frame> attack <unit>`, with no target, for a controlled `IsKindOf(18h)` squadron.
+- One units-host call would set all three host copies of `ctl+370h` (`st_` / `db_` /
+  `torpedo_attack_mode_370`) to 2, as `007F0068` does for message `BCh` with `+20h` = 1.
+- The WarningManager report would be recorded, not modelled.
