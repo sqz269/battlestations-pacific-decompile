@@ -9898,3 +9898,83 @@ About 62 s neutral in all, and 15 path thinks, 7 of them due.
     the neutral windows), not from a per-think diagnostic. `BSP_CAPTURE_DIAG=1` would print it.
   - The two neutral windows come from the host's capture binding (`cc9_command_building_capture_bind`).
   - That the HQ's `+78Ch` points at a SpawnPoint is not read; the verdict does not need it.
+
+## 122. The local party on IJN rows: `00A0F87E` and the host's constant 0 (packet `cc9_target_weight_local_party`, `kAiTargetWeightLocalPartyBound`, cc9-ships28, 2026-10-05)
+
+### 122.1 The image
+
+`00A0F810` (the close target weight), `disasm-raw 00A0F860..00A0F8C0`:
+```
+00A0F86D  MOV EAX,[00E188A8]
+00A0F875  MOV ECX,[EAX+18CCh]        ; player slot 0's record (not indexed by +18ECh)
+00A0F87B  MOV EDX,[ECX+28h]          ; its party
+00A0F87E  CMP EDX,[EBP+54h]          ; the attacker's party
+00A0F8A2  JNE 00A0F8AC
+00A0F8A4  MOV EAX,[EAX+21A4h]        ; equal: slot 0's objective set
+00A0F8AC  MOV EAX,[EAX+21B4h]        ; otherwise: slot 4's
+00A0F8B5  CALL 008DDF90              ; then x10 at 00A0F8C6 on a hit
+```
+So the compared value is **player slot 0's party**, the party of the human player in single
+player. It is not a constant.
+
+### 122.2 What the host has, and what it uses
+
+The host already knows that party. `ai_publish_scene_slot_parties` fills `g_scene_slot_parties`
+from the scene, and `slot_team(0)` answers it. The `ai party gate` line prints it on every run.
+Reference W (cc9-gunnery23 `local\g23_rw_<row>.log`):
+
+| row | `local_team` | `slot_teams` |
+| --- | --- | --- |
+| JM05, JM05 long, JM06, JM08 | 1 | 1,1,0,1,0,1,0,1 |
+| IJN01 | 1 | 1,0,0,0,0,0,0,0 |
+| USN13, USNOS long (and the US rows) | 0 | all 0 |
+
+But **`src/game_hosts_ai.cpp`'s target weight uses `const int local_party = 0`**. On the IJN rows
+it therefore asks the wrong set for both sides. US attackers (+54h 0) ask slot 0's set, where
+the image asks slot 4's. Japanese attackers (+54h 1) ask slot 4's, where the image asks slot 0's.
+
+**Other host constants standing in for the same party** (in other lanes; recorded, not touched):
+
+| site | host | image read (as the host's comment cites it) | lane |
+| --- | --- | --- | --- |
+| `include/bsp/game_hosts_world.hpp` `kLocalPlayerParty = 0` | the local recon triple / unit lists (`004C3CB0`), the sensor-pass coverage test | `[game+18CCh + [game+18ECh]*4]+28h` | world / gunnery |
+| `src/game_hosts_hud.cpp` `selectable_inputs_00645060` | `team_matches_owner = side == 0` | `006450B9: [unit+54h] == [[game+18CCh]+28h]` | HUD |
+| `src/game_hosts_ready.cpp` `slot_party()` returns 0 | `mission_load_hosts.cpp` `004C38B4` (party indexes a frame) | `[slot record]+28h` | mission load |
+| `src/game_hosts_lua.cpp` `objective_slot_mask` | the party arm always answers slot 0 | `008CDEF2`: every active slot whose `+28h` matches | lua |
+
+The objective sets themselves are keyed by slot, not party. Slot 0 is the local player on every
+row, so 118's `008DDF90` branch (indexed by `[game+18ECh]` = 0) is right. Only the
+party-to-slot comparisons are wrong on the IJN rows.
+
+**A related known item, not this packet:** on every IJN reference row the host's controlled unit
+is a US ship (`controlled unit: ... party 0`: JM05 USS Phelps, IJN01 Downes, JM08 Auilick,
+JM06 Fletcher-class 08). docs/CONTROLLED_UNIT.md leaves this open as "the JM05 USS Phelps
+question".
+
+### 122.3 The binding (prepared; `src/game_hosts_ai.cpp` is on loan to cc9-lua34)
+
+- The edit is `local\s28_edit_ai_122.py`; run it as `python s28_edit_ai_122.py <root>`. It
+  anchors on exact text and refuses a missing or duplicate anchor.
+- It adds `kAiTargetWeightLocalPartyBound`, committed OFF. ON, `local_party = slot_team(0)`.
+- It adds a census line, counted both ways:
+  `summary mission ai target weight local party value= same_party_attackers= bound=`.
+- Both switch values compiled with MSVC Win32 on copies (`local\s28_ai\`). The only warnings
+  are the existing C4702 lines in the capture think.
+
+### 122.4 Predictions (written before any run)
+
+- **US rows** (`local_team` 0): the value is 0 both ways, so exit 0 (USN13 as the control).
+- **IJN rows.** The fix swaps which set each side asks.
+  - Slot 4's set is empty in this process: the host's objective mask only fills slot 0.
+  - So US attackers' `objective_hits` can only fall. They are 0 on every reference W row today.
+  - Japanese attackers start asking slot 0's set, which holds the IJN player's objective units.
+    Those are mostly US targets: JM06 `Ambush` = 3 US cargo ships, JM08 `Missouri` +
+    `landingships` = 12 US ships.
+  - A hit needs a Japanese attacker under a brain. The party gate gives the local side's groups
+    no brain (NONCONTROL), so **`same_party_attackers` is expected to be 0 and the IJN pairs
+    gameplay-identical (exit 0 or 1)**.
+  - If `same_party_attackers` > 0 on JM06, `objective_hits` > 0 there and the Japanese AI retargets
+    onto the cargo ships (exit 3). Explain any death move from the per-entity table.
+- **Rows to pair:** JM06, JM08, JM05, IJN01, with USN13 as the US control.
+- **Verdict rule:** flip ON when the value equals `local_team` on every row and every hit is a
+  same-party attacker on a slot-0 objective unit.
