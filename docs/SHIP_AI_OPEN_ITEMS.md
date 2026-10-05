@@ -10068,3 +10068,101 @@ Covered by earlier packets, and not listed again:
    into a per-frame value.
 3. The three "to check" rows are bookkeeping. Check each site against the existing
    reconstruction before ranking it.
+
+## 125. The local player's party and the slot parties: one source (packet `cc9_local_party_source`, `kLocalPartyFromSceneBound`, cc9-ships28, 2026-10-05)
+
+The lead's sweep, after section 122. It is read-only so far; the edits are prepared per file.
+
+### 125.1 Where the image gets the parties
+
+- **The slot records.** `004C6890 BSP_Game_SelectSceneRecord` copies the scene's
+  `Multiplay.PlayerN` side blocks into the eight `0x118` records at `game+1008h`. `game+18CCh..18E8h`
+  point at them (`004BB160`). Record `+28h` is the block's `Party` and `+24h` its `Race`
+  (docs/SCENE_RECORD_SIDE_BLOCKS.md, docs/MISSION_LOAD_PATH.md). `004BB440` copies slot 0's party
+  (`game+1030h`) into the live participant. So the local player's party is **side block 0's
+  Party, the scene's `Player1`**. The local slot is 0 in single player (section 52's
+  `004DFD77` read, and `[game+18ECh]` = 0).
+- **The only rewrite is session-only.** `004BC890 BSP_Game_SetGameMode` rewrites every slot's
+  `+28h` and the record's side blocks: mode 7 gives all of them `record+98Ch`; any other mode
+  gives slots 0-3 party 0 and slots 4-7 party 1 (`004BC8D9..004BC99F`, `004BC9A9..`). But
+  `004BC8A1 CMP [ECX+1FE4h],EAX / JE 004BCA4C` skips all of it when `game+1FE4h` = 0, the
+  single-player value. A displacement scan of `.text` for `1FE4h` finds 124 sites, and every
+  one checked is a `CMP`. No literal store was found: the writer of `game+1FE4h` is unidentified,
+  and "0 in single player" rests on the earlier packets' reading.
+- **The readers.**
+  - `009FFD60` (`009FFD60..009FFD6F`): `[[00E188A8]+18CCh + slot*4]+28h`, a brain's team.
+  - `009FFD20` (`009FFD20..009FFD5C`): a unit whose `+180h` <= 7 keeps it. Otherwise, in single
+    player, it gets slot 0 when `unit+54h == [[game+18CCh + [game+18ECh]*4]+28h]` and slot 4
+    when not.
+  - `00A0F87E`: section 122.
+  - `006450B9`: the selectable test.
+  - `004C3CB0` / `008073C0`: the local triple, and through it the initial controlled unit
+    (docs/CONTROLLED_UNIT.md, "The own triple's order").
+
+**So the host's publication is already the image's rule.** `game_hosts_mission.cpp` publishes the
+eight Party ordinals from the scene's `Multiplay` block (`ai_publish_scene_slot_parties`). The
+party gate prints them: JM05, JM06 and JM08 `1,1,0,1,0,1,0,1`, IJN01 `1,0,0,0,0,0,0,0`, the US rows
+all 0. **On USN13 slot 4's team is Allied in the image too.** `usn_13_truk.scn` authors all
+eight `Player1..8` as `Party = Allied`, and in single player nothing rewrites them. cc9-lua34's
+"slot-4 brain plans the Japanese groups with team 0" is therefore the image's rule as read, not a
+host error. It is not play-validated, and it depends on the unidentified `1FE4h` writer above.
+
+### 125.2 The host constants standing in for the local party
+
+| # | site | host value | image read | lane | effect on the IJN rows |
+| --- | --- | --- | --- | --- | --- |
+| a | `game_hosts_world.cpp` `kLocalPlayerParty` (`004C3CB0` local triple; `00807995` latch clear) | 0 | `[[game+18CCh+[18ECh]*4]+28h]` | world | **the local unit lists and the initial controlled unit come from the Allied side**: JM05 USS Phelps, IJN01 Downes, JM08 Auilick, JM06 Fletcher-class 08 (the "USS Phelps question") |
+| b | `game_hosts_hud.cpp` `selectable_inputs_00645060` `side == 0` | 0 | `006450B9` | HUD | US units are the selectable ones |
+| c | `game_hosts_ready.cpp` `slot_party()` | 0 | `[slot]+28h` (`004DFCF5`'s menu record) | mission load | none today: `select_menu_record` answers -1 |
+| d | `game_hosts_lua.cpp` `objective_slot_mask` party arm | slot 0 always | `008CDEF2`: every active slot whose `+28h` matches | lua | open. In single player every copied block has `+8h` = 1, and whether `+9h` is clear is unread, so the mask could select slots 0,1,3,5,7 on an IJN row. Read `slot+9h` before editing |
+| e | `game_hosts_ai.cpp` target weight `local_party` (section 122) | 0 | `00A0F87E` | AI | the two sides ask each other's objective sets |
+| f | `game_hosts_gunnery.cpp` `KillBinding::local_player_side` | -1 | `0091BDD8` (kill credit's local side) | gunnery / scoring | friendly-loss scoring only. Listed, not edited |
+| g | `game_hosts_ship_ai.cpp` capture flip `slot = side` (`006F70E6..006F71F5`) | slot 0 for side 0, slot 1 for side 1 | in single player, a slot record whose Party equals the side | ships | the flip's slot (`+528h` first slot, the retake test) only, not the party. JM06's side 0 would be slot 2. Listed for this lane |
+
+The AI party gate (`kAiPartyGateUnforcedBound`, `slot_team()`) already reads the published table,
+so it needs nothing.
+
+### 125.3 The single switch (prepared, `local\s28_edit_localparty_125.py`)
+
+`kLocalPartyFromSceneBound` lives in `include/bsp/game_hosts_ai.hpp`, committed OFF, with two
+helpers:
+- `scene_slot_party(slot, fallback)`: the published ordinal, or `fallback` when unpublished,
+  unauthored or out of range;
+- `local_player_party()`: `scene_slot_party(0, 0)` while the switch is ON, else 0.
+
+The readers follow. Each part is one file, so each can go in under its own loan:
+
+| part | file | change |
+| --- | --- | --- |
+| `ai_hpp` | `include/bsp/game_hosts_ai.hpp` | the switch and the two helpers (must land first) |
+| `ai_cpp` | `src/game_hosts_ai.cpp` | `scene_slot_party`'s body; (e) reads `local_player_party()`. This supersedes section 122's `s28_edit_ai_122.py`, which is not to be applied |
+| `world` | `src/game_hosts_world.cpp` | (a), both uses |
+| `hud` | `src/game_hosts_hud.cpp` | (b) |
+| `ready` | `src/game_hosts_ready.cpp` | (c) |
+
+All five parts were applied to copies (`local\s28_lp\`) and compiled with MSVC Win32 for both
+values of the switch: four translation units, exit 0. (d) waits for its read. (f) and (g) are
+recorded, not edited.
+
+### 125.4 Predictions (written before any run)
+
+- **US rows** (Player1 Allied: USN01, USN02, USN04, E2, USN12, USN13, USNOS, BSM01, LOMP06,
+  LOMP10): `local_player_party()` = 0 both ways, so exit 0. **Controls: USN13 and USN04.**
+- **IJN rows** (JM05, JM06, JM08, IJN01; IJN11 too): `local_player_party()` = 1. **Exit 3 on every
+  one**:
+  - The initial controlled unit becomes the first Japanese unit of the lowest own class bucket
+    present. The OFF picks are JM05 USS Phelps, IJN01 Downes, JM08 Auilick and JM06
+    Fletcher-class 08. The ON names are not predicted.
+  - The previously controlled US ship is no longer the idle player's, so its AI runs. The
+    Japanese pick goes idle.
+  - The local unit lists, the HUD's selectable set and markers switch sides.
+  - (e) swaps the objective sets as section 122 says. `objective_hits` stays 0 unless a
+    Japanese attacker is planned.
+- **Per-row checks:**
+  - the `controlled unit:` line names a `party 1` unit;
+  - the party gate line is unchanged;
+  - deaths move only through the swapped controlled pair. Explain each moved death row from the
+    per-entity table, with the clock offset subtracted.
+- **Verdict rule:** flip when every IJN row's controlled unit is Japanese, the US controls hold,
+  and every moved death traces to the controlled-unit swap or (e). **A US unit staying
+  controlled on an IJN row is a mechanism failure.**
