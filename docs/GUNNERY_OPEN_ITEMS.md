@@ -10830,3 +10830,62 @@ flyabove.
 - That is `dive_bomb_rounds_remaining` (the rack census `rack_ammo` / `rack_single_count`) and the live ordnance mask
   (`kRackLiveOrdnanceMaskBound`).
 - Both are in the planes and racks lane (`src/game_hosts_units.cpp`). **Routed to the lead / cc9-lua45**, with this log.
+
+## 150. The dive handover attitude is the image's own completion rule (147.2 item 2; cc9-gunnery32, 2026-10-06, read only)
+
+143.2 found the SBD leader entering `aimdive` at -1.18 rad live pitch, against a turndown "command" of -0.56. Three
+pieces were read against the image.
+
+**The turndown's completion test `009C7EA0` (read whole, `009C7EA0-009C7EFB`)** is the handover point:
+- `009C7ED0` / `009C7ED8` JA: done when `-1.3 > pitch` (`00D1F98C` = `bf a6 66 66` = -1.3f);
+- otherwise `009C7EDD` / `009C7EE5` JBE and `009C7EEA` JA: done when `-1.0 > pitch` (`00D7A260`) **and** |bank|, folded
+  at `009C7EAE..009C7ECC`, is above 135 degrees (`00D20E80` = `40 16 cb e4` = 2.3562f).
+- `dive_bomb_turndown_complete_009c7ea0` (`src/dive_bomb_task.cpp`) is the same predicate, written as its negation.
+
+So the image hands a still-inverted aircraft to `aimdive` anywhere between -1.0 and -1.3 rad of pitch. The trace's
+-1.18 sits inside that window; it is the rule, not a fault.
+
+**The turndown tick `009C44F0`** (host `dive_bomb_turndown_tick_009c44f0`) writes no attitude target once latched:
+- `009C46C9-009C4736` releases the roll and writes the pitch **slot** `+29Ch` = `interp(30 deg -> 0, 3 deg -> 1,
+  angle to inverted)`, a stick pull of 0..1 while inverted, with `+2D0h` = 0.
+- Its unlatched arm writes `+29Ch` = 0 below 20 degrees of pitch, or `+2BCh` = 0 with mode 2 above.
+- No -0.56 is written anywhere in the tick. The -0.5585 that 143.2 quotes as "the turndown's own command" is not an
+  input of the pull; it is a leftover field in the trace line.
+
+**The pitch-mode gate `0099E3BF`:** `MOV ECX,[ESI+2D0h]` / `TEST ECX,ECX` / `JNE 0099E490`, read in this packet's
+listing. It matches the host's `if (unit_.plan_state.pitch_mode_2d0 != 0)` (`src/game_hosts_units.cpp`, PlanControls'
+pitch arm). With mode 0 the pull reaches the elevator unaltered, as DIVE_BOMB_TASK "The pitch-arm gate" records.
+
+**Verdict: faithful; nothing to bind.** The handover attitude is the image's. 143.2's along-track error, born after the
+handover, belongs to `aimdive`'s steering (`009C5C9F`, `dive_bomb_aimdive_steer_009c5c9f`): its job is to turn a
+68-72 degree dive onto a 45-degree sight line. That law is the place to look next; it is not re-read here.
+
+## 151. The depth charge keeps its horizontal speed in the water, as the image does (147.2 item 5; cc9-gunnery32, 2026-10-06, read only)
+
+The question from 142 and 147.2: a sinking charge still moves 0.6 m/s horizontally at -14.5 m. Does the image keep the
+horizontal speed after water entry, or zero or damp it?
+
+**The water entry `006FD660` keeps the velocity.** Read `006FD660..006FD743`:
+- `006FD686` takes `|v|` (`0042B2F0` on `record+8`).
+- `006FD699` / `006FD69D` JA: break-up when `|v|` > class `+ECh`.
+- `006FD6A3..006FD6B2`: break-up when `vy` < -class `+F0h` (FCHS, then JA).
+- Otherwise `006FD6BF` calls `006E6450`, which sets the water byte and keeps the velocity (142's read). Nothing in `006FD660` writes a`n  velocity component.
+- The tail from `006FD6C4` is an effect lookup (`00440490`, `00868420`) that sets `[effect+9]`.
+
+**The in-water advance `006FCD20` drags all three axes by the same `k`.** Read `006FCD28..006FCDB7`:
+- `k = -record+468h` (dragvert, FCHS at `006FCD2F`).
+- `+318h += k*vx*dt`, `+31Ch += (k*vy - 9.81)*dt` (`006FCD5F` FSUB double `00CF9058`), `+320h += k*vz*dt`. `dt` is the
+  argument at `[ESP+40h]`.
+- `+46Ch` (dragside in the save table `006FCC50`) is not read in the advance.
+
+So the horizontal speed decays as `exp(-k t)` with the vertical drag constant (`9.81 / DiveSpeed * U(0.9, 1.1)`, 142).
+It is never zeroed.
+
+**The host is the same law.** `bsp::depth_charge_dive_velocity` (`src/bomb_torpedo_tick.cpp`) is component for component
+`v += (-k v - (0, 9.81, 0)) dt`, called from `depth_charge_advance_006fcd20` (`src/game_hosts_gunnery.cpp`), with the
+activate's `k`.
+
+**Verdict: faithful; nothing to bind.** A 0.6 m/s residual at -14.5 m is the image's own decay. 142's early landscape
+impacts therefore cannot be blamed on the drift: a 0.4 m, near-vertical step that reports a crossing 40 m below itself
+(`from y -14.56 to -14.94, point y -53.01`) is the segment query's answer. That stays with the scene-contents lane
+(`00ADEB80` / the slot-3Ch walk), as 142 routed it.
