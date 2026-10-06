@@ -15576,7 +15576,7 @@ Launch form: reference AD (`local\s40_rows.ps1`). Logs: `local\s40_<prefix>_<row
 | `s40_on3_osxl`, 48000, idle | none | **Fails at 1376.32 s:** Enterprise is sunk by `Ada3` at 1368.76 s |
 | `s40_f1_osf`, 24000 | `s40_os_f1.txt`: F2G (810) x3 from Enterprise at frames 850 / 870 on `plane #1.5` / `#1.6` | Both launches apply (slots 1 and 2). `plane #1.6` is shot down (Dead 315.00 s). `#1.5` goes back into stock (Dead 564.14 s). Wave 1 is empty at 564 s |
 | `s40_f2_osf2`, 36000 | f1 plus F2G x3 at frames 11320-11360 on `#4.4` / `#4.5` / `#4.6` | Fails at 1371.36 s, again Enterprise by Ada3. Two of the F2G flights are shot down by the Judys they attack |
-| `s40_f3_osf3`, 40000 | f2 plus `300 moveto Enterprise 12500 -4000` | Wave 1 is empty at 335.09 s and wave 2 spawns at 336.5 s. `#4.6` is shot down at 783.98 s, and the leaders of `#4.4` / `#4.5` go back into stock at 643-665 s. No troop transport dies and no failure occurs, but **phase 1 never ends**: the six remaining members of `#4.4` / `#4.5` circle Airfield3 until 2000 s |
+| `s40_f3_osf3`, 40000 | f2 plus `300 moveto Enterprise 12500 -4000` | Wave 1 is empty at 335.09 s and wave 2 spawns at 336.5 s. `#4.6` is shot down at 783.98 s, and the leaders of `#4.4` / `#4.5` go back into stock at 643-665 s. TroopTrans1, 2 and 4 die (146.50, 445.21, 455.91 s; three of six remain), no failure, but **phase 1 never ends** (CORRECTED: an earlier draft said no transport died; its grep missed the digit): the six remaining members of `#4.4` / `#4.5` circle Airfield3 until 2000 s |
 
 ### Why Enterprise needs a player order
 
@@ -15618,6 +15618,8 @@ ends, unless the F2Gs kill those members.
 - **Phase 2 fails at 2273.14 s.** `Takao1` sinks Enterprise at 2268.54 s, from 1726 m. That follows
   `luaMoveToPh2`'s `NavigatorAttackMove(Mission.InitTakao[1], Mission.BigE)` (1624), with Enterprise
   holding at (12500, -4000).
+- Troop transports: 1, 2 and 4 die in phase 1 (as in f3), and 5 and 6 die at 1782.36 / 1839.92 s
+  in phase 2. Only TroopTrans3 is left, one loss from the line-985 failure.
 - No mission completion, so no exec-guard line is expected.
 
 **What made phase 1 pass.**
@@ -15628,3 +15630,24 @@ ends, unless the F2Gs kill those members.
 **Next for phase 2:**
 - keep Enterprise away from Takao1's attack;
 - the convoy and secondary objectives (1018 onward).
+
+### 202.2 Into phase 2 (cc9-ships40, 2026-10-06)
+
+`s40_f6_osf6` (60000 frames, `s40_os_f6.txt`) is f5 plus `27950 moveto Enterprise 16000 -4500` and AD2
+(339) / BTD (331) strikes at Takao1 from 28000.
+- **All five strike lines are refused with "no such slot".** Every Enterprise slot still holds a
+  launched squadron in state 3.
+  - The F2G flights sent at wave 2 are alive and have not landed. A slot comes back only through the
+    stock return on the squadron's last plane (`006C5950`), or when the squadron dies.
+- **Takao1 dies at 2284.25 s.** The killer was not read.
+- **Enterprise is sunk at 2401.27 s by `Shima6`, from 3924 m,** so the mission fails at 2401.97 s.
+- **Phase 2 primaries** (us_osumi.lua 1104-1205):
+  - primary 2 captures three JapHQs (`capCount == 3`);
+  - primary 3 sinks Shimotsuke;
+  - primary 4 clears the Blockade;
+  - after that come the reinforcement carriers and FinalTrgs.
+- **What the next run needs:**
+  - a free Enterprise slot (recall the F2G squadrons with `order <base> <slot> 2|3`, or let them land and
+    stow);
+  - Enterprise kept clear of both Japanese groups;
+  - a guard on TroopTrans3, which is the last transport.
