@@ -11795,3 +11795,37 @@ mission calls them.
   USN13: phase 3, if it is reached). No slot refills on these rows (`refills_3_4_to_5=0` in
   `l38_d1`), so they are gameplay-identical (exit 1).
 - **Every other row:** identical apart from the new summary line.
+
+### 5ds.1 Measured (`l39_a0` against `l39_a1`, commit `49c42034a`): **ON** (cc9-lua39, 2026-10-05)
+
+Both sides were exported from `49c42034a` (`a0` SHA-256 `299B1C4E1DAA`, `a1` `94F0F772C22C`) and run
+with the l38 launch lines (`local\l39_queue.ps1`; `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`). The console session was Active, and every log ends in the final COM release.
+
+| row | exit | countdown (ON) | |
+| --- | --- | --- | --- |
+| USN02 | 1 | none | control |
+| JM05 | 1 | none | |
+| JM08 | 1 | `Countdown(..., 180, "SpawnHoshoFleet")` at 111.15 s, still running at 150 s | |
+| LOMP10 | 1 | `Countdown(..., 180, "TimeLimit")` at 52.55 s, still running at 150 s | |
+| LOMP10 long | 1 | `TimeLimit` ran at 232.56 s | only records, a dialog and a narrative line |
+| JM05 long | 1 | event 4's 400 s timer from 198.06 s, not expired at 450 s; 83 `CountdownTimeLeft` reads | the reminder arm now runs (presentation) |
+| **JM08 long** | **3** | **`SpawnHoshoFleet` ran at 291.15 s** | deaths 179 -> 180, hit records 6894 -> 8141, hull hits 639 -> 538, damage 101129 -> 104971, shots 7757 -> 8551, units 405 -> 411 |
+
+**JM08 long, per entity.**
+- `SpawnHoshoFleet` generates Hosho, Isokaze and Fubuki (party 1) at (-6500, 0, 6500).
+- `HoshoMovie`'s `luaDelay(SpawnHawaiiFleet, 90)` (prcpjm08.lua:954) then generates Hawaii,
+  Pringle and Erben (party 0) at (-7500, 0, 7500).
+- Hawaii's guns sink all three Japanese ships: Hosho at 522.65 s (first damage 455.61 s),
+  Isokaze at 617.12 s and Fubuki at 674.56 s. Those are the three only-ON death rows among the
+  ships.
+- The other 61 death-row differences are the island structures (tents, huts, houses).
+  - Their killers and ranges move by about a metre, and a few flip in or out.
+  - This is the fight around them re-timed by the six new hulls. The shared stream is
+    RNG-coupled, as memory notes for pairs.
+  - No Japanese or US ship that exists on both sides changes its fate.
+- LOMP10 long's 1 s late fire (232.56 against 52.55 + 180) is the float residue of
+  `left <= 0`, stepped at 0.05 s.
+
+Every prediction held. **Verdict: ON.** The mechanism is the image's as read. The only
+gameplay move is the scripted reinforcement the countdown exists to trigger.
