@@ -12931,3 +12931,136 @@ release-order offer, made after a player order: `unit+72Ch` vtable[38h].
 - **So on an AI squadron, prepare never drops.** It can only be reached in attack mode 0, which
   the leader's `0099B740` lifts to 1 on its first think.
 - **The host keeps the follow tick there** (5ee, labelled). No AI row reaches this arm.
+
+## 5ef. Handoff (cc9-lua41, 2026-10-06, at about 70% context)
+
+The branch is `agent/cc9-lua41` and the worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua41`.
+Main is merged in, everything is committed, and no lease is held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| level-bomb task (kind 4), with the level-bomber rack issue and gate | `kPlaneLevelBombTaskBound` | ON (after reference AC) | 5ee, 5ee.1, 5ee.2 |
+| os.execute guard line into the run log | - | in (`lua_exec_guard.hpp` sink) | 5ee.1 |
+| player air-ops launch (Support Manager 00675C40 path) | `kAirOpsPlayerLaunchBound` | ON | AIROPS_LAUNCH_TICK, "The player's launch" |
+| harness `launch` line | - | ships36, SCRIPTED_HELM 13 | - |
+| GUNNERY 130 bomb axis | - | reported to the lead | see below |
+
+**USN01's state.** With the level-bomb task, Enterprise sinks at 384.43 s and the mission reaches its
+scripted end: `luaMissionCompletedNew()` runs and the guard refuses `sus_prog.exe`.
+- **The win** (every Nell shot down) needs fighters. Two Wildcat squadrons launched at 215 s shoot
+  down six Nells but do not save Enterprise.
+- cc9-ships36 is tuning the `launch` lines. Order file: `local\l41_usn01_launch.txt`.
+
+**GUNNERY 130 (bomb axis).**
+- **Attach.** The rack round is created by 006E3E70 -> 006E2C00 with pos 0 and dir (0,0,1), so its
+  local frame is identity. 00924F90 then parents it to the rack entity without touching its matrix.
+  The axis is the rack entity's +Z.
+- **Single racks.** Their setup, 0072E6D0, writes no gun+74h, so the axis is the plane's nose.
+- **Slot frames** (models 2024-07-13): the Nell and Dauntless carry no rotation. The Val and Kate
+  slot 50 is 2.0 deg nose-down. That matters only if an unread store gives the gun entity its slot
+  frame.
+
+**Next, in order:**
+1. **The squadron creator's `wing=5` for a slot count of 6** (`create_air_ops_squadron_006c5050`).
+   Check it against the authored PlaneWingCount limits.
+2. **AutoAttackTarget for members that spawn later** (served once at the first step).
+3. **The recall order (2) and the slot states 2-4 arms of `006CCDA0`.**
+4. **The 5dr census.** Item 1 (the drop scatter) is gunnery28's `kBombDropScatterBound`, which waits
+   on the 130 read above.
+
+**Scripts** in `local\`, prefix `l41_`:
+- `l41_queue.ps1`, with rows `usn01o` (s35 orders) and `usn01w` (with launch lines);
+- `l41_vt.py` / `l41_consts.py` (PE dwords and constants);
+- `l41_ends.py` (end-address checks);
+- `l41_callscan.py` (rel32 and absolute references);
+- `l41_mmod_aux.py` (model Aux slot points);
+- `l41_grep.py`;
+- `l41_units_patch.py` (the applied units-host edit).
+
+## 5eg. Handoff, final (cc9-lua41, 2026-10-06, at about 72% context)
+
+This supersedes 5ef's "Next" list. The branch is `agent/cc9-lua41` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua41`. Everything is committed and no lease is held.
+
+**State.**
+- **The level-bomb task** (`kPlaneLevelBombTaskBound`) is ON (5ee.1).
+- **The player air-ops launch** (`kAirOpsPlayerLaunchBound`) is ON on main and belongs to reference
+  AD (AIROPS_LAUNCH_TICK, "The player's launch").
+- **The queued-LaunchSquadron census has no reach.** queued=0 on all 22 of AB's rows.
+- **GUNNERY 130's bomb axis** went to the lead in 5ef: the nose for the Nell and Dauntless, and
+  the nose or 2 deg below it for the Val and Kate.
+
+**Successor items, in order:**
+1. **The two open launch items.**
+   - **`wing=5` for a slot count of 6.** The `air ops squadron` line from
+     `create_air_ops_squadron_006c5050` (src/game_hosts_script_orders.cpp) logs it.
+     - 006C5050 writes the bag's `WingCount` = slot+8h.
+     - Find where the host clamps or remaps it, against the authored PlaneWingCount limits that
+       `plane_squadron_host.hpp` mentions.
+     - Evidence: USN01 `local\l41_on_usn01w.log`, squadrons 112 and 117.
+   - **AutoAttackTarget for members that spawn later.**
+     `GameScriptOrdersHost::run_air_ops_player_launch_queue` serves it once, at the first step a
+     member exists (one member on USN01). In the image, 007F4BA0 issues it on the squadron in its
+     pass-C init, so later members take the squadron's command through the intake.
+     - Bind delivery to every member as it spawns, or to the squadron record, by that reading.
+2. **cc9-ships36's USN01 win attempt.** Check its logs for the mechanism lines:
+   - `player air ops launch:` (the fill count against MaxInAirPlanes 12);
+   - `air ops queued launch:` about 1 s later;
+   - `air ops AutoAttackTarget: ... class=00E08F58`.
+   - My baseline: `local\l41_usn01_launch.txt` gave six Nells down, and Enterprise still sank at
+     384.43 s.
+3. **A plane/Lua reach census on reference AC**, once cc9-gunnery29 closes it. Use the 5dr method:
+   host-method rows and summary lines over the AC logs, plus a stale-label check before calling
+   any row a gap.
+
+## 5eh. USN01's scout miss under the drop scatter: the dive aim chain checked (cc9-lua42, 2026-10-06)
+
+**The question** (SHIP_AI 176.1, lead): with `kBombDropScatterBound` ON, both ScoutDauntless bombs
+miss Convoy1, so USN01 never leaves phase 2. Is the dive aim chain image-faithful end to end on this
+case, and is the hull hit test right? Read-only; no code changed.
+
+**The evidence** is cc9-ships36's w7 run (`cc9-ships36\local\s36_u1w7.log`, scatter ON). For
+`ScoutDauntless|.-2`:
+
+| step | log line | value |
+| --- | --- | --- |
+| hull pick, 00816650 box (L 180, W 16) | 17694 `hull_aim draw` seed=21 | body (across -7.96, along 35.03), including the error bias |
+| authored aim error, 009C3DA0 | 17681 `aim error draw` | bias (h -4.81, v -2.95), spread 0.80, time -6.00 |
+| lead, 009FAF05 tail | 19780 `aim lead` | projtime 2.69, lead (6.6, -20.7) |
+| release | 20945 / 20953 | 219.0 m, \|v\| 89.15 m/s, angle_to_nose 1.5 deg; predicted impact (-3397, -1449) |
+| scatter, 006E4D50 / 006E1F00 | 20952 | cone 0.297 deg; turn 3.098 deg; v (-62.8 -42.3 -48.6) -> (-64.5 -38.0 -50.0) |
+| impact | 108930 | (-3413, -1461), 19.4 m from the prediction |
+
+**Each link against the image:**
+1. **Predicted impact.** 009C7D71 is `unit + (007BCC80(H, v.y) + 0.1) x v`, built from the
+   aircraft's velocity (AIMDIVE_ENTRY.md line 62; DIVE_BOMB_AIM_POINT.md line 14). The image steers
+   that velocity-based point onto the aim point.
+2. **Release direction.** 006E1F00 replaces the 5do velocity's direction with the round's forward
+   row, keeping |v| (GUNNERY 130.1). The Dauntless rack has no gun+74h setup (0072E6D0) and its slot
+   carries no rotation, so that row is the nose (5ef, GUNNERY 130). The image therefore releases
+   along the nose but predicts along the velocity. The difference between the two is in the image
+   itself, not in this host.
+3. **The turn's size.** 3.1 deg, made of three parts:
+   - the 5do velocity's 3.0 m/s taken off y, which 006E1F00 discards along with the rest of the
+     direction (about 1.9 deg at 89 m/s);
+   - the aircraft's angle of attack, 1.5 deg (`angle_to_nose`);
+   - the cone, 0.30 deg.
+   The bomb leaves shallower (v.y -42.3 -> -38.0) and so carries further along its path.
+4. **Geometry.** The attack is a beam attack. The aircraft's planar heading (-0.79, -0.61) is 0.93
+   along Convoy1's across axis, row0 (-0.957, -0.289). So the overshoot lands ACROSS the hull.
+   Impact minus prediction = (-16, -12): 18.8 m across, 6.9 m along.
+5. **Hull test.** The aim point was already at -7.96 m across, inside the class half-beam of 8 m
+   (`Width` 16). Adding 18.8 m puts the impact about 10.8 m on the other side, so it is outside the
+   hull. "Died at the sea surface" is the right outcome for a point 2.8 m beyond the side. The
+   leader's bomb is 16.6 m across from its prediction and misses the same way.
+
+**Verdict.** No host departure was found in the chain. The miss comes from the image's own
+velocity-versus-nose difference in a beam attack, landing on an aim point that the box pick had put
+at the beam's edge. **Two host inputs are labelled substitutes, and the miss depends on both:**
+- the box draws (`approach_target_ref_unit_draws_substitute`, a hash, not stream 1). A different
+  draw nearer the centreline would hit.
+- the 1.5 deg angle of attack, from the host's flight model. The image's own dive AoA is not
+  measured.
+So this is recorded as the image's own sample under those two substitutes, not as a bug. The win
+path needs the player's manual-release line (cc9-ships37) or a run whose draws aim nearer the
+centreline.

@@ -751,6 +751,24 @@ inline constexpr bool kCommandBuildingLevelBound = true;
 // ON by section 173.1: three rows gameplay identical; JM08 long's HQ fire roll moves
 // (starts 15 -> 16), as its chance reads the maximum.
 inline constexpr bool kCommandBuildingLevelMaxHpBound = true;
+// Packet cc9_command_building_garrison (docs/SHIP_AI_OPEN_ITEMS.md 175 and 177):
+// 006F5CC0 pass 1 adopts every LandFort / AirField / Shipyard (kinds 1Bh, 45h, 46h)
+// whose scene bag finds MinLevel (+724h) within the building's InferiorRange
+// (+7C8h) as a garrison record, and 006F3660 runs at the adoption and after every
+// level change (006F38E0). Per record: MinLevel above the level kills a linked
+// member (00926D90(2)); MinLevel at or below it re-creates a member whose record
+// the death notice 00546200 has nulled, with the building's Party and Skill, or
+// gives a live member the building's skill (vtable[128h](vtable[12Ch]())).
+// True: the records, the skill pushes and the re-create as a revive in place
+// (GameGunneryHost::revive_unit_garrison_006f3660, routed to the gunnery lane;
+// until it lands the re-create is recorded). LABELLED: adoption runs at the first
+// controller step, not InitAll; MinLevel is 0 (Basic) for every member because the
+// scene record carries only whether the key exists; the kill arm is recorded (no
+// row has a member above its building's level). False: nothing is adopted.
+// ON by section 177.1: JM08, JM08 long, USN01 and USNOS gameplay identical (the
+// re-create is still recorded); every LandFort's bag finds MinLevel through
+// landfort.props, so JM08's HQ adopts 349 members and USN01's CB2 42.
+inline constexpr bool kCommandBuildingGarrisonBound = true;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.
@@ -1024,6 +1042,13 @@ struct GameShipAiHost::Impl {
         bool fire_740{false};          // the fire effect pointer is set
         float fire_time_748{0.0f};
         float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
+        // Packet cc9_command_building_garrison: the 64h-byte records at +778h.
+        struct GarrisonRecord {
+            std::size_t unit{0};
+            bool linked{true};             // record+14h non-null
+            std::int32_t min_level_5c{0};  // record+5Ch (LABELLED 0, see the switch)
+        };
+        std::vector<GarrisonRecord> garrison;
     };
     // Packet cc9_ship_ai_timer_draws: the draws taken per site.
     unsigned long long timer_draws_retarget{0};
@@ -1044,6 +1069,14 @@ struct GameShipAiHost::Impl {
     unsigned long long level_ups{0};
     unsigned long long level_resets{0};
     unsigned long long level_unchanged{0};
+    // Packet cc9_command_building_garrison: the census.
+    unsigned long long garrison_records{0};
+    unsigned long long garrison_passes{0};
+    unsigned long long garrison_kills{0};
+    unsigned long long garrison_recreates{0};
+    unsigned long long garrison_recreates_recorded{0};
+    unsigned long long garrison_skill_pushes{0};
+    void command_building_garrison_006f3660(CaptureBuilding& b, const char* source);
     void command_building_level_006f38e0(CaptureBuilding& b, std::int32_t level,
                                          const char* source);
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
@@ -12153,6 +12186,42 @@ void GameShipAiHost::Impl::build_capture_buildings() {
         b.level_up_seconds_76c = units.command_building_level_up_seconds_076c(u);
         capture_buildings.push_back(b);
     }
+    if (kCommandBuildingGarrisonBound) {
+        // 006F5CC0 pass 1 (006F5CF7..006F5EB2), per building: entities of kind 1Bh,
+        // 45h or 46h other than the building, within InferiorRange (per-axis float
+        // differences entity minus building, the squared sum as a float, against
+        // FILD of the integer R * R at 006F5DC9), with +724h set (006F5DCF).
+        for (CaptureBuilding& b : capture_buildings) {
+            float bx = 0.0f, by = 0.0f, bz = 0.0f;
+            units.unit_position_00fc(b.unit, bx, by, bz);
+            const std::int32_t range = units.command_building_inferior_range_07c8(b.unit);
+            const std::int32_t r2 = static_cast<std::int32_t>(
+                static_cast<std::uint32_t>(range) * static_cast<std::uint32_t>(range));
+            for (std::size_t e = 0; e < count; ++e) {
+                if (e == b.unit) continue;
+                if (!units.unit_is_kind_of(e, 0x1B) && !units.unit_is_kind_of(e, 0x45)
+                    && !units.unit_is_kind_of(e, 0x46)) continue;
+                if (!units.unit_inferior_bag_0724(e)) continue;
+                float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+                units.unit_position_00fc(e, ex, ey, ez);
+                const float dx = ex - bx, dy = ey - by, dz = ez - bz;
+                const float d2 = static_cast<float>(
+                    (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
+                    + static_cast<double>(dz) * dz);
+                if (static_cast<double>(d2) > static_cast<double>(r2)) continue;
+                CaptureBuilding::GarrisonRecord r;
+                r.unit = e;
+                b.garrison.push_back(r);
+                ++garrison_records;
+            }
+            const GameUnitRow* row = units.unit_row(b.unit);
+            log.notef("command building garrison: unit=%s inferior_range=%d members=%zu "
+                "(006F5CC0 pass 1, packet cc9_command_building_garrison)",
+                row != nullptr ? row->name.c_str() : "?", range, b.garrison.size());
+            // 006F5EB2..: 006F3660 when the record count is non-zero.
+            if (!b.garrison.empty()) command_building_garrison_006f3660(b, "adoption 006F5CC0");
+        }
+    }
     char* env = nullptr;
     std::size_t env_bytes = 0;
     std::string text;
@@ -12740,6 +12809,60 @@ void GameShipAiHost::Impl::command_building_level_006f38e0(CaptureBuilding& b,
         row != nullptr ? row->name.c_str() : "?", was, level, source, capture_clock,
         static_cast<double>(b.armour_368), static_cast<double>(max_hp),
         kCommandBuildingLevelMaxHpBound ? "set" : "recorded");
+    // 006F3660 after the level store (packet cc9_command_building_garrison).
+    if (kCommandBuildingGarrisonBound && !b.garrison.empty()) {
+        command_building_garrison_006f3660(b, source);
+    }
+}
+
+// 006F3660 (packet cc9_command_building_garrison, SHIP_AI_OPEN_ITEMS 175), body
+// 006F3660..006F38DE, complete. Single player: [00E188A8]+1FE4h is never 2 here.
+void GameShipAiHost::Impl::command_building_garrison_006f3660(CaptureBuilding& b,
+    const char* source) {
+    ++garrison_passes;
+    const int skill = units.skill_level(b.unit);   // building vtable[12Ch]
+    const int party = units.unit_side_0054(b.unit); // building +54h
+    const GameUnitRow* brow = units.unit_row(b.unit);
+    const char* bname = brow != nullptr ? brow->name.c_str() : "?";
+    for (CaptureBuilding::GarrisonRecord& r : b.garrison) {
+        // 00546200, the record's observer slot 1: the on-killed notice nulls +14h.
+        if (r.linked && gunnery_draws != nullptr && gunnery_draws->unit_dead(r.unit)) {
+            r.linked = false;
+        }
+        const GameUnitRow* row = units.unit_row(r.unit);
+        const char* name = row != nullptr ? row->name.c_str() : "?";
+        if (r.min_level_5c > b.level_770) {
+            // 006F36AE..006F36F0: 00926D90(entity, 2), unregister, +14h = 0.
+            if (r.linked) {
+                ++garrison_kills;
+                record("CommandBuilding::garrison_kill_00926d90", 0x006f36cdu);
+                log.notef("command building garrison: %s member %s MinLevel %d > level %d: "
+                    "kill 00926D90(2) (recorded) (%s)", bname, name, r.min_level_5c,
+                    b.level_770, source);
+                r.linked = false;
+            }
+            continue;
+        }
+        if (!r.linked) {
+            // 006F3703..006F3844: re-create from the bag's Type at record+18h, Party =
+            // building +54h (006F37A0), Skill = building vtable[12Ch] (006F37D7).
+            // SUBSTITUTION: the dead unit is revived in place.
+            ++garrison_recreates_recorded;
+            record("CommandBuilding::garrison_recreate_006f3736", 0x006f3736u);
+            log.notef("command building garrison: %s re-creates %s with party %d skill %d "
+                "at t=%.2f (%s): revive not bound (recorded)", bname, name, party, skill,
+                capture_clock, source);
+            continue;
+        }
+        // 006F3853..006F3870: member vtable[128h](building vtable[12Ch]()).
+        if (units.skill_level(r.unit) != skill) {
+            log.notef("command building garrison: %s sets %s skill %d -> %d (%s)", bname,
+                name, units.skill_level(r.unit), skill, source);
+        }
+        units.set_skill_level_007b8ae0(r.unit, skill);
+        ++garrison_skill_pushes;
+    }
+    // 006F3872..006F38A6: building vtable[128h](its own vtable[12Ch]()), a no-op here.
 }
 
 bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
@@ -13848,6 +13971,12 @@ void GameShipAiHost::report() {
             "unchanged=%llu bound=%d (006F7360 / 006F4D10 -> D4h 006F38E0, packet "
             "cc9_command_building_level)", host.level_ups, host.level_resets,
             host.level_unchanged, kCommandBuildingLevelBound ? 1 : 0);
+        host.log.notef("summary mission command building garrison records=%llu passes=%llu "
+            "kills=%llu recreates=%llu recreates_recorded=%llu skill_pushes=%llu bound=%d "
+            "(006F5CC0 pass 1 / 006F3660, packet cc9_command_building_garrison)",
+            host.garrison_records, host.garrison_passes, host.garrison_kills,
+            host.garrison_recreates, host.garrison_recreates_recorded,
+            host.garrison_skill_pushes, kCommandBuildingGarrisonBound ? 1 : 0);
         for (const Impl::CaptureBuilding& b : host.capture_buildings) {
             const GameUnitRow* row = host.units.unit_row(b.unit);
             host.log.notef("summary mission command building level unit=%s level=%d "

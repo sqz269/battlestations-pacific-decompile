@@ -1443,6 +1443,7 @@ struct GameUnitSlot {
     int rack_gate_refused{0};          // 007CC8E0 / 007C7600 said no
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
+    int player_bomb_releases{0};       // packet cc9_player_bomb_release, 006082D0
     int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
     // Packet cc9_plane_scene_equipment: the record's bag `Equipment`, which
     // 007CDF20 stores at [unit+C54h]; -1 when the creator carried none.
@@ -4833,6 +4834,102 @@ struct GameUnitsHost::Impl {
             slot.db_release_speed = slot.plane_travel_speed;
             slot.db_release_range = slot.db_planar_bc;
         }
+    }
+
+    // Packet cc9_player_bomb_release (docs/SCRIPTED_HELM.md section 14). The
+    // plane screen's 006082D0 (__thiscall(screen, param), body 006082D0-00608895,
+    // screen+B8h the plane): the bomb mode +BDh, then on IC_PLANE_BOMBFIRE (A8h,
+    // 0060877F) with the latch +BCh clear, 007BC7A0, 007B9500 and 007BB110, and
+    // message C4h (00605270 PUSH 0C4h) routed at 0060882B to BSP_Plane_HandleMessage,
+    // whose 007CD0B4 arm calls 007BBBA0 with no further gate. LABELLED: the bomb
+    // switch input (+1F78h/+1F74h) is taken as held and the mode as entered on an
+    // earlier frame (its entry frame sets +BCh); the latch is one press per line;
+    // the HUD timer +CCh and 0042ECA0 are display.
+    GameUnitsHost::PlayerBombRelease player_bomb_release_006082d0(std::size_t index) {
+        GameUnitsHost::PlayerBombRelease r;
+        if (index >= slots.size()) { r.reason = "no such unit"; return r; }
+        GameUnitSlot& slot = *slots[index];
+        if (!bsp::unit_is_kind_of(slot.class_id, 0x0F)) {
+            r.reason = "not a plane (the plane screen only)";
+            return r;
+        }
+        if (kPlaneDeathModesBound && slot.plane_death_c3a) {
+            r.reason = "dead (unit+C3Ah)";
+            return r;
+        }
+        // 006082F6 007B9140(0) and 0060830C IsKindOf(17h): a torpedo bomber
+        // has no bomb mode. 007B9140's rack walk (vtable[210h](2Ah, 0)) is the
+        // ordnance mask and the rack's rounds here.
+        if (bsp::unit_is_kind_of(slot.class_id, 0x17)) {
+            r.reason = "006082D0: a torpedo bomber (17h) has no bomb mode";
+            return r;
+        }
+        const bsp::OrdnanceKindSet set{slot.ordnance_mask};
+        if (!bsp::ordnance_has_general_bomb_2ah(set) || dive_bomb_rounds_remaining(slot) <= 0) {
+            r.reason = "007B9140: no rack holds a bomb (2Ah)";
+            return r;
+        }
+        // 00608338 (unit+72Ch)->vtable[38h], free flight.
+        if (slot.plane_control_mode_900 != 7) {
+            r.reason = "00608338: not in free flight (unit+900h != 7)";
+            return r;
+        }
+        if (bsp::unit_is_kind_of(slot.class_id, 0x10)) {
+            // 00608360 007C7750 and the level-bomb arm 007C4D90: unread.
+            r.reason = "level bomber: 007C7750 / 007C4D90 not bound";
+            return r;
+        }
+        // 00608367 007C7600, the same attitude gate the rack tick applies
+        // (run_rack_tick_006e56f0). The bay byte unit+9C3h is not modelled.
+        const float pitch = slot.plane_pitch_angle_c64;
+        const float bank = slot.plane_bank_angle_c68;
+        float pmin = 1.0471976f, pmax = 1.5707964f;
+        float rmin = 1.0471976f, rmax = 1.5707964f;
+        float rmin_p = -1.3962634f, rmax_p = 1.5707964f;
+        if (lua.plane_globals_loaded()) {
+            const bsp::GameTuningBlock& g = lua.plane_globals();
+            pmin = g.pilot_general_dive_bomb_pitch_angle_min;
+            pmax = g.pilot_general_dive_bomb_pitch_angle_max;
+            rmin = g.pilot_general_dive_bomb_roll_angle_min;
+            rmax = g.pilot_general_dive_bomb_roll_angle_max;
+            rmin_p = g.pilot_general_dive_bomb_roll_angle_min_pitch;
+            rmax_p = g.pilot_general_dive_bomb_roll_angle_max_pitch;
+        }
+        if (pitch > pmax) {
+            r.reason = "007C7600: pitch above DiveBombPitchAngleMax";
+            return r;
+        }
+        if (!(pmin > pitch) && std::fabs(bank) > bsp::clamped_interpolate_00419010(
+                                   rmax_p, rmax, rmin_p, rmin, pitch)) {
+            r.reason = "007C7600: bank outside the roll curve";
+            return r;
+        }
+        // 0060876C 007BC7A0: above -50 deg of pitch ([00D05A30]) the bank must
+        // be within max(0, 80 deg ([00D05A28]) - |pitch|). Its rocket pass
+        // (ordnance 33h with descriptor+E0h > 0, 007BC7BA-007BC7D4) does not
+        // apply to a bomb.
+        if (pitch > -0.87266463f) {
+            float limit = 1.3962635f - std::fabs(pitch);
+            if (limit < 0.0f) limit = 0.0f;
+            if (std::fabs(bank) > limit) {
+                r.reason = "007BC7A0: bank above 80 deg - |pitch|";
+                return r;
+            }
+        }
+        // 006087DC 007BB110: channel C of unit+DECh idle or at the top passes;
+        // otherwise the per-slot byte unit+9C3h, which this host does not have
+        // (the same omission as release_ordnance_007bbba0), so it passes.
+        done("Unit::can_release_007bb110", 0x007bb110u);
+        // 0060882B -> 007CD0B4 -> 007BBBA0.
+        ++slot.player_bomb_releases;
+        log.notef("player bomb release: unit=%s t=%.2f alt=%.1f pitch=%.4f bank=%.4f "
+            "(006082D0 -> C4h -> 007BBBA0)", slot.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds),
+            static_cast<double>(slot.motion.position[1]), static_cast<double>(pitch),
+            static_cast<double>(bank));
+        release_ordnance_007bbba0(slot);
+        r.accepted = true;
+        return r;
     }
 
     // No slot carries its own index, and the release request is rare, so the
@@ -31575,6 +31672,10 @@ float GameUnitsHost::unit_forward_speed_0092d730(std::size_t index) const {
     return bsp::unit_forward_speed_0092d730(axis);
 }
 
+GameUnitsHost::PlayerBombRelease GameUnitsHost::player_bomb_release_006082d0(std::size_t index) {
+    return impl_->player_bomb_release_006082d0(index);
+}
+
 bool GameUnitsHost::unit_linear_velocity(std::size_t index, float out[3]) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return false;
@@ -32643,6 +32744,17 @@ std::int32_t GameUnitsHost::command_building_level_up_seconds_076c(std::size_t u
     if (unit_index >= impl_->slots.size()) return 10;
     if (!unit_is_kind_of(unit_index, 0x1c)) return 10;
     return impl_->slots[unit_index]->level_up_seconds_76c;
+}
+
+std::int32_t GameUnitsHost::command_building_inferior_range_07c8(std::size_t unit_index) const {
+    // Packet cc9_command_building_garrison: 006F288C -> unit+7C8h.
+    if (unit_index >= impl_->slots.size()) return 200;
+    return impl_->slots[unit_index]->inferior_range_7c8;
+}
+
+bool GameUnitsHost::unit_inferior_bag_0724(std::size_t unit_index) const {
+    // Packet cc9_command_building_garrison: 009554DF's unit+724h clone.
+    return unit_index < impl_->slots.size() && impl_->slots[unit_index]->bag_min_level_724;
 }
 
 std::int32_t GameUnitsHost::command_building_capture_value_07a4(std::size_t unit_index) const {

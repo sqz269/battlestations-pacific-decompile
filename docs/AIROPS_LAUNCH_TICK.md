@@ -662,3 +662,185 @@ is `00675C40` (HUD slot 4Eh, vtable `00CF6B44` +20h). Its launch is `0067A565`-`
   - about 1 s later `air ops queued launch` appears, and a squadron of 4 takes off from
     Enterprise;
   - `AutoAttackTarget` issues dogfight (`00E08F58`) on the Nells.
+
+### The player's launch: identity pairs (cc9-lua41, 2026-10-06)
+
+The OFF build is `18f67fa22` (ships36's `launch` line, SCRIPTED_HELM 13, with this packet). The ON
+build is its export with `kAirOpsPlayerLaunchBound=true` (`local\l41_on`). The launch form is
+reference AB/AC's. Neither run has a `launch` line, so nothing queues.
+
+| row | `pair_diff` | what differs |
+| --- | --- | --- |
+| USN04 | 1 | only the known noise counter `ship ai free refills` |
+| USN01 3000 | 1 | gameplay identical |
+| ESMP08 long | 0 | none |
+| USNRM01 | 0 | none |
+| JM05 long | 1 | gameplay identical |
+| IJN11 | 1 | gameplay identical |
+
+The prediction holds: with no `launch` line the switch moves nothing. The USN01 win attempt with a
+`launch` line is cc9-ships36's.
+
+### The player's launch: measured, **ON** (cc9-lua41, 2026-10-06)
+
+**USN01 36000** with `local\l41_usn01_launch.txt`: ships35's two phase-2 target picks, then at frame
+4300 (215 s, after the Nells' phase-3 generation) `launch Enterprise <1..4> 101 6 Nell<1..4>`.
+OFF and ON builds are `05fab57f8` and its flip export. Logs are `local\l41_{off,on}_usn01w.log`
+and the diff is `local\l41_diff3_usn01w.txt`. `pair_diff` exits 3. OFF refuses every launch line
+("kAirOpsPlayerLaunchBound is off").
+
+**The mechanism matches the read.**
+- **Slots 1 and 2 fill with 6 Wildcats each and queue.** Slots 3 and 4 are refused because
+  006C0F00 leaves them empty. That is right: Enterprise's MaxInAirPlanes is 12 (`air ops deck`),
+  and the first two slots hold all 12 (006BD460).
+- **About 1 s later** `air ops queued launch` builds squadrons 112 and 117 (006C64B0 -> 006C7490).
+  The creator logs `wing=5` for a slot count of 6. The difference is the squadron creator's own
+  and was not traced here.
+- **The AutoAttackTarget** chooses dogfight (`00E08F58`) on Nell1 and Nell2. It is served at the
+  first step, while one member exists (labelled).
+- **What it changed:**
+  - deaths go from 70 to 77;
+  - six Nells are shot down (Nell1|.-2, Nell2, Nell2|.-2, Nell2|.-3, Nell4, Nell4|.-2);
+  - both Wildcat leaders die to the Nells' gunners (328.6 s and 403.3 s);
+  - Nell5|.-2 now survives.
+- **Enterprise still sinks at 384.43 s,** to Nell5|.-3's bomb, as without the launch. Four Nell
+  squadrons (3, 5, 6 and the rest of 1) were never intercepted, so the win needs more fighters
+  in the air sooner. That is a scripting choice for the harness line, not a mechanism gap.
+- **Rows without a `launch` line** are identical (the identity pairs above).
+
+**Verdict: ON.** The flip only acts on a `launch` line.
+
+**Open:** the creator's `wing=5` for a count of 6; and the AutoAttackTarget order is given to the
+members that exist at the first step.
+
+### Queued LaunchSquadron: census, no reach (cc9-lua41, 2026-10-06)
+
+The question was whether any reference row has a script `LaunchSquadron` that 006CC690 queues (its
+006CC72C arm, taken while block+38h holds a squadron) and that this host never starts.
+
+**AB's 22 logs** (`summary mission airops gates`, cc9-gunnery28's `local\g28_ab_base_<row>.log`):
+- every call started: E2 4/4, IJN11 6/6, JM05 8/8, JM05 long 14/14, USN04 4/4, USN13 9/9 and
+  USN13 long 18/18;
+- `queued=0` on all 22 rows;
+- no row calls `LaunchAirBaseSlot` or `SetAirBaseSlot`.
+
+The scripts gate `LaunchSquadron` on `IsReadyToSendPlanes`, which answers false while block+38h is
+set (006BF620), so the queued arm is never taken. **No reach:** no `kAirOpsQueuedLaunchStartBound`
+binding is made. The queue machinery this packet added would serve it unchanged if a script
+queued one.
+
+### The screen's launch group (packet `cc9_player_launch_group`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAirOpsPlayerLaunchGroupBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+Ghidra was read-only.
+
+**The question.** 5ef's `wing=5` for a requested 6.
+
+**The read.**
+- 0067A57D..0067A592 (inside 00675C40):
+  - `CALL 006BF310` (stock);
+  - `CMP EAX,EDI / JLE` (no stock, no launch);
+  - `MOV ECX,[ESI+2B4h]`, then `CMP EAX,ECX / CMOVL ECX,EAX`.
+  - So 006C0F00 gets min(stock, screen+2B4h).
+- screen+2B4h has one writer in the image: `0066EC1B MOV [ESI+2B4h],EBP`, with `0066EC0A MOV EBP,3`.
+  It is in `BSP_HudSupportManagerScreen_Register` (body 0066EA60-0066FADD).
+  - A whole-image scan for disp32 2B4h (`local\l42_field_writers.py`) found 62 store candidates.
+  - Their enclosing functions are plane bot states, plane-class derivation, the main menu, shader
+    constants and others. None is a Support Manager method.
+  - The only other screen reader is FUN_00673A10 at 00674815. It applies the same min before its
+    own 006C4780 call.
+- **So a player launch is at most 3 planes per slot.**
+  - A 6 never reaches 006C5050's `WingCount` from the screen.
+  - In the image, a sixth wing would overrun 007F4B55's five-slot array.
+  - The host's five-slot refusal (`plane_squadron_attach_plane_007f4b43`) is what printed `wing=5`.
+- **UNCERTAIN:** a block copy into the screen object would not show in a disp32 scan.
+
+**The host.** `player_air_ops_launch` clamps the requested count to `kSupportManagerLaunchGroup` (3)
+and logs `count N clamped to the screen's 3`. The stock clamp stays 006C0F00's.
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line: identical (the clamp is only on the harness launch path).
+- USN01 with launch lines asking 6: each filled slot holds 3 Wildcats, not 6.
+  - Enterprise's plane limit of 12 (006BD460) then admits four slots instead of two.
+  - The creator logs `wing=3`.
+
+### AutoAttackTarget for every member (packet `cc9_player_launch_group`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAutoAttackAllMembersBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+
+**The question.** 5ef's second open item: the order reached only the members that existed at the
+first step.
+
+**The evidence.** cc9-lua41's ON log (`l41_on_usn01w.log`, lines 35781-35800) shows the order in the
+same step as 006C5050. It reads `AutoAttackTarget: squadron 112 members=1`, and only after it come the
+`plane spawn` lines for `Enterprise_sqn01|.-2..|.-5`. The wings are made one step later by the
+squadron's pass A (`kWingConstructionInPassABound`). In the image, the key is read in pass-C init
+007F4BA0 (007F4EC0 -> 007F15F0), after 007F4580 has made every wing.
+
+**The host.** `run_air_ops_player_launch_queue` holds the pending order while any registered slot
+of the squadron (`member_units`) is still `kPlaneSquadronNoUnit`. It keeps the 600-step cap and then
+serves the members that exist. The order still goes through `squadron_intake_007f1940`, which issues
+it to every member it is given.
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line are identical (the queue is filled only by 006CCDA0 order 3).
+- USN01 with launch lines:
+  - each `air ops AutoAttackTarget` line moves one step later and reads `members=3`;
+  - the wingmen get the dogfight task (`00E08F58`) as well as the leader.
+
+### The screen's launch group and AutoAttackTarget for every member: measured (cc9-lua42, 2026-10-06)
+
+**Measurement configuration only.** Every run below has `kBombDropScatterBound` forced **false** on
+both sides (`pair_export --flip kBombDropScatterBound=false`).
+- Without that flip, USN01 never reaches phase 3 on this base. The scout's bombs miss Convoy1, so no
+  Nell is generated and every `launch` line is refused.
+- With it, phase 2 is the pre-scatter one, so the Nells exist.
+- The flip is not a proposal to turn the scatter off.
+
+**The runs.**
+- Base `7c883e271`, USN01 20000 frames, reference AB/AC launch form.
+- Order files are cc9-ships36's:
+  - `w5`: four Wildcats per slot (`local\l42_usn01_w5.txt`);
+  - `w7`: three per slot, four slots (`local\l42_usn01_w7.txt`).
+- Exports:
+  - `local\l42_s`: scatter off;
+  - `local\l42_sg`: plus `kAirOpsPlayerLaunchGroupBound`;
+  - `local\l42_sga`: plus `kAutoAttackAllMembersBound`.
+- Logs are `local\l42_{s,sg,sga}_u1w{5,7}.log`. No run completed the mission (the Nell6 group
+  survives on every side), so no guard line was expected.
+
+**`kAirOpsPlayerLaunchGroupBound`** (`s` -> `sg`):
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| w7 (3 per slot) | 1 | gameplay identical: no count above 3, so nothing is clamped |
+| w5 (4 per slot) | 3 | each slot is clamped (`count 4 clamped to the screen's 3`, `count=4->3`, `wing=3`); deaths 90 -> 89, hit records 4074 -> 3928 |
+
+- In w5, slots 1-3 still fill and the Nell5/6 retries are still refused for plane room.
+- With three fewer Wildcats in the air, Nell4 dies earlier (332.14 -> 318.25 s) and Nell3's leader
+  later (364.83 -> 637.37 s). The prediction holds.
+- **Verdict: ON.**
+- Order files now get at most 3 planes per slot, which is what a player can do.
+
+**`kAutoAttackAllMembersBound`** (`sg` -> `sga`): **mechanism failure, stays OFF.**
+
+| row | `pair_diff` | `air ops AutoAttackTarget` lines (ON) |
+| --- | --- | --- |
+| w7 | 3 | sqn01 `members=1`, sqn02 `members=1`, sqn03 `members=0 class=0`, sqn04 `members=0 class=0` |
+| w5 | 3 | the same shape |
+
+- **The wait works, but the member filter does not.** The wings exist the step after 006C5050
+  (`plane spawn: unit=Enterprise_sqn01|.-2` at log line 34286). But the deck launches the members
+  one at a time: sqn01 at 210.71, 219.41 and 228.11 s, and sqn03 at 262.91, 271.61 and 280.31 s
+  (`base launch ground state ... 2 -> 4`).
+- The intake counts only members that are alive and visible (`unit_alive_and_visible`). A plane
+  still Inside the deck is not counted.
+- **So the order still reaches only the one member already flying.** sqn03 and sqn04 reach the
+  600-step cap with no member flying and get no order at all. That is worse than OFF, which gives
+  each leader the order. In w7, Enterprise_sqn03 never engages and its Nell3/Nell4 kills move to the
+  ships (Nell4 331.04 -> 613.57 s, killer Northampton).
+- **What the image does instead.** It issues the order once, to the squadron, in pass-C init
+  007F4BA0, whatever the members' deck state. A member that takes off later carries the squadron's
+  command. This host has no squadron-level command to inherit.
+- **The next step** is to deliver the order to each member as it leaves the deck (state 2 -> 4), not
+  to wait for every member slot. That needs the takeoff seam in the units host. It is not done here.

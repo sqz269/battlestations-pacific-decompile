@@ -123,6 +123,11 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
 // flush does in the image (009273A0 -> vtable[74h] 00926390 -> vtable[7Ch] ->
 // 00929B60 -> 00929800). False: the old behaviour, `Dead` stays false.
 inline constexpr bool kEntityDeadBound = true;
+// Packet cc9_squadron_dead, docs/ENTITY_DEAD_FLAG.md section 8. True: a squadron
+// fused with its wing-0 plane publishes `Dead` only once no other member still
+// flies, as 007F3970 kills the squadron entity only when +3CCh reaches 0. False:
+// the fused leader's death publishes it.
+inline constexpr bool kSquadronDeadOnLastMemberBound = true;   // ON: ENTITY_DEAD_FLAG 8.1, measured
 
 // Packet cc9_mission_end, docs/MISSION_END.md. True: the dialog registry that
 // StartDialog / KillDialog / GetActDialogIDs share (the case-insensitive map at

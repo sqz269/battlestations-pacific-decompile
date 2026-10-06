@@ -1162,6 +1162,8 @@ public:
     // The three objective bindings' own line. docs/MISSION_OBJECTIVES.md.
     void note_objective_binding(const char* binding, const std::string& objective,
         unsigned int slot_mask, int units_touched);
+    // DIAGNOSTIC: logs `mission objective: <text>` for each Objectives_Add.
+    void note_objective_text(const std::string& objective, const std::string& text);
 
     // 0088BF80 GetProperty. The native resolves argument 0 to an entity, reads
     // argument 1 as the key, and calls the entity's own reader at vtable+138h;

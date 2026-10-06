@@ -13940,6 +13940,9 @@ AIR_OPERATIONS.md, GAME_EXECUTABLE.md; the host's `GameUnitsHost::skill_level` /
 
 ### 175.3 Census and reach (`local\s36_garrison.py` over this installation's `.scn`, positions composed through the entity nesting)
 
+**Corrected in 177.1:** `landfort.props` declares `MinLevel`, so every LandFort is a member,
+not only the `CommandBuildingInferior` ones. The garrisons are 349 on JM08 and 42 on USN01.
+
 | row | scene | buildings | garrison | what the pass does on the row |
 | --- | --- | --- | --- | --- |
 | JM08 | `prcpijn_08_defend_guadalcanal.scn` (mtime 2024-08-09) | Headquarter 01, `InferiorRange = I 100000` | 17, all MinLevel 0: Medium Bunker 01-06/08, Japanese AA truck 01/03-07, MainAirFieldEntity 01, MainHangar, PTHangar 01, Shipyard 01 | level changes at 10/20/30 s and the 3 -> 0 neutralize (JM08 long, 1041.50 s) |
@@ -13983,3 +13986,356 @@ the `006F3660` rule then belong in `game_hosts_ship_ai.cpp` next to `command_bui
 - JM08 3000: `pair_diff` 3 (Bunker 03 dies at 29.50 s there too, so the 30.00 s revival is in
   its window);
 - USN01, USNOS and USN13: `pair_diff` 1.
+
+## 176. USN01 won with scripted player input: Enterprise's fighters (lead item 2, cc9-ships36, 2026-10-06)
+
+**Lines used:** SCRIPTED_HELM 13's `launch` (18f67fa22) over cc9-lua41's
+`script_orders_player_air_ops_launch` (f7288fd5b), with `kAirOpsPlayerLaunchBound` flipped
+(`pair_export.py --commit 18f67fa22 --flip kAirOpsPlayerLaunchBound=true --out
+local\s36_launch_on`). Every other switch is as on main. The order files are
+`local\s36_u1_w<N>.txt`; each is `s35_orders1.txt` (the `target ConTBD1 Convoy4` pair) plus the
+lines below.
+
+| run | phase-3 orders | outcome |
+| --- | --- | --- |
+| w1 (10000) | 4300-4303 launch slots 1-4 at Nell1-4 (4 F4F each); slot 0 at 4800/5300 | slots 1-3 launch. Slot 4 and the later ones get `006C0F00 left the slot empty (no stock or plane room)`: the deck holds 12. 13 Nells die; **Enterprise sunk at 404.42 s** (Nell6\|.-3) |
+| w2 (12000) | w1's first three, then slot 0 every 20 s at Nell4/5/6 | a fourth squadron (1 plane) at 6700 once sqn01 is lost. All six leaders die by 437.27 s, but Enterprise is sunk at 404.42 s. `summary mission end: completed at 440.57 s` (see the caveats) |
+| w3 (12000) | four squadrons of 3 at Nell6/5/4/3 | worse: Enterprise sunk at 396.63 s |
+| w4 (12000) | w2, plus `4310 moveto Enterprise 12000 0` | Enterprise sunk at 386.68 s. In w5, with the same moveto, Enterprise still heads south-west (2907, 2648 at 400 s; 1153, 322 at 600 s); why it does not turn was not read |
+| w5 (12000) | launches at 4100-4102, the first frames after `luaMoveToPh3` (about frame 4070); Ralph, McCall and Blue moved 1.8 km toward the Nells; slot 0 every 10 s | **Enterprise survives** to 600 s (fire at 356.04 s, 6285/8000). Nell1, Nell2 and Nell4 groups die, plus Nell3, Nell6 and Nell6\|.-2 |
+| **w6 (20000)** | w5's file | **Mission complete at 673.16 s**, Enterprise alive (no death row; afloat at 999.8 s) |
+
+**w6 timeline:** luaMoveToPh3 at about 204 s. Three F4F squadrons queue at 205 s and launch about 1 s
+later (`air ops queued launch:`, then `AutoAttackTarget`). Nells die from 275.01 s. The
+fighters are lost at 328.84, 357.34 and 369.18 s, and a fourth squadron of 1 goes up at 335 s.
+The surviving Nell3\|.-2/.-3 and the Nell5 group pass Enterprise to the south and come back.
+Northampton, Dunlap and SaltLakeCity shoot down Nell3\|.-2 (655.91 s), Nell3\|.-3 (663.61 s) and
+Nell5 (671.71 s). `luaMissionComplete` -> `luaMissionCompletedNew` follows, and the guard's line
+`bsp: refused a mission script's process launch: sus_prog.exe` is in the run log (line 104419),
+followed by `summary mission end: completed at 673.16 s ... "We showed we can fight back! -
+Mission Complete!"`. **LABELLED:** the harness's fixed click times; the launches need not come
+from the controlled carrier (SCRIPTED_HELM 13).
+
+**Caveats, routed (not this lane's):**
+1. **The win fires on the six leaders.** `Mission.Nells` holds the six `GenerateObject` returns.
+   The completion fires 1.45 s after the leader Nell5 dies, while Nell5\|.-2 and .-3 still fly
+   (they die at 691.35 and 694.50 s). In w2 the same rule completes the mission after Enterprise
+   has sunk, because `Mission.Enterprise.Dead` only calls `luaMissionCompletedNew()` every tick
+   (usn_1_marshall.lua 568-576) without setting `EndMission`. Whether the image's `.Dead` on a
+   generated squadron is its leader's death or the squadron's was not read (Lua/plane lane).
+2. **A Nell in the sea is not dead.** In w5/w6, Nell6\|.-3 sits at y = -1.07 with zero speed from
+   about 404 s (`s36_traj_u1w5.Nell6__-3.csv`), with no death row (plane lane).
+3. **Slots do not come back.** After the three squadrons are lost, slot 0 finds no slot in state
+   1 or 5 (`no such slot`) for the rest of the run, except the one at 6700 (lua41's launch chain).
+
+## 177. The garrison binding (packet `cc9_command_building_garrison`, `kCommandBuildingGarrisonBound`, cc9-ships36, 2026-10-06)
+
+**What is bound** (in `src/game_hosts_ship_ai.cpp`, committed OFF; the read is section 175):
+- **Adoption** (`006F5CC0` pass 1) in `build_capture_buildings`, per CommandBuilding: every unit
+  of kind `1Bh`, `45h` or `46h` with the `+724h` bag (`GameUnitsHost::unit_inferior_bag_0724`)
+  within `InferiorRange` (`command_building_inferior_range_07c8`, the image's float/`FILD`
+  comparison). Then `006F3660` once when there are records.
+- **`006F3660`** after every level change in `command_building_level_006f38e0`:
+  - a record whose member died is unlinked (the `00546200` notice);
+  - MinLevel above the level, linked: the kill (`00926D90(2)`) is **recorded**;
+  - unlinked, MinLevel at or below the level: the re-create is **recorded** until the gunnery
+    lane's `revive_unit_garrison_006f3660` lands (routed: `local\s36_gunnery_revive_edit.txt`).
+    Then it will revive in place, with scene flags, the building's Party and Skill, and
+    `refresh_unit_side`;
+  - linked: `set_skill_level_007b8ae0(member, skill_level(building))`.
+- **LABELLED:** adoption at the first controller step, not InitAll; MinLevel 0 for every
+  member, because the scene record keeps only whether the key exists (every member on the rows
+  is Basic, 175.3); a single-player session.
+- **Census:** `command building garrison: unit=... members=N`, a line per re-create and per
+  skill change, and `summary mission command building garrison ...`.
+
+**Predictions for this commit's ON** (the re-create still recorded; written before any ON run):
+- JM08: Headquarter 01 adopts 17 members. Skill pushes at adoption and at 10/20/30 s. The
+  airfield goes 2 -> 1 at the first pass after the script's `SetSkillLevel` (10 s). The
+  re-create of Medium Bunker, Concrete 03 is recorded at 30.00 s, and on JM08 long eleven more
+  at 1041.50 s with party 2. `pair_diff` 1: the airfield launches nothing, and every other
+  member's skill is already 1.
+- USN01: CB2 adopts 9 members. One pass at adoption, every skill 1 = CB2's. `pair_diff` 1.
+- USNOS (control): no members (InferiorRange 10). `pair_diff` 1.
+
+### 177.1 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:** OFF is this tree at `cba12c0f8`; ON is `pair_export.py --commit cba12c0f8 --flip
+kCommandBuildingGarrisonBound=true --out local\s36_gar_on`. The prefixes are `off9` / `on9`
+(`local\s36_rows.ps1`, the reference V launch form). Smoke: `local\s36_smoke_gar.log`, JM08 300,
+OFF, clean.
+
+| row | `pair_diff` | ON census |
+| --- | --- | --- |
+| JM08 3000 | 1 | Headquarter 01 adopts **349**; 4 passes; 5 re-creates recorded (20 and 30 s); the airfield's skill 2 -> 1 |
+| JM08 long 36000 | 1 | 349 members; 5 passes; **117 re-creates recorded, 112 of them at the 1041.50 s neutralize** (party 2); 1628 skill pushes |
+| USN01 3000 | 1 | CB2 adopts **42**; one pass; 42 skill pushes, no change |
+| USNOS 3000 (control) | 1 | 0 members (InferiorRange 10) |
+
+**The member counts missed the prediction, and section 175.3's census was wrong.** This
+installation's `universe/library/landfort.props` (2024-07-13) declares `MinLevel` and `LevelX`
+in the `LandFort` group itself, not only in `CommandBuildingInferior`. So **every LandFort's**
+bag finds `MinLevel`, and `+724h` is set on every LandFort, house, tent, pier and watchtower. The
+host's flag (`scene_contents` `bag.find("MinLevel")` over the merged groups) is right. The census
+script (`s36_garrison.py`) wrongly filtered on the `CommandBuildingInferior` group. The garrisons
+are therefore 349 on JM08 (InferiorRange 100000: every LandFort in the scene) and 42 on USN01,
+not 17 and 9. MinLevel is still 0 for all of them: no row scene authors a MinLevel.
+
+**Verdict: ON.** The mechanism matches the read: adoption by the image's rule, the passes at the
+adoption and at each level change, the death-unlink, and the skill pushes. Every row is gameplay
+identical, as predicted, because the re-create is still recorded. When the gunnery lane's revive
+lands, JM08 long will re-create 112 dead members as Neutral at 1041.50 s (and 5 in JM08 3000 at
+20/30 s), so the next pair should be `pair_diff` 3 there. Not game-validated.
+
+### 176.1 Re-run on main with the bomb drop scatter: blocked in phase 2 (cc9-ships36, 2026-10-06)
+
+The 176 win (w5/w6) used 4 F4F per slot. cc9-lua42 reads the Support Manager's per-slot
+count as min(stock, 3): `0066EC1B` is the only writer of screen+2B4h, with EBP = 3. So the
+native maximum is 3, and w6 is not a reachable win. The re-run with legal counts (w7,
+`local\s36_u1_w7.txt`: four slots of 3 at Nell1-4 from 4100, escorts as w5, slot-0 retries
+of 3) was on main `a8e570039`, with `kAirOpsPlayerLaunchBound` and `kBombDropScatterBound`
+(gunnery29, 1eeffd541) ON. **It never reaches phase 3:**
+- `luaMoveToPh2` runs. Both scout Dauntlesses release their single bomb at 133.20 and 134.10 s
+  from about 218 m (`bomb drop scatter: ... cone=0.297 deg`), with predicted impacts
+  (-3397, -1449) and (-3405, -1462) against Convoy1 at about (-3393, -1428). The
+  `ConLeadListener` (`hit`, TORPEDO/BOMB/ROCKET on Convoy1) never fires, so the ConTBDs are never
+  generated, and there is no `luaMoveToPh3` and no Nells by 1000 s.
+- **No player order recovers it** (w8, w9, `local\s36_u1_w8.txt` / `w9.txt`):
+  - the scouts carry one bomb each and are the only player squadron;
+  - `select Dunlap` is refused by `00645060` (the role is not open to the player in phase 2);
+  - a `moveto Dunlap` onto the convoy's track gets there at about 620 s, behind the convoy (8.1
+    m/s south-south-east), and fires no torpedo;
+  - the torpedo destroyers Ralph and McCall are with Enterprise, about 12 km north.
+
+**Result:** the legal-count win attempt is **blocked before phase 3** by the scout's miss under
+the bomb drop scatter. That is gunnery29's measured flip; whether a human-flown scout (manual
+aim) would hit is outside the harness. Routed (lead): a deterministic scout hit needs either the
+plane lane's dive-aim review against the scatter, or a harness line for the player's manual
+bomb release. The w7 order file is ready to re-run once phase 2 passes.
+
+## 178. Handoff (cc9-ships36, 2026-10-06, at about 70% context)
+
+### Landed (main or `agent/cc9-ships36`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 174 | USN02 completed with player orders (p7, 727.60 s); `009EF350` read whole, 171 (b) closed | - |
+| 175 / 177 | the garrison read (`006F5CC0` pass 1, `006F3660`); records, skill pushes, death-unlink; kill and re-create recorded | `kCommandBuildingGarrisonBound` ON (177.1) |
+| SCRIPTED_HELM 13 | the `launch` line (`script_orders_player_air_ops_launch`) | harness |
+| 176 / 176.1 | USN01 won with 4 F4F per slot (not natively legal); the legal re-run is blocked in phase 2 by the scout miss | - |
+
+### Open, in order
+
+1. **Wire the garrison revive** when cc9-gunnery29 lands `revive_unit_garrison_006f3660`
+   (the routed edit is `local\s36_gunnery_revive_edit.txt` in the ships36 tree). In
+   `command_building_garrison_006f3660`'s re-create arm (`game_hosts_ship_ai.cpp`, "revive
+   not bound (recorded)"), call it. If it returns true:
+   - `units.store_scene_node_flags(identity, {active, !torn_down, !destroyed, !removed})`;
+   - `units.store_pending_destroy_0060(identity, false)`;
+   - `units.set_unit_side_0054(member, party)`, then `gunnery_draws->refresh_unit_side(member)`;
+   - `units.set_skill_level_007b8ae0(member, skill)`;
+   - `r.linked = true`, `++garrison_recreates`.
+   Write the predictions first: JM08 long re-creates 112 members as party 2 at 1041.50 s, and
+   JM08 3000 re-creates 5 at 20/30 s (Watchtower 01 03, Bunker 03, Watchtower 01 05, and the
+   rest are in `local\s36_on9_jm08.log`). Expect `pair_diff` 3 there and 1 on USN01 and USNOS.
+   Then pair off/on with a flip of a new `kCommandBuildingGarrisonReviveBound`.
+2. **A harness line for the player's MANUAL bomb release** (the lead's item). In USN01's
+   opening the player controls ScoutDauntless, so a real player aims and drops that bomb. Scope
+   the image's player release path first:
+   - the input that triggers the drop;
+   - how the player's aim and release point differ from the bot's (`val bomb request` /
+     `release census` / `bomb drop scatter` lines in `local\s36_u1w7.log` show the bot's at
+     133.20 / 134.10 s, about 218 m altitude).
+   Then add a `release <unit>` line, or a takehelm-style dive-and-release for planes, so the
+   scout hit is a player action. The lead has asked cc9-lua42 whether the AI scout's miss is
+   image-faithful under the scatter.
+   - **Note from cc9-lua42:** phase 2 ends only when every `Mission.Convoy` entry is dead
+     (usn_1_marshall.lua 535). Since the scatter, the ConTBD1 drops (the `target ConTBD1
+     Convoy4` lines) miss too, so phase 2 may need player hits beyond the scout's.
+   - Also from cc9-lua42 (all OFF): `kAirOpsPlayerLaunchGroupBound` (the count clamped to 3,
+     0066EC0A), `kAutoAttackAllMembersBound`, and `kSquadronDeadOnLastMemberBound` (a
+     generated squadron is `.Dead` only when its last plane dies; this changes the Nell win
+     condition and phase 2's convoy/MainAttack counting).
+3. **USN01 legal win:** re-run `local\s36_u1_w7.txt` (four slots of 3 at Nell1-4) once phase 2
+   passes (176.1's blocker). Send the order file's path to cc9-lua42, which needs a phase-3 file
+   for its pairs.
+4. **MinLevel value:** scene-contents (lua's lane) carries only whether the key exists. Members
+   take MinLevel 0 (LABELLED). No row scene authors MinLevel; `ijn_05`, `sol_strike` and
+   `empires_fall` would need it.
+
+### Tools (`local\`, `s36_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s36_run.ps1` / `s36_rows.ps1` | one run / detached rows (usn01, jm08, usnos, jm08l), reference V launch form |
+| `s36_sum.ps1`, `s36_traj.py` | death rows, phase markers and per-unit tracks with distance to (0, -7500) |
+| `s36_mkorders.py` | order files with `attack` lines in windows |
+| `s36_garrison.py` | `.scn` garrison census (filters on the CommandBuildingInferior group: WRONG for LandForts, see 177.1) |
+| `s36_hangarcls.py` | hangar objects' hull kinds across row logs |
+
+All leases are released after this commit.
+
+## 179. USN01 won with legal counts and the player's own scout bomb (lead item 1, cc9-ships37, 2026-10-06)
+
+**Lines used:** SCRIPTED_HELM 14's `release` (24c55e733, the player's bomb fire `006082D0` ->
+message C4h -> `007BBBA0`), 12's `target`, 13's `launch` and `moveto`. Every switch is as on main
+`ea9a5b704` (`kAirOpsPlayerLaunchBound`, `kBombDropScatterBound`, the rack and carried-rounds
+switches ON). Launch form: reference V (`local\s37_run.ps1`, a copy of `s36_run.ps1`).
+
+| run | orders | outcome |
+| --- | --- | --- |
+| r1 (4000) | `2400 release ScoutDauntless on Convoy1 within 15 until 2700` over `s36_u1_w7.txt` | the sight closes at 133.65 s (14.6 m from the lead point, tf 3.79 s); the rack drops at 133.70 s; **`luaConLeadHit()` on a 502.8 Bomb hit on Convoy1**: phase 2 passes (176.1's blocker gone) |
+| r2 (20000) | r1's file | Convoy1 and Convoy2 survive to 929.45 / 896.50 s (Northampton), so phase 3 starts only at about 930 s, and w7's launches at 4100+ are refused (no Nells yet). The scouts do not strafe Convoy1 after the drop, unlike s35's idle runs, where ScoutDauntless\|.-2's guns killed it at 163.61 s |
+| p2 (9000) | r1, plus `target ConTBD2` at Convoy1/Convoy2 from 4300 | ConTBD2 is out of torpedoes by then: 007EEC50 chooses class `00E08F20`, not the torpedo class `00E08F18`. No convoy death |
+| p3 (6000) | release, `2720 target ScoutDauntless Convoy1`, ConTBD1 at Convoy1 (2900) then Convoy2 (3500) | Convoy2 dies (196.91 s, ConTBD1's torpedo); Convoy1 and Convoy4 live; no phase 3 by 300 s |
+| p4 (6000) | as p3, with ConTBD1 at Convoy2 (2900) then **Convoy1 (3500)** | all six convoys die by 216.21 s (Convoy1 at 198.76 s, ConTBD1's torpedo); **`luaMoveToPh3` at 218.86 s** |
+| **p5 (20000)** | p4's phase 2, then w7's phase 3 shifted by +300 frames (four slots of 3 at Nell1-4 from 4400, escorts at 4410-4412, slot-0 retries of 3) | **Mission complete at 697.90 s** |
+
+**p5 timeline** (`local\s37_u1p5.log`, order file `local\s37_u1_p5.txt`, trajectories
+`local\s37_traj_u1p5.*.csv`):
+- 133.70 s: the player's bomb hits Convoy1 (`luaConLeadHit`). The ConTBDs are generated, and
+  ConTBD1 becomes the controlled unit at about 140 s.
+- 185.76-216.21 s: the six convoys die. ConTBD1's torpedo kills Convoy1 at 198.76 s.
+- 218.86 s: `luaMoveToPh3`. Four F4F squadrons of 3 queue on slots 1-4. The 38 slot-0 retries
+  are all refused `no such slot` (176 caveat 3).
+- 290.20-401.08 s: the fighters kill eleven Nells: Nell1, 2, 3, 4 and 5, and the wingmen.
+  Squadrons sqn02, sqn01 and sqn04 are lost at 327.19, 351.59 and 422.52 s.
+- 604.68-697.50 s: Northampton and SaltLakeCity shoot down Nell2|.-2, Nell5|.-2, Nell6|.-2 and
+  Nell6. **Enterprise has no death row.**
+- Log line 109036: `bsp: refused a mission script's process launch: sus_prog.exe`. Then
+  `summary mission end: completed at 697.90 s (Mission.EndMission) text="We showed we can fight
+  back! - Mission Complete!"`.
+
+**What this changes against 176:** the legal per-slot count of 3 (`0066EC1B`) wins, and phase 2
+passes on a bomb the player drops, which needs no AI aim. The scout wingman still drops by its own
+task and misses (133.20 s). **LABELLED:**
+- the harness's fixed click times;
+- the sight's lead and radius (SCRIPTED_HELM 14);
+- launches need not come from the controlled carrier (SCRIPTED_HELM 13).
+
+## 180. Victory conditions of the other reference rows, by script (lead item 3, cc9-ships37, 2026-10-06, a read)
+
+Scripts as each row loads them (`mission script name:` lines of reference AB's anchor logs); this
+installation's files, mtime 2024-07-13 unless noted. `local\s37_wins.py` prints each script's
+`MissionComplete` sites and their callers.
+
+| row | script | victory, as the script tests it |
+| --- | --- | --- |
+| LOMP06 | `USN\LOMP\06_crucial_cargo.lua` | both `CrucialCargo1/2` dead, neither by `exitzone` (lines 512-520). The two are `luaPickRnd` picks from twelve Marus (151-153); the player is the submarine Narwhal |
+| LOMP10 | `USN\LOMP\10_san_jose.lua` | five of the eight `SanJoseForce` ships dead (`MonitorSanJoseForce`, 557), before the HQ falls; the player holds the HQ, then the B-25s (424) |
+| USN12 | `USN\usn_12_augusta.lua` | three phases: `DDrow`, then `IJNGrp` dead, then `MontGrp` within 1000 m of its point |
+| ESMP08 | `IJN\ESMP\08_engano.lua` | all of `USNFleet` dead while two IJN carriers live (`luaMonitorObjectives`) |
+| JM08 | `COTP-IJN\PRCPIJN\PRCPJM08.lua` | phase 3's `Dakota` group dead (`CheckPrim3`, 1306), after the earlier phases |
+| JM06, USN04 (`usn_19_coralus.lua`), USN13 (`usn_13_truk.lua`), BSM01, IJN01, IJN11, USNOS (`us_osumi.lua`, a movie end), USNRM01 | | multi-phase, each ending in a whole group or base destroyed |
+
+**Shortest:** LOMP06, two kills by one submarine. Idle (`local\s37_l6idle.log`, 12000 frames,
+`--trajectory-csv`), the AI-held Narwhal sinks Komaki Maru at 230.41 s with a torpedo from 1407 m,
+and nothing else dies; no end by 600 s. **Blocked for a scripted plan:** which two Marus are
+crucial is a Lua random pick (`luaPickRnd` -> `luaRnd`), and no log line or harness probe shows it.
+The objective text that names them (line 251) is not logged. Routed to the lead: a Lua-state probe
+(the lua lane), for example a log line when `luaObj_Add` takes a `Text`.
+
+## 181. LOMP10 toward completion: first pass (lead item 3, cc9-ships37, 2026-10-06)
+
+**The script** (`USN\LOMP\10_san_jose.lua`, this installation, mtime 2024-07-13):
+- **Win:** five of the eight `SanJoseForce` ships dead (Ashigara, Oyodo and six destroyers), tested
+  by `MonitorSanJoseForce` (557). The force attack-moves on the HQ `CB4` (303).
+- **The player's means:** the opening B-25 01 / Lightning 01 / Warhawk 01 flights and PT 01/02.
+  After the 180 s `Countdown` (441), `TimeLimit` gives the airfield `CB4_AF` six B-25s (118),
+  eighteen P-38s (104) and eighteen P-40s (135) (`AddAirBaseStock`, logged), and opens the
+  shipyard (Elco PTs).
+
+**Idle** (`local\s37_l10i2.log`, 9000 frames, merged main): no IJN ship dies by 450 s.
+- B-25 01's sticks fall 20-23 m from their aim (`level bomb release ... miss=23.0` at 119.50 s).
+- PT 01/02 are sunk by Ashigara at 228.31 / 237.31 s.
+- The fleet closes at 16-18 m/s and is 5.5 km from the HQ at 450 s.
+- No end by 800 s (`local\s37_l10idle.log`).
+
+**p1/p2** (`local\s37_l10_p1.txt`, `_p2.txt`): `launch CB4_AF` slots 1-4 at 4900-4903, after
+HQReady.
+- All four launch three planes each. B-25 squadrons go at Kasumi and Kaya, P-38 squadrons at
+  Kashi and Sugi.
+- `CB4_AF_sqn01` runs the level-bomb task to release at 383.93 s: 16 rounds, impact about 13 m
+  from the aim. No ship dies.
+- sqn03, sqn04 and sqn01 are shot down at 365.93, 371.38 and 391.13 s.
+
+**Blocked: the slots never come back.** Every later launch is refused:
+- slot 0: `no such slot` (p1, 38 lines);
+- slots 1-4 named explicitly: `the slot is not in state 1 or 5` (p2, 16 lines from 8000 to
+  11000, after three of the four squadrons were lost).
+
+So the base flies 12 of its 42 planes. This is 176 caveat 3 again, now the gate on LOMP10. Routed
+to the lead for the air-ops lane: what returns a slot to state 1 or 5 after its squadron is lost
+(`BSP_AirOps_UpdateSlot` `006CD350`). Not read here.
+
+### 179.1 p5 re-run with `kSquadronDeadOnLastMemberBound` ON (cc9-ships37, 2026-10-06)
+
+The tree is `agent/cc9-ships37` with main merged (it contains `99905eea9`, the switch ON), rebuilt,
+with the same order file and launch form (`local\s37_u1p5b.log`).
+- **The win holds: `summary mission end: completed at 697.90 s (Mission.EndMission)`**, the
+  same time as p5.
+- The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+  109032.
+- Every listed event matches p5 to the hundredth of a second: `luaConLeadHit`, the six convoy
+  deaths (185.76-216.21 s), `luaMoveToPh3`, and the 22 Nell deaths from 290.20 to 697.50 s.
+
+Why the switch does not move the end: under p5 the last Nell to die is the leader Nell6 itself
+(697.50 s), after every wingman. "Squadron dead" therefore falls on the same tick whether it counts
+the leader or the last member.
+- **Also with `kAirOpsPlayerLaunchGroupBound` ON** (main `34c0a484a` merged, rebuilt,
+  `local\s37_u1p5c.log`): completed at 697.90 s again. The guard line is at 109032, and the log is
+  line-for-line the same at every event checked (the hit at 21478, Convoy4 at 35834,
+  `luaMoveToPh3` at 36521, Nell6 at 108966, the end at 150269).
+
+## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
+
+Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
+
+**The player's order.** On the strategic map (`00675C40`), `00673A10` handles a confirmed purchase
+at a selected shipyard (`EBX` = the unit from `00658A60`, `006743B1`):
+1. It records `[screen+414h][unit id +174h] = screen+330h + screen+32Ch` (`006743D3`-`006743DE`).
+2. It takes the first entry of the shipyard's queue `unit+790h` whose `+4` (state) is 0
+   (`006743ED`-`0067440D`, `006534E0`) as `EBP`.
+3. It sends `screen+334h - 1` messages **A8h** (`00656570`, `PUSH 0A8h`; `+20h` = the entry index,
+   `+24h` = 1; route `006745EE`). The loop runs only when `[screen+3A4h]->vtable[18h](0Fh)` holds.
+4. It sends one message **A9h** (`00656670`, `PUSH 0A9h`, the same layout; route `00674624`), then
+   calls `0065F560`.
+
+**The shipyard's side.** `BSP_Shipyard_HandleLaunchRequest` `00847030` (body `00847030-0084708E`)
+dispatches on the kind byte: A7h -> `00844D60`, A8h -> `008436F0`, A9h -> `00846D90`,
+AAh -> `008437D0`, else `BSP_Unit_HandleMessage`.
+- **A8h** `008436F0`: the entry's `+0Ch` becomes `(+0Ch + step) % (N + 1)`, with `N` =
+  `00951F10` and `step` = 1 when the byte is set. Then it rebroadcasts. A cycling selector on the
+  entry, the UI's quantity or variant.
+- **A9h** `00846D90` (`00846D90..00846FC4`):
+  - finds the stock record (`unit+774h`, stride 20h) whose class `+4` equals the entry's `+8`;
+  - sets the entry's state to **2**;
+  - takes the record's next name (`+10h` list, `+1Ch` index, cycled);
+  - with the byte set, stores `unit+7A0h->vtable[2Ch]()` as the entry's order `+48h`, swapping its
+    observer;
+  - rebroadcasts A9h;
+  - when `00844CE0` answers, calls `BSP_Shipyard_CreateLaunchedUnit` `00844FC0` at once and then
+    `00984EB0(unit, class id, 00844610(class id))`.
+  - The tick's state-2 arm (GUNNERY 122) covers a later free hangar.
+- **Stock**: `AddShipyardStock` `00896CC0` -> `0084ACB0(shipyard, class id, count, name)`. That adds
+  `count` to the stock record for the class, or creates the record through
+  `BSP_VehicleClass_GetOrCreate`, `008485F0` and `008499A0`. LOMP10's `TimeLimit` calls it for
+  four Elcos (27) and two Catalinas (125). **In this host it is UNIMPLEMENTED** (the native table,
+  2 calls on LOMP10).
+
+**What the host lacks, by lane:**
+- **Lua lane:** the `AddShipyardStock` binding (`0084ACB0`).
+- **Gunnery lane** (the shipyard host):
+  - the stock records `+774h`;
+  - the queue entries `+794h`, built from the scene by `00849F70` (`NumSlots`, `"Slot %d"`,
+    `"Stock %d"`);
+  - the A8h/A9h handlers;
+  - the production walk of `00846320`;
+  - `00844FC0`, the unit build.
+- **Mine:** a harness line, `<frame> build <shipyard> [<entry>] [count <n>]`, standing for
+  `00673A10`: `n - 1` A8h and one A9h on the first idle entry (or the named one), through a host
+  entry the gunnery lane would expose. Unread for the line: how the screen chooses its entry
+  beyond "first idle", and `screen+330h/32Ch/334h`.
+
+**Not landed:** the line has nothing to call until the shipyard queue exists in the host. Routed
+to the lead.
