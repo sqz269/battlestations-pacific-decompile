@@ -447,7 +447,7 @@ inline constexpr bool kLuaCountdownBound = true;   // ON: SQUADRON_LAND_TASK 5ds
 // the ship-AI host's capture buildings. False: an
 // unimplemented record that pushes nothing, so `GetCapturePercentage(x) * 100`
 // raises (JM05.lua:5178-5216).
-inline constexpr bool kLuaCapturePercentageBound = false;
+inline constexpr bool kLuaCapturePercentageBound = true;   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

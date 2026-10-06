@@ -12057,6 +12057,22 @@ Every prediction held:
 
 **Verdict: ON**, to be committed once the ship-AI accessor is on main (the binding calls it).
 
+### 5dw.2 Re-measured with the signed value: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+- **The pairs.** Same tree. OFF is `cefd3e213`, which is main with the accessor (2fe14fa05) plus this
+  binding pushing the signed fraction. ON is that commit exported with the flip (`6A8C1180307A`).
+  Logs: `local\l40_{off,on}_{usn02,jm05,jm05l}.log`.
+
+| row | exit | timers created OFF -> ON | `luaTimetable` failures OFF -> ON | calls (ON) |
+| --- | --- | --- | --- | --- |
+| USN02 | 1 | (unchanged) | 0 -> 0 | 0 |
+| JM05 | 1 | 80 -> 128 | 48 -> 0 | 48, none unresolved |
+| JM05 long | 1 | 212 -> 360 | 148 -> 0 | 148, none unresolved |
+
+- **The sign changes no gameplay line**, as 5dw.1 predicted: the value feeds only
+  `Mission.CaptureProgress` and the score display.
+- **Verdict: ON.** The flip belongs to reference AC.
+
 ## 5dx. `SetCatapultStock` and `PilotRetreat`: read, no reach, not bound (cc9-lua39, 2026-10-05)
 
 **`SetCatapultStock` `00892C30`** (census item 5):
