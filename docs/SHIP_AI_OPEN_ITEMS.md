@@ -13220,3 +13220,214 @@ secondary_rolls=0 draws=3007`.
 it. It only matters without the measurement option. Not game-validated.
 
 **Uncertainty:** the effect creation is assumed to succeed, and `class+2Ch` is assumed 0 (162.2).
+
+## 163. Census: what the ship-AI, navigator, landing and building paths still reach on reference AA (lead item 2, cc9-ships34, 2026-10-05)
+
+**Input.** cc9-gunnery27's 22 `g27_aa_base_<row>.log` logs (reference AA). I ran cc9-lua39's
+`l39_census.py` with the name filter `ShipAi|Ship|Navig|Landing|Lander|LandFort|CommandBuilding|
+Building|Approach|Path|Capture|Avoid|Cruise|Steer|Helm|Convoy|Formation|AttackMove` and status
+`UNIMPLEMENTED`. There are 59 keys (`local\s34_census1.txt`).
+`local\s34_recctx.py` (ships33's tool) prints each record's source context.
+
+**Stale labels: the record is the image's whole behaviour, or follows a modelled body.**
+- **`ShipAiState::exit_vtable08`** (22 rows, 929 calls) and **`enter_vtable04`** (20 rows): every
+  non-attackmove exit `+8h` is `RET` (`007B3DC0`, `009DB000`), and the enters other than stop,
+  moveonpath, land, kamikaze and attackmove are `RET` (`007B3DB0`). `local\s34_vt.py` dumps the
+  slots.
+- **`ShipAiAttack::initial_enter_009db590`** (11 rows): `009DB590` is a bare `RET`.
+- **`ShipAiNavBlock::seed_steering_unprojected`**, **`ShipAiApproach::sub_heading_command`** /
+  **`sub_throttle_command`** / **`wrap_brain_heading`** / **`set_brain_throttle_0258`**: recorded
+  next to a `done()` or a modelled read.
+- **`ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530`**: it returns this installation's
+  robots.lua values.
+- **`ShipAiMoveOnPath::brain_leg_scale_0308`**, **`ShipAiLand::brain_field_308`**: stored, with no
+  reader (section 138).
+- **`ShipAiApproach::target_kind_probe_005c`**: the result is discarded at `009E80AB`.
+
+**Records with no consumer (a named hole, no gameplay):**
+- `ShipAi::unit_weapon_director` (vtable `114h`);
+- `ShipAi::drive_heading_vtable50`, which the host's heading getter answers;
+- `ShipAiOrder::slot_to_order_ring` (inter-unit state with no reader in the steering);
+- `ShipAiFollow` / `ShipAiApproachPoint::refresh_world_pose` `00414DB0`;
+- `ShipAiGoal::observer_*`, `ShipAiPlanner::release_node_list`;
+- the HUD rows (presentation);
+- the JM08-long-only landing records (`0A6h` route, troop paths, `0080E490`).
+
+**Real gaps, ranked by reach:**
+
+| # | site | rows | calls | what is missing | gameplay reach |
+| ---: | --- | ---: | ---: | --- | --- |
+| 1 | `00BD2F10` stand-ins answered with the low bound. **Stream 1:** `009F1DB4` (retarget timer `+11D8h`), `009E9209` (avoid refresh `+11F4h`), `009E63A6` (traffic `+108h`), `009E711D` / `009E7199` (standoff `+11E4h`). **Stream 0:** `009E465F` (nav block, constructor) | 22 (nav block); 10 / 10 / 8 (timers); 1 (standoff, JM08 long) | 908; 16136 / 13121 / 10530; 28 | the draws: every timer is exactly 2.0 instead of uniform in [2, 3), the standoff is pinned to its low end, and no stream draw is consumed | every approaching ship's retarget and avoidance cadence; the stream positions of every later draw on those keys |
+| 2 | `ShipAiObstacle::backoff_countdown` `009F3F89`, behind `kShipAiObstacleBackoffCountdownBound` (OFF since 65.5) | 22 | 5.5 M (every step) | the astern-latch countdown | 65.5 found `held_steps=0` on seven rows with the bound ON. The OFF census cannot show the latch arming, so a re-pair is needed to know whether it reaches now |
+| 3 | `Navigator::parts_land_avoidance_disabled` `0092BD00` (script orders) | 3: JM05, JM05 long, USNRM01 | 5 | the disable arm of the land avoidance | the Lua lane (`game_hosts_script_orders.cpp`) |
+| 4 | `MissionLuaNative::GetCapturePercentage` | 2 | 196 | cc9-lua39's accessor (`f022aeb0c`) is in; the native is the Lua lane's | presentation (JM05's score display) |
+
+**Taken:** item 1 (section 164), then item 2's re-pair if time allows. Item 3 belongs to the Lua lane.
+
+## 164. The ship AI's random timers take their draws (packet `cc9_ship_ai_timer_draws`, `kShipAiTimerDrawsBound`, cc9-ships34, 2026-10-05)
+
+### 164.1 The read
+
+| site | stream | range | store |
+| --- | --- | --- | --- |
+| `009F1DB4` (in `009F1BC0`, the approach point) | 1 (`009F1D9F MOV ECX,1`) | `[00CE3958]` 2.0 .. `[00CE3854]` 3.0 | `nested+11D8h`, the retarget timer (`009F1DB9`) |
+| `009E9209` (in `009E9190`, the approach avoidance refresh) | 1 | 2.0 .. 3.0 | `+11F4h` (`009E9211`) |
+| `009E63A6` (in `009E6240`, the traffic record) | 1 | 2.0 .. 3.0 | record `+108h` (`009E63AB`) |
+| `009E711D` / `009E7199` (in `009E6E80`) | 1 | `[low, low + spread]` | the standoff range `+11E4h`, re-drawn when out of range |
+| `009E465F` (in the nav block constructor) | 0 (`009E4644 XOR ECX,ECX`) | 0.0 .. 1.0 | negated into `blk+148h` (`009E4669`), no traced reader |
+
+The host answered every one with its low bound and recorded it. So each timer is exactly 2.0 and the
+standoff is pinned to its low end. No draw is consumed, so every later draw on the same stream
+position differs from the image's.
+
+### 164.2 The binding (committed OFF)
+
+`kShipAiTimerDrawsBound` in `src/game_hosts_ship_ai.cpp`:
+- the stream-1 sites call `GameGunneryHost::ship_ai_draw(unit, low, high)`, the stream-1
+  generator the ship AI's torpedo draws already use;
+- the stream-0 site calls `death_mode_draw_00bd2f10(0, unit, 0, 1)`.
+
+Under the reference form's `BSP_GUNNERY_RNG_STREAMS=1` both are keyed per unit:
+- `ship_ai` for stream 1;
+- `death_delay` for stream 0, which is also the key of the unit's death-explosion delay draw
+  (`007BBFA0`).
+
+Census: `summary mission ship ai timer draws retarget avoid traffic nav_block standoff bound`.
+
+### 164.3 Predictions (written before any ON run)
+
+- **Mechanism:**
+  - `nav_block` equals the units with a nav block (about 908 / 22, so about 40 per row);
+  - retarget, avoid and traffic are positive on the approach rows (JM05, JM08 long), and 0 on
+    BSM01 and USN01;
+  - `standoff > 0` only on JM08 long.
+- **Spread:**
+  - **Approach rows (JM05 3000, JM08 long):** `pair_diff` 3. The retarget and avoid timers become
+    staggered in [2, 3), so the approach scans and the ring retargets retime.
+  - **USNOS and USN13:** they have approach frames in reference AA (USNOS mode 0). Expect 3 if any
+    timer site is reached there, else 1 by the stream-0 key below.
+  - **Rows with ship deaths and no approach (USN01):** the nav-block draw takes the first position
+    of each unit's `death_delay` key, so every later explosion-delay draw of a dying ship moves.
+    Expect 3 through death timings.
+  - **BSM01:** it has no deaths and no approach, so it is identical (1).
+
+### 164.4 Smoke and pairs; verdict ON (spread miss recorded)
+
+**Runs:**
+- OFF is this tree at `0c4904f46`.
+- ON is `pair_export.py --commit 0c4904f46 --flip kShipAiTimerDrawsBound=true --out local\s34_td_on`.
+- Prefixes `off5` / `on5`.
+- Smoke: `local\s34_smoke5.log`, JM05 300 frames. Clean.
+
+| row | `pair_diff` | ON census (retarget / avoid / traffic / nav_block / standoff) |
+| --- | --- | --- |
+| BSM01 3000 | 1 | 0 / 0 / 0 / 2 / 0 |
+| USN13 3000 | 1 | 0 / 0 / 0 / 0 / 0 |
+| USNOS 3000 | 1 | 376 / 384 / 40 / 20 / 0 |
+| USN01 3000 | 1 | 0 / 0 / 0 / 0 / 0 |
+| JM05 3000 | 1 | 111 / 110 / 142 / 5 / 0 |
+| JM08 long 36000 | 3 | 12150 / 7934 / 385 / 19 / 26 |
+
+**Mechanism: matched.** Every reached site takes its draw, and `standoff` is reached only on JM08
+long.
+
+**JM08 long:**
+- deaths 129 -> 126;
+- the HQ is neutralized at 1036.10 s instead of 1034.10 s;
+- `Japanese AA truck 01` dies at 1212.21 s instead of 1029.53 s;
+- the kontener rows leave, and a third LandingShip death appears.
+
+**Spread miss, recorded:**
+- I predicted 3 for JM05 and for USN01. JM05's staggered timers do not change any outcome within
+  3000 frames.
+- USN01 builds no nav block in 3000 frames (`nav_block=0`), so the death-delay coupling I
+  predicted has no input.
+- USNOS (20 nav-block draws, 87 deaths) is also identical. Its dying units' explosion-delay keys
+  are not those units, or the delay draw does not use the `death_delay` key there. Not traced.
+
+**Verdict: ON** (mechanism matched; spread miss recorded). Not game-validated.
+
+## 165. The CommandBuilding hit-gate entry, and the backoff countdown re-pair (cc9-ships34, 2026-10-06; reference AC)
+
+### 165.1 The hit-gate entry (`52b0240fe`, no behaviour change)
+
+`GameShipAiHost::command_building_hit_gate_006f1f20(unit, amount)` is for cc9-gunnery28's gunfire
+gate (GUNNERY_OPEN_ITEMS 125). It is the `006F1F20` step the lander bleed (section 161) runs inline:
+- false while the capture building's `+7D8h` is not 0;
+- otherwise `007470B0`'s roll (section 162) and true;
+- true for any other unit.
+
+`+7D8h` is set and counted down only under `kLandingShipLandedRemainderBound` (ON). Nothing calls
+the entry in this commit.
+
+### 165.2 The backoff countdown re-pair (section 163 item 2): predictions
+
+`kShipAiObstacleBackoffCountdownBound` (`include/bsp/ship_ai_obstacle_tables.hpp`, OFF since 65.5)
+binds `009F3F89..009F3FE3`, the astern latch `blk+380h` countdown. 65.5 found it never armed on seven
+rows. Reference AA reaches the call site on all 22 rows, and the escape byte reset (ON) now sets on
+entry thousands of times (USNOS 14009, JM05 13590). So the latch may arm now.
+
+**Runs:** OFF is this tree at `52b0240fe`; ON is `pair_export --flip
+kShipAiObstacleBackoffCountdownBound=true`. Rows: BSM01, USN13, USNOS, USN01, JM05 3000 and JM08
+long.
+
+**Predictions:**
+- If the latch never arms, `held_steps=0` on every row and all six are `pair_diff` 1. The switch
+  stays OFF, as in 65.5.
+- If it arms (`held_steps > 0`), the held units hold astern until the countdown expires, and those
+  rows move (3). The escape rows (USNOS, JM05, USN13) are the candidates.
+
+### 165.3 The re-pair: stays OFF
+
+**Runs:** prefixes `off6` / `on6`; ON is `local\s34_bo_on` from `9845c1c13`.
+
+All six rows (BSM01, USN13, USNOS, USN01, JM05 3000 and JM08 long) are `pair_diff` 1, with
+`held_steps=0 units=0 expiries=0` under the bound on every row. The astern latch `blk+380h` still
+never arms on reference AC's state, so 65.5's verdict holds:
+`kShipAiObstacleBackoffCountdownBound` **stays OFF, recorded (no reach)**.
+
+The escape byte reset's thousands of entries do not reach the latch's arming path.
+
+## 166. Handoff (cc9-ships34, 2026-10-06, at about 68% context)
+
+### Landed (on main or on agent/cc9-ships34)
+
+| section | what | switch |
+| --- | --- | --- |
+| 158 | JM08 72000: no HQ flip (host-only past the mission end) | doc |
+| 159 | the approach's "throttle" is plan `+2Ch`, the search's side-switch penalty | `kShipAiApproachSearchPenaltyBound` ON |
+| 160 | a capture building's Lua `Party` re-mirrored on neutralize and flip; JM08 fails at about 1052.6 s | `kCommandBuildingPartyLuaMirrorBound` ON |
+| 161 | the landing-ship remainder `00749B20`: bleed a hostile building, leave a friendly one, the 20 s `+7D8h` | `kLandingShipLandedRemainderBound` ON |
+| 162 | the LandFort fire roll and its draws | `kLandFortFireRollBound` ON |
+| 163 | the ships-lane census on reference AA | doc |
+| 164 | the ship AI's timer draws | `kShipAiTimerDrawsBound` ON |
+| 165 | the `006F1F20` hit-gate entry for cc9-gunnery28 (`52b0240fe`); the backoff re-pair (stays OFF) | entry only |
+
+Also on the branch: cc9-lua39's capture-fraction accessor (`f022aeb0c`, landed).
+
+### Open items
+
+- **163 item 3:** `Navigator::parts_land_avoidance_disabled` `0092BD00` / `0080E490` (JM05, JM05
+  long, USNRM01). It is in the Lua lane's `game_hosts_script_orders.cpp`; route it there.
+- **161 / 162 LABELLED pieces:**
+  - the master `+738h` forward;
+  - `006F38E0`'s armour level rescale;
+  - the fire-effect creation (assumed to succeed);
+  - `class+2Ch` (taken as 0);
+  - `00BD2FC0` consumed as one `00BD2F10` step.
+- **164's spread miss:** USNOS's 20 nav-block draws do not move any death-delay draw. Whether the
+  explosion delay uses the `death_delay` key per dying unit is untraced.
+- **Section 160's follow-ups**, routed by the lead to cc9-lua40: `MissionNarrative`'s callback
+  (so the end chain reaches `EndScene`), and the `MissionFailed` summary field.
+- **Rows are image-faithful only to about 40 s past a scripted mission end** (160.1). JM08 long's
+  rows are host-only after about 1093 s.
+
+### Tools (`local\`, `s34_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s34_run.ps1` / `s34_rows.ps1` | reference V's launch form (`-Prefix -Only <keys> [-Exe]`, called with `&`) |
+| `s34_dispscan.py <disp...> [--lo --hi]` | a `.text` census of memory operands by displacement (it takes the longest decode) |
+| `s34_captick.py` | the capture tick timeline |
+| `s34_recctx.py` | a record's source context |
+| `s34_vt.py` | the state vtables' enter / exit slots |
