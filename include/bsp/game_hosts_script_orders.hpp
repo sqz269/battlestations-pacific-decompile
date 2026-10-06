@@ -457,7 +457,7 @@ inline constexpr bool kLuaCapturePercentageBound = true;
 // TempWaitBase, fade-out DialogFadeTime) and 00734140 calls the entry's callback
 // when it has faded out; EndScene 008B01B0 is recorded (no freeze). False: the
 // natives stay unimplemented records and no callback ever fires.
-inline constexpr bool kLuaMissionNarrativeBound = false;   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
+inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

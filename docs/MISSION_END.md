@@ -246,3 +246,30 @@ JM08 long now fails at about 1052.6 s through CheckHQ -> `luaMissionFailedNew`, 
   5. Expect `summary mission scene end calls=1 first_at` at about 1093 s.
   6. Gameplay after the failure is already frozen by `luaInitMissionEnd` (every unit invincible).
      Expect exit 1, or exit 3 only in post-failure counters.
+### 7.1 Measured: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+**The pairs.** Same tree. OFF is `aa2228fe0`; ON is that commit exported with the flip
+(`FE4DB5B63EF3`). Logs: `local\l40_{off,on}_<row>.log`.
+
+| row | exit | narrative on ON |
+| --- | --- | --- |
+| USN02 | 1 | 2 shown. The failure at 74.30 s queues `obj_fail` with `luaMissionEnd_CamOnEnt`, and the callback fires |
+| USN01 | 1 | 4 shown, no callback |
+| USNRM01 | 1 | 4 shown, no callback |
+| LOMP06 | 1 | 1 shown; 21 clears |
+| JM08 long | 1 | 3 shown. The failure queues `obj_fail` at 1034.53 s, and the callback fires about 2.7 s later |
+
+**Gameplay is identical on every row**, as predicted. The queue, the timings and the callback firing
+match the read.
+
+**The prediction that missed: no EndScene.** On both failing rows `luaMissionEnd_CamOnEnt` raises at
+`commandhelpers.lua:10720` (`attempt to index a nil value`). `GetCameraState()` (`008BF6A0`) is an
+unimplemented native, so it returns nothing, and the chain stops before `luaDelay(FadeAway)`.
+- **What that native does (read for this note).** It returns `{Position, Rotation, Zoom}` (the key
+  string is at `00D14988`) from the camera object `[game+19FCh]`.
+  This host does not model that camera.
+- **Recorded as the next gap.** `summary mission scene end calls=0`, and `summary mission end` now
+  says `EndScene 008B01B0 not reached (narrative callbacks=1)` when the switch is on.
+
+**Verdict: ON.** The mechanism matches. The stop comes from a different, unbound native, and is
+recorded.
