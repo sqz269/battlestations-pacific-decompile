@@ -12228,6 +12228,20 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
     }
 }
 
+// Packet cc9_lua_capture_percentage: see the header.
+bool GameShipAiHost::command_building_capture_fraction_006f1f90(std::size_t unit_index,
+                                                                float& out) const {
+    for (const auto& b : impl_->capture_buildings) {
+        if (b.unit != unit_index) continue;
+        const std::int32_t value = b.state.capture_value_7a4;
+        out = value == 0 ? 0.0f
+            : static_cast<float>(static_cast<double>(b.state.progress_7a8)
+                                 / static_cast<double>(value));
+        return true;
+    }
+    return false;
+}
+
 bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
     Impl& host = *impl_;
     if (!kCommandBuildingCaptureBound) return false;
