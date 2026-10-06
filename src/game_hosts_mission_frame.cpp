@@ -3024,12 +3024,37 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 const std::size_t count = host.units->count();
                 std::size_t idx = count;
                 std::size_t target_idx = count;
+                // LABELLED (cc9-ships38): `<t1> | <t2> | ...` names the player's
+                // next picks in order; the first that passes 0043F080 (live and
+                // visible) is taken, standing in for the player moving the
+                // screen centre to the next target once one is gone.
+                std::vector<std::string> picks;
+                for (std::size_t from = 0;;) {
+                    const std::size_t bar = order.target.find(" | ", from);
+                    picks.push_back(order.target.substr(from, bar == std::string::npos
+                        ? std::string::npos : bar - from));
+                    if (bar == std::string::npos) break;
+                    from = bar + 3;
+                }
                 for (std::size_t k = 0; k < count; ++k) {
                     const GameUnitRow* row = host.units->unit_row(k);
-                    if (row == nullptr) continue;
-                    if (row->name == order.unit && idx == count) idx = k;
-                    if (row->name == order.target && target_idx == count) target_idx = k;
+                    if (row != nullptr && row->name == order.unit) { idx = k; break; }
                 }
+                for (const std::string& pick : picks) {
+                    std::size_t first = count;
+                    for (std::size_t k = 0; k < count; ++k) {
+                        const GameUnitRow* row = host.units->unit_row(k);
+                        if (row != nullptr && row->name == pick) { first = k; break; }
+                    }
+                    if (first < count && target_idx == count) target_idx = first;
+                    if (first < count && host.units->unit_alive_and_visible(first)) {
+                        target_idx = first;
+                        break;
+                    }
+                }
+                const GameUnitRow* picked_row = target_idx < count
+                    ? host.units->unit_row(target_idx) : nullptr;
+                const std::string picked = picked_row != nullptr ? picked_row->name : order.target;
                 const bsp::PlaneSquadronHostRecord* squadron = idx < count
                     ? bsp::plane_squadron_registry().find_by_member_unit(idx) : nullptr;
                 std::vector<std::size_t> members;
@@ -3074,7 +3099,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) target "
                     "%s -> %s%s through 00525250: 0077D600(00E08EF8 settarget, kind 1, flags 1) "
                     "-> 007F1940 -> class %08lx to %zu member(s)", issued ? "applied" : "refused",
-                    order.line, due, now, order.unit.c_str(), order.target.c_str(), why,
+                    order.line, due, now, order.unit.c_str(), picked.c_str(), why,
                     static_cast<unsigned long>(chosen), members.size());
                 continue;
             }
