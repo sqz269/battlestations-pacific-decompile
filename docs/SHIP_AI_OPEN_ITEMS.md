@@ -14595,3 +14595,55 @@ AI-led ships carry `NavigatorSetAvoidLandCollision`.
 
 **LABELLED:** the harness's fixed click times. The moveto goes to the named NavPoint's position
 (SCRIPTED_HELM 8.1), where the player would click a map point.
+
+## 188. ESMP08 toward completion: 10 of 15 (lead item 3, cc9-ships38, 2026-10-06)
+
+**Correction to 180.** `Mission.USNFleet` in `IJN\ESMP\08_engano.lua` (this installation, mtime
+2024-07-13, lines 330-345) holds **fifteen** ships, not ten:
+- Iowa, Washington and South Dakota;
+- Salt Lake City, San Diego, Santa Fe and Mobile (Pensacola is commented out);
+- Cummings, Case and Cassin;
+- **Downes, Dunlap, Fanning, Grayson and Woodworth.**
+
+`luaMonitorObjectives` wins when all fifteen are dead while two of the four IJN carriers live.
+
+**Orders** (`local\s38_e8gen.py` -> `s38_e8_p<n>.txt`):
+- Every 600 frames from 300, each of Zuikaku, Chiyoda, Zuiho and Chitose launches each of its
+  slots 1-4 at count 4.
+- Slots 1-3 try bombers first and fall back to Zeros: B6N Jill 163, D4Y Judy 159 and B5N Kate 162
+  as each carrier's stock allows. Slot 4 launches A6M Zeros (150).
+- Each slot walks the target list from its own rotation. A dead or hidden target is refused by
+  186's `0043F080` check, and the next line is tried.
+
+| run | frames | targets listed | USNFleet dead | carriers lost |
+| --- | --- | --- | --- | --- |
+| idle (`s38_e8idle`) | 20000 | none | 0 by 1000 s | 0 |
+| p1 (`s38_e8p1`) | 40000 | the first ten | 5 | 0 |
+| p2 (`s38_e8p2`) | 72000 | the first ten | all ten listed, by 2166.19 s; the other five are never targeted | 0 |
+| p3 (`s38_e8p3`) | 72000 | all fifteen | 10; Mobile, Cummings, Case, Cassin and Woodworth live | 0 |
+
+Every run ends with `summary mission end: none`.
+
+**What stops p3:**
+- **Launch counts.** 46 launches are applied, the last at frame 43515. For the final 28000
+  frames every one of the 16 slots refuses with `the slot is not in state 1 or 5`.
+- **Kills are slot-limited.** At about one kill every four minutes, a longer run does not help
+  while the slots stay held.
+- **The Zuikaku deck is blocked for 38 minutes.** `Zuikaku_sqn01|.-2` is installed in the takeoff
+  prepare at 29.90 s, and its `prep_left` is 2313.08 s ("prepare time and site permission",
+  `summary takeoff member`).
+  - Zuikaku's other ten planes (sqn01|.-3 to sqn04|.-3) take off only between 2326 and 2415 s.
+  - In p1 the same member is still in prepare at 443.42 s (state 448, 4135 ticks), when it is
+    destroyed (death row killer `Zuikaku_sqn02`).
+  - No other member in p3 waits more than 60 s.
+- **Routed to the lead:**
+  - the takeoff site permission for that member: the plane and takeoff sources, lua lane;
+  - what keeps the other carriers' slots out of states 1 and 5: the air-ops slot return, 176
+    caveat 3.
+
+`Mission.SkillLevel`, the US repair switch (`RepairEnable(unit, false)`) and
+`SetForcedReconLevel(unit, 2, PARTY_JAPANESE)` were not examined.
+
+**LABELLED:** the launch line (SCRIPTED_HELM 13) and 186's dead-or-hidden refusal. A hidden target
+is one that fails `0043F080`, which this host computes and the screen's target list was assumed to
+share.
