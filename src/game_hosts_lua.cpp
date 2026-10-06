@@ -843,8 +843,17 @@ namespace {
 lua_State* g_loadout_lua_state = nullptr;
 }  // namespace
 
+// The run log the os.execute / io.popen guard writes its refusal into.
+static GameHostLog* g_exec_refusal_log = nullptr;
+
 GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
     : log_(log), vfs_(vfs) {
+    // The guard's refusal line into this run's log (stderr is discarded).
+    g_exec_refusal_log = &log_;
+    bsp::g_lua_exec_refused_sink = [](const char* command) {
+        if (g_exec_refusal_log != nullptr)
+            g_exec_refusal_log->notef("bsp: refused a mission script's process launch: %s", command);
+    };
     // The content-suffix list at manager +48h/+4Ch is empty in this process, as
     // milestone 2b recorded, so every override query answers with the base file
     // alone. The resource adapter is the same one the locale tables read
@@ -856,6 +865,10 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameMissionLuaHost::~GameMissionLuaHost() {
+    if (g_exec_refusal_log == &log_) {
+        g_exec_refusal_log = nullptr;
+        bsp::g_lua_exec_refused_sink = nullptr;
+    }
     // The world walk holds a bare pointer to this host for the spawn drain.
     bsp::set_spawn_queue_drain(nullptr);
     if (state_ != nullptr) {
