@@ -165,8 +165,10 @@ struct GameDirector {
     bsp::ShipAiPathCursor path_cursor{};
     std::vector<std::array<float, 3>> path_points;   // the path source's points
     std::string path_name;
-    int path_follow_mode{0};   // command+8h, 0071C1B0's first store
-    int path_start_mode{0};    // command+0Ch, 0071C1B0's second store
+    // command+8h / +0Ch, 0071C1B0's two stores; 0071FB90 constructs them as 1
+    // and 5 (kPathObjectDefaultPairBound).
+    int path_follow_mode{kPathObjectDefaultPairBound ? 1 : 0};
+    int path_start_mode{kPathObjectDefaultPairBound ? 5 : 0};
     bool path_built{false};
     unsigned long long path_advances{0};
     int path_start_index{0};
