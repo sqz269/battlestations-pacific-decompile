@@ -1088,6 +1088,12 @@ public:
     // or why it was refused. docs/GUNNERY_OPEN_ITEMS.md section 136.
     bool shipyard_order(std::size_t shipyard, int entry, int count, int& chosen_entry,
                         std::string& reason, int vehicle_class = 0);
+    // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound in the
+    // .cpp): the player's weapon-group fire, message 79h (005484F0 -> 00959C20).
+    // Only group 5 (Function 8/9 launchers, the depth charges) is bound. `held`
+    // is the 99h byte; it stays on the launchers until a call with held=false,
+    // as a held key sends it every frame. docs/GUNNERY_OPEN_ITEMS.md 140.
+    bool player_fire_weapon_group(std::size_t unit, int group, bool held, std::string& reason);
     // unit+368h, the instance armour, for a writer outside this host: 006F38E0
     // stores Armor[level] / 100 * class Armour there (SHIP_AI 169). The direct-hit
     // passes read it under kCommandBuildingGunfireArmourBound (GUNNERY 129).
