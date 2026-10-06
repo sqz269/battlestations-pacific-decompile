@@ -12006,7 +12006,11 @@ aim-error draws. Two routes can advance USN01's phase 2:
 
 Census item 4. **The image (read whole):**
 - `0089B840` reads argument 0 through `00888AA0`, calls `006F1F90` on that entity with no class
-  test, takes `|result|` and pushes it with `00B66480`: one result.
+  test, and pushes the result as it is with `00B66480`: one result.
+  - **Correction (cc9-lua40, 2026-10-06, from cc9-ships34).** The earlier text here said `|result|`.
+    `006F1F90` is `FLD [+7A8h]` / `FIDIV [+7A4h]` / `FSTP` with no `FABS`, so a side-1 capture
+    pushes a negative fraction. The committed binding pushes the signed value, and 5dw.2 re-measures
+    it.
 - `006F1F90` (`006F1F90`-`006F1FB2`) answers 0.0 when `+7A4h` (the capture value) is 0.
   Otherwise it answers `[+7A8h] FIDIV [+7A4h]` (progress over value), stored as a float.
 

@@ -439,6 +439,15 @@ inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TAS
 // stored arguments (0073521F). False: the three natives stay unimplemented
 // records that push nothing, so no countdown callback ever runs.
 inline constexpr bool kLuaCountdownBound = true;   // ON: SQUADRON_LAND_TASK 5ds.1
+
+// Packet cc9_lua_capture_percentage (docs/SQUADRON_LAND_TASK.md 5dw). True:
+// `GetCapturePercentage(entity)` 0089B840 pushes 006F1F90(entity), the
+// building's capture progress +7A8h over its capture value +7A4h (0 when +7A4h
+// is 0), signed (there is no FABS, so a side-1 capture is negative), read from
+// the ship-AI host's capture buildings. False: an
+// unimplemented record that pushes nothing, so `GetCapturePercentage(x) * 100`
+// raises (JM05.lua:5178-5216).
+inline constexpr bool kLuaCapturePercentageBound = false;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
@@ -951,6 +960,9 @@ private:
     std::size_t countdown_expiries_{0};
     std::size_t countdown_callbacks_{0};
     std::string countdown_last_callback_;
+    // Packet cc9_lua_capture_percentage.
+    std::size_t capture_percentage_calls_{0};
+    std::size_t capture_percentage_unresolved_{0};
     // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
     std::string after_row9_poster_;
     struct DeferredOrder {
