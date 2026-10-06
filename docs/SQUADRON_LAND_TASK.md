@@ -13155,3 +13155,20 @@ It then calls `shipyard_scene_attach_00849a30`. The Lua entity seeding binds the
     the stock.
 - **Rows with shipyards in their scene** (USN04 and the Truk rows): attach lines only, gameplay
   identical.
+
+### 5ej.1 Measured: both **ON** (cc9-lua43, 2026-10-06)
+
+The pair is same-tree at b8b8415e0 with both switches flipped (`local\l43_sy`). pair_diff exits 1 on
+both rows: gameplay is identical.
+
+**LOMP10 11400/11200, p2 order file.** Every predicted line appears:
+- `shipyard scene attach: unit=CB4_SY NumSlots=4 stocks=4 kept=0 hangars=4 slots=4 entries=4`;
+- `AddShipyardStock 00896cc0: "CB4_SY" class 27 +4 -> 4 names="Elco" (new record)`;
+- `... class 125 +2 -> 2 names="Catalina" (new record)`;
+- summary: calls=2 new_records=2 unresolved=0.
+
+**USN04 4700/4500.** The prediction was wrong. This USN04 is `usn_19_coralus.scn`, which has no
+Shipyard row, so there are no attach lines. Gameplay is identical.
+
+**Verdict.** The mechanism matches, so both switches are ON. The production walk, the `build` line and
+the creation seam are what would make this stock reach gameplay.
