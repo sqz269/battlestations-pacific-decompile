@@ -12850,3 +12850,127 @@ The `searches` counter counts search ticks with a non-zero `+2Ch` in either bloc
   escort and transport paths after the approach brings them within range.
 - **Not game-validated:** the penalty's effect on route choice is the image's cost walk as read,
   not an observation of the original game.
+
+## 160. A captured building's Lua `Party` (packet `cc9_capture_party_lua_mirror`, `kCommandBuildingPartyLuaMirrorBound`, cc9-ships34, 2026-10-05)
+
+### 160.1 The read
+
+Section 158.2 has the chain.
+- 006F4D10's neutralize arm calls `vtable[2Ch](2, [this+58h], &tmp)` at `006F50CA` (`CALL EDX`,
+  EDI = 2 from `006F5083`).
+- The flip arms make the same call with the slot's party at `006F4FB8`.
+- CommandBuilding's slot `+2Ch` (`00CFB054`) is `00951F30` = `JMP 00928F50`.
+  `BSP_MissionEntity_SetPartyRaceLuaMirror` calls `00923B80`, then writes `Race` and `Party` into
+  the entity's Lua table.
+
+**What the image does after `luaMissionFailedNew`** (this installation's
+`scripts\global\commandhelpers.lua`, mtime 2024-10-29). The second definition at 10360 is the live
+one.
+- `luaInitMissionEnd` (13643):
+  - stops the scoring clock and disables messages and input;
+  - cancels the countdown;
+  - calls `SetInvincible(unit, 0.1)` on every live Allied, Japanese and neutral unit;
+  - clears the dialogs;
+  - hands `endEnt` to the AI.
+- Then `luaObj_FailedAll(true)`, `Mission.MissionStatus = false`, and `Mission.MusicEndTime =
+  GameTime()+40`. It calls `Blackout(true, "", false, 0.25)` and
+  `MissionNarrative("missionglobals.obj_fail", "luaMissionEnd_CamOnEnt")`.
+- `luaMissionEnd_CamOnEnt` (10616) arms `luaMissionEnd_FadeAway` at `MusicEndTime - GameTime() -
+  2.5`, which `luaFadeAway`s into `luaMissionEnd_Finale` (10899). The Finale calls `luaDelay(luaMissionEnd_EndScene, 2)`, and that runs the
+  `EndScene()` native (10915).
+- **So the world keeps stepping for about 40 s after the failure, with every unit invincible
+  (`SetInvincible(..., 0.1)`) and input off. Then `EndScene` closes the scene.**
+- Read only: the `EndScene` native's own body (the request 0Fh -> `004D7970` path that the mission
+  frame host runs) and `luaFadeAway`'s duration were not re-read here.
+- **Consequence:** a reference row's gameplay after a scripted mission end is the image's for about
+  40 s at most. Beyond that the image has no world, so those numbers are host-only.
+
+### 160.2 The binding (committed OFF)
+
+`kCommandBuildingPartyLuaMirrorBound` in `src/game_hosts_ship_ai.cpp`:
+- **true:** after the host's side change, at both the neutralize (`006F50CA`) and the flip
+  (`006F4FB8`), the ship-AI host calls `GameMissionLuaHost::mirror_party_race_00928f50()` through
+  the Lua host pointer it already holds (`settings_owner`). `src/game_hosts_lua.cpp` is not edited.
+- **LABELLED:** that projection rewrites `Party` on every named unit from its row, not on the one
+  entity. Rows whose party did not change get the value they already hold.
+- **false:** the table keeps the party written at attach.
+
+Census line: `summary mission command building party lua mirror calls last_slots bound`.
+
+### 160.3 Predictions (written before any ON run)
+
+- **JM08 long 36000:**
+  - `calls=1` (the neutralize at 1052.00 s);
+  - the next `CheckHQ` (a 1 s poll) sees `Party == 2`. `luaMissionFailedNew` runs at about
+    1052-1053 s, and `MissionFailedRan` is set;
+  - from then on the units are invincible, so the deaths after about 1053 s disappear (OFF has
+    deaths through 1800 s). `pair_diff` 3;
+  - about 40 s later (about 1093-1095 s) the script reaches `EndScene`, if the host's
+    Blackout/narrative/fade callbacks fire. If any of them is a stand-in that never calls back,
+    the run continues past it, and the census will show where it stops.
+- **Controls:**
+  - USN13 and USNOS each have 3 capture buildings but no neutralize in 3000 frames;
+  - BSM01 has none;
+  - USN01 3000 does not neutralize CB2 within 150 s (156.2's run did, much later);
+  - all four `pair_diff` 1, census only.
+
+### 160.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `1bd0f3073`.
+- ON is `pair_export.py --commit 1bd0f3073 --flip kCommandBuildingPartyLuaMirrorBound=true --out
+  local\s34_pm_on`.
+- Prefixes `off2` / `on2`.
+- Smoke: `local\s34_smoke2.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism:**
+- `calls=1 last_slots=403`: the neutralize at 1052.00 s re-mirrors 403 named slots.
+- The next `CheckHQ` runs `Fail()`, and `luaMissionFailedNew` runs `luaInitMissionEnd`. The
+  `SetInvincible(..., 0.100)` lines for every live unit start at log line 136430 (about
+  1052.6 s), after the `CountdownCancel` and `EnableInput` natives (both still
+  UNIMPLEMENTED).
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| deaths | 177 | 135 |
+| deaths after 1053 s | 43 | 1 |
+| last death | 1794.88 s | 1079.73 s |
+| hit records | 6967 | 9376 |
+| shots | 7839 | 9037 |
+
+- The one late death is `Japanese AA truck 01` at 1079.73 s (first damaged 1076.47 s). Either
+  `luaGetOwnUnits` does not return it, or `SetInvincible 0.1` is a health floor that a large hit
+  crosses. Not read.
+- Fire continues against invincible units (more hits, no kills), which is what the image's 40 s
+  epilogue would show.
+
+**Where the host diverges after that:**
+- `MissionNarrative` (`008B0C10`) is UNIMPLEMENTED in the host, so its callback
+  `luaMissionEnd_CamOnEnt` never runs.
+- The fade, the Finale and `EndScene` are never reached, and the host steps an invincible world to
+  1800 s.
+- The image would end the scene about 40 s after the failure (160.1). So every JM08 long row is now
+  image-faithful to about 1093 s and host-only after it.
+- `summary mission script state` still prints `MissionFailedRan=nil`: it reads
+  `Mission.MissionFailed`, which the New path does not set (it sets `Mission.MissionStatus = false`).
+  That is a census gap in `src/game_hosts_lua.cpp` (cc9-lua39's file).
+
+**Verdict: ON.**
+- Every prediction held. The one open alternative (whether `EndScene` is reached) is answered:
+  not in the host, because of the narrative stand-in.
+- **Not game-validated.**
+- **Follow-ups:**
+  - (a) `MissionNarrative`'s callback, so the end chain reaches `EndScene`;
+  - (b) a `MissionStatus` census;
+  - (c) reference-row tooling should treat a row as image-faithful only up to about 40 s after a
+    scripted mission end.
