@@ -1,4 +1,5 @@
 #include "bsp/lua_state_owner.hpp"
+#include "bsp/lua_exec_guard.hpp"
 
 #include <cstring>
 #include <new>
@@ -19,8 +20,8 @@ struct Library {
 // Native00d62bb8: base/package/table/io/os/string/math/debug, then null.
 const Library libraries[] = {
     {"", luaopen_base}, {LUA_LOADLIBNAME, luaopen_package},
-    {LUA_TABLIBNAME, luaopen_table}, {LUA_IOLIBNAME, luaopen_io},
-    {LUA_OSLIBNAME, luaopen_os}, {LUA_STRLIBNAME, luaopen_string},
+    {LUA_TABLIBNAME, luaopen_table}, {LUA_IOLIBNAME, bsp::luaopen_io_guarded},
+    {LUA_OSLIBNAME, bsp::luaopen_os_guarded}, {LUA_STRLIBNAME, luaopen_string},
     {LUA_MATHLIBNAME, luaopen_math}, {LUA_DBLIBNAME, luaopen_debug}
 };
 int panic_00b669c0(lua_State* state) {

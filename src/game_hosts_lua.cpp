@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/lua_exec_guard.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -92,7 +93,7 @@ constexpr std::uint32_t kScriptReadMode = 2;
 // are in bsp::kMissionLuaStandardLibraries; these are the matched library's
 // openers for the same seven rows, and luaopen_package is absent from both.
 const lua_CFunction kLibraryOpeners[bsp::kMissionLuaStandardLibraryCount] = {
-    luaopen_base, luaopen_table, luaopen_io, luaopen_os,
+    luaopen_base, luaopen_table, bsp::luaopen_io_guarded, bsp::luaopen_os_guarded,
     luaopen_string, luaopen_math, luaopen_debug,
 };
 

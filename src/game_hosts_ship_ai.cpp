@@ -642,6 +642,17 @@ inline constexpr bool kShipAiApproachLanderTermsBound = true;
 // another state. False: it starts with no state and its first steps are records.
 // ON by section 155.1: BSM01, USN13 and USNOS gameplay identical.
 inline constexpr bool kShipAiInitialCruiseStateBound = true;
+// Packet cc9_approach_search_penalty (section 159). The approach's "throttle"
+// (009F32A0..009F32E5: 2 * (unit+494h + 500 - nested+11E0h), clamped to 0..1000)
+// is stored at 009F337B / 009F3383 into [blk+250h] and [blk+2B8h], which are the
+// two plan blocks' +2Ch (blk+224h+2Ch, blk+28Ch+2Ch). The only reader is the
+// search tick: 009EC6D8 FLD [plan+2Ch] is the side_switch_penalty argument of the
+// cost walk 009EC280 (009EC6E2). True: the store goes into ctl.plan_a and
+// ctl.plan_b's search_context, so the next search adds it at each side switch.
+// False: the value is kept in a member nothing reads, as before.
+// ON by section 159.4: BSM01, USN13 and USNOS gameplay identical (USNOS writes
+// 3951 zeros); JM08 long moves through 25958 positive writes and 129466 searches.
+inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1426,6 +1437,13 @@ struct GameShipAiHost::Impl {
     unsigned long long path_resets{0};
     unsigned long long path_resets_live{0};
     unsigned long long path_resets_setter{0};
+    // Packet cc9_approach_search_penalty: the approach's stores into both plan
+    // blocks' +2Ch, those above 0, and the search ticks that ran with a non-zero
+    // penalty in either block.
+    unsigned long long approach_penalty_writes{0};
+    unsigned long long approach_penalty_positive{0};
+    unsigned long long approach_penalty_searches{0};
+    float approach_penalty_max{0.0f};
     std::map<int, GameUnitsHost::VehicleClassLaunchKeys> launch_keys;
     const GameUnitsHost::VehicleClassLaunchKeys& class_launch_keys(int type_id) {
         auto found = launch_keys.find(type_id);
@@ -6572,13 +6590,26 @@ public:
     void set_brain_throttle_0258(float throttle) override {
         // 009F337B and 009F3383, brain+258h and brain+2C0h: [ESI+250h] and
         // [ESI+2B8h] with ESI = blk = brain+8h (009F32F7 LEA ESI,[ECX+8],
-        // ECX = [sub+4h]). A displacement scan of 009D8000-009F6060 and a .text
-        // co-occurrence scan find no reader of either field (section 139), so
-        // this is where the approach's own
-        // throttle stops: it is NOT blk+1D0h, the desired throttle the ring
-        // hop carries.
+        // ECX = [sub+4h]). Section 139 found no [blk+250h] reader; section 159
+        // (cc9-ships34) reads the fields as the plan blocks' +2Ch, read through the
+        // plan pointer at 009EC6D8 as 009EC280's side-switch penalty. It is NOT
+        // blk+1D0h, the desired throttle the ring hop carries.
         brain_throttle_0258_ = throttle;
-        owner_.record("ShipAiApproach::set_brain_throttle_0258", 0x009f337bu);
+        if (!kShipAiApproachSearchPenaltyBound) {
+            owner_.record("ShipAiApproach::set_brain_throttle_0258", 0x009f337bu);
+            return;
+        }
+        // Packet cc9_approach_search_penalty: blk+250h / +2B8h are the plan
+        // blocks' +2Ch, which 009EC6D8 hands to 009EC280 as the side-switch
+        // penalty. The host keeps the field as a raw dword (search_context).
+        std::uint32_t bits = 0;
+        std::memcpy(&bits, &throttle, sizeof(bits));
+        ctl_.plan_a.search_context = bits;   // 009F337B
+        ctl_.plan_b.search_context = bits;   // 009F3383
+        ++owner_.approach_penalty_writes;
+        if (throttle > 0.0f) ++owner_.approach_penalty_positive;
+        owner_.approach_penalty_max = std::max(owner_.approach_penalty_max, throttle);
+        owner_.done("ShipAiApproach::set_brain_throttle_0258", 0x009f337bu);
     }
     float sub_sweep_timer_14b4() override { return ctl_.substate_ring_timer_14b4; }
     void set_sub_sweep_timer_14b4(float seconds_left) override {
@@ -8617,6 +8648,9 @@ public:
         if (result.searched_back || result.searched_front) {
             ++row_.path_search_ticks;
             ++owner_.summary.path_search_ticks;
+            if (ctl_.plan_a.search_context != 0u || ctl_.plan_b.search_context != 0u) {
+                ++owner_.approach_penalty_searches;
+            }
         }
         if (result.swapped) {
             ++row_.path_plan_swaps;
@@ -13247,6 +13281,12 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission ship ai approach search penalty writes=%llu "
+            "positive=%llu max=%.1f searches=%llu bound=%d (009F337B / 009F3383 into plan "
+            "+2Ch, read at 009EC6D8 for 009EC280; packet cc9_approach_search_penalty)",
+            host.approach_penalty_writes, host.approach_penalty_positive,
+            static_cast<double>(host.approach_penalty_max), host.approach_penalty_searches,
+            kShipAiApproachSearchPenaltyBound ? 1 : 0);
         host.log.notef("summary mission ship ai setter path reset resets=%llu live=%llu "
             "from_setters=%llu bound=%d (009DA4E0 at 009DFFDE / 009E006E every pass, "
             "+1CCh at 009E0088; packet cc9_setter_path_reset)",
