@@ -13238,3 +13238,47 @@ takeoff site denied: Zuikaku_sqn01|.-2 own_z=78.4 by Zuikaku_sqn01 z=-85.4 state
 - A narrower alternative: the `006C0840` key. A non-accepting holder keys on l.x² + (0.3 l.z)², so a plane
   just off one carrier's bow and behind the next carrier's stern can pick the next carrier.
 - No switch was bound. The diagnostics are log lines only.
+
+## 5em. Handoff (cc9-lua43, 2026-10-06, at about 72% context)
+
+The branch is `agent/cc9-lua43` and the worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua43`. Main is
+merged in and everything is committed. The only lease held is the docs lease `cc9_placement_followup_docs`
+(released at the end of this turn).
+
+| item | commits | state |
+| --- | --- | --- |
+| summary mission end keyed on `Mission.MissionStatus` (lua42's diff) | `926a8f826` | in; LOMP06 p2 verified |
+| 007F2920 member placement: PutTo + pass C | `6604cdf11`, `e68beb96d` (main `12291183b`) | ON; SQUADRON_MEMBER_PLACEMENT |
+| SQUADRON_SPAWN_SEATS 6c (6a corrected, `+408h` path audit) | `52dc012b4` | in |
+| AddShipyardStock + shipyard scene attach, GUNNERY 136 (A)-(C) | `b8b8415e0`, `7556f3f03` | ON, 5ej |
+| shipyard creation seam, GUNNERY 136 (D) | `e07680e85` | registered, inert, 5ek |
+| takeoff-site / lift-off diagnostics | `e0dd63a99`, `cc996267d` | log lines only |
+| re-check pairs, ESMP08 (b) read | `69fe3a044` | SQUADRON_MEMBER_PLACEMENT 6, 5el |
+
+**Next, in order:**
+1. **ESMP08 (b).** The read is 5el.
+   - Find why Zuikaku_sqn01 leaves the bow edge at |v| 37 instead of lifting off on the runway: the
+     takeoff run `009CE2C0` and its lift-off by speed.
+   - Also check whether `006C0840`'s non-accepting key really lets the next carrier in column win.
+   - Bind any host departure OFF, then pair ESMP08 long with `cc9-ships38\local\s38_e8_p3.txt`.
+2. **ESMP08 (a).** After frame 43515 all 16 IJN carrier slots refuse with "not in state 1 or 5".
+   - First establish whether those squadrons are lost, landed, or still flying (the LOMP10 method,
+     ENTITY_DEAD_FLAG 8).
+   - If they land and the slot is still not released, read `006CD350` states 1/2, `006CC5C0` and
+     `007F1B70` -> `006C65B0`.
+3. **GUNNERY 138, the rack branch split.** bruh #1.9 is a LevelBomber on USN13 long.
+   - Its first drop goes through the single-rack path as a torpedo; then `lb_level_bomber_racks()` turns
+     true and no per-rack drops follow.
+   - Find the producer of `unit_.ordnance_mask`, unify the two arms the way `006E56F0` does, bind OFF, and
+     pair USN13 long, USNOS and LOMP10.
+4. **To route to cc9-ships37:** `s37_u1_p5.txt`'s line-2 release misses by 1.5 m with placement ON
+   (SQUADRON_MEMBER_PLACEMENT 6). The order file needs re-tuning before USN01's win is re-checked with it.
+5. **GUNNERY 136.** gunnery30 pairs `kShipyardProductionBound` with ships38's `build CB4_SY class 27` line.
+   The seam's first real use will show its labelled gaps: the Catalina's `State` 6, and the water height.
+
+**Scripts** are in `local\`, prefix `l43_`:
+- `l43_queue.ps1` (rows `u1w6`, `u1s37`, `l6p2`, `l10p2`, `usn04`, `lomp10l`, `jm08`; sides `off` /
+  `<export>`);
+- `l43_edit_2920.py` (the applied units edit);
+- `l43_occ.py` (ground-entry vs lift-off census);
+- `l43_field_writers.py` (lua42's disp32 scanner).
