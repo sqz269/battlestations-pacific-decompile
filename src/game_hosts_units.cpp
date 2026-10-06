@@ -11363,7 +11363,11 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     }
     const ReturnToBaseCensus* entry = nullptr;
     for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
-    if (entry == nullptr || entry->last_arm != 2) return false;
+    // Packet cc9_rtb_home_arm: the home arm's `land` (007F1000) targets the home
+    // base, so it keeps the task the same way.
+    const bool home_arm = bsp::kReturnToBaseHomeArmBound && entry != nullptr
+        && entry->last_arm == 1;
+    if (entry == nullptr || (entry->last_arm != 2 && !home_arm)) return false;
     const std::size_t owner = unit.land_site_plus_one - 1u;
     if (owner >= slots.size()) return false;
     return slots[owner]->row.name == entry->last_site;
