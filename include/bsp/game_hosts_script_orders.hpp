@@ -127,7 +127,7 @@ inline constexpr bool kEntityDeadBound = true;
 // fused with its wing-0 plane publishes `Dead` only once no other member still
 // flies, as 007F3970 kills the squadron entity only when +3CCh reaches 0. False:
 // the fused leader's death publishes it.
-inline constexpr bool kSquadronDeadOnLastMemberBound = false;
+inline constexpr bool kSquadronDeadOnLastMemberBound = true;   // ON: ENTITY_DEAD_FLAG 8.1, measured
 
 // Packet cc9_mission_end, docs/MISSION_END.md. True: the dialog registry that
 // StartDialog / KillDialog / GetActDialogIDs share (the case-insensitive map at
