@@ -821,6 +821,14 @@ inline constexpr bool kAutoAttackAllMembersBound = false;  // OFF: mechanism fai
 // squadron-level command, so each deck member is given it as it launches.
 // False: only the members flying at the first serve get it.
 inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAUNCH_TICK, member orders at launch, measured
+// Packet cc9_takeoff_own_site (SQUADRON_LAND_TASK 5en). True: the plane's site
+// probe 006C0840 takes its own-site arm (006C086D-006C0964) for a plane with a
+// scene parent (00923810(1); this host: the deck parent) that answers
+// IsKindOf(45h) or IsKindOf(9) with +5Eh clear: *dist = 0.0 and the parent's
+// holder (+7ACh / +1208h) when the sides match, else no site, before any key
+// is compared. False: a parented plane is keyed against every deck like a
+// flying one, so a plane at its carrier's bow can pick the next carrier.
+inline constexpr bool kTakeoffOwnSiteBound = true;   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state
