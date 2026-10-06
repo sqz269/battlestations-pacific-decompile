@@ -623,6 +623,12 @@ constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
 //    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
 //    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
 constexpr bool kDepthChargeBotTickBound = false;
+//  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
+//    79h's group 5 arm (0095A441): the player's depth-charge launchers take
+//    the 99h-held byte as their trigger, and GameGunneryHost::
+//    player_fire_weapon_group sends that message for a harness line. OFF: the
+//    arm is a record. docs/GUNNERY_OPEN_ITEMS.md 140.
+constexpr bool kPlayerWeaponGroupFireBound = false;
 // robots.lua (2025-06-01) DepthChargeBot by skill index 0 Stun .. 5 Elite:
 // AttackDist, BulletThrowMul, ContinuousFireTime, FireDelay low, high.
 constexpr float kDepthChargeBotLevels[6][5] = {
@@ -1175,6 +1181,8 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
     std::map<std::size_t, bool> depth_charge_trigger_by_gun;
     unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
+    unsigned long long player_group5_triggers{0}, player_group_fires{0};
     std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
@@ -10265,7 +10273,28 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         return;
     }
     if (m.group == 5) {                                            // 0095A441
-        record("PlayerGunSeat::message_group5", 0x0095a441u);
+        if (!kPlayerWeaponGroupFireBound) {
+            record("PlayerGunSeat::message_group5", 0x0095a441u);
+            return;
+        }
+        // Packet cc9_player_weapon_group_fire. 0095A441..0095A5BB walks unit+48h:
+        // a gun that is IsKindOf(20h) and passes 00954210(5) (operational, and
+        // 0080F750: Function 8 or 9). Function 9 is aimed first (00957740,
+        // 00955630, 0085ABA0) and its trigger drops outside 3 degrees; any
+        // other takes vtable[1E8h](+34h, 99h held) directly (0095A58D..0095A5A0).
+        if (unit >= unit_state.size() || unit_state[unit].dead) return;
+        for (std::size_t g = 0; g < guns.size(); ++g) {
+            GameGunRow& gun = guns[g];
+            if (gun.unit_index != unit) continue;
+            if (gun.category == 8) {
+                gun.seat_trigger = m.held_34;
+                ++player_group5_triggers;
+            } else if (gun.category == 9) {
+                // LABELLED: the Function 9 aim (00957740 / 00955630) is not read.
+                record("PlayerGunSeat::group5_function9_aim", 0x0095a4b6u);
+            }
+        }
+        done("PlayerGunSeat::message_group5", 0x0095a441u);
         return;
     }
     if (m.group != 1 && m.group != 2) {
@@ -10917,6 +10946,48 @@ bool GameGunneryHost::shipyard_order(std::size_t shipyard, int entry, int count,
         "cc9_shipyard_production)", row->name.c_str(), chosen_entry, class_id, equipment,
         name.c_str(), bsp::shipyard_available_00844610(*yard, class_id), reason.c_str());
     host.done("Shipyard::order", 0x00846d90u);
+    return true;
+}
+
+// Packet cc9_player_weapon_group_fire. The player's weapon-group fire on screen
+// 2Eh (SHIP_SCREEN_UPDATE 28): 9Fh selects group 5 (role 7, mask 80h, through
+// 005484B0 and 0077C470), then 005484F0 sends message 79h with the group and the
+// 99h held / pressed bytes, routed to the unit's 00959C20 every frame.
+// LABELLED: the role take is modelled as the group's guns taking the local
+// slot (seat 0), which is what makes their bots stand aside (00927F10); the
+// permission test 009542B0 and the HUD screen are not run.
+bool GameGunneryHost::player_fire_weapon_group(std::size_t unit, int group, bool held,
+                                               std::string& reason) {
+    Impl& host = *impl_;
+    const GameUnitRow* row = unit < host.units.count() ? host.units.unit_row(unit) : nullptr;
+    auto refuse = [&](const char* why) {
+        reason = why;
+        host.log.notef("player weapon group fire REFUSED: unit=%s group=%d held=%d: %s "
+            "(005484F0 79h, packet cc9_player_weapon_group_fire)",
+            row != nullptr ? row->name.c_str() : "-", group, held ? 1 : 0, why);
+        return false;
+    };
+    if (!kPlayerWeaponGroupFireBound) return refuse("kPlayerWeaponGroupFireBound is off");
+    if (row == nullptr || unit >= host.unit_state.size()) return refuse("no such unit");
+    if (host.unit_state[unit].dead) return refuse("the unit is dead");
+    if (group != 5) return refuse("only group 5 (depth charges) is bound");
+    std::size_t taken = 0;
+    for (GameGunRow& gun : host.guns) {
+        if (gun.unit_index != unit || (gun.category != 8 && gun.category != 9)) continue;
+        gun.seat_1ac = 0;
+        ++taken;
+    }
+    if (taken == 0) return refuse("the unit has no Function 8/9 launcher (0080F750)");
+    GunAimMessage79 m;
+    m.group = 5;
+    m.held_34 = held;
+    m.pressed_35 = held;
+    host.apply_gun_aim_message(unit, m);
+    ++host.player_group_fires;
+    reason = held ? "held" : "released";
+    host.log.notef("player weapon group fire: unit=%s group=5 launchers=%zu %s (005484F0 79h -> "
+        "00959C20 0095A441, packet cc9_player_weapon_group_fire)", row->name.c_str(), taken,
+        reason.c_str());
     return true;
 }
 
@@ -11874,6 +11945,12 @@ void GameGunneryHost::log_sample(unsigned long long step_index,
 void GameGunneryHost::report() {
     Impl& host = *impl_;
     const GameGunnerySummary& s = host.summary;
+    if (kDepthChargeBotTickBound || kPlayerWeaponGroupFireBound) {
+        host.log.notef("summary mission gunnery depth charge bot ticks=%llu holds=%llu "
+            "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
+            "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
+            host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
     if constexpr (bsp::kShipyardProductionBound) {
         const auto& y = host.shipyard;
         host.log.notef("summary shipyard production: yards=%zu walks=%llu orders=%llu "

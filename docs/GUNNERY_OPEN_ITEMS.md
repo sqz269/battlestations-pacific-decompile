@@ -10261,3 +10261,28 @@ cat 8) with `assigns 496 shots 0 rises 0 refusals 20324`. The category table rea
    is not checked here. If it does, the mini-sub dies and phase 3 advances.
 2. **Idle reference rows:** the switch moves only rows where a DC-armed ship holds a submerged target within
    100 m. Expected exit 1 on the controls (BSM01 3000, USN13 long), unless a destroyer meets a submarine there.
+
+## 140. The player's weapon-group fire: message 79h group 5 (lead item; SHIP_AI 191.2; cc9-gunnery30, 2026-10-06)
+
+**The image.** Screen 2Eh (SHIP_SCREEN_UPDATE 28) selects group 5 with key 9Fh. The role take for role 7
+(mask 80h) goes through `005484B0` -> `0077C470`. Then `005484F0` sends message 79h (group, aim, 99h held at
+`+34h`, pressed at `+35h`, target) every frame, routed to the unit. `00959C20`'s group 5 arm,
+`0095A441..0095A5BB` (read here), works like this:
+- It walks the unit's gun list `+48h`. A gun must be `IsKindOf(20h)` and pass `00954210(5)`: operational, and
+  `0080F750` true, i.e. Function 8 or 9 (`0080F75C`, `0080F761`).
+- Function 9 is aimed (`00957740`, `00955630`, `0085ABA0`). Its trigger drops when either angle is more than 3
+  degrees off (`00D1A8A0`, `0095A54C`, `0095A587`).
+- Every other gun, i.e. the depth-charge rack (Function 8), gets `vtable[1E8h]` with the 99h-held byte directly
+  (`0095A58D..0095A5A0`). A network client skips this (`[00E188A8]+1FE4h == 2`, `0095A506`).
+
+**The host** (`kPlayerWeaponGroupFireBound`, committed OFF):
+- The group 5 arm sets `seat_trigger` = held for the unit's Function 8 guns. The Function 9 aim is a record.
+- `GameGunneryHost::player_fire_weapon_group(unit, group, held, reason)`, for a harness line
+  `fire <ship> group 5 [release]`:
+  1. It takes the group's guns for the local slot (seat 0), so their bots stand aside (`00927F10`).
+  2. It applies the message. The trigger stays held until a call with `held=false`.
+- **LABELLED:** the role take `0077C470` is modelled as that seat change; `009542B0`'s permission test is not
+  run. Groups other than 5 are refused.
+**Prediction:** with both switches ON and a `fire HenryPT group 5` line once Henry has stopped 39.8 m from the
+mini-sub (BSM01 p6, about frame 10000), Henry's rack fires at its reload rate and a charge drops at Henry's
+position. Whether it sinks to -6.96 m and hits within its blast radius is the projectile's business, not read here.
