@@ -653,6 +653,25 @@ constexpr bool kPlayerWeaponGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 14
 //    player_fire_torpedo_group sends the message. OFF: the arm is a record.
 //    docs/GUNNERY_OPEN_ITEMS.md 152.
 constexpr bool kPlayerTorpedoGroupFireBound = false;
+//  * kMeshlessGunPointWindowBound: packet cc9_meshless_gun_point_window.
+//    0085A3D0 (TurningGun setup), 0085A3E0..0085A4A8: when world+4A4h is set
+//    (always 1, 009037F0 from 004DE69C), the gun class has no Mesh ([desc+38h],
+//    the Mesh string 0087CB64 fills, is empty) and 007F6CA0 answers (the
+//    platform holds at most one window and the first lacks bit 0, i.e. only
+//    007F7110's flags-0 seed survived), the setup inserts through 007F5A10 a
+//    POINT window {flags 3, h..h, v..v}: h = atan2(-f.x, f.z) (0085A467),
+//    v = atan2(f.y, f.z) (0085A488), f = row 2 (+20h) of [gun+3BCh]'s local
+//    matrix (00B6DB60). A meshless gun's node is a fresh one (0072EBE9) whose
+//    local matrix is 0072DD20's platform frame, the 0095F500 slot frame. This
+//    installation's "US/Jap submarine torpedo catapult" rows author no Mesh,
+//    so it is what lets 0085AB50 / 007F6190 snap a tube's bearing (player
+//    group 4 and the bot alike). The 0085A3D0 rest seed then takes the point.
+//    SUBSTITUTIONS: 0072DD20's re-expression through a kind 46h/44h parent is
+//    not modelled (ship and land platforms only); a platform shared by several
+//    meshless guns gets the same insert from each (the image's later guns fail
+//    007F6CA0 but see the same frame, so the list is identical). OFF: counted
+//    only. docs/GUNNERY_OPEN_ITEMS.md 155.
+constexpr bool kMeshlessGunPointWindowBound = false;
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
@@ -2256,6 +2275,11 @@ struct GameGunneryHost::Impl {
     unsigned long long turn_average_tests{0};        // cc9_aa_turn_average
     unsigned long long turn_average_rotations{0};
     unsigned long long mounts_missing{0};
+    // Packet cc9_meshless_gun_point_window (0085A3E0..0085A4A8).
+    unsigned long long point_window_candidates{0};
+    unsigned long long point_window_inserts{0};
+    unsigned long long point_window_meshed{0};
+    unsigned long long point_window_carved{0};
     ShipModelSlots& ship_model_slots(int type_id);
     // The ship's model mesh for the shell hit test, when bound and loaded.
     const ShipModelSlots* ship_mesh_of(std::size_t index) {
@@ -4337,6 +4361,48 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             // keeps this a statement about what the data says.
             if (gun.arcs.size() <= 1 && windows > 0 && traverses) continue;
             done("Gunnery::add_authored_arc_007f6b10", 0x007f6b10u);
+
+            // 0085A3E0..0085A4A8: the meshless gun's point fire window.
+            if (gun_answers_turning_22h(gun.category) && gun.device_class >= 0) {
+                const bool meshless = device_fire_points(gun.device_class).mesh.empty();
+                const bool seed_only = gun.arcs.size() <= 1
+                    && (gun.arcs.empty()
+                        || (gun.arcs.front().flags & bsp::kGunArcFlagTraverse) == 0);  // 007F6CA0
+                if (!meshless) {
+                    ++point_window_meshed;
+                } else if (!seed_only) {
+                    ++point_window_carved;
+                } else {
+                    ++point_window_candidates;
+                    // 0072EBE9: the node's local matrix is 0072DD20's platform
+                    // frame; an absent slot keeps 007F7110's identity frame.
+                    float f[3] = {0.0f, 0.0f, 1.0f};
+                    bsp::GunPlatformSlotFrame frame;
+                    const ShipModelSlots& slots = ship_model_slots(type_id);
+                    if (slots.loaded && bsp::gun_platform_slot_frame_0095f500(slots.items,
+                            gun.platform_key, frame)) {
+                        for (int k = 0; k < 3; ++k) f[k] = frame.forward[k];
+                    }
+                    bsp::GunFiringArc point;
+                    point.flags = static_cast<std::uint8_t>(bsp::kGunArcFlagTraverse
+                        | bsp::kGunArcFlagFire);                     // 0085A43B, byte 3
+                    point.min_horz = point.max_horz = std::atan2(-f[0], f[2]);  // 0085A467
+                    point.min_vert = point.max_vert = std::atan2(f[1], f[2]);   // 0085A488
+                    if (point_window_candidates <= 8) {
+                        log.notef("gunnery: meshless point window %s platform %d cat=%d dev=%d "
+                            "h=%.1f v=%.1f bound=%d (0085A4A8)", state.row.name.c_str(),
+                            gun.platform_key, gun.category, gun.device_class,
+                            static_cast<double>(point.min_horz * 57.2957795f),
+                            static_cast<double>(point.min_vert * 57.2957795f),
+                            kMeshlessGunPointWindowBound ? 1 : 0);
+                    }
+                    if constexpr (kMeshlessGunPointWindowBound) {
+                        bsp::gun_split_insert_arc_007f5a10(gun.arcs, point);
+                        ++point_window_inserts;
+                        done("TurningGun::insert_meshless_point_window_0085a4a8", 0x0085a4a8u);
+                    }
+                }
+            }
 
             gun.angles.horz = gun.rest_horz;
             gun.angles.vert = gun.rest_vert;
@@ -13214,6 +13280,11 @@ void GameGunneryHost::report() {
         kGunIdleRestBound ? 1 : 0, s.idle_holds, s.idle_rests, s.idle_rests_unauthored,
         s.idle_windbacks, s.rest_seeds, s.rest_seed_no_arc,
         static_cast<double>(kGunNoTargetTimeUntilRest));
+    host.log.notef("summary mission gunnery meshless point window bound=%d candidates=%llu "
+        "inserts=%llu meshed=%llu carved=%llu (0085A3E0..0085A4A8, packet "
+        "cc9_meshless_gun_point_window)", kMeshlessGunPointWindowBound ? 1 : 0,
+        host.point_window_candidates, host.point_window_inserts, host.point_window_meshed,
+        host.point_window_carved);
     host.log.notef("summary mission gunnery targeted refusals=%llu no_accept=%llu "
         "no_settle=%llu no_window=%llu", s.angle_refusals_targeted,
         s.want_fire_no_accept, s.want_fire_no_settle, s.want_fire_no_window);
