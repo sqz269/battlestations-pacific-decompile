@@ -13805,3 +13805,90 @@ All leases are released after this commit.
 **Verdict: ON.** The mechanism matches (the maximum follows the level, health is untouched). Every
 row is gameplay identical; only the presentation-side fire roll moves, as predicted. Not
 game-validated.
+
+## 174. USN02 completed with scripted player input; 009EF350's give-way read whole (lead item 1, cc9-ships36, 2026-10-06)
+
+### 174.1 The give-way rule: the image turns a player-ordered moveto ship the same way (171 (b) closed)
+
+`009EF350` (`void __fastcall(ECX=blk)`, body `009EF350..009EF90C`, sole caller `009F4D10`) was read
+whole against `bsp::ship_ai_traffic_pass_009ef350` (`src/ship_ai_neighbour_clips.cpp`). Coverage:
+complete. Every branch matches:
+- **Who is accepted.** Entry k of the three-entry table is set when `blk+3F0h >= 0`,
+  `0080E160(unit)+241h` (`shipCollisionAvoidance`, default 1, `0083672A`) and `settings+04h` are
+  set, and `blk+3F0h` is 3 or equals k. A node counts when `+88h` (pass side) is non-zero, its owner
+  is live (`+5Eh` clear) and the table entry for the owner's Party `+54h` is set.
+- **What a player moveto leaves in `blk+3F0h`.** The harness `moveto` and the HUD's `005F9B20` both
+  issue `00E08F68` into `0077D600`; the ship AI state becomes `movetopos`. By the whole-`.text`
+  writer census of SHIP_AI_AVOIDANCE_REQUEST.md section 3, no `movetopos` arm writes `blk+3F0h`, so
+  the pre-pass `009F1420` value stands: `AvoidAllShipCollision ? 3 : -1`, that is 3 on USN02, whose
+  script never calls `NavigatorSetAvoidShipCollision`. 3 accepts all three Parties, so an **enemy**
+  destroyer with a pass side is a node the ship gives way to. Only `009E23B0` (attackmove engage) and
+  `009E2020` (kamikaze) narrow it to the own Party.
+- **The window and clamp.** Side-1 / side-2 nearest selection (`local_14`/`local_20` and
+  `local_18`/`local_10`), the open-side defaults `heading -/+ [00CF0AA8]`, the `(n1 - k + n2)`
+  narrowing rounds, the overlap nudge `[00D7A358]`, the clearance `sqrt` into `blk+33Ch`, the clamp
+  of `blk+324h - heading` into `[lo, hi]` and the `blk+354h` floor all match the host line by line.
+  The host's extra `party > 2` skip covers the latent one-past-the-table read
+  (SHIP_AI_AVOIDANCE_REQUEST.md section 2); ship Parties are 0..2, so it never differs.
+
+**Verdict:** 171 (b)'s turn of Houston away from Yamakaze (429 m) is what the image does for a
+`movetopos` ship. Nothing to bind.
+
+### 174.2 USN02: phase timeline of seven player plans
+
+Tree `agent/cc9-ships36` at `4b41b8555` (main), reference V launch form (`local\s36_run.ps1`,
+copied from `s35_run.ps1`), 12000-18000 frames, `--trajectory-csv`. Houston starts at
+(1200, -6000), **1921 m** from EscapePoint (0, -7500), heading north, away from it.
+
+| plan | orders | outcome |
+| --- | --- | --- |
+| p1 | r3, plus `2900 moveto Houston EscapePoint` | Houston holds at 0 m/s 105-145 s (171 (a)), then turns east and south at 8.3 m/s; 3038 m out at phase 2 (210 s); sunk at 265.61 s by Nachi |
+| p2 | `540 moveto Houston EscapePoint`, then r3's Exeter orders | Houston at 4.4 m from the point by 240 s and parked. Phase 1 never clears: Asagumo and Yukikaze sit at 0 m/s 3.5 km east; no end by 600 s |
+| p3 | p2, plus `attack Exeter Asagumo/Yukikaze` from 4400 | Exeter stays at 0 m/s: r3's `attack Exeter Hatsukaze repeat 15` keeps re-issuing on the dead Hatsukaze and overrides each new order. No end |
+| p4 | p2 with attacks in windows (no repeat onto dead targets) | Exeter's attackmove closes at 8.2 m/s and wanders west first; not in range by 600 s. No end |
+| p5 | p4, plus `4400 takehelm Exeter 1.0 2800 -5400 stop 1500` | Exeter driven in under the harness helm (no torpedo evasion); sunk at 518.05 s by Yukikaze's torpedoes (2 hits); fail |
+| p6 | as p5 with `stop 3500` | Exeter stops 3.5 km out and **never moves again**: see 174.3 |
+| **p7** | p2, plus `4400 moveto Exeter 1000 -5450` and attacks on Asagumo from 7600, Yukikaze from 10300 | **Mission complete at 727.60 s** |
+
+**p7 timeline** (`local\s36_u2p7.log`, order file `local\s36_u2_p7.txt`, built by
+`python local\s36_mkorders.py s36_u2_p7.txt s36_u2_p7h.txt Exeter 300 Hatsukaze:1801:2500
+Amatsukaze:2600:3800 Hatsukaze:3900:4200 Asagumo:7600:10000 Yukikaze:10300:12500
+Asagumo:12800:13700 Yukikaze:14000:15000` over the header `540 moveto Houston EscapePoint`,
+`1800 select Exeter`, `4400 moveto Exeter 1000 -5450`):
+
+| time | event |
+| --- | --- |
+| 27 s | Houston's moveto to EscapePoint (the player is on Houston) |
+| 45-218 s | six destroyers die (Kawakaze, Yamakaze, Minegumo, Tokitsukaze, Amatsukaze, Hatsukaze); US losses Alden, Encounter, John2, John3, Jupiter |
+| 240 s | Houston parked 4.4 m from EscapePoint, 0 m/s, and stays there |
+| 220-690 s | Exeter, AI helm, closes the stationary Asagumo/Yukikaze at 8.2-16.6 m/s |
+| 684.51 s | Yukikaze dies (Exeter, 2004 m) |
+| 714.90 s | Asagumo dies (Exeter, 1796 m): all eight `EnemyDestroya` dead, `luaMoveToPh2` |
+| 725.75 s | `luaPh2MovieEnd`: DRGrp killed by script, Houston re-selected |
+| **727.60 s** | Houston (6 m from the point) passes `NavDist < 500`: `luaMissionComplete` -> `luaMissionCompletedNew`; `summary mission end: completed ... "Well we did what we could... - Mission Complete"` |
+
+So USN02's phase 2 needs no fight: a player who parks Houston on the point during phase 1 wins as
+soon as phase 2 starts. The plan is plausible for a person (two moveto clicks and attack clicks),
+**LABELLED** only by the harness's fixed click times.
+
+**The exec guard.** `luaMissionCompletedNew` begins with this installation's
+`os.execute("sus_prog.exe")` (`scripts\global\commandhelpers.lua` line 10411, mtime 2024-10-29), and
+`sus_prog.exe` is present in the game root. The guard (`include/bsp/lua_exec_guard.hpp`, bb30ca8c7,
+an ancestor of this tree) reports only through `stderr`, which the GUI-subsystem `bsp_game.exe`
+discards: **its line appears in neither the log nor `s36_u2p7.out`**. No `sus_prog` process was
+running after the run. The refusal is therefore inferred, not shown; a log copy of the guard's line
+would make it observable (routed to the lead, tooling).
+
+### 174.3 Two harness/host observations from the plans (recorded, not bound)
+
+1. **`attack ... repeat` keeps re-issuing on a dead target** (p3): the repeat ends only when the
+   ordering unit dies or an issue is refused, so a later attack on another ship is overwritten every
+   period. Harness behaviour; a person would not click a dead ship. Use windows (`s36_mkorders.py`).
+2. **After `takehelm`, an `attack` does not hand the ship back to the AI** (p6). The attack's
+   `0077C470(unit, 2, 0)` (`005FAB36 PUSH 2`, `005FAB35 PUSH EBX`) releases role 1, but `+184h` is
+   cleared only by a release whose mask has bit 0 and whose role 0 is the player's
+   (`0078021C TEST byte [EDI+24h],BL` with BL = 1, `00780235`), or by role 0 given 8 (`009281D6`).
+   So `+184h` stays 1 and `009F3DF3` keeps forcing `cruise` (`player roles Exeter ... +184h=1` at
+   the end of p6; Exeter `state=cruise` to step 14100). The host matches the image at both sites
+   (disasm-raw read). How a real player returns a helmed ship to its AI is **unread**; do not
+   combine `takehelm` with a later AI order on the same ship.
