@@ -14040,3 +14040,32 @@ Branch `agent/cc9-lua46`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   ships41 f7), `usnos`, `bsm01w`.
 - `l46_e8gen.py <log> <base orders> <out> [--census]` generates ESMP08 held-slot order lines from a run log, one
   order-3 target per frame.
+
+## 5fa. The gunnery rows read the rack's device, `kGunneryRackEquipmentDeviceBound` (packet `cc9_lua47_gunnery_rack_device`, cc9-lua47, 2026-10-06)
+
+GUNNERY 138 (`kRackBulletKindBound`) failed its 5ev pair through the gunnery host: its per-unit gun rows still took each
+platform's device from the class (`Platforms[slot].Gun[1]`), so USN13's `bruh` carried device 122 (torpedo) rows while
+their racks held device 88 (250 kg bombs), and `release_bomb_drop` refused every 2Ah drop (`bomb_drops=2 refusals=33`).
+On a loan from the lead, `src/game_hosts_gunnery.cpp` now reads the device the way the units host does under
+`kRackEquipmentDeviceBound`.
+
+- **The rule** (5ev, `00961F57` stores `Platform` per equipment entry): `VehicleClass[c].Equipments[unit+C54h][slot].Platform`;
+  a plane with no recorded bag reads `DefaultEquipment or 1`; bag 0, or an entry with no `Platform`, keeps the class device.
+- **The flatten.** The authored-table chunk's per-platform body is now a Lua function `plat(f, q, k, p, devid, dev)`. Besides
+  the class row `p<n>_*`, it writes one row `p<n>e<e>_*` for every equipment entry whose `Platform` names another device
+  (every device-derived field: category, bomb-platform flag, gun class, rotation speeds, bullets, reload, ballistics; the
+  platform's own fields, windows and rest angles copied). `f.defeq` carries `DefaultEquipment or 1`.
+- **The switch** picks the `p<n>e<e>_` row per plane unit (`units.plane_bag_equipment`), counted as
+  `summary mission gunnery rack equipment device rows=N`. Committed OFF.
+- **Divergence, labelled:** an entry whose `Platform` names no `DeviceClass` table keeps the class row here, where the units
+  host would still return that id.
+
+**Predictions (before the pairs).** Rows USN13 9000, USNOS 3000, LOMP10 3000. Variants A (both OFF), B (this switch ON),
+C (this switch and `kRackBulletKindBound` ON).
+- **B against A.** Only planes whose equipment platform differs from the class device move. On USN13 the `bruh` rows turn
+  from torpedo (category of device 122) to bomb rows (device 88, bullet 78), so their AA/attack inventory (007EEC50 inputs)
+  loses the torpedo kind and gains 2Ah. With 138 OFF the release path still issues the old "torpedo" drop from the live
+  mask, which now finds no torpedo row: expect B's two USN13 torpedo drops to go (refused), so USN13 moves (3). USNOS and
+  LOMP10 identical or gameplay-identical unless a scene plane there carries a non-default platform; the rows count says.
+- **C against B.** 007C0D90's level-bomber arm drops the 16-bomb stick at 0.05 s and `release_bomb_drop` finds the 2Ah row:
+  USN13's `bomb_drops` rises by about 16 per released rack with refusals near 0.
