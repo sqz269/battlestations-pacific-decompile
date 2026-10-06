@@ -14234,3 +14234,36 @@ and nothing else dies; no end by 600 s. **Blocked for a scripted plan:** which t
 crucial is a Lua random pick (`luaPickRnd` -> `luaRnd`), and no log line or harness probe shows it.
 The objective text that names them (line 251) is not logged. Routed to the lead: a Lua-state probe
 (the lua lane), for example a log line when `luaObj_Add` takes a `Text`.
+
+## 181. LOMP10 toward completion: first pass (lead item 3, cc9-ships37, 2026-10-06)
+
+**The script** (`USN\LOMP\10_san_jose.lua`, this installation, mtime 2024-07-13):
+- **Win:** five of the eight `SanJoseForce` ships dead (Ashigara, Oyodo and six destroyers), tested
+  by `MonitorSanJoseForce` (557). The force attack-moves on the HQ `CB4` (303).
+- **The player's means:** the opening B-25 01 / Lightning 01 / Warhawk 01 flights and PT 01/02.
+  After the 180 s `Countdown` (441), `TimeLimit` gives the airfield `CB4_AF` six B-25s (118),
+  eighteen P-38s (104) and eighteen P-40s (135) (`AddAirBaseStock`, logged), and opens the
+  shipyard (Elco PTs).
+
+**Idle** (`local\s37_l10i2.log`, 9000 frames, merged main): no IJN ship dies by 450 s.
+- B-25 01's sticks fall 20-23 m from their aim (`level bomb release ... miss=23.0` at 119.50 s).
+- PT 01/02 are sunk by Ashigara at 228.31 / 237.31 s.
+- The fleet closes at 16-18 m/s and is 5.5 km from the HQ at 450 s.
+- No end by 800 s (`local\s37_l10idle.log`).
+
+**p1/p2** (`local\s37_l10_p1.txt`, `_p2.txt`): `launch CB4_AF` slots 1-4 at 4900-4903, after
+HQReady.
+- All four launch three planes each. B-25 squadrons go at Kasumi and Kaya, P-38 squadrons at
+  Kashi and Sugi.
+- `CB4_AF_sqn01` runs the level-bomb task to release at 383.93 s: 16 rounds, impact about 13 m
+  from the aim. No ship dies.
+- sqn03, sqn04 and sqn01 are shot down at 365.93, 371.38 and 391.13 s.
+
+**Blocked: the slots never come back.** Every later launch is refused:
+- slot 0: `no such slot` (p1, 38 lines);
+- slots 1-4 named explicitly: `the slot is not in state 1 or 5` (p2, 16 lines from 8000 to
+  11000, after three of the four squadrons were lost).
+
+So the base flies 12 of its 42 planes. This is 176 caveat 3 again, now the gate on LOMP10. Routed
+to the lead for the air-ops lane: what returns a slot to state 1 or 5 after its squadron is lost
+(`BSP_AirOps_UpdateSlot` `006CD350`). Not read here.
