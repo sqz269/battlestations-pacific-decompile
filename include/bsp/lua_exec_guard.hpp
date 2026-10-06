@@ -28,10 +28,17 @@ const char* lua_tolstring(lua_State* state, int index, std::size_t* length);
 
 namespace bsp {
 
+// Optional second sink for the refusal line. bsp_game is a GUI-subsystem process,
+// so its stderr goes nowhere; the mission Lua host points this at its run log
+// (packet cc9_plane_level_bomb_task). The refusal itself never depends on it.
+inline void (*g_lua_exec_refused_sink)(const char* command) = nullptr;
+
 inline int lua_exec_refused(lua_State* state) {
     const char* command = lua_tolstring(state, 1, nullptr);
     std::fprintf(stderr, "bsp: refused a mission script's process launch: %s\n",
         command != nullptr ? command : "(non-string)");
+    if (g_lua_exec_refused_sink != nullptr)
+        g_lua_exec_refused_sink(command != nullptr ? command : "(non-string)");
     lua_pushnil(state);
     lua_pushstring(state, "process launch disabled by the rebuild host");
     return 2;

@@ -157,6 +157,12 @@ struct AirOpsSlot {
     AirOpsSlotState state{AirOpsSlotState::kCooldown};
     float timer{0.0F};
     bool launch_requested{false};
+    // Packet cc9_player_air_ops_launch. slot+4Ch, the order's target 006C4F70
+    // stores (the object whose +174h 006C5050 writes as `AutoAttackTarget`),
+    // held here as the target's unit index + 1; and slot+50h, the ordering
+    // player (006CCE95).
+    std::uint32_t order_target_4c{0};
+    std::int32_t order_player_50{0};
 };
 
 // 00CE3850, the float stored into slot+30h by 006C65B0 (006C65D5) and by the
@@ -480,6 +486,9 @@ inline constexpr bool kBaseLaunchBrakeBound = true;
 // block+50h; `max_in_air_planes` is block+58h.
 struct AirOpsDeck {
     std::vector<AirOpsSlot> slots;
+    // Packet cc9_player_air_ops_launch: block+14h, the list of queued slot
+    // indices 006CA640 appends to and 006C64B0 serves from its head.
+    std::vector<int> launch_queue;
     std::vector<AirOpsStockEntry> stock;
     std::int32_t max_in_air_planes{0};
 
@@ -773,6 +782,59 @@ AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_s
 // the stock regeneration 006CD240, the ready-plane pull 006C6540, the elevator
 // 006C64B0 and the AI launch 006CD810 are not.
 AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds);
+
+// ---------------------------------------------------------------------------
+// The player's launch (packet cc9_player_air_ops_launch, docs/AIROPS_LAUNCH_TICK.md
+// section "The player's launch"). The Support Manager screen's update 00675C40
+// fills a slot (0067A5A7 -> 006C0F00) and routes an 82h slot message with order
+// 3 (00656280, 0067A5E6); the deck's 006CD160 hands it to 006CCDA0, which stores
+// the target and queues the slot (006CA640); 006C64B0 then sends 89h, whose
+// handler 006CD6C0 calls the launch start 006C7490(slot, 0).
+// ---------------------------------------------------------------------------
+// Packet switch: true runs the queue wait 006C64B0 in the deck update and lets
+// the launch start hand slot+4Ch to the squadron as AutoAttackTarget. False:
+// neither (no queued slot is ever launched, as before).
+inline constexpr bool kAirOpsPlayerLaunchBound = false;
+
+// 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
+// OTHER slot holds - a launched slot its squadron's live count, a slot in state
+// 1 or 5 nothing (its planes can be taken), any other its slot+8h.
+std::int32_t air_ops_slot_capacity_006bd460(const AirOpsDeck& deck, int slot_index,
+                                            const std::int32_t* launched_plane_counts) noexcept;
+
+// 006C0F00 (__thiscall(block, slot, class, count)): clamp the count to the class
+// stock (006BF230's second field) and to 006BD460; take planes of the class from
+// other idle slots while the free stock (first field, plus this slot's own count
+// when it already holds the class) is short; take planes of ANY idle slot while
+// the plane limit is short; then write the class (with class+134h into slot+10h
+// when the class changes) and the count. Returns the count written.
+std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
+                                        std::uint32_t vehicle_class, std::int32_t count,
+                                        std::int32_t class_default_arm,
+                                        const std::int32_t* launched_plane_counts) noexcept;
+
+// 006CA640 (__thiscall(block, slot)): a slot in state 1 or 5 goes to state 2 with
+// the timer at 0 (5.0 when slot+34h is set, which is cleared) and its index is
+// appended to block+14h. Returns true when it queued.
+bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept;
+
+// 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
+// with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):
+// with `apply`, slot+4Ch = the target for order 3 (0 otherwise, 006C4F70),
+// slot+50h = the player and 006CA640. Order 3 with no target answers 0
+// (006CCDD3). Other states and order 2 (recall) are not modelled: answers -1.
+int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
+                                  std::uint32_t target_plus_one, std::int32_t player,
+                                  bool apply) noexcept;
+
+// 006BED60: runway and hangar clear, an owner present and not disabled.
+bool air_ops_deck_free_006bed60(const AirOpsDeck& deck) noexcept;
+
+// 006C64B0 BSP_AirOps_QueuedSlotWait: the head of block+14h. A head slot no
+// longer in state 2 is dropped; one in state 2 whose timer is above 1.0, with
+// block+38h zero and 006BED60 true, is popped and returned (the caller sends
+// 89h, i.e. runs 006C7490(slot, 0)). Returns -1 otherwise.
+int air_ops_queued_slot_wait_006c64b0(AirOpsDeck& deck) noexcept;
 
 // `resolve_type` stands in for 007B8A80, which turns the authored `Type` token
 // into the class id the slot carries at +4h. A resolver that returns 0 leaves

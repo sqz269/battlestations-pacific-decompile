@@ -9732,3 +9732,159 @@ dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h
   LOMP10 long (14). USN13 long (3 releases) may stay at 1 if its bombs miss either way.
 - **Rows without a bomb drop** (USN02, JM06, BSM01): `pair_diff` 1, `drops=0`.
 - The summary's `max_cone_deg` is at most 0.573 (`Throw` 0.01), and 0 for a SPVeteran or Elite dive bomber.
+
+### 130.4 Smoke and pairs; verdict ON
+
+- **Runs:** `pair_export --commit 1c5e270c5`, OFF `local\g28_lane_l`, ON `--flip kBombDropScatterBound=true`
+  `local\g28_lane_m`; logs `local\g28_sc_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke130.log`, USN01 300 frames, OFF, clean. Diagnostic re-run of the ON side at `3608bcba7`
+  (the turn logged, `local\g28_sc_dg_<row>.log`): `pair_diff` 1 against the ON logs on all three rows.
+
+| row | `pair_diff` | drops | max cone | turn from the 5do velocity (first drops) | headline (OFF -> ON) |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | 3 | 2 | 0.297 deg | 3.10, 3.23 deg | the scout's bombs miss Convoy1: no `luaConLeadHit`, phase 2 does not launch (units 93 -> 64, torpedo-task 0 of 17 -> 0 of 5), damage 35624.3 -> 34425.9; deaths 29 both |
+| USNRM01 | 3 | 34 | 0.000 deg (dive bombers at SPVeteran) | 1.8-3.7 deg | deaths 132 -> 135, hull hits 1345 -> 1210, shots 56823 -> 54967 |
+| LOMP10 | 3 | 14 | 0.524 deg | 2.3-3.2 deg | damage 1987.1 -> 2194.0 |
+| LOMP10 long | 3 | 14 | 0.524 deg | | shots 3804 -> 3697 |
+| USN13 long | 1 | 3 | 0.000 deg | | |
+| USN02, JM06, BSM01 | 1 | 0 | | | |
+
+- **The mechanism matches the read.** Four draws per drop; the cone stays under `atan(Throw)`, 0 for a
+  SPVeteran or Elite dive bomber (`DiveBombThrowMul` 0.0); and the direction becomes the plane's forward
+  axis. The turn of 2-4 degrees is that replacement: 5do's world velocity (with 3.0 off y and the dive's
+  angle of attack) points below the nose, the forward row does not. The magnitude is kept.
+- **What moved USN01.** The ScoutDauntless pair's bombs (133.20 s, 134.10 s) now leave along the nose and
+  miss Convoy1, so the scripted hit callback and the next phase do not happen in 150 s.
+
+**Predictions:** right on all eight rows (USN01, USNRM01, LOMP10, LOMP10 long moved; USN13 long stayed at 1
+as allowed; the controls identical) and on the cone bound.
+
+**Verdict: ON.** The mechanism matches; the flip moves USN01's phase timing and belongs to AC.
+**Uncertainty:** the round's rows are taken to be the plane's pose rows. If the rack mount (`+3F4h`) carries
+a rotation, the image's direction differs from the nose by that rotation; the mount rotation is unread.
+Not game-validated.
+
+### 130.5 Back to OFF: mechanism unsettled (lead's hold, 2026-10-06)
+
+The lead held the flip: it reverses the USN01 progression that 5do's velocity fix produced, on an
+unread piece. The read asked for: does the round leave along the plane's nose, or along the nose
+rotated by the rack's mount?
+
+- **`+3F4h` is not a rotation.** In `006E4D50` the rack's `[+3F4h]` is the device descriptor
+  (`[+3F4h]+DCh`, taken to be `LaunchSpeed`, 5du) and `[+3F8h]` the fire record (`+4h` Throw,
+  `+8h` Wind). The rack's own pose is its scene node's.
+- **The rows `006E1F00` uses** are the round's local matrix (`round+74h`, `+84h`, `+94h`) after it is
+  detached: it copies the round's world matrix (`round+CCh`, refreshed first) and makes it the local one
+  (`BSP_Matrix_Copy4x4X87`, `SetParent(0)`). So the direction is the round's world forward row while it
+  hangs on the rack: plane pose x rack node x the round's attach transform.
+- **Unread:** the round's attach transform (where a loaded round is parented under the rack and with what
+  matrix; `006E3500`, which loads rounds, shows no matrix work in its pseudocode) and the rack node's
+  orientation in the aircraft model (a model dummy). Neither was found in this pass.
+
+**Verdict: OFF, mechanism unsettled.** 130.4's pair stands as a measurement of the nose-alignment
+hypothesis (USN01's scout bombs miss Convoy1 under it), not as the image's behaviour. To settle it: read
+the round's attach path (who parents a kind-2Ah child under the rack, and its local matrix) and the
+Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
+the same read to justify.
+
+## 131. USN02 r5: Houston's hold after its attackmove target dies is the director's idle tail (SHIP_AI 171 (a); cc9-gunnery28, 2026-10-06, read only)
+
+The question routed from cc9-ships35: in r5 (`local\s35_u2r5.log` in the cc9-ships35 tree, orders
+`s35_u2_orders5.txt`), the player leaves Houston for Exeter at frame 1800, Houston's attackmove target
+Minegumo dies at 92.55 s, and Houston holds at 0 m/s from about 93 s to 210 s. Does the image retarget,
+keep moving, or hold?
+
+**The chain in the host, from r5's log:**
+1. Frame 1858 (about 92.9 s): `command finished: Houston cleared attackmove from slot 0 (mode 1); the
+   queue now holds (none)`. The attackmove ends because its target is dead.
+2. The director's idle tail `00836DC9` re-issues a default command. Houston's row in the idle-tail table
+   reads `stop / director idle tail` (and earlier `cruise`, while it was player controlled).
+3. The next sync (`009F3DD0`) finds the current command `stop`, not null, and `009F3D00` installs the
+   `stop` state: from ship AI step 1830, `state=stop mode=heading dir=stopped throttle=0.000`.
+
+**The image, as read:**
+- `009F3DD0` (`BSP_ShipAi_SyncStateToCurrentCommand`, `src/ship_ai_states.cpp`, read whole): a null command
+  on an uncontrolled unit keeps the current state; any other command switches through `009F3D00`.
+- `00836DC9..00836EA7` (`weapon_director_idle_reissue_00836dc9`, `include/bsp/unit_commanded_speed.hpp`,
+  coverage complete): with an empty queue it issues `follow` on the controller's owner when the controller
+  belongs to another entity; else `cruise` when the unit is player controlled or a commanded speed is
+  active (`*(unit+73Ch)+28h >= 0`); **else `stop`**. Houston is no longer player controlled, and no
+  commanded speed is set (`commanded_speeds=0` in r5's director summary), so the image's choice is
+  `stop` too.
+
+**So the hold is the image's behaviour as read.** No retarget happens on the director side: nothing in
+`00836DC9` or `009F3DD0` picks a new enemy, and the `stop` state's step holds the ship. Guns keep firing
+through their own targeting.
+
+**Not established here, and the one route left to a moving Houston:** a side-level AI that orders idle
+friendly ships. r5's `ai coordinator` summary reads `game_mode=8 compose=0 groups_created=0 tick_orders=0`:
+no AI group exists for Houston's side, so nothing re-orders it. Whether the image builds a group for the
+player's own side in single player is outside this lane (`ai_group_think`, `00A2DFA0`). A script or player
+order (a `moveto`, or `SetShipSpeed`, which makes the idle tail choose `cruise`) is what moves Houston.
+
+**Nothing bound.**
+
+### 129.4 Smoke and pairs; verdict ON (cc9-gunnery28, 2026-10-06)
+
+- **Runs:** `pair_export --commit be379f2cb` (main merged, with cc9-ships35's caller `cc4408825`), OFF
+  `local\g28_lane_o` (SHA-256 prefix `3C3E2C86D5A5`), ON `--flip kCommandBuildingGunfireArmourBound=true`
+  `local\g28_lane_p` (`AEBB2D83A432`); logs `local\g28_ar_{off,on}_<row>.log`, reference AB's launch form.
+  Smoke: `local\g28_smoke129.log`, JM08 300 frames, OFF, clean.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM08 long 36000 | 1 | one hull-leak message (`00827663` 5505 -> 5504); the HQ is neutralized at 1041.50 s on both sides |
+| USNOS 3000 | 1 | the known `free: empty / refills` noise only |
+| USN01 3000 | 0 | (`CB2` neutralized at 32.90 s on both sides) |
+| USN13, BSM01 3000 | 0 | |
+
+- **Why so little.** The levelled armour reaches only the direct-hit passes with a non-negative selector,
+  and JM08 long's HQ falls to the landed bleed (which already read `+368h`, SHIP_AI 169) at the same
+  1041.50 s; its gunfire is mostly impact blasts on the class `Armour` (125.1: 2172 blasts). One direct
+  hit's outcome changed (a leak message), which shows the read is reached.
+
+**Predictions:**
+- **Missed, the spread on JM08 long:** `pair_diff` 1, not 3; the neutralize does not move.
+- Right on USNOS, USN13 and BSM01. USN01 is identical too (whether `CB2` levelled before 32.90 s was not checked).
+
+**Verdict: ON** (the image's armour source as read; spread miss recorded). It belongs to AC. Not
+game-validated.
+
+## 132. Handoff (cc9-gunnery28, 2026-10-06, at about 75% context)
+
+### 132.1 Landed on agent/cc9-gunnery28
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference AB (GAME_EXECUTABLE "2026-10-06 ab", base `c245a54bb`) | `f0bc77b13`, `e64d088a7` | `reports/cc9_reference_rebaseline_28.json` |
+| 125 CommandBuilding gunfire gate `006F1F20` | `9017c87e3`, `867c2ccc0` | **ON** (AC) |
+| 127 damage-smoke draws `008227E0` | `0af7fccec`, `c644da9e7`, `edd18ad03` | **ON** (AC) |
+| 128 census item 4 (`0071FB90`, `007208A3`) | `edd18ad03` | no reach |
+| `set_unit_max_health_036c` for SHIP_AI 173 | `9886e40e9` | called by cc9-ships35 |
+| 129 CommandBuilding gunfire armour `+368h` | `4413c6056`, this commit | **ON** (AC) |
+| 130 bomb drop scatter `006E4D50` / `006E1F00` | `c3b0e21e1`, `1c5e270c5`, `3608bcba7`, `78e123e83`, `1b3853290` | **OFF, mechanism unsettled** (130.5) |
+| 131 USN02 r5 Houston hold | `7adf7933d` | image-faithful as read |
+
+Flips since AB's base, for reference AC (this lane): `kCommandBuildingGunfireGateBound`,
+`kDamageSmokeDrawsBound`, `kCommandBuildingGunfireArmourBound`.
+
+### 132.2 Next, in order
+
+1. **130, the bomb's launch direction.** `006E1F00` sends a bomb along the round's world forward row on the
+   rack. Read who parents a kind-2Ah round under the rack and with what local matrix (the load path from
+   `006E3500`), and the Dauntless, Val and Kate racks' mount dummies in this installation's models. If the
+   round's forward is the plane's nose, flip `kBombDropScatterBound` (130.4's pair is the expected spread:
+   USN01's scout bombs then miss Convoy1). If it is not, change the cone to that frame and re-pair.
+   Splitting the switch (draws without the redirect) needs the same read.
+2. **127's census against the hull column** is closed; nothing follows.
+3. The planes-lane census item 3 (`009D4923`, `007BB110`) stays with that lane.
+
+### 132.3 Tools (`local\` in this tree, prefix `g28_`)
+
+- `g28_lane.ps1 -Lane x -Variants 'short=kA+kB,...' -Rows a,b -Commit sha -Prefix p`: export and run in
+  the reference form (rows and variants are comma lists; `!k` flips a switch ON).
+- `g28_wait.ps1 -File f -Text t` / `-Proc 'a&b'`: foreground waits under 600 s.
+- `g28_diffrows.ps1 -A prefixA_ -B prefixB_ [-Rows]`, `g28_cmp.py`, `g28_head.py`, `g28_loo_diff.ps1`,
+  `g28_table.py`, `g28_report28.py`, `g28_switches.py`, `g28_smokecensus.py`.
+- Watch out: a summary line starting `mission gunnery damage` collides with `pair_diff`'s headline key
+  (127.4).

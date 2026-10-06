@@ -13735,9 +13735,8 @@ eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6
 
 ### Open, in order
 
-1. **Wire the max-HP setter** when cc9-gunnery28 sends its sha: call it from
-   `command_building_level_006f38e0` with `kCommandBuildingHpLevel[level] * b.class_hp_048`
-   behind its own OFF switch, then pair (USNOS and JM08 HQs go to 16800 / 12000).
+1. **Done after this handoff (section 173):** both setters are wired (`cc4408825`) and
+   `kCommandBuildingLevelMaxHpBound` is ON (`6ec44dfc8`).
 2. **USN02 completion** waits on the commands lane's `cruise_step` item (171 (a)). When it lands:
    - re-run r5 (`local\s35_u2_orders5.txt`): Houston pre-positioned during phase 1 while the
      player is on Exeter;
