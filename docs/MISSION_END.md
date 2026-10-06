@@ -1,6 +1,6 @@
 # Mission end: dialogs, wing-member self tables, and what ends a failed mission
 
-Addresses: 008CB730, 008CB825, 008CB834, 00450750, 008B0540, 008B0688, 008B0940, 008B0A5F, 008B0C10, 00734870, 008B01B0, 00531B00, 004D7970, 007F4580, 007F45A7, 007CDF20, 0077E830, 00928A00, 00925F20, 00926054
+Addresses: 008CB730, 008CB825, 008CB834, 00450750, 008B0540, 008B0688, 008B0940, 008B0A5F, 008B0C10, 00734870, 008B01B0, 00531B00, 004D7970, 007F4580, 007F45A7, 007CDF20, 0077E830, 00928A00, 00925F20, 00926054, 00735100, 00733BB0, 00734140, 00734FA0, 008B15B0, 008B0AC0, 00733260, 005B7390, 005BB130
 
 Packet `cc9_mission_end`, 2026-09-23. It closes the three open items of `docs/ENTITY_DEAD_FLAG.md`.
 The report is `reports/mission_end.json`. All names are hypotheses, not recovered symbols. Nothing
@@ -180,3 +180,69 @@ Worktree root `J:\PROG\battlestations-pacific-decompile-cc9-difficulty`. Control
 * **Noted: the scene-marker FindEntity results change** for every mission whose markers used to
   share ids with spawned units. Correctness improves, and other missions' references should be
   re-run to take the new rows.
+
+## 7. The narrative queue (packet `cc9_lua_mission_narrative`, cc9-lua40, 2026-10-06)
+
+This closes section 6's open item "the narrative panel". It came from cc9-ships34's SHIP_AI 160:
+JM08 long now fails at about 1052.6 s through CheckHQ -> `luaMissionFailedNew`, and stops there.
+
+### The image (read whole; Ghidra was read-only)
+
+- **The object.** The narrative queue is the same `[game+21E8h]` object that holds the countdown
+  (5ds of `docs/SQUADRON_LAND_TASK.md`). `00734870` appends a node to the list at `+8h`, with the
+  text at `+0Ch`, the callback at `+14h` and the arguments at `+1Ch`.
+- **The natives.**
+  - `MissionNarrative` and `MissionNarrativeEnqueue` (`008B0C10`): argument 0 is the text,
+    argument 1 the callback name when there are more than one, and arguments 2..n go to a vector.
+  - `MissionNarrativeClear` (`008B15B0` -> `00734FA0`): empties the list, hides the entry, clears
+    `+14h` and frees `+34h`.
+  - `MissionNarrativeSize` (`008B0AC0` -> `00733260`): the list count plus 1 while an entry shows.
+- **The step, `00735100`.** It is called from `005BC920`, the HUD narrative screen's update, under
+  the same gate as the blackout. It runs after the countdown half.
+  - **Start, when nothing shows.** `00733BB0` takes the head, then `00734D20` pops it, and the step
+    returns. Timings come from `005B7390`:
+    - fade-in `+1Ch` = 0.5 x `DialogFadeTime`;
+    - display `+20h` = the text widget's character count `+ECh` x `TempCharWait` + `TempWaitBase`;
+    - fade-out `+24h` = `DialogFadeTime`.
+  - **The three values.** `005BB130` reads them from `Scripts/datatables/DialogGlobals.lua`
+    (`005BB80B`-`005BB901`). This installation has 0.5, 0.04 and 1.0 (mtime 2024-07-13).
+  - **States.**
+    - 0: the alpha rises by dt / fade-in until it reaches 1.
+    - 1: the display time counts down by dt, unless the text is `"*"`.
+    - 2: the alpha falls by dt / fade-out.
+    - The alpha is clamped to [0, 1]. When it reaches 0 in state 2, `00734140` ends the entry.
+- **`00734140`.** It runs `005B5D40` (the HUD), then calls the callback through `00887E50` with the
+  arguments, and clears `+14h` on both arms.
+- **The skip.** Input action `0E7h` ends the shown entry at once (`00735123`).
+
+### The binding, `kLuaMissionNarrativeBound` (`include/bsp/game_hosts_script_orders.hpp`), committed OFF
+
+- **The natives.** The four natives above and `EndScene` route to the script-orders host. The step
+  runs in `run_blackout_update`, after the countdown.
+- **SUBSTITUTIONS, labelled:**
+  - the character count is the argument's own length (there is no text table; a key such as
+    `missionglobals.obj_fail` counts the key itself);
+  - the HUD calls are records;
+  - the skip key is never pressed.
+- **EndScene `008B01B0` is RECORDED.** A run logs `summary mission scene end calls=N first_at=T` and
+  runs on to its frame budget. That is how the harness reports an ended scene: no freeze, no
+  unload, and no restart prompt.
+- **Not bound, and on no reference row:** `MissionNarrativeUrgent` `008B0E10`,
+  `MissionNarrativeOverride` `008B1010`, `MissionNarrativeParty` `008B1210` and
+  `MissionNarrativePlayer` `008B13E0`.
+
+### Predictions, before any run
+
+- **OFF:** exit 0. The natives keep their unimplemented records.
+- **ON, the rows without a mission end** (every reference AA row's first call is `argc=1` at
+  `luaStageInit`): the entries show, and no callback runs unless a later call carries one. Expect
+  exit 1 (summary and log text only).
+- **ON, JM08 long, which fails at about 1052.6 s on main:**
+  1. `obj_fail` shows for about 0.25 + 1.92 + 0.5 s.
+  2. `luaMissionEnd_CamOnEnt` runs at about 1055 s and queues `luaMissionEnd_Text` in 2 s.
+  3. `luaMissionEnd_FadeAway` runs at `MusicEndTime - 2.5` (about 1090 s):
+     `Blackout(true, "luaMissionEnd_Finale")` with EnableMessages(false) and SoundFade.
+  4. `luaMissionEnd_Finale` runs when the blackout completes, and EndScene follows 2 s later.
+  5. Expect `summary mission scene end calls=1 first_at` at about 1093 s.
+  6. Gameplay after the failure is already frozen by `luaInitMissionEnd` (every unit invincible).
+     Expect exit 1, or exit 3 only in post-failure counters.
