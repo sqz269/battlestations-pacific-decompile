@@ -13670,3 +13670,138 @@ the measurement streams.**
   0 is one sequence (`death_mode_draw_00bd2f10`'s static generator). There each nav-block draw
   shifts every later plane delay draw. That sequence's seed is a labelled substitution, so the
   shift cannot be checked against the image.
+
+## 171. USN02 toward completion with scripted player input (lead packet "drive a mission to completion", cc9-ships35, 2026-10-06)
+
+**Script** (this installation's `scripts\missions\usn\usn_2_java.lua`, mtime 2024-07-13):
+- **Fail:** `Houston.Dead or Exeter.Dead` in any phase (lines 521-525).
+- **Phase 1:** `GetHpPercentage(DeRuyter) < 0.15` (DeRuyter is `SetInvincible(0.1)`), or all eight
+  `EnemyDestroya` dead (lines 529-545).
+- **Phase 2** (`luaMoveToPh2`): four `FinalShips` are generated, Nachi, Sazanami, Naka and Ushio,
+  at (+-4200..4700, -7500), flanking the escape point (0, -7500). They `NavigatorAttackMove`
+  Houston and Exeter.
+- **Win:** after `luaPh2MovieEnd` re-selects Houston, `CATable[1]` (Houston while it lives) within
+  500 m of `EscapePoint` -> `luaMissionComplete` -> `luaMissionCompletedNew` (lines 559-597).
+
+**Runs** (tree `agent/cc9-ships35` at `4746489ea`, main merged; reference V launch form;
+`local\s35_run.ps1 -Mission USN02`; order files `local\s35_u2_orders<N>.txt`):
+
+| run | orders | outcome |
+| --- | --- | --- |
+| idle `s35_u2idle` (3000) | none | Houston sunk at 70.00 s by Minegumo's torpedoes (launched 52.45-54.95 s at about 2 km; two hits for 4041 and 1965 of 6500, plus a component `Explosion`); fail at 74.30 s |
+| r1 (7200) | `540 takehelm Houston 1.0 EscapePoint stop 400` | Houston turns away but is sunk at 125.85 s (Minegumo torpedo, 2298 m); fail at 128.75 s |
+| r2 (7200) | `540 attack Houston Minegumo repeat 15` | Houston lives. Six destroyers die by 144.45 s (four to Houston). **Exeter** sunk at 176.51 s by Hatsukaze's torpedo; fail at 178.26 s |
+| r3 (9000) | r2, plus `1800 select Exeter` and Exeter `attack` on Hatsukaze and Amatsukaze (`repeat 15`) | all eight destroyers dead at 209.41 s, so **phase 2** (`luaMoveToPh2`); Houston re-selected at frame 4418. Exeter sunk at 370.18 s by Ushio; fail at 371.28 s |
+| r4 (12000) | r3, plus `4420/4600 takehelm Houston 1.0 EscapePoint stop 300` | phase 2 at about 210 s. Houston starts 3045 m out, stopped at (1941, -5154); the helm turns it clockwise through east, toward Sazanami and Nachi. Sunk at 280.06 s, 2926 m out (Sazanami torpedo) |
+| r5 (12000) | r3 with `1700 takehelm Houston ... EscapePoint` before the Exeter select | **Houston holds at 0 m/s from 100 s to 210 s** once the player leaves it (its attackmove target Minegumo died at 92.55 s). Exeter sunk at 221.01 s by a Hatsukaze torpedo still running after Hatsukaze's death; fail at 222.81 s |
+| r6 (12000) | r3, plus `1860 moveto Houston EscapePoint repeat 10` while the player is on Exeter | phase 2 at about 210 s, but Houston never closes: `movetopos` with the reissue every 10 s alternates rudder -1 / +1 and reverses (heading 74 -> 100 -> 55 degrees, speed -8.3 at 138 s). It drifts east to (2686, -5277) and is sunk at 259.56 s (Nachi torpedo) |
+| r7 (12000) | r2's attack, then `1900 takehelm Houston ... EscapePoint stop 300` with no Exeter select | Exeter sunk at 176.51 s, as in r2; fail at 178.26 s |
+
+**What blocks a completion.**
+1. **The idle failure is image-faithful in kind.** The controlled ship has no AI helm, so an idle
+   player does not evade a torpedo spread. One `attack` line, which hands the helm back to the
+   AI, keeps Houston alive (r2).
+2. **Phase 1 is reachable with plausible orders** (r3-r6: all eight destroyers dead by about
+   205-209 s). It needs the player on Exeter as well: without that, Hatsukaze's torpedoes sink
+   Exeter at 176.51 s (r2, r7).
+3. **Phase 2 needs Houston to cover about 3 km to a point the four FinalShips converge on.**
+   Sailing from the phase-1 position loses Houston to their torpedoes (r4, r6). Pre-positioning
+   during phase 1 hits two host behaviours, routed:
+   - **(a) commands lane (cc9-gunnery28):** a ship whose attackmove target has died and that the
+     player has left holds at 0 m/s for 110 s with enemies near (r5). This is section 157's
+     routed `cruise_step` item ("declines a unit with no command"; 155.1, `009E1170`).
+   - **(b) not shown wrong (r8):** r8 repeats r6 with ONE `moveto` click and gives the same
+     track, so the reissue is not the cause.
+     - The ship AI's `traffic trace` (009EF350) rewrites Houston's target heading from 3.856 to
+       1.026 rad (turn -2.83, a side-1 neighbour) at steps 2160-2166.
+     - At 108 s the attacking destroyer Yamakaze is 429 m from Houston (it dies at 110.15 s), and
+       Asagumo is 1486 m off. So Houston is being steered around destroyers in a melee.
+     - No ally is within 500 m. Whether the image's neighbour list would make the same pass was
+       not read; nothing here shows the host wrong.
+No run reached a mission end, so the exec guard's line did not appear. **USN02 is closed after
+eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6). Next: the reference mission with the shortest victory condition.
+
+## 172. Handoff (cc9-ships35, 2026-10-06, at about 65% context)
+
+### Landed (main or `agent/cc9-ships35`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 168 / SCRIPTED_HELM 12 | the `target` line (the 00525250 target pick on a controlled squadron, into intake 007F1940); USN01 reaches phase 3 | harness |
+| 168 | USN01's phase 3 is blocked by the unimplemented `levelbomb` task (routed: plane lane, cc9-lua41) | - |
+| 169 | a CommandBuilding's level: the clock (006F7360), D4h, 006F38E0's armour for the bleed, the reset (006F5362); the scene's `Level` / `LevelUpSeconds` | `kCommandBuildingLevelBound` ON |
+| 170 | the explosion-delay draw is aircraft-only; no key coupling with ship draws | doc |
+| 171 | USN02 toward completion: eight runs, phase 2 reached, no completion | doc |
+
+### Open, in order
+
+1. **Done after this handoff (section 173):** both setters are wired (`cc4408825`) and
+   `kCommandBuildingLevelMaxHpBound` is ON (`6ec44dfc8`).
+2. **USN02 completion** waits on the commands lane's `cruise_step` item (171 (a)). When it lands:
+   - re-run r5 (`local\s35_u2_orders5.txt`): Houston pre-positioned during phase 1 while the
+     player is on Exeter;
+   - then r3's phase-1 orders with a parked Houston.
+3. **USN01 completion** waits on cc9-lua41's level-bomb task. The order file is
+   `local\s35_orders1.txt`.
+4. **169 recorded pieces:** the garrison respawn `006F3660` (no host records), the master `+738h`
+   forward (no established reach), `class+2Ch` (no reach on the rows).
+
+### Tools (`local\`, `s35_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s35_run.ps1` / `s35_rows.ps1` | reference V's launch form (as s34's) |
+| `s35_nells.py <prefix> <ref> <every_s> units...` | per-unit trajectory CSVs: positions and distance to a reference unit |
+| `s35_aisteps.py <log> <unit> <lo> <hi>` | a unit's `ship ai step` state / mode / dir transitions |
+| `s35_endscan.py <script.lua...>` | where a mission script completes, with the enclosing conditions |
+| `s35_dispscan.py` | s34's displacement census |
+
+All leases are released after this commit.
+
+## 173. The level's maximum health and the gunnery armour copy (packet `cc9_command_building_level_hp`, `kCommandBuildingLevelMaxHpBound`, cc9-ships35, 2026-10-06)
+
+**What is wired** in `command_building_level_006f38e0` (section 169):
+- **The armour copy (routed from cc9-gunnery28, GUNNERY 129).** After the `+368h` store
+  (`006F392F`), the line calls `GameGunneryHost::set_unit_armour_0368(unit, armour)`. It runs
+  unconditionally under `kCommandBuildingLevelBound`. Gunfire reads it only under gunnery28's
+  `kCommandBuildingGunfireArmourBound`, so it changes no behaviour while that switch is OFF.
+- **Maximum health (committed OFF).** `006F3951 FSTP [ESI+36Ch]` stores HP[level] * class HP.
+  Under `kCommandBuildingLevelMaxHpBound` it goes to `set_unit_max_health_036c` (gunnery28,
+  `9886e40e9`), which leaves current health unchanged, as the image's handler does.
+
+**Predictions (written before any ON run):**
+- **JM08 long:** the HQ's maximum goes 12000 -> 13200 -> 14400 -> 16800 at 10, 20 and 30 s, and
+  back to 12000 at its neutralize. Current health stays where damage left it.
+  - Readers of the maximum are the health-fraction consumers: AI target weights, Lua
+    `GetHpPercentage`, the repair to fraction and the fire roll's `(max - hp) / max`.
+  - The fire roll's chance (section 162) uses the maximum, so its draws and starts move. That
+    is stream-1 / stream-0 work keyed per unit under the measurement option.
+  - Expect `pair_diff` 3 if any AI weight or the fire roll moves an outcome, else 1.
+  - The neutralize time (1041.50 s) does not move through the maximum: neutralize is health <= 0.
+- **USNOS 3000:** HQ1, HQ2 and CB2 reach 16800 at 30 s; their fraction drops to 0.71 at full
+  health. If the US AI weighs targets by fraction, `pair_diff` 3, else 1.
+- **USN01 3000 (control):** CB2 never levels. `pair_diff` 1.
+
+### 173.1 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:**
+- OFF is this tree at `cc4408825`.
+- ON is `pair_export.py --commit cc4408825 --flip kCommandBuildingLevelMaxHpBound=true --out
+  local\s35_hp_on`.
+- Prefixes `off8` / `on8`.
+- Smoke: `local\s35_smoke3.log`, JM08 300 frames. Clean.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| USN01 3000 | 1 | CB2 never levels |
+| USNOS 3000 | 1 | HQ1, HQ2 and CB2 set to 16800 at 30 s; nothing reads the fraction into an outcome within 150 s |
+| JM08 long 36000 | 1 | the HQ's maximum is set 13200 / 14400 / 16800 at 10 / 20 / 30 s and 12000 at the neutralize (1041.50 s, unchanged) |
+
+- JM08 long's only movement is the LandFort fire roll, whose chance reads the maximum: roll hits
+  218 -> 217, starts 15 -> 16 and extends 203 -> 201. The native table moves only
+  `fire_effect_create_008689c0` and `fire_sync_message_d1`, 15 -> 16 each.
+- Deaths, hits, damage and the unit table are identical.
+
+**Verdict: ON.** The mechanism matches (the maximum follows the level, health is untouched). Every
+row is gameplay identical; only the presentation-side fire roll moves, as predicted. Not
+game-validated.

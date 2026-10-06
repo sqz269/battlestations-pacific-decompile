@@ -822,6 +822,10 @@ public:
     // Used for the device row's `Mesh` model path. docs/GUN_BARREL_COUNT.md.
     std::string read_device_class_string(int index, const char* key);
 
+    // `DeviceClass[index][key]` as a number; `fallback` when absent. Packet
+    // cc9_plane_level_bomb_task reads a bomb platform's `RepeatTime` (desc+E0h).
+    float read_device_class_number(int index, const char* key, float fallback);
+
     // `VehicleClass[index][key]` as a string; "" when absent. Used for the ship
     // row's `Mesh`, whose "slot" point groups 0095F500 turns into the platform
     // frames. docs/SHIP_PLATFORM_ATTACHMENT.md.

@@ -12560,3 +12560,274 @@ merged at the end. Everything below is committed; no lease is held.
 
 **Diagnostic.** `BSP_SPENT_RTB_CENSUS=1` logs B5 latches without issuing (the switch is ON now, so
 it matters only with the switch off).
+
+## 5ee. The level-bomb bot task, kind 4 (packet `cc9_plane_level_bomb_task`, cc9-lua41, 2026-10-06)
+
+Switch `bsp::kPlaneLevelBombTaskBound` (`include/bsp/plane_level_bomb_task.hpp`), committed
+**OFF**. Ghidra read-only. Names are ledger hypotheses. Rules in `src/plane_level_bomb_task.cpp`;
+host in `src/game_hosts_units.cpp` (PlaneBinding `lb_*`); `read_device_class_number` added to
+`src/game_hosts_lua.cpp`.
+
+**Why.** On USN01 phase 3, six Nell squadrons get `levelbomb` (`00E08F28`) on Enterprise.
+`0099A170` installs kind 4. The host had no task body, so the Nells flew north at heading 0
+(5ed, SHIP_AI 168).
+
+### The task object
+
+- **Factory and constructor.** `009B9030` `operator_new(6F8h)` -> `009B7990`. The constructor
+  calls the base `0099C6F0(bot, 4)` at `009B79B6` and the approach `009B75E0` at `009B79D1` (task+3F8h).
+  It stores the vtables `00D20210` / `00D2020C` (+3F8h) / `00D20208` (+4D4h). It picks
+  `+4E8h` moveto for the flight leader and `+534h` follow for the others (`007B8AD0`), then that
+  state's enter.
+- **The approach base `009B44F0`.**
+  - `009F9CE0` with Pilot/LevelBomb/ReferenceSpeed (`+458h`); +24h = task+41Ch is the speed ratio.
+  - The target ref is at +30h (`009FB200`).
+  - +A4h = 16.0 (`00CE6454`).
+  - +A8h = U(0.3, 0.65) (`00CE69C8`, `00D07FC4`) x `007C1FB0`(unit). `007C1FB0` is the largest
+    single rack's vtable[1F8h] `006E4170`, which is desc+E0h RepeatTime x max(0, rounds - 1).
+  - +ACh = class+188h MaxSpd.
+  - +B0h = 1200.0 (`00CFD714`).
+  - +B4h = U(1.6, 1.8) x class+268h TurnCircleRadius.
+  - +B8h = +BCh = +B4h x 1.4 (`00D045F0`).
+  - +C8h = FFh, +CCh = +CDh = 0, +CEh = 1.
+  - +D0h..+D8h = the unit's position.
+  - It ends with `009B4400`.
+- **The aim error, `009B4400`.**
+  - h = U(-row+ACh, row+ACh) and v = U(-row+B0h, row+B0h), the LevelBombTargetH/VError fields.
+    They go into `009FA380` (ref +34h..+3Ch, +41h = 1).
+  - The spread row+B8h (TargetPointSelectPrec) goes into ref +78h..+80h, with +71h = 1.
+  - +C4h = U(-row+B4h, row+B4h) (CalcTargetPosError).
+  - This is the torpedo's shape, so `redraw_aim_error` serves.
+  - The rows are this installation's robots.lua (`kLevelBombAimErrorRows`).
+- **The states (`009B75E0`, names `009B42D0`).**
+
+  | state | task offset | construction | enter | tick |
+  | --- | --- | --- | --- | --- |
+  | moveto | `+4E8h` | `009B6C10` (vt `00D201E0`) | `009B6CE0` | `009B6D20` |
+  | follow | `+534h` | `009C2980` | base | base `009C1FD0` |
+  | attackrun | `+5CCh` | `009B49B0` (vt `00D20100`) | `009B4BD0` | `009B4D00` |
+  | aim | `+5F4h` | inline (vt `00D2015C`) | `009B5C60` | `009B5C80` |
+  | prepare | `+610h` | `009C2980` + vt `00D201A0` | `009B6600` | `009B6670` (unread) |
+  | release | `+6B4h` | inline (vt `00D20140`) | `009B5B00` | `009B59F0` |
+  | goaway | `+6D8h` | inline (vt `00D2011C`) | `009B5680` | `009B5760` |
+
+  The goaway's +18h is seeded as 2 x class+268h (`009B7785`).
+
+### The arm `009B8B50` (task vtable `+64h`)
+
+1. task+4C0h (approach+C8h) = FFh.
+2. The approach update `009B7C90`(dt).
+3. `009BDE80` on moveto: near +B0h - 100, far +B0h, speed range +B4h.
+4. The rule `009B88F0`.
+5. The state's vt[0Ch](dt).
+6. task+2E4h = +C8h.
+7. The manual passthrough of +424h. It needs a player-held aircraft, so it is not modelled.
+
+The other slots:
+- `+54h` `009B8C90`, the cruise profile, leader only:
+  - ctl+394h = CruisingAlt +444h, ctl+398h = DropAlt +448h, through the usual freeze, timer and
+    lock gates;
+  - +4B0h (approach+B8h) = max(itself, AttackDist +44Ch x +41Ch);
+  - `009B7C90(0)`;
+  - `0099B740`.
+- `+1Ch` `009B8D80`, the break-off.
+- `+40h` `009B81F0`, still valid: the command is levelbomb or attackmove at the latched target.
+- `+24h` `009B83D0` and `+58h` `009B8180`, the manual release queue.
+- `+4Ch` `009B8420`, follow-wait (009BE3E0) on follow and prepare.
+- `+50h` `009B8450`: 0 or 2 from task+4C4h in the attacking states.
+- `+4h`, `+18h`, `+60h`: debug draw, name and serialisation. Not modelled.
+
+### The approach update `009B7C90`
+
+1. `009FADA0`. +CCh = 0. +B0h = ctl+398h.
+2. +CEh = unit+C25h || unit+C20h > 0 || `007B9320`(0) || `007B9500`(0). The last is 31h, paratroopers.
+3. No target: +CDh = 0, return.
+4. +A4h = `007BCC80`(unit.y - aim.y) + 0.15.
+5. **The bomb branch.** +D0h..+D8h = unit + vtable[34h] x (+A8h + +A4h). This is the straight-line
+   point the release reaches; +D4h is then overwritten by aim.y. The paratrooper branch
+   (`007BCCF0`) is not modelled.
+6. +BCh = the planar range to the aim point. +C0h = the bearing (pi/2 - atan2 wrapped).
+7. **The latch +CDh.** It is entered below +B8h and released above 1.1 x +B8h, or held while
+   ctl+369h && `[00E17BF2]`.
+8. **With ordnance**, the ref's projection time +74h = clamp(+A8h + +A4h + +C4h - 2, 0, 30).
+9. **Without ordnance**, a non-leader keeps its latch only while its leader is within +B8h of
+   the aim point.
+
+### The rule `009B88F0`
+
+engaged = +CDh, or (ctl+370h == 2 and a live latched target).
+- **Not attacking** (`009B7B70`: attackrun, aim, prepare, release, goaway). Engaged goes to
+  the entry chooser `009B8820`; otherwise moveto (leader) or follow.
+- **Attacking but not engaged.** Moveto or follow.
+- **Attacking and engaged.**
+  - ctl+370h == 0 and not leader: prepare.
+  - Else the break-off: goaway.
+  - Else per state:
+
+    | state | rule |
+    | --- | --- |
+    | prepare | +A0h -> release; a member that `009B7A80` holds stays; else `009B8820` |
+    | attackrun | the latch -> aim |
+    | aim | +18h, or (+19h and ctl+3AEh) -> release; +19h without ctl+3AEh, or no ordnance -> goaway |
+    | release | +1Ch < 0 -> goaway |
+    | goaway | `009B7AB0` (standoff +18h < +BCh, unless ctl+369h/E17BF2 without ordnance) with ordnance -> aim |
+
+`009B8820` picks:
+- unit+C25h set: release;
+- non-leader in mode 0: prepare;
+- with ordnance: aim if latched, else attackrun;
+- else goaway.
+
+The break-off `009B8D80`:
+- `0099C230` must allow it;
+- no target or a dead target: break off;
+- else, unless ctl+369h/E17BF2 or (attacking with ordnance): break off when the 3D range is at
+  least min(2500, SafeDist) x +41Ch.
+
+### The state ticks
+
+**moveto `009B6D20`.**
+- It runs the base `009C18C0`, then a squadron **spacing law**.
+- The law runs every +44h. The enter sets +44h = U(0.4, 0.7) on stream 0 and +40h = 1.0.
+- The pass takes the same side's other squadrons that can still drop and whose command target
+  lies within 300 m (`00CFD404` 90000 squared) of this aim point. Each goes ahead or behind by
+  its distance to the aim point (+-15 m, then +174h as the tie break). Gaps are floored at 10 m.
+- +3Ch = interp(180, 1, 400, 0, ahead), less interp(0.1, 0.5, 0.5, 0, behind/ahead), clamped to
+  [0, 1].
+- +40h = interp(250, 0, 500, 1.2, gap), the smaller over the ahead and behind gaps.
+- When |+3Ch - the current speed's fraction| > +40h, the speed becomes
+  interp(0, MaxSpd x 1.05, 1.05, 007C47F0, +3Ch).
+
+**attackrun `009B4D00`.** The enter sets +20h = +24h = 0 and +18h = U(0.4, 0.7) on stream 0.
+- Every +18h it does two things:
+  - `007F0280` in mode 1, box (100, 60, 120): +20h = -a.x b.y b.z x pi/6;
+  - the spacing pass into +24h.
+- Heading = +C0h (+) +20h.
+- `009FBA50`: base aim.y + +B0h, low +B4h, high +BCh, scale interp(0.1, 0.4, 0.35, 1, max(1400 - y,
+  50) / min(+BCh, 2000)).
+- Speed = interp(0, MaxSpd x 1.05, 1.05, LevelFlight, +24h). With no squadron ahead this is
+  full speed.
+
+**aim `009B5C80`.** The enter redraws the aim error and clears +18h and +19h.
+- **Geometry.** dB = +C0h - heading. Impact bearing error = bearing(impact -> aim) - heading.
+  Dimp = the planar miss. r = Dimp / turn radius.
+- **Close.** When r < 1.4 and |dB| > interp(0.1, pi/6, 2, 5pi/6, r) with ordnance: +19h (abort).
+  With ctl+3AEh, +18h is set instead, when |dB| > 1.5.
+- **Steer** (unless +19h):
+  - probe mode 1, box (interp(0.1, 120, 0.6, 300, r), 400, 400), weights (len/2, 0, 0);
+  - a heading nudge from out_a.x, scaled by interp(150, 0.15, 350, 1, Dimp) x pi/12;
+  - a speed term from out_a.z;
+  - a height offset clamp(600 out_a.y, +-80);
+  - heading = H + clamp(+C0h (+) nudge - H, +-interp(0.3, 5 deg, 1.5, 80 deg, r));
+  - bank limit plan+2C8h = interp(0.1, 0.2, 0.8, 1.2, r).
+- **Height.** Below Dimp 240 the pitch is levelled (2BCh = 0, 2D0h = 2). Otherwise `009FBA50`:
+  base aim.y + +B0h + offset, low 200, high Dimp.
+- **Speed.** MaxSpd + t x interp(0, 0.4, 0.3, 1, r) x (MaxSpd - LevelFlight).
+- +CCh = Dimp < 650.
+- **The release.** Once Dimp < 300 (or +18h already), +18h is set when |impact bearing error|
+  > 85 deg, that is once the predicted impact point passes abeam.
+- **The far abort.** Further out, |impact bearing error| > 120 deg with r < 1 aborts (+19h).
+- +C8h = 3 while not releasing and Dimp >= +B4h/2, else 1.
+
+**release `009B59F0`.** The enter sets:
+- +18h = unit+C25h;
+- +1Ch = 5;
+- +20h = max(speed, LevelFlight);
+- +19h / +1Ah = |bank| / |pitch| > 15 deg.
+
+The tick:
+- one `007BBBA0` on its first tick, and approach+2Ch -= 1;
+- wings level (bank target 0 if banked, else roll slot 0);
+- pitch level likewise;
+- speed +20h;
+- +1Ch counts down while unit+C25h is clear. The rule leaves at < 0, five seconds after the request.
+
+**goaway `009B5760`.** The enter sets:
+- side +1Ch from the step parity;
+- standoff +18h = U(1.05, 1.2) x min(max(SafeDist, the target's extent), 3500) x +24h.
+
+The tick:
+- `009FD570` (aim point, standoff, side, +BCh, 0.6), then probe mode 1 box (100, 200, 120);
+- turn = clamp(heading error, +-10 deg) when +BCh >= 300, else 0;
+- a nudge of 0.1396 x probe when the probe opposes the turn;
+- full throttle, no brake;
+- `009FB800`(aim.y + +B0h, 1.0);
+- cone Angle_GoAway.
+
+**prepare.** The enter `009B6600` sets +A0h = 0, +98h = -1, the follow base enter, formation
+shape 3 (ctl+3E4h) and `007ED260`. Its tick `009B6670` is **unread**, so the host runs the follow
+tick there. Prepare is reached only in attack mode 0, which no AI squadron holds after its
+leader's first think (`0099B740` sets 1).
+
+### The release path for a level bomber
+
+`007BBBA0` raises unit+C20h. The stage `007CE9FD` spends it into `007C0D90`.
+- **The level-bomber branch (`IsKindOf(10h)`, plain bombs).**
+  - It fires EVERY rack holding a round and not busy. Each rack gets the delay so far
+    (`006E3550`: toRepeatTime += delay, dropBombs = 1).
+  - The delay grows by U(0.9, 1.1) x class+1F4h BombDelay per rack (`007C0E67`-`007C0EA0`).
+  - It does not set unit+C25h and does not call `007EEF30`.
+- **The rack tick `006E56F0`.**
+  - It drops through the level arm of `007CC8E0`: |bank| and |pitch| <= LevelBombAngleMax
+    (tuning+550h).
+  - After each drop, toRepeatTime = desc+E0h, the rack's RepeatTime (`006E58AA`, now read:
+    `006E4170` uses the same field).
+- **This installation's Nell.** `VehicleClass[166]` has six platforms (50-55) of device 88, a
+  "Bomb platform 250kg JP" `BombPlatform` with RepeatTime 0.05 and Ammo 2, so 12 bombs. BombDelay
+  is 0.3.
+- **The host.** It keeps per-rack toRepeatTime/dropBombs for a level bomber (`lb_rack_*`). The
+  old single rack state still serves every other aircraft.
+
+### Routine table
+
+| routine | coverage |
+| --- | --- |
+| `009B8B50` arm | complete (manual passthrough not modelled: player only) |
+| `009B88F0` rule, `009B8820`, `009B7B70`, `009B7A80`, `009B7AB0`, `009B7B10`, `009B7B40` | complete |
+| `009B8D80` break-off | complete |
+| `009B8C90` cruise profile | complete (cadence labelled, as the land profile) |
+| `009B7C90` approach update | partial: paratrooper branch `009B7D7D`-`009B7E1F` |
+| `009B44F0`, `009B4400`, `009B75E0`, `009B6C10`, `009B49B0` | complete |
+| `009B6CE0`/`009B6D20` moveto | complete |
+| `009B4BD0`/`009B4D00` attackrun | complete |
+| `009B5C60`/`009B5C80` aim | complete |
+| `009B5B00`/`009B59F0` release | complete |
+| `009B5680`/`009B5760` goaway | complete (target extent `007B5BE0` absent, as for the dive and torpedo) |
+| `009B6600` prepare enter | partial: shape 3 / `007ED260` not modelled; tick `009B6670` unread |
+| `007C0D90` level branch | partial: paratrooper target point `006E3F90` not modelled |
+| `007CC8E0` level arm | partial: the bay test needs unit+9C3h, absent here (as at `007BBBA0`) |
+
+### Substitutions, labelled
+
+- **Draws.** Every 00BD2F10 draw takes the keyed stand-in stream (`name#lb<field>`). That
+  includes the stream-0 draws of the moveto and attackrun enters.
+- **The goaway side.** It takes the arm's tick parity for `[00F876B0]`, as the dive goaway does.
+- **The spacing pass.**
+  - A squadron's position is its flight leader's.
+  - +174h is the registry order.
+  - "Can drop" means a live member carries bomb or torpedo ordnance.
+- **Ownership.** ctl+370h is copied leader to members (as `db_attack_mode_370`). ctl+398h is
+  read from the squadron slot, with DropAlt when the slot holds none.
+- **`007B9320`.** The rack census: the issue-seeded per-rack ammo, else the authored rounds.
+- **ctl+3AEh.** SquadronSetForceRelease is taken as 0, the value `007A91D1` clears it to.
+
+### Predictions (switch OFF -> ON)
+
+1. **USN01 36000, ships35's order.**
+   - Phase 3: the six Nell squadrons install kind 4 (`level-bomb task ... installed`). Leaders
+     go to moveto and members to follow.
+   - They turn toward Enterprise instead of flying north. Squadrons converging on the same
+     target space themselves (`+3Ch` > 0 on some).
+   - Inside ~4000 m (+B8h = 1.4 x 1.6-1.8 x 1800 = 4030-4540 m) they latch. The state
+     sequence is attackrun -> aim -> release.
+   - Each aircraft issues once (`level bomber issue: ... racks=6`) and drops 12 bombs in
+     about 1.5-2 s, when level (gate 20 deg).
+   - Then goaway. Spent: the latch is held only by the leader's range, then break-off, then B5
+     returntobase.
+   - The bombs land near Enterprise. Damage depends on the stick and on Enterprise's
+     manoeuvring. The Nells take AA losses.
+   - Phase 3 ends when the Nells die (`luaMissionComplete`) or Enterprise sinks
+     (`luaMissionCompletedNew`). If it ends in a completion, the guard's refusal line must appear.
+2. **Reference rows with no `levelbomb` census.** Identical, apart from the summary line.
+3. **Rows that issue `levelbomb`** (BSM04's B-17s, B-25 01): the same chain. A row may move a
+   lot: new bombs, deaths and AA.
