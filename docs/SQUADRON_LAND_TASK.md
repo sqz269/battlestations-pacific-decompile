@@ -13844,3 +13844,38 @@ AD's. Logs are `local\l45_eq<A|B|C>_<row>.log`, and the B smoke ran clean.
 - **Routed to cc9-gunnery31 (its file):** the gunnery host's per-unit gun rows (the mount census in
   `src/game_hosts_gunnery.cpp`) must read the rack's device the same way,
   `Equipments[unit+C54h][slot].Platform`. Then the bomb drop finds its 2Ah row and 138 can be re-paired.
+
+## 5ew. Handoff (cc9-lua45, 2026-10-06)
+
+Branch `agent/cc9-lua45`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua45`. Main is merged in and everything is
+committed. No leases are held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| scene deck `Type` enum symbols | `kSceneDeckTypeEnumBound` | ON | AIROPS_LOAD_FROM_SCENE 6 |
+| why no AI deck launches | - | read: no native AI launcher | AIROPS_LOAD_FROM_SCENE 6 |
+| elevator re-take | - | answered by SHIP_AI 200 (ships40) | 5et |
+| rack live ordnance mask | `kRackLiveOrdnanceMaskBound` | ON (stands down under EnableDeviceReload) | 5eu |
+| second rack for IJN01 A7M_2 | - | open, routed to gunnery (command-target zero hypothesis) | 5eu.1 |
+| depth-charge seabed hit | - | read: the faithful line test; the drift goes to gunnery | SCENE_CONTENTS_HOSTS 30 |
+| rack device from equipment, RepeatTime 0.6 | `kRackEquipmentDeviceBound` | ON | 5ev |
+| GUNNERY 138 re-pair | `kRackBulletKindBound` | OFF: the gunnery gun rows still use the class device | 5ev |
+
+**Next, in order:**
+1. **Held-slot pair** (`kAirOpsHeldSlotOrdersBound`), once the lead says ships40's `kStowedPlaneStockReturnBound` is ON.
+   - Run ESMP08 with `cc9-lua44\local\l44_e8_p3.txt`, plus `order <base> <slot> 1` and then `order <base> <slot> 3
+     <target>` lines (SCRIPTED_HELM 16) for slots whose squadron flies with a dead target.
+   - USN04 is the control.
+2. **Re-pair 138** once gunnery31's mount census reads `Equipments[C54h][slot].Platform`. The rows are USN13 9000,
+   USNOS and LOMP10, and the lane rows already exist.
+3. **JM06 submarine torpedo.** The harness entry spec (group 4, the press byte `+35h`, one tube per press) was sent to
+   the lead for routing. Before anyone binds it, the tube's `vtable[1D0h]`/`[1F0h]` and the group-4 role mask are
+   unread.
+
+**Scripts** are in `local\`, prefix `l45_`:
+- `l45_lane.ps1 -Variant <dir suffix> -Rows a,b` starts detached runs from `local\l45_<variant>\build`. It holds
+  the AD rows plus `osprobe`, `ijn01p1` and `smoke`.
+- `l45_disp_scan.py <hex disp> [filter]` lists every instruction using a displacement.
+- `l45_dwords.py <va> <n>` prints image dwords.
+- `l45_vcall_near.py <slot> <addrs>` finds a vtable call after given loads.
+- `l45_deck_census.py` is the scene deck numbering census.
