@@ -630,6 +630,18 @@ constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //    player_fire_weapon_group sends that message for a harness line. OFF: the
 //    arm is a record. docs/GUNNERY_OPEN_ITEMS.md 140.
 constexpr bool kPlayerWeaponGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
+//  * kPlayerTorpedoGroupFireBound: packet cc9_player_torpedo_group. Message
+//    79h's group 4 arm (0095A1CC..0095A426) over the unit's Function 7 tubes:
+//    the bearing -wrap(msg+2Ch - heading) snapped by 0085AB50 (007F6190, pi/4).
+//    A surface unit trains each tube to it (0085ABA0) and raises the trigger
+//    (vtable[1E8h](1)) while 99h is held and the tube is within 5 degrees
+//    (00CEDF5C), with a launch order 007311B0 carrying msg+2Ch as the gyro
+//    heading; an invalid bearing or a release drops it. A submarine or torpedo
+//    boat (IsKindOf 8 / 0Eh, 0095A380) fires, per press, the first tube whose
+//    CanFire(1) answers, through vtable[1F0h], and stops. GameGunneryHost::
+//    player_fire_torpedo_group sends the message. OFF: the arm is a record.
+//    docs/GUNNERY_OPEN_ITEMS.md 152.
+constexpr bool kPlayerTorpedoGroupFireBound = false;
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
@@ -1202,6 +1214,13 @@ struct GameGunneryHost::Impl {
     bool depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt);
     // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
     unsigned long long player_group5_triggers{0}, player_group_fires{0};
+    // Packet cc9_player_torpedo_group (kPlayerTorpedoGroupFireBound).
+    unsigned long long group4_messages{0}, group4_trains{0}, group4_snap_failures{0},
+        group4_trigger_ons{0}, group4_trigger_offs{0}, group4_presses{0},
+        group4_can_fire_refusals{0}, group4_tube_fires{0}, group4_order_launches{0};
+    std::map<std::size_t, bool> group4_last_held;
+    void apply_gun_aim_message_group4(std::size_t unit, const GunAimMessage79& m);
+    bool torpedo_tube_can_fire_1d0(std::size_t g);
     std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
@@ -5153,6 +5172,31 @@ public:
             // switch is on, and counted either way.
             bsp::GunneryGunInputs observed = in;
             bind_aa_acceptance(row, other, observed);
+            // DIAGNOSTIC, env-gated (GUNNERY 147.2 item 6): with BSP_FIRE_GATE_TRACE
+            // naming this unit and BSP_FIRE_GATE_TARGET naming the candidate, each
+            // gun's slot answer once a second: the range test and the term that
+            // bind_aa_acceptance refused on. Reads only.
+            static const std::string slot_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+            static const std::string slot_trace_target = aa_env("BSP_FIRE_GATE_TARGET");
+            if (!slot_trace_unit.empty() && !slot_trace_target.empty()
+                && unit_ < owner_.unit_state.size() && other < owner_.unit_state.size()
+                && owner_.unit_state[unit_].row.name == slot_trace_unit
+                && owner_.unit_state[other].row.name == slot_trace_target) {
+                static std::map<std::size_t, float> next_line;
+                float& next = next_line[slot];
+                if (owner_.clock_seconds >= next) {
+                    next = owner_.clock_seconds + 1.0f;
+                    static const char* const kRefusal[] = {"none", "window", "armour",
+                                                           "line_of_fire"};
+                    const int r = static_cast<int>(last_refusal_);
+                    owner_.log.notef("  fire gate slot t=%.2f %s gun=%zu cat=%d target=%s "
+                        "in_range=%d accepts=%d refusal=%s",
+                        static_cast<double>(owner_.clock_seconds), slot_trace_unit.c_str(), slot,
+                        row.category, slot_trace_target.c_str(), in_range ? 1 : 0,
+                        observed.slot_accepts_target ? 1 : 0,
+                        (r >= 0 && r < 4) ? kRefusal[r] : "?");
+                }
+            }
             if constexpr (kAaMinRangeBound) {
                 in.is_torpedo_class_launcher = observed.is_torpedo_class_launcher;
                 in.minimum_air_range = observed.minimum_air_range;
@@ -6762,12 +6806,34 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
+            const float pre_horz = gun.angles.horz, pre_vert = gun.angles.vert;
             if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
                 ++gun.aim_steps;
                 ++summary.aim_steps;
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
             ++wave_order_pre_steps;
+            // DIAGNOSTIC, env-gated with the fire gate trace (GUNNERY 147.2 item 6):
+            // wave 1's step for the traced unit's guns, once a second.
+            static const std::string step_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+            if (!step_trace_unit.empty() && state.row.name == step_trace_unit) {
+                static std::map<std::size_t, float> next_step_line;
+                float& next = next_step_line[g];
+                if (clock_seconds >= next) {
+                    next = clock_seconds + 1.0f;
+                    log.notef("  fire gate step t=%.2f %s gun=%zu tgt=(%.2f %.2f) deltas=(%.3f %.3f) "
+                        "horz %.3f -> %.3f vert %.3f -> %.3f deg",
+                        static_cast<double>(clock_seconds), step_trace_unit.c_str(), g,
+                        static_cast<double>(gun.angles.target_horz * 57.2957795f),
+                        static_cast<double>(gun.angles.target_vert * 57.2957795f),
+                        static_cast<double>(route.deltas.horz * 57.2957795f),
+                        static_cast<double>(route.deltas.vert * 57.2957795f),
+                        static_cast<double>(pre_horz * 57.2957795f),
+                        static_cast<double>(gun.angles.horz * 57.2957795f),
+                        static_cast<double>(pre_vert * 57.2957795f),
+                        static_cast<double>(gun.angles.vert * 57.2957795f));
+                }
+            }
         }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
@@ -6882,8 +6948,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (!fire_gate_unit.empty() && owner_unit < unit_state.size()
             && unit_state[owner_unit].row.name == fire_gate_unit) {
             static std::map<std::size_t, float> next_line;
+            static std::map<std::size_t, std::array<int, 2>> have_ticks;
+            std::array<int, 2>& ht = have_ticks[g];
+            ++ht[0];
+            if (have_target) ++ht[1];
             float& next = next_line[g];
             if (clock_seconds >= next) {
+                log.notef("  fire gate ticks t=%.2f %s gun=%zu have_target %d of %d ticks",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g, ht[1], ht[0]);
+                ht = {0, 0};
                 next = clock_seconds + 1.0f;
                 float tp[3] = {0.0f, 0.0f, 0.0f};
                 float range = 0.0f;
@@ -6905,6 +6978,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     static_cast<double>(want_vert * 57.2957795f),
                     static_cast<double>(gun.angles.horz * 57.2957795f),
                     static_cast<double>(gun.angles.vert * 57.2957795f));
+                // GUNNERY 147.2 item 6: the traverse the next wave 1 takes - the
+                // commanded pair, 007F6530's route deltas and the class rates.
+                const bsp::GunPlatformArcs trace_arcs{gun.arcs.data(), gun.arcs.size()};
+                const bsp::GunArcRouteOutcome trace_route = bsp::gun_arc_route_deltas_007f6530(
+                    trace_arcs, gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
+                    gun.angles.target_vert);
+                log.notef("  fire gate route t=%.2f %s gun=%zu tgt=(%.2f %.2f) deltas=(%.2f %.2f) "
+                    "routed=%d clamped=%d known=%d rates=(%.2f %.2f) deg seat=%d angle_refusals=%llu aim_steps=%llu dt=%.4f",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g,
+                    static_cast<double>(gun.angles.target_horz * 57.2957795f),
+                    static_cast<double>(gun.angles.target_vert * 57.2957795f),
+                    static_cast<double>(trace_route.deltas.horz * 57.2957795f),
+                    static_cast<double>(trace_route.deltas.vert * 57.2957795f),
+                    trace_route.routed_around ? 1 : 0, trace_route.vertical_clamped ? 1 : 0,
+                    trace_route.current_window_known ? 1 : 0,
+                    static_cast<double>(gun.speeds.horz * 57.2957795f),
+                    static_cast<double>(gun.speeds.vert * 57.2957795f), gun.seat_1ac,
+                    gun.angle_refusals, gun.aim_steps, static_cast<double>(dt));
             }
         }
         if (kAaBotFireTestsBound && !player_seat
@@ -7473,6 +7564,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (shot.flight.class_disables_gravity) ++no_gravity_shots;
         }
         if constexpr (kDepthChargeInWaterBound) depth_charge_activate_006fd9b0(shot, g);
+        if (kPlayerTorpedoGroupFireBound && kTorpedoGyroHeadingBound && torpedo_gun
+            && gun.player_order_heading != 10000.0f) {
+            // Packet cc9_player_torpedo_group: 00856637 installs the player's
+            // launch order heading (order+4 = msg+2Ch) as record+46Ch.
+            shot.commanded_heading = gun.player_order_heading;
+            ++group4_order_launches;
+        }
         if (kTorpedoGyroHeadingBound && gun.category == bsp::kUnitGunneryTorpedoCategory
             && torpedo_gun && (torpedo_lead_xz[0] != 0.0f || torpedo_lead_xz[1] != 0.0f)) {
             // 008FFF20 00900476..00900526: the run line's world heading from the
@@ -10466,7 +10564,11 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         return;
     }
     if (m.group == 4) {                                            // 0095A1CC
-        record("PlayerGunSeat::message_group4", 0x0095a1ccu);
+        if (kPlayerTorpedoGroupFireBound) {
+            apply_gun_aim_message_group4(unit, m);
+        } else {
+            record("PlayerGunSeat::message_group4", 0x0095a1ccu);
+        }
         return;
     }
     if (m.group == 5) {                                            // 0095A441
@@ -10627,6 +10729,115 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         gun.seat_trigger = m.held_34 && (gun.category == 1 || within_band);
     }
     done("PlayerGunSeat::apply_message_00959c20", 0x00959c20u);
+}
+
+// Packet cc9_player_torpedo_group: a tube's vtable[1D0h](1), CanFire with the
+// reload check (0085A830 -> 00729A80), with the gate the fire pass builds.
+bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
+    const GameGunRow& gun = guns[g];
+    const UnitState& state = unit_state[gun.unit_index];
+    float right[3], up[3], forward[3], origin[3], muzzle[3];
+    unit_pose(gun.unit_index, right, up, forward, origin);
+    gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+    bsp::GunFireGateInputs gate;
+    gate.fire_params_armed = true;
+    gate.disabled = false;
+    gate.damage_counter = 0;
+    gate.barrel_delay_time = gun.fire.barrel_delay_time;
+    gate.secondary_delay = gun.fire.fire_stagger;
+    gate.unit_cooldown_applies = false;   // 006D1E50: not for Function 7
+    if (kUnitFireCooldownBound) {
+        gate.unit_fire_cooldown = state.fire_cooldown_6f8;
+        gate.unit_torpedo_cooldown = state.torpedo_cooldown_6fc;
+    }
+    gate.weapon_type_id = gun.category;
+    gate.muzzle_world_y = muzzle[1];
+    gate.muzzle_submerged = false;
+    gate.muzzle_blocked = false;
+    gate.barrel_count = gun.barrel_num;
+    gate.reload_timers = gun.fire.barrel_timers.data();
+    const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+    return bsp::gun_can_fire_turning_0085a830(false, arcs, gun.angles, gate, true);
+}
+
+// Packet cc9_player_torpedo_group: the group 4 arm of 00959C20 (0095A1CC..
+// 0095A426) for one unit. Per gun of unit+48h (next at +44h): IsKindOf(20h) and
+// 00954210(4), i.e. operational and Function 7.
+//   0095A1FF..0095A238  v = 0085AB50(tube, -wrap(msg+2Ch - heading), pi/4):
+//                       the platform snap 007F6190, FLT_MAX when no window
+//                       holds the bearing;
+//   0095A24B / 0095A25F IsKindOf(8) or IsKindOf(0Eh): the press arm 0095A380;
+//   surface:            v valid -> 0085ABA0(tube, v, 0); then, v valid and +34h
+//                       held: |wrap(tube+480h - v)| < 5 deg (00CEDF5C) -> order
+//                       007311B0(msg+2Ch, 0072C970 swim depth), 0072AC20, and
+//                       vtable[1E8h](1); a wider error leaves the trigger as it
+//                       is; v invalid or not held -> vtable[1E8h](0);
+//   0095A380:           v valid, +35h pressed and vtable[1D0h](1) -> the order,
+//                       0072AC20 and vtable[1F0h](); BL = 1 ends the walk.
+// The order's heading is the MESSAGE's yaw ([ESP+14h] in the loop frame; the
+// tube angle v sits at [ESP+20h]): 00856637 copies order+4 to the torpedo's
+// record+46Ch, the heading the gyro turns it to.
+// LABELLED: the world+1FE4h == 2 (network client) gate is open; 0072C970's
+// swim depth (00852410) is not modelled, as for the bot's launches; the
+// bearing is the host's kGunHorzSign * atan2(right, forward) of the yaw's
+// direction, the convention 008FDAF0 uses for every other gun angle here.
+void GameGunneryHost::Impl::apply_gun_aim_message_group4(std::size_t unit,
+                                                         const GunAimMessage79& m) {
+    if (unit >= unit_state.size() || unit_state[unit].dead) return;
+    ++group4_messages;
+    float right[3], up[3], forward[3], origin[3];
+    unit_pose(unit, right, up, forward, origin);
+    const float d[3] = {std::sin(m.yaw_2c), 0.0f, std::cos(m.yaw_2c)};
+    const float bearing = kGunHorzSign * std::atan2(dot3(d, right), dot3(d, forward));
+    const bool press_arm = units.unit_is_kind_of(unit, 0x08)
+        || units.unit_is_kind_of(unit, 0x0E);                            // 0095A24B / 0095A25F
+    if (press_arm && m.pressed_35) ++group4_presses;
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+        const float v = bsp::gun_snap_heading_to_fire_window_007f6190(arcs, bearing, kQuarterPi);
+        const bool valid = !bsp::gun_heading_snap_failed(v);
+        if (!valid) ++group4_snap_failures;
+        if (m.held_34 || m.pressed_35) {
+            float lo = 0.0f, hi = 0.0f;
+            if (!gun.arcs.empty()) { lo = gun.arcs.front().min_horz; hi = gun.arcs.front().max_horz; }
+            log.notef("  player torpedo tube: unit=%s gun=%zu bearing=%.1f window0=[%.1f %.1f] flags=%X of %zu "
+                "at=%.1f snapped=%s%.1f deg", unit_state[unit].row.name.c_str(), g,
+                static_cast<double>(bearing) * 57.2957795, static_cast<double>(lo) * 57.2957795,
+                static_cast<double>(hi) * 57.2957795, gun.arcs.empty() ? 0u : static_cast<unsigned>(gun.arcs.front().flags), gun.arcs.size(),
+                static_cast<double>(gun.angles.horz) * 57.2957795, valid ? "" : "FAILED ",
+                valid ? static_cast<double>(v) * 57.2957795 : 0.0);
+        }
+        if (press_arm) {                                                 // 0095A380
+            if (!valid || !m.pressed_35) continue;                       // 0095A39C / 0095A3AA
+            if (!torpedo_tube_can_fire_1d0(g)) {                         // 0095A3B8
+                ++group4_can_fire_refusals;
+                continue;
+            }
+            gun.player_order_heading = m.yaw_2c;                         // 007311B0, 0072AC20
+            gun.immediate_fire_009e2b60 = true;                          // vtable[1F0h]
+            ++group4_tube_fires;
+            break;                                                       // 0095A41B BL = 1
+        }
+        if (valid) {                                                     // 0095A28F 0085ABA0
+            gun.seat_horz = v;
+            gun.seat_vert = 0.0f;
+            ++group4_trains;
+        }
+        if (!valid || !m.held_34) {                                      // 0095A36B
+            if (gun.seat_trigger) ++group4_trigger_offs;
+            gun.seat_trigger = false;
+            continue;
+        }
+        if (std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, v))
+                < 0.0872664675f) {                                       // 0095A2FC 00CEDF5C
+            gun.player_order_heading = m.yaw_2c;                         // 007311B0, 0072AC20
+            if (!gun.seat_trigger) ++group4_trigger_ons;
+            gun.seat_trigger = true;                                     // vtable[1E8h](1)
+        }
+    }
+    done("PlayerGunSeat::message_group4", 0x0095a1ccu);
 }
 
 // Packet cc9_player_gun_seat_artillery: the group 3 arm of 00959C20
@@ -11185,6 +11396,57 @@ bool GameGunneryHost::player_fire_weapon_group(std::size_t unit, int group, bool
     host.log.notef("player weapon group fire: unit=%s group=5 launchers=%zu %s (005484F0 79h -> "
         "00959C20 0095A441, packet cc9_player_weapon_group_fire)", row->name.c_str(), taken,
         reason.c_str());
+    return true;
+}
+
+// Packet cc9_player_torpedo_group. The torpedo seat's message 79h with group 4
+// (key 9Eh selects the group, SHIP_SCREEN_UPDATE 32). LABELLED, as for group 5:
+// the role take is modelled as the unit's Function 7 tubes taking the local
+// slot (seat 0); the permission test 009542B0 and the HUD screen are not run.
+bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::string& target,
+                                                float yaw_radians, bool held,
+                                                std::string& reason) {
+    Impl& host = *impl_;
+    const GameUnitRow* row = unit < host.units.count() ? host.units.unit_row(unit) : nullptr;
+    auto refuse = [&](const char* why) {
+        reason = why;
+        host.log.notef("player torpedo group fire REFUSED: unit=%s target=%s held=%d: %s "
+            "(79h group 4, packet cc9_player_torpedo_group)",
+            row != nullptr ? row->name.c_str() : "-", target.empty() ? "-" : target.c_str(),
+            held ? 1 : 0, why);
+        return false;
+    };
+    if (!kPlayerTorpedoGroupFireBound) return refuse("kPlayerTorpedoGroupFireBound is off");
+    if (row == nullptr || unit >= host.unit_state.size()) return refuse("no such unit");
+    if (host.unit_state[unit].dead) return refuse("the unit is dead");
+    float yaw = yaw_radians;
+    if (!target.empty()) {
+        const std::size_t t = host.unit_by_name(target);
+        if (t >= host.unit_state.size()) return refuse("no unit of that name");
+        float r[3], u[3], f[3], from[3], to[3];
+        host.unit_pose(unit, r, u, f, from);
+        host.unit_pose(t, r, u, f, to);
+        yaw = std::atan2(to[0] - from[0], to[2] - from[2]);
+    }
+    std::size_t taken = 0;
+    for (GameGunRow& gun : host.guns) {
+        if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        gun.seat_1ac = 0;
+        ++taken;
+    }
+    if (taken == 0) return refuse("the unit has no Function 7 tube");
+    bool& last = host.group4_last_held[unit];
+    GunAimMessage79 m;
+    m.group = 4;
+    m.yaw_2c = yaw;
+    m.held_34 = held;
+    m.pressed_35 = held && !last;
+    last = held;
+    host.apply_gun_aim_message(unit, m);
+    reason = m.pressed_35 ? "pressed" : (held ? "held" : "released");
+    host.log.notef("player torpedo group fire: unit=%s yaw=%.1f deg tubes=%zu %s (79h group 4 -> "
+        "00959C20 0095A1CC, packet cc9_player_torpedo_group)", row->name.c_str(),
+        static_cast<double>(yaw) * 57.2957795, taken, reason.c_str());
     return true;
 }
 
@@ -12147,6 +12409,15 @@ void GameGunneryHost::report() {
             "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
             "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
             host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
+    if constexpr (kPlayerTorpedoGroupFireBound) {
+        host.log.notef("summary mission gunnery player torpedo group messages=%llu trains=%llu "
+            "snap_failures=%llu trigger_ons=%llu trigger_offs=%llu presses=%llu "
+            "can_fire_refusals=%llu tube_fires=%llu order_launches=%llu (0095A1CC / 0095A380, "
+            "packet cc9_player_torpedo_group)", host.group4_messages, host.group4_trains,
+            host.group4_snap_failures, host.group4_trigger_ons, host.group4_trigger_offs,
+            host.group4_presses, host.group4_can_fire_refusals, host.group4_tube_fires,
+            host.group4_order_launches);
     }
     if constexpr (kDepthChargeInWaterBound) {
         host.log.notef("summary mission gunnery depth charge rounds launched=%llu "
