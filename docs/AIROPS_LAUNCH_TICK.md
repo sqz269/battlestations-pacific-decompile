@@ -763,3 +763,27 @@ and logs `count N clamped to the screen's 3`. The stock clamp stays 006C0F00's.
 - USN01 with launch lines asking 6: each filled slot holds 3 Wildcats, not 6.
   - Enterprise's plane limit of 12 (006BD460) then admits four slots instead of two.
   - The creator logs `wing=3`.
+
+### AutoAttackTarget for every member (packet `cc9_player_launch_group`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAutoAttackAllMembersBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+
+**The question.** 5ef's second open item: the order reached only the members that existed at the
+first step.
+
+**The evidence.** cc9-lua41's ON log (`l41_on_usn01w.log`, lines 35781-35800) shows the order in the
+same step as 006C5050. It reads `AutoAttackTarget: squadron 112 members=1`, and only after it come the
+`plane spawn` lines for `Enterprise_sqn01|.-2..|.-5`. The wings are made one step later by the
+squadron's pass A (`kWingConstructionInPassABound`). In the image, the key is read in pass-C init
+007F4BA0 (007F4EC0 -> 007F15F0), after 007F4580 has made every wing.
+
+**The host.** `run_air_ops_player_launch_queue` holds the pending order while any registered slot
+of the squadron (`member_units`) is still `kPlaneSquadronNoUnit`. It keeps the 600-step cap and then
+serves the members that exist. The order still goes through `squadron_intake_007f1940`, which issues
+it to every member it is given.
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line are identical (the queue is filled only by 006CCDA0 order 3).
+- USN01 with launch lines:
+  - each `air ops AutoAttackTarget` line moves one step later and reads `members=3`;
+  - the wingmen get the dogfight task (`00E08F58`) as well as the leader.

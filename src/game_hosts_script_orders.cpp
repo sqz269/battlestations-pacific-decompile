@@ -1645,12 +1645,25 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             }
         }
         std::vector<std::size_t> members;
+        bool slot_waiting = false;
         if (record != nullptr) {
             for (const std::size_t m : record->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) slot_waiting = true;
                 if (m != bsp::kPlaneSquadronNoUnit && m < units_.count() &&
                     units_.unit_alive_and_visible(m)) {
                     members.push_back(m);
                 }
+            }
+        }
+        // Packet cc9_player_launch_group (kAutoAttackAllMembersBound): the image
+        // reads the key in pass-C init 007F4BA0, after 007F4580 has made every
+        // wing, so the order waits while a registered slot still awaits its
+        // pass-A plane (kWingConstructionInPassABound). Same 600-step cap.
+        if constexpr (bsp::kAutoAttackAllMembersBound) {
+            if (slot_waiting && p.waited_steps + 1 < 600) {
+                ++p.waited_steps;
+                ++i;
+                continue;
             }
         }
         if (members.empty() && ++p.waited_steps < 600) { ++i; continue; }

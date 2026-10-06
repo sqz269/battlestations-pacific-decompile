@@ -807,6 +807,11 @@ inline constexpr std::int32_t kSupportManagerLaunchGroup = 3;  // screen+2B4h, 0
 // (a larger request is clamped, with a log line). False: the requested count goes
 // to 006C0F00 unchanged, which no player can do.
 inline constexpr bool kAirOpsPlayerLaunchGroupBound = false;
+// Packet switch: true serves a launched squadron's AutoAttackTarget once every
+// registered member slot holds a plane (the image's 007F4BA0 runs after 007F4580
+// made every wing). False: served at the first step any member exists, so only
+// the flight leader receives it.
+inline constexpr bool kAutoAttackAllMembersBound = false;
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state
