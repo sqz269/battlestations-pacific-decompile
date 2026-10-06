@@ -5644,6 +5644,21 @@ struct GameUnitsHost::Impl {
     // whose torpedo bit the gunnery host clears after one drop, and the single
     // rack's toRepeatTime is 0.
     static constexpr bool kRackBulletKindBound = false;
+    // Packet cc9_lua45_rack_live_ordnance (SQUADRON_LAND_TASK 5eu). The image's
+    // loadout tests ask each device live: 007B9320 / 007B91C0 call the rack's
+    // vtable[220h] / [210h] (MBombPlatform 006E4060 / 006E3FE0, vtable 00CF96A8),
+    // which answer from the rack's attached child round (+48h list, IsKind via
+    // child vtable[5Ch], descriptor child+314h), or, only when the owner's
+    // vtable[1E4h] (006D1F40: the global byte 00E17BF2, 00 in single player) and
+    // the loadout flag are both set, from the rack's bullet descriptor. So an
+    // emptied rack stops answering. True: unit_ordnance() drops each single-rack
+    // kind whose racks are all empty once the rack ammo is seeded, and the
+    // general-bomb bit 2Ah when no rack of the bomb family (2Ah, 2Bh, 2Ch, 2Dh,
+    // 31h, 33h; their descriptors answer 2Ah too, 007B9320's exclusions) has a
+    // round left. LABELLED: "ammo > 0" stands for "a round is attached"; planes
+    // with a MultiBombPlatform or an unknown rack kind keep the static mask.
+    // False: the static OR of the device kinds, as before.
+    static constexpr bool kRackLiveOrdnanceMaskBound = false;
     // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
     // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
     // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below
@@ -31483,8 +31498,42 @@ void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) n
 }
 
 std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
-    if (index >= impl_->slots.size()) return 0;
-    return impl_->slots[index]->ordnance_mask;
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return 0;
+    const GameUnitSlot& u = *impl_->slots[index];
+    std::uint64_t mask = u.ordnance_mask;
+    if constexpr (Impl::kRackLiveOrdnanceMaskBound) {
+        // 007B9320 / 007B91C0 -> rack vtable[220h] / [210h]: an emptied rack has
+        // no child round to answer with (SQUADRON_LAND_TASK 5eu).
+        const std::size_t n = u.rack_bullet_class_per_rack.size();
+        if (u.rack_census_done && u.rack_multi_count == 0 && u.rack_ammo >= 0 && n != 0
+            && u.rack_ammo_per_rack.size() == n) {
+            const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
+            const auto bomb_family = [](int kind) {
+                return kind == 0x2A || kind == 0x2B || kind == 0x2C || kind == 0x2D
+                    || kind == 0x31 || kind == 0x33;
+            };
+            bool known = true;
+            bool family_loaded = false;
+            for (std::size_t i = 0; i < n; ++i) {
+                const int k = u.rack_bullet_class_per_rack[i];
+                if (k < 0x08 || k > 0x3F) { known = false; break; }
+                if (u.rack_ammo_per_rack[i] > 0 && bomb_family(k)) family_loaded = true;
+            }
+            if (known) {
+                for (std::size_t i = 0; i < n; ++i) {
+                    const int k = u.rack_bullet_class_per_rack[i];
+                    bool loaded = false;
+                    for (std::size_t j = 0; j < n; ++j) {
+                        if (u.rack_bullet_class_per_rack[j] == k && u.rack_ammo_per_rack[j] > 0)
+                            loaded = true;
+                    }
+                    if (!loaded) mask &= ~bit(k);
+                }
+                if (!family_loaded) mask &= ~bit(0x2A);
+            }
+        }
+    }
+    return mask;
 }
 
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
