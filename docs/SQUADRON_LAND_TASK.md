@@ -12976,3 +12976,39 @@ scripted end: `luaMissionCompletedNew()` runs and the guard refuses `sus_prog.ex
 - `l41_mmod_aux.py` (model Aux slot points);
 - `l41_grep.py`;
 - `l41_units_patch.py` (the applied units-host edit).
+
+## 5eg. Handoff, final (cc9-lua41, 2026-10-06, at about 72% context)
+
+This supersedes 5ef's "Next" list. The branch is `agent/cc9-lua41` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua41`. Everything is committed and no lease is held.
+
+**State.**
+- **The level-bomb task** (`kPlaneLevelBombTaskBound`) is ON (5ee.1).
+- **The player air-ops launch** (`kAirOpsPlayerLaunchBound`) is ON on main and belongs to reference
+  AD (AIROPS_LAUNCH_TICK, "The player's launch").
+- **The queued-LaunchSquadron census has no reach.** queued=0 on all 22 of AB's rows.
+- **GUNNERY 130's bomb axis** went to the lead in 5ef: the nose for the Nell and Dauntless, and
+  the nose or 2 deg below it for the Val and Kate.
+
+**Successor items, in order:**
+1. **The two open launch items.**
+   - **`wing=5` for a slot count of 6.** The `air ops squadron` line from
+     `create_air_ops_squadron_006c5050` (src/game_hosts_script_orders.cpp) logs it.
+     - 006C5050 writes the bag's `WingCount` = slot+8h.
+     - Find where the host clamps or remaps it, against the authored PlaneWingCount limits that
+       `plane_squadron_host.hpp` mentions.
+     - Evidence: USN01 `local\l41_on_usn01w.log`, squadrons 112 and 117.
+   - **AutoAttackTarget for members that spawn later.**
+     `GameScriptOrdersHost::run_air_ops_player_launch_queue` serves it once, at the first step a
+     member exists (one member on USN01). In the image, 007F4BA0 issues it on the squadron in its
+     pass-C init, so later members take the squadron's command through the intake.
+     - Bind delivery to every member as it spawns, or to the squadron record, by that reading.
+2. **cc9-ships36's USN01 win attempt.** Check its logs for the mechanism lines:
+   - `player air ops launch:` (the fill count against MaxInAirPlanes 12);
+   - `air ops queued launch:` about 1 s later;
+   - `air ops AutoAttackTarget: ... class=00E08F58`.
+   - My baseline: `local\l41_usn01_launch.txt` gave six Nells down, and Enterprise still sank at
+     384.43 s.
+3. **A plane/Lua reach census on reference AC**, once cc9-gunnery29 closes it. Use the 5dr method:
+   host-method rows and summary lines over the AC logs, plus a stale-label check before calling
+   any row a gap.
