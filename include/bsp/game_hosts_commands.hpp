@@ -188,6 +188,16 @@ inline constexpr bool kSetCommandClearAllMessageBound = true;
 // the queue as it was.
 inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 9
 
+// Packet cc9_path_object_default_pair, docs/SHIP_AI_OPEN_ITEMS.md 197. True: a
+// director's path object starts with the pair 0071FB90 constructs it with,
+// follow mode 1 (SIMPLE, 0071FBBD) and start mode 5 (join forward, 0071FBC4),
+// so a `moveonpath` issued without 0071C1B0 (the shipyard's 00844FC0 ->
+// 0077D600) follows its path. False: {0, 0}, a follow mode whose 007ADCC0 arm
+// keeps the cursor on its point. LABELLED: the host keeps one pair per
+// director, not one per slot, so 00720850's re-construction on a slot clear
+// (00720B36 / 00720C72) is not modelled.
+inline constexpr bool kPathObjectDefaultPairBound = true;  // ON: SHIP_AI 197
+
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
 struct GameReleasedTarget {

@@ -15192,3 +15192,72 @@ Script: this installation's `COTP-USN\us_osumi.lua`, 2024-10-29.
   - **Unverified:** a scripted attacker that drowns submerged 120 s after it spawns may be a host artifact rather than image behaviour. This is routed to the lead and is not checked here.
 - **Enterprise launches nothing.** A probe (`s39_osprobe`, `s39_osprobe2`) launched classes 100-320 from Enterprise and Essex at frame 900. Every line was refused with "006C0F00 left the slot empty (no stock or plane room)". The deck logs `stock=4`, but the idle run has no Enterprise squadron either.
   - Next: read which classes Enterprise's four stock entries hold, and whether their counts are zero.
+
+## 197. The shipyard boat's path pair, and what `+1130h` really gates (cc9-ships39, 2026-10-06; GUNNERY 136.6 follow-up)
+
+### Why `Elco #Y1` never leaves the hangar
+
+The evidence is cc9-gunnery30's ON log `g30_sy3on_l10b.log`, from LOMP10 with `kShipyardProductionBound` on.
+- The path cursor row reads `Elco #Y1 CB4_SY_Path pts 3 mode 0 start 0 ... advances 11301 ... 0>0>0>...`.
+- `00836BF0`'s arm does run on every step, and the boat is inside its radius of point 0.
+- `ship_ai_path_next_index_007adcc0` falls into its default arm for follow mode 0 and returns the same index. So the goal stays at point 0, which is the boat's own position. The ship AI sits in `moveonpath` with `dir=stopped` and throttle 0.
+
+**Where the 0 comes from.**
+- The host's `GameDirector` starts with `path_follow_mode{0}` and `path_start_mode{0}`.
+- Only `0071C1B0` writes them. That is the 5Bh arm of a script's `NavigatorMoveOnPath`.
+- The shipyard's creator `00844FC0` issues `moveonpath` (`00E08F80`) straight through `0077D600`, with a kind-1 descriptor that names the path entity. It never calls `0071C1B0`.
+
+**The image.**
+- `0071F600`'s entity arm passes `(director+1A4h)+8` to the cursor start: the slot path object's mode pair.
+- That object is built by `0071FB90` with `MOV [EAX+8],1` (`0071FBBD`) and `MOV [EAX+0Ch],5` (`0071FBC4`), i.e. SIMPLE and join forward.
+- `0071FB90`'s callers are `00720B36` and `00720C72` in `00720850`. When a slot is cleared, that function deletes the slot's path object, shifts the rest, and appends a fresh `{1, 5}`.
+- So a fresh slot follows its path unless `0071C1B0` overwrote the pair.
+
+**Binding.** `kPathObjectDefaultPairBound` (`include/bsp/game_hosts_commands.hpp`), committed OFF.
+- ON, a director starts with `{1, 5}`.
+- **LABELLED:** the host keeps one pair per director, not one per slot, so the re-construction on a slot clear is not modelled.
+
+**Predictions, written before the pairs.**
+1. **LOMP10 build pair** (both sides with `kShipyardProductionBound=true`, ON adds this switch):
+   - `Elco #Y1` row: mode 1, start 5, and the legs leave 0 within a few steps.
+   - The ship AI goal moves to point 1, and the boat gets a non-zero throttle.
+   - **Risk:** the boat is created at y=0, not at the `0078CF20` water height, and touches terrain at 235.41 s. If it still does not move, that creation gap is the blocker, and it is routed to the Lua lane.
+   - If the boat clears the hangar, entries 2-4 build.
+2. **Broad pairs** (LOMP10, JM05 long, USN13 long, JM08 long, and a control): the switch reaches only directors whose `moveonpath` began without a `0071C1B0` store.
+   - Script `NavigatorMoveOnPath` and `PilotMoveOnPath` always store the pair first, so their rows should not change.
+   - Before the runs, I expect every row with mode 0 in the path cursor table to come from a non-script issuer. Pairs with no such row should be identical (pair_diff 0 or 1).
+
+### Correction: `+1130h` (`shipYardLaunch`) does not stop the motion body
+
+- `0081DE10` (its compare is at `0081DE31`) is not the ship motion body. Its one caller is `00864680`, the target-visibility test (GUNNERY_OPEN_ITEMS's `00864680` section), where `+1130h > 0` reads as "hidden".
+- **`+1130h` is decremented.** The ship motion tick `00825F20` (`ECX` = unit+310h) does this at `0082639C`-`008263AF`:
+  1. `MOV EAX,[EDI+0E20h]` (unit+1130h), `TEST`, and skip when it is zero;
+  2. `ADD EAX,-1`, then store it back;
+  3. when the result is zero, `MOV ECX,ESI` (the unit) and `CALL 00813830`, which sends `7Ah` with byte `+20h` clear.
+- So the sentinel lasts five motion ticks, and the motion body runs on every one of them.
+- That corrects LAND_AND_STRUCTURES.md section 3 ("There is no decrement anywhere") and GUNNERY 136.6's reading of `0081DE31`.
+
+**The pairs, measured (switch flipped ON).** The base is `7bcdb0fa9`. The exports are `local\s39_sy_off`, `local\s39_sy_on` and `local\s39_pp_on`.
+
+| row | OFF | ON | pair_diff |
+| --- | --- | --- | --- |
+| LOMP10 build, 16000, `s39_l10_build.txt` (cc9-gunnery30's `g30_ord_l10_build`), shipyard ON on both sides | `s39_syoff_l10` | `s39_syon_l10` | 3 |
+| LOMP10 long 9000 | `s39_ppoff_l10l` | `s39_ppon_l10l` | 1 (refill counter and sector-scan noise) |
+| JM05 long 9000 | `s39_ppoff_jm05l` | `s39_ppon_jm05l` | 0 |
+| USN13 long 9000 | `s39_ppoff_usn13l` | `s39_ppon_usn13l` | 0 |
+| JM08 long 36000 | `s39_ppoff_jm08l` | `s39_ppon_jm08l` | 1 (the HQ failure at 1026.93 s on both) |
+| USN04 4500 (control) | `s39_ppoff_usn04` | `s39_ppon_usn04` | 0 |
+
+**The build pair: prediction 1 is met.**
+- All four Elcos build. Each path cursor row reads `mode 1 start 5`, legs `0>1>2`, final yes.
+  - Elco #Y1 travels 855.6 m and Elco #Y4 619.6 m.
+  - At step 4720, Y1 is in `moveonpath dir=ahead throttle 1.000`, heading for point 1 (`d32c` 317 m).
+- The terrain contact at y=0 (235.41 s) does not hold the boat, so the `0078CF20` water-height gap is not this blocker.
+- Gameplay moves only through the boats:
+  - three more units (`Elco #Y2`-`#Y4`);
+  - Elco #Y1 sinks at 788.28 s;
+  - deaths go from 14 to 15.
+
+**The broad set: prediction 2 is met.** No row moves its gameplay, so no `moveonpath` in these missions began without a `0071C1B0` store.
+
+**Verdict: the mechanism matches and no row moves for any other reason, so the switch is ON.** The per-slot re-construction stays labelled.
