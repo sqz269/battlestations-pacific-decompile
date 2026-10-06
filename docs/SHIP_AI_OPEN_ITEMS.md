@@ -15123,3 +15123,72 @@ grammar reads one word, as in `launch "MainAirFieldEntity 01" 1 162 3 <target>`.
   - the shipyard (`build` on `Shipyard 01`, which waits on `kShipyardProductionBound`);
   - the patrol boat `Japanese Patrolboat 01`;
   - holding the Mavises back until the transports approach the coast, after 700 s.
+
+## 196. USN04 phase 1 passes under frame jitter; phase 2 needs a release; USNOS read (cc9-ships39, 2026-10-06, runs and reads only)
+
+No code changed. The runs are in worktree cc9-ships39 `local\` (`s39_run.ps1`, the s38 launch form). All USN04 runs use difficulty 1.
+
+### The jitter does reach the fade
+
+- `--frame-jitter <pct>,<seed>` multiplies `--mission-frame-seconds` by one factor per in-mission frame, in `[1 - pct, 1 + pct]` (`src/game_hosts_mission.cpp`, `MissionFrameJitter`, set at 1918).
+- `run_mission_frame_004e4a40` stores that value as the raw and scaled delta. With `kScaledDeltaWriteBound` it also goes to `game+21F0h`.
+- `run_script_timers(raw_delta)` (`src/game_hosts_script_orders.cpp` 5039-5079) then does two things:
+  - It adds the delta to the think accumulator and runs one `Think` pass per whole 0.05 s step (`kScriptThinkOnFixedStep`, 00875BB0's rule).
+  - It steps the fade with the raw jittered delta (`run_blackout_update(step)`, 005B9800).
+- The call is gated on `result.simulated`, the simulation gate at 004E50B0. It does not depend on a fixed step having run, so a frame with no fixed step still steps the fade.
+- This is the image's split (MISSION_BLACKOUT.md, "The two clocks"). No harness packet is needed.
+
+### USN04 phase 1: three seeds out of three
+
+Idle runs, 60000 frames, `--mission-frame-seconds 0.0222 --frame-jitter 20,<seed>`:
+
+| run | seed | `luaMoveToPh2` called back | `Blackout(..., "luaMoveToPh2", 3)` re-issues |
+| --- | --- | --- | --- |
+| `s39_u4j1` | 1 | frame 43827, about 973 s | 253 |
+| `s39_u4j2` | 2 | frame 17298, about 384 s | 57 |
+| `s39_u4j3` | 3 | frame 10425, about 231 s | 6 |
+
+- The first re-arm is at about 222 s (194), so the callbacks come 9, 162 and 751 s after it.
+  - Seeds 2 and 3 fall inside MISSION_BLACKOUT's 1/45 s ± 20 % model range (35-359 s; seed 3 is earlier still).
+  - Seed 1 is later than any seed the model drew.
+  - In every seed the callback is a matter of chance; the jitter only makes it possible.
+- Phase 2 then starts: Shoho (`Zuiho-class01`) and its escorts `Takao-class01` and `Mogami-class01` spawn, and the objective "Sink the Shoho!" is added.
+- **The frame mode is a condition of every USN04 order file from now on:** `-Step 0.0222 -Jitter 20,3`. Phase 2 starts at frame 10425 under it.
+- Idle, no run ends: phase 2 waits for the player to sink Shoho.
+
+### USN04 phase 2: the strikes reach Shoho but do not release
+
+**What the player controls** (this installation's `usn_19_coralus.lua`, 2024-08-26):
+- Lexington's captain and AA roles (458-459), and the squadrons.
+- Every escort is `PLAYER_AI` (153, 192).
+- So Shoho can only be sunk from the air.
+
+**`s39_u4p1`** (`s39_u4_p1.txt`, from `s39_u4gen.py`): Lexington relaunches slots 1-4 every 900 frames from 11200, at Shoho first.
+- Class 108 is the SBD, 112 the TBD, 101 the F4F.
+- Only 3 of the player's launches go through. Slots 1 and 2 are never in state 1 or 5 (the slot return, routed to cc9-lua44).
+- The support manager still sends many US squadrons at Shoho (Lexington sqn05-sqn23, Yorktown sqn09-sqn22).
+- Over 1332 s the summary reads:
+  - `dive-bomb task: aircraft=33 releases=1`;
+  - `torpedo task: aircraft=36 releases=3 blocked_engaged_009d3210=31532`;
+  - torpedo racks `drops=0`.
+- No hit reaches Zuiho's hull. Takao, Mogami and Zuiho's AA kill the strikes.
+
+**`s39_u4p2` and `s39_u4p3`**: the player takes the first SBD squadron (`12500 select Lexington-class01_sqn05`, applied), then watches for a release on Shoho.
+- The squadron dives on Shoho at 711.9 s (alt 357 m, pitch -1.21).
+- A 25 m watch ends with "the sight never came within 25.0 m (nearest 234.1 m)".
+- A 150 m watch fires at 721.60 s, but only in the pull-out (pitch +0.15, alt 136). The predicted impact is (10321, 10048).
+- The wingmen exit `aimdive -> goaway` at `d=514.0` and `d=424.8` without releasing. The leader dies at 722.95 s.
+- **So the dive aim ends 230-500 m off the target, and the AI's own release does not happen either.** This is the planes lane's dive and torpedo attack (routed to the lead).
+- The test row: seed 3, `s39_u4_p1.txt`, 45000 frames.
+
+### USNOS phase 1: not USN04's shape
+
+Script: this installation's `COTP-USN\us_osumi.lua`, 2024-10-29.
+- **No re-issue loop.** `luaCheckObjectives` (995-1015) clears `Mission.AtkTime` before it calls `luaPh1FadeOut` (`Blackout(true, "luaMoveToPh2", 1)`). The fade is armed once, so lockstep is enough.
+- **What holds phase 1 is a wave-1 survivor.** The next wave spawns only when `PhOneAttackers` is empty. In `s38_osidle` (24000 frames) every wave-1 member dies except Judy groups `plane #1.5` and `plane #1.6`. After their bombs, both run `returntobase` to Airfield3 (146.90 s and 165.71 s). They land and sit in `land/park` state 5 (`q910=1 done=0`) until 1200 s.
+  - SQUADRON_LAND_TASK.md 5bi read the image's hangared airfield plane: it never leaves park.
+  - So in the image too, the table empties only if the player kills those Judys, in the air or parked.
+- **The Kaiten/submarines are not what blocks.** `unit #3.1` is sunk by Portland2 at 110.80 s. `unit #3.2`-`#3.6` all die at 160.81 s with no damage, through `submarine air: ... drowned (vtable[70h](1), packet cc9_submarine_air)`.
+  - **Unverified:** a scripted attacker that drowns submerged 120 s after it spawns may be a host artifact rather than image behaviour. This is routed to the lead and is not checked here.
+- **Enterprise launches nothing.** A probe (`s39_osprobe`, `s39_osprobe2`) launched classes 100-320 from Enterprise and Essex at frame 900. Every line was refused with "006C0F00 left the slot empty (no stock or plane room)". The deck logs `stock=4`, but the idle run has no Enterprise squadron either.
+  - Next: read which classes Enterprise's four stock entries hold, and whether their counts are zero.
