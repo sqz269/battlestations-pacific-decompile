@@ -9786,3 +9786,40 @@ hypothesis (USN01's scout bombs miss Convoy1 under it), not as the image's behav
 the round's attach path (who parents a kind-2Ah child under the rack, and its local matrix) and the
 Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
 the same read to justify.
+
+## 131. USN02 r5: Houston's hold after its attackmove target dies is the director's idle tail (SHIP_AI 171 (a); cc9-gunnery28, 2026-10-06, read only)
+
+The question routed from cc9-ships35: in r5 (`local\s35_u2r5.log` in the cc9-ships35 tree, orders
+`s35_u2_orders5.txt`), the player leaves Houston for Exeter at frame 1800, Houston's attackmove target
+Minegumo dies at 92.55 s, and Houston holds at 0 m/s from about 93 s to 210 s. Does the image retarget,
+keep moving, or hold?
+
+**The chain in the host, from r5's log:**
+1. Frame 1858 (about 92.9 s): `command finished: Houston cleared attackmove from slot 0 (mode 1); the
+   queue now holds (none)`. The attackmove ends because its target is dead.
+2. The director's idle tail `00836DC9` re-issues a default command. Houston's row in the idle-tail table
+   reads `stop / director idle tail` (and earlier `cruise`, while it was player controlled).
+3. The next sync (`009F3DD0`) finds the current command `stop`, not null, and `009F3D00` installs the
+   `stop` state: from ship AI step 1830, `state=stop mode=heading dir=stopped throttle=0.000`.
+
+**The image, as read:**
+- `009F3DD0` (`BSP_ShipAi_SyncStateToCurrentCommand`, `src/ship_ai_states.cpp`, read whole): a null command
+  on an uncontrolled unit keeps the current state; any other command switches through `009F3D00`.
+- `00836DC9..00836EA7` (`weapon_director_idle_reissue_00836dc9`, `include/bsp/unit_commanded_speed.hpp`,
+  coverage complete): with an empty queue it issues `follow` on the controller's owner when the controller
+  belongs to another entity; else `cruise` when the unit is player controlled or a commanded speed is
+  active (`*(unit+73Ch)+28h >= 0`); **else `stop`**. Houston is no longer player controlled, and no
+  commanded speed is set (`commanded_speeds=0` in r5's director summary), so the image's choice is
+  `stop` too.
+
+**So the hold is the image's behaviour as read.** No retarget happens on the director side: nothing in
+`00836DC9` or `009F3DD0` picks a new enemy, and the `stop` state's step holds the ship. Guns keep firing
+through their own targeting.
+
+**Not established here, and the one route left to a moving Houston:** a side-level AI that orders idle
+friendly ships. r5's `ai coordinator` summary reads `game_mode=8 compose=0 groups_created=0 tick_orders=0`:
+no AI group exists for Houston's side, so nothing re-orders it. Whether the image builds a group for the
+player's own side in single player is outside this lane (`ai_group_think`, `00A2DFA0`). A script or player
+order (a `moveto`, or `SetShipSpeed`, which makes the idle tail choose `cruise`) is what moves Houston.
+
+**Nothing bound.**
