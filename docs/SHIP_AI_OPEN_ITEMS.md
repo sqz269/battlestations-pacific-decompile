@@ -14980,3 +14980,46 @@ not completed with legal input.** 190's p1 completion stands only as a labelled 
 | `s38_line.py` | the units near a pose-to-goal segment at one trajectory step |
 
 Leases: `cc9_reference_completion` is released with this commit.
+
+### 191.3 The `depthcharge` line, and BSM01 phase 3 still not passed (cc9-ships38, 2026-10-06)
+
+**The image's input path:**
+1. `IC_GUNC_DEPTHCHARGE = 159` (9Fh) in this installation's `scripts\datatables\Inputs.lua`
+   (mtime 2024-07-13, groups `IG_GUNCONTROL`, `IG_ZOOMROLESWITCH`).
+2. On screen 2Eh, `005484F0` maps keys 9Ch..9Fh to weapon groups 2..5 (SHIP_SCREEN_UPDATE 32),
+   so 9Fh selects group 5 (role 7, mask 80h).
+3. While the group's role is held, the fire key 99h makes `005484F0` build message 79h
+   (`00954A10`) and route it to `[00E188D8]` (`0077C2A0`).
+4. `00959C20` jumps on group 5 to **`0095A441`**, read here from the listing to its loop back at
+   `0095A5A5`. For each kind-20h device on unit+48h that `00954210(5, dev)` keeps (operational
+   `00729F10` and `0080F750`):
+   - a **Function-9** device is aimed first (`00957740`, `00955630`, `0085ABA0`) and is triggered
+     only inside the `00D1A8A0` window;
+   - every other kept device, the **Function-8 racks**, gets `vtable[1E8h](msg+34h)` at
+     `0095A58D..0095A5A0`;
+   - nothing fires while `[00E188A8]+1FE4h == 2` (`0095A506`).
+
+**The line** (`src/game_hosts_mission_frame.cpp`): `<frame> depthcharge <ship>`.
+- It refuses unless `<ship>` is the controlled unit, since `005484F0` gates on `[00E188D8]`.
+- **LABELLED stand-in:** the press is delivered as
+  `GameGunneryHost::fire_function_guns_now_009e2b60(unit, 8)`, which applies the same
+  `vtable[1E8h](1)` latch to the Function-8 racks. No group screen, role take or message runs.
+
+**BSM01 runs** (30000 frames, trajectories). Both use 191.2's hand-helmed route from frame 5500:
+- **p7** (`s38_b1_p7.txt`): `stop 40` at the mini-sub, then a press every 40 frames from 9900 to
+  10500.
+  - Henry halts at (1096, -3007), 19 m from the sub (1077, -3011, -7.0).
+  - The rack fires 5 times (`gunrow ... plat 9 cat 8 ... shots 5`; `bullet throw ... depth=5`).
+  - No hit, and the mission stays in phase 3.
+- **p8** (`s38_b1_p8.txt`): the last leg is aimed past the sub at (900, -3040). Henry stops at
+  (1718, -2738), short of the sub, after 11 drops. No hit.
+
+**Why no hit: the depth charges never sink.**
+- `src/bomb_torpedo_tick.cpp` has `depth_charge_terminal_sink_speed`, `depth_charge_should_detonate`
+  and `depth_charge_in_proximity`, but nothing calls them.
+- The gunnery host's projectiles stop at the water (`projectiles ... water=3854`), so a depth
+  charge never reaches its detonation depth near the boat.
+- PROJECTILE_KINDS gives the image's model: record 474h, create `006FD210`, the shared bomb
+  tick, and `DiveSpeed` / `DiveMinDepth` / `DiveMaxDepth`.
+- **Routed: the gunnery lane** (the depth-charge projectile under water, and its detonation and
+  radial damage). Then re-run p7.
