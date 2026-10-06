@@ -2960,6 +2960,15 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     }
 
     if (script_orders_ == nullptr) return 0;
+    if (record.class_id == 0x1a) {
+        // Packet cc9_lua46_generate_land_convoy. A held-back LandConvoy (JM05's
+        // Event5Convoy and Event3Convoy 01..03): 0046DB4B's descriptor[1] is the
+        // LandConvoy creator (004F2700, a 3CCh FixedInstance, no vehicle class),
+        // and its slot-39 attach 00743450 (vtable 00CEA570 +9Ch) builds the
+        // members from Type1..TypeN. Before, the record went to create_units as a
+        // unit and threw (no creator for the observer tables), killing the run.
+        return generate_land_convoy_00743450(state, *entry, record, placed);
+    }
     const std::size_t units_before = script_orders_->units().count();
     const std::uint32_t entity_id
         = script_orders_->create_unit_from_scene_record_0046db4b(record);
@@ -3037,6 +3046,62 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     }
     log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
     if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
+    return 0;
+}
+
+// Packet cc9_lua46_generate_land_convoy: GenerateObject of a held-back
+// LandConvoy, the same three steps a load-time convoy takes in this host
+// (src/game_hosts_mission_frame.cpp: the marker seed collect_scene_markers makes,
+// 00925F20's pass A over it, then 00743450 and 007420B0/007AF150), run at the
+// call instead of the load walk. SUBSTITUTIONS, labelled:
+//  - the convoy entity is a scene marker of this host, with an id from
+//    kGeneratedSceneMarkerIdBase (the load-time markers count up from 50000);
+//  - the members are units created by build_land_convoy_roster_00743450 and,
+//    as for a load-time convoy, are not pushed onto the pending list;
+//  - a convoy whose Path does not resolve keeps its members standing, as at load.
+int GameMissionLuaHost::generate_land_convoy_00743450(lua_State* state,
+    bsp::game::SceneSpawnPoolEntry& entry, const bsp::game::GameSceneEntityRecord& held,
+    bool placed) {
+    bsp::game::GameSceneEntityRecord record = held;
+    record.generated = true;   // the instantiate pass took it (0046DB4B)
+    record.created = false;    // a marker: no unit is made of the convoy itself
+    record.skipped_because.clear();
+    const int id = kGeneratedSceneMarkerIdBase + generated_scene_markers_++;
+    const float position[3] = {record.world[12], record.world[13], record.world[14]};
+    // 00928760's push, then the marker fields run_scene_load_init_all_0046eb4b sets.
+    push_pending_entity_00926be0(id, record.name, -1);
+    if (PendingEntity* const node = find_pending(id)) {
+        node->findable = true;          // the LandConvoy row of find_scene_class_lua_identity
+        node->marker_class_id = record.class_id;
+        node->marker_authored_party = record.party;
+        node->party = record.party;
+        node->race = record.race;
+    }
+    script_orders_->register_scene_marker(id, record.name, position, record.class_id);
+    if (units_hooks_ != nullptr) units_hooks_->register_scene_marker_frame(id, record.world);
+    run_sentity_init_all_00925f20(false, 0x0046dbe8u);  // 0046DBE6 XOR CL,CL
+    const bool attached = init_all_attached(id);
+    std::size_t members = 0;
+    bool moving = false;
+    if constexpr (bsp::game::kLandConvoyMembersBound) {
+        if (units_hooks_ != nullptr) members = units_hooks_->build_land_convoy_roster_00743450(record);
+        if constexpr (bsp::game::kLandConvoyMovementBound) {
+            if (const std::vector<bsp::game::GameSceneEntityRecord>* scene =
+                    bsp::game::live_scene_entities(); scene != nullptr && units_hooks_ != nullptr) {
+                moving = units_hooks_->bind_land_convoy_motion(record, *scene);
+            }
+        }
+    }
+    entry.spawned = true;
+    entry.entity_id = id;
+    ++summary_.generate_object_created;
+    log_.notef("  GenerateObject 00944fd0: \"%s\" (LandConvoy) -> marker id %d at "
+        "(%.1f %.1f %.1f)%s, thisTable=%d, members=%zu, moving=%d (0046DB4B 004F2700, "
+        "00743450, packet cc9_lua46_generate_land_convoy)", record.name.c_str(), id,
+        position[0], position[1], position[2], placed ? " placed" : " authored frame",
+        attached ? 1 : 0, members, moving ? 1 : 0);
+    log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
+    if (attached && push_resolved_entity_by_id(state, id)) return 1;
     return 0;
 }
 

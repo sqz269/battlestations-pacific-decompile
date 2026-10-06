@@ -345,6 +345,12 @@ private:
 
 SceneSpawnPool& scene_spawn_pool() noexcept;
 
+// Packet cc9_lua46_generate_land_convoy. The records of the live scene-contents
+// host (null when none exists), for GenerateObject's LandConvoy, whose 007420B0
+// resolves its Path among them. Same reason as scene_spawn_pool(): the Lua host
+// does not hold the scene-contents host.
+const std::vector<GameSceneEntityRecord>* live_scene_entities() noexcept;
+
 // Packet cc8_ship_moveonpath. The authored `Path` entities (class 0x47), with
 // their `Point%02i.Pos` triples carried into WORLD space by the record's own
 // composed frame through the recovered 00B62D10, which is the transform

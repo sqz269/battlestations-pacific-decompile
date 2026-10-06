@@ -383,6 +383,8 @@ class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
 class GameUnitsHost;
+struct SceneSpawnPoolEntry;
+struct GameSceneEntityRecord;
 
 // One binding the running scripts actually reached, with the row address the
 // table at 00e0b7b8 carries for it.
@@ -1275,6 +1277,14 @@ public:
     // held back at 0046D3C5, by name, and pushes its `thisTable` slot the way the
     // entity-returning tail 0089903C does. docs/LUA_GENERATE_OBJECT_HOST.md.
     int run_generate_object_00944fd0(lua_State* state, int argument_count);
+    // Packet cc9_lua46_generate_land_convoy: a held-back LandConvoy (class 1Ah)
+    // becomes a scene marker plus its 00743450 members, as a load-time convoy.
+    int generate_land_convoy_00743450(lua_State* state, SceneSpawnPoolEntry& entry,
+        const GameSceneEntityRecord& held, bool placed);
+    // Marker ids for GenerateObject's convoys; the load-time markers count up from
+    // 50000 (kSceneMarkerIdBase) and script entities start at 100000.
+    static constexpr int kGeneratedSceneMarkerIdBase = 90000;
+    int generated_scene_markers_{0};
 
     // Packet cc8_spawn_new_route. 0094C480 SpawnNew is a three-instruction thunk
     // into 00949750 on the manager at *(00F89B3C): it parses ONE Lua table,
