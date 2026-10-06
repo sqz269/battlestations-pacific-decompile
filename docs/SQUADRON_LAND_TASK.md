@@ -12351,3 +12351,45 @@ That is a spread miss, not a mechanism failure.
 none, harm, soft, sell, exitzone, landed, editor. The host published `harm` for every death. Now
 the units host keeps the cause its own kills pass to `00926D90` (4 at the retreat exit), so an
 escaping catalina reads `exitzone` and the event's failure branch runs, as the script intends.
+
+## 5eb. The spent-ordnance RTB, 0084E010's B5 (packet `cc9_squadron_spent_ordnance_rtb`, cc9-lua40, 2026-10-06)
+
+**The read is 5ea step 1.** The binding is `kSquadronSpentOrdnanceRtbBound`
+(`include/bsp/squadron_spent_ordnance.hpp`), committed OFF.
+
+**The driver.** `GameUnitsHost::run_spent_ordnance_rtb_0084e010` runs once per simulation step, at
+the head of `run_landing_queue_006cd240`. For every squadron with a live member it does three things:
+- **009F8160's latch:** the leader's command is one of the seven ordnance classes, no live member
+  holds a rack round (`007B9140`), the leader is not `IsKindOf(13h)`, and the reload gate is open.
+- **009F7C90's ending:** every live member's dive-bomb or torpedo break-off answer is true; a member
+  with neither task counts as true.
+- **0084E010's B5:** `returntobase` on the squadron (`issue_return_to_base_007f16d0`). Its
+  `007F16D0` resolution and the bot intake install the land task (site arm) or the retreat task
+  (retreat arm, 5ea).
+
+The substitutions are listed at the routine. **`BSP_SPENT_RTB_CENSUS=1`** runs the three steps and
+logs them while the switch is OFF, without issuing anything.
+
+**Census.** Run at `456fb1b2a` plus this edit, OFF, with the census variable set; logs are
+`local\l40_off_<row>.log`.
+
+| row | latched | ended and B5 | squadrons |
+| --- | ---: | ---: | --- |
+| USNRM01 | 16 | 16 | twelve Val squadrons (`Jap #2.1`..`#48.1`, divebomb, 237-434 s) and three Kate squadrons (`KateSpawn1/3/4`, torpedo, 164-178 s); B5 0.1 s after each latch |
+| USN01 | 1 | 1 | `ScoutDauntless` (divebomb, 134.1 s) |
+| USN13l | 1 | 0 | `bruh #1.9` (torpedo, 153.3 s): its members never all answer the break-off |
+| USN04, LOMP10, JM05l | 0 | 0 | USN04 and JM05l: no squadron spends all of its ordnance; LOMP10: the dive-bombing Lightning and Warhawk are fighters (`IsKindOf(13h)`), which 009F8160 excludes |
+
+### Predictions, before any ON run
+
+- **OFF:** exit 0 on every row. Without the variable the driver returns at once.
+- **ON:**
+  - **USNRM01** moves a lot. Sixteen Japanese strike squadrons receive `returntobase` right after
+    their attacks. Each squadron resolves through 007F16D0: land at home when its spawn bag names a
+    base, otherwise a carrier of its side, otherwise retreat. The retreating ones fly off the map
+    and are removed (Kill(4), `exitzone`), so they stop circling over Pearl Harbor in the AA. Expect
+    fewer plane deaths and fewer AA shots after about 165 s.
+  - **USN01** moves after 134 s. ScoutDauntless returns to its carrier (land, if its resolution
+    gives a site) or retreats.
+  - **USN13l, USN04, LOMP10, JM05l:** no B5, so exit 0 or 1.
+  - **USN02**, the control: exit 0 or 1.
