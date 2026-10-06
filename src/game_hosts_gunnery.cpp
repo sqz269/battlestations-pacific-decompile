@@ -72,6 +72,9 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_weapons.hpp"
 #include "bsp/weapon_director.hpp"
+#include "bsp/plane_pose_commit.hpp"
+#include "bsp/shipyard_production.hpp"
+#include "bsp/vehicle_class.hpp"
 
 namespace bsp::game {
 namespace {
@@ -1146,6 +1149,20 @@ struct GameGunneryHost::Impl {
     GameUnitsHost& units;
     GameMissionLuaHost& lua;
     GameShipAiHost* ship_ai{nullptr};
+
+    // Packet cc9_shipyard_production (bsp::kShipyardProductionBound).
+    struct ShipyardCounters {
+        unsigned long long walks{0}, orders{0}, orders_refused{0}, a7{0}, a8{0}, a9{0};
+        unsigned long long builds{0}, builds_at_order{0}, builds_refused{0};
+        unsigned long long hangar_releases{0}, launches{0}, launch_orders_unbound{0};
+    } shipyard;
+    std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
+    std::size_t unit_by_name(const std::string& name) const;
+    bool shipyard_complete(bsp::ShipyardState& yard);
+    std::vector<bool> shipyard_hangars_usable(const bsp::ShipyardState& yard) const;
+    bool shipyard_build_00844fc0(bsp::ShipyardState& yard, std::size_t shipyard_unit,
+                                 std::size_t entry);
+    void shipyard_walk_00846320();
 
     // One entry per created unit, index aligned with GameUnitsHost.
     struct UnitState {
@@ -10481,8 +10498,333 @@ void queue_explode_to_parts_0088e1b0(std::size_t unit_index) {
     explode_to_parts_queue().push_back(unit_index);
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_shipyard_production (bsp::kShipyardProductionBound). The shipyard's
+// production queue: 00849F70's slot pass, the tick 00846320, the build 00844FC0
+// and the strategic map's purchase 00673A10 -> A7h / A8h / A9h. The state and
+// the pure arms are include/bsp/shipyard_production.hpp; docs/GUNNERY_OPEN_ITEMS.md
+// sections 134 and 136.
+// ---------------------------------------------------------------------------
+namespace {
+
+struct ShipyardLuaClassFacts final : bsp::ShipyardClassFacts {
+    explicit ShipyardLuaClassFacts(GameMissionLuaHost& lua_in) : lua(lua_in) {}
+    // class+134h `DefaultEquipment` (00961F0A), 0 when nil (00961F30).
+    int default_equipment_134(std::uint32_t class_id) const override {
+        return lua.read_vehicle_class_integer(static_cast<int>(class_id), "DefaultEquipment",
+                                              nullptr, 0);
+    }
+    // class+128h, the size of `Equipments` (00951F10).
+    int equipment_count_128(std::uint32_t class_id) const override {
+        return game_ai_plane_equipment_count(static_cast<int>(class_id));
+    }
+    GameMissionLuaHost& lua;
+};
+
+int shipyard_class_kind(GameMissionLuaHost& lua, std::uint32_t class_id) {
+    const GameVehicleClassRow row = lua.read_vehicle_class_row(static_cast<int>(class_id));
+    if (!row.found) return 0;
+    const bsp::VehicleClassDescriptorRow* kind = bsp::vehicle_class_kind_row(row.type.c_str());
+    return kind != nullptr ? static_cast<int>(kind->kind) : 0;
+}
+
+const char* shipyard_creator_name(bsp::ShipyardCreator c) {
+    switch (c) {
+    case bsp::ShipyardCreator::PlaneSquadron: return "PlaneSquadronGen";
+    case bsp::ShipyardCreator::Destroyer: return "DestroyerGen";
+    case bsp::ShipyardCreator::MotherShip: return "MotherShipGen";
+    case bsp::ShipyardCreator::Submarine: return "SubmarineGen";
+    case bsp::ShipyardCreator::TorpedoBoat: return "TBoatGen";
+    case bsp::ShipyardCreator::LandingShip: return "LandingShipGen";
+    default: return "none";
+    }
+}
+
+}  // namespace
+
+std::size_t GameGunneryHost::Impl::unit_by_name(const std::string& name) const {
+    if (name.empty()) return units.count();
+    for (std::size_t i = 0; i < units.count(); ++i) {
+        const GameUnitRow* row = units.unit_row(i);
+        if (row != nullptr && row->name == name) return i;
+    }
+    return units.count();
+}
+
+bool GameGunneryHost::Impl::shipyard_complete(bsp::ShipyardState& yard) {
+    if (yard.slots_completed) return true;
+    // 00849F70 is the deferred mode-1 pass; the slot `Unit` lookups need the
+    // scene's entities, which exist by the first fixed step.
+    struct Ctx { const Impl* host; };
+    Ctx ctx{this};
+    const bsp::ShipyardSlotFill fill = bsp::shipyard_complete_slots_00849f70(yard,
+        [](const std::string& unit, void* c) -> std::uint32_t {
+            const Impl* h = static_cast<Ctx*>(c)->host;
+            const std::size_t i = h->unit_by_name(unit);
+            const GameUnitRow* row = i < h->units.count() ? h->units.unit_row(i) : nullptr;
+            return (row != nullptr && row->type_id > 0) ? static_cast<std::uint32_t>(row->type_id)
+                                                        : 0u;
+        },
+        [](const std::string& unit, void* c) -> std::size_t {
+            const Impl* h = static_cast<Ctx*>(c)->host;
+            const std::size_t i = h->unit_by_name(unit);
+            return i < h->units.count() ? i : bsp::kShipyardNone;
+        },
+        &ctx);
+    log.notef("shipyard slots: unit=%s hangars=%zu entries=%zu stock=%zu launched=%zu "
+        "chosen=%zu missing_stock=%zu (00849F70 mode 1, packet cc9_shipyard_production)",
+        yard.owner_name.c_str(), fill.hangars, yard.entries.size(), yard.stock.size(),
+        fill.launched, fill.chosen, fill.missing_stock);
+    for (std::size_t h = 0; h < yard.hangars.size(); ++h) {
+        const bsp::game::ScenePathEntry* path =
+            bsp::game::scene_path_registry().find(yard.hangars[h].path);
+        log.notef("shipyard hangar: unit=%s hangar=%zu object=%s found=%d path=%s points=%zu",
+            yard.owner_name.c_str(), h + 1, yard.hangars[h].object.c_str(),
+            unit_by_name(yard.hangars[h].object) < units.count() ? 1 : 0,
+            yard.hangars[h].path.c_str(), path != nullptr ? path->points_world.size() : 0u);
+    }
+    done("Shipyard::slot_pass", 0x00849f70u);
+    return true;
+}
+
+std::vector<bool> GameGunneryHost::Impl::shipyard_hangars_usable(
+    const bsp::ShipyardState& yard) const {
+    // 00844CE0's four bytes on the hangar object: +5Ch set, +5Dh, +5Eh (dead)
+    // and +60h clear. LABELLED: this process has the row's `active` (+5Ch) and
+    // the gunnery death; +5Dh and +60h have no host field and read as clear.
+    std::vector<bool> usable(yard.hangars.size(), false);
+    for (std::size_t h = 0; h < yard.hangars.size(); ++h) {
+        const std::size_t obj = unit_by_name(yard.hangars[h].object);
+        if (obj >= units.count()) continue;
+        const GameUnitRow* row = units.unit_row(obj);
+        const bool dead = obj < unit_state.size()
+            && (unit_state[obj].dead || unit_state[obj].health <= 0.0f);
+        usable[h] = row != nullptr && row->active && !dead;
+    }
+    return usable;
+}
+
+bool GameGunneryHost::Impl::shipyard_build_00844fc0(bsp::ShipyardState& yard,
+    std::size_t shipyard_unit, std::size_t entry) {
+    if (entry >= yard.entries.size()) return false;
+    if (shipyard_build_blocked.count(yard.owner_name) != 0) return false;
+    bsp::ShipyardEntry& e = yard.entries[entry];
+    const std::size_t hangar = bsp::shipyard_free_hangar_00844ce0(yard,
+        shipyard_hangars_usable(yard));
+    if (hangar == bsp::kShipyardNone) return false;
+    const bsp::ShipyardHangar& h = yard.hangars[hangar];
+    const bsp::game::ScenePathEntry* path = bsp::game::scene_path_registry().find(h.path);
+    bsp::ShipyardBuildRequest request;
+    request.shipyard_name = yard.owner_name;
+    request.shipyard_unit = shipyard_unit;
+    request.entry = entry;
+    request.class_id = e.class_id;
+    request.creator = bsp::shipyard_creator_for_kind_00844fc0(shipyard_class_kind(lua, e.class_id));
+    request.equipment = e.equipment;
+    request.gui_name = e.name;
+    request.path_name = h.path;
+    // 008450B9..00845182: rows (1,0,0), (0,1,0), p1 - p0, then 0085DC80; the
+    // translation p0 with the water height (0078CF20) put on by the creator.
+    float m[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                   0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    if (path != nullptr && path->points_world.size() >= 2) {
+        const auto& p0 = path->points_world[0];
+        const auto& p1 = path->points_world[1];
+        m[8] = p1[0] - p0[0];
+        m[9] = p1[1] - p0[1];
+        m[10] = p1[2] - p0[2];
+        bsp::orthonormalize_pose_matrix_0085dc80(m);
+        m[12] = p0[0];
+        m[13] = p0[1];
+        m[14] = p0[2];
+    }
+    for (int i = 0; i < 16; ++i) request.frame[i] = m[i];
+    const bsp::ShipyardCreateUnitFn create = bsp::shipyard_create_unit();
+    const std::size_t made = (create != nullptr && request.creator != bsp::ShipyardCreator::None
+                              && path != nullptr && path->points_world.size() >= 2)
+        ? create(request) : bsp::kShipyardNone;
+    if (made == bsp::kShipyardNone || made >= units.count()) {
+        // The image always creates (an unmatched kind would fault at 00845430).
+        // LABELLED: refused here, counted, and not retried for this shipyard.
+        ++shipyard.builds_refused;
+        shipyard_build_blocked.insert(yard.owner_name);
+        log.notef("shipyard build REFUSED: unit=%s entry=%zu class=%u creator=%s hangar=%zu "
+            "path=%s points=%zu create_seam=%d (00844FC0, packet cc9_shipyard_production)",
+            yard.owner_name.c_str(), entry + 1, e.class_id, shipyard_creator_name(request.creator),
+            hangar + 1, h.path.c_str(), path != nullptr ? path->points_world.size() : 0u,
+            create != nullptr ? 1 : 0);
+        return false;
+    }
+    // 0084500E..00845014: state 3, +2Ch the hangar; 00845416 hangar +0Ch = +30h.
+    e.state = bsp::ShipyardEntryState::Building;
+    e.hangar = hangar;
+    e.unit = made;
+    yard.hangars[hangar].launched_unit = made;
+    ++shipyard.builds;
+    const GameUnitRow* row = units.unit_row(made);
+    log.notef("shipyard build: unit=%s entry=%zu class=%u equipment=%d creator=%s hangar=%zu "
+        "path=%s made=%s pos=(%.1f, %.1f, %.1f) fwd=(%.3f, %.3f, %.3f) (00844FC0 -> moveonpath "
+        "00E08F80, packet cc9_shipyard_production)", yard.owner_name.c_str(), entry + 1,
+        e.class_id, e.equipment, shipyard_creator_name(request.creator), hangar + 1,
+        h.path.c_str(), row != nullptr ? row->name.c_str() : "-", static_cast<double>(m[12]),
+        static_cast<double>(m[13]), static_cast<double>(m[14]), static_cast<double>(m[8]),
+        static_cast<double>(m[9]), static_cast<double>(m[10]));
+    // 008454F5..0084555E: the AAh replication goes to non-local peers only
+    // (0077C7B0 -> 00770B50); none offline.
+    done("Shipyard::build", 0x00844fc0u);
+    return true;
+}
+
+void GameGunneryHost::Impl::shipyard_walk_00846320() {
+    bsp::ShipyardRegistry& registry = bsp::shipyards();
+    for (std::size_t y = 0; y < registry.size(); ++y) {
+        bsp::ShipyardState* yard = registry.mutable_at(y);
+        if (yard == nullptr) continue;
+        shipyard_complete(*yard);
+        const std::size_t self = unit_by_name(yard->owner_name);
+        if (self >= units.count()) continue;
+        // 00846337: the walk runs only while shipyard+5Dh is clear. LABELLED:
+        // read here as "the shipyard is not dead".
+        if (self < unit_state.size() && (unit_state[self].dead || unit_state[self].health <= 0.0f))
+            continue;
+        ++shipyard.walks;
+        const std::vector<bool> usable = shipyard_hangars_usable(*yard);
+        int free_hangars = 0;
+        // 0084634C..008464D6: a hangar that has launched nothing counts free when
+        // its object is usable; a launching hangar lets the unit go once the unit
+        // is further from point 0 than point 1 is.
+        for (std::size_t h = 0; h < yard->hangars.size(); ++h) {
+            bsp::ShipyardHangar& hangar = yard->hangars[h];
+            if (hangar.launched_unit == bsp::kShipyardNone) {
+                if (usable[h]) ++free_hangars;
+                continue;
+            }
+            const bsp::game::ScenePathEntry* path =
+                bsp::game::scene_path_registry().find(hangar.path);
+            if (path == nullptr || path->points_world.size() < 2) continue;
+            const auto& p0 = path->points_world[0];
+            const auto& p1 = path->points_world[1];
+            float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+            units.unit_position_00fc(hangar.launched_unit, ux, uy, uz);
+            const float lx = p1[0] - p0[0], ly = p1[1] - p0[1], lz = p1[2] - p0[2];
+            const float dx = ux - p0[0], dy = uy - p0[1], dz = uz - p0[2];
+            if (lz * lz + lx * lx + ly * ly < dz * dz + dx * dx + dy * dy) {
+                hangar.launched_unit = bsp::kShipyardNone;
+                ++shipyard.hangar_releases;
+                log.notef("shipyard hangar released: unit=%s hangar=%zu (00846320)",
+                    yard->owner_name.c_str(), h + 1);
+            }
+        }
+        // 008464D6..00846631: the entries.
+        for (std::size_t i = 0; i < yard->entries.size(); ++i) {
+            bsp::ShipyardEntry& e = yard->entries[i];
+            if (e.state == bsp::ShipyardEntryState::Building && e.hangar < yard->hangars.size()
+                && yard->hangars[e.hangar].launched_unit == bsp::kShipyardNone) {
+                e.state = bsp::ShipyardEntryState::Launched;
+                e.hangar = bsp::kShipyardNone;
+                ++shipyard.launches;
+                if (e.order_target != bsp::kShipyardNone) {
+                    // 008465A6: attackmove (00E08F78) for a ship, else settarget
+                    // (00E08EF8), on +48h. This process never sets +48h (A9h's
+                    // order is the shipyard director's +238h, which nothing here
+                    // writes), so the arm stays a record.
+                    ++shipyard.launch_orders_unbound;
+                    record("Shipyard::launch_order", 0x008465a6u);
+                }
+                log.notef("shipyard launched: unit=%s entry=%zu made=%zu (00846320 state 3 -> 4)",
+                    yard->owner_name.c_str(), i + 1, e.unit);
+                ++free_hangars;
+            }
+            if (e.state == bsp::ShipyardEntryState::Ordered && free_hangars > 0) {
+                if (shipyard_build_00844fc0(*yard, self, i)) --free_hangars;
+            }
+        }
+    }
+}
+
+bool GameGunneryHost::shipyard_order(std::size_t shipyard, int entry, int count,
+    int& chosen_entry, std::string& reason, int vehicle_class) {
+    Impl& host = *impl_;
+    chosen_entry = -1;
+    ++host.shipyard.orders;
+    const GameUnitRow* row = shipyard < host.units.count() ? host.units.unit_row(shipyard) : nullptr;
+    auto refuse = [&](const char* why) {
+        reason = why;
+        ++host.shipyard.orders_refused;
+        host.log.notef("shipyard order REFUSED: unit=%s entry=%d count=%d class=%d: %s "
+            "(00673A10, packet cc9_shipyard_production)", row != nullptr ? row->name.c_str() : "-",
+            entry, count, vehicle_class, why);
+        return false;
+    };
+    if constexpr (!bsp::kShipyardProductionBound) return refuse("kShipyardProductionBound is off");
+    if (row == nullptr) return refuse("no such unit");
+    bsp::ShipyardState* yard = bsp::shipyards().find_mutable(row->name);
+    if (yard == nullptr) return refuse("the unit has no shipyard state");
+    host.shipyard_complete(*yard);
+    // 006743E0..00674416: the first entry in state 0 (006534E0), else return.
+    std::size_t e = bsp::kShipyardNone;
+    if (entry > 0) {
+        e = static_cast<std::size_t>(entry - 1);
+        if (e >= yard->entries.size()) return refuse("no such entry");
+    } else {
+        for (std::size_t i = 0; i < yard->entries.size(); ++i) {
+            if (yard->entries[i].state == bsp::ShipyardEntryState::Idle) { e = i; break; }
+        }
+        if (e == bsp::kShipyardNone) return refuse("no idle entry (0067442D returns)");
+    }
+    const ShipyardLuaClassFacts facts(host.lua);
+    // 00674460..00674592: A7h with byte 1, repeated until the entry holds the
+    // class the screen chose (screen+3A4h). With no class named, one A7h.
+    const std::size_t tries = vehicle_class > 0 ? yard->stock.size() + 1 : 1;
+    for (std::size_t t = 0; t < tries; ++t) {
+        bsp::shipyard_choose_class_00844d60(*yard, e, true, facts);
+        ++host.shipyard.a7;
+        if (vehicle_class <= 0
+            || yard->entries[e].class_id == static_cast<std::uint32_t>(vehicle_class)) break;
+    }
+    bsp::ShipyardEntry& picked = yard->entries[e];
+    if (picked.class_id == 0u || picked.state != bsp::ShipyardEntryState::Chosen)
+        return refuse("A7h found no stock");
+    if (vehicle_class > 0 && picked.class_id != static_cast<std::uint32_t>(vehicle_class))
+        return refuse("A7h never reached the named class");
+    // 006745A3..00674604: for a plane class (vtable+18h(0Fh)), A8h with byte 1
+    // while 1 <= i < screen+334h.
+    const int kind = shipyard_class_kind(host.lua, picked.class_id);
+    if (bsp::shipyard_creator_for_kind_00844fc0(kind) == bsp::ShipyardCreator::PlaneSquadron) {
+        for (int i = 1; i < count; ++i) {
+            bsp::shipyard_cycle_equipment_008436f0(*yard, e, true, facts);
+            ++host.shipyard.a8;
+        }
+    }
+    // 00674606..00674624: A9h with byte 1. Its order is the shipyard director's
+    // +238h (008364E0); LABELLED: nothing in this process sets it, so none.
+    if (!bsp::shipyard_order_entry_00846d90(*yard, e, true, bsp::kShipyardNone))
+        return refuse("A9h found no stock record or no names");
+    ++host.shipyard.a9;
+    chosen_entry = static_cast<int>(e) + 1;
+    const std::uint32_t class_id = picked.class_id;
+    const int equipment = picked.equipment;
+    const std::string name = picked.name;
+    // 00846F65..00846F9F: a free hangar builds at once, then the stock notice.
+    bool built = false;
+    if (bsp::shipyard_free_hangar_00844ce0(*yard, host.shipyard_hangars_usable(*yard))
+        != bsp::kShipyardNone) {
+        built = host.shipyard_build_00844fc0(*yard, shipyard, e);
+        if (built) ++host.shipyard.builds_at_order;
+        host.record("Shipyard::stock_notice", 0x00984eb0u);
+    }
+    reason = built ? "built" : "queued";
+    host.log.notef("shipyard order: unit=%s entry=%d class=%u equipment=%d name=\"%s\" "
+        "available=%d %s (00673A10 A7h/A8h/A9h -> 00844D60/008436F0/00846D90, packet "
+        "cc9_shipyard_production)", row->name.c_str(), chosen_entry, class_id, equipment,
+        name.c_str(), bsp::shipyard_available_00844610(*yard, class_id), reason.c_str());
+    host.done("Shipyard::order", 0x00846d90u);
+    return true;
+}
+
 void GameGunneryHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
+    if constexpr (bsp::kShipyardProductionBound) host.shipyard_walk_00846320();
     if (!host.pending_hull_torques.empty()) {
         // Packet cc9_hull_roll_torque: the previous step's message-93h posts,
         // delivered before this step's motion pass integrates (00821E80 case 93h,
@@ -11434,6 +11776,15 @@ void GameGunneryHost::log_sample(unsigned long long step_index,
 void GameGunneryHost::report() {
     Impl& host = *impl_;
     const GameGunnerySummary& s = host.summary;
+    if constexpr (bsp::kShipyardProductionBound) {
+        const auto& y = host.shipyard;
+        host.log.notef("summary shipyard production: yards=%zu walks=%llu orders=%llu "
+            "refused=%llu a7=%llu a8=%llu a9=%llu builds=%llu at_order=%llu build_refused=%llu "
+            "hangar_releases=%llu launches=%llu launch_orders_unbound=%llu (packet "
+            "cc9_shipyard_production)", bsp::shipyards().size(), y.walks, y.orders,
+            y.orders_refused, y.a7, y.a8, y.a9, y.builds, y.builds_at_order, y.builds_refused,
+            y.hangar_releases, y.launches, y.launch_orders_unbound);
+    }
     host.log.notef("summary mission gunnery units=%zu guns=%zu passes=%zu ticks=%llu "
         "bodies=%llu bridge=%llu sweeps=%llu candidates=%llu rejected=%llu "
         "assignment_passes=%llu gun_evaluations=%llu slot_rejects=%llu assigns=%llu "

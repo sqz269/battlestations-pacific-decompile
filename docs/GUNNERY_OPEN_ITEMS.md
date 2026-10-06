@@ -10062,3 +10062,56 @@ Flips since AC's base belong to AD.
   `g29_diffrows.ps1 -A prefixA_ -B prefixB_ [-Rows]`, `g29_table.py <prefix>`, `g29_report29.py`, `g29_census.py`.
 - A full 22-row reference takes about 25 minutes; JM08 long (36000 frames) dominates every lane, so a
   leave-one-out lane that waits for it between variants costs about 25 minutes per round.
+
+## 136. The shipyard production host (lead queue item 1; cc9-gunnery30, 2026-10-06)
+
+`include/bsp/shipyard_production.hpp`, `src/shipyard_production.cpp` (the state and the pure arms) and the walk and
+order in `src/game_hosts_gunnery.cpp`, behind **`bsp::kShipyardProductionBound`**, committed OFF. Read through Ghidra
+(read-only) on top of 134; names are hypotheses.
+
+### 136.1 Corrections to 134
+
+| was (134) | is | evidence |
+| --- | --- | --- |
+| 134.1: an entry takes state 1 from `"Stock i"` with `Count > 0` | from the **slot's** `UnitClass` > 0 (`00D0B9B4`), with `+0Ch` = `UnitEquipment` (`00D0B9A4`); either slot arm then takes one from the class's stock (`0084A3C9`) | the key pushes `0084A2C4`, `0084A2D8`, `0084A345` |
+| 134.1: stock comes only from AddShipyardStock and a saved game | the scene's `"Stock 1".."Stock 12"` (`Count` `00CE5710`, `Type` `00CE4780`, `Names` `00D0B974`) build records in **`00849A30`** (`00849D94..00849E6C`; kept when Count != 0 and Type > 0), which also sizes the entries by `NumSlots` (`00849E7B`, default entry `+0Ch = -1` at `00849E99`) | `00849A30` listing; USN04's and Truk's scenes author six Elcos / Mavis / JapPT stocks |
+| 134.2: `+0Ch` is the quantity, A8h "the quantity" | `+0Ch` is the class's **Equipments index** (A7h stores `class+134h` DefaultEquipment; A8h cycles it modulo `class+128h + 1`; 00844FC0 pushes it as `Equipment` for a plane) | `00844F86`, `008436F0`, the build's `Equipment` key |
+| 134.2 / SHIP_AI 182: the screen sends one A7h, then `n - 1` A8h | A7h (byte 1) **in a loop** until the entry's class equals the screen's choice (`[screen+3A4h]+70h`, `0067458F JNZ 00674460`); the A8h loop runs only for a plane class (`006745B2 vtable[18h](0Fh)`), `1 <= i < screen+334h` | `00674460..00674604` |
+
+### 136.2 What the host does (ON)
+
+- **Scene** (routed to the scene-contents lane, not landed): `00849A30` builds the stock and the entries into
+  `bsp::shipyards()`; the gunnery host completes `00849F70` at its first step (hangars `"Hangar 1".."12"`, `Object`
+  and `Path`, both empty ends the list; slots `Unit` -> state 4, `UnitClass` -> state 1).
+- **`shipyard_order`** (for the harness `build` line): the first idle entry (or a named one), A7h until the named
+  class (one A7h with none), A8h `count - 1` times for a plane class, A9h; then `00844CE0` and the build at once.
+  A9h's order object is the shipyard director's `+238h` (`008364E0`); nothing in this process writes it, so it is
+  none (labelled), and the launch arm `008465A6` (attackmove `00E08F78` / settarget `00E08EF8`) stays a record.
+- **Walk `00846320`** each fixed step while the shipyard lives (the image tests `shipyard+5Dh`; labelled): a hangar
+  that launched a unit frees itself once the unit is further from path point 0 than point 1 is; an entry in state 3
+  whose hangar is free goes to 4; an entry in state 2 builds when a hangar is free.
+- **Build `00844FC0`**: state 3, the hangar, the frame (rows (1,0,0), (0,1,0), p1 - p0, `0085DC80`, translation p0),
+  the creator by kind (plane / destroyer for BattleShip, Cruiser, Destroyer, Cargo / mother ship / submarine /
+  torpedo boat / landing ship), through `bsp::shipyard_create_unit()`, a seam the SpawnNew lane registers (routed),
+  which also issues `moveonpath` `00E08F80` on the hangar's path (`008454B4..008454C9`, ECX = the new unit).
+  A refused creation is counted and the shipyard is not retried (the image always creates).
+- **Not modelled:** the stock notice `00984EB0` (a record, as AirOps'); AAh `008437D0`, the non-local peers' copy
+  of the build (`0077C7B0` sends to non-local peers only); the hangar observer `00694A60` on the unit and what its
+  notice does; who returns an entry from state 4 to 0 (with four `NumSlots`, the fifth order finds no idle entry
+  unless something does). Coverage: `00844D60`, `008436F0`, `00846D90`, `00844CE0`, `00844610`, `0084ACB0` complete;
+  `00846320` complete but for the launch-order arm; `00844FC0` partial (the bag keys and the creator are the seam's);
+  `00849F70` mode 1 only (mode 3, the saved game, unread); `00849A30` the stock and NumSlots arms only.
+
+### 136.3 Predictions (written before any ON run)
+
+1. **OFF vs ON, no `build` line, on every reference row: gameplay identical** (pair_diff 0 or 1). Nothing sends A9h
+   but the strategic map (`00656670` has one caller, `00673A10`; the only other `PUSH 0A9h` is `0060C055`, a HUD
+   query), scene slot arms set states 1 and 4 only, and the walk builds only from state 2. ON adds the summary line
+   and, once the scene edit lands, the `shipyard slots:` / `shipyard hangar:` lines.
+2. **LOMP10 with the routed edits and a `build CB4_SY` line after TimeLimit's AddShipyardStock** (Elco 27 x4, then
+   Catalina 125 x2; names "Elco" / "Catalina"): the first order takes entry 1, A7h picks Elco (the first record),
+   A9h names it "Elco", `CB4_SY_Hangar` is free, the TBoatGen unit is made at `CB4_SY_Path` point 0 heading to
+   point 1 and runs `moveonpath`; the hangar frees once it is past point 1's distance; a second order made before
+   that queues (state 2) and builds at the release. Four orders give four Elcos and Elco stock 0; a fifth order is
+   refused with "no idle entry" (all four entries in state 3 or 4).
+3. **JM05 / JM05 long** (shipyard units via SpawnNew, 122): identical with the switch ON.
