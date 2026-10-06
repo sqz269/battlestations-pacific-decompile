@@ -208,3 +208,40 @@ Lexington dies at 220.31 s, again credited to York-class02.
   `MissionNarrative("missionglobals.obj_fail", "luaMissionEnd_CamOnEnt")`. What never runs is the
   narrative's completion callback (the camera, then FadeAway and `EndScene`), because the host
   records MissionNarrative without playing it. See docs/MISSION_END.md section 3.
+
+## 8. A squadron's `Dead` waits for its last plane (packet `cc9_squadron_dead`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kSquadronDeadOnLastMemberBound` (`include/bsp/game_hosts_script_orders.hpp`), committed
+**OFF**. Ghidra was read-only.
+
+**The report.** cc9-ships36's USN01 win fired 1.45 s after the last LEADER (Nell5) died, while
+Nell5|.-2 and Nell5|.-3 were still flying. The script's test is
+`table.getn(luaRemoveDeadsFromTable(Mission.Nells)) == 0` (usn_1_marshall.lua, mtime 2024-07-13).
+`Mission.Nells` holds `GenerateObject("Nell<n>")` (line 816), which is the squadron entity, and
+`luaRemoveDeadsFromTable` (commandhelpers.lua:1582) reads only `.Dead`.
+
+**The image.** The squadron entity dies only when its last plane leaves:
+- 007F3970 `BSP_Squadron_RemovePlane` (__thiscall(squadron, plane, killed_by_landing)) compacts
+  +3D0h and decrements +3CCh (007F39ED).
+- At 007F3A16, `CMP [ESI+3CCh],0 / JNE`. Only when the count is zero does 007F3A2A call
+  00926D90 (Kill, cause = plane+70h).
+  - ECX is still the squadron there. It was set at 007F3A05 (`MOV ECX,ESI`), and the call to
+    007ED260 between them never writes ECX (its listing has only `LEA ECX,[ECX]`).
+- So the squadron reaches 00926D90 -> destroy list -> 00929800 (`Dead` = true) only after every
+  member is gone.
+
+**The host.** The squadron is fused with its wing-0 plane (`squadron_unit`), so the leader's death
+published the squadron's `Dead`. With the switch on, `publish_unit_deaths_00929800` holds a fused
+leader's death while another registered member (`member_units`, not yet in `destroyed_units()`) is
+still alive. It publishes the death on the frame the last one dies.
+- **SUBSTITUTION, labelled:** the leader plane has no table of its own here, so its own `Dead` waits
+  with the squadron's.
+- A member removed by landing (007F3970 with arg 1) is not modelled.
+
+**Predictions (OFF -> ON).**
+- Rows with no multi-plane squadron whose leader dies before its wingmen: identical.
+- USN01 win run: the `entity dead` line for Nell5 moves to the death of the last Nell5 member,
+  and the mission's win moves with it.
+- Rows whose scripts count squadrons with `luaRemoveDeadsFromTable` or `.Dead`: a phase change or
+  objective that waited on a squadron fires later or not at all. Each change is explained per
+  entity in the measured section.

@@ -4454,9 +4454,36 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
     if (deaths.empty()) return;
     if (dead_published_.size() < units_.count()) dead_published_.resize(units_.count(), false);
     lua_State* const L = machine_state_;
+    std::vector<bool> sunk(units_.count(), false);
+    for (const auto& death : deaths) {
+        if (death.first < sunk.size()) sunk[death.first] = true;
+    }
     for (const auto& death : deaths) {
         const std::size_t index = death.first;
         if (index >= dead_published_.size() || dead_published_[index]) continue;
+        if constexpr (kSquadronDeadOnLastMemberBound) {
+            // Packet cc9_squadron_dead (docs/ENTITY_DEAD_FLAG.md section 8). The
+            // squadron entity is killed only by 007F3970 when its LAST plane
+            // leaves +3D0h (007F3A16 +3CCh == 0, then 007F3A2A 00926D90 Kill with
+            // ECX still the squadron: 007ED260 never writes ECX), so its self
+            // table's `Dead` waits for that. Here the squadron is fused with its
+            // wing-0 plane, so a fused leader's death is held while another
+            // member still flies.
+            bool held = false;
+            for (const bsp::PlaneSquadronHostRecord& record :
+                 bsp::plane_squadron_registry().records()) {
+                if (record.squadron_unit != index) continue;
+                for (const std::size_t m : record.member_units) {
+                    if (m != bsp::kPlaneSquadronNoUnit && m != index && m < sunk.size() &&
+                        !sunk[m]) {
+                        held = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            if (held) continue;
+        }
         dead_published_[index] = true;
         lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
         if (!lua_istable(L, -1)) {
