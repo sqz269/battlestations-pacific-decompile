@@ -14070,6 +14070,36 @@ C (this switch and `kRackBulletKindBound` ON).
 - **C against B.** 007C0D90's level-bomber arm drops the 16-bomb stick at 0.05 s and `release_bomb_drop` finds the 2Ah row:
   USN13's `bomb_drops` rises by about 16 per released rack with refusals near 0.
 
+**Pairs (2026-10-06, commit `93debebf9`).** Exports `local\l47_<A|B|C>`, launch form of reference AD (`local\l47_lane.ps1`),
+logs `local\l47_<A|B|C>_<usn13l|usnos|lomp10>.log`. The B smoke (USNOS 300) ran clean.
+
+| row | A -> B | B -> C |
+| --- | --- | --- |
+| USN13 9000 | **3** | 1 |
+| USNOS 3000 | 1 (`rows=0`) | 1 |
+| LOMP10 3000 | 1 (`rows=0`) | 1 |
+
+- **B: the mechanism holds, and USN13 moves much more than predicted.** 36 `bruh` gun rows take the `p<n>e1_` row (device
+  88). The rows now carry the 2Ah kind, so the attack chooser gives the Bettys the level-bomb task instead of the torpedo
+  run: `BotTaskLevelBomb::arm` / `cruise_profile` / `BotApproachLevelBomb::update` become concrete (65577 calls), and
+  `level bomber issue: bruh #1.7 t=150.45 racks=1 ... rounds=16` follows for each bomber.
+  - The gunnery host takes every bomb: `bomb_drops=573 refusals=0`. A had 2 bomb and 2 torpedo drops.
+  - The bruh deaths move: the bombers fly at about 1370-1440 m (`alt 58 -> 1371`, `54 -> 1441`) instead of the 50 m
+    torpedo run, and die later to heavy AA (`killer_cat 1 -> 6`).
+  - **Intrepid** (311.05 s, first damage 171.31 s, killer `bruh #1.14|.-4`) and **Cowpens** (340.24 s, killer
+    `bruh #1.8|.-4`) burn out: `fire_total=3106` and `2964`, `water_total=0`.
+  - `usn_13_truk.lua` 787 fails the mission when `luaRemoveDeadsFromTable(Mission.USCV)` drops to 7, so B ends
+    `failed at 341.59 s (Mission.MissionStatus) text="Game Over"`. All the other count moves (shots 31753 -> 9799, units
+    463 -> 373) are the run ending at 341.59 s.
+  - The open question this raises is the fire damage that sinks two carriers in about 140 s. That belongs to the fire
+    and damage-control lane, not to the device rule.
+- **C (138 ON) is gameplay identical to B on all three rows.** C prints `rack bullet kinds bruh #1.7 (level bomber):
+  [2Ah/0.05s]`, and its drops find their 2Ah rows (`refusals=0`). The prediction (bomb drops up) was already met by B,
+  because the mask path issues the same stick once the rows are right.
+
+**Verdict: both ON.** `kGunneryRackEquipmentDeviceBound` is ON by mechanism. `kRackBulletKindBound` (GUNNERY 138) is ON,
+identical with its mechanism visible. USN13 9000's reference row now ends in the scripted failure at 341.59 s.
+
 ## 5fb. The score lines, `kLuaDisplayScoresBound` (packet `cc9_lua47_display_scores`, cc9-lua47, 2026-10-06)
 
 `DisplayScores` `008C20D0` and `HideScoreDisplay` `008C24B0` were unimplemented records, so USNOS's primary 2 count

@@ -477,8 +477,9 @@ constexpr bool kPlanePlatformAttachmentBound = true;
 //    bag 0 or no Platform the class device Platforms[slot].Gun[1]. Every device-derived
 //    field of the row (category, bomb-platform flag, bullets, reload, ballistics) follows.
 //    OFF: every plane's rows use the class device, so USN13's `bruh` carry device 122
-//    (torpedo) rows while their racks hold device 88 (250 kg bombs).
-constexpr bool kGunneryRackEquipmentDeviceBound = false;
+//    (torpedo) rows while their racks hold device 88 (250 kg bombs). ON by the pairs of
+//    2026-10-06 (5fa): USN13's Bettys level-bomb; USNOS and LOMP10 identical.
+constexpr bool kGunneryRackEquipmentDeviceBound = true;
 //  * kLandPlatformAttachmentBound (packet cc9_muzzle_no_mount, docs/GUN_BARREL_COUNT.md
 //    section 9): the same mount for a gun on any other vehicle class (forts, bunkers,
 //    command buildings, airfields, land vehicles). Each class's slot +20h is 0095F500

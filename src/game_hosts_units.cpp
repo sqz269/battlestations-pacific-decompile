@@ -5742,8 +5742,10 @@ struct GameUnitsHost::Impl {
     // fired rack's own class, and 006E58AA re-arms toRepeatTime from the
     // rack's RepeatTime. False: both arms key on the unit's ordnance mask,
     // whose torpedo bit the gunnery host clears after one drop, and the single
-    // rack's toRepeatTime is 0.
-    static constexpr bool kRackBulletKindBound = false;
+    // rack's toRepeatTime is 0. ON (SQUADRON_LAND_TASK 5fa): gameplay identical to
+    // kGunneryRackEquipmentDeviceBound alone on USN13 9000, USNOS and LOMP10,
+    // with the 2Ah/0.05s racks found by the gunnery rows (refusals=0).
+    static constexpr bool kRackBulletKindBound = true;
     // Packet cc9_lua45_rack_live_ordnance (SQUADRON_LAND_TASK 5eu). The image's
     // loadout tests ask each device live: 007B9320 / 007B91C0 call the rack's
     // vtable[220h] / [210h] (MBombPlatform 006E4060 / 006E3FE0, vtable 00CF96A8),
