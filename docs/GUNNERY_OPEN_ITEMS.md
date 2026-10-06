@@ -9396,6 +9396,39 @@ gunfire gate refusals=... passes=...` (not under the `mission gunnery damage` ke
 2172 impact blasts on ships34's run), the stream-1 draws per hit move only under the default form; under
 the measurement streams the roll keys on the building, so the pair still reads the gate alone.
 
+### 125.5 Smoke and pairs; verdict ON (cc9-gunnery28, 2026-10-06)
+
+- **Runs:** `pair_export --commit 9017c87e3` (main `a1224f007` merged), OFF `local\g28_lane_j` (SHA-256
+  prefix `E6CCD2C76C56`), ON `--flip kCommandBuildingGunfireGateBound=true` `local\g28_lane_k`
+  (`EF107B7C43A3`); logs `local\g28_cb_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke125.log`, JM08 300 frames, OFF, clean.
+
+| row | `pair_diff` | refusals / passes | `00879070` calls (OFF -> ON) | LandFort fire rolls / starts |
+| --- | --- | --- | --- | --- |
+| JM08 long 36000 | 1 | 39 / 3648 | 8871 -> 8832 | 3153 -> 6801 / 2 -> 17 |
+| USN01 3000 | 1 | 19 / 47 | 947 -> 928 | 0 -> 47 / 0 -> 2 |
+| USNOS 3000 | 1 | 0 / 16 | | |
+| USN13 3000 | 1 | 0 / 0 | | |
+| BSM01 3000 | 1 | 0 / 0 | | |
+
+- **The mechanism matches.** Refusals happen only on rows with a neutralize (JM08 long's HQ at 1034.10 s
+  in this tree; USN01's `CB2` at 32.90 s) and remove exactly that many `00879070` damage applications.
+  Every accepted hit takes the `007470B0` roll: JM08 long's HQ rolls 3648 more times and its first fire
+  starts at 897.75 s instead of 1012.05 s (presentation: the fire's frame arm only counts down, as
+  `SecondaryExplosionChanceMul` is 0).
+- **Why the headline does not move.** `pair_diff`'s damage is the hit records' sum, taken before
+  `add_damage`, and a refused hit on an already neutral building changes nothing that follows: JM08 long
+  fails at the neutralize (SHIP_AI 160), and USN01's `CB2` is captured nowhere in 150 s.
+
+**Predictions:**
+- **Missed, the spread on JM08 long:** `pair_diff` 1, not 3. Refusals > 0 and the neutralize time
+  unchanged held; the damage headline counts the hit, not the AddDamage.
+- **Missed, USN01:** a control was predicted to have no neutralize in 150 s; `CB2` is neutralized at
+  32.90 s and 19 hits are refused, still gameplay-identical.
+- Right on USN13, USNOS and BSM01 (no refusal).
+
+**Verdict: ON** (mechanism matching; spread misses recorded). Not game-validated.
+
 ## 126. Handoff (cc9-gunnery27, 2026-10-06, at about 72% context)
 
 ### 126.1 Landed on agent/cc9-gunnery27
@@ -9606,3 +9639,96 @@ answer is pushed with the slot index and mode into `004254B0` with the format at
 `"---InternalClearPrimaryCommand: %s (%d), mode:%d, (%s, %d)"`. A trace argument; **no gameplay reader.**
 
 Item 3 (`009D4923`, `007BB110`, `unit+9C0h`: the aircraft device) is the planes lane's.
+
+## 129. A CommandBuilding's gunfire armour follows its level: unit+368h in the hit record (SHIP_AI 169 follow-up; packet `cc9_cb_level_gunnery`, `kCommandBuildingGunfireArmourBound`, cc9-gunnery28, 2026-10-06)
+
+### 129.1 The read
+
+The lead's question (from cc9-ships35): does the direct-hit base `00470510` see `unit+368h`, which
+`006F38E0` rescales on a CommandBuilding level-up (`Armor[level] / 100 * class Armour`, 100/105/110/120
+in this installation)? `00470510` takes the armour as an argument; the hit record picks it.
+
+- **`008777D0`** (a CommandBuilding's hit-record slot, GUNNERY 125.1), `disasm-raw`:
+  - hull pass: `008777ED` `vtable[5Ch](6)`; when true and `0.0 > [record+0Ch]` (`008777F5 XORPS`,
+    `008777F8 COMISS`, `JBE`), the armour is `[+354h]->vtable[24h]()` (the class, `004407A0` `FLD [ECX+4Ch]`);
+    otherwise `00877811 MOVSS xmm0,[ESI+368h]`. It goes to `00470510` at `008778A4`.
+  - part pass: for each part entry (`[EBX+3Ch] + EBP`) a type of 4 (`0087790F CMP [EAX],4`) takes the
+    class arm (`0087791F`), any other `00877927 MOVSS xmm0,[ESI+368h]`; it goes to `004705C0` at `008779D3`.
+- **`00826F10`** (ships; the host's port in `src/ship_hit_record.cpp`) takes the instance armour when the
+  selector is not below 0.0 (`00826F6B`) and in its part pass always (`008275A0`).
+
+**So yes:** unless the victim is kind 6 and the selector negative, a CommandBuilding's direct hits read
+`+368h`, and a level-up raises the armour they meet. The blast pass is the class `Armour` (cc9-ships35's
+note), and so is a type-4 part.
+
+**The host.** `ShipHitBinding::hull_armour()` and `class_armour_virtual()` both return the class
+`Armour` row value; nothing writes an instance armour.
+
+### 129.2 The binding (committed OFF)
+
+- `UnitState::armour_368`, seeded from the class `Armour` at build (`0087BCF4`, per SHIP_AI 169), and
+  `GameGunneryHost::set_unit_armour_0368(unit, value)` for `006F38E0`'s writer in the ship AI host.
+- `kCommandBuildingGunfireArmourBound`, ON: `hull_armour()` returns `armour_368`; `class_armour_virtual()`
+  returns it too for a kind-1Ch victim that is not kind 6 (`008777D0`'s gate).
+- **LABELLED:** the host runs a CommandBuilding's hit through the `00826F10` port, whose part pass reads
+  the instance armour for every part; `008777D0` reads the class armour for a type-4 part.
+- Also committed: `set_unit_max_health_036c` (`9886e40e9`, no caller yet), for `006F38E0`'s `+36Ch`.
+- **Needs a caller:** the ship AI host must call `set_unit_armour_0368(unit, b.armour_368)` where
+  `006F38E0` stores `+368h` (routed to cc9-ships35). Until it does, ON equals OFF.
+
+### 129.3 Predictions (written before any ON run; with the caller in place)
+
+- **JM08 long:** the HQ reaches level 3 at 30 s (SHIP_AI 169.5), so its direct hits meet 1.2 x Armour.
+  `00470510`'s damage falls for each shell (the armour subtraction grows), so the HQ loses health more
+  slowly to gunfire and is neutralized later than 1041.50 s. `pair_diff` 3.
+- **USN01:** `CB2` is neutralized at 32.90 s; if it levelled before that, the neutralize moves later.
+  The neutralize resets the level to 0 (`006F4D10` routes D4h with level 0), so hits after it are
+  unchanged.
+- **USNOS:** 16 hits reach a capture building (125.5); they move only if it has levelled, so `pair_diff` 1
+  is expected but not certain.
+- **USN13, BSM01:** no capture building is hit: `pair_diff` 1.
+
+## 130. The bomb rack's drop scatter `006E4D50` and the cone `006E1F00` (SQUADRON_LAND_TASK 5du; packet `cc9_bomb_drop_scatter`, `kBombDropScatterBound`, cc9-gunnery28, 2026-10-06)
+
+### 130.1 The read
+
+5du (cc9-lua39) read the four draws; this section adds `006E1F00`, the bullet block's slot `+34h`,
+which applies them (`ghidra decompile 006e1f00`):
+- the round is detached from the rack (`BSP_Entity_FindAncestorOfKind(5)`, the owner's `vtable[190h]`
+  `006E0A70`, 5do, sets the velocity; `block+38h..+40h` = the drift with `+3Ch` zeroed; `SetParent(0)`),
+  so its local matrix (`round+74h`, `+84h`, `+94h`) is the pose it had on the rack;
+- unless D = (1, 1, 1): `v = |v| (D.x row0 + D.y row1 + D.z row2)` (zero when `|v|^2 <= [00CE3820]`),
+  with D = (`t cos a`, `-t sin a`, 1) not normalised.
+
+**So the cone does more than tilt.** With `t = 0` the velocity still becomes `|v|` along the round's
+forward row: the 5do velocity's direction (the aircraft's world velocity with 3.0 off y) is replaced by
+the rack's forward axis, keeping its magnitude. The cone then tilts that axis by `atan(t)`, at most
+`atan(0.01)` = 0.57 degrees on this installation's racks (`Throw` 0.01). The drift (`Wind` 0.05) goes to
+`block+38h`, whose reader is still unread.
+
+**ThrowMul** (`00999B70`, AI-held planes): `DiveBombThrowMul` (`+78h`) or, for `IsKindOf(10h)`,
+`LevelBombThrowMul` (`+C8h`), named as `include/bsp/robot_config.hpp` names those offsets. This
+installation's `robots.lua` (mtime 2025-06-01): DiveBombThrowMul 1.0 except SPVeteran (:722) and Elite
+(:1136), 0.0; LevelBombThrowMul 1.0 on all six rows.
+
+### 130.2 The binding (committed OFF)
+
+`kBombDropScatterBound` (gunnery), in `GameGunneryHost::release_bomb_drop` after the 5do velocity: the four
+draws in order on stream 1 (key `Draw::bomb_scatter` (unit, 0) under the measurement option), then the cone
+over the plane's pose rows (right, up, forward). Both host drop paths reach it (the rack tick's
+`run_rack_bomb_drop_006e4d50` and the bay release in `src/game_hosts_units.cpp`). The ThrowMul row is the
+plane's PilotBot level from `GameUnitsHost::skill_level` (`bot+34h`, `007B8AE0`), so no units edit is
+needed; the units host's `Rack::drop_dispersion_006e4f91` record stays (a stale label while bound).
+
+**LABELLED:** the round's rows are the plane's pose rows (the rack mount rotation is unread); every
+dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h)` no-cone arm
+(`006E521E`) is taken as never true; a drop the host refuses (no bomb row) draws nothing.
+
+### 130.3 Predictions (written before any ON run)
+
+- **Every bomb's launch direction moves** to the plane's forward axis (plus at most 0.57 degrees), so
+  every row with a bomb drop moves its impact points. Rows with a bomb that hits or nearly hits a ship
+  move (`pair_diff` 3): USN01 (the scout bomb on Convoy1), USNRM01 (34 dive-bomb releases), LOMP10 and
+  LOMP10 long (14). USN13 long (3 releases) may stay at 1 if its bombs miss either way.
+- **Rows without a bomb drop** (USN02, JM06, BSM01): `pair_diff` 1, `drops=0`.
+- The summary's `max_cone_deg` is at most 0.573 (`Throw` 0.01), and 0 for a SPVeteran or Elite dive bomber.
