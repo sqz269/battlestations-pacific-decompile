@@ -10342,6 +10342,7 @@ owed.
   `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
 - Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
   group's runs as its build lands.
+
 ### 141.4 Added to the queue after the handoff (from the lead, 2026-10-06)
 
 The shipyard build pair the lead asked for is 136.6, already run.
@@ -10365,6 +10366,7 @@ The shipyard build pair the lead asked for is 136.6, already run.
 - **USNOS Kaiten drown (SHIP_AI 196).** The wave-1 Kaiten and subs #3.2-#3.6 all drown at 160.81 s with no damage,
   about 120 s after spawning (packet `cc9_submarine_air`). Read the submarine air/drown rule against the image; it
   may be a host artefact.
+
 ## 142. The depth charge under water: 006FD9B0, 006FD660 and 006FCD20 (lead item; 141.2 item 1; cc9-gunnery31, 2026-10-06)
 
 **What was missing.** 139 made HenryPT's rack fire (60 shots on BSM01 p6) and nothing was hurt: every host round ends
