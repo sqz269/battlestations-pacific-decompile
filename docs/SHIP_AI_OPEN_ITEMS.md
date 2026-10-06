@@ -13758,3 +13758,27 @@ eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6
 | `s35_dispscan.py` | s34's displacement census |
 
 All leases are released after this commit.
+
+## 173. The level's maximum health and the gunnery armour copy (packet `cc9_command_building_level_hp`, `kCommandBuildingLevelMaxHpBound`, cc9-ships35, 2026-10-06)
+
+**What is wired** in `command_building_level_006f38e0` (section 169):
+- **The armour copy (routed from cc9-gunnery28, GUNNERY 129).** After the `+368h` store
+  (`006F392F`), the line calls `GameGunneryHost::set_unit_armour_0368(unit, armour)`. It runs
+  unconditionally under `kCommandBuildingLevelBound`. Gunfire reads it only under gunnery28's
+  `kCommandBuildingGunfireArmourBound`, so it changes no behaviour while that switch is OFF.
+- **Maximum health (committed OFF).** `006F3951 FSTP [ESI+36Ch]` stores HP[level] * class HP.
+  Under `kCommandBuildingLevelMaxHpBound` it goes to `set_unit_max_health_036c` (gunnery28,
+  `9886e40e9`), which leaves current health unchanged, as the image's handler does.
+
+**Predictions (written before any ON run):**
+- **JM08 long:** the HQ's maximum goes 12000 -> 13200 -> 14400 -> 16800 at 10, 20 and 30 s, and
+  back to 12000 at its neutralize. Current health stays where damage left it.
+  - Readers of the maximum are the health-fraction consumers: AI target weights, Lua
+    `GetHpPercentage`, the repair to fraction and the fire roll's `(max - hp) / max`.
+  - The fire roll's chance (section 162) uses the maximum, so its draws and starts move. That
+    is stream-1 / stream-0 work keyed per unit under the measurement option.
+  - Expect `pair_diff` 3 if any AI weight or the fire roll moves an outcome, else 1.
+  - The neutralize time (1041.50 s) does not move through the maximum: neutralize is health <= 0.
+- **USNOS 3000:** HQ1, HQ2 and CB2 reach 16800 at 30 s; their fraction drops to 0.71 at full
+  health. If the US AI weighs targets by fraction, `pair_diff` 3, else 1.
+- **USN01 3000 (control):** CB2 never levels. `pair_diff` 1.

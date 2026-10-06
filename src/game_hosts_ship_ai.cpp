@@ -744,6 +744,11 @@ inline constexpr bool kShipAiTimerDrawsBound = true;
 // 4 per craft-second and the HQ is neutralized at 1041.50 s, not 1036.10; five
 // rows gameplay identical.
 inline constexpr bool kCommandBuildingLevelBound = true;
+// Packet cc9_command_building_level_hp (section 173): 006F38E0's +36Ch store
+// (006F3951 FSTP [ESI+36Ch]) = HP[level] * class HP into the gunnery host's maximum
+// health through GameGunneryHost::set_unit_max_health_036c (cc9-gunnery28,
+// 9886e40e9); current health is unchanged, as in the image. False: recorded only.
+inline constexpr bool kCommandBuildingLevelMaxHpBound = false;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.
@@ -12719,13 +12724,20 @@ void GameShipAiHost::Impl::command_building_level_006f38e0(CaptureBuilding& b,
     b.level_770 = level;                                          // 006F38FB
     b.level_timer_774 = 0.0f;                                     // 006F3901
     b.armour_368 = kCommandBuildingArmorLevel[level] * b.class_armour_04c;   // 006F392F
-    const float max_hp = kCommandBuildingHpLevel[level] * b.class_hp_048;   // +36Ch, recorded
+    // Routed from cc9-gunnery28 (GUNNERY 129): the gunnery host's copy of +368h;
+    // its kCommandBuildingGunfireArmourBound decides whether gunfire reads it.
+    if (gunnery_draws != nullptr) gunnery_draws->set_unit_armour_0368(b.unit, b.armour_368);
+    const float max_hp = kCommandBuildingHpLevel[level] * b.class_hp_048;   // +36Ch
+    if (kCommandBuildingLevelMaxHpBound && gunnery_draws != nullptr) {
+        gunnery_draws->set_unit_max_health_036c(b.unit, max_hp);   // 006F3951
+    }
     if (level > was) ++level_ups; else ++level_resets;
     const GameUnitRow* row = units.unit_row(b.unit);
     log.notef("command building level: unit=%s %d -> %d (%s) at t=%.2f: +368h armour %.2f, "
-        "+36Ch max hp %.1f (recorded), garrison respawn 006F3660 (recorded)",
+        "+36Ch max hp %.1f (%s), garrison respawn 006F3660 (recorded)",
         row != nullptr ? row->name.c_str() : "?", was, level, source, capture_clock,
-        static_cast<double>(b.armour_368), static_cast<double>(max_hp));
+        static_cast<double>(b.armour_368), static_cast<double>(max_hp),
+        kCommandBuildingLevelMaxHpBound ? "set" : "recorded");
 }
 
 bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
