@@ -662,3 +662,21 @@ is `00675C40` (HUD slot 4Eh, vtable `00CF6B44` +20h). Its launch is `0067A565`-`
   - about 1 s later `air ops queued launch` appears, and a squadron of 4 takes off from
     Enterprise;
   - `AutoAttackTarget` issues dogfight (`00E08F58`) on the Nells.
+
+### The player's launch: identity pairs (cc9-lua41, 2026-10-06)
+
+The OFF build is `18f67fa22` (ships36's `launch` line, SCRIPTED_HELM 13, with this packet). The ON
+build is its export with `kAirOpsPlayerLaunchBound=true` (`local\l41_on`). The launch form is
+reference AB/AC's. Neither run has a `launch` line, so nothing queues.
+
+| row | `pair_diff` | what differs |
+| --- | --- | --- |
+| USN04 | 1 | only the known noise counter `ship ai free refills` |
+| USN01 3000 | 1 | gameplay identical |
+| ESMP08 long | 0 | none |
+| USNRM01 | 0 | none |
+| JM05 long | 1 | gameplay identical |
+| IJN11 | 1 | gameplay identical |
+
+The prediction holds: with no `launch` line the switch moves nothing. The USN01 win attempt with a
+`launch` line is cc9-ships36's.
