@@ -14571,3 +14571,136 @@ they are inert on single-player rows. No leave-one-out was run for them.
 - **Missed** on USN02 and USN12. Both have `tick_orders=0` in y, yet they move against y.
   The coordinator reaches gameplay there without a tick order: through group creation and its
   target choice, not through orders. That path was not traced.
+
+## Mission reference baselines, 2026-10-05 aa (main 13fd2978e)
+
+Packet `cc9_reference_rebaseline_27`, worker cc9-gunnery27, report `reports/cc9_reference_rebaseline_27.json`.
+The base is main `13fd2978e` (2026-10-05 23:15 UTC). The previous reference is z (`c8c69f5ab`).
+Anything flipped on main during these runs belongs to the next reference.
+
+### The switch diff and the plan
+
+`local\g27_switches.py c8c69f5ab 13fd2978e` lists five switches newly ON and two new OFF ones
+(`kAiPlaneBagEquipmentBound`, `kAiRocketAccuracyBound`):
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `pse` | `kPlaneSceneEquipmentBound` | SQUADRON_LAND_TASK 5dk-5dk.4 | live: LOMP10, LOMP10 long; default arm on USN13 long |
+| `bdv` | `kBombDropVelocityBound` | SQUADRON_LAND_TASK 5do, 5do.1 | live: USN01 (scout bomb hits Convoy1), USNRM01, LOMP10 |
+| `alt` | `kShipAiApproachLanderTermsBound` | SHIP_AI 152 | live: JM08 long |
+| `ld` | `kAiLoadoutCarriedTermsBound` | SQUADRON_LAND_TASK 5dl | inert |
+| `spr` | `kShipAiSetterPathResetBound` | SHIP_AI 154 | `pair_diff` 1 on four rows |
+| `ics` | `kShipAiInitialCruiseStateBound` | SHIP_AI 155 | `pair_diff` 1 on three rows |
+
+The leave-one-out sets `pse`, `bdv` and `alt` OFF one at a time, two rounds each, on the rows
+AA moves against z. One row set (USN01, LOMP10) sets `ld` + `spr` + `ics` OFF to confirm that
+they are inert.
+
+**Rows:** z's twenty-two (USNRM01 among them), in z's launch form (`local\g27_lane.ps1`, copied
+from g26's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player).
+
+### Predictions (written before the runs)
+
+- **Anchor** (all six OFF at `13fd2978e`): gameplay-identical to z on all twenty-two rows.
+- **AA against z.** Moves (exit 3) on:
+  - the rows with a dive-bomb release in z (`bdv`): USN01, LOMP10, LOMP10 long, JM05 long,
+    USN13 long, USNRM01;
+  - LOMP10 and LOMP10 long also through `pse`, USN13 long also through the default arm;
+  - JM08 long through `alt` (more landing craft, launched nearer the navpoints).
+  - Every other row (USN04, E2, USN02, JM06, JM08, USN13, BSM01, LOMP06, JM05, USN12, USNOS,
+    USNOS long, IJN01, ESMP08 long, IJN11) is gameplay-identical. A miss there would mean that
+    a torpedo or level-bomb release shares the drop-velocity path, or that a scene squadron
+    elsewhere carries a non-default `Equipment`.
+- **Leave-one-out.** A moved row comes back to its z history (exit 0/1 against z) only when every
+  switch that reaches it is OFF; for a row reached by one switch, that switch alone OFF restores
+  z. `ld` + `spr` + `ics` OFF is gameplay-identical to AA.
+
+**Binaries** (`pair_export.py --commit 13fd2978e`):
+- AA: `local\g27_lane_a` (SHA-256 prefix `34A5AD0A7271`);
+- anchor: `local\g27_lane_b` (`FBD0E5A172F3`);
+- `pse` OFF: `local\g27_lane_c` (`30E68B80C336`); `bdv` OFF: `local\g27_lane_d` (`ADF696731005`);
+  `alt` OFF: `local\g27_lane_e` (`02C025CE445C`); `spr` + `ics` OFF: `local\g27_lane_f` (`0A9441AA092F`);
+  `ld` OFF: `local\g27_lane_g` (`E74EEB70B306`).
+
+**Environment:** the console session was Active and every run completed.
+
+### The anchor: the six OFF
+
+`g27_aa_anc_<row>` is **gameplay-identical to z on all twenty-two rows**: exit 1 against
+`g26_z_base_<row>` (cc9-gunnery26's tree), with deaths, hull hits and shots equal on every row.
+Nothing else that landed since z moves a row.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12822.0 | 48 | 1036 (153) | 14785 | 98.70 s | 3 of 16 / 0 of 19 | 15 | Lexington-class01 3353.44 | none (Mission.EndMission never true) | 479 | `local\g27_aa_base_usn04.log` |
+| USN01 | 3000 | 35060.7 | 29 | 1282 (231) | 2032 | 12.90 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 658.23 | none (Mission.EndMission never true) | 486 | `local\g27_aa_base_usn01.log` |
+| USN04 (E2) | 9000 | 13094.2 | 52 | 1055 (153) | 15137 | 98.70 s | 3 of 16 / 0 of 19 | 19 | Lexington-class01 5761.17 | none (Mission.EndMission never true) | 480 | `local\g27_aa_base_e2.log` |
+| USN02 | 9000 | 42492.4 | 3 | 5299 (366) | 4418 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.EndMission) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side) | 486 | `local\g27_aa_base_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g27_aa_base_jm06.log` |
+| JM08 (smoke) | 3000 | 10057.1 | 22 | 482 (157) | 2794 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 451 | `local\g27_aa_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 466 | `local\g27_aa_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 445 | `local\g27_aa_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 439 | `local\g27_aa_base_lomp06.log` |
+| LOMP10 | 3000 | 1987.1 | 2 | 185 (104) | 3439 | 93.95 s | - / 14 of 8 | - | (none) 7565.67 | none (Mission.EndMission never true) | 463 | `local\g27_aa_base_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 3 / 0 of 6 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 506 | `local\g27_aa_base_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 438 | `local\g27_aa_base_usn12.log` |
+| LOMP10 (long) | 9000 | 2619.6 | 5 | 199 (108) | 3804 | 93.95 s | - / 14 of 8 | - | (none) 7565.67 | none (Mission.EndMission never true) | 475 | `local\g27_aa_base_lomp10l.log` |
+| USNOS | 3000 | 43048.0 | 87 | 1409 (177) | 5668 | 5.00 s | - | 11 | NH 1497.26 | none (Mission.EndMission never true) | 495 | `local\g27_aa_base_usnos.log` |
+| USNOS (long) | 9000 | 48691.3 | 105 | 3059 (294) | 19805 | 5.00 s | - | 13 | NH 4492.07 | none (Mission.EndMission never true) | 495 | `local\g27_aa_base_usnosl.log` |
+| IJN01 | 3000 | 1707.7 | 1 | 163 (151) | 4846 | 89.35 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 433 | `local\g27_aa_base_ijn01.log` |
+| JM05 (long) | 9000 | 31958.8 | 38 | 999 (321) | 13716 | 5.85 s | 3 of 6 / 0 of 17 | 19 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 535 | `local\g27_aa_base_jm05l.log` |
+| JM08 (long) | 36000 | 101129.4 | 179 | 6894 (639) | 7757 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 478 | `local\g27_aa_base_jm08l.log` |
+| USN13 (long) | 9000 | 42530.4 | 102 | 2871 (1766) | 35863 | 98.90 s | 3 of 80 / 3 of 50 | 38 | Enterprise 2777.59 | none (Mission.EndMission never true) | 491 | `local\g27_aa_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 362 (96) | 3189 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 458 | `local\g27_aa_base_esmp08l.log` |
+| USNRM01 | 9000 | 26159.1 | 132 | 1872 (1256) | 61392 | 166.56 s | 6 of 15 / 34 of 51 | 99947 | West Virginia 0.00 | none (Mission.EndMission never true) | 503 | `local\g27_aa_base_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 140 (31) | 805 | 65.25 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 499 | `local\g27_aa_base_ijn11.log` |
+
+**Against z: nine rows move** (exit 3): USN01, USN02, LOMP06, LOMP10, JM05, LOMP10 long, JM05 long,
+JM08 long and USNRM01. The other thirteen are gameplay-identical.
+
+Headline moves (z -> aa):
+- **JM08 long:** deaths 207 -> 179; hull hits 754 -> 639; shots 8693 -> 7757.
+- **USNRM01:** deaths 129 -> 132; hull hits 1351 -> 1256; dive-bomb-task releases 36 -> 34 of 51.
+- **USN01:** damage 33939.4 -> 35060.7; torpedo-task 0 of 5 -> 0 of 17 and dive-bomb-task 2 of 2 -> 2 of 19
+  (the next phase's squadrons launch); the controlled unit becomes ConTBD1. Deaths stay 29.
+- **JM05 long:** hull hits 312 -> 321; shots 15341 -> 13716; releases 2 of 6 / 1 of 16 -> 3 of 6 / 0 of 17.
+- **LOMP10:** dive-bomb-task 9 -> 14 of 8; damage 2156.6 -> 1987.1. **LOMP10 long:** shots 3623 -> 3804.
+- **USN02:** damage 42491.2 -> 42492.4. **JM05:** 30 unit rows move, combat equal. **LOMP06:** the
+  Narwhal moves 770.74 -> 770.42 m.
+
+### Leave-one-out
+
+Each group OFF alone, two rounds (`local\g27_aa_<group>{1,2}_<row>.log`), on the nine moved rows.
+**The two rounds agree on every row** (exit 0 or 1).
+
+| row | `pse` OFF | `bdv` OFF | `alt` OFF | `spr` + `ics` OFF | carried by |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | = AA | **= z** | = AA | = AA | `bdv` |
+| USNRM01 | = AA | **= z** | = AA | = AA | `bdv` |
+| LOMP10 | moves | moves | = AA | = AA | `pse` and `bdv` together |
+| LOMP10 long | moves | moves | = AA | = AA | `pse` and `bdv` together |
+| JM08 long | = AA | = AA | **= z** | = AA | `alt` |
+| USN02 | = AA | = AA | = AA | **= z** | `spr` + `ics` |
+| LOMP06 | = AA | = AA | = AA | **= z** | `spr` + `ics` |
+| JM05 | = AA | = AA | = AA | **= z** | `spr` + `ics` |
+| JM05 long | = AA | = AA | = AA | **= z** | `spr` + `ics` |
+
+"= AA" and "= z" are `pair_diff` exit 0/1 against that history; "moves" is exit 3 against both.
+**`ld` OFF** (USN01, LOMP10, `local\g27_aa_ld1_<row>.log`) is gameplay-identical to AA: inert.
+
+`spr` and `ics` were not split. In their own pairs (SHIP_AI 154.4, 155.1) they were `pair_diff` 1
+on JM08 long, USNOS, USN13, BSM01; here they reach USN02, LOMP06, JM05 and JM05 long. The native
+tables show both at work on those rows (`ShipAiPath::reset_live_plan_009da4e0` and
+`ShipAiState::replan_interval_vtable28 009dac30` appear).
+
+**Predictions:**
+- Right on the anchor (= z everywhere).
+- Right on USN01, USNRM01, LOMP10, LOMP10 long and JM08 long moving, and on their switches.
+- Right on `ld` being inert.
+- **Missed** on JM05 long's cause: it moves through `spr` + `ics`, not `bdv` (its `bdv` OFF run equals AA).
+- **Missed** on USN13 long: it is gameplay-identical. Its three dive-bomb-task releases and the
+  default-arm launches change nothing it reports.
+- **Missed** on USN02, LOMP06 and JM05: they move, through `spr` + `ics`, which their own pairs found
+  gameplay-inert on four other rows.
