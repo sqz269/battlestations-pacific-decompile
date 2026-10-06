@@ -10195,6 +10195,8 @@ The routed pieces (A)-(D) are cc9-lua43's `b8b8415e0`, `7556f3f03` and `e07680e8
 
 ### 136.6 The LOMP10 build pair: the queue works, but the launched Elco never leaves the hangar (switch stays OFF)
 
+**Pointer (cc9-gunnery31, 2026-10-06).** The mechanism failure below is resolved by SHIP_AI 197, which holds the `0081DE10` / `+1130h` correction (`kPathObjectDefaultPairBound` ON). The re-pair and the flip are section 146.
+
 **Setup.**
 - Binaries: `pair_export --commit dbcb95705` (local branch `g30-sytest`: my tree plus cc9-ships38's `a5c970e65`,
   the `build` line). OFF is `22FC31B1F015`; ON (`kShipyardProductionBound=true`) is `B80CE35E8A62`.
@@ -10673,3 +10675,15 @@ Rows:
    - the gameplay moves (exit 3) by those four boats.
 2. **JM05 long and BSM01 3000:** identical gameplay (exit 1, from the ON-only summary line). No `build` line, and
    nothing sends A9h (136.3 item 1).
+
+**Results** (exports `local\g31_sy_off` `68F9339D1E4D` and `local\g31_sy_on` `7D50444063D4`; logs
+`local\g31_sy{off,on}_<row>.log`):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP10 12000 build | moved | units 341 -> 345. `shipyard build` x4: Elco #Y1-#Y4 from `CB4_SY_Hangar`, entry 1 at once and entries 2-4 as the hangar released (`00846320`), each `moveonpath CB4_SY_Path`. The fifth line is refused with `no idle entry` (136.3 item 2). Shots 11257 -> 11248, damage 10681.8 -> 10661.1, deaths 13 = 13 |
+| JM05 long | identical | |
+| BSM01 3000 | identical | |
+
+Prediction 1 holds as written, including the fifth refusal, and prediction 2 holds. **Verdict: the mechanism matches,
+so `kShipyardProductionBound` is flipped ON** (`include/bsp/shipyard_production.hpp`).
