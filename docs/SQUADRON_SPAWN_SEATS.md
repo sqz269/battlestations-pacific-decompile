@@ -156,3 +156,46 @@ USN01 3200/3000 with streams on, logs `local\ap_{ctl,fp_on}_usn01.log`.
 - **Unchanged:** deaths 7, hit records 141, damage 2690.0, and window refusals 754.
 - This attributes reference c's USN01 shot and scout-death moves to the teleport going OFF
   (`docs/GAME_EXECUTABLE.md`, reference c, "Attribution pairs").
+
+
+### 6c. Correction, 2026-10-06 (cc9-lua43): the image places an airborne wing at pass C
+
+**This supersedes section 1's conclusion** that "every member of a squadron starts at the same point". It
+also supersedes the clause in 6a that reads "The image spawns the wing stacked (section 1), so OFF is the
+image's spawn". The earlier text is left as written. Full read and measurements:
+`docs/SQUADRON_MEMBER_PLACEMENT.md`.
+
+**Why section 1 was wrong.**
+- Section 1 read only `007F4580`. Its statement that "none of these moves a member" is true of `007F4580`.
+- The squadron's pass C, `007F4BA0`, runs later. At `007F4DA5` it executes `CMP byte ptr [ESI+408h],0` and
+  `JNZ 007F4DB5`; at `007F4DB0` it calls `007F2920`.
+- `007F2920` puts every member k >= 1 on its `007F23A0` station, with the leader's `+74h` rotation and the
+  leader's vt[38h] speed.
+- `tools/callsite_census.py 007f2920` lists four rel32 callers, `007F4DB0` among them. Ghidra's `callers`
+  returns none, which is why the earlier read missed it.
+
+**Who sets `+408h` before `007F4DA5`.** A disp32 scan of `007E0000-00800000` finds four writers:
+
+| writer | value written |
+| --- | --- |
+| `007ED6EC` (`007ED6E0`) | 1 |
+| `007F1C78` (`007F1C00` SetHomeAirBase) | its flag |
+| `007F1C89` (`007F1C00`, the other arm) | 0 |
+| `007F293C` (`007F2920` itself) | 0 |
+
+The constructor `007F2C60` stores nothing there; it writes `+3F0h`..`+404h` only. Whether the allocation
+zeroes `+408h` was not read (labelled), and the host treats it as 0.
+
+**The spawn paths:**
+
+| path | `+408h` at `007F4DA5` | placement |
+| --- | --- | --- |
+| a scene PlaneSquadronGen row (load time or GenerateObject) | `007F1C00` runs only with `HomeBase`, with flag `State <= 1`; no scene row in this installation authors `State`, so the default 7 gives 0 | yes |
+| SpawnNew (`009483D0` -> `007F2C60` -> InitAll) | no `HomeBase`, so not written | yes |
+| an air-ops or deck launch (`006C5050`: `LaunchSquadron`, the player launch, the AI deck tick) | the bag's `State` is 1 when `006C5050`'s airborne flag is 0, so `007F1C00(base, 1)` sets it | **no** |
+
+On the last path, an airborne-flag launch (`State` 7) would be placed.
+
+**The host matches this table.** Its pass-C call skips a squadron whose record has `home_launch_408` set,
+which is the base-launch arm. On USN04 the four `base launch inside start` squadrons logged no placement,
+while all 17 airborne ones did.

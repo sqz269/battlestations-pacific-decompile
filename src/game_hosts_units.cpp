@@ -13074,6 +13074,19 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
             ++base_launch_liftoff_site_leaves;
         }
     }
+    if (prev == 4 || prev == 5) {
+        // DIAGNOSTIC (cc9_takeoff_site_permission_diag): a lift-off that leaves the
+        // plane on some site's occupancy vector.
+        for (std::size_t k = 0; k < landing_decks.size(); ++k) {
+            const auto& o = landing_decks[k].site_occupants_34;
+            if (std::find(o.begin(), o.end(), p.process_index) == o.end()) continue;
+            log.notef("  lift-off leaves %s on deck %zu (%s) occupants; its +BF4h is %zu "
+                "(packet cc9_takeoff_site_permission_diag)", p.row.name.c_str(), k + 1u,
+                landing_decks[k].owner < slots.size() && slots[landing_decks[k].owner]
+                    ? slots[landing_decks[k].owner]->row.name.c_str() : "?",
+                static_cast<std::size_t>(p.plane_contact_deck_bf4));
+        }
+    }
     p.plane_control_mode_900 = 7;
     p.plane_site_timer_c04 = -1.0f;
     p.plane_taxi_queue_910 = false;
@@ -13150,6 +13163,7 @@ bool GameUnitsHost::Impl::carrier_site_permission_006d01c0(LandingDeck& d,
     if (landing_deck_006c0750(di, d.owner) == nullptr) return true;
     float own = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
     float best = 9999.0f;
+    std::size_t blocker = slots.size();   // DIAGNOSTIC (cc9_takeoff_site_permission_diag)
     for (const std::size_t oi : d.site_occupants_34) {
         if (oi >= slots.size() || !slots[oi]) continue;
         const std::array<float, 3> l =
@@ -13159,9 +13173,21 @@ bool GameUnitsHost::Impl::carrier_site_permission_006d01c0(LandingDeck& d,
             own = z;
         } else if (z <= best) {
             best = z;
+            blocker = oi;
         }
     }
-    return !(best < own);
+    const bool permit = !(best < own);
+    // DIAGNOSTIC (cc9_takeoff_site_permission_diag): who holds a denied plane back.
+    if (!permit && blocker < slots.size() && (takeoff_permission_denied % 2000u) == 0u) {
+        const GameUnitSlot& b = *slots[blocker];
+        log.notef("  takeoff site denied: %s own_z=%.1f by %s z=%.1f state900=%d deck_bf4=%zu "
+            "occupants=%zu at %.2f s (006D01C0, packet cc9_takeoff_site_permission_diag)",
+            p.row.name.c_str(), static_cast<double>(own), b.row.name.c_str(),
+            static_cast<double>(best), b.plane_control_mode_900,
+            static_cast<std::size_t>(b.plane_contact_deck_bf4), d.site_occupants_34.size(),
+            static_cast<double>(summary.simulated_seconds));
+    }
+    return permit;
 }
 
 // 006FC720 (flag 0 of 006D0050 with a plane): the platform at the top and still,
