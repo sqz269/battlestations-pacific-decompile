@@ -215,6 +215,40 @@ scripted-win rows (USN02, USN01, LOMP06, LOMP10, USN12) are where a mission-timi
 show. A mechanism failure is any deck whose authored symbol stays 0 ON, or a launch whose class
 the stock does not answer for.
 
+**Pairs (2026-10-06, commit `1b1618cd7` = main `635f31902` + this packet).** `pair_export` OFF
+`D84707AF9F34`, ON `5EFB177104ED`; AD launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+lockstep 0.05, idle player); logs `local\l45_<off|on>_<row>.log`, launcher `local\l45_lane.ps1`.
+
+| row | frames | pair_diff | note |
+| --- | --- | --- | --- |
+| USNOS | 3000 | 1 | deaths 87, units 453 both; only the census lines differ |
+| USNOS + `s39_os_probe3` launch lines | 3000 | **3** | OFF: the four `launch Enterprise` lines refused, "006C0F00 left the slot empty". ON: all four queued (810, 339, 331, 810; count 4 clamped to the screen's 3), 12 planes `Enterprise_sqn01..04` take off; deaths/hits identical in the window |
+| LOMP10 | 3000 | 1 | |
+| E2 (USN04) | 9000 | 1 | deaths 52, shots 13743 |
+| ESMP08 long | 9000 | 1 | deaths 12; `GetProperty` 974 calls, `slots_rows=0` both |
+| USN13 long | 9000 | 1 | |
+| JM08 long | 36000 | 1 | deaths 143, shots 8708 |
+| USN04 jitter + `s39_u4_p1` | 45000 | 1 | deaths 68, shots 32968 |
+| USN02 `s36_u2_p7` | 16000 | 1 | completed 727.60 s both (AD 727.60); guard line both |
+| USN01 `s37_u1_p5` | 22000 | 1 | **not completed in either** (see below) |
+| LOMP06 `s37_l6_p2` | 16000 | 1 | completed 267.41 s, `EndScene` 301.95 s both (AD the same); guard line both |
+| LOMP10 `s37_l10_p2` | 30000 | 1 | `luaVictory` 1438.63 s both (AD 1081.08 s); guard line both |
+| USN12 `s38_u12_p2` | 36000 | 1 | completed 1544.78 s both (AD the same); guard line both |
+
+**Verdict: ON.** The mechanism matches (every scene deck now carries its authored classes: USNOS
+Enterprise `810x40,339x40,331x40`, Airfield1 `312x40` / slot `312x3`; held-back Haku decks 150) and
+the one consumer that exercises it, the player launch through `006C0F00`, now fills the slots it
+used to refuse. The prediction that AI support managers would start launching was **wrong**: no row
+has a consumer of a scene deck's classes besides the harness `launch` line (`GetProperty(.., "slots")`
+is never asked on USNOS or LOMP10, and ESMP08's 974 calls ask other keys), so every row without
+launch lines is gameplay-identical. Sub-blocks with no authored `Type` come out as 101 (USN01's Enterprise and Airfield2,
+all counts 0), presumably a schema default merged into the bag; not traced.
+
+**Base drift since AD, not this switch** (identical OFF and ON, for AE): USN01 p5 no longer wins,
+because line 2 (`release ScoutDauntless on Convoy1`, frame 2400) is refused, "the sight never came
+within 15.0 m (nearest 16.5 m)", so the later target and launch lines find no unit; LOMP10 p2's
+`luaVictory` moved from 1081.08 s to 1438.63 s.
+
 ## Uncertainty
 
 * Whether USN04's carriers author `Slot %d` blocks at all. The scene is binary and this process
