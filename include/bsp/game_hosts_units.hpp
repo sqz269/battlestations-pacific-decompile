@@ -575,6 +575,13 @@ public:
     // member) or a lone wing plane; `site_index` the target unit (carrier or
     // airfield). Returns the number of land tasks installed.
     std::size_t land_at_site_0099a3dd(std::size_t unit_index, std::size_t site_index);
+    // Packet cc9_plane_retreat_task. PilotRetreat 008A4300's retreat point: the
+    // mean of the corners of the nearest border zone of the unit's side
+    // (004C7730 over world+7134h, 008A443E). False without the zones or a match.
+    bool retreat_point_008a4300(std::size_t unit_index, float out[3]) const;
+    // The bots' intake of `retreat` (00E08F90), 0099A45B -> 009CA2B0: every
+    // member of a squadron order, or the one plane. Returns the tasks installed.
+    std::size_t retreat_0099a45b(std::size_t unit_index, const std::string& source);
     // 00999AA0, the pilot bot's hit notice (from the plane hit handler 007BBCF0
     // before 008777D0): the first task whose vtable[2Ch] answers true takes it.
     // Bound here: the torpedo task's 009D3270, approach+134h = 0. The divebomb

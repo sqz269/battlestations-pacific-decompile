@@ -5,6 +5,10 @@ Addresses: 009B41C0 009B3240 009B2E50 009AFE70 009AF9A0 009AFA50 009B3EB0 009B39
 006CC9F0 006C7960 006C3B10 006C5C40 006C5380 006C3E50 006C46B0 006C45C0 006BED60 007C6760 006C7540
 006BEF70 006C0750 006BEE40 006BC960 006BF0D0 006BA620
 0099A3DD 007C07A0 007D83D0 007D88CB 009B1C79 009B0A3B 0074E210 007DC6C5
+009CA2B0 009C9D00 009C9BB0 009C91B0 009C8D40 009C8F40 009C92F0 009C9310 009C98C0 009C9990
+009C9EA0 009C9F70 009C9FB0 009CA130 009CA0C0 009C9E30 009F9D90 00489C40 004C74C0 0059C9B0
+007C6C30 007EE2E0 007EE410 007CA790 007F31A0 0084E010 009F8470 009F8160 009F7C90 009F7590
+007ED790 007ED920 007EE6B0 0071F290
 
 Worker cc9-lua8, 2026-09-28. This continues `docs/CONTROLLED_UNIT.md`, "The squadron's
 `returntobase` resolution, and the `land` task's shape" (cc9-lua6). The switch is
@@ -12184,3 +12188,116 @@ Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
 1. the capture commit pair (above);
 2. 5dy's binding plan, step 1 first;
 3. the drop scatter (5du), if the lead still wants it.
+
+## 5ea. The retreat task bound OFF, and what 0084E010's B5 really is (cc9-lua40, 2026-10-06)
+
+Packet `cc9_plane_retreat_task`, the lead's queue item 1 after 5dz. Ghidra was read-only.
+
+### Step 1: B5 is "the squadron's ordnance is spent", and it is live
+
+This settles 5dy's open question. Everything below was read from the listing.
+
+**The driver.** `0071F290` is the command controller's per-frame update (slot `+0Ch`). Its tail
+does two things unless `[00E188A8]+1FE4h` is 2:
+- at `0071F395` it calls `[+38h]->vtable[4](dt)`;
+- then at `0071F39E` it calls `vtable[7Ch]`.
+
+On a squadron's `+348h` block (`0084D810`), `+38h` is the `40h` object `009F7590` builds, with
+vtable `00D21C00`, so the first call is the tick `009F8470`. Slot `+7Ch` is `0084E010`. Both
+therefore run every frame, for every squadron.
+
+**The latch, controller `[+38h]+3Ch`.** Two writers set it to 1, both reached from `009F8470`:
+- **`009F8160` `BSP_Bot_RevalidateCurrentCommand`, `009F8205`.** The current command is one of the
+  seven ordnance classes `00E08F18`/`20`/`28`/`30`/`38`/`48`/`50`. The squadron (`ECX = [sel+8]`)
+  has no member left that `007ED790(0)` -> `007B9140` says can drop. The class is not a fighter
+  (`vtable[18h](13h)` false). And `(sq+369h == 0 || [00E17BF2] == 0)`.
+- **`009F7C90`, `009F7CD4`.** A non-fighter squadron's rockets (`007ED920(0)` -> `007B9400`, kind
+  `33h`) go from present (`sel+28h`) to absent, under the same 369h/E17BF2 test.
+
+**The ending.** `009F7C90` continues: with the latch set and `007EE6B0` true, it calls
+`EndCommand(current, 1)` (`009F7CFC`). `007EE6B0` is true when every member's top bot task answers
+its break-off slot `+1Ch`; the dive bomber's `009C8A90` breaks off on distance once it is out of
+bombs. The end puts the queue stage `+48h` at 2.
+
+**The issue.** `0084E010` runs in the same frame. B5 holds because `+48h == 2`, `0071BE60() < 2`
+and the latch is set. It then tests `(369 == 0 || E17BF2 == 0) && sq+368h == 0` and runs
+`007F16D0`, which ends in one of three results: land at home, land at a carrier, or `retreat`.
+
+**`[00E17BF2]` is 0 on every reference row except JM06 and JM08** (LUA_BINDING_MISSION,
+SetDeviceReloadEnabled), so the latch is open on those rows. In the image, then, a strike
+squadron whose whole ordnance is spent goes home or retreats.
+
+This host does none of this. `summary squadron returntobase 007F16D0 ... squadrons=0` holds on
+every row, and spent dive bombers sit in `BotStateDiveBombDone`.
+
+**Reach estimate, from reference AA's release counts.** Only squadrons with EVERY member spent
+qualify, so these are upper bounds:
+
+| row | releases |
+| --- | --- |
+| USN04 | t3 |
+| E2 | t3 |
+| USN01 | db2 |
+| LOMP10, LOMP10l | db14 each |
+| JM05l | t3 |
+| USN13l | db3 + t3 |
+| USNRM01 | db34 + t6 |
+
+This is a separate binding, the B5 driver (proposed switch `kSquadronSpentOrdnanceRtbBound`). It
+needs the per-plane break-off state, which lives in the shared units host. The retreat task below
+is its retreat outcome. Not bound here.
+
+### Step 2: the task, read whole
+
+| routine | what | coverage |
+| --- | --- | --- |
+| `009C9D00` | constructor; `+55Ch` = 1.0, `+560h` = -U(0, 1); a leader starts in moveto `+478h`, a member in follow `+4C4h`, then that state's enter | complete |
+| `009C9BB0` -> `009C91B0` | approach (task+3F8h): `+2Ch` = U(-50, 100) + CruisingAlt (tuning+53Ch); `+30h` = U(500, 800); `+34h` = 1.0; `+38h` = -U(0, 1); `009C8D40`, `009C8F40`; then the follow state `009C2980` (its draw); four names registered | complete |
+| `009C8D40` | zone `004C7730(pos, side)`; edge B..C into `+40h..+4Ch`; direction = unit(mean of corners - edge midpoint) `+58h`; enter point `+50h` = midpoint + 3 x TurnCircleRadius x direction | complete |
+| `009C8F40` | moveto target `+64h/+68h` on the edge (x-constant edge: clamp z; z-constant edge: clamp x to the edge inset by 2 x margin); `+61h` lined up; `+60h` when already outside the map in that zone (`00489C40` -> `004C74C0`) | complete |
+| `009CA130` | slot `+64h`: the approach countdown (refresh `009C8D40` + `009C8F40` per `+34h`), the arm `009C9FB0`, then the current state's `vtable[0Ch]` | complete |
+| `009C9FB0` | per 1 s: follow -> moveto once leader; moveto -> leave on `+60h`, -> enterzone when the timer is below 0 or `+61h`; enterzone -> leave inside `009C9EA0` | complete |
+| `009C92F0` / `009C9310` | moveto enter: timer = TurnCircleRadius / TravelSpeed. Tick: four edge weights `00419010(edge, 1, edge -+ margin, 0, coord)`, push vector, blend with the unit vector to the target, heading pi/2 - atan2, speed `00419010(0, sq+3A0h, 1, MaxSpd, w)`, pitch `009FB800(+2Ch, 1)`, cone tuning+670h; the timer runs inside TurnCircleRadius | complete |
+| `009C98C0` | enterzone: speed class+190h, pitch, steer `009F9D90` to `+50h`, cone tuning+66Ch | complete |
+| `009C9990` | leave: heading of `+58h`, speed class+190h, pitch, cone tuning+66Ch | complete |
+| `009C9E30` | still-valid: the squadron's current command is `retreat` | complete |
+| `007C6C30` | the plane's leave countdown: outside the map and the squadron leaving on purpose (`007EE2E0`: its command is `retreat`), `+6F0h` runs down from ExitTime (20 s here); `0059C9B0` (ExitDist 1000 m beyond) or expiry -> `007EE410` | partial: HUD `00982120` and the squadron `+36Ch` timer not modelled |
+| `007EE410` -> `007CA790` -> `007F31A0` | message 50h; Lua ExitZoneParty; gate (leader, or `+361h`); the leader's arm also exits members already outside; survivors latch `+361h`; Kill(4) | partial: ExitZoneParty (no script in this installation reads it), fire stance 0 and the survivors' moveto re-issue `007F340F` not modelled |
+
+The values in this installation's `scripts/datatables/planeglobals.lua` (mtime 2024-10-29) are
+`Retreat.ExitDist` 1000, `Retreat.ExitTime` 20 and `WarningRepeatTime` 6.
+
+### The binding, `kPlaneRetreatTaskBound` (`include/bsp/plane_retreat_task.hpp`), committed OFF
+
+- **The pure rules** are in `src/plane_retreat_task.cpp`: the zone refresh, the target, the zone
+  at a point, the countdowns, the arm, the moveto steer, the enterzone test, the two headings, and
+  `0059C9B0`.
+- **The issuers.**
+  - `PilotRetreat` is routed through `GameScriptOrdersHost::run_pilot_retreat`, which issues the
+    order and installs at the delivery.
+  - `007F16D0`'s retreat arm (`last_arm == 3`) installs in `install_land_task_0099a3dd`.
+  - Both go through `GameUnitsHost::retreat_0099a45b` / `install_retreat_task_009c9d00`.
+- **The despawn** is `retreat_leave_map_007ee410` (Kill(4) through `kill_unit_00926d90`).
+- **Substitutions, labelled:**
+  - the squadron's command is carried on each member (`retreat_squadron_ordered`, set when the
+    order went to the squadron);
+  - `007C6C30` runs for retreating planes only;
+  - a plane not in free flight is refused;
+  - the five construction draws use the shared stream, as every task install does.
+
+### Predictions, before any run
+
+- **OFF:** exit 0 on every row. The routing and the glue are compiled out, and PilotRetreat stays
+  the unimplemented record.
+- **ON, census:** of the reference rows, only JM05l calls PilotRetreat (3 calls in reference AA).
+  `007F16D0` never resolves on any row (`squadrons=0`). Every other row: exit 0.
+- **ON, JM05l:**
+  - The three ordered Allied squadrons or planes fly to the nearest Allied border zone. They are
+    removed about 20 s after crossing the map edge, or at once 1000 m beyond it.
+  - Expect `summary plane retreat task ... installs > 0 exits > 0` and a `retreat leave map` line
+    for each one removed.
+  - The deaths total should rise by the members removed by Kill(4). Their later fire and AA
+    exposure disappear.
+  - The extra stream draws (five per installed plane) shift every later shared-stream draw, so
+    expect broad numeric movement after the first install (verdict 3). Judge the mechanism from
+    the per-plane retreat lines, not from the aggregates.
