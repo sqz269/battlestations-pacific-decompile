@@ -1134,3 +1134,21 @@ Worker cc9-ships39, 2026-10-06. This is a harness line over cc9-gunnery30's entr
 - **LABELLED:** no group screen runs and no role is taken.
 
 **Smoke** (`local\s39_b1smoke.log`, BSM01 300 frames, switch OFF): the held, release and `depthcharge` lines all reach the entry, which refuses them with "kPlayerWeaponGroupFireBound is off". The `group x` line is refused at read, and an unknown ship is refused.
+## 16. `order`: the Support Manager's order to a held slot (packet `cc9_player_air_ops_order_line`)
+
+Worker cc9-ships39, 2026-10-06. This is a harness line over cc9-lua44's entry. The switch belongs to that entry: `kAirOpsHeldSlotOrdersBound`, documented in AIROPS_LAUNCH_TICK.md under "Orders to a held slot".
+
+```
+<frame> order <base> <slot> <1|2|3> [target...]
+```
+
+- **What it sends.** The 82h message `{slot, order, target}` into `006CCDA0`, through `bsp::game::script_orders_player_air_ops_order`.
+  - The slot is 1-based.
+  - Order 1 is moveto, 2 is recall and 3 is attack. The target is the rest of the line and only order 3 uses it.
+- **What it logs.** The harness prints the entry's answer: `006CCDA0`'s 0, 1 or 2, or -1 for a slot that is not in state 3 or 4. It also prints the slot state afterwards, the number of planes, and the entry's reason.
+- **Re-sending a held squadron, as the image's player does:** order 1, then order 3. A landed squadron needs a recall first.
+- **LABELLED:** no screen runs; the file names the base and the slot. The base is one word, as for `launch`.
+
+**Smoke** (`local\s39_e8smoke.log`, ESMP08, 300 frames, switch OFF):
+- Slot 0 and order 4 are refused at read.
+- Orders 1, 3 and 2 reach the entry, which refuses each one with "kAirOpsHeldSlotOrdersBound is off".
