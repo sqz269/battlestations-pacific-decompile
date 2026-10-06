@@ -11166,3 +11166,29 @@ wings-level Kate's -0.04 ... -0.13) is what the image computes for that attitude
 `G32BAND` line. None of them depends on the bank.
 - If USN04's TBD hold must change, look upstream of the probe: the steady 0.19-0.33 rad bank on a 0.02-0.05 rad
   heading error (148's closing note) is the roll arm's output, and that is planes code.
+
+## 157. The aimdive steering `009C58D0..009C5DB2` is the host's, line for line (154.2 item 5 / 150; cc9-gunnery33, 2026-10-06, read only, nothing bound)
+
+**Read.** The listing of `BSP_BotStateDiveBombAimDive_Tick` (`009C58D0-009C6161`, `local\g33_aimdive.txt`) from
+`009C58D0` to `009C5DB2`, and the approach update's diving arm `009C7D71..009C7E36`. These were set against
+`dive_bomb_aimdive_steer_009c5c9f`, `dive_bomb_aim_error_009c5c9b`, `dive_bomb_impact_point_009c7d71` and
+`weapon_fall_time_007bcc80` (`src/dive_bomb_task.cpp`), and against the input assembly in `src/game_hosts_units.cpp`.
+
+| step | image | host |
+| --- | --- | --- |
+| live pair | `approach->vtable[0]` minus `unit+FCh/+104h`: `d1` (`[ESP+1Ch]`) and `err_a = 00438B10(009C4F80 heading, pi/2 - atan2(dz, dx))` (`[ESP+24h]`) | same |
+| CCIP pair | `approach->vtable[0]` minus `approach+D8h/+E0h`: `d2` (`[ESP+5Ch]`) and `err_18` (`[ESP+18h]`) | same (`db_impact_planar_5c`, `db_impact_bearing_18`) |
+| `approach+D8h` | `009C7D71`: `t = 007BCC80(unit, h) + 0.1`, `p = pos + t v` (x, z), y the aim point's | same; `007BCC80` is `(sqrt((vy-3)^2 + 2 g h) + vy - 3) / g` |
+| break-off | `h < approach+D4h + approach+50h`, pitch above -60 degrees (`00D20338`), and `0.3 h + 150 > d1` (`00CE3DC8`, `00CE3DD8`): clears `+19h`/`+18h` and returns | modelled (`kAbortRollFloor`, dive_bomb_task.cpp 356) |
+| steep gate | `pitch_c64 > -30 degrees` (`00CEC728`): pitch slot -1.0 | same |
+| error | `gain * (cos(err_18) d2 - lead)`. `lead` is `interp(A8h + 100 -> 0, ACh + 50h -> row+5Ch; h)` and `gain` is `interp(... -> 1, ... -> row+60h; h)`, where `row` = `[approach+14h]` | same |
+| pitch | `err > 0`: `min(err * row+64h, 1)`; else `max(err * row+68h, -1)`; `+29Ch`, `+2A0h = 1`, `+2D0h = 0` | same |
+| roll | wide arm when `[ESP+5Ch] > 0` and `|bank| < 60 degrees` (`00D05AAC`): `interp(-0.5, 1, 0.5, -1; err_18)`; else `interp(-0.4, 1, 0.4, -1; err_a)`; `+290h`, `+294h = 1`, `+2CCh = 0` | same, both bearings passed |
+
+**Result.** The steering is the image's own law, constants included. 143.2's along-track error is the CCIP error
+of a dive steeper than its sight line, and the law pulls against it at the robots row's `AimPrecPull` gains.
+Nothing here differs from the host.
+- The residual is downstream of the command: how fast the stick moves the attitude (the planes' flight model),
+  or the turndown's handover attitude, which 150 found to be the image's.
+- The next read, if wanted, is the aircraft's pitch response to a held `+29Ch` of 1.0 in mode 0 (`0099E3BF` onward
+  and the control law). That is planes code.
