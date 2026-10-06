@@ -882,3 +882,44 @@ It replaces the approach of `kAutoAttackAllMembersBound`, which stays OFF.
 - LOMP10 `s37_l10_p2`: CB4_AF's wingmen attack their slot's ship instead of idling. Some slots may
   return (squadrons wholly lost or landed), so some of the retries at 8000-11000 may stop being
   refused.
+
+#### Measured: **ON** (cc9-lua42, 2026-10-06)
+
+The OFF build is `local\l42_m`'s base commit, built in the tree. The ON build is its export with
+`kAutoAttackMemberOnLaunchBound=true` (`local\l42_m`). Every other switch is as on main; the
+scatter is ON. The order files are cc9-ships37's: `s37_l10_p2.txt` (LOMP10 11200) and
+`s37_u1_p5.txt` (USN01 14000). Logs are `local\l42_{off,m}_<row>.log` and diffs
+`local\l42_diffm_<row>.txt`.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| smoke 300 | 1 | gameplay identical |
+| LOMP10 p2 | 3 | 14 member orders at launch; `releases_006c65b0` 0 -> 3; deaths 9 -> 19 |
+| USN01 p5 | 3 | 6 member orders at launch; deaths 92 -> 89; the win leaves the 14000-frame window |
+
+**LOMP10.**
+- CB4_AF's wingmen now attack:
+  - every sqn01-03 |.-2/|.-3 dies in action (12 rows only ON);
+  - Kasumi is sunk.
+- Three slots come back to state 1 (`releases_006c65b0=3`) and are relaunched:
+  - slot 3 at Kashi twice;
+  - slot 1 at Asashimo.
+  - The new squadrons sqn05 and sqn06 fly; the other retries are still refused while their slots'
+    squadrons are away.
+- This is the slot return SHIP_AI 181 asked for. Its cause was the idle wingmen, not a missing
+  release arm. 006CD350 states 1/2 and 006CC5C0 were not needed for this case and stay unread.
+
+**USN01 p5.**
+- The fighters' wingmen engage. The Nell1-4 squadrons are wholly destroyed earlier:
+  - Nell2 is `Dead` at 310.85 s instead of 604.68 s;
+  - Nell3 at 343.44 s instead of 387.23 s;
+  - Nell4 at 311.75 s instead of 401.08 s.
+- Nell5|.-3 and Nell6, which OFF's escorts shot down late (Nell6 at 697.50 s), survive to the end
+  of the window. So `luaRemoveDeadsFromTable(Mission.Nells)` is not empty and the mission does not
+  complete within 14000 frames (OFF: completed at 697.90 s, with the guard line).
+- Enterprise survives on both sides.
+- The win now depends on the harness lines for the last two Nell groups (cc9-ships37), not on this
+  mechanism.
+
+**Verdict: ON.** The mechanism matches: every later member gets the squadron's order as it leaves
+the deck. The moves trace to wingmen that now fight.

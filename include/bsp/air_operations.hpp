@@ -820,7 +820,7 @@ inline constexpr bool kAutoAttackAllMembersBound = false;  // OFF: mechanism fai
 // +128h 007ECF80 fans out over +3D0h); SUBSTITUTION, labelled: this host has no
 // squadron-level command, so each deck member is given it as it launches.
 // False: only the members flying at the first serve get it.
-inline constexpr bool kAutoAttackMemberOnLaunchBound = false;
+inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAUNCH_TICK, member orders at launch, measured
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state
