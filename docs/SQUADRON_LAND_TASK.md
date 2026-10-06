@@ -13677,3 +13677,87 @@ The missing piece is **what removes, or destroys, a stowed plane**.
 **Next:** read `006CA4AC` and `006CAC00` (the other two `+C0h` users), then census the plane destructors'
 callers from the squadron land/park tail (`007EFB60` promotes the next member). Until then the host's loop is
 kept, and ESMP08's relaunch count stays bounded as 5ep says.
+
+## 5eu. IJN01: the rack answers live, `kRackLiveOrdnanceMaskBound` (packet `cc9_lua45_rack_live_ordnance`, cc9-lua45, 2026-10-06)
+
+This closes 5er's open read, from disk bytes.
+
+**The rack.** `MBombPlatform`'s constructor `006E3C00` stores the primary vtable `00CF96A8` at `006E3C43`, and
+`+310h` = `00CF9664` (whose `+8h` is the tick `006E56F0`, the `00CF966C` slot 5er cites).
+- **`vtable[220h]`** = `006E4060` (dword at `00CF98C8`). `__thiscall(rack)(char loadout)`, `RET 4`.
+  1. It walks the rack's child list (`+48h`, next `+44h`) and asks each child `vtable[5Ch](2Ah)`. The first
+     child that answers returns `child+314h`, its descriptor (`006E40DA`).
+  2. Only when the loadout byte is set **and** the owner's `vtable[1E4h]` answers (`+3F0h`) does it return the
+     rack's own bullet descriptor `[+3F8h]+34h`, provided that answers `vtable[8](2Ah)`.
+     - For a plane, `vtable[1E4h]` = `006D1F40`, `MOV AL,[00E17BF2]`.
+     - That byte is written by `BSP_Session_SetMode` and the lobby sync, and AI_COMMAND_TICK reads it as 00
+       in single player (not re-checked here).
+     - 007EEC00 passes `(unit+369h && 00E17BF2)`, so that arm is closed in single player.
+  3. Otherwise it returns null.
+- **`vtable[210h]`** = `006E3FE0` (`00CF98B8`), `(kind, loadout)`, `RET 8`. It is the same shape with the kind as
+  an argument and answers a bool.
+- **So a rack answers a kind only while a round is attached to it.** A dropped bomb leaves the child list,
+  and `007B9320` (divebomb) and `007B91C0` (torpedo and the others) then skip the rack. When every rack is
+  empty, `007EEC50` loses its ordnance classes, and a fighter-bomber falls to its gun classes, as 5er expected.
+
+**Binding** (`src/game_hosts_units.cpp`, `GameUnitsHost::unit_ordnance`, committed OFF).
+- Once the rack ammo is seeded (`rack_ammo >= 0`), each single-rack kind (`rack_bullet_class_per_rack`, 5eq's
+  census) whose racks all have zero rounds is dropped from the mask.
+- The general-bomb bit 2Ah is dropped when no rack of the bomb family (2Ah, 2Bh, 2Ch, 2Dh, 31h, 33h) has a
+  round. Those descriptors answer 2Ah too, which is why `007B9320` excludes them.
+- **LABELLED:** "rounds > 0" stands for "a round is attached". The re-attach after a drop (`006E4D50`'s tail)
+  is not read.
+- A plane with a MultiBombPlatform, or with an unknown rack kind, keeps the static mask.
+- Every consumer of `unit_ordnance()` sees the live mask:
+  - the script-order chooser (`game_hosts_script_orders.cpp` ~1406);
+  - the AI target chooser (`game_hosts_ai.cpp` ~2789);
+  - the gunnery host's torpedo clear and rearm census.
+  The rearm census may now log "left cleared" for a live-emptied unit; that line is diagnostic only.
+
+**Predictions (before the pairs).**
+- **IJN01 with `s38_i1_p1.txt`.**
+  - A7M_2's re-issued targets after its one release (frame 1603 on) no longer answer `class 00e08f20`. They
+    answer a gun class (strafe or dogfight against LST2), so the `done` stretch of about 11010 ticks ends.
+  - Expect more MG hits on LST2 and on its escorts, and moved death and kill rows.
+- **USN13 long and LOMP10.**
+  - AI dive bombers that have dropped stop being chosen for divebomb on a later AI re-target (the AI chooser
+    reads the same mask). Rows with no post-drop re-choice stay identical.
+  - A mechanism failure is any unit whose racks are all empty that is still offered divebomb, or a unit with a
+    round left that loses it.
+
+**Pairs (2026-10-06, commit `1934b6438`).** OFF `945DB8DF1082`, ON `F4F2C67B04CF`, AD launch form, logs
+`local\l45_ro_<off|on>_<row>.log`. The 300-frame ON smoke ran clean.
+
+| row | frames | pair_diff | |
+| --- | --- | --- | --- |
+| IJN01 + `s38_i1_p1.txt` | 24000 | **3** | deaths 12 -> 37, hit records 698 -> 2666, shots 14588 -> 21253 |
+| USN13 long | 9000 | 0 | |
+| LOMP10 | 3000 | 1 | |
+
+**The IJN01 move, per entity.** The chooser census (`target A7M_n` answers, OFF -> ON):
+
+| squadron | OFF | ON |
+| --- | --- | --- |
+| A7M_3 | 57 divebomb | 4 divebomb, then 21 strafe `00E08F40` |
+| A7M_5 | 57 divebomb | 4 divebomb, then 1 strafe |
+| A7M_1 | 8 strafe | 2 divebomb, then 10 strafe |
+| A7M_2 | 57 divebomb | 57 divebomb |
+| A7M_4 | 57 divebomb | 57 divebomb |
+
+- **Which squadrons switched.** A7M_3 and A7M_5 each released twice (`releases=2 rounds_left=0`, both racks
+  empty). From their re-issue at frame 2805 / 2809 (140 s) they strafe: A7M_3 -> LST7, A7M_5 -> Vestal.
+- **What strafing adds.**
+  - LST7 and PT2 die.
+  - The strafe passes cross the B-17s, and A7M_3's guns kill B-17 01|.-2 (cat 0, 155.30 s).
+  - The B-17 gunners shoot down A7M_5's whole squadron at 149-153 s.
+  - The 1968 added hit records come with the strafing (not split by shooter here).
+- **Which squadrons kept divebomb.** A7M_2 and A7M_4 released **once** (`releases=1`; the active rack's count is
+  0 and the other single rack still holds its round), so they keep 2Ah. That is faithful: the image's
+  `006E4060` would still find the loaded rack's child. **The 5er / 5eu prediction for A7M_2 was therefore wrong.** Its
+  `done` stretch is the host firing one rack per issue (`kRackRoundsPerRackBound`) and the same-target keep
+  holding the done task while a round remains. That is a separate open item: who re-issues the release for the
+  second rack.
+- **Verdict: ON.**
+  - The mechanism matches: units whose racks are all empty lose divebomb, and units with a round left keep it.
+  - The row moves through exactly those two squadrons, and the moved deaths follow from their strafing.
+  - USN13 long is identical and LOMP10 is gameplay-identical.
