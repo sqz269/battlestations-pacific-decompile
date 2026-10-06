@@ -273,3 +273,64 @@ unimplemented native, so it returns nothing, and the chain stops before `luaDela
 
 **Verdict: ON.** The mechanism matches. The stop comes from a different, unbound native, and is
 recorded.
+### 7.2 `GetCameraState` and `GetRotation` (packet `cc9_lua_camera_state`, cc9-lua40, 2026-10-06), committed OFF
+
+The two natives that stop `luaMissionEnd_CamOnEnt` (7.1).
+
+**GetCameraState `008BF6A0` (read whole).** It builds a new table:
+- `Position`: `0088BA30` on the camera node's world translation. The node is `[game+19FCh]`; when
+  `+5Ch` bit 2 is clear, `00B6DB70` refreshes it first.
+- `Rotation`: `0042D2E0` on the node's basis. Each angle is converted at `008BF870`-`008BF8AF`:
+  `float(fmod(float(a + 131.9469), 2 pi)) / pi * 180`. That is degrees in [0, 360); the constant
+  is the double at `00D13268`, which is 42 pi.
+- `Zoom` (key at `00D14988`) = `[00F889B4]` / node `+1C4h` (the fov).
+
+**GetRotation `008A7E60` (read whole).** It resolves argument 0 through `00888AA0`, with no null
+test. It refreshes the world when `+C8h` is clear, applies the same `0042D2E0` and degree tail to
+the unit's world basis (`unit+CCh` rows), and pushes `0088BA30`'s {x, y, z}: one result.
+CamOnEnt's live arm needs it (`luaGetRotation(ent)`, `commandhelpers.lua:10721`).
+
+**The binding, `kLuaCameraStateBound`:**
+- GetCameraState reads the host's published Operator camera (`bsp::mission_camera_publication`,
+  packet `cc9_mission_camera`), which is the `[game+19FCh]` node.
+- **SUBSTITUTION, labelled.** When nothing has been published, the controlled unit's world matrix
+  stands in, with Zoom 1.0; with no controlled unit, the identity at the origin. JM08's controlled
+  unit, the HQ, has no ship camera.
+- GetRotation reads `unit_pose`. A non-unit argument pushes nothing (labelled).
+- **Open item:** what `[game+19FCh]` holds when the image's controlled unit is not a ship (JM08's
+  HQ). The host's camera covers only the ShipCaptain mover.
+
+**Predictions, before any run:**
+- **OFF:** exit 0.
+- **ON, USN02 (fails at 74.30 s) and JM08 long (fails at 1034.53 s):**
+  - CamOnEnt runs to its end;
+  - `luaMissionEnd_Text` follows 2 s later;
+  - FadeAway runs at `MusicEndTime - 2.5`, which is about the end + 37.5 s;
+  - the blackout, then Finale, then EndScene 2 s later.
+  - Expect `summary mission scene end calls=1 first_at` at about the end + 40 s: about 114 s on
+    USN02 and 1075 s on JM08 long.
+  - Both rows fail, so no completion path runs and `os.execute` is not reached.
+  - Exit 1.
+- **ON, USN01 (control, no end):** exit 1.
+#### 7.2.1 Measured: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+**The pairs.** Same tree. OFF is `908746853`; ON is that commit exported with the flip (`225D753A26EC`).
+Logs: `local\l40_{off,on}_{usn01,usn02,jm08l}.log`.
+
+| row | exit | mission end | CamOnEnt ran | EndScene | end to EndScene |
+| --- | --- | --- | --- | --- | --- |
+| USN01 (control) | 1 | none | - | - | - |
+| USN02 | 3 | fails at 74.30 s | 77.00 s | **113.90 s** | 39.6 s |
+| JM08 long | 1 | fails at 1034.53 s (`obj_fail` queued) | 1039.14 s | **1076.02 s** | 41.5 s |
+
+- **EndScene is reached on both failing rows,** and `summary mission scene end calls=1`. The
+  image's figure is about 40 s after the end.
+- **USN02's exit 3 is only the `mission end` line.** It now ends `EndScene 008B01B0 reached at
+  113.90 s`, which pair_diff counts as a gameplay field. Deaths, hits, damage, shots and the unit
+  table are identical.
+- **The camera.** Both rows read the published camera (`from_camera=2`); the stand-in was not
+  needed. GetRotation ran once on each row.
+- **The guard.** Neither row completes, so `luaMissionCompletedNew` and its `os.execute` are
+  not reached. No row here can show the guard's refusal line.
+
+**Verdict: ON.**
