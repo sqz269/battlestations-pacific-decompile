@@ -27,6 +27,7 @@
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
 #include "bsp/mission_lua_host.hpp"
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
@@ -153,6 +154,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
     {"PilotLand", 0x008a47b0u},
+    // Packet cc9_plane_retreat_task: handled only with bsp::kPlaneRetreatTaskBound.
+    {"PilotRetreat", 0x008a4300u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
     // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
     // the eight script sites are the Lexington and the Town being told to circle
@@ -544,6 +547,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
+    if (std::strcmp(binding->name, "PilotRetreat") == 0) return bsp::kPlaneRetreatTaskBound;
     if (std::strcmp(binding->name, "Countdown") == 0 ||
         std::strcmp(binding->name, "CountdownCancel") == 0 ||
         std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
@@ -1949,6 +1953,44 @@ int GameScriptOrdersHost::run_pilot_land(GameScriptOrderRow& row) {
     return 0;  // the binding pushes nothing
 }
 
+// 008A4300 `PilotRetreat(unit)`, packet cc9_plane_retreat_task (the body is
+// bsp::pilot_retreat_008a4300). Argument 0 through 00888AA0, the unit's side
+// (+54h), 004C7730 over world+7134h, the corner mean 008A443E as the hand-built
+// descriptor's position, then 0077D600(entity, retreat 00E08F90, desc, 1) at
+// 008A4532. The bots' arm 0099A45B installs at the delivery (the standing
+// substitution PilotLand states). LABELLED: with no zone the image reads a null
+// record; here the position stays (0, 0, 0) and the order is still issued.
+int GameScriptOrdersHost::run_pilot_retreat(GameScriptOrderRow& row) {
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    ++pilot_retreat_calls_;
+    if (unit == nullptr || row.unit_index >= units_.count()) {
+        log_.notef("  PilotRetreat: unit unresolved; nothing issued (008A4300)");
+        return 0;
+    }
+    bsp::SceneCommandTarget target;
+    target.kind = 0;            // 008A4471
+    target.position_valid = 1;  // 008A445E
+    target.object_id = 0;       // 008A4475
+    target.object = nullptr;    // 008A446D
+    target.trailing = 0.0f;     // 008A447E
+    const bool zone = units_.retreat_point_008a4300(row.unit_index, target.position);
+    entity_issue_command(unit, bsp::kPilotOrderClassRetreat, target,
+                         bsp::kPilotOrderIssueFlags);                     // 008A4532
+    const std::size_t leader = row.unit_index;
+    after_order_delivery([this, leader]() {
+        pilot_retreat_tasks_ += units_.retreat_0099a45b(leader, "PilotRetreat 008A4300");
+    });
+    log_.notef("  PilotRetreat: %s -> (%.1f, %.1f, %.1f) zone=%d (008A4300 -> 0077D600 "
+        "00E08F90 -> 0099A45B, packet cc9_plane_retreat_task)", row.unit.c_str(),
+        static_cast<double>(target.position[0]), static_cast<double>(target.position[1]),
+        static_cast<double>(target.position[2]), zone ? 1 : 0);
+    return 0;  // the binding pushes nothing
+}
+
 // 008A7060 `NavigatorEnable(unit, enable)`, packet cc9_scripted_order_natives.
 // Argument 0 through 00888AA0 with no kind check, then [unit+740h] and
 // MOV [EAX+11h],AL with argument 1 as a boolean. No result is pushed.
@@ -2615,6 +2657,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = 0;
     } else if (std::strcmp(binding->name, "PilotLand") == 0) {
         results = run_pilot_land(row);
+    } else if (std::strcmp(binding->name, "PilotRetreat") == 0) {
+        results = run_pilot_retreat(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "SetFireTarget") == 0) {

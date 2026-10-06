@@ -874,6 +874,12 @@ public:
     const bsp::BorderZoneSet* world_border_zones() const noexcept {
         return border_zones_loaded_ ? &border_zones_ : nullptr;
     }
+    // Packet cc9_plane_retreat_task: world+711Ch..+7130h, the box 0071C4F0,
+    // 0059C9B0 and the retreat moveto tick 009C9310 read; null until
+    // set_world_border_zones ran.
+    const bsp::WorldMapBounds* world_border_bounds() const noexcept {
+        return border_zones_loaded_ ? &border_bounds_ : nullptr;
+    }
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
     // Packet cc9_ship_neighbour_list: the ShipAvoidance block settings+190h..+1D8h,
