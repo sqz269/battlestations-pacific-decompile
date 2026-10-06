@@ -13280,6 +13280,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
         }
         sq->formation_indices_assigned = false;
     }
+    note_kill_cause(p.process_index, 5);   // 007F1D53 PUSH 5: KillReason "landed" (00E0CF04)
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
     log.notef("  stock return: %s back into %s's stock (class %d -> %d) at %.2f s, squadron %s, "
