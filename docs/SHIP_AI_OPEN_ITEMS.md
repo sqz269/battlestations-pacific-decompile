@@ -14310,6 +14310,46 @@ The tree is `agent/cc9-ships38` at main `78eab7589`, which has `kAutoAttackMembe
 lua42's 14000-frame window (700 s) closed 2.75 s before Nell5|.-3 died. So the "outlived" Nells
 were a window artefact. The cruisers still finish the raid, about 15 s later than in p5.
 
+### 179.3 p5 with squadron placement ON: re-tuned, completes at 648.42 s (cc9-ships38, 2026-10-06)
+
+The tree is `agent/cc9-ships38` with main `3d0dcce5f` merged, which has squadron placement ON
+(lua43 `12291183b`). The launch form is s37's.
+- **p5 unchanged** (`s38_u1q`) fails at line 2: `release ScoutDauntless on Convoy1: the sight
+  never came within 15.0 m (nearest 16.5 m)`. Pass C places `ScoutDauntless|.-2` beside the
+  player's plane, so the path shifts.
+- **Release window 20 m** (`s38_u1_p6.txt`, `s38_u1q6`): the sight closes at 130.20 s (miss
+  19.8 m, tf 3.91 s), and `luaConLeadHit` follows on a 502.8 bomb hit. Phase 2 passes.
+- **But at 22000 frames** (`s38_u1p6`) Convoy5 is never hit, so the mission stays in phase 2.
+  Convoy3, 6, 1, 4 and 2 die between 181.56 and 197.41 s.
+- **The convoy strike, re-tuned** (5500-frame probes `s38_u1p7a`..`p7n`). All of them use the
+  player's legal pick (`select` then `target`). The probes, by which strike gets retargeted:
+  - ConTBD1, the player's own TBDs (variants a, b, d and e): Convoy5 or Convoy1 still survives.
+  - ConSBD1, 2 or 3 at Convoy5 (variants f, g, h and k): their bombs never kill Convoy5.
+  - ConTBD2 at Convoy5 (variant i): Convoy5 dies, but Convoy3 survives.
+  - **Variant n:** ConTBD2 at Convoy5 and also ConSBD3 at Convoy3. **All six die.**
+  - The deaths move from probe to probe, as the shared RNG stream predicts.
+- **p8 = n** (`local\s38_u1_p8.txt`). At frames 3300-3305 the player selects ConTBD2, targets
+  Convoy5, selects ConSBD3, targets Convoy3, then re-selects ConTBD1. The rest is p5's file with
+  the 20 m window.
+
+**p8 at 22000 frames** (`local\s38_u1p8.log`):
+- **Phase 2.** `luaConLeadHit` is at log line 21117. The convoys die at 180.11 (Convoy6,
+  ConTBD2|.-2), 194.96 (Convoy1, ConTBD1), 195.86 (Convoy5, ConTBD2|.-3), 196.31 (Convoy4,
+  ConSBD2|.-4), 205.66 (Convoy2, ConTBD1|.-2) and 214.86 s (Convoy3, ConSBD3|.-2).
+  `luaMoveToPh3` runs at log line 35559.
+- **Phase 3.** The four F4F launches and the escort movetos apply. Ralph, McCall and Blue pass
+  190.1's selectable gate.
+- **Guard.** `bsp: refused a mission script's process launch: sus_prog.exe` is at log line 100043.
+- **End:** `summary mission end: completed at 648.42 s (Mission.MissionStatus) text="We showed we
+  can fight back! - Mission Complete!"`, and EndScene at 682.96 s. No US ship has a death row.
+- **Against lua42's `l42_u1_p5`:** its logs in `cc9-lua42\local` predate placement. Its
+  `l42_m_u1p5.log` kills the convoys in s37's order (185.76-216.21 s), so the move comes from
+  placement plus the RNG coupling.
+
+**LABELLED:**
+- the 20 m sight window (SCRIPTED_HELM 14);
+- the harness's fixed click times;
+- the target pick lists are not used here; each target line names one convoy.
 ## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
 
 Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
@@ -14815,3 +14855,340 @@ mini-sub's path goal is refused the same way.
 
 Either keeps phase 3, and so the mission, out of reach. Phase 4 (the `Donald` flight, ten kills or
 17 km from Akagi) has not been reached.
+
+### 191.2 Why Henry stops: the traffic setback; phase 3 then needs the player's depth charges (cc9-ships38, 2026-10-06)
+
+**Diagnostic** (env-gated, no behaviour change): `BSP_SHIP_MOVETO_TRACE=<unit>` logs the inputs of
+009E5821's arrival test from `MoveToPosStepBinding::state_goal_reached_vtable_002c`
+(`src/game_hosts_ship_ai.cpp`):
+- the position, the brain goal, the latch `+2FEh`, the latched plan goal and the plan front;
+- `reached` and `clears`, and the director command;
+- `blk+330h`, the start radius `+3D8h`, the steer flag, `blk.direction`, and the plan's search
+  state and node count.
+
+**The probe** (`s38_b1p5d`, moveto lines at 5500, 5600 and 5700). Each new moveto runs this way:
+1. **Step 1.** The plan is reset (`search=0`), and the trace reads `330=24.0`: the previous
+   step's stop-state look-ahead.
+2. **The controls step.** It computes `330=1835.1`, the straight path, since `nodes=0`. The ship
+   is in `direction` Stopped, and the arm tail's release test (`009EEF14`, start radius 57.9 +
+   setback < 330) does not release it.
+3. **The latch.** `009EF034` latches `+2FEh` against the new goal.
+4. **Step 2.** `reached=1`, and the movetopos finishes into `stop`.
+
+`ship ai traffic setback unit=HenryPT ... max_setback=2055.7`: the traffic walk (`009EEAAB`, the
+walk back from the goal through the ship list 6) ate the whole path.
+
+**Why the walk eats the path** (`local\s38_line.py` over the step-5500 trajectories): the straight
+line from (2525, -1734) to (1150, -2950) runs down Battleship Row.
+- It passes Whitney (perp 8.8 m), LST No. 122 (43 m), Nevada (47 m), West Virginia (23 m),
+  Tennessee (59 m), Oklahoma (25 m) and Maryland (68 m).
+- Each hull's clearance circle (at least 60 m, or half the two hull lengths) chains into the next.
+- **Read as faithful.** The walk and its gate are projected from `009EEAAB`..`009EEEEC`. The path
+  plan has no nodes, so the walk runs on the destination itself.
+- **Not checked:** whether the image's ship list 6 holds the same moored hulls.
+
+**p6** (`local\s38_b1_p6.txt`, 30000 frames, trajectories) drives Henry by hand instead.
+- `select HenryPT` at 5500. Then `takehelm` along phase 1's own channel: (2234, -2203), (1890,
+  -2863), (1915, -3084), and finally the mini-sub at (1072, -3017) with `stop 40`.
+- The route is flown, and the stop applies at frame 9994 with Henry 39.8 m from the sub.
+- **There is still no hit.** Henry's depth-charge row (plat 9, cat 8, range 240) shows `assigns 496
+  ... shots 0 refusals 20324`, and the gun rows cannot reach a boat at -6.96 m.
+
+**What phase 3 needs** is the player's own depth-charge release. SHIP_SCREEN_UPDATE 28's group 5
+(role 7, mask 80h) is selected through `005484B0`; `005484F0` then builds fire message 79h to the
+unit. The host answers `009542B0` "not available", so no group is ever selected.
+- **Routed:** a player weapon-fire line (group select plus message 79h), needing the gunnery lane's
+  role and fire path.
+- **Why the AI row refuses** 20324 times is not read. It is the gunnery lane's (`docs/DEPTHCHARGE_FLAK_ADMISSION.md`
+  covers the category's admission).
+
+### 190.1 IJN11 is not legal: the player's moveto needs a unit 00645060 accepts (cc9-ships38, 2026-10-06)
+
+**The image's evidence** (SCRIPTED_HELM 8.2, CONTROLLED_UNIT "`00645060`, the selectable test"):
+- The player's moveto `005F9B20` sends its order to `[00E188D8]`: `MOV ECX,[00E188D8]` at `005F9B42`,
+  then `0077D600`.
+- `[00E188D8]` changes only through `00645600`. Its two selection callers run `00645060` first:
+  `00647317` in `00647300`, and `0064564D`.
+- A unit that `00645060` refuses can therefore never be the controlled unit, so it never receives
+  the player's moveto.
+- In IJN11 phase 2, `select SupplyCargo` is refused by `00645060` (190). Which of its tests fails
+  (the party `[unit+54h]`, the kind tests, `vtable[124h]` or `00927C50`) was not read.
+
+**Harness change** (`src/game_hosts_mission_frame.cpp`; the query is in
+`src/game_hosts_hud.cpp` / `include/bsp/game_hosts_hud.hpp`):
+- `bsp::game::hud_unit_selectable_00645060(unit, reached)` runs the same pure rule
+  (`unit_is_selectable_00645060` over `selectable_inputs_00645060`) without changing the
+  selection.
+- A `moveto` on a unit other than the controlled one is now refused when that rule rejects it:
+  `helm order refused: ... moveto <unit>: 00645060 rejects the unit, so it can never be
+  [00E188D8], the unit 005F9B20 orders`.
+- **Still LABELLED:** a selectable unit that is not the controlled one is ordered without the
+  select (SCRIPTED_HELM 8.2 difference 2). This is how USN01's escorts Ralph, McCall and Blue are
+  ordered; they pass the gate in 179.3.
+
+**Re-run** (`local\s38_i11p2.log`, `s38_i11_p1.txt`, 20000 frames): both moveto lines are refused
+by the new gate, and the mission does not end (`summary mission end: none`). **IJN11 is recorded as
+not completed with legal input.** 190's p1 completion stands only as a labelled run.
+
+## 192. Handoff (cc9-ships38, 2026-10-06)
+
+### Landed (`agent/cc9-ships38`)
+
+| section | what |
+| --- | --- |
+| 179.2 / 179.3 | USN01 completes. 179.2: 712.75 s with the wingmen's launch order ON. 179.3: 648.42 s under squadron placement, with p8 (`local\s38_u1_p8.txt`): a 20 m release window and two legal convoy retargets |
+| 186 | LOMP10 completes with `s37_l10_p2.txt` at 30000 frames: `luaVictory` at 1081.08 s, then EndScene. Also the dead-or-hidden refusal of a launch target |
+| 187 | USN12 completes at 1544.78 s (`s38_u12_p2.txt`): an early moveto keeps Montpelier off the shoal |
+| 188 | ESMP08 reaches 10 of 15. The routed blockers: carrier slots stop returning, and Zuikaku's deck is blocked by one member stuck in takeoff prepare |
+| 189 | BSM01, IJN01 and USNRM01 idle reads. Also `target <sq> a \| b \| ...` pick lists |
+| 190 / 190.1 | IJN11 completes only through a moveto on an unselectable unit, so it is **not legal**. The harness moveto now refuses units that `00645060` rejects |
+| 191 / 191.1 / 191.2 | BSM01 reaches phase 3. The traffic setback walk explains Henry's instant movetopos finish; `BSP_SHIP_MOVETO_TRACE` is the diagnostic. Phase 3 needs the player's depth-charge release |
+| harness | `build <shipyard> class <id>` (`a5c970e65`), which calls `GameGunneryHost::shipyard_order` |
+
+### Open, in order
+
+1. **BSM01 phase 3** (191.3): the `depthcharge` line exists. The gunnery lane must make depth charges sink and detonate (`006FD210`, the bomb tick's dive model); then re-run `s38_b1_p7.txt`. Superseded text follows.
+   **BSM01 depth-charge line** (gunnery lane). The player selects weapon group 5 (role 7, mask 80h)
+   through `005484B0`; `005484F0` then sends fire message 79h. The host answers `009542B0` "not
+   available", so no group is selected.
+   - Then re-run `s38_b1_p6.txt` (takehelm to the mini-sub) with a release once Henry is within
+     40 m.
+   - Phase 4 (`Donald`: ten kills, or 17 km from Akagi) has not been reached.
+2. **USN04 phase 1** (read in 194: no binding gap; the re-issued fade never calls back under lockstep. Superseded text follows.)
+   - At difficulty 1 it passes when `IJNBombersLex` or `IJNFightersLex` is all dead (575).
+   - Idle, every Lex bomber and fighter group (#1, #2, #5, #6) dies by 1200 s, yet phase 1 never
+     completes.
+   - Read next: the tables hold the squadron units from `luaBombersSpawnedLex(unit1, unit2)`
+     (3081). Check whether `luaRemoveDeadsFromTable` sees those group entities as `Dead`, and
+     whether `luaObj_IsActive("primary",1)` is ever true (`luaObj_Add` at 3245).
+3. **The rows blocked on routed items:**
+   - ESMP08 and USN13: the carrier slot return.
+   - JM06: `GetSubmarineOnSurface` `008942C0` is unimplemented.
+   - IJN01: a fighter does nothing after its one dive bomb.
+   - USNRM01: West Virginia is never sunk.
+   - JM08: the neutralize (185).
+   - USNOS: Kaiten in each wave, and the ASW issue above.
+4. **JM08 defence** (193, 195): reachable on paper. The first strike plans fail: the airfield's slots are held by scene squadrons, and Hosho's Kates and the Mavises die to AA. Next: the shipyard once production is ON, the patrol boat, and later Mavis timing.
+   **USN04 phase 1** (194): stuck on the re-issued fade. Needs a holdfire line, or a ruling that it is out of scope.
+5. **IJN11.** It is legal only if the player can command the cargo some other way. Read why
+   `00645060` refuses `SupplyCargo` in phase 2.
+
+### Tools (`local\`, `s38_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s38_run.ps1` | one run, in s37's launch form (`-Name -Orders -Mission -Frames -Traj`) |
+| `s38_sum.ps1` | a log summary: the end, the guard line, death rows (`-Ships` regex), launch outcomes |
+| `s38_l10gen.py`, `s38_e8gen.py`, `s38_i1gen.py` | generators of cyclic launch and target order files |
+| `s38_line.py` | the units near a pose-to-goal segment at one trajectory step |
+
+Leases: `cc9_reference_completion` is released with this commit.
+
+### 191.3 The `depthcharge` line, and BSM01 phase 3 still not passed (cc9-ships38, 2026-10-06)
+
+**The image's input path:**
+1. `IC_GUNC_DEPTHCHARGE = 159` (9Fh) in this installation's `scripts\datatables\Inputs.lua`
+   (mtime 2024-07-13, groups `IG_GUNCONTROL`, `IG_ZOOMROLESWITCH`).
+2. On screen 2Eh, `005484F0` maps keys 9Ch..9Fh to weapon groups 2..5 (SHIP_SCREEN_UPDATE 32),
+   so 9Fh selects group 5 (role 7, mask 80h).
+3. While the group's role is held, the fire key 99h makes `005484F0` build message 79h
+   (`00954A10`) and route it to `[00E188D8]` (`0077C2A0`).
+4. `00959C20` jumps on group 5 to **`0095A441`**, read here from the listing to its loop back at
+   `0095A5A5`. For each kind-20h device on unit+48h that `00954210(5, dev)` keeps (operational
+   `00729F10` and `0080F750`):
+   - a **Function-9** device is aimed first (`00957740`, `00955630`, `0085ABA0`) and is triggered
+     only inside the `00D1A8A0` window;
+   - every other kept device, the **Function-8 racks**, gets `vtable[1E8h](msg+34h)` at
+     `0095A58D..0095A5A0`;
+   - nothing fires while `[00E188A8]+1FE4h == 2` (`0095A506`).
+
+**The line** (`src/game_hosts_mission_frame.cpp`): `<frame> depthcharge <ship>`.
+- It refuses unless `<ship>` is the controlled unit, since `005484F0` gates on `[00E188D8]`.
+- **LABELLED stand-in:** the press is delivered as
+  `GameGunneryHost::fire_function_guns_now_009e2b60(unit, 8)`, which applies the same
+  `vtable[1E8h](1)` latch to the Function-8 racks. No group screen, role take or message runs.
+
+**BSM01 runs** (30000 frames, trajectories). Both use 191.2's hand-helmed route from frame 5500:
+- **p7** (`s38_b1_p7.txt`): `stop 40` at the mini-sub, then a press every 40 frames from 9900 to
+  10500.
+  - Henry halts at (1096, -3007), 19 m from the sub (1077, -3011, -7.0).
+  - The rack fires 5 times (`gunrow ... plat 9 cat 8 ... shots 5`; `bullet throw ... depth=5`).
+  - No hit, and the mission stays in phase 3.
+- **p8** (`s38_b1_p8.txt`): the last leg is aimed past the sub at (900, -3040). Henry stops at
+  (1718, -2738), short of the sub, after 11 drops. No hit.
+
+**Why no hit: the depth charges never sink.**
+- `src/bomb_torpedo_tick.cpp` has `depth_charge_terminal_sink_speed`, `depth_charge_should_detonate`
+  and `depth_charge_in_proximity`, but nothing calls them.
+- The gunnery host's projectiles stop at the water (`projectiles ... water=3854`), so a depth
+  charge never reaches its detonation depth near the boat.
+- PROJECTILE_KINDS gives the image's model: record 474h, create `006FD210`, the shared bomb
+  tick, and `DiveSpeed` / `DiveMinDepth` / `DiveMaxDepth`.
+- **Routed: the gunnery lane** (the depth-charge projectile under water, and its detonation and
+  radial damage). Then re-run p7.
+
+## 193. JM08 as a defence: is a win reachable for the IJN player? (cc9-ships38, 2026-10-06, a read plus one idle run)
+
+**The script** (`COTP-IJN\PRCPIJN\PRCPJM08.lua`, this installation, mtime 2024-08-26):
+- **Win** (1300-1313): `CheckPrim3` needs every `Mission.Dakota` ship dead; then `Victory`
+  calls `luaMissionCompletedNew`.
+  - The Dakota group follows `CheckCompletion`: primary 1 and primary 2 both succeeded.
+  - **Primary 1** (727): all 11 `LandShips` dead. These are `USTroopTransport 01`..`06`, `LST
+    01`..`03` and `LSM 01`..`02` (520-531).
+  - **Primary 2** (747): the flagship `Missouri` dead.
+- **Fail** (`CheckHQ`): `Mission.CommandBuilding.Party == 2`, the HQ neutralized.
+- **The invasion** (`CheckInvasion`, 757):
+  - It starts once any PARTY_ALLIED ship is within 300 m of (0, 0, 0).
+  - `StartInvasion` then attack-moves the `InvasionForce` on the HQ, and sends the six transports
+    (`Mission.APs`) to `Mission.LandPoints[i]`.
+- **The player** commands the HQ (`SetSelectedUnit(Mission.CommandBuilding)`, 485/626). Its means
+  are `MainAirFieldEntity 01` (4 slots, scene stock) and `Shipyard 01` (4 entries, 2 stocks kept),
+  later the carrier `Hosho` (Zeros 150 x21, Judys 158 x12, Kates 162 x18; 909-911).
+
+**Idle** (`local\s38_j8idle.log`, 24000 frames):
+- The transports launch their landing craft from 774.65 s (`landing craft launch (94h ->
+  008206F0)`, transport unit 353).
+- **The mission fails at 1026.93 s:** "Mission Failed - The HQ has been destroyed!", by HQ capture
+  (`capture_range=500`). No LandShip or Missouri dies.
+
+**Verdict: reachable on paper.** A defence that sinks the six transports, ideally before about
+770 s, keeps the HQ. Primary 1 also needs the 3 LSTs and 2 LSMs, and primary 2 needs Missouri.
+Then the Dakota group has to be sunk.
+- **The player's tools:** the `launch` line on `MainAirFieldEntity 01` (the stock classes are not
+  read yet), the `build` line on `Shipyard 01` (waits on `kShipyardProductionBound`), and later
+  Hosho's 51 planes.
+- **Risk:** 188's slot return. If the airfield's slots stop coming back, the strike count is
+  capped, as on ESMP08.
+
+## 194. USN04 phase 1: the entries do read Dead; the re-issued fade never calls back (cc9-ships38, 2026-10-06, a read plus three runs)
+
+**The lead's questions, answered.** The run is `local\s38_u4tr.log` (12000 frames, merged main,
+`BSP_LUA_CALLBACK_TRACE=1`).
+- **The entries do read as Dead.** Every Lex bomber and fighter group dies (189's idle list), and
+  `luaRemoveDeadsFromTable` empties the table.
+  - The phase-1 test in `Think` (`usn_19_coralus.lua` 575-579, difficulty 1) becomes true at
+    **222.06 s**. That is the first `luaObj_Completed` call.
+- **Primary 1 is active.** `luaObj_Add` runs once at 26.55 s (`luaAddPh1Obj`, 3243).
+  - `luaObj_IsActive` stays true after completion. This installation's `commandhelpers.lua`
+    (2024-10-29, line 5898) has `--obj.Active = false` commented out; it only sets `Success`.
+  - So `Think` re-runs the branch on every pass: 126 `luaObj_Completed` calls, all no-ops after
+    the first, and 126 `Blackout(true, "luaMoveToPh2", 3)` calls.
+- **The blocker.** Each `Blackout` re-arms the fade at 3.0001 s (005B9BA0), and `Think` runs every
+  3.0 s (00929460's countdown, refill 3.0 at 00929557). The fade is re-armed before it finishes, so
+  `luaMoveToPh2` never runs.
+  - This is docs/MISSION_BLACKOUT.md, section "A re-issued blackout never calls back", and
+    GAME_EXECUTABLE.md's `--frame-jitter` section.
+  - Both 005B9BA0 and 005B9800 match the listing. The frame order (think, then fade) is the image's.
+  - Even at 1/45 s ± 20 % frames the callback is a matter of chance. The integrator ruled no
+    further harness tuning there.
+- **A non-lockstep step does not help** (`s38_u4s51`, `--mission-frame-seconds 0.051`, 7000
+  frames): 45 re-issues, no callback. A pass every 58-59 frames still re-arms the fade on or before
+  its 59th update.
+
+**So no binding gap is open on this path.** USN04 leaves phase 1 only when the condition stops
+holding while a fade is pending.
+- In the image's script that means `BomberWave == 5` (the 345-425 s window, MISSION_BLACKOUT's
+  OFF run) while both `IJNBombersLex` and `IJNFightersLex` still hold a live squadron. Once either
+  table is empty, the condition stays true for good and the mission is stuck.
+- **A legal player plan would have to keep one Lex bomber and one Lex fighter group alive until
+  about 425 s.** Lexington's own AA and its scripted CAP kill them by about 220 s. The player has
+  no harness line to hold fire (none exists), so I did not attempt it.
+- **Routed to the lead:** a `holdfire <ship>` line, or a decision that USN04 is out of scope for
+  lockstep completion.
+
+## 195. JM08 defence, first strike plans (cc9-ships38, 2026-10-06)
+
+**Harness change** (`src/game_hosts_mission_frame.cpp`): a double-quoted run of words in a helm
+order is one word, with the quotes removed. A unit name with spaces can then stand where the
+grammar reads one word, as in `launch "MainAirFieldEntity 01" 1 162 3 <target>`.
+
+**The order files** (`local\s38_j8gen.py`):
+- The airfield `MainAirFieldEntity 01` launches from frame 300, and `Hosho` from frame 6000 (it is
+  generated at about frame 5822). Every slot relaunches each 400 frames, **3 per slot**.
+- The class order is the screen's: 162, 163, 158, 159, then 150 on the airfield; 162, 158, then 150
+  on Hosho.
+- Each slot's target list starts with the six transports, rotated per slot, then the LSTs, the
+  LSMs and Missouri.
+
+| run | orders | outcome (24000 frames) |
+| --- | --- | --- |
+| p1 (`s38_j8p1`) | the launches only | **the airfield never launches.** Every line is refused with `the slot is not in state 1 or 5`; class 158 also leaves the slot empty. Its slots are held by the scene's own squadrons (`Ki-43 Oscar 01`, `Gekko 01`, home base set by `007F1C00`). Hosho launches 12 Kate squadrons at the transports between 6000 and 12003; they are shot down by the fleet's AA (sqn01-08, 409-599 s). USTroopTransport 03 dies at 484.66 s. Hosho is sunk at 551.39 s. **Failed at 1038.34 s** (HQ) |
+| p2 (`s38_j8p2`) | p1, plus each 600 frames `select "H6K Mavis 0k"` and a `target` pick list at the transports, then `select "Headquarter 01"` | the three scene Mavis flying boats are shot down at 107-116 s (Helena, Stephen, Auilick), before the first strike can arrive. Their target lines apply only at 603-607. The transports that die (02 at 461.81 s, 06 at 599.08 s) are killed by Bristol and an LSM. **Failed at 1039.29 s** |
+
+**What this says.** In this host the defence is not reachable with the player's air units alone.
+- The airfield is blocked by the slot return (188's routed item): the scene squadrons hold its
+  slots.
+- Hosho's Kates, and the Mavises, fly into the invasion fleet's AA and die before their drops.
+- Untried:
+  - the shipyard (`build` on `Shipyard 01`, which waits on `kShipyardProductionBound`);
+  - the patrol boat `Japanese Patrolboat 01`;
+  - holding the Mavises back until the transports approach the coast, after 700 s.
+
+## 196. USN04 phase 1 passes under frame jitter; phase 2 needs a release; USNOS read (cc9-ships39, 2026-10-06, runs and reads only)
+
+No code changed. The runs are in worktree cc9-ships39 `local\` (`s39_run.ps1`, the s38 launch form). All USN04 runs use difficulty 1.
+
+### The jitter does reach the fade
+
+- `--frame-jitter <pct>,<seed>` multiplies `--mission-frame-seconds` by one factor per in-mission frame, in `[1 - pct, 1 + pct]` (`src/game_hosts_mission.cpp`, `MissionFrameJitter`, set at 1918).
+- `run_mission_frame_004e4a40` stores that value as the raw and scaled delta. With `kScaledDeltaWriteBound` it also goes to `game+21F0h`.
+- `run_script_timers(raw_delta)` (`src/game_hosts_script_orders.cpp` 5039-5079) then does two things:
+  - It adds the delta to the think accumulator and runs one `Think` pass per whole 0.05 s step (`kScriptThinkOnFixedStep`, 00875BB0's rule).
+  - It steps the fade with the raw jittered delta (`run_blackout_update(step)`, 005B9800).
+- The call is gated on `result.simulated`, the simulation gate at 004E50B0. It does not depend on a fixed step having run, so a frame with no fixed step still steps the fade.
+- This is the image's split (MISSION_BLACKOUT.md, "The two clocks"). No harness packet is needed.
+
+### USN04 phase 1: three seeds out of three
+
+Idle runs, 60000 frames, `--mission-frame-seconds 0.0222 --frame-jitter 20,<seed>`:
+
+| run | seed | `luaMoveToPh2` called back | `Blackout(..., "luaMoveToPh2", 3)` re-issues |
+| --- | --- | --- | --- |
+| `s39_u4j1` | 1 | frame 43827, about 973 s | 253 |
+| `s39_u4j2` | 2 | frame 17298, about 384 s | 57 |
+| `s39_u4j3` | 3 | frame 10425, about 231 s | 6 |
+
+- The first re-arm is at about 222 s (194), so the callbacks come 9, 162 and 751 s after it.
+  - Seeds 2 and 3 fall inside MISSION_BLACKOUT's 1/45 s ± 20 % model range (35-359 s; seed 3 is earlier still).
+  - Seed 1 is later than any seed the model drew.
+  - In every seed the callback is a matter of chance; the jitter only makes it possible.
+- Phase 2 then starts: Shoho (`Zuiho-class01`) and its escorts `Takao-class01` and `Mogami-class01` spawn, and the objective "Sink the Shoho!" is added.
+- **The frame mode is a condition of every USN04 order file from now on:** `-Step 0.0222 -Jitter 20,3`. Phase 2 starts at frame 10425 under it.
+- Idle, no run ends: phase 2 waits for the player to sink Shoho.
+
+### USN04 phase 2: the strikes reach Shoho but do not release
+
+**What the player controls** (this installation's `usn_19_coralus.lua`, 2024-08-26):
+- Lexington's captain and AA roles (458-459), and the squadrons.
+- Every escort is `PLAYER_AI` (153, 192).
+- So Shoho can only be sunk from the air.
+
+**`s39_u4p1`** (`s39_u4_p1.txt`, from `s39_u4gen.py`): Lexington relaunches slots 1-4 every 900 frames from 11200, at Shoho first.
+- Class 108 is the SBD, 112 the TBD, 101 the F4F.
+- Only 3 of the player's launches go through. Slots 1 and 2 are never in state 1 or 5 (the slot return, routed to cc9-lua44).
+- The support manager still sends many US squadrons at Shoho (Lexington sqn05-sqn23, Yorktown sqn09-sqn22).
+- Over 1332 s the summary reads:
+  - `dive-bomb task: aircraft=33 releases=1`;
+  - `torpedo task: aircraft=36 releases=3 blocked_engaged_009d3210=31532`;
+  - torpedo racks `drops=0`.
+- No hit reaches Zuiho's hull. Takao, Mogami and Zuiho's AA kill the strikes.
+
+**`s39_u4p2` and `s39_u4p3`**: the player takes the first SBD squadron (`12500 select Lexington-class01_sqn05`, applied), then watches for a release on Shoho.
+- The squadron dives on Shoho at 711.9 s (alt 357 m, pitch -1.21).
+- A 25 m watch ends with "the sight never came within 25.0 m (nearest 234.1 m)".
+- A 150 m watch fires at 721.60 s, but only in the pull-out (pitch +0.15, alt 136). The predicted impact is (10321, 10048).
+- The wingmen exit `aimdive -> goaway` at `d=514.0` and `d=424.8` without releasing. The leader dies at 722.95 s.
+- **So the dive aim ends 230-500 m off the target, and the AI's own release does not happen either.** This is the planes lane's dive and torpedo attack (routed to the lead).
+- The test row: seed 3, `s39_u4_p1.txt`, 45000 frames.
+
+### USNOS phase 1: not USN04's shape
+
+Script: this installation's `COTP-USN\us_osumi.lua`, 2024-10-29.
+- **No re-issue loop.** `luaCheckObjectives` (995-1015) clears `Mission.AtkTime` before it calls `luaPh1FadeOut` (`Blackout(true, "luaMoveToPh2", 1)`). The fade is armed once, so lockstep is enough.
+- **What holds phase 1 is a wave-1 survivor.** The next wave spawns only when `PhOneAttackers` is empty. In `s38_osidle` (24000 frames) every wave-1 member dies except Judy groups `plane #1.5` and `plane #1.6`. After their bombs, both run `returntobase` to Airfield3 (146.90 s and 165.71 s). They land and sit in `land/park` state 5 (`q910=1 done=0`) until 1200 s.
+  - SQUADRON_LAND_TASK.md 5bi read the image's hangared airfield plane: it never leaves park.
+  - So in the image too, the table empties only if the player kills those Judys, in the air or parked.
+- **The Kaiten/submarines are not what blocks.** `unit #3.1` is sunk by Portland2 at 110.80 s. `unit #3.2`-`#3.6` all die at 160.81 s with no damage, through `submarine air: ... drowned (vtable[70h](1), packet cc9_submarine_air)`.
+  - **Unverified:** a scripted attacker that drowns submerged 120 s after it spawns may be a host artifact rather than image behaviour. This is routed to the lead and is not checked here.
+- **Enterprise launches nothing.** A probe (`s39_osprobe`, `s39_osprobe2`) launched classes 100-320 from Enterprise and Essex at frame 900. Every line was refused with "006C0F00 left the slot empty (no stock or plane room)". The deck logs `stock=4`, but the idle run has no Enterprise squadron either.
+  - Next: read which classes Enterprise's four stock entries hold, and whether their counts are zero.

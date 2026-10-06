@@ -3692,3 +3692,66 @@ worktree cc9-lua8.
 Every prediction held. **Verdict: `kLuaLastCatapultedBound = true`.** The row starts answering a
 plane only when the host builds the catapult launch (`006EC8E0`) and the launched-child message
 (`00957450`).
+
+## `GetSubmarineOnSurface`, 008942C0 (packet `cc9_lua_submarine_on_surface`, `kLuaGetSubmarineOnSurfaceBound`)
+
+cc9-lua44, 2026-10-06. Committed **OFF**.
+
+**The native** (`008942C0`-`00894436`, `__fastcall(lua_State*)`, plain `RET`, one result):
+- Argument 0 goes through `00888AA0` (`008943BF`). The entity goes straight into `ECX` for `00852820`
+  (`008943D6`), with no null test and no class test.
+- The answer byte is pushed through `00B66450` (`008943EA`), and the result count is `00B66400`.
+
+**`00852820`** (`00852820`-`0085285B`, `__thiscall(entity)`, `RET`) refreshes the pose (`00414DB0`) when `+C8h`
+is clear. It answers `y(+100h) > (+1204h + +1200h) / 3.0` (`FDIV [00D7A2B0]`, then `FCOMIP` and `JBE` to 0).
+That is the exact negation of `00852860`, which the host already carries as
+`ship_ai_attackmove_altitude_gate_00852860`.
+
+**The binding.** `run_get_submarine_on_surface_008942c0` in `src/game_hosts_lua.cpp` uses the units
+host's `unit_position_00fc` and `submarine_band_y` (bands 0 and 1). Labelled substitutions:
+- An entity with no units-host slot answers false; the image would dereference null.
+- A slot with unseeded bands keeps `00E0B578`'s defaults (0, -20). This covers every surface ship,
+  where the image would read whatever those offsets hold. The gunnery and ship AI hosts make the same
+  substitution.
+
+A summary line `summary mission script submarine on surface` counts calls, true answers, unseeded slots
+and unresolved entities.
+
+**Reach in this installation.** The JM06 file is `scripts\missions\ijn\JM\jm06.lua`, mtime 2024-07-13, the
+untouched bulk. Its callers:
+- `luaJM6IsInZone` (line 795);
+- the periscope hint (1935);
+- `luaJM6CheckSurface` (1949), phase 2's only work until `Mission.MessageTransmitted`;
+- two target loops (1019, 1233).
+
+While the native is unimplemented it answers nil. So `luaJM6CheckSurface` always takes its "submerged" arm
+(`CountdownCancel`, `SurfaceCounter = 0`), and phase 2 never passes. The same native is also called by
+jm01, jm10, ijn_12_panama and two multiplayer scripts.
+
+**Predictions, written before any ON run (JM06 3000).**
+1. Calls > 0, and the player boat's answers are true while it rides at its surface depth: the scene
+   starts the I-boat surfaced, and no helm order dives it.
+2. `luaJM6CheckSurface` takes the surface arm: the `RadioMessage` dialog, `luaJM6Sec3Score` and its
+   countdown. If the countdown completes while the boat stays surfaced (`Mission.MessageTransmitted`),
+   primary 3 completes and phase 3 starts (primary 2, Lexington).
+3. Everything that follows phase 3 moves. Deaths and hits may move, because USN units react to a
+   surfaced boat.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.** OFF is `8ac8db242`; ON is the same commit with the flip
+(`local\l44_sub2`). The JM06 3000-frame pair does not reach the native: phase 1 is still running, `calls=0`, and
+`pair_diff` gives exit 1. The deciding pair is JM06 24000 (`local\l44_off_j6l.log` / `local\l44_sub_j6l.log`),
+`pair_diff` exit 3.
+- **Calls.** The native answers 285 calls, 51 of them true, with no unseeded slot and no unresolved entity.
+- **Prediction 1's wording was wrong.** The boat does not start surfaced: the depth trace starts at level 1,
+  y = -20.00, and rises to about -12.6. The surface answers come later in the run. The mechanism (the
+  `00852820` test on the player's boat) is the one predicted.
+- **Prediction 2 holds.**
+  - `luaJM6CheckSurface` starts the countdown once (`summary mission countdown starts=1 expiries=1 callbacks=1
+    last_callback=luaJM6MessageTransmitted`).
+  - Primary 3 completes, and phase 3 posts `ijn06.obj_p2` ("Carrier", log line 137110). It is never reached OFF.
+- **Prediction 3.** Phase 3 adds four units: Lexington launches `Lexington-class 01_sqn01` and `_sqn02` (with
+  their wingmen). The Lexington group's fire ranges open (`range 0 -> 1500/1600`).
+  - Deaths, hits and damage are identical; mission end is `none` on both sides.
+  - `dive-bomb-task releases` gains the new squadrons' 5 of 4.
+- So phase 2's blocker is gone. The next JM06 gates are phase 3's player torpedo hit on Lexington, then
+  Lexington and every escort dead (SHIP_AI_OPEN_ITEMS, JM06). Both need the player's input.

@@ -24,6 +24,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
 #include "bsp/entity_orders.hpp"     // packet cc9_unit_get_attack_target
 #include "bsp/game_hosts_gunnery.hpp"  // packet cc9_get_property_class_readers
@@ -417,6 +418,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_submarine_depth_level.
     const bool sub_depth_row = kLuaSetSubmarineDepthLevelBound
         && dispatch_row.address == 0x00893f40u;
+    // Packet cc9_lua_submarine_on_surface.
+    const bool sub_surface_row = kLuaGetSubmarineOnSurfaceBound
+        && dispatch_row.address == 0x008942c0u;
     // Packet cc9_set_air_base_slot_count.
     const bool slot_count_row = kLuaSetAirBaseSlotCountBound
         && dispatch_row.address == 0x008963e0u;
@@ -490,6 +494,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
+        || sub_surface_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
@@ -656,6 +661,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (class_changed_row && !host->error_replay()) {
         return host->run_is_class_changed_008cc4b0(state, argc);
+    }
+    if (sub_surface_row && !host->error_replay()) {
+        return host->run_get_submarine_on_surface_008942c0(state, argc);
     }
     if (squadron_speed_row) {
         if (!host->error_replay()) host->run_squadron_set_speed_0089f780(state, argc);
@@ -5327,6 +5335,40 @@ int GameMissionLuaHost::run_is_class_changed_008cc4b0(lua_State* state, int argu
     return 1;
 }
 
+// Packet cc9_lua_submarine_on_surface. 008942C0 GetSubmarineOnSurface(entity)
+// (008942C0-00894436, RET): argument 0 through 00888AA0 (008943BF), then 00852820 with
+// ECX = the entity and no null or class test (008943D6), and its byte pushed through
+// 00B66450; one result. 00852820 (00852820-0085285B): y at +100h (after 00414DB0 when
+// +C8h is clear) above (+1204h + +1200h) / 3.0, i.e. NOT 00852860.
+// SUBSTITUTIONS (labelled): an entity with no units-host slot answers false (the image
+// would dereference null); a slot whose depth bands were never seeded (any class that
+// names no depth key, every surface ship) keeps 00E0B578's defaults (0, -20), as the
+// gunnery and ship AI hosts do.
+int GameMissionLuaHost::run_get_submarine_on_surface_008942c0(lua_State* state,
+                                                             int argument_count) {
+    (void)argument_count;
+    ++summary_.sub_surface_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    bool on_surface = false;
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.sub_surface_unresolved;
+    } else {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units->unit_position_00fc(index, x, y, z);                     // +100h
+        float band0 = 0.0f, band1 = -20.0f;                           // 00E0B578 defaults
+        const bool seeded = units->submarine_band_y(index, 0, band0);  // +1200h
+        units->submarine_band_y(index, 1, band1);                     // +1204h
+        if (!seeded) ++summary_.sub_surface_unseeded;
+        on_surface = !bsp::ship_ai_attackmove_altitude_gate_00852860(y, band1, band0);
+    }
+    if (on_surface) ++summary_.sub_surface_true;
+    ::lua_pushboolean(state, on_surface ? 1 : 0);
+    log_.implemented("MissionLuaNative::GetSubmarineOnSurface", "008942c0");
+    return 1;
+}
+
 // Packet cc9_set_submarine_depth_level. 00893F40 SetSubmarineDepthLevel(entity, level):
 // argument 0 through 00888AA0, argument 1 as an integer; a request for 1 becomes 0 when
 // +122Ch (periscopeState) is 2 or +1214h (the periscope node) is null; then 008528B0.
@@ -7588,6 +7630,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (00893F40 -> 008528B0, packet cc9_set_submarine_depth_level)",
         kLuaSetSubmarineDepthLevelBound ? 1 : 0, summary_.sub_depth_calls,
         summary_.sub_depth_stored, summary_.sub_depth_unresolved);
+    log_.notef("summary mission script submarine on surface bound=%d calls=%llu true=%llu "
+        "unseeded=%llu unresolved=%llu (008942C0 -> 00852820, packet "
+        "cc9_lua_submarine_on_surface)", kLuaGetSubmarineOnSurfaceBound ? 1 : 0,
+        summary_.sub_surface_calls, summary_.sub_surface_true, summary_.sub_surface_unseeded,
+        summary_.sub_surface_unresolved);
     log_.notef("summary mission script air base slot count bound=%d calls=%llu resized=%llu "
         "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
         kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,

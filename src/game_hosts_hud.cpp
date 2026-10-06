@@ -1966,6 +1966,20 @@ bool hud_movie_screen_camera_005cd240() {
     return true;
 }
 
+bool hud_unit_selectable_00645060(std::size_t unit, bool& reached) {
+    GameHudHost* hud = attached_hud_for_selection();
+    reached = hud != nullptr;
+    if (hud == nullptr) return false;
+    return hud->unit_selectable_00645060(unit);
+}
+
+bool GameHudHost::unit_selectable_00645060(std::size_t unit) {
+    Impl& impl = *impl_;
+    if (impl.units == nullptr || unit >= impl.units->count()) return false;   // 00645082
+    impl.done("HelmOrder::selectable_00645060", 0x00645060u);
+    return bsp::unit_is_selectable_00645060(impl.selectable_inputs_00645060(unit));
+}
+
 bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
     Impl& impl = *impl_;
     ++impl.select_calls;

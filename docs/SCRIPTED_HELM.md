@@ -1107,3 +1107,30 @@ within 15 until 2700` over cc9-ships36's `s36_u1_w7.txt`.
   passes. The ConTBDs are generated; the two `target ConTBD1 Convoy4` lines apply at 3000/3600;
   Convoy3, Convoy6 and Convoy4 die at 185.31, 186.16 and 196.91 s.
 - The leader's own task release (134.10 s in 176.1) does not happen: the rack is empty.
+
+## 15. `fire`: the player's weapon-group fire (packet `cc9_player_fire_group_line`)
+
+Worker cc9-ships39, 2026-10-06. This is a harness line over cc9-gunnery30's entry (GUNNERY 140) and adds no image switch of its own.
+
+```
+<frame> fire <ship> group <g>
+<frame> fire <ship> group <g> release
+<frame> depthcharge <ship>
+```
+
+- **What the line stands for.** The player selects weapon group `g`; for group 5 that is key 9Fh, `IC_GUNC_DEPTHCHARGE` in this installation's `Inputs.lua`.
+  - Holding the fire key 99h makes `005484F0` build message 79h (`00954A10`) for `[00E188D8]`, with the held byte at `msg+34h`.
+  - Letting go sends the message again with the byte clear.
+  - `00959C20` jumps on group 5 to `0095A441`.
+- **What it calls.** The line calls `GameGunneryHost::player_fire_weapon_group(unit, g, held, reason)`.
+  - That entry sends the message when `kPlayerWeaponGroupFireBound` is on.
+  - It holds the trigger until a `release` line arrives.
+  - Only group 5 is bound.
+- **`depthcharge <ship>`** (cc9-ships38) is now a one-frame press: `fire <ship> group 5` on its frame and the release on the next frame. The earlier stand-in through `009E2B60` is retired.
+- **Refusals, each with its reason:**
+  - no created unit has the name;
+  - not the controlled unit (`005484F0` requires it);
+  - every refusal of the gunnery entry, which passes its own reason through.
+- **LABELLED:** no group screen runs and no role is taken.
+
+**Smoke** (`local\s39_b1smoke.log`, BSM01 300 frames, switch OFF): the held, release and `depthcharge` lines all reach the entry, which refuses them with "kPlayerWeaponGroupFireBound is off". The `group x` line is refused at read, and an unknown ship is refused.

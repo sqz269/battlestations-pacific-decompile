@@ -13282,3 +13282,207 @@ merged in and everything is committed. The only lease held is the docs lease `cc
 - `l43_edit_2920.py` (the applied units edit);
 - `l43_occ.py` (ground-entry vs lift-off census);
 - `l43_field_writers.py` (lua42's disp32 scanner).
+
+## 5en. ESMP08 (b): the site probe's own-site arm, `kTakeoffOwnSiteBound` (packet `cc9_takeoff_own_site`, cc9-lua44, 2026-10-06)
+
+**The departure.** 5el left two candidates. The read settles it as the probe, not the lift-off speed:
+`006C0840` (`__fastcall(side ECX, plane EDX, float* dist, char, char)`, `RET 0Ch`) has an arm the host
+never took, labelled "scene parent not carried" when the probe was first bound. Since then the host
+carries the deck parent (`deck_parent_plus_one`, set by the deck placement and by `007C71E0`'s
+re-parent, cleared only by the lift-off `007C6F50`), so the label is stale.
+
+The arm, `006C086D`-`006C0964`, from the disk listing:
+- `00923810(1)` on the plane (`ECX = EDI`, the plane) is its scene parent. Non-null takes the arm.
+- The parent answering `IsKindOf(45h)` (vtable `+5Ch`, `PUSH 45h` at `006C0893`), with its `+5Eh`
+  clear and its own parent's `+5Eh` clear: `*dist = 0.0` (`006C08C7`); then side `> 1` unsigned
+  (`006C08CE JA`), or parent `+54h` == side, or single-player (`00927C90` false, `SETE` at `006C0871`)
+  and parent side 2, returns parent `+7ACh` (`006C08E6`); otherwise returns 0 (`006C095C`).
+- Failing that, the same with `IsKindOf(9)` (`006C08FA`), returning parent `+1208h` (`006C094D`).
+- Failing both (or a dead parent), the scan at `006C0967` (the arm the host already carries).
+- 45h is the airfield kind and 9 the ship kind (the host's `unit_is_kind_of` uses).
+
+So in the image a plane parented to its carrier keeps that carrier's holder at every probe, whatever
+lies ahead of the bow. In the host the probe keyed Zuikaku_sqn01 against every deck. At the step it
+rolled off Zuikaku's bow it was not over Zuikaku's runway (no longer accepting) and was 31 m behind
+Zuiho's stern on the centre line, so Zuiho won the `l.x^2 + (0.3 l.z)^2` key. `007C7110` then erased
+it from Zuiho's site instead of Zuikaku's.
+
+The lift-off speed is not the departure. The leader leaves the bow at relative 26.4 m/s (world 37.1).
+That is the `deck edge` reason of the roll's lift-off send, and the image takes the same exit when the
+runway test fails.
+
+**The binding.** `bsp::kTakeoffOwnSiteBound` (`include/bsp/air_operations.hpp`), committed **OFF**, in
+`plane_landing_site_006c0840`. Labelled substitutions:
+- the parent's own parent is never carried;
+- a holder the host refuses (`landing_deck_006c0750` null) answers 0;
+- `+5Eh` is the gunnery host's `unit_dead`.
+
+Coverage: `006C0840` is complete except the parent's own-parent `+5Eh` tests (`006C08A3`-`006C08BD`,
+`006C090A`-`006C0924`). A summary line `summary takeoff own site: answers=` is printed only when the
+switch is ON.
+
+**Predictions, written before any ON run.**
+1. ESMP08 3600 s with `s38_e8_p3.txt`:
+   - the `lift-off leaves ... occupants` diagnostic falls to 0;
+   - `summary base launch lift-off` gets `site_leaves == liftoffs` (OFF had 138 / 137 on lua43's
+     1000-frame diagnostic);
+   - Zuikaku_sqn01|.-2 leaves takeoff/prepare within a few seconds of the leader's lift-off, not at
+     2313 s;
+   - Zuikaku's later squadrons launch earlier, so the IJN strike timing and the per-entity deaths move.
+     The direction of the mission outcome is not predicted.
+2. A single-carrier control (USN04 4500): gameplay identical (pair_diff 0 or 1). With one deck, the
+   only change is the parked plane's `dist` (0 instead of `sqrt(key)`). That moves `+C04h`, but it stays
+   negative under 200 m, so the plane is re-probed every step either way.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.** OFF is `b7b44d0a6`; ON is the same commit with the
+flip (`local\l44_own`). Rows: ESMP08 72000 with `s38_e8_p3.txt` (copied as `local\l44_e8_p3.txt`), and USN04 4500.
+Launches went through `local\l44_run.ps1`.
+
+**USN04, the control:** `pair_diff` exit 1, gameplay identical. The only moved lines are:
+- the known `refills` noise;
+- `carrier landing decks: refreshes 213416 -> 211760`, because the own-site answer skips the other decks' holder
+  refresh;
+- the ON-only `takeoff own site: answers=1656`.
+Prediction 2 holds.
+
+**ESMP08: every mechanism prediction holds.**
+| | OFF | ON |
+| --- | --- | --- |
+| `lift-off leaves ... occupants` lines | 1 | 0 |
+| `takeoff site denied` lines | 12 | 0 |
+| lift-offs / site leaves | 180 / 179 | 120 / 120 |
+| own-site answers | - | 57955 |
+| Zuikaku_sqn01\|.-2 prepare -> SlowTakeoff | 2313.28 s | 31.50 s |
+| Zuikaku relaunches (s1-s4) | 1, 1, 1, 1 | 3, 2, 2, 2 |
+
+`pair_diff` exit 3 (moved): deaths 706 -> 659, hits 13500 -> 11202, queued launches 60 -> 44. Mission end is
+`none` on both sides.
+
+**Why the row moved** (per-entity tables, `local\l44_deaths.ps1`):
+- Zuikaku's slots now relaunch at 405-495 s (frames 8101-9904), against the targets the order file gives them:
+  Case, Cassin, Mobile and Santa Fe.
+- ON sinks **Case at 401.8 s, Mobile at 487.7 s and Cassin at 749.3 s**. None of the three dies OFF. Mobile was
+  OFF's best killer of IJN planes (24); ON it has 3.
+- With those escorts gone, the rest of the USN screen dies much earlier ON. Washington 1172 s (OFF 1527), Santa Fe
+  1279 (2570), San Diego 1308 (1758), Fanning 1383 (2254), Grayson 2467 (2722).
+- So the IJN plane deaths after 1200 s fall from 89 to 24. The USN air waves die at the same times on both sides.
+- Fewer squadrons are lost, so fewer slots are released (`releases_006c65b0 44 -> 28`). The order file's targets
+  are dead earlier ("target fails 0043F080" refusals 23154 -> 37196). So there are fewer launches.
+- One number is not explained: the player's Zuikaku takes 3199 damage ON against 640 OFF (health 635 left). This
+  was not chased; Zuikaku survives.
+
+## 5eo. ESMP08 (a): who holds the 16 slots, and 007F16D0's home arm, `kReturnToBaseHomeArmBound` (packet `cc9_rtb_home_arm`, cc9-lua44, 2026-10-06)
+
+**Who holds the slots.** This reads 5en's ON log `local\l44_own_e8.log` (census script `local\l44_sqn_fate.py`).
+Between mission frames 30000 and 49000, every refusal on all 16 slots is "not in state 1 or 5", while the order
+file's targets are still alive. At 3600 s the slot holders are of two kinds:
+- **Still flying, never ordered home.** Examples are Zuikaku_sqn21/22/27 and the sqn37-42 group. These squadrons
+  have no `returntobase` line, no touchdown and no `live=0` leave; their targets died under them. The order file
+  gives no second order, and nothing in the image re-tasks a player squadron, so this half is the harness's input,
+  not a host departure.
+- **Landed on the wrong carrier and stuck in land/park.** Chiyoda_sqn28, Chitose_sqn35/36 and Zuiho_sqn43 all
+  answer `returntobase -> land at site Zuikaku`. They touch down on Zuikaku and sit in land/park state 620 with
+  `done=0` and the parking spot refused. Zuikaku_sqn17 answers Zuiho and sits on Zuiho the same way
+  (`spot_refused=17753`).
+  - Their home slots wait for a squadron that never reaches its own hangar, so they are never released
+    (`006C65B0`).
+
+**The departure: 007F16D0's home arm was never taken.** Before this packet the host recorded
+"home-arm-unread" and fell through to the nearest-site arm. The arm, from the disk bytes:
+- `007F1726` tests `+369h` (ReloadEnabled).
+- `007F1732`-`007F173A`: `006BCD20(ECX = squadron+404h, DL = 1)`. The home base's block: `+1188h` for
+  `IsKindOf(9)`, `+72Ch` for `IsKindOf(45h)`. With DL set it is refused when the block's owner `+7Ch` is null
+  or `+5Dh`.
+- `007F1745`-`007F174F`: `006C4790(block, squadron)`, false when the squadron is on the block's `+B4h` list.
+- `007F1751`-`007F175A`: `006BED30(block)` (`006BED30`-`006BED52`, `RET`). It is true for block `+1Ch` (runway
+  failure), `+1Dh` (hangar failure), a null owner or an owner with `+5Dh`; true skips the arm.
+- `007F175C`-`007F176E`: `007F1000(out, 00E08FA0 land, squadron+404h)`. The land record names the home base
+  entity itself.
+
+**The binding.** `bsp::kReturnToBaseHomeArmBound` (`include/bsp/air_operations.hpp`), committed **OFF**, in
+`record_return_to_base_007f16d0` and its land install:
+- `+404h` is the air-ops bag's `HomeBase` (`bag_home_base`), or else the scene row's HomeBase;
+- the arm answers `land at home <base>`, and the install treats it like a site.
+
+Labelled:
+- the `+B4h` exclusion list is not carried (empty);
+- a sunk home owner counts as no block (the image keeps the pointer and tests only `+5Dh`).
+
+**Predictions, written before any ON run.**
+1. ESMP08 72000 (`l44_e8_p3.txt`):
+   - every air-ops squadron that returns answers `land at home <its own carrier>`;
+   - Chiyoda_sqn28, Chitose_sqn35/36, Zuiho_sqn43 and Zuikaku_sqn17 touch down on their own carriers.
+   - If the park then completes into the home hangar, those slots release and relaunch. If park still refuses
+     the spot, the slots stay held, and the next read is the park / release path (`006CD350` states 1/2,
+     `006CC5C0`, `007F1B70` -> `006C65B0`).
+2. USN04 4500, a control with one carrier: the squadrons' home is the only deck, so gameplay should be
+   identical. Only the `returntobase` text changes from "land at site" to "land at home".
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.**
+
+**First ON pair** (`b71e3f5bc` + flip, `local\l44_home`): a mechanism failure, in the host's 009B34D0 check.
+- Every return answers `land at home <own carrier>`.
+- But `land_command_still_valid_009b34d0` accepted only the land-at-site answer, so each task installed from the
+  home arm was retired one step later ("no longer land at this site").
+- The squadrons then flew on unordered, and Zuikaku_sqn17, Zuiho_sqn20 and Chiyoda_sqn36 were shot down within
+  20 s.
+- `cc546c344` fixes the check: a home-arm answer keeps the task, behind the same switch.
+
+**Second pair** (`cc546c344`, OFF `local\l44_h2off_*`, ON `local\l44_home2`):
+- **USN04 4500:** `pair_diff` exit 1, gameplay identical. Prediction 2 holds.
+- **ESMP08 72000:** every return answers home, and the squadrons touch down on their own carriers:
+  - Zuikaku_sqn17 on Zuikaku at 1101.6 s (OFF: Zuiho);
+  - Chiyoda_sqn28 on Chiyoda;
+  - Chitose_sqn35/36/41 on Chitose;
+  - Zuiho_sqn43 on Zuiho.
+- **Prediction 1 takes its second branch.** Every one of those planes stops in land/park state 620 with
+  `done=0` and the spot refused (for example Chiyoda_sqn28|.-3 `spot_refused=11927`). So no slot is released:
+  `releases_006c65b0 = 28` and `slots_holding_a_squadron = 16` on both sides.
+- **The row moved, `pair_diff` exit 3:** deaths 659 -> 669, and **the player's Zuikaku sinks at 1702.9 s**
+  (killer TBF Avenger #7.2, a torpedo).
+  - Zuikaku was already a knife-edge OFF: 3199 damage taken, 635 health left.
+  - ON it takes 3837. Its own squadron now lands on its deck instead of Zuiho's, which changes its course
+    holding and AA during the USN wave-7 attack. That cause is likely but not traced shot by shot.
+  - The USN ships die at the same times as OFF.
+- **Verdict.** The mechanism matches the image (land at the home base). The outcome move is an explained
+  knife-edge, not a host departure, so the switch is ON.
+- **ESMP08 (a) is not yet released by this.** The next read is the land/park spot refusal on the home deck
+  (`006CD350` states 1/2, `006CC5C0`, `007F1B70` -> `006C65B0`).
+
+## 5ep. ESMP08 (a): why a landed squadron's slot stays in state 3 (cc9-lua44, 2026-10-06, read-only)
+
+The read is from disk bytes and the 5eo ON log `local\l44_h2on_e8.log`. No code changed.
+
+**The image releases a slot only when its squadron pointer is gone.**
+- `006C0510` writes state 5 only when slot `+28h` is zero (`006C0544`-`006C058F`, AIROPS_LAUNCH_TICK 1).
+- A rel32 / absolute scan of the image (`local\l44_calls.py 006C65B0`) finds `006C65B0` called only from
+  `007F1B70` (at `007F1BAD` and `007F1BED`).
+- `007F1B70`'s one caller is the Lua binding `008A20E0` (SquadronLandAndKill).
+- So a landing never clears slot `+28h`: only the squadron's destruction (the observer pair), or that script
+  call, does.
+- A squadron that lands home and goes below keeps its slot in **state 3** in the image too. The player's
+  `launch` on that slot is then refused ("not in state 1 or 5") by design.
+- `006CD350`'s state 1/2 arms are dead code (AIROPS_LAUNCH_TICK 3), so they cannot change this.
+- **So ESMP08 (a) is image behaviour, given the order file.** Both kinds of holder keep their slot:
+  - the squadrons still flying with dead targets;
+  - the squadrons landed and stowed.
+- What the 5en/5eo log shows the host doing differently is the landing's tail.
+
+**The host's elevator re-takes the stowed leader every 4.8 s.**
+- Chiyoda_sqn28 lands on Chiyoda at 1391 s. From then to 3601 s the elevator alternates `takes Chiyoda_sqn28`
+  and `stows Chiyoda_sqn28`, about every 2.2 s and 2.6 s.
+- The platform offset sinks 7 m per cycle (y = -3127.85 at 3548 s, -3204.85 at 3601 s).
+- `summary carrier elevator Chiyoda`: intakes 459, stowed 458, unfed_relaunch 458.
+- The wingmen wait in land/park with the lane refused: Chiyoda_sqn28|.-2 refused 5635 times, |.-3 11927 times.
+- The intake `006D06A5`-`006D0705` takes any occupant with `+904h`, `006CFF70` (the nose within x/z distance
+  of the lift; the depth is not tested), speed < 1.389 and `007B8D40`. In state 2, `007C11E0(0)` writes the
+  gear channel's `+45h` = 0 and `+48h` = 0.0 (`007C1281`-`007C12B0`). That makes `007B8D40`'s float test
+  answer **true**, so the gear test does not exclude a stowed plane either.
+- So the bytes read here do not show what keeps the image from re-taking it. 5an found no erase from `+34h`
+  on the state-2 path. This is **open**, and nothing was bound.
+- A substitution that skips state-2 occupants at the intake would free the wingmen. It would not release the
+  slot (above).
+
+**Next for this row:** read whether the hidden plane's position or its `+904h` changes under the platform in
+the image (the carry `006FC0D0` and the release `006FC250`). Until then, ESMP08's relaunch count is bounded
+by squadron deaths, as the order file is written.

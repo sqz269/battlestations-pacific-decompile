@@ -247,6 +247,13 @@ inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (do
 // row to run_set_submarine_depth_level_00893f40. False: unimplemented.
 inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua_submarine_on_surface (docs/LUA_BINDING_MISSION.md,
+// "GetSubmarineOnSurface, 008942C0"). GetSubmarineOnSurface(entity) resolves argument 0
+// through 00888AA0 and pushes 00852820's answer: the world y at +100h above
+// (+1204h + +1200h) / 3.0, with no class test. True: route the row to
+// run_get_submarine_on_surface_008942c0. False: unimplemented (nil, read as false).
+inline constexpr bool kLuaGetSubmarineOnSurfaceBound = true;  // ON: JM06 24000 pair (docs/LUA_BINDING_MISSION.md)
+
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
 // (+4Ch, count +50h) to exactly n through 006C7E20: new slots are default records, a
@@ -656,6 +663,10 @@ struct GameMissionLuaSummary {
     unsigned long long sub_depth_calls{0};
     unsigned long long sub_depth_stored{0};
     unsigned long long sub_depth_unresolved{0};
+    unsigned long long sub_surface_calls{0};
+    unsigned long long sub_surface_true{0};
+    unsigned long long sub_surface_unseeded{0};
+    unsigned long long sub_surface_unresolved{0};
     unsigned long long slot_count_calls{0};
     unsigned long long slot_count_resized{0};
     unsigned long long slot_count_unresolved{0};
@@ -1220,6 +1231,8 @@ public:
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
     // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
+    // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
+    int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
     // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_air_base_stock, under kLuaAddAirBaseStockBound.

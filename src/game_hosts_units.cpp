@@ -2608,6 +2608,8 @@ struct GameUnitsHost::Impl {
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
     unsigned long long base_launch_liftoff_site_leaves{0}, base_launch_c01_sets{0};
+    // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
+    unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
     unsigned long long base_launch_brake_releases{0}, base_launch_brake_gone{0};
     void release_launch_brake_006c5b70();
@@ -10986,7 +10988,40 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     const bool home_authored = sq->squadron_unit < slots.size()
         && !slots[sq->squadron_unit]->scene_home_base_key.empty();
     in.home_arm_issues = false;
-    if (home_authored) note += " home-arm-unread";
+    // Packet cc9_rtb_home_arm: 007F1732-007F176E. squadron+404h is the deck owner
+    // the air-ops bag names (`HomeBase`, 006C5050 -> 007F1C00) or the scene row's
+    // HomeBase; 006BCD20(+404h, 1) answers its block (kind 9 +1188h, kind 45h
+    // +72Ch) unless the owner is remote (+5Dh, never here); 006C4790 tests the
+    // block+B4h list; 006BED30 answers true for block+1Ch, +1Dh, no owner or a
+    // remote owner. LABELLED: the +B4h exclusion list is not carried (empty); a
+    // sunk home owner is taken as gone from +404h (the image keeps the pointer).
+    std::string home_name;
+    std::size_t home_owner = slots.size();
+    std::size_t home_deck = 0;
+    if constexpr (bsp::kReturnToBaseHomeArmBound) {
+        home_name = sq->from_air_ops_launch ? sq->bag_home_base : std::string();
+        if (home_name.empty() && home_authored) {
+            home_name = slots[sq->squadron_unit]->scene_home_base_key;
+        }
+        bsp::AirOpsDeckRegistry& hdecks = bsp::air_ops_decks();
+        for (std::size_t i = 0; !home_name.empty() && i < hdecks.size(); ++i) {
+            if (hdecks.name_at(i) != home_name) continue;
+            for (std::size_t u = 0; u < slots.size(); ++u) {
+                if (slots[u]->row.name == home_name) { home_owner = u; break; }
+            }
+            const bsp::AirOpsDeck* hd = hdecks.mutable_at(i);
+            const bool sunk = home_owner < slots.size() && gunnery != nullptr
+                && gunnery->unit_dead(home_owner);
+            if (home_owner < slots.size() && !sunk && hd->owner_present
+                && !hd->runway_failure && !hd->hangar_failure) {
+                home_deck = i;
+                in.home_arm_issues = true;
+            }
+            break;
+        }
+    } else if (home_authored) {
+        note += " home-arm-unread";
+    }
     // 006C0840(side = sq+54h, head, 0, 0047B850(head), 1).
     bsp::NearestLandingSiteInputs site_in;
     site_in.side = sq->party;
@@ -11064,6 +11099,8 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     std::string site_name;
     if (r.arm == bsp::ReturnToBaseArm::kLandAtSite && site.node != 0) {
         site_name = decks.name_at(static_cast<std::size_t>(site.node - 1u));
+    } else if (r.arm == bsp::ReturnToBaseArm::kLandAtHome && home_owner < slots.size()) {
+        site_name = decks.name_at(home_deck);                       // 007F1000(+404h)
     }
     ReturnToBaseCensus* entry = nullptr;
     for (ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
@@ -11182,7 +11219,10 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
         if (install_retreat_task_009c9d00(unit_index, true)) ++retreat_rtb_installs;
         return;
     }
-    if (entry->last_arm != 2) {
+    // Packet cc9_rtb_home_arm: the home arm's `land` (007F1000) names the home
+    // base itself, which this host installs like a site.
+    const bool home_arm = bsp::kReturnToBaseHomeArmBound && entry->last_arm == 1;
+    if (entry->last_arm != 2 && !home_arm) {
         refuse(c.refused_arm, "007F16D0 did not answer land at site");
         return;
     }
@@ -11323,7 +11363,11 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     }
     const ReturnToBaseCensus* entry = nullptr;
     for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
-    if (entry == nullptr || entry->last_arm != 2) return false;
+    // Packet cc9_rtb_home_arm: the home arm's `land` (007F1000) targets the home
+    // base, so it keeps the task the same way.
+    const bool home_arm = bsp::kReturnToBaseHomeArmBound && entry != nullptr
+        && entry->last_arm == 1;
+    if (entry == nullptr || (entry->last_arm != 2 && !home_arm)) return false;
     const std::size_t owner = unit.land_site_plus_one - 1u;
     if (owner >= slots.size()) return false;
     return slots[owner]->row.name == entry->last_site;
@@ -11640,8 +11684,38 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
     in.multiplayer_927c90 = false;
     in.need_approach_bit = false;
     in.local_only = p.plane_control_mode_900 == 7 || p.plane_control_mode_900 == 6;
-    std::vector<bsp::LandingSiteCandidate> list;
     bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    // 006C086D-006C0964, the own-site arm (kTakeoffOwnSiteBound): the plane's
+    // scene parent (00923810(1)) answering IsKindOf(45h) (holder +7ACh) or else
+    // IsKindOf(9) (holder +1208h), with its +5Eh clear, sets *dist = 0.0 and
+    // returns its holder when side > 1 (unsigned), the parent's +54h is the side,
+    // or single-player and the parent's side is 2; otherwise 0, with no key
+    // compared. A dead parent falls through to the scan. LABELLED: the scene
+    // parent is deck_parent_plus_one; the parent's own parent (+5Eh test at
+    // 006C08A3 / 006C090A) is never carried; a refused holder answers 0.
+    if constexpr (bsp::kTakeoffOwnSiteBound) {
+        if (in.head_control_9d4 && p.deck_parent_plus_one != 0
+            && p.deck_parent_plus_one <= slots.size()) {
+            const std::size_t parent = p.deck_parent_plus_one - 1u;
+            const GameUnitSlot& o = *slots[parent];
+            const bool parent_dead = gunnery != nullptr && gunnery->unit_dead(parent);
+            if (!parent_dead && (bsp::unit_is_kind_of(o.class_id, 0x45)
+                    || bsp::unit_is_kind_of(o.class_id, 0x09))) {
+                dist = 0.0f;
+                const unsigned side = static_cast<unsigned>(in.side);
+                if (side > 1u || static_cast<unsigned>(o.row.party) == side || o.row.party == 2) {
+                    for (std::size_t i = 0; i < decks.size(); ++i) {
+                        if (decks.name_at(i) != o.row.name) continue;
+                        if (landing_deck_006c0750(i, parent) == nullptr) break;
+                        ++takeoff_own_site_answers;
+                        return i + 1u;
+                    }
+                }
+                return 0;
+            }
+        }
+    }
+    std::vector<bsp::LandingSiteCandidate> list;
     for (std::size_t i = 0; i < decks.size(); ++i) {
         std::size_t owner = slots.size();
         for (std::size_t u = 0; u < slots.size(); ++u) {
@@ -33429,6 +33503,10 @@ void GameUnitsHost::report() {
             "c01_sets=%llu (007CC1B3 / 007C6F50 / 007C7110, packet cc9_base_launch_liftoff)",
             host.base_launch_liftoffs, host.base_launch_liftoff_unparented,
             host.base_launch_liftoff_site_leaves, host.base_launch_c01_sets);
+        if constexpr (bsp::kTakeoffOwnSiteBound) {
+            host.log.notef("summary takeoff own site: answers=%llu (006C086D-006C0964, packet "
+                "cc9_takeoff_own_site)", host.takeoff_own_site_answers);
+        }
         if constexpr (bsp::kBaseLaunchBrakeBound) {
             unsigned long long sets = 0, clears = 0, held = 0;
             bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
