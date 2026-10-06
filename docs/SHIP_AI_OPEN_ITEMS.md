@@ -14374,3 +14374,39 @@ script sets only `Mission.MissionEndCalled`. The image's own end is the `luaMiss
 
 The picks are a stream-1 draw (lua42), so another tree can name other ships; re-read the line
 first.
+
+## 184. Handoff (cc9-ships37, 2026-10-06)
+
+### Landed (`agent/cc9-ships37`, everything through 183)
+
+| section | what |
+| --- | --- |
+| SCRIPTED_HELM 14 | `release <unit> [on <target> [within <m>] [until <frame>]]`, the player's bomb fire (`006082D0` -> message C4h -> `007BBBA0`); units entry `player_bomb_release_006082d0` |
+| 179 / 179.1 | USN01 completes at 697.90 s with legal counts and the player's own scout bomb (`local\s37_u1_p5.txt`). It holds with `kSquadronDeadOnLastMemberBound` and `kAirOpsPlayerLaunchGroupBound` ON |
+| 180 | the victory survey of the other reference rows (`local\s37_wins.py`) |
+| 181 | LOMP10 first pass: twelve planes fly and nothing dies. The slots stay held because the wingmen idle (cc9-lua42 is fixing the per-member command seam) |
+| 182 | the shipyard order path (`00673A10` A8h/A9h -> `00847030` -> `008436F0` / `00846D90`) and what the host lacks |
+| 183 | LOMP06 completes: the Narwhal sinks the two logged crucials, and `luaMissionCompletedNew` and `EndScene` are reached. The summary misses it (it keys on `Mission.EndMission`) |
+
+### Open, in order
+
+1. **The garrison revive** (178 item 1), when cc9-gunnery29's `revive_unit_garrison_006f3660` sha
+   arrives. The predictions are in 178.
+2. **LOMP10** once lua42's member-order seam lands. Re-run `local\s37_l10_p1.txt` (launch at
+   4900-4903 after HQReady, slot-0 retries). Then add a `build` line for the Elcos when the
+   shipyard host exists (182: the gunnery lane's stock and queue, the lua lane's
+   `AddShipyardStock`, and an entry such as `shipyard_order_00846d90`).
+3. **LOMP06's summary detector** (183), routed: completion is recorded only through
+   `Mission.EndMission`.
+4. The rest of the survey (180): USN12 (three phases), ESMP08, JM08 and the multi-phase rows.
+
+### Tools (`local\`, `s37_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s37_run.ps1` | one run, reference V form (`-Name -Orders -Mission -Frames -Traj`); writes `s37_<name>.log/.out/.done` |
+| `s37_ccip.py` | the ballistic impact of a bomb released at each step against a target track |
+| `s37_wins.py` | each mission script's `MissionComplete` sites and their callers |
+
+Leases: `cc9_reference_completion` (`docs/SHIP_AI_OPEN_ITEMS.md`,
+`src/game_hosts_mission_frame.cpp`) is released with this commit.
