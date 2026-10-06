@@ -4678,7 +4678,8 @@ std::string lua_field_text(lua_State* L, int index, const char* field) {
 }  // namespace
 
 void GameScriptOrdersHost::observe_mission_end() {
-    if (!kMissionEndBound || mission_end_.seen || machine_state_ == nullptr) return;
+    if (!kMissionEndBound || machine_state_ == nullptr) return;
+    if (mission_end_.seen && mission_end_.end_mission_at >= 0.0f) return;
     lua_State* const L = machine_state_;
     lua_getfield(L, LUA_GLOBALSINDEX, "Mission");
     if (!lua_istable(L, -1)) {
@@ -4687,13 +4688,27 @@ void GameScriptOrdersHost::observe_mission_end() {
     }
     const int mission = lua_gettop(L);
     lua_getfield(L, mission, "EndMission");
-    const bool ended = lua_toboolean(L, -1) != 0;
+    const bool end_flag = lua_toboolean(L, -1) != 0;
     lua_settop(L, mission);
-    if (!ended) {
+    if (end_flag && mission_end_.end_mission_at < 0.0f) mission_end_.end_mission_at = mission_clock_;
+    if (mission_end_.seen) {
+        lua_settop(L, mission - 1);
+        return;
+    }
+    // The image's end chain: every commandhelpers.lua end function writes
+    // Mission.MissionStatus (true for the completed ones, false for the failed
+    // ones; no other script writes it), so a boolean there means the first
+    // luaMissionCompletedNew / luaMissionFailedNew has run, whether or not the
+    // mission sets its own EndMission. Diagnostic only: a table read.
+    lua_getfield(L, mission, "MissionStatus");
+    const bool status_set = lua_type(L, -1) == LUA_TBOOLEAN;
+    lua_settop(L, mission);
+    if (!end_flag && !status_set) {
         lua_settop(L, mission - 1);
         return;
     }
     mission_end_.seen = true;
+    mission_end_.trigger = status_set ? "MissionStatus" : "EndMission";
     mission_end_.at_seconds = mission_clock_;   // the frame whose thinks set it
     const std::string status = lua_field_text(L, mission, "MissionStatus");
     mission_end_.status = status == "false" ? "failed" : status == "true" ? "completed" : status;
@@ -4741,7 +4756,8 @@ void GameScriptOrdersHost::observe_mission_end() {
         }
     }
     lua_settop(L, mission - 1);
-    log_.notef("mission end: EndMission=true at %.2f s status=%s text=\"%s\" entity=\"%s\"",
+    log_.notef("mission end: %s at %.2f s status=%s text=\"%s\" entity=\"%s\"",
+        mission_end_.trigger.c_str(),
         static_cast<double>(mission_end_.at_seconds), mission_end_.status.c_str(),
         mission_end_.fail_text.c_str(), mission_end_.fail_entity.c_str());
 }
@@ -5126,10 +5142,20 @@ void GameScriptOrdersHost::report() {
                 std::snprintf(end_scene, sizeof(end_scene), "not reached (narrative callbacks=%zu)",
                     narrative_callbacks_);
             }
-            log_.notef("summary mission end: %s at %.2f s (Mission.EndMission) text=\"%s\" "
-                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 %s", mission_end_.status.c_str(),
-                static_cast<double>(mission_end_.at_seconds), mission_end_.fail_text.c_str(),
-                mission_end_.fail_entity.c_str(), mission_end_.objectives.size(), end_scene);
+            char end_flag[48];
+            if (mission_end_.end_mission_at >= 0.0f) {
+                std::snprintf(end_flag, sizeof(end_flag), "at %.2f s",
+                    static_cast<double>(mission_end_.end_mission_at));
+            } else {
+                std::snprintf(end_flag, sizeof(end_flag), "never true");
+            }
+            log_.notef("summary mission end: %s at %.2f s (Mission.%s) text=\"%s\" "
+                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 %s; Mission.EndMission %s",
+                mission_end_.status.c_str(),
+                static_cast<double>(mission_end_.at_seconds), mission_end_.trigger.c_str(),
+                mission_end_.fail_text.c_str(),
+                mission_end_.fail_entity.c_str(), mission_end_.objectives.size(), end_scene,
+                end_flag);
             for (const std::string& objective : mission_end_.objectives) {
                 log_.notef("  objective %s", objective.c_str());
             }

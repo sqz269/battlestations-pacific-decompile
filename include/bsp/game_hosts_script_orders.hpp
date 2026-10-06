@@ -881,6 +881,11 @@ private:
         std::string status;          // Mission.MissionStatus: failed / completed / unset
         std::string fail_text;       // Mission.MissionEndParams.Text
         std::string fail_entity;     // Mission.MissionEndParams.Ent
+        // What set `seen`: "MissionStatus" (an end function ran:
+        // commandhelpers.lua luaMissionCompletedNew :10425 / luaMissionFailedNew
+        // :10369 and the older pair) or "EndMission" (the mission's own flag).
+        std::string trigger;
+        float end_mission_at{-1.0f};  // first frame Mission.EndMission is true
         std::vector<std::string> objectives;  // level:num=Active/Success
     } mission_end_;
     unsigned long long dialog_starts_{0};
