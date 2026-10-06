@@ -13282,3 +13282,54 @@ merged in and everything is committed. The only lease held is the docs lease `cc
 - `l43_edit_2920.py` (the applied units edit);
 - `l43_occ.py` (ground-entry vs lift-off census);
 - `l43_field_writers.py` (lua42's disp32 scanner).
+
+## 5en. ESMP08 (b): the site probe's own-site arm, `kTakeoffOwnSiteBound` (packet `cc9_takeoff_own_site`, cc9-lua44, 2026-10-06)
+
+**The departure.** 5el left two candidates. The read settles it as the probe, not the lift-off speed:
+`006C0840` (`__fastcall(side ECX, plane EDX, float* dist, char, char)`, `RET 0Ch`) has an arm the host
+never took, labelled "scene parent not carried" when the probe was first bound. Since then the host
+carries the deck parent (`deck_parent_plus_one`, set by the deck placement and by `007C71E0`'s
+re-parent, cleared only by the lift-off `007C6F50`), so the label is stale.
+
+The arm, `006C086D`-`006C0964`, from the disk listing:
+- `00923810(1)` on the plane (`ECX = EDI`, the plane) is its scene parent. Non-null takes the arm.
+- The parent answering `IsKindOf(45h)` (vtable `+5Ch`, `PUSH 45h` at `006C0893`), with its `+5Eh`
+  clear and its own parent's `+5Eh` clear: `*dist = 0.0` (`006C08C7`); then side `> 1` unsigned
+  (`006C08CE JA`), or parent `+54h` == side, or single-player (`00927C90` false, `SETE` at `006C0871`)
+  and parent side 2, returns parent `+7ACh` (`006C08E6`); otherwise returns 0 (`006C095C`).
+- Failing that, the same with `IsKindOf(9)` (`006C08FA`), returning parent `+1208h` (`006C094D`).
+- Failing both (or a dead parent), the scan at `006C0967` (the arm the host already carries).
+- 45h is the airfield kind and 9 the ship kind (the host's `unit_is_kind_of` uses).
+
+So in the image a plane parented to its carrier keeps that carrier's holder at every probe, whatever
+lies ahead of the bow. In the host the probe keyed Zuikaku_sqn01 against every deck. At the step it
+rolled off Zuikaku's bow it was not over Zuikaku's runway (no longer accepting) and was 31 m behind
+Zuiho's stern on the centre line, so Zuiho won the `l.x^2 + (0.3 l.z)^2` key. `007C7110` then erased
+it from Zuiho's site instead of Zuikaku's.
+
+The lift-off speed is not the departure. The leader leaves the bow at relative 26.4 m/s (world 37.1).
+That is the `deck edge` reason of the roll's lift-off send, and the image takes the same exit when the
+runway test fails.
+
+**The binding.** `bsp::kTakeoffOwnSiteBound` (`include/bsp/air_operations.hpp`), committed **OFF**, in
+`plane_landing_site_006c0840`. Labelled substitutions:
+- the parent's own parent is never carried;
+- a holder the host refuses (`landing_deck_006c0750` null) answers 0;
+- `+5Eh` is the gunnery host's `unit_dead`.
+
+Coverage: `006C0840` is complete except the parent's own-parent `+5Eh` tests (`006C08A3`-`006C08BD`,
+`006C090A`-`006C0924`). A summary line `summary takeoff own site: answers=` is printed only when the
+switch is ON.
+
+**Predictions, written before any ON run.**
+1. ESMP08 3600 s with `s38_e8_p3.txt`:
+   - the `lift-off leaves ... occupants` diagnostic falls to 0;
+   - `summary base launch lift-off` gets `site_leaves == liftoffs` (OFF had 138 / 137 on lua43's
+     1000-frame diagnostic);
+   - Zuikaku_sqn01|.-2 leaves takeoff/prepare within a few seconds of the leader's lift-off, not at
+     2313 s;
+   - Zuikaku's later squadrons launch earlier, so the IJN strike timing and the per-entity deaths move.
+     The direction of the mission outcome is not predicted.
+2. A single-carrier control (USN04 4500): gameplay identical (pair_diff 0 or 1). With one deck, the
+   only change is the parked plane's `dist` (0 instead of `sqrt(key)`). That moves `+C04h`, but it stays
+   negative under 200 m, so the plane is re-probed every step either way.

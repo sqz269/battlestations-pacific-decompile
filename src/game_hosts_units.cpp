@@ -2608,6 +2608,8 @@ struct GameUnitsHost::Impl {
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
     unsigned long long base_launch_liftoff_site_leaves{0}, base_launch_c01_sets{0};
+    // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
+    unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
     unsigned long long base_launch_brake_releases{0}, base_launch_brake_gone{0};
     void release_launch_brake_006c5b70();
@@ -11640,8 +11642,38 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
     in.multiplayer_927c90 = false;
     in.need_approach_bit = false;
     in.local_only = p.plane_control_mode_900 == 7 || p.plane_control_mode_900 == 6;
-    std::vector<bsp::LandingSiteCandidate> list;
     bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    // 006C086D-006C0964, the own-site arm (kTakeoffOwnSiteBound): the plane's
+    // scene parent (00923810(1)) answering IsKindOf(45h) (holder +7ACh) or else
+    // IsKindOf(9) (holder +1208h), with its +5Eh clear, sets *dist = 0.0 and
+    // returns its holder when side > 1 (unsigned), the parent's +54h is the side,
+    // or single-player and the parent's side is 2; otherwise 0, with no key
+    // compared. A dead parent falls through to the scan. LABELLED: the scene
+    // parent is deck_parent_plus_one; the parent's own parent (+5Eh test at
+    // 006C08A3 / 006C090A) is never carried; a refused holder answers 0.
+    if constexpr (bsp::kTakeoffOwnSiteBound) {
+        if (in.head_control_9d4 && p.deck_parent_plus_one != 0
+            && p.deck_parent_plus_one <= slots.size()) {
+            const std::size_t parent = p.deck_parent_plus_one - 1u;
+            const GameUnitSlot& o = *slots[parent];
+            const bool parent_dead = gunnery != nullptr && gunnery->unit_dead(parent);
+            if (!parent_dead && (bsp::unit_is_kind_of(o.class_id, 0x45)
+                    || bsp::unit_is_kind_of(o.class_id, 0x09))) {
+                dist = 0.0f;
+                const unsigned side = static_cast<unsigned>(in.side);
+                if (side > 1u || static_cast<unsigned>(o.row.party) == side || o.row.party == 2) {
+                    for (std::size_t i = 0; i < decks.size(); ++i) {
+                        if (decks.name_at(i) != o.row.name) continue;
+                        if (landing_deck_006c0750(i, parent) == nullptr) break;
+                        ++takeoff_own_site_answers;
+                        return i + 1u;
+                    }
+                }
+                return 0;
+            }
+        }
+    }
+    std::vector<bsp::LandingSiteCandidate> list;
     for (std::size_t i = 0; i < decks.size(); ++i) {
         std::size_t owner = slots.size();
         for (std::size_t u = 0; u < slots.size(); ++u) {
@@ -33429,6 +33461,10 @@ void GameUnitsHost::report() {
             "c01_sets=%llu (007CC1B3 / 007C6F50 / 007C7110, packet cc9_base_launch_liftoff)",
             host.base_launch_liftoffs, host.base_launch_liftoff_unparented,
             host.base_launch_liftoff_site_leaves, host.base_launch_c01_sets);
+        if constexpr (bsp::kTakeoffOwnSiteBound) {
+            host.log.notef("summary takeoff own site: answers=%llu (006C086D-006C0964, packet "
+                "cc9_takeoff_own_site)", host.takeoff_own_site_answers);
+        }
         if constexpr (bsp::kBaseLaunchBrakeBound) {
             unsigned long long sets = 0, clears = 0, held = 0;
             bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
