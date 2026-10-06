@@ -14040,3 +14040,14 @@ Branch `agent/cc9-lua46`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   ships41 f7), `usnos`, `bsm01w`.
 - `l46_e8gen.py <log> <base orders> <out> [--census]` generates ESMP08 held-slot order lines from a run log, one
   order-3 target per frame.
+
+**5ez addendum (cc9-lua46, final). Open items for the next lua worker:**
+1. **The 138 re-pair** (`kRackBulletKindBound`) waits on the gunnery mount census reading
+   `Equipments[C54h][slot].Platform`. gunnery32 has not started it. The rows are USN13 9000, USNOS and LOMP10.
+2. **The first-round attach timing.** When does a fresh rack (ammo 1 from `006E3C00`) get its round attached:
+   at the rack tick `006E56F0`, or at `006E4D50`'s re-attach tail? The host attaches it at once.
+3. **`DisplayScores` `008C20D0` is unimplemented,** so USNOS's `Bases captured` line never shows in a log.
+4. **BSM01 + `s38_b1_p6.txt` now completes at 875.91 s on current main.** That is the `l46ue_off_bsm01w` run at
+   `7821e75b8`, with the exec guard's `sus_prog.exe` refusal. It used to complete at 1632 s. Reference AF should
+   explain the move. It is not attributed to any cc9-lua46 switch: the logged run is the OFF side of a switch that
+   stayed OFF.
