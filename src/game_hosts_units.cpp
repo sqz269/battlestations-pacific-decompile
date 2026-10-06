@@ -52,6 +52,7 @@
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_retreat_task.hpp"         // packet cc9_plane_retreat_task
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
 #include "bsp/plane_follow_hold.hpp"
@@ -691,6 +692,25 @@ struct GameUnitSlot {
     float takeoff_installed_at{-1.0f}, takeoff_prep_left_at{-1.0f};
     float takeoff_slow_left_at{-1.0f}, takeoff_prep_min_member_d{-1.0f};
     const char* takeoff_prep_exit{""};
+    // Packet cc9_plane_retreat_task (bsp::kPlaneRetreatTaskBound): the `retreat`
+    // task, kind 9 (009CA2B0 -> 009C9D00, size 564h), its approach at task+3F8h
+    // (009C9BB0 -> 009C91B0) and the plane's leave-map countdown 007C6C30
+    // (unit+6ECh/+6F0h). include/bsp/plane_retreat_task.hpp; the state names
+    // are the approach's own registered strings.
+    bool retreat_task_installed{false};
+    bsp::RetreatState retreat_state{bsp::RetreatState::kNone};
+    bsp::RetreatApproach retreat_approach{};
+    float retreat_arm_560{0.0f};            // task+560h, -U(0, 1) at 009C9D7E
+    float retreat_moveto_timer_18{0.0f};    // moveto state+18h (task+490h), 009C92F0
+    // 007EE2E0's retreat arm reads the SQUADRON's current command; set on every
+    // member when the order went to the squadron (its fused flight leader).
+    bool retreat_squadron_ordered{false};
+    float retreat_exit_6f0{0.0f};           // unit+6F0h
+    int retreat_exit_state_6ec{0};          // unit+6ECh: 1 inside, 2 counting, 3 expired
+    unsigned long long retreat_ticks{0}, retreat_moveto_ticks{0}, retreat_enter_ticks{0},
+        retreat_leave_ticks{0}, retreat_follow_ticks{0}, retreat_refreshes{0},
+        retreat_zone_misses{0}, retreat_outside_ticks{0};
+    float retreat_installed_at{-1.0f}, retreat_outside_at{-1.0f};
     // Packet cc9_land_task_reach (kSquadronLandTaskBound): the `land` task,
     // kind 3 (009B41C0 -> 009B3240, size 670h). The eight states sit in the
     // approach at task+3F8h and register these names through 00411E70 in
@@ -2316,6 +2336,12 @@ struct GameUnitsHost::Impl {
         double first_install_at{-1.0};
     };
     std::vector<LandTaskCensus> land_census;
+
+    // Packet cc9_plane_retreat_task: the retreat task's census.
+    unsigned long long retreat_orders{0}, retreat_installs{0}, retreat_refused{0},
+        retreat_retired{0}, retreat_exits{0}, retreat_exit_members{0},
+        retreat_exit_gated{0}, retreat_latches_361{0}, retreat_rtb_installs{0};
+    std::vector<std::string> retreat_latched_361;   // squadron+361h, by squadron name
     unsigned long long land_retired_invalid{0};
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
     unsigned long long yaw_rate_calls_00811940{0};
@@ -6899,6 +6925,199 @@ struct GameUnitsHost::Impl {
         }
     }
 
+    // Packet cc9_plane_retreat_task: 009FB800(altitude, 1.0) as the retreat
+    // states call it (009C9820, 009C98FD, 009C9A09).
+    void retreat_pitch_009fb800(GameUnitSlot& unit, float altitude) {
+        bsp::PlanePitchCommandInputs pin;
+        pin.desired_altitude = altitude;
+        pin.reference = 1.0f;
+        pin.unit_world_y = unit.motion.position[1];
+        if (lua.plane_globals_loaded()) {
+            const bsp::GameTuningBlock& g = lua.plane_globals();
+            pin.ceiling = g.dynamics_ceiling;
+            pin.climb_dist = g.pilot_general_climb_dist;
+            pin.drop_dist = g.pilot_general_drop_dist;
+        }
+        pin.class_climb_angle = unit.plane_climb_angle_1ec;
+        pin.class_drop_angle = unit.plane_drop_angle;
+        unit.plane_commanded_altitude = altitude;
+        unit.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+        unit.plan_state.pitch_target_2bc = unit.plane_commanded_pitch;
+        if constexpr (kPitchCommandCallersBound) unit.plan_state.pitch_mode_2d0 = 2;
+    }
+    // squadron+3A0h = class+190h, TravelSpeed x NewTravelSpeedMul (as
+    // moveto_speed_009c1850 takes it; the members' class stands in).
+    float retreat_squadron_speed_3a0(const GameUnitSlot& unit) const {
+        float travel_mul = 1.6f;
+        if (lua.plane_globals_loaded())
+            travel_mul = lua.plane_globals().dynamics_spd_multipliers_new_travel_speed_mul;
+        return unit.plane_travel_speed * travel_mul;
+    }
+    // The state transition 009C9F70: the old state's exit (007B3DC0, empty for
+    // all four) then the new state's enter; only moveto's 009C92F0 writes.
+    void retreat_enter_state(GameUnitSlot& unit, bsp::RetreatState s) {
+        if (unit.retreat_state == s) return;
+        unit.retreat_state = s;
+        if (s == bsp::RetreatState::kMoveTo) {
+            unit.retreat_moveto_timer_18 = bsp::retreat_moveto_timer_009c92f0(
+                unit.plane_turn_circle_radius, unit.plane_travel_speed);
+        }
+        log.notef("  retreat %s -> %s at %.2f s (009C9F70, packet cc9_plane_retreat_task)",
+            unit.row.name.c_str(),
+            s == bsp::RetreatState::kMoveTo ? "moveto (retreat)"
+                : s == bsp::RetreatState::kEnterZone ? "enterzone (retreat)"
+                : s == bsp::RetreatState::kLeave ? "leave (retreat)" : "follow (retreat)",
+            static_cast<double>(summary.simulated_seconds));
+    }
+    // 009C8D40 then 009C8F40 over the host's world+7134h and world box.
+    void retreat_refresh_approach(GameUnitSlot& unit) {
+        const bsp::BorderZoneSet* zones = lua.world_border_zones();
+        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
+        if (zones == nullptr || bounds == nullptr) return;
+        const float* p = unit.motion.position;
+        ++unit.retreat_refreshes;
+        if (!bsp::retreat_refresh_zone_009c8d40(unit.retreat_approach, *zones,
+                {p[0], p[1], p[2]}, unit.row.party,
+                unit.plane_turn_circle_radius)) {
+            ++unit.retreat_zone_misses;   // the image dereferences null here
+        }
+        bsp::retreat_refresh_target_009c8f40(unit.retreat_approach, *bounds, *zones, p[0], p[2]);
+    }
+    // 0099A45B's arm: 009CA2B0 -> 009C9D00 on one plane. LABELLED refusals: a
+    // dead plane, a plane not in free flight (the image builds the task on any
+    // bot; a parked plane's retreat is not modelled), and a run without the
+    // world's border zones.
+    bool install_retreat_task_009c9d00(std::size_t m, bool squadron_ordered) {
+        if (m >= slots.size()) return false;
+        GameUnitSlot& unit = *slots[m];
+        if (unit.plane_death_c3a || unit.plane_control_mode_900 != 7
+            || lua.world_border_zones() == nullptr || lua.world_border_bounds() == nullptr) {
+            ++retreat_refused;
+            log.notef("retreat task REFUSED: plane \"%s\": %s at %.2f s (packet "
+                "cc9_plane_retreat_task)", unit.row.name.c_str(),
+                unit.plane_death_c3a ? "dead" : unit.plane_control_mode_900 != 7
+                    ? "not in free flight" : "no border zones",
+                static_cast<double>(summary.simulated_seconds));
+            return false;
+        }
+        record("Bot::install_command_task_retreat_arm", 0x0099a45bu);
+        // 0099A4C0's retire: the old task goes, whatever it was.
+        unit.dive_bomb_task_installed = false;
+        unit.dive_bomb_state = bsp::DiveBombState::kNone;
+        unit.dogfight_task_installed = false;
+        unit.dogfight_state = bsp::DogfightState::kNone;
+        unit.torpedo_task_installed = false;
+        unit.torpedo_state = bsp::TorpedoState::kNone;
+        unit.moveto_task_installed = false;
+        unit.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+        unit.land_task_installed = false;
+        unit.land_state = GameUnitSlot::LandTaskState::kNone;
+        unit.strafe_task_installed = false;
+        unit.attack_command_class = bsp::kRetreatCommandClass;
+        // 009C9D26 base, 009C9BB0 -> 009C91B0: the draws, in order.
+        const std::string& n = unit.row.name;
+        float cruising = 0.0f;
+        if (lua.plane_globals_loaded()) cruising = lua.plane_globals().pilot_general_cruising_alt;
+        bsp::RetreatApproach& a = unit.retreat_approach;
+        a = bsp::RetreatApproach{};
+        a.altitude_2c = release_altitude_draw_00bd2f10(n + "#r2c", bsp::kRetreatAltitudeDrawLow,
+                                                       bsp::kRetreatAltitudeDrawHigh) + cruising;
+        a.margin_30 = release_altitude_draw_00bd2f10(n + "#r30", bsp::kRetreatMarginDrawLow,
+                                                     bsp::kRetreatMarginDrawHigh);
+        a.period_34 = bsp::kRetreatRefreshPeriod;
+        a.countdown_38 = -release_altitude_draw_00bd2f10(n + "#r38", 0.0f, 1.0f);
+        retreat_refresh_approach(unit);                       // 009C9282, 009C9289
+        // 009C9C5D 009C2980, the follow state's construction draw.
+        (void)release_altitude_draw_00bd2f10(n + "#rf", 0.0f, 0.6f);
+        unit.retreat_arm_560 = -release_altitude_draw_00bd2f10(n + "#r560", 0.0f, 1.0f);
+        unit.retreat_squadron_ordered = squadron_ordered;
+        unit.retreat_exit_6f0 = 0.0f;
+        unit.retreat_exit_state_6ec = 0;
+        unit.retreat_installed_at = summary.simulated_seconds;
+        unit.retreat_task_installed = true;
+        unit.retreat_state = bsp::RetreatState::kNone;
+        // 009C9DA0-009C9DC6: leader -> moveto, member -> follow, then its enter.
+        retreat_enter_state(unit, unit_is_flight_leader_007b8ad0(m)
+            ? bsp::RetreatState::kMoveTo : bsp::RetreatState::kFollow);
+        ++retreat_installs;
+        const bsp::RetreatApproach& r = unit.retreat_approach;
+        log.notef("retreat task install: plane \"%s\" squadron_ordered=%d alt=%.1f margin=%.1f "
+            "zone=%d edge=(%.1f,%.1f)-(%.1f,%.1f) target=(%.1f,%.1f) enter=(%.1f,%.1f) "
+            "dir=(%.3f,%.3f) lined=%d leave=%d at %.2f s (0099A45B -> 009CA2B0, packet "
+            "cc9_plane_retreat_task)", n.c_str(), squadron_ordered ? 1 : 0,
+            static_cast<double>(r.altitude_2c), static_cast<double>(r.margin_30),
+            r.zone_3c != nullptr ? 1 : 0, static_cast<double>(r.edge_40[0]),
+            static_cast<double>(r.edge_40[1]), static_cast<double>(r.edge_40[2]),
+            static_cast<double>(r.edge_40[3]), static_cast<double>(r.target_64[0]),
+            static_cast<double>(r.target_64[1]), static_cast<double>(r.enter_point_50[0]),
+            static_cast<double>(r.enter_point_50[1]), static_cast<double>(r.direction_58[0]),
+            static_cast<double>(r.direction_58[1]), r.lined_up_61 ? 1 : 0,
+            r.leave_now_60 ? 1 : 0, static_cast<double>(summary.simulated_seconds));
+        done("BotTaskRetreat::construct", 0x009c9d00u);
+        return true;
+    }
+    // 007EE410 -> message 50h -> 007CA790 -> 007F31A0 for a plane whose leave
+    // countdown ran out. PARTIAL, labelled: 00982120's HUD notices, the Lua
+    // ExitZoneParty stores (no script in this installation reads the key), the
+    // fire stance 0 and the moveto 007F340F re-issues to the survivors are not
+    // modelled; the survivors keep their retreat task instead.
+    void retreat_leave_map_007ee410(std::size_t m) {
+        bsp::PlaneSquadronHostRecord* sq = bsp::plane_squadron_registry().find_by_member_unit(m);
+        GameGunneryHost* const gun = gunnery.get();
+        if (gun == nullptr || m >= slots.size() || gun->unit_dead(m)) return;
+        if (sq == nullptr) {
+            record("Plane::exit_zone_party_007ca790", 0x007ca790u);   // no 007F31A0
+            return;
+        }
+        bool latched = false;
+        for (const std::string& s : retreat_latched_361) if (s == sq->name) latched = true;
+        const std::size_t leader = sq->flight_leader();
+        // 007EE427: squadron+5Dh clear and (+361h set, or the plane is the leader).
+        if (!latched && m != leader) {
+            ++retreat_exit_gated;
+            return;
+        }
+        ++retreat_exits;
+        std::vector<std::size_t> alive;
+        for (const std::size_t u : sq->member_units) {
+            if (u != bsp::kPlaneSquadronNoUnit && u < slots.size() && !gun->unit_dead(u))
+                alive.push_back(u);
+        }
+        const bsp::WorldMapBounds* bounds = lua.world_border_bounds();
+        std::size_t outside_killed = 0;
+        if (alive.size() > 1) {
+            std::size_t survivors = alive.size() - 1;
+            if (m == leader && bounds != nullptr) {
+                // 007F3240-007F32B6: every other member already outside gets the
+                // same exit message, whose 007F31A0 kills it (non-leader arm).
+                for (const std::size_t u : alive) {
+                    if (u == m) continue;
+                    const float* p = slots[u]->motion.position;
+                    if (bsp::point_outside_world_map_0071c4f0(*bounds, {p[0], p[1], p[2]})) {
+                        gun->kill_unit_00926d90(u, 4);
+                        ++retreat_exit_members;
+                        ++outside_killed;
+                        --survivors;
+                    }
+                }
+            }
+            // 007F32C6-007F3323: survivors left, +361h clear, still leaving.
+            if (survivors > 0 && !latched && slots[m]->retreat_squadron_ordered) {
+                retreat_latched_361.push_back(sq->name);
+                ++retreat_latches_361;
+            }
+        }
+        // 007F3418 Kill(4) on the plane; 007F34CE on the squadron for the last
+        // plane (the host fuses a one-plane squadron with that plane).
+        log.notef("retreat leave map: plane \"%s\" squadron \"%s\" leader=%d members=%zu "
+            "also_outside=%zu at %.2f s (007C6C30 -> 007EE410 -> 007CA790 -> 007F31A0 "
+            "Kill(4), packet cc9_plane_retreat_task)", slots[m]->row.name.c_str(),
+            sq->name.c_str(), m == leader ? 1 : 0, alive.size(), outside_killed,
+            static_cast<double>(summary.simulated_seconds));
+        gun->kill_unit_00926d90(m, 4);
+        slots[m]->retreat_task_installed = false;
+        record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
+    }
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit) {
         bsp::PlaneFormationStation station;
         const GameUnitSlot* leader = nullptr;
@@ -10629,6 +10848,12 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
                 why.c_str(), static_cast<double>(summary.simulated_seconds));
         }
     };
+    // Packet cc9_plane_retreat_task: 007F16D0's retreat arm (007F1896) issues
+    // `retreat` on the squadron; each member's bot takes 0099A45B.
+    if (bsp::kPlaneRetreatTaskBound && entry->last_arm == 3) {
+        if (install_retreat_task_009c9d00(unit_index, true)) ++retreat_rtb_installs;
+        return;
+    }
     if (entry->last_arm != 2) {
         refuse(c.refused_arm, "007F16D0 did not answer land at site");
         return;
@@ -10820,6 +11045,61 @@ std::size_t GameUnitsHost::land_at_site_0099a3dd(std::size_t unit_index,
         "installed (008A47B0 -> 0099A3DD, packet cc9_pilot_land_native)",
         host.slots[unit_index]->row.name.c_str(), site_name.c_str(), planes.size(),
         installed);
+    return installed;
+}
+
+// Packet cc9_plane_retreat_task. PilotRetreat 008A4300's world query: 004C7730
+// over world+7134h with the unit's side (unit+54h), then 008A443E's corner mean.
+bool GameUnitsHost::retreat_point_008a4300(std::size_t unit_index, float out[3]) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    const bsp::BorderZoneSet* zones = host.lua.world_border_zones();
+    if (zones == nullptr) return false;
+    const float* p = host.slots[unit_index]->motion.position;
+    const bsp::BorderZoneHit hit = bsp::closest_border_zone_004c7730(
+        *zones, {p[0], p[1], p[2]}, host.slots[unit_index]->row.party);
+    if (hit.zone == nullptr) return false;
+    bsp::PilotRetreatZoneCorners corners;
+    const std::array<float, 3>* c[4] = {&hit.zone->a, &hit.zone->b, &hit.zone->c, &hit.zone->d};
+    for (int i = 0; i < 4; ++i)
+        for (int k = 0; k < 3; ++k) corners.corner[i][k] = (*c[i])[static_cast<std::size_t>(k)];
+    bsp::pilot_retreat_position_008a443e(corners, out);
+    return true;
+}
+
+// Packet cc9_plane_retreat_task. The bots' intake of `retreat` (00E08F90):
+// 0099A170's arm 0099A45B -> 009CA2B0 on every member of a squadron order
+// (the fan-out substitution land_at_site_0099a3dd states), or on the one plane.
+std::size_t GameUnitsHost::retreat_0099a45b(std::size_t unit_index, const std::string& source) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return 0;
+    ++host.retreat_orders;
+    bsp::PlaneSquadronRegistry& reg = bsp::plane_squadron_registry();
+    const bsp::PlaneSquadronHostRecord* sq = reg.find_by_member_unit(unit_index);
+    bool whole = false;
+    if (sq == nullptr) {
+        for (const bsp::PlaneSquadronHostRecord& r : reg.records()) {
+            if (r.squadron_unit == unit_index) { sq = &r; whole = true; break; }
+        }
+    } else {
+        whole = unit_index == sq->flight_leader() || unit_index == sq->squadron_unit;
+    }
+    std::vector<std::size_t> planes;
+    if (sq != nullptr && whole) {
+        for (const std::size_t m : sq->member_units) {
+            if (m != bsp::kPlaneSquadronNoUnit && m < host.slots.size()) planes.push_back(m);
+        }
+    } else {
+        planes.push_back(unit_index);
+    }
+    std::size_t installed = 0;
+    for (const std::size_t m : planes) {
+        if (host.install_retreat_task_009c9d00(m, sq != nullptr && whole)) ++installed;
+    }
+    host.log.notef("retreat command: unit \"%s\" squadron \"%s\" whole=%d: %zu plane(s), %zu "
+        "task(s) installed (%s -> 0099A45B, packet cc9_plane_retreat_task)",
+        host.slots[unit_index]->row.name.c_str(), sq != nullptr ? sq->name.c_str() : "",
+        whole ? 1 : 0, planes.size(), installed, source.c_str());
     return installed;
 }
 
@@ -26744,6 +27024,141 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_air_brake_mode_2d8 = 1;
                     }
 
+                    // Packet cc9_plane_retreat_task: the retreat task's per-tick
+                    // slot +64h 009CA130, then the plane's leave countdown 007C6C30.
+                    // SUBSTITUTION, labelled: the image runs 007C6C30 in every
+                    // plane's unit tick; only its retreat arm (007EE2E0) leads
+                    // anywhere, so the host runs it for retreating planes only.
+                    void run_retreat_task_tick_009ca130(float dt) {
+                        using RS = bsp::RetreatState;
+                        if (!unit_.retreat_task_installed) return;
+                        // 0099B740 over slot +40h 009C9E30: the command is still
+                        // `retreat`, else the task is abandoned.
+                        if (unit_.attack_command_class != bsp::kRetreatCommandClass) {
+                            unit_.retreat_task_installed = false;
+                            unit_.retreat_state = RS::kNone;
+                            ++owner_.retreat_retired;
+                            owner_.log.notef("  retreat task %s: retired, the command is no "
+                                "longer retreat (009C9E30) at %.2f s", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds));
+                            return;
+                        }
+                        ++unit_.retreat_ticks;
+                        bsp::RetreatApproach& a = unit_.retreat_approach;
+                        // 009CA135-009CA162: the approach countdown and refresh.
+                        if (bsp::retreat_countdown_step(a.countdown_38, a.period_34, dt))
+                            owner_.retreat_refresh_approach(unit_);
+                        // 009CA171 the arm 009C9FB0.
+                        if (bsp::retreat_countdown_step(unit_.retreat_arm_560,
+                                                        bsp::kRetreatArmPeriod, dt)) {
+                            bsp::RetreatArmInputs in;
+                            in.state = unit_.retreat_state;
+                            in.flight_leader =
+                                owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                            in.leave_now_60 = a.leave_now_60;
+                            in.lined_up_61 = a.lined_up_61;
+                            in.moveto_timer = unit_.retreat_moveto_timer_18;
+                            in.inside_enter_zone = bsp::retreat_inside_enter_zone_009c9ea0(
+                                a, unit_.motion.position[0], unit_.motion.position[2],
+                                unit_.plane_turn_circle_radius);
+                            owner_.retreat_enter_state(unit_, bsp::retreat_arm_009c9fb0(in));
+                        }
+                        // 009CA17A-009CA189: the current state's tick.
+                        const float travel = owner_.retreat_squadron_speed_3a0(unit_);
+                        switch (unit_.retreat_state) {
+                        case RS::kMoveTo: {
+                            ++unit_.retreat_moveto_ticks;
+                            const bsp::WorldMapBounds* b = owner_.lua.world_border_bounds();
+                            if (b == nullptr) break;
+                            bsp::RetreatMoveToInputs in;
+                            in.bounds = *b;
+                            in.margin_30 = a.margin_30;
+                            in.x = unit_.motion.position[0];
+                            in.z = unit_.motion.position[2];
+                            in.target_x = a.target_64[0];
+                            in.target_z = a.target_64[1];
+                            in.turn_circle_radius = unit_.plane_turn_circle_radius;
+                            in.squadron_speed_3a0 = travel;
+                            in.max_spd_188 = unit_.plane_max_spd;
+                            const bsp::RetreatMoveToSteer s = bsp::retreat_moveto_steer_009c9310(in);
+                            if (s.timer_runs) {   // 009C9701-009C970F
+                                unit_.retreat_moveto_timer_18 = static_cast<float>(
+                                    static_cast<double>(unit_.retreat_moveto_timer_18) - dt);
+                            }
+                            unit_.plane_desired_speed_2b4 = s.desired_speed_2b4;   // 009C97F6
+                            unit_.plane_trg_speed_corr_off_2b0 = 0;
+                            unit_.plane_air_brake_mode_2d8 = 1;
+                            owner_.retreat_pitch_009fb800(unit_, a.altitude_2c);   // 009C9820
+                            unit_.plan_heading_2c0 = s.heading_2c0;                // 009C9830
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = 2;
+                            if constexpr (GameUnitsHost::Impl::kTaskGunConeBound)
+                                unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            owner_.done("BotStateRetreatMoveTo::tick", 0x009c9310u);
+                            break;
+                        }
+                        case RS::kEnterZone:
+                        case RS::kLeave: {
+                            const bool enter = unit_.retreat_state == RS::kEnterZone;
+                            if (enter) ++unit_.retreat_enter_ticks; else ++unit_.retreat_leave_ticks;
+                            unit_.plane_desired_speed_2b4 = travel;                // class+190h
+                            unit_.plane_trg_speed_corr_off_2b0 = 0;
+                            unit_.plane_air_brake_mode_2d8 = 1;
+                            owner_.retreat_pitch_009fb800(unit_, a.altitude_2c);
+                            unit_.plan_heading_2c0 = enter
+                                ? bsp::retreat_heading_to_point_009f9d90(
+                                      unit_.motion.position[0], unit_.motion.position[2],
+                                      a.enter_point_50)                             // 009C990A
+                                : bsp::retreat_leave_heading_009c9990(a);           // 009C9A13
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = 2;
+                            if constexpr (GameUnitsHost::Impl::kTaskGunConeBound)
+                                unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x66C);
+                            owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                            owner_.done(enter ? "BotStateRetreatEnterZone::tick"
+                                              : "BotStateRetreatLeave::tick",
+                                        enter ? 0x009c98c0u : 0x009c9990u);
+                            break;
+                        }
+                        case RS::kFollow:
+                            ++unit_.retreat_follow_ticks;
+                            unit_.plan_mode_26c = 2;   // 009C1FE2
+                            owner_.run_follow_tick_009c1fd0(unit_);
+                            owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
+                            break;
+                        default:
+                            break;
+                        }
+                        // 007C6C30's arms for this plane.
+                        const bsp::WorldMapBounds* b = owner_.lua.world_border_bounds();
+                        if (b == nullptr || !owner_.lua.plane_globals_loaded()) return;
+                        const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                        const float* p = unit_.motion.position;
+                        const bool outside =
+                            bsp::point_outside_world_map_0071c4f0(*b, {p[0], p[1], p[2]});
+                        if (!outside || !unit_.retreat_squadron_ordered) {
+                            unit_.retreat_exit_6f0 = g.retreat_exit_time;           // 007C6C8A
+                            unit_.retreat_exit_state_6ec = 1;
+                            return;
+                        }
+                        ++unit_.retreat_outside_ticks;
+                        if (unit_.retreat_outside_at < 0.0f)
+                            unit_.retreat_outside_at = owner_.summary.simulated_seconds;
+                        unit_.retreat_exit_6f0 = static_cast<float>(
+                            static_cast<double>(unit_.retreat_exit_6f0) - dt);    // 007C6CA6
+                        int st = 2;
+                        if (bsp::point_beyond_map_margin_0059c9b0(*b, p[0], p[2], g.retreat_exit_dist)
+                            || unit_.retreat_exit_6f0 < 0.0f) {
+                            st = 3;
+                            unit_.retreat_exit_6f0 = -1.0f;                         // 007C6CD5
+                        }
+                        owner_.record("Plane::out_of_action_notice_00982120", 0x00982120u);
+                        unit_.retreat_exit_state_6ec = st;
+                        if (unit_.retreat_exit_6f0 < 0.0f)
+                            owner_.retreat_leave_map_007ee410(unit_.process_index);  // 007C6DE3
+                    }
+
                     void run_land_task_tick_009b3eb0(float dt) {
                         using LS = GameUnitSlot::LandTaskState;
                         if (!unit_.land_task_installed) return;
@@ -27481,6 +27896,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_takeoff_task_tick_009cfd70(elapsed);
                             } else if (kSquadronLandTaskBound && unit_.land_task_installed) {
                                 run_land_task_tick_009b3eb0(elapsed);
+                            } else if (bsp::kPlaneRetreatTaskBound && unit_.retreat_task_installed) {
+                                // Packet cc9_plane_retreat_task: the one installed task's
+                                // vtable[64h], 009CA130.
+                                run_retreat_task_tick_009ca130(elapsed);
                             } else if (kBaseLaunchChainBound && unit_.takeoff_task_installed) {
                                 // Packet cc9_takeoff_task_bind: the takeoff task is
                                 // the bot's one task, so no attack arm runs.
@@ -27558,7 +27977,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     (bsp::kStrafeTaskBound && unit_.strafe_task_installed) ||
                                     unit_.dive_bomb_task_installed ||
                                     unit_.moveto_task_installed ||
-                                    (kSquadronLandTaskBound && unit_.land_task_installed);
+                                    (kSquadronLandTaskBound && unit_.land_task_installed) ||
+                                    (bsp::kPlaneRetreatTaskBound && unit_.retreat_task_installed);
                                 const bool eligible = !unit_.dogfight_task_installed &&
                                     !unit_.generic_suppress_520 &&
                                     (!GameUnitsHost::Impl::kPilotFiresBound ||
@@ -31214,6 +31634,23 @@ void GameUnitsHost::report() {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
     if constexpr (kSquadronReturnToBaseResolveBound) {
+        host.log.notef("summary plane retreat task bound=%d orders=%llu installs=%llu "
+            "rtb_installs=%llu refused=%llu retired=%llu exits=%llu exit_members=%llu "
+            "exit_gated=%llu latches_361=%llu (009CA2B0 / 007C6C30 / 007F31A0, packet "
+            "cc9_plane_retreat_task)", bsp::kPlaneRetreatTaskBound ? 1 : 0,
+            host.retreat_orders, host.retreat_installs, host.retreat_rtb_installs,
+            host.retreat_refused, host.retreat_retired, host.retreat_exits,
+            host.retreat_exit_members, host.retreat_exit_gated, host.retreat_latches_361);
+        for (const auto& slot : host.slots) {
+            if (!slot || slot->retreat_ticks == 0) continue;
+            host.log.notef("  retreat %-16s ticks=%llu moveto=%llu enterzone=%llu leave=%llu "
+                "follow=%llu refreshes=%llu zone_misses=%llu outside=%llu installed_at=%.2f "
+                "outside_at=%.2f", slot->row.name.c_str(), slot->retreat_ticks,
+                slot->retreat_moveto_ticks, slot->retreat_enter_ticks, slot->retreat_leave_ticks,
+                slot->retreat_follow_ticks, slot->retreat_refreshes, slot->retreat_zone_misses,
+                slot->retreat_outside_ticks, static_cast<double>(slot->retreat_installed_at),
+                static_cast<double>(slot->retreat_outside_at));
+        }
         host.log.notef("summary squadron returntobase 007F16D0 null=%llu home=%llu site=%llu "
             "retreat=%llu squadrons=%zu RECORD ONLY (packet cc9_squadron_land_task)",
             host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
