@@ -10830,3 +10830,32 @@ flyabove.
 - That is `dive_bomb_rounds_remaining` (the rack census `rack_ammo` / `rack_single_count`) and the live ordnance mask
   (`kRackLiveOrdnanceMaskBound`).
 - Both are in the planes and racks lane (`src/game_hosts_units.cpp`). **Routed to the lead / cc9-lua45**, with this log.
+
+## 150. The dive handover attitude is the image's own completion rule (147.2 item 2; cc9-gunnery32, 2026-10-06, read only)
+
+143.2 found the SBD leader entering `aimdive` at -1.18 rad live pitch, against a turndown "command" of -0.56. Three
+pieces were read against the image.
+
+**The turndown's completion test `009C7EA0` (read whole, `009C7EA0-009C7EFB`)** is the handover point:
+- `009C7ED0` / `009C7ED8` JA: done when `-1.3 > pitch` (`00D1F98C` = `bf a6 66 66` = -1.3f);
+- otherwise `009C7EDD` / `009C7EE5` JBE and `009C7EEA` JA: done when `-1.0 > pitch` (`00D7A260`) **and** |bank|, folded
+  at `009C7EAE..009C7ECC`, is above 135 degrees (`00D20E80` = `40 16 cb e4` = 2.3562f).
+- `dive_bomb_turndown_complete_009c7ea0` (`src/dive_bomb_task.cpp`) is the same predicate, written as its negation.
+
+So the image hands a still-inverted aircraft to `aimdive` anywhere between -1.0 and -1.3 rad of pitch. The trace's
+-1.18 sits inside that window; it is the rule, not a fault.
+
+**The turndown tick `009C44F0`** (host `dive_bomb_turndown_tick_009c44f0`) writes no attitude target once latched:
+- `009C46C9-009C4736` releases the roll and writes the pitch **slot** `+29Ch` = `interp(30 deg -> 0, 3 deg -> 1,
+  angle to inverted)`, a stick pull of 0..1 while inverted, with `+2D0h` = 0.
+- Its unlatched arm writes `+29Ch` = 0 below 20 degrees of pitch, or `+2BCh` = 0 with mode 2 above.
+- No -0.56 is written anywhere in the tick. The -0.5585 that 143.2 quotes as "the turndown's own command" is not an
+  input of the pull; it is a leftover field in the trace line.
+
+**The pitch-mode gate `0099E3BF`:** `MOV ECX,[ESI+2D0h]` / `TEST ECX,ECX` / `JNE 0099E490`, read in this packet's
+listing. It matches the host's `if (unit_.plan_state.pitch_mode_2d0 != 0)` (`src/game_hosts_units.cpp`, PlanControls'
+pitch arm). With mode 0 the pull reaches the elevator unaltered, as DIVE_BOMB_TASK "The pitch-arm gate" records.
+
+**Verdict: faithful; nothing to bind.** The handover attitude is the image's. 143.2's along-track error, born after the
+handover, belongs to `aimdive`'s steering (`009C5C9F`, `dive_bomb_aimdive_steer_009c5c9f`): its job is to turn a
+68-72 degree dive onto a 45-degree sight line. That law is the place to look next; it is not re-read here.
