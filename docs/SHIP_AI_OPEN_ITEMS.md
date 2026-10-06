@@ -13720,3 +13720,65 @@ the measurement streams.**
        not read; nothing here shows the host wrong.
 No run reached a mission end, so the exec guard's line did not appear. **USN02 is closed after
 eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6). Next: the reference mission with the shortest victory condition.
+
+## 172. Handoff (cc9-ships35, 2026-10-06, at about 65% context)
+
+### Landed (main or `agent/cc9-ships35`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 168 / SCRIPTED_HELM 12 | the `target` line (the 00525250 target pick on a controlled squadron, into intake 007F1940); USN01 reaches phase 3 | harness |
+| 168 | USN01's phase 3 is blocked by the unimplemented `levelbomb` task (routed: plane lane, cc9-lua41) | - |
+| 169 | a CommandBuilding's level: the clock (006F7360), D4h, 006F38E0's armour for the bleed, the reset (006F5362); the scene's `Level` / `LevelUpSeconds` | `kCommandBuildingLevelBound` ON |
+| 170 | the explosion-delay draw is aircraft-only; no key coupling with ship draws | doc |
+| 171 | USN02 toward completion: eight runs, phase 2 reached, no completion | doc |
+
+### Open, in order
+
+1. **Wire the max-HP setter** when cc9-gunnery28 sends its sha: call it from
+   `command_building_level_006f38e0` with `kCommandBuildingHpLevel[level] * b.class_hp_048`
+   behind its own OFF switch, then pair (USNOS and JM08 HQs go to 16800 / 12000).
+2. **USN02 completion** waits on the commands lane's `cruise_step` item (171 (a)). When it lands:
+   - re-run r5 (`local\s35_u2_orders5.txt`): Houston pre-positioned during phase 1 while the
+     player is on Exeter;
+   - then r3's phase-1 orders with a parked Houston.
+3. **USN01 completion** waits on cc9-lua41's level-bomb task. The order file is
+   `local\s35_orders1.txt`.
+4. **169 recorded pieces:** the garrison respawn `006F3660` (no host records), the master `+738h`
+   forward (no established reach), `class+2Ch` (no reach on the rows).
+
+### Tools (`local\`, `s35_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s35_run.ps1` / `s35_rows.ps1` | reference V's launch form (as s34's) |
+| `s35_nells.py <prefix> <ref> <every_s> units...` | per-unit trajectory CSVs: positions and distance to a reference unit |
+| `s35_aisteps.py <log> <unit> <lo> <hi>` | a unit's `ship ai step` state / mode / dir transitions |
+| `s35_endscan.py <script.lua...>` | where a mission script completes, with the enclosing conditions |
+| `s35_dispscan.py` | s34's displacement census |
+
+All leases are released after this commit.
+
+## 173. The level's maximum health and the gunnery armour copy (packet `cc9_command_building_level_hp`, `kCommandBuildingLevelMaxHpBound`, cc9-ships35, 2026-10-06)
+
+**What is wired** in `command_building_level_006f38e0` (section 169):
+- **The armour copy (routed from cc9-gunnery28, GUNNERY 129).** After the `+368h` store
+  (`006F392F`), the line calls `GameGunneryHost::set_unit_armour_0368(unit, armour)`. It runs
+  unconditionally under `kCommandBuildingLevelBound`. Gunfire reads it only under gunnery28's
+  `kCommandBuildingGunfireArmourBound`, so it changes no behaviour while that switch is OFF.
+- **Maximum health (committed OFF).** `006F3951 FSTP [ESI+36Ch]` stores HP[level] * class HP.
+  Under `kCommandBuildingLevelMaxHpBound` it goes to `set_unit_max_health_036c` (gunnery28,
+  `9886e40e9`), which leaves current health unchanged, as the image's handler does.
+
+**Predictions (written before any ON run):**
+- **JM08 long:** the HQ's maximum goes 12000 -> 13200 -> 14400 -> 16800 at 10, 20 and 30 s, and
+  back to 12000 at its neutralize. Current health stays where damage left it.
+  - Readers of the maximum are the health-fraction consumers: AI target weights, Lua
+    `GetHpPercentage`, the repair to fraction and the fire roll's `(max - hp) / max`.
+  - The fire roll's chance (section 162) uses the maximum, so its draws and starts move. That
+    is stream-1 / stream-0 work keyed per unit under the measurement option.
+  - Expect `pair_diff` 3 if any AI weight or the fire roll moves an outcome, else 1.
+  - The neutralize time (1041.50 s) does not move through the maximum: neutralize is health <= 0.
+- **USNOS 3000:** HQ1, HQ2 and CB2 reach 16800 at 30 s; their fraction drops to 0.71 at full
+  health. If the US AI weighs targets by fraction, `pair_diff` 3, else 1.
+- **USN01 3000 (control):** CB2 never levels. `pair_diff` 1.
