@@ -614,6 +614,27 @@ constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.
 //    constructor's memset 1 (00864623), taken as set. OFF: the liveness bytes
 //    only. Packet cc9_gunnery_class_arms, docs/GUNNERY_OPEN_ITEMS.md 77.
 constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
+//  * kDepthChargeBotTickBound: packet cc9_depth_charge_bot. A depth-charge
+//    launcher (category 8) is driven by DepthChargeBot's own tick 008FC080
+//    (src/gun_bot_remainder.cpp): the target below -2.0 m, its position
+//    predicted over the charge's sink time (DiveSpeed, desc+DCh), within
+//    max(AttackDist, 100) m horizontally, the FireDelay / ContinuousFireTime
+//    burst. OFF: the generic bot test, which needs 0085ABA0 to accept the
+//    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
+//    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
+constexpr bool kDepthChargeBotTickBound = false;
+//  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
+//    79h's group 5 arm (0095A441): the player's depth-charge launchers take
+//    the 99h-held byte as their trigger, and GameGunneryHost::
+//    player_fire_weapon_group sends that message for a harness line. OFF: the
+//    arm is a record. docs/GUNNERY_OPEN_ITEMS.md 140.
+constexpr bool kPlayerWeaponGroupFireBound = false;
+// robots.lua (2025-06-01) DepthChargeBot by skill index 0 Stun .. 5 Elite:
+// AttackDist, BulletThrowMul, ContinuousFireTime, FireDelay low, high.
+constexpr float kDepthChargeBotLevels[6][5] = {
+    {100.0f, 1.0f, 0.5f, 5.0f, 7.0f}, {30.0f, 1.0f, 0.5f, 2.0f, 5.0f},
+    {45.0f, 1.0f, 1.0f, 1.0f, 2.5f}, {60.0f, 1.0f, 1.0f, 3.0f, 5.0f},
+    {80.0f, 0.5f, 2.5f, 0.1f, 1.0f}, {100.0f, 0.0f, 10.0f, 0.0f, 0.0f}};
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
@@ -1156,6 +1177,12 @@ struct GameGunneryHost::Impl {
         unsigned long long builds{0}, builds_at_order{0}, builds_refused{0};
         unsigned long long hangar_releases{0}, launches{0}, launch_orders_unbound{0};
     } shipyard;
+    // Packet cc9_depth_charge_bot (kDepthChargeBotTickBound).
+    std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
+    std::map<std::size_t, bool> depth_charge_trigger_by_gun;
+    unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
+    unsigned long long player_group5_triggers{0}, player_group_fires{0};
     std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
@@ -1409,6 +1436,7 @@ struct GameGunneryHost::Impl {
         aa_gunner_error = 19, // 00902B5C period, 00902CF0 spread, 00902D77/00902D95 offsets, key (gun, 0)
         aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
         bomb_scatter = 22,    // 006E4D50's four drop draws, key (unit, 0)
+        depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -6910,6 +6938,84 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
+        if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
+            // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
+            // LABELLED: the target check (008FC08A) and the idle timer (008FC0E2)
+            // are the host's own, run above for every gun. The trigger byte keeps
+            // its value between the 0.1 s thinks (the tick returns before
+            // 008FC39A); with no target it is dropped, as clearing the fire
+            // target drops vtable[1E8h] (LABELLED: that clear is not read here).
+            if (!have_target) depth_charge_trigger_by_gun[g] = false;
+            struct DcHost final : bsp::DepthChargeBotHost {
+                Impl& h; std::size_t g, owner, target; bool have, inhibit; bool& trigger;
+                DcHost(Impl& h_, std::size_t g_, std::size_t o, std::size_t t, bool hv,
+                       bool inh, bool& tr)
+                    : h(h_), g(g_), owner(o), target(t), have(hv), inhibit(inh), trigger(tr) {}
+                void* resolve_fire_target_00521ea0() override {
+                    return have ? static_cast<void*>(this) : nullptr;
+                }
+                bsp::GunBotTargetValidity target_validity() override {
+                    bsp::GunBotTargetValidity v;
+                    v.target_resolved = v.target_alive = v.gun_present = true;
+                    v.gun_parent_present = v.gun_parent_alive = v.sides_related = true;
+                    return v;
+                }
+                void clear_fire_target_slot38() override {}
+                void run_idle_rest_timer_008fbce0(float) override {}
+                bool side_enabled_00927f10() override {
+                    return h.slot_ai_held_00927f10(h.guns[g].seat_1ac);
+                }
+                bool gun_present() override { return true; }
+                void* fire_target_entity_slot44() override {
+                    return have ? static_cast<void*>(this) : nullptr;
+                }
+                float weapon_sink_rate() override {
+                    const float s = h.lua.read_bullet_class_number(h.guns[g].bullet_class,
+                        "DiveSpeed", 0.0f);                          // desc+DCh, 006FD4E3
+                    return s > 0.0f ? s : 1.0f;
+                }
+                std::array<float, 3> owner_world_position() override {
+                    std::array<float, 3> p{};
+                    h.units.unit_position_00fc(owner, p[0], p[1], p[2]);
+                    return p;
+                }
+                std::array<float, 3> target_world_position() override {
+                    std::array<float, 3> p{};
+                    h.units.unit_position_00fc(target, p[0], p[1], p[2]);
+                    return p;
+                }
+                std::array<float, 3> target_world_velocity_slot34() override {
+                    float v[3] = {0.0f, 0.0f, 0.0f};
+                    h.unit_velocity(target, v);
+                    return {v[0], v[1], v[2]};
+                }
+                bsp::DepthChargeBotLevel level_parameters() override {
+                    int level = h.units.skill_level(owner);
+                    if (level < 0) level = 0;
+                    if (level > 5) level = 5;
+                    bsp::DepthChargeBotLevel l;
+                    l.attack_dist = kDepthChargeBotLevels[level][0];
+                    l.bullet_throw_mul = kDepthChargeBotLevels[level][1];
+                    l.continuous_fire_time = kDepthChargeBotLevels[level][2];
+                    l.fire_delay_min = kDepthChargeBotLevels[level][3];
+                    l.fire_delay_max = kDepthChargeBotLevels[level][4];
+                    return l;
+                }
+                bool muzzle_fire_inhibited() override { return inhibit; }
+                void set_trigger_slot1e8(bool held) override { trigger = held; }
+                float random_range_00bd2f10(float low, float high) override {
+                    return h.draw(Draw::depth_charge_delay, g, 0, low, high);
+                }
+            };
+            bool& trigger = depth_charge_trigger_by_gun[g];
+            DcHost dc(*this, g, owner_unit, have_target ? target : 0, have_target, inhibited,
+                      trigger);
+            bsp::depth_charge_bot_tick_008fc080(dc, depth_charge_bot_by_gun[g], dt);
+            ++depth_charge_ticks;
+            want_fire = trigger;
+            if (want_fire) ++depth_charge_holds;
+            done("DepthChargeBot::tick_008fc080", 0x008fc080u);
+        }
         const bool plane_gun = gun.category == 0
             && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase);
         if constexpr (kPlaneGunfireHooked) {
@@ -10167,7 +10273,28 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         return;
     }
     if (m.group == 5) {                                            // 0095A441
-        record("PlayerGunSeat::message_group5", 0x0095a441u);
+        if (!kPlayerWeaponGroupFireBound) {
+            record("PlayerGunSeat::message_group5", 0x0095a441u);
+            return;
+        }
+        // Packet cc9_player_weapon_group_fire. 0095A441..0095A5BB walks unit+48h:
+        // a gun that is IsKindOf(20h) and passes 00954210(5) (operational, and
+        // 0080F750: Function 8 or 9). Function 9 is aimed first (00957740,
+        // 00955630, 0085ABA0) and its trigger drops outside 3 degrees; any
+        // other takes vtable[1E8h](+34h, 99h held) directly (0095A58D..0095A5A0).
+        if (unit >= unit_state.size() || unit_state[unit].dead) return;
+        for (std::size_t g = 0; g < guns.size(); ++g) {
+            GameGunRow& gun = guns[g];
+            if (gun.unit_index != unit) continue;
+            if (gun.category == 8) {
+                gun.seat_trigger = m.held_34;
+                ++player_group5_triggers;
+            } else if (gun.category == 9) {
+                // LABELLED: the Function 9 aim (00957740 / 00955630) is not read.
+                record("PlayerGunSeat::group5_function9_aim", 0x0095a4b6u);
+            }
+        }
+        done("PlayerGunSeat::message_group5", 0x0095a441u);
         return;
     }
     if (m.group != 1 && m.group != 2) {
@@ -10819,6 +10946,48 @@ bool GameGunneryHost::shipyard_order(std::size_t shipyard, int entry, int count,
         "cc9_shipyard_production)", row->name.c_str(), chosen_entry, class_id, equipment,
         name.c_str(), bsp::shipyard_available_00844610(*yard, class_id), reason.c_str());
     host.done("Shipyard::order", 0x00846d90u);
+    return true;
+}
+
+// Packet cc9_player_weapon_group_fire. The player's weapon-group fire on screen
+// 2Eh (SHIP_SCREEN_UPDATE 28): 9Fh selects group 5 (role 7, mask 80h, through
+// 005484B0 and 0077C470), then 005484F0 sends message 79h with the group and the
+// 99h held / pressed bytes, routed to the unit's 00959C20 every frame.
+// LABELLED: the role take is modelled as the group's guns taking the local
+// slot (seat 0), which is what makes their bots stand aside (00927F10); the
+// permission test 009542B0 and the HUD screen are not run.
+bool GameGunneryHost::player_fire_weapon_group(std::size_t unit, int group, bool held,
+                                               std::string& reason) {
+    Impl& host = *impl_;
+    const GameUnitRow* row = unit < host.units.count() ? host.units.unit_row(unit) : nullptr;
+    auto refuse = [&](const char* why) {
+        reason = why;
+        host.log.notef("player weapon group fire REFUSED: unit=%s group=%d held=%d: %s "
+            "(005484F0 79h, packet cc9_player_weapon_group_fire)",
+            row != nullptr ? row->name.c_str() : "-", group, held ? 1 : 0, why);
+        return false;
+    };
+    if (!kPlayerWeaponGroupFireBound) return refuse("kPlayerWeaponGroupFireBound is off");
+    if (row == nullptr || unit >= host.unit_state.size()) return refuse("no such unit");
+    if (host.unit_state[unit].dead) return refuse("the unit is dead");
+    if (group != 5) return refuse("only group 5 (depth charges) is bound");
+    std::size_t taken = 0;
+    for (GameGunRow& gun : host.guns) {
+        if (gun.unit_index != unit || (gun.category != 8 && gun.category != 9)) continue;
+        gun.seat_1ac = 0;
+        ++taken;
+    }
+    if (taken == 0) return refuse("the unit has no Function 8/9 launcher (0080F750)");
+    GunAimMessage79 m;
+    m.group = 5;
+    m.held_34 = held;
+    m.pressed_35 = held;
+    host.apply_gun_aim_message(unit, m);
+    ++host.player_group_fires;
+    reason = held ? "held" : "released";
+    host.log.notef("player weapon group fire: unit=%s group=5 launchers=%zu %s (005484F0 79h -> "
+        "00959C20 0095A441, packet cc9_player_weapon_group_fire)", row->name.c_str(), taken,
+        reason.c_str());
     return true;
 }
 
@@ -11776,6 +11945,12 @@ void GameGunneryHost::log_sample(unsigned long long step_index,
 void GameGunneryHost::report() {
     Impl& host = *impl_;
     const GameGunnerySummary& s = host.summary;
+    if (kDepthChargeBotTickBound || kPlayerWeaponGroupFireBound) {
+        host.log.notef("summary mission gunnery depth charge bot ticks=%llu holds=%llu "
+            "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
+            "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
+            host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
     if constexpr (bsp::kShipyardProductionBound) {
         const auto& y = host.shipyard;
         host.log.notef("summary shipyard production: yards=%zu walks=%llu orders=%llu "

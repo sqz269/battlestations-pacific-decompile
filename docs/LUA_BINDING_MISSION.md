@@ -3736,3 +3736,22 @@ jm01, jm10, ijn_12_panama and two multiplayer scripts.
    primary 3 completes and phase 3 starts (primary 2, Lexington).
 3. Everything that follows phase 3 moves. Deaths and hits may move, because USN units react to a
    surfaced boat.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.** OFF is `8ac8db242`; ON is the same commit with the flip
+(`local\l44_sub2`). The JM06 3000-frame pair does not reach the native: phase 1 is still running, `calls=0`, and
+`pair_diff` gives exit 1. The deciding pair is JM06 24000 (`local\l44_off_j6l.log` / `local\l44_sub_j6l.log`),
+`pair_diff` exit 3.
+- **Calls.** The native answers 285 calls, 51 of them true, with no unseeded slot and no unresolved entity.
+- **Prediction 1's wording was wrong.** The boat does not start surfaced: the depth trace starts at level 1,
+  y = -20.00, and rises to about -12.6. The surface answers come later in the run. The mechanism (the
+  `00852820` test on the player's boat) is the one predicted.
+- **Prediction 2 holds.**
+  - `luaJM6CheckSurface` starts the countdown once (`summary mission countdown starts=1 expiries=1 callbacks=1
+    last_callback=luaJM6MessageTransmitted`).
+  - Primary 3 completes, and phase 3 posts `ijn06.obj_p2` ("Carrier", log line 137110). It is never reached OFF.
+- **Prediction 3.** Phase 3 adds four units: Lexington launches `Lexington-class 01_sqn01` and `_sqn02` (with
+  their wingmen). The Lexington group's fire ranges open (`range 0 -> 1500/1600`).
+  - Deaths, hits and damage are identical; mission end is `none` on both sides.
+  - `dive-bomb-task releases` gains the new squadrons' 5 of 4.
+- So phase 2's blocker is gone. The next JM06 gates are phase 3's player torpedo hit on Lexington, then
+  Lexington and every escort dead (SHIP_AI_OPEN_ITEMS, JM06). Both need the player's input.

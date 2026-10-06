@@ -828,7 +828,14 @@ inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAU
 // holder (+7ACh / +1208h) when the sides match, else no site, before any key
 // is compared. False: a parented plane is keyed against every deck like a
 // flying one, so a plane at its carrier's bow can pick the next carrier.
-inline constexpr bool kTakeoffOwnSiteBound = true;   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
+inline constexpr bool kTakeoffOwnSiteBound = true;
+// Packet cc9_rtb_home_arm (SQUADRON_LAND_TASK 5eo). True: 007F16D0's home arm
+// (007F1732-007F176E): block = 006BCD20(squadron+404h, 1); when the block exists,
+// 006C4790 does not exclude the squadron and 006BED30 is false (runway +1Ch and
+// hangar +1Dh failures clear, owner present and local), `land` is issued at the
+// home base itself (007F1000), before any nearest-site key. False: the arm is
+// never taken and a returning squadron lands at the nearest site.
+inline constexpr bool kReturnToBaseHomeArmBound = true;   // ON: SQUADRON_LAND_TASK 5eo, ESMP08 / USN04 pairs   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state

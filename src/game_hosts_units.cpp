@@ -10988,7 +10988,40 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     const bool home_authored = sq->squadron_unit < slots.size()
         && !slots[sq->squadron_unit]->scene_home_base_key.empty();
     in.home_arm_issues = false;
-    if (home_authored) note += " home-arm-unread";
+    // Packet cc9_rtb_home_arm: 007F1732-007F176E. squadron+404h is the deck owner
+    // the air-ops bag names (`HomeBase`, 006C5050 -> 007F1C00) or the scene row's
+    // HomeBase; 006BCD20(+404h, 1) answers its block (kind 9 +1188h, kind 45h
+    // +72Ch) unless the owner is remote (+5Dh, never here); 006C4790 tests the
+    // block+B4h list; 006BED30 answers true for block+1Ch, +1Dh, no owner or a
+    // remote owner. LABELLED: the +B4h exclusion list is not carried (empty); a
+    // sunk home owner is taken as gone from +404h (the image keeps the pointer).
+    std::string home_name;
+    std::size_t home_owner = slots.size();
+    std::size_t home_deck = 0;
+    if constexpr (bsp::kReturnToBaseHomeArmBound) {
+        home_name = sq->from_air_ops_launch ? sq->bag_home_base : std::string();
+        if (home_name.empty() && home_authored) {
+            home_name = slots[sq->squadron_unit]->scene_home_base_key;
+        }
+        bsp::AirOpsDeckRegistry& hdecks = bsp::air_ops_decks();
+        for (std::size_t i = 0; !home_name.empty() && i < hdecks.size(); ++i) {
+            if (hdecks.name_at(i) != home_name) continue;
+            for (std::size_t u = 0; u < slots.size(); ++u) {
+                if (slots[u]->row.name == home_name) { home_owner = u; break; }
+            }
+            const bsp::AirOpsDeck* hd = hdecks.mutable_at(i);
+            const bool sunk = home_owner < slots.size() && gunnery != nullptr
+                && gunnery->unit_dead(home_owner);
+            if (home_owner < slots.size() && !sunk && hd->owner_present
+                && !hd->runway_failure && !hd->hangar_failure) {
+                home_deck = i;
+                in.home_arm_issues = true;
+            }
+            break;
+        }
+    } else if (home_authored) {
+        note += " home-arm-unread";
+    }
     // 006C0840(side = sq+54h, head, 0, 0047B850(head), 1).
     bsp::NearestLandingSiteInputs site_in;
     site_in.side = sq->party;
@@ -11066,6 +11099,8 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     std::string site_name;
     if (r.arm == bsp::ReturnToBaseArm::kLandAtSite && site.node != 0) {
         site_name = decks.name_at(static_cast<std::size_t>(site.node - 1u));
+    } else if (r.arm == bsp::ReturnToBaseArm::kLandAtHome && home_owner < slots.size()) {
+        site_name = decks.name_at(home_deck);                       // 007F1000(+404h)
     }
     ReturnToBaseCensus* entry = nullptr;
     for (ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
@@ -11184,7 +11219,10 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
         if (install_retreat_task_009c9d00(unit_index, true)) ++retreat_rtb_installs;
         return;
     }
-    if (entry->last_arm != 2) {
+    // Packet cc9_rtb_home_arm: the home arm's `land` (007F1000) names the home
+    // base itself, which this host installs like a site.
+    const bool home_arm = bsp::kReturnToBaseHomeArmBound && entry->last_arm == 1;
+    if (entry->last_arm != 2 && !home_arm) {
         refuse(c.refused_arm, "007F16D0 did not answer land at site");
         return;
     }
@@ -11325,7 +11363,11 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     }
     const ReturnToBaseCensus* entry = nullptr;
     for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
-    if (entry == nullptr || entry->last_arm != 2) return false;
+    // Packet cc9_rtb_home_arm: the home arm's `land` (007F1000) targets the home
+    // base, so it keeps the task the same way.
+    const bool home_arm = bsp::kReturnToBaseHomeArmBound && entry != nullptr
+        && entry->last_arm == 1;
+    if (entry == nullptr || (entry->last_arm != 2 && !home_arm)) return false;
     const std::size_t owner = unit.land_site_plus_one - 1u;
     if (owner >= slots.size()) return false;
     return slots[owner]->row.name == entry->last_site;
