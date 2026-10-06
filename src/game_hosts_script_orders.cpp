@@ -1570,9 +1570,21 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
         live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
     const int arm = g_class_default_arm_reader != nullptr
         ? g_class_default_arm_reader(vehicle_class) : 0;
+    // Packet cc9_player_launch_group: 0067A584..0067A592 hands 006C0F00
+    // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
+    // stock clamp is 006C0F00's own; this applies the screen's.
+    int screen_count = count;
+    if constexpr (bsp::kAirOpsPlayerLaunchGroupBound) {
+        if (screen_count > bsp::kSupportManagerLaunchGroup) {
+            log_.notef("player air ops launch: count %d clamped to the screen's %d "
+                "(screen+2B4h, 0066EC0A / 0067A592, packet cc9_player_launch_group)",
+                screen_count, bsp::kSupportManagerLaunchGroup);
+            screen_count = bsp::kSupportManagerLaunchGroup;
+        }
+    }
     // 0067A5A7 -> 006C4780 -> 006C0F00.
     out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
-        static_cast<std::uint32_t>(vehicle_class), count, arm, live.data());
+        static_cast<std::uint32_t>(vehicle_class), screen_count, arm, live.data());
     if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
     // 0067A5D1 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
     // 0067A5E6 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
@@ -1633,12 +1645,25 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             }
         }
         std::vector<std::size_t> members;
+        bool slot_waiting = false;
         if (record != nullptr) {
             for (const std::size_t m : record->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) slot_waiting = true;
                 if (m != bsp::kPlaneSquadronNoUnit && m < units_.count() &&
                     units_.unit_alive_and_visible(m)) {
                     members.push_back(m);
                 }
+            }
+        }
+        // Packet cc9_player_launch_group (kAutoAttackAllMembersBound): the image
+        // reads the key in pass-C init 007F4BA0, after 007F4580 has made every
+        // wing, so the order waits while a registered slot still awaits its
+        // pass-A plane (kWingConstructionInPassABound). Same 600-step cap.
+        if constexpr (bsp::kAutoAttackAllMembersBound) {
+            if (slot_waiting && p.waited_steps + 1 < 600) {
+                ++p.waited_steps;
+                ++i;
+                continue;
             }
         }
         if (members.empty() && ++p.waited_steps < 600) { ++i; continue; }
@@ -4429,9 +4454,36 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
     if (deaths.empty()) return;
     if (dead_published_.size() < units_.count()) dead_published_.resize(units_.count(), false);
     lua_State* const L = machine_state_;
+    std::vector<bool> sunk(units_.count(), false);
+    for (const auto& death : deaths) {
+        if (death.first < sunk.size()) sunk[death.first] = true;
+    }
     for (const auto& death : deaths) {
         const std::size_t index = death.first;
         if (index >= dead_published_.size() || dead_published_[index]) continue;
+        if constexpr (kSquadronDeadOnLastMemberBound) {
+            // Packet cc9_squadron_dead (docs/ENTITY_DEAD_FLAG.md section 8). The
+            // squadron entity is killed only by 007F3970 when its LAST plane
+            // leaves +3D0h (007F3A16 +3CCh == 0, then 007F3A2A 00926D90 Kill with
+            // ECX still the squadron: 007ED260 never writes ECX), so its self
+            // table's `Dead` waits for that. Here the squadron is fused with its
+            // wing-0 plane, so a fused leader's death is held while another
+            // member still flies.
+            bool held = false;
+            for (const bsp::PlaneSquadronHostRecord& record :
+                 bsp::plane_squadron_registry().records()) {
+                if (record.squadron_unit != index) continue;
+                for (const std::size_t m : record.member_units) {
+                    if (m != bsp::kPlaneSquadronNoUnit && m != index && m < sunk.size() &&
+                        !sunk[m]) {
+                        held = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            if (held) continue;
+        }
         dead_published_[index] = true;
         lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
         if (!lua_istable(L, -1)) {

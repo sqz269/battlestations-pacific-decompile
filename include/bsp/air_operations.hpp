@@ -796,6 +796,23 @@ AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds);
 // neither (no queued slot is ever launched, as before).
 inline constexpr bool kAirOpsPlayerLaunchBound = true;   // ON: AIROPS_LAUNCH_TICK, the player's launch, measured
 
+// Packet cc9_player_launch_group (docs/AIROPS_LAUNCH_TICK.md, "The screen's launch
+// group"). The count the screen hands 006C0F00 is min(stock, screen+2B4h)
+// (0067A584..0067A592 CMP/CMOVL). screen+2B4h has one writer in the image,
+// 0066EC1B MOV [ESI+2B4h],EBP with EBP = 3 (0066EC0A) in the screen's register
+// 0066EA60; a whole-image disp32 scan found no other screen method writing it.
+// UNCERTAIN: a block copy into the screen would not show in that scan.
+inline constexpr std::int32_t kSupportManagerLaunchGroup = 3;  // screen+2B4h, 0066EC0A
+// Packet switch: true limits a player launch's count to kSupportManagerLaunchGroup
+// (a larger request is clamped, with a log line). False: the requested count goes
+// to 006C0F00 unchanged, which no player can do.
+inline constexpr bool kAirOpsPlayerLaunchGroupBound = false;
+// Packet switch: true serves a launched squadron's AutoAttackTarget once every
+// registered member slot holds a plane (the image's 007F4BA0 runs after 007F4580
+// made every wing). False: served at the first step any member exists, so only
+// the flight leader receives it.
+inline constexpr bool kAutoAttackAllMembersBound = false;
+
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state
 // 1 or 5 nothing (its planes can be taken), any other its slot+8h.

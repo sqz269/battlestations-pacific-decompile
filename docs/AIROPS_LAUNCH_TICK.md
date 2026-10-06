@@ -728,3 +728,62 @@ The scripts gate `LaunchSquadron` on `IsReadyToSendPlanes`, which answers false 
 set (006BF620), so the queued arm is never taken. **No reach:** no `kAirOpsQueuedLaunchStartBound`
 binding is made. The queue machinery this packet added would serve it unchanged if a script
 queued one.
+
+### The screen's launch group (packet `cc9_player_launch_group`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAirOpsPlayerLaunchGroupBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+Ghidra was read-only.
+
+**The question.** 5ef's `wing=5` for a requested 6.
+
+**The read.**
+- 0067A57D..0067A592 (inside 00675C40):
+  - `CALL 006BF310` (stock);
+  - `CMP EAX,EDI / JLE` (no stock, no launch);
+  - `MOV ECX,[ESI+2B4h]`, then `CMP EAX,ECX / CMOVL ECX,EAX`.
+  - So 006C0F00 gets min(stock, screen+2B4h).
+- screen+2B4h has one writer in the image: `0066EC1B MOV [ESI+2B4h],EBP`, with `0066EC0A MOV EBP,3`.
+  It is in `BSP_HudSupportManagerScreen_Register` (body 0066EA60-0066FADD).
+  - A whole-image scan for disp32 2B4h (`local\l42_field_writers.py`) found 62 store candidates.
+  - Their enclosing functions are plane bot states, plane-class derivation, the main menu, shader
+    constants and others. None is a Support Manager method.
+  - The only other screen reader is FUN_00673A10 at 00674815. It applies the same min before its
+    own 006C4780 call.
+- **So a player launch is at most 3 planes per slot.**
+  - A 6 never reaches 006C5050's `WingCount` from the screen.
+  - In the image, a sixth wing would overrun 007F4B55's five-slot array.
+  - The host's five-slot refusal (`plane_squadron_attach_plane_007f4b43`) is what printed `wing=5`.
+- **UNCERTAIN:** a block copy into the screen object would not show in a disp32 scan.
+
+**The host.** `player_air_ops_launch` clamps the requested count to `kSupportManagerLaunchGroup` (3)
+and logs `count N clamped to the screen's 3`. The stock clamp stays 006C0F00's.
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line: identical (the clamp is only on the harness launch path).
+- USN01 with launch lines asking 6: each filled slot holds 3 Wildcats, not 6.
+  - Enterprise's plane limit of 12 (006BD460) then admits four slots instead of two.
+  - The creator logs `wing=3`.
+
+### AutoAttackTarget for every member (packet `cc9_player_launch_group`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAutoAttackAllMembersBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+
+**The question.** 5ef's second open item: the order reached only the members that existed at the
+first step.
+
+**The evidence.** cc9-lua41's ON log (`l41_on_usn01w.log`, lines 35781-35800) shows the order in the
+same step as 006C5050. It reads `AutoAttackTarget: squadron 112 members=1`, and only after it come the
+`plane spawn` lines for `Enterprise_sqn01|.-2..|.-5`. The wings are made one step later by the
+squadron's pass A (`kWingConstructionInPassABound`). In the image, the key is read in pass-C init
+007F4BA0 (007F4EC0 -> 007F15F0), after 007F4580 has made every wing.
+
+**The host.** `run_air_ops_player_launch_queue` holds the pending order while any registered slot
+of the squadron (`member_units`) is still `kPlaneSquadronNoUnit`. It keeps the 600-step cap and then
+serves the members that exist. The order still goes through `squadron_intake_007f1940`, which issues
+it to every member it is given.
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line are identical (the queue is filled only by 006CCDA0 order 3).
+- USN01 with launch lines:
+  - each `air ops AutoAttackTarget` line moves one step later and reads `members=3`;
+  - the wingmen get the dogfight task (`00E08F58`) as well as the leader.
