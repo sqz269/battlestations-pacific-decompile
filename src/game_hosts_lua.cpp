@@ -7264,6 +7264,13 @@ void GameMissionLuaHost::report_mission_script_state() {
         {"Party", "Party"}, {"Distance", "Distance"}, {"Measure", "Measure"},
         {"MissionComplete", "MissionCompleteRan"},
         {"MissionFailed", "MissionFailedRan"},
+        // The shipped end path sets neither of the two above. commandhelpers.lua's
+        // luaMissionFailed (9551), luaMissionFailedNew (10123, 10369) and
+        // luaMissionCompleted/CompletedNew (9921, 10425) write Mission.MissionStatus
+        // (false / true) and Mission.MusicEndTime (GameTime() + 40 / + 35), so
+        // MissionStatus=nil means no scripted end ran.
+        {"MissionStatus", "MissionStatus"},
+        {"MusicEndTime", "MusicEndTime"},
     };
     std::string line;
     for (const Field& field : kFields) {
