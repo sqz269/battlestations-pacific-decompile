@@ -14139,8 +14139,27 @@ bomb release. The w7 order file is ready to re-run once phase 2 passes.
    JM08 3000 re-creates 5 at 20/30 s (Watchtower 01 03, Bunker 03, Watchtower 01 05, and the
    rest are in `local\s36_on9_jm08.log`). Expect `pair_diff` 3 there and 1 on USN01 and USNOS.
    Then pair off/on with a flip of a new `kCommandBuildingGarrisonReviveBound`.
-2. **USN01 legal win:** re-run `local\s36_u1_w7.txt` once phase 2 passes (176.1's blocker).
-3. **MinLevel value:** scene-contents (lua's lane) carries only whether the key exists. Members
+2. **A harness line for the player's MANUAL bomb release** (the lead's item). In USN01's
+   opening the player controls ScoutDauntless, so a real player aims and drops that bomb. Scope
+   the image's player release path first:
+   - the input that triggers the drop;
+   - how the player's aim and release point differ from the bot's (`val bomb request` /
+     `release census` / `bomb drop scatter` lines in `local\s36_u1w7.log` show the bot's at
+     133.20 / 134.10 s, about 218 m altitude).
+   Then add a `release <unit>` line, or a takehelm-style dive-and-release for planes, so the
+   scout hit is a player action. The lead has asked cc9-lua42 whether the AI scout's miss is
+   image-faithful under the scatter.
+   - **Note from cc9-lua42:** phase 2 ends only when every `Mission.Convoy` entry is dead
+     (usn_1_marshall.lua 535). Since the scatter, the ConTBD1 drops (the `target ConTBD1
+     Convoy4` lines) miss too, so phase 2 may need player hits beyond the scout's.
+   - Also from cc9-lua42 (all OFF): `kAirOpsPlayerLaunchGroupBound` (the count clamped to 3,
+     0066EC0A), `kAutoAttackAllMembersBound`, and `kSquadronDeadOnLastMemberBound` (a
+     generated squadron is `.Dead` only when its last plane dies; this changes the Nell win
+     condition and phase 2's convoy/MainAttack counting).
+3. **USN01 legal win:** re-run `local\s36_u1_w7.txt` (four slots of 3 at Nell1-4) once phase 2
+   passes (176.1's blocker). Send the order file's path to cc9-lua42, which needs a phase-3 file
+   for its pairs.
+4. **MinLevel value:** scene-contents (lua's lane) carries only whether the key exists. Members
    take MinLevel 0 (LABELLED). No row scene authors MinLevel; `ijn_05`, `sol_strike` and
    `empires_fall` would need it.
 
