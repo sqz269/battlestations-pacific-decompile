@@ -95,6 +95,14 @@ namespace {
 // fell back to the class stand-in. ON: publish once more when the guns are built
 // (attach_00864bd0 / register_new_units_00864bd0).
 constexpr bool kBombDropVelocityBound = true;   // SQUADRON_LAND_TASK 5do
+// Packet cc9_airfield_sub_entities (docs/GUNNERY_OPEN_ITEMS.md 124): step 8.7's
+// target->vtable[0FCh] (008654AC) for an airfield is 006D4DD0, which appends each
+// listed hangar (+830h) whose +370h > 0 and not the airfield itself. True: an
+// airfield target hands the gun pass its live hangars (none once they are gone).
+// LABELLED: a hangar is the first unit named like its Object reference, as
+// airfield_aim_point. False: the target itself (the base 00432480).
+// ON by the pairs of 2026-10-06 (GUNNERY 124.4): no reach on the reference rows.
+constexpr bool kAirfieldTargetSubEntitiesBound = true;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -1851,6 +1859,8 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
+    unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
+    unsigned long long airfield_sub_entities_listed{0};
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
@@ -4868,6 +4878,34 @@ public:
         // process creates, so a target here always takes the base.
         // docs/SHIP_SUB_ENTITY_LIST.md.
         owner_.record("Gunnery::target_sub_entities_slot0fc", 0x008654acu);
+        sub_entities_.clear();
+        const std::size_t t = target != nullptr ? unit_of(target) : owner_.unit_state.size();
+        if (t < owner_.unit_state.size() && owner_.units.unit_is_kind_of(t, 0x45)) {
+            ++owner_.airfield_sub_entity_asks;   // both builds: the reach
+            if (kAirfieldTargetSubEntitiesBound) {
+                // 006D4DD0..006D4E34: the +830h hangars with +370h > 0, in order.
+                const bsp::AirOpsDeck* deck =
+                    bsp::air_ops_decks().find(owner_.unit_state[t].row.name);
+                if (owner_.unit_index_by_name.size() != owner_.unit_state.size()) {
+                    owner_.unit_index_by_name.clear();
+                    for (std::size_t i = 0; i < owner_.unit_state.size(); ++i) {
+                        owner_.unit_index_by_name.emplace(owner_.unit_state[i].row.name, i);
+                    }
+                }
+                if (deck != nullptr) {
+                    for (const bsp::AirOpsDeck::HangarNames& h : deck->hangars) {
+                        const auto found = owner_.unit_index_by_name.find(h.object);
+                        if (found == owner_.unit_index_by_name.end()) continue;
+                        if (owner_.unit_state[found->second].dead) continue;
+                        sub_entities_.push_back(handle(found->second));
+                    }
+                }
+                owner_.airfield_sub_entities_listed += sub_entities_.size();
+                owner_.done("AirField::append_intact_hangars_006d4dd0", 0x006d4dd0u);
+                if (target != nullptr) arm_entities_.insert(target);
+                return static_cast<int>(sub_entities_.size());
+            }
+        }
         sub_entity_ = target;
         // Provenance for the diagnostic counters: this method is reached only from
         // step 8.7's two arms, so anything it hands back came from the director's
@@ -4876,6 +4914,10 @@ public:
         return target != nullptr ? 1 : 0;
     }
     void* sub_entity(int index) override {
+        if (!sub_entities_.empty()) {
+            return index >= 0 && static_cast<std::size_t>(index) < sub_entities_.size()
+                ? sub_entities_[static_cast<std::size_t>(index)] : nullptr;
+        }
         return index == 0 ? sub_entity_ : nullptr;
     }
     std::array<float, 3> entity_world_position(void* entity) override {
@@ -5183,6 +5225,7 @@ private:
     std::size_t accepted_{0};
     std::size_t rejected_{0};
     void* sub_entity_{nullptr};   // the one entry 00432480 appends: the target itself
+    std::vector<void*> sub_entities_;   // 006D4DD0's live hangars (kAirfieldTargetSubEntitiesBound)
     std::set<void*> arm_entities_;   // entities handed out by step 8.7 this pass
 };
 
@@ -11348,6 +11391,10 @@ void GameGunneryHost::report() {
             kAaGunnerErrorBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
+        host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
+            "bound=%d (008654AC -> 006D4DD0, packet cc9_airfield_sub_entities)",
+            host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
+            kAirfieldTargetSubEntitiesBound ? 1 : 0);
         if (host.airfield_destroy_kills != 0) {
             host.log.notef("summary mission gunnery airfield destroy kills=%llu (006D41EF -> "
                 "0077D1A0, packet cc9_airfield_destruction_rule)", host.airfield_destroy_kills);
