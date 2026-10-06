@@ -14916,3 +14916,8 @@ g28's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle pla
   On USNRM01, `sct` and `rtb` OFF each move. On LOMP10 (long), `lbt` and `sct` OFF each move. On USNOS
   (long), `lbt` OFF equals AB. On JM08 long, `cb` and `tmr` OFF each move the neutralize time; `end` OFF
   moves only the end text. On USN02 `end` OFF equals AB; on JM05 (long) `nav` OFF equals AB.
+**Added after the AC runs and before the leave-one-out runs:** USN02 moved gameplay against AB (hull hits
+366 -> 335), against the prediction. Its native table shows `ShipAiApproachPoint::random_stream1` and
+`ShipAiApproach::avoid_random` newly taken (about 1960 draws), so `tmr` OFF is expected to restore AB's
+gameplay on USN02, and `end` OFF to restore only the end text. The leave-one-out runs every group on all
+ten moved rows (groups as above, plus `misc` = `smk` + `cap`, expected exit 1 against AC everywhere).
