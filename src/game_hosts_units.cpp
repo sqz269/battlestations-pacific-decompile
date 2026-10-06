@@ -1454,6 +1454,13 @@ struct GameUnitSlot {
     std::vector<int> rack_ammo_per_rack;      // seeded with rack_ammo
     int rack_active{-1};
     int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
+    // GUNNERY 133.3 / 137, a diagnostic (no behaviour): single-rack drops since
+    // the last issue set dropBombs, drops after the first in that episode (the
+    // ones the unmodelled CanFire gates and RepeatTime would pace), and drops
+    // that left rounds on the rack that dropped.
+    int rack_episode_drops{0};
+    int rack_repeat_drops{0};
+    int rack_drops_leaving_rounds{0};
     float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
     float hull_heading_1050{0.0f};     // unit+1050h, written at 00826C56
     float occupant_timer_1158{0.0f};   // unit+1158h, 0 from 00823C30
@@ -21552,6 +21559,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.lb_rack_drops;
                             rt = unit_.lb_rack_repeat_e0;                     // 006E58AA
                             if (unit_.rack_ammo_per_rack[i] <= 0) unit_.lb_rack_dropping[i] = 0;
+                            else ++unit_.rack_drops_leaving_rounds;           // GUNNERY 137 diagnostic
                         }
                         owner_.done("Rack::tick_level_bomber_006e56f0", 0x006e56f0u);
                     }
@@ -24440,6 +24448,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         --unit_.rack_ammo;
                         ++unit_.rack_drops;
+                        {
+                            // GUNNERY 137, a diagnostic: what the CanFire gates and
+                            // RepeatTime would pace. No behaviour.
+                            int left = unit_.rack_ammo;
+                            if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                                left = unit_.rack_ammo_per_rack[static_cast<std::size_t>(unit_.rack_active)];
+                            }
+                            const bool repeat = unit_.rack_episode_drops > 0;
+                            ++unit_.rack_episode_drops;
+                            if (repeat) ++unit_.rack_repeat_drops;
+                            if (left > 0) ++unit_.rack_drops_leaving_rounds;
+                            if (repeat || left > 0) {
+                                owner_.log.notef("rack repeat diag: %s t=%.2f rack=%d left=%d "
+                                    "episode_drop=%d bomb=%d (006E56F0, GUNNERY 137)",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.rack_active, left, unit_.rack_episode_drops,
+                                    drop_is_bomb ? 1 : 0);
+                            }
+                        }
                         // 006E58AA-006E58B7: toRepeatTime = descriptor+E0h. The
                         // descriptor is unread; with one round per rack it does
                         // not matter before the ammo test clears dropBombs.
@@ -24560,6 +24588,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
                             // a single torpedo), dropBombs = 1.
                             if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            unit_.rack_episode_drops = 0;  // GUNNERY 137 diagnostic
                             if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
                                 // 007C0DE3-007C0E17: the first rack holding a
                                 // round and not busy is the one fired.
@@ -35003,10 +35032,12 @@ void GameUnitsHost::report() {
                             slot->torpedo_release_pending_c25 ? 1 : 0);
                         if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
                             host.log.notef("  torpedo %-12s rack 006E56F0: deferred=%d drops=%d "
-                                "ammo=%d dropping=%d gate_refused=%d", slot->row.name.c_str(),
+                                "ammo=%d dropping=%d gate_refused=%d repeat_drops=%d "
+                                "drops_leaving_rounds=%d", slot->row.name.c_str(),
                                 slot->rack_requests_deferred, slot->rack_drops,
                                 slot->rack_ammo, slot->rack_dropping ? 1 : 0,
-                                slot->rack_gate_refused);
+                                slot->rack_gate_refused, slot->rack_repeat_drops,
+                                slot->rack_drops_leaving_rounds);
                             // Packet cc9_mavis_rack_drops.
                             std::string per_rack;
                             for (const int a : slot->rack_ammo_per_rack) {
