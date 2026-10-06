@@ -5668,7 +5668,8 @@ struct GameUnitsHost::Impl {
     unsigned long long squadron_pass_c_hook_calls = 0;
     // Packet cc9_squadron_member_placement: 007F2920 at pass C (007F4DB0, an
     // airborne squadron: +408h clear). OFF: the wing stays where 007F4580 put it.
-    static constexpr bool kSquadronPassCPlacementBound = false;
+    // ON (docs/SQUADRON_MEMBER_PLACEMENT.md section 5): USN04 4500, LOMP10 9000.
+    static constexpr bool kSquadronPassCPlacementBound = true;
     unsigned long long squadron_member_place_calls = 0;
     unsigned long long squadron_members_placed = 0;
     unsigned long long squadron_member_place_unseeded = 0;
