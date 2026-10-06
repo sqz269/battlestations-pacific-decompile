@@ -422,6 +422,13 @@ inline constexpr bool kSceneRaceAndScriptIdentityBound = true;
 // the held-back rows GenerateObject/SpawnNew create. False: never called.
 inline constexpr bool kSceneHomeBaseContractBound = true;
 
+// Packet cc9_shipyard_scene_attach (GUNNERY 136.2, the scene half routed to this lane;
+// docs/SQUADRON_LAND_TASK.md 5ej). True: create_units reads a Shipyard row's bag
+// (`NumSlots`, "Stock 1".."Stock 12", "Hangar 1".."Hangar 12", "Slot 1".."Slot n") into
+// bsp::shipyards() through bsp::shipyard_scene_attach_00849a30, and the Lua entity
+// seeding binds the record to the entity id. False: the registry stays empty.
+inline constexpr bool kShipyardSceneAttachBound = true;   // ON: SQUADRON_LAND_TASK 5ej.1
+
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
 

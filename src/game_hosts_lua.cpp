@@ -52,6 +52,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
+#include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -422,6 +423,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_lua_add_air_base_stock.
     const bool add_stock_row = kLuaAddAirBaseStockBound
         && dispatch_row.address == 0x00896a90u;
+    // Packet cc9_lua_add_shipyard_stock.
+    const bool shipyard_stock_row = kLuaAddShipyardStockBound
+        && dispatch_row.address == 0x00896cc0u;
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
@@ -486,7 +490,8 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || slot_count_row || add_stock_row || device_reload_row || unlimited_air_row
+        || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
+        || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
         || attack_alt_row
@@ -603,6 +608,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (add_stock_row) {
         if (!host->error_replay()) host->run_add_air_base_stock_00896a90(state, argc);
+        return 0;
+    }
+    if (shipyard_stock_row) {
+        if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
         return 0;
     }
     if (slot_count_row) {
@@ -861,6 +870,11 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
             g_exec_refusal_log->notef("bsp: refused a mission script's process launch: %s", command);
     };
     g_class_arm_host = this;
+    // Packet cc9_shipyard_create_unit: gunnery30's build arm creates through this host.
+    bsp::shipyard_set_create_unit([](const bsp::ShipyardBuildRequest& request) {
+        return g_class_arm_host != nullptr ? g_class_arm_host->create_shipyard_unit_00844fc0(request)
+                                           : bsp::kShipyardNone;
+    });
     script_orders_set_class_default_arm_reader([](int vehicle_class) {
         // class+134h `DefaultEquipment` (00961F0A), 0 when nil (00961F30).
         return g_class_arm_host != nullptr
@@ -886,6 +900,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     if (g_class_arm_host == this) {
         g_class_arm_host = nullptr;
         script_orders_set_class_default_arm_reader(nullptr);
+        bsp::shipyard_set_create_unit(nullptr);
     }
     // The world walk holds a bare pointer to this host for the spawn drain.
     bsp::set_spawn_queue_drain(nullptr);
@@ -3851,6 +3866,7 @@ public:
             // instance besides the slot. The scene pass's decks are keyed by
             // the authored name (docs/AIROPS_LOAD_FROM_SCENE.md).
             bsp::air_ops_decks().bind_entity_id(node.entity_id, node.name);
+            if (kShipyardSceneAttachBound) bsp::shipyards().bind_entity_id(node.entity_id, node.name);
             host_.load_attached_.insert(node.entity_id);
         }
         if (host_.attach_created_entity_00928a00(node.entity_id, node.name,
@@ -5426,6 +5442,144 @@ int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int ar
     return 0;
 }
 
+// Packet cc9_lua_add_shipyard_stock (docs/SQUADRON_LAND_TASK.md 5ej). 00896CC0
+// AddShipyardStock(entity, class, count [, names]): the contract is at
+// kLuaAddShipyardStockBound. 0084ACB0 (GUNNERY 136, bsp::shipyard_add_stock_0084acb0)
+// adds the count to the record whose class+70h is the id, else pushes a new record
+// (008485F0, 008499A0).
+// SUBSTITUTIONS (labelled): the object is the bsp::shipyards() record bound to the
+// entity id, else the one named like the entity's row; an entity with neither is
+// counted unresolved, where the image calls 0084ACB0 on any object 00888AA0 returns.
+int GameMissionLuaHost::run_add_shipyard_stock_00896cc0(lua_State* state, int argument_count) {
+    ++summary_.shipyard_stock_calls;
+    const int class_id = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int count = argument_count >= 3 ? static_cast<int>(::lua_tonumber(state, 3)) : 0;
+    std::string names;
+    if (argument_count >= 4) {
+        const char* text = ::lua_tostring(state, 4);
+        if (text != nullptr) names = text;
+    }
+    const int id = air_ops_entity_id(state);
+    bsp::ShipyardState* yard = id > 0 ? bsp::shipyards().find_mutable_by_entity_id(id) : nullptr;
+    std::string row_name;
+    if (units_hooks_ != nullptr && id > 0 && static_cast<std::size_t>(id) <= units_hooks_->count()) {
+        if (const GameUnitRow* row = units_hooks_->unit_row(static_cast<std::size_t>(id - 1))) {
+            row_name = row->name;
+        }
+    }
+    if (yard == nullptr && !row_name.empty()) yard = bsp::shipyards().find_mutable(row_name);
+    if (yard == nullptr) {
+        ++summary_.shipyard_stock_unresolved;
+        log_.notef("  AddShipyardStock 00896cc0: entity id %d \"%s\" has no shipyard record "
+            "(class %d +%d) (packet cc9_lua_add_shipyard_stock)", id, row_name.c_str(), class_id,
+            count);
+        return 0;
+    }
+    const std::size_t before = yard->stock.size();
+    const int total = bsp::shipyard_add_stock_0084acb0(*yard, static_cast<std::uint32_t>(class_id),
+        count, names);
+    if (yard->stock.size() > before) ++summary_.shipyard_stock_created;
+    log_.notef("  AddShipyardStock 00896cc0: \"%s\" class %d +%d -> %d names=\"%s\"%s (packet "
+        "cc9_lua_add_shipyard_stock)", yard->owner_name.c_str(), class_id, count, total,
+        names.c_str(), yard->stock.size() > before ? " (new record)" : "");
+    log_.implemented("MissionLuaNative::AddShipyardStock", "00896cc0");
+    return 0;
+}
+
+// Packet cc9_shipyard_create_unit (GUNNERY 136 (D), docs/SQUADRON_LAND_TASK.md 5ek).
+// 00844FC0's creation, for gunnery30's build arm (bsp::shipyard_create_unit()): a bag
+// with `Type` = the class, the shipyard's `Skill` / `Race` / `Party` / `OwnerPlayer`
+// and `ShipYardLaunch` = 1; the creator by kind (plane 004F0AD0 with `WingCount` 1,
+// destroyer 004F0520, mother ship 004F0860, submarine 004F05F0, torpedo boat
+// 004F06C0, landing ship 004F0790); the request's frame, its y on the water; then
+// `moveonpath` 00E08F80 on the hangar's path (008454B4..008454C9).
+// The creation runs the SpawnNew member path (0094879A's InitAll after it).
+// SUBSTITUTIONS (labelled): Party is the shipyard row's; Race follows SpawnNew's
+// default (2 for party 0, else 1) and Skill / OwnerPlayer the record defaults (1, 9),
+// since this process keeps no bag on the shipyard unit; the plane's `State` 6 and
+// `VelocitySI` 0 and the submarine's `Dive` 0 have no record field, so a plane is
+// made airborne as every created plane here is; the water height is 0, the ocean
+// sampler's level with no wave field over the point; the bag ref at unit+C0h
+// (00845440) and the hangar observer 00694A60 are not modelled.
+std::size_t GameMissionLuaHost::create_shipyard_unit_00844fc0(
+    const bsp::ShipyardBuildRequest& r) {
+    ++summary_.shipyard_units_requested;
+    if (script_orders_ == nullptr || units_hooks_ == nullptr) return bsp::kShipyardNone;
+    bsp::game::GameSceneEntityRecord record;
+    switch (r.creator) {
+    case bsp::ShipyardCreator::PlaneSquadron: record.class_name = "PlaneSquadronGen"; record.class_id = 0x18; break;
+    case bsp::ShipyardCreator::Destroyer: record.class_name = "DestroyerGen"; record.class_id = 0x07; break;
+    case bsp::ShipyardCreator::MotherShip: record.class_name = "MotherShipGen"; record.class_id = 0x09; break;
+    case bsp::ShipyardCreator::Submarine: record.class_name = "SubmarineGen"; record.class_id = 0x08; break;
+    case bsp::ShipyardCreator::TorpedoBoat: record.class_name = "TBoatGen"; record.class_id = 0x0e; break;
+    case bsp::ShipyardCreator::LandingShip: record.class_name = "LandingShipGen"; record.class_id = 0x0c; break;
+    default:
+        log_.notef("  shipyard create 00844fc0: \"%s\" class %u has no creator (00845416)",
+            r.shipyard_name.c_str(), r.class_id);
+        return bsp::kShipyardNone;
+    }
+    int party = -1;
+    for (std::size_t i = 0; i < units_hooks_->count(); ++i) {
+        const GameUnitRow* row = units_hooks_->unit_row(i);
+        if (row != nullptr && row->name == r.shipyard_name) {
+            party = row->party;
+            break;
+        }
+    }
+    const bool plane = r.creator == bsp::ShipyardCreator::PlaneSquadron;
+    ++shipyard_units_serial_;
+    char suffix[24];
+    std::snprintf(suffix, sizeof(suffix), " #Y%u", shipyard_units_serial_);
+    record.name = (r.gui_name.empty() ? r.shipyard_name : r.gui_name) + suffix;
+    record.type_id = static_cast<int>(r.class_id);
+    record.party = party;
+    record.race = party == 0 ? 2 : 1;
+    record.shipyard_launch = true;
+    record.bag_equipment = plane && r.equipment >= 0 ? r.equipment : -1;
+    record.created = true;
+    for (int i = 0; i < 16; ++i) record.world[i] = r.frame[i];
+    if (r.snap_to_water) record.world[13] = 0.0f;
+    bsp::game::scene_spawn_pool().add(record);
+    if (bsp::game::SceneSpawnPoolEntry* entry = bsp::game::scene_spawn_pool().find(record.name)) {
+        entry->wing_count_present = plane;
+        entry->wing_count_raw = plane ? 1 : 0;
+    }
+    const std::size_t units_before = script_orders_->units().count();
+    const std::uint32_t entity = script_orders_->create_unit_from_scene_record_0046db4b(record);
+    if (bsp::game::SceneSpawnPoolEntry* entry = bsp::game::scene_spawn_pool().find(record.name)) {
+        entry->spawned = entity != 0u;
+        entry->entity_id = static_cast<int>(entity);
+    }
+    if (entity == 0u) {
+        log_.notef("  shipyard create 00844fc0: \"%s\" class %u reached no creator",
+            record.name.c_str(), r.class_id);
+        return bsp::kShipyardNone;
+    }
+    if constexpr (kSEntityInitAllBound) {
+        if (plane) {
+            route_push_squadron(static_cast<int>(entity), record.name, record.type_id, units_before);
+        } else {
+            route_push_entity(static_cast<int>(entity), record.name, record.type_id);
+            if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+                node->party = record.party;
+                node->race = record.race;
+                node->generated_party = true;
+            }
+        }
+        run_sentity_init_all_00925f20(false, 0x00844fc0u);
+    }
+    const std::size_t index = static_cast<std::size_t>(entity) - 1;
+    const bool ordered = script_orders_->issue_shipyard_moveonpath_008454b4(index, r.path_name);
+    ++summary_.shipyard_units_made;
+    log_.notef("  shipyard create 00844fc0: \"%s\" %s type %u party %d at (%.1f %.1f %.1f) -> "
+        "entity %u; moveonpath %s %s (packet cc9_shipyard_create_unit)", record.name.c_str(),
+        record.class_name.c_str(), r.class_id, party, static_cast<double>(record.world[12]),
+        static_cast<double>(record.world[13]), static_cast<double>(record.world[14]), entity,
+        r.path_name.c_str(), ordered ? "issued" : "NOT issued (no such path marker)");
+    log_.implemented("Shipyard::create_unit", "00844fc0");
+    return index;
+}
+
 namespace {
 // 00E17BF2. One byte in the image, so one value per process here.
 bool g_device_reload_enabled_00e17bf2 = false;
@@ -6910,6 +7064,8 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // will carry as `ID`, so it is where the two are tied together.
         // docs/AIROPS_LOAD_FROM_SCENE.md.
         bsp::air_ops_decks().bind_entity_id(entity.id, entity.name);
+        // Packet cc9_shipyard_scene_attach: the shipyard records likewise.
+        if (kShipyardSceneAttachBound) bsp::shipyards().bind_entity_id(entity.id, entity.name);
         // 00928b53 assigns a fresh table, then 00928bxx seeds `ID`, `Dead` and
         // `Ptr`. The native `Ptr` is lightuserdata(entity), the entity object
         // itself; this process has no such object, so the slot carries the
@@ -7440,6 +7596,13 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (00896A90 -> 006CA770, packet cc9_lua_add_air_base_stock)",
         kLuaAddAirBaseStockBound ? 1 : 0, summary_.stock_add_calls,
         summary_.stock_add_created, summary_.stock_add_unresolved);
+    log_.notef("summary mission script shipyard stock bound=%d calls=%llu new_records=%llu "
+        "unresolved=%llu (00896CC0 -> 0084ACB0, packet cc9_lua_add_shipyard_stock)",
+        kLuaAddShipyardStockBound ? 1 : 0, summary_.shipyard_stock_calls,
+        summary_.shipyard_stock_created, summary_.shipyard_stock_unresolved);
+    log_.notef("summary shipyard create requested=%llu made=%llu (00844FC0 through the "
+        "SpawnNew path, packet cc9_shipyard_create_unit)", summary_.shipyard_units_requested,
+        summary_.shipyard_units_made);
     log_.notef("summary mission script device reload bound=%d calls=%llu true=%llu "
         "now=%d (008C1350 -> 00E17BF2, packet cc9_device_reload_enabled)",
         kLuaDeviceReloadEnabledBound ? 1 : 0, summary_.device_reload_calls,

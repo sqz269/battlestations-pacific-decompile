@@ -189,8 +189,9 @@ inline constexpr bool kPutToBound = true;
 // PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
 // then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0
 // station with the leader's rotation and speed. False: only the fused leader slot
-// moves, and the members stay where they spawned.
-inline constexpr bool kSquadronPutToMembersBound = false;
+// moves, and the members stay where they spawned. ON: USN01 p5 completes
+// (docs/SQUADRON_MEMBER_PLACEMENT.md section 5).
+inline constexpr bool kSquadronPutToMembersBound = true;
 
 // Packet cc9_get_hp_percentage (docs/LUA_BINDING_MISSION.md, "GetHpPercentage's
 // health slot"). True: 00923BE0's two host reads answer from the gunnery host.
@@ -605,6 +606,11 @@ public:
     // by any position or yaw the script passed. Returns the entity id, or 0.
     std::uint32_t create_unit_from_scene_record_0046db4b(
         const GameSceneEntityRecord& record);
+    // Packet cc9_shipyard_create_unit. 008454B4..008454C9: 0077D600 with ECX = the
+    // unit 00844FC0 just made, PUSH 1, the target {1, the hangar path's +174h id},
+    // PUSH 00E08F80 `moveonpath`. False when the unit or the path marker is unknown.
+    bool issue_shipyard_moveonpath_008454b4(std::size_t unit_index,
+                                            const std::string& path_name);
 
     // 007F4B55's array, filled in. The scene pass queues one entity record per
     // wing and create_units turns them into units afterwards, so the squadron

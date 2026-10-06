@@ -24,6 +24,7 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
+#include "bsp/shipyard_production.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/vfs_mounts.hpp"
@@ -1845,6 +1846,84 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             deck.stock.size());
         bsp::air_ops_decks().set(stored.name, std::move(deck));
         owner.log.implemented("AirOps::load_from_scene", "006cadd0");
+    }
+
+    // Packet cc9_shipyard_scene_attach. 00849A30 on a Shipyard (scene class 46h)
+    // reads `NumSlots` (00CE56FC) and "Stock %d" 1..12 (`Count` 00CE5710, `Type`
+    // 00CE4780, `Names` 00D0B974); 00849F70 mode 1 reads "Hangar %d" 1..12 (`Object`
+    // 00CF8F00, `Path` 00CEA738) and "Slot %d" 1..NumSlots (`Unit` 00CF7C8C,
+    // `UnitClass` 00D0B9B4, `UnitEquipment` 00D0B9A4). The rules are GUNNERY 136's
+    // (src/shipyard_production.cpp); this is only the reading half.
+    // SUBSTITUTIONS (labelled): an enum value is resolved through the scene
+    // library's symbol tables (the property's +0Ch integer); a reference keeps its
+    // last path component, as the air ops hangars do.
+    if (kShipyardSceneAttachBound && klass->class_id == 0x46) {
+        const auto enum_int = [&](const ScenePropertyBlock& block, const char* key,
+                                  int fallback) {
+            const SceneEnumProperty e = scene_enum_property(block, key);
+            int value = fallback;
+            if (e.present && owner.library.resolve_symbol(e.table, e.symbol, value)) return value;
+            std::int32_t parsed = 0;
+            if (e.present) {
+                // gunnery30's routed (A): the symbol's own digits, `:" 0"` included.
+                std::string s = e.symbol;
+                if (s.size() >= 2 && s.front() == '"' && s.back() == '"') s = s.substr(1, s.size() - 2);
+                while (!s.empty() && s.front() == ' ') s.erase(s.begin());
+                if (scene_scan_int(s, parsed)) return static_cast<int>(parsed);
+            }
+            const SceneProperty* p = block.find(key);
+            if (p != nullptr && !p->values.empty() && scene_scan_int(p->values.back(), parsed)) {
+                return static_cast<int>(parsed);
+            }
+            return fallback;
+        };
+        const auto reference_name = [](const SceneProperty* p) {
+            if (p == nullptr || p->values.empty()) return std::string();
+            std::string v = p->values.back();
+            if (v.size() >= 2 && v.front() == '"' && v.back() == '"') v = v.substr(1, v.size() - 2);
+            const std::size_t cut = v.find_last_of('\\');
+            return cut == std::string::npos ? v : v.substr(cut + 1);
+        };
+        bsp::ShipyardSceneAuthored yard;
+        yard.num_slots = enum_int(bag, "NumSlots", 0);
+        for (int i = 1; i <= 12; ++i) {
+            const ScenePropertyBlock* sub = scene_deck_sub_block(bag, "Stock " + std::to_string(i));
+            if (sub == nullptr) continue;
+            bsp::ShipyardSceneStock row;
+            row.count = enum_int(*sub, "Count", 0);
+            const int stock_type = enum_int(*sub, "Type", 0);
+            row.class_id = stock_type > 0 ? static_cast<std::uint32_t>(stock_type) : 0u;
+            row.names = reference_name(sub->find("Names"));
+            yard.stocks.push_back(std::move(row));
+        }
+        for (int i = 1; i <= 12; ++i) {
+            const ScenePropertyBlock* sub = scene_deck_sub_block(bag, "Hangar " + std::to_string(i));
+            if (sub == nullptr) continue;
+            bsp::ShipyardSceneHangar row;
+            row.object = reference_name(sub->find("Object"));
+            row.path = reference_name(sub->find("Path"));
+            yard.hangars.push_back(std::move(row));
+        }
+        for (int i = 1; i <= yard.num_slots; ++i) {
+            const ScenePropertyBlock* sub = scene_deck_sub_block(bag, "Slot " + std::to_string(i));
+            bsp::ShipyardSceneSlot row;
+            if (sub != nullptr) {
+                row.present = true;
+                row.unit = reference_name(sub->find("Unit"));
+                row.unit_class_present = sub->find("UnitClass") != nullptr;
+                row.unit_class_raw = enum_int(*sub, "UnitClass", 0);
+                row.unit_class = row.unit_class_raw > 0 ? static_cast<std::uint32_t>(row.unit_class_raw) : 0u;
+                row.unit_equipment = enum_int(*sub, "UnitEquipment", -1);
+            }
+            yard.slots.push_back(std::move(row));
+        }
+        bsp::ShipyardState state = bsp::shipyard_scene_attach_00849a30(stored.name, yard);
+        owner.log.notef("shipyard scene attach: unit=%s NumSlots=%d stocks=%zu kept=%zu hangars=%zu "
+            "slots=%zu entries=%zu (00849A30, packet cc9_shipyard_scene_attach)", stored.name.c_str(),
+            yard.num_slots, yard.stocks.size(), state.stock.size(), yard.hangars.size(),
+            yard.slots.size(), state.entries.size());
+        bsp::shipyards().set(stored.name, std::move(state));
+        owner.log.implemented("Shipyard::scene_attach", "00849a30");
     }
 
     SceneUnitCreationResult created;

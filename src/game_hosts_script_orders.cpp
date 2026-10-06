@@ -2525,6 +2525,43 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
     });
 }
 
+// Packet cc9_shipyard_create_unit (GUNNERY 136 (D), docs/SQUADRON_LAND_TASK.md 5ek).
+// 00844FC0 issues `moveonpath` itself (008454B4..008454C9) and makes no 0071C1B0
+// call, so the slot's follow pair is whatever the issue leaves.
+// SUBSTITUTION (labelled): the path build 0071F600, which the director runs when it
+// begins the command, is made on delivery, as the navigator route above does.
+bool GameScriptOrdersHost::issue_shipyard_moveonpath_008454b4(std::size_t unit_index,
+    const std::string& path_name) {
+    if (unit_index >= units_.count() || path_name.empty()) return false;
+    const SceneMarker* marker = nullptr;
+    for (const SceneMarker& m : markers_) {
+        if (m.name == path_name) {
+            marker = &m;
+            break;
+        }
+    }
+    if (marker == nullptr) return false;
+    void* const entity = reinterpret_cast<void*>(static_cast<std::uintptr_t>(unit_index + 1));
+    void* const path_entity = reinterpret_cast<void*>(static_cast<std::uintptr_t>(marker->id));
+    bsp::SceneCommandTarget target{};
+    target.kind = 1;
+    target.position_valid = 0;
+    target.object = path_entity;
+    target.object_id = static_cast<std::uint16_t>(marker->id);   // +174h, entity_object_id's stand-in
+    entity_issue_command(entity, bsp::kCommandMoveOnPath, target, 1);   // 008454B4 PUSH 1
+    const std::string name = marker->name;
+    after_order_delivery([this, unit_index, name]() {
+        if (unit_index >= units_.count()) return;
+        const bsp::game::ScenePathEntry* authored = bsp::game::scene_path_registry().find(name);
+        float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+        units_.unit_position_00fc(unit_index, ux, uy, uz);
+        static const std::vector<std::array<float, 3>> kNoPoints;
+        units_.commands().begin_path_command_0071f600(unit_index, name,
+            authored != nullptr ? authored->points_world : kNoPoints, ux, uz);
+    });
+    return true;
+}
+
 // The pair at *(entity+73Ch)+24h and +28h, 008a3901 and 008a3912. The same
 // store luaMW_SetShipSpeed 00890d30 makes, which this host already owns.
 void GameScriptOrdersHost::entity_store_commanded_speed(void* entity, float speed) {

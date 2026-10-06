@@ -14610,3 +14610,208 @@ AI-led ships carry `NavigatorSetAvoidLandCollision`.
 
 **LABELLED:** the harness's fixed click times. The moveto goes to the named NavPoint's position
 (SCRIPTED_HELM 8.1), where the player would click a map point.
+
+## 188. ESMP08 toward completion: 10 of 15 (lead item 3, cc9-ships38, 2026-10-06)
+
+**Correction to 180.** `Mission.USNFleet` in `IJN\ESMP\08_engano.lua` (this installation, mtime
+2024-07-13, lines 330-345) holds **fifteen** ships, not ten:
+- Iowa, Washington and South Dakota;
+- Salt Lake City, San Diego, Santa Fe and Mobile (Pensacola is commented out);
+- Cummings, Case and Cassin;
+- **Downes, Dunlap, Fanning, Grayson and Woodworth.**
+
+`luaMonitorObjectives` wins when all fifteen are dead while two of the four IJN carriers live.
+
+**Orders** (`local\s38_e8gen.py` -> `s38_e8_p<n>.txt`):
+- Every 600 frames from 300, each of Zuikaku, Chiyoda, Zuiho and Chitose launches each of its
+  slots 1-4 at count 4.
+- Slots 1-3 try bombers first and fall back to Zeros: B6N Jill 163, D4Y Judy 159 and B5N Kate 162
+  as each carrier's stock allows. Slot 4 launches A6M Zeros (150).
+- Each slot walks the target list from its own rotation. A dead or hidden target is refused by
+  186's `0043F080` check, and the next line is tried.
+
+| run | frames | targets listed | USNFleet dead | carriers lost |
+| --- | --- | --- | --- | --- |
+| idle (`s38_e8idle`) | 20000 | none | 0 by 1000 s | 0 |
+| p1 (`s38_e8p1`) | 40000 | the first ten | 5 | 0 |
+| p2 (`s38_e8p2`) | 72000 | the first ten | all ten listed, by 2166.19 s; the other five are never targeted | 0 |
+| p3 (`s38_e8p3`) | 72000 | all fifteen | 10; Mobile, Cummings, Case, Cassin and Woodworth live | 0 |
+
+Every run ends with `summary mission end: none`.
+
+**What stops p3:**
+- **Launch counts.** 46 launches are applied, the last at frame 43515. For the final 28000
+  frames every one of the 16 slots refuses with `the slot is not in state 1 or 5`.
+- **Kills are slot-limited.** At about one kill every four minutes, a longer run does not help
+  while the slots stay held.
+- **The Zuikaku deck is blocked for 38 minutes.** `Zuikaku_sqn01|.-2` is installed in the takeoff
+  prepare at 29.90 s, and its `prep_left` is 2313.08 s ("prepare time and site permission",
+  `summary takeoff member`).
+  - Zuikaku's other ten planes (sqn01|.-3 to sqn04|.-3) take off only between 2326 and 2415 s.
+  - In p1 the same member is still in prepare at 443.42 s (state 448, 4135 ticks), when it is
+    destroyed (death row killer `Zuikaku_sqn02`).
+  - No other member in p3 waits more than 60 s.
+- **Routed to the lead:**
+  - the takeoff site permission for that member: the plane and takeoff sources, lua lane;
+  - what keeps the other carriers' slots out of states 1 and 5: the air-ops slot return, 176
+    caveat 3.
+
+`Mission.SkillLevel`, the US repair switch (`RepairEnable(unit, false)`) and
+`SetForcedReconLevel(unit, 2, PARTY_JAPANESE)` were not examined.
+
+**LABELLED:** the launch line (SCRIPTED_HELM 13) and 186's dead-or-hidden refusal. A hidden target
+is one that fails `0043F080`, which this host computes and the screen's target list was assumed to
+share.
+
+## 189. The other survey rows: idle reads of BSM01, IJN01 and USNRM01 (lead item 3, cc9-ships38, 2026-10-06)
+
+Idle runs of 24000 frames (`local\s38_{b1,i1,rm1}idle.log`) on the 186 build. None ends.
+
+| row | script (this installation) | what the script needs first | idle | blocker |
+| --- | --- | --- | --- | --- |
+| BSM01 | `BSM\bsm_01_stationed_at_pearl.lua` (2518 lines, 2024-07-13) | phase 1: `HenryPT` within 250 m of `Phoenix` (786); phase 2: survive 150 s (`luaDelay(luaMoveToPh3, 150)`); phase 3: the mini-sub, which is `SetInvincible` (1112) and needs Henry's depth charges (`HasFired(..., "DEPTHCHARGE")`); phase 4: ten planes shot down, or the Japanese gone, or out of range | phase 1, `Distance=1.4` km | no harness line fires a ship's depth charges; phase 1 is a single moveto |
+| IJN01 | `Ijn\ijn_1_pearl.lua` (2024-08-26) | phase 1: all 25 `StrafeShips` dead (four oilers and tenders, PT1-4, LST1-11, Oglala, Solace, Curtiss, Harris, Zeilin, Leonard); then the battleships | phase 1; two plane deaths | see p1 below |
+| USNRM01 | `USN\USNRM\usn_1_pearl.lua` (2024-10-29) | phase 1 ends when West Virginia, the player's ship, is killed (`luaWVSunk`, kill listener 1048); phase 2 starts from that path's Arizona movie | phase 1; 492 deaths, none of WV, Arizona, Oklahoma or Nevada | WV ends at hull health 0.129 (water 2975 of 19133) after 12 bullet hits and no torpedo hit. The script's `TorpTable` (2336-2341) never sinks it. Routed: the plane lane |
+
+**IJN01 p1** (`local\s38_i1_p1.txt` from `s38_i1gen.py`, 24000 frames):
+- **Orders.** Every 400 frames each `A7M_k` is selected in turn and given a `target` with a pick
+  list (below) over its own rotation of StrafeShips.
+  - The squadrons exist only from about 44 s, so the lines before that are refused (no such unit).
+  - 233 targets are applied. 007EEC50 picks `divebomb` `00E08F20` for 228 of them and `00E08F40`
+    for 5.
+- **Outcome.** Each squadron makes one dive (27 rack drops, `rounds_left=0`). Then it stays in
+  `done` and never strafes.
+  - Only PT1 dies (116.80 s), and no other StrafeShip takes water.
+  - A7M_1's five planes are shot down by 178.86 s.
+- **Routed: the plane lane.** What a fighter squadron does after its one dive bomb against a ship
+  target (`divebomb ... done`, no gun pass). The aim misses are about 16 m short (`lead
+  last=-16.33`).
+
+**Harness change (labelled, `src/game_hosts_mission_frame.cpp`).** A `target` line may now list
+picks separated by ` | `. The first pick that passes `0043F080` is taken; a single target behaves
+as before. This stands in for the player moving the screen centre to the next target. The
+`repeat` form keeps working, but a repeat stops on its first refusal, including "not the
+controlled unit". So one squadron at a time is cycled with `select`.
+
+## 190. IJN11 completes; JM06 and USN13 read (lead item 3, cc9-ships38, 2026-10-06)
+
+### IJN11 (`Ijn\ijn_11_operation_to.lua`, this installation, mtime 2024-10-29)
+
+**The script's three phases:**
+1. Phase 1 completes idle; phase 2 starts at 891.91 s ("Get the supply ship out of the area!").
+2. Phase 2: `SupplyCargo` within 1200 m of `EscapeNav` (-5000, -5000) (620). The mission fails if
+   the cargo dies (662, then `luaMissionFailedNew(Mission.Cargo, "Game Over")`).
+3. Phase 3 (`luaPhaseThreeUnits`, 1168): every `HenryGang` ship dead (Iowa, Hornet and
+   Fletch6-11). That sets `Mission.EndMission`, and `luaMissionComplete` follows (991).
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| idle (`s38_i11idle`) | none | 24000 | phase 2; the cargo is still 6.14 km from `EscapeNav` |
+| idle (`s38_i11idle2`) | none | 50000 | **failed at 1648.83 s**, "Game Over" on SupplyCargo; it was still 6.12 km out |
+| **p1 (`s38_i11p1`)** | `select SupplyCargo` then `moveto SupplyCargo EscapeNav` at 18100/18110, repeated at 19000/19010 (`local\s38_i11_p1.txt`) | 50000 | **completed**: `mission end: EndMission=true at 1990.72 s`, then `MissionNarrative("We have some new toys! - Mission Complete!")` at 2002.08 s and EndScene at 2034.66 s |
+
+**p1, in order:**
+- **Phase 2.** The cargo reaches `EscapeNav`, and phase 3 starts at about frame 25265 (1263 s).
+- **Phase 3.** Fletch10, 7, 6, 11 and 8 die from 1766.00 s, Iowa at 1886.82 s and Hornet at
+  1976.40 s. The last, Fletch9, dies at 1987.91 s.
+- **Guard.** `bsp: refused a mission script's process launch: sus_prog.exe` is at log line 376456.
+- **Summary row.** `summary mission end: nil at 1990.72 s (Mission.EndMission) text=""` records
+  the `EndMission` flag before `luaMissionComplete` sets the status, so its status reads nil.
+
+**Caveat on the player's input:**
+- Both `select SupplyCargo` lines are refused (`00645060 rejects it`). The moveto lines still
+  apply, because the harness's moveto does not need the unit to be the controlled one (SCRIPTED_HELM 8).
+- The script captures the cargo for PARTY_JAPANESE (`SetParty`, 1284). It grants it to the AI
+  (`SetRoleAvailable(..., PLAYER_AI)`, 1171) only in phase 3. Why 00645060 refuses it in phase 2
+  was not read.
+- **So whether the player can steer the cargo in the image is not established.** LABELLED: this
+  completion depends on a moveto to a unit the select path refused.
+
+### JM06 (`COTP-IJN\PRCPIJN\JM06.lua`, 2024-07-13)
+
+The player commands the submarine `PlayerSub 01`. Phase 1 (the cargo convoy) completes idle.
+- **Phase 2** needs `Mission.MessageTransmitted`, which is set after a surface countdown.
+  `luaJM6CheckSurface` (1944) tests `GetSubmarineOnSurface(Mission.PlayerUnit)`.
+- **Blocker:** `host MissionLuaNative::GetSubmarineOnSurface [008942c0] UNIMPLEMENTED, returning a
+  neutral value` (`local\s38_j6idle.log`). The test is always false, so phase 2 cannot complete.
+- **Routed:** the binding to the lua lane, and a dive/surface harness line (none exists).
+- Phases 3 and 4 need the player's torpedo hit on Lexington, then Lexington and every escort dead.
+
+### USN13 (`USN\usn_13_truk.lua`, 2024-08-13)
+
+Idle reaches phase 3 (`local\s38_u13idle.log`, 24000 frames).
+- **The win** is every `TotalTrgs` entry dead (897): 57 `SeaTrgs` Marus plus the `LandTrgs`
+  airfields (`Airfield2`, `Airfield5`, `JapAF`) and `Shipyard Entity CB3`. Five Marus die idle.
+- **The player's means:** nine US carriers (Enterprise, Yorktown, Wood, Essex, Intrepid, Cabot,
+  Hill, Cowpens, Monterey; four slots each).
+- **Not attempted.** ESMP08 (188) shows that the carrier slots stop returning after about 46
+  launches, so a 60-target strike waits on 188's routed slot-return item.
+
+## 191. BSM01 to phase 3; USN04 and USNOS read (lead item 3, cc9-ships38, 2026-10-06)
+
+### BSM01 (189's row)
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| p1 (`s38_b1p1`) | `moveto HenryPT Phoenix` | 24000 | both lines refused: `moveto` takes a scene marker or x z, not a unit name |
+| p2 (`s38_b1p2`, trajectories) | `moveto HenryPT 2580 -1650` at 200 and 1200 (Henry starts at (2550, -2950); Phoenix is at (2584, -1542)) | 14000 | **phases 1 and 2 pass**: Henry stops at (2525, -1734), 196 m from Phoenix. The 150 s survival follows, and phase 3 starts at about frame 5219 (`GenerateObject "MiniSub"`). The run ends in phase 3 |
+| p3 (`s38_b1p3`) | p2, plus `attack HenryPT MiniSub repeat 15` from 5500 | 30000 | **phase 3 does not pass.** 82 attack lines are applied (`005FAAE0` form). Henry sits in `attackmove` with `dir=stopped`, throttle 0, about 1860 m from the target, through frame 21000 |
+
+**What phase 3 needs.** `luaMiniSubHit` (2032) clears `SetInvincible` and kills the sub on any hit
+by Henry; the listener logs `attacker_filters=0`. The sub runs `pt_path3` at depth level 1.
+- **No hit happens in p3.** Henry's gun rows fire 17076 shots, all at other targets; none reaches
+  the listener.
+- **Its other rows never fire:** the depth-charge row (plat 9, cat 8) and the torpedo rows (cat 7)
+  show `assigns 0 shots 0`.
+- **Two open items:**
+  - why a ship's attack-move holds about 1860 m from a submerged target and never assigns its
+    depth charges. Ship AI, this lane; not read yet.
+  - a player depth-charge fire line. The script's own dialog keys on `HasFired(Henry,
+    "DEPTHCHARGE")` (809). Input path unread.
+
+### USN04 (`USN\usn_19_coralus.lua`, 3397 lines, this installation, mtime 2024-08-26)
+
+Idle stays in phase 1 to 1200 s (`local\s38_u4idle.log`). Phase 1 is the defence of Lexington:
+- it passes when the bomber waves are spent (`BomberWave` 4 or 5 by difficulty), or when
+  `IJNBombersLex` (and at difficulty 1 and 2 `IJNFightersLex`) are all dead (566-585);
+- it fails if Lexington dies.
+
+Not attempted. The plane-lane pairs already track this row (memory: the USN04 knife-edge).
+
+### USNOS (`COTP-USN\us_osumi.lua`, 2024-10-29)
+
+Idle stays in phase 1 (`local\s38_osidle.log`). The player commands `BigE` (1308).
+- **Phase 1** (995) needs three waves of `PhOneAttackers` killed. Each wave is a `SpawnNew` of 6
+  D4Y Judys (`Equipment` 1), 9 Shinyo boats and 6 submarines (serials 1-3).
+- **Only the first wave spawns by 1200 s.** The submarines need anti-submarine attack, which
+  waits on the same open item as BSM01's phase 3.
+
+### 191.1 BSM01 phase 3: Henry cannot move after phase 2 (cc9-ships38, 2026-10-06)
+
+Runs `s38_b1p3t` (8000 frames, trajectories) and `s38_b1p4` (30000 frames, trajectories; at phase
+3 `moveto HenryPT 1150 -2950`, then `attack HenryPT MiniSub repeat 15` from 6600).
+
+**What the trajectories show:**
+- **The mini-sub stops.** It is put at (800, -30, -3200) and runs `moveonpath`. By 296 s it halts
+  at (1072, -6.96, -3017) and stays there: `dir=stopped throttle=0`, 137.6 m from its path goal.
+- **Henry never moves again after phase 1.** From 140 s to 1500 s it stays at (2524.6, -1734.2).
+  - The phase-3 moveto is applied at frame 5500, and the step shows `state=movetopos`.
+  - At step 5510 the state is `state=stop` with `d32c=24.00`. The movetopos completes at once,
+    as if its goal had been placed 24 m from the hull.
+  - Under p3's attack lines Henry moves only about 130 m (to (2501, -1862)) and then holds.
+- **Phase 2, between those times,** runs `ExplodeToParts`, `BreakShip` and `SetDeadMeat` on
+  Phoenix, 196 m from Henry. It also re-grants and turns Henry (`SetRoleAvailable`,
+  `EntityTurnToEntity(Henry, Sacramento)`).
+
+**Hypothesis (not read):** the path plan cannot reach a goal from inside the Phoenix wreck's
+obstacle footprint, or from the crowded anchorage. It falls back to a goal at the hull, and the
+mini-sub's path goal is refused the same way.
+
+**Open in this lane:**
+1. Why a `movetopos` from (2525, -1734) completes in one step with `d32c=24`. Read the path
+   publish (`009F3F80` and the obstacle sector scan) on this position. Diagnostic first:
+   `path_picks` / `path_publishes` per unit.
+2. Why `MiniSub`'s `moveonpath` stops 137.6 m from its goal.
+
+Either keeps phase 3, and so the mission, out of reach. Phase 4 (the `Donald` flight, ten kills or
+17 km from Akagi) has not been reached.
