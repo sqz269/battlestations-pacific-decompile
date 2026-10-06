@@ -1686,7 +1686,79 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             "(007F4EC0 -> 007F15F0 -> 007EEC50, packet cc9_player_air_ops_launch)",
             p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",
             chosen);
+        if constexpr (bsp::kAutoAttackMemberOnLaunchBound) {
+            if (chosen != 0u && record != nullptr) {
+                SquadronStandingAttack s;
+                s.squadron_entity = p.squadron_entity;
+                s.target = p.target_plus_one - 1u;
+                s.served = members;
+                standing_attacks_.push_back(std::move(s));
+            }
+        }
         pending_auto_attacks_.erase(pending_auto_attacks_.begin() + static_cast<std::ptrdiff_t>(i));
+    }
+    if constexpr (bsp::kAutoAttackMemberOnLaunchBound) run_standing_attacks();
+}
+
+// Packet cc9_auto_attack_member_launch (bsp::kAutoAttackMemberOnLaunchBound).
+// In the image 007F15F0 issues the class to the squadron (0071ECF0), and the
+// squadron's +128h 007ECF80 applies it to every plane in +3D0h, whether it is
+// flying or still on the deck. This host's intake issues per member, and a
+// member Inside its base is not alive-and-visible, so a deck member is given the
+// order on the first step it is airborne. SUBSTITUTION, labelled: the timing
+// (at launch, not at the serve) and the per-member 007EEC50 choice (the image
+// chooses once, on the squadron). A standing order ends when every registered
+// member has been served or has left the squadron, when the target is gone,
+// or after 6000 steps.
+void GameScriptOrdersHost::run_standing_attacks() {
+    for (std::size_t i = 0; i < standing_attacks_.size();) {
+        SquadronStandingAttack& s = standing_attacks_[i];
+        const bsp::PlaneSquadronHostRecord* record = nullptr;
+        for (const AirOpsSquadron& made : squadrons_) {
+            if (made.entity_id == s.squadron_entity) {
+                record = bsp::plane_squadron_registry().find(made.name);
+                break;
+            }
+        }
+        std::size_t target = s.target;
+        bool target_live = target < units_.count() && units_.unit_alive_and_visible(target);
+        if (target < units_.count()) {
+            // 007F15F7-007F1606, as at the serve: a plane target stands for its
+            // squadron, which this host fuses into its flight leader.
+            if (const bsp::PlaneSquadronHostRecord* t =
+                    bsp::plane_squadron_registry().find_by_member_unit(target)) {
+                const std::size_t lead = t->flight_leader();
+                if (lead != bsp::kPlaneSquadronNoUnit && lead < units_.count()) {
+                    target = lead;
+                    target_live = units_.unit_alive_and_visible(lead);
+                }
+            }
+        }
+        bool open = false;
+        if (record != nullptr && target_live) {
+            for (const std::size_t m : record->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit) { open = true; continue; }
+                if (std::find(s.served.begin(), s.served.end(), m) != s.served.end()) continue;
+                open = true;
+                if (m >= units_.count() || !units_.unit_alive_and_visible(m)) continue;
+                const std::vector<std::size_t> one{m};
+                const std::uint32_t chosen = squadron_intake_007f1940(m, one, target);
+                s.served.push_back(m);
+                if (chosen != 0u) ++standing_attack_member_orders_;
+                const GameUnitRow* mrow = units_.unit_row(m);
+                const GameUnitRow* trow = units_.unit_row(target);
+                log_.notef("air ops AutoAttackTarget member at launch: squadron %u member=\"%s\" "
+                    "target=\"%s\" class=%08X (007F15F0 -> 0071ECF0 -> 007ECF80 stand-in, packet "
+                    "cc9_auto_attack_member_launch)", s.squadron_entity,
+                    mrow != nullptr ? mrow->name.c_str() : "-",
+                    trow != nullptr ? trow->name.c_str() : "-", chosen);
+            }
+        }
+        if (!open || ++s.age_steps >= 6000) {
+            standing_attacks_.erase(standing_attacks_.begin() + static_cast<std::ptrdiff_t>(i));
+        } else {
+            ++i;
+        }
     }
 }
 

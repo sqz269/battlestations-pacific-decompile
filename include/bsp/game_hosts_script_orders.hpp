@@ -842,12 +842,24 @@ private:
         int waited_steps{0};
     };
     std::vector<PendingAutoAttack> pending_auto_attacks_;
+    // Packet cc9_auto_attack_member_launch (kAutoAttackMemberOnLaunchBound): a
+    // served AutoAttackTarget stays with its squadron, and each member that
+    // leaves the deck after the serve receives it then.
+    struct SquadronStandingAttack {
+        std::uint32_t squadron_entity{0};
+        std::size_t target{0};
+        std::vector<std::size_t> served;
+        int age_steps{0};
+    };
+    std::vector<SquadronStandingAttack> standing_attacks_;
+    unsigned long long standing_attack_member_orders_{0};
     unsigned long long player_launch_requests_{0};
     unsigned long long player_launch_accepted_{0};
     unsigned long long player_launch_started_{0};
     unsigned long long auto_attack_issued_{0};
     unsigned long long auto_attack_declined_{0};
     void run_air_ops_player_launch_queue(float step);
+    void run_standing_attacks();
     GameHostLog& log_;
     GameUnitsHost& units_;
     std::vector<bool> dead_published_;   // per unit index, 00929800 has run

@@ -13064,3 +13064,50 @@ at the beam's edge. **Two host inputs are labelled substitutes, and the miss dep
 So this is recorded as the image's own sample under those two substitutes, not as a bug. The win
 path needs the player's manual-release line (cc9-ships37) or a run whose draws aim nearer the
 centreline.
+
+## 5ei. Handoff (cc9-lua42, 2026-10-06, at about 70% context)
+
+The branch is `agent/cc9-lua42` and the worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua42`.
+Main is merged in, everything is committed, and no lease is held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| player launch count limited to the screen's 3 (0066EC0A) | `kAirOpsPlayerLaunchGroupBound` | ON | AIROPS_LAUNCH_TICK, "The screen's launch group" |
+| AutoAttackTarget held until every member slot is filled | `kAutoAttackAllMembersBound` | OFF (mechanism failure: deck members are not visible) | same doc, measured |
+| the squadron's AutoAttackTarget given to each member as it leaves the deck | `kAutoAttackMemberOnLaunchBound` | ON | same doc, "for members that launch later" |
+| a squadron's `.Dead` waits for its last plane (007F3970) | `kSquadronDeadOnLastMemberBound` | ON | ENTITY_DEAD_FLAG 8, 8.1 |
+| `mission objective: <text>` log (008CD440 argument 3) | - (diagnostic) | in | `bce8c9a42` |
+| USN01 scout miss, the dive aim chain | - | read-only, no host departure | 5eh |
+
+**What was settled.**
+- **USN01 caveat (c)** and **LOMP10's slots (SHIP_AI 181)** are the same case. The squadrons were not
+  wholly lost: their wingmen lived on, idle, because only the leader was given the order. With
+  `kAutoAttackMemberOnLaunchBound`, LOMP10 releases three slots and relaunches from them.
+- **Caveat (b).** The image also leaves a live plane that ditched alive. Inverted water contact
+  raises `powerlost`, but that is engine-off only. Both the explosion clock C3Ch and the `splash`
+  need +5Dh, and the depth kill is the state-7 arm. So no powerlost edit was made (accepted by the
+  lead).
+
+**Next, in order:**
+1. **The follow-law throttle for a wingman ahead of its station.** The case is Nell6|.-3 in
+   `cc9-ships36\local\s36_u1w6.log`.
+   - Its level-bomb `follow law` rows: spd 115.6 at 204 s, 83.0 (line 41778), 44.5 (48096), and
+     32.4 at 340 s (54594).
+   - Throughout: `band=1`, `along=-752` (ahead of its station), and throttle 0 in the 58286 surface
+     probe.
+   - It stalls and flies into the sea at 348.8 s.
+   - Read where the follow arm sets the desired speed (`plane_desired_speed_2b4`, 009BFD0F) for a
+     member ahead of its station, and whether the image clamps it to a minimum. Candidates are the
+     StallSpd or the min control speed 007C4810. See PLANE_FOLLOW_SPEED.md and PLANE_FOLLOW_LAW.md.
+   - The code is in the shared `src/game_hosts_units.cpp`, but the lead assigned the item to this
+     lane: prepare the edit, claim, build, commit and release at once.
+2. **USN01 p5's win** left the 14000-frame window with the member orders ON: Nell5|.-3 and Nell6
+   survive. That belongs to cc9-ships37's harness lines, but check whether the Wildcats' wingmen
+   lose their order when the target squadron's leader dies. The standing order re-resolves to the
+   new flight leader; the members already served keep their first task.
+3. **006CD350 states 1/2 (006CD43C onward) and 006CC5C0** are still unread (AIR_OPERATIONS.md:392).
+   No row has reached them yet.
+
+**Scripts** are in `local\`, prefix `l42_`:
+- `l42_queue.ps1`, with rows `u1w5`, `u1w7`, `u1p5` and `l10p2` with their order files;
+- `l42_field_writers.py <disp> [lo hi]`, a disp32 load/store scanner over .text.

@@ -812,6 +812,15 @@ inline constexpr bool kAirOpsPlayerLaunchGroupBound = true;   // ON: AIROPS_LAUN
 // made every wing). False: served at the first step any member exists, so only
 // the flight leader receives it.
 inline constexpr bool kAutoAttackAllMembersBound = false;  // OFF: mechanism failure (deck members are not visible), measured
+// Packet cc9_auto_attack_member_launch. True: the AutoAttackTarget order served
+// at the first step stays with the squadron, and every member that becomes
+// airborne (alive and visible: off the deck, state 2 -> 4) afterwards is given
+// the same order through the squadron intake. The image applies the squadron's
+// command to every member at once (007F15F0 -> 0071ECF0 on the squadron, whose
+// +128h 007ECF80 fans out over +3D0h); SUBSTITUTION, labelled: this host has no
+// squadron-level command, so each deck member is given it as it launches.
+// False: only the members flying at the first serve get it.
+inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAUNCH_TICK, member orders at launch, measured
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state
