@@ -251,6 +251,11 @@ struct GameGunRow {
     // Packet cc9_fire_function_guns_now: 009E2B60's vtable[1F0h], queued for the
     // gun's next aim-and-fire pass.
     bool immediate_fire_009e2b60{false};
+    // Packet cc9_player_torpedo_group (message 79h group 4, 0095A1CC): the
+    // launch order 007311B0 that 0072AC20 leaves on the tube. Its heading
+    // (order+4, the message's world yaw msg+2Ch) is what 00856637 installs as
+    // the torpedo's record+46Ch; 10000 = no order.
+    float player_order_heading{10000.0f};
     unsigned long long seat_handovers{0};
     unsigned long long seat_returns{0};
     // Packet cc9_player_gun_seat_artillery. Message 79h's group 3 arm
@@ -443,6 +448,9 @@ struct GunAimMessage79 {
     bool pressed_35{false};
     bool has_target_36{false};
     std::uint16_t target_38{0};
+    // msg+2Ch, the group 4 arm's world yaw (0095A210), in this host's world
+    // heading convention (atan2(x, z)).
+    float yaw_2c{0.0f};
 };
 
 // One projectile in flight, as 006E8430 created it.
@@ -1101,6 +1109,15 @@ public:
     // is the 99h byte; it stays on the launchers until a call with held=false,
     // as a held key sends it every frame. docs/GUNNERY_OPEN_ITEMS.md 140.
     bool player_fire_weapon_group(std::size_t unit, int group, bool held, std::string& reason);
+    // Packet cc9_player_torpedo_group (kPlayerTorpedoGroupFireBound in the .cpp):
+    // message 79h group 4 (0095A1CC), the player's torpedo tubes. The aim is the
+    // world yaw from the unit to `target` (a unit name), or `yaw_radians` when
+    // `target` is empty, in this host's heading convention (atan2(x, z)). `held`
+    // is the 99h byte (+34h); +35h, pressed, is its rising edge per unit. A
+    // surface unit fires while it is held and a tube is trained; a submarine or
+    // a torpedo boat fires one ready tube per press. GUNNERY_OPEN_ITEMS 152.
+    bool player_fire_torpedo_group(std::size_t unit, const std::string& target, float yaw_radians,
+                                   bool held, std::string& reason);
     // unit+368h, the instance armour, for a writer outside this host: 006F38E0
     // stores Armor[level] / 100 * class Armour there (SHIP_AI 169). The direct-hit
     // passes read it under kCommandBuildingGunfireArmourBound (GUNNERY 129).

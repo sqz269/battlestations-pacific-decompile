@@ -10889,3 +10889,57 @@ activate's `k`.
 impacts therefore cannot be blamed on the drift: a 0.4 m, near-vertical step that reports a crossing 40 m below itself
 (`from y -14.56 to -14.94, point y -53.01`) is the segment query's answer. That stays with the scene-contents lane
 (`00ADEB80` / the slot-3Ch walk), as 142 routed it.
+
+## 152. The player's torpedo fire: message 79h group 4 (147.2 item 4; cc9-gunnery32, 2026-10-06)
+
+**The read: `00959C20`'s group 4 arm, `0095A1CC..0095A426`.** The loop walks `unit+48h` (next at `+44h`). It takes a
+gun that answers `IsKindOf(20h)` and passes `00954210(4)` (operational, Function 7). Then:
+- `0095A1FF..0095A238`: `v = 0085AB50(tube, -00438B10(msg+2Ch, unit->vtable[50h]()), [00E0B588] = pi/4)`.
+  - `0085AB50` (read whole, `0085AB50..0085AB98`) is the platform snap `007F6190` over the tube's window list
+    `[[unit+3F0h]+538h]+94h[gun+38Ch]`. It answers the hull-relative tube angle, or `FLT_MAX` (`00D7A278`).
+- `0095A24B` / `0095A25F`: a unit answering `IsKindOf(8)` (submarine) or `IsKindOf(0Eh)` (torpedo boat) takes the press
+  arm `0095A380`. Every other unit takes the surface arm.
+- **Surface arm.**
+  - `v` valid: `0085ABA0(tube, v, 0)`, training the tube (`0095A28F`).
+  - `world+1FE4h == 2` (network client) skips the rest.
+  - With `v` valid and `+34h` held: when `|00438B10(v, tube+480h)| < [00CEDF5C]` (5 degrees), build the launch order
+    `007311B0` (24h bytes), install it with `0072AC20`, and call `vtable[1E8h](1)`, the trigger. A wider error leaves
+    the trigger as it is.
+  - `v` invalid or not held: `vtable[1E8h](0)` (`0095A36B`).
+- **Press arm `0095A380`.**
+  - The network gate, then `v` valid, then `+35h` pressed, then `vtable[1D0h](1)` (CanFire with the reload check,
+    `0085A830`).
+  - Then the same order and `0072AC20`, and `vtable[1F0h]()`, the immediate-fire slot (GUN_SHOT_CADENCE 10).
+  - `BL = 1` ends the walk (`0095A41B`, tested at `0095A421`): **one tube per press**.
+- **The order's heading is the message's yaw, not the tube angle.** In the loop frame, `msg+2Ch` sits at `[ESP+14h]`
+  and `v` at `[ESP+20h]`. At both `007311B0` calls (`0095A334`, `0095A3EB`) the read is `[ESP+20h]` after `PUSH EBP`
+  and `SUB ESP,8`, which is `[ESP+14h]` of the loop frame.
+  - `007311B0` (read, `RET 0Ch`) stores it at `order+4`, the swim depth at `+8` and the unit at `+0Ch`.
+  - `00856637` copies `order+4` to the torpedo's `record+46Ch`, the gyro heading `00857061` turns it to.
+  - `0072C970` (read) is the swim depth: `00852410` for a submarine's Function 7 tube, else `[00D0C314]`.
+
+**The binding, `kPlayerTorpedoGroupFireBound`, committed OFF** (`src/game_hosts_gunnery.cpp`):
+- `apply_gun_aim_message_group4` is the arm, over the unit's Function 7 rows. The bearing is the host's
+  `kGunHorzSign * atan2(right, forward)` of the yaw's direction, which is the convention every other gun angle here
+  uses for `-wrap(yaw - heading)`.
+- The surface arm sets `seat_horz` / `seat_vert` (`0085ABA0`), and the trigger is `seat_trigger`.
+- The press arm checks `torpedo_tube_can_fire_1d0` (the fire pass's own `0085A830` gate) and queues
+  `immediate_fire_009e2b60` (`vtable[1F0h]`).
+- A launched round of a tube carrying an order gets `commanded_heading = order heading` (`00856637`).
+- `GameGunneryHost::player_fire_torpedo_group(unit, target, yaw, held, reason)` sends the message. The yaw is toward a
+  named unit, or given. `+35h` is the rising edge of `held` per unit.
+- LABELLED, as for group 5: the tubes take seat 0 (the role take), and the permission test `009542B0` and the HUD are
+  not run. The network gate is open. `0072C970`'s swim depth is not modelled, as for the bot.
+- A summary line: `summary mission gunnery player torpedo group ...`.
+- **The harness line is not here.** `src/game_hosts_mission_frame.cpp` is ships40's; the proposed line is
+  `torpedo <ship> at <unit...>` / `torpedo <ship> yaw <deg>` / `torpedo <ship> release`, sent to the lead.
+
+**Predictions (before any run).**
+- Idle rows: there is no caller without a harness line, so they are identical (exit 0/1) by construction. JM06 3000 is
+  the control.
+- JM06 with presses at a transport (a local test export that routes `fire PlayerSub 01 group 4` to the new call,
+  never committed):
+  - ON: one torpedo per press from PlayerSub 01's bow tubes, while a tube passes CanFire and the bearing is within
+    pi/4 of a tube window. Each round's gyro heading is the yaw to the target.
+  - `tube_fires` = presses minus refusals, and `order_launches` = the rounds launched.
+  - OFF: nothing (the arm is a record), so exit 3 on that row only.
