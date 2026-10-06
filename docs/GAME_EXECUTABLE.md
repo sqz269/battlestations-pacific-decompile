@@ -14704,3 +14704,64 @@ tables show both at work on those rows (`ShipAiPath::reset_live_plan_009da4e0` a
   default-arm launches change nothing it reports.
 - **Missed** on USN02, LOMP06 and JM05: they move, through `spr` + `ics`, which their own pairs found
   gameplay-inert on four other rows.
+
+
+## Mission reference baselines, 2026-10-06 ab (main c245a54bb)
+
+Packet `cc9_reference_rebaseline_28`, worker cc9-gunnery28, report `reports/cc9_reference_rebaseline_28.json`.
+The base is main `c245a54bb` (2026-10-06 02:37 UTC). The previous reference is aa (`13fd2978e`).
+Anything flipped on main during these runs belongs to the next reference (AC), notably
+`kLuaCapturePercentageBound` if cc9-lua40 lands it.
+
+### The switch diff and the plan
+
+`local\g28_switches.py 13fd2978e c245a54bb` lists nine switches that did not exist at AA's base,
+all ON at `c245a54bb`:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `cd` | `kLuaCountdownBound` | SQUADRON_LAND_TASK 5ds.1 | live: JM08 long (`SpawnHoshoFleet` at 291 s); presentation only on LOMP10 long, JM05 long |
+| `abs` | `kLuaAddAirBaseStockBound` | SQUADRON_LAND_TASK 5dt.1 | inert on five rows |
+| `pen` | `kShipAiApproachSearchPenaltyBound` | SHIP_AI 159.4 | live: JM08 long; `pair_diff` 1 on USNOS, USN13, BSM01 |
+| `pm` | `kCommandBuildingPartyLuaMirrorBound` | SHIP_AI 160.4 | live: JM08 long (the HQ neutralize fails the mission; host-only after about +40 s) |
+| `lr` | `kLandingShipLandedRemainderBound` | SHIP_AI 161.4 | live: JM08 long (HQ falls 5.25 s earlier) |
+| `fr` | `kLandFortFireRollBound` | SHIP_AI 162.4 | `pair_diff` 1 everywhere under the measurement streams |
+| `afd` | `kAirfieldDestructionRuleBound` | GUNNERY 121.5 | `pair_diff` 1 (USN01 36000, USN13, USNOS) |
+| `afs` | `kAirfieldTargetSubEntitiesBound` | GUNNERY 124.4 | `pair_diff` 1 on ten rows, no reach |
+| `ret` | `kPlaneRetreatTaskBound` (+ the KillReason commit `456fb1b2a`, inert with it OFF) | SQUADRON_LAND_TASK 5ea.1 | live: JM05 long |
+
+The `os.execute` / `io.popen` guard (`bb30ca8c7`) and the capture-fraction accessor (`f022aeb0c`)
+also landed; neither has a switch.
+
+**Rows:** AA's twenty-two (USNRM01 among them), in AA's launch form (`local\g28_lane.ps1`, copied
+from g27's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player).
+
+### Predictions (written before the runs)
+
+- **Anchor** (all nine OFF at `c245a54bb`): gameplay-identical to AA on all twenty-two rows. A miss
+  would mean the guard, the accessor or the KillReason plumbing moves a row by itself.
+- **AB against AA.** Moves (exit 3) on:
+  - **JM08 long**, through `cd` (Hosho, Hawaii fleets), `pen` (re-timed escorts and transports),
+    `lr` (HQ neutralized about 5 s earlier) and `pm` (the neutralize fails the mission at about
+    1035-1052 s; `SetInvincible 0.1` on every live unit; deaths after that collapse). Expected
+    shape: deaths well below AA's 179, the last death near the failure plus a few tens of seconds,
+    hit records up (fire against invincible units). The row is image-faithful only to about 40 s
+    past the failure.
+  - **JM05 long**, through `ret`: the three event-4 catalinas fly east over the Japanese force and
+    die there (deaths 38 -> 42 in 5ea.1's tree), with `CountdownCancel` / `AddPowerup` on the
+    success branch (their deaths stay `harm`).
+  - Every other row is gameplay-identical. The open risks, with the reason:
+    - `pen` writes a non-zero penalty only when an approaching ship comes within max range + 500 of
+      its destination; AA's logs show approach steps on IJN11 (5210), JM05 (1160), JM05 long (3560),
+      JM08 (76), LOMP10 (1380), LOMP10 long (3243), USN02 (20472), USNOS (3951), USNOS long (6999),
+      and only USNOS and JM08 long were paired. USN02 and the long rows are the likeliest misses.
+    - `cd` fires a countdown inside the window only on JM08 long (JM08's 180 s timer starts at
+      111 s; LOMP10 long's `TimeLimit` and JM05 long's reminder are presentation only).
+    - `afd` arms on USN01 at 133.95 s, but nothing reads `airfield_blocked` there.
+    - `fr` draws on the shared stream, which the measurement streams separate from gunnery.
+- **Leave-one-out.** On JM08 long the groups are `cd` (+ `abs`), `pen`, `pm`, and `lr` + `fr`; on
+  JM05 long, `ret`. Each group OFF alone, two rounds. Every group OFF moves JM08 long against AB
+  (they act in sequence: Hosho fleet at 291-675 s, approach re-timing from about 1090 s in 159.4's
+  tree, the bleed from the first ramp near 991 s, the failure at the neutralize), and none of them
+  alone restores AA. `ret` OFF restores AA on JM05 long. Any other row that moves gets the groups
+  that its own record says reach it.
