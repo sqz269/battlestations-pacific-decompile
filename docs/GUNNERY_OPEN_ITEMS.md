@@ -11049,3 +11049,89 @@ the OFF switch only.
 - With three slots shared by three workers, 200 runs take about 5 hours. Narrow the leave-one-out to the rows that the
   broad group leaves unexplained.
 - `std::getenv` is a C4996 error in this build (warnings are errors); local hacks use `_dupenv_s`.
+
+## 155. The submarine tube's fire window is the meshless gun's point window (154.2 item 2; cc9-gunnery33, 2026-10-06)
+
+**The question (152.1).** Each of PlayerSub 01's tubes carries one window, `[-180, 180]` with flags 0, so
+`007F6190` refuses every bearing. Does the image's platform carry the fire bit?
+
+**The platform seed is flags 0 in the image too.** `007F7110` (the platform constructor; `operator_new` +
+call at `BSP_VehicleClass_ReadLuaFields`, before the `Windows` loop that calls `007F6B10`) appends one record
+`{flags = BL, min_h = [00D08BA8], max_h = [00D08BAC], min_v = 0, max_v = 0}` (`007F7206..007F7235`, stored at
+`007F72C5..007F72DD`). `EBX` is zeroed at `007F7143` and is not written again before `007F722B`
+(`MOV [ESP+14h],BL`); the calls between are callee-saved. So the host's flags-0 seed (`game_hosts_gunnery.cpp`,
+the window load) is the image's. One difference stays recorded: the image's seed has vertical bounds `0..0`, and
+the host's has `-pi/2..pi/2`. `007F6190` does not test the vertical.
+
+**The fire bit comes from the gun, not the platform: `0085A3D0` (TurningGun setup, gun vtable `A0h`),
+`0085A3E0..0085A4A8`.** Read whole from the listing:
+
+| step | site | rule |
+| --- | --- | --- |
+| 1 | `0085A3DD..0085A3E7` | `[[gun+30h]+4A4h] != 0`: the world's byte. `009037F0` stores its first argument there (`00903802`). Its one caller, `004DE69C`, passes 1 (docs/CONSTRUCT_WORLD.md). |
+| 2 | `0085A3ED..0085A3F7` | `[[gun+3F4h]+38h] == 0`: the gun class's `Mesh` string is empty. `0087CB35` reads `"Mesh"` (`00CE5FD0`) and `0087CB64` assigns the string at `+38h` (length first). |
+| 3 | `0085A3FD..0085A433` | `007F6CA0(platform)` answers: `count (+40h) <= 1` and `!(first window flags & 1)`, i.e. only `007F7110`'s seed survived the authored windows. |
+| 4 | `0085A435..0085A456` | `f` = row 2 (`+20h..+28h`) of `[gun+3BCh]`'s local matrix (`00B6DB60` = node `+B0h`). |
+| 5 | `0085A43B`, `0085A45D..0085A4A3` | the record `{flags byte 3, h, h, v, v}`: `h = atan2(-f.x, f.z)` (`FCHS`, `LIBCRT_atan2` `00BF701A` at `0085A467`), `v = atan2(f.y, f.z)` (`0085A488`). |
+| 6 | `0085A4A8` | `007F5A10(platform, &record)`: a point window with traverse and fire, split into the seed. There is no `007F6B10` normalisation, so there is no 0.01 widening. |
+
+- **What `[gun+3BCh]` is for a meshless gun.** In `0072E6D0`, `[desc+38h] == 0` jumps to `0072EBE9`. That arm
+  makes a fresh node (`00B6ED70` with `ECX = 174h`, then `00B6F5A0` with the class `Name` at `+54h`) and stores it at `+3BCh`
+  (`0072EC76`). It then sets the node's local matrix through `vtable[38h]` to `0072DD20`'s platform frame
+  (`0072ECA8..0072ECC8`), the `0095F500` slot frame. So `f` is the platform slot's forward row.
+- **The rest seed follows it.** `0085A3D0`'s unauthored arm takes the first window with bits 0 and 1 (docs/GUN_REST_ANGLES.md),
+  which is now the point. The tube's idle angles become `(h, v)`.
+- **This installation.** The `"US submarine torpedo catapult"` and `"Jap submarine torpedo catapult"` rows of both
+  `classtables/arcade/deviceclasses.lua` (modified 2026-05-09) and `realistic/deviceclasses.lua` (2024-07-13) author
+  no `Mesh`, and neither do the single torpedo catapults; every torpedo *tube* row has `Mesh = Platform(...)`.
+  PlayerSub 01's tube platforms 50/51 have the slot forward `(0, 0, 1.16)` (`g32_t4on_j6c.log`), so `h = 0`: a
+  bow point window, and `007F6190` snaps any bearing within pi/4 of the bow onto it.
+- **The host had not modelled steps 1-6,** so its bot torpedo snap (`008FFF20` step 8, `game_hosts_gunnery.cpp`)
+  refuses every meshless tube as well. This is the gap 152.1 found from the player's side.
+
+**The binding, `kMeshlessGunPointWindowBound`, committed OFF** (`src/game_hosts_gunnery.cpp`):
+- At the spawn window load, after the authored arcs and before the `0085A3D0` rest seed. The gate is a TurningGun
+  category (`gun_answers_turning_22h`), a device row with no `Mesh` (`device_fire_points(dev).mesh`), and the
+  seed-only test of `007F6CA0`. The insert takes `f` from `gun_platform_slot_frame_0095f500` (identity `(0, 0, 1)` when
+  the class has no slot), and `gun_split_insert_arc_007f5a10` makes the point window.
+- SUBSTITUTIONS: `0072DD20`'s re-expression through a kind 46h/44h parent is not modelled. A platform shared by
+  several meshless guns gets the same insert from each: the image's later guns fail `007F6CA0` but read the same
+  frame, so the list comes out identical.
+- Counted in both states: `summary mission gunnery meshless point window bound=%d candidates inserts meshed carved`,
+  and the first eight candidates log a `gunnery: meshless point window` line with `h`/`v`.
+
+**Predictions (before any run).**
+- Rows with no submarine and no PT boat: `candidates=0`, identical (exit 0/1).
+- Rows with a meshless tube (JM06's PlayerSub and any AI submarine; USNOS, whose Kaiten/I-boats carry
+  them):
+  - ON, the AI's torpedo bot can open a launch window on submarine tubes. `torpedo_heading_snaps` rises, and new
+    torpedo launches and hits from submarines appear. Expected exit 3 on those rows.
+  - The tube's rest angle moves to the bow/stern point.
+- JM06 with the local group-4 test (152.1's `g32_t4_hack`, both switches ON): `snap_failures` falls from 48 to the
+  presses whose bearing is more than pi/4 off the tube's point. While the transport is within 45 degrees of the
+  bow, each press launches one torpedo (`tube_fires > 0`) with the gyro heading toward the target.
+
+### 155.1 Pairs on `696dde849` and the verdict
+
+- **Smoke**: JM06, 300 frames: exit 0, `candidates=46 inserts=0`.
+- **Census** (300-frame OFF runs): there are candidates in BSM01 (12), IJN01 (24), IJN11 (36), JM05 (16), JM06 (46), JM08 (4),
+  LOMP06 (12), LOMP10 (8), USNOS (6) and USNRM01 (8). ESMP08, USN01, USN02, USN04, USN12 and USN13 have none. Every
+  candidate logged is a `"... submarine torpedo catapult"` tube (category 7, device 66), with `h = 0` and `v = 0`: each
+  sub's tube platforms 50-55 point at the bow. The `carved=` guns are meshless rows with an authored window.
+- **Idle pairs** (`--flip kMeshlessGunPointWindowBound=true`, `local\g33_{off,on}_<row>.log`, AE launch form) on jm06,
+  usnos, bsm01, ijn01, ijn11, jm05, jm08, lomp06, lomp10 and usnrm01 (9000): **all exit 1**, gameplay identical.
+  - The AI torpedo bot now gets past the snap (JM06 `torpedo_gate targeted` 0 -> 23208), but `accepted` stays 0.
+    `0085ABA0` refuses a gun whose rotation speed is zero (`0085ACA5` / `0085ACB9`), and the catapult rows author
+    `HorzRotSpeed = 0` and `VertRotSpeed = 0`.
+  - So the image's bot cannot aim a submarine's fixed tubes either. Its submarines fire through the script's
+    `NavigatorForceTorpedo`, as 152.1 noted.
+- **The player's group 4** (`kPlayerTorpedoGroupFireBound = true` on both sides, plus the harness line
+  `local\g33_harness_edit.py`, orders `local\g33_ord_j6t4.txt`: four presses at USTroopTransport 01):
+  - OFF: `snap_failures=48 tube_fires=0`.
+  - ON: `snap_failures=0`, `tube_fires=4`, `order_launches=2`, `can_fire_refusals=2` (the second tube of a pair
+    still reloading), and `PlayerSub 01: shots 0 -> 2` (exit 3). The bearings of 11.2 to 4.1 degrees snap to the
+    bow point (`snapped=-0.0`).
+  - The two torpedoes do not hit within 3000 frames. That is the aim of the test, not a mechanism failure.
+
+**Verdict: ON.** The mechanism matches end to end, and every idle row is gameplay-identical.
+`kPlayerTorpedoGroupFireBound` stays OFF until the ships lane lands the harness line (sent to the lead).
