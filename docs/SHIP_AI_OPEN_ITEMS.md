@@ -14746,3 +14746,72 @@ Idle reaches phase 3 (`local\s38_u13idle.log`, 24000 frames).
   Hill, Cowpens, Monterey; four slots each).
 - **Not attempted.** ESMP08 (188) shows that the carrier slots stop returning after about 46
   launches, so a 60-target strike waits on 188's routed slot-return item.
+
+## 191. BSM01 to phase 3; USN04 and USNOS read (lead item 3, cc9-ships38, 2026-10-06)
+
+### BSM01 (189's row)
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| p1 (`s38_b1p1`) | `moveto HenryPT Phoenix` | 24000 | both lines refused: `moveto` takes a scene marker or x z, not a unit name |
+| p2 (`s38_b1p2`, trajectories) | `moveto HenryPT 2580 -1650` at 200 and 1200 (Henry starts at (2550, -2950); Phoenix is at (2584, -1542)) | 14000 | **phases 1 and 2 pass**: Henry stops at (2525, -1734), 196 m from Phoenix. The 150 s survival follows, and phase 3 starts at about frame 5219 (`GenerateObject "MiniSub"`). The run ends in phase 3 |
+| p3 (`s38_b1p3`) | p2, plus `attack HenryPT MiniSub repeat 15` from 5500 | 30000 | **phase 3 does not pass.** 82 attack lines are applied (`005FAAE0` form). Henry sits in `attackmove` with `dir=stopped`, throttle 0, about 1860 m from the target, through frame 21000 |
+
+**What phase 3 needs.** `luaMiniSubHit` (2032) clears `SetInvincible` and kills the sub on any hit
+by Henry; the listener logs `attacker_filters=0`. The sub runs `pt_path3` at depth level 1.
+- **No hit happens in p3.** Henry's gun rows fire 17076 shots, all at other targets; none reaches
+  the listener.
+- **Its other rows never fire:** the depth-charge row (plat 9, cat 8) and the torpedo rows (cat 7)
+  show `assigns 0 shots 0`.
+- **Two open items:**
+  - why a ship's attack-move holds about 1860 m from a submerged target and never assigns its
+    depth charges. Ship AI, this lane; not read yet.
+  - a player depth-charge fire line. The script's own dialog keys on `HasFired(Henry,
+    "DEPTHCHARGE")` (809). Input path unread.
+
+### USN04 (`USN\usn_19_coralus.lua`, 3397 lines, this installation, mtime 2024-08-26)
+
+Idle stays in phase 1 to 1200 s (`local\s38_u4idle.log`). Phase 1 is the defence of Lexington:
+- it passes when the bomber waves are spent (`BomberWave` 4 or 5 by difficulty), or when
+  `IJNBombersLex` (and at difficulty 1 and 2 `IJNFightersLex`) are all dead (566-585);
+- it fails if Lexington dies.
+
+Not attempted. The plane-lane pairs already track this row (memory: the USN04 knife-edge).
+
+### USNOS (`COTP-USN\us_osumi.lua`, 2024-10-29)
+
+Idle stays in phase 1 (`local\s38_osidle.log`). The player commands `BigE` (1308).
+- **Phase 1** (995) needs three waves of `PhOneAttackers` killed. Each wave is a `SpawnNew` of 6
+  D4Y Judys (`Equipment` 1), 9 Shinyo boats and 6 submarines (serials 1-3).
+- **Only the first wave spawns by 1200 s.** The submarines need anti-submarine attack, which
+  waits on the same open item as BSM01's phase 3.
+
+### 191.1 BSM01 phase 3: Henry cannot move after phase 2 (cc9-ships38, 2026-10-06)
+
+Runs `s38_b1p3t` (8000 frames, trajectories) and `s38_b1p4` (30000 frames, trajectories; at phase
+3 `moveto HenryPT 1150 -2950`, then `attack HenryPT MiniSub repeat 15` from 6600).
+
+**What the trajectories show:**
+- **The mini-sub stops.** It is put at (800, -30, -3200) and runs `moveonpath`. By 296 s it halts
+  at (1072, -6.96, -3017) and stays there: `dir=stopped throttle=0`, 137.6 m from its path goal.
+- **Henry never moves again after phase 1.** From 140 s to 1500 s it stays at (2524.6, -1734.2).
+  - The phase-3 moveto is applied at frame 5500, and the step shows `state=movetopos`.
+  - At step 5510 the state is `state=stop` with `d32c=24.00`. The movetopos completes at once,
+    as if its goal had been placed 24 m from the hull.
+  - Under p3's attack lines Henry moves only about 130 m (to (2501, -1862)) and then holds.
+- **Phase 2, between those times,** runs `ExplodeToParts`, `BreakShip` and `SetDeadMeat` on
+  Phoenix, 196 m from Henry. It also re-grants and turns Henry (`SetRoleAvailable`,
+  `EntityTurnToEntity(Henry, Sacramento)`).
+
+**Hypothesis (not read):** the path plan cannot reach a goal from inside the Phoenix wreck's
+obstacle footprint, or from the crowded anchorage. It falls back to a goal at the hull, and the
+mini-sub's path goal is refused the same way.
+
+**Open in this lane:**
+1. Why a `movetopos` from (2525, -1734) completes in one step with `d32c=24`. Read the path
+   publish (`009F3F80` and the obstacle sector scan) on this position. Diagnostic first:
+   `path_picks` / `path_publishes` per unit.
+2. Why `MiniSub`'s `moveonpath` stops 137.6 m from its goal.
+
+Either keeps phase 3, and so the mission, out of reach. Phase 4 (the `Donald` flight, ten kills or
+17 km from Akagi) has not been reached.
