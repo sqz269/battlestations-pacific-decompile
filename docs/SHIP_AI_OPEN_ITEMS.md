@@ -13493,3 +13493,40 @@ Logs: `local\l40_{off,on}_{usn02,jm05,jm05l,usnrm01}.log`.
 
 **Verdict: ON.** The class bit drops exactly where the read says, and the draft contacts end for
 exactly those hulls.
+
+## 167. USN01 toward completion with scripted player input (lead item 1, cc9-ships35, 2026-10-06)
+
+**Phase 2 ends with one player order.** docs/SCRIPTED_HELM.md section 12 adds the `target` line,
+the player's target pick `00525250` on a controlled squadron (`settarget` through `0077D600` into
+the squadron intake `007F1940`). With `3000 target ConTBD1 Convoy4` (and a repeat at 3600) the
+convoy dies by 201.71 s and `luaMoveToPh3` runs; the idle run on the same build keeps Convoy4
+alive. Runs and order file: SCRIPTED_HELM 12.1.
+
+**Phase timeline (r1/r2, 14000 frames):**
+
+| phase | marker | time |
+| --- | --- | --- |
+| 1 -> 2 | `blackout callback luaMoveToPh2 ran` | before the scout (as section 156) |
+| 2 | `luaConLeadHit` (Convoy1 bomb), ConTBD1 controlled | about 141.8 s (frame 2836) |
+| 2 | `target ConTBD1 Convoy4` applied | 150 s, 180 s |
+| 2 -> 3 | Convoy4 dead 199.76 s, Convoy5 dead 201.71 s, `luaMoveToPh3 ran` | about 205 s |
+| 3 | six Nell squadrons generated, `levelbomb` on Enterprise | about 205 s |
+| end | none by 700 s (`summary mission end: none`) | - |
+
+**The phase-3 blocker is an unimplemented row, not the script or a binding.**
+- `007EEC50` gives the Nells `levelbomb` (`00E08F28`); 0099A170 installs task kind 4
+  (`PilotSetTarget task: 0099A170 -> 1`).
+- The `levelbomb` task (`009B9030`, vtable `00D20210`, tick `009B7990`, states `009B42D0`) has no
+  host body (`src/bot_tasks.cpp` only lists it). The Nells keep heading 0 and fly north at about
+  64 m/s, 38.9-42.4 km from Enterprise at 700 s (`local\s35_nells.py` over `local\s35_traj_r2.*`).
+- No bomb, no Nell death, no Enterprise damage. Neither phase-3 end (`luaMissionComplete` when all
+  Nells are dead, line 579; `luaMissionCompletedNew()` on `Enterprise.Dead`, line 573) can fire.
+- **Route:** the plane lane (the level-bomb task body). It is a whole packet: the seven states
+  and the `Pilot/LevelBomb` tunables (CruisingAlt 1300, DropAlt 1300, AttackDist 2000, SafeDist
+  1000; BOT_TASKS.md).
+- A player-input route around it would need fighters from Enterprise (`SetAirBaseSlotCount 4`,
+  `AddAirBaseStock(101, 40)`, lines 807-809), that is the air-ops launch UI, which the harness
+  does not drive; and the Nells are already out of range. Not attempted.
+
+**Runs spent:** 4 (idle1, sm1, r1, r2); the guard line did not appear because no run reached a
+mission end.

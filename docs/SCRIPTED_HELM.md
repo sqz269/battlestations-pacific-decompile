@@ -935,3 +935,73 @@ scripted").
    - The torpedo that sinks it is Katori's (killer_gun 217, category 7), so check first whether
      the plane-weight switches change which target Katori engages.
    - Non-switch code also changed over that range, and no bisect was run.
+## 12. `target`: the player's target pick on a controlled squadron (packet `cc9_player_squadron_target`)
+
+Worker cc9-ships35, 2026-10-06. Harness code only; no image switch.
+
+```
+<frame> target <unit> <target...> [repeat <seconds>]
+```
+
+**The image's path.** In the 3D view the player's target key runs `00525250`.
+- `00523130` walks the hostile list (`[00E188A8+19BCh]`) and picks the entity nearest the screen
+  centre. For a controlled unit that is not a ship it returns `settarget` (`00E08EF8`); a ship
+  gets `attackmove` when `[00E188A8+19C4h]` is set.
+- `005252ED` issues it through `0077D600` on `[00E188D8]`, with a kind-1 descriptor naming the
+  pick and **flags = `IsKindOf(18h)`**.
+- On a squadron the order reaches the command intake `007F1940`, which is vtable `00D087C0`
+  slot `+160h` (the only reference to it is the `.rdata` dword `00D08920`). For `settarget` and
+  `attackmove` it runs `007EEC50(target, 1, 1)` and issues the chosen class to the squadron's
+  director (`007F1AD6..007F1B24`), or nothing when the chooser declines.
+- The host already runs that intake for the AI's settarget to a squadron
+  (`kAiSquadronSetTargetIntakeBound`, `script_orders_squadron_intake_007f1940`). The line calls it.
+
+**Why this and not `attack`.** USN01 hands the player the squadron ConTBD1
+(`SetSelectedUnit(FindEntity("ConTBD1"))`, this installation's `usn_1_marshall.lua` line 928). In
+the image the controlled unit is then the `PlaneSquadronGen` instance (kind 18h). `005FAAE0`'s
+squadron arm only sends message `BCh` (the attack mode, `ctl+370h`); it names no target. The
+target pick is the order that points a squadron at a ship.
+
+**Refusals, each with its reason:** the unit is not the controlled unit; the unit is not a member
+of a plane squadron; the target is not a live created unit; `007EEC50` chose no class.
+
+**LABELLED differences from the image:**
+1. The file names the target. `00523130`'s relation test (`> 1`), `00804350(5)`, the screen-centre
+   distance and `005220C0` are not run.
+2. This host fuses a squadron into its flight leader (the controlled row logs `IsKindOf(18h)=0`),
+   so "a member of a plane squadron" stands in for `IsKindOf(18h)`.
+3. The order is delivered at once; message routing is not modelled.
+
+### 12.1 USN01: phase 2 ends
+
+Runs on `agent/cc9-ships35` (main `cc1ad6dd4` plus this line), the reference V launch form
+(`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`), `local\s35_run.ps1`. The orders
+(`local\s35_orders1.txt`):
+
+```
+3000 target ConTBD1 Convoy4
+3600 target ConTBD1 Convoy4
+```
+
+| run | frames | outcome |
+| --- | --- | --- |
+| idle `local\s35_idle1.log` | 7000 | Convoy 1, 3, 2, 6, 5 die (163.61-203.41 s); **Convoy4 survives to the end (350 s)**; no phase 3 |
+| sm1 `local\s35_sm1.log` | 7000 | both lines applied, class `00E08F18` (`torpedo`) to 3 members; `command target 0071EBF0: ConTBD1 / .-2 / .-3 -> Convoy4`; **Convoy4 dies at 199.76 s**, Convoy5 at 201.71 s; `luaMoveToPh3` runs |
+| r1 `local\s35_r1.log` | 14000 | as sm1; phase 3 from about 205 s; no mission end by 700 s |
+| r2 `local\s35_r2.log` | 14000 | r1 again with `--trajectory-csv` (same deaths): the Nell track below |
+
+- The convoy's last kills are not ConTBD1's torpedoes. Convoy4's killer is `ConSBD1|.-4` (gun,
+  800 m) and Convoy2's is `ConTBD1|.-2` (torpedo). The order moves the whole phase-2 fight; the
+  outcome differs from the idle run only by the line.
+- **Phase 3 stalls.** The six Nell squadrons are put 6-10 km west of Enterprise at 1200 m with
+  `PilotSetTarget(unit, Enterprise)` (lines 811-838). `007EEC50` chooses `levelbomb`
+  (`00E08F28`), and 0099A170 installs task kind 4. No Nell turns: each leader holds heading 0 and
+  flies north at about 64 m/s. At 700 s they are 38.9-42.4 km from Enterprise. No bomb is
+  released, no Nell dies and Enterprise is untouched, so `luaMissionComplete` (all Nells dead)
+  and line 573's `Enterprise.Dead` arm both stay out of reach.
+- **Why:** the `levelbomb` task (factory `009B9030`, vtable `00D20210`, tick `009B7990`, states
+  `009B42D0`: moveto, follow, attackrun, aim, prepare, release, goaway; docs/BOT_TASKS.md) has no
+  host body. `src/bot_tasks.cpp` lists it; nothing flies it. The divebomb and torpedo tasks have
+  bodies. Routed to the plane lane (docs/SHIP_AI_OPEN_ITEMS.md section 167).
+- No run reached a mission end, so the Lua exec guard's "refused a mission script's process
+  launch" line does not appear (none was expected).
