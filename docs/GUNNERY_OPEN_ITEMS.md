@@ -9529,3 +9529,80 @@ state; the effect side is presentation.
   - the first respawn follows the first hull hit on a ship that is a quarter down, within one step.
 - **Default form (no option):** not paired here. Every respawn moves the shared stream three steps, so
   a default-form run diverges after the first respawn; that is the binding's purpose.
+
+### 127.4 Smoke and pairs; verdict ON
+
+- **Runs:** `pair_export --commit c644da9e7`, OFF `local\g28_lane_h` (SHA-256 prefix `3E1482BD326D`), ON
+  `--flip kDamageSmokeDrawsBound=true` `local\g28_lane_i` (`F316FA6ADDDD`); logs
+  `local\g28_ds_{off2,on2}_<row>.log`, reference AB's launch form. Smoke: `local\g28_smoke127.log`, USNOS
+  300 frames, OFF, clean.
+- **The first pair** (`0af7fccec`, `local\g28_ds_{off,on}_<row>.log`) read exit 3 on every row. The
+  summary line was then `summary mission gunnery damage smoke ...`, and `pair_diff` keys its headline
+  on `mission gunnery damage`, so the ON side lost deaths, hits and damage. Every section below the
+  headline was identical (USN02: the native table and the summary line only). `c644da9e7` renamed the
+  line to `summary mission unit damage smoke`; the second pair is the verdict.
+- **All twenty-two rows are `pair_diff` 1.** What changes: `UnitInstance::smooth_intensity` becomes
+  concrete, `UnitDamageSmoke::point_effect_create` (`00822AD7`) appears with one call per respawn, and the
+  new summary line.
+
+| row | units with slots | slots | clock resets | respawns | expired, held | first respawn |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | 23 | 65 | 2620 | 1084 | 107293 | Kawakaze, 38.45 s |
+| JM08 long | 7 | 17 | 323 | 310 | 50999 | Japanese Patrolboat 01, 27.20 s |
+| JM05 long | 5 | 9 | 114 | 81 | 30578 | USS Lexington, 0.05 s |
+| IJN11 | 4 | 12 | 34 | 51 | 740 | Farra1, 96.45 s |
+| JM05 | 2 | 4 | 15 | 27 | 5130 | USS Lexington, 0.05 s |
+| USNRM01 | 2 | 3 | 444 | 21 | 5461 | Neosho, 195.16 s |
+| USNOS / USNOS long | 1 | 3 | 129 / 1224 | 16 / 16 | 5253 / 23253 | MovieCargo, 19.10 s |
+| JM08 | 1 | 1 | 86 | 10 | 1015 | Japanese Patrolboat 01, 27.20 s |
+| LOMP10 long | 2 | 2 | 5 | 9 | 3080 | PT 01, 227.16 s |
+| JM06 | 2 | 2 | 77 | 8 | 177 | Fletcher-class 08, 101.50 s |
+| USN01 | 1 | 2 | 2 | 4 | 0 | Convoy1, 137.80 s |
+| USN13 long | 1 | 1 | 29 | 3 | 5022 | Intrepid, 179.06 s |
+| USN04, E2, ESMP08 long, LOMP10, USN12, USN13 | 0 | 0 | 2, 2, 185, 1, 4, 9 | 0 | 0 | none |
+| BSM01, IJN01, LOMP06 | 0 | 0 | 0 | 0 | 0 | none |
+
+- JM05's Lexington respawns on the first step: it starts below 75 % health, and the constructor's clock
+  is 0, so its slots respawn for the first 30 s without a hit.
+- **Mechanism: matches the read.** Slots appear only on damaged ship-family units, respawns stop 30 s
+  after the last hull hit (`expired, held` counts the expired slots waiting for one), and BSM01, IJN01
+  and LOMP06 take nothing.
+
+**Predictions:**
+- Right: every row `pair_diff` 1; no respawn on BSM01 and LOMP06.
+- **Missed, the proxy:** `clock_resets` is not the `hit records (hull)` column. USN04 resets twice
+  against 153 "hull" hits, and USN02 2620 times against 366. The reset is taken where `00826F10` takes
+  it, on the passes with a hull segment (`008270BE` sits after `00826F62`'s segment test); the headline's
+  `hull` counts something else, and was the wrong yardstick.
+- **Missed, reach:** USN04, E2 and ESMP08 long were named as likely. Their ships
+  are not hit on a hull segment while a quarter down (USN04 and E2: two resets in the whole run;
+  ESMP08 long: 185 resets, no unit with a slot).
+
+**Verdict: ON.** The mechanism is the image's as read and the reference rows are gameplay-identical
+under the measurement streams. Under the default form every respawn now moves the gameplay stream
+three steps, as the image does. Not game-validated.
+
+## 128. Census 123.2 item 4: the director's path objects and the clear trace have no reach (cc9-gunnery28, 2026-10-06, read only)
+
+**`0071FB90` (`WeaponDirector::create_path_object`, 22 rows on AB).** `0071FB90` (`0071FB90..0071FC10`,
+`RET 4`) constructs the 50h-byte slot path object: vtable `00CFDB24`, an inner `00CFDB10` at `+10h`, and
+an empty point vector at `+44h..+4Ch`. Its `vtable[8h]` is `0071FC20` (`LEA EAX,[ECX+40h]`), the vector
+`0071D780` weighs (`(end - begin) / 0Ch`, COMMAND_EXECUTION). The director keeps one per slot at `+1A4h`
+and rotates them with the queue (`00720850`, `src/command_execution.cpp`). The known writers of the vector (from the reads cited; no exhaustive store scan was run) are:
+- `0071F600`'s `moveonpath` arm at `0071F6A6`, which builds the route into the **slot-0** object when the
+  head begins (the only rel32 caller is `00835C70`, cc8_ship_drive), which the host carries as
+  `path_points`;
+- `0071FDE0` from the 5Fh receiver `007207C0` (user path points), on the last queued slot's object
+  (docs/AI_CAUTIOUS_ROUTE.md).
+
+So a queued `moveonpath` slot weighs more than 1 in the image only after user path points. AB's
+`summary mission director user path points=0 queued=0` holds on all twenty-two rows, so the queued
+objects are empty there as in the host, and the "named hole" in `command_count` (slots 1..9 weigh 1)
+matches the image on every reference row. USN04 and E2 queue named `moveonpath` commands behind a
+named one (`with_queued_moveonpath` 144 and 294), and those weigh 1 in both. **No reach.**
+
+**`007208A3` (`WeaponDirector::session_trace_value`).** In `00720850` the unit's `vtable[10h]([00F876B0])`
+answer is pushed with the slot index and mode into `004254B0` with the format at `00CFDB44`,
+`"---InternalClearPrimaryCommand: %s (%d), mode:%d, (%s, %d)"`. A trace argument; **no gameplay reader.**
+
+Item 3 (`009D4923`, `007BB110`, `unit+9C0h`: the aircraft device) is the planes lane's.
