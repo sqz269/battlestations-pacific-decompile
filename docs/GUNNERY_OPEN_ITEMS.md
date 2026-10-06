@@ -10155,3 +10155,27 @@ The ON exe is `pair_export --commit 165e910c4 --flip kShipyardProductionBound=tr
   gameplay identical. The only differences are the diagnostic's added rack-line fields.
 - ON's summary is `yards=0 walks=0`: without routed edit (A) the registry is empty. Prediction 1 holds,
   trivially. Prediction 2 waits for (A), (C), (D) and the harness `build` line.
+
+## 138. Why USN13 long's `bruh #1.9` racks stop after one drop (137 follow-up; cc9-gunnery30, 2026-10-06)
+
+This commit adds per-unit counters to the single-rack tick `run_rack_tick_006e56f0`: calls, each early return, and
+ticks after a drop. They are printed as `rack tick returns:`. Log only. Run: `local\g30_ret_usn13l.log`.
+
+| unit | calls | idle returns | level-bomber branch | ticks after drop | last drop / last tick |
+| --- | --- | --- | --- | --- | --- |
+| `bruh #1.9|.-2` | 2668 | 2545 | 122 | 122 | 150.45 / 156.55 s |
+| `bruh #1.9|.-3` | 2587 | 2549 | 37 | 37 | 150.65 / 152.50 s |
+| `bruh #1.9|.-4` | 8537 | 2593 | 5943 | 5943 | 152.85 / 449.96 s |
+
+**It is a host branch switch, not the CanFire substitution and not a missing tick.** The tick runs every step after
+the drop. Every one of those steps takes the level-bomber branch (`lb_level_bomber_racks()` true), and none took it
+before. `bruh` is type 167, kind 10h (LevelBomber; `unit hull input ... kind=16`).
+- The first drop went through the single-rack path with `bomb=0` (the 137 diag line). So when it dropped, the
+  unit's ordnance kind set did not yet answer "general bomb, no torpedo", the predicate was false, and the drop
+  took the torpedo spawn (`release_ordnance_drop`, `spawned=1`).
+- After the drop the predicate turned true. The level-bomber tick then runs with per-rack `lb_rack_dropping`
+  never set (no `007C0E67` issue reached it), so it never drops again.
+- In the image one tick, `006E56F0`, serves every rack. The split between the two arms is the host's.
+**Uncertain:** what changed the predicate between the two steps. It reads `unit_.ordnance_mask`, and its producer
+was not read here. The next step for the release lane (units host, planes) is the `ordnance_mask` writer's timing
+for a level bomber, and which of the issue stages the first release of these wingmen came from.
