@@ -10651,3 +10651,25 @@ Runs on this tree (`e611d7c4f` plus local, uncommitted `G31CMD` / `G31AF` / `G31
 1. the AA slot test's refusal term for a grounded plane;
 2. what freezes the 8-inch traverse after 1131 s, the damage rotation scale (`gun+358h` level, device HP) or a seat
    hold.
+
+## 146. Re-pairing `kShipyardProductionBound` on current main (lead item 8; cc9-gunnery31, 2026-10-06)
+
+136.6's mechanism failure was that the launched Elco never moved. SHIP_AI 197 removes it: ships39's
+`kPathObjectDefaultPairBound` is ON on main (`game_hosts_commands.hpp`), and it holds the `0081DE10` / `+1130h`
+correction. On LOMP10 with g30's build orders, all four Elcos follow `CB4_SY_Path` and entries 2-4 build.
+
+**Pair.** OFF is this branch at `9dfdb6a64` (main `096f4d4ca` merged); ON is the same commit with the switch flipped.
+Rows:
+- LOMP10 12200/12000 with `local\g31_ord_l10_build.txt` (g30's `g30_ord_l10_build.txt`: build lines at 4700-4740,
+  then the airfield launches);
+- JM05 long;
+- BSM01 3000 as the control.
+
+**Predictions (before the runs):**
+1. **LOMP10 build.** Four Elcos (class 27):
+   - the first is built at once on `CB4_SY_Hangar`; orders 2-4 queue in state 2 and build as the hangar frees;
+   - each runs `moveonpath` on `CB4_SY_Path` and moves;
+   - units +4 and the shipyard summary shows four builds;
+   - the gameplay moves (exit 3) by those four boats.
+2. **JM05 long and BSM01 3000:** identical gameplay (exit 1, from the ON-only summary line). No `build` line, and
+   nothing sends A9h (136.3 item 1).
