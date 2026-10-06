@@ -15012,3 +15012,146 @@ rounds agree** (exit 0 or 1 on every group and row). Exit against AC / against A
   the end text, `cb` and `tmr` each move JM08 long's neutralize.
 - No row exceeds the image-faithful window that AB recorded; JM08 long is faithful to about 40 s past the HQ
   neutralize (EndScene at 1081.73 s).
+
+## Mission reference baselines, 2026-10-06 ad (main bb5ad5db8)
+
+Packet `cc9_reference_rebaseline_30`, worker cc9-gunnery30, report `reports/cc9_reference_rebaseline_30.json`.
+The base is main `bb5ad5db8`. The previous reference is AC (`20c30e6fb`, `local\g29_ac_base_<row>.log` in
+cc9-gunnery29's tree).
+
+### The switch diff and the plan
+
+`local\g30_switches.py 20c30e6fb bb5ad5db8` lists ten switches. Six of them are ON:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `pl` | `kAirOpsPlayerLaunchBound` (flipped) + `kAirOpsPlayerLaunchGroupBound` | AIROPS_LAUNCH_TICK | live only with harness `launch` lines; rows without them identical |
+| `mem` | `kAutoAttackMemberOnLaunchBound` | AUTOATTACK_MEMBER_LAUNCH | live on order-file runs (LOMP10 p2, USN01 p5); smoke identical |
+| `sqd` | `kSquadronDeadOnLastMemberBound` | ENTITY_DEAD_FLAG 8.1 | live: USN13 long (MAINPHASE 270.31 -> 285.15 s), USNRM01 (two Kate squadrons Killed) |
+| `gar` | `kCommandBuildingGarrisonBound` | SHIP_AI 177.1 | exit 1 on JM08, JM08 long, USN01, USNOS |
+| `rev` | `kCommandBuildingGarrisonReviveBound` | SHIP_AI 185.1 | live: JM08 (4 revives), JM08 long (111) |
+
+These four are OFF and stay OFF: `kAutoAttackAllMembersBound`, `kShipyardProductionBound`,
+`kSquadronPassCPlacementBound` and `kSquadronPutToMembersBound`.
+
+**Rows:** AC's twenty-two, in AC's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player). There are also five scripted-win rows, each with its order file (`--helm-orders`, copies in
+`local\g30_ord_*.txt`):
+
+| row | order file | mission frames |
+| --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 |
+| USN01 | `s37_u1_p5` | 22000 |
+| LOMP06 | `s37_l6_p2` | 16000 |
+| LOMP10 | `s37_l10_p2` | 30000 |
+| USN12 | `s38_u12_p2` | 36000 |
+
+**Binaries** (`pair_export.py --commit bb5ad5db8`): AD is `local\g30_ad`; the anchor (the six OFF) is
+`local\g30_anc`.
+
+### Predictions (written before any run finished)
+
+- **Anchor** (the six OFF): gameplay-identical to AC (exit 0/1 against `g29_ac_base_<row>`) on all twenty-two
+  rows. A miss means non-switch code since AC moves a row. Candidates are the shipyard and diagnostic commits,
+  which are log only, and the Lua and ships lanes' unswitched commits.
+- **AD against AC.** Moves (exit 3) on:
+  - **USN13 long** through `sqd` (MAINPHASE later);
+  - **USNRM01** through `sqd`;
+  - **JM08** and **JM08 long** through `rev`.
+  Every other row is exit 0/1, because `pl` and `mem` need harness launch lines and `gar` alone was identical.
+  The risks: `sqd` on any row where a squadron's leader dies before its wingmen (USN04/E2, USN01, LOMP10 long,
+  JM05 long, ESMP08 long, IJN11); `rev` on any row with a neutralized command building (USNOS, LOMP06,
+  LOMP10 long).
+- **Leave-one-out** (two rounds, on the rows that move): groups `pl`, `mem`, `sqd`, `gar` (both garrison
+  switches) and `rev` (revive alone). On USN13 long and USNRM01, `sqd` OFF restores AC and the rest are exit
+  0/1 against AD. On JM08 and JM08 long, `rev` OFF and `gar` OFF restore AC.
+- **Scripted wins.** The recorded results from earlier runs:
+  - **USN02 p7:** completed at 727.60 s (cc9-ships36's base). Expected to hold within a few seconds.
+  - **USN01 p5, 22000:** completed at 712.75 s (cc9-ships38 on `78eab7589`). Expected to hold exactly unless
+    `rev`/`gar` reach it.
+  - **LOMP06 p2:** Sado Maru sunk at 261.36 s, `luaMissionCompletedNew` at 267.41 s, `EndScene` at 301.95 s.
+    The summary line says "none", because the script sets only `Mission.MissionEndCalled`.
+  - **LOMP10 p2, 30000:** `luaVictory` at 1081.08 s and `EndScene` at 1115.66 s. The summary says "none".
+  - **USN12 p2:** completed at 1544.78 s.
+  - In every win row the guard line `bsp: refused a mission script's process launch: sus_prog.exe` is
+    expected.
+**Environment:** the console session was Active and every run completed.
+- Binaries (`pair_export --commit bb5ad5db8`): AD `E286026DB93F`, anchor `75FEF274C0F0`.
+- Leave-one-out binaries, each with its group OFF: `pl` `4659239873F1`, `mem` `23D5986E3F3E`, `sqd`
+  `99209F50681F`, `gar` `332D1C9F00E2`, `rev` `251998943460` (`local\g30_loo_<group>`).
+
+### The anchor: the six OFF
+
+`g30_ad_anc_<row>` is **gameplay-identical to AC on all twenty-two rows**. Two rows give exit 3: USN02 and
+JM08 long. In both, the only change is the mission-end summary. It now reads `Mission.MissionStatus`, where AC's
+read only `Mission.EndMission`. This is non-switch code since AC (the completion detector SHIP_AI 183 asked for).
+- USN02: `failed at 74.30 s` both times, with only the detector's name changed.
+- JM08 long: AC's `none` is now `failed at 1042.14 s` (the HQ).
+Deaths, unit table and native table are identical.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12822.0 | 48 | 1036 (153) | 14785 | 98.70 s | 3 of 16 / 0 of 19 | 15 | Lexington-class01 3353.44 | none (Mission.EndMission never true) | 480 | `local\g30_ad_base_usn04.log` |
+| USN01 | 3000 | 34425.9 | 29 | 1382 (328) | 2254 | 12.90 s | 0 of 5 / - | 3 | ScoutDauntless 3134.36 | none (Mission.EndMission never true) | 493 | `local\g30_ad_base_usn01.log` |
+| USN04 (E2) | 9000 | 13094.2 | 52 | 1055 (153) | 15137 | 98.70 s | 3 of 16 / 0 of 19 | 19 | Lexington-class01 5761.17 | none (Mission.EndMission never true) | 481 | `local\g30_ad_base_e2.log` |
+| USN02 | 9000 | 41913.3 | 3 | 5266 (335) | 4382 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.MissionStatus) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 reached at 113.90 s (recorded); Mission.EndMission at 74.30 s | 489 | `local\g30_ad_base_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g30_ad_base_jm06.log` |
+| JM08 (smoke) | 3000 | 10025.3 | 22 | 474 (159) | 2779 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 452 | `local\g30_ad_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 467 | `local\g30_ad_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 446 | `local\g30_ad_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 439 | `local\g30_ad_base_lomp06.log` |
+| LOMP10 | 3000 | 3816.6 | 2 | 246 (123) | 4910 | 92.05 s | - / 14 of 8 | - | (none) 8369.13 | none (Mission.EndMission never true) | 475 | `local\g30_ad_base_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 3 / 0 of 6 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 504 | `local\g30_ad_base_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 439 | `local\g30_ad_base_usn12.log` |
+| LOMP10 (long) | 9000 | 4613.2 | 5 | 278 (127) | 5726 | 92.05 s | - / 14 of 8 | - | (none) 8369.13 | none (Mission.EndMission never true) | 490 | `local\g30_ad_base_lomp10l.log` |
+| USNOS | 3000 | 46258.9 | 88 | 1497 (235) | 5124 | 5.00 s | - | 6 | NH 1497.26 | none (Mission.EndMission never true) | 506 | `local\g30_ad_base_usnos.log` |
+| USNOS (long) | 9000 | 56076.7 | 107 | 2145 (321) | 8839 | 5.00 s | - | 8 | NH 4492.07 | none (Mission.EndMission never true) | 512 | `local\g30_ad_base_usnosl.log` |
+| IJN01 | 3000 | 1707.7 | 1 | 163 (151) | 4846 | 89.35 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 434 | `local\g30_ad_base_ijn01.log` |
+| JM05 (long) | 9000 | 33338.6 | 42 | 1062 (379) | 14489 | 5.85 s | 3 of 6 / 0 of 17 | 20 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 538 | `local\g30_ad_base_jm05l.log` |
+| JM08 (long) | 36000 | 130579.5 | 144 | 12265 (894) | 9783 | 5.25 s | - | 1 | Headquarter 01 0.00 | failed at 1027.88 s (Mission.MissionStatus) text="Mission Failed - The HQ has been destroyed!" entity="Headquarter 01" objectives=5; EndScene 008B01B0 reached at 1067.47 s (recorded); Mission.EndMission never true | 495 | `local\g30_ad_base_jm08l.log` |
+| USN13 (long) | 9000 | 43781.3 | 102 | 3306 (1982) | 35651 | 98.90 s | 3 of 80 / 1 of 48 | 38 | Enterprise 2777.59 | none (Mission.EndMission never true) | 499 | `local\g30_ad_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 362 (96) | 3189 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 459 | `local\g30_ad_base_esmp08l.log` |
+| USNRM01 | 9000 | 27326.8 | 132 | 1554 (1255) | 50539 | 166.56 s | 0 of 9 / 0 of 24 | 104869 | West Virginia 0.00 | none (Mission.EndMission never true) | 503 | `local\g30_ad_base_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 140 (31) | 805 | 65.25 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 497 | `local\g30_ad_base_ijn11.log` |
+
+**AD against AC: as predicted.**
+- Four rows move gameplay (exit 3):
+  - **JM08:** `rev`. Hits 482 -> 474.
+  - **JM08 long:** `rev`. Deaths 126 -> 144. The HQ failure moves from 1042.14 s (anchor) to 1027.88 s.
+  - **USN13 long:** `sqd`. Hull hits 1766 -> 1982.
+  - **USNRM01:** `sqd`. Deaths 135 -> 132.
+- USN02 gives exit 3 on the detector only.
+- The other seventeen rows are exit 1.
+
+### Leave-one-out
+
+Two rounds on the four moved rows; logs `local\g30_loo_<group><round>_<row>.log`. Round 1 equals round 2
+everywhere (exit 0/1).
+
+| group OFF | JM08 | JM08 long | USN13 long | USNRM01 |
+| --- | --- | --- | --- | --- |
+| `pl` | = AD (1) | = AD (1) | = AD (0) | = AD (0) |
+| `mem` | = AD (1) | = AD (1) | = AD (0) | = AD (0) |
+| `sqd` | = AD (1) | = AD (1) | **= AC (1)** | **= AC (1)** |
+| `gar` | **= AC (1)** | **= AC** but the detector | = AD (1) | = AD (1) |
+| `rev` | **= AC (1)** | **= AC** but the detector | = AD (0) | = AD (0) |
+
+Every move is attributed as predicted: `sqd` on USN13 long and USNRM01, `rev` on JM08 and JM08 long. `gar`
+moves nothing by itself; it reaches the rows only through `rev`. `pl` and `mem` are inert on idle rows.
+
+### Scripted-win rows (AD; order files in `local\g30_ord_*.txt`)
+
+| row | order file | frames | completion (summary) | EndScene | guard line (log line) | log |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 | **727.60 s** | 762.14 s | 112258 | `local\g30_ad_win_u2.log` |
+| USN01 | `s37_u1_p5` | 22000 | **712.75 s** | 747.29 s | 111030 | `local\g30_ad_win_u1.log` |
+| LOMP06 | `s37_l6_p2` | 16000 | **267.41 s** (`luaMissionSuccess`) | 301.95 s | 47987 | `local\g30_ad_win_l6.log` |
+| LOMP10 | `s37_l10_p2` | 30000 | **1081.08 s** (`luaVictory`) | 1115.66 s | 118090 | `local\g30_ad_win_l10.log` |
+| USN12 | `s38_u12_p2` | 36000 | **1544.78 s** | 1579.37 s | 229208 | `local\g30_ad_win_u12.log` |
+
+All five completion times equal their earlier records to the hundredth of a second. LOMP06 and LOMP10 now show
+as completions in the summary, through `Mission.MissionStatus`. Each log has the exec guard's refusal line
+(`bsp: refused a mission script's process launch: sus_prog.exe`). A later reference that misses one of these
+times, or the guard line, has regressed a win.
