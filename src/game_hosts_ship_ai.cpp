@@ -665,6 +665,26 @@ inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
 // ON by section 160.4: four controls gameplay identical; JM08 long's CheckHQ now
 // runs luaMissionFailedNew at 1052.6 s and the units turn invincible.
 inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
+// Packet cc9_landed_ship_remainder (section 161). The landing ship's own motion
+// override 00749B20 (ESI = unit+310h, RET 4), after the ship motion 00825F20:
+//   - dead with +118Ch (landed) set: 00926D90(unit, 2) (00749B59), the wreck's removal;
+//   - alive with a building at +1204h whose party +54h is the ship's: the same
+//     00926D90(unit, 2) (00749B7B JE 00749B59);
+//   - alive, ramp down (+1188h) and 00803CE0(ship party, building) == 1 (hostile,
+//     seen at recon level >= 2): x = (float)(int)class+80Ch LandedDamage -
+//     building+368h armour; x > 0 calls building->vtable[1ACh](x * dt).
+// For a CommandBuilding slot 1ACh is 006F1F20: only while +7D8h == 0.0 (the
+// neutralize stores CommandBuildingGlobals SingleInvincibleTime there at
+// 006F50B0; 006F761D..006F7650 counts it down to 0 every fixed step), it calls
+// 007470B0, whose base call is AddDamage 0095DA00 (the SmokeFireChanceMul roll
+// before it and the master +738h forward after it are records). True: the
+// remainder runs after the ramp step for every landing ship holding a building
+// (LABELLED order), and +7D8h is kept per capture building. False: none of it.
+inline constexpr bool kLandingShipLandedRemainderBound = false;
+// LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
+// (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
+// 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
+inline constexpr float kCommandBuildingSingleInvincibleTime = 20.0f;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -914,7 +934,24 @@ struct GameShipAiHost::Impl {
         std::size_t unit{0};
         bsp::CommandBuildingCaptureState state{};
         double neutral_at{-1.0};
+        float invincible_7d8{0.0f};   // packet cc9_landed_ship_remainder
+        float armour_368{0.0f};       // class Armour, read at build (LABELLED level 0)
+        float smoke_fire_mul_164{0.0f};   // class+164h SmokeFireChanceMul (00749210)
     };
+    // Packet cc9_landed_ship_remainder: class+80Ch LandedDamage per unit, and the
+    // remainder's census.
+    std::vector<std::int32_t> landed_damage_080c;
+    unsigned long long remainder_own_party_kills{0};
+    unsigned long long remainder_dead_landed{0};
+    unsigned long long remainder_hostile_frames{0};
+    unsigned long long remainder_not_seen{0};
+    unsigned long long remainder_bleed_calls{0};
+    unsigned long long remainder_bleed_applied{0};
+    unsigned long long remainder_bleed_invincible{0};
+    double remainder_bleed_total{0.0};
+    double remainder_first_bleed{-1.0};
+    std::vector<char> remainder_removed;
+    void landed_ship_remainder_00749b20(float seconds);
     std::vector<CaptureBuilding> capture_buildings;
     std::vector<float> capture_power_0804;
     bool capture_built{false};
@@ -11671,6 +11708,9 @@ void GameShipAiHost::controller_step(float seconds) {
     // (vtable 00CFFA30 slot 0DCh); here it runs after the capture tick of the same
     // step (LABELLED order).
     host.landing_ship_ramp_step(seconds);
+    // Packet cc9_landed_ship_remainder: 00749B20's tail for each landing ship
+    // (LABELLED order: after the ramp latch of the same step).
+    if (kLandingShipLandedRemainderBound) host.landed_ship_remainder_00749b20(seconds);
     ++host.steps;
     host.sub_attack_clock += static_cast<double>(seconds);
     // The session pump (fixed-step row 9) drains last step's queue before the
@@ -11922,6 +11962,13 @@ void GameShipAiHost::Impl::read_capture_class_fields(std::size_t u) {
     capture_power_0804[u] = static_cast<float>(
         settings_owner->read_vehicle_class_integer(row->type_id, "CapturePower",
                                                    nullptr, 10));
+    // Packet cc9_landed_ship_remainder: class+80Ch `LandedDamage`, an integer
+    // (0074C6B8 GetIntegerOrDefault, stored at 0074C6C1); this installation's
+    // vehicleclasses.lua authors 40 and 50 on the landing-ship rows.
+    if (u < landed_damage_080c.size()) {
+        landed_damage_080c[u] = settings_owner->read_vehicle_class_integer(
+            row->type_id, "LandedDamage", nullptr, 0);
+    }
 }
 
 void GameShipAiHost::Impl::build_capture_buildings() {
@@ -11929,6 +11976,7 @@ void GameShipAiHost::Impl::build_capture_buildings() {
     const std::size_t count = units.count();
     capture_power_0804.assign(count, 10.0f);
     landed_capture_power_0810.assign(count, 0);
+    landed_damage_080c.assign(count, 0);
     for (std::size_t u = 0; u < count; ++u) {
         read_capture_class_fields(u);
         if (!units.unit_is_kind_of(u, 0x1C)) continue;   // MCommandBuilding
@@ -11936,6 +11984,16 @@ void GameShipAiHost::Impl::build_capture_buildings() {
         b.unit = u;
         b.state.party_54 = units.unit_side_0054(u);
         b.state.capture_value_7a4 = units.command_building_capture_value_07a4(u);
+        // +368h: 0087BCF4 seeds it from the class `Armour`; 006F38E0 (the level
+        // message, 006F54BF) rescales it by CommandBuildingGlobals Armor[level] /
+        // 100. LABELLED: no level message is modelled, so the class value.
+        const GameUnitRow* building_row = units.unit_row(u);
+        if (settings_owner != nullptr && building_row != nullptr && building_row->type_id >= 0) {
+            b.armour_368 = settings_owner->read_vehicle_class_number(building_row->type_id,
+                "Armour", 0.0f);
+            b.smoke_fire_mul_164 = settings_owner->read_vehicle_class_number(
+                building_row->type_id, "SmokeFireChanceMul", 0.0f);
+        }
         // LABELLED: the constructor seeds +7C0h = -uniform(0, 1), a phase stagger;
         // the draw is not taken here so the shared stream stays as it was. Only
         // where inside the first second a neutral building's ticks fall moves.
@@ -12005,7 +12063,16 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         const std::size_t from = capture_power_0804.size();
         capture_power_0804.resize(units.count(), 10.0f);
         landed_capture_power_0810.resize(units.count(), 0);
+        landed_damage_080c.resize(units.count(), 0);
         for (std::size_t u = from; u < units.count(); ++u) read_capture_class_fields(u);
+    }
+    if (kLandingShipLandedRemainderBound) {
+        // 006F761D..006F7650: +7D8h -= step, clamped at 0, on every fixed step
+        // (the multiplayer-client arm jumps straight here, 006F7387).
+        for (CaptureBuilding& b : capture_buildings) {
+            const float left = b.invincible_7d8 - seconds;
+            b.invincible_7d8 = 0.0f > left ? 0.0f : left;
+        }
     }
     for (CaptureBuilding& b : capture_buildings) {
         if (!bsp::command_building_capture_countdown_006f75ed(b.state, seconds)) continue;
@@ -12113,6 +12180,112 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             // occupants (+778h) are not separate units here; the building's own
             // guns follow its party.
             if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit, 1.0f);
+        }
+    }
+}
+
+// 00803CE0, fastcall (ECX = side, EDX = target), complete: 3 when the target's
+// record for that side (target+1E8h+side*34h: +8h when +10h is set, else +4h) is
+// below 2; otherwise 0 same party, 1 hostile, 2 neutral. The record level is the
+// host's recon sensor pass (a side the pass never covered reads `identified`,
+// kReconDetectionUnknownLevel).
+static int side_relation_00803ce0(int side, int target_party, bsp::ReconDetectionLevel level) {
+    if (static_cast<int>(level) < 2) return 3;                        // 00803D01
+    if (side == 2) return target_party != 2 ? 2 : 0;                  // 00803D26..00803D2D
+    if (side == target_party) return 0;                               // 00803D15
+    return target_party == 2 ? 2 : 1;                                 // 00803D18..00803D20
+}
+
+void GameShipAiHost::Impl::landed_ship_remainder_00749b20(float seconds) {
+    if (!capture_built) build_capture_buildings();
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    const std::size_t count = units.count();
+    for (std::size_t u = 0; u < count; ++u) {
+        bsp::BuildingPadModel::Lander* l = pads.mutable_lander(static_cast<int>(u));
+        if (l == nullptr) continue;
+        if (!units.unit_is_kind_of(u, 0x0C)) continue;
+        // 00749B43: the dead byte unit+5Dh.
+        if (unit_dead(u) || !units.unit_alive_and_visible(u)) {
+            // 00749B4C: a landed wreck (+118Ch) is removed, 00926D90(unit, 2). The
+            // host's unit is already dead; the removal is recorded once.
+            if (l->landed_118c) {
+                if (remainder_removed.size() < count) remainder_removed.resize(count, 0);
+                if (remainder_removed[u] == 0) {
+                    remainder_removed[u] = 1;
+                    ++remainder_dead_landed;
+                }
+                record("LandingShip::remove_landed_wreck_00926d90", 0x00749b61u);
+            }
+            continue;
+        }
+        if (l->building_1204 < 0) continue;                             // 00749B71
+        const std::size_t building = static_cast<std::size_t>(l->building_1204);
+        if (building >= count) continue;
+        const int own = units.unit_side_0054(u);                        // 00749B75
+        const int building_party = units.unit_side_0054(building);
+        if (building_party == own) {                                    // 00749B7B
+            // The building is now the lander's own side's: 00926D90(unit, 2).
+            ++remainder_own_party_kills;
+            const GameUnitRow* row = units.unit_row(u);
+            log.notef("landed remainder: unit=%s removed at t=%.2f, its building is now "
+                "party %d (00749B7B -> 00926D90 cause 2)", row != nullptr ? row->name.c_str()
+                : "?", capture_clock, building_party);
+            if (gunnery_draws != nullptr) gunnery_draws->kill_unit_00926d90(u, 2);
+            continue;
+        }
+        if (!l->ramp_down_1188) continue;                               // 00749B80
+        bsp::ReconDetectionLevel level = bsp::kReconDetectionUnknownLevel;
+        if (gunnery_draws != nullptr) {
+            const bsp::ReconSensorPassState& pass = gunnery_draws->recon_sensor_pass_state();
+            if (pass.side_covered(own)) level = pass.level(own, building);
+        }
+        const int relation = side_relation_00803ce0(own, building_party, level);
+        if (relation == 3) ++remainder_not_seen;
+        if (relation != 1) continue;                                    // 00749B8E
+        ++remainder_hostile_frames;
+        const std::int32_t landed = u < landed_damage_080c.size() ? landed_damage_080c[u] : 0;
+        CaptureBuilding* b = capture_building_of(building);
+        const float armour = b != nullptr ? b->armour_368 : 0.0f;
+        // 00749B99 FILD class+80Ch, 00749BA5 FSUB [building+368h], 00749BAB FSTP float.
+        const float x = static_cast<float>(static_cast<double>(landed)
+                                           - static_cast<double>(armour));
+        if (!(x > 0.0f)) continue;                                      // 00749BB9
+        const float amount = x * seconds;                               // 00749BBB, 00749BC9
+        ++remainder_bleed_calls;
+        // vtable[1ACh]: 006F1F20 for a CommandBuilding (vtable 00CFB028). Another
+        // building kind's slot is not read here (LABELLED: recorded, no damage).
+        if (b == nullptr) {
+            record("LandingShip::building_vtable_1ac_other_kind", 0x00749bd5u);
+            continue;
+        }
+        if (b->invincible_7d8 != 0.0f) {                                // 006F1F2B
+            ++remainder_bleed_invincible;
+            continue;
+        }
+        // 007470B0: class+164h > 0 rolls 00BD2F10(0, 1.0) for 00746320; LABELLED:
+        // not drawn here (the shared stream stays as it was), recorded.
+        if (b->smoke_fire_mul_164 > 0.0f) {
+            record("LandFort::smoke_fire_roll_00746320", 0x00747116u);
+        }
+        if (gunnery_draws != nullptr) {
+            gunnery_draws->apply_script_damage_0095da00(building, amount);   // 00747136
+        }
+        // 0074713B: the master LandFort +738h gets the same amount; a capture
+        // building with a master is not modelled (recorded).
+        record("LandFort::master_add_damage_738", 0x0074715au);
+        ++remainder_bleed_applied;
+        remainder_bleed_total += static_cast<double>(amount);
+        if (remainder_first_bleed < 0.0) {
+            remainder_first_bleed = capture_clock;
+            const GameUnitRow* row = units.unit_row(u);
+            const GameUnitRow* brow = units.unit_row(building);
+            log.notef("landed remainder: first bleed t=%.2f unit=%s building=%s "
+                "LandedDamage=%d armour=%.1f x=%.2f amount=%.4f smoke_fire_mul=%.2f "
+                "(00749B99 -> 006F1F20 -> 007470B0 -> 0095DA00)", capture_clock,
+                row != nullptr ? row->name.c_str() : "?",
+                brow != nullptr ? brow->name.c_str() : "?", landed,
+                static_cast<double>(armour), static_cast<double>(x),
+                static_cast<double>(amount), static_cast<double>(b->smoke_fire_mul_164));
         }
     }
 }
@@ -12254,6 +12427,10 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
     if (bsp::command_building_neutralize_006f3270(b->state, -1)) {
         ++host.capture_neutralized;
         b->neutral_at = host.capture_clock;
+        // 006F509F..006F50B0: +7D8h = class+190h, SingleInvincibleTime here.
+        if (kLandingShipLandedRemainderBound) {
+            b->invincible_7d8 = kCommandBuildingSingleInvincibleTime;
+        }
         host.units.set_unit_side_0054(unit_index, 2);
         host.mirror_capture_party_00928f50();   // 006F50CA CALL EDX, vtable[2Ch](2, ...)
         if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
@@ -13324,6 +13501,15 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission landing ship landed remainder own_party_kills=%llu "
+            "dead_landed=%llu hostile_frames=%llu not_seen=%llu bleed_calls=%llu "
+            "bleed_applied=%llu bleed_invincible=%llu bleed_total=%.2f first_bleed=%.2f "
+            "bound=%d (00749B20 / 00803CE0 / 006F1F20 / 007470B0, packet "
+            "cc9_landed_ship_remainder)", host.remainder_own_party_kills,
+            host.remainder_dead_landed, host.remainder_hostile_frames, host.remainder_not_seen,
+            host.remainder_bleed_calls, host.remainder_bleed_applied,
+            host.remainder_bleed_invincible, host.remainder_bleed_total,
+            host.remainder_first_bleed, kLandingShipLandedRemainderBound ? 1 : 0);
         host.log.notef("summary mission command building party lua mirror calls=%llu "
             "last_slots=%zu bound=%d (006F4FB8 / 006F50CA vtable[2Ch] -> 00951F30 -> 00928F50, "
             "packet cc9_capture_party_lua_mirror)", host.capture_party_mirrors,
