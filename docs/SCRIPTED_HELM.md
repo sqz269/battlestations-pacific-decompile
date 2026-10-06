@@ -1031,3 +1031,79 @@ logs its own `player air ops launch:` line. The launch follows about 1 s later
 **Smoke** (`local\s36_u1smoke.log`, USN01 4500, the switch OFF): a malformed line (`bad` slot) is
 refused at read; `4200 launch Enterprise 0 101 4 Nell1` reaches the entry, which refuses with
 `kAirOpsPlayerLaunchBound is off`.
+
+## 14. `release`: the player's bomb fire (packet `cc9_player_bomb_release`)
+
+Worker cc9-ships37, 2026-10-06. Harness line plus one units-host entry; no image switch.
+
+```
+<frame> release <unit>
+<frame> release <unit> on <target...> [within <m>] [until <frame>]
+```
+
+**The image's path** (read whole for the release; Ghidra read-only):
+- **The input.** This installation's `scripts\datatables\Inputs.lua` (mtime 2024-07-13) names
+  `IC_PLANE_BOMBSWITCH = 167`, `IC_PLANE_BOMBFIRE = 168` (A8h) and `IC_PLANE_FIRE = 169` in the
+  plane context `IG_PLANE = 10`; `keyboardsetup.lua` binds "fire" to both fire actions.
+- **The reader.** `006082D0` (`__thiscall(screen, param)`, body `006082D0..00608895`, a plane
+  screen in the `0060xxxx` HUD band; `screen+B8h` is the plane) is the only `PUSH 0A8h` in the HUD
+  code (`0060877A`; the other hit `0060C069` is in `0060ABD0`, not read).
+  1. **Bomb mode `+BDh`**: `007B9140(0)` (a rack holds 2Ah) and not `IsKindOf(17h)` (no torpedo
+     bomber), or the mode already on; then free flight (`(unit+72Ch)->vtable[38h]`, `00608338`);
+     then the attitude gate, `007C7600` for a dive bomber or `007C7750` for a level bomber (10h);
+     then the bomb-switch input (`inputMgr+4 -> +1F78h` set, `+1F74h > 0`). A change of mode sets
+     the latch `+BCh` (`006083C8`).
+  2. **The press**, only with `+BCh` clear (it clears when the fire input `+1FD8h` is released):
+     `007BC7A0(plane)`, then `004C43C0(A8h)` pressed. For a plane without level-bomb ordnance
+     (`007B9500`) it needs `007BB110` (CanReleaseOrdnance); with it, `007C4D90`.
+  3. **The message.** `00605270` builds message kind **C4h** (`00605271 PUSH 0C4h` into the base
+     `0075B430`, vtable `00CF4378`), and `0060882B` routes it through `0077C2A0(plane, msg, 0, 0)`;
+     then `+BCh = 1`, one release per press.
+  4. `BSP_Plane_HandleMessage` `007CCFA0` sends kind C4h straight to `007BBBA0` at `007CD0B4`.
+     This settles docs/TORPEDO_FIRST_RELEASE.md's "message 0C4h has no producer with an immediate":
+     the immediate is a `PUSH 0C4h` in the message constructor, not at the route.
+- **`007BC7A0`** (`bool __fastcall(plane)`, plain RET at `007BC874`): a rocket rack (33h, descriptor
+  `+E0h > 0`) passes; otherwise, when pitch `unit+C64h` is above `-50 deg` (`[00D05A30]`, double),
+  `|bank C68h|` must be at most `max(0, 80 deg - |pitch|)` (`[00D05A28]`).
+- **`007BB110`**: channel C of `unit+DECh` idle or at 1.0 passes; else the per-slot byte
+  `unit+9C3h[[00F876B8]*8]` must be clear.
+
+**So the player's release and the bot's are one path from `007BBBA0` on**: the stage `007CE9FD`,
+the issue `007C0D90`, the rack tick and its attitude gate, the drop `006E4D50` with its scatter
+draws. The player has no aim error because there is no aim: the bomb leaves when the key is
+pressed, from the aircraft's state, and the dive task (still flying the plane while the player
+holds only role 0, docs/CONTROLLED_UNIT.md) loses its round with the rack's ammo.
+
+**The line.** `release <unit>` presses at its frame. `release <unit> on <target>` presses at the
+first frame, from its own, whose bomb released now is predicted by `009C7D71`
+(`bsp::dive_bomb_impact_point_009c7d71`, the image's own CCIP from the plane's position and
+velocity) to fall within `<m>` (default 25) of the target's position advanced by the target's
+velocity (its last frame's displacement) over the fall time; `until` ends the watch with a
+refusal that reports the nearest miss. The units host's `player_bomb_release_006082d0` applies the
+gates of 1 and 2 and calls the host's `007BBBA0` (`release_ordnance_007bbba0`).
+
+**Refusals, each with its reason:** not the controlled unit; not a plane; dead; a torpedo
+bomber; no bomb in a rack; not in free flight; a level bomber (`007C7750`/`007C4D90` unread);
+`007C7600` pitch or roll; `007BC7A0`; the sight never closed.
+
+**LABELLED differences from the image:**
+1. The bomb switch is taken as held and bomb mode as entered on an earlier frame; the mode
+   change's latch is not modelled. One press per line.
+2. `on <target>`: the lead and the radius stand for the player's eye on the sight.
+3. `007BB110`'s slot byte and `007C7600`'s bay test are absent in this host (they pass), as for
+   the bot's request.
+4. The HUD timer `+CCh` and `0042ECA0` are display and not run.
+
+### 14.1 USN01: the scout's bomb hits Convoy1 (run r1, `local\s37_u1r1.log`, 4000 frames)
+
+Tree `agent/cc9-ships37` at `ea9a5b704` plus this line, reference V launch form
+(`local\s37_run.ps1`), order file `local\s37_u1_r1.txt` = `2400 release ScoutDauntless on Convoy1
+within 15 until 2700` over cc9-ships36's `s36_u1_w7.txt`.
+- The wingman `ScoutDauntless|.-2` still drops by its own task at 133.20 s (a miss, as in 176.1).
+- The sight closes at frame 2674 (133.65 s, alt 237 m): predicted (-3377.7, -1439.3), lead
+  (-3384.9, -1452.0), 14.6 m, tf 3.79 s. The units host passes 006082D0's gates (pitch -0.504,
+  bank 0.017) and the rack drops at 133.70 s (scatter turn 1.9 deg).
+- `hit listener 00988510: target "Convoy1" type "Bomb" damage 502.8 -> luaConLeadHit()`: phase 2
+  passes. The ConTBDs are generated; the two `target ConTBD1 Convoy4` lines apply at 3000/3600;
+  Convoy3, Convoy6 and Convoy4 die at 185.31, 186.16 and 196.91 s.
+- The leader's own task release (134.10 s in 176.1) does not happen: the rack is empty.

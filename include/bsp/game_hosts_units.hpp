@@ -1226,6 +1226,16 @@ public:
     const GameUnitRow* unit_row(std::size_t index) const noexcept;
     bool controlled_bound() const noexcept;
     std::size_t controlled_index() const noexcept;
+    // Packet cc9_player_bomb_release (docs/SCRIPTED_HELM.md section 14): the
+    // plane screen's bomb fire 006082D0, IC_PLANE_BOMBFIRE pressed on the
+    // controlled plane. Its gates (the bomb mode +BDh: 007B9140, not 17h, free
+    // flight, 007C7600; then 007BC7A0 and 007BB110), then message C4h
+    // (00605270) to 007CD0B4 -> 007BBBA0, the request the bot tasks also make.
+    struct PlayerBombRelease {
+        bool accepted{false};
+        std::string reason;   // the refusing gate, empty when accepted
+    };
+    PlayerBombRelease player_bomb_release_006082d0(std::size_t index);
     // Packet cc9_helm_orders_helm_route (docs/SCRIPTED_HELM.md section 9):
     // --helm-orders `takehelm`. The controlled unit takes role 1 through the
     // BSP_PLAYER_HELM transfer (0064B9A6 -> 0077C470(unit, 2, 1), +184h set),
