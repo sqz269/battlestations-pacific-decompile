@@ -33,7 +33,7 @@ namespace bsp {
 // levelbomb (00E08F28) flies this task, and a level bomber's release issue
 // fires every rack with the 007C0E67 delays behind the 007CC8E0 level gate.
 // False: no level-bomb task (the aircraft keeps whatever it flew before).
-inline constexpr bool kPlaneLevelBombTaskBound = false;
+inline constexpr bool kPlaneLevelBombTaskBound = true;   // ON: SQUADRON_LAND_TASK 5ee.1
 
 // The seven states, as task-relative offsets (approach+F0h .. +2E0h).
 enum class LevelBombState : int {

@@ -12831,3 +12831,83 @@ leader's first think (`0099B740` sets 1).
 2. **Reference rows with no `levelbomb` census.** Identical, apart from the summary line.
 3. **Rows that issue `levelbomb`** (BSM04's B-17s, B-25 01): the same chain. A row may move a
    lot: new bombs, deaths and AA.
+
+### 5ee.1 Measured: **ON** (cc9-lua41, 2026-10-06, after reference AC)
+
+The OFF build is `b198447ef` (`build\win32`); the ON build is its export with the one flip
+(`local\l41_on`). Both use the launch form of reference AB/AC: `BSP_GUNNERY_RNG_STREAMS=1` and
+`BSP_DEATH_TABLE=1`. The rows are USN01 36000 with ships35's order file (`local\l41_usn01_orders.txt`
+= `s35_orders1.txt`, `3000 target ConTBD1 Convoy4`), plus the four reference rows whose census
+issues `levelbomb`: USNOS, USNOS long, LOMP10 and LOMP10 long. No other reference row has a
+`levelbomb` line in AB's logs. Logs are `local\l41_<off|on>_<row>.log`; diffs are
+`local\l41_diff_<row>.txt`. `pair_diff` exits 3 (moved) on all five.
+
+**The mechanism matches the reading on every aircraft that reached its target.**
+
+**USN01.**
+- **Installs.** 18 Nells install kind 4 at phase 3 (leaders moveto, members follow).
+- **The run.** Each flies moveto/follow -> attackrun -> aim, holds the aim 450-680 arm ticks and
+  enters release once, at the impact point's abeam pass. Its smallest planar miss (predicted impact
+  to aim point) is **25.9-34.6 m**.
+- **The drop.** Each issues once (`level bomber issue: racks=6`) and drops **12** bombs. The
+  20-degree gate refuses none; drops run at bank 0.15 rad and pitch about 0.
+- **Times.** First releases are at 288.0-367.8 s.
+- **Exceptions.** Nell6|.-2 and Nell6|.-3 never release. The mission ended first; Nell6|.-2 was
+  still in aim at a 2646 m miss when its arm stopped (open, below).
+- **Return.** Every spent squadron latches 009F8160 and gets B5 `returntobase` 0.05 s later.
+  009B8D80 already answers true for a spent aircraft beyond min(2500, SafeDist 1000) m in 3D.
+  The squadrons go to `land`.
+
+**USN01's outcome.** Enterprise first takes damage at 313.25 s and **sinks at 384.43 s** (killer
+Nell5|.-3, category 10, the bomb).
+- Phase 3's `Mission.Enterprise.Dead` arm calls `luaMissionCompletedNew()` (this installation's
+  usn_1_marshall.lua:573). `Scoring_SetMissionCompleted(true)` runs, and EndScene repeats every
+  5 s from 420.67 s. So **USN01 now reaches its scripted end**.
+  - It is the Enterprise-lost end. The script calls it `luaMissionCompletedNew`, without arguments.
+- **The guard.** `luaMissionCompletedNew` runs `os.execute("sus_prog.exe")` first
+  (commandhelpers.lua:10411). The guard refuses it every time: **286 refusals** in
+  `local\l41_cur_usn01o.log`, the ON build of this commit.
+  - **Fix needed and made: the refusal now reaches the log.** Its line went only to stderr, which a
+    GUI-subsystem bsp_game discards. So `include/bsp/lua_exec_guard.hpp` gained
+    `g_lua_exec_refused_sink`, and the mission Lua host points it at the run log. The refusal does
+    not depend on the sink, and nothing about the refusal was changed.
+  - It reads `bsp: refused a mission script's process launch: sus_prog.exe`.
+- **Deaths.** Totals are 70 both sides. Only ON: Enterprise, KatTBD, Nell3|.-2, Nell5|.-2, Nell6,
+  Nell6|.-3. Only OFF: two coastal guns and four buildings killed at 619-640 s, which the ON run
+  never reaches because the mission has ended.
+- **Earlier moves.** The KatSBD deaths move earlier: 332 -> 275 s, 446 -> 354, 458 -> 368 (killer
+  categories 5 -> 1). They fall after the Nells' phase-3 install (about 205 s) and before their
+  first release. The Nells now close on Enterprise instead of flying north. That moves the US AA's
+  targets and the shared RNG stream (memory `shared-rng-stream-couples-pairs`). This is not
+  attributed further.
+
+**USNOS and USNOS long.**
+- **The aircraft.** 12 bombers (`plane #1.4`-`#1.6` and wingmen) install at 39.80 s against
+  TroopTrans1/2/4. Each one's single rack carries 24 rounds, and +A8h is 0.4-0.7 s, from the
+  longer stick.
+- **The drops.** 11 of 12 release once and drop 24 each, at 123.1-163.2 s, with misses of
+  2.6-16.2 m. `plane #1.4|.-4` stays in follow and never releases.
+- **Results.** TroopTrans1 and TroopTrans2 now sink (only ON). The long row has deaths 105 -> 107
+  and damage 48691 -> 57063.
+- **Other deaths.** The ones that moved before 123 s (plane #1.1..#1.3 wingmen, 104-119 s) are
+  US fighters and bombers dying to the same AA. Their killers and ranges change because the level
+  bombers now fly to their targets.
+
+**LOMP10 and LOMP10 long.**
+- B-25 01 and its wingman release at 119.5 s and 125.0 s with misses of 19.3 / 16.5 m, and drop
+  16 bombs each.
+- Deaths are unchanged at 2 / 5. Damage doubles (1987 -> 4071, 2620 -> 4851). The B-25s now die at
+  148.9 / 147.3 s instead of 109.9 / 115.2 s, because they fly the level attack at altitude
+  instead of descending into the destroyers' AA.
+
+**Verdict.** The mechanism matches, so the switch is **ON**. The rows move by new bombs, new
+sinkings and the RNG coupling those bring.
+
+**Open.**
+- **The Nell6 wingmen.** They stop ticking the arm at about 1081 ticks. Nell6 lives to the end,
+  and the cause is not traced.
+- **`plane #1.4|.-4`** never latches out of follow.
+- **The racks.** Racks 1-4 of a Nell drop on one fixed step: toRepeatTime idles at -1, so the
+  delays 0-0.9 s are all still below zero. That is the image's arithmetic as read; the idle value
+  after 006E3C00 is unread.
+- **Prepare's tick `009B6670`** is unread (mode 0 is not reached on these rows).
