@@ -495,6 +495,16 @@ inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1
 // the call (LABELLED: the HUD's own expansion is unread). False: both natives
 // stay unimplemented records.
 inline constexpr bool kLuaDisplayScoresBound = true;   // ON: SQUADRON_LAND_TASK 5fb
+// Packet cc9_lua47_scene_squadron_orders (docs/AIROPS_LAUNCH_TICK.md, "Orders to a
+// scene squadron's slot"). 006CCDA0 reads the squadron through the slot's +28h
+// whoever built it; a scene squadron with a HomeBase reaches its slot through
+// 007F1C00 -> 006CC7B0 -> 006C58A0 -> 006C56D0, which stores its id there.
+// True: the held-slot order entry resolves +28h to the squadron unit (id - 1,
+// the numbering 006CC7B0's push and the air-ops launch share) when no squadron
+// this host launched holds it. False: such a slot refuses ("the slot holds no
+// squadron this host built"), JM08's MainAirFieldEntity 01 with Ki-43 Oscar 01
+// and Gekko 01.
+inline constexpr bool kAirOpsSceneSquadronOrdersBound = false;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
