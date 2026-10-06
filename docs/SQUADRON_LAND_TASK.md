@@ -12506,3 +12506,57 @@ USN01 at 36000 frames. Run on `agent/cc9-lua40`, main `352d41953` merged; log
 **So no land-task refusal stands between B5 and a landing on this row.** The chain B5 -> 007F16D0
 land at site -> land task -> landing states -> park -> elevator runs end to end, as in the image.
 Nothing was changed for this section.
+
+## 5ed. Handoff (cc9-lua40, 2026-10-06, at about 66% context)
+
+Branch `agent/cc9-lua40`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua40`, main
+merged at the end. Everything below is committed; no lease is held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| retreat bot task (kind 9) | `kPlaneRetreatTaskBound` | ON (reference AB) | 5ea, 5ea.1 |
+| KillReason from the kill cause (`exitzone`) | - | in | 5ea.1 |
+| spent-ordnance RTB, 0084E010 B5 | `kSquadronSpentOrdnanceRtbBound` | ON (AC), both arms | 5eb, 5eb.1 |
+| USN01 36000: B5 -> land -> park -> stow | - | measured, no fix needed | 5ec |
+| GetCapturePercentage (signed) | `kLuaCapturePercentageBound` | ON (AC) | 5dw.2 |
+| mission state summary (MissionStatus, MusicEndTime) | - | in | commit 094cfca24 |
+| narrative queue (MissionNarrative/Clear/Size, EndScene record) | `kLuaMissionNarrativeBound` | ON (AC) | MISSION_END 7, 7.1 |
+| GetCameraState + GetRotation | `kLuaCameraStateBound` | ON (AC); EndScene about 40 s after a failure | MISSION_END 7.2, 7.2.1 |
+| NavigatorSetAvoidLandCollision's 0092BD00 | `kNavigatorPartsLandAvoidanceBound` | ON (AC) | SHIP_AI 167, 167.1 |
+
+**Next, in order:**
+1. **The LEVEL-BOMB bot task (kind 4). This is the lead's next packet, not started.**
+   - **Why.** It blocks USN01's phase 3 (cc9-ships35, SHIP_AI 167/168): six Nell squadrons get
+     `levelbomb` (`00E08F28`) on Enterprise, `0099A170` installs kind 4, and the host has no body,
+     so the Nells fly north at heading 0 and never release.
+   - **The addresses.** The lead's note names them slightly differently; the ledger has:
+     - factory `009B9030` `BSP_BotTask_MakeLevelBomb` (`operator_new(6F8h)`);
+     - constructor `009B7990`, with approach `009B75E0` at `009B79D1`;
+     - vtables `00D20210` / `00D2020C` / `00D20208` at `+4D4h`;
+     - initial state `+4E8h` (leader) or `+534h` (member);
+     - `src/bot_tasks.cpp` lists it only; the states come from `009B42D0` (lead).
+   - **Plan.** Read it whole (`BOT_TASKS.md` has the slot table; `DIVE_BOMB_TASK.md` and
+     `BOMBER_AFTER_TASK.md` are the closest worked examples), and bind it behind
+     `kPlaneLevelBombTaskBound`, OFF with predictions.
+   - **Pairs.** USN01 36000 with ships35's player order file (`3000 target ConTBD1 Convoy4`;
+     SCRIPTED_HELM 12, `J:\PROG\battlestations-pacific-decompile-cc9-ships35\local\s35_*`), a
+     control, and every reference row whose census issues `levelbomb`. The dive-bomb host is in
+     the shared `src/game_hosts_units.cpp`, so prepare the edit as a script (as
+     `local\l40_units_patch*.py` were) and apply it with claim, apply, build, commit, release.
+2. **The `os.execute` refusal line.** No reference row completes a mission, so nothing has shown it
+   yet. When a row first reaches `luaMissionCompletedNew`, check that the guard's refusal appears.
+3. **The MISSION_END open item:** what `[game+19FCh]` holds when the controlled unit is not a ship.
+   The stand-in covers this today, but no row has needed it yet.
+4. **The 5dr census.** Item 1 (the drop scatter 006E4D50) is what remains there, and it needs the
+   gunnery lane.
+
+**Scripts in `local\`** (prefix `l40_`):
+- `l40_queue.ps1 -Jobs 'side:row,...' -Tag t`. `off` and `cur` use `build\win32\Release`; any
+  other side uses `local\l40_<side>`. Row `usn01l` is USN01 36000.
+- `l40_spent.py`: done dive-bomb / torpedo goaway planes per squadron.
+- `l40_natcensus.py <glob> <regex>`: host-method call counts per row.
+- `l40_units_patch.py`, `patch2`, `patch3`: the applied units-host edits, for reference.
+- `l40_narrative_patch.py`, `l40_camera_patch.py`.
+
+**Diagnostic.** `BSP_SPENT_RTB_CENSUS=1` logs B5 latches without issuing (the switch is ON now, so
+it matters only with the switch off).
