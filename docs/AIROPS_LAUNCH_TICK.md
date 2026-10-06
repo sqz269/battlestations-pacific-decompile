@@ -590,3 +590,75 @@ the pilot bot.
 What this host still fuses is the container with its flight leader: the unit carrying the squadron's
 own name is wing 0 rather than a separate `0x414` object. `docs/PLANE_SQUADRON_HOST.md` section 1
 states that substitution and why it is the design here.
+
+## The player's launch (packet `cc9_player_air_ops_launch`, cc9-lua41, 2026-10-06)
+
+Switch `bsp::kAirOpsPlayerLaunchBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+Ghidra was read-only.
+
+**There is no launch native: the player launches from the Support Manager screen.** Its update
+is `00675C40` (HUD slot 4Eh, vtable `00CF6B44` +20h). Its launch is `0067A565`-`0067A5E6`:
+1. **Stock.** `0067A57D` `006BF310`(class): the class's stock (`006BF230`'s second field).
+2. **Fill.** `0067A5A7` `006C4780` -> `006C0F00`(slot, class, min(stock, screen+2B4h)).
+3. **Message.** `0067A5D1` `00656280` builds message **82h**:
+   - +20h the slot;
+   - +24h order **3**;
+   - +28h the target's +174h (screen+21Ch);
+   - +2Ch the player (game+18ECh).
+   It is routed at `0067A5E6` (`0077C2A0`).
+4. **Delivery.** The deck's message switch `006CD6C0` reaches it from the carrier's `00758EB0`
+   and the airfield's `006D2956`. Case 1 is `006CD160`, which calls `006CCDA0`(slot, 3, target,
+   player, 1).
+5. **The order.** `006CCDA0`, for a slot in state 5 or 1:
+   - order 3 with no target answers 0;
+   - otherwise `006C4F70` stores the target at slot+4Ch and slot+50h = player;
+   - then `006CA640` queues the slot: state 2, timer 0 (or 5.0 with slot+34h), and the index is
+     appended to block+14h.
+6. **The queue wait.** `006CDC70`'s `006C64B0` serves the head of block+14h:
+   - a head no longer in state 2 is dropped;
+   - one with timer > 1.0, block+38h zero and `006BED60` true (runway and hangar clear, an owner
+     present and not disabled) is popped, and `006BC8E0` routes **89h** with the slot;
+   - `006CD6C0` case 8 runs `006C7490`(slot, 0).
+7. **The target.** `006C5050` writes slot+4Ch's +174h as the bag key `AutoAttackTarget`. The
+   squadron's pass-C init `007F4BA0` reads it at `007F4EC0` and calls `007F15F0`:
+   - a plane target is replaced by its squadron (+9D4h);
+   - `007EEC50`(target, 1, 1) chooses the class, issued by `0071ECF0`;
+   - a null class issues moveto `00E08F68`.
+8. **Other senders.**
+   - `LaunchAirBaseSlot` sends 83h (`006CA8E0`: immediate `006C7490`(slot, 1), or the same queue).
+   - The 81h slot setup goes through `006BD800` (`006C47F0` -> `006C0E70`/`006C0F00`).
+   - `006CC690`'s queued arm returns the stock but, in this host, never queues. That is unchanged.
+
+**006C0F00 (fill).**
+- The count is clamped to the class's stock total and to `006BD460`. That is the plane limit
+  block+58h less what every other slot holds: a launched slot counts its live planes, an idle
+  slot nothing, any other its count.
+- While the free stock (plus this slot's count, when it holds the class) is short, it takes from
+  other idle slots of the class, last first.
+- While the plane limit is short, it takes from any other idle slot.
+- It writes the class, with class+134h into slot+10h when the class changes, and the count.
+
+**The host.**
+- **Pure rules.** `air_ops_fill_slot_006c0f00`, `air_ops_slot_capacity_006bd460`,
+  `air_ops_slot_command_006ccda0` (states 1 and 5, orders 1 and 3 only; recall and the other
+  states answer -1), `air_ops_queue_slot_006ca640`, `air_ops_deck_free_006bed60` and
+  `air_ops_queued_slot_wait_006c64b0`.
+- **The harness entry.** `script_orders_player_air_ops_launch(base, slot_number, class, count,
+  target)` is for cc9-ships36's `launch` line.
+- **The queue wait** runs after the deck update. The launch start passes `AutoAttackTarget`.
+- **AutoAttackTarget** is served through the squadron intake `007F1940` once the members exist.
+
+**Substitutions, labelled.**
+- The message delivery is immediate, and the player id is 0.
+- `006C7D10` and `006C48F0` in `006CA640` are not read.
+- A declined `007EEC50` issues nothing, not moveto.
+- The AutoAttackTarget order is given at the first step the squadron's members exist, not in
+  its own pass-C init.
+
+**Predictions (OFF -> ON).**
+- **Rows with no `launch` line:** identical, because nothing queues.
+- **USN01 with a `launch Enterprise 0 101 4 <Nell squadron>` line in phase 3:**
+  - the slot fills from the 40 Wildcats (class 101);
+  - about 1 s later `air ops queued launch` appears, and a squadron of 4 takes off from
+    Enterprise;
+  - `AutoAttackTarget` issues dogfight (`00E08F58`) on the Nells.

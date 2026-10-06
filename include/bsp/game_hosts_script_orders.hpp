@@ -471,6 +471,28 @@ inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
     const std::vector<std::size_t>& members, std::size_t target_index);
 
+// Packet cc9_player_air_ops_launch (bsp::kAirOpsPlayerLaunchBound,
+// docs/AIROPS_LAUNCH_TICK.md "The player's launch"). The Support Manager screen's
+// launch 00675C40 for the one live host: 0067A5A7 006C0F00 fills slot
+// `slot_number` (1-based as the Lua `slots` table numbers it; 0 = the first slot
+// in state 1 or 5) of `base`'s deck with `count` of `vehicle_class`, then the 82h
+// message (00656280, order 3, routed at 0067A5E6) reaches 006CCDA0, which stores
+// `target` at slot+4Ch and queues the slot (006CA640). The deck update's 006C64B0
+// launches it when the slot's timer passes 1 s (89h -> 006C7490), and the new
+// squadron's 007F4BA0 issues 007EEC50(target, 1, 1) at 007F15F0. `target` names a
+// unit ("" refused: order 3 needs one). Refused, with `reason`, when the switch
+// is off, no host is live, or the base, target or a free slot is missing.
+struct PlayerAirOpsLaunchResult {
+    bool accepted{false};
+    int slot{-1};          // 0-based slot used
+    int count{0};          // planes after 006C0F00's clamps
+    std::string reason;
+};
+PlayerAirOpsLaunchResult script_orders_player_air_ops_launch(const std::string& base,
+    int slot_number, int vehicle_class, int count, const std::string& target);
+// The class+134h (DefaultEquipment) reader 006C0F00 needs; the mission Lua host
+// sets it, since it holds the class table.
+void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class));
 // The host the reconstructed binding bodies run over. Owned for the whole run
 // because the rows are per run and the units it addresses are the created scene
 // instances.
@@ -589,7 +611,13 @@ public:
     // 006CDC70's walk, driven from run_script_timers. See the .cpp for why it is
     // not in the unit motion pass, where the executable has it.
     void run_air_ops_update_006cdc70(float step);
-    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
+    // Packet cc9_player_air_ops_launch: the entry above, and the AutoAttackTarget
+    // a squadron launched from an ordered slot carries (007F4BA0 -> 007F15F0),
+    // served once its members exist.
+    PlayerAirOpsLaunchResult player_air_ops_launch(const std::string& base, int slot_number,
+        int vehicle_class, int count, const std::string& target);
+    void queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
+                                           std::uint32_t target_plus_one);    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
     unsigned long long air_ops_slot_refills() const noexcept { return air_ops_refills_; }
     unsigned long long air_ops_slot_releases() const noexcept { return air_ops_released_; }
     std::size_t air_ops_slots_tracking() const noexcept { return air_ops_tracking_; }
@@ -803,7 +831,18 @@ private:
     unsigned long long air_ops_released_{0};
     std::size_t air_ops_tracking_{0};
     std::size_t air_ops_refill_logs_{0};
-
+    struct PendingAutoAttack {
+        std::uint32_t squadron_entity{0};
+        std::uint32_t target_plus_one{0};
+        int waited_steps{0};
+    };
+    std::vector<PendingAutoAttack> pending_auto_attacks_;
+    unsigned long long player_launch_requests_{0};
+    unsigned long long player_launch_accepted_{0};
+    unsigned long long player_launch_started_{0};
+    unsigned long long auto_attack_issued_{0};
+    unsigned long long auto_attack_declined_{0};
+    void run_air_ops_player_launch_queue(float step);
     GameHostLog& log_;
     GameUnitsHost& units_;
     std::vector<bool> dead_published_;   // per unit index, 00929800 has run

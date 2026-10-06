@@ -916,6 +916,8 @@ void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
         }
     }
     const bsp::AirOpsDeckTickResult tick = bsp::air_ops_update_decks_006cdc70(step);
+    // Packet cc9_player_air_ops_launch: 006C64B0, sub-update 4 of 006CDC70.
+    if constexpr (bsp::kAirOpsPlayerLaunchBound) run_air_ops_player_launch_queue(step);
     // 006CDCDC: the landing queue 006CD240, after 006C0DA0 in 006CDC70's order
     // (006C77E0, 006C64B0 and 006C6540 between them are not run here). Packet
     // cc9_landing_sequencer; returns at once while kLandingSequencerBound is off.
@@ -1513,6 +1515,165 @@ std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
     return g_live_script_orders != nullptr
         ? g_live_script_orders->squadron_intake_007f1940(leader, members, target_index)
         : 0u;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_player_air_ops_launch (bsp::kAirOpsPlayerLaunchBound). The Support
+// Manager screen's launch, 00675C40 at 0067A57D-0067A5E6, for the harness's
+// `launch` line. docs/AIROPS_LAUNCH_TICK.md, "The player's launch".
+// ---------------------------------------------------------------------------
+namespace {
+// class+134h DefaultEquipment, which 006C0F00 copies into slot+10h when the
+// class changes. The mission Lua host, which holds the class table, sets it.
+int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
+}  // namespace
+
+void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)) {
+    g_class_default_arm_reader = reader;
+}
+
+PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::string& base,
+    int slot_number, int vehicle_class, int count, const std::string& target) {
+    PlayerAirOpsLaunchResult out;
+    ++player_launch_requests_;
+    auto refuse = [&](const char* why) {
+        out.reason = why;
+        log_.notef("player air ops launch REFUSED: base=\"%s\" slot=%d class=%d count=%d "
+            "target=\"%s\": %s (packet cc9_player_air_ops_launch)", base.c_str(), slot_number,
+            vehicle_class, count, target.c_str(), why);
+        return out;
+    };
+    if constexpr (!bsp::kAirOpsPlayerLaunchBound) return refuse("kAirOpsPlayerLaunchBound is off");
+    bsp::AirOpsDeckRegistry& registry = bsp::air_ops_decks();
+    bsp::AirOpsDeck* deck = nullptr;
+    for (std::size_t i = 0; i < registry.size(); ++i) {
+        if (registry.name_at(i) == base) { deck = registry.mutable_at(i); break; }
+    }
+    if (deck == nullptr) return refuse("no air-ops deck for that base");
+    std::size_t target_index = units_.count();
+    for (std::size_t k = 0; k < units_.count(); ++k) {
+        const GameUnitRow* row = units_.unit_row(k);
+        if (row != nullptr && row->name == target) { target_index = k; break; }
+    }
+    // 006CCDD3: order 3 with no target answers 0 and does nothing.
+    if (target_index >= units_.count()) return refuse("no unit by the target name");
+    int slot = slot_number - 1;
+    if (slot_number <= 0) slot = bsp::air_ops_pick_launch_slot_006c7210(*deck);
+    if (slot < 0 || static_cast<std::size_t>(slot) >= deck->slots.size())
+        return refuse("no such slot");
+    const bsp::AirOpsSlotState state = deck->slots[static_cast<std::size_t>(slot)].state;
+    // 0067A565 and 006C0E70: the screen fills only a slot in state 1 or 5.
+    if (state != bsp::AirOpsSlotState::kCooldown && state != bsp::AirOpsSlotState::kReady)
+        return refuse("the slot is not in state 1 or 5");
+    std::vector<std::int32_t> live(deck->slots.size(), 0);
+    for (std::size_t i = 0; i < deck->slots.size(); ++i)
+        live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
+    const int arm = g_class_default_arm_reader != nullptr
+        ? g_class_default_arm_reader(vehicle_class) : 0;
+    // 0067A5A7 -> 006C4780 -> 006C0F00.
+    out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
+        static_cast<std::uint32_t>(vehicle_class), count, arm, live.data());
+    if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
+    // 0067A5D1 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
+    // 0067A5E6 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
+    // LABELLED: delivered at once; the player id is 0.
+    const int answer = bsp::air_ops_slot_command_006ccda0(*deck, slot, 3,
+        static_cast<std::uint32_t>(target_index + 1u), 0, true);
+    if (answer != 1) return refuse("006CCDA0 refused the attack order");
+    out.accepted = true;
+    out.slot = slot;
+    ++player_launch_accepted_;
+    log_.notef("player air ops launch: base=\"%s\" slot=%d class=%d count=%d->%d target=\"%s\" "
+        "queued (0067A5A7 006C0F00, 0067A5E6 82h -> 006CCDA0 order 3 -> 006CA640, packet "
+        "cc9_player_air_ops_launch)", base.c_str(), slot + 1, vehicle_class, count, out.count,
+        target.c_str());
+    return out;
+}
+
+void GameScriptOrdersHost::queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
+                                                             std::uint32_t target_plus_one) {
+    PendingAutoAttack p;
+    p.squadron_entity = squadron_entity;
+    p.target_plus_one = target_plus_one;
+    pending_auto_attacks_.push_back(p);
+}
+
+// 006CDC70's 006C64B0 for every deck, then the AutoAttackTarget the squadrons
+// launched from an ordered slot carry. 007F4BA0 reads the bag key at 007F4EC0 and
+// calls 007F15F0(00521E30(id)): a plane target is replaced by its squadron
+// (+9D4h), 007EEC50(target, 1, 1) chooses the class and 0071ECF0 issues it, a
+// null class issuing moveto instead. SUBSTITUTIONS, labelled: the host serves it
+// through the squadron intake 007F1940 (the same 007EEC50 call; a declined class
+// issues nothing rather than moveto) at the first step the squadron's members
+// exist, where the image runs it in the squadron's own pass-C init.
+void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
+    static_cast<void>(step);
+    bsp::AirOpsDeckRegistry& registry = bsp::air_ops_decks();
+    for (std::size_t d = 0; d < registry.size(); ++d) {
+        bsp::AirOpsDeck* deck = registry.mutable_at(d);
+        if (deck == nullptr) continue;
+        const int slot = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
+        if (slot < 0) continue;
+        // 006BC8E0 routes 89h; 006CD6C0 case 8 runs 006C7490(slot, 0).
+        bsp::air_ops_launch_start_006c7490(*deck, slot);
+        ++player_launch_started_;
+        log_.notef("air ops queued launch: base=\"%s\" slot=%d squadron=%u target=%u "
+            "(006C64B0 -> 89h -> 006C7490, packet cc9_player_air_ops_launch)",
+            registry.name_at(d).c_str(), slot + 1,
+            deck->slots[static_cast<std::size_t>(slot)].launched_squadron,
+            deck->slots[static_cast<std::size_t>(slot)].order_target_4c);
+    }
+    for (std::size_t i = 0; i < pending_auto_attacks_.size();) {
+        PendingAutoAttack& p = pending_auto_attacks_[i];
+        const bsp::PlaneSquadronHostRecord* record = nullptr;
+        for (const AirOpsSquadron& made : squadrons_) {
+            if (made.entity_id == p.squadron_entity) {
+                record = bsp::plane_squadron_registry().find(made.name);
+                break;
+            }
+        }
+        std::vector<std::size_t> members;
+        if (record != nullptr) {
+            for (const std::size_t m : record->member_units) {
+                if (m != bsp::kPlaneSquadronNoUnit && m < units_.count() &&
+                    units_.unit_alive_and_visible(m)) {
+                    members.push_back(m);
+                }
+            }
+        }
+        if (members.empty() && ++p.waited_steps < 600) { ++i; continue; }
+        std::size_t target = p.target_plus_one - 1u;
+        if (target < units_.count()) {
+            // 007F15F7-007F1606: a plane target stands for its squadron; the host
+            // fuses the squadron into its flight leader.
+            if (const bsp::PlaneSquadronHostRecord* t =
+                    bsp::plane_squadron_registry().find_by_member_unit(target)) {
+                const std::size_t lead = t->flight_leader();
+                if (lead != bsp::kPlaneSquadronNoUnit && lead < units_.count()) target = lead;
+            }
+        }
+        std::uint32_t chosen = 0u;
+        if (!members.empty() && target < units_.count())
+            chosen = squadron_intake_007f1940(members.front(), members, target);
+        if (chosen != 0u) ++auto_attack_issued_; else ++auto_attack_declined_;
+        const GameUnitRow* trow = target < units_.count() ? units_.unit_row(target) : nullptr;
+        log_.notef("air ops AutoAttackTarget: squadron %u members=%zu target=\"%s\" class=%08X "
+            "(007F4EC0 -> 007F15F0 -> 007EEC50, packet cc9_player_air_ops_launch)",
+            p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",
+            chosen);
+        pending_auto_attacks_.erase(pending_auto_attacks_.begin() + static_cast<std::ptrdiff_t>(i));
+    }
+}
+
+PlayerAirOpsLaunchResult script_orders_player_air_ops_launch(const std::string& base,
+    int slot_number, int vehicle_class, int count, const std::string& target) {
+    if (g_live_script_orders == nullptr) {
+        PlayerAirOpsLaunchResult out;
+        out.reason = "no live script-orders host";
+        return out;
+    }
+    return g_live_script_orders->player_air_ops_launch(base, slot_number, vehicle_class,
+                                                       count, target);
 }
 
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
