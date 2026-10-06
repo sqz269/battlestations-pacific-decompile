@@ -14765,3 +14765,92 @@ from g27's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idl
   tree, the bleed from the first ramp near 991 s, the failure at the neutralize), and none of them
   alone restores AA. `ret` OFF restores AA on JM05 long. Any other row that moves gets the groups
   that its own record says reach it.
+
+**Binaries** (`pair_export.py --commit c245a54bb`):
+- AB: `local\g28_lane_a` (SHA-256 prefix `5A90C266336A`);
+- anchor: `local\g28_lane_b` (`31E50D371BC2`);
+- `cd` + `abs` OFF: `local\g28_lane_c` (`DFB16A1AB600`); `pen` OFF: `local\g28_lane_d` (`AF08F6825199`);
+  `pm` OFF: `local\g28_lane_e` (`32CECDF970B4`); `lr` + `fr` OFF: `local\g28_lane_f` (`571EBC64813B`);
+  `ret` OFF: `local\g28_lane_g` (`1E3DB614D90B`).
+
+**Environment:** the console session was Active and every run completed.
+
+### The anchor: the nine OFF
+
+`g28_ab_anc_<row>` is **gameplay-identical to AA on all twenty-two rows**: exit 1 against
+`g27_aa_base_<row>` (cc9-gunnery27's tree). The guard, the accessor and the KillReason plumbing move
+nothing by themselves.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12822.0 | 48 | 1036 (153) | 14785 | 98.70 s | 3 of 16 / 0 of 19 | 15 | Lexington-class01 3353.44 | none (Mission.EndMission never true) | 479 | `local\g28_ab_base_usn04.log` |
+| USN01 | 3000 | 35060.7 | 29 | 1282 (231) | 2032 | 12.90 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 658.23 | none (Mission.EndMission never true) | 486 | `local\g28_ab_base_usn01.log` |
+| USN04 (E2) | 9000 | 13094.2 | 52 | 1055 (153) | 15137 | 98.70 s | 3 of 16 / 0 of 19 | 19 | Lexington-class01 5761.17 | none (Mission.EndMission never true) | 480 | `local\g28_ab_base_e2.log` |
+| USN02 | 9000 | 42492.4 | 3 | 5299 (366) | 4418 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.EndMission) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side) | 486 | `local\g28_ab_base_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g28_ab_base_jm06.log` |
+| JM08 (smoke) | 3000 | 10057.1 | 22 | 482 (157) | 2794 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 452 | `local\g28_ab_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 466 | `local\g28_ab_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 445 | `local\g28_ab_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 439 | `local\g28_ab_base_lomp06.log` |
+| LOMP10 | 3000 | 1987.1 | 2 | 185 (104) | 3439 | 93.95 s | - / 14 of 8 | - | (none) 7565.67 | none (Mission.EndMission never true) | 464 | `local\g28_ab_base_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 3 / 0 of 6 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 505 | `local\g28_ab_base_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 438 | `local\g28_ab_base_usn12.log` |
+| LOMP10 (long) | 9000 | 2619.6 | 5 | 199 (108) | 3804 | 93.95 s | - / 14 of 8 | - | (none) 7565.67 | none (Mission.EndMission never true) | 479 | `local\g28_ab_base_lomp10l.log` |
+| USNOS | 3000 | 43048.0 | 87 | 1409 (177) | 5668 | 5.00 s | - | 11 | NH 1497.26 | none (Mission.EndMission never true) | 494 | `local\g28_ab_base_usnos.log` |
+| USNOS (long) | 9000 | 48691.3 | 105 | 3059 (294) | 19805 | 5.00 s | - | 13 | NH 4492.07 | none (Mission.EndMission never true) | 494 | `local\g28_ab_base_usnosl.log` |
+| IJN01 | 3000 | 1707.7 | 1 | 163 (151) | 4846 | 89.35 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 433 | `local\g28_ab_base_ijn01.log` |
+| JM05 (long) | 9000 | 33338.6 | 42 | 1062 (379) | 14489 | 5.85 s | 3 of 6 / 0 of 17 | 20 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 539 | `local\g28_ab_base_jm05l.log` |
+| JM08 (long) | 36000 | 114850.7 | 129 | 10072 (721) | 9701 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 494 | `local\g28_ab_base_jm08l.log` |
+| USN13 (long) | 9000 | 42530.4 | 102 | 2871 (1766) | 35863 | 98.90 s | 3 of 80 / 3 of 50 | 38 | Enterprise 2777.59 | none (Mission.EndMission never true) | 491 | `local\g28_ab_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 362 (96) | 3189 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 458 | `local\g28_ab_base_esmp08l.log` |
+| USNRM01 | 9000 | 26159.1 | 132 | 1872 (1256) | 61392 | 166.56 s | 6 of 15 / 34 of 51 | 99947 | West Virginia 0.00 | none (Mission.EndMission never true) | 503 | `local\g28_ab_base_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 140 (31) | 805 | 65.25 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 498 | `local\g28_ab_base_ijn11.log` |
+
+JM08 long's "mission end" column reads `none` because the failure path sets `Mission.MissionStatus`,
+not `Mission.EndMission` (SHIP_AI 160.4). The row fails at the HQ neutralize (1034.10 s) and is
+image-faithful only to about 40 s past it.
+
+**Against AA: two rows move** (exit 3), JM05 long and JM08 long. The other twenty are
+gameplay-identical (exit 1).
+
+- **JM08 long:** deaths 179 -> 129; hit records 6894 -> 10072 (hull 639 -> 721); shots 7757 -> 9701;
+  damage 101129.4 -> 114850.7; units 405 -> 408. Hosho, Isokaze and Fubuki spawn at 291.15 s
+  (`SpawnHoshoFleet`) and die; Hawaii arrives. The HQ is neutralized at 1034.10 s, the mission fails,
+  and **no death follows**: the last death is at 1033.93 s (AA: 49 deaths after 1035 s, the last at
+  1794.88 s).
+- **JM05 long:** deaths 38 -> 42 (the three event-4 catalinas and `SecondaryAirfieldEntity 01_sqn12|.-3`),
+  hull hits 321 -> 379, shots 13716 -> 14489: SQUADRON_LAND_TASK 5ea.1's result, unchanged.
+
+### Leave-one-out
+
+Each group OFF alone, two rounds (`local\g28_ab_<group>{1,2}_<row>.log`). **The two rounds agree** (exit 1
+on JM08 long for every group, exit 0 on JM05 long).
+
+| row | group OFF | vs AB | vs AA | deaths | hull hits | shots | HQ neutralized | deaths after 1035 s (last) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JM08 long | none (AB) | | 3 | 129 | 721 | 9701 | 1034.10 s | 0 (1033.93 s) |
+| JM08 long | `cd` + `abs` | 3 | 3 | 132 | 603 | 9204 | 1040.10 s | 2 (1212.96 s) |
+| JM08 long | `pen` | 3 | 3 | 131 | 763 | 9426 | 1034.10 s | 2 (1762.89 s) |
+| JM08 long | `pm` | 3 | 3 | 189 | 619 | 8477 | 1034.10 s, no failure | 59 (1718.10 s) |
+| JM08 long | `lr` + `fr` | 3 | 3 | 132 | 768 | 9258 | 1039.35 s (by gunfire) | 3 (1563.35 s) |
+| JM05 long | `ret` | 3 | **1** | 38 | 321 | 13716 | | |
+
+- **JM08 long** is carried by all four groups at once: each OFF moves the row against AB and none
+  restores AA. `cd` OFF removes the Hosho and Hawaii fleets, which retimes the fight so that the HQ falls
+  6 s later. `lr` + `fr` OFF returns the neutralize to gunfire at 1039.35 s, as in SHIP_AI 161.4's OFF
+  side. `pm` OFF keeps the mission running after the neutralize (59 later deaths). `pen` OFF leaves the
+  neutralize where it is but moves the hull hits and two late deaths.
+- **JM05 long** is carried by `ret` alone: `ret` OFF equals AA.
+- `fr` was not split from `lr`; its own pairs (SHIP_AI 162.4) were exit 1 under the measurement streams.
+
+**Predictions:**
+- Right on the anchor (= AA everywhere).
+- Right on the two moved rows and on every other row being gameplay-identical, including the risks
+  named for `pen` (USN02, IJN11, JM05, LOMP10 and the long rows).
+- Right on the leave-one-out: every JM08 long group moves the row and none restores AA; `ret` OFF
+  restores AA on JM05 long.
+- **Partly missed:** "deaths collapse after the failure, the last near the failure plus a few tens of
+  seconds". On AB no death follows the neutralize at all; the late deaths that SHIP_AI 160.4 saw (one at
+  1079.73 s) appear only with `pen` or `cd` OFF, where the fight is retimed.
