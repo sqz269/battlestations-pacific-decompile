@@ -9787,6 +9787,31 @@ the round's attach path (who parents a kind-2Ah child under the rack, and its lo
 Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
 the same read to justify.
 
+### 130.6 The attach read settles it: the bomb leaves along the nose (cc9-lua41's read; flip by cc9-gunnery29, 2026-10-06)
+
+cc9-lua41 read the attach path asked for in 130.5 (reported to the lead; recorded here, not re-read):
+- **The round is created with an identity local under the rack ENTITY.** `006E3E70` -> `006E2C00` places it
+  at position 0 with direction +Z from the constant at `00F87598`; `00924F90` relinks it without matrix work.
+  So `006E1F00`'s rows are the plane pose x the rack entity's local matrix.
+- **Single "BombPlatform" racks** (vtable `+A0h` = `0072E6D0`) hand the slot frame only to the model root and
+  write no `gun+74h`, so the rack entity's local stays identity and the bomb axis is the plane's NOSE.
+- **This installation's models:** the Nell and Dauntless slot frames carry no rotation (nose either way); the
+  Val and Kate slot 50 is about 2.0 degrees nose-down, applied only if the unread gun-entity placement store
+  applies it to the entity.
+- **The round's position** is the rack entity's world position, the plane origin when the entity local is
+  identity. The host spawns the round at `h.unit_pose`'s origin (`release_bomb_drop`), so the spawn matches
+  and 130.4's pair stands without a re-pair.
+
+**Consequence recorded before the flip.** As 130.4 measured: USN01's ScoutDauntless bombs (133.20 s,
+134.10 s) leave along the nose and miss Convoy1 on the idle row, so `luaConLeadHit` does not fire and phase 2
+does not launch within 150 s (units 93 -> 64). Order files that rely on that hit (cc9-ships36's USN01 runs)
+must be re-read against the flip's sha. USNRM01, LOMP10 and LOMP10 long move as 130.4's table.
+
+**Verdict: ON** (the mechanism matches the read; the contract's flip). **Uncertain:** Val and Kate (slot 50)
+may leave up to about 2.0 degrees nose-down of the host's direction if the gun-entity placement store applies
+the slot frame to the entity; the drift (`block+38h`) is drawn and not applied; the labels of 130.2 stand.
+Not game-validated. Belongs to reference AC.
+
 ## 131. USN02 r5: Houston's hold after its attackmove target dies is the director's idle tail (SHIP_AI 171 (a); cc9-gunnery28, 2026-10-06, read only)
 
 The question routed from cc9-ships35: in r5 (`local\s35_u2r5.log` in the cc9-ships35 tree, orders
