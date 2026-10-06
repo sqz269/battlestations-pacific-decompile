@@ -9023,3 +9023,68 @@ are per unit per fixed step.
 - `g26_motion_census.py`: the census in 117.1.
 - `g26_hangar_reach.py`: the airfield-hangar deaths in 117.2.
 - `g26_run.ps1`: one run with `BSP_AA_TRACE_UNIT` / `BSP_AA_TRACE_TARGET`.
+
+## 119. The carrier remainder `00758270`: the mother-ship holder's yaw-rate filter (lead item 3; cc9-gunnery27, 2026-10-05, read only)
+
+**`00758270`** (`00758270..007582AD`, `RET 4`, `ECX = unit+310h`), read whole from the disk bytes:
+1. `00825F20(dt)`, the ship motion the host runs.
+2. `006CDC70(dt)` on `unit+E78h`, the air-operations block. The host runs it relocated
+   (`kDeckTickInFixedStepBound`).
+3. When `[unit+EF8h]` (block `+80h`, the landing holder) is non-null: **`00758090(dt)`** on the holder.
+
+**`00758090`** (`00758090..0075812A`, `__thiscall(holder, float dt)`, `RET 4`):
+- `h = owner->vtable[50h]()`, owner = `[[holder+4h]+7Ch]` (the block's owner); `holder+88h = h`.
+- `holder+94h += dt`. When it is above `0.2` (`00CE3D10`, the double of `0.2f`):
+  - `rate = 00438B10(h, holder+90h) x 0.5 (00D7A280) / holder+94h`;
+  - `holder+8Ch = rate + 0.5 x holder+8Ch` (a halving low-pass of the yaw rate);
+  - `holder+94h = 0`, `holder+90h = h`.
+
+**Correction.** `docs/SQUADRON_LAND_TASK.md` (the `006BCA80` notes) says `holder+8Ch` "is written
+only at construction". That sweep covered `006B9000-006CE000`; `00758090` (`0075810D FSTP [ESI+8Ch]`)
+writes it for every mother-ship holder, every fixed step. For an airfield holder the statement stands
+(the airfield's `006D2510` has no such call).
+
+**Reach: none on the current host.** `holder+8Ch` is read by `006BCA80` (the approach's lead point,
+`T` turned by `holder+8Ch x t`), which the host runs only for airfield holders. Carrier landings are
+not reached: on AA's twenty-two rows every mother-ship deck reports `records=0 ... landed=0`
+(for example E2's `Lexington-class01` and `Yorktown-class01`), and land/park's carrier arm is refused
+(`src/game_hosts_units.cpp`, `009B22C0` notes). `holder+88h` is already refreshed at each use by
+the host's `carrier_holder_frame_006bee40` (`006BEE40` stores the same `vtable[50h]` heading).
+
+**When carrier landings are bound**, the holder needs `+8Ch`/`+90h`/`+94h` and this filter, run in the
+carrier's fixed step after `006CDC70`, and `land_path_point_006bca80` must turn `T` by `holder+8Ch x t`
+and add the owner's velocity. Not bound now: there is nothing to pair.
+
+## 120. The landing-ship remainder `00749B20`: the landed ship bleeds its building (lead item 3; cc9-gunnery27, 2026-10-05, read only)
+
+**`BSP_LandingShipUnit_UpdateMotion` `00749B20`** (`00749B20..00749BE2`, `RET 4`, `ECX = ESI = unit+310h`),
+read whole from the disk bytes:
+1. `00825F20(dt)`, the ship motion the host runs.
+2. A multiplayer client (`[[00E188A8]+1FE4h] == 2`) stops here.
+3. **Dead** (`unit+5Dh`, `00749B43`): when `unit+118Ch` (landed, set by `BSP_LandingShip_FinishLanding`
+   `0074AE68`) is set, `00926D90(unit, 2)` (`00749B59..00749B61`, `BSP_MissionEntity_Kill` with cause 2),
+   then return.
+4. **Alive**, with a building at `unit+1204h` (`BSP_LandingShip_BeginLandingAtPad` `0074A9AA`):
+   - the building's party `+54h` equals the ship's (`00749B7B`): the same `00926D90(unit, 2)`.
+     A lander whose building is now its own side's is removed.
+   - else, when the ramp is down (`unit+1188h`, `BSP_LandingShip_LowerRamp` `0074A426`) and
+     `00803CE0(ECX = own party, EDX = building) == 1`. `00803CE0` (`00803CE0..00803D30`, fastcall)
+     answers 3 when the building's per-party record (`building + party x 34h + 1E8h`, the dword at
+     `+8h` when the byte at `+10h` is set, else `+4h`) is below 2; otherwise 0 for the same party,
+     1 for a hostile building and 2 for a neutral one (party 2). So only a **hostile** building bleeds:
+     `x = float(int class+80Ch) - building+368h` (`00749B99..00749BAB`). `class+80Ch` is the class key
+     **`LandedDamage`** (`00CFFCF8`, stored at `0074C6C1` in `BSP_LandingShipClass_ReadLuaFields`);
+     `building+368h` is the unit's armour. When `x > 0`: `building->vtable[1ACh](x * dt)`.
+5. For a CommandBuilding (vtable `00CFB028`), slot `1ACh` is `006F1F20` (`006F1F20..006F1F72`, `RET 4`):
+   when `building+7D8h == 0.0` it takes the lock at `+764h` and calls `007470B0(amount)`, the
+   LandFort damage, so the building's health falls and the capture rule (`006F3270`) follows at zero.
+
+**Reach.** JM08 long lands troops (SHIP_AI 152.5: 14 ramp lowers and unloads with the lander terms ON),
+so a landed lander with a hostile building should bleed it at `LandedDamage - armour` per second, and a
+lander whose building turns friendly should disappear. The host's lander model
+(`include/bsp/building_pads.hpp`: `building_1204`, `ramp_down_1188`, `landed_118c`) has the inputs, and
+nothing runs this remainder (`UnitMotion::unreconstructed_override_remainder_00749b20`).
+
+**Not bound here.** The lander and capture sources are the ships lane's (cc9-ships33). The open
+reads before a binding: the per-party record at `building+1E8h` (who writes it; whether the host
+has it), `007470B0`'s damage path for a CommandBuilding, and what `+7D8h` gates.
