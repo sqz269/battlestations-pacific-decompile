@@ -10062,3 +10062,120 @@ Flips since AC's base belong to AD.
   `g29_diffrows.ps1 -A prefixA_ -B prefixB_ [-Rows]`, `g29_table.py <prefix>`, `g29_report29.py`, `g29_census.py`.
 - A full 22-row reference takes about 25 minutes; JM08 long (36000 frames) dominates every lane, so a
   leave-one-out lane that waits for it between variants costs about 25 minutes per round.
+
+## 136. The shipyard production host (lead queue item 1; cc9-gunnery30, 2026-10-06)
+
+`include/bsp/shipyard_production.hpp`, `src/shipyard_production.cpp` (the state and the pure arms) and the walk and
+order in `src/game_hosts_gunnery.cpp`, behind **`bsp::kShipyardProductionBound`**, committed OFF. Read through Ghidra
+(read-only) on top of 134; names are hypotheses.
+
+### 136.1 Corrections to 134
+
+| was (134) | is | evidence |
+| --- | --- | --- |
+| 134.1: an entry takes state 1 from `"Stock i"` with `Count > 0` | from the **slot's** `UnitClass` > 0 (`00D0B9B4`), with `+0Ch` = `UnitEquipment` (`00D0B9A4`); either slot arm then takes one from the class's stock (`0084A3C9`) | the key pushes `0084A2C4`, `0084A2D8`, `0084A345` |
+| 134.1: stock comes only from AddShipyardStock and a saved game | the scene's `"Stock 1".."Stock 12"` (`Count` `00CE5710`, `Type` `00CE4780`, `Names` `00D0B974`) build records in **`00849A30`** (`00849D94..00849E6C`; kept when Count != 0 and Type > 0), which also sizes the entries by `NumSlots` (`00849E7B`, default entry `+0Ch = -1` at `00849E99`) | `00849A30` listing; USN04's and Truk's scenes author six Elcos / Mavis / JapPT stocks |
+| 134.2: `+0Ch` is the quantity, A8h "the quantity" | `+0Ch` is the class's **Equipments index** (A7h stores `class+134h` DefaultEquipment; A8h cycles it modulo `class+128h + 1`; 00844FC0 pushes it as `Equipment` for a plane) | `00844F86`, `008436F0`, the build's `Equipment` key |
+| 134.2 / SHIP_AI 182: the screen sends one A7h, then `n - 1` A8h | A7h (byte 1) **in a loop** until the entry's class equals the screen's choice (`[screen+3A4h]+70h`, `0067458F JNZ 00674460`); the A8h loop runs only for a plane class (`006745B2 vtable[18h](0Fh)`), `1 <= i < screen+334h` | `00674460..00674604` |
+
+### 136.2 What the host does (ON)
+
+- **Scene** (routed to the scene-contents lane, not landed): `00849A30` builds the stock and the entries into
+  `bsp::shipyards()`; the gunnery host completes `00849F70` at its first step (hangars `"Hangar 1".."12"`, `Object`
+  and `Path`, both empty ends the list; slots `Unit` -> state 4, `UnitClass` -> state 1).
+- **`shipyard_order`** (for the harness `build` line): the first idle entry (or a named one), A7h until the named
+  class (one A7h with none), A8h `count - 1` times for a plane class, A9h; then `00844CE0` and the build at once.
+  A9h's order object is the shipyard director's `+238h` (`008364E0`); nothing in this process writes it, so it is
+  none (labelled), and the launch arm `008465A6` (attackmove `00E08F78` / settarget `00E08EF8`) stays a record.
+- **Walk `00846320`** each fixed step while the shipyard lives (the image tests `shipyard+5Dh`; labelled): a hangar
+  that launched a unit frees itself once the unit is further from path point 0 than point 1 is; an entry in state 3
+  whose hangar is free goes to 4; an entry in state 2 builds when a hangar is free.
+- **Build `00844FC0`**: state 3, the hangar, the frame (rows (1,0,0), (0,1,0), p1 - p0, `0085DC80`, translation p0),
+  the creator by kind (plane / destroyer for BattleShip, Cruiser, Destroyer, Cargo / mother ship / submarine /
+  torpedo boat / landing ship), through `bsp::shipyard_create_unit()`, a seam the SpawnNew lane registers (routed),
+  which also issues `moveonpath` `00E08F80` on the hangar's path (`008454B4..008454C9`, ECX = the new unit).
+  A refused creation is counted and the shipyard is not retried (the image always creates).
+- **Not modelled:** the stock notice `00984EB0` (a record, as AirOps'); AAh `008437D0`, the non-local peers' copy
+  of the build (`0077C7B0` sends to non-local peers only); the hangar observer `00694A60` on the unit and what its
+  notice does; who returns an entry from state 4 to 0 (with four `NumSlots`, the fifth order finds no idle entry
+  unless something does). Coverage: `00844D60`, `008436F0`, `00846D90`, `00844CE0`, `00844610`, `0084ACB0` complete;
+  `00846320` complete but for the launch-order arm; `00844FC0` partial (the bag keys and the creator are the seam's);
+  `00849F70` mode 1 only (mode 3, the saved game, unread); `00849A30` the stock and NumSlots arms only.
+
+### 136.3 Predictions (written before any ON run)
+
+1. **OFF vs ON, no `build` line, on every reference row: gameplay identical** (pair_diff 0 or 1). Nothing sends A9h
+   but the strategic map (`00656670` has one caller, `00673A10`; the only other `PUSH 0A9h` is `0060C055`, a HUD
+   query), scene slot arms set states 1 and 4 only, and the walk builds only from state 2. ON adds the summary line
+   and, once the scene edit lands, the `shipyard slots:` / `shipyard hangar:` lines.
+2. **LOMP10 with the routed edits and a `build CB4_SY` line after TimeLimit's AddShipyardStock** (Elco 27 x4, then
+   Catalina 125 x2; names "Elco" / "Catalina"): the first order takes entry 1, A7h picks Elco (the first record),
+   A9h names it "Elco", `CB4_SY_Hangar` is free, the TBoatGen unit is made at `CB4_SY_Path` point 0 heading to
+   point 1 and runs `moveonpath`; the hangar frees once it is past point 1's distance; a second order made before
+   that queues (state 2) and builds at the release. Four orders give four Elcos and Elco stock 0; a fifth order is
+   refused with "no idle entry" (all four entries in state 3 or 4).
+3. **JM05 / JM05 long** (shipyard units via SpawnNew, 122): identical with the switch ON.
+
+
+## 137. The rack repeat-drop diagnostic (133.3; lead queue item 2; cc9-gunnery30, 2026-10-06)
+
+`67106f83d` (units host, leased and released): log-only counters in the single-rack tick `006E56F0`.
+`repeat_drops` counts drops after the first since the issue set dropBombs. `drops_leaving_rounds` counts drops
+that leave rounds on the rack that dropped; it is also counted in the level bomber's rack tick, which already loads
+`RepeatTime`. One `rack repeat diag:` line is written per such single-rack drop. Runs:
+`local\g30_diag_<row>.log` (`67106f83d`, AC's launch form).
+
+| row | `Rack::can_fire` / `repeat_time` records | diag lines | repeat drops |
+| --- | --- | --- | --- |
+| USN04 (4700) | 6 / 3 | 0 | 0 |
+| LOMP10 (3200) | 60 / 14 | 0 | 0 |
+| USNRM01 (9200) | 72 / 36 | 0 | 0 |
+| USN13 long | 9 / 6 | 3 | 0 |
+
+**Reach of `RepeatTime` (`006E58AA`): none on these rows.** No single rack dropped twice. Every single-rack drop
+but three emptied its rack, so the 0 the host stores where the image loads `desc+E0h` was never read.
+The three exceptions are USN13 long's `bruh #1.9|.-2/-3/-4` at 150.45-152.85 s: authored 16 rounds, one single
+rack, 15 left, dropBombs still set. `-3` and `-4` died 0.15 s and 0.45 s after their drops. `-2` lived 4.45 s more
+and never dropped again, with `gate_refused=0`. With `toRepeatTime = 0` the host would have dropped on the next step
+if the tick had run, so the tick did not run, or returned before the counted gates. A likely cause is that
+`latch_control_input_007b9770` is not reached once the plane leaves the release state. This is unverified, and it is
+a host scheduling question, not the CanFire substitution.
+**Reach of the CanFire gates (`00729A80`) on first drops:** not measured. A gate that refuses leaves no host trace,
+and modelling it is the step that would show one.
+**Next:** a counter per early return in `run_rack_tick_006e56f0` (census, death, `to_repeat`, dropBombs), on USN13
+long, to settle why `-2` stopped. Then `RepeatTime` matters only for authored multi-round single racks: in this
+installation, `bruh` (USN13).
+
+### 136.4 First pairs (switch alone, before the routed edits)
+
+The ON exe is `pair_export --commit 165e910c4 --flip kShipyardProductionBound=true` (`local\g30_sy_on`).
+- **LOMP10:** OFF is `local\g30_diag_lomp10.log`, which is `67106f83d`; that commit adds only log lines.
+  `pair_diff` gives exit 1, gameplay identical.
+- **JM05:** OFF is `local\g30_syoff_jm05.log`, ON is `local\g30_syon_jm05.log`. `pair_diff` gives exit 1,
+  gameplay identical. The only differences are the diagnostic's added rack-line fields.
+- ON's summary is `yards=0 walks=0`: without routed edit (A) the registry is empty. Prediction 1 holds,
+  trivially. Prediction 2 waits for (A), (C), (D) and the harness `build` line.
+
+## 138. Why USN13 long's `bruh #1.9` racks stop after one drop (137 follow-up; cc9-gunnery30, 2026-10-06)
+
+This commit adds per-unit counters to the single-rack tick `run_rack_tick_006e56f0`: calls, each early return, and
+ticks after a drop. They are printed as `rack tick returns:`. Log only. Run: `local\g30_ret_usn13l.log`.
+
+| unit | calls | idle returns | level-bomber branch | ticks after drop | last drop / last tick |
+| --- | --- | --- | --- | --- | --- |
+| `bruh #1.9|.-2` | 2668 | 2545 | 122 | 122 | 150.45 / 156.55 s |
+| `bruh #1.9|.-3` | 2587 | 2549 | 37 | 37 | 150.65 / 152.50 s |
+| `bruh #1.9|.-4` | 8537 | 2593 | 5943 | 5943 | 152.85 / 449.96 s |
+
+**It is a host branch switch, not the CanFire substitution and not a missing tick.** The tick runs every step after
+the drop. Every one of those steps takes the level-bomber branch (`lb_level_bomber_racks()` true), and none took it
+before. `bruh` is type 167, kind 10h (LevelBomber; `unit hull input ... kind=16`).
+- The first drop went through the single-rack path with `bomb=0` (the 137 diag line). So when it dropped, the
+  unit's ordnance kind set did not yet answer "general bomb, no torpedo", the predicate was false, and the drop
+  took the torpedo spawn (`release_ordnance_drop`, `spawned=1`).
+- After the drop the predicate turned true. The level-bomber tick then runs with per-rack `lb_rack_dropping`
+  never set (no `007C0E67` issue reached it), so it never drops again.
+- In the image one tick, `006E56F0`, serves every rack. The split between the two arms is the host's.
+**Uncertain:** what changed the predicate between the two steps. It reads `unit_.ordnance_mask`, and its producer
+was not read here. The next step for the release lane (units host, planes) is the `ordnance_mask` writer's timing
+for a level bomber, and which of the issue stages the first release of these wingmen came from.

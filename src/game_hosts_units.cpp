@@ -1454,6 +1454,17 @@ struct GameUnitSlot {
     std::vector<int> rack_ammo_per_rack;      // seeded with rack_ammo
     int rack_active{-1};
     int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
+    // GUNNERY 133.3 / 137, a diagnostic (no behaviour): single-rack drops since
+    // the last issue set dropBombs, drops after the first in that episode (the
+    // ones the unmodelled CanFire gates and RepeatTime would pace), and drops
+    // that left rounds on the rack that dropped.
+    int rack_episode_drops{0};
+    int rack_repeat_drops{0};
+    int rack_drops_leaving_rounds{0};
+    // GUNNERY 138, a diagnostic: the single-rack tick's calls and early returns.
+    int rack_tick_calls{0}, rack_ret_census{0}, rack_ret_dead{0}, rack_ret_idle{0};
+    int rack_ret_level{0}, rack_ticks_after_drop{0};
+    float rack_last_drop_t{-1.0f}, rack_last_tick_t{-1.0f};
     float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
     float hull_heading_1050{0.0f};     // unit+1050h, written at 00826C56
     float occupant_timer_1158{0.0f};   // unit+1158h, 0 from 00823C30
@@ -21657,6 +21668,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.lb_rack_drops;
                             rt = unit_.lb_rack_repeat_e0;                     // 006E58AA
                             if (unit_.rack_ammo_per_rack[i] <= 0) unit_.lb_rack_dropping[i] = 0;
+                            else ++unit_.rack_drops_leaving_rounds;           // GUNNERY 137 diagnostic
                         }
                         owner_.done("Rack::tick_level_bomber_006e56f0", 0x006e56f0u);
                     }
@@ -24446,20 +24458,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // plane's stage in the same fixed step (order between the
                     // rack's tick and the plane's is not read).
                     void run_rack_tick_006e56f0(float dt) {
+                        // GUNNERY 138 diagnostic: calls and early returns.
+                        ++unit_.rack_tick_calls;
+                        unit_.rack_last_tick_t = static_cast<float>(owner_.summary.simulated_seconds);
+                        if (unit_.rack_last_drop_t >= 0.0f && unit_.rack_dropping)
+                            ++unit_.rack_ticks_after_drop;
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (unit_.rack_census_done && lb_level_bomber_racks()) {
+                                ++unit_.rack_ret_level;
                                 run_level_bomber_rack_tick_006e56f0(dt);
                                 return;
                             }
                         }
-                        if (!unit_.rack_census_done || unit_.rack_single_count <= 0) return;
+                        if (!unit_.rack_census_done || unit_.rack_single_count <= 0) {
+                            ++unit_.rack_ret_census;
+                            return;
+                        }
                         // 006E5718-006E5748: the owner must be live; a dead
                         // aircraft's rack does nothing.
-                        if (GameUnitsHost::Impl::kPlaneDeathModesBound && unit_.plane_death_c3a) return;
+                        if (GameUnitsHost::Impl::kPlaneDeathModesBound && unit_.plane_death_c3a) {
+                            ++unit_.rack_ret_dead;
+                            return;
+                        }
                         // 006E577F-006E579E: counted down while above -1.0.
                         if (unit_.rack_to_repeat > -1.0f) unit_.rack_to_repeat -= dt;
                         if (!unit_.rack_dropping || !(dt > 0.0f) ||
-                            !(unit_.rack_to_repeat < 0.0f)) return;  // 006E57D4-006E57FA
+                            !(unit_.rack_to_repeat < 0.0f)) {  // 006E57D4-006E57FA
+                            ++unit_.rack_ret_idle;
+                            return;
+                        }
                         // 006E5816 CanFire(1) = 00729A80 + ordnance 2Ah (006E3460).
                         // SUBSTITUTION, labelled: the gun gates of 00729A80 are
                         // not modelled for a rack; a rack can fire while it has
@@ -24545,6 +24572,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         --unit_.rack_ammo;
                         ++unit_.rack_drops;
+                        {
+                            // GUNNERY 137, a diagnostic: what the CanFire gates and
+                            // RepeatTime would pace. No behaviour.
+                            int left = unit_.rack_ammo;
+                            if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                                left = unit_.rack_ammo_per_rack[static_cast<std::size_t>(unit_.rack_active)];
+                            }
+                            unit_.rack_last_drop_t =
+                                static_cast<float>(owner_.summary.simulated_seconds);
+                            const bool repeat = unit_.rack_episode_drops > 0;
+                            ++unit_.rack_episode_drops;
+                            if (repeat) ++unit_.rack_repeat_drops;
+                            if (left > 0) ++unit_.rack_drops_leaving_rounds;
+                            if (repeat || left > 0) {
+                                owner_.log.notef("rack repeat diag: %s t=%.2f rack=%d left=%d "
+                                    "episode_drop=%d bomb=%d (006E56F0, GUNNERY 137)",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.rack_active, left, unit_.rack_episode_drops,
+                                    drop_is_bomb ? 1 : 0);
+                            }
+                        }
                         // 006E58AA-006E58B7: toRepeatTime = descriptor+E0h. The
                         // descriptor is unread; with one round per rack it does
                         // not matter before the ammo test clears dropBombs.
@@ -24665,6 +24714,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
                             // a single torpedo), dropBombs = 1.
                             if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            unit_.rack_episode_drops = 0;  // GUNNERY 137 diagnostic
                             if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
                                 // 007C0DE3-007C0E17: the first rack holding a
                                 // round and not busy is the one fired.
@@ -35128,10 +35178,20 @@ void GameUnitsHost::report() {
                             slot->torpedo_release_pending_c25 ? 1 : 0);
                         if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
                             host.log.notef("  torpedo %-12s rack 006E56F0: deferred=%d drops=%d "
-                                "ammo=%d dropping=%d gate_refused=%d", slot->row.name.c_str(),
+                                "ammo=%d dropping=%d gate_refused=%d repeat_drops=%d "
+                                "drops_leaving_rounds=%d", slot->row.name.c_str(),
                                 slot->rack_requests_deferred, slot->rack_drops,
                                 slot->rack_ammo, slot->rack_dropping ? 1 : 0,
-                                slot->rack_gate_refused);
+                                slot->rack_gate_refused, slot->rack_repeat_drops,
+                                slot->rack_drops_leaving_rounds);
+                            host.log.notef("  torpedo %-12s rack tick returns: calls=%d census=%d "
+                                "dead=%d idle=%d level=%d ticks_after_drop=%d last_drop=%.2f "
+                                "last_tick=%.2f (GUNNERY 138)", slot->row.name.c_str(),
+                                slot->rack_tick_calls, slot->rack_ret_census, slot->rack_ret_dead,
+                                slot->rack_ret_idle, slot->rack_ret_level,
+                                slot->rack_ticks_after_drop,
+                                static_cast<double>(slot->rack_last_drop_t),
+                                static_cast<double>(slot->rack_last_tick_t));
                             // Packet cc9_mavis_rack_drops.
                             std::string per_rack;
                             for (const int a : slot->rack_ammo_per_rack) {

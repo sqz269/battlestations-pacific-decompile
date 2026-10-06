@@ -14287,6 +14287,29 @@ the leader or the last member.
   line-for-line the same at every event checked (the hit at 21478, Convoy4 at 35834,
   `luaMoveToPh3` at 36521, Nell6 at 108966, the end at 150269).
 
+### 179.2 p5 on main with the wingmen's launch order ON: still completes, at 712.75 s (cc9-ships38, 2026-10-06)
+
+The tree is `agent/cc9-ships38` at main `78eab7589`, which has `kAutoAttackMemberOnLaunchBound` ON
+(`cd19fc145`) and the exec guard (`bb30ca8c7`). It runs `s37_u1_p5.txt` unchanged
+(`local\s38_u1_p5.txt`) for 22000 frames, in s37's launch form (`local\s38_run.ps1`), and logs to
+`local\s38_u1p5.log`. No order line was re-tuned.
+- **`summary mission end: completed at 712.75 s (Mission.EndMission)`**, with the text "We showed
+  we can fight back! - Mission Complete!". p5 under 179.1 ended at 697.90 s.
+- The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+  111030. The mission end follows at 111158.
+- Phase 2 is unchanged: `luaConLeadHit` at log line 21480, and `luaMoveToPh3` runs at 36525.
+- The Nell deaths:
+  - Nell1-4 and their wingmen die from 289.60 to 343.44 s, all to the Enterprise fighters.
+    Nell2 dies at 295.35 s (p5: 604.68 s).
+  - Nell6|.-3 is killed by sqn02 at 310.90 s.
+  - Northampton kills Nell5 (657.46 s), Nell5|.-2 (673.41 s) and Nell5|.-3 (702.75 s).
+  - SaltLakeCity kills Nell6|.-2 (698.05 s) and the last Nell, the leader Nell6 (710.60 s).
+- No US ship has a death row.
+- As in p5, the 38 slot-0 retries are refused (`no such slot`, 176 caveat 3).
+
+lua42's 14000-frame window (700 s) closed 2.75 s before Nell5|.-3 died. So the "outlived" Nells
+were a window artefact. The cruisers still finish the raid, about 15 s later than in p5.
+
 ## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
 
 Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
@@ -14390,8 +14413,7 @@ first.
 
 ### Open, in order
 
-1. **The garrison revive** (178 item 1), when cc9-gunnery29's `revive_unit_garrison_006f3660` sha
-   arrives. The predictions are in 178.
+1. ~~The garrison revive~~: done in 185 (ON).
 2. **LOMP10** once lua42's member-order seam lands. Re-run `local\s37_l10_p1.txt` (launch at
    4900-4903 after HQReady, slot-0 retries). Then add a `build` line for the Elcos when the
    shipyard host exists (182: the gunnery lane's stock and queue, the lua lane's
@@ -14410,3 +14432,181 @@ first.
 
 Leases: `cc9_reference_completion` (`docs/SHIP_AI_OPEN_ITEMS.md`,
 `src/game_hosts_mission_frame.cpp`) is released with this commit.
+
+## 185. The garrison revive (packet `cc9_command_building_garrison_revive`, `kCommandBuildingGarrisonReviveBound`, cc9-ships37, 2026-10-06)
+
+**What is bound** (`src/game_hosts_ship_ai.cpp`, committed OFF): `006F3660`'s re-create arm
+(`006F3703..006F3844`, 177). For an unlinked member at or under the building's level, the arm now
+does the following:
+- calls cc9-gunnery29's `GameGunneryHost::revive_unit_garrison_006f3660` (`119deb177`: clears the
+  death, refills health, resets the damage and gun state);
+- on true, stores the scene flags `{active}` and `pending_destroy = false`;
+- sets the member's Party to the building's (`006F37A0`), then `refresh_unit_side`;
+- sets its Skill to the building's (`006F37D7`);
+- links the record again and counts it in `garrison_recreates`.
+
+**SUBSTITUTION, labelled:** the image builds a new unit from the record's Type at its stored
+matrix (`00964790`, class `vtable[28h]`, `vtable[98h]`). The host has no unit creation and revives
+the dead unit in place. `summary.deaths` and kill credits keep the original death.
+
+**Predictions, written before any ON run** (from 177.1's census):
+- **JM08 3000:** five members re-created at the 20 s and 30 s passes, Party = the HQ's.
+  `pair_diff` 3: the revived LandForts are targets again.
+- **JM08 long 36000:** about 117 re-creates, 112 of them at the 1041.50 s neutralize with Party 2
+  (Neutral). `pair_diff` 3. The deaths after 1041.50 s move, because the revived forts are neutral
+  targets with full health.
+- **USN01 3000:** one pass and no re-create. `pair_diff` 1.
+- **USNOS 3000** (control): no members. `pair_diff` 1.
+
+### 185.1 Smoke and pairs; verdict ON
+
+**Runs:** OFF is this tree at `602980de7`; ON is `pair_export.py --commit 602980de7 --flip
+kCommandBuildingGarrisonReviveBound=true --out local\s37_rev_on`. The prefixes are `off` / `on`
+(`local\s37_rows.ps1`, reference V form). Smoke: `local\s37_smoke_rev.log`, JM08 300, OFF, clean
+(349 members, two passes).
+
+| row | `pair_diff` | ON | OFF |
+| --- | --- | --- | --- |
+| JM08 3000 | **3** | 4 revives (Watchtower 01 03 at 20.00 s; House Piled 03, Medium Bunker Concrete 03 and Watchtower 01 05 at 30.00 s), party 1 skill 1; deaths 22, hits 474 | 5 re-creates recorded (Watchtower 01 03 twice, because a recorded re-create never relinks); hits 482 |
+| JM08 long 36000 | **3** | 111 revives, **107 of them as party 2 at the HQ neutralize, 1027.20 s** (the last is Shipyard 01); deaths 144, hits 12265 | 117 recorded; deaths 126, hits 9170 |
+| USN01 3000 | 1 | no re-create | |
+| USNOS 3000 (control) | 1 | no members | |
+
+**Against the predictions:**
+- The mechanism and the rows that move are as predicted.
+- JM08 3000 has 4 revives, not 5: the fifth OFF line is the repeat of a member that was never
+  relinked.
+- JM08 long has 107 Neutral revives, not 112, and the neutralize falls at 1027.20 s, not
+  1041.50 s. 177.1's tree timed the HQ's fall later; mains since then (the AB and AC switches)
+  moved it.
+- In both the count follows the deaths before the neutralize, which is a spread miss, not a
+  mechanism miss.
+
+**Verdict: ON.** After 1027 s the revived forts are Neutral, full-health targets: deaths
+126 -> 144 and hit records 9170 -> 12265 on JM08 long. JM08 long fails at the neutralize either
+way (no `EndMission`). The revive is a substitution for the image's new unit; not
+game-validated.
+
+### 184.1 Handoff addendum (cc9-ships37, 2026-10-06, after 185.1)
+
+- **Garrison revive:** done and ON (185 / 185.1).
+- **`kAutoAttackMemberOnLaunchBound` is ON on main** (cc9-lua42 `cd19fc145`, landed `02055e469`):
+  each wingman of a launched squadron now gets the squadron's `AutoAttackTarget`.
+  - **LOMP10 is unblocked.** lua42's re-run of `local\s37_l10_p2.txt` shows CB4_AF's wingmen
+    fighting, Kasumi sunk, and slots 1 and 3 relaunching (slot 3 at Kashi at 8400 and 10800,
+    slot 1 at Asashimo at 8800). Next: re-run `s37_l10_p1/p2` on current main for 18000+ frames,
+    then re-tune toward five SanJoseForce kills.
+  - **USN01 p5 must be re-checked:** Nell1-4 now die earlier, but Nell5|.-3 and Nell6 outlived
+    lua42's 14000-frame window. Re-run `local\s37_u1_p5.txt` for 20000+ frames on current main;
+    if the end moves past the window or is lost, retarget the later slot launches at Nell5/Nell6.
+- Lane owners now: cc9-lua43 (after lua42) and cc9-gunnery30 (after gunnery29). The `build` line
+  waits on gunnery30's `shipyard_order_00846d90` and lua43's `AddShipyardStock`.
+
+## 186. LOMP10 completes with scripted player input (lead item 2, cc9-ships38, 2026-10-06)
+
+**Build:** `agent/cc9-ships38` at main `78eab7589`. It has `kAutoAttackMemberOnLaunchBound` ON
+and the exec guard. Launch form: s37's (`local\s38_run.ps1`). The script is
+`USN\LOMP\10_san_jose.lua` in this installation (mtime 2024-07-13).
+
+| run | orders | frames | SanJoseForce dead | end |
+| --- | --- | --- | --- | --- |
+| idle (`s38_l10idle`) | none | 30000 | 3: Asashimo, Sugi and Oyodo, all to `CB4` (919.90-958.19 s) | none |
+| p2 (`s38_l10p2`) | `s37_l10_p2.txt` | 16000 | 1: Kasumi (446.86 s, `CB4_AF_sqn01\|.-3`) | none by 800 s |
+| **p2 long (`s38_l10long`)** | `s37_l10_p2.txt` | 30000 | **5**: Kasumi 446.86, Asashimo 904.70, Sugi 940.54, Oyodo 947.94 and Kaya 1064.76 s | **`luaVictory` at 1081.08 s; `EndScene` at 1115.66 s** |
+| p3 (`s38_l10p3`) | `local\s38_l10_p3.txt`, from `s38_l10gen.py` | 30000 | 4: Kasumi 414.32 s, then the same three to `CB4` | none |
+
+**p2 long, in order:**
+- **Launches.** Seven are applied: slots 1-4 at 4900-4903 (B-25s at Kasumi and Kaya, P-38s at
+  Kashi and Sugi), then slot 3 at Kashi (8400 and 10800) and slot 1 at Asashimo (8800). Every
+  other retry is refused because the slot is not in state 1 or 5.
+- **Air strikes.** `CB4_AF_sqn01|.-3` sinks Kasumi. `CB4_AF_sqn02`'s bombs hit Kaya first at
+  378.88 s.
+- **HQ guns.** The fleet attack-moves on the HQ (`NavigatorAttackMove`, script line 303). `CB4`'s
+  guns sink Asashimo, Sugi and Oyodo. The coastal gun `Coastal Gun, Japanese 02` finishes Kaya at a
+  range of 1010 m.
+- **Victory.** `MonitorSanJoseForce` (557) sees three ships left. It starts the `Victory`
+  dialog, and its callback `luaVictory` calls `luaMissionCompletedNew`.
+  - The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+    118092.
+  - `luaMissionEnd_Finale` runs, then `EndScene` (log line 121676).
+  - The survivors are ordered to `Lookat4`.
+
+**The player's part decides it.** Idle, the HQ guns sink the same three ships, and Kasumi and Kaya
+live. The player's B-25 kill and the B-25 damage on Kaya make four and five.
+
+**The summary misses it.** `summary mission end: none (Mission.EndMission never true)`, as for
+LOMP06 (183): this script never sets `Mission.EndMission`. The detector item is already routed
+(184 open item 3).
+
+**Script facts this rests on:**
+- `CheckHQ` (545) tests `not Mission.HQ.Party == PARTY_ALLIED`, which Lua parses as
+  `(not Party) == PARTY_ALLIED`. That is always false, so losing the HQ never fails the mission in
+  this installation's script.
+- `TimeLimit` (476) stocks `CB4_AF`: six B-25s (118), eighteen P-38s (104) and eighteen P-40s (135).
+
+**Airfield fighters carry no bombs.** In this installation's `vehicleclasses.lua` (mtime
+2026-05-09, modded), P-38 (104) and P-40 (135) have `DefaultEquipment = 0`; `Equipments[1]` holds
+two bombs. The launch line's slot fill `006C0F00` copies class+134h (DefaultEquipment) into
+slot+10h when the class changes. `006C7490` passes slot+10h to the squadron bag, so launched
+fighters log `equipment=0`. The scene's `Lightning 01` and `Warhawk 01` are authored with
+`Equipment` 1.
+- The Support Manager's launch (`0067A565`..`0067A5E6`) passes class, count and target only. Its
+  calls into air ops are `006BC690`, `006BDC30`, `006BF310`, `006C1960` and `006C4780`, and none
+  of them writes slot+10h.
+- The two other slot+10h writers, `006C1170` and `006C80C0`, have no references in Ghidra.
+  `006C80C0` writes a caller's equipment into a state-6 slot, which is the scene-loader shape.
+- So no player loadout pick was found. Not proven absent: the screen's other handlers were not
+  read.
+
+**Harness change (labelled, `src/game_hosts_mission_frame.cpp`).** A `launch` line whose target
+fails `0043F080` (`unit_alive_and_visible`, the marker gate `006431A8` that the screen's target list
+uses) is refused before the entry runs: `helm order refused: ... the target fails 0043F080 (dead
+or hidden)`. A file can then list fallback targets for one slot on consecutive lines. p3 relies
+on it, with 2570 such refusals. p3 is not better than p2: it puts both B-25 slots on Kasumi
+first, and Kaya is never bombed.
+
+**LABELLED:** the harness's fixed click times; the launch line's target naming (SCRIPTED_HELM 13);
+the dead-target refusal above. RNG coupling (memory: the shared stream) means one run per order
+file is not a spread.
+
+## 187. USN12 completes with scripted player input (lead item 3, cc9-ships38, 2026-10-06)
+
+**The script** (`USN\usn_12_augusta.lua`, this installation, mtime 2024-07-13) has three phases:
+1. `DDrow` dead.
+2. The generated `IJNGrp` dead. It attack-moves on `MontGrp[1]` (592).
+3. `MontGrp`'s first live ship comes within 1000 m of `CLGoTo` (461; the NavPoint is at (7000,
+   6000)). Then `luaMissionComplete` runs and `Mission.EndMission = true`.
+
+It fails only if every MontGrp ship is lost (391). The player starts on `Montpelier`, the formation
+leader (533). At phase 3, `luaPh3MovieEnd` hands the player a random live MontGrp ship (Denver
+here).
+
+The build and launch form are as in 186.
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| idle (`s38_u12idle`) | none | 20000 | DDrow dead by 501.60 s; IJNGrp dead by 897.85 s (Charles lost); `luaMoveToPh3` near frame 18019; MontGrp still 10.50 km from `CLGoTo`; no end |
+| p1 (`s38_u12p1`, `s38_u12p1t` with trajectories) | `select Montpelier`, then `moveto Montpelier CLGoTo` at 18400/18410 and again at 19400/19410 | 34000 / 22000 | both lines applied, and Montpelier enters `movetopos`, but it does not move: 10.54 km at the end |
+| **p2 (`s38_u12p2`)** | the same two lines at **12000/12010**, repeated at 18400/18410 (`local\s38_u12_p2.txt`) | 36000 | **`summary mission end: completed at 1544.78 s (Mission.EndMission)`**, "We have destroyed the enemy counter attack! - Mission Complete!" |
+
+**Why p1 fails: the idle player ship runs aground.** Left on its opening heading (91.5 deg,
+throttle 0.598, rudder 0, mode `heading`), Montpelier sails due east (`s38_traj_u12p1t.Montpelier.csv`).
+- At about 733 s it reaches (4823, -4393) and its y rises to 3-4 m.
+- Its forward speed falls to about 0 and then swings between -2 and +2 m/s. It never gets free,
+  under `movetopos` or otherwise.
+
+An idle player gives no orders, so the beaching is the player's omission, not an AI fault. The
+AI-led ships carry `NavigatorSetAvoidLandCollision`.
+
+**p2:**
+- **Steering.** The 12000 (600 s) moveto turns Montpelier north (heading 44.9 deg at 625 s, then
+  17.5 deg) before the shoal. It closes on `CLGoTo` at up to 16.7 m/s and stops at (6998, 5995)
+  by 1675 s.
+- **Phase 2.** The fight moves with it. IJNGrp is dead by 859.41 s; Montpelier itself kills
+  Naganami, Wakatsuki, Agano and Haguro. MontGrp loses Charles and Columbia.
+- **Phase 3.** `luaMoveToPh3` runs, and `MovieBetty` is shot down at 998.98 s.
+- **End.** The exec guard's `bsp: refused a mission script's process launch: sus_prog.exe` is at
+  log line 229209. The mission end follows at 229450 (`entity="Claxton"`).
+
+**LABELLED:** the harness's fixed click times. The moveto goes to the named NavPoint's position
+(SCRIPTED_HELM 8.1), where the player would click a map point.
