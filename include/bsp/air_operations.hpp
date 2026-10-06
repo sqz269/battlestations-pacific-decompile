@@ -835,7 +835,7 @@ inline constexpr bool kTakeoffOwnSiteBound = true;
 // hangar +1Dh failures clear, owner present and local), `land` is issued at the
 // home base itself (007F1000), before any nearest-site key. False: the arm is
 // never taken and a returning squadron lands at the nearest site.
-inline constexpr bool kReturnToBaseHomeArmBound = false;   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
+inline constexpr bool kReturnToBaseHomeArmBound = true;   // ON: SQUADRON_LAND_TASK 5eo, ESMP08 / USN04 pairs   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state

@@ -13417,3 +13417,34 @@ Labelled:
      `006CC5C0`, `007F1B70` -> `006C65B0`).
 2. USN04 4500, a control with one carrier: the squadrons' home is the only deck, so gameplay should be
    identical. Only the `returntobase` text changes from "land at site" to "land at home".
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.**
+
+**First ON pair** (`b71e3f5bc` + flip, `local\l44_home`): a mechanism failure, in the host's 009B34D0 check.
+- Every return answers `land at home <own carrier>`.
+- But `land_command_still_valid_009b34d0` accepted only the land-at-site answer, so each task installed from the
+  home arm was retired one step later ("no longer land at this site").
+- The squadrons then flew on unordered, and Zuikaku_sqn17, Zuiho_sqn20 and Chiyoda_sqn36 were shot down within
+  20 s.
+- `cc546c344` fixes the check: a home-arm answer keeps the task, behind the same switch.
+
+**Second pair** (`cc546c344`, OFF `local\l44_h2off_*`, ON `local\l44_home2`):
+- **USN04 4500:** `pair_diff` exit 1, gameplay identical. Prediction 2 holds.
+- **ESMP08 72000:** every return answers home, and the squadrons touch down on their own carriers:
+  - Zuikaku_sqn17 on Zuikaku at 1101.6 s (OFF: Zuiho);
+  - Chiyoda_sqn28 on Chiyoda;
+  - Chitose_sqn35/36/41 on Chitose;
+  - Zuiho_sqn43 on Zuiho.
+- **Prediction 1 takes its second branch.** Every one of those planes stops in land/park state 620 with
+  `done=0` and the spot refused (for example Chiyoda_sqn28|.-3 `spot_refused=11927`). So no slot is released:
+  `releases_006c65b0 = 28` and `slots_holding_a_squadron = 16` on both sides.
+- **The row moved, `pair_diff` exit 3:** deaths 659 -> 669, and **the player's Zuikaku sinks at 1702.9 s**
+  (killer TBF Avenger #7.2, a torpedo).
+  - Zuikaku was already a knife-edge OFF: 3199 damage taken, 635 health left.
+  - ON it takes 3837. Its own squadron now lands on its deck instead of Zuiho's, which changes its course
+    holding and AA during the USN wave-7 attack. That cause is likely but not traced shot by shot.
+  - The USN ships die at the same times as OFF.
+- **Verdict.** The mechanism matches the image (land at the home base). The outcome move is an explained
+  knife-edge, not a host departure, so the switch is ON.
+- **ESMP08 (a) is not yet released by this.** The next read is the land/park spot refusal on the home deck
+  (`006CD350` states 1/2, `006CC5C0`, `007F1B70` -> `006C65B0`).
