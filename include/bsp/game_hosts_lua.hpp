@@ -259,7 +259,7 @@ inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, o
 // 006CA770(class, argument 2) at 00896C54: add to the entry of that class or push
 // {class, count, 5}. True: route the row to run_add_air_base_stock_00896a90 on the deck
 // registry's stock list. False: unimplemented.
-inline constexpr bool kLuaAddAirBaseStockBound = false;
+inline constexpr bool kLuaAddAirBaseStockBound = true;   // ON: SQUADRON_LAND_TASK 5dt.1
 
 // Packet cc9_hit_listener_filters (docs/LUA_BINDING_MISSION.md, "The unmodelled `hit`
 // filters, bound"). 00988510 hands the channel eight parameters: target, targetDevice
