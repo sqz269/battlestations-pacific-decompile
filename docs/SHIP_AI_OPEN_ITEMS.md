@@ -14282,3 +14282,60 @@ with the same order file and launch form (`local\s37_u1p5b.log`).
 Why the switch does not move the end: under p5 the last Nell to die is the leader Nell6 itself
 (697.50 s), after every wingman. "Squadron dead" therefore falls on the same tick whether it counts
 the leader or the last member.
+- **Also with `kAirOpsPlayerLaunchGroupBound` ON** (main `34c0a484a` merged, rebuilt,
+  `local\s37_u1p5c.log`): completed at 697.90 s again. The guard line is at 109032, and the log is
+  line-for-line the same at every event checked (the hit at 21478, Convoy4 at 35834,
+  `luaMoveToPh3` at 36521, Nell6 at 108966, the end at 150269).
+
+## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
+
+Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
+
+**The player's order.** On the strategic map (`00675C40`), `00673A10` handles a confirmed purchase
+at a selected shipyard (`EBX` = the unit from `00658A60`, `006743B1`):
+1. It records `[screen+414h][unit id +174h] = screen+330h + screen+32Ch` (`006743D3`-`006743DE`).
+2. It takes the first entry of the shipyard's queue `unit+790h` whose `+4` (state) is 0
+   (`006743ED`-`0067440D`, `006534E0`) as `EBP`.
+3. It sends `screen+334h - 1` messages **A8h** (`00656570`, `PUSH 0A8h`; `+20h` = the entry index,
+   `+24h` = 1; route `006745EE`). The loop runs only when `[screen+3A4h]->vtable[18h](0Fh)` holds.
+4. It sends one message **A9h** (`00656670`, `PUSH 0A9h`, the same layout; route `00674624`), then
+   calls `0065F560`.
+
+**The shipyard's side.** `BSP_Shipyard_HandleLaunchRequest` `00847030` (body `00847030-0084708E`)
+dispatches on the kind byte: A7h -> `00844D60`, A8h -> `008436F0`, A9h -> `00846D90`,
+AAh -> `008437D0`, else `BSP_Unit_HandleMessage`.
+- **A8h** `008436F0`: the entry's `+0Ch` becomes `(+0Ch + step) % (N + 1)`, with `N` =
+  `00951F10` and `step` = 1 when the byte is set. Then it rebroadcasts. A cycling selector on the
+  entry, the UI's quantity or variant.
+- **A9h** `00846D90` (`00846D90..00846FC4`):
+  - finds the stock record (`unit+774h`, stride 20h) whose class `+4` equals the entry's `+8`;
+  - sets the entry's state to **2**;
+  - takes the record's next name (`+10h` list, `+1Ch` index, cycled);
+  - with the byte set, stores `unit+7A0h->vtable[2Ch]()` as the entry's order `+48h`, swapping its
+    observer;
+  - rebroadcasts A9h;
+  - when `00844CE0` answers, calls `BSP_Shipyard_CreateLaunchedUnit` `00844FC0` at once and then
+    `00984EB0(unit, class id, 00844610(class id))`.
+  - The tick's state-2 arm (GUNNERY 122) covers a later free hangar.
+- **Stock**: `AddShipyardStock` `00896CC0` -> `0084ACB0(shipyard, class id, count, name)`. That adds
+  `count` to the stock record for the class, or creates the record through
+  `BSP_VehicleClass_GetOrCreate`, `008485F0` and `008499A0`. LOMP10's `TimeLimit` calls it for
+  four Elcos (27) and two Catalinas (125). **In this host it is UNIMPLEMENTED** (the native table,
+  2 calls on LOMP10).
+
+**What the host lacks, by lane:**
+- **Lua lane:** the `AddShipyardStock` binding (`0084ACB0`).
+- **Gunnery lane** (the shipyard host):
+  - the stock records `+774h`;
+  - the queue entries `+794h`, built from the scene by `00849F70` (`NumSlots`, `"Slot %d"`,
+    `"Stock %d"`);
+  - the A8h/A9h handlers;
+  - the production walk of `00846320`;
+  - `00844FC0`, the unit build.
+- **Mine:** a harness line, `<frame> build <shipyard> [<entry>] [count <n>]`, standing for
+  `00673A10`: `n - 1` A8h and one A9h on the first idle entry (or the named one), through a host
+  entry the gunnery lane would expose. Unread for the line: how the screen chooses its entry
+  beyond "first idle", and `screen+330h/32Ch/334h`.
+
+**Not landed:** the line has nothing to call until the shipyard queue exists in the host. Routed
+to the lead.
