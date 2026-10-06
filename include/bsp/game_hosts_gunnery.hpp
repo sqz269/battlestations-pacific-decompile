@@ -1000,6 +1000,10 @@ public:
     };
     std::vector<GameGunneryHitEvent> take_hit_events();
     void kill_unit_00926d90(std::size_t unit_index, int cause);
+    // Packet cc9_airfield_destruction_rule: 006D41E6..006D41EF, the airfield's
+    // destroy arm, vtable[70h](0) = 0077D1A0 BSP_UnitInstance_DestroyAndBroadcast
+    // with recurse 0. Through the same death funnel; its own counter.
+    void destroy_unit_0077d1a0(std::size_t unit_index, int recurse);
     // Packet cc9_set_invincible_floor (docs/LUA_BINDING_MISSION.md "SetInvincible,
     // 00897A50"; docs/UNIT_DAMAGE_AND_DEATH.md). unit+150h, the invincibility
     // float 0042ED80 (vtable[F4h]) stores and fans to the unit's children. The

@@ -1614,6 +1614,15 @@ struct GameUnitSlot {
     // Packet cc9_building_pad_model: unit+7CCh LandingPointRange (006F28B3; 500
     // when unauthored), the radius 006F5CC0 adopts landing pads within.
     std::int32_t landing_point_range_7cc{500};
+    // Packet cc9_airfield_destruction_rule: unit+7C8h InferiorRange (006F288C; C8h
+    // when unauthored), the radius 006F5CC0's first pass adopts within, and
+    // whether the merged scene bag finds MinLevel (009554C1, which gates the
+    // unit+724h clone that 006F5DCF requires).
+    std::int32_t inferior_range_7c8{200};
+    bool bag_min_level_724{false};
+    // unit+71Ch as 006F5E9B writes it: 0 unresolved, -1 none, else building+1.
+    int parent_link_71c{0};
+    unsigned long long inferior_failure_steps{0};
     // Packet cc9_squadron_travel_alt: the squadron cruise block 0089F550 writes, kept on
     // the squadron's slot. The countdown +380h is held as the clock at which it goes
     // below zero (0.5 s after the call); -1.0 at construction means already expired.
@@ -2468,6 +2477,7 @@ struct GameUnitsHost::Impl {
     unsigned long long base_launch_sends{0}, base_launch_owner_dead{0};
     unsigned long long base_launch_no_deck{0};
     // Packet cc9_base_launch_deck_arms (kBaseLaunchChainBound), piece 3.
+    void run_airfield_destruction_rule_006d40f0(std::size_t index);
     const bsp::game::ScenePathEntry* landing_hangar_path_006d2780_006d2640(
         const LandingDeck& d, bool entry) const;
     void airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d);
@@ -5102,6 +5112,13 @@ struct GameUnitsHost::Impl {
     static constexpr bool kTorpedoArmTimeToTargetBound = true;
     static constexpr bool kPlaneYawGainBc4Bound = true;
     static constexpr bool kFighterLeadAccel654Bound = true;
+    // Packet cc9_airfield_destruction_rule (docs/GUNNERY_OPEN_ITEMS.md 119): 006D40F0,
+    // the airfield's vtable[1A8h], which 006D2510 runs every fixed step. When no
+    // listed hangar has +370h > 0, an airfield adopted by a CommandBuilding
+    // (+71Ch, 006F5E9B) takes the InferiorFailure arm (message 7Dh, +720h, which
+    // 00895E51 makes IsReadyToSendPlanes answer false); any other dies through
+    // vtable[70h](0) = 0077D1A0. False: the rule does not run.
+    static constexpr bool kAirfieldDestructionRuleBound = false;
     // Packet cc9_fighter_accel_friendly_fire (docs/FIGHTER_GUN_LEAD.md 5):
     // 007B96D0 -> 007DEDB0, the fighter gun's friendly-in-line hold. The
     // answer feeds DogfightGunInputs::finder_busy at the fighter gun call site.
@@ -11311,6 +11328,86 @@ void GameUnitsHost::Impl::moveto_arrival_end_command_009c3100(GameUnitSlot& unit
 // 006D2780 / 006D2640 over the deck's hangar records: the chosen hangar's entry
 // or exit path (packet cc9_base_launch_deck_arms split this out of 006CF420 /
 // 006CF520 so that 006CF730 can sample two points of the same path).
+// Packet cc9_airfield_destruction_rule, docs/GUNNERY_OPEN_ITEMS.md 119. 006D40F0
+// (inside Ghidra's 006D40D0, ends 006D4207 RET), __thiscall(unit), the airfield's
+// vtable[1A8h], called by 006D2510 after 00953CC0 every fixed step.
+// SUBSTITUTIONS, labelled: a hangar is the first unit named like its Object
+// reference's last component, and "+370h > 0" is "not dead" (as
+// landing_hangar_path_006d2780_006d2640); of message 7Dh only the +720h read at
+// 00895E51 (AirOpsDeck::airfield_blocked) is modelled; 006D2980's park-slot
+// rebuild (006D41F3) is not run, because the gunnery host's 006D3250 reads the
+// hangar list live.
+void GameUnitsHost::Impl::run_airfield_destruction_rule_006d40f0(std::size_t index) {
+    GameUnitSlot& slot = *slots[index];
+    if (gunnery == nullptr || gunnery->unit_dead(index)) return;  // 006D410B, +5Dh
+    bsp::AirOpsDeck* deck = nullptr;
+    for (std::size_t d = 0; d < bsp::air_ops_decks().size(); ++d) {
+        if (bsp::air_ops_decks().name_at(d) == slot.row.name) {
+            deck = bsp::air_ops_decks().mutable_at(d);
+            break;
+        }
+    }
+    // 006D4116-006D4158: a listed hangar with +370h > 0 returns at 006D41F8.
+    if (deck != nullptr) {
+        for (const bsp::AirOpsDeck::HangarNames& h : deck->hangars) {
+            for (std::size_t u = 0; u < slots.size(); ++u) {
+                if (slots[u]->row.name != h.object) continue;
+                if (!gunnery->unit_dead(u)) return;
+                break;
+            }
+        }
+    }
+    if (slot.parent_link_71c == 0) {
+        // 006F5CC0 pass 1, from every CommandBuilding's side: kind 45h here, the
+        // building is not the entity, entity+724h set (006F5DCF), and the squared
+        // distance (per-axis float differences, entity minus building; the sum
+        // stored as a float) not above FILD(R * R) (006F5DC9). The last adopter wins.
+        slot.parent_link_71c = -1;
+        if (slot.bag_min_level_724) {
+            for (std::size_t c = 0; c < slots.size(); ++c) {
+                const GameUnitSlot& cb = *slots[c];
+                if (c == index || !bsp::unit_is_kind_of(cb.class_id, 0x1C)) continue;
+                const float dx = slot.motion.position[0] - cb.motion.position[0];
+                const float dy = slot.motion.position[1] - cb.motion.position[1];
+                const float dz = slot.motion.position[2] - cb.motion.position[2];
+                const float d2 = static_cast<float>(
+                    (static_cast<double>(dx) * dx + static_cast<double>(dy) * dy)
+                    + static_cast<double>(dz) * dz);
+                const std::int32_t r2 = static_cast<std::int32_t>(
+                    static_cast<std::uint32_t>(cb.inferior_range_7c8)
+                    * static_cast<std::uint32_t>(cb.inferior_range_7c8));
+                if (static_cast<double>(d2) > static_cast<double>(r2)) continue;
+                slot.parent_link_71c = static_cast<int>(c) + 1;
+            }
+        }
+        log.notef("airfield destruction rule: unit=%s parent=%s min_level=%d t=%.2f "
+            "(006F5CC0 pass 1 +71Ch, packet cc9_airfield_destruction_rule)",
+            slot.row.name.c_str(),
+            slot.parent_link_71c > 0
+                ? slots[static_cast<std::size_t>(slot.parent_link_71c - 1)]->row.name.c_str()
+                : "-",
+            slot.bag_min_level_724 ? 1 : 0, summary.simulated_seconds);
+    }
+    if (slot.parent_link_71c > 0) {
+        // 006D4167-006D41BB: "InferiorFailure" (00CF0B74) -> vtable[194h] 006D2210,
+        // which matches neither RunwayFailure nor HangarFailure and falls to
+        // 00953DA0: message 7Dh through 0077C2A0(msg, 7, 0); 0095AD0A sets +720h.
+        if (deck != nullptr) deck->airfield_blocked = true;
+        if (slot.inferior_failure_steps++ == 0) {
+            log.notef("airfield destruction rule: unit=%s arm=inferior_failure t=%.2f "
+                "(006D2210 -> 00953DA0 7Dh -> +720h, packet cc9_airfield_destruction_rule)",
+                slot.row.name.c_str(), summary.simulated_seconds);
+        }
+        done("Airfield::destruction_rule_inferior_failure_006d40f0", 0x006d40f0u);
+        return;
+    }
+    log.notef("airfield destruction rule: unit=%s arm=destroy t=%.2f (006D41E6 -> 0077D1A0, "
+        "packet cc9_airfield_destruction_rule)", slot.row.name.c_str(),
+        summary.simulated_seconds);
+    gunnery->destroy_unit_0077d1a0(index, 0);  // 006D41EF, vtable[70h](0)
+    done("Airfield::destruction_rule_destroy_006d40f0", 0x006d40f0u);
+}
+
 const bsp::game::ScenePathEntry* GameUnitsHost::Impl::landing_hangar_path_006d2780_006d2640(
     const LandingDeck& d, bool entry) const {
     const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(
@@ -13803,6 +13900,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // Packet cc9_building_pad_model: 006F2780's LandingPointRange, unit+7CCh (006F28B3).
         slot->landing_point_range_7cc = entity.landing_point_range_present
             ? entity.landing_point_range_raw : 500;
+        // Packet cc9_airfield_destruction_rule: 006F2780's InferiorRange, unit+7C8h
+        // (006F288C), and 009554C1's MinLevel find.
+        slot->inferior_range_7c8 = entity.inferior_range_present ? entity.inferior_range_raw : 200;
+        slot->bag_min_level_724 = entity.bag_min_level;
 
         // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
         // vtable slot 0A0h, which for this class family is 00822C20. Only that
@@ -28962,6 +29063,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 }
                 host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
                 continue;
+            }
+            if constexpr (Impl::kAirfieldDestructionRuleBound) {
+                // 006D2510's second call, unit->vtable[1A8h]() (packet
+                // cc9_airfield_destruction_rule). Its first and third calls are
+                // the generic tick and the relocated 006CDC70.
+                if (slot.motion_dispatch.entry == 0x006d2510u) {
+                    host.run_airfield_destruction_rule_006d40f0(index);
+                }
             }
             if (slot.motion_dispatch.entry != 0) {
                 host.record_motion_phase("unreconstructed_phase", slot.motion_dispatch.entry);

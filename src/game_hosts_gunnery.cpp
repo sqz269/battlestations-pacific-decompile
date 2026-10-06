@@ -1850,6 +1850,7 @@ struct GameGunneryHost::Impl {
     unsigned long long dp_air_rounds{0};
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
+    unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
@@ -10755,6 +10756,15 @@ void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     impl_->kill_unit(unit_index);
 }
 
+void GameGunneryHost::destroy_unit_0077d1a0(std::size_t unit_index, int recurse) {
+    if (unit_index >= impl_->unit_state.size()) return;
+    // 0077D243 -> 00926C80 with the recurse argument; the host's funnel takes no
+    // cause, and the destroy message (0077D1E4) is not modelled.
+    (void)recurse;
+    ++impl_->airfield_destroy_kills;
+    impl_->kill_unit(unit_index);
+}
+
 const std::vector<GameGunneryUnitRow>& GameGunneryHost::unit_rows() const noexcept {
     static std::vector<GameGunneryUnitRow> rows;
     rows.clear();
@@ -11338,6 +11348,10 @@ void GameGunneryHost::report() {
             kAaGunnerErrorBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
+        if (host.airfield_destroy_kills != 0) {
+            host.log.notef("summary mission gunnery airfield destroy kills=%llu (006D41EF -> "
+                "0077D1A0, packet cc9_airfield_destruction_rule)", host.airfield_destroy_kills);
+        }
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
