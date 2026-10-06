@@ -1060,6 +1060,10 @@ public:
     // the units host's scaled delta. False when kDamageSmokeDrawsBound is off: the
     // caller keeps its record.
     bool damage_smoke_tick_008227e0(std::size_t unit_index, float delta);
+    // unit+36Ch, the maximum health, for a writer outside this host: 006F38E0's
+    // CommandBuilding level-up stores HP[level] / 100 * class HP there and leaves
+    // the current health alone (SHIP_AI 169). No-op for an unbuilt index.
+    void set_unit_max_health_036c(std::size_t unit_index, float value);
     // Packet cc9_gun_aim_terms (docs/GUN_AIM_TERMS.md). The dogfight fine aim's
     // distortion, 009FA7E0 on dogfight-gun+4h, called at 009FCCD7 only on a tick
     // where the fine aim runs. One wander per unit, created on the first call

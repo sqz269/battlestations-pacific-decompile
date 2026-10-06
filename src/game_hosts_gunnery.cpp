@@ -10662,6 +10662,14 @@ void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float frac
     state.row.health = state.health;
 }
 
+void GameGunneryHost::set_unit_max_health_036c(std::size_t unit_index, float value) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    Impl::UnitState& us = host.unit_state[unit_index];
+    us.max_health = value;        // unit+36Ch; the current health is not touched
+    us.row.max_health = value;
+}
+
 bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float delta) {
     if (!kDamageSmokeDrawsBound) return false;
     Impl& host = *impl_;
