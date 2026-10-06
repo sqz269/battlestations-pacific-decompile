@@ -10859,3 +10859,33 @@ pitch arm). With mode 0 the pull reaches the elevator unaltered, as DIVE_BOMB_TA
 **Verdict: faithful; nothing to bind.** The handover attitude is the image's. 143.2's along-track error, born after the
 handover, belongs to `aimdive`'s steering (`009C5C9F`, `dive_bomb_aimdive_steer_009c5c9f`): its job is to turn a
 68-72 degree dive onto a 45-degree sight line. That law is the place to look next; it is not re-read here.
+
+## 151. The depth charge keeps its horizontal speed in the water, as the image does (147.2 item 5; cc9-gunnery32, 2026-10-06, read only)
+
+The question from 142 and 147.2: a sinking charge still moves 0.6 m/s horizontally at -14.5 m. Does the image keep the
+horizontal speed after water entry, or zero or damp it?
+
+**The water entry `006FD660` keeps the velocity.** Read `006FD660..006FD743`:
+- `006FD686` takes `|v|` (`0042B2F0` on `record+8`).
+- `006FD699` / `006FD69D` JA: break-up when `|v|` > class `+ECh`.
+- `006FD6A3..006FD6B2`: break-up when `vy` < -class `+F0h` (FCHS, then JA).
+- Otherwise `006FD6BF` calls `006E6450`, which sets the water byte and keeps the velocity (142's read). Nothing in `006FD660` writes a`n  velocity component.
+- The tail from `006FD6C4` is an effect lookup (`00440490`, `00868420`) that sets `[effect+9]`.
+
+**The in-water advance `006FCD20` drags all three axes by the same `k`.** Read `006FCD28..006FCDB7`:
+- `k = -record+468h` (dragvert, FCHS at `006FCD2F`).
+- `+318h += k*vx*dt`, `+31Ch += (k*vy - 9.81)*dt` (`006FCD5F` FSUB double `00CF9058`), `+320h += k*vz*dt`. `dt` is the
+  argument at `[ESP+40h]`.
+- `+46Ch` (dragside in the save table `006FCC50`) is not read in the advance.
+
+So the horizontal speed decays as `exp(-k t)` with the vertical drag constant (`9.81 / DiveSpeed * U(0.9, 1.1)`, 142).
+It is never zeroed.
+
+**The host is the same law.** `bsp::depth_charge_dive_velocity` (`src/bomb_torpedo_tick.cpp`) is component for component
+`v += (-k v - (0, 9.81, 0)) dt`, called from `depth_charge_advance_006fcd20` (`src/game_hosts_gunnery.cpp`), with the
+activate's `k`.
+
+**Verdict: faithful; nothing to bind.** A 0.6 m/s residual at -14.5 m is the image's own decay. 142's early landscape
+impacts therefore cannot be blamed on the drift: a 0.4 m, near-vertical step that reports a crossing 40 m below itself
+(`from y -14.56 to -14.94, point y -53.01`) is the segment query's answer. That stays with the scene-contents lane
+(`00ADEB80` / the slot-3Ch walk), as 142 routed it.
