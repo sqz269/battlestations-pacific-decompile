@@ -15599,3 +15599,32 @@ Wave 1's members did land after their leader was retired, the last at 548.84 s, 
 general. Next: read why the new head drifts beyond 1.2 x StandbyDist. Candidates are the squadron land
 task following a retired leader, and the standby circle centre. Wave 2 cannot empty until this loop
 ends, unless the F2Gs kill those members.
+
+### 202.1 Phase 1 passes (cc9-ships40, 2026-10-06)
+
+**Runs.**
+- `s40_f4_osf4` (40000 frames, `s40_os_f4.txt`) is f3 plus F2G x3 at the circling wave-2 members
+  (`plane #4.4|.-2` ... `#4.5|.-4`, frames 16000-20040).
+  - Some lines are refused "no such slot" while every Enterprise slot holds a squadron.
+  - Slots 0 and 1 come back for frame 20000, after the stock return.
+  - `plane #4.4` is Dead at 1262.16 s (members shot down by the F2Gs).
+- `s40_f5_osf5` (48000 frames, `s40_os_f5.txt`) is f4 plus retries at `plane #4.5|.-4` (22000 applied;
+  23000 and 25000 refused, no free slot).
+
+**Result in f5.**
+- `plane #4.5` is Dead at 1391.98 s. PhOneAttackers is then empty after wave 2.
+- `Blackout(true, "luaMoveToPh2")` fires at 1395.7 s (mission frame 27911), so **phase 1 passes**:
+  MissionPhase 2.
+- **Phase 2 fails at 2273.14 s.** `Takao1` sinks Enterprise at 2268.54 s, from 1726 m. That follows
+  `luaMoveToPh2`'s `NavigatorAttackMove(Mission.InitTakao[1], Mission.BigE)` (1624), with Enterprise
+  holding at (12500, -4000).
+- No mission completion, so no exec-guard line is expected.
+
+**What made phase 1 pass.**
+- The stock return: the parked wave-1/2 Judys count as Dead.
+- The Enterprise hold: it avoids the Ada3 sinking at ~1369 s.
+- The F2Gs at wave 2's circling members.
+
+**Next for phase 2:**
+- keep Enterprise away from Takao1's attack;
+- the convoy and secondary objectives (1018 onward).
