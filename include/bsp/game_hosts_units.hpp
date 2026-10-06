@@ -896,6 +896,11 @@ public:
     // a unit that is not a CommandBuilding or has no slot).
     std::int32_t command_building_level_0770(std::size_t unit_index) const;
     std::int32_t command_building_level_up_seconds_076c(std::size_t unit_index) const;
+    // Packet cc9_command_building_garrison: 006F2780's InferiorRange (unit+7C8h,
+    // 200 when unauthored) and whether the unit's scene bag finds MinLevel
+    // (009554C1, the unit+724h bag clone 006F5CC0 tests at 006F5DCF).
+    std::int32_t command_building_inferior_range_07c8(std::size_t unit_index) const;
+    bool unit_inferior_bag_0724(std::size_t unit_index) const;
     // Routed from cc9-ships13: unit+7C4h, the CommandBuilding's LandingRange, which
     // 006F2780 stores from the scene (006F2847 find, 006F285F store; 500 when
     // unauthored). 009E6E80's mode-4 arm (009E6F4E FILD) and the latch 009F20A4 read

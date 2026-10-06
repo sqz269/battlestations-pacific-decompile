@@ -32645,6 +32645,17 @@ std::int32_t GameUnitsHost::command_building_level_up_seconds_076c(std::size_t u
     return impl_->slots[unit_index]->level_up_seconds_76c;
 }
 
+std::int32_t GameUnitsHost::command_building_inferior_range_07c8(std::size_t unit_index) const {
+    // Packet cc9_command_building_garrison: 006F288C -> unit+7C8h.
+    if (unit_index >= impl_->slots.size()) return 200;
+    return impl_->slots[unit_index]->inferior_range_7c8;
+}
+
+bool GameUnitsHost::unit_inferior_bag_0724(std::size_t unit_index) const {
+    // Packet cc9_command_building_garrison: 009554DF's unit+724h clone.
+    return unit_index < impl_->slots.size() && impl_->slots[unit_index]->bag_min_level_724;
+}
+
 std::int32_t GameUnitsHost::command_building_capture_value_07a4(std::size_t unit_index) const {
     // 006F2780 -> unit+7A4h; 006F6760 compares |+7A8h| with (float)+7A4h.
     if (unit_index >= impl_->slots.size()) return 1000;
