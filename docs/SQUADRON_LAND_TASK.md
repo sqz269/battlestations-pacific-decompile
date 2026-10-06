@@ -13448,3 +13448,41 @@ Labelled:
   knife-edge, not a host departure, so the switch is ON.
 - **ESMP08 (a) is not yet released by this.** The next read is the land/park spot refusal on the home deck
   (`006CD350` states 1/2, `006CC5C0`, `007F1B70` -> `006C65B0`).
+
+## 5ep. ESMP08 (a): why a landed squadron's slot stays in state 3 (cc9-lua44, 2026-10-06, read-only)
+
+The read is from disk bytes and the 5eo ON log `local\l44_h2on_e8.log`. No code changed.
+
+**The image releases a slot only when its squadron pointer is gone.**
+- `006C0510` writes state 5 only when slot `+28h` is zero (`006C0544`-`006C058F`, AIROPS_LAUNCH_TICK 1).
+- A rel32 / absolute scan of the image (`local\l44_calls.py 006C65B0`) finds `006C65B0` called only from
+  `007F1B70` (at `007F1BAD` and `007F1BED`).
+- `007F1B70`'s one caller is the Lua binding `008A20E0` (SquadronLandAndKill).
+- So a landing never clears slot `+28h`: only the squadron's destruction (the observer pair), or that script
+  call, does.
+- A squadron that lands home and goes below keeps its slot in **state 3** in the image too. The player's
+  `launch` on that slot is then refused ("not in state 1 or 5") by design.
+- `006CD350`'s state 1/2 arms are dead code (AIROPS_LAUNCH_TICK 3), so they cannot change this.
+- **So ESMP08 (a) is image behaviour, given the order file.** Both kinds of holder keep their slot:
+  - the squadrons still flying with dead targets;
+  - the squadrons landed and stowed.
+- What the 5en/5eo log shows the host doing differently is the landing's tail.
+
+**The host's elevator re-takes the stowed leader every 4.8 s.**
+- Chiyoda_sqn28 lands on Chiyoda at 1391 s. From then to 3601 s the elevator alternates `takes Chiyoda_sqn28`
+  and `stows Chiyoda_sqn28`, about every 2.2 s and 2.6 s.
+- The platform offset sinks 7 m per cycle (y = -3127.85 at 3548 s, -3204.85 at 3601 s).
+- `summary carrier elevator Chiyoda`: intakes 459, stowed 458, unfed_relaunch 458.
+- The wingmen wait in land/park with the lane refused: Chiyoda_sqn28|.-2 refused 5635 times, |.-3 11927 times.
+- The intake `006D06A5`-`006D0705` takes any occupant with `+904h`, `006CFF70` (the nose within x/z distance
+  of the lift; the depth is not tested), speed < 1.389 and `007B8D40`. In state 2, `007C11E0(0)` writes the
+  gear channel's `+45h` = 0 and `+48h` = 0.0 (`007C1281`-`007C12B0`). That makes `007B8D40`'s float test
+  answer **true**, so the gear test does not exclude a stowed plane either.
+- So the bytes read here do not show what keeps the image from re-taking it. 5an found no erase from `+34h`
+  on the state-2 path. This is **open**, and nothing was bound.
+- A substitution that skips state-2 occupants at the intake would free the wingmen. It would not release the
+  slot (above).
+
+**Next for this row:** read whether the hidden plane's position or its `+904h` changes under the platform in
+the image (the carry `006FC0D0` and the release `006FC250`). Until then, ESMP08's relaunch count is bounded
+by squadron deaths, as the order file is written.
