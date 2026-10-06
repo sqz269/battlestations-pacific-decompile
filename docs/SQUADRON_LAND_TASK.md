@@ -13950,3 +13950,41 @@ IJN01 + `s38_i1_p1.txt` at 24000 frames: pair_diff **3**.
 PlaneSquadronGen. Their kind-2 arm (`007CDF40`) takes `+C54h` from the squadron's `+124h` and attaches nothing there.
 Whether IJN01's A7Ms carry bombs at all in the image is therefore an open read for the plane-equipment packet. If they
 do not, this switch has nothing to count.
+
+## 5ey. A plane with bag Equipment 0 carries no rack round, `kRackUnequippedEmptyBound` (packet `cc9_lua46_unequipped_racks`, cc9-lua46, 2026-10-06)
+
+This settles 5ex's open item. The read is 5dk's (cc9-lua38), confirmed here:
+- `007CDF20`'s kind-1 arm (`007CDF89`..`007CDFF8`) sets `+C54h` from the bag's `Equipment`. For a value <= 0 it calls
+  `0095A880(plane, 0, 1, 0)`.
+- `0095A880`'s first loop, which builds each equipment entry's device and hands it Ammo (`vtable[1BCh]`) and
+  ReloadTime (`vtable[1C0h]`), runs only with an entry. The flag pass adds the class's default devices that are
+  missing (`vtable[5Ch](1Eh)`), and no rack gets a round.
+- A PlaneSquadronGen's planes are not kind 2. `007F48FD` builds each plane's context with `00922DE0`, which copies
+  the kind and clones the squadron's kind-1 bag.
+- `plane.props` (2024-10-29) authors `Equipment = E EquipmentIndex : none` (0).
+- So IJN01's A7Ms (bag 0) have their two bomb racks and no round. In single player `006E4060` / `006E3FE0` answer no
+  rack kind (5eu), so the chooser never offers divebomb.
+
+**The host's divergence.** `kPlaneSceneEquipmentBound` (ON) already reads bag 0 as "no Ammo" (`rack_equipment_ammo`
+-1). The rack pool then seeds its labelled one-round-per-rack fallback, and the ordnance mask keeps the gun rows'
+static rack kinds.
+
+**The binding**, committed **OFF**, in `src/game_hosts_units.cpp`:
+- `store_unit_ordnance` drops 2Ah, 2Bh, 2Ch, 2Dh, 31h and 33h for a slot whose carried bag Equipment is 0.
+- `plane_rack_census` seeds that slot's rack pool empty.
+- Planes with no carried index (-1) or a positive index are unchanged.
+
+5dk's table lists the bag-0 squadrons on the reference rows: USN04 Kingfisher, USNOS AD-2 and 3 F2G, BSM01 3 B-17,
+IJN01 Dauntless, plus the A7Ms here.
+
+**Predictions (same-tree pairs).**
+- **IJN01 + `s38_i1_p1.txt`.** The A7Ms and the Dauntless drop nothing. The chooser offers them only gun classes
+  (strafe or dogfight) from the start. `dive-bomb-task releases` falls toward 0, the LST deaths of 5ex go, and
+  5ex's switch has nothing to count on this row.
+- **BSM01 + `s38_b1_p6.txt` (a scripted win row).** The three B-17 squadrons carry no bombs. Level-bomb releases
+  from them stop. The win may move or be lost if it depends on B-17 bombing.
+- **USNOS 3000.** The AD-2 / F2G (bag 0) lose their rack kinds. Expect a change only if any of them is ordered at a
+  ship target within 3000 frames.
+- **USN04 9000.** The Kingfisher loses its rack kinds. Otherwise identical.
+- **Mechanism failure:** a bag-0 plane that still drops a rack round, or a plane with a positive Equipment that
+  loses one.
