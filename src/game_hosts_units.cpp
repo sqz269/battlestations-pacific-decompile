@@ -5731,6 +5731,9 @@ struct GameUnitsHost::Impl {
     // whose carried bag Equipment is 0 (kPlaneSceneEquipmentBound) stores no
     // rack-borne kind (2Ah 2Bh 2Ch 2Dh 31h 33h) and its rack pool seeds empty.
     // False: such a plane's racks take the pool's one-round fallback.
+    // REFUTED, stays OFF (5ey): the rack's constructor 006E3C00 stores ammo +484h
+    // = orgAmmo +488h = 1 (006E3C20..006E3C3D), so a default rack 0095A880's flag
+    // pass adds holds one round; the pool's fallback is the image's default.
     static constexpr bool kRackUnequippedEmptyBound = false;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level

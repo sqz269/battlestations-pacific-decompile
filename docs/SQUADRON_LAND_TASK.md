@@ -13988,3 +13988,25 @@ IJN01 Dauntless, plus the A7Ms here.
 - **USN04 9000.** The Kingfisher loses its rack kinds. Otherwise identical.
 - **Mechanism failure:** a bag-0 plane that still drops a rack round, or a plane with a positive Equipment that
   loses one.
+
+**Pairs (commit `7821e75b8`, logs `local\l46ue_<off|on>_<row>.log`).** The 300-frame ON smoke is clean.
+
+| row | pair_diff | |
+| --- | --- | --- |
+| IJN01 + `s38_i1_p1.txt` | 3 | dive-bomb-task releases 44 -> none; deaths 48 -> 42 |
+| BSM01 + `s38_b1_p6.txt` | 3 | the scripted win is LOST: OFF ends at 875.91 s with objectives set 6 and the exec guard's `sus_prog.exe` refusal; ON ends at 1653.49 s with sets=3, no refusal, and the controlled Donald gone; deaths 257 -> 652 |
+| USNOS 3000 | 1 | |
+| USN04 9000 | 1 | |
+
+**The read that settles it: the switch is refuted and stays OFF.**
+- `0095A880`'s flag pass (`vtable[5Ch](1Eh)` slots missing a device, class list `+94h`) does build the class's
+  default BombPlatforms.
+- The rack's constructor `006E3C00` stores ammo `+484h` = 1 and orgAmmo `+488h` = 1 (`006E3C20 MOV EAX,1`,
+  `006E3C37`, `006E3C3D`). So a default rack holds one round although no `vtable[1BCh]` call hands it an equipment
+  `Ammo`.
+- 5dk's "loads no rack round" is therefore wrong. The host's one-round-per-rack fallback for a bag-0 plane is the
+  image's constructor default.
+- So the IJN01 A7Ms do carry two rounds, 5ex's `kRackPoolRoundsRemainingBound` (ON) stands, and the BSM01 B-17s keep
+  their bombs.
+- **Uncertainty:** when the first round is attached to a fresh rack (the rack tick `006E56F0` and the re-attach in
+  `006E4D50`'s tail) is not read. The host attaches it at once.
