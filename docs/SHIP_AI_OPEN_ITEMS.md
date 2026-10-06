@@ -12639,3 +12639,172 @@ there as a priority.
   the controlled Devastator squadron is not `IsKindOf(18h)`.
 
 All leases are released after this commit.
+## 158. JM08 long's HQ capture with the lander terms, and the Lua `Party` mirror (lead item 1, cc9-ships34, 2026-10-05, runs and reads only)
+
+### 158.1 The 72000-frame run
+
+**The run:** `local\s34_jm08x.log`, this tree at `c0cec070f` (main, section 152 ON), launched with
+reference V's form through `local\s34_run.ps1 -Mission JM08 -Frames 72000` (3600 s of mission time).
+Exit 0.
+
+**Who would win a flip.** This installation's `prcpijn_08_defend_guadalcanal.scn` (mtime 2024-08-09)
+gives Player1, 2, 4, 6 and 8 the party Japanese, and Player3, 5 and 7 Allied. `Headquarter 01` is
+party 1 (Japanese), with CaptureRange 500 and CaptureValue 2,000,000. The capture tick credits side 0
+(Allied). So a flip would be to a real Allied slot.
+
+**What happened:**
+- The HQ is neutralized at 1052.00 s, the same time as section 152's 36000-frame ON run.
+- The capture tick then adds `s0` per second. `s0` is 100 per landed craft and 150 per landed LST,
+  through LandedCapturePower.
+- The run ends at 3600 s with `countdown_fires=2549`, `progress_messages=2549`, `flips=0`.
+- The tick log stops at its 400-line cap (1451 s, progress 211,950). The later progress is
+  reconstructed below from the ramp and death rows.
+
+**Strength over time.** Each landed unit adds 100 (craft) or 150 (LST).
+
+| t (s) | event | s0 after |
+| --- | --- | --- |
+| 978-1029 | 8 crafts lower their ramps | 400 by 1052 (4 crafts die 1021-1045) |
+| 1233-1281 | 3 crafts land | 700 |
+| 1322 | craft 402 dies | 600 |
+| 1351 / 1387 | LST 01 lands, then dies | 750, then 600 |
+| 1556 / 1565 | LST 02 and LST 03 land | 900 |
+| 1601 / 1646 | LST 03, then LST 02, dies | 750, then 600 |
+| 1814 / 1875 | 2 crafts land | about 800 |
+| 1840, 1910, 2446 (two), 2808 | crafts 403, 404, 399, 401, 400 die | about 300 by 2808 |
+
+**The estimate** is integrated from that table and is LABELLED: which crafts had landed when they
+died is inferred from the counts, not logged. Progress is about 0.35M at 1646 s, 0.83M at 2446 s and
+about 1.2M of 2.0M at 3600 s. The strength falls as crafts die (the Japanese AA trucks and the
+shore guns), so no flip is in reach at any length. My pre-run estimate (about 3470 s) assumed the
+900/s of 1565 s held; it did not survive LST 02 and LST 03 dying.
+
+**Section 109's flip.** `kCaptureGeneratedUnitClassFieldsBound` (section 109.6) recorded a
+76000-frame JM08 run that flipped the HQ to party 0 at 3496.95 s. That was before section 152's
+lander terms. Those terms park the transports offshore, and their crafts now land into the AA trucks'
+fire. It is the same host mechanism with a different landing history.
+
+### 158.2 The image would not get there: the HQ's Lua `Party` (read, not run)
+
+**The script.** This installation's `scripts\missions\COTP-IJN\PRCPIJN\prcpjm08.lua` (mtime
+2024-08-26), 1320-1326:
+- `CheckHQ` tests `Mission.CommandBuilding.Party == 2` (the HQ, 109) and calls `Fail()` (1316:
+  `luaMissionFailedNew(..., "Mission Failed - The HQ has been destroyed!")`).
+- Otherwise it re-arms itself with `luaDelay(CheckHQ,1)`.
+- `luaIntroMovieEnd` starts it (642). That ran in both runs: its `DisplayUnitHP` native appears at
+  line 9105 of section 152's `s33_off2_jm08l.log`.
+
+**The image updates `Party` on a neutralize.**
+- 006F4D10's slot 8/9 arm (the neutralize) ends with `vtable[2Ch](2, [this+58h], &tmp)` (after
+  `local_50 = 2`).
+- The flip arms call `vtable[2Ch](party, ...)`.
+- CommandBuilding's vtable `00CFB028` + 2Ch = `00CFB054` holds `00951F30`, which is `JMP 00928F50`
+  (`BSP_MissionEntity_SetPartyRaceLuaMirror`). That routine calls `00923B80`, then writes `Race`
+  (`00928FD9`) and `Party` into the entity's Lua table.
+- So in the image `Mission.CommandBuilding.Party` becomes 2 at the neutralize. CheckHQ fails the
+  mission within a second: on this run's timeline, at about 1052-1053 s.
+
+**The host does not.**
+- `GameUnitsHost::set_unit_side_0054` sets only `row.party`.
+- `GameMissionLuaHost::mirror_party_race_00928f50` (`src/game_hosts_lua.cpp`) runs once, at attach.
+- So the table keeps `Party=1`, and the summary says `MissionFailedRan=nil` and `mission end: none`.
+
+**Consequences:**
+- Any host run past 1052 s on JM08 shows a world the image has already ended.
+- This includes every JM08 long row since section 152, and section 109's flip.
+- USN01's CB2 capture (section 157) has the same gap for any script that reads `.Party` after a flip.
+
+**Proposed packet** (routed to the lead; the mirror lives in cc9-lua39's file):
+- re-run the per-unit mirror when the capture host neutralizes or flips a building, behind a bound
+  flag committed OFF;
+- prediction: JM08 long ON reaches `luaMissionFailedNew` at about 1053 s, and USN13 / USNOS /
+  BSM01 are gameplay identical (no capture there).
+
+## 159. The approach's "throttle" is the path search's side-switch penalty (lead item 3, packet `cc9_approach_search_penalty`, `kShipAiApproachSearchPenaltyBound`, cc9-ships34, 2026-10-05)
+
+### 159.1 The read
+
+**The value.** `009F32A0..009F32E5` in `BSP_ShipAi_AttackMoveApproachSubStateStep` (body
+`009F3240-009F3664`) computes it:
+- `2 * ([unit+494h] + 500.0 - nested+11E0h)`;
+- `unit+494h` is the any-weapon max range;
+- `nested+11E0h` is the planar range to the attackmove destination;
+- 500.0 is the double at `00CE3840`;
+- the result is clamped below at 0. Above 1000.0 (the double at `00CE47A0`) it is replaced by the
+  float 1000.0 at `00CE3804`.
+
+The host already computes it (`ship_ai_attackmove_approach_throttle_009f3240`).
+
+**Where it goes.** `009F337B` / `009F3383` store it with `MOVSS [ESI+250h]` / `[ESI+2B8h]`, where
+`ESI = brain+8h = blk` (`009F32F7`). Sections 136 and 154.1 put the two plan blocks at `blk+224h`
+and `blk+28Ch` (`kShipAiPathPlanSlotA/B`), so these stores are each block's `+2Ch`. That field is
+`ShipAiPathPlanBlock::search_context` in `bsp/ship_ai_path_planner.hpp`.
+
+**The reader.** The plan pointer, not `blk`, reads it:
+- the search tick `BSP_ShipAiPathSearch_Tick` `009EC680` (ECX = the plan,
+  `nav+2F4h` / `+2F8h` from `009ED3E0`) does `009EC6D8 FLD [ESI+2Ch]`, `009EC6DF FSTP [ESP]`,
+  `009EC6E2 CALL 009EC280`;
+- `009EC280` is `BSP_ShipAiPathSearch_CostGraph(node, float side_switch_penalty)`. It adds the
+  penalty where the cheaper direction changes side (`src/ship_ai_path_search.cpp`
+  `009EC4D2`, `009EC568`, `009EC613`, `009EC62D`).
+
+This is why section 139's census found no reader: it searched for `blk+250h` / `+2B8h` displacement
+reads. `s34_dispscan.py` (all of `.text`) finds no read with those displacements in
+`009C0000-00A40000`, only the stores.
+
+**Every writer of plan +2Ch found:**
+
+| site | value |
+| --- | --- |
+| `009D9CE1` (constructor `009D9CC0`) | 0.0 |
+| `009DA57B` / `009DA583` (`009DA4E0`, the path reset) | 0.0 |
+| `009F337B` / `009F3383` (the approach) | the term above |
+| `009DE2DC` / `009DE2E4` | the third argument |
+
+- The last row is in an undefined routine at `009DE280`. It calls `009DE050`, sets `+1D8h`,
+  `+1CCh = 0` and `+1C4h = 3`, and returns with `RET 0Ch`.
+- Its only caller is `009E7FB8`, in the wrapper `009E7FA0` (`ADD ECX,8`, `RET 0Ch`).
+- `009E7FA0` has no rel32 or absolute reference on disk and no Ghidra xref, so it is unreached.
+
+`009E3780` (the plan request) and `009ED3E0` (the refresh) do not touch `+2Ch`.
+
+**Uncertainty:**
+- `+2Ch` from an arbitrary plan pointer cannot be scanned exhaustively (`[reg+2Ch]` is everywhere).
+  The writer list is the constructor, the reset, and the two `blk`-relative store pairs found by
+  the displacement census.
+- The name "side-switch penalty" is the ledger's hypothesis for `009EC280`'s argument.
+
+**Reading.**
+- Within 500 m beyond its max weapon range of the destination, an approaching ship's route search
+  charges up to 1000 per side switch around an obstacle. It prefers routes that keep to one side
+  of the obstacle chain.
+- It is not a throttle.
+- Any of `009DA4E0`'s ten callers (section 154.1, the setters among them since section 154 ON)
+  clears it to 0. So in the main it is carried by plans searched while, or soon after, the approach
+  holds the unit.
+
+### 159.2 The binding (committed OFF)
+
+`kShipAiApproachSearchPenaltyBound` in `src/game_hosts_ship_ai.cpp`:
+- true: `set_brain_throttle_0258` copies the float's bits into `ctl.plan_a.search_context` and
+  `ctl.plan_b.search_context`, which the host's search tick already hands to the cost walk;
+- false: the value stays in `brain_throttle_0258_`, as before.
+
+Census line: `summary mission ship ai approach search penalty writes positive max searches bound`.
+The `searches` counter counts search ticks with a non-zero `+2Ch` in either block.
+
+### 159.3 Predictions (written before any ON run)
+
+- **Mechanism:**
+  - `writes` equals the approach steps;
+  - `max` is at most 1000.0;
+  - `positive > 0` on rows whose approaching ships come within max range + 500 of their
+    destination (USNOS mode-0 ship targets, JM08 long's transports and escorts);
+  - `searches > 0` wherever a positive write precedes a search tick.
+- **Spread:**
+  - JM08 long: `pair_diff` 3. It has 72382 approach frames and 126951 corner arms, so routes
+    around obstacles with side choices exist. Expect retimed transport paths, with landing and
+    death times moving.
+  - USNOS 3000: 3960 approach frames, mode 0. If no searched graph has a side choice, it is 1
+    (census only); otherwise 3. I lean to 1 (`corner_arms=0` in section 155's OFF log).
+- **Controls:** USN13 and BSM01 have no approach frames, so they are identical (1, census only).
