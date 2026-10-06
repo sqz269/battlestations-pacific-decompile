@@ -14086,3 +14086,29 @@ adoption and at each level change, the death-unlink, and the skill pushes. Every
 identical, as predicted, because the re-create is still recorded. When the gunnery lane's revive
 lands, JM08 long will re-create 112 dead members as Neutral at 1041.50 s (and 5 in JM08 3000 at
 20/30 s), so the next pair should be `pair_diff` 3 there. Not game-validated.
+
+### 176.1 Re-run on main with the bomb drop scatter: blocked in phase 2 (cc9-ships36, 2026-10-06)
+
+The 176 win (w5/w6) used 4 F4F per slot. cc9-lua42 reads the Support Manager's per-slot
+count as min(stock, 3): `0066EC1B` is the only writer of screen+2B4h, with EBP = 3. So the
+native maximum is 3, and w6 is not a reachable win. The re-run with legal counts (w7,
+`local\s36_u1_w7.txt`: four slots of 3 at Nell1-4 from 4100, escorts as w5, slot-0 retries
+of 3) was on main `a8e570039`, with `kAirOpsPlayerLaunchBound` and `kBombDropScatterBound`
+(gunnery29, 1eeffd541) ON. **It never reaches phase 3:**
+- `luaMoveToPh2` runs. Both scout Dauntlesses release their single bomb at 133.20 and 134.10 s
+  from about 218 m (`bomb drop scatter: ... cone=0.297 deg`), with predicted impacts
+  (-3397, -1449) and (-3405, -1462) against Convoy1 at about (-3393, -1428). The
+  `ConLeadListener` (`hit`, TORPEDO/BOMB/ROCKET on Convoy1) never fires, so the ConTBDs are never
+  generated, and there is no `luaMoveToPh3` and no Nells by 1000 s.
+- **No player order recovers it** (w8, w9, `local\s36_u1_w8.txt` / `w9.txt`):
+  - the scouts carry one bomb each and are the only player squadron;
+  - `select Dunlap` is refused by `00645060` (the role is not open to the player in phase 2);
+  - a `moveto Dunlap` onto the convoy's track gets there at about 620 s, behind the convoy (8.1
+    m/s south-south-east), and fires no torpedo;
+  - the torpedo destroyers Ralph and McCall are with Enterprise, about 12 km north.
+
+**Result:** the legal-count win attempt is **blocked before phase 3** by the scout's miss under
+the bomb drop scatter. That is gunnery29's measured flip; whether a human-flown scout (manual
+aim) would hit is outside the harness. Routed (lead): a deterministic scout hit needs either the
+plane lane's dive-aim review against the scatter, or a harness line for the player's manual
+bomb release. The w7 order file is ready to re-run once phase 2 passes.
