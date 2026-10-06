@@ -15474,3 +15474,41 @@ Log `cc9-lua44\local\l44_h2on_e8.log` (ESMP08, 3600 s):
      may advance.
    - Airfield3's slot returns when the last plane of a squadron parks.
 5. **USN13, 9000 frames, idle.** Moves only if a plane is stowed or parks inside 450 s.
+
+### 200.1 Pairs (cc9-ships40, 2026-10-06; OFF `68b187418` main build, ON `local\s40_sr`)
+
+Launch form: reference AD (`local\s40_rows.ps1`: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+step 0.05). Logs: `local\s40_off_<row>.log` and `local\s40_on_<row>.log`. Diffs: `local\s40_diff_<row>.txt`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| ESMP08 p3, 72000 | 3 | intakes 1362 -> 12 (12 distinct planes, one take each); stows 1046 -> 12, each followed by one stock return; no_deck = no_squadron = 0; 7 slot returns; units 776 -> 791 (relaunches from the returned slots); deaths 669 -> 675; Zuikaku no longer dies; dive-bomb releases 5/176 -> 13/201, torpedo 47/258 -> 45/237 (RNG-coupled) |
+| USN01 p8, 22000 | 3 | still completes at 648.42 s, with the exec guard's `sus_prog.exe` refusal; ScoutDauntless (414.07 s) and KatTBD (523.15 s) go back into Enterprise's stock; deaths 87 -> 89; Enterprise's landing sequencer passes 5631 -> 1421 |
+| USNOS, 9000 | 3 | five Judys (`plane #1.5` x3, `plane #1.6` x2) taxi into Airfield3's hangar and go back into its stock at 321.10-384.58 s; deaths 109 -> 114; no slot return (scene squadrons hold no slot); no mission end |
+| USN13, 9000 | 1 | no stow inside 450 s |
+
+- **Verdict: the mechanism matches the predictions.** Every stow has exactly one stock return, there are
+  no re-takes, and every holder resolves.
+- **Open before the flip: the Lua `KillReason`.**
+  - The image kills with cause 5, which is "landed" in `00E0CF04`. The host's kill publishes the default
+    cause 1, "harm".
+  - The fix is `note_kill_cause(p.process_index, 5)` in `plane_stock_return_c7h_007cc8b0`. It is routed,
+    because `game_hosts_units.cpp` was leased elsewhere.
+  - These pairs therefore carry "harm". Re-pair after the fix.
+- **Diagnostic only.** The death table's `killed_by` for a stock-returned plane shows its last attacker.
+
+## 201. BSM01 completes with the AI depth-charge rack (cc9-ships40, 2026-10-06; lead item 2)
+
+The tree is `agent/cc9-ships40` with main merged (`c7991d5a3`, including `efbc2de86`, GUNNERY 142:
+depth charges in water ON). Launch form: reference AD, BSM01 40000 frames (`local\s40_rows.ps1`).
+
+| order file | log | result |
+| --- | --- | --- |
+| `s38_b1_p6.txt` (the AI-rack route: Henry helmed to the halted mini-sub, `stop 40`) | `local\s40_bsm_b6.log` | **completed.** MiniSub dies at 1300.79 s (killer HenryPT at 25 m), and "Zeros! They're coming in fast!" shows at 1335.23 s. Mission.EndMission at 1632.47 s with `MissionStatus=true`, MissionPhase 4. Narrative "Donald is heading home - Mission Complete" at 1644.08 s. The exec guard logs "refused a mission script's process launch: sus_prog.exe" |
+| `g31_ord_b1_p9.txt` (p6 plus a player depth-charge press every 80 frames, 11000-12920) | `local\s40_bsm_b9.log` | no end. MiniSub survives: 21 water entries, and no hit is recorded. This is the terrain-subwalk fault the lead is routing |
+
+Notes:
+- `Objectives_Failed` names "Bruh" at the end of the p6 run. Its source in this installation's
+  scripts was not read.
+- Mission.EndMission is set with `status=nil`; the completion narrative follows 11.6 s later.
+- EndScene `008B01B0` is not reached inside 40000 frames.
