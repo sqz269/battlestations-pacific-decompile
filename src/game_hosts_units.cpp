@@ -5723,6 +5723,18 @@ struct GameUnitsHost::Impl {
     // salvo's request spends whole, so one drop zeroes it with a rack still loaded.
     // ON by its IJN01 pair (5ex): every A7M_2 / A7M_4 member drops both racks.
     static constexpr bool kRackPoolRoundsRemainingBound = true;
+    // Packet cc9_lua46_unequipped_racks (SQUADRON_LAND_TASK 5ey). 007CDF20's kind-1
+    // arm (a squadron's planes share its cloned bag, 007F48FD / 00922DE0) calls
+    // 0095A880(null, 1, 0) when the bag's Equipment is <= 0: only the default
+    // devices are added and no rack is handed Ammo (vtable[1BCh]) or a round, so
+    // 006E4060 / 006E3FE0 answer no rack kind in single player. True: a plane
+    // whose carried bag Equipment is 0 (kPlaneSceneEquipmentBound) stores no
+    // rack-borne kind (2Ah 2Bh 2Ch 2Dh 31h 33h) and its rack pool seeds empty.
+    // False: such a plane's racks take the pool's one-round fallback.
+    // REFUTED, stays OFF (5ey): the rack's constructor 006E3C00 stores ammo +484h
+    // = orgAmmo +488h = 1 (006E3C20..006E3C3D), so a default rack 0095A880's flag
+    // pass adds holds one round; the pool's fallback is the image's default.
+    static constexpr bool kRackUnequippedEmptyBound = false;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
@@ -24814,6 +24826,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.rack_multi_count;
                             }
                         }
+                        if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&
+                                      bsp::kPlaneSceneEquipmentBound) {
+                            // 0095A880(null, 1, 0) hands no rack a round (5ey).
+                            if (unit_.bag_equipment == 0 && unit_.rack_ammo < 0) {
+                                unit_.rack_ammo = 0;
+                                unit_.rack_ammo_per_rack.assign(
+                                    unit_.rack_authored_per_rack.size(), 0);
+                            }
+                        }
                         if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
                             if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
                                 && !unit_.rack_bullet_class_per_rack.empty()) {
@@ -31723,6 +31744,13 @@ std::size_t GameUnitsHost::place_squadron_members_007f2920(std::size_t index) {
 
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
     if (index >= impl_->slots.size()) return;
+    if constexpr (Impl::kRackUnequippedEmptyBound && bsp::kPlaneSceneEquipmentBound) {
+        // 0095A880(null, 1, 0): no rack round, so no rack-borne kind (5ey).
+        if (impl_->slots[index]->bag_equipment == 0) {
+            const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
+            mask &= ~(bit(0x2A) | bit(0x2B) | bit(0x2C) | bit(0x2D) | bit(0x31) | bit(0x33));
+        }
+    }
     impl_->slots[index]->ordnance_mask = mask;
 }
 
