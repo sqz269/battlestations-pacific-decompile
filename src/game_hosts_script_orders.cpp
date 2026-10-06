@@ -344,6 +344,10 @@ public:
             // race is handed back unchanged.
             if (owner_.set_script_entity_party_00928f50(entity, party)) return;
         }
+        if constexpr (kSetPartyUnitBound) {
+            // Packet cc9_lua46_set_party_unit: a unit's slot, 00951F30 -> 00928F50.
+            if (owner_.set_unit_party_00928f50(entity, party)) return;
+        }
         owner_.record_unimplemented("LuaBindingCore::entity_set_party_vtable_2c",
             "008a8ae3");
     }
@@ -5178,6 +5182,22 @@ bool GameScriptOrdersHost::set_script_entity_party_00928f50(void* entity, int pa
     write_script_identity_fields(*script, false);  // 00928FD9, 00929046
     ++script_party_sets_;
     log_.implemented("ScriptEntity::set_party_race_lua_mirror", "00928f50");
+    return true;
+}
+
+bool GameScriptOrdersHost::set_unit_party_00928f50(void* entity, int party) {
+    const std::size_t index = index_of(entity);
+    if (index >= units_.count()) return false;
+    const GameUnitRow* row = units_.unit_row(index);
+    const int was = row != nullptr ? row->party : -1;
+    units_.set_unit_side_0054(index, party);   // 00923B92 +54h
+    // 00928FD9 / 00929046: the Lua Race and Party, re-read off the entity.
+    const std::size_t mirrored = party_mirror_ != nullptr
+        ? party_mirror_(party_mirror_context_) : 0u;
+    log_.notef("SetParty 008a8930: unit=%s party %d -> %d (vtable+2Ch 00951F30 -> 00928F50, "
+        "Lua mirror on %zu slot(s), packet cc9_lua46_set_party_unit)",
+        row != nullptr ? row->name.c_str() : "?", was, party, mirrored);
+    log_.implemented("Unit::set_party_race_lua_mirror", "00928f50");
     return true;
 }
 

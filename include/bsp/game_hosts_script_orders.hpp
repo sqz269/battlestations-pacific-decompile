@@ -110,6 +110,15 @@ std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
 // old behaviour, difficulty 0 everywhere and every skill call recorded only.
 inline constexpr bool kSkillLevelBound = true;
 
+// Packet cc9_lua46_set_party_unit. SetParty (008A8930) on a unit: its else arm's
+// vtable +2Ch is 00951F30 -> 00928F50 for every unit class. True: the unit's
+// party (+54h, the units-host row) is set and the Lua Party mirror re-run.
+// LABELLED: 00923B80's recursion over the +48h children (each child not
+// answering vtable[5Ch] gets the same +2Ch) is not carried; this host's devices
+// read their owner's party. False: SetParty on a unit is recorded only.
+// ON by its USNOS pair (LUA_BINDING_CORE, cc9-lua46).
+inline constexpr bool kSetPartyUnitBound = true;
+
 // game+6ACh, the effective difficulty, one process-wide word as in the image
 // (`*(00E188A8)+6ACh`). The mission host's MissionStart store writes it and
 // the script host's GetDifficulty reads it. Zero until the first store, the
@@ -1054,8 +1063,22 @@ public:
     // 00923B80 stores +54h = party (00923B92), then 00928F50 mirrors Race and
     // Party. Answers false when the entity is not a script entity.
     bool set_script_entity_party_00928f50(void* entity, int party);
+    // Packet cc9_lua46_set_party_unit (kSetPartyUnitBound): the same slot on a
+    // unit. Every unit class's vtable +2Ch is 00951F30 (JMP 00928F50): 00923B80
+    // stores +54h party (and +58h race, handed back unchanged by 008A8ADF), then
+    // the Lua Party/Race mirror. Answers false when the entity is not a unit.
+    bool set_unit_party_00928f50(void* entity, int party);
+    // The Lua host's 00928F50 projection (GameMissionLuaHost::
+    // mirror_party_race_00928f50), registered by the Lua host when it attaches.
+    void set_party_mirror(std::size_t (*mirror)(void* context), void* context) noexcept {
+        party_mirror_ = mirror;
+        party_mirror_context_ = context;
+    }
 
 private:
+    std::size_t (*party_mirror_)(void* context){nullptr};
+    void* party_mirror_context_{nullptr};
+
 
     // Packet cc_mission_blackout. The five fields at `*(00E198C4 + A4h) + C0h`,
     // and the widget colour the +54h getter would answer with. 005BA7B0 leaves
