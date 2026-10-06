@@ -9763,3 +9763,26 @@ as allowed; the controls identical) and on the cone bound.
 **Uncertainty:** the round's rows are taken to be the plane's pose rows. If the rack mount (`+3F4h`) carries
 a rotation, the image's direction differs from the nose by that rotation; the mount rotation is unread.
 Not game-validated.
+
+### 130.5 Back to OFF: mechanism unsettled (lead's hold, 2026-10-06)
+
+The lead held the flip: it reverses the USN01 progression that 5do's velocity fix produced, on an
+unread piece. The read asked for: does the round leave along the plane's nose, or along the nose
+rotated by the rack's mount?
+
+- **`+3F4h` is not a rotation.** In `006E4D50` the rack's `[+3F4h]` is the device descriptor
+  (`[+3F4h]+DCh`, taken to be `LaunchSpeed`, 5du) and `[+3F8h]` the fire record (`+4h` Throw,
+  `+8h` Wind). The rack's own pose is its scene node's.
+- **The rows `006E1F00` uses** are the round's local matrix (`round+74h`, `+84h`, `+94h`) after it is
+  detached: it copies the round's world matrix (`round+CCh`, refreshed first) and makes it the local one
+  (`BSP_Matrix_Copy4x4X87`, `SetParent(0)`). So the direction is the round's world forward row while it
+  hangs on the rack: plane pose x rack node x the round's attach transform.
+- **Unread:** the round's attach transform (where a loaded round is parented under the rack and with what
+  matrix; `006E3500`, which loads rounds, shows no matrix work in its pseudocode) and the rack node's
+  orientation in the aircraft model (a model dummy). Neither was found in this pass.
+
+**Verdict: OFF, mechanism unsettled.** 130.4's pair stands as a measurement of the nose-alignment
+hypothesis (USN01's scout bombs miss Convoy1 under it), not as the image's behaviour. To settle it: read
+the round's attach path (who parents a kind-2Ah child under the rack, and its local matrix) and the
+Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
+the same read to justify.
