@@ -1936,6 +1936,7 @@ struct GameGunneryHost::Impl {
     unsigned long long airfield_sub_entities_listed{0};
     unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
     double scatter_max_angle{0.0};
+    double scatter_max_turn_deg{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
     unsigned long long cb_gate_passes{0};
     unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
@@ -11244,10 +11245,34 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float dy = -t * std::sin(a);
         const float vmag = std::sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1]
             + velocity[2] * velocity[2]);
+        const float before[3] = {velocity[0], velocity[1], velocity[2]};
         for (int i = 0; i < 3; ++i) {
             velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
         }
         ++h.scatter_drops;
+        {
+            // Diagnostic: the turn from the 5do velocity to the new direction.
+            const double nb = vmag;
+            const double na = std::sqrt(static_cast<double>(velocity[0]) * velocity[0]
+                + static_cast<double>(velocity[1]) * velocity[1]
+                + static_cast<double>(velocity[2]) * velocity[2]);
+            double c = (nb > 0.0 && na > 0.0) ? (static_cast<double>(before[0]) * velocity[0]
+                + static_cast<double>(before[1]) * velocity[1]
+                + static_cast<double>(before[2]) * velocity[2]) / (nb * na) : 1.0;
+            if (c > 1.0) c = 1.0;
+            if (c < -1.0) c = -1.0;
+            const double turn = std::acos(c) * 57.29577951308232;
+            if (turn > h.scatter_max_turn_deg) h.scatter_max_turn_deg = turn;
+            if (h.scatter_drops <= 6) {
+                h.log.notef("bomb drop scatter: unit=%s t=%.2f cone=%.3f deg turn=%.3f deg "
+                    "v_before=(%.1f %.1f %.1f) v_after=(%.1f %.1f %.1f) (006E4D50 / 006E1F00)",
+                    h.unit_state[unit_index].row.name.c_str(), static_cast<double>(h.clock_seconds),
+                    std::atan(static_cast<double>(t)) * 57.29577951308232, turn,
+                    static_cast<double>(before[0]), static_cast<double>(before[1]),
+                    static_cast<double>(before[2]), static_cast<double>(velocity[0]),
+                    static_cast<double>(velocity[1]), static_cast<double>(velocity[2]));
+            }
+        }
         const double ang = std::atan(static_cast<double>(t));
         if (ang > h.scatter_max_angle) h.scatter_max_angle = ang;
         h.done("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
@@ -11631,9 +11656,10 @@ void GameGunneryHost::report() {
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
             kAirfieldTargetSubEntitiesBound ? 1 : 0);
         if (kBombDropScatterBound) {
-            host.log.notef("summary mission bomb drop scatter drops=%llu max_cone_deg=%.3f "
+            host.log.notef("summary mission bomb drop scatter drops=%llu max_cone_deg=%.3f max_turn_deg=%.3f "
                 "(006E4D50: four stream-1 draws per drop, packet cc9_bomb_drop_scatter)",
-                host.scatter_drops, host.scatter_max_angle * 57.29577951308232);
+                host.scatter_drops, host.scatter_max_angle * 57.29577951308232,
+                host.scatter_max_turn_deg);
         }
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
