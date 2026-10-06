@@ -244,6 +244,38 @@ is never asked on USNOS or LOMP10, and ESMP08's 974 calls ask other keys), so ev
 launch lines is gameplay-identical. Sub-blocks with no authored `Type` come out as 101 (USN01's Enterprise and Airfield2,
 all counts 0), presumably a schema default merged into the bag; not traced.
 
+**Why no AI launches (read after the flip, cc9-lua45, no code changed).** The image has no native
+AI launcher, so nothing was bound.
+- **The image side.** The deck's message switch `006CD6C0` (reached from the carrier's `00758EB0` and the
+  airfield's `006D2956`) is the only route into a launch. Case 83h goes to `006CA8E0` and case 89h to
+  `006C7490`; `006CC690`, the `LaunchSquadron` body, also calls `006C7490`.
+- **Who builds those messages.** The byte-store census `C6 ?? 10 8x` finds only `00763140` (81h), `00763320`
+  (82h), `007631A0` (83h), `00763380`-`00763500` (84h-87h) and `007634A0` (88h). None builds 89h. The three
+  whose xrefs were checked (81h, 83h, 88h) each have one call site, in the id switch at `00769206`-`007692E6`,
+  so they are the session-message factory, which replays the same messages from another machine. The other 82h builder is `00656280`, whose two callers `00673A10` and
+  `00675C40` are the Support Manager screen (AIROPS_LAUNCH_TICK "The player's launch"). This agrees with that
+  section's "there is no launch native".
+- **So an AI deck launches only when a mission script asks.** The asks are `LaunchSquadron` directly or the
+  commandhelpers managers `luaAirfieldManager` (7872), `luaCapManager` (8073) and `luaLaunchAirstrike` (8149).
+  Every one of them passes its class ids explicitly and reads back only `slots[i].squadron`, so a slot's
+  scene class is never consulted. `006CC690` (AIROPS_LAUNCH_GATES 3) writes the class itself and has no
+  stock test.
+- **The consumers of the resolved classes** are the stock rows `GetProperty(base, "planes")`, read by
+  `luaRemoveAllFromStocks` (8421) and `luaPlayerAirbaseManager` (15219), and the harness `launch` line.
+- **Per row, from this installation's scripts (2024-07/10):**
+  - **USNOS** (`COTP-USN/us_osumi.lua`) calls `luaAirfieldManager` for the Japanese airfields (line 1072)
+    and carriers (1173) only while `primary 2` is active. `luaPh2MovieEnd` adds that objective (1650) in
+    phase 2. The idle-player run stays in `MissionPhase=1` (AD's `usnos` and `usnosl` logs as well), so
+    `GetProperty` is never called. That is the script's gate, not a host gap.
+  - **LOMP10** (`usn/LOMP/10_san_jose.lua`) and **ESMP08** (`ijn/ESMP/08_engano.lua`) call none of these.
+  - **USN13** (`usn_13_truk.lua`) launches with explicit class 26 (lines 291, 348 and 399; started in both
+    states). **E2/USN04** (`usn_19_coralus.lua`) reads 3763 slot rows and launches with explicit classes.
+- **Rows that would exercise the resolved classes** are scripts that read `"planes"` or run the player
+  airbase manager. The census includes `COTP-USN/usn_09_leyte.lua`, `usn_10_battle_of_capeengano.lua` and
+  `bsm_11_endgame_at_midway.lua`, none of which is a reference row.
+- **Coverage.** The census covers the disp8 byte-store form only. Messages built through the generic base
+  `0075B430` (125 writers of vtable `00D02C68`) were not walked.
+
 **Base drift since AD, not this switch** (identical OFF and ON, for AE): USN01 p5 no longer wins,
 because line 2 (`release ScoutDauntless on Convoy1`, frame 2400) is refused, "the sight never came
 within 15.0 m (nearest 16.5 m)", so the later target and launch lines find no unit; LOMP10 p2's
