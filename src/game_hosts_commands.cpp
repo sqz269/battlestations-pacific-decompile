@@ -846,9 +846,15 @@ public:
 
     // -- 0071ecf0 ----------------------------------------------------------
     std::uint32_t endpoint_subject_vtable140() override {
-        // [director+34h]->vtable[140h]. The session endpoint is the session
-        // owner's object and this process builds none, so the whole AI-group
-        // block of 0071ecf0 (0071ed19..0071ed5c) is skipped.
+        // [director+34h]->vtable[140h]. GUNNERY 133.2: [director+34h] is not a
+        // session object. 00720180 stores [arg+28h] there (0072020B/00720219)
+        // and 008366D0 passes unit->vtable[60h]() = unit+310h (006D1DD0 for the
+        // destroyer vtable 00CFC3D0), so it is [unit+338h], read elsewhere as
+        // the unit (its +54h party, GUNNERY 35); slot 140h of that vtable is
+        // 0047F320, MOV EAX,ECX. The block 0071ed19..0071ed5c then needs
+        // entity+16Ch, the AI group, which nothing sets on any reference row
+        // (entity_ai_group above; the coordinator creates no group), so
+        // answering 0 skips exactly what the image skips there. LABELLED.
         chain_.owner.record_slot("EntityCommand::endpoint_subject", "00d09ec0+vtable140");
         return 0;
     }
