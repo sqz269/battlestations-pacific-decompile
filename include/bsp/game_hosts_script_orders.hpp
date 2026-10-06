@@ -447,7 +447,17 @@ inline constexpr bool kLuaCountdownBound = true;   // ON: SQUADRON_LAND_TASK 5ds
 // the ship-AI host's capture buildings. False: an
 // unimplemented record that pushes nothing, so `GetCapturePercentage(x) * 100`
 // raises (JM05.lua:5178-5216).
-inline constexpr bool kLuaCapturePercentageBound = true;   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
+inline constexpr bool kLuaCapturePercentageBound = true;
+// Packet cc9_lua_mission_narrative (docs/MISSION_END.md, "The narrative queue").
+// True: MissionNarrative / MissionNarrativeEnqueue 008B0C10 enqueue (text,
+// callback, arguments) on [game+21E8h] (00734870), MissionNarrativeClear
+// 008B15B0 empties it (00734FA0), MissionNarrativeSize 008B0AC0 answers
+// 00733260, the HUD narrative screen's step 00735100 shows one entry at a time
+// (00733BB0's fade-in 0.5 x DialogFadeTime, display length x TempCharWait +
+// TempWaitBase, fade-out DialogFadeTime) and 00734140 calls the entry's callback
+// when it has faded out; EndScene 008B01B0 is recorded (no freeze). False: the
+// natives stay unimplemented records and no callback ever fires.
+inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
@@ -681,7 +691,10 @@ private:
     void run_blackout_update(float step);
     // Packet cc9_lua_countdown: the countdown arm of 00735100 (00735151-0073524F).
     void run_countdown_update_00735100();
-    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
+    // Packet cc9_lua_mission_narrative: 00735100's narrative half.
+    void run_narrative_update_00735100(float step);
+    void narrative_finish_00734140();
+    void narrative_clear_00734fa0();    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
     float countdown_time_left() const noexcept;
     // 007340A0 past the time-left store: clear +3Ch and +4Ch, free +54h.
     void countdown_stop_007340a0();
@@ -963,7 +976,31 @@ private:
     // Packet cc9_lua_capture_percentage.
     std::size_t capture_percentage_calls_{0};
     std::size_t capture_percentage_unresolved_{0};
-    // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
+    // Packet cc9_lua_mission_narrative: [game+21E8h]'s list +8h (00734870's
+    // nodes: text +0Ch, callback +14h, arguments +1Ch) and the shown entry
+    // +14h..+34h.
+    struct NarrativeEntry {
+        std::string text;
+        std::string callback;
+        std::vector<int> argument_refs;
+    };
+    std::vector<NarrativeEntry> narrative_queue_;
+    bool narrative_active_14_{false};
+    int narrative_state_18_{0};
+    float narrative_fade_in_1c_{0.0f};
+    float narrative_display_20_{0.0f};
+    float narrative_fade_out_24_{0.0f};
+    float narrative_alpha_28_{0.0f};
+    std::string narrative_text_;
+    std::string narrative_callback_2c_;
+    std::vector<int> narrative_refs_34_;
+    std::size_t narrative_enqueues_{0};
+    std::size_t narrative_clears_{0};
+    std::size_t narrative_shown_{0};
+    std::size_t narrative_callbacks_{0};
+    std::string narrative_last_callback_;
+    std::size_t end_scene_calls_{0};
+    float end_scene_first_at_{-1.0f};    // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
     std::string after_row9_poster_;
     struct DeferredOrder {
         std::size_t index{0};

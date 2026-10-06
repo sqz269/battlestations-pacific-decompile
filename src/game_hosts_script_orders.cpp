@@ -269,6 +269,12 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_lua_capture_percentage: JM05.lua:5178-5216. Handled only with
     // kLuaCapturePercentageBound.
     {"GetCapturePercentage", 0x0089b840u},
+    // Packet cc9_lua_mission_narrative: handled only with kLuaMissionNarrativeBound.
+    {"MissionNarrative", 0x008b0c10u},
+    {"MissionNarrativeEnqueue", 0x008b0c10u},
+    {"MissionNarrativeClear", 0x008b15b0u},
+    {"MissionNarrativeSize", 0x008b0ac0u},
+    {"EndScene", 0x008b01b0u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -555,6 +561,13 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "CountdownCancel") == 0 ||
         std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         return kLuaCountdownBound;
+    }
+    if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
+        std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0 ||
+        std::strcmp(binding->name, "MissionNarrativeClear") == 0 ||
+        std::strcmp(binding->name, "MissionNarrativeSize") == 0 ||
+        std::strcmp(binding->name, "EndScene") == 0) {
+        return kLuaMissionNarrativeBound;
     }
     if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         return kLuaCapturePercentageBound;
@@ -3122,6 +3135,48 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         ++countdown_cancels_;
         push_number_float_00b66480(left);
         results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
+               std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0) {
+        // 008B0C10 (both rows): 00887120(-1, 4) reads the frame; argument 0 is the
+        // text (the variant at +8h), argument 1 the callback name when there are
+        // more than one (008B0D0A), arguments 2..n a new vector (008B0D50-
+        // 008B0D80); then 00734870 on [game+21E8h] (008B0DAC) appends the entry.
+        NarrativeEntry entry;
+        entry.text = get_string(0);
+        if (count() > 1) entry.callback = get_string(1);
+        for (int index = 2; index < count(); ++index) {
+            lua_pushvalue(state_, stack_slot(index));
+            entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+        }
+        log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
+            "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
+            static_cast<double>(mission_clock_), entry.argument_refs.size(),
+            narrative_queue_.size() + 1);
+        narrative_queue_.push_back(std::move(entry));
+        ++narrative_enqueues_;
+        results = 0;  // 008B0E07, nothing pushed
+    } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
+        // 008B15B0 -> 00734FA0 on [game+21E8h].
+        narrative_clear_00734fa0();
+        ++narrative_clears_;
+        results = 0;
+    } else if (std::strcmp(binding->name, "MissionNarrativeSize") == 0) {
+        // 008B0AC0 -> 00733260: the list count +0Ch plus 1 while an entry shows.
+        lua_pushinteger(state_, static_cast<lua_Integer>(narrative_queue_.size() +
+                                                         (narrative_active_14_ ? 1u : 0u)));
+        results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "EndScene") == 0) {
+        // 008B01B0. RECORD, labelled: for a failed single-player mission it raises
+        // the restart prompt (00531B00) and returns; otherwise it reaches
+        // BSP_Game_EndScene 004D7970 (docs/MISSION_END.md). This host ends no
+        // scene: it records the first call and the run continues to its frame
+        // budget, so a run reports `summary mission scene end`.
+        ++end_scene_calls_;
+        if (end_scene_first_at_ < 0.0f) end_scene_first_at_ = mission_clock_;
+        log_.notef("  EndScene at %.2f s (008B01B0, RECORDED: no prompt and no unload)",
+            static_cast<double>(mission_clock_));
+        log_.unimplemented("Game::end_scene_prompt_or_unload", "008b01b0");
+        results = 0;
     } else if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
         // test, then 00B66480 on the result as it is; one result. 006F1F90
@@ -3822,6 +3877,7 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     argument_count_ = 0;
     // 005BC920 runs 00735100 on [game+21E8h] (005BC9EF) before 005B9800.
     if constexpr (kLuaCountdownBound) run_countdown_update_00735100();
+    if constexpr (kLuaMissionNarrativeBound) run_narrative_update_00735100(step);
     const bsp::MissionBlackoutStep record
         = bsp::mission_blackout_update_005b9800(blackout_, step, *this);
     ++blackout_summary_.updates;
@@ -3848,6 +3904,157 @@ void GameScriptOrdersHost::countdown_stop_007340a0() {
         if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
     }
     countdown_.argument_refs_54.clear();
+}
+
+// Packet cc9_lua_mission_narrative. 00735100's narrative half (00735229-
+// 007352E5), after the countdown, on [game+21E8h] with dt = game+21F0h:
+//  - nothing showing (+14h clear) and an entry queued: 00733BB0 starts the head
+//    (+14h = 1, +18h = 0, +28h = 0; 005B7390 sets +1Ch = 0.5 x DialogFadeTime,
+//    +20h = characters x TempCharWait + TempWaitBase, +24h = DialogFadeTime from
+//    Scripts/datatables/DialogGlobals.lua, read by 005BB130 at 005BB80B-005BB901;
+//    the callback +2Ch and arguments +34h), and 00734D20 pops it;
+//  - showing: state 0 raises the alpha +28h by dt / +1Ch to 1, then state 1;
+//    state 1 counts +20h down by dt unless the text is "*", then state 2;
+//    state 2 lowers the alpha by dt / +24h. The alpha is clamped to [0, 1]
+//    (005B5D20 is the HUD). At alpha 0 in state 2, 00734140 ends it.
+// SUBSTITUTIONS, labelled: the character count is the text widget's +ECh after
+// localisation; this host has no text table, so it counts the argument's own
+// characters (a key such as "missionglobals.obj_fail" counts its key). The
+// HUD calls 005B7390's widget writes, 005B5D20 and 005B5D40 are records. The
+// skip key 0E7h (00735123) is never pressed by the idle player. The step runs
+// inside run_blackout_update's gate (step > 0).
+void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
+    if (!narrative_active_14_) {
+        if (narrative_queue_.empty()) return;
+        NarrativeEntry head = std::move(narrative_queue_.front());
+        narrative_queue_.erase(narrative_queue_.begin());          // 00734D20
+        float fade = 0.5f, char_wait = 0.04f, wait_base = 1.0f;     // DialogGlobals.lua
+        if (machine_state_ != nullptr) {
+            const int top = lua_gettop(machine_state_);
+            lua_getfield(machine_state_, LUA_GLOBALSINDEX, "DialogFadeTime");
+            if (lua_type(machine_state_, -1) == LUA_TNUMBER)
+                fade = static_cast<float>(lua_tonumber(machine_state_, -1));
+            lua_getfield(machine_state_, LUA_GLOBALSINDEX, "TempCharWait");
+            if (lua_type(machine_state_, -1) == LUA_TNUMBER)
+                char_wait = static_cast<float>(lua_tonumber(machine_state_, -1));
+            lua_getfield(machine_state_, LUA_GLOBALSINDEX, "TempWaitBase");
+            if (lua_type(machine_state_, -1) == LUA_TNUMBER)
+                wait_base = static_cast<float>(lua_tonumber(machine_state_, -1));
+            lua_settop(machine_state_, top);
+        }
+        // 00733BB0 and 005B7390 (005B7434-005B7466).
+        narrative_active_14_ = true;
+        narrative_fade_in_1c_ = static_cast<float>(static_cast<double>(fade) * 0.5);
+        narrative_display_20_ = static_cast<float>(
+            static_cast<double>(head.text.size()) * char_wait + wait_base);
+        narrative_fade_out_24_ = fade;
+        narrative_state_18_ = 0;
+        narrative_alpha_28_ = 0.0f;
+        narrative_text_ = head.text;
+        narrative_callback_2c_ = head.callback;
+        for (const int ref : narrative_refs_34_) {
+            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+        }
+        narrative_refs_34_ = std::move(head.argument_refs);
+        ++narrative_shown_;
+        log_.notef("  narrative shows \"%s\" at %.2f s: fade-in %.3f display %.3f fade-out %.3f "
+            "callback \"%s\" (00733BB0 / 005B7390)", narrative_text_.c_str(),
+            static_cast<double>(mission_clock_), static_cast<double>(narrative_fade_in_1c_),
+            static_cast<double>(narrative_display_20_),
+            static_cast<double>(narrative_fade_out_24_), narrative_callback_2c_.c_str());
+        log_.unimplemented("HudNarrative::show_text", "005b7390");
+        return;   // 0073528B: RET with 1 after the pop
+    }
+    float top = 1.0f;   // 00D7A24C
+    if (narrative_state_18_ == 0) {
+        narrative_alpha_28_ = static_cast<float>(
+            (1.0 / static_cast<double>(narrative_fade_in_1c_)) * step + narrative_alpha_28_);
+        if (1.0f <= narrative_alpha_28_) narrative_state_18_ = 1;
+    } else if (narrative_state_18_ == 1) {
+        if (narrative_text_ != "*") {
+            narrative_display_20_ = static_cast<float>(
+                static_cast<double>(narrative_display_20_) - step);
+        }
+        if (narrative_display_20_ <= 0.0f) narrative_state_18_ = 2;
+        narrative_alpha_28_ = top;
+    } else if (narrative_state_18_ == 2) {
+        narrative_alpha_28_ = static_cast<float>(narrative_alpha_28_ -
+            (1.0 / static_cast<double>(narrative_fade_out_24_)) * step);
+    }
+    if (0.0f <= narrative_alpha_28_) {
+        if (top < narrative_alpha_28_) narrative_alpha_28_ = top;
+    } else {
+        narrative_alpha_28_ = 0.0f;
+    }
+    log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
+    if (0.0f < narrative_alpha_28_) return;
+    if (narrative_state_18_ == 2) narrative_finish_00734140();
+}
+
+// 00734140: 005B5D40 (the HUD), then, when the callback name +2Ch is not empty,
+// 00887E50(self 0, &+2Ch, +34h, 0, -1) on [game+1A08h] with +34h taken and
+// zeroed; +14h is cleared on both arms (00734199, 0073419F). The name +2Ch is
+// not cleared here; it is overwritten by the next start.
+void GameScriptOrdersHost::narrative_finish_00734140() {
+    log_.unimplemented("HudNarrative::hide", "005b5d40");
+    narrative_active_14_ = false;
+    std::vector<int> refs;
+    refs.swap(narrative_refs_34_);
+    if (narrative_callback_2c_.empty() || machine_state_ == nullptr) {
+        for (const int ref : refs) {
+            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+        }
+        return;
+    }
+    const std::string name = narrative_callback_2c_;
+    ++narrative_callbacks_;
+    narrative_last_callback_ = name;
+    log_.implemented("MissionLuaHost::call_named", "00887e50");
+    lua_State* const machine = machine_state_;
+    const int base = lua_gettop(machine);
+    lua_getfield(machine, LUA_GLOBALSINDEX, name.c_str());
+    if (!lua_isfunction(machine, -1)) {
+        log_.notef("  narrative callback %s is not a global function", name.c_str());
+    } else {
+        for (const int ref : refs) lua_rawgeti(machine, LUA_REGISTRYINDEX, ref);
+        lua_State* const outer_state = state_;
+        const std::string outer_poster = after_row9_poster_;
+        if constexpr (kAfterRow9OrderQueueBound) after_row9_poster_ = name;
+        state_ = machine;
+        const int call_status = lua_pcall(machine, static_cast<int>(refs.size()), 0, 0);
+        state_ = outer_state;
+        after_row9_poster_ = outer_poster;
+        if (call_status != 0) {
+            ++timers_.call_failures;
+            const char* message = lua_tolstring(machine, -1, nullptr);
+            if (timers_.first_error.empty() && message != nullptr) timers_.first_error = message;
+            log_.notef("  narrative callback %s failed: %s", name.c_str(),
+                message != nullptr ? message : "(no message)");
+        } else {
+            log_.notef("  narrative callback %s ran at %.2f s", name.c_str(),
+                static_cast<double>(mission_clock_));
+        }
+    }
+    lua_settop(machine, base);
+    for (const int ref : refs) luaL_unref(machine, LUA_REGISTRYINDEX, ref);
+}
+
+// 00734FA0: 00734CE0 empties the list, 005B5D40 (the HUD), +14h = 0 and the
+// shown entry's arguments +34h are released. The name +2Ch stays (it never
+// fires: nothing is showing).
+void GameScriptOrdersHost::narrative_clear_00734fa0() {
+    for (NarrativeEntry& e : narrative_queue_) {
+        for (const int ref : e.argument_refs) {
+            if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+        }
+    }
+    narrative_queue_.clear();
+    log_.unimplemented("HudNarrative::hide", "005b5d40");
+    narrative_active_14_ = false;
+    for (const int ref : narrative_refs_34_) {
+        if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);
+    }
+    narrative_refs_34_.clear();
 }
 
 void GameScriptOrdersHost::run_countdown_update_00735100() {
@@ -4483,11 +4690,23 @@ void GameScriptOrdersHost::report() {
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
         if (mission_end_.seen) {
+            // Packet cc9_lua_mission_narrative: with the narrative bound the
+            // callback fires, so the line says whether EndScene was reached.
+            char end_scene[96];
+            if (!kLuaMissionNarrativeBound) {
+                std::snprintf(end_scene, sizeof(end_scene),
+                    "not reached (the narrative callback is render-side)");
+            } else if (end_scene_calls_ != 0) {
+                std::snprintf(end_scene, sizeof(end_scene), "reached at %.2f s (recorded)",
+                    static_cast<double>(end_scene_first_at_));
+            } else {
+                std::snprintf(end_scene, sizeof(end_scene), "not reached (narrative callbacks=%zu)",
+                    narrative_callbacks_);
+            }
             log_.notef("summary mission end: %s at %.2f s (Mission.EndMission) text=\"%s\" "
-                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 not reached (the narrative "
-                "callback is render-side)", mission_end_.status.c_str(),
+                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 %s", mission_end_.status.c_str(),
                 static_cast<double>(mission_end_.at_seconds), mission_end_.fail_text.c_str(),
-                mission_end_.fail_entity.c_str(), mission_end_.objectives.size());
+                mission_end_.fail_entity.c_str(), mission_end_.objectives.size(), end_scene);
             for (const std::string& objective : mission_end_.objectives) {
                 log_.notef("  objective %s", objective.c_str());
             }
@@ -4572,6 +4791,18 @@ void GameScriptOrdersHost::report() {
             countdown_time_left_reads_, countdown_expiries_, countdown_callbacks_,
             countdown_last_callback_.empty() ? "(none)" : countdown_last_callback_.c_str(),
             countdown_.active_3c ? 1 : 0);
+    }
+    if (kLuaMissionNarrativeBound || narrative_enqueues_ != 0 || end_scene_calls_ != 0) {
+        log_.notef("summary mission narrative bound=%d enqueues=%zu clears=%zu shown=%zu "
+            "callbacks=%zu last_callback=%s queued_at_end=%zu showing_at_end=%d (008B0C10 / "
+            "00735100 / 00734140, packet cc9_lua_mission_narrative)",
+            kLuaMissionNarrativeBound ? 1 : 0, narrative_enqueues_, narrative_clears_,
+            narrative_shown_, narrative_callbacks_,
+            narrative_last_callback_.empty() ? "(none)" : narrative_last_callback_.c_str(),
+            narrative_queue_.size(), narrative_active_14_ ? 1 : 0);
+        log_.notef("summary mission scene end calls=%zu first_at=%.2f (008B01B0, recorded; "
+            "the run continues, packet cc9_lua_mission_narrative)", end_scene_calls_,
+            static_cast<double>(end_scene_first_at_));
     }
     if (capture_percentage_calls_ != 0) {
         log_.notef("summary mission script capture percentage bound=%d calls=%zu "
