@@ -14692,3 +14692,57 @@ picks separated by ` | `. The first pick that passes `0043F080` is taken; a sing
 as before. This stands in for the player moving the screen centre to the next target. The
 `repeat` form keeps working, but a repeat stops on its first refusal, including "not the
 controlled unit". So one squadron at a time is cycled with `select`.
+
+## 190. IJN11 completes; JM06 and USN13 read (lead item 3, cc9-ships38, 2026-10-06)
+
+### IJN11 (`Ijn\ijn_11_operation_to.lua`, this installation, mtime 2024-10-29)
+
+**The script's three phases:**
+1. Phase 1 completes idle; phase 2 starts at 891.91 s ("Get the supply ship out of the area!").
+2. Phase 2: `SupplyCargo` within 1200 m of `EscapeNav` (-5000, -5000) (620). The mission fails if
+   the cargo dies (662, then `luaMissionFailedNew(Mission.Cargo, "Game Over")`).
+3. Phase 3 (`luaPhaseThreeUnits`, 1168): every `HenryGang` ship dead (Iowa, Hornet and
+   Fletch6-11). That sets `Mission.EndMission`, and `luaMissionComplete` follows (991).
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| idle (`s38_i11idle`) | none | 24000 | phase 2; the cargo is still 6.14 km from `EscapeNav` |
+| idle (`s38_i11idle2`) | none | 50000 | **failed at 1648.83 s**, "Game Over" on SupplyCargo; it was still 6.12 km out |
+| **p1 (`s38_i11p1`)** | `select SupplyCargo` then `moveto SupplyCargo EscapeNav` at 18100/18110, repeated at 19000/19010 (`local\s38_i11_p1.txt`) | 50000 | **completed**: `mission end: EndMission=true at 1990.72 s`, then `MissionNarrative("We have some new toys! - Mission Complete!")` at 2002.08 s and EndScene at 2034.66 s |
+
+**p1, in order:**
+- **Phase 2.** The cargo reaches `EscapeNav`, and phase 3 starts at about frame 25265 (1263 s).
+- **Phase 3.** Fletch10, 7, 6, 11 and 8 die from 1766.00 s, Iowa at 1886.82 s and Hornet at
+  1976.40 s. The last, Fletch9, dies at 1987.91 s.
+- **Guard.** `bsp: refused a mission script's process launch: sus_prog.exe` is at log line 376456.
+- **Summary row.** `summary mission end: nil at 1990.72 s (Mission.EndMission) text=""` records
+  the `EndMission` flag before `luaMissionComplete` sets the status, so its status reads nil.
+
+**Caveat on the player's input:**
+- Both `select SupplyCargo` lines are refused (`00645060 rejects it`). The moveto lines still
+  apply, because the harness's moveto does not need the unit to be the controlled one (SCRIPTED_HELM 8).
+- The script captures the cargo for PARTY_JAPANESE (`SetParty`, 1284). It grants it to the AI
+  (`SetRoleAvailable(..., PLAYER_AI)`, 1171) only in phase 3. Why 00645060 refuses it in phase 2
+  was not read.
+- **So whether the player can steer the cargo in the image is not established.** LABELLED: this
+  completion depends on a moveto to a unit the select path refused.
+
+### JM06 (`COTP-IJN\PRCPIJN\JM06.lua`, 2024-07-13)
+
+The player commands the submarine `PlayerSub 01`. Phase 1 (the cargo convoy) completes idle.
+- **Phase 2** needs `Mission.MessageTransmitted`, which is set after a surface countdown.
+  `luaJM6CheckSurface` (1944) tests `GetSubmarineOnSurface(Mission.PlayerUnit)`.
+- **Blocker:** `host MissionLuaNative::GetSubmarineOnSurface [008942c0] UNIMPLEMENTED, returning a
+  neutral value` (`local\s38_j6idle.log`). The test is always false, so phase 2 cannot complete.
+- **Routed:** the binding to the lua lane, and a dive/surface harness line (none exists).
+- Phases 3 and 4 need the player's torpedo hit on Lexington, then Lexington and every escort dead.
+
+### USN13 (`USN\usn_13_truk.lua`, 2024-08-13)
+
+Idle reaches phase 3 (`local\s38_u13idle.log`, 24000 frames).
+- **The win** is every `TotalTrgs` entry dead (897): 57 `SeaTrgs` Marus plus the `LandTrgs`
+  airfields (`Airfield2`, `Airfield5`, `JapAF`) and `Shipyard Entity CB3`. Five Marus die idle.
+- **The player's means:** nine US carriers (Enterprise, Yorktown, Wood, Essex, Intrepid, Cabot,
+  Hill, Cowpens, Monterey; four slots each).
+- **Not attempted.** ESMP08 (188) shows that the carrier slots stop returning after about 46
+  launches, so a 60-target strike waits on 188's routed slot-return item.
