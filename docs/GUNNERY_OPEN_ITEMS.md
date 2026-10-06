@@ -9239,3 +9239,53 @@ which the host already runs (`kSpawnNewEntityRefPosBound`). The queue's entries 
 **Reach: none on the reference rows.** The player is idle, so no `A9h` is sent, no entry reaches
 state 2, and the hangar walk never sees a shipyard-launched unit. The census's 87000 calls on eight z
 rows are the base advance plus two empty walks. Not bound.
+
+## 123. Census: what the gunnery, physics and commands paths still reach on reference AA (lead item; cc9-gunnery27, 2026-10-06)
+
+**Input.** AA's twenty-two logs (`local\g27_aa_base_<row>.log`, main `13fd2978e`). `local\g27_census.py`
+(cc9-lua39's `l39_census.py`) sums each host-method row of the native table over the logs and
+counts the rows that reach it; `local\g27_sites.py` prints each row's recording site. As 5dr found,
+`UNIMPLEMENTED` is the status of every `record()` call, including records written after a modelled
+body, so each row below was read at its site.
+
+### 123.1 Stale labels and presentation (no gameplay gap)
+
+| rows | calls | record | reading |
+| --- | --- | --- | --- |
+| 22 | 5.6 M | `ShipMotion::rigid_body_substep_schedule` `00C5BB30` | modelled: one substep of the whole 0.05 s step (`docs/DYN_WORLD_SETTINGS.md`); the record is the schedule's label |
+| 22 | 36944 | `WeaponDirector::build_set_command_message` `0071C830`, `route_set_command_message` `0077C2A0` | the `MT_GAMEUNIT_SETCMD` message; the host delivers its content directly (`src/game_hosts_commands.cpp`) |
+| 22 | 5217 | `CommandController::begin_command` `00835C70` | run at its own site already; this record avoids running it twice |
+| 18 | 275 | `CruiseCommand::unit_heading` (vtable `50h`) | a `RET 0` getter; the caller computes the heading from pose row 2 |
+| 17 / 16 | 2677 / 2670 | `WeaponDirector::unregister_target_observer` `006952A0`, `refresh_target_pose` `00414DB0` | observer bookkeeping and a pose refresh the host keeps current anyway |
+| 13 | 266985 | `UnitInstance::wake_setting` `00424C40` | `BSP_GameSettings_GetSingleton`, the wake display setting |
+| 4 | 382294 | `WeaponDirector::attackmove_arm_building_moveto_00836b95` | the arm runs; its moveto conversion holds 0 times on every row (`converts=0` on JM08, JM08 long, LOMP10, LOMP10 long) |
+| 7 | 2655 | `DamageControl::pending_exceeds_health_0090e6c0` | `0090E6C0` adds the unit's id (`+174h`) to a per-party list (`+140h + party x 284h`) once; a list for the warning side, not read further |
+| 22 | (HUD) | `UnitPickScreen::*` | the HUD's lane |
+| 15 / 11 / 8 / 5 | | the unit-motion remainders `006D2510`, `00758270`, `00846320`, `00749B20` | sections 117-122 and SHIP_AI 161 |
+
+### 123.2 Real gaps, ranked by reach
+
+1. **`Gunnery::target_sub_entities_slot0fc` `008654AC`: 10 rows, 7172 calls.** The gun target pass
+   asks the director's target for `vtable[0FCh]`, its sub-entities. The host always answers "the
+   target itself" (the base `00432480`), because its comment says that the two overrides belong to
+   units the host does not create. That premise is stale: airfields are units now.
+   **`BSP_AirField_AppendIntactHangarsAsSubEntities` `006D4DD0`** (`006D4DD0..006D4E37`, `RET 4`)
+   appends each listed hangar (`+830h`) whose `+370h > 0`, **and not the airfield itself**, so a
+   gun ordered at an airfield fires at its live hangars, and at nothing once they are gone. The plane
+   squadron's `007F44E0` (live planes) is the other override. Reach: any director target that is an
+   airfield. The count per row needs a diagnostic; it is the top item to bind.
+2. **`UnitInstance::smooth_intensity` `008227E0`: 22 rows, 37.7 M calls.** The routine is
+   `BSP_UnitDamageSmoke_Tick` (damage smoke effects, presentation), but it draws: three
+   `00BD2F10` calls on stream 1 (`00822973`, `008229F5`, `00822A39`, `MOV ECX,1`) and one
+   `00BD2FC0` on **stream 0** (`00822A87 XOR ECX,ECX`, `00822A89`). Stream 0 is the process-wide
+   generator that ship fire staggers also use, so every draw the host skips shifts later stream-0
+   consumers. Not bound; binding it needs the arms that reach `00822A89` read.
+3. **Planes lane, recorded here for completeness:** `Unit::device_requests_release` `009D4923`
+   (10 rows, 261 k), `Unit::can_release_007bb110` and `Unit::slot_byte_9c0` (8 rows, 38 k): the
+   aircraft device at `unit+72Ch` / `+DECh`, which the host stands in for (`src/game_hosts_units.cpp`).
+4. **Commands, unread:** `WeaponDirector::create_path_object` `0071FB90` (22 rows, 3552 calls) and
+   `WeaponDirector::session_trace_value` `007208A3` (22 rows, 6061; inside
+   `BSP_WeaponDirector_InternalClearPrimaryCommand` `00720850`).
+
+**Next, by contract:** item 1 (`kAirfieldTargetSubEntitiesBound`, with a counter of airfield targets in
+both builds), then item 2's read.
