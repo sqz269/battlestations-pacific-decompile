@@ -10749,3 +10749,84 @@ routed to lua45.
 - `--frame-jitter 20,3` needs quoting (`'20,3'`) inside a `pwsh -Command` string, or the executable exits 2 with no log.
 - Diagnostic exports in `local\`: `g31_u4trace` (`kHullAimTrace` plus `G31AIM`, never committed), `g31_dc_on`,
   `g31_dc_off`, `g31_sy_on` and `g31_sy_off`.
+
+## 148. The banked-torpedo pitch hold is the terrain-avoidance pitch band, not the pitch arm (147.2 item 1; cc9-gunnery32, 2026-10-06, diagnostic runs, nothing bound)
+
+**Run.** A local diagnostic export of `8eee3a87c` (`local\g32_diag`, never committed) prints two lines for every tenth
+planner think of a torpedo aircraft that has entered `aim`:
+- `G32AIM`, after `pilot_pitch_demand_0099e490`: the entry roll mode `+2CCh`, the pitch mode `+2D0h`, bank, `TurnRoll`,
+  the heading error, the heading ramp, `q`, the task's `plan+2BCh`, the floor, the floored target, the measured angle,
+  the bank correction, the live pitch and the demand; then the pitch slot, the live controls, the command block,
+  speed, vy and throttle.
+- `G32BAND`, at the top of `gunfire_repair_0099bf30` (`0099BF30`): the pitch command before the repair, the running
+  `tr_bands` count, and the pitch band set (`pilot+CCh`, set 1).
+
+The launch is USN04, `--mission-frame-seconds 0.0222 --frame-jitter '20,3'`, with `s39_u4_p1` (`local\g32_ord_u4p1.txt`)
+and 32000 frames. The logs are `local\g32_diag_u4b.log` and `local\g32_diag_u4c.log`. The game numbers match 143.1's
+trace: Yorktown_sqn09 levels off at 106-110 m from aim tick 401 and climbs to 157 m by tick 621.
+
+**The pitch arm is not the cause.**
+- Throughout the level-off the entry `+2CCh` is 2 and the heading error is 0.02-0.05 rad. The heading ramp is therefore
+  0, `q` = 0, and the floor sits at -2.395, which is inert. With `+2CCh` = 2 the image computes the ramp too
+  (PILOT_PLANNER_PITCH_ROLL 2c), and an error under `PitchTurnHdgRange/1` = DEG(25) gives 0 there as well.
+- The bank correction is 0.003-0.008 rad, and the mode-2 hold `0099DD4C` never caps the target, because `held` equals
+  the live pitch.
+- The arm's demand goes from +0.04 at tick 401 to -0.3 ... -2.1 from tick 411 on. That is a saturated nose-down request,
+  so `plan_pitch_0099e68d` gives the slot -1.
+- **The command never follows it.** The pitch slot and the live pitch control stay at -0.01 ... +0.13 while the demand
+  is -1.7 (tick 541: `demand=-1.741 slotcur=-0.008`).
+
+**What holds it: `0099BF30`'s repair against the terrain-avoidance band.**
+- `G32BAND Yorktown-class01_sqn09`: from about 120 m the pitch set holds one forbidden band `[-5.0, hi]`, with `hi`
+  rising from -0.18 (138 m) through -0.05 to +0.24 (122 m). It then settles at +0.02 ... +0.10 for the whole hold.
+- The pre-repair command is -0.30 ... -0.41. `ga_band_search_0099b940` moves it to the nearer edge, `hi`, so the
+  aircraft flies `hi`: about level, then climbing.
+- `tr_bands` grows about 3 per think. The band is the terrain pass's insert at `0099D025` (`0099CAB0`, from
+  `terrain_avoidance_0099f1c0`), not the gunfire arm (`0099F172`) and not the vehicle arm (`007DFDC4` / `007E0706`).
+- **The wings-level Kate gets the same band, but lower.** `B5N Kate #2.1` at 112, 80, 56, 40 and 23 m has
+  `hi` = -0.040, -0.130, -0.103, -0.055 and -0.007. Its own command is +0.06 ... +0.23, above `hi`, so the repair never
+  moves it, and it reaches 15 m.
+- The TBD at a similar height (106-122 m) has `hi` between +0.02 and +0.24, banked 0.19-0.33 rad.
+
+**Candidate, not settled: the bank terms of `0099F1C0`'s probe.** Three terms in `terrain_avoidance_0099f1c0` grow with
+the bank:
+- `sa`'s `interp(0.1 -> 1.0, 1.2 -> 8.0, |bank|)` (0.23 rad gives 1.8x);
+- pass 0's turn bend `m_turn * sin(bank) * cos(pitch) * SlideRatio * YawSpd`;
+- the probe radius `interp(0.3 -> 0.6, 1.2 -> 1.2, |bank|)`.
+
+Any of these may differ from the image, or the band may be the image's own behaviour for a banked approach. The body
+is `0099F1C0-009A17CB` (about 9.6 KB, x87) with `0099CAB0`. It is in the planes code (`src/game_hosts_units.cpp`,
+shared). This packet binds nothing there. **Routed to the lead:** read the pass-0/pass-1 probe and the `0099CAB0`
+band arithmetic against the image for a banked descent, and pair any switch on this USN04 launch (and USNRM01).
+
+Also recorded: the TBD banks 0.19-0.33 rad on a heading error of 0.02-0.05 rad for the whole run-in. That is a steady
+turn (the lead point keeps moving), and it is what puts the bank terms in play.
+
+## 149. IJN01 A7M_2's break-off is not a cleared target (147.2 item 3; cc9-gunnery32, 2026-10-06)
+
+**Diagnostic, committed (log only).** `refresh_command_targets` (`0071EBF0`'s rule, `src/game_hosts_gunnery.cpp`) now
+logs two cases:
+- an accepted category-1/2 row with an EMPTY target: `command target 0071EBF0: unit=... accepted an EMPTY target:
+  command=... token=... category=... slot=... source=... -> 0`;
+- every store that takes a unit's target from non-zero to 0, with the reason: `... CLEARED t=... (was N): no current
+  category-1/2 row | row command="..." with an empty target | ... whose target names no unit`.
+
+**Run.** IJN01 with `s38_i1_p1` (`local\g32_ord_i1p1.txt`), 3000 frames, this tree's build: `local\g32_tgt_i1p1.log`.
+The break-offs reproduce (`db aim exit A7M_2|.-4: aimglide -> done ... tgt_440=1 bomb_4c9=1 breakoff=1 d=410.0
+thr=100.0`, and the same for `.-5`, `.-2`, `.-3` and the leader at d = 360-443 m).
+
+**There is no CLEARED and no EMPTY line in the whole log.** The 0071EBF0 refresh never zeroes A7M_2's (or any member's)
+target, so 5eu.1's hypothesis is refuted. The log's own fields say what fires instead:
+- `tgt_440=1`: the latched-target arm is not it.
+- `bomb_4c9` is printed from `pre_bomb_d1`, the value before the tick. The break-off reads `db_has_bomb_d1` as written
+  in that tick by `update_dive_bomb_approach` (`009C7AFE`: `HasGeneralBombOrdnance && rounds_remaining > 0`).
+- Each member breaks off in the tick of its own single drop (`val rack drop: unit=A7M_2|.-4 t=96.10 ...
+  requests_left=1`, then `.-5` at 97.90).
+- With no bomb, `009C8A90`'s range arm fires (`d` = 360-443 m >= `thr` 100 m), and done follows.
+
+**So the open question is the ordnance count, not the target.** After one drop the member's bomb flag reads 0, while
+5eu.1 expects a loaded second rack to keep `approach+D1h` set and send the aircraft round again through goaway and
+flyabove.
+- That is `dive_bomb_rounds_remaining` (the rack census `rack_ammo` / `rack_single_count`) and the live ordnance mask
+  (`kRackLiveOrdnanceMaskBound`).
+- Both are in the planes and racks lane (`src/game_hosts_units.cpp`). **Routed to the lead / cc9-lua45**, with this log.

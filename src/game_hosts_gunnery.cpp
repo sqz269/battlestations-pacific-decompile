@@ -5454,6 +5454,7 @@ void GameGunneryHost::Impl::refresh_command_targets() {
     }
     command_rows_resolved = command_rows.size();
     command_rows_current = current_rows;
+    const std::vector<std::size_t> previous_targets = command_target_by_unit;
     command_target_by_unit.assign(units.count(), 0);
     std::map<std::string, std::size_t> by_name;
     for (std::size_t i = 0; i < units.count(); ++i) {
@@ -5482,7 +5483,19 @@ void GameGunneryHost::Impl::refresh_command_targets() {
     }
     // Step two: resolve only that row's token.
     for (std::size_t i = 0; i < accepted.size(); ++i) {
-        if (accepted[i] == nullptr || accepted[i]->target_token.empty()) continue;
+        if (accepted[i] == nullptr) continue;
+        if (accepted[i]->target_token.empty()) {
+            // GUNNERY 147.2 item 3: an accepted category-1/2 row with no
+            // CommandTarget publishes 0 below, which ends an attack task's run
+            // (009C8A90 needs command_target_plus_one != 0). Name the row so a
+            // run can tell an authored empty target from a host gap.
+            log.notef("  command target 0071EBF0: unit=%s accepted an EMPTY target: command=\"%s\""
+                " token=\"%s\" category=%d slot=%d source=%s -> 0",
+                (i < unit_state.size() ? unit_state[i].row.name.c_str() : "?"),
+                accepted[i]->command.c_str(), accepted[i]->token.c_str(), accepted[i]->category,
+                accepted[i]->slot_index, accepted[i]->source.c_str());
+            continue;
+        }
         const std::map<std::string, std::size_t>::const_iterator found =
             by_name.find(accepted[i]->target_token);
         if (found != by_name.end()) command_target_by_unit[i] = found->second;
@@ -5510,6 +5523,19 @@ void GameGunneryHost::Impl::refresh_command_targets() {
         if (kCommandTargetKeepUnauthoredBound && accepted[i] == nullptr) {
             ++command_target_keeps;
             continue;
+        }
+        // GUNNERY 147.2 item 3: say when this store takes a unit's target from
+        // non-zero to 0, and through which row.
+        if (command_target_by_unit[i] == 0 && i < previous_targets.size()
+            && previous_targets[i] != 0) {
+            log.notef("  command target 0071EBF0: unit=%s CLEARED t=%.2f (was %zu): %s%s%s",
+                (i < unit_state.size() ? unit_state[i].row.name.c_str() : "?"),
+                static_cast<double>(clock_seconds), previous_targets[i],
+                accepted[i] == nullptr ? "no current category-1/2 row" : "row command=\"",
+                accepted[i] == nullptr ? "" : accepted[i]->command.c_str(),
+                accepted[i] == nullptr ? ""
+                    : (accepted[i]->target_token.empty() ? "\" with an empty target"
+                                                         : "\" whose target names no unit"));
         }
         // The plane's control path needs the same answer, and taking it from
         // here rather than resolving names again is what keeps the two from
