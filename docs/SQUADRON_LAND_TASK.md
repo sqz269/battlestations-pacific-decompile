@@ -13765,3 +13765,27 @@ This closes 5er's open read, from disk bytes.
   - The mechanism matches: units whose racks are all empty lose divebomb, and units with a round left keep it.
   - The row moves through exactly those two squadrons, and the moved deaths follow from their strafing.
   - USN13 long is identical and LOMP10 is gameplay-identical.
+
+### 5eu.1 Who drops the second rack (cc9-lua45, read-only)
+
+**In the image, nobody has to re-issue anything.** The task re-attacks by itself (DIVE_BOMB_REATTACK 1).
+- `009C86EE` sends a completed goaway (`009C7F00`) to flyabove while `approach+D1h` (`007B9320`, a rack still
+  answering 2Ah) is set, and to done only once it clears.
+- The aimglide's two exits, `009C8695` (out of bombs) and `009C86B2` (pull-out), both go to goaway.
+- So an A7M with a loaded second rack flies another pass at the same target.
+- The host has all three edges (`src/dive_bomb_task.cpp`).
+
+**The host's A7M_2 never reaches goaway.** The IJN01 ON log (`local\l45_ro_on_ijn01p1.log`) has
+`db aim exit A7M_2|.-4: aimglide -> done ... bomb_4c9=1 breakoff=1 d=410.0 thr=100.0`.
+- The other four members do the same between 95 s and 100 s, right after `.-4`'s one drop at 96.10 s.
+- Done from aimglide is the break-off `009C8A90` (`009C8495` -> `009C849E`).
+- With `bomb_4c9=1` its range arm cannot fire (`d` > `thr`, but it needs the ordnance byte clear). So the only
+  arm left is `!has_latched_target || target+5Dh`.
+- LST2 is alive, so the host's `command_target_plus_one` must read 0 at that tick.
+- The 0071EBF0 refresh in `src/game_hosts_gunnery.cpp` (around line 5480) stores 0 for a unit whose accepted
+  category-1/2 row has an empty token. That case does not log, so the log shows no re-resolution at 96 s.
+- **Hypothesis, not yet proved:** the drop puts a current category-1/2 command row with no target token on the
+  squadron's members, which zeroes their command target for that step.
+
+**Open, routed to the gunnery lane (its file):** a diagnostic at that store, a log line when a non-zero target
+is overwritten with 0, will show which row does it. Nothing is bound here.
