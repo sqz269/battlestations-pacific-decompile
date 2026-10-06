@@ -252,7 +252,7 @@ inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held
 // through 00888AA0 and pushes 00852820's answer: the world y at +100h above
 // (+1204h + +1200h) / 3.0, with no class test. True: route the row to
 // run_get_submarine_on_surface_008942c0. False: unimplemented (nil, read as false).
-inline constexpr bool kLuaGetSubmarineOnSurfaceBound = false;
+inline constexpr bool kLuaGetSubmarineOnSurfaceBound = true;  // ON: JM06 24000 pair (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
