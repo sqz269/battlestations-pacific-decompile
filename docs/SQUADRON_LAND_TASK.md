@@ -11819,12 +11819,12 @@ with the l38 launch lines (`local\l39_queue.ps1`; `BSP_GUNNERY_RNG_STREAMS=1`,
 - Hawaii's guns sink all three Japanese ships: Hosho at 522.65 s (first damage 455.61 s),
   Isokaze at 617.12 s and Fubuki at 674.56 s. Those are the three only-ON death rows among the
   ships.
-- The other 61 death-row differences are the island structures (tents, huts, houses).
+- The other death-row differences (28 only ON, 30 only OFF, 90 changed) are island structures (tents, huts, houses).
   - Their killers and ranges move by about a metre, and a few flip in or out.
   - This is the fight around them re-timed by the six new hulls. The shared stream is
     RNG-coupled, as memory notes for pairs.
   - No Japanese or US ship that exists on both sides changes its fate.
-- LOMP10 long's 1 s late fire (232.56 against 52.55 + 180) is the float residue of
+- LOMP10 long's fire 0.01 s after 52.55 + 180 (at 232.56) is the float residue of
   `left <= 0`, stepped at 0.05 s.
 
 Every prediction held. **Verdict: ON.** The mechanism is the image's as read. The only
