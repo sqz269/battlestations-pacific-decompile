@@ -13192,3 +13192,31 @@ The class values are read through `read_vehicle_class_number`: `SmokeFireDuratio
 - **Without the option**, stream 1 is the shared generator, so each roll moves every later shared
   draw. That is the point of the binding, and the pairs cannot show it.
 - **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no bleed, so 0 rolls.
+
+### 162.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `f0c97da4a`.
+- ON is `pair_export.py --commit f0c97da4a --flip kLandFortFireRollBound=true --out local\s34_fr_on`.
+- Prefixes `off4` / `on4`.
+- Smoke: `local\s34_smoke4.log`. Clean.
+
+**Pairs:** BSM01, USN13, USNOS, USN01 3000 and JM08 long 36000 are all `pair_diff` 1. As predicted,
+no row's gameplay moves under the measurement streams.
+
+**JM08 long census:** `rolls=3003` (one per bleed call) `roll_hits=2 starts=2 extends=0 stops=2
+secondary_rolls=0 draws=3007`.
+
+| | first start | second start |
+| --- | --- | --- |
+| t | 1012.05 s | 1023.15 s |
+| duration | 0.91 s | 19.81 s |
+| chance | 0.00032 | 0.00037 |
+| HQ health | 2807.6 / 12000 | 1457.6 / 12000 |
+
+- The HQ class's `SecondaryExplosionChanceMul` is 0, so the frame arm only counts down.
+
+**Verdict: ON.** The mechanism matches: one shared-stream roll per bleed call, as the image takes
+it. It only matters without the measurement option. Not game-validated.
+
+**Uncertainty:** the effect creation is assumed to succeed, and `class+2Ch` is assumed 0 (162.2).

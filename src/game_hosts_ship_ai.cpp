@@ -704,7 +704,9 @@ inline constexpr bool kLandingShipLandedRemainderBound = true;
 // 00BD2FC0 is consumed as one 00BD2F10(0) draw (one generator step either way,
 // 00BD2F22 / 00BD2F29). True: those draws and the +740h / +748h / +750h state.
 // False: the roll is a record and no draw is taken.
-inline constexpr bool kLandFortFireRollBound = false;
+// ON by section 162.4: all five rows gameplay identical under the measurement
+// streams; JM08 long rolls 3003 times, 2 fires start, no secondary roll.
+inline constexpr bool kLandFortFireRollBound = true;
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
