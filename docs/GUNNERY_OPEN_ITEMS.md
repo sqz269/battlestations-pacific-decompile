@@ -10195,6 +10195,8 @@ The routed pieces (A)-(D) are cc9-lua43's `b8b8415e0`, `7556f3f03` and `e07680e8
 
 ### 136.6 The LOMP10 build pair: the queue works, but the launched Elco never leaves the hangar (switch stays OFF)
 
+**Pointer (cc9-gunnery31, 2026-10-06).** The mechanism failure below is resolved by SHIP_AI 197, which holds the `0081DE10` / `+1130h` correction (`kPathObjectDefaultPairBound` ON). The re-pair and the flip are section 146.
+
 **Setup.**
 - Binaries: `pair_export --commit dbcb95705` (local branch `g30-sytest`: my tree plus cc9-ships38's `a5c970e65`,
   the `build` line). OFF is `22FC31B1F015`; ON (`kShipyardProductionBound=true`) is `B80CE35E8A62`.
@@ -10461,8 +10463,9 @@ switches flipped; logs `local\g31_dc{off,on}_<row>.log`; the reference AD launch
   - A local diagnostic build (`G31DIAG`, `local\g31_dcdiag.log`, not committed) shows that each hit comes from a
     near-vertical sinking step about 0.4 m long, but the hit point it reports is about 40 m below that step:
     `from=(1119.06 -14.56 -2997.52) to=(1119.09 -14.94 -2997.51) point=(1121.89 -53.01 -2996.32) shape=10`.
-  - The path is `landscape_entry_segment_hit`'s vertical case, `kTerrainVerticalSubwalkBound` (00AECC40/00AECA60,
-    `src/game_hosts_scene_contents.cpp`).
+  - The path is the general slot-3Ch quadtree walk (vertical=2/0 in the same log); its 00ADEB80 line test is the
+    image's (SCENE_CONTENTS_HOSTS 30), so the open term is the in-water horizontal drift (006FCD20).
+    (Corrected 2026-10-06 from cc9-lua45's read: the vertical subwalk ran twice and hit nothing.)
   - The blast is then centred at -53 m, beyond 50 m of MiniSub, so it never reaches it.
   - Routed to the lead (scene-contents lane): a segment whose y range is -14.56..-14.94 should not report a crossing
     at -53.01.
@@ -10605,3 +10608,144 @@ when the plane has no equipment index. With that and the 0.6 default, kRackBulle
 USN13 9000 / USNOS / LOMP10.
 
 Uncertainty: `+3B8h`'s producer for a rack, and whether a damaged rack (`+358h > 0`) occurs on these rows, are unread.
+
+## 145. USNOS: Portland1's attack on a parked Judy and on Airfield3 (lead item 7, from cc9-ships39; cc9-gunnery31, 2026-10-06, diagnostic runs, nothing bound)
+
+Runs on this tree (`e611d7c4f` plus local, uncommitted `G31CMD` / `G31AF` / `G31VIS` lines in the gun pass binding):
+- USNOS 30000/0.05 with ships39's order files `s39_os_b2.txt` (attack plane #1.5) and `s39_os_b4.txt` (attack
+  Airfield3), `BSP_FIRE_GATE_TRACE=Portland1`;
+- logs `local\g31_os30_b2.log` and `local\g31_os30_b4.log`.
+- Portland1 closes to 1279 m (b2) and 1959 m (b4) of its target, at about 1240-1265 s. It is then sunk, at 1270.8 s
+  (b2) by Ada2 and at 1246.7 s (b4) by Ada1. ships39's run closed to 1069 m.
+
+**(a) The attack order's target does reach the gun pass.**
+- `0077D600` stores the command, and `0071EBF0` resolves it (`command target 0071EBF0: unit=Portland1 token="plane
+  #1.5"`).
+- Step 8.7 scores it every pass: `G31CMD` from 310 s on. `score_candidate_00863990` is called with plane #1.5 for
+  categories 1 and 5, and with Airfield3 for categories 1, 3 and 5.
+
+**(b) The parked plane.**
+- Category 3 (the 8-inch rows) never reaches the mask test for a plane. The rank table answers 0 for the plane
+  classes, and is read by `gunnery_rank(rank_table, 3, class)`. That is the image's data, not a host gate.
+- Categories 1 and 5 pass the mask, liveness and range tests once Portland1 is inside 1600 / 2000 m (from 1203 s).
+  The plane is visible: `G31VIS sub=plane #1.5 cached=1 visible=1 los_now=1`, with y = 13.5 on the field.
+- **But no AA gun is assigned it** (`fire gate ... have=0`). So step 8.8's per-gun slot test refuses it. That test is
+  `gun_inputs`: the in-range test against `dp_air_ammo` / `max_range`, then `bind_aa_acceptance`'s fire window,
+  armour and line-of-fire terms (`kAaFireWindowBound`, `kAaArmourBound`, `kAaLineOfFireBound`).
+- Which term refuses is **not yet measured**. The next diagnostic is `last_refusal_` for that pair. A plane on the
+  ground at about 0 degrees of elevation from a mount whose window starts above it, or a blocked line of fire, is
+  the likely answer. Either would be image behaviour, since a parked plane is not an air target for an AA mount's
+  window.
+
+**(c) Airfield3.**
+- The airfield arm works. `kAirfieldTargetSubEntitiesBound` hands over the live hangars, and the 8-inch rows take
+  `Multi Hangar 1` (and `Coastal Gun 03` on the way) once inside the category range of **2300 m**
+  (`category_engagement_range_00956d63`). That happens from about 1182 s: `have=1 accepted=1`.
+- **The forward turrets then do not traverse.** Gun 547 wants -7.2 / -16 degrees but sits at -130.8 from 1164 s to
+  1246 s, while its elevation creeps 0.08 degrees a second. Gun 549 (aft, window [-180..-55] [55..180]) is
+  correctly out of arc.
+- Portland1 has been taking hits since 1131 s (`first_damage=1131.43`). So the traverse is probably the damage
+  state's rotation slow-down, **not checked**: the producer of the turret's live rotation speed under damage is
+  unread.
+- A ship that closes inside 2300 m of a defended airfield is shot down there, so this row cannot show a hangar kill
+  without a longer-lived attacker.
+
+**Status: partial.** Nothing is bound. Two measurements are open for the next gunnery packet:
+1. the AA slot test's refusal term for a grounded plane;
+2. what freezes the 8-inch traverse after 1131 s, the damage rotation scale (`gun+358h` level, device HP) or a seat
+   hold.
+
+## 146. Re-pairing `kShipyardProductionBound` on current main (lead item 8; cc9-gunnery31, 2026-10-06)
+
+136.6's mechanism failure was that the launched Elco never moved. SHIP_AI 197 removes it: ships39's
+`kPathObjectDefaultPairBound` is ON on main (`game_hosts_commands.hpp`), and it holds the `0081DE10` / `+1130h`
+correction. On LOMP10 with g30's build orders, all four Elcos follow `CB4_SY_Path` and entries 2-4 build.
+
+**Pair.** OFF is this branch at `9dfdb6a64` (main `096f4d4ca` merged); ON is the same commit with the switch flipped.
+Rows:
+- LOMP10 12200/12000 with `local\g31_ord_l10_build.txt` (g30's `g30_ord_l10_build.txt`: build lines at 4700-4740,
+  then the airfield launches);
+- JM05 long;
+- BSM01 3000 as the control.
+
+**Predictions (before the runs):**
+1. **LOMP10 build.** Four Elcos (class 27):
+   - the first is built at once on `CB4_SY_Hangar`; orders 2-4 queue in state 2 and build as the hangar frees;
+   - each runs `moveonpath` on `CB4_SY_Path` and moves;
+   - units +4 and the shipyard summary shows four builds;
+   - the gameplay moves (exit 3) by those four boats.
+2. **JM05 long and BSM01 3000:** identical gameplay (exit 1, from the ON-only summary line). No `build` line, and
+   nothing sends A9h (136.3 item 1).
+
+**Results** (exports `local\g31_sy_off` `68F9339D1E4D` and `local\g31_sy_on` `7D50444063D4`; logs
+`local\g31_sy{off,on}_<row>.log`):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP10 12000 build | moved | units 341 -> 345. `shipyard build` x4: Elco #Y1-#Y4 from `CB4_SY_Hangar`, entry 1 at once and entries 2-4 as the hangar released (`00846320`), each `moveonpath CB4_SY_Path`. The fifth line is refused with `no idle entry` (136.3 item 2). Shots 11257 -> 11248, damage 10681.8 -> 10661.1, deaths 13 = 13 |
+| JM05 long | identical | |
+| BSM01 3000 | identical | |
+
+Prediction 1 holds as written, including the fifth refusal, and prediction 2 holds. **Verdict: the mechanism matches,
+so `kShipyardProductionBound` is flipped ON** (`include/bsp/shipyard_production.hpp`).
+
+## 147. Handoff (cc9-gunnery31, 2026-10-06, at about 70% context)
+
+### 147.1 Landed or committed on agent/cc9-gunnery31
+
+| item | commits | state |
+| --- | --- | --- |
+| 142 depth charge under water (006FD9B0 / 006FD660 / 006FCD20) | `dc333827c`, `efbc2de86` | **ON**, with 139 `kDepthChargeBotTickBound` and 140 `kPlayerWeaponGroupFireBound` |
+| 143 USN04 strike releases and USNOS Kaiten drown | `fbc2f7f4a` | read; routed to the planes lane; the Kaiten drown is faithful |
+| 144 rack CanFire and the RepeatTime default | `180564f8d` | read; edits routed (0.6f default, and the equipment-bag device) |
+| 145 Portland1 vs a parked Judy and Airfield3 | `8003a7d45` | partial; two measurements open |
+| 146 `kShipyardProductionBound` re-pair | `e4269601d`, `d09116c3d` | **ON** |
+
+### 147.2 Next, in order (the lead's full queue, 2026-10-06)
+
+1. **(6new) The banked-torpedo pitch hold.** TBDs in `aim` level off at 106-110 m while banked 0.19-0.32 rad,
+   against an aim command of -0.18..-0.49 rad (143.1). Read `0099E490`'s pitch arm, its turn terms
+   (`pilot_general_pitch_turn_*`) and the mode-2 hold `0099DD4C` against the image; bind OFF.
+   - Pairs: USN04 (`--mission-frame-seconds 0.0222 --frame-jitter '20,3'`, ships39's `s39_u4_p1.txt`,
+     this tree's `local\g31_ord_u4_p1.txt`) and USNRM01, plus a control.
+   - The `G31AIM` diagnostic (local only) is in `local\g31_u4trace\src\game_hosts_units.cpp`.
+2. **(6b) The dive handover attitude.** The SBD leader enters `aimdive` at -1.18 rad live pitch against a turndown
+   command of -0.56 (143.2). Read `009C44F0` and the pitch-mode-0 gate `0099E3BF`; bind OFF. Pairs: USN04 and
+   USN01 p8 (scripted dive bombers).
+3. **(ii) IJN01 A7M_2's target cleared to 0 while LST2 is alive** (SQUADRON_LAND_TASK 5eu.1). All five members
+   leave aimglide for `done` through the `009C8A90` break-off at 95-100 s, which needs
+   `command_target_plus_one == 0`.
+   - Suspect: `refresh_command_targets` (0071EBF0, `game_hosts_gunnery.cpp` around 5480) stores 0 when the accepted
+     category-1/2 row has an EMPTY token, and logs nothing.
+   - Add a diagnostic that names the row, then fix it if it is a host gap.
+4. **(iii) Player torpedo fire, group 4, for JM06** (lua45's spec).
+   - Key 9Eh selects group 4. `00959C20`'s arm `0095A1CC..0095A43E` walks the torpedo tubes (`[+3F4h]+80h == 7`).
+   - The submarine arm `0095A380` fires one ready tube per `+35h` press: `vtable[1D0h](1)`, then
+     `0072C970` / `007311B0(yaw)`, `0072AC20`, `vtable[1F0h]()`.
+   - The surface arm uses `+34h` held, with a |yaw| tolerance `[00CEDF5C]`.
+   - Extend `player_fire_weapon_group` to group 4 with an aim (a yaw or a target), after reading the tube vtable
+     `1D0h`/`1F0h` and the yaw formula. The lead routes the harness line to ships40.
+   - `+34h` = held and `+35h` = pressed, as in 140; SHIP_SCREEN_UPDATE 32 has them reversed.
+5. **The depth charge's in-water horizontal drift** (gates BSM01's player route; p9 hits nothing). A sinking charge
+   still moving 0.6 m/s horizontally at -14.5 m extends the quadtree line test to the seabed 37 m below.
+   - Does the image keep that horizontal speed after water entry? `006FCD20` drags all three components by
+     `+468h`.
+   - Check `006FD660`'s water-entry velocity (and `006E6450`), and whether the image zeroes or damps the
+     horizontal part.
+6. **145's two open measurements:**
+   - the AA slot-test refusal for a grounded plane (`bind_aa_acceptance`'s `last_refusal_`, Portland1 against
+     plane #1.5 on `s39_os_b2.txt`);
+   - the 8-inch traverse freeze after damage (gun 547 at -130.8 deg from 1164 s).
+7. **(i) The GUNNERY 142 bullet correction**: done in this commit.
+8. **Reference AE**, when the lead asks. The AD tools are at 141.3. This tree's `local\g31_runrows.ps1` is the same
+   launch form, with rows `b1p6`, `b1p7`, `b1p9` and `l10b`.
+
+Recorded, no action: 143.3's submarine breathing-line floor `00CEE4E0` = -4.0 (the host tests < 0.0). It has no
+effect on this installation's classes. 144's 0.6f RepeatTime default and the `Equipments[C54h]` rack device are
+routed to lua45.
+
+### 147.3 Notes
+
+- `--frame-jitter 20,3` needs quoting (`'20,3'`) inside a `pwsh -Command` string, or the executable exits 2 with no log.
+- Diagnostic exports in `local\`: `g31_u4trace` (`kHullAimTrace` plus `G31AIM`, never committed), `g31_dc_on`,
+  `g31_dc_off`, `g31_sy_on` and `g31_sy_off`.

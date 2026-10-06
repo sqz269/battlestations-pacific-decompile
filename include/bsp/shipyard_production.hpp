@@ -28,7 +28,7 @@ namespace bsp {
 // every registered shipyard, runs 00846320's walk each fixed step and accepts
 // the strategic map's purchase (GameGunneryHost::shipyard_order). False: none
 // of it; the registry may still be filled by the scene, and nothing reads it.
-inline constexpr bool kShipyardProductionBound = false;
+inline constexpr bool kShipyardProductionBound = true;  // ON: GUNNERY_OPEN_ITEMS 146
 
 inline constexpr std::size_t kShipyardNone = static_cast<std::size_t>(-1);
 
