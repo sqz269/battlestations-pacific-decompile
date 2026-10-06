@@ -653,6 +653,16 @@ inline constexpr bool kShipAiInitialCruiseStateBound = true;
 // ON by section 159.4: BSM01, USN13 and USNOS gameplay identical (USNOS writes
 // 3951 zeros); JM08 long moves through 25958 positive writes and 129466 searches.
 inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
+// Packet cc9_capture_party_lua_mirror (section 160). 006F4D10 ends every arm with
+// this->vtable[2Ch](party, race, &tmp): 2 on the neutralize arm (slot 8/9), the
+// slot's party on a flip. CommandBuilding's vtable 00CFB028 + 2Ch (00CFB054) is
+// 00951F30, JMP 00928F50, which rewrites the entity's Lua `Race` and `Party`. True:
+// after the host's side change the Lua host re-runs its 00928F50 projection
+// (GameMissionLuaHost::mirror_party_race_00928f50). LABELLED: that projection
+// rewrites `Party` on every named unit from its row, not on this entity alone;
+// rows whose party did not change get the value they already hold. False: the
+// table keeps the party written at attach, as before.
+inline constexpr bool kCommandBuildingPartyLuaMirrorBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1444,6 +1454,21 @@ struct GameShipAiHost::Impl {
     unsigned long long approach_penalty_positive{0};
     unsigned long long approach_penalty_searches{0};
     float approach_penalty_max{0.0f};
+    // Packet cc9_capture_party_lua_mirror: 006F4D10's vtable[2Ch] mirror calls,
+    // and the slots the Lua host rewrote on the last one.
+    unsigned long long capture_party_mirrors{0};
+    std::size_t capture_party_mirror_slots{0};
+    // 006F4D10 -> vtable[2Ch] 00951F30 -> 00928F50 after a side change.
+    void mirror_capture_party_00928f50() {
+        if (!kCommandBuildingPartyLuaMirrorBound) {
+            record("CommandBuilding::set_party_lua_mirror_00928f50", 0x00928f50u);
+            return;
+        }
+        if (settings_owner == nullptr) return;
+        capture_party_mirror_slots = settings_owner->mirror_party_race_00928f50();
+        ++capture_party_mirrors;
+        done("CommandBuilding::set_party_lua_mirror_00928f50", 0x00928f50u);
+    }
     std::map<int, GameUnitsHost::VehicleClassLaunchKeys> launch_keys;
     const GameUnitsHost::VehicleClassLaunchKeys& class_launch_keys(int type_id) {
         auto found = launch_keys.find(type_id);
@@ -12077,6 +12102,7 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             : "?", flip.new_party, tick.side, slot, flip.repair ? 1 : 0, capture_clock);
         ++capture_flips;
         units.set_unit_side_0054(b.unit, flip.new_party);
+        mirror_capture_party_00928f50();   // 006F4FB8 CALL EDX, vtable[2Ch](party, ...)
         if (gunnery_draws != nullptr) {
             gunnery_draws->refresh_unit_side(b.unit);
             // 006F47F0(this, 1.0, 1.0): Repair[level] / 100 is >= 1.0 at every level
@@ -12213,6 +12239,7 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
         ++host.capture_neutralized;
         b->neutral_at = host.capture_clock;
         host.units.set_unit_side_0054(unit_index, 2);
+        host.mirror_capture_party_00928f50();   // 006F50CA CALL EDX, vtable[2Ch](2, ...)
         if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
         const GameUnitRow* row = host.units.unit_row(unit_index);
         host.log.notef("command building capture: unit=%s neutralized (prior party=%d) at "
@@ -13281,6 +13308,10 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission command building party lua mirror calls=%llu "
+            "last_slots=%zu bound=%d (006F4FB8 / 006F50CA vtable[2Ch] -> 00951F30 -> 00928F50, "
+            "packet cc9_capture_party_lua_mirror)", host.capture_party_mirrors,
+            host.capture_party_mirror_slots, kCommandBuildingPartyLuaMirrorBound ? 1 : 0);
         host.log.notef("summary mission ship ai approach search penalty writes=%llu "
             "positive=%llu max=%.1f searches=%llu bound=%d (009F337B / 009F3383 into plan "
             "+2Ch, read at 009EC6D8 for 009EC280; packet cc9_approach_search_penalty)",
