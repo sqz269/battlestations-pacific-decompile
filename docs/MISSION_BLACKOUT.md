@@ -363,3 +363,35 @@ were checked against the listing and match.
 
 Coverage: 005B9BA0 and 005B9800 were read for the re-arm and the idle arm only; the rest is
 earlier sections of this doc. No functions were added and no names changed.
+
+## Two movies on one frame: USNOS's lost `luaShimoMovieEnd` (cc9-lua46, 2026-10-06, a read)
+
+**The observation.** In cc9-ships41's USNOS run (`s41_f7_osf7.log`, lines 222940-223146):
+- One recon refresh fires both `luaShimotSighted` (Shimotsuke) and `luaBlockade` (ToSpawnShima), each
+  `party 0 0 -> 2`.
+- Each calls `luaIngameMovie(..., cb, true)`, so `Blackout(true, "luaIngameMovieBOStart")` is called twice.
+- `luaIngameMovieBOStart` runs once.
+- Only the Blockade movie plays. `luaShimoMovieEnd` never runs, so `luaObj_Add("primary", 3, Shimotsuke)` is
+  never reached.
+
+**Why: the image does the same.**
+- **The script.** `luaIngameMovie` (this installation's `scripts/global/commandhelpers.lua`, dated 2024-10-29,
+  line 7747) keeps the callback in one slot, `Mission.MovieCallbackParameters`. With `bo` set, it only arms the
+  blackout. `luaIngameMovieBOStart` reads that slot when the fade lands and gives the callback to
+  `luaCamIngameMovieAuto`, whose `luaDelay(luaCamOnTargetExt, ..., "CB", callback)` is the only call of it.
+  The second `luaIngameMovie` overwrites the slot before the first fade lands.
+- **The native.** `Blackout` (`008D1340` -> `005B9BA0`) replaces the pending name and restarts the timer with no
+  pending test (section above). So `luaIngameMovieBOStart` runs once, with Blockade's parameters. Even if it ran
+  twice, it would run with the same slot.
+- **The two sightings on one frame.** `00980E50` dispatches per unit from `0077B0C0`. The recon records
+  are refreshed every 3 s (`008079B0`, RECON_SENSOR_PASS_BINDING). Two units that become visible within one
+  refresh are dispatched on the same tick in the image as well.
+
+**Verdict.** No host gap. The movie layer is Lua, with no native movie queue: no MissionNarrative or movie native
+is involved. The Blackout native matches `005B9BA0`. The lost callback is the script's single-slot design,
+which is reached whenever both listeners fire within one fade (1 s). Whether that happens depends only on the two
+units entering recon within one 3 s refresh. Nothing is bound.
+
+**For the harness.** To get primary 3, sight Shimotsuke and the Blockade more than one fade apart. One way is
+to delay the approach to the Blockade by at least one refresh after Shimotsuke is sighted. This is a player
+choice, not a host fix.
