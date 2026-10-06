@@ -11226,7 +11226,9 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     }
     if (kBombDropScatterBound) {
         // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
-        const int row = (skill_row < 0 || skill_row > 5) ? 1 : skill_row;
+        // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
+        const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
+        const int row = (level < 0 || level > 5) ? 1 : level;
         const float mul = h.units.unit_is_kind_of(unit_index, 0x10)
             ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
         const float s = chosen->throw_amount * mul;

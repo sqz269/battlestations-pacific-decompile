@@ -958,11 +958,11 @@ public:
     // for the same reason and with the same caveat (packet cc8_dive_aim item 2:
     // the aimdive census `tf=` column is last-sampled and cannot be read as a
     // release value). Pass a negative when the caller has none.
-    // `skill_row` is the dropping plane's PilotBot level (0..5), for 006E4D50's
-    // ThrowMul (packet cc9_bomb_drop_scatter, GUNNERY 130).
+    // `skill_row` is the dropping plane's PilotBot level (0..5) for 006E4D50's
+    // ThrowMul (packet cc9_bomb_drop_scatter, GUNNERY 130); -1 asks the units host.
     bool release_bomb_drop(std::size_t unit_index,
                            const float predicted_impact[3],
-                           float release_fall_time, int skill_row = 1);
+                           float release_fall_time, int skill_row = -1);
     // True when 006E4D50's scatter draws are taken (kBombDropScatterBound).
     static bool bomb_drop_scatter_bound() noexcept;
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;

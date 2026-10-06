@@ -9716,9 +9716,9 @@ installation's `robots.lua` (mtime 2025-06-01): DiveBombThrowMul 1.0 except SPVe
 `kBombDropScatterBound` (gunnery), in `GameGunneryHost::release_bomb_drop` after the 5do velocity: the four
 draws in order on stream 1 (key `Draw::bomb_scatter` (unit, 0) under the measurement option), then the cone
 over the plane's pose rows (right, up, forward). Both host drop paths reach it (the rack tick's
-`run_rack_bomb_drop_006e4d50` and the bay release in `src/game_hosts_units.cpp`). `skill_row` (default 1,
-SPNormal) picks the ThrowMul row; the prepared units edit (`local\g28_units_scatter_edit.py`) passes
-`dive_bomb_row_index` and keeps the `Rack::drop_dispersion_006e4f91` record only while unbound.
+`run_rack_bomb_drop_006e4d50` and the bay release in `src/game_hosts_units.cpp`). The ThrowMul row is the
+plane's PilotBot level from `GameUnitsHost::skill_level` (`bot+34h`, `007B8AE0`), so no units edit is
+needed; the units host's `Rack::drop_dispersion_006e4f91` record stays (a stale label while bound).
 
 **LABELLED:** the round's rows are the plane's pose rows (the rack mount rotation is unread); every
 dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h)` no-cone arm
