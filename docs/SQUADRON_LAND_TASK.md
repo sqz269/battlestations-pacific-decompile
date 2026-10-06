@@ -13172,3 +13172,34 @@ Shipyard row, so there are no attach lines. Gameplay is identical.
 
 **Verdict.** The mechanism matches, so both switches are ON. The production walk, the `build` line and
 the creation seam are what would make this stock reach gameplay.
+
+## 5ek. The shipyard creation seam, GUNNERY 136 (D) (cc9-lua43, 2026-10-06)
+
+`GameMissionLuaHost::create_shipyard_unit_00844fc0` is registered with `bsp::shipyard_set_create_unit` in the
+host's constructor and cleared in its destructor. It follows gunnery30's contract in
+`cc9-gunnery30\local\g30_routed_shipyard.txt` (D).
+
+**What it builds.**
+- A scene record:
+  - `Type` = the class; `ShipYardLaunch` = 1; the shipyard row's Party.
+  - The creator row by kind: PlaneSquadronGen 18h with `WingCount` 1 through the spawn pool, DestroyerGen 07h,
+    MotherShipGen 09h, SubmarineGen 08h, TBoatGen 0Eh, LandingShipGen 0Ch.
+  - The request's frame, with y = 0 when `snap_to_water` is set.
+- It creates the record through the SpawnNew member path (`create_unit_from_scene_record_0046db4b`), then the
+  InitAll push and pass.
+- It then calls `GameScriptOrdersHost::issue_shipyard_moveonpath_008454b4`. That issues `moveonpath` (00E08F80,
+  flags 1, target {1, the path marker's id}) with no 0071C1B0 call. The path build 0071F600 runs on delivery.
+
+**SUBSTITUTIONS (labelled):**
+- Race follows SpawnNew's default, and Skill / OwnerPlayer take the record defaults (1, 9). This process keeps
+  no bag on the shipyard unit.
+- The plane `State` 6 / `VelocitySI` 0 and the submarine `Dive` 0 have no record field.
+- The water height is 0.
+- The unit+C0h bag ref (00845440) and the hangar observer 00694A60 are not modelled.
+
+**Switches.**
+- No switch of its own. The seam is inert until something orders a build: gunnery30's
+  `kShipyardProductionBound` together with ships38's `build` line.
+- The LOMP10 300-frame smoke shows `summary shipyard create requested=0 made=0`.
+- Also in this commit: (B) binds the record at the load-attach site as well, and (A)'s enum reader takes the
+  symbol's own digits (`:" 0"`), as gunnery30's text does.

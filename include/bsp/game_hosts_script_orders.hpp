@@ -606,6 +606,11 @@ public:
     // by any position or yaw the script passed. Returns the entity id, or 0.
     std::uint32_t create_unit_from_scene_record_0046db4b(
         const GameSceneEntityRecord& record);
+    // Packet cc9_shipyard_create_unit. 008454B4..008454C9: 0077D600 with ECX = the
+    // unit 00844FC0 just made, PUSH 1, the target {1, the hangar path's +174h id},
+    // PUSH 00E08F80 `moveonpath`. False when the unit or the path marker is unknown.
+    bool issue_shipyard_moveonpath_008454b4(std::size_t unit_index,
+                                            const std::string& path_name);
 
     // 007F4B55's array, filled in. The scene pass queues one entity record per
     // wing and create_units turns them into units afterwards, so the squadron
