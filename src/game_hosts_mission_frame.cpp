@@ -362,9 +362,12 @@ struct GameMissionFrameHost::Impl {
         // 00673A10 through GameGunneryHost::shipyard_order (cc9-ships38).
         bool build{false};
         int build_class{0};
-        // `depthcharge <ship>`: weapon group 5 (key 9Fh) and fire (99h) on the
-        // controlled ship, 005484F0's message 79h -> 00959C20's arm 0095A441.
-        bool depthcharge{false};
+        // Packet cc9_player_fire_group_line: `fire <ship> group <g> [release]`,
+        // the fire key 99h held (or let go) with weapon group g selected:
+        // 005484F0's message 79h through GameGunneryHost::player_fire_weapon_group.
+        bool fire_group{false};
+        int fire_group_id{0};
+        bool fire_held{true};
         // Packet cc9_player_bomb_release: `release <unit> [on <target...>
         // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
         bool bomb_release{false};
@@ -2582,9 +2585,15 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
-                || words[1] == "depthcharge");
+                || words[1] == "depthcharge" || words[1] == "fire");
         // `<frame> depthcharge <ship...>`.
         const bool depthcharge_ok = verb_ok && words[1] == "depthcharge" && words.size() >= 3;
+        // `<frame> fire <ship...> group <g> [release]`: the ship name may carry
+        // spaces, so the group is read from the end.
+        const bool fire_release = verb_ok && words[1] == "fire" && words.back() == "release";
+        const std::size_t fire_words = words.size() - (fire_release ? 1 : 0);
+        const bool fire_ok = verb_ok && words[1] == "fire" && fire_words >= 5
+            && words[fire_words - 2] == "group";
         // `<frame> build <shipyard...> class <id>`: the shipyard name may carry
         // spaces, so the class is the last two words.
         const bool build_ok = verb_ok && words[1] == "build" && words.size() >= 5
@@ -2600,20 +2609,44 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "launch" ? !launch_ok
                 : words[1] == "release" ? !release_ok
                 : words[1] == "build" ? !build_ok
-                : words[1] == "depthcharge" ? !depthcharge_ok : words.size() < 4)) {
+                : words[1] == "depthcharge" ? !depthcharge_ok
+                : words[1] == "fire" ? !fire_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
                 "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
                 "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
-                "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>`", line,
-                path.c_str());
+                "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
+                "fire <ship> group <g> [release]`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (fire_ok) {
+            char* ge = nullptr;
+            const long g = std::strtol(words[fire_words - 1].c_str(), &ge, 10);
+            if (ge == nullptr || *ge != '\0' || g < 0) {
+                host.log.notef("helm order refused: line %d of \"%s\": fire needs a "
+                    "non-negative group number", line, path.c_str());
+                continue;
+            }
+            order.fire_group = true;
+            order.fire_group_id = static_cast<int>(g);
+            order.fire_held = !fire_release;
+            for (std::size_t w = 3; w + 2 < fire_words; ++w) order.unit += ' ' + words[w];
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (depthcharge_ok) {
-            order.depthcharge = true;
+            // `depthcharge <ship>` is now a one-frame press of the fire key with
+            // group 5: `fire <ship> group 5` on its frame and the release on the
+            // next one. (cc9-ships38's 009E2B60 stand-in is retired.)
             for (std::size_t w = 3; w < words.size(); ++w) order.unit += ' ' + words[w];
+            order.fire_group = true;
+            order.fire_group_id = 5;
+            order.fire_held = true;
+            host.helm_orders.push_back(order);
+            order.frame += 1;
+            order.fire_held = false;
             host.helm_orders.push_back(order);
             continue;
         }
@@ -3027,43 +3060,41 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
                 continue;
             }
-            if (order.depthcharge) {
-                // The player's depth-charge release. In the image the key 9Fh
-                // (IC_GUNC_DEPTHCHARGE, this installation's Inputs.lua) selects
-                // weapon group 5 on screen 2Eh (005484F0, role 7, mask 80h), and
-                // the fire key 99h makes 005484F0 build message 79h (00954A10)
-                // for [00E188D8]. 00959C20 jumps on group 5 to 0095A441. For each
-                // kind-20h device that 00954210(5) keeps (operational, 0080F750),
-                // a Function-8 rack takes its trigger vtable[1E8h] from msg+34h
-                // (0095A58D..0095A5A0); Function 9 is aimed first.
-                // LABELLED: the press is delivered through 009E2B60's mark
-                // (GameGunneryHost::fire_function_guns_now_009e2b60, the same
-                // vtable[1E8h](1) latch on the Function-8 racks), not a message;
-                // no group screen or role take runs.
+            if (order.fire_group) {
+                // Packet cc9_player_fire_group_line. In the image the player's
+                // group key (9Fh, IC_GUNC_DEPTHCHARGE in this installation's
+                // Inputs.lua, for group 5) selects the weapon group on screen 2Eh,
+                // and holding the fire key 99h makes 005484F0 build message 79h
+                // (00954A10) for [00E188D8] with the held byte at msg+34h; letting
+                // go sends it again with the byte clear. 00959C20 jumps on group
+                // 5 to 0095A441. The line calls cc9-gunnery30's
+                // GameGunneryHost::player_fire_weapon_group, which sends that
+                // message (kPlayerWeaponGroupFireBound) and refuses with its
+                // reason otherwise. LABELLED: no group screen or role take runs.
                 std::size_t idx = host.units->count();
                 for (std::size_t k = 0; k < host.units->count(); ++k) {
                     const GameUnitRow* row = host.units->unit_row(k);
                     if (row != nullptr && row->name == order.unit) { idx = k; break; }
                 }
                 GameGunneryHost* gunnery = host.units->gunnery();
-                const char* why = "";
+                std::string why;
                 bool fired = false;
                 if (idx >= host.units->count()) {
-                    why = " (no created unit has that name)";
+                    why = "no created unit has that name";
                 } else if (!host.units->controlled_bound()
                            || host.units->controlled_index() != idx) {
-                    why = " (not the controlled unit [00E188D8], which 005484F0 requires)";
+                    why = "not the controlled unit [00E188D8], which 005484F0 requires";
                 } else if (gunnery == nullptr) {
-                    why = " (no gunnery host)";
+                    why = "no gunnery host";
                 } else {
-                    fired = gunnery->fire_function_guns_now_009e2b60(idx, 8);
-                    if (!fired) why = " (no Function-8 rack marked)";
+                    fired = gunnery->player_fire_weapon_group(idx, order.fire_group_id,
+                        order.fire_held, why);
                 }
                 if (fired) ++host.helm_orders_applied; else ++host.helm_orders_refused;
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
-                    "depthcharge %s%s through 9Fh/99h -> 79h group 5 -> 0095A441 "
-                    "(stand-in 009E2B60)", fired ? "applied" : "refused", order.line, due, now,
-                    order.unit.c_str(), why);
+                    "fire %s group %d %s: %s (99h -> 005484F0 79h -> 00959C20)",
+                    fired ? "applied" : "refused", order.line, due, now, order.unit.c_str(),
+                    order.fire_group_id, order.fire_held ? "held" : "release", why.c_str());
                 continue;
             }
             if (order.build) {
