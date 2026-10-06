@@ -11508,7 +11508,7 @@ void GameGunneryHost::report() {
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
             kAirfieldTargetSubEntitiesBound ? 1 : 0);
         if (kDamageSmokeDrawsBound) {
-            host.log.notef("summary mission gunnery damage smoke ticks=%llu units=%zu "
+            host.log.notef("summary mission unit damage smoke ticks=%llu units=%zu "
                 "slots_grown=%llu clock_resets=%llu respawns=%llu expired_held=%llu "
                 "first_respawn=%s@%.2f (008227E0, 00822770, 008270BE; three stream-1 "
                 "draws and one stream-0 pick per respawn, packet cc9_damage_smoke_draws)",
