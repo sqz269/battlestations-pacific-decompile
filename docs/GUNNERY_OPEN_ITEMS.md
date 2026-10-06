@@ -9088,3 +9088,94 @@ nothing runs this remainder (`UnitMotion::unreconstructed_override_remainder_007
 **Not bound here.** The lander and capture sources are the ships lane's (cc9-ships33). The open
 reads before a binding: the per-party record at `building+1E8h` (who writes it; whether the host
 has it), `007470B0`'s damage path for a CommandBuilding, and what `+7D8h` gates.
+
+## 121. The airfield destruction rule `006D40F0` and its parent link `+71Ch` (lead item 2; packet `cc9_airfield_destruction_rule`, `kAirfieldDestructionRuleBound`, cc9-gunnery27, 2026-10-05)
+
+### 121.1 The writer of `+71Ch`
+
+`scan-bytes '89 ?? 1C 07 00 00'` and `'C7 ?? 1C 07 00 00'` (`--limit 4000`) find five stores. Three
+are not airfield links:
+- `0095CF0E` in `BSP_UnitGameObject_Construct`, the zero at construction;
+- `00ABEB52`, outside any function, a different object;
+- `009EC742`, `00C0A72E` and `00C10DD8` are `MOV [reg+1Ch], imm` with a 07 in the immediate.
+
+The writer is **`BSP_CommandBuilding_AdoptNearbyGarrison` `006F5CC0`, pass 1** (`006F5CF7..006F5EB2`):
+- for every entity of the world list 5 other than the building, of kind `1Bh`, `45h` or `46h`
+  (`006F5D10`/`1F`/`2E`);
+- within the building's `InferiorRange` (`+7C8h`, `006F288C`, `C8h` when unauthored): the per-axis
+  differences entity minus building are stored as floats, their squared sum is stored as a float
+  and compared with `FILD` of the integer `R * R` (`006F5DC9 JA` skips when farther);
+- with `entity+724h != 0` (`006F5DCF`);
+- it records the garrison entry (`006F4B30`, stride 64h) and stores **`entity+71Ch = building`**
+  (`006F5E9B MOV [EDI+71Ch], ESI`).
+The other two writers are the same link re-applied: `006F3836` in
+`BSP_CommandBuilding_RespawnGarrison` `006F3660`, and `006F5562` (no Ghidra function) over the
+`+778h` garrison records.
+
+**`+724h`** is written at `009554DF` in `BSP_UnitInstance_InitializeSceneBindings` `00955420`: when
+the scene holder at `+0C0h` is kind 1 and its bag finds `MinLevel` (`00CFB24C`), the bag is cloned
+there. `MinLevel` is the `CommandBuildingInferior` group's key: `universe/library/commandbuildinginferior.props`
+(this installation, 2024-07-13) declares `CommandBuildingInferior(Common)` with `MinLevel = E
+CommandBuildingLevels : Basic` and `LevelX`. Group defaults merge into every entity bag that names
+the group (`docs/SCENE_PROPERTY_BAG_MERGE.md`), so **any `CommandBuildingInferior` entity has
+`+724h` set**, authored or not.
+
+**USN01.** `usn_1_marshall.scn` (2024-07-13): `Airfield2` (AirField, groups `Common, LandingZone,
+MotherShipPlanes, CommandBuildingInferior, MultiEntity`) is top-level at (1013.95, 3.00, 757.32);
+`CB2` (CommandBuilding, `InferiorRange = I 1560`) is top-level at (973.37, 3.00, 817.77). They are
+72.8 m apart. **So `Airfield2+71Ch = CB2`**, and the image takes the InferiorFailure arm, not the
+destroy arm, when its only hangar `Multi Hangar 1` dies (z: 133.95 s).
+
+### 121.2 The InferiorFailure arm, read
+
+- `006D4167..006D41BB`: the string `"InferiorFailure"` (`00CF0B74`) goes to `vtable[194h]` =
+  `006D2210(name, 0)` (`006D2210..006D2341`, `RET 8`).
+- `006D2210` compares the name with `"RunwayFailure"` (`00CF8E24`, message `72h`) and
+  `"HangarFailure"` (`00CF8E14`, message `74h`); neither matches, so `006D2320` tail-calls the base
+  `00953DA0(name, 0)` (`00953DA0..00953E53`, `RET 8`).
+- `00953DA0` matches `"InferiorFailure"` and sends message **`7Dh`** (`MT_VEHICLE_SET_INFERIORFAILURE`)
+  through `0077C2A0(msg, 7, 0)`. The unit's handler (`src/unit_message_arms.cpp`, `0095AD0A`) sets
+  **`+720h = 1`** and, for class `45h`/`46h`, raises `BSP_WarningManager_FireFailure` `00982C50`
+  (presentation).
+- The arm runs **every fixed step** from then on (the rule has no latch), and each pass ends with
+  `006D2980`, the park-slot cache rebuild (`+83Ch`/`+884h`, zero live hangars).
+
+**Readers of `+720h`** (`scan-bytes` over `80/8A/38/0FB6/84/F6 ?? 20 07 00 00`):
+- `00895E51` in Lua `IsReadyToSendPlanes` `00895D20`: an airfield (`45h`) with `+720h` set answers
+  **false**. The host has this as `AirOpsDeck::airfield_blocked`, which nothing set until now.
+- `00729F16` `BSP_Gun_IsOperational` and `0072D1C1` `BSP_Gun_FixedStepTick`: the owner's guns stop.
+  `Airfield2` carries no gun mount in z's log.
+- `00958A6D`/`00958BDE`/`00958CD4` in `BSP_UnitInstance_ReactToHealthChange`, `00897F56` in Lua
+  `InferiorIsDisabled` (not called by `usn_1_marshall.lua`), and the HUD markers `0063D077`, `0063DD59`.
+
+`IsReadyToSendPlanes` is called by `scripts/global/commandhelpers.lua` (the airbase AI, lines 7898-8208
+and 15548-15996). So the gameplay reach is Airfield2's launches after 133.95 s.
+
+### 121.3 The binding (committed OFF)
+
+`kAirfieldDestructionRuleBound` (`src/game_hosts_units.cpp`, Impl). In the units host's
+`006D2510` branch, ON runs `run_airfield_destruction_rule_006d40f0`:
+- dead airfield (`+5Dh`): nothing;
+- any listed hangar alive (`object+370h > 0`, as the host's "not dead"): return before the refresh;
+- the parent link, resolved once (the image resolves it at InitAll pass C): the scene bag has
+  `MinLevel` and some CommandBuilding (`1Ch`) lies within its `InferiorRange` by the float rule above;
+- linked: `AirOpsDeck::airfield_blocked = true` (the `7Dh` -> `+720h` effect the host can read);
+- not linked: `GameGunneryHost::destroy_unit_0077d1a0(unit, 0)`, the death funnel.
+The scene record carries the two new keys (`InferiorRange`, `MinLevel`) through the scene-contents
+host, read-only.
+
+**Labelled substitutions:** a hangar is resolved by its `Object` name's last component, the first unit
+of that name (as `landing_hangar_path_006d2780_006d2640` already does; USN13's three airfields all list
+a `Multi Hangar 1`); the `7Dh` message's other effects (gun stop, warning manager, HUD) are not modelled;
+`006D2980` is not run (the host's artillery aim at `006D3250` already reads the hangar list live).
+
+### 121.4 Predictions (written before any ON run)
+
+- **Census on z:** every airfield on the twenty-two rows lists exactly one hangar
+  (`local\g27_airfields.py`), and only USN01's `Multi Hangar 1` dies. So only USN01 can move.
+- **USN01 36000:** at 133.95 s (or the next step) `Airfield2` takes the InferiorFailure arm, with
+  `parent=CB2`; it does **not** die. The destroy counter stays 0.
+  - If commandhelpers' airbase AI asks `IsReadyToSendPlanes(Airfield2)` after that, it gets false,
+    and any later Airfield2 launch is gone: `pair_diff` 3. If Airfield2 never launches after 134 s
+    in the OFF run, `pair_diff` 1 (the rule's lines only).
+- **Controls (USN13 3000, USNOS 3000):** no hangar dies; gameplay-identical (`pair_diff` 0 or 1).
