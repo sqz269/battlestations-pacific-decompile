@@ -13346,3 +13346,88 @@ long.
   are not those units, or the delay draw does not use the `death_delay` key there. Not traced.
 
 **Verdict: ON** (mechanism matched; spread miss recorded). Not game-validated.
+
+## 165. The CommandBuilding hit-gate entry, and the backoff countdown re-pair (cc9-ships34, 2026-10-06; reference AC)
+
+### 165.1 The hit-gate entry (`52b0240fe`, no behaviour change)
+
+`GameShipAiHost::command_building_hit_gate_006f1f20(unit, amount)` is for cc9-gunnery28's gunfire
+gate (GUNNERY_OPEN_ITEMS 125). It is the `006F1F20` step the lander bleed (section 161) runs inline:
+- false while the capture building's `+7D8h` is not 0;
+- otherwise `007470B0`'s roll (section 162) and true;
+- true for any other unit.
+
+`+7D8h` is set and counted down only under `kLandingShipLandedRemainderBound` (ON). Nothing calls
+the entry in this commit.
+
+### 165.2 The backoff countdown re-pair (section 163 item 2): predictions
+
+`kShipAiObstacleBackoffCountdownBound` (`include/bsp/ship_ai_obstacle_tables.hpp`, OFF since 65.5)
+binds `009F3F89..009F3FE3`, the astern latch `blk+380h` countdown. 65.5 found it never armed on seven
+rows. Reference AA reaches the call site on all 22 rows, and the escape byte reset (ON) now sets on
+entry thousands of times (USNOS 14009, JM05 13590). So the latch may arm now.
+
+**Runs:** OFF is this tree at `52b0240fe`; ON is `pair_export --flip
+kShipAiObstacleBackoffCountdownBound=true`. Rows: BSM01, USN13, USNOS, USN01, JM05 3000 and JM08
+long.
+
+**Predictions:**
+- If the latch never arms, `held_steps=0` on every row and all six are `pair_diff` 1. The switch
+  stays OFF, as in 65.5.
+- If it arms (`held_steps > 0`), the held units hold astern until the countdown expires, and those
+  rows move (3). The escape rows (USNOS, JM05, USN13) are the candidates.
+
+### 165.3 The re-pair: stays OFF
+
+**Runs:** prefixes `off6` / `on6`; ON is `local\s34_bo_on` from `9845c1c13`.
+
+All six rows (BSM01, USN13, USNOS, USN01, JM05 3000 and JM08 long) are `pair_diff` 1, with
+`held_steps=0 units=0 expiries=0` under the bound on every row. The astern latch `blk+380h` still
+never arms on reference AC's state, so 65.5's verdict holds:
+`kShipAiObstacleBackoffCountdownBound` **stays OFF, recorded (no reach)**.
+
+The escape byte reset's thousands of entries do not reach the latch's arming path.
+
+## 166. Handoff (cc9-ships34, 2026-10-06, at about 68% context)
+
+### Landed (on main or on agent/cc9-ships34)
+
+| section | what | switch |
+| --- | --- | --- |
+| 158 | JM08 72000: no HQ flip (host-only past the mission end) | doc |
+| 159 | the approach's "throttle" is plan `+2Ch`, the search's side-switch penalty | `kShipAiApproachSearchPenaltyBound` ON |
+| 160 | a capture building's Lua `Party` re-mirrored on neutralize and flip; JM08 fails at about 1052.6 s | `kCommandBuildingPartyLuaMirrorBound` ON |
+| 161 | the landing-ship remainder `00749B20`: bleed a hostile building, leave a friendly one, the 20 s `+7D8h` | `kLandingShipLandedRemainderBound` ON |
+| 162 | the LandFort fire roll and its draws | `kLandFortFireRollBound` ON |
+| 163 | the ships-lane census on reference AA | doc |
+| 164 | the ship AI's timer draws | `kShipAiTimerDrawsBound` ON |
+| 165 | the `006F1F20` hit-gate entry for cc9-gunnery28 (`52b0240fe`); the backoff re-pair (stays OFF) | entry only |
+
+Also on the branch: cc9-lua39's capture-fraction accessor (`f022aeb0c`, landed).
+
+### Open items
+
+- **163 item 3:** `Navigator::parts_land_avoidance_disabled` `0092BD00` / `0080E490` (JM05, JM05
+  long, USNRM01). It is in the Lua lane's `game_hosts_script_orders.cpp`; route it there.
+- **161 / 162 LABELLED pieces:**
+  - the master `+738h` forward;
+  - `006F38E0`'s armour level rescale;
+  - the fire-effect creation (assumed to succeed);
+  - `class+2Ch` (taken as 0);
+  - `00BD2FC0` consumed as one `00BD2F10` step.
+- **164's spread miss:** USNOS's 20 nav-block draws do not move any death-delay draw. Whether the
+  explosion delay uses the `death_delay` key per dying unit is untraced.
+- **Section 160's follow-ups**, routed by the lead to cc9-lua40: `MissionNarrative`'s callback
+  (so the end chain reaches `EndScene`), and the `MissionFailed` summary field.
+- **Rows are image-faithful only to about 40 s past a scripted mission end** (160.1). JM08 long's
+  rows are host-only after about 1093 s.
+
+### Tools (`local\`, `s34_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s34_run.ps1` / `s34_rows.ps1` | reference V's launch form (`-Prefix -Only <keys> [-Exe]`, called with `&`) |
+| `s34_dispscan.py <disp...> [--lo --hi]` | a `.text` census of memory operands by displacement (it takes the longest decode) |
+| `s34_captick.py` | the capture tick timeline |
+| `s34_recctx.py` | a record's source context |
+| `s34_vt.py` | the state vtables' enter / exit slots |
