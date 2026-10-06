@@ -13940,6 +13940,9 @@ AIR_OPERATIONS.md, GAME_EXECUTABLE.md; the host's `GameUnitsHost::skill_level` /
 
 ### 175.3 Census and reach (`local\s36_garrison.py` over this installation's `.scn`, positions composed through the entity nesting)
 
+**Corrected in 177.1:** `landfort.props` declares `MinLevel`, so every LandFort is a member,
+not only the `CommandBuildingInferior` ones. The garrisons are 349 on JM08 and 42 on USN01.
+
 | row | scene | buildings | garrison | what the pass does on the row |
 | --- | --- | --- | --- | --- |
 | JM08 | `prcpijn_08_defend_guadalcanal.scn` (mtime 2024-08-09) | Headquarter 01, `InferiorRange = I 100000` | 17, all MinLevel 0: Medium Bunker 01-06/08, Japanese AA truck 01/03-07, MainAirFieldEntity 01, MainHangar, PTHangar 01, Shipyard 01 | level changes at 10/20/30 s and the 3 -> 0 neutralize (JM08 long, 1041.50 s) |
@@ -14024,3 +14027,62 @@ from the controlled carrier (SCRIPTED_HELM 13).
    about 404 s (`s36_traj_u1w5.Nell6__-3.csv`), with no death row (plane lane).
 3. **Slots do not come back.** After the three squadrons are lost, slot 0 finds no slot in state
    1 or 5 (`no such slot`) for the rest of the run, except the one at 6700 (lua41's launch chain).
+
+## 177. The garrison binding (packet `cc9_command_building_garrison`, `kCommandBuildingGarrisonBound`, cc9-ships36, 2026-10-06)
+
+**What is bound** (in `src/game_hosts_ship_ai.cpp`, committed OFF; the read is section 175):
+- **Adoption** (`006F5CC0` pass 1) in `build_capture_buildings`, per CommandBuilding: every unit
+  of kind `1Bh`, `45h` or `46h` with the `+724h` bag (`GameUnitsHost::unit_inferior_bag_0724`)
+  within `InferiorRange` (`command_building_inferior_range_07c8`, the image's float/`FILD`
+  comparison). Then `006F3660` once when there are records.
+- **`006F3660`** after every level change in `command_building_level_006f38e0`:
+  - a record whose member died is unlinked (the `00546200` notice);
+  - MinLevel above the level, linked: the kill (`00926D90(2)`) is **recorded**;
+  - unlinked, MinLevel at or below the level: the re-create is **recorded** until the gunnery
+    lane's `revive_unit_garrison_006f3660` lands (routed: `local\s36_gunnery_revive_edit.txt`).
+    Then it will revive in place, with scene flags, the building's Party and Skill, and
+    `refresh_unit_side`;
+  - linked: `set_skill_level_007b8ae0(member, skill_level(building))`.
+- **LABELLED:** adoption at the first controller step, not InitAll; MinLevel 0 for every
+  member, because the scene record keeps only whether the key exists (every member on the rows
+  is Basic, 175.3); a single-player session.
+- **Census:** `command building garrison: unit=... members=N`, a line per re-create and per
+  skill change, and `summary mission command building garrison ...`.
+
+**Predictions for this commit's ON** (the re-create still recorded; written before any ON run):
+- JM08: Headquarter 01 adopts 17 members. Skill pushes at adoption and at 10/20/30 s. The
+  airfield goes 2 -> 1 at the first pass after the script's `SetSkillLevel` (10 s). The
+  re-create of Medium Bunker, Concrete 03 is recorded at 30.00 s, and on JM08 long eleven more
+  at 1041.50 s with party 2. `pair_diff` 1: the airfield launches nothing, and every other
+  member's skill is already 1.
+- USN01: CB2 adopts 9 members. One pass at adoption, every skill 1 = CB2's. `pair_diff` 1.
+- USNOS (control): no members (InferiorRange 10). `pair_diff` 1.
+
+### 177.1 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:** OFF is this tree at `cba12c0f8`; ON is `pair_export.py --commit cba12c0f8 --flip
+kCommandBuildingGarrisonBound=true --out local\s36_gar_on`. The prefixes are `off9` / `on9`
+(`local\s36_rows.ps1`, the reference V launch form). Smoke: `local\s36_smoke_gar.log`, JM08 300,
+OFF, clean.
+
+| row | `pair_diff` | ON census |
+| --- | --- | --- |
+| JM08 3000 | 1 | Headquarter 01 adopts **349**; 4 passes; 5 re-creates recorded (20 and 30 s); the airfield's skill 2 -> 1 |
+| JM08 long 36000 | 1 | 349 members; 5 passes; **117 re-creates recorded, 112 of them at the 1041.50 s neutralize** (party 2); 1628 skill pushes |
+| USN01 3000 | 1 | CB2 adopts **42**; one pass; 42 skill pushes, no change |
+| USNOS 3000 (control) | 1 | 0 members (InferiorRange 10) |
+
+**The member counts missed the prediction, and section 175.3's census was wrong.** This
+installation's `universe/library/landfort.props` (2024-07-13) declares `MinLevel` and `LevelX`
+in the `LandFort` group itself, not only in `CommandBuildingInferior`. So **every LandFort's**
+bag finds `MinLevel`, and `+724h` is set on every LandFort, house, tent, pier and watchtower. The
+host's flag (`scene_contents` `bag.find("MinLevel")` over the merged groups) is right. The census
+script (`s36_garrison.py`) wrongly filtered on the `CommandBuildingInferior` group. The garrisons
+are therefore 349 on JM08 (InferiorRange 100000: every LandFort in the scene) and 42 on USN01,
+not 17 and 9. MinLevel is still 0 for all of them: no row scene authors a MinLevel.
+
+**Verdict: ON.** The mechanism matches the read: adoption by the image's rule, the passes at the
+adoption and at each level change, the death-unlink, and the skill pushes. Every row is gameplay
+identical, as predicted, because the re-create is still recorded. When the gunnery lane's revive
+lands, JM08 long will re-create 112 dead members as Neutral at 1041.50 s (and 5 in JM08 3000 at
+20/30 s), so the next pair should be `pair_diff` 3 there. Not game-validated.
