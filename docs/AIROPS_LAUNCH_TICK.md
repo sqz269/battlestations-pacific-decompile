@@ -787,3 +787,60 @@ it to every member it is given.
 - USN01 with launch lines:
   - each `air ops AutoAttackTarget` line moves one step later and reads `members=3`;
   - the wingmen get the dogfight task (`00E08F58`) as well as the leader.
+
+### The screen's launch group and AutoAttackTarget for every member: measured (cc9-lua42, 2026-10-06)
+
+**Measurement configuration only.** Every run below has `kBombDropScatterBound` forced **false** on
+both sides (`pair_export --flip kBombDropScatterBound=false`).
+- Without that flip, USN01 never reaches phase 3 on this base. The scout's bombs miss Convoy1, so no
+  Nell is generated and every `launch` line is refused.
+- With it, phase 2 is the pre-scatter one, so the Nells exist.
+- The flip is not a proposal to turn the scatter off.
+
+**The runs.**
+- Base `7c883e271`, USN01 20000 frames, reference AB/AC launch form.
+- Order files are cc9-ships36's:
+  - `w5`: four Wildcats per slot (`local\l42_usn01_w5.txt`);
+  - `w7`: three per slot, four slots (`local\l42_usn01_w7.txt`).
+- Exports:
+  - `local\l42_s`: scatter off;
+  - `local\l42_sg`: plus `kAirOpsPlayerLaunchGroupBound`;
+  - `local\l42_sga`: plus `kAutoAttackAllMembersBound`.
+- Logs are `local\l42_{s,sg,sga}_u1w{5,7}.log`. No run completed the mission (the Nell6 group
+  survives on every side), so no guard line was expected.
+
+**`kAirOpsPlayerLaunchGroupBound`** (`s` -> `sg`):
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| w7 (3 per slot) | 1 | gameplay identical: no count above 3, so nothing is clamped |
+| w5 (4 per slot) | 3 | each slot is clamped (`count 4 clamped to the screen's 3`, `count=4->3`, `wing=3`); deaths 90 -> 89, hit records 4074 -> 3928 |
+
+- In w5, slots 1-3 still fill and the Nell5/6 retries are still refused for plane room.
+- With three fewer Wildcats in the air, Nell4 dies earlier (332.14 -> 318.25 s) and Nell3's leader
+  later (364.83 -> 637.37 s). The prediction holds.
+- **Verdict: ON.**
+- Order files now get at most 3 planes per slot, which is what a player can do.
+
+**`kAutoAttackAllMembersBound`** (`sg` -> `sga`): **mechanism failure, stays OFF.**
+
+| row | `pair_diff` | `air ops AutoAttackTarget` lines (ON) |
+| --- | --- | --- |
+| w7 | 3 | sqn01 `members=1`, sqn02 `members=1`, sqn03 `members=0 class=0`, sqn04 `members=0 class=0` |
+| w5 | 3 | the same shape |
+
+- **The wait works, but the member filter does not.** The wings exist the step after 006C5050
+  (`plane spawn: unit=Enterprise_sqn01|.-2` at log line 34286). But the deck launches the members
+  one at a time: sqn01 at 210.71, 219.41 and 228.11 s, and sqn03 at 262.91, 271.61 and 280.31 s
+  (`base launch ground state ... 2 -> 4`).
+- The intake counts only members that are alive and visible (`unit_alive_and_visible`). A plane
+  still Inside the deck is not counted.
+- **So the order still reaches only the one member already flying.** sqn03 and sqn04 reach the
+  600-step cap with no member flying and get no order at all. That is worse than OFF, which gives
+  each leader the order. In w7, Enterprise_sqn03 never engages and its Nell3/Nell4 kills move to the
+  ships (Nell4 331.04 -> 613.57 s, killer Northampton).
+- **What the image does instead.** It issues the order once, to the squadron, in pass-C init
+  007F4BA0, whatever the members' deck state. A member that takes off later carries the squadron's
+  command. This host has no squadron-level command to inherit.
+- **The next step** is to deliver the order to each member as it leaves the deck (state 2 -> 4), not
+  to wait for every member slot. That needs the takeoff seam in the units host. It is not done here.
