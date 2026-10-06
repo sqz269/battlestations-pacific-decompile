@@ -13346,3 +13346,33 @@ long.
   are not those units, or the delay draw does not use the `death_delay` key there. Not traced.
 
 **Verdict: ON** (mechanism matched; spread miss recorded). Not game-validated.
+
+## 165. The CommandBuilding hit-gate entry, and the backoff countdown re-pair (cc9-ships34, 2026-10-06; reference AC)
+
+### 165.1 The hit-gate entry (`52b0240fe`, no behaviour change)
+
+`GameShipAiHost::command_building_hit_gate_006f1f20(unit, amount)` is for cc9-gunnery28's gunfire
+gate (GUNNERY_OPEN_ITEMS 125). It is the `006F1F20` step the lander bleed (section 161) runs inline:
+- false while the capture building's `+7D8h` is not 0;
+- otherwise `007470B0`'s roll (section 162) and true;
+- true for any other unit.
+
+`+7D8h` is set and counted down only under `kLandingShipLandedRemainderBound` (ON). Nothing calls
+the entry in this commit.
+
+### 165.2 The backoff countdown re-pair (section 163 item 2): predictions
+
+`kShipAiObstacleBackoffCountdownBound` (`include/bsp/ship_ai_obstacle_tables.hpp`, OFF since 65.5)
+binds `009F3F89..009F3FE3`, the astern latch `blk+380h` countdown. 65.5 found it never armed on seven
+rows. Reference AA reaches the call site on all 22 rows, and the escape byte reset (ON) now sets on
+entry thousands of times (USNOS 14009, JM05 13590). So the latch may arm now.
+
+**Runs:** OFF is this tree at `52b0240fe`; ON is `pair_export --flip
+kShipAiObstacleBackoffCountdownBound=true`. Rows: BSM01, USN13, USNOS, USN01, JM05 3000 and JM08
+long.
+
+**Predictions:**
+- If the latch never arms, `held_steps=0` on every row and all six are `pair_diff` 1. The switch
+  stays OFF, as in 65.5.
+- If it arms (`held_steps > 0`), the held units hold astern until the countdown expires, and those
+  rows move (3). The escape rows (USNOS, JM05, USN13) are the candidates.
