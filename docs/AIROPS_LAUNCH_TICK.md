@@ -844,3 +844,41 @@ both sides (`pair_export --flip kBombDropScatterBound=false`).
   command. This host has no squadron-level command to inherit.
 - **The next step** is to deliver the order to each member as it leaves the deck (state 2 -> 4), not
   to wait for every member slot. That needs the takeoff seam in the units host. It is not done here.
+
+### The squadron's order for members that launch later (packet `cc9_auto_attack_member_launch`, cc9-lua42, 2026-10-06)
+
+Switch `bsp::kAutoAttackMemberOnLaunchBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+It replaces the approach of `kAutoAttackAllMembersBound`, which stays OFF.
+
+**Why.** LOMP10 (cc9-ships37's `s37_l10p2.log`, SHIP_AI 181) is the case:
+- CB4_AF's four squadrons were not wholly lost. Only the leaders of sqn01/03/04 and sqn04|.-2 died.
+- At the end, 8 of the 12 planes are alive. Every wingman sits in `director idle tail`, with
+  `releases_006c65b0=0`.
+- The slots are correctly held, because a squadron with a live plane is away. The wingmen never
+  received the AutoAttackTarget order (`members=1`), so they never attack, spend their ordnance,
+  return and land. Nothing frees the slot.
+
+**The image.** 007F15F0 issues the chosen class to the squadron (0071ECF0). The squadron's +128h,
+007ECF80, applies it to every plane in +3D0h, whether it is flying or on the deck.
+
+**The host.**
+- The order served at the first step is kept as a standing order on the squadron.
+- `run_standing_attacks` gives it to each registered member through `squadron_intake_007f1940` on
+  the first step that member is alive and visible, which is when it leaves the deck (ground state
+  2 -> 4).
+- Each such order logs `air ops AutoAttackTarget member at launch`.
+- The standing order ends when:
+  - every member has been served or has left;
+  - the target (its squadron's flight leader, for a plane target) is gone;
+  - or 6000 steps have passed.
+- **SUBSTITUTIONS, labelled:** the order arrives at launch rather than at the serve, and each
+  member's class goes through its own 007EEC50 call (the image makes one call for the squadron).
+
+**Predictions (OFF -> ON).**
+- Rows with no `launch` line: identical (the standing order is made only from a served
+  AutoAttackTarget).
+- USN01 `s37_u1_p5`: each F4F squadron's |.-2/|.-3 gets the dogfight order (`00E08F58`) as it leaves
+  Enterprise's deck, about 8.7 s apart. More Nells die earlier, more Wildcats engage, and deaths move.
+- LOMP10 `s37_l10_p2`: CB4_AF's wingmen attack their slot's ship instead of idling. Some slots may
+  return (squadrons wholly lost or landed), so some of the retries at 8000-11000 may stop being
+  refused.
