@@ -14854,3 +14854,161 @@ on JM08 long for every group, exit 0 on JM05 long).
 - **Partly missed:** "deaths collapse after the failure, the last near the failure plus a few tens of
   seconds". On AB no death follows the neutralize at all; the late deaths that SHIP_AI 160.4 saw (one at
   1079.73 s) appear only with `pen` or `cd` OFF, where the fight is retimed.
+
+## Mission reference baselines, 2026-10-06 ac (agent/cc9-gunnery29 20c30e6fb = main ec9af1f29 + kBombDropScatterBound ON)
+
+Packet `cc9_reference_rebaseline_29`, worker cc9-gunnery29, report `reports/cc9_reference_rebaseline_29.json`.
+The base is `20c30e6fb`: main `ec9af1f29` (2026-10-06 06:21 UTC) with GUNNERY 130.6's flip (`1eeffd541`)
+merged. The previous reference is AB (`c245a54bb`).
+
+### The switch diff and the plan
+
+`local\g29_switches.py c245a54bb 20c30e6fb` lists fourteen switches that did not exist at AB's base.
+`kAirOpsPlayerLaunchBound` is committed OFF and stays OFF. The other thirteen are ON:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `rtb` | `kSquadronSpentOrdnanceRtbBound` | SQUADRON_LAND_TASK 5eb.1 | live: USN01 (scout B5 at 134.20 s), USNRM01 (18 B5) |
+| `cap` | `kLuaCapturePercentageBound` | SQUADRON_LAND_TASK 5dw.2 | exit 1 (USN02, JM05, JM05 long) |
+| `tmr` | `kShipAiTimerDrawsBound` | SHIP_AI 164.4 | live: JM08 long (HQ 1034.10 -> 1036.10 s, deaths 129 -> 126) |
+| `nav` | `kNavigatorPartsLandAvoidanceBound` | SHIP_AI 167.1 | exit 3 on JM05, JM05 long (PT draft contacts only) |
+| `nar` | `kLuaMissionNarrativeBound` | MISSION_END 7.1 | exit 1 |
+| `cam` | `kLuaCameraStateBound` | MISSION_END 7.2.1 | exit 3 on USN02 (mission-end text: EndScene at 113.90 s) |
+| `lvl` | `kCommandBuildingLevelBound` | SHIP_AI 169.5 | live: JM08 long (HQ at 1041.50 s) |
+| `mhp` | `kCommandBuildingLevelMaxHpBound` | SHIP_AI 173.1 | exit 1 (LandFort fire roll 15 -> 16 starts on JM08 long) |
+| `smk` | `kDamageSmokeDrawsBound` | GUNNERY 127.4 | exit 1 on all 22 rows |
+| `gat` | `kCommandBuildingGunfireGateBound` | GUNNERY 125.5 | exit 1 (refused hits on JM08 long, USN01) |
+| `arm` | `kCommandBuildingGunfireArmourBound` | GUNNERY 129.4 | exit 1 |
+| `lbt` | `kPlaneLevelBombTaskBound` | SQUADRON_LAND_TASK 5ee.1 | live: USN01 36000 (order file), USNOS, USNOS long, LOMP10, LOMP10 long |
+| `sct` | `kBombDropScatterBound` | GUNNERY 130.4/130.6 | live: USN01, USNRM01, LOMP10, LOMP10 long |
+
+Non-switch code since AB's base: the `os.execute` guard's log sink, SHIP_AI 174/175 (USN02 scripted
+input is an order-file feature, not on the idle rows), helm/air-ops lines behind the OFF switch.
+
+**Rows:** AB's twenty-two (USNRM01 among them), in AB's launch form (`local\g29_lane.ps1`, copied from
+g28's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player). Binaries
+(`pair_export.py --commit 20c30e6fb`): AC `local\g29_lane_a`, anchor (the thirteen OFF) `local\g29_lane_b`.
+
+### Predictions (written before any run finished)
+
+- **Anchor** (the thirteen OFF): gameplay-identical to AB (exit 1 against `g28_ab_base_<row>`) on all
+  twenty-two rows. A miss means non-switch code moves a row.
+- **AC against AB.** Moves (exit 3) on:
+  - **USN01** through `sct` and `rtb`: the scout's bombs miss Convoy1, no `luaConLeadHit`, phase 2 does
+    not launch (units about 93 -> 64, as 130.4), and the scout pair turns for the carrier at 134.20 s.
+    Deaths 29 as AB. `lbt` should not reach within 150 s (USN01's Nells came in the 36000-frame run).
+  - **USNRM01** through `rtb` and `sct`: 18 B5 retreats, deaths about 132 -> 135.
+  - **LOMP10, LOMP10 long** through `lbt` (B-25 damage about doubled) and `sct`.
+  - **USNOS, USNOS long** through `lbt` (TroopTrans1/2 sunk).
+  - **JM08 long** through `lvl` + `tmr` (+ `mhp`, `gat`, `arm`): the HQ neutralized at about 1041.50 s
+    instead of 1034.10 s, the failure later, and `cam` + `nar`: EndScene reached about 40 s after the
+    failure.
+  - **USN02** on the mission-end text only (`cam`: EndScene at about 113.90 s); gameplay identical.
+  - **JM05, JM05 long** through `nav` on the PT draft contacts only; gameplay counters identical.
+  - Every other row exit 1: USN04, USN04 E2, JM06, JM08, USN13, BSM01, LOMP06, USN12, IJN01, USN13 long,
+    ESMP08 long, IJN11. Risks: `lbt` on any row with a level bomber that was not paired (USN13 long,
+    ESMP08 long, IJN11, USN04/E2); `rtb` on any row whose squadrons spend their ordnance (USN13 long,
+    JM05 long); `sct` on USN13 long (130.4: exit 1 with 3 drops) and on any row whose bombs land near a
+    ship; `tmr` (spread misses recorded on JM05 and USN01).
+- **Leave-one-out** (two rounds, only on rows that move): groups `sct`, `rtb`, `lbt`, `tmr`,
+  `cb` (= `lvl` + `mhp` + `gat` + `arm`), `end` (= `nar` + `cam`), `nav`. Expected: on USN01, `sct` OFF
+  restores the Convoy1 hit and phase 2; `rtb` OFF moves the row; `lbt` and `cb` OFF are exit 1 against AC.
+  On USNRM01, `sct` and `rtb` OFF each move. On LOMP10 (long), `lbt` and `sct` OFF each move. On USNOS
+  (long), `lbt` OFF equals AB. On JM08 long, `cb` and `tmr` OFF each move the neutralize time; `end` OFF
+  moves only the end text. On USN02 `end` OFF equals AB; on JM05 (long) `nav` OFF equals AB.
+**Added after the AC runs and before the leave-one-out runs:** USN02 moved gameplay against AB (hull hits
+366 -> 335), against the prediction. Its native table shows `ShipAiApproachPoint::random_stream1` and
+`ShipAiApproach::avoid_random` newly taken (about 1960 draws), so `tmr` OFF is expected to restore AB's
+gameplay on USN02, and `end` OFF to restore only the end text. The leave-one-out runs every group on all
+ten moved rows (groups as above, plus `misc` = `smk` + `cap`, expected exit 1 against AC everywhere).
+**Environment:** the console session was Active; every run completed. LOO binaries (`pair_export --commit 20c30e6fb`,
+the group OFF): `sct` `local\g29_lane_c` (`8C93932BB967`), `rtb` (`A2153593333E`), `lbt` `local\g29_lane_d`
+(`2279886A889D`), `tmr` (`75DFF040FB55`), `cb` `local\g29_lane_e` (`2827D8B308BA`), `end` (`CFD0F36DEE58`),
+`nav` `local\g29_lane_f` (`8AD51009D799`), `misc` (`7947E1C7C2E9`).
+
+### The anchor: the thirteen OFF
+
+`g29_ac_anc_<row>` is **gameplay-identical to AB on all twenty-two rows** (exit 1 against
+`g28_ab_base_<row>`). The non-switch code since AB's base moves nothing by itself.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 12822.0 | 48 | 1036 (153) | 14785 | 98.70 s | 3 of 16 / 0 of 19 | 15 | Lexington-class01 3353.44 | none (Mission.EndMission never true) | 480 | `local\g29_ac_base_usn04.log` |
+| USN01 | 3000 | 34425.9 | 29 | 1382 (328) | 2254 | 12.90 s | 0 of 5 / - | 3 | ScoutDauntless 3134.36 | none (Mission.EndMission never true) | 493 | `local\g29_ac_base_usn01.log` |
+| USN04 (E2) | 9000 | 13094.2 | 52 | 1055 (153) | 15137 | 98.70 s | 3 of 16 / 0 of 19 | 19 | Lexington-class01 5761.17 | none (Mission.EndMission never true) | 481 | `local\g29_ac_base_e2.log` |
+| USN02 | 9000 | 41913.3 | 3 | 5266 (335) | 4382 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.EndMission) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 reached at 113.90 s (recorded) | 489 | `local\g29_ac_base_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g29_ac_base_jm06.log` |
+| JM08 (smoke) | 3000 | 10057.1 | 22 | 482 (157) | 2794 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 452 | `local\g29_ac_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 467 | `local\g29_ac_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 446 | `local\g29_ac_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 439 | `local\g29_ac_base_lomp06.log` |
+| LOMP10 | 3000 | 3816.6 | 2 | 246 (123) | 4910 | 92.05 s | - / 14 of 8 | - | (none) 8369.13 | none (Mission.EndMission never true) | 475 | `local\g29_ac_base_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 3 / 0 of 6 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 504 | `local\g29_ac_base_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 439 | `local\g29_ac_base_usn12.log` |
+| LOMP10 (long) | 9000 | 4613.2 | 5 | 278 (127) | 5726 | 92.05 s | - / 14 of 8 | - | (none) 8369.13 | none (Mission.EndMission never true) | 490 | `local\g29_ac_base_lomp10l.log` |
+| USNOS | 3000 | 46258.9 | 88 | 1497 (235) | 5124 | 5.00 s | - | 6 | NH 1497.26 | none (Mission.EndMission never true) | 506 | `local\g29_ac_base_usnos.log` |
+| USNOS (long) | 9000 | 56076.7 | 107 | 2145 (321) | 8839 | 5.00 s | - | 8 | NH 4492.07 | none (Mission.EndMission never true) | 512 | `local\g29_ac_base_usnosl.log` |
+| IJN01 | 3000 | 1707.7 | 1 | 163 (151) | 4846 | 89.35 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 434 | `local\g29_ac_base_ijn01.log` |
+| JM05 (long) | 9000 | 33338.6 | 42 | 1062 (379) | 14489 | 5.85 s | 3 of 6 / 0 of 17 | 20 | Mogami-class 01 4566.02 | none (Mission.EndMission never true) | 538 | `local\g29_ac_base_jm05l.log` |
+| JM08 (long) | 36000 | 111576.6 | 126 | 9170 (659) | 9473 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 496 | `local\g29_ac_base_jm08l.log` |
+| USN13 (long) | 9000 | 42530.4 | 102 | 2871 (1766) | 35863 | 98.90 s | 3 of 80 / 3 of 50 | 38 | Enterprise 2777.59 | none (Mission.EndMission never true) | 496 | `local\g29_ac_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 362 (96) | 3189 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 459 | `local\g29_ac_base_esmp08l.log` |
+| USNRM01 | 9000 | 27463.9 | 135 | 1487 (1210) | 54967 | 166.56 s | 0 of 9 / 0 of 17 | 102008 | West Virginia 0.00 | none (Mission.EndMission never true) | 505 | `local\g29_ac_base_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 140 (31) | 805 | 65.25 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 497 | `local\g29_ac_base_ijn11.log` |
+
+**Against AB: ten rows move** (exit 3): USN01, USN02, LOMP10, LOMP10 long, USNOS, USNOS long, JM05, JM05 long,
+JM08 long, USNRM01. The other twelve are gameplay-identical (exit 1).
+
+- **USN01:** units 93 -> 64 (phase 2 does not launch: the scout's bombs miss Convoy1), hull hits 231 -> 328,
+  damage 35060.7 -> 34425.9; deaths 29 both. `sct` alone carries the phase loss (`sct` OFF: units 93).
+- **USNRM01:** deaths 132 -> 135, hull hits 1256 -> 1210, shots 61392 -> 54967; dive-bomb-task releases
+  34 of 51 -> 0 of 17 and torpedo-task 6 of 15 -> 0 of 9 (`rtb`: `rtb` OFF gives back 34 of 54 and 6 of 15).
+- **LOMP10 / LOMP10 long:** damage 1987.1 -> 3816.6 / 2619.6 -> 4613.2 (`lbt`), shots up by about 1500 / 1900.
+- **USNOS / USNOS long:** deaths 87 -> 88 / 105 -> 107, damage 43048.0 -> 46258.9 / 48691.3 -> 56076.7 (`lbt`).
+- **JM08 long:** deaths 129 -> 126; the HQ is neutralized at 1041.50 s (AB 1034.10 s); EndScene at 1081.73 s.
+- **USN02:** hull hits 366 -> 335, damage 42492.4 -> 41913.3 (`tmr`: the approach draws); EndScene at 113.90 s.
+- **JM05 / JM05 long:** the moored PT boats' draft contacts only (`nav`); gameplay counters identical.
+
+### Leave-one-out
+
+Each group OFF alone, two rounds (`local\g29_ac_<group>{1,2}_<row>.log`) on the ten moved rows. **The two
+rounds agree** (exit 0 or 1 on every group and row). Exit against AC / against AB, round 1:
+
+| group OFF | USN01 | USN02 | LOMP10 | LOMP10 l | USNOS | USNOS l | JM05 | JM05 l | JM08 l | USNRM01 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `sct` | 3/3 | 1/3 | 3/3 | 3/3 | 3/3 | 3/3 | 1/3 | 1/3 | 1/3 | 3/3 |
+| `rtb` | 3/3 | 1/3 | 3/3 | 3/3 | 3/3 | 3/3 | 1/3 | 1/3 | 1/3 | 3/3 |
+| `lbt` | 1/3 | 1/3 | 3/3 | 3/3 | 3/**1** | 3/**1** | 1/3 | 1/3 | 1/3 | 1/3 |
+| `tmr` | 1/3 | 3/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 3/3 | 3/3 |
+| `cb` | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 3/3 | 1/3 |
+| `end` | 1/3 | 3/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 |
+| `nav` | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 0/3 | 3/**1** | 3/**1** | 1/3 | 1/3 |
+| `misc` | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 | 1/3 |
+
+- **USN01:** `sct` OFF restores phase 2 (units 93, dive-bomb-task 0 of 17 because `rtb` is still ON);
+  `rtb` OFF keeps the phase loss and returns the scout pair's 2 of 2 releases.
+- **USNRM01:** `sct` OFF: deaths 132, hull hits 1345 (130.4's OFF side); `rtb` OFF: deaths 134, the release
+  counters back; `tmr` OFF: deaths 135, damage 27463.9 -> 27615.8.
+- **LOMP10 (long):** `lbt` OFF: damage 2194.0 / 2831.9 (bombs still scattered); `rtb` OFF: LOMP10 deaths 2 -> 0;
+  `sct` OFF: damage 4071.3 / 4851.4.
+- **USNOS (long):** `lbt` OFF equals AB; `sct` and `rtb` OFF move it by a hit or two (the level drops go
+  through the scatter; the level bombers return when spent).
+- **JM08 long:** `cb` OFF: the HQ at 1036.10 s, deaths 126; `tmr` OFF: 1038.75 s, deaths 130, hull hits 877;
+  `end` OFF: gameplay identical, no EndScene.
+- **USN02:** `tmr` OFF restores AB's gameplay (exit 3 against AB on the end text only); `end` OFF changes
+  only the end text.
+- **JM05 (long):** `nav` OFF equals AB.
+- `misc` (`smk` + `cap`) OFF is gameplay-identical to AC everywhere.
+
+**Predictions:**
+- Right on the anchor (= AB everywhere) and on the twelve unmoved rows.
+- Right on nine of the ten moved rows. **Missed on USN02**: predicted gameplay-identical, moved through `tmr`
+  (recorded before the leave-one-out runs, and right there).
+- **Leave-one-out, missed reach:** `rtb` also reaches LOMP10 (long) and USNOS (long); `sct` also reaches
+  USNOS (long) (the level bombers' drops); `tmr` also reaches USNRM01. Right: `sct` alone carries USN01's
+  phase loss, `lbt` OFF equals AB on USNOS (long), `nav` OFF equals AB on JM05 (long), `end` OFF moves only
+  the end text, `cb` and `tmr` each move JM08 long's neutralize.
+- No row exceeds the image-faithful window that AB recorded; JM08 long is faithful to about 40 s past the HQ
+  neutralize (EndScene at 1081.73 s).
