@@ -14339,3 +14339,38 @@ AAh -> `008437D0`, else `BSP_Unit_HandleMessage`.
 
 **Not landed:** the line has nothing to call until the shipyard queue exists in the host. Routed
 to the lead.
+
+## 183. LOMP06 completed with scripted player input (lead item 3, cc9-ships37, 2026-10-06)
+
+**Lines used:** SCRIPTED_HELM 11's `attack` on the controlled submarine Narwhal. The crucial pair
+is read from each run's own log: cc9-lua42's probe (`bce8c9a42`, on main) prints
+`mission objective: Identify the crucial cargo ships| Kongosan Maru, Sado Maru`. The tree is
+`agent/cc9-ships37` with main merged and rebuilt; the launch form is reference V
+(`local\s37_run.ps1`).
+
+| run | orders | outcome |
+| --- | --- | --- |
+| p1 (12000) | `600 attack Narwhal Kongosan Maru repeat 20` | **Kongosan Maru sunk at 147.05 s** (Narwhal, torpedo, 614 m). The repeat keeps re-issuing on the dead ship (174.3) |
+| **p2 (16000)** | `attack Narwhal Kongosan Maru` every 400 frames 600-2600, then `attack Narwhal Sado Maru` every 400 frames from 3000 (`local\s37_l6_p2.txt`) | Kongosan Maru sunk at 147.05 s; **Sado Maru sunk at 261.36 s** (Narwhal, torpedo, 754 m) |
+
+**p2's end** (`local\s37_l6p2.log`):
+1. Both crucials are dead and neither died by `exitzone`, so `luaStartDialog("Victory")` runs
+   (script line 520).
+2. At 267.41 s the dialog callback `luaMissionSuccess` runs `luaMissionCompletedNew(Mission.PlayerUnit,
+   "missionglobals.obj_compl")`. The log shows `bsp: refused a mission script's process launch:
+   sus_prog.exe`.
+3. The end sequence follows: `GetCameraState`, `EndSCore`, then **`EndScene at 301.95 s`**. The
+   Narwhal survives.
+
+**The host's summary misses it:** `summary mission end: none (Mission.EndMission never true)`. The
+summary detects a completion through `Mission.EndMission`. USN01 and USN02 set that flag; LOMP06's
+script sets only `Mission.MissionEndCalled`. The image's own end is the `luaMissionCompletedNew` ->
+`EndScene` chain, which the run reaches. Routed to the lead: the summary's detector, which keys on
+`Mission.EndMission` instead of the completion call (lua or mission-result lane).
+
+**LABELLED:**
+- the harness's fixed click times;
+- a real player reads the two names from the objective on screen, which the probe logs.
+
+The picks are a stream-1 draw (lua42), so another tree can name other ships; re-read the line
+first.
