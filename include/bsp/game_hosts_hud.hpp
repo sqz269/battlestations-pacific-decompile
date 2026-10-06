@@ -163,6 +163,8 @@ public:
     // controlled unit and the manager idle it pushes 34h INTF_LIMBO (0064734B).
     // `unit` is the units host's index. Returns whether 00645060 accepted it.
     bool set_selected_unit_00647300(std::size_t unit);
+    // 00645060 on `unit` without the selection (see hud_unit_selectable_00645060).
+    bool unit_selectable_00645060(std::size_t unit);
     // Packet cc9_movie_interface_and_reseed. 005CD240 on the movie screen
     // (registry slot 37h), which every MovCamNew native calls first
     // (008B7941, 008B7AE1, 008B7C92): the first call engages the movie
@@ -228,6 +230,11 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // while a world is attached (attach_world_2k / detach_world_2k). Returns false
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
+// 00645060 alone, with no selection change: whether the player could select
+// `unit` (single player, teamIndex 0, allowSpectate 1 as 00647317 passes).
+// cc9-ships38: the helm-order moveto's gate (SHIP_AI 190.1). `reached` is
+// false when no HUD is attached.
+bool hud_unit_selectable_00645060(std::size_t unit, bool& reached);
 
 // Packet cc9_force_select_unit (docs/CONTROLLED_UNIT.md, "ForceSelectUnit"),
 // committed OFF (39e587a19), ON by the identity pairs. While true: the Lua host routes
