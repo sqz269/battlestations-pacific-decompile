@@ -13486,3 +13486,145 @@ The read is from disk bytes and the 5eo ON log `local\l44_h2on_e8.log`. No code 
 **Next for this row:** read whether the hidden plane's position or its `+904h` changes under the platform in
 the image (the carry `006FC0D0` and the release `006FC250`). Until then, ESMP08's relaunch count is bounded
 by squadron deaths, as the order file is written.
+
+## 5eq. GUNNERY 138: the rack's own projectile decides, `kRackBulletKindBound` (packet `cc9_rack_bullet_kind`, cc9-lua44, 2026-10-06)
+
+**The image, `007C0D90`** (`BSP_Plane_TickReleaseOrderIssue`, read from the live decompile):
+- It walks the plane's device list (`+48h`, next `+44h`). For each device of class 25h that holds ordnance 2Ah
+  (`vtable[210h](2Ah, 0)`) and is not busy (`vtable[1FCh]`), it takes the rack's projectile descriptor
+  (`vtable[220h](0)`).
+- **Single-drop arm.** Taken when the plane is not `IsKindOf(10h)`, or the descriptor answers 2Ch, 2Bh or 33h
+  (`vtable[8]`). The arm is: `+C25h` = 1, then `007EEF30`, unless 33h.
+- **Level-bomber arm.** Otherwise the rack fires with the accumulated delay (`vtable[1F0h]`), and the walk
+  continues.
+- So the choice is per rack, from a static descriptor. `006E56F0` is the one tick for every rack.
+
+**The host departure (GUNNERY 138).**
+- `lb_level_bomber_racks()` and the single-rack drop choose from the unit's ordnance mask: the OR of every
+  device's kinds (`game_hosts_gunnery.cpp:4371`).
+- A torpedo answers both 2Ah and 2Bh. After the first torpedo the gunnery host clears only the 2Bh bit
+  (`game_hosts_gunnery.cpp:11568`, "one torpedo per aircraft"). The 2Ah bit that came from the torpedo itself
+  stays.
+- So from the next step a torpedo-armed level bomber looks like a plain-bomb level bomber. bruh #1.9's wingmen
+  then took the level-bomber tick, with no rack armed, and never dropped again.
+- The single rack's `toRepeatTime` was also stored as 0 where the image loads `desc+E0h` (`006E58AA`).
+
+**The binding.** `GameUnitsHost::Impl::kRackBulletKindBound`, committed **OFF**, in `src/game_hosts_units.cpp`:
+- the census records each single rack's projectile class (`read_device_bullet_class_id`: Bullet[1] ->
+  Bullets[].Type) and its RepeatTime;
+- `lb_level_bomber_racks()` is false when any rack is 2Bh, 2Ch or 33h;
+- the single-rack drop spawns by the fired rack's own class (2Bh torpedo, else the bomb arm);
+- `006E58AA` re-arms `toRepeatTime` from the fired rack's RepeatTime.
+
+Labelled:
+- the class's default Bullet[1] is used; an equipment bag that swaps the projectile is not read;
+- with mixed racks, any torpedo/depth-charge/rocket rack decides, where the image's walk order decides;
+- the gunnery host's mask clear itself is left as it is (gunnery lane).
+
+An ON-only line `rack bullet kinds <unit> (level bomber): [...]` lists each level bomber's racks.
+
+**Predictions, written before any ON run.**
+1. **USN13 9200.** The rack line shows each `bruh` wingman's rack class.
+   - If it is 2Bh: after the first torpedo they stay on the single arm and drop again every RepeatTime while
+     dropBombs and the pitch/roll gates allow it. GUNNERY 138's census then shows `level=0` for them,
+     `repeat_drops > 0` and more torpedo spawns.
+   - If it is 2Ah: their first drop is already a bomb through the level-bomber tick.
+2. **USNOS 3200 and LOMP10 3200.** Gameplay identical, unless a kind-10h plane there carries a torpedo or
+   multi-round rack. A plain-bomb level bomber's arms do not change.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): stays OFF.**
+OFF is `a7cf95afd`, a C4702 fix only. ON is the same commit with the flip (`local\l44_rk`).
+
+**USNOS 3000 and LOMP10 3000: `pair_diff` exit 1, gameplay identical.** Prediction 2 holds. Their level bombers
+carry plain bombs with RepeatTime 0.05 s: `plane #1.4-1.6 [2Ah/0.05s]` and `B-25 01 [2Ah/0.05s]`.
+
+**USN13 9000:** `pair_diff` exit 3.
+- Every `bruh` level bomber's single rack is a **torpedo with RepeatTime 0.00** (`bruh #1.7-1.14 [2Bh/0.00s]`).
+- So prediction 1's first branch holds: after the first torpedo the wingmen stay on the single arm and keep
+  dropping.
+- Torpedo drops go 2 -> 32 and damage 39558 -> 44664; deaths 100 -> 101.
+- **This is not the image's pacing.** With toRepeatTime 0, `006E577F`-`006E57FA` lets the rack fire on every
+  step. The host substitutes `00729A80`'s CanFire gates with "fires while it has ammo", so each plane empties its
+  16 torpedoes in 16 steps (0.8 s).
+- The image's gates (`00729A80` plus ordnance 2Ah, `006E3460`) are unread for a rack. They, or a non-zero
+  default for an absent RepeatTime in the device constructor, are what pace a multi-round rack.
+
+**Verdict.**
+- The arm choice matches the image: per rack, from the projectile. The host's mask switch was the departure,
+  and that much is settled.
+- The drop pacing behind it is a substitution that the switch exposes. The row would move by a wrong
+  mechanism, so the switch stays **OFF**, recorded.
+- **Next (gunnery lane):** read `00729A80` as a rack's CanFire (its reload / gate fields for a BombPlatform
+  device), and the device constructor's default for an absent `RepeatTime`. Then re-pair USN13 9000 with
+  this switch.
+
+## 5er. IJN01: why the player's A7M stay 'done' after their bomb (cc9-lua44, 2026-10-06, read-only)
+
+**The case.** In `cc9-ships38\local\s38_i1p1.log` (order file `s38_i1_p1.txt`), the player's `target A7M_2 ->
+LST2` gives `class 00e08f20` (divebomb) at frame 1203. A7M_2 then:
+- makes one release (`releases=1 rounds_left=0`, about 99 s);
+- sits in `done` for 11010 ticks.
+
+Every later re-issue (frames 1603, 2003, ... 4003) still answers `class 00e08f20`. That keeps the finished task
+under 009B3560-style same-target keeps: the divebomb still-valid predicate `009C8060` checks only the class and
+the target.
+
+**What the image does.**
+- **Nothing re-tasks a player squadron by itself.** The squadron auto-target tick `009F8470` re-chooses only
+  when the leader's party slot is AI (`+1B0h == 8` or `00927F10`) and not player-held (`+184h`), or when `+3Ch`,
+  `+3Dh` and `sq+370h == 2` all hold.
+- For a fighter (`IsKindOf(13h)`) with its ordnance spent, `009F8160` takes `LAB_009F8412`, which only sets
+  `+3Dh`; the B5 latch `+3Ch` is for non-fighters.
+- So the player's re-issued SetTarget is what moves it on, through `007F1940` -> `007EEC50`.
+- **`007EEC50` sees the bomb gone.** Its loadout tests read the devices: `007ED7E0` -> `007B9320` per weapon
+  controller asks each device's `vtable[220h](loadout)` descriptor for 2Ah and not 2Ch/31h/2Bh/33h/2Dh. With
+  the bomb dropped, divebomb no longer applies, and a fighter falls to its gun classes (strafe / dogfight).
+
+**The host departure.**
+- The chooser (`game_hosts_script_orders.cpp` ~1406) reads `units_.unit_ordnance()`. That is the static OR of
+  every device's kinds (`game_hosts_gunnery.cpp:4371`).
+- Only a torpedo drop clears a bit (2Bh, `:11568`). A dropped bomb leaves 2Ah set forever.
+- So the re-issue chooses divebomb again and the done task is kept.
+- This is the same root as GUNNERY 138 (5eq): the host's kind set does not follow per-device ammo.
+
+**Open, before binding.**
+- Whether `vtable[220h](loadout)` on an emptied BombPlatform returns null (so the descriptor test fails), or
+  whether `vtable[210h]`'s ammo test is what empties it. `006E56F0`'s vtable slot is at `00CF966C`; the device
+  vtable base and its `+210h` / `+220h` bodies are unread.
+- The likely fix: a per-rack live mask (the census of 5eq already records each single rack's projectile
+  class), where an empty rack drops its kinds from `unit_ordnance()`. It belongs with cc9-gunnery31's
+  CanFire/RepeatTime packet, since it touches the gunnery host's mask.
+
+## 5es. Handoff (cc9-lua44, 2026-10-06, at about 75% context)
+
+The branch is `agent/cc9-lua44` and the worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua44`. Main
+(`21ca49284`) is merged in and everything is committed. The leases are released at the end of this turn.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| `006C0840`'s own-site arm (ESMP08 (b)) | `kTakeoffOwnSiteBound` | ON | 5en |
+| `GetSubmarineOnSurface` `008942C0` (JM06 phase 2) | `kLuaGetSubmarineOnSurfaceBound` | ON | LUA_BINDING_MISSION |
+| `007F16D0` home arm (land at the home carrier) | `kReturnToBaseHomeArmBound` | ON (Zuikaku knife-edge noted) | 5eo |
+| ESMP08 (a): a landed squadron keeps its slot in state 3 | - | read: image behaviour | 5ep |
+| GUNNERY 138, the per-rack projectile decides the arm | `kRackBulletKindBound` | OFF (pacing goes to gunnery31) | 5eq |
+| orders to a held slot (`006CCDA0` states 3/4) | `kAirOpsHeldSlotOrdersBound` | OFF, waiting for a harness line | AIROPS_LAUNCH_TICK |
+| IJN01 A7M stay 'done' | - | read: static ordnance mask | 5er |
+
+**Next, in order:**
+1. **Held-slot orders.** Once cc9-ships39 adds `order <base> <slot> <1|2|3> [target]` (it calls
+   `bsp::script_orders_player_air_ops_order`), pair `kAirOpsHeldSlotOrdersBound` on ESMP08 with
+   `l44_e8_p3.txt` plus order lines (order 1, then order 3, for each slot whose squadron is flying with a dead
+   target), and a control (USN04).
+   - Not yet served: the state-2 retarget/cancel (`006CC5C0`) and the state-5 order-2 re-arm.
+   - A stowed squadron (members in state 2) cannot fly a moveto in this host.
+2. **The elevator re-take loop (5ep).** The stowed leader is re-taken every 4.8 s and the wingmen starve. Read
+   what keeps the image from re-taking a stowed plane (`006FC0D0`, `006FC250`, the hidden plane's pose).
+3. **5er.** Read the BombPlatform's `vtable[210h]` / `[220h]` for an empty rack, then route a live ordnance
+   mask to the gunnery lane.
+
+**Scripts** are in `local\`, prefix `l44_`:
+- `l44_run.ps1 -Name -Mission -Frames [-Orders] [-Exe]`;
+- `l44_e8sum.ps1`, `l44_launch_times.ps1`, `l44_refusals.ps1`, `l44_deaths.ps1` (ESMP08 censuses);
+- `l44_sqn_fate.py` (per-squadron fate);
+- `l44_calls.py <hex>...` (rel32 / abs reference scan);
+- `l44_dwords.py lo hi` (image dwords).

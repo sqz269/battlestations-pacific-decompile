@@ -1602,6 +1602,135 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     return out;
 }
 
+// Packet cc9_air_ops_held_slot_orders. 006CCDA0's state-3/4 arms for the player's
+// order to a held slot; the command is issued on the squadron (0077D600 with ECX =
+// slot+28h). SUBSTITUTIONS, labelled:
+//  - delivered at once (the 82h message is not queued), player id 0;
+//  - 006BC5E0's "holding at the moveto point" is the flight leader's stored command
+//    class being moveto; its distance test (class+268h x [00CEC160]) is not read,
+//    which only matters for a moveto whose point is not the squadron's own;
+//  - the squadron's command reaches its members the host's way: attack through the
+//    squadron intake 007F1940, moveto as each member's kind-7 task (0099A170) with
+//    the leader's position as the point, land through 0099A3DD at the deck owner;
+//  - 0071BED0's hold fire on the recall is not carried.
+PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::string& base,
+    int slot_number, int order, const std::string& target) {
+    PlayerAirOpsOrderResult out;
+    auto refuse = [&](const char* why) {
+        out.reason = why;
+        log_.notef("player air ops order REFUSED: base=\"%s\" slot=%d order=%d target=\"%s\": %s "
+            "(packet cc9_air_ops_held_slot_orders)", base.c_str(), slot_number, order,
+            target.c_str(), why);
+        return out;
+    };
+    if constexpr (!bsp::kAirOpsHeldSlotOrdersBound) return refuse("kAirOpsHeldSlotOrdersBound is off");
+    bsp::AirOpsDeckRegistry& registry = bsp::air_ops_decks();
+    bsp::AirOpsDeck* deck = nullptr;
+    for (std::size_t i = 0; i < registry.size(); ++i) {
+        if (registry.name_at(i) == base) { deck = registry.mutable_at(i); break; }
+    }
+    if (deck == nullptr) return refuse("no air-ops deck for that base");
+    const int slot = slot_number - 1;
+    if (slot < 0 || static_cast<std::size_t>(slot) >= deck->slots.size()) return refuse("no such slot");
+    bsp::AirOpsSlot& s = deck->slots[static_cast<std::size_t>(slot)];
+    std::size_t target_index = units_.count();
+    if (!target.empty()) {
+        for (std::size_t k = 0; k < units_.count(); ++k) {
+            const GameUnitRow* row = units_.unit_row(k);
+            if (row != nullptr && row->name == target) { target_index = k; break; }
+        }
+        if (target_index >= units_.count()) return refuse("no unit by the target name");
+    }
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    for (const AirOpsSquadron& made : squadrons_) {
+        if (made.entity_id == s.launched_squadron && s.launched_squadron != 0u) {
+            record = bsp::plane_squadron_registry().find(made.name);
+            break;
+        }
+    }
+    if (record == nullptr) return refuse("the slot holds no squadron this host built");
+    const std::size_t leader = record->flight_leader();
+    // 007EE5C0: members not landed in state 5 or 2 (or 1 while disabled).
+    std::int32_t unstowed = 0;
+    std::vector<std::size_t> members;
+    for (const std::size_t m : record->member_units) {
+        if (m == bsp::kPlaneSquadronNoUnit) continue;
+        int st = 0;
+        bool landed = false, enabled = false;
+        unsigned int cls = 0;
+        if (!units_.plane_order_view(m, st, landed, enabled, cls)) continue;
+        members.push_back(m);
+        const bool stowed = landed && (st == 5 || st == 2 || (!enabled && st == 1));
+        if (!stowed) ++unstowed;
+    }
+    bool holding = false;
+    {
+        int st = 0;
+        bool landed = false, enabled = false;
+        unsigned int cls = 0;
+        if (leader < units_.count() && units_.plane_order_view(leader, st, landed, enabled, cls))
+            holding = cls == bsp::kPilotOrderClassMoveTo;
+    }
+    const std::uint32_t target_plus_one = target_index < units_.count()
+        ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+    const bsp::AirOpsHeldSlotOrder r = bsp::air_ops_held_slot_order_006ccda0(*deck, slot, order,
+        target_plus_one, holding, unstowed, true);
+    out.answer = r.answer;
+    out.state_after = static_cast<int>(s.state);
+    if (r.answer == -1) return refuse("the slot is not in state 3 or 4 (the launch entry serves 1 and 5)");
+    if (r.answer != 1) {
+        return refuse(r.answer == 2 ? "006CCDA0 refused the order in this slot state"
+                                    : "006CCDA0 refused the order (no class, or no target)");
+    }
+    if (r.action == bsp::AirOpsHeldSlotAction::kAttack && leader < units_.count()) {
+        if (script_orders_squadron_intake_007f1940(leader, members, target_index) != 0u)
+            out.planes = static_cast<int>(members.size());
+    } else if (r.action == bsp::AirOpsHeldSlotAction::kMoveToSelf && leader < units_.count()) {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units_.unit_position_00fc(leader, x, y, z);                   // 00427EB0
+        const float point[3] = {x, y, z};
+        for (const std::size_t m : members) {
+            ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
+            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                static_cast<std::uint32_t>(m + 1u), bot_host);
+            if (task == 0u) continue;
+            units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
+            units_.store_unit_moveto_range(m, 0.0f);
+            units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
+            units_.store_unit_moveto_point(m, point);
+            ++out.planes;
+        }
+    } else if (r.action == bsp::AirOpsHeldSlotAction::kRecallLand) {
+        std::size_t owner = units_.count();
+        for (std::size_t k = 0; k < units_.count(); ++k) {
+            const GameUnitRow* row = units_.unit_row(k);
+            if (row != nullptr && row->name == base) { owner = k; break; }
+        }
+        if (owner < units_.count()) {
+            for (const std::size_t m : members) {
+                if (units_.land_at_site_0099a3dd(m, owner) != 0u) ++out.planes;
+            }
+        }
+    }
+    out.accepted = true;
+    out.state_after = static_cast<int>(s.state);
+    log_.notef("player air ops order: base=\"%s\" slot=%d order=%d target=\"%s\" squadron=%s "
+        "holding=%d unstowed=%d -> state %d, %d plane(s) (0067A5E6 82h -> 006CCDA0, packet "
+        "cc9_air_ops_held_slot_orders)", base.c_str(), slot_number, order, target.c_str(),
+        record->name.c_str(), holding ? 1 : 0, unstowed, out.state_after, out.planes);
+    return out;
+}
+
+PlayerAirOpsOrderResult script_orders_player_air_ops_order(const std::string& base,
+    int slot_number, int order, const std::string& target) {
+    if (g_live_script_orders == nullptr) {
+        PlayerAirOpsOrderResult out;
+        out.reason = "no live script-orders host";
+        return out;
+    }
+    return g_live_script_orders->player_air_ops_order(base, slot_number, order, target);
+}
+
 void GameScriptOrdersHost::queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
                                                              std::uint32_t target_plus_one) {
     PendingAutoAttack p;

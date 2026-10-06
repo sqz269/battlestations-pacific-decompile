@@ -868,6 +868,43 @@ int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
                                   std::uint32_t target_plus_one, std::int32_t player,
                                   bool apply) noexcept;
 
+// Packet cc9_air_ops_held_slot_orders (docs/AIROPS_LAUNCH_TICK.md, "Orders to a
+// held slot"). True: 006CCDA0's arms for a slot whose squadron is out (state 3)
+// or recalled (state 4) answer through air_ops_held_slot_order_006ccda0 and the
+// player entry GameScriptOrdersHost::player_air_ops_order issues the squadron's
+// command. False: those states answer -1 (not modelled) and nothing is issued.
+inline constexpr bool kAirOpsHeldSlotOrdersBound = false;
+
+// What 006CCDA0 asks of a held slot's squadron (slot+28h), issued by the caller
+// through 0077D600 on the squadron.
+enum class AirOpsHeldSlotAction : std::int32_t {
+    kNone = 0,
+    kRecallLand,   // 006CCF61-006CCF91: vtable[114h] -> 0071BED0 (hold fire), then
+                   // `land` (00E08FA0) at the block's owner +7Ch (00465080)
+    kAttack,       // 006CCFF6-006CD014 / 006CD0A2: SetTarget 00E08EF8 at the target
+    kMoveToSelf,   // 006CD02A-006CD04A / 006CD0B4: moveto 00E08F68 at the squadron's
+                   // own world position (00427EB0 on the squadron -> 00468560)
+};
+struct AirOpsHeldSlotOrder {
+    int answer{0};   // 0 refused (no class, or order 3 without a target), 1 done, 2 refused by state
+    AirOpsHeldSlotAction action{AirOpsHeldSlotAction::kNone};
+};
+// 006CCDA0's state-3 and state-4 arms (006CCF4A-006CD117). `holding_at_moveto`
+// is 006BC5E0 on the squadron: its current command is moveto (00E08F68) and it
+// is within class+268h x [00CEC160] of the point. `unstowed_members` is 007EE5C0:
+// the members not landed in state 5 or 2 (or 1 while disabled).
+//   state 3, order 2: kRecallLand, state 4 (timer pair), answer 1.
+//   state 3, orders 1/3: holding -> order 3 kAttack (1), order 1 refused (2);
+//                        not holding -> order 1 kMoveToSelf (1), order 3 refused (2).
+//   state 4, order 2: refused (2). Orders 1/3: kMoveToSelf / kAttack, then 006BC730:
+//                        slot+8h = unstowed_members (its state-1 write for 0 is
+//                        overwritten), state 3 (006CD0EC) and the timer pair.
+// Other states are not this routine's (answer -1). With `apply` false only the
+// answer is computed.
+AirOpsHeldSlotOrder air_ops_held_slot_order_006ccda0(AirOpsDeck& deck, int slot_index,
+    int order, std::uint32_t target_plus_one, bool holding_at_moveto,
+    std::int32_t unstowed_members, bool apply) noexcept;
+
 // 006BED60: runway and hangar clear, an owner present and not disabled.
 bool air_ops_deck_free_006bed60(const AirOpsDeck& deck) noexcept;
 
