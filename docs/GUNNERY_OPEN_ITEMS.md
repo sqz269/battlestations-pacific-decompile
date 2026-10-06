@@ -11110,3 +11110,28 @@ the host's has `-pi/2..pi/2`. `007F6190` does not test the vertical.
 - JM06 with the local group-4 test (152.1's `g32_t4_hack`, both switches ON): `snap_failures` falls from 48 to the
   presses whose bearing is more than pi/4 off the tube's point. While the transport is within 45 degrees of the
   bow, each press launches one torpedo (`tube_fires > 0`) with the gyro heading toward the target.
+
+### 155.1 Pairs on `696dde849` and the verdict
+
+- **Smoke**: JM06, 300 frames: exit 0, `candidates=46 inserts=0`.
+- **Census** (300-frame OFF runs): there are candidates in BSM01 (12), IJN01 (24), IJN11 (36), JM05 (16), JM06 (46), JM08 (4),
+  LOMP06 (12), LOMP10 (8), USNOS (6) and USNRM01 (8). ESMP08, USN01, USN02, USN04, USN12 and USN13 have none. Every
+  candidate logged is a `"... submarine torpedo catapult"` tube (category 7, device 66), with `h = 0` and `v = 0`: each
+  sub's tube platforms 50-55 point at the bow. The `carved=` guns are meshless rows with an authored window.
+- **Idle pairs** (`--flip kMeshlessGunPointWindowBound=true`, `local\g33_{off,on}_<row>.log`, AE launch form) on jm06,
+  usnos, bsm01, ijn01, ijn11, jm05, jm08, lomp06, lomp10 and usnrm01 (9000): **all exit 1**, gameplay identical.
+  - The AI torpedo bot now gets past the snap (JM06 `torpedo_gate targeted` 0 -> 23208), but `accepted` stays 0.
+    `0085ABA0` refuses a gun whose rotation speed is zero (`0085ACA5` / `0085ACB9`), and the catapult rows author
+    `HorzRotSpeed = 0` and `VertRotSpeed = 0`.
+  - So the image's bot cannot aim a submarine's fixed tubes either. Its submarines fire through the script's
+    `NavigatorForceTorpedo`, as 152.1 noted.
+- **The player's group 4** (`kPlayerTorpedoGroupFireBound = true` on both sides, plus the harness line
+  `local\g33_harness_edit.py`, orders `local\g33_ord_j6t4.txt`: four presses at USTroopTransport 01):
+  - OFF: `snap_failures=48 tube_fires=0`.
+  - ON: `snap_failures=0`, `tube_fires=4`, `order_launches=2`, `can_fire_refusals=2` (the second tube of a pair
+    still reloading), and `PlayerSub 01: shots 0 -> 2` (exit 3). The bearings of 11.2 to 4.1 degrees snap to the
+    bow point (`snapped=-0.0`).
+  - The two torpedoes do not hit within 3000 frames. That is the aim of the test, not a mechanism failure.
+
+**Verdict: ON.** The mechanism matches end to end, and every idle row is gameplay-identical.
+`kPlayerTorpedoGroupFireBound` stays OFF until the ships lane lands the harness line (sent to the lead).

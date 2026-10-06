@@ -671,7 +671,7 @@ constexpr bool kPlayerTorpedoGroupFireBound = false;
 //    meshless guns gets the same insert from each (the image's later guns fail
 //    007F6CA0 but see the same frame, so the list is identical). OFF: counted
 //    only. docs/GUNNERY_OPEN_ITEMS.md 155.
-constexpr bool kMeshlessGunPointWindowBound = false;
+constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 155.1
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
