@@ -11762,3 +11762,36 @@ The countdown state is a member of `GameScriptOrdersHost`. The step runs inside
   a `luaMonitorAF` that finds no Allied airfield squadron. The row is gameplay-identical (exit 1).
 - **JM08, LOMP10** (3000 frames): no expiry inside 150 s; gameplay-identical (exit 1).
 - **Every other row:** identical (exit 0) or gameplay-identical.
+
+## 5dt. `AddAirBaseStock` routed (packet `cc9_lua_add_air_base_stock`, cc9-lua39, 2026-10-05)
+
+**The image.** `00896A90` (both `AddAirBaseStock` and `AddAirBasePlanes`, LUA_BINDING_ALIASES):
+`00888AA0` on argument 0, `006BCD20` with `DL = 0` (`00896BAA`-`00896BAE`), the class
+`00964790` over argument 1 (`00896BD8`), `0095BA60(class+70h, entity+54h)` (the party preload,
+`00896BF5`), `00964790` again, then `006CA770(class, argument 2)` on the block at `00896C54`
+(the third argument's index is `EBX` = 2, the same register the EH state bytes use). There is
+no null test of the block before `006CA770`. Nothing is pushed. `006CA770` itself is AIR_OPERATIONS
+section 2 and is already reconstructed (`air_base_stock_add_006ca770`).
+
+**The binding** (`kLuaAddAirBaseStockBound`, `include/bsp/game_hosts_lua.hpp`, committed OFF):
+`run_add_air_base_stock_00896a90` adds to, or appends to, the entity's air-ops deck stock list
+(`bsp::air_ops_decks()`), the same list the scene's `PlaneStock` blocks fill.
+- **SUBSTITUTIONS:** the class is its id, as the deck's list holds ids. An entity with no deck
+  is counted unresolved; the image would call `006CA770` on a null block.
+- **Records:** `006CA770`'s notice `00984EB0` (contract: unread). The replication has no peer
+  offline.
+
+**Who reads the stock in this host:**
+- the refill `006C0510` (state 3 or 4 slots);
+- `GetProperty(base, "stock" | "planes")`.
+
+The launch decision `006CD350` (`air_ops_slot_launch_006cd350`) is reconstructed but has no host
+caller. The only script readers of `planes` are commandhelpers' `luaPlayerAirbaseInit` /
+`Manager` and a stock remover (`commandhelpers.lua:8427`, `15183`, `15226`). No reference row's
+mission calls them.
+
+**Predictions (written before the runs):**
+- **ESMP08 long, USN13 long:** the calls now add stock (ESMP08: four carriers, ten entries;
+  USN13: phase 3, if it is reached). No slot refills on these rows (`refills_3_4_to_5=0` in
+  `l38_d1`), so they are gameplay-identical (exit 1).
+- **Every other row:** identical apart from the new summary line.

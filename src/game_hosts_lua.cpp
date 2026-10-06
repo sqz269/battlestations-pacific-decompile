@@ -418,6 +418,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_air_base_slot_count.
     const bool slot_count_row = kLuaSetAirBaseSlotCountBound
         && dispatch_row.address == 0x008963e0u;
+    // Packet cc9_lua_add_air_base_stock.
+    const bool add_stock_row = kLuaAddAirBaseStockBound
+        && dispatch_row.address == 0x00896a90u;
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
@@ -482,7 +485,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || slot_count_row || device_reload_row || unlimited_air_row
+        || slot_count_row || add_stock_row || device_reload_row || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
         || attack_alt_row
@@ -591,6 +594,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (unlimited_air_row) {
         if (!host->error_replay()) host->run_set_unlimited_air_00893c00(state, argc);
+        return 0;
+    }
+    if (add_stock_row) {
+        if (!host->error_replay()) host->run_add_air_base_stock_00896a90(state, argc);
         return 0;
     }
     if (slot_count_row) {
@@ -5335,6 +5342,44 @@ int GameMissionLuaHost::run_set_air_base_slot_count_008963e0(lua_State* state,
     return 0;
 }
 
+// Packet cc9_lua_add_air_base_stock. 00896A90 AddAirBaseStock / AddAirBasePlanes(entity,
+// class, count): 00888AA0 on argument 0, 006BCD20 with DL = 0 (00896BAA..00896BAE), the
+// class 00964790 over argument 1 (00896BD8), 0095BA60(class+70h, entity+54h) (the party
+// preload, 00896BF5), 00964790 again, then 006CA770(class, argument 2) on the block at
+// 00896C54 (argument index EBX = 2). Returns no value.
+// SUBSTITUTIONS (labelled): the block is the deck registry's entry for the entity and the
+// class is its id (the deck's stock list holds ids); an entity with no deck is counted
+// unresolved, where the image calls 006CA770 on a null block. 006CA770's replication
+// (0077C7B0, no peer offline) and its notice 00984EB0 (contract: unread) are records.
+int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int argument_count) {
+    ++summary_.stock_add_calls;
+    const int class_id = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int added = argument_count >= 3 ? static_cast<int>(::lua_tonumber(state, 3)) : 0;
+    const int id = air_ops_entity_id(state);
+    bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    if (deck == nullptr) {
+        ++summary_.stock_add_unresolved;
+        log_.notef("  AddAirBaseStock 00896a90: entity id %d has no deck (packet "
+            "cc9_lua_add_air_base_stock)", id);
+        return 0;
+    }
+    bsp::AirOpsStockEntry created{};
+    const bsp::AirOpsStockAddResult result = bsp::air_base_stock_add_006ca770(
+        deck->stock.data(), static_cast<int>(deck->stock.size()),
+        static_cast<int>(deck->stock.size()) + 1, static_cast<std::uint32_t>(class_id), added,
+        &created);
+    if (result.created_entry) {
+        deck->stock.push_back(created);
+        ++summary_.stock_add_created;
+    }
+    log_.unimplemented("AirOps::stock_notice", "00984eb0");
+    log_.notef("  AddAirBaseStock 00896a90: entity id %d class %d +%d -> %d%s (packet "
+        "cc9_lua_add_air_base_stock)", id, class_id, added, result.entry_count,
+        result.created_entry ? " (new entry)" : "");
+    log_.implemented("MissionLuaNative::AddAirBaseStock", "00896a90");
+    return 0;
+}
+
 namespace {
 // 00E17BF2. One byte in the image, so one value per process here.
 bool g_device_reload_enabled_00e17bf2 = false;
@@ -7316,6 +7361,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
         kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,
         summary_.slot_count_resized, summary_.slot_count_unresolved);
+    log_.notef("summary mission script air base stock bound=%d calls=%llu new_entries=%llu "
+        "unresolved=%llu (00896A90 -> 006CA770, packet cc9_lua_add_air_base_stock)",
+        kLuaAddAirBaseStockBound ? 1 : 0, summary_.stock_add_calls,
+        summary_.stock_add_created, summary_.stock_add_unresolved);
     log_.notef("summary mission script device reload bound=%d calls=%llu true=%llu "
         "now=%d (008C1350 -> 00E17BF2, packet cc9_device_reload_enabled)",
         kLuaDeviceReloadEnabledBound ? 1 : 0, summary_.device_reload_calls,
