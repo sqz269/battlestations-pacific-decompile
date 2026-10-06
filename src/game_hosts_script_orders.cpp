@@ -1610,8 +1610,9 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
 //    class being moveto; its distance test (class+268h x [00CEC160]) is not read,
 //    which only matters for a moveto whose point is not the squadron's own;
 //  - the squadron's command reaches its members the host's way: attack through the
-//    squadron intake 007F1940, moveto as each member's kind-7 task (0099A170) with
-//    the leader's position as the point, land through 0099A3DD at the deck owner;
+//    squadron intake 007F1940, moveto issued on each member (0077D600) at the
+//    leader's position and its kind-7 task (0099A170) installed after delivery,
+//    land through 0099A3DD at the deck owner;
 //  - 0071BED0's hold fire on the recall is not carried.
 PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::string& base,
     int slot_number, int order, const std::string& target) {
@@ -1640,6 +1641,11 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
             if (row != nullptr && row->name == target) { target_index = k; break; }
         }
         if (target_index >= units_.count()) return refuse("no unit by the target name");
+        // LABELLED (cc9-lua46): the screen offers only targets that pass the marker
+        // gate 0043F080 (006431A8), as the launch line's harness gate; a file can then
+        // list fallback targets for one slot and the first live one is taken.
+        if (order == 3 && !units_.unit_alive_and_visible(target_index))
+            return refuse("the target fails 0043F080 (dead or hidden); the screen does not offer it");
     }
     const bsp::PlaneSquadronHostRecord* record = nullptr;
     for (const AirOpsSquadron& made : squadrons_) {
@@ -1688,18 +1694,37 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
     } else if (r.action == bsp::AirOpsHeldSlotAction::kMoveToSelf && leader < units_.count()) {
         float x = 0.0f, y = 0.0f, z = 0.0f;
         units_.unit_position_00fc(leader, x, y, z);                   // 00427EB0
-        const float point[3] = {x, y, z};
+        // 00468560's position descriptor (kind 0) at the squadron's own position.
+        // cc9-lua46: the moveto is issued on each member first (0077D600), so
+        // 0099A170 reads it as the member's current command (0071BE40); before, the
+        // install read the member's old command and a squadron whose torpedo
+        // target was dead took no task (ESMP08 i1: 8 of 23 order-1s, 0 planes).
+        bsp::SceneCommandTarget here;
+        here.kind = 0;
+        here.position_valid = 1;
+        here.position[0] = x;
+        here.position[1] = y;
+        here.position[2] = z;
+        const std::string saved_source = delivery_source_;
+        delivery_source_ = "player:air ops order 006CCDA0";
+        // `planes` counts the members the moveto is issued to: the install runs
+        // after the order's delivery, usually after this entry returns.
         for (const std::size_t m : members) {
-            ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
-            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
-                static_cast<std::uint32_t>(m + 1u), bot_host);
-            if (task == 0u) continue;
-            units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
-            units_.store_unit_moveto_range(m, 0.0f);
-            units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
-            units_.store_unit_moveto_point(m, point);
+            void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(m + 1u));
+            entity_issue_command(handle, bsp::kPilotOrderClassMoveTo, here, 1);
             ++out.planes;
+            after_order_delivery([this, m, here]() {
+                ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
+                const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                    static_cast<std::uint32_t>(m + 1u), bot_host);
+                if (task == 0u) return;
+                units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
+                units_.store_unit_moveto_range(m, 0.0f);
+                units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
+                units_.store_unit_moveto_point(m, here.position);
+            });
         }
+        delivery_source_ = saved_source;
     } else if (r.action == bsp::AirOpsHeldSlotAction::kRecallLand) {
         std::size_t owner = units_.count();
         for (std::size_t k = 0; k < units_.count(); ++k) {

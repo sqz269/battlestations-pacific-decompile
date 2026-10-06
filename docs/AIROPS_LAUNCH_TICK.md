@@ -952,7 +952,8 @@ The helpers:
 - No arm releases the slot: `006BC730`'s state 1 is overwritten at `006CD0EC`. A held slot frees only when its
   squadron is gone (5ep).
 
-**The binding.** `bsp::kAirOpsHeldSlotOrdersBound` (`include/bsp/air_operations.hpp`), committed **OFF**:
+**The binding.** `bsp::kAirOpsHeldSlotOrdersBound` (`include/bsp/air_operations.hpp`), committed **OFF** and
+flipped **ON** by the ESMP08 pair below (cc9-lua46):
 - `air_ops_held_slot_order_006ccda0` is the arm table above;
 - `GameScriptOrdersHost::player_air_ops_order(base, slot_number, order, target)`, with the free
   `script_orders_player_air_ops_order`, is the player entry;
@@ -962,7 +963,8 @@ Labelled substitutions:
 - delivered at once, with player 0;
 - `006BC5E0`'s distance test is not read: holding means the leader's stored class is moveto;
 - the commands reach the members the host's way: the attack through the squadron intake `007F1940`, the
-  moveto as each member's kind-7 task with the leader's position, the land through `0099A3DD`;
+  moveto issued on each member at the leader's position with its kind-7 task installed after delivery
+  (cc9-lua46; before, the task read the member's old command), the land through `0099A3DD`;
 - the hold fire is not carried.
 
 The state-2 arms (retarget, and `006CC5C0`'s cancel) and the state-5 order-2 re-arm are not served by this
@@ -976,3 +978,72 @@ entry.
 - **A squadron landed and stowed** (state 3, all members in state 2): order 1 issues a moveto that the host's
   stowed planes cannot fly (state 2 has no motion arm). The host is expected to show 0 planes moving: a known
   limit, not the image.
+
+#### The ESMP08 pair (cc9-lua46, 2026-10-06): predictions, written before the ON run
+
+- **The order lines.** They are generated from the OFF run (`local\l46_e8gen.py`), with the `s38_e8_p3.txt` launch lines
+  kept. For every slot whose squadron is still out when its launch target dies, the file sends `order <base> <slot> 1`
+  about 5 s later. On the next frame it sends `order <base> <slot> 3 <target>` for each USN ship in the launch generator's
+  rotating priority.
+- **A new labelled gate in the entry.** Order 3 refuses a target that fails `0043F080` (dead or hidden), as the launch
+  line's harness gate does, because the screen offers only live targets. The first live target is taken; the later
+  lines for that slot answer 2, because the leader is no longer holding.
+- **OFF.** Every order line is refused with "kAirOpsHeldSlotOrdersBound is off". Gameplay is identical to a run with no
+  order lines.
+- **ON.**
+  - Each order 1 to a busy squadron answers 1 and gives its members a moveto at the leader's position.
+  - The order 3 that follows answers 1 and goes through the squadron intake `007F1940`, so the re-sent squadrons fly
+    and strike again.
+  - Expected: more torpedo and dive releases after the first re-send, and US ship deaths no later than OFF. This
+    reaches Cummings, the one US ship the OFF run of ships40 (`s40_on2_e8`) never sank, only if a re-sent squadron
+    lives long enough.
+  - USN04 (the control, no order lines) is gameplay-identical.
+- **Mechanism failure:** an order that answers 1 but whose members never take the target (no `command target` line
+  naming it), or a re-sent squadron that never releases.
+
+#### The ESMP08 pair: results (cc9-lua46, 2026-10-06), the switch ON
+
+The pair was built from the same tree (`pair_export.py`, commits `f59c3f4a9` and `be9ff3830`). The runs were ESMP08 at
+72000 frames with `l46_e8_orders2.txt`, which is generated from the OFF log so that each order's premise holds there.
+The logs are in `local\l46_*` of the cc9-lua46 tree.
+
+| run | US ships sunk | mission end | order 1 / order 3 accepted |
+| --- | --- | --- | --- |
+| OFF | 14 of 15 (Cummings lives) | none | 0 / 0 (every line: "is off") |
+| ON i1 (orders from ships40's log, all order-3 lines in one frame) | 15 | completed at 2277.55 s | 23 / 68 |
+| ON i2 (one order-3 line per frame) | 15 | completed at 2777.98 s | 23 / 11 |
+| ON i3 (i2, with the moveto issued before the task) | 15 | completed at 3387.43 s | 24 / 24 |
+
+USN04 (the control, no order lines) is gameplay-identical (pair_diff exit 1). Two OFF runs with different order
+files are identical (exit 0). Every ON run that completes logs `bsp: refused a mission script's process launch:
+sus_prog.exe`.
+
+**Two host corrections, made during the pair.**
+1. **i1, holding.** All the order-3 lines of one frame were accepted: the members' attack class is stored after the
+   order's delivery, so the leader still read as holding. The image's player clicks one target. The file now
+   sends one line per frame, so the next line sees the attack and answers 2.
+2. **i2, the moveto.** 8 of the 23 order-1s took no task. The kind-7 install read the member's old command
+   (`0071BE40`), for example a torpedo run on a dead target, and refused it. The moveto is now issued on each member
+   (`entity_issue_command`, the position descriptor of `00468560`), and `0099A170` runs after its delivery, as the Lua
+   moveto does. In i3 every order 1 leaves its squadron holding, and its order 3 is accepted.
+
+**How the win comes about (i3), from the per-entity tables.**
+- The re-sent squadrons take their new targets. Each of the 24 accepted order-3s is followed by `command target
+  0071EBF0` lines naming the new target, from 24 to 666 lines per squadron.
+- Two of them sink their targets earlier:
+  - Grayson, by `Chitose_sqn37` (re-sent), at 1642 s against 2263 s;
+  - Woodworth, by `Chitose_sqn47` (re-sent), at 2346 s against 3209 s.
+- Re-sent squadrons fight, then die or land, and their slots free (stock return, SHIP_AI 200.2). Then the
+  launch lines reach Cummings: `Chitose` slot 2 queues class 162 at Cummings, and `Chitose_sqn51|.-3` sinks it at
+  3385 s.
+- In OFF every slot stays in state 3 to the end. Its squadrons loiter over dead targets, so no launch line is ever
+  accepted for Cummings.
+- Deaths move 675 -> 685. Before the ON mission end at 3387 s there are 637 OFF deaths and 648 ON deaths. The mission
+  then enters EndScene, so the later deaths are not comparable.
+
+**Verdict: ON.** The mechanism matches the image's arms, and it reaches the mission's scripted win. The
+`planes` count in the log now counts members that were issued the moveto: the install runs after delivery. The
+i3 logs show 0 for order 1 because they predate that change.
+
+Still not served: the state-2 retarget and cancel (`006CC5C0`), and the state-5 order-2 re-arm. A landed and
+stowed squadron (state 2 members) still cannot fly the moveto.

@@ -884,7 +884,8 @@ int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
 // or recalled (state 4) answer through air_ops_held_slot_order_006ccda0 and the
 // player entry GameScriptOrdersHost::player_air_ops_order issues the squadron's
 // command. False: those states answer -1 (not modelled) and nothing is issued.
-inline constexpr bool kAirOpsHeldSlotOrdersBound = false;
+// ON by its ESMP08 pair (cc9-lua46): with `order` lines the mission completes.
+inline constexpr bool kAirOpsHeldSlotOrdersBound = true;
 
 // What 006CCDA0 asks of a held slot's squadron (slot+28h), issued by the caller
 // through 0077D600 on the squadron.
