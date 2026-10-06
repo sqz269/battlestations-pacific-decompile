@@ -748,7 +748,9 @@ inline constexpr bool kCommandBuildingLevelBound = true;
 // (006F3951 FSTP [ESI+36Ch]) = HP[level] * class HP into the gunnery host's maximum
 // health through GameGunneryHost::set_unit_max_health_036c (cc9-gunnery28,
 // 9886e40e9); current health is unchanged, as in the image. False: recorded only.
-inline constexpr bool kCommandBuildingLevelMaxHpBound = false;
+// ON by section 173.1: three rows gameplay identical; JM08 long's HQ fire roll moves
+// (starts 15 -> 16), as its chance reads the maximum.
+inline constexpr bool kCommandBuildingLevelMaxHpBound = true;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.

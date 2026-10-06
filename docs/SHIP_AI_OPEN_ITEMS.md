@@ -13782,3 +13782,27 @@ All leases are released after this commit.
 - **USNOS 3000:** HQ1, HQ2 and CB2 reach 16800 at 30 s; their fraction drops to 0.71 at full
   health. If the US AI weighs targets by fraction, `pair_diff` 3, else 1.
 - **USN01 3000 (control):** CB2 never levels. `pair_diff` 1.
+
+### 173.1 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:**
+- OFF is this tree at `cc4408825`.
+- ON is `pair_export.py --commit cc4408825 --flip kCommandBuildingLevelMaxHpBound=true --out
+  local\s35_hp_on`.
+- Prefixes `off8` / `on8`.
+- Smoke: `local\s35_smoke3.log`, JM08 300 frames. Clean.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| USN01 3000 | 1 | CB2 never levels |
+| USNOS 3000 | 1 | HQ1, HQ2 and CB2 set to 16800 at 30 s; nothing reads the fraction into an outcome within 150 s |
+| JM08 long 36000 | 1 | the HQ's maximum is set 13200 / 14400 / 16800 at 10 / 20 / 30 s and 12000 at the neutralize (1041.50 s, unchanged) |
+
+- JM08 long's only movement is the LandFort fire roll, whose chance reads the maximum: roll hits
+  218 -> 217, starts 15 -> 16 and extends 203 -> 201. The native table moves only
+  `fire_effect_create_008689c0` and `fire_sync_message_d1`, 15 -> 16 each.
+- Deaths, hits, damage and the unit table are identical.
+
+**Verdict: ON.** The mechanism matches (the maximum follows the level, health is untouched). Every
+row is gameplay identical; only the presentation-side fire roll moves, as predicted. Not
+game-validated.
