@@ -1,4 +1,5 @@
 #include "bsp/native_lua_bootstrap.hpp"
+#include "bsp/lua_exec_guard.hpp"
 #include <cstring>
 #include <stdexcept>
 extern "C" {
@@ -14,7 +15,7 @@ namespace {
 struct Library {const char* name;lua_CFunction open;};
 const Library libraries[]={
     {"",luaopen_base},{LUA_LOADLIBNAME,luaopen_package},{LUA_TABLIBNAME,luaopen_table},
-    {LUA_IOLIBNAME,luaopen_io},{LUA_OSLIBNAME,luaopen_os},{LUA_STRLIBNAME,luaopen_string},
+    {LUA_IOLIBNAME,bsp::luaopen_io_guarded},{LUA_OSLIBNAME,bsp::luaopen_os_guarded},{LUA_STRLIBNAME,luaopen_string},
     {LUA_MATHLIBNAME,luaopen_math},{LUA_DBLIBNAME,luaopen_debug}
 };
 void platform_chunk(NativeLuaStateStorage& owner,NativeStringStorage& strings,const char* code,bool current_release_length=false){

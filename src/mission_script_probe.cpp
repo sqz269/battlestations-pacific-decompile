@@ -23,6 +23,7 @@
 // Defaults to the installed copy and "usn/usn_2_java".
 
 #include "bsp/lua_binding_core.hpp"
+#include "bsp/lua_exec_guard.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -1117,7 +1118,7 @@ int dofile_stub(lua_State* L)
 void open_standard_libraries(lua_State* L)
 {
     const lua_CFunction openers[] = {
-        luaopen_base, luaopen_table, luaopen_io, luaopen_os,
+        luaopen_base, luaopen_table, bsp::luaopen_io_guarded, bsp::luaopen_os_guarded,
         luaopen_string, luaopen_math, luaopen_debug,
     };
     const std::size_t opener_count = sizeof(openers) / sizeof(openers[0]);
