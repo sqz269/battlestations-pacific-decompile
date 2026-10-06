@@ -2342,6 +2342,13 @@ struct GameUnitsHost::Impl {
         retreat_retired{0}, retreat_exits{0}, retreat_exit_members{0},
         retreat_exit_gated{0}, retreat_latches_361{0}, retreat_rtb_installs{0};
     std::vector<std::string> retreat_latched_361;   // squadron+361h, by squadron name
+    // BSP_MissionEntity_Kill's cause (00926D90's argument) for the kills this
+    // host passes one other than 1; 00929800 names it from 00E0CF04.
+    std::vector<int> kill_cause_by_unit;
+    void note_kill_cause(std::size_t unit, int cause) {
+        if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
+        kill_cause_by_unit[unit] = cause;
+    }
     unsigned long long land_retired_invalid{0};
     // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
     unsigned long long yaw_rate_calls_00811940{0};
@@ -7094,6 +7101,7 @@ struct GameUnitsHost::Impl {
                     if (u == m) continue;
                     const float* p = slots[u]->motion.position;
                     if (bsp::point_outside_world_map_0071c4f0(*bounds, {p[0], p[1], p[2]})) {
+                        note_kill_cause(u, 4);
                         gun->kill_unit_00926d90(u, 4);
                         ++retreat_exit_members;
                         ++outside_killed;
@@ -7114,6 +7122,7 @@ struct GameUnitsHost::Impl {
             "Kill(4), packet cc9_plane_retreat_task)", slots[m]->row.name.c_str(),
             sq->name.c_str(), m == leader ? 1 : 0, alive.size(), outside_killed,
             static_cast<double>(summary.simulated_seconds));
+        note_kill_cause(m, 4);
         gun->kill_unit_00926d90(m, 4);
         slots[m]->retreat_task_installed = false;
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
@@ -14896,6 +14905,11 @@ bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
 int GameUnitsHost::skill_level(std::size_t unit_index) const {
     const Impl& host = *impl_;
     return unit_index < host.slots.size() ? host.slots[unit_index]->pilot_skill_index : 1;
+}
+
+int GameUnitsHost::kill_cause_00926d90(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    return unit_index < host.kill_cause_by_unit.size() ? host.kill_cause_by_unit[unit_index] : 1;
 }
 
 std::vector<std::pair<std::size_t, float>> GameUnitsHost::destroyed_units() const {
