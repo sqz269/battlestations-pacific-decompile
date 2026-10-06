@@ -4690,11 +4690,23 @@ void GameScriptOrdersHost::report() {
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
         if (mission_end_.seen) {
+            // Packet cc9_lua_mission_narrative: with the narrative bound the
+            // callback fires, so the line says whether EndScene was reached.
+            char end_scene[96];
+            if (!kLuaMissionNarrativeBound) {
+                std::snprintf(end_scene, sizeof(end_scene),
+                    "not reached (the narrative callback is render-side)");
+            } else if (end_scene_calls_ != 0) {
+                std::snprintf(end_scene, sizeof(end_scene), "reached at %.2f s (recorded)",
+                    static_cast<double>(end_scene_first_at_));
+            } else {
+                std::snprintf(end_scene, sizeof(end_scene), "not reached (narrative callbacks=%zu)",
+                    narrative_callbacks_);
+            }
             log_.notef("summary mission end: %s at %.2f s (Mission.EndMission) text=\"%s\" "
-                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 not reached (the narrative "
-                "callback is render-side)", mission_end_.status.c_str(),
+                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 %s", mission_end_.status.c_str(),
                 static_cast<double>(mission_end_.at_seconds), mission_end_.fail_text.c_str(),
-                mission_end_.fail_entity.c_str(), mission_end_.objectives.size());
+                mission_end_.fail_entity.c_str(), mission_end_.objectives.size(), end_scene);
             for (const std::string& objective : mission_end_.objectives) {
                 log_.notef("  objective %s", objective.c_str());
             }
