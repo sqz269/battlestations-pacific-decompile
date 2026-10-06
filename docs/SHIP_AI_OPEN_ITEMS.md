@@ -14267,3 +14267,18 @@ HQReady.
 So the base flies 12 of its 42 planes. This is 176 caveat 3 again, now the gate on LOMP10. Routed
 to the lead for the air-ops lane: what returns a slot to state 1 or 5 after its squadron is lost
 (`BSP_AirOps_UpdateSlot` `006CD350`). Not read here.
+
+### 179.1 p5 re-run with `kSquadronDeadOnLastMemberBound` ON (cc9-ships37, 2026-10-06)
+
+The tree is `agent/cc9-ships37` with main merged (it contains `99905eea9`, the switch ON), rebuilt,
+with the same order file and launch form (`local\s37_u1p5b.log`).
+- **The win holds: `summary mission end: completed at 697.90 s (Mission.EndMission)`**, the
+  same time as p5.
+- The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+  109032.
+- Every listed event matches p5 to the hundredth of a second: `luaConLeadHit`, the six convoy
+  deaths (185.76-216.21 s), `luaMoveToPh3`, and the 22 Nell deaths from 290.20 to 697.50 s.
+
+Why the switch does not move the end: under p5 the last Nell to die is the leader Nell6 itself
+(697.50 s), after every wingman. "Squadron dead" therefore falls on the same tick whether it counts
+the leader or the last member.
