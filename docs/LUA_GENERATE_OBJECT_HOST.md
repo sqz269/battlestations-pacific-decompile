@@ -297,3 +297,52 @@ back and generated, from existing worktree-cc9-ships2 logs:
 **PRCP03's seven troop transports are Hidden rows.** The script generates them only in
 `PreparePhase4` (`prcp_07_tarawa.lua:1360..1368`), after the phase-3 victory movie. See packet
 `cc9_prcp03_phase_progress`.
+
+## A held-back LandConvoy is a convoy, not a unit (packet `cc9_lua46_generate_land_convoy`, cc9-lua46, 2026-10-06)
+
+**The crash.** gunnery32's reference AE run of JM05 at 9000 frames died at about 195 s. The log
+(`g32_ae_jm05l.log` line 49938) reads: `startup failed: unit observer creator projection is unavailable:
+unit=Event5Convoy creator=00000000`.
+- The call is this installation's `jm05.lua` (2024-07-13) line 3698,
+  `GenerateObject("Event5Convoy", "ijn05.hint_15_title|.")`, in random event 5 ("Catch the convoy").
+- `Event5Convoy` is a `Hidden` `LandConvoy` in `ijn_05_invasion_of_port_moresby.scn` (line 2254). It has 4
+  rows and `Type1..Type4` of `LandVehicleClasses` `Us_tank` / `Us_apc`, and its `Path` is `Landscape 01\Event5Path`.
+  Event 3's `Event3Convoy 01..03` are held-back LandConvoys too.
+
+**What the image does.**
+- `0046D930` -> `0046DB4B` calls the class's `descriptor[1]`. For class 1Ah that is the LandConvoy creator
+  `004F2700` (a 3CCh FixedInstance with no vehicle class; `src/scene_entity_factory.cpp`).
+- `00925F20`'s pass A then reaches its slot 39, `00743450` (vtable `00CEA570` +9Ch; the
+  `find_scene_class_lua_identity` row). That builds one member per `TypeN` and binds the Path (`007420B0`).
+- The convoy itself is never a vehicle unit.
+
+**The host's error.** `create_unit_from_scene_record_0046db4b` sent the convoy record to `create_units`, which
+makes a unit of every created record. The observer tables then had no creator to key on, and the
+`logic_error` ended the run.
+
+**The fix.** `run_generate_object_00944fd0` sends class 1Ah to `generate_land_convoy_00743450`. That runs the
+three steps a load-time convoy takes in this host, at the call:
+1. A scene-marker identity: pending push, `thisTable` through `00925F20`, `register_scene_marker`, and the
+   marker frame.
+2. `build_land_convoy_roster_00743450`.
+3. `bind_land_convoy_motion` against the live scene records (`live_scene_entities()`, new in
+   `game_hosts_scene_contents`).
+
+The binding returns the convoy's table, so `Convoy.Dead`, `Kill` and `luaGetDistance` resolve as they do for
+the load-time `SecondaryLandConvoy 01`. No switch: it is a crash fix that follows the image's creator.
+
+**Labelled substitutions.**
+- The convoy's marker id comes from `kGeneratedSceneMarkerIdBase` (90000). Load-time markers count up from
+  50000.
+- The members are not pushed onto the pending list, which is also true of a load-time convoy here.
+
+**Verified.** These are JM05 runs at 9000 frames (`--mission-frame-seconds 0.05`, AE's launch form). Logs are
+`local\l46_ae_jm05l.log` and `local\l46_tree_jm05l.log` in the cc9-lua46 tree.
+- **Builds.** One is built from AE's base `8eee3a87c` plus this fix (scratch commit `e23110cd4`). The other is
+  this branch.
+- **Both reach the end.** Both runs reach frame 9000 (`frames_presented=9199`, `exit_code=0`).
+- **The convoy.** `GenerateObject` logs: `"Event5Convoy" (LandConvoy) -> marker id 90000 ... thisTable=1,
+  members=4, moving=1`. The roster holds 2 `Us_tank` and 2 `Us_apc`. The motion is bound on the 126-knot
+  `Event5Path` (length 13781 m). By step 4800 the convoy has moved 1200 m.
+- **Another row.** The unit path is unchanged. In the same runs `GenerateObject("Event2Pt")` (TBoatGen)
+  creates unit 364 as before.

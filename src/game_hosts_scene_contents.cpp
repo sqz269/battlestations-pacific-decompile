@@ -2762,10 +2762,22 @@ void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
     impl_->lua = lua;
 }
 
-GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
-    : impl_(std::make_unique<Impl>(log, vfs)) {}
+namespace {
+const GameSceneContentsHost* g_live_scene_contents = nullptr;
+}  // namespace
 
-GameSceneContentsHost::~GameSceneContentsHost() = default;
+GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
+    : impl_(std::make_unique<Impl>(log, vfs)) {
+    g_live_scene_contents = this;
+}
+
+GameSceneContentsHost::~GameSceneContentsHost() {
+    if (g_live_scene_contents == this) g_live_scene_contents = nullptr;
+}
+
+const std::vector<GameSceneEntityRecord>* live_scene_entities() noexcept {
+    return g_live_scene_contents != nullptr ? &g_live_scene_contents->entities() : nullptr;
+}
 
 // ---------------------------------------------------------------------------
 // The GenerateObject pool, the stand-in for the named-object map at sceneDb+18h
