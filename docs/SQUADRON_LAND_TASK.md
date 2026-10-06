@@ -12913,3 +12913,21 @@ sinkings and the RNG coupling those bring.
   delays 0-0.9 s are all still below zero. That is the image's arithmetic as read; the idle value
   after 006E3C00 is unread.
 - **Prepare's tick `009B6670`** is unread (mode 0 is not reached on these rows).
+
+### 5ee.2 Prepare's tick `009B6670`, read (not bound) (cc9-lua41, 2026-10-06)
+
+`009B6670` has two arms.
+- **The wait arm, while +98h <= 0.**
+  - The member copies its leader's bay byte (leader+9C1h[slot]) into approach+CCh.
+  - It scales the formation spacing +8Ch by its range and bearing to the leader.
+  - It runs the follow base tick and zeroes the gun cone.
+  - Within 300 m of the aim point it levels the pitch and holds the speed at or below +ACh.
+- **The drop arm, +98h > 0.** It counts +98h down while holding wings level. On expiry, or when
+  aligned within range, it sets +A0h and calls `007BBBA0`. The rule then moves prepare to release.
+
+The only writer of a positive +98h is `009B8100`, which stores 5.0 (`00CE3850`). That function
+runs from the task's +24h `009B83D0`, only when the state is prepare. +24h is the manual
+release-order offer, made after a player order: `unit+72Ch` vtable[38h].
+- **So on an AI squadron, prepare never drops.** It can only be reached in attack mode 0, which
+  the leader's `0099B740` lifts to 1 on its first think.
+- **The host keeps the follow tick there** (5ee, labelled). No AI row reaches this arm.
