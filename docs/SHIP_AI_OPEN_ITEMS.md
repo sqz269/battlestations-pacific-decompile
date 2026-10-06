@@ -12913,3 +12913,64 @@ Census line: `summary mission command building party lua mirror calls last_slots
   - BSM01 has none;
   - USN01 3000 does not neutralize CB2 within 150 s (156.2's run did, much later);
   - all four `pair_diff` 1, census only.
+
+### 160.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `1bd0f3073`.
+- ON is `pair_export.py --commit 1bd0f3073 --flip kCommandBuildingPartyLuaMirrorBound=true --out
+  local\s34_pm_on`.
+- Prefixes `off2` / `on2`.
+- Smoke: `local\s34_smoke2.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism:**
+- `calls=1 last_slots=403`: the neutralize at 1052.00 s re-mirrors 403 named slots.
+- The next `CheckHQ` runs `Fail()`, and `luaMissionFailedNew` runs `luaInitMissionEnd`. The
+  `SetInvincible(..., 0.100)` lines for every live unit start at log line 136430 (about
+  1052.6 s), after the `CountdownCancel` and `EnableInput` natives (both still
+  UNIMPLEMENTED).
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| deaths | 177 | 135 |
+| deaths after 1053 s | 43 | 1 |
+| last death | 1794.88 s | 1079.73 s |
+| hit records | 6967 | 9376 |
+| shots | 7839 | 9037 |
+
+- The one late death is `Japanese AA truck 01` at 1079.73 s (first damaged 1076.47 s). Either
+  `luaGetOwnUnits` does not return it, or `SetInvincible 0.1` is a health floor that a large hit
+  crosses. Not read.
+- Fire continues against invincible units (more hits, no kills), which is what the image's 40 s
+  epilogue would show.
+
+**Where the host diverges after that:**
+- `MissionNarrative` (`008B0C10`) is UNIMPLEMENTED in the host, so its callback
+  `luaMissionEnd_CamOnEnt` never runs.
+- The fade, the Finale and `EndScene` are never reached, and the host steps an invincible world to
+  1800 s.
+- The image would end the scene about 40 s after the failure (160.1). So every JM08 long row is now
+  image-faithful to about 1093 s and host-only after it.
+- `summary mission script state` still prints `MissionFailedRan=nil`: it reads
+  `Mission.MissionFailed`, which the New path does not set (it sets `Mission.MissionStatus = false`).
+  That is a census gap in `src/game_hosts_lua.cpp` (cc9-lua39's file).
+
+**Verdict: ON.**
+- Every prediction held. The one open alternative (whether `EndScene` is reached) is answered:
+  not in the host, because of the narrative stand-in.
+- **Not game-validated.**
+- **Follow-ups:**
+  - (a) `MissionNarrative`'s callback, so the end chain reaches `EndScene`;
+  - (b) a `MissionStatus` census;
+  - (c) reference-row tooling should treat a row as image-faithful only up to about 40 s after a
+    scripted mission end.

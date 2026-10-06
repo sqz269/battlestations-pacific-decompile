@@ -662,7 +662,9 @@ inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
 // rewrites `Party` on every named unit from its row, not on this entity alone;
 // rows whose party did not change get the value they already hold. False: the
 // table keeps the party written at attach, as before.
-inline constexpr bool kCommandBuildingPartyLuaMirrorBound = false;
+// ON by section 160.4: four controls gameplay identical; JM08 long's CheckHQ now
+// runs luaMissionFailedNew at 1052.6 s and the units turn invincible.
+inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
