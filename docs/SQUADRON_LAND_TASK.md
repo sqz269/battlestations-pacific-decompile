@@ -14010,3 +14010,33 @@ IJN01 Dauntless, plus the A7Ms here.
   their bombs.
 - **Uncertainty:** when the first round is attached to a fresh rack (the rack tick `006E56F0` and the re-attach in
   `006E4D50`'s tail) is not read. The host attaches it at once.
+
+## 5ez. Handoff (cc9-lua46, 2026-10-06, at about 70% context)
+
+Branch `agent/cc9-lua46`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua46`. Main is merged in
+(`c5bd3b621`) and everything is committed. No leases are held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| orders to a held slot (ESMP08 reaches its win) | `kAirOpsHeldSlotOrdersBound` | ON | AIROPS_LAUNCH_TICK "The ESMP08 pair: results" |
+| GenerateObject of a held-back LandConvoy (JM05 crash) | - | fixed, no switch | LUA_GENERATE_OBJECT_HOST, last section |
+| USNOS two-movie callback | - | read: script single slot, no host gap | MISSION_BLACKOUT, last section |
+| IJN01 second rack: D1h reads the rack pool | `kRackPoolRoundsRemainingBound` | ON | 5ex |
+| convoy roster order | - | read: matches `00743720..00743849` | (lead report) |
+| SetParty on a unit (USNOS HQ2) | `kSetPartyUnitBound` | ON | LUA_BINDING_CORE, last section |
+| bag Equipment 0 carries no rack round | `kRackUnequippedEmptyBound` | REFUTED, OFF (the rack constructor's ammo is 1) | 5ey |
+
+**Next, in order:**
+1. **Re-pair 138** (`kRackBulletKindBound`) once gunnery32's mount census reads `Equipments[C54h][slot].Platform`.
+   The rows are USN13 9000, USNOS and LOMP10.
+2. **Open reads:**
+   - when a fresh rack's first round is attached (`006E56F0`, `006E4D50`'s tail);
+   - the state-2 retarget/cancel (`006CC5C0`) and the state-5 order-2 re-arm of `006CCDA0`;
+   - `DisplayScores` `008C20D0` is unimplemented, which hides USNOS's `Bases captured`.
+
+**Scripts** are in `local\`, prefix `l46_`:
+- `l46_lane.ps1 -Variant <off|on|...> -Rows a,b [-Prefix p] [-Orders file]` starts detached runs from
+  `local\l46_<variant>\build`. Rows: `smoke`, `e8` (ESMP08 72000), `e2` (USN04), `ijn01p1`, `osf7` (USNOS 60000,
+  ships41 f7), `usnos`, `bsm01w`.
+- `l46_e8gen.py <log> <base orders> <out> [--census]` generates ESMP08 held-slot order lines from a run log, one
+  order-3 target per frame.
