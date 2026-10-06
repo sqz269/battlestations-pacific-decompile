@@ -14568,3 +14568,45 @@ first, and Kaya is never bombed.
 **LABELLED:** the harness's fixed click times; the launch line's target naming (SCRIPTED_HELM 13);
 the dead-target refusal above. RNG coupling (memory: the shared stream) means one run per order
 file is not a spread.
+
+## 187. USN12 completes with scripted player input (lead item 3, cc9-ships38, 2026-10-06)
+
+**The script** (`USN\usn_12_augusta.lua`, this installation, mtime 2024-07-13) has three phases:
+1. `DDrow` dead.
+2. The generated `IJNGrp` dead. It attack-moves on `MontGrp[1]` (592).
+3. `MontGrp`'s first live ship comes within 1000 m of `CLGoTo` (461; the NavPoint is at (7000,
+   6000)). Then `luaMissionComplete` runs and `Mission.EndMission = true`.
+
+It fails only if every MontGrp ship is lost (391). The player starts on `Montpelier`, the formation
+leader (533). At phase 3, `luaPh3MovieEnd` hands the player a random live MontGrp ship (Denver
+here).
+
+The build and launch form are as in 186.
+
+| run | orders | frames | outcome |
+| --- | --- | --- | --- |
+| idle (`s38_u12idle`) | none | 20000 | DDrow dead by 501.60 s; IJNGrp dead by 897.85 s (Charles lost); `luaMoveToPh3` near frame 18019; MontGrp still 10.50 km from `CLGoTo`; no end |
+| p1 (`s38_u12p1`, `s38_u12p1t` with trajectories) | `select Montpelier`, then `moveto Montpelier CLGoTo` at 18400/18410 and again at 19400/19410 | 34000 / 22000 | both lines applied, and Montpelier enters `movetopos`, but it does not move: 10.54 km at the end |
+| **p2 (`s38_u12p2`)** | the same two lines at **12000/12010**, repeated at 18400/18410 (`local\s38_u12_p2.txt`) | 36000 | **`summary mission end: completed at 1544.78 s (Mission.EndMission)`**, "We have destroyed the enemy counter attack! - Mission Complete!" |
+
+**Why p1 fails: the idle player ship runs aground.** Left on its opening heading (91.5 deg,
+throttle 0.598, rudder 0, mode `heading`), Montpelier sails due east (`s38_traj_u12p1t.Montpelier.csv`).
+- At about 733 s it reaches (4823, -4393) and its y rises to 3-4 m.
+- Its forward speed falls to about 0 and then swings between -2 and +2 m/s. It never gets free,
+  under `movetopos` or otherwise.
+
+An idle player gives no orders, so the beaching is the player's omission, not an AI fault. The
+AI-led ships carry `NavigatorSetAvoidLandCollision`.
+
+**p2:**
+- **Steering.** The 12000 (600 s) moveto turns Montpelier north (heading 44.9 deg at 625 s, then
+  17.5 deg) before the shoal. It closes on `CLGoTo` at up to 16.7 m/s and stops at (6998, 5995)
+  by 1675 s.
+- **Phase 2.** The fight moves with it. IJNGrp is dead by 859.41 s; Montpelier itself kills
+  Naganami, Wakatsuki, Agano and Haguro. MontGrp loses Charles and Columbia.
+- **Phase 3.** `luaMoveToPh3` runs, and `MovieBetty` is shot down at 998.98 s.
+- **End.** The exec guard's `bsp: refused a mission script's process launch: sus_prog.exe` is at
+  log line 229209. The mission end follows at 229450 (`entity="Claxton"`).
+
+**LABELLED:** the harness's fixed click times. The moveto goes to the named NavPoint's position
+(SCRIPTED_HELM 8.1), where the player would click a map point.
