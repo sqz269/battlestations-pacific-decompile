@@ -11850,8 +11850,8 @@ Ghidra was read-only. The listing is `local\output\ghidra-disasm-006e4d50-*.txt`
    - Field names (the `ThrowMul` family of this installation's `robots.lua`): `TorpThrowMul`,
      `DiveBombThrowMul`, `LevelBombThrowMul`. The exact offset-to-name pairing is **not
      verified**.
-   - If `+78h` is `DiveBombThrowMul`, the SPNormal row (robots.lua:722) authors **0.0**, so an
-     AI dive bomber at the default skill has no cone.
+   - If `+78h` is `DiveBombThrowMul`, the SPNormal row authors 1.0 (robots.lua:583); 0.0 is
+     SPVeteran's (robots.lua:722). CORRECTED in 5dv: an earlier draft of this section had the rows swapped.
 2. `rack+400h` = U(0, `[00D7A264]` = pi) (`006E4F91`).
 3. `rack+404h` = `00412E20`(U(0, `s`)) (`006E4FB1`), the tangent.
 4. The cone vector D = (`t` cos a, `-t` sin a, 1) (`006E5013`-`006E503B`) is a round-frame direction.
@@ -11877,7 +11877,7 @@ matrix row 1. That `+DCh` is taken to be the device's `LaunchSpeed` (**unverifie
 - `Bullet[1].Throw` = 0.01, `Wind` = 0.05;
 - `LaunchSpeed` = 0.
 
-So the cone is at most about 0.57 degrees, and none when an AI-held dive bomber's ThrowMul is 0.
+So the cone is at most about 0.57 degrees (none at SPVeteran, whose ThrowMul is 0).
 The wind term is a few cm/s. The four draws per drop always happen. The gameplay effect is
 therefore mostly the shared-stream shift: 95 drops over 6 reference rows.
 
@@ -11907,3 +11907,93 @@ All five rows are gameplay-identical, as predicted. Every call made a new list e
 added classes was already in the carrier's scene `PlaneStock` list. For example, Enterprise's
 four scene entries hold no class 26, 113, 108 or 38. **Verdict: ON.** The stock now holds the
 image's entries for the refill and the `GetProperty` readers. It moves no reference row.
+
+## 5dv. USN01's ConSBD2 misses Convoy4 by its aim-error draw, and the image does not re-attack (cc9-lua39, 2026-10-05)
+
+This is the lead's question on ships33's `s33_c1.log` (USN01, 36000 frames). Here it is re-run as
+`local\l39_tr_usn01.log`:
+- the run is 4200 frames on main `bdac14748`;
+- it is an export with `kHullAimTrace` flipped for the diagnosis only (`local\l39_a0`, SHA-256
+  `B369F7B8F1A2`);
+- the environment is `BSP_SHELL_FATE=ConSBD2|Convoy4`, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+Ghidra was read-only. **Nothing was bound: no divergence was found.**
+
+### What happened
+
+**The target and the order.** `PilotSetTarget(MainAttack[5], Convoy[4])` (usn_1_marshall.lua:911)
+resolves on all four members to Convoy4 (`command target 0071EBF0 ... -> Convoy4`). The pick is
+right.
+
+**The approach.** All 16 convoy dive bombers fly the same chain:
+- `moveto`/`follow` -> `attackrun` -> `flyabove` -> `aimglide` -> `done`;
+- they release in the glide at 200-255 m;
+- this includes ConSBD1 and ConSBD3, which sink Convoy2 and Convoy5 (s33_c1's death rows).
+
+ConSBD2 differs in no state, gate or count from those squadrons. Each census line for it matches
+theirs: `releases=1`, `bombs_spawned=1`, `rack drops=1`, `blocked[rearm=0 ...] passed=1`.
+
+**The release geometry, leader (release tick 465 = step 3667, 183.36 s):**
+- the aircraft is at (-2912.1, 204.3, -762.3) (s33 trajectory);
+- `hull_trace rel=(230.82 205.07 206.85)` puts the aim point at (-3142.9, -969.1);
+- Convoy4 is at (-3132.7, -1025.0), heading 166.5 deg, at 10.28 m/s, while it turns
+  (rudder 0.46);
+- so the aim point lies **57.5 m astern of the centre and 3 m to one side**, inside the hull's
+  180 m length;
+- the glide gate releases 13.3 m short of it (`lead last=-13.33`, window -117.4..-5.0).
+
+The bomb ends at (-3164.5, -2.3, -961.0) after 4.55 s (`shell fate ... fate=4`), with Convoy4 by
+then at (-3121.1, -1069.8): **116 m astern and 17 m abeam**, a miss.
+
+**Why the aim point is astern.** It is 009FADA0's point: a random hull point plus a lead. Both
+are drawn from this installation's SPNormal PilotBot row (robots.lua:570-578):
+- `DiveBombTargetPointSelectPrec` 0.8: the box draw spans ±0.8 of the hull's half-length, ±72 m
+  on a 180 m cargo ship;
+- `DiveBombTargetHError` 10 / `VError` 5: the body-frame bias;
+- `DiveBombCalcTargetPosError` 10 s: the lead time is clamp(fall + U(-10, 10), 0, cap).
+  - Read whole: `009C3DA0`, `009C3E70`-`009C3E91`.
+  - The draw is `00BD2F10(stream 1, -0.0 - row+2Ch, row+2Ch)`; `[00D7A208]` is -0.0f, so the
+    range is symmetric.
+  - The fall-time sum and the clamp at 0 are `009C7E3C`-`009C7E85`.
+  - A negative draw larger than the fall leaves **no lead at all** against a 10 m/s target.
+
+So the leader's miss is a sample of the authored error model:
+- a stern-side hull point;
+- a lead time near or below zero;
+- a 47 m run of the target during the fall.
+
+The other three bombs:
+- `.-3`'s bomb hit at 190.71 s (`impact blast bullet=71 on Convoy4 ... took=69.9 health=1845.0`);
+- `.-2` and `.-4` missed.
+
+ConSBD1 and ConSBD3 drew better. The draws come from this host's stream-1 stand-in, so the
+image's sequence would give a different sample, not a different law.
+
+### Re-tasking: the image never re-attacks a spent bomber here
+
+- **The rounds.** A Dauntless carries one bomb: `VehicleClass[108]` `Equipments[1]` is platform 50
+  with `Ammo` 1, and the scene authors `Equipment` 1. After its release `+4C9h` (bombs) is 0.
+- **The entry chooser.** `009C8310` (BOMBER_AFTER_TASK 10.3, read whole) sends a bomber with
+  `+4C9h == 0` to `done`. The only exception is `sqn+369h` and `[00E17BF2]` together (the
+  reload-payload pair).
+  - `00E17BF2` is written only by `SetDeviceReloadEnabled`, by the lobby sync
+    (`005E2FB2`/`005E3017`, `ReloadPayload == globals.on`) and by `BSP_Session_SetMode` (0).
+  - usn_1_marshall.lua never calls `SetDeviceReloadEnabled` (LUA_BINDING_MISSION).
+  - A campaign launch has no lobby `ReloadPayload` (`summary mission script device reload ...
+    now=0`).
+  - So the byte is 0 and `done` is terminal.
+- **No re-order.** The squadrons were generated in the air with no `HomeBase`, so nothing lands
+  and rearms. The phase-2 script (usn_1_marshall.lua:513-545) issues no new order.
+  - It waits for `table.getn(luaRemoveDeadsFromTable(Mission.Convoy)) == 0`.
+  - The script hands the player a squadron (`SetSelectedUnit(FindEntity("ConTBD1"))`, :928).
+  - So finishing the convoy is the **player's** task, and an idle-player run stays in phase 2
+    whenever the scripted strike leaves a survivor. That is a property of the harness, not a
+    divergence.
+
+### Verdict
+
+No host divergence in the target pick, the aim point, the release state or the dive geometry was
+found. No re-attack exists in the image for this squadron. The convoy's survival depends on the
+aim-error draws. Two routes can advance USN01's phase 2:
+- the image's own RNG sequence for those draws (not available to this host);
+- a scripted player order (the harness's player-input rows).
