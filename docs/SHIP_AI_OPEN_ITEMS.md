@@ -14770,3 +14770,33 @@ Idle stays in phase 1 (`local\s38_osidle.log`). The player commands `BigE` (1308
   D4Y Judys (`Equipment` 1), 9 Shinyo boats and 6 submarines (serials 1-3).
 - **Only the first wave spawns by 1200 s.** The submarines need anti-submarine attack, which
   waits on the same open item as BSM01's phase 3.
+
+### 191.1 BSM01 phase 3: Henry cannot move after phase 2 (cc9-ships38, 2026-10-06)
+
+Runs `s38_b1p3t` (8000 frames, trajectories) and `s38_b1p4` (30000 frames, trajectories; at phase
+3 `moveto HenryPT 1150 -2950`, then `attack HenryPT MiniSub repeat 15` from 6600).
+
+**What the trajectories show:**
+- **The mini-sub stops.** It is put at (800, -30, -3200) and runs `moveonpath`. By 296 s it halts
+  at (1072, -6.96, -3017) and stays there: `dir=stopped throttle=0`, 137.6 m from its path goal.
+- **Henry never moves again after phase 1.** From 140 s to 1500 s it stays at (2524.6, -1734.2).
+  - The phase-3 moveto is applied at frame 5500, and the step shows `state=movetopos`.
+  - At step 5510 the state is `state=stop` with `d32c=24.00`. The movetopos completes at once,
+    as if its goal had been placed 24 m from the hull.
+  - Under p3's attack lines Henry moves only about 130 m (to (2501, -1862)) and then holds.
+- **Phase 2, between those times,** runs `ExplodeToParts`, `BreakShip` and `SetDeadMeat` on
+  Phoenix, 196 m from Henry. It also re-grants and turns Henry (`SetRoleAvailable`,
+  `EntityTurnToEntity(Henry, Sacramento)`).
+
+**Hypothesis (not read):** the path plan cannot reach a goal from inside the Phoenix wreck's
+obstacle footprint, or from the crowded anchorage. It falls back to a goal at the hull, and the
+mini-sub's path goal is refused the same way.
+
+**Open in this lane:**
+1. Why a `movetopos` from (2525, -1734) completes in one step with `d32c=24`. Read the path
+   publish (`009F3F80` and the obstacle sector scan) on this position. Diagnostic first:
+   `path_picks` / `path_publishes` per unit.
+2. Why `MiniSub`'s `moveonpath` stops 137.6 m from its goal.
+
+Either keeps phase 3, and so the mission, out of reach. Phase 4 (the `Donald` flight, ten kills or
+17 km from Akagi) has not been reached.
