@@ -353,6 +353,10 @@ struct GameMissionFrameHost::Impl {
         bool select{false};        // packet cc9_player_order_capture_row
         bool attack{false};        // packet cc9_player_attack_row
         bool squadron_target{false};   // packet cc9_player_squadron_target
+        bool launch{false};        // packet cc9_helm_orders_launch
+        int launch_slot{0};        // launch: 1-based slot, 0 = 006C7210's pick
+        int launch_class{0};       // launch: VehicleClass id
+        int launch_count{0};       // launch: planes requested
         std::string target;        // attack / target: the target entity's name
         float stop_radius{-1.0f};  // takehelm ... stop R; negative: none
         unsigned applications{0};
@@ -2541,20 +2545,48 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
         const bool verb_ok = words.size() >= 2
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
-                || words[1] == "attack" || words[1] == "target");
+                || words[1] == "attack" || words[1] == "target" || words[1] == "launch");
         // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
         const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
-        if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok : words.size() < 4)) {
+        const bool launch_ok = verb_ok && words[1] == "launch" && words.size() >= 7;
+        if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok
+                : words[1] == "launch" ? !launch_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
-                "attack|target <unit> <target> [repeat <s>]`", line,
+                "attack|target <unit> <target> [repeat <s>]` or `<frame> launch <base> <slot> "
+                "<class> <count> <target>`", line,
                 path.c_str());
             continue;
         }
         order.unit = words[2];
         if (select_ok) {
             order.select = true;
+            host.helm_orders.push_back(order);
+            continue;
+        }
+        // Packet cc9_helm_orders_launch: `<frame> launch <base> <slot> <class>
+        // <count> <target...>`, the Support Manager screen's launch (00675C40,
+        // 0067A57D..0067A5E6) through cc9-lua41's script_orders_player_air_ops_launch.
+        if (launch_ok) {
+            int* fields[3] = {&order.launch_slot, &order.launch_class, &order.launch_count};
+            bool numbers_ok = true;
+            for (int k = 0; k < 3; ++k) {
+                char* ne = nullptr;
+                const long v = std::strtol(words[3 + k].c_str(), &ne, 10);
+                if (ne == nullptr || *ne != '\0' || v < 0) numbers_ok = false;
+                *fields[k] = static_cast<int>(v);
+            }
+            if (!numbers_ok) {
+                host.log.notef("helm order refused: line %d of \"%s\": launch needs a slot, a "
+                    "class and a count as non-negative integers", line, path.c_str());
+                continue;
+            }
+            order.launch = true;
+            for (std::size_t w = 6; w < words.size(); ++w) {
+                if (!order.target.empty()) order.target += ' ';
+                order.target += words[w];
+            }
             host.helm_orders.push_back(order);
             continue;
         }
@@ -2781,6 +2813,24 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
                     "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
+            if (order.launch) {
+                // Packet cc9_helm_orders_launch: the player's Support Manager launch
+                // (00675C40's 0067A57D stock check, 0067A5A7 006C0F00 slot fill,
+                // 0067A5D1 82h slot message, order 3 = attack target). The entry
+                // logs its own `player air ops launch:` line. LABELLED: no screen,
+                // and the base need not be the controlled unit's carrier.
+                const bsp::game::PlayerAirOpsLaunchResult r = bsp::game::script_orders_player_air_ops_launch(
+                    order.unit, order.launch_slot, order.launch_class, order.launch_count,
+                    order.target);
+                if (r.accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) launch "
+                    "%s slot %d class %d count %d -> %s: slot %d, %d plane(s)%s%s",
+                    r.accepted ? "applied" : "refused", order.line, due, now,
+                    order.unit.c_str(), order.launch_slot, order.launch_class,
+                    order.launch_count, order.target.c_str(), r.slot, r.count,
+                    r.reason.empty() ? "" : ": ", r.reason.c_str());
                 continue;
             }
             if (order.squadron_target) {

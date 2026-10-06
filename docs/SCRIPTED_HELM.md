@@ -1005,3 +1005,29 @@ Runs on `agent/cc9-ships35` (main `cc1ad6dd4` plus this line), the reference V l
   bodies. Routed to the plane lane (docs/SHIP_AI_OPEN_ITEMS.md section 168).
 - No run reached a mission end, so the Lua exec guard's "refused a mission script's process
   launch" line does not appear (none was expected).
+
+## 13. `launch`: the player's air-ops launch (packet `cc9_helm_orders_launch`)
+
+```
+<frame> launch <base> <slot> <class> <count> <target...>
+```
+
+It stands for the Support Manager screen's launch (HUD slot 4Eh, update `00675C40`): the stock
+check `0067A57D` (`006BF310`), the slot fill `0067A5A7` (`006C0F00`), and the 82h slot message
+`0067A5D1` (order 3, attack target), routed at `0067A5E6` into `006CD160` -> `006CCDA0`. The line
+calls cc9-lua41's `bsp::game::script_orders_player_air_ops_launch(base, slot, class, count,
+target)` (`include/bsp/game_hosts_script_orders.hpp`, behind `kAirOpsPlayerLaunchBound`), which
+logs its own `player air ops launch:` line. The launch follows about 1 s later
+(`air ops queued launch:`), and the target reaches the squadron as `AutoAttackTarget`.
+- `<slot>` is 1-based; 0 takes the first slot in state 1 or 5 (`006C7210`'s pick).
+- `<class>` is a VehicleClass id (101 is the F4F); `<count>` is clamped by the entry to the stock
+  and the screen's maximum.
+- The target is the rest of the line.
+- The harness prints `helm order applied|refused: ... launch <base> slot S class C count N ->
+  <target>: slot s, n plane(s)[: reason]`.
+
+**LABELLED:** no screen runs, and the base need not be the controlled unit's carrier.
+
+**Smoke** (`local\s36_u1smoke.log`, USN01 4500, the switch OFF): a malformed line (`bad` slot) is
+refused at read; `4200 launch Enterprise 0 101 4 Nell1` reaches the entry, which refuses with
+`kAirOpsPlayerLaunchBound is off`.
