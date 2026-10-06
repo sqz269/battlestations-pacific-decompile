@@ -5266,7 +5266,7 @@ struct GameUnitsHost::Impl {
     // state 1, 007F1CA0's stock add 006CA770(class, 1) on the holder's block, the
     // last plane's slot return 006C5950, and Kill(plane, 5). False: the stowed
     // plane stays alive on the site vector and the elevator re-takes it.
-    static constexpr bool kStowedPlaneStockReturnBound = false;
+    static constexpr bool kStowedPlaneStockReturnBound = true;   // ON by its pairs (SHIP_AI 200.2)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -13296,6 +13296,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
         }
         sq->formation_indices_assigned = false;
     }
+    note_kill_cause(p.process_index, 5);   // 007F1D53 PUSH 5: KillReason "landed" (00E0CF04)
     p.plane_death_removed = true;
     if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
     log.notef("  stock return: %s back into %s's stock (class %d -> %d) at %.2f s, squadron %s, "

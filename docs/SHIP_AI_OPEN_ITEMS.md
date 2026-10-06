@@ -15512,3 +15512,22 @@ Notes:
   scripts was not read.
 - Mission.EndMission is set with `status=nil`; the completion narrative follows 11.6 s later.
 - EndScene `008B01B0` is not reached inside 40000 frames.
+
+### 200.2 KillReason "landed", re-pair, and the flip (cc9-ships40, 2026-10-06)
+
+- **`078d33791`.** `note_kill_cause(plane, 5)` before the retire, so the scripts read `KillReason=landed`
+  (`00E0CF04` slot 5).
+- **Re-pair.** OFF is the build at `078d33791`, ON is `local\s40_sr2`. Logs: `local\s40_off2_<row>` and
+  `local\s40_on2_<row>`.
+  - ESMP08, USN01 and USNOS give pair_diff 3, with the same gameplay as 200.1, row for row. The reason
+    string alone moved nothing.
+  - USN01 still completes at 648.42 s, with the exec guard's `sus_prog.exe` refusal.
+  - Count of `KillReason=landed`: ESMP08 12, USN01 2, USNOS 3.
+- **USNOS publishes three of its five.** The two flight leaders (`plane #1.5`, `plane #1.6`) are the
+  fused squadron entities. As for any leader death in this host, Dead is not published under the
+  leader's own key. This is not part of this packet.
+- **Verdict: mechanism match, so `kStowedPlaneStockReturnBound` is ON.**
+  - Every stow is followed by exactly one stock return, and every holder resolves.
+  - There are no re-takes, and slots return on the last plane.
+  - The moves in releases and deaths follow from the relaunches and from the shared RNG stream.
+  - The flip belongs to reference AE.
