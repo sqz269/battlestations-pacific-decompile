@@ -13628,3 +13628,52 @@ The branch is `agent/cc9-lua44` and the worktree `J:\PROG\battlestations-pacific
 - `l44_sqn_fate.py` (per-squadron fate);
 - `l44_calls.py <hex>...` (rel32 / abs reference scan);
 - `l44_dwords.py lo hi` (image dwords).
+
+## 5et. The elevator re-take (5ep): what the image's intake would see (cc9-lua45, 2026-10-06, read-only)
+
+Item 2 of 5es. Disk bytes only; no code changed, nothing bound. The question is whether the image keeps a
+stowed plane from being re-taken at the top, as the host does every 4.8 s.
+
+**Every term of the intake is already faithful, and none of them excludes a stowed plane.**
+- `006D06A5`-`006D0705` walks site `+34h` and keeps the **last** candidate. It needs a non-null entry,
+  plane `+904h`, `006CFF70`, `3.0 (00D7A2B0) - speed > 006CFE90` and `007B8D40`.
+- **The speed is the flight controller's.** The plane vtable `00D05F20` (the last store at `007CFD78` in
+  `007CFD20`) has `+38h` = `007B8E60`, `FLD [ECX+0B1Ch]`, which is controller `+6Ch` = `|ctl+18h|`
+  (`007D807C`, ATTACKER_EVASION). Entering flight state 2 runs `007C11E0(0)`, whose non-3..7 arm writes
+  `+9F0h` = 0, resets `+AECh..+B00h` from `00F87574..7C` and calls `007D9C80`
+  (BodyToWorldVelocity). `00F87574` is BSS (past the raw data) and read widely as a default vector
+  (`0046AB55`, `00465080`, `0077D6F2`), so it is zero unless a static initializer fills it (not checked).
+  The stowed plane's speed is then 0, which is what the host has.
+- **`+904h` survives state 2.** `007C1430` SetFlightState writes `+904h` only in its state 3..7 table
+  (`007C14B5`, `007C14DE`, `007C1518`). State 2 falls to the default arm at `007C1542`. A census of
+  `[reg+904h]` byte stores finds no other writer on the elevator path.
+- **`006CFE90`** measures the nose `(0, 0, class+158h)` through the pose at plane `+74h` against site
+  `+50h` / `+58h`, in x and z only. The carry `006FC0D0` writes plane `+A4h..+ACh` from the platform,
+  which is carrier-local (the plane is parented), so a stowed plane stays under the lift in x/z.
+- `006FC250` (release) and `007B96C0` (hide) only detach the spatial node (`00951F40(0)` ->
+  `00710B80`) and set `+C00h`, which has no reader.
+
+**Site `+34h` is an observer list, and only lift-off erases from it.**
+- `006CEF80` (reached as `this+20h` through the thunk `006CF180`, slot `+28h` of the three site vtables
+  `00CF8948`, `00CF89F8` and `00CF8A58`) unlinks with `BSP_Observer_UnregisterPair` and compacts the list.
+- A scan of every `[reg+0BF4h]` load in the plane and bot ranges (`local\l45_vcall_near.py 28`) finds one
+  slot-`28h` dispatch, in `007C7110` BeginFlying (`007C7151`-`007C7163`), the lift-off.
+- The only other way out is the plane's destruction: the observer pair nulls the entry, which is why the
+  intake tests for a null entry at `006D06B6`.
+
+**So, on the bytes read, the image re-takes a stowed plane too.** It also starves the wingmen: `006D0150`
+refuses the lift while any other occupant's nose is within 14.0 (`00E08FC8`), and a stowed leader under the
+lift is within 0. A carrier could then recover only one plane per lift, which the game plainly does not do.
+The missing piece is **what removes, or destroys, a stowed plane**.
+
+- **Ruled out: the ready queue.** `006C6540` BSP_AirOps_PullReadyPlane pops the container at block `+C0h`
+  (head `+D8h`, count `+DCh`) into `+38h`. The `[reg+0C0h]` address-takers in `006B0000`-`006DFFFF` are
+  `006C6567` (the pull), `006CC767` `006CC760` BSP_AirOps_PushReadyPlane, `006CA4AC` and `006CAD07`
+  `006CAC00` (not read). The push's one caller is `007F1C00` BSP_PlaneSquadron_SetHomeAirBase, so the queue
+  carries squadrons homed on the base, not stowed planes.
+- **Left:** the squadron's own landing record, which still has to hand the plane back to stock, and whatever
+  destroys a plane that is in state 2 with `+C00h` set.
+
+**Next:** read `006CA4AC` and `006CAC00` (the other two `+C0h` users), then census the plane destructors'
+callers from the squadron land/park tail (`007EFB60` promotes the next member). Until then the host's loop is
+kept, and ESMP08's relaunch count stays bounded as 5ep says.
