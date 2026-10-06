@@ -12006,7 +12006,11 @@ aim-error draws. Two routes can advance USN01's phase 2:
 
 Census item 4. **The image (read whole):**
 - `0089B840` reads argument 0 through `00888AA0`, calls `006F1F90` on that entity with no class
-  test, takes `|result|` and pushes it with `00B66480`: one result.
+  test, and pushes the result as it is with `00B66480`: one result.
+  - **Correction (cc9-lua40, 2026-10-06, from cc9-ships34).** The earlier text here said `|result|`.
+    `006F1F90` is `FLD [+7A8h]` / `FIDIV [+7A4h]` / `FSTP` with no `FABS`, so a side-1 capture
+    pushes a negative fraction. The committed binding pushes the signed value, and 5dw.2 re-measures
+    it.
 - `006F1F90` (`006F1F90`-`006F1FB2`) answers 0.0 when `+7A4h` (the capture value) is 0.
   Otherwise it answers `[+7A8h] FIDIV [+7A4h]` (progress over value), stored as a float.
 
@@ -12052,6 +12056,22 @@ Every prediction held:
 - deaths, hits and every gameplay line are identical.
 
 **Verdict: ON**, to be committed once the ship-AI accessor is on main (the binding calls it).
+
+### 5dw.2 Re-measured with the signed value: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+- **The pairs.** Same tree. OFF is `cefd3e213`, which is main with the accessor (2fe14fa05) plus this
+  binding pushing the signed fraction. ON is that commit exported with the flip (`6A8C1180307A`).
+  Logs: `local\l40_{off,on}_{usn02,jm05,jm05l}.log`.
+
+| row | exit | timers created OFF -> ON | `luaTimetable` failures OFF -> ON | calls (ON) |
+| --- | --- | --- | --- | --- |
+| USN02 | 1 | (unchanged) | 0 -> 0 | 0 |
+| JM05 | 1 | 80 -> 128 | 48 -> 0 | 48, none unresolved |
+| JM05 long | 1 | 212 -> 360 | 148 -> 0 | 148, none unresolved |
+
+- **The sign changes no gameplay line**, as 5dw.1 predicted: the value feeds only
+  `Mission.CaptureProgress` and the score display.
+- **Verdict: ON.** The flip belongs to reference AC.
 
 ## 5dx. `SetCatapultStock` and `PilotRetreat`: read, no reach, not bound (cc9-lua39, 2026-10-05)
 
@@ -12444,3 +12464,13 @@ The script overrides as the image's script would.
 `latches=0` (`local\l40_cur_<row>.log`), so B5 never acts there. JM06 and JM08 set
 SetDeviceReloadEnabled(true), which closes the gate. The other short rows release no ordnance in
 reference AA.
+
+**Controls and arms per row (added after the lead's review).**
+- **JM06, JM08 and JM08 long ([00E17BF2] = 1, `device reload ... now=1`): `latches=0`** on
+  `19bc34aca` (`local\l40_cur_{jm06,jm08,jm08l}.log`). The must-not-latch controls hold.
+- **The 007F16D0 arm, row by row:**
+  - **USNRM01:** all 18 squadrons take `retreat`, which is bound whole.
+  - **USN01:** ScoutDauntless takes **land at site**. The land task is partial. The row ends at
+    150 s, 16 s after B5 and 10.5 km out, so its pair shows only the turn for the carrier, never the
+    landing states. That row's result is a turn toward the carrier, not a landing.
+- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC.

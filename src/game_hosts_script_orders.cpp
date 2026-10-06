@@ -266,6 +266,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"Countdown", 0x008b16e0u},
     {"CountdownCancel", 0x008b19a0u},
     {"CountdownTimeLeft", 0x008b1b40u},
+    // Packet cc9_lua_capture_percentage: JM05.lua:5178-5216. Handled only with
+    // kLuaCapturePercentageBound.
+    {"GetCapturePercentage", 0x0089b840u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -552,6 +555,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "CountdownCancel") == 0 ||
         std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         return kLuaCountdownBound;
+    }
+    if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
+        return kLuaCapturePercentageBound;
     }
     return true;
 }
@@ -3116,6 +3122,26 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         ++countdown_cancels_;
         push_number_float_00b66480(left);
         results = state_ != nullptr ? 1 : 0;
+    } else if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
+        // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
+        // test, then 00B66480 on the result as it is; one result. 006F1F90
+        // (006F1F90-006F1FB2): +7A4h == 0 -> 0.0, else FLD [+7A8h] / FIDIV [+7A4h] /
+        // FSTP, with no FABS, so a side-1 capture pushes a NEGATIVE fraction.
+        // SUBSTITUTION, labelled: an entity that is not one of the ship-AI host's
+        // capture buildings answers 0.0; the image reads those two offsets of
+        // whatever object it is handed.
+        ++capture_percentage_calls_;
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        GameShipAiHost* ai = units_.ship_ai();
+        float fraction = 0.0f;
+        if (entity == nullptr || index >= units_.count() || ai == nullptr ||
+            !ai->command_building_capture_fraction_006f1f90(index, fraction)) {
+            ++capture_percentage_unresolved_;
+            fraction = 0.0f;
+        }
+        push_number_float_00b66480(fraction);   // signed
+        results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         // 008B1B40 computes the time left without testing +3Ch.
         ++countdown_time_left_reads_;
@@ -4546,6 +4572,12 @@ void GameScriptOrdersHost::report() {
             countdown_time_left_reads_, countdown_expiries_, countdown_callbacks_,
             countdown_last_callback_.empty() ? "(none)" : countdown_last_callback_.c_str(),
             countdown_.active_3c ? 1 : 0);
+    }
+    if (capture_percentage_calls_ != 0) {
+        log_.notef("summary mission script capture percentage bound=%d calls=%zu "
+            "unresolved=%zu (0089B840 -> 006F1F90, packet cc9_lua_capture_percentage)",
+            kLuaCapturePercentageBound ? 1 : 0, capture_percentage_calls_,
+            capture_percentage_unresolved_);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "
