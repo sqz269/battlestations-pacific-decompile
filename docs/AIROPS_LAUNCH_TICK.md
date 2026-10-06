@@ -1047,3 +1047,23 @@ i3 logs show 0 for order 1 because they predate that change.
 
 Still not served: the state-2 retarget and cancel (`006CC5C0`), and the state-5 order-2 re-arm. A landed and
 stowed squadron (state 2 members) still cannot fly the moveto.
+
+#### Orders to a scene squadron's slot, `kAirOpsSceneSquadronOrdersBound` (packet `cc9_lua47_scene_squadron_orders`, cc9-lua47, 2026-10-06)
+
+JM08 as the IJN player (SHIP_AI_OPEN_ITEMS 193/195): `MainAirFieldEntity 01`'s slots are held by the scene squadrons
+`Ki-43 Oscar 01` and `Gekko 01`. Their `HomeBase` key queues them on the deck (`007F1C00` -> `006CC7B0`), and
+`006C58A0` -> `006C56D0` stores the squadron id at slot `+28h`. A 6000-frame probe (`local\l47pr_R1_j8.log`, ships38's
+`s38_j8_p1.txt` plus `order` lines) refused all 156 orders: "the slot holds no squadron this host built". The entry
+looked the squadron up only among the squadrons this host launched.
+- **`006CCDA0` does not care who built the squadron.** It reads it through the slot's `+28h`. With the switch, the entry
+  resolves `+28h` to the squadron unit (id - 1, the numbering `006CC7B0`'s push and the air-ops launch share) when no
+  squadron launched by this host holds the slot. Committed OFF.
+- **Predictions.** The base row is JM08 24000 with `local\l47_j8_o1.txt` (ships38's p1, plus order 1 / order 3 lines for
+  the airfield's slots 1-4 every 2000 frames from 400).
+  - **OFF:** identical to a run without the order lines (every order refused).
+  - **ON:** the scene squadrons' slots log `holds scene squadron Ki-43 Oscar 01` / `Gekko 01`. Each order 1 answers 1
+    (moveto at the leader). The next order 3 at a transport goes through the intake `007F1940`, and the fighters attack
+    the transports. A fighter has no bomb rack, so it is expected to strafe at most.
+  - Once the scene squadrons die or land, their slots should free (stock return), and ships38's `launch` lines on the
+    airfield should then go through.
+  - **Mechanism failure:** an order that answers 1 but whose members never take the target.

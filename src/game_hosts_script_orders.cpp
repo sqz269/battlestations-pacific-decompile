@@ -1665,6 +1665,18 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
             break;
         }
     }
+    if constexpr (kAirOpsSceneSquadronOrdersBound) {
+        if (record == nullptr && s.launched_squadron != 0u
+            && static_cast<std::size_t>(s.launched_squadron - 1u) < units_.count()) {
+            const GameUnitRow* row = units_.unit_row(s.launched_squadron - 1u);
+            if (row != nullptr) record = bsp::plane_squadron_registry().find(row->name);
+            if (record != nullptr) {
+                log_.notef("player air ops order: base=\"%s\" slot=%d holds scene squadron %s "
+                    "(slot+28h = %u, 006C56D0; packet cc9_lua47_scene_squadron_orders)",
+                    base.c_str(), slot_number, row->name.c_str(), s.launched_squadron);
+            }
+        }
+    }
     if (record == nullptr) return refuse("the slot holds no squadron this host built");
     const std::size_t leader = record->flight_leader();
     // 007EE5C0: members not landed in state 5 or 2 (or 1 while disabled).
