@@ -14024,3 +14024,33 @@ from the controlled carrier (SCRIPTED_HELM 13).
    about 404 s (`s36_traj_u1w5.Nell6__-3.csv`), with no death row (plane lane).
 3. **Slots do not come back.** After the three squadrons are lost, slot 0 finds no slot in state
    1 or 5 (`no such slot`) for the rest of the run, except the one at 6700 (lua41's launch chain).
+
+## 177. The garrison binding (packet `cc9_command_building_garrison`, `kCommandBuildingGarrisonBound`, cc9-ships36, 2026-10-06)
+
+**What is bound** (in `src/game_hosts_ship_ai.cpp`, committed OFF; the read is section 175):
+- **Adoption** (`006F5CC0` pass 1) in `build_capture_buildings`, per CommandBuilding: every unit
+  of kind `1Bh`, `45h` or `46h` with the `+724h` bag (`GameUnitsHost::unit_inferior_bag_0724`)
+  within `InferiorRange` (`command_building_inferior_range_07c8`, the image's float/`FILD`
+  comparison). Then `006F3660` once when there are records.
+- **`006F3660`** after every level change in `command_building_level_006f38e0`:
+  - a record whose member died is unlinked (the `00546200` notice);
+  - MinLevel above the level, linked: the kill (`00926D90(2)`) is **recorded**;
+  - unlinked, MinLevel at or below the level: the re-create is **recorded** until the gunnery
+    lane's `revive_unit_garrison_006f3660` lands (routed: `local\s36_gunnery_revive_edit.txt`).
+    Then it will revive in place, with scene flags, the building's Party and Skill, and
+    `refresh_unit_side`;
+  - linked: `set_skill_level_007b8ae0(member, skill_level(building))`.
+- **LABELLED:** adoption at the first controller step, not InitAll; MinLevel 0 for every
+  member, because the scene record keeps only whether the key exists (every member on the rows
+  is Basic, 175.3); a single-player session.
+- **Census:** `command building garrison: unit=... members=N`, a line per re-create and per
+  skill change, and `summary mission command building garrison ...`.
+
+**Predictions for this commit's ON** (the re-create still recorded; written before any ON run):
+- JM08: Headquarter 01 adopts 17 members. Skill pushes at adoption and at 10/20/30 s. The
+  airfield goes 2 -> 1 at the first pass after the script's `SetSkillLevel` (10 s). The
+  re-create of Medium Bunker, Concrete 03 is recorded at 30.00 s, and on JM08 long eleven more
+  at 1041.50 s with party 2. `pair_diff` 1: the airfield launches nothing, and every other
+  member's skill is already 1.
+- USN01: CB2 adopts 9 members. One pass at adoption, every skill 1 = CB2's. `pair_diff` 1.
+- USNOS (control): no members (InferiorRange 10). `pair_diff` 1.
