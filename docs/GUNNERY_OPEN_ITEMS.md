@@ -10463,8 +10463,9 @@ switches flipped; logs `local\g31_dc{off,on}_<row>.log`; the reference AD launch
   - A local diagnostic build (`G31DIAG`, `local\g31_dcdiag.log`, not committed) shows that each hit comes from a
     near-vertical sinking step about 0.4 m long, but the hit point it reports is about 40 m below that step:
     `from=(1119.06 -14.56 -2997.52) to=(1119.09 -14.94 -2997.51) point=(1121.89 -53.01 -2996.32) shape=10`.
-  - The path is `landscape_entry_segment_hit`'s vertical case, `kTerrainVerticalSubwalkBound` (00AECC40/00AECA60,
-    `src/game_hosts_scene_contents.cpp`).
+  - The path is the general slot-3Ch quadtree walk (vertical=2/0 in the same log); its 00ADEB80 line test is the
+    image's (SCENE_CONTENTS_HOSTS 30), so the open term is the in-water horizontal drift (006FCD20).
+    (Corrected 2026-10-06 from cc9-lua45's read: the vertical subwalk ran twice and hit nothing.)
   - The blast is then centred at -53 m, beyond 50 m of MiniSub, so it never reaches it.
   - Routed to the lead (scene-contents lane): a segment whose y range is -14.56..-14.94 should not report a crossing
     at -53.01.
@@ -10687,3 +10688,64 @@ Rows:
 
 Prediction 1 holds as written, including the fifth refusal, and prediction 2 holds. **Verdict: the mechanism matches,
 so `kShipyardProductionBound` is flipped ON** (`include/bsp/shipyard_production.hpp`).
+
+## 147. Handoff (cc9-gunnery31, 2026-10-06, at about 70% context)
+
+### 147.1 Landed or committed on agent/cc9-gunnery31
+
+| item | commits | state |
+| --- | --- | --- |
+| 142 depth charge under water (006FD9B0 / 006FD660 / 006FCD20) | `dc333827c`, `efbc2de86` | **ON**, with 139 `kDepthChargeBotTickBound` and 140 `kPlayerWeaponGroupFireBound` |
+| 143 USN04 strike releases and USNOS Kaiten drown | `fbc2f7f4a` | read; routed to the planes lane; the Kaiten drown is faithful |
+| 144 rack CanFire and the RepeatTime default | `180564f8d` | read; edits routed (0.6f default, and the equipment-bag device) |
+| 145 Portland1 vs a parked Judy and Airfield3 | `8003a7d45` | partial; two measurements open |
+| 146 `kShipyardProductionBound` re-pair | `e4269601d`, `d09116c3d` | **ON** |
+
+### 147.2 Next, in order (the lead's full queue, 2026-10-06)
+
+1. **(6new) The banked-torpedo pitch hold.** TBDs in `aim` level off at 106-110 m while banked 0.19-0.32 rad,
+   against an aim command of -0.18..-0.49 rad (143.1). Read `0099E490`'s pitch arm, its turn terms
+   (`pilot_general_pitch_turn_*`) and the mode-2 hold `0099DD4C` against the image; bind OFF.
+   - Pairs: USN04 (`--mission-frame-seconds 0.0222 --frame-jitter '20,3'`, ships39's `s39_u4_p1.txt`,
+     this tree's `local\g31_ord_u4_p1.txt`) and USNRM01, plus a control.
+   - The `G31AIM` diagnostic (local only) is in `local\g31_u4trace\src\game_hosts_units.cpp`.
+2. **(6b) The dive handover attitude.** The SBD leader enters `aimdive` at -1.18 rad live pitch against a turndown
+   command of -0.56 (143.2). Read `009C44F0` and the pitch-mode-0 gate `0099E3BF`; bind OFF. Pairs: USN04 and
+   USN01 p8 (scripted dive bombers).
+3. **(ii) IJN01 A7M_2's target cleared to 0 while LST2 is alive** (SQUADRON_LAND_TASK 5eu.1). All five members
+   leave aimglide for `done` through the `009C8A90` break-off at 95-100 s, which needs
+   `command_target_plus_one == 0`.
+   - Suspect: `refresh_command_targets` (0071EBF0, `game_hosts_gunnery.cpp` around 5480) stores 0 when the accepted
+     category-1/2 row has an EMPTY token, and logs nothing.
+   - Add a diagnostic that names the row, then fix it if it is a host gap.
+4. **(iii) Player torpedo fire, group 4, for JM06** (lua45's spec).
+   - Key 9Eh selects group 4. `00959C20`'s arm `0095A1CC..0095A43E` walks the torpedo tubes (`[+3F4h]+80h == 7`).
+   - The submarine arm `0095A380` fires one ready tube per `+35h` press: `vtable[1D0h](1)`, then
+     `0072C970` / `007311B0(yaw)`, `0072AC20`, `vtable[1F0h]()`.
+   - The surface arm uses `+34h` held, with a |yaw| tolerance `[00CEDF5C]`.
+   - Extend `player_fire_weapon_group` to group 4 with an aim (a yaw or a target), after reading the tube vtable
+     `1D0h`/`1F0h` and the yaw formula. The lead routes the harness line to ships40.
+   - `+34h` = held and `+35h` = pressed, as in 140; SHIP_SCREEN_UPDATE 32 has them reversed.
+5. **The depth charge's in-water horizontal drift** (gates BSM01's player route; p9 hits nothing). A sinking charge
+   still moving 0.6 m/s horizontally at -14.5 m extends the quadtree line test to the seabed 37 m below.
+   - Does the image keep that horizontal speed after water entry? `006FCD20` drags all three components by
+     `+468h`.
+   - Check `006FD660`'s water-entry velocity (and `006E6450`), and whether the image zeroes or damps the
+     horizontal part.
+6. **145's two open measurements:**
+   - the AA slot-test refusal for a grounded plane (`bind_aa_acceptance`'s `last_refusal_`, Portland1 against
+     plane #1.5 on `s39_os_b2.txt`);
+   - the 8-inch traverse freeze after damage (gun 547 at -130.8 deg from 1164 s).
+7. **(i) The GUNNERY 142 bullet correction**: done in this commit.
+8. **Reference AE**, when the lead asks. The AD tools are at 141.3. This tree's `local\g31_runrows.ps1` is the same
+   launch form, with rows `b1p6`, `b1p7`, `b1p9` and `l10b`.
+
+Recorded, no action: 143.3's submarine breathing-line floor `00CEE4E0` = -4.0 (the host tests < 0.0). It has no
+effect on this installation's classes. 144's 0.6f RepeatTime default and the `Equipments[C54h]` rack device are
+routed to lua45.
+
+### 147.3 Notes
+
+- `--frame-jitter 20,3` needs quoting (`'20,3'`) inside a `pwsh -Command` string, or the executable exits 2 with no log.
+- Diagnostic exports in `local\`: `g31_u4trace` (`kHullAimTrace` plus `G31AIM`, never committed), `g31_dc_on`,
+  `g31_dc_off`, `g31_sy_on` and `g31_sy_off`.
