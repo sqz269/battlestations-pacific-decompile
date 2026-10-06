@@ -665,6 +665,15 @@ inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
 // ON by section 160.4: four controls gameplay identical; JM08 long's CheckHQ now
 // runs luaMissionFailedNew at 1052.6 s and the units turn invincible.
 inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
+// Packet cc9_capture_party_one_field (docs/SHIP_AI_OPEN_ITEMS.md 205). The image has
+// one party field, unit+54h: 006F3270, 006F4D10 and 006F75ED read it, and every
+// writer (00923B80 through vtable[2Ch] 00928F50: the capture arms and the Lua
+// SetParty 008A8930) writes it. This host keeps two copies, GameUnitRow::party and
+// CaptureBuilding::state.party_54, and only the capture arms write both. True: at
+// the head of each capture step the state's copy is re-read from the row, so a
+// party set elsewhere (SetParty on an HQ) is what the capture arms see, and the
+// building's guns take the new side. False: the state keeps its own copy.
+inline constexpr bool kCaptureStatePartyFromUnitBound = false;
 // Packet cc9_landed_ship_remainder (section 161). The landing ship's own motion
 // override 00749B20 (ESI = unit+310h, RET 4), after the ship motion 00825F20:
 //   - dead with +118Ch (landed) set: 00926D90(unit, 2) (00749B59), the wreck's removal;
@@ -1129,6 +1138,7 @@ struct GameShipAiHost::Impl {
     bool capture_forced{false};
     unsigned long long capture_neutralized{0};
     unsigned long long capture_countdown_fires{0};
+    unsigned long long capture_party_resyncs{0};
     unsigned long long capture_progress_messages{0};   // D5h routes
     unsigned long long capture_flips{0};
     unsigned long long capture_health_zero_calls{0};
@@ -12355,6 +12365,20 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             if (!(b.level_timer_774 > static_cast<float>(b.level_up_seconds_76c))) continue;
             if (b.level_770 >= 3) continue;                           // 006F759D
             command_building_level_006f38e0(b, b.level_770 + 1, "level-up D4h 006F759F");
+        }
+    }
+    if constexpr (kCaptureStatePartyFromUnitBound) {
+        for (CaptureBuilding& b : capture_buildings) {
+            const std::int32_t party = units.unit_side_0054(b.unit);
+            if (party == b.state.party_54) continue;
+            const GameUnitRow* row = units.unit_row(b.unit);
+            log.notef("command building capture: unit=%s party %d -> %d from the unit's "
+                "+54h at t=%.2f (one field; packet cc9_capture_party_one_field)",
+                row != nullptr ? row->name.c_str() : "?", b.state.party_54, party,
+                capture_clock);
+            b.state.party_54 = party;
+            ++capture_party_resyncs;
+            if (gunnery_draws != nullptr) gunnery_draws->refresh_unit_side(b.unit);
         }
     }
     for (CaptureBuilding& b : capture_buildings) {

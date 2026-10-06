@@ -15776,3 +15776,73 @@ In `plane_stock_return_c7h_007cc8b0`, when 006C5950 runs (last live plane):
   What remains:
   - the shot-down squadrons' records, which only the destructor path removes;
   - the death order above.
+
+## 205. USNOS phase 2: the Enterprise survives; HQ captures need SetParty (cc9-ships41, 2026-10-06; lead item 1)
+
+### Run f7 (`local\s41_os_f7.txt`, 60000 frames)
+
+**Tree:** main `7bc668d3c`, with `kAirOpsHeldSlotOrdersBound` ON. The run is s40 f6's phase-1 lines,
+then:
+- `27950 moveto Enterprise 20000 -6000`;
+- `order Enterprise 1..4 2` at 28000-28030 (the F2G recall);
+- BTD (331) / AD2 (339) strikes from 32000 to 40020.
+
+**Results:**
+- **All four recalls apply** (answer 1, state 4). BTD x3 at Shima6 launch at 32000, 35000, 36000,
+  38000 and 40000. The AD2 and Takao1 lines are refused: no free slot.
+- **The Enterprise and TroopTrans3 survive to 3000 s, and there is no mission failure.**
+- Deaths in phase 2:
+
+  | t (s) | unit | killed by | range |
+  | --- | --- | --- | --- |
+  | 1450.39 | Shimotsuke | NH | 2971 m |
+  | 1780.51 | TroopTrans6 | Airfield1_sqn17 | |
+  | 1783.46 | TroopTrans5 | ToSpawnAda | |
+  | 2346.51 | Shima6 | Gear4 | |
+  | 2362.58 | Takao1 | Gear4 | |
+
+  Shima4, Shima5 and Shima7 are sunk by DM1 at 2294-2339 s.
+- The Countdown starts at 1415.31 s. `luaReinTime` (Yamato and the carriers) follows 900 s later.
+- **HQ2 is neutralized at 1483.85 s and CB2 at 2047.15 s.** TroopTrans3 holds at (2500, 4423),
+  1258 m from HQ2 (1736, 5422).
+
+### Why HQ2 is not captured
+
+- A traced run (`BSP_LUA_CALLBACK_TRACE=1`, `s41_lt_osf7t`, 40000 frames) shows the script's capture
+  arm running: luaSortByDistance2 and luaGetDistance3D, 105 calls from 1485.32 s. That is us_osumi.lua
+  1100-1108, `SetParty(unit, PARTY_ALLIED)` when the nearest troop is within 1500 m.
+- **The binding does nothing to a unit in this host.**
+  - `SetThinkCoreHost::entity_vcall_2c` answers only script entities. Everything else is
+    `record_unimplemented`.
+  - In the image, `008A8930` calls `vtable[2Ch](party, +58h, ...)` (the else arm of `vtable[5Ch](2)`).
+  - In every unit class that slot is `00951F30`, a JMP to `00928F50`. For example,
+    `00CFB028`+2Ch = `00CFB054` for the CommandBuilding, and the ledger lists 28 vtables.
+  - `00928F50` calls `00923B80`:
+    - unit `+54h` = party, `+58h` = race (`00923B92`/`00923B95`);
+    - then it walks the `+48h` children through `vtable[5Ch]`;
+    - then the Lua `Race`/`Party` writes.
+  - This is the slot the capture arms already use (`006F50CA`, `006F4FB8`).
+- **Routed** to the Lua lane (`kSetPartyUnitBound`, `src/game_hosts_script_orders.cpp`):
+  - the unit row's party, then the 00928F50 projection.
+
+### The second copy of `+54h` (`kCaptureStatePartyFromUnitBound`, committed OFF)
+
+- `CaptureBuilding::state.party_54` is a host copy of unit `+54h`. Only the capture arms write both copies.
+- A SetParty would change the row and leave the state neutral. `006F75ED` would then keep running
+  the neutral countdown and capture tick on an allied HQ.
+- True: each capture step re-reads the state's copy from the row (a log line per change) and refreshes
+  the building's gunnery side.
+- **Predictions (OFF -> ON):**
+  - with no SetParty on a building in the run, nothing moves: gameplay identical, no resync line, on
+    USNOS f3 and USN01 p8;
+  - with the routed SetParty edit, USNOS f7 ON logs one HQ2 resync to party 0 after TroopTrans3
+    reaches it.
+
+### Open for phase 2
+
+- Primary 2 also needs HQ1 and CB2. Nothing neutralizes HQ1, and no troop goes near CB2.
+- Primary 3 is never added, so Shimotsuke's death does not count. Evidence: f6's end dump reads `primary:3 Active=false`.
+  - `luaShimotSighted` and `luaBlockade` both run at 1410.20 s (trace), so two ingame movies start on the same frame.
+  - Suspected: the first movie's end callback, `luaShimoMovieEnd`, is lost. Not read.
+  - This is for the Lua lane.
+- Primary 5 is the Yamato, the Musashi and four Hakus, after 2315 s.
