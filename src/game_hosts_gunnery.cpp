@@ -118,8 +118,11 @@ constexpr bool kAirfieldTargetSubEntitiesBound = true;
 // and capped at 1 (0.0 for a dead unit, 00923BE4's +5Dh arm); the slot count
 // comes from the class row's DamageSmoke.MaxNumber (00832495) for any unit the
 // world updates (the image runs 008227E0 only through 008255B0's vtables); the
-// stream-0 pick is consumed as one generator step. False: 008227E0 stays a record and nothing is drawn.
-constexpr bool kDamageSmokeDrawsBound = false;
+// stream-0 pick is consumed as one generator step. False: 008227E0 stays a
+// record and nothing is drawn.
+// ON by GUNNERY 127.4: all 22 rows gameplay identical under the measurement
+// streams; USN02 respawns 1084 times, JM08 long 310.
+constexpr bool kDamageSmokeDrawsBound = true;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
