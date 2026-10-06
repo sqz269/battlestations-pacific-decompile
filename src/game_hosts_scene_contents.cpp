@@ -1942,6 +1942,30 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 stored.capture_value_raw = bits;
             }
         }
+        // Packet cc9_command_building_level: 006F2780's `Level` (unit+770h) and
+        // `LevelUpSeconds` (unit+76Ch), the same way.
+        for (int which = 0; which < 2; ++which) {
+            const SceneProperty* level_prop = bag.find(which == 0 ? "Level" : "LevelUpSeconds");
+            if (level_prop == nullptr || level_prop->values.empty()) continue;
+            std::int32_t as_int = 0;
+            float as_float = 0.0f;
+            bool found = false;
+            if (level_prop->type_letter == "I"
+                && scene_scan_int(level_prop->values.back(), as_int)) {
+                found = true;
+            } else if (scene_scan_float(level_prop->values.back(), as_float)) {
+                std::memcpy(&as_int, &as_float, sizeof as_int);
+                found = true;
+            }
+            if (!found) continue;
+            if (which == 0) {
+                stored.level_present = true;
+                stored.level_raw = as_int;
+            } else {
+                stored.level_up_seconds_present = true;
+                stored.level_up_seconds_raw = as_int;
+            }
+        }
         // 006F2847-006F285F, `LandingRange`, the same way (routed from cc9-ships13).
         const SceneProperty* landing_prop = bag.find("LandingRange");
         if (landing_prop != nullptr && !landing_prop->values.empty()) {
