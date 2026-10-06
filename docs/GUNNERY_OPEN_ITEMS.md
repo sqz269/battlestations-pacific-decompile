@@ -10549,3 +10549,59 @@ ground, `approach+74h/+78h`, `f34`, the pitch command `2BCh`, the live pitch, ba
   `submarine_air_breathing_line_00855250` tests `sum < 0.0f`, the image `sum < -4.0`. The result differs only for
   `PeriscopeDepth` between 3 and 7 exclusive, and this installation has none (3, 7, 10.2-14.0). Routed to the
   submarine-model owner.
+
+## 144. A rack's CanFire (`006E3460` -> `00729A80`) and the RepeatTime default (lead item 5, for GUNNERY 138 / SQUADRON_LAND_TASK 5eq; cc9-gunnery31, 2026-10-06, read only)
+
+**CanFire for a BombPlatform.** The rack's `vtable[1D0h]` (`00CF9878`, `00CF9AE8`) is `006E3460`:
+`00729A80(checkReload)` and then `vtable[210h](2Ah, 0)`. The rack tick asks with checkReload = 1 at `006E5816`.
+`00729A80`'s conjuncts (docs/GUN_SHOT_CADENCE.md table 1):
+- the fire-parameter block `[+3F8h]+34h` is non-null;
+- `+3B8h` is clear;
+- `+358h <= 0`, the destroyed level;
+- with checkReload, `+450h` (BarrelDelayTime) <= 0 and `+478h` <= 0;
+- the artillery and kind-7 unit cooldowns;
+- the muzzle y >= 1 or not AA/artillery;
+- a barrel `i < +448h` with `[+414h][i] <= 0`.
+
+**For a rack every timer gate is inert.** The rack's `vtable[1D8h]` (the slot after `1D0h`/`1D4h`) is `006E4D50`, the
+drop, and it replaces `BSP_Gun_Fire`. So the gun's per-shot tail never runs for a rack: no barrel pick, no
+`0072D520` rearm, and no `+450h` store at `00730A05`. Evidence:
+- `006E4D50`'s callees (live `ghidra callees`) include no `0072D520` / `0072CF00`;
+- a byte scan finds no access to `+414h`, `+450h` or `+478h` anywhere in `006E3000`-`006E5FFF`.
+
+The authored rack data agrees: device 88 and device 122 have `ReloadTime` 0 and `BarrelDelayTime` 0. So a rack's
+CanFire reduces to "not destroyed (`+358h`), not disabled (`+3B8h`), the parameter block present", plus the
+`vtable[210h](2Ah)` ordnance answer (lua45's live-mask packet). **The host's "fires while it has ammo" is that reading,
+less the destroyed gate.** The pacing is `toRepeatTime` alone.
+
+**The RepeatTime default is 0.6 s.** `006E01C0`, the BombPlatform class reader (after the gun reader `007327B0`):
+- `006E01F2`: `"LaunchSpeed"` -> `desc+DCh`;
+- `006E021D`-`006E0247`: `"RepeatTime"` through `00B66330` with the default `[00CE3D30]` = `3F19999Ah`, **0.6f**,
+  stored at `desc+E0h`;
+- `006E025E`: `"HideAmmo"` -> `desc+E4h`.
+
+The host reads the absent field as 0.0 at two sites, both in `src/game_hosts_units.cpp`:
+- `lb_rack_timing_007c1fb0`, `read_device_class_number(dev, "RepeatTime", 0.0f)`, about line 21011;
+- the single-rack census, `rack_repeat_per_rack.push_back(... "RepeatTime", 0.0f)`, about line 24573.
+
+Both should default to 0.6f. That is the planes lane's file, so the edit is routed.
+
+**The bigger departure, for 138's USN13 reading: the rack device comes from the equipment bag, not from the class.**
+- USN13's `bruh` Bettys are scene planes with `Equipment` 1 (`plane equipment: ... type=167 bag=1`).
+- `[unit+C54h]` is 1-based into `Equipments[]` (SQUADRON_LAND_TASK 10880-10892, `009552E0`). Class 167 (this
+  installation's `vehicleclasses.lua`, 2026-05-09) has:
+  - `Equipments[1][50]` = Platform **88**, Ammo 16, ReloadTime 120;
+  - `Equipments[2][50]` = Platform 122, Ammo 1.
+- Device 88 (realistic `deviceclasses.lua`, 2024-07-13) is "Bomb platform 250kg JP": Bullet 78, **RepeatTime 0.05**.
+  Device 122 is "Torpedo platform Japan strong": Bullet 69, no RepeatTime, so 0.6. 122 is the class's default gun
+  for slot 50 (`Platforms[50].Gun[1]`).
+- The host's census reads the class-default device: `p%d_dev`, and `read_device_bullet_class_id(dev)`. So it pairs
+  122's torpedo kind (2Bh, RepeatTime 0) with bag 1's 16 rounds.
+- In the image these are 16 x 250 kg bombs on a 0.05 s repeat: a 0.8 s stick, which the level-bomber arm of
+  `007C0D90` drops (descriptor 2Ah). So "16 torpedoes in 0.8 s" is the bomb stick, mis-typed.
+
+**Routed to lua45:** read the rack device as `Equipments[C54h][slot].Platform`, falling back to the class default only
+when the plane has no equipment index. With that and the 0.6 default, kRackBulletKindBound can be re-paired on
+USN13 9000 / USNOS / LOMP10.
+
+Uncertainty: `+3B8h`'s producer for a rack, and whether a damaged rack (`+358h > 0`) occurs on these rows, are unread.
