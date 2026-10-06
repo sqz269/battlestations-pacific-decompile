@@ -828,7 +828,7 @@ inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAU
 // holder (+7ACh / +1208h) when the sides match, else no site, before any key
 // is compared. False: a parented plane is keyed against every deck like a
 // flying one, so a plane at its carrier's bow can pick the next carrier.
-inline constexpr bool kTakeoffOwnSiteBound = false;
+inline constexpr bool kTakeoffOwnSiteBound = true;   // ON: SQUADRON_LAND_TASK 5en, ESMP08 / USN04 pairs
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state

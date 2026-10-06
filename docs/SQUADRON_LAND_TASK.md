@@ -13333,3 +13333,40 @@ switch is ON.
 2. A single-carrier control (USN04 4500): gameplay identical (pair_diff 0 or 1). With one deck, the
    only change is the parked plane's `dist` (0 instead of `sqrt(key)`). That moves `+C04h`, but it stays
    negative under 200 m, so the plane is re-probed every step either way.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.** OFF is `b7b44d0a6`; ON is the same commit with the
+flip (`local\l44_own`). Rows: ESMP08 72000 with `s38_e8_p3.txt` (copied as `local\l44_e8_p3.txt`), and USN04 4500.
+Launches went through `local\l44_run.ps1`.
+
+**USN04, the control:** `pair_diff` exit 1, gameplay identical. The only moved lines are:
+- the known `refills` noise;
+- `carrier landing decks: refreshes 213416 -> 211760`, because the own-site answer skips the other decks' holder
+  refresh;
+- the ON-only `takeoff own site: answers=1656`.
+Prediction 2 holds.
+
+**ESMP08: every mechanism prediction holds.**
+| | OFF | ON |
+| --- | --- | --- |
+| `lift-off leaves ... occupants` lines | 1 | 0 |
+| `takeoff site denied` lines | 12 | 0 |
+| lift-offs / site leaves | 180 / 179 | 120 / 120 |
+| own-site answers | - | 57955 |
+| Zuikaku_sqn01\|.-2 prepare -> SlowTakeoff | 2313.28 s | 31.50 s |
+| Zuikaku relaunches (s1-s4) | 1, 1, 1, 1 | 3, 2, 2, 2 |
+
+`pair_diff` exit 3 (moved): deaths 706 -> 659, hits 13500 -> 11202, queued launches 60 -> 44. Mission end is
+`none` on both sides.
+
+**Why the row moved** (per-entity tables, `local\l44_deaths.ps1`):
+- Zuikaku's slots now relaunch at 405-495 s (frames 8101-9904), against the targets the order file gives them:
+  Case, Cassin, Mobile and Santa Fe.
+- ON sinks **Case at 401.8 s, Mobile at 487.7 s and Cassin at 749.3 s**. None of the three dies OFF. Mobile was
+  OFF's best killer of IJN planes (24); ON it has 3.
+- With those escorts gone, the rest of the USN screen dies much earlier ON. Washington 1172 s (OFF 1527), Santa Fe
+  1279 (2570), San Diego 1308 (1758), Fanning 1383 (2254), Grayson 2467 (2722).
+- So the IJN plane deaths after 1200 s fall from 89 to 24. The USN air waves die at the same times on both sides.
+- Fewer squadrons are lost, so fewer slots are released (`releases_006c65b0 44 -> 28`). The order file's targets
+  are dead earlier ("target fails 0043F080" refusals 23154 -> 37196). So there are fewer launches.
+- One number is not explained: the player's Zuikaku takes 3199 damage ON against 640 OFF (health 635 left). This
+  was not chased; Zuikaku survives.
