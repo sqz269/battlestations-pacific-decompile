@@ -12301,3 +12301,53 @@ The values in this installation's `scripts/datatables/planeglobals.lua` (mtime 2
   - The extra stream draws (five per installed plane) shift every later shared-stream draw, so
     expect broad numeric movement after the first install (verdict 3). Judge the mechanism from
     the per-plane retreat lines, not from the aggregates.
+
+### 5ea.1 Measured: **ON** (cc9-lua40, 2026-10-06)
+
+**The pairs.** Same tree. OFF is `b06d44670`. ON is the same commit exported with the flip
+(`local\l40_on`, SHA-256 `86F7DD6EE95F`). Both sides ran with the queue environment
+(`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`). Logs: `local\l40_{off,on}_{jm05l,usn02}.log`.
+
+| row | verdict | what moved |
+| --- | --- | --- |
+| USN02 (control) | 1, gameplay identical | only the summary's `bound=` text |
+| JM05l | 3, moved | below |
+
+**JM05l, the mechanism (matches).**
+- One `PilotRetreat` reached a live squadron: `PBY Catalina #3.1` at 381.03 s, the event 4 catalina
+  (`jm05.lua:4353`, this installation's PRCPIJN copy, mtime 2024-07-13).
+- All three members got the task. The leader started in moveto (retreat); the two wing members in
+  follow.
+- The zone is the east edge `x = 10050` (`|z| <= 3283`). The leader was already lined up (`+61h`),
+  so the first arm tick (`-U(0, 1)` phase) put it in enterzone at 381.08 s. It flew toward the
+  enter point `(14850, 0)`: 313 enterzone ticks.
+- The OFF side shows why the call count fell from 3 to 1. With the order never placed, the
+  script's `GetProperty(catalina, "unitcommand") ~= "retreat"` stayed true, and it called
+  `PilotRetreat` again on later thinks. ON, the command reads `retreat` after the first call.
+
+**JM05l, where the numbers moved.**
+- **The catalinas.** OFF, the three catalinas circle their PilotMoveToRange point at r = 1600
+  (`moveto circle ... r=1600`, 668 ticks) and are never hit. ON, the route east passes over the
+  Japanese force: first damage at 384-391 s.
+  - `#3.1|.-2` was killed by Fubuki-class 05 at 407.47 s.
+  - `#3.1` was killed by Kuma-class 01 at 412.37 s.
+  - `#3.1|.-3` was killed by Kuma-class 02 at 413.12 s, within 255-700 m horizontally of
+    Kuma-class 02.
+  - At about 413 s, `#3.1|.-3` (the last one alive) was switched from follow to moveto, as 009C9FB0
+    does once a member is no longer following.
+- **The script.** The catalinas' deaths are `harm`, so the event's success branch runs:
+  `CountdownCancel`, `AddPowerup` and the HUD countdown end appear only ON.
+- **Knock-on.** Deaths went 38 -> 42: the three catalinas, plus `SecondaryAirfieldEntity 01_sqn12|.-3`.
+  The Japanese ships spent fire on the catalinas (Fubuki-class 05 shots 503 -> 688, Kuma-class 02
+  878 -> 957, and so on), which re-timed their AA against the airfield squadron (`sqn12|.-2` died
+  5 s later, to a different ship).
+- **Not reached on any row:** the leave state, the leave-map countdown and Kill(4).
+
+**Verdict: ON.** The mechanism matches the read. The prediction expected removals at the edge;
+instead the catalinas were shot down on the way, because their zone lies beyond the Japanese force.
+That is a spread miss, not a mechanism failure.
+
+**Follow-up commit `456fb1b2a`, KillReason.** `00929800` names `KillReason` from `00E0CF04[+70h]`:
+none, harm, soft, sell, exitzone, landed, editor. The host published `harm` for every death. Now
+the units host keeps the cause its own kills pass to `00926D90` (4 at the retreat exit), so an
+escaping catalina reads `exitzone` and the event's failure branch runs, as the script intends.

@@ -44,8 +44,9 @@ namespace bsp {
 // squadron's planes installs this task (0099A170's arm at 0099A45B -> 009CA2B0)
 // and the planes fly it to the map edge and are removed there (007C6C30 ->
 // 007F31A0 -> Kill(4)). False: the command is placed and the bot intake drops
-// it, as before. Committed OFF, predictions in the doc first.
-inline constexpr bool kPlaneRetreatTaskBound = false;
+// it, as before. Committed OFF with the predictions (5ea), flipped ON after
+// the JM05l / USN02 pairs (5ea.1).
+inline constexpr bool kPlaneRetreatTaskBound = true;   // ON: SQUADRON_LAND_TASK 5ea.1
 
 inline constexpr std::uint32_t kRetreatCommandClass = 0x00E08F90u;   // 009C9E20
 inline constexpr float kRetreatAltitudeDrawLow = -50.0f;     // 00CECA0C, 009C91D6
