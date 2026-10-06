@@ -14174,3 +14174,41 @@ bomb release. The w7 order file is ready to re-run once phase 2 passes.
 | `s36_hangarcls.py` | hangar objects' hull kinds across row logs |
 
 All leases are released after this commit.
+
+## 179. USN01 won with legal counts and the player's own scout bomb (lead item 1, cc9-ships37, 2026-10-06)
+
+**Lines used:** SCRIPTED_HELM 14's `release` (24c55e733, the player's bomb fire `006082D0` ->
+message C4h -> `007BBBA0`), 12's `target`, 13's `launch` and `moveto`. Every switch is as on main
+`ea9a5b704` (`kAirOpsPlayerLaunchBound`, `kBombDropScatterBound`, the rack and carried-rounds
+switches ON). Launch form: reference V (`local\s37_run.ps1`, a copy of `s36_run.ps1`).
+
+| run | orders | outcome |
+| --- | --- | --- |
+| r1 (4000) | `2400 release ScoutDauntless on Convoy1 within 15 until 2700` over `s36_u1_w7.txt` | the sight closes at 133.65 s (14.6 m from the lead point, tf 3.79 s); the rack drops at 133.70 s; **`luaConLeadHit()` on a 502.8 Bomb hit on Convoy1**: phase 2 passes (176.1's blocker gone) |
+| r2 (20000) | r1's file | Convoy1 and Convoy2 survive to 929.45 / 896.50 s (Northampton), so phase 3 starts only at about 930 s, and w7's launches at 4100+ are refused (no Nells yet). The scouts do not strafe Convoy1 after the drop, unlike s35's idle runs, where ScoutDauntless\|.-2's guns killed it at 163.61 s |
+| p2 (9000) | r1, plus `target ConTBD2` at Convoy1/Convoy2 from 4300 | ConTBD2 is out of torpedoes by then: 007EEC50 chooses class `00E08F20`, not the torpedo class `00E08F18`. No convoy death |
+| p3 (6000) | release, `2720 target ScoutDauntless Convoy1`, ConTBD1 at Convoy1 (2900) then Convoy2 (3500) | Convoy2 dies (196.91 s, ConTBD1's torpedo); Convoy1 and Convoy4 live; no phase 3 by 300 s |
+| p4 (6000) | as p3, with ConTBD1 at Convoy2 (2900) then **Convoy1 (3500)** | all six convoys die by 216.21 s (Convoy1 at 198.76 s, ConTBD1's torpedo); **`luaMoveToPh3` at 218.86 s** |
+| **p5 (20000)** | p4's phase 2, then w7's phase 3 shifted by +300 frames (four slots of 3 at Nell1-4 from 4400, escorts at 4410-4412, slot-0 retries of 3) | **Mission complete at 697.90 s** |
+
+**p5 timeline** (`local\s37_u1p5.log`, order file `local\s37_u1_p5.txt`, trajectories
+`local\s37_traj_u1p5.*.csv`):
+- 133.70 s: the player's bomb hits Convoy1 (`luaConLeadHit`). The ConTBDs are generated, and
+  ConTBD1 becomes the controlled unit at about 140 s.
+- 185.76-216.21 s: the six convoys die. ConTBD1's torpedo kills Convoy1 at 198.76 s.
+- 218.86 s: `luaMoveToPh3`. Four F4F squadrons of 3 queue on slots 1-4. The 38 slot-0 retries
+  are all refused `no such slot` (176 caveat 3).
+- 290.20-401.08 s: the fighters kill eleven Nells: Nell1, 2, 3, 4 and 5, and the wingmen.
+  Squadrons sqn02, sqn01 and sqn04 are lost at 327.19, 351.59 and 422.52 s.
+- 604.68-697.50 s: Northampton and SaltLakeCity shoot down Nell2|.-2, Nell5|.-2, Nell6|.-2 and
+  Nell6. **Enterprise has no death row.**
+- Log line 109036: `bsp: refused a mission script's process launch: sus_prog.exe`. Then
+  `summary mission end: completed at 697.90 s (Mission.EndMission) text="We showed we can fight
+  back! - Mission Complete!"`.
+
+**What this changes against 176:** the legal per-slot count of 3 (`0066EC1B`) wins, and phase 2
+passes on a bomb the player drops, which needs no AI aim. The scout wingman still drops by its own
+task and misses (133.20 s). **LABELLED:**
+- the harness's fixed click times;
+- the sight's lead and radius (SCRIPTED_HELM 14);
+- launches need not come from the controlled carrier (SCRIPTED_HELM 13).
