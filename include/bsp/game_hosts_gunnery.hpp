@@ -1069,6 +1069,14 @@ public:
     // CommandBuilding level-up stores HP[level] / 100 * class HP there and leaves
     // the current health alone (SHIP_AI 169). No-op for an unbuilt index.
     void set_unit_max_health_036c(std::size_t unit_index, float value);
+    // Packet cc9_command_building_garrison (SHIP_AI_OPEN_ITEMS 175): 006F3660's
+    // re-create of a dead garrison member, as a revive in place (SUBSTITUTION:
+    // the image builds a new entity). Clears the death, restores health to the
+    // unit's maximum, turns its guns' triggers back on, clears its attacker and
+    // targets and resets its damage-control and damage-smoke state. False when
+    // the unit is not dead. The caller restores the units-host scene flags and
+    // the party (then refresh_unit_side).
+    bool revive_unit_garrison_006f3660(std::size_t unit_index);
     // unit+368h, the instance armour, for a writer outside this host: 006F38E0
     // stores Armor[level] / 100 * class Armour there (SHIP_AI 169). The direct-hit
     // passes read it under kCommandBuildingGunfireArmourBound (GUNNERY 129).
