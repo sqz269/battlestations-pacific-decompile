@@ -1570,9 +1570,21 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
         live[i] = air_ops_squadron_plane_count(deck->slots[i].launched_squadron);
     const int arm = g_class_default_arm_reader != nullptr
         ? g_class_default_arm_reader(vehicle_class) : 0;
+    // Packet cc9_player_launch_group: 0067A584..0067A592 hands 006C0F00
+    // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
+    // stock clamp is 006C0F00's own; this applies the screen's.
+    int screen_count = count;
+    if constexpr (bsp::kAirOpsPlayerLaunchGroupBound) {
+        if (screen_count > bsp::kSupportManagerLaunchGroup) {
+            log_.notef("player air ops launch: count %d clamped to the screen's %d "
+                "(screen+2B4h, 0066EC0A / 0067A592, packet cc9_player_launch_group)",
+                screen_count, bsp::kSupportManagerLaunchGroup);
+            screen_count = bsp::kSupportManagerLaunchGroup;
+        }
+    }
     // 0067A5A7 -> 006C4780 -> 006C0F00.
     out.count = bsp::air_ops_fill_slot_006c0f00(*deck, slot,
-        static_cast<std::uint32_t>(vehicle_class), count, arm, live.data());
+        static_cast<std::uint32_t>(vehicle_class), screen_count, arm, live.data());
     if (out.count <= 0) return refuse("006C0F00 left the slot empty (no stock or plane room)");
     // 0067A5D1 00656280: 82h {slot, order 3, the target's +174h, game+18ECh};
     // 0067A5E6 routes it, and 006CD6C0 case 1 -> 006CD160 -> 006CCDA0(apply 1).
