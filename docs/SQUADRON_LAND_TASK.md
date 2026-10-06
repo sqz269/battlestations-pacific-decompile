@@ -13724,3 +13724,40 @@ This closes 5er's open read, from disk bytes.
     reads the same mask). Rows with no post-drop re-choice stay identical.
   - A mechanism failure is any unit whose racks are all empty that is still offered divebomb, or a unit with a
     round left that loses it.
+
+**Pairs (2026-10-06, commit `1934b6438`).** OFF `945DB8DF1082`, ON `F4F2C67B04CF`, AD launch form, logs
+`local\l45_ro_<off|on>_<row>.log`. The 300-frame ON smoke ran clean.
+
+| row | frames | pair_diff | |
+| --- | --- | --- | --- |
+| IJN01 + `s38_i1_p1.txt` | 24000 | **3** | deaths 12 -> 37, hit records 698 -> 2666, shots 14588 -> 21253 |
+| USN13 long | 9000 | 0 | |
+| LOMP10 | 3000 | 1 | |
+
+**The IJN01 move, per entity.** The chooser census (`target A7M_n` answers, OFF -> ON):
+
+| squadron | OFF | ON |
+| --- | --- | --- |
+| A7M_3 | 57 divebomb | 4 divebomb, then 21 strafe `00E08F40` |
+| A7M_5 | 57 divebomb | 4 divebomb, then 1 strafe |
+| A7M_1 | 8 strafe | 2 divebomb, then 10 strafe |
+| A7M_2 | 57 divebomb | 57 divebomb |
+| A7M_4 | 57 divebomb | 57 divebomb |
+
+- **Which squadrons switched.** A7M_3 and A7M_5 each released twice (`releases=2 rounds_left=0`, both racks
+  empty). From their re-issue at frame 2805 / 2809 (140 s) they strafe: A7M_3 -> LST7, A7M_5 -> Vestal.
+- **What strafing adds.**
+  - LST7 and PT2 die.
+  - The strafe passes cross the B-17s, and A7M_3's guns kill B-17 01|.-2 (cat 0, 155.30 s).
+  - The B-17 gunners shoot down A7M_5's whole squadron at 149-153 s.
+  - The 1968 added hit records come with the strafing (not split by shooter here).
+- **Which squadrons kept divebomb.** A7M_2 and A7M_4 released **once** (`releases=1`; the active rack's count is
+  0 and the other single rack still holds its round), so they keep 2Ah. That is faithful: the image's
+  `006E4060` would still find the loaded rack's child. **The 5er / 5eu prediction for A7M_2 was therefore wrong.** Its
+  `done` stretch is the host firing one rack per issue (`kRackRoundsPerRackBound`) and the same-target keep
+  holding the done task while a round remains. That is a separate open item: who re-issues the release for the
+  second rack.
+- **Verdict: ON.**
+  - The mechanism matches: units whose racks are all empty lose divebomb, and units with a round left keep it.
+  - The row moves through exactly those two squadrons, and the moved deaths follow from their strafing.
+  - USN13 long is identical and LOMP10 is gameplay-identical.

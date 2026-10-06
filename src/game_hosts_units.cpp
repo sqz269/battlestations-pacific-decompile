@@ -5657,8 +5657,9 @@ struct GameUnitsHost::Impl {
     // 31h, 33h; their descriptors answer 2Ah too, 007B9320's exclusions) has a
     // round left. LABELLED: "ammo > 0" stands for "a round is attached"; planes
     // with a MultiBombPlatform or an unknown rack kind keep the static mask.
-    // False: the static OR of the device kinds, as before.
-    static constexpr bool kRackLiveOrdnanceMaskBound = false;
+    // False: the static OR of the device kinds, as before. ON by verdict (5eu):
+    // IJN01 moves through the two A7M squadrons that emptied both racks.
+    static constexpr bool kRackLiveOrdnanceMaskBound = true;
     // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
     // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
     // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below
