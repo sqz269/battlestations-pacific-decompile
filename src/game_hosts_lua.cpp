@@ -845,6 +845,8 @@ lua_State* g_loadout_lua_state = nullptr;
 
 // The run log the os.execute / io.popen guard writes its refusal into.
 static GameHostLog* g_exec_refusal_log = nullptr;
+// Packet cc9_player_air_ops_launch: the host whose class table answers class+134h.
+static GameMissionLuaHost* g_class_arm_host = nullptr;
 
 GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
     : log_(log), vfs_(vfs) {
@@ -854,6 +856,14 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
         if (g_exec_refusal_log != nullptr)
             g_exec_refusal_log->notef("bsp: refused a mission script's process launch: %s", command);
     };
+    g_class_arm_host = this;
+    script_orders_set_class_default_arm_reader([](int vehicle_class) {
+        // class+134h `DefaultEquipment` (00961F0A), 0 when nil (00961F30).
+        return g_class_arm_host != nullptr
+            ? g_class_arm_host->read_vehicle_class_integer(vehicle_class, "DefaultEquipment",
+                                                           nullptr, 0)
+            : 0;
+    });
     // The content-suffix list at manager +48h/+4Ch is empty in this process, as
     // milestone 2b recorded, so every override query answers with the base file
     // alone. The resource adapter is the same one the locale tables read
@@ -868,6 +878,10 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     if (g_exec_refusal_log == &log_) {
         g_exec_refusal_log = nullptr;
         bsp::g_lua_exec_refused_sink = nullptr;
+    }
+    if (g_class_arm_host == this) {
+        g_class_arm_host = nullptr;
+        script_orders_set_class_default_arm_reader(nullptr);
     }
     // The world walk holds a bare pointer to this host for the spawn drain.
     bsp::set_spawn_queue_drain(nullptr);
@@ -3641,6 +3655,14 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         request.type, request.wing_count, request.equipment, request.home_base, name,
         wing);
     if (entity == 0u) return 0u;
+    if constexpr (bsp::kAirOpsPlayerLaunchBound) {
+        // Packet cc9_player_air_ops_launch: the bag's `AutoAttackTarget`
+        // (006C5050), which the squadron's 007F4BA0 turns into an attack order.
+        if (request.has_auto_attack_target && request.auto_attack_target > 0) {
+            script_orders_->queue_auto_attack_target_007f15f0(entity,
+                static_cast<std::uint32_t>(request.auto_attack_target));
+        }
+    }
     if constexpr (kSEntityInitAllBound) {
         // Packet cc9_sentity_init_all. 006C5050 returns the squadron whatever
         // its attach will do; the attach is the next InitAll: 0089E613 when a

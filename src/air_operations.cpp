@@ -559,6 +559,14 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     request.owner_player = deck.owner_player;
     request.home_base = deck.owner_name;
     request.state = 1;                     // the flag argument is zero from 006CC690
+    if constexpr (kAirOpsPlayerLaunchBound) {
+        // Packet cc9_player_air_ops_launch. 006C5050's `AutoAttackTarget`: the
+        // +174h of the object at slot+4Ch, written only when it is not null.
+        if (slot.order_target_4c != 0u) {
+            request.has_auto_attack_target = true;
+            request.auto_attack_target = static_cast<std::int32_t>(slot.order_target_4c);
+        }
+    }
     const std::uint32_t squadron = factory->create_squadron(request);
     if (squadron != 0u && slot.launched_squadron != squadron) {
         slot.launched_squadron = squadron;
@@ -795,6 +803,143 @@ AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds) {
 AirOpsDeckRegistry& air_ops_decks() noexcept {
     static AirOpsDeckRegistry registry;
     return registry;
+}
+
+// ---------------------------------------------------------------------------
+// The player's launch, packet cc9_player_air_ops_launch
+// ---------------------------------------------------------------------------
+namespace {
+bool slot_idle(const AirOpsSlot& slot) noexcept {
+    return slot.state == AirOpsSlotState::kCooldown || slot.state == AirOpsSlotState::kReady;
+}
+std::int32_t live_count(const std::int32_t* counts, std::size_t index) noexcept {
+    return counts != nullptr ? counts[index] : 0;
+}
+} // namespace
+
+std::int32_t air_ops_slot_capacity_006bd460(const AirOpsDeck& deck, int slot_index,
+                                            const std::int32_t* launched_plane_counts) noexcept {
+    std::int32_t capacity = deck.max_in_air_planes;   // 006BD480 block+58h
+    for (std::size_t i = 0; i < deck.slots.size(); ++i) {
+        if (static_cast<int>(i) == slot_index) continue;
+        const AirOpsSlot& s = deck.slots[i];
+        // 006BD49A-006BD4C0: a launched slot its squadron's +3CCh; an idle slot
+        // (state 1 or 5) nothing; any other its slot+8h.
+        if (s.launched_squadron != 0u) {
+            capacity -= live_count(launched_plane_counts, i);
+        } else if (!slot_idle(s)) {
+            capacity -= s.assigned_count;
+        }
+    }
+    return capacity;
+}
+
+std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
+                                        std::uint32_t vehicle_class, std::int32_t count,
+                                        std::int32_t class_default_arm,
+                                        const std::int32_t* launched_plane_counts) noexcept {
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return 0;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    const std::uint32_t old_class = slot.vehicle_class;
+    // 006C0F1D-006C0F5A: min with the class's stock total, then with 006BD460.
+    const AirOpsStockAvailable stock0 =
+        air_ops_stock_available_006bf230(deck, vehicle_class, launched_plane_counts);
+    if (stock0.total < count) count = stock0.total;
+    const std::int32_t capacity =
+        air_ops_slot_capacity_006bd460(deck, slot_index, launched_plane_counts);
+    if (capacity < count) count = capacity;
+    // 006C0F6B-006C0FFD: the stock not held by idle slots, plus this slot's own
+    // count when it already holds the class; while short, take from the other
+    // idle slots of the class, last slot first.
+    std::int32_t free_stock = air_ops_stock_available_006bf230(
+        deck, vehicle_class, launched_plane_counts).available;
+    if (old_class == vehicle_class) free_stock += slot.assigned_count;
+    for (int i = static_cast<int>(deck.slots.size()) - 1; i >= 0 && free_stock < count; --i) {
+        AirOpsSlot& s = deck.slots[static_cast<std::size_t>(i)];
+        if (i == slot_index || s.vehicle_class != vehicle_class || !slot_idle(s)) continue;
+        const std::int32_t take = (count - free_stock < s.assigned_count)
+            ? count - free_stock : s.assigned_count;
+        s.assigned_count -= take;
+        free_stock += take;
+    }
+    // 006C1006-006C10A5: the plane limit (block+58h less 006BD3F0, plus this
+    // slot's own count); while short, take from ANY other idle slot.
+    std::vector<std::int32_t> live(deck.slots.size(), 0);
+    for (std::size_t i = 0; i < deck.slots.size(); ++i) live[i] = live_count(launched_plane_counts, i);
+    std::int32_t room = deck.max_in_air_planes -
+        air_base_committed_planes_006bd3f0(deck.slots.data(), live.data(),
+                                           static_cast<int>(deck.slots.size())) +
+        slot.assigned_count;
+    for (int i = static_cast<int>(deck.slots.size()) - 1; i >= 0 && room < count; --i) {
+        AirOpsSlot& s = deck.slots[static_cast<std::size_t>(i)];
+        if (i == slot_index || !slot_idle(s)) continue;
+        const std::int32_t take = (count - room < s.assigned_count) ? count - room
+                                                                    : s.assigned_count;
+        s.assigned_count -= take;
+        room += take;
+    }
+    // 006C10A8-006C10D4.
+    if (slot.vehicle_class != vehicle_class) {
+        slot.vehicle_class = vehicle_class;
+        slot.class_field_134 = vehicle_class != 0u ? class_default_arm : 0;
+    }
+    slot.assigned_count = count;
+    return count;
+}
+
+bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept {
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return false;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    if (!slot_idle(slot)) return false;            // 006CA65A-006CA663
+    slot.state = AirOpsSlotState::kLaunching;      // 006CA66B
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {                   // 006CA67C
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+    // 006CA6A0-006CA6F0: appended to block+14h. CONTRACT: 006C7D10 / 006C48F0,
+    // called on the way (the class and count, or the found node), are not read.
+    deck.launch_queue.push_back(slot_index);
+    return true;
+}
+
+int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
+                                  std::uint32_t target_plus_one, std::int32_t player,
+                                  bool apply) noexcept {
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return 0;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    if (slot.vehicle_class == 0u) return 0;        // 006CCDC3: no class
+    if (order == 3 && target_plus_one == 0u) return 0;   // 006CCDD3
+    if (order == 2) return -1;                     // the recall arms: not modelled
+    if (!slot_idle(slot)) return -1;               // states 2, 3, 4: not modelled
+    if (!apply) return 1;
+    // 006CCE95-006CCEAD: 006C4F70 on the slot, slot+50h, 006CA640.
+    slot.order_target_4c = order == 3 ? target_plus_one : 0u;
+    slot.order_player_50 = player;
+    air_ops_queue_slot_006ca640(deck, slot_index);
+    return 1;
+}
+
+bool air_ops_deck_free_006bed60(const AirOpsDeck& deck) noexcept {
+    return !deck.runway_failure && !deck.hangar_failure && deck.owner_present &&
+           !deck.owner_blocked;
+}
+
+int air_ops_queued_slot_wait_006c64b0(AirOpsDeck& deck) noexcept {
+    if (deck.launch_queue.empty()) return -1;     // 006C64B6 block+18h
+    const int head = deck.launch_queue.front();
+    if (head < 0 || static_cast<std::size_t>(head) >= deck.slots.size() ||
+        deck.slots[static_cast<std::size_t>(head)].state != AirOpsSlotState::kLaunching) {
+        deck.launch_queue.erase(deck.launch_queue.begin());   // 006C6523
+        return -1;
+    }
+    const AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(head)];
+    // 006C64E2-006C6501: timer above 1.0, block+38h zero, 006BED60.
+    if (!(slot.timer > 1.0F) || deck.launch_in_progress != 0u || !air_ops_deck_free_006bed60(deck)) {
+        return -1;
+    }
+    deck.launch_queue.erase(deck.launch_queue.begin());       // 006C6514 0048CD50
+    return head;                                              // 006C650A 006BC8E0(slot)
 }
 
 } // namespace bsp
