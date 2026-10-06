@@ -9396,6 +9396,39 @@ gunfire gate refusals=... passes=...` (not under the `mission gunnery damage` ke
 2172 impact blasts on ships34's run), the stream-1 draws per hit move only under the default form; under
 the measurement streams the roll keys on the building, so the pair still reads the gate alone.
 
+### 125.5 Smoke and pairs; verdict ON (cc9-gunnery28, 2026-10-06)
+
+- **Runs:** `pair_export --commit 9017c87e3` (main `a1224f007` merged), OFF `local\g28_lane_j` (SHA-256
+  prefix `E6CCD2C76C56`), ON `--flip kCommandBuildingGunfireGateBound=true` `local\g28_lane_k`
+  (`EF107B7C43A3`); logs `local\g28_cb_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke125.log`, JM08 300 frames, OFF, clean.
+
+| row | `pair_diff` | refusals / passes | `00879070` calls (OFF -> ON) | LandFort fire rolls / starts |
+| --- | --- | --- | --- | --- |
+| JM08 long 36000 | 1 | 39 / 3648 | 8871 -> 8832 | 3153 -> 6801 / 2 -> 17 |
+| USN01 3000 | 1 | 19 / 47 | 947 -> 928 | 0 -> 47 / 0 -> 2 |
+| USNOS 3000 | 1 | 0 / 16 | | |
+| USN13 3000 | 1 | 0 / 0 | | |
+| BSM01 3000 | 1 | 0 / 0 | | |
+
+- **The mechanism matches.** Refusals happen only on rows with a neutralize (JM08 long's HQ at 1034.10 s
+  in this tree; USN01's `CB2` at 32.90 s) and remove exactly that many `00879070` damage applications.
+  Every accepted hit takes the `007470B0` roll: JM08 long's HQ rolls 3648 more times and its first fire
+  starts at 897.75 s instead of 1012.05 s (presentation: the fire's frame arm only counts down, as
+  `SecondaryExplosionChanceMul` is 0).
+- **Why the headline does not move.** `pair_diff`'s damage is the hit records' sum, taken before
+  `add_damage`, and a refused hit on an already neutral building changes nothing that follows: JM08 long
+  fails at the neutralize (SHIP_AI 160), and USN01's `CB2` is captured nowhere in 150 s.
+
+**Predictions:**
+- **Missed, the spread on JM08 long:** `pair_diff` 1, not 3. Refusals > 0 and the neutralize time
+  unchanged held; the damage headline counts the hit, not the AddDamage.
+- **Missed, USN01:** a control was predicted to have no neutralize in 150 s; `CB2` is neutralized at
+  32.90 s and 19 hits are refused, still gameplay-identical.
+- Right on USN13, USNOS and BSM01 (no refusal).
+
+**Verdict: ON** (mechanism matching; spread misses recorded). Not game-validated.
+
 ## 126. Handoff (cc9-gunnery27, 2026-10-06, at about 72% context)
 
 ### 126.1 Landed on agent/cc9-gunnery27
