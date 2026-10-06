@@ -15531,3 +15531,71 @@ Notes:
   - There are no re-takes, and slots return on the last plane.
   - The moves in releases and deaths follow from the relaunches and from the shared RNG stream.
   - The flip belongs to reference AE.
+
+**Legality of the AI-rack route (cc9-ships40).** The player helms Henry by hand, and Henry's own
+DepthChargeBot drops the charges, as gun crews do on any player-helmed ship.
+
+- **What the tick checks.** `008FC080`'s inhibits are:
+  - the side gate at `008FC116`;
+  - bit 3 of `[[gun+3F0h]+634h]` (`006DFBF0`'s bit for weapon kind 0Bh).
+- **What writes `+634h`.** A byte scan (`83 ?? 34 06 00 00`, `89 ?? 34 06 00 00`) finds:
+  - constructors and the ship-class Lua read, which store whole dwords;
+  - `00465290` (AND, clear) and `00465350` (OR, set).
+- **How `00465350` sets it.** It ORs `0FFh`, `1`, `2`, `4` or `8` by the group name it is given
+  ("AA_Flak", "Artillery", "Torpedo" and two more at `00CE5468` / `00CE5448`).
+- **What reaches those two routines.** No rel32 call does. They are slots of a vtable at
+  `00CE5510`-`00CE5518`, which looks like a named per-group action.
+- **So taking the helm does not inhibit the rack.** LABELLED: the owner of `00CE5510` was not
+  identified, so a scripted inhibit in BSM01 is not ruled out from the image side. The host has no
+  such writer (`game_hosts_gunnery.cpp`, the `+634h` note).
+
+## 202. USNOS phase 1 with the stock return ON and Enterprise F2Gs (cc9-ships40, 2026-10-06; lead item 4)
+
+**Tree.** `agent/cc9-ships40` with main merged: the PlaneStock enum fix `763831c7b` and
+`kStowedPlaneStockReturnBound` ON. Script: this installation's `COTP-USN\us_osumi.lua`, mtime
+2024-10-29.
+
+### What the script needs
+
+- **To leave phase 1.** `luaCheckObjectives` (994-1015) spawns the next wave when
+  `luaRemoveDeadsFromTable(Mission.PhOneAttackers)` is empty. When that table empties after wave 2,
+  it calls `luaPh1FadeOut`.
+- **What counts as gone.** `luaRemoveDeadsFromTable` (`commandhelpers.lua` 1582) keeps a unit unless
+  its `.Dead` is set. It does not read `KillReason`, so a Judy returned to stock counts as gone.
+  - The table holds the squadron entities.
+  - In this host a squadron's `Dead` is published when its last plane is retired.
+- **What fails the mission.** Line 985: all six `TroopTrans` dead, or `Mission.BigE.Dead`.
+
+### Runs
+
+Launch form: reference AD (`local\s40_rows.ps1`). Logs: `local\s40_<prefix>_<row>.log`.
+
+| run | orders | result |
+| --- | --- | --- |
+| `s40_on3_osx`, 24000, idle | none | Wave 1's Judys go back into stock at 321-762 s. The squadrons publish `Dead` at 548.84 s (`plane #1.5`) and 762.29 s (`plane #1.6`), so **wave 2 spawns** (plane #4.x). Before, in s39 runs, wave 1 never emptied |
+| `s40_on3_osxl`, 48000, idle | none | **Fails at 1376.32 s:** Enterprise is sunk by `Ada3` at 1368.76 s |
+| `s40_f1_osf`, 24000 | `s40_os_f1.txt`: F2G (810) x3 from Enterprise at frames 850 / 870 on `plane #1.5` / `#1.6` | Both launches apply (slots 1 and 2). `plane #1.6` is shot down (Dead 315.00 s). `#1.5` goes back into stock (Dead 564.14 s). Wave 1 is empty at 564 s |
+| `s40_f2_osf2`, 36000 | f1 plus F2G x3 at frames 11320-11360 on `#4.4` / `#4.5` / `#4.6` | Fails at 1371.36 s, again Enterprise by Ada3. Two of the F2G flights are shot down by the Judys they attack |
+| `s40_f3_osf3`, 40000 | f2 plus `300 moveto Enterprise 12500 -4000` | Wave 1 is empty at 335.09 s and wave 2 spawns at 336.5 s. `#4.6` is shot down at 783.98 s, and the leaders of `#4.4` / `#4.5` go back into stock at 643-665 s. No troop transport dies and no failure occurs, but **phase 1 never ends**: the six remaining members of `#4.4` / `#4.5` circle Airfield3 until 2000 s |
+
+### Why Enterprise needs a player order
+
+The trajectory (`local\s40_traj.py`, run `s40_t2`) shows Enterprise sailing west at 10 m/s and 0.6
+throttle from (14000, -4000) on its authored course. It closes on Ada3's group, which sits at
+(-1800, -2600), and is sunk at 2.5 km.
+- The script orders Ada3 to attack only in `luaMoveToPh2` (1623).
+- So Ada3 shooting in phase 1 is its own target pick, which is not checked here.
+- A player in this mission would steer Enterprise. The `moveto` above is that player input.
+
+### Open: wave 2's leaderless members never land
+
+After the leaders of `#4.4` / `#4.5` are retired:
+- The landing sequencer releases the new head (`|.-2`) 24 times: `006C45C0` holds while it is airborne
+  beyond StandbyDist x 1.2.
+- It puts the head back and releases it again. The members' path stays at 10-12 km.
+- Airfield3's summary reads `queue=6 releases=24 inserts=28`.
+
+Wave 1's members did land after their leader was retired, the last at 548.84 s, so the loop is not
+general. Next: read why the new head drifts beyond 1.2 x StandbyDist. Candidates are the squadron land
+task following a retired leader, and the standby circle centre. Wave 2 cannot empty until this loop
+ends, unless the F2Gs kill those members.
