@@ -12464,3 +12464,13 @@ The script overrides as the image's script would.
 `latches=0` (`local\l40_cur_<row>.log`), so B5 never acts there. JM06 and JM08 set
 SetDeviceReloadEnabled(true), which closes the gate. The other short rows release no ordnance in
 reference AA.
+
+**Controls and arms per row (added after the lead's review).**
+- **JM06, JM08 and JM08 long ([00E17BF2] = 1, `device reload ... now=1`): `latches=0`** on
+  `19bc34aca` (`local\l40_cur_{jm06,jm08,jm08l}.log`). The must-not-latch controls hold.
+- **The 007F16D0 arm, row by row:**
+  - **USNRM01:** all 18 squadrons take `retreat`, which is bound whole.
+  - **USN01:** ScoutDauntless takes **land at site**. The land task is partial. The row ends at
+    150 s, 16 s after B5 and 10.5 km out, so its pair shows only the turn for the carrier, never the
+    landing states. That row's result is a turn toward the carrier, not a landing.
+- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC.
