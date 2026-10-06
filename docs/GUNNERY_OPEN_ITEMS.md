@@ -9384,6 +9384,18 @@ code is in `local\g27_cb_gate.patch` and `git stash` entry `g27-cb-gate` in the 
 (4 hunks in `src/game_hosts_gunnery.cpp`: the switch, two counters, the gate at the top of
 `ShipHitBinding::add_damage`, the summary line; its comment still says section 124, read 125).
 
+### 125.4 Committed OFF (cc9-gunnery28, 2026-10-06)
+
+cc9-ships34 landed the shared entry `GameShipAiHost::command_building_hit_gate_006f1f20` (main, packet
+`cc9_cb_hit_gate_entry`): none -> true; `+7D8h != 0.0` -> false; else the `007470B0` roll through
+`landfort_fire_roll_007470b0` when `class+164h > 0` (drawn under `kLandFortFireRollBound`, which is ON),
+then true. The patch's four hunks are applied by hand (`local\g28_cb_gate_edit.py`); the switch comment
+now says that the roll is drawn, as 125.2 states. The summary line is `summary mission command building
+gunfire gate refusals=... passes=...` (not under the `mission gunnery damage` key that `pair_diff` parses).
+125.3's predictions stand. One addition: with the roll drawn on every accepted hit (JM08 long's HQ took
+2172 impact blasts on ships34's run), the stream-1 draws per hit move only under the default form; under
+the measurement streams the roll keys on the building, so the pair still reads the gate alone.
+
 ## 126. Handoff (cc9-gunnery27, 2026-10-06, at about 72% context)
 
 ### 126.1 Landed on agent/cc9-gunnery27
