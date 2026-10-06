@@ -10179,3 +10179,16 @@ before. `bruh` is type 167, kind 10h (LevelBomber; `unit hull input ... kind=16`
 **Uncertain:** what changed the predicate between the two steps. It reads `unit_.ordnance_mask`, and its producer
 was not read here. The next step for the release lane (units host, planes) is the `ordnance_mask` writer's timing
 for a level bomber, and which of the issue stages the first release of these wingmen came from.
+
+### 136.5 Idle pairs with the routed pieces on main (`fa10e2e3b` = main `0084fb9d3` merged)
+
+The routed pieces (A)-(D) are cc9-lua43's `b8b8415e0`, `7556f3f03` and `e07680e85`. The pairs use
+`pair_export --commit fa10e2e3b`: OFF is `72375C8D289D` and ON (`--flip kShipyardProductionBound=true`) is
+`B67576E2E2DA`. Logs are `local\g30_sy2off_<row>.log` / `local\g30_sy2on_<row>.log`.
+- **LOMP10 long, JM05, JM05 long and USN04 (control) are all exit 1, gameplay identical** (prediction 1).
+- The registry is now real:
+  - LOMP10's `CB4_SY` completes with 1 hangar (`CB4_SY_Hangar` found, `CB4_SY_Path` 3 points), 4 entries and
+    stock 0 at the first step. AddShipyardStock comes at 180 s.
+  - JM05's two `MainShipyardEntity` yards each have 1 hangar, 4 entries and 4 scene stock records.
+  - The walk runs every step (`walks=9000` / `18000`), with no order, build or release.
+- Prediction 2 (LOMP10 with `build` lines) waits for cc9-ships38's harness line.
