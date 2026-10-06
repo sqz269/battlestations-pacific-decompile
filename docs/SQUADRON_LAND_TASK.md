@@ -11829,3 +11829,81 @@ with the l38 launch lines (`local\l39_queue.ps1`; `BSP_GUNNERY_RNG_STREAMS=1`,
 
 Every prediction held. **Verdict: ON.** The mechanism is the image's as read. The only
 gameplay move is the scripted reinforcement the countdown exists to trigger.
+
+## 5du. The bomb rack's drop scatter `006E4D50`, read (not bound) (cc9-lua39, 2026-10-05)
+
+Census item 1. **Read here; nothing is bound.** The host's substitution is
+`Rack::drop_dispersion_006e4f91` in `run_rack_bomb_drop_006e4d50` (`src/game_hosts_units.cpp`).
+Ghidra was read-only. The listing is `local\output\ghidra-disasm-006e4d50-*.txt` in this tree.
+
+**The draws, per dropped round (`006E4F7A`-`006E51EE`).** All four come from the shared stream
+`00BD2F10` with `ECX = 1`.
+1. The spread `s` = `[rack+3F8h]+4h`.
+   - When the owner is a plane with a bot (`vtable[5Ch](0Fh)`, `unit+DF4h`) and is AI-held
+     (`unit+1B0h == 8` or `00927F10(party)`), `s` is multiplied by `00999B70(bot, [rack+3F8h]+34h)`.
+   - `00999B70` (read whole, `00999B70`-`00999C64`) switches on the bullet class's `+8h` type:
+     - `0Ah` -> PilotBot row `+34h`;
+     - `0Bh` -> `+E0h`;
+     - `12h` -> `+12Ch`;
+     - otherwise `+C8h` for a level bomber (`IsKindOf(10h)`) and `+78h` for the rest;
+     - with no bullet class, 1.0.
+   - Field names (the `ThrowMul` family of this installation's `robots.lua`): `TorpThrowMul`,
+     `DiveBombThrowMul`, `LevelBombThrowMul`. The exact offset-to-name pairing is **not
+     verified**.
+   - If `+78h` is `DiveBombThrowMul`, the SPNormal row (robots.lua:722) authors **0.0**, so an
+     AI dive bomber at the default skill has no cone.
+2. `rack+400h` = U(0, `[00D7A264]` = pi) (`006E4F91`).
+3. `rack+404h` = `00412E20`(U(0, `s`)) (`006E4FB1`), the tangent.
+4. The cone vector D = (`t` cos a, `-t` sin a, 1) (`006E5013`-`006E503B`) is a round-frame direction.
+5. The wind scale `w` = `[rack+3F8h]+8h`.
+   - n = (vz, 0, -vx) / |v| of the owner's `vtable[34h]` velocity (`006E50E3`-`006E511F`).
+   - `rack+4ECh` = U(-w, w) n (`006E513C`) + U(-0.5 w, 0.3 w) v/|v| (`006E51AC`; the doubles
+     `00D7A280` = 0.5 and `00CE3DC8` = 0.3).
+6. A round that is `IsKindOf(33h)` with `[round+314h]+E0h <= 0` gets D = (1, 1, 1) and
+   `+4ECh` = 0 (`006E521E`-`006E525A`). (1, 1, 1) is `006E1F00`'s "no cone" sentinel.
+
+**Applying them.** `round+310h` (MBomb's `vtable[108h]` = `006E27C0`) is the bullet block (vtable
+`00CF95E0`). Its slot `+34h` is `006E1F00`, called at `006E529C` with (&D, &`rack+4ECh`):
+- `vtable[190h]` (`006E0A70`, 5do) sets the velocity;
+- `block+38h..+40h` = `rack+4ECh`, with `+3Ch` then zeroed. Its reader was not found:
+  **contract: unread**;
+- unless D is (1, 1, 1), the velocity becomes |v| (D.x r0 + D.y r1 + D.z r2) over the round's
+  matrix rows, so the cone tilts the launch direction. D is not normalised.
+
+Then the velocity gains `[rack+3F4h]+DCh` x `rack+DCh..+E4h` (`006E52B4`-`006E5301`), the rack's
+matrix row 1. That `+DCh` is taken to be the device's `LaunchSpeed` (**unverified**).
+
+**This installation's values** (`deviceclasses.lua`, class 87 "Bomb platform 500kg JP"):
+- `Bullet[1].Throw` = 0.01, `Wind` = 0.05;
+- `LaunchSpeed` = 0.
+
+So the cone is at most about 0.57 degrees, and none when an AI-held dive bomber's ThrowMul is 0.
+The wind term is a few cm/s. The four draws per drop always happen. The gameplay effect is
+therefore mostly the shared-stream shift: 95 drops over 6 reference rows.
+
+**To bind it** (a units-host edit, plus the gunnery lane's bomb spawn taking a launch
+direction):
+- the four draws in this order on stream 1;
+- the AI-held test and the `ThrowMul` row by bullet type;
+- D applied to the `vtable[190h]` velocity in the round's frame.
+
+**Open:** the reader of `block+38h`, the bullet class's `+8h` type for class 77, and the
+`+3F4h`/`+3F8h` field names.
+
+### 5dt.1 Measured (`l39_a0` against `l39_a1`, commit `63479bf4d`, countdown ON on both sides): **ON** (cc9-lua39, 2026-10-05)
+
+`a0` SHA-256 `5CC558588CC4`, `a1` `2A1110F0DCAC`. The logs are `local\l39_a{0,1}_<row>.log`; the
+countdown pair's logs were renamed `l39_ca{0,1}_*`.
+
+| row | exit | `AddAirBaseStock` calls (ON) |
+| --- | --- | --- |
+| USN02 | 1 | 0 (control) |
+| LOMP10 long | 1 | 3: `TimeLimit`'s airfield stock |
+| ESMP08 long | 1 | 10: the four IJN carriers at init |
+| USN13 long | 1 | 36: phase 3, nine US carriers x 4 |
+| JM08 long | 1 | 3: the Hosho, after `SpawnHoshoFleet` |
+
+All five rows are gameplay-identical, as predicted. Every call made a new list entry: none of the
+added classes was already in the carrier's scene `PlaneStock` list. For example, Enterprise's
+four scene entries hold no class 26, 113, 108 or 38. **Verdict: ON.** The stock now holds the
+image's entries for the refill and the `GetProperty` readers. It moves no reference row.
