@@ -15862,3 +15862,45 @@ OFF is `16a5e37a3`; ON is the same commit exported with the switch true (`local\
 - **Verdict: ON.** The mechanism matches the listing, and the moves are the landing-timing spread
   that 204 predicted.
 - The 202 loop stays open, and its remaining candidate is the destructor path in 204.
+### 205.1 All three HQs neutral; the Capture Posts (cc9-ships41, 2026-10-06)
+
+Order files are in `local\` (`s41_os_f8.txt` .. `s41_os_f11.txt`), 60000 frames, built from `a1b85eff1`.
+
+| run | orders added to f7 | result |
+| --- | --- | --- |
+| f8 | `29400 attack NH HQ1 repeat 30` | refused at every repeat: the attack form needs the controlled unit (00E188D8) |
+| f9 | `29390 select NH` before it | applied. **HQ1 is neutralized at 1885.30 s.** HQ2 at 1484.75 s, CB2 at 2047.15 s. TroopTrans3 follows NH west to (-2380, 3772), 1192 m from HQ1, and is sunk at 2363.98 s by `Capture Post 01` (-3551, 2990), from 1409 m. Its damage had built up since 122 s |
+| f10 | NH onto Capture Posts 01/04/02 from 37900 | refused: by then the script has made the Enterprise the selected unit again |
+| f11 | `select NH` 10 frames before each `attack NH "Capture Post 01"`, every 600 frames from 37900 to 46900 | the Capture Posts die: 01 at 1929.06 s and 02 at 1992.17 s (both NH), 04 at 2906.56 s, 03/05 at 1580/1630 s. **The Enterprise and TroopTrans3 survive to 3000 s.** TroopTrans3 holds at (97, 3673): 2316 m from HQ2 and 3618 m from HQ1 |
+
+- Shima6 and Takao1 still die at about 2350 s (DM1 / Gear4). TroopTrans5 dies at 1823.00 s and
+  TroopTrans6 at 2100.57 s, both to Airfield3 squadrons.
+- **A first f11 run is void.** A filter dropped the `300 moveto Enterprise` line, so the Enterprise
+  sailed its authored course. Ada3 sank it at 1368.76 s, as in s40's idle `osxl`.
+
+### 205.2 All three HQs captured: primary 2 completes (cc9-ships41, 2026-10-06)
+
+The tree is main `3f2069daa`, which carries cc9-lua46's `kSetPartyUnitBound` ON. The runs below are
+idle except for their helm lines, with no frame jitter.
+
+| run | orders added | result |
+| --- | --- | --- |
+| f12 (80000) | f11 plus TroopTrans3 by `select` + `moveto`: (2300, 4400) at 31000, (-2100, 3300) at 39960, (-7600, -7700) at 50010 | **SetParty turns HQ2 2 -> 0** at about 1700 s (TroopTrans3 is 1250 m away), then **HQ1 2 -> 0** at about 2380 s. TroopTrans6 dies at 2132.15 s. TroopTrans3 is sunk by Ada3, which sits at (-1800, -2600), at 2828.28 s on the CB2 leg |
+| f13 (90000) | f12 plus `select NH` / `attack NH Ada3` every 600 frames from 47500; the CB2 leg moved to 52210 | **NH sinks Ada3 at 2785.29 s.** TroopTrans3 runs aground near (-5500, -2600) on the straight leg. Loui1 sinks the Yamato at 3996.32 s and the Musashi at 4181.98 s |
+| f14 (100000) | the CB2 leg through water points taken from Ada1's own track: (-4300, -1000), (-10400, -2800) at 61000, (-9061, -6396) at 74500, (-8600, -7600) at 82500 | TroopTrans3 reaches (-8602, -7594), 1458 m from CB2. **SetParty turns CB2 2 -> 0, and `HideScoreDisplay(3, 0)` at 4234.58 s is the `capCount == 3` arm: primary 2 completes and `BaseCapped` is set.** HQ1/HQ2/CB2 end as party 0 |
+
+**What is left for the completion.**
+- `luaCheckObjectives` 973 needs `ReinDead`: every FinalTrg dead. That is the Yamato and the Musashi
+  (both sunk by Loui1 in f13/f14) and Haku1-4 (alive at 5000 s).
+- f15 (120000 frames, running) adds Enterprise BTD/AD2 strikes at the Hakus from 48000.
+
+**`kCaptureStatePartyFromUnitBound` pair on f12** (`s41_g12` OFF, `s41_h12` ON). It stays **OFF**.
+- The mechanism works: the state's copy follows SetParty.
+- But the HQ then flip-flops. 3 s after each SetParty it is "neutralized (prior party=0)":
+  - HQ2 13 times, HQ1 about 30 times;
+  - hits 16698 -> 16642, deaths equal at 469.
+- The cause is in the gunnery host:
+  - a blast that deals 0 damage to the 0-hp HQ still reaches `kill_unit` -> `006F3270`;
+  - in the image the damage path reaches it through `00877B90` (vtable[1B0h] at 00877C3A), which returns at `00877BBE`/`00877BC1`
+    (`TEST AH,44h; JNP`) when the health is unchanged.
+- Routed to the gunnery lane (an `applied != 0` guard at the two hit sites). Re-pair once it lands.
