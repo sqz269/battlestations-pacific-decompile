@@ -14051,3 +14051,87 @@ Branch `agent/cc9-lua46`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
    `7821e75b8`, with the exec guard's `sus_prog.exe` refusal. It used to complete at 1632 s. Reference AF should
    explain the move. It is not attributed to any cc9-lua46 switch: the logged run is the OFF side of a switch that
    stayed OFF.
+
+## 5fa. The gunnery rows read the rack's device, `kGunneryRackEquipmentDeviceBound` (packet `cc9_lua47_gunnery_rack_device`, cc9-lua47, 2026-10-06)
+
+GUNNERY 138 (`kRackBulletKindBound`) failed its 5ev pair through the gunnery host: its per-unit gun rows still took each
+platform's device from the class (`Platforms[slot].Gun[1]`), so USN13's `bruh` carried device 122 (torpedo) rows while
+their racks held device 88 (250 kg bombs), and `release_bomb_drop` refused every 2Ah drop (`bomb_drops=2 refusals=33`).
+On a loan from the lead, `src/game_hosts_gunnery.cpp` now reads the device the way the units host does under
+`kRackEquipmentDeviceBound`.
+
+- **The rule** (5ev, `00961F57` stores `Platform` per equipment entry): `VehicleClass[c].Equipments[unit+C54h][slot].Platform`;
+  a plane with no recorded bag reads `DefaultEquipment or 1`; bag 0, or an entry with no `Platform`, keeps the class device.
+- **The flatten.** The authored-table chunk's per-platform body is now a Lua function `plat(f, q, k, p, devid, dev)`. Besides
+  the class row `p<n>_*`, it writes one row `p<n>e<e>_*` for every equipment entry whose `Platform` names another device
+  (every device-derived field: category, bomb-platform flag, gun class, rotation speeds, bullets, reload, ballistics; the
+  platform's own fields, windows and rest angles copied). `f.defeq` carries `DefaultEquipment or 1`.
+- **The switch** picks the `p<n>e<e>_` row per plane unit (`units.plane_bag_equipment`), counted as
+  `summary mission gunnery rack equipment device rows=N`. Committed OFF.
+- **Divergence, labelled:** an entry whose `Platform` names no `DeviceClass` table keeps the class row here, where the units
+  host would still return that id.
+
+**Predictions (before the pairs).** Rows USN13 9000, USNOS 3000, LOMP10 3000. Variants A (both OFF), B (this switch ON),
+C (this switch and `kRackBulletKindBound` ON).
+- **B against A.** Only planes whose equipment platform differs from the class device move. On USN13 the `bruh` rows turn
+  from torpedo (category of device 122) to bomb rows (device 88, bullet 78), so their AA/attack inventory (007EEC50 inputs)
+  loses the torpedo kind and gains 2Ah. With 138 OFF the release path still issues the old "torpedo" drop from the live
+  mask, which now finds no torpedo row: expect B's two USN13 torpedo drops to go (refused), so USN13 moves (3). USNOS and
+  LOMP10 identical or gameplay-identical unless a scene plane there carries a non-default platform; the rows count says.
+- **C against B.** 007C0D90's level-bomber arm drops the 16-bomb stick at 0.05 s and `release_bomb_drop` finds the 2Ah row:
+  USN13's `bomb_drops` rises by about 16 per released rack with refusals near 0.
+
+**Pairs (2026-10-06, commit `93debebf9`).** Exports `local\l47_<A|B|C>`, launch form of reference AD (`local\l47_lane.ps1`),
+logs `local\l47_<A|B|C>_<usn13l|usnos|lomp10>.log`. The B smoke (USNOS 300) ran clean.
+
+| row | A -> B | B -> C |
+| --- | --- | --- |
+| USN13 9000 | **3** | 1 |
+| USNOS 3000 | 1 (`rows=0`) | 1 |
+| LOMP10 3000 | 1 (`rows=0`) | 1 |
+
+- **B: the mechanism holds, and USN13 moves much more than predicted.** 36 `bruh` gun rows take the `p<n>e1_` row (device
+  88). The rows now carry the 2Ah kind, so the attack chooser gives the Bettys the level-bomb task instead of the torpedo
+  run: `BotTaskLevelBomb::arm` / `cruise_profile` / `BotApproachLevelBomb::update` become concrete (65577 calls), and
+  `level bomber issue: bruh #1.7 t=150.45 racks=1 ... rounds=16` follows for each bomber.
+  - The gunnery host takes every bomb: `bomb_drops=573 refusals=0`. A had 2 bomb and 2 torpedo drops.
+  - The bruh deaths move: the bombers fly at about 1370-1440 m (`alt 58 -> 1371`, `54 -> 1441`) instead of the 50 m
+    torpedo run, and die later to heavy AA (`killer_cat 1 -> 6`).
+  - **Intrepid** (311.05 s, first damage 171.31 s, killer `bruh #1.14|.-4`) and **Cowpens** (340.24 s, killer
+    `bruh #1.8|.-4`) burn out: `fire_total=3106` and `2964`, `water_total=0`.
+  - `usn_13_truk.lua` 787 fails the mission when `luaRemoveDeadsFromTable(Mission.USCV)` drops to 7, so B ends
+    `failed at 341.59 s (Mission.MissionStatus) text="Game Over"`. All the other count moves (shots 31753 -> 9799, units
+    463 -> 373) are the run ending at 341.59 s.
+  - The open question this raises is the fire damage that sinks two carriers in about 140 s. That belongs to the fire
+    and damage-control lane, not to the device rule.
+- **C (138 ON) is gameplay identical to B on all three rows.** C prints `rack bullet kinds bruh #1.7 (level bomber):
+  [2Ah/0.05s]`, and its drops find their 2Ah rows (`refusals=0`). The prediction (bomb drops up) was already met by B,
+  because the mask path issues the same stick once the rows are right.
+
+**Verdict: both ON.** `kGunneryRackEquipmentDeviceBound` is ON by mechanism. `kRackBulletKindBound` (GUNNERY 138) is ON,
+identical with its mechanism visible. USN13 9000's reference row now ends in the scripted failure at 341.59 s.
+
+## 5fb. The score lines, `kLuaDisplayScoresBound` (packet `cc9_lua47_display_scores`, cc9-lua47, 2026-10-06)
+
+`DisplayScores` `008C20D0` and `HideScoreDisplay` `008C24B0` were unimplemented records, so USNOS's primary 2 count
+(`us_osumi.lua` 1121-1126: `Mission.CapCount = string.format("%.2f", capCount)`, then
+`luaDisplayScore(3, "Capture all bases!", "Bases captured: #Mission.CapCount#")`, i.e. `DisplayScores(3, 0, line1, line2)`)
+never reached the log.
+
+| routine | reading | coverage |
+| --- | --- | --- |
+| `008C20D0` DisplayScores | argument count 6: `0052B780(arg0, arg1, arg2 string, arg3 string, arg4, arg5)` at `008C22DA`; count 4: `0052B620(arg0, arg1, arg2 string, arg3 string)` at `008C241A` (the `ArgumentAt` pushes 3, 2, 1, `EBP`=0 at `008C2354..008C23D6`); any other count posts nothing; returns the result count, nothing pushed | complete |
+| `0052B620` | builds session message 23h (`0075B430(23h)`, vtable `00CED098`), stores the two integers and the two strings, posts it through `00772330` | complete; the HUD consumer of 23h is unread |
+| `0052B780` | the same 23h message with the two extra integers | read to the stores at `0052B7BE..0052B7FB` |
+| `008C24B0` HideScoreDisplay | two integer arguments -> `0052B900` (`008C25E5`), the 23h message's hide form | complete; the hide field's value is unread |
+
+The `this` of both posts is `[[00E198C4]+C8h]`. The host has no HUD, so the binding (script-orders host, committed OFF)
+logs `DisplayScores(id, flag) "line1" / "line2"` whenever an id's lines change, with each `#name.field#` reference read
+from the Lua globals at the call. **LABELLED:** that expansion is the host's, for the log; the HUD's own expansion of
+`#...#` is unread. The summary prints the posts, changes, hides and each id still shown.
+
+**Predictions (before the pair).** Gameplay identical (pair_diff 0 or 1) on every row: nothing reads the message back.
+- USNOS f7 (60000 frames, `s41_os_f7.txt`): `DisplayScores(2, 0)` for the troop line at the start, then `DisplayScores(3, 0)
+  "Capture all bases!" / "Bases captured: 0.00"` once primary 2 starts, stepping to 1.00 / 2.00 as HQ captures land
+  (5ez's SetParty run captured HQ2 at about 1732 s), and `HideScoreDisplay(3, 0)` only if the count reaches 3.
+- Control USN04 9000 (`usn_19_coralus.lua`, 12 `DisplayScore` sites): any score lines it reaches appear, nothing else moves.

@@ -469,6 +469,17 @@ constexpr bool kAiUntouchableGateBound = true;
 //    the store that places the gun entity at its platform is not read.
 //    ON by the pairs of 2026-09-27 (docs/USN04_KATE_ATTRITION.md section 13).
 constexpr bool kPlanePlatformAttachmentBound = true;
+//  * kGunneryRackEquipmentDeviceBound (packet cc9_lua47_gunnery_rack_device,
+//    docs/SQUADRON_LAND_TASK.md 5fa): a plane's gun rows take each platform's device
+//    from the plane's own equipment entry, VehicleClass[c].Equipments[unit+C54h][slot].Platform
+//    (00961F57 stores Platform per entry), the rule the units host binds under
+//    kRackEquipmentDeviceBound: bag > 0 its entry, no recorded bag `DefaultEquipment or 1`,
+//    bag 0 or no Platform the class device Platforms[slot].Gun[1]. Every device-derived
+//    field of the row (category, bomb-platform flag, bullets, reload, ballistics) follows.
+//    OFF: every plane's rows use the class device, so USN13's `bruh` carry device 122
+//    (torpedo) rows while their racks hold device 88 (250 kg bombs). ON by the pairs of
+//    2026-10-06 (5fa): USN13's Bettys level-bomb; USNOS and LOMP10 identical.
+constexpr bool kGunneryRackEquipmentDeviceBound = true;
 //  * kLandPlatformAttachmentBound (packet cc9_muzzle_no_mount, docs/GUN_BARREL_COUNT.md
 //    section 9): the same mount for a gun on any other vehicle class (forts, bunkers,
 //    command buildings, airfields, land vehicles). Each class's slot +20h is 0095F500
@@ -2239,6 +2250,7 @@ struct GameGunneryHost::Impl {
     }
     unsigned long long mounts_from_model{0};
     unsigned long long plane_mounts_from_model{0};   // cc9_plane_gun_mounts
+    unsigned long long rack_equipment_device_rows{0};   // cc9_lua47_gunnery_rack_device
     unsigned long long land_mounts_from_slot{0};     // cc9_muzzle_no_mount
     unsigned long long land_mounts_identity{0};
     unsigned long long turn_average_tests{0};        // cc9_aa_turn_average
@@ -3577,111 +3589,9 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  if type(m.CalcTargetPosTimeAddFix) == 'number' then aafix = m.CalcTargetPosTimeAddFix end\n"
         "  if type(m.CalcTargetPosTimeAddMul) == 'number' then aamul = m.CalcTargetPosTimeAddMul end\n"
         "end\n"
-        "for _, id in ipairs(ids) do\n"
-        "  local row = type(VehicleClass) == 'table' and VehicleClass[id] or nil\n"
-        "  if type(row) == 'table' then\n"
-        "    local f = {}\n"
-        "    f.think = num(think, 1000) or 2000\n"
-        "    f.aafix = num(aafix, 100000) or 0\n"
-        "    f.aamul = num(aamul, 100000) or 0\n"
-        "    f.subtd = num(subtd, 100000) or 0\n"
-        "    f.shiptd = num(shiptd, 100000) or 0\n"
-        // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
-        // present and false; the ShipGlobals damage block with 0083E1B3..
-        // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
-        "    f.repair = (row.Repair == false) and 0 or 1\n"
-        // Packet cc9_torpedo_stock: class+7A0h (00833CE6), 0 when absent.
-        "    f.torpstock = num(row.MaxTorpedoStock, 1) or 0\n"
-        "    local SG = type(ShipGlobals) == 'table' and ShipGlobals or {}\n"
-        "    f.dcwater = num(SG.WaterTickDamage, 1000) or 0\n"
-        "    f.dcfire = num(SG.FireTickDamage, 1000) or 0\n"
-        "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
-        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
-        "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
-        // Packet cc9_component_failures. Damage.Sections (0087CA80): kind from
-        // 007149D0 with no remap, Index, FailureChance / 100 (default -1) and
-        // FailureDamageThreshold (default -1). ShipGlobals: FailureChance / 100
-        // (0083E547), FailureDamageThreshold (0083E594), ExplosionDamagePercentage
-        // / 100 (0083E379), FireFailureDamageDuration (0083E32C) and the
-        // Failures rows (SectionName -> kind at 0083E956, FailureName,
-        // FailureDuration). The name is carried as the first row index with the
-        // same FailureName plus an effect code for the 00827B90 compares.
-        "    local secs = type(row.Damage) == 'table' and row.Damage.Sections or nil\n"
-        "    local ns = 0\n"
-        "    if type(secs) == 'table' then\n"
-        "      for k = 1, 64 do\n"
-        "        local sc = secs[k]\n"
-        "        if type(sc) == 'table' then\n"
-        "          ns = ns + 1\n"
-        "          local q = 's' .. ns .. '_'\n"
-        "          f[q .. 'kind'] = mcat(sc.MshCategory)\n"
-        "          f[q .. 'idx'] = type(sc.Index) == 'number' and math.floor(sc.Index + 0.5) or 0\n"
-        "          f[q .. 'fc'] = num(sc.FailureChance, 1000) or -100000\n"
-        "          f[q .. 'thr'] = num(sc.FailureDamageThreshold, 1000) or -1000\n"
-        "        end\n"
-        "      end\n"
-        "    end\n"
-        "    f.nsec = ns\n"
-        "    f.fchance = num(SG.FailureChance, 1000) or 5000\n"
-        "    f.fthr = num(SG.FailureDamageThreshold, 1000) or 100000\n"
-        "    f.explpct = num(SG.ExplosionDamagePercentage, 1000) or 1000\n"
-        "    f.firefd = num(SG.FireFailureDamageDuration, 1000) or 1000\n"
-        "    local nf = 0\n"
-        "    if type(SG.Failures) == 'table' then\n"
-        "      local names = {}\n"
-        "      for k = 1, 32 do\n"
-        "        local r = SG.Failures[k]\n"
-        "        if type(r) == 'table' then\n"
-        "          nf = nf + 1\n"
-        "          local q = 'fl' .. nf .. '_'\n"
-        "          local nm = type(r.FailureName) == 'string' and r.FailureName or ''\n"
-        "          if names[nm] == nil then names[nm] = nf end\n"
-        "          f[q .. 'kind'] = mcat(r.SectionName)\n"
-        "          f[q .. 'id'] = names[nm]\n"
-        "          f[q .. 'dur'] = num(r.FailureDuration, 1000) or 0\n"
-        "          local lo = string.lower(nm)\n"
-        "          local e = 0\n"
-        "          if lo == 'explosion' then e = 1 elseif lo == 'steeringjam' then e = 2\n"
-        "          elseif lo == 'enginejam' then e = 3 elseif lo == 'fire' then e = 4 end\n"
-        "          f[q .. 'eff'] = e\n"
-        "        end\n"
-        "      end\n"
-        "    end\n"
-        "    f.nfail = nf\n"
-        "    f.hp = num(row.HP, 1000) or 0\n"
-        "    f.armour = num(row.Armour, 1000) or 0\n"
-        // Packet cc9_plane_attacker_weight: class+210h, KamikazeBulletClass,
-        // which 00A08DEE reads for the plane arm's kamikaze option.
-        "    f.kbc = num(row.KamikazeBulletClass, 1) or -1\n"
-        "    f.uwarmour = num(row.UnderwaterArmour, 1000) or -1\n"
-        "    f.length = num(row.Length, 1000) or 0\n"
-        "    f.width = num(row.Width, 1000) or 0\n"
-        "    f.height = num(row.Height, 1000) or 0\n"
-        // Packet cc9_damage_smoke_draws: 00832445..00832616, DamageSmoke.MaxNumber
-        // (class+660h) and the length of the integer run in DamageSmoke.Effect
-        // (the +664h vector; the native walk stops at the first non-integer).
-        "    if type(row.DamageSmoke) == 'table' then\n"
-        "      f.dsmax = num(row.DamageSmoke.MaxNumber, 1) or 0\n"
-        "      local ne = 0\n"
-        "      local fx = row.DamageSmoke.Effect\n"
-        "      if type(fx) == 'table' then\n"
-        "        while type(fx[ne + 1]) == 'number' do ne = ne + 1 end\n"
-        "      end\n"
-        "      f.dsfx = ne\n"
-        "    end\n"
-        "    local n = 0\n"
-        "    local plats = row.Platforms\n"
-        "    if type(plats) == 'table' then\n"
-        "      for k = 1, 64 do\n"
-        "        local p = plats[k]\n"
-        "        if type(p) == 'table' and type(p.Gun) == 'table'\n"
-        "           and type(p.Gun[1]) == 'number' then\n"
-        "          local dev = type(DeviceClass) == 'table' and DeviceClass[p.Gun[1]] or nil\n"
-        "          if type(dev) == 'table' then\n"
-        "            n = n + 1\n"
-        "            local q = 'p' .. n .. '_'\n"
+        "local function plat(f, q, k, p, devid, dev)\n"
         "            f[q .. 'key'] = k\n"
-        "            f[q .. 'dev'] = p.Gun[1]\n"
+        "            f[q .. 'dev'] = devid\n"
         "            f[q .. 'cat'] = cat(dev.Function)\n"
         // Packet cc9_plane_attacker_weight: platform +0Ch PilotFires, +18h the
         // Gun list's size, and the device's 25h answer (MBombPlatform and its
@@ -3784,6 +3694,128 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            if type(p.RestAngles) == 'table' then\n"
         "              f[q .. 'rh'] = num(p.RestAngles[1], 1000000) or 0\n"
         "              f[q .. 'rv'] = num(p.RestAngles[2], 1000000) or 0\n"
+        "            end\n"
+        "end\n"
+        "for _, id in ipairs(ids) do\n"
+        "  local row = type(VehicleClass) == 'table' and VehicleClass[id] or nil\n"
+        "  if type(row) == 'table' then\n"
+        "    local f = {}\n"
+        "    f.think = num(think, 1000) or 2000\n"
+        "    f.aafix = num(aafix, 100000) or 0\n"
+        "    f.aamul = num(aamul, 100000) or 0\n"
+        "    f.subtd = num(subtd, 100000) or 0\n"
+        "    f.shiptd = num(shiptd, 100000) or 0\n"
+        // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
+        // present and false; the ShipGlobals damage block with 0083E1B3..
+        // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
+        "    f.repair = (row.Repair == false) and 0 or 1\n"
+        // Packet cc9_torpedo_stock: class+7A0h (00833CE6), 0 when absent.
+        "    f.torpstock = num(row.MaxTorpedoStock, 1) or 0\n"
+        "    local SG = type(ShipGlobals) == 'table' and ShipGlobals or {}\n"
+        "    f.dcwater = num(SG.WaterTickDamage, 1000) or 0\n"
+        "    f.dcfire = num(SG.FireTickDamage, 1000) or 0\n"
+        "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
+        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
+        "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
+        // Packet cc9_component_failures. Damage.Sections (0087CA80): kind from
+        // 007149D0 with no remap, Index, FailureChance / 100 (default -1) and
+        // FailureDamageThreshold (default -1). ShipGlobals: FailureChance / 100
+        // (0083E547), FailureDamageThreshold (0083E594), ExplosionDamagePercentage
+        // / 100 (0083E379), FireFailureDamageDuration (0083E32C) and the
+        // Failures rows (SectionName -> kind at 0083E956, FailureName,
+        // FailureDuration). The name is carried as the first row index with the
+        // same FailureName plus an effect code for the 00827B90 compares.
+        "    local secs = type(row.Damage) == 'table' and row.Damage.Sections or nil\n"
+        "    local ns = 0\n"
+        "    if type(secs) == 'table' then\n"
+        "      for k = 1, 64 do\n"
+        "        local sc = secs[k]\n"
+        "        if type(sc) == 'table' then\n"
+        "          ns = ns + 1\n"
+        "          local q = 's' .. ns .. '_'\n"
+        "          f[q .. 'kind'] = mcat(sc.MshCategory)\n"
+        "          f[q .. 'idx'] = type(sc.Index) == 'number' and math.floor(sc.Index + 0.5) or 0\n"
+        "          f[q .. 'fc'] = num(sc.FailureChance, 1000) or -100000\n"
+        "          f[q .. 'thr'] = num(sc.FailureDamageThreshold, 1000) or -1000\n"
+        "        end\n"
+        "      end\n"
+        "    end\n"
+        "    f.nsec = ns\n"
+        "    f.fchance = num(SG.FailureChance, 1000) or 5000\n"
+        "    f.fthr = num(SG.FailureDamageThreshold, 1000) or 100000\n"
+        "    f.explpct = num(SG.ExplosionDamagePercentage, 1000) or 1000\n"
+        "    f.firefd = num(SG.FireFailureDamageDuration, 1000) or 1000\n"
+        "    local nf = 0\n"
+        "    if type(SG.Failures) == 'table' then\n"
+        "      local names = {}\n"
+        "      for k = 1, 32 do\n"
+        "        local r = SG.Failures[k]\n"
+        "        if type(r) == 'table' then\n"
+        "          nf = nf + 1\n"
+        "          local q = 'fl' .. nf .. '_'\n"
+        "          local nm = type(r.FailureName) == 'string' and r.FailureName or ''\n"
+        "          if names[nm] == nil then names[nm] = nf end\n"
+        "          f[q .. 'kind'] = mcat(r.SectionName)\n"
+        "          f[q .. 'id'] = names[nm]\n"
+        "          f[q .. 'dur'] = num(r.FailureDuration, 1000) or 0\n"
+        "          local lo = string.lower(nm)\n"
+        "          local e = 0\n"
+        "          if lo == 'explosion' then e = 1 elseif lo == 'steeringjam' then e = 2\n"
+        "          elseif lo == 'enginejam' then e = 3 elseif lo == 'fire' then e = 4 end\n"
+        "          f[q .. 'eff'] = e\n"
+        "        end\n"
+        "      end\n"
+        "    end\n"
+        "    f.nfail = nf\n"
+        "    f.hp = num(row.HP, 1000) or 0\n"
+        "    f.armour = num(row.Armour, 1000) or 0\n"
+        // Packet cc9_plane_attacker_weight: class+210h, KamikazeBulletClass,
+        // which 00A08DEE reads for the plane arm's kamikaze option.
+        "    f.kbc = num(row.KamikazeBulletClass, 1) or -1\n"
+        // Packet cc9_lua47_gunnery_rack_device: `DefaultEquipment or 1`, the entry
+        // a plane with no recorded bag reads (game_hosts_units.cpp read_equipment_platform).
+        "    f.defeq = type(row.DefaultEquipment) == 'number' and row.DefaultEquipment or 1\n"
+        "    f.uwarmour = num(row.UnderwaterArmour, 1000) or -1\n"
+        "    f.length = num(row.Length, 1000) or 0\n"
+        "    f.width = num(row.Width, 1000) or 0\n"
+        "    f.height = num(row.Height, 1000) or 0\n"
+        // Packet cc9_damage_smoke_draws: 00832445..00832616, DamageSmoke.MaxNumber
+        // (class+660h) and the length of the integer run in DamageSmoke.Effect
+        // (the +664h vector; the native walk stops at the first non-integer).
+        "    if type(row.DamageSmoke) == 'table' then\n"
+        "      f.dsmax = num(row.DamageSmoke.MaxNumber, 1) or 0\n"
+        "      local ne = 0\n"
+        "      local fx = row.DamageSmoke.Effect\n"
+        "      if type(fx) == 'table' then\n"
+        "        while type(fx[ne + 1]) == 'number' do ne = ne + 1 end\n"
+        "      end\n"
+        "      f.dsfx = ne\n"
+        "    end\n"
+        "    local n = 0\n"
+        "    local plats = row.Platforms\n"
+        "    if type(plats) == 'table' then\n"
+        "      for k = 1, 64 do\n"
+        "        local p = plats[k]\n"
+        "        if type(p) == 'table' and type(p.Gun) == 'table'\n"
+        "           and type(p.Gun[1]) == 'number' then\n"
+        "          local dev = type(DeviceClass) == 'table' and DeviceClass[p.Gun[1]] or nil\n"
+        "          if type(dev) == 'table' then\n"
+        "            n = n + 1\n"
+        "            local q = 'p' .. n .. '_'\n"
+        "            plat(f, q, k, p, p.Gun[1], dev)\n"
+        // Packet cc9_lua47_gunnery_rack_device: the same row for each equipment
+        // entry whose Platform names another device, under `p<n>e<e>_`;
+        // kGunneryRackEquipmentDeviceBound picks it per unit.
+        "            if type(row.Equipments) == 'table' then\n"
+        "              for e = 1, 32 do\n"
+        "                local eq = row.Equipments[e]\n"
+        "                local ep = type(eq) == 'table' and eq[k] or nil\n"
+        "                local pid = type(ep) == 'table' and ep.Platform or nil\n"
+        "                if type(pid) == 'number' and pid ~= p.Gun[1] then\n"
+        "                  local d2 = DeviceClass[pid]\n"
+        "                  if type(d2) == 'table' then plat(f, 'p' .. n .. 'e' .. e .. '_', k, p, pid, d2) end\n"
+        "                end\n"
+        "              end\n"
         "            end\n"
         "          end\n"
         "        end\n"
@@ -4005,10 +4037,32 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         }
 
         const int platforms = flat(type_id, "n", 0);
+        // Packet cc9_lua47_gunnery_rack_device: a plane's equipment entry, as the
+        // units host's rack_equipment_device picks it (bag > 0 its own, no bag
+        // `DefaultEquipment or 1`, bag 0 the class device).
+        int equipment = 0;
+        if constexpr (kGunneryRackEquipmentDeviceBound) {
+            if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
+                const int bag = bsp::kPlaneSceneEquipmentBound ? units.plane_bag_equipment(i) : -1;
+                equipment = bag > 0 ? bag : bag < 0 ? flat(type_id, "defeq", 1) : 0;
+            }
+        }
         for (int p = 1; p <= platforms && p <= kMaxPlatformScan; ++p) {
             char key[32];
-            auto make = [&key, p](const char* leaf) {
-                std::snprintf(key, sizeof(key), "p%d_%s", p, leaf);
+            int alt = 0;
+            if (equipment > 0) {
+                std::snprintf(key, sizeof(key), "p%de%d_dev", p, equipment);
+                if (flat(type_id, key, -1) >= 0) {
+                    alt = equipment;
+                    ++rack_equipment_device_rows;
+                }
+            }
+            auto make = [&key, p, alt](const char* leaf) {
+                if (alt > 0) {
+                    std::snprintf(key, sizeof(key), "p%de%d_%s", p, alt, leaf);
+                } else {
+                    std::snprintf(key, sizeof(key), "p%d_%s", p, leaf);
+                }
                 return key;
             };
             GameGunRow gun;
@@ -12934,6 +12988,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery plane mounts from model=%llu bound=%d "
             "(007D3E81 -> 0095F500 slot frames, packet cc9_plane_gun_mounts)",
             host.plane_mounts_from_model, kPlanePlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery rack equipment device rows=%llu bound=%d "
+            "(Equipments[unit+C54h][slot].Platform, packet cc9_lua47_gunnery_rack_device)",
+            host.rack_equipment_device_rows, kGunneryRackEquipmentDeviceBound ? 1 : 0);
         host.log.notef("summary mission gunnery land mounts slot=%llu identity=%llu bound=%d "
             "(0095F500 slot frames / 007F7110 identity, packet cc9_muzzle_no_mount)",
             host.land_mounts_from_slot, host.land_mounts_identity,

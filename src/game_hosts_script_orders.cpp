@@ -277,6 +277,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"MissionNarrativeClear", 0x008b15b0u},
     {"MissionNarrativeSize", 0x008b0ac0u},
     {"EndScene", 0x008b01b0u},
+    // Packet cc9_lua47_display_scores: handled only with kLuaDisplayScoresBound.
+    {"DisplayScores", 0x008c20d0u},
+    {"HideScoreDisplay", 0x008c24b0u},
     // Packet cc9_lua_camera_state: handled only with kLuaCameraStateBound.
     {"GetCameraState", 0x008bf6a0u},
     {"GetRotation", 0x008a7e60u},
@@ -584,6 +587,10 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         return kLuaCapturePercentageBound;
+    }
+    if (std::strcmp(binding->name, "DisplayScores") == 0 ||
+        std::strcmp(binding->name, "HideScoreDisplay") == 0) {
+        return kLuaDisplayScoresBound;
     }
     return true;
 }
@@ -3088,6 +3095,50 @@ void GameScriptOrdersHost::game_assign_party_player_slots(int value) {
 // The dispatch
 // ---------------------------------------------------------------------------
 
+// Packet cc9_lua47_display_scores. A score line's `#name.field#` references
+// read from the Lua globals at the call, for the log only (the HUD's own
+// expansion is unread); a reference that does not resolve to a string or a
+// number stays as written.
+static std::string expand_score_references(lua_State* state, const std::string& text) {
+    if (state == nullptr) return text;
+    std::string out;
+    std::size_t at = 0;
+    while (at < text.size()) {
+        const std::size_t open = text.find('#', at);
+        const std::size_t close = open == std::string::npos ? open : text.find('#', open + 1);
+        if (close == std::string::npos) {
+            out.append(text, at, std::string::npos);
+            break;
+        }
+        out.append(text, at, open - at);
+        const std::string path = text.substr(open + 1, close - open - 1);
+        const int top = lua_gettop(state);
+        bool resolved = !path.empty();
+        std::size_t start = 0;
+        for (bool first = true; resolved; first = false) {
+            const std::size_t dot = path.find('.', start);
+            const std::string part = path.substr(start, dot == std::string::npos ? dot : dot - start);
+            if (part.empty() || (!first && lua_type(state, -1) != LUA_TTABLE)) {
+                resolved = false;
+                break;
+            }
+            lua_getfield(state, first ? LUA_GLOBALSINDEX : -1, part.c_str());
+            if (dot == std::string::npos) break;
+            start = dot + 1;
+        }
+        const int type = resolved ? lua_type(state, -1) : LUA_TNIL;
+        if (type == LUA_TSTRING || type == LUA_TNUMBER) {
+            const char* value = lua_tolstring(state, -1, nullptr);
+            out += value != nullptr ? value : "";
+        } else {
+            out.append(text, open, close - open + 1);
+        }
+        lua_settop(state, top);
+        at = close + 1;
+    }
+    return out;
+}
+
 int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int argument_count) {
     const ScriptOrderBinding* binding = find_binding(binding_name);
@@ -3645,6 +3696,48 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         narrative_queue_.push_back(std::move(entry));
         ++narrative_enqueues_;
         results = 0;  // 008B0E07, nothing pushed
+    } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
+        // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
+        // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
+        // arg3) (008C241A), both on [[00E198C4]+C8h], posting the HUD score
+        // message 23h through 00772330. Any other count posts nothing. No result.
+        const int n = count();
+        if (n == 6 || n == 4) {
+            const int id = static_cast<int>(argument_number(0));
+            const int flag = static_cast<int>(argument_number(1));
+            const std::string line1 = expand_score_references(state_, get_string(2));
+            const std::string line2 = expand_score_references(state_, get_string(3));
+            ++score_posts_;
+            std::string shown = line1 + "\n" + line2;
+            if (n == 6) {
+                char extra[48];
+                std::snprintf(extra, sizeof(extra), "\n%d %d",
+                    static_cast<int>(argument_number(4)), static_cast<int>(argument_number(5)));
+                shown += extra;
+            }
+            auto it = score_lines_.find(id);
+            if (it == score_lines_.end() || it->second != shown) {
+                score_lines_[id] = shown;
+                ++score_changes_;
+                if (score_changes_ <= 400) {
+                    log_.notef("  DisplayScores(%d, %d) \"%s\" / \"%s\" args=%d at %.2f s "
+                        "(008C20D0 -> %s, HUD message 23h)", id, flag, line1.c_str(),
+                        line2.c_str(), n, static_cast<double>(mission_clock_),
+                        n == 6 ? "0052B780" : "0052B620");
+                }
+            }
+        }
+        results = 0;
+    } else if (std::strcmp(binding->name, "HideScoreDisplay") == 0) {
+        // 008C24B0: two integer arguments -> 0052B900 (008C25E5), the same 23h
+        // message's hide form. No result.
+        const int id = static_cast<int>(argument_number(0));
+        ++score_hides_;
+        if (score_lines_.erase(id) != 0 || score_hides_ <= 20) {
+            log_.notef("  HideScoreDisplay(%d, %d) at %.2f s (008C24B0 -> 0052B900)", id,
+                static_cast<int>(argument_number(1)), static_cast<double>(mission_clock_));
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
         // 008B15B0 -> 00734FA0 on [game+21E8h].
         narrative_clear_00734fa0();
@@ -5451,6 +5544,16 @@ void GameScriptOrdersHost::report() {
             countdown_time_left_reads_, countdown_expiries_, countdown_callbacks_,
             countdown_last_callback_.empty() ? "(none)" : countdown_last_callback_.c_str(),
             countdown_.active_3c ? 1 : 0);
+    }
+    if (kLuaDisplayScoresBound) {
+        log_.notef("summary mission score display posts=%zu changes=%zu hides=%zu shown_at_end=%zu "
+            "(008C20D0 / 008C24B0, packet cc9_lua47_display_scores)", score_posts_,
+            score_changes_, score_hides_, score_lines_.size());
+        for (const auto& [id, lines] : score_lines_) {
+            std::string flat = lines;
+            for (char& c : flat) if (c == '\n') c = '|';
+            log_.notef("summary mission score display id=%d \"%s\"", id, flat.c_str());
+        }
     }
     if (kLuaMissionNarrativeBound || narrative_enqueues_ != 0 || end_scene_calls_ != 0) {
         log_.notef("summary mission narrative bound=%d enqueues=%zu clears=%zu shown=%zu "
