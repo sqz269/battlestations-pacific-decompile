@@ -9322,3 +9322,17 @@ long (130), USNOS and USNOS long (23), USN01 (20), IJN11 (15), LOMP06 (9), LOMP1
 - Expected to have `asks > 0`: rows whose scripts order ships at airfields; I cannot tell which from
   the AA logs, so the OFF runs' `asks` decide.
 - JM08 long is image-faithful only to about 1093 s (SHIP_AI 160).
+
+### 124.4 Pairs; verdict ON (no reach, unexercised)
+
+- **Runs:** `pair_export --commit 5ce2f1d98`, OFF `local\g27_lane_j` (SHA-256 prefix `AEBB44579BD4`),
+  ON `--flip kAirfieldTargetSubEntitiesBound=true` `local\g27_lane_k` (`DE4324C45CDF`); logs
+  `local\g27_sub_{off,on}_<row>.log`, reference z's launch form. Smoke: `local\g27_smoke2.log`, USN02
+  300 frames, clean.
+- **All ten rows are `pair_diff` 1**: USN02, JM08 long, JM06, JM05 long, USNOS, USNOS long, USN01,
+  IJN11, LOMP06, LOMP10 long.
+- **`asks=0` on every row.** No director's command or fire target is an airfield on the reference
+  rows: the 7172 `008654AC` calls of 123.2 are ship and fort targets. The prediction's first branch.
+
+**Verdict: ON**, as the image's rule read from the listing, with no reach and so **unexercised**: no
+run has yet listed a hangar through it. A row that orders a ship at an airfield is the first test.

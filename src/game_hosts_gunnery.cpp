@@ -101,7 +101,8 @@ constexpr bool kBombDropVelocityBound = true;   // SQUADRON_LAND_TASK 5do
 // airfield target hands the gun pass its live hangars (none once they are gone).
 // LABELLED: a hangar is the first unit named like its Object reference, as
 // airfield_aim_point. False: the target itself (the base 00432480).
-constexpr bool kAirfieldTargetSubEntitiesBound = false;
+// ON by the pairs of 2026-10-06 (GUNNERY 124.4): no reach on the reference rows.
+constexpr bool kAirfieldTargetSubEntitiesBound = true;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
