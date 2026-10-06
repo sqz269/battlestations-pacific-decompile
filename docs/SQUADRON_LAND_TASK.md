@@ -14154,3 +14154,49 @@ from the Lua globals at the call. **LABELLED:** that expansion is the host's, fo
 - No run completed a mission, so the exec guard had nothing to refuse.
 
 **Verdict: ON.** The mechanism matches: the lines and the count reach the log, and gameplay is identical.
+
+## 5fc. 5ez's open reads: the first round, and `006CCDA0`'s state-2 and state-5 arms (cc9-lua47, 2026-10-06, read-only)
+
+**When a fresh rack's first round is attached.** At the rack's bind to its owner, not on a tick.
+- **`006E3350`..`006E3402`** (no Ghidra function; it sits inside `FUN_006e3260`'s gap) is the MBombPlatform's vtable `9Ch`
+  slot (`00CF9744` in `00CF96A8`, and `00CF99B4`).
+  - It calls the base `0072D7E0`. Then, when the owner `+3F0h` answers IsKind `0Fh` (a plane) with `C54h > 0`, it walks
+    `009552E0(owner+538h, C54h)`, the plane's equipment entry list.
+  - For each entry whose class equals the rack descriptor's `+6Ch` with a count > 0, it calls `vtable[1BCh](count)`.
+    That is `006E3530` SetAmmo: `+484h = +488h = count`. It also calls `vtable[1C0h](entry+0Ch)` (`006E3A20`, unread).
+  - Unless `[+C0h]+4 == 3` (`006E33ED`, unread), it then tail-jumps `vtable[224h]` (`006E33F5`).
+- **`006E3E70`..`006E3F8D`** (`vtable[224h]`, `00CF98CC`) attaches the next round.
+  - Unless `+5Dh` is set, and outside the network arm (`00E0AF20` with `[00E188A8]+1FE4h == 2`), it builds the round through
+    the factory `+3F8h -> +34h vtable[20h]`, binds it to the owner (`006E6BB0`) and copies the rack pose.
+  - It calls `006E0B40(0)` for a 2Ah round that is a paratrooper (`31h`) or has `[+3F4h]+E4h` set.
+  - Then `+484h -= 1`.
+- **The drop's tail** (`006E55E7`): `+484h > 0` attaches the next round at once through the same `vtable[224h]`, and
+  otherwise clears `+4F8h`.
+- **So the image keeps one round attached and `+484h` counts the rest.** "A round is attached" is equivalent to the
+  host's "rounds remaining (attached included) > 0", the 5eu label, at every point but one: the unread `[+C0h]+4 == 3`
+  bind-time skip. The host's immediate attach is faithful, and nothing needs binding.
+- The rack tick `006E56F0` never attaches. Its `vtable[204h](dt)` arm runs only under owner `vtable[1E4h]` (`00E17BF2`,
+  0 in single player).
+
+**`006CCDA0`'s arms the host does not serve** (`BSP_AirOps_SlotCommand`, slot stride 58h at `deck+4Ch`, state at slot `+2Ch`).
+- **State 5, order 2** (`006CCDF8`..`006CCE7B`), applied:
+  - `n = min(deck+58h - 006BD3F0(), 006BF330(class), slot+0Ch)`;
+  - state 1, with the timer pair (`+30h = 0`, or 5.0 with `+34h` cleared);
+  - when `n > 0`, `006BC6F0(slot, class, n)`; otherwise the class is cleared (`+4 = +10h = 0`) and `+8 = 0`;
+  - then `006BF150(slot)`, answer 1.
+- **State 1, order 2:** answer 2 (`006CCE88` -> `006CD078`).
+- **State 2, order 2:** `006CC5C0(slot)`, answer 1.
+  - **`006CC5C0`..`006CC682`** (`RET 4`), under the deck lock `+0Ch`: if the slot is still in state 2, it sets state 1 with
+    the timer pair, calls `006CA770` AddStock(slot+4, slot+8) and `006C48F0` (off the launch queue), then `006BF150(slot)`.
+- **State 2, order 1 or 3** (`006CCEF7`..`006CCF3E`), the retarget:
+  - `006C4F70(slot, order == 3 ? target : 0)`, then `slot+50h = player`.
+  - The answer is 1 when exactly one of the old `slot+4Ch` and the new target is zero, otherwise 2. It is computed
+    before the store.
+- **Reach:** only the player's air-ops screen (the 82h message) and the harness `order` lines reach these arms; no AI
+  path sends 82h. A state-2 slot exists only between its queueing and the launch (timer > 1 s, `006C64B0`), so an
+  order line must land in that window. No run in the reference set reaches them. **Not bound.**
+
+**Names for the lead (hypotheses):**
+- `006E3350`..`006E3402` `BSP_MBombPlatform_BindOwnerLoadout` (vtable `9Ch`);
+- `006E3E70`..`006E3F8D` `BSP_MBombPlatform_AttachNextRound` (vtable `224h`);
+- `006CC5C0`..`006CC682` `BSP_AirOps_CancelQueuedSlot`.
