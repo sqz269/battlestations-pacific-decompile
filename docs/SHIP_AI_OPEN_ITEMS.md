@@ -15467,3 +15467,10 @@ Log `cc9-lua44\local\l44_h2on_e8.log` (ESMP08, 3600 s):
 3. **Failure tests.**
    - A mechanism failure is any stow without a `stock return`, or a re-take of a retired plane.
    - A failure is also any `no_deck` or `no_squadron` on a carrier stow.
+4. **USNOS, 9000 frames, idle player** (the airfield case). The OFF log `cc9-ships39\local\s39_osb4.log`
+   has 8 hangar taxi-ins (`plane #1.5` at 321.10 s ... `plane #1.6|.-4` at 586.23 s).
+   - ON: each of these is followed by one `stock return` into Airfield3's stock.
+   - The plane is killed (cause 5), so the scripts see these Judys as Dead. If phase 1 counts them, it
+     may advance.
+   - Airfield3's slot returns when the last plane of a squadron parks.
+5. **USN13, 9000 frames, idle.** Moves only if a plane is stowed or parks inside 450 s.
