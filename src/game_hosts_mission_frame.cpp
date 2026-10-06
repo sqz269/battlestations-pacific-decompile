@@ -3256,6 +3256,28 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     || !host.units->unit_alive_and_visible(unit_index))) {
                 continue;   // a repeat stops when the unit is gone
             }
+            // cc9-ships38 (SHIP_AI 190.1): the image's moveto 005F9B20 goes to
+            // [00E188D8] (005F9B42), and a unit becomes [00E188D8] only through
+            // 00645060 (00647317, 0064564D). A unit 00645060 would refuse can
+            // therefore never take the player's moveto; the harness refuses it.
+            // LABELLED: a selectable unit that is not the controlled one is still
+            // ordered without the select (SCRIPTED_HELM 8.2 difference 2).
+            if (unit_index < host.units->count()
+                && !(host.units->controlled_bound()
+                     && host.units->controlled_index() == unit_index)) {
+                bool hud_reached = false;
+                const bool selectable =
+                    bsp::game::hud_unit_selectable_00645060(unit_index, hud_reached);
+                if (hud_reached && !selectable) {
+                    ++order.applications;
+                    ++host.helm_orders_refused;
+                    host.log.notef("helm order refused: line %d frame %ld (at mission frame "
+                        "%llu) moveto %s: 00645060 rejects the unit, so it can never be "
+                        "[00E188D8], the unit 005F9B20 orders", order.line, due, now,
+                        order.unit.c_str());
+                    continue;
+                }
+            }
             char point[64];
             std::snprintf(point, sizeof(point), "%.3f,%.3f", static_cast<double>(x),
                 static_cast<double>(z));

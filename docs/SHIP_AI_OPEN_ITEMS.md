@@ -14310,6 +14310,46 @@ The tree is `agent/cc9-ships38` at main `78eab7589`, which has `kAutoAttackMembe
 lua42's 14000-frame window (700 s) closed 2.75 s before Nell5|.-3 died. So the "outlived" Nells
 were a window artefact. The cruisers still finish the raid, about 15 s later than in p5.
 
+### 179.3 p5 with squadron placement ON: re-tuned, completes at 648.42 s (cc9-ships38, 2026-10-06)
+
+The tree is `agent/cc9-ships38` with main `3d0dcce5f` merged, which has squadron placement ON
+(lua43 `12291183b`). The launch form is s37's.
+- **p5 unchanged** (`s38_u1q`) fails at line 2: `release ScoutDauntless on Convoy1: the sight
+  never came within 15.0 m (nearest 16.5 m)`. Pass C places `ScoutDauntless|.-2` beside the
+  player's plane, so the path shifts.
+- **Release window 20 m** (`s38_u1_p6.txt`, `s38_u1q6`): the sight closes at 130.20 s (miss
+  19.8 m, tf 3.91 s), and `luaConLeadHit` follows on a 502.8 bomb hit. Phase 2 passes.
+- **But at 22000 frames** (`s38_u1p6`) Convoy5 is never hit, so the mission stays in phase 2.
+  Convoy3, 6, 1, 4 and 2 die between 181.56 and 197.41 s.
+- **The convoy strike, re-tuned** (5500-frame probes `s38_u1p7a`..`p7n`). All of them use the
+  player's legal pick (`select` then `target`). The probes, by which strike gets retargeted:
+  - ConTBD1, the player's own TBDs (variants a, b, d and e): Convoy5 or Convoy1 still survives.
+  - ConSBD1, 2 or 3 at Convoy5 (variants f, g, h and k): their bombs never kill Convoy5.
+  - ConTBD2 at Convoy5 (variant i): Convoy5 dies, but Convoy3 survives.
+  - **Variant n:** ConTBD2 at Convoy5 and also ConSBD3 at Convoy3. **All six die.**
+  - The deaths move from probe to probe, as the shared RNG stream predicts.
+- **p8 = n** (`local\s38_u1_p8.txt`). At frames 3300-3305 the player selects ConTBD2, targets
+  Convoy5, selects ConSBD3, targets Convoy3, then re-selects ConTBD1. The rest is p5's file with
+  the 20 m window.
+
+**p8 at 22000 frames** (`local\s38_u1p8.log`):
+- **Phase 2.** `luaConLeadHit` is at log line 21117. The convoys die at 180.11 (Convoy6,
+  ConTBD2|.-2), 194.96 (Convoy1, ConTBD1), 195.86 (Convoy5, ConTBD2|.-3), 196.31 (Convoy4,
+  ConSBD2|.-4), 205.66 (Convoy2, ConTBD1|.-2) and 214.86 s (Convoy3, ConSBD3|.-2).
+  `luaMoveToPh3` runs at log line 35559.
+- **Phase 3.** The four F4F launches and the escort movetos apply. Ralph, McCall and Blue pass
+  190.1's selectable gate.
+- **Guard.** `bsp: refused a mission script's process launch: sus_prog.exe` is at log line 100043.
+- **End:** `summary mission end: completed at 648.42 s (Mission.MissionStatus) text="We showed we
+  can fight back! - Mission Complete!"`, and EndScene at 682.96 s. No US ship has a death row.
+- **Against lua42's `l42_u1_p5`:** its logs in `cc9-lua42\local` predate placement. Its
+  `l42_m_u1p5.log` kills the convoys in s37's order (185.76-216.21 s), so the move comes from
+  placement plus the RNG coupling.
+
+**LABELLED:**
+- the 20 m sight window (SCRIPTED_HELM 14);
+- the harness's fixed click times;
+- the target pick lists are not used here; each target line names one convoy.
 ## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
 
 Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
@@ -14861,3 +14901,31 @@ unit. The host answers `009542B0` "not available", so no group is ever selected.
   role and fire path.
 - **Why the AI row refuses** 20324 times is not read. It is the gunnery lane's (`docs/DEPTHCHARGE_FLAK_ADMISSION.md`
   covers the category's admission).
+
+### 190.1 IJN11 is not legal: the player's moveto needs a unit 00645060 accepts (cc9-ships38, 2026-10-06)
+
+**The image's evidence** (SCRIPTED_HELM 8.2, CONTROLLED_UNIT "`00645060`, the selectable test"):
+- The player's moveto `005F9B20` sends its order to `[00E188D8]`: `MOV ECX,[00E188D8]` at `005F9B42`,
+  then `0077D600`.
+- `[00E188D8]` changes only through `00645600`. Its two selection callers run `00645060` first:
+  `00647317` in `00647300`, and `0064564D`.
+- A unit that `00645060` refuses can therefore never be the controlled unit, so it never receives
+  the player's moveto.
+- In IJN11 phase 2, `select SupplyCargo` is refused by `00645060` (190). Which of its tests fails
+  (the party `[unit+54h]`, the kind tests, `vtable[124h]` or `00927C50`) was not read.
+
+**Harness change** (`src/game_hosts_mission_frame.cpp`; the query is in
+`src/game_hosts_hud.cpp` / `include/bsp/game_hosts_hud.hpp`):
+- `bsp::game::hud_unit_selectable_00645060(unit, reached)` runs the same pure rule
+  (`unit_is_selectable_00645060` over `selectable_inputs_00645060`) without changing the
+  selection.
+- A `moveto` on a unit other than the controlled one is now refused when that rule rejects it:
+  `helm order refused: ... moveto <unit>: 00645060 rejects the unit, so it can never be
+  [00E188D8], the unit 005F9B20 orders`.
+- **Still LABELLED:** a selectable unit that is not the controlled one is ordered without the
+  select (SCRIPTED_HELM 8.2 difference 2). This is how USN01's escorts Ralph, McCall and Blue are
+  ordered; they pass the gate in 179.3.
+
+**Re-run** (`local\s38_i11p2.log`, `s38_i11_p1.txt`, 20000 frames): both moveto lines are refused
+by the new gate, and the mission does not end (`summary mission end: none`). **IJN11 is recorded as
+not completed with legal input.** 190's p1 completion stands only as a labelled run.
