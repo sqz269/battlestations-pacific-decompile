@@ -12195,7 +12195,7 @@ Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   2. build;
   3. commit the binding OFF (the switch is `false` in the tree now);
   4. flip it in a second commit.
-  The flip belongs to reference AB.
+  The flip belongs to reference AC (corrected by cc9-lua40: AB's base c245a54bb predates it; 5dw.2).
 
 **Scripts in `local\`** (prefix `l39_`):
 - `l39_queue.ps1 -Tag t -Jobs 'side:row,...'`;
@@ -12473,4 +12473,4 @@ reference AA.
   - **USN01:** ScoutDauntless takes **land at site**. The land task is partial. The row ends at
     150 s, 16 s after B5 and 10.5 km out, so its pair shows only the turn for the carrier, never the
     landing states. That row's result is a turn toward the carrier, not a landing.
-- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC.
+- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC. The retreat flip `6d90b5e04` (5ea.1) is in AB.
