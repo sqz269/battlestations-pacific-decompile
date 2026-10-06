@@ -15236,3 +15236,28 @@ The evidence is cc9-gunnery30's ON log `g30_sy3on_l10b.log`, from LOMP10 with `k
   3. when the result is zero, `MOV ECX,ESI` (the unit) and `CALL 00813830`, which sends `7Ah` with byte `+20h` clear.
 - So the sentinel lasts five motion ticks, and the motion body runs on every one of them.
 - That corrects LAND_AND_STRUCTURES.md section 3 ("There is no decrement anywhere") and GUNNERY 136.6's reading of `0081DE31`.
+
+**The pairs, measured (switch flipped ON).** The base is `7bcdb0fa9`. The exports are `local\s39_sy_off`, `local\s39_sy_on` and `local\s39_pp_on`.
+
+| row | OFF | ON | pair_diff |
+| --- | --- | --- | --- |
+| LOMP10 build, 16000, `s39_l10_build.txt` (cc9-gunnery30's `g30_ord_l10_build`), shipyard ON on both sides | `s39_syoff_l10` | `s39_syon_l10` | 3 |
+| LOMP10 long 9000 | `s39_ppoff_l10l` | `s39_ppon_l10l` | 1 (refill counter and sector-scan noise) |
+| JM05 long 9000 | `s39_ppoff_jm05l` | `s39_ppon_jm05l` | 0 |
+| USN13 long 9000 | `s39_ppoff_usn13l` | `s39_ppon_usn13l` | 0 |
+| JM08 long 36000 | `s39_ppoff_jm08l` | `s39_ppon_jm08l` | 1 (the HQ failure at 1026.93 s on both) |
+| USN04 4500 (control) | `s39_ppoff_usn04` | `s39_ppon_usn04` | 0 |
+
+**The build pair: prediction 1 is met.**
+- All four Elcos build. Each path cursor row reads `mode 1 start 5`, legs `0>1>2`, final yes.
+  - Elco #Y1 travels 855.6 m and Elco #Y4 619.6 m.
+  - At step 4720, Y1 is in `moveonpath dir=ahead throttle 1.000`, heading for point 1 (`d32c` 317 m).
+- The terrain contact at y=0 (235.41 s) does not hold the boat, so the `0078CF20` water-height gap is not this blocker.
+- Gameplay moves only through the boats:
+  - three more units (`Elco #Y2`-`#Y4`);
+  - Elco #Y1 sinks at 788.28 s;
+  - deaths go from 14 to 15.
+
+**The broad set: prediction 2 is met.** No row moves its gameplay, so no `moveonpath` in these missions began without a `0071C1B0` store.
+
+**Verdict: the mechanism matches and no row moves for any other reason, so the switch is ON.** The per-slot re-construction stays labelled.

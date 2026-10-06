@@ -196,7 +196,7 @@ inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROU
 // keeps the cursor on its point. LABELLED: the host keeps one pair per
 // director, not one per slot, so 00720850's re-construction on a slot clear
 // (00720B36 / 00720C72) is not modelled.
-inline constexpr bool kPathObjectDefaultPairBound = false;
+inline constexpr bool kPathObjectDefaultPairBound = true;  // ON: SHIP_AI 197
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
