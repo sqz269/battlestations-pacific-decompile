@@ -13310,3 +13310,39 @@ Census: `summary mission ship ai timer draws retarget avoid traffic nav_block st
     of each unit's `death_delay` key, so every later explosion-delay draw of a dying ship moves.
     Expect 3 through death timings.
   - **BSM01:** it has no deaths and no approach, so it is identical (1).
+
+### 164.4 Smoke and pairs; verdict ON (spread miss recorded)
+
+**Runs:**
+- OFF is this tree at `0c4904f46`.
+- ON is `pair_export.py --commit 0c4904f46 --flip kShipAiTimerDrawsBound=true --out local\s34_td_on`.
+- Prefixes `off5` / `on5`.
+- Smoke: `local\s34_smoke5.log`, JM05 300 frames. Clean.
+
+| row | `pair_diff` | ON census (retarget / avoid / traffic / nav_block / standoff) |
+| --- | --- | --- |
+| BSM01 3000 | 1 | 0 / 0 / 0 / 2 / 0 |
+| USN13 3000 | 1 | 0 / 0 / 0 / 0 / 0 |
+| USNOS 3000 | 1 | 376 / 384 / 40 / 20 / 0 |
+| USN01 3000 | 1 | 0 / 0 / 0 / 0 / 0 |
+| JM05 3000 | 1 | 111 / 110 / 142 / 5 / 0 |
+| JM08 long 36000 | 3 | 12150 / 7934 / 385 / 19 / 26 |
+
+**Mechanism: matched.** Every reached site takes its draw, and `standoff` is reached only on JM08
+long.
+
+**JM08 long:**
+- deaths 129 -> 126;
+- the HQ is neutralized at 1036.10 s instead of 1034.10 s;
+- `Japanese AA truck 01` dies at 1212.21 s instead of 1029.53 s;
+- the kontener rows leave, and a third LandingShip death appears.
+
+**Spread miss, recorded:**
+- I predicted 3 for JM05 and for USN01. JM05's staggered timers do not change any outcome within
+  3000 frames.
+- USN01 builds no nav block in 3000 frames (`nav_block=0`), so the death-delay coupling I
+  predicted has no input.
+- USNOS (20 nav-block draws, 87 deaths) is also identical. Its dying units' explosion-delay keys
+  are not those units, or the delay draw does not use the `death_delay` key there. Not traced.
+
+**Verdict: ON** (mechanism matched; spread miss recorded). Not game-validated.

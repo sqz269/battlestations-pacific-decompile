@@ -717,7 +717,10 @@ inline constexpr bool kLandFortFireRollBound = true;
 // True: each takes the draw (GameGunneryHost::ship_ai_draw for stream 1, the
 // stream-1 generator the torpedo draws use; death_mode_draw_00bd2f10(0, ...)
 // for stream 0). False: the low bound, as before.
-inline constexpr bool kShipAiTimerDrawsBound = false;
+// ON by section 164.4: the draws are taken wherever reached; JM08 long moves
+// (HQ neutralized 1036.10, not 1034.10), five rows gameplay identical (a recorded
+// spread miss on JM05 and USN01).
+inline constexpr bool kShipAiTimerDrawsBound = true;
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
