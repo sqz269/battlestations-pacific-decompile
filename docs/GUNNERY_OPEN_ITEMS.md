@@ -9823,3 +9823,68 @@ player's own side in single player is outside this lane (`ai_group_think`, `00A2
 order (a `moveto`, or `SetShipSpeed`, which makes the idle tail choose `cruise`) is what moves Houston.
 
 **Nothing bound.**
+
+### 129.4 Smoke and pairs; verdict ON (cc9-gunnery28, 2026-10-06)
+
+- **Runs:** `pair_export --commit be379f2cb` (main merged, with cc9-ships35's caller `cc4408825`), OFF
+  `local\g28_lane_o` (SHA-256 prefix `3C3E2C86D5A5`), ON `--flip kCommandBuildingGunfireArmourBound=true`
+  `local\g28_lane_p` (`AEBB2D83A432`); logs `local\g28_ar_{off,on}_<row>.log`, reference AB's launch form.
+  Smoke: `local\g28_smoke129.log`, JM08 300 frames, OFF, clean.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM08 long 36000 | 1 | one hull-leak message (`00827663` 5505 -> 5504); the HQ is neutralized at 1041.50 s on both sides |
+| USNOS 3000 | 1 | the known `free: empty / refills` noise only |
+| USN01 3000 | 0 | (`CB2` neutralized at 32.90 s on both sides) |
+| USN13, BSM01 3000 | 0 | |
+
+- **Why so little.** The levelled armour reaches only the direct-hit passes with a non-negative selector,
+  and JM08 long's HQ falls to the landed bleed (which already read `+368h`, SHIP_AI 169) at the same
+  1041.50 s; its gunfire is mostly impact blasts on the class `Armour` (125.1: 2172 blasts). One direct
+  hit's outcome changed (a leak message), which shows the read is reached.
+
+**Predictions:**
+- **Missed, the spread on JM08 long:** `pair_diff` 1, not 3; the neutralize does not move.
+- Right on USNOS, USN13 and BSM01. USN01 is identical too (whether `CB2` levelled before 32.90 s was not checked).
+
+**Verdict: ON** (the image's armour source as read; spread miss recorded). It belongs to AC. Not
+game-validated.
+
+## 132. Handoff (cc9-gunnery28, 2026-10-06, at about 75% context)
+
+### 132.1 Landed on agent/cc9-gunnery28
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference AB (GAME_EXECUTABLE "2026-10-06 ab", base `c245a54bb`) | `f0bc77b13`, `e64d088a7` | `reports/cc9_reference_rebaseline_28.json` |
+| 125 CommandBuilding gunfire gate `006F1F20` | `9017c87e3`, `867c2ccc0` | **ON** (AC) |
+| 127 damage-smoke draws `008227E0` | `0af7fccec`, `c644da9e7`, `edd18ad03` | **ON** (AC) |
+| 128 census item 4 (`0071FB90`, `007208A3`) | `edd18ad03` | no reach |
+| `set_unit_max_health_036c` for SHIP_AI 173 | `9886e40e9` | called by cc9-ships35 |
+| 129 CommandBuilding gunfire armour `+368h` | `4413c6056`, this commit | **ON** (AC) |
+| 130 bomb drop scatter `006E4D50` / `006E1F00` | `c3b0e21e1`, `1c5e270c5`, `3608bcba7`, `78e123e83`, `1b3853290` | **OFF, mechanism unsettled** (130.5) |
+| 131 USN02 r5 Houston hold | `7adf7933d` | image-faithful as read |
+
+Flips since AB's base, for reference AC (this lane): `kCommandBuildingGunfireGateBound`,
+`kDamageSmokeDrawsBound`, `kCommandBuildingGunfireArmourBound`.
+
+### 132.2 Next, in order
+
+1. **130, the bomb's launch direction.** `006E1F00` sends a bomb along the round's world forward row on the
+   rack. Read who parents a kind-2Ah round under the rack and with what local matrix (the load path from
+   `006E3500`), and the Dauntless, Val and Kate racks' mount dummies in this installation's models. If the
+   round's forward is the plane's nose, flip `kBombDropScatterBound` (130.4's pair is the expected spread:
+   USN01's scout bombs then miss Convoy1). If it is not, change the cone to that frame and re-pair.
+   Splitting the switch (draws without the redirect) needs the same read.
+2. **127's census against the hull column** is closed; nothing follows.
+3. The planes-lane census item 3 (`009D4923`, `007BB110`) stays with that lane.
+
+### 132.3 Tools (`local\` in this tree, prefix `g28_`)
+
+- `g28_lane.ps1 -Lane x -Variants 'short=kA+kB,...' -Rows a,b -Commit sha -Prefix p`: export and run in
+  the reference form (rows and variants are comma lists; `!k` flips a switch ON).
+- `g28_wait.ps1 -File f -Text t` / `-Proc 'a&b'`: foreground waits under 600 s.
+- `g28_diffrows.ps1 -A prefixA_ -B prefixB_ [-Rows]`, `g28_cmp.py`, `g28_head.py`, `g28_loo_diff.ps1`,
+  `g28_table.py`, `g28_report28.py`, `g28_switches.py`, `g28_smokecensus.py`.
+- Watch out: a summary line starting `mission gunnery damage` collides with `pair_diff`'s headline key
+  (127.4).

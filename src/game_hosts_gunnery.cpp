@@ -146,7 +146,9 @@ constexpr bool kCommandBuildingGunfireGateBound = true;
 // not kind 6 takes it on both hull arms. LABELLED: the host runs a CommandBuilding
 // hit through the 00826F10 port, whose part pass reads +368h for every part.
 // False: the class Armour everywhere, as before.
-constexpr bool kCommandBuildingGunfireArmourBound = false;
+// ON by GUNNERY 129.4: five rows gameplay identical (JM08 long's HQ falls to the
+// bleed at the same 1041.50 s).
+constexpr bool kCommandBuildingGunfireArmourBound = true;
 // Packet cc9_bomb_drop_scatter (docs/GUNNERY_OPEN_ITEMS.md 130, SQUADRON_LAND_TASK
 // 5du): 006E4D50 takes four 00BD2F10 draws on stream 1 per dropped round
 // (006E4F91 U(0, pi) the cone azimuth, 006E4FB1 U(0, s) the cone angle through
