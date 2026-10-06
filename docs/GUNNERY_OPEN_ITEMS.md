@@ -10605,3 +10605,49 @@ when the plane has no equipment index. With that and the 0.6 default, kRackBulle
 USN13 9000 / USNOS / LOMP10.
 
 Uncertainty: `+3B8h`'s producer for a rack, and whether a damaged rack (`+358h > 0`) occurs on these rows, are unread.
+
+## 145. USNOS: Portland1's attack on a parked Judy and on Airfield3 (lead item 7, from cc9-ships39; cc9-gunnery31, 2026-10-06, diagnostic runs, nothing bound)
+
+Runs on this tree (`e611d7c4f` plus local, uncommitted `G31CMD` / `G31AF` / `G31VIS` lines in the gun pass binding):
+- USNOS 30000/0.05 with ships39's order files `s39_os_b2.txt` (attack plane #1.5) and `s39_os_b4.txt` (attack
+  Airfield3), `BSP_FIRE_GATE_TRACE=Portland1`;
+- logs `local\g31_os30_b2.log` and `local\g31_os30_b4.log`.
+- Portland1 closes to 1279 m (b2) and 1959 m (b4) of its target, at about 1240-1265 s. It is then sunk, at 1270.8 s
+  (b2) by Ada2 and at 1246.7 s (b4) by Ada1. ships39's run closed to 1069 m.
+
+**(a) The attack order's target does reach the gun pass.**
+- `0077D600` stores the command, and `0071EBF0` resolves it (`command target 0071EBF0: unit=Portland1 token="plane
+  #1.5"`).
+- Step 8.7 scores it every pass: `G31CMD` from 310 s on. `score_candidate_00863990` is called with plane #1.5 for
+  categories 1 and 5, and with Airfield3 for categories 1, 3 and 5.
+
+**(b) The parked plane.**
+- Category 3 (the 8-inch rows) never reaches the mask test for a plane. The rank table answers 0 for the plane
+  classes, and is read by `gunnery_rank(rank_table, 3, class)`. That is the image's data, not a host gate.
+- Categories 1 and 5 pass the mask, liveness and range tests once Portland1 is inside 1600 / 2000 m (from 1203 s).
+  The plane is visible: `G31VIS sub=plane #1.5 cached=1 visible=1 los_now=1`, with y = 13.5 on the field.
+- **But no AA gun is assigned it** (`fire gate ... have=0`). So step 8.8's per-gun slot test refuses it. That test is
+  `gun_inputs`: the in-range test against `dp_air_ammo` / `max_range`, then `bind_aa_acceptance`'s fire window,
+  armour and line-of-fire terms (`kAaFireWindowBound`, `kAaArmourBound`, `kAaLineOfFireBound`).
+- Which term refuses is **not yet measured**. The next diagnostic is `last_refusal_` for that pair. A plane on the
+  ground at about 0 degrees of elevation from a mount whose window starts above it, or a blocked line of fire, is
+  the likely answer. Either would be image behaviour, since a parked plane is not an air target for an AA mount's
+  window.
+
+**(c) Airfield3.**
+- The airfield arm works. `kAirfieldTargetSubEntitiesBound` hands over the live hangars, and the 8-inch rows take
+  `Multi Hangar 1` (and `Coastal Gun 03` on the way) once inside the category range of **2300 m**
+  (`category_engagement_range_00956d63`). That happens from about 1182 s: `have=1 accepted=1`.
+- **The forward turrets then do not traverse.** Gun 547 wants -7.2 / -16 degrees but sits at -130.8 from 1164 s to
+  1246 s, while its elevation creeps 0.08 degrees a second. Gun 549 (aft, window [-180..-55] [55..180]) is
+  correctly out of arc.
+- Portland1 has been taking hits since 1131 s (`first_damage=1131.43`). So the traverse is probably the damage
+  state's rotation slow-down, **not checked**: the producer of the turret's live rotation speed under damage is
+  unread.
+- A ship that closes inside 2300 m of a defended airfield is shot down there, so this row cannot show a hangar kill
+  without a longer-lived attacker.
+
+**Status: partial.** Nothing is bound. Two measurements are open for the next gunnery packet:
+1. the AA slot test's refusal term for a grounded plane;
+2. what freezes the 8-inch traverse after 1131 s, the damage rotation scale (`gun+358h` level, device HP) or a seat
+   hold.
