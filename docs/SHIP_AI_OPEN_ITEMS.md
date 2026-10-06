@@ -14947,7 +14947,8 @@ not completed with legal input.** 190's p1 completion stands only as a labelled 
 
 ### Open, in order
 
-1. **BSM01 depth-charge line** (gunnery lane). The player selects weapon group 5 (role 7, mask 80h)
+1. **BSM01 phase 3** (191.3): the `depthcharge` line exists. The gunnery lane must make depth charges sink and detonate (`006FD210`, the bomb tick's dive model); then re-run `s38_b1_p7.txt`. Superseded text follows.
+   **BSM01 depth-charge line** (gunnery lane). The player selects weapon group 5 (role 7, mask 80h)
    through `005484B0`; `005484F0` then sends fire message 79h. The host answers `009542B0` "not
    available", so no group is selected.
    - Then re-run `s38_b1_p6.txt` (takehelm to the mini-sub) with a release once Henry is within
@@ -14967,7 +14968,8 @@ not completed with legal input.** 190's p1 completion stands only as a labelled 
    - USNRM01: West Virginia is never sunk.
    - JM08: the neutralize (185).
    - USNOS: Kaiten in each wave, and the ASW issue above.
-4. **IJN11.** It is legal only if the player can command the cargo some other way. Read why
+4. **JM08 defence** (193): reachable on paper; a strike plan on the six transports before ~770 s.
+5. **IJN11.** It is legal only if the player can command the cargo some other way. Read why
    `00645060` refuses `SupplyCargo` in phase 2.
 
 ### Tools (`local\`, `s38_` prefix)
@@ -15023,3 +15025,36 @@ Leases: `cc9_reference_completion` is released with this commit.
   tick, and `DiveSpeed` / `DiveMinDepth` / `DiveMaxDepth`.
 - **Routed: the gunnery lane** (the depth-charge projectile under water, and its detonation and
   radial damage). Then re-run p7.
+
+## 193. JM08 as a defence: is a win reachable for the IJN player? (cc9-ships38, 2026-10-06, a read plus one idle run)
+
+**The script** (`COTP-IJN\PRCPIJN\PRCPJM08.lua`, this installation, mtime 2024-08-26):
+- **Win** (1300-1313): `CheckPrim3` needs every `Mission.Dakota` ship dead; then `Victory`
+  calls `luaMissionCompletedNew`.
+  - The Dakota group follows `CheckCompletion`: primary 1 and primary 2 both succeeded.
+  - **Primary 1** (727): all 11 `LandShips` dead. These are `USTroopTransport 01`..`06`, `LST
+    01`..`03` and `LSM 01`..`02` (520-531).
+  - **Primary 2** (747): the flagship `Missouri` dead.
+- **Fail** (`CheckHQ`): `Mission.CommandBuilding.Party == 2`, the HQ neutralized.
+- **The invasion** (`CheckInvasion`, 757):
+  - It starts once any PARTY_ALLIED ship is within 300 m of (0, 0, 0).
+  - `StartInvasion` then attack-moves the `InvasionForce` on the HQ, and sends the six transports
+    (`Mission.APs`) to `Mission.LandPoints[i]`.
+- **The player** commands the HQ (`SetSelectedUnit(Mission.CommandBuilding)`, 485/626). Its means
+  are `MainAirFieldEntity 01` (4 slots, scene stock) and `Shipyard 01` (4 entries, 2 stocks kept),
+  later the carrier `Hosho` (Zeros 150 x21, Judys 158 x12, Kates 162 x18; 909-911).
+
+**Idle** (`local\s38_j8idle.log`, 24000 frames):
+- The transports launch their landing craft from 774.65 s (`landing craft launch (94h ->
+  008206F0)`, transport unit 353).
+- **The mission fails at 1026.93 s:** "Mission Failed - The HQ has been destroyed!", by HQ capture
+  (`capture_range=500`). No LandShip or Missouri dies.
+
+**Verdict: reachable on paper.** A defence that sinks the six transports, ideally before about
+770 s, keeps the HQ. Primary 1 also needs the 3 LSTs and 2 LSMs, and primary 2 needs Missouri.
+Then the Dakota group has to be sunk.
+- **The player's tools:** the `launch` line on `MainAirFieldEntity 01` (the stock classes are not
+  read yet), the `build` line on `Shipyard 01` (waits on `kShipyardProductionBound`), and later
+  Hosho's 51 planes.
+- **Risk:** 188's slot return. If the airfield's slots stop coming back, the strike count is
+  capped, as on ESMP08.
