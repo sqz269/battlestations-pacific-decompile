@@ -30,7 +30,7 @@ namespace bsp {
 // arm) or the retreat task (retreat arm). False: nothing runs. With the
 // environment variable BSP_SPENT_RTB_CENSUS=1 the steps run and are logged
 // while the switch is false, but nothing is issued (a diagnostic only).
-inline constexpr bool kSquadronSpentOrdnanceRtbBound = false;
+inline constexpr bool kSquadronSpentOrdnanceRtbBound = true;   // ON: SQUADRON_LAND_TASK 5eb.1
 
 // 009F8160's seven ordnance classes (009F818B-009F81C2).
 inline bool spent_ordnance_command_class_009f8160(std::uint32_t command) noexcept {

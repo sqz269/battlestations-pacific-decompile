@@ -12393,3 +12393,49 @@ logs them while the switch is OFF, without issuing anything.
     gives a site) or retreats.
   - **USN13l, USN04, LOMP10, JM05l:** no B5, so exit 0 or 1.
   - **USN02**, the control: exit 0 or 1.
+
+### 5eb.1 Measured: **ON** (cc9-lua40, 2026-10-06)
+
+**The pairs.** Same tree. OFF is `cc6d108f3` (with `kPlaneRetreatTaskBound` ON); ON is that commit
+exported with the flip (SHA-256 `4C91E9A83627`). Both sides ran with the queue environment and
+without the census variable. Logs: `local\l40_{off,on}_<row>.log`.
+
+| row | verdict | note |
+| --- | --- | --- |
+| USN02 (control) | 1, gameplay identical | summary text only |
+| USN04 | 1 | as predicted, no B5 |
+| USN13l | 1 | as predicted, no B5 |
+| USN01 | 3 | ScoutDauntless: latched at 134.10 s, B5 at 134.20 s |
+| USNRM01 | 3 | 18 latches, 18 B5, all resolved to `retreat` |
+
+**USN01.** 007F16D0 answered land at site Enterprise, so both planes installed the land task
+(moveto (land) and follow (land)) and turned for the carrier, 10.5 km away. The row ends at 150 s,
+so this is 16 s of flight. Their task guns now tick (the land task is a task:
+ScoutDauntless shots 0 -> 63), and the convoy ships' AA meets them on the way (Convoy1 hits 4 -> 72).
+Deaths stay at 29. The `dive-bomb-task releases 2 of 19 -> 0 of 17` line is a reporting artifact:
+the summary counts the planes still holding the task at the end.
+
+**USNRM01.**
+- **The issue.** All 18 latches (Vals and Kates) reach B5. Every `007F16D0` answers `retreat`
+  (`null=0 home=0 site=0 retreat=18`), and 46 retreat tasks are installed.
+- **36 tasks are retired by the script, as in the image.** `usn_1_pearl.lua:2012`/`:2056` (this
+  installation, mtime 2024-10-29) sends every Val squadron whose `ammoType` is 0 to
+  `Mission.JapRetreat` with `PilotMoveToRange`. That new command replaces `retreat`; 009C9E30 fails,
+  and the moveto task takes over at the delivery. In the image the script's order also lands a few
+  seconds after B5, so the Vals fly the retreat task only until then.
+  - Note that the `-> 0 moveto task(s)` in those lines counts only the installs made before the
+    binding returns; they happen at the delivery.
+- **The torpedo Kates are not in the script's `vals` loop.** They keep the retreat:
+  - `KateSpawn3|.-2` and `KateSpawn5|.-2` leave the map at 320.45 s and 319.05 s through
+    007C6C30 -> 007F31A0 Kill(4) (`exits=2`; their KillReason is `exitzone`, 456fb1b2a);
+  - `KateSpawn1` and `KateSpawn4` climbed toward the retreat altitude (about 1000 m) and were shot
+    down there (alt 24 -> 344, 17 -> 159) instead of low over the harbour.
+- **Knock-on.** The AA's attention moves from the first B5 at 164 s: shots 61392 -> 56998, hit
+  records 1872 -> 1693. The later Val deaths re-time by seconds and change killers. Deaths stay at
+  132, with six planes swapped: four Vals of `#34.1`/`#50.1` and the two Kates that left (Kill(4)
+  is a death row), for six that OFF loses (`#21.1`, `#35.1`, `#44.1`, `#49.1`).
+- The `dive-bomb-task releases`/`torpedo-task releases` lines are the same reporting artifact as on
+  USN01. `torpedo drops` is unchanged at 6.
+
+**Verdict: ON.** Every predicted latch and B5 happens, with the resolutions the 007F16D0 read gives.
+The script overrides as the image's script would.
