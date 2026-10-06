@@ -9289,3 +9289,36 @@ body, so each row below was read at its site.
 
 **Next, by contract:** item 1 (`kAirfieldTargetSubEntitiesBound`, with a counter of airfield targets in
 both builds), then item 2's read.
+
+## 124. An airfield gun target is its live hangars: `006D4DD0` (census 123.2 item 1; packet `cc9_airfield_sub_entities`, `kAirfieldTargetSubEntitiesBound`, cc9-gunnery27, 2026-10-06)
+
+### 124.1 The read
+
+- Step 8.7 of the gun pass (`src/unit_gunnery_pass.cpp`) expands the director's command and fire
+  targets through `target->vtable[0FCh]` (`008654AC`) and puts the entries first in the walk order.
+- The base slot `00432480` appends the target itself. `MAirfield`'s override
+  **`BSP_AirField_AppendIntactHangarsAsSubEntities` `006D4DD0`** (`006D4DD0..006D4E37`, `RET 4`, one
+  vector argument) walks the `+830h` hangar records (stride `0Ch`) and appends each non-null hangar
+  whose `+370h > 0.0` (`00D7A218`). **The airfield itself is not appended.** With every hangar dead the
+  expansion is empty.
+- The host answered "the target itself" for every target. Its comment said that no airfield was a
+  unit of this process; airfields have been units since the air-operations packets.
+
+### 124.2 The binding (committed OFF)
+
+`kAirfieldTargetSubEntitiesBound` (gunnery). ON: a target of kind `45h` hands step 8.7 the live
+hangars of its deck (`AirOpsDeck::hangars`, resolved by name as `airfield_aim_point` does; LABELLED),
+and nothing else. `airfield sub-entity asks` (the airfield targets, both builds) and `listed` are
+logged. The plane squadron's override `007F44E0` stays unbound.
+
+### 124.3 Predictions (written before any ON run)
+
+The ten rows that reach `008654AC` on AA: USN02 (2769 calls), JM08 long (3984), JM06 (196), JM05
+long (130), USNOS and USNOS long (23), USN01 (20), IJN11 (15), LOMP06 (9), LOMP10 long (3).
+- A row whose `asks` is 0 (no director targets an airfield) is gameplay-identical (`pair_diff` 1).
+- A row with `asks > 0`: the airfield leaves step 8.7's head and its live hangars take the place;
+  the hangars take more hits and the airfield fewer (`pair_diff` 3). Once the hangars are dead the
+  ordered guns fall back to the recon candidates.
+- Expected to have `asks > 0`: rows whose scripts order ships at airfields; I cannot tell which from
+  the AA logs, so the OFF runs' `asks` decide.
+- JM08 long is image-faithful only to about 1093 s (SHIP_AI 160).
