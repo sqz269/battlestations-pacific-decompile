@@ -11213,8 +11213,8 @@ Nothing here differs from the host.
     500 kg), 50 for incendiaries.
 - **Spread.** There is none. `0093A470` adds the seconds to the one timer `task+38h`. `0093CA20`'s fire step drains it
   at real time and charges `FireTickDamage` (40 hp, ShipGlobals) per second (docs/UNIT_FIRE_AND_REPAIR.md). No step
-  multiplies or propagates a fire. 3106 hp is about 78 fire-seconds, which is a fire kept lit by about 60 direct hits
-  over 140 s.
+  multiplies or propagates a fire. 3106 hp is about 78 fire-seconds, one timer topped up by each direct hit over the 140 s (the
+  per-bomb seconds depend on which bomb row bullet 78 is, which this read did not pin).
 - **The damage-control crew.** `task+24h`, the repair priority that divides fire (priority 3/4) or water damage,
   is written only by message `A0h`. Its senders are the vtable `00CF5C38` census: the HUD ship screen
   (`0064A770` from `0064DD30`), the network decode (`00760B70`) and Lua `SetRepairPriority` (`008AD6F0`).
