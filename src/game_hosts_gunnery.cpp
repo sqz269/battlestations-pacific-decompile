@@ -147,6 +147,26 @@ constexpr bool kCommandBuildingGunfireGateBound = true;
 // hit through the 00826F10 port, whose part pass reads +368h for every part.
 // False: the class Armour everywhere, as before.
 constexpr bool kCommandBuildingGunfireArmourBound = false;
+// Packet cc9_bomb_drop_scatter (docs/GUNNERY_OPEN_ITEMS.md 130, SQUADRON_LAND_TASK
+// 5du): 006E4D50 takes four 00BD2F10 draws on stream 1 per dropped round
+// (006E4F91 U(0, pi) the cone azimuth, 006E4FB1 U(0, s) the cone angle through
+// 00412E20 tan, 006E513C U(-w, w) and 006E51AC U(-0.5w, 0.3w) the drift), with
+// s = rack Throw ([+3F8h]+4h) times the AI pilot's ThrowMul (00999B70) and
+// w = rack Wind ([+3F8h]+8h); 006E1F00 then turns the 006E0A70 velocity into
+// |v| (t cos a * r0 - t sin a * r1 + r2) over the round's matrix rows. True:
+// the draws and the cone. LABELLED: the round's rows are the plane's pose rows;
+// every dropping plane is AI-held; the ThrowMul row is the plane's skill row
+// (DiveBombThrowMul +78h, LevelBombThrowMul +C8h for IsKindOf(10h)); the drift
+// lands in block+38h, whose reader is unread, so it is drawn and not applied;
+// the IsKindOf(33h) "no cone" arm (006E521E) is taken as never true; a refused
+// drop (no bomb row) draws nothing. False: no draw, no cone.
+constexpr bool kBombDropScatterBound = false;
+// This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
+// LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
+// SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
+// :998/:1008, Elite :1136/:1146).
+constexpr float kDiveBombThrowMulRows[6] = {1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f};
+constexpr float kLevelBombThrowMulRows[6] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -1361,6 +1381,7 @@ struct GameGunneryHost::Impl {
         artillery_fire_delay = 18, // 006DFBD6, fireDelayTime = U(0, 0.1), key (gun, 0)
         aa_gunner_error = 19, // 00902B5C period, 00902CF0 spread, 00902D77/00902D95 offsets, key (gun, 0)
         aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
+        bomb_scatter = 22,    // 006E4D50's four drop draws, key (unit, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -1913,6 +1934,8 @@ struct GameGunneryHost::Impl {
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
     unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
     unsigned long long airfield_sub_entities_listed{0};
+    unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
+    double scatter_max_angle{0.0};
     unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
     unsigned long long cb_gate_passes{0};
     unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
@@ -3602,6 +3625,7 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "              f[q .. 'reload'] = num(rt1, 1000) or 0\n"
         "              f[q .. 'bdelay'] = num(b1.BarrelDelayTime, 1000) or 0\n"
         "              f[q .. 'throw'] = num(b1.Throw, 1000000) or 0\n"
+        "              f[q .. 'wind'] = num(b1.Wind, 1000000) or 0\n"
         // bulletclasses.lua publishes the arcade or realistic table under the
         // global `Bullets`; `BulletClass` is accepted as well so a differently
         // named installation still reads.
@@ -3938,6 +3962,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.reload_time = flat_scaled(type_id, make("reload"), kMilliScale, 0.0f);
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.throw_amount = flat_scaled(type_id, make("throw"), kAngleScale, 0.0f);
+            gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
             // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
@@ -11153,9 +11178,11 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
 // spawn and the same substituted release geometry, with the kind 2Ah selection
 // the dive bomber needs in place of the torpedo `swim_speed > 0` one. See the
 // header for why the predicate was the whole defect.
+bool GameGunneryHost::bomb_drop_scatter_bound() noexcept { return kBombDropScatterBound; }
+
 bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
                                         const float predicted_impact[3],
-                                        float release_fall_time) {
+                                        float release_fall_time, int skill_row) {
     Impl& h = *impl_;
     const GameGunRow* chosen = nullptr;
     for (const GameGunRow& gun : h.guns) {
@@ -11196,6 +11223,34 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
             velocity[2] = world[2];
             if (speed > 1.3888888f) velocity[1] -= 3.0f;   // 006E0A93..006E0AB3
         }
+    }
+    if (kBombDropScatterBound) {
+        // 006E4F7A..006E4F8A: s = Throw, times ThrowMul for an AI-held plane with a bot.
+        // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
+        const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
+        const int row = (level < 0 || level > 5) ? 1 : level;
+        const float mul = h.units.unit_is_kind_of(unit_index, 0x10)
+            ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+        const float s = chosen->throw_amount * mul;
+        const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            3.14159274f);                                                   // 006E4F91
+        const float t = std::tan(h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            s));                                                            // 006E4FB1
+        const float w = chosen->wind_amount;
+        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);             // 006E513C
+        h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w, 0.3f * w); // 006E51AC
+        // 006E1F00 after vtable[190h]: |v| (D.x r0 + D.y r1 + D.z r2), D not normalised.
+        const float dx = t * std::cos(a);
+        const float dy = -t * std::sin(a);
+        const float vmag = std::sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1]
+            + velocity[2] * velocity[2]);
+        for (int i = 0; i < 3; ++i) {
+            velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
+        }
+        ++h.scatter_drops;
+        const double ang = std::atan(static_cast<double>(t));
+        if (ang > h.scatter_max_angle) h.scatter_max_angle = ang;
+        h.done("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
     }
 
     GameProjectileRow shot;
@@ -11575,6 +11630,11 @@ void GameGunneryHost::report() {
             "bound=%d (008654AC -> 006D4DD0, packet cc9_airfield_sub_entities)",
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
             kAirfieldTargetSubEntitiesBound ? 1 : 0);
+        if (kBombDropScatterBound) {
+            host.log.notef("summary mission bomb drop scatter drops=%llu max_cone_deg=%.3f "
+                "(006E4D50: four stream-1 draws per drop, packet cc9_bomb_drop_scatter)",
+                host.scatter_drops, host.scatter_max_angle * 57.29577951308232);
+        }
         if (kCommandBuildingGunfireGateBound) {
             host.log.notef("summary mission command building gunfire gate refusals=%llu "
                 "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "
