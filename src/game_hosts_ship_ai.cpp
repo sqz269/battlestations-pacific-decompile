@@ -765,7 +765,10 @@ inline constexpr bool kCommandBuildingLevelMaxHpBound = true;
 // controller step, not InitAll; MinLevel is 0 (Basic) for every member because the
 // scene record carries only whether the key exists; the kill arm is recorded (no
 // row has a member above its building's level). False: nothing is adopted.
-inline constexpr bool kCommandBuildingGarrisonBound = false;
+// ON by section 177.1: JM08, JM08 long, USN01 and USNOS gameplay identical (the
+// re-create is still recorded); every LandFort's bag finds MinLevel through
+// landfort.props, so JM08's HQ adopts 349 members and USN01's CB2 42.
+inline constexpr bool kCommandBuildingGarrisonBound = true;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.
