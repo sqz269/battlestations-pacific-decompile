@@ -1453,6 +1453,11 @@ struct GameUnitSlot {
     std::vector<int> rack_authored_per_rack;  // authored Ammo per single rack, -1 absent
     std::vector<int> rack_ammo_per_rack;      // seeded with rack_ammo
     int rack_active{-1};
+    // Packet cc9_rack_bullet_kind: each single rack's projectile class (the
+    // descriptor 007C0D90 asks vtable[8] of: 2Ah bomb, 2Bh torpedo, 2Ch depth
+    // charge, 33h rocket) and its RepeatTime (desc+E0h), in census order.
+    std::vector<int> rack_bullet_class_per_rack;
+    std::vector<float> rack_repeat_per_rack;
     int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
     // GUNNERY 133.3 / 137, a diagnostic (no behaviour): single-rack drops since
     // the last issue set dropBombs, drops after the first in that episode (the
@@ -5630,6 +5635,15 @@ struct GameUnitsHost::Impl {
     // sample OFF on both sides: Mav1 and Mav4 drop once instead of four times,
     // the same two torpedoes spawn, gameplay identical.
     static constexpr bool kRackRoundsPerRackBound = true;
+    // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
+    // 007C0D90 decides per rack from the rack's projectile descriptor (a level
+    // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack
+    // of a non-10h plane, takes the single-drop arm), the drop spawns by the
+    // fired rack's own class, and 006E58AA re-arms toRepeatTime from the
+    // rack's RepeatTime. False: both arms key on the unit's ordnance mask,
+    // whose torpedo bit the gunnery host clears after one drop, and the single
+    // rack's toRepeatTime is 0.
+    static constexpr bool kRackBulletKindBound = false;
     // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
     // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
     // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below
@@ -21688,11 +21702,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // The paratrooper target point 006E3F90 (007C0EC9) is not modelled.
                     bool lb_level_bomber_racks() {
                         if (!bsp::unit_is_kind_of(unit_.class_id, 0x10)) return false;
-                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
-                        if (bsp::ordnance_has_torpedo_2bh(set) ||
-                            !bsp::ordnance_has_general_bomb_2ah(set)) return false;
-                        plane_rack_census();
-                        return unit_.rack_single_count > 0;
+                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+                            // 007C0E30-007C0E62: the rack's descriptor answering 2Ch,
+                            // 2Bh or 33h takes the single-drop arm. LABELLED: the
+                            // walk's first eligible rack decides in the image; the
+                            // host takes any such rack as deciding (no mixed racks
+                            // on the rows measured).
+                            plane_rack_census();
+                            for (const int c : unit_.rack_bullet_class_per_rack) {
+                                if (c == 0x2B || c == 0x2C || c == 0x33) return false;
+                            }
+                            return unit_.rack_single_count > 0;
+                        } else {
+                            const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                            if (bsp::ordnance_has_torpedo_2bh(set) ||
+                                !bsp::ordnance_has_general_bomb_2ah(set)) return false;
+                            plane_rack_census();
+                            return unit_.rack_single_count > 0;
+                        }
                     }
                     void lb_rack_state_seed() {
                         if (unit_.rack_ammo < 0) {
@@ -24537,8 +24564,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const int ammo = owner_.rack_equipment_ammo(unit_, type_id, pkey);
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
                                 unit_.rack_authored_per_rack.push_back(ammo);
+                                // Packet cc9_rack_bullet_kind. LABELLED: the class's
+                                // default Bullet[1]; an equipment bag that changes
+                                // the bullet is not read.
+                                unit_.rack_bullet_class_per_rack.push_back(
+                                    owner_.read_device_bullet_class_id(dev));
+                                unit_.rack_repeat_per_rack.push_back(
+                                    owner_.lua.read_device_class_number(dev, "RepeatTime", 0.0f));
                             } else if (type == "MultiBombPlatform") {
                                 ++unit_.rack_multi_count;
+                            }
+                        }
+                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+                            if (bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                                && !unit_.rack_bullet_class_per_rack.empty()) {
+                                std::string k;
+                                for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
+                                    char b[48];
+                                    std::snprintf(b, sizeof(b), "%s%Xh/%.2fs", i ? " " : "",
+                                        unit_.rack_bullet_class_per_rack[i],
+                                        static_cast<double>(unit_.rack_repeat_per_rack[i]));
+                                    k += b;
+                                }
+                                owner_.log.notef("  rack bullet kinds %s (level bomber): [%s] "
+                                    "(007C0D90, packet cc9_rack_bullet_kind)",
+                                    unit_.row.name.c_str(), k.c_str());
                             }
                         }
                     }
@@ -24652,10 +24702,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // host's spawn stands in for 006E4D50, as at the request.
                         owner_.done("Rack::tick_006e56f0", 0x006e56f0u);
                         const bsp::OrdnanceKindSet drop_set{unit_.ordnance_mask};
-                        const bool drop_is_bomb =
+                        bool drop_is_bomb =
                             GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
                             !bsp::ordnance_has_torpedo_2bh(drop_set) &&
                             bsp::ordnance_has_general_bomb_2ah(drop_set);
+                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+                            // The fired rack's own projectile: anything but a
+                            // torpedo (2Bh) drops through 006E4D50's bomb arm.
+                            const int a = unit_.rack_active;
+                            if (GameUnitsHost::Impl::kReleaseIssueStageValsBound && a >= 0
+                                && static_cast<std::size_t>(a) < unit_.rack_bullet_class_per_rack.size()) {
+                                drop_is_bomb = unit_.rack_bullet_class_per_rack[
+                                    static_cast<std::size_t>(a)] != 0x2B;
+                            }
+                        }
                         if (drop_is_bomb) {
                             run_rack_bomb_drop_006e4d50();
                         } else if (owner_.gunnery != nullptr) {
@@ -24698,7 +24758,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // descriptor is unread; with one round per rack it does
                         // not matter before the ammo test clears dropBombs.
                         unit_.rack_to_repeat = 0.0f;
-                        owner_.record("Rack::repeat_time_descriptor_e0", 0x006e58aau);
+                        bool repeat_read = false;
+                        if constexpr (GameUnitsHost::Impl::kRackBulletKindBound) {
+                            const int a = unit_.rack_active;
+                            if (a >= 0 && static_cast<std::size_t>(a) < unit_.rack_repeat_per_rack.size()) {
+                                unit_.rack_to_repeat =
+                                    unit_.rack_repeat_per_rack[static_cast<std::size_t>(a)];
+                                repeat_read = true;
+                            }
+                        }
+                        if (repeat_read) {
+                            owner_.done("Rack::repeat_time_descriptor_e0", 0x006e58aau);
+                        } else {
+                            owner_.record("Rack::repeat_time_descriptor_e0", 0x006e58aau);
+                        }
                     }
 
                     // Packet cc9_release_issue_stage_vals. 006E4D50 for a dive
