@@ -21713,12 +21713,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (c == 0x2B || c == 0x2C || c == 0x33) return false;
                             }
                             return unit_.rack_single_count > 0;
+                        } else {
+                            const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                            if (bsp::ordnance_has_torpedo_2bh(set) ||
+                                !bsp::ordnance_has_general_bomb_2ah(set)) return false;
+                            plane_rack_census();
+                            return unit_.rack_single_count > 0;
                         }
-                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
-                        if (bsp::ordnance_has_torpedo_2bh(set) ||
-                            !bsp::ordnance_has_general_bomb_2ah(set)) return false;
-                        plane_rack_census();
-                        return unit_.rack_single_count > 0;
                     }
                     void lb_rack_state_seed() {
                         if (unit_.rack_ammo < 0) {
