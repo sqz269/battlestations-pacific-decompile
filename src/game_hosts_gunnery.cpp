@@ -5172,6 +5172,31 @@ public:
             // switch is on, and counted either way.
             bsp::GunneryGunInputs observed = in;
             bind_aa_acceptance(row, other, observed);
+            // DIAGNOSTIC, env-gated (GUNNERY 147.2 item 6): with BSP_FIRE_GATE_TRACE
+            // naming this unit and BSP_FIRE_GATE_TARGET naming the candidate, each
+            // gun's slot answer once a second: the range test and the term that
+            // bind_aa_acceptance refused on. Reads only.
+            static const std::string slot_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+            static const std::string slot_trace_target = aa_env("BSP_FIRE_GATE_TARGET");
+            if (!slot_trace_unit.empty() && !slot_trace_target.empty()
+                && unit_ < owner_.unit_state.size() && other < owner_.unit_state.size()
+                && owner_.unit_state[unit_].row.name == slot_trace_unit
+                && owner_.unit_state[other].row.name == slot_trace_target) {
+                static std::map<std::size_t, float> next_line;
+                float& next = next_line[slot];
+                if (owner_.clock_seconds >= next) {
+                    next = owner_.clock_seconds + 1.0f;
+                    static const char* const kRefusal[] = {"none", "window", "armour",
+                                                           "line_of_fire"};
+                    const int r = static_cast<int>(last_refusal_);
+                    owner_.log.notef("  fire gate slot t=%.2f %s gun=%zu cat=%d target=%s "
+                        "in_range=%d accepts=%d refusal=%s",
+                        static_cast<double>(owner_.clock_seconds), slot_trace_unit.c_str(), slot,
+                        row.category, slot_trace_target.c_str(), in_range ? 1 : 0,
+                        observed.slot_accepts_target ? 1 : 0,
+                        (r >= 0 && r < 4) ? kRefusal[r] : "?");
+                }
+            }
             if constexpr (kAaMinRangeBound) {
                 in.is_torpedo_class_launcher = observed.is_torpedo_class_launcher;
                 in.minimum_air_range = observed.minimum_air_range;
@@ -6781,12 +6806,34 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
                 gun.angles.target_vert);
             done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
+            const float pre_horz = gun.angles.horz, pre_vert = gun.angles.vert;
             if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
                 ++gun.aim_steps;
                 ++summary.aim_steps;
             }
             done("Gun::step_aim_0085ad80", 0x0085ad80u);
             ++wave_order_pre_steps;
+            // DIAGNOSTIC, env-gated with the fire gate trace (GUNNERY 147.2 item 6):
+            // wave 1's step for the traced unit's guns, once a second.
+            static const std::string step_trace_unit = aa_env("BSP_FIRE_GATE_TRACE");
+            if (!step_trace_unit.empty() && state.row.name == step_trace_unit) {
+                static std::map<std::size_t, float> next_step_line;
+                float& next = next_step_line[g];
+                if (clock_seconds >= next) {
+                    next = clock_seconds + 1.0f;
+                    log.notef("  fire gate step t=%.2f %s gun=%zu tgt=(%.2f %.2f) deltas=(%.3f %.3f) "
+                        "horz %.3f -> %.3f vert %.3f -> %.3f deg",
+                        static_cast<double>(clock_seconds), step_trace_unit.c_str(), g,
+                        static_cast<double>(gun.angles.target_horz * 57.2957795f),
+                        static_cast<double>(gun.angles.target_vert * 57.2957795f),
+                        static_cast<double>(route.deltas.horz * 57.2957795f),
+                        static_cast<double>(route.deltas.vert * 57.2957795f),
+                        static_cast<double>(pre_horz * 57.2957795f),
+                        static_cast<double>(gun.angles.horz * 57.2957795f),
+                        static_cast<double>(pre_vert * 57.2957795f),
+                        static_cast<double>(gun.angles.vert * 57.2957795f));
+                }
+            }
         }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
@@ -6901,8 +6948,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (!fire_gate_unit.empty() && owner_unit < unit_state.size()
             && unit_state[owner_unit].row.name == fire_gate_unit) {
             static std::map<std::size_t, float> next_line;
+            static std::map<std::size_t, std::array<int, 2>> have_ticks;
+            std::array<int, 2>& ht = have_ticks[g];
+            ++ht[0];
+            if (have_target) ++ht[1];
             float& next = next_line[g];
             if (clock_seconds >= next) {
+                log.notef("  fire gate ticks t=%.2f %s gun=%zu have_target %d of %d ticks",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g, ht[1], ht[0]);
+                ht = {0, 0};
                 next = clock_seconds + 1.0f;
                 float tp[3] = {0.0f, 0.0f, 0.0f};
                 float range = 0.0f;
@@ -6924,6 +6978,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     static_cast<double>(want_vert * 57.2957795f),
                     static_cast<double>(gun.angles.horz * 57.2957795f),
                     static_cast<double>(gun.angles.vert * 57.2957795f));
+                // GUNNERY 147.2 item 6: the traverse the next wave 1 takes - the
+                // commanded pair, 007F6530's route deltas and the class rates.
+                const bsp::GunPlatformArcs trace_arcs{gun.arcs.data(), gun.arcs.size()};
+                const bsp::GunArcRouteOutcome trace_route = bsp::gun_arc_route_deltas_007f6530(
+                    trace_arcs, gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
+                    gun.angles.target_vert);
+                log.notef("  fire gate route t=%.2f %s gun=%zu tgt=(%.2f %.2f) deltas=(%.2f %.2f) "
+                    "routed=%d clamped=%d known=%d rates=(%.2f %.2f) deg seat=%d angle_refusals=%llu aim_steps=%llu dt=%.4f",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g,
+                    static_cast<double>(gun.angles.target_horz * 57.2957795f),
+                    static_cast<double>(gun.angles.target_vert * 57.2957795f),
+                    static_cast<double>(trace_route.deltas.horz * 57.2957795f),
+                    static_cast<double>(trace_route.deltas.vert * 57.2957795f),
+                    trace_route.routed_around ? 1 : 0, trace_route.vertical_clamped ? 1 : 0,
+                    trace_route.current_window_known ? 1 : 0,
+                    static_cast<double>(gun.speeds.horz * 57.2957795f),
+                    static_cast<double>(gun.speeds.vert * 57.2957795f), gun.seat_1ac,
+                    gun.angle_refusals, gun.aim_steps, static_cast<double>(dt));
             }
         }
         if (kAaBotFireTestsBound && !player_seat
@@ -10727,6 +10799,16 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group4(std::size_t unit,
         const float v = bsp::gun_snap_heading_to_fire_window_007f6190(arcs, bearing, kQuarterPi);
         const bool valid = !bsp::gun_heading_snap_failed(v);
         if (!valid) ++group4_snap_failures;
+        if (m.held_34 || m.pressed_35) {
+            float lo = 0.0f, hi = 0.0f;
+            if (!gun.arcs.empty()) { lo = gun.arcs.front().min_horz; hi = gun.arcs.front().max_horz; }
+            log.notef("  player torpedo tube: unit=%s gun=%zu bearing=%.1f window0=[%.1f %.1f] flags=%X of %zu "
+                "at=%.1f snapped=%s%.1f deg", unit_state[unit].row.name.c_str(), g,
+                static_cast<double>(bearing) * 57.2957795, static_cast<double>(lo) * 57.2957795,
+                static_cast<double>(hi) * 57.2957795, gun.arcs.empty() ? 0u : static_cast<unsigned>(gun.arcs.front().flags), gun.arcs.size(),
+                static_cast<double>(gun.angles.horz) * 57.2957795, valid ? "" : "FAILED ",
+                valid ? static_cast<double>(v) * 57.2957795 : 0.0);
+        }
         if (press_arm) {                                                 // 0095A380
             if (!valid || !m.pressed_35) continue;                       // 0095A39C / 0095A3AA
             if (!torpedo_tube_can_fire_1d0(g)) {                         // 0095A3B8

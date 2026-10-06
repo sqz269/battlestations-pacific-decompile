@@ -10943,3 +10943,68 @@ gun that answers `IsKindOf(20h)` and passes `00954210(4)` (operational, Function
     pi/4 of a tube window. Each round's gyro heading is the yaw to the target.
   - `tube_fires` = presses minus refusals, and `order_launches` = the rounds launched.
   - OFF: nothing (the arm is a record), so exit 3 on that row only.
+
+### 152.1 The JM06 test: the message arrives, and the snap refuses every tube
+
+A local test export (`local\g32_t4on` / `g32_t4off`, never committed) routes `fire PlayerSub 01 group 4` to
+`player_fire_torpedo_group`, aimed at `USTroopTransport 01`. The launch is JM06, 3000 frames, with four presses
+(`local\g32_ord_j6t4.txt`); the logs are `local\g32_t4off_j6.log`, `g32_t4on_j6.log` and `g32_t4on_j6c.log`.
+- **OFF:** each line is refused with "kPlayerTorpedoGroupFireBound is off". Gameplay is identical to ON (exit 1).
+- **ON:** all 8 messages arrive (`messages=8 presses=4`) and the arm runs (`PlayerGunSeat::message_group4 0095a1cc
+  calls=8`). **Every one of the 6 tubes fails the snap** (`snap_failures=48`, `tube_fires=0`). Gameplay is identical
+  to OFF.
+- **Why:** each PlayerSub 01 tube carries one window, `[-180, 180]` with **flags 0** (no traverse bit, no fire bit):
+  `player torpedo tube: unit=PlayerSub 01 gun=102 bearing=11.2 window0=[-180.0 180.0] flags=0 of 1 ... snapped=FAILED`.
+  `007F6190` (`gun_snap_heading_to_fire_window_007f6190`) finds the window, sees no fire bit, and has no neighbouring
+  traverse window to walk, so it answers `FLT_MAX`.
+
+**Verdict: stays OFF; mechanism not shown end to end.** The arm is the image's. The open question is upstream of it:
+whether the image's platform record for these tubes carries a window with the fire bit.
+- If it does not, the image's player cannot fire them through group 4 either, and the press arm's `0085AB50` gate is
+  the rule.
+- If it does, the host's window load (`007F6B10`, the authored-arc path) drops the flags for submarine tubes.
+- **Next:** read the tube platform's windows for this installation's Gato/PlayerSub class and `007F6B10`'s flag
+  source, then re-pair this test.
+- JM06's own script fires through `NavigatorForceTorpedo` (`008A7200`, UNIT_WEAPON_DEVICES), which bypasses the snap.
+
+## 153. GUNNERY 145's two open measurements (147.2 item 6; cc9-gunnery32, 2026-10-06)
+
+**Diagnostics, committed (env-gated, reads only), in `src/game_hosts_gunnery.cpp`:**
+- `BSP_FIRE_GATE_TRACE=<unit>` now adds three lines per gun per second:
+  - `fire gate route`: the commanded pair, `007F6530`'s route deltas, the class rates, the seat and `aim_steps`;
+  - `fire gate step`: wave 1's `0085AD80` step, before and after;
+  - `fire gate ticks`: how many of the second's ticks had a bot target.
+- With `BSP_FIRE_GATE_TARGET=<unit>` as well, `fire gate slot` gives each gun's slot answer for that candidate: the
+  range test and the `bind_aa_acceptance` term that refused (`window`, `armour`, `line_of_fire`).
+
+**Runs (this tree):** USNOS 30000 / 0.05 with ships39's `s39_os_b2.txt` / `s39_os_b4.txt` (copies
+`local\g32_ord_osb2.txt` / `g32_ord_osb4.txt`), Portland1 traced. Logs: `local\g32_os_b2.log`, `g32_os_b4.log`,
+`g32_os_b4c.log` and `g32_os_b4d.log`.
+
+**(1) The AA slot test against `plane #1.5`: the fire window refuses.**
+- From 112.80 s to 143 s, Portland1's in-range AA mounts answer `refusal=window` for plane #1.5. That is guns 550,
+  552, 554 and 556 (category 5) and 564 (category 1). Guns 558-563 (category 1) fail the range test (`in_range=0`).
+  From 143.55 s the same mounts accept (`accepts=1`).
+- **The parked case 145 asked about no longer arises on current main.** With the stowed-plane stock return ON
+  (SHIP_AI 200.2), plane #1.5 taxies into Airfield3's hangar at 321.10 s and is returned to stock (`stock return:
+  plane #1.5 back into Airfield3's stock ... at 321.10 s`). Every later `attack Portland1 -> plane #1.5` line targets a
+  stowed unit, and no slot line follows.
+- So the term that refuses a low target is the window (`AaRefusal::window`, `kAaFireWindowBound`), as 145 guessed.
+  The grounded plane itself cannot be measured on this base.
+
+**(2) The 8-inch traverse freeze is the player's artillery seat, not damage.**
+- Portland1 is the controlled unit in these runs (the order file helms it). The HUD's weapon-group screen
+  (`game_hosts_hud.cpp`, `00954A10` -> `0077C2A0`) sends message 79h every frame with the camera's forward row. The
+  summary counts `groups 0..5 = 0/0/303/24118/0/0` and `artillery ... turns=125294 refusals=105432`.
+- Group 3's arm queues the camera direction for each 8-inch mount (`seat_cmd_pending`). Every step, before wave 1, it
+  goes through `0085ABA0` (0095A0EF), so wave 1 steps toward the camera's pair, not toward the bot's command of the
+  step before.
+- `fire gate step t=1241.09 Portland1 gun=547 tgt=(-131.21 2.52) deltas=(-0.001 0.008)`. In the same tick the bot
+  commands `want=(-16.28 8.61)` (accepted, `have_target 20 of 20 ticks`), but its command lives only until the next
+  seat command replaces it. `aim_steps` grows about 2 per second instead of 20.
+- The rates are intact (45.8 / 22.9 deg/s), and nothing in the step is scaled by damage. 145's suspicion of the damage
+  rotation scale is refuted.
+- **Image or host?** The image's HUD also sends 79h every frame for the controlled ship with the selected group, so a
+  player who never moves the camera holds the turrets the same way. The difference is only that the harness never
+  aims. **Recorded, nothing bound.** A run that needs Portland1's guns on the bot should not control Portland1, or
+  should select a group other than 3.
