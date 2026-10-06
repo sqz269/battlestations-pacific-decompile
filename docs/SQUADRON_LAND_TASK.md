@@ -13664,13 +13664,16 @@ stowed plane from being re-taken at the top, as the host does every 4.8 s.
 **So, on the bytes read, the image re-takes a stowed plane too.** It also starves the wingmen: `006D0150`
 refuses the lift while any other occupant's nose is within 14.0 (`00E08FC8`), and a stowed leader under the
 lift is within 0. A carrier could then recover only one plane per lift, which the game plainly does not do.
-The missing piece is **what removes, or destroys, a stowed plane**. Candidates, in order:
-- `006C6540` BSP_AirOps_PullReadyPlane pops the head of the block `+D8h` queue into `+38h`, moves the
-  observer pair and enables its scene node. Find the writer that pushes onto `+D8h`. If it is the hangar
-  arrival, a stowed plane becomes the ready plane, which `006D0667`-`006D0684` releases at the top with
-  ground state 4.
-- The squadron's own landing record, which still has to hand the plane back to stock.
+The missing piece is **what removes, or destroys, a stowed plane**.
 
-**Next:** census the pushes onto air-ops block `+D8h` / `+DCh` (`006C4A70`'s siblings), then read
-whoever deletes a plane that is in state 2 with `+C00h` set. Until then the host's loop is kept, and
-ESMP08's relaunch count stays bounded as 5ep says.
+- **Ruled out: the ready queue.** `006C6540` BSP_AirOps_PullReadyPlane pops the container at block `+C0h`
+  (head `+D8h`, count `+DCh`) into `+38h`. The `[reg+0C0h]` address-takers in `006B0000`-`006DFFFF` are
+  `006C6567` (the pull), `006CC767` `006CC760` BSP_AirOps_PushReadyPlane, `006CA4AC` and `006CAD07`
+  `006CAC00` (not read). The push's one caller is `007F1C00` BSP_PlaneSquadron_SetHomeAirBase, so the queue
+  carries squadrons homed on the base, not stowed planes.
+- **Left:** the squadron's own landing record, which still has to hand the plane back to stock, and whatever
+  destroys a plane that is in state 2 with `+C00h` set.
+
+**Next:** read `006CA4AC` and `006CAC00` (the other two `+C0h` users), then census the plane destructors'
+callers from the squadron land/park tail (`007EFB60` promotes the next member). Until then the host's loop is
+kept, and ESMP08's relaunch count stays bounded as 5ep says.
