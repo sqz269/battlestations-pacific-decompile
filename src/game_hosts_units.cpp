@@ -5324,7 +5324,7 @@ struct GameUnitsHost::Impl {
     // record at the block (006C59A4-006C59DC: find at +98h, 14h stride, count +9Ch;
     // 006BF7F0 on +84h moves the last record into its place). False: the record stays
     // and later squadrons queue behind it (n = largest + 1).
-    static constexpr bool kStockReturnQueueEraseBound = false;
+    static constexpr bool kStockReturnQueueEraseBound = true;   // ON by its pairs (SHIP_AI 204.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its

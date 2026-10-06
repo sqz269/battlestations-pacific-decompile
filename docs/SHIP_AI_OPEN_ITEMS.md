@@ -15846,3 +15846,19 @@ then:
   - Suspected: the first movie's end callback, `luaShimoMovieEnd`, is lost. Not read.
   - This is for the Lua lane.
 - Primary 5 is the Yamato, the Musashi and four Hakus, after 2315 s.
+
+### 204.1 Pairs and the flip (cc9-ships41, 2026-10-06)
+
+OFF is `16a5e37a3`; ON is the same commit exported with the switch true (`local\s41_qe`).
+
+| row | erases | result |
+| --- | --- | --- |
+| USNOS f3 (`s40_os_f3.txt`) | 1 (`#1.5` at Airfield3) | gameplay identical. Airfield3 `queue=6 -> 5`; `records=16`, `releases=24`, `inserts=28` unchanged |
+| USN01 p8 | 2 (ScoutDauntless, KatTBD at Enterprise) | gameplay identical |
+| ESMP08 p3 | 7 (Zuiho, Zuikaku, Chiyoda x3, Chitose x2) | deaths equal (675). Hit records 11863 -> 11866, shots 134459 -> 134175. 8 death rows move, the first at 2770 s (Chiyoda_sqn44 lands 2.3 s earlier); then four Corsair deaths at 3580-3588 s by up to 2 s, one killer Isuzu -> Oyodo |
+
+- Every prediction held. The f3 loop is unchanged, because the largest queue number left is still 2.
+- ESMP08's moves begin with a landing at a deck whose queue had been shortened.
+- **Verdict: ON.** The mechanism matches the listing, and the moves are the landing-timing spread
+  that 204 predicted.
+- The 202 loop stays open, and its remaining candidate is the destructor path in 204.
