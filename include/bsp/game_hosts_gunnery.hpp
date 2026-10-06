@@ -463,6 +463,13 @@ struct GameProjectileRow {
     // 3 flak burst, 4 water, 5 expired.
     int fate{0};
     bool swimming{false};             // past the water crossing, on the swim
+    // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound): a round of a
+    // "Depthcharge" class, its water byte (006E6450 at the entry 006FD660), and
+    // the activate 006FD9B0's record+468h dragvert and +470h divedepth.
+    bool depth_charge{false};
+    bool depth_charge_in_water{false};
+    float depth_charge_drag{0.0f};
+    float depth_charge_depth{0.0f};
     // record+46Ch, the commanded world heading (atan2(x, z)) the launch command
     // 007311B0 carries as `heading`; 10000 (00D0C310) means none, and the steer
     // then holds the heading it swims on. Packet cc9_usn02_sameside_torpedoes.

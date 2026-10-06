@@ -10342,3 +10342,77 @@ owed.
   `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
 - Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
   group's runs as its build lands.
+## 142. The depth charge under water: 006FD9B0, 006FD660 and 006FCD20 (lead item; 141.2 item 1; cc9-gunnery31, 2026-10-06)
+
+**What was missing.** 139 made HenryPT's rack fire (60 shots on BSM01 p6) and nothing was hurt: every host round ends
+at the water (`impacts_static`), and the hit view's `shot_is_depth_charge` and `hull_is_submarine` are both
+hard-wired false. The image's depth charge (MDepthCharge, entity vtable `00CFBA80`) lives through three routines.
+
+**The activate, `006FD9B0`** (entity slot `+A0h`, `00CFBB20`; no Ghidra function, raw `006FD9B0`, read to
+`006FDB31`). After the base activate `006E2E10`, outside world mode 2, three draws on stream 1 (`ECX = 1`):
+- `006FDA4F`: the velocity at `+318h..+320h` times `U(1 - V0RandomFactor, 1 + V0RandomFactor)` (`classDesc+D8h`).
+- `006FDAA6..006FDAEA`: `record+468h = 9.81 (00CF9058) / DiveSpeed (+DCh) * U(0.9 (00CE3860), 1.1 (00CE6448))`;
+  `+46Ch` takes the same value.
+- `006FDB0B..006FDB2B`: `record+470h = U(DiveMinDepth (+E0h), DiveMaxDepth (+E4h))`; both default to FLT_MAX
+  (`00D7A248`, `006FD507`, `006FD544`).
+- The save table `006FCC50` names the three fields: `+468h` "dragvert", `+46Ch` "dragside", `+470h` "divedepth".
+  `006FCAF0` / `006FC9F0` copy `+468h` and `+470h` through the network message B7h; they are not the producer.
+- **Correction to docs/BOMB_FAMILY_TICK.md's open question**: the producer of `+468h` / `+470h` is this activate.
+  So the terminal sink rate is `DiveSpeed / U(0.9, 1.1)` and the charge detonates between DiveMinDepth and DiveMaxDepth.
+- `006FD9E1`: when the round did not start under water (`+354h`, set by `006E2E10`), shot `vtable[+20h](0.25)`. That
+  slot (`006E2550`) stores the weapon scale `record+3E0h`, read by `006E2850`; the water entry restores 1.0
+  (`006FD660`). **Not carried**: no detonation here happens before the entry. The tail from `006FDB31` is unread.
+
+**The water entry, `006FD660`** (shot `vtable[+28h]`, read in docs/BOMB_FAMILY_TICK.md): the round breaks up above
+MaxWaterHitVel (`+ECh`) or when falling faster than `+F0h = sqrt(2 * MaxFall * 9.81)` (`006FD618..006FD640`);
+otherwise `006E6450` sets the water byte and keeps the velocity. **LABELLED**: the break-up branch
+`006FD746..006FD89A` is unread and modelled as the torpedo's (the round dies, no blast). This installation's rows
+(class 54 "Depth Charge ship US", realistic bulletclasses.lua, 2025-06-02: V0 10, MaxWaterHitVel 55.6, MaxFall
+100) never reach it from a deck.
+
+**The in-water advance, `006FCD20`** (now read whole, `006FCD20..006FD0C5`):
+1. `v += (-k v - (0, 9.81, 0)) dt`, with `k = +468h` on all three axes (`006FCD28..006FCDB7`).
+2. Only below -5.0 (`00CFBC84`; `COMISS`/`JBE`, so strictly below) and outside world mode 2: walk `[[record+30h]+7Ch]`.
+   That is the world's submarine list (`008530E0` unlinks a submarine from it; a byte scan finds only these two
+   readers). An entry is a contact when:
+   - `|target+FCh - record+FCh|^2 <= 625` (`00CFBC80`), i.e. within 25 m;
+   - the charge, mapped into the target's frame (`00B63D50`, `004142E0`), lies inside the class box `[target+538h]`
+     grown by 10 m: `|x| - 0.5 Width (+A4h) < 10`, `|y| - 0.5 Height (+A8h) < 10`, `|z| - 0.5 Length (+A0h) < 10`
+     (`00D7A280` = 0.5 double, `00CE38B8` = 10.0f).
+   A contact goes to `006FCFD8`.
+3. With no contact, the round detonates once `y < -|+470h|` (`006FCFA6`).
+4. `006FCFD8`: `0084BAD0` at `record+FCh`, with radius BlastRange and damage `U(BlastDamageMin, BlastDamageMax)`
+   (docs/EXPLOSION_RADIAL_DAMAGE.md row `006FD032`), owner `[record+3D8h]`, the round as the shot. Then `0078D1B0`
+   puts the record on the surface (effects) and `00926D90` kills it.
+5. The blast's hit records carry the round, so `00826F44`'s `IsKindOf(2Ch)` vetoes every hull that is not
+   `IsKindOf(8)` (MSubmarine): **a depth charge hurts submarines only**. The same `IsKindOf(8)` answer also skips
+   the leak messages at `008274B4` / `00827677` for a submarine.
+
+**Binding** (`kDepthChargeInWaterBound`, `src/game_hosts_gunnery.cpp`, committed OFF):
+- `depth_charge_activate_006fd9b0` runs at the spawn of a "Depthcharge" round, with three new `Draw::depth_charge_launch`
+  keys `(gun, 0..2)`.
+- The water crossing takes `006FD660`'s two limits and then marks the round in the water.
+- `depth_charge_advance_006fcd20` runs before each flight step of a round in the water. The flight step's own gravity
+  is off, because 006FCD20 carries the vertical term.
+- `apply_hit` sets `shot_is_depth_charge` for a Depthcharge class, and `ShipHitBinding::hull_is_submarine` answers
+  `IsKindOf(8)`. OFF, it answers false as before.
+- **SUBSTITUTIONS, labelled**: the submarine list is this host's live `IsKindOf(8)` units; the target frame is the
+  unit pose rows (unit scale); the position integrates with the advanced velocity (the image's place-pose step order
+  is not re-read here).
+- A summary line `depth charge rounds launched=... water_entries=... contact_detonations=... depth_detonations=...`
+  is printed when the switch is ON, and so is one `gunnery: depth charge detonates` line per detonation.
+
+**Predictions (before any run).** Pairs: OFF = the commit; ON = `kDepthChargeBotTickBound`,
+`kPlayerWeaponGroupFireBound` and `kDepthChargeInWaterBound` all true.
+1. **BSM01 p7** (ships38's `s38_b1_p7.txt`, 30000 frames):
+   - HenryPT stops about 40 m from MiniSub (at -6.96 m); the AI rack fires from about frame 10000, and the p7
+     presses from 9920.
+   - Charges enter at about 10 m/s and sink toward about 8 m/s, so they drift about 8 m. No centre comes within
+     25 m, so no contacts are expected; each charge detonates between 20 and 33 m.
+   - The blast centre is then about 35-45 m from MiniSub's box, inside BlastRange 50. Each detonation damages
+     MiniSub (health 200, armour 10) by a falloff fraction of 260-300, and nothing else: Henry is the source and
+     surface hulls are vetoed.
+   - **Expected:** MiniSub dies within the first few to tens of detonations, and phase 3 advances. Exit 3.
+2. **Controls** (BSM01 3000 frames, USN13 long): no DC round reaches the water within 100 m of a submarine, so
+   gameplay is identical; exit 1 (the ON-only summary line). Any moved number outside the DC rows belongs to the
+   bot or player switch (a DC ship firing at a submerged target).

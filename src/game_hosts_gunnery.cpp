@@ -47,6 +47,7 @@
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gun_bot_remainder.hpp"
+#include "bsp/bomb_torpedo_tick.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/camera_affine.hpp"
@@ -629,6 +630,19 @@ constexpr bool kDepthChargeBotTickBound = false;
 //    player_fire_weapon_group sends that message for a harness line. OFF: the
 //    arm is a record. docs/GUNNERY_OPEN_ITEMS.md 140.
 constexpr bool kPlayerWeaponGroupFireBound = false;
+//  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
+//    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
+//    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
+//    record+468h = 9.81 / DiveSpeed * U(0.9, 1.1) and +470h = U(DiveMinDepth,
+//    DiveMaxDepth); the water entry 006FD660 keeps the round; 006FCD20 sinks
+//    it (linear drag +468h on all three axes, gravity kept) and, below 5 m,
+//    detonates it on a submarine within 25 m whose class box grown by 10 m
+//    holds it, or past -|+470h|: the radial blast 0084BAD0 (BlastRange,
+//    U(BlastDamageMin, BlastDamageMax)). The hit view carries the MDepthCharge
+//    shot kind (00826F44) and the real MSubmarine answer (00826F51, 008274B4,
+//    00827677), so the blast hurts submarines only. OFF: the round ends at the
+//    water. docs/GUNNERY_OPEN_ITEMS.md 142.
+constexpr bool kDepthChargeInWaterBound = false;
 // robots.lua (2025-06-01) DepthChargeBot by skill index 0 Stun .. 5 Elite:
 // AttackDist, BulletThrowMul, ContinuousFireTime, FireDelay low, high.
 constexpr float kDepthChargeBotLevels[6][5] = {
@@ -1181,6 +1195,11 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
     std::map<std::size_t, bool> depth_charge_trigger_by_gun;
     unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
+    // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound).
+    unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
+        dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
+    void depth_charge_activate_006fd9b0(GameProjectileRow& shot, std::size_t gun_row);
+    bool depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt);
     // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
     unsigned long long player_group5_triggers{0}, player_group_fires{0};
     std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
@@ -1437,6 +1456,7 @@ struct GameGunneryHost::Impl {
         aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
         bomb_scatter = 22,    // 006E4D50's four drop draws, key (unit, 0)
         depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
+        depth_charge_launch = 24, // 006FDA4F / 006FDAE3 / 006FDB26, the activate's three draws, key (gun, 0..2)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -7426,6 +7446,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 && round_class != nullptr && round_class->no_gravity;   // classDesc+20h
             if (shot.flight.class_disables_gravity) ++no_gravity_shots;
         }
+        if constexpr (kDepthChargeInWaterBound) depth_charge_activate_006fd9b0(shot, g);
         if (kTorpedoGyroHeadingBound && gun.category == bsp::kUnitGunneryTorpedoCategory
             && torpedo_gun && (torpedo_lead_xz[0] != 0.0f || torpedo_lead_xz[1] != 0.0f)) {
             // 008FFF20 00900476..00900526: the run line's world heading from the
@@ -8057,10 +8078,128 @@ bool GameGunneryHost::landscape_segment_hit_00904400(const float from[3],
     return hit;
 }
 
+namespace {
+
+bool is_depth_charge_class(const GameBulletClassRow* row) {
+    if (row == nullptr || row->type.size() != 11) return false;
+    static const char kName[] = "depthcharge";
+    for (std::size_t i = 0; i < 11; ++i) {
+        if (std::tolower(static_cast<unsigned char>(row->type[i])) != kName[i]) return false;
+    }
+    return true;
+}
+
+}  // namespace
+
+// Packet cc9_depth_charge_in_water. 006FD9B0, MDepthCharge's entity slot +A0h
+// (00CFBB20), after the base activate 006E2E10. Outside world mode 2 it draws,
+// on stream 1 and in this order:
+//   006FDA4F  velocity *= U(1 - V0RandomFactor, 1 + V0RandomFactor) (+D8h);
+//   006FDAA6  +468h (dragvert) = 9.81 (00CF9058) / DiveSpeed (+DCh), then
+//   006FDAE3  *= U(0.9 (00CE3860), 1.1 (00CE6448)); +46Ch (dragside) = +468h;
+//   006FDB26  +470h (divedepth) = U(DiveMinDepth (+E0h), DiveMaxDepth (+E4h)).
+// The fields' names are the save table's (006FCC50: "dragvert", "dragside",
+// "divedepth"). LABELLED: 006FD9E1's shot vtable[+20h](0.25) sets the weapon
+// scale record+3E0h (006E2550, read by 006E2850) to a quarter until the water
+// entry restores 1.0; no detonation here happens before that, so it is not
+// carried. The tail from 006FDB31 (record+C0h) is unread.
+void GameGunneryHost::Impl::depth_charge_activate_006fd9b0(GameProjectileRow& shot,
+    std::size_t gun_row) {
+    const GameBulletClassRow* const dc = bullet(shot.bullet_class);
+    if (!is_depth_charge_class(dc)) return;
+    shot.depth_charge = true;
+    const float f = lua.read_bullet_class_number(shot.bullet_class, "V0RandomFactor", 0.0f);
+    const float scale = draw(Draw::depth_charge_launch, gun_row, 0, 1.0f - f, 1.0f + f);
+    shot.flight.velocity.x *= scale;
+    shot.flight.velocity.y *= scale;
+    shot.flight.velocity.z *= scale;
+    const float dive_speed = lua.read_bullet_class_number(shot.bullet_class, "DiveSpeed", 0.0f);
+    float drag = static_cast<float>(9.8100004196167 / static_cast<double>(dive_speed));
+    drag *= draw(Draw::depth_charge_launch, gun_row, 1, 0.9f, 1.1f);
+    shot.depth_charge_drag = drag;
+    // 006FD51B / 006FD558: both depths default to FLT_MAX (00D7A248).
+    const float lo = lua.read_bullet_class_number(shot.bullet_class, "DiveMinDepth",
+        std::numeric_limits<float>::max());
+    const float hi = lua.read_bullet_class_number(shot.bullet_class, "DiveMaxDepth",
+        std::numeric_limits<float>::max());
+    shot.depth_charge_depth = draw(Draw::depth_charge_launch, gun_row, 2, lo, hi);
+    ++dc_launches;
+    done("DepthCharge::activate_006fd9b0", 0x006fd9b0u);
+}
+
+// 006FCD20, MDepthCharge's in-water advance (entity slot +1A0h). Returns true
+// when the round detonated and is gone.
+//   006FCD28  v += (-k v - (0, 9.81, 0)) dt with k = +468h on all three axes;
+//   006FCDDD  below -5.0 (00CFBC84, strict) the world's submarine list
+//             [[record+30h]+7Ch] (the list 008530E0 unlinks a submarine from)
+//             is walked: |target+FCh - record+FCh|^2 <= 625 (00CFBC80), then the
+//             charge in the target's frame (00B63D50, 004142E0) inside the class
+//             box [+538h] (+A4h Width, +A8h Height, +A0h Length, each halved by
+//             00D7A280) grown by 10.0 (00CE38B8) on all three axes -> 006FCFD8;
+//   006FCF96  else past -|+470h| -> 006FCFD8;
+//   006FCFD8  0084BAD0 at record+FCh, radius BlastRange, damage U(BlastDamageMin,
+//             BlastDamageMax), owner [record+3D8h]; 0078D1B0 moves the record to
+//             the surface (effects) and 00926D90 kills it.
+// SUBSTITUTIONS, labelled: the list is this host's live MSubmarine units
+// (IsKindOf(8)); the target frame is the unit pose rows (unit scale).
+bool GameGunneryHost::Impl::depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt) {
+    ++dc_water_steps;
+    const bsp::BombVector3 v = bsp::depth_charge_dive_velocity(
+        bsp::BombVector3{shot.flight.velocity.x, shot.flight.velocity.y, shot.flight.velocity.z},
+        shot.depth_charge_drag, dt);
+    shot.flight.velocity.x = v.x;
+    shot.flight.velocity.y = v.y;
+    shot.flight.velocity.z = v.z;
+    if (!bsp::depth_charge_scan_enabled(shot.position[1])) return false;
+    std::size_t contact = 0;
+    for (std::size_t i = 0; i < unit_state.size() && contact == 0; ++i) {
+        if (unit_state[i].dead || !units.unit_is_kind_of(i, 0x08)) continue;
+        float r[3], u[3], f[3], o[3];
+        unit_pose(i, r, u, f, o);
+        const bsp::BombVector3 delta{shot.position[0] - o[0], shot.position[1] - o[1],
+            shot.position[2] - o[2]};
+        if (!bsp::depth_charge_in_proximity(delta)) continue;
+        const float rel[3] = {delta.x, delta.y, delta.z};
+        const UnitState& s = unit_state[i];
+        const float half[3] = {s.hull_width * 0.5f, s.hull_height * 0.5f, s.hull_length * 0.5f};
+        const float* axes[3] = {r, u, f};
+        bool inside = true;
+        for (int a = 0; a < 3 && inside; ++a) {
+            inside = std::fabs(dot3(rel, axes[a])) - half[a] < 10.0f;
+        }
+        if (inside) contact = i + 1;
+    }
+    if (contact == 0 && !bsp::depth_charge_should_detonate(shot.position[1],
+            shot.depth_charge_depth)) {
+        return false;
+    }
+    if (contact != 0) ++dc_contact_detonations; else ++dc_depth_detonations;
+    const float point[3] = {shot.position[0], shot.position[1], shot.position[2]};
+    const float no_dir[3] = {0.0f, 0.0f, 0.0f};
+    log.notef("gunnery: depth charge detonates t=%.2f owner=%s %s at=(%.1f,%.2f,%.1f) "
+        "depth=%.1f life=%.2f", static_cast<double>(clock_seconds),
+        unit_name_or_index(shot.owner_unit).c_str(),
+        contact != 0 ? ("contact=" + unit_name_or_index(contact)).c_str() : "by_depth",
+        static_cast<double>(point[0]), static_cast<double>(point[1]),
+        static_cast<double>(point[2]), static_cast<double>(shot.depth_charge_depth),
+        static_cast<double>(shot.life));
+    shot.fate = 3;
+    round_bullet_class = shot.bullet_class;
+    apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, no_dir);
+    round_bullet_class = -1;
+    done("DepthCharge::advance_in_water_006fcd20", 0x006fcd20u);
+    shot.alive = false;
+    return true;
+}
+
 void GameGunneryHost::Impl::run_projectiles(float dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;
         if (shot.serial == 0) shot.serial = ++next_projectile_serial;
+        if (kDepthChargeInWaterBound && shot.depth_charge_in_water) {
+            // 006E137D: in water the record's +1A0h slot is 006FCD20.
+            if (depth_charge_advance_006fcd20(shot, dt)) continue;
+        }
         if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt
         if (kTorpedoSwimThrustBound && shot.swimming) {
             // 00857480 steps 4 and 5 and its tail, horizontally.
@@ -8406,6 +8545,32 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
             ++summary.water_crossings;
             shot.fate = 4;
+            if (kDepthChargeInWaterBound && shot.depth_charge) {
+                // 006FD660, MDepthCharge's water entry (shot vtable[+28h]): the
+                // round breaks up past MaxWaterHitVel (classDesc+ECh) or falling
+                // faster than classDesc+F0h = sqrt(2 * MaxFall * 9.81) (006FD618..
+                // 006FD640); otherwise 006E6450 sets the water byte and keeps the
+                // velocity. LABELLED: the break-up branch 006FD746..006FD89A is
+                // unread and is taken as the torpedo's (the round dies, no blast).
+                const GameBulletClassRow* const dc = bullet(shot.bullet_class);
+                const float v[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
+                    shot.flight.velocity.z};
+                const float hit_limit = dc != nullptr ? dc->max_water_hit_vel : 0.0f;
+                const float fall_limit = dc != nullptr
+                    ? std::sqrt(2.0f * dc->max_fall * 9.81f) : 0.0f;
+                if (length3(v) > hit_limit || v[1] < -fall_limit) {
+                    ++dc_breakups;
+                    shot.alive = false;
+                    continue;
+                }
+                ++dc_water_entries;
+                shot.depth_charge_in_water = true;
+                // 006FCD20 carries the vertical term itself (gravity minus the
+                // drag), so the flight step's own gravity is switched off.
+                shot.flight.class_disables_gravity = true;
+                done("DepthCharge::water_entry_006fd660", 0x006fd660u);
+                continue;
+            }
             // A torpedo does not die at the surface: it enters its swim. The
             // round's record carries a swim speed at +470h, written at
             // 0085786D..00857875 as WaterTravelSpeed * the double at 00D0C5E0
@@ -8630,7 +8795,10 @@ public:
         for (int i = 0; i < 3; ++i) direction_[i] = direction[i];
     }
 
-    bool hull_is_submarine() override { return false; }
+    // 00826F51 / 008274B4 / 00827677: vtable[5Ch](8). OFF: never a submarine.
+    bool hull_is_submarine() override {
+        return kDepthChargeInWaterBound && owner_.units.unit_is_kind_of(victim_, 0x08);
+    }
     float hull_armour() override {
         const auto& us = owner_.unit_state[victim_];
         return kCommandBuildingGunfireArmourBound ? us.armour_368 : us.armour;
@@ -8983,7 +9151,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
                                                                              : 0x0A;
     for (int i = 0; i < 3; ++i) view.impact_point[i] = point[i];
     view.shot_present = true;
-    view.shot_is_depth_charge = false;
+    // shot->vtable[5Ch](2Ch) at 00826F44; the blast passes the round itself.
+    view.shot_is_depth_charge = kDepthChargeInWaterBound && is_depth_charge_class(bullet(priced_class));
     view.shot_is_torpedo = gun.category == bsp::kUnitGunneryTorpedoCategory;
     view.weapon_present = weapon != nullptr;
 
@@ -11952,6 +12121,14 @@ void GameGunneryHost::report() {
             "player_group_fires=%llu group5_triggers=%llu (008FC080 / 0095A441, packets "
             "cc9_depth_charge_bot, cc9_player_weapon_group_fire)", host.depth_charge_ticks,
             host.depth_charge_holds, host.player_group_fires, host.player_group5_triggers);
+    }
+    if constexpr (kDepthChargeInWaterBound) {
+        host.log.notef("summary mission gunnery depth charge rounds launched=%llu "
+            "water_entries=%llu breakups=%llu water_steps=%llu contact_detonations=%llu "
+            "depth_detonations=%llu (006FD9B0 / 006FD660 / 006FCD20, packet "
+            "cc9_depth_charge_in_water)", host.dc_launches, host.dc_water_entries,
+            host.dc_breakups, host.dc_water_steps, host.dc_contact_detonations,
+            host.dc_depth_detonations);
     }
     if constexpr (bsp::kShipyardProductionBound) {
         const auto& y = host.shipyard;
