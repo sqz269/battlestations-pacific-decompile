@@ -614,6 +614,16 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
         if (in.flight_state != 5) {
             return out;
         }
+        if constexpr (kPilotThrottleGroundArmBound) {
+            // 0099D90A-0099D91F -> 0099DC82: the active slot's desired value,
+            // or its current one, capped at 0.6; no demand.
+            const float v = in.slot_active ? in.slot_desired : in.slot_current;
+            if (v > kPilotThrottleGroundCap) {
+                out.wrote_throttle = true;
+                out.throttle_desired = kPilotThrottleGroundCap;
+            }
+            return out;
+        }
         if (!in.slot_active) {
             // 0099DC7A-0099DC97, the ground cap. 0099D911 reaches it only
             // from inside the state branch, so this one really is ground only.
@@ -660,6 +670,12 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
     const float braking = 0.0f - demand;                    // 0099DC01, 00D7A208
     out.air_brake_desired = braking > 0.0f ? braking : 0.0f;
     out.clears_air_brake_mode = true;                       // 0099DC6B
+    if constexpr (kPilotThrottleGroundArmBound) {
+        // 0099DC75 JMP 0099D8F7: the state-5 cap on the slot just written.
+        if (in.flight_state == 5 && out.throttle_desired > kPilotThrottleGroundCap) {
+            out.throttle_desired = kPilotThrottleGroundCap;
+        }
+    }
     return out;
 }
 

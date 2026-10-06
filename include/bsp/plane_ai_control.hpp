@@ -559,6 +559,17 @@ inline constexpr float kPilotThrottleCutValue = 0.001f;    // 00D7A23C
 inline constexpr float kPilotThrottleErrorLow = -6.9444447f;  // 00D1F3DC, -25 km/h
 inline constexpr float kPilotThrottleErrorHigh = 6.9444447f;  // 00D0686C, +25 km/h
 inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30
+// Packet cc9_lua47_ground_throttle_cap (docs/SQUADRON_LAND_TASK.md 5fe). The
+// state-5 (taxi on a path) arm as the listing runs it: 0099D8F5-0099D91F reads
+// +900h, and on 5 takes the slot's desired value when +27Ch is set (its current
+// value otherwise) to 0099DC82, which caps it at 0.6 (00CE3D30) and stores it
+// active; it never enters the demand arm. The demand arm's own tail (0099DC6B
+// -> JMP 0099D8F7) runs the same test, so a demand on a plane in state 5 is
+// capped at 0.6 too. True: both. False: mode 0 with an active slot in state 5
+// runs the demand arm, and a demand in state 5 is not capped (a taxiing plane
+// under the takeoff run's hold reached full throttle toward the reseeded
+// +2B4h, JM08's airfield bombers).
+inline constexpr bool kPilotThrottleGroundArmBound = false;
 
 struct PilotBotThrottleInputs {
     // The slot, read the way 0099D977-0099D998 and 0099DC7A read it.
