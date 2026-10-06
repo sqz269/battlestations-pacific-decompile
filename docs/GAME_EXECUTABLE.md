@@ -15012,3 +15012,66 @@ rounds agree** (exit 0 or 1 on every group and row). Exit against AC / against A
   the end text, `cb` and `tmr` each move JM08 long's neutralize.
 - No row exceeds the image-faithful window that AB recorded; JM08 long is faithful to about 40 s past the HQ
   neutralize (EndScene at 1081.73 s).
+
+## Mission reference baselines, 2026-10-06 ad (main bb5ad5db8)
+
+Packet `cc9_reference_rebaseline_30`, worker cc9-gunnery30, report `reports/cc9_reference_rebaseline_30.json`.
+The base is main `bb5ad5db8`. The previous reference is AC (`20c30e6fb`, `local\g29_ac_base_<row>.log` in
+cc9-gunnery29's tree).
+
+### The switch diff and the plan
+
+`local\g30_switches.py 20c30e6fb bb5ad5db8` lists ten switches. Six of them are ON:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `pl` | `kAirOpsPlayerLaunchBound` (flipped) + `kAirOpsPlayerLaunchGroupBound` | AIROPS_LAUNCH_TICK | live only with harness `launch` lines; rows without them identical |
+| `mem` | `kAutoAttackMemberOnLaunchBound` | AUTOATTACK_MEMBER_LAUNCH | live on order-file runs (LOMP10 p2, USN01 p5); smoke identical |
+| `sqd` | `kSquadronDeadOnLastMemberBound` | ENTITY_DEAD_FLAG 8.1 | live: USN13 long (MAINPHASE 270.31 -> 285.15 s), USNRM01 (two Kate squadrons Killed) |
+| `gar` | `kCommandBuildingGarrisonBound` | SHIP_AI 177.1 | exit 1 on JM08, JM08 long, USN01, USNOS |
+| `rev` | `kCommandBuildingGarrisonReviveBound` | SHIP_AI 185.1 | live: JM08 (4 revives), JM08 long (111) |
+
+These four are OFF and stay OFF: `kAutoAttackAllMembersBound`, `kShipyardProductionBound`,
+`kSquadronPassCPlacementBound` and `kSquadronPutToMembersBound`.
+
+**Rows:** AC's twenty-two, in AC's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player). There are also five scripted-win rows, each with its order file (`--helm-orders`, copies in
+`local\g30_ord_*.txt`):
+
+| row | order file | mission frames |
+| --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 |
+| USN01 | `s37_u1_p5` | 22000 |
+| LOMP06 | `s37_l6_p2` | 16000 |
+| LOMP10 | `s37_l10_p2` | 30000 |
+| USN12 | `s38_u12_p2` | 36000 |
+
+**Binaries** (`pair_export.py --commit bb5ad5db8`): AD is `local\g30_ad`; the anchor (the six OFF) is
+`local\g30_anc`.
+
+### Predictions (written before any run finished)
+
+- **Anchor** (the six OFF): gameplay-identical to AC (exit 0/1 against `g29_ac_base_<row>`) on all twenty-two
+  rows. A miss means non-switch code since AC moves a row. Candidates are the shipyard and diagnostic commits,
+  which are log only, and the Lua and ships lanes' unswitched commits.
+- **AD against AC.** Moves (exit 3) on:
+  - **USN13 long** through `sqd` (MAINPHASE later);
+  - **USNRM01** through `sqd`;
+  - **JM08** and **JM08 long** through `rev`.
+  Every other row is exit 0/1, because `pl` and `mem` need harness launch lines and `gar` alone was identical.
+  The risks: `sqd` on any row where a squadron's leader dies before its wingmen (USN04/E2, USN01, LOMP10 long,
+  JM05 long, ESMP08 long, IJN11); `rev` on any row with a neutralized command building (USNOS, LOMP06,
+  LOMP10 long).
+- **Leave-one-out** (two rounds, on the rows that move): groups `pl`, `mem`, `sqd`, `gar` (both garrison
+  switches) and `rev` (revive alone). On USN13 long and USNRM01, `sqd` OFF restores AC and the rest are exit
+  0/1 against AD. On JM08 and JM08 long, `rev` OFF and `gar` OFF restore AC.
+- **Scripted wins.** The recorded results from earlier runs:
+  - **USN02 p7:** completed at 727.60 s (cc9-ships36's base). Expected to hold within a few seconds.
+  - **USN01 p5, 22000:** completed at 712.75 s (cc9-ships38 on `78eab7589`). Expected to hold exactly unless
+    `rev`/`gar` reach it.
+  - **LOMP06 p2:** Sado Maru sunk at 261.36 s, `luaMissionCompletedNew` at 267.41 s, `EndScene` at 301.95 s.
+    The summary line says "none", because the script sets only `Mission.MissionEndCalled`.
+  - **LOMP10 p2, 30000:** `luaVictory` at 1081.08 s and `EndScene` at 1115.66 s. The summary says "none".
+  - **USN12 p2:** completed at 1544.78 s.
+  - In every win row the guard line `bsp: refused a mission script's process launch: sus_prog.exe` is
+    expected.
