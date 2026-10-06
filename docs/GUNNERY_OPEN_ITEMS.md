@@ -10342,6 +10342,7 @@ owed.
   `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
 - Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
   group's runs as its build lands.
+
 ### 141.4 Added to the queue after the handoff (from the lead, 2026-10-06)
 
 The shipyard build pair the lead asked for is 136.6, already run.
@@ -10365,3 +10366,186 @@ The shipyard build pair the lead asked for is 136.6, already run.
 - **USNOS Kaiten drown (SHIP_AI 196).** The wave-1 Kaiten and subs #3.2-#3.6 all drown at 160.81 s with no damage,
   about 120 s after spawning (packet `cc9_submarine_air`). Read the submarine air/drown rule against the image; it
   may be a host artefact.
+
+## 142. The depth charge under water: 006FD9B0, 006FD660 and 006FCD20 (lead item; 141.2 item 1; cc9-gunnery31, 2026-10-06)
+
+**What was missing.** 139 made HenryPT's rack fire (60 shots on BSM01 p6) and nothing was hurt: every host round ends
+at the water (`impacts_static`), and the hit view's `shot_is_depth_charge` and `hull_is_submarine` are both
+hard-wired false. The image's depth charge (MDepthCharge, entity vtable `00CFBA80`) lives through three routines.
+
+**The activate, `006FD9B0`** (entity slot `+A0h`, `00CFBB20`; no Ghidra function, raw `006FD9B0`, read to
+`006FDB31`). After the base activate `006E2E10`, outside world mode 2, three draws on stream 1 (`ECX = 1`):
+- `006FDA4F`: the velocity at `+318h..+320h` times `U(1 - V0RandomFactor, 1 + V0RandomFactor)` (`classDesc+D8h`).
+- `006FDAA6..006FDAEA`: `record+468h = 9.81 (00CF9058) / DiveSpeed (+DCh) * U(0.9 (00CE3860), 1.1 (00CE6448))`;
+  `+46Ch` takes the same value.
+- `006FDB0B..006FDB2B`: `record+470h = U(DiveMinDepth (+E0h), DiveMaxDepth (+E4h))`; both default to FLT_MAX
+  (`00D7A248`, `006FD507`, `006FD544`).
+- The save table `006FCC50` names the three fields: `+468h` "dragvert", `+46Ch` "dragside", `+470h` "divedepth".
+  `006FCAF0` / `006FC9F0` copy `+468h` and `+470h` through the network message B7h; they are not the producer.
+- **Correction to docs/BOMB_FAMILY_TICK.md's open question**: the producer of `+468h` / `+470h` is this activate.
+  So the terminal sink rate is `DiveSpeed / U(0.9, 1.1)` and the charge detonates between DiveMinDepth and DiveMaxDepth.
+- `006FD9E1`: when the round did not start under water (`+354h`, set by `006E2E10`), shot `vtable[+20h](0.25)`. That
+  slot (`006E2550`) stores the weapon scale `record+3E0h`, read by `006E2850`; the water entry restores 1.0
+  (`006FD660`). **Not carried**: no detonation here happens before the entry. The tail from `006FDB31` is unread.
+
+**The water entry, `006FD660`** (shot `vtable[+28h]`, read in docs/BOMB_FAMILY_TICK.md): the round breaks up above
+MaxWaterHitVel (`+ECh`) or when falling faster than `+F0h = sqrt(2 * MaxFall * 9.81)` (`006FD618..006FD640`);
+otherwise `006E6450` sets the water byte and keeps the velocity. **LABELLED**: the break-up branch
+`006FD746..006FD89A` is unread and modelled as the torpedo's (the round dies, no blast). This installation's rows
+(class 54 "Depth Charge ship US", realistic bulletclasses.lua, 2025-06-02: V0 10, MaxWaterHitVel 55.6, MaxFall
+100) never reach it from a deck.
+
+**The in-water advance, `006FCD20`** (now read whole, `006FCD20..006FD0C5`):
+1. `v += (-k v - (0, 9.81, 0)) dt`, with `k = +468h` on all three axes (`006FCD28..006FCDB7`).
+2. Only below -5.0 (`00CFBC84`; `COMISS`/`JBE`, so strictly below) and outside world mode 2: walk `[[record+30h]+7Ch]`.
+   That is the world's submarine list (`008530E0` unlinks a submarine from it; a byte scan finds only these two
+   readers). An entry is a contact when:
+   - `|target+FCh - record+FCh|^2 <= 625` (`00CFBC80`), i.e. within 25 m;
+   - the charge, mapped into the target's frame (`00B63D50`, `004142E0`), lies inside the class box `[target+538h]`
+     grown by 10 m: `|x| - 0.5 Width (+A4h) < 10`, `|y| - 0.5 Height (+A8h) < 10`, `|z| - 0.5 Length (+A0h) < 10`
+     (`00D7A280` = 0.5 double, `00CE38B8` = 10.0f).
+   A contact goes to `006FCFD8`.
+3. With no contact, the round detonates once `y < -|+470h|` (`006FCFA6`).
+4. `006FCFD8`: `0084BAD0` at `record+FCh`, with radius BlastRange and damage `U(BlastDamageMin, BlastDamageMax)`
+   (docs/EXPLOSION_RADIAL_DAMAGE.md row `006FD032`), owner `[record+3D8h]`, the round as the shot. Then `0078D1B0`
+   puts the record on the surface (effects) and `00926D90` kills it.
+5. The blast's hit records carry the round, so `00826F44`'s `IsKindOf(2Ch)` vetoes every hull that is not
+   `IsKindOf(8)` (MSubmarine): **a depth charge hurts submarines only**. The same `IsKindOf(8)` answer also skips
+   the leak messages at `008274B4` / `00827677` for a submarine.
+
+**Binding** (`kDepthChargeInWaterBound`, `src/game_hosts_gunnery.cpp`, committed OFF):
+- `depth_charge_activate_006fd9b0` runs at the spawn of a "Depthcharge" round, with three new `Draw::depth_charge_launch`
+  keys `(gun, 0..2)`.
+- The water crossing takes `006FD660`'s two limits and then marks the round in the water.
+- `depth_charge_advance_006fcd20` runs before each flight step of a round in the water. The flight step's own gravity
+  is off, because 006FCD20 carries the vertical term.
+- `apply_hit` sets `shot_is_depth_charge` for a Depthcharge class, and `ShipHitBinding::hull_is_submarine` answers
+  `IsKindOf(8)`. OFF, it answers false as before.
+- **SUBSTITUTIONS, labelled**: the submarine list is this host's live `IsKindOf(8)` units; the target frame is the
+  unit pose rows (unit scale); the position integrates with the advanced velocity (the image's place-pose step order
+  is not re-read here).
+- A summary line `depth charge rounds launched=... water_entries=... contact_detonations=... depth_detonations=...`
+  is printed when the switch is ON, and so is one `gunnery: depth charge detonates` line per detonation.
+
+**Predictions (before any run).** Pairs: OFF = the commit; ON = `kDepthChargeBotTickBound`,
+`kPlayerWeaponGroupFireBound` and `kDepthChargeInWaterBound` all true.
+1. **BSM01 p7** (ships38's `s38_b1_p7.txt`, 30000 frames):
+   - HenryPT stops about 40 m from MiniSub (at -6.96 m); the AI rack fires from about frame 10000, and the p7
+     presses from 9920.
+   - Charges enter at about 10 m/s and sink toward about 8 m/s, so they drift about 8 m. No centre comes within
+     25 m, so no contacts are expected; each charge detonates between 20 and 33 m.
+   - The blast centre is then about 35-45 m from MiniSub's box, inside BlastRange 50. Each detonation damages
+     MiniSub (health 200, armour 10) by a falloff fraction of 260-300, and nothing else: Henry is the source and
+     surface hulls are vetoed.
+   - **Expected:** MiniSub dies within the first few to tens of detonations, and phase 3 advances. Exit 3.
+2. **Controls** (BSM01 3000 frames, USN13 long): no DC round reaches the water within 100 m of a submarine, so
+   gameplay is identical; exit 1 (the ON-only summary line). Any moved number outside the DC rows belongs to the
+   bot or player switch (a DC ship firing at a submerged target).
+
+**First runs** (commit `dc333827c`; OFF export `local\g31_dc_off`, `2FDBB50BF1C7`; ON export `local\g31_dc_on` with all three
+switches flipped; logs `local\g31_dc{off,on}_<row>.log`; the reference AD launch form):
+
+| row | verdict | what moved |
+| --- | --- | --- |
+| BSM01 3000, USN13 long, USNOS long, JM05 long | identical | nothing. USNOS ticks the DC bot 501536 times and never holds |
+| BSM01 p7 (presses 9920-10480) | moved | shots +5 (5 rounds, all during Henry's approach); MiniSub untouched |
+| BSM01 p9 (`g31_ord_b1_p9.txt`: p6 plus a press every 80 frames, 11000-12920) | moved | shots +21; MiniSub untouched |
+| BSM01 p6 (the AI only) | moved | holds 462, 145 rounds. At 1300.79 s a round detonates by depth (`depth=20.2`) 44 m from MiniSub's box, and the hit listener `luaMiniSubHit` fires (`hit listener 00988510: target "MiniSub" type "Depthcharge"`). The mission's `AddDamage(9999)` kills MiniSub and phase 3 advances (deaths 486 -> 433 over the rest; Donald controlled) |
+
+- **Why the hit lands with no damage, and why that is enough.** MiniSub is invincible: this installation's
+  `bsm_01_stationed_at_pearl.lua` (2024-07-13) line 1137. Its hit listener (2006-2016, attacker Henry) removes the
+  invincibility and adds 9999 damage on any hit by Henry. So any hit record from Henry completes phase 3.
+- **Why 144 of the 145 rounds never reach their dive depth (a terrain-query artefact, not this lane's).** Those rounds
+  end as `fate=1`, landscape impacts, between -11 and -21 m (`BSP_SHELL_FATE=HenryPT|MiniSub`,
+  `local\g31_dcon_p6fate.log`).
+  - A local diagnostic build (`G31DIAG`, `local\g31_dcdiag.log`, not committed) shows that each hit comes from a
+    near-vertical sinking step about 0.4 m long, but the hit point it reports is about 40 m below that step:
+    `from=(1119.06 -14.56 -2997.52) to=(1119.09 -14.94 -2997.51) point=(1121.89 -53.01 -2996.32) shape=10`.
+  - The path is `landscape_entry_segment_hit`'s vertical case, `kTerrainVerticalSubwalkBound` (00AECC40/00AECA60,
+    `src/game_hosts_scene_contents.cpp`).
+  - The blast is then centred at -53 m, beyond 50 m of MiniSub, so it never reaches it.
+  - Routed to the lead (scene-contents lane): a segment whose y range is -14.56..-14.94 should not report a crossing
+    at -53.01.
+  - The image's sweep does run in water: `006E13C7` runs it in both modes, with flags 1/1.
+- **Verdict: the mechanism matches.** 008FC080 fires, 79h group 5 fires, and the round sinks, detonates and its
+  blast reaches the submarine. The DC switches stay identical on every row without a submerged target. The early
+  ends belong to the terrain query. **All three switches are flipped ON** (`kDepthChargeBotTickBound`,
+  `kPlayerWeaponGroupFireBound`, `kDepthChargeInWaterBound`). BSM01 can be re-run by cc9-ships39.
+
+## 143. USN04 phase 2: why the strikes on Shoho do not release, and the USNOS Kaiten drown (lead items 2 and 3; cc9-gunnery31, 2026-10-06, read and diagnostic runs only)
+
+Runs: an export of `e611d7c4f` with `kHullAimTrace` flipped (`local\g31_u4trace`, `7D50EAC0AF43`). It also carries a local
+`G31AIM` line, never committed, printed every 10 aim ticks of a torpedo aircraft: the altitude, the floor `F=28h`, the
+ground, `approach+74h/+78h`, `f34`, the pitch command `2BCh`, the live pitch, bank, vy, speed, throttle and pitch mode.
+- Launch: USN04 with ships39's `s39_u4_p1.txt` (copied to `local\g31_ord_u4_p1.txt`), `--mission-frame-seconds 0.0222
+  --frame-jitter '20,3'`.
+- Logs: `local\g31_u4trace.log` (45000 frames), `local\g31_u4aim.log` and `local\g31_u4aim2.log` (45000 and 32000).
+- The game numbers match ships39's `s39_u4p1.log` line for line, for example `db aim exit Lexington-class01_sqn06:
+  aimdive -> goaway tick=3879 alt=127.2 ... d=362.8`.
+- **A launch note**: from a `pwsh -Command` string, `--frame-jitter 20,3` must be quoted (`'20,3'`). Otherwise the
+  executable exits 2 before it opens the log.
+
+### 143.1 The torpedo task: `blocked_engaged_009d3210` is the approach, and the loss is in `aim`
+
+- The summary reads `blocked_engaged_009d3210=31532`, split as `member=23908 range=7624` (`no_target=0`). That is
+  docs/TORPEDO_RELEASE_ORDERS.md (8)'s reading: wing members in `follow` before the mode reaches 2, and leaders beyond
+  2.2 x AttackDist. It is the image's own gate. **Nothing to bind at 009D3210.**
+- The three releases are Japanese Kate leaders (#2.1, #4.1, #6.1). **No US TBD releases.** Every Yorktown TBD reaches
+  `aim` for 300-690 ticks. In each one the altitude flag (`009D20C4`, `alt_gate > altitude`, which needs about
+  25-40 m) never opens: `aim gates: ... alt=0 ... min_alt=106.0..139.7`.
+- **What differs from the Kates** (`G31AIM`):
+  - The floor is not the cause. TBD `F=28h` = 5.2 m (`approach+74h` 5.0, SPVeteran's `TorpReleaseAlt`); the Kates' is
+    14.2. Ground is -1000 (open sea) for both.
+  - The TBDs enter `aim` at about 1050-1120 m. That is the image's descent law at their `approach+8Ch` of about 3840 m
+    (`A = 12 + (3843 - 450) x 0.5 x 0.6249 = 1072`, docs/TORPEDO_RELEASE_ORDERS.md (7)). The Kates enter at about 930 m
+    with `+8Ch` about 2900.
+  - `aim`'s command brings both down cleanly at first: `cmd=-0.236 pitch=-0.248` at 197 m for Yorktown_sqn09.
+  - **At about 110 m the TBD levels off against its command.** From t=401 to 441 the aim command stays -0.18 to -0.20
+    rad, but the live pitch goes -0.178 -> -0.067 -> -0.018 -> +0.002. The aircraft then holds 106-110 m and climbs to
+    208 m by t=641 while the command reaches -0.49. Bank is 0.19-0.32 rad throughout (it is turning), with the plan
+    pitch mode 2.
+  - The Kate in the same law (#2.1) is wings level (bank about 0.00) and tracks its command to 15.2 m (`cmd=-0.005
+    pitch=-0.007`).
+- **Candidate, not settled:** something in the planner's pitch arm (`0099E490`, `pilot_pitch_demand_0099e490`, its
+  turn terms `pilot_general_pitch_turn_*`, or the mode-2 hold `0099DD4C`) overrides `aim`'s nose-down command while
+  the aircraft banks. Every TBD in Yorktown's three squadrons stalls at the same 106-140 m, which points at a rule
+  rather than at spread. This is the planes lane (`src/game_hosts_units.cpp` planner, `src/plane_ai_control.cpp`).
+  **Routed, not bound.**
+- The torpedo leader of SHIP_AI 189 (USNRM01's Kates) should be checked against the same `G31AIM` shape.
+
+### 143.2 The dive bombers: the roll-in is 45 degrees of sight line, and the dive goes in at 72
+
+`hull_trace Lexington-class01_sqn06` (leader, tick 3610-3879):
+- Turndown at tick 3610: rel = (-1107, +1206, -500), so 1214 m planar from 1206 m up (a 45-degree sight line).
+- Into `aimdive` at tick 3670: the live pitch is already -1.18 and goes to -1.26 rad (72 degrees) at 100-134 m/s. The
+  turndown's own `plan_commanded_pitch` is -0.5585.
+- The along-track error (`009C5C9B`, `gain * (cos(brg) d - lead)`) then grows from 0 to 42, 179, 303, 439, 548 and
+  653 m. The aircraft is steeper than its sight line, so the impact point runs short of the aim point.
+- The pitch law does pull out: pitch 0.0 by tick 3790, but at 168 m with the error at 299 m. The pull-out edge
+  (`approach+A8h * 0.5`) ends the dive at 127 m, with the error still 280-290 m.
+- The release needs `|error| < 25` below `approach+A8h` (`009C60A9..009C60EC`), so it never fires. The wingmen show
+  the same shape (d = 280-514 at exit).
+- **Not authored spread.** The miss is 10 to 20 times the hull-point and lead draws of SQUADRON_LAND_TASK 5dv
+  (±72 m, ±10 s). The error is born in the first second of `aimdive`, from the attitude the turndown hands over:
+  -1.18 rad live against the -0.56 command. docs/HULL_AIM_AXIS.md section 1 saw the same shape on USN04's Vals (the
+  closest pass at 420-796 m, above the floor).
+- **Routed:** the turndown-to-aimdive attitude handover (`009C44F0`, the pitch-mode 0 gate at `0099E3BF`, the stick
+  path) is the planes lane's. No binding here.
+
+### 143.3 USNOS: the wave-1 Kaiten drown is the image's own rule
+
+- Unit #3.2-#3.6 are class 4: this installation's `vehicleclasses.lua` (2026-05-09) "Kaiten Suicide torpedo", with
+  `AirRunOutTime` 120, `AirReloadTime` 40 and `PeriscopeDepth` 3. `us_osumi.lua` (2024-10-29) spawns them at y = -5
+  (1489-1491), sets no unlimited air, and gives them `NavigatorAttackMove` only.
+- `00855250`, read again: the breathing line is `periscopeY + 3.0` (`00D7A2B0`), floored at -4.0. Here it is
+  -3 + 3 = 0.0. The test at `008552A4` is `FCOMIP` of `pose+100h` against the line, then `JBE` into the submerged arm,
+  so **y <= 0 drains** at `dt / 120`. The trace shows `y=-0.11 level=0 air` falling 0.083 per 200 steps, which drowns
+  them at 120.0 s after the spawn (40.81 + 120 = 160.81 s).
+- A kamikaze class never surfaces for air (`submarine_model.cpp` 198, `!in.kamikaze_class`). In the image, a Kaiten at
+  band 0 would need y strictly above 0.0 to refill.
+- **Verdict: faithful** to the read rule. **Uncertainty:** the image's surfaced y for a band-0 hull. The host settles
+  at -0.11; any y at or below 0.0 gives the same drown.
+- **A transcription slip, with no effect here:** `00CEE4E0`, the bound of the floor, is the double **-4.0**, not 0.0.
+  `submarine_air_breathing_line_00855250` tests `sum < 0.0f`, the image `sum < -4.0`. The result differs only for
+  `PeriscopeDepth` between 3 and 7 exclusive, and this installation has none (3, 7, 10.2-14.0). Routed to the
+  submarine-model owner.

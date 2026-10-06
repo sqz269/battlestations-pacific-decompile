@@ -784,6 +784,48 @@ AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_s
     return out;
 }
 
+std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
+                                                  std::uint32_t squadron) noexcept {
+    std::size_t returned = 0;
+    if (squadron == 0u) return returned;
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        AirOpsSlot& slot = deck.slots[index];
+        if (slot.launched_squadron != squadron) continue;   // 006C59F8
+        const std::uint32_t vehicle_class = slot.vehicle_class;   // +4h, read first
+        const std::int32_t class_field = slot.class_field_134;
+        std::int32_t count = slot.requested_count;               // +0Ch
+        slot.state = AirOpsSlotState::kCooldown;                 // +2Ch = 1
+        slot.timer = 0.0F;                                       // +30h
+        if (slot.launch_requested) {                             // +34h
+            slot.timer = kAirOpsSlotCooldownSeconds;             // 00CE3850
+            slot.launch_requested = false;
+        }
+        slot.launched_squadron = 0u;      // 006C5A2A: unregister, then zero +28h
+        slot.vehicle_class = 0u;          // +4h and +10h cleared while counting
+        slot.class_field_134 = 0;
+        slot.assigned_count = 0;          // +8h
+        std::vector<std::int32_t> live(deck.slots.size(), 0);
+        for (std::size_t i = 0; i < deck.slots.size(); ++i) {
+            const std::uint32_t other = deck.slots[i].launched_squadron;
+            if (other != 0u && g_squadron_plane_count != nullptr) {
+                live[i] = g_squadron_plane_count(other, g_squadron_plane_count_context);
+            }
+        }
+        const AirOpsStockAvailable stock =
+            air_ops_stock_available_006bf230(deck, vehicle_class, live.data());
+        if (stock.available < count) count = stock.available;
+        const std::int32_t room = deck.max_in_air_planes
+            - air_base_committed_planes_006bd3f0(deck.slots.data(), live.data(),
+                                                 static_cast<int>(deck.slots.size()));
+        if (room < count) count = room;
+        slot.vehicle_class = vehicle_class;
+        slot.class_field_134 = class_field;
+        slot.assigned_count = count;
+        ++returned;
+    }
+    return returned;
+}
+
 AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds) {
     AirOpsDeckTickResult total;
     AirOpsDeckRegistry& registry = air_ops_decks();

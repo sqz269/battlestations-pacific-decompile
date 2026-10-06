@@ -15367,3 +15367,148 @@ Nothing is bound and no run was made. The listing was read from Ghidra, read-onl
 | `s39_broad.ps1` | the five-row broad pair launcher |
 
 Leases: `cc9_elevator_retake_read` is released with this commit.
+
+## 200. A stowed plane goes back into stock and is killed; the elevator never re-takes it (cc9-ships40, 2026-10-06)
+
+**Source.** 199 item 1 (198, 198.1). Read from disk bytes (`python tools/bsp.py disasm-raw`), with the
+Ghidra decompile read-only. The scans are `local\s40_rel32.py` (rel32 E8/E9 plus absolute dwords over
+the whole PE) and `bsp.py scan-bytes`.
+
+### The chain
+
+1. **The send, BSP_PlaneTickElement_FixedStep `007CE6CA`-`007CE75B`** (ESI = plane+310h).
+   - The gate: plane `+9E0h` is clear (`007CE6CA`), `+520h` is clear (`007CE6D7`), and `+C00h`
+     (the stowed byte that `007B96C0` sets) is set (`007CE6E4`).
+   - The step builds message C7h (`75B430(C7h)`, vtable `00D0352C`). Its `+20h` word is
+     `[[[plane+BF4h]+4]+7Ch]+174h`, the handle of the holder site's owner entity. It is routed with
+     `0077C2A0(msg, 5, 0)`, and then `+C00h` is cleared (`007CE75B`).
+   - Nothing returns before it. Decompile lines 1-330 have no `return` or `goto`, so every live
+     plane step reaches the test.
+2. **Every sender of C7h.**
+   - `scan-bytes 'c6 ?? 10 c7'` finds only the factory `00762B20`, which the deserialiser `00769C04`
+     calls. The pattern is known to occur, because `'c6 ?? 10 c6'` finds `00762A00`.
+   - The vtable dword `2c 35 d0 00` occurs at `00762B73`, `007BD4F6` and `007CE727`.
+   - `007BD4D0`-`007BD50B` builds C7h too, but the rel32/dword scan finds no caller.
+   - So the fixed step is the one live sender.
+3. **The receive.** `BSP_Plane_HandleMessage` `007CCFA0`, case C7h (`-39h`), runs `007BA890`
+   (handle -> entity) and then `007CC8B0` (`007CC8B0`-`007CC8D0`, RET 4):
+   - `007CC820` EnterFlightStateOne: `+900h` = 1, `+C04h` = -1.0, `007C11E0(0)`, `vtable[ACh]`;
+   - then, when plane `+9D4h` (the squadron) is set, `squadron->007F1CA0(holder, plane)`.
+4. **`007F1CA0`-`007F1D66`** (RET 8, ESI = squadron, EBP = plane):
+   - `+3B8h` = (plane == `+3D0h`); `vtable[10h]()`; the holder observer pair at `+3F0h` / `+404h`;
+   - `006BCD20(holder)` -> `006CA770` AddStock(plane `+538h` class, 1): **the plane goes back into the
+     holder's stock**;
+   - when `+3CCh` == 1, i.e. this is the squadron's last live plane:
+     - `00922F80(0)`, game `+193Ch` = 0, `00696350`;
+     - outside session mode 2, `006C5950(block, squadron)`;
+   - `00926D90` Kill(**plane**, 5) at `007F1D57`, then `+3ECh` = 1.
+5. **The kill.**
+   - The destroy flush sets `+5Dh` and dispatches `007BCAA0` (OnDestroyed).
+   - OnDestroyed draws `+C14h` on `00BD2F10` and calls `007F3970`, which takes the plane off its
+     squadron and kills the squadron when it is empty.
+6. **`006C5950` is a slot return.** It walks the block's slots at `+4Ch` (stride 58h). For each slot
+   whose `+28h` is the squadron:
+   - `+2Ch` (state) = 1, `+30h` = 0 (5.0 `00CE3850` when byte `+34h` is set, which it then clears);
+   - the `+28h` observer is unregistered and the field zeroed;
+   - `+8h` = min(`+0Ch`, 006BF230(class).available, block `+58h` - 006BD3F0), counted with the slot's
+     class cleared; then the class `+4h` / `+10h` is restored and the slot replicated.
+   - **Correction to SQUADRON_LAND_TASK 5ep** ("a landing never clears slot `+28h`"): when the last
+     plane of a squadron is stowed, its slot returns to state 1.
+
+### What this decides
+
+- The image never re-takes a stowed plane.
+  - The plane's next fixed step after `+C00h` sends C7h. The plane then enters flight state 1, goes
+    back into stock, and is killed with cause 5.
+  - It leaves the site vector `+34h` when the entity is destroyed. The vector's entries are observer
+    pairs (`006CE910` registers one, `006CEF80` unregisters it).
+  - The host's re-take loop and its 7 m sink per cycle are therefore host artefacts. They come from a
+    plane that the host never retires.
+- The airfield taxi-in (`009B2xxx` -> `007B96C0`) sets the same `+C00h`, so a plane that parks in a
+  hangar ends the same way.
+
+### The host before this packet
+
+Log `cc9-lua44\local\l44_h2on_e8.log` (ESMP08, 3600 s):
+- 1362 elevator intakes (Zuiho 540, Chiyoda 459, Chitose 362, Zuikaku 1);
+- 1046 stows, of only four planes (`Chiyoda_sqn28` 458, `Chitose_sqn35` 361,
+  `Zuiho_sqn20|.-3` 226, `Zuikaku_sqn17` 1).
+
+### The binding, `kStowedPlaneStockReturnBound` (committed OFF)
+
+- **Where.** `plane_stock_return_c7h_007cc8b0` (`src/game_hosts_units.cpp`) runs right after the plane's
+  fixed step. The image sends C7h in the middle of the step.
+- **What it does,** for a plane with `+C00h` set, `+9E0h` / `+520h` clear, and not dead:
+  - it clears `+C00h`, sets `+900h` = 1 and `+C04h` = -1.0;
+  - it adds the plane's class to the stock of the deck indexed by `+BF4h`, with 1;
+  - when it is its squadron's last live plane, `air_ops_return_squadron_slot_006c5950` returns the slot;
+  - it then retires the plane: off the site vector and the squadron, `plane_death_removed`, and gunnery
+    `kill_unit_00926d90(plane, 5)`.
+- **Substitutions (labelled).**
+  - The destroy flush is taken at once.
+  - OnDestroyed's `+C14h` draw is not taken.
+  - `vtable[ACh]`, `00922F80`, `+193Ch` and `00696350` are not carried.
+  - The squadron entity id is `squadron_unit + 1`.
+  - `006C5950` keeps the slot's own `+10h`; the image rewrites it from class `+134h`.
+
+### Predictions (written before any run)
+
+1. **ESMP08, `s38_e8_p3.txt`** (72000 frames, the mission's 3600 s):
+   - Elevator intakes fall from about 1362 to the number of planes that reach a deck: one take per plane.
+   - Every stow is followed by one `stock return` line, on the next step.
+   - Deaths rise by the number of stowed planes (four in the OFF log above).
+   - Each stowed squadron's last plane returns its slot (`slot_returns` > 0). The slot is then back in
+     state 1 with a recounted `+8h`. 006C7210 launches from state 1 or 5, so the carrier's AI or
+     script launches on that slot may rise.
+2. **USN01, `s38_u1_p8.txt`** (control, 22000 frames):
+   - Enterprise's planes that land and stow are retired the same way.
+   - The win stands if no order in p8 targets a plane that was stowed.
+   - Nothing moves before the first stow.
+3. **Failure tests.**
+   - A mechanism failure is any stow without a `stock return`, or a re-take of a retired plane.
+   - A failure is also any `no_deck` or `no_squadron` on a carrier stow.
+4. **USNOS, 9000 frames, idle player** (the airfield case). The OFF log `cc9-ships39\local\s39_osb4.log`
+   has 8 hangar taxi-ins (`plane #1.5` at 321.10 s ... `plane #1.6|.-4` at 586.23 s).
+   - ON: each of these is followed by one `stock return` into Airfield3's stock.
+   - The plane is killed (cause 5), so the scripts see these Judys as Dead. If phase 1 counts them, it
+     may advance.
+   - Airfield3's slot returns when the last plane of a squadron parks.
+5. **USN13, 9000 frames, idle.** Moves only if a plane is stowed or parks inside 450 s.
+
+### 200.1 Pairs (cc9-ships40, 2026-10-06; OFF `68b187418` main build, ON `local\s40_sr`)
+
+Launch form: reference AD (`local\s40_rows.ps1`: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+step 0.05). Logs: `local\s40_off_<row>.log` and `local\s40_on_<row>.log`. Diffs: `local\s40_diff_<row>.txt`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| ESMP08 p3, 72000 | 3 | intakes 1362 -> 12 (12 distinct planes, one take each); stows 1046 -> 12, each followed by one stock return; no_deck = no_squadron = 0; 7 slot returns; units 776 -> 791 (relaunches from the returned slots); deaths 669 -> 675; Zuikaku no longer dies; dive-bomb releases 5/176 -> 13/201, torpedo 47/258 -> 45/237 (RNG-coupled) |
+| USN01 p8, 22000 | 3 | still completes at 648.42 s, with the exec guard's `sus_prog.exe` refusal; ScoutDauntless (414.07 s) and KatTBD (523.15 s) go back into Enterprise's stock; deaths 87 -> 89; Enterprise's landing sequencer passes 5631 -> 1421 |
+| USNOS, 9000 | 3 | five Judys (`plane #1.5` x3, `plane #1.6` x2) taxi into Airfield3's hangar and go back into its stock at 321.10-384.58 s; deaths 109 -> 114; no slot return (scene squadrons hold no slot); no mission end |
+| USN13, 9000 | 1 | no stow inside 450 s |
+
+- **Verdict: the mechanism matches the predictions.** Every stow has exactly one stock return, there are
+  no re-takes, and every holder resolves.
+- **Open before the flip: the Lua `KillReason`.**
+  - The image kills with cause 5, which is "landed" in `00E0CF04`. The host's kill publishes the default
+    cause 1, "harm".
+  - The fix is `note_kill_cause(p.process_index, 5)` in `plane_stock_return_c7h_007cc8b0`. It is routed,
+    because `game_hosts_units.cpp` was leased elsewhere.
+  - These pairs therefore carry "harm". Re-pair after the fix.
+- **Diagnostic only.** The death table's `killed_by` for a stock-returned plane shows its last attacker.
+
+## 201. BSM01 completes with the AI depth-charge rack (cc9-ships40, 2026-10-06; lead item 2)
+
+The tree is `agent/cc9-ships40` with main merged (`c7991d5a3`, including `efbc2de86`, GUNNERY 142:
+depth charges in water ON). Launch form: reference AD, BSM01 40000 frames (`local\s40_rows.ps1`).
+
+| order file | log | result |
+| --- | --- | --- |
+| `s38_b1_p6.txt` (the AI-rack route: Henry helmed to the halted mini-sub, `stop 40`) | `local\s40_bsm_b6.log` | **completed.** MiniSub dies at 1300.79 s (killer HenryPT at 25 m), and "Zeros! They're coming in fast!" shows at 1335.23 s. Mission.EndMission at 1632.47 s with `MissionStatus=true`, MissionPhase 4. Narrative "Donald is heading home - Mission Complete" at 1644.08 s. The exec guard logs "refused a mission script's process launch: sus_prog.exe" |
+| `g31_ord_b1_p9.txt` (p6 plus a player depth-charge press every 80 frames, 11000-12920) | `local\s40_bsm_b9.log` | no end. MiniSub survives: 21 water entries, and no hit is recorded. This is the terrain-subwalk fault the lead is routing |
+
+Notes:
+- `Objectives_Failed` names "Bruh" at the end of the p6 run. Its source in this installation's
+  scripts was not read.
+- Mission.EndMission is set with `status=nil`; the completion narrative follows 11.6 s later.
+- EndScene `008B01B0` is not reached inside 40000 frames.

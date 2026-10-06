@@ -2613,6 +2613,11 @@ struct GameUnitsHost::Impl {
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
     unsigned long long base_launch_liftoff_site_leaves{0}, base_launch_c01_sets{0};
+    // Packet cc9_stowed_plane_stock_return (kStowedPlaneStockReturnBound).
+    void plane_stock_return_c7h_007cc8b0(GameUnitSlot& p);
+    unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
+    unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
+    unsigned long long stock_return_site_leaves{0};
     // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
     unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
@@ -5255,6 +5260,13 @@ struct GameUnitsHost::Impl {
     // request 007C2090 -> 007CC7A0, the carry 006FC0D0 and the hide/release
     // 007B96C0/006FC250. False: park on a carrier takes the airfield arm.
     static constexpr bool kCarrierElevatorBound = true;  // ON, staged behind park: JM05 9000 stows 8 of 8 (5ao.1)
+    // Packet cc9_stowed_plane_stock_return (docs/SHIP_AI_OPEN_ITEMS.md 200). True: a
+    // plane whose stowed byte +C00h is set (the elevator's 007B96C0, or the hangar
+    // taxi-in) runs 007CE6CA's C7h send on its next fixed step: 007CC8B0 flight
+    // state 1, 007F1CA0's stock add 006CA770(class, 1) on the holder's block, the
+    // last plane's slot return 006C5950, and Kill(plane, 5). False: the stowed
+    // plane stays alive on the site vector and the elevator re-takes it.
+    static constexpr bool kStowedPlaneStockReturnBound = false;
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -13204,6 +13216,95 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
         static_cast<double>(p.motion.position[1]),
         static_cast<double>(avoid_len(p.plane_world_velocity)));
     done("Plane::begin_flying_007c7110", 0x007c7110u);
+}
+
+// Packet cc9_stowed_plane_stock_return (docs/SHIP_AI_OPEN_ITEMS.md 200).
+// 007CE6CA-007CE75B in the plane's fixed step (ESI = plane+310h): +9E0h clear,
+// +520h clear and the stowed byte +C00h set build message C7h carrying the holder
+// owner's handle ([[[plane+BF4h]+4]+7Ch]+174h), route it (0077C2A0 with 5;
+// LABELLED: delivered at once) and clear +C00h. 007CCFA0 case C7h -> 007CC8B0:
+// - 007CC820 EnterFlightStateOne: +900h = 1, +C04h = -1.0, 007C11E0(0) (recorded),
+//   vtable[ACh] (not carried: the plane is retired in the same step);
+// - with a squadron (+9D4h), 007F1CA0(holder, plane): 006BCD20 -> 006CA770
+//   AddStock(plane+538h class, 1) on the holder's block; when +3CCh == 1 (the last
+//   live plane) 006C5950 returns its slot (00922F80 / +193Ch / 00696350 are not
+//   carried); then 00926D90 Kill(plane, 5).
+// SUBSTITUTIONS, labelled: the holder's block is the deck registry entry indexed
+// by +BF4h (landing_decks and air_ops_decks share the index); the squadron is the
+// registry record holding the plane and its entity id squadron_unit + 1; the
+// destroy flush is taken at once, so the plane leaves the site vector +34h (the
+// observer pair 006CE910 / 006CEF80) and its squadron (007BCAA0 -> 007F3970) in
+// this step. OnDestroyed's +C14h draw on 00BD2F10 is not taken: this host draws
+// nothing for a retired plane.
+void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
+    if (!p.plane_in_hangar_c00 || p.plane_death_removed) return;
+    if (p.plane_airborne_frozen_9e0 || p.generic_suppress_520) return;   // 007CE6CA / 007CE6D7
+    if (gunnery != nullptr && gunnery->unit_dead(p.process_index)) return;
+    p.plane_in_hangar_c00 = false;                                        // 007CE75B
+    ++stock_return_sends;
+    p.plane_control_mode_900 = 1;                                         // 007CC857
+    p.plane_site_timer_c04 = -1.0f;
+    record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    const std::size_t di = p.plane_contact_deck_bf4 != 0 ? p.plane_contact_deck_bf4 - 1u
+                                                         : static_cast<std::size_t>(-1);
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    bsp::AirOpsDeck* deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
+    bsp::PlaneSquadronHostRecord* sq =
+        bsp::plane_squadron_registry().find_by_member_unit(p.process_index);
+    int stock_after = -1;
+    std::size_t slots_returned = 0;
+    if (sq == nullptr) {
+        ++stock_return_no_squadron;
+    } else if (deck == nullptr) {
+        ++stock_return_no_deck;
+    } else {
+        bsp::AirOpsStockEntry created{};
+        const bsp::AirOpsStockAddResult added = bsp::air_base_stock_add_006ca770(
+            deck->stock.data(), static_cast<int>(deck->stock.size()),
+            static_cast<int>(deck->stock.size()) + 1, static_cast<std::uint32_t>(p.row.type_id),
+            1, &created);                                                 // 007F1D09
+        if (added.created_entry) deck->stock.push_back(created);
+        stock_after = added.entry_count;
+        ++stock_return_adds;
+        std::size_t live = 0;
+        for (const std::size_t m : sq->member_units) {
+            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+            if (slots[m]->plane_death_removed) continue;
+            if (gunnery != nullptr && gunnery->unit_dead(m)) continue;
+            ++live;
+        }
+        if (live == 1 && sq->squadron_unit != bsp::kPlaneSquadronNoUnit) {   // 007F1D0E
+            slots_returned = bsp::air_ops_return_squadron_slot_006c5950(
+                *deck, static_cast<std::uint32_t>(sq->squadron_unit + 1u));   // 007F1D4E
+            stock_return_slot_returns += slots_returned;
+        }
+    }
+    // 007F1D57 Kill(plane, 5), and the flush taken at once.
+    if (di < landing_decks.size()) {
+        std::vector<std::size_t>& occ = landing_decks[di].site_occupants_34;
+        const auto it = std::find(occ.begin(), occ.end(), p.process_index);
+        if (it != occ.end()) {
+            occ.erase(it);
+            ++stock_return_site_leaves;
+        }
+    }
+    if (sq != nullptr) {
+        for (std::size_t& member : sq->member_units) {                   // 007F3970
+            if (member != p.process_index) continue;
+            member = bsp::kPlaneSquadronNoUnit;
+            break;
+        }
+        sq->formation_indices_assigned = false;
+    }
+    p.plane_death_removed = true;
+    if (gunnery != nullptr) gunnery->kill_unit_00926d90(p.process_index, 5);
+    log.notef("  stock return: %s back into %s's stock (class %d -> %d) at %.2f s, squadron %s, "
+        "slots returned %zu (007CE6CA C7h -> 007CC8B0 -> 007F1CA0 -> Kill 5, packet "
+        "cc9_stowed_plane_stock_return)", p.row.name.c_str(),
+        deck != nullptr ? decks.name_at(di).c_str() : "?", p.row.type_id, stock_after,
+        static_cast<double>(summary.simulated_seconds), sq != nullptr ? sq->name.c_str() : "-",
+        slots_returned);
+    done("Plane::stock_return_007cc8b0", 0x007cc8b0u);
 }
 
 // 009CDD50 (009CDD50-009CDE4C, RET), takeoff/prepare's enter: +19h = +18h = 0,
@@ -30993,6 +31094,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 } plane_calls(host, slot);
                 const bsp::PlaneMotionArm arm =
                     bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
+                if constexpr (Impl::kStowedPlaneStockReturnBound) {
+                    // Packet cc9_stowed_plane_stock_return: 007CE6CA, after the
+                    // step's motion (LABELLED: the send sits mid-step).
+                    host.plane_stock_return_c7h_007cc8b0(slot);
+                }
                 if constexpr (Impl::kFighterLeadAccel654Bound) {
                     if (step_seconds > 0.0f) {
                         const double idt = 1.0 / static_cast<double>(step_seconds);
@@ -33611,6 +33717,12 @@ void GameUnitsHost::report() {
                 host.carrier_elevator_state_two);
         }
     }
+    host.log.notef("summary stowed plane stock return bound=%d sends=%llu adds=%llu no_deck=%llu "
+        "no_squadron=%llu slot_returns=%llu site_leaves=%llu (007CE6CA -> 007CC8B0 -> 007F1CA0, "
+        "packet cc9_stowed_plane_stock_return)", Impl::kStowedPlaneStockReturnBound ? 1 : 0,
+        host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
+        host.stock_return_no_squadron, host.stock_return_slot_returns,
+        host.stock_return_site_leaves);
     if constexpr (kBaseLaunchChainBound) {
         std::size_t inside_now = 0;
         for (const auto& s : host.slots) {
