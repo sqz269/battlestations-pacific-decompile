@@ -12006,7 +12006,11 @@ aim-error draws. Two routes can advance USN01's phase 2:
 
 Census item 4. **The image (read whole):**
 - `0089B840` reads argument 0 through `00888AA0`, calls `006F1F90` on that entity with no class
-  test, takes `|result|` and pushes it with `00B66480`: one result.
+  test, and pushes the result as it is with `00B66480`: one result.
+  - **Correction (cc9-lua40, 2026-10-06, from cc9-ships34).** The earlier text here said `|result|`.
+    `006F1F90` is `FLD [+7A8h]` / `FIDIV [+7A4h]` / `FSTP` with no `FABS`, so a side-1 capture
+    pushes a negative fraction. The committed binding pushes the signed value, and 5dw.2 re-measures
+    it.
 - `006F1F90` (`006F1F90`-`006F1FB2`) answers 0.0 when `+7A4h` (the capture value) is 0.
   Otherwise it answers `[+7A8h] FIDIV [+7A4h]` (progress over value), stored as a float.
 
@@ -12052,6 +12056,22 @@ Every prediction held:
 - deaths, hits and every gameplay line are identical.
 
 **Verdict: ON**, to be committed once the ship-AI accessor is on main (the binding calls it).
+
+### 5dw.2 Re-measured with the signed value: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+- **The pairs.** Same tree. OFF is `cefd3e213`, which is main with the accessor (2fe14fa05) plus this
+  binding pushing the signed fraction. ON is that commit exported with the flip (`6A8C1180307A`).
+  Logs: `local\l40_{off,on}_{usn02,jm05,jm05l}.log`.
+
+| row | exit | timers created OFF -> ON | `luaTimetable` failures OFF -> ON | calls (ON) |
+| --- | --- | --- | --- | --- |
+| USN02 | 1 | (unchanged) | 0 -> 0 | 0 |
+| JM05 | 1 | 80 -> 128 | 48 -> 0 | 48, none unresolved |
+| JM05 long | 1 | 212 -> 360 | 148 -> 0 | 148, none unresolved |
+
+- **The sign changes no gameplay line**, as 5dw.1 predicted: the value feeds only
+  `Mission.CaptureProgress` and the score display.
+- **Verdict: ON.** The flip belongs to reference AC.
 
 ## 5dx. `SetCatapultStock` and `PilotRetreat`: read, no reach, not bound (cc9-lua39, 2026-10-05)
 
@@ -12175,7 +12195,7 @@ Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   2. build;
   3. commit the binding OFF (the switch is `false` in the tree now);
   4. flip it in a second commit.
-  The flip belongs to reference AB.
+  The flip belongs to reference AC (corrected by cc9-lua40: AB's base c245a54bb predates it; 5dw.2).
 
 **Scripts in `local\`** (prefix `l39_`):
 - `l39_queue.ps1 -Tag t -Jobs 'side:row,...'`;
@@ -12351,3 +12371,192 @@ That is a spread miss, not a mechanism failure.
 none, harm, soft, sell, exitzone, landed, editor. The host published `harm` for every death. Now
 the units host keeps the cause its own kills pass to `00926D90` (4 at the retreat exit), so an
 escaping catalina reads `exitzone` and the event's failure branch runs, as the script intends.
+
+## 5eb. The spent-ordnance RTB, 0084E010's B5 (packet `cc9_squadron_spent_ordnance_rtb`, cc9-lua40, 2026-10-06)
+
+**The read is 5ea step 1.** The binding is `kSquadronSpentOrdnanceRtbBound`
+(`include/bsp/squadron_spent_ordnance.hpp`), committed OFF.
+
+**The driver.** `GameUnitsHost::run_spent_ordnance_rtb_0084e010` runs once per simulation step, at
+the head of `run_landing_queue_006cd240`. For every squadron with a live member it does three things:
+- **009F8160's latch:** the leader's command is one of the seven ordnance classes, no live member
+  holds a rack round (`007B9140`), the leader is not `IsKindOf(13h)`, and the reload gate is open.
+- **009F7C90's ending:** every live member's dive-bomb or torpedo break-off answer is true; a member
+  with neither task counts as true.
+- **0084E010's B5:** `returntobase` on the squadron (`issue_return_to_base_007f16d0`). Its
+  `007F16D0` resolution and the bot intake install the land task (site arm) or the retreat task
+  (retreat arm, 5ea).
+
+The substitutions are listed at the routine. **`BSP_SPENT_RTB_CENSUS=1`** runs the three steps and
+logs them while the switch is OFF, without issuing anything.
+
+**Census.** Run at `456fb1b2a` plus this edit, OFF, with the census variable set; logs are
+`local\l40_off_<row>.log`.
+
+| row | latched | ended and B5 | squadrons |
+| --- | ---: | ---: | --- |
+| USNRM01 | 16 | 16 | twelve Val squadrons (`Jap #2.1`..`#48.1`, divebomb, 237-434 s) and three Kate squadrons (`KateSpawn1/3/4`, torpedo, 164-178 s); B5 0.1 s after each latch |
+| USN01 | 1 | 1 | `ScoutDauntless` (divebomb, 134.1 s) |
+| USN13l | 1 | 0 | `bruh #1.9` (torpedo, 153.3 s): its members never all answer the break-off |
+| USN04, LOMP10, JM05l | 0 | 0 | USN04 and JM05l: no squadron spends all of its ordnance; LOMP10: the dive-bombing Lightning and Warhawk are fighters (`IsKindOf(13h)`), which 009F8160 excludes |
+
+### Predictions, before any ON run
+
+- **OFF:** exit 0 on every row. Without the variable the driver returns at once.
+- **ON:**
+  - **USNRM01** moves a lot. Sixteen Japanese strike squadrons receive `returntobase` right after
+    their attacks. Each squadron resolves through 007F16D0: land at home when its spawn bag names a
+    base, otherwise a carrier of its side, otherwise retreat. The retreating ones fly off the map
+    and are removed (Kill(4), `exitzone`), so they stop circling over Pearl Harbor in the AA. Expect
+    fewer plane deaths and fewer AA shots after about 165 s.
+  - **USN01** moves after 134 s. ScoutDauntless returns to its carrier (land, if its resolution
+    gives a site) or retreats.
+  - **USN13l, USN04, LOMP10, JM05l:** no B5, so exit 0 or 1.
+  - **USN02**, the control: exit 0 or 1.
+
+### 5eb.1 Measured: **ON** (cc9-lua40, 2026-10-06)
+
+**The pairs.** Same tree. OFF is `cc6d108f3` (with `kPlaneRetreatTaskBound` ON); ON is that commit
+exported with the flip (SHA-256 `4C91E9A83627`). Both sides ran with the queue environment and
+without the census variable. Logs: `local\l40_{off,on}_<row>.log`.
+
+| row | verdict | note |
+| --- | --- | --- |
+| USN02 (control) | 1, gameplay identical | summary text only |
+| USN04 | 1 | as predicted, no B5 |
+| USN13l | 1 | as predicted, no B5 |
+| USN01 | 3 | ScoutDauntless: latched at 134.10 s, B5 at 134.20 s |
+| USNRM01 | 3 | 18 latches, 18 B5, all resolved to `retreat` |
+
+**USN01.** 007F16D0 answered land at site Enterprise, so both planes installed the land task
+(moveto (land) and follow (land)) and turned for the carrier, 10.5 km away. The row ends at 150 s,
+so this is 16 s of flight. Their task guns now tick (the land task is a task:
+ScoutDauntless shots 0 -> 63), and the convoy ships' AA meets them on the way (Convoy1 hits 4 -> 72).
+Deaths stay at 29. The `dive-bomb-task releases 2 of 19 -> 0 of 17` line is a reporting artifact:
+the summary counts the planes still holding the task at the end.
+
+**USNRM01.**
+- **The issue.** All 18 latches (Vals and Kates) reach B5. Every `007F16D0` answers `retreat`
+  (`null=0 home=0 site=0 retreat=18`), and 46 retreat tasks are installed.
+- **36 tasks are retired by the script, as in the image.** `usn_1_pearl.lua:2012`/`:2056` (this
+  installation, mtime 2024-10-29) sends every Val squadron whose `ammoType` is 0 to
+  `Mission.JapRetreat` with `PilotMoveToRange`. That new command replaces `retreat`; 009C9E30 fails,
+  and the moveto task takes over at the delivery. In the image the script's order also lands a few
+  seconds after B5, so the Vals fly the retreat task only until then.
+  - Note that the `-> 0 moveto task(s)` in those lines counts only the installs made before the
+    binding returns; they happen at the delivery.
+- **The torpedo Kates are not in the script's `vals` loop.** They keep the retreat:
+  - `KateSpawn3|.-2` and `KateSpawn5|.-2` leave the map at 320.45 s and 319.05 s through
+    007C6C30 -> 007F31A0 Kill(4) (`exits=2`; their KillReason is `exitzone`, 456fb1b2a);
+  - `KateSpawn1` and `KateSpawn4` climbed toward the retreat altitude (about 1000 m) and were shot
+    down there (alt 24 -> 344, 17 -> 159) instead of low over the harbour.
+- **Knock-on.** The AA's attention moves from the first B5 at 164 s: shots 61392 -> 56998, hit
+  records 1872 -> 1693. The later Val deaths re-time by seconds and change killers. Deaths stay at
+  132, with six planes swapped: four Vals of `#34.1`/`#50.1` and the two Kates that left (Kill(4)
+  is a death row), for six that OFF loses (`#21.1`, `#35.1`, `#44.1`, `#49.1`).
+- The `dive-bomb-task releases`/`torpedo-task releases` lines are the same reporting artifact as on
+  USN01. `torpedo drops` is unchanged at 6.
+
+**Verdict: ON.** Every predicted latch and B5 happens, with the resolutions the 007F16D0 read gives.
+The script overrides as the image's script would.
+
+**The rows not paired.** Runs of `19bc34aca` (ON) on E2, LOMP10l, ESMP08l, USNOSl, IJN11 and JM05 log
+`latches=0` (`local\l40_cur_<row>.log`), so B5 never acts there. JM06 and JM08 set
+SetDeviceReloadEnabled(true), which closes the gate. The other short rows release no ordnance in
+reference AA.
+
+**Controls and arms per row (added after the lead's review).**
+- **JM06, JM08 and JM08 long ([00E17BF2] = 1, `device reload ... now=1`): `latches=0`** on
+  `19bc34aca` (`local\l40_cur_{jm06,jm08,jm08l}.log`). The must-not-latch controls hold.
+- **The 007F16D0 arm, row by row:**
+  - **USNRM01:** all 18 squadrons take `retreat`, which is bound whole.
+  - **USN01:** ScoutDauntless takes **land at site**. The land task is partial. The row ends at
+    150 s, 16 s after B5 and 10.5 km out, so its pair shows only the turn for the carrier, never the
+    landing states. That row's result is a turn toward the carrier, not a landing.
+- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC. The retreat flip `6d90b5e04` (5ea.1) is in AB.
+
+## 5ec. USN01 36000 with B5: every spent squadron lands on Enterprise (cc9-lua40, 2026-10-06)
+
+The lead asked for this check (the land task's refusals for B5 squadrons sent home), measured on
+USN01 at 36000 frames. Run on `agent/cc9-lua40`, main `352d41953` merged; log
+`local\l40_cur_usn01l.log`.
+
+- **Seven squadrons are sent home.** Their B5 times are:
+
+  | squadron | B5 | class |
+  | --- | --- | --- |
+  | ScoutDauntless | 134.2 s | dive bomber |
+  | ConTBD2 | 184.8 s | torpedo |
+  | ConSBD1 | 189.8 s | dive bomber |
+  | ConSBD2 | 190.2 s | dive bomber |
+  | ConTBD3 | 195.3 s | torpedo |
+  | ConSBD3 | 198.8 s | dive bomber |
+  | KatTBD | 199.0 s | torpedo |
+
+  - Every `007F16D0` answers **land at site Enterprise**: `site=7`, with no null, home or retreat
+    answer.
+- **21 land tasks are installed, and none is refused** (`refused=0`, `refused_states=0`).
+- **20 planes reach `land/park`** (`state=620`), each about 0.2-0.9 m from its deck point, at
+  423-1029 s.
+- **The carrier elevator stows all 20** (`intakes=20 stowed=20`).
+- **The 21st plane, `ScoutDauntless|.-2`, is shot down** in follow (land) at about 171 s.
+- **The sequencer's `empty_assignments`** (5644 of 21057 requests) are the 0.5 s requests that find
+  no free assignment while the deck is busy. They are the queueing the image does, not refusals.
+
+**So no land-task refusal stands between B5 and a landing on this row.** The chain B5 -> 007F16D0
+land at site -> land task -> landing states -> park -> elevator runs end to end, as in the image.
+Nothing was changed for this section.
+
+## 5ed. Handoff (cc9-lua40, 2026-10-06, at about 66% context)
+
+Branch `agent/cc9-lua40`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua40`, main
+merged at the end. Everything below is committed; no lease is held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| retreat bot task (kind 9) | `kPlaneRetreatTaskBound` | ON (reference AB) | 5ea, 5ea.1 |
+| KillReason from the kill cause (`exitzone`) | - | in | 5ea.1 |
+| spent-ordnance RTB, 0084E010 B5 | `kSquadronSpentOrdnanceRtbBound` | ON (AC), both arms | 5eb, 5eb.1 |
+| USN01 36000: B5 -> land -> park -> stow | - | measured, no fix needed | 5ec |
+| GetCapturePercentage (signed) | `kLuaCapturePercentageBound` | ON (AC) | 5dw.2 |
+| mission state summary (MissionStatus, MusicEndTime) | - | in | commit 094cfca24 |
+| narrative queue (MissionNarrative/Clear/Size, EndScene record) | `kLuaMissionNarrativeBound` | ON (AC) | MISSION_END 7, 7.1 |
+| GetCameraState + GetRotation | `kLuaCameraStateBound` | ON (AC); EndScene about 40 s after a failure | MISSION_END 7.2, 7.2.1 |
+| NavigatorSetAvoidLandCollision's 0092BD00 | `kNavigatorPartsLandAvoidanceBound` | ON (AC) | SHIP_AI 167, 167.1 |
+
+**Next, in order:**
+1. **The LEVEL-BOMB bot task (kind 4). This is the lead's next packet, not started.**
+   - **Why.** It blocks USN01's phase 3 (cc9-ships35, SHIP_AI 167/168): six Nell squadrons get
+     `levelbomb` (`00E08F28`) on Enterprise, `0099A170` installs kind 4, and the host has no body,
+     so the Nells fly north at heading 0 and never release.
+   - **The addresses.** The lead's note names them slightly differently; the ledger has:
+     - factory `009B9030` `BSP_BotTask_MakeLevelBomb` (`operator_new(6F8h)`);
+     - constructor `009B7990`, with approach `009B75E0` at `009B79D1`;
+     - vtables `00D20210` / `00D2020C` / `00D20208` at `+4D4h`;
+     - initial state `+4E8h` (leader) or `+534h` (member);
+     - `src/bot_tasks.cpp` lists it only; the states come from `009B42D0` (lead).
+   - **Plan.** Read it whole (`BOT_TASKS.md` has the slot table; `DIVE_BOMB_TASK.md` and
+     `BOMBER_AFTER_TASK.md` are the closest worked examples), and bind it behind
+     `kPlaneLevelBombTaskBound`, OFF with predictions.
+   - **Pairs.** USN01 36000 with ships35's player order file (`3000 target ConTBD1 Convoy4`;
+     SCRIPTED_HELM 12, `J:\PROG\battlestations-pacific-decompile-cc9-ships35\local\s35_*`), a
+     control, and every reference row whose census issues `levelbomb`. The dive-bomb host is in
+     the shared `src/game_hosts_units.cpp`, so prepare the edit as a script (as
+     `local\l40_units_patch*.py` were) and apply it with claim, apply, build, commit, release.
+2. **The `os.execute` refusal line.** No reference row completes a mission, so nothing has shown it
+   yet. When a row first reaches `luaMissionCompletedNew`, check that the guard's refusal appears.
+3. **The MISSION_END open item:** what `[game+19FCh]` holds when the controlled unit is not a ship.
+   The stand-in covers this today, but no row has needed it yet.
+4. **The 5dr census.** Item 1 (the drop scatter 006E4D50) is what remains there, and it needs the
+   gunnery lane.
+
+**Scripts in `local\`** (prefix `l40_`):
+- `l40_queue.ps1 -Jobs 'side:row,...' -Tag t`. `off` and `cur` use `build\win32\Release`; any
+  other side uses `local\l40_<side>`. Row `usn01l` is USN01 36000.
+- `l40_spent.py`: done dive-bomb / torpedo goaway planes per squadron.
+- `l40_natcensus.py <glob> <regex>`: host-method call counts per row.
+- `l40_units_patch.py`, `patch2`, `patch3`: the applied units-host edits, for reference.
+- `l40_narrative_patch.py`, `l40_camera_patch.py`.
+
+**Diagnostic.** `BSP_SPENT_RTB_CENSUS=1` logs B5 latches without issuing (the switch is ON now, so
+it matters only with the switch off).

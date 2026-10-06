@@ -50,6 +50,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_state_frame.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/session_participant_pools.hpp"
@@ -351,7 +352,8 @@ struct GameMissionFrameHost::Impl {
         float repeat_seconds{0.0f};  // moveto ... repeat N
         bool select{false};        // packet cc9_player_order_capture_row
         bool attack{false};        // packet cc9_player_attack_row
-        std::string target;        // attack: the target entity's name
+        bool squadron_target{false};   // packet cc9_player_squadron_target
+        std::string target;        // attack / target: the target entity's name
         float stop_radius{-1.0f};  // takehelm ... stop R; negative: none
         unsigned applications{0};
         std::string unit;
@@ -2512,7 +2514,8 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
     //   <mission frame> moveto <unit> <x> <z>
     //   <mission frame> moveto <unit> <navpoint name>
     // plus `... repeat <s>`, `<frame> takehelm <unit> <throttle> <point> [stop
-    // <m>]` and `<frame> select <unit>` (docs/SCRIPTED_HELM.md sections 9, 10).
+    // <m>]` and `<frame> select <unit>` (docs/SCRIPTED_HELM.md sections 9, 10),
+    // `attack` (11) and `target` (12).
     // Blank lines and lines starting with '#' are skipped. A malformed line is
     // refused here, with its number, and the rest are kept.
     Impl& host = *impl_;
@@ -2538,14 +2541,14 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
         const bool verb_ok = words.size() >= 2
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
-                || words[1] == "attack");
+                || words[1] == "attack" || words[1] == "target");
         // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
         const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
         if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
-                "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> attack "
-                "<unit> <target> [repeat <s>]`", line,
+                "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
+                "attack|target <unit> <target> [repeat <s>]`", line,
                 path.c_str());
             continue;
         }
@@ -2557,8 +2560,9 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         }
         // Packet cc9_player_attack_row: `<frame> attack <unit> <target...>
         // [repeat <s>]`; the target is the rest of the line (names such as
-        // "Coastal Gun 01" carry spaces).
-        if (words[1] == "attack") {
+        // "Coastal Gun 01" carry spaces). Packet cc9_player_squadron_target:
+        // `<frame> target <unit> <target...> [repeat <s>]` has the same shape.
+        if (words[1] == "attack" || words[1] == "target") {
             if (words.size() >= 6 && words[words.size() - 2] == "repeat") {
                 char* re = nullptr;
                 order.repeat_seconds = std::strtof(words.back().c_str(), &re);
@@ -2569,7 +2573,8 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 }
                 words.resize(words.size() - 2);
             }
-            order.attack = true;
+            order.attack = words[1] == "attack";
+            order.squadron_target = words[1] == "target";
             for (std::size_t w = 3; w < words.size(); ++w) {
                 if (!order.target.empty()) order.target += ' ';
                 order.target += words[w];
@@ -2776,6 +2781,79 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
                     "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
+            if (order.squadron_target) {
+                // Packet cc9_player_squadron_target: the player's target pick
+                // 00525250 on a controlled squadron. 00523130 picks the hostile
+                // entity nearest the screen centre and returns settarget
+                // (00E08EF8) for a unit that is not a ship; 005252ED issues it
+                // through 0077D600 on [00E188D8] with a kind-1 descriptor and
+                // flags = IsKindOf(18h). The squadron's command intake, vtable
+                // 00D087C0 +160h = 007F1940, turns settarget into 007EEC50's
+                // class and issues that to its members (007F1AD6..007F1B24), as
+                // the AI's settarget to a squadron does (kAiSquadronSetTarget-
+                // IntakeBound). LABELLED: the file names the target instead of
+                // the screen-centre pick (00523130's relation, 00804350(5) and
+                // 005220C0 tests are not run); this host fuses the squadron
+                // into its flight leader, so "the controlled unit is a member of
+                // a plane squadron" stands in for IsKindOf(18h); message
+                // delivery is immediate.
+                const std::size_t count = host.units->count();
+                std::size_t idx = count;
+                std::size_t target_idx = count;
+                for (std::size_t k = 0; k < count; ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row == nullptr) continue;
+                    if (row->name == order.unit && idx == count) idx = k;
+                    if (row->name == order.target && target_idx == count) target_idx = k;
+                }
+                const bsp::PlaneSquadronHostRecord* squadron = idx < count
+                    ? bsp::plane_squadron_registry().find_by_member_unit(idx) : nullptr;
+                std::vector<std::size_t> members;
+                if (squadron != nullptr) {
+                    for (const std::size_t m : squadron->member_units) {
+                        if (m < count && host.units->unit_alive_and_visible(m)) {
+                            members.push_back(m);
+                        }
+                    }
+                }
+                const char* why = "";
+                if (idx >= count) {
+                    why = " (no created unit has that name)";
+                } else if (order.applications > 0 && !host.units->unit_alive_and_visible(idx)) {
+                    continue;   // a repeat stops when the unit is gone
+                } else if (!host.units->controlled_bound()
+                           || host.units->controlled_index() != idx) {
+                    why = " (not the controlled unit [00E188D8])";
+                } else if (squadron == nullptr || members.empty()) {
+                    why = " (not a plane squadron: 00523130 issues settarget only on 007F1940)";
+                } else if (target_idx >= count
+                           || !host.units->unit_alive_and_visible(target_idx)) {
+                    why = " (the target is not a live created unit)";
+                }
+                std::uint32_t chosen = 0u;
+                if (*why == '\0') {
+                    chosen = script_orders_squadron_intake_007f1940(members.front(), members,
+                        target_idx);
+                    if (chosen == 0u) why = " (007EEC50 chose no class: nothing issued)";
+                }
+                const bool issued = chosen != 0u;
+                ++order.applications;
+                if (issued && order.repeat_seconds > 0.0f) {
+                    const float frame_seconds = host.mission_frame_seconds > 0.0f
+                        ? host.mission_frame_seconds : 0.05f;
+                    long step = static_cast<long>(order.repeat_seconds / frame_seconds + 0.5f);
+                    if (step < 1) step = 1;
+                    order.frame = static_cast<long>(now) + step;
+                    order.applied = false;
+                }
+                if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) target "
+                    "%s -> %s%s through 00525250: 0077D600(00E08EF8 settarget, kind 1, flags 1) "
+                    "-> 007F1940 -> class %08lx to %zu member(s)", issued ? "applied" : "refused",
+                    order.line, due, now, order.unit.c_str(), order.target.c_str(), why,
+                    static_cast<unsigned long>(chosen), members.size());
                 continue;
             }
             if (order.attack) {

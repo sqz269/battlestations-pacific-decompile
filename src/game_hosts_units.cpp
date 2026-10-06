@@ -53,6 +53,7 @@
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_retreat_task.hpp"         // packet cc9_plane_retreat_task
+#include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
 #include "bsp/plane_follow_hold.hpp"
@@ -1509,6 +1510,9 @@ struct GameUnitSlot {
     // the FIRST tick it returns true, so the arm that retires the bomber is read
     // from a run instead of inferred. Additive: nothing here feeds behaviour.
     int torpedo_breakoff_first_tick{-1};      // slot arm tick, or -1
+    // Packet cc9_squadron_spent_ordnance_rtb: the last answer of the task's
+    // break-off slot +1Ch (009D4C10), which 007EE6B0 asks.
+    bool torpedo_breakoff_now{false};
     int torpedo_breakoff_true_ticks{0};
     int torpedo_breakoff_arm{0};              // 2 = target arm, 5 = range arm
     int torpedo_breakoff_state{0};
@@ -2354,6 +2358,18 @@ struct GameUnitsHost::Impl {
     // BSP_MissionEntity_Kill's cause (00926D90's argument) for the kills this
     // host passes one other than 1; 00929800 names it from 00E0CF04.
     std::vector<int> kill_cause_by_unit;
+    // Packet cc9_squadron_spent_ordnance_rtb: per squadron, the latch
+    // [+38h]+3Ch, the stage-2 ending and the B5 issue, by squadron name.
+    struct SpentOrdnanceRtb {
+        bool latch_3c{false};
+        bool ended{false};
+        bool issued{false};
+        float latch_at{-1.0f}, ended_at{-1.0f}, issued_at{-1.0f};
+        std::uint32_t command{0};
+        std::size_t placed{0};
+    };
+    std::map<std::string, SpentOrdnanceRtb> spent_rtb;
+    unsigned long long spent_rtb_latches{0}, spent_rtb_ends{0}, spent_rtb_issues{0};
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
@@ -13726,7 +13742,103 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
     return found;
 }
 
+// Packet cc9_squadron_spent_ordnance_rtb (bsp::kSquadronSpentOrdnanceRtbBound),
+// docs/SQUADRON_LAND_TASK.md 5eb: 009F8160's ordnance latch, 009F7C90's
+// ending and 0084E010's B5 per squadron, once per simulation step.
+// SUBSTITUTIONS, labelled: the squadron's current command is its flight
+// leader's (the host fuses them); the queue holds one command, so
+// 0071BE60() < 2 holds; sq+368h is 0 (007F2C60 never writes it) and sq+369h is
+// kLuaDeviceReloadEnabledBound's default 1; the class's fighter test is the
+// leader's IsKindOf(13h); 009F7C90's rocket arm (007ED920) is not modelled, a
+// rocket squadron latches through 009F8160 only; 007EE6B0 reads each member's
+// dive-bomb (009C8A90) or torpedo (009D4C10) break-off answer, a member with
+// neither task counting as broken off (007EE6E0's empty-list skip); B5 issues
+// `returntobase` on the squadron (issue_return_to_base_007f16d0), whose
+// 007F16D0 resolution and bot intake install what the image issues directly.
+// POSITION, labelled: the image runs this inside each squadron's 0071F290; the
+// host runs it at the head of the landing queue's step.
+void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
+    static const bool census = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        bool value = false;
+        if (_dupenv_s(&text, &bytes, "BSP_SPENT_RTB_CENSUS") == 0 && text != nullptr)
+            value = text[0] == '1';
+        std::free(text);
+        return value;
+    }();
+    if (!bsp::kSquadronSpentOrdnanceRtbBound && !census) return;
+    Impl& h = *impl_;
+    GameGunneryHost* const gun = h.gunnery.get();
+    if (gun == nullptr) return;
+    const bool reload_open =
+        !(kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2());
+    const float now = h.summary.simulated_seconds;
+    std::vector<std::pair<std::size_t, std::string>> issue;
+    for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+        std::vector<std::size_t> alive;
+        for (const std::size_t m : sq.member_units) {
+            if (m != bsp::kPlaneSquadronNoUnit && m < h.slots.size() && !gun->unit_dead(m))
+                alive.push_back(m);
+        }
+        if (alive.empty()) continue;
+        const std::size_t leader = sq.flight_leader();
+        if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
+        Impl::SpentOrdnanceRtb& st = h.spent_rtb[sq.name];
+        if (st.issued) continue;
+        const std::uint32_t command = h.slots[leader]->attack_command_class;
+        // 009F8160, the ordnance arm (009F81C8-009F8205).
+        if (!st.latch_3c && bsp::spent_ordnance_command_class_009f8160(command)) {
+            bool any = false;
+            for (const std::size_t m : alive) {
+                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+            }
+            if (reload_open && !any && !unit_is_kind_of(leader, 0x13)) {
+                st.latch_3c = true;
+                st.latch_at = now;
+                st.command = command;
+                ++h.spent_rtb_latches;
+                h.log.notef("spent ordnance: squadron \"%s\" latched (command %08X, %zu live) "
+                    "at %.2f s (009F8205, packet cc9_squadron_spent_ordnance_rtb)",
+                    sq.name.c_str(), command, alive.size(), static_cast<double>(now));
+            }
+        }
+        // 009F7C90 (009F7CE0-009F7CFC): every member's task breaks off.
+        if (st.latch_3c && !st.ended) {
+            bool all = true;
+            for (const std::size_t m : alive) {
+                const GameUnitSlot& u = *h.slots[m];
+                if (u.dive_bomb_task_installed) all = all && u.db_dbg_break_off;
+                else if (u.torpedo_task_installed) all = all && u.torpedo_breakoff_now;
+            }
+            if (all) {
+                st.ended = true;
+                st.ended_at = now;
+                ++h.spent_rtb_ends;
+            }
+        }
+        // 0084E010's B5 (0084E4A4-0084E5C6).
+        if (st.ended && reload_open) {
+            st.issued = true;
+            st.issued_at = now;
+            ++h.spent_rtb_issues;
+            issue.emplace_back(leader, sq.name);
+            h.log.notef("spent ordnance: squadron \"%s\" B5 at %.2f s (latched %.2f, ended "
+                "%.2f): 007F16D0 %s (0084E4A4, packet cc9_squadron_spent_ordnance_rtb)",
+                sq.name.c_str(), static_cast<double>(now), static_cast<double>(st.latch_at),
+                static_cast<double>(st.ended_at),
+                bsp::kSquadronSpentOrdnanceRtbBound ? "issued" : "census only");
+        }
+    }
+    if constexpr (bsp::kSquadronSpentOrdnanceRtbBound) {
+        for (const auto& e : issue) {
+            h.spent_rtb[e.second].placed = issue_return_to_base_007f16d0(e.first, "0084E010 B5");
+        }
+    }
+}
+
 void GameUnitsHost::run_landing_queue_006cd240(float dt) {
+    run_spent_ordnance_rtb_0084e010();   // packet cc9_squadron_spent_ordnance_rtb
     if constexpr (!kLandingSequencerBound) {
         (void)dt;
         return;
@@ -17494,6 +17606,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // so the arm is decided by the target pair:
                                 // arm 2 is `!has_target || target_marked`, arm 5
                                 // is `SafeDist * ratio <= range`.
+                                slot_.torpedo_breakoff_now = in.should_break_off;
                                 if (in.should_break_off) {
                                     ++slot_.torpedo_breakoff_true_ticks;
                                     if (slot_.torpedo_breakoff_first_tick < 0) {
@@ -31774,6 +31887,19 @@ void GameUnitsHost::report() {
             host.retreat_orders, host.retreat_installs, host.retreat_rtb_installs,
             host.retreat_refused, host.retreat_retired, host.retreat_exits,
             host.retreat_exit_members, host.retreat_exit_gated, host.retreat_latches_361);
+        if (bsp::kSquadronSpentOrdnanceRtbBound || host.spent_rtb_latches != 0) {
+            host.log.notef("summary squadron spent ordnance rtb bound=%d latches=%llu ends=%llu "
+                "issues=%llu (009F8160 / 009F7C90 / 0084E010, packet "
+                "cc9_squadron_spent_ordnance_rtb)", bsp::kSquadronSpentOrdnanceRtbBound ? 1 : 0,
+                host.spent_rtb_latches, host.spent_rtb_ends, host.spent_rtb_issues);
+            for (const auto& e : host.spent_rtb) {
+                if (!e.second.latch_3c) continue;
+                host.log.notef("  spent %-24s command=%08X latched=%.2f ended=%.2f issued=%.2f "
+                    "placed=%zu", e.first.c_str(), e.second.command,
+                    static_cast<double>(e.second.latch_at), static_cast<double>(e.second.ended_at),
+                    static_cast<double>(e.second.issued_at), e.second.placed);
+            }
+        }
         for (const auto& slot : host.slots) {
             if (!slot || slot->retreat_ticks == 0) continue;
             host.log.notef("  retreat %-16s ticks=%llu moveto=%llu enterzone=%llu leave=%llu "

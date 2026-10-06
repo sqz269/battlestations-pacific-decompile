@@ -923,6 +923,10 @@ public:
     // every deck with a queue, run from 006CDC70 after 006C0DA0. Returns at once
     // unless kLandingSequencerBound. docs/SQUADRON_LAND_TASK.md section 5c.
     void run_landing_queue_006cd240(float dt);
+    // Packet cc9_squadron_spent_ordnance_rtb: 009F8160's ordnance latch,
+    // 009F7C90's ending and 0084E010's B5 for every squadron, once per step
+    // (from the head of run_landing_queue_006cd240).
+    void run_spent_ordnance_rtb_0084e010();
     // unit+9c8h, the full hull length 0081106e / 0081fa4d produce. This process
     // builds no model box at [class+50h], so the producers' fallback applies and
     // the field is the descriptor's own +a0h `Length`.

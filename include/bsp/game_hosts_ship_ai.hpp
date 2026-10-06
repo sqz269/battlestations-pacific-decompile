@@ -847,6 +847,13 @@ public:
     // when the unit is not one of the capture buildings (out untouched).
     bool command_building_capture_fraction_006f1f90(std::size_t unit_index,
                                                     float& out) const;
+    // Packet cc9_cb_hit_gate_entry (SHIP_AI 165, GUNNERY_OPEN_ITEMS 125): a
+    // CommandBuilding's vtable[1ACh] 006F1F20 for a caller's damage amount. False
+    // while +7D8h != 0.0 (006F1F2B..006F1F36: the hit does nothing); otherwise
+    // 007470B0's SmokeFireChanceMul roll (drawn only under kLandFortFireRollBound,
+    // SHIP_AI 162) and true, after which the caller applies AddDamage 0095DA00.
+    // True for a unit that is not a capture building.
+    bool command_building_hit_gate_006f1f20(std::size_t unit_index, float amount);
 
     // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
