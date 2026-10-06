@@ -160,7 +160,9 @@ constexpr bool kCommandBuildingGunfireArmourBound = false;
 // lands in block+38h, whose reader is unread, so it is drawn and not applied;
 // the IsKindOf(33h) "no cone" arm (006E521E) is taken as never true; a refused
 // drop (no bomb row) draws nothing. False: no draw, no cone.
-constexpr bool kBombDropScatterBound = false;
+// ON by GUNNERY 130.4: USN01, USNRM01, LOMP10 and LOMP10 long move (bombs leave
+// along the nose, 2-4 degrees from the 5do velocity); the controls identical.
+constexpr bool kBombDropScatterBound = true;
 // This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
 // LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
 // SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
