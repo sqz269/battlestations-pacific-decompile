@@ -10286,3 +10286,22 @@ cat 8) with `assigns 496 shots 0 rises 0 refusals 20324`. The category table rea
 **Prediction:** with both switches ON and a `fire HenryPT group 5` line once Henry has stopped 39.8 m from the
 mini-sub (BSM01 p6, about frame 10000), Henry's rack fires at its reload rate and a charge drops at Henry's
 position. Whether it sinks to -6.96 m and hits within its blast radius is the projectile's business, not read here.
+**First runs** (`1fdd623a8`; OFF `1591B2F710B4`, ON `850BBF5CA1B0`; logs `local\g30_dc{off,on}_<row>.log`):
+- BSM01 p6, BSM01, USN13 long and JM05 long are all exit 1. The bot ticked 220643 times on BSM01 p6 and never fired.
+- `BSP_FIRE_GATE_TRACE=HenryPT` (`local\g30_dcon_b1trace.log`) shows why: gun 7's target is MiniSub at 36 m, but
+  `have=0`. The host's artillery arc solve fails for the launcher and clears `have_target` (`006DFA60`'s gate),
+  and the block read that cleared flag.
+- **Fixed in the next commit:** the block takes the bot's own target (`bot_has_target`, before the arc solve),
+  because 008FC080 solves no arc.
+
+**Re-run, a local diagnostic build** (the switch flipped in the working tree only, `local\g30_dcq`;
+`local\g30_dcq_b1.log`, BSM01 p6, 16000 frames):
+- HenryPT's rack fires: `rises 178`, **`shots 60`**, `holds 178`.
+- **`hits 0`**, and the mini-sub survives.
+- The rounds go through the host's generic projectile path. The depth charge's own in-water advance,
+  `BSP_DepthChargeProjectile_AdvanceInWater` `006FCD20` (sink at DiveSpeed, detonate at depth or on contact), is not
+  modelled: `shot_is_depth_charge` is always false in the hit view.
+
+**Verdict: the trigger mechanism works; the kill needs the depth-charge projectile.** The switch stays OFF until
+`006FCD20` and the depth-charge hit are bound (next item, this lane). A pair_export pair on the fixed commit is still
+owed.
