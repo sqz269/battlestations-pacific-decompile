@@ -22,6 +22,7 @@
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/attack_commands.hpp"
 #include <vector>
+#include <memory>
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
@@ -1693,18 +1694,39 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
     } else if (r.action == bsp::AirOpsHeldSlotAction::kMoveToSelf && leader < units_.count()) {
         float x = 0.0f, y = 0.0f, z = 0.0f;
         units_.unit_position_00fc(leader, x, y, z);                   // 00427EB0
-        const float point[3] = {x, y, z};
+        // 00468560's position descriptor (kind 0) at the squadron's own position.
+        // cc9-lua46: the moveto is issued on each member first (0077D600), so
+        // 0099A170 reads it as the member's current command (0071BE40); before, the
+        // install read the member's old command and a squadron whose torpedo
+        // target was dead took no task (ESMP08 i1: 8 of 23 order-1s, 0 planes).
+        bsp::SceneCommandTarget here;
+        here.kind = 0;
+        here.position_valid = 1;
+        here.position[0] = x;
+        here.position[1] = y;
+        here.position[2] = z;
+        const std::string saved_source = delivery_source_;
+        delivery_source_ = "player:air ops order 006CCDA0";
+        // Counts the installs made before this entry returns (a queued order's
+        // install runs at the drain and is not counted).
+        const auto installed = std::make_shared<int>(0);
         for (const std::size_t m : members) {
-            ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
-            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
-                static_cast<std::uint32_t>(m + 1u), bot_host);
-            if (task == 0u) continue;
-            units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
-            units_.store_unit_moveto_range(m, 0.0f);
-            units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
-            units_.store_unit_moveto_point(m, point);
-            ++out.planes;
+            void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(m + 1u));
+            entity_issue_command(handle, bsp::kPilotOrderClassMoveTo, here, 1);
+            after_order_delivery([this, m, here, installed]() {
+                ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
+                const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                    static_cast<std::uint32_t>(m + 1u), bot_host);
+                if (task == 0u) return;
+                units_.store_unit_attack_command_class(m, bsp::kPilotOrderClassMoveTo);
+                units_.store_unit_moveto_range(m, 0.0f);
+                units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
+                units_.store_unit_moveto_point(m, here.position);
+                ++*installed;
+            });
         }
+        delivery_source_ = saved_source;
+        out.planes = *installed;
     } else if (r.action == bsp::AirOpsHeldSlotAction::kRecallLand) {
         std::size_t owner = units_.count();
         for (std::size_t k = 0; k < units_.count(); ++k) {
