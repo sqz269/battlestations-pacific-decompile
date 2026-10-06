@@ -707,6 +707,17 @@ inline constexpr bool kLandingShipLandedRemainderBound = true;
 // ON by section 162.4: all five rows gameplay identical under the measurement
 // streams; JM08 long rolls 3003 times, 2 fires start, no secondary roll.
 inline constexpr bool kLandFortFireRollBound = true;
+// Packet cc9_ship_ai_timer_draws (section 164). Four 00BD2F10 sites the host
+// answered with their low bound:
+//   - 009F1DB4 (stream 1, [00CE3958] 2.0 .. [00CE3854] 3.0) into nested+11D8h,
+//     the approach point's retarget timer;
+//   - 009E9209 (stream 1, 2.0 .. 3.0) into +11F4h, the avoidance refresh timer;
+//   - 009E63A6 (stream 1, 2.0 .. 3.0) into traffic record +108h;
+//   - 009E465F (stream 0, 0.0 .. 1.0), negated into blk+148h (no traced reader).
+// True: each takes the draw (GameGunneryHost::ship_ai_draw for stream 1, the
+// stream-1 generator the torpedo draws use; death_mode_draw_00bd2f10(0, ...)
+// for stream 0). False: the low bound, as before.
+inline constexpr bool kShipAiTimerDrawsBound = false;
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
@@ -970,6 +981,12 @@ struct GameShipAiHost::Impl {
         float fire_time_748{0.0f};
         float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
     };
+    // Packet cc9_ship_ai_timer_draws: the draws taken per site.
+    unsigned long long timer_draws_retarget{0};
+    unsigned long long timer_draws_avoid{0};
+    unsigned long long timer_draws_traffic{0};
+    unsigned long long timer_draws_nav_block{0};
+    unsigned long long timer_draws_standoff{0};
     // Packet cc9_landfort_fire_roll: the census.
     unsigned long long fire_rolls{0};
     unsigned long long fire_roll_hits{0};
@@ -4128,10 +4145,15 @@ public:
             return 0.0f;
         }
     }
-    float random_stream1_00bd2f10(float low, float) override {
+    float random_stream1_00bd2f10(float low, float high) override {
         // 009F1DB4, the retarget timer's reseed in [2, 3). 00BD2F10 was not
         // read; the low end is taken and recorded, which makes the timer
         // deterministic rather than staggered and says so.
+        if (kShipAiTimerDrawsBound && owner_.gunnery_draws != nullptr) {
+            ++owner_.timer_draws_retarget;
+            owner_.done("ShipAiApproachPoint::random_stream1", 0x009f1db4u);
+            return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+        }
         owner_.record("ShipAiApproachPoint::random_stream1", 0x00bd2f10u);
         return low;
     }
@@ -4959,7 +4981,14 @@ public:
         owner_.record("ShipAiApproach::unit_cruise_speed_0490", 0x009e7140u);
         return 0.0f;
     }
-    float random_stream1_00bd2f10(float low, float) override {
+    float random_stream1_00bd2f10(float low, float high) override {
+        // 009E6FBx / 009E711D / 009E7199 (stream 1): the standoff range +11E4h
+        // re-drawn inside [low, low + spread] (packet cc9_ship_ai_timer_draws).
+        if (kShipAiTimerDrawsBound && owner_.gunnery_draws != nullptr) {
+            ++owner_.timer_draws_standoff;
+            owner_.done("ShipAiApproach::random_stream1_00bd2f10", 0x009e711du);
+            return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+        }
         owner_.record("ShipAiApproach::random_stream1_00bd2f10", 0x00bd2f10u);
         return low;
     }
@@ -5040,7 +5069,12 @@ public:
     AvoidBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
                  GameShipAiRow& row, std::size_t index)
         : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
-    float random_stream1_00bd2f10(float low, float) override {
+    float random_stream1_00bd2f10(float low, float high) override {
+        if (kShipAiTimerDrawsBound && owner_.gunnery_draws != nullptr) {
+            ++owner_.timer_draws_avoid;
+            owner_.done("ShipAiApproach::avoid_random_00bd2f10", 0x009e9209u);
+            return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+        }
         owner_.record("ShipAiApproach::avoid_random_00bd2f10", 0x00bd2f10u);
         return low;
     }
@@ -5177,8 +5211,14 @@ public:
         rec.weight_120 = weight;
         // 009E63A6, 00BD2F10(1, 2.0, 3.0): the approach's stream-1 stand-in
         // returns the low bound, as for the pass timer. LABELLED.
-        owner_.record("ShipAiApproach::traffic_random_00bd2f10", 0x009e63a6u);
-        rec.timer_108 = 2.0f;
+        if (kShipAiTimerDrawsBound && owner_.gunnery_draws != nullptr) {
+            ++owner_.timer_draws_traffic;
+            owner_.done("ShipAiApproach::traffic_random_00bd2f10", 0x009e63a6u);
+            rec.timer_108 = owner_.gunnery_draws->ship_ai_draw(index_, 2.0f, 3.0f);
+        } else {
+            owner_.record("ShipAiApproach::traffic_random_00bd2f10", 0x009e63a6u);
+            rec.timer_108 = 2.0f;
+        }
         owner_.done("ShipAiApproach::advance_traffic_record_009e6240", 0x009e6240u);
         ++row_.traffic_refreshes;
         row_.traffic_weight_max = std::max(row_.traffic_weight_max, weight);
@@ -11508,6 +11548,11 @@ public:
         // negated draw in blk+148h, a field with no traced reader. The low end
         // is taken and the call recorded, which is what the approach point's
         // own draw at 009F1BC0 does.
+        if (kShipAiTimerDrawsBound && owner_.gunnery_draws != nullptr) {
+            ++owner_.timer_draws_nav_block;
+            owner_.done("ShipAiNavBlock::uniform_00bd2f10", 0x009e465fu);
+            return owner_.gunnery_draws->death_mode_draw_00bd2f10(0, index_, low, high);
+        }
         owner_.record("ShipAiNavBlock::uniform_00bd2f10", 0x00bd2f10u);
         static_cast<void>(high);
         return low;
@@ -13664,6 +13709,12 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission ship ai timer draws retarget=%llu avoid=%llu "
+            "traffic=%llu nav_block=%llu standoff=%llu bound=%d (009F1DB4 / 009E9209 / 009E63A6 / 009E465F, "
+            "packet cc9_ship_ai_timer_draws)", host.timer_draws_retarget,
+            host.timer_draws_avoid, host.timer_draws_traffic, host.timer_draws_nav_block,
+            host.timer_draws_standoff,
+            kShipAiTimerDrawsBound ? 1 : 0);
         host.log.notef("summary mission landfort fire rolls=%llu roll_hits=%llu starts=%llu "
             "extends=%llu stops=%llu secondary_rolls=%llu secondary_hits=%llu draws=%llu "
             "bound=%d (007470B0 / 00746320 / 00745BE0, packet cc9_landfort_fire_roll)",
