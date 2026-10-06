@@ -12351,3 +12351,96 @@ That is a spread miss, not a mechanism failure.
 none, harm, soft, sell, exitzone, landed, editor. The host published `harm` for every death. Now
 the units host keeps the cause its own kills pass to `00926D90` (4 at the retreat exit), so an
 escaping catalina reads `exitzone` and the event's failure branch runs, as the script intends.
+
+## 5eb. The spent-ordnance RTB, 0084E010's B5 (packet `cc9_squadron_spent_ordnance_rtb`, cc9-lua40, 2026-10-06)
+
+**The read is 5ea step 1.** The binding is `kSquadronSpentOrdnanceRtbBound`
+(`include/bsp/squadron_spent_ordnance.hpp`), committed OFF.
+
+**The driver.** `GameUnitsHost::run_spent_ordnance_rtb_0084e010` runs once per simulation step, at
+the head of `run_landing_queue_006cd240`. For every squadron with a live member it does three things:
+- **009F8160's latch:** the leader's command is one of the seven ordnance classes, no live member
+  holds a rack round (`007B9140`), the leader is not `IsKindOf(13h)`, and the reload gate is open.
+- **009F7C90's ending:** every live member's dive-bomb or torpedo break-off answer is true; a member
+  with neither task counts as true.
+- **0084E010's B5:** `returntobase` on the squadron (`issue_return_to_base_007f16d0`). Its
+  `007F16D0` resolution and the bot intake install the land task (site arm) or the retreat task
+  (retreat arm, 5ea).
+
+The substitutions are listed at the routine. **`BSP_SPENT_RTB_CENSUS=1`** runs the three steps and
+logs them while the switch is OFF, without issuing anything.
+
+**Census.** Run at `456fb1b2a` plus this edit, OFF, with the census variable set; logs are
+`local\l40_off_<row>.log`.
+
+| row | latched | ended and B5 | squadrons |
+| --- | ---: | ---: | --- |
+| USNRM01 | 16 | 16 | twelve Val squadrons (`Jap #2.1`..`#48.1`, divebomb, 237-434 s) and three Kate squadrons (`KateSpawn1/3/4`, torpedo, 164-178 s); B5 0.1 s after each latch |
+| USN01 | 1 | 1 | `ScoutDauntless` (divebomb, 134.1 s) |
+| USN13l | 1 | 0 | `bruh #1.9` (torpedo, 153.3 s): its members never all answer the break-off |
+| USN04, LOMP10, JM05l | 0 | 0 | USN04 and JM05l: no squadron spends all of its ordnance; LOMP10: the dive-bombing Lightning and Warhawk are fighters (`IsKindOf(13h)`), which 009F8160 excludes |
+
+### Predictions, before any ON run
+
+- **OFF:** exit 0 on every row. Without the variable the driver returns at once.
+- **ON:**
+  - **USNRM01** moves a lot. Sixteen Japanese strike squadrons receive `returntobase` right after
+    their attacks. Each squadron resolves through 007F16D0: land at home when its spawn bag names a
+    base, otherwise a carrier of its side, otherwise retreat. The retreating ones fly off the map
+    and are removed (Kill(4), `exitzone`), so they stop circling over Pearl Harbor in the AA. Expect
+    fewer plane deaths and fewer AA shots after about 165 s.
+  - **USN01** moves after 134 s. ScoutDauntless returns to its carrier (land, if its resolution
+    gives a site) or retreats.
+  - **USN13l, USN04, LOMP10, JM05l:** no B5, so exit 0 or 1.
+  - **USN02**, the control: exit 0 or 1.
+
+### 5eb.1 Measured: **ON** (cc9-lua40, 2026-10-06)
+
+**The pairs.** Same tree. OFF is `cc6d108f3` (with `kPlaneRetreatTaskBound` ON); ON is that commit
+exported with the flip (SHA-256 `4C91E9A83627`). Both sides ran with the queue environment and
+without the census variable. Logs: `local\l40_{off,on}_<row>.log`.
+
+| row | verdict | note |
+| --- | --- | --- |
+| USN02 (control) | 1, gameplay identical | summary text only |
+| USN04 | 1 | as predicted, no B5 |
+| USN13l | 1 | as predicted, no B5 |
+| USN01 | 3 | ScoutDauntless: latched at 134.10 s, B5 at 134.20 s |
+| USNRM01 | 3 | 18 latches, 18 B5, all resolved to `retreat` |
+
+**USN01.** 007F16D0 answered land at site Enterprise, so both planes installed the land task
+(moveto (land) and follow (land)) and turned for the carrier, 10.5 km away. The row ends at 150 s,
+so this is 16 s of flight. Their task guns now tick (the land task is a task:
+ScoutDauntless shots 0 -> 63), and the convoy ships' AA meets them on the way (Convoy1 hits 4 -> 72).
+Deaths stay at 29. The `dive-bomb-task releases 2 of 19 -> 0 of 17` line is a reporting artifact:
+the summary counts the planes still holding the task at the end.
+
+**USNRM01.**
+- **The issue.** All 18 latches (Vals and Kates) reach B5. Every `007F16D0` answers `retreat`
+  (`null=0 home=0 site=0 retreat=18`), and 46 retreat tasks are installed.
+- **36 tasks are retired by the script, as in the image.** `usn_1_pearl.lua:2012`/`:2056` (this
+  installation, mtime 2024-10-29) sends every Val squadron whose `ammoType` is 0 to
+  `Mission.JapRetreat` with `PilotMoveToRange`. That new command replaces `retreat`; 009C9E30 fails,
+  and the moveto task takes over at the delivery. In the image the script's order also lands a few
+  seconds after B5, so the Vals fly the retreat task only until then.
+  - Note that the `-> 0 moveto task(s)` in those lines counts only the installs made before the
+    binding returns; they happen at the delivery.
+- **The torpedo Kates are not in the script's `vals` loop.** They keep the retreat:
+  - `KateSpawn3|.-2` and `KateSpawn5|.-2` leave the map at 320.45 s and 319.05 s through
+    007C6C30 -> 007F31A0 Kill(4) (`exits=2`; their KillReason is `exitzone`, 456fb1b2a);
+  - `KateSpawn1` and `KateSpawn4` climbed toward the retreat altitude (about 1000 m) and were shot
+    down there (alt 24 -> 344, 17 -> 159) instead of low over the harbour.
+- **Knock-on.** The AA's attention moves from the first B5 at 164 s: shots 61392 -> 56998, hit
+  records 1872 -> 1693. The later Val deaths re-time by seconds and change killers. Deaths stay at
+  132, with six planes swapped: four Vals of `#34.1`/`#50.1` and the two Kates that left (Kill(4)
+  is a death row), for six that OFF loses (`#21.1`, `#35.1`, `#44.1`, `#49.1`).
+- The `dive-bomb-task releases`/`torpedo-task releases` lines are the same reporting artifact as on
+  USN01. `torpedo drops` is unchanged at 6.
+
+**Verdict: ON.** Every predicted latch and B5 happens, with the resolutions the 007F16D0 read gives.
+The script overrides as the image's script would.
+
+**The rows not paired.** Runs of `19bc34aca` (ON) on E2, LOMP10l, ESMP08l, USNOSl, IJN11 and JM05 log
+`latches=0` (`local\l40_cur_<row>.log`), so B5 never acts there. JM06 and JM08 set
+SetDeviceReloadEnabled(true), which closes the gate. The other short rows release no ordnance in
+reference AA.
