@@ -15651,3 +15651,48 @@ ends, unless the F2Gs kill those members.
     stow);
   - Enterprise kept clear of both Japanese groups;
   - a guard on TroopTrans3, which is the last transport.
+
+- In f6, TroopTrans5 and TroopTrans6 are sunk by the generated blockade ships `ToSpawnAda`. Their first
+  damage comes at 426.57 s, and they die at 1782.36 / 1839.92 s from 2.6-3.3 km.
+  - These are GenerateObject clones placed by `luaSpawnInBlockade` (1332, `luaSpawnNewAreaCoverForJP`
+    2177). They keep the template's name. They are not hidden templates firing.
+  - Takao1 dies at 2284.25 s to DM1.
+
+## 203. Handoff (cc9-ships40, 2026-10-06)
+
+### Landed or committed (`agent/cc9-ships40`)
+
+| section / sha | what |
+| --- | --- |
+| 200, `68b187418` | The stowed plane's stock return: 007CE6CA C7h -> 007CC8B0 -> 007F1CA0 (AddStock, the last plane's slot return 006C5950, Kill 5). Adds `air_ops_return_squadron_slot_006c5950`. Corrects SQUADRON_LAND_TASK 5ep |
+| 200.1, 200.2, `078d33791`, `4f897d75c` | KillReason "landed"; the pairs; `kStowedPlaneStockReturnBound` **ON** |
+| 201, `93155654f`, `f7732220d` | BSM01 completes on p6 (AI depth-charge rack), with the exec guard's refusal line logged; the legality note on `+634h` |
+| 202-202.2, `ede609f59`, `8f22f6d60` | USNOS: phase 1 passes at 1395.7 s with `local\s40_os_f5.txt`; phase 2 fails (Enterprise is sunk) |
+
+### Open, in order
+
+1. **USNOS phase 2.**
+   - Free an Enterprise slot: recall the F2G squadrons with `order Enterprise <slot> 2`, or let them land.
+   - Keep Enterprise clear of Takao1 and Shima6.
+   - Cover TroopTrans3, the last transport.
+   - Primary 2 is the capture of three HQs, which is the base-capture lane.
+   - Start from `local\s40_os_f6.txt`. The row is `osf6` in `local\s40_rows.ps1`.
+2. **The wave-2 leaderless landing loop** (202, Open). A squadron whose fused leader went back into stock
+   circles Airfield3: the sequencer releases the new head 24 times via `006C45C0`.
+   - Read why the head stays beyond 1.2 x StandbyDist.
+3. **Items from 199 still waiting on other lanes:**
+   - JM08 / ESMP08 / USN13 with the held-slot orders;
+   - USN04 phase 2 (dive aim);
+   - BSM01's player depth-charge route (seabed subwalk).
+
+### Tools (`local\`, `s40_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s40_rows.ps1` | launcher for the reference AD form (`-Rows`, `-Prefix`, `-Exe`, `-Traj`); writes `<prefix>_<row>.done` |
+| `s40_cnt.py` | regex counts, grouped by capture, with the first and last match |
+| `s40_rel32.py` | whole-PE scan for rel32 calls/jumps and absolute dwords to given addresses |
+| `s40_traj.py` | prints named units from a trajectory CSV every N s, with their mutual distances |
+| `s40_patch_*.py` | the applied patches, kept for reference |
+
+Leases: `cc9_usnos_phase1` is released with this commit.
