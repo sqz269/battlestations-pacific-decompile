@@ -15696,3 +15696,83 @@ ends, unless the F2Gs kill those members.
 | `s40_patch_*.py` | the applied patches, kept for reference |
 
 Leases: `cc9_usnos_phase1` is released with this commit.
+
+## 204. The wave-2 landing loop: who removes a squadron from a deck's landing queue (cc9-ships41, 2026-10-06; lead item 2)
+
+**Question (202, Open).** After its fused leader goes back into stock, a wave-2 squadron's new head
+(`plane #4.4|.-2`) is released by `006C45C0` 24 times at Airfield3 and never lands.
+
+### What the log shows (`s40_f3_osf3`, read again)
+
+- The head's cycle, 692-762 s:
+  1. standby (mode 3) on the circle at (-5797.7, -6866.9), r = 2836.2;
+  2. `006C5C40` fails on heading (delta 0.448 > thr 0.389) while the head is outside StandbyDist, so
+     `006C7960` gives mode 1 (721.30 s);
+  3. the rule's mode-1 arm `009AFA50` puts the head, now the flight leader, in moveto (`+4C4h`,
+     cruise altitude 1450);
+  4. at 723.60 s it is beyond StandbyDist x 1.2 = 3840 m from T, and `006C45C0` releases it;
+  5. it is re-inserted at 3189 m (761.59 s), and the cycle repeats.
+- **The circle is large because the queue and the records are large.**
+  - `006C3E50`'s radius is TurnCircle x m x f^2, where f runs 1.0 to 2.5 over RadiusChange {10, 50}
+    planes by the `+A8h` record count. This installation's `datatables\planeglobals.lua` lines
+    624-645: StandbyDist 3200, PosBehind 780, RadiusChange {10, 50}.
+  - TurnCircle x m is 1890 m for these Judys: 2339.2 / 1.2377 at 13 records and 2836.2 / 1.5006 at 16.
+  - `006C5380` puts the circle point 60 x n m further behind and 20 x n m higher, where n is the
+    squadron's queue number. n is never reused: `006C0B50` gives one more than the largest n queued.
+- **The queue never shrinks in this host.** Airfield3's summary at the end of f3 reads `queue=6
+  records=16`, with six live planes left. Six squadrons were queued (n 0-5): `#1.5`, `#1.6`, `#1.4`, then
+  `#4.4`, `#4.5`, `#4.6`.
+
+### What the image does (read whole from the listing)
+
+Only two sites erase a queue record (whole-PE rel32 scan for `006BF7F0`, `006C7540`, `006C7680` and
+`006C8800`: `006C59DC`, `006C7711`, `006C771D`, `006C8820`, `006CCD5A` and `009B3FB3`, nothing else):
+
+1. **`006C5950`**, the last plane's slot return (`air_ops_return_squadron_slot_006c5950`, SHIP_AI 200).
+   - Its head, `006C59A4`-`006C59DC`, walks the queue at block `+98h` (14h stride, count `+9Ch`) for
+     the squadron.
+   - It erases the record with `006BF7F0` (ECX = block `+84h`). That unregisters the record's
+     observer pair, copies the last record into its place, and decrements the count.
+   - The `+A8h` assignment records are not touched.
+   - The host runs the slot walk and skips this head. That is the gap bound below.
+2. **`009B3F50`**, the land task's destructor body (vtable `00D1FFA0` via `009B4100`; the adjustor
+   thunk `009B34B0`).
+   - When the task's plane `+3FCh` is set and is its squadron's flight leader (`007B8AD0`: plane
+     `+9D8h` == 0), it calls `006C8800(plane+9D4h)` at `009B3FB3`.
+   - `006C8800` (`__fastcall(squadron)`) walks every air-ops block on the `00E19948` list (link
+     `+BCh`) whose owner `+4h`/`+7Ch` is present, and calls `006C7680(block, squadron)`.
+   - `006C7680` (`__thiscall(block)(squadron)`, under the `+4h` and `+0Ch` locks):
+     - erases the queue record (`006BF7F0`);
+     - erases every assignment record of the squadron (`006C7540`);
+     - moves every launch slot whose `+28h` is the squadron to state 3 (`+2Ch`; from state 2,
+       `+0Ch` = `+8h` first), with `+30h` = 0, or 00CE3850 and `+34h` cleared when `+34h` is set;
+     - publishes each such slot (`006BF150`).
+   - **Not bound, and the death order is unread.** At a plane's death, `007BCAA0` calls
+     `007F3970` (`RemovePlane`), which nulls the dying plane's `+9D4h` and renumbers the survivors'
+     `+9D8h` (`007ED260`). It does this before releasing `+6DCh`. If the bot's task list is
+     destroyed after that, the destructor sees `+9D4h` null, and `006C8800` returns at once (ECX = 0).
+   - The host's two live retire sites, the retreat install and `009B34D0`'s invalid command, never
+     ran in f3.
+
+### The binding (`kStockReturnQueueEraseBound`, committed OFF)
+
+In `plane_stock_return_c7h_007cc8b0`, when 006C5950 runs (last live plane):
+- the squadron's queue record at the plane's deck is erased the `006BF7F0` way (the last record
+  copied into its place);
+- the line `stock return: squadron ... landing-queue record erased`;
+- a summary line with erases and misses.
+
+### Predictions (written before the pairs)
+
+- **USNOS f3** (`s40_os_f3.txt`):
+  - one erase, `#1.5` at 335.09 s. It is the only wave-1 squadron whose last plane goes back into
+    stock; `#1.4` and `#1.6` are shot down.
+  - Airfield3 ends `queue=5`. The wave-2 n stay 3, 4 and 5, because the largest n left is 2.
+  - **So the loop stays:** releases about 24. Gameplay identical or nearly so; the only change is the
+    vector order the queue tick walks.
+- **ESMP08 p3, USN01 p8:** erases at the carriers. Later squadrons get a smaller n only when the
+  erased record held the largest n. Small moves in landing timing are possible.
+- **Consequence for the loop.** If the pairs confirm this, the 202 loop is not fixed by `006C5950`.
+  What remains:
+  - the shot-down squadrons' records, which only the destructor path removes;
+  - the death order above.
