@@ -355,6 +355,11 @@ struct GameMissionFrameHost::Impl {
         bool attack{false};        // packet cc9_player_attack_row
         bool squadron_target{false};   // packet cc9_player_squadron_target
         bool launch{false};        // packet cc9_helm_orders_launch
+        // Packet cc9_player_air_ops_order_line: `order <base> <slot> <1|2|3>
+        // [target...]`, the Support Manager's 82h order to a held slot.
+        bool air_order{false};
+        int air_order_slot{0};     // 1-based
+        int air_order_kind{0};     // 1 moveto, 2 recall, 3 attack
         int launch_slot{0};        // launch: 1-based slot, 0 = 006C7210's pick
         int launch_class{0};       // launch: VehicleClass id
         int launch_count{0};       // launch: planes requested
@@ -2585,7 +2590,9 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
                 || words[1] == "release" || words[1] == "build"
-                || words[1] == "depthcharge" || words[1] == "fire");
+                || words[1] == "depthcharge" || words[1] == "fire" || words[1] == "order");
+        // `<frame> order <base> <slot> <order> [target...]`.
+        const bool air_order_ok = verb_ok && words[1] == "order" && words.size() >= 5;
         // `<frame> depthcharge <ship...>`.
         const bool depthcharge_ok = verb_ok && words[1] == "depthcharge" && words.size() >= 3;
         // `<frame> fire <ship...> group <g> [release]`: the ship name may carry
@@ -2610,17 +2617,41 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 : words[1] == "release" ? !release_ok
                 : words[1] == "build" ? !build_ok
                 : words[1] == "depthcharge" ? !depthcharge_ok
-                : words[1] == "fire" ? !fire_ok : words.size() < 4)) {
+                : words[1] == "fire" ? !fire_ok
+                : words[1] == "order" ? !air_order_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
                 "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
                 "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
                 "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>` or `<frame> "
-                "fire <ship> group <g> [release]`", line, path.c_str());
+                "fire <ship> group <g> [release]` or `<frame> order <base> <slot> <1|2|3> "
+                "[target]`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (air_order_ok) {
+            char* se = nullptr;
+            char* oe = nullptr;
+            const long s = std::strtol(words[3].c_str(), &se, 10);
+            const long o = std::strtol(words[4].c_str(), &oe, 10);
+            if (se == nullptr || *se != '\0' || s < 1 || oe == nullptr || *oe != '\0'
+                || o < 1 || o > 3) {
+                host.log.notef("helm order refused: line %d of \"%s\": order needs a 1-based "
+                    "slot and an order of 1 (moveto), 2 (recall) or 3 (attack)", line,
+                    path.c_str());
+                continue;
+            }
+            order.air_order = true;
+            order.air_order_slot = static_cast<int>(s);
+            order.air_order_kind = static_cast<int>(o);
+            for (std::size_t w = 5; w < words.size(); ++w) {
+                if (!order.target.empty()) order.target += ' ';
+                order.target += words[w];
+            }
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (fire_ok) {
             char* ge = nullptr;
             const long g = std::strtol(words[fire_words - 1].c_str(), &ge, 10);
@@ -3160,6 +3191,24 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     order.unit.c_str(), order.launch_slot, order.launch_class,
                     order.launch_count, order.target.c_str(), r.slot, r.count,
                     r.reason.empty() ? "" : ": ", r.reason.c_str());
+                continue;
+            }
+            if (order.air_order) {
+                // Packet cc9_player_air_ops_order_line: the Support Manager's
+                // order to a slot whose squadron is out or recalled, the 82h
+                // message {slot, order, target} into 006CCDA0, through cc9-lua44's
+                // script_orders_player_air_ops_order (kAirOpsHeldSlotOrdersBound).
+                // LABELLED: no screen runs; the file names the base and the slot.
+                const bsp::game::PlayerAirOpsOrderResult r
+                    = bsp::game::script_orders_player_air_ops_order(order.unit,
+                        order.air_order_slot, order.air_order_kind, order.target);
+                if (r.accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) order "
+                    "%s slot %d order %d%s%s: answer %d, state after %d, %d plane(s)%s%s "
+                    "(82h -> 006CCDA0)", r.accepted ? "applied" : "refused", order.line, due,
+                    now, order.unit.c_str(), order.air_order_slot, order.air_order_kind,
+                    order.target.empty() ? "" : " -> ", order.target.c_str(), r.answer,
+                    r.state_after, r.planes, r.reason.empty() ? "" : ": ", r.reason.c_str());
                 continue;
             }
             if (order.squadron_target) {

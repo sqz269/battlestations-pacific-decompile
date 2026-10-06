@@ -167,6 +167,120 @@ left roughly forty slots each where four were authored. Nothing reads those slot
 wrong downstream, but the deck is no longer a faithful projection after the first four launches on
 a carrier. The tick that would return a slot to state 1 is the same one that fills slot+28h.
 
+## 6. The `Type` token is an enum symbol (cc9-lua45, `kSceneDeckTypeEnumBound`)
+
+Found by cc9-ships39 (USNOS probe `s39_osprobe3`): every scene deck slot and stock row resolved to
+class 0, so `006BF230`'s class match never hit and `006C0F00` left every slot it was asked to fill
+empty. The section 4 contract ("the scene authors these tokens as numeric class ids") is wrong.
+
+**Authored form.** This installation's 259 `.scn` files (2024-10-29) carry 43,054
+`Type = E PlaneClasses : <symbol>` lines (deck sub-blocks and squadron rows alike) and no
+`Type = I <number>` line at all (a `Select-String` census; `local/l45_deck_census.py` counts 5,380
+`PlaneStock` and 11,752 `Slot` blocks). `PlaneClasses` is the enum at
+`universe/library/global.enums` line 589 (F2G 810, AD2 339, BTD_Destroyer 331, BlackCat 343).
+
+**Image.** `006CB108..006CB114` (stock) and `006CB1F5..006CB201` (slot) read the `Type` property
+through `008F2260` and take its `+0Ch` payload (`MOV EBP,[EAX+0Ch]`) without a type test;
+`006CB139` / `006CB24E` move it to ECX and call `007B8A80`, which is `MOV DL,1; JMP 00964790`
+(disk bytes): `BSP_VehicleClass_GetOrCreate(__fastcall int typeId, bool readRace)`, which indexes
+`registry[10h + typeId*4]`. For an `E` property the reader stores the resolved integer at `+0Ch`
+(`008F33A6` with a key declaration, `008F5F94` through the global enum registry without one), so
+the argument is the PlaneClasses integer. ABI: ECX type id, DL 1, result EAX (descriptor); this
+process carries the type id itself as the class, as every other caller of the deck does.
+
+**Binding.** `kSceneDeckTypeEnumBound` (`include/bsp/game_hosts_scene_contents.hpp`): the reading
+half (`scene_deck_type`, `src/game_hosts_scene_contents.cpp`) resolves the symbol through
+`PropertyLibrary::resolve_symbol` with the authored table, on the created path and the held-back
+path, and hands the loader decimal text. An unresolved symbol stays raw and scans to 0, the old
+answer (what the image stores for an unresolvable symbol was not read: contract). A new census
+line `air ops deck classes: unit=<name> stock=<class>x<count>,... slots=<class>x<count>,...`
+prints what each deck resolved, in both states.
+
+**Correction (loop exits).** Section 2 says a missing sub-block stops the loop. The listing says
+otherwise: `006CB0F9` / `006CB0FF` / `006CB106` jump to `006CB158`, the index increment, and the
+stock loop runs `PlaneStock 1..12` (`006CB15F CMP EAX,0Ch; JLE`); `006CB1DA` / `006CB1E4` /
+`006CB1EF` jump to `006CB2A9`, the slot index increment, bounded by the live count at block+50h
+(`006CB192`, `006CB1A2`). The reading half still stops at the first gap. The census found no gap
+and no `PlaneStock` index above 12 in this installation, so the difference cannot move a run;
+recorded, not changed.
+
+**Predictions (written before the pairs).** OFF is identical to the base. ON: every
+`air ops deck classes` line shows non-zero ids (Enterprise in USNOS `810x40,339x..,331x..`).
+`GetProperty(unit, "slots")` and the stock rows publish real classes, so the Lua support managers
+(commandhelpers) that launch from scene decks can now find stock and fill slots: expect new
+`LaunchSquadron` successes and new airborne squadrons from scene carriers and airfields on every
+row with an AI deck (USNOS, ESMP08, USN13, JM08, LOMP10, E2), so death, shot and kill rows move on
+those rows; USN04 (player carriers launched by script with explicit classes) and the five
+scripted-win rows (USN02, USN01, LOMP06, LOMP10, USN12) are where a mission-timing change would
+show. A mechanism failure is any deck whose authored symbol stays 0 ON, or a launch whose class
+the stock does not answer for.
+
+**Pairs (2026-10-06, commit `1b1618cd7` = main `635f31902` + this packet).** `pair_export` OFF
+`D84707AF9F34`, ON `5EFB177104ED`; AD launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+lockstep 0.05, idle player); logs `local\l45_<off|on>_<row>.log`, launcher `local\l45_lane.ps1`.
+
+| row | frames | pair_diff | note |
+| --- | --- | --- | --- |
+| USNOS | 3000 | 1 | deaths 87, units 453 both; only the census lines differ |
+| USNOS + `s39_os_probe3` launch lines | 3000 | **3** | OFF: the four `launch Enterprise` lines refused, "006C0F00 left the slot empty". ON: all four queued (810, 339, 331, 810; count 4 clamped to the screen's 3), 12 planes `Enterprise_sqn01..04` take off; deaths/hits identical in the window |
+| LOMP10 | 3000 | 1 | |
+| E2 (USN04) | 9000 | 1 | deaths 52, shots 13743 |
+| ESMP08 long | 9000 | 1 | deaths 12; `GetProperty` 974 calls, `slots_rows=0` both |
+| USN13 long | 9000 | 1 | |
+| JM08 long | 36000 | 1 | deaths 143, shots 8708 |
+| USN04 jitter + `s39_u4_p1` | 45000 | 1 | deaths 68, shots 32968 |
+| USN02 `s36_u2_p7` | 16000 | 1 | completed 727.60 s both (AD 727.60); guard line both |
+| USN01 `s37_u1_p5` | 22000 | 1 | **not completed in either** (see below) |
+| LOMP06 `s37_l6_p2` | 16000 | 1 | completed 267.41 s, `EndScene` 301.95 s both (AD the same); guard line both |
+| LOMP10 `s37_l10_p2` | 30000 | 1 | `luaVictory` 1438.63 s both (AD 1081.08 s); guard line both |
+| USN12 `s38_u12_p2` | 36000 | 1 | completed 1544.78 s both (AD the same); guard line both |
+
+**Verdict: ON.** The mechanism matches (every scene deck now carries its authored classes: USNOS
+Enterprise `810x40,339x40,331x40`, Airfield1 `312x40` / slot `312x3`; held-back Haku decks 150) and
+the one consumer that exercises it, the player launch through `006C0F00`, now fills the slots it
+used to refuse. The prediction that AI support managers would start launching was **wrong**: no row
+has a consumer of a scene deck's classes besides the harness `launch` line (`GetProperty(.., "slots")`
+is never asked on USNOS or LOMP10, and ESMP08's 974 calls ask other keys), so every row without
+launch lines is gameplay-identical. Sub-blocks with no authored `Type` come out as 101 (USN01's Enterprise and Airfield2,
+all counts 0), presumably a schema default merged into the bag; not traced.
+
+**Why no AI launches (read after the flip, cc9-lua45, no code changed).** The image has no native
+AI launcher, so nothing was bound.
+- **The image side.** The deck's message switch `006CD6C0` (reached from the carrier's `00758EB0` and the
+  airfield's `006D2956`) is the only route into a launch. Case 83h goes to `006CA8E0` and case 89h to
+  `006C7490`; `006CC690`, the `LaunchSquadron` body, also calls `006C7490`.
+- **Who builds those messages.** The byte-store census `C6 ?? 10 8x` finds only `00763140` (81h), `00763320`
+  (82h), `007631A0` (83h), `00763380`-`00763500` (84h-87h) and `007634A0` (88h). None builds 89h. The three
+  whose xrefs were checked (81h, 83h, 88h) each have one call site, in the id switch at `00769206`-`007692E6`,
+  so they are the session-message factory, which replays the same messages from another machine. The other 82h builder is `00656280`, whose two callers `00673A10` and
+  `00675C40` are the Support Manager screen (AIROPS_LAUNCH_TICK "The player's launch"). This agrees with that
+  section's "there is no launch native".
+- **So an AI deck launches only when a mission script asks.** The asks are `LaunchSquadron` directly or the
+  commandhelpers managers `luaAirfieldManager` (7872), `luaCapManager` (8073) and `luaLaunchAirstrike` (8149).
+  Every one of them passes its class ids explicitly and reads back only `slots[i].squadron`, so a slot's
+  scene class is never consulted. `006CC690` (AIROPS_LAUNCH_GATES 3) writes the class itself and has no
+  stock test.
+- **The consumers of the resolved classes** are the stock rows `GetProperty(base, "planes")`, read by
+  `luaRemoveAllFromStocks` (8421) and `luaPlayerAirbaseManager` (15219), and the harness `launch` line.
+- **Per row, from this installation's scripts (2024-07/10):**
+  - **USNOS** (`COTP-USN/us_osumi.lua`) calls `luaAirfieldManager` for the Japanese airfields (line 1072)
+    and carriers (1173) only while `primary 2` is active. `luaPh2MovieEnd` adds that objective (1650) in
+    phase 2. The idle-player run stays in `MissionPhase=1` (AD's `usnos` and `usnosl` logs as well), so
+    `GetProperty` is never called. That is the script's gate, not a host gap.
+  - **LOMP10** (`usn/LOMP/10_san_jose.lua`) and **ESMP08** (`ijn/ESMP/08_engano.lua`) call none of these.
+  - **USN13** (`usn_13_truk.lua`) launches with explicit class 26 (lines 291, 348 and 399; started in both
+    states). **E2/USN04** (`usn_19_coralus.lua`) reads 3763 slot rows and launches with explicit classes.
+- **Rows that would exercise the resolved classes** are scripts that read `"planes"` or run the player
+  airbase manager. The census includes `COTP-USN/usn_09_leyte.lua`, `usn_10_battle_of_capeengano.lua` and
+  `bsm_11_endgame_at_midway.lua`, none of which is a reference row.
+- **Coverage.** The census covers the disp8 byte-store form only. Messages built through the generic base
+  `0075B430` (125 writers of vtable `00D02C68`) were not walked.
+
+**Base drift since AD, not this switch** (identical OFF and ON, for AE): USN01 p5 no longer wins,
+because line 2 (`release ScoutDauntless on Convoy1`, frame 2400) is refused, "the sight never came
+within 15.0 m (nearest 16.5 m)", so the later target and launch lines find no unit; LOMP10 p2's
+`luaVictory` moved from 1081.08 s to 1438.63 s.
+
 ## Uncertainty
 
 * Whether USN04's carriers author `Slot %d` blocks at all. The scene is binary and this process
