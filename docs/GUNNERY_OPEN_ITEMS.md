@@ -10145,3 +10145,13 @@ and modelling it is the step that would show one.
 **Next:** a counter per early return in `run_rack_tick_006e56f0` (census, death, `to_repeat`, dropBombs), on USN13
 long, to settle why `-2` stopped. Then `RepeatTime` matters only for authored multi-round single racks: in this
 installation, `bruh` (USN13).
+
+### 136.4 First pairs (switch alone, before the routed edits)
+
+The ON exe is `pair_export --commit 165e910c4 --flip kShipyardProductionBound=true` (`local\g30_sy_on`).
+- **LOMP10:** OFF is `local\g30_diag_lomp10.log`, which is `67106f83d`; that commit adds only log lines.
+  `pair_diff` gives exit 1, gameplay identical.
+- **JM05:** OFF is `local\g30_syoff_jm05.log`, ON is `local\g30_syon_jm05.log`. `pair_diff` gives exit 1,
+  gameplay identical. The only differences are the diagnostic's added rack-line fields.
+- ON's summary is `yards=0 walks=0`: without routed edit (A) the registry is empty. Prediction 1 holds,
+  trivially. Prediction 2 waits for (A), (C), (D) and the harness `build` line.
