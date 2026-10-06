@@ -502,6 +502,26 @@ struct PlayerAirOpsLaunchResult {
 };
 PlayerAirOpsLaunchResult script_orders_player_air_ops_launch(const std::string& base,
     int slot_number, int vehicle_class, int count, const std::string& target);
+// Packet cc9_air_ops_held_slot_orders (bsp::kAirOpsHeldSlotOrdersBound,
+// docs/AIROPS_LAUNCH_TICK.md "Orders to a held slot"). The Support Manager's
+// order to a slot whose squadron is out (state 3) or recalled (state 4): the 82h
+// message with `order` 1 (moveto: the squadron holds at its own position), 2
+// (recall: `land` at the deck's owner) or 3 (attack `target`) reaches 006CCDA0,
+// which issues that command on the squadron and moves the slot (2: state 4;
+// 1/3 from 4: state 3). A busy squadron in state 3 takes only order 1; one holding
+// at its moveto point only order 3; so a re-send is order 1, then order 3.
+// `slot_number` is 1-based. Refused, with `reason` (answer 2 = refused by the
+// slot's state), when the switch is off, no host is live, or the base, slot,
+// squadron or (order 3) target is missing.
+struct PlayerAirOpsOrderResult {
+    bool accepted{false};
+    int answer{0};       // 006CCDA0's: 0, 1 or 2 (-1: a state this entry does not serve)
+    int state_after{0};  // slot+2Ch after the order
+    int planes{0};       // members the command was issued to
+    std::string reason;
+};
+PlayerAirOpsOrderResult script_orders_player_air_ops_order(const std::string& base,
+    int slot_number, int order, const std::string& target);
 // The class+134h (DefaultEquipment) reader 006C0F00 needs; the mission Lua host
 // sets it, since it holds the class table.
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class));
@@ -633,6 +653,9 @@ public:
     // served once its members exist.
     PlayerAirOpsLaunchResult player_air_ops_launch(const std::string& base, int slot_number,
         int vehicle_class, int count, const std::string& target);
+    // Packet cc9_air_ops_held_slot_orders: the entry above.
+    PlayerAirOpsOrderResult player_air_ops_order(const std::string& base, int slot_number,
+        int order, const std::string& target);
     void queue_auto_attack_target_007f15f0(std::uint32_t squadron_entity,
                                            std::uint32_t target_plus_one);    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
     unsigned long long air_ops_slot_refills() const noexcept { return air_ops_refills_; }

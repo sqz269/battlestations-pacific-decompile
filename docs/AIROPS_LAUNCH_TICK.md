@@ -923,3 +923,56 @@ scatter is ON. The order files are cc9-ships37's: `s37_l10_p2.txt` (LOMP10 11200
 
 **Verdict: ON.** The mechanism matches: every later member gets the squadron's order as it leaves
 the deck. The moves trace to wingmen that now fight.
+
+### Orders to a held slot (packet `cc9_air_ops_held_slot_orders`, cc9-lua44, 2026-10-06)
+
+**Why.** A squadron that is out, or landed and below, keeps its slot in state 3 (SQUADRON_LAND_TASK 5ep). So the
+player's `launch` entry, which serves states 1 and 5 only, can never re-send it. The Support Manager re-sends
+it through `006CCDA0`'s other arms: the same 82h message with order 1, 2 or 3 against an occupied slot. These
+arms were read from the disk listing at `006CCF4A`-`006CD117`.
+
+In every arm the command is issued **on the squadron**, through `0077D600` with `ECX = slot+28h`.
+
+| state | order | the image | answer |
+| --- | --- | --- | --- |
+| 3 | 2 (recall) | squadron `vtable[114h]` -> `0071BED0` (hold fire); `land` `00E08FA0` at the block's owner `+7Ch` (`00465080`); state **4**, the timer pair, `006BF150` | 1 |
+| 3 | 3 (attack) | only when `006BC5E0` is true: `SetTarget` `00E08EF8` at the target (`006CCFF6`-`006CD014`) | 1, else 2 |
+| 3 | 1 (moveto) | only when `006BC5E0` is false: `moveto` `00E08F68` at the squadron's **own** position (`00427EB0` on the squadron, then `00468560`), `006BF150` | 1, else 2 |
+| 4 | 2 | refused | 2 |
+| 4 | 1 / 3 | moveto own position / SetTarget target; then `006BC730`, which sets slot+8h = `007EE5C0` (and state 1 when 0). `006CD0EC` then writes state **3** unconditionally, plus the timer pair | 1 |
+
+The helpers:
+- **`006BC5E0`** (`006BC5E0`-`006BC683`, `__fastcall(squadron)`, bool). It is true when the squadron's current
+  command (`vtable[114h]` -> `0071BE40`) is moveto `00E08F68` and the squadron is within class+268h x
+  `[00CEC160]` of the command's point (`0071EB60` -> `006F7DD0`, `0042B2F0`).
+- **`007EE5C0`** (one caller, `006BC730`). It counts the members of `+3D0h` that are **not** landed (`+904h`)
+  in state 5 or 2, or in state 1 while disabled (`+5Ch` clear).
+- So a busy squadron takes only a moveto (it holds where it is). Once it holds at that point, it takes an
+  attack. **The player's re-send is order 1, then order 3**, or order 2, then 1 or 3, for a recalled one.
+- No arm releases the slot: `006BC730`'s state 1 is overwritten at `006CD0EC`. A held slot frees only when its
+  squadron is gone (5ep).
+
+**The binding.** `bsp::kAirOpsHeldSlotOrdersBound` (`include/bsp/air_operations.hpp`), committed **OFF**:
+- `air_ops_held_slot_order_006ccda0` is the arm table above;
+- `GameScriptOrdersHost::player_air_ops_order(base, slot_number, order, target)`, with the free
+  `script_orders_player_air_ops_order`, is the player entry;
+- the units host exposes `plane_order_view` for `007EE5C0` and `006BC5E0`.
+
+Labelled substitutions:
+- delivered at once, with player 0;
+- `006BC5E0`'s distance test is not read: holding means the leader's stored class is moveto;
+- the commands reach the members the host's way: the attack through the squadron intake `007F1940`, the
+  moveto as each member's kind-7 task with the leader's position, the land through `0099A3DD`;
+- the hold fire is not carried.
+
+The state-2 arms (retarget, and `006CC5C0`'s cancel) and the state-5 order-2 re-arm are not served by this
+entry.
+
+**Predictions, written before any ON run.** These need a harness line (`order <base> <slot> <1|2|3>
+[target]`), routed to cc9-ships39.
+- **ESMP08 with `s38_e8_p3.txt` plus `order` lines** for the slots whose squadrons are still flying after
+  their target died. Each slot answers order 1, then order 3 with a live target. The squadrons re-attack, so
+  IJN strikes on the remaining USN ships rise.
+- **A squadron landed and stowed** (state 3, all members in state 2): order 1 issues a moveto that the host's
+  stowed planes cannot fly (state 2 has no motion arm). The host is expected to show 0 planes moving: a known
+  limit, not the image.
