@@ -52,6 +52,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
+#include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -422,6 +423,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_lua_add_air_base_stock.
     const bool add_stock_row = kLuaAddAirBaseStockBound
         && dispatch_row.address == 0x00896a90u;
+    // Packet cc9_lua_add_shipyard_stock.
+    const bool shipyard_stock_row = kLuaAddShipyardStockBound
+        && dispatch_row.address == 0x00896cc0u;
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
@@ -486,7 +490,8 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || slot_count_row || add_stock_row || device_reload_row || unlimited_air_row
+        || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
+        || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
         || attack_alt_row
@@ -603,6 +608,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (add_stock_row) {
         if (!host->error_replay()) host->run_add_air_base_stock_00896a90(state, argc);
+        return 0;
+    }
+    if (shipyard_stock_row) {
+        if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
         return 0;
     }
     if (slot_count_row) {
@@ -5426,6 +5435,50 @@ int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int ar
     return 0;
 }
 
+// Packet cc9_lua_add_shipyard_stock (docs/SQUADRON_LAND_TASK.md 5ej). 00896CC0
+// AddShipyardStock(entity, class, count [, names]): the contract is at
+// kLuaAddShipyardStockBound. 0084ACB0 (GUNNERY 136, bsp::shipyard_add_stock_0084acb0)
+// adds the count to the record whose class+70h is the id, else pushes a new record
+// (008485F0, 008499A0).
+// SUBSTITUTIONS (labelled): the object is the bsp::shipyards() record bound to the
+// entity id, else the one named like the entity's row; an entity with neither is
+// counted unresolved, where the image calls 0084ACB0 on any object 00888AA0 returns.
+int GameMissionLuaHost::run_add_shipyard_stock_00896cc0(lua_State* state, int argument_count) {
+    ++summary_.shipyard_stock_calls;
+    const int class_id = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int count = argument_count >= 3 ? static_cast<int>(::lua_tonumber(state, 3)) : 0;
+    std::string names;
+    if (argument_count >= 4) {
+        const char* text = ::lua_tostring(state, 4);
+        if (text != nullptr) names = text;
+    }
+    const int id = air_ops_entity_id(state);
+    bsp::ShipyardState* yard = id > 0 ? bsp::shipyards().find_mutable_by_entity_id(id) : nullptr;
+    std::string row_name;
+    if (units_hooks_ != nullptr && id > 0 && static_cast<std::size_t>(id) <= units_hooks_->count()) {
+        if (const GameUnitRow* row = units_hooks_->unit_row(static_cast<std::size_t>(id - 1))) {
+            row_name = row->name;
+        }
+    }
+    if (yard == nullptr && !row_name.empty()) yard = bsp::shipyards().find_mutable(row_name);
+    if (yard == nullptr) {
+        ++summary_.shipyard_stock_unresolved;
+        log_.notef("  AddShipyardStock 00896cc0: entity id %d \"%s\" has no shipyard record "
+            "(class %d +%d) (packet cc9_lua_add_shipyard_stock)", id, row_name.c_str(), class_id,
+            count);
+        return 0;
+    }
+    const std::size_t before = yard->stock.size();
+    const int total = bsp::shipyard_add_stock_0084acb0(*yard, static_cast<std::uint32_t>(class_id),
+        count, names);
+    if (yard->stock.size() > before) ++summary_.shipyard_stock_created;
+    log_.notef("  AddShipyardStock 00896cc0: \"%s\" class %d +%d -> %d names=\"%s\"%s (packet "
+        "cc9_lua_add_shipyard_stock)", yard->owner_name.c_str(), class_id, count, total,
+        names.c_str(), yard->stock.size() > before ? " (new record)" : "");
+    log_.implemented("MissionLuaNative::AddShipyardStock", "00896cc0");
+    return 0;
+}
+
 namespace {
 // 00E17BF2. One byte in the image, so one value per process here.
 bool g_device_reload_enabled_00e17bf2 = false;
@@ -6910,6 +6963,8 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // will carry as `ID`, so it is where the two are tied together.
         // docs/AIROPS_LOAD_FROM_SCENE.md.
         bsp::air_ops_decks().bind_entity_id(entity.id, entity.name);
+        // Packet cc9_shipyard_scene_attach: the shipyard records likewise.
+        if (kShipyardSceneAttachBound) bsp::shipyards().bind_entity_id(entity.id, entity.name);
         // 00928b53 assigns a fresh table, then 00928bxx seeds `ID`, `Dead` and
         // `Ptr`. The native `Ptr` is lightuserdata(entity), the entity object
         // itself; this process has no such object, so the slot carries the
@@ -7440,6 +7495,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (00896A90 -> 006CA770, packet cc9_lua_add_air_base_stock)",
         kLuaAddAirBaseStockBound ? 1 : 0, summary_.stock_add_calls,
         summary_.stock_add_created, summary_.stock_add_unresolved);
+    log_.notef("summary mission script shipyard stock bound=%d calls=%llu new_records=%llu "
+        "unresolved=%llu (00896CC0 -> 0084ACB0, packet cc9_lua_add_shipyard_stock)",
+        kLuaAddShipyardStockBound ? 1 : 0, summary_.shipyard_stock_calls,
+        summary_.shipyard_stock_created, summary_.shipyard_stock_unresolved);
     log_.notef("summary mission script device reload bound=%d calls=%llu true=%llu "
         "now=%d (008C1350 -> 00E17BF2, packet cc9_device_reload_enabled)",
         kLuaDeviceReloadEnabledBound ? 1 : 0, summary_.device_reload_calls,
