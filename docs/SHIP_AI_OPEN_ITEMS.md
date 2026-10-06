@@ -14929,3 +14929,54 @@ unit. The host answers `009542B0` "not available", so no group is ever selected.
 **Re-run** (`local\s38_i11p2.log`, `s38_i11_p1.txt`, 20000 frames): both moveto lines are refused
 by the new gate, and the mission does not end (`summary mission end: none`). **IJN11 is recorded as
 not completed with legal input.** 190's p1 completion stands only as a labelled run.
+
+## 192. Handoff (cc9-ships38, 2026-10-06)
+
+### Landed (`agent/cc9-ships38`)
+
+| section | what |
+| --- | --- |
+| 179.2 / 179.3 | USN01 completes. 179.2: 712.75 s with the wingmen's launch order ON. 179.3: 648.42 s under squadron placement, with p8 (`local\s38_u1_p8.txt`): a 20 m release window and two legal convoy retargets |
+| 186 | LOMP10 completes with `s37_l10_p2.txt` at 30000 frames: `luaVictory` at 1081.08 s, then EndScene. Also the dead-or-hidden refusal of a launch target |
+| 187 | USN12 completes at 1544.78 s (`s38_u12_p2.txt`): an early moveto keeps Montpelier off the shoal |
+| 188 | ESMP08 reaches 10 of 15. The routed blockers: carrier slots stop returning, and Zuikaku's deck is blocked by one member stuck in takeoff prepare |
+| 189 | BSM01, IJN01 and USNRM01 idle reads. Also `target <sq> a \| b \| ...` pick lists |
+| 190 / 190.1 | IJN11 completes only through a moveto on an unselectable unit, so it is **not legal**. The harness moveto now refuses units that `00645060` rejects |
+| 191 / 191.1 / 191.2 | BSM01 reaches phase 3. The traffic setback walk explains Henry's instant movetopos finish; `BSP_SHIP_MOVETO_TRACE` is the diagnostic. Phase 3 needs the player's depth-charge release |
+| harness | `build <shipyard> class <id>` (`a5c970e65`), which calls `GameGunneryHost::shipyard_order` |
+
+### Open, in order
+
+1. **BSM01 depth-charge line** (gunnery lane). The player selects weapon group 5 (role 7, mask 80h)
+   through `005484B0`; `005484F0` then sends fire message 79h. The host answers `009542B0` "not
+   available", so no group is selected.
+   - Then re-run `s38_b1_p6.txt` (takehelm to the mini-sub) with a release once Henry is within
+     40 m.
+   - Phase 4 (`Donald`: ten kills, or 17 km from Akagi) has not been reached.
+2. **USN04 phase 1.**
+   - At difficulty 1 it passes when `IJNBombersLex` or `IJNFightersLex` is all dead (575).
+   - Idle, every Lex bomber and fighter group (#1, #2, #5, #6) dies by 1200 s, yet phase 1 never
+     completes.
+   - Read next: the tables hold the squadron units from `luaBombersSpawnedLex(unit1, unit2)`
+     (3081). Check whether `luaRemoveDeadsFromTable` sees those group entities as `Dead`, and
+     whether `luaObj_IsActive("primary",1)` is ever true (`luaObj_Add` at 3245).
+3. **The rows blocked on routed items:**
+   - ESMP08 and USN13: the carrier slot return.
+   - JM06: `GetSubmarineOnSurface` `008942C0` is unimplemented.
+   - IJN01: a fighter does nothing after its one dive bomb.
+   - USNRM01: West Virginia is never sunk.
+   - JM08: the neutralize (185).
+   - USNOS: Kaiten in each wave, and the ASW issue above.
+4. **IJN11.** It is legal only if the player can command the cargo some other way. Read why
+   `00645060` refuses `SupplyCargo` in phase 2.
+
+### Tools (`local\`, `s38_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s38_run.ps1` | one run, in s37's launch form (`-Name -Orders -Mission -Frames -Traj`) |
+| `s38_sum.ps1` | a log summary: the end, the guard line, death rows (`-Ships` regex), launch outcomes |
+| `s38_l10gen.py`, `s38_e8gen.py`, `s38_i1gen.py` | generators of cyclic launch and target order files |
+| `s38_line.py` | the units near a pose-to-goal segment at one trajectory step |
+
+Leases: `cc9_reference_completion` is released with this commit.
