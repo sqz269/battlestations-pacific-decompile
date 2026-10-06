@@ -15261,3 +15261,109 @@ The evidence is cc9-gunnery30's ON log `g30_sy3on_l10b.log`, from LOMP10 with `k
 **The broad set: prediction 2 is met.** No row moves its gameplay, so no `moveonpath` in these missions began without a `0071C1B0` store.
 
 **Verdict: the mechanism matches and no row moves for any other reason, so the switch is ON.** The per-slot re-construction stays labelled.
+
+## 198. The carrier elevator re-takes a stowed plane: partial read (cc9-ships39, 2026-10-06, read-only)
+
+**Source.** SQUADRON_LAND_TASK 5ep: on ESMP08, Chiyoda's elevator re-takes the stowed `Chiyoda_sqn28` every 4.8 s. The intake count is 459, and the platform offset sinks 7 m per cycle.
+
+Nothing is bound and no run was made. The listing was read from Ghidra, read-only.
+
+### The intake at the top (006D0600)
+
+1. **The owner gate** (`006D0689`-`006D06A3`): `[[site+B8h]+1188h+7Ch]` must be non-null and its `+5Dh` must be clear. That is the carrier, and it must be alive. Otherwise the arm returns.
+2. **The walk** (`006D06A5`-`006D0701`) goes over the site's occupant vector `+34h`/`+38h`. The last occupant that passes all four tests is taken:
+   - `+904h` is set (`006D06BA`);
+   - the site's `vtable[3Ch]`, `006CFF70`, answers true. That needs `006CFE90`'s nose distance, measured in x/z only through the plane's `+74h` local matrix, to be below `3.0 (00D7A2B0) - speed`;
+   - `vtable[38h]`, the speed, is below 1.3889 (`00CF8AAC`);
+   - `007B8D40` answers true.
+3. **No test looks at height.** A plane hidden at the bottom of the lift keeps the lift's x/z, so it passes the distance test again.
+
+### Nothing on the stow path removes the plane
+
+- **`007B96C0`** is only `+C00h = 1; 00951F40(0)`. `00951F40` detaches or re-attaches the spatial node (`+4A4h`) and sets the visibility factor; nothing else.
+- **`006FC250`** (release) and **`006FC720`** (take) touch only the elevator's own handle `+20h`..`+34h`. Neither erases from the site's `+34h` vector, which agrees with 5an.
+- **`006FC720`'s offset** is the plane's `+A4h`..`+ACh` (local position) less the lift `+0Ch`..`+14h`.
+  - For a plane already at the bottom, that offset includes `-depth`.
+  - So each re-take carries it a further depth down. That is the host's 7 m per cycle, and the image would share it if it re-took the plane.
+- **The writers of `+904h`** (byte scan `c6 8? 04 09 00 00` and `88 ?? 04 09 00 00`) are all off the state-2 path:
+  - `007B8450`, `007C719E` BeginFlying, `007CB9E0`, ReadPropertyBag, `009CE2E0` TakeoffStateTakeoff;
+  - SceneRecord_Construct and ApplyHeaderProperties;
+  - SetFlightState `007C14B5`/`14DE`/`1518`, for states 4/5/6/7 only;
+  - FlightStateFiveToFour, FlightStateFourToFive, `007C3680`, ChooseSpawnFlightState, `007C7430`;
+  - SetFlightStateUnguarded (client only), OnTouchdownFromFlight, PlaneUnitInstance_Construct.
+
+### Correction to 5ep's gear reading
+
+- **`007B8D40`** (`007B8D40`-`007B8D68`) answers **false** only when the channel byte `+DEC+44h` is set **and** the float `+DEC+48h` is not 0.0. The test is `UCOMISS`, `LAHF`, `TEST AH,44h`, `JNP`: equal answers true, and not-equal or unordered answers false.
+- **`007C1281`-`007C12B0` is `007C11E0`'s param != 0 arm.** That arm stores the value `+48h` directly.
+- **The elevator's state 2 calls `007C11E0(0)`, which takes `007C12E0`.** That arm writes only:
+  - the target byte `+45h` = 1 when `+900h` is 7, 6, 4 or 5, else 0 (`007C130A`);
+  - the dirty byte `+4Ch` (and `+11h`).
+- **It does not write the value `+48h`.** Some actuator tick then moves `+48h` toward the target.
+- **What follows:**
+  - In state 2 the channel heads to 0, so `007B8D40` becomes true once the value settles. A stowed plane would then pass again.
+  - In park states 4/5 the target is 1. For a plane that carries channel `+44h`, `007B8D40` would answer false while the value is non-zero.
+  - The host takes the channel as absent (always true), so its intake may accept parked planes that the image refuses.
+
+### Open: what decides the question
+
+1. The `+DEC` actuator tick that moves `+48h` toward `+45h`, and which plane classes carry channel `+44h`.
+2. The flight state that a parked carrier plane holds when the image's intake takes it.
+
+- If a stowed state-2 plane passes after these reads, **the image re-takes it too**. The loop and the sink would then be image behaviour.
+- Otherwise the deciding gate is the one to bind. **Nothing is bound until these reads decide it.**
+
+### 198.1 Further reads (cc9-ships39, 2026-10-06)
+
+- **Channel `+44h` is the wing-fold animation.**
+  - `BSP_PlaneActuatorBlock_Construct` `007EABC0` enables each channel from the class descriptor:
+    - `+28h` (gear) from `+5C8h`..`+5D4h`;
+    - `+44h` from `+5D8h`..`+5E4h`;
+    - `+60h` (bay) from `+5E8h`..`+5F4h`.
+  - Each channel is enabled when its flag byte (`+5D4h` / `+5E4h` / `+5F4h`) is set. The constructor then sets value 0, target 0 and rate `1 / time`.
+  - This installation's `vehicleclasses.lua` authors `PartAnims = { Gears = {0, 5}, Wings = {5.03, 8.33} }` for class 101 (F4F). So `+44h` is the `Wings` part animation. Not every class has one.
+- **The host's channel A.** `actuator_block_dec.channel_a` exists and has a tick (`007DE3A0`), but nothing enables it from the class. The elevator's intake comment ("no `+DECh` block") is therefore out of date.
+- **The erase from site `+34h`.** The one site found is `007C7110` BeginFlying. At `007C7151`-`007C7167` it calls the holder's `vtable[28h]` (`006CF180` -> `006CEF80`) when `+900h` is 4 or 5. The host mirrors this in its lift-off arm.
+  - A scan for other `MOV reg,[reg+28h]; CALL reg` sites (`8b ?? 28 ff ??`) **missed `007C7163` itself**. So it is no census, and other callers of the erase may exist.
+- **The working hypothesis.** A stowed plane stays on the site vector in state 2 with its wings target 0. Once the value settles, it passes `007B8D40` again, so the image would re-take it as well.
+  - What the image's player actually sees on the deck is unknown.
+  - The deciding question remains: does something take a stowed plane off the site vector, or out of `+904h`, other than `007C7110`?
+  - Candidates are the squadron's land task end and the air-ops stock return. Neither was read.
+
+## 199. Handoff (cc9-ships39, 2026-10-06)
+
+### Landed (`agent/cc9-ships39`)
+
+| section / sha | what |
+| --- | --- |
+| 196 | USN04 phase 1 passes under `--mission-frame-seconds 0.0222 --frame-jitter 20,<seed>` (3 of 3 seeds). Phase 2 is blocked: the dive aim ends 230-500 m off Shoho, and the strikes almost never release. USNOS read |
+| 197, `7bcdb0fa9` / `f0a74bf44` | `kPathObjectDefaultPairBound` **ON**: `0071FB90`'s `{1,5}` path pair. The shipyard boats follow their path. Also the `+1130h` correction (`00825F20` counts it down; `0081DE10` is a visibility test) |
+| 198 | The elevator re-take, partial read, and the `007B8D40` correction. Nothing bound |
+| `6a7bd90bd` | the `fire <ship> group <g> [release]` line; `depthcharge` is now a one-frame press through it |
+| `8a6c626ba` | the `order <base> <slot> <1|2|3> [target]` line (held-slot air-ops order) |
+
+### Open, in order
+
+1. **The elevator re-take loop** (198, 198.1). Read what removes a stowed plane from the site vector or from `+904h`: the land task end, and the stock return on landing. Then decide whether the image re-takes it.
+   - **Bind nothing until that read decides it.**
+   - Test rows once bound: ESMP08 with `s38_e8_p3.txt`, and USN01 with `s38_u1_p8.txt` as the control.
+2. **BSM01 re-run** (`s38_b1_p7.txt`, now through the `fire` line), once cc9-gunnery31's depth-charge-in-water lands.
+3. **JM08, ESMP08, USN13 re-runs** once the slot return and held-slot orders land (cc9-lua45). Also JM08's shipyard `build` line, now that the path pair is ON.
+4. **USNOS phase 1.** It is blocked twice:
+   - ships do not shell Airfield3 or the hangared Judys (to the gunnery lane);
+   - Enterprise's stock resolves to class 0 (cc9-lua45's PlaneStock enum fix).
+   - Once the fix lands, launch F2Gs (810) from Enterprise at wave-1 Judys `plane #1.5` and `plane #1.6` before they return to base at 147-189 s. Waves 2-3 follow the same shape.
+5. **USN04 phase 2** needs the planes lane's dive aim and release. Test row: seed 3, `s39_u4_p1.txt`, 45000 frames.
+
+### Tools (`local\`, `s39_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s39_run.ps1` | one run (`-Name -Orders -Mission -Frames -Step -Jitter -Exe`) |
+| `s39_grp.py` | groups a log's lines matching a regex by shape (count, first, last) |
+| `s39_ctx.py` | context around the nth match, with the mission frame and `t=` |
+| `s39_u4sum.py`, `s39_u4gen.py` | USN04 summary and launch-order generator |
+| `s39_scnstr.py` | printable strings around a marker in a `.scn` |
+| `s39_broad.ps1` | the five-row broad pair launcher |
+
+Leases: `cc9_elevator_retake_read` is released with this commit.
