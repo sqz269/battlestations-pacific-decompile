@@ -14293,3 +14293,28 @@ axis.
 - **Carrier launches.** Members wait in state 4/5 on the lift. Any of them that ran the mode-0 demand in state 5 now holds
   at 0.6 at most, so USN04 may move slightly in launch timing.
 - **Mechanism failure:** members still in state 470 at the end, or a taxiing plane above throttle 0.6 in state 5.
+
+**Pairs (2026-10-06, `e159644d7`).** `e159644d7` is the switch commit plus the `else if` that keeps the ON build free of
+C4702. Exports are `local\l47_F0` / `local\l47_F1`, in AD's launch form; logs are `local\l47_F<0|1>_<j8|lomp10w|e2>.log`.
+The F1 smoke ran clean.
+
+| row | pair_diff | takeoff tasks done (OFF -> ON) | mission end |
+| --- | --- | --- | --- |
+| JM08 g5 24000 | 3 | 24/32 -> **56/57**; members stuck in 470: 6 -> **0** | failed 995.58 -> 997.48 s |
+| LOMP10 30000 (`g30_ord_l10_p2.txt`) | 3 | 13/15 -> **30/30** | **completed 1452.89 -> 1013.58 s**; both runs log the exec guard's `sus_prog.exe` refusal |
+| USN04 9000 | **0** (identical) | 12/12 both | none |
+
+- **JM08.** Every airfield member now takes off, so the squadrons fly complete and their slots return. Airfield launches
+  go from 4 to 13.
+  - The level-bomber wingmen release too: USTroopTransport 03 dies at 253.26 s to `MainAirFieldEntity 01_sqn03|.-3`, and
+    USTroopTransport 04 at 305.85 s to `sqn04|.-3`. In OFF those were Hosho's 469 s Kate kill and Fubuki at 795 s.
+  - T05 dies at 442.42 s. Its killer is logged as `Gleaves`, a US destroyer; that attribution is unexplained.
+  - Deaths 153 -> 182, shots 28849 -> 50592.
+  - The mission still fails at 997.48 s: T01 lands its craft at 774.65 s and Isokaze sinks it only at 869 s. The JM08 plan
+    must now get T01 before then, and with 13 airfield sorties it has the tools.
+- **LOMP10.** The `CB4_AF` airfield's squadrons all take off (30/30 against 13/15), dive-bomb releases rise from 28 to 48,
+  and the scripted win comes 439 s earlier, at 1013.58 s (the completion's entity is `Kiyoshimo`, against `Ashigara` in OFF). Deaths 42 -> 55.
+- **USN04** (carrier launches, which leave state 5 through the lift) is identical, as predicted.
+
+**Verdict: ON** (reference AG). The mechanism matches: no taxiing plane runs the demand arm, no member is stuck, and the
+carrier row is unmoved.

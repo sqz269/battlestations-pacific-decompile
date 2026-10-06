@@ -569,7 +569,7 @@ inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30
 // runs the demand arm, and a demand in state 5 is not capped (a taxiing plane
 // under the takeoff run's hold reached full throttle toward the reseeded
 // +2B4h, JM08's airfield bombers).
-inline constexpr bool kPilotThrottleGroundArmBound = false;
+inline constexpr bool kPilotThrottleGroundArmBound = true;   // ON (AG): SQUADRON_LAND_TASK 5fe
 
 struct PilotBotThrottleInputs {
     // The slot, read the way 0099D977-0099D998 and 0099DC7A read it.
