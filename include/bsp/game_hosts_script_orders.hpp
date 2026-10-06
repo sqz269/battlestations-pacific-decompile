@@ -438,7 +438,7 @@ inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TAS
 // clears +3Ch and the name and calls `_G[name](...)` through 00887E50 with the
 // stored arguments (0073521F). False: the three natives stay unimplemented
 // records that push nothing, so no countdown callback ever runs.
-inline constexpr bool kLuaCountdownBound = false;
+inline constexpr bool kLuaCountdownBound = true;   // ON: SQUADRON_LAND_TASK 5ds.1
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

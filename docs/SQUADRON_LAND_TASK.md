@@ -11762,3 +11762,70 @@ The countdown state is a member of `GameScriptOrdersHost`. The step runs inside
   a `luaMonitorAF` that finds no Allied airfield squadron. The row is gameplay-identical (exit 1).
 - **JM08, LOMP10** (3000 frames): no expiry inside 150 s; gameplay-identical (exit 1).
 - **Every other row:** identical (exit 0) or gameplay-identical.
+
+## 5dt. `AddAirBaseStock` routed (packet `cc9_lua_add_air_base_stock`, cc9-lua39, 2026-10-05)
+
+**The image.** `00896A90` (both `AddAirBaseStock` and `AddAirBasePlanes`, LUA_BINDING_ALIASES):
+`00888AA0` on argument 0, `006BCD20` with `DL = 0` (`00896BAA`-`00896BAE`), the class
+`00964790` over argument 1 (`00896BD8`), `0095BA60(class+70h, entity+54h)` (the party preload,
+`00896BF5`), `00964790` again, then `006CA770(class, argument 2)` on the block at `00896C54`
+(the third argument's index is `EBX` = 2, the same register the EH state bytes use). There is
+no null test of the block before `006CA770`. Nothing is pushed. `006CA770` itself is AIR_OPERATIONS
+section 2 and is already reconstructed (`air_base_stock_add_006ca770`).
+
+**The binding** (`kLuaAddAirBaseStockBound`, `include/bsp/game_hosts_lua.hpp`, committed OFF):
+`run_add_air_base_stock_00896a90` adds to, or appends to, the entity's air-ops deck stock list
+(`bsp::air_ops_decks()`), the same list the scene's `PlaneStock` blocks fill.
+- **SUBSTITUTIONS:** the class is its id, as the deck's list holds ids. An entity with no deck
+  is counted unresolved; the image would call `006CA770` on a null block.
+- **Records:** `006CA770`'s notice `00984EB0` (contract: unread). The replication has no peer
+  offline.
+
+**Who reads the stock in this host:**
+- the refill `006C0510` (state 3 or 4 slots);
+- `GetProperty(base, "stock" | "planes")`.
+
+The launch decision `006CD350` (`air_ops_slot_launch_006cd350`) is reconstructed but has no host
+caller. The only script readers of `planes` are commandhelpers' `luaPlayerAirbaseInit` /
+`Manager` and a stock remover (`commandhelpers.lua:8427`, `15183`, `15226`). No reference row's
+mission calls them.
+
+**Predictions (written before the runs):**
+- **ESMP08 long, USN13 long:** the calls now add stock (ESMP08: four carriers, ten entries;
+  USN13: phase 3, if it is reached). No slot refills on these rows (`refills_3_4_to_5=0` in
+  `l38_d1`), so they are gameplay-identical (exit 1).
+- **Every other row:** identical apart from the new summary line.
+
+### 5ds.1 Measured (`l39_a0` against `l39_a1`, commit `49c42034a`): **ON** (cc9-lua39, 2026-10-05)
+
+Both sides were exported from `49c42034a` (`a0` SHA-256 `299B1C4E1DAA`, `a1` `94F0F772C22C`) and run
+with the l38 launch lines (`local\l39_queue.ps1`; `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`). The console session was Active, and every log ends in the final COM release.
+
+| row | exit | countdown (ON) | |
+| --- | --- | --- | --- |
+| USN02 | 1 | none | control |
+| JM05 | 1 | none | |
+| JM08 | 1 | `Countdown(..., 180, "SpawnHoshoFleet")` at 111.15 s, still running at 150 s | |
+| LOMP10 | 1 | `Countdown(..., 180, "TimeLimit")` at 52.55 s, still running at 150 s | |
+| LOMP10 long | 1 | `TimeLimit` ran at 232.56 s | only records, a dialog and a narrative line |
+| JM05 long | 1 | event 4's 400 s timer from 198.06 s, not expired at 450 s; 83 `CountdownTimeLeft` reads | the reminder arm now runs (presentation) |
+| **JM08 long** | **3** | **`SpawnHoshoFleet` ran at 291.15 s** | deaths 179 -> 180, hit records 6894 -> 8141, hull hits 639 -> 538, damage 101129 -> 104971, shots 7757 -> 8551, units 405 -> 411 |
+
+**JM08 long, per entity.**
+- `SpawnHoshoFleet` generates Hosho, Isokaze and Fubuki (party 1) at (-6500, 0, 6500).
+- `HoshoMovie`'s `luaDelay(SpawnHawaiiFleet, 90)` (prcpjm08.lua:954) then generates Hawaii,
+  Pringle and Erben (party 0) at (-7500, 0, 7500).
+- Hawaii's guns sink all three Japanese ships: Hosho at 522.65 s (first damage 455.61 s),
+  Isokaze at 617.12 s and Fubuki at 674.56 s. Those are the three only-ON death rows among the
+  ships.
+- The other death-row differences (28 only ON, 30 only OFF, 90 changed) are island structures (tents, huts, houses).
+  - Their killers and ranges move by about a metre, and a few flip in or out.
+  - This is the fight around them re-timed by the six new hulls. The shared stream is
+    RNG-coupled, as memory notes for pairs.
+  - No Japanese or US ship that exists on both sides changes its fate.
+- LOMP10 long's fire 0.01 s after 52.55 + 180 (at 232.56) is the float residue of
+  `left <= 0`, stepped at 0.05 s.
+
+Every prediction held. **Verdict: ON.** The mechanism is the image's as read. The only
+gameplay move is the scripted reinforcement the countdown exists to trigger.
