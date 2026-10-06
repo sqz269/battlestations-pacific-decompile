@@ -9687,3 +9687,48 @@ note), and so is a type-4 part.
 - **USNOS:** 16 hits reach a capture building (125.5); they move only if it has levelled, so `pair_diff` 1
   is expected but not certain.
 - **USN13, BSM01:** no capture building is hit: `pair_diff` 1.
+
+## 130. The bomb rack's drop scatter `006E4D50` and the cone `006E1F00` (SQUADRON_LAND_TASK 5du; packet `cc9_bomb_drop_scatter`, `kBombDropScatterBound`, cc9-gunnery28, 2026-10-06)
+
+### 130.1 The read
+
+5du (cc9-lua39) read the four draws; this section adds `006E1F00`, the bullet block's slot `+34h`,
+which applies them (`ghidra decompile 006e1f00`):
+- the round is detached from the rack (`BSP_Entity_FindAncestorOfKind(5)`, the owner's `vtable[190h]`
+  `006E0A70`, 5do, sets the velocity; `block+38h..+40h` = the drift with `+3Ch` zeroed; `SetParent(0)`),
+  so its local matrix (`round+74h`, `+84h`, `+94h`) is the pose it had on the rack;
+- unless D = (1, 1, 1): `v = |v| (D.x row0 + D.y row1 + D.z row2)` (zero when `|v|^2 <= [00CE3820]`),
+  with D = (`t cos a`, `-t sin a`, 1) not normalised.
+
+**So the cone does more than tilt.** With `t = 0` the velocity still becomes `|v|` along the round's
+forward row: the 5do velocity's direction (the aircraft's world velocity with 3.0 off y) is replaced by
+the rack's forward axis, keeping its magnitude. The cone then tilts that axis by `atan(t)`, at most
+`atan(0.01)` = 0.57 degrees on this installation's racks (`Throw` 0.01). The drift (`Wind` 0.05) goes to
+`block+38h`, whose reader is still unread.
+
+**ThrowMul** (`00999B70`, AI-held planes): `DiveBombThrowMul` (`+78h`) or, for `IsKindOf(10h)`,
+`LevelBombThrowMul` (`+C8h`), named as `include/bsp/robot_config.hpp` names those offsets. This
+installation's `robots.lua` (mtime 2025-06-01): DiveBombThrowMul 1.0 except SPVeteran (:722) and Elite
+(:1136), 0.0; LevelBombThrowMul 1.0 on all six rows.
+
+### 130.2 The binding (committed OFF)
+
+`kBombDropScatterBound` (gunnery), in `GameGunneryHost::release_bomb_drop` after the 5do velocity: the four
+draws in order on stream 1 (key `Draw::bomb_scatter` (unit, 0) under the measurement option), then the cone
+over the plane's pose rows (right, up, forward). Both host drop paths reach it (the rack tick's
+`run_rack_bomb_drop_006e4d50` and the bay release in `src/game_hosts_units.cpp`). `skill_row` (default 1,
+SPNormal) picks the ThrowMul row; the prepared units edit (`local\g28_units_scatter_edit.py`) passes
+`dive_bomb_row_index` and keeps the `Rack::drop_dispersion_006e4f91` record only while unbound.
+
+**LABELLED:** the round's rows are the plane's pose rows (the rack mount rotation is unread); every
+dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h)` no-cone arm
+(`006E521E`) is taken as never true; a drop the host refuses (no bomb row) draws nothing.
+
+### 130.3 Predictions (written before any ON run)
+
+- **Every bomb's launch direction moves** to the plane's forward axis (plus at most 0.57 degrees), so
+  every row with a bomb drop moves its impact points. Rows with a bomb that hits or nearly hits a ship
+  move (`pair_diff` 3): USN01 (the scout bomb on Convoy1), USNRM01 (34 dive-bomb releases), LOMP10 and
+  LOMP10 long (14). USN13 long (3 releases) may stay at 1 if its bombs miss either way.
+- **Rows without a bomb drop** (USN02, JM06, BSM01): `pair_diff` 1, `drops=0`.
+- The summary's `max_cone_deg` is at most 0.573 (`Throw` 0.01), and 0 for a SPVeteran or Elite dive bomber.

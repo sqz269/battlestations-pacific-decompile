@@ -189,6 +189,7 @@ struct GameGunRow {
     // gun[+3F8h]+4h, the fire record's `Throw` (007313E0): the cone half-angle
     // in radians before 0073031D's seat multiplier. docs/BULLET_THROW.md.
     float throw_amount{0.0f};
+    float wind_amount{0.0f};          // gun[+3F8h]+8h, `Wind` (006E50E3, the rack's drift)
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0
@@ -957,9 +958,13 @@ public:
     // for the same reason and with the same caveat (packet cc8_dive_aim item 2:
     // the aimdive census `tf=` column is last-sampled and cannot be read as a
     // release value). Pass a negative when the caller has none.
+    // `skill_row` is the dropping plane's PilotBot level (0..5), for 006E4D50's
+    // ThrowMul (packet cc9_bomb_drop_scatter, GUNNERY 130).
     bool release_bomb_drop(std::size_t unit_index,
                            const float predicted_impact[3],
-                           float release_fall_time);
+                           float release_fall_time, int skill_row = 1);
+    // True when 006E4D50's scatter draws are taken (kBombDropScatterBound).
+    static bool bomb_drop_scatter_bound() noexcept;
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     // Packet cc9_water_surface_law. The gunnery host owns every death, so the
     // units host asks it two things for an aircraft in the water:
