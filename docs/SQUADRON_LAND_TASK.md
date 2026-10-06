@@ -13111,3 +13111,47 @@ Main is merged in, everything is committed, and no lease is held.
 **Scripts** are in `local\`, prefix `l42_`:
 - `l42_queue.ps1`, with rows `u1w5`, `u1w7`, `u1p5` and `l10p2` with their order files;
 - `l42_field_writers.py <disp> [lo hi]`, a disp32 load/store scanner over .text.
+
+## 5ej. AddShipyardStock and the shipyard scene attach (cc9-lua43, 2026-10-06)
+
+These are the Lua-lane halves of GUNNERY 136, the shipyard production host (`165e910c4`). gunnery30's
+`bsp::shipyards()` registry and `bsp::shipyard_add_stock_0084acb0` are used unchanged. Each half has
+its own switch, and both are committed OFF.
+
+**The binding: `kLuaAddShipyardStockBound`.** It covers `00896CC0` AddShipyardStock(entity, class,
+count [, names]), read from the listing:
+
+| step | where | detail |
+| --- | --- | --- |
+| argument 0 | `00888AA0` | resolves the object, held in EDI |
+| arguments 1 and 2 | `00B66290` | integers; the class is an id, not resolved through `00964790` (unlike AddAirBaseStock) |
+| argument 3 | `00B662B0` | read only with four arguments; otherwise `00CE3A0C` |
+| the add | `00896E81..00896E8A` | `0084ACB0(class, count, names)` with ECX = the object |
+| result | `00B66400` | no value returned |
+
+`0084ACB0` adds the count to the record whose `class+70h` equals the id. Otherwise it pushes a new
+record (`008485F0`, `008499A0`).
+- **SUBSTITUTION (labelled):** the object is the registry record bound to the entity id, or failing
+  that the record named like the row. An entity with neither is counted as unresolved.
+
+**The scene attach: `kShipyardSceneAttachBound`** (`game_hosts_scene_contents`). For a Shipyard row
+(scene class 46h), `create_units` reads:
+- `NumSlots`;
+- "Stock 1".."12" (`Count`, `Type`, `Names`);
+- "Hangar 1".."12" (`Object`, `Path`);
+- "Slot 1".."NumSlots" (`Unit`, `UnitClass`, `UnitEquipment`).
+
+It then calls `shipyard_scene_attach_00849a30`. The Lua entity seeding binds the record to the entity id.
+- **SUBSTITUTION (labelled):** enum values resolve through the scene library's symbol tables.
+
+**Predictions (OFF -> ON, both switches), written before any run:**
+- **LOMP10 11200, lua42's p2 order file.**
+  - One `shipyard scene attach: unit=CB4_SY NumSlots=4 stocks=4 kept=0 hangars=4 slots=4
+    entries=4` line. All four of this installation's stocks are `None` / `" 0"` (10_san_jose.scn,
+    mtime 2024-08-09).
+  - Two AddShipyardStock lines on CB4_SY, both `(new record)`: class 27 +4 and class 125 +2.
+  - The summary reads calls=2 new_records=2 unresolved=0.
+  - Gameplay identical (pair_diff 0 or 1): `kShipyardProductionBound` is OFF, so no reader consumes
+    the stock.
+- **Rows with shipyards in their scene** (USN04 and the Truk rows): attach lines only, gameplay
+  identical.

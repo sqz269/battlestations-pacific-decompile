@@ -261,6 +261,14 @@ inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, o
 // registry's stock list. False: unimplemented.
 inline constexpr bool kLuaAddAirBaseStockBound = true;   // ON: SQUADRON_LAND_TASK 5dt.1
 
+// Packet cc9_lua_add_shipyard_stock. 00896CC0 AddShipyardStock(entity, class, count
+// [, names]): 00888AA0 on argument 0 (the object in EDI), arguments 1 and 2 as integers
+// (00B66290; the class is an id, not resolved through 00964790), argument 3 as a string
+// when there are four (00B662B0, else 00CE3A0C), then 0084ACB0(class, count, names) with
+// ECX = the object (00896E81..00896E8A). Returns no value. True: route the row to
+// bsp::shipyard_add_stock_0084acb0 on the bsp::shipyards() record. False: unimplemented.
+inline constexpr bool kLuaAddShipyardStockBound = false;
+
 // Packet cc9_hit_listener_filters (docs/LUA_BINDING_MISSION.md, "The unmodelled `hit`
 // filters, bound"). 00988510 hands the channel eight parameters: target, targetDevice
 // (the hit record's own entity when it is a live child other than the victim), attacker,
@@ -653,6 +661,9 @@ struct GameMissionLuaSummary {
     unsigned long long stock_add_calls{0};
     unsigned long long stock_add_created{0};
     unsigned long long stock_add_unresolved{0};
+    unsigned long long shipyard_stock_calls{0};       // packet cc9_lua_add_shipyard_stock
+    unsigned long long shipyard_stock_created{0};
+    unsigned long long shipyard_stock_unresolved{0};
     unsigned long long device_reload_calls{0};
     unsigned long long device_reload_true{0};
     unsigned long long in_formation_calls{0};
@@ -1210,6 +1221,8 @@ public:
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_air_base_stock, under kLuaAddAirBaseStockBound.
     int run_add_air_base_stock_00896a90(lua_State* state, int argument_count);
+    // Packet cc9_lua_add_shipyard_stock, under kLuaAddShipyardStockBound.
+    int run_add_shipyard_stock_00896cc0(lua_State* state, int argument_count);
     // Packet cc9_device_reload_enabled, under kLuaDeviceReloadEnabledBound.
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
