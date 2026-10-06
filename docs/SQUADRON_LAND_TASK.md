@@ -11997,3 +11997,76 @@ found. No re-attack exists in the image for this squadron. The convoy's survival
 aim-error draws. Two routes can advance USN01's phase 2:
 - the image's own RNG sequence for those draws (not available to this host);
 - a scripted player order (the harness's player-input rows).
+
+## 5dw. `GetCapturePercentage` (packet `cc9_lua_capture_percentage`, cc9-lua39, 2026-10-05)
+
+Census item 4. **The image (read whole):**
+- `0089B840` reads argument 0 through `00888AA0`, calls `006F1F90` on that entity with no class
+  test, takes `|result|` and pushes it with `00B66480`: one result.
+- `006F1F90` (`006F1F90`-`006F1FB2`) answers 0.0 when `+7A4h` (the capture value) is 0.
+  Otherwise it answers `[+7A8h] FIDIV [+7A4h]` (progress over value), stored as a float.
+
+**The host.** The three JM05 capture buildings (MainCommandBuilding 01, SecondaryCommandBuilding 01
+and RadarStation 01) are the ship-AI host's `capture_buildings` (packet
+`cc9_command_building_capture_bind`), and each carries `+7A4h`/`+7A8h`.
+
+**The binding (`kLuaCapturePercentageBound`; the code is held until the ship-AI accessor is on main):**
+- The row joins the script-orders table.
+- It reads the fraction through a read-only ship-AI accessor,
+  `command_building_capture_fraction_006f1f90`, routed to the ship lane as
+  `local\l39_capture_patch.py`.
+- **SUBSTITUTION:** an entity that is not a capture building answers 0.0. The image reads those
+  offsets of whatever object it is handed.
+
+**Reach.** JM05 and JM05 long call it 196 times between them. Every call fails today (`nil * 100`
+at JM05.lua:5178-5216), so `luaTimetable` reports 196 failures and the score-display timers
+`luaJM5Pri*Score` / `luaJM5Sec1Score` never re-arm.
+
+**Predictions (written before the runs):**
+- **JM05, JM05 long:**
+  - the `luaTimetable ... 5216` failures go to 0;
+  - the score functions re-arm every 3 s, so script timer counts rise;
+  - gameplay-identical (exit 1): the values feed only `Mission.CaptureProgress` and
+    `DisplayScores`.
+- **USN02** (control): identical; it makes no call.
+
+### 5dw.1 Measured: **ON** (cc9-lua39, 2026-10-05)
+
+Both sides are exports of `3bb758e7d` with `local\l39_capture_patch.py` applied and this packet's two
+script-orders files: `l39_a0` with the switch OFF, `l39_a1` ON. Each is a same-tree pair; logs are
+`local\l39_a{0,1}_<row>.log`.
+
+| row | exit | `JM05.lua:5216` failures OFF -> ON | script timers created OFF -> ON | `GetCapturePercentage` calls (ON) |
+| --- | --- | --- | --- | --- |
+| USN02 | 1 | 0 -> 0 | 19 -> 19 | 0 |
+| JM05 | 1 | 49 -> 0 (`failures=48` -> 0) | 80 -> 128 | 48, none unresolved |
+| JM05 long | 1 | 149 -> 0 (`failures=148` -> 0) | 211 -> 359 | 148, none unresolved |
+
+Every prediction held:
+- the failures are gone;
+- the score functions re-arm, which is the extra timers;
+- deaths, hits and every gameplay line are identical.
+
+**Verdict: ON**, to be committed once the ship-AI accessor is on main (the binding calls it).
+
+## 5dx. `SetCatapultStock` and `PilotRetreat`: read, no reach, not bound (cc9-lua39, 2026-10-05)
+
+**`SetCatapultStock` `00892C30`** (census item 5):
+- **What it does.** It takes the entity from argument 0 and runs the ship test `vtable[5Ch](5)`.
+  It then calls `009539A0(argument 1)` (`00892D7B`), which writes unit+`638h` clamped to the
+  class `LaunchStock` at `class+C8h`. That clamp is already reconstructed as
+  `ship_catapult_stock_clamp_009539a0`.
+- **Its only reference-row caller.** USNRM01, `usn_1_pearl.lua:501`, sets it to 0 on its US
+  ships.
+- **Why it has no reach.** This host keeps no catapult stock and launches nothing from catapults
+  (`summary mission script last catapulted ... calls=0` on every row).
+- **Not bound:** a write-only field in the shared units file would change nothing.
+
+**`PilotRetreat` `008A4300`** (census item 6):
+- **The body is reconstructed** (`pilot_retreat_008a4300`, `src/pilot_order_bindings.cpp`): the
+  side's retreat zone, then an issue of command class `00E08F90`.
+- **No bot task executes that class here.** The squadron returntobase's retreat arm `007F16D0` is
+  RECORD ONLY (5dq), and the hit notice `00999AA0` lists a retreat task this host does not model.
+- **Its reach** is 3 calls on JM05 long: Allied planes out of ammunition (JM05.lua:1428, :1471,
+  :3571).
+- **Not bound:** binding it needs the retreat bot task, a planes-lane packet.
