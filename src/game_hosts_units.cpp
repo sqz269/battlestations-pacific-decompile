@@ -5721,7 +5721,8 @@ struct GameUnitsHost::Impl {
     // release spends (one round per rack before the first issue), as an authored
     // one already does. False: it answers the task's substitute 2, which the
     // salvo's request spends whole, so one drop zeroes it with a rack still loaded.
-    static constexpr bool kRackPoolRoundsRemainingBound = false;
+    // ON by its IJN01 pair (5ex): every A7M_2 / A7M_4 member drops both racks.
+    static constexpr bool kRackPoolRoundsRemainingBound = true;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack

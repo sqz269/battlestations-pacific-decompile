@@ -13924,3 +13924,29 @@ substitution. If it is wrong, IJN01's A7Ms should not bomb, and this switch is m
 - Mechanism failure: any member with `ammo=1` left that still goes to done on the range arm, or a member that
   drops more rounds than it has racks.
 - USN04 (the Vals carry authored Ammo): identical.
+
+**Pairs (2026-10-06, commit `4a51e4feb`, `pair_export`, AD launch form, logs `local\l46rp_<off|on>_<row>.log`).**
+The 300-frame ON smoke ran clean. USN04 at 9000 frames: pair_diff 1 (gameplay identical).
+
+IJN01 + `s38_i1_p1.txt` at 24000 frames: pair_diff **3**.
+- Deaths go 37 -> 48, hit records 2666 -> 5828, and dive-bomb-task releases 28 -> 44.
+- Every A7M_2 / A7M_4 member logs `releases=2 bombs_spawned=2 rounds_left=0` where OFF logs 1/1/0. Its `done`
+  stretch falls from about 10500-11000 ticks to 87-237.
+- **The second drop comes in the same glide, not on a second pass.** The transitions are unchanged (4 for A7M_2,
+  6 for A7M_4). The aimglide's request is for two rounds, capped by `007C1DB0` = 2. With D1h still set after the
+  first rack, the task stays in aimglide and the second rack drops on its own tick. Then D1h clears, and the range
+  arm ends the glide. The goaway -> flyabove re-pass that the prediction expected is not needed for a two-round
+  salvo. That is the one spread miss.
+- **The mechanism matches.** D1h follows the racks' rounds. No member drops more rounds than it has single racks
+  (2). After both racks are empty, the live mask removes 2Ah and the members go on to their gun classes.
+- **Per entity.**
+  - Only ON: LST1-LST6, Neosho, Medusa and Vestal die, plus A7M_2 and two of its members.
+  - Only OFF: A7M_1, A7M_1|.-4, and A7M_3 with two of its members.
+  - Kill credit: A7M_4 goes 0 -> 7 and A7M_2 0 -> 6. The second bombs and the strafing that follows account for
+    the added hits and the LST deaths.
+
+**Verdict: ON.** The upstream uncertainty above is unchanged. `007CDF20`'s kind-1 arm (`007CDFC4`..`007CDFF8`) calls
+`0095A880(0, 1, 0)` for an Equipment <= 0, so it attaches nothing. The A7M members, though, are planes of a
+PlaneSquadronGen. Their kind-2 arm (`007CDF40`) takes `+C54h` from the squadron's `+124h` and attaches nothing there.
+Whether IJN01's A7Ms carry bombs at all in the image is therefore an open read for the plane-equipment packet. If they
+do not, this switch has nothing to count.
