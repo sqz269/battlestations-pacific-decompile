@@ -11135,3 +11135,60 @@ the host's has `-pi/2..pi/2`. `007F6190` does not test the vertical.
 
 **Verdict: ON.** The mechanism matches end to end, and every idle row is gameplay-identical.
 `kPlayerTorpedoGroupFireBound` stays OFF until the ships lane lands the harness line (sent to the lead).
+
+## 156. 148's candidate, the bank terms of the terrain probe, is the image's arithmetic (154.2 item 3; cc9-gunnery33, 2026-10-06, read only, nothing bound)
+
+**Read.** The listing of `0099F1C0` (`local\g33_tr_asm.txt`, 2101 lines; `0099F1C0..0099FF49` read line by line,
+`0099FF50..009A13AC` by constants and slots) and `0099CAB0` (`0099CAB0..0099CBB8` line by line), set against
+`terrain_avoidance_0099f1c0` and `terrain_shape_band_0099cab0` (`src/game_hosts_units.cpp`).
+
+| term | image | host |
+| --- | --- | --- |
+| folded bank | `[unit+C68h]`, abs through `[00D7A208] - x` (`0099F2BA..0099F2F1`); `> pi/2` gives `pi - x`, inverted, `sa *= 8` (`0099F2F7..0099F320`) | same |
+| `sa` bank factor | `00419010(0.1, 1, 1.2, 8; bank_f)` (`[00D7A2F0]`, `[00CE3814]`, `[00CE3918]`), times `W/5` | same |
+| `sa` pitch, height and speed terms | `-4W pitch` (`[00D7A328]` = 4.0); `interp(80 -> 0, 460 -> 2W; [unit+9B4h])`; `interp(1.4 MaxSpd -> 0, 2.5 MaxSpd -> 3W; 007D99C0)`; floor 10 | same (the 1.4 is the double `0x3FF6666660000000`, the float 1.4) |
+| pass 0 turn bend | `c = interp(-0.15, 0, 0.2, 2.5; -pitch) * sin(bank, signed [ESP+114h]) * cos(pitch) * [cls+1B8h] * [cls+1B0h]`, `f = row2 + c(-row0)` (`0099F53B..0099F62B`) | same (SlideRatio `+1B8h`, YawSpd `+1B0h`) |
+| pass 0 radius | `interp(0.3, 0.6, 1.2, 1.2; bank_f) * D` (`0099F663..0099F697`) | same |
+| `00419510` normalises | the outputs at `[ESP+474h]`, `[ESP+468h]` and `[ESP+45Ch]` are never read: they are discarded | same |
+| pass 0 points | `p0 = pos - 10f`, the ends `p0 + 0.8 r (f +- l)`, `c0 = max(p0.y - (h + 10), 0.1)` | same |
+| pass 1 | `up = 1.25 row1`; inverted: `f += cos(bank_f) cos(pitch) 0.15 up`; else with pitch < 0, `f.y *= 1 - interp(10, 0, 50, 1; h9b4) interp(-0.4, 0, -0.15, 1; pitch)`; `r = 1.1 D`; the ends `p0 + 0.75 r (f -+ up)` | same |
+| height | `pilot+268h` is always 0 (docs/ATTACKER_EVASION.md), so `h` = the layer `0041BC20` | `kAvoidZoneLayerSampleBound` ON: the layer |
+| fan steps | `cell = min(layer+0Ch, 120)` (`[00D1F3F8]` = 120.0 double, `[00D05804]` = 120f); `n = int(ext / cell) + 1` | same |
+| `0099CAB0` `g` | pass 0 `interp([pilot+264h] = 0.12, 0, 0.35, 1; bankF)`, pass 1 `interp(1.3, 1, 1.7, 0; bankF)`; `g < 1` pulls `lo` and `hi` toward `+-1.1` (`0099CB1E..0099CB67`) | same |
+| `0099CAB0` arguments | `bankF = [ESP+78h]`, the folded bank, at all three calls (`009A0A9E`, `009A11FE`, `009A133E`) | same |
+
+**Result.** Every bank term in the probe and in the band shaper is the image's own arithmetic, constants included.
+The host gap that 148 suspected is not there. The banked TBD's band `hi` (+0.02 ... +0.24 at 106-122 m, against the
+wings-level Kate's -0.04 ... -0.13) is what the image computes for that attitude. Nothing is bound.
+
+**Still labelled.** `vtable[204h]` (bound to the body-forward speed), `unit+C7Ch` (the velocity elevation),
+`unit+9B4h` (recomputed each think rather than kept by `007CE87F`), and the merged-set `lo` sentinel in the
+`G32BAND` line. None of them depends on the bank.
+- If USN04's TBD hold must change, look upstream of the probe: the steady 0.19-0.33 rad bank on a 0.02-0.05 rad
+  heading error (148's closing note) is the roll arm's output, and that is planes code.
+
+## 157. The aimdive steering `009C58D0..009C5DB2` is the host's, line for line (154.2 item 5 / 150; cc9-gunnery33, 2026-10-06, read only, nothing bound)
+
+**Read.** The listing of `BSP_BotStateDiveBombAimDive_Tick` (`009C58D0-009C6161`, `local\g33_aimdive.txt`) from
+`009C58D0` to `009C5DB2`, and the approach update's diving arm `009C7D71..009C7E36`. These were set against
+`dive_bomb_aimdive_steer_009c5c9f`, `dive_bomb_aim_error_009c5c9b`, `dive_bomb_impact_point_009c7d71` and
+`weapon_fall_time_007bcc80` (`src/dive_bomb_task.cpp`), and against the input assembly in `src/game_hosts_units.cpp`.
+
+| step | image | host |
+| --- | --- | --- |
+| live pair | `approach->vtable[0]` minus `unit+FCh/+104h`: `d1` (`[ESP+1Ch]`) and `err_a = 00438B10(009C4F80 heading, pi/2 - atan2(dz, dx))` (`[ESP+24h]`) | same |
+| CCIP pair | `approach->vtable[0]` minus `approach+D8h/+E0h`: `d2` (`[ESP+5Ch]`) and `err_18` (`[ESP+18h]`) | same (`db_impact_planar_5c`, `db_impact_bearing_18`) |
+| `approach+D8h` | `009C7D71`: `t = 007BCC80(unit, h) + 0.1`, `p = pos + t v` (x, z), y the aim point's | same; `007BCC80` is `(sqrt((vy-3)^2 + 2 g h) + vy - 3) / g` |
+| break-off | `h < approach+D4h + approach+50h`, pitch above -60 degrees (`00D20338`), and `0.3 h + 150 > d1` (`00CE3DC8`, `00CE3DD8`): clears `+19h`/`+18h` and returns | modelled (`kAbortRollFloor`, dive_bomb_task.cpp 356) |
+| steep gate | `pitch_c64 > -30 degrees` (`00CEC728`): pitch slot -1.0 | same |
+| error | `gain * (cos(err_18) d2 - lead)`. `lead` is `interp(A8h + 100 -> 0, ACh + 50h -> row+5Ch; h)` and `gain` is `interp(... -> 1, ... -> row+60h; h)`, where `row` = `[approach+14h]` | same |
+| pitch | `err > 0`: `min(err * row+64h, 1)`; else `max(err * row+68h, -1)`; `+29Ch`, `+2A0h = 1`, `+2D0h = 0` | same |
+| roll | wide arm when `[ESP+5Ch] > 0` and `|bank| < 60 degrees` (`00D05AAC`): `interp(-0.5, 1, 0.5, -1; err_18)`; else `interp(-0.4, 1, 0.4, -1; err_a)`; `+290h`, `+294h = 1`, `+2CCh = 0` | same, both bearings passed |
+
+**Result.** The steering is the image's own law, constants included. 143.2's along-track error is the CCIP error
+of a dive steeper than its sight line, and the law pulls against it at the robots row's `AimPrecPull` gains.
+Nothing here differs from the host.
+- The residual is downstream of the command: how fast the stick moves the attitude (the planes' flight model),
+  or the turndown's handover attitude, which 150 found to be the image's.
+- The next read, if wanted, is the aircraft's pitch response to a held `+29Ch` of 1.0 in mode 0 (`0099E3BF` onward
+  and the control law). That is planes code.
