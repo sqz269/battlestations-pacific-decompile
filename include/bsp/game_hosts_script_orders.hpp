@@ -494,7 +494,7 @@ inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1
 // change, with every `#name.field#` reference expanded from the Lua globals at
 // the call (LABELLED: the HUD's own expansion is unread). False: both natives
 // stay unimplemented records.
-inline constexpr bool kLuaDisplayScoresBound = false;
+inline constexpr bool kLuaDisplayScoresBound = true;   // ON: SQUADRON_LAND_TASK 5fb
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50

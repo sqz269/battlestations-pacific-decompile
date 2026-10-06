@@ -14135,3 +14135,22 @@ from the Lua globals at the call. **LABELLED:** that expansion is the host's, fo
   "Capture all bases!" / "Bases captured: 0.00"` once primary 2 starts, stepping to 1.00 / 2.00 as HQ captures land
   (5ez's SetParty run captured HQ2 at about 1732 s), and `HideScoreDisplay(3, 0)` only if the count reaches 3.
 - Control USN04 9000 (`usn_19_coralus.lua`, 12 `DisplayScore` sites): any score lines it reaches appear, nothing else moves.
+
+**Pair (2026-10-06, commit `096bd886e`).** Exports `local\l47_D0` (OFF) and `local\l47_D1` (ON), launch form of AD. The
+300-frame smoke ran clean. Logs are `local\l47_D<0|1>_<osf7|e2>.log`.
+
+| row | pair_diff | score lines |
+| --- | --- | --- |
+| USNOS f7 (60000, `s41_os_f7.txt`) | 1 (gameplay identical) | 325 posts, 4 changes, 0 hides |
+| USN04 9000 (control) | 1 | none reached |
+
+- The USNOS lines, in the order logged:
+  - `DisplayScores(2, 0) "Protect your transports and the Enterprise!" / ""` at 36.60 s;
+  - `DisplayScores(3, 0) "Capture all bases!" / "Bases captured: 0.00"` at 1406.05 s;
+  - `"Bases captured: 1.00"` at 1733.07 s, the HQ2 capture of 5ez's SetParty run;
+  - `DisplayScores(4, 0) "Crush Japans last stand!" / ""` at 2325.34 s. This is `luaReinMovieEnd` (`us_osumi.lua` 1757-1766),
+    after the Yamato reinforcement movie, and it does not depend on the base count.
+- The run ends with 1 base of 3 captured, so primary 2 is not completed and `HideScoreDisplay(3, 0)` is never called.
+- No run completed a mission, so the exec guard had nothing to refuse.
+
+**Verdict: ON.** The mechanism matches: the lines and the count reach the log, and gameplay is identical.
