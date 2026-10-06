@@ -1864,6 +1864,13 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             int value = fallback;
             if (e.present && owner.library.resolve_symbol(e.table, e.symbol, value)) return value;
             std::int32_t parsed = 0;
+            if (e.present) {
+                // gunnery30's routed (A): the symbol's own digits, `:" 0"` included.
+                std::string s = e.symbol;
+                if (s.size() >= 2 && s.front() == '"' && s.back() == '"') s = s.substr(1, s.size() - 2);
+                while (!s.empty() && s.front() == ' ') s.erase(s.begin());
+                if (scene_scan_int(s, parsed)) return static_cast<int>(parsed);
+            }
             const SceneProperty* p = block.find(key);
             if (p != nullptr && !p->values.empty() && scene_scan_int(p->values.back(), parsed)) {
                 return static_cast<int>(parsed);

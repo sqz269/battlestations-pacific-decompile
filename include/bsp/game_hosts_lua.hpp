@@ -37,6 +37,7 @@
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/shipyard_production.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_load_hosts.hpp"
@@ -664,6 +665,8 @@ struct GameMissionLuaSummary {
     unsigned long long shipyard_stock_calls{0};       // packet cc9_lua_add_shipyard_stock
     unsigned long long shipyard_stock_created{0};
     unsigned long long shipyard_stock_unresolved{0};
+    unsigned long long shipyard_units_requested{0};   // packet cc9_shipyard_create_unit
+    unsigned long long shipyard_units_made{0};
     unsigned long long device_reload_calls{0};
     unsigned long long device_reload_true{0};
     unsigned long long in_formation_calls{0};
@@ -1223,6 +1226,10 @@ public:
     int run_add_air_base_stock_00896a90(lua_State* state, int argument_count);
     // Packet cc9_lua_add_shipyard_stock, under kLuaAddShipyardStockBound.
     int run_add_shipyard_stock_00896cc0(lua_State* state, int argument_count);
+    // Packet cc9_shipyard_create_unit: the unit 00844FC0 builds, registered with
+    // bsp::shipyard_set_create_unit. Answers the new unit's index or kShipyardNone.
+    std::size_t create_shipyard_unit_00844fc0(const ::bsp::ShipyardBuildRequest& request);
+    unsigned shipyard_units_serial_{0};
     // Packet cc9_device_reload_enabled, under kLuaDeviceReloadEnabledBound.
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
