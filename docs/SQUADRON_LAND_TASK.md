@@ -14069,3 +14069,28 @@ C (this switch and `kRackBulletKindBound` ON).
   LOMP10 identical or gameplay-identical unless a scene plane there carries a non-default platform; the rows count says.
 - **C against B.** 007C0D90's level-bomber arm drops the 16-bomb stick at 0.05 s and `release_bomb_drop` finds the 2Ah row:
   USN13's `bomb_drops` rises by about 16 per released rack with refusals near 0.
+
+## 5fb. The score lines, `kLuaDisplayScoresBound` (packet `cc9_lua47_display_scores`, cc9-lua47, 2026-10-06)
+
+`DisplayScores` `008C20D0` and `HideScoreDisplay` `008C24B0` were unimplemented records, so USNOS's primary 2 count
+(`us_osumi.lua` 1121-1126: `Mission.CapCount = string.format("%.2f", capCount)`, then
+`luaDisplayScore(3, "Capture all bases!", "Bases captured: #Mission.CapCount#")`, i.e. `DisplayScores(3, 0, line1, line2)`)
+never reached the log.
+
+| routine | reading | coverage |
+| --- | --- | --- |
+| `008C20D0` DisplayScores | argument count 6: `0052B780(arg0, arg1, arg2 string, arg3 string, arg4, arg5)` at `008C22DA`; count 4: `0052B620(arg0, arg1, arg2 string, arg3 string)` at `008C241A` (the `ArgumentAt` pushes 3, 2, 1, `EBP`=0 at `008C2354..008C23D6`); any other count posts nothing; returns the result count, nothing pushed | complete |
+| `0052B620` | builds session message 23h (`0075B430(23h)`, vtable `00CED098`), stores the two integers and the two strings, posts it through `00772330` | complete; the HUD consumer of 23h is unread |
+| `0052B780` | the same 23h message with the two extra integers | read to the stores at `0052B7BE..0052B7FB` |
+| `008C24B0` HideScoreDisplay | two integer arguments -> `0052B900` (`008C25E5`), the 23h message's hide form | complete; the hide field's value is unread |
+
+The `this` of both posts is `[[00E198C4]+C8h]`. The host has no HUD, so the binding (script-orders host, committed OFF)
+logs `DisplayScores(id, flag) "line1" / "line2"` whenever an id's lines change, with each `#name.field#` reference read
+from the Lua globals at the call. **LABELLED:** that expansion is the host's, for the log; the HUD's own expansion of
+`#...#` is unread. The summary prints the posts, changes, hides and each id still shown.
+
+**Predictions (before the pair).** Gameplay identical (pair_diff 0 or 1) on every row: nothing reads the message back.
+- USNOS f7 (60000 frames, `s41_os_f7.txt`): `DisplayScores(2, 0)` for the troop line at the start, then `DisplayScores(3, 0)
+  "Capture all bases!" / "Bases captured: 0.00"` once primary 2 starts, stepping to 1.00 / 2.00 as HQ captures land
+  (5ez's SetParty run captured HQ2 at about 1732 s), and `HideScoreDisplay(3, 0)` only if the count reaches 3.
+- Control USN04 9000 (`usn_19_coralus.lua`, 12 `DisplayScore` sites): any score lines it reaches appear, nothing else moves.

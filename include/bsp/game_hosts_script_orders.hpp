@@ -485,6 +485,16 @@ inline constexpr bool kLuaCapturePercentageBound = true;
 // degrees. False: both stay unimplemented records that push nothing.
 inline constexpr bool kLuaCameraStateBound = true;   // ON: MISSION_END 7.2.1
 inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
+// Packet cc9_lua47_display_scores (docs/SQUADRON_LAND_TASK.md 5fb). True:
+// DisplayScores 008C20D0 with six arguments (0052B780) or four (0052B620:
+// id = argument 0, argument 1, line1 = argument 2, line2 = argument 3) posts
+// the HUD score message 23h through 00772330, and HideScoreDisplay 008C24B0
+// posts its hide form through 0052B900; any other count posts nothing, and no
+// result is pushed. The host has no HUD: it logs each id's lines when they
+// change, with every `#name.field#` reference expanded from the Lua globals at
+// the call (LABELLED: the HUD's own expansion is unread). False: both natives
+// stay unimplemented records.
+inline constexpr bool kLuaDisplayScoresBound = false;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
@@ -1128,6 +1138,11 @@ private:
     std::string narrative_callback_2c_;
     std::vector<int> narrative_refs_34_;
     std::size_t narrative_enqueues_{0};
+    // Packet cc9_lua47_display_scores: each score id's last logged lines.
+    std::map<int, std::string> score_lines_;
+    std::size_t score_posts_{0};
+    std::size_t score_changes_{0};
+    std::size_t score_hides_{0};
     std::size_t narrative_clears_{0};
     std::size_t narrative_shown_{0};
     std::size_t narrative_callbacks_{0};
