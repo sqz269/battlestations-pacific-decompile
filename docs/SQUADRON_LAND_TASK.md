@@ -11997,3 +11997,190 @@ found. No re-attack exists in the image for this squadron. The convoy's survival
 aim-error draws. Two routes can advance USN01's phase 2:
 - the image's own RNG sequence for those draws (not available to this host);
 - a scripted player order (the harness's player-input rows).
+
+## 5dw. `GetCapturePercentage` (packet `cc9_lua_capture_percentage`, cc9-lua39, 2026-10-05)
+
+Census item 4. **The image (read whole):**
+- `0089B840` reads argument 0 through `00888AA0`, calls `006F1F90` on that entity with no class
+  test, takes `|result|` and pushes it with `00B66480`: one result.
+- `006F1F90` (`006F1F90`-`006F1FB2`) answers 0.0 when `+7A4h` (the capture value) is 0.
+  Otherwise it answers `[+7A8h] FIDIV [+7A4h]` (progress over value), stored as a float.
+
+**The host.** The three JM05 capture buildings (MainCommandBuilding 01, SecondaryCommandBuilding 01
+and RadarStation 01) are the ship-AI host's `capture_buildings` (packet
+`cc9_command_building_capture_bind`), and each carries `+7A4h`/`+7A8h`.
+
+**The binding (`kLuaCapturePercentageBound`; the code is held until the ship-AI accessor is on main):**
+- The row joins the script-orders table.
+- It reads the fraction through a read-only ship-AI accessor,
+  `command_building_capture_fraction_006f1f90`, routed to the ship lane as
+  `local\l39_capture_patch.py`.
+- **SUBSTITUTION:** an entity that is not a capture building answers 0.0. The image reads those
+  offsets of whatever object it is handed.
+
+**Reach.** JM05 and JM05 long call it 196 times between them. Every call fails today (`nil * 100`
+at JM05.lua:5178-5216), so `luaTimetable` reports 196 failures and the score-display timers
+`luaJM5Pri*Score` / `luaJM5Sec1Score` never re-arm.
+
+**Predictions (written before the runs):**
+- **JM05, JM05 long:**
+  - the `luaTimetable ... 5216` failures go to 0;
+  - the score functions re-arm every 3 s, so script timer counts rise;
+  - gameplay-identical (exit 1): the values feed only `Mission.CaptureProgress` and
+    `DisplayScores`.
+- **USN02** (control): identical; it makes no call.
+
+### 5dw.1 Measured: **ON** (cc9-lua39, 2026-10-05)
+
+Both sides are exports of `3bb758e7d` with `local\l39_capture_patch.py` applied and this packet's two
+script-orders files: `l39_a0` with the switch OFF, `l39_a1` ON. Each is a same-tree pair; logs are
+`local\l39_a{0,1}_<row>.log`.
+
+| row | exit | `JM05.lua:5216` failures OFF -> ON | script timers created OFF -> ON | `GetCapturePercentage` calls (ON) |
+| --- | --- | --- | --- | --- |
+| USN02 | 1 | 0 -> 0 | 19 -> 19 | 0 |
+| JM05 | 1 | 49 -> 0 (`failures=48` -> 0) | 80 -> 128 | 48, none unresolved |
+| JM05 long | 1 | 149 -> 0 (`failures=148` -> 0) | 211 -> 359 | 148, none unresolved |
+
+Every prediction held:
+- the failures are gone;
+- the score functions re-arm, which is the extra timers;
+- deaths, hits and every gameplay line are identical.
+
+**Verdict: ON**, to be committed once the ship-AI accessor is on main (the binding calls it).
+
+## 5dx. `SetCatapultStock` and `PilotRetreat`: read, no reach, not bound (cc9-lua39, 2026-10-05)
+
+**`SetCatapultStock` `00892C30`** (census item 5):
+- **What it does.** It takes the entity from argument 0 and runs the ship test `vtable[5Ch](5)`.
+  It then calls `009539A0(argument 1)` (`00892D7B`), which writes unit+`638h` clamped to the
+  class `LaunchStock` at `class+C8h`. That clamp is already reconstructed as
+  `ship_catapult_stock_clamp_009539a0`.
+- **Its only reference-row caller.** USNRM01, `usn_1_pearl.lua:501`, sets it to 0 on its US
+  ships.
+- **Why it has no reach.** This host keeps no catapult stock and launches nothing from catapults
+  (`summary mission script last catapulted ... calls=0` on every row).
+- **Not bound:** a write-only field in the shared units file would change nothing.
+
+**`PilotRetreat` `008A4300`** (census item 6):
+- **The body is reconstructed** (`pilot_retreat_008a4300`, `src/pilot_order_bindings.cpp`): the
+  side's retreat zone, then an issue of command class `00E08F90`.
+- **No bot task executes that class here.** The squadron returntobase's retreat arm `007F16D0` is
+  RECORD ONLY (5dq), and the hit notice `00999AA0` lists a retreat task this host does not model.
+- **Its reach** is 3 calls on JM05 long: Allied planes out of ammunition (JM05.lua:1428, :1471,
+  :3571).
+- **Not bound:** binding it needs the retreat bot task, a planes-lane packet.
+
+## 5dy. The retreat bot task and who issues it: read so far (cc9-lua39, 2026-10-05)
+
+The lead's item after 5dx. This section is a **read and a binding plan only; nothing is bound**.
+Ghidra was read-only.
+
+### Who issues command class `00E08F90` (retreat)
+
+**Method.** A byte scan of `90 8F E0 00` (`local\output` was not needed). It found 18 hits:
+- **Issuers:** `008A4300` (PilotRetreat), `007F16D0` (`BSP_Plane_ResolveReturnToBase`, its retreat
+  arm), `0099A170` (the installer), `009C9D00` (the task's own constructor).
+- **Readers:** `007EE2E0` (the "leaving the map on purpose" predicate of `007C6C30` /
+  `007F31A0`), `00811F50`, `009F8160`, `0084DB90`, `0084DDC1`, `0084E010`, HUD rows.
+
+**`0084E010`, the squadron command controller's slot `+7Ch`, is the likely wide-reach producer.**
+Its owner, from GAMEPLAY_LOOSE_ENDS_2 C5, is the controller `0084D810` builds, with its unit at
+`+224h`. The tail (`0084E4A4`-`0084E5C6`, read from the listing) does this:
+- **The RTB test.** If
+  `(sq+369h == 0 && (B4 || no command || command category not 1/2)) || B5`, and also
+  `(sq+369h == 0 || [00E17BF2] == 0) && sq+368h == 0`, it runs `007F16D0(&result)`.
+  - On a non-null result it clears the commands (`0071D880`) and issues the result
+    (`0071ECF0`); `+228h` = 1.
+  - That result is land at home, land at a site, or **retreat** when neither exists. The
+    reference rows' generated strike squadrons have no `HomeBase`, so they retreat.
+- **B4 and B5.** B4 is "no command, squadron has members, and `0071BE60()` == 0". B5 comes from
+  `+48h == 2` with `0071BE60() < 2` and `[+38h]+3Ch` set or a retreat/`98h`/`A0h` command, or
+  from `+50h == 2` with `[+38h]+3Ch` set.
+  - `+48h`, `+50h` and `[+38h]+3Ch` are **contract: unread**.
+  - With `sq+369h` = 1, the scene default (LUA_BINDING_MISSION), only B5 opens the RTB.
+- **Otherwise,** with `0071BE60() <= (+48h == 2)`, it issues `moveto` (`00E08F68`) to the
+  squadron itself.
+
+**What is open.** Who calls slot `+7Ch`, and how often; and what `+48h`/`+50h`/`+38h` are,
+presumably the ordnance and fuel state. Until those are read, the reach is unknown. If B5 is
+"ordnance spent", every scripted dive and torpedo strike retreats after its release in the
+image (USN01, LOMP10, USNRM01, USN13 long, ...). In this host they keep station
+(`BotStateDiveBombDone`). The host's `007F16D0` is RECORD ONLY with zero calls on every row.
+
+### The task
+
+- **Factory `009CA2B0`, constructor `009C9D00`** (read whole). It builds the base kind 9, then
+  the approach `009C9BB0`. Vtables: `00D20F60`, `+3F8h` `00D20F58`, `+464h` `00D20F54`.
+  - `+55Ch` = 1.0 (the arm period) and `+560h` = -U(0, 1) (stream 1, the phase stagger).
+  - It starts in `moveto +478h` when the unit is the squadron's flight leader, else in
+    `follow +4C4h`.
+  - It ends with `BSP_BotApproach_BindToTask`.
+- **The arm `009C9FB0`** (read whole), once per `+55Ch` seconds:
+  - in `follow`: switch to `moveto` once the unit becomes the flight leader;
+  - in `moveto`: if approach `+458h` is set, go to `leave +4ACh`. Otherwise, once
+    `moveto+490h < 0` or `[moveto+47Ch]+61h` is set, go to `enterzone +494h`;
+  - in `enterzone`: when `009C9EA0()` answers true, go to `leave`.
+  - The transitions go through `009C9F70`.
+- **Not read:** the approach `009C9BB0`; the state ticks (`009C9EA0`, `009CA1A0`, `009CA200`,
+  `009C9A80`, the `moveto`/`enterzone`/`leave` objects); where `leave` flies; and how the plane
+  ends.
+  - The despawn is presumably `007F31A0 BSP_PlaneSquadron_OnPlaneLeftMap`, gated by `007EE2E0`,
+    which answers true for a retreat command.
+
+### Binding plan (for the successor)
+
+1. **Settle the reach first.**
+   - Read `0084E010`'s caller of slot `+7Ch` and the controller fields `+38h`/`+48h`/`+50h`
+     (`0071BE60` is the count it compares).
+   - Grep `src/game_hosts_units.cpp` and `src/plane_squadron_host.cpp` for an existing model of
+     that controller before writing anything.
+2. **The task (`kPlaneRetreatTaskBound`, OFF):**
+   - the constructor's initial state and the 1 s staggered arm above;
+   - `moveto` to the 007F16D0 / PilotRetreat zone point (`pilot_retreat_position_008a443e` is
+     reconstructed);
+   - `enterzone` and `leave` per their ticks, and the leave-map removal per `007F31A0`.
+3. **The issuers:** route PilotRetreat's row (`pilot_retreat_008a4300` is reconstructed) and
+   007F16D0's retreat arm to the task under the same switch.
+4. **Predictions to write first:** JM05 long (3 PilotRetreat calls) moves only in those three
+   planes' paths and AA exposure. If step 1 shows the out-of-ammo RTB is live, every strike row
+   moves: spent bombers leave instead of circling. Control: USN02 (no aircraft).
+
+## 5dz. Handoff (cc9-lua39, 2026-10-05, at about 72% context)
+
+Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua39`.
+
+| item | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| census of the plane / bot / air-ops / Lua rows, gate ON | `49c42034a` | - | done | 5dr |
+| Lua countdown natives | `49c42034a`, `7d54d2b47` | `kLuaCountdownBound` | **ON** (JM08 long moves: the Hosho group spawns) | 5ds, 5ds.1 |
+| AddAirBaseStock | `13c8a72ce`, `22261b812` | `kLuaAddAirBaseStockBound` | **ON** (gameplay-identical) | 5dt, 5dt.1 |
+| drop scatter 006E4D50 | `22261b812` | - | read, not bound | 5du |
+| USN01 ConSBD2 | `3bb758e7d` | - | no divergence; aim-error draws; no re-attack | 5dv |
+| GetCapturePercentage | **uncommitted** in this tree | `kLuaCapturePercentageBound` | measured, verdict ON | 5dw, 5dw.1 |
+| SetCatapultStock, PilotRetreat | `87717d65b` | - | no reach | 5dx |
+| retreat task and its issuers | this commit | (`kPlaneRetreatTaskBound` planned) | read + plan | 5dy |
+
+**The held capture binding.**
+- Where it is: `src/game_hosts_script_orders.cpp` and `include/bsp/game_hosts_script_orders.hpp`,
+  modified and uncommitted, under the lease `cc9_lua_capture_percentage`.
+- Why it is held: it calls `GameShipAiHost::command_building_capture_fraction_006f1f90`, which
+  cc9-ships34 is landing from `local\l39_capture_patch.py`.
+- When the accessor is on main:
+  1. merge main;
+  2. build;
+  3. commit the binding OFF (the switch is `false` in the tree now);
+  4. flip it in a second commit.
+  The flip belongs to reference AB.
+
+**Scripts in `local\`** (prefix `l39_`):
+- `l39_queue.ps1 -Tag t -Jobs 'side:row,...'`;
+- `l39_census.py <prefix> <re> <status> <n>`;
+- `l39_sumgrep.py`, `l39_rows.py`, `l39_site.py <name>` (record sites in the units host);
+- `l39_traj.py <csv> <unit-re> <t0> <t1> [every]`;
+- `l39_capture_patch.py <tree>`.
+
+**Next, in order:**
+1. the capture commit pair (above);
+2. 5dy's binding plan, step 1 first;
+3. the drop scatter (5du), if the lead still wants it.
