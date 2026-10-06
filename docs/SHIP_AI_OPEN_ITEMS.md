@@ -14282,3 +14282,7 @@ with the same order file and launch form (`local\s37_u1p5b.log`).
 Why the switch does not move the end: under p5 the last Nell to die is the leader Nell6 itself
 (697.50 s), after every wingman. "Squadron dead" therefore falls on the same tick whether it counts
 the leader or the last member.
+- **Also with `kAirOpsPlayerLaunchGroupBound` ON** (main `34c0a484a` merged, rebuilt,
+  `local\s37_u1p5c.log`): completed at 697.90 s again. The guard line is at 109032, and the log is
+  line-for-line the same at every event checked (the hit at 21478, Convoy4 at 35834,
+  `luaMoveToPh3` at 36521, Nell6 at 108966, the end at 150269).
