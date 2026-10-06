@@ -11135,3 +11135,34 @@ the host's has `-pi/2..pi/2`. `007F6190` does not test the vertical.
 
 **Verdict: ON.** The mechanism matches end to end, and every idle row is gameplay-identical.
 `kPlayerTorpedoGroupFireBound` stays OFF until the ships lane lands the harness line (sent to the lead).
+
+## 156. 148's candidate, the bank terms of the terrain probe, is the image's arithmetic (154.2 item 3; cc9-gunnery33, 2026-10-06, read only, nothing bound)
+
+**Read.** The listing of `0099F1C0` (`local\g33_tr_asm.txt`, 2101 lines; `0099F1C0..0099FF49` read line by line,
+`0099FF50..009A13AC` by constants and slots) and `0099CAB0` (`0099CAB0..0099CBB8` line by line), set against
+`terrain_avoidance_0099f1c0` and `terrain_shape_band_0099cab0` (`src/game_hosts_units.cpp`).
+
+| term | image | host |
+| --- | --- | --- |
+| folded bank | `[unit+C68h]`, abs through `[00D7A208] - x` (`0099F2BA..0099F2F1`); `> pi/2` gives `pi - x`, inverted, `sa *= 8` (`0099F2F7..0099F320`) | same |
+| `sa` bank factor | `00419010(0.1, 1, 1.2, 8; bank_f)` (`[00D7A2F0]`, `[00CE3814]`, `[00CE3918]`), times `W/5` | same |
+| `sa` pitch, height and speed terms | `-4W pitch` (`[00D7A328]` = 4.0); `interp(80 -> 0, 460 -> 2W; [unit+9B4h])`; `interp(1.4 MaxSpd -> 0, 2.5 MaxSpd -> 3W; 007D99C0)`; floor 10 | same (the 1.4 is the double `0x3FF6666660000000`, the float 1.4) |
+| pass 0 turn bend | `c = interp(-0.15, 0, 0.2, 2.5; -pitch) * sin(bank, signed [ESP+114h]) * cos(pitch) * [cls+1B8h] * [cls+1B0h]`, `f = row2 + c(-row0)` (`0099F53B..0099F62B`) | same (SlideRatio `+1B8h`, YawSpd `+1B0h`) |
+| pass 0 radius | `interp(0.3, 0.6, 1.2, 1.2; bank_f) * D` (`0099F663..0099F697`) | same |
+| `00419510` normalises | the outputs at `[ESP+474h]`, `[ESP+468h]` and `[ESP+45Ch]` are never read: they are discarded | same |
+| pass 0 points | `p0 = pos - 10f`, the ends `p0 + 0.8 r (f +- l)`, `c0 = max(p0.y - (h + 10), 0.1)` | same |
+| pass 1 | `up = 1.25 row1`; inverted: `f += cos(bank_f) cos(pitch) 0.15 up`; else with pitch < 0, `f.y *= 1 - interp(10, 0, 50, 1; h9b4) interp(-0.4, 0, -0.15, 1; pitch)`; `r = 1.1 D`; the ends `p0 + 0.75 r (f -+ up)` | same |
+| height | `pilot+268h` is always 0 (docs/ATTACKER_EVASION.md), so `h` = the layer `0041BC20` | `kAvoidZoneLayerSampleBound` ON: the layer |
+| fan steps | `cell = min(layer+0Ch, 120)` (`[00D1F3F8]` = 120.0 double, `[00D05804]` = 120f); `n = int(ext / cell) + 1` | same |
+| `0099CAB0` `g` | pass 0 `interp([pilot+264h] = 0.12, 0, 0.35, 1; bankF)`, pass 1 `interp(1.3, 1, 1.7, 0; bankF)`; `g < 1` pulls `lo` and `hi` toward `+-1.1` (`0099CB1E..0099CB67`) | same |
+| `0099CAB0` arguments | `bankF = [ESP+78h]`, the folded bank, at all three calls (`009A0A9E`, `009A11FE`, `009A133E`) | same |
+
+**Result.** Every bank term in the probe and in the band shaper is the image's own arithmetic, constants included.
+The host gap that 148 suspected is not there. The banked TBD's band `hi` (+0.02 ... +0.24 at 106-122 m, against the
+wings-level Kate's -0.04 ... -0.13) is what the image computes for that attitude. Nothing is bound.
+
+**Still labelled.** `vtable[204h]` (bound to the body-forward speed), `unit+C7Ch` (the velocity elevation),
+`unit+9B4h` (recomputed each think rather than kept by `007CE87F`), and the merged-set `lo` sentinel in the
+`G32BAND` line. None of them depends on the bank.
+- If USN04's TBD hold must change, look upstream of the probe: the steady 0.19-0.33 rad bank on a 0.02-0.05 rad
+  heading error (148's closing note) is the roll arm's output, and that is planes code.
