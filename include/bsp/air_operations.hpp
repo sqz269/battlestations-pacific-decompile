@@ -794,7 +794,7 @@ AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds);
 // Packet switch: true runs the queue wait 006C64B0 in the deck update and lets
 // the launch start hand slot+4Ch to the squadron as AutoAttackTarget. False:
 // neither (no queued slot is ever launched, as before).
-inline constexpr bool kAirOpsPlayerLaunchBound = false;
+inline constexpr bool kAirOpsPlayerLaunchBound = true;   // ON: AIROPS_LAUNCH_TICK, the player's launch, measured
 
 // 006BD460 (__thiscall(block, slot)): the plane limit block+58h less what every
 // OTHER slot holds - a launched slot its squadron's live count, a slot in state

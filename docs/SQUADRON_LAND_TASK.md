@@ -12931,3 +12931,84 @@ release-order offer, made after a player order: `unit+72Ch` vtable[38h].
 - **So on an AI squadron, prepare never drops.** It can only be reached in attack mode 0, which
   the leader's `0099B740` lifts to 1 on its first think.
 - **The host keeps the follow tick there** (5ee, labelled). No AI row reaches this arm.
+
+## 5ef. Handoff (cc9-lua41, 2026-10-06, at about 70% context)
+
+The branch is `agent/cc9-lua41` and the worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua41`.
+Main is merged in, everything is committed, and no lease is held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| level-bomb task (kind 4), with the level-bomber rack issue and gate | `kPlaneLevelBombTaskBound` | ON (after reference AC) | 5ee, 5ee.1, 5ee.2 |
+| os.execute guard line into the run log | - | in (`lua_exec_guard.hpp` sink) | 5ee.1 |
+| player air-ops launch (Support Manager 00675C40 path) | `kAirOpsPlayerLaunchBound` | ON | AIROPS_LAUNCH_TICK, "The player's launch" |
+| harness `launch` line | - | ships36, SCRIPTED_HELM 13 | - |
+| GUNNERY 130 bomb axis | - | reported to the lead | see below |
+
+**USN01's state.** With the level-bomb task, Enterprise sinks at 384.43 s and the mission reaches its
+scripted end: `luaMissionCompletedNew()` runs and the guard refuses `sus_prog.exe`.
+- **The win** (every Nell shot down) needs fighters. Two Wildcat squadrons launched at 215 s shoot
+  down six Nells but do not save Enterprise.
+- cc9-ships36 is tuning the `launch` lines. Order file: `local\l41_usn01_launch.txt`.
+
+**GUNNERY 130 (bomb axis).**
+- **Attach.** The rack round is created by 006E3E70 -> 006E2C00 with pos 0 and dir (0,0,1), so its
+  local frame is identity. 00924F90 then parents it to the rack entity without touching its matrix.
+  The axis is the rack entity's +Z.
+- **Single racks.** Their setup, 0072E6D0, writes no gun+74h, so the axis is the plane's nose.
+- **Slot frames** (models 2024-07-13): the Nell and Dauntless carry no rotation. The Val and Kate
+  slot 50 is 2.0 deg nose-down. That matters only if an unread store gives the gun entity its slot
+  frame.
+
+**Next, in order:**
+1. **The squadron creator's `wing=5` for a slot count of 6** (`create_air_ops_squadron_006c5050`).
+   Check it against the authored PlaneWingCount limits.
+2. **AutoAttackTarget for members that spawn later** (served once at the first step).
+3. **The recall order (2) and the slot states 2-4 arms of `006CCDA0`.**
+4. **The 5dr census.** Item 1 (the drop scatter) is gunnery28's `kBombDropScatterBound`, which waits
+   on the 130 read above.
+
+**Scripts** in `local\`, prefix `l41_`:
+- `l41_queue.ps1`, with rows `usn01o` (s35 orders) and `usn01w` (with launch lines);
+- `l41_vt.py` / `l41_consts.py` (PE dwords and constants);
+- `l41_ends.py` (end-address checks);
+- `l41_callscan.py` (rel32 and absolute references);
+- `l41_mmod_aux.py` (model Aux slot points);
+- `l41_grep.py`;
+- `l41_units_patch.py` (the applied units-host edit).
+
+## 5eg. Handoff, final (cc9-lua41, 2026-10-06, at about 72% context)
+
+This supersedes 5ef's "Next" list. The branch is `agent/cc9-lua41` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua41`. Everything is committed and no lease is held.
+
+**State.**
+- **The level-bomb task** (`kPlaneLevelBombTaskBound`) is ON (5ee.1).
+- **The player air-ops launch** (`kAirOpsPlayerLaunchBound`) is ON on main and belongs to reference
+  AD (AIROPS_LAUNCH_TICK, "The player's launch").
+- **The queued-LaunchSquadron census has no reach.** queued=0 on all 22 of AB's rows.
+- **GUNNERY 130's bomb axis** went to the lead in 5ef: the nose for the Nell and Dauntless, and
+  the nose or 2 deg below it for the Val and Kate.
+
+**Successor items, in order:**
+1. **The two open launch items.**
+   - **`wing=5` for a slot count of 6.** The `air ops squadron` line from
+     `create_air_ops_squadron_006c5050` (src/game_hosts_script_orders.cpp) logs it.
+     - 006C5050 writes the bag's `WingCount` = slot+8h.
+     - Find where the host clamps or remaps it, against the authored PlaneWingCount limits that
+       `plane_squadron_host.hpp` mentions.
+     - Evidence: USN01 `local\l41_on_usn01w.log`, squadrons 112 and 117.
+   - **AutoAttackTarget for members that spawn later.**
+     `GameScriptOrdersHost::run_air_ops_player_launch_queue` serves it once, at the first step a
+     member exists (one member on USN01). In the image, 007F4BA0 issues it on the squadron in its
+     pass-C init, so later members take the squadron's command through the intake.
+     - Bind delivery to every member as it spawns, or to the squadron record, by that reading.
+2. **cc9-ships36's USN01 win attempt.** Check its logs for the mechanism lines:
+   - `player air ops launch:` (the fill count against MaxInAirPlanes 12);
+   - `air ops queued launch:` about 1 s later;
+   - `air ops AutoAttackTarget: ... class=00E08F58`.
+   - My baseline: `local\l41_usn01_launch.txt` gave six Nells down, and Enterprise still sank at
+     384.43 s.
+3. **A plane/Lua reach census on reference AC**, once cc9-gunnery29 closes it. Use the 5dr method:
+   host-method rows and summary lines over the AC logs, plus a stale-label check before calling
+   any row a gap.
