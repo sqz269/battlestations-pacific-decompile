@@ -14501,3 +14501,70 @@ game-validated.
     if the end moves past the window or is lost, retarget the later slot launches at Nell5/Nell6.
 - Lane owners now: cc9-lua43 (after lua42) and cc9-gunnery30 (after gunnery29). The `build` line
   waits on gunnery30's `shipyard_order_00846d90` and lua43's `AddShipyardStock`.
+
+## 186. LOMP10 completes with scripted player input (lead item 2, cc9-ships38, 2026-10-06)
+
+**Build:** `agent/cc9-ships38` at main `78eab7589`. It has `kAutoAttackMemberOnLaunchBound` ON
+and the exec guard. Launch form: s37's (`local\s38_run.ps1`). The script is
+`USN\LOMP\10_san_jose.lua` in this installation (mtime 2024-07-13).
+
+| run | orders | frames | SanJoseForce dead | end |
+| --- | --- | --- | --- | --- |
+| idle (`s38_l10idle`) | none | 30000 | 3: Asashimo, Sugi and Oyodo, all to `CB4` (919.90-958.19 s) | none |
+| p2 (`s38_l10p2`) | `s37_l10_p2.txt` | 16000 | 1: Kasumi (446.86 s, `CB4_AF_sqn01\|.-3`) | none by 800 s |
+| **p2 long (`s38_l10long`)** | `s37_l10_p2.txt` | 30000 | **5**: Kasumi 446.86, Asashimo 904.70, Sugi 940.54, Oyodo 947.94 and Kaya 1064.76 s | **`luaVictory` at 1081.08 s; `EndScene` at 1115.66 s** |
+| p3 (`s38_l10p3`) | `local\s38_l10_p3.txt`, from `s38_l10gen.py` | 30000 | 4: Kasumi 414.32 s, then the same three to `CB4` | none |
+
+**p2 long, in order:**
+- **Launches.** Seven are applied: slots 1-4 at 4900-4903 (B-25s at Kasumi and Kaya, P-38s at
+  Kashi and Sugi), then slot 3 at Kashi (8400 and 10800) and slot 1 at Asashimo (8800). Every
+  other retry is refused because the slot is not in state 1 or 5.
+- **Air strikes.** `CB4_AF_sqn01|.-3` sinks Kasumi. `CB4_AF_sqn02`'s bombs hit Kaya first at
+  378.88 s.
+- **HQ guns.** The fleet attack-moves on the HQ (`NavigatorAttackMove`, script line 303). `CB4`'s
+  guns sink Asashimo, Sugi and Oyodo. The coastal gun `Coastal Gun, Japanese 02` finishes Kaya at a
+  range of 1010 m.
+- **Victory.** `MonitorSanJoseForce` (557) sees three ships left. It starts the `Victory`
+  dialog, and its callback `luaVictory` calls `luaMissionCompletedNew`.
+  - The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+    118092.
+  - `luaMissionEnd_Finale` runs, then `EndScene` (log line 121676).
+  - The survivors are ordered to `Lookat4`.
+
+**The player's part decides it.** Idle, the HQ guns sink the same three ships, and Kasumi and Kaya
+live. The player's B-25 kill and the B-25 damage on Kaya make four and five.
+
+**The summary misses it.** `summary mission end: none (Mission.EndMission never true)`, as for
+LOMP06 (183): this script never sets `Mission.EndMission`. The detector item is already routed
+(184 open item 3).
+
+**Script facts this rests on:**
+- `CheckHQ` (545) tests `not Mission.HQ.Party == PARTY_ALLIED`, which Lua parses as
+  `(not Party) == PARTY_ALLIED`. That is always false, so losing the HQ never fails the mission in
+  this installation's script.
+- `TimeLimit` (476) stocks `CB4_AF`: six B-25s (118), eighteen P-38s (104) and eighteen P-40s (135).
+
+**Airfield fighters carry no bombs.** In this installation's `vehicleclasses.lua` (mtime
+2026-05-09, modded), P-38 (104) and P-40 (135) have `DefaultEquipment = 0`; `Equipments[1]` holds
+two bombs. The launch line's slot fill `006C0F00` copies class+134h (DefaultEquipment) into
+slot+10h when the class changes. `006C7490` passes slot+10h to the squadron bag, so launched
+fighters log `equipment=0`. The scene's `Lightning 01` and `Warhawk 01` are authored with
+`Equipment` 1.
+- The Support Manager's launch (`0067A565`..`0067A5E6`) passes class, count and target only. Its
+  calls into air ops are `006BC690`, `006BDC30`, `006BF310`, `006C1960` and `006C4780`, and none
+  of them writes slot+10h.
+- The two other slot+10h writers, `006C1170` and `006C80C0`, have no references in Ghidra.
+  `006C80C0` writes a caller's equipment into a state-6 slot, which is the scene-loader shape.
+- So no player loadout pick was found. Not proven absent: the screen's other handlers were not
+  read.
+
+**Harness change (labelled, `src/game_hosts_mission_frame.cpp`).** A `launch` line whose target
+fails `0043F080` (`unit_alive_and_visible`, the marker gate `006431A8` that the screen's target list
+uses) is refused before the entry runs: `helm order refused: ... the target fails 0043F080 (dead
+or hidden)`. A file can then list fallback targets for one slot on consecutive lines. p3 relies
+on it, with 2570 such refusals. p3 is not better than p2: it puts both B-25 slots on Kasumi
+first, and Kaya is never bombed.
+
+**LABELLED:** the harness's fixed click times; the launch line's target naming (SCRIPTED_HELM 13);
+the dead-target refusal above. RNG coupling (memory: the shared stream) means one run per order
+file is not a spread.

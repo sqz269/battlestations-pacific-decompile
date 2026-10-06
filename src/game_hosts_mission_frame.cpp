@@ -2975,6 +2975,24 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // 0067A5D1 82h slot message, order 3 = attack target). The entry
                 // logs its own `player air ops launch:` line. LABELLED: no screen,
                 // and the base need not be the controlled unit's carrier.
+                // LABELLED (cc9-ships38): the screen offers only targets that pass
+                // the marker gate 0043F080 (006431A8), so a target that is dead or
+                // hidden is refused here before the entry runs; a file can then
+                // list fallback targets for one slot on consecutive frames.
+                std::size_t target_pick = host.units->count();
+                for (std::size_t k = 0; k < host.units->count(); ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row != nullptr && row->name == order.target) { target_pick = k; break; }
+                }
+                if (target_pick < host.units->count()
+                    && !host.units->unit_alive_and_visible(target_pick)) {
+                    ++host.helm_orders_refused;
+                    host.log.notef("helm order refused: line %d frame %ld (at mission frame %llu) "
+                        "launch %s slot %d -> %s: the target fails 0043F080 (dead or hidden)",
+                        order.line, due, now, order.unit.c_str(), order.launch_slot,
+                        order.target.c_str());
+                    continue;
+                }
                 const bsp::game::PlayerAirOpsLaunchResult r = bsp::game::script_orders_player_air_ops_launch(
                     order.unit, order.launch_slot, order.launch_class, order.launch_count,
                     order.target);
