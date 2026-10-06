@@ -245,3 +245,50 @@ still alive. It publishes the death on the frame the last one dies.
 - Rows whose scripts count squadrons with `luaRemoveDeadsFromTable` or `.Dead`: a phase change or
   objective that waited on a squadron fires later or not at all. Each change is explained per
   entity in the measured section.
+
+### 8.1 Measured: **ON** (cc9-lua42, 2026-10-06)
+
+The OFF build is `15d1eadab` (main merged, the switch OFF). The ON build is its export with
+`kSquadronDeadOnLastMemberBound=true` (`local\l42_d`). The launch form is lua41's (reference AB/AC),
+and USN01 36000 uses ships35's phase-2 orders (`usn01o`). Logs are `local\l42_{off,d}_<row>.log`
+and diffs are `local\l42_diffd_<row>.txt`. No run completed a mission, so no guard line was
+expected.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| smoke 300 | 0 | none |
+| USN01 3000 | 1 | gameplay identical |
+| USN01 36000 (`usn01o`) | 1 | gameplay identical (the mission stays in phase 2; see below) |
+| USN04 | 1 | gameplay identical |
+| JM05 long | 1 | gameplay identical |
+| IJN11 | 0 | none |
+| ESMP08 long | 1 | gameplay identical |
+| USN13 long | 3 | phase 1 ends later (below) |
+| USNRM01 | 3 | the intro clean-up kills two leaderless wingmen (below) |
+
+**USN13 long.**
+- Five `bruh #3.x` leaders die between 236.11 and 254.86 s. ON holds their `Dead` until the last
+  member of each squadron dies, and the last is published at 275.01 s.
+- `usn_13_truk.lua` line 801 ends phase 1 when `luaRemoveDeadsFromTable(Mission.AttackWave)` is
+  empty, so `MAINPHASE` finishes at 285.15 s instead of 270.31 s.
+- That 15 s shift is the source of every later change (death rows 2/2 only, 7 changed; hit
+  records 2871 -> 3306). The death count stays 102.
+
+**USNRM01.**
+- `KateSpawn3` and `KateSpawn5` (leaders) die at 145.60 and 146.95 s. OFF publishes their `Dead` at
+  once; ON holds it while `|.-2` flies.
+- `luaKillOffIntroJaps` (`usn_1_pearl.lua` 2266-2288) then runs `Kill(unit,true)` on every
+  `Mission.TorpTable` squadron that is not `.Dead`. ON reaches the two squadrons, and both `|.-2`
+  wingmen die at 186.91 s. OFF skips them as dead, and the two wingmen fly on and fight.
+- Everything later moves with that: deaths go 135 -> 132, `2PLANESDOWN` comes at 331.74 s instead
+  of 403.52 s, and hit records go 1487 -> 1554. This is the script's own clean-up, not a host
+  artefact.
+
+**Verdict: ON.** The mechanism matches the read, 007F3970's kill at +3CCh == 0, in both moved rows.
+Each move traces to a script reading `.Dead` on a `GenerateObject` squadron whose leader died first.
+
+**The USN01 launch rows** (ships36's `s36_u1_w5.txt`) never leave phase 2 on this base. Phase 2 ends
+only when every `Mission.Convoy` entry is dead (`usn_1_marshall.lua` 535). Since
+`kBombDropScatterBound` went ON, the ConTBD1 drops miss, so no Nell is generated and every `launch`
+line is refused (`no unit by the target name`). The win's caveat (a) is covered by the rule above,
+not by a USN01 run.
