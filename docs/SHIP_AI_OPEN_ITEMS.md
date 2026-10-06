@@ -14968,7 +14968,8 @@ not completed with legal input.** 190's p1 completion stands only as a labelled 
    - USNRM01: West Virginia is never sunk.
    - JM08: the neutralize (185).
    - USNOS: Kaiten in each wave, and the ASW issue above.
-4. **JM08 defence** (193): reachable on paper; a strike plan on the six transports before ~770 s.
+4. **JM08 defence** (193, 195): reachable on paper. The first strike plans fail: the airfield's slots are held by scene squadrons, and Hosho's Kates and the Mavises die to AA. Next: the shipyard once production is ON, the patrol boat, and later Mavis timing.
+   **USN04 phase 1** (194): stuck on the re-issued fade. Needs a holdfire line, or a ruling that it is out of scope.
 5. **IJN11.** It is legal only if the player can command the cargo some other way. Read why
    `00645060` refuses `SupplyCargo` in phase 2.
 
@@ -15094,3 +15095,31 @@ holding while a fade is pending.
   no harness line to hold fire (none exists), so I did not attempt it.
 - **Routed to the lead:** a `holdfire <ship>` line, or a decision that USN04 is out of scope for
   lockstep completion.
+
+## 195. JM08 defence, first strike plans (cc9-ships38, 2026-10-06)
+
+**Harness change** (`src/game_hosts_mission_frame.cpp`): a double-quoted run of words in a helm
+order is one word, with the quotes removed. A unit name with spaces can then stand where the
+grammar reads one word, as in `launch "MainAirFieldEntity 01" 1 162 3 <target>`.
+
+**The order files** (`local\s38_j8gen.py`):
+- The airfield `MainAirFieldEntity 01` launches from frame 300, and `Hosho` from frame 6000 (it is
+  generated at about frame 5822). Every slot relaunches each 400 frames, **3 per slot**.
+- The class order is the screen's: 162, 163, 158, 159, then 150 on the airfield; 162, 158, then 150
+  on Hosho.
+- Each slot's target list starts with the six transports, rotated per slot, then the LSTs, the
+  LSMs and Missouri.
+
+| run | orders | outcome (24000 frames) |
+| --- | --- | --- |
+| p1 (`s38_j8p1`) | the launches only | **the airfield never launches.** Every line is refused with `the slot is not in state 1 or 5`; class 158 also leaves the slot empty. Its slots are held by the scene's own squadrons (`Ki-43 Oscar 01`, `Gekko 01`, home base set by `007F1C00`). Hosho launches 12 Kate squadrons at the transports between 6000 and 12003; they are shot down by the fleet's AA (sqn01-08, 409-599 s). USTroopTransport 03 dies at 484.66 s. Hosho is sunk at 551.39 s. **Failed at 1038.34 s** (HQ) |
+| p2 (`s38_j8p2`) | p1, plus each 600 frames `select "H6K Mavis 0k"` and a `target` pick list at the transports, then `select "Headquarter 01"` | the three scene Mavis flying boats are shot down at 107-116 s (Helena, Stephen, Auilick), before the first strike can arrive. Their target lines apply only at 603-607. The transports that die (02 at 461.81 s, 06 at 599.08 s) are killed by Bristol and an LSM. **Failed at 1039.29 s** |
+
+**What this says.** In this host the defence is not reachable with the player's air units alone.
+- The airfield is blocked by the slot return (188's routed item): the scene squadrons hold its
+  slots.
+- Hosho's Kates, and the Mavises, fly into the invasion fleet's AA and die before their drops.
+- Untried:
+  - the shipyard (`build` on `Shipyard 01`, which waits on `kShipyardProductionBound`);
+  - the patrol boat `Japanese Patrolboat 01`;
+  - holding the Mavises back until the transports approach the coast, after 700 s.

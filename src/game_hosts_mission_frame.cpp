@@ -2555,6 +2555,24 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         std::string word;
         while (in >> word) words.push_back(word);
         if (words.empty() || words[0][0] == '#') continue;
+        // cc9-ships38: a double-quoted run of words is one word, so a unit
+        // name with spaces can stand where one word is read (the `launch` base,
+        // e.g. "MainAirFieldEntity 01"). The quotes are removed.
+        for (std::size_t w = 0; w < words.size(); ++w) {
+            if (words[w].size() < 1 || words[w][0] != '"') continue;
+            std::size_t last = w;
+            while (last < words.size()
+                   && (words[last].size() < (last == w ? 2u : 1u)
+                       || words[last].back() != '"')) {
+                ++last;
+            }
+            if (last >= words.size()) break;   // unclosed: left as typed
+            std::string merged = words[w];
+            for (std::size_t k = w + 1; k <= last; ++k) merged += ' ' + words[k];
+            words[w] = merged.substr(1, merged.size() - 2);
+            words.erase(words.begin() + static_cast<std::ptrdiff_t>(w) + 1,
+                        words.begin() + static_cast<std::ptrdiff_t>(last) + 1);
+        }
         Impl::HelmOrder order;
         order.line = line;
         char* end = nullptr;
