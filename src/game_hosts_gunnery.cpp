@@ -614,6 +614,21 @@ constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.
 //    constructor's memset 1 (00864623), taken as set. OFF: the liveness bytes
 //    only. Packet cc9_gunnery_class_arms, docs/GUNNERY_OPEN_ITEMS.md 77.
 constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
+//  * kDepthChargeBotTickBound: packet cc9_depth_charge_bot. A depth-charge
+//    launcher (category 8) is driven by DepthChargeBot's own tick 008FC080
+//    (src/gun_bot_remainder.cpp): the target below -2.0 m, its position
+//    predicted over the charge's sink time (DiveSpeed, desc+DCh), within
+//    max(AttackDist, 100) m horizontally, the FireDelay / ContinuousFireTime
+//    burst. OFF: the generic bot test, which needs 0085ABA0 to accept the
+//    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
+//    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
+constexpr bool kDepthChargeBotTickBound = false;
+// robots.lua (2025-06-01) DepthChargeBot by skill index 0 Stun .. 5 Elite:
+// AttackDist, BulletThrowMul, ContinuousFireTime, FireDelay low, high.
+constexpr float kDepthChargeBotLevels[6][5] = {
+    {100.0f, 1.0f, 0.5f, 5.0f, 7.0f}, {30.0f, 1.0f, 0.5f, 2.0f, 5.0f},
+    {45.0f, 1.0f, 1.0f, 1.0f, 2.5f}, {60.0f, 1.0f, 1.0f, 3.0f, 5.0f},
+    {80.0f, 0.5f, 2.5f, 0.1f, 1.0f}, {100.0f, 0.0f, 10.0f, 0.0f, 0.0f}};
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
@@ -1156,6 +1171,10 @@ struct GameGunneryHost::Impl {
         unsigned long long builds{0}, builds_at_order{0}, builds_refused{0};
         unsigned long long hangar_releases{0}, launches{0}, launch_orders_unbound{0};
     } shipyard;
+    // Packet cc9_depth_charge_bot (kDepthChargeBotTickBound).
+    std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
+    std::map<std::size_t, bool> depth_charge_trigger_by_gun;
+    unsigned long long depth_charge_ticks{0}, depth_charge_holds{0};
     std::set<std::string> shipyard_build_blocked;  // creation refused once: not retried
     std::size_t unit_by_name(const std::string& name) const;
     bool shipyard_complete(bsp::ShipyardState& yard);
@@ -1409,6 +1428,7 @@ struct GameGunneryHost::Impl {
         aa_gunner_error = 19, // 00902B5C period, 00902CF0 spread, 00902D77/00902D95 offsets, key (gun, 0)
         aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
         bomb_scatter = 22,    // 006E4D50's four drop draws, key (unit, 0)
+        depth_charge_delay = 23, // 008FC3E2, DepthChargeBot's FireDelay, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
@@ -6909,6 +6929,84 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++summary.torpedo_friendly_holds;
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
+        }
+        if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
+            // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
+            // LABELLED: the target check (008FC08A) and the idle timer (008FC0E2)
+            // are the host's own, run above for every gun. The trigger byte keeps
+            // its value between the 0.1 s thinks (the tick returns before
+            // 008FC39A); with no target it is dropped, as clearing the fire
+            // target drops vtable[1E8h] (LABELLED: that clear is not read here).
+            if (!have_target) depth_charge_trigger_by_gun[g] = false;
+            struct DcHost final : bsp::DepthChargeBotHost {
+                Impl& h; std::size_t g, owner, target; bool have, inhibit; bool& trigger;
+                DcHost(Impl& h_, std::size_t g_, std::size_t o, std::size_t t, bool hv,
+                       bool inh, bool& tr)
+                    : h(h_), g(g_), owner(o), target(t), have(hv), inhibit(inh), trigger(tr) {}
+                void* resolve_fire_target_00521ea0() override {
+                    return have ? static_cast<void*>(this) : nullptr;
+                }
+                bsp::GunBotTargetValidity target_validity() override {
+                    bsp::GunBotTargetValidity v;
+                    v.target_resolved = v.target_alive = v.gun_present = true;
+                    v.gun_parent_present = v.gun_parent_alive = v.sides_related = true;
+                    return v;
+                }
+                void clear_fire_target_slot38() override {}
+                void run_idle_rest_timer_008fbce0(float) override {}
+                bool side_enabled_00927f10() override {
+                    return h.slot_ai_held_00927f10(h.guns[g].seat_1ac);
+                }
+                bool gun_present() override { return true; }
+                void* fire_target_entity_slot44() override {
+                    return have ? static_cast<void*>(this) : nullptr;
+                }
+                float weapon_sink_rate() override {
+                    const float s = h.lua.read_bullet_class_number(h.guns[g].bullet_class,
+                        "DiveSpeed", 0.0f);                          // desc+DCh, 006FD4E3
+                    return s > 0.0f ? s : 1.0f;
+                }
+                std::array<float, 3> owner_world_position() override {
+                    std::array<float, 3> p{};
+                    h.units.unit_position_00fc(owner, p[0], p[1], p[2]);
+                    return p;
+                }
+                std::array<float, 3> target_world_position() override {
+                    std::array<float, 3> p{};
+                    h.units.unit_position_00fc(target, p[0], p[1], p[2]);
+                    return p;
+                }
+                std::array<float, 3> target_world_velocity_slot34() override {
+                    float v[3] = {0.0f, 0.0f, 0.0f};
+                    h.unit_velocity(target, v);
+                    return {v[0], v[1], v[2]};
+                }
+                bsp::DepthChargeBotLevel level_parameters() override {
+                    int level = h.units.skill_level(owner);
+                    if (level < 0) level = 0;
+                    if (level > 5) level = 5;
+                    bsp::DepthChargeBotLevel l;
+                    l.attack_dist = kDepthChargeBotLevels[level][0];
+                    l.bullet_throw_mul = kDepthChargeBotLevels[level][1];
+                    l.continuous_fire_time = kDepthChargeBotLevels[level][2];
+                    l.fire_delay_min = kDepthChargeBotLevels[level][3];
+                    l.fire_delay_max = kDepthChargeBotLevels[level][4];
+                    return l;
+                }
+                bool muzzle_fire_inhibited() override { return inhibit; }
+                void set_trigger_slot1e8(bool held) override { trigger = held; }
+                float random_range_00bd2f10(float low, float high) override {
+                    return h.draw(Draw::depth_charge_delay, g, 0, low, high);
+                }
+            };
+            bool& trigger = depth_charge_trigger_by_gun[g];
+            DcHost dc(*this, g, owner_unit, have_target ? target : 0, have_target, inhibited,
+                      trigger);
+            bsp::depth_charge_bot_tick_008fc080(dc, depth_charge_bot_by_gun[g], dt);
+            ++depth_charge_ticks;
+            want_fire = trigger;
+            if (want_fire) ++depth_charge_holds;
+            done("DepthChargeBot::tick_008fc080", 0x008fc080u);
         }
         const bool plane_gun = gun.category == 0
             && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase);

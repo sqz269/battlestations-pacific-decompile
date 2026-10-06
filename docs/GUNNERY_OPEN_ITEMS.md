@@ -10228,3 +10228,36 @@ downstream of this host, so the switch stays OFF.**
   - the position y is 0.0, not the `0078CF20` water height;
   - Race, Skill and OwnerPlayer are defaults;
   - the Catalina arm (`State 6`) was not reached, because no class 125 order was made.
+
+## 139. The depth-charge launcher's fire test: DepthChargeBot 008FC080 was never wired (lead item; SHIP_AI 191.2; cc9-gunnery30, 2026-10-06)
+
+**Why the AI row refuses.** BSM01 p6 (cc9-ships38's `local\s38_b1p6.log`) shows HenryPT's depth-charge row (plat 9,
+cat 8) with `assigns 496 shots 0 rises 0 refusals 20324`. The category table reads `DEPTHCHARGE 666 assigns, 0 shots,
+27270 refusals`.
+- The `refusals` column is `angle_refusals`: 0085ABA0 refusing the launcher's commanded angles, on every tick.
+- `rises 0` says the trigger was never requested. The host sends a category-8 gun through the generic bot test
+  (`want_fire = have_target && accepted && settled && window`), and a launcher's angles are never accepted.
+- In the image, a category-8 gun's bot is DepthChargeBot (vtable `00D18338`, tick `008FC080`), which never calls
+  0085ABA0. It fires when:
+  - the target is below -2.0 m (`008FC204`);
+  - the target's position, predicted over the charge's sink time `(owner y - target y - 15) / DiveSpeed`, or its
+    present position, is horizontally within `max(AttackDist, 100)` m (`008FC2B0..008FC354`);
+  - the fire delay has run out and the muzzle is not inhibited.
+  The fire delay is a FireDelay draw after a ContinuousFireTime burst.
+- That tick is reconstructed (`src/gun_bot_remainder.cpp`, `depth_charge_bot_tick_008fc080`), but no host called it.
+  **This is a host gap.**
+
+**Binding** (`src/game_hosts_gunnery.cpp`, `kDepthChargeBotTickBound`, committed OFF):
+- For a category-8 gun not held by the player, the tick's trigger byte replaces the generic test.
+- The levels are this installation's robots.lua DepthChargeBot rows (2025-06-01), by skill.
+- DiveSpeed is the bullet class's (`006FD4E3` stores it at desc+DCh).
+- **LABELLED:** the host's own target check and idle timer stand in for `008FC08A` and `008FC0E2`; with no target
+  the trigger is dropped.
+
+**Predictions (before any run):**
+1. **BSM01 p6** (30000 frames, ships38's order file): HenryPT stops 39.8 m from the mini-sub at -6.96 m. The sub
+   is submerged and well inside 100 m, so the DC row fires (rises > 0, shots > 0) once Henry is in range, about
+   frame 10000. Whether a charge hits depends on the depth-charge projectile's sink and fuse in this host, which
+   is not checked here. If it does, the mini-sub dies and phase 3 advances.
+2. **Idle reference rows:** the switch moves only rows where a DC-armed ship holds a submerged target within
+   100 m. Expected exit 1 on the controls (BSM01 3000, USN13 long), unless a destroyer meets a submarine there.
