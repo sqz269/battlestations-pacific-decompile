@@ -13531,3 +13531,29 @@ An ON-only line `rack bullet kinds <unit> (level bomber): [...]` lists each leve
    - If it is 2Ah: their first drop is already a bomb through the level-bomber tick.
 2. **USNOS 3200 and LOMP10 3200.** Gameplay identical, unless a kind-10h plane there carries a torpedo or
    multi-round rack. A plain-bomb level bomber's arms do not change.
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): stays OFF.**
+OFF is `a7cf95afd`, a C4702 fix only. ON is the same commit with the flip (`local\l44_rk`).
+
+**USNOS 3000 and LOMP10 3000: `pair_diff` exit 1, gameplay identical.** Prediction 2 holds. Their level bombers
+carry plain bombs with RepeatTime 0.05 s: `plane #1.4-1.6 [2Ah/0.05s]` and `B-25 01 [2Ah/0.05s]`.
+
+**USN13 9000:** `pair_diff` exit 3.
+- Every `bruh` level bomber's single rack is a **torpedo with RepeatTime 0.00** (`bruh #1.7-1.14 [2Bh/0.00s]`).
+- So prediction 1's first branch holds: after the first torpedo the wingmen stay on the single arm and keep
+  dropping.
+- Torpedo drops go 2 -> 32 and damage 39558 -> 44664; deaths 100 -> 101.
+- **This is not the image's pacing.** With toRepeatTime 0, `006E577F`-`006E57FA` lets the rack fire on every
+  step. The host substitutes `00729A80`'s CanFire gates with "fires while it has ammo", so each plane empties its
+  16 torpedoes in 16 steps (0.8 s).
+- The image's gates (`00729A80` plus ordnance 2Ah, `006E3460`) are unread for a rack. They, or a non-zero
+  default for an absent RepeatTime in the device constructor, are what pace a multi-round rack.
+
+**Verdict.**
+- The arm choice matches the image: per rack, from the projectile. The host's mask switch was the departure,
+  and that much is settled.
+- The drop pacing behind it is a substitution that the switch exposes. The row would move by a wrong
+  mechanism, so the switch stays **OFF**, recorded.
+- **Next (gunnery lane):** read `00729A80` as a rack's CanFire (its reload / gate fields for a BombPlatform
+  device), and the device constructor's default for an absent `RepeatTime`. Then re-pair USN13 9000 with
+  this switch.
