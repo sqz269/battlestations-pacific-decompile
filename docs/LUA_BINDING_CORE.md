@@ -204,3 +204,52 @@ None. Every address this packet named already had a Ghidra function: the ten cor
 the three aliased handlers were defined before it started, and the four spawn handlers were
 defined and named by the integrator at 39F9528F, which `python tools/bsp.py ghidra proto <addr>
 --brief` confirms for all four.
+
+## SetParty on a unit, `kSetPartyUnitBound` (packet `cc9_lua46_set_party_unit`, cc9-lua46, 2026-10-06)
+
+**The image.**
+- `SetParty` `008A8930` takes the else arm for a non-session entity and calls `vtable[2Ch]` (`008A8AE3`). For every
+  unit class that slot is `00951F30`, a `JMP 00928F50`.
+- `00928F50` calls `00923B80`.
+  - `00923B92` stores `+54h` = party and `00923B95` stores `+58h` = race (`008A8ADF` hands the race back unchanged).
+  - It walks the `+48h` children (next `+44h`). Each child that does not answer `vtable[5Ch](*arg3)` gets the same
+    `vtable[2Ch]`.
+  - It ends with `00696350(party, 6)`.
+- `00928F50` then rewrites the Lua `Race` (`00928FD9`) and `Party` (`00929046`).
+- It is the same slot as the CommandBuilding capture neutralize (`006F50CA`).
+
+**The host before.** `SetThinkCoreHost::entity_vcall_2c` served script entities only. It recorded a unit as
+unimplemented, so the unit's party never changed.
+
+**The binding**, committed **OFF**, in `include/bsp/game_hosts_script_orders.hpp`:
+- `GameScriptOrdersHost::set_unit_party_00928f50` sets the units-host row's party (`set_unit_side_0054`).
+- It re-runs `GameMissionLuaHost::mirror_party_race_00928f50` through a hook the Lua host registers at attach.
+
+LABELLED:
+- The children recursion is not carried. This host's guns and racks read their owner's `+54h` (for example the
+  gunnery host's `0090058F` own-party list).
+- `00696350` is not read.
+
+**Predictions (USNOS with cc9-ships41's `s41_os_f7.txt`, 60000 frames, both this switch and ships41's
+`kCaptureStatePartyFromUnitBound` ON, against both OFF).**
+- `us_osumi.lua` (2024-10-29, modded) line 1106: `SetParty(unit, PARTY_ALLIED)` runs for a neutral JapHQ within
+  1500 m of a troop.
+- ON: a `SetParty 008a8930: unit=HQ2 party 2 -> 0` line follows TroopTrans3's park. `unit.Party` reads 0 on the next
+  pass, and `Bases captured` counts 1. HQ2's guns, if any, change side.
+- OFF: HQ2 stays neutral, and the line repeats every pass as `entity_set_party_vtable_2c` unimplemented.
+- Mechanism failure: the line logs and `Party` still reads 2, or the count stays 0.
+
+**Pair** (scratch `94a2de4f4` = `3c632a8fc` + cc9-ships41's `ee6de15b3` ship_ai switch; OFF = both off, ON = both on;
+USNOS 60000 frames with `s41_os_f7.txt`; logs `local\l46sp_<off|on>_osf7.log`). The 300-frame ON smoke is clean.
+pair_diff 3, a small move: deaths 386 = 386, 56 changed rows (buildings round HQ2), hits 12751 -> 12756.
+- **OFF:** `entity_set_party_vtable_2c` is recorded as unimplemented, and HQ2 stays neutral.
+- **ON:** `SetParty 008a8930: unit=HQ2 party 2 -> 0` at 1732 s, with the Lua mirror on 563 slots.
+  - ships41's capture copy then reads it (`command building capture: unit=HQ2 party 2 -> 0 from the unit's +54h`).
+  - HQ2 levels up allied (0 -> 3 by 1762 s) and its guns kill the base's barracks.
+  - At 1840.85 s it is neutralized (`006F5362`). The script's next pass captures it again: 7 SetParty lines in all.
+  - It ends the run allied at level 3 (1930 s).
+- `Bases captured` is shown through `DisplayScores` (`008C20D0`), which is unimplemented, so the count itself is
+  not in the log. It is computed from `unit.Party`, which the mirror now writes.
+
+**Verdict: ON.** The mechanism matches (party set, Lua mirror, capture state follows). The neutralize/re-capture
+cycle belongs to the capture machine, not to this switch.

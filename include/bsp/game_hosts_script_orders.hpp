@@ -116,7 +116,8 @@ inline constexpr bool kSkillLevelBound = true;
 // LABELLED: 00923B80's recursion over the +48h children (each child not
 // answering vtable[5Ch] gets the same +2Ch) is not carried; this host's devices
 // read their owner's party. False: SetParty on a unit is recorded only.
-inline constexpr bool kSetPartyUnitBound = false;
+// ON by its USNOS pair (LUA_BINDING_CORE, cc9-lua46).
+inline constexpr bool kSetPartyUnitBound = true;
 
 // game+6ACh, the effective difficulty, one process-wide word as in the image
 // (`*(00E188A8)+6ACh`). The mission host's MissionStart store writes it and
