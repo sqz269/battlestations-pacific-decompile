@@ -15261,3 +15261,54 @@ The evidence is cc9-gunnery30's ON log `g30_sy3on_l10b.log`, from LOMP10 with `k
 **The broad set: prediction 2 is met.** No row moves its gameplay, so no `moveonpath` in these missions began without a `0071C1B0` store.
 
 **Verdict: the mechanism matches and no row moves for any other reason, so the switch is ON.** The per-slot re-construction stays labelled.
+
+## 198. The carrier elevator re-takes a stowed plane: partial read (cc9-ships39, 2026-10-06, read-only)
+
+**Source.** SQUADRON_LAND_TASK 5ep: on ESMP08, Chiyoda's elevator re-takes the stowed `Chiyoda_sqn28` every 4.8 s. The intake count is 459, and the platform offset sinks 7 m per cycle.
+
+Nothing is bound and no run was made. The listing was read from Ghidra, read-only.
+
+### The intake at the top (006D0600)
+
+1. **The owner gate** (`006D0689`-`006D06A3`): `[[site+B8h]+1188h+7Ch]` must be non-null and its `+5Dh` must be clear. That is the carrier, and it must be alive. Otherwise the arm returns.
+2. **The walk** (`006D06A5`-`006D0701`) goes over the site's occupant vector `+34h`/`+38h`. The last occupant that passes all four tests is taken:
+   - `+904h` is set (`006D06BA`);
+   - the site's `vtable[3Ch]`, `006CFF70`, answers true. That needs `006CFE90`'s nose distance, measured in x/z only through the plane's `+74h` local matrix, to be below `3.0 (00D7A2B0) - speed`;
+   - `vtable[38h]`, the speed, is below 1.3889 (`00CF8AAC`);
+   - `007B8D40` answers true.
+3. **No test looks at height.** A plane hidden at the bottom of the lift keeps the lift's x/z, so it passes the distance test again.
+
+### Nothing on the stow path removes the plane
+
+- **`007B96C0`** is only `+C00h = 1; 00951F40(0)`. `00951F40` detaches or re-attaches the spatial node (`+4A4h`) and sets the visibility factor; nothing else.
+- **`006FC250`** (release) and **`006FC720`** (take) touch only the elevator's own handle `+20h`..`+34h`. Neither erases from the site's `+34h` vector, which agrees with 5an.
+- **`006FC720`'s offset** is the plane's `+A4h`..`+ACh` (local position) less the lift `+0Ch`..`+14h`.
+  - For a plane already at the bottom, that offset includes `-depth`.
+  - So each re-take carries it a further depth down. That is the host's 7 m per cycle, and the image would share it if it re-took the plane.
+- **The writers of `+904h`** (byte scan `c6 8? 04 09 00 00` and `88 ?? 04 09 00 00`) are all off the state-2 path:
+  - `007B8450`, `007C719E` BeginFlying, `007CB9E0`, ReadPropertyBag, `009CE2E0` TakeoffStateTakeoff;
+  - SceneRecord_Construct and ApplyHeaderProperties;
+  - SetFlightState `007C14B5`/`14DE`/`1518`, for states 4/5/6/7 only;
+  - FlightStateFiveToFour, FlightStateFourToFive, `007C3680`, ChooseSpawnFlightState, `007C7430`;
+  - SetFlightStateUnguarded (client only), OnTouchdownFromFlight, PlaneUnitInstance_Construct.
+
+### Correction to 5ep's gear reading
+
+- **`007B8D40`** (`007B8D40`-`007B8D68`) answers **false** only when the channel byte `+DEC+44h` is set **and** the float `+DEC+48h` is not 0.0. The test is `UCOMISS`, `LAHF`, `TEST AH,44h`, `JNP`: equal answers true, and not-equal or unordered answers false.
+- **`007C1281`-`007C12B0` is `007C11E0`'s param != 0 arm.** That arm stores the value `+48h` directly.
+- **The elevator's state 2 calls `007C11E0(0)`, which takes `007C12E0`.** That arm writes only:
+  - the target byte `+45h` = 1 when `+900h` is 7, 6, 4 or 5, else 0 (`007C130A`);
+  - the dirty byte `+4Ch` (and `+11h`).
+- **It does not write the value `+48h`.** Some actuator tick then moves `+48h` toward the target.
+- **What follows:**
+  - In state 2 the channel heads to 0, so `007B8D40` becomes true once the value settles. A stowed plane would then pass again.
+  - In park states 4/5 the target is 1. For a plane that carries channel `+44h`, `007B8D40` would answer false while the value is non-zero.
+  - The host takes the channel as absent (always true), so its intake may accept parked planes that the image refuses.
+
+### Open: what decides the question
+
+1. The `+DEC` actuator tick that moves `+48h` toward `+45h`, and which plane classes carry channel `+44h`.
+2. The flight state that a parked carrier plane holds when the image's intake takes it.
+
+- If a stowed state-2 plane passes after these reads, **the image re-takes it too**. The loop and the sink would then be image behaviour.
+- Otherwise the deciding gate is the one to bind. **Nothing is bound until these reads decide it.**
