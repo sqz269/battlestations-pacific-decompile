@@ -131,7 +131,9 @@ constexpr bool kDamageSmokeDrawsBound = true;
 // building goes through GameShipAiHost::command_building_hit_gate_006f1f20 (the
 // lander bleed's entry): refused with +7D8h != 0, else the roll (drawn under
 // kLandFortFireRollBound) and the damage. False: every hit damages, no roll.
-constexpr bool kCommandBuildingGunfireGateBound = false;
+// ON by GUNNERY 125.5: JM08 long refuses 39 hits after the neutralize, USN01 19;
+// all five rows gameplay identical.
+constexpr bool kCommandBuildingGunfireGateBound = true;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
