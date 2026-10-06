@@ -680,7 +680,9 @@ inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
 // before it and the master +738h forward after it are records). True: the
 // remainder runs after the ramp step for every landing ship holding a building
 // (LABELLED order), and +7D8h is kept per capture building. False: none of it.
-inline constexpr bool kLandingShipLandedRemainderBound = false;
+// ON by section 161.4: four controls gameplay identical; JM08 long's crafts bleed
+// the HQ (40 - 30 per craft-second) and it is neutralized at 1034.10, not 1039.35.
+inline constexpr bool kLandingShipLandedRemainderBound = true;
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).

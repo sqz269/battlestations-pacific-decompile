@@ -13066,3 +13066,54 @@ Census line: `summary mission landing ship landed remainder ...`. The first blee
     record.
   - `pair_diff` 3 if the HQ bleeds, else 1.
 - **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no landing ship on a pad. All `pair_diff` 1.
+
+### 161.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `d1a9bc187` (main merged, sections 159 and 160 ON).
+- ON is `pair_export.py --commit d1a9bc187 --flip kLandingShipLandedRemainderBound=true --out
+  local\s34_lr_on`.
+- Prefixes `off3` / `on3`.
+- Smoke: `local\s34_smoke3.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism (ON census):** `hostile_frames=3003 bleed_applied=3003
+bleed_total=1501.50 first_bleed=991.10 not_seen=0 bleed_invincible=0 own_party_kills=0
+dead_landed=1`.
+- The first bleed logs `LandedDamage=40`, HQ `armour=30.0`, `x=10.00` and `amount=0.5000` (one
+  craft, one 0.05 s step).
+- It is the first ramp of this tree's run (991.10 s).
+- `smoke_fire_mul=1.00`: the HQ class's `SmokeFireChanceMul` is 1.0.
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| HQ neutralize | 1039.35 s, by gunfire | 1034.10 s, 5.25 s earlier |
+| with section 160's mirror | | the mission fails that much earlier too |
+| deaths | 132 | 129 |
+| last death | 1563.35 s | 1033.93 s |
+
+- The three `LandingShip` rows only in OFF are crafts that survive in ON.
+
+**Verdict: ON.** Every prediction held: armour below 40 made the HQ bleed and fall earlier, no
+own-party kill, a dead-landed record, and the controls identical. Not game-validated.
+
+**Open, recorded:**
+- **The `SmokeFireChanceMul` roll.** With the HQ's multiplier at 1.0, the image takes one
+  `00BD2F10(0, 1.0)` draw on the shared stream for each of the 3003 bleed calls. On success it
+  runs `00746320`: point effects, more draws, a session message. The host takes none of them, so
+  the stream-0 draws after 991 s are not the image's (LABELLED). `00BD2F10` is one process-wide
+  generator, so every later consumer of stream 0 is shifted.
+  Binding the roll needs `00746320` read.
+- **The gunnery lane's question.** If the gunfire hit path also reaches a CommandBuilding through
+  `vtable[1ACh]` (`006F1F20` -> `007470B0`), it also has the 20 s `+7D8h` gate and the roll. That
+  is for cc9-gunnery27 to check.
+- **Not modelled:** the master `+738h` forward and `006F38E0`'s armour level rescale.
