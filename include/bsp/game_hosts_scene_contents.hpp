@@ -427,7 +427,7 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // (`NumSlots`, "Stock 1".."Stock 12", "Hangar 1".."Hangar 12", "Slot 1".."Slot n") into
 // bsp::shipyards() through bsp::shipyard_scene_attach_00849a30, and the Lua entity
 // seeding binds the record to the entity id. False: the registry stays empty.
-inline constexpr bool kShipyardSceneAttachBound = false;
+inline constexpr bool kShipyardSceneAttachBound = true;   // ON: SQUADRON_LAND_TASK 5ej.1
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h

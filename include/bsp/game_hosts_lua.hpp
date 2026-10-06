@@ -267,7 +267,7 @@ inline constexpr bool kLuaAddAirBaseStockBound = true;   // ON: SQUADRON_LAND_TA
 // when there are four (00B662B0, else 00CE3A0C), then 0084ACB0(class, count, names) with
 // ECX = the object (00896E81..00896E8A). Returns no value. True: route the row to
 // bsp::shipyard_add_stock_0084acb0 on the bsp::shipyards() record. False: unimplemented.
-inline constexpr bool kLuaAddShipyardStockBound = false;
+inline constexpr bool kLuaAddShipyardStockBound = true;   // ON: SQUADRON_LAND_TASK 5ej.1
 
 // Packet cc9_hit_listener_filters (docs/LUA_BINDING_MISSION.md, "The unmodelled `hit`
 // filters, bound"). 00988510 hands the channel eight parameters: target, targetDevice
