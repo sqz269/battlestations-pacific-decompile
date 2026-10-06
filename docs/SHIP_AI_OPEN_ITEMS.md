@@ -14662,3 +14662,33 @@ Every run ends with `summary mission end: none`.
 **LABELLED:** the launch line (SCRIPTED_HELM 13) and 186's dead-or-hidden refusal. A hidden target
 is one that fails `0043F080`, which this host computes and the screen's target list was assumed to
 share.
+
+## 189. The other survey rows: idle reads of BSM01, IJN01 and USNRM01 (lead item 3, cc9-ships38, 2026-10-06)
+
+Idle runs of 24000 frames (`local\s38_{b1,i1,rm1}idle.log`) on the 186 build. None ends.
+
+| row | script (this installation) | what the script needs first | idle | blocker |
+| --- | --- | --- | --- | --- |
+| BSM01 | `BSM\bsm_01_stationed_at_pearl.lua` (2518 lines, 2024-07-13) | phase 1: `HenryPT` within 250 m of `Phoenix` (786); phase 2: survive 150 s (`luaDelay(luaMoveToPh3, 150)`); phase 3: the mini-sub, which is `SetInvincible` (1112) and needs Henry's depth charges (`HasFired(..., "DEPTHCHARGE")`); phase 4: ten planes shot down, or the Japanese gone, or out of range | phase 1, `Distance=1.4` km | no harness line fires a ship's depth charges; phase 1 is a single moveto |
+| IJN01 | `Ijn\ijn_1_pearl.lua` (2024-08-26) | phase 1: all 25 `StrafeShips` dead (four oilers and tenders, PT1-4, LST1-11, Oglala, Solace, Curtiss, Harris, Zeilin, Leonard); then the battleships | phase 1; two plane deaths | see p1 below |
+| USNRM01 | `USN\USNRM\usn_1_pearl.lua` (2024-10-29) | phase 1 ends when West Virginia, the player's ship, is killed (`luaWVSunk`, kill listener 1048); phase 2 starts from that path's Arizona movie | phase 1; 492 deaths, none of WV, Arizona, Oklahoma or Nevada | WV ends at hull health 0.129 (water 2975 of 19133) after 12 bullet hits and no torpedo hit. The script's `TorpTable` (2336-2341) never sinks it. Routed: the plane lane |
+
+**IJN01 p1** (`local\s38_i1_p1.txt` from `s38_i1gen.py`, 24000 frames):
+- **Orders.** Every 400 frames each `A7M_k` is selected in turn and given a `target` with a pick
+  list (below) over its own rotation of StrafeShips.
+  - The squadrons exist only from about 44 s, so the lines before that are refused (no such unit).
+  - 233 targets are applied. 007EEC50 picks `divebomb` `00E08F20` for 228 of them and `00E08F40`
+    for 5.
+- **Outcome.** Each squadron makes one dive (27 rack drops, `rounds_left=0`). Then it stays in
+  `done` and never strafes.
+  - Only PT1 dies (116.80 s), and no other StrafeShip takes water.
+  - A7M_1's five planes are shot down by 178.86 s.
+- **Routed: the plane lane.** What a fighter squadron does after its one dive bomb against a ship
+  target (`divebomb ... done`, no gun pass). The aim misses are about 16 m short (`lead
+  last=-16.33`).
+
+**Harness change (labelled, `src/game_hosts_mission_frame.cpp`).** A `target` line may now list
+picks separated by ` | `. The first pick that passes `0043F080` is taken; a single target behaves
+as before. This stands in for the player moving the screen centre to the next target. The
+`repeat` form keeps working, but a repeat stops on its first refusal, including "not the
+controlled unit". So one squadron at a time is cycled with `select`.
