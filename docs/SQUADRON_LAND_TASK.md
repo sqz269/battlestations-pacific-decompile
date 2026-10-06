@@ -12115,7 +12115,7 @@ image (USN01, LOMP10, USNRM01, USN13 long, ...). In this host they keep station
   - `+55Ch` = 1.0 (the arm period) and `+560h` = -U(0, 1) (stream 1, the phase stagger).
   - It starts in `moveto +478h` when the unit is the squadron's flight leader, else in
     `follow +4C4h`.
-  - It ends with `0099xxxx BSP_BotApproach_BindToTask`.
+  - It ends with `BSP_BotApproach_BindToTask`.
 - **The arm `009C9FB0`** (read whole), once per `+55Ch` seconds:
   - in `follow`: switch to `moveto` once the unit becomes the flight leader;
   - in `moveto`: if approach `+458h` is set, go to `leave +4ACh`. Otherwise, once
@@ -12145,3 +12145,42 @@ image (USN01, LOMP10, USNRM01, USN13 long, ...). In this host they keep station
 4. **Predictions to write first:** JM05 long (3 PilotRetreat calls) moves only in those three
    planes' paths and AA exposure. If step 1 shows the out-of-ammo RTB is live, every strike row
    moves: spent bombers leave instead of circling. Control: USN02 (no aircraft).
+
+## 5dz. Handoff (cc9-lua39, 2026-10-05, at about 72% context)
+
+Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua39`.
+
+| item | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| census of the plane / bot / air-ops / Lua rows, gate ON | `49c42034a` | - | done | 5dr |
+| Lua countdown natives | `49c42034a`, `7d54d2b47` | `kLuaCountdownBound` | **ON** (JM08 long moves: the Hosho group spawns) | 5ds, 5ds.1 |
+| AddAirBaseStock | `13c8a72ce`, `22261b812` | `kLuaAddAirBaseStockBound` | **ON** (gameplay-identical) | 5dt, 5dt.1 |
+| drop scatter 006E4D50 | `22261b812` | - | read, not bound | 5du |
+| USN01 ConSBD2 | `3bb758e7d` | - | no divergence; aim-error draws; no re-attack | 5dv |
+| GetCapturePercentage | **uncommitted** in this tree | `kLuaCapturePercentageBound` | measured, verdict ON | 5dw, 5dw.1 |
+| SetCatapultStock, PilotRetreat | `87717d65b` | - | no reach | 5dx |
+| retreat task and its issuers | this commit | (`kPlaneRetreatTaskBound` planned) | read + plan | 5dy |
+
+**The held capture binding.**
+- Where it is: `src/game_hosts_script_orders.cpp` and `include/bsp/game_hosts_script_orders.hpp`,
+  modified and uncommitted, under the lease `cc9_lua_capture_percentage`.
+- Why it is held: it calls `GameShipAiHost::command_building_capture_fraction_006f1f90`, which
+  cc9-ships34 is landing from `local\l39_capture_patch.py`.
+- When the accessor is on main:
+  1. merge main;
+  2. build;
+  3. commit the binding OFF (the switch is `false` in the tree now);
+  4. flip it in a second commit.
+  The flip belongs to reference AB.
+
+**Scripts in `local\`** (prefix `l39_`):
+- `l39_queue.ps1 -Tag t -Jobs 'side:row,...'`;
+- `l39_census.py <prefix> <re> <status> <n>`;
+- `l39_sumgrep.py`, `l39_rows.py`, `l39_site.py <name>` (record sites in the units host);
+- `l39_traj.py <csv> <unit-re> <t0> <t1> [every]`;
+- `l39_capture_patch.py <tree>`.
+
+**Next, in order:**
+1. the capture commit pair (above);
+2. 5dy's binding plan, step 1 first;
+3. the drop scatter (5du), if the lead still wants it.
