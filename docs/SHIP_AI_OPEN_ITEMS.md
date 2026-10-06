@@ -13605,6 +13605,44 @@ immediate. Census: `summary mission command building level ...`, one line per bu
   - **USN01, BSM01, USN13, USNOS 3000:** no landed bleed, and the host reads `armour_368` nowhere
     else. The new log lines are census lines. `pair_diff` 1.
   - **JM08 3000:** the HQ levels to 3 within 150 s, but no craft lands. `pair_diff` 1.
+### 169.5 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:**
+- OFF is this tree at `dd887300a`.
+- ON is `pair_export.py --commit dd887300a --flip kCommandBuildingLevelBound=true --out
+  local\s35_lv_on`.
+- Prefixes `off7` / `on7`; launch form of reference V (`local\s35_rows.ps1`).
+- Smoke: `local\s35_smoke2.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` | ON census |
+| --- | --- | --- |
+| BSM01 3000 | 1 | no CommandBuilding |
+| USN13 3000 | 1 | CB2, CB4, CBT: `LevelUpSeconds` 600, no level-up in 150 s |
+| USNOS 3000 | 1 | HQ1, HQ2, CB2 (10 s) each reach level 3 at 30 s: 9 level-ups, armour 36 |
+| USN01 3000 | 1 | CB2 (600 s) neutralized at 32.90 s; its reset finds level 0 (`unchanged=1`) |
+| JM08 3000 | 1 | the HQ reaches level 3 at 30 s; no craft lands |
+| JM08 long 36000 | 3 | below |
+
+**JM08 long:**
+- The HQ goes 0 -> 1 -> 2 -> 3 at 10.00, 20.00 and 30.00 s (the step sum passes 10.0 on the
+  200th 0.05 s step), with armour 31.5, 33.0 and 36.0.
+- The landed bleed from 991.10 s takes 0.2 per craft-step instead of 0.5:
+  `bleed_total` is 725.40 over 3627 calls (OFF: 1576.50 over 3153).
+- **The HQ is neutralized at 1041.50 s instead of 1036.10 s.** The reset to level 0 is logged
+  there (armour back to 30).
+- Deaths 126 -> 126. Three death rows change time: two LandingShips (1033.43 -> 1033.93 and
+  1033.93 -> 1035.53, with a different killer each) and `Japanese AA truck 01` (1212.21 ->
+  1242.39).
+
+**Verdict: ON.** Every prediction held: the level-ups, the reset, the bleed at 4 per
+craft-second, and the later neutralize; the five other rows are gameplay identical. Not
+game-validated.
+
+**Routed (lead to cc9-gunnery28):** the `+36Ch` maximum-health rescale (logged per change as
+"recorded"), and whether the gunfire path follows the level. The blast part pass reads the
+class's Armour through `004407A0` (`FLD [ECX+4Ch]`, the class), not `unit+368h`, so blast damage
+does not follow the level. **Not modelled:** the garrison respawn `006F3660` (the host has no
+garrison records).
 ## 170. 164's open question: the explosion delay's key (lead item 3, cc9-ships35, 2026-10-06, a read)
 
 **Answer: the delay is drawn per dying unit, but only for aircraft. A ship's death takes no

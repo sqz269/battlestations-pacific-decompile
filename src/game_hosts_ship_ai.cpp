@@ -740,7 +740,10 @@ inline constexpr bool kShipAiTimerDrawsBound = true;
 // not modelled: the +36Ch rescale (the gunnery rows' maximum health), the
 // garrison respawn, the gunfire path's armour; message delivery is immediate.
 // False: +368h stays the class Armour (level 0).
-inline constexpr bool kCommandBuildingLevelBound = false;
+// ON by section 169.5: JM08 long's HQ reaches level 3 at 30 s, the bleed falls to
+// 4 per craft-second and the HQ is neutralized at 1041.50 s, not 1036.10; five
+// rows gameplay identical.
+inline constexpr bool kCommandBuildingLevelBound = true;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.
