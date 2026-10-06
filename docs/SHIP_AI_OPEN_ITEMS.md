@@ -14112,3 +14112,46 @@ the bomb drop scatter. That is gunnery29's measured flip; whether a human-flown 
 aim) would hit is outside the harness. Routed (lead): a deterministic scout hit needs either the
 plane lane's dive-aim review against the scatter, or a harness line for the player's manual
 bomb release. The w7 order file is ready to re-run once phase 2 passes.
+
+## 178. Handoff (cc9-ships36, 2026-10-06, at about 70% context)
+
+### Landed (main or `agent/cc9-ships36`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 174 | USN02 completed with player orders (p7, 727.60 s); `009EF350` read whole, 171 (b) closed | - |
+| 175 / 177 | the garrison read (`006F5CC0` pass 1, `006F3660`); records, skill pushes, death-unlink; kill and re-create recorded | `kCommandBuildingGarrisonBound` ON (177.1) |
+| SCRIPTED_HELM 13 | the `launch` line (`script_orders_player_air_ops_launch`) | harness |
+| 176 / 176.1 | USN01 won with 4 F4F per slot (not natively legal); the legal re-run is blocked in phase 2 by the scout miss | - |
+
+### Open, in order
+
+1. **Wire the garrison revive** when cc9-gunnery29 lands `revive_unit_garrison_006f3660`
+   (the routed edit is `local\s36_gunnery_revive_edit.txt` in the ships36 tree). In
+   `command_building_garrison_006f3660`'s re-create arm (`game_hosts_ship_ai.cpp`, "revive
+   not bound (recorded)"), call it. If it returns true:
+   - `units.store_scene_node_flags(identity, {active, !torn_down, !destroyed, !removed})`;
+   - `units.store_pending_destroy_0060(identity, false)`;
+   - `units.set_unit_side_0054(member, party)`, then `gunnery_draws->refresh_unit_side(member)`;
+   - `units.set_skill_level_007b8ae0(member, skill)`;
+   - `r.linked = true`, `++garrison_recreates`.
+   Write the predictions first: JM08 long re-creates 112 members as party 2 at 1041.50 s, and
+   JM08 3000 re-creates 5 at 20/30 s (Watchtower 01 03, Bunker 03, Watchtower 01 05, and the
+   rest are in `local\s36_on9_jm08.log`). Expect `pair_diff` 3 there and 1 on USN01 and USNOS.
+   Then pair off/on with a flip of a new `kCommandBuildingGarrisonReviveBound`.
+2. **USN01 legal win:** re-run `local\s36_u1_w7.txt` once phase 2 passes (176.1's blocker).
+3. **MinLevel value:** scene-contents (lua's lane) carries only whether the key exists. Members
+   take MinLevel 0 (LABELLED). No row scene authors MinLevel; `ijn_05`, `sol_strike` and
+   `empires_fall` would need it.
+
+### Tools (`local\`, `s36_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s36_run.ps1` / `s36_rows.ps1` | one run / detached rows (usn01, jm08, usnos, jm08l), reference V launch form |
+| `s36_sum.ps1`, `s36_traj.py` | death rows, phase markers and per-unit tracks with distance to (0, -7500) |
+| `s36_mkorders.py` | order files with `attack` lines in windows |
+| `s36_garrison.py` | `.scn` garrison census (filters on the CommandBuildingInferior group: WRONG for LandForts, see 177.1) |
+| `s36_hangarcls.py` | hangar objects' hull kinds across row logs |
+
+All leases are released after this commit.
