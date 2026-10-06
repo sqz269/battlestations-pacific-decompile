@@ -13670,3 +13670,53 @@ the measurement streams.**
   0 is one sequence (`death_mode_draw_00bd2f10`'s static generator). There each nav-block draw
   shifts every later plane delay draw. That sequence's seed is a labelled substitution, so the
   shift cannot be checked against the image.
+
+## 171. USN02 toward completion with scripted player input (lead packet "drive a mission to completion", cc9-ships35, 2026-10-06)
+
+**Script** (this installation's `scripts\missions\usn\usn_2_java.lua`, mtime 2024-07-13):
+- **Fail:** `Houston.Dead or Exeter.Dead` in any phase (lines 521-525).
+- **Phase 1:** `GetHpPercentage(DeRuyter) < 0.15` (DeRuyter is `SetInvincible(0.1)`), or all eight
+  `EnemyDestroya` dead (lines 529-545).
+- **Phase 2** (`luaMoveToPh2`): four `FinalShips` are generated, Nachi, Sazanami, Naka and Ushio,
+  at (+-4200..4700, -7500), flanking the escape point (0, -7500). They `NavigatorAttackMove`
+  Houston and Exeter.
+- **Win:** after `luaPh2MovieEnd` re-selects Houston, `CATable[1]` (Houston while it lives) within
+  500 m of `EscapePoint` -> `luaMissionComplete` -> `luaMissionCompletedNew` (lines 559-597).
+
+**Runs** (tree `agent/cc9-ships35` at `4746489ea`, main merged; reference V launch form;
+`local\s35_run.ps1 -Mission USN02`; order files `local\s35_u2_orders<N>.txt`):
+
+| run | orders | outcome |
+| --- | --- | --- |
+| idle `s35_u2idle` (3000) | none | Houston sunk at 70.00 s by Minegumo's torpedoes (launched 52.45-54.95 s at about 2 km; two hits for 4041 and 1965 of 6500, plus a component `Explosion`); fail at 74.30 s |
+| r1 (7200) | `540 takehelm Houston 1.0 EscapePoint stop 400` | Houston turns away but is sunk at 125.85 s (Minegumo torpedo, 2298 m); fail at 128.75 s |
+| r2 (7200) | `540 attack Houston Minegumo repeat 15` | Houston lives. Six destroyers die by 144.45 s (four to Houston). **Exeter** sunk at 176.51 s by Hatsukaze's torpedo; fail at 178.26 s |
+| r3 (9000) | r2, plus `1800 select Exeter` and Exeter `attack` on Hatsukaze and Amatsukaze (`repeat 15`) | all eight destroyers dead at 209.41 s, so **phase 2** (`luaMoveToPh2`); Houston re-selected at frame 4418. Exeter sunk at 370.18 s by Ushio; fail at 371.28 s |
+| r4 (12000) | r3, plus `4420/4600 takehelm Houston 1.0 EscapePoint stop 300` | phase 2 at about 210 s. Houston starts 3045 m out, stopped at (1941, -5154); the helm turns it clockwise through east, toward Sazanami and Nachi. Sunk at 280.06 s, 2926 m out (Sazanami torpedo) |
+| r5 (12000) | r3 with `1700 takehelm Houston ... EscapePoint` before the Exeter select | **Houston holds at 0 m/s from 100 s to 210 s** once the player leaves it (its attackmove target Minegumo died at 92.55 s). Exeter sunk at 221.01 s by a Hatsukaze torpedo still running after Hatsukaze's death; fail at 222.81 s |
+| r6 (12000) | r3, plus `1860 moveto Houston EscapePoint repeat 10` while the player is on Exeter | phase 2 at about 210 s, but Houston never closes: `movetopos` with the reissue every 10 s alternates rudder -1 / +1 and reverses (heading 74 -> 100 -> 55 degrees, speed -8.3 at 138 s). It drifts east to (2686, -5277) and is sunk at 259.56 s (Nachi torpedo) |
+| r7 (12000) | r2's attack, then `1900 takehelm Houston ... EscapePoint stop 300` with no Exeter select | Exeter sunk at 176.51 s, as in r2; fail at 178.26 s |
+
+**What blocks a completion.**
+1. **The idle failure is image-faithful in kind.** The controlled ship has no AI helm, so an idle
+   player does not evade a torpedo spread. One `attack` line, which hands the helm back to the
+   AI, keeps Houston alive (r2).
+2. **Phase 1 is reachable with plausible orders** (r3-r6: all eight destroyers dead by about
+   205-209 s). It needs the player on Exeter as well: without that, Hatsukaze's torpedoes sink
+   Exeter at 176.51 s (r2, r7).
+3. **Phase 2 needs Houston to cover about 3 km to a point the four FinalShips converge on.**
+   Sailing from the phase-1 position loses Houston to their torpedoes (r4, r6). Pre-positioning
+   during phase 1 hits two host behaviours, routed:
+   - **(a) commands lane (cc9-gunnery28):** a ship whose attackmove target has died and that the
+     player has left holds at 0 m/s for 110 s with enemies near (r5). This is section 157's
+     routed `cruise_step` item ("declines a unit with no command"; 155.1, `009E1170`).
+   - **(b) not shown wrong (r8):** r8 repeats r6 with ONE `moveto` click and gives the same
+     track, so the reissue is not the cause.
+     - The ship AI's `traffic trace` (009EF350) rewrites Houston's target heading from 3.856 to
+       1.026 rad (turn -2.83, a side-1 neighbour) at steps 2160-2166.
+     - At 108 s the attacking destroyer Yamakaze is 429 m from Houston (it dies at 110.15 s), and
+       Asagumo is 1486 m off. So Houston is being steered around destroyers in a melee.
+     - No ally is within 500 m. Whether the image's neighbour list would make the same pass was
+       not read; nothing here shows the host wrong.
+No run reached a mission end, so the exec guard's line did not appear. **USN02 is closed after
+eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6). Next: the reference mission with the shortest victory condition.
