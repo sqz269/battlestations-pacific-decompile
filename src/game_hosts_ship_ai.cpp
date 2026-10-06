@@ -774,8 +774,9 @@ inline constexpr bool kCommandBuildingGarrisonBound = true;
 // gunnery host's revive_unit_garrison_006f3660, then the scene flags, the
 // building's Party (006F37A0) and Skill (006F37D7). SUBSTITUTION: the image
 // creates a new unit from the record's Type at the stored matrix. False: the
-// re-create is recorded only.
-inline constexpr bool kCommandBuildingGarrisonReviveBound = false;
+// re-create is recorded only. ON by section 185.1: JM08 and JM08 long move (4 and 111
+// revives), USN01 and USNOS gameplay identical.
+inline constexpr bool kCommandBuildingGarrisonReviveBound = true;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.

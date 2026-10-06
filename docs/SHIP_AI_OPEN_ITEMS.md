@@ -14390,8 +14390,7 @@ first.
 
 ### Open, in order
 
-1. **The garrison revive** (178 item 1), when cc9-gunnery29's `revive_unit_garrison_006f3660` sha
-   arrives. The predictions are in 178.
+1. ~~The garrison revive~~: done in 185 (ON).
 2. **LOMP10** once lua42's member-order seam lands. Re-run `local\s37_l10_p1.txt` (launch at
    4900-4903 after HQReady, slot-0 retries). Then add a `build` line for the Elcos when the
    shipyard host exists (182: the gunnery lane's stock and queue, the lua lane's
@@ -14435,3 +14434,32 @@ the dead unit in place. `summary.deaths` and kill credits keep the original deat
   targets with full health.
 - **USN01 3000:** one pass and no re-create. `pair_diff` 1.
 - **USNOS 3000** (control): no members. `pair_diff` 1.
+
+### 185.1 Smoke and pairs; verdict ON
+
+**Runs:** OFF is this tree at `602980de7`; ON is `pair_export.py --commit 602980de7 --flip
+kCommandBuildingGarrisonReviveBound=true --out local\s37_rev_on`. The prefixes are `off` / `on`
+(`local\s37_rows.ps1`, reference V form). Smoke: `local\s37_smoke_rev.log`, JM08 300, OFF, clean
+(349 members, two passes).
+
+| row | `pair_diff` | ON | OFF |
+| --- | --- | --- | --- |
+| JM08 3000 | **3** | 4 revives (Watchtower 01 03 at 20.00 s; House Piled 03, Medium Bunker Concrete 03 and Watchtower 01 05 at 30.00 s), party 1 skill 1; deaths 22, hits 474 | 5 re-creates recorded (Watchtower 01 03 twice, because a recorded re-create never relinks); hits 482 |
+| JM08 long 36000 | **3** | 111 revives, **107 of them as party 2 at the HQ neutralize, 1027.20 s** (the last is Shipyard 01); deaths 144, hits 12265 | 117 recorded; deaths 126, hits 9170 |
+| USN01 3000 | 1 | no re-create | |
+| USNOS 3000 (control) | 1 | no members | |
+
+**Against the predictions:**
+- The mechanism and the rows that move are as predicted.
+- JM08 3000 has 4 revives, not 5: the fifth OFF line is the repeat of a member that was never
+  relinked.
+- JM08 long has 107 Neutral revives, not 112, and the neutralize falls at 1027.20 s, not
+  1041.50 s. 177.1's tree timed the HQ's fall later; mains since then (the AB and AC switches)
+  moved it.
+- In both the count follows the deaths before the neutralize, which is a spread miss, not a
+  mechanism miss.
+
+**Verdict: ON.** After 1027 s the revived forts are Neutral, full-health targets: deaths
+126 -> 144 and hit records 9170 -> 12265 on JM08 long. JM08 long fails at the neutralize either
+way (no `EndMission`). The revive is a substitution for the image's new unit; not
+game-validated.
