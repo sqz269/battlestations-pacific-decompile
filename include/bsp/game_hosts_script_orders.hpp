@@ -185,6 +185,12 @@ inline constexpr bool kScoringPlayerShotDownBound = true;
 // function, unread), is recorded and not applied. False: the native stays an
 // unimplemented record.
 inline constexpr bool kPutToBound = true;
+// Packet cc9_squadron_member_placement (docs/SQUADRON_MEMBER_PLACEMENT.md). On a
+// PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
+// then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0
+// station with the leader's rotation and speed. False: only the fused leader slot
+// moves, and the members stay where they spawned.
+inline constexpr bool kSquadronPutToMembersBound = false;
 
 // Packet cc9_get_hp_percentage (docs/LUA_BINDING_MISSION.md, "GetHpPercentage's
 // health slot"). True: 00923BE0's two host reads answer from the gunnery host.
@@ -875,6 +881,11 @@ private:
         std::string status;          // Mission.MissionStatus: failed / completed / unset
         std::string fail_text;       // Mission.MissionEndParams.Text
         std::string fail_entity;     // Mission.MissionEndParams.Ent
+        // What set `seen`: "MissionStatus" (an end function ran:
+        // commandhelpers.lua luaMissionCompletedNew :10425 / luaMissionFailedNew
+        // :10369 and the older pair) or "EndMission" (the mission's own flag).
+        std::string trigger;
+        float end_mission_at{-1.0f};  // first frame Mission.EndMission is true
         std::vector<std::string> objectives;  // level:num=Active/Success
     } mission_end_;
     unsigned long long dialog_starts_{0};
