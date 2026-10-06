@@ -13370,3 +13370,81 @@ Prediction 2 holds.
   are dead earlier ("target fails 0043F080" refusals 23154 -> 37196). So there are fewer launches.
 - One number is not explained: the player's Zuikaku takes 3199 damage ON against 640 OFF (health 635 left). This
   was not chased; Zuikaku survives.
+
+## 5eo. ESMP08 (a): who holds the 16 slots, and 007F16D0's home arm, `kReturnToBaseHomeArmBound` (packet `cc9_rtb_home_arm`, cc9-lua44, 2026-10-06)
+
+**Who holds the slots.** This reads 5en's ON log `local\l44_own_e8.log` (census script `local\l44_sqn_fate.py`).
+Between mission frames 30000 and 49000, every refusal on all 16 slots is "not in state 1 or 5", while the order
+file's targets are still alive. At 3600 s the slot holders are of two kinds:
+- **Still flying, never ordered home.** Examples are Zuikaku_sqn21/22/27 and the sqn37-42 group. These squadrons
+  have no `returntobase` line, no touchdown and no `live=0` leave; their targets died under them. The order file
+  gives no second order, and nothing in the image re-tasks a player squadron, so this half is the harness's input,
+  not a host departure.
+- **Landed on the wrong carrier and stuck in land/park.** Chiyoda_sqn28, Chitose_sqn35/36 and Zuiho_sqn43 all
+  answer `returntobase -> land at site Zuikaku`. They touch down on Zuikaku and sit in land/park state 620 with
+  `done=0` and the parking spot refused. Zuikaku_sqn17 answers Zuiho and sits on Zuiho the same way
+  (`spot_refused=17753`).
+  - Their home slots wait for a squadron that never reaches its own hangar, so they are never released
+    (`006C65B0`).
+
+**The departure: 007F16D0's home arm was never taken.** Before this packet the host recorded
+"home-arm-unread" and fell through to the nearest-site arm. The arm, from the disk bytes:
+- `007F1726` tests `+369h` (ReloadEnabled).
+- `007F1732`-`007F173A`: `006BCD20(ECX = squadron+404h, DL = 1)`. The home base's block: `+1188h` for
+  `IsKindOf(9)`, `+72Ch` for `IsKindOf(45h)`. With DL set it is refused when the block's owner `+7Ch` is null
+  or `+5Dh`.
+- `007F1745`-`007F174F`: `006C4790(block, squadron)`, false when the squadron is on the block's `+B4h` list.
+- `007F1751`-`007F175A`: `006BED30(block)` (`006BED30`-`006BED52`, `RET`). It is true for block `+1Ch` (runway
+  failure), `+1Dh` (hangar failure), a null owner or an owner with `+5Dh`; true skips the arm.
+- `007F175C`-`007F176E`: `007F1000(out, 00E08FA0 land, squadron+404h)`. The land record names the home base
+  entity itself.
+
+**The binding.** `bsp::kReturnToBaseHomeArmBound` (`include/bsp/air_operations.hpp`), committed **OFF**, in
+`record_return_to_base_007f16d0` and its land install:
+- `+404h` is the air-ops bag's `HomeBase` (`bag_home_base`), or else the scene row's HomeBase;
+- the arm answers `land at home <base>`, and the install treats it like a site.
+
+Labelled:
+- the `+B4h` exclusion list is not carried (empty);
+- a sunk home owner counts as no block (the image keeps the pointer and tests only `+5Dh`).
+
+**Predictions, written before any ON run.**
+1. ESMP08 72000 (`l44_e8_p3.txt`):
+   - every air-ops squadron that returns answers `land at home <its own carrier>`;
+   - Chiyoda_sqn28, Chitose_sqn35/36, Zuiho_sqn43 and Zuikaku_sqn17 touch down on their own carriers.
+   - If the park then completes into the home hangar, those slots release and relaunch. If park still refuses
+     the spot, the slots stay held, and the next read is the park / release path (`006CD350` states 1/2,
+     `006CC5C0`, `007F1B70` -> `006C65B0`).
+2. USN04 4500, a control with one carrier: the squadrons' home is the only deck, so gameplay should be
+   identical. Only the `returntobase` text changes from "land at site" to "land at home".
+
+**The pairs and the verdict (cc9-lua44, 2026-10-06): ON.**
+
+**First ON pair** (`b71e3f5bc` + flip, `local\l44_home`): a mechanism failure, in the host's 009B34D0 check.
+- Every return answers `land at home <own carrier>`.
+- But `land_command_still_valid_009b34d0` accepted only the land-at-site answer, so each task installed from the
+  home arm was retired one step later ("no longer land at this site").
+- The squadrons then flew on unordered, and Zuikaku_sqn17, Zuiho_sqn20 and Chiyoda_sqn36 were shot down within
+  20 s.
+- `cc546c344` fixes the check: a home-arm answer keeps the task, behind the same switch.
+
+**Second pair** (`cc546c344`, OFF `local\l44_h2off_*`, ON `local\l44_home2`):
+- **USN04 4500:** `pair_diff` exit 1, gameplay identical. Prediction 2 holds.
+- **ESMP08 72000:** every return answers home, and the squadrons touch down on their own carriers:
+  - Zuikaku_sqn17 on Zuikaku at 1101.6 s (OFF: Zuiho);
+  - Chiyoda_sqn28 on Chiyoda;
+  - Chitose_sqn35/36/41 on Chitose;
+  - Zuiho_sqn43 on Zuiho.
+- **Prediction 1 takes its second branch.** Every one of those planes stops in land/park state 620 with
+  `done=0` and the spot refused (for example Chiyoda_sqn28|.-3 `spot_refused=11927`). So no slot is released:
+  `releases_006c65b0 = 28` and `slots_holding_a_squadron = 16` on both sides.
+- **The row moved, `pair_diff` exit 3:** deaths 659 -> 669, and **the player's Zuikaku sinks at 1702.9 s**
+  (killer TBF Avenger #7.2, a torpedo).
+  - Zuikaku was already a knife-edge OFF: 3199 damage taken, 635 health left.
+  - ON it takes 3837. Its own squadron now lands on its deck instead of Zuiho's, which changes its course
+    holding and AA during the USN wave-7 attack. That cause is likely but not traced shot by shot.
+  - The USN ships die at the same times as OFF.
+- **Verdict.** The mechanism matches the image (land at the home base). The outcome move is an explained
+  knife-edge, not a host departure, so the switch is ON.
+- **ESMP08 (a) is not yet released by this.** The next read is the land/park spot refusal on the home deck
+  (`006CD350` states 1/2, `006CC5C0`, `007F1B70` -> `006C65B0`).
