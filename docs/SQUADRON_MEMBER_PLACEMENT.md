@@ -103,3 +103,47 @@ read only 007F4580 and did not follow pass C.
 - Tick-0 pairwise distances go from 0.000 (stacked) to the station spacing.
 - Avoidance between wingmates at spawn drops.
 - A deck launch (`base launch inside start`) logs no pass-C placement.
+
+## 5. Measured: both **ON** (cc9-lua43, 2026-10-06)
+
+The pairs are same-tree at 926a8f826, each flip on its own. Logs are in `local\l43_*`.
+
+**(a) PutTo, USN01 14200/14000, lua42's p5 order file.**
+- pair_diff exits 3 (moved).
+- Six `site=put_to` lines, two members each.
+- The tick-0 Nell6 pairwise distance went from 9295/9298/3.3 to 141.4/143.8/200.0, as predicted.
+
+| row | OFF | ON |
+| --- | --- | --- |
+| mission end | none | **completed at 692.95 s** (`Mission.MissionStatus`, "We showed we can fight back! - Mission Complete!") |
+| deaths | 89 | 94 |
+| plane water contacts | 23 | 25 |
+| units | 123 | 126 |
+
+- **New deaths.** In ON, Nell5|.-3 and Nell6 also die; these are the two survivors in 5ei item 2. Every Nell is down, so the script ends the mission. Three Wildcats die as well: Enterprise_sqn01, Enterprise_sqn01|.-2 and Enterprise_sqn02|.-2.
+- **Why the deaths moved.** In OFF, each wing arrived strung out over 9 km behind its leader. In ON, a wing arrives together, so the Wildcats meet three bombers' return fire at once. Two examples from the killer columns:
+  - Nell6|.-3 killer range: 636 -> 143.
+  - Nell4|.-3 killer range: 293 -> 78.
+- **The exec guard.** The mission completes, and the guard's line is in the ON log: `bsp: refused a mission script's process launch: sus_prog.exe`.
+- **Not predicted:** the extra three units in ON come from the later phase the script reaches.
+
+**(b) Pass C.**
+
+USN04 4700/4500:
+- 17 `site=pass_c` placements of 34 members, `unseeded=0`.
+- The 4 `base launch inside start` squadrons log no placement, so the deck-launch skip holds.
+- Deaths 48 -> 50: D3A Val #7.1|.-2 and |.-3 die only in ON.
+- Torpedo releases 3 -> 5 of 16, drops 3 -> 5.
+- Hypothesis, not traced per plane: without the stacked start, the wings skip the avoidance
+  break-up at spawn and reach the fleet in formation.
+
+LOMP10 9200/9000:
+- 3 placements of 7 members.
+- Deaths 5 -> 4: Warhawk 01|.-4 survives.
+- Dive-bomb releases 14 -> 16.
+
+**Verdict.** Both mechanisms match the listing: the members land at the 007F23A0 stations, and the deck launches are excluded. Both are ON.
+
+This reverses SQUADRON_SPAWN_SEATS.md 6a ("the image spawns the wing stacked"). That conclusion came from 007F4580 alone; pass C's 007F4DB0 places the wing.
+
+`kPlaneFormationPlacementEnabled`, the first-step stand-in, stays OFF. Pass C now does in the image's place what that stand-in did.

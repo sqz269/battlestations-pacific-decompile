@@ -189,8 +189,9 @@ inline constexpr bool kPutToBound = true;
 // PlaneSquadron, PutTo's vtable[118h] is 007F2E20: the base position set 00489760,
 // then 007F2920 (007F2E8F), which puts every member but the leader on its 007F23A0
 // station with the leader's rotation and speed. False: only the fused leader slot
-// moves, and the members stay where they spawned.
-inline constexpr bool kSquadronPutToMembersBound = false;
+// moves, and the members stay where they spawned. ON: USN01 p5 completes
+// (docs/SQUADRON_MEMBER_PLACEMENT.md section 5).
+inline constexpr bool kSquadronPutToMembersBound = true;
 
 // Packet cc9_get_hp_percentage (docs/LUA_BINDING_MISSION.md, "GetHpPercentage's
 // health slot"). True: 00923BE0's two host reads answer from the gunnery host.
