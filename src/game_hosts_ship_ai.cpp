@@ -650,7 +650,9 @@ inline constexpr bool kShipAiInitialCruiseStateBound = true;
 // cost walk 009EC280 (009EC6E2). True: the store goes into ctl.plan_a and
 // ctl.plan_b's search_context, so the next search adds it at each side switch.
 // False: the value is kept in a member nothing reads, as before.
-inline constexpr bool kShipAiApproachSearchPenaltyBound = false;
+// ON by section 159.4: BSM01, USN13 and USNOS gameplay identical (USNOS writes
+// 3951 zeros); JM08 long moves through 25958 positive writes and 129466 searches.
+inline constexpr bool kShipAiApproachSearchPenaltyBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

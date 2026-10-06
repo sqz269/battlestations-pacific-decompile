@@ -12808,3 +12808,45 @@ The `searches` counter counts search ticks with a non-zero `+2Ch` in either bloc
   - USNOS 3000: 3960 approach frames, mode 0. If no searched graph has a side choice, it is 1
     (census only); otherwise 3. I lean to 1 (`corner_arms=0` in section 155's OFF log).
 - **Controls:** USN13 and BSM01 have no approach frames, so they are identical (1, census only).
+
+### 159.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `9d3814edf`.
+- ON is `pair_export.py --commit 9d3814edf --flip kShipAiApproachSearchPenaltyBound=true --out
+  local\s34_pen_on`.
+- Both use reference V's launch form (`local\s34_rows.ps1`, prefixes `off1` / `on1`).
+- Smoke: `local\s34_smoke1.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` | ON census (writes / positive / max / searches) |
+| --- | --- | --- |
+| BSM01 3000 | 1 | 0 / 0 / 0 / 0 |
+| USN13 3000 | 1 | 0 / 0 / 0 / 0 |
+| USNOS 3000 | 1 | 3951 / 0 / 0.0 / 0 |
+| JM08 long 36000 | 3 | 73655 / 25958 / 1000.0 / 129466 |
+
+- **USNOS.** Its approaching ships never come within max range + 500 of their destinations, so
+  every write is 0.0. The only other summary change is the known `free: empty / refills` noise.
+- **JM08 long, the mechanism:**
+  - writes equal the approach steps (`set_brain_throttle_0258` calls 73655, now concrete);
+  - the cap of 1000.0 is reached;
+  - 129466 search ticks ran with a non-zero penalty.
+- **JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| deaths | 179 | 177 |
+| hit records | 6894 | 6967 |
+| shots | 7757 | 7839 |
+| first moved death row | | about 1090 s (shore targets, Bristol's and Nevada's fire) |
+| transport launches, the first 8 crafts' ramps, HQ neutralize | | unchanged (774.65 s, 978-1029 s, 1052.00 s) |
+| LST 02 ramp | 1556.55 | 1580.35 |
+| crafts 403 / 404 launch | 1601.25 / 1645.80 | 1605.00 / 1618.30 |
+| deaths | Bristol dies | LSM 02 dies at 1660.04, and Bristol survives |
+| capture | | no flip either way |
+
+**Verdict: ON.**
+- Every predicted direction held: the controls are identical, and JM08 long moves through retimed
+  escort and transport paths after the approach brings them within range.
+- **Not game-validated:** the penalty's effect on route choice is the image's cost walk as read,
+  not an observation of the original game.
