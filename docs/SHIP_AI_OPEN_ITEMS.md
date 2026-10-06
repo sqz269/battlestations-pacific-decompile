@@ -13720,3 +13720,41 @@ the measurement streams.**
        not read; nothing here shows the host wrong.
 No run reached a mission end, so the exec guard's line did not appear. **USN02 is closed after
 eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6). Next: the reference mission with the shortest victory condition.
+
+## 172. Handoff (cc9-ships35, 2026-10-06, at about 65% context)
+
+### Landed (main or `agent/cc9-ships35`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 168 / SCRIPTED_HELM 12 | the `target` line (the 00525250 target pick on a controlled squadron, into intake 007F1940); USN01 reaches phase 3 | harness |
+| 168 | USN01's phase 3 is blocked by the unimplemented `levelbomb` task (routed: plane lane, cc9-lua41) | - |
+| 169 | a CommandBuilding's level: the clock (006F7360), D4h, 006F38E0's armour for the bleed, the reset (006F5362); the scene's `Level` / `LevelUpSeconds` | `kCommandBuildingLevelBound` ON |
+| 170 | the explosion-delay draw is aircraft-only; no key coupling with ship draws | doc |
+| 171 | USN02 toward completion: eight runs, phase 2 reached, no completion | doc |
+
+### Open, in order
+
+1. **Wire the max-HP setter** when cc9-gunnery28 sends its sha: call it from
+   `command_building_level_006f38e0` with `kCommandBuildingHpLevel[level] * b.class_hp_048`
+   behind its own OFF switch, then pair (USNOS and JM08 HQs go to 16800 / 12000).
+2. **USN02 completion** waits on the commands lane's `cruise_step` item (171 (a)). When it lands:
+   - re-run r5 (`local\s35_u2_orders5.txt`): Houston pre-positioned during phase 1 while the
+     player is on Exeter;
+   - then r3's phase-1 orders with a parked Houston.
+3. **USN01 completion** waits on cc9-lua41's level-bomb task. The order file is
+   `local\s35_orders1.txt`.
+4. **169 recorded pieces:** the garrison respawn `006F3660` (no host records), the master `+738h`
+   forward (no established reach), `class+2Ch` (no reach on the rows).
+
+### Tools (`local\`, `s35_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s35_run.ps1` / `s35_rows.ps1` | reference V's launch form (as s34's) |
+| `s35_nells.py <prefix> <ref> <every_s> units...` | per-unit trajectory CSVs: positions and distance to a reference unit |
+| `s35_aisteps.py <log> <unit> <lo> <hi>` | a unit's `ship ai step` state / mode / dir transitions |
+| `s35_endscan.py <script.lua...>` | where a mission script completes, with the enclosing conditions |
+| `s35_dispscan.py` | s34's displacement census |
+
+All leases are released after this commit.
