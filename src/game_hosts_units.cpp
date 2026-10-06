@@ -5730,8 +5730,9 @@ struct GameUnitsHost::Impl {
     // (C54h 1-based, the equipment reader 00961F57 stores Platform per entry), and
     // the class default p%d_dev only when C54h is 0 or the entry has no Platform.
     // A slot with no recorded bag keeps `DefaultEquipment or 1`, as the ammo
-    // reader does. False: the class default device and a 0.0 RepeatTime.
-    static constexpr bool kRackEquipmentDeviceBound = false;
+    // reader does. False: the class default device and a 0.0 RepeatTime. ON (5ev):
+    // identical on USN13 9000, USNOS and LOMP10 with 138 OFF.
+    static constexpr bool kRackEquipmentDeviceBound = true;
     // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
     // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
     // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below

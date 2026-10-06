@@ -13819,3 +13819,28 @@ A (both OFF), B (`kRackEquipmentDeviceBound` ON) and C (both ON, with `kRackBull
 - **C against B.** 138's per-rack decision drops the 16-bomb stick at 0.05 s through 007C0D90's level-bomber arm,
   with the descriptor 2Ah.
   - USN13 should show bomb drops paced at 0.05 s instead of the old 0.8 s "torpedo" burst.
+
+**Pairs (2026-10-06, commit `ef3a8e1f3`).** A `1AA721764127`, B `C41A5DF977F9`, C `E94DCC77A9C0`. The launch form is
+AD's. Logs are `local\l45_eq<A|B|C>_<row>.log`, and the B smoke ran clean.
+
+| row | A -> B | B -> C |
+| --- | --- | --- |
+| USN13 9000 | 0 (identical) | **3** |
+| USNOS 3000 | 1 | 1 |
+| LOMP10 3000 | 1 | 1 |
+
+- **B is identical, and its mechanism holds.** Every USN13 `bruh` rack now reads device 88: C prints
+  `rack bullet kinds bruh #1.9|.-2 (level bomber): [2Ah/0.05s]`, for scene type 162 with `bag=1`. Nothing with 138
+  OFF reads the census kind before a rack empties, so A -> B moves nothing. **`kRackEquipmentDeviceBound` is ON.**
+- **C (138 ON) moves USN13 through a mechanism failure, so 138 stays OFF.**
+  - `bruh #1.9|.-2` (149.85 s) and `#1.14|.-2` (182.26 s) take 007C0D90's level-bomber arm:
+    `level bomber issue ... racks=1 rounds=16`, rack `drops=16`.
+  - The gunnery host refuses every one of those bombs: `bomb_drops=2 refusals=33`, where a refusal means "the unit
+    carried no bomb platform". Its gun rows still come from the class default (device 122, the torpedo platform), so
+    no 2Ah row exists.
+  - B's two "torpedo" drops (bullet 69, at 16 m) are therefore gone in C, and nothing replaces them. The 30 moved
+    death rows are bruh deaths shifted by about 0.1 s, from the changed shot and flight sequence (shots
+    31753 -> 32093).
+- **Routed to cc9-gunnery31 (its file):** the gunnery host's per-unit gun rows (the mount census in
+  `src/game_hosts_gunnery.cpp`) must read the rack's device the same way,
+  `Equipments[unit+C54h][slot].Platform`. Then the bomb drop finds its 2Ah row and 138 can be re-paired.
