@@ -15904,3 +15904,19 @@ idle except for their helm lines, with no frame jitter.
   - in the image the damage path reaches it through `00877B90` (vtable[1B0h] at 00877C3A), which returns at `00877BBE`/`00877BC1`
     (`TEST AH,44h; JNP`) when the health is unchanged.
 - Routed to the gunnery lane (an `applied != 0` guard at the two hit sites). Re-pair once it lands.
+### 205.3 The Hakus: the Enterprise's strikes reach them but never release (cc9-ships41, 2026-10-06)
+
+`s41_os_f15.txt` (120000 frames, main `3f2069daa`) is f14 plus BTD (331) / AD2 (339) launches from
+the Enterprise at Haku1-4, every 1000 frames from 48000, with the other three Hakus listed as
+fallbacks on the following frames.
+
+- Primary 2 again completes at 4234.58 s (`HideScoreDisplay(3, 0)`).
+- **60 launches apply.** The squadrons `Enterprise_sqn47`.. hold `Haku` command targets (32402
+  `0071EBF0` lines).
+- **No Enterprise squadron drops a torpedo or a bomb.** None of its planes reach the release lines,
+  and the squadrons die near the Hakus (for example sqn64 to Haku4's guns from 725 m at 4581.02 s).
+- **No Haku dies by 6000 s**, so `ReinDead` stays false and the mission does not complete.
+- This is the pending US torpedo/dive release (the gunnery lane). The completion path waits on it,
+  or on a surface attack.
+- f16 (160000 frames, running) tries the surface attack: `select` + `attack` with Loui1 and NH at
+  the Hakus in 600 s windows from 86000.
