@@ -9962,3 +9962,69 @@ behaviour is unchanged. **Uncertain:** `[unit+338h]` = the unit rests on section
 2. Nothing else in this lane's filter reaches gameplay on AC.
 
 **Next:** item 1's diagnostic, as a units edit routed through the lead.
+
+## 134. The shipyard's production queue: the scene build and the four order messages (SHIP_AI 182 follow-up; lead item; cc9-gunnery29, 2026-10-06, read only)
+
+Read through Ghidra (read-only) for the shipyard production host that SHIP_AI 182 asks for. Offsets are from the
+handlers' `this` (the same base `00849F70` and `00846D90` use for `+774h`/`+794h`). Builds on 122 (the tick
+`00846320`) and LAND_AND_STRUCTURES 3 (the build `00844FC0`).
+
+### 134.1 The records
+
+- **Hangars `+780h`** (vector begin `+784h`, end `+788h`, stride `10h`): `+4` the hangar object, `+0Ch` the unit it
+  launched (0 = free). Built by `00849F70` from `"Hangar 1".."Hangar 12"` (`local_d0 < 0Dh`): a property of type 6
+  naming an entity and a path, appended through `00848150`.
+- **Stock `+774h`** (begin `+774h`, end `+778h`, stride `20h`): `+4` the vehicle class, `+8` the count, `+10h..+14h`
+  a name list (stride `1Ch`, string), `+1Ch` the next-name index. Added by `AddShipyardStock` (`00896CC0` ->
+  `0084ACB0`, the Lua lane) and from a saved game (`00849F70`'s mode-3 arm through `008499A0`).
+- **Queue entries `+794h`** (begin `+794h`, end `+798h`, stride `4Ch`; one per `NumSlots`): `+4` the state, `+8` the
+  vehicle class, `+0Ch` the quantity, `+2Ch`, `+30h` a placed unit, `+48h` the order (an observed pointer). Built by
+  `00849F70` per slot `i`:
+  - `"Slot i"` names an existing entity: state **4**, `+30h` = that entity, `+8` = its class (`entity+538h`),
+    `+0Ch` = `+2Ch` = 0, and the stock record of that class loses one (`+8 -= 1`, at `0084A3C9`);
+  - else `"Stock i"` has `Count > 0`: state **1**, `+8` = `BSP_VehicleClass_GetOrCreate(Type)`, `+0Ch` = Count;
+  - else state 0, class 0.
+  This installation's LOMP10 scene (`universe\scenes\missions\usn\LOMP\10_san_jose.scn`) has `NumSlots 4` with every
+  `Slot` unit and `Stock` type empty: four idle entries, and the stock comes only from `AddShipyardStock`.
+
+### 134.2 The four messages (`vtable[164h]` `00847030`), each `__thiscall(this)(sender, entry, byte)`, `RET 0Ch`
+
+- **A7h `00844D60`** (`00844D60..00844FAF`), *choose the class*. If the entry has a class, its stock record gets the
+  unit back (`+8 += 1`). Then it steps from that record (or from the end, or -1, for an empty entry) forward when the
+  byte is set, backward when clear, to the next stock record with `+8 > 0`: that record's count drops by one, the
+  entry becomes state **1** with `+8` = its class and `+0Ch` = `class+134h` (the default quantity). None left: state 0,
+  class 0. Rebroadcasts A7h.
+- **A8h `008436F0`**, *the quantity*: `+0Ch = (+0Ch + step) % (N + 1)`, `N` = `class+128h` (`00951F10`,
+  `MOV EAX,[ECX+128h]` with `ECX = [entry+8]`, `00843749`), `step` = 1 with the byte set, else `N` (one back).
+- **A9h `00846D90`** (`00846D90..00846FC2`), *the order*: the stock record whose class equals the entry's (none
+  would fault: the screen sends A7h first), state **2**, the record's next name (cycled), with the byte set the order
+  `+48h` = `[this+7A0h]->vtable[2Ch]()` (observer swapped), rebroadcast; then, when **`00844CE0`** finds a free
+  hangar (the first whose object has `+5Ch` set, `+5Dh`/`+5Eh`/`+60h` clear and `+0Ch == 0`), it builds at once:
+  `BSP_Shipyard_CreateLaunchedUnit 00844FC0(entry)` and `00984EB0(this, [class+70h], 00844610([class+70h]))`.
+  Otherwise the tick's state-2 arm (122) builds at the next free hangar.
+- **AAh `008437D0`**: unread.
+
+**The screen's sequence** (`00673A10`, SHIP_AI 182 adds one step): a **`PUSH 0A7h`** at `00674460` (routed at
+`006744C6`) precedes the A8h loop and the A9h; so a purchase is A7h, then `n - 1` A8h, then A9h. SHIP_AI 182's
+summary omitted the A7h.
+
+### 134.3 What the host needs (a plan, not landed)
+
+1. **State** in the gunnery host (`shipyard` per Shipyard unit): hangars, stock, entries, built from the scene bag
+   at load (the scene-contents lane owns the bag reader; the units host keeps `scene_marker_frames` for
+   `cc9_spawn_new_shipyard`). LOMP10 needs only the four idle entries and the hangar records.
+2. **`add_stock_0084acb0(shipyard, class, count, name)`** for the Lua lane's `AddShipyardStock` binding.
+3. **`shipyard_order_00846d90(shipyard, entry, count, chosen_entry, reason)`** for ships37's `build` line: A7h
+   (byte 1), then `count - 1` A8h, then A9h (byte 1), as `00673A10` sends them.
+4. **The production walk** of `00846320` (122): state 3 -> 4 when the hangar lets the unit go, issuing `+48h`;
+   state 2 with a free hangar -> build.
+5. **The build `00844FC0`** creates a scene unit from a property bag (`Type`, `Skill`, `Race`, `Party` = the
+   shipyard's `+54h`, `OwnerPlayer`, `WingCount` = the entry's quantity, `VelocitySI`, `State`, `Equipment`, `Dive`,
+   `ShipYardLaunch`) at the hangar's pose snapped to the water, then `0077D600`. The host creates units only
+   through the SpawnNew path (`src/lua_spawn_new.cpp`, the scene-contents / Lua lane), so the build is a call into
+   that lane: route it.
+6. Unread: `00844FC0`'s state write (taken to set state 3 and the hangar's `+0Ch`), `00984EB0`, `00844610`, AAh,
+   and `[this+7A0h]->vtable[2Ch]` (the order object).
+
+**Reach:** none on the idle reference rows (no message is sent). With ships37's `build` line on LOMP10 after
+`AddShipyardStock` (four Elcos, two Catalinas), the entries take the stock and the hangars launch.
