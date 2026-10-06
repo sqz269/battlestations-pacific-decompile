@@ -14253,3 +14253,68 @@ The destroyers reach the fleet at about 680 s, too late to sink T01 before 774 s
 
 **The furthest state:** g5. All six transports and three landing ships are sunk, but too late: T01's landing craft take the
 HQ. A win also needs Missouri and then the Dakota group.
+
+## 5fe. The taxiing plane's throttle, `kPilotThrottleGroundArmBound` (packet `cc9_lua47_ground_throttle_cap`, cc9-lua47, 2026-10-06)
+
+The lead's item after 5fd: 6 of JM08's 12 airfield planes never leave `takeoff/Takeoff`.
+
+**What the planes do.** The trace was a local diagnostic build, `local\l47_D9`, never committed; the log is
+`local\l47dg_D9_j8.log`. Take `MainAirFieldEntity 01_sqn03|.-2`, placed at 18.10 s on the entry path, 74 m off the runway
+axis.
+- `009CE2C0` spends most of its first 10 s in the **refused** arm: `006CF5B0` refuses while the leader is near. That arm
+  writes the hold, throttle `+278h` = 0.01 (`00D7A238`) and air brake `+2A8h` = 1.0, with `+2D8h` = `EBX` = 0 (`009CF2E3`,
+  `009CF30E`-`009CF33C`, which matches the host).
+- Yet the plane's live throttle is 1.0 from 19.9 s. It reaches 46 m/s at 42.4 s, hops to 38 m altitude, overshoots the
+  axis by 140 m, rolls off the runway end (local z 298 against 250) and sits in the sea. Betty's `MinWaterSpd` is 22.2, so
+  the D arm's `y < h` return holds it there, about 10,300 run ticks.
+- The full throttle comes from `0099D300`. With `+2D8h` = 0, an active throttle slot and `+900h` = 5, the host ran the
+  **demand** arm toward `+2B4h`. The think's reseed (`0099B450`) had just set that to TravelSpeed x NewTravelSpeedMul =
+  88.89 m/s, and the refused arm never overwrites it.
+
+**The listing** (`0099D8C1`-`0099D924`, `0099DC46`-`0099DC9E`):
+- With `+2D8h` = 0, `0099D8F5`-`0099D904` tests `+900h` == 5. On 5 it takes the slot's desired value when `+27Ch` is set
+  (the current `+274h` otherwise) to `0099DC82`. That point caps the value at 0.6 (`00CE3D30`) and stores it active
+  (`0099DC8F`/`0099DC97`). **It never enters the demand arm.**
+- The demand arm (`+2D8h` = 1 with a desired speed) ends at `0099DC6B` (`+2D8h` = 0) and **`JMP 0099D8F7`**, the same
+  state-5 test. So a demand on a plane in state 5 is capped at 0.6 too.
+- The host had both wrong. In mode 0 with an active slot in state 5 it ran the demand arm. After a demand it applied no
+  state-5 cap.
+
+**The switch.** `include/bsp/plane_ai_control.hpp` `kPilotThrottleGroundArmBound`, used in
+`pilot_plan_throttle_0099d300`. It is committed OFF.
+
+**Predictions (before the pairs).** The rows are JM08 g5 (24000, `local\l47_j8_g5.txt`), LOMP10 30000 with
+`g30_ord_l10_p2.txt` (airfield launches from `CB4_AF`) and USN04 9000 (carrier launches).
+- **Airfield launches.** A plane in state 5 under the refused hold now keeps throttle 0.01 and brake 1.0, and waits. A
+  taxiing plane never exceeds throttle 0.6 until `007C1680` (5 -> 4) in the aligned arm.
+  - Expect JM08's airfield members to queue, align and take off in turn: `takeoff ... done` rises toward 12 of 12, and no
+    member is stuck in state 470.
+  - The squadrons then fly complete. The slots return when they land or die, so later `launch` lines go through.
+- **Carrier launches.** Members wait in state 4/5 on the lift. Any of them that ran the mode-0 demand in state 5 now holds
+  at 0.6 at most, so USN04 may move slightly in launch timing.
+- **Mechanism failure:** members still in state 470 at the end, or a taxiing plane above throttle 0.6 in state 5.
+
+**Pairs (2026-10-06, `e159644d7`).** `e159644d7` is the switch commit plus the `else if` that keeps the ON build free of
+C4702. Exports are `local\l47_F0` / `local\l47_F1`, in AD's launch form; logs are `local\l47_F<0|1>_<j8|lomp10w|e2>.log`.
+The F1 smoke ran clean.
+
+| row | pair_diff | takeoff tasks done (OFF -> ON) | mission end |
+| --- | --- | --- | --- |
+| JM08 g5 24000 | 3 | 24/32 -> **56/57**; members stuck in 470: 6 -> **0** | failed 995.58 -> 997.48 s |
+| LOMP10 30000 (`g30_ord_l10_p2.txt`) | 3 | 13/15 -> **30/30** | **completed 1452.89 -> 1013.58 s**; both runs log the exec guard's `sus_prog.exe` refusal |
+| USN04 9000 | **0** (identical) | 12/12 both | none |
+
+- **JM08.** Every airfield member now takes off, so the squadrons fly complete and their slots return. Airfield launches
+  go from 4 to 13.
+  - The level-bomber wingmen release too: USTroopTransport 03 dies at 253.26 s to `MainAirFieldEntity 01_sqn03|.-3`, and
+    USTroopTransport 04 at 305.85 s to `sqn04|.-3`. In OFF those were Hosho's 469 s Kate kill and Fubuki at 795 s.
+  - T05 dies at 442.42 s. Its killer is logged as `Gleaves`, a US destroyer; that attribution is unexplained.
+  - Deaths 153 -> 182, shots 28849 -> 50592.
+  - The mission still fails at 997.48 s: T01 lands its craft at 774.65 s and Isokaze sinks it only at 869 s. The JM08 plan
+    must now get T01 before then, and with 13 airfield sorties it has the tools.
+- **LOMP10.** The `CB4_AF` airfield's squadrons all take off (30/30 against 13/15), dive-bomb releases rise from 28 to 48,
+  and the scripted win comes 439 s earlier, at 1013.58 s (the completion's entity is `Kiyoshimo`, against `Ashigara` in OFF). Deaths 42 -> 55.
+- **USN04** (carrier launches, which leave state 5 through the lift) is identical, as predicted.
+
+**Verdict: ON** (reference AG). The mechanism matches: no taxiing plane runs the demand arm, no member is stuck, and the
+carrier row is unmoved.
