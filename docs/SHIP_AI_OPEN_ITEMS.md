@@ -13893,3 +13893,94 @@ would make it observable (routed to the lead, tooling).
    the end of p6; Exeter `state=cruise` to step 14100). The host matches the image at both sites
    (disasm-raw read). How a real player returns a helmed ship to its AI is **unread**; do not
    combine `takehelm` with a later AI order on the same ship.
+
+## 175. The 169 recorded pieces by reach: the garrison respawn has row reach (lead item 3, packet `cc9_command_building_garrison`, cc9-ships36, 2026-10-06, a read)
+
+### 175.1 The two pieces without reach
+
+- **The master `+738h` forward (`007470B0` -> `006F57F0`).** `00744A20` gives a LandFort its master
+  only from an airfield's `hangars` list (`006D5220`). Every `air ops hangar:` object in about 200
+  row logs (the cc9-ships30..35 trees) has hull kind 27 (LandFort; types 534, 539, 550, 587, 588,
+  593, 594: `local\s36_hangarcls.py`). A CommandBuilding is kind 28 (`CB2 type_id=6 kind=28` on
+  USN01). So no CommandBuilding has a master on the rows. Stays recorded.
+- **`class+2Ch`:** unchanged from 169.1 (no bled building with `class+170h > 0`). Stays LABELLED.
+
+### 175.2 The read: `006F5CC0` pass 1 and `006F3660` whole
+
+**Adoption** (`006F5CC0`, CommandBuilding vtable slot A4h via `006F6740`, at InitAll). Every
+entity of kind `1Bh`, `45h` or `46h` (LandFort, AirField, Shipyard) within `InferiorRange`
+(`+7C8h`, 200 when unauthored; squared 3-D distance against `FILD R*R`) whose `+724h` bag is set
+(any `CommandBuildingInferior` entity, GUNNERY_OPEN_ITEMS 121.1) gets a 64h-byte record at
+`+778h`/`+77Ch`. The record holds the entity (`+14h`, observer-registered), its world matrix
+(`+18h`), a bag clone (`+58h`), `MinLevel` (`+5Ch`) and `LevelX` (`+60h`). The entity's
+`+71Ch` is set to the building. When the count is non-zero, `006F3660` runs once at the end.
+
+**The respawn pass** (`006F3660`, `void __thiscall(building)`, body `006F3660..006F38DE`;
+callers `006F5CC0` and `006F38E0` after every level change). Coverage: complete. For each record:
+
+| condition | action | sites |
+| --- | --- | --- |
+| `MinLevel > +770h`, entity set | `00926D90(entity, 2)` (kill) unless `[00E188A8]+1FE4h == 2` (multiplayer client); unregister; `+14h = 0`; HUD refresh flag | `006F36AE..006F36F0` |
+| `MinLevel > +770h`, entity null | nothing | `006F36FA..006F3851` |
+| `MinLevel <= +770h`, entity null | unless MP client: re-create from the bag's `Type` (`00964790`, class `vtable[28h](0)`), observer-register, `vtable[98h](0, world root, record+18h)` (placed at the stored world matrix); bag `Party` = building `+54h`; bag `Skill` = building `vtable[12Ch]()`; scene bag clone at `+0C0h`; `+71Ch` = building; building `+7D4h = 1` | `006F3703..006F3844` |
+| `MinLevel <= +770h`, entity set | `entity->vtable[128h](building->vtable[12Ch]())`: the member takes the building's skill | `006F3853..006F3870` |
+
+Then `building->vtable[128h](building->vtable[12Ch]())` (its own skill) and, when a member was
+killed and the building is the HUD's selected unit, `00549430`.
+
+**A dead member's record is null.** The record's vtable is `00CEDDA0`. Its slot 1, `00546200`, is
+the observer notice: if the notifying entity is `+14h`, it clears `+14h` and unregisters
+(`0054620E..0054621E`). The image sends that notice from the on-killed dispatch
+(`009274DE..00927510` -> `00696330` -> `00693550` -> `observer->vtable[4h]`, CONTROLLED_UNIT.md).
+So a member that died before a level change is **re-created** at that change.
+
+`vtable[12Ch]` / `vtable[128h]` are the skill getter and `SetSkillLevel`'s store (unit `+390h`;
+AIR_OPERATIONS.md, GAME_EXECUTABLE.md; the host's `GameUnitsHost::skill_level` /
+`set_skill_level_007b8ae0`). `MinLevel` uses `CommandBuildingLevels` (this installation's
+`universe/library/global.enums`): Basic 0, Medium 1, Advanced 2, Expert 3, XLevel 4.
+
+### 175.3 Census and reach (`local\s36_garrison.py` over this installation's `.scn`, positions composed through the entity nesting)
+
+| row | scene | buildings | garrison | what the pass does on the row |
+| --- | --- | --- | --- | --- |
+| JM08 | `prcpijn_08_defend_guadalcanal.scn` (mtime 2024-08-09) | Headquarter 01, `InferiorRange = I 100000` | 17, all MinLevel 0: Medium Bunker 01-06/08, Japanese AA truck 01/03-07, MainAirFieldEntity 01, MainHangar, PTHangar 01, Shipyard 01 | level changes at 10/20/30 s and the 3 -> 0 neutralize (JM08 long, 1041.50 s) |
+| USN01 | `usn_1_marshall.scn` | CB2, 1560 | 9 (Airfield2, Coastal Gun 01-03, Heavy AA 01-03, two Multi Hangars) | init pass only. CB2 never changes level (neutralized at 32.90 s at level 0: `unchanged`) |
+| USNOS | `us_osumi.scn` (2024-10-29) | HQ1, HQ2, CB2, `InferiorRange = I 10` | 0 | none (its four MinLevel 1/2 forts have no building in range) |
+| USN13 | `usn_13_truk.scn` | CB2, CB4, CBT, `InferiorRange = I 1` | 0 | none |
+
+**Skill pushes.** Every building and member on these rows has the default `Skill` SPNormal (1)
+(`landfort.props`). The one scripted difference is JM08's `SetSkillLevel(Mission.Airfield,
+SKILL_SPVETERAN)` (`prcpjm08.lua`, 2024-08-26), which the 10 s level-up returns to 1. The
+airfield launches no squadron on the host's JM08 long (no `air ops launch skill` line), so the
+pushes have no gameplay reach on the rows.
+
+**Respawns: JM08 long has reach** (deaths from `s35_on8_jm08l.log`, reference AC):
+- Medium Bunker 03 dies at 29.50 s, before the 30.00 s level-up. The image re-creates it at
+  30.00 s with **Party Japanese** (the HQ's), whatever its authored party (the Japanese patrol
+  boat killed it, so it was not Japanese).
+- At the neutralize (1041.50 s) the HQ's party is already 2 (`006F50CA` precedes `006F5362`), and 11
+  dead members are re-created **Neutral** at full health: Medium Bunker 01, 02, 04, 05, 06 and
+  08, Japanese AA truck 05, 06 and 07, Shipyard 01 and PTHangar 01.
+- The other members alive at 1041.50 s (AA truck 01, 03 and 04, the airfield, MainHangar) take the
+  HQ's skill (1, unchanged).
+
+### 175.4 What binding it needs (not committed)
+
+The host has no way to bring a destroyed unit back. The image re-creates the entity, which the
+host can only model by reviving the dead slot in place. That needs:
+- the units host: alive/visible flags, party, health to the class maximum and the scene-bag
+  substitution (shared file);
+- the gunnery host: its death row and damage-control state for the revived unit (cc9-gunnery's
+  lane).
+
+Without the revive, a binding would do only the skill pushes, which have no reach. **Routed** (to
+the lead): a revive API in the units and gunnery hosts. The garrison records, the adoption and
+the `006F3660` rule then belong in `game_hosts_ship_ai.cpp` next to `command_building_level_006f38e0`.
+
+**Predictions for that binding** (JM08 long, written now):
+- one revive at 30.00 s (Bunker 03, party 1) and eleven at 1041.50 s (party 2);
+- `pair_diff` 3. Deaths rise if the revived units are fired on again. How either side treats a
+  party-2 LandFort was not read;
+- JM08 3000: `pair_diff` 3 (Bunker 03 dies at 29.50 s there too, so the 30.00 s revival is in
+  its window);
+- USN01, USNOS and USN13: `pair_diff` 1.
