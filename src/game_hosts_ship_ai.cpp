@@ -683,6 +683,30 @@ inline constexpr bool kCommandBuildingPartyLuaMirrorBound = true;
 // ON by section 161.4: four controls gameplay identical; JM08 long's crafts bleed
 // the HQ (40 - 30 per craft-second) and it is neutralized at 1034.10, not 1039.35.
 inline constexpr bool kLandingShipLandedRemainderBound = true;
+// Packet cc9_landfort_fire_roll (section 162). 007470B0's SmokeFireChanceMul roll
+// and the LandFort fire it starts, for the capture buildings the remainder bleeds:
+//   - 007470B0: when class+164h > 0, chance = (max - hp) / max * (amount / max) *
+//     class+164h * 10.0 ([00CE3DC0]) against 00BD2F10(stream 1, 0, 1.0) (007470E0
+//     MOV ECX,1); chance > draw calls 00746320;
+//   - 00746320: a burning building (+740h) draws 00BD2F10(0, class+168h, +16Ch)
+//     and keeps the larger +748h; otherwise one 00BD2FC0(0) picks the fire effect
+//     (class+144h list), the effect is created into +740h, and the same duration
+//     draw sets +748h; the D1h sync message (00744870 shape) is a record;
+//   - 00745BE0 (LandFort frame update) while +740h: +748h -= dt, +750h += dt, the
+//     effect stops at +748h <= 0; then, alive with class+170h
+//     (SecondaryExplosionChanceMul) > 0 and +750h > 0: chance = min(1, (max - hp)
+//     / max) * class+170h * 0.01 ([00D7A358]) against 00BD2F10(0, 0, 1.0); a hit
+//     draws 00BD2FC0(0) (class+150h list), 00BD2F10(0, 0, class+2Ch) when the
+//     int class+2Ch > 0, and +750h = min(-1.0, +750h - 00BD2F10(0, 5.0, 15.0)).
+// The effects and the D1h messages are presentation and are recorded. LABELLED:
+// the effect creation is taken to succeed; class+2Ch (an effect-point count read
+// from the model) is not known here and taken as 0, so that draw is not taken;
+// 00BD2FC0 is consumed as one 00BD2F10(0) draw (one generator step either way,
+// 00BD2F22 / 00BD2F29). True: those draws and the +740h / +748h / +750h state.
+// False: the roll is a record and no draw is taken.
+// ON by section 162.4: all five rows gameplay identical under the measurement
+// streams; JM08 long rolls 3003 times, 2 fires start, no secondary roll.
+inline constexpr bool kLandFortFireRollBound = true;
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
@@ -939,7 +963,25 @@ struct GameShipAiHost::Impl {
         float invincible_7d8{0.0f};   // packet cc9_landed_ship_remainder
         float armour_368{0.0f};       // class Armour, read at build (LABELLED level 0)
         float smoke_fire_mul_164{0.0f};   // class+164h SmokeFireChanceMul (00749210)
+        float fire_duration_min_168{0.0f};    // class+168h SmokeFireDurationMin
+        float fire_duration_max_16c{0.0f};    // class+16Ch SmokeFireDurationMax
+        float secondary_mul_170{0.0f};        // class+170h SecondaryExplosionChanceMul
+        bool fire_740{false};          // the fire effect pointer is set
+        float fire_time_748{0.0f};
+        float secondary_clock_750{0.0f};   // 00745A1A: 0 at construct
     };
+    // Packet cc9_landfort_fire_roll: the census.
+    unsigned long long fire_rolls{0};
+    unsigned long long fire_roll_hits{0};
+    unsigned long long fire_starts{0};
+    unsigned long long fire_extends{0};
+    unsigned long long fire_stops{0};
+    unsigned long long fire_secondary_rolls{0};
+    unsigned long long fire_secondary_hits{0};
+    unsigned long long fire_draws{0};
+    bool building_health_of(std::size_t unit, float& health, float& max_health) const;
+    void landfort_fire_roll_007470b0(CaptureBuilding& b, float amount);
+    void landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds);
     // Packet cc9_landed_ship_remainder: class+80Ch LandedDamage per unit, and the
     // remainder's census.
     std::vector<std::int32_t> landed_damage_080c;
@@ -11995,6 +12037,12 @@ void GameShipAiHost::Impl::build_capture_buildings() {
                 "Armour", 0.0f);
             b.smoke_fire_mul_164 = settings_owner->read_vehicle_class_number(
                 building_row->type_id, "SmokeFireChanceMul", 0.0f);
+            b.fire_duration_min_168 = settings_owner->read_vehicle_class_number(
+                building_row->type_id, "SmokeFireDurationMin", 0.0f);
+            b.fire_duration_max_16c = settings_owner->read_vehicle_class_number(
+                building_row->type_id, "SmokeFireDurationMax", 0.0f);
+            b.secondary_mul_170 = settings_owner->read_vehicle_class_number(
+                building_row->type_id, "SecondaryExplosionChanceMul", 0.0f);
         }
         // LABELLED: the constructor seeds +7C0h = -uniform(0, 1), a phase stagger;
         // the draw is not taken here so the shared stream stays as it was. Only
@@ -12074,6 +12122,13 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         for (CaptureBuilding& b : capture_buildings) {
             const float left = b.invincible_7d8 - seconds;
             b.invincible_7d8 = 0.0f > left ? 0.0f : left;
+        }
+    }
+    if (kLandFortFireRollBound) {
+        // 00745BE0, the LandFort frame update's fire arm (LABELLED order: here, at
+        // the head of the capture step).
+        for (CaptureBuilding& b : capture_buildings) {
+            if (b.fire_740) landfort_fire_frame_00745be0(b, seconds);
         }
     }
     for (CaptureBuilding& b : capture_buildings) {
@@ -12186,6 +12241,108 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
     }
 }
 
+bool GameShipAiHost::Impl::building_health_of(std::size_t unit, float& health,
+                                              float& max_health) const {
+    if (gunnery_draws == nullptr) return false;
+    const std::vector<GameGunneryUnitRow>& gunnery_rows = gunnery_draws->unit_rows();
+    if (unit >= gunnery_rows.size()) return false;
+    health = gunnery_rows[unit].health;           // unit+370h
+    max_health = gunnery_rows[unit].max_health;   // unit+36Ch
+    return max_health > 0.0f;
+}
+
+// 007470B0 (body 007470B0-00747163), the roll before AddDamage; packet
+// cc9_landfort_fire_roll.
+void GameShipAiHost::Impl::landfort_fire_roll_007470b0(CaptureBuilding& b, float amount) {
+    if (gunnery_draws == nullptr) return;
+    float health = 0.0f, max_health = 0.0f;
+    if (!building_health_of(b.unit, health, max_health)) return;
+    // 007470D3..00747107: ((max - hp) / max) * ((amount / max) * (mul * 10.0)),
+    // x87 extended, stored as a float at 00747107.
+    const double m = static_cast<double>(max_health);
+    const float chance = static_cast<float>(((m - static_cast<double>(health)) / m)
+        * ((static_cast<double>(amount) / m)
+           * (static_cast<double>(b.smoke_fire_mul_164) * 10.0)));
+    ++fire_rolls;
+    ++fire_draws;
+    const float draw = gunnery_draws->death_mode_draw_00bd2f10(1, b.unit, 0.0f, 1.0f);
+    done("LandFort::smoke_fire_roll_007470e0", 0x00747116u);
+    if (!(chance > draw)) return;                                       // 00747123
+    ++fire_roll_hits;
+    // 00746320. +744h (the smoke effect) is set only by 007465E0 (the death arm,
+    // 00747351) and the D1h handler; neither runs for a capture building here.
+    if (b.fire_740) {
+        // 0074657E..007465C5: keep the larger duration.
+        ++fire_draws;
+        const float d = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit,
+            b.fire_duration_min_168, b.fire_duration_max_16c);
+        if (b.fire_time_748 <= d) b.fire_time_748 = d;
+        ++fire_extends;
+        return;
+    }
+    // 007463C1: 00BD2FC0(0) % count of class+144h, the effect choice.
+    ++fire_draws;
+    gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 0.0f, 1.0f);
+    record("LandFort::fire_effect_create_008689c0", 0x0074645bu);
+    b.fire_740 = true;                                                  // 00746474
+    ++fire_draws;
+    b.fire_time_748 = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit,
+        b.fire_duration_min_168, b.fire_duration_max_16c);              // 007464FD
+    record("LandFort::fire_sync_message_d1", 0x00746566u);
+    ++fire_starts;
+    if (fire_starts <= 4) {
+        const GameUnitRow* row = units.unit_row(b.unit);
+        log.notef("landfort fire: unit=%s starts at t=%.2f duration=%.2f chance=%.5f "
+            "draw=%.5f hp=%.1f/%.1f secondary_mul=%.2f (007470B0 -> 00746320)",
+            row != nullptr ? row->name.c_str() : "?", capture_clock,
+            static_cast<double>(b.fire_time_748), static_cast<double>(chance),
+            static_cast<double>(draw), static_cast<double>(health),
+            static_cast<double>(max_health), static_cast<double>(b.secondary_mul_170));
+    }
+}
+
+// 00745BE0 (body 00745BE0-00745F9F), the +740h arm only; packet
+// cc9_landfort_fire_roll. The +744h arm (00745F1E..) has no producer here.
+void GameShipAiHost::Impl::landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds) {
+    // 00745C41..00745C6C: +748h -= dt (stored as a float), +750h += dt.
+    b.fire_time_748 = static_cast<float>(static_cast<double>(b.fire_time_748)
+                                         - static_cast<double>(seconds));
+    b.secondary_clock_750 = static_cast<float>(static_cast<double>(b.secondary_clock_750)
+                                               + static_cast<double>(seconds));
+    if (!(0.0f < b.fire_time_748)) {                                    // 00745C78 JB
+        b.fire_740 = false;                                             // 00745C89
+        ++fire_stops;
+        record("LandFort::fire_effect_stop_00867b10", 0x00745c7cu);
+    }
+    if (unit_dead(b.unit)) return;                                      // 00745C8E
+    if (!(b.secondary_mul_170 > 0.0f)) return;                          // 00745CAC
+    if (!(b.secondary_clock_750 > 0.0f)) return;                        // 00745CBD
+    if (gunnery_draws == nullptr) return;
+    float health = 0.0f, max_health = 0.0f;
+    if (!building_health_of(b.unit, health, max_health)) return;
+    // 00745CDC..00745D38: min(1.0, (max - hp) / max) * class+170h * 0.01.
+    const float ratio = static_cast<float>((static_cast<double>(max_health)
+        - static_cast<double>(health)) / static_cast<double>(max_health));
+    const float capped = 1.0f < ratio ? 1.0f : ratio;                   // 00415510
+    const float chance = static_cast<float>(static_cast<double>(capped)
+        * (static_cast<double>(b.secondary_mul_170) * 0.0099999997764825821));
+    ++fire_secondary_rolls;
+    ++fire_draws;
+    const float draw = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 0.0f, 1.0f);
+    if (!(chance > draw)) return;                                       // 00745D5C
+    ++fire_secondary_hits;
+    ++fire_draws;
+    gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 0.0f, 1.0f);     // 00745D79
+    record("LandFort::secondary_explosion_effect", 0x00745e23u);
+    // 00745E41: the class+2Ch point draw; LABELLED count 0, not taken.
+    ++fire_draws;
+    const float back = gunnery_draws->death_mode_draw_00bd2f10(0, b.unit, 5.0f, 15.0f);
+    const float next = static_cast<float>(static_cast<double>(b.secondary_clock_750)
+                                          - static_cast<double>(back));
+    b.secondary_clock_750 = -1.0f < next ? -1.0f : next;                // 00745EDE
+    record("LandFort::secondary_sync_message_d1", 0x00745f06u);
+}
+
 // 00803CE0, fastcall (ECX = side, EDX = target), complete: 3 when the target's
 // record for that side (target+1E8h+side*34h: +8h when +10h is set, else +4h) is
 // below 2; otherwise 0 same party, 1 hostile, 2 neutral. The record level is the
@@ -12267,7 +12424,11 @@ void GameShipAiHost::Impl::landed_ship_remainder_00749b20(float seconds) {
         // 007470B0: class+164h > 0 rolls 00BD2F10(0, 1.0) for 00746320; LABELLED:
         // not drawn here (the shared stream stays as it was), recorded.
         if (b->smoke_fire_mul_164 > 0.0f) {
-            record("LandFort::smoke_fire_roll_00746320", 0x00747116u);
+            if (kLandFortFireRollBound) {
+                landfort_fire_roll_007470b0(*b, amount);
+            } else {
+                record("LandFort::smoke_fire_roll_00746320", 0x00747116u);
+            }
         }
         if (gunnery_draws != nullptr) {
             gunnery_draws->apply_script_damage_0095da00(building, amount);   // 00747136
@@ -13503,6 +13664,12 @@ void GameShipAiHost::report() {
             host.lander_hold_positive, held_transports, host.lander_range_reads,
             host.lander_accept_asks, host.lander_accept_true,
             kShipAiApproachLanderTermsBound ? 1 : 0);
+        host.log.notef("summary mission landfort fire rolls=%llu roll_hits=%llu starts=%llu "
+            "extends=%llu stops=%llu secondary_rolls=%llu secondary_hits=%llu draws=%llu "
+            "bound=%d (007470B0 / 00746320 / 00745BE0, packet cc9_landfort_fire_roll)",
+            host.fire_rolls, host.fire_roll_hits, host.fire_starts, host.fire_extends,
+            host.fire_stops, host.fire_secondary_rolls, host.fire_secondary_hits,
+            host.fire_draws, kLandFortFireRollBound ? 1 : 0);
         host.log.notef("summary mission landing ship landed remainder own_party_kills=%llu "
             "dead_landed=%llu hostile_frames=%llu not_seen=%llu bleed_calls=%llu "
             "bleed_applied=%llu bleed_invincible=%llu bleed_total=%.2f first_bleed=%.2f "

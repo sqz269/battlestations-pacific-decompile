@@ -13117,3 +13117,106 @@ own-party kill, a dead-landed record, and the controls identical. Not game-valid
   `vtable[1ACh]` (`006F1F20` -> `007470B0`), it also has the 20 s `+7D8h` gate and the roll. That
   is for cc9-gunnery27 to check.
 - **Not modelled:** the master `+738h` forward and `006F38E0`'s armour level rescale.
+
+## 162. The LandFort fire roll behind the landed bleed (161.4(a), packet `cc9_landfort_fire_roll`, `kLandFortFireRollBound`, cc9-ships34, 2026-10-05)
+
+### 162.1 The read
+
+**`007470B0`** (`BSP_UnitInstance_AddDamageWithCriticalRoll`, `007470B0-00747163`). When
+`class+164h` (`SmokeFireChanceMul`) is above 0:
+- `chance = (max - hp) / max * (amount / max) * mul * 10.0`, with the 10.0 the double at
+  `[00CE3DC0]`, computed `007470D3..00747107`;
+- the draw is `00BD2F10(stream 1, 0, 1.0)` (`007470E0 MOV ECX,1`), the shared generator;
+- `chance > draw` calls `00746320`; then AddDamage runs either way.
+
+**`00746320`** (`00746320-0074657E` plus the tail to `007465DD`):
+1. A smoke effect at `+744h` is stopped and released.
+2. **Already burning** (`+740h` set): one `00BD2F10(0, class+168h, class+16Ch)`
+   (`SmokeFireDurationMin` / `Max`). `+748h` keeps the larger of the two (`0074657E..007465C5`).
+3. **Otherwise:**
+   - one `00BD2FC0(0)` picks the fire effect: modulo the `class+144h` list length, `007463C1`;
+   - `008689C0` creates it at the node `+4A4h`, into `+740h`;
+   - the same duration draw sets `+748h` (`007464FD`);
+   - with an effect, the `D1h` sync message is built and routed (`00746515..00746566`).
+
+**`00745BE0`** (`BSP_LandFort_FrameUpdate`, `00745BE0-00745F9F`). While `+740h` is set:
+1. `+748h -= dt` and `+750h += dt`. At `+748h <= 0` the effect stops (`00867B10`, `00484620`).
+2. Alive, with `class+170h` (`SecondaryExplosionChanceMul`) > 0, `+750h > 0`, and a single-player
+   or host session:
+   - `chance = min(1, (max - hp) / max) * class+170h * 0.01` (`[00D7A358]`);
+   - the draw is `00BD2F10(0, 0, 1.0)`.
+3. A hit takes:
+   - `00BD2FC0(0)` over the `class+150h` list (`00745D79`);
+   - `00BD2F10(0, 0, (float)class+2Ch)` when the int `class+2Ch` > 0 (a point index into
+     `class+28h`, 12-byte records);
+   - `+750h = min(-1.0, +750h - 00BD2F10(0, 5.0, 15.0))` (`00745EBB..00745EE3`);
+   - a `D1h` message.
+4. The `+744h` arm (`00745F1E..`) is the same countdown without draws.
+
+**Other writers:**
+- `+750h` is 0 at construct (`00745A1A`).
+- `007465E0`, the other fire start, is called only from `00747351` (the LandFort destroyed
+  handler `00747170`, gated on `class+164h > 0`). A neutralized CommandBuilding never takes it.
+
+**Gameplay reach.** Nothing outside `00745xxx..007467xx` reads `+740h`, `+744h`, `+748h` or
+`+750h` (displacement census of `00740000-00750000`). What the fire touches is effects, `D1h`
+sync messages and random draws. **So it is presentation plus draws.**
+
+### 162.2 The binding (committed OFF)
+
+`kLandFortFireRollBound` in `src/game_hosts_ship_ai.cpp`:
+- takes the roll for every bleed call on a building with `SmokeFireChanceMul > 0`;
+- models `00746320`'s duration and start arms, and the `+740h` frame arm of `00745BE0`, through
+  `GameGunneryHost::death_mode_draw_00bd2f10` (stream 1 for the roll, stream 0 for the rest);
+- keeps the `+740h`, `+748h` and `+750h` state per capture building;
+- records the effects and messages.
+
+LABELLED:
+- the effect creation is taken to succeed;
+- `class+2Ch` is unknown here and taken as 0, so that draw is skipped;
+- `00BD2FC0` is consumed as one `00BD2F10` draw (one generator step, `00BD2F22` / `00BD2F29`);
+- the frame arm runs at the head of the capture step.
+
+The class values are read through `read_vehicle_class_number`: `SmokeFireDurationMin`, `Max` and
+`SecondaryExplosionChanceMul`. Census: `summary mission landfort fire ...`.
+
+### 162.3 Predictions (written before any ON run)
+
+- **The reference launch form sets `BSP_GUNNERY_RNG_STREAMS=1`.** Under it each (stream, unit) has
+  its own generator, and these draws use the HQ's own keys, which nothing else draws from (the HQ
+  never dies). So **every row is gameplay identical, `pair_diff` 1**, JM08 long included.
+- **JM08 long's census:**
+  - `rolls` equals section 161's 3003 bleed calls;
+  - `roll_hits` is small: chance is `(max-hp)/max * 0.5/max * 10` per 0.05 s call;
+  - the first start, if any, logs its duration and the class's `SecondaryExplosionChanceMul`.
+- **Without the option**, stream 1 is the shared generator, so each roll moves every later shared
+  draw. That is the point of the binding, and the pairs cannot show it.
+- **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no bleed, so 0 rolls.
+
+### 162.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `f0c97da4a`.
+- ON is `pair_export.py --commit f0c97da4a --flip kLandFortFireRollBound=true --out local\s34_fr_on`.
+- Prefixes `off4` / `on4`.
+- Smoke: `local\s34_smoke4.log`. Clean.
+
+**Pairs:** BSM01, USN13, USNOS, USN01 3000 and JM08 long 36000 are all `pair_diff` 1. As predicted,
+no row's gameplay moves under the measurement streams.
+
+**JM08 long census:** `rolls=3003` (one per bleed call) `roll_hits=2 starts=2 extends=0 stops=2
+secondary_rolls=0 draws=3007`.
+
+| | first start | second start |
+| --- | --- | --- |
+| t | 1012.05 s | 1023.15 s |
+| duration | 0.91 s | 19.81 s |
+| chance | 0.00032 | 0.00037 |
+| HQ health | 2807.6 / 12000 | 1457.6 / 12000 |
+
+- The HQ class's `SecondaryExplosionChanceMul` is 0, so the frame arm only counts down.
+
+**Verdict: ON.** The mechanism matches: one shared-stream roll per bleed call, as the image takes
+it. It only matters without the measurement option. Not game-validated.
+
+**Uncertainty:** the effect creation is assumed to succeed, and `class+2Ch` is assumed 0 (162.2).
