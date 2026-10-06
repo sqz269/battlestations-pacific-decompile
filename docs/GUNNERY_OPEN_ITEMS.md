@@ -9179,3 +9179,32 @@ a `Multi Hangar 1`); the `7Dh` message's other effects (gun stop, warning manage
     and any later Airfield2 launch is gone: `pair_diff` 3. If Airfield2 never launches after 134 s
     in the OFF run, `pair_diff` 1 (the rule's lines only).
 - **Controls (USN13 3000, USNOS 3000):** no hangar dies; gameplay-identical (`pair_diff` 0 or 1).
+
+### 121.5 Smoke and pairs; verdict ON
+
+- **Runs:** OFF is `pair_export --commit c2cbe41ac` (`local\g27_lane_h`, SHA-256 prefix `01DEA8E5E1C5`);
+  ON adds `--flip kAirfieldDestructionRuleBound=true` (`local\g27_lane_i`, `DC28EB68290E`). Logs
+  `local\g27_af_{off,on}_<row>.log`, reference z's launch form, the tree merged with main `df31f2e3b`
+  (the `os.execute` guard).
+- **Smoke:** `local\g27_smoke.log`, USN01 300 frames, OFF. Clean.
+
+| row | `pair_diff` | notes |
+| --- | --- | --- |
+| USN01 36000 | 1 | the rule's two lines and the native row only |
+| USN13 3000 | 1 | no hangar dies |
+| USNOS 3000 | 1 | no hangar dies |
+
+**USN01, the mechanism (ON):**
+- `airfield destruction rule: unit=Airfield2 parent=CB2 min_level=1 t=133.95`: the parent link is
+  resolved on the step `Multi Hangar 1` dies, and it is CB2;
+- `arm=inferior_failure t=133.95`, then `Airfield::destruction_rule_inferior_failure_006d40f0`
+  33322 calls (every step to 1800 s); the destroy counter stays 0 and `Airfield2` survives.
+- Death rows (49), unit table (90 rows) and every combat headline are identical.
+
+**Why no gameplay moves.** `IsReadyToSendPlanes` is never called on this row, OFF or ON (no
+`MissionLuaNative::IsReadyToSendPlanes` line in either log): USN01's script never runs the airbase AI
+for `Airfield2`, whose plane stocks are all authored `" 0"`. So `airfield_blocked` has no reader here.
+This is the prediction's second branch.
+
+**Verdict: ON** (mechanism matching, gameplay identical as predicted). The flip belongs to reference AB
+(AA's base is `13fd2978e`). `+720h`'s other readers (guns, warning manager, HUD) stay unmodelled.
