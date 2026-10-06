@@ -134,6 +134,19 @@ constexpr bool kDamageSmokeDrawsBound = true;
 // ON by GUNNERY 125.5: JM08 long refuses 39 hits after the neutralize, USN01 19;
 // all five rows gameplay identical.
 constexpr bool kCommandBuildingGunfireGateBound = true;
+// Packet cc9_cb_level_gunnery (docs/GUNNERY_OPEN_ITEMS.md 129): both hit-record
+// passes take their armour from the instance cell unit+368h or from the class
+// vtable[24h] (004407A0, FLD [ECX+4Ch], the class Armour). 00826F10 (ships) picks
+// the class arm when the record's selector +0Ch is below 0.0 (00826F6B); the base
+// 008777D0 (a CommandBuilding's slot) picks it only when the victim also answers
+// IsKindOf(6) (008777ED..008777FC), so any other victim reads +368h; its part
+// pass (0087790F) takes the class arm for a part of type 4 and +368h otherwise.
+// 006F38E0 rewrites +368h on a CommandBuilding level-up. True: the instance arm
+// reads the stored +368h (set_unit_armour_0368), and a kind-1Ch victim that is
+// not kind 6 takes it on both hull arms. LABELLED: the host runs a CommandBuilding
+// hit through the 00826F10 port, whose part pass reads +368h for every part.
+// False: the class Armour everywhere, as before.
+constexpr bool kCommandBuildingGunfireArmourBound = false;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -1156,6 +1169,7 @@ struct GameGunneryHost::Impl {
         bool dead{false};
         // Packet cc9_damage_smoke_draws: class+660h / the +664h count, and the
         // controller at unit+10A0h (slot timers +0Ch, clock +30h).
+        float armour_368{0.0f};      // unit+368h, seeded from the class Armour (0087BCF4)
         int smoke_max_660{0};
         int smoke_effects_664{0};
         std::vector<float> smoke_timers;
@@ -3772,6 +3786,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         state.health = state.max_health;
         state.max_torpedo_stock = flat(type_id, "torpstock", 0);  // packet cc9_torpedo_stock
         state.armour = flat_scaled(type_id, "armour", kMilliScale, 0.0f);
+        state.armour_368 = state.armour;
         state.kamikaze_bullet_class = flat(type_id, "kbc", -1);
         // Ship class vtable[24h] = 009635D0 (+6B4h UnderwaterArmour); every other
         // family's slot is 004407A0 (Armour). Labelled: an absent key keeps Armour.
@@ -8455,8 +8470,19 @@ public:
     }
 
     bool hull_is_submarine() override { return false; }
-    float hull_armour() override { return owner_.unit_state[victim_].armour; }
-    float class_armour_virtual() override { return owner_.unit_state[victim_].armour; }
+    float hull_armour() override {
+        const auto& us = owner_.unit_state[victim_];
+        return kCommandBuildingGunfireArmourBound ? us.armour_368 : us.armour;
+    }
+    float class_armour_virtual() override {
+        const auto& us = owner_.unit_state[victim_];
+        // 008777ED..008777FC: the base hit record takes the class arm only for IsKindOf(6).
+        if (kCommandBuildingGunfireArmourBound && owner_.units.unit_is_kind_of(victim_, 0x1c)
+            && !owner_.units.unit_is_kind_of(victim_, 6)) {
+            return us.armour_368;
+        }
+        return us.armour;
+    }
     float class_mass() override {
         // [this+538h]+B0h, the `Mass` key. 00826FD0 compares it against 100 and
         // 500 to pick which of the three part-damage arms runs.
@@ -10660,6 +10686,12 @@ void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float frac
     const float healed = fraction * state.max_health + state.health;
     state.health = healed < state.max_health ? healed : state.max_health;
     state.row.health = state.health;
+}
+
+void GameGunneryHost::set_unit_armour_0368(std::size_t unit_index, float value) {
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    host.unit_state[unit_index].armour_368 = value;
 }
 
 void GameGunneryHost::set_unit_max_health_036c(std::size_t unit_index, float value) {

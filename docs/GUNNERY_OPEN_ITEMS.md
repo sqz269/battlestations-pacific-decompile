@@ -9639,3 +9639,51 @@ answer is pushed with the slot index and mode into `004254B0` with the format at
 `"---InternalClearPrimaryCommand: %s (%d), mode:%d, (%s, %d)"`. A trace argument; **no gameplay reader.**
 
 Item 3 (`009D4923`, `007BB110`, `unit+9C0h`: the aircraft device) is the planes lane's.
+
+## 129. A CommandBuilding's gunfire armour follows its level: unit+368h in the hit record (SHIP_AI 169 follow-up; packet `cc9_cb_level_gunnery`, `kCommandBuildingGunfireArmourBound`, cc9-gunnery28, 2026-10-06)
+
+### 129.1 The read
+
+The lead's question (from cc9-ships35): does the direct-hit base `00470510` see `unit+368h`, which
+`006F38E0` rescales on a CommandBuilding level-up (`Armor[level] / 100 * class Armour`, 100/105/110/120
+in this installation)? `00470510` takes the armour as an argument; the hit record picks it.
+
+- **`008777D0`** (a CommandBuilding's hit-record slot, GUNNERY 125.1), `disasm-raw`:
+  - hull pass: `008777ED` `vtable[5Ch](6)`; when true and `0.0 > [record+0Ch]` (`008777F5 XORPS`,
+    `008777F8 COMISS`, `JBE`), the armour is `[+354h]->vtable[24h]()` (the class, `004407A0` `FLD [ECX+4Ch]`);
+    otherwise `00877811 MOVSS xmm0,[ESI+368h]`. It goes to `00470510` at `008778A4`.
+  - part pass: for each part entry (`[EBX+3Ch] + EBP`) a type of 4 (`0087790F CMP [EAX],4`) takes the
+    class arm (`0087791F`), any other `00877927 MOVSS xmm0,[ESI+368h]`; it goes to `004705C0` at `008779D3`.
+- **`00826F10`** (ships; the host's port in `src/ship_hit_record.cpp`) takes the instance armour when the
+  selector is not below 0.0 (`00826F6B`) and in its part pass always (`008275A0`).
+
+**So yes:** unless the victim is kind 6 and the selector negative, a CommandBuilding's direct hits read
+`+368h`, and a level-up raises the armour they meet. The blast pass is the class `Armour` (cc9-ships35's
+note), and so is a type-4 part.
+
+**The host.** `ShipHitBinding::hull_armour()` and `class_armour_virtual()` both return the class
+`Armour` row value; nothing writes an instance armour.
+
+### 129.2 The binding (committed OFF)
+
+- `UnitState::armour_368`, seeded from the class `Armour` at build (`0087BCF4`, per SHIP_AI 169), and
+  `GameGunneryHost::set_unit_armour_0368(unit, value)` for `006F38E0`'s writer in the ship AI host.
+- `kCommandBuildingGunfireArmourBound`, ON: `hull_armour()` returns `armour_368`; `class_armour_virtual()`
+  returns it too for a kind-1Ch victim that is not kind 6 (`008777D0`'s gate).
+- **LABELLED:** the host runs a CommandBuilding's hit through the `00826F10` port, whose part pass reads
+  the instance armour for every part; `008777D0` reads the class armour for a type-4 part.
+- Also committed: `set_unit_max_health_036c` (`9886e40e9`, no caller yet), for `006F38E0`'s `+36Ch`.
+- **Needs a caller:** the ship AI host must call `set_unit_armour_0368(unit, b.armour_368)` where
+  `006F38E0` stores `+368h` (routed to cc9-ships35). Until it does, ON equals OFF.
+
+### 129.3 Predictions (written before any ON run; with the caller in place)
+
+- **JM08 long:** the HQ reaches level 3 at 30 s (SHIP_AI 169.5), so its direct hits meet 1.2 x Armour.
+  `00470510`'s damage falls for each shell (the armour subtraction grows), so the HQ loses health more
+  slowly to gunfire and is neutralized later than 1041.50 s. `pair_diff` 3.
+- **USN01:** `CB2` is neutralized at 32.90 s; if it levelled before that, the neutralize moves later.
+  The neutralize resets the level to 0 (`006F4D10` routes D4h with level 0), so hits after it are
+  unchanged.
+- **USNOS:** 16 hits reach a capture building (125.5); they move only if it has levelled, so `pair_diff` 1
+  is expected but not certain.
+- **USN13, BSM01:** no capture building is hit: `pair_diff` 1.
