@@ -3830,6 +3830,15 @@ struct GameUnitsHost::Impl {
                 return slot.rack_ammo < 0 ? slot.rack_rounds_authored : slot.rack_ammo;
             }
         }
+        if constexpr (kRackPoolRoundsRemainingBound) {
+            // The same 007C1DB0 over the pool's fallback (one round per single
+            // rack, 0x007C0DE3's seed). LABELLED: a MultiBombPlatform keeps the
+            // substitute, its count being unread.
+            if (slot.rack_census_done && slot.rack_single_count > 0 && slot.rack_multi_count == 0) {
+                done("Unit::count_remaining_rounds_007c1db0", 0x007c1db0u);
+                return slot.rack_ammo < 0 ? slot.rack_single_count : slot.rack_ammo;
+            }
+        }
         const int dropped = slot.torpedo_drops_spawned;
         const int carried = slot.dive_bomb_task_installed
             ? slot.dive_bomb_rounds_remaining + dropped
@@ -5705,6 +5714,14 @@ struct GameUnitsHost::Impl {
     // sample OFF on both sides: Mav1 and Mav4 drop once instead of four times,
     // the same two torpedoes spawn, gameplay identical.
     static constexpr bool kRackRoundsPerRackBound = true;
+    // Packet cc9_lua46_rack_pool_rounds (SQUADRON_LAND_TASK 5ex). 007C1DB0 sums
+    // 006E3500 (the loaded round plus ammo +484h) over the single racks. True: an
+    // aircraft whose census found single racks but no authored Ammo (IJN01's A7M,
+    // class 150 DefaultEquipment 0, bag Equipment 0) answers the rack pool the
+    // release spends (one round per rack before the first issue), as an authored
+    // one already does. False: it answers the task's substitute 2, which the
+    // salvo's request spends whole, so one drop zeroes it with a rack still loaded.
+    static constexpr bool kRackPoolRoundsRemainingBound = false;
     // Packet cc9_rack_bullet_kind (SQUADRON_LAND_TASK 5eq, GUNNERY 138). True:
     // 007C0D90 decides per rack from the rack's projectile descriptor (a level
     // bomber 10h fires its plain-bomb racks together; 2Bh/2Ch/33h, or any rack

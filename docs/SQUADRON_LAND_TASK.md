@@ -13879,3 +13879,48 @@ committed. No leases are held.
 - `l45_dwords.py <va> <n>` prints image dwords.
 - `l45_vcall_near.py <slot> <addrs>` finds a vtable call after given loads.
 - `l45_deck_census.py` is the scene deck numbering census.
+
+## 5ex. IJN01's second rack: `kRackPoolRoundsRemainingBound` (packet `cc9_lua46_rack_pool_rounds`, cc9-lua46, 2026-10-06)
+
+GUNNERY 149 refuted 5eu.1: the target is never cleared. Each A7M member breaks off, through `009C8A90`'s range arm,
+in the tick of its single drop, because `approach+D1h` (`009C7AFE`: `HasGeneralBombOrdnance && 007C1DB0 > 0`)
+reads 0 then.
+
+**Why D1h drops with a rack still loaded (read from `g32_tgt_i1p1.log`).**
+- `A7M_2|.-4`'s rack line: `single=2 multi=0 authored=0 deferred=2 drops=1 ammo=1`. The rack pool still holds a
+  round.
+- Its task line: `releases=1 rounds=2 ... rounds_left=0`.
+- `dive_bomb_rounds_remaining` (the host's `007C1DB0`) answers the rack census only when the racks have authored
+  `Ammo` (`kDiveBombCarriedRoundsBound`). Otherwise it answers the task's substitute 2, latched at install, and
+  `spend_round` spends both of those at the two-round request, while `kRackRoundsPerRackBound` drops one rack per
+  issue.
+- **Why no authored Ammo.** This installation's `vehicleclasses.lua` (2026-05-09) gives `VehicleClass[150]` (Zero)
+  `DefaultEquipment = 0` and `Equipments[1] = {[50] = {Ammo 1, Platform 89}, [51] = {Ammo 1, Platform 89}}`.
+  `ijn_1_pearl.scn`'s `A7M_n` rows carry no Equipment, and the log has `plane equipment: ... bag=0 applied=1`.
+  `rack_equipment_ammo` therefore answers -1 for both racks.
+- In the image, `007C1DB0` sums `006E3500` (`vtable[21Ch](2Ah)` + ammo +484h) over the racks. It is the racks'
+  own count, not the task's latched count (RELEASE_ISSUE_STAGE "Carried rounds"). The host's rack pool is that
+  count, and it reads 1.
+
+**The binding**, `kRackPoolRoundsRemainingBound` in `src/game_hosts_units.cpp`, committed **OFF**. When the census
+found single racks (and no MultiBombPlatform) without authored Ammo, `dive_bomb_rounds_remaining` answers the rack
+pool: `rack_single_count` before the first issue, `rack_ammo` after. Labelled: the pool's one-round-per-rack
+fallback, as the issue stage already seeds it.
+
+**Uncertainty, flagged and not changed.** In the image, bag Equipment 0 means `Equipments[0]` is null
+(`007CDFDE..007CDFF8`, packet `cc9_plane_scene_equipment`). Then `0095A880` attaches nothing, and the racks would
+hold no round at all. The host's pool fallback, which lets these A7Ms drop at all, is the older labelled
+substitution. If it is wrong, IJN01's A7Ms should not bomb, and this switch is moot.
+
+**Predictions (IJN01 + `s38_i1_p1.txt`, 24000 frames).**
+- OFF: as now. Each A7M_2 / A7M_4 member drops once, breaks off to done, and never drops again.
+- ON:
+  - After the first drop, D1h stays set (pool 1), so the aimglide exit goes through goaway -> flyabove and a
+    second pass at the same target (DIVE_BOMB_REATTACK 1).
+  - Expect `releases=2` and `rounds_left=0` on the A7M_2 / A7M_4 members, a second drop each, more bomb
+    impacts, and moved deaths around LST2.
+  - The members with both racks empty then lose 2Ah (`kRackLiveOrdnanceMaskBound`) and strafe, as A7M_3 / A7M_5
+    do now.
+- Mechanism failure: any member with `ammo=1` left that still goes to done on the range arm, or a member that
+  drops more rounds than it has racks.
+- USN04 (the Vals carry authored Ammo): identical.
