@@ -335,6 +335,10 @@ the value already scaled by `classDesc[+5Ch]`.
   depth. Neither the create, the constructor nor the water-entry hook writes them, and the record is
   memset to zero, so a path outside this packet must. With both at zero the charge free-falls and
   never detonates, which the game clearly does not do.
+  **Answered** (cc9-gunnery31, docs/GUNNERY_OPEN_ITEMS.md 142): the activate `006FD9B0` (entity slot `+A0h`)
+  writes `+468h = 9.81 / DiveSpeed * U(0.9, 1.1)`, `+46Ch` the same, and `+470h = U(DiveMinDepth, DiveMaxDepth)`;
+  the save table `006FCC50` names them "dragvert", "dragside" and "divedepth". The per-target block is the
+  submarine list, with a contact inside the class box grown by 10 m.
 - Why the rocket adds gravity back over `min(record+490h, post)` after ignition. It reads as a
   cancellation with a credit that drains, but the intent is not recoverable statically.
 - `record+348h..350h`, the acceleration `006E1510` adds inside the gravity branch, has no producer
