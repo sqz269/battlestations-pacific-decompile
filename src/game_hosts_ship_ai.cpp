@@ -806,6 +806,22 @@ bool ship_escape_trace_unit(const std::string& unit) {
     return !wanted.empty() && unit == wanted;
 }
 
+// Diagnostic only: BSP_SHIP_MOVETO_TRACE=<unit name> logs 009E5821's arrival
+// inputs for that unit (cc9-ships38, SHIP_AI 191.1).
+bool ship_moveto_trace_unit(const std::string& unit) {
+    static const std::string wanted = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        std::string value;
+        if (_dupenv_s(&text, &bytes, "BSP_SHIP_MOVETO_TRACE") == 0 && text != nullptr) {
+            value = text;
+        }
+        std::free(text);
+        return value;
+    }();
+    return !wanted.empty() && unit == wanted;
+}
+
 bool has_ship_navigation_class(int kind) noexcept {
     // Actual VehicleClass.Type leaf kinds. The ship-family virtual+210
     // reaches00810DD0/009F3F20; other entity families own different brains.
@@ -3224,6 +3240,25 @@ public:
         const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
             ctl_.goal.flag_2fe, goal_x, goal_z, live.latched_goal_x, live.latched_goal_z);
         owner_.done("ShipAiMoveTo::goal_reached_009da590", 0x009da590u);
+        if (ship_moveto_trace_unit(row_.unit)) {
+            // Diagnostic only (BSP_SHIP_MOVETO_TRACE=<unit name>), cc9-ships38
+            // SHIP_AI 191.1: the inputs of 009E5821's arrival test.
+            float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+            owner_.units.unit_position_00fc(index_, ux, uy, uz);
+            owner_.log.notef("  ship moveto trace %s pos=(%.1f,%.1f) goal=(%.1f,%.1f) "
+                "latch_2fe=%d latched=(%.1f,%.1f) front=%d reached=%d clears=%d cmd=%08x "
+                "330=%.1f 3d8=%.1f steer=%d dir=%d search=%d nodes=%d",
+                row_.unit.c_str(), static_cast<double>(ux), static_cast<double>(uz),
+                static_cast<double>(goal_x), static_cast<double>(goal_z),
+                ctl_.goal.flag_2fe ? 1 : 0, static_cast<double>(live.latched_goal_x),
+                static_cast<double>(live.latched_goal_z), ctl_.plan_front,
+                arrival.reached ? 1 : 0, arrival.clears_latch ? 1 : 0,
+                owner_.units.director_current_command_0071be40(index_),
+                static_cast<double>(ctl_.blk.distance_330),
+                static_cast<double>(ctl_.nav_block.start_radius_3d8),
+                ctl_.path_point.steer_enabled_21 ? 1 : 0, static_cast<int>(ctl_.blk.direction),
+                live.search_state, live.node_count);
+        }
         if (arrival.clears_latch) ctl_.goal.flag_2fe = false;  // 009DA5F6
         // The latch itself is raised only at 009EF034, inside the navigation
         // arm's tail. Milestone 2r fills its input: 009EEF14's release test is

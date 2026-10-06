@@ -14815,3 +14815,49 @@ mini-sub's path goal is refused the same way.
 
 Either keeps phase 3, and so the mission, out of reach. Phase 4 (the `Donald` flight, ten kills or
 17 km from Akagi) has not been reached.
+
+### 191.2 Why Henry stops: the traffic setback; phase 3 then needs the player's depth charges (cc9-ships38, 2026-10-06)
+
+**Diagnostic** (env-gated, no behaviour change): `BSP_SHIP_MOVETO_TRACE=<unit>` logs the inputs of
+009E5821's arrival test from `MoveToPosStepBinding::state_goal_reached_vtable_002c`
+(`src/game_hosts_ship_ai.cpp`):
+- the position, the brain goal, the latch `+2FEh`, the latched plan goal and the plan front;
+- `reached` and `clears`, and the director command;
+- `blk+330h`, the start radius `+3D8h`, the steer flag, `blk.direction`, and the plan's search
+  state and node count.
+
+**The probe** (`s38_b1p5d`, moveto lines at 5500, 5600 and 5700). Each new moveto runs this way:
+1. **Step 1.** The plan is reset (`search=0`), and the trace reads `330=24.0`: the previous
+   step's stop-state look-ahead.
+2. **The controls step.** It computes `330=1835.1`, the straight path, since `nodes=0`. The ship
+   is in `direction` Stopped, and the arm tail's release test (`009EEF14`, start radius 57.9 +
+   setback < 330) does not release it.
+3. **The latch.** `009EF034` latches `+2FEh` against the new goal.
+4. **Step 2.** `reached=1`, and the movetopos finishes into `stop`.
+
+`ship ai traffic setback unit=HenryPT ... max_setback=2055.7`: the traffic walk (`009EEAAB`, the
+walk back from the goal through the ship list 6) ate the whole path.
+
+**Why the walk eats the path** (`local\s38_line.py` over the step-5500 trajectories): the straight
+line from (2525, -1734) to (1150, -2950) runs down Battleship Row.
+- It passes Whitney (perp 8.8 m), LST No. 122 (43 m), Nevada (47 m), West Virginia (23 m),
+  Tennessee (59 m), Oklahoma (25 m) and Maryland (68 m).
+- Each hull's clearance circle (at least 60 m, or half the two hull lengths) chains into the next.
+- **Read as faithful.** The walk and its gate are projected from `009EEAAB`..`009EEEEC`. The path
+  plan has no nodes, so the walk runs on the destination itself.
+- **Not checked:** whether the image's ship list 6 holds the same moored hulls.
+
+**p6** (`local\s38_b1_p6.txt`, 30000 frames, trajectories) drives Henry by hand instead.
+- `select HenryPT` at 5500. Then `takehelm` along phase 1's own channel: (2234, -2203), (1890,
+  -2863), (1915, -3084), and finally the mini-sub at (1072, -3017) with `stop 40`.
+- The route is flown, and the stop applies at frame 9994 with Henry 39.8 m from the sub.
+- **There is still no hit.** Henry's depth-charge row (plat 9, cat 8, range 240) shows `assigns 496
+  ... shots 0 refusals 20324`, and the gun rows cannot reach a boat at -6.96 m.
+
+**What phase 3 needs** is the player's own depth-charge release. SHIP_SCREEN_UPDATE 28's group 5
+(role 7, mask 80h) is selected through `005484B0`; `005484F0` then builds fire message 79h to the
+unit. The host answers `009542B0` "not available", so no group is ever selected.
+- **Routed:** a player weapon-fire line (group select plus message 79h), needing the gunnery lane's
+  role and fire path.
+- **Why the AI row refuses** 20324 times is not read. It is the gunnery lane's (`docs/DEPTHCHARGE_FLAK_ADMISSION.md`
+  covers the category's admission).
