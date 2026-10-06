@@ -12974,3 +12974,146 @@ Census line: `summary mission command building party lua mirror calls last_slots
   - (b) a `MissionStatus` census;
   - (c) reference-row tooling should treat a row as image-faithful only up to about 40 s after a
     scripted mission end.
+
+## 161. The landing ship's motion remainder `00749B20`: bleed a hostile building, leave a friendly one (packet `cc9_landed_ship_remainder`, `kLandingShipLandedRemainderBound`, cc9-ships34, 2026-10-05; GUNNERY_OPEN_ITEMS 120)
+
+### 161.1 The read
+
+GUNNERY 120 read `00749B20` (`00749B20..00749BE3`, `RET 4`, `ECX = ESI = unit+310h`). I re-read it
+from the disk bytes and agree with it. The offsets from `ESI`:
+
+| field | offset from `ESI` | unit offset |
+| --- | --- | --- |
+| dead byte | `-2B3h` | `+5Dh` |
+| landed | `+E7Ch` | `+118Ch` |
+| building | `+EF4h` | `+1204h` |
+| party | `-2BCh` | `+54h` |
+| ramp | `+E78h` | `+1188h` |
+| class | `+228h` | `+538h` |
+
+**What the remainder does:**
+1. A dead ship that has landed is removed: `00926D90(unit, 2)` at `00749B61`.
+2. An alive ship whose building is its own party's is removed the same way (`00749B7B` JE
+   `00749B59`).
+3. Otherwise, with the ramp down and `00803CE0(own party, building) == 1`:
+   - `x = (float)(int)class+80Ch - building+368h`;
+   - if `x > 0`, it calls `building->vtable[1ACh](x * dt)` (`00749BD5`).
+
+**The three questions GUNNERY 120 left open:**
+
+- **The per-party record at `building+1E8h`.**
+  - `00803CE0` (`00803CE0..00803D31`, fastcall, complete) reads the target's detection record for
+    the side: `+8h` when the force byte `+10h` is set, else `+4h`. Below 2 (not identified) it
+    answers 3.
+  - Otherwise: 0 for the same party, 1 hostile, 2 neutral. A neutral side (2) gets 2 against any
+    non-neutral target.
+  - The host has the record as the recon sensor pass (`ReconSensorPassState::level(side,
+    target)`). A side the pass never covered reads `identified` (`kReconDetectionUnknownLevel`).
+- **`+7D8h`.**
+  - The constructor clears it (`006F5759`).
+  - The neutralize arm stores `class+190h` there (`006F509F..006F50B0`). `006F4360` fills
+    `class+190h` from the `004C1D10` globals: `+4Ch` in single player, `+48h` otherwise.
+  - `006F7670` reads those two as `SingleInvincibleTime` and `MultiInvincibleTime`. Both are 20 in
+    this installation's `scripts\datatables\commandbuildingglobals.lua` (mtime 2024-07-13).
+  - The fixed-step callback `006F7360` counts it down every step and clamps it at 0
+    (`006F761D..006F7650`, through `EDI = building+310h`, so the displacement is `+4C8h`). Every
+    path, including the multiplayer client's `006F7387`, reaches that tail.
+  - `006F1F20` (CommandBuilding slot `1ACh`) damages only while `+7D8h == 0.0` (`[00D7A218]`).
+    So a neutralized building is immune to landed bleed for 20 s. It cannot bleed while neutral
+    anyway (relation 2), so this matters only after a retake.
+  - A whole-`.text` displacement census for `7D8h` finds only those three sites plus unrelated
+    classes (`00963xxx`, `009D49C2`).
+- **`007470B0` for a CommandBuilding:**
+  - `class+164h` is `SmokeFireChanceMul` (`00749210`). When it is above 0, it draws
+    `00BD2F10(0, 1.0)` against a damage-scaled chance and calls `00746320`.
+  - It always calls AddDamage `0095DA00(amount)`, then the same `vtable[1ACh]` on the master
+    LandFort `+738h` when it has one (`006F57F0`, `BSP_LandFort_MasterIsKindOf`).
+  - The host's `GameGunneryHost::apply_script_damage_0095da00` is that AddDamage. Its death funnel
+    already asks the capture rule (`006F3270`) first.
+
+**Values in this installation:**
+- `LandedDamage` is authored 40 and 50 on the landing-ship rows (`vehicleclasses.lua`).
+- The HQ's armour is the class `Armour`. LABELLED: `006F38E0`'s level rescale
+  (`Armor[level] / 100`, reached only from the message handler at `006F54BF`) is not modelled.
+
+### 161.2 The binding (committed OFF)
+
+`kLandingShipLandedRemainderBound` in `src/game_hosts_ship_ai.cpp`:
+- `landed_ship_remainder_00749b20` runs after the ramp step for every kind-0Ch unit with a lander
+  record (LABELLED order);
+- the own-party arm calls `GameGunneryHost::kill_unit_00926d90(u, 2)`;
+- the hostile arm applies `x * dt` through `apply_script_damage_0095da00` while the building's
+  `+7D8h` is 0;
+- the dead-landed arm is a record (the host's unit is already dead);
+- the capture step keeps `+7D8h`: 20 at the neutralize, counted down every step;
+- recorded, not modelled: the `SmokeFireChanceMul` roll (no draw, so the shared stream is
+  unchanged), the master `+738h` forward, and a non-CommandBuilding building's slot `1ACh`.
+
+Census line: `summary mission landing ship landed remainder ...`. The first bleed logs its inputs
+(`LandedDamage`, armour, `x`, the amount).
+
+### 161.3 Predictions (written before any ON run)
+
+- **JM08 long 36000:**
+  - The crafts lower their ramps on the HQ's pads from 978.10 s while it is party 1 (hostile to
+    side 0). If the HQ's class armour is below 40, `bleed_applied > 0` from about 978 s, and the HQ
+    is neutralized EARLIER than 1052.00 s.
+  - With section 160's mirror ON, the mission then fails earlier too.
+  - If the armour is 40 or more, `bleed_calls=0` and the row is gameplay identical. The first-bleed
+    line or its absence settles which.
+  - `own_party_kills=0`: the HQ never becomes party 0.
+  - `dead_landed > 0` if any of the dead crafts (395-398, before 1046 s) had landed. That arm is a
+    record.
+  - `pair_diff` 3 if the HQ bleeds, else 1.
+- **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no landing ship on a pad. All `pair_diff` 1.
+
+### 161.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `d1a9bc187` (main merged, sections 159 and 160 ON).
+- ON is `pair_export.py --commit d1a9bc187 --flip kLandingShipLandedRemainderBound=true --out
+  local\s34_lr_on`.
+- Prefixes `off3` / `on3`.
+- Smoke: `local\s34_smoke3.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism (ON census):** `hostile_frames=3003 bleed_applied=3003
+bleed_total=1501.50 first_bleed=991.10 not_seen=0 bleed_invincible=0 own_party_kills=0
+dead_landed=1`.
+- The first bleed logs `LandedDamage=40`, HQ `armour=30.0`, `x=10.00` and `amount=0.5000` (one
+  craft, one 0.05 s step).
+- It is the first ramp of this tree's run (991.10 s).
+- `smoke_fire_mul=1.00`: the HQ class's `SmokeFireChanceMul` is 1.0.
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| HQ neutralize | 1039.35 s, by gunfire | 1034.10 s, 5.25 s earlier |
+| with section 160's mirror | | the mission fails that much earlier too |
+| deaths | 132 | 129 |
+| last death | 1563.35 s | 1033.93 s |
+
+- The three `LandingShip` rows only in OFF are crafts that survive in ON.
+
+**Verdict: ON.** Every prediction held: armour below 40 made the HQ bleed and fall earlier, no
+own-party kill, a dead-landed record, and the controls identical. Not game-validated.
+
+**Open, recorded:**
+- **The `SmokeFireChanceMul` roll.** With the HQ's multiplier at 1.0, the image takes one
+  `00BD2F10(0, 1.0)` draw on the shared stream for each of the 3003 bleed calls. On success it
+  runs `00746320`: point effects, more draws, a session message. The host takes none of them, so
+  the stream-0 draws after 991 s are not the image's (LABELLED). `00BD2F10` is one process-wide
+  generator, so every later consumer of stream 0 is shifted.
+  Binding the roll needs `00746320` read.
+- **The gunnery lane's question.** If the gunfire hit path also reaches a CommandBuilding through
+  `vtable[1ACh]` (`006F1F20` -> `007470B0`), it also has the 20 s `+7D8h` gate and the roll. That
+  is for cc9-gunnery27 to check.
+- **Not modelled:** the master `+738h` forward and `006F38E0`'s armour level rescale.
