@@ -12850,3 +12850,373 @@ The `searches` counter counts search ticks with a non-zero `+2Ch` in either bloc
   escort and transport paths after the approach brings them within range.
 - **Not game-validated:** the penalty's effect on route choice is the image's cost walk as read,
   not an observation of the original game.
+
+## 160. A captured building's Lua `Party` (packet `cc9_capture_party_lua_mirror`, `kCommandBuildingPartyLuaMirrorBound`, cc9-ships34, 2026-10-05)
+
+### 160.1 The read
+
+Section 158.2 has the chain.
+- 006F4D10's neutralize arm calls `vtable[2Ch](2, [this+58h], &tmp)` at `006F50CA` (`CALL EDX`,
+  EDI = 2 from `006F5083`).
+- The flip arms make the same call with the slot's party at `006F4FB8`.
+- CommandBuilding's slot `+2Ch` (`00CFB054`) is `00951F30` = `JMP 00928F50`.
+  `BSP_MissionEntity_SetPartyRaceLuaMirror` calls `00923B80`, then writes `Race` and `Party` into
+  the entity's Lua table.
+
+**What the image does after `luaMissionFailedNew`** (this installation's
+`scripts\global\commandhelpers.lua`, mtime 2024-10-29). The second definition at 10360 is the live
+one.
+- `luaInitMissionEnd` (13643):
+  - stops the scoring clock and disables messages and input;
+  - cancels the countdown;
+  - calls `SetInvincible(unit, 0.1)` on every live Allied, Japanese and neutral unit;
+  - clears the dialogs;
+  - hands `endEnt` to the AI.
+- Then `luaObj_FailedAll(true)`, `Mission.MissionStatus = false`, and `Mission.MusicEndTime =
+  GameTime()+40`. It calls `Blackout(true, "", false, 0.25)` and
+  `MissionNarrative("missionglobals.obj_fail", "luaMissionEnd_CamOnEnt")`.
+- `luaMissionEnd_CamOnEnt` (10616) arms `luaMissionEnd_FadeAway` at `MusicEndTime - GameTime() -
+  2.5`, which `luaFadeAway`s into `luaMissionEnd_Finale` (10899). The Finale calls `luaDelay(luaMissionEnd_EndScene, 2)`, and that runs the
+  `EndScene()` native (10915).
+- **So the world keeps stepping for about 40 s after the failure, with every unit invincible
+  (`SetInvincible(..., 0.1)`) and input off. Then `EndScene` closes the scene.**
+- Read only: the `EndScene` native's own body (the request 0Fh -> `004D7970` path that the mission
+  frame host runs) and `luaFadeAway`'s duration were not re-read here.
+- **Consequence:** a reference row's gameplay after a scripted mission end is the image's for about
+  40 s at most. Beyond that the image has no world, so those numbers are host-only.
+
+### 160.2 The binding (committed OFF)
+
+`kCommandBuildingPartyLuaMirrorBound` in `src/game_hosts_ship_ai.cpp`:
+- **true:** after the host's side change, at both the neutralize (`006F50CA`) and the flip
+  (`006F4FB8`), the ship-AI host calls `GameMissionLuaHost::mirror_party_race_00928f50()` through
+  the Lua host pointer it already holds (`settings_owner`). `src/game_hosts_lua.cpp` is not edited.
+- **LABELLED:** that projection rewrites `Party` on every named unit from its row, not on the one
+  entity. Rows whose party did not change get the value they already hold.
+- **false:** the table keeps the party written at attach.
+
+Census line: `summary mission command building party lua mirror calls last_slots bound`.
+
+### 160.3 Predictions (written before any ON run)
+
+- **JM08 long 36000:**
+  - `calls=1` (the neutralize at 1052.00 s);
+  - the next `CheckHQ` (a 1 s poll) sees `Party == 2`. `luaMissionFailedNew` runs at about
+    1052-1053 s, and `MissionFailedRan` is set;
+  - from then on the units are invincible, so the deaths after about 1053 s disappear (OFF has
+    deaths through 1800 s). `pair_diff` 3;
+  - about 40 s later (about 1093-1095 s) the script reaches `EndScene`, if the host's
+    Blackout/narrative/fade callbacks fire. If any of them is a stand-in that never calls back,
+    the run continues past it, and the census will show where it stops.
+- **Controls:**
+  - USN13 and USNOS each have 3 capture buildings but no neutralize in 3000 frames;
+  - BSM01 has none;
+  - USN01 3000 does not neutralize CB2 within 150 s (156.2's run did, much later);
+  - all four `pair_diff` 1, census only.
+
+### 160.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `1bd0f3073`.
+- ON is `pair_export.py --commit 1bd0f3073 --flip kCommandBuildingPartyLuaMirrorBound=true --out
+  local\s34_pm_on`.
+- Prefixes `off2` / `on2`.
+- Smoke: `local\s34_smoke2.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism:**
+- `calls=1 last_slots=403`: the neutralize at 1052.00 s re-mirrors 403 named slots.
+- The next `CheckHQ` runs `Fail()`, and `luaMissionFailedNew` runs `luaInitMissionEnd`. The
+  `SetInvincible(..., 0.100)` lines for every live unit start at log line 136430 (about
+  1052.6 s), after the `CountdownCancel` and `EnableInput` natives (both still
+  UNIMPLEMENTED).
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| deaths | 177 | 135 |
+| deaths after 1053 s | 43 | 1 |
+| last death | 1794.88 s | 1079.73 s |
+| hit records | 6967 | 9376 |
+| shots | 7839 | 9037 |
+
+- The one late death is `Japanese AA truck 01` at 1079.73 s (first damaged 1076.47 s). Either
+  `luaGetOwnUnits` does not return it, or `SetInvincible 0.1` is a health floor that a large hit
+  crosses. Not read.
+- Fire continues against invincible units (more hits, no kills), which is what the image's 40 s
+  epilogue would show.
+
+**Where the host diverges after that:**
+- `MissionNarrative` (`008B0C10`) is UNIMPLEMENTED in the host, so its callback
+  `luaMissionEnd_CamOnEnt` never runs.
+- The fade, the Finale and `EndScene` are never reached, and the host steps an invincible world to
+  1800 s.
+- The image would end the scene about 40 s after the failure (160.1). So every JM08 long row is now
+  image-faithful to about 1093 s and host-only after it.
+- `summary mission script state` still prints `MissionFailedRan=nil`: it reads
+  `Mission.MissionFailed`, which the New path does not set (it sets `Mission.MissionStatus = false`).
+  That is a census gap in `src/game_hosts_lua.cpp` (cc9-lua39's file).
+
+**Verdict: ON.**
+- Every prediction held. The one open alternative (whether `EndScene` is reached) is answered:
+  not in the host, because of the narrative stand-in.
+- **Not game-validated.**
+- **Follow-ups:**
+  - (a) `MissionNarrative`'s callback, so the end chain reaches `EndScene`;
+  - (b) a `MissionStatus` census;
+  - (c) reference-row tooling should treat a row as image-faithful only up to about 40 s after a
+    scripted mission end.
+
+## 161. The landing ship's motion remainder `00749B20`: bleed a hostile building, leave a friendly one (packet `cc9_landed_ship_remainder`, `kLandingShipLandedRemainderBound`, cc9-ships34, 2026-10-05; GUNNERY_OPEN_ITEMS 120)
+
+### 161.1 The read
+
+GUNNERY 120 read `00749B20` (`00749B20..00749BE3`, `RET 4`, `ECX = ESI = unit+310h`). I re-read it
+from the disk bytes and agree with it. The offsets from `ESI`:
+
+| field | offset from `ESI` | unit offset |
+| --- | --- | --- |
+| dead byte | `-2B3h` | `+5Dh` |
+| landed | `+E7Ch` | `+118Ch` |
+| building | `+EF4h` | `+1204h` |
+| party | `-2BCh` | `+54h` |
+| ramp | `+E78h` | `+1188h` |
+| class | `+228h` | `+538h` |
+
+**What the remainder does:**
+1. A dead ship that has landed is removed: `00926D90(unit, 2)` at `00749B61`.
+2. An alive ship whose building is its own party's is removed the same way (`00749B7B` JE
+   `00749B59`).
+3. Otherwise, with the ramp down and `00803CE0(own party, building) == 1`:
+   - `x = (float)(int)class+80Ch - building+368h`;
+   - if `x > 0`, it calls `building->vtable[1ACh](x * dt)` (`00749BD5`).
+
+**The three questions GUNNERY 120 left open:**
+
+- **The per-party record at `building+1E8h`.**
+  - `00803CE0` (`00803CE0..00803D31`, fastcall, complete) reads the target's detection record for
+    the side: `+8h` when the force byte `+10h` is set, else `+4h`. Below 2 (not identified) it
+    answers 3.
+  - Otherwise: 0 for the same party, 1 hostile, 2 neutral. A neutral side (2) gets 2 against any
+    non-neutral target.
+  - The host has the record as the recon sensor pass (`ReconSensorPassState::level(side,
+    target)`). A side the pass never covered reads `identified` (`kReconDetectionUnknownLevel`).
+- **`+7D8h`.**
+  - The constructor clears it (`006F5759`).
+  - The neutralize arm stores `class+190h` there (`006F509F..006F50B0`). `006F4360` fills
+    `class+190h` from the `004C1D10` globals: `+4Ch` in single player, `+48h` otherwise.
+  - `006F7670` reads those two as `SingleInvincibleTime` and `MultiInvincibleTime`. Both are 20 in
+    this installation's `scripts\datatables\commandbuildingglobals.lua` (mtime 2024-07-13).
+  - The fixed-step callback `006F7360` counts it down every step and clamps it at 0
+    (`006F761D..006F7650`, through `EDI = building+310h`, so the displacement is `+4C8h`). Every
+    path, including the multiplayer client's `006F7387`, reaches that tail.
+  - `006F1F20` (CommandBuilding slot `1ACh`) damages only while `+7D8h == 0.0` (`[00D7A218]`).
+    So a neutralized building is immune to landed bleed for 20 s. It cannot bleed while neutral
+    anyway (relation 2), so this matters only after a retake.
+  - A whole-`.text` displacement census for `7D8h` finds only those three sites plus unrelated
+    classes (`00963xxx`, `009D49C2`).
+- **`007470B0` for a CommandBuilding:**
+  - `class+164h` is `SmokeFireChanceMul` (`00749210`). When it is above 0, it draws
+    `00BD2F10(0, 1.0)` against a damage-scaled chance and calls `00746320`.
+  - It always calls AddDamage `0095DA00(amount)`, then the same `vtable[1ACh]` on the master
+    LandFort `+738h` when it has one (`006F57F0`, `BSP_LandFort_MasterIsKindOf`).
+  - The host's `GameGunneryHost::apply_script_damage_0095da00` is that AddDamage. Its death funnel
+    already asks the capture rule (`006F3270`) first.
+
+**Values in this installation:**
+- `LandedDamage` is authored 40 and 50 on the landing-ship rows (`vehicleclasses.lua`).
+- The HQ's armour is the class `Armour`. LABELLED: `006F38E0`'s level rescale
+  (`Armor[level] / 100`, reached only from the message handler at `006F54BF`) is not modelled.
+
+### 161.2 The binding (committed OFF)
+
+`kLandingShipLandedRemainderBound` in `src/game_hosts_ship_ai.cpp`:
+- `landed_ship_remainder_00749b20` runs after the ramp step for every kind-0Ch unit with a lander
+  record (LABELLED order);
+- the own-party arm calls `GameGunneryHost::kill_unit_00926d90(u, 2)`;
+- the hostile arm applies `x * dt` through `apply_script_damage_0095da00` while the building's
+  `+7D8h` is 0;
+- the dead-landed arm is a record (the host's unit is already dead);
+- the capture step keeps `+7D8h`: 20 at the neutralize, counted down every step;
+- recorded, not modelled: the `SmokeFireChanceMul` roll (no draw, so the shared stream is
+  unchanged), the master `+738h` forward, and a non-CommandBuilding building's slot `1ACh`.
+
+Census line: `summary mission landing ship landed remainder ...`. The first bleed logs its inputs
+(`LandedDamage`, armour, `x`, the amount).
+
+### 161.3 Predictions (written before any ON run)
+
+- **JM08 long 36000:**
+  - The crafts lower their ramps on the HQ's pads from 978.10 s while it is party 1 (hostile to
+    side 0). If the HQ's class armour is below 40, `bleed_applied > 0` from about 978 s, and the HQ
+    is neutralized EARLIER than 1052.00 s.
+  - With section 160's mirror ON, the mission then fails earlier too.
+  - If the armour is 40 or more, `bleed_calls=0` and the row is gameplay identical. The first-bleed
+    line or its absence settles which.
+  - `own_party_kills=0`: the HQ never becomes party 0.
+  - `dead_landed > 0` if any of the dead crafts (395-398, before 1046 s) had landed. That arm is a
+    record.
+  - `pair_diff` 3 if the HQ bleeds, else 1.
+- **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no landing ship on a pad. All `pair_diff` 1.
+
+### 161.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `d1a9bc187` (main merged, sections 159 and 160 ON).
+- ON is `pair_export.py --commit d1a9bc187 --flip kLandingShipLandedRemainderBound=true --out
+  local\s34_lr_on`.
+- Prefixes `off3` / `on3`.
+- Smoke: `local\s34_smoke3.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` |
+| --- | --- |
+| BSM01 3000 | 1 |
+| USN13 3000 | 1 |
+| USNOS 3000 | 1 |
+| USN01 3000 | 1 |
+| JM08 long 36000 | 3 |
+
+**JM08 long, the mechanism (ON census):** `hostile_frames=3003 bleed_applied=3003
+bleed_total=1501.50 first_bleed=991.10 not_seen=0 bleed_invincible=0 own_party_kills=0
+dead_landed=1`.
+- The first bleed logs `LandedDamage=40`, HQ `armour=30.0`, `x=10.00` and `amount=0.5000` (one
+  craft, one 0.05 s step).
+- It is the first ramp of this tree's run (991.10 s).
+- `smoke_fire_mul=1.00`: the HQ class's `SmokeFireChanceMul` is 1.0.
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| HQ neutralize | 1039.35 s, by gunfire | 1034.10 s, 5.25 s earlier |
+| with section 160's mirror | | the mission fails that much earlier too |
+| deaths | 132 | 129 |
+| last death | 1563.35 s | 1033.93 s |
+
+- The three `LandingShip` rows only in OFF are crafts that survive in ON.
+
+**Verdict: ON.** Every prediction held: armour below 40 made the HQ bleed and fall earlier, no
+own-party kill, a dead-landed record, and the controls identical. Not game-validated.
+
+**Open, recorded:**
+- **The `SmokeFireChanceMul` roll.** With the HQ's multiplier at 1.0, the image takes one
+  `00BD2F10(0, 1.0)` draw on the shared stream for each of the 3003 bleed calls. On success it
+  runs `00746320`: point effects, more draws, a session message. The host takes none of them, so
+  the stream-0 draws after 991 s are not the image's (LABELLED). `00BD2F10` is one process-wide
+  generator, so every later consumer of stream 0 is shifted.
+  Binding the roll needs `00746320` read.
+- **The gunnery lane's question.** If the gunfire hit path also reaches a CommandBuilding through
+  `vtable[1ACh]` (`006F1F20` -> `007470B0`), it also has the 20 s `+7D8h` gate and the roll. That
+  is for cc9-gunnery27 to check.
+- **Not modelled:** the master `+738h` forward and `006F38E0`'s armour level rescale.
+
+## 162. The LandFort fire roll behind the landed bleed (161.4(a), packet `cc9_landfort_fire_roll`, `kLandFortFireRollBound`, cc9-ships34, 2026-10-05)
+
+### 162.1 The read
+
+**`007470B0`** (`BSP_UnitInstance_AddDamageWithCriticalRoll`, `007470B0-00747163`). When
+`class+164h` (`SmokeFireChanceMul`) is above 0:
+- `chance = (max - hp) / max * (amount / max) * mul * 10.0`, with the 10.0 the double at
+  `[00CE3DC0]`, computed `007470D3..00747107`;
+- the draw is `00BD2F10(stream 1, 0, 1.0)` (`007470E0 MOV ECX,1`), the shared generator;
+- `chance > draw` calls `00746320`; then AddDamage runs either way.
+
+**`00746320`** (`00746320-0074657E` plus the tail to `007465DD`):
+1. A smoke effect at `+744h` is stopped and released.
+2. **Already burning** (`+740h` set): one `00BD2F10(0, class+168h, class+16Ch)`
+   (`SmokeFireDurationMin` / `Max`). `+748h` keeps the larger of the two (`0074657E..007465C5`).
+3. **Otherwise:**
+   - one `00BD2FC0(0)` picks the fire effect: modulo the `class+144h` list length, `007463C1`;
+   - `008689C0` creates it at the node `+4A4h`, into `+740h`;
+   - the same duration draw sets `+748h` (`007464FD`);
+   - with an effect, the `D1h` sync message is built and routed (`00746515..00746566`).
+
+**`00745BE0`** (`BSP_LandFort_FrameUpdate`, `00745BE0-00745F9F`). While `+740h` is set:
+1. `+748h -= dt` and `+750h += dt`. At `+748h <= 0` the effect stops (`00867B10`, `00484620`).
+2. Alive, with `class+170h` (`SecondaryExplosionChanceMul`) > 0, `+750h > 0`, and a single-player
+   or host session:
+   - `chance = min(1, (max - hp) / max) * class+170h * 0.01` (`[00D7A358]`);
+   - the draw is `00BD2F10(0, 0, 1.0)`.
+3. A hit takes:
+   - `00BD2FC0(0)` over the `class+150h` list (`00745D79`);
+   - `00BD2F10(0, 0, (float)class+2Ch)` when the int `class+2Ch` > 0 (a point index into
+     `class+28h`, 12-byte records);
+   - `+750h = min(-1.0, +750h - 00BD2F10(0, 5.0, 15.0))` (`00745EBB..00745EE3`);
+   - a `D1h` message.
+4. The `+744h` arm (`00745F1E..`) is the same countdown without draws.
+
+**Other writers:**
+- `+750h` is 0 at construct (`00745A1A`).
+- `007465E0`, the other fire start, is called only from `00747351` (the LandFort destroyed
+  handler `00747170`, gated on `class+164h > 0`). A neutralized CommandBuilding never takes it.
+
+**Gameplay reach.** Nothing outside `00745xxx..007467xx` reads `+740h`, `+744h`, `+748h` or
+`+750h` (displacement census of `00740000-00750000`). What the fire touches is effects, `D1h`
+sync messages and random draws. **So it is presentation plus draws.**
+
+### 162.2 The binding (committed OFF)
+
+`kLandFortFireRollBound` in `src/game_hosts_ship_ai.cpp`:
+- takes the roll for every bleed call on a building with `SmokeFireChanceMul > 0`;
+- models `00746320`'s duration and start arms, and the `+740h` frame arm of `00745BE0`, through
+  `GameGunneryHost::death_mode_draw_00bd2f10` (stream 1 for the roll, stream 0 for the rest);
+- keeps the `+740h`, `+748h` and `+750h` state per capture building;
+- records the effects and messages.
+
+LABELLED:
+- the effect creation is taken to succeed;
+- `class+2Ch` is unknown here and taken as 0, so that draw is skipped;
+- `00BD2FC0` is consumed as one `00BD2F10` draw (one generator step, `00BD2F22` / `00BD2F29`);
+- the frame arm runs at the head of the capture step.
+
+The class values are read through `read_vehicle_class_number`: `SmokeFireDurationMin`, `Max` and
+`SecondaryExplosionChanceMul`. Census: `summary mission landfort fire ...`.
+
+### 162.3 Predictions (written before any ON run)
+
+- **The reference launch form sets `BSP_GUNNERY_RNG_STREAMS=1`.** Under it each (stream, unit) has
+  its own generator, and these draws use the HQ's own keys, which nothing else draws from (the HQ
+  never dies). So **every row is gameplay identical, `pair_diff` 1**, JM08 long included.
+- **JM08 long's census:**
+  - `rolls` equals section 161's 3003 bleed calls;
+  - `roll_hits` is small: chance is `(max-hp)/max * 0.5/max * 10` per 0.05 s call;
+  - the first start, if any, logs its duration and the class's `SecondaryExplosionChanceMul`.
+- **Without the option**, stream 1 is the shared generator, so each roll moves every later shared
+  draw. That is the point of the binding, and the pairs cannot show it.
+- **Controls:** USN13, USNOS, BSM01 and USN01 3000 have no bleed, so 0 rolls.
+
+### 162.4 Smoke and pairs; verdict ON
+
+**Runs:**
+- OFF is this tree at `f0c97da4a`.
+- ON is `pair_export.py --commit f0c97da4a --flip kLandFortFireRollBound=true --out local\s34_fr_on`.
+- Prefixes `off4` / `on4`.
+- Smoke: `local\s34_smoke4.log`. Clean.
+
+**Pairs:** BSM01, USN13, USNOS, USN01 3000 and JM08 long 36000 are all `pair_diff` 1. As predicted,
+no row's gameplay moves under the measurement streams.
+
+**JM08 long census:** `rolls=3003` (one per bleed call) `roll_hits=2 starts=2 extends=0 stops=2
+secondary_rolls=0 draws=3007`.
+
+| | first start | second start |
+| --- | --- | --- |
+| t | 1012.05 s | 1023.15 s |
+| duration | 0.91 s | 19.81 s |
+| chance | 0.00032 | 0.00037 |
+| HQ health | 2807.6 / 12000 | 1457.6 / 12000 |
+
+- The HQ class's `SecondaryExplosionChanceMul` is 0, so the frame arm only counts down.
+
+**Verdict: ON.** The mechanism matches: one shared-stream roll per bleed call, as the image takes
+it. It only matters without the measurement option. Not game-validated.
+
+**Uncertainty:** the effect creation is assumed to succeed, and `class+2Ch` is assumed 0 (162.2).

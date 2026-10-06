@@ -841,6 +841,12 @@ public:
     // neutral one) and the building does not die (vtable[1A8h] 006F1F80 is RET).
     // False otherwise, and the funnel kills as before.
     bool command_building_health_zero_006f3270(std::size_t unit_index);
+    // Packet cc9_lua_capture_percentage (SQUADRON_LAND_TASK 5dw): 006F1F90 on a
+    // command building, read-only. +7A4h == 0 answers 0.0; otherwise +7A8h /
+    // (float)+7A4h (006F1FA2 FLD / 006F1FA8 FIDIV / 006F1FAB FSTP float). False
+    // when the unit is not one of the capture buildings (out untouched).
+    bool command_building_capture_fraction_006f1f90(std::size_t unit_index,
+                                                    float& out) const;
 
     // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
     // VehicleClass row at load (the depth reader's tuning-pair choice). False

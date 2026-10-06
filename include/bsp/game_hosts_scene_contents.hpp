@@ -147,6 +147,17 @@ struct GameSceneEntityRecord {
     // stored at unit+7CCh (006F28B3); 006F5CC0 adopts the pads within it.
     bool landing_point_range_present{false};
     std::int32_t landing_point_range_raw{500};
+    // Packet cc9_airfield_destruction_rule: 006F2780's `InferiorRange` find (key
+    // 00CFAE20, 006F286E), read like CaptureRange: the found record's +0Ch dword
+    // or C8h (006F2881), stored at unit+7C8h (006F288C); 006F5CC0's first pass
+    // adopts the forts, airfields and shipyards within it.
+    bool inferior_range_present{false};
+    std::int32_t inferior_range_raw{200};
+    // 009554C1-009554DF: BSP_UnitInstance_InitializeSceneBindings clones the bag
+    // to unit+724h only when the merged bag finds `MinLevel` (00CFB24C, the
+    // CommandBuildingInferior group default); 006F5DCF adopts only an entity
+    // whose +724h is set.
+    bool bag_min_level{false};
     // Packet cc9_land_convoy_members: 00743450's reads from a LandConvoy's bag,
     // merged with the library group (landconvoy.props). `convoy_slots` holds the
     // Rows * Columns slot map after the Type1..4 x Position1..4 walk: the resolved
