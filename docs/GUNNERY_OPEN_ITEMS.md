@@ -9732,3 +9732,57 @@ dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h
   LOMP10 long (14). USN13 long (3 releases) may stay at 1 if its bombs miss either way.
 - **Rows without a bomb drop** (USN02, JM06, BSM01): `pair_diff` 1, `drops=0`.
 - The summary's `max_cone_deg` is at most 0.573 (`Throw` 0.01), and 0 for a SPVeteran or Elite dive bomber.
+
+### 130.4 Smoke and pairs; verdict ON
+
+- **Runs:** `pair_export --commit 1c5e270c5`, OFF `local\g28_lane_l`, ON `--flip kBombDropScatterBound=true`
+  `local\g28_lane_m`; logs `local\g28_sc_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke130.log`, USN01 300 frames, OFF, clean. Diagnostic re-run of the ON side at `3608bcba7`
+  (the turn logged, `local\g28_sc_dg_<row>.log`): `pair_diff` 1 against the ON logs on all three rows.
+
+| row | `pair_diff` | drops | max cone | turn from the 5do velocity (first drops) | headline (OFF -> ON) |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | 3 | 2 | 0.297 deg | 3.10, 3.23 deg | the scout's bombs miss Convoy1: no `luaConLeadHit`, phase 2 does not launch (units 93 -> 64, torpedo-task 0 of 17 -> 0 of 5), damage 35624.3 -> 34425.9; deaths 29 both |
+| USNRM01 | 3 | 34 | 0.000 deg (dive bombers at SPVeteran) | 1.8-3.7 deg | deaths 132 -> 135, hull hits 1345 -> 1210, shots 56823 -> 54967 |
+| LOMP10 | 3 | 14 | 0.524 deg | 2.3-3.2 deg | damage 1987.1 -> 2194.0 |
+| LOMP10 long | 3 | 14 | 0.524 deg | | shots 3804 -> 3697 |
+| USN13 long | 1 | 3 | 0.000 deg | | |
+| USN02, JM06, BSM01 | 1 | 0 | | | |
+
+- **The mechanism matches the read.** Four draws per drop; the cone stays under `atan(Throw)`, 0 for a
+  SPVeteran or Elite dive bomber (`DiveBombThrowMul` 0.0); and the direction becomes the plane's forward
+  axis. The turn of 2-4 degrees is that replacement: 5do's world velocity (with 3.0 off y and the dive's
+  angle of attack) points below the nose, the forward row does not. The magnitude is kept.
+- **What moved USN01.** The ScoutDauntless pair's bombs (133.20 s, 134.10 s) now leave along the nose and
+  miss Convoy1, so the scripted hit callback and the next phase do not happen in 150 s.
+
+**Predictions:** right on all eight rows (USN01, USNRM01, LOMP10, LOMP10 long moved; USN13 long stayed at 1
+as allowed; the controls identical) and on the cone bound.
+
+**Verdict: ON.** The mechanism matches; the flip moves USN01's phase timing and belongs to AC.
+**Uncertainty:** the round's rows are taken to be the plane's pose rows. If the rack mount (`+3F4h`) carries
+a rotation, the image's direction differs from the nose by that rotation; the mount rotation is unread.
+Not game-validated.
+
+### 130.5 Back to OFF: mechanism unsettled (lead's hold, 2026-10-06)
+
+The lead held the flip: it reverses the USN01 progression that 5do's velocity fix produced, on an
+unread piece. The read asked for: does the round leave along the plane's nose, or along the nose
+rotated by the rack's mount?
+
+- **`+3F4h` is not a rotation.** In `006E4D50` the rack's `[+3F4h]` is the device descriptor
+  (`[+3F4h]+DCh`, taken to be `LaunchSpeed`, 5du) and `[+3F8h]` the fire record (`+4h` Throw,
+  `+8h` Wind). The rack's own pose is its scene node's.
+- **The rows `006E1F00` uses** are the round's local matrix (`round+74h`, `+84h`, `+94h`) after it is
+  detached: it copies the round's world matrix (`round+CCh`, refreshed first) and makes it the local one
+  (`BSP_Matrix_Copy4x4X87`, `SetParent(0)`). So the direction is the round's world forward row while it
+  hangs on the rack: plane pose x rack node x the round's attach transform.
+- **Unread:** the round's attach transform (where a loaded round is parented under the rack and with what
+  matrix; `006E3500`, which loads rounds, shows no matrix work in its pseudocode) and the rack node's
+  orientation in the aircraft model (a model dummy). Neither was found in this pass.
+
+**Verdict: OFF, mechanism unsettled.** 130.4's pair stands as a measurement of the nose-alignment
+hypothesis (USN01's scout bombs miss Convoy1 under it), not as the image's behaviour. To settle it: read
+the round's attach path (who parents a kind-2Ah child under the rack, and its local matrix) and the
+Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
+the same read to justify.
