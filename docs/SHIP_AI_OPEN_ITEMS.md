@@ -15496,3 +15496,19 @@ step 0.05). Logs: `local\s40_off_<row>.log` and `local\s40_on_<row>.log`. Diffs:
     because `game_hosts_units.cpp` was leased elsewhere.
   - These pairs therefore carry "harm". Re-pair after the fix.
 - **Diagnostic only.** The death table's `killed_by` for a stock-returned plane shows its last attacker.
+
+## 201. BSM01 completes with the AI depth-charge rack (cc9-ships40, 2026-10-06; lead item 2)
+
+The tree is `agent/cc9-ships40` with main merged (`c7991d5a3`, including `efbc2de86`, GUNNERY 142:
+depth charges in water ON). Launch form: reference AD, BSM01 40000 frames (`local\s40_rows.ps1`).
+
+| order file | log | result |
+| --- | --- | --- |
+| `s38_b1_p6.txt` (the AI-rack route: Henry helmed to the halted mini-sub, `stop 40`) | `local\s40_bsm_b6.log` | **completed.** MiniSub dies at 1300.79 s (killer HenryPT at 25 m), and "Zeros! They're coming in fast!" shows at 1335.23 s. Mission.EndMission at 1632.47 s with `MissionStatus=true`, MissionPhase 4. Narrative "Donald is heading home - Mission Complete" at 1644.08 s. The exec guard logs "refused a mission script's process launch: sus_prog.exe" |
+| `g31_ord_b1_p9.txt` (p6 plus a player depth-charge press every 80 frames, 11000-12920) | `local\s40_bsm_b9.log` | no end. MiniSub survives: 21 water entries, and no hit is recorded. This is the terrain-subwalk fault the lead is routing |
+
+Notes:
+- `Objectives_Failed` names "Bruh" at the end of the p6 run. Its source in this installation's
+  scripts was not read.
+- Mission.EndMission is set with `status=nil`; the completion narrative follows 11.6 s later.
+- EndScene `008B01B0` is not reached inside 40000 frames.
