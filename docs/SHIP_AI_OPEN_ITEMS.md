@@ -13983,3 +13983,44 @@ the `006F3660` rule then belong in `game_hosts_ship_ai.cpp` next to `command_bui
 - JM08 3000: `pair_diff` 3 (Bunker 03 dies at 29.50 s there too, so the 30.00 s revival is in
   its window);
 - USN01, USNOS and USN13: `pair_diff` 1.
+
+## 176. USN01 won with scripted player input: Enterprise's fighters (lead item 2, cc9-ships36, 2026-10-06)
+
+**Lines used:** SCRIPTED_HELM 13's `launch` (18f67fa22) over cc9-lua41's
+`script_orders_player_air_ops_launch` (f7288fd5b), with `kAirOpsPlayerLaunchBound` flipped
+(`pair_export.py --commit 18f67fa22 --flip kAirOpsPlayerLaunchBound=true --out
+local\s36_launch_on`). Every other switch is as on main. The order files are
+`local\s36_u1_w<N>.txt`; each is `s35_orders1.txt` (the `target ConTBD1 Convoy4` pair) plus the
+lines below.
+
+| run | phase-3 orders | outcome |
+| --- | --- | --- |
+| w1 (10000) | 4300-4303 launch slots 1-4 at Nell1-4 (4 F4F each); slot 0 at 4800/5300 | slots 1-3 launch. Slot 4 and the later ones get `006C0F00 left the slot empty (no stock or plane room)`: the deck holds 12. 13 Nells die; **Enterprise sunk at 404.42 s** (Nell6\|.-3) |
+| w2 (12000) | w1's first three, then slot 0 every 20 s at Nell4/5/6 | a fourth squadron (1 plane) at 6700 once sqn01 is lost. All six leaders die by 437.27 s, but Enterprise is sunk at 404.42 s. `summary mission end: completed at 440.57 s` (see the caveats) |
+| w3 (12000) | four squadrons of 3 at Nell6/5/4/3 | worse: Enterprise sunk at 396.63 s |
+| w4 (12000) | w2, plus `4310 moveto Enterprise 12000 0` | Enterprise sunk at 386.68 s. In w5, with the same moveto, Enterprise still heads south-west (2907, 2648 at 400 s; 1153, 322 at 600 s); why it does not turn was not read |
+| w5 (12000) | launches at 4100-4102, the first frames after `luaMoveToPh3` (about frame 4070); Ralph, McCall and Blue moved 1.8 km toward the Nells; slot 0 every 10 s | **Enterprise survives** to 600 s (fire at 356.04 s, 6285/8000). Nell1, Nell2 and Nell4 groups die, plus Nell3, Nell6 and Nell6\|.-2 |
+| **w6 (20000)** | w5's file | **Mission complete at 673.16 s**, Enterprise alive (no death row; afloat at 999.8 s) |
+
+**w6 timeline:** luaMoveToPh3 at about 204 s. Three F4F squadrons queue at 205 s and launch about 1 s
+later (`air ops queued launch:`, then `AutoAttackTarget`). Nells die from 275.01 s. The
+fighters are lost at 328.84, 357.34 and 369.18 s, and a fourth squadron of 1 goes up at 335 s.
+The surviving Nell3\|.-2/.-3 and the Nell5 group pass Enterprise to the south and come back.
+Northampton, Dunlap and SaltLakeCity shoot down Nell3\|.-2 (655.91 s), Nell3\|.-3 (663.61 s) and
+Nell5 (671.71 s). `luaMissionComplete` -> `luaMissionCompletedNew` follows, and the guard's line
+`bsp: refused a mission script's process launch: sus_prog.exe` is in the run log (line 104419),
+followed by `summary mission end: completed at 673.16 s ... "We showed we can fight back! -
+Mission Complete!"`. **LABELLED:** the harness's fixed click times; the launches need not come
+from the controlled carrier (SCRIPTED_HELM 13).
+
+**Caveats, routed (not this lane's):**
+1. **The win fires on the six leaders.** `Mission.Nells` holds the six `GenerateObject` returns.
+   The completion fires 1.45 s after the leader Nell5 dies, while Nell5\|.-2 and .-3 still fly
+   (they die at 691.35 and 694.50 s). In w2 the same rule completes the mission after Enterprise
+   has sunk, because `Mission.Enterprise.Dead` only calls `luaMissionCompletedNew()` every tick
+   (usn_1_marshall.lua 568-576) without setting `EndMission`. Whether the image's `.Dead` on a
+   generated squadron is its leader's death or the squadron's was not read (Lua/plane lane).
+2. **A Nell in the sea is not dead.** In w5/w6, Nell6\|.-3 sits at y = -1.07 with zero speed from
+   about 404 s (`s36_traj_u1w5.Nell6__-3.csv`), with no death row (plane lane).
+3. **Slots do not come back.** After the three squadrons are lost, slot 0 finds no slot in state
+   1 or 5 (`no such slot`) for the rest of the run, except the one at 6700 (lua41's launch chain).
