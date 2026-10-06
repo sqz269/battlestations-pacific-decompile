@@ -13631,6 +13631,10 @@ The branch is `agent/cc9-lua44` and the worktree `J:\PROG\battlestations-pacific
 
 ## 5et. The elevator re-take (5ep): what the image's intake would see (cc9-lua45, 2026-10-06, read-only)
 
+**Answered by SHIP_AI_OPEN_ITEMS 200 (cc9-ships40).** A stowed plane (`+C00h`) gets message C7h on its next fixed
+step (`007CE6CA`), which leads to `007CC8B0` -> `007F1CA0`: AddStock, then for the last plane the slot return `006C5950`,
+then Kill(plane, 5). That destruction is what empties site `+34h`, through the observer pair this section names.
+
 Item 2 of 5es. Disk bytes only; no code changed, nothing bound. The question is whether the image keeps a
 stowed plane from being re-taken at the top, as the host does every 4.8 s.
 
