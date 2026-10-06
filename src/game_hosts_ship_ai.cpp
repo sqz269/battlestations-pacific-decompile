@@ -769,6 +769,13 @@ inline constexpr bool kCommandBuildingLevelMaxHpBound = true;
 // re-create is still recorded); every LandFort's bag finds MinLevel through
 // landfort.props, so JM08's HQ adopts 349 members and USN01's CB2 42.
 inline constexpr bool kCommandBuildingGarrisonBound = true;
+// Packet cc9_command_building_garrison_revive (SHIP_AI_OPEN_ITEMS 185): 006F3660's
+// re-create arm (006F3703..006F3844) revives the dead member in place through the
+// gunnery host's revive_unit_garrison_006f3660, then the scene flags, the
+// building's Party (006F37A0) and Skill (006F37D7). SUBSTITUTION: the image
+// creates a new unit from the record's Type at the stored matrix. False: the
+// re-create is recorded only.
+inline constexpr bool kCommandBuildingGarrisonReviveBound = false;
 // LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
 // ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
 // 100/110/120/140, divided by 100 at 006F7670.
@@ -12847,6 +12854,26 @@ void GameShipAiHost::Impl::command_building_garrison_006f3660(CaptureBuilding& b
             // 006F3703..006F3844: re-create from the bag's Type at record+18h, Party =
             // building +54h (006F37A0), Skill = building vtable[12Ch] (006F37D7).
             // SUBSTITUTION: the dead unit is revived in place.
+            if (kCommandBuildingGarrisonReviveBound && gunnery_draws != nullptr
+                && gunnery_draws->revive_unit_garrison_006f3660(r.unit)) {
+                const void* identity = units.unit_identity(r.unit);
+                bsp::SceneNodeFlags flags;
+                flags.active = true;
+                if (identity != nullptr) {
+                    units.store_scene_node_flags(identity, flags);
+                    units.store_pending_destroy_0060(identity, false);
+                }
+                units.set_unit_side_0054(r.unit, party);       // 006F37A0
+                gunnery_draws->refresh_unit_side(r.unit);
+                units.set_skill_level_007b8ae0(r.unit, skill); // 006F37D7
+                r.linked = true;
+                ++garrison_recreates;
+                done("CommandBuilding::garrison_recreate_006f3736", 0x006f3736u);
+                log.notef("command building garrison: %s re-creates %s with party %d skill %d "
+                    "at t=%.2f (%s): revived in place", bname, name, party, skill,
+                    capture_clock, source);
+                continue;
+            }
             ++garrison_recreates_recorded;
             record("CommandBuilding::garrison_recreate_006f3736", 0x006f3736u);
             log.notef("command building garrison: %s re-creates %s with party %d skill %d "

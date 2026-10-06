@@ -14410,3 +14410,28 @@ first.
 
 Leases: `cc9_reference_completion` (`docs/SHIP_AI_OPEN_ITEMS.md`,
 `src/game_hosts_mission_frame.cpp`) is released with this commit.
+
+## 185. The garrison revive (packet `cc9_command_building_garrison_revive`, `kCommandBuildingGarrisonReviveBound`, cc9-ships37, 2026-10-06)
+
+**What is bound** (`src/game_hosts_ship_ai.cpp`, committed OFF): `006F3660`'s re-create arm
+(`006F3703..006F3844`, 177). For an unlinked member at or under the building's level, the arm now
+does the following:
+- calls cc9-gunnery29's `GameGunneryHost::revive_unit_garrison_006f3660` (`119deb177`: clears the
+  death, refills health, resets the damage and gun state);
+- on true, stores the scene flags `{active}` and `pending_destroy = false`;
+- sets the member's Party to the building's (`006F37A0`), then `refresh_unit_side`;
+- sets its Skill to the building's (`006F37D7`);
+- links the record again and counts it in `garrison_recreates`.
+
+**SUBSTITUTION, labelled:** the image builds a new unit from the record's Type at its stored
+matrix (`00964790`, class `vtable[28h]`, `vtable[98h]`). The host has no unit creation and revives
+the dead unit in place. `summary.deaths` and kill credits keep the original death.
+
+**Predictions, written before any ON run** (from 177.1's census):
+- **JM08 3000:** five members re-created at the 20 s and 30 s passes, Party = the HQ's.
+  `pair_diff` 3: the revived LandForts are targets again.
+- **JM08 long 36000:** about 117 re-creates, 112 of them at the 1041.50 s neutralize with Party 2
+  (Neutral). `pair_diff` 3. The deaths after 1041.50 s move, because the revived forts are neutral
+  targets with full health.
+- **USN01 3000:** one pass and no re-create. `pair_diff` 1.
+- **USNOS 3000** (control): no members. `pair_diff` 1.
