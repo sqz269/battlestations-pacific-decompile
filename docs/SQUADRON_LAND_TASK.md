@@ -12439,3 +12439,8 @@ the summary counts the planes still holding the task at the end.
 
 **Verdict: ON.** Every predicted latch and B5 happens, with the resolutions the 007F16D0 read gives.
 The script overrides as the image's script would.
+
+**The rows not paired.** Runs of `19bc34aca` (ON) on E2, LOMP10l, ESMP08l, USNOSl, IJN11 and JM05 log
+`latches=0` (`local\l40_cur_<row>.log`), so B5 never acts there. JM06 and JM08 set
+SetDeviceReloadEnabled(true), which closes the gate. The other short rows release no ordnance in
+reference AA.
