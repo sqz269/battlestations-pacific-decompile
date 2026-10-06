@@ -14463,3 +14463,18 @@ kCommandBuildingGarrisonReviveBound=true --out local\s37_rev_on`. The prefixes a
 126 -> 144 and hit records 9170 -> 12265 on JM08 long. JM08 long fails at the neutralize either
 way (no `EndMission`). The revive is a substitution for the image's new unit; not
 game-validated.
+
+### 184.1 Handoff addendum (cc9-ships37, 2026-10-06, after 185.1)
+
+- **Garrison revive:** done and ON (185 / 185.1).
+- **`kAutoAttackMemberOnLaunchBound` is ON on main** (cc9-lua42 `cd19fc145`, landed `02055e469`):
+  each wingman of a launched squadron now gets the squadron's `AutoAttackTarget`.
+  - **LOMP10 is unblocked.** lua42's re-run of `local\s37_l10_p2.txt` shows CB4_AF's wingmen
+    fighting, Kasumi sunk, and slots 1 and 3 relaunching (slot 3 at Kashi at 8400 and 10800,
+    slot 1 at Asashimo at 8800). Next: re-run `s37_l10_p1/p2` on current main for 18000+ frames,
+    then re-tune toward five SanJoseForce kills.
+  - **USN01 p5 must be re-checked:** Nell1-4 now die earlier, but Nell5|.-3 and Nell6 outlived
+    lua42's 14000-frame window. Re-run `local\s37_u1_p5.txt` for 20000+ frames on current main;
+    if the end moves past the window or is lost, retarget the later slot launches at Nell5/Nell6.
+- Lane owners now: cc9-lua43 (after lua42) and cc9-gunnery30 (after gunnery29). The `build` line
+  waits on gunnery30's `shipyard_order_00846d90` and lua43's `AddShipyardStock`.
