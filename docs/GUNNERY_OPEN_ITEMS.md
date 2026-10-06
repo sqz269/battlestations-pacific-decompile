@@ -11192,3 +11192,43 @@ Nothing here differs from the host.
   or the turndown's handover attitude, which 150 found to be the image's.
 - The next read, if wanted, is the aircraft's pitch response to a held `+29Ch` of 1.0 in mode 0 (`0099E3BF` onward
   and the control law). That is planes code.
+
+## 158. USN13's carrier burn-out: the fire and damage-control model is the image's (lead item 2b; cc9-gunnery33, 2026-10-06, one diagnostic run, nothing bound)
+
+**Run.** `local\g33_u13l.log`, a USN13 9000-frame run in the AE form on this branch (main `57c010ddf` merged). It fails at
+**341.59 s**, as the lead saw.
+- Intrepid (8000 hp): first damage at 171.31 s, dead at 311.05 s, `fire_total=3106`, `repaired=1243`.
+- Cowpens (6000 hp): first damage at 206.91 s, dead at 340.24 s, `fire_total=2964`, `repaired=889`.
+- Mission-wide: `element_hits=135`, `fires=135` (every direct hull hit), `fire_adds=142` (135 plus 7 component `Fire`
+  failures), `water_damage=0`, and 3 component explosions for 4278 hp. 57 Betty bomb (`bullet 78`) bursts land on the
+  two carriers.
+
+**The three questions, against the image.**
+- **Fire start chance.** R7c (`0082738E..008273DF`, read) rolls `weapon->vtable[18h]() > U(0,1)` on stream 1
+  (`00BD2F10`, ECX = 1) only when the hit did hull damage. On success it routes 9Eh with `weapon->vtable[14h]()` seconds
+  and the add flag. The host's `ship_hit_record.cpp` is the same, with FireChance / 100.
+  - This installation's bombs author `FireChance = 100` (US 725/500 kg: 150) in both `classtables/arcade`
+    (2026-05-09) and `realistic` `bulletclasses.lua`.
+  - So every direct bomb hit starts a fire in the image too, of `FireDamage` seconds: 2 (50 kg) to 15 (Japan
+    500 kg), 50 for incendiaries.
+- **Spread.** There is none. `0093A470` adds the seconds to the one timer `task+38h`. `0093CA20`'s fire step drains it
+  at real time and charges `FireTickDamage` (40 hp, ShipGlobals) per second (docs/UNIT_FIRE_AND_REPAIR.md). No step
+  multiplies or propagates a fire. 3106 hp is about 78 fire-seconds, one timer topped up by each direct hit over the 140 s (the
+  per-bomb seconds depend on which bomb row bullet 78 is, which this read did not pin).
+- **The damage-control crew.** `task+24h`, the repair priority that divides fire (priority 3/4) or water damage,
+  is written only by message `A0h`. Its senders are the vtable `00CF5C38` census: the HUD ship screen
+  (`0064A770` from `0064DD30`), the network decode (`00760B70`) and Lua `SetRepairPriority` (`008AD6F0`).
+  - No AI path sets it, and `usn_13_truk.lua` never calls `SetRepairPriority`, so the AI-run carriers sit at priority
+    0, as in the host.
+  - The gameplay modifier is 1.0 (docs/GAMEPLAY_MODIFIERS.md: USN13 grants no power-up).
+  - Hull repair is 0.2% of max per second (1243 hp on Intrepid), as bound.
+
+**Result.** No gap in the fire or damage-control model. Of Intrepid's 9243 hp of damage (8000 plus 1243 repaired),
+fire is about a third. The rest is direct bomb hits, their bursts (13.8 hp each) and one component explosion
+(about 1700 hp).
+- If the two carriers dying by 340 s is wrong, look upstream at the hit volume. 135 direct hull hits from the level
+  bombers at about 1400 m is the number to test: the level-bomb aim and release (`009B9030`'s task, the predicted
+  impact) and the bombs' scatter.
+- Second, check the component-failure rolls, which fire an Explosion on Intrepid's first hit at full health
+  (`kComponentFailureBound`, 0093BED0).
+- No USN13 pair was run: there is nothing to bind.
