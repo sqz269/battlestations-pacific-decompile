@@ -13074,6 +13074,19 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
             ++base_launch_liftoff_site_leaves;
         }
     }
+    if (prev == 4 || prev == 5) {
+        // DIAGNOSTIC (cc9_takeoff_site_permission_diag): a lift-off that leaves the
+        // plane on some site's occupancy vector.
+        for (std::size_t k = 0; k < landing_decks.size(); ++k) {
+            const auto& o = landing_decks[k].site_occupants_34;
+            if (std::find(o.begin(), o.end(), p.process_index) == o.end()) continue;
+            log.notef("  lift-off leaves %s on deck %zu (%s) occupants; its +BF4h is %zu "
+                "(packet cc9_takeoff_site_permission_diag)", p.row.name.c_str(), k + 1u,
+                landing_decks[k].owner < slots.size() && slots[landing_decks[k].owner]
+                    ? slots[landing_decks[k].owner]->row.name.c_str() : "?",
+                static_cast<std::size_t>(p.plane_contact_deck_bf4));
+        }
+    }
     p.plane_control_mode_900 = 7;
     p.plane_site_timer_c04 = -1.0f;
     p.plane_taxi_queue_910 = false;
