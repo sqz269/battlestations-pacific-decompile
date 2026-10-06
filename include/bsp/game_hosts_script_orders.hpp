@@ -1000,6 +1000,8 @@ private:
     std::size_t narrative_callbacks_{0};
     std::string narrative_last_callback_;
     std::size_t end_scene_calls_{0};
+    // Packet cc9_parts_land_avoidance: 0092BD00 calls that dropped a hull's class bit.
+    std::size_t parts_land_avoidance_disables_{0};
     float end_scene_first_at_{-1.0f};    // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
     std::string after_row9_poster_;
     struct DeferredOrder {
