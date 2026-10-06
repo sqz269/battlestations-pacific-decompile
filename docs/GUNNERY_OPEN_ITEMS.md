@@ -10342,6 +10342,7 @@ owed.
   `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
 - Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
   group's runs as its build lands.
+
 ### 141.4 Added to the queue after the handoff (from the lead, 2026-10-06)
 
 The shipyard build pair the lead asked for is 136.6, already run.
@@ -10470,3 +10471,81 @@ switches flipped; logs `local\g31_dc{off,on}_<row>.log`; the reference AD launch
   blast reaches the submarine. The DC switches stay identical on every row without a submerged target. The early
   ends belong to the terrain query. **All three switches are flipped ON** (`kDepthChargeBotTickBound`,
   `kPlayerWeaponGroupFireBound`, `kDepthChargeInWaterBound`). BSM01 can be re-run by cc9-ships39.
+
+## 143. USN04 phase 2: why the strikes on Shoho do not release, and the USNOS Kaiten drown (lead items 2 and 3; cc9-gunnery31, 2026-10-06, read and diagnostic runs only)
+
+Runs: an export of `e611d7c4f` with `kHullAimTrace` flipped (`local\g31_u4trace`, `7D50EAC0AF43`). It also carries a local
+`G31AIM` line, never committed, printed every 10 aim ticks of a torpedo aircraft: the altitude, the floor `F=28h`, the
+ground, `approach+74h/+78h`, `f34`, the pitch command `2BCh`, the live pitch, bank, vy, speed, throttle and pitch mode.
+- Launch: USN04 with ships39's `s39_u4_p1.txt` (copied to `local\g31_ord_u4_p1.txt`), `--mission-frame-seconds 0.0222
+  --frame-jitter '20,3'`.
+- Logs: `local\g31_u4trace.log` (45000 frames), `local\g31_u4aim.log` and `local\g31_u4aim2.log` (45000 and 32000).
+- The game numbers match ships39's `s39_u4p1.log` line for line, for example `db aim exit Lexington-class01_sqn06:
+  aimdive -> goaway tick=3879 alt=127.2 ... d=362.8`.
+- **A launch note**: from a `pwsh -Command` string, `--frame-jitter 20,3` must be quoted (`'20,3'`). Otherwise the
+  executable exits 2 before it opens the log.
+
+### 143.1 The torpedo task: `blocked_engaged_009d3210` is the approach, and the loss is in `aim`
+
+- The summary reads `blocked_engaged_009d3210=31532`, split as `member=23908 range=7624` (`no_target=0`). That is
+  docs/TORPEDO_RELEASE_ORDERS.md (8)'s reading: wing members in `follow` before the mode reaches 2, and leaders beyond
+  2.2 x AttackDist. It is the image's own gate. **Nothing to bind at 009D3210.**
+- The three releases are Japanese Kate leaders (#2.1, #4.1, #6.1). **No US TBD releases.** Every Yorktown TBD reaches
+  `aim` for 300-690 ticks. In each one the altitude flag (`009D20C4`, `alt_gate > altitude`, which needs about
+  25-40 m) never opens: `aim gates: ... alt=0 ... min_alt=106.0..139.7`.
+- **What differs from the Kates** (`G31AIM`):
+  - The floor is not the cause. TBD `F=28h` = 5.2 m (`approach+74h` 5.0, SPVeteran's `TorpReleaseAlt`); the Kates' is
+    14.2. Ground is -1000 (open sea) for both.
+  - The TBDs enter `aim` at about 1050-1120 m. That is the image's descent law at their `approach+8Ch` of about 3840 m
+    (`A = 12 + (3843 - 450) x 0.5 x 0.6249 = 1072`, docs/TORPEDO_RELEASE_ORDERS.md (7)). The Kates enter at about 930 m
+    with `+8Ch` about 2900.
+  - `aim`'s command brings both down cleanly at first: `cmd=-0.236 pitch=-0.248` at 197 m for Yorktown_sqn09.
+  - **At about 110 m the TBD levels off against its command.** From t=401 to 441 the aim command stays -0.18 to -0.20
+    rad, but the live pitch goes -0.178 -> -0.067 -> -0.018 -> +0.002. The aircraft then holds 106-110 m and climbs to
+    208 m by t=641 while the command reaches -0.49. Bank is 0.19-0.32 rad throughout (it is turning), with the plan
+    pitch mode 2.
+  - The Kate in the same law (#2.1) is wings level (bank about 0.00) and tracks its command to 15.2 m (`cmd=-0.005
+    pitch=-0.007`).
+- **Candidate, not settled:** something in the planner's pitch arm (`0099E490`, `pilot_pitch_demand_0099e490`, its
+  turn terms `pilot_general_pitch_turn_*`, or the mode-2 hold `0099DD4C`) overrides `aim`'s nose-down command while
+  the aircraft banks. Every TBD in Yorktown's three squadrons stalls at the same 106-140 m, which points at a rule
+  rather than at spread. This is the planes lane (`src/game_hosts_units.cpp` planner, `src/plane_ai_control.cpp`).
+  **Routed, not bound.**
+- The torpedo leader of SHIP_AI 189 (USNRM01's Kates) should be checked against the same `G31AIM` shape.
+
+### 143.2 The dive bombers: the roll-in is 45 degrees of sight line, and the dive goes in at 72
+
+`hull_trace Lexington-class01_sqn06` (leader, tick 3610-3879):
+- Turndown at tick 3610: rel = (-1107, +1206, -500), so 1214 m planar from 1206 m up (a 45-degree sight line).
+- Into `aimdive` at tick 3670: the live pitch is already -1.18 and goes to -1.26 rad (72 degrees) at 100-134 m/s. The
+  turndown's own `plan_commanded_pitch` is -0.5585.
+- The along-track error (`009C5C9B`, `gain * (cos(brg) d - lead)`) then grows from 0 to 42, 179, 303, 439, 548 and
+  653 m. The aircraft is steeper than its sight line, so the impact point runs short of the aim point.
+- The pitch law does pull out: pitch 0.0 by tick 3790, but at 168 m with the error at 299 m. The pull-out edge
+  (`approach+A8h * 0.5`) ends the dive at 127 m, with the error still 280-290 m.
+- The release needs `|error| < 25` below `approach+A8h` (`009C60A9..009C60EC`), so it never fires. The wingmen show
+  the same shape (d = 280-514 at exit).
+- **Not authored spread.** The miss is 10 to 20 times the hull-point and lead draws of SQUADRON_LAND_TASK 5dv
+  (±72 m, ±10 s). The error is born in the first second of `aimdive`, from the attitude the turndown hands over:
+  -1.18 rad live against the -0.56 command. docs/HULL_AIM_AXIS.md section 1 saw the same shape on USN04's Vals (the
+  closest pass at 420-796 m, above the floor).
+- **Routed:** the turndown-to-aimdive attitude handover (`009C44F0`, the pitch-mode 0 gate at `0099E3BF`, the stick
+  path) is the planes lane's. No binding here.
+
+### 143.3 USNOS: the wave-1 Kaiten drown is the image's own rule
+
+- Unit #3.2-#3.6 are class 4: this installation's `vehicleclasses.lua` (2026-05-09) "Kaiten Suicide torpedo", with
+  `AirRunOutTime` 120, `AirReloadTime` 40 and `PeriscopeDepth` 3. `us_osumi.lua` (2024-10-29) spawns them at y = -5
+  (1489-1491), sets no unlimited air, and gives them `NavigatorAttackMove` only.
+- `00855250`, read again: the breathing line is `periscopeY + 3.0` (`00D7A2B0`), floored at -4.0. Here it is
+  -3 + 3 = 0.0. The test at `008552A4` is `FCOMIP` of `pose+100h` against the line, then `JBE` into the submerged arm,
+  so **y <= 0 drains** at `dt / 120`. The trace shows `y=-0.11 level=0 air` falling 0.083 per 200 steps, which drowns
+  them at 120.0 s after the spawn (40.81 + 120 = 160.81 s).
+- A kamikaze class never surfaces for air (`submarine_model.cpp` 198, `!in.kamikaze_class`). In the image, a Kaiten at
+  band 0 would need y strictly above 0.0 to refill.
+- **Verdict: faithful** to the read rule. **Uncertainty:** the image's surfaced y for a band-0 hull. The host settles
+  at -0.11; any y at or below 0.0 gives the same drown.
+- **A transcription slip, with no effect here:** `00CEE4E0`, the bound of the floor, is the double **-4.0**, not 0.0.
+  `submarine_air_breathing_line_00855250` tests `sum < 0.0f`, the image `sum < -4.0`. The result differs only for
+  `PeriscopeDepth` between 3 and 7 exclusive, and this installation has none (3, 7, 10.2-14.0). Routed to the
+  submarine-model owner.
