@@ -680,3 +680,35 @@ reference AB/AC's. Neither run has a `launch` line, so nothing queues.
 
 The prediction holds: with no `launch` line the switch moves nothing. The USN01 win attempt with a
 `launch` line is cc9-ships36's.
+
+### The player's launch: measured, **ON** (cc9-lua41, 2026-10-06)
+
+**USN01 36000** with `local\l41_usn01_launch.txt`: ships35's two phase-2 target picks, then at frame
+4300 (215 s, after the Nells' phase-3 generation) `launch Enterprise <1..4> 101 6 Nell<1..4>`.
+OFF and ON builds are `05fab57f8` and its flip export. Logs are `local\l41_{off,on}_usn01w.log`
+and the diff is `local\l41_diff3_usn01w.txt`. `pair_diff` exits 3. OFF refuses every launch line
+("kAirOpsPlayerLaunchBound is off").
+
+**The mechanism matches the read.**
+- **Slots 1 and 2 fill with 6 Wildcats each and queue.** Slots 3 and 4 are refused because
+  006C0F00 leaves them empty. That is right: Enterprise's MaxInAirPlanes is 12 (`air ops deck`),
+  and the first two slots hold all 12 (006BD460).
+- **About 1 s later** `air ops queued launch` builds squadrons 112 and 117 (006C64B0 -> 006C7490).
+  The creator logs `wing=5` for a slot count of 6. The difference is the squadron creator's own
+  and was not traced here.
+- **The AutoAttackTarget** chooses dogfight (`00E08F58`) on Nell1 and Nell2. It is served at the
+  first step, while one member exists (labelled).
+- **What it changed:**
+  - deaths go from 70 to 77;
+  - six Nells are shot down (Nell1|.-2, Nell2, Nell2|.-2, Nell2|.-3, Nell4, Nell4|.-2);
+  - both Wildcat leaders die to the Nells' gunners (328.6 s and 403.3 s);
+  - Nell5|.-2 now survives.
+- **Enterprise still sinks at 384.43 s,** to Nell5|.-3's bomb, as without the launch. Four Nell
+  squadrons (3, 5, 6 and the rest of 1) were never intercepted, so the win needs more fighters
+  in the air sooner. That is a scripting choice for the harness line, not a mechanism gap.
+- **Rows without a `launch` line** are identical (the identity pairs above).
+
+**Verdict: ON.** The flip only acts on a `launch` line.
+
+**Open:** the creator's `wing=5` for a count of 6; and the AutoAttackTarget order is given to the
+members that exist at the first step.
