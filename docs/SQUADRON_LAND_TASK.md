@@ -13203,3 +13203,38 @@ host's constructor and cleared in its destructor. It follows gunnery30's contrac
 - The LOMP10 300-frame smoke shows `summary shipyard create requested=0 made=0`.
 - Also in this commit: (B) binds the record at the load-attach site as well, and (A)'s enum reader takes the
   symbol's own digits (`:" 0"`), as gunnery30's text does.
+
+## 5el. ESMP08 (b): Zuikaku_sqn01|.-2 is held in takeoff prepare by a stale site occupant (cc9-lua43, 2026-10-06)
+
+**The case.** In `cc9-ships38\local\s38_e8p3.log`, Zuikaku_sqn01|.-2 sits in takeoff/prepare from 29.90 s to
+2313.08 s. Its exit reason is "prepare time and site permission", so `takeoff_permission_009cdd10` /
+`006D01C0` refuses it for 2281 s.
+
+**Diagnostics.** Two diagnostic lines (units `e0dd63a99`, `cc996267d`), run on ESMP08 1000/800 with ships38's
+p3 order file (`local\l43_e8diag2.log`), show:
+```
+lift-off leaves Zuikaku_sqn01 on deck 1 (Zuikaku) occupants; its +BF4h is 3
+takeoff site denied: Zuikaku_sqn01|.-2 own_z=78.4 by Zuikaku_sqn01 z=-85.4 state900=7 deck_bf4=3 occupants=2 at 31.40 s
+```
+
+**What happens to the leader, Zuikaku_sqn01:**
+1. `007CA3F0` puts it on Zuikaku's site vector at 20.75 s.
+2. Its takeoff run ends with a deck-edge lift-off at 28.75 s, at |v| 37. The contact-lost line reads
+   `deck=3 local=(1.20 3.44 -126.00) half=(11 95)`.
+3. **Deck 3 is Zuiho**, which steams just ahead of Zuikaku in this scene. At that step the probe `007C5AC0` /
+   `006C0840` has already re-picked Zuiho as the plane's holder, because the plane is 31 m behind Zuiho's
+   stern on its centre line.
+4. So `007C7110` erases the plane from Zuiho's site vector (where it is absent) instead of Zuikaku's. The
+   lift-off summary agrees: 138 lift-offs, 137 site leaves.
+5. The airborne leader stays on Zuikaku's site+34h. Its z' is ahead of .-2's, so `006D01C0` denies .-2 until
+   the leader's flight path takes its z' back behind, at 2313 s.
+
+**Open: is this the image or the host?**
+- The image erases from `+BF4h` too (`007C7110` -> the holder's vtable[28h]), and probes before the ground
+  arm. So the same order would leave the same stale occupant.
+- The likelier host departure is upstream: **the leader leaves Zuikaku's deck at the bow edge, below
+  flying speed, instead of lifting off on the runway.** Read the takeoff run's lift-off by speed (`009CE2C0`
+  and the free-flight gate) before binding anything.
+- A narrower alternative: the `006C0840` key. A non-accepting holder keys on l.x² + (0.3 l.z)², so a plane
+  just off one carrier's bow and behind the next carrier's stern can pick the next carrier.
+- No switch was bound. The diagnostics are log lines only.
