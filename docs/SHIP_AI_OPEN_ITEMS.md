@@ -14954,7 +14954,7 @@ not completed with legal input.** 190's p1 completion stands only as a labelled 
    - Then re-run `s38_b1_p6.txt` (takehelm to the mini-sub) with a release once Henry is within
      40 m.
    - Phase 4 (`Donald`: ten kills, or 17 km from Akagi) has not been reached.
-2. **USN04 phase 1.**
+2. **USN04 phase 1** (read in 194: no binding gap; the re-issued fade never calls back under lockstep. Superseded text follows.)
    - At difficulty 1 it passes when `IJNBombersLex` or `IJNFightersLex` is all dead (575).
    - Idle, every Lex bomber and fighter group (#1, #2, #5, #6) dies by 1200 s, yet phase 1 never
      completes.
@@ -15058,3 +15058,39 @@ Then the Dakota group has to be sunk.
   Hosho's 51 planes.
 - **Risk:** 188's slot return. If the airfield's slots stop coming back, the strike count is
   capped, as on ESMP08.
+
+## 194. USN04 phase 1: the entries do read Dead; the re-issued fade never calls back (cc9-ships38, 2026-10-06, a read plus three runs)
+
+**The lead's questions, answered.** The run is `local\s38_u4tr.log` (12000 frames, merged main,
+`BSP_LUA_CALLBACK_TRACE=1`).
+- **The entries do read as Dead.** Every Lex bomber and fighter group dies (189's idle list), and
+  `luaRemoveDeadsFromTable` empties the table.
+  - The phase-1 test in `Think` (`usn_19_coralus.lua` 575-579, difficulty 1) becomes true at
+    **222.06 s**. That is the first `luaObj_Completed` call.
+- **Primary 1 is active.** `luaObj_Add` runs once at 26.55 s (`luaAddPh1Obj`, 3243).
+  - `luaObj_IsActive` stays true after completion. This installation's `commandhelpers.lua`
+    (2024-10-29, line 5898) has `--obj.Active = false` commented out; it only sets `Success`.
+  - So `Think` re-runs the branch on every pass: 126 `luaObj_Completed` calls, all no-ops after
+    the first, and 126 `Blackout(true, "luaMoveToPh2", 3)` calls.
+- **The blocker.** Each `Blackout` re-arms the fade at 3.0001 s (005B9BA0), and `Think` runs every
+  3.0 s (00929460's countdown, refill 3.0 at 00929557). The fade is re-armed before it finishes, so
+  `luaMoveToPh2` never runs.
+  - This is docs/MISSION_BLACKOUT.md, section "A re-issued blackout never calls back", and
+    GAME_EXECUTABLE.md's `--frame-jitter` section.
+  - Both 005B9BA0 and 005B9800 match the listing. The frame order (think, then fade) is the image's.
+  - Even at 1/45 s ± 20 % frames the callback is a matter of chance. The integrator ruled no
+    further harness tuning there.
+- **A non-lockstep step does not help** (`s38_u4s51`, `--mission-frame-seconds 0.051`, 7000
+  frames): 45 re-issues, no callback. A pass every 58-59 frames still re-arms the fade on or before
+  its 59th update.
+
+**So no binding gap is open on this path.** USN04 leaves phase 1 only when the condition stops
+holding while a fade is pending.
+- In the image's script that means `BomberWave == 5` (the 345-425 s window, MISSION_BLACKOUT's
+  OFF run) while both `IJNBombersLex` and `IJNFightersLex` still hold a live squadron. Once either
+  table is empty, the condition stays true for good and the mission is stuck.
+- **A legal player plan would have to keep one Lex bomber and one Lex fighter group alive until
+  about 425 s.** Lexington's own AA and its scripted CAP kill them by about 220 s. The player has
+  no harness line to hold fire (none exists), so I did not attempt it.
+- **Routed to the lead:** a `holdfire <ship>` line, or a decision that USN04 is out of scope for
+  lockstep completion.
