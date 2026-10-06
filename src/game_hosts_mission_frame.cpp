@@ -358,6 +358,10 @@ struct GameMissionFrameHost::Impl {
         int launch_slot{0};        // launch: 1-based slot, 0 = 006C7210's pick
         int launch_class{0};       // launch: VehicleClass id
         int launch_count{0};       // launch: planes requested
+        // `build <shipyard> class <id>`: the strategic map's shipyard purchase
+        // 00673A10 through GameGunneryHost::shipyard_order (cc9-ships38).
+        bool build{false};
+        int build_class{0};
         // Packet cc9_player_bomb_release: `release <unit> [on <target...>
         // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
         bool bomb_release{false};
@@ -2556,7 +2560,11 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const bool verb_ok = words.size() >= 2
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
                 || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
-                || words[1] == "release");
+                || words[1] == "release" || words[1] == "build");
+        // `<frame> build <shipyard...> class <id>`: the shipyard name may carry
+        // spaces, so the class is the last two words.
+        const bool build_ok = verb_ok && words[1] == "build" && words.size() >= 5
+            && words[words.size() - 2] == "class";
         // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
         const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
         const bool launch_ok = verb_ok && words[1] == "launch" && words.size() >= 7;
@@ -2566,17 +2574,36 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
             && (words.size() == 3 || (words.size() >= 5 && words[3] == "on"));
         if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok
                 : words[1] == "launch" ? !launch_ok
-                : words[1] == "release" ? !release_ok : words.size() < 4)) {
+                : words[1] == "release" ? !release_ok
+                : words[1] == "build" ? !build_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
                 "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
                 "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
-                "<m>] [until <frame>]]`", line,
+                "<m>] [until <frame>]]` or `<frame> build <shipyard> class <id>`", line,
                 path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (build_ok) {
+            char* ne = nullptr;
+            const long v = std::strtol(words.back().c_str(), &ne, 10);
+            if (ne == nullptr || *ne != '\0' || v <= 0) {
+                host.log.notef("helm order refused: line %d of \"%s\": build needs a positive "
+                    "class id", line, path.c_str());
+                continue;
+            }
+            order.build = true;
+            order.build_class = static_cast<int>(v);
+            order.unit.clear();
+            for (std::size_t w = 2; w + 2 < words.size(); ++w) {
+                if (!order.unit.empty()) order.unit += ' ';
+                order.unit += words[w];
+            }
+            host.helm_orders.push_back(order);
+            continue;
+        }
         if (select_ok) {
             order.select = true;
             host.helm_orders.push_back(order);
@@ -2967,6 +2994,35 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
                     "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
+            if (order.build) {
+                // The strategic map's shipyard purchase (00673A10: A7h until the
+                // entry holds the class, then A9h), one unit per order, through
+                // cc9-gunnery30's GameGunneryHost::shipyard_order. LABELLED: no
+                // map screen runs; the file names the shipyard and the class.
+                std::size_t yard = host.units->count();
+                for (std::size_t k = 0; k < host.units->count(); ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row != nullptr && row->name == order.unit) { yard = k; break; }
+                }
+                GameGunneryHost* gunnery = host.units->gunnery();
+                int chosen = 0;
+                std::string reason;
+                bool accepted = false;
+                if (yard >= host.units->count()) {
+                    reason = "no created unit has that name";
+                } else if (gunnery == nullptr) {
+                    reason = "no gunnery host";
+                } else {
+                    accepted = gunnery->shipyard_order(yard, 0, 1, chosen, reason,
+                                                       order.build_class);
+                }
+                if (accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) build "
+                    "%s class %d: entry %d: %s (00673A10 A7h/A9h -> shipyard_order)",
+                    accepted ? "applied" : "refused", order.line, due, now,
+                    order.unit.c_str(), order.build_class, chosen, reason.c_str());
                 continue;
             }
             if (order.launch) {
