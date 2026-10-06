@@ -15155,3 +15155,66 @@ All five completion times equal their earlier records to the hundredth of a seco
 as completions in the summary, through `Mission.MissionStatus`. Each log has the exec guard's refusal line
 (`bsp: refused a mission script's process launch: sus_prog.exe`). A later reference that misses one of these
 times, or the guard line, has regressed a win.
+
+## Mission reference baselines, 2026-10-06 ae (main 8eee3a87c)
+
+Packet `cc9_reference_rebaseline_32`, worker cc9-gunnery32. The base is main `8eee3a87c`. The previous
+reference is AD (`bb5ad5db8`, `local\g30_ad_base_<row>.log` in cc9-gunnery30's tree).
+
+### The switch diff and the plan
+
+`local\g32_switches.py bb5ad5db8 8eee3a87c` lists fifteen switches, all ON at the base (three flips, twelve new):
+
+| short | switches | record | its own pairs (commit) |
+| --- | --- | --- | --- |
+| `sqp` | `kSquadronPassCPlacementBound`, `kSquadronPutToMembersBound` | SQUADRON_MEMBER_PLACEMENT | USN04 4500 deaths 48 -> 50, releases 3 -> 5; LOMP10 9000 deaths 5 -> 4; USN01 p5 completes (`e68beb96d`) |
+| `sy` | `kShipyardProductionBound`, `kLuaAddShipyardStockBound`, `kShipyardSceneAttachBound` | GUNNERY 146, SQUADRON_LAND_TASK 5ej.1 | moves only LOMP10 with build lines; idle rows identical (`d09116c3d`, `7556f3f03`) |
+| `pod` | `kPathObjectDefaultPairBound` | SHIP_AI 197 | moves only the LOMP10 build boats; broad pairs exit 0/1 (`f0a74bf44`) |
+| `dc` | `kDepthChargeBotTickBound`, `kDepthChargeInWaterBound`, `kPlayerWeaponGroupFireBound` | GUNNERY 139/140/142 | moves BSM01 player routes; USN13 long, USNOS long, JM05 long identical (`efbc2de86`) |
+| `rack` | `kRackLiveOrdnanceMaskBound` | SQUADRON_LAND_TASK 5eu | IJN01 + `s38_i1_p1` deaths 12 -> 37; USN13 long and LOMP10 identical (`a3b542d6a`) |
+| `air` | `kTakeoffOwnSiteBound`, `kReturnToBaseHomeArmBound`, `kStowedPlaneStockReturnBound` | SQUADRON_LAND_TASK 5en/5eo, SHIP_AI 200.2 | ESMP08 (order file, 72000) and USN01 p8 move; USN04 identical (`8ac8db242`, `17cb04378`, `4f897d75c`) |
+| `sub` | `kLuaGetSubmarineOnSurfaceBound` | LUA_BINDING_MISSION | JM06 24000 pair (`0e7843a09`) |
+| `deck` | `kSceneDeckTypeEnumBound` | AIROPS_LOAD_FROM_SCENE 6 | only the harness launch line moves; twelve rows identical (`fb7f526e0`) |
+
+**Rows:** AD's twenty-two in AD's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05,
+idle player; USN04 stays at 0.05 so that it compares with AD), and six scripted-win rows with their order files
+(copies in `local\g32_ord_<key>.txt`):
+
+| key | row | order file | mission frames |
+| --- | --- | --- | --- |
+| `u2` | USN02 | `s36_u2_p7` | 16000 |
+| `u1` | USN01 | `s38_u1_p8` | 22000 |
+| `l6` | LOMP06 | `s37_l6_p2` | 16000 |
+| `l10` | LOMP10 | `s37_l10_p2` | 30000 |
+| `u12` | USN12 | `s38_u12_p2` | 36000 |
+| `b1` | BSM01 | `s38_b1_p6` | 40000 |
+
+**Binaries** (`pair_export.py --commit 8eee3a87c`): AE is `local\g32_ae`; the anchor (all fifteen OFF) is
+`local\g32_anc`. Tools: `local\g32_jobs.py` (job lists) and `local\g32_queue.ps1` (three runs at a time through
+`tools/run_game.ps1`).
+
+### Predictions (written before any run started)
+
+- **Anchor** (fifteen OFF) against AD: gameplay-identical (exit 0/1) on all twenty-two rows. A miss means that
+  unswitched code since AD moves a row. The candidates are the Lua lane's unswitched binding commits; the
+  mission-end summary and diagnostic commits are log only.
+- **AE against AD.** `sqp` is the broad one: pass C places every airborne wing at tick 0.
+  - Expected exit 3 on every row that spawns an airborne squadron: USN04, USN04 E2, LOMP10, LOMP10 long, USN01,
+    USN13, USN13 long, JM05, JM05 long, ESMP08 long, USNRM01, IJN11, IJN01, USNOS and USNOS long. The risk is that
+    some of these spawn only deck squadrons, which pass C does not touch; those stay exit 1.
+  - `air` adds ESMP08 long (returns to their own carrier) and any row where a plane stows (USN13 long, USNRM01).
+  - `rack` may add IJN01. `sub` may move JM06 if its script polls `GetSubmarineOnSurface`.
+  - `dc`, `sy`, `pod` and `deck` are expected to be inert on idle rows.
+  - Expected exit 0/1: JM08, JM08 long, BSM01, LOMP06, USN12 and USN02. A move there would point at unswitched
+    code, to be checked against the anchor.
+- **Leave-one-out** (two rounds on the moved rows; groups `sqp`, `air`, `rack`, `sub`, `dc`, and `sy` with `pod`):
+  `sqp` OFF restores the anchor on most moved rows, `air` OFF on ESMP08 long; every other group OFF = AE.
+- **Scripted wins (AE):**
+  - USN02 p7 completes at **727.60 s** (AD, and the scene-deck pair).
+  - USN01 p8 completes at **648.42 s** (SHIP_AI 200.2's stock-return pair).
+  - LOMP06 p2: `luaMissionSuccess` at **267.41 s**, `EndScene` 301.95 s.
+  - LOMP10 p2: `luaVictory` at **1438.63 s** (the drift since AD, recorded at AIROPS_LOAD_FROM_SCENE 6).
+  - USN12 p2 completes at **1544.78 s**.
+  - BSM01 p6, 40000: the MiniSub dies near 1300.79 s and `Mission.EndMission` comes near **1632.47 s** (cc9-ships40's
+    `s40_bsm_b6.log`). The depth-charge switches that landed after that run may move it by seconds.
+  - Every win log has the guard line `bsp: refused a mission script's process launch: sus_prog.exe`.
