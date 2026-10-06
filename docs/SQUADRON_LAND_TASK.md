@@ -13012,3 +13012,55 @@ This supersedes 5ef's "Next" list. The branch is `agent/cc9-lua41` and the workt
 3. **A plane/Lua reach census on reference AC**, once cc9-gunnery29 closes it. Use the 5dr method:
    host-method rows and summary lines over the AC logs, plus a stale-label check before calling
    any row a gap.
+
+## 5eh. USN01's scout miss under the drop scatter: the dive aim chain checked (cc9-lua42, 2026-10-06)
+
+**The question** (SHIP_AI 176.1, lead): with `kBombDropScatterBound` ON, both ScoutDauntless bombs
+miss Convoy1, so USN01 never leaves phase 2. Is the dive aim chain image-faithful end to end on this
+case, and is the hull hit test right? Read-only; no code changed.
+
+**The evidence** is cc9-ships36's w7 run (`cc9-ships36\local\s36_u1w7.log`, scatter ON). For
+`ScoutDauntless|.-2`:
+
+| step | log line | value |
+| --- | --- | --- |
+| hull pick, 00816650 box (L 180, W 16) | 17694 `hull_aim draw` seed=21 | body (across -7.96, along 35.03), including the error bias |
+| authored aim error, 009C3DA0 | 17681 `aim error draw` | bias (h -4.81, v -2.95), spread 0.80, time -6.00 |
+| lead, 009FAF05 tail | 19780 `aim lead` | projtime 2.69, lead (6.6, -20.7) |
+| release | 20945 / 20953 | 219.0 m, \|v\| 89.15 m/s, angle_to_nose 1.5 deg; predicted impact (-3397, -1449) |
+| scatter, 006E4D50 / 006E1F00 | 20952 | cone 0.297 deg; turn 3.098 deg; v (-62.8 -42.3 -48.6) -> (-64.5 -38.0 -50.0) |
+| impact | 108930 | (-3413, -1461), 19.4 m from the prediction |
+
+**Each link against the image:**
+1. **Predicted impact.** 009C7D71 is `unit + (007BCC80(H, v.y) + 0.1) x v`, built from the
+   aircraft's velocity (AIMDIVE_ENTRY.md line 62; DIVE_BOMB_AIM_POINT.md line 14). The image steers
+   that velocity-based point onto the aim point.
+2. **Release direction.** 006E1F00 replaces the 5do velocity's direction with the round's forward
+   row, keeping |v| (GUNNERY 130.1). The Dauntless rack has no gun+74h setup (0072E6D0) and its slot
+   carries no rotation, so that row is the nose (5ef, GUNNERY 130). The image therefore releases
+   along the nose but predicts along the velocity. The difference between the two is in the image
+   itself, not in this host.
+3. **The turn's size.** 3.1 deg, made of three parts:
+   - the 5do velocity's 3.0 m/s taken off y, which 006E1F00 discards along with the rest of the
+     direction (about 1.9 deg at 89 m/s);
+   - the aircraft's angle of attack, 1.5 deg (`angle_to_nose`);
+   - the cone, 0.30 deg.
+   The bomb leaves shallower (v.y -42.3 -> -38.0) and so carries further along its path.
+4. **Geometry.** The attack is a beam attack. The aircraft's planar heading (-0.79, -0.61) is 0.93
+   along Convoy1's across axis, row0 (-0.957, -0.289). So the overshoot lands ACROSS the hull.
+   Impact minus prediction = (-16, -12): 18.8 m across, 6.9 m along.
+5. **Hull test.** The aim point was already at -7.96 m across, inside the class half-beam of 8 m
+   (`Width` 16). Adding 18.8 m puts the impact about 10.8 m on the other side, so it is outside the
+   hull. "Died at the sea surface" is the right outcome for a point 2.8 m beyond the side. The
+   leader's bomb is 16.6 m across from its prediction and misses the same way.
+
+**Verdict.** No host departure was found in the chain. The miss comes from the image's own
+velocity-versus-nose difference in a beam attack, landing on an aim point that the box pick had put
+at the beam's edge. **Two host inputs are labelled substitutes, and the miss depends on both:**
+- the box draws (`approach_target_ref_unit_draws_substitute`, a hash, not stream 1). A different
+  draw nearer the centreline would hit.
+- the 1.5 deg angle of attack, from the host's flight model. The image's own dive AoA is not
+  measured.
+So this is recorded as the image's own sample under those two substitutes, not as a bug. The win
+path needs the player's manual-release line (cc9-ships37) or a run whose draws aim nearer the
+centreline.

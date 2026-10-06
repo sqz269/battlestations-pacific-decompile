@@ -566,6 +566,10 @@ int binding_trampoline(lua_State* state) {
             // 008CD753 / 008CD841: 5, or 6 after a boolean argument 5.
             first_target = argc > 5 && lua_type(state, 6) == LUA_TBOOLEAN ? 6 : 5;
         }
+        // DIAGNOSTIC: the objective's display text, argument 3 of 008CD440
+        // (commandhelpers.lua luaObj_Add passes obj.Text there). Reads the
+        // stack only: no Lua call, no draw.
+        if (is_add) host->note_objective_text(name, objective_argument_string(state, 3));
         int units_touched = 0;
         for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
             if ((mask & (1u << k)) == 0u) continue;
@@ -4409,6 +4413,12 @@ void GameMissionLuaHost::run_sentity_init_all_00925f20(bool flag, std::uint32_t 
 
 bool GameMissionLuaHost::init_all_attached(int entity_id) const {
     return init_all_attached_.count(entity_id) != 0;
+}
+
+void GameMissionLuaHost::note_objective_text(const std::string& objective,
+                                             const std::string& text) {
+    log_.notef("mission objective: %s (id \"%s\", 008CD440 argument 3)", text.c_str(),
+        objective.c_str());
 }
 
 void GameMissionLuaHost::note_objective_binding(const char* binding,
