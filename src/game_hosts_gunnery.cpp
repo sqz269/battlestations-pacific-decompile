@@ -103,6 +103,23 @@ constexpr bool kBombDropVelocityBound = true;   // SQUADRON_LAND_TASK 5do
 // airfield_aim_point. False: the target itself (the base 00432480).
 // ON by the pairs of 2026-10-06 (GUNNERY 124.4): no reach on the reference rows.
 constexpr bool kAirfieldTargetSubEntitiesBound = true;
+// Packet cc9_damage_smoke_draws (docs/GUNNERY_OPEN_ITEMS.md 127): 008227E0, step 7
+// of the unit update (008259EB), the damage-smoke controller at unit+10A0h. Its
+// slot count follows the damage (00822770: min(ftol((class+660h + 1) * (1 -
+// 00923BE0)), class+660h), grow only); its clock +30h (unit+10D0h) counts up and
+// is zeroed by every hull hit (008270BE in 00826F10). While the clock is below
+// 30.0 ([00CE7630], double) and the unit's world Y (+100h) is above -5.0
+// ([00CFBC84]), each slot whose timer has run out takes three 00BD2F10 draws on
+// stream 1 (00822973 U(5, 10) the next timer; 008229F5 / 00822A39 U(-0.3 *
+// class+A0h, +) and U(-0.3 * class+A4h, +) the spawn point) and one 00BD2FC0 on
+// stream 0 (00822A89, the effect pick % the class+664h count). True: those draws
+// and the clock, slot and timer state; the effects themselves are presentation
+// and are not created. LABELLED: the health is health / max_health floored at 0
+// and capped at 1 (0.0 for a dead unit, 00923BE4's +5Dh arm); the slot count
+// comes from the class row's DamageSmoke.MaxNumber (00832495) for any unit the
+// world updates (the image runs 008227E0 only through 008255B0's vtables); the
+// stream-0 pick is consumed as one generator step. False: 008227E0 stays a record and nothing is drawn.
+constexpr bool kDamageSmokeDrawsBound = false;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -1123,6 +1140,12 @@ struct GameGunneryHost::Impl {
         float artillery_max_range{0.0f};  // unit+490h, 00956E43
         float any_weapon_max_range{0.0f}; // unit+494h, 00956E59
         bool dead{false};
+        // Packet cc9_damage_smoke_draws: class+660h / the +664h count, and the
+        // controller at unit+10A0h (slot timers +0Ch, clock +30h).
+        int smoke_max_660{0};
+        int smoke_effects_664{0};
+        std::vector<float> smoke_timers;
+        float smoke_clock{0.0f};
         // The kill attribution block at victim+2C4h..+2E8h, as 0077CE60 leaves it.
         bsp::KillAttributionFields attribution{};
         std::size_t last_attacker{0};   // victim+2C4h, one based
@@ -1310,6 +1333,7 @@ struct GameGunneryHost::Impl {
         artillery_fire_delay = 18, // 006DFBD6, fireDelayTime = U(0, 0.1), key (gun, 0)
         aa_gunner_error = 19, // 00902B5C period, 00902CF0 spread, 00902D77/00902D95 offsets, key (gun, 0)
         aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
+        damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1861,6 +1885,14 @@ struct GameGunneryHost::Impl {
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
     unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
     unsigned long long airfield_sub_entities_listed{0};
+    unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
+    unsigned long long smoke_clock_resets{0};
+    unsigned long long smoke_slots_grown{0};
+    unsigned long long smoke_respawns{0};
+    unsigned long long smoke_expired_held{0};
+    std::size_t smoke_units{0};
+    float smoke_first_respawn{-1.0f};
+    std::string smoke_first_unit;
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
     // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
@@ -3477,6 +3509,18 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.length = num(row.Length, 1000) or 0\n"
         "    f.width = num(row.Width, 1000) or 0\n"
         "    f.height = num(row.Height, 1000) or 0\n"
+        // Packet cc9_damage_smoke_draws: 00832445..00832616, DamageSmoke.MaxNumber
+        // (class+660h) and the length of the integer run in DamageSmoke.Effect
+        // (the +664h vector; the native walk stops at the first non-integer).
+        "    if type(row.DamageSmoke) == 'table' then\n"
+        "      f.dsmax = num(row.DamageSmoke.MaxNumber, 1) or 0\n"
+        "      local ne = 0\n"
+        "      local fx = row.DamageSmoke.Effect\n"
+        "      if type(fx) == 'table' then\n"
+        "        while type(fx[ne + 1]) == 'number' do ne = ne + 1 end\n"
+        "      end\n"
+        "      f.dsfx = ne\n"
+        "    end\n"
         "    local n = 0\n"
         "    local plats = row.Platforms\n"
         "    if type(plats) == 'table' then\n"
@@ -3723,6 +3767,8 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         state.hull_length = flat_scaled(type_id, "length", kMilliScale, 0.0f);
         state.hull_width = flat_scaled(type_id, "width", kMilliScale, 0.0f);
         state.hull_height = flat_scaled(type_id, "height", kMilliScale, 0.0f);
+        state.smoke_max_660 = flat(type_id, "dsmax", 0);
+        state.smoke_effects_664 = flat(type_id, "dsfx", 0);
         state.row.health = state.health;
         state.row.max_health = state.max_health;
         if (damage_control.size() < unit_state.size()) damage_control.resize(unit_state.size());
@@ -8400,7 +8446,13 @@ public:
         // 500 to pick which of the three part-damage arms runs.
         return owner_.units.unit_hull_mass_00b0(victim_);
     }
-    void clear_hit_accumulator() override {}
+    void clear_hit_accumulator() override {
+        // 008270BE: the damage-smoke clock unit+10D0h (controller +30h).
+        if (kDamageSmokeDrawsBound && victim_ < owner_.unit_state.size()) {
+            owner_.unit_state[victim_].smoke_clock = 0.0f;
+            ++owner_.smoke_clock_resets;
+        }
+    }
 
     float hull_damage(float armour) override {
         return bsp::hull_damage_00470510(hit_, armour);
@@ -10582,6 +10634,66 @@ void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float frac
     state.row.health = state.health;
 }
 
+bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float delta) {
+    if (!kDamageSmokeDrawsBound) return false;
+    Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return true;   // not built: no class row yet
+    Impl::UnitState& us = host.unit_state[unit_index];
+    const int max_number = us.smoke_max_660;
+    if (max_number <= 0) return true;                        // +2Ch == 0: no slot ever
+    ++host.smoke_ticks;
+    // 00822801 00923BE0, then 00822813 1.0 - health into 00822770.
+    float health = 0.0f;
+    if (!us.dead && us.max_health > 0.0f) {
+        health = us.health / us.max_health;
+        if (health < 0.0f) health = 0.0f;                    // 00923C0C
+        if (health > 1.0f) health = 1.0f;                    // 00923C2F
+    }
+    const float damage = 1.0f - health;
+    // 00822774..00822791: (+2Ch + 1) * arg through _ftol (truncation), capped at +2Ch.
+    int wanted = static_cast<int>(static_cast<double>(max_number + 1) * damage);
+    if (!(wanted < max_number)) wanted = max_number;
+    // 008227AD: an unsigned compare; the grow appends {null effect, 0.0}.
+    if (wanted > 0 && static_cast<std::size_t>(wanted) > us.smoke_timers.size()) {
+        if (us.smoke_timers.empty()) ++host.smoke_units;
+        host.smoke_slots_grown += static_cast<std::size_t>(wanted) - us.smoke_timers.size();
+        us.smoke_timers.resize(static_cast<std::size_t>(wanted), 0.0f);
+    }
+    // 00822825..00822837: the clock, then 0082286A (30.0 as a double) and 0082288E.
+    us.smoke_clock += delta;
+    bool respawn = false;
+    if (static_cast<double>(us.smoke_clock) < 30.0) {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        host.units.unit_position_00fc(unit_index, x, y, z);
+        respawn = y > -5.0f;
+    }
+    // class+A0h / +A4h times 0.3 ([00CE3DC8]); the host's Length and Width.
+    const float half_a0 = us.hull_length * 0.3f;
+    const float half_a4 = us.hull_width * 0.3f;
+    for (std::size_t slot = 0; slot < us.smoke_timers.size(); ++slot) {
+        float& timer = us.smoke_timers[slot];
+        timer -= delta;                                      // 008228FA
+        if (!(timer <= 0.0f)) continue;                      // 0082290C
+        if (!respawn) { ++host.smoke_expired_held; continue; }   // 0082295B
+        timer = host.draw(Impl::Draw::damage_smoke, unit_index, slot * 2u, 5.0f, 10.0f);
+        host.draw(Impl::Draw::damage_smoke, unit_index, slot * 2u, -half_a0, half_a0);
+        host.draw(Impl::Draw::damage_smoke, unit_index, slot * 2u, -half_a4, half_a4);
+        // 00822A87 XOR ECX,ECX / 00822A89 00BD2FC0: the effect pick on stream 0.
+        if (Impl::rng_streams_enabled()) {
+            host.draw(Impl::Draw::damage_smoke, unit_index, slot * 2u + 1u, 0.0f, 1.0f);
+        } else {
+            death_mode_draw_00bd2f10(0, unit_index, 0.0f, 1.0f);
+        }
+        host.record("UnitDamageSmoke::point_effect_create", 0x00822ad7u);
+        ++host.smoke_respawns;
+        if (host.smoke_first_respawn < 0.0f) {
+            host.smoke_first_respawn = host.clock_seconds;
+            host.smoke_first_unit = us.row.name;
+        }
+    }
+    return true;
+}
+
 float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,
     float low, float high) {
     // Stream 1 is the shared generator, exactly as ship_ai_draw uses it; under the
@@ -11395,6 +11507,16 @@ void GameGunneryHost::report() {
             "bound=%d (008654AC -> 006D4DD0, packet cc9_airfield_sub_entities)",
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
             kAirfieldTargetSubEntitiesBound ? 1 : 0);
+        if (kDamageSmokeDrawsBound) {
+            host.log.notef("summary mission gunnery damage smoke ticks=%llu units=%zu "
+                "slots_grown=%llu clock_resets=%llu respawns=%llu expired_held=%llu "
+                "first_respawn=%s@%.2f (008227E0, 00822770, 008270BE; three stream-1 "
+                "draws and one stream-0 pick per respawn, packet cc9_damage_smoke_draws)",
+                host.smoke_ticks, host.smoke_units, host.smoke_slots_grown,
+                host.smoke_clock_resets, host.smoke_respawns, host.smoke_expired_held,
+                host.smoke_first_unit.empty() ? "none" : host.smoke_first_unit.c_str(),
+                static_cast<double>(host.smoke_first_respawn));
+        }
         if (host.airfield_destroy_kills != 0) {
             host.log.notef("summary mission gunnery airfield destroy kills=%llu (006D41EF -> "
                 "0077D1A0, packet cc9_airfield_destruction_rule)", host.airfield_destroy_kills);
