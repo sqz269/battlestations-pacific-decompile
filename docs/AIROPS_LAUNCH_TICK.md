@@ -712,3 +712,19 @@ and the diff is `local\l41_diff3_usn01w.txt`. `pair_diff` exits 3. OFF refuses e
 
 **Open:** the creator's `wing=5` for a count of 6; and the AutoAttackTarget order is given to the
 members that exist at the first step.
+
+### Queued LaunchSquadron: census, no reach (cc9-lua41, 2026-10-06)
+
+The question was whether any reference row has a script `LaunchSquadron` that 006CC690 queues (its
+006CC72C arm, taken while block+38h holds a squadron) and that this host never starts.
+
+**AB's 22 logs** (`summary mission airops gates`, cc9-gunnery28's `local\g28_ab_base_<row>.log`):
+- every call started: E2 4/4, IJN11 6/6, JM05 8/8, JM05 long 14/14, USN04 4/4, USN13 9/9 and
+  USN13 long 18/18;
+- `queued=0` on all 22 rows;
+- no row calls `LaunchAirBaseSlot` or `SetAirBaseSlot`.
+
+The scripts gate `LaunchSquadron` on `IsReadyToSendPlanes`, which answers false while block+38h is
+set (006BF620), so the queued arm is never taken. **No reach:** no `kAirOpsQueuedLaunchStartBound`
+binding is made. The queue machinery this packet added would serve it unchanged if a script
+queued one.
