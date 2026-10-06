@@ -14318,3 +14318,53 @@ The F1 smoke ran clean.
 
 **Verdict: ON** (reference AG). The mechanism matches: no taxiing plane runs the demand arm, no member is stuck, and the
 carrier row is unmoved.
+
+## 5ff. JM08 with the ground throttle arm ON, and the handoff (cc9-lua47, 2026-10-06, at about 70% context)
+
+**Two more JM08 runs** on the tree at `684f2a6fe` (copied to `local\l47_R2`). Both use `local\l47_j8gen2.py ... norot`:
+every airfield slot aims at USTroopTransport 01 first, relaunching every 200 frames.
+
+| run | ships | outcome |
+| --- | --- | --- |
+| g8 (`local\l47_j8_g8.txt`) | boats and DDs, all on T01 first | **T01 sunk at 252.76 s** (Betty `sqn03|.-3`); T02 490.70 (airfield sqn11); LST 02 466 (Hosho); T03 748; Isokaze and Fubuki die to Hawaii/Pringle; transport unit 356 launches its craft at 811.20 s; **HQ neutralized 996.90 s** |
+| g9 (`local\l47_j8_g9.txt`) | boats and DDs rotated (g5 style) | **T01 252.76 s**; LST 02 465.81; T03 483.76; T02 495.55; T06 685.06; T05 686.76; LSM 01 776.18; T04 787.48; LST 03 934.95. **No landing craft is launched at all.** **Failed 1006.03 s** |
+
+**The fail is not the landing craft.** g9 launches no craft, and in g8 the first unload is at 1021.77 s, after the
+neutralize.
+- The HQ is neutralized when its **health reaches 0** (SHIP_AI_OPEN_ITEMS 6824: `006F3270` at health <= 0).
+- g9's log has 474 `impact blast ... on Headquarter 01` lines. Health is already 0.0 at the last ones; the invasion
+  force bombards it from its attack-move onto the HQ (`StartInvasion`).
+- So the defence must sink or turn the bombarding ships before the HQ's 12000 hp run out, not just the transports.
+- Primary 1 also needs LST 01 and LSM 02, still alive in g9.
+
+### Handoff
+
+Branch `agent/cc9-lua47`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua47`. Everything is committed; no
+leases are held.
+
+| item | switch | state | where |
+| --- | --- | --- | --- |
+| gunnery rows read the rack's equipment device | `kGunneryRackEquipmentDeviceBound` | ON | 5fa |
+| GUNNERY 138 per-rack bullet kind | `kRackBulletKindBound` | ON | 5fa |
+| DisplayScores / HideScoreDisplay | `kLuaDisplayScoresBound` | ON | 5fb |
+| first rack round; 006CCDA0 state-2/5 arms | - | read, not bound (lead: skip) | 5fc |
+| held-slot orders to a scene squadron's slot | `kAirOpsSceneSquadronOrdersBound` | OFF, unreached | AIROPS_LAUNCH_TICK, last section |
+| JM08 attempts | - | furthest: g5 (all transports) / g9 (T01 at 252 s) | 5fd, 5ff |
+| taxiing plane's throttle, `0099D300` state-5 arm | `kPilotThrottleGroundArmBound` | **ON (AG)** | 5fe |
+
+**Next, in order:**
+1. **JM08.** Find which ships shell the HQ. The impact lines carry only the bullet id: 1, 15 and 19 appear. Map them to
+   device rows through the gunrow table, then point the airfield sorties and the destroyers at those ships.
+   - The airfield now cycles: 13 launches in g8/g9.
+   - Hosho's Kates and Judys add more.
+   - Keep the T01-first plan, since it removes the landing craft.
+2. **The Gleaves kill of T05** in the F1 JM08 run (5fe) is unexplained. A friendly kill is worth a look by the gunnery lane.
+3. **Routed already (gunnery33):** the Gyoraitei tubes never fire, and the shipyard entries never re-idle.
+
+**Scripts** are in `local\`, prefix `l47_`:
+- `l47_lane.ps1 -Variant <dir> -Rows a,b [-Orders f] [-Frames n] [-Prefix p]`. Rows: `smoke`, `usn13l`, `usnos`,
+  `lomp10`, `lomp10w`, `e2`, `osf7`, `osf8`, `ijn01p1`, `j8` (JM08 with `-Orders`).
+- `l47_j8gen2.py` writes the airfield stock-class launches (`norot` puts T01 first). `l47_j8gen3.py` adds the shipyard
+  builds and the `select`/`attack`/`select HQ` lines for the boats and Isokaze/Fubuki (`--ships`, `--norot`, `--boats N`,
+  `--first T`).
+- `l47_diag_patch*.py` patch an exported copy (`local\l47_D9`) with throttle and branch traces. They are never for commit.
