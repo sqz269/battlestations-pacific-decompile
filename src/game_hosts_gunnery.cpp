@@ -120,6 +120,15 @@ constexpr bool kAirfieldTargetSubEntitiesBound = true;
 // world updates (the image runs 008227E0 only through 008255B0's vtables); the
 // stream-0 pick is consumed as one generator step. False: 008227E0 stays a record and nothing is drawn.
 constexpr bool kDamageSmokeDrawsBound = false;
+// Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
+// victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
+// (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
+// (SingleInvincibleTime after a neutralize; the ship AI host keeps it) and runs
+// 007470B0's SmokeFireChanceMul roll before the AddDamage. True: a hit on a capture
+// building goes through GameShipAiHost::command_building_hit_gate_006f1f20 (the
+// lander bleed's entry): refused with +7D8h != 0, else the roll (drawn under
+// kLandFortFireRollBound) and the damage. False: every hit damages, no roll.
+constexpr bool kCommandBuildingGunfireGateBound = false;
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -1885,6 +1894,8 @@ struct GameGunneryHost::Impl {
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
     unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
     unsigned long long airfield_sub_entities_listed{0};
+    unsigned long long cb_gate_refusals{0};        // packet cc9_cb_gunfire_gate
+    unsigned long long cb_gate_passes{0};
     unsigned long long smoke_ticks{0};             // packet cc9_damage_smoke_draws
     unsigned long long smoke_clock_resets{0};
     unsigned long long smoke_slots_grown{0};
@@ -8605,6 +8616,18 @@ public:
     // 00879070 -> 00877B90 write both passes share.
     bool add_damage(float damage) {
         if (damage <= 0.0f) return false;
+        if (kCommandBuildingGunfireGateBound && owner_.ship_ai != nullptr
+            && owner_.units.unit_is_kind_of(victim_, 0x1c)) {
+            // 006F1F23..006F1F36: +7D8h != 0.0 returns before 007470B0; otherwise
+            // the ship AI host runs 007470B0's roll (the lander bleed's helper) and
+            // the AddDamage 0095DA00 below follows.
+            if (!owner_.ship_ai->command_building_hit_gate_006f1f20(victim_, damage)) {
+                ++owner_.cb_gate_refusals;
+                owner_.done("CommandBuilding::add_damage_gate_006f1f20", 0x006f1f20u);
+                return false;
+            }
+            ++owner_.cb_gate_passes;
+        }
         applied_ += damage;
         bsp::UnitHealth health;
         health.current_health = owner_.unit_state[victim_].health;
@@ -11507,6 +11530,11 @@ void GameGunneryHost::report() {
             "bound=%d (008654AC -> 006D4DD0, packet cc9_airfield_sub_entities)",
             host.airfield_sub_entity_asks, host.airfield_sub_entities_listed,
             kAirfieldTargetSubEntitiesBound ? 1 : 0);
+        if (kCommandBuildingGunfireGateBound) {
+            host.log.notef("summary mission command building gunfire gate refusals=%llu "
+                "passes=%llu (006F1F20 +7D8h, then 007470B0's roll, packet "
+                "cc9_cb_gunfire_gate)", host.cb_gate_refusals, host.cb_gate_passes);
+        }
         if (kDamageSmokeDrawsBound) {
             host.log.notef("summary mission unit damage smoke ticks=%llu units=%zu "
                 "slots_grown=%llu clock_resets=%llu respawns=%llu expired_held=%llu "
