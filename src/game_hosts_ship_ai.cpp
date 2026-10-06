@@ -721,6 +721,34 @@ inline constexpr bool kLandFortFireRollBound = true;
 // (HQ neutralized 1036.10, not 1034.10), five rows gameplay identical (a recorded
 // spread miss on JM05 and USN01).
 inline constexpr bool kShipAiTimerDrawsBound = true;
+// Packet cc9_command_building_level (section 169). A CommandBuilding's level:
+//   - 006F2780 stores the scene's `Level` (0 when absent) at +770h and
+//     `LevelUpSeconds` (10 when absent) at +76Ch; the constructor clears +774h;
+//   - the fixed-step callback 006F7360, outside a multiplayer client
+//     (006F737D) and for party != 2 (006F755D), adds the step to +774h
+//     (006F756A..006F757C) and, when +774h > (float)+76Ch and +770h < 3
+//     (006F758E..006F759D), routes message D4h with +1Ch = level + 1
+//     (006F759F..006F75E6);
+//   - 006F4D10 (D3h: the neutralize and the flip) routes D4h with +1Ch = 0
+//     (006F5362..006F53A4, EBP = 0 from 006F5081) outside a multiplayer client;
+//   - D4h's handler 006F38E0 (006F5460's table, entry 006F54B5): a level other
+//     than 4 that differs from +770h stores it, clears +774h, and sets +368h =
+//     Armor[level] * class+4Ch (Armour) and +36Ch = HP[level] * class+48h (HP)
+//     from the 004C1D10 globals (+18h.. and +4h.., each Lua value / 100), then
+//     respawns the garrison (006F3660).
+// True: the level, the timer and +368h, which the landed bleed reads. Recorded,
+// not modelled: the +36Ch rescale (the gunnery rows' maximum health), the
+// garrison respawn, the gunfire path's armour; message delivery is immediate.
+// False: +368h stays the class Armour (level 0).
+// ON by section 169.5: JM08 long's HQ reaches level 3 at 30 s, the bleed falls to
+// 4 per craft-second and the HQ is neutralized at 1041.50 s, not 1036.10; five
+// rows gameplay identical.
+inline constexpr bool kCommandBuildingLevelBound = true;
+// LABELLED: this installation's commandbuildingglobals.lua (mtime 2024-07-13):
+// ArmorBasic/Medium/Advanced/Expert 100/105/110/120 and HPBasic..Expert
+// 100/110/120/140, divided by 100 at 006F7670.
+inline constexpr float kCommandBuildingArmorLevel[4] = {1.00f, 1.05f, 1.10f, 1.20f};
+inline constexpr float kCommandBuildingHpLevel[4] = {1.00f, 1.10f, 1.20f, 1.40f};
 // LABELLED: this installation's scripts\datatables\commandbuildingglobals.lua
 // (mtime 2024-07-13) SingleInvincibleTime = 20 (006F7670 stores it at +4Ch of the
 // 004C1D10 globals; 006F4360 copies +4Ch into class+190h in single player).
@@ -976,6 +1004,12 @@ struct GameShipAiHost::Impl {
         double neutral_at{-1.0};
         float invincible_7d8{0.0f};   // packet cc9_landed_ship_remainder
         float armour_368{0.0f};       // class Armour, read at build (LABELLED level 0)
+        // Packet cc9_command_building_level.
+        float class_armour_04c{0.0f};
+        float class_hp_048{0.0f};
+        std::int32_t level_770{0};
+        std::int32_t level_up_seconds_76c{10};
+        float level_timer_774{0.0f};
         float smoke_fire_mul_164{0.0f};   // class+164h SmokeFireChanceMul (00749210)
         float fire_duration_min_168{0.0f};    // class+168h SmokeFireDurationMin
         float fire_duration_max_16c{0.0f};    // class+16Ch SmokeFireDurationMax
@@ -999,6 +1033,12 @@ struct GameShipAiHost::Impl {
     unsigned long long fire_secondary_rolls{0};
     unsigned long long fire_secondary_hits{0};
     unsigned long long fire_draws{0};
+    // Packet cc9_command_building_level: the census.
+    unsigned long long level_ups{0};
+    unsigned long long level_resets{0};
+    unsigned long long level_unchanged{0};
+    void command_building_level_006f38e0(CaptureBuilding& b, std::int32_t level,
+                                         const char* source);
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
     void landfort_fire_roll_007470b0(CaptureBuilding& b, float amount);
     void landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds);
@@ -12083,6 +12123,11 @@ void GameShipAiHost::Impl::build_capture_buildings() {
         if (settings_owner != nullptr && building_row != nullptr && building_row->type_id >= 0) {
             b.armour_368 = settings_owner->read_vehicle_class_number(building_row->type_id,
                 "Armour", 0.0f);
+            // Packet cc9_command_building_level: class+4Ch Armour and class+48h HP
+            // (HP is 100.0 when absent, 0087CC98).
+            b.class_armour_04c = b.armour_368;
+            b.class_hp_048 = settings_owner->read_vehicle_class_number(building_row->type_id,
+                "HP", 100.0f);
             b.smoke_fire_mul_164 = settings_owner->read_vehicle_class_number(
                 building_row->type_id, "SmokeFireChanceMul", 0.0f);
             b.fire_duration_min_168 = settings_owner->read_vehicle_class_number(
@@ -12096,6 +12141,9 @@ void GameShipAiHost::Impl::build_capture_buildings() {
         // the draw is not taken here so the shared stream stays as it was. Only
         // where inside the first second a neutral building's ticks fall moves.
         b.state.countdown_7c0 = 0.0f;
+        // 006F2780: the scene's `Level` and `LevelUpSeconds`; +774h is 0.
+        b.level_770 = units.command_building_level_0770(u);
+        b.level_up_seconds_76c = units.command_building_level_up_seconds_076c(u);
         capture_buildings.push_back(b);
     }
     char* env = nullptr;
@@ -12177,6 +12225,17 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         // the head of the capture step).
         for (CaptureBuilding& b : capture_buildings) {
             if (b.fire_740) landfort_fire_frame_00745be0(b, seconds);
+        }
+    }
+    if (kCommandBuildingLevelBound) {
+        // 006F755D..006F75E6, the owned arm of 006F7360 (LABELLED order: before
+        // the neutral arm's countdown, as each building takes one arm per step).
+        for (CaptureBuilding& b : capture_buildings) {
+            if (units.unit_side_0054(b.unit) == 2) continue;          // 006F755D
+            b.level_timer_774 += seconds;                             // 006F757C
+            if (!(b.level_timer_774 > static_cast<float>(b.level_up_seconds_76c))) continue;
+            if (b.level_770 >= 3) continue;                           // 006F759D
+            command_building_level_006f38e0(b, b.level_770 + 1, "level-up D4h 006F759F");
         }
     }
     for (CaptureBuilding& b : capture_buildings) {
@@ -12286,6 +12345,8 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             // guns follow its party.
             if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit, 1.0f);
         }
+        // 006F5362..006F53A4: D4h with level 0, after the repair.
+        if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
     }
 }
 
@@ -12644,6 +12705,29 @@ bool GameShipAiHost::command_building_hit_gate_006f1f20(std::size_t unit_index, 
     return true;
 }
 
+// 006F38E0, D4h's handler (packet cc9_command_building_level). The level-4 arm
+// (006F38F0..006F3912, the garrison MinLevel rewrite) is not reached by either
+// sender here. Recorded, not modelled: +36Ch = HP[level] * class+48h (the
+// gunnery rows' maximum health) and 006F3660's garrison respawn.
+void GameShipAiHost::Impl::command_building_level_006f38e0(CaptureBuilding& b,
+    std::int32_t level, const char* source) {
+    if (level == 4 || level == b.level_770 || level < 0 || level > 3) {
+        ++level_unchanged;   // 006F38EC JE: the same level does nothing
+        return;
+    }
+    const std::int32_t was = b.level_770;
+    b.level_770 = level;                                          // 006F38FB
+    b.level_timer_774 = 0.0f;                                     // 006F3901
+    b.armour_368 = kCommandBuildingArmorLevel[level] * b.class_armour_04c;   // 006F392F
+    const float max_hp = kCommandBuildingHpLevel[level] * b.class_hp_048;   // +36Ch, recorded
+    if (level > was) ++level_ups; else ++level_resets;
+    const GameUnitRow* row = units.unit_row(b.unit);
+    log.notef("command building level: unit=%s %d -> %d (%s) at t=%.2f: +368h armour %.2f, "
+        "+36Ch max hp %.1f (recorded), garrison respawn 006F3660 (recorded)",
+        row != nullptr ? row->name.c_str() : "?", was, level, source, capture_clock,
+        static_cast<double>(b.armour_368), static_cast<double>(max_hp));
+}
+
 bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
     Impl& host = *impl_;
     if (!kCommandBuildingCaptureBound) return false;
@@ -12663,6 +12747,10 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
         host.units.set_unit_side_0054(unit_index, 2);
         host.mirror_capture_party_00928f50();   // 006F50CA CALL EDX, vtable[2Ch](2, ...)
         if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
+        // 006F5362..006F53A4: D4h with level 0.
+        if (kCommandBuildingLevelBound) {
+            host.command_building_level_006f38e0(*b, 0, "neutralize D4h 006F5362");
+        }
         const GameUnitRow* row = host.units.unit_row(unit_index);
         host.log.notef("command building capture: unit=%s neutralized (prior party=%d) at "
             "t=%.2f (006F3270 -> 006F2940 -> D3h slot 9)", row != nullptr ? row->name.c_str()
@@ -13742,6 +13830,18 @@ void GameShipAiHost::report() {
             host.fire_rolls, host.fire_roll_hits, host.fire_starts, host.fire_extends,
             host.fire_stops, host.fire_secondary_rolls, host.fire_secondary_hits,
             host.fire_draws, kLandFortFireRollBound ? 1 : 0);
+        host.log.notef("summary mission command building level ups=%llu resets=%llu "
+            "unchanged=%llu bound=%d (006F7360 / 006F4D10 -> D4h 006F38E0, packet "
+            "cc9_command_building_level)", host.level_ups, host.level_resets,
+            host.level_unchanged, kCommandBuildingLevelBound ? 1 : 0);
+        for (const Impl::CaptureBuilding& b : host.capture_buildings) {
+            const GameUnitRow* row = host.units.unit_row(b.unit);
+            host.log.notef("summary mission command building level unit=%s level=%d "
+                "level_up_seconds=%d timer=%.2f armour=%.2f class_armour=%.2f",
+                row != nullptr ? row->name.c_str() : "?", b.level_770,
+                b.level_up_seconds_76c, static_cast<double>(b.level_timer_774),
+                static_cast<double>(b.armour_368), static_cast<double>(b.class_armour_04c));
+        }
         host.log.notef("summary mission landing ship landed remainder own_party_kills=%llu "
             "dead_landed=%llu hostile_frames=%llu not_seen=%llu bleed_calls=%llu "
             "bleed_applied=%llu bleed_invincible=%llu bleed_total=%.2f first_bleed=%.2f "

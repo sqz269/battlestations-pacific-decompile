@@ -891,6 +891,11 @@ public:
     // CaptureValue (006F2780 stores the scene dword, 1000 when unauthored). 1000
     // for a unit that is not a CommandBuilding or has no slot.
     std::int32_t command_building_capture_value_07a4(std::size_t unit_index) const;
+    // Packet cc9_command_building_level: unit+770h Level and unit+76Ch
+    // LevelUpSeconds as 006F2780 stores them (0 and 10 when unauthored, and for
+    // a unit that is not a CommandBuilding or has no slot).
+    std::int32_t command_building_level_0770(std::size_t unit_index) const;
+    std::int32_t command_building_level_up_seconds_076c(std::size_t unit_index) const;
     // Routed from cc9-ships13: unit+7C4h, the CommandBuilding's LandingRange, which
     // 006F2780 stores from the scene (006F2847 find, 006F285F store; 500 when
     // unauthored). 009E6E80's mode-4 arm (009E6F4E FILD) and the latch 009F20A4 read
