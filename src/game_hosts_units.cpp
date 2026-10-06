@@ -5143,8 +5143,9 @@ struct GameUnitsHost::Impl {
     // listed hangar has +370h > 0, an airfield adopted by a CommandBuilding
     // (+71Ch, 006F5E9B) takes the InferiorFailure arm (message 7Dh, +720h, which
     // 00895E51 makes IsReadyToSendPlanes answer false); any other dies through
-    // vtable[70h](0) = 0077D1A0. False: the rule does not run.
-    static constexpr bool kAirfieldDestructionRuleBound = false;
+    // vtable[70h](0) = 0077D1A0. ON by the pairs of 2026-10-06 (GUNNERY 121.5).
+    // False: the rule does not run.
+    static constexpr bool kAirfieldDestructionRuleBound = true;
     // Packet cc9_fighter_accel_friendly_fire (docs/FIGHTER_GUN_LEAD.md 5):
     // 007B96D0 -> 007DEDB0, the fighter gun's friendly-in-line hold. The
     // answer feeds DogfightGunInputs::finder_busy at the fighter gun call site.

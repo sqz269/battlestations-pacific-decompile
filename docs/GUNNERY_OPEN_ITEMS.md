@@ -9208,3 +9208,34 @@ This is the prediction's second branch.
 
 **Verdict: ON** (mechanism matching, gameplay identical as predicted). The flip belongs to reference AB
 (AA's base is `13fd2978e`). `+720h`'s other readers (guns, warning manager, HUD) stay unmodelled.
+
+## 122. The shipyard tick `00846320`: the strategic-map production queue (lead item 3; cc9-gunnery27, 2026-10-06, read only)
+
+**`BSP_Shipyard_TickAdvance` `00846320`** (`00846320..00846637`, `RET 4`, `ECX = unit+310h`):
+1. `00953CC0(dt)`, the base advance the host runs.
+2. Dead (`unit+5Dh`): return.
+3. **The hangar walk** over `unit+780h` (stride `10h`, the `"Hangar %d"` records): an entry with no
+   launched unit (`+0Ch == 0`) counts as free when its object's `+5Ch` is set and `+5Dh`/`+5Eh`/`+60h`
+   are clear; an entry holding a launched unit clears `+0Ch` once that unit is farther from the
+   hangar path's point 0 than the path's length (`BSP_ScenePath_TransformPointToWorld` points 0 and 1).
+4. **The production walk** over `unit+794h` (stride `4Ch`):
+   - state 3 whose hangar entry has let its unit go: state 4, and (not on a multiplayer client) the
+     unit's stored order `+48h` is issued through `BSP_Entity_IssueCommand` `0077D600`
+     (`00E08EF8` or `00E08F78` by the unit's `vtable[5Ch](6)`); the free count goes up by one;
+   - state 2 with a free hangar: `BSP_Shipyard_CreateLaunchedUnit` `00844FC0` (the scene-unit build
+     that writes `ShipYardLaunch`, LAND_AND_STRUCTURES section 3) and one hangar fewer.
+
+**Who sets state 2.** `00846D90` (`00846D90..00846FC4`) sets a queue entry's state to 2; it runs on
+message `A9h` through the shipyard's `vtable[164h]` `00847030` (cases `A7h`, `A8h`, `A9h`, `AAh`).
+`68 A9 00 00 00` occurs three times in `.text`: `00846F12` (inside `00846D90`, the rebroadcast),
+`00656671` (`00656670`, the message's constructor, called only by `00673A10`), and `0060C055`
+(`0060ABD0`). `00673A10`'s only caller is `00675C40`, whose string immediates are the strategic-map
+interface (`ingame.sm_cp`, `ingame.sm_support`, `SMPERMANENTSHIP`, ...). So **a production order is a
+player's strategic-map purchase**. No Lua binding sets it: this installation's mission scripts launch
+from shipyards through `SpawnNew` with the shipyard as the reference (JM05's `luaJM5Shipyard2Spawned`),
+which the host already runs (`kSpawnNewEntityRefPosBound`). The queue's entries come from the scene
+(`00849F70` over `NumSlots`, `"Slot %d"`, `"Stock %d"`).
+
+**Reach: none on the reference rows.** The player is idle, so no `A9h` is sent, no entry reaches
+state 2, and the hangar walk never sees a shipyard-launched unit. The census's 87000 calls on eight z
+rows are the base advance plus two empty walks. Not bound.
