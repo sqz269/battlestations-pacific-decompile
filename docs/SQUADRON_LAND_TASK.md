@@ -14200,3 +14200,56 @@ from the Lua globals at the call. **LABELLED:** that expansion is the host's, fo
 - `006E3350`..`006E3402` `BSP_MBombPlatform_BindOwnerLoadout` (vtable `9Ch`);
 - `006E3E70`..`006E3F8D` `BSP_MBombPlatform_AttachNextRound` (vtable `224h`);
 - `006CC5C0`..`006CC682` `BSP_AirOps_CancelQueuedSlot`.
+
+## 5fd. JM08 as the IJN player: attempt runs (cc9-lua47, 2026-10-06)
+
+The lead's item, following SHIP_AI_OPEN_ITEMS 193/195. The runs used the export `local\l47_E0` (`db6b72de1`, every switch as
+committed), JM08 at 24000 frames in AD's launch form (`local\l47_lane.ps1 -Rows j8 -Orders <file>`). The order generators
+are `local\l47_j8gen2.py` and `local\l47_j8gen3.py`. No run completed the mission, so no exec-guard line is expected.
+
+**What the player can use, corrected.**
+- **The airfield's stock is not ships38's classes.** The `air ops deck classes` line reads `stock=152x30,154x30,167x9,166x9`
+  (J1N1 Gekko, Ki-43 Oscar, G4M Betty, G3M Nell; `vehicleclasses.lua` 53165, 53483, 55810, 55340) and `slots=152x3,154x3,
+  101x0,101x0`.
+  - Every `launch` of 162/163/158/159/150 there was refused by `006C0F00` ("left the slot empty").
+  - With the stock classes, slots 1-4 each launch once (g2).
+- **The shipyard builds `Gyoraitei` torpedo boats.** `build "Shipyard 01" class 77` works (`TBoatGen`, `available=11` after
+  the first). A boat is made as `Gyoraitei #Y<k>`. Classes 43, 4, 83 and 81 are refused with "A7h found no stock".
+- **A ship takes `attack` only while it is the controlled unit.** A bare `attack` is refused "not the controlled unit
+  [00E188D8]". Each order is therefore `select <unit>`, then `attack <unit> <target>` lines, then `select "Headquarter 01"`.
+- **Isokaze and Fubuki** arrive with Hosho at about 291 s, at (-6250, 6750), and are the player's to order.
+
+| run | orders | outcome |
+| --- | --- | --- |
+| g2 | the airfield's stock classes, plus ships38's Hosho lines | the airfield launches once per slot; T03 dies at 469 s (Hosho Kates); T02, T05 and T04 die at 1005-1022 s (Isokaze, Fubuki, on their own); **failed 1023.12 s** |
+| g4 | g2, plus boats, plus `attack` without `select` | every `attack` refused; Hosho, Isokaze and Fubuki die to Hawaii; **failed 992.73 s** |
+| g5 | g2, plus boats, plus `select`/`attack`, the six transports rotated per unit | **all six transports sunk** (T03 469 s; T06 681; T05 789; T04 795; T01 845; T02 857), plus LSM 02, LST 02 and LST 01; **failed 995.58 s** |
+| g6 | g5, with every unit on the same list and the boats held to frame 11000 | T06 687, T02 790, T05 798, T01 840; **failed 1025.98 s** |
+| g7 | g5, with every unit on the same list | T06 687, T05 775, T02 793, T01 848, T04 869, LST 02 946; **failed 993.68 s** |
+
+**Why g5 still fails.** Only USTroopTransport 01 (unit 353) launches landing craft: 8 `LandingShip`s at 774.65 s
+(`landing craft launch (94h -> 008206F0)`). It dies at 845 s, and its craft neutralize the HQ at 994.95 s (`006F5362`).
+The destroyers reach the fleet at about 680 s, too late to sink T01 before 774 s.
+
+**Blockers found, by lane.**
+1. **Airfield takeoff (planes).** 6 of the 12 airfield planes never leave `Takeoff`: state 470, `flight_state=4` for the
+   whole mission, `run_refused` about 140-210.
+   - Every member is placed at the same point, about 75 m off the airfield origin (`carrier deck stop: local=(74-77, 1.08,
+     0.5)`), with 2 s between members.
+   - The stuck ones taxi to the runway axis, overshoot it (`takeoff run ... e=-140`) and roll off the runway end at walking
+     speed: `plane ground contact lost ... local=(14.92 0.11 298.04) half=(10.00 250.00) |v|=4.23` at 61.70 s for
+     `sqn03|.-2`.
+   - The squadrons therefore never finish, their slots stay in state 3, and every later launch is refused ("not in state 1
+     or 5"). Only the two bomber leaders release: 28 bombs, at 1410 m.
+2. **Torpedo-boat tubes (gunnery).** The Gyoraitei's four tubes (cat 7, dev 67) never fire (`assigns 0`). The boats die at
+   346-396 s having fired only their guns. This is presumably the meshless tube window (cc9-gunnery33).
+3. **Shipyard re-idle (gunnery).** Only 4 of the 12 boats are ever built. One builds at once and three queue; after that the
+   four entries stay non-idle ("no idle entry (0067442D returns)", 113 refusals).
+4. **Scene squadrons in slots (air ops).** `kAirOpsSceneSquadronOrdersBound` (AIROPS_LAUNCH_TICK, last section) is
+   unreached on JM08: the pair at `db6b72de1` is gameplay identical (pair_diff 1), and slot `+28h` stays 0. The scene
+   squadrons pushed by `006CC7B0` drain before any slot is in state 6/1 with a matching class and count (`006C56D0`'s
+   priority), so they never arrive. The switch stays OFF, unreached. Whether the image's slots are in state 1 at that first
+   drain is unread.
+
+**The furthest state:** g5. All six transports and three landing ships are sunk, but too late: T01's landing craft take the
+HQ. A win also needs Missouri and then the Dakota group.

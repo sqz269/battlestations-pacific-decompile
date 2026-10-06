@@ -1067,3 +1067,10 @@ looked the squadron up only among the squadrons this host launched.
   - Once the scene squadrons die or land, their slots should free (stock return), and ships38's `launch` lines on the
     airfield should then go through.
   - **Mechanism failure:** an order that answers 1 but whose members never take the target.
+
+**Pair (2026-10-06, `db6b72de1`, `local\l47_E0` / `local\l47_E1`, JM08 24000 with `local\l47_j8_o1.txt`): gameplay identical
+(pair_diff 1). The mechanism is unreached.** Even ON, all 404 orders are refused "the slot holds no squadron this host
+built", because slot `+28h` is 0 on every airfield slot. The scene squadrons queued by `006CC7B0` drain before any slot sits
+in state 6/1 with their class and count, so `006C56D0` places neither of them. The airfield's slots instead read `152x3,
+154x3, 101x0, 101x0` from the scene stock. **The switch stays OFF, unreached.** Whether the image's slots are in state 1 at
+that first drain is unread. JM08's attempt is SQUADRON_LAND_TASK 5fd.
