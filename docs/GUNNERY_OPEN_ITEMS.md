@@ -9913,3 +9913,52 @@ Flips since AB's base, for reference AC (this lane): `kCommandBuildingGunfireGat
   `g28_table.py`, `g28_report28.py`, `g28_switches.py`, `g28_smokecensus.py`.
 - Watch out: a summary line starting `mission gunnery damage` collides with `pair_diff`'s headline key
   (127.4).
+
+## 133. Census: what the gunnery, physics and commands paths still reach on reference AC (lead item; cc9-gunnery29, 2026-10-06, read only)
+
+**Input.** AC's twenty-two logs (`local\g29_ac_base_<row>.log`, `20c30e6fb`), summed by `local\g29_census.py`
+(123's tool) over the host-method rows whose status is `UNIMPLEMENTED`, filtered to the gunnery, physics,
+commands and rack names; each row read at its recording site, as 123 did.
+
+### 133.1 Stale labels, presentation and other lanes (no gameplay gap in this lane)
+
+| rows | calls | record | reading |
+| --- | --- | --- | --- |
+| 22 / 22 / 22 / 18 / 17 / 16 | | `00C5BB30`, `0071C830` / `0077C2A0`, `00835C70`, `CruiseCommand::unit_heading`, `006952A0`, `00414DB0` | as 123.1 |
+| 22 / 22 | 6108 / 3596 | `007208A3`, `0071FB90` | no reach (128) |
+| 15 / 12 / 8 / 7 | | the unit-motion remainders `006D2510`, `00758270`, `00846320`, `00855420` | 117-122 for the first three; `00855420` is the submarine tick: its seabed scan runs behind `kSubmarineSeabedBound` (docs/SUBMARINE_MODEL.md 14), `00855643..008556BB` unread there |
+| 13 | 1636 | `UnitDamageSmoke::point_effect_create` `00822AD7` | presentation: the effect is created after 127's four draws, which are bound |
+| 10 | 7822 | `Gunnery::target_sub_entities_slot0fc` `008654AC` | bound by 124 (`asks=0`); the status is the record's label |
+| 7 | 1222 | `Rack::drop_dispersion_006e4f91` | the units host's label; the draws and the cone are bound in the gunnery host (130) |
+| 19 / 10 / 14 / ... | 1.48 M / 253 k / ... | `BotTaskGun::tick` `009FC7C0`, `PilotBot::*`, `BotStateMoveTo::*`, `BotScheduler::*`, `TorpedoApproach::*` | the planes lane |
+
+### 133.2 `EntityCommand::endpoint_subject` (`0071ED19`, 22 rows, 46955 calls): premise corrected, no reach
+
+The host's comment called `[director+34h]` the session owner's endpoint, "null in this process". It is not
+a session object. `00720180` stores `[arg+28h]` at `+34h` (`0072020B MOV EDI,[EDI+28h]`, `00720219`), and
+`008366D0` passes `unit->vtable[60h]()`: for the destroyer vtable `00CFC3D0` (`006FE46D`) slot `60h` is
+`006D1DD0` (`LEA EAX,[ECX+310h]; RET`; the `PUSH 1` before it is `008363E0`'s second argument). So the
+endpoint is `[unit+338h]`, which the attack-move building arm already reads as the unit (its `+54h` party,
+section 35). Slot `140h` of that vtable is `0047F320` (`MOV EAX,ECX; RET`), so the subject is the unit itself.
+The block `0071ED19..0071ED5C` then forwards to `00A2BD90` only when `entity+16Ch`, the AI group, is set.
+Nothing sets it on any AC row: the coordinator's `groups_created=0` and `members_added=0` on all twenty-two,
+and the only other producer is the `AICreateGroup` binding, which no installed mission calls (the host's
+`entity_ai_group` note). **No reach;** the comment is corrected (`src/game_hosts_commands.cpp`), the
+behaviour is unchanged. **Uncertain:** `[unit+338h]` = the unit rests on section 35's reading; no writer of
+`(unit+310h)+28h` was found by the `89 ?? 38 03 00 00` scan (its ten hits are other classes' fields).
+
+### 133.3 Real gaps, ranked by reach
+
+1. **`Rack::can_fire_00729a80` (10 rows, 711 calls) and `Rack::repeat_time_descriptor_e0` `006E58AA`
+   (8 rows, 85).** The units host's single-rack and level-bomber rack ticks stand in for `BSP_Gun_CanFire`
+   with "the rack has ammo" (the reconstructed gates are in `src/gun_aiming.cpp`), and the single-rack tick
+   sets `toRepeatTime = 0` where `006E58AA` loads the rack's `RepeatTime` (`desc+E0h`; 0.05-2 s in this
+   installation's `deviceclasses.lua`, mtime 2026-05-09). Both matter only for a rack that drops again: a
+   rack holding more than one round, or a gate that refuses (`[+3F8h]+34h`, `+3B8h`, `+358h`, the reload
+   timers, `unit+6F8h`, and `unit+6FCh` for a torpedo rack). The racks' `Ammo` is 9999 on most
+   `BombPlatform` rows, so the carried rounds come from `kDiveBombCarriedRoundsBound`'s authored count. The
+   reach needs a diagnostic (drops from a rack that already dropped this release) in the units host's rack
+   ticks; the rack ticks are shared (`src/game_hosts_units.cpp`) and belong with the release lane.
+2. Nothing else in this lane's filter reaches gameplay on AC.
+
+**Next:** item 1's diagnostic, as a units edit routed through the lead.

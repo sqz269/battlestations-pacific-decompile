@@ -10738,6 +10738,59 @@ void GameGunneryHost::set_unit_max_health_036c(std::size_t unit_index, float val
     us.row.max_health = value;
 }
 
+bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
+    Impl& h = *impl_;
+    if (unit_index >= h.unit_state.size() || !h.unit_state[unit_index].dead) return false;
+    Impl::UnitState& s = h.unit_state[unit_index];
+    s.dead = false;
+    s.row.sunk = false;
+    s.row.sunk_seconds = 0.0f;
+    s.enabled = true;
+    s.row.pass_enabled = true;
+    s.health = s.max_health;
+    s.row.health = s.health;
+    s.last_attacker = 0;
+    s.fire_target = 0;
+    s.command_target = 0;
+    s.attribution = {};
+    for (GameGunRow& gun : h.guns) {
+        if (gun.unit_index == unit_index) gun.seat_trigger = true;   // undo 009594A0's vt[1E8h](0)
+    }
+    // A fresh entity's per-unit state: the cooldowns (unit+6F8h/+6FCh), the
+    // visibility cache, the damage-control task (no failures, no running
+    // timers, the blast segments rebuilt from the model on first use) and the
+    // damage-smoke controller (no slots, clock 0). The class rows (repair
+    // ticks, sections) and the run totals stay; summary.deaths and the kill
+    // credits stay as well, because the death happened.
+    s.fire_cooldown_6f8 = 0.0f;
+    s.torpedo_cooldown_6fc = 0.0f;
+    s.visibility.clear();
+    s.smoke_timers.clear();
+    s.smoke_clock = 0.0f;
+    if (unit_index < h.damage_control.size()) {
+        Impl::DamageControl& dc = h.damage_control[unit_index];
+        dc.water_seconds = 0.0f;
+        dc.fire_seconds = 0.0f;
+        dc.task.failures.clear();
+        dc.task.fire_seconds = 0.0f;
+        dc.task.water_seconds = 0.0f;
+        dc.task.water_expired_slot = 0;
+        dc.task.fire_expired_slot = 0;
+        dc.task.reported_repaired = false;
+        dc.segments_built = false;
+        for (int i = 0; i < 20; ++i) {
+            dc.segment_health[i] = 0.0f;
+            dc.segment_present[i] = false;
+        }
+        dc.destroyed_segments.clear();
+        dc.script_hull_repair = -1;
+    }
+    h.log.notef("gunnery: garrison revive unit=%s health=%.0f t=%.2f (006F3660 re-create, "
+        "packet cc9_command_building_garrison)", s.row.name.c_str(),
+        static_cast<double>(s.health), static_cast<double>(h.clock_seconds));
+    return true;
+}
+
 bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float delta) {
     if (!kDamageSmokeDrawsBound) return false;
     Impl& host = *impl_;
