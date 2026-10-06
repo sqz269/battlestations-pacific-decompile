@@ -12070,3 +12070,78 @@ Every prediction held:
 - **Its reach** is 3 calls on JM05 long: Allied planes out of ammunition (JM05.lua:1428, :1471,
   :3571).
 - **Not bound:** binding it needs the retreat bot task, a planes-lane packet.
+
+## 5dy. The retreat bot task and who issues it: read so far (cc9-lua39, 2026-10-05)
+
+The lead's item after 5dx. This section is a **read and a binding plan only; nothing is bound**.
+Ghidra was read-only.
+
+### Who issues command class `00E08F90` (retreat)
+
+**Method.** A byte scan of `90 8F E0 00` (`local\output` was not needed). It found 18 hits:
+- **Issuers:** `008A4300` (PilotRetreat), `007F16D0` (`BSP_Plane_ResolveReturnToBase`, its retreat
+  arm), `0099A170` (the installer), `009C9D00` (the task's own constructor).
+- **Readers:** `007EE2E0` (the "leaving the map on purpose" predicate of `007C6C30` /
+  `007F31A0`), `00811F50`, `009F8160`, `0084DB90`, `0084DDC1`, `0084E010`, HUD rows.
+
+**`0084E010`, the squadron command controller's slot `+7Ch`, is the likely wide-reach producer.**
+Its owner, from GAMEPLAY_LOOSE_ENDS_2 C5, is the controller `0084D810` builds, with its unit at
+`+224h`. The tail (`0084E4A4`-`0084E5C6`, read from the listing) does this:
+- **The RTB test.** If
+  `(sq+369h == 0 && (B4 || no command || command category not 1/2)) || B5`, and also
+  `(sq+369h == 0 || [00E17BF2] == 0) && sq+368h == 0`, it runs `007F16D0(&result)`.
+  - On a non-null result it clears the commands (`0071D880`) and issues the result
+    (`0071ECF0`); `+228h` = 1.
+  - That result is land at home, land at a site, or **retreat** when neither exists. The
+    reference rows' generated strike squadrons have no `HomeBase`, so they retreat.
+- **B4 and B5.** B4 is "no command, squadron has members, and `0071BE60()` == 0". B5 comes from
+  `+48h == 2` with `0071BE60() < 2` and `[+38h]+3Ch` set or a retreat/`98h`/`A0h` command, or
+  from `+50h == 2` with `[+38h]+3Ch` set.
+  - `+48h`, `+50h` and `[+38h]+3Ch` are **contract: unread**.
+  - With `sq+369h` = 1, the scene default (LUA_BINDING_MISSION), only B5 opens the RTB.
+- **Otherwise,** with `0071BE60() <= (+48h == 2)`, it issues `moveto` (`00E08F68`) to the
+  squadron itself.
+
+**What is open.** Who calls slot `+7Ch`, and how often; and what `+48h`/`+50h`/`+38h` are,
+presumably the ordnance and fuel state. Until those are read, the reach is unknown. If B5 is
+"ordnance spent", every scripted dive and torpedo strike retreats after its release in the
+image (USN01, LOMP10, USNRM01, USN13 long, ...). In this host they keep station
+(`BotStateDiveBombDone`). The host's `007F16D0` is RECORD ONLY with zero calls on every row.
+
+### The task
+
+- **Factory `009CA2B0`, constructor `009C9D00`** (read whole). It builds the base kind 9, then
+  the approach `009C9BB0`. Vtables: `00D20F60`, `+3F8h` `00D20F58`, `+464h` `00D20F54`.
+  - `+55Ch` = 1.0 (the arm period) and `+560h` = -U(0, 1) (stream 1, the phase stagger).
+  - It starts in `moveto +478h` when the unit is the squadron's flight leader, else in
+    `follow +4C4h`.
+  - It ends with `0099xxxx BSP_BotApproach_BindToTask`.
+- **The arm `009C9FB0`** (read whole), once per `+55Ch` seconds:
+  - in `follow`: switch to `moveto` once the unit becomes the flight leader;
+  - in `moveto`: if approach `+458h` is set, go to `leave +4ACh`. Otherwise, once
+    `moveto+490h < 0` or `[moveto+47Ch]+61h` is set, go to `enterzone +494h`;
+  - in `enterzone`: when `009C9EA0()` answers true, go to `leave`.
+  - The transitions go through `009C9F70`.
+- **Not read:** the approach `009C9BB0`; the state ticks (`009C9EA0`, `009CA1A0`, `009CA200`,
+  `009C9A80`, the `moveto`/`enterzone`/`leave` objects); where `leave` flies; and how the plane
+  ends.
+  - The despawn is presumably `007F31A0 BSP_PlaneSquadron_OnPlaneLeftMap`, gated by `007EE2E0`,
+    which answers true for a retreat command.
+
+### Binding plan (for the successor)
+
+1. **Settle the reach first.**
+   - Read `0084E010`'s caller of slot `+7Ch` and the controller fields `+38h`/`+48h`/`+50h`
+     (`0071BE60` is the count it compares).
+   - Grep `src/game_hosts_units.cpp` and `src/plane_squadron_host.cpp` for an existing model of
+     that controller before writing anything.
+2. **The task (`kPlaneRetreatTaskBound`, OFF):**
+   - the constructor's initial state and the 1 s staggered arm above;
+   - `moveto` to the 007F16D0 / PilotRetreat zone point (`pilot_retreat_position_008a443e` is
+     reconstructed);
+   - `enterzone` and `leave` per their ticks, and the leave-map removal per `007F31A0`.
+3. **The issuers:** route PilotRetreat's row (`pilot_retreat_008a4300` is reconstructed) and
+   007F16D0's retreat arm to the task under the same switch.
+4. **Predictions to write first:** JM05 long (3 PilotRetreat calls) moves only in those three
+   planes' paths and AA exposure. If step 1 shows the out-of-ammo RTB is live, every strike row
+   moves: spent bombers leave instead of circling. Control: USN02 (no aircraft).
