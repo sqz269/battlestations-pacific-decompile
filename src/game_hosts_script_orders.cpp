@@ -22,7 +22,6 @@
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/attack_commands.hpp"
 #include <vector>
-#include <memory>
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
@@ -1611,8 +1610,9 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
 //    class being moveto; its distance test (class+268h x [00CEC160]) is not read,
 //    which only matters for a moveto whose point is not the squadron's own;
 //  - the squadron's command reaches its members the host's way: attack through the
-//    squadron intake 007F1940, moveto as each member's kind-7 task (0099A170) with
-//    the leader's position as the point, land through 0099A3DD at the deck owner;
+//    squadron intake 007F1940, moveto issued on each member (0077D600) at the
+//    leader's position and its kind-7 task (0099A170) installed after delivery,
+//    land through 0099A3DD at the deck owner;
 //  - 0071BED0's hold fire on the recall is not carried.
 PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::string& base,
     int slot_number, int order, const std::string& target) {
@@ -1707,13 +1707,13 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
         here.position[2] = z;
         const std::string saved_source = delivery_source_;
         delivery_source_ = "player:air ops order 006CCDA0";
-        // Counts the installs made before this entry returns (a queued order's
-        // install runs at the drain and is not counted).
-        const auto installed = std::make_shared<int>(0);
+        // `planes` counts the members the moveto is issued to: the install runs
+        // after the order's delivery, usually after this entry returns.
         for (const std::size_t m : members) {
             void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(m + 1u));
             entity_issue_command(handle, bsp::kPilotOrderClassMoveTo, here, 1);
-            after_order_delivery([this, m, here, installed]() {
+            ++out.planes;
+            after_order_delivery([this, m, here]() {
                 ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kPilotOrderClassMoveTo, 0u);
                 const std::uint32_t task = bsp::bot_install_command_task_0099a170(
                     static_cast<std::uint32_t>(m + 1u), bot_host);
@@ -1722,11 +1722,9 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
                 units_.store_unit_moveto_range(m, 0.0f);
                 units_.store_unit_moveto_target(m, ~static_cast<std::size_t>(0));
                 units_.store_unit_moveto_point(m, here.position);
-                ++*installed;
             });
         }
         delivery_source_ = saved_source;
-        out.planes = *installed;
     } else if (r.action == bsp::AirOpsHeldSlotAction::kRecallLand) {
         std::size_t owner = units_.count();
         for (std::size_t k = 0; k < units_.count(); ++k) {
