@@ -167,6 +167,54 @@ left roughly forty slots each where four were authored. Nothing reads those slot
 wrong downstream, but the deck is no longer a faithful projection after the first four launches on
 a carrier. The tick that would return a slot to state 1 is the same one that fills slot+28h.
 
+## 6. The `Type` token is an enum symbol (cc9-lua45, `kSceneDeckTypeEnumBound`)
+
+Found by cc9-ships39 (USNOS probe `s39_osprobe3`): every scene deck slot and stock row resolved to
+class 0, so `006BF230`'s class match never hit and `006C0F00` left every slot it was asked to fill
+empty. The section 4 contract ("the scene authors these tokens as numeric class ids") is wrong.
+
+**Authored form.** This installation's 259 `.scn` files (2024-10-29) carry 43,054
+`Type = E PlaneClasses : <symbol>` lines (deck sub-blocks and squadron rows alike) and no
+`Type = I <number>` line at all (a `Select-String` census; `local/l45_deck_census.py` counts 5,380
+`PlaneStock` and 11,752 `Slot` blocks). `PlaneClasses` is the enum at
+`universe/library/global.enums` line 589 (F2G 810, AD2 339, BTD_Destroyer 331, BlackCat 343).
+
+**Image.** `006CB108..006CB114` (stock) and `006CB1F5..006CB201` (slot) read the `Type` property
+through `008F2260` and take its `+0Ch` payload (`MOV EBP,[EAX+0Ch]`) without a type test;
+`006CB139` / `006CB24E` move it to ECX and call `007B8A80`, which is `MOV DL,1; JMP 00964790`
+(disk bytes): `BSP_VehicleClass_GetOrCreate(__fastcall int typeId, bool readRace)`, which indexes
+`registry[10h + typeId*4]`. For an `E` property the reader stores the resolved integer at `+0Ch`
+(`008F33A6` with a key declaration, `008F5F94` through the global enum registry without one), so
+the argument is the PlaneClasses integer. ABI: ECX type id, DL 1, result EAX (descriptor); this
+process carries the type id itself as the class, as every other caller of the deck does.
+
+**Binding.** `kSceneDeckTypeEnumBound` (`include/bsp/game_hosts_scene_contents.hpp`): the reading
+half (`scene_deck_type`, `src/game_hosts_scene_contents.cpp`) resolves the symbol through
+`PropertyLibrary::resolve_symbol` with the authored table, on the created path and the held-back
+path, and hands the loader decimal text. An unresolved symbol stays raw and scans to 0, the old
+answer (what the image stores for an unresolvable symbol was not read: contract). A new census
+line `air ops deck classes: unit=<name> stock=<class>x<count>,... slots=<class>x<count>,...`
+prints what each deck resolved, in both states.
+
+**Correction (loop exits).** Section 2 says a missing sub-block stops the loop. The listing says
+otherwise: `006CB0F9` / `006CB0FF` / `006CB106` jump to `006CB158`, the index increment, and the
+stock loop runs `PlaneStock 1..12` (`006CB15F CMP EAX,0Ch; JLE`); `006CB1DA` / `006CB1E4` /
+`006CB1EF` jump to `006CB2A9`, the slot index increment, bounded by the live count at block+50h
+(`006CB192`, `006CB1A2`). The reading half still stops at the first gap. The census found no gap
+and no `PlaneStock` index above 12 in this installation, so the difference cannot move a run;
+recorded, not changed.
+
+**Predictions (written before the pairs).** OFF is identical to the base. ON: every
+`air ops deck classes` line shows non-zero ids (Enterprise in USNOS `810x40,339x..,331x..`).
+`GetProperty(unit, "slots")` and the stock rows publish real classes, so the Lua support managers
+(commandhelpers) that launch from scene decks can now find stock and fill slots: expect new
+`LaunchSquadron` successes and new airborne squadrons from scene carriers and airfields on every
+row with an AI deck (USNOS, ESMP08, USN13, JM08, LOMP10, E2), so death, shot and kill rows move on
+those rows; USN04 (player carriers launched by script with explicit classes) and the five
+scripted-win rows (USN02, USN01, LOMP06, LOMP10, USN12) are where a mission-timing change would
+show. A mechanism failure is any deck whose authored symbol stays 0 ON, or a launch whose class
+the stock does not answer for.
+
 ## Uncertainty
 
 * Whether USN04's carriers author `Slot %d` blocks at all. The scene is binary and this process

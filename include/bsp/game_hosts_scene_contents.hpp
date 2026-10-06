@@ -429,6 +429,15 @@ inline constexpr bool kSceneHomeBaseContractBound = true;
 // seeding binds the record to the entity id. False: the registry stays empty.
 inline constexpr bool kShipyardSceneAttachBound = true;   // ON: SQUADRON_LAND_TASK 5ej.1
 
+// Packet cc9_lua45_scene_deck_type_enum (docs/AIROPS_LOAD_FROM_SCENE.md section 6). The
+// `Type` of a "PlaneStock %d" / "Slot %d" sub-block is authored as an enum symbol
+// (`Type = E PlaneClasses : F2G`), and 006CB114 / 006CB201 hand the property's +0Ch, the
+// integer the reader resolved it to, to 007B8A80 (ECX = type id, DL = 1 -> 00964790).
+// True: the reading half resolves the symbol through the library's enum tables (810 for
+// F2G, global.enums) before the loader scans it. False: the raw symbol is scanned as an
+// integer, so every scene deck class resolves to 0, as before.
+inline constexpr bool kSceneDeckTypeEnumBound = false;
+
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
 

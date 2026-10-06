@@ -803,7 +803,43 @@ const ScenePropertyBlock* scene_deck_sub_block(const ScenePropertyBlock& block,
 // 006CB0D5 and 006CB1B2 compose the key with the 1-based index and stop at the
 // first index the bag does not answer (006CB0F9 and 006CB1DA take the exit when
 // the lookup returns null).
-bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag) {
+// 006CB114 / 006CB201 take the `Type` property's +0Ch, which the property reader
+// filled with the enum's resolved integer (008F33A6 / 008F5F94). With
+// kSceneDeckTypeEnumBound the symbol is resolved here, through the same library
+// tables, and handed on as decimal text; an unresolved symbol stays raw.
+std::string scene_deck_type(const ScenePropertyBlock& block, const PropertyLibrary* library) {
+    std::string text = scene_deck_text(block, "Type");
+    if (!kSceneDeckTypeEnumBound || library == nullptr) return text;
+    const SceneEnumProperty e = scene_enum_property(block, "Type");
+    int value = 0;
+    if (e.present && library->resolve_symbol(e.table, e.symbol, value)) {
+        return std::to_string(value);
+    }
+    return text;
+}
+
+// Census line for kSceneDeckTypeEnumBound: the class each stock row and slot
+// resolved to, in authored order. Not a native log line.
+std::string scene_deck_classes(const bsp::AirOpsDeck& deck) {
+    std::string out = "stock=";
+    for (std::size_t i = 0; i < deck.stock.size(); ++i) {
+        if (i != 0) out += ',';
+        out += std::to_string(deck.stock[i].vehicle_class);
+        out += 'x';
+        out += std::to_string(deck.stock[i].count);
+    }
+    out += " slots=";
+    for (std::size_t i = 0; i < deck.slots.size(); ++i) {
+        if (i != 0) out += ',';
+        out += std::to_string(deck.slots[i].vehicle_class);
+        out += 'x';
+        out += std::to_string(deck.slots[i].assigned_count);
+    }
+    return out;
+}
+
+bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag,
+    const PropertyLibrary* library) {
     bsp::AirOpsSceneDeck authored;
     authored.num_slots = scene_deck_int(bag, "NumSlots");
     authored.max_in_air_planes = scene_deck_int(bag, "MaxInAirPlanes");
@@ -813,7 +849,7 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag) {
         const ScenePropertyBlock* sub = scene_deck_sub_block(bag, key);
         if (sub == nullptr) break;
         bsp::AirOpsSceneStock row;
-        row.type = scene_deck_text(*sub, "Type");
+        row.type = scene_deck_type(*sub, library);
         row.count = scene_deck_int(*sub, "Count");
         row.squad_limit = scene_deck_int(*sub, "SquadLimit");
         authored.stock.push_back(row);
@@ -824,7 +860,7 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag) {
         const ScenePropertyBlock* sub = scene_deck_sub_block(bag, key);
         if (sub == nullptr) break;
         bsp::AirOpsSceneSlot row;
-        row.type = scene_deck_text(*sub, "Type");
+        row.type = scene_deck_type(*sub, library);
         row.count = scene_deck_int(*sub, "Count");
         row.arm = scene_deck_int(*sub, "Arm");
         // 006CB236 requires property type 3 and reads the byte at +0Ch, so any
@@ -1702,7 +1738,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         if (klass != nullptr
             && (klass->class_id == bsp::kAirOpsSceneClassIdMothership
                 || klass->class_id == bsp::kAirOpsSceneClassIdAirfield)) {
-            const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag);
+            const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag, &owner.library);
             bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
                 [](const std::string& type, void*) -> std::uint32_t {
                     std::int32_t parsed = 0;
@@ -1721,6 +1757,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 "held back for GenerateObject (006cadd0 mode 1, registered on spawn)",
                 record.name.c_str(), klass->class_id, authored.num_slots,
                 authored.max_in_air_planes);
+            if (const SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
+                owner.log.notef("air ops deck classes: unit=%s %s (007b8a80 type ids, held back)",
+                    record.name.c_str(), scene_deck_classes(held->deck).c_str());
+            }
         }
         owner.entities.push_back(record);
         return;
@@ -1771,12 +1811,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // is exactly what `GetProperty(carrier, "slots")` reads back.
     if (klass->class_id == bsp::kAirOpsSceneClassIdMothership
         || klass->class_id == bsp::kAirOpsSceneClassIdAirfield) {
-        const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag);
-        // 007B8A80 is a thunk to 00964790 BSP_VehicleClass_GetOrCreate. Its
-        // argument form was not read, and the scene authors these `Type` tokens
-        // as numeric class ids, so the resolver here is the scan the rest of this
-        // file uses for a scene integer. A token that is not a number resolves to
-        // zero, which is what an unresolvable token does. contract.
+        const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag, &owner.library);
+        // 007B8A80 is `MOV DL,1; JMP 00964790` BSP_VehicleClass_GetOrCreate, with
+        // ECX the `Type` property's +0Ch, the resolved PlaneClasses integer. The
+        // reading half resolves the symbol under kSceneDeckTypeEnumBound; the
+        // resolver below scans it, and a token that is not a number resolves to
+        // zero. Unbound, every authored symbol scans to zero. contract.
         bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
             [](const std::string& type, void*) -> std::uint32_t {
                 std::int32_t parsed = 0;
@@ -1844,6 +1884,8 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             "slots=%zu stock=%zu (006cadd0 mode 1)", stored.name.c_str(), klass->class_id,
             authored.num_slots, authored.max_in_air_planes, deck.slots.size(),
             deck.stock.size());
+        owner.log.notef("air ops deck classes: unit=%s %s (007b8a80 type ids)",
+            stored.name.c_str(), scene_deck_classes(deck).c_str());
         bsp::air_ops_decks().set(stored.name, std::move(deck));
         owner.log.implemented("AirOps::load_from_scene", "006cadd0");
     }
