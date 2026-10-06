@@ -12907,7 +12907,8 @@ sinkings and the RNG coupling those bring.
 - **The Nell6 wingmen.** Closed. Nell6|.-2 is shot down in its aim: it hits the water at 311.95 s
   with `dead=1` (`plane water contact`), and its arm stops there. It has no death row. Nell6|.-3
   dies at 425.07 s, killed by Blue.
-- **`plane #1.4|.-4`** never latches out of follow.
+- **`plane #1.4|.-4`.** Closed. It aims from 86.20 s and is 1062 m short when its target sinks at
+  147.60 s. With no target the latch drops (aim -> follow), and AA kills it at 188.11 s.
 - **The racks.** Racks 1-4 of a Nell drop on one fixed step: toRepeatTime idles at -1, so the
   delays 0-0.9 s are all still below zero. That is the image's arithmetic as read; the idle value
   after 006E3C00 is unread.
