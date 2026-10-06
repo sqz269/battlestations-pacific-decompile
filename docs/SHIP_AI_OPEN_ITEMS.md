@@ -14193,3 +14193,25 @@ task and misses (133.20 s). **LABELLED:**
 - the harness's fixed click times;
 - the sight's lead and radius (SCRIPTED_HELM 14);
 - launches need not come from the controlled carrier (SCRIPTED_HELM 13).
+
+## 180. Victory conditions of the other reference rows, by script (lead item 3, cc9-ships37, 2026-10-06, a read)
+
+Scripts as each row loads them (`mission script name:` lines of reference AB's anchor logs); this
+installation's files, mtime 2024-07-13 unless noted. `local\s37_wins.py` prints each script's
+`MissionComplete` sites and their callers.
+
+| row | script | victory, as the script tests it |
+| --- | --- | --- |
+| LOMP06 | `USN\LOMP\06_crucial_cargo.lua` | both `CrucialCargo1/2` dead, neither by `exitzone` (lines 512-520). The two are `luaPickRnd` picks from twelve Marus (151-153); the player is the submarine Narwhal |
+| LOMP10 | `USN\LOMP\10_san_jose.lua` | five of the eight `SanJoseForce` ships dead (`MonitorSanJoseForce`, 557), before the HQ falls; the player holds the HQ, then the B-25s (424) |
+| USN12 | `USN\usn_12_augusta.lua` | three phases: `DDrow`, then `IJNGrp` dead, then `MontGrp` within 1000 m of its point |
+| ESMP08 | `IJN\ESMP\08_engano.lua` | all of `USNFleet` dead while two IJN carriers live (`luaMonitorObjectives`) |
+| JM08 | `COTP-IJN\PRCPIJN\PRCPJM08.lua` | phase 3's `Dakota` group dead (`CheckPrim3`, 1306), after the earlier phases |
+| JM06, USN04 (`usn_19_coralus.lua`), USN13 (`usn_13_truk.lua`), BSM01, IJN01, IJN11, USNOS (`us_osumi.lua`, a movie end), USNRM01 | | multi-phase, each ending in a whole group or base destroyed |
+
+**Shortest:** LOMP06, two kills by one submarine. Idle (`local\s37_l6idle.log`, 12000 frames,
+`--trajectory-csv`), the AI-held Narwhal sinks Komaki Maru at 230.41 s with a torpedo from 1407 m,
+and nothing else dies; no end by 600 s. **Blocked for a scripted plan:** which two Marus are
+crucial is a Lua random pick (`luaPickRnd` -> `luaRnd`), and no log line or harness probe shows it.
+The objective text that names them (line 251) is not logged. Routed to the lead: a Lua-state probe
+(the lua lane), for example a log line when `luaObj_Add` takes a `Text`.
