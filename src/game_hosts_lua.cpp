@@ -6516,6 +6516,28 @@ std::string GameMissionLuaHost::read_device_class_string(int index, const char* 
     return value;
 }
 
+float GameMissionLuaHost::read_device_class_number(int index, const char* key,
+                                                  float fallback) {
+    // The number companion of read_device_class_string (packet
+    // cc9_plane_level_bomb_task: a bomb platform's `RepeatTime`, desc+E0h).
+    float value = fallback;
+    if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "DeviceClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                value = static_cast<float>(::lua_tonumber(state_, -1));
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 bool GameMissionLuaHost::read_resource_file(const std::string& path,
     std::vector<std::uint8_t>& bytes) {
     return resources_ != nullptr && resources_->read_file(path, kScriptReadMode, bytes);
