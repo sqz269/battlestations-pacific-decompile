@@ -165,7 +165,12 @@ constexpr bool kCommandBuildingGunfireArmourBound = true;
 // OFF again by GUNNERY 130.5, mechanism unsettled: 130.4's pair moved USN01,
 // USNRM01, LOMP10 and LOMP10 long (bombs leave along the nose, 2-4 degrees from
 // the 5do velocity), but the round's attach orientation on the rack is unread.
-constexpr bool kBombDropScatterBound = false;
+// ON by GUNNERY 130.6 (cc9-lua41's attach read): 006E3E70 -> 006E2C00 creates the
+// round with an identity local under the rack entity and a single BombPlatform
+// rack (vtable +A0h 0072E6D0) writes no gun+74h, so the rows are the plane's pose
+// and the origin is the plane's. UNCERTAIN: Val/Kate slot 50 may add ~2.0 deg
+// nose-down if the unread gun-entity placement store applies the slot frame.
+constexpr bool kBombDropScatterBound = true;
 // This installation's robots.lua (mtime 2025-06-01): DiveBombThrowMul and
 // LevelBombThrowMul of the six PilotBot rows in 00901610's order (Stun :1274/:1284,
 // SPNormal :583/:594, SPVeteran :722/:732, MPNormal :860/:870, MPVeteran
