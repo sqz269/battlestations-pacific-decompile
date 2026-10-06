@@ -10416,3 +10416,33 @@ otherwise `006E6450` sets the water byte and keeps the velocity. **LABELLED**: t
 2. **Controls** (BSM01 3000 frames, USN13 long): no DC round reaches the water within 100 m of a submarine, so
    gameplay is identical; exit 1 (the ON-only summary line). Any moved number outside the DC rows belongs to the
    bot or player switch (a DC ship firing at a submerged target).
+
+**First runs** (commit `dc333827c`; OFF export `local\g31_dc_off`, `2FDBB50BF1C7`; ON export `local\g31_dc_on` with all three
+switches flipped; logs `local\g31_dc{off,on}_<row>.log`; the reference AD launch form):
+
+| row | verdict | what moved |
+| --- | --- | --- |
+| BSM01 3000, USN13 long, USNOS long, JM05 long | identical | nothing. USNOS ticks the DC bot 501536 times and never holds |
+| BSM01 p7 (presses 9920-10480) | moved | shots +5 (5 rounds, all during Henry's approach); MiniSub untouched |
+| BSM01 p9 (`g31_ord_b1_p9.txt`: p6 plus a press every 80 frames, 11000-12920) | moved | shots +21; MiniSub untouched |
+| BSM01 p6 (the AI only) | moved | holds 462, 145 rounds. At 1300.79 s a round detonates by depth (`depth=20.2`) 44 m from MiniSub's box, and the hit listener `luaMiniSubHit` fires (`hit listener 00988510: target "MiniSub" type "Depthcharge"`). The mission's `AddDamage(9999)` kills MiniSub and phase 3 advances (deaths 486 -> 433 over the rest; Donald controlled) |
+
+- **Why the hit lands with no damage, and why that is enough.** MiniSub is invincible: this installation's
+  `bsm_01_stationed_at_pearl.lua` (2024-07-13) line 1137. Its hit listener (2006-2016, attacker Henry) removes the
+  invincibility and adds 9999 damage on any hit by Henry. So any hit record from Henry completes phase 3.
+- **Why 144 of the 145 rounds never reach their dive depth (a terrain-query artefact, not this lane's).** Those rounds
+  end as `fate=1`, landscape impacts, between -11 and -21 m (`BSP_SHELL_FATE=HenryPT|MiniSub`,
+  `local\g31_dcon_p6fate.log`).
+  - A local diagnostic build (`G31DIAG`, `local\g31_dcdiag.log`, not committed) shows that each hit comes from a
+    near-vertical sinking step about 0.4 m long, but the hit point it reports is about 40 m below that step:
+    `from=(1119.06 -14.56 -2997.52) to=(1119.09 -14.94 -2997.51) point=(1121.89 -53.01 -2996.32) shape=10`.
+  - The path is `landscape_entry_segment_hit`'s vertical case, `kTerrainVerticalSubwalkBound` (00AECC40/00AECA60,
+    `src/game_hosts_scene_contents.cpp`).
+  - The blast is then centred at -53 m, beyond 50 m of MiniSub, so it never reaches it.
+  - Routed to the lead (scene-contents lane): a segment whose y range is -14.56..-14.94 should not report a crossing
+    at -53.01.
+  - The image's sweep does run in water: `006E13C7` runs it in both modes, with flags 1/1.
+- **Verdict: the mechanism matches.** 008FC080 fires, 79h group 5 fires, and the round sinks, detonates and its
+  blast reaches the submarine. The DC switches stay identical on every row without a submerged target. The early
+  ends belong to the terrain query. **All three switches are flipped ON** (`kDepthChargeBotTickBound`,
+  `kPlayerWeaponGroupFireBound`, `kDepthChargeInWaterBound`). BSM01 can be re-run by cc9-ships39.

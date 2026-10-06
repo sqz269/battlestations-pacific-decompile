@@ -623,13 +623,13 @@ constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
 //    burst. OFF: the generic bot test, which needs 0085ABA0 to accept the
 //    launcher's angles and so never fires one (BSM01's HenryPT: assigns 496,
 //    shots 0). docs/GUNNERY_OPEN_ITEMS.md 139.
-constexpr bool kDepthChargeBotTickBound = false;
+constexpr bool kDepthChargeBotTickBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //  * kPlayerWeaponGroupFireBound: packet cc9_player_weapon_group_fire. Message
 //    79h's group 5 arm (0095A441): the player's depth-charge launchers take
 //    the 99h-held byte as their trigger, and GameGunneryHost::
 //    player_fire_weapon_group sends that message for a harness line. OFF: the
 //    arm is a record. docs/GUNNERY_OPEN_ITEMS.md 140.
-constexpr bool kPlayerWeaponGroupFireBound = false;
+constexpr bool kPlayerWeaponGroupFireBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
@@ -642,7 +642,7 @@ constexpr bool kPlayerWeaponGroupFireBound = false;
 //    shot kind (00826F44) and the real MSubmarine answer (00826F51, 008274B4,
 //    00827677), so the blast hurts submarines only. OFF: the round ends at the
 //    water. docs/GUNNERY_OPEN_ITEMS.md 142.
-constexpr bool kDepthChargeInWaterBound = false;
+constexpr bool kDepthChargeInWaterBound = true;  // ON: GUNNERY_OPEN_ITEMS 142
 // robots.lua (2025-06-01) DepthChargeBot by skill index 0 Stun .. 5 Elite:
 // AttackDist, BulletThrowMul, ContinuousFireTime, FireDelay low, high.
 constexpr float kDepthChargeBotLevels[6][5] = {
