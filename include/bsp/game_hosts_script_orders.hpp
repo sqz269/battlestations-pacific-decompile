@@ -462,7 +462,7 @@ inline constexpr bool kLuaCapturePercentageBound = true;
 // camera [game+19FCh] (a labelled stand-in, the controlled unit's pose, when
 // none is published) and GetRotation 008A7E60 answers a unit's basis angles in
 // degrees. False: both stay unimplemented records that push nothing.
-inline constexpr bool kLuaCameraStateBound = false;
+inline constexpr bool kLuaCameraStateBound = true;   // ON: MISSION_END 7.2.1
 inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the

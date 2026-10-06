@@ -312,3 +312,25 @@ CamOnEnt's live arm needs it (`luaGetRotation(ent)`, `commandhelpers.lua:10721`)
   - Both rows fail, so no completion path runs and `os.execute` is not reached.
   - Exit 1.
 - **ON, USN01 (control, no end):** exit 1.
+#### 7.2.1 Measured: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+**The pairs.** Same tree. OFF is `908746853`; ON is that commit exported with the flip (`225D753A26EC`).
+Logs: `local\l40_{off,on}_{usn01,usn02,jm08l}.log`.
+
+| row | exit | mission end | CamOnEnt ran | EndScene | end to EndScene |
+| --- | --- | --- | --- | --- | --- |
+| USN01 (control) | 1 | none | - | - | - |
+| USN02 | 3 | fails at 74.30 s | 77.00 s | **113.90 s** | 39.6 s |
+| JM08 long | 1 | fails at 1034.53 s (`obj_fail` queued) | 1039.14 s | **1076.02 s** | 41.5 s |
+
+- **EndScene is reached on both failing rows,** and `summary mission scene end calls=1`. The
+  image's figure is about 40 s after the end.
+- **USN02's exit 3 is only the `mission end` line.** It now ends `EndScene 008B01B0 reached at
+  113.90 s`, which pair_diff counts as a gameplay field. Deaths, hits, damage, shots and the unit
+  table are identical.
+- **The camera.** Both rows read the published camera (`from_camera=2`); the stand-in was not
+  needed. GetRotation ran once on each row.
+- **The guard.** Neither row completes, so `luaMissionCompletedNew` and its `os.execute` are
+  not reached. No row here can show the guard's refusal line.
+
+**Verdict: ON.**
