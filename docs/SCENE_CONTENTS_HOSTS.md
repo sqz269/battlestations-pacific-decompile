@@ -3085,3 +3085,29 @@ Reads closed: 24 (station keeping on the new spacing), 25 (the torpedo leader's 
   - `local\cc9-plane2-pitchtrace2.patch` (pitch, repair, hold, eval, vehicle-avoidance and geometry
     trace, env `BSP_PITCH_TRACE=<unit>`);
   - `local\cc9-plane2-luahost.patch` (superseded: applied as be664aa2f).
+
+## 30. The depth charge's seabed hit is the faithful line test, not the vertical subwalk (cc9-lua45, 2026-10-06, read-only)
+
+This corrects the routing in GUNNERY_OPEN_ITEMS 142, which put the hit in `landscape_entry_segment_hit`'s vertical case
+(`kTerrainVerticalSubwalkBound`, `00AECC40` / `00AECA60`). Nothing in this file changed.
+
+**The census says otherwise.** In `cc9-gunnery31\local\g31_dcdiag.log` the summary reads `vertical=2/0 ... vsub
+bound=1 equal=2 walks=2 tiles=0 cells=0`: the vertical subwalk ran twice and hit nothing. The land hits come from the
+general slot-3Ch walk, `walks=2042273/4955`. The example step `from=(1119.06 -14.56 -2997.52) to=(1119.09 -14.94
+-2997.51)` moves 0.03 / 0.01 in x / z, far above the 0.001 that sends a step to `00AECC40` (`00ADA2EE`).
+
+**The general walk tests a line, and so does the image.**
+- `00ADA240` (read whole) hands the hit of `00AEA2B0` back with no clip.
+- The quadtree node test (`00AE9D80`) only asks that the piece's y-range overlap the node's min/max y.
+- `00ADF1B0` passes each cell's quad to `00ADEB80`, an unclipped line-vs-quad test (scalar triples, no `t` range; read
+  whole). `line_quad_00adeb80` says so.
+- The per-entity narrowphase `0098AC20` and the broadphase `0098ADE1` keep the returned point without a range check.
+- The example fits: the step's slope is 0.38 / 0.0316 = 12 : 1, the hit is 3.07 m from `from` horizontally, and
+  3.07 x 12 = 36.9 m, close to the 38.45 m drop to y = -53.01. That is the seabed quad inside the same 9.375 m cell,
+  reached because the tile's max_y (a shoreline) lets the node test pass.
+
+**So the hit is image behaviour for that step.** The open question is the step itself: how fast a sinking charge
+drifts horizontally. `006FCD20` drags all three velocity components with `record+468h`. With the host's 7.6 m/s sink
+rate (c about 1.29), a horizontal speed of v0 stays above the vertical case's 0.02 m/s for about ln(v0 / 0.02) / c
+seconds. The water-entry speed and the drag belong to the gunnery lane (routed to cc9-gunnery31). The lead declined
+a clip-to-segment substitution.

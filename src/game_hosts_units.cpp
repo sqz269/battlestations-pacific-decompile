@@ -31612,7 +31612,11 @@ std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
         // 007B9320 / 007B91C0 -> rack vtable[220h] / [210h]: an emptied rack has
         // no child round to answer with (SQUADRON_LAND_TASK 5eu).
         const std::size_t n = u.rack_bullet_class_per_rack.size();
-        if (u.rack_census_done && u.rack_multi_count == 0 && u.rack_ammo >= 0 && n != 0
+        // With EnableDeviceReload (00E17BF2) set and the squadron's ReloadEnabled
+        // +369h (default 1), 006E4060's second arm answers from the rack's own
+        // bullet descriptor whatever is attached, so the static kinds stand.
+        if (!lua_device_reload_enabled_00e17bf2()
+            && u.rack_census_done && u.rack_multi_count == 0 && u.rack_ammo >= 0 && n != 0
             && u.rack_ammo_per_rack.size() == n) {
             const auto bit = [](int kind) { return std::uint64_t(1) << (kind - 0x08); };
             const auto bomb_family = [](int kind) {
