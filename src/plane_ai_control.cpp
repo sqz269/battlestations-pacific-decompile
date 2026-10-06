@@ -623,8 +623,7 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
                 out.throttle_desired = kPilotThrottleGroundCap;
             }
             return out;
-        }
-        if (!in.slot_active) {
+        } else if (!in.slot_active) {
             // 0099DC7A-0099DC97, the ground cap. 0099D911 reaches it only
             // from inside the state branch, so this one really is ground only.
             if (in.slot_current > kPilotThrottleGroundCap) {   // 00CE3D30 = 0.6
