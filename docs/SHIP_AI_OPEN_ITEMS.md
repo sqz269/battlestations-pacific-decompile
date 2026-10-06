@@ -13431,3 +13431,65 @@ Also on the branch: cc9-lua39's capture-fraction accessor (`f022aeb0c`, landed).
 | `s34_captick.py` | the capture tick timeline |
 | `s34_recctx.py` | a record's source context |
 | `s34_vt.py` | the state vtables' enter / exit slots |
+
+## 167. `NavigatorSetAvoidLandCollision(false)` drops the hull's class bit, 163 item 3 (packet `cc9_parts_land_avoidance`, cc9-lua40, 2026-10-06; reference AC)
+
+**The read.** `0092BD00` is 37 bytes, `0092BD00`-`0092BD24`, read whole.
+- `__thiscall(controller)`: `ECX = 0080E490(unit)` = `[unit+1018h]`, called at `008A3C79`.
+- It reaches only the disable side of `008A3B10` (`TEST BL,BL` / `JNZ` at `008A3C6C`).
+- It loads the hull body `[ctl+2Ch]` with no null test and gets the first shape (`00C31DC0`). For
+  every shape (next at `+208h`) it calls `00C48020(0Dh)`, which stores the mask `shape+30h = 0Dh`
+  and clears the body's manifolds (`00C43AA0`).
+- The hull build gave that mask `0Dh | the class bit` (`009394A9`..`009395E2`; SHIP_HULL_SHAPES).
+
+**What it changes.** The store drops the class bit. That is the same effect as `0092BD70(0)`, which
+the host already carries as `GameUnitsHost::set_hull_class_bit_0092bd70` (packet
+`cc9_avoid_zone_draft_bodies`). The draft bodies that pull hulls through the class bit stop catching
+this hull. Terrain (group 8) and hull-hull pairs (group 1) still pass, since `0Dh` keeps both bits.
+
+**The binding.** `kNavigatorPartsLandAvoidanceBound` (`src/game_hosts_script_orders.cpp`), committed
+OFF. It calls the accessor with `false`; no other lane's file is touched.
+- **SUBSTITUTIONS, labelled:**
+  - a sunk hull whose terrain bit 8 was cleared regains it from the image's `0Dh` store, but not
+    here;
+  - the manifold clear is not modelled.
+
+**Reach** (reference AA, `navigator avoidance order: ... land=0`):
+
+| row | unit |
+| --- | --- |
+| JM05, JM05 long | PT Boat 80' Elco 01 and 02 |
+| USNRM01 | Nevada |
+
+All three rows have live draft contacts: JM05 `pairs=2`, hits on every step; USNRM01 `pairs=4`.
+
+**Predictions, before any run:**
+- **OFF:** exit 0.
+- **ON:** `summary hull draft contact ... class_bit_clears` rises by the number of disabled units.
+  - **JM05 and JM05 long:** if the PT boats are among the touching pairs, their draft contacts end
+    and their tracks move: exit 3. Otherwise exit 1.
+  - **USNRM01:** the same test for Nevada.
+  - **USN02, the control:** exit 1.
+
+### 167.1 Measured: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+**The pairs.** Same tree. OFF is `da6daa333`; ON is its flip export (`61364EB16332`).
+Logs: `local\l40_{off,on}_{usn02,jm05,jm05l,usnrm01}.log`.
+
+| row | exit | what changed |
+| --- | --- | --- |
+| USN02 (control) | 1 | nothing |
+| JM05 | 3 | both PT boats lose the class bit at 0.00 s (`class_bit_clears=2`) |
+| JM05 long | 3 | as JM05 |
+| USNRM01 | 1 | Nevada loses its bit (`class_bit_clears=1`) |
+
+- **JM05 and JM05 long.** The PT boats were exactly the two touching draft pairs. Draft contact goes
+  `pairs=2 -> 0`, and `hits` from 8946 / 20946 to 0. They are the moored boats of the scene (state
+  `stop`, the terrain contact at t = 0.05). Their hull tilt and the neighbour-scan counters move.
+  Deaths, hits, shots, damage and the unit table are identical; one death row's nearest distance
+  moves by 6 m.
+- **USNRM01.** Nevada was not one of the four touching pairs, so its tests are now filtered
+  (`filtered=18000`) and nothing else moves.
+
+**Verdict: ON.** The class bit drops exactly where the read says, and the draft contacts end for
+exactly those hulls.

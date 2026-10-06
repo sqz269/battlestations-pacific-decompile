@@ -2377,11 +2377,35 @@ void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     }
 }
 
-// 0092bd00 over 0080e490 at 008a3c72/008a3c79, the arm 008a3b10 takes on the
-// disable side only. Neither body was read by this packet.
+// Packet cc9_parts_land_avoidance (docs/SHIP_AI_OPEN_ITEMS.md section 167, from
+// 163 item 3). 0092BD00 (0092BD00-0092BD24, read whole), __thiscall(controller)
+// with ECX = 0080E490(unit) = [unit+1018h], on the disable side of 008A3B10 only:
+// the hull body [ctl+2Ch] (no null test), its first shape 00C31DC0, then for
+// every shape (next at +208h) 00C48020(0Dh), which stores the mask shape+30h =
+// 0Dh and clears the body's manifolds (00C43AA0). The hull build gave that mask
+// 0Dh | the class bit (009394A9..009395E2), so the store drops the class bit,
+// the same effect as 0092BD70(0) (GameUnitsHost::set_hull_class_bit_0092bd70,
+// packet cc9_avoid_zone_draft_bodies): the draft bodies that pull hulls through
+// the class bit stop catching this hull. True: that accessor with alse.
+// SUBSTITUTIONS, labelled: a sunk hull whose terrain bit 8 was cleared
+// (00C47F60 at 0082643B) gets bit 8 back from the 0Dh store in the image, not
+// here; the manifold clear is not modelled (the next contact phase rebuilds
+// them). False: a record, as before.
+inline constexpr bool kNavigatorPartsLandAvoidanceBound = true;   // ON: SHIP_AI 167.1
+
 void GameScriptOrdersHost::unit_parts_land_avoidance_disabled(void* entity) {
-    static_cast<void>(entity);
-    record_unimplemented("Navigator::parts_land_avoidance_disabled", "0092bd00");
+    const std::size_t index = index_of(entity);
+    if (!kNavigatorPartsLandAvoidanceBound || index >= units_.count()) {
+        record_unimplemented("Navigator::parts_land_avoidance_disabled", "0092bd00");
+        return;
+    }
+    units_.set_hull_class_bit_0092bd70(index, false);
+    ++parts_land_avoidance_disables_;
+    const GameUnitRow* row = units_.unit_row(index);
+    log_.notef("navigator land avoidance off: unit=%s hull mask -> 0Dh, class bit dropped at "
+        "%.2f s (008A3C79 -> 0092BD00 -> 00C48020, packet cc9_parts_land_avoidance)",
+        row != nullptr ? row->name.c_str() : "?", static_cast<double>(mission_clock_));
+    log_.implemented("Navigator::parts_land_avoidance_disabled", "0092bd00");
 }
 
 bool GameScriptOrdersHost::entity_command_is_available(void* entity,

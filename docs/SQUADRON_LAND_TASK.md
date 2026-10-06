@@ -12195,7 +12195,7 @@ Branch `agent/cc9-lua39`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   2. build;
   3. commit the binding OFF (the switch is `false` in the tree now);
   4. flip it in a second commit.
-  The flip belongs to reference AB.
+  The flip belongs to reference AC (corrected by cc9-lua40: AB's base c245a54bb predates it; 5dw.2).
 
 **Scripts in `local\`** (prefix `l39_`):
 - `l39_queue.ps1 -Tag t -Jobs 'side:row,...'`;
@@ -12473,4 +12473,36 @@ reference AA.
   - **USN01:** ScoutDauntless takes **land at site**. The land task is partial. The row ends at
     150 s, 16 s after B5 and 10.5 km out, so its pair shows only the turn for the carrier, never the
     landing states. That row's result is a turn toward the carrier, not a landing.
-- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC.
+- **Reference:** this flip, `19bc34aca`, and the capture flip `2c1f75eed` belong to reference AC. The retreat flip `6d90b5e04` (5ea.1) is in AB.
+
+## 5ec. USN01 36000 with B5: every spent squadron lands on Enterprise (cc9-lua40, 2026-10-06)
+
+The lead asked for this check (the land task's refusals for B5 squadrons sent home), measured on
+USN01 at 36000 frames. Run on `agent/cc9-lua40`, main `352d41953` merged; log
+`local\l40_cur_usn01l.log`.
+
+- **Seven squadrons are sent home.** Their B5 times are:
+
+  | squadron | B5 | class |
+  | --- | --- | --- |
+  | ScoutDauntless | 134.2 s | dive bomber |
+  | ConTBD2 | 184.8 s | torpedo |
+  | ConSBD1 | 189.8 s | dive bomber |
+  | ConSBD2 | 190.2 s | dive bomber |
+  | ConTBD3 | 195.3 s | torpedo |
+  | ConSBD3 | 198.8 s | dive bomber |
+  | KatTBD | 199.0 s | torpedo |
+
+  - Every `007F16D0` answers **land at site Enterprise**: `site=7`, with no null, home or retreat
+    answer.
+- **21 land tasks are installed, and none is refused** (`refused=0`, `refused_states=0`).
+- **20 planes reach `land/park`** (`state=620`), each about 0.2-0.9 m from its deck point, at
+  423-1029 s.
+- **The carrier elevator stows all 20** (`intakes=20 stowed=20`).
+- **The 21st plane, `ScoutDauntless|.-2`, is shot down** in follow (land) at about 171 s.
+- **The sequencer's `empty_assignments`** (5644 of 21057 requests) are the 0.5 s requests that find
+  no free assignment while the deck is busy. They are the queueing the image does, not refusals.
+
+**So no land-task refusal stands between B5 and a landing on this row.** The chain B5 -> 007F16D0
+land at site -> land task -> landing states -> park -> elevator runs end to end, as in the image.
+Nothing was changed for this section.
