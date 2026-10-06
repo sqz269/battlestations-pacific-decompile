@@ -3928,13 +3928,22 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
         if (own_slot) {
             const GameUnitRow* const row = units_.unit_row(index);
             const std::string unit_name = row != nullptr ? row->name : std::string();
+            // 00E0CF04[+70h]: none, harm, soft, sell, exitzone, landed, editor
+            // (00CE43EC, 00D0E35C, 00D0E354, 00D19080, 00D19074, 00D0E34C,
+            // 00D1906C). Packet cc9_plane_retreat_task: the cause is the one the
+            // host's kill passed (4 for the retreat leave-map kill), 1 otherwise.
+            static const char* const kKillReasons[] = {
+                "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+            const int cause = units_.kill_cause_00926d90(index);
+            const char* const reason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
             lua_pushboolean(L, 1);
             lua_setfield(L, -2, "Dead");
-            lua_pushstring(L, "harm");   // 00E0CF04[1], +70h = 1
+            lua_pushstring(L, reason);
             lua_setfield(L, -2, "KillReason");
             log_.notef("entity dead: unit=%zu \"%s\" died=%.2f s published=%.2f s Dead=true "
-                "KillReason=harm (00929800)", index, unit_name.c_str(),
-                static_cast<double>(death.second), static_cast<double>(units_.mission_clock()));
+                "KillReason=%s (00929800)", index, unit_name.c_str(),
+                static_cast<double>(death.second), static_cast<double>(units_.mission_clock()),
+                reason);
         }
         lua_settop(L, lua_gettop(L) - 2);
     }

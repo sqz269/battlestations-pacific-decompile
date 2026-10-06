@@ -594,6 +594,10 @@ public:
     // death (its kill_unit funnel), so this reads its per-unit rows. Each entry
     // is (unit index, the mission clock of the death).
     std::vector<std::pair<std::size_t, float>> destroyed_units() const;
+    // Packet cc9_plane_retreat_task: the cause a host kill passed to 00926D90
+    // (4 for the retreat leave-map kill 007F3418), 1 (`harm`, every damage
+    // death) otherwise.
+    int kill_cause_00926d90(std::size_t unit_index) const;
 
     // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
     // once per fixed simulation step: the pre-pass, the `stop` arm and the idle
