@@ -976,3 +976,25 @@ entry.
 - **A squadron landed and stowed** (state 3, all members in state 2): order 1 issues a moveto that the host's
   stowed planes cannot fly (state 2 has no motion arm). The host is expected to show 0 planes moving: a known
   limit, not the image.
+
+#### The ESMP08 pair (cc9-lua46, 2026-10-06): predictions, written before the ON run
+
+- **The order lines.** They are generated from the OFF run (`local\l46_e8gen.py`), with the `s38_e8_p3.txt` launch lines
+  kept. For every slot whose squadron is still out when its launch target dies, the file sends `order <base> <slot> 1`
+  about 5 s later. On the next frame it sends `order <base> <slot> 3 <target>` for each USN ship in the launch generator's
+  rotating priority.
+- **A new labelled gate in the entry.** Order 3 refuses a target that fails `0043F080` (dead or hidden), as the launch
+  line's harness gate does, because the screen offers only live targets. The first live target is taken; the later
+  lines for that slot answer 2, because the leader is no longer holding.
+- **OFF.** Every order line is refused with "kAirOpsHeldSlotOrdersBound is off". Gameplay is identical to a run with no
+  order lines.
+- **ON.**
+  - Each order 1 to a busy squadron answers 1 and gives its members a moveto at the leader's position.
+  - The order 3 that follows answers 1 and goes through the squadron intake `007F1940`, so the re-sent squadrons fly
+    and strike again.
+  - Expected: more torpedo and dive releases after the first re-send, and US ship deaths no later than OFF. This
+    reaches Cummings, the one US ship the OFF run of ships40 (`s40_on2_e8`) never sank, only if a re-sent squadron
+    lives long enough.
+  - USN04 (the control, no order lines) is gameplay-identical.
+- **Mechanism failure:** an order that answers 1 but whose members never take the target (no `command target` line
+  naming it), or a re-sent squadron that never releases.

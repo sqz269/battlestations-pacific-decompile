@@ -1640,6 +1640,11 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
             if (row != nullptr && row->name == target) { target_index = k; break; }
         }
         if (target_index >= units_.count()) return refuse("no unit by the target name");
+        // LABELLED (cc9-lua46): the screen offers only targets that pass the marker
+        // gate 0043F080 (006431A8), as the launch line's harness gate; a file can then
+        // list fallback targets for one slot and the first live one is taken.
+        if (order == 3 && !units_.unit_alive_and_visible(target_index))
+            return refuse("the target fails 0043F080 (dead or hidden); the screen does not offer it");
     }
     const bsp::PlaneSquadronHostRecord* record = nullptr;
     for (const AirOpsSquadron& made : squadrons_) {
