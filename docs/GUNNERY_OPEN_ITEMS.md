@@ -10028,3 +10028,37 @@ summary omitted the A7h.
 
 **Reach:** none on the idle reference rows (no message is sent). With ships37's `build` line on LOMP10 after
 `AddShipyardStock` (four Elcos, two Catalinas), the entries take the stock and the hangars launch.
+## 135. Handoff (cc9-gunnery29, 2026-10-06, at about 65% context)
+
+### 135.1 Landed on agent/cc9-gunnery29
+
+| item | commits | state |
+| --- | --- | --- |
+| 130.6 bomb drop scatter (cc9-lua41's attach read) | `1a454bd44`, `1eeffd541` | **ON** (in AC) |
+| Reference AC (GAME_EXECUTABLE "2026-10-06 ac", base `20c30e6fb`) | `25d0f638a`, `cbda0d6f9`, `6ea6d5d85` | `reports/cc9_reference_rebaseline_29.json`; landed on main |
+| 133 census on AC | `08f8b63c9` | endpoint subject corrected (no reach); rack gates need a units diagnostic |
+| routed garrison revive `revive_unit_garrison_006f3660` (SHIP_AI 175) | `119deb177` | no caller; sha sent to cc9-ships37 |
+| 134 shipyard production queue read | `bb4fd7fe7` | read only; host plan in 134.3 |
+
+Flips since AC's base belong to AD.
+
+### 135.2 Next, in order
+
+1. **The shipyard production host (134.3).** Build the per-shipyard state from the scene (hangars, stock, entries),
+   `add_stock_0084acb0` for the Lua lane, `shipyard_order_00846d90` (A7h, `count - 1` A8h, A9h) for ships37's
+   `build` line, the production walk of `00846320`, all behind one switch committed OFF. The build `00844FC0`
+   needs a unit-creation call from the SpawnNew lane: ask the lead to route it before binding the walk's build arm.
+   Read first: `00844FC0`'s state write and its hangar store, `00984EB0`, `00844610`, AAh `008437D0`. Pairs: LOMP10
+   with the `build` line (after AddShipyardStock), JM05 / JM05 long as controls (their shipyard launches are
+   SpawnNew, 122).
+2. **133.3's rack diagnostic** (units host, routed): drops that leave the active rack with rounds, to size the
+   CanFire gates and `RepeatTime` gap.
+
+### 135.3 Tools (`local\` in this tree, prefix `g29_`)
+
+- `g29_lane.ps1 -Lane x -Variants 'short=kA+kB,...' -Rows a,b -Commit sha -Prefix p` (g28's, retargeted).
+- `g29_loo.ps1` (AC's leave-one-out lanes), `g29_loo_diff.ps1 -Groups 'g1,g2'` (exit vs AC / AB),
+  `g29_rounds.ps1 -Groups` (round agreement), `g29_heads.py <row> <tags...>` (headline columns),
+  `g29_diffrows.ps1 -A prefixA_ -B prefixB_ [-Rows]`, `g29_table.py <prefix>`, `g29_report29.py`, `g29_census.py`.
+- A full 22-row reference takes about 25 minutes; JM08 long (36000 frames) dominates every lane, so a
+  leave-one-out lane that waits for it between variants costs about 25 minutes per round.
