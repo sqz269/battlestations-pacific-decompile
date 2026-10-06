@@ -12626,6 +12626,24 @@ bool GameShipAiHost::command_building_capture_fraction_006f1f90(std::size_t unit
     return false;
 }
 
+// Packet cc9_cb_hit_gate_entry: see the header. The lander bleed
+// (landed_ship_remainder_00749b20) applies the same two steps inline.
+bool GameShipAiHost::command_building_hit_gate_006f1f20(std::size_t unit_index, float amount) {
+    Impl& host = *impl_;
+    if (!host.capture_built) host.build_capture_buildings();
+    Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return true;
+    if (b->invincible_7d8 != 0.0f) return false;                       // 006F1F2B
+    if (b->smoke_fire_mul_164 > 0.0f) {
+        if (kLandFortFireRollBound) {
+            host.landfort_fire_roll_007470b0(*b, amount);
+        } else {
+            host.record("LandFort::smoke_fire_roll_00746320", 0x00747116u);
+        }
+    }
+    return true;
+}
+
 bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
     Impl& host = *impl_;
     if (!kCommandBuildingCaptureBound) return false;
