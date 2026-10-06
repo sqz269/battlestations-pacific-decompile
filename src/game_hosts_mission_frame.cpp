@@ -39,6 +39,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/award_trackers.hpp"
+#include "bsp/dive_bomb_task.hpp"
 #include "bsp/game_dynamics_list.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"
@@ -357,6 +358,15 @@ struct GameMissionFrameHost::Impl {
         int launch_slot{0};        // launch: 1-based slot, 0 = 006C7210's pick
         int launch_class{0};       // launch: VehicleClass id
         int launch_count{0};       // launch: planes requested
+        // Packet cc9_player_bomb_release: `release <unit> [on <target...>
+        // [within <m>] [until <frame>]]`, the plane screen's bomb fire 006082D0.
+        bool bomb_release{false};
+        float release_within{25.0f};   // release ... on: the sight radius, metres
+        long release_until{-1};        // release ... on: last frame tried
+        bool release_have_last{false}; // the target's previous sample, for its velocity
+        float release_last[3]{};
+        float release_last_seconds{0.0f};
+        float release_best{-1.0f};     // the nearest predicted miss seen
         std::string target;        // attack / target: the target entity's name
         float stop_radius{-1.0f};  // takehelm ... stop R; negative: none
         unsigned applications{0};
@@ -2545,23 +2555,62 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
         const bool verb_ok = words.size() >= 2
             && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
-                || words[1] == "attack" || words[1] == "target" || words[1] == "launch");
+                || words[1] == "attack" || words[1] == "target" || words[1] == "launch"
+                || words[1] == "release");
         // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
         const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
         const bool launch_ok = verb_ok && words[1] == "launch" && words.size() >= 7;
+        // Packet cc9_player_bomb_release: `<frame> release <unit>` or
+        // `<frame> release <unit> on <target...> [within <m>] [until <frame>]`.
+        const bool release_ok = verb_ok && words[1] == "release"
+            && (words.size() == 3 || (words.size() >= 5 && words[3] == "on"));
         if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok
-                : words[1] == "launch" ? !launch_ok : words.size() < 4)) {
+                : words[1] == "launch" ? !launch_ok
+                : words[1] == "release" ? !release_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
                 "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> "
-                "attack|target <unit> <target> [repeat <s>]` or `<frame> launch <base> <slot> "
-                "<class> <count> <target>`", line,
+                "attack|target <unit> <target> [repeat <s>]`, `<frame> launch <base> <slot> "
+                "<class> <count> <target>` or `<frame> release <unit> [on <target> [within "
+                "<m>] [until <frame>]]`", line,
                 path.c_str());
             continue;
         }
         order.unit = words[2];
         if (select_ok) {
             order.select = true;
+            host.helm_orders.push_back(order);
+            continue;
+        }
+        if (release_ok) {
+            order.bomb_release = true;
+            bool numbers_ok = true;
+            while (words.size() >= 7 && (words[words.size() - 2] == "within"
+                                         || words[words.size() - 2] == "until")) {
+                char* ne = nullptr;
+                if (words[words.size() - 2] == "within") {
+                    order.release_within = std::strtof(words.back().c_str(), &ne);
+                    if (ne == nullptr || *ne != '\0' || !(order.release_within > 0.0f)) {
+                        numbers_ok = false;
+                    }
+                } else {
+                    order.release_until = std::strtol(words.back().c_str(), &ne, 10);
+                    if (ne == nullptr || *ne != '\0' || order.release_until < order.frame) {
+                        numbers_ok = false;
+                    }
+                }
+                words.resize(words.size() - 2);
+            }
+            if (!numbers_ok) {
+                host.log.notef("helm order refused: line %d of \"%s\": release needs `within` "
+                    "a positive number of metres and `until` a frame not before its own",
+                    line, path.c_str());
+                continue;
+            }
+            for (std::size_t w = 4; w < words.size(); ++w) {
+                if (!order.target.empty()) order.target += ' ';
+                order.target += words[w];
+            }
             host.helm_orders.push_back(order);
             continue;
         }
@@ -2782,6 +2831,111 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
         const unsigned long long now = host.frames.frames + 1;
         for (Impl::HelmOrder& order : host.helm_orders) {
             if (order.applied || static_cast<unsigned long long>(order.frame) > now) continue;
+            if (order.bomb_release) {
+                // Packet cc9_player_bomb_release (docs/SCRIPTED_HELM.md section 14):
+                // the player's bomb fire, IC_PLANE_BOMBFIRE (action A8h,
+                // scripts\datatables\Inputs.lua) read by the plane screen's
+                // 006082D0 at 0060877F, whose message C4h (00605270) reaches
+                // BSP_Plane_HandleMessage 007CD0B4 -> 007BBBA0. The units host
+                // applies 006082D0's gates. `on <target>` stands for the player
+                // watching the sight: the press is the first frame whose bomb,
+                // released now, is predicted (009C7D71's prediction) to fall
+                // within <m> of the target's position advanced by its own
+                // velocity over the fall time. LABELLED: the lead and the radius
+                // are the file's, not a person's eye; the bomb switch is held.
+                const std::size_t count = host.units->count();
+                std::size_t idx = count;
+                std::size_t target_idx = count;
+                for (std::size_t k = 0; k < count; ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row == nullptr) continue;
+                    if (row->name == order.unit && idx == count) idx = k;
+                    if (!order.target.empty() && row->name == order.target
+                        && target_idx == count) {
+                        target_idx = k;
+                    }
+                }
+                const float seconds = host.units->summary().simulated_seconds;
+                const char* why = "";
+                if (idx >= count) {
+                    why = " (no created unit has that name)";
+                } else if (!host.units->controlled_bound() || host.units->controlled_index() != idx) {
+                    why = " (not the controlled unit [00E188D8]: 006082D0 reads the plane "
+                          "screen's own unit)";
+                } else if (!order.target.empty() && (target_idx >= count
+                           || !host.units->unit_alive_and_visible(target_idx))) {
+                    why = " (the target is not a live created unit)";
+                }
+                if (*why == '\0' && !order.target.empty()) {
+                    // The sight. The target's velocity is its last frame's
+                    // displacement; the first frame only samples it.
+                    float t[3];
+                    host.units->unit_position_00fc(target_idx, t[0], t[1], t[2]);
+                    const float dt = seconds - order.release_last_seconds;
+                    float tv[3] = {0.0f, 0.0f, 0.0f};
+                    const bool have = order.release_have_last && dt > 0.0f;
+                    if (have) {
+                        for (int i = 0; i < 3; ++i) tv[i] = (t[i] - order.release_last[i]) / dt;
+                    }
+                    for (int i = 0; i < 3; ++i) order.release_last[i] = t[i];
+                    order.release_last_seconds = seconds;
+                    order.release_have_last = true;
+                    bsp::DiveBombImpactPointInputs ip;
+                    host.units->unit_position_00fc(idx, ip.unit_position[0], ip.unit_position[1],
+                        ip.unit_position[2]);
+                    host.units->unit_linear_velocity(idx, ip.unit_velocity);
+                    ip.aim_point_y = t[1];
+                    const bsp::DiveBombImpactPoint p = bsp::dive_bomb_impact_point_009c7d71(ip);
+                    const float lead_x = t[0] + tv[0] * p.fall_time;
+                    const float lead_z = t[2] + tv[2] * p.fall_time;
+                    const float miss = std::sqrt((p.point[0] - lead_x) * (p.point[0] - lead_x)
+                        + (p.point[2] - lead_z) * (p.point[2] - lead_z));
+                    const bool expired = order.release_until >= 0
+                        && now > static_cast<unsigned long long>(order.release_until);
+                    if (have && (order.release_best < 0.0f || miss < order.release_best)) {
+                        order.release_best = miss;
+                    }
+                    if (!have || !(p.fall_time > 0.0f) || miss > order.release_within) {
+                        if (!expired) continue;   // not yet on the sight: try next frame
+                        order.applied = true;
+                        ++host.helm_orders_refused;
+                        host.log.notef("helm order refused: line %d frame %ld (at mission frame "
+                            "%llu) release %s on %s: the sight never came within %.1f m "
+                            "(nearest %.1f m)", order.line, order.frame, now,
+                            order.unit.c_str(), order.target.c_str(),
+                            static_cast<double>(order.release_within),
+                            static_cast<double>(order.release_best));
+                        continue;
+                    }
+                    host.log.notef("helm order sight: line %d at mission frame %llu t=%.2f "
+                        "%s on %s: predicted (%.1f %.1f) lead (%.1f %.1f) miss %.1f m tf %.2f s "
+                        "alt %.1f", order.line, now, static_cast<double>(seconds),
+                        order.unit.c_str(), order.target.c_str(),
+                        static_cast<double>(p.point[0]), static_cast<double>(p.point[2]),
+                        static_cast<double>(lead_x), static_cast<double>(lead_z),
+                        static_cast<double>(miss), static_cast<double>(p.fall_time),
+                        static_cast<double>(ip.unit_position[1]));
+                }
+                order.applied = true;
+                bool accepted = false;
+                std::string reason;
+                if (*why == '\0') {
+                    const GameUnitsHost::PlayerBombRelease r =
+                        host.units->player_bomb_release_006082d0(idx);
+                    accepted = r.accepted;
+                    reason = r.reason;
+                } else {
+                    reason = why + 2;   // drop the leading " ("
+                    if (!reason.empty() && reason.back() == ')') reason.pop_back();
+                }
+                if (accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
+                    "release %s t=%.2f through 0060877F A8h -> 00605270 C4h -> 007CD0B4 -> "
+                    "007BBBA0%s%s", accepted ? "applied" : "refused", order.line,
+                    order.frame, now, order.unit.c_str(), static_cast<double>(seconds),
+                    reason.empty() ? "" : ": ", reason.c_str());
+                continue;
+            }
             order.applied = true;
             const long due = order.frame;
             if (order.select) {
