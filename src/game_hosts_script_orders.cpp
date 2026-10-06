@@ -2391,7 +2391,7 @@ void GameScriptOrdersHost::session_route_avoidance_message(void* director,
 // (00C47F60 at 0082643B) gets bit 8 back from the 0Dh store in the image, not
 // here; the manifold clear is not modelled (the next contact phase rebuilds
 // them). False: a record, as before.
-inline constexpr bool kNavigatorPartsLandAvoidanceBound = false;
+inline constexpr bool kNavigatorPartsLandAvoidanceBound = true;   // ON: SHIP_AI 167.1
 
 void GameScriptOrdersHost::unit_parts_land_avoidance_disabled(void* entity) {
     const std::size_t index = index_of(entity);

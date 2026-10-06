@@ -13470,3 +13470,26 @@ All three rows have live draft contacts: JM05 `pairs=2`, hits on every step; USN
     and their tracks move: exit 3. Otherwise exit 1.
   - **USNRM01:** the same test for Nevada.
   - **USN02, the control:** exit 1.
+
+### 167.1 Measured: **ON** (cc9-lua40, 2026-10-06, reference AC)
+
+**The pairs.** Same tree. OFF is `da6daa333`; ON is its flip export (`61364EB16332`).
+Logs: `local\l40_{off,on}_{usn02,jm05,jm05l,usnrm01}.log`.
+
+| row | exit | what changed |
+| --- | --- | --- |
+| USN02 (control) | 1 | nothing |
+| JM05 | 3 | both PT boats lose the class bit at 0.00 s (`class_bit_clears=2`) |
+| JM05 long | 3 | as JM05 |
+| USNRM01 | 1 | Nevada loses its bit (`class_bit_clears=1`) |
+
+- **JM05 and JM05 long.** The PT boats were exactly the two touching draft pairs. Draft contact goes
+  `pairs=2 -> 0`, and `hits` from 8946 / 20946 to 0. They are the moored boats of the scene (state
+  `stop`, the terrain contact at t = 0.05). Their hull tilt and the neighbour-scan counters move.
+  Deaths, hits, shots, damage and the unit table are identical; one death row's nearest distance
+  moves by 6 m.
+- **USNRM01.** Nevada was not one of the four touching pairs, so its tests are now filtered
+  (`filtered=18000`) and nothing else moves.
+
+**Verdict: ON.** The class bit drops exactly where the read says, and the draft contacts end for
+exactly those hulls.
