@@ -457,6 +457,12 @@ inline constexpr bool kLuaCapturePercentageBound = true;
 // TempWaitBase, fade-out DialogFadeTime) and 00734140 calls the entry's callback
 // when it has faded out; EndScene 008B01B0 is recorded (no freeze). False: the
 // natives stay unimplemented records and no callback ever fires.
+// Packet cc9_lua_camera_state (docs/MISSION_END.md 7.2). True: GetCameraState
+// 008BF6A0 answers {Position, Rotation, Zoom} from the published Operator
+// camera [game+19FCh] (a labelled stand-in, the controlled unit's pose, when
+// none is published) and GetRotation 008A7E60 answers a unit's basis angles in
+// degrees. False: both stay unimplemented records that push nothing.
+inline constexpr bool kLuaCameraStateBound = false;
 inline constexpr bool kLuaMissionNarrativeBound = true;   // ON: MISSION_END 7.1   // ON: SQUADRON_LAND_TASK 5dw.1 / 5dw.2
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
@@ -693,6 +699,14 @@ private:
     void run_countdown_update_00735100();
     // Packet cc9_lua_mission_narrative: 00735100's narrative half.
     void run_narrative_update_00735100(float step);
+    // Packet cc9_lua_camera_state.
+    int run_get_camera_state_008bf6a0();
+    void basis_degrees_0042d2e0(const bsp::CameraMatrix& world, float out[3]);
+    std::size_t camera_state_calls_{0};
+    std::size_t camera_state_from_camera_{0};
+    std::size_t camera_state_stand_ins_{0};
+    std::size_t get_rotation_calls_{0};
+    std::size_t get_rotation_unresolved_{0};
     void narrative_finish_00734140();
     void narrative_clear_00734fa0();    // max(0, +44h - (clock - +48h)), the value 007340A0 and 008B1B40 push.
     float countdown_time_left() const noexcept;

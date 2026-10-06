@@ -28,6 +28,8 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
+#include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
+#include "bsp/mission_camera.hpp"        // packet cc9_lua_camera_state
 #include "bsp/mission_lua_host.hpp"
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
@@ -275,6 +277,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"MissionNarrativeClear", 0x008b15b0u},
     {"MissionNarrativeSize", 0x008b0ac0u},
     {"EndScene", 0x008b01b0u},
+    // Packet cc9_lua_camera_state: handled only with kLuaCameraStateBound.
+    {"GetCameraState", 0x008bf6a0u},
+    {"GetRotation", 0x008a7e60u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -568,6 +573,10 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "MissionNarrativeSize") == 0 ||
         std::strcmp(binding->name, "EndScene") == 0) {
         return kLuaMissionNarrativeBound;
+    }
+    if (std::strcmp(binding->name, "GetCameraState") == 0 ||
+        std::strcmp(binding->name, "GetRotation") == 0) {
+        return kLuaCameraStateBound;
     }
     if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         return kLuaCapturePercentageBound;
@@ -3201,6 +3210,31 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             static_cast<double>(mission_clock_));
         log_.unimplemented("Game::end_scene_prompt_or_unload", "008b01b0");
         results = 0;
+    } else if (std::strcmp(binding->name, "GetCameraState") == 0) {
+        results = run_get_camera_state_008bf6a0();
+    } else if (std::strcmp(binding->name, "GetRotation") == 0) {
+        // 008A7E60: argument 0 through 00888AA0 (no null test in the image),
+        // the world refresh when +C8h is clear, 0042D2E0 on the unit's world
+        // basis (unit+CCh rows), the degree conversion (as 008BF6A0's), and
+        // 0088BA30's {x, y, z}: one result. LABELLED: an argument that is not a
+        // unit pushes nothing (the image reads whatever object it is handed).
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        float right[3], up[3], forward[3], position[3];
+        if (entity != nullptr && index < units_.count() &&
+            units_.unit_pose(index, right, up, forward, position)) {
+            const bsp::CameraMatrix world = {right[0], right[1], right[2], 0.0f,
+                up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
+                position[0], position[1], position[2], 1.0f};
+            float degrees[3];
+            basis_degrees_0042d2e0(world, degrees);
+            push_vector3_table_0088ba30(degrees);
+            ++get_rotation_calls_;
+            results = state_ != nullptr ? 1 : 0;
+        } else {
+            ++get_rotation_unresolved_;
+            results = 0;
+        }
     } else if (std::strcmp(binding->name, "GetCapturePercentage") == 0) {
         // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
         // test, then 00B66480 on the result as it is; one result. 006F1F90
@@ -3947,6 +3981,82 @@ void GameScriptOrdersHost::countdown_stop_007340a0() {
 // HUD calls 005B7390's widget writes, 005B5D20 and 005B5D40 are records. The
 // skip key 0E7h (00735123) is never pressed by the idle player. The step runs
 // inside run_blackout_update's gate (step > 0).
+// Packet cc9_lua_camera_state. 008BF6A0 and 008A7E60's angle tail: 0042D2E0
+// (extract_camera_matrix_angles_0042d2e0) on the basis, then for each angle
+// (008BF870-008BF8AF) f = float(a + 42 pi) [00D13268], f = float(fmod(f, 2 pi))
+// [00CE3828], degrees = float(f / pi [00CE3D28] * 180 [00CE3D20]).
+void GameScriptOrdersHost::basis_degrees_0042d2e0(const bsp::CameraMatrix& world,
+                                                  float out[3]) {
+    float a[3] = {0.0f, 0.0f, 0.0f};
+    bsp::CameraMatrix basis = world;
+    bsp::extract_camera_matrix_angles_0042d2e0(basis, a[0], a[1], a[2]);
+    for (int i = 0; i < 3; ++i) {
+        const float shifted = static_cast<float>(static_cast<double>(a[i]) + 131.9468994140625);
+        const float wrapped = static_cast<float>(std::fmod(static_cast<double>(shifted),
+                                                           6.2831854820251465));
+        out[i] = static_cast<float>(static_cast<double>(wrapped) / 3.1415927410125732 * 180.0);
+    }
+}
+
+// 008BF6A0 GetCameraState(): a new table with `Position` (0088BA30 of the
+// camera node's world translation, after 00B6DB70 when +5Ch bit 2 is clear),
+// `Rotation` (the basis angles in degrees, above) and `Zoom` = [00F889B4] /
+// node+1C4h (the fov). The node is [game+19FCh], the Operator camera the
+// host's mission camera publishes (bsp::mission_camera_publication, packet
+// cc9_mission_camera). SUBSTITUTION, labelled: when no pose has been
+// published (a controlled unit with no ship camera, such as JM08's HQ), the
+// controlled unit's own world matrix stands in, with Zoom 1.0; with no
+// controlled unit either, the identity at the origin.
+int GameScriptOrdersHost::run_get_camera_state_008bf6a0() {
+    if (state_ == nullptr) return 0;
+    bsp::CameraMatrix world = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                               0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    float zoom = 1.0f;
+    const char* source = "identity";
+    bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+    if (node.ready) {
+        if ((node.state.transform.valid_flags & 2u) == 0) {
+            bsp::refresh_camera_world_00b6db70(node.state.transform);
+        }
+        world = node.state.transform.world;
+        const float fov = node.state.projection.fov;
+        zoom = static_cast<float>(static_cast<double>(bsp::kFovDivisor00f889b4) / fov);
+        source = "camera";
+        ++camera_state_from_camera_;
+    } else if (units_.controlled_bound() && units_.controlled_index() < units_.count()) {
+        float right[3], up[3], forward[3], position[3];
+        if (units_.unit_pose(units_.controlled_index(), right, up, forward, position)) {
+            world = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
+                     forward[0], forward[1], forward[2], 0.0f,
+                     position[0], position[1], position[2], 1.0f};
+            source = "controlled unit (stand-in)";
+        }
+        ++camera_state_stand_ins_;
+    } else {
+        ++camera_state_stand_ins_;
+    }
+    ++camera_state_calls_;
+    const float position[3] = {world[12], world[13], world[14]};
+    float degrees[3];
+    basis_degrees_0042d2e0(world, degrees);
+    lua_newtable(state_);
+    push_vector3_table_0088ba30(position);
+    lua_setfield(state_, -2, "Position");
+    push_vector3_table_0088ba30(degrees);
+    lua_setfield(state_, -2, "Rotation");
+    lua_pushnumber(state_, static_cast<lua_Number>(zoom));
+    lua_setfield(state_, -2, "Zoom");                         // 00D14988
+    if (camera_state_calls_ <= 8) {
+        log_.notef("  GetCameraState at %.2f s: %s position=(%.1f, %.1f, %.1f) rotation=(%.1f, "
+            "%.1f, %.1f) zoom=%.3f (008BF6A0, packet cc9_lua_camera_state)",
+            static_cast<double>(mission_clock_), source, static_cast<double>(position[0]),
+            static_cast<double>(position[1]), static_cast<double>(position[2]),
+            static_cast<double>(degrees[0]), static_cast<double>(degrees[1]),
+            static_cast<double>(degrees[2]), static_cast<double>(zoom));
+    }
+    return 1;
+}
+
 void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     if (!narrative_active_14_) {
         if (narrative_queue_.empty()) return;
@@ -4827,6 +4937,12 @@ void GameScriptOrdersHost::report() {
         log_.notef("summary mission scene end calls=%zu first_at=%.2f (008B01B0, recorded; "
             "the run continues, packet cc9_lua_mission_narrative)", end_scene_calls_,
             static_cast<double>(end_scene_first_at_));
+    }
+    if (kLuaCameraStateBound || camera_state_calls_ != 0 || get_rotation_calls_ != 0) {
+        log_.notef("summary mission camera state bound=%d calls=%zu from_camera=%zu stand_ins=%zu "
+            "get_rotation=%zu unresolved=%zu (008BF6A0 / 008A7E60, packet cc9_lua_camera_state)",
+            kLuaCameraStateBound ? 1 : 0, camera_state_calls_, camera_state_from_camera_,
+            camera_state_stand_ins_, get_rotation_calls_, get_rotation_unresolved_);
     }
     if (capture_percentage_calls_ != 0) {
         log_.notef("summary mission script capture percentage bound=%d calls=%zu "
