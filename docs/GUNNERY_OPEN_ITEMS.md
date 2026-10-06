@@ -10342,3 +10342,26 @@ owed.
   `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
 - Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
   group's runs as its build lands.
+### 141.4 Added to the queue after the handoff (from the lead, 2026-10-06)
+
+The shipyard build pair the lead asked for is 136.6, already run.
+- **First: the depth-charge round below the surface.** cc9-ships38's `depthcharge` line (SHIP_AI 191.3, through
+  `fire_function_guns_now_009e2b60(unit, 8)`) fires Henry's rack 5 times at 19 m from the mini-sub, with no hit.
+  139's AI bot fired 60 times, also with no hit. The host's depth-charge projectiles end at the water, and the
+  sink/detonate helpers in `src/bomb_torpedo_tick.cpp` have no caller.
+  - Read `006FD210` (the projectile's creation), `006FCD20` (the advance in water) and the bomb tick's dive model.
+  - Read the fuse and detonation: depth or contact, and the blast against a submerged hull.
+  - Bind OFF. Pair BSM01 with `local\s38_b1_p7.txt` (cc9-ships38's tree) plus a control.
+  - Then pair 139 and 140, and flip by verdict. The `fire ... group 5` harness line goes to cc9-ships39.
+- **USN04 phase 2 (sink Shoho), from cc9-ships39.** Strikes reach Shoho but almost never release.
+  - Dive-bomb task: 1 release from 33 aircraft. The dive aim ends 230-500 m off; the wingmen log `db aim exit
+    aimdive -> goaway d=514.0 / 424.8`.
+  - Torpedo task: 3 releases from 36 aircraft, with `blocked_engaged_009d3210 = 31532`. Yorktown's TBD racks drop 0.
+  - Test row: USN04 `--mission-frame-seconds 0.0222 --frame-jitter 20,3`, ships39's `local\s39_u4_p1.txt`,
+    45000 frames. Shoho spawns at about 231 s.
+  - Read the dive aim chain (aimdive -> release) and the `009D3210` engaged gate against the image. Tell faithful
+    spread from a host gap: SQUADRON_LAND_TASK 5dv found that ConSBD2's misses were the image's own authored aim error.
+  - The same torpedo gate likely explains USNRM01's Kates never torpedoing West Virginia (SHIP_AI 189).
+- **USNOS Kaiten drown (SHIP_AI 196).** The wave-1 Kaiten and subs #3.2-#3.6 all drown at 160.81 s with no damage,
+  about 120 s after spawning (packet `cc9_submarine_air`). Read the submarine air/drown rule against the image; it
+  may be a host artefact.
