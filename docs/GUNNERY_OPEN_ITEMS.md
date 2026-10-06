@@ -11008,3 +11008,44 @@ whether the image's platform record for these tubes carries a window with the fi
   player who never moves the camera holds the turrets the same way. The difference is only that the harness never
   aims. **Recorded, nothing bound.** A run that needs Portland1's guns on the bot should not control Portland1, or
   should select a group other than 3.
+
+## 154. Handoff (cc9-gunnery32, 2026-10-06, at about 75% context)
+
+### 154.1 Landed on agent/cc9-gunnery32 (base main `8eee3a87c`)
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference AE (GAME_EXECUTABLE "2026-10-06 ae", `reports/cc9_reference_rebaseline_32.json`) | `1b444cb06`, `355817681` | done: anchor = AD on 22 rows; 17 rows move, mostly `sqp`; six wins hold |
+| 148 the banked-TBD pitch hold | `91f79bdfb` | read and measured: the terrain-avoidance pitch band (`0099CAB0` -> `0099D025`, repaired at `0099BF30`), not the pitch arm; routed |
+| 149 IJN01 A7M_2's target | `91f79bdfb` | refuted: the target is never cleared; the break-off is the range arm after the single drop clears `db_has_bomb_d1`; routed to racks |
+| 150 the dive handover attitude | `5699be292` | faithful (`009C7EA0`'s -1.0..-1.3 window) |
+| 151 the DC in-water drift | `21fb959cc` | faithful (`006FD660` keeps v, `006FCD20` drags all axes) |
+| 152 the player's torpedo group 4 | `fabcc0a46`, `3b8a30917` | bound **OFF** (`kPlayerTorpedoGroupFireBound`); JM06's tubes fail the snap (window flags 0) |
+| 153 145's two measurements | `3b8a30917` | done: the AA window term; the 8-inch freeze is the controlled ship's artillery seat |
+
+The diagnostics committed with these are log-only. They are the 0071EBF0 empty/cleared lines, the env-gated
+`BSP_FIRE_GATE_TRACE` route/step/ticks lines, and `BSP_FIRE_GATE_TARGET` slot lines. The group-4 tube line runs under
+the OFF switch only.
+
+### 154.2 Next, in order
+
+1. **JM05 long's death** (AE): `GenerateObject("Event5Convoy")` throws in the units host's observer check. This is the
+   Lua / scene lane's work (routed); until it lands, JM05 long under AE ends at 195.01 s. A reference that needs the
+   row whole can take it from `air` OFF.
+2. **152's open question**: does the image's platform record for a submarine's Function 7 tubes carry a window with the
+   fire bit? Read `007F6B10`'s flag source for this installation's Gato/PlayerSub classes. The tube windows the host
+   loads are `[-180, 180]` with flags 0. Then re-run the JM06 test (`local\g32_t4_hack*.py`, `g32_ord_j6t4.txt`,
+   `BSP_G32_TORP_TARGET`). The harness line is the ships lane's (the proposed edit is in the 152 report to the lead).
+3. **148's candidate**: `0099F1C0`'s bank terms against the image for a banked descent (about 9.6 KB of x87). Planes code;
+   it needs the lead's routing. The local `G32AIM` / `G32BAND` diagnostic edits are `local\g32_diag_edit*.py`.
+4. **USN13 long under AE** is an unattributed interaction (only `sqp` OFF moves it, and not to the anchor). Pairwise
+   leave-two-out (`sqp`+`air`, `sqp`+`rack`) on that row would settle it.
+5. The aimdive along-track miss (143.2 / 150): `009C5C9F`'s steering, not the handover.
+
+### 154.3 Notes
+
+- `local\g32_queue.ps1` (three at a time through `tools/run_game.ps1`, with `-WaitSeconds 30000`) and `local\g32_jobs.py`
+  (AD's 22 rows and the six win rows) are this tree's run tools. `local\g32_lane.ps1` runs leave-one-out lanes.
+- With three slots shared by three workers, 200 runs take about 5 hours. Narrow the leave-one-out to the rows that the
+  broad group leaves unexplained.
+- `std::getenv` is a C4996 error in this build (warnings are errors); local hacks use `_dupenv_s`.

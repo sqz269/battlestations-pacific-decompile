@@ -15218,3 +15218,105 @@ idle player; USN04 stays at 0.05 so that it compares with AD), and six scripted-
   - BSM01 p6, 40000: the MiniSub dies near 1300.79 s and `Mission.EndMission` comes near **1632.47 s** (cc9-ships40's
     `s40_bsm_b6.log`). The depth-charge switches that landed after that run may move it by seconds.
   - Every win log has the guard line `bsp: refused a mission script's process launch: sus_prog.exe`.
+
+### The runs (AE, `local\g32_ae_<row>.log`)
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13707.8 | 50 | 1041 (149) | 13694 | 98.70 s | 5 of 16 / 0 of 19 | 15 | Lexington-class01 3295.50 | none (Mission.EndMission never true) | 482 | `local\g32_ae_usn04.log` |
+| USN01 | 3000 | 34487.7 | 29 | 1412 (341) | 2302 | 12.90 s | 0 of 5 / - | 3 | ScoutDauntless 3171.32 | none (Mission.EndMission never true) | 493 | `local\g32_ae_usn01.log` |
+| USN04 (E2) | 9000 | 13743.9 | 52 | 1044 (149) | 13743 | 98.70 s | 5 of 16 / 0 of 19 | 19 | Lexington-class01 5736.48 | none (Mission.EndMission never true) | 482 | `local\g32_ae_e2.log` |
+| USN02 | 9000 | 41913.3 | 3 | 5266 (335) | 4382 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.MissionStatus) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 reached at 113.90 s (recorded); Mission.EndMission at 74.30 s | 489 | `local\g32_ae_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 448 | `local\g32_ae_jm06.log` |
+| JM08 (smoke) | 3000 | 9609.0 | 20 | 431 (147) | 1592 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 452 | `local\g32_ae_jm08.log` |
+| USN13 (smoke) | 3000 | 7894.1 | 23 | 443 (139) | 3915 | 98.90 s | 1 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 472 | `local\g32_ae_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 446 | `local\g32_ae_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 439 | `local\g32_ae_lomp06.log` |
+| LOMP10 | 3000 | 3145.8 | 2 | 235 (111) | 4563 | 91.95 s | - / 16 of 8 | - | (none) 8380.01 | none (Mission.EndMission never true) | 473 | `local\g32_ae_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 8 / 0 of 9 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 504 | `local\g32_ae_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 439 | `local\g32_ae_usn12.log` |
+| LOMP10 (long) | 9000 | 3762.1 | 4 | 248 (116) | 4627 | 91.95 s | - / 16 of 8 | - | (none) 8380.01 | none (Mission.EndMission never true) | 488 | `local\g32_ae_lomp10l.log` |
+| USNOS | 3000 | 45850.4 | 87 | 1490 (234) | 5062 | 5.00 s | - | 6 | NH 1497.26 | none (Mission.EndMission never true) | 506 | `local\g32_ae_usnos.log` |
+| USNOS (long) | 9000 | 55447.4 | 114 | 2191 (310) | 9198 | 5.00 s | - | 8 | NH 4492.07 | none (Mission.EndMission never true) | 513 | `local\g32_ae_usnosl.log` |
+| IJN01 | 3000 | 1763.3 | 1 | 161 (149) | 5017 | 80.20 s | - | - | A7M_1 8788.23 | none (Mission.EndMission never true) | 434 | `local\g32_ae_ijn01.log` |
+| JM05 (long) | 9000 | - | - | - | 4619 | - | - | 4 | - | **dies at 195.01 s**: `startup failed: unit observer creator projection is unavailable: unit=Event5Convoy` | 502 | `local\g32_ae_jm05l.log` |
+| JM08 (long) | 36000 | 120797.7 | 143 | 15617 (747) | 8708 | 5.25 s | - | 1 | Headquarter 01 0.00 | failed at 1026.93 s (Mission.MissionStatus) text="Mission Failed - The HQ has been destroyed!" entity="Headquarter 01" objectives=5; EndScene 008B01B0 reached at 1066.52 s (recorded); Mission.EndMissi | 495 | `local\g32_ae_jm08l.log` |
+| USN13 (long) | 9000 | 39557.9 | 100 | 2562 (1589) | 31753 | 98.90 s | 2 of 60 / 2 of 50 | 31 | Enterprise 2777.59 | none (Mission.EndMission never true) | 490 | `local\g32_ae_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 489 (95) | 3470 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 459 | `local\g32_ae_esmp08l.log` |
+| USNRM01 | 9000 | 31862.8 | 149 | 1731 (1370) | 60842 | 166.96 s | 5 of 11 / 5 of 19 | 104081 | West Virginia 0.00 | none (Mission.EndMission never true) | 502 | `local\g32_ae_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 128 (31) | 1077 | 65.20 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 497 | `local\g32_ae_ijn11.log` |
+
+**Binaries:** AE `D8EA5FA98BD3`, anchor `2E94BD190546`. The console session was Active for every run.
+
+### The anchor: all fifteen OFF
+
+`g32_anc_<row>` is **gameplay-identical to AD on all twenty-two rows** (exit 1 on each), as predicted. No unswitched
+code since `bb5ad5db8` moves a reference row.
+
+### AE against AD
+
+**Seventeen rows move (exit 3); five are exit 1:** USN02, JM06, BSM01, LOMP06 and USN12. The headline moves:
+
+| row | AD -> AE |
+| --- | --- |
+| USN04 / E2 | deaths 48 -> 50 (4500); hull hits 153 -> 149; torpedo-task releases 3 -> 5 of 16 |
+| USN01 | hull hits 328 -> 341 |
+| JM08 | deaths 22 -> 20 (Ki-43 Oscar 01 and Gekko 01\|.-2 survive); hull hits 159 -> 147 |
+| JM08 long | deaths 144 -> 143; HQ failure 1027.88 -> 1026.93 s |
+| USN13 / USN13 long | 22 -> 23 deaths; long: deaths 102 -> 100, hull hits 1982 -> 1589 |
+| LOMP10 / long | dive-bomb releases 14 -> 16; long: deaths 5 -> 4 |
+| USNOS / long | deaths 88 -> 87; long 107 -> 114 |
+| IJN01, ESMP08 long, IJN11 | hit records and shots only |
+| JM05 | torpedo-task 0 of 3 -> 0 of 8, dive-bomb 0 of 6 -> 0 of 9 (units 392 -> 398); damage and deaths equal |
+| USNRM01 | deaths 132 -> 149; torpedo-task releases 0 -> 5 of 11, dive-bomb 0 -> 5 of 19 |
+| **JM05 long** | **the run dies at 195.01 s** (see below) |
+
+- **Prediction misses.** JM08 and JM08 long move; I had expected them identical. JM08 has airborne squadrons, and
+  `sqp` moves it, as the leave-one-out shows.
+- **JM05 long dies.** At 195.01 s the mission script's random event 5 calls `GenerateObject("Event5Convoy", ...)`
+  (this installation's `scripts/missions/COTP-IJN/PRCPIJN/jm05.lua`, 2024-07-13, line 3698). The unit creation then
+  throws at `src/game_hosts_units.cpp`'s observer check: `unit observer creator projection is unavailable:
+  unit=Event5Convoy creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`, and the
+  run ends (`exit_code=1`).
+  - AD and the anchor never draw event 5. Under AE the changed air operations do (`air`, below).
+  - This is a host gap in `GenerateObject` for a stationary-class template, not a switch fault. It was routed to the
+    lead on 2026-10-06.
+
+### Leave-one-out
+
+`local\g32_loo_<group><round>_<row>.log`. Every round 2 equals its round 1 (exit 0/1).
+- `sqp` and `sub` were run on all seventeen moved rows.
+- After `sqp` explained thirteen of them, `air`, `rack`, `dc` and `yard` were run on the four left over (USNOS long,
+  JM05, JM05 long, USN13 long), plus USN04, ESMP08 long and IJN01 as controls.
+
+| group OFF | result |
+| --- | --- |
+| `sqp` | **= anchor (exit 1) on 13 rows**: USN04, E2, USN01, JM08, JM08 long, USN13, LOMP10, LOMP10 long, USNOS, IJN01, ESMP08 long, USNRM01, IJN11. Still moved against the anchor: USNOS long, JM05, JM05 long, USN13 long |
+| `air` | moves USNOS long, JM05 and JM05 long against AE (exit 3); **JM05 long runs all 9000 frames** (no event 5); = AE on USN13 long, ESMP08 long, USN04, IJN01 |
+| `sub` | = AE on all 17 rows |
+| `rack`, `dc`, `yard` | = AE on all 7 rows (JM05 long still dies) |
+
+- **Attribution.**
+  - `sqp` is the broad mover.
+  - `air` adds USNOS long and JM05, and it is what sends JM05 long into event 5.
+  - USNOS long and JM05 need both `sqp` and `air` OFF to return to the anchor.
+  - **USN13 long is not attributed.** Only `sqp` OFF moves it, yet it does not restore the anchor, and every other
+    group OFF on its own equals AE. So an interaction between `sqp` and another group moves it; pairwise runs were
+    not taken.
+- The prediction held for `sqp` and for `air` on ESMP08 long, which is in fact equal to AE with `air` OFF; `sqp`
+  restores it. `rack` does not move IJN01 without its order file. `sub` does not move JM06.
+
+### Scripted-win rows (AE; order files in `local\g32_ord_<key>.txt`)
+
+| row | order file | frames | completion | EndScene | guard line (log line) | log |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 | **727.60 s** | 762.14 s | 112259 | `local\g32_aew_u2.log` |
+| USN01 | `s38_u1_p8` | 22000 | **648.42 s** | 682.96 s | 100084 | `local\g32_aew_u1.log` |
+| LOMP06 | `s37_l6_p2` | 16000 | **267.41 s** (`luaMissionSuccess`) | 301.95 s | 47988 | `local\g32_aew_l6.log` |
+| LOMP10 | `s37_l10_p2` | 30000 | **1438.63 s** (`luaVictory`) | 1473.21 s | 153442 | `local\g32_aew_l10.log` |
+| USN12 | `s38_u12_p2` | 36000 | **1544.78 s** | 1579.37 s | 226500 | `local\g32_aew_u12.log` |
+| BSM01 | `s38_b1_p6` | 40000 | MiniSub dies **1300.79 s** (HenryPT, 25 m); `Mission.EndMission` **1632.47 s** | not reached | 447593 | `local\g32_aew_b1.log` |
+
+All six equal their predictions to the hundredth of a second. Each log has the exec guard's refusal line
+(`bsp: refused a mission script's process launch: sus_prog.exe`). BSM01's summary reads `nil at 1632.47 s
+(Mission.EndMission)`.
