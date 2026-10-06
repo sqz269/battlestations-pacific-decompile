@@ -9336,3 +9336,92 @@ long (130), USNOS and USNOS long (23), USN01 (20), IJN11 (15), LOMP06 (9), LOMP1
 
 **Verdict: ON**, as the image's rule read from the listing, with no reach and so **unexercised**: no
 run has yet listed a hangar through it. A row that orders a ship at an airfield is the first test.
+
+## 125. Gunfire on a CommandBuilding goes through `006F1F20` (SHIP_AI 161.4(b); packet `cc9_cb_gunfire_gate`, `kCommandBuildingGunfireGateBound`, cc9-gunnery27, 2026-10-06)
+
+### 125.1 The read
+
+- A CommandBuilding's hit-record slot is the base `BSP_UnitInstance_ApplyHitRecord` `008777D0`
+  (`00CFB114` = vtable `00CFB028` + `ECh` holds `008777D0`; the same pointer sits in six other unit
+  vtables, among them `00CF8CF4` and `00CFF4E4`).
+- `008777D0` (`008777D0..00877A43`) applies both of its passes through **`victim->vtable[1ACh](damage)`**:
+  the hull pass at `008778C6..008778D2` and the part pass at `00877A2B..00877A37`.
+- For a CommandBuilding, slot `1ACh` (`00CFB1D4`) is **`006F1F20`** (`006F1F20..006F1F72`, `RET 4`):
+  it calls `007470B0(amount)` under the `+764h` lock only while `+7D8h == 0.0` (`006F1F23 MOVSS`,
+  `006F1F2B UCOMISS [00D7A218]`, `006F1F36 JP` skips). SHIP_AI 161.1 read the rest: the neutralize
+  stores `SingleInvincibleTime` (20 s in this installation) at `+7D8h`, the fixed-step tail counts it
+  down, and `007470B0` rolls `SmokeFireChanceMul` (`class+164h`) before AddDamage `0095DA00`.
+- **So shells, bombs and blasts on a capture building are refused for 20 s after a neutralize, and
+  each accepted hit takes the roll**, exactly as the lander bleed does.
+
+**The host.** Every hit reaches the gunnery host's `add_damage` (`src/game_hosts_gunnery.cpp`, the
+`ShipHitBinding`), which applies the difficulty multiplies and `00879070` with no `+7D8h` test. On
+cc9-ships34's JM08 long ON run (`s34_on3_jm08l.log`) the HQ takes 2172 impact blasts and the kill
+funnel asks the capture rule 3709 times.
+
+### 125.2 The binding (committed OFF)
+
+`kCommandBuildingGunfireGateBound` (gunnery). ON: in `add_damage`, a victim of kind `1Ch` goes through
+the ship AI host's `command_building_hit_gate_006f1f20(unit, damage)`, the entry shared with
+cc9-ships34's lander bleed: false while `+7D8h != 0.0` (no damage, counted as a refusal); otherwise it
+runs `007470B0`'s roll through the same helper the bleed uses (drawn only under
+`kLandFortFireRollBound`, SHIP_AI 162) and the host's AddDamage follows (counted as a pass). The amount
+handed to the roll is the hit's damage before the difficulty multiplies, as `vtable[1ACh]` receives it.
+
+### 125.3 Predictions (written before any ON run)
+
+- **JM08 long 36000:** the HQ is neutralized at 1034.10 s as before (the gate is 0 until then).
+  Hits between 1034.10 and 1054.10 s are refused (`refusals > 0`), so the damage headline falls and
+  the capture rule's health-zero calls fall: `pair_diff` 3, with the neutralize time unchanged. Whether
+  anything after 1054 s moves depends on the HQ's health at the window's end; the row is
+  image-faithful only to about 1093 s (SHIP_AI 160).
+- **Controls (USN01, USN13, USNOS, BSM01 3000):** no capture building is neutralized in 150 s, so
+  `refusals=0` and gameplay is identical (`pair_diff` 1).
+
+**Status of 125 (2026-10-06):** read, plan and predictions only. The binding is NOT committed: it calls
+`GameShipAiHost::command_building_hit_gate_006f1f20(unit, amount)`, which does not exist yet. The
+code is in `local\g27_cb_gate.patch` and `git stash` entry `g27-cb-gate` in the cc9-gunnery27 tree
+(4 hunks in `src/game_hosts_gunnery.cpp`: the switch, two counters, the gate at the top of
+`ShipHitBinding::add_damage`, the summary line; its comment still says section 124, read 125).
+
+## 126. Handoff (cc9-gunnery27, 2026-10-06, at about 72% context)
+
+### 126.1 Landed on agent/cc9-gunnery27
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference AA (GAME_EXECUTABLE "2026-10-05 aa", base `13fd2978e`) | `5bf980c12`, `675511666` | `reports/cc9_reference_rebaseline_27.json` |
+| 119 carrier remainder `00758090` (holder yaw-rate filter) | `573eaba72` | no reach; correction recorded |
+| 120 landing-ship remainder `00749B20` | `573eaba72` | routed; cc9-ships34 bound it (SHIP_AI 161) |
+| 121 airfield destruction rule `006D40F0` + scene record fields | `f55f06bca`, `c2cbe41ac`, `c0051ed49`, `c72b54a06` | **ON** (AB) |
+| 122 shipyard tick `00846320` | `d63d1b6dc` | strategic-map only, no reach |
+| 123 gunnery/physics/commands census on AA | `cd225cd9b` | ranked list |
+| 124 airfield gun target = live hangars `006D4DD0` | `5ce2f1d98`, `f0543ef6d` | **ON** (AB), no reach, unexercised |
+| 125 CommandBuilding gunfire gate `006F1F20` | this commit (doc only) | blocked, see above |
+
+Flips since AA's base, for reference AB: `kAirfieldDestructionRuleBound`, `kAirfieldTargetSubEntitiesBound`
+(and the other lanes' flips on main).
+
+### 126.2 Next, in order
+
+1. **125, the CommandBuilding gunfire gate.** Get the shared entry into the ship AI host (cc9-ships34
+   owns `src/game_hosts_ship_ai.cpp`; it holds the SmokeFireChanceMul roll helper
+   `landfort_fire_roll_007470b0` from SHIP_AI 162). Spec, as sent to cc9-ships34:
+   `bool command_building_hit_gate_006f1f20(std::size_t unit_index, float amount);` - find the capture
+   building (build the list if not built); none: true; `invincible_7d8 != 0.0f`: false; else run the
+   roll helper and return true. Then apply `local\g27_cb_gate.patch`, fix its section number, build,
+   commit OFF with 125's predictions (already in the doc), smoke, pair JM08 long 36000 + USN01, USN13,
+   USNOS, BSM01 3000, flip by verdict. JM08 long is image-faithful only to about 1093 s (SHIP_AI 160).
+2. **Census 123.2 item 2:** `BSP_UnitDamageSmoke_Tick` `008227E0` draws `00BD2FC0` on stream 0 at
+   `00822A89` (list pick over `[ESI+18h]..[ESI+20h]`, stride 4) and three stream-1 floats. Read which
+   arm reaches `00822A89` (the per-slot timers at `[ESI+0Ch]`, stride 8, counted down at `008228FA`);
+   bind the stream-0 draw if it is per damaged unit per interval.
+3. Census items 3-4 (planes-lane devices; `0071FB90`, `007208A3`) as reach allows.
+
+### 126.3 Tools (`local\` in the cc9-gunnery27 tree, prefix `g27_`)
+
+- `g27_lane.ps1 -Lane -Variants 'short=kA+kB' | 'short=!kOn' -Rows a,b -Commit -Prefix`: export, build,
+  reference launch form; keys include `usn01x` (USN01 36000). Run one 22-row lane at a time.
+- `g27_cmp.py <prefixA> <prefixB> [rows]`, `g27_table.py <prefix>`, `g27_report27.py`, `g27_switches.py`.
+- `g27_census.py <prefix> [regex] [status] [limit]`, `g27_sites.py <record names>`.
+- `g27_airfields.py`: airfield hangar census on z logs. `g27_units_edit.py`: the applied units edit.
