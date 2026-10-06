@@ -13486,3 +13486,48 @@ The read is from disk bytes and the 5eo ON log `local\l44_h2on_e8.log`. No code 
 **Next for this row:** read whether the hidden plane's position or its `+904h` changes under the platform in
 the image (the carry `006FC0D0` and the release `006FC250`). Until then, ESMP08's relaunch count is bounded
 by squadron deaths, as the order file is written.
+
+## 5eq. GUNNERY 138: the rack's own projectile decides, `kRackBulletKindBound` (packet `cc9_rack_bullet_kind`, cc9-lua44, 2026-10-06)
+
+**The image, `007C0D90`** (`BSP_Plane_TickReleaseOrderIssue`, read from the live decompile):
+- It walks the plane's device list (`+48h`, next `+44h`). For each device of class 25h that holds ordnance 2Ah
+  (`vtable[210h](2Ah, 0)`) and is not busy (`vtable[1FCh]`), it takes the rack's projectile descriptor
+  (`vtable[220h](0)`).
+- **Single-drop arm.** Taken when the plane is not `IsKindOf(10h)`, or the descriptor answers 2Ch, 2Bh or 33h
+  (`vtable[8]`). The arm is: `+C25h` = 1, then `007EEF30`, unless 33h.
+- **Level-bomber arm.** Otherwise the rack fires with the accumulated delay (`vtable[1F0h]`), and the walk
+  continues.
+- So the choice is per rack, from a static descriptor. `006E56F0` is the one tick for every rack.
+
+**The host departure (GUNNERY 138).**
+- `lb_level_bomber_racks()` and the single-rack drop choose from the unit's ordnance mask: the OR of every
+  device's kinds (`game_hosts_gunnery.cpp:4371`).
+- A torpedo answers both 2Ah and 2Bh. After the first torpedo the gunnery host clears only the 2Bh bit
+  (`game_hosts_gunnery.cpp:11568`, "one torpedo per aircraft"). The 2Ah bit that came from the torpedo itself
+  stays.
+- So from the next step a torpedo-armed level bomber looks like a plain-bomb level bomber. bruh #1.9's wingmen
+  then took the level-bomber tick, with no rack armed, and never dropped again.
+- The single rack's `toRepeatTime` was also stored as 0 where the image loads `desc+E0h` (`006E58AA`).
+
+**The binding.** `GameUnitsHost::Impl::kRackBulletKindBound`, committed **OFF**, in `src/game_hosts_units.cpp`:
+- the census records each single rack's projectile class (`read_device_bullet_class_id`: Bullet[1] ->
+  Bullets[].Type) and its RepeatTime;
+- `lb_level_bomber_racks()` is false when any rack is 2Bh, 2Ch or 33h;
+- the single-rack drop spawns by the fired rack's own class (2Bh torpedo, else the bomb arm);
+- `006E58AA` re-arms `toRepeatTime` from the fired rack's RepeatTime.
+
+Labelled:
+- the class's default Bullet[1] is used; an equipment bag that swaps the projectile is not read;
+- with mixed racks, any torpedo/depth-charge/rocket rack decides, where the image's walk order decides;
+- the gunnery host's mask clear itself is left as it is (gunnery lane).
+
+An ON-only line `rack bullet kinds <unit> (level bomber): [...]` lists each level bomber's racks.
+
+**Predictions, written before any ON run.**
+1. **USN13 9200.** The rack line shows each `bruh` wingman's rack class.
+   - If it is 2Bh: after the first torpedo they stay on the single arm and drop again every RepeatTime while
+     dropBombs and the pitch/roll gates allow it. GUNNERY 138's census then shows `level=0` for them,
+     `repeat_drops > 0` and more torpedo spawns.
+   - If it is 2Ah: their first drop is already a bomb through the level-bomber tick.
+2. **USNOS 3200 and LOMP10 3200.** Gameplay identical, unless a kind-10h plane there carries a torpedo or
+   multi-round rack. A plain-bomb level bomber's arms do not change.
