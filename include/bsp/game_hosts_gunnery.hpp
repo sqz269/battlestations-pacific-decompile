@@ -1055,6 +1055,11 @@ public:
     // Under BSP_GUNNERY_RNG_STREAMS=1, a MEASUREMENT option, each (stream, unit)
     // key gets its own deterministic generator instead.
     float death_mode_draw_00bd2f10(int stream, std::size_t unit_index, float low, float high);
+    // Packet cc9_damage_smoke_draws (docs/GUNNERY_OPEN_ITEMS.md 127): 008227E0 on
+    // the unit's damage-smoke controller (unit+10A0h) for one update step 7, with
+    // the units host's scaled delta. False when kDamageSmokeDrawsBound is off: the
+    // caller keeps its record.
+    bool damage_smoke_tick_008227e0(std::size_t unit_index, float delta);
     // Packet cc9_gun_aim_terms (docs/GUN_AIM_TERMS.md). The dogfight fine aim's
     // distortion, 009FA7E0 on dogfight-gun+4h, called at 009FCCD7 only on a tick
     // where the fine aim runs. One wander per unit, created on the first call

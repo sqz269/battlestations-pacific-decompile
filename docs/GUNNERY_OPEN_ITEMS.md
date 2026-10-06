@@ -9425,3 +9425,95 @@ Flips since AA's base, for reference AB: `kAirfieldDestructionRuleBound`, `kAirf
 - `g27_cmp.py <prefixA> <prefixB> [rows]`, `g27_table.py <prefix>`, `g27_report27.py`, `g27_switches.py`.
 - `g27_census.py <prefix> [regex] [status] [limit]`, `g27_sites.py <record names>`.
 - `g27_airfields.py`: airfield hangar census on z logs. `g27_units_edit.py`: the applied units edit.
+
+## 127. The damage-smoke controller `008227E0` draws on the gameplay stream (census 123.2 item 2; packet `cc9_damage_smoke_draws`, `kDamageSmokeDrawsBound`, cc9-gunnery28, 2026-10-06)
+
+### 127.1 The read
+
+`BSP_UnitDamageSmoke_Tick` `008227E0` (`008227E0..00822B6F`, `RET 4`, `__thiscall(controller, float
+delta)`) is step 7 of `008255B0` (`008259EB`, `008227E0(&unit->f_10A0h, delta)`). The controller is
+embedded at `unit+10A0h`; its `+28h` is the unit (`00823760` stores it), so its fields are unit cells:
+
+| controller | unit | meaning | writer |
+| --- | --- | --- | --- |
+| `+0Ch..+14h` | `+10ACh` | slot vector, 8 bytes each: `{effect, timer}` | grown only by `00822770` |
+| `+18h..+20h` | `+10B8h` | effect definitions, a copy of `class+664h` | `00823766` (`0081E350`) in `BSP_UnitInstance_SEntityInit` |
+| `+2Ch` | `+10CCh` | slot cap, `class+660h` | `00823753` (SEntityInit) |
+| `+30h` | `+10D0h` | the clock | zeroed by the constructor (`0081F14D`), by `008270BE` in `00826F10` (every hull hit), and by the sync message (`00816DF9`); counted up here |
+
+`class+660h` / `+664h` are `DamageSmoke.MaxNumber` / `DamageSmoke.Effect` (`BSP_ShipClass_ReadLuaFields`
+`00832495` / `00832571`, `include/bsp/ship_class_fields.hpp`). `scan-bytes` finds no other `.text` site
+with displacement `10D0h`, `10CCh` or `10BCh` in the unit's range.
+
+The tick, in order (`disasm-raw` `008227E0..00822B45`):
+1. `00822801` `00923BE0` (the health, 0.0 while `+5Dh` is set, else `vtable[110h]` floored at 0 and
+   capped at 1.0 `[00D7A24C]`); `0082280F..00822820` `00822770(1.0 - health)`.
+2. `00822770` (`00822770..008227D3`): `n = _ftol((+2Ch + 1) * arg)` (`FILD`, `FMUL`, `00BF7420`), capped at
+   `+2Ch` (`JL`); when `n` exceeds the slot count (`JBE`, unsigned) the vector grows to `n` with
+   `{null, 0.0}` (`00822560`). It never shrinks.
+3. `00822825..00822837`: `+30h += delta`. `0082286A`: `30.0` (`[00CE7630]`, a double) `> +30h`, and
+   `0082288E`: the unit's world Y `+100h` `> -5.0` (`[00CFBC84]`; `00414DB0` first when `+C8h` is clear).
+   Both true sets the respawn flag (`[ESP+13h]`).
+4. For each slot: the effect scalar (`00815370`, presentation); `008228FA` `timer -= delta`; when
+   `timer <= 0` (`0082290C..00822912`) the effect is stopped (`00867B10`, presentation) and, with the
+   respawn flag:
+   - `00822973` `MOV ECX,1` / `00822981` `00BD2F10(5.0 [00D098D0], 10.0 [00CE38B8])`, the next timer;
+   - `008229F5` / `00822A17` and `00822A39` / `00822A43`, `00BD2F10` on stream 1 again:
+     `U(-0.3 * class+A0h, +0.3 * class+A0h)` then `U(-0.3 * class+A4h, ...)` (`[00CE3DC8]` is the double
+     0.3), the spawn point;
+   - `00822A87` `XOR ECX,ECX` / `00822A89` `00BD2FC0` on stream 0, `% (+20h - +1Ch) / 4` the effect pick
+     (a zero count would divide by zero; every row that has `DamageSmoke` in this installation lists two
+     effects);
+   - `00822AD7` `008687C0` creates the point effect (presentation).
+
+**Correction to 123.2.** The three `00BD2F10` draws are `ECX = 1`, the gameplay stream
+(`docs/RANDOM_STREAMS.md`: stream 1 is gameplay, stream 0 sits mostly in `004xxxxx`); the `00BD2FC0`
+pick is stream 0. So the respawns shift the stream that gunnery, ship AI and plane draws share, three
+steps each, not only stream 0.
+
+**Reach.** This installation's `scripts\datatables\autoload\vehicleclasses.lua` (mtime 2026-05-09,
+locally modified) carries `DamageSmoke` on 155 rows: `MaxNumber` 3 on 139, 1 on 13, 2 on 3, and two effects each.
+The rows whose `Type` the census matched are BattleShip, Cruiser, Destroyer, MotherShip, Submarine,
+TorpedoBoat and Cargo (24); the other 131 were not typed by its regex, so "ship family only" is not
+established (`local\g28_smokecensus.py`). A ship therefore gets its first slot at 25 %
+damage (`MaxNumber` 3), and while hull hits keep its clock under 30 s each slot respawns every
+5-10 s, three stream-1 draws a time. A dead ship (health 0.0) has every slot.
+
+**The host.** `UnitInstanceBinding::smooth_intensity_008227e0` (`src/game_hosts_units.cpp`) records
+`UnitInstance::smooth_intensity` and draws nothing; `ShipHitBinding::clear_hit_accumulator`
+(`src/game_hosts_gunnery.cpp`) is empty.
+
+### 127.2 The binding (committed OFF)
+
+`kDamageSmokeDrawsBound` (gunnery). ON:
+- the flatten chunk adds `dsmax` (`DamageSmoke.MaxNumber`) and `dsfx` (the integer run of
+  `DamageSmoke.Effect`) to each class's `BSPGun` row; `UnitState` keeps them with the slot timers and
+  the clock;
+- `clear_hit_accumulator` zeroes the victim's clock (`008270BE`);
+- `GameGunneryHost::damage_smoke_tick_008227e0(unit, delta)` runs steps 1-4 for a unit whose class has
+  `dsmax > 0`, taking the three stream-1 draws through `Impl::draw` (the shared generator by default; key
+  `Draw::damage_smoke` (unit, slot * 2) under `BSP_GUNNERY_RNG_STREAMS=1`) and the stream-0 pick as one
+  generator step (the units host's stream 0 by default; key (unit, slot * 2 + 1) under the option);
+- the units host's step 7 forwards to it (one edit in `src/game_hosts_units.cpp`) and keeps its record
+  when it answers false.
+
+**LABELLED:** health is `health / max_health` in [0, 1], 0.0 for a dead unit (the host's `dead` for
+`+5Dh`); class `+A0h` / `+A4h` are the host's `Length` / `Width`; no effect is created, so the effect
+scalar and stop calls are not taken (they draw nothing). **Coverage:** complete for the draws and the
+state; the effect side is presentation.
+
+### 127.3 Predictions (written before any ON run)
+
+- **Every row, `pair_diff` 1.** Under the reference launch form (`BSP_GUNNERY_RNG_STREAMS=1`) the
+  respawn draws get their own keys, so no gameplay draw moves; only the summary line and the native
+  table change (`UnitInstance::smooth_intensity` becomes concrete, `UnitDamageSmoke::point_effect_create`
+  appears). A gameplay move would mean a key collision or a stray state write.
+- **The census (ON):**
+  - `clock_resets` equals the row's hull-hit count (the `hit records (hull)` column, all victims, planes
+    included: a plane class has no `DamageSmoke`, so its reset is inert);
+  - `respawns > 0` on the rows where a ship reaches 25 % damage: USNOS, USNOS long, JM05, JM05 long,
+    JM08, JM08 long, USN01, USN04, E2, USN02, USN13 long, USNRM01, IJN11, ESMP08 long are the likely
+    ones; `respawns = 0` and `slots_grown = 0` on BSM01 and LOMP06 (no damage);
+  - the first respawn follows the first hull hit on a ship that is a quarter down, within one step.
+- **Default form (no option):** not paired here. Every respawn moves the shared stream three steps, so
+  a default-form run diverges after the first respawn; that is the binding's purpose.

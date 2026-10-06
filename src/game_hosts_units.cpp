@@ -7985,7 +7985,16 @@ public:
     }
     bool is_controlled_unit() override { return owner_.is_controlled(slot_); }
     bool global_intensity_override() override { return false; }  // 00f87152
-    void smooth_intensity_008227e0(float) override {
+    void smooth_intensity_008227e0(float scaled_delta) override {
+        // Packet cc9_damage_smoke_draws (docs/GUNNERY_OPEN_ITEMS.md 127): the
+        // gunnery host keeps the damage-smoke controller (unit+10A0h) and its
+        // draws; it answers false while kDamageSmokeDrawsBound is off.
+        GameGunneryHost* const gun = owner_.gunnery.get();
+        if (gun != nullptr
+            && gun->damage_smoke_tick_008227e0(slot_.process_index, scaled_delta)) {
+            owner_.done("UnitInstance::smooth_intensity", 0x008227e0u);
+            return;
+        }
         owner_.record("UnitInstance::smooth_intensity", 0x008227e0u);
     }
     bool wake_enabled() override {
