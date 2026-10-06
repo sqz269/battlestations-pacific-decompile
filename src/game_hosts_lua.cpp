@@ -2518,6 +2518,10 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
             return host != nullptr ? host->air_ops_squadron_plane_count(squadron) : 0;
         },
         orders);
+    // Packet cc9_lua46_set_party_unit: SetParty on a unit re-runs the mirror.
+    orders->set_party_mirror([](void* context) -> std::size_t {
+        return static_cast<GameMissionLuaHost*>(context)->mirror_party_race_00928f50();
+    }, this);
     mirror_party_race_00928f50();
 }
 
