@@ -1077,6 +1077,17 @@ public:
     // the unit is not dead. The caller restores the units-host scene flags and
     // the party (then refresh_unit_side).
     bool revive_unit_garrison_006f3660(std::size_t unit_index);
+    // Packet cc9_shipyard_production (bsp::kShipyardProductionBound): the strategic
+    // map's purchase at a shipyard, 00673A10. `shipyard` is the shipyard's unit
+    // index; `entry` is 1-based, or <= 0 for the first idle entry (006534E0). The
+    // screen sends A7h (byte 1), repeated until the entry holds `vehicle_class`
+    // (one A7h when it is <= 0), then for a plane class `count - 1` A8h (byte 1,
+    // screen+334h; they cycle the entry's Equipments index, not a unit count),
+    // then A9h (byte 1), which builds at once when a hangar is free. Each order
+    // builds one unit. `chosen_entry` is 1-based; `reason` is "built", "queued"
+    // or why it was refused. docs/GUNNERY_OPEN_ITEMS.md section 136.
+    bool shipyard_order(std::size_t shipyard, int entry, int count, int& chosen_entry,
+                        std::string& reason, int vehicle_class = 0);
     // unit+368h, the instance armour, for a writer outside this host: 006F38E0
     // stores Armor[level] / 100 * class Armour there (SHIP_AI 169). The direct-hit
     // passes read it under kCommandBuildingGunfireArmourBound (GUNNERY 129).
