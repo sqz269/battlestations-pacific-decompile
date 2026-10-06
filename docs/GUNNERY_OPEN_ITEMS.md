@@ -10687,3 +10687,41 @@ Rows:
 
 Prediction 1 holds as written, including the fifth refusal, and prediction 2 holds. **Verdict: the mechanism matches,
 so `kShipyardProductionBound` is flipped ON** (`include/bsp/shipyard_production.hpp`).
+
+## 147. Handoff (cc9-gunnery31, 2026-10-06, at about 70% context)
+
+### 147.1 Landed or committed on agent/cc9-gunnery31
+
+| item | commits | state |
+| --- | --- | --- |
+| 142 depth charge under water (006FD9B0 / 006FD660 / 006FCD20) | `dc333827c`, `efbc2de86` | **ON**, with 139 `kDepthChargeBotTickBound` and 140 `kPlayerWeaponGroupFireBound` |
+| 143 USN04 strike releases and USNOS Kaiten drown | `fbc2f7f4a` | read; routed to the planes lane; the Kaiten drown is faithful |
+| 144 rack CanFire and the RepeatTime default | `180564f8d` | read; edits routed (0.6f default, and the equipment-bag device) |
+| 145 Portland1 vs a parked Judy and Airfield3 | `8003a7d45` | partial; two measurements open |
+| 146 `kShipyardProductionBound` re-pair | `e4269601d`, `d09116c3d` | **ON** |
+
+### 147.2 Next, in order
+
+1. **Reference AE** (lead item 4), when asked. The AD tools are at 141.3; this tree's `local\g31_runrows.ps1` is
+   the same launch form, with rows `b1p6`, `b1p7`, `b1p9` and `l10b`.
+2. **145's open measurements:**
+   - the AA slot-test refusal for a grounded plane (`bind_aa_acceptance`'s `last_refusal_`, Portland1 against
+     plane #1.5 on `s39_os_b2.txt`);
+   - the 8-inch traverse freeze after damage (gun 547 at -130.8 deg from 1164 s; the live rotation-speed producer
+     under damage).
+3. **142's follow-up:** once the scene-contents lane fixes the vertical subwalk false hit
+   (`landscape_entry_segment_hit`'s `kTerrainVerticalSubwalkBound` arm), re-run BSM01 p6/p9. The charges should
+   then reach 20-33 m.
+4. **Routed items to watch:**
+   - 143.1, the TBD level-off at about 110 m against aim's command (planner pitch arm `0099E490` while banked);
+   - 143.2, the SBD turndown/aimdive attitude handover (72 degrees against a 45-degree sight line);
+   - 144, the 0.6f RepeatTime default at two `game_hosts_units.cpp` sites and the `Equipments[C54h]` rack device.
+     Both are lua45's / the planes lane's.
+   - 143.3, the submarine breathing-line floor `00CEE4E0` = -4.0 (host tests < 0.0; no effect on this
+     installation's classes).
+
+### 147.3 Notes
+
+- `--frame-jitter 20,3` needs quoting (`'20,3'`) inside a `pwsh -Command` string, or the executable exits 2 with no log.
+- Diagnostic exports in `local\`: `g31_u4trace` (`kHullAimTrace` plus `G31AIM`, never committed), `g31_dc_on`,
+  `g31_dc_off`, `g31_sy_on` and `g31_sy_off`.
