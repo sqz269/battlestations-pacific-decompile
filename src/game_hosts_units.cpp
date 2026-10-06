@@ -2618,6 +2618,7 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
     unsigned long long stock_return_site_leaves{0};
+    unsigned long long stock_return_queue_erases{0}, stock_return_queue_misses{0};
     // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
     unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
@@ -5318,6 +5319,12 @@ struct GameUnitsHost::Impl {
     // last plane's slot return 006C5950, and Kill(plane, 5). False: the stowed
     // plane stays alive on the site vector and the elevator re-takes it.
     static constexpr bool kStowedPlaneStockReturnBound = true;   // ON by its pairs (SHIP_AI 200.2)
+    // Packet cc9_stock_return_queue_erase (docs/SHIP_AI_OPEN_ITEMS.md 204). True: the
+    // last plane's slot return 006C5950 first erases the squadron's landing-queue
+    // record at the block (006C59A4-006C59DC: find at +98h, 14h stride, count +9Ch;
+    // 006BF7F0 on +84h moves the last record into its place). False: the record stays
+    // and later squadrons queue behind it (n = largest + 1).
+    static constexpr bool kStockReturnQueueEraseBound = false;
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -13335,6 +13342,30 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
             ++live;
         }
         if (live == 1 && sq->squadron_unit != bsp::kPlaneSquadronNoUnit) {   // 007F1D0E
+            if constexpr (kStockReturnQueueEraseBound) {
+                // 006C59A4-006C59DC, before the slot walk: the squadron's queue record
+                // at this block goes through 006BF7F0 (its observer pair unregistered,
+                // the last record copied into its place, count - 1). The +A8h
+                // assignment records are not touched here.
+                if (di < landing_decks.size()) {
+                    std::vector<LandingQueueEntry>& q = landing_decks[di].queue;
+                    const std::size_t sqi = static_cast<std::size_t>(
+                        sq - bsp::plane_squadron_registry().records().data());
+                    std::size_t k = 0;
+                    while (k < q.size() && q[k].squadron != sqi) ++k;
+                    if (k < q.size()) {
+                        q[k] = q.back();
+                        q.pop_back();
+                        ++stock_return_queue_erases;
+                        log.notef("  stock return: squadron %s's landing-queue record erased "
+                            "at %s, %zu left (006C59A4 -> 006BF7F0, packet "
+                            "cc9_stock_return_queue_erase)", sq->name.c_str(),
+                            decks.name_at(di).c_str(), q.size());
+                    } else {
+                        ++stock_return_queue_misses;
+                    }
+                }
+            }
             slots_returned = bsp::air_ops_return_squadron_slot_006c5950(
                 *deck, static_cast<std::uint32_t>(sq->squadron_unit + 1u));   // 007F1D4E
             stock_return_slot_returns += slots_returned;
@@ -33800,6 +33831,10 @@ void GameUnitsHost::report() {
         host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
         host.stock_return_no_squadron, host.stock_return_slot_returns,
         host.stock_return_site_leaves);
+    host.log.notef("summary stock return queue erase bound=%d erases=%llu misses=%llu "
+        "(006C59A4 -> 006BF7F0, packet cc9_stock_return_queue_erase)",
+        Impl::kStockReturnQueueEraseBound ? 1 : 0, host.stock_return_queue_erases,
+        host.stock_return_queue_misses);
     if constexpr (kBaseLaunchChainBound) {
         std::size_t inside_now = 0;
         for (const auto& s : host.slots) {
