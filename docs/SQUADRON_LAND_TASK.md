@@ -13789,3 +13789,33 @@ This closes 5er's open read, from disk bytes.
 
 **Open, routed to the gunnery lane (its file):** a diagnostic at that store, a log line when a non-zero target
 is overwritten with 0, will show which row does it. Nothing is bound here.
+
+## 5ev. The rack's device from the equipment, `kRackEquipmentDeviceBound` (packet `cc9_lua45_rack_equipment_device`, cc9-lua45, 2026-10-06)
+
+GUNNERY 144 (cc9-gunnery31) routed two edits in `src/game_hosts_units.cpp` to this lane. Both are behind one switch,
+committed OFF.
+
+- **(a) The RepeatTime default.** `006E01C0` reads `"RepeatTime"` through `00B66330` with the default `[00CE3D30]` =
+  `3F19999Ah` (0.6f) at `006E0242`. Both host readers took 0.0: the single-rack census and
+  `lb_rack_timing_007c1fb0`.
+- **(b) The rack's device.** It is `VehicleClass[c].Equipments[unit+C54h][slot].Platform` (C54h 1-based; `00961F57`
+  stores Platform per entry), and the class default `p%d_dev` only when C54h is 0. A slot with no recorded bag value
+  keeps `DefaultEquipment or 1`, as `rack_equipment_ammo` does.
+  - USN13's `bruh` (class 167, scene Equipment 1) then carry device 88, "Bomb platform 250kg JP": Bullet 78,
+    RepeatTime 0.05, Ammo 16.
+  - The class default is device 122, a torpedo platform.
+- **Not done:** CanFire's destroyed gate (`+358h <= 0`). The host has no per-rack damage level.
+
+**Predictions (before the pairs).** The rows are USN13 9000, USNOS 3000 and LOMP10 3000, with variants
+A (both OFF), B (`kRackEquipmentDeviceBound` ON) and C (both ON, with `kRackBulletKindBound`).
+- **B against A.**
+  - On USN13, the `bruh` racks change kind from torpedo (2Bh) to bomb (2Ah). That changes:
+    - `lb_level_bomber_racks` (the torpedo test on the mask);
+    - the live mask's kinds;
+    - the squadron ammo type (007EDAD0 ancestry).
+  - So the Bettys stop dropping "torpedoes" and drop bombs if their task reaches a release.
+  - Expect USN13 to move: torpedo drops go down, bomb drops go up.
+  - USNOS and LOMP10 move only if a scene plane's equipment platform differs from its class default.
+- **C against B.** 138's per-rack decision drops the 16-bomb stick at 0.05 s through 007C0D90's level-bomber arm,
+  with the descriptor 2Ah.
+  - USN13 should show bomb drops paced at 0.05 s instead of the old 0.8 s "torpedo" burst.

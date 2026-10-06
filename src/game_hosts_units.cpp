@@ -3599,6 +3599,57 @@ struct GameUnitsHost::Impl {
         }
         return read_equipment_ammo(class_id, platform_key);
     }
+    // Packet cc9_lua45_rack_equipment_device: Equipments[e][platform].Platform,
+    // -1 when any level is absent. `equipment` 0 reads `DefaultEquipment or 1`.
+    int read_equipment_platform(int class_id, int platform_key, int equipment) {
+        if (platform_key < 0) return -1;
+        char chunk[512];
+        char index[48];
+        if (equipment > 0) {
+            std::snprintf(index, sizeof(index), "%d", equipment);
+        } else {
+            std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
+        }
+        std::snprintf(chunk, sizeof(chunk),
+            "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+            "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+            "local e = c.Equipments[%s]\n"
+            "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+            "return tonumber(e[%d].Platform) or -1\n", class_id, index, platform_key, platform_key);
+        const int top = lua.lua_gettop();
+        int value = -1;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_equipment_platform") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            const std::string text = lua.lua_tolstring_at_top();
+            if (!text.empty()) value = std::atoi(text.c_str());
+        }
+        lua.lua_settop(top);
+        return value;
+    }
+    // The rack's device under kRackEquipmentDeviceBound; `class_dev` otherwise.
+    int rack_equipment_device(const GameUnitSlot& s, int class_id, int platform_key,
+                              int class_dev) {
+        if constexpr (!kRackEquipmentDeviceBound) {
+            (void)s; (void)class_id; (void)platform_key;
+            return class_dev;
+        } else {
+            int equipment = 0;
+            if constexpr (bsp::kPlaneSceneEquipmentBound) {
+                if (s.bag_equipment == 0) return class_dev;
+                if (s.bag_equipment > 0) equipment = s.bag_equipment;
+            }
+            const int dev = read_equipment_platform(class_id, platform_key, equipment);
+            if (dev >= 0) ++rack_equipment_devices;
+            return dev >= 0 ? dev : class_dev;
+        }
+    }
+    // 006E0242: 00B66330("RepeatTime") with the default [00CE3D30] = 0.6f.
+    static constexpr float kRackRepeatTimeDefault = 0.6f;
+    float rack_repeat_default() const noexcept {
+        return kRackEquipmentDeviceBound ? kRackRepeatTimeDefault : 0.0f;
+    }
+    unsigned long long rack_equipment_devices{0};
     unsigned long long plane_equipment_reads{0};
     unsigned long long plane_equipment_none{0};
     unsigned long long plane_equipment_default{0};
@@ -5672,6 +5723,15 @@ struct GameUnitsHost::Impl {
     // False: the static OR of the device kinds, as before. ON by verdict (5eu):
     // IJN01 moves through the two A7M squadrons that emptied both racks.
     static constexpr bool kRackLiveOrdnanceMaskBound = true;
+    // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
+    // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
+    // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
+    // own equipment entry, VehicleClass[c].Equipments[unit+C54h][slot].Platform
+    // (C54h 1-based, the equipment reader 00961F57 stores Platform per entry), and
+    // the class default p%d_dev only when C54h is 0 or the entry has no Platform.
+    // A slot with no recorded bag keeps `DefaultEquipment or 1`, as the ammo
+    // reader does. False: the class default device and a 0.0 RepeatTime.
+    static constexpr bool kRackEquipmentDeviceBound = false;
     // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
     // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
     // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below
@@ -21121,11 +21181,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1) !=
                                 static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
                             std::snprintf(key, sizeof(key), "p%d_dev", p);
-                            const int dev = owner_.lua.read_vehicle_class_integer(
+                            const int class_dev = owner_.lua.read_vehicle_class_integer(
                                 type_id, "BSPGun", key, -1);
+                            std::snprintf(key, sizeof(key), "p%d_key", p);
+                            const int pkey = owner_.lua.read_vehicle_class_integer(
+                                type_id, "BSPGun", key, -1);
+                            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
                             if (dev < 0 || owner_.lua.read_device_class_string(dev, "Type") !=
                                 "BombPlatform") continue;
-                            const float r = owner_.lua.read_device_class_number(dev, "RepeatTime", 0.0f);
+                            // 006E0242 00B66330 default [00CE3D30] = 0.6f.
+                            const float r = owner_.lua.read_device_class_number(dev, "RepeatTime",
+                                owner_.rack_repeat_default());
                             const int rounds = rack < unit_.rack_authored_per_rack.size()
                                 ? unit_.rack_authored_per_rack[rack] : 1;
                             const float span = r * static_cast<float>(rounds > 1 ? rounds - 1 : 0);
@@ -24667,17 +24733,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 type_id, "BSPGun", key, -1);
                             if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
                             std::snprintf(key, sizeof(key), "p%d_dev", p);
-                            const int dev = owner_.lua.read_vehicle_class_integer(
+                            const int class_dev = owner_.lua.read_vehicle_class_integer(
                                 type_id, "BSPGun", key, -1);
+                            // The platform's key, which also indexes the
+                            // equipment entry (packet cc9_lua45_rack_equipment_device).
+                            std::snprintf(key, sizeof(key), "p%d_key", p);
+                            const int pkey = owner_.lua.read_vehicle_class_integer(
+                                type_id, "BSPGun", key, -1);
+                            const int dev = owner_.rack_equipment_device(unit_, type_id, pkey, class_dev);
                             const std::string type = dev >= 0
                                 ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
                             if (type == "BombPlatform") {
                                 ++unit_.rack_single_count;
                                 // The platform's authored rounds (packet
                                 // cc9_dive_bomb_carried_rounds). -1 when absent.
-                                std::snprintf(key, sizeof(key), "p%d_key", p);
-                                const int pkey = owner_.lua.read_vehicle_class_integer(
-                                    type_id, "BSPGun", key, -1);
                                 const int ammo = owner_.rack_equipment_ammo(unit_, type_id, pkey);
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
                                 unit_.rack_authored_per_rack.push_back(ammo);
@@ -24686,8 +24755,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // the bullet is not read.
                                 unit_.rack_bullet_class_per_rack.push_back(
                                     owner_.read_device_bullet_class_id(dev));
+                                // 006E0242 00B66330 default [00CE3D30] = 0.6f.
                                 unit_.rack_repeat_per_rack.push_back(
-                                    owner_.lua.read_device_class_number(dev, "RepeatTime", 0.0f));
+                                    owner_.lua.read_device_class_number(dev, "RepeatTime",
+                                        owner_.rack_repeat_default()));
                             } else if (type == "MultiBombPlatform") {
                                 ++unit_.rack_multi_count;
                             }
