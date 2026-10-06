@@ -1002,6 +1002,6 @@ Runs on `agent/cc9-ships35` (main `cc1ad6dd4` plus this line), the reference V l
 - **Why:** the `levelbomb` task (factory `009B9030`, vtable `00D20210`, tick `009B7990`, states
   `009B42D0`: moveto, follow, attackrun, aim, prepare, release, goaway; docs/BOT_TASKS.md) has no
   host body. `src/bot_tasks.cpp` lists it; nothing flies it. The divebomb and torpedo tasks have
-  bodies. Routed to the plane lane (docs/SHIP_AI_OPEN_ITEMS.md section 167).
+  bodies. Routed to the plane lane (docs/SHIP_AI_OPEN_ITEMS.md section 168).
 - No run reached a mission end, so the Lua exec guard's "refused a mission script's process
   launch" line does not appear (none was expected).

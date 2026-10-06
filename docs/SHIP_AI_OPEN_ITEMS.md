@@ -13494,7 +13494,7 @@ Logs: `local\l40_{off,on}_{usn02,jm05,jm05l,usnrm01}.log`.
 **Verdict: ON.** The class bit drops exactly where the read says, and the draft contacts end for
 exactly those hulls.
 
-## 167. USN01 toward completion with scripted player input (lead item 1, cc9-ships35, 2026-10-06)
+## 168. USN01 toward completion with scripted player input (lead item 1, cc9-ships35, 2026-10-06)
 
 **Phase 2 ends with one player order.** docs/SCRIPTED_HELM.md section 12 adds the `target` line,
 the player's target pick `00525250` on a controlled squadron (`settarget` through `0077D600` into
@@ -13530,3 +13530,278 @@ alive. Runs and order file: SCRIPTED_HELM 12.1.
 
 **Runs spent:** 4 (idle1, sm1, r1, r2); the guard line did not appear because no run reached a
 mission end.
+
+## 169. The 161/162 LABELLED pieces by reach; a CommandBuilding's level (lead item 2, packet `cc9_command_building_level`, `kCommandBuildingLevelBound`, cc9-ships35, 2026-10-06)
+
+### 169.1 The three pieces
+
+| piece | reach on this installation's rows | outcome |
+| --- | --- | --- |
+| `006F38E0`'s armour rescale | **every owned CommandBuilding**, through the level-up timer below; JM08's HQ reaches level 3 at about 30 s | bound (169.2) |
+| the master `+738h` forward (`007470B0` -> `006F57F0`) | a LandFort's master is set only by `00744A20` (`+738h` = master, `+73Ch`; it copies the master's party and `+36Ch`), whose callers are the airfield hangar reader `006D5220` and `00849F70` (unread). A CommandBuilding has a master only if an airfield lists it in `hangars`. Not established on any row | stays recorded |
+| `class+2Ch` | read only in `00745BE0`'s secondary-explosion arm, which needs `class+170h` > 0. JM08's HQ (the only bled building on the rows) has 0 (162.4) | stays LABELLED |
+
+### 169.2 The read: the level-up timer and `006F38E0`
+
+- **The fields.** `006F2780` stores the scene's `Level` at `+770h` (0 when absent) and
+  `LevelUpSeconds` at `+76Ch` (10 when absent). JM08's scene
+  (`prcpijn_08_defend_guadalcanal.scn`, mtime 2024-08-09) authors neither; USN01's
+  (`usn_1_marshall.scn`, mtime 2024-07-13) authors `LevelUpSeconds = I 600`. 68 scenes author it.
+- **The timer.** `006F7360`, the CommandBuilding fixed-step callback:
+  - it returns at once for a multiplayer client (`006F737D`, `[00E188A8+1FE4h] == 2`);
+  - for a building whose party is not 2 (`006F755D`, `[EDI-2BCh]` = `+54h`) it adds the step
+    argument (`[ESP+70h]`, the stack argument after the frame and `PUSH ESI`) to `+774h`
+    (`006F756A..006F757C`);
+  - when `+774h > (float)+76Ch` (`FILD`, `006F7582..006F758E`) and `+770h < 3` (`006F759D`) it
+    builds message D4h with `+1Ch = level + 1` and routes it through `0077C2A0(msg, 7, 0)`
+    (`006F759F..006F75E6`);
+  - a party-2 building takes the capture-tick arm instead (`006F75ED`).
+- **The reset.** `006F4D10` (D3h: both the neutralize and the flip) routes D4h with `+1Ch = 0`
+  (`006F5362..006F53A4`; `EBP` is 0 from `006F5081`, the last `EBP` write before it in the
+  linear listing) unless the session is a multiplayer client (`006F535A`, `EDI = EBP + 2`).
+  No jump between `006F5081` and `006F5362` leaves the path.
+- **The handler.** D4h is entry 2 of the CommandBuilding message table (`006F5460`: `id - D3h`,
+  table `006F55B8` = `006F549E`, `006F54B5`, `006F5481`, `006F54CB`). `006F54B5` calls
+  `006F38E0(msg+1Ch, msg+20h)`:
+  - level 4 rewrites the garrison records' MinLevel and respawns (not reached by these senders);
+  - a level equal to `+770h` does nothing;
+  - otherwise `+770h = level`, `+774h = 0`, `+368h = G[18h + 4*level] * class+4Ch` (Armour) and
+    `+36Ch = G[4h + 4*level] * class+48h` (HP), then `006F3660` respawns the garrison.
+  - `G` is the `004C1D10` globals. `006F7670` stores `ArmorBasic..Expert` at `+18h..+24h` and
+    `HPBasic..Expert` at `+4h..+10h`, each divided by 100. This installation's
+    `commandbuildingglobals.lua` (mtime 2024-07-13): armour 100/105/110/120, HP 100/110/120/140.
+
+So an owned building's armour is 1.00, 1.05, 1.10, then 1.20 times the class Armour, and its
+maximum health 1.0 to 1.4 times the class HP; it falls back to level 0 when it is neutralized.
+
+### 169.3 The binding (committed OFF)
+
+`kCommandBuildingLevelBound` in `src/game_hosts_ship_ai.cpp`:
+- per capture building, the level, the timer and `LevelUpSeconds` from the scene (units accessors
+  `command_building_level_0770` / `command_building_level_up_seconds_076c`);
+- the owned arm of `006F7360` at the head of the capture step (LABELLED order);
+- `006F38E0` sets `armour_368`, which the landed bleed (section 161) reads;
+- the neutralize and the flip send level 0.
+
+Recorded, not modelled (routed): the `+36Ch` rescale (the gunnery rows' maximum health), whether
+the gunfire hit path's building armour follows the level, and the garrison respawn. Delivery is
+immediate. Census: `summary mission command building level ...`, one line per building, and a
+`command building level:` line per change.
+
+### 169.4 Predictions (written before any ON run)
+
+- **Mechanism.** Every CommandBuilding whose party is not 2 levels up once per `LevelUpSeconds`
+  (strictly more: the first change at the first step past it) to level 3, and then stops.
+  - JM08 (no `LevelUpSeconds`, so 10): the HQ (party 1 from the start) goes 0 -> 1 -> 2 -> 3 at
+    about 10.05, 20.10 and 30.15 s, with armour 31.5, 33.0 and 36.0. It resets to 0 at its
+    neutralize (one reset, armour 30).
+  - USN01 (600 s): CB2 is neutralized at 32.90 s, before 600 s, so it has no level-up. Its reset
+    finds level 0 already (`unchanged`).
+  - Any building already neutral at the start never levels.
+- **Spread.**
+  - **JM08 long 36000:** the bleed's `x` falls from 10 to 4 (`LandedDamage` 40 against armour
+    36), so `bleed_total` falls to about 0.4 of reference AC's. The HQ is neutralized later than
+    1036.10 s, and its `first_bleed` stays at about 991 s. `pair_diff` 3.
+  - **USN01, BSM01, USN13, USNOS 3000:** no landed bleed, and the host reads `armour_368` nowhere
+    else. The new log lines are census lines. `pair_diff` 1.
+  - **JM08 3000:** the HQ levels to 3 within 150 s, but no craft lands. `pair_diff` 1.
+### 169.5 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:**
+- OFF is this tree at `dd887300a`.
+- ON is `pair_export.py --commit dd887300a --flip kCommandBuildingLevelBound=true --out
+  local\s35_lv_on`.
+- Prefixes `off7` / `on7`; launch form of reference V (`local\s35_rows.ps1`).
+- Smoke: `local\s35_smoke2.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` | ON census |
+| --- | --- | --- |
+| BSM01 3000 | 1 | no CommandBuilding |
+| USN13 3000 | 1 | CB2, CB4, CBT: `LevelUpSeconds` 600, no level-up in 150 s |
+| USNOS 3000 | 1 | HQ1, HQ2, CB2 (10 s) each reach level 3 at 30 s: 9 level-ups, armour 36 |
+| USN01 3000 | 1 | CB2 (600 s) neutralized at 32.90 s; its reset finds level 0 (`unchanged=1`) |
+| JM08 3000 | 1 | the HQ reaches level 3 at 30 s; no craft lands |
+| JM08 long 36000 | 3 | below |
+
+**JM08 long:**
+- The HQ goes 0 -> 1 -> 2 -> 3 at 10.00, 20.00 and 30.00 s (the step sum passes 10.0 on the
+  200th 0.05 s step), with armour 31.5, 33.0 and 36.0.
+- The landed bleed from 991.10 s takes 0.2 per craft-step instead of 0.5:
+  `bleed_total` is 725.40 over 3627 calls (OFF: 1576.50 over 3153).
+- **The HQ is neutralized at 1041.50 s instead of 1036.10 s.** The reset to level 0 is logged
+  there (armour back to 30).
+- Deaths 126 -> 126. Three death rows change time: two LandingShips (1033.43 -> 1033.93 and
+  1033.93 -> 1035.53, with a different killer each) and `Japanese AA truck 01` (1212.21 ->
+  1242.39).
+
+**Verdict: ON.** Every prediction held: the level-ups, the reset, the bleed at 4 per
+craft-second, and the later neutralize; the five other rows are gameplay identical. Not
+game-validated.
+
+**Routed (lead to cc9-gunnery28):** the `+36Ch` maximum-health rescale (logged per change as
+"recorded"), and whether the gunfire path follows the level. The blast part pass reads the
+class's Armour through `004407A0` (`FLD [ECX+4Ch]`, the class), not `unit+368h`, so blast damage
+does not follow the level. **Not modelled:** the garrison respawn `006F3660` (the host has no
+garrison records).
+## 170. 164's open question: the explosion delay's key (lead item 3, cc9-ships35, 2026-10-06, a read)
+
+**Answer: the delay is drawn per dying unit, but only for aircraft. A ship's death takes no
+`ExplosionExplosionDelay` draw, so a ship's nav-block draw shares no key with any delay draw under
+the measurement streams.**
+
+- **The image.** `007BBFA0` (`BSP_Plane_StartNamedEffect`) is the `00BD2F10(ECX = 0, ...)` site
+  that draws `ExplosionExplosionDelay`. A whole-image scan for its address finds nine `.rdata`
+  dwords, all at slot `+194h` of a plane vtable: `00D05F20` (0Fh), `00D06638` (10h), `00D1A000`
+  (11h), `00D19D28` (12h), `00D06920` (13h), `00D00070` (14h), `00D0BA80` (15h), `00D00308` (16h),
+  `00D1A2D8` (17h) (docs/ENTITY_CLASS_IDS.md). No ship or building vtable holds it.
+- **The host.** `GameGunneryHost::death_mode_draw_00bd2f10(0, unit, ...)` keys stream 0 as
+  `(death_delay, unit, 0)` under `BSP_GUNNERY_RNG_STREAMS=1`. Its callers are:
+  - the plane death chain in `src/game_hosts_units.cpp` (`007CA8A0 -> 007BBFA0`), for the dying
+    plane, only in the `explosion_delayed` mode;
+  - the ship AI's nav-block draw (`009E465F`, section 164), for the ship;
+  - the LandFort fire draws (section 162), for the building.
+
+  The three sets of units are disjoint, so no stream-0 key is shared.
+- **Run evidence** (`cc9-ships34\local\s34_off5_usnos.log` / `s34_on5_usnos.log`, section 164.4's
+  USNOS pair): 18 `plane death mode:` lines each way, 7 of them `explosion_delayed`. All 18 lines
+  are identical OFF and ON (draw, mode and `c10`). The 20 nav-block draws went to ship keys.
+- **So 164.3's USN01 / USNOS prediction had a wrong premise:** no "explosion-delay draw of a dying
+  ship" exists. The coupling it expected exists only without the measurement option, where stream
+  0 is one sequence (`death_mode_draw_00bd2f10`'s static generator). There each nav-block draw
+  shifts every later plane delay draw. That sequence's seed is a labelled substitution, so the
+  shift cannot be checked against the image.
+
+## 171. USN02 toward completion with scripted player input (lead packet "drive a mission to completion", cc9-ships35, 2026-10-06)
+
+**Script** (this installation's `scripts\missions\usn\usn_2_java.lua`, mtime 2024-07-13):
+- **Fail:** `Houston.Dead or Exeter.Dead` in any phase (lines 521-525).
+- **Phase 1:** `GetHpPercentage(DeRuyter) < 0.15` (DeRuyter is `SetInvincible(0.1)`), or all eight
+  `EnemyDestroya` dead (lines 529-545).
+- **Phase 2** (`luaMoveToPh2`): four `FinalShips` are generated, Nachi, Sazanami, Naka and Ushio,
+  at (+-4200..4700, -7500), flanking the escape point (0, -7500). They `NavigatorAttackMove`
+  Houston and Exeter.
+- **Win:** after `luaPh2MovieEnd` re-selects Houston, `CATable[1]` (Houston while it lives) within
+  500 m of `EscapePoint` -> `luaMissionComplete` -> `luaMissionCompletedNew` (lines 559-597).
+
+**Runs** (tree `agent/cc9-ships35` at `4746489ea`, main merged; reference V launch form;
+`local\s35_run.ps1 -Mission USN02`; order files `local\s35_u2_orders<N>.txt`):
+
+| run | orders | outcome |
+| --- | --- | --- |
+| idle `s35_u2idle` (3000) | none | Houston sunk at 70.00 s by Minegumo's torpedoes (launched 52.45-54.95 s at about 2 km; two hits for 4041 and 1965 of 6500, plus a component `Explosion`); fail at 74.30 s |
+| r1 (7200) | `540 takehelm Houston 1.0 EscapePoint stop 400` | Houston turns away but is sunk at 125.85 s (Minegumo torpedo, 2298 m); fail at 128.75 s |
+| r2 (7200) | `540 attack Houston Minegumo repeat 15` | Houston lives. Six destroyers die by 144.45 s (four to Houston). **Exeter** sunk at 176.51 s by Hatsukaze's torpedo; fail at 178.26 s |
+| r3 (9000) | r2, plus `1800 select Exeter` and Exeter `attack` on Hatsukaze and Amatsukaze (`repeat 15`) | all eight destroyers dead at 209.41 s, so **phase 2** (`luaMoveToPh2`); Houston re-selected at frame 4418. Exeter sunk at 370.18 s by Ushio; fail at 371.28 s |
+| r4 (12000) | r3, plus `4420/4600 takehelm Houston 1.0 EscapePoint stop 300` | phase 2 at about 210 s. Houston starts 3045 m out, stopped at (1941, -5154); the helm turns it clockwise through east, toward Sazanami and Nachi. Sunk at 280.06 s, 2926 m out (Sazanami torpedo) |
+| r5 (12000) | r3 with `1700 takehelm Houston ... EscapePoint` before the Exeter select | **Houston holds at 0 m/s from 100 s to 210 s** once the player leaves it (its attackmove target Minegumo died at 92.55 s). Exeter sunk at 221.01 s by a Hatsukaze torpedo still running after Hatsukaze's death; fail at 222.81 s |
+| r6 (12000) | r3, plus `1860 moveto Houston EscapePoint repeat 10` while the player is on Exeter | phase 2 at about 210 s, but Houston never closes: `movetopos` with the reissue every 10 s alternates rudder -1 / +1 and reverses (heading 74 -> 100 -> 55 degrees, speed -8.3 at 138 s). It drifts east to (2686, -5277) and is sunk at 259.56 s (Nachi torpedo) |
+| r7 (12000) | r2's attack, then `1900 takehelm Houston ... EscapePoint stop 300` with no Exeter select | Exeter sunk at 176.51 s, as in r2; fail at 178.26 s |
+
+**What blocks a completion.**
+1. **The idle failure is image-faithful in kind.** The controlled ship has no AI helm, so an idle
+   player does not evade a torpedo spread. One `attack` line, which hands the helm back to the
+   AI, keeps Houston alive (r2).
+2. **Phase 1 is reachable with plausible orders** (r3-r6: all eight destroyers dead by about
+   205-209 s). It needs the player on Exeter as well: without that, Hatsukaze's torpedoes sink
+   Exeter at 176.51 s (r2, r7).
+3. **Phase 2 needs Houston to cover about 3 km to a point the four FinalShips converge on.**
+   Sailing from the phase-1 position loses Houston to their torpedoes (r4, r6). Pre-positioning
+   during phase 1 hits two host behaviours, routed:
+   - **(a) commands lane (cc9-gunnery28):** a ship whose attackmove target has died and that the
+     player has left holds at 0 m/s for 110 s with enemies near (r5). This is section 157's
+     routed `cruise_step` item ("declines a unit with no command"; 155.1, `009E1170`).
+   - **(b) not shown wrong (r8):** r8 repeats r6 with ONE `moveto` click and gives the same
+     track, so the reissue is not the cause.
+     - The ship AI's `traffic trace` (009EF350) rewrites Houston's target heading from 3.856 to
+       1.026 rad (turn -2.83, a side-1 neighbour) at steps 2160-2166.
+     - At 108 s the attacking destroyer Yamakaze is 429 m from Houston (it dies at 110.15 s), and
+       Asagumo is 1486 m off. So Houston is being steered around destroyers in a melee.
+     - No ally is within 500 m. Whether the image's neighbour list would make the same pass was
+       not read; nothing here shows the host wrong.
+No run reached a mission end, so the exec guard's line did not appear. **USN02 is closed after
+eight runs** (r8: `local\s35_u2_orders8.txt`, Houston sunk at 259.56 s, as in r6). Next: the reference mission with the shortest victory condition.
+
+## 172. Handoff (cc9-ships35, 2026-10-06, at about 65% context)
+
+### Landed (main or `agent/cc9-ships35`)
+
+| section | what | switch |
+| --- | --- | --- |
+| 168 / SCRIPTED_HELM 12 | the `target` line (the 00525250 target pick on a controlled squadron, into intake 007F1940); USN01 reaches phase 3 | harness |
+| 168 | USN01's phase 3 is blocked by the unimplemented `levelbomb` task (routed: plane lane, cc9-lua41) | - |
+| 169 | a CommandBuilding's level: the clock (006F7360), D4h, 006F38E0's armour for the bleed, the reset (006F5362); the scene's `Level` / `LevelUpSeconds` | `kCommandBuildingLevelBound` ON |
+| 170 | the explosion-delay draw is aircraft-only; no key coupling with ship draws | doc |
+| 171 | USN02 toward completion: eight runs, phase 2 reached, no completion | doc |
+
+### Open, in order
+
+1. **Done after this handoff (section 173):** both setters are wired (`cc4408825`) and
+   `kCommandBuildingLevelMaxHpBound` is ON (`6ec44dfc8`).
+2. **USN02 completion** waits on the commands lane's `cruise_step` item (171 (a)). When it lands:
+   - re-run r5 (`local\s35_u2_orders5.txt`): Houston pre-positioned during phase 1 while the
+     player is on Exeter;
+   - then r3's phase-1 orders with a parked Houston.
+3. **USN01 completion** waits on cc9-lua41's level-bomb task. The order file is
+   `local\s35_orders1.txt`.
+4. **169 recorded pieces:** the garrison respawn `006F3660` (no host records), the master `+738h`
+   forward (no established reach), `class+2Ch` (no reach on the rows).
+
+### Tools (`local\`, `s35_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s35_run.ps1` / `s35_rows.ps1` | reference V's launch form (as s34's) |
+| `s35_nells.py <prefix> <ref> <every_s> units...` | per-unit trajectory CSVs: positions and distance to a reference unit |
+| `s35_aisteps.py <log> <unit> <lo> <hi>` | a unit's `ship ai step` state / mode / dir transitions |
+| `s35_endscan.py <script.lua...>` | where a mission script completes, with the enclosing conditions |
+| `s35_dispscan.py` | s34's displacement census |
+
+All leases are released after this commit.
+
+## 173. The level's maximum health and the gunnery armour copy (packet `cc9_command_building_level_hp`, `kCommandBuildingLevelMaxHpBound`, cc9-ships35, 2026-10-06)
+
+**What is wired** in `command_building_level_006f38e0` (section 169):
+- **The armour copy (routed from cc9-gunnery28, GUNNERY 129).** After the `+368h` store
+  (`006F392F`), the line calls `GameGunneryHost::set_unit_armour_0368(unit, armour)`. It runs
+  unconditionally under `kCommandBuildingLevelBound`. Gunfire reads it only under gunnery28's
+  `kCommandBuildingGunfireArmourBound`, so it changes no behaviour while that switch is OFF.
+- **Maximum health (committed OFF).** `006F3951 FSTP [ESI+36Ch]` stores HP[level] * class HP.
+  Under `kCommandBuildingLevelMaxHpBound` it goes to `set_unit_max_health_036c` (gunnery28,
+  `9886e40e9`), which leaves current health unchanged, as the image's handler does.
+
+**Predictions (written before any ON run):**
+- **JM08 long:** the HQ's maximum goes 12000 -> 13200 -> 14400 -> 16800 at 10, 20 and 30 s, and
+  back to 12000 at its neutralize. Current health stays where damage left it.
+  - Readers of the maximum are the health-fraction consumers: AI target weights, Lua
+    `GetHpPercentage`, the repair to fraction and the fire roll's `(max - hp) / max`.
+  - The fire roll's chance (section 162) uses the maximum, so its draws and starts move. That
+    is stream-1 / stream-0 work keyed per unit under the measurement option.
+  - Expect `pair_diff` 3 if any AI weight or the fire roll moves an outcome, else 1.
+  - The neutralize time (1041.50 s) does not move through the maximum: neutralize is health <= 0.
+- **USNOS 3000:** HQ1, HQ2 and CB2 reach 16800 at 30 s; their fraction drops to 0.71 at full
+  health. If the US AI weighs targets by fraction, `pair_diff` 3, else 1.
+- **USN01 3000 (control):** CB2 never levels. `pair_diff` 1.
+
+### 173.1 Smoke and pairs; verdict ON (reference AC)
+
+**Runs:**
+- OFF is this tree at `cc4408825`.
+- ON is `pair_export.py --commit cc4408825 --flip kCommandBuildingLevelMaxHpBound=true --out
+  local\s35_hp_on`.
+- Prefixes `off8` / `on8`.
+- Smoke: `local\s35_smoke3.log`, JM08 300 frames. Clean.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| USN01 3000 | 1 | CB2 never levels |
+| USNOS 3000 | 1 | HQ1, HQ2 and CB2 set to 16800 at 30 s; nothing reads the fraction into an outcome within 150 s |
+| JM08 long 36000 | 1 | the HQ's maximum is set 13200 / 14400 / 16800 at 10 / 20 / 30 s and 12000 at the neutralize (1041.50 s, unchanged) |
+
+- JM08 long's only movement is the LandFort fire roll, whose chance reads the maximum: roll hits
+  218 -> 217, starts 15 -> 16 and extends 203 -> 201. The native table moves only
+  `fire_effect_create_008689c0` and `fire_sync_message_d1`, 15 -> 16 each.
+- Deaths, hits, damage and the unit table are identical.
+
+**Verdict: ON.** The mechanism matches (the maximum follows the level, health is untouched). Every
+row is gameplay identical; only the presentation-side fire roll moves, as predicted. Not
+game-validated.

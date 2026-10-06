@@ -1685,6 +1685,10 @@ struct GameUnitSlot {
     // Packet cc9_command_building_capture_bind: unit+7A4h CaptureValue (006F2780,
     // 1000 when unauthored).
     std::int32_t capture_value_7a4{1000};
+    // Packet cc9_command_building_level: unit+770h Level (0 when unauthored) and
+    // unit+76Ch LevelUpSeconds (10 when unauthored), as 006F2780 stores them.
+    std::int32_t level_770{0};
+    std::int32_t level_up_seconds_76c{10};
     // unit+7C4h LandingRange as 006F2780 stores it (006F285F; 500 when unauthored).
     std::int32_t landing_range_7c4{500};
     // Packet cc9_building_pad_model: unit+7CCh LandingPointRange (006F28B3; 500
@@ -14370,6 +14374,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->capture_range_7a0 = entity.capture_range_present ? entity.capture_range_raw : 500;
         // Packet cc9_command_building_capture_bind: 006F2780's CaptureValue, unit+7A4h.
         slot->capture_value_7a4 = entity.capture_value_present ? entity.capture_value_raw : 1000;
+        // Packet cc9_command_building_level: 006F2780's Level and LevelUpSeconds.
+        slot->level_770 = entity.level_present ? entity.level_raw : 0;
+        slot->level_up_seconds_76c = entity.level_up_seconds_present
+            ? entity.level_up_seconds_raw : 10;
         // 006F2780's LandingRange, unit+7C4h (006F285F).
         slot->landing_range_7c4 = entity.landing_range_present ? entity.landing_range_raw : 500;
         // Packet cc9_building_pad_model: 006F2780's LandingPointRange, unit+7CCh (006F28B3).
@@ -32621,6 +32629,20 @@ float GameUnitsHost::command_building_capture_range_07a0(std::size_t unit_index)
     if (unit_index >= impl_->slots.size()) return 500.0f;
     if (!unit_is_kind_of(unit_index, 0x1c)) return 500.0f;
     return static_cast<float>(impl_->slots[unit_index]->capture_range_7a0);
+}
+
+std::int32_t GameUnitsHost::command_building_level_0770(std::size_t unit_index) const {
+    // Packet cc9_command_building_level: 006F2780 -> unit+770h.
+    if (unit_index >= impl_->slots.size()) return 0;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 0;
+    return impl_->slots[unit_index]->level_770;
+}
+
+std::int32_t GameUnitsHost::command_building_level_up_seconds_076c(std::size_t unit_index) const {
+    // Packet cc9_command_building_level: 006F2780 -> unit+76Ch.
+    if (unit_index >= impl_->slots.size()) return 10;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 10;
+    return impl_->slots[unit_index]->level_up_seconds_76c;
 }
 
 std::int32_t GameUnitsHost::command_building_capture_value_07a4(std::size_t unit_index) const {

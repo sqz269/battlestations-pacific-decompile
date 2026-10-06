@@ -9384,6 +9384,51 @@ code is in `local\g27_cb_gate.patch` and `git stash` entry `g27-cb-gate` in the 
 (4 hunks in `src/game_hosts_gunnery.cpp`: the switch, two counters, the gate at the top of
 `ShipHitBinding::add_damage`, the summary line; its comment still says section 124, read 125).
 
+### 125.4 Committed OFF (cc9-gunnery28, 2026-10-06)
+
+cc9-ships34 landed the shared entry `GameShipAiHost::command_building_hit_gate_006f1f20` (main, packet
+`cc9_cb_hit_gate_entry`): none -> true; `+7D8h != 0.0` -> false; else the `007470B0` roll through
+`landfort_fire_roll_007470b0` when `class+164h > 0` (drawn under `kLandFortFireRollBound`, which is ON),
+then true. The patch's four hunks are applied by hand (`local\g28_cb_gate_edit.py`); the switch comment
+now says that the roll is drawn, as 125.2 states. The summary line is `summary mission command building
+gunfire gate refusals=... passes=...` (not under the `mission gunnery damage` key that `pair_diff` parses).
+125.3's predictions stand. One addition: with the roll drawn on every accepted hit (JM08 long's HQ took
+2172 impact blasts on ships34's run), the stream-1 draws per hit move only under the default form; under
+the measurement streams the roll keys on the building, so the pair still reads the gate alone.
+
+### 125.5 Smoke and pairs; verdict ON (cc9-gunnery28, 2026-10-06)
+
+- **Runs:** `pair_export --commit 9017c87e3` (main `a1224f007` merged), OFF `local\g28_lane_j` (SHA-256
+  prefix `E6CCD2C76C56`), ON `--flip kCommandBuildingGunfireGateBound=true` `local\g28_lane_k`
+  (`EF107B7C43A3`); logs `local\g28_cb_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke125.log`, JM08 300 frames, OFF, clean.
+
+| row | `pair_diff` | refusals / passes | `00879070` calls (OFF -> ON) | LandFort fire rolls / starts |
+| --- | --- | --- | --- | --- |
+| JM08 long 36000 | 1 | 39 / 3648 | 8871 -> 8832 | 3153 -> 6801 / 2 -> 17 |
+| USN01 3000 | 1 | 19 / 47 | 947 -> 928 | 0 -> 47 / 0 -> 2 |
+| USNOS 3000 | 1 | 0 / 16 | | |
+| USN13 3000 | 1 | 0 / 0 | | |
+| BSM01 3000 | 1 | 0 / 0 | | |
+
+- **The mechanism matches.** Refusals happen only on rows with a neutralize (JM08 long's HQ at 1034.10 s
+  in this tree; USN01's `CB2` at 32.90 s) and remove exactly that many `00879070` damage applications.
+  Every accepted hit takes the `007470B0` roll: JM08 long's HQ rolls 3648 more times and its first fire
+  starts at 897.75 s instead of 1012.05 s (presentation: the fire's frame arm only counts down, as
+  `SecondaryExplosionChanceMul` is 0).
+- **Why the headline does not move.** `pair_diff`'s damage is the hit records' sum, taken before
+  `add_damage`, and a refused hit on an already neutral building changes nothing that follows: JM08 long
+  fails at the neutralize (SHIP_AI 160), and USN01's `CB2` is captured nowhere in 150 s.
+
+**Predictions:**
+- **Missed, the spread on JM08 long:** `pair_diff` 1, not 3. Refusals > 0 and the neutralize time
+  unchanged held; the damage headline counts the hit, not the AddDamage.
+- **Missed, USN01:** a control was predicted to have no neutralize in 150 s; `CB2` is neutralized at
+  32.90 s and 19 hits are refused, still gameplay-identical.
+- Right on USN13, USNOS and BSM01 (no refusal).
+
+**Verdict: ON** (mechanism matching; spread misses recorded). Not game-validated.
+
 ## 126. Handoff (cc9-gunnery27, 2026-10-06, at about 72% context)
 
 ### 126.1 Landed on agent/cc9-gunnery27
@@ -9517,3 +9562,264 @@ state; the effect side is presentation.
   - the first respawn follows the first hull hit on a ship that is a quarter down, within one step.
 - **Default form (no option):** not paired here. Every respawn moves the shared stream three steps, so
   a default-form run diverges after the first respawn; that is the binding's purpose.
+
+### 127.4 Smoke and pairs; verdict ON
+
+- **Runs:** `pair_export --commit c644da9e7`, OFF `local\g28_lane_h` (SHA-256 prefix `3E1482BD326D`), ON
+  `--flip kDamageSmokeDrawsBound=true` `local\g28_lane_i` (`F316FA6ADDDD`); logs
+  `local\g28_ds_{off2,on2}_<row>.log`, reference AB's launch form. Smoke: `local\g28_smoke127.log`, USNOS
+  300 frames, OFF, clean.
+- **The first pair** (`0af7fccec`, `local\g28_ds_{off,on}_<row>.log`) read exit 3 on every row. The
+  summary line was then `summary mission gunnery damage smoke ...`, and `pair_diff` keys its headline
+  on `mission gunnery damage`, so the ON side lost deaths, hits and damage. Every section below the
+  headline was identical (USN02: the native table and the summary line only). `c644da9e7` renamed the
+  line to `summary mission unit damage smoke`; the second pair is the verdict.
+- **All twenty-two rows are `pair_diff` 1.** What changes: `UnitInstance::smooth_intensity` becomes
+  concrete, `UnitDamageSmoke::point_effect_create` (`00822AD7`) appears with one call per respawn, and the
+  new summary line.
+
+| row | units with slots | slots | clock resets | respawns | expired, held | first respawn |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | 23 | 65 | 2620 | 1084 | 107293 | Kawakaze, 38.45 s |
+| JM08 long | 7 | 17 | 323 | 310 | 50999 | Japanese Patrolboat 01, 27.20 s |
+| JM05 long | 5 | 9 | 114 | 81 | 30578 | USS Lexington, 0.05 s |
+| IJN11 | 4 | 12 | 34 | 51 | 740 | Farra1, 96.45 s |
+| JM05 | 2 | 4 | 15 | 27 | 5130 | USS Lexington, 0.05 s |
+| USNRM01 | 2 | 3 | 444 | 21 | 5461 | Neosho, 195.16 s |
+| USNOS / USNOS long | 1 | 3 | 129 / 1224 | 16 / 16 | 5253 / 23253 | MovieCargo, 19.10 s |
+| JM08 | 1 | 1 | 86 | 10 | 1015 | Japanese Patrolboat 01, 27.20 s |
+| LOMP10 long | 2 | 2 | 5 | 9 | 3080 | PT 01, 227.16 s |
+| JM06 | 2 | 2 | 77 | 8 | 177 | Fletcher-class 08, 101.50 s |
+| USN01 | 1 | 2 | 2 | 4 | 0 | Convoy1, 137.80 s |
+| USN13 long | 1 | 1 | 29 | 3 | 5022 | Intrepid, 179.06 s |
+| USN04, E2, ESMP08 long, LOMP10, USN12, USN13 | 0 | 0 | 2, 2, 185, 1, 4, 9 | 0 | 0 | none |
+| BSM01, IJN01, LOMP06 | 0 | 0 | 0 | 0 | 0 | none |
+
+- JM05's Lexington respawns on the first step: it starts below 75 % health, and the constructor's clock
+  is 0, so its slots respawn for the first 30 s without a hit.
+- **Mechanism: matches the read.** Slots appear only on damaged ship-family units, respawns stop 30 s
+  after the last hull hit (`expired, held` counts the expired slots waiting for one), and BSM01, IJN01
+  and LOMP06 take nothing.
+
+**Predictions:**
+- Right: every row `pair_diff` 1; no respawn on BSM01 and LOMP06.
+- **Missed, the proxy:** `clock_resets` is not the `hit records (hull)` column. USN04 resets twice
+  against 153 "hull" hits, and USN02 2620 times against 366. The reset is taken where `00826F10` takes
+  it, on the passes with a hull segment (`008270BE` sits after `00826F62`'s segment test); the headline's
+  `hull` counts something else, and was the wrong yardstick.
+- **Missed, reach:** USN04, E2 and ESMP08 long were named as likely. Their ships
+  are not hit on a hull segment while a quarter down (USN04 and E2: two resets in the whole run;
+  ESMP08 long: 185 resets, no unit with a slot).
+
+**Verdict: ON.** The mechanism is the image's as read and the reference rows are gameplay-identical
+under the measurement streams. Under the default form every respawn now moves the gameplay stream
+three steps, as the image does. Not game-validated.
+
+## 128. Census 123.2 item 4: the director's path objects and the clear trace have no reach (cc9-gunnery28, 2026-10-06, read only)
+
+**`0071FB90` (`WeaponDirector::create_path_object`, 22 rows on AB).** `0071FB90` (`0071FB90..0071FC10`,
+`RET 4`) constructs the 50h-byte slot path object: vtable `00CFDB24`, an inner `00CFDB10` at `+10h`, and
+an empty point vector at `+44h..+4Ch`. Its `vtable[8h]` is `0071FC20` (`LEA EAX,[ECX+40h]`), the vector
+`0071D780` weighs (`(end - begin) / 0Ch`, COMMAND_EXECUTION). The director keeps one per slot at `+1A4h`
+and rotates them with the queue (`00720850`, `src/command_execution.cpp`). The known writers of the vector (from the reads cited; no exhaustive store scan was run) are:
+- `0071F600`'s `moveonpath` arm at `0071F6A6`, which builds the route into the **slot-0** object when the
+  head begins (the only rel32 caller is `00835C70`, cc8_ship_drive), which the host carries as
+  `path_points`;
+- `0071FDE0` from the 5Fh receiver `007207C0` (user path points), on the last queued slot's object
+  (docs/AI_CAUTIOUS_ROUTE.md).
+
+So a queued `moveonpath` slot weighs more than 1 in the image only after user path points. AB's
+`summary mission director user path points=0 queued=0` holds on all twenty-two rows, so the queued
+objects are empty there as in the host, and the "named hole" in `command_count` (slots 1..9 weigh 1)
+matches the image on every reference row. USN04 and E2 queue named `moveonpath` commands behind a
+named one (`with_queued_moveonpath` 144 and 294), and those weigh 1 in both. **No reach.**
+
+**`007208A3` (`WeaponDirector::session_trace_value`).** In `00720850` the unit's `vtable[10h]([00F876B0])`
+answer is pushed with the slot index and mode into `004254B0` with the format at `00CFDB44`,
+`"---InternalClearPrimaryCommand: %s (%d), mode:%d, (%s, %d)"`. A trace argument; **no gameplay reader.**
+
+Item 3 (`009D4923`, `007BB110`, `unit+9C0h`: the aircraft device) is the planes lane's.
+
+## 129. A CommandBuilding's gunfire armour follows its level: unit+368h in the hit record (SHIP_AI 169 follow-up; packet `cc9_cb_level_gunnery`, `kCommandBuildingGunfireArmourBound`, cc9-gunnery28, 2026-10-06)
+
+### 129.1 The read
+
+The lead's question (from cc9-ships35): does the direct-hit base `00470510` see `unit+368h`, which
+`006F38E0` rescales on a CommandBuilding level-up (`Armor[level] / 100 * class Armour`, 100/105/110/120
+in this installation)? `00470510` takes the armour as an argument; the hit record picks it.
+
+- **`008777D0`** (a CommandBuilding's hit-record slot, GUNNERY 125.1), `disasm-raw`:
+  - hull pass: `008777ED` `vtable[5Ch](6)`; when true and `0.0 > [record+0Ch]` (`008777F5 XORPS`,
+    `008777F8 COMISS`, `JBE`), the armour is `[+354h]->vtable[24h]()` (the class, `004407A0` `FLD [ECX+4Ch]`);
+    otherwise `00877811 MOVSS xmm0,[ESI+368h]`. It goes to `00470510` at `008778A4`.
+  - part pass: for each part entry (`[EBX+3Ch] + EBP`) a type of 4 (`0087790F CMP [EAX],4`) takes the
+    class arm (`0087791F`), any other `00877927 MOVSS xmm0,[ESI+368h]`; it goes to `004705C0` at `008779D3`.
+- **`00826F10`** (ships; the host's port in `src/ship_hit_record.cpp`) takes the instance armour when the
+  selector is not below 0.0 (`00826F6B`) and in its part pass always (`008275A0`).
+
+**So yes:** unless the victim is kind 6 and the selector negative, a CommandBuilding's direct hits read
+`+368h`, and a level-up raises the armour they meet. The blast pass is the class `Armour` (cc9-ships35's
+note), and so is a type-4 part.
+
+**The host.** `ShipHitBinding::hull_armour()` and `class_armour_virtual()` both return the class
+`Armour` row value; nothing writes an instance armour.
+
+### 129.2 The binding (committed OFF)
+
+- `UnitState::armour_368`, seeded from the class `Armour` at build (`0087BCF4`, per SHIP_AI 169), and
+  `GameGunneryHost::set_unit_armour_0368(unit, value)` for `006F38E0`'s writer in the ship AI host.
+- `kCommandBuildingGunfireArmourBound`, ON: `hull_armour()` returns `armour_368`; `class_armour_virtual()`
+  returns it too for a kind-1Ch victim that is not kind 6 (`008777D0`'s gate).
+- **LABELLED:** the host runs a CommandBuilding's hit through the `00826F10` port, whose part pass reads
+  the instance armour for every part; `008777D0` reads the class armour for a type-4 part.
+- Also committed: `set_unit_max_health_036c` (`9886e40e9`, no caller yet), for `006F38E0`'s `+36Ch`.
+- **Needs a caller:** the ship AI host must call `set_unit_armour_0368(unit, b.armour_368)` where
+  `006F38E0` stores `+368h` (routed to cc9-ships35). Until it does, ON equals OFF.
+
+### 129.3 Predictions (written before any ON run; with the caller in place)
+
+- **JM08 long:** the HQ reaches level 3 at 30 s (SHIP_AI 169.5), so its direct hits meet 1.2 x Armour.
+  `00470510`'s damage falls for each shell (the armour subtraction grows), so the HQ loses health more
+  slowly to gunfire and is neutralized later than 1041.50 s. `pair_diff` 3.
+- **USN01:** `CB2` is neutralized at 32.90 s; if it levelled before that, the neutralize moves later.
+  The neutralize resets the level to 0 (`006F4D10` routes D4h with level 0), so hits after it are
+  unchanged.
+- **USNOS:** 16 hits reach a capture building (125.5); they move only if it has levelled, so `pair_diff` 1
+  is expected but not certain.
+- **USN13, BSM01:** no capture building is hit: `pair_diff` 1.
+
+## 130. The bomb rack's drop scatter `006E4D50` and the cone `006E1F00` (SQUADRON_LAND_TASK 5du; packet `cc9_bomb_drop_scatter`, `kBombDropScatterBound`, cc9-gunnery28, 2026-10-06)
+
+### 130.1 The read
+
+5du (cc9-lua39) read the four draws; this section adds `006E1F00`, the bullet block's slot `+34h`,
+which applies them (`ghidra decompile 006e1f00`):
+- the round is detached from the rack (`BSP_Entity_FindAncestorOfKind(5)`, the owner's `vtable[190h]`
+  `006E0A70`, 5do, sets the velocity; `block+38h..+40h` = the drift with `+3Ch` zeroed; `SetParent(0)`),
+  so its local matrix (`round+74h`, `+84h`, `+94h`) is the pose it had on the rack;
+- unless D = (1, 1, 1): `v = |v| (D.x row0 + D.y row1 + D.z row2)` (zero when `|v|^2 <= [00CE3820]`),
+  with D = (`t cos a`, `-t sin a`, 1) not normalised.
+
+**So the cone does more than tilt.** With `t = 0` the velocity still becomes `|v|` along the round's
+forward row: the 5do velocity's direction (the aircraft's world velocity with 3.0 off y) is replaced by
+the rack's forward axis, keeping its magnitude. The cone then tilts that axis by `atan(t)`, at most
+`atan(0.01)` = 0.57 degrees on this installation's racks (`Throw` 0.01). The drift (`Wind` 0.05) goes to
+`block+38h`, whose reader is still unread.
+
+**ThrowMul** (`00999B70`, AI-held planes): `DiveBombThrowMul` (`+78h`) or, for `IsKindOf(10h)`,
+`LevelBombThrowMul` (`+C8h`), named as `include/bsp/robot_config.hpp` names those offsets. This
+installation's `robots.lua` (mtime 2025-06-01): DiveBombThrowMul 1.0 except SPVeteran (:722) and Elite
+(:1136), 0.0; LevelBombThrowMul 1.0 on all six rows.
+
+### 130.2 The binding (committed OFF)
+
+`kBombDropScatterBound` (gunnery), in `GameGunneryHost::release_bomb_drop` after the 5do velocity: the four
+draws in order on stream 1 (key `Draw::bomb_scatter` (unit, 0) under the measurement option), then the cone
+over the plane's pose rows (right, up, forward). Both host drop paths reach it (the rack tick's
+`run_rack_bomb_drop_006e4d50` and the bay release in `src/game_hosts_units.cpp`). The ThrowMul row is the
+plane's PilotBot level from `GameUnitsHost::skill_level` (`bot+34h`, `007B8AE0`), so no units edit is
+needed; the units host's `Rack::drop_dispersion_006e4f91` record stays (a stale label while bound).
+
+**LABELLED:** the round's rows are the plane's pose rows (the rack mount rotation is unread); every
+dropping plane is AI-held; the drift is drawn and not applied; the `IsKindOf(33h)` no-cone arm
+(`006E521E`) is taken as never true; a drop the host refuses (no bomb row) draws nothing.
+
+### 130.3 Predictions (written before any ON run)
+
+- **Every bomb's launch direction moves** to the plane's forward axis (plus at most 0.57 degrees), so
+  every row with a bomb drop moves its impact points. Rows with a bomb that hits or nearly hits a ship
+  move (`pair_diff` 3): USN01 (the scout bomb on Convoy1), USNRM01 (34 dive-bomb releases), LOMP10 and
+  LOMP10 long (14). USN13 long (3 releases) may stay at 1 if its bombs miss either way.
+- **Rows without a bomb drop** (USN02, JM06, BSM01): `pair_diff` 1, `drops=0`.
+- The summary's `max_cone_deg` is at most 0.573 (`Throw` 0.01), and 0 for a SPVeteran or Elite dive bomber.
+
+### 130.4 Smoke and pairs; verdict ON
+
+- **Runs:** `pair_export --commit 1c5e270c5`, OFF `local\g28_lane_l`, ON `--flip kBombDropScatterBound=true`
+  `local\g28_lane_m`; logs `local\g28_sc_{off,on}_<row>.log`, reference AB's launch form. Smoke:
+  `local\g28_smoke130.log`, USN01 300 frames, OFF, clean. Diagnostic re-run of the ON side at `3608bcba7`
+  (the turn logged, `local\g28_sc_dg_<row>.log`): `pair_diff` 1 against the ON logs on all three rows.
+
+| row | `pair_diff` | drops | max cone | turn from the 5do velocity (first drops) | headline (OFF -> ON) |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | 3 | 2 | 0.297 deg | 3.10, 3.23 deg | the scout's bombs miss Convoy1: no `luaConLeadHit`, phase 2 does not launch (units 93 -> 64, torpedo-task 0 of 17 -> 0 of 5), damage 35624.3 -> 34425.9; deaths 29 both |
+| USNRM01 | 3 | 34 | 0.000 deg (dive bombers at SPVeteran) | 1.8-3.7 deg | deaths 132 -> 135, hull hits 1345 -> 1210, shots 56823 -> 54967 |
+| LOMP10 | 3 | 14 | 0.524 deg | 2.3-3.2 deg | damage 1987.1 -> 2194.0 |
+| LOMP10 long | 3 | 14 | 0.524 deg | | shots 3804 -> 3697 |
+| USN13 long | 1 | 3 | 0.000 deg | | |
+| USN02, JM06, BSM01 | 1 | 0 | | | |
+
+- **The mechanism matches the read.** Four draws per drop; the cone stays under `atan(Throw)`, 0 for a
+  SPVeteran or Elite dive bomber (`DiveBombThrowMul` 0.0); and the direction becomes the plane's forward
+  axis. The turn of 2-4 degrees is that replacement: 5do's world velocity (with 3.0 off y and the dive's
+  angle of attack) points below the nose, the forward row does not. The magnitude is kept.
+- **What moved USN01.** The ScoutDauntless pair's bombs (133.20 s, 134.10 s) now leave along the nose and
+  miss Convoy1, so the scripted hit callback and the next phase do not happen in 150 s.
+
+**Predictions:** right on all eight rows (USN01, USNRM01, LOMP10, LOMP10 long moved; USN13 long stayed at 1
+as allowed; the controls identical) and on the cone bound.
+
+**Verdict: ON.** The mechanism matches; the flip moves USN01's phase timing and belongs to AC.
+**Uncertainty:** the round's rows are taken to be the plane's pose rows. If the rack mount (`+3F4h`) carries
+a rotation, the image's direction differs from the nose by that rotation; the mount rotation is unread.
+Not game-validated.
+
+### 130.5 Back to OFF: mechanism unsettled (lead's hold, 2026-10-06)
+
+The lead held the flip: it reverses the USN01 progression that 5do's velocity fix produced, on an
+unread piece. The read asked for: does the round leave along the plane's nose, or along the nose
+rotated by the rack's mount?
+
+- **`+3F4h` is not a rotation.** In `006E4D50` the rack's `[+3F4h]` is the device descriptor
+  (`[+3F4h]+DCh`, taken to be `LaunchSpeed`, 5du) and `[+3F8h]` the fire record (`+4h` Throw,
+  `+8h` Wind). The rack's own pose is its scene node's.
+- **The rows `006E1F00` uses** are the round's local matrix (`round+74h`, `+84h`, `+94h`) after it is
+  detached: it copies the round's world matrix (`round+CCh`, refreshed first) and makes it the local one
+  (`BSP_Matrix_Copy4x4X87`, `SetParent(0)`). So the direction is the round's world forward row while it
+  hangs on the rack: plane pose x rack node x the round's attach transform.
+- **Unread:** the round's attach transform (where a loaded round is parented under the rack and with what
+  matrix; `006E3500`, which loads rounds, shows no matrix work in its pseudocode) and the rack node's
+  orientation in the aircraft model (a model dummy). Neither was found in this pass.
+
+**Verdict: OFF, mechanism unsettled.** 130.4's pair stands as a measurement of the nose-alignment
+hypothesis (USN01's scout bombs miss Convoy1 under it), not as the image's behaviour. To settle it: read
+the round's attach path (who parents a kind-2Ah child under the rack, and its local matrix) and the
+Dauntless, Val and Kate racks' mount dummies; or keep the four draws and drop the redirect, which needs
+the same read to justify.
+
+## 131. USN02 r5: Houston's hold after its attackmove target dies is the director's idle tail (SHIP_AI 171 (a); cc9-gunnery28, 2026-10-06, read only)
+
+The question routed from cc9-ships35: in r5 (`local\s35_u2r5.log` in the cc9-ships35 tree, orders
+`s35_u2_orders5.txt`), the player leaves Houston for Exeter at frame 1800, Houston's attackmove target
+Minegumo dies at 92.55 s, and Houston holds at 0 m/s from about 93 s to 210 s. Does the image retarget,
+keep moving, or hold?
+
+**The chain in the host, from r5's log:**
+1. Frame 1858 (about 92.9 s): `command finished: Houston cleared attackmove from slot 0 (mode 1); the
+   queue now holds (none)`. The attackmove ends because its target is dead.
+2. The director's idle tail `00836DC9` re-issues a default command. Houston's row in the idle-tail table
+   reads `stop / director idle tail` (and earlier `cruise`, while it was player controlled).
+3. The next sync (`009F3DD0`) finds the current command `stop`, not null, and `009F3D00` installs the
+   `stop` state: from ship AI step 1830, `state=stop mode=heading dir=stopped throttle=0.000`.
+
+**The image, as read:**
+- `009F3DD0` (`BSP_ShipAi_SyncStateToCurrentCommand`, `src/ship_ai_states.cpp`, read whole): a null command
+  on an uncontrolled unit keeps the current state; any other command switches through `009F3D00`.
+- `00836DC9..00836EA7` (`weapon_director_idle_reissue_00836dc9`, `include/bsp/unit_commanded_speed.hpp`,
+  coverage complete): with an empty queue it issues `follow` on the controller's owner when the controller
+  belongs to another entity; else `cruise` when the unit is player controlled or a commanded speed is
+  active (`*(unit+73Ch)+28h >= 0`); **else `stop`**. Houston is no longer player controlled, and no
+  commanded speed is set (`commanded_speeds=0` in r5's director summary), so the image's choice is
+  `stop` too.
+
+**So the hold is the image's behaviour as read.** No retarget happens on the director side: nothing in
+`00836DC9` or `009F3DD0` picks a new enemy, and the `stop` state's step holds the ship. Guns keep firing
+through their own targeting.
+
+**Not established here, and the one route left to a moving Houston:** a side-level AI that orders idle
+friendly ships. r5's `ai coordinator` summary reads `game_mode=8 compose=0 groups_created=0 tick_orders=0`:
+no AI group exists for Houston's side, so nothing re-orders it. Whether the image builds a group for the
+player's own side in single player is outside this lane (`ai_group_think`, `00A2DFA0`). A script or player
+order (a `moveto`, or `SetShipSpeed`, which makes the idle tail choose `cruise`) is what moves Houston.
+
+**Nothing bound.**
