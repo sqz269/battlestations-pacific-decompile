@@ -14287,6 +14287,29 @@ the leader or the last member.
   line-for-line the same at every event checked (the hit at 21478, Convoy4 at 35834,
   `luaMoveToPh3` at 36521, Nell6 at 108966, the end at 150269).
 
+### 179.2 p5 on main with the wingmen's launch order ON: still completes, at 712.75 s (cc9-ships38, 2026-10-06)
+
+The tree is `agent/cc9-ships38` at main `78eab7589`, which has `kAutoAttackMemberOnLaunchBound` ON
+(`cd19fc145`) and the exec guard (`bb30ca8c7`). It runs `s37_u1_p5.txt` unchanged
+(`local\s38_u1_p5.txt`) for 22000 frames, in s37's launch form (`local\s38_run.ps1`), and logs to
+`local\s38_u1p5.log`. No order line was re-tuned.
+- **`summary mission end: completed at 712.75 s (Mission.EndMission)`**, with the text "We showed
+  we can fight back! - Mission Complete!". p5 under 179.1 ended at 697.90 s.
+- The guard line `bsp: refused a mission script's process launch: sus_prog.exe` is at log line
+  111030. The mission end follows at 111158.
+- Phase 2 is unchanged: `luaConLeadHit` at log line 21480, and `luaMoveToPh3` runs at 36525.
+- The Nell deaths:
+  - Nell1-4 and their wingmen die from 289.60 to 343.44 s, all to the Enterprise fighters.
+    Nell2 dies at 295.35 s (p5: 604.68 s).
+  - Nell6|.-3 is killed by sqn02 at 310.90 s.
+  - Northampton kills Nell5 (657.46 s), Nell5|.-2 (673.41 s) and Nell5|.-3 (702.75 s).
+  - SaltLakeCity kills Nell6|.-2 (698.05 s) and the last Nell, the leader Nell6 (710.60 s).
+- No US ship has a death row.
+- As in p5, the 38 slot-0 retries are refused (`no such slot`, 176 caveat 3).
+
+lua42's 14000-frame window (700 s) closed 2.75 s before Nell5|.-3 died. So the "outlived" Nells
+were a window artefact. The cruisers still finish the raid, about 15 s later than in p5.
+
 ## 182. Scope of a `build` line: the strategic map's shipyard order (lead item 3 / LOMP10, cc9-ships37, 2026-10-06, a read)
 
 Read through Ghidra (read-only). Builds on GUNNERY 122, which read the shipyard tick `00846320`.
