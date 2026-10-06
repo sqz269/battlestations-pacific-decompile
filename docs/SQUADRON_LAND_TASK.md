@@ -12853,7 +12853,7 @@ issues `levelbomb`: USNOS, USNOS long, LOMP10 and LOMP10 long. No other referenc
   20-degree gate refuses none; drops run at bank 0.15 rad and pitch about 0.
 - **Times.** First releases are at 288.0-367.8 s.
 - **Exceptions.** Nell6|.-2 and Nell6|.-3 never release. The mission ended first; Nell6|.-2 was
-  still in aim at a 2646 m miss when its arm stopped (open, below).
+  still in aim at a 2646 m miss when it was shot down (below).
 - **Return.** Every spent squadron latches 009F8160 and gets B5 `returntobase` 0.05 s later.
   009B8D80 already answers true for a spent aircraft beyond min(2500, SafeDist 1000) m in 3D.
   The squadrons go to `land`.
@@ -12904,8 +12904,9 @@ Nell5|.-3, category 10, the bomb).
 sinkings and the RNG coupling those bring.
 
 **Open.**
-- **The Nell6 wingmen.** They stop ticking the arm at about 1081 ticks. Nell6 lives to the end,
-  and the cause is not traced.
+- **The Nell6 wingmen.** Closed. Nell6|.-2 is shot down in its aim: it hits the water at 311.95 s
+  with `dead=1` (`plane water contact`), and its arm stops there. It has no death row. Nell6|.-3
+  dies at 425.07 s, killed by Blue.
 - **`plane #1.4|.-4`** never latches out of follow.
 - **The racks.** Racks 1-4 of a Nell drop on one fixed step: toRepeatTime idles at -1, so the
   delays 0-0.9 s are all still below zero. That is the image's arithmetic as read; the idle value
