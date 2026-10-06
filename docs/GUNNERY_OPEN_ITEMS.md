@@ -10286,3 +10286,59 @@ cat 8) with `assigns 496 shots 0 rises 0 refusals 20324`. The category table rea
 **Prediction:** with both switches ON and a `fire HenryPT group 5` line once Henry has stopped 39.8 m from the
 mini-sub (BSM01 p6, about frame 10000), Henry's rack fires at its reload rate and a charge drops at Henry's
 position. Whether it sinks to -6.96 m and hits within its blast radius is the projectile's business, not read here.
+**First runs** (`1fdd623a8`; OFF `1591B2F710B4`, ON `850BBF5CA1B0`; logs `local\g30_dc{off,on}_<row>.log`):
+- BSM01 p6, BSM01, USN13 long and JM05 long are all exit 1. The bot ticked 220643 times on BSM01 p6 and never fired.
+- `BSP_FIRE_GATE_TRACE=HenryPT` (`local\g30_dcon_b1trace.log`) shows why: gun 7's target is MiniSub at 36 m, but
+  `have=0`. The host's artillery arc solve fails for the launcher and clears `have_target` (`006DFA60`'s gate),
+  and the block read that cleared flag.
+- **Fixed in the next commit:** the block takes the bot's own target (`bot_has_target`, before the arc solve),
+  because 008FC080 solves no arc.
+
+**Re-run, a local diagnostic build** (the switch flipped in the working tree only, `local\g30_dcq`;
+`local\g30_dcq_b1.log`, BSM01 p6, 16000 frames):
+- HenryPT's rack fires: `rises 178`, **`shots 60`**, `holds 178`.
+- **`hits 0`**, and the mini-sub survives.
+- The rounds go through the host's generic projectile path. The depth charge's own in-water advance,
+  `BSP_DepthChargeProjectile_AdvanceInWater` `006FCD20` (sink at DiveSpeed, detonate at depth or on contact), is not
+  modelled: `shot_is_depth_charge` is always false in the hit view.
+
+**Verdict: the trigger mechanism works; the kill needs the depth-charge projectile.** The switch stays OFF until
+`006FCD20` and the depth-charge hit are bound (next item, this lane). A pair_export pair on the fixed commit is still
+owed.
+
+## 141. Handoff (cc9-gunnery30, 2026-10-06, at about 72% context)
+
+### 141.1 Landed or committed on agent/cc9-gunnery30
+
+| item | commits | state |
+| --- | --- | --- |
+| 136 shipyard production host | `165e910c4`, `c03766593`, `3c75e197e`, `bfd94c59c` | **OFF**: the queue works; the launched Elco never moves (136.6) |
+| 137/138 rack repeat-drop diagnostics | `67106f83d`, `a8029d55a`, `71f5c9695` | landed; 138 routed (level-bomber branch switch) |
+| Reference AD (GAME_EXECUTABLE "2026-10-06 ad", base `bb5ad5db8`) | `313e99697`, `b49aee2af` | landed; `reports/cc9_reference_rebaseline_30.json` |
+| 139 DepthChargeBot tick for category 8 | `1fdd623a8`, `fafcf1440` | **OFF**: fires (60 shots), no hit (no 006FCD20) |
+| 140 player weapon-group fire (79h group 5) | `da922da99` | **OFF**; `player_fire_weapon_group` waits for a harness `fire` line |
+
+### 141.2 Next, in order
+
+1. **The depth-charge projectile** (139's blocker, this lane): `BSP_DepthChargeProjectile_AdvanceInWater`
+   `006FCD20` (sink at DiveSpeed `desc+DCh`, the fuse and the blast) and its hit view (`shot_is_depth_charge`). Then
+   pair 139 and 140 with pair_export on BSM01 p6. HenryPT stops 39.8 m from MiniSub at -6.96 m; the AI rack fires
+   from about 600 s (`local\g30_dcq_b1.log`). Then flip, by verdict.
+2. **Shipyard (136.6):** what moves a shipyard-launched ship in the image. `+1130h = 5` makes `0081DE31` skip the
+   motion body. Read the three `7Ah` senders (`0081386D`, `009CFC1B`, `00760511`). Ships/units lane; route through
+   the lead. Re-pair LOMP10 with `local\g30_ord_l10_build.txt` (build lines at 4700-4740, after TimeLimit at
+   232.56 s). The test branch `g30-sytest` (local only) carries ships38's `a5c970e65`; drop it once the line is on main.
+3. **Reference AE** (squadron placement `12291183b`, lua43's shipyard attach and stock, later flips): AD's tools
+   are below.
+
+### 141.3 Tools (`local\` in this tree, prefix `g30_`)
+
+- `g30_runrows.ps1 -Rows a,b -Prefix p -Exe x [-Extra '...']`: the AC/AD launch form, background launch.
+- `g30_winrows.ps1 [-Prefix] [-Exe] [-Rows u2,u1,l6,l10,u12]`: the five scripted-win rows, with order files
+  `g30_ord_*.txt`.
+- `g30_loo_launch.ps1 -Group g` (two rounds of the moved rows on `local\g30_loo_<g>`) and
+  `g30_loo_diff.ps1 -Groups 'a,b'` (against AD, AC and round 2).
+- `g30_table.py <prefix>` (the run table and its json), `g30_report30.py` (AD's report),
+  `g30_switches.py <from> <to>`, `g30_dcrun.ps1 -V off|on` (BSM01 p6 plus controls).
+- Five fresh exports build in about 60 minutes when runs share the machine. Export them early and launch each
+  group's runs as its build lands.

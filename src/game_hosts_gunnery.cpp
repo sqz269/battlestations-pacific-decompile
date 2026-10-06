@@ -6945,7 +6945,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // its value between the 0.1 s thinks (the tick returns before
             // 008FC39A); with no target it is dropped, as clearing the fire
             // target drops vtable[1E8h] (LABELLED: that clear is not read here).
-            if (!have_target) depth_charge_trigger_by_gun[g] = false;
+            // The target is the bot's (bot_has_target): the host's arc solve above
+            // clears have_target, and 008FC080 solves no arc.
+            if (!bot_has_target) depth_charge_trigger_by_gun[g] = false;
             struct DcHost final : bsp::DepthChargeBotHost {
                 Impl& h; std::size_t g, owner, target; bool have, inhibit; bool& trigger;
                 DcHost(Impl& h_, std::size_t g_, std::size_t o, std::size_t t, bool hv,
@@ -7008,7 +7010,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             };
             bool& trigger = depth_charge_trigger_by_gun[g];
-            DcHost dc(*this, g, owner_unit, have_target ? target : 0, have_target, inhibited,
+            DcHost dc(*this, g, owner_unit, bot_has_target ? target : 0, bot_has_target, inhibited,
                       trigger);
             bsp::depth_charge_bot_tick_008fc080(dc, depth_charge_bot_by_gun[g], dt);
             ++depth_charge_ticks;
