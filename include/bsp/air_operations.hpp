@@ -652,6 +652,17 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
 // Nothing is returned to the stock list. Its own caller is
 // 007F1B70 BSP_Squadron_ReleaseFromAllAirBases, which calls it twice.
 // Returns the number of slots it released. docs/AIROPS_LAUNCH_TICK.md.
+// 006C5950, __thiscall(block, squadron), packet cc9_stowed_plane_stock_return
+// (docs/SHIP_AI_OPEN_ITEMS.md 200). 007F1CA0 calls it when the squadron's last live
+// plane is stowed and returned to stock (+3CCh == 1, session mode not 2). For each
+// slot whose +28h is the squadron: state 1, timer 0 (5.0 when +34h is set, which
+// is cleared), +28h unregistered and zeroed, then +8h = min(+0Ch,
+// 006BF230(class).available, block+58h - 006BD3F0), counted with the slot's class
+// and +8h cleared, and the class restored. Returns the slots returned.
+// SUBSTITUTION (labelled): 006C5950 rewrites +10h from class+134h; this keeps the
+// slot's own +10h. The replication (006BD520 / 0077C7B0) is not carried.
+std::size_t air_ops_return_squadron_slot_006c5950(AirOpsDeck& deck,
+                                                  std::uint32_t squadron) noexcept;
 std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
                                                    std::uint32_t squadron) noexcept;
 
