@@ -10115,3 +10115,33 @@ order in `src/game_hosts_gunnery.cpp`, behind **`bsp::kShipyardProductionBound`*
    that queues (state 2) and builds at the release. Four orders give four Elcos and Elco stock 0; a fifth order is
    refused with "no idle entry" (all four entries in state 3 or 4).
 3. **JM05 / JM05 long** (shipyard units via SpawnNew, 122): identical with the switch ON.
+
+
+## 137. The rack repeat-drop diagnostic (133.3; lead queue item 2; cc9-gunnery30, 2026-10-06)
+
+`67106f83d` (units host, leased and released): log-only counters in the single-rack tick `006E56F0`.
+`repeat_drops` counts drops after the first since the issue set dropBombs. `drops_leaving_rounds` counts drops
+that leave rounds on the rack that dropped; it is also counted in the level bomber's rack tick, which already loads
+`RepeatTime`. One `rack repeat diag:` line is written per such single-rack drop. Runs:
+`local\g30_diag_<row>.log` (`67106f83d`, AC's launch form).
+
+| row | `Rack::can_fire` / `repeat_time` records | diag lines | repeat drops |
+| --- | --- | --- | --- |
+| USN04 (4700) | 6 / 3 | 0 | 0 |
+| LOMP10 (3200) | 60 / 14 | 0 | 0 |
+| USNRM01 (9200) | 72 / 36 | 0 | 0 |
+| USN13 long | 9 / 6 | 3 | 0 |
+
+**Reach of `RepeatTime` (`006E58AA`): none on these rows.** No single rack dropped twice. Every single-rack drop
+but three emptied its rack, so the 0 the host stores where the image loads `desc+E0h` was never read.
+The three exceptions are USN13 long's `bruh #1.9|.-2/-3/-4` at 150.45-152.85 s: authored 16 rounds, one single
+rack, 15 left, dropBombs still set. `-3` and `-4` died 0.15 s and 0.45 s after their drops. `-2` lived 4.45 s more
+and never dropped again, with `gate_refused=0`. With `toRepeatTime = 0` the host would have dropped on the next step
+if the tick had run, so the tick did not run, or returned before the counted gates. A likely cause is that
+`latch_control_input_007b9770` is not reached once the plane leaves the release state. This is unverified, and it is
+a host scheduling question, not the CanFire substitution.
+**Reach of the CanFire gates (`00729A80`) on first drops:** not measured. A gate that refuses leaves no host trace,
+and modelling it is the step that would show one.
+**Next:** a counter per early return in `run_rack_tick_006e56f0` (census, death, `to_repeat`, dropBombs), on USN13
+long, to settle why `-2` stopped. Then `RepeatTime` matters only for authored multi-round single racks: in this
+installation, `bruh` (USN13).
