@@ -31428,6 +31428,17 @@ void GameUnitsHost::store_unit_attack_command_class(std::size_t index,
     impl_->slots[index]->attack_command_class = cls;
 }
 
+bool GameUnitsHost::plane_order_view(std::size_t index, int& state_900, bool& landed_904,
+                                     bool& enabled_5c, unsigned int& command_class) const noexcept {
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return false;
+    const GameUnitSlot& s = *impl_->slots[index];
+    state_900 = s.plane_control_mode_900;
+    landed_904 = s.plane_landed_904;
+    enabled_5c = s.row.active;
+    command_class = s.attack_command_class;
+    return true;
+}
+
 void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->moveto_range = range;

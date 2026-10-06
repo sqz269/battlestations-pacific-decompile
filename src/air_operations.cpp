@@ -920,6 +920,63 @@ int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
     return 1;
 }
 
+namespace {
+// The timer pair every state entry writes: +30h = 0, or 5.0 with +34h cleared.
+void held_slot_timer_pair(AirOpsSlot& slot) noexcept {
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+}
+}  // namespace
+
+AirOpsHeldSlotOrder air_ops_held_slot_order_006ccda0(AirOpsDeck& deck, int slot_index,
+    int order, std::uint32_t target_plus_one, bool holding_at_moveto,
+    std::int32_t unstowed_members, bool apply) noexcept {
+    AirOpsHeldSlotOrder out;
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return out;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    if (slot.vehicle_class == 0u) return out;                 // 006CCDC3
+    if (order == 3 && target_plus_one == 0u) return out;      // 006CCDD3
+    if (slot.state == AirOpsSlotState::kLaunched) {
+        if (order == 2) {                                      // 006CCF4A
+            out.answer = 1;
+            if (!apply) return out;
+            out.action = AirOpsHeldSlotAction::kRecallLand;
+            slot.state = AirOpsSlotState::kRecalled;            // 006CCF9D
+            held_slot_timer_pair(slot);
+            return out;                                         // 006CCFC3 006BF150
+        }
+        if (holding_at_moveto) {                               // 006CCFD9 006BC5E0
+            if (order != 3) { out.answer = 2; return out; }    // 006CCFE5
+            out.answer = 1;
+            if (apply) out.action = AirOpsHeldSlotAction::kAttack;
+            return out;
+        }
+        if (order != 1) { out.answer = 2; return out; }        // 006CD021
+        out.answer = 1;
+        if (apply) out.action = AirOpsHeldSlotAction::kMoveToSelf;
+        return out;
+    }
+    if (slot.state == AirOpsSlotState::kRecalled) {
+        if (order == 2) { out.answer = 2; return out; }        // 006CD076
+        out.answer = 1;
+        if (!apply) return out;
+        out.action = order == 3 ? AirOpsHeldSlotAction::kAttack
+                                : AirOpsHeldSlotAction::kMoveToSelf;
+        // 006CD0D4 006BC730: slot+8h = 007EE5C0 (state 1 when 0), but 006CD0EC
+        // writes state 3 unconditionally afterwards (the +0Ch copy at 006CD0D9
+        // needs state 2, which a recalled slot is not).
+        slot.assigned_count = unstowed_members > 0 ? unstowed_members : 0;
+        slot.state = AirOpsSlotState::kLaunched;               // 006CD0EC
+        held_slot_timer_pair(slot);
+        return out;
+    }
+    out.answer = -1;
+    return out;
+}
+
 bool air_ops_deck_free_006bed60(const AirOpsDeck& deck) noexcept {
     return !deck.runway_failure && !deck.hangar_failure && deck.owner_present &&
            !deck.owner_blocked;
