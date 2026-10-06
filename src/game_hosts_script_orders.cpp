@@ -3185,6 +3185,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         if (entity != nullptr && have_pos && index < units_.count()) {
             placed = units_.place_at_world_position_008193a0(index, pos);
             if (placed) ++put_to_placed_;
+            // 007F2E8F: a squadron's vtable[118h] then places its members.
+            if (kSquadronPutToMembersBound && placed) {
+                units_.place_squadron_members_007f2920(index);
+            }
         }
         if (argument_count_ >= 3) {
             log_.unimplemented("PutTo::set_heading_vtable_011c", "008196b0");

@@ -1145,6 +1145,12 @@ public:
     // the motion state itself here, and vtable[0D8h] (00955970, the scene-node
     // matrix refresh) and the 1.25 at unit+0BCCh have no host counterpart.
     bool place_at_world_position_008193a0(std::size_t index, const float pos[3]);
+    // Packet cc9_squadron_member_placement. 007F2920, which the squadron's PutTo
+    // (vt[118h] 007F2E20 -> 007F2E8F) runs after the position set: every member
+    // but the leader goes to its 007F23A0 station with the leader's rotation and
+    // speed. `index` is the squadron's (fused leader) unit; answers the members
+    // placed, 0 for a unit with no squadron record.
+    std::size_t place_squadron_members_007f2920(std::size_t index);
     // Packet cc9_bsm01_state_natives. DisablePhysics 00891380: the force
     // controller's +14h byte, which 009329C9 tests every step; false for a unit
     // with no controller. The entity's local 4x4 (+74h) and its slot 88h setter

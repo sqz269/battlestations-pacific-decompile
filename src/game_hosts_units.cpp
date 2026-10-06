@@ -5666,6 +5666,14 @@ struct GameUnitsHost::Impl {
     unsigned long long wing_hook_builds = 0;
     unsigned long long wing_planes_built = 0;
     unsigned long long squadron_pass_c_hook_calls = 0;
+    // Packet cc9_squadron_member_placement: 007F2920 at pass C (007F4DB0, an
+    // airborne squadron: +408h clear). OFF: the wing stays where 007F4580 put it.
+    static constexpr bool kSquadronPassCPlacementBound = false;
+    unsigned long long squadron_member_place_calls = 0;
+    unsigned long long squadron_members_placed = 0;
+    unsigned long long squadron_member_place_unseeded = 0;
+    unsigned long long squadron_member_place_no_station = 0;
+    unsigned long long squadron_member_place_pass_c = 0;
     // Packet cc9_squadron_initial_command, docs/CONSTRUCT_WORLD.md section 27:
     // the squadron's pass C default order at 007F4E9E. OFF: none.
     // ON since the USN04 4700/4500, E2 9200/9000 and USN02 pairs: 4 movetos (12
@@ -6172,7 +6180,8 @@ struct GameUnitsHost::Impl {
         GameUnitSlot& unit, bool once,
         bsp::PlaneFormationStation* station_out = nullptr,
         const GameUnitSlot** leader_out = nullptr,
-        bool apply_position = true) {
+        bool apply_position = true,
+        bool report = true) {
         bsp::PlaneSquadronHostRecord* const squadron =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         if (squadron == nullptr) return false;
@@ -6274,7 +6283,7 @@ struct GameUnitsHost::Impl {
         // Reporting, from the first non-leader seat only so one squadron gives
         // one line. This runs whether or not the placement below is enabled,
         // which is what makes a before/after on the same binary possible.
-        if (seat == 1u) {
+        if (report && seat == 1u) {
             const std::int32_t tick = squadron->formation_report_ticks++;
             if (tick == 0 || (tick % 400) == 0) {
                 std::string pairs;
@@ -6362,6 +6371,101 @@ struct GameUnitsHost::Impl {
         for (int i = 0; i < 3; ++i) unit.motion.position[i] = station.world[i];
         publish_pose(unit);
         return true;
+    }
+
+    // 007F2920 (body 007F2920-007F2BC9, __fastcall(squadron), RET), read whole from
+    // the listing. With +3CCh members: +408h = 0 (007F293C); the leader's speed
+    // vt[38h] (007F294A, 007B8E60) is kept; member 0 takes the squadron's +CCh
+    // matrix through vt[88h] (007F298B) and runs 007C6340, vt[3Ch](speed),
+    // 007C18B0(0), vt[D8h] and [+310h]+0Ch. Then for every member k >= 1
+    // (007F2A50-007F2BB8): the matrix is the LEADER's +74h block (007F2A68 REP
+    // MOVSD), its translation is 007F23A0(member+9D0h) (007F2A78), and the height
+    // is floored: a station below 10.0 ([00CE38B8]) under a leader above it takes
+    // min(leaderY, 10.0) ([00CE3DC0], 007F2A83-007F2AEC). vt[88h](matrix)
+    // (007F2B23), 007C6340 (007F2B27), vt[3Ch](the leader's speed) (007F2B3C),
+    // 007C18B0(0), vt[D8h], [+310h]+0Ch and the physics body sync (+804h).
+    // Callers (tools/callsite_census.py): 007F2E8F (squadron vt[118h] 007F2E20,
+    // PutTo's position set, after the base 00489760), 007F2F74, 007F2FC6 and
+    // 007F4DB0 (pass C 007F4BA0, skipped when +408h is set).
+    // SUBSTITUTIONS (labelled): the host fuses the squadron with member 0, so the
+    // member-0 arm is the squadron's own placement and is not repeated; 007C6340,
+    // 007C18B0, vt[D8h], [+310h]+0Ch and the +804h sync have no counterpart here
+    // (a member keeps its flight state); vt[3Ch] is set_forward_speed and is
+    // skipped for a plane whose velocity is not seeded yet (its seed is the same
+    // class TravelSpeed along the nose the leader is seeded with).
+    std::size_t place_squadron_members_007f2920(std::size_t squadron_unit, const char* site) {
+        if (squadron_unit >= slots.size() || slots[squadron_unit] == nullptr) return 0;
+        const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == squadron_unit) {
+                squadron = &r;
+                break;
+            }
+        }
+        if (squadron == nullptr) return 0;
+        ++squadron_member_place_calls;
+        GameUnitSlot& leader = *slots[squadron_unit];
+        publish_pose(leader);   // the position the squadron was just given
+        const float speed = leader_live_speed_007b8e60(leader);   // 007F294A vt[38h]
+        std::size_t placed = 0, unseeded = 0;
+        std::string where;
+        for (const std::size_t member : squadron->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit || member == squadron_unit) continue;
+            if (member >= slots.size() || slots[member] == nullptr) continue;
+            GameUnitSlot& unit = *slots[member];
+            bsp::PlaneFormationStation station;
+            const GameUnitSlot* station_leader = nullptr;
+            place_wing_member_on_station_007f23a0(unit, false, &station, &station_leader,
+                false, false);
+            if (!station.produced || station_leader != &leader) {
+                ++squadron_member_place_no_station;
+                continue;
+            }
+            float y = station.world[1];
+            if (10.0f > y) {                                      // 007F2A8B [00CE38B8]
+                const float leader_y = leader.motion.position[1];   // 007F2AB2 +100h
+                if (leader_y > y) y = leader_y > 10.0 ? 10.0f : leader_y;   // [00CE3DC0]
+            }
+            for (int i = 0; i < 3; ++i) {                         // 007F2A68 the +74h rows
+                unit.motion.pose_row0[i] = leader.motion.pose_row0[i];
+                unit.motion.pose_row1[i] = leader.motion.pose_row1[i];
+                unit.motion.pose_row2[i] = leader.motion.pose_row2[i];
+            }
+            unit.motion.position[0] = station.world[0];
+            unit.motion.position[1] = y;
+            unit.motion.position[2] = station.world[2];
+            publish_pose(unit);                                   // 007F2B23 vt[88h]
+            if (unit.plane_velocity_seeded) {                     // 007F2B3C vt[3Ch]
+                const float* fwd = unit.motion.pose_row2;
+                const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
+                if (len > 1e-6f) {
+                    for (int i = 0; i < 3; ++i) {
+                        unit.plane_world_velocity[i] = speed * fwd[i] / len;
+                        unit.plane_body_angular[i] = 0.0f;
+                    }
+                    unit.motion.linear_velocity = bsp::OceanVec3{unit.plane_world_velocity[0],
+                        unit.plane_world_velocity[1], unit.plane_world_velocity[2]};
+                }
+            } else {
+                ++unseeded;
+            }
+            ++placed;
+            char buf[96];
+            std::snprintf(buf, sizeof buf, " %s=(%.1f %.1f %.1f)", unit.row.name.c_str(),
+                static_cast<double>(unit.motion.position[0]), static_cast<double>(y),
+                static_cast<double>(unit.motion.position[2]));
+            where += buf;
+        }
+        squadron_members_placed += placed;
+        squadron_member_place_unseeded += unseeded;
+        log.notef("squadron members placed: squadron=%s site=%s leader=(%.1f %.1f %.1f) speed=%.2f "
+            "members=%zu unseeded=%zu%s (007F2920, packet cc9_squadron_member_placement)",
+            leader.row.name.c_str(), site, static_cast<double>(leader.motion.position[0]),
+            static_cast<double>(leader.motion.position[1]),
+            static_cast<double>(leader.motion.position[2]), static_cast<double>(speed),
+            placed, unseeded, where.c_str());
+        done("PlaneSquadron::place_members_007f2920", 0x007f2920u);
+        return placed;
     }
 
     void refresh_row(GameUnitSlot& slot);
@@ -31134,6 +31238,10 @@ bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float
     return true;
 }
 
+std::size_t GameUnitsHost::place_squadron_members_007f2920(std::size_t index) {
+    return impl_->place_squadron_members_007f2920(index, "put_to");
+}
+
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->ordnance_mask = mask;
@@ -32223,6 +32331,16 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
                         squadron.row.name.c_str(), key.c_str());
                     host.done("Squadron::set_home_air_base_007f1c00", 0x007f1c00u);
                 }
+            }
+        }
+        // Packet cc9_squadron_member_placement: 007F4DA9 tests +408h (set by the
+        // base launch above) and 007F4DB0 calls 007F2920 for an airborne squadron.
+        if constexpr (Impl::kSquadronPassCPlacementBound) {
+            const bsp::PlaneSquadronHostRecord* placed_rec =
+                bsp::plane_squadron_registry().find_by_member_unit(squadron_index);
+            if (placed_rec != nullptr && !placed_rec->home_launch_408) {
+                ++host.squadron_member_place_pass_c;
+                host.place_squadron_members_007f2920(squadron_index, "pass_c");
             }
         }
         // 007F4E0C 0071BE40: a current command skips the block.
@@ -33627,6 +33745,12 @@ void GameUnitsHost::report() {
         host.log.notef("summary squadron pass hooks pass_a=%llu pass_c=%llu (no-op entries, "
             "packet cc9_squadron_pass_hooks)", host.squadron_pass_a_hook_calls,
             host.squadron_pass_c_hook_calls);
+        host.log.notef("summary squadron member placement pass_c_bound=%d calls=%llu pass_c=%llu "
+            "members=%llu unseeded=%llu no_station=%llu (007F2920, packet "
+            "cc9_squadron_member_placement)", Impl::kSquadronPassCPlacementBound ? 1 : 0,
+            host.squadron_member_place_calls, host.squadron_member_place_pass_c,
+            host.squadron_members_placed, host.squadron_member_place_unseeded,
+            host.squadron_member_place_no_station);
         host.log.notef("summary squadron wing construction bound=%d staged=%llu builds=%llu "
             "planes=%llu left_staged=%zu (007F4580 in pass A, packet cc9_wing_construction)",
             kWingConstructionInPassABound ? 1 : 0, host.wing_records_staged,
