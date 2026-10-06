@@ -14854,3 +14854,65 @@ on JM08 long for every group, exit 0 on JM05 long).
 - **Partly missed:** "deaths collapse after the failure, the last near the failure plus a few tens of
   seconds". On AB no death follows the neutralize at all; the late deaths that SHIP_AI 160.4 saw (one at
   1079.73 s) appear only with `pen` or `cd` OFF, where the fight is retimed.
+
+## Mission reference baselines, 2026-10-06 ac (agent/cc9-gunnery29 20c30e6fb = main ec9af1f29 + kBombDropScatterBound ON)
+
+Packet `cc9_reference_rebaseline_29`, worker cc9-gunnery29, report `reports/cc9_reference_rebaseline_29.json`.
+The base is `20c30e6fb`: main `ec9af1f29` (2026-10-06 06:21 UTC) with GUNNERY 130.6's flip (`1eeffd541`)
+merged. The previous reference is AB (`c245a54bb`).
+
+### The switch diff and the plan
+
+`local\g29_switches.py c245a54bb 20c30e6fb` lists fourteen switches that did not exist at AB's base.
+`kAirOpsPlayerLaunchBound` is committed OFF and stays OFF. The other thirteen are ON:
+
+| short | switch | record | its own pairs |
+| --- | --- | --- | --- |
+| `rtb` | `kSquadronSpentOrdnanceRtbBound` | SQUADRON_LAND_TASK 5eb.1 | live: USN01 (scout B5 at 134.20 s), USNRM01 (18 B5) |
+| `cap` | `kLuaCapturePercentageBound` | SQUADRON_LAND_TASK 5dw.2 | exit 1 (USN02, JM05, JM05 long) |
+| `tmr` | `kShipAiTimerDrawsBound` | SHIP_AI 164.4 | live: JM08 long (HQ 1034.10 -> 1036.10 s, deaths 129 -> 126) |
+| `nav` | `kNavigatorPartsLandAvoidanceBound` | SHIP_AI 167.1 | exit 3 on JM05, JM05 long (PT draft contacts only) |
+| `nar` | `kLuaMissionNarrativeBound` | MISSION_END 7.1 | exit 1 |
+| `cam` | `kLuaCameraStateBound` | MISSION_END 7.2.1 | exit 3 on USN02 (mission-end text: EndScene at 113.90 s) |
+| `lvl` | `kCommandBuildingLevelBound` | SHIP_AI 169.5 | live: JM08 long (HQ at 1041.50 s) |
+| `mhp` | `kCommandBuildingLevelMaxHpBound` | SHIP_AI 173.1 | exit 1 (LandFort fire roll 15 -> 16 starts on JM08 long) |
+| `smk` | `kDamageSmokeDrawsBound` | GUNNERY 127.4 | exit 1 on all 22 rows |
+| `gat` | `kCommandBuildingGunfireGateBound` | GUNNERY 125.5 | exit 1 (refused hits on JM08 long, USN01) |
+| `arm` | `kCommandBuildingGunfireArmourBound` | GUNNERY 129.4 | exit 1 |
+| `lbt` | `kPlaneLevelBombTaskBound` | SQUADRON_LAND_TASK 5ee.1 | live: USN01 36000 (order file), USNOS, USNOS long, LOMP10, LOMP10 long |
+| `sct` | `kBombDropScatterBound` | GUNNERY 130.4/130.6 | live: USN01, USNRM01, LOMP10, LOMP10 long |
+
+Non-switch code since AB's base: the `os.execute` guard's log sink, SHIP_AI 174/175 (USN02 scripted
+input is an order-file feature, not on the idle rows), helm/air-ops lines behind the OFF switch.
+
+**Rows:** AB's twenty-two (USNRM01 among them), in AB's launch form (`local\g29_lane.ps1`, copied from
+g28's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player). Binaries
+(`pair_export.py --commit 20c30e6fb`): AC `local\g29_lane_a`, anchor (the thirteen OFF) `local\g29_lane_b`.
+
+### Predictions (written before any run finished)
+
+- **Anchor** (the thirteen OFF): gameplay-identical to AB (exit 1 against `g28_ab_base_<row>`) on all
+  twenty-two rows. A miss means non-switch code moves a row.
+- **AC against AB.** Moves (exit 3) on:
+  - **USN01** through `sct` and `rtb`: the scout's bombs miss Convoy1, no `luaConLeadHit`, phase 2 does
+    not launch (units about 93 -> 64, as 130.4), and the scout pair turns for the carrier at 134.20 s.
+    Deaths 29 as AB. `lbt` should not reach within 150 s (USN01's Nells came in the 36000-frame run).
+  - **USNRM01** through `rtb` and `sct`: 18 B5 retreats, deaths about 132 -> 135.
+  - **LOMP10, LOMP10 long** through `lbt` (B-25 damage about doubled) and `sct`.
+  - **USNOS, USNOS long** through `lbt` (TroopTrans1/2 sunk).
+  - **JM08 long** through `lvl` + `tmr` (+ `mhp`, `gat`, `arm`): the HQ neutralized at about 1041.50 s
+    instead of 1034.10 s, the failure later, and `cam` + `nar`: EndScene reached about 40 s after the
+    failure.
+  - **USN02** on the mission-end text only (`cam`: EndScene at about 113.90 s); gameplay identical.
+  - **JM05, JM05 long** through `nav` on the PT draft contacts only; gameplay counters identical.
+  - Every other row exit 1: USN04, USN04 E2, JM06, JM08, USN13, BSM01, LOMP06, USN12, IJN01, USN13 long,
+    ESMP08 long, IJN11. Risks: `lbt` on any row with a level bomber that was not paired (USN13 long,
+    ESMP08 long, IJN11, USN04/E2); `rtb` on any row whose squadrons spend their ordnance (USN13 long,
+    JM05 long); `sct` on USN13 long (130.4: exit 1 with 3 drops) and on any row whose bombs land near a
+    ship; `tmr` (spread misses recorded on JM05 and USN01).
+- **Leave-one-out** (two rounds, only on rows that move): groups `sct`, `rtb`, `lbt`, `tmr`,
+  `cb` (= `lvl` + `mhp` + `gat` + `arm`), `end` (= `nar` + `cam`), `nav`. Expected: on USN01, `sct` OFF
+  restores the Convoy1 hit and phase 2; `rtb` OFF moves the row; `lbt` and `cb` OFF are exit 1 against AC.
+  On USNRM01, `sct` and `rtb` OFF each move. On LOMP10 (long), `lbt` and `sct` OFF each move. On USNOS
+  (long), `lbt` OFF equals AB. On JM08 long, `cb` and `tmr` OFF each move the neutralize time; `end` OFF
+  moves only the end text. On USN02 `end` OFF equals AB; on JM05 (long) `nav` OFF equals AB.
