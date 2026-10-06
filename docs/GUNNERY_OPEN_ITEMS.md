@@ -10192,3 +10192,39 @@ The routed pieces (A)-(D) are cc9-lua43's `b8b8415e0`, `7556f3f03` and `e07680e8
   - JM05's two `MainShipyardEntity` yards each have 1 hangar, 4 entries and 4 scene stock records.
   - The walk runs every step (`walks=9000` / `18000`), with no order, build or release.
 - Prediction 2 (LOMP10 with `build` lines) waits for cc9-ships38's harness line.
+
+### 136.6 The LOMP10 build pair: the queue works, but the launched Elco never leaves the hangar (switch stays OFF)
+
+**Setup.**
+- Binaries: `pair_export --commit dbcb95705` (local branch `g30-sytest`: my tree plus cc9-ships38's `a5c970e65`,
+  the `build` line). OFF is `22FC31B1F015`; ON (`kShipyardProductionBound=true`) is `B80CE35E8A62`.
+- LOMP10, 16000 frames. The order file is `local\g30_ord_l10_build.txt`: `s37_l10_p2` plus `build CB4_SY class 27`
+  at mission frames 4700, 4710, 4720, 4730 and 4740.
+- Logs: `local\g30_sy3off_l10b.log` / `local\g30_sy3on_l10b.log`.
+- The orders had to come after TimeLimit's AddShipyardStock, which runs at 232.56 s (mission frame about 4650,
+  because the countdown starts at 52.55 s). A first try at 3800 was refused five times with "A7h found no stock",
+  as the image would refuse it.
+
+**The queue behaves as 136.3 predicted:**
+- Entry 1: A7h takes Elco and A9h names it "Elco". `CB4_SY_Hangar` is free, so the build runs at once:
+  TBoatGen `Elco #Y1` at `CB4_SY_Path` point 0 (-2709.6, 0.0, -4714.0), forward (0.951, 0, -0.310), and
+  moveonpath on `CB4_SY_Path` is issued. `00844610` reports 3 left.
+- Entries 2-4 queue in state 2. `available` falls to 0.
+- The fifth order is refused with "no idle entry".
+- `pair_diff` gives exit 3 (one more unit; hull hits 435 -> 432 and the other RNG-coupled moves).
+
+**The miss.** `Elco #Y1` never moves. Its slot-0 path cursor sits on point 0 for 11301 steps at speed 0, the
+hangar is never released, so entries 2-4 never build. That is one PT instead of four. **Mechanism failure
+downstream of this host, so the switch stays OFF.**
+- In the image, the new ship's `+1130h` is 5 (`ShipYardLaunch`, LAND_AND_STRUCTURES 3), and `0081DE31` skips
+  the ship motion body while it is positive. So the image's launched ship is moved by something other than its
+  own motion body, or the sentinel is cleared first: by a `7Ah` sender (`0081386D`, `009CFC1B`, `00760511`)
+  or by the `moveonpath` it was given. Neither path was read.
+- In this host the created record carries no `StartSpeed`, and nothing stores a commanded speed for the
+  moveonpath (the script's NavigatorMoveOnPath stores one through `00890E6F`).
+- **Next, ships/units lane:** what moves a shipyard-launched ship in the image. Read `0081DE31`'s caller and
+  the three `7Ah` senders.
+- lua43's labelled creation gaps seen here:
+  - the position y is 0.0, not the `0078CF20` water height;
+  - Race, Skill and OwnerPlayer are defaults;
+  - the Catalina arm (`State 6`) was not reached, because no class 125 order was made.
