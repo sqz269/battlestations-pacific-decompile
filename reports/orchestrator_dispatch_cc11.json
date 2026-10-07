@@ -106,5 +106,53 @@
     "cc11_land_retirement"
   ],
   "readiness_correction": "brief reads the packets array; both commands honor explicit source blockers and prerequisite packets.",
-  "qualification": "Dispatch and prior commit ancestry are scheduling evidence, not new runtime, ABI, or original-game proof."
+  "qualification": "Dispatch and prior commit ancestry are scheduling evidence, not new runtime, ABI, or original-game proof.",
+  "initial_batch": {
+    "integrated_revision": "f6c6d992aa18cc243c7854a6c1be83ef220830f9",
+    "packets": [
+      {
+        "packet": "cc11_health_guard",
+        "worker_revision": "01b53daac0f65a6ba384ea8d1339375d8a3e1667",
+        "status": "partial_host_callback_binding_OFF_pending_runtime_pair",
+        "primary_call_rows_checked": 1,
+        "call_failures": 0
+      },
+      {
+        "packet": "cc11_director_props",
+        "worker_revision": "1b7d88ed52a11bc090783c732ef429e55929d0ed",
+        "status": "native_producer_audit_and_source_comments_only",
+        "primary_call_rows_checked": 20,
+        "call_failures": 0
+      },
+      {
+        "packet": "cc11_land_retirement",
+        "worker_revision": "c63fedd05",
+        "status": "native_lifetime_audit_no_cpp_behavior_change",
+        "primary_call_rows_checked": 18,
+        "call_failures": 0
+      }
+    ],
+    "full_build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/cc11_integrated_build.log",
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "native_math_seed_disk_matches": 8,
+      "bsp_game_sha256": "9a85c3efdc1ddbe1321532fb0ab493cfd832a730ce83586310ff61a02ab88dee"
+    },
+    "runtime_pair": "dispatched_to_same_health_worker_after_main_build; not yet validated",
+    "worker_reuse": {
+      "health_guard": "cc11_health_pair",
+      "director_props": "cc11_director_class8",
+      "land_retirement": "cc11_land_retained_hook"
+    },
+    "evidence_limits": [
+      "Native math differential tests do not establish callback or task ABI equivalence.",
+      "Guard remains OFF; no new mission runtime or original-game result claimed.",
+      "Landing task lifetime remains an audited frontier rather than a gameplay fix."
+    ]
+  },
+  "updated_utc": "2026-10-07T04:41:38.621073+00:00"
 }
