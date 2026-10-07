@@ -548,5 +548,258 @@
       "path": "docs/NATIVE_ENUM_SYMBOL_LIFETIME_CC11.md",
       "sha256": "cab2924cf07f3f1598bcbb9ba2aa9523133332d4bdbc9224bb3753bfe2c2742e"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T23:11:55.751760+00:00",
+    "main_build_revision": "6bf930f3518af4d99b0fa9df6c0b3d2c10b7f698",
+    "worker_commit": "48a3cf12dda703ca2be931e44a5b94c4f9a021ce",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_enum_lifetime_sorted_insert_integrated_build.log",
+    "fresh_actual_translation_units": 13,
+    "stable_Source_header_fixture_inputs": 55,
+    "stable_generated_inputs": 1,
+    "actual_compiler_project_includes": 42,
+    "host_headers_hashed": 254,
+    "actual_searched_linker_libraries_hashed": 16,
+    "stable_historical_worker_paths": 1019,
+    "current_linked_BSP_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "008f4b60",
+        "bytes": 233,
+        "sha256": "1079eaa4aead384715ddc2f8e81f2cc70e85614b13be0e567951e3f11d2fc1fd",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f4e70",
+        "bytes": 132,
+        "sha256": "26fd655fa6a6954eed562a9cbef47c154fa39b6749834a0ae5d7acfaa529715e",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0041dd20",
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00419cc0",
+        "bytes": 192,
+        "sha256": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00bd1510",
+        "bytes": 95,
+        "sha256": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0043b0a0",
+        "bytes": 101,
+        "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d162d4",
+        "bytes": 4,
+        "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e186ed",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e17654",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "whole_Source_COFF_matches_worker": true,
+    "Source_COFF": [
+      {
+        "symbol": "?clear_native_enum_symbol_map_008f4b60@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+        "machine": "I386",
+        "section": 6,
+        "bytes": 170,
+        "sha256": "c6988492cecc24d19014ccbfb34236a86a744ee8b6a552eddf7fb3973f263d9b",
+        "relocations": [
+          {
+            "operand_offset": "57",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "61",
+            "coff_kind": "0014",
+            "symbol": "?return_native_enum_node_0043b0a0@bsp@@YAXPAX0@Z"
+          }
+        ],
+        "instruction_count": 54,
+        "disassembly": [
+          "00: sub esp, 0x14",
+          "03: push ebx",
+          "04: mov ebx, dword ptr [esp + 0x1c]",
+          "08: push ebp",
+          "09: mov ebp, dword ptr [esp + 0x28]",
+          "0D: add ebx, 8",
+          "10: push esi",
+          "11: push edi",
+          "12: mov dword ptr [esp + 0x10], ebx",
+          "16: mov dword ptr [esp + 0x18], 0x40",
+          "1E: nop ",
+          "20: mov eax, dword ptr [esp + 0x10]",
+          "24: mov edx, 0",
+          "29: mov eax, dword ptr [eax + edx]",
+          "2C: mov dword ptr [esp + 0x1c], eax",
+          "30: mov edi, dword ptr [esp + 0x1c]",
+          "34: mov dword ptr [esp + 0x14], edi",
+          "38: test edi, edi",
+          "3A: je 0x72",
+          "3C: nop dword ptr [eax]",
+          "40: mov eax, dword ptr [esp + 0x14]",
+          "44: mov edx, 0xc",
+          "49: mov eax, dword ptr [eax + edx]",
+          "4C: mov dword ptr [esp + 0x20], eax",
+          "50: mov esi, dword ptr [esp + 0x20]",
+          "54: push ebp",
+          "55: push edi",
+          "56: call 0x5b",
+          "5B: push edi",
+          "5C: push dword ptr [esp + 0x38]",
+          "60: call 0x65",
+          "65: add esp, 0x10",
+          "68: mov edi, esi",
+          "6A: mov dword ptr [esp + 0x14], edi",
+          "6E: test esi, esi",
+          "70: jne 0x40",
+          "72: mov eax, dword ptr [esp + 0x10]",
+          "76: mov edx, 0",
+          "7B: mov ecx, 0",
+          "80: mov dword ptr [eax + edx], ecx",
+          "83: add ebx, 4",
+          "86: sub dword ptr [esp + 0x18], 1",
+          "8B: mov dword ptr [esp + 0x10], ebx",
+          "8F: jne 0x20",
+          "91: pop edi",
+          "92: pop esi",
+          "93: pop ebp",
+          "94: pop ebx",
+          "95: mov eax, dword ptr [esp + 0x18]",
+          "99: mov edx, 4",
+          "9E: mov ecx, 0",
+          "A3: mov dword ptr [eax + edx], ecx",
+          "A6: add esp, 0x14",
+          "A9: ret "
+        ]
+      },
+      {
+        "symbol": "?destroy_native_scene_enum_owner_008f4e70@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+        "machine": "I386",
+        "section": 8,
+        "bytes": 97,
+        "sha256": "cac909dfb93e5914502cc92e1d2b1142e76829f192b19394c048f1340cd0a1c1",
+        "relocations": [
+          {
+            "operand_offset": "2A",
+            "coff_kind": "0014",
+            "symbol": "?clear_native_enum_symbol_map_008f4b60@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "37",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "56",
+            "coff_kind": "0014",
+            "symbol": "?clear_native_enum_symbol_map_008f4b60@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+          }
+        ],
+        "instruction_count": 33,
+        "disassembly": [
+          "00: push ebx",
+          "01: push ebp",
+          "02: push esi",
+          "03: mov eax, dword ptr [esp + 0x10]",
+          "07: mov edx, 0",
+          "0C: mov ecx, 0xd16508",
+          "11: mov dword ptr [eax + edx], ecx",
+          "14: mov esi, dword ptr [esp + 0x10]",
+          "18: mov ebx, dword ptr [esp + 0x18]",
+          "1C: push ebx",
+          "1D: push dword ptr [esp + 0x18]",
+          "21: lea ebp, [esi + 4]",
+          "24: push ebp",
+          "25: mov dword ptr [esp + 0x1c], ebp",
+          "29: call 0x2e",
+          "2E: lea eax, [esi + 0x114]",
+          "34: push ebx",
+          "35: push eax",
+          "36: call 0x3b",
+          "3B: add esp, 0x14",
+          "3E: mov eax, dword ptr [esp + 0x10]",
+          "42: mov edx, 0",
+          "47: mov ecx, 0xd162c0",
+          "4C: mov dword ptr [eax + edx], ecx",
+          "4F: push ebx",
+          "50: push dword ptr [esp + 0x18]",
+          "54: push ebp",
+          "55: call 0x5a",
+          "5A: add esp, 0xc",
+          "5D: pop esi",
+          "5E: pop ebp",
+          "5F: pop ebx",
+          "60: ret "
+        ]
+      }
+    ],
+    "one_connected_fixture": true,
+    "native_call_rows": 6,
+    "native_leaf_call_rows": null,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "source_fixture_receipt": "local/cc11_enum_lifetime_current_primary/inputs_after_link.json",
+    "source_fixture_receipt_sha256": "ae8cccaea1f7242715e5b6158c0efeab4606a7282cd8cc7cca33b80418662b4a",
+    "qualification": "Complete ordinary clear233B and CEnum destructor132B, total365B. Capture next+C before key release; genuine complete41DD20 leaves headers stale and43B0A0 matches inlined real14h node-return/CS/depth/page/WORD schedule; mapped8 untouched. Clear bucket after its chain/count after64. Dtor actualD16508 -> clear owner+4 -> current owning114/118 release -> nestedD162C0 -> SECOND empty clear; stats/name/stale slots and headers preserved, root not freed. One connected actual2Ctor/28installedsymbol/2emptykey family: standalone clear, repeat empty clear, genuine reinsertion/current readers, each ordinary dtor ONCE,31slot returns/38word39membership77temporary-prefix checks, other-owner independence, real64free slots then trim/shutdown/unlink; explicit fixture root free only afterward. Whole Source170B54/97B33 exactworker with genuine provider relocations. Native two bodies NOT executed; normal originalprivateEH/globalclass lifecycle/CRT failure/scalar8F59C0/namespace/mappedvirtual/traffic/nativeABI/fault/concurrency/game remainunbound. Successful coherent disjoint finite unique-slot externally synchronized lifetime domain; no fake profiles/allocators/defaults.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "source_fixture_outcomes": {
+      "owners": 2,
+      "installed_symbols": 28,
+      "empty_keys": 2,
+      "standalone_clears": 2,
+      "reinsertions": 1,
+      "ordinary_Source_destructors": 2,
+      "returned_slots": 31,
+      "query_cleanups": 31,
+      "chain_collisions": 5,
+      "word_reads": 38,
+      "memberships": 39,
+      "complete_temporary_pool_prefix_checks": 77,
+      "stale_owner_and_slots_preserved": true,
+      "other_owner_independent": true,
+      "actual_slot_string_return_trim_shutdown_unlink": true,
+      "explicit_fixture_root_free": true,
+      "original_bodies_executed": false
+    },
+    "original_function_bodies_executed": false,
+    "saved_annotation_prior_values_receipt": "local/ghidra-annotations-20261007T231157Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_enum_lifetime_sorted_insert_primary_snapshot.log",
+    "saved_function_count": 64720
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests and independent current primary connected fixture passed; originalABI/game qualified"
 }

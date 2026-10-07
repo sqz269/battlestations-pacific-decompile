@@ -391,5 +391,305 @@
     "No full build",
     "No tracked tests",
     "No original game installation or old sealed artifact modifications"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T23:11:56.942095+00:00",
+    "main_build_revision": "6bf930f3518af4d99b0fa9df6c0b3d2c10b7f698",
+    "worker_commit": "de4612b35d01cfa5e8da81bd23bb07c66abf29a0",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_enum_lifetime_sorted_insert_integrated_build.log",
+    "fresh_actual_translation_units": 3,
+    "stable_Source_header_fixture_inputs": 30,
+    "stable_generated_inputs": 1,
+    "actual_compiler_project_includes": 27,
+    "host_headers_hashed": 214,
+    "actual_searched_linker_libraries_hashed": 14,
+    "stable_historical_worker_paths": 136,
+    "current_linked_BSP_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "007ed0d0",
+        "bytes": 129,
+        "sha256": "25a888843fd7f3e017f78bfbd8429c4528096526da55f53b7805d4b184c420ee",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007b8ad0",
+        "bytes": 12,
+        "sha256": "e36649fc9c52af877c6e5ba57286d8dca843f1c070891df8cdcfd3724900bc88",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007cdf78",
+        "bytes": 15,
+        "sha256": "0ec6d382a5eaa648c8b6af7f1847eebe665f0122c3c9b1d2fd48e76bbc1f2dc9",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d05fbc",
+        "bytes": 4,
+        "sha256": "a7c85aefce64749202066b917579eaf14038d65f00b35e6330c7286ad4d82ca9",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007cfd78",
+        "bytes": 6,
+        "sha256": "68823d712fa96c4e2295bec2f493e71616ca339a6a90df1804feb2e99dfa1d38",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009b32c8",
+        "bytes": 5,
+        "sha256": "1bd2fe1982313b461612197789112bc48166ca083f900a5f16170183ab920ab8",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009b3c6e",
+        "bytes": 5,
+        "sha256": "f31a47460d375ab246d2a4cf9eb5b2c077669550b181269a5de26320c44ff892",
+        "disk_live": "MATCH"
+      }
+    ],
+    "whole_Source_COFF_matches_worker": true,
+    "Source_COFF": [
+      {
+        "symbol": "?native_plane_squadron_insert_sorted_007ed0d0@bsp@@YAXABUNativePlaneSquadronInsertView@1@PBXHAAVNativePlaneSquadronInsertViews@1@@Z",
+        "machine": "I386",
+        "section": 28,
+        "bytes": 245,
+        "sha256": "91c51e5dddaa0cd37626df420cec264b1d6213ef6ecd1477f1d341db9b548ed3",
+        "relocations": [
+          {
+            "operand_offset": "BB",
+            "coff_kind": "0006",
+            "symbol": "??_C@_0CO@HFJFBNHJ@native?5insert?5mapping?5changed?5me@"
+          },
+          {
+            "operand_offset": "C4",
+            "coff_kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": "C9",
+            "coff_kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": "D3",
+            "coff_kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "operand_offset": "D8",
+            "coff_kind": "0006",
+            "symbol": "??_C@_0DA@NFPDGOIH@native?5insert?5mapping?5changed?5in@"
+          },
+          {
+            "operand_offset": "E1",
+            "coff_kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": "E6",
+            "coff_kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": "F0",
+            "coff_kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instruction_count": 86,
+        "disassembly": [
+          "00: sub esp, 0x24",
+          "03: push ebp",
+          "04: mov ebp, dword ptr [esp + 0x2c]",
+          "08: push esi",
+          "09: mov esi, dword ptr [esp + 0x34]",
+          "0D: mov eax, dword ptr [ebp + 0xc]",
+          "10: mov byte ptr [eax], 1",
+          "13: test esi, esi",
+          "15: je 0xb4",
+          "1B: mov ecx, dword ptr [esp + 0x3c]",
+          "1F: lea eax, [esp + 0x14]",
+          "23: push esi",
+          "24: push eax",
+          "25: mov eax, dword ptr [ecx]",
+          "27: call dword ptr [eax + 8]",
+          "2A: cmp dword ptr [esp + 0x14], esi",
+          "2E: jne 0xd7",
+          "34: mov eax, dword ptr [esp + 0x18]",
+          "38: mov ecx, dword ptr [ebp]",
+          "3B: push ebx",
+          "3C: push edi",
+          "3D: mov dword ptr [eax], ecx",
+          "3F: xor edi, edi",
+          "41: mov eax, dword ptr [esp + 0x24]",
+          "45: mov ecx, dword ptr [esp + 0x40]",
+          "49: mov dword ptr [eax], ecx",
+          "4B: mov eax, dword ptr [ebp + 4]",
+          "4E: mov ebx, dword ptr [eax]",
+          "50: test ebx, ebx",
+          "52: jle 0x84",
+          "54: mov eax, dword ptr [ebp + 8]",
+          "57: mov ecx, dword ptr [esp + 0x44]",
+          "5B: mov esi, dword ptr [eax + edi*4]",
+          "5E: lea eax, [esp + 0x10]",
+          "62: push esi",
+          "63: push eax",
+          "64: mov eax, dword ptr [ecx]",
+          "66: call dword ptr [eax + 4]",
+          "69: cmp dword ptr [esp + 0x10], esi",
+          "6D: jne 0xba",
+          "6F: mov eax, dword ptr [esp + 0x14]",
+          "73: mov ecx, dword ptr [esp + 0x40]",
+          "77: cmp dword ptr [eax], ecx",
+          "79: jg 0x80",
+          "7B: inc edi",
+          "7C: cmp edi, ebx",
+          "7E: jl 0x54",
+          "80: mov esi, dword ptr [esp + 0x3c]",
+          "84: cmp ebx, edi",
+          "86: jle 0xa1",
+          "88: nop dword ptr [eax + eax]",
+          "90: mov eax, dword ptr [ebp + 8]",
+          "93: lea ecx, [eax + ebx*4]",
+          "96: mov eax, dword ptr [eax + ebx*4 - 4]",
+          "9A: dec ebx",
+          "9B: mov dword ptr [ecx], eax",
+          "9D: cmp ebx, edi",
+          "9F: jg 0x90",
+          "A1: mov eax, dword ptr [ebp + 8]",
+          "A4: mov dword ptr [eax + edi*4], esi",
+          "A7: mov eax, dword ptr [ebp + 4]",
+          "AA: pop edi",
+          "AB: pop ebx",
+          "AC: mov ecx, dword ptr [eax]",
+          "AE: mov eax, dword ptr [ebp + 4]",
+          "B1: inc ecx",
+          "B2: mov dword ptr [eax], ecx",
+          "B4: pop esi",
+          "B5: pop ebp",
+          "B6: add esp, 0x24",
+          "B9: ret ",
+          "BA: push 0",
+          "BF: lea ecx, [esp + 0x2c]",
+          "C3: call 0xc8",
+          "C8: push 0",
+          "CD: lea eax, [esp + 0x2c]",
+          "D1: push eax",
+          "D2: call 0xd7",
+          "D7: push 0",
+          "DC: lea ecx, [esp + 0xc]",
+          "E0: call 0xe5",
+          "E5: push 0",
+          "EA: lea eax, [esp + 0xc]",
+          "EE: push eax",
+          "EF: call 0xf4",
+          "F4: int3 "
+        ]
+      },
+      {
+        "symbol": "?native_land_plane_is_leader_007b8ad0@bsp@@YA_NABUNativeLandPlaneLeaderView@1@@Z",
+        "machine": "I386",
+        "section": 24,
+        "bytes": 14,
+        "sha256": "777d79ac5935e1c58bfc0a1a1548fe63c77c46f369fa9b8718d91a5f09587988",
+        "relocations": [],
+        "instruction_count": 5,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 4]",
+          "04: mov eax, dword ptr [eax + 4]",
+          "07: cmp dword ptr [eax], 0",
+          "0A: sete al",
+          "0D: ret "
+        ]
+      },
+      {
+        "symbol": "?plane_is_leader_007b8ad0@NativeLandPlaneLeaderCruiseHost@bsp@@UAE_NPBX@Z",
+        "machine": "I386",
+        "section": 28,
+        "bytes": 75,
+        "sha256": "605e6a77d7ea40dc7aa2332d82d0237000eef03cf0561d16da584bace38df730",
+        "relocations": [
+          {
+            "operand_offset": "2E",
+            "coff_kind": "0006",
+            "symbol": "??_C@_0CN@NFNANOA@native?5leader?5mapping?5changed?5pl@"
+          },
+          {
+            "operand_offset": "37",
+            "coff_kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": "3C",
+            "coff_kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": "46",
+            "coff_kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instruction_count": 25,
+        "disassembly": [
+          "00: sub esp, 0x14",
+          "03: push esi",
+          "04: mov esi, dword ptr [esp + 0x1c]",
+          "08: lea eax, [esp + 4]",
+          "0C: add ecx, 4",
+          "0F: push esi",
+          "10: push eax",
+          "11: mov eax, dword ptr [ecx]",
+          "13: call dword ptr [eax + 4]",
+          "16: cmp dword ptr [esp + 4], esi",
+          "1A: pop esi",
+          "1B: jne 0x2d",
+          "1D: mov eax, dword ptr [esp + 4]",
+          "21: cmp dword ptr [eax], 0",
+          "24: sete al",
+          "27: add esp, 0x14",
+          "2A: ret 4",
+          "2D: push 0",
+          "32: lea ecx, [esp + 0xc]",
+          "36: call 0x3b",
+          "3B: push 0",
+          "40: lea eax, [esp + 0xc]",
+          "44: push eax",
+          "45: call 0x4a",
+          "4A: int3 "
+        ]
+      }
+    ],
+    "one_connected_fixture": true,
+    "native_call_rows": 3,
+    "native_leaf_call_rows": 0,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "source_fixture_receipt": "local/cc11_sorted_insert_current_primary/inputs_after_link.json",
+    "source_fixture_receipt_sha256": "0a1a97e30381ad7b68002c75ff7e6ec70150df0083d2fdf3006158712fab50be",
+    "qualification": "Complete129B42decoded7ED0D0 body, unreachable3B alignment12D..12F retained. Dirty3EC first includingNULL; nonnull sameplane9D4 link before9D8 requested signed index, captured3CC count, current3D0 member fresh signed9D8 scan FIRSTstrictlygreater, backward shift/member publish/FRESH countincrement. Genuine same live squadron+3CC/+3D0/+3EC and sameplane+9D4/+9D8 references, PURE checked identity mappings only; no default/cache/represented-read duringmapping or addedcapacity/duplicate/reindex policy. Ordinary count0..4/live occupied/coherent disjoint backing, no structural reentry/fault/overflow/concurrency. One24-check Source/original same-storage fixture0-before1/4 full backing/guards and unchanged otherindices, SAME producedcell through unchangedoriginal12B/fullEAX leader/Sourcebool/currentadopter, null dirty-only. Whole original129+12B unrelocated/no bridges, Source245B86 incl admission cold throw paths/leaf14B5/adopter75B25 exactworker; SourcePURE mapping calls distinct from native0CALL. Actualcaller7CDF82/D05F20+9C DATA and2leadercallers verified, no sortedtablexref (D087C0+13C is7ED010). Actualclass/wholehighercaller/ctor/queue/holder/world/arena/tuning/math/nativeABI/privateEH/game unbound; no olderfixture replay.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "internal_checks": 24,
+    "original_function_bodies_executed": true,
+    "original_whole_executed_bytes": 141,
+    "original_designated_operand_bytes": 0,
+    "saved_annotation_prior_values_receipt": "local/ghidra-annotations-20261007T231157Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_enum_lifetime_sorted_insert_primary_snapshot.log",
+    "saved_function_count": 64720
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests and independent current primary connected fixture passed; originalABI/game qualified"
 }
