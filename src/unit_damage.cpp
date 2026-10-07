@@ -37,6 +37,69 @@ bool full_health_marker_00877c00(float stored, float maximum) noexcept {
     return set_marker != 0;
 }
 
+static_assert(offsetof(UnitHealth, max_health) == 0 && offsetof(UnitHealth, current_health) == 4,
+    "UnitHealth snapshot offsets used by numeric kernels");
+constexpr float kUnitHealthNumericCeiling00923be0 = 1.0f; // float at 00D7A24C
+
+// Unit-specific provider 00876260. ECX is a typed snapshot here, not a native
+// entity: mapped current/max offsets are 4/0 instead of 370h/36Ch. Return ST0
+// after the original division and float spill/reload, with no zero guard.
+__declspec(naked) float __fastcall unit_health_fraction_x87(const UnitHealth*) noexcept {
+    __asm {
+        push ecx
+        fld dword ptr [ecx + 4]
+        fdiv dword ptr [ecx]
+        fstp dword ptr [esp]
+        fld dword ptr [esp]
+        pop ecx
+        ret
+    }
+}
+
+// Numeric-only, unit-specialized 00923BE0. ECX is the snapshot and DL is the
+// release flag. This deliberately selects the verified unit provider above;
+// it is not arbitrary native vtable[110h] dispatch and writes no cache +164h.
+__declspec(naked) float __fastcall unit_health_getter_numeric_x87(const UnitHealth*, bool) noexcept {
+    __asm {
+        push ecx
+        push esi
+        mov esi, ecx
+        test dl, dl
+        jz read_unit_fraction
+        fldz
+        pop esi
+        pop ecx
+        ret
+    read_unit_fraction:
+        mov ecx, esi
+        call unit_health_fraction_x87
+        fstp dword ptr [esp + 4]
+        fld dword ptr [esp + 4]
+        fldz
+        fcomip st(0), st(1)
+        fstp st(0)
+        jbe cap_fraction
+        xorps xmm0, xmm0
+        movss dword ptr [esp + 4], xmm0
+        fld dword ptr [esp + 4]
+        pop esi
+        pop ecx
+        ret
+    cap_fraction:
+        movss xmm0, dword ptr [esp + 4]
+        movss xmm1, dword ptr kUnitHealthNumericCeiling00923be0
+        comiss xmm0, xmm1
+        jbe return_fraction
+        movaps xmm0, xmm1
+    return_fraction:
+        movss dword ptr [esp + 4], xmm0
+        fld dword ptr [esp + 4]
+        pop esi
+        pop ecx
+        ret
+    }
+}
+
 }  // namespace
 
 // 00926DA1: MOV EDI,2 / CMP param,7 / CMOV-style select. A cause of 7 is stored
@@ -56,20 +119,15 @@ UnitKillCause kill_cause_from_lua_008ac5c0(bool has_second_argument, bool hard) 
     return hard ? UnitKillCause::hard : UnitKillCause::normal;
 }
 
-// 00876260: FLD current / FDIV max / FSTP float / FLD float / RET. No zero
-// guard. This typed projection does not reproduce ambient x87 precision.
+// Numeric 00876260, with the actual ambient x87 division and spill boundary.
 float health_fraction_00876260(const UnitHealth& health) noexcept {
-    return health.current_health / health.max_health;
+    return unit_health_fraction_x87(&health);
 }
 
-// Partial 00923BE0: release gate and unit vtable[110h] fraction only. The native
-// getter additionally floors at zero, caps at 1.0f and writes cache +164h.
-// Those existing projection gaps remain outside cc11_health_nan.
+// Partial, unit-specific numeric 00923BE0. Native cache/store and arbitrary
+// virtual-provider dispatch require a real entity contract, not this snapshot.
 float entity_health_00923be0(const UnitHealth& health, bool released) noexcept {
-    if (released) {
-        return 0.0f;
-    }
-    return health_fraction_00876260(health);
+    return unit_health_getter_numeric_x87(&health, released);
 }
 
 // 00877C53..00877C77: FMUL double 256, runtime-selected CRT conversion, byte
