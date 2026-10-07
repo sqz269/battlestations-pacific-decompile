@@ -1,0 +1,296 @@
+{
+  "packet": "cc11_health_target_operations",
+  "created_utc": "2026-10-07T14:01:21.365230+00:00",
+  "base_commit": "86f0c692c8536b47453990cebfe635e85de2064a",
+  "branch": "agent/cc11_health_guard",
+  "bounds_are_end_exclusive": true,
+  "functions": [
+    {
+      "entry": "007827D0",
+      "end_exclusive": "007827E6",
+      "bytes": 22,
+      "raw_decoded_instruction_count": 7,
+      "native_call_count": 0,
+      "source": "release_native_session_target_slot_007827d0",
+      "source_file": "src/native_session_target_operations.cpp",
+      "original_ordinary_abi": "ECX unsigned index; RET",
+      "new_source_abi": true,
+      "coverage": "complete ordinary native body",
+      "native_bytes_sha256": "b101018bb8de6636144c824b94fb5a2ba514d363163319a8ce4097ed90ac5943",
+      "complete_live_bytes_match_disk": true,
+      "source_omits_only_unreachable_padding": null
+    },
+    {
+      "entry": "007831E0",
+      "end_exclusive": "00783226",
+      "bytes": 70,
+      "raw_decoded_instruction_count": 20,
+      "native_call_count": 0,
+      "source": "append_native_session_target_history_007831e0",
+      "source_file": "src/native_session_target_operations.cpp",
+      "original_ordinary_abi": "ECX target; signed sample stack; RET4",
+      "new_source_abi": true,
+      "coverage": "complete ordinary native body",
+      "native_bytes_sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+      "complete_live_bytes_match_disk": true,
+      "source_omits_only_unreachable_padding": null
+    },
+    {
+      "entry": "00783230",
+      "end_exclusive": "00783274",
+      "bytes": 68,
+      "raw_decoded_instruction_count": 19,
+      "native_call_count": 0,
+      "source": "reset_native_session_target_history_00783230",
+      "source_file": "src/native_session_target_operations.cpp",
+      "original_ordinary_abi": "ECX target; raw float word stack; RET4",
+      "new_source_abi": true,
+      "coverage": "complete ordinary native body",
+      "native_bytes_sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+      "complete_live_bytes_match_disk": true,
+      "source_omits_only_unreachable_padding": "0078324A..00783250"
+    }
+  ],
+  "status": "three complete ordinary SOURCE leaves freshly compiled and complete original-body comparisons passed; primary integration/full main build pending; original ABI, timing conversion, derived publication and game remain unbound",
+  "storage": {
+    "target": "existing actual NativeSessionTargetStorage; capture real D54 history once",
+    "history": "existing actual NativeSessionTargetHistoryStorage18h and owned float-word array",
+    "allocation_added": false,
+    "profile_dispatch_added": false,
+    "lifetime_added": false,
+    "borrowed_mask": "actual volatile WORD F871B0"
+  },
+  "native_callers": {
+    "slot_release": [
+      "00773120"
+    ],
+    "append": [
+      "007833E0"
+    ],
+    "reset": [
+      "007833E0"
+    ]
+  },
+  "instruction_contracts": {
+    "slot_release": [
+      "native unsignedindex<=15 check before mask access",
+      "SHL/NOT and unprefixed current-word AND",
+      "indices16..FFFFFFFF leave actualmask unchanged",
+      "no universal bit ownership or atomicity claim"
+    ],
+    "append": [
+      "capture targetD54 once; captureindex10; FLDtotal14; capturearray0C; FSUBcapturedsample",
+      "CVTSI2SS original signed sample under ambientMXCSR before differenceFSTP; first sample store uses capturedarray/index",
+      "freshindex10 andarray0C; FLDfreshselectedsample; native32-bitindexincrement; comparefreshcount04",
+      "FADDcurrenttotal14; publishnewindex10; FSTPtotal14; earlier equality controls finalindexzero"
+    ],
+    "reset": [
+      "capture targetD54 once; MOVSSargument; comparesignedcount04 BEFOREinitial08publication",
+      "each entered iteration reloadsarray0C and FLDinitial08/FSTPsample, then comparesfreshsignedcount04",
+      "afterloop FILDfreshsignedcount04; index10zero; FMULfreshinitial08; FSTPtotal14",
+      "no rawwordfill; nonpositive count skipsfill but still computesproduct; no addedboundsorFPcontrolguards"
+    ]
+  },
+  "complete_native_call_rows": [],
+  "native_direct_call_verifier": "not applicable: all three are no-call leaves; complete native bytes and original-body execution used",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_writes": false,
+    "verified_before_live_batches": true,
+    "stored_body_ranges_complete": true,
+    "listing_instruction_counts": {
+      "mask": 7,
+      "append": 20,
+      "reset": 18
+    },
+    "reset_padding": "branch-skipped LEA EBX,[EBX] at0078324A occupies6bytes; raw decoder includes it, live listing excludes it",
+    "bytes": "all22/70/68 live bytes compared to original disk bytes"
+  },
+  "validation": {
+    "fresh_actual_translation_units": [
+      "src/native_session_target_operations.cpp",
+      "src/native_session_target_lifetime.cpp",
+      "src/native_session_target_history.cpp",
+      "src/native_session_transport_buffers.cpp",
+      "src/singleton_lifetime.cpp",
+      "src/native_renderer_worker_lifetime.cpp"
+    ],
+    "fresh_tu_count": 6,
+    "immutable_source_header_inputs": 25,
+    "probe_sha256": "90b53dde742f5d3dd6ed642cada83813744a97cd8f1aee78745f7b596f707697",
+    "compiler": "MSVC19.51.36244 Win32 /std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs",
+    "build_exit": 0,
+    "probe_exit": 0,
+    "embedded_manifest": "asInvoker",
+    "probe_result": {
+      "checks": 305,
+      "failures": 0,
+      "append_original_cases": 99,
+      "reset_original_cases": 31,
+      "mask_original_cases": 21,
+      "history_code_relocations": 0,
+      "mask_operand_relocations": 1,
+      "pc_values": 3,
+      "x87_rc_values": 4,
+      "mxcsr_rc_values": 4,
+      "ambient_stack_cases": 2,
+      "constructor_owned_targets": 2,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "actual_storage": "two complete Source-constructed targets with real canonical D54 histories/50samplearrays, D58 histories, cursors and locks, explicitly destroyed afterward",
+    "original_body_execution": {
+      "history_relocated_bytes": 0,
+      "mask_relocated_bytes": 4,
+      "mask_operand_native_site": "007827E1",
+      "mask_operand_offset": 17,
+      "native_mask_operand": "00F871B0",
+      "mask_operand_replacement": "actual fixture native_mask.value also used by constructor",
+      "original_history_abi": "ignored-EDX fastcall bridge: ECXtarget, stackword, nativeRET4",
+      "original_mask_abi": "ECXindex, nativeRET",
+      "copies_sealed_execute_read": true,
+      "native_crt_game_process_invoked": false
+    },
+    "append_cases": {
+      "total": 99,
+      "matrix_cases": 96,
+      "matrix": "PC24/53/64 x fourx87RC x fourindependentMXCSRRC x empty/threeoccupied x87slots",
+      "signed_samples": [
+        16777217,
+        -16777217,
+        0,
+        -2147483648,
+        2147483647
+      ],
+      "count": 50,
+      "valid_indices": [
+        0,
+        49
+      ],
+      "wrap_and_nonwrap": true
+    },
+    "reset_cases": {
+      "total": 31,
+      "matrix_cases": 24,
+      "matrix": "PC24/53/64 x fourx87RC x empty/threeoccupied, rawinitial3EAAAAAB,count50",
+      "edge_words": [
+        "80000000",
+        "7FC12345",
+        "7F812345",
+        "00000001",
+        "7F800000",
+        "3EAAAAAB"
+      ],
+      "helper_level_signed_counts": [
+        -1,
+        0,
+        3,
+        50
+      ],
+      "allocated_array_elements": 50,
+      "count_qualification": "only50 is constructor-produced D54 count; -1/0/3 are valid-storage mutable helper fixtures, not native producer-reachability claims"
+    },
+    "mask_cases": {
+      "total": 21,
+      "actual_constructor_early_release": true,
+      "valid_indices": "all0..15",
+      "out_of_range": [
+        "00000010",
+        "0000001F",
+        "80000000",
+        "FFFFFFFF"
+      ],
+      "adjacent_word_sentinels_preserved": true
+    },
+    "compared": [
+      "profile/count/initial/index/total fields",
+      "all50 rawsamplewords",
+      "array ownership identities",
+      "outertarget bytes",
+      "secondhistory storage",
+      "x87CW",
+      "x87SW",
+      "x87FTW",
+      "all8raw80bitx87registerimages",
+      "MXCSR",
+      "all16bytesXMM0",
+      "maskword andadjacent sentinels"
+    ],
+    "excluded": [
+      "FPinstruction/data pointeraddresses",
+      "unmaskedexceptions",
+      "unavailablex87slot",
+      "DAZ/FTZenabled",
+      "concurrentmutation",
+      "whole timingstate producer reachability",
+      "nativeclassABI/game"
+    ],
+    "assembly_review": "every Source leaf inspected in full; captured/fresh accesses, mixedx87/SSEordering, rawfloatword MOVSS, signedloops and nativewordAND retained",
+    "stable_support_built_main_commit": "ae90949a7",
+    "support_pinned_at_main_head": "f3027c0f415f6760a83eb3021b09728c86ab47a3",
+    "fresh_before_after_support": {
+      "main_head_after": "f3027c0f415f6760a83eb3021b09728c86ab47a3",
+      "libraries_stable": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 25,
+      "support_before": {
+        "main_head": "f3027c0f415f6760a83eb3021b09728c86ab47a3",
+        "worker_head": "86f0c692c8536b47453990cebfe635e85de2064a",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_operations_20261007_a\\support_bsp_core.lib",
+            "sha256": "5aa94b8a218bbfe1e05efa37e81eb43b6cd6923a53c1645a3f324761e7e39226",
+            "bytes": 73222570
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_operations_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_operations_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "main_rebuild_released_after_link_and_execution": true,
+    "full_main_build_run_by_worker": false,
+    "tracked_tests_added": false,
+    "network_send_calls": 0,
+    "game_validated": false
+  },
+  "limitations": [
+    "new Source ABI rather than drop-in native replacement",
+    "caller supplies valid reached storage and available x87 stack",
+    "no native7833E0 timing/conversion/global provider",
+    "no derivedtarget registration or mask ownership claim",
+    "no original private CRT/EH or unmaskedhardwarefault equivalence",
+    "no networksend or gameplayvalidation"
+  ],
+  "artifact_root": "local/cc11_target_operations_20261007_a",
+  "artifacts_sha256": {
+    "probe.cpp": "90b53dde742f5d3dd6ed642cada83813744a97cd8f1aee78745f7b596f707697",
+    "probe.exe": "bde64c1389717e9e8745d83b868e411c0aa6c1a9f090344ecc76ac451da7b8e7",
+    "probe.log": "1cf4819a5686465bdb6b9483990f62ea29ed312587f561cd3f0ad444fe1257a8",
+    "build.cmd": "d84a0f8f428f4dbb56c506b99c8f7a6162bd2e036255443cdead93b93093e07f",
+    "build.log": "f22fa793d682488fae5f3e2d659f2fd60ec0d53e915f0ee14339ac2a653f80a4",
+    "prepare_build.py": "f936b3a4da58ccff13f0bb12582b38b38dc1db29833a4dd46c4698e3fc0a009a",
+    "pin_support.py": "4276682e6b888c2a7e7ad24b50752f9684126557747396a7c8e5b2ffbd2e6ed0",
+    "write_report.py": "a9e538399bd5308eaa3b3f50add7415d913d6aa8470980be351e254496f6432e",
+    "inputs_before_link.json": "315ed130a790743d1ffa9abb0ca635f95e99758f2e63388d51d97b0eb0724daf",
+    "inputs_after_link.json": "4fa4afc0ab2a2d95e917aa1af48bf91468abb2a75d50edae3bdbf99e1bbb055a",
+    "support_before_link.json": "f28913adfca9044dbf4fc3187d9884b0f032b08bb9838a78df688e9f5060ddd2",
+    "embedded_manifest.xml": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290",
+    "original_mask.bin": "b101018bb8de6636144c824b94fb5a2ba514d363163319a8ce4097ed90ac5943",
+    "original_append.bin": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+    "original_reset.bin": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+    "asm/native_session_target_operations.asm": "e216b285c17e95acee9773308b4d16f8271f96f5b50d0f00dd48d5b0d2a6505b",
+    "obj/native_session_target_operations.obj": "127434c19da393ed1e2541487df9b0cf15da4d650b780c2ef6b5caa84dbe9f23"
+  }
+}
