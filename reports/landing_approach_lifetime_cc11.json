@@ -1,0 +1,480 @@
+{
+  "packet": "cc11_land_approach_lifetime",
+  "status": "complete conditional ordinary Source approach cleanup; strict focused connected Source/full-original fixture passed; native class/arena/private-EH/runtime/game binding remains unbound",
+  "native_body": {
+    "entry": "009b2c80",
+    "end_exclusive": "009b2d62",
+    "bytes": 226,
+    "listed_instructions": 52,
+    "call_gaps": 0,
+    "whole_disk_live_sha256": "b816aff23cc930c8b1d3fa44a92510b0d8ab930722328abe39e916b594bdf733",
+    "direct_call_sites": 10,
+    "indirect_call_sites": 0,
+    "original_name": "FUN_009b2c80",
+    "original_abi": "ECX=actual approach; ESI/EDI preserved; ordinary RET; no recovered EAX-result requirement",
+    "private_FH_SEH": "original prologue/frame state/FS restore observed in listing; private unwind/fault semantics not reconstructed",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_ghidra_mutations": false
+  },
+  "tracked_files": [
+    "include/bsp/native_land_approach_lifetime.hpp",
+    "src/native_land_approach_lifetime.cpp",
+    "docs/LANDING_APPROACH_LIFETIME_CC11.md",
+    "reports/landing_approach_lifetime_cc11.json"
+  ],
+  "source_contract": {
+    "entry": "destroy_native_land_approach_009b2c80",
+    "view": "NativeLandApproachCleanupView",
+    "binder": "native_land_approach_cleanup_view",
+    "minimum_live_backing_hex": "26c",
+    "minimum_is_cleanup_extent_not_constructor_or_class_size": true,
+    "pure_alias_validation_only": true,
+    "represented_field_reads_in_binder": false,
+    "provider_calls_or_allocations_in_binder": false,
+    "same_root_aliases": {
+      "profile": "00",
+      "registry": "b8",
+      "moveto_root": "cc",
+      "moveto_vector": "d8",
+      "moveto_callback": "e4",
+      "follow_root": "108",
+      "follow_vector": "114",
+      "follow_callback": "120",
+      "follow_FIRST_cell": "134",
+      "trailing_state_order": [
+        "254",
+        "228",
+        "200",
+        "1e0",
+        "1c0",
+        "1a0"
+      ]
+    },
+    "all_natural_calls_use_existing_concrete_complete_Source": true,
+    "opaque_cleanup_or_phase_providers": false,
+    "last_store": {
+      "site": "009b2d4f",
+      "field": "actual root+00",
+      "raw_word": "00d1fdb8"
+    },
+    "raw_image_profiles_callable": false,
+    "new_cpp_interface_not_original_ABI": true,
+    "required_domain": [
+      "stable nonnull actual same-root typed coherent live approach/members >=26Ch",
+      "valid actual24B CF5C94 shared vectors, representable nonwrapping coherent ranges and successful same-CRT allocation/free",
+      "actual FIRST endpoint identities with live NativeObserverOwnerStorage prefix at the SAME address",
+      "genuine required NativeObserverLifetime manager/publications/recursive-lock/dispatch/edge-deletion contexts",
+      "ordinary successful returning providers; stable aliases without structural reentry, invalidation or concurrency"
+    ],
+    "native_registry_null_placement_admitted": false,
+    "approach_or_embedded_receiver_self_free": false,
+    "remaining_state_constructors_or_tuning_entry_invoked": false,
+    "provider_final_fields_retained": true,
+    "shared_dangling_headers_retained_no_pointee_read": true,
+    "registry_proxy_name_state_pointees_borrowed_untouched": true
+  },
+  "native_calls": [
+    {
+      "function": "009b2c80",
+      "address": "009b2cae",
+      "native": "007b45f0",
+      "receiver": "actual approach+254",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2cbe",
+      "native": "007b45f0",
+      "receiver": "actual approach+228",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2cce",
+      "native": "007b45f0",
+      "receiver": "actual approach+200",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2cde",
+      "native": "007b45f0",
+      "receiver": "actual approach+1e0",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2cee",
+      "native": "007b45f0",
+      "receiver": "actual approach+1c0",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2cfe",
+      "native": "007b45f0",
+      "receiver": "actual approach+1a0",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2d15",
+      "native": "006cdd70",
+      "receiver": "actual Follow callback at approach+120; watched FIRST cell at+134",
+      "Source": "destroy_native_land_follow_observer_006cdd70"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2d21",
+      "native": "007b45f0",
+      "receiver": "actual Follow shared root at approach+108",
+      "Source": "destroy_native_land_state_007b45f0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2d31",
+      "native": "007b65e0",
+      "receiver": "actual MoveTo root at approach+cc",
+      "Source": "destroy_native_land_moveto_007b65e0"
+    },
+    {
+      "function": "009b2c80",
+      "address": "009b2d46",
+      "native": "004116d0",
+      "receiver": "actual registry at approach+b8, nonnull ordinary domain",
+      "Source": "destroy_native_bot_state_registry_004116d0"
+    }
+  ],
+  "natural_consumers": [
+    {
+      "entry": "009b3f50",
+      "site": "009b3fbf",
+      "receiver": "actual task+3f8 approach captured in EDI",
+      "sequence": "after optional actual plane+9d4 dequeue, before base007b4030",
+      "whole_caller_binding": false,
+      "task404_or_plane9d4_lifetime_proof": false
+    },
+    {
+      "entry": "009b3220",
+      "site": "009b3223",
+      "name_preserved": "CG_scalar_deleting_dtor_009b3220",
+      "whole_scalar_Source_reconstruction": false,
+      "free_continuation_gap_outside_packet": "009b3235..009b3238"
+    },
+    {
+      "entries": [
+        "00caec08",
+        "00caec28",
+        "00caeca8"
+      ],
+      "scope": "private unwind reachability only; not Source fault/unwind admission"
+    }
+  ],
+  "focused_fixture": {
+    "recipe": "local/cc11_land_approach_lifetime_probe_build.ps1",
+    "Source": "local/cc11_land_approach_lifetime_probe.cpp",
+    "manifest": "local/cc11_land_approach_lifetime_probe_manifest.json",
+    "output": "local/cc11_land_approach_lifetime_probe_output.txt",
+    "result": "PASS: 287 approach cleanup SOURCE/full-original226B checks; genuine members, pairs, pending span, CRT and recursive lock",
+    "assertions": 287,
+    "case_count": 1,
+    "case_executions": "Source plus full original normal caller on separate actual-shaped borrowed storage",
+    "actual_backing_hex": "26c",
+    "genuine_connected_operations": [
+      "real embedded registry00411e20 constructor/reserve and eight00411e70 Add calls retaining names/state identities",
+      "real MoveTo009c2ac0 construction and00694a60 registration on actual CC member",
+      "eight real007b4500 vector operations with known actual24B CF5C94 elements",
+      "real00694a60 observer registration, retained Follow pair refs2, canonical complete edge/owner cleanup and pending suppression",
+      "actual already-published OS recursive section and real captured guard restoration"
+    ],
+    "remaining_states_setup": "explicit borrowed SOURCE preimage only; no remaining-state/full-composite/Follow constructor or tuning entry invocation",
+    "runtime_manager_lookup_exercised": false,
+    "Original_copy": {
+      "bytes": 226,
+      "operand_relocation_count": 10,
+      "operand_relocation_offsets_hex": [
+        "2f",
+        "3f",
+        "4f",
+        "5f",
+        "6f",
+        "7f",
+        "96",
+        "a2",
+        "b2",
+        "c7"
+      ],
+      "all_other_186_bytes_unchanged": true,
+      "natural_bridges": [
+        "complete shared007b45f0",
+        "complete Follow observer006cdd70",
+        "complete MoveTo007b65e0",
+        "complete registry004116d0"
+      ],
+      "exact_received_native_member_addresses_and_order_checked": true,
+      "unchanged_original_normal_FS_frame_prefix_return": true,
+      "original_private_EH_executed": false,
+      "bridges_are_new_Source_interfaces_not_native_provider_ABI_proof": true
+    },
+    "CRT_observation": {
+      "only_executable_own_import_temporarily_traced": true,
+      "always_forward_captured_actual_free": true,
+      "import_and_protection_restored": true,
+      "live_retiring_allocation_fields_read_before_free_only": true,
+      "afterward_only_live_root_headers_and_saved_numeric_identities": true,
+      "reentry_mutation_or_production_free_provider": false,
+      "historical_game_CRT_loader_equivalence": false
+    },
+    "checks": [
+      "six shared members then Follow observer/shared then Move then registry release",
+      "decrement-before-element cleanup and provider-final raw profiles/fields before actual array retirement",
+      "last approach stamp after all provider frees; registry stamp before buffer free before header clears",
+      "all remaining live bytes/padding/borrowed identities retained",
+      "shared headers keep numeric dangling pointers/capacity; no retired allocation dereference",
+      "all ten real pending pair slots suppressed while span size retained",
+      "actual outer recursive lock depth restored"
+    ],
+    "fixture_profiles_callbacks_and_publication_cells_are_Source_instrumentation_only": true
+  },
+  "compiler_receipts": {
+    "toolchain_vcvars": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars32.bat",
+    "target": "MSVC Win32 PE32 x86",
+    "fresh_actual_tus_including_probe": [
+      "src/native_land_approach_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "src/native_land_follow_observer_lifetime.cpp",
+      "src/native_land_moveto_constructor.cpp",
+      "src/native_land_state_registry.cpp",
+      "src/native_land_state_registry_lifetime.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "local/cc11_land_approach_lifetime_probe.cpp"
+    ],
+    "fresh_tu_count": 9,
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/Gy",
+      "/DNDEBUG",
+      "/showIncludes"
+    ],
+    "commands": [
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_approach.obj src/native_land_approach_lifetime.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_state.obj src/native_land_state_lifetime.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_follow_observer.obj src/native_land_follow_observer_lifetime.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_moveto_constructor.obj src/native_land_moveto_constructor.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_registry.obj src/native_land_state_registry.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_registry_lifetime.obj src/native_land_state_registry_lifetime.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_observer_edges.obj src/observer_edges.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_observer_lifetime.obj src/observer_lifetime.cpp",
+      "cl /nologo /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /permissive- /showIncludes /Iinclude /Folocal/cc11_land_approach_lifetime_probe.obj local/cc11_land_approach_lifetime_probe.cpp",
+      "link /NOLOGO /INCREMENTAL:NO /OPT:REF /MANIFEST:EMBED /OUT:local/cc11_land_approach_lifetime_probe.exe local/cc11_land_approach_lifetime_approach.obj local/cc11_land_approach_lifetime_state.obj local/cc11_land_approach_lifetime_follow_observer.obj local/cc11_land_approach_lifetime_moveto_constructor.obj local/cc11_land_approach_lifetime_registry.obj local/cc11_land_approach_lifetime_registry_lifetime.obj local/cc11_land_approach_lifetime_observer_edges.obj local/cc11_land_approach_lifetime_observer_lifetime.obj local/cc11_land_approach_lifetime_probe.obj local/cc11_land_approach_lifetime_core.lib local/cc11_land_approach_lifetime_lua.lib local/cc11_land_approach_lifetime_zlib.lib user32.lib d3d9.lib PowrProf.lib shell32.lib advapi32.lib"
+    ],
+    "all_compile_link_exit_codes": 0,
+    "warning_or_error_diagnostics": 0,
+    "pinned_inputs_pre_post": 58,
+    "inputs_unchanged": true,
+    "quoted_project_header_inputs": 41,
+    "actual_compiler_project_includes": [
+      "include/bsp/ai_command_lifetime.hpp",
+      "include/bsp/camera_projection.hpp",
+      "include/bsp/camera_transform.hpp",
+      "include/bsp/command_execution.hpp",
+      "include/bsp/entity_orders.hpp",
+      "include/bsp/frame_clock.hpp",
+      "include/bsp/game_entry.hpp",
+      "include/bsp/lua_binding_ai.hpp",
+      "include/bsp/lua_binding_core.hpp",
+      "include/bsp/native_land_approach_lifetime.hpp",
+      "include/bsp/native_land_follow_observer_lifetime.hpp",
+      "include/bsp/native_land_moveto_constructor.hpp",
+      "include/bsp/native_land_state_entries.hpp",
+      "include/bsp/native_land_state_lifetime.hpp",
+      "include/bsp/native_land_state_registry.hpp",
+      "include/bsp/native_land_state_registry_lifetime.hpp",
+      "include/bsp/native_land_task_constructor.hpp",
+      "include/bsp/native_pilot_bot_task_owner.hpp",
+      "include/bsp/native_renderer_worker_lifetime.hpp",
+      "include/bsp/native_string.hpp",
+      "include/bsp/native_string_pool_owner.hpp",
+      "include/bsp/native_string_pool_storage.hpp",
+      "include/bsp/native_tracked_critical_section_release.hpp",
+      "include/bsp/observer_edges.hpp",
+      "include/bsp/observer_lifetime.hpp",
+      "include/bsp/plane_squadron.hpp",
+      "include/bsp/plane_squadron_entity.hpp",
+      "include/bsp/plane_squadron_host.hpp",
+      "include/bsp/random.hpp",
+      "include/bsp/random_threads.hpp",
+      "include/bsp/render_tail.hpp",
+      "include/bsp/scene_deferred_refs.hpp",
+      "include/bsp/singleton_lifetime.hpp",
+      "include/bsp/sound_lifetime_access.hpp",
+      "include/bsp/storage_pool.hpp",
+      "include/bsp/system_time_constants.hpp",
+      "include/bsp/unit_weapons.hpp",
+      "include/bsp/weapon_director.hpp"
+    ],
+    "actual_compiler_project_include_count": 38,
+    "all_actual_project_includes_pinned": true,
+    "embedded_manifest_resource": {
+      "type": 24,
+      "id": 1,
+      "machine": "PE32 x86",
+      "level": "asInvoker",
+      "xml": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n"
+    },
+    "source_coff": {
+      "artifact": "local/cc11_land_approach_lifetime_probe_coff.txt",
+      "body_call_offsets_hex": [
+        "18",
+        "2c",
+        "36",
+        "40",
+        "48"
+      ],
+      "six_iteration_loop_call_at_hex": "18",
+      "final_raw_stamp_at_hex": "56",
+      "new_Source_interface_no_instruction_ABI_equivalence": true
+    },
+    "support_provenance": "parent-confirmed CURRENT b7 main build frozen before next root build",
+    "source_base_origin_main": "50c6f867e1177fb980bfb3b9d9b6e86ecaf9eeb8",
+    "support_libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "local\\cc11_land_approach_lifetime_core.lib",
+        "source_sha256_before": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+        "copy_sha256": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+        "source_sha256_after": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+        "source_and_copy_equality": true,
+        "size": 73331252
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "local\\cc11_land_approach_lifetime_lua.lib",
+        "source_sha256_before": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_and_copy_equality": true,
+        "size": 454824
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "local\\cc11_land_approach_lifetime_zlib.lib",
+        "source_sha256_before": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_and_copy_equality": true,
+        "size": 71766
+      }
+    ],
+    "only_immutable_support_copies_used_after_freeze": true,
+    "pinned_support_provider_source": [
+      "src/singleton_lifetime.cpp",
+      "src/random_threads.cpp",
+      "src/sound_lifetime_access.cpp"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_land_approach_lifetime_approach.obj",
+      "sha256": "ea8889d14eeaf9773c04b370442e9c4b3cd63c14973ebe4a4a9f1498c9b0806e",
+      "size": 13718
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_state.obj",
+      "sha256": "5ffa7a2a835e4fa6b8dee5d061a1e4bc82cb3043eb7bd3e2d0d35a71678e6e28",
+      "size": 12475
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_follow_observer.obj",
+      "sha256": "82b98b3f50254d3c95784174cd9ce948014002555e16726b833e63cc2e4e6c3d",
+      "size": 3489
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_moveto_constructor.obj",
+      "sha256": "eb5b5510a27c5d9218a13ba1528d33ac6fc8a0a8f0e3612308e539d05f4b6a8f",
+      "size": 8928
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_registry.obj",
+      "sha256": "7032c7ca65cf5443a00a8d0b536833e774a49722486e3a24e2da68800bb79224",
+      "size": 8896
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_registry_lifetime.obj",
+      "sha256": "67e01b87bc92b87385a47173206f2455dc81703f8c4659f198f55579a2f51294",
+      "size": 2125
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_observer_edges.obj",
+      "sha256": "c9f06d3cd631c0ce0c1cf8813191ca6d107a0ad20467d23ff4b6c3cb75a3b4ba",
+      "size": 7152
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_observer_lifetime.obj",
+      "sha256": "d028313d862ef5b4c64ad30e9d090448519ed045d025cf296bdb682d2e392571",
+      "size": 28272
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_probe.obj",
+      "sha256": "6f900a3175d65f12cb3c32e60af27282b2e1c84743e23d02ceef73debf622cd5",
+      "size": 48629
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_probe.exe",
+      "sha256": "b7ed01bc48ca428199759e6a71c84480d158a96a2a79192922a431f290fbfade",
+      "size": 234496
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_probe_compile.log",
+      "sha256": "f4745a4a700768c0880ff63278a88897d0a60a129038888c99fd2f726e6b9f99",
+      "size": 196556
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_probe_output.txt",
+      "sha256": "b66039125db88d10295a2a5cab7676cf0f04ae2b682fbc788aa5366a0f5fa342",
+      "size": 122
+    },
+    {
+      "path": "local/cc11_land_approach_lifetime_probe_coff.txt",
+      "sha256": "d688b28f8c8c0e8514e3dcc03e3753203e6098e4c69e8a3b5a6d1a1eca18d6ff",
+      "size": 76787
+    }
+  ],
+  "original_binary_sha256_pre_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_status": "complete conditional normal Source body and pure connected embedded-storage view",
+  "abi_compatible": false,
+  "actual_game_binding": false,
+  "game_validated": false,
+  "unbound": [
+    "full remaining-state/composite/lower constructors and profile/arena/class construction lifetimes",
+    "actual manager/global publication/runtime callback/endpoint lifetimes beyond admitted Source context",
+    "dequeue006c8800/006c7680 and cached404 versus fresh plane9d4 death/retired-task ownership",
+    "whole landing task009b3f50 and base007b4030 cleanup",
+    "related scalar009b3220 optional root free and flags1 object-size/allocator contract",
+    "null/unsupported profile/overflow/allocation failure/fault/structural reentry/concurrency",
+    "private FH/SEH unwind, image class profiles/original calling convention/ABI and gameplay"
+  ],
+  "tracked_tests_added": false,
+  "CMake_or_shared_metadata_edited": false,
+  "full_build_worker_run": false,
+  "handed_off_prior_artifacts_modified": false,
+  "validation": {
+    "native_direct_rows_checked": 10,
+    "native_direct_rows_failed": 0,
+    "command": "python tools/verify_report_calls.py reports/landing_approach_lifetime_cc11.json",
+    "focused_probe_executions": 1,
+    "Source_and_original_paths_both_passed": true,
+    "input_hashes_unchanged": 58,
+    "git_diff_check": "checked on staged four-file handoff",
+    "Source_COFF_calls_before_final_stamp_verified": true,
+    "git_diff_check_passed": true
+  }
+}
