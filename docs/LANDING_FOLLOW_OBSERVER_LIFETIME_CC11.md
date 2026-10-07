@@ -114,3 +114,7 @@ Full outer task/base cleanup, raw profile/callback semantics, cached identities,
 arena/CRT historical equivalence, observer/death lifetimes, private EH, original
 ABI and gameplay remain unbound. Root owns CMake registration, full build,
 independent review, annotations and integration; no tracked tests were added.
+
+## Primary integration
+
+Main `8ea38c617da5a2a4aa7b4811ffcac4defde5589d` passed the full Win32 build and all three existing CTests. Root independently reviewed all new code, both native bodies and the whole fixture, compiled three fresh actual TUs including the existing complete observer lifetime provider, verified39current Source/provider/header/fixture inputs (33actual includes), three current libraries and the original PE before/after linking, and checked the PE32 asInvoker manifest. All43ordinary Source/original-copy checks passed; all118native bytes also matched the fixture literals. Six native direct rows passed. Current emitted scalar code inlines the ordinary body; the post-base-destruction flag test remains verified, without native call-instruction or ABI equivalence. All runtime/manager/constructor/entry/private-EH/game qualifications above remain; no tracked tests were added.
