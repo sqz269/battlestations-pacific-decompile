@@ -1,0 +1,1339 @@
+{
+  "packet": "cc11_scene_start_speed_float_payload",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_START_SPEED_FLOAT_PAYLOAD_CC11.md",
+  "source_baseline": "b06eee8d1bf4e1214b98b99d7b6026f06fbe4664",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only bsp.py wrappers"
+  },
+  "owned_addresses": [
+    "00822C20"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_START_SPEED_FLOAT_PAYLOAD_CC11.md",
+    "reports/scene_start_speed_float_payload_cc11.json"
+  ],
+  "reused_support": {
+    "report": "reports/scene_convoy_float_payload_cc11.json",
+    "snapshot_source_baseline": "e036b2964baff72f2bccd5b92a805d5cbb225df7",
+    "inputs": [
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+        "path": "local/cc11_scene_convoy_float_core.lib",
+        "bytes": 73110072,
+        "sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "source_pre_copy": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "source_post_copy": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "snapshot_stable": true,
+        "snapshot_post_link": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+        "path": "local/cc11_scene_convoy_float_support/bsp_lua511.lib",
+        "bytes": 454824,
+        "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "source_pre_copy": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "source_post_copy": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "snapshot_stable": true,
+        "snapshot_post_link": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+        "path": "local/cc11_scene_convoy_float_support/bsp_zlib121.lib",
+        "bytes": 71766,
+        "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "source_pre_copy": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "source_post_copy": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_close_attack_tick.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_close_attack_tick.obj",
+        "bytes": 8132,
+        "sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "source_pre_copy": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "source_post_copy": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "snapshot_stable": true,
+        "snapshot_post_link": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_lifetime.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_command_lifetime.obj",
+        "bytes": 1792,
+        "sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "source_pre_copy": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "source_post_copy": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "snapshot_stable": true,
+        "snapshot_post_link": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_object.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_command_object.obj",
+        "bytes": 3331,
+        "sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "source_pre_copy": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "source_post_copy": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "snapshot_stable": true,
+        "snapshot_post_link": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_tick.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_command_tick.obj",
+        "bytes": 17020,
+        "sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "source_pre_copy": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "source_post_copy": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "snapshot_stable": true,
+        "snapshot_post_link": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_group_think.obj",
+        "bytes": 6283,
+        "sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "source_pre_copy": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "source_post_copy": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "snapshot_stable": true,
+        "snapshot_post_link": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "source_pre_copy": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "source_post_copy": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "snapshot_stable": true,
+        "snapshot_post_link": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_tuning_globals.obj",
+        "path": "local/cc11_scene_convoy_float_support/ai_tuning_globals.obj",
+        "bytes": 15089,
+        "sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "source_pre_copy": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "source_post_copy": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "snapshot_stable": true,
+        "snapshot_post_link": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "path": "local/cc11_scene_convoy_float_support/airfield_taxi.obj",
+        "bytes": 4187,
+        "sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "source_pre_copy": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "source_post_copy": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "snapshot_stable": true,
+        "snapshot_post_link": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/command_completion.obj",
+        "path": "local/cc11_scene_convoy_float_support/command_completion.obj",
+        "bytes": 77466,
+        "sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "source_pre_copy": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "source_post_copy": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "snapshot_stable": true,
+        "snapshot_post_link": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_aimdive_tail.obj",
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_aimdive_tail.obj",
+        "bytes": 7480,
+        "sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "source_pre_copy": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "source_post_copy": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "snapshot_stable": true,
+        "snapshot_post_link": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_goaway_turn.obj",
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_goaway_turn.obj",
+        "bytes": 4628,
+        "sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "source_pre_copy": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "source_post_copy": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "snapshot_stable": true,
+        "snapshot_post_link": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_task.obj",
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_task.obj",
+        "bytes": 32543,
+        "sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "source_pre_copy": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "source_post_copy": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "snapshot_stable": true,
+        "snapshot_post_link": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dogfight_task.obj",
+        "path": "local/cc11_scene_convoy_float_support/dogfight_task.obj",
+        "bytes": 20326,
+        "sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "source_pre_copy": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "source_post_copy": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "snapshot_stable": true,
+        "snapshot_post_link": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_avoid_zone_runtime.obj",
+        "bytes": 363663,
+        "sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "source_pre_copy": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "source_post_copy": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "snapshot_stable": true,
+        "snapshot_post_link": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts.obj",
+        "bytes": 926101,
+        "sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "source_pre_copy": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "source_post_copy": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "snapshot_stable": true,
+        "snapshot_post_link": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ai.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ai.obj",
+        "bytes": 1403099,
+        "sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "source_pre_copy": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "source_post_copy": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "snapshot_stable": true,
+        "snapshot_post_link": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_avoid_zones.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_avoid_zones.obj",
+        "bytes": 82422,
+        "sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "source_pre_copy": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "source_post_copy": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "snapshot_stable": true,
+        "snapshot_post_link": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_commands.obj",
+        "bytes": 633940,
+        "sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "source_pre_copy": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "source_post_copy": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "snapshot_stable": true,
+        "snapshot_post_link": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fixed_step.obj",
+        "bytes": 47500,
+        "sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "source_pre_copy": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "source_post_copy": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "snapshot_stable": true,
+        "snapshot_post_link": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fonts.obj",
+        "bytes": 147168,
+        "sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "source_pre_copy": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "source_post_copy": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "snapshot_stable": true,
+        "snapshot_post_link": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_frontend.obj",
+        "bytes": 705688,
+        "sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "source_pre_copy": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "source_post_copy": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "snapshot_stable": true,
+        "snapshot_post_link": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_gunnery.obj",
+        "bytes": 3307078,
+        "sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "source_pre_copy": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "source_post_copy": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud.obj",
+        "bytes": 661386,
+        "sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "source_pre_copy": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "source_post_copy": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "snapshot_stable": true,
+        "snapshot_post_link": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud_world.obj",
+        "bytes": 246452,
+        "sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "source_pre_copy": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "source_post_copy": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "snapshot_stable": true,
+        "snapshot_post_link": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_init_tail.obj",
+        "bytes": 123679,
+        "sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "source_pre_copy": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "source_post_copy": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "snapshot_stable": true,
+        "snapshot_post_link": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_lua.obj",
+        "bytes": 1570061,
+        "sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "source_pre_copy": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "source_post_copy": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_menu.obj",
+        "bytes": 521505,
+        "sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "source_pre_copy": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "source_post_copy": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission.obj",
+        "bytes": 776775,
+        "sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "source_pre_copy": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "source_post_copy": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "snapshot_stable": true,
+        "snapshot_post_link": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_frame.obj",
+        "bytes": 928403,
+        "sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "source_pre_copy": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "source_post_copy": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "snapshot_stable": true,
+        "snapshot_post_link": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_result.obj",
+        "bytes": 241488,
+        "sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "source_pre_copy": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "source_post_copy": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "snapshot_stable": true,
+        "snapshot_post_link": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ready.obj",
+        "bytes": 223211,
+        "sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "source_pre_copy": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "source_post_copy": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "snapshot_stable": true,
+        "snapshot_post_link": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_script_orders.obj",
+        "bytes": 1541428,
+        "sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "source_pre_copy": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "source_post_copy": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "snapshot_stable": true,
+        "snapshot_post_link": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ship_ai.obj",
+        "bytes": 1792521,
+        "sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "source_pre_copy": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "source_post_copy": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "snapshot_stable": true,
+        "snapshot_post_link": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_singletons.obj",
+        "bytes": 36465,
+        "sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "source_pre_copy": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "source_post_copy": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "snapshot_stable": true,
+        "snapshot_post_link": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_text.obj",
+        "bytes": 148570,
+        "sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "source_pre_copy": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "source_post_copy": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "snapshot_stable": true,
+        "snapshot_post_link": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_trajectory.obj",
+        "bytes": 122691,
+        "sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "source_pre_copy": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "source_post_copy": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "snapshot_stable": true,
+        "snapshot_post_link": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_units.obj",
+        "bytes": 3203137,
+        "sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "source_pre_copy": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "source_post_copy": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "snapshot_stable": true,
+        "snapshot_post_link": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_vfs.obj",
+        "bytes": 418499,
+        "sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "source_pre_copy": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "source_post_copy": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "snapshot_stable": true,
+        "snapshot_post_link": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_world.obj",
+        "bytes": 174829,
+        "sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "source_pre_copy": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "source_post_copy": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "snapshot_stable": true,
+        "snapshot_post_link": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_graphics_pools.obj",
+        "bytes": 27840,
+        "sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "source_pre_copy": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "source_post_copy": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "snapshot_stable": true,
+        "snapshot_post_link": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_hardware_layout_tree.obj",
+        "bytes": 12716,
+        "sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "source_pre_copy": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "source_post_copy": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "snapshot_stable": true,
+        "snapshot_post_link": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_globals.obj",
+        "bytes": 15929,
+        "sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "source_pre_copy": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "source_post_copy": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "snapshot_stable": true,
+        "snapshot_post_link": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_services.obj",
+        "bytes": 23120,
+        "sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "source_pre_copy": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "source_post_copy": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "snapshot_stable": true,
+        "snapshot_post_link": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_material_process.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_material_process.obj",
+        "bytes": 22165,
+        "sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "source_pre_copy": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "source_post_copy": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "snapshot_stable": true,
+        "snapshot_post_link": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_renderer_application.obj",
+        "bytes": 326318,
+        "sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "source_pre_copy": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "source_post_copy": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "snapshot_stable": true,
+        "snapshot_post_link": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_shader_process.obj",
+        "bytes": 20624,
+        "sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "source_pre_copy": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "source_post_copy": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "snapshot_stable": true,
+        "snapshot_post_link": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_string_process.obj",
+        "bytes": 4089,
+        "sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "source_pre_copy": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "source_post_copy": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "snapshot_stable": true,
+        "snapshot_post_link": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_vertex_declarations.obj",
+        "bytes": 17088,
+        "sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "source_pre_copy": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "source_post_copy": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "snapshot_stable": true,
+        "snapshot_post_link": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_native_vfs_application.obj",
+        "bytes": 52166,
+        "sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "source_pre_copy": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "source_post_copy": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "snapshot_stable": true,
+        "snapshot_post_link": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "path": "local/cc11_scene_convoy_float_support/game_observer_runtime.obj",
+        "bytes": 15845,
+        "sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "source_pre_copy": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "source_post_copy": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "snapshot_stable": true,
+        "snapshot_post_link": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "path": "local/cc11_scene_convoy_float_support/gameplay_loose_ends_2.obj",
+        "bytes": 1742,
+        "sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "source_pre_copy": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "source_post_copy": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "snapshot_stable": true,
+        "snapshot_post_link": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "path": "local/cc11_scene_convoy_float_support/geom_mesh_resource.obj",
+        "bytes": 261693,
+        "sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "source_pre_copy": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "source_post_copy": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "snapshot_stable": true,
+        "snapshot_post_link": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "path": "local/cc11_scene_convoy_float_support/hit_hull_segment.obj",
+        "bytes": 1820,
+        "sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "source_pre_copy": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "source_post_copy": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "snapshot_stable": true,
+        "snapshot_post_link": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_ship_screen.obj",
+        "path": "local/cc11_scene_convoy_float_support/hud_ship_screen.obj",
+        "bytes": 14623,
+        "sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "source_pre_copy": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "source_post_copy": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "snapshot_stable": true,
+        "snapshot_post_link": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_warning_screen.obj",
+        "path": "local/cc11_scene_convoy_float_support/hud_warning_screen.obj",
+        "bytes": 13095,
+        "sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "source_pre_copy": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "source_post_copy": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "snapshot_stable": true,
+        "snapshot_post_link": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_weapon_group_screen.obj",
+        "path": "local/cc11_scene_convoy_float_support/hud_weapon_group_screen.obj",
+        "bytes": 18543,
+        "sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "source_pre_copy": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "source_post_copy": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hull_terrain_contact.obj",
+        "path": "local/cc11_scene_convoy_float_support/hull_terrain_contact.obj",
+        "bytes": 1102762,
+        "sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "source_pre_copy": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "source_post_copy": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "snapshot_stable": true,
+        "snapshot_post_link": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "path": "local/cc11_scene_convoy_float_support/kill_credit.obj",
+        "bytes": 33814,
+        "sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "source_pre_copy": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "source_post_copy": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "snapshot_stable": true,
+        "snapshot_post_link": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/mission_camera.obj",
+        "path": "local/cc11_scene_convoy_float_support/mission_camera.obj",
+        "bytes": 48286,
+        "sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "source_pre_copy": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "source_post_copy": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "snapshot_stable": true,
+        "snapshot_post_link": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "path": "local/cc11_scene_convoy_float_support/narrowphase_unit_part_shape.obj",
+        "bytes": 2064,
+        "sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "source_pre_copy": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "source_post_copy": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "snapshot_stable": true,
+        "snapshot_post_link": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/near_field_probe.obj",
+        "path": "local/cc11_scene_convoy_float_support/near_field_probe.obj",
+        "bytes": 3929,
+        "sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "source_pre_copy": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "source_post_copy": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "snapshot_stable": true,
+        "snapshot_post_link": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "path": "local/cc11_scene_convoy_float_support/part_damage_reachability.obj",
+        "bytes": 4140,
+        "sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "source_pre_copy": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "source_post_copy": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "snapshot_stable": true,
+        "snapshot_post_link": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "path": "local/cc11_scene_convoy_float_support/pilot_command_path.obj",
+        "bytes": 8834,
+        "sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "source_pre_copy": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "source_post_copy": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "snapshot_stable": true,
+        "snapshot_post_link": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_follow_hold.obj",
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_hold.obj",
+        "bytes": 10325,
+        "sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "source_pre_copy": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "source_post_copy": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "snapshot_stable": true,
+        "snapshot_post_link": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_follow_law.obj",
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_law.obj",
+        "bytes": 23046,
+        "sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "source_pre_copy": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "source_post_copy": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "snapshot_stable": true,
+        "snapshot_post_link": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "path": "local/cc11_scene_convoy_float_support/plane_ground_ops.obj",
+        "bytes": 13372,
+        "sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "source_pre_copy": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "source_post_copy": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "snapshot_stable": true,
+        "snapshot_post_link": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_wanderer.obj",
+        "path": "local/cc11_scene_convoy_float_support/plane_wanderer.obj",
+        "bytes": 10014,
+        "sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "source_pre_copy": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "source_post_copy": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "snapshot_stable": true,
+        "snapshot_post_link": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "path": "local/cc11_scene_convoy_float_support/ship_hit_record.obj",
+        "bytes": 7907,
+        "sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "source_pre_copy": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "source_post_copy": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "snapshot_stable": true,
+        "snapshot_post_link": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "path": "local/cc11_scene_convoy_float_support/ship_sub_entity_list.obj",
+        "bytes": 1461,
+        "sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "source_pre_copy": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "source_post_copy": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "snapshot_stable": true,
+        "snapshot_post_link": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_group_slot_swap.obj",
+        "path": "local/cc11_scene_convoy_float_support/unit_group_slot_swap.obj",
+        "bytes": 5218,
+        "sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "source_pre_copy": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "source_post_copy": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "snapshot_stable": true,
+        "snapshot_post_link": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "path": "local/cc11_scene_convoy_float_support/unit_gunnery_pass.obj",
+        "bytes": 11730,
+        "sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "source_pre_copy": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "source_post_copy": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "snapshot_stable": true,
+        "snapshot_post_link": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_instance_step11.obj",
+        "path": "local/cc11_scene_convoy_float_support/unit_instance_step11.obj",
+        "bytes": 43473,
+        "sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "source_pre_copy": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "source_post_copy": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "snapshot_stable": true,
+        "snapshot_post_link": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "path": "local/cc11_scene_convoy_float_support/unit_message_arms.obj",
+        "bytes": 25766,
+        "sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "source_pre_copy": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "source_post_copy": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "snapshot_stable": true,
+        "snapshot_post_link": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "start_speed_pre_post_link_stable": true
+      },
+      {
+        "source": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "path": "local/cc11_scene_convoy_float_support/unit_neighbour_fields.obj",
+        "bytes": 1314,
+        "sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "source_pre_copy": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "source_post_copy": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "snapshot_stable": true,
+        "snapshot_post_link": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "pre_post_link_stable": true,
+        "start_speed_post_link_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "start_speed_pre_post_link_stable": true
+      }
+    ],
+    "response": {
+      "path": "local/cc11_scene_convoy_float_support/link.rsp",
+      "sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "objects": 74,
+      "post_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "start_speed_post_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3"
+    },
+    "count": 77,
+    "cached_project_inputs": "3 libraries+74 uninvoked Game objects; active parser/library/scene-retention TUs fresh; no enlarged record crosses stale active object interface",
+    "pre_link_all_hashes_match": true,
+    "post_link_all_hashes_match": true
+  },
+  "status": "bounded SOURCE adoption complete; focused actual-production-TU compile/run and2direct native rows PASS; primary integration/build/independent rerun pending",
+  "result": "Called StartSpeed retention helper adopts only successful retained F, including diagnostic-free data; existing creation gate/counter and raw/I/non-I/incidental integer/malformed skip/no-reset/ShipYardLaunch policies remain intact.",
+  "coverage": [
+    {
+      "address": "00822C20",
+      "body_inclusive": "00822C20..00824B57",
+      "native_data_span": "00823582..008235AA",
+      "read_setup_spans": [
+        "008234D1..0082353D",
+        "0082356C..0082357F"
+      ],
+      "EDI_zero_anchor": "008234D1",
+      "port": "bounded SOURCE successful nonempty F data adoption; no whole-body/math/holder/ABI port"
+    },
+    {
+      "address": "008F2260",
+      "role": "accepted supporting lookup read in prior convoy audit, not new ownership/reconstruction"
+    },
+    {
+      "address": "008F5A00",
+      "role": "accepted supporting type1 nonempty-F parser data contract; no parser change"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00823590",
+      "native": "008F2260",
+      "function": "00822C20",
+      "contract": "StartSpeed record pointer lookup; null skip00823595/97, type comparison00823599, Int0CVTSI2SS0082359E versus MOVSS008235A5 atrecord+0C, stackstore008235AA"
+    },
+    {
+      "address": "00823576",
+      "native": "008F2260",
+      "function": "00822C20",
+      "contract": "adjacent unchanged ShipYardLaunch byte record lookup/load0082357F; source launch retention not changed"
+    }
+  ],
+  "correction": {
+    "was": "Actual scene emitter requires nonempty diagnostics and reparses StartSpeed despite retained successful F data.",
+    "is": "Called private retain_start_speed helper selects F+has_float owning payload; otherwise preserves original raw predicate/scanners/type mapping/no resets; helper result increments unchanged immediate summary counter within existing created gate.",
+    "evidence": [
+      "native stored-value slice and original missing-record jump",
+      "actual scene producer -> StartSpeedSeedBinding -> runs_ship_base init arm connectedness",
+      "actual production TU probe, cached F without diagnostics, installed F0/sixteenF10 and no-reset/counter source boundaries"
+    ]
+  },
+  "source_connection": {
+    "producer": "SceneReaderBinding::instantiate_entity after group fill-missing/authored overwrite, inside same created.instance nonnull block",
+    "retained_fields": [
+      "start_speed_present",
+      "start_speed_type",
+      "start_speed_int",
+      "start_speed_float"
+    ],
+    "consumer": "GameUnits StartSpeedSeedBinding::find_start_speed_00823590 reads retained fields; create_units calls existing run_start_speed_arm_0082356c for runs_ship_base() before authored command latch",
+    "changes": "only private producer/helper and direct call; no GameUnits/header/API/layout/flags changes",
+    "SOURCE_policy": "Nonempty malformed raw still becomes present and increments counter while failed assignments leave previous fields unchanged; skipped missing/raw-empty leaves old record/counter intact; non-I raw mapping remains Float. No broader native typed/failure claim."
+  },
+  "provider": {
+    "accepted_report": "reports/scene_float_nonempty_payload_cc11.json",
+    "native_storage_support": [
+      "008F5BE0..008F5C91",
+      "008F3770",
+      "008EF170 scalar constructor, not existing-record-copy helper",
+      "008F4F60 clone separate",
+      "008F0700 assignment separate"
+    ],
+    "source": "modernMSVC std::sscanf %f DIRECT into float once at parser; retained consumer skips raw float scanner; incidental integer scanner remains when diagnostics exist",
+    "domain": "successful nonempty explicit F, finite ordinary C-locale decimal-prefix tokens, closed NUL-free/<400h input, compatible ordinary unique-key source group/authored updates",
+    "unverified": [
+      "historicalVS2005 BF7533 CRT numerical/FPstatus/error/extendedST0 parity",
+      "newx87/reference/setter/whole-body/holder behavior",
+      "native allocator/global/fault/reentry/ABI/game"
+    ],
+    "metadata": "SOURCE availability only; private helper boolean is immediate source eligibility, not native persistent parser action"
+  },
+  "unresolved": {
+    "empty_F": "Native guardmiss positivezero temp, existingtype1 updates only on per-key readsuccess, absentrecord3770 can createzero; copied zero is real data. Source lacks declaration context; bareFsemicolon raw/nohas_float old SOURCE skip remains, no new default/replay/reset.",
+    "typing": "duplicate/implicit/conflicting/existing-declaration and enum+28 identity/Lua providers remain separate integration limits",
+    "group": "previous supported capture/overwrite/fill-missing and structural-alias/missing-forward-self-cyclic parent boundaries unchanged; prior008F54F0 stored-body tail limitation retained",
+    "admission": "fixture exercises retained fields and primitive service, not emitter creation/mode/Hidden/difficulty/class/type admission; SOURCE raw policies outside newF domain are preserved, not native compatibility proof"
+  },
+  "fixture": {
+    "source": "local/cc11_scene_start_speed_float_probe.cpp",
+    "compile_command": "cmd.exe /d /c .\\local\\cc11_scene_start_speed_float_probe.cmd",
+    "compile_exit": 0,
+    "run": "local/cc11_scene_start_speed_float_probe.exe",
+    "run_exit": 0,
+    "flags": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy; link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "fresh_active_TUs": [
+      "src/scene_file.cpp",
+      "src/game_hosts_scene_contents.cpp included in probe"
+    ],
+    "existing_active_primitive": "scene_start_speed_value_00823599 on unchanged small primitive struct from pinned core; does not receive enlarged SceneProperty/GameSceneEntityRecord",
+    "pe_machine": "014C",
+    "manifest": {
+      "type": 24,
+      "id": 1,
+      "asInvoker": true
+    },
+    "stdout": [
+      "installed library_files=15 groups=22 Ship_F0=1 prior_SOURCE_bits_match=1",
+      "focused payload_without_diagnostics=1 owning_overwrite=1 prefix=1 signed_zero=1 incidental_integer=1 ShipYardLaunch_untouched=1 eligible_count=7",
+      "SOURCE_only raw_F=1 I=1 non_I_mapping=1 malformed_no_reset=1 missing_raw_empty_skip=1 counter_skip=1 native_empty_F_claim=0",
+      "JM06 authored_entities=96 authored_F10=16 SOURCE_bag_retention=1 emitter_mode_Hidden_admission=0 seed_math_ABI_game_claim=0"
+    ],
+    "emitter_or_GameUnits_adapter_run": false,
+    "seed_math_run": false,
+    "tracked_tests_added": false
+  },
+  "artifacts": [
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 241748,
+      "sha256": "2955E7C4E1033F22FB4E90A63088CB0104380DB88913F0D7AE693020B108A664"
+    },
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 33393,
+      "sha256": "E31C16F2FB9CDB3ABB9FEE72999D1E36207042CD6B07542486D6368A8CA5AA23"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18330,
+      "sha256": "583182041F1A0413F352EEB4EC1342CCDFC6CF50775E53FBCF5E3B80C510B0C0"
+    },
+    {
+      "path": "include/bsp/game_hosts_scene_contents.hpp",
+      "bytes": 40196,
+      "sha256": "3024F4477E0462951D29D612356DD5AA51FC0481D613AC987C7DBA780C12D4FF"
+    },
+    {
+      "path": "src/cruise_speed_setting.cpp",
+      "bytes": 6154,
+      "sha256": "933F39833323FF792EB234FEFAD1997612301D2B93987DF439DF785984CBFF71"
+    },
+    {
+      "path": "include/bsp/cruise_speed_setting.hpp",
+      "bytes": 12108,
+      "sha256": "501AC28E1AEC1E8F859ABC26BE4ABAAEBD97CB20D9EC6526C51FFFC82F95C269"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_probe.cpp",
+      "bytes": 9137,
+      "sha256": "7809CEF95BE06CCEA2BEB16852EB054F20D3B3DDE2D60D1991AB36052254CCAA"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_probe.cmd",
+      "bytes": 1062,
+      "sha256": "E4EA31977BEF88CE2DFC7E6205E77A71BE09927C600B109F46813A3F923E31FF"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_probe.obj",
+      "bytes": 2197735,
+      "sha256": "34DF2C47A50F26ACFDA2B199918358A1A3DD575DFB38506DD437BC7A536C61CD"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_scene.obj",
+      "bytes": 290808,
+      "sha256": "CB1CCB78F319280561D75BD0FADAE58F7E3A73532455BDE86C67CE9A9CFD320E"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_probe.exe",
+      "bytes": 475648,
+      "sha256": "F73DCDD06B1A7C73DE306E1D841E68F915A49759D33A09C82487347580386FB4"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_compile.log",
+      "bytes": 56,
+      "sha256": "8D338B6FA0AC8637909B1B412C83A595784CCEACCE8E2CB10545B25CE6B86A2E"
+    },
+    {
+      "path": "local/cc11_scene_start_speed_float_probe.log",
+      "bytes": 470,
+      "sha256": "4BB34548B5B3DC13CF71B59DB0E0FAC13054C23E6AA85281E51D4FE0E54819EC"
+    },
+    {
+      "path": "docs/SCENE_START_SPEED_FLOAT_PAYLOAD_CC11.md",
+      "bytes": 7228,
+      "sha256": "0352A98E3A76DB2C12ACB670BA9EAE13A98C89B76C3A53214444DEA52E2183DF"
+    }
+  ],
+  "installed_inputs": [
+    {
+      "path": "universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027"
+    },
+    {
+      "path": "universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087"
+    },
+    {
+      "path": "universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E"
+    },
+    {
+      "path": "universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A"
+    },
+    {
+      "path": "universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948"
+    },
+    {
+      "path": "universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607"
+    },
+    {
+      "path": "universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5"
+    },
+    {
+      "path": "universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887"
+    },
+    {
+      "path": "universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915"
+    },
+    {
+      "path": "universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB"
+    },
+    {
+      "path": "universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E"
+    },
+    {
+      "path": "universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41"
+    },
+    {
+      "path": "universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440"
+    },
+    {
+      "path": "universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460"
+    },
+    {
+      "path": "universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90"
+    },
+    {
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C"
+    }
+  ],
+  "installed_effect": {
+    "bounded_files": 16,
+    "library_files": 15,
+    "groups": 22,
+    "Ship_StartSpeed_F0": true,
+    "Ship_prior_SOURCE_bits_match": true,
+    "JM06_authored_entities": 96,
+    "JM06_authored_F10_records": 16,
+    "JM06_authored_class": "DestroyerGen",
+    "JM06_merged_bag_retention": true,
+    "native_or_emitter_admission_claim": false,
+    "discovery": "actual parser/library group methods; no enum/VFS/Lua provider claim"
+  },
+  "qualification": {
+    "reconstructed": "bounded called SOURCE retained-F adoption",
+    "focused_TU_compile": "PASS",
+    "source_fixture": "PASS first run",
+    "full_build": "worker not run; primary integration pending",
+    "runtime": "source helper+primitive read only; no game/emitter/seed run",
+    "native_ABI": "not established",
+    "original_game": "not validated"
+  },
+  "verification": {
+    "native_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/scene_start_speed_float_payload_cc11.json",
+      "exit": 0,
+      "direct_rows": 2,
+      "failed": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "fresh_source_and_probe_artifacts_unchanged_after_compile": true,
+    "cached77_pre_post_link_hashes_stable": true,
+    "installed16_hashes_stable": true,
+    "full_build_game_Ghidra_mutations": false
+  }
+}
