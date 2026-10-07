@@ -193,6 +193,15 @@ bool scene_property_bool(const SceneProperty* prop) noexcept
 
 namespace {
 
+bool generation_property_bool(const SceneProperty* prop) noexcept
+{
+    if (prop != nullptr && equal_insensitive_ascii(prop->type_letter, "B") &&
+        prop->has_boolean) {
+        return prop->boolean_value != 0;
+    }
+    return scene_property_bool(prop);
+}
+
 std::string party_token(const ScenePropertyBlock& bag)
 {
     // 0046C5AC and 0046CB59 read `Party` off the entity bag, not the MultiType
@@ -302,7 +311,7 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
     // 0046CC5B: mode 8 registers the stock and generates, with no area test and
     // no deferred record.
     if (mode == SceneGameMode::InGameGeneration) {
-        if (scene_property_bool(bag.find("GenerateInGame"))) {
+        if (generation_property_bool(bag.find("GenerateInGame"))) {
             host.register_multiplayer_stock(bag, inputs.class_name);
             result.stock_registered = true;
             result.generate = true;
@@ -314,7 +323,7 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
     // 0046CB43: mode 9 does the same but also builds the deferred record, and
     // only falls through to `GenerateInEngineMovie` when the record is missing.
     if (mode == SceneGameMode::EngineMovie) {
-        if (scene_property_bool(bag.find("GenerateInGame"))) {
+        if (generation_property_bool(bag.find("GenerateInGame"))) {
             build_record(inputs, bag, host, result, parent_identity, *local_frame, parent_argument);
             host.register_multiplayer_stock(bag, inputs.class_name);
             result.stock_registered = true;
@@ -324,7 +333,7 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
                 return result;
             }
         }
-        result.generate = scene_property_bool(bag.find("GenerateInEngineMovie"));
+        result.generate = generation_property_bool(bag.find("GenerateInEngineMovie"));
         result.rule = SceneGateRule::EngineMovieFallback;
         return result;
     }
@@ -338,7 +347,7 @@ SceneEntityGateResult scene_entity_generation_gate_0046c550(
 
     // Inside the area the answer is the mode's own boolean out of the MultiType
     // sub-bag, read at +0Ch without a null check.
-    result.generate = scene_property_bool(multi->find(scene_mode_property_key(mode)));
+    result.generate = generation_property_bool(multi->find(scene_mode_property_key(mode)));
     result.rule = SceneGateRule::InsideModeArea;
     return result;
 }
