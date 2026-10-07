@@ -1,4 +1,5 @@
 #include "bsp/native_land_state_entries.hpp"
+#include "bsp/native_land_follow_parameters.hpp"
 #include "bsp/observer_edges.hpp"
 #include <stdexcept>
 
@@ -82,6 +83,11 @@ void NativeLandTaskStateEntryConstructorCalls::enter_state_04(const void* state)
     else if (state == task_.follow_500)
         enter_native_land_follow_009bed80(follow_entry_fields(state), *this);
     else enter_native_land_park_009b21a0(park_entry_fields(state));
+}
+
+void NativeLandTaskParameterCopyConstructorCalls::copy_follow_parameters_009be150(
+    void* destination, const void* source) {
+    (void)copy_native_land_follow_parameters_009be150(destination, nullptr, source);
 }
 
 } // namespace bsp
