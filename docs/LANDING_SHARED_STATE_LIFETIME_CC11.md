@@ -155,3 +155,7 @@ before D056D0 stamp. Three support libraries were frozen from the current
 input/support/artifact manifest. Probe source/executable are the ignored
 `local/cc11_land_shared_state_lifetime_probe.cpp/.exe`. Root owns CMake source
 registration, full main build, annotations, ledger additions and integration.
+
+## Primary integration
+
+Main `d670125fc8e3c969d6c111168f37fd8f645e5468` passed the full Win32 build and all three existing CTests. Root compiled3fresh TUs including the actual observer provider. All25current Source/provider/header/fixture inputs (19compiler includes),3current libraries and original PE stayed stable. The manifested independent fixture reproduced126checks. All754native bytes match disk/live and five380B original body literals match; the374B indirect callers remain Source/byte evidence. All21direct rows passed and two virtual sites remain excluded. Emitted free/requested/data/capacity and shared free/profile ordering were inspected. Existing90h ledger fields are retained, with a nested24B provider record. The PE32 asInvoker manifest was verified. All runtime/ABI/game qualifications above remain. No tracked tests were added.

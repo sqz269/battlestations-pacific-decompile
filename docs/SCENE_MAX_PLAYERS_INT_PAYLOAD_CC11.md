@@ -86,3 +86,7 @@ Exact recipes and hashes are in the ignored artifact manifest and JSON report.
 Primary main full build/CTest and independent verification remain integration
 steps. No original-game/runtime, whole header applier, participant array safety,
 formal ABI or native allocator/EH proof is claimed.
+
+## Primary integration
+
+Main `d670125fc8e3c969d6c111168f37fd8f645e5468` passed the full Win32 build and all three existing CTests. Root independently compiled3actual parser/public-reader/probe TUs against the current core, verified23current Source/header/fixture inputs (20compiler includes),3installed files,1current core and the PE before/after linking, and reproduced all owning/raw/default/count checks. The43native bytes matched disk/live and the direct Find row passed. Primary appended the observed ECXbag/EDXrecord/oneDWORDstack/RET4 correction, preserving historical evidence and leaving stackarg meaning/fullEH ABI unclaimed. The PE32 asInvoker manifest was verified. All runtime/ABI/game qualifications above remain. No tracked tests were added.

@@ -20,7 +20,7 @@
     "cc11_scene_typed_int_payload",
     "existing SceneRecordSlotTable public reader and Source Mission count path"
   ],
-  "status": "bounded MaxPlayerNum owning-I consumer adoption; fresh strict compile/link/actual-parser public-reader fixture PASS; primary integration/full main build/CTest pending",
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3CTests passed; native ABI/game unbound",
   "correction": {
     "was": "The actually called MaxPlayerNum read ignored successful owning I storage and reparsed diagnostic tokens",
     "is": "One called private compatible I/i plus has_integer reader prefers integer_value; otherwise exact unchanged public scene_property_int32 raw fallback",
@@ -387,5 +387,64 @@
     "fixture_tested": "Actual parser/public reader/owning copy/count helper and3 installed explicit I8 witnesses PASS",
     "ABI_compatible": false,
     "game_validated": false
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T16:42:30.506594+00:00",
+    "worker_revision": "34bfd0aef7923e8506549d6cea52031475bb17a1",
+    "integrated_revision": "d670125fc8e3c969d6c111168f37fd8f645e5468",
+    "full_main_build_revision": "d670125fc8e3c969d6c111168f37fd8f645e5468",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_shared_max_integrated_build.log",
+    "game_executable_sha256": "4b02185af2d092ec1992ecf684318b2c1e918b90ded5438d3e6dac7e23ac581d",
+    "probe_recipe": "local/cc11_max_players_root.cmd",
+    "probe_log": "local/cc11_max_players_root_compile.log",
+    "probe_sha256": "611062440e7a075bf64e4fafe0ff58bf660e88f1dca8aea97d8edb5ac44cbd01",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "fresh_actual_translation_units": 3,
+    "stable_current_Source_provider_header_fixture_inputs": 23,
+    "actual_compiler_includes": 20,
+    "stable_installed_inputs": 3,
+    "stable_current_libraries": 1,
+    "native_bytes": [
+      {
+        "address": "004f2136",
+        "end_exclusive": "004f2161",
+        "bytes": 43,
+        "sha256": "350a94c53f61420d6b069608c1373437d9eda4dde73ba1492075b86d2516e9a9",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "actual_installed_I8_witnesses": 3,
+    "actual_public_reader_executed": true,
+    "actual_count_helper_executed": true,
+    "native_direct_rows_checked": 1,
+    "native_direct_rows_failed": 0,
+    "whole_Mission_VFS_frame_participant_copy_executed": false,
+    "primary_register_boundary": {
+      "ECX": "property bag",
+      "EDX": "scene record",
+      "stack": "one pushed DWORD",
+      "returns": [
+        "004f23e0 RET4",
+        "004f2404 RET4"
+      ],
+      "semantic_stack_argument_claimed": false,
+      "full_native_EH_ABI_claimed": false
+    },
+    "primary_ABI_receipts": [
+      "local/cc11_max_players_abi_entry.txt",
+      "local/cc11_max_players_abi_returns.txt",
+      "local/cc11_max_players_abi_caller.txt"
+    ],
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T164231Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "004f1d70"
+    ]
   }
 }
