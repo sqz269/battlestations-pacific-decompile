@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:19:11.455406+00:00",
+  "updated_utc": "2026-10-07T08:21:03.226262+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -778,5 +778,45 @@
       "006c0b50"
     ],
     "canonical_storage_and_observer_lifetimes_unbound": true
+  },
+  "scene_typed_vectors_handoff": {
+    "id": "cc11_scene_typed_vectors",
+    "done": false,
+    "state": "approved_explicit_v3_payload_and_actual_path_consumer",
+    "worker": "director_props",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "008f5a00",
+      "008f3690",
+      "007b34f0"
+    ],
+    "output_files": [
+      "src/scene_file.cpp",
+      "include/bsp/scene_file.hpp",
+      "src/game_hosts_scene_contents.cpp",
+      "tests/math_tests.cpp",
+      "docs/SCENE_TYPED_VECTORS_CC11.md",
+      "reports/scene_typed_vectors_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_scene_typed_strings",
+      "cc11_scene_group_loading"
+    ],
+    "reuses_worker_from": "cc11_scene_typed_strings",
+    "contract": "Bind explicitV3 authored branch in actualparser to owning3binary32 lanes pluspresentflag, preservingrawtokens. Present-empty immediate-semicolonV3 storespositivezero3lanes; missingproperty remainsmissing. Actualretain_path_points consumespayload directly, sourceauthoredrawbags may retain explicitlegacyfallback. Groupclone/overwrite/multi-parent ordering carriespayload. Primary verifiedfullbranch008F6276..631E,008F3690 type7/lane DWORDstores,scalar guard008D8F40 andreader008D9B40 useactualBF7533 sscanf%f. SourcecurrentMSVC sscanf%f directfloat acceptsboundedfiniteC-locale ordinarydecimal-prefix inputs; historicalVS2005 CRT numeric/FPstatus/error parity is UNVERIFIED, not an actualBF7533 binding. No strtodreparse fornative-derivedpayload; no sharedhelperrewrite/enum/Lua/fakeproperty/provider/default. Emptybranch performsnoscalarreads. Unsupportedpartialtriple/NaN/overflow/NUL/overlong/locale/EH/fault/ABI/game explicit. One existingfixture extension + oneignoredactualTU installedinventory/consumerprobe; no broadtestframework. Worker implementsfixedprimaryrecovereddata/store contract, no independentnewx87/ABIrecovery.",
+    "worker_ghidra_read_only": true,
+    "installed_v3_assignments": 1199,
+    "installed_present_empty_vectors": 3,
+    "primary_scalar_review": "Guard%f peeks; reader%f consumesONLYsuccess and returnsbinary32viaST0;V3branchpositivezerobeforeguard/threeunconditionalreadsiffirstconverts/laneDWORDcopy",
+    "historical_crt_conversion_parity_verified": false
+  },
+  "scene_enum_dependency_boundary": {
+    "declaration_identity_28_unbound": true,
+    "parser_before_group_capture_context_unbound": true,
+    "actual_consumer_late_resolution_requires_adoption": true,
+    "clone_copies_declaration_and_value": true,
+    "overwrite_preserves_destination_declaration": true,
+    "lua_table_import_008f2f70_unbound": true
   }
 }
