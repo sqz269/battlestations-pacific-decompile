@@ -32,6 +32,11 @@ void destroy_native_land_follow_observer_006cdd70(
 
 // Complete scalar006CDDF0..006CDE0E: original stack DWORD flags, low BYTE bit0,
 // EAX=original component identity, RET4. Test AFTER ordinary destruction.
+// Also the complete normal SOURCE provider for active CF89B4 scalar006CEEB0
+// ..006CEECE: its 30 bytes match after ONLY the two rel32 CALL operands are
+// normalized, and both actual targets remain 006CDD70/BF65AC. No new wrapper
+// or ABI bridge: incoming COMPONENT identity is preserved, with no root+18
+// adjustment or routing to the distinct whole-root scalar009C2A60.
 // Flag1 requires a separate actual CRT allocation of the component; NEVER
 // self-free the interior callback+18 in an allocated/embedded Follow state.
 // Return after flag1 is dangling; do not dereference or destroy again.

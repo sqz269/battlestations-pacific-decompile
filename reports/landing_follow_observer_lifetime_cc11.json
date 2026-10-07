@@ -555,5 +555,128 @@
       "006cdd70",
       "006cddf0"
     ]
+  },
+  "active_scalar_reuse_006ceeb0": {
+    "packet": "cc11_land_follow_active_scalar_reuse",
+    "status": "complete native normal-contract mapping to unchanged existing Source scalar provider; comments and evidence only",
+    "native_entry": "006ceeb0",
+    "native_end_exclusive": "006ceece",
+    "native_bytes": 30,
+    "listed_instructions": 11,
+    "call_gaps": 0,
+    "preserved_native_library_name": "CG_scalar_deleting_dtor_006ceeb0",
+    "original_abi_evidence": {
+      "ecx": "actual incoming component identity",
+      "stack": "DWORD flags; test low BYTE bit0 after complete ordinary helper",
+      "eax": "captured incoming component identity",
+      "return": "RET4",
+      "new_Source_interface_is_not_original_binary_ABI": true
+    },
+    "whole_body_disk_live_sha256": "da8c55e3384ec9944ea956271ae2f7e73f36d9128661128c07aca5a89f669e5a",
+    "existing_native_scalar_reference": {
+      "entry": "006cddf0",
+      "end_exclusive": "006cde0e",
+      "bytes": 30,
+      "whole_body_disk_live_sha256": "6434990cad4b66401d7d38ad7084a45c6adad43c549d0b532213b2c96d6410ac"
+    },
+    "equivalence": {
+      "only_rel32_operand_offsets": [
+        [
+          4,
+          8
+        ],
+        [
+          17,
+          21
+        ]
+      ],
+      "equal_normalized_30_bytes": true,
+      "normalized_sha256": "b40481af87cc4bcd23da7d559dd5ce54f616e2f51cadc2008081b4c4e057f65d",
+      "all_nonoperand_bytes_unchanged": true,
+      "both_actual_call_targets": [
+        "006cdd70",
+        "00bf65ac"
+      ]
+    },
+    "native_calls": [
+      {
+        "function": "006ceeb0",
+        "address": "006ceeb3",
+        "native": "006cdd70",
+        "operation": "complete ordinary component cleanup before flags test"
+      },
+      {
+        "function": "006ceeb0",
+        "address": "006ceec0",
+        "native": "00bf65ac",
+        "operation": "conditional actual CRT component free"
+      }
+    ],
+    "existing_reference_call_sites": [
+      "006cddf3",
+      "006cde00"
+    ],
+    "source_provider": "scalar_delete_native_land_follow_observer_006cddf0",
+    "source_status": "existing complete conditional ordinary Source provider reused without code/interface/ABI change",
+    "header_cpp_changes": "contract comments only",
+    "profile_evidence": {
+      "active_raw_profile": "00cf89b4",
+      "active_slot0": "006ceeb0",
+      "ordinary_cleanup_raw_profile": "00cf8900",
+      "ordinary_slot0": "006cddf0",
+      "ctor_009c2980_store_site": "009c29cf",
+      "ctor_store_bytes_hex": "c7 46 18 b4 89 cf 00",
+      "ctor_field": "actual same Follow root+18h callback",
+      "reachability_only": true,
+      "raw_image_profiles_callable_in_Source": false
+    },
+    "identity_and_free_domain": {
+      "incoming_and_returned_identity": "actual component, including borrowed callback18 within Follow",
+      "root_adjustment": false,
+      "route_to_whole_root_scalar_009c2a60": false,
+      "flags0": "complete component cleanup and captured component return",
+      "flags1": "only separately actual same-CRT allocated component; free same component and return dangling numeric identity",
+      "embedded_callback18_flags1_admitted": false,
+      "whole_Follow_root_free_or_return_claimed": false,
+      "post_free_dereference_admitted": false
+    },
+    "root_supported_flow_repair": {
+      "report": "reports/cc11_follow_active_scalar_flow_repair.json",
+      "gap_start": "006ceec5",
+      "gap_end_exclusive": "006ceec8",
+      "bytes_hex": "83 c4 04",
+      "operation": "returning free continuation ADD ESP,4; original body bounds unchanged",
+      "worker_ghidra_mutations": false
+    },
+    "verification": {
+      "receipt": "local/cc11_land_follow_active_scalar_reuse_receipt.json",
+      "original_binary_sha256_before": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "original_binary_sha256_after": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "original_binary_unchanged": true,
+      "live_queries_verified_project": "C:/Users/sqz269/bsp.gpr",
+      "live_queries_verified_program": "/battlestationspacific.exe",
+      "comment_stripped_Source_tokens_unchanged": true,
+      "historical_report_fields_preserved": true,
+      "new_compile_or_probe_execution": false,
+      "new_executed_Source_checks": 0,
+      "historical_43_check_fixture_rerun": false,
+      "historical_support_hashes_reused_as_new_execution_proof": false,
+      "earlier_MoveTo_and_Follow_callback_artifacts_modified": false,
+      "native_direct_rows_checked": 2,
+      "native_direct_rows_failed": 0,
+      "git_diff_check_passed": true
+    },
+    "required_unbound_contexts": [
+      "real NativeObserverLifetime manager/publications/lock/dispatch and current deletion providers",
+      "stable coherent same actual component and FIRST endpoint identities/lifetimes",
+      "ordinary successful returning helper/free services; standalone same-CRT allocation only for flags1",
+      "full Follow constructor/arena/published lifetime",
+      "private EH/fault/concurrency/structural reentry",
+      "image class profile and original register ABI",
+      "whole approach/task death lifetime and gameplay"
+    ],
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false
   }
 }
