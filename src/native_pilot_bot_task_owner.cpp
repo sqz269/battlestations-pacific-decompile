@@ -45,6 +45,39 @@ void append_native_pilot_bot_active_task_0099a020(
     ++active.count;                     //0099A08E
 }
 
+void prepend_native_pilot_bot_active_task_00999f50(
+    NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
+    NativePilotBotTaskHandle task) {
+    auto& active = owner.active_58_5c_60;
+    if (active.count == active.capacity) {
+        // This is not the append growth helper: capacity2*n+1, incoming first,
+        // and count-before-base publication are distinct native observations.
+        active.capacity = active.capacity * 2u + 1u; //00999F61, before allocate
+        const NativePilotBotTaskArrayAllocation request{
+            active.capacity, active.capacity * 4u,
+            static_cast<std::size_t>(active.capacity) * sizeof(NativePilotBotTaskHandle)};
+        auto* replacement = calls.allocate_task_array_00bf55be(request); //00999F6A
+        replacement[0] = task; //00999F78/7C, incoming stack task before old prefix
+        for (std::uint32_t i = 0; i < active.count; ++i) {
+            replacement[i + 1u] = active.entries[i]; //00999F94..9C
+        }
+        if (active.entries != nullptr) calls.free_task_array_00bf6989(active.entries); //00999FB2
+        ++active.count;                //00999FBA, after ADD ESP4 at00999FB7
+        active.entries = replacement; //00999FBE, AFTER count publication
+    } else {
+        // REQUIRES count>0 in this valid spare-capacity domain. Native00999FD0
+        // reads the old tail first, and00999FD8 underflows for count0; no repair.
+        active.entries[active.count] = active.entries[active.count - 1u]; //00999FD0/D3
+        std::uint32_t index = active.count - 1u;                         //00999FD5/D8
+        while (index != 0) {
+            active.entries[index] = active.entries[index - 1u]; //00999FE9/EC
+            --index;
+        }
+        active.entries[0] = task; //00999FF3/F7, incoming stack task written last
+        ++active.count;           //00999FF9
+    }
+}
+
 void retire_native_pilot_bot_leading_tasks_0099a0a0(
     NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
     NativePilotBotActiveRetirementCalls& task_calls) {
