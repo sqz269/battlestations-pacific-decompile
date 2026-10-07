@@ -13833,6 +13833,56 @@
       "actual_singleton_controller_arena_bound": false,
       "abi_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc11_scene_typed_strings",
+      "done": false,
+      "state": "approved_actual_parser_quoted_string_binding_in_progress",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f5a00",
+        "008efb00",
+        "008ee670"
+      ],
+      "output_files": [
+        "src/scene_file.cpp",
+        "include/bsp/scene_file.hpp",
+        "tests/math_tests.cpp",
+        "docs/SCENE_TYPED_STRINGS_CC11.md",
+        "reports/scene_typed_strings_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_group_loading"
+      ],
+      "reuses_worker_from": "cc11_scene_group_loading",
+      "contract": "Bind explicit quoted S runs directly in actual parser: per-fragment exact native escape decoder, concat/no separator, one owning string; quoted punctuation data, following key intact. Lexer remains raw. NUL/trailing solitary slash/verified400h buffer admission explicit; native scratch/ownership/EH/fault/ABI external. Validate one actual installed JM06StageScript doubled-to-single slash change through existing consumer/path; no broad enum/ref/unquoted/implicit/VFS/class policy rewrite."
+    },
+    {
+      "id": "cc11_land_command_validity",
+      "done": false,
+      "state": "approved_complete_conditional_command_validity_waiting_primary_descriptor_handoff",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "009b34d0",
+        "009b3560",
+        "007eedc0"
+      ],
+      "output_files": [
+        "src/plane_squadron_host.cpp",
+        "include/bsp/plane_squadron_host.hpp",
+        "docs/PILOT_BOT_LAND_COMMAND_VALIDITY_CC11.md",
+        "reports/pilot_bot_land_command_validity_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_cruise_profile",
+        "cc11_land_active_retirement"
+      ],
+      "reuses_worker_from": "cc11_land_cruise_profile",
+      "contract": "Complete actual retained-cache land slot40 result2/1/0 and paired approach validation/clear2C/30/34 caller. Repeated fresh actual174 token calls, actual178 descriptor copy and mutable521EA0 resolution,424/428; required live block7C/owner5D/admission services. Primary recovered/defined full19instruction007EEDC0: squad348->71EB60; WORD0/2,DWORD4 then four pointerFLD/FSTP floats8/C/10/14; EAX output/RET4. Worker implements fixed recovered numeric-copy contract only, no new ABI/arithmetic recovery. No Boolean/census/empty descriptor/defaultSP/list/arena/lifetime/runtime substitution."
     }
   ],
   "snapshot_after_analysis": {

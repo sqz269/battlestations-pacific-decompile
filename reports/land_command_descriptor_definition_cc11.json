@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007eedc0",
+    "end_address": "007eee00"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007eedc0",
+    "end_address": "007eedff",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007eedc0",
+    "disassemble_first": false,
+    "name": "BSP_PlaneSquadron_CopyCurrentCommandDescriptor"
+   },
+   "result": {
+    "success": true,
+    "address": "007eedc0",
+    "function_name": "BSP_PlaneSquadron_CopyCurrentCommandDescriptor",
+    "entry_point": "007eedc0",
+    "body_size": 64,
+    "message": "Function created successfully at 007eedc0",
+    "warnings": [
+     "Function name 'BSP_PlaneSquadron_CopyCurrentCommandDescriptor' \u2014 main part 'PlaneSquadron_CopyCurrentCommandDescriptor' is not PascalCase. Expected: PlanesquadronCopycurrentcommanddescriptor",
+     "Function name 'BSP_PlaneSquadron_CopyCurrentCommandDescriptor' \u2014 main part 'PlaneSquadron_CopyCurrentCommandDescriptor' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneSquadron_CopyCurrentCommandDescriptor' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007eedc0",
+   "end": "007eee00",
+   "name": "BSP_PlaneSquadron_CopyCurrentCommandDescriptor",
+   "after": "Function: BSP_PlaneSquadron_CopyCurrentCommandDescriptor at 007eedc0\nSignature: undefined BSP_PlaneSquadron_CopyCurrentCommandDescriptor(void)\nEntry: 007eedc0\nBody: 007eedc0 - 007eedff"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
