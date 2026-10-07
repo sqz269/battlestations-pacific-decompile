@@ -1,0 +1,328 @@
+{
+  "packet": "cc11_land_moveto_observer_callback",
+  "base_commit": "b02e3154636139d964b1e32f0f91b710dd71985e",
+  "source_status": "complete_conditional_009BDEB0_and_opt_in_actual_callback18_delivery_access",
+  "original_abi_status": "new_SOURCE_view/provider/context_API; original30B_and_known3B_getters_fixture_executed_with_two_ORIGINAL_table_data_relocations_only",
+  "runtime_status": "actual_getter/delegates_world_ownership_manager_lifetimes_profiles_privateEH_classABI_game_unbound",
+  "owned_files": [
+    "include/bsp/native_land_moveto_observer_callback.hpp",
+    "src/native_land_moveto_observer_callback.cpp",
+    "docs/LANDING_MOVETO_OBSERVER_CALLBACK_CC11.md",
+    "reports/landing_moveto_observer_callback_cc11.json"
+  ],
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "read_only_bsp_CLI_verified_client_each_batch",
+    "worker_mutations": false
+  },
+  "native_bodies": [
+    {
+      "address": "009BDEB0",
+      "end_exclusive": "009BDECE",
+      "bytes": 30,
+      "instructions": 11,
+      "coverage": "complete_ordinary_body",
+      "disk_live_fixture_literal_equal": true,
+      "sha256": "9bf5918e0baa257210dffb98d20fea0396c2b9e68e542ebb5c2fd6bcc3475045",
+      "original_abi": "ECX callback18; stacked original FIRST; RET4; no defined return contract",
+      "source": "native_land_moveto_observer_callback_009bdeb0",
+      "native_calls": [
+        {
+          "address": "009BDEBC",
+          "native": "FIRST+vtable04",
+          "function": "009BDEB0",
+          "kind": "indirect",
+          "contract": "capture actual FIRST+0 table then+4 target; execute complete selected provider once; returned EAX identity",
+          "resolution": "required actual provider; known42B970/522E90 admitted only actual proved profile domains; no universal getter"
+        }
+      ]
+    }
+  ],
+  "native_order": [
+    {
+      "site": "009BDEB3",
+      "operation": "load original FIRST from stacked argument"
+    },
+    {
+      "site": "009BDEB7/009BDEB9",
+      "operation": "capture actual FIRST primarytable and slot04 target"
+    },
+    {
+      "site": "009BDEBC",
+      "operation": "indirect actual getter call"
+    },
+    {
+      "site": "009BDEBE",
+      "operation": "compare returned EAX with FRESH callback14/root2C AFTER getter"
+    },
+    {
+      "site": "009BDEC3",
+      "operation": "zero root2C iff equal including NULL==NULL"
+    },
+    {
+      "site": "009BDECB",
+      "operation": "RET4"
+    }
+  ],
+  "profiles": {
+    "actual_callback_identity": "D20AD4; ctor9C2AC0 producer; D20AD8 points9BDEB0",
+    "verified_callback_words": [
+      "009C2B70",
+      "009BDEB0",
+      "0042B120",
+      "0042B130",
+      "0042B140",
+      "006953C0"
+    ],
+    "raw_production_tables_callable": false,
+    "known_FIRST_identity_profiles": [
+      "D19120",
+      "D192E0"
+    ],
+    "known_FIRST_null_profile": "D23084",
+    "source_routes": "capturedD20AD4 slot04 -> complete SAMEroot body; all other04 and08 required complete actual delegates",
+    "xref_cells": [
+      "00D201CC",
+      "00D20AD8",
+      "00D20B10"
+    ],
+    "direct_callers_reported": 0
+  },
+  "reused_native_getters": [
+    {
+      "entry": "0042B970",
+      "end_exclusive": "0042B973",
+      "bytes": 3,
+      "body": "8BC1C3",
+      "contract": "actual ECX identity ->EAX; RET",
+      "new_reconstruction": false
+    },
+    {
+      "entry": "00522E90",
+      "end_exclusive": "00522E93",
+      "bytes": 3,
+      "body": "33C0C3",
+      "contract": "zero ->EAX; RET",
+      "new_reconstruction": false
+    }
+  ],
+  "storage": {
+    "actual_root_backing_minimum": 60,
+    "constructor_view": "existing NativeLandMoveToConstructorView",
+    "callback": "actual sameROOT+18 NativeObserverOwnerStorage",
+    "watched_cell": "volatile actualROOT+2C; callback+14; sampled after complete getter",
+    "first": "original observed endpoint owner-prefix identity delivered by real dispatcher; NEVER edge or translated semantic unit",
+    "pure_alias_mapping": "actual callback18 ->same>=3Chroot/aliases; no represented reads/callback/nativecall/alloc/default/cache",
+    "source_admission_guard": "actual callback/ref and root-minus18 identity mismatch throws Source error; not native fallback",
+    "no_implicit_unregister_or_owner_free": true
+  },
+  "natural_source_consumers": {
+    "registration": "complete009C2AC0 ->00694A60 with SAME callback18/root2C",
+    "delivery": "existing notify_observer_slot04_00696330 ->dispatch_observer_edges_00695f90 ->invoke_observer_slot04_00693550 ->new opt-in callback_access",
+    "cleanup": "existing complete007B65E0 ->00695870 ->007B45F0; retains registrations until actual cleanup"
+  },
+  "required_bindings": [
+    "PURE callback18/root field mapping",
+    "COMPLETE actual FIRST vtable04 getter captured target/effects",
+    "COMPLETE other callback04 delegates",
+    "COMPLETE all callback08 delegates",
+    "actual NativeObserverLifetime manager/global/recursive lock/CRT/list/dispatch storage and live owners"
+  ],
+  "validation": {
+    "strict_compile": "PASS /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX; eight fresh TUs including probe",
+    "fresh_tus": [
+      "src/native_land_moveto_observer_callback.cpp",
+      "src/native_land_moveto_constructor.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "src/observer_event_producer.cpp",
+      "src/observer_dispatch_schedule.cpp",
+      "local/cc11_land_moveto_observer_callback_probe.cpp"
+    ],
+    "fresh_tu_count": 8,
+    "source_header_count": 25,
+    "immutable_input_count": 37,
+    "inputs_pre_post_equal": true,
+    "pinned_support_build": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "support_freeze": [
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73302410,
+          "sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98"
+        },
+        "copy": {
+          "path": "local\\cc11_land_moveto_observer_callback_bsp_core.lib",
+          "bytes": 73302410,
+          "sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98"
+        },
+        "before_copy_after_equal": true
+      },
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        "copy": {
+          "path": "local\\cc11_land_moveto_observer_callback_bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        "before_copy_after_equal": true
+      },
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "copy": {
+          "path": "local\\cc11_land_moveto_observer_callback_bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "before_copy_after_equal": true
+      }
+    ],
+    "source_and_original_fixture_checks": 85,
+    "fixture_exit_code": 0,
+    "exe": {
+      "path": "local\\cc11_land_moveto_observer_callback_probe.exe",
+      "bytes": 257024,
+      "sha256": "3ea903143d86f56782ed1d98df8360cd7ccea61d03b704632959579441ae37e1"
+    },
+    "embedded_manifest": {
+      "machine": "0x14c",
+      "preferred_image_base": "0x20000000",
+      "actual_GetModuleHandle_base": "20000000 (fixture checked)",
+      "dynamicbase": false,
+      "embedded_manifest": true,
+      "requested_execution_level": {
+        "level": "asInvoker",
+        "uiAccess": "false"
+      }
+    },
+    "coff": "providercall0000000A ->fresh watchedalias00000011/CMP00000014 ->conditional zero0000001B; new Source encoding",
+    "call_verifier": {
+      "direct_rows": 0,
+      "failed_rows": 0,
+      "explicit_indirect_unresolved_rows": 1
+    },
+    "diff_check": "PASS",
+    "worker_full_build": false,
+    "worker_game_run": false,
+    "manifest": "local/cc11_land_moveto_observer_callback_manifest.json",
+    "fixture_source": "local/cc11_land_moveto_observer_callback_probe.cpp"
+  },
+  "fixture": {
+    "one_connected_sequence_two_modes": [
+      "SOURCE opt-in delivery",
+      "unchanged complete original30B caller delivery"
+    ],
+    "actual_Source_operations": [
+      "same-root ctor",
+      "realregister/find_pair/canonicaledgeallocation",
+      "real696330/695F90/693550 notification",
+      "same-root genuinecleanup",
+      "real pending-slot suppression and saved-span/OSrecursive-lock restoration"
+    ],
+    "scenario": [
+      "mismatch B leaves watchedA",
+      "matchA clearsONLYwatched field",
+      "proved null getter comparesNULL==NULL",
+      "all3 edges retained until eventualcleanup",
+      "cleanup removes allpairs and nulls pending slot"
+    ],
+    "profile_domains_exercised": [
+      "D19120 for distinct A/B actual FIRST addresses",
+      "D23084 for null FIRST"
+    ],
+    "D192E0": "byte-pinned evidence only, not executed fixture profile",
+    "prepublished_source_lock": true,
+    "actual_manager_lookup_exercised": false,
+    "structural_reentry_observed": false,
+    "whole_native_game_constructed": false,
+    "original_code": {
+      "source_then_original_same_connected_case": true,
+      "controlled_source_world": true,
+      "original_caller_instruction_relocations": 0,
+      "original_getter_instruction_relocations": 0,
+      "original_table_data_relocations": 2,
+      "data_relocations": [
+        "copiedD19120+4 -> copied ORIGINAL42B970",
+        "copiedD23084+4 -> copied ORIGINAL522E90"
+      ],
+      "occupied_original_interval": "00420000 MEM_MAPPED; VirtualAlloc ERROR_INVALID_ADDRESS487; existing allocation untouched",
+      "actual_probe_module_base": "20000000",
+      "getters_executed": [
+        "0042B970..0042B973",
+        "00522E90..00522E93"
+      ],
+      "actual_profile_domains_exercised": [
+        "D19120 identity (distinct FIRST A/B)",
+        "D23084 null FIRST"
+      ],
+      "D192E0": "disk/live pinned table evidence only; not executed fixture domain"
+    },
+    "native_page_receipts": [
+      {
+        "start": "00d19000",
+        "end_exclusive": "00d1a000",
+        "bytes": 4096,
+        "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00d19000-length-4096-112704.txt"
+      },
+      {
+        "start": "00d23000",
+        "end_exclusive": "00d24000",
+        "bytes": 4096,
+        "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00d23000-length-4096-112755.txt"
+      },
+      {
+        "start": "0042b000",
+        "end_exclusive": "0042c000",
+        "bytes": 4096,
+        "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-0042b000-length-4096-112755.txt"
+      },
+      {
+        "start": "00522000",
+        "end_exclusive": "00523000",
+        "bytes": 4096,
+        "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00522000-length-4096-112756.txt"
+      },
+      {
+        "start": "009bdeb0",
+        "end_exclusive": "009bdece",
+        "bytes": 30,
+        "sha256": "9bf5918e0baa257210dffb98d20fea0396c2b9e68e542ebb5c2fd6bcc3475045",
+        "disk_live": "MATCH",
+        "live_spill": null
+      }
+    ],
+    "original_code_no_SOURCE_thunks": true,
+    "whole_original_page_readonly_RX_protection_checked": true,
+    "original_caller_code_relocations": 0,
+    "original_getter_code_relocations": 0,
+    "original_table_data_relocations": 2,
+    "occupied_memory_modified_or_freed": false,
+    "historical_loader_or_whole_class_ABI_proof": false
+  },
+  "limits": [
+    "stable live actual root/FIRST/callback/observer storage required through getter and delivery",
+    "normal coherent lists/current publications, successful sameCRT allocation/free and ordinary selected-body returns only",
+    "other callback/getter profiles and complete producer/world/controller bindings remain required",
+    "no concurrency/structural reentry/lifetime invalidation/fault/privateEH/invalid allocation behavior admission",
+    "raw production profile tokens remain uncallable despite relocated original fixture",
+    "no whole9B2C80/approach/task arena/death/cache/plane404 lifetime/native class ABI/game claim"
+  ]
+}
