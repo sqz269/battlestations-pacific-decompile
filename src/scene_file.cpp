@@ -304,6 +304,17 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.values.push_back(cur.read_token());
             }
         }
+        // 008F5D8A/5DA1 recognize true/false, then store type-3 byte +0Ch.
+        // Keep the raw scan and admit only one literal with a closed statement;
+        // native existing-record/empty assignment needs declaration context.
+        if (equal_insensitive(prop.type_letter, "B") && cur.at(";")
+            && prop.values.size() == 1) {
+            const bool is_true = equal_insensitive(prop.values.front(), "true");
+            if (is_true || equal_insensitive(prop.values.front(), "false")) {
+                prop.boolean_value = static_cast<std::uint8_t>(is_true ? 1 : 0);
+                prop.has_boolean = true;
+            }
+        }
         cur.expect(";");
         block.values.push_back(std::move(prop));
     }

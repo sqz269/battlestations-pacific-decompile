@@ -1032,7 +1032,7 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag,
         // other shape leaves the flag false.
         const SceneProperty* fake = sub->find("FakeAllocated");
         row.fake_allocated = fake != nullptr && equal_insensitive(fake->type_letter, "B")
-            && scene_property_bool(fake);
+            && (fake->has_boolean ? fake->boolean_value != 0 : scene_property_bool(fake));
         authored.slots.push_back(row);
     }
     return authored;
