@@ -15279,8 +15279,8 @@
     },
     {
       "id": "cc11_health_target_operations",
-      "done": false,
-      "state": "approved complete target/history leaf implementation and original-body comparison",
+      "done": true,
+      "state": "complete3leaves integrated independent151wholeoriginalcases305checks/fullWin32all3CTests passed; timing producerdomain ABI game qualified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -15298,7 +15298,83 @@
       "depends_on": [
         "cc11_health_target_lifetime"
       ],
-      "contract": "Complete22/70/68-byte target leaves: unsigned-index actualmask word clear; realD54 signed-sample append preserving mixedx87/SSE MXCSR/currentfield order; fresh FLD/FSTP reset and finalFILD/count/index/FMUL/store. Reuse constructor-owned target/history. No timing7833E0/derived lifetime/runtime/game claim. Original full-body comparison with onlymaskabsoluteoperand relocation and zerohistorybody relocations; no tracked tests."
+      "contract": "Complete22/70/68-byte target leaves: unsigned-index actualmask word clear; realD54 signed-sample append preserving mixedx87/SSE MXCSR/currentfield order; fresh FLD/FSTP reset and finalFILD/count/index/FMUL/store. Reuse constructor-owned target/history. No timing7833E0/derived lifetime/runtime/game claim. Original full-body comparison with onlymaskabsoluteoperand relocation and zerohistorybody relocations; no tracked tests.",
+      "primary_integration": {
+        "utc": "2026-10-07T14:09:08.314051+00:00",
+        "worker_revision": "3abf43f1b2c806f19574bdf4fde7f646b4cf8c8d",
+        "integrated_revision": "6b06cfd166af854345d0d97fa3488eb53a969398",
+        "full_main_build_revision": "6b06cfd166af854345d0d97fa3488eb53a969398",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_target_operations_integrated_build.log",
+        "executable_sha256": "6ead46578be156b157fad5e79987d7ba388855fd8c63c527e6e3351b94633e64",
+        "root_probe": "local/cc11_target_operations_root.cmd",
+        "probe_log": "local/cc11_target_operations_root_compile.log",
+        "probe_sha256": "ff0987fdf810ca1d9bdb2f19d48bdfcf4d3c809599d76dcc0cfac3599fe95c82",
+        "root_manifest_id1_asInvoker_verified": true,
+        "fresh_actual_translation_units": 7,
+        "stable_main_source_header_inputs": 26,
+        "stable_current_main_libraries": 3,
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "complete_disk_live_bodies": {
+          "mask": {
+            "address": "007827D0",
+            "bytes": 22,
+            "sha256": "b101018bb8de6636144c824b94fb5a2ba514d363163319a8ce4097ed90ac5943",
+            "disk_live": "MATCH"
+          },
+          "append": {
+            "address": "007831E0",
+            "bytes": 70,
+            "sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+            "disk_live": "MATCH"
+          },
+          "reset": {
+            "address": "00783230",
+            "bytes": 68,
+            "sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+            "disk_live": "MATCH"
+          }
+        },
+        "primary_source_native_and_whole_fixture_review": true,
+        "original_whole_body_result": {
+          "checks": 305,
+          "failures": 0,
+          "append_original_cases": 99,
+          "reset_original_cases": 31,
+          "mask_original_cases": 21,
+          "history_code_relocations": 0,
+          "mask_operand_relocations": 1,
+          "pc_values": 3,
+          "x87_rc_values": 4,
+          "mxcsr_rc_values": 4,
+          "ambient_stack_cases": 2,
+          "constructor_owned_targets": 2,
+          "network_send_calls": 0,
+          "gameplay_validated": false
+        },
+        "no_native_calls_in_leaves": true,
+        "masked_exceptions": true,
+        "DAZ_FTZ_disabled": true,
+        "available_x87_stack_slot": true,
+        "compared": [
+          "50 sample words/history fields/ownership identities",
+          "outertarget and secondhistory unchanged",
+          "x87CW/SW/tag/TOP/all8eightybitregisters",
+          "MXCSR/all16bytesXMM0",
+          "maskword and adjacent sentinels"
+        ],
+        "ignored": [
+          "otherGPR/EFLAGS/otherXMM/FIPFDP/faults"
+        ],
+        "constructed_D54_count": 50,
+        "other_counts_valid_storage_helper_cases_not_producer_reachability": true,
+        "timing_7833e0_reconstructed": false,
+        "derived_target_publication": false,
+        "network_send_calls": 0,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false
+      }
     },
     {
       "id": "cc11_land_state_registry",
@@ -15331,6 +15407,48 @@
       ],
       "depends_on": [],
       "contract": "Complete fourteen-entry integer-only genuine pair allocator/copy/fill/shift/insert/reserve/ctor/Add chain and actual9AF9A0 eight ordered registrations. Borrow actual executableCE37DCprofile, proxy and pointeridentity names/states. Preservecapturedpair beforealias/growth,1.5capacity growth and cap/end/begin publication. Real411E20reserve16, nineprefixentries+eight landentries\u219217thgrowth24 fixture. No default profile/arena/name callbacks/opaquephase/wholecomposite/ABI/game claim; normal coherent valid capacity<=1FFFFFFF/terminating inputs/alloc return; CRTdiagnostics/privateEH/faults qualified. Primary freecontinuation repair saved and original integer register/call shapes reviewed; any unresolved shape remains separately qualified until rootreview."
+    },
+    {
+      "id": "cc11_health_target_tick_history",
+      "done": false,
+      "state": "approved complete175-byte history timing consumer with real existing rawCRT conversion",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "007833e0"
+      ],
+      "output_files": [
+        "include/bsp/native_session_target_tick_history.hpp",
+        "src/native_session_target_tick_history.cpp",
+        "docs/CC11_SESSION_TARGET_TICK_HISTORY.md",
+        "reports/cc11_session_target_tick_history.json"
+      ],
+      "depends_on": [
+        "cc11_health_target_operations"
+      ],
+      "contract": "Complete7833E0..78348F175B59inst,ECXtarget/stackDWORD/RET4; actual borrowedF876B0 once, signed<10 nativeFLDZreset, else F876A8/D0DE84 ST0 intoexisting native_crt_truncate_st0_00bf7420 with actual0109EEA4 readatconversion/BF7456fallback. Preserveboth modulo32sub/normalize loops with inclusive endpoints-32768,+32768 and samplepriority:firstpositive\u2192negative else secondpositive else0, directcompleteappend/reset. InputfullDWORDunmasked; fixtureobserved0..FFFFdomain from785994MOVZX. Wholeoriginalconsumer+originalappend/reset/CRTmodepaths comparisons. No timeproviders/opaquephases/defaultcells/wholederivedruntimeABIgame claim."
+    },
+    {
+      "id": "cc11_scene_generation_bool_payload",
+      "done": false,
+      "state": "approved bounded generationgate owningB consumer preference with unchanged raw fallback and nativeprovider qualifications",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046c550"
+      ],
+      "output_files": [
+        "src/scene_entity_factory.cpp",
+        "docs/SCENE_GENERATION_BOOL_PAYLOAD_CC11.md",
+        "reports/scene_generation_bool_payload_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_typed_bool_payload",
+        "cc11_scene_typed_int_payload"
+      ],
+      "contract": "Onlyprivatecalled reader compatibleB+has_boolean\u2192canonicalbyte elseunchanged scene_property_bool, exactlyfourexisting generationgate calls:mode8Game,mode9Game/MovieFallback,selectedMultiTypekey. Preservemode/geometry/class/deferred/stock/default/type/raw policy; noheaders/globalhelper/Hidden/directors changes. NativeelevenFind8F2260\u2192byte0Cspansinside46C550..46CCE1 areboundeddata evidence,nativeuntypednullfaultvsSourcepartialskips qualified. Actualpublicgate/parser/Sourceclassregistry+explicitadmittedSourcearea inputs fixture,modes0..7 finiteinside/selectedkey/oppositeother/outsideboundary,mode8/9clear/opposediagnostics/rawfallback and actual14JM06SubmarineGenbags. No inventednativeplayarea-table/enum/class/geometryprovider,wholemultiplayer/ABI/EH/game claim; productionareabindingremainsunresolved."
     }
   ],
   "snapshot_after_analysis": {

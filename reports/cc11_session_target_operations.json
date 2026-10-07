@@ -51,7 +51,7 @@
       "source_omits_only_unreachable_padding": "0078324A..00783250"
     }
   ],
-  "status": "three complete ordinary SOURCE leaves freshly compiled and complete original-body comparisons passed; primary integration/full main build pending; original ABI, timing conversion, derived publication and game remain unbound",
+  "status": "complete mask append reset Source integrated; independent7freshTUs/26currentSourceinputs/3currentlibs 151completeoriginalbody305checks and fullWin32/all3CTests passed; timing producerdomain nativeABI game qualified",
   "storage": {
     "target": "existing actual NativeSessionTargetStorage; capture real D54 history once",
     "history": "existing actual NativeSessionTargetHistoryStorage18h and owned float-word array",
@@ -292,5 +292,88 @@
     "original_reset.bin": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
     "asm/native_session_target_operations.asm": "e216b285c17e95acee9773308b4d16f8271f96f5b50d0f00dd48d5b0d2a6505b",
     "obj/native_session_target_operations.obj": "127434c19da393ed1e2541487df9b0cf15da4d650b780c2ef6b5caa84dbe9f23"
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T14:09:08.314051+00:00",
+    "worker_revision": "3abf43f1b2c806f19574bdf4fde7f646b4cf8c8d",
+    "integrated_revision": "6b06cfd166af854345d0d97fa3488eb53a969398",
+    "full_main_build_revision": "6b06cfd166af854345d0d97fa3488eb53a969398",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_target_operations_integrated_build.log",
+    "executable_sha256": "6ead46578be156b157fad5e79987d7ba388855fd8c63c527e6e3351b94633e64",
+    "root_probe": "local/cc11_target_operations_root.cmd",
+    "probe_log": "local/cc11_target_operations_root_compile.log",
+    "probe_sha256": "ff0987fdf810ca1d9bdb2f19d48bdfcf4d3c809599d76dcc0cfac3599fe95c82",
+    "root_manifest_id1_asInvoker_verified": true,
+    "fresh_actual_translation_units": 7,
+    "stable_main_source_header_inputs": 26,
+    "stable_current_main_libraries": 3,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_disk_live_bodies": {
+      "mask": {
+        "address": "007827D0",
+        "bytes": 22,
+        "sha256": "b101018bb8de6636144c824b94fb5a2ba514d363163319a8ce4097ed90ac5943",
+        "disk_live": "MATCH"
+      },
+      "append": {
+        "address": "007831E0",
+        "bytes": 70,
+        "sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+        "disk_live": "MATCH"
+      },
+      "reset": {
+        "address": "00783230",
+        "bytes": 68,
+        "sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+        "disk_live": "MATCH"
+      }
+    },
+    "primary_source_native_and_whole_fixture_review": true,
+    "original_whole_body_result": {
+      "checks": 305,
+      "failures": 0,
+      "append_original_cases": 99,
+      "reset_original_cases": 31,
+      "mask_original_cases": 21,
+      "history_code_relocations": 0,
+      "mask_operand_relocations": 1,
+      "pc_values": 3,
+      "x87_rc_values": 4,
+      "mxcsr_rc_values": 4,
+      "ambient_stack_cases": 2,
+      "constructor_owned_targets": 2,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "no_native_calls_in_leaves": true,
+    "masked_exceptions": true,
+    "DAZ_FTZ_disabled": true,
+    "available_x87_stack_slot": true,
+    "compared": [
+      "50 sample words/history fields/ownership identities",
+      "outertarget and secondhistory unchanged",
+      "x87CW/SW/tag/TOP/all8eightybitregisters",
+      "MXCSR/all16bytesXMM0",
+      "maskword and adjacent sentinels"
+    ],
+    "ignored": [
+      "otherGPR/EFLAGS/otherXMM/FIPFDP/faults"
+    ],
+    "constructed_D54_count": 50,
+    "other_counts_valid_storage_helper_cases_not_producer_reachability": true,
+    "timing_7833e0_reconstructed": false,
+    "derived_target_publication": false,
+    "network_send_calls": 0,
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "ghidra_annotations": {
+      "applied": true,
+      "saved": true,
+      "prior_values": "local/ghidra-annotations-20261007T140912Z.json",
+      "exports_refreshed": true,
+      "index_rebuilt": true
+    }
   }
 }

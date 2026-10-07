@@ -95,3 +95,7 @@ private CRT/EH, network sending or gameplay validation are included. Primary
 registration, full main build and integration remain separate work.
 See `reports/cc11_session_target_operations.json` and the reproducible ignored
 artifacts under `local/cc11_target_operations_20261007_a/`.
+
+## Primary integration
+
+Main `6b06cfd166af854345d0d97fa3488eb53a969398` passed the full Win32 build and all three CTests. Root independently compiled seven actual TUs and checked 26 current Source/header inputs, three current main libraries and the original PE before/after linking. All160 original bytes separately matched live memory. The manifested PE32 fixture passed305checks across151complete original-body cases, including full XMM0 and independent x87/MXCSR rounding. Source-owned count50, valid-storage helper edge counts and whole-timing producer reachability remain distinct. No vacuous call-row check substitutes for whole-body comparison. Current timing/derived/runtime/nativeABI/game qualifications remain.
