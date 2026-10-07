@@ -1,0 +1,267 @@
+{
+  "packet": "cc11_land_command_producer",
+  "status": "conditional_normal_caller_source_compiled_probe_passed_runtime_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verification": "Primary live BSP client verified project/program; complete saved body inspected"
+  },
+  "source": "src/attack_commands.cpp",
+  "header": "include/bsp/native_pilot_bot_command_producer.hpp",
+  "document": "docs/PILOT_BOT_COMMAND_PRODUCER_CC11.md",
+  "entry": "0099A170",
+  "end_exclusive": "0099A49D",
+  "original_abi": "ECX=bot, plain RET; new C++ three-reference API is not native ABI",
+  "coverage": "Complete conditional normal CALLER control flow only; actual required services and task arena external",
+  "host_steps": [
+    {
+      "address": "0099A191",
+      "native": "current_squadron+vtable114",
+      "function": "0099A170",
+      "contract": "Obtain actual command block348 from current squadron"
+    },
+    {
+      "address": "0099A197",
+      "native": "0071BE40",
+      "function": "0099A170",
+      "contract": "Initial interned singleton token; initial null returns"
+    },
+    {
+      "address": "0099A1A9",
+      "native": "0071EB60",
+      "function": "0099A170",
+      "contract": "Read actual current descriptor; not command-class reinterpretation"
+    },
+    {
+      "address": "0099A1B0",
+      "native": "00521EA0",
+      "function": "0099A170",
+      "contract": "Resolve captured target retained in ESI"
+    },
+    {
+      "address": "0099A1E2",
+      "native": "007EEC50",
+      "function": "0099A170",
+      "contract": "Attackmove: ECX=current squadron, stack captured target/1/1; returned singleton class"
+    },
+    {
+      "address": "0099A201",
+      "native": "007F16D0",
+      "function": "0099A170",
+      "contract": "Returntobase: ECX=current squadron, stack real output record; captured target is distinct"
+    },
+    {
+      "address": "0099A210",
+      "native": "0071EB60",
+      "function": "0099A170",
+      "contract": "Resolved-null/default factory re-probes descriptor"
+    },
+    {
+      "address": "0099A219",
+      "native": "009C3C40",
+      "function": "0099A170",
+      "contract": "Resolved-null/default task factory: ECX=bot, EDX=fresh descriptor"
+    },
+    {
+      "address": "0099A22D",
+      "native": "0071EB60",
+      "function": "0099A170",
+      "contract": "Moveto factory re-probes descriptor"
+    },
+    {
+      "address": "0099A236",
+      "native": "009C3BE0",
+      "function": "0099A170",
+      "contract": "Moveto00E08F68 factory: ECX=bot, EDX=fresh descriptor"
+    },
+    {
+      "address": "0099A24A",
+      "native": "009BDBB0",
+      "function": "0099A170",
+      "contract": "Moveonpath00E08F80 factory: ECX=bot"
+    },
+    {
+      "address": "0099A27B",
+      "native": "009C8C70",
+      "function": "0099A170",
+      "contract": "Divebomb00E08F20 factory: ECX=bot, EDX=nonnull captured target with actual kind2 predicate"
+    },
+    {
+      "address": "0099A2AC",
+      "native": "009B9030",
+      "function": "0099A170",
+      "contract": "Levelbomb00E08F28 factory: ECX=bot, EDX=nonnull captured target with actual kind2 predicate"
+    },
+    {
+      "address": "0099A2DD",
+      "native": "009AEBE0",
+      "function": "0099A170",
+      "contract": "Dropkamibomb00E08F30 factory: ECX=bot, EDX=nonnull captured target with actual kind2 predicate"
+    },
+    {
+      "address": "0099A2FE",
+      "native": "009229F0",
+      "function": "0099A170",
+      "contract": "Torpedobomb attackable-kind6 check: ECX=captured target, EDX=6"
+    },
+    {
+      "address": "0099A30F",
+      "native": "009D4E30",
+      "function": "0099A170",
+      "contract": "Torpedobomb00E08F18 factory: ECX=bot, EDX=captured target after actual kind6 acceptance"
+    },
+    {
+      "address": "0099A32D",
+      "native": "009CD300",
+      "function": "0099A170",
+      "contract": "Strafe00E08F40 factory: ECX=bot, EDX=nonnull captured target"
+    },
+    {
+      "address": "0099A371",
+      "native": "007B7FD0",
+      "function": "0099A170",
+      "contract": "Rocket00E08F48 factory: ECX=bot, EDX=captured target kind2 and not kind18h"
+    },
+    {
+      "address": "0099A3A2",
+      "native": "009AF720",
+      "function": "0099A170",
+      "contract": "Kamikaze00E08F50 factory: ECX=bot, EDX=captured target kind2"
+    },
+    {
+      "address": "0099A3D3",
+      "native": "009AB570",
+      "function": "0099A170",
+      "contract": "Dogfight00E08F58 factory: ECX=bot, EDX=captured target kind2"
+    },
+    {
+      "address": "0099A3E9",
+      "native": "006BCD20",
+      "function": "0099A170",
+      "contract": "Land00E08FA0: ECX=CAPTURED resolved target, DL=1; obtains actual air block"
+    },
+    {
+      "address": "0099A404",
+      "native": "006C4790",
+      "function": "0099A170",
+      "contract": "Land: ECX=returned block, stack CURRENT squadron; actual landing admission"
+    },
+    {
+      "address": "0099A415",
+      "native": "009B41C0",
+      "function": "0099A170",
+      "contract": "Land factory: ECX=bot, EDX=returned/admitted air block; not original target substitution"
+    },
+    {
+      "address": "0099A42F",
+      "native": "009229F0",
+      "function": "0099A170",
+      "contract": "Closebomb attackable-kind6 check: ECX=captured target, EDX=6"
+    },
+    {
+      "address": "0099A43C",
+      "native": "009A2F40",
+      "function": "0099A170",
+      "contract": "Closebomb00E08FA8 factory: ECX=bot, EDX=captured target after actual kind6 acceptance"
+    },
+    {
+      "address": "0099A462",
+      "native": "009A6970",
+      "function": "0099A170",
+      "contract": "Depthcharge00E08F38 factory: ECX=bot, EDX=captured target kind8"
+    },
+    {
+      "address": "0099A473",
+      "native": "009CA2B0",
+      "function": "0099A170",
+      "contract": "Retreat00E08F90 factory: ECX=bot"
+    },
+    {
+      "address": "0099A484",
+      "native": "009BADB0",
+      "function": "0099A170",
+      "contract": "Stop00E08F88 factory: ECX=bot"
+    },
+    {
+      "address": "0099A490",
+      "native": "0099A020",
+      "function": "0099A170",
+      "contract": "Nonzero actual factory result appended to active owner; no immediate delete"
+    },
+    {
+      "address": "0099A26D",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A29E",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A2CF",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A350",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A363",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind24, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A394",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A3C5",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind2, native AL predicate; required ordered source provider"
+    },
+    {
+      "address": "0099A458",
+      "native": "captured_target+vtable5c",
+      "function": "0099A170",
+      "contract": "Actual captured target ECX, stack kind8, native AL predicate; required ordered source provider"
+    }
+  ],
+  "native_listing_sha256": "6de80d55c2676c721e7eea87baae323c5cb7b32efee06bfdaa722c0843e3a411",
+  "source_contract": {
+    "initial_null": "No descriptor/default factory dispatch",
+    "resolved_null": "Fresh descriptor on captured controller ->009C3C40",
+    "land": "Captured target ->006BCD20 DL1 ->block; reload current squadron ->006C4790 ->009B41C0 EDXblock",
+    "factories": "16 distinct required factory services; all actual predicates retained, nonzero append0099A020 only",
+    "observers": "No58/delete/retired drain/head54; scheduler remains separate"
+  },
+  "validation": {
+    "strict_msvc_win32_compile": "PASS /O2 /W4 /WX /Gy /Gw",
+    "focused_source_probe": "PASS differing fresh descriptors/squadrons and target/block, null paths, zero factory and deferred retired FIFO",
+    "probe_log": "local/cc11_command_producer_probe.log",
+    "probe_executable": "local/cc11_command_producer_probe.exe",
+    "probe_sha256": "2b068f26b83d156072923411d3e90360c792cfe6efa76955bdd5d440644cfc4a",
+    "full_main_build": "pending",
+    "tracked_tests_added": 0
+  },
+  "limitations": [
+    "Actual native callee/provider/allocator/task arena implementations and profile/world lifetimes remain external",
+    "Normal successful representable append domain; structural reentry/base/count/capacity mutation, faults/privateEH excluded",
+    "Return resolver signature observes only native outputword0; no output-record/stack ABI equivalence",
+    "Existing AttackCommandHost remains a lossy typed projection; no BooleanGameUnitsHost adapter provided",
+    "No original ABI/privateEH/game parity claim"
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}

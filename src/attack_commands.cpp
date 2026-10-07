@@ -2,6 +2,7 @@
 // and reports/attack_commands.json; every address named in a comment here is
 // repeated there with its role.
 #include "bsp/attack_commands.hpp"
+#include "bsp/native_pilot_bot_command_producer.hpp"
 
 namespace bsp {
 namespace {
@@ -545,6 +546,85 @@ ReturnToBaseOutcome return_to_base_outcome(bool has_assigned_base,
         return ReturnToBaseOutcome::kIssuedLandAtCarrier; // 007F18C6
     }
     return ReturnToBaseOutcome::kBuiltRetreat; // the retreat record 007F19xx writes
+}
+
+void install_native_pilot_bot_command_task_0099a170(NativePilotBotTaskOwnerView& owner,
+    NativePilotBotTaskOwnerCalls& array_calls, NativePilotBotCommandProducerCalls& calls)
+{
+    const auto initial_squadron = calls.current_squadron_50_9d4(); //0099A176/179
+    if (initial_squadron.identity == 0u) return;
+    const auto controller = calls.command_controller_114(initial_squadron); //0099A191, captured EBP
+    auto token = calls.command_token_0071be40(controller); //0099A197
+    if (token == 0u) return; //initial null command does NOT choose default
+    const auto initial_descriptor = calls.active_descriptor_0071eb60(controller); //0099A1A9
+    const auto target = calls.resolve_target_00521ea0(initial_descriptor); //0099A1B0, captured ESI
+    if (token == kAttackCmdLand && target.identity == 0u) token = kAttackCmdReturnToBase;
+    if (token == kCommandAttackMove) {
+        if (target.identity != 0u) {
+            const auto squadron = calls.current_squadron_50_9d4(); //0099A1D4/1D7
+            token = calls.choose_attack_token_007eec50(squadron, target, true, true);
+        }
+    } else if (token == kAttackCmdReturnToBase) {
+        const auto squadron = calls.current_squadron_50_9d4(); //0099A1F3/1F6
+        token = calls.resolve_return_token_007f16d0(squadron); //0099A201; only outputword0 read
+    }
+
+    NativePilotBotTaskHandle task{0u};
+    if (token == 0u) {
+        const auto fresh_descriptor = calls.active_descriptor_0071eb60(controller);
+        task = calls.make_default_009c3c40(fresh_descriptor); //0099A210/219
+    } else if (token == kCommandMoveTo) {
+        const auto fresh_descriptor = calls.active_descriptor_0071eb60(controller);
+        task = calls.make_moveto_009c3be0(fresh_descriptor); //0099A22D/236
+    } else if (token == kCommandMoveOnPath) {
+        task = calls.make_moveonpath_009bdbb0(); //0099A24A
+    } else if (token == kAttackCmdDiveBomb) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        task = calls.make_divebomb_009c8c70(target); //0099A26D/27B
+    } else if (token == kAttackCmdLevelBomb) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        task = calls.make_levelbomb_009b9030(target); //0099A29E/2AC
+    } else if (token == kAttackCmdDropKamikaze) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        task = calls.make_dropkamikaze_009aebe0(target); //0099A2CF/2DD
+    } else if (token == kAttackCmdTorpedo) {
+        if (target.identity == 0u || !calls.target_attackable_009229f0(target, 6u)) return;
+        task = calls.make_torpedo_009d4e30(target); //0099A2FE/30F
+    } else if (token == kAttackCmdStrafe) {
+        if (target.identity == 0u) return;
+        task = calls.make_strafe_009cd300(target); //0099A32D; no kind call
+    } else if (token == kAttackCmdRocket) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        if (calls.target_kind_5c(target, 0x18u)) return;
+        task = calls.make_rocket_007b7fd0(target); //0099A350/363/371
+    } else if (token == kAttackCmdKamikaze) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        task = calls.make_kamikaze_009af720(target); //0099A394/3A2
+    } else if (token == kAttackCmdDogfight) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 2u)) return;
+        task = calls.make_dogfight_009ab570(target); //0099A3C5/3D3
+    } else if (token == kAttackCmdLand) {
+        const auto block = calls.air_block_006bcd20(target, true); //0099A3E9, captured TARGET
+        if (block.identity == 0u) return;
+        const auto squadron = calls.current_squadron_50_9d4(); //0099A3F8/3FB, fresh
+        if (!calls.squadron_admitted_006c4790(block, squadron)) return;
+        task = calls.make_land_009b41c0(block); //0099A415, BLOCK not target
+    } else if (token == kAttackCmdCloseToShip) {
+        if (target.identity == 0u || !calls.target_attackable_009229f0(target, 6u)) return;
+        task = calls.make_close_009a2f40(target); //0099A42F/43C
+    } else if (token == kAttackCmdDepthCharge) {
+        if (target.identity == 0u || !calls.target_kind_5c(target, 8u)) return;
+        task = calls.make_depthcharge_009a6970(target); //0099A458/462
+    } else if (token == kAttackCmdRetreat) {
+        task = calls.make_retreat_009ca2b0(); //0099A473
+    } else if (token == kCommandStop) {
+        task = calls.make_stop_009badb0(); //0099A484
+    } else {
+        return; //0099A480, unsupported token
+    }
+    if (task.identity != 0u) {
+        append_native_pilot_bot_active_task_0099a020(owner, array_calls, task); //0099A490
+    }
 }
 
 } // namespace bsp

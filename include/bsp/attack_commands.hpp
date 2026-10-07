@@ -272,8 +272,10 @@ bool terminal_command_runs_at_issue(std::uint32_t command) noexcept;
 // ---------------------------------------------------------------------------
 // The per-class arms as sequences over an injected host
 // ---------------------------------------------------------------------------
-// One virtual per native call site. The bodies in attack_commands.cpp perform
-// the same calls in the same order as 0099A170 and 007F16D0.
+// Typed command-class projection. This API conflates fresh descriptor/target
+// observations and omits the actual land air-block/current-squadron arguments;
+// it cannot supply the complete native0099A170 producer contract. See the
+// separate required-provider facade in native_pilot_bot_command_producer.hpp.
 
 struct AttackCommandHost {
     virtual ~AttackCommandHost() = default;
@@ -313,7 +315,7 @@ struct AttackCommandHost {
     virtual bool land_group_available(std::uint32_t unit) = 0;
 };
 
-// 0099A170. The whole routine: read the current class, rewrite land without a
+// Partial typed0099A170 projection: read the current class, rewrite land without a
 // target into returntobase, resolve attackmove and returntobase into a concrete
 // class, then build and install that class's task. Returns the installed task,
 // or 0 for every path that returns early.
