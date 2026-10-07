@@ -26,7 +26,7 @@ struct WorldMapSettings {
 };
 
 // Data-read portion of 004E6C00, through the two global border-size stores.
-// Takes the already parsed Map block and copies retained V3 lanes directly.
+// Takes the already parsed Map block and copies retained F/V3 payloads directly.
 // Source-authored raw bags still use the existing property value decoder.
 // A missing MultiPlayMapSizes block returns false and leaves output unchanged,
 // matching the native early return before its global stores. Other missing or

@@ -196,6 +196,51 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 }
             } while (cur.lexer().peek().quoted);
             prop.values.push_back(std::move(value));
+        } else if (equal_insensitive(prop.type_letter, "F") && !cur.at(";")) {
+            // Successful explicit F: 008F5C55 reads, 008F5C5A stores binary32.
+            // Empty F remains on the raw partial path: a native existing value
+            // is preserved when the ephemeral read-success byte is zero.
+            const char* locale = std::setlocale(LC_NUMERIC, nullptr);
+            if (locale == nullptr || std::string(locale) != "C") {
+                throw std::runtime_error("unsupported F numeric locale");
+            }
+            const SceneToken& token = cur.lexer().peek();
+            if (token.is_end() || token.text.size() >= 0x400
+                || token.text.find('\0') != std::string::npos) {
+                throw std::runtime_error("unsupported F scalar token");
+            }
+            std::size_t first = 0;
+            while (first < token.text.size()
+                && std::isspace(static_cast<unsigned char>(token.text[first]))) ++first;
+            if (first < token.text.size()
+                && (token.text[first] == '+' || token.text[first] == '-')) ++first;
+            const bool digit = first < token.text.size()
+                && std::isdigit(static_cast<unsigned char>(token.text[first]));
+            const bool fraction = first + 1 < token.text.size()
+                && token.text[first] == '.'
+                && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
+            const bool hex = first + 1 < token.text.size()
+                && token.text[first] == '0'
+                && (token.text[first + 1] == 'x' || token.text[first + 1] == 'X');
+            if ((!digit && !fraction) || hex) {
+                throw std::runtime_error("unsupported F decimal prefix");
+            }
+            float value = 0.0f;
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+            const int converted = std::sscanf(token.text.c_str(), "%f", &value);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+            if (converted != 1 || !std::isfinite(value)) {
+                throw std::runtime_error("unsupported F scalar conversion");
+            }
+            // Modern source CRT only; historical VS2005/FP parity unverified.
+            prop.float_value = value;
+            prop.has_float = true;
+            prop.values.push_back(cur.read_token());
         } else if (equal_insensitive(prop.type_letter, "V3")) {
             // 008F629F..008F62B0 zero all lanes before the first-number guard.
             // Immediate ';' retains a present positive-zero vector, with no

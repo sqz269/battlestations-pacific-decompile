@@ -91,12 +91,16 @@ private:
 // three positive zeros (008F629F..008F6319). Raw tokens remain diagnostic data.
 // Nonempty conversion uses the modern source CRT; VS2005 numerical/FP parity
 // and native storage/ABI are unverified. Other forms retain partial coverage.
+// Successful nonempty explicit F also retains one owning binary32 value.
+// Bare F ';' stays raw: existing-record empty assignment needs parser context.
 struct SceneProperty {
     std::string key;
     std::string type_letter;
     std::vector<std::string> values;
     std::array<float, 3> vector3{};
     bool has_vector3{false};
+    float float_value{0.0f};
+    bool has_float{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.

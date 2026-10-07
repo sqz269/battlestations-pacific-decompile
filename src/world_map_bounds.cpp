@@ -64,7 +64,12 @@ ScenePropertyValue decode(const ScenePropertyBlock& bag, const char* key,
         (type != expected && !(allow_integer && type == ScenePropertyType::Int))) {
         throw std::invalid_argument(std::string("Invalid required map property: ") + key);
     }
-    if (type == ScenePropertyType::Vector3 && item->has_vector3) {
+    if (type == ScenePropertyType::Float && item->has_float) {
+        // 004E6C1D/004E6C41 read stored F bits without numeric conversion.
+        value.type = type;
+        value.reference_kind = kind;
+        std::memcpy(&value.float_value, &item->float_value, sizeof(value.float_value));
+    } else if (type == ScenePropertyType::Vector3 && item->has_vector3) {
         // 004E6C77..004E7113 copies the sixteen stored corner triples.
         // Parsed empty V3 is present zero data; tokens are only diagnostics.
         value.type = type;

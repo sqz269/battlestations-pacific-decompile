@@ -1,0 +1,581 @@
+{
+  "packet": "cc11_scene_float_nonempty_payload",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_FLOAT_NONEMPTY_PAYLOAD_CC11.md",
+  "source_baseline": "baa980857519b72c7d49ebd2d9588da03c4b877f",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only bsp.py wrappers; primary independently reviewed full F branch and actual scalar constructors"
+  },
+  "owned_addresses": [
+    "008F5A00",
+    "008F3770",
+    "008EF170",
+    "004E6C00"
+  ],
+  "owned_files": [
+    "src/scene_file.cpp",
+    "include/bsp/scene_file.hpp",
+    "src/world_map_bounds.cpp",
+    "include/bsp/world_map_bounds.hpp",
+    "docs/SCENE_FLOAT_NONEMPTY_PAYLOAD_CC11.md",
+    "reports\\scene_float_nonempty_payload_cc11.json"
+  ],
+  "result": "Successful NONEMPTY explicit F stores owning binary32 payload and source availability; actual Map Float arm consumes it directly after required/type validation. Bare F semicolon stays raw with nohas_float; no native-empty binding or persistent assignment/success action.",
+  "coverage": [
+    {
+      "address": "008F5A00",
+      "native_span": "008F5BE0..008F5C91",
+      "port": "partial successful nonempty explicit F normal arm; existing empty/implicit/conflicting/duplicate context and fault paths deferred"
+    },
+    {
+      "address": "008F3770",
+      "body_inclusive": "008F3770..008F37D4",
+      "instructions": 35,
+      "port": "complete normal heap producer read; type1/+0C storage bound, allocator/null insert/ABI not ported"
+    },
+    {
+      "address": "008EF170",
+      "body_inclusive": "008EF170..008EF1A4",
+      "end_exclusive": "008EF1A5",
+      "instructions": 15,
+      "port": "complete actual scalar-record constructor read, RET4 at008EF1A2; not an existing-record-copy helper or source binary replacement"
+    },
+    {
+      "address": "008F4F60",
+      "port": "existing supporting scalar clone call008F4FDD->008EF170, no new whole-clone reconstruction"
+    },
+    {
+      "address": "008F0700",
+      "port": "existing type1 assignment arm copies+0C dword; separate from scalar constructor/clone, not changed"
+    },
+    {
+      "address": "008D8F40",
+      "port": "accepted supporting guard %f/ret1 contract; original provider remains external"
+    },
+    {
+      "address": "008D9B40",
+      "port": "accepted scalar reader %f-to-float with successful consume; source modern direct-float reuse only"
+    },
+    {
+      "address": "004E6C00",
+      "port": "existing Map data-reading projection, Float stored-value arm adopted; Int/V3 and external global/border tail unchanged"
+    }
+  ],
+  "calls": [
+    {
+      "address": "008F5AF9",
+      "function": "008F5A00",
+      "native": "008D9980",
+      "contract": "per-key token read after local success byte initialized0"
+    },
+    {
+      "address": "008F5B1B",
+      "function": "008F5A00",
+      "native": "008F2260",
+      "contract": "find existing declaration before typed dispatch"
+    },
+    {
+      "address": "008F5BEC",
+      "function": "008F5A00",
+      "native": "008D8A70",
+      "contract": "peek explicit F token when existing type1 does not select arm"
+    },
+    {
+      "address": "008F5BF8",
+      "function": "008F5A00",
+      "native": "00438E10",
+      "contract": "case-insensitive explicit F comparison"
+    },
+    {
+      "address": "008F5C07",
+      "function": "008F5A00",
+      "native": "008D8960",
+      "contract": "consume explicit F prefix on new-record path"
+    },
+    {
+      "address": "008F5C12",
+      "function": "008F5A00",
+      "native": "008D8A70",
+      "contract": "existing type1 optional F prefix peek"
+    },
+    {
+      "address": "008F5C1E",
+      "function": "008F5A00",
+      "native": "00438E10",
+      "contract": "optional F prefix comparison"
+    },
+    {
+      "address": "008F5C29",
+      "function": "008F5A00",
+      "native": "008D8960",
+      "contract": "consume matching optional F prefix"
+    },
+    {
+      "address": "008F5C3A",
+      "function": "008F5A00",
+      "native": "008D8F40",
+      "contract": "native numeric guard unless force-read"
+    },
+    {
+      "address": "008F5C55",
+      "function": "008F5A00",
+      "native": "008D9B40",
+      "contract": "read float; binary32 spill at5C5A; existing write iffok"
+    },
+    {
+      "address": "008F5C8C",
+      "function": "008F5A00",
+      "native": "008F3770",
+      "contract": "absent-record heap type1 producer"
+    },
+    {
+      "address": "008F66A6",
+      "function": "008F5A00",
+      "native": "008D9930",
+      "contract": "following semicolon expectation"
+    },
+    {
+      "address": "008F3775",
+      "function": "008F3770",
+      "native": "00BF681B",
+      "contract": "allocate38h; allocator/failure source-unbound"
+    },
+    {
+      "address": "008F37B9",
+      "function": "008F3770",
+      "native": "008F33F0",
+      "contract": "insert allocated type1 record with passed float at+0C"
+    },
+    {
+      "address": "008F37CC",
+      "function": "008F3770",
+      "native": "008F33F0",
+      "contract": "null-allocation insertion arm; source-unbound failure"
+    },
+    {
+      "address": "008F4FDD",
+      "function": "008F4F60",
+      "native": "008EF170",
+      "contract": "actual scalar-record constructor used by clone; not assignment helper"
+    },
+    {
+      "address": "008D8F4A",
+      "function": "008D8F40",
+      "native": "008D8A70",
+      "contract": "guard peeks token"
+    },
+    {
+      "address": "008D8F50",
+      "function": "008D8F40",
+      "native": "00BF7533",
+      "contract": "original VS2005 %f scanner guard; modern-provider parity unclaimed"
+    },
+    {
+      "address": "008D9B4F",
+      "function": "008D9B40",
+      "native": "008D8A70",
+      "contract": "scalar reader peeks token"
+    },
+    {
+      "address": "008D9B55",
+      "function": "008D9B40",
+      "native": "00BF7533",
+      "contract": "original %f conversion into float temp; unclaimed original numerical provider"
+    },
+    {
+      "address": "008D9B96",
+      "function": "008D9B40",
+      "native": "008D8F70",
+      "contract": "failed-read recovery; source success-only binding"
+    },
+    {
+      "address": "004E6C0B",
+      "function": "004E6C00",
+      "native": "008F2260",
+      "contract": "BorderSizeX actual stored scalar lookup"
+    },
+    {
+      "address": "004E6C2F",
+      "function": "004E6C00",
+      "native": "008F2260",
+      "contract": "BorderSizeY actual stored scalar lookup"
+    },
+    {
+      "address": "00469D09",
+      "function": "00469BF0",
+      "native": "008F5A00",
+      "contract": "fresh header authored bag/force-read1/resolver0"
+    },
+    {
+      "address": "00469D23",
+      "function": "00469BF0",
+      "native": "008F54F0",
+      "contract": "header fills missing SceneRootProps after authored parse; source context remains partial"
+    },
+    {
+      "address": "0046D34E",
+      "function": "0046CF40",
+      "native": "008F5A00",
+      "contract": "entity authored parse after group fill-missing, force-read1"
+    },
+    {
+      "address": "008F6AD7",
+      "function": "008F67B0",
+      "native": "008F5A00",
+      "contract": "library reopens existing bag, force-read0/group resolver; captures parents before authored body"
+    },
+    {
+      "address": "008F6740",
+      "function": "008F5A00",
+      "native": "008F5A00",
+      "contract": "child recursion carries numeric-read flag with null group resolver"
+    }
+  ],
+  "data_receipts": {
+    "per_key": "008F5AF4 ok-byte0; existing type1 at5BE4; explicit/optional F prefix matching; force-read at5C2E",
+    "success": "5C55->8D9B40,5C5A FSTP binary32,5C62/67 requireok for existing+0C MOVSS at5C73; absent5C8C->3770",
+    "empty": "guard miss5C43 XORPS/5C46 positivezero temporary; existing remains unchanged because ok0; absent may create zero. Forced reader failure also ok0. Source empty contract remains explicitly deferred.",
+    "heap": "3775 allocate38h,3783 read stack float,378F +0C MOVSS,3799 type1,37B9/37CC insertion,37BF/37D2 RET8; allocator/EH/fault external",
+    "scalar_constructor": "8EF170 reads passed scalar,8EF185 type1,8EF188 +0C MOVSS; fields18/1C/20/24/30/34zero and2C=1; RET4 at1A2; no owning scalar pointer",
+    "map": "4E6C1D/6C41 direct MOVSS stored F;4E6C16/6C3A CVTSI2SS Int preserved",
+    "buffer": "accepted tokenizer cached/read400h ranges+5..404/+405..804, cache+805; source fragment closed/NUL-free/<400h"
+  },
+  "source": {
+    "members": "owning SceneProperty.float_value andhas_float; availability only, no original record-field offset mapping and no read-success/empty action",
+    "parser": "explicit F only and next token notsemicolon; exactly one admitted modern conversion/one raw diagnostic token retained",
+    "consumer": "required property/type check first; Float+has_float => correct type/kind and memcpy payload; Vector3 existing payload arm retained; otherwise old raw decoder",
+    "empty": "bareFsemicolon generic raw path,has_float=false; map old raw rejection preserved and NOT claimed native-compatible",
+    "ownership": "existing owning group/child/overwrite copies carry value/presence; no shared scalar pointer or action flag",
+    "unchanged": [
+      "lexer raw tokens",
+      "scene_scan_float",
+      "separate raw decoder",
+      "raw source-authored fallback",
+      "Int/CVTSI2SS",
+      "S/V3 admitted behavior",
+      "group parent order",
+      "map mode/inverted bounds/runtime flags"
+    ],
+    "actual_callers": [
+      "GameAvoidZoneRuntime::rebuild ->map settings ->avoid-zone bounds",
+      "mission-frame scene initialization ->map settings ->Lua border-zone setup"
+    ],
+    "stride": "SceneProperty size changes; primary must FULL rebuild all consumers before main probe linking; source interfaces not original native ABI"
+  },
+  "native_vs_source_order": {
+    "library": "existing bag reopened, ordered parent flag0 merge before authored parse; source callback-free captures already parsed body, success-only F source copies valid on admitted domain",
+    "entity": "group flag1 fill-missing before authored parse; source owns defaults then authored merge",
+    "header": "fresh authored parse then SceneRootProps flag1 fills missing at469D23; source raw header publication does not implement that library merge, separate context boundary",
+    "deferred": "empty existing-context and raw duplicate-record identity cannot be implemented by a permanent flag carried through resolved groups"
+  },
+  "provider_and_admission": {
+    "provider": "current MSVC std::sscanf(token,%f,&float) DIRECT binary32, one successful finite conversion per nonempty explicit F",
+    "normal": "finite ordinary decimal-prefix token under numeric localeC, closed/NUL-free/<400h; unique keys within raw authored block; absent/compatible existing native F descriptor",
+    "source_errors": "unsupported locale/NUL/overcapacity/nonnumeric or hex prefixes/NaNInf/nonfinite conversion => source runtime_error; no native graceful recovery/rollback claim",
+    "outside": [
+      "bare emptyF/new-vs-existing contextual writes",
+      "implicit/conflicting original typing",
+      "raw duplicate declaration/first-record identity",
+      "extra or malformed tokens",
+      "historical VS2005 BF7533 numerical/FPstatus/range/underflow/error/extended-ST0 parity",
+      "original scratch/allocator/SEH/fault/reentry/global lifetime",
+      "engine border tail/native ABI/game proof"
+    ],
+    "original_CRT_binding_claimed": false
+  },
+  "installed": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "input_files": 16,
+    "group_count": 22,
+    "F_declarations": 834,
+    "nonempty_F_payloads": 830,
+    "empty_F_raw": 4,
+    "prior_SOURCE_float_bit_differences": 0,
+    "V3_assignments_preserved": 1199,
+    "empty_fields": [
+      "path.props PathPointCamera.SustainBefore",
+      "path.props PathPointCamera.SustainAfter",
+      "path.props PathPointCamera.Speed",
+      "plane.props PlaneSquadronWNavpoint.Velocity"
+    ],
+    "scene_props": {
+      "F_borders": [
+        20000,
+        20000
+      ],
+      "V3_corners": 16,
+      "payload_and_prior_SOURCE_bits_agree": true
+    },
+    "JM06": {
+      "F_borders": [
+        12000,
+        12000
+      ],
+      "V3_corners": 16,
+      "payload_and_prior_SOURCE_bits_agree": true
+    },
+    "qualification": "bounded literal assignment inventory plus actual parser/library/map source paths; discovery driver not private VFS/enum loader/full scene runtime; SOURCE bit agreement not original numeric exactness"
+  },
+  "verification": {
+    "compile_command": "cmd /c local\\cc11_scene_float_compile.cmd",
+    "compile_exit": 0,
+    "probe_command": "local\\cc11_scene_float_probe.exe",
+    "probe_exit": 0,
+    "log": "focused F_prefix=1 single_payload=1 diagnostics_retained=1 direct_map=1 raw_fallback=1 Int_branch=1 missing_type_checked=1 bare_F_raw=1 S_V3_preserved=1\nowning capture=1 redeclare_nonempty=1 later_parent=1 entity_fill_missing=1 authored_nonempty=1\nscene.props F_payload_bits_match=1 prior_SOURCE_bits_match=1 V3_corners=16 border=20000,20000\nJM06 F_payload_bits_match=1 prior_SOURCE_bits_match=1 V3_corners=16 border=12000,12000\ninstalled files=16 groups=22 F=834 nonempty=830 raw_empty=4 prior_SOURCE_differences=0 V3=1199 original_CRT_parity=0\n",
+    "compiler": "VS18 Community Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy; parser standalone no global CRT-deprecation suppression; actual library TU included fresh in probe",
+    "link": "fresh probe/parser/reader first, pinned local/cc11_scene_float_core.lib plus unchanged Lua/zlib and response inputs; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "fresh_active_layout_paths": [
+      "parse_scene_property_block",
+      "parse_scene_document",
+      "world_map_bounds::decode/reader",
+      "PropertyLibrary::add_group/capture/redeclare",
+      "merge_property_block/merge_group_into and all owning SceneProperty copies"
+    ],
+    "stale_layout_qualification": "cached engine support objects linked but uninvoked; no enlarged records pass into stale helper/engine interfaces. Unchanged raw decoder receives unchanged token vector/ScenePropertyValue layouts. Full main rebuild still mandatory.",
+    "manifest": {
+      "machine": "014C",
+      "RT_MANIFEST": 24,
+      "resource_id": 1,
+      "bytes": 381,
+      "asInvoker": true,
+      "sha256": "4BB79DCEA0A901F7D9EAC5AA05728AE92ACB42E0CB22E5DD14134F4421A3D8DF"
+    },
+    "focused_checks": [
+      "normal/decimal-prefix F payload",
+      "raw diagnostic token retained",
+      "following key and S/V3 preservation",
+      "map payload independent of diagnostics",
+      "raw Float fallback",
+      "Int branch and required/type checks",
+      "bareF stays raw/no nativeemptyclaim",
+      "early-child/nested owning capture",
+      "successful nonempty redeclaration/later-parent overwrite",
+      "entity fill-missing and successful authored overwrite",
+      "actual830 F SOURCE bit comparisons and1199V3/22groups",
+      "actual two installed map inputs"
+    ],
+    "initial_probe_correction": "added explicit fstream/sstream includes to the ignored probe; production TUs already compiled clean",
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/scene_float_nonempty_payload_cc11.json",
+      "status": "PASS",
+      "exit": 0,
+      "direct_rows_checked": 28,
+      "failed": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "tracked_tests_added": 0,
+    "full_build": "primary only; worker focused TUs",
+    "native_differential": "not run",
+    "game": "not run",
+    "stable_link_receipt": "Shared main core library drift detected during receipt recheck; extended ignored lease, copied core to unique local snapshot, recompiled/relinked and reran same probe exit0; local snapshot SHA stable before/after. Primary held shared libraries stable for final receipt closure."
+  },
+  "retained_boundaries": {
+    "enum_Lua": "declaration identity/int snapshots/provider/parser context/group capture/consumer architecture still unbound; unused model methods not activated",
+    "group_flow": "prior8F54F0 decoded tail through exclusive8F566F; stored body stillends8F5658, not full bodyrepair"
+  },
+  "qualification": {
+    "source": "bounded successful nonempty F owning payload and actual map consumption",
+    "fixture": "actual fresh production paths PASS",
+    "installed": "same16 inputs and two actual Map consumers inspected",
+    "ABI": "not compatible original interface",
+    "original_game": "unvalidated",
+    "original_CRT": "unclaimed"
+  },
+  "assets": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 33393,
+      "sha256": "E31C16F2FB9CDB3ABB9FEE72999D1E36207042CD6B07542486D6368A8CA5AA23"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18330,
+      "sha256": "583182041F1A0413F352EEB4EC1342CCDFC6CF50775E53FBCF5E3B80C510B0C0"
+    },
+    {
+      "path": "src/world_map_bounds.cpp",
+      "bytes": 15133,
+      "sha256": "77276B21AB5244FD933D87D4C8C6B3980FBFF75FE541972CF3FF37887DF70C9C"
+    },
+    {
+      "path": "include/bsp/world_map_bounds.hpp",
+      "bytes": 5363,
+      "sha256": "58AC59CCB95CC326AFC2C9C8F172FB87AA1BF4660B98EA1B134528A19DD10AA1"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 240889,
+      "sha256": "FE418C70F1CD0396CDE2D2645310AE278D7528DD74A439907AFCD7AB91BA319F"
+    },
+    {
+      "path": "include/bsp/game_hosts_scene_contents.hpp",
+      "bytes": 40196,
+      "sha256": "3024F4477E0462951D29D612356DD5AA51FC0481D613AC987C7DBA780C12D4FF"
+    },
+    {
+      "path": "src/scene_property_bag.cpp",
+      "bytes": 25972,
+      "sha256": "7CE07CD97B31826D12CD2C0E9BA3BA74FC5928AF07436613653CD9B5B7AD4759"
+    },
+    {
+      "path": "include/bsp/scene_property_bag.hpp",
+      "bytes": 12832,
+      "sha256": "973B54DC7F9A18A66B6723DBCD1E08618209745F3DF64DC168D77183BEC67C88"
+    },
+    {
+      "path": "local/cc11_scene_float_probe.cpp",
+      "bytes": 11414,
+      "sha256": "D39ADB16B93F84A15B12ABCC5D5D6FCA5428657A47B23DB6A9F35CD387F3D34C"
+    },
+    {
+      "path": "local/cc11_scene_float_probe.obj",
+      "bytes": 2644045,
+      "sha256": "CF1674EAFD3BDC3AEC5E1689D30F428AC58943EC038238D321F77C8660912272"
+    },
+    {
+      "path": "local/cc11_scene_float_parser.obj",
+      "bytes": 290796,
+      "sha256": "786C9B04D8A56C3493BEE822C2BD2295E9FD10E27E75EF11ED4E33F363CE718B"
+    },
+    {
+      "path": "local/cc11_scene_float_reader.obj",
+      "bytes": 114254,
+      "sha256": "73C7021CCDBADBE57C18F20B79AAFB4D77375AD2ABC74B7552FF401DE4AAAB18"
+    },
+    {
+      "path": "local/cc11_scene_float_probe.exe",
+      "bytes": 534016,
+      "sha256": "9E9364788EF8C18F52BE3105C782FDBCE842C8B2CB1E4FEA4623051EB77B5D10"
+    },
+    {
+      "path": "local/cc11_scene_float_probe.log",
+      "bytes": 551,
+      "sha256": "529E87030CD2B280A2620AA392703D2EA2CB2010DA9159B42655B1487036C587"
+    },
+    {
+      "path": "local/cc11_scene_float_compile.cmd",
+      "bytes": 1241,
+      "sha256": "A7BEFD06D0485AEBC8D98E6EB7072F0E50C62F8B722121BAE26AA24C0697C206"
+    },
+    {
+      "path": "local/cc11_scene_float_compile.log",
+      "bytes": 66,
+      "sha256": "2E477C8CB5A45831EB7606243E44B8832BB805FE9C98AE305939A2E1CA1C3664"
+    },
+    {
+      "path": "local/cc11_scene_group_link.rsp",
+      "bytes": 7484,
+      "sha256": "ED422FCF58A0B659238C00C9674BF6AF33AA317F327F849757336EBFBCAF50E0"
+    }
+  ],
+  "linked_libraries": [
+    {
+      "path": "local/cc11_scene_float_core.lib",
+      "bytes": 73106874,
+      "sha256": "43D69CAF82EB7D338C4E929C22D1A4BD13BEBF688F680184D644CAA570BE031D"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+      "bytes": 454824,
+      "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+      "bytes": 71766,
+      "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
+    }
+  ],
+  "cached_response_input_receipts": {
+    "response": "local/cc11_scene_group_link.rsp",
+    "object_count": 74,
+    "path_sha256_pairs_digest": "4285CD61DE31F135853A732EE0B9520F4338EA480951C779C2B8CF1B8E8B3D5C",
+    "qualification": "linked support inputs, no enlarged-record active calls; actual main build must refresh every consumer"
+  }
+}
