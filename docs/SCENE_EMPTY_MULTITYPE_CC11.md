@@ -20,7 +20,7 @@ eight inherited multiplayer entries or the movie-generation default.
 | `008F5A00` | partial: entry/argument setup, child branch `008F66B9..008F6747`, empty-body exit `008F6760..008F6784`; scalar/enum/error arms remain outside this closure | Reuse existing child or allocate/attach a missing child before recursive parsing |
 | `0046C550` | partial: presence branch `0046C58C..0046C6AB`, mode 9 `0046CB43..0046CC58`; other mode/geometry/class arms are existing work | Missing record selects deferred path; present record uses child pointer and mode gating |
 
-The entity producer constructs its bag at `0046D2C3 -> 008F41A0).
+The entity producer constructs its bag at `0046D2C3 -> 008F41A0`.
 It resolves a group at `0046D304 -> 00469B60` and merges it at
 `0046D30C -> 008F54F0`. At `0046D347..0046D34E`, it pushes nullable group
 resolver 0, allow-untyped flag 1 and tokenizer EBP, sets ECX to that bag, and calls
@@ -88,8 +88,10 @@ switches are unchanged.
 
 ## Parser ABI correction and qualification
 
-The current saved description of `008F5A00` as
+The naming ledger's leading description of `008F5A00` as
 `__fastcall(Tokenizer* ECX, char, int)` is contradicted by entry and callers.
+An earlier `cc2_scene_property_bag` correction already records the correct ABI;
+this audit independently confirms it and the primary corrects the leading text.
 `008F5A25` saves ECX as the bag; `008F5A1E` loads the entry-stack +4 tokenizer.
 Entry-stack +8 is the allow-untyped flag and +0Ch is the nullable group resolver
 used by the optional group-list branch. The recursive setup
@@ -98,8 +100,10 @@ The terminal `008F6784 RET 0Ch` matches three stack slots. The established
 calling convention is `__thiscall`; a semantic return value is not established.
 The terminal tokenizer call at `008F6767` is followed only by unwinding, and both
 `0046D353` and `008F6745` ignore the parser's EAX. The C++ function's returned
-tree is a host interface, not this native ABI. Primary owns the metadata
-correction; this packet made no Ghidra/ledger changes.
+tree is a host interface, not this native ABI. The primary canonicalized the ledger
+description and appended this evidence to the preserved Ghidra comments; the worker
+made no Ghidra/ledger changes. Formal parameter types and semantic return remain
+unassigned in Ghidra, rather than inferred from this partial parser audit.
 
 The existing installed-scene probe exited 0: 96 entities, 11 classes, fourteen
 SubmarineGen/MultiType records, 46 registration-pass entries kept, zero
