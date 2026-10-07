@@ -1,0 +1,96 @@
+{
+  "packet": "cc11_land_initial_state_entries",
+  "date": "2026-10-07",
+  "status": "complete_conditional_ordinary_entries_and_connected_abstract_outer_adoption_source_required_services_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verifies project/program before live prototype and call batches",
+    "worker_ghidra_writes": false,
+    "primary_recovery_revision": "16fd96f5a",
+    "primary_report": "reports/orchestrator_dispatch_cc11.json#land_state_entry_native_recovery",
+    "primary_complete_assembly_disk_live_constants_annotations_saved_exports_refreshed": true
+  },
+  "source_files": ["include/bsp/native_land_state_entries.hpp", "src/native_land_state_entries.cpp"],
+  "functions": [
+    {"entry": "009BED80", "end_exclusive": "009BEE25", "bytes": 165, "primary_disk_live_match": true, "sha256": "ca07807a443b51fe14018286b1783bc01d3d1eee7cbb8f17bebc23fb65cc730f", "abi": "ECXstate,RET,preservesEBX/ESI and branch-savedEBP/EDI", "source": "enter_native_land_follow_009bed80", "coverage": "Complete conditional ordinary caller with required complete singleton/copy/reindex and existing actual observer services"},
+    {"entry": "009B21A0", "end_exclusive": "009B21BA", "bytes": 26, "primary_disk_live_match": true, "sha256": "5c93d7039935c2239636db611b10e15b12438edd1a2b2dd54afabacdd19d3df7", "abi": "ECXstate,RET", "source": "enter_native_land_park_009b21a0", "coverage": "Complete positivezero1C/byte18zero/binary32three28 stores in admitted constant/ordinary domain"},
+    {"entry": "007B3DB0", "end_exclusive": "007B3DB1", "bytes": 1, "primary_disk_live_match": true, "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e", "abi": "ECXstate unused,RET", "source": "enter_native_land_moveto_007b3db0", "coverage": "Proved empty one-byteRET"}
+  ],
+  "host_steps": [
+    {"address": "009BED84", "native": "0042E740", "function": "009BED80", "contract": "REQUIRED actual singleton; +380 block identity; destination6C loaded afterward"},
+    {"address": "009BED92", "native": "009BE150", "function": "009BED80", "contract": "REQUIRED complete forty x87 float-lane/two-byte copy into EXISTING6C; never pointer replacement/rawmemcpy"},
+    {"address": "009BEDE4", "native": "007ED260", "function": "009BED80", "contract": "REQUIRED complete actual formation-field reindex after3E4=1"},
+    {"address": "009BEE05", "native": "006952A0", "function": "009BED80", "contract": "Actual existing unregister OLD observed endpoint with SAMEembedded18 callback"},
+    {"address": "009BEE15", "native": "00694A60", "function": "009BED80", "contract": "Actual existing register CAPTURED newleader iffnonnull AFTERcapturedaliasstore"},
+    {"address": "009B32E8", "native": "virtual+04", "function": "009B3240", "contract": "Connected opt-in adapter for SAMEactualtask selectedmember/profile;310publishedbeforeentry,aliasesafterward; native virtual target remains explicit caller-domain requirement"}
+  ],
+  "field_steps": [
+    {"site": "009BED89", "operation": "state6C read AFTERsingleton; existing destination"},
+    {"site": "009BED9A", "operation": "RELOADstate6C after completecopy"},
+    {"site": "009BED9D", "operation": "CAPTUREstate4 before94/90 stores"},
+    {"site": "009BEDA0", "operation": "94positivezero then90positivezero atBEDA8"},
+    {"site": "009BEDB0", "operation": "primary fixed FLD actualcurrentparameters+8; FSTP actualstate88 atBEDBB"},
+    {"site": "009BEDC3", "operation": "84bytezero then8Cverifiedone atBEDC9"},
+    {"site": "009BEDD1", "operation": "capturedapproachC read AFTERstores; null skips formation/observer"},
+    {"site": "009BEDDA", "operation": "actual cachedsquad3E4DWORDone beforecomplete reindex"},
+    {"site": "009BEDE9", "operation": "FRESHstate4 thenFRESHapproachC atBEDEC; requirednonnull/livepostreindex"},
+    {"site": "009BEDEF", "operation": "CAPTUREnewleader3D0 BEFOREold2C read atBEDF5; retained acrossunregister"},
+    {"site": "009BEE0C", "operation": "CAPTUREDnewleader ->state2C AFTERoldunregister BEFOREnonnullnewregister"},
+    {"site": "009BEE1C", "operation": "85bytezero LASTonallordinarybranches"},
+    {"site": "009B21A3", "operation": "Park1Cpositivezero then18bytezero at21B0 then28verifiedthree at21B4"}
+  ],
+  "constants": [
+    {"address": "00CE3854", "binary32_bits": "0x40400000", "value": 3.0, "primary_disk_live_match": true},
+    {"address": "00D7A24C", "binary32_bits": "0x3F800000", "value": 1.0, "primary_disk_live_match": true}
+  ],
+  "connected_adoption": {
+    "source": "NativeLandTaskStateEntryConstructorCalls",
+    "same_view": "Borrow SAME actual NativeLandTaskConstructorView passed to existing outer009B3240 SOURCEcaller",
+    "profiles": "Requiredactual nonnull00D20AEC/00D20AB8/00D1FF60 executabletables for same4C4/500/620members; actual stateprofilecell read",
+    "primary_profile_target_receipt": "Independent primary nativebytes check:00D20AEC+4=007B3DB0;00D20AB8+4=009BED80;00D1FF60+4=009B21A0",
+    "dispatch": "finalenter_state04 supports only matched actual member/profile and its complete SOURCEentry; unsupportedpair source logicerror outsideadmitted domain",
+    "other_services": "base/composite/owner50/embeddedplane72Cpredicate/leader/singleton/copy/reindex/mappings remain REQUIREDabstract, no default/no-op allocation/profile/provider",
+    "outer_order": "Existingouter publishes310 BEFOREentry, aliases410/414/418 AFTERentry; no restoration of entry/currentcache mutations",
+    "current_host_game_binding": false
+  },
+  "contract": {
+    "canonical_storage": "Actual caller-owned stable task; separate3FCcell and ONEcanonical404cell; taskapproachC maps that same cell, no translated cache",
+    "pure_maps": "Required identity/address-to-borrowed-field maps; no represented nativevalue reads, callbacks/nativecalls/allocation/defaults/translatedcache",
+    "parameters": "Actual existing6C destination and source380 block; reload6C; pure actualparameter8 address; complete9BE150 required",
+    "observer": "Alreadyconstructed actualcallback18 prefix, actualold/capturednewobserved endpointprefixes and stablecurrent lock/dispatch/lifetime context; source register/unregister reused; capturednew retained through oldunregister",
+    "nulls": "State4/6C/tuning380/accessedfieldaddresses requirednonnull/live; initialcapturedapproachCNULL skips formation/observer then clears85; postreindexfreshCunguarded and requirednonnull/live; old/newleaderNULL branches preserve native behavior",
+    "numeric": "Primary fixed pointerFLD/FSTP; ambientx87 control; masked exceptions/no pendingunmasked exception/oneavailable stackslot; invariant verifiedbinary32 constants",
+    "ordinary_limits": "Stable identities/fields/storage and normalcompleteprovider returns; no structuralaliasinvalidations/reentry/concurrency/fault/privateEH/allocationfailure or unknownprofile recovery",
+    "queue": "No queue/currentcommand/census/currentplane9D4 substitutions or drain; existing42C/006C0B50 identity/lifetime remains completecomposite requirement"
+  },
+  "required_unbound_dependencies": [
+    {"entry": "009BE150", "end_exclusive": "009BE28B", "bytes": 315, "primary_disk_live_match": true, "sha256": "48dfafc30042b9594b4ee2dbcee1ab2252b8039676f27a6134b1fabd9601cf1a", "abi": "ECXexistingdestination,stacksource,RET4", "contract": "COMPLETEfortyorderedx87FLD/FSTP lanes0..64/6C..A0 step4 andbytes68/69; sourceprovider remains external"},
+    {"entry": "007ED260", "contract": "Complete actual squad/plane formationfield writes, timing and valid priorindices; detachedtypedrotation alone incomplete"},
+    {"entry": "009C2980", "contract": "Complete actual Followstate construction/parameterstorage/callback18 profile/lifetime"},
+    {"entry": "0099C6F0", "contract": "Complete SAMEtask base construction remains abstract"},
+    {"entry": "009B2E50", "contract": "Complete SAMEtask composite, including9F9CE0/9AFE70/006C0B50 and all constructedstate/profile/observer work remains abstract"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86 /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "objects": "PASS actualnewsrc/native_land_state_entries.cpp and existingouterconstructor.cpp ->uniqueignoredobjects",
+    "manifested_source_fixture": "PASS oneignoredlocal/cc11_land_state_entry_probe linked actualnew/outerobjects with existingmainReleasebsp_core/bsp_lua511/bsp_zlib121,user32,d3d9,PowrProf,shell32,advapi32; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "probe_output": "PASS SOURCE outer->Follow same storage/fresh loads/observer replacement; nullC/unchangedleader skip; Park/MoveTo/profile guard; alias/final85/x87 order",
+    "focused_branches": "Sameignoredscenario: initialCNULL skips reindex/pairchanges, unchangedleader preservesactualpairidentity/refcount, Parkpositivezero/byte/three, MoveToempty, excludedprofilemismatch logicerrorguard; distinctold/newcase andCOFFcapturedspill/reload check capturednew use without fabricatedobserverprofile/reentryhook",
+    "fixture_boundary": "SOURCEfixture providers/tables only; copy models testedamplitudeeffect, NOT complete9BE150; controlled field replacements test freshloads, NOT observednative reentry/servicebehavior; actualexisting observerprefix/register/unregister runs on explicitfixturestorage/prepublishedlock",
+    "existing_fixture": "PASS ignoredexistinghook/cruise/validity/canonical/outerprobe; no newtracked tests",
+    "source_coff_receipt": "KernelFLD+04/FSTP+0A. Follow singleton+13/destload+1A/copy+21/reload+27/capture4+2F/zeros+37+40/amplitude+4D/84clear+5A/8Cone+61/capturedCload+6C/shape+89/reindex+95/fresh4+9B/freshC+A7/newleader+B8/spill+BD/unregister+F2/capturedreload+F7/capturedalias+104/register+127/final85clear+135. SOURCE offsets, notnativeABI.",
+    "live_call_verifier": "PASS5directnative rows,0failed;1outervirtualrow explicitlyindirect/unresolved; read-only verifiedcorrectproject/program",
+    "json_diff": "PASS JSONparse and stagedgitdiff--check",
+    "full_build": "Primaryowned; worker nofullCMakebuild orCMake edits",
+    "source_reconstructed": true,
+    "fixture_tested": true,
+    "original_provider_bound": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining_boundaries": ["actual670taskarena/factory/scalardestruction", "actual executableprofiles/rawmember mappings", "completebase/composite/lowerqueue/stateconstruction", "actual singleton/fortylanecopy/livereindex providers", "observer callback/event/profile worldrouting", "retained404/plane3FC/queue42Clifetime afterdeath", "privateEH/unmaskedfault/nativeABI", "livegameplay"],
+  "next_packet": "Recover/adopt one complete existing construction/copy service with real same-storage/profile/lifetime contract; do not replace required providers using sparseBotTaskHost/currentregistryqueue/Booleanpresence"
+}
