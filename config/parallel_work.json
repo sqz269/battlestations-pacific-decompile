@@ -14263,6 +14263,30 @@
       ],
       "reuses_worker_from": "cc11_scene_float_nonempty_payload",
       "contract": "Adopt retained type1 float payload only for actual convoy Speed, ColumnGap, HP, RowGap and Offset consumers, preserving existing raw fallback, integer conversion, missing/malformed handling, Rows/Columns, enum roster, Path and other policy. Reverse remains on its original distinct raw byte path. No header/layout change or contextual empty-F/default action. Actual native five lookup/type1 MOVSS or CVTSI2SS/store fragments in 00743450; full function, allocator/global/provider/ABI/game unbound. One ignored production-TU probe uses installed landconvoy.props, diagnostic removal/replacement, nonempty authored overwrite, and existing raw/I/missing/malformed/Reverse cases. JM06 has no LandConvoy and is only an unrelated source regression. Preserve admitted parser modern CRT qualification. Worker is Ghidra read-only, no CMake or shared metadata edits."
+    },
+    {
+      "id": "cc11_land_parameter_copy_adoption",
+      "done": false,
+      "state": "approved_caller_adoption_of_primary_instruction_proved_x87_kernel",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "009bed80",
+        "009c2980"
+      ],
+      "output_files": [
+        "include/bsp/native_land_state_entries.hpp",
+        "src/native_land_state_entries.cpp",
+        "docs/PILOT_BOT_LAND_PARAMETER_COPY_CC11.md",
+        "reports/pilot_bot_land_parameter_copy_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_parameter_x87_kernel",
+        "cc11_land_initial_state_entries"
+      ],
+      "reuses_worker_from": "cc11_land_initial_state_entries",
+      "contract": "Opt-in abstract state-entry constructor adapter final copy_follow_parameters_009be150 directly invokes primary full instruction-exact kernel on passed existing destination and actual source, with unused EDX nullptr. Same borrowed outer-task view/profiles; all other providers stay abstract. Fixed primary contract only, no new x87 recovery. Use actual A4-byte blocks and preserve exact self alias (normal constructor caches singleton380) and disjoint changed publication with valid lifetimes. Update ignored source fixture from 12-byte partial copy to real kernel, check outer->Follow connected route, all lanes/bytes/holes and self alias; no fake allocator/tuning/queue/profile, lifetime or complete private constructor. Ghidra read-only; no CMake/root metadata; fresh kernel and active entry/outer translation units, pinned stable read-only libraries."
     }
   ],
   "snapshot_after_analysis": {

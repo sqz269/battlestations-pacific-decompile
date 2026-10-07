@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:56:12.601276+00:00",
+  "updated_utc": "2026-10-07T10:00:33.386534+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1442,5 +1442,48 @@
     ],
     "reuses_worker_from": "cc11_scene_float_nonempty_payload",
     "contract": "Adopt retained type1 float payload only for actual convoy Speed, ColumnGap, HP, RowGap and Offset consumers, preserving existing raw fallback, integer conversion, missing/malformed handling, Rows/Columns, enum roster, Path and other policy. Reverse remains on its original distinct raw byte path. No header/layout change or contextual empty-F/default action. Actual native five lookup/type1 MOVSS or CVTSI2SS/store fragments in 00743450; full function, allocator/global/provider/ABI/game unbound. One ignored production-TU probe uses installed landconvoy.props, diagnostic removal/replacement, nonempty authored overwrite, and existing raw/I/missing/malformed/Reverse cases. JM06 has no LandConvoy and is only an unrelated source regression. Preserve admitted parser modern CRT qualification. Worker is Ghidra read-only, no CMake or shared metadata edits."
+  },
+  "land_parameter_copy_adoption_handoff": {
+    "id": "cc11_land_parameter_copy_adoption",
+    "done": false,
+    "state": "approved_caller_adoption_of_primary_instruction_proved_x87_kernel",
+    "worker": "land_retirement",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "009bed80",
+      "009c2980"
+    ],
+    "output_files": [
+      "include/bsp/native_land_state_entries.hpp",
+      "src/native_land_state_entries.cpp",
+      "docs/PILOT_BOT_LAND_PARAMETER_COPY_CC11.md",
+      "reports/pilot_bot_land_parameter_copy_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_land_parameter_x87_kernel",
+      "cc11_land_initial_state_entries"
+    ],
+    "reuses_worker_from": "cc11_land_initial_state_entries",
+    "contract": "Opt-in abstract state-entry constructor adapter final copy_follow_parameters_009be150 directly invokes primary full instruction-exact kernel on passed existing destination and actual source, with unused EDX nullptr. Same borrowed outer-task view/profiles; all other providers stay abstract. Fixed primary contract only, no new x87 recovery. Use actual A4-byte blocks and preserve exact self alias (normal constructor caches singleton380) and disjoint changed publication with valid lifetimes. Update ignored source fixture from 12-byte partial copy to real kernel, check outer->Follow connected route, all lanes/bytes/holes and self alias; no fake allocator/tuning/queue/profile, lifetime or complete private constructor. Ghidra read-only; no CMake/root metadata; fresh kernel and active entry/outer translation units, pinned stable read-only libraries."
+  },
+  "land_parameter_x87_kernel_probe": {
+    "probe": "local/cc11_land_parameter_x87_probe.cpp",
+    "command": "cmd /c local\\cc11_land_parameter_x87_probe.cmd",
+    "log": "local/cc11_land_parameter_x87_compile.log",
+    "cases": 144,
+    "failures": 0,
+    "compiled_original_instruction_bytes_equal": true,
+    "source_body_bytes": 315,
+    "original_execution": "Position-independent original 315-byte body extracted from installed PE, verified against complete live Ghidra bytes, copied into a fresh RX page without relocation or game calls.",
+    "domain": "Disjoint and exact-self-alias A4-byte blocks; three IEEE payload rotations, three precision settings, four rounding settings, zero/one occupied x87 stack values, preexisting masked denormal sticky flag.",
+    "compared": "Returned destination, full source/destination bytes, untouched holes, NaN quieting, x87 CW/SW/TOP/tag and all 80-bit register payloads. Address-specific FIP/FDP and reserved padding excluded.",
+    "artifacts": {
+      "local/cc11_land_parameter_x87_original.bin": "48dfafc30042b9594b4ee2dbcee1ab2252b8039676f27a6134b1fabd9601cf1a",
+      "local/cc11_land_parameter_x87_kernel.obj": "5df3117d504c1f193058d7123eac9cbf4c683c47e5a4565fc26f6db47c8d1663",
+      "local/cc11_land_parameter_x87_probe.exe": "ebc8f360c70330635ae99190fd8cc28493e29df994bc10af049121765d5b77c9"
+    },
+    "manifest_embedded": true,
+    "compiler": "MSVC Win32 /O2 /Gy /W4 /WX /fp:strict /MANIFEST:EMBED"
   }
 }
