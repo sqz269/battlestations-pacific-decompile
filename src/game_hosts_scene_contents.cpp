@@ -1031,11 +1031,8 @@ bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag,
         // 006CB236 requires property type 3 and reads the byte at +0Ch, so any
         // other shape leaves the flag false.
         const SceneProperty* fake = sub->find("FakeAllocated");
-        if (fake != nullptr && !fake->values.empty()) {
-            const std::string& text = fake->values.back();
-            std::int32_t parsed = 0;
-            row.fake_allocated = scene_scan_int(text, parsed) ? parsed != 0 : text == "true";
-        }
+        row.fake_allocated = fake != nullptr && equal_insensitive(fake->type_letter, "B")
+            && scene_property_bool(fake);
         authored.slots.push_back(row);
     }
     return authored;
