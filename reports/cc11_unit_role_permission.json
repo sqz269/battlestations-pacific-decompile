@@ -949,5 +949,218 @@
       "bytes": 5087,
       "sha256": "2e7ec3d068a1529e9a39caa91a2408942e622d7fa9705a9dcafdae8b0cd2446f"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T21:49:04.904333+00:00",
+    "main_build_revision": "488abdcb06ae1d841e9c1447727237c6e5cdc668",
+    "worker_commit": "32b071c2bf0c8e138077ea4dcef6bc3fbfec2738",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 2,
+    "stable_current_Source_header_fixture_inputs": 3,
+    "actual_compiler_project_includes": 2,
+    "stable_generated_recipe_inputs": 2,
+    "current_BSP_support_libraries": {},
+    "stable_historical_worker_inputs": 772,
+    "host_compiler_headers_hashed": 173,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "0059bbd0",
+        "bytes": 35,
+        "sha256": "2769ff0366c986837058cea881870d68d207c0543be75995538ee367902ee802",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007801f3",
+        "bytes": 39,
+        "sha256": "6f3f8d7b44e5c0f5f6a3b7601f90a2d3c08fdae680c568918c1a3e1cc30dba65",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00928662",
+        "bytes": 6,
+        "sha256": "443b7743a74886daf56edda76786ec95d88c79d6ef934e2ee0c48388a1c85241",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009286eb",
+        "bytes": 40,
+        "sha256": "d9904832d02b5abe7d9e9d333af6c43621c3ffccc36a25e1556e18e47c91adb8",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00928713",
+        "bytes": 59,
+        "sha256": "32cd2046ddaf913a99d5b2060c7d6960906b0ba05b60363ed345ceb0be1eaba0",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00927d3e",
+        "bytes": 23,
+        "sha256": "9526ce80d911bcbadf09bb4cb2618b5bcf8b144ddfc805033a6a480beb1c49c0",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00927d57",
+        "bytes": 15,
+        "sha256": "56249bd3b49b5bef596baa471f9845d21a1d5cfe26c9a6490a68a7eb723bce32",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00927de0",
+        "bytes": 20,
+        "sha256": "a1ac6087441d990a3f88427abb4b2b363d6bf010398c3a31c1817bf3d29df553",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d19428",
+        "bytes": 4,
+        "sha256": "a053b6700c3d8ece81106c7625608f9cdc4ee6dcfadb32c23fd357af2baf87f6",
+        "disk_live": "MATCH"
+      }
+    ],
+    "one_connected_fixture": true,
+    "internal_checks": 30,
+    "Source_COFF_exact_worker_bytes": true,
+    "native_call_rows": 1,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "probe_sha256": "0d6603acf15659331903a8e823fd91348b4a7b4ad80b768ce2ef72de6f488d19",
+    "qualification": "Complete35B10inst0059BBD0, actualunit188+4*role DWORD: policy9 wildcard OR full32bit candidate equality. Native fullEAX0/1, RET8; Source uint32 interface with no invented bounds/null guard. Borrowed coherent valid9policy slots, roles0..8; one connected9slot family/18candidate pairs/36 full-width Source-original comparisons/30 internal checks. Exact original35B unrelocated/no dependency bridge/profile patch/BSP support lib. Actual78020B caller and928630/927D20 policy initialization/profile producers are structural-only witnesses; complete units/native class/register ABI/dispatcher/construction/world/game unbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "original_whole_body_bytes": 35,
+    "original_designated_operand_bytes": 0,
+    "original_relocated": false,
+    "artifacts": [
+      {
+        "path": "local/cc11_role_permission_current_primary/0059bbd0_original.bin",
+        "sha256": "2769ff0366c986837058cea881870d68d207c0543be75995538ee367902ee802",
+        "bytes": 35
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/007801f3_original.bin",
+        "sha256": "6f3f8d7b44e5c0f5f6a3b7601f90a2d3c08fdae680c568918c1a3e1cc30dba65",
+        "bytes": 39
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00927d3e_original.bin",
+        "sha256": "9526ce80d911bcbadf09bb4cb2618b5bcf8b144ddfc805033a6a480beb1c49c0",
+        "bytes": 23
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00927d57_original.bin",
+        "sha256": "56249bd3b49b5bef596baa471f9845d21a1d5cfe26c9a6490a68a7eb723bce32",
+        "bytes": 15
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00927de0_original.bin",
+        "sha256": "a1ac6087441d990a3f88427abb4b2b363d6bf010398c3a31c1817bf3d29df553",
+        "bytes": 20
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00928662_original.bin",
+        "sha256": "443b7743a74886daf56edda76786ec95d88c79d6ef934e2ee0c48388a1c85241",
+        "bytes": 6
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/009286eb_original.bin",
+        "sha256": "d9904832d02b5abe7d9e9d333af6c43621c3ffccc36a25e1556e18e47c91adb8",
+        "bytes": 40
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00928713_original.bin",
+        "sha256": "32cd2046ddaf913a99d5b2060c7d6960906b0ba05b60363ed345ceb0be1eaba0",
+        "bytes": 59
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/00d19428_original.bin",
+        "sha256": "a053b6700c3d8ece81106c7625608f9cdc4ee6dcfadb32c23fd357af2baf87f6",
+        "bytes": 4
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/build.cmd",
+        "sha256": "1faeb4e74d14570435b06a1183fa7910016de404d0ff4e83a0fe42b4d6b18035",
+        "bytes": 859
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/coff_evidence.json",
+        "sha256": "24aa67c2f541a4daf5137b1470e61db18225f87a4335302822b4a32fc2d7ded2",
+        "bytes": 1621
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/compile.log",
+        "sha256": "8c09c17d9f5f0bfd872071f2543afac0d623fb003edcf7fdaee615f58fd64a6b",
+        "bytes": 25887
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/inputs_after_link.json",
+        "sha256": "b68b683dc648a162a8dd33aba4d66775c4b40681bf64725a1d6a50bc726cb1b7",
+        "bytes": 210570
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/inputs_before_link.json",
+        "sha256": "28e715eb48e91cdd041274a67f376d9240777ecf5ad29fdeaee12f3cf1bf74f8",
+        "bytes": 180798
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/invoke_original_coff.bin",
+        "sha256": "5ac0c8166965490b31dc721b409385f71481705e3f290cce01326464627590e3",
+        "bytes": 26
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/native_unit_role_open_to_slot_0059bbd0_coff.bin",
+        "sha256": "53edf73d0dae9b6ab1f58f79f6f55383ecc27f840ef52869645caed21bcafec0",
+        "bytes": 35
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/native_unit_role_permission.asm",
+        "sha256": "bc08c9bfb7706dfc53556ceb5a449ac3446ab203b06b90655e7d6d1223d8c52a",
+        "bytes": 1635
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/native_unit_role_permission.obj",
+        "sha256": "450fe4f621398702ab6e460abbc704a63baaaf5275c8400f7ef1a555a0a48f2e",
+        "bytes": 858
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/pe_reader.inc",
+        "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96",
+        "bytes": 2138
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/probe.asm",
+        "sha256": "4e3f154d33f3a65b5f376e062d64f678f39929193a25d5fdaec5a5d4ba9fa84c",
+        "bytes": 108940
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/probe.cpp",
+        "sha256": "60a9d24d226722b19394b52d728c64f1df0e3ec50ef10cc0ac1c453936ad886b",
+        "bytes": 3803
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/probe.exe",
+        "sha256": "0d6603acf15659331903a8e823fd91348b4a7b4ad80b768ce2ef72de6f488d19",
+        "bytes": 14848
+      },
+      {
+        "path": "local/cc11_role_permission_current_primary/probe.obj",
+        "sha256": "d3841094111f2cd9c45445207944585d7b6cb023bc6e802f60d659da291a82e0",
+        "bytes": 28511
+      }
+    ],
+    "saved_annotation_prior_values_receipt": "local/ghidra-annotations-20261007T214937Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_pool_predicates_point_primary_snapshot.log",
+    "saved_function_count": 64719
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full current Win32/all3 CTests/current primary fixture passed; native ABI/game qualified"
 }
