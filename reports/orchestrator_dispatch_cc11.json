@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:40:26.581243+00:00",
+  "updated_utc": "2026-10-07T08:50:52.583147+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -939,5 +939,34 @@
     "original_allocator_identity_proved": false,
     "original_profile_binary_abi_proved": false,
     "complete_router_bound": false
+  },
+  "health_route_flags4_handoff": {
+    "id": "cc11_health_route_flags4",
+    "done": false,
+    "state": "approved_d2_exact_flags4_parent_router_branch_and_existing_constructor_adapter",
+    "worker": "health_guard",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "0077c2a0"
+    ],
+    "output_files": [
+      "include/bsp/native_unit_health_message.hpp",
+      "src/native_unit_health_message.cpp",
+      "docs/UNIT_HEALTH_MESSAGE_ROUTE_FLAGS4_CC11.md",
+      "reports/unit_health_message_route_flags4_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_health_message_d2",
+      "cc11_health_setter_sequence"
+    ],
+    "reuses_worker_from": "cc11_health_message_d2",
+    "contract": "Explicit D2/exactflags4 ordinarybranch of0077C2A0, consumedbyopt-inABSTRACTderivedconstructor+routeradapter,notfullotherflagsrouter. SAMEsetter/constructor/gameE188A8mutableCELL; initialnonnullgame/signed5D4>=10; actualfreshreceiver5C query5/signed528/query1C/optionalactualcurrentD2profilequeryD3. ALWAYSvolatiledefaultE0AF1Creadbeforenonzerooverride4;capturepostquerygame,twomodeobservations1required; actualdebugE18DB7/currentD2predicate49(falseinadmittedactiveprofile),bothfreshglobalmodegates. Actualsender2A8sentinelcell/node00next/08payload/currentpeer50,rawborrowedliveiterationnotarray/snapshot; freshsenderWORD174->D2WORD18;freshactualgame1EF0->REQUIREDcomplete770B50;freshsentinelguard/next AFTERsend. ReachedBF6713serviceREQUIRED,nofakefault/noreturn. Sourcecallbackscanreplaceglobals/sender/validlinks whilecaptured/reachedstorage lives;nocurrentnode/headfree/corruptcycle/concurrentuncoupledmodes. Exact4excludeslocalclone/enqueue/statusclear,nopolicy/allocator/factoryinvention. Legacyrun_route/run_enqueue snapshotsEXCLUDED; transport/session/query29/783DC0 andprofile/stack-message lifetimes remainactualrequiredunbound. Sourceparentbranch/ABI/fault/privateEH/network/game limits explicit. Fourownedpaths,uniqueignoredmanifestedactualTUprobe,CMakeunchanged/GhidrametadataPRIMARY.",
+    "primary_independent_native_review": "All145listed0077C2A0instructions reviewed in two pages; fullbody0077C2A0..0077C46A; originalECXsender/stackmessage,flags,status/RET0C. Flags4reject/nonlocalpeerpath, no localclone in admitted domain.",
+    "worker_ghidra_read_only": true,
+    "legacy_snapshot_workflows_not_admitted": [
+      "run_route",
+      "run_enqueue"
+    ]
   }
 }
