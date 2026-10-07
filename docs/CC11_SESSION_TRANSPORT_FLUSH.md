@@ -141,3 +141,5 @@ the source adds no bounds clamp, successful-delivery result or substitute policy
 
 See `reports/cc11_session_transport_flush.json` for pinned hashes, call evidence,
 artifact paths and the complete validation boundaries.
+
+Primary integration 9319c93251d0b8d3c438b78bc3a9e40e0772e65c: full MSVC Win32/all three existing CTests passed. Independent root fresh actual-main20TU manifested probe repeated all180checks,17fixture cases and72original-x87 comparisons with zero failures. All61 main source/header snapshot inputs and3 current-main support libraries matched pre/post-link hashes; emitted returned-pointer kernel and post-store game reload inspected. Machine014C/resource24/id1/asInvoker and original PE identity verified. Ten direct native CALL rows passed. Queue ownership and arithmetic remain bounded component evidence; actual transport/lifetime/network thread/socket delivery/private fault paths/full native ABI/game remain unbound. Executable SHA256 3289fd463eb26ded9b3609542440d132ae865b0af1a40b477d05238c4849033b. Probe local/cc11_transport_root.cmd; build log local/cc11_transport_integrated_build.log.
