@@ -24,6 +24,8 @@
 #include <vector>
 
 #include "bsp/plane_squadron.hpp"
+#include "bsp/plane_squadron_entity.hpp"
+#include "bsp/command_execution.hpp"
 
 namespace bsp {
 
@@ -254,5 +256,64 @@ class PlaneSquadronRegistry {
 };
 
 PlaneSquadronRegistry& plane_squadron_registry();
+
+// cc11_land_retained_hook: source-only views for 009B33F0 -> 007EFB60 ->
+// 007EEE50. These borrow a particular old task's squadron; they do not resolve
+// current plane membership, retain/refcount native objects, or supply a bot
+// retired FIFO. Every referenced object must remain valid through the hook.
+// A new task's view must be distinct from the retired task's view. The native
+// producer 009F9CFC copies plane+9D4h to approach+0Ch/task+404h without an
+// observer registration. Death-time invalidation/lifetime is still unproved.
+struct PlaneSquadronLandingHookView {
+    PlaneSquadronEntity& squadron;
+    std::uint8_t& field_3b0;
+    std::uint8_t& field_3b8;
+};
+
+struct LandTaskRetainedHookView {
+    PlaneSquadronLandingHookView* squadron_404;
+};
+
+// All providers are required, with no fallback values or live-game adapter.
+// The command state must be this retained squadron's actual +348h controller,
+// including +188h override state; a plane attack-command latch is insufficient.
+// live_count must be 0..5 and each occupied member must be a valid plane.
+class PlaneSquadronLandingHookHost {
+   public:
+    virtual ~PlaneSquadronLandingHookHost() = default;
+    virtual const CommandQueueState& command_queue_348(
+        const PlaneSquadronEntity& squadron) = 0;
+    virtual bool plane_landed_904(const void* plane) = 0;
+    virtual int plane_control_mode_900(const void* plane) = 0;
+    virtual bool current_game_present_00e188a8() = 0;
+    virtual int session_mode_1fe4() = 0;
+
+    // Consumes the recovered 007EEE50 message contract: construct base BEh
+    // with 0075B430's real game/selected-owner context; derived profile
+    // 00D02E5C; delivery+04h=1, sender WORD+18h=0, relay+1Ah=0,
+    // member index+1Ch=index; call 0077C2A0(sender=squadron, flags=5,
+    // status=null). Native serialization writes the extended header then the
+    // index in 3 bits (007EF6F0), rebuilds it and enqueues the COPY for later
+    // receive dispatch (0076E520). This provider must preserve that route,
+    // including game+5D4h readiness and sender identity; it must not rotate
+    // members synchronously. The base constructor requires a valid current
+    // game when emission reaches it, even though 007EEE50's mode gate itself
+    // tolerates a null current game. This interface supplies no message ABI
+    // profile, queue adapter, or substitute success response.
+    virtual void construct_and_route_promotion_be(
+        PlaneSquadronEntity& squadron, int member_index) = 0;
+};
+
+// Complete conditional source projections, not ABI-compatible native entries
+// or GameUnitsHost bindings. Original 009B33F0/007EFB60: ECX=this, plain RET;
+// 007EEE50: __thiscall(squadron, candidate_plane), RET 4. Native ranges and
+// external provider/lifetime limits: docs/LANDING_TASK_RETAINED_HOOK_CC11.md.
+void land_task_retained_hook_009b33f0(const LandTaskRetainedHookView& task,
+                                     PlaneSquadronLandingHookHost& host);
+void plane_squadron_end_landing_007efb60(PlaneSquadronLandingHookView& squadron,
+                                       PlaneSquadronLandingHookHost& host);
+void plane_squadron_request_leader_promotion_007eee50(
+    PlaneSquadronEntity& squadron, const void* candidate,
+    PlaneSquadronLandingHookHost& host);
 
 }  // namespace bsp

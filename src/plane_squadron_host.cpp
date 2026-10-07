@@ -323,4 +323,54 @@ PlaneSquadronRegistry& plane_squadron_registry() {
     return registry;
 }
 
+void plane_squadron_request_leader_promotion_007eee50(
+    PlaneSquadronEntity& squadron, const void* candidate,
+    PlaneSquadronLandingHookHost& host) {
+    // 007EEE71/007EEE7E: neither one plane nor the current leader can promote.
+    if (squadron.live_count < 2 || squadron.members[0] == candidate) return;
+    // 007EEE8A..007EEE9B: only a PRESENT game in mode 2 suppresses the request.
+    if (host.current_game_present_00e188a8() && host.session_mode_1fe4() == 2) return;
+    // 007EEE9E..007EEED3 searches backwards and never accepts slot zero.
+    for (int index = squadron.live_count - 1; index > 0; --index) {
+        if (squadron.members[static_cast<std::size_t>(index)] != candidate) continue;
+        // 007EEEDE base BEh construction, fields at 007EEEE3..007EEEFF,
+        // 007EEF16 route flags 5/status null. Promotion occurs on later receipt,
+        // not at this request or at the land task's pre-destructor hook.
+        host.construct_and_route_promotion_be(squadron, index);
+        return;
+    }
+}
+
+void plane_squadron_end_landing_007efb60(PlaneSquadronLandingHookView& view,
+                                       PlaneSquadronLandingHookHost& host) {
+    PlaneSquadronEntity& squadron = view.squadron;
+    // CMP count at 007EFB62 precedes both MOV byte clears at 007EFB69/007EFB6F.
+    const int count = squadron.live_count;
+    view.field_3b0 = 0;
+    view.field_3b8 = 0;
+    if (count <= 1) return;
+    const void* const leader = squadron.members[0];                 // 007EFB77
+    if (!host.plane_landed_904(leader)) return;                     // 007EFB7D
+    if (host.plane_control_mode_900(leader) != 5) return;            // 007EFB85
+    plane_squadron_request_leader_promotion_007eee50(
+        squadron, squadron.members[1], host);                      // 007EFB95
+}
+
+void land_task_retained_hook_009b33f0(const LandTaskRetainedHookView& task,
+                                     PlaneSquadronLandingHookHost& host) {
+    // 009B33F3, 009B340B and 009B3422 reload the OLD task's +404h. Preserve
+    // both command probes; do not replace them with a current plane lookup.
+    if (task.squadron_404 != nullptr
+        && command_queue_current_command(
+            host.command_queue_348(task.squadron_404->squadron)) != 0u) {
+        if (command_queue_current_command(
+                host.command_queue_348(task.squadron_404->squadron)) == 0x00e08fa0u) {
+            return;                                                // 009B3420
+        }
+    }
+    if (task.squadron_404 != nullptr) {
+        plane_squadron_end_landing_007efb60(*task.squadron_404, host); // 009B342D
+    }
+}
+
 }  // namespace bsp
