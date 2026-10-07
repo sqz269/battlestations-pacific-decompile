@@ -1,0 +1,365 @@
+{
+  "packet": "cc11_land_approach_scalar_lifetime",
+  "status": "complete conditional ordinary SOURCE root scalar and registry adjustor; unbound original class ABI/game",
+  "owned_files": [
+    "include/bsp/native_land_approach_scalar_lifetime.hpp",
+    "src/native_land_approach_scalar_lifetime.cpp",
+    "docs/LANDING_APPROACH_SCALAR_LIFETIME_CC11.md",
+    "reports/landing_approach_scalar_lifetime_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "009b3030",
+      "end_exclusive": "009b303b",
+      "bytes": 11,
+      "instructions": 2,
+      "coverage": "complete",
+      "call_gaps": 0,
+      "sha256": "4e20972b7bddde27696ed028fefcba8dc476d1760fc244cf166f29ffd29427d2",
+      "original_abi": "incoming ECX=actual root+B8 registry; SUB ECX,B8; JMP009B3220; original flags argument remains stacked and scalar RET4 consumes it",
+      "Source": "scalar_delete_native_land_approach_from_registry_009b3030",
+      "identity": "free/return SAME WHOLE ROOT, never registry",
+      "stored_function_definition": "parent supported definition; reports/cc11_approach_registry_adjustor_definition.json"
+    },
+    {
+      "entry": "009b3220",
+      "end_exclusive": "009b323e",
+      "bytes": 30,
+      "instructions": 11,
+      "coverage": "complete",
+      "call_gaps": 0,
+      "sha256": "51f377ca3191eb63c83b30d5487c4bd185cfefc7c2aa1caac102e533e3efbb67",
+      "original_name": "CG_scalar_deleting_dtor_009b3220",
+      "original_name_tag_preserved": true,
+      "original_abi": "ECX=actual WHOLE root; stacked DWORD flags; ESI captures receiver; EAX=original ROOT; RET4",
+      "Source": "scalar_delete_native_land_approach_009b3220",
+      "ordering": "capture ROOT ->complete009B2C80 ->TEST LOW byte flags bit0 ->optional BF65AC(ROOT) and ADD ESP,4 ->return captured ROOT",
+      "flow_repair": "parent supported ADD ESP,4 repair009B3235..009B3238; reports/cc11_approach_scalar_flow_repair.json"
+    }
+  ],
+  "whole_body_disk_live_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "query_route": "bsp.py ghidra bytes; CLI verifies active project/program each query",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ranges": [
+      {
+        "start": "009b3030",
+        "end_exclusive": "009b303b",
+        "bytes": 11,
+        "role": "whole registry adjustor",
+        "sha256": "4e20972b7bddde27696ed028fefcba8dc476d1760fc244cf166f29ffd29427d2",
+        "hex": "81e9b8000000e9e5010000",
+        "disk_live_match": true,
+        "verified_cli_output": "009b3030  81 e9 b8 00 00 00 e9 e5 01 00 00  ...........\n"
+      },
+      {
+        "start": "009b3220",
+        "end_exclusive": "009b323e",
+        "bytes": 30,
+        "role": "whole root scalar",
+        "sha256": "51f377ca3191eb63c83b30d5487c4bd185cfefc7c2aa1caac102e533e3efbb67",
+        "hex": "568bf1e858fafffff644240801740956e87733240083c4048bc65ec20400",
+        "disk_live_match": true,
+        "verified_cli_output": "009b3220  56 8b f1 e8 58 fa ff ff f6 44 24 08 01 74 09 56  V...X....D$..t.V\n009b3230  e8 77 33 24 00 83 c4 04 8b c6 5e c2 04 00  .w3$......^...\n"
+      },
+      {
+        "start": "00d1ff84",
+        "end_exclusive": "00d1ff94",
+        "bytes": 16,
+        "role": "actual profile words",
+        "sha256": "cb57a9f1bcda268a15f62e462e2c623a15ee04718e75e09feb01e3dc74779c29",
+        "hex": "30309b00d0fa9a0020329b00b0349b00",
+        "disk_live_match": true,
+        "verified_cli_output": "00d1ff84  30 30 9b 00 d0 fa 9a 00 20 32 9b 00 b0 34 9b 00  00...... 2...4..\n"
+      },
+      {
+        "start": "009b2eb8",
+        "end_exclusive": "009b2ebe",
+        "bytes": 6,
+        "role": "actual ctor root-profile publication",
+        "sha256": "0d2a73d9e65a75a8ad77e16444814ad6777a8210d4fe566e1a0915af1776f4a4",
+        "hex": "c70688ffd100",
+        "disk_live_match": true,
+        "verified_cli_output": "009b2eb8  c7 06 88 ff d1 00  ......\n"
+      },
+      {
+        "start": "009b2ec3",
+        "end_exclusive": "009b2ec9",
+        "bytes": 6,
+        "role": "actual ctor registry-profile publication",
+        "sha256": "80de1ea8e2f9d7fd4840ccd98eab318c0c15c7d15619065534c7b25dc5c1234c",
+        "hex": "c70784ffd100",
+        "disk_live_match": true,
+        "verified_cli_output": "009b2ec3  c7 07 84 ff d1 00  ......\n"
+      },
+      {
+        "start": "009b3003",
+        "end_exclusive": "009b3009",
+        "bytes": 6,
+        "role": "ctor-reached byte275 store",
+        "sha256": "83050ab6a07ea5ca33c5e659b2e8f358a2fa7c5e38b68a386f3d55f8853dfc87",
+        "hex": "889e75020000",
+        "disk_live_match": true,
+        "verified_cli_output": "009b3003  88 9e 75 02 00 00  ..u...\n",
+        "coverage": "complete six-byte MOV [ESI+275h],BL; prior seventh byte excluded"
+      }
+    ]
+  },
+  "native_calls": [
+    {
+      "function": "009b3030",
+      "address": "009b3036",
+      "native": "009b3220",
+      "kind": "tail_jump",
+      "Source": "complete ROOT scalar facade",
+      "receiver": "actual registry receiver minusB8; SAME WHOLE ROOT"
+    },
+    {
+      "function": "009b3220",
+      "address": "009b3223",
+      "native": "009b2c80",
+      "Source": "destroy_native_land_approach_009b2c80",
+      "receiver": "captured WHOLE ROOT"
+    },
+    {
+      "function": "009b3220",
+      "address": "009b3230",
+      "native": "00bf65ac",
+      "Source": "singleton_lifetime_free",
+      "receiver": "captured WHOLE ROOT; optional LOW byte bit0; caller ADD ESP,4 at3235"
+    }
+  ],
+  "profile_producer": {
+    "native_ctor": "009b2e50; whole lower/composite constructor remains unbound",
+    "captures": "ESI=root at2E6D; EDI=root+B8 at2E80; actual registry ctor411E20 call2E8E",
+    "root_publication": {
+      "site": "009b2eb8",
+      "bytes": "c70688ffd100",
+      "identity": "[ESI]=00D1FF88"
+    },
+    "registry_publication": {
+      "site": "009b2ec3",
+      "bytes": "c70784ffd100",
+      "identity": "[EDI]=00D1FF84"
+    },
+    "actual_table_words": {
+      "00d1ff84": "009b3030 registry slot0",
+      "00d1ff88": "009afad0 root slot0",
+      "00d1ff8c": "009b3220 root profile+4"
+    },
+    "excluded_outer_task_profile_graph": [
+      "00d1ff90=009b34b0",
+      "00d1ff94=009afad0",
+      "009b4100 caller"
+    ],
+    "raw_profiles_uncallable": true,
+    "constructor_extent_witness": "MOV [ESI+275h],BL at009B3003; cleanup26Ch is not class sizeof; full ctor/storage/arena not supplied"
+  },
+  "source_admission": {
+    "same_storage": "stable coherent actual >=26Ch NativeLandApproachCleanupView from existing pure factory; registry argument must equal view.registry_b8 and actual ROOT+B8",
+    "pure_adjustment": "unsigned Win32 address-only subtractionB8 and comparisons; no represented reads/provider/native call/default/translated cache before complete scalar",
+    "flags0": "borrowed WHOLE backing; complete cleanup without receiver free",
+    "flags1": "independent successful same-current-CRT COMPLETE WHOLE-root allocation; never task+3F8, registry+B8, embedded state/callback, arena interior or standalone registry",
+    "return": "numeric original ROOT identity only after free; no dereference or second cleanup",
+    "required_context": "genuine NativeObserverLifetime manager/global publications/current dispatch/recursive lock/deletion services and actual known24B CF5C94 elements/current CRT",
+    "native_guards_added": false,
+    "source_mismatch_diagnostic": "logic_error on pure invalid alias admission; not native guard/fallback",
+    "excluded": "structural reentry, alias invalidation/concurrency, null native placement, unsupported profiles, invalid allocations/free, failure/overflow/fault/privateEH, uncalled constructors, runtime lifetime/arena/classABI/game"
+  },
+  "existing_complete_dependencies": [
+    "native_land_approach_lifetime.cpp009B2C80",
+    "native_land_state_lifetime.cpp007B45F0/007B65E0 and24B vector operations",
+    "native_land_follow_observer_lifetime.cpp006CDD70",
+    "native_land_state_registry_lifetime.cpp004116D0",
+    "observer_edges.cpp/observer_lifetime.cpp complete ordinary admitted services",
+    "singleton_lifetime.cpp genuine current CRT allocate/free"
+  ],
+  "corrections": [
+    {
+      "was": "potential assumption direct009B3220 pointer atD1FF8C is slot0",
+      "is": "D1FF84 registry slot0=009B3030; rootD1FF88 slot0=009AFAD0 and +4=009B3220",
+      "evidence": "exact disk/live16B profile words and full integer ctor store instructions at2EB8/2EC3"
+    },
+    {
+      "was": "prior undefined adjustor and scalar no-return free continuation",
+      "is": "parent-defined full11B adjustor and repaired full30B scalar,2/11 instructions0call gaps",
+      "evidence": "parent recovery reports and live verified flow/listing"
+    }
+  ],
+  "fixture": {
+    "case_count": 1,
+    "domains": "borrowed flags0 and separately whole-CRT-allocated flags1, each Source and full original composition on independent admitted storage",
+    "checks": 581,
+    "result": "PASS",
+    "family": "local/cc11_land_approach_scalar_lifetime_*",
+    "fixture_source_lines": 291,
+    "actual_shaped_source_backing": "278h; includes opaque26C..277 tail beyond constructor-reached275; all retained; not native class sizeof or constructor proof",
+    "connections": "real registryCtor/Add, MoveCtor/register, eight actual24B vector allocations/elements, ten genuine pair removals including Follow retained-reference cleanup, pending span suppression, actual owned recursive OS lock, genuine current CRT",
+    "original_composition": "complete11B adjustor ->complete30B scalar; only adjustorE9 and two natural scalarE8 operands relocated12B; all29 other bytes unchanged",
+    "original_targets": "complete genuine Source approach ABI bridge and current Source CRTfree boundary; no callable image table or original constructor invoked",
+    "root_free_observation": "own executable CRT IAT trace always forwards captured actual free; final live headers/profiles/borrowed fields/opaque tail observed ONLY before genuine ROOTfree; numeric root return only afterward",
+    "borrowed_observation": "flags0 final actual receiver fields and dangling vector numeric headers remain live; no freed array/edge reads",
+    "lifetime_qualification": "prepublished actual owned SOURCE OS lock; actual manager lookup unexercised; remaining state constructor preimages are explicitly borrowed Source setup",
+    "native_runtime_reentry_or_game_proof": false,
+    "original_historical_crt_loader_private_eh_class_abi_proof": false,
+    "old_artifacts_immutable": true
+  },
+  "source_coff": {
+    "root": "captureESI+09; helperCALL+0C; flagbyte load+11/AND+18; optional actualROOTfreeCALL+22; returnESI+2A",
+    "registry_valid_path": "pure receiver/rootB8 validation; compiler inlines complete scalar: helper+25, flagload+2A/AND+31, free+3B, captured ROOTreturn+43",
+    "new_interface_not_native_encoding": true,
+    "path": "local/cc11_land_approach_scalar_lifetime_probe_coff.txt"
+  },
+  "validation": {
+    "strict_10_fresh_tus_pass": true,
+    "manifested_probe_pass": true,
+    "no_worker_full_cmake_build_or_game_run": true,
+    "root_owns_full_build_registration_integration": true,
+    "input_count": 60,
+    "inputs_pre_post_unchanged": true,
+    "quoted_project_header_count": 42,
+    "actual_compiler_project_include_count": 39,
+    "actual_compiler_includes_all_pinned": true,
+    "native_call_jmp_rows": 3,
+    "native_call_jmp_failed": 0,
+    "manifest_resource": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "support_provenance": "parent-confirmed CURRENT e240 Source/build; published898 metadata",
+    "support_libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "local\\cc11_land_approach_scalar_lifetime_core.lib",
+        "bytes": 73352078,
+        "source_sha256_before": "987223e17d34c4cfe7b128a835dd3177c416287fff1bc85acd23ce87a2501991",
+        "copy_sha256": "987223e17d34c4cfe7b128a835dd3177c416287fff1bc85acd23ce87a2501991",
+        "source_sha256_after": "987223e17d34c4cfe7b128a835dd3177c416287fff1bc85acd23ce87a2501991"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "local\\cc11_land_approach_scalar_lifetime_lua.lib",
+        "bytes": 454824,
+        "source_sha256_before": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "local\\cc11_land_approach_scalar_lifetime_zlib.lib",
+        "bytes": 71766,
+        "source_sha256_before": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ],
+    "manifest_path": "local/cc11_land_approach_scalar_lifetime_probe_manifest.json",
+    "probe_build_recipe": "powershell -NoProfile -File local/cc11_land_approach_scalar_lifetime_probe_build.ps1",
+    "probe_sha256": "60343eb464f429c3d2c7757cc02dd6891e22184cdc14fb1cd0b78cec465381ae",
+    "fresh_tus": [
+      "src/native_land_approach_scalar_lifetime.cpp",
+      "src/native_land_approach_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "src/native_land_follow_observer_lifetime.cpp",
+      "src/native_land_moveto_constructor.cpp",
+      "src/native_land_state_registry.cpp",
+      "src/native_land_state_registry_lifetime.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "local/cc11_land_approach_scalar_lifetime_probe.cpp"
+    ],
+    "probe_artifacts": [
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_approach.obj",
+        "size": 13722,
+        "sha256": "26f5e312a0b3117ebe0b3df967e27737b18e19bcc4f00c10f568c978ab59dc13"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_follow_observer.obj",
+        "size": 3497,
+        "sha256": "d6babfe19a665cd54c444a819e2815d3c69b371a14d395dfcb67045fac619cd7"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_moveto_constructor.obj",
+        "size": 8936,
+        "sha256": "4a96202035da7afecdbc4b263664620920c2eb13d7dbf3034158ddca1275452d"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_native_receipt.json",
+        "size": 2885,
+        "sha256": "023e1b7a1e0e2361ab25b5ec6b72d767098356fe0b8afcf171a60accc0b3e801"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_observer_edges.obj",
+        "size": 7160,
+        "sha256": "82dfa0238c664fe82f434de9d95f15f039319c2e1d9267b1e9508339ec962c41"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_observer_lifetime.obj",
+        "size": 28280,
+        "sha256": "157ce7127390dd5e3d4523ee2692a48a13ad6a36d43e594ffb4098db1ef4ec90"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe.cpp",
+        "size": 19804,
+        "sha256": "912efa4390fa7eb0698336f969dc6562dcda97c8b60f69663beeab8c15d27ed8"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe.exe",
+        "size": 235008,
+        "sha256": "60343eb464f429c3d2c7757cc02dd6891e22184cdc14fb1cd0b78cec465381ae"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe.obj",
+        "size": 49361,
+        "sha256": "2d4a9bb2173ded750767d51a6d05edcb406ab5f6ce522b5ba1dbcb079fff5e51"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe_build.ps1",
+        "size": 4173,
+        "sha256": "0e0905ac79ef30072663440e09412c1c113b930516015319f64e5d9953389c48"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe_coff.txt",
+        "size": 43963,
+        "sha256": "75a1873013c7fbba03c684d27f456933b644132e038633ec120d5fda6980ff9e"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe_compile.log",
+        "size": 224681,
+        "sha256": "f5a57ea4b093ee1115d6a13e7a08b5a40f310ea28312059e4a1c74b7912f2f21"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_probe_output.txt",
+        "size": 133,
+        "sha256": "39b2a34cce36074e5438ddecada7cd26ff2303e59b9f9f95a80962a2c01c1726"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_registry.obj",
+        "size": 8900,
+        "sha256": "c12cc15cd7eb2530bbe8eb76399ea439e90b997b9ac365b08ce530ebb5b56132"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_registry_lifetime.obj",
+        "size": 2133,
+        "sha256": "7703432c8d08d4bdda9e75c57e95946e915eb68d92047aee777657d88326f3c3"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_scalar.obj",
+        "size": 9267,
+        "sha256": "bac9d8e1b4ba62cbec6f31bb83b451ecf61fb53336d7d484a0018880348db926"
+      },
+      {
+        "path": "local/cc11_land_approach_scalar_lifetime_state.obj",
+        "size": 12483,
+        "sha256": "2a06f9bad2d874425ff10802859c3434a6b6d50b69c155b3adfc98109e43dc0f"
+      }
+    ]
+  },
+  "unbound_boundaries": [
+    "full009B2E50/009AFE70 lower/composite constructors and x87/owner/profile/arena services",
+    "full actual class construction and runtime observer manager/world lifetime",
+    "outer/taskD1FF90/D1FF94 and9B34B0/9B4100 callers",
+    "task/death/dequeue/base/EH cleanup",
+    "original image class ABI and game admission"
+  ]
+}
