@@ -1,0 +1,667 @@
+{
+  "packet": "cc11_land_moveto_constructor",
+  "base_commit": "cd8a11f4a",
+  "source_status": "complete_conditional_ordinary_source_constructor_connected_to_genuine_registration_and_same_root_cleanup",
+  "original_abi_status": "new_SOURCE_interfaces_not_original_ECX_RET14_binary_replacements",
+  "runtime_status": "actual_arena_class_profile_manager_lifetime_private_EH_ABI_and_game_binding_unbound",
+  "owned_files": [
+    "include/bsp/native_land_moveto_constructor.hpp",
+    "src/native_land_moveto_constructor.cpp",
+    "docs/LANDING_MOVETO_CONSTRUCTOR_CC11.md",
+    "reports/landing_moveto_constructor_cc11.json"
+  ],
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "read_only_bsp.py_cli_verified_each_batch",
+    "mutations": false
+  },
+  "native_body": {
+    "address": "009C2AC0",
+    "end_exclusive": "009C2B64",
+    "bytes": 164,
+    "instructions": 44,
+    "listing_gaps": 0,
+    "disk_live_fixture_literal_equal": true,
+    "sha256": "9160d22694c0335e800fa049a58458958603a352a1d2917e90043c038efda669",
+    "original_abi": "ECX actual MoveTo root; stack owner,FIRST,three raw binary32 words; EAXroot; RET14; native SEH frame",
+    "source": "construct_native_land_moveto_009c2ac0",
+    "native_calls": [
+      {
+        "address": "009C2B4B",
+        "native": "00694A60",
+        "function": "009C2AC0"
+      }
+    ]
+  },
+  "native_consumer_reachability": {
+    "address": "009B2EC9",
+    "native": "009C2AC0",
+    "function": "009B2E50",
+    "source_status": "whole_composite_unbound",
+    "root_operand": "LEA ECX,[ESI+CC] at009B2EA3",
+    "next_state": "LEA ECX,[ESI+108] at009B2ED9",
+    "minimum_actual_backing_bytes": 60,
+    "constructor_direct_callers_read": 12
+  },
+  "field_contract": {
+    "minimum_backing": "3Ch",
+    "pure_mapper": "extent/reference_addresses_only; no represented loads/callbacks/native_calls/default/allocation",
+    "fields": [
+      "00 raw profile",
+      "04 copied owner identity",
+      "08 DWORD",
+      "0C actual data/count/capacity vector",
+      "18 actual16B callback owner prefix",
+      "28 byte",
+      "2C actual FIRST endpoint identity",
+      "30/34/38 raw binary32 DWORDs"
+    ],
+    "untouched": "29..2B padding",
+    "captured_inputs": "stable copied argument words and FIRST identity; null FIRST skips registration",
+    "later_owner_domain": "constructor only copies owner; later consumers require their own valid owner and lifetime contracts"
+  },
+  "publication_order": [
+    "owner4",
+    "zero vector C/10/14 then8",
+    "callback CE3CD4 then zero1C/20/24/byte28",
+    "word30 then34",
+    "root D20AEC then callback D20AD4",
+    "null2C then word38",
+    "if captured FIRST nonnull publish2C then real694A60"
+  ],
+  "word38_naming": {
+    "historical_evidence": "int mode",
+    "later_annotation": "speedRange",
+    "observed": "009C2B27 MOVSS stack word -> XMM0;009C2B41 MOVSS XMM0 -> state38",
+    "source": "raw DWORD transport, no numeric conversion or semantic mode/float-argument ABI claim",
+    "history_preserved": true
+  },
+  "profiles": {
+    "raw_source_uncallable": true,
+    "disk_live_bytes": 56,
+    "sha256": "5b3e60123eb65ddf07c292e1d8f91767b167d1df283d3e0a6b0c977b0e0cd478",
+    "callback_D20AD4": [
+      "009C2B70",
+      "009BDEB0",
+      "0042B120",
+      "0042B130",
+      "0042B140",
+      "006935C0"
+    ],
+    "root_D20AEC": [
+      "009C3D10",
+      "007B3DB0",
+      "007B3DC0",
+      "009C18C0",
+      "007B3DE0",
+      "007B3DF0",
+      "007B45E0",
+      "009C1850"
+    ],
+    "unbound": "undefined9C2B70/scalars/type_aware_callbacks/tick/other_virtual_methods; no executable Source profile fabricated"
+  },
+  "required_complete_providers": [
+    {
+      "source": "src/observer_edges.cpp",
+      "operation": "register_observer_pair_00694a60",
+      "contract": "captured current recursive lock/nested find/current canonical create or modulo32 reference increment"
+    },
+    {
+      "source": "src/observer_lifetime.cpp",
+      "operation": "NativeObserverLifetime",
+      "contract": "mandatory actual published manager/lock/dispatch/current CRT context and genuine canonical edge lifetime"
+    },
+    {
+      "source": "src/native_land_state_lifetime.cpp",
+      "operation": "destroy_native_land_moveto_007b65e0",
+      "contract": "SAME root callback18 complete695870 before shared7B45F0; preserve provider-final fields and dangling headers"
+    }
+  ],
+  "source_admission": {
+    "required": [
+      "fresh successful placement into actual stable >=3Ch root; no overwrite of live resources",
+      "pure same-root fields and stable copied arguments",
+      "nonnull FIRST live actual prefix, coherent arrays, actual lifetime current contexts",
+      "native observer size/count/range requirements and successful current same-CRT allocation/free"
+    ],
+    "excluded": [
+      "structural reentry/concurrency/field mutation/invalid storage/null allocation/overflow",
+      "private EH/fault/allocation failure/rollback/native constructor ABI/game equivalence",
+      "whole9B2E50/9AFE70/approach construction/arena ownership/other class table methods"
+    ]
+  },
+  "fixture": {
+    "path": "local/cc11_land_moveto_constructor_probe.cpp",
+    "executable": "local/cc11_land_moveto_constructor_probe.exe",
+    "manifest": "local/cc11_land_moveto_constructor_manifest.json",
+    "checks": 57,
+    "result": "PASS: 57 SAME3Ch MoveTo SOURCE/original164B constructor-register-cleanup checks",
+    "normal_branches": "Source and full-original164B nonnull and null FIRST, then genuine existing Source cleanup",
+    "original_relocations": [
+      {
+        "offset": "008B",
+        "bytes_modified": "CALL operand only4B",
+        "target": "SOURCE fastcall bridge to complete register_observer_pair_00694a60"
+      }
+    ],
+    "raw_words": [
+      "7F800123 sNaN bits",
+      "80000000 negative zero bits",
+      "00000001 denormal bits"
+    ],
+    "behavior": "same root/FIRST/callback18, actual canonical edge and pending suppression, retained padding/words, provider-final profile and captured recursive lock restoration",
+    "limits": [
+      "controlled Source observations only, no runtime reentry proof",
+      "copied owner token is not a constructed approach or task arena",
+      "prepublished actual owned OS recursive lock; actual manager lookup unexercised",
+      "original SEH setup/restore ordinary success only; new bridge ABI/current CRT not historical CRT/loader/privateEH/game proof",
+      "no callback-table invocation or freed-array dereference"
+    ]
+  },
+  "compiler_receipts": {
+    "toolchain": "MSVC18Community14.51.36231 Win32",
+    "vcvars": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars32.bat",
+    "fresh_tus": [
+      "src/native_land_moveto_constructor.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "local/cc11_land_moveto_constructor_probe.cpp"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_constructor.obj",
+          "src/native_land_moveto_constructor.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_constructor_observer_edges.obj",
+          "src/observer_edges.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_constructor_observer_lifetime.obj",
+          "src/observer_lifetime.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_constructor_shared_state.obj",
+          "src/native_land_state_lifetime.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_constructor_probe.obj",
+          "local/cc11_land_moveto_constructor_probe.cpp"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "link": {
+      "argv": [
+        "link",
+        "/NOLOGO",
+        "/INCREMENTAL:NO",
+        "/OPT:REF",
+        "/MANIFEST:EMBED",
+        "/OUT:local/cc11_land_moveto_constructor_probe.exe",
+        "local/cc11_land_moveto_constructor.obj",
+        "local/cc11_land_moveto_constructor_observer_edges.obj",
+        "local/cc11_land_moveto_constructor_observer_lifetime.obj",
+        "local/cc11_land_moveto_constructor_shared_state.obj",
+        "local/cc11_land_moveto_constructor_probe.obj",
+        "local/cc11_land_moveto_constructor_bsp_core.lib",
+        "local/cc11_land_moveto_constructor_bsp_lua511.lib",
+        "local/cc11_land_moveto_constructor_bsp_zlib121.lib",
+        "user32.lib",
+        "d3d9.lib",
+        "PowrProf.lib",
+        "shell32.lib",
+        "advapi32.lib"
+      ],
+      "exit_code": 0
+    },
+    "probe_exit_code": 0,
+    "executable": {
+      "machine": "0x14c",
+      "asInvoker": true,
+      "uiAccess_false": true
+    },
+    "coff": {
+      "represented_store_order": "retained exactly",
+      "raw_word_stores": "68,71,95 DWORD stores no arithmetic",
+      "root_callback_stamps": "76 D20AEC,7F D20AD4",
+      "null_FIRST": "88 DWORDzero before95 thirdword",
+      "nonnull_FIRST": "A6 DWORDstore beforeAC genuine registration call",
+      "only_call": "AC register_observer_pair_00694a60 REL32@AD",
+      "return": "B4 loads borrowed actual_root; new cdecl ret not original RET14",
+      "pure_helpers": "address checks and reference copies; no represented value reads"
+    }
+  },
+  "support_freeze": {
+    "build": "a121efaa0",
+    "source_before_copy_after_equal": true,
+    "libraries": [
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+        "copy": "local/cc11_land_moveto_constructor_bsp_core.lib",
+        "bytes": 73274634,
+        "original_before_copy_original_after_sha256": "4159cc5daee3d4f38ff7059095cd1aa5c9b98211c95424d5c7c3ade0b723c793"
+      },
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+        "copy": "local/cc11_land_moveto_constructor_bsp_lua511.lib",
+        "bytes": 454824,
+        "original_before_copy_original_after_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+        "copy": "local/cc11_land_moveto_constructor_bsp_zlib121.lib",
+        "bytes": 71766,
+        "original_before_copy_original_after_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "immutable_inputs": {
+    "count": 28,
+    "all_equal": true,
+    "before": [
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/native_land_moveto_constructor.hpp",
+        "bytes": 3044,
+        "sha256": "19e7dbb4dddad630729b2a087bc2dc39fa69accb13e403914833c3ad0a1423ad"
+      },
+      {
+        "path": "include/bsp/native_land_state_lifetime.hpp",
+        "bytes": 5099,
+        "sha256": "82d5a58ab58ee4e975a6eb5a760f772766e14cb56a76627bdc104b901579c1f5"
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_tracked_critical_section_release.hpp",
+        "bytes": 794,
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "bytes": 1700,
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "bytes": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_core.lib",
+        "bytes": 73274634,
+        "sha256": "4159cc5daee3d4f38ff7059095cd1aa5c9b98211c95424d5c7c3ade0b723c793"
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_lua511.lib",
+        "bytes": 454824,
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_zlib121.lib",
+        "bytes": 71766,
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_probe.cpp",
+        "bytes": 11868,
+        "sha256": "7dcaff47a172c509a62869b5f2fa1f377c030d496b613e0e492b25960e925baa"
+      },
+      {
+        "path": "src/native_land_moveto_constructor.cpp",
+        "bytes": 2838,
+        "sha256": "a107614b4e42dff239989a6911dcdd536c9c029c30a5d11ed2fc381bfc3fd062"
+      },
+      {
+        "path": "src/native_land_state_lifetime.cpp",
+        "bytes": 5326,
+        "sha256": "9e3a1a3056011eb4a10232386b72663415757c09eaccc6af8027fb05052f4f19"
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "bytes": 3890,
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+      }
+    ],
+    "after": [
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_land_moveto_constructor.hpp",
+        "sha256": "19e7dbb4dddad630729b2a087bc2dc39fa69accb13e403914833c3ad0a1423ad",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_land_state_lifetime.hpp",
+        "sha256": "82d5a58ab58ee4e975a6eb5a760f772766e14cb56a76627bdc104b901579c1f5",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_tracked_critical_section_release.hpp",
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_core.lib",
+        "sha256": "4159cc5daee3d4f38ff7059095cd1aa5c9b98211c95424d5c7c3ade0b723c793",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_lua511.lib",
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_bsp_zlib121.lib",
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_constructor_probe.cpp",
+        "sha256": "7dcaff47a172c509a62869b5f2fa1f377c030d496b613e0e492b25960e925baa",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_land_moveto_constructor.cpp",
+        "sha256": "a107614b4e42dff239989a6911dcdd536c9c029c30a5d11ed2fc381bfc3fd062",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_land_state_lifetime.cpp",
+        "sha256": "9e3a1a3056011eb4a10232386b72663415757c09eaccc6af8027fb05052f4f19",
+        "unchanged": true
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47",
+        "unchanged": true
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+        "unchanged": true
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "local\\cc11_land_moveto_constructor.obj",
+      "bytes": 8912,
+      "sha256": "810a7bc449a5a22b83541a4a3cfa70e2ccd8a3b5b01b71f14ead3d639a0dd6ca"
+    },
+    {
+      "path": "local\\cc11_land_moveto_constructor_observer_edges.obj",
+      "bytes": 7152,
+      "sha256": "cba8b710f1383bbebb3910f76acc8046f59e7d8e82e156c4f158615755bb8800"
+    },
+    {
+      "path": "local\\cc11_land_moveto_constructor_observer_lifetime.obj",
+      "bytes": 28272,
+      "sha256": "c7870bc0a9a20d975fc2547b78870015aef1b0031f088820f10c9bd76d9da6b6"
+    },
+    {
+      "path": "local\\cc11_land_moveto_constructor_shared_state.obj",
+      "bytes": 12483,
+      "sha256": "aef92a2026d401abcc8451ff9ea9637851f37584dd8c0533992904ba77fab7e3"
+    },
+    {
+      "path": "local\\cc11_land_moveto_constructor_probe.obj",
+      "bytes": 29043,
+      "sha256": "8c7a5e32e5d645145e72a285d08359fa5e8e0a65732bb396c274a2cdba6f07fe"
+    },
+    {
+      "path": "local\\cc11_land_moveto_constructor_probe.exe",
+      "bytes": 227840,
+      "sha256": "cb52e413a15d72c35d916f788574f15af4b6ca24de65c1a95230f8a6cbd2b7cb"
+    }
+  ],
+  "validation": {
+    "strict_five_TUs": "passed",
+    "focused_probe": "57 checks passed",
+    "native_call_verifier": "passed2direct_rows0failed; constructor1plus_read_only_composite_caller1",
+    "git_diff_check": "passed including final staged owned files",
+    "root_full_build_independent_probe": "primary-owned pending integration; no worker full build",
+    "new_tracked_tests": false,
+    "shared_edits": false
+  },
+  "next_boundaries": {
+    "Follow009C2980": "213B complete native evidence but actual42E740 allocation/publication and caller x87 kernel remain external; not ported",
+    "whole_constructor": "all composite/arena/privateEH/full profile/lifetime services still required; no promotion"
+  }
+}
