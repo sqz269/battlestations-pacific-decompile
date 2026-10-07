@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:29:42.993960+00:00",
+  "updated_utc": "2026-10-07T05:34:54.174561+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -249,7 +249,18 @@
     "primary_calls_checked": 8,
     "failures": 0,
     "source_fixture": "BE BC3A/24bits; padding/BE46/virtual-reader/deferred-receipt/reindex/signed-edge; source-only",
-    "full_main_build": "queued; no native queue, lifetime, ABI or runtime binding claimed",
+    "full_main_build": {
+      "code_revision": "a84eb7968",
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/cc11_be_integrated_build.log",
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "bsp_game_sha256": "d1ba8c3d6a3c93abb8fad902ebd8a0ae27e5792d6784a5ae24539037c4e1131c",
+      "primary_source_probe_exit_code": 0,
+      "probe_receipt": "PASS BE BC3A/24bits, padding, predicate, virtual-reader, deferred receipt/reindex and signed edge; source-only"
+    },
     "annotations_saved": true,
     "exports_refreshed": true,
     "stale_source_comments_corrected": true,

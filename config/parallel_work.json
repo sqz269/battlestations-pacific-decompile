@@ -13103,7 +13103,7 @@
     },
     {
       "id": "cc11_health_pair",
-      "state": "dispatched_to_reused_worker",
+      "state": "completed_80000_step_simulation_pair_causal_review_pending_renderer_failures",
       "done": false,
       "worker": "health_guard",
       "model": "gpt-6-astra",
@@ -13270,9 +13270,11 @@
       ],
       "code_revision": "8d10fac7e0e742aa733bdfbc02fa701a99856cce",
       "integrated_revision": "593a56eefaaabcca65916c6b5cbdcb2ec33ee41e",
-      "full_main_build_pending": true,
+      "full_main_build_pending": false,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "build_validation_revision": "a84eb7968",
+      "build_validation_report": "reports/orchestrator_dispatch_cc11.json"
     },
     {
       "id": "cc11_land_owner",
@@ -13322,7 +13324,10 @@
         "00999e40",
         "00999ee0",
         "0099a830",
-        "0099a720"
+        "0099a720",
+        "0099a010",
+        "00695870",
+        "00875b30"
       ],
       "output_files": [
         "include/bsp/native_pilot_bot_task_owner.hpp",
@@ -13336,7 +13341,13 @@
         "cc11_land_be_profile"
       ],
       "reuses_worker_from": "cc11_land_be_profile",
-      "contract": "Reconstruct complete conditional retire-all, retired FIFO drain, disable/drain and separate member cleanup ordering from reviewed native bodies. Use actual owned stable task handles and required hook/scalar-delete/member-cleanup providers; no GameUnitsHost wiring or invented cached lifetime. Keep destructor-without-hook distinct from ordinary retired drain. Preserve native post-hook head reload, flags and deletion/storage order; excluded reentrancy/allocation-failure domains explicit."
+      "contract": "Reconstruct complete conditional retire-all, retired FIFO drain, disable/drain and separate member cleanup ordering from reviewed native bodies. Use actual owned stable task handles and required hook/scalar-delete/member-cleanup providers; no GameUnitsHost wiring or invented cached lifetime. Keep destructor-without-hook distinct from ordinary retired drain. Preserve native post-hook head reload, flags and deletion/storage order; excluded reentrancy/allocation-failure domains explicit.",
+      "local_validation_artifacts": [
+        "local/cc11_land_owner_probe.cpp",
+        "local/cc11_land_owner_probe.obj",
+        "local/cc11_land_owner_probe.exe",
+        "local/native_pilot_bot_task_owner_cc11.obj"
+      ]
     }
   ],
   "snapshot_after_analysis": {
