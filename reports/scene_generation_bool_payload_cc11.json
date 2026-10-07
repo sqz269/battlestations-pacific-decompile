@@ -1,0 +1,429 @@
+{
+  "packet": "cc11_scene_generation_bool_payload",
+  "date": "2026-10-07",
+  "source_baseline": "e7ce15904665997509d01e2c3d8904429f6f19ca",
+  "doc": "docs/SCENE_GENERATION_BOOL_PAYLOAD_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "owned_addresses": [
+    "0046C550"
+  ],
+  "owned_files": [
+    "src/scene_entity_factory.cpp",
+    "docs/SCENE_GENERATION_BOOL_PAYLOAD_CC11.md",
+    "reports/scene_generation_bool_payload_cc11.json"
+  ],
+  "dependencies": [
+    "cc11_scene_typed_bool_payload",
+    "cc11_scene_typed_int_payload",
+    "cc11_scene_group_loading",
+    "cc11_scene_empty_bag",
+    "scene_entity_factory"
+  ],
+  "status": "bounded owning-B gate adoption; strict fresh compile and connected SOURCE fixture PASS; root integrated full build/CTests pending",
+  "correction": {
+    "was": "Four actual generation-gate reads use first raw diagnostic literal, ignoring successful owning B values",
+    "is": "A private called reader prefers compatible case-insensitive B plus has_boolean byte, otherwise exact unchanged scene_property_bool",
+    "evidence": "Eleven native lookup+0C byte fragments; existing type3 producer/clone/assignment and successful recognized-literal owning-B integration; actual public-gate diagnostic-clear/opposite fixture"
+  },
+  "routines": [
+    {
+      "address": "0046C550",
+      "coverage": "partial: only eleven lookup/stored-byte fragments at four existing Source reads; no additional whole native body/service/ABI binding",
+      "body_start": "0046C550",
+      "body_end_inclusive": "0046CCE0",
+      "body_end_exclusive": "0046CCE1",
+      "listed_instruction_count": 520,
+      "stored_ghidra_signature": "undefined BSP_SceneEntity_ShouldGenerate(void)",
+      "terminal_ret_site": "0046CCDE",
+      "terminal_ret": "RET 5Ch",
+      "original_abi_claimed": false
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0046C9B8",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 0,
+      "key": "MultiIslandCapture1v1",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046C9AC",
+      "fragment_end_inclusive": "0046C9BF",
+      "fragment_end_exclusive": "0046C9C0",
+      "byte_read_site": "0046C9BD",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE57B4",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046CA2F",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 1,
+      "key": "MultiIslandCapture2v2",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CA23",
+      "fragment_end_inclusive": "0046CA36",
+      "fragment_end_exclusive": "0046CA37",
+      "byte_read_site": "0046CA34",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE579C",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046CAA6",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 2,
+      "key": "MultiIslandCapture3v3",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CA9A",
+      "fragment_end_inclusive": "0046CAAD",
+      "fragment_end_exclusive": "0046CAAE",
+      "byte_read_site": "0046CAAB",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE5784",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046CB0D",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 3,
+      "key": "MultiIslandCapture4v4",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CB01",
+      "fragment_end_inclusive": "0046CB14",
+      "fragment_end_exclusive": "0046CB15",
+      "byte_read_site": "0046CB12",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE576C",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046C8CA",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 4,
+      "key": "MultiDuel",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046C8BE",
+      "fragment_end_inclusive": "0046C8D1",
+      "fragment_end_exclusive": "0046C8D2",
+      "byte_read_site": "0046C8CF",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE57D8",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046C941",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 5,
+      "key": "MultiEscort",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046C935",
+      "fragment_end_inclusive": "0046C948",
+      "fragment_end_exclusive": "0046C949",
+      "byte_read_site": "0046C946",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE57CC",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046C7DC",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 6,
+      "key": "MultiSiege",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046C7D0",
+      "fragment_end_inclusive": "0046C7E3",
+      "fragment_end_exclusive": "0046C7E4",
+      "byte_read_site": "0046C7E1",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE57F8",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046C853",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 7,
+      "key": "MultiCompetitive",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046C847",
+      "fragment_end_inclusive": "0046C85A",
+      "fragment_end_exclusive": "0046C85B",
+      "byte_read_site": "0046C858",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE57E4",
+      "bag": "MultiType child"
+    },
+    {
+      "address": "0046CC62",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 8,
+      "key": "GenerateInGame",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CC5B",
+      "fragment_end_inclusive": "0046CC70",
+      "fragment_end_exclusive": "0046CC71",
+      "byte_read_site": "0046CC67",
+      "byte_read_instruction": "CMP zero",
+      "key_literal": "00CE575C",
+      "bag": "parent bag ESI"
+    },
+    {
+      "address": "0046CB4A",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 9,
+      "key": "GenerateInGame",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CB43",
+      "fragment_end_inclusive": "0046CB58",
+      "fragment_end_exclusive": "0046CB59",
+      "byte_read_site": "0046CB4F",
+      "byte_read_instruction": "CMP zero",
+      "key_literal": "00CE575C",
+      "bag": "parent bag ESI"
+    },
+    {
+      "address": "0046CC3E",
+      "native": "008F2260",
+      "function": "0046C550",
+      "mode": 9,
+      "key": "GenerateInEngineMovie",
+      "contract": "Existing property lookup followed by untyped byte+0C read; no null/type guard",
+      "fragment_start": "0046CC37",
+      "fragment_end_inclusive": "0046CC45",
+      "fragment_end_exclusive": "0046CC46",
+      "byte_read_site": "0046CC43",
+      "byte_read_instruction": "MOV AL",
+      "key_literal": "00CE5744",
+      "bag": "parent bag ESI"
+    }
+  ],
+  "producer_support": {
+    "prior_doc": "docs/SCENE_TYPED_BOOL_PAYLOAD_CC11.md",
+    "parser_B_arm": {
+      "start": "008F5D4F",
+      "end_inclusive": "008F5DDF",
+      "end_exclusive": "008F5DE0"
+    },
+    "heap_type3": {
+      "start": "008F3940",
+      "end_inclusive": "008F39A0",
+      "end_exclusive": "008F39A1"
+    },
+    "scalar_constructor": {
+      "start": "008EF1F0",
+      "end_inclusive": "008EF220",
+      "end_exclusive": "008EF221"
+    },
+    "clone_B_fragment": {
+      "start": "008F4F8D",
+      "end_inclusive": "008F4FC1",
+      "end_exclusive": "008F4FC2"
+    },
+    "assign_B_fragment": {
+      "start": "008F0736",
+      "end_inclusive": "008F0745",
+      "end_exclusive": "008F0746"
+    },
+    "contract": "Native type3 records retain byte+0C; Source boolean_value/has_boolean are independent owning data, not native parser success/+2C/action flags",
+    "ownership": "supporting accepted prior packet; no new naming/reconstruction of these entries"
+  },
+  "admission": [
+    "One recognized explicit B true/false literal with ASCII case variants and closed semicolon",
+    "Independent owning byte/presence copied through existing admitted PropertyLibrary/group/authored merge",
+    "Native missing/type-fault behavior is not Source skip/false compatibility policy",
+    "Global helper and its old first-literal/null/empty/cross-type raw policies remain unchanged",
+    "Modes, geometry, exempt-class input, deferred/stock/default/type policy unchanged"
+  ],
+  "installed": {
+    "input_manifest": "local/cc11_scene_generation_bool_payload/inputs.json",
+    "library_files": 15,
+    "resolved_groups": 22,
+    "JM06_SubmarineGen_bags": 14,
+    "gate_boolean_counts": {
+      "ordinary_game_true_movie_true": 8,
+      "PlayerSub_game_true_movie_false": 3,
+      "tutorial_game_false_movie_true": 3
+    },
+    "tutorial_scene_lines": {
+      "start": 5994,
+      "end_inclusive": 6065
+    },
+    "MultiEntity_global_enums_lines": {
+      "start": 1772,
+      "end_inclusive": 1787
+    },
+    "tutorials": "Authored GenerateInGame B false and present-empty MultiType retain inherited movie B true and eight selected-key B true values",
+    "consumer_effect": "All14 actual Source bags preserve mode8/mode9 answers after clearing or reversing B diagnostics; three tutorials mode8 skip/mode9 fallback",
+    "whole_SceneReader_creator_mission_game_executed": false
+  },
+  "verification": {
+    "strict_fresh_Win32_compile": {
+      "exit_code": 0,
+      "translation_units": [
+        "src/scene_file.cpp",
+        "src/scene_entity_factory.cpp",
+        "probe.cpp including actual src/game_hosts_scene_contents.cpp"
+      ],
+      "flags": "/std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /showIncludes; actual scene-contents _CRT_SECURE_NO_WARNINGS plus current Lua headers",
+      "active_Source_Lua_input_count": 180,
+      "actual_included_project_Lua_paths": 178
+    },
+    "link": {
+      "exit_code": 0,
+      "immutable_compiled_inputs": 77,
+      "PE_machine": "0x14c",
+      "embedded_asInvoker_manifest": true
+    },
+    "connected_fixture": {
+      "exit_code": 0,
+      "class": "real Source SubmarineGen registry id8; explicitly empty allowed-class vector",
+      "frames": "actual local and identity-parent arrays; null parent identity; rejecting pose resolver",
+      "mode_area_provider": "explicit borrowed finite Source interface area; existing geometry runs; no native play-area/table or actual production multiplayer provider claim",
+      "checks": [
+        "owning independent copy plus clear/opposite diagnostics",
+        "mode8 generation/stock with no deferred record",
+        "mode9 movie fallback, game branch and priorbuilt policy",
+        "all8 selected MultiType keys vs opposite nonselected values and exact slot mapping",
+        "strict boundary/outside rejection",
+        "compatible B preference; no-own B/nonB raw fallback",
+        "missing/empty and absent-vs-present MultiType Source policy",
+        "15 actual libraries/22 groups/14 JM06 bags/3 tutorial fallback bags"
+      ]
+    },
+    "hash_stability": {
+      "active_Source_Lua_inputs": true,
+      "installed_inputs": 16,
+      "all77_compiled_supports": true,
+      "original_pre_post_pinned_copies": true
+    },
+    "report_call_verifier": {
+      "status": "PASS",
+      "exit_code": 0,
+      "direct_rows": 11,
+      "failed_rows": 0,
+      "log": "local/cc11_scene_generation_bool_payload/native_calls.log"
+    },
+    "git_diff_check": "PASS exit0",
+    "integrated_build_CTests": "root pending; no worker full build"
+  },
+  "support_provenance": {
+    "manifest": "local/cc11_scene_generation_bool_payload/support_freeze.json",
+    "libraries": "Three immutable pre-registry libraries after root completed owning-I full SceneProperty consumer rebuild",
+    "library_freeze_observed_main_head_not_asserted_build_commit": "f60a091aa7d1fb7584c12d09922a930809c5053d",
+    "library_hashes": [
+      {
+        "name": "bsp_core.lib",
+        "sha256": "338F924E70CA4FCB4642ED79126AB44D634B3EBB466C893CE552D65AC1F0D821"
+      },
+      {
+        "name": "bsp_lua511.lib",
+        "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE"
+      },
+      {
+        "name": "bsp_zlib121.lib",
+        "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
+      }
+    ],
+    "game_objects": "74 immutable current post-I same-SceneProperty-header game objects; exclude game_main and scene_contents freshly included in probe",
+    "game_objects_build_commit": "d87f925047dfcf3c79d345e3ba5c0b62a3e1fa3a",
+    "game_objects_freeze_observed_main_head": "ac77bffe078f5047477e7b915deeb41e0cf347c8",
+    "mixed_provenance_explicit": true,
+    "old_pre_I_binaries_used": false,
+    "all_link_inputs_local_immutable_no_live_main_paths": true
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_scene_generation_bool_payload/probe.cpp",
+      "bytes": 15263,
+      "sha256": "920B6901F64940297B4A80BFDE3CBE91068DEB877EBB773A683EAAA3017AAC26"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/compile.cmd",
+      "bytes": 913,
+      "sha256": "3F0D71D4C29FB93E77C058F0B44D95BBD62311A79FE090FD33E72C79351701E5"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/link.cmd",
+      "bytes": 810,
+      "sha256": "822F7A45C5F3F4A4AC0194B00D7FBCFFC0966A4E3B71DCC05ECAAA282CBD7204"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/recipe.md",
+      "bytes": 2557,
+      "sha256": "5615EF1B2CF9104691C79434DD6563DCEECE48283DC1B63E345207E357FA52F2"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/receipt.py",
+      "bytes": 4256,
+      "sha256": "74F3EC37F78E7E5C003E84229718262E59DCFEF98D517F9D69AA50ADCA327372"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/make_report.py",
+      "bytes": 10937,
+      "sha256": "524546727E13CDB59AFCCD36D502D57D0A70A7140A9549BE1EA2AB14D55D9BA1"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/inputs.json",
+      "bytes": 223073,
+      "sha256": "ADEEEB2A8CD9E510BBE6AA4197556F49C7E1C87596AA6F15739AA0B4F2EE4A74"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/support_freeze.json",
+      "bytes": 49705,
+      "sha256": "F5998626FF531BD62C51640DC7B3ADAC87E086AC111BDF52B163FC48DF316B4C"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/game_objects.rsp",
+      "bytes": 11110,
+      "sha256": "8B27CD1C91AF71CADE7138F3C308D06C9EB4804946BAB53034B0EC10CF2A2522"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/compile.log",
+      "bytes": 73024,
+      "sha256": "A216A5D361982344473423F88CCD0CAD62804BEE5460D3EBF783F19E9C4EB380"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/link.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/probe.log",
+      "bytes": 1190,
+      "sha256": "173F25C94577872B9CE23E17438222E6E61FCC515EB4DFAF0FBD435C0BDAA787"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/probe.exe",
+      "bytes": 489984,
+      "sha256": "28F7330543C85DB69ADF8D5D8BCB5F6E8CCEE7E6CD6A3D6AA4ECCCA944490ABE"
+    },
+    {
+      "path": "local/cc11_scene_generation_bool_payload/native_calls.log",
+      "bytes": 81,
+      "sha256": "DD8D15B85DF92150BBF58FB8977A16E05253750EB5CBCC7176F5BF3F8AE3A83E"
+    }
+  ],
+  "unresolved": [
+    "Native required-key absence/type fault vs preserved Source false/raw behavior",
+    "Malformed/implicit/multitoken/empty-existing/declaration conflicts and native parser-context contracts",
+    "Native enum/deferred Party identity and property registry provider integration",
+    "Exempt-class set fill and actual play-area table/provider; production zero-area binding remains unresolved",
+    "Native allocator/deferred record insertion/stock/ownership/alias/EH/reentry and original ABI",
+    "Whole SceneReader/emitter/mission/game and original-game behavior parity",
+    "Historical numeric CRT/FP provider parity remains separate and unclaimed",
+    "Prior group flow repair only decoded tail through exclusive008F566F; stored body still ends008F5658, not full native merger repair"
+  ]
+}
