@@ -1,0 +1,499 @@
+{
+  "packet": "cc11_land_follow_observer_lifetime",
+  "baseline": "a93835328",
+  "date": "2026-10-07",
+  "status": "complete conditional ordinary SOURCE services and pure existing-entry view projection; strict Source/original-copy fixture passed; class image/constructor/whole caller/private EH/lifetime/ABI/game bindings unbound",
+  "scope": {
+    "addresses": [
+      "006CDD70",
+      "006CDDF0"
+    ],
+    "owned_files": [
+      "include/bsp/native_land_follow_observer_lifetime.hpp",
+      "src/native_land_follow_observer_lifetime.cpp",
+      "docs/LANDING_FOLLOW_OBSERVER_LIFETIME_CC11.md",
+      "reports/landing_follow_observer_lifetime_cc11.json"
+    ],
+    "original_bytes": 118,
+    "full_disk_instructions": 35,
+    "new_tracked_tests": 0,
+    "ghidra_cmake_metadata_writes": 0
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "every bsp ghidra bytes query invokes Client.verify for configured project/program; complete original body bytes MATCH"
+  },
+  "entries": [
+    {
+      "address": "006CDD70",
+      "end_exclusive": "006CDDC8",
+      "bytes": 88,
+      "instructions": 24,
+      "sha256": "087d2d210fb945077867516ff05a278485b826cd65b2eaf3fce58af5e9e0a719",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006CDDA4",
+          "native": "006952A0",
+          "function": "006CDD70"
+        },
+        {
+          "address": "006CDDB3",
+          "native": "00695870",
+          "function": "006CDD70"
+        }
+      ],
+      "source_api": "destroy_native_land_follow_observer_006cdd70",
+      "source_status": "complete ordinary admitted body; new C++ interface, not original binary entry",
+      "original_abi": "ECX actual component; RET",
+      "probe_body": "all original bytes preserved except natural complete CALL rel32 operands"
+    },
+    {
+      "address": "006CDDF0",
+      "end_exclusive": "006CDE0E",
+      "bytes": 30,
+      "instructions": 11,
+      "sha256": "6434990cad4b66401d7d38ad7084a45c6adad43c549d0b532213b2c96d6410ac",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006CDDF3",
+          "native": "006CDD70",
+          "function": "006CDDF0"
+        },
+        {
+          "address": "006CDE00",
+          "native": "00BF65AC",
+          "function": "006CDDF0"
+        }
+      ],
+      "source_api": "scalar_delete_native_land_follow_observer_006cddf0",
+      "source_status": "complete ordinary admitted body; new C++ interface, not original binary entry",
+      "original_abi": "ECX actual component; DWORD stack flags; TEST low-byte bit0 AFTER ordinary call; EAX captured identity; RET4",
+      "probe_body": "all original bytes preserved except natural complete CALL rel32 operands"
+    }
+  ],
+  "profiles": [
+    {
+      "address": "00CF8900",
+      "bytes": 24,
+      "sha256": "d813a72e2788ad781baed2c27b3f78f1ad33ec8c27aecbea644f7cd2d119514c",
+      "slots": [
+        "006CDDF0",
+        "0042B110",
+        "0042B120",
+        "0042B130",
+        "0042B140",
+        "006935C0"
+      ],
+      "source": "UNCALLABLE raw native table identity; no fabricated Source class table; methods/payload/profile binding not admitted"
+    },
+    {
+      "address": "00CF89B4",
+      "bytes": 24,
+      "sha256": "0386669f312c96db42bdf163f761ad31a7da708f0ee38e6cfafa424dc8a985c8",
+      "slots": [
+        "006CEEB0",
+        "006CEED0",
+        "0042B120",
+        "0042B130",
+        "0042B140",
+        "006935C0"
+      ],
+      "source": "UNCALLABLE raw native table identity; no fabricated Source class table; methods/payload/profile binding not admitted"
+    }
+  ],
+  "flow_repair": {
+    "report": "reports/follow_callback_scalar_flow_recovery_cc11.json",
+    "primary_only": true,
+    "site": "006CDE00",
+    "return_continuation": "006CDE05..006CDE08 ADD ESP,4",
+    "remaining_call_gaps": 0
+  },
+  "contracts": {
+    "component": "same live actual >=18h component storage, callback-prefix0 and first-endpoint identity-cell14; Follow offsets18/2C; no copied/translated pointer caches",
+    "projection": "pure reference projection from NativeLandFollowEntryView; no represented field reads/calls/allocations/defaults",
+    "ordinary": "CF8900 stamp -> one fresh first14 capture -> if nonnull actual same-address FIRST-prefix alias -> complete6952A0(captured first, same component) -> complete695870; retain FINAL provider profile/fields, no14 clear/reset/receiver free",
+    "scalar": "capture component identity -> complete ordinary body -> low byte bit0 flag capture -> optional actual singleton_lifetime_free(receiver) -> original captured identity return",
+    "required": "mandatory existing NativeObserverLifetime& with actual manager/global publications/recursive lock/dispatch/allocator/deletion-provider context; no new default observer world",
+    "flags1": "requires separately allocated actual CRT component, never interior callback18 in an embedded/allocated Follow; no dereference after free",
+    "provider_final_profile": "facade never restores CF8900 or overrides provider results; canonical fixture observes real695870 finalCE3CD4; other required providers' effects remain preserved",
+    "identity": "nonnull component14 is ALREADY actual6952A0 FIRST endpoint at same address; no whole-unit or semantic-entity claim, no endpoint-offset translation"
+  },
+  "reachability": {
+    "caller": {
+      "address": "009B2D15",
+      "native": "006CDD70",
+      "function": "009B2C80",
+      "receiver": "approach108+18 = task518"
+    },
+    "top_level": "009B3FBF in9B3F50 calls actual9B2C80; full caller Source/lifetime unbound",
+    "constructor_prefix": "009C2980 zeros member1C/20/24 and watched2C, byte28=1, stamps DERIVEDCF89B4 at9C29CF; full arithmetic/parameter ctor unbound",
+    "register_producer": {
+      "address": "009BEE15",
+      "native": "00694A60",
+      "function": "009BED80",
+      "publication": "9BEE0C stores captured new FIRST identity into state2C; existing Source uses actual first-prefix alias and same callback18"
+    },
+    "qualification": "native reachability and existing Source registration contract only; no whole9B2C80/9B3F50/9C2980 admission, no cachedtask404/plane3FC lifetime proof"
+  },
+  "edge_dependency": {
+    "complete_source": [
+      "register_observer_pair_00694a60",
+      "create_observer_edge_00694850",
+      "NativeObserverLifetime::unregister_pair_006952a0",
+      "NativeObserverLifetime::destroy_callback_owner_00695870",
+      "NativeObserverLifetime::detach_all_00695530",
+      "delete_observer_edge_00693ca0",
+      "singleton_lifetime_allocate/free"
+    ],
+    "native_dispatch_sites": [
+      "00695399 edge slot0(flags1) after both endpoint erases",
+      "00695654 edge slot0(flags1) after both endpoint erases"
+    ],
+    "canonical": "real registration produces16B CF7E64 edge; complete693CA0 only restampsCF7E64 and optional actualCRTfree",
+    "owner_callbacks": "NO ownerCF8900+04/+08/onDetach dispatch in admitted canonical-pair cleanup path; no missing callback silently replaced",
+    "other_profiles": "required existing ObserverLifetimeServices::delete_edge_virtual_00 remains caller-owned; no no-op/default dispatcher added",
+    "unbound": "other class/profile callback semantics, actual lifetime/global publication binding and private EH"
+  },
+  "domain": {
+    "admitted": [
+      "live coherent actual component/prefix/first identity; ordinary returning existing providers",
+      "stable immutable view bindings; fields/endpoints live across required operations",
+      "same Source CRT domain for owned arrays and flags1 receiver",
+      "real supplied NativeObserverLifetime, canonical registration edge or complete supplied other-profile deletion service"
+    ],
+    "excluded": [
+      "null/invalid receiver or first-prefix identity; structural reentry/concurrency/faults",
+      "self-free of interior embeddedFollow callback18; repeated cleanup of freed backing array",
+      "invented owner lifetimes/default world/profile/arena/translated cache",
+      "private EH/original class ABI/loader/historicalCRT/game equivalence"
+    ]
+  },
+  "validation": {
+    "compiler": "MSVC Win32 toolset14.51.36231; /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
+    "fresh_tus": [
+      "src/native_land_follow_observer_lifetime.cpp",
+      "local/cc11_land_follow_observer_lifetime_probe.cpp"
+    ],
+    "compiler_exit_codes": [
+      0,
+      0
+    ],
+    "existing_providers": "four Source provider files separately pinned; actual complete registration/lifetime/CRT bodies linked from immutable current beff-build core; no phase/callback substitutes",
+    "link": "link /INCREMENTAL:NO /OPT:REF /MANIFEST:EMBED; two fresh objects plus three uniquely pinned libraries; user32/d3d9/PowrProf/shell32/advapi32",
+    "link_exit_code": 0,
+    "probe": {
+      "path": "local/cc11_land_follow_observer_lifetime_probe.exe",
+      "source": "local/cc11_land_follow_observer_lifetime_probe.cpp",
+      "exit_code": 0,
+      "checks": 43,
+      "output": "PASS: 43 connected Follow registration/cleanup SOURCE and full original-copy checks; 118B, canonical pair/pending/recursive-lock/flags0/1",
+      "machine": "0x14c",
+      "manifest": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n",
+      "flow": "contiguous Follow18/component14 storage -> existing-entry pure projection -> actual00694A60 twice same canonical pair -> refs2 -> scalarflags0 invokes ordinary/unregister refs1/pending null -> genuine695870 force detach/delete remaining edge -> preserve final profile/fields/identity/lock; second separate actual CRT component null-first/flags1; same connected flow through full original copies",
+      "qualification": "43 checks ONLY in explicitly owned ordinary SOURCE observer domain; no full Follow entry/constructor invocation, actual runtime manager lookup or owner lifetime proof; entry arithmetic/closed fixtures not repeated; flags1 NEVER frees interior callback18",
+      "original_relocations": [
+        "ordinary+34 CALL6952A0 -> argument-only genuine Source lifetime ABI bridge",
+        "ordinary+43 CALL695870 -> argument-only genuine Source lifetime ABI bridge",
+        "scalar+03 CALL6CDD70 -> FULL copied ordinary body",
+        "scalar+10 CALLBF65AC -> genuine singleton_lifetime_free"
+      ],
+      "private_eh": "all normal original SEH setup/restore bytes preserved; original absolute handler not mapped/exception-tested; successful normal-flow Source bridges only",
+      "lock_context": "existing real critical_section_create/destroy and Source observer instance borrow explicit actual-shaped publication cells; already-published lock path, manager lookup branch unexercised; runtime actual manager/global/lifetimes required external",
+      "dispatch": "actual-shaped prepublished pending span containing real registered canonical edge; real lifetime invalidation clears it, retains span size; no fake dispatcher/profile callbacks",
+      "instrumentation": "ignored probe ONLY own CRTfree import trace before receiver free, always captured real CRT forward and restore; numeric/captured observations only after free; no behavioral reentry/mutation",
+      "profile_result": "actual provider finalCE3CD4 observed; CF8900 intermediate only"
+    },
+    "input_manifest": {
+      "pre_post_equal": true,
+      "total": 36,
+      "fresh_tus": 2,
+      "source_headers": 27,
+      "existing_provider_sources": 4,
+      "pinned_libraries": 3,
+      "rows": [
+        {
+          "path": "include/bsp/ai_command_lifetime.hpp",
+          "bytes": 7090,
+          "sha256": "8f3174bdaddaeb919145aae5dc7a1cda8185889c4f92c2f12e916cc83d5c7a08",
+          "post_sha256": "8f3174bdaddaeb919145aae5dc7a1cda8185889c4f92c2f12e916cc83d5c7a08"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "bytes": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+          "post_sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "bytes": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+          "post_sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/command_execution.hpp",
+          "bytes": 16559,
+          "sha256": "c74644807bcd947df757eac7b5ed21afe96a3591c9f921de6351ab8256ada60e",
+          "post_sha256": "c74644807bcd947df757eac7b5ed21afe96a3591c9f921de6351ab8256ada60e"
+        },
+        {
+          "path": "include/bsp/entity_orders.hpp",
+          "bytes": 17772,
+          "sha256": "64a09ffcf55f0a24aa461434821999f79b362d99580ffa311818d735e66926fe",
+          "post_sha256": "64a09ffcf55f0a24aa461434821999f79b362d99580ffa311818d735e66926fe"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "bytes": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+          "post_sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "bytes": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+          "post_sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/lua_binding_ai.hpp",
+          "bytes": 18182,
+          "sha256": "dfdaad45ed79cea8dd0b73543a65d0f63596f0ab9c9a8be3fe7a861a765f5c6a",
+          "post_sha256": "dfdaad45ed79cea8dd0b73543a65d0f63596f0ab9c9a8be3fe7a861a765f5c6a"
+        },
+        {
+          "path": "include/bsp/lua_binding_core.hpp",
+          "bytes": 21913,
+          "sha256": "519ff88071165bc5ff8727b4f621fe6c78eac87b2608e8f36bdde657cc895c95",
+          "post_sha256": "519ff88071165bc5ff8727b4f621fe6c78eac87b2608e8f36bdde657cc895c95"
+        },
+        {
+          "path": "include/bsp/native_land_follow_observer_lifetime.hpp",
+          "bytes": 2609,
+          "sha256": "c27cccaeb9ce42700e9e31c901ce19627bdf8bacd39157d2a38b7e8946a2e21f",
+          "post_sha256": "c27cccaeb9ce42700e9e31c901ce19627bdf8bacd39157d2a38b7e8946a2e21f"
+        },
+        {
+          "path": "include/bsp/native_land_state_entries.hpp",
+          "bytes": 6335,
+          "sha256": "942143a0a568d9397684681de2cca6d6ad5d05f2f9322b6a94c50e2f6d8e3d3c",
+          "post_sha256": "942143a0a568d9397684681de2cca6d6ad5d05f2f9322b6a94c50e2f6d8e3d3c"
+        },
+        {
+          "path": "include/bsp/native_land_task_constructor.hpp",
+          "bytes": 5161,
+          "sha256": "cde86b5fe69db0e3eb6c23105b615f442b00d16d05b606e3e326fd15cb9703fc",
+          "post_sha256": "cde86b5fe69db0e3eb6c23105b615f442b00d16d05b606e3e326fd15cb9703fc"
+        },
+        {
+          "path": "include/bsp/native_pilot_bot_task_owner.hpp",
+          "bytes": 9506,
+          "sha256": "880c237b8f549cee403ebe498502d62e84be229945b993a4feeb162dee3e7ad8",
+          "post_sha256": "880c237b8f549cee403ebe498502d62e84be229945b993a4feeb162dee3e7ad8"
+        },
+        {
+          "path": "include/bsp/observer_edges.hpp",
+          "bytes": 1700,
+          "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27",
+          "post_sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+        },
+        {
+          "path": "include/bsp/observer_lifetime.hpp",
+          "bytes": 7290,
+          "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+          "post_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+        },
+        {
+          "path": "include/bsp/plane_squadron.hpp",
+          "bytes": 15252,
+          "sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+          "post_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9"
+        },
+        {
+          "path": "include/bsp/plane_squadron_entity.hpp",
+          "bytes": 6560,
+          "sha256": "8a422ca50bd68490a90ffaf70c0a294dddb13800b4f2bfaa95b72330a03b3c88",
+          "post_sha256": "8a422ca50bd68490a90ffaf70c0a294dddb13800b4f2bfaa95b72330a03b3c88"
+        },
+        {
+          "path": "include/bsp/plane_squadron_host.hpp",
+          "bytes": 25784,
+          "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+          "post_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e"
+        },
+        {
+          "path": "include/bsp/random.hpp",
+          "bytes": 791,
+          "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+          "post_sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "bytes": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+          "post_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "bytes": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+          "post_sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/scene_deferred_refs.hpp",
+          "bytes": 9867,
+          "sha256": "c5647236b47f72ba5e8b3f1f05391429c33d24971732e840e3378085800ddd51",
+          "post_sha256": "c5647236b47f72ba5e8b3f1f05391429c33d24971732e840e3378085800ddd51"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "post_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+          "post_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "bytes": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+          "post_sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/unit_weapons.hpp",
+          "bytes": 19143,
+          "sha256": "30c06c50dd4729ebc8e54b9b7897064eac69346f2ec516e92c74ada99f6da9ca",
+          "post_sha256": "30c06c50dd4729ebc8e54b9b7897064eac69346f2ec516e92c74ada99f6da9ca"
+        },
+        {
+          "path": "include/bsp/weapon_director.hpp",
+          "bytes": 14053,
+          "sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330",
+          "post_sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_core.lib",
+          "bytes": 73238818,
+          "sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730",
+          "post_sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "post_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "post_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_probe.cpp",
+          "bytes": 13327,
+          "sha256": "bf1a5a7b24a4e2d95c59b144f6557874fd3b771673b7d2aae66b4b99591e1a50",
+          "post_sha256": "bf1a5a7b24a4e2d95c59b144f6557874fd3b771673b7d2aae66b4b99591e1a50"
+        },
+        {
+          "path": "src/native_land_follow_observer_lifetime.cpp",
+          "bytes": 2012,
+          "sha256": "a7fcbda0ca511583920e1f1e705ff8b650c95b479d5f46dba612666e6237251c",
+          "post_sha256": "a7fcbda0ca511583920e1f1e705ff8b650c95b479d5f46dba612666e6237251c"
+        },
+        {
+          "path": "src/observer_edges.cpp",
+          "bytes": 3890,
+          "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47",
+          "post_sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+        },
+        {
+          "path": "src/observer_lifetime.cpp",
+          "bytes": 14092,
+          "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+          "post_sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "post_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "src/sound_lifetime_access.cpp",
+          "bytes": 2751,
+          "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+          "post_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+        }
+      ]
+    },
+    "support_freeze": {
+      "root_reported_build": "current beff-build",
+      "original_before_copy_equals_after_copy_equals_copy": true,
+      "rows": [
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_core.lib",
+          "bytes": 73238818,
+          "sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730",
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+          "original_pre_copy_sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730",
+          "original_post_copy_sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730",
+          "copy_post_compile_link_run_sha256": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+          "original_pre_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "original_post_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "copy_post_compile_link_run_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "path": "local/cc11_land_follow_observer_lifetime_bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+          "original_pre_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "original_post_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "copy_post_compile_link_run_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ]
+    },
+    "native_call_verifier": "python tools/verify_report_calls.py reports/landing_follow_observer_lifetime_cc11.json:6 checked,0 failed (4 complete-body calls plus actualcaller/registration producer)",
+    "diff_check": "git diff --check and staged git diff --cached --check passed; exactly four owned new files staged",
+    "full_build": "root owns full mainWin32/CMake/CTest/integration; not run by worker"
+  },
+  "source_coff": {
+    "object": "local/cc11_land_follow_observer_lifetime.obj",
+    "status": "new C++ ABI compiler-order receipt only, not original ABI/EH",
+    "ordinary": "offset07 CF8900 store;0D/10 one fresh field-cell load;1D optional unregister;28 complete callback-owner destruction; no restoration/clear afterward",
+    "projection": "copies reference addresses only: entry.callback18 and watched2C; no represented field loads/calls",
+    "scalar": "ordinary body inlined by compiler;0A stamp,13 first-cell load,20 optional unregister,2B complete base destruction,30/34/37 low-byte mask/volatilecapture,3E optional actualCRTfree,47 capturedESI return; no postfree field read"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_land_follow_observer_lifetime.obj",
+      "bytes": 3481,
+      "sha256": "1e6f4717b863cef4228177063e1d026ab78376a3aa3f06a8757b10074348b259"
+    },
+    {
+      "path": "local/cc11_land_follow_observer_lifetime_probe.obj",
+      "bytes": 35699,
+      "sha256": "f45403a7147a8ad0c9f62cc23c87fe5dcbea230d3de5cec812febb295d30d877"
+    },
+    {
+      "path": "local/cc11_land_follow_observer_lifetime_probe.exe",
+      "bytes": 226816,
+      "sha256": "ba4bcc91e39aed1cdcb4297714e7fefaf53b522dd974ecc4dce7c48b0275b8be"
+    }
+  ],
+  "remaining": "root review/fullbuild/integration; full9C2980/9B2C80/9B3F50, raw image profiles/callback semantics, arena/CRT historical equivalence, manager/observer/death/cached lifetime, privateEH, originalABI/game",
+  "next_shared_state_blocker": "7B45F0 -> full7B4500 resize/7B4400 growth/7B3FC0 copy;24B CF5C94 elements; existing64B5F0 Source explicitly admits90h node, no unsupported stride/type substitution; MoveTo7B65E0 also depends shared base"
+}
