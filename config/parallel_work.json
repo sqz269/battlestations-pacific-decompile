@@ -14765,9 +14765,9 @@
         "reports/cc11_session_target_history.json"
       ],
       "depends_on": [
-        "cc11_session_transport_buffers"
+        "cc11_health_transport_buffer_lifetime"
       ],
-      "reuses_worker_from": "cc11_session_transport_buffers",
+      "reuses_worker_from": "cc11_health_transport_buffer_lifetime",
       "root_source_registration": "cmake/startup.cmake",
       "contract": "Complete 152-byte initializer 782F40..782FD8 and 43-byte scalar 783970..78399B, ends exclusive including RET8/RET4. Actual18h storage without defaults. Initializer preserves profile00, stores original count04/initial08, unsigned count*4 with overflow saturation FFFFFFFF through canonical BF55BE JMP BF681B existing singleton_lifetime_allocate(object,bytes,bytes); no new allocator/arena/overflow exception or zero shortcut. Publish0C, exact signed fill loops with fresh array0C per write and original arguments. FILD signed count, index10=0, FMUL originalfloat, FSTP total14 under ambientx87. Destructor capturesarray0C BEFORE numericD04268 stamp, canonical BF6989 JMP BF65AC capturedarray free, optional flagsbit0 self-free, captured identity return; no clearing, automatic lifetime or executableprofile invention. Focused ignored actual-TU Sourcefixture and bounded complete relocated native initializer x87 comparison with explicit hostCRT allocator bridge, PC/RC/occupiedstack qualifications. StoredGhidra scalar truncated at783981: full raw/byte evidence for self-free78398D; do not claim stored-body CALL check or fullflow repair. Target constructor natural prerequisite; whole target profiles/lock/mask/derived publications/lifetimes remain separate. Worker isolated branch/leases, Ghidra read-only, no CMake/shared metadata/ledger/full build. Fresh inputs pre/post hashes and manifested safe probe. Primary reviews/builds/integrates."
     },
