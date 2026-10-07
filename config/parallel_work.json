@@ -14679,8 +14679,8 @@
     },
     {
       "id": "cc11_native_bot_approach_head",
-      "done": false,
-      "state": "primary_complete_head_source_native_component_passed_full_main_build_pending",
+      "done": true,
+      "state": "primary_complete_head_integrated_native_component_full_build_passed",
       "worker": "primary",
       "model": "gpt-6-astra",
       "function_addresses": [
@@ -14699,7 +14699,12 @@
         "fixture row/constant changes do not establish native runtime reentry or mutable game constants",
         "whole lower/composite/queue caller and task/holder ownership unbound"
       ],
-      "full_main_build_pending": true
+      "full_main_build_pending": false,
+      "integrated_revision": "f795e26d711974a2ffa66b0ba6f6a027e77bd3e9",
+      "full_main_ctests_passed": 3,
+      "actual_game_binding": false,
+      "abi_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

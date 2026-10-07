@@ -63,3 +63,5 @@ Artifacts: `local/cc11_head_primary.cmd`,
 `local/cc11_head_primary/probe.cpp`, `original.hpp`, `head.asm`, `probe.exe`,
 `inputs_before_link.json`; compile/probe output is
 `local/cc11_head_primary_compile.log`.
+
+Primary integration f795e26d711974a2ffa66b0ba6f6a027e77bd3e9: full MSVC Win32 and all three existing CTests passed. Five fresh Source/header/fixture inputs remained stable through linking. Reviewed emitted fresh-class reload and native spill/FCOMIP/JBE operations;293checks,73original-body components and72x87 matrix cases passed. New C++ ABI and the global/lifetime/task/game limits remain explicit. Executable SHA256 10b296190b9efd7cd25c26dccc192a2a91a85e6918e3bc4cdfdeec763741079a. Build log local/cc11_head_integrated_build.log.
