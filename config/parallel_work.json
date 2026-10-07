@@ -13384,8 +13384,8 @@
     },
     {
       "id": "cc11_health_nan",
-      "state": "dispatched_to_reused_health_worker",
-      "done": false,
+      "state": "integrated_unordered_data_correction_main_build_pending",
+      "done": true,
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -13403,12 +13403,17 @@
         "cc11_health_pair"
       ],
       "reuses_worker_from": "cc11_health_pair",
-      "contract": "Recover ordered/unordered clamp, marker and replication semantics from x87/SSE listings; fix the existing NaN-to-zero source mismatch only within a proved floating-point domain, preserve finite behavior, and document signaling/exception/precision limits. No GameHosts switch/timing changes."
+      "contract": "Recover ordered/unordered clamp, marker and replication semantics from x87/SSE listings; fix the existing NaN-to-zero source mismatch only within a proved floating-point domain, preserve finite behavior, and document signaling/exception/precision limits. No GameHosts switch/timing changes.",
+      "integrated_revision": "a6e258500c29c5aaba2730f962577c0387f38f95",
+      "code_revision": "e842ab075387ffaa536db38055bc59c6dd72ca59",
+      "abi_compatible": false,
+      "game_validated": false,
+      "full_main_build_pending": true
     },
     {
       "id": "cc11_land_scheduler",
-      "state": "dispatched_to_reused_landing_worker",
-      "done": false,
+      "state": "integrated_native_schedule_audit_no_runtime_binding",
+      "done": true,
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13425,7 +13430,11 @@
         "cc11_land_owner_cpp"
       ],
       "reuses_worker_from": "cc11_land_owner_cpp",
-      "contract": "Recover normal pilot-bot deferred-drain, install and finished-head retirement ordering, actual task identity publication and relevant callback contracts. Audit named-but-incomplete dependencies before a bounded source extension. Do not bind Boolean GameUnitsHost tasks or assume retained cached references survive death."
+      "contract": "Recover normal pilot-bot deferred-drain, install and finished-head retirement ordering, actual task identity publication and relevant callback contracts. Audit named-but-incomplete dependencies before a bounded source extension. Do not bind Boolean GameUnitsHost tasks or assume retained cached references survive death.",
+      "integrated_revision": "a6e258500c29c5aaba2730f962577c0387f38f95",
+      "code_revision": "7e742a25379037153edb14f46873635c0e5d4be8",
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_scene_empty_bag",
@@ -13452,6 +13461,80 @@
       ],
       "reuses_worker_from": "cc11_director_jm06_pair",
       "contract": "Recover actual property-block producer presence/empty-block preservation and mode9 gate admission for JM06 tutorial rows; correct a proved parser/gate mismatch with a bounded source change. Distinguish missing versus present-empty MultiType, GenerateInGame, group merge, Hidden and host mode policy. No class8 or unrelated switches changed."
+    },
+    {
+      "id": "cc11_parked_callback",
+      "done": true,
+      "state": "defined_reviewed_native_body_audit_unbound",
+      "worker": "primary",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00999a60",
+        "00999a80",
+        "0099a940",
+        "0099a980"
+      ],
+      "output_files": [
+        "config/names/00990000.jsonl",
+        "docs/PILOT_BOT_PARKED_CALLBACK_CC11.md",
+        "reports/pilot_bot_parked_callback_cc11.json"
+      ],
+      "integrated_revision": "a6e258500c29c5aaba2730f962577c0387f38f95",
+      "code_revision": "b875337a1",
+      "contract": "Define exact four-entry parked predicate bodies; recover actual plane-word and stream operands without inventing serializer/observer lifetime semantics.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc11_health_marker",
+      "done": false,
+      "state": "ready_for_reused_health_worker",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00877c00"
+      ],
+      "address_ranges": [
+        "00877c00-00877c20"
+      ],
+      "output_files": [
+        "src/unit_damage.cpp",
+        "include/bsp/unit_damage.hpp",
+        "docs/UNIT_HEALTH_MARKER_X87_CC11.md",
+        "reports/unit_health_marker_x87_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_nan"
+      ],
+      "reuses_worker_from": "cc11_health_nan",
+      "contract": "Reproduce marker stored-float/max loads, FSUB double1, FXCH and FCOMIP/JBE using actual ambient x87 control word. Remove the four proved precision data-result mismatches without installing a precision policy or changing clamp/getter/callback contracts; reuse meaningful existing probe witnesses."
+    },
+    {
+      "id": "cc11_land_active_retirement",
+      "done": false,
+      "state": "ready_for_reused_landing_worker",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0099a020",
+        "0099a0a0",
+        "0099a4c0"
+      ],
+      "output_files": [
+        "include/bsp/native_pilot_bot_task_owner.hpp",
+        "src/native_pilot_bot_task_owner.cpp",
+        "docs/PILOT_BOT_ACTIVE_RETIREMENT_CC11.md",
+        "reports/pilot_bot_active_retirement_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_scheduler",
+        "cc11_land_owner_cpp"
+      ],
+      "reuses_worker_from": "cc11_land_scheduler",
+      "contract": "Port complete conditional active append and leading/finished-head retirement using stable borrowed owner handles and required actual command/predicate/install providers. Preserve growth2n+2, current-head reloads, captured predicate target, deferred retirement and tail install. No fake arena/providers, immediate drain, Boolean GameUnitsHost, prepend substitution or broad tick binding."
     }
   ],
   "snapshot_after_analysis": {

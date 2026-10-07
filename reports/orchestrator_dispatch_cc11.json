@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:58:39.013381+00:00",
+  "updated_utc": "2026-10-07T06:14:54.527705+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -346,5 +346,23 @@
     "reviewed_tutorial_mask_range_changes": true,
     "mode9_admission_qualified": true,
     "next_reused_worker_packet": "cc11_scene_empty_bag"
+  },
+  "unordered_and_schedule_integration": {
+    "revision": "a6e258500c29c5aaba2730f962577c0387f38f95",
+    "health_revision": "e842ab075387ffaa536db38055bc59c6dd72ca59",
+    "health_primary_probe": "336prefix,672mode,240byte checks passed;4knownmarker differences retained",
+    "health_direct_calls_checked": 2,
+    "health_call_failures": 0,
+    "full_main_build": "pending",
+    "schedule_revision": "7e742a25379037153edb14f46873635c0e5d4be8",
+    "schedule_direct_tail_calls_checked": 60,
+    "schedule_call_failures": 0,
+    "schedule_indirect_excluded": 11,
+    "schedule_runtime_binding": false,
+    "parked_native_audit": "b875337a1;4exact defined bodies,1directcallchecked,2indirectexcluded",
+    "next_worker_packets": {
+      "health_guard": "cc11_health_marker",
+      "land_retirement": "cc11_land_active_retirement"
+    }
   }
 }
