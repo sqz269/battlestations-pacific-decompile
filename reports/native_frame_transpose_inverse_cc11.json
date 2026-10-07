@@ -1,0 +1,149 @@
+{
+  "packet": "cc11_native_frame_transpose_inverse",
+  "status": "complete ordinary Source helper and fulloriginal composition fixture integrated; nativeABI/caller/game unbound",
+  "owned_addresses": [
+    "0085dea0"
+  ],
+  "owned_files": [
+    "include/bsp/native_frame_transpose_inverse.hpp",
+    "src/native_frame_transpose_inverse.cpp",
+    "docs/NATIVE_FRAME_TRANSPOSE_INVERSE_CC11.md",
+    "reports/native_frame_transpose_inverse_cc11.json"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "original_abi": "ECXdestination EDXsource plainRET; no usefulsemanticreturn recovered",
+  "source_abi": "fastcall destinationECX sourceEDX borrowedactualnegativezeropointerstack RET4",
+  "call_sites": [
+    {
+      "address": "0085dea7",
+      "native": "004134f0",
+      "function": "0085dea0",
+      "kind": "direct",
+      "source": "copy_native_camera_matrix_004134f0"
+    },
+    {
+      "address": "0085df1a",
+      "native": "0042d0d0",
+      "function": "0085dea0",
+      "kind": "direct",
+      "source": "transform_native_effect_direction_0042d0d0_no_normalize"
+    }
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T15:42:25.391750+00:00",
+    "integrated_revision": "c96ecf1e0f0d7f5193a220cd20459e38924ab1d0",
+    "full_main_build_revision": "c96ecf1e0f0d7f5193a220cd20459e38924ab1d0",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_frame_transpose_inverse_build.log",
+    "executable_sha256": "cb0e49949edeb7b804709b6376f4d69ef235c1f46bcab4f712e473084c6db778",
+    "root_probe": "local/cc11_frame_inverse_root.cmd",
+    "probe_log": "local/cc11_frame_inverse_root_compile.log",
+    "probe_sha256": "f59eb050c91e83cf8338ad1b663a838ff4861904dad37b63e8b9f9c966288ae4",
+    "root_manifest_id1_asInvoker_verified": true,
+    "fresh_actual_translation_units": 4,
+    "stable_current_Source_header_fixture_inputs": 41,
+    "actual_compiler_includes": 37,
+    "stable_current_main_libraries": 3,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_native_bodies": [
+      {
+        "address": "0085DEA0",
+        "end_exclusive": "0085DF5B",
+        "bytes": 187,
+        "instructions": 47,
+        "sha256": "bf324574794c253dad0a1c6fa6aec210385ea7f9fcbceccff006789632b6a520",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "004134F0",
+        "end_exclusive": "00413557",
+        "bytes": 103,
+        "instructions": 35,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0042D0D0",
+        "end_exclusive": "0042D18B",
+        "bytes": 187,
+        "instructions": 64,
+        "sha256": "b15282939ead3cf84c443e3092841998741ebf62b02f712287eed22fa32f767a",
+        "disk_live": "MATCH"
+      }
+    ],
+    "full_original_composition_bytes": 477,
+    "full_original_composition_cases": 46,
+    "checks_including_PE_bounds_and_setup": 619,
+    "case_comparisons_per_case": 3,
+    "whole_backing_bytes_compared_per_case": 256,
+    "raw_x87_all8_and_MXCSR_XMM0through4_match": true,
+    "original_code_only_two_CALL_and_one_absolute_operand_relocations": true,
+    "original_unentered_normalize_true_branch_unchanged": true,
+    "primary_emitted_COFF": {
+      "bytes": 192,
+      "instructions": 49,
+      "sha256": "d060e66f2521418ca46d18fed4825449ee59f978cef1a32fd1b713505e4a3aac",
+      "relocations": [
+        {
+          "operand_offset": "0x8",
+          "kind": "0x14",
+          "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z"
+        },
+        {
+          "operand_offset": "0x7b",
+          "kind": "0x14",
+          "symbol": "?transform_native_effect_direction_0042d0d0_no_normalize@bsp@@YIPAMPAMPBM1@Z"
+        }
+      ],
+      "fp_schedule_matches_except_borrowed_actual_cell_operand": true,
+      "exact_103B_copy_provider_COFF": true,
+      "extra_integer_stack_pop_and_cell_pointer_load_qualified": true,
+      "RET4_extra_actual_cell_argument": true
+    },
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "native_direct_rows_checked": 2,
+    "native_direct_rows_failed": 0,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T154327Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "0085dea0"
+    ]
+  },
+  "fixture": {
+    "cases": 46,
+    "ambient_cases": 24,
+    "independent_MXCSR_rounding_cases": 8,
+    "alias_and_unaligned_cases": 8,
+    "signedzero_NaN_denormal_cases": 6,
+    "exceptions": "masked",
+    "DAZ_FTZ": false,
+    "occupied_x87": [
+      0,
+      3
+    ],
+    "original_copy_offsets": [
+      "0",
+      "100",
+      "200"
+    ],
+    "original_changed_code_operand_bytes": 12,
+    "original_operand_offsets": [
+      "8",
+      "7b",
+      "87"
+    ],
+    "semantic_GPR_EFLAGS_FIP_FDP_excluded": true
+  },
+  "limits": [
+    "Transposed-frame translation behavior, not generalinverse-matrix correctness.",
+    "No originalnormalize=true/helper419510 execution.",
+    "No nativeEAXreturn/newSourcebinaryABI equivalence.",
+    "Unmaskedexceptions/DAZFTZ/callerlifetimes/classprofiles/fullholder-plane/runtime/game unbound."
+  ],
+  "tracked_tests_added": 0
+}
