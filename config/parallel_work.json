@@ -14866,6 +14866,31 @@
         "abi_compatible": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc11_landing_queue_source",
+      "done": false,
+      "state": "approved complete connected landing queue append owner route prerequisite",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "006c0b50",
+        "006bf720",
+        "0077c7b0"
+      ],
+      "output_files": [
+        "include/bsp/native_landing_queue.hpp",
+        "src/native_landing_queue.cpp",
+        "docs/LANDING_QUEUE_SOURCE_CC11.md",
+        "reports/landing_queue_source_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_landing_message84_profile"
+      ],
+      "reuses_worker_from": "cc11_landing_message84_profile",
+      "root_source_registration": "cmake/startup.cmake",
+      "contract": "Complete ordinary6C0B50..6C0D1D (461B),6BF720..6BF7E5(197B),77C7B0..77C87F(207B), exclusive. Abstract NativeLandingQueueCalls may inherit existing complete generic PeerSend/Locked/Serialized hierarchy, with actual contexts/aliases/profile/globalcells and complete transport operation REQUIRED; no health source edits/copies, fake unrelated globals/defaults or frame retention. Queue directly consumes append/route in same packet; no arbitrary phase callback. Exact first-matchnonnull record4 capturedreturn vs first-matchnull duplicateappend/ignorelater; nextsequence signed comparisons/wrappedincrement. Real embeddedcallbackowner actualblock84 viaexistingcomplete694A60 before count/capacity; actualvector98/9C/A0. Growth2n+2 capacity published before canonical BF55BE thunk BF681B, native modulo byte arithmetic not invented saturation; fresh count/base reads and fiveword copies; canonical BF6989 thunk BF65AC, thenbase/count publication. Actual record4 capturesPREAPPENDblock80, wordCzerobits, word10currentD7A24Cbits. Capturedblock4 queue and separateblockC slotlocks, realtracked services no invented owner slotclear. Matching slotflag34 captured, state2C4/timer30zero or currentCE3850/clear34. Freshowner7C realevent4value0, realhex84 constructor, freshowner7C complete route, freshbounds butoldcursor58 advance, freshblock80 return. Modegate/exclusion/specialtypes/rawvt0Ctype4A/currentAL predicate, originalowner/currentnode/sentinelfreshreads, senderWORD174/peer50/freshgame1EF0 pergenericpeerSend preserved; no nullgame fallback. Requiredactual clock/session/profile/slots/banks/getter/locks/observers/lifetimes existing providers, no allocator arena/stubs/fake profile. One focused ignored manifested connected Sourcefixture: earlynonnull vs nullfirst duplicategrowth, realregistration/eventworddispatch, controlled Sourceholder/owner/global publication effects, complete real codec/sendchain belowflushthreshold/capturedlock restoration. Fresh actual TUs/support prepost hashes; explicit SOURCEeffects notnative reentry. Wholelower/composite/geometry/privateEH/ABI/network/game unbound. Worker isolated lease/branch, Ghidrareadonly, no CMake/shared metadata/ledger/fullbuild. Root review/integration/build."
     }
   ],
   "snapshot_after_analysis": {
