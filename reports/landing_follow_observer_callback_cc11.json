@@ -1,0 +1,323 @@
+{
+  "packet": "cc11_land_follow_observer_callback",
+  "published_main": "b982327be",
+  "base_merge": "3fbfa2769",
+  "source_status": "complete_conditional_006CEED0_and_opt_in_actual_CF89B4_callback18_delivery_access",
+  "original_abi_status": "new_SOURCE_view/provider/context_API; full_original39B_fixture_with_one_naturalCALL_to_complete_genuineSource_bridge_and_two_ORIGINALtable_data_relocations",
+  "runtime_status": "actual_getter_delegates_manager_world_lifetimes_full_profiles_constructor_entry_arenas_EH_classABI_game_unbound",
+  "owned_files": [
+    "include/bsp/native_land_follow_observer_callback.hpp",
+    "src/native_land_follow_observer_callback.cpp",
+    "docs/LANDING_FOLLOW_OBSERVER_CALLBACK_CC11.md",
+    "reports/landing_follow_observer_callback_cc11.json"
+  ],
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "read_only_verified_bsp_CLI_each_batch",
+    "worker_mutations": false
+  },
+  "native_bodies": [
+    {
+      "address": "006CEED0",
+      "end_exclusive": "006CEEF7",
+      "bytes": 39,
+      "instructions": 14,
+      "coverage": "complete_ordinary_body",
+      "sha256": "1e1501763b222c92eeb1251fb27321f61cd3e0b0890b0538c25030b85e480490",
+      "disk_live_fixture_literal_equal": true,
+      "original_abi": "ECX callback18; one stacked original FIRST; RET4; no defined return contract",
+      "source": "native_land_follow_observer_callback_006ceed0",
+      "native_calls": [
+        {
+          "address": "006CEEDC",
+          "native": "FIRST+vtable04",
+          "function": "006CEED0",
+          "kind": "indirect",
+          "contract": "capture actual FIRST primary table+4 target and execute full actual selected getter once",
+          "resolution": "required actual provider; known42B970/522E90 only actual proved profiles, no universal policy"
+        },
+        {
+          "address": "006CEEEE",
+          "native": "006952A0",
+          "function": "006CEED0",
+          "contract": "ECX captured returned EAX FIRST; EDX SAME callback; watchedcell alreadyzero; DIRECT complete unregister"
+        }
+      ]
+    }
+  ],
+  "native_order": [
+    {
+      "site": "006CEED3",
+      "operation": "load original observed FIRST"
+    },
+    {
+      "site": "006CEED7/006CEED9",
+      "operation": "capture actual FIRST primarytable then+4 target"
+    },
+    {
+      "site": "006CEEDC",
+      "operation": "full indirect getter call once"
+    },
+    {
+      "site": "006CEEDE",
+      "operation": "compare result with FRESH callback14/root2C AFTER getter"
+    },
+    {
+      "site": "006CEEE3/006CEEE5",
+      "operation": "EDX SAME callback; ECX captured returned FIRST identity"
+    },
+    {
+      "site": "006CEEE7",
+      "operation": "clear watchedcell iffmatch BEFORE unregister"
+    },
+    {
+      "site": "006CEEEE",
+      "operation": "complete006952A0 on captured returned FIRST/SAME callback"
+    },
+    {
+      "site": "006CEEF4",
+      "operation": "RET4"
+    }
+  ],
+  "profiles": {
+    "active_callback": "CF89B4",
+    "producer_store": "009C29CF in COMPLETE009C2980 native constructor; body not ported here",
+    "active_table_words": [
+      "006CEEB0",
+      "006CEED0",
+      "0042B120",
+      "0042B130",
+      "0042B140",
+      "006953C0"
+    ],
+    "xref_cells": [
+      "00CF89B8"
+    ],
+    "destructor_base_profile": "CF8900 DIFFERENT; not admitted as active route",
+    "slot08": "existing complete42B120 selected by actualCF89B4; no new noop or default adapter",
+    "raw_production_tables_callable": false,
+    "source_routes": "capturedCF89B4 slot04 ->complete body; everyother04 andall08 REQUIRED complete actual delegates",
+    "known_FIRST_identity_profiles": [
+      "D19120",
+      "D192E0"
+    ],
+    "known_FIRST_null_profile": "D23084"
+  },
+  "actual_storage": {
+    "root_minimum_backing": 152,
+    "view": "existing mutable NativeLandFollowEntryView; pure callback-to-same-root mapping",
+    "callback": "SAME actualROOT+18 NativeObserverOwnerStorage prefix",
+    "watchedcell": "actualROOT+2C /callback+14 constvoid*volatile identitycell",
+    "watch_semantics": "actual FIRST prefix at SAME address, NOT semanticunit/translated endpoint/cache",
+    "source_alias_guard": "address-only callback identity and watchedcell==callback+14; Source admission, no native guard",
+    "no_extra_profile_default_constructor_or_allocation": true
+  },
+  "normal_domain": {
+    "matching_identity": "nonnull live actual FIRST prefix with genuinecoherent observer context; nonexistentpair stilluses actual complete lookup/return behavior",
+    "null_mismatch": "native mismatch branch admitted while watchnonnull; no unregister",
+    "NULL_equals_NULL": "native clears then passesNULL into6952A0, whose lookup reachesFIRST storage; invalid outsideadmission, no inventedguard",
+    "specified_current_edge_removal": "actual matchingunregister/pending invalidation/reference decrement/canonical deletion iscovered",
+    "other_structural_reentry_concurrency_owner_invalidation": "excluded",
+    "receiver_free": "none; noflags1; no wholeapproach/task retirement"
+  },
+  "natural_connections": {
+    "native_producer": "009C2980 activeCF89B4 initialization; complete conditional009BED80 watchstore009BEE0C thenactual00694A60 at009BEE15",
+    "source_delivery": "notify_observer_slot04_00696330 ->dispatch_observer_edges_00695f90 ->invoke_observer_slot04_00693550 ->newaccess",
+    "real_unregister": "DIRECT existing NativeObserverLifetime::unregister_pair_006952a0, actual current manager/lock/dispatch/CRT/delete services",
+    "later_cleanup": "existing complete007B6630 ->006CDD70 ->00695870 and shared007B45F0 on SAME root"
+  },
+  "required_bindings": [
+    "PURE callback18-to-same actual>=98h Follow field aliases",
+    "COMPLETE actual FIRST primaryslot04 captured getter/result/effects",
+    "COMPLETE other04 andall08 delegates",
+    "BORROWED genuine NativeObserverLifetime actual manager/publications/recursive lock/dispatch/CRT/edge deletion contexts",
+    "stable actual endpoints and lifetime through getter/unregister/cleanup"
+  ],
+  "validation": {
+    "strict_compile": "PASS /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX",
+    "fresh_tus": [
+      "src/native_land_follow_observer_callback.cpp",
+      "src/native_land_follow_observer_lifetime.cpp",
+      "src/native_land_follow_state_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "src/observer_event_producer.cpp",
+      "src/observer_dispatch_schedule.cpp",
+      "local/cc11_land_follow_observer_callback_probe.cpp"
+    ],
+    "fresh_tu_count": 9,
+    "quoted_source_header_count": 40,
+    "immutable_input_count": 53,
+    "inputs_pre_post_equal": true,
+    "support_build": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "support_freeze": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "local\\cc11_land_follow_observer_callback_bsp_core.lib",
+        "bytes": 73302410,
+        "source_before_sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+        "copy_sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+        "source_after_sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+        "equal": true
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "local\\cc11_land_follow_observer_callback_bsp_lua511.lib",
+        "bytes": 454824,
+        "source_before_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_after_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "equal": true
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "local\\cc11_land_follow_observer_callback_bsp_zlib121.lib",
+        "bytes": 71766,
+        "source_before_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_after_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "equal": true
+      }
+    ],
+    "fixture_checks": 80,
+    "fixture_exit_code": 0,
+    "exe": {
+      "path": "local\\cc11_land_follow_observer_callback_probe.exe",
+      "bytes": 256000,
+      "sha256": "b00c25ead64286a53db7d06134165276a4a875578b8b5eef1fd037a801baa6ec"
+    },
+    "executable": {
+      "machine": "0x14c",
+      "preferred_image_base": "0x20000000",
+      "actual_GetModuleHandle_base": "20000000 fixture checked",
+      "dynamicbase": false,
+      "embedded_manifest": true,
+      "requested_execution_level": {
+        "level": "asInvoker",
+        "uiAccess": "false"
+      }
+    },
+    "coff": {
+      "source": "getterCALL0E ->freshCMP18 ->zero1F ->DIRECT unregisterCALL2C",
+      "original_bridge": "watchzeroCMP16 ->DIRECT unregisterCALL30",
+      "newencoding_originalABI_claim": false
+    },
+    "native_call_verifier": {
+      "direct_rows": 1,
+      "failed_rows": 0,
+      "explicit_indirect_unresolved_rows": 1
+    },
+    "diff_check": "PASS",
+    "full_worker_build": false,
+    "worker_game_run": false,
+    "manifest": "local/cc11_land_follow_observer_callback_manifest.json",
+    "probe_source": "local/cc11_land_follow_observer_callback_probe.cpp"
+  },
+  "fixture": {
+    "one_connected_sequence_two_modes": [
+      "SOURCE fullcallback/access",
+      "whole original39B caller through qualified naturalSourceABIbridge"
+    ],
+    "backing": "explicitactual-shaped contiguous>=98h borrowed Follow root; nativeproducerpreimage only, no wholeconstructor claim",
+    "Source_FIRST_profiles": [
+      "D19120 distinctA/B actual FIRST addresses",
+      "D23084 null-FIRST"
+    ],
+    "scenario": [
+      "genuine register/find canonicalA/B/nullpairs",
+      "mismatchB retains watchedA/allpairs/pendingprefixA",
+      "nullmismatch retains watchedA/allpairs",
+      "matchingA clearsbefore directunregister; removesONLYA; suppresses both prefix/current pendingA",
+      "real pairlookup confirmsremainingB/null without freed-edge access",
+      "completeexisting6CDD70/7B6630/sharedcleanup removesremainingpairs/finalproviderfields",
+      "realcapturedOSrecursive lock and savedspan restored"
+    ],
+    "Source_operation_providers": "genuine existing registration/lifetime/dispatch/CRT bodies; fixture callback/getter observations are Source instrumentation",
+    "actual_original_caller_executed": true,
+    "original_caller_bytes": 39,
+    "natural_call_operand_relocations": 1,
+    "natural_call_target": "completegenuine SourceABI original_unregister_bridge ->DIRECT6952A0",
+    "indirect_getter_call_relocations": 0,
+    "getter_instruction_relocations": 0,
+    "original_table_data_relocations": 2,
+    "other_original_page_bytes_unchanged": true,
+    "whole_page_readonly_RX_protection_checked": true,
+    "original_getters_executed": [
+      "0042B970..0042B973",
+      "00522E90..00522E93"
+    ],
+    "native_byte_receipts": [
+      {
+        "start": "006ceed0",
+        "end_exclusive": "006ceef7",
+        "bytes": 39,
+        "sha256": "1e1501763b222c92eeb1251fb27321f61cd3e0b0890b0538c25030b85e480490",
+        "disk_live": "MATCH",
+        "live_spill": null
+      },
+      {
+        "start": "00cf89b4",
+        "end_exclusive": "00cf89cc",
+        "bytes": 24,
+        "sha256": "0386669f312c96db42bdf163f761ad31a7da708f0ee38e6cfafa424dc8a985c8",
+        "disk_live": "MATCH",
+        "live_spill": null
+      },
+      {
+        "start": "009c29cf",
+        "end_exclusive": "009c29d6",
+        "bytes": 7,
+        "sha256": "41a61c4162d72d37d7383acf80ed82cfe02b4055038ceddccdfb913b46b2b306",
+        "disk_live": "MATCH",
+        "live_spill": null
+      },
+      {
+        "start": "00d19000",
+        "end_exclusive": "00d1a000",
+        "bytes": 4096,
+        "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00d19000-length-4096-120815.txt"
+      },
+      {
+        "start": "00d23000",
+        "end_exclusive": "00d24000",
+        "bytes": 4096,
+        "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00d23000-length-4096-120815.txt"
+      },
+      {
+        "start": "0042b000",
+        "end_exclusive": "0042c000",
+        "bytes": 4096,
+        "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-0042b000-length-4096-120816.txt"
+      },
+      {
+        "start": "00522000",
+        "end_exclusive": "00523000",
+        "bytes": 4096,
+        "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+        "disk_live": "MATCH",
+        "live_spill": "local\\output\\ghidra-bytes-00522000-length-4096-120816.txt"
+      }
+    ],
+    "full_constructor_or_tuning_entry_invoked": false,
+    "actual_manager_lookup_exercised": false,
+    "NULL_equals_NULL_invoked": false,
+    "flags1_receiver_free": false,
+    "native_reentry_or_historical_loader_gameABI_proof": false,
+    "previous_Move_callback_fixture_support_modified": false
+  },
+  "limits": [
+    "wholeCF89B4/CF8900/classABI/rootfactory/arena/manager/death/cache/world/gamebindings remainunbound",
+    "full9C2980 stillrequires true42E740 lazyfactory/lifetime/complete7E2A20 constructor andprimary x87/randomkernel; semanticGameTuningLuaHost loader isnot wholefactory",
+    "completeconditional9BED80 tuning/reindex/services are not invoked or madeconcrete by thispacket",
+    "unsupportedprofiles/getters/concurrency/extra structuralreentry/fault/privateEH/invalidallocation domains excluded",
+    "no inventedplane9FAprefix, gunfield, liveBooleanhost orwhole9B2C80/retirementadmission"
+  ]
+}
