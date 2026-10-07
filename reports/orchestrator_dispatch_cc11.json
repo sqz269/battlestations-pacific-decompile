@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T10:53:36.947895+00:00",
+  "updated_utc": "2026-10-07T10:55:48.258575+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1821,5 +1821,32 @@
     "immediate_counter_eligibilities": 7,
     "full_emitter_or_seed_math_executed": false,
     "historical_crt_and_empty_f_declaration_context_unproved": true
+  },
+  "scene_runway_float_approval": {
+    "id": "cc11_scene_runway_float_payload",
+    "done": false,
+    "state": "approved_connected_retained_runway_pair_data",
+    "worker": "director_props",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "006d3c10"
+    ],
+    "output_files": [
+      "src/game_hosts_scene_contents.cpp",
+      "docs/SCENE_RUNWAY_FLOAT_PAYLOAD_CC11.md",
+      "reports/scene_runway_float_payload_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_scene_start_speed_float_payload"
+    ],
+    "reuses_worker_from": "cc11_scene_start_speed_float_payload",
+    "required_unbound_dependencies": [
+      "actual airfield kind/class admission",
+      "native holder construction/refresh and lifetime",
+      "historical CRT/FP and empty-F declaration context",
+      "whole native caller/ABI/game"
+    ],
+    "contract": "Called private runway retention helper ONLY in existing deck.is_airfield gate and unchanged logging. Select explicitF/has_float owning payload even diagnosticsempty; otherwise exact old nonemptyraw/scene_scan_float for I/non-I/raw/malformed. Bothfields and runway_from_scene commit only when BOTH reads succeed; preserve shortcircuit/failure/missing/rawempty/no-reset and all other fields. No header/API/layout/math change. Primary reviewed actual3C10kind1 gate3C83/89/8F and 3D09widthliteral,3D0EFind/type0CVTSI2SS3D19 versusMOVSS3D20,3D39Find/type0CVTSI2SS3D44 versusMOVSS3D4B,3D6Acall; complete7instruction6BF0D0 supporting setter storesB0/B4 andcalls6BC960, notnewbodyport. ActiveGameUnits landingholder readsdeck.runway_width/length alreadyconnected, mathunchanged. Oneignored freshactualproductionTU+parserprobe installedusn_1_marshall Airfield2 authoredF30/F420, owningoverwrite/diagnosticremoval/mixedretainedraw/signedzero/prefix/rawI/non-I/malformed/missing/rawempty/pairnoreset. Installedauthored/sourcebag witness only, no entityadmission/emitter/landing/gameproof. Reuse immutable77supportinputs only afterpre/postlinkhashverify; uniqueignored artifactsclaim. ModernfiniteCdecimalprefix domain only; nativesmissingkeydereferences mean SOURCEskip/refusal is preservedhostpolicy, notnativegracefulbehavior. HistoricalCRT/x87status/emptyFcontext/implicitconflicts/enumLua/holderrefresh/allocatorEH originalABI/fullgame remainunproved. Worker Ghidraread-only/noCMake/sharedmetadata/ledger, own3trackedfiles, rootfullWin32build and independentprobe beforeclose."
   }
 }
