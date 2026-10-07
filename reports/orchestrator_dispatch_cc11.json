@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T07:46:20.668653+00:00",
+  "updated_utc": "2026-10-07T07:56:10.184884+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -627,5 +627,26 @@
     "root_descriptor_report": "reports/land_command_descriptor_definition_cc11.json",
     "landing_runtime_audit": "Current GameUnitSlot inline flags/overwritten task fields have no stable retired-task FIFO identity; current cruise fixed/snapshot fields and current mode2 descriptor projection are incomplete, so no real adapter was fabricated",
     "model_exception": "Existing6.1-sol landing worker implements primary-recovered fixed x87 copy contract; primary retains new numeric/ABI/flow recovery"
+  },
+  "health_setter_sequence_integration": {
+    "source_revision": "22cc6a4975455bf4f045c87a53ea3b9282cdcbb4",
+    "worker_revision": "0561eaa0ae92a1e5bb224ae122a4d4d8d7ac04a6",
+    "included_packet": "cc11_health_setter_sequence",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "a2dd43ed0c14f11259c1b71661f48414cbff024bdafc823df3db27b93eeab698",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_health_setter_integrated_build.log",
+    "utc": "2026-10-07T07:56:10.184884+00:00",
+    "independent_production_probe": "Actual-TU manifested probe rerun PASS:336bound-prefix comparisons/11full-flow mutation-reentrancy cases; previoushealth numeric/CRT/state matrices0fail",
+    "native_direct_calls_checked": 4,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 2,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "full_fp_status_equivalent": false,
+    "arbitrary_extended_provider_abi_equivalent": false,
+    "next_reused_read_only_work": "Samehealthworker: completeD2 constructor00876D30/shared0075B430 message storage and actualowner/global contract proposal"
   }
 }

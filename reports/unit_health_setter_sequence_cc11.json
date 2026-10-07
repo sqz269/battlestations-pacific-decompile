@@ -273,5 +273,25 @@
       "  indirect  report.indirect_steps[1]: native='vtable[110h]' (not checked)",
       "reports/unit_health_setter_sequence_cc11.json: 4 call rows checked, 0 failed"
     ]
+  },
+  "primary_integration": {
+    "source_revision": "22cc6a4975455bf4f045c87a53ea3b9282cdcbb4",
+    "worker_revision": "0561eaa0ae92a1e5bb224ae122a4d4d8d7ac04a6",
+    "included_packet": "cc11_health_setter_sequence",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "a2dd43ed0c14f11259c1b71661f48414cbff024bdafc823df3db27b93eeab698",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_health_setter_integrated_build.log",
+    "utc": "2026-10-07T07:56:10.184884+00:00",
+    "independent_production_probe": "Actual-TU manifested probe rerun PASS:336bound-prefix comparisons/11full-flow mutation-reentrancy cases; previoushealth numeric/CRT/state matrices0fail",
+    "native_direct_calls_checked": 4,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 2,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "full_fp_status_equivalent": false,
+    "arbitrary_extended_provider_abi_equivalent": false
   }
 }
