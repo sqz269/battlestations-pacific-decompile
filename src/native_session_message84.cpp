@@ -13,26 +13,26 @@ template<class T> T load_at(const void* p, U offset) noexcept {
     return *reinterpret_cast<const volatile T*>(reinterpret_cast<U>(p) + offset);
 }
 
-NativeSessionMessage84* __fastcall scalar(NativeSessionMessage84* m, void*, U flags) {
-    auto* const release = reinterpret_cast<const NativeSessionMessage84Profile*>(m->base.profile_00)->release;
+NativeLandingSlotMessage84* __fastcall scalar(NativeLandingSlotMessage84* m, void*, U flags) {
+    auto* const release = reinterpret_cast<const NativeLandingSlotMessage84Profile*>(m->base.profile_00)->release;
     return delete_native_session_message84_006bd600(m, flags, *release);
 }
-void __fastcall write(NativeSessionMessage84* m, void*, NativeBitCursor* c) {
+void __fastcall write(NativeLandingSlotMessage84* m, void*, NativeBitCursor* c) {
     write_native_session_message84_006bd680(m, c);
 }
-void __fastcall read(NativeSessionMessage84* m, void*, NativeSessionReadStream* s) {
+void __fastcall read(NativeLandingSlotMessage84* m, void*, NativeSessionReadStream* s) {
     read_native_session_message84_006bd710(m, s);
 }
-bool __fastcall accepts(const NativeSessionMessage84* m, void*, U type) {
+bool __fastcall accepts(const NativeLandingSlotMessage84* m, void*, U type) {
     return native_session_message84_accepts_type_006bd5d0(m, type);
 }
-bool __fastcall valid(const NativeSessionMessage84* m, void*) {
-    const auto* const banks = reinterpret_cast<const NativeSessionMessage84Profile*>(m->base.profile_00)->banks;
+bool __fastcall valid(const NativeLandingSlotMessage84* m, void*) {
+    const auto* const banks = reinterpret_cast<const NativeLandingSlotMessage84Profile*>(m->base.profile_00)->banks;
     return native_session_message84_is_valid_006bd7a0(m, *banks);
 }
 } // namespace
 
-NativeSessionMessage84Profile::NativeSessionMessage84Profile(
+NativeLandingSlotMessage84Profile::NativeLandingSlotMessage84Profile(
     const ObjectHandleTables& actual_banks, NativeMessage84Release& actual_release)
     : slots{reinterpret_cast<U>(&scalar), reinterpret_cast<U>(&write), reinterpret_cast<U>(&read),
             reinterpret_cast<U>(&accepts), reinterpret_cast<U>(&valid)},
@@ -45,9 +45,9 @@ U native_vehicle_class_id_0095b9c0(const void* descriptor, NativeMessage84ClassR
     return load_at<U>(registry, 0x2010u + index * 4u);
 }
 
-NativeSessionMessage84* construct_native_session_message84_006bd520(
-    NativeSessionMessage84* m, const void* block, U index,
-    const NativeSessionMessageContext& base_context, const NativeSessionMessage84Profile& profile,
+NativeLandingSlotMessage84* construct_native_session_message84_006bd520(
+    NativeLandingSlotMessage84* m, const void* block, U index,
+    const NativeSessionMessageContext& base_context, const NativeLandingSlotMessage84Profile& profile,
     NativeMessage84ClassRegistryAccess& access) {
     construct_native_session_message_0075b430(&m->base, 0x84, base_context);
     volatile auto& v = *m;
@@ -69,15 +69,15 @@ NativeSessionMessage84* construct_native_session_message84_006bd520(
     return m;
 }
 
-NativeSessionMessage84* delete_native_session_message84_006bd600(
-    NativeSessionMessage84* m, U flags, NativeMessage84Release& release) noexcept {
+NativeLandingSlotMessage84* delete_native_session_message84_006bd600(
+    NativeLandingSlotMessage84* m, U flags, NativeMessage84Release& release) noexcept {
     static_cast<volatile NativeSessionMessageStorage&>(m->base).profile_00 =
         native_session_message_root_profile_00ce4974();
     if ((flags & 1u) != 0) release.free_00bf65ac(m);
     return m;
 }
 
-void write_native_session_message84_006bd680(const NativeSessionMessage84* m, NativeBitCursor* c) {
+void write_native_session_message84_006bd680(const NativeLandingSlotMessage84* m, NativeBitCursor* c) {
     write_native_session_message_header_0075b480(m, c);
     const volatile auto& v = *m;
     write_native_bool_bit_004290b0(c, v.flag_1c);
@@ -91,7 +91,7 @@ void write_native_session_message84_006bd680(const NativeSessionMessage84* m, Na
     if (present) write_native_word_bits_00429120(c, v.squad_id_34, 12);
 }
 
-void read_native_session_message84_006bd710(NativeSessionMessage84* m, NativeSessionReadStream* stream) {
+void read_native_session_message84_006bd710(NativeLandingSlotMessage84* m, NativeSessionReadStream* stream) {
     read_native_session_message_header_0075b4c0(m, stream);
     auto* const c = &stream->cursor_04;
     read_native_bool_bit_00428d70(c, reinterpret_cast<bool*>(&m->flag_1c));
@@ -103,16 +103,16 @@ void read_native_session_message84_006bd710(NativeSessionMessage84* m, NativeSes
     bool present;
     read_native_bool_bit_00428d70(c, &present);
     if (present) read_native_word_bits_00428e30(c, &m->squad_id_34, 12);
-    else static_cast<volatile NativeSessionMessage84&>(*m).squad_id_34 = 0;
+    else static_cast<volatile NativeLandingSlotMessage84&>(*m).squad_id_34 = 0;
 }
 
-bool native_session_message84_accepts_type_006bd5d0(const NativeSessionMessage84*, U type) {
+bool native_session_message84_accepts_type_006bd5d0(const NativeLandingSlotMessage84*, U type) {
     return type == 0x84 || type == 0x49 || type == 0x46;
 }
 
-bool native_session_message84_is_valid_006bd7a0(const NativeSessionMessage84* m,
+bool native_session_message84_is_valid_006bd7a0(const NativeLandingSlotMessage84* m,
                                                const ObjectHandleTables& actual_banks) noexcept {
-    const auto id = static_cast<const volatile NativeSessionMessage84&>(*m).squad_id_34;
+    const auto id = static_cast<const volatile NativeLandingSlotMessage84&>(*m).squad_id_34;
     return id == 0 || object_from_handle_006ad080(id, actual_banks) != nullptr;
 }
 
