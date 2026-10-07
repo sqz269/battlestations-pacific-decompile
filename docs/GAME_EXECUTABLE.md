@@ -15320,3 +15320,168 @@ code since `bb5ad5db8` moves a reference row.
 All six equal their predictions to the hundredth of a second. Each log has the exec guard's refusal line
 (`bsp: refused a mission script's process launch: sus_prog.exe`). BSM01's summary reads `nil at 1632.47 s
 (Mission.EndMission)`.
+## Mission reference baselines, 2026-10-06 af (main 49eee58d5)
+
+Packet `cc9_reference_rebaseline_33`, worker cc9-gunnery33. The base is main `49eee58d5`, and the previous
+reference is AE (`8eee3a87c`, `local\g32_ae_<row>.log` and `local\g32_aew_<key>.log` in cc9-gunnery32's tree).
+
+### The switch diff and the plan
+
+`local\g33_switches.py 8eee3a87c 49eee58d5` (a copy of g32's) lists twelve switches. Nine are ON at the base (two
+flips, seven new):
+
+| short | switches | record | its own pairs (commit) |
+| --- | --- | --- | --- |
+| `rack` | `kRackEquipmentDeviceBound`, `kRackPoolRoundsRemainingBound`, `kGunneryRackEquipmentDeviceBound`, `kRackBulletKindBound` (flip) | SQUADRON_LAND_TASK 5ev/5ex/5fa, GUNNERY 138 | USN13 9000 moves: the Bettys level-bomb, 573 drops, and the mission fails at 341.59 s. USNOS and LOMP10 identical (`c0d5741f2`). IJN01 + `s38_i1_p1` deaths 37 -> 48 (`268f02fbb`) |
+| `held` | `kAirOpsHeldSlotOrdersBound` (flip) | AIROPS_LAUNCH_TICK | ESMP08 with order lines completes; USN04 identical (`27caa65cc`) |
+| `party` | `kSetPartyUnitBound` | LUA_BINDING_CORE | USNOS 60000 `s41_os_f7`: HQ2 turns allied; deaths equal (`bb623ee89`) |
+| `stock` | `kStockReturnQueueEraseBound` | SHIP_AI 204.1 | USNOS f3 and USN01 p8 identical; ESMP08 p3 landing timing only (`a1b85eff1`) |
+| `mesh` | `kMeshlessGunPointWindowBound` | GUNNERY 155 | ten idle rows exit 1 (`57c010ddf`) |
+| `score` | `kLuaDisplayScoresBound` | SQUADRON_LAND_TASK 5fb | USNOS f7 and USN04 gameplay-identical (`04ea6de53`) |
+
+The three new switches committed OFF (`kCaptureStatePartyFromUnitBound`, `kPlayerTorpedoGroupFireBound`,
+`kRackUnequippedEmptyBound`) are OFF in both builds. One unswitched behaviour change is in the window:
+`4b5c57a8d`, where `GenerateObject` of a held-back LandConvoy builds the convoy, the fix for AE's JM05 long death at
+195.01 s.
+
+**Rows.** AE's twenty-two in AE's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player), and seven scripted-win rows: AE's six, with `local\g32_ord_<key>.txt` in cc9-gunnery32's tree, plus ESMP08 at
+72000 frames with cc9-lua46's `local\l46_e8_orders2.txt`. That file is `s38_e8_p3` plus 400 `order` lines.
+
+**Binaries** (`pair_export.py --commit 49eee58d5`): AF is `local\g33_af`; the anchor (all nine OFF) is
+`local\g33_anc`. The tools are `local\g33_ref_jobs.py` and `local\g33_queue.ps1` (three at a time through
+`tools/run_game.ps1`).
+
+### Predictions (written before any run started)
+
+- **Anchor against AE:** gameplay-identical (exit 0/1) on twenty-one rows.
+  - JM05 long moves (exit 3) by the unswitched `4b5c57a8d`. It runs all 9000 frames instead of dying at 195.01 s.
+  - Anchor BSM01 + `s38_b1_p6` reproduces AE's `Mission.EndMission` at 1632.47 s if the 875.91 s move is switched.
+    If the anchor also ends at 875.91 s, the move is unswitched code (the convoy fix, or a diagnostic commit that is
+    not log-only).
+- **AF against AE.**
+  - `rack` moves USN13 long (exit 3: fails at 341.59 s under `usn_13_truk.lua:787`).
+  - `rack` probably also moves USN13 (3000, 150 s), since the Bettys take the level-bomb task at 23 s. The first bomb
+    falls inside 150 s only if the run-in is short, so this is uncertain.
+  - `rack` may move other bomber rows whose rack device differs from the class platform's (USN04, E2, USNRM01,
+    JM05, IJN01, IJN11, ESMP08 long). lua47's pair saw USNOS and LOMP10 identical, so those two are expected exit
+    0/1.
+  - `held` acts only on order lines: no idle row.
+  - `party`'s SetParty in USNOS fires late in the mission (phase f7); USNOS long ends at 450 s, so expected
+    identical.
+  - `stock`, `mesh` and `score` are expected inert on idle rows.
+  - JM05 long moves by the convoy fix as for the anchor.
+- **Leave-one-out** (round 1 on every moved row, then a 5-row round 2): `rack` OFF restores AE on the USN13 rows; every
+  other group OFF = AF.
+- **Scripted wins (AF):**
+  - USN02 727.60 s, USN01 648.42 s, LOMP06 267.41 s, LOMP10 1438.63 s and USN12 1544.78 s, all as AE, unless `rack`
+    reaches them.
+  - BSM01 p6 completes at **875.91 s** (cc9-lua46's `l46ue_off_bsm01w`, base `7821e75b8`), against AE's
+    `Mission.EndMission` at 1632.47 s.
+    - Candidates: `rack` (pool rounds and the equipment device; the base already carried `kRackEquipmentDeviceBound`
+      ON at `95c369fcc`), `held` and `stock`.
+    - Round 1 leaves each group out on this row.
+  - ESMP08 with the order file completes in about 3387 s (cc9-lua46's i3, before `stock` and `rack`). `stock` may
+    move the landing timing.
+  - Every completed win logs the exec guard's `sus_prog.exe` refusal.
+
+
+### Results (AF, base 49eee58d5)
+
+**Anchor against AE: all predictions held.**
+- The anchor equals AE (exit 1) on 21 rows. JM05 long moves (exit 3) by the unswitched `4b5c57a8d`: the run now goes
+  all 9000 frames, with Event5Convoy built as a convoy. AF equals the anchor on JM05 long (exit 1).
+- Anchor BSM01 + `s38_b1_p6` reproduces AE: the MiniSub dies at 1300.79 s and `Mission.EndMission` comes at
+  1632.47 s (`local\g33_ancw_b1.log`). So the 875.91 s move is switched.
+
+**AF against AE:** moved rows are USN13 (exit 3), USN13 long (exit 3) and JM05 long (exit 3, the convoy fix). The
+other nineteen rows are exit 1.
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13707.8 | 50 | 1041 (149) | 13694 | 98.70 s | 5 of 16 / 0 of 19 | 15 | Lexington-class01 3295.50 | none (Mission.EndMission never true) | 481 | `local\g33_af_usn04.log` |
+| USN01 | 3000 | 34487.7 | 29 | 1412 (341) | 2302 | 12.90 s | 0 of 5 / - | 3 | ScoutDauntless 3171.32 | none (Mission.EndMission never true) | 491 | `local\g33_af_usn01.log` |
+| USN04 (E2) | 9000 | 13743.9 | 52 | 1044 (149) | 13743 | 98.70 s | 5 of 16 / 0 of 19 | 19 | Lexington-class01 5736.48 | none (Mission.EndMission never true) | 481 | `local\g33_af_e2.log` |
+| USN02 | 9000 | 41913.3 | 3 | 5266 (335) | 4382 | 37.45 s | - | - | (none) 839.37 | failed at 74.30 s (Mission.MissionStatus) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 reached at 113.90 s (recorded); Mission.EndMission at 74.30 s | 489 | `local\g33_af_usn02.log` |
+| JM06 (smoke) | 3000 | 2229.2 | 2 | 88 (79) | 120 | 10.10 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 447 | `local\g33_af_jm06.log` |
+| JM08 (smoke) | 3000 | 9609.0 | 20 | 431 (147) | 1592 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 451 | `local\g33_af_jm08.log` |
+| USN13 (smoke) | 3000 | 4550.9 | 18 | 288 (33) | 3142 | 98.90 s | 0 of 24 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 468 | `local\g33_af_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 445 | `local\g33_af_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 9 | -1.00 s | - | - | Narwhal 770.42 | none (Mission.EndMission never true) | 438 | `local\g33_af_lomp06.log` |
+| LOMP10 | 3000 | 3145.8 | 2 | 235 (111) | 4563 | 91.95 s | - / 16 of 8 | - | (none) 8380.01 | none (Mission.EndMission never true) | 471 | `local\g33_af_lomp10.log` |
+| JM05 | 3000 | 17421.8 | 16 | 517 (77) | 2544 | 5.85 s | 0 of 8 / 0 of 9 | 3 | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 503 | `local\g33_af_jm05.log` |
+| USN12 | 3000 | 1526.0 | 3 | 56 (9) | 132 | 7.85 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 439 | `local\g33_af_usn12.log` |
+| LOMP10 (long) | 9000 | 3762.1 | 4 | 248 (116) | 4627 | 91.95 s | - / 16 of 8 | - | (none) 8380.01 | none (Mission.EndMission never true) | 486 | `local\g33_af_lomp10l.log` |
+| USNOS | 3000 | 45850.4 | 87 | 1490 (234) | 5062 | 5.00 s | - | 6 | NH 1497.26 | none (Mission.EndMission never true) | 505 | `local\g33_af_usnos.log` |
+| USNOS (long) | 9000 | 55447.4 | 114 | 2191 (310) | 9198 | 5.00 s | - | 8 | NH 4492.07 | none (Mission.EndMission never true) | 512 | `local\g33_af_usnosl.log` |
+| IJN01 | 3000 | 1763.3 | 1 | 161 (149) | 5017 | 80.20 s | - | - | A7M_1 8788.23 | none (Mission.EndMission never true) | 433 | `local\g33_af_ijn01.log` |
+| JM05 (long) | 9000 | 36001.4 | 51 | 1174 (392) | 18058 | 5.85 s | 5 of 20 / 2 of 19 | 20 | Mogami-class 01 4565.71 | none (Mission.EndMission never true) | 530 | `local\g33_af_jm05l.log` |
+| JM08 (long) | 36000 | 120797.7 | 143 | 15617 (747) | 8708 | 5.25 s | - | 1 | Headquarter 01 0.00 | failed at 1026.93 s (Mission.MissionStatus) text="Mission Failed - The HQ has been destroyed!" entity="Headquarter 01" objectives=5; EndScene 008B01B0 reached at 1066.52 s (recorded); Mission.EndMissi | 494 | `local\g33_af_jm08l.log` |
+| USN13 (long) | 9000 | 35938.9 | 46 | 1649 (222) | 9799 | 98.90 s | 0 of 24 / - | 15 | Enterprise 2777.59 | failed at 341.59 s (Mission.MissionStatus) text="Game Over" entity="" objectives=6; EndScene 008B01B0 reached at 381.18 s (recorded); Mission.EndMission at 341.59 s | 505 | `local\g33_af_usn13l.log` |
+| ESMP08 (long) | 9000 | 3600.0 | 12 | 489 (95) | 3470 | 417.17 s | 0 of 18 / 0 of 21 | 6 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 458 | `local\g33_af_esmp08l.log` |
+| USNRM01 | 9000 | 31862.8 | 149 | 1731 (1370) | 60842 | 166.96 s | 5 of 11 / 5 of 19 | 104081 | West Virginia 0.00 | none (Mission.EndMission never true) | 501 | `local\g33_af_usnrm01.log` |
+| IJN11 | 3000 | 5183.0 | 6 | 128 (31) | 1077 | 65.20 s | 0 of 5 / 0 of 6 | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 496 | `local\g33_af_ijn11.log` |
+
+**Moves against AE.**
+
+| row | move |
+| --- | --- |
+| USN13 | deaths 23 -> 18, hull hits 139 -> 33, torpedo-task releases 1 of 60 -> 0 of 24 |
+| USN13 long | **fails at 341.59 s** (`usn_13_truk.lua:787`, fewer than 8 US carriers): Intrepid and Cowpens burn out; deaths 100 -> 46, units 463 -> 373 |
+| JM05 long | runs all 9000 frames instead of dying at 195.01 s (convoy fix) |
+
+**Leave-one-out.**
+
+Round 1 left each group out on USN13, USN13 long, BSM01 p6 and LOMP10 p2 (logs `local\g33_loo_<g>1_<row>.log` and
+`local\g33_loow_<g>1_<key>.log`).
+
+| group OFF | result |
+| --- | --- |
+| `rack` | **= AE on all four**: USN13 and USN13 long exit 1 against AE; BSM01 p6 back to 1632.47 s; LOMP10 p2 back to 1438.63 s |
+| `held`, `party`, `stock`, `mesh`, `score` | = AF on all four |
+
+Round 2 split `rack` on five rows: USN13, USN13 long, IJN01 (the control), BSM01 p6 and LOMP10 p2.
+
+| switch OFF | USN13 / USN13 long | IJN01 | BSM01 p6 | LOMP10 p2 |
+| --- | --- | --- | --- | --- |
+| `kRackEquipmentDeviceBound` (`rdev`) | moved from AF and from AE; **no carrier failure** (USN13 long runs 9000 frames) | = AF | = AF | = AF |
+| `kGunneryRackEquipmentDeviceBound` (`gdev`) | **about AE**: USN13 long has 100 deaths, equal damage and no failure; hit records 2562 -> 2578 | = AF | = AF | = AF |
+| `kRackPoolRoundsRemainingBound` (`pool`) | = AF | = AF | **1632.47 s**, gameplay = anchor (3 death rows differ in detail) | **1438.63 s, = AE** (exit 1) |
+| `kRackBulletKindBound` (`kind`) | = AF | = AF | = AF | = AF |
+
+**Attribution.**
+- **USN13's carrier failure takes both device switches.**
+  - `kRackEquipmentDeviceBound` gives the `bruh` Bettys rack device 88 (250 kg bombs).
+  - `kGunneryRackEquipmentDeviceBound` makes their gunnery rows read it, so they take the level-bomb task instead of
+    the torpedo approach and drop from about 1400 m.
+  - With either one OFF, the mission runs on. `gdev` OFF is all but AE.
+  - The burn-out itself is the image's fire and damage-control rule (GUNNERY 158): every direct bomb hit lights
+    `FireDamage` seconds at 40 hp/s. Fire is about a third of Intrepid's damage.
+- **BSM01 p6's 1632.47 s -> 875.91 s is `kRackPoolRoundsRemainingBound`.**
+  - First divergence: at 189.81 s the Val `Jap #4.1` releases its second rack (`val rack drop ... requests_left=0`)
+    where the pool-OFF run stops after one.
+  - The world drifts from there: HenryPT's planner distance differs by 3 cm at frame 5520.
+  - The order file's last line (`takehelm HenryPT 0.6 1072 -3017 stop 40`) leaves HenryPT about 40 m from the halted
+    mini-sub. The MiniSub's death is a contact (`killer_gun=0`, 21-25 m): at 547.39 s in AF, 1300.79 s with pool OFF.
+  - From there the script runs the same: phase 4 at 551.69 s against 1305.10 s, and `Mission.EndMission` about 325 s later. The completion time is a knife-edge contact, not a gameplay gain, and any change upstream can move it
+    again.
+- **LOMP10 p2's 1438.63 -> 1452.89 s is `pool` too** (pool OFF equals AE, exit 1).
+- **USN13 long's unattributed interaction from AE** (154.2 item 4) is not re-run here: AF's USN13 long is dominated by
+  the rack move.
+
+### Scripted-win rows (AF)
+
+| row | order file | frames | completion | EndScene | guard line (log line) | log |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 16000 | **727.60 s** (= AE) | 762.14 s | 112261 | `local\g33_afw_u2.log` |
+| USN01 | `s38_u1_p8` | 22000 | **648.42 s** (= AE) | 682.96 s | 100107 | `local\g33_afw_u1.log` |
+| LOMP06 | `s37_l6_p2` | 16000 | **267.41 s** (= AE) | 301.95 s | 47998 | `local\g33_afw_l6.log` |
+| LOMP10 | `s37_l10_p2` | 30000 | **1452.89 s** (AE 1438.63 s; `pool`) | 1487.48 s | 154914 | `local\g33_afw_l10.log` |
+| USN12 | `s38_u12_p2` | 36000 | **1544.78 s** (= AE) | 1579.37 s | 226724 | `local\g33_afw_u12.log` |
+| BSM01 | `s38_b1_p6` | 40000 | MiniSub dies 547.39 s; `Mission.EndMission` **875.91 s** (AE 1632.47 s; `pool`) | not reached | 184591 | `local\g33_afw_b1.log` |
+| ESMP08 | cc9-lua46 `l46_e8_orders2.txt` | 72000 | **2371.69 s** (new row) | 2406.27 s | 491890 | `local\g33_afw_e8.log` |
+
+All seven complete and log the exec guard's refusal (`bsp: refused a mission script's process launch: sus_prog.exe`).
+- The BSM01 and LOMP10 predictions missed: `rack` reaches both through `pool`.
+- ESMP08 has no AE row. cc9-lua46's i3 completion (3387.43 s) was on an older base, before `stock`, `rack` and the
+  held-slot moveto change.
