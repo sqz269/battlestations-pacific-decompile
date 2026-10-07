@@ -693,12 +693,17 @@ SceneWorldClassLists& scene_world_class_lists() noexcept;
 
 // Packet cc9_ship_weapon_director_enable (docs/SENTITY_INIT_PASSES.md section
 // 7). The ship's pass B, 00822C20's property-bag arm, reads `ArtilleryDirector`,
-// `AADirector`, `TorpedoDirector` and `DCDirector` (008238F0..008239A3, finds
+// `AADirector`, `TorpedoDirector` and `DCDirector` (008238FD..008239A8, finds
 // through 008F2260, +0Ch tested) and hands them to the weapon director through
 // 007214C0 / vt[3Ch] 00835690 -> 007219C0, which stores them at +220h..+223h
 // (007219DB..007219ED). This keeps the merged bag's four values per entity name
-// (group defaults included: universe/library/ship.props has TorpedoDirector =
-// B false), for the gunnery host to read. Cleared with the scene.
+// (group defaults included when the scene names a group: ship.props has
+// TorpedoDirector = B false), for the gunnery host to read. Missing keys take
+// the native arm's 1. Shipyard creation 00844FC0 supplies a sparse bag with no
+// director keys or Ship-group merge, so its boats keep 1; see
+// docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md. The native's explicit-false
+// TorpedoDirector class-id-8 exception at 00823941..00823955 is outside this
+// retained-value projection. Cleared with the scene.
 struct SceneDirectorEnables {
     bool artillery{true};
     bool anti_air{true};
