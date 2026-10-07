@@ -1,0 +1,395 @@
+{
+  "schema": 1,
+  "packet": "cc11_plane_squadron_sorted_insert",
+  "base_revision": "b512de11c",
+  "source_status": "complete conditional ordinary Source reconstruction; actual backing/provider/lifetime admission required; unbound game/class/native ABI",
+  "tracked_files": [
+    "include/bsp/native_plane_squadron_insert.hpp",
+    "src/native_plane_squadron_insert.cpp",
+    "docs/PLANE_SQUADRON_SORTED_INSERT_CC11.md",
+    "reports/plane_squadron_sorted_insert_cc11.json"
+  ],
+  "routine": {
+    "entry": "007ed0d0",
+    "end_exclusive": "007ed151",
+    "size": 129,
+    "instruction_count": 42,
+    "coverage": "complete normal body",
+    "descriptive_name": "BSP_PlaneSquadron_InsertPlaneSorted; existing hypothesis retained, not recovered symbol",
+    "native_calling_convention": "ECX actual squadron; stack(actual plane, signed requested index); RET8; EAX scratch unspecified",
+    "source_interface": "void native_plane_squadron_insert_sorted_007ed0d0(view,incoming,index,required pure views); new Source ABI",
+    "sha256": "25a888843fd7f3e017f78bfbd8429c4528096526da55f53b7805d4b184c420ee",
+    "disk_live_equal": true,
+    "native_calls": 0,
+    "absolute_globals": 0,
+    "table_xrefs": 0,
+    "alignment_gap": {
+      "start": "007ed12d",
+      "end_exclusive": "007ed130",
+      "bytes": "8d4900",
+      "reason": "JMP007ED12B jumps directly007ED130; no reachable continuation missing"
+    }
+  },
+  "schedule": [
+    {
+      "site": "007ed0d7",
+      "action": "squadron dirty byte+3EC=1, including null incoming"
+    },
+    {
+      "site": "007ed0de",
+      "action": "null -> return; no other represented field or mapping access"
+    },
+    {
+      "site": "007ed0e6",
+      "action": "incoming live plane+9D4=SAME actual squadron"
+    },
+    {
+      "site": "007ed0ec",
+      "action": "incoming live int32+9D8=requested signed index"
+    },
+    {
+      "site": "007ed0f2",
+      "action": "capture actual count+3CC once"
+    },
+    {
+      "site": "007ed105",
+      "action": "load current member pointer from actual array+3D0"
+    },
+    {
+      "site": "007ed107",
+      "action": "fresh actual signed member+9D8 read versus requested index"
+    },
+    {
+      "site": "007ed10d",
+      "action": "stop FIRST STRICTLY GREATER; equal values stay ahead"
+    },
+    {
+      "site": "007ed130..007ed13b",
+      "action": "backward suffix shift from captured tail"
+    },
+    {
+      "site": "007ed13d",
+      "action": "publish incoming member pointer"
+    },
+    {
+      "site": "007ed144",
+      "action": "increment FRESH actual count field; do not publish captured count+1"
+    }
+  ],
+  "borrowed_storage": {
+    "squadron": {
+      "minimum_extent": "0x3ed",
+      "alignment": 4,
+      "fields": {
+        "3cc": "genuine live volatile int32 count",
+        "3d0": "genuine live five-pointer array; volatile accesses",
+        "3ec": "genuine live volatile dirty byte"
+      }
+    },
+    "incoming_plane": {
+      "minimum_extent": "0x9dc",
+      "alignment": 4,
+      "fields": {
+        "9d4": "genuine live volatile pointer cell",
+        "9d8": "genuine live volatile int32 cell; same cell as existing leader"
+      }
+    },
+    "current_member": "Required PURE NativeLandPlaneLeaderViews mapping to existing checked NativeLandPlaneLeaderView on SAME actual supplied member identity; operation performs the fresh signed field read",
+    "factories": "Pure address/admission checks only, no represented value reads/effects/callback/native calls/allocation/default/cache/object construction; invalid Source placement/identity throws logic_error; caller supplies true live objects",
+    "domain": "Nonnull count0..4/live occupied planes/coherent writable fields/stable nonstructural schedule; squadron structural backing disjoint from reached plane backing. Repeated identities not rejected. Null body requires only valid dirty access. Invalid/overflow/fault/concurrency/structural reentry unbound.",
+    "no_added_policy": [
+      "capacity guard",
+      "duplicate guard",
+      "reindex",
+      "allocation or free",
+      "ownership",
+      "retention",
+      "default world/profile",
+      "dequeue/drain"
+    ],
+    "excluded_projection": "PlaneSquadronEntity and semantic attach helpers do not provide actual squadron/plane backing"
+  },
+  "natural_consumer": {
+    "existing_source": "native_land_plane_is_leader_007b8ad0 plus NativeLandPlaneLeaderCruiseHost final leader provider; unchanged",
+    "identity": "SAME incoming plane+9D8 live cell produced by insertion",
+    "original_leaf": {
+      "entry": "007b8ad0",
+      "end_exclusive": "007b8adc",
+      "size": 12,
+      "sha256": "e36649fc9c52af877c6e5ba57286d8dca843f1c070891df8cdcfd3724900bc88",
+      "native_calls": 0,
+      "native_result": "FULL EAX0/1",
+      "source_result": "bool; no full EAX ABI claim"
+    },
+    "higher_caller_status": "Actual007CDF20 insertion caller and009B3240/009B3C60 leader callers evidenced separately; no whole higher native body reconstructed or replayed in this fixture"
+  },
+  "native_call_rows": [
+    {
+      "address": "007cdf82",
+      "native": "007ed0d0",
+      "function": "007cdf20",
+      "profile_data": "00d05f20+9c=007cdf20",
+      "whole_caller_source": "unbound"
+    },
+    {
+      "address": "009b32c8",
+      "native": "007b8ad0",
+      "function": "009b3240"
+    },
+    {
+      "address": "009b3c6e",
+      "native": "007b8ad0",
+      "function": "009b3c60"
+    }
+  ],
+  "caller_profile_witness": {
+    "profile_data_word": "00d05fbc",
+    "profile_expression": "00d05f20+9c",
+    "word": "007cdf20",
+    "producer_instruction": "007cfd78 MOV [ESI],00D05F20",
+    "table_admission": "DATA only; no Source callable profile/native world or constructor closure",
+    "sorted_entry_has_no_table_xref": true,
+    "caller_boundary": "007cdf20..007ce03d; native full caller Source remains unbound"
+  },
+  "identity_correction": {
+    "was": "Historical wording queue_record_42c can be read as queue-record address / receiver identity",
+    "is": "009AFE70 stores returned HOLDER identity in approach34/task42C: first matching nonnull record+4 or FRESH block80 after event/message. Its006C0B50 ECX is actual block; argument is FRESH input-plane9D4, distinct cached task404.",
+    "evidence": "009AFE8F actual block capture;009AFEA2 fresh input-plane9D4;009AFEA9 natural006C0B50 call;009AFEB6 returned holder publication; complete existing queue producer Source contract",
+    "scope": "Correction recorded only here/new doc; no old unowned doc or source edited; no higher constructor/queue-lifetime admission"
+  },
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/std:c++17",
+        "/permissive-",
+        "/showIncludes"
+      ],
+      "warnings": 0,
+      "fresh_translation_units": [
+        "src/native_plane_squadron_insert.cpp",
+        "src/native_land_plane_leader.cpp",
+        "local/cc11_plane_squadron_sorted_insert_probe.cpp"
+      ],
+      "tu_count": 3,
+      "link_manifest": "/MANIFEST:EMBED"
+    },
+    "focused_fixture": {
+      "output": "PASS: 24 connected Source/original checks; unchanged unrelocated129B+12B; higher caller/world unbound",
+      "checks": 24,
+      "scope": "One connected Source-shaped insert->same-cell leader/adopter setup, original129B and12B unchanged/unrelocated; null dirty-only branch; no higher caller replay",
+      "original_instruction_changes": 0,
+      "original_call_relocations": 0,
+      "original_table_relocations": 0
+    },
+    "fixture_coverage": [
+      "Requested0 before occupied1/4, backward shift2 slots",
+      "Whole actual-shaped squadron/incoming/existing backing, explicit retained padding and external guards",
+      "Same published live9D8 through original full-EAX leader/Source leader/current final adopter",
+      "Null dirty-only branch; all other represented storage unchanged"
+    ],
+    "fixture_limits": [
+      "One focused connected setup; no extra branch sweep",
+      "Shaped Source storage/pure mapping, not native object constructor/profile/arena proof",
+      "Higher tuning/controller methods explicitly excluded and throw; no whole cruise/constructor invocation",
+      "No original code/CALL/table relocation or bridge",
+      "Raw profile word read as DATA only",
+      "Existing31/165/all older families unchanged/not replayed"
+    ],
+    "coff": {
+      "path": "local/cc11_plane_squadron_sorted_insert_coff.txt",
+      "insert_symbol": "native_plane_squadron_insert_sorted_007ed0d0",
+      "dirty_store": "10",
+      "null_test": "13",
+      "null_branch": "15->B4",
+      "pure_incoming_mapping": "27",
+      "identity_admission": "2A",
+      "plane_link_store": "3D",
+      "plane_index_store": "49",
+      "captured_count": "4E",
+      "fresh_current_member": "5B",
+      "pure_current_mapping": "66",
+      "identity_admission_current": "69",
+      "fresh_signed_compare": "77",
+      "strict_greater": "79",
+      "backward_load": "96",
+      "backward_store": "9B",
+      "member_publish": "A4",
+      "fresh_count_read": "AC",
+      "count_increment": "B1",
+      "count_store": "B2",
+      "leader_cell_compare": "07",
+      "leader_bool": "0A",
+      "current_adopter_mapping": "13",
+      "current_adopter_cell_compare": "21",
+      "current_adopter_bool": "24",
+      "compiler_added_calls": "PURE mappings and invalid-Source-placement exception paths only; not native call inventory"
+    },
+    "input_manifest": {
+      "path": "local/cc11_plane_squadron_sorted_insert_manifest.json",
+      "schema": 1,
+      "sha256": "24203afec3c832e8c6c95c4dcf260fa31572b6ec7cadb363ec4eef2002f30bf7",
+      "input_count": 34,
+      "quoted_project_header_count": 27,
+      "actual_compiler_project_include_count": 27,
+      "all_inputs_pre_post_equal": true,
+      "support_pre_copy_post_equal": true
+    },
+    "executable": {
+      "path": "local/cc11_plane_squadron_sorted_insert_probe.exe",
+      "sha256": "a6204043679d8ce33a8aababa0bc127854195a87f7c1efbc2dd7152d064e3cc4",
+      "size": 31744,
+      "machine": "I386",
+      "pe_magic": "PE32",
+      "manifest_resources": [
+        {
+          "type": 24,
+          "id": 1,
+          "size": 381,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "asInvoker": true
+        }
+      ]
+    },
+    "frozen_support": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_sorted_insert_core.lib",
+        "sha256": "40c16f99d6788c1444173bcf48353147b315fd00b28fd535dca0d9b5f53668b0",
+        "size": 73408806,
+        "source_before": "40c16f99d6788c1444173bcf48353147b315fd00b28fd535dca0d9b5f53668b0",
+        "source_after": "40c16f99d6788c1444173bcf48353147b315fd00b28fd535dca0d9b5f53668b0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_sorted_insert_lua.lib",
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "size": 454824,
+        "source_before": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_sorted_insert_zlib.lib",
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "size": 71766,
+        "source_before": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ],
+    "recipe": "local/cc11_plane_squadron_sorted_insert_build.ps1",
+    "compile_log": "local/cc11_plane_squadron_sorted_insert_compile.log",
+    "output": "local/cc11_plane_squadron_sorted_insert_output.txt",
+    "native_receipt": "local/cc11_plane_squadron_sorted_insert_native_receipt.json",
+    "native_receipt_sha256": "544fe827aed5df87d6affcee4d38336c1a59382e16e4efa676f6911cdedb3414",
+    "report_call_verifier": "PASS:3 distinct direct call rows,0 failed. Owned sorted insert and existing leader each have0 native CALLs.",
+    "git_diff_check": "PASS; final staged check also required before commit",
+    "full_main_build": "root-owned, not worker-run",
+    "game_run": "not performed"
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra read uses CLIClient.verify before query",
+    "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "start": "007ed0d0",
+        "end_exclusive": "007ed151",
+        "size": 129,
+        "hex": "558b6c240885edc681ec03000001746d568b74241057898dd409000089b5d80900008bb9cc03000033c085ff7e1c8d91d0030000538b1a39b3d80900007f0a83c00183c2043bc77cec5b3bf87e1f8bf72bf08d94b9d00300002bfeeb038d49008b42fc890283c2fc83ee0175f389acb9d00300008381cc030000015f5e5dc20800",
+        "sha256": "25a888843fd7f3e017f78bfbd8429c4528096526da55f53b7805d4b184c420ee",
+        "disk_live_equal": true,
+        "role": "complete sorted insert; no calls"
+      },
+      {
+        "start": "007b8ad0",
+        "end_exclusive": "007b8adc",
+        "size": 12,
+        "hex": "33c03981d80900000f94c0c3",
+        "sha256": "e36649fc9c52af877c6e5ba57286d8dca843f1c070891df8cdcfd3724900bc88",
+        "disk_live_equal": true,
+        "role": "existing complete leader; no calls"
+      },
+      {
+        "start": "007cdf78",
+        "end_exclusive": "007cdf87",
+        "size": 15,
+        "hex": "57568bc889bed8090000e849f10100",
+        "sha256": "0ec6d382a5eaa648c8b6af7f1847eebe665f0122c3c9b1d2fd48e76bbc1f2dc9",
+        "disk_live_equal": true,
+        "role": "incoming arguments and sole direct call witness"
+      },
+      {
+        "start": "00d05fbc",
+        "end_exclusive": "00d05fc0",
+        "size": 4,
+        "hex": "20df7c00",
+        "sha256": "a7c85aefce64749202066b917579eaf14038d65f00b35e6330c7286ad4d82ca9",
+        "disk_live_equal": true,
+        "role": "DATA-only plane profile+9C caller word"
+      },
+      {
+        "start": "007cfd78",
+        "end_exclusive": "007cfd7e",
+        "size": 6,
+        "hex": "c706205fd000",
+        "sha256": "68823d712fa96c4e2295bec2f493e71616ca339a6a90df1804feb2e99dfa1d38",
+        "disk_live_equal": true,
+        "role": "plane constructor root profile publication"
+      },
+      {
+        "start": "009b32c8",
+        "end_exclusive": "009b32cd",
+        "size": 5,
+        "hex": "e80358e0ff",
+        "sha256": "1bd2fe1982313b461612197789112bc48166ca083f900a5f16170183ab920ab8",
+        "disk_live_equal": true,
+        "role": "Existing higher leader caller evidence ONLY; not reconstructed or replayed here",
+        "actual_direct_call_target": "007b8ad0"
+      },
+      {
+        "start": "009b3c6e",
+        "end_exclusive": "009b3c73",
+        "size": 5,
+        "hex": "e85d4ee0ff",
+        "sha256": "f31a47460d375ab246d2a4cf9eb5b2c077669550b181269a5de26320c44ff892",
+        "disk_live_equal": true,
+        "role": "Existing higher leader caller evidence ONLY; not reconstructed or replayed here",
+        "actual_direct_call_target": "007b8ad0"
+      }
+    ],
+    "whole_instruction_count": 42,
+    "unreachable_alignment_gap": {
+      "start": "007ed12d",
+      "end_exclusive": "007ed130",
+      "bytes": "8d4900",
+      "reason": "JMP007ED12B jumps directly007ED130; no reachable continuation missing"
+    },
+    "calls_in_owned_body": 0,
+    "table_xrefs_to_owned_body": 0
+  },
+  "unfinished_boundaries": [
+    "Required actual lifetime/backing/arena/context and pure mappings",
+    "Whole007CDF20 caller: actual resolver/state/world dependencies",
+    "Whole plane constructor007CFD20 including genuine owner/lifetime/field initialization",
+    "Larger lower/composite/outer constructor providers and original numeric/register/x87 contracts",
+    "Actual tuning singleton/controller/retained task404/death lifetime",
+    "Original class/profile/register ABI and private EH/gameplay"
+  ],
+  "unchanged_shared_scope": [
+    "No Ghidra writes",
+    "No config/ledger/metadata/CMake edits",
+    "No full build",
+    "No tracked tests",
+    "No original game installation or old sealed artifact modifications"
+  ]
+}
