@@ -61,8 +61,17 @@ ScenePropertyValue decode(const ScenePropertyBlock& bag, const char* key,
     ScenePropertyType type;
     SceneReferenceKind kind = SceneReferenceKind::Any;
     if (!item || !scene_property_type_for_letter(item->type_letter, type, kind) ||
-        (type != expected && !(allow_integer && type == ScenePropertyType::Int)) ||
-        !scene_decode_property_value(type, kind, item->values, value)) {
+        (type != expected && !(allow_integer && type == ScenePropertyType::Int))) {
+        throw std::invalid_argument(std::string("Invalid required map property: ") + key);
+    }
+    if (type == ScenePropertyType::Vector3 && item->has_vector3) {
+        // 004E6C77..004E7113 copies the sixteen stored corner triples.
+        // Parsed empty V3 is present zero data; tokens are only diagnostics.
+        value.type = type;
+        value.reference_kind = kind;
+        std::memcpy(value.vector, item->vector3.data(), sizeof(value.vector));
+    } else if (!scene_decode_property_value(type, kind, item->values, value)) {
+        // Existing fallback for source-authored raw bags without a payload.
         throw std::invalid_argument(std::string("Invalid required map property: ") + key);
     }
     return value;

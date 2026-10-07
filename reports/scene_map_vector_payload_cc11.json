@@ -1,0 +1,527 @@
+{
+  "packet": "cc11_scene_map_vector_payload",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_MAP_VECTOR_PAYLOAD_CC11.md",
+  "source_baseline": "4d8c432649bab5e4398a6314edb4eceb9983ea06",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "analysis": "bsp.py read-only wrappers; stored body 004E6C00..004E7212/337 instructions reconfirmed"
+  },
+  "owned_addresses": [
+    "004E6C00"
+  ],
+  "owned_files": [
+    "src/world_map_bounds.cpp",
+    "include/bsp/world_map_bounds.hpp",
+    "docs/SCENE_MAP_VECTOR_PAYLOAD_CC11.md",
+    "reports/scene_map_vector_payload_cc11.json"
+  ],
+  "result": "Actual map reader copies retained explicit V3 binary32 payload after required-property/type validation; present-empty accepted and diagnostic tokens never reparsed. Existing source-authored raw fallback and all scalar/border policy retained.",
+  "coverage": [
+    {
+      "address": "004E6C00",
+      "body": "004E6C00..004E7212",
+      "instructions": 337,
+      "port": "existing data-read projection through border-size publication; only retained-V3 adoption added",
+      "full_function_reconstructed": false
+    },
+    {
+      "address": "008F5A00",
+      "coverage": "accepted supporting explicit V3 parser branch 008F6276..008F631E; not new ownership/recovery"
+    },
+    {
+      "address": "008F3690",
+      "coverage": "accepted type7/three inline lane constructor; allocator/insert/fault/ABI not source-bound"
+    },
+    {
+      "address": "008F2260",
+      "coverage": "existing case-insensitive/dotted property lookup, not changed"
+    },
+    {
+      "address": "004D5BD0",
+      "coverage": "named but incomplete engine apply/border lifetime dependency; unchanged external tail"
+    },
+    {
+      "address": "004C7150",
+      "coverage": "existing border-zone side calls external to this data bridge; no new body recovery"
+    }
+  ],
+  "calls": [
+    {
+      "address": "004e6c0b",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6c2f",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6c53",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6c72",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6cbd",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6d08",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6d53",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6d9e",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6de9",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6e34",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6e7f",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6eca",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6f15",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6f60",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6fab",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e6ff6",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e7041",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e708c",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    },
+    {
+      "address": "004e70d7",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "unchanged property lookup in actual Map data-read path; three scalar/subbag plus sixteen retained vector reads"
+    }
+  ],
+  "excluded_tail_calls": [
+    {
+      "address": "004e713d",
+      "native": "004d5bd0",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e714e",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e715f",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e7170",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e7181",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e7192",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71a3",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71b4",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71c5",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71d6",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71e7",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e71f8",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    },
+    {
+      "address": "004e7209",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained",
+      "coverage": "external unchanged engine tail, no new reconstruction claim"
+    }
+  ],
+  "native_receipts": {
+    "scalar": "004E6C0B/6C2F->008F2260; type0 CVTSI2SS at6C16/6C3A versus MOVSS at6C1D/6C41; no changes/new arithmetic recovery",
+    "subbag": "004E6C53->008F2260; null tests6C58/6C65 branch720E, follow+0C at6C60; no global stores if absent",
+    "first_vector": "004E6C72->008F2260, loads+0C/+10/+14 at6C77/6C7A/6C7D; MOVSS publishE189A0/A4/A8 at6C8A/6CA0/6CB5",
+    "all_vectors": "sixteen lookups6C72..70D7, three lane copies each; no tokenizer/CRT numeric calls",
+    "last_vector": "Competitive_se lookup004E70D7; globalsE18A54/58/5C copied70EF/7101/7113",
+    "terminal": "border sizes copied004E7121/7135;004E713D->004D5BD0 plus twelve004C7150;720E POP ESI/720F ADD ESP14h/7212 RET",
+    "ABI": "ECX Map bag; semantic native return unestablished; source bool/WorldMapSettings interface not original binary ABI"
+  },
+  "source_contract": {
+    "validation": "existing case-insensitive required property/type checks first; Vector3 typed presence cannot bypass a wrong tag",
+    "typed": "correct ScenePropertyValue.type/reference_kind then memcpy three retained float lanes; empty has positivezero3, absent remains distinct",
+    "raw_fallback": "SceneProperty.has_vector3 false => existing scene_decode_property_value, 3tokens/strtod-to-float for Vector3; source-authored raw bags only",
+    "unchanged": [
+      "F/I scalar decode",
+      "missing/type invalid_argument source boundary",
+      "absent MultiPlayMapSizes false/output preserved",
+      "inverted bounds",
+      "selection math",
+      "map mode/border policy",
+      "all Lua/runtime flags"
+    ],
+    "layout": "no source data layout/interface change in this packet; one header-comment correction",
+    "actual_callers": [
+      {
+        "file": "src/game_avoid_zone_runtime.cpp",
+        "call": "GameAvoidZoneRuntime::rebuild ->read_world_map_settings_004e6c00 ->avoid-zone bounds"
+      },
+      {
+        "file": "src/game_hosts_mission_frame.cpp",
+        "call": "scene initialization ->read_world_map_settings_004e6c00 ->Lua world border-zone setup"
+      }
+    ]
+  },
+  "source_admission": {
+    "typed": "accepted explicit V3 finite ordinary decimal-prefix full triple in C numeric locale or immediate-empty; closed/NUL-free/<400h fragments; absent/compatible native type7 descriptor",
+    "provider": "no new conversion; upstream modern MSVC std::sscanf %f direct-float provider remains source-only",
+    "outside": [
+      "historical VS2005 BF7533 scanner numerical/FPstatus/error/extended-ST0 parity",
+      "malformed/partial/nonfinite/overflow/locale inputs",
+      "native incompatible descriptor and structural aliases",
+      "original pointer faults/SEH",
+      "reentry/global aliasing",
+      "original allocator/ownership",
+      "engine apply/border-object lifetime",
+      "native ABI/game validation"
+    ]
+  },
+  "installed": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "files": 2,
+    "corners_per_file": 16,
+    "lanes_total": 96,
+    "empty_map_corners": 0,
+    "scene_props": {
+      "group": "SceneRootProps.Map",
+      "border_sizes": [
+        20000,
+        20000
+      ]
+    },
+    "JM06": {
+      "block": "header.properties.Map",
+      "border_sizes": [
+        12000,
+        12000
+      ]
+    },
+    "all_NW": [
+      -100,
+      0,
+      -100
+    ],
+    "all_SE": [
+      100,
+      0,
+      100
+    ],
+    "before_after_payload_and_prior_source_bits_match": true,
+    "limit": "32 full triples agree with retained modern source payload and prior source decoder; not original numerical equivalence. Probe discovery selects SceneRootProps body, not private library/VFS/enum loading or full scene runtime."
+  },
+  "verification": {
+    "probe": "one unique ignored actual-production-TU case compiled before/after; no new tracked test",
+    "compile_command": "cmd /c local\\cc11_scene_map_vector_compile.cmd before|after",
+    "compiler": "VS18 Community current MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy; actual parser/reader freshly compiled, core library input separately hashed",
+    "link": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "before": {
+      "command": "local\\cc11_scene_map_vector_before.exe --expect-before",
+      "compile_exit": 0,
+      "exit": 0,
+      "log": "focused before=1 empty_rejected=1 diagnostic_reparse=1 missing_rejected=1 type_checked=1 raw_fallback=1 absent_preserved=1\nscene.props corners=16 payload_bits_match=1 prior_source_bits_match=1 border=20000,20000\nJM06 corners=16 payload_bits_match=1 prior_source_bits_match=1 border=12000,12000\nactual_parser_and_map_reader=1 original_engine=0\n"
+    },
+    "after": {
+      "command": "local\\cc11_scene_map_vector_after.exe",
+      "compile_exit": 0,
+      "exit": 0,
+      "log": "focused before=0 empty_rejected=0 diagnostic_reparse=0 missing_rejected=1 type_checked=1 raw_fallback=1 absent_preserved=1\nscene.props corners=16 payload_bits_match=1 prior_source_bits_match=1 border=20000,20000\nJM06 corners=16 payload_bits_match=1 prior_source_bits_match=1 border=12000,12000\nactual_parser_and_map_reader=1 original_engine=0\n"
+    },
+    "manifest_receipts": [
+      {
+        "path": "local/cc11_scene_map_vector_before.exe",
+        "machine": "014C",
+        "RT_MANIFEST": 24,
+        "resource_id": 1,
+        "bytes": 381,
+        "asInvoker": true,
+        "manifest_sha256": "4BB79DCEA0A901F7D9EAC5AA05728AE92ACB42E0CB22E5DD14134F4421A3D8DF"
+      },
+      {
+        "path": "local/cc11_scene_map_vector_after.exe",
+        "machine": "014C",
+        "RT_MANIFEST": 24,
+        "resource_id": 1,
+        "bytes": 381,
+        "asInvoker": true,
+        "manifest_sha256": "4BB79DCEA0A901F7D9EAC5AA05728AE92ACB42E0CB22E5DD14134F4421A3D8DF"
+      }
+    ],
+    "checks": [
+      "before-only empty rejection and diagnostic reparse reproduced",
+      "after present-empty positivezero3",
+      "after diagnostic mutation does not replace typed data",
+      "missing corner rejection",
+      "wrong type rejected before typed payload",
+      "source-authored raw fallback",
+      "absent subbag preserves output",
+      "actual installed32 corners/96lanes and border sizes unchanged"
+    ],
+    "initial_probe_correction": "private library delimiter constant is not public; discovery driver uses the verified identical literal ;{}=:(), without a new API/helper",
+    "supporting_regression": {
+      "command": "local\\cc11_scene_vector_probe.exe",
+      "exit": 0,
+      "result": "existing semantic checks plus1199V3/22groups/JM0640paths1163points0errors pass",
+      "qualification": "cached accepted vector/parser/path probe predates this map change; not evidence for the new reader"
+    },
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/scene_map_vector_payload_cc11.json",
+      "status": "PASS",
+      "exit": 0,
+      "direct_rows_checked": 32,
+      "property_lookup_rows": 19,
+      "external_tail_rows": 13,
+      "failed": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "full_build": "primary owns integrated full Win32 build; worker ran only focused actual-TU compilation",
+    "game": "not run",
+    "native_differential": "not run"
+  },
+  "retained_boundaries": {
+    "enum_LUA": "requires stable declaration identity/int snapshot, real parser/provider context, group capture ordering and consumer adoption; unused model methods remain unused",
+    "008F54F0_flow": "prior decoded tail through exclusive008F566F only; stored function body stillends008F5658, no full body-repair claim"
+  },
+  "qualification": {
+    "source": "bounded actual reader adoption",
+    "fixture": "actual source parser/reader before+after PASS",
+    "installed": "two actual Map inputs/32corner triples unchanged",
+    "build": "focused Win32 TUs only, full integrated build primary",
+    "original_ABI": false,
+    "original_game": false
+  },
+  "assets": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/world_map_bounds.cpp",
+      "bytes": 14835,
+      "sha256": "33288841C5F216734E78BCFA5687F8B0237013ABB7C802E6C8FC3094789C0215"
+    },
+    {
+      "path": "include/bsp/world_map_bounds.hpp",
+      "bytes": 5358,
+      "sha256": "344BB5D66EEBC0158562F5CC14F8533B70F4225A4C9C1063B2636AA82229F159"
+    },
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 31038,
+      "sha256": "23FA8AF534829CD232108D7768946B3D080F739374F8600AB6B5C2F67AC82302"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18120,
+      "sha256": "EC3AE607808C7B16FEC8FAC7DE1E96A23818E3FC2439F791025D8BCB0FD68244"
+    },
+    {
+      "path": "src/scene_property_bag.cpp",
+      "bytes": 25972,
+      "sha256": "7CE07CD97B31826D12CD2C0E9BA3BA74FC5928AF07436613653CD9B5B7AD4759"
+    },
+    {
+      "path": "include/bsp/scene_property_bag.hpp",
+      "bytes": 12832,
+      "sha256": "973B54DC7F9A18A66B6723DBCD1E08618209745F3DF64DC168D77183BEC67C88"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_probe.cpp",
+      "bytes": 7364,
+      "sha256": "C7557B6EDEDB4475BD9B8413154452D51C61E7E17B275EAC3222B4D7C6923795"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_probe.obj",
+      "bytes": 306702,
+      "sha256": "1389A6E86E1BBE02C859446E86E98376216FBF1A05C4FEB225EE786DD510E71F"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_parser.obj",
+      "bytes": 288173,
+      "sha256": "F50B3D8EBC51C085F1C22DB0EC3050446D8457DF181ECD84A21082403013E9EA"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_reader.obj",
+      "bytes": 114227,
+      "sha256": "1BEDF0B7AA171442B5981F48B30CF3D69BF5626464B1C6761ACC571BFECA1792"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_before.exe",
+      "bytes": 95744,
+      "sha256": "272D7055496AE91C489874D8399518A1085C40D1FD60D344B9FA88369779FE5A"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_after.exe",
+      "bytes": 95744,
+      "sha256": "EADF77E6258C96C9462F7BD4643EA267DA6177C3A252D0A2F87087EE51BB53F1"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_before.log",
+      "bytes": 347,
+      "sha256": "5901AC0882A2C84FF61F9A47940094EBB4905CF0B8DB00CD19D97B577A620237"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_after.log",
+      "bytes": 347,
+      "sha256": "FD05AF50471A86B09BDBA7AAEDCDF2E0BF27F00C2AC01698BD5B0F9E3A2A39EB"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_compile.cmd",
+      "bytes": 947,
+      "sha256": "10B1F5BD713A7F0B95A50CEC4553D6CF8CD49EF05D890F37D6DBDA1EE66E3828"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_compile_before.log",
+      "bytes": 71,
+      "sha256": "5A0FFAD63ACAD78AA50FC824020EA5E7736DB39CDD37142EC9198A6E8926C33E"
+    },
+    {
+      "path": "local/cc11_scene_map_vector_compile_after.log",
+      "bytes": 71,
+      "sha256": "5A0FFAD63ACAD78AA50FC824020EA5E7736DB39CDD37142EC9198A6E8926C33E"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "bytes": 73075656,
+      "sha256": "D343E0A1E7E9DE4FD50B983392109442A39BA49971986615EA403920FDB03D51"
+    }
+  ]
+}
