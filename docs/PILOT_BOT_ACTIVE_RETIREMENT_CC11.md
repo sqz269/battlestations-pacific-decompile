@@ -133,3 +133,10 @@ actual task+404h squadron/task+3FCh plane lifetime after base death notification
 publication, deferred BE sender/readiness/FIFO/receipt/reindex binding, x87 eligibility and
 original binary ABI/private EH/game validation remain separate dependencies. No broad tick
 port, Boolean GameUnitsHost binding or speculative death cleanup is introduced.
+
+Primary integration: Win32 Release main f1de65be60f050bd78714e6dc6ba8d03041c2e23 passes all3 existing CTests;
+independent source-owner fixture and9 direct/tail call rows pass. The primary repaired
+the three call-site CALL_RETURN overrides at0099A06F/0099A110/0099A58E and decoded
+their ADD ESP4 continuations, saved the project and refreshed all3 exports. Global
+CRT flags and non-call alignment gaps were left intact. Receipt: reports/pilot_bot_active_flow_repair_cc11.json.
+These checks do not bind the actual producer/arena or establish original ABI/game parity.

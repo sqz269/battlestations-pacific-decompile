@@ -13531,8 +13531,8 @@
     },
     {
       "id": "cc11_land_active_retirement",
-      "done": false,
-      "state": "dispatched_to_reused_worker",
+      "done": true,
+      "state": "integrated_conditional_active_retirement_main_build_and_fixture_passed",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13558,7 +13558,14 @@
         "local/cc11_land_owner_probe.obj",
         "local/cc11_land_owner_probe.exe",
         "local/native_pilot_bot_task_owner_cc11.obj"
-      ]
+      ],
+      "code_revision": "ac308fad236bbac263e1358ff5a85297ad59b9c6",
+      "integrated_revision": "f1de65be60f050bd78714e6dc6ba8d03041c2e23",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "f1de65be60f050bd78714e6dc6ba8d03041c2e23",
+      "full_main_ctests_passed": 3,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_scene_library_loader",
@@ -13603,6 +13610,29 @@
       ],
       "reuses_worker_from": "cc11_health_marker",
       "contract": "Port proved ambient x87 unit fraction and entity numeric floor/cap ordering; preserve released no-dispatch/no-cache branch and explicit actual virtual/cache provider boundaries. No invented snapshot cache, broader callback rewrite or full ABI/game/exception-state claim."
+    },
+    {
+      "id": "cc11_land_active_prepend",
+      "done": false,
+      "state": "dispatched_to_reused_landing_worker",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00999f50"
+      ],
+      "output_files": [
+        "include/bsp/native_pilot_bot_task_owner.hpp",
+        "src/native_pilot_bot_task_owner.cpp",
+        "docs/PILOT_BOT_ACTIVE_PREPEND_CC11.md",
+        "reports/pilot_bot_active_prepend_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_active_retirement",
+        "cc11_land_scheduler"
+      ],
+      "reuses_worker_from": "cc11_land_active_retirement",
+      "contract": "Port conditional normal active prepend with native2*n+1 full growth, incoming-first prefix copy, count-before-base publication and valid spare tail shift. Exclude zero-count spare-capacity native underflow; keep actual parked producer/arena/lifetimes and broad scheduler binding explicit and unbound."
     }
   ],
   "snapshot_after_analysis": {

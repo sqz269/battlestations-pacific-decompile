@@ -1,7 +1,7 @@
 {
   "packet": "cc11_land_active_retirement",
   "date": "2026-10-06",
-  "status": "complete_conditional_normal_active_append_retirement_source_unbound",
+  "status": "integrated_conditional_normal_active_append_retirement_source_main_build_checked_unbound",
   "target": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
     "program_path": "/battlestationspacific.exe",
@@ -95,5 +95,27 @@
     "Deferred BE selected-owner/readiness/sender-copy/retired route/receipt/reindex and parked component input/output resolver/lifetime domains",
     "Original bot/task profiles/layout/register ABI, private FH3/SEH/fault/allocation behavior, arbitrary structural mutation/concurrency, native differential/runtime/gameplay checks"
   ],
-  "prior_reports": ["reports/pilot_bot_task_owner_source_cc11.json", "reports/pilot_bot_retirement_schedule_cc11.json", "reports/pilot_bot_parked_callback_cc11.json", "reports/pilot_bot_owner_flow_repair_cc11.json", "reports/landing_task_retained_hook_cc11.json", "reports/landing_be_profile_cc11.json"]
+  "prior_reports": ["reports/pilot_bot_task_owner_source_cc11.json", "reports/pilot_bot_retirement_schedule_cc11.json", "reports/pilot_bot_parked_callback_cc11.json", "reports/pilot_bot_owner_flow_repair_cc11.json", "reports/landing_task_retained_hook_cc11.json", "reports/landing_be_profile_cc11.json"],
+  "primary_integration": {
+    "source_revision": "f1de65be60f050bd78714e6dc6ba8d03041c2e23",
+    "worker_revision": "ac308fad236bbac263e1358ff5a85297ad59b9c6",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "executable_sha256": "2c9bcfe2aee78a3eec42d585aefb48966a4868b51f071db83d3c6b176a35523f",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_active_retirement_integrated_build.log",
+    "utc": "2026-10-07T06:36:38.019196+00:00",
+    "independent_source_fixture": "existing manifested owner probe rerun PASS",
+    "direct_tail_calls_checked": 9,
+    "call_failures": 0,
+    "indirect_excluded": 5,
+    "flow_repair": "reports/pilot_bot_active_flow_repair_cc11.json;3callsite overrides cleared,3ADD ESP4 gaps disassembled,program saved",
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }
