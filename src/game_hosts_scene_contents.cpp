@@ -290,6 +290,31 @@ bool retain_start_speed(const ScenePropertyBlock& bag, GameSceneEntityRecord& re
     return true;
 }
 
+bool retain_airfield_runway(const ScenePropertyBlock& bag, bsp::AirOpsDeck& deck) {
+    const SceneProperty* width = bag.find("RunwayWidth");
+    const SceneProperty* length = bag.find("RunwayLength");
+    const auto retained = [](const SceneProperty* prop) {
+        return prop != nullptr && equal_insensitive(prop->type_letter, "F") && prop->has_float;
+    };
+    // 006D3D20/006D3D4B read the stored +0Ch float. Keep the existing raw
+    // availability checks and scans for properties without a retained F value.
+    if (width == nullptr || (!retained(width) && width->values.empty())
+        || length == nullptr || (!retained(length) && length->values.empty())) return false;
+    const auto read = [&retained](const SceneProperty* prop, float& value) {
+        if (retained(prop)) {
+            value = prop->float_value;
+            return true;
+        }
+        return scene_scan_float(prop->values.back(), value);
+    };
+    float width_value = 0.0f, length_value = 0.0f;
+    if (!read(width, width_value) || !read(length, length_value)) return false;
+    deck.runway_width = width_value;
+    deck.runway_length = length_value;
+    deck.runway_from_scene = true;
+    return true;
+}
+
 // Packet cc9_land_convoy_members. 00743450's scene reads (007434A4..007437B0):
 // five float fields read type 1's retained float32 or convert an integer;
 // Rows/Columns read integers and Reverse a byte. Then the slot map: every
@@ -1979,18 +2004,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         deck.owner_party = stored.party;
         // 006D3C10 kind 1: RunwayWidth / RunwayLength through 008F2260 into
         // 006BF0D0 (holder+B0h/+B4h). An integer-typed property is converted,
-        // a float one is read as is; both parse the same from the scene text.
+        // other types read the stored float lane. Raw source properties retain
+        // the existing text-scan fallback.
         if (deck.is_airfield) {
-            const SceneProperty* w = bag.find("RunwayWidth");
-            const SceneProperty* l = bag.find("RunwayLength");
-            float wv = 0.0f, lv = 0.0f;
-            if (w != nullptr && !w->values.empty() && l != nullptr && !l->values.empty()
-                && scene_scan_float(w->values.back(), wv)
-                && scene_scan_float(l->values.back(), lv)) {
-                deck.runway_width = wv;
-                deck.runway_length = lv;
-                deck.runway_from_scene = true;
-            }
+            retain_airfield_runway(bag, deck);
             owner.log.notef("air ops runway: unit=%s RunwayWidth=%.2f RunwayLength=%.2f "
                 "authored=%d (006d3c10 -> 006bf0d0)", stored.name.c_str(),
                 static_cast<double>(deck.runway_width), static_cast<double>(deck.runway_length),
