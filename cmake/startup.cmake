@@ -269,7 +269,8 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_id_t
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_participant_binding.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_role_permission.cpp
     src/native_unit_group_owner.cpp
-    src/native_unit_group_storage.cpp)
+    src/native_unit_group_storage.cpp
+    src/native_unit_group_lookup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_deferred_message_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_append.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_history.cpp)
