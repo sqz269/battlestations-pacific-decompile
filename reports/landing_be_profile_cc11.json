@@ -1,0 +1,107 @@
+{
+  "packet": "cc11_land_be_profile",
+  "date": "2026-10-06",
+  "status": "conditional_source_reconstruction_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py client verifies project/program before each live batch",
+    "worker_ghidra_writes": false,
+    "primary_updates": "Primary defined/saved/exported0075ADA0 and0075ADC0; retained existing0075AD60 body; earlier defined writer/reader/getter exports reused"
+  },
+  "changed_files": [
+    "include/bsp/plane_squadron_host.hpp",
+    "src/plane_squadron_host.cpp",
+    "include/bsp/native_session_message_be.hpp",
+    "src/native_session_message_be.cpp",
+    "cmake/startup.cmake",
+    "docs/LANDING_BE_PROFILE_CC11.md",
+    "reports/landing_be_profile_cc11.json"
+  ],
+  "routines": [
+    {"entry": "0075AD60", "range_end_exclusive": "0075AD60-0075AD88", "coverage": "complete", "source": "construct_native_session_message_be_zero_0075ad60", "abi": "ECX=message; RET", "limit": "Receive-side zero constructor, not game-selected-owner emission construction"},
+    {"entry": "0075ADA0", "range_end_exclusive": "0075ADA0-0075ADBD", "coverage": "complete", "source": "native_session_message_is_be_0075ada0", "abi": "ECX=message; stack DWORD type; RET4", "limit": "AcceptsBEh and46h;46h payload/semantics not inferred"},
+    {"entry": "0075ADC0", "range_end_exclusive": "0075ADC0-0075ADDF", "coverage": "complete", "native_name": "CG_scalar_deleting_dtor_0075adc0", "source": "delete_native_session_message_be_0075adc0", "abi": "ECX=message; stack flags; RET4", "limit": "Existing source root-delete/free provider reused; original allocator identity unproved"},
+    {"entry": "007EF6F0", "range_end_exclusive": "007EF6F0-007EF710", "coverage": "complete", "source": "write_native_session_message_be_007ef6f0", "abi": "ECX=message; stack cursor; RET4"},
+    {"entry": "007EF710", "range_end_exclusive": "007EF710-007EF731", "coverage": "complete", "source": "read_native_session_message_be_007ef710", "abi": "ECX=message; stack read wrapper; RET4", "limit": "Three-bit signed reader exactly preserved"},
+    {"entry": "007ED580", "range_end_exclusive": "007ED580-007ED58B", "coverage": "complete", "source": "existing command_queue_current_command through required real command_queue_348 provider", "abi": "ECX=squadron; load ECX=[ECX+348h]; tail JMP0071BE40", "limit": "Actual head/override native singleton pointer tokens required; existing GameCommandsHost getter with zero override is not a binding"},
+    {"entry": "00769AAB", "parent": "00768530", "range_end_exclusive": "00769AAB-00769ACB", "coverage": "partial: BE allocation/zero-constructor arm only; other selectors and entry/SEH remain outside projection", "source": "create_native_session_message_be_00769aab", "abi": "parent ECX=wrapper; RET", "ghidra_containing_function": null, "limit": "Reviewed raw live/disk bytes; current noncontiguous factory body omits arm; source allocation success/ordinary-provider domain"},
+    {"entry": "0076A27B", "parent": "00768530", "range_end_exclusive": "0076A27B-0076A298", "coverage": "partial: common virtual-reader join and normal return only", "source": "create_native_session_message_be_00769aab", "abi": "ESI=constructed message; EDI=original wrapper; CALL[profile+8], RET", "limit": "Caller already selectedBE and rewound selector byte"},
+    {"entry": "007ED610", "range_end_exclusive": "007ED610-007ED64F", "coverage": "complete conditional control flow", "source": "plane_squadron_promote_and_reindex_007ed610", "abi": "ECX=squadron; stack signed index; RET4", "limit": "Existing prefix-rotation helper plus required live reindex provider; new source ABI"},
+    {"entry": "007ED260", "range_end_exclusive": "007ED260-007ED375", "coverage": "complete native body reviewed; existing value algorithm reused as provider contract", "source": "PlaneSquadronPromotionReceiptHost::assign_formation_indices_007ed260", "abi": "ECX=squadron; RET", "limit": "Live plane+9D0h/+9D8h publication remains required external provider; detached arrays do not bind native writes/timing"},
+    {"entry": "007F0030", "range_end_exclusive": "007F0030-007F01E6", "coverage": "partial: BE arm007F0077-007F008C only;4B/4C/7F/80/BC/default arms excluded", "source": "plane_squadron_receive_leader_promotion_be_007f0030", "abi": "ECX=squadron; stack message; RET4; AL=1 even on invalid index", "limit": "Caller already selectedBE and completed actual deferred delivery to live squadron"}
+  ],
+  "host_steps": [
+    {"address": "007EF6F9", "native": "0075B480", "function": "007EF6F0", "contract": "extended header write: type8/sender12/relay1"},
+    {"address": "007EF706", "native": "00429090", "function": "007EF6F0", "contract": "low3 index bits; stack value/bits and RET8 provider"},
+    {"address": "007EF719", "native": "0075B4C0", "function": "007EF710", "contract": "extended header read with wrapper"},
+    {"address": "007EF727", "native": "00428D30", "function": "007EF710", "contract": "signed3bit index into msg+1Ch with cursor=wrapper+4h; RET8 provider"},
+    {"address": "0075ADD1", "native": "00BF65AC", "function": "0075ADC0", "contract": "_free(message) when flags bit0 set; ADD ESP,4 at0075ADD6"},
+    {"address": "007F007B", "native": "007ED610", "function": "007F0030", "contract": "only BE receipt arm; AL1 returned even if rejected index"},
+    {"address": "007ED645", "native": "007ED260", "function": "007ED610", "contract": "required reindex after successful prefix rotation"},
+    {"address": "007ED586", "native": "0071BE40", "function": "007ED580", "kind": "tail_jump", "contract": "real singleton-token getter with actual override/head queue state"},
+    {"address": "0076A283", "native": "00D02E5C+vtable08", "function": "00768530", "contract": "common virtual-reader join; source BE slot2 actually invoked"}
+  ],
+  "raw_factory_receipts": {
+    "coverage": "raw BE arm only; no containing Ghidra function at00769ABF, so not claimed as an automated function-membership receipt",
+    "switch_table": {"location": "0076A58C", "value": "00769AAB", "selector": "BEh-1"},
+    "arm_bytes": "6A20E869CD480083C40485C00F84E1EAFFFF8BC8E89C12FFFF8BF0E9B0070000",
+    "join_bytes": "8B168B4208578BCEFFD0",
+    "steps": [
+      {"site": "00769AAD", "callee": "00BF681B", "contract": "allocate20h; ADD ESP,4 at00769AB2", "bytes": "E869CD4800", "validation": "live bytes and disk Capstone; function membership unresolved"},
+      {"site": "00769ABF", "callee": "0075AD60", "contract": "ECX=allocation; zero constructor then JMP common reader", "bytes": "E89C12FFFF", "validation": "live bytes and disk Capstone; function membership unresolved"}
+    ]
+  },
+  "profile": {
+    "native_table": "00D02E5C",
+    "native_slots": ["0075ADC0", "007EF6F0", "007EF710", "0075ADA0", "004499C0"],
+    "source_slots": "static five-DWORD source thunk array; no appended context/default adapter",
+    "storage": {"size": "20h", "sender": "WORD18h", "relay": "BYTE1Ah", "member_index": "signedDWORD1Ch", "retained_padding": ["11h-13h", "1Bh"]},
+    "wire": "type8 + sender12 + relay1 + signed index3 =24bits",
+    "signed_edge": "00428D30 sign-extends bit2; wire4..7 -> -4..-1; codec round-trip positive4 is rejected by native610 index gate; observed listing/source fixture, not observed gameplay"
+  },
+  "reindex_contract": {
+    "domain": "live_count0..5, valid occupied live plane pointers, old formation indices0..4; native unchecked faults/aliasing/corrupt data excluded",
+    "first_pass": "current array order: plane+9D8h=i then taken[old plane+9D0h]=1",
+    "second_pass": "leader+9D0h=0/taken0=-1; select lowest not-assigned odd/even; adjacent tie retains positive old even side; publish chosen+9D0h/taken=-1",
+    "required_order": "first-pass actual plane+9D8h publications precede second-pass+9D0h writes; provider invoked only after rotation",
+    "existing_algorithm": "plane_formation_assign_indices_007ed260; native listing reread; source count/index/scan safety guards restrict agreement to admitted normal domain",
+    "binding": "pure virtual required provider; no actual plane field/default implementation supplied"
+  },
+  "corrections": [
+    {"was": "Three-bit promotion member index can be read as unsigned", "is": "Reader uses00428D30 signed extension; payload4 decodes-4", "evidence": "007EF727 exact CALL and00428D30 whole body; source probe"},
+    {"was": "Existing typed007ED610 completes native promotion", "is": "It only rotates the prefix; new wrapper makes required007ED260 call afterward", "evidence": "007ED645 CALL007ED260; existing typed helper ends after rotation"},
+    {"was": "BE factory uses emission base constructor/current selected owner", "is": "BE factory uses0075AD60 zero constructor; sender/owner copy belongs to deferred route", "evidence": "00769ABF raw CALL0075AD60; constructor+14h=0; earlier0076E5B9/0076E5CE copy stores"}
+  ],
+  "caller_contracts": {
+    "factory": "BE selector already chosen and type byte rewound; valid sufficient bitstream backing; actual source allocation provider; other selectors and native private SEH/fault domains excluded",
+    "receipt": "BE branch already selected, deferred delivery completed; same live sender/resolved squadron and planes remain valid; no other message dispatch inferred",
+    "current_command": "Actual native singleton address tokens for admitted mode1/head and mode2/override; classes are not pointer equality; unknown world/controller domains excluded",
+    "lifetime": "Old task+404h view is distinct from current plane+9D4h/new task; task FIFO, cached object lifetime and death observer invalidation are separate unfinished bindings",
+    "delivery": "Real0075B430 owner-capturing emission, game readiness, flags5/statusnull route, sender+174h -> copy+18h, original owner -> copy+14h, enqueue and deferred receive remain required external contracts",
+    "abi": "New public C++ interfaces and source thunk addresses; Win32 offsets/static size assertions are source layout evidence, not drop-in original ABI proof"
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86 Visual Studio18 Community, toolset14.51.36231 HostX64/x86; /EHsc /std:c++17 /MD /O2 /DNDEBUG",
+    "objects": ["local/native_session_message_be_cc11.obj", "local/plane_squadron_host_cc11.obj"],
+    "object_compile": "passed both changed .cpp files",
+    "focused_probe": "local/cc11_land_be_probe.exe",
+    "link": "changed objects + existing main build/win32/Release/bsp_core.lib, user32.lib, d3d9.lib; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "probe_result": "PASS BE BC 3A /24bits; BE/46 predicate; zero constructor/padding; deferred receipt rotates then reindexes; wire4 -> -4 rejected",
+    "probe_domain": "one focused source serialization/receipt fixture; actual source virtual slots called; fixture per-plane publication provider; no original-game queue/native-runtime/ABI/lifetime test",
+    "live_call_verifier": "passed8 direct/tail call rows,0 failed;1 indirect slot not checked;2 raw factory-arm calls explicitly excluded from automated containing-function claim",
+    "diff_check": "passed git diff --check; final staged check recorded in commit closeout",
+    "full_cmake_msvc": "not run by worker; primary serializes integration/full build; director currently holds compile slot",
+    "gameplay": "not tested"
+  },
+  "remaining": [
+    "Primary Ghidra repair/review of noncontiguous00768530 BE arm membership before automatic call receipts for00769AAD/00769ABF",
+    "Concrete retired-task ownership/FIFO and native drain-before-destructor scheduling; cached squadron lifetime through hook/deferred receive",
+    "Emission selected-owner context, actual route readiness and sender/owner copy, queue allocation/tail and receive consumer before a host connection",
+    "Real live plane+9D0h/+9D8h reindex publication provider; source value algorithm alone is incomplete binding",
+    "Separate uncertain destruction/death observer ordering; no immediate dequeue or synchronous request promotion",
+    "Original ABI/allocator/exception/fault/46-payload/network/gameplay domains unproved"
+  ]
+}

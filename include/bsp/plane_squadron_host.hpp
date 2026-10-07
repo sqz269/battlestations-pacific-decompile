@@ -298,8 +298,9 @@ class PlaneSquadronLandingHookHost {
     // including game+5D4h readiness and sender identity; it must not rotate
     // members synchronously. The base constructor requires a valid current
     // game when emission reaches it, even though 007EEE50's mode gate itself
-    // tolerates a null current game. This interface supplies no message ABI
-    // profile, queue adapter, or substitute success response.
+    // tolerates a null current game. The BE source codec/factory is declared in
+    // native_session_message_be.hpp; this route still requires a real queue
+    // adapter and supplies no substitute success response.
     virtual void construct_and_route_promotion_be(
         PlaneSquadronEntity& squadron, int member_index) = 0;
 };
@@ -315,5 +316,37 @@ void plane_squadron_end_landing_007efb60(PlaneSquadronLandingHookView& squadron,
 void plane_squadron_request_leader_promotion_007eee50(
     PlaneSquadronEntity& squadron, const void* candidate,
     PlaneSquadronLandingHookHost& host);
+
+struct NativeSessionMessageBE;
+
+// Receipt needs actual per-plane +9D0h/+9D8h publications. PlaneSquadronEntity
+// holds member pointers but does not own those fields. There is no default
+// provider. The caller keeps this squadron and all occupied planes alive and
+// supplies live_count in 0..5 and valid previous formation indices in 0..4.
+class PlaneSquadronPromotionReceiptHost {
+   public:
+    virtual ~PlaneSquadronPromotionReceiptHost() = default;
+    // Complete 007ED260 contract, ECX=squadron, RET at007ED374: first walk the
+    // CURRENT +3D0h order, write plane+9D8h=i, and mark old plane+9D0h in a
+    // five-entry table. Then set leader+9D0h=0 and assign the lowest available
+    // odd/even index, preserving a positive old even side on an adjacent tie.
+    // Publish +9D8h before the second-pass +9D0h stores. The existing value
+    // algorithm is plane_formation_assign_indices_007ed260; its detached arrays
+    // alone do not implement these live field writes or their native timing.
+    virtual void assign_formation_indices_007ed260(PlaneSquadronEntity& squadron) = 0;
+};
+
+// Full conditional 007ED610 control flow: rotate with the existing typed prefix
+// helper, then make the REQUIRED reindex call. New source ABI; native RET4.
+void plane_squadron_promote_and_reindex_007ed610(
+    PlaneSquadronEntity& squadron, int index, PlaneSquadronPromotionReceiptHost& host);
+
+// Only the BE arm007F0077..007F008Bh of dispatcher007F0030; all other message
+// arms are outside this projection. Caller has selected typeBEh and completed
+// deferred delivery to this same live squadron. Receipt returns true even for
+// an invalid index, as the native arm does. Never call this on request/enqueue.
+bool plane_squadron_receive_leader_promotion_be_007f0030(
+    PlaneSquadronEntity& squadron, const NativeSessionMessageBE& message,
+    PlaneSquadronPromotionReceiptHost& host);
 
 }  // namespace bsp
