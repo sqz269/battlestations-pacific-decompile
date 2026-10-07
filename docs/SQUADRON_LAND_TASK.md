@@ -14368,3 +14368,87 @@ leases are held.
   builds and the `select`/`attack`/`select HQ` lines for the boats and Isokaze/Fubuki (`--ships`, `--norot`, `--boats N`,
   `--first T`).
 - `l47_diag_patch*.py` patch an exported copy (`local\l47_D9`) with throttle and branch traces. They are never for commit.
+
+## 5fg. JM08: who shells the HQ, the strikes that follow, and T05's friendly kill (cc9-lua48, 2026-10-06, read and runs only)
+
+This section answers the two open items of 5ff. No switch was added and no source changed. All runs are JM08 at 24000
+frames in 5fd's launch form (`local\l48_lane.ps1`, a copy of `l47_lane.ps1`).
+
+**The diagnostic build.** `local\l48_D0` is an export of main `62988a6fa`, patched by `local\l48_diag_hq.py` and never
+committed. The patch adds one `l48diag hit` line at the entry of `apply_hit` with these fields:
+- the shooter, its gun row, platform, category and bullet class;
+- the victim, both sides, and the victim's health before the hit.
+
+The line is printed when the victim is the HQ, when it is named in `BSP_L48_VICTIMS` (`|A|B|`), or when the hit is
+same-side. `local\l48_hqdmg.py <log> <victim> [tmax]` credits each health drop, to the next line on that victim, to
+the shooter of that line. The g10 orders run twice (g10, and g12 with the victims set) and give the same rows, so the
+build is deterministic.
+
+### The HQ's shooters (g9's orders again, `local\l48g9_D0_j8.log`; HQ 12000 hp, neutralized at 1005.90 s)
+
+| shooter, cat, bullet | hits to 1005.9 s | damage | from |
+| --- | --- | --- | --- |
+| Nevada, cat 4 main, **bullet 1** | 66 | 4046 | 659.9 s |
+| Missouri, cat 4, bullet 100 | 54 | 3580 | 874.9 s |
+| Nevada, cat 6, **bullet 15** | 68 | 2588 | 885.2 s |
+| Auilick, cat 6, bullet 15 | 20 | 813 | 984.8 s |
+| Helena, cat 3, bullet 13 | 16 | 650 | 975.6 s |
+| Bristol and Gleaves, cat 6, bullet 15 | 8 | 303 | 995 s |
+
+- **Bullet 19** is the Japanese AA trucks' cat-2 splash on their own HQ (about 0 damage).
+- **Bullet 15** is the US 5-inch round, shared by the destroyers, Nevada's secondaries and LSM 02.
+- **Nevada is the first and largest bombarder.** `SpawnNevadaFleet` (`prcpjm08.lua`, the 2024-08-26 file in this
+  installation) attack-moves it onto the HQ. It shells the houses from 143 s and the HQ from 660 s.
+- **The HQ's fall is the end condition.** `CheckHQ` fails the mission when the HQ's `Party` becomes 2. A win needs
+  primary 1 (the 11 `LandShips`) and primary 2 (Missouri). `CompletionDialog("Run")` -> `FadeIn` -> phase 2's bomber
+  waves, and then `CheckPrim3` (the Dakota group) -> `Victory`.
+
+### Strike runs (`local\l48_j8gen.py`; each list is a priority order)
+
+| run | airfield | Hosho (Kates 162 first) | Isokaze, Fubuki | boats | outcome |
+| --- | --- | --- | --- | --- | --- |
+| g10 / g12 | T01 first (5ff's `norot`) | Nevada, Missouri, the landships | Nevada, Missouri, ... | the same | T01 252.76, T02 496.05, **Nevada 508.45** (Hosho_sqn08), T03 812.18; Hosho dies 656.61 (Hawaii); **failed 1167.66 s** (g9: 1006.03) |
+| g11 | T01, Nevada, Missouri, ... | as g10 | as g10 | as g10 | only T01; Nevada 496.70 (San Francisco's own guns, below); failed 1124.87 |
+| g13 | as g10 | Missouri first | as g10 | as g10 | Hosho dies 591.03; Nevada 907.15; failed 1120.12 |
+| g14 | as g10 | as g10 | Hawaii, Pringle, Erben first | as g10 | Hosho lives to 968.84 (Isokaze, Fubuki dead by 563); failed 1116.50 |
+
+**Damage to Nevada in g12** (10000 hp, 423-527 s):
+- Hosho's Kate torpedoes (bullet 69, cat 10): about 5600, from 6 drops.
+- Gyoraitei guns (bullet 34): about 2550.
+- San Francisco's own cat-3 rounds: about 2000.
+
+**Missouri cannot be reached.**
+- It has 11000 hp, armour 130, and repairs back to full between strikes.
+- A Kate torpedo does 1069 there (g13, `impact blast bullet=69 ... base=1200`).
+- The later Kate sorties at Missouri (10 accepted in g14) all die to the invasion force's AA: the transports, the LSMs
+  and Missouri itself. `torpedo_drop drops=6` covers the whole run, and all 6 hit Nevada.
+- The airfield's Bettys and Nells carry bullet 78 (base 75, range 25), which is useless against armour 130.
+
+**Furthest state: g10/g12.** Nevada is sunk at 508 s; T01-T03 are sunk; the HQ holds 160 s longer than in g9. The
+mission still fails, with Missouri unhurt.
+
+**The blocker is not in the plane lane.** The weapons the IJN player has against Missouri are the twelve Gyoraitei
+and Isokaze/Fubuki torpedoes, and none of them is ever aimed:
+- `summary mission gunnery torpedo_gate guns=156 ... targeted=0 accepted=0 sent=0` on every JM08 run.
+- The same is true of USN13, USNOS and E2. LOMP10 reaches `targeted=636` but still `accepted=0`.
+- The player's own tube fire, `kPlayerTorpedoGroupFireBound` (GUNNERY_OPEN_ITEMS 152), is OFF, and main's harness has
+  no group-4 `fire` line.
+
+So JM08 waits on the gunnery lane: the AI tube aim, or the player's group-4 fire together with a harness line.
+
+### T05 "killed by Gleaves" (5fe's F1, the g5 orders, `local\l48g5_D0_j8.log`): friendly fire, credited correctly
+
+The run reproduces F1's death row exactly (`t=442.42 killer=Gleaves killer_gun=215 killer_cat=1`).
+- **Every one of T05's 93 cat-1 hits (2809 damage) is from its own side** (`side=0/0`): the AA rounds 40/42 of
+  Missouri, Macomb, T01, LST 03, Grayson, Gleaves and others, from 413.17 s. Their target was Hosho's Kates, which
+  were attacking T05.
+- Those hits open the leaks (`first_water_t=413.17`), then cause an `Explosion` component failure at 442.17 s
+  (health 1530/4000), and T05 dies. Gleaves fired last, so the credit is right, and the party bytes are right.
+- **Friendly fire is broad.** In g9, Nevada's cat-4 sank San Francisco (`killer_range=51`). In g11, San Francisco's
+  cat-3 sank Nevada (40 hits from 62 m). Each g5/g9 run logs 100-160 same-side hits on single transports.
+- **Two candidate causes, both in the gunnery lane and both unread against the image:**
+  1. `kAaLineOfFireBound` asks `0072CDD0` once per (gun, target) and caches the answer for the gun's life, because the
+     cached record's expiry field has no reader found. An AA gun therefore fires through a friendly that moves into its
+     line.
+  2. The artillery kinds (cat 3/4/6) carry no line-of-fire predicate at all (`00729560` installs it for kinds 1, 5 and
+     6 only). Whether the image has another friendly gate for them is unread.
