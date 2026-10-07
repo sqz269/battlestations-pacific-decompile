@@ -122,7 +122,9 @@ size+insert count must be <=1FFFFFFF, with native-valid signed distances.
 No structural reentry/concurrent mutation, invalid iterator/placement, backing
 allocation failure/overflow, private EH/diagnostic behavior or pointee lifetime
 is silently supplied. Existing raw buffers must belong to the same CRT free
-domain. Complete class destruction, lower/composite/queue state construction,
+domain. Direct ordinary class cleanup is now covered by
+[the lifetime packet](LANDING_STATE_REGISTRY_LIFETIME_CC11.md). Original callable
+class binding, lower/composite/queue state construction,
 native executable profile binding, owner scheduler/death lifetime, original
 ABI and in-game behavior remain separate unfinished dependencies. Root owns
 CMake registration, full main build and independent integration validation.

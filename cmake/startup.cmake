@@ -240,6 +240,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_tar
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_operations.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_state_registry.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_tick_history.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_state_registry_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_history.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message88.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tag_08.cpp)

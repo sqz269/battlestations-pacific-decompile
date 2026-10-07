@@ -21,8 +21,9 @@ struct NativeBotStateVectorStorage {
 };
 
 struct NativeBotStateRegistryStorage {
-    // 411E20 writes numeric CE37DC. This SOURCE word is UNCALLABLE: complete
-    // class profile/scalar destructor 411810 and original binding are absent.
+    // 411E20 writes numeric CE37DC. This SOURCE word is UNCALLABLE.
+    // Direct Source cleanup helpers are in native_land_state_registry_lifetime.hpp;
+    // the original callable image profile/class binding remains absent.
     volatile std::uint32_t profile_word_00;
     NativeBotStateVectorStorage vector_04;
 };
