@@ -687,7 +687,7 @@ constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    OFF: the generic test, and the image's answer is counted. Steps 5 and 7
 //    (the two range gates) and the 0.2 s think timer stay unmodelled as before.
 //    docs/GUNNERY_OPEN_ITEMS.md 161.
-constexpr bool kTorpedoBotReadyGateBound = false;
+constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161.4
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
@@ -695,7 +695,7 @@ constexpr bool kTorpedoBotReadyGateBound = false;
 //    with class 0. The host never did, so an entry stayed in state 4 forever and
 //    00673A10's idle search (0067442D) ran dry after NumSlots builds. OFF: the
 //    deaths are counted only. docs/GUNNERY_OPEN_ITEMS.md 162.
-constexpr bool kShipyardDeathReleaseBound = false;
+constexpr bool kShipyardDeathReleaseBound = true;   // ON: GUNNERY_OPEN_ITEMS 162.3
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws

@@ -11374,6 +11374,44 @@ the image's AI fire a torpedo boat's fixed tubes?
 - **JM08 with the boats (lua47 `g9` orders):** the tubes are identical (`assigns 0`), because 161.1's mask refuses
   first. The per-unit line shows `masked == scored` for every Gyoraitei.
 
+### 161.4 Pairs on `405865d4c` and the verdict
+
+- **Smoke:** JM06, 300 frames, exit 0.
+- **Pairs:** `--flip kTorpedoBotReadyGateBound=true`; logs `local\g34_t1{off,on}_<row>.log`; AF launch form.
+
+| row | pair_diff | OFF `targeted / image / generic / refused_angles`, shots | ON shots | deaths |
+| --- | --- | --- | --- | --- |
+| JM06 3000 | 3 | 23208 / 23208 / 0 / 23208, 0 | **24** (PlayerSub 02 and 03, all twelve bow tubes, 2 each) | identical |
+| LOMP10 9000 | 3 | 636 / 636 / 0 / 636, 0 | **4** (PT 02's four `US single torpedo catapult` tubes) | PT 02 dies 245.76 -> 247.61 s; the rest identical |
+| USN02 9000 | 3 | 34627 / 32915 / 28429 / 0, 113 | 110 | identical (Kawakaze, Yamakaze, Houston at 70.00 s) |
+| IJN11 3000 | 3 | 194 / 102 / 30 / 0, 3 | 7 | identical |
+| LOMP06 1000 | 1 | 783 / 666 / 659 / 0, 9 | 9 | identical |
+| USN01 3000 (control) | 1 | 0 | 0 | identical |
+| JM08 24000, lua47 `g9` orders | 1 | 0 | 0 | identical |
+
+- **Mechanism:** each prediction holds. Zero-speed tubes now launch: the AI's submarines on JM06, and an AI US PT boat
+  on LOMP10. Every refused-angle tick passes the image's test. The turning mounts on USN02 and IJN11 open their windows
+  on the image's 1-degree band, and no death moves.
+- **Verdict: ON.** The scripted wins that carry torpedo ships (USN02, LOMP06, LOMP10) are for reference AG to re-time.
+
+**Correction to 161.1 (the run contradicts the static reading).** The host does not mask the Gyoraitei.
+- The new per-unit line gives `mask=3` and `masked=0` for all four boats (`g34_t2off_j8.log`).
+  - The scene host's director table has no entry for a shipyard-built name, so the stance push keeps the
+    constructor's 1 (SENTITY_INIT_PASSES section 7).
+  - Whether the image's pass B gives a built boat the library `TorpedoDirector = false` is **unread**. The bag that
+    `00844FC0` builds is LAND_AND_STRUCTURES section 3's. The question is routed to the scene-contents lane.
+- **What does stop the tubes in the host is the pass byte `+7Dh` (GUNNERY 103).**
+  - The diagnostic `g34_diag2_j8y4.log` used `BSP_AA_TRACE_UNIT` and `BSP_FIRE_GATE_TRACE` = `Gyoraitei #Y4`,
+    `BSP_FIRE_GATE_TARGET` = `USTroopTransport 04`, on the OFF build, at 8800 frames.
+  - `00863990` accepts USTroopTransport 04 at 1762, 1578 and 1486 m (category range 1852).
+  - On each of the four tubes, `00729BC0`'s slot answer is `in_range=1 accepts=1`.
+  - No assignment follows. The candidate is the director's fire target, and `+7Dh` is 0 on every frame of the boat's
+    life (`zero_frames=1113`). `00865809` skips it.
+  - `+7Dh` is set only while the torpedo gate is set and the approach goal lies within the clearance (300..920 m) plus
+    50 m (`009F2FDB..009F301B`).
+  - The boats die (368-457 s) before they close that far. Whether the host's goal range `+127Ch` is the image's is the
+    ships lane's question.
+
 ## 162. The shipyard's entries never return to idle: `008455A0`, the observer release (lead queue item 2; cc9-gunnery34, 2026-10-06)
 
 **The question.** In JM08 (5fd) only 4 of the 12 ordered `Gyoraitei` are ever built. One builds at once and three
@@ -11421,3 +11459,22 @@ state 0 in the image?
   - ON: the same deaths, `entry_reidles = unit_deaths`, and new builds after the first death.
   - So expect `builds > 4` (at most 12, the stock), fewer refusals, and new `Gyoraitei #Y5...` units. Exit 3.
 - **LOMP10 with a build pair:** the same pattern if a built unit dies before the last `build` line. Otherwise exit 1.
+
+### 162.3 The pair on `405865d4c` and the verdict
+
+`--flip kShipyardDeathReleaseBound=true`, JM08 at 24000 frames with lua47's `g9` orders (`local\g34_t2{off,on}_j8.log`).
+`pair_diff` exit 3.
+
+| | OFF | ON |
+| --- | --- | --- |
+| builds | 4 | **10** (`#Y5`..`#Y10`) |
+| refused orders | 113 | 107 |
+| `unit_deaths` / `entry_reidles` / `hangar_clears` | 4 / 0 / 0 | 7 / 7 / 1 |
+
+- **Mechanism:** each boat's death returns its entry to idle, and the next `build` line reuses the entry. `#Y7` died in
+  state 3, while still on the hangar path, and its hangar record was cleared too (`hangar_clears=1`).
+- **Mission:** the deaths of transports 01-06 before 690 s are the same on both sides. ON, three more boats die
+  (514-633 s), and the run reaches `EndScene` earlier.
+- **Rows without `build` lines** do not reach the path. Every reference row has `unit_deaths=0`, as the 300-frame smoke
+  and the torpedo pairs' OFF logs show.
+- **Verdict: ON.**
