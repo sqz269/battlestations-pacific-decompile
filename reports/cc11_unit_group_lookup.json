@@ -1,0 +1,1119 @@
+{
+  "packet": "cc11_health_unit_group_lookup",
+  "base_commit": "b512de11c16202dc208fbd4f8fbd2edfc5e0b9c0",
+  "branch": "agent/cc11_health_guard",
+  "status": "two_complete_raw_searches_strict_win32_build_and_one_focused_unrelocated_original_comparison_passed_pending_primary_registration",
+  "owned_files": [
+    "include/bsp/native_unit_group_lookup.hpp",
+    "src/native_unit_group_lookup.cpp",
+    "docs/CC11_UNIT_GROUP_LOOKUP.md",
+    "reports/cc11_unit_group_lookup.json"
+  ],
+  "functions": [
+    {
+      "name": "index",
+      "address": "0070D030",
+      "end_exclusive": "0070D059",
+      "bytes": 41,
+      "instruction_count": 16,
+      "sha256": "158b64ad5782c42471e20fba7682bf4340344eeee7a25c1f593fef205f07e2ec",
+      "disassembly": [
+        "0070D030: mov edx, dword ptr [ecx + 0x4f8]",
+        "0070D036: xor eax, eax",
+        "0070D038: test edx, edx",
+        "0070D03A: push esi",
+        "0070D03B: jle 0x70d052",
+        "0070D03D: mov esi, dword ptr [esp + 8]",
+        "0070D041: add ecx, 0x18",
+        "0070D044: cmp dword ptr [ecx], esi",
+        "0070D046: je 0x70d055",
+        "0070D048: add eax, 1",
+        "0070D04B: add ecx, 0x34",
+        "0070D04E: cmp eax, edx",
+        "0070D050: jl 0x70d044",
+        "0070D052: or eax, 0xffffffff",
+        "0070D055: pop esi",
+        "0070D056: ret 4"
+      ],
+      "calls": [],
+      "relocations": 0,
+      "retained_bytes": 41,
+      "live_disk_frozen_executed_match": true
+    },
+    {
+      "name": "record",
+      "address": "0070D080",
+      "end_exclusive": "0070D0B6",
+      "bytes": 54,
+      "instruction_count": 23,
+      "sha256": "0c7dd9cc4d295d3f6c83485c466b918bcabd4a7ec7c4cb097aa10813cbf8055a",
+      "disassembly": [
+        "0070D080: push esi",
+        "0070D081: mov esi, dword ptr [ecx + 0x4f8]",
+        "0070D087: xor eax, eax",
+        "0070D089: test esi, esi",
+        "0070D08B: push edi",
+        "0070D08C: jle 0x70d0a3",
+        "0070D08E: mov edi, dword ptr [esp + 0xc]",
+        "0070D092: lea edx, [ecx + 0x18]",
+        "0070D095: cmp dword ptr [edx], edi",
+        "0070D097: je 0x70d0aa",
+        "0070D099: add eax, 1",
+        "0070D09C: add edx, 0x34",
+        "0070D09F: cmp eax, esi",
+        "0070D0A1: jl 0x70d095",
+        "0070D0A3: pop edi",
+        "0070D0A4: xor eax, eax",
+        "0070D0A6: pop esi",
+        "0070D0A7: ret 4",
+        "0070D0AA: imul eax, eax, 0x34",
+        "0070D0AD: pop edi",
+        "0070D0AE: lea eax, [eax + ecx + 0x18]",
+        "0070D0B2: pop esi",
+        "0070D0B3: ret 4"
+      ],
+      "calls": [],
+      "relocations": 0,
+      "retained_bytes": 54,
+      "live_disk_frozen_executed_match": true
+    }
+  ],
+  "native_calls": [],
+  "native_leaf_call_count": 0,
+  "native_abi": {
+    "ecx": "actual group receiver",
+    "stack_arguments": [
+      "actual entity pointer"
+    ],
+    "return_instruction": "RET4",
+    "index_return": "fullEAX first index orFFFFFFFF",
+    "record_return": "fullEAX actual record address or0",
+    "native_ecx_index": "group for count<=0; walks to first matching record or one-past-last on positive miss",
+    "native_ecx_record": "preserves actual group, used immediately by70D2A6",
+    "source": "new C++ interfaces; not the native class/register ABI"
+  },
+  "raw_contract": {
+    "receiver_bytes": 1288,
+    "capacity": 24,
+    "count": "signed DWORD group+4F8 captured ONCE",
+    "nonpositive_count": "no record reads",
+    "records": "actual entity DWORD at group+18+index*34",
+    "identity": "actual pointer bits, no semantic handles",
+    "match": "FIRST equal identity, including null query matching a null hole",
+    "miss": "full -1 index / null record",
+    "writes": 0,
+    "calls": 0,
+    "globals": 0,
+    "relocations": 0,
+    "domain": "valid aligned full508h borrowed Win32 group and readable records for positive count",
+    "no_added": [
+      "null query rejection",
+      "bound guard",
+      "copy",
+      "default",
+      "callback",
+      "allocation",
+      "ownership",
+      "publisher"
+    ]
+  },
+  "structural_input_evidence": [
+    {
+      "name": "list_selection",
+      "start": "00536083",
+      "end_exclusive": "00536098",
+      "bytes": 21,
+      "sha256": "5c0e8b2eeb01ca00b7634cca216e5c94f5d255f876cced377157f21dbe6bfcb9",
+      "disassembly": [
+        "00536083: push edi",
+        "00536084: mov ecx, ebp",
+        "00536086: call 0x70d030",
+        "0053608B: mov ecx, dword ptr [esi + 0xac]",
+        "00536091: push eax",
+        "00536092: mov dword ptr [esi + 0x8c], eax"
+      ],
+      "classification": "actual caller witness only; not a reconstructed caller fragment"
+    },
+    {
+      "name": "list_record_selection",
+      "start": "0053ACCF",
+      "end_exclusive": "0053ACE1",
+      "bytes": 18,
+      "sha256": "792ff58cd8b202a8fd705d96584e733a43ffe4032ac547a3bc27b5bff678c37e",
+      "disassembly": [
+        "0053ACCF: push esi",
+        "0053ACD0: call 0x70d030",
+        "0053ACD5: mov ecx, dword ptr [ebp + 0x138]",
+        "0053ACDB: push eax",
+        "0053ACDC: call 0x70d070"
+      ],
+      "classification": "actual caller witness only; not a reconstructed caller fragment"
+    },
+    {
+      "name": "formation_station",
+      "start": "0070D2A0",
+      "end_exclusive": "0070D2B7",
+      "bytes": 23,
+      "sha256": "3fa30258c369f75c137998ca2154e97bc6a9ccb7a3b2a017ac2aeb88b9a6c084",
+      "disassembly": [
+        "0070D2A0: push esi",
+        "0070D2A1: call 0x70d080",
+        "0070D2A6: cmp esi, dword ptr [ecx + 0x14]",
+        "0070D2A9: je 0x70d362",
+        "0070D2AF: test eax, eax",
+        "0070D2B1: je 0x70d362"
+      ],
+      "classification": "actual caller witness only; not a reconstructed caller fragment"
+    },
+    {
+      "name": "session_formation_order",
+      "start": "0077FB79",
+      "end_exclusive": "0077FB94",
+      "bytes": 27,
+      "sha256": "1a94cff263f6e9f35cf1ee0b5e49c8fb05698eb9b1510a39b7554c0ce3fc9b65",
+      "disassembly": [
+        "0077FB79: mov ecx, dword ptr [esi + 0x284]",
+        "0077FB7F: push esi",
+        "0077FB80: call 0x70d080",
+        "0077FB85: mov ecx, dword ptr [esi + 0x284]",
+        "0077FB8B: cmp dword ptr [ecx + 0x4fc], 0x18",
+        "0077FB92: jne 0x77fbb1"
+      ],
+      "classification": "actual caller witness only; not a reconstructed caller fragment"
+    }
+  ],
+  "separate_caller_verification": {
+    "function_scoped_checked": 3,
+    "function_scoped_failed": 0,
+    "successful_log": "local/cc11_unit_group_lookup_20261007_a/verify_scoped_callers.log",
+    "initial_attempt": {
+      "checked": 4,
+      "failed": 1,
+      "log": "local/cc11_unit_group_lookup_20261007_a/verify_callers.log",
+      "reason": "0053ACD0 is in no Ghidra function"
+    },
+    "unscoped_raw_call": {
+      "address": "0053ACD0",
+      "target": "0070D030",
+      "live_frozen_disk_bytes_match": true,
+      "qualification": "actual CALL bytes verified; not inside a Ghidra function, so not counted among function-scoped verifier rows"
+    },
+    "qualification": "actual callers are structural witnesses and are separate from the leaves zero dependency-call rows"
+  },
+  "existing_source_before_packet": {
+    "raw_binding": false,
+    "semantic_helper": "GameUnitsHost::set_formation_member_offset_0070d080",
+    "source": "src/game_hosts_units.cpp",
+    "qualification": "hosted vector and member+1 handles plus guards, not actual group storage",
+    "unchanged": true
+  },
+  "original_image": {
+    "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_unit_group_lookup_20261007_a\\original_image.bin",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752,
+    "unchanged": true
+  },
+  "fixture": {
+    "artifact_directory": "local/cc11_unit_group_lookup_20261007_a",
+    "focused_fixtures": 1,
+    "checks": 49,
+    "failures": 0,
+    "query_cases": 7,
+    "result_comparisons": 28,
+    "queries": [
+      "first_with_duplicate",
+      "null_hole",
+      "interior",
+      "last",
+      "absent",
+      "zero_count",
+      "negative_count"
+    ],
+    "actual_original_bytes": 95,
+    "retained_original_bytes": 95,
+    "relocations": 0,
+    "patches": 0,
+    "original_dependency_bridges": 0,
+    "repository_support_libraries": 0,
+    "receiver_bytes": 1288,
+    "guard_bytes": 32,
+    "borrowed_entity_prefixes": 4,
+    "entity_prefix_bytes": 648,
+    "all_input_bytes_preserved_after_each_query": true,
+    "same_actual_storage_for_original_and_source": true,
+    "exact_record_pointer_comparisons": true,
+    "native_eax_and_ecx_verified": true,
+    "original_bytes_verified_before_after": true,
+    "runtime_log": [
+      "BYTE_ACCOUNT before index=41 record=54 retained=95 relocated=0 patched=0",
+      "QUERY first_with_duplicate count=24 expected=0 indexEAX=00000000 recordEAX=00eff234 sourceIndex=0 sourceRecord=00eff234 indexECX=00eff234 recordECX=00eff21c",
+      "QUERY null_hole count=24 expected=1 indexEAX=00000001 recordEAX=00eff268 sourceIndex=1 sourceRecord=00eff268 indexECX=00eff268 recordECX=00eff21c",
+      "QUERY interior count=24 expected=12 indexEAX=0000000c recordEAX=00eff4a4 sourceIndex=12 sourceRecord=00eff4a4 indexECX=00eff4a4 recordECX=00eff21c",
+      "QUERY last count=24 expected=23 indexEAX=00000017 recordEAX=00eff6e0 sourceIndex=23 sourceRecord=00eff6e0 indexECX=00eff6e0 recordECX=00eff21c",
+      "QUERY absent count=24 expected=-1 indexEAX=ffffffff recordEAX=00000000 sourceIndex=-1 sourceRecord=00000000 indexECX=00eff714 recordECX=00eff21c",
+      "QUERY zero_count count=0 expected=-1 indexEAX=ffffffff recordEAX=00000000 sourceIndex=-1 sourceRecord=00000000 indexECX=00eff21c recordECX=00eff21c",
+      "QUERY negative_count count=-1 expected=-1 indexEAX=ffffffff recordEAX=00000000 sourceIndex=-1 sourceRecord=00000000 indexECX=00eff21c recordECX=00eff21c",
+      "BYTE_ACCOUNT after index=41 record=54 retained=95 relocated=0 patched=0",
+      "RESULT checks=49 failures=0 focused_fixtures=1 query_cases=7 result_comparisons=28 receiver_bytes=1288 guard_bytes=32 repository_support_libraries=0"
+    ]
+  },
+  "build": {
+    "platform": "MSVC Win32 I386",
+    "manifest": "embedded asInvoker",
+    "compiler_flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /showIncludes",
+    "link_flags": "/MANIFEST:EMBED /OPT:REF /VERBOSE:LIB kernel32.lib",
+    "repository_translation_units": 1,
+    "fixture_translation_units": 1,
+    "repository_support_libraries": [],
+    "pinned_actual_input_count": 4,
+    "host_header_count": 173,
+    "inputs": {
+      "source_head": "b512de11c16202dc208fbd4f8fbd2edfc5e0b9c0",
+      "sources": [
+        "src/native_unit_group_lookup.cpp"
+      ],
+      "snapshot": "local/cc11_unit_group_lookup_20261007_a/inputs_01",
+      "sha256_by_path": {
+        "include/bsp/native_unit_group_lookup.hpp": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe",
+        "local/cc11_unit_group_lookup_20261007_a/pe_reader.inc": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96",
+        "local/cc11_unit_group_lookup_20261007_a/probe.cpp": "c6b4d9d3cac944c7beb177e23f92fdfb69b2ff42c50882524845ce25c495d182",
+        "src/native_unit_group_lookup.cpp": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+      },
+      "support_libraries": [],
+      "probe_sha256": "c6b4d9d3cac944c7beb177e23f92fdfb69b2ff42c50882524845ce25c495d182",
+      "actual_frozen_repository_includes": [
+        "include/bsp/native_unit_group_lookup.hpp",
+        "local/cc11_unit_group_lookup_20261007_a/pe_reader.inc"
+      ],
+      "actual_frozen_translation_units": [
+        "local/cc11_unit_group_lookup_20261007_a/probe.cpp",
+        "src/native_unit_group_lookup.cpp"
+      ],
+      "actual_repository_and_fixture_input_count": 4,
+      "all_current_source_and_actual_includes_match_frozen": true,
+      "host_include_sha256": {
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apiset.h": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apisetcconv.h": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/basetsd.h": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/driverspecs.h": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/guiddef.h": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/kernelspecs.h": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/ktmtypes.h": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/minwindef.h": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack1.h": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack8.h": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdkddkver.h": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdv_driverspecs.h": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings.h": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_strict.h": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_undef.h": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/stralign.h": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/tvout.h": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winapifamily.h": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/windef.h": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winerror.h": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winpackagefamily.h": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/wnnc.h": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_malloc.h": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_math.h": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memcpy_s.h": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memory.h": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_search.h": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_share.h": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_stdio_config.h": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_terminate.h": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wconio.h": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wctype.h": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wdirect.h": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wio.h": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wprocess.h": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdio.h": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdlib.h": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstring.h": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wtime.h": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/crtdbg.h": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/ctype.h": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/errno.h": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/float.h": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/malloc.h": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/math.h": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stddef.h": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdio.h": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdlib.h": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/string.h": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/stat.h": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/types.h": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/wchar.h": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinBase.h": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinNls.h": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinUser.h": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/Windows.h": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/apiquery2.h": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi.h": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi2.h": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi3.h": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/datetimeapi.h": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/debugapi.h": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/enclaveapi.h": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/errhandlingapi.h": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fibersapi.h": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapi.h": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapifromapp.h": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/handleapi.h": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/heapapi.h": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ime_cmodes.h": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/imm.h": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/interlockedapi.h": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ioapiset.h": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi.h": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi2.h": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/libloaderapi.h": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mcx.h": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/memoryapi.h": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/minwinbase.h": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namedpipeapi.h": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namespaceapi.h": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processenv.h": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processthreadsapi.h": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processtopologyapi.h": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/profileapi.h": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/realtimeapiset.h": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/reason.h": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securityappcontainer.h": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securitybaseapi.h": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/stringapiset.h": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/synchapi.h": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/sysinfoapi.h": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/systemtopologyapi.h": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoolapiset.h": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoollegacyapiset.h": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/timezoneapi.h": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/utilapiset.h": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/verrsrc.h": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincon.h": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincontypes.h": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wingdi.h": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnetwk.h": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnt.h": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winreg.h": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winsvc.h": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winver.h": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+        "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wow64apiset.h": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_doom_core.hpp": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_iter_core.hpp": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_sanitizer_annotate_container.hpp": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_string_view.hpp": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ammintrin.h": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/array": "823bff850876472cb1d3209ca745a0f1c4c9caf09a26720f096d7336cbe1d16f",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cfloat": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/climits": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/concurrencysal.h": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/crtdefs.h": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstddef": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdint": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdio": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdlib": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstring": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cwchar": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/eh.h": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/emmintrin.h": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/excpt.h": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/immintrin.h": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/initializer_list": "7d15e533e1453ef99e71156c470f7d3b7ece6b7c55527b8b15fe24dabedeb196",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin.h": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.h": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.inl.h": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/iosfwd": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits": "dde4a73958faee94656e0fdc37d73a686aee75f8a5dc6dbc478bed56178f2f2a",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits.h": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mm3dnow.h": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mmintrin.h": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/new": "a88db84beaf4d5d201a7a8393d0a41d647072da207a0c7e2ffe0e9997aef0e2a",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/nmmintrin.h": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/pmmintrin.h": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/sal.h": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/setjmp.h": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/smmintrin.h": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdarg.h": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdexcept": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdint.h": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tmmintrin.h": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tuple": "dcabb4e66cfb39d4068fd92a8e181b96405d5cbdb946fbf6ae852b55cce86565",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/type_traits": "c04ca6a9f8e48aaa077714c8a34cb52f00216d5de9e0d05065642c19cf41c1d5",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/use_ansi.h": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/utility": "70d85f5ad793a8b8891e02d13b7a348423ce195fa144ff612c0bf0755eea64e0",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vadefs.h": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime.h": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_exception.h": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new.h": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new_debug.h": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_string.h": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/wmmintrin.h": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xatomic.h": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xkeycheck.h": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmemory": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmmintrin.h": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xpolymorphic_allocator.h": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xstring": "ab80a6b60196246d1c8653e6d55f78e3cbaaf4207860a37cf6996cdc833eea7a",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtr1common": "cdffecba4f44c22fe4f809c6e4f6eeee628a7331a1b2e4ffd5dba32afcda2dcd",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xutility": "44344065c26095b03a7228d2c733d41532ae99a56bbadf052baba64d22e39a9d",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals.h": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals_core.h": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/zmmintrin.h": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01"
+      },
+      "host_headers_count": 173,
+      "toolchain_libraries_searched_sha256": {
+        "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x86/ucrt.lib": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+        "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/kernel32.Lib": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcrt.lib": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/oldnames.lib": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+        "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      "compiler_flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /showIncludes",
+      "link_flags": "/MANIFEST:EMBED /OPT:REF /VERBOSE:LIB kernel32.lib"
+    },
+    "toolchain_files": {
+      "environment": {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat",
+        "bytes": 10163,
+        "sha256": "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2"
+      },
+      "tools": [
+        {
+          "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/cl.exe",
+          "bytes": 830824,
+          "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+          "host_pe_machine": "0x14c"
+        },
+        {
+          "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/link.exe",
+          "bytes": 3208544,
+          "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+          "host_pe_machine": "0x14c"
+        }
+      ],
+      "qualification": "Post-build PATH resolution using the same vcvarsall.bat x86 command as the recorded build. Compiler/linker toolset root agrees with libraries in the actual build log. This is a file/environment pin, not an instrumented process-load trace."
+    }
+  },
+  "coff": {
+    "source": [
+      {
+        "symbol": "?native_unit_group_member_index_0070d030@bsp@@YAHPBX0@Z",
+        "machine": "I386",
+        "section": 7,
+        "symbol_value": 0,
+        "bytes": 57,
+        "sha256": "da80590185018ff79e74c38cdf63b8c7fbeaa9b0740d20737ad705372e3f82c3",
+        "relocations": [],
+        "instruction_count": 25,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 4]",
+          "04: xor ecx, ecx",
+          "06: push esi",
+          "07: push edi",
+          "08: mov esi, dword ptr [eax + 0x4f8]",
+          "0E: lea edx, [eax + 0x18]",
+          "11: test esi, esi",
+          "13: jle 0x2e",
+          "15: mov edi, dword ptr [esp + 0x10]",
+          "19: nop dword ptr [eax]",
+          "20: mov eax, dword ptr [edx]",
+          "22: cmp eax, edi",
+          "24: je 0x34",
+          "26: inc ecx",
+          "27: add edx, 0x34",
+          "2A: cmp ecx, esi",
+          "2C: jl 0x20",
+          "2E: pop edi",
+          "2F: or eax, 0xffffffff",
+          "32: pop esi",
+          "33: ret ",
+          "34: pop edi",
+          "35: mov eax, ecx",
+          "37: pop esi",
+          "38: ret "
+        ],
+        "review": "Whole body reviewed. +08 captures signed count once into ESI. +13 JLE skips all record reads for count<=0. Query load +15 occurs only on positive path. +20 reads actual record DWORD; +22 compares actual query; +24 first-match branch. +26 increments index, +27 advances record34h, +2A/+2C use captured signed count. No calls, globals, relocations, writes or extra guards. Miss +2F OR EAX,FFFFFFFF; match +35 MOV EAX,ECX index."
+      },
+      {
+        "symbol": "?native_unit_group_member_record_0070d080@bsp@@YAPAXPAXPBX@Z",
+        "machine": "I386",
+        "section": 9,
+        "symbol_value": 0,
+        "bytes": 56,
+        "sha256": "7ebbc83d819fc74411eb15229998430d5b102015c9c895d2186732c08edf2911",
+        "relocations": [],
+        "instruction_count": 25,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 4]",
+          "04: xor edx, edx",
+          "06: push esi",
+          "07: push edi",
+          "08: mov esi, dword ptr [eax + 0x4f8]",
+          "0E: lea ecx, [eax + 0x18]",
+          "11: test esi, esi",
+          "13: jle 0x2e",
+          "15: mov edi, dword ptr [esp + 0x10]",
+          "19: nop dword ptr [eax]",
+          "20: mov eax, dword ptr [ecx]",
+          "22: cmp eax, edi",
+          "24: je 0x33",
+          "26: inc edx",
+          "27: add ecx, 0x34",
+          "2A: cmp edx, esi",
+          "2C: jl 0x20",
+          "2E: pop edi",
+          "2F: xor eax, eax",
+          "31: pop esi",
+          "32: ret ",
+          "33: pop edi",
+          "34: mov eax, ecx",
+          "36: pop esi",
+          "37: ret "
+        ],
+        "review": "Whole body reviewed. +08 captures signed count once into ESI. +13 JLE skips all record reads for count<=0. Query load +15 occurs only on positive path. +20 reads actual record DWORD; +22 compares actual query; +24 first-match branch. +26 increments index, +27 advances record34h, +2A/+2C use captured signed count. No calls, globals, relocations, writes or extra guards. Miss +2F XOR EAX,EAX; match +34 MOV EAX,ECX actual record pointer. Source ECX is a walker and does not reproduce the original preserved-ECX ABI."
+      }
+    ],
+    "adapter": [
+      {
+        "symbol": "?invoke_original@@YAIPBXPAX0AAI@Z",
+        "machine": "I386",
+        "section": 123,
+        "symbol_value": 0,
+        "bytes": 36,
+        "sha256": "5d3f7be8e1346941a64e22daf4ac4fef55b32da0b539a36efe869feb02b6cb5d",
+        "relocations": [],
+        "instruction_count": 15,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: sub esp, 8",
+          "06: push dword ptr [ebp + 0x10]",
+          "09: mov ecx, dword ptr [ebp + 0xc]",
+          "0C: call dword ptr [ebp + 8]",
+          "0F: mov dword ptr [ebp - 8], eax",
+          "12: mov dword ptr [ebp - 4], ecx",
+          "15: mov ecx, dword ptr [ebp + 0x14]",
+          "18: mov eax, dword ptr [ebp - 4]",
+          "1B: mov dword ptr [ecx], eax",
+          "1D: mov eax, dword ptr [ebp - 8]",
+          "20: mov esp, ebp",
+          "22: pop ebp",
+          "23: ret "
+        ],
+        "review": "Whole36B/15 instructions reviewed. +06 pushes actual entity; +09 ECX=actual group; +0C indirect CALL enters unchanged original body; native RET4 removes argument. +0F captures fullEAX; +12 captures ECX; +1B publishes observedECX; +1D returns fullEAX; +20 restores frame and +23 RET. Entry adapter only, no leaf dependency bridge."
+      }
+    ],
+    "native": {
+      "functions": [
+        {
+          "name": "index",
+          "address": "0070D030",
+          "end_exclusive": "0070D059",
+          "bytes": 41,
+          "instruction_count": 16,
+          "sha256": "158b64ad5782c42471e20fba7682bf4340344eeee7a25c1f593fef205f07e2ec",
+          "disassembly": [
+            "0070D030: mov edx, dword ptr [ecx + 0x4f8]",
+            "0070D036: xor eax, eax",
+            "0070D038: test edx, edx",
+            "0070D03A: push esi",
+            "0070D03B: jle 0x70d052",
+            "0070D03D: mov esi, dword ptr [esp + 8]",
+            "0070D041: add ecx, 0x18",
+            "0070D044: cmp dword ptr [ecx], esi",
+            "0070D046: je 0x70d055",
+            "0070D048: add eax, 1",
+            "0070D04B: add ecx, 0x34",
+            "0070D04E: cmp eax, edx",
+            "0070D050: jl 0x70d044",
+            "0070D052: or eax, 0xffffffff",
+            "0070D055: pop esi",
+            "0070D056: ret 4"
+          ],
+          "calls": [],
+          "relocations": 0,
+          "retained_bytes": 41,
+          "live_disk_frozen_executed_match": true
+        },
+        {
+          "name": "record",
+          "address": "0070D080",
+          "end_exclusive": "0070D0B6",
+          "bytes": 54,
+          "instruction_count": 23,
+          "sha256": "0c7dd9cc4d295d3f6c83485c466b918bcabd4a7ec7c4cb097aa10813cbf8055a",
+          "disassembly": [
+            "0070D080: push esi",
+            "0070D081: mov esi, dword ptr [ecx + 0x4f8]",
+            "0070D087: xor eax, eax",
+            "0070D089: test esi, esi",
+            "0070D08B: push edi",
+            "0070D08C: jle 0x70d0a3",
+            "0070D08E: mov edi, dword ptr [esp + 0xc]",
+            "0070D092: lea edx, [ecx + 0x18]",
+            "0070D095: cmp dword ptr [edx], edi",
+            "0070D097: je 0x70d0aa",
+            "0070D099: add eax, 1",
+            "0070D09C: add edx, 0x34",
+            "0070D09F: cmp eax, esi",
+            "0070D0A1: jl 0x70d095",
+            "0070D0A3: pop edi",
+            "0070D0A4: xor eax, eax",
+            "0070D0A6: pop esi",
+            "0070D0A7: ret 4",
+            "0070D0AA: imul eax, eax, 0x34",
+            "0070D0AD: pop edi",
+            "0070D0AE: lea eax, [eax + ecx + 0x18]",
+            "0070D0B2: pop esi",
+            "0070D0B3: ret 4"
+          ],
+          "calls": [],
+          "relocations": 0,
+          "retained_bytes": 54,
+          "live_disk_frozen_executed_match": true
+        }
+      ],
+      "structural_input_evidence": [
+        {
+          "name": "list_selection",
+          "start": "00536083",
+          "end_exclusive": "00536098",
+          "bytes": 21,
+          "sha256": "5c0e8b2eeb01ca00b7634cca216e5c94f5d255f876cced377157f21dbe6bfcb9",
+          "disassembly": [
+            "00536083: push edi",
+            "00536084: mov ecx, ebp",
+            "00536086: call 0x70d030",
+            "0053608B: mov ecx, dword ptr [esi + 0xac]",
+            "00536091: push eax",
+            "00536092: mov dword ptr [esi + 0x8c], eax"
+          ],
+          "classification": "actual caller witness only; not a reconstructed caller fragment"
+        },
+        {
+          "name": "list_record_selection",
+          "start": "0053ACCF",
+          "end_exclusive": "0053ACE1",
+          "bytes": 18,
+          "sha256": "792ff58cd8b202a8fd705d96584e733a43ffe4032ac547a3bc27b5bff678c37e",
+          "disassembly": [
+            "0053ACCF: push esi",
+            "0053ACD0: call 0x70d030",
+            "0053ACD5: mov ecx, dword ptr [ebp + 0x138]",
+            "0053ACDB: push eax",
+            "0053ACDC: call 0x70d070"
+          ],
+          "classification": "actual caller witness only; not a reconstructed caller fragment"
+        },
+        {
+          "name": "formation_station",
+          "start": "0070D2A0",
+          "end_exclusive": "0070D2B7",
+          "bytes": 23,
+          "sha256": "3fa30258c369f75c137998ca2154e97bc6a9ccb7a3b2a017ac2aeb88b9a6c084",
+          "disassembly": [
+            "0070D2A0: push esi",
+            "0070D2A1: call 0x70d080",
+            "0070D2A6: cmp esi, dword ptr [ecx + 0x14]",
+            "0070D2A9: je 0x70d362",
+            "0070D2AF: test eax, eax",
+            "0070D2B1: je 0x70d362"
+          ],
+          "classification": "actual caller witness only; not a reconstructed caller fragment"
+        },
+        {
+          "name": "session_formation_order",
+          "start": "0077FB79",
+          "end_exclusive": "0077FB94",
+          "bytes": 27,
+          "sha256": "1a94cff263f6e9f35cf1ee0b5e49c8fb05698eb9b1510a39b7554c0ce3fc9b65",
+          "disassembly": [
+            "0077FB79: mov ecx, dword ptr [esi + 0x284]",
+            "0077FB7F: push esi",
+            "0077FB80: call 0x70d080",
+            "0077FB85: mov ecx, dword ptr [esi + 0x284]",
+            "0077FB8B: cmp dword ptr [ecx + 0x4fc], 0x18",
+            "0077FB92: jne 0x77fbb1"
+          ],
+          "classification": "actual caller witness only; not a reconstructed caller fragment"
+        }
+      ]
+    },
+    "runtime_byte_account": {
+      "whole": 95,
+      "retained": 95,
+      "relocations": 0,
+      "patches": 0
+    },
+    "separate_unscoped_caller": {
+      "address": "0053ACD0",
+      "target": "0070D030",
+      "live_frozen_disk_bytes_match": true,
+      "qualification": "actual CALL bytes verified; not inside a Ghidra function, so not counted among function-scoped verifier rows"
+    }
+  },
+  "prior_artifact_preservation": [
+    {
+      "report": "reports/cc11_session_transport_broadcast.json",
+      "report_sha256": "60de5e358fab5045e535e9fe5675f085ff04b67b192b006c757b27f500a09a02",
+      "artifact_count": 58,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_message_append.json",
+      "report_sha256": "f6844ac079084c95582b3b558bd4adc6ee895ba47a0b4665a1ebc8fbdf98fe94",
+      "artifact_count": 73,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_deferred_message_storage.json",
+      "report_sha256": "641818ec312feed5d4425bd29a4c5baeb05339fc54e85f9f284fc5cf41de2f84",
+      "artifact_count": 100,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_entity_id_table_storage.json",
+      "report_sha256": "a246a90f2c1a08cac0c7248166ab0b9b805f52c274ce2e240ff0dfe934e1df5a",
+      "artifact_count": 103,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_participant_binding.json",
+      "report_sha256": "3faa6628b2773c05ae368b6f04c9897f86284e4e2c59163b83d89cdbc3ec46f3",
+      "artifact_count": 394,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_role_permission.json",
+      "report_sha256": "c8f23254131d12075bac98615647391741679724498e4572533a0e3e95d6e8d0",
+      "artifact_count": 44,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_owner_predicate.json",
+      "report_sha256": "032c761b5d7309af4f2e6b058e2a27bfc7cadbea997d56d28def0a49afd0c431",
+      "artifact_count": 42,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_storage.json",
+      "report_sha256": "a7465818f6a160af91323686fc86d627cfbba2eccd04af61826b20b311034005",
+      "artifact_count": 46,
+      "before_after_match": true
+    }
+  ],
+  "limitations": [
+    "New C++ interfaces, not native class/register ABI; Source record search does not preserve native ECX behavior.",
+    "Valid borrowed backing and readable positive-count span are domain requirements, not added runtime guards.",
+    "Full constructors/publishers do not execute in this lookup fixture; unrelated bytes remain canaries.",
+    "Caller receipts do not close list selection, formation, settings, observer/profile lifecycle or dispatcher integration.",
+    "0053ACD0 remains outside Ghidra function ownership; its raw call bytes are verified separately, and the original validator failure is retained.",
+    "No concurrency, failure/unwinding, native class ABI or game-validation claim.",
+    "Worker Ghidra access read-only; primary owns shared registration and full project build."
+  ],
+  "source_hashes": {
+    "include/bsp/native_unit_group_lookup.hpp": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe",
+    "src/native_unit_group_lookup.cpp": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e",
+    "docs/CC11_UNIT_GROUP_LOOKUP.md": "65f1a20d67e4f4a16c9f86abf9927113e586c38f991060623466a2ec6b93cb2c"
+  },
+  "live_leaf_call_row_verification": {
+    "checked": 0,
+    "failed": 0,
+    "log": "local/cc11_unit_group_lookup_20261007_a/verify_leaf_calls.log"
+  },
+  "artifact_hashes": [
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/adapter_coff.bin",
+      "bytes": 36,
+      "sha256": "5d3f7be8e1346941a64e22daf4ac4fef55b32da0b539a36efe869feb02b6cb5d"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/adapter_coff.txt",
+      "bytes": 391,
+      "sha256": "7b9a05381a8ab562545bceb44dc2299b0837766f5adbbefc49322b76f72923f1"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/asm/native_unit_group_lookup.asm",
+      "bytes": 5883,
+      "sha256": "771a789006ae1876bf72deec921b2bf9c4bdc3ba78d792a8d0ec7396a75db47f"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/asm/probe.asm",
+      "bytes": 168174,
+      "sha256": "a8f73a81ca0a85cfae9b6998cb2777e8ca1dba8bfc37721672b30734f3b54b21"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/borrowed_group_final.bin",
+      "bytes": 1320,
+      "sha256": "683fe645356cc17b3673450817b5d41e9550116b82fd37f88d341c1bf15adbe1"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/borrowed_units_final.bin",
+      "bytes": 2592,
+      "sha256": "bb41734b28db7fe354a2a99e918113dd7413f4c008dee219513657ccd82be6f7"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/build.cmd",
+      "bytes": 705,
+      "sha256": "4984556f9ffa7711a9ac167d2f3959ec6937a05e4546e308c5895989de38f752"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/build.log",
+      "bytes": 28265,
+      "sha256": "1a558e7f96f28e6cd62f47fb6e1d522f3d0cfef4e6d786606f5fb59f68c362d5"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/caller_witnesses.json",
+      "bytes": 780,
+      "sha256": "6229c033a3dc0ca8a4a18fefccca7e0f59a2202433e01f7e62d9c0fdf9d28069"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/coff_evidence.json",
+      "bytes": 8437,
+      "sha256": "5a90922110270f1da8a437ff3bfa424cffdf56a29f4fe2bb29992104230648b3"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/embedded_manifest.xml",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/executed_index_body.bin",
+      "bytes": 41,
+      "sha256": "158b64ad5782c42471e20fba7682bf4340344eeee7a25c1f593fef205f07e2ec"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/executed_record_body.bin",
+      "bytes": 54,
+      "sha256": "0c7dd9cc4d295d3f6c83485c466b918bcabd4a7ec7c4cb097aa10813cbf8055a"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/ghidra_process_identity.json",
+      "bytes": 798,
+      "sha256": "91acd797532d22717a78b18e16287bf63152bc7d45ff38cd1b7792a487dabd4e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_01/include/bsp/native_unit_group_lookup.hpp",
+      "bytes": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_01/local/cc11_unit_group_lookup_20261007_a/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_01/local/cc11_unit_group_lookup_20261007_a/probe.cpp",
+      "bytes": 6108,
+      "sha256": "c6b4d9d3cac944c7beb177e23f92fdfb69b2ff42c50882524845ce25c495d182"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_01/src/native_unit_group_lookup.cpp",
+      "bytes": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_after_link.json",
+      "bytes": 30451,
+      "sha256": "1d45b2a6af171377cc58e5a2c202e12138155e06cddf5588551df39061641668"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inputs_before_link.json",
+      "bytes": 822,
+      "sha256": "0ab80001d13a603095c7b5e2a13b3bb835f4c97f782e7f575d32ca36024f653c"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/inspect_evidence.py",
+      "bytes": 2684,
+      "sha256": "6d574d4cd43bd974faf1b7eb630ef3afd736950c8d7c90f8ec147578cbd7f1dc"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/live_index_bytes.txt",
+      "bytes": 203,
+      "sha256": "9a721d3a3b3a272cc2596f90acfef0b2c8b7de64d5424f9498655337d4423def"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/live_record_bytes.txt",
+      "bytes": 268,
+      "sha256": "f714a97cce17413885036b5c02c40c3f15029a1b2bd80058fad24b223eafdcd8"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/live_unscoped_caller_bytes.txt",
+      "bytes": 98,
+      "sha256": "98ff795ed4d06ae30fef5e299e9ed35dabd3b881843f12cede69d5efe311a81e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/native_after_run.json",
+      "bytes": 372,
+      "sha256": "f8037fc84a692e1d4df523fa9614770e66400251b4fc821e9316021a55827177"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/native_before_run.json",
+      "bytes": 350,
+      "sha256": "75fa9f8b6f8032104092bdc5368211e5de7c775cc167a1ebe4b41fe1beb9d1b5"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/native_static_evidence.json",
+      "bytes": 4509,
+      "sha256": "f83cc021cf3ab27f22c9cd8053ca67cc81785ef36ba416727c99a1f315679d7f"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/obj/native_unit_group_lookup.obj",
+      "bytes": 1748,
+      "sha256": "90ae9a100aa2e3cb90a71ab98b76c52832dba7eea7e8d6bfb960e6c729faf547"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/obj/probe.obj",
+      "bytes": 39808,
+      "sha256": "4e98f864d5f3301e42f89e82e53727fe33f7766cfe333b32624794fd57925bff"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/original_image.bin",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/original_index.bin",
+      "bytes": 41,
+      "sha256": "158b64ad5782c42471e20fba7682bf4340344eeee7a25c1f593fef205f07e2ec"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/original_record.bin",
+      "bytes": 54,
+      "sha256": "0c7dd9cc4d295d3f6c83485c466b918bcabd4a7ec7c4cb097aa10813cbf8055a"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/pin_toolchain.py",
+      "bytes": 1377,
+      "sha256": "bfd8d4c96bcebe32644c923ff93e18393ef9fbad95d02d3657f7e4c18d46c534"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/prepare.py",
+      "bytes": 5684,
+      "sha256": "6ab91b98650d66ebc952678707d8991b7632e842000acb0448838cc40fae6e7e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/prior_artifact_preservation.json",
+      "bytes": 1787,
+      "sha256": "a412a1b5187e991a218f785803a8f985b29b89409ce3ab771f06f33416d65e72"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/prior_before.json",
+      "bytes": 203820,
+      "sha256": "763c4f7f3835a85ae1d29dc0523c7bb3e64331f080d8c7fcdbbd05f3011c49d0"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/probe.cpp",
+      "bytes": 6108,
+      "sha256": "c6b4d9d3cac944c7beb177e23f92fdfb69b2ff42c50882524845ce25c495d182"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/probe.exe",
+      "bytes": 16384,
+      "sha256": "4f72aff5b4f338b8c3d3f8d54351bc1e73e7cea8212a8cb39aad94f64705bcba"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/probe.log",
+      "bytes": 1343,
+      "sha256": "3318cd8ae3e8582ab9b02940168c023c7acb151eeda58892cd254c814fde6626"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/receipt_formation_station.bin",
+      "bytes": 23,
+      "sha256": "3fa30258c369f75c137998ca2154e97bc6a9ccb7a3b2a017ac2aeb88b9a6c084"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/receipt_list_record_selection.bin",
+      "bytes": 18,
+      "sha256": "792ff58cd8b202a8fd705d96584e733a43ffe4032ac547a3bc27b5bff678c37e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/receipt_list_selection.bin",
+      "bytes": 21,
+      "sha256": "5c0e8b2eeb01ca00b7634cca216e5c94f5d255f876cced377157f21dbe6bfcb9"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/receipt_session_formation_order.bin",
+      "bytes": 27,
+      "sha256": "1a94cff263f6e9f35cf1ee0b5e49c8fb05698eb9b1510a39b7554c0ce3fc9b65"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/scoped_caller_witnesses.json",
+      "bytes": 724,
+      "sha256": "56996c89b53ec0cb2e2c15bac18747aa2f629be7e60e776f933dda7be6d5791c"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/source_index_coff.bin",
+      "bytes": 57,
+      "sha256": "da80590185018ff79e74c38cdf63b8c7fbeaa9b0740d20737ad705372e3f82c3"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/source_index_coff.txt",
+      "bytes": 478,
+      "sha256": "f2cde597b9ebf7cb0ffba9c437a4efffb9b3039baa8190e5310e06dc9755562a"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/source_record_coff.bin",
+      "bytes": 56,
+      "sha256": "7ebbc83d819fc74411eb15229998430d5b102015c9c895d2186732c08edf2911"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/source_record_coff.txt",
+      "bytes": 472,
+      "sha256": "a3259707453c46ec5fde281f1d2cf96aafabb46ac01bc1d02ed9ee6a5acfcc3e"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/toolchain_files.json",
+      "bytes": 1079,
+      "sha256": "907d4dba78fc8ef61c40d8135400d4bc42ecdc3a5461c9b8a0f148f83ac56366"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/toolchain_resolution.cmd",
+      "bytes": 180,
+      "sha256": "b701b90fb63e7154066e88127a29d54cab1bb102cc072ba4cd89fb4d6f59e170"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/toolchain_resolution.log",
+      "bytes": 210,
+      "sha256": "a5f29707ea22b942e5a5200430599449c03ea69ad41db7bdab00719f1d593bfa"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/verify_callers.log",
+      "bytes": 175,
+      "sha256": "588e554d284fe7fa61a3bdde5f465d8d809b577fa466ab44d732a877d06f8a4f"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/verify_inputs.py",
+      "bytes": 3525,
+      "sha256": "be02e94be5ccff2337feaf4d23698d40b6b9a88c237ccc34897459bf6e849d29"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/verify_leaf_calls.log",
+      "bytes": 68,
+      "sha256": "246afbd9e1bd55dc91f6129749d2bf2401d6fb1605ee2541a3de13b90e4357a0"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/verify_scoped_callers.log",
+      "bytes": 101,
+      "sha256": "b8573a70f39608da7dbef420517a17c393a9e7803607fba8e81188d81d6c0355"
+    },
+    {
+      "path": "local/cc11_unit_group_lookup_20261007_a/write_report.py",
+      "bytes": 7151,
+      "sha256": "1b2ec4c2c236338c631d67ac18ce9a6a7755b4959181ab5aefb39574b5c37686"
+    }
+  ]
+}
