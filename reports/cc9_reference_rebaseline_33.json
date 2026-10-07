@@ -1,0 +1,556 @@
+{
+ "packet": "cc9_reference_rebaseline_33",
+ "reference": "AF",
+ "base": "49eee58d5",
+ "previous": {
+  "reference": "AE",
+  "base": "8eee3a87c",
+  "report": "reports/cc9_reference_rebaseline_32.json"
+ },
+ "binaries": {
+  "af": "local\\g33_af",
+  "anchor": "local\\g33_anc"
+ },
+ "switches_off_in_anchor": [
+  "kAirOpsHeldSlotOrdersBound",
+  "kGunneryRackEquipmentDeviceBound",
+  "kLuaDisplayScoresBound",
+  "kMeshlessGunPointWindowBound",
+  "kRackBulletKindBound",
+  "kRackEquipmentDeviceBound",
+  "kRackPoolRoundsRemainingBound",
+  "kSetPartyUnitBound",
+  "kStockReturnQueueEraseBound"
+ ],
+ "anchor_vs_ae": "exit 1 on 21 rows; JM05 long exit 3 (unswitched 4b5c57a8d); anchor BSM01 p6 = AE (1632.47 s)",
+ "attribution": {
+  "usn13, usn13l": "kRackEquipmentDeviceBound AND kGunneryRackEquipmentDeviceBound",
+  "bsm01 p6 (1632.47 -> 875.91 s)": "kRackPoolRoundsRemainingBound",
+  "lomp10 p2 (1438.63 -> 1452.89 s)": "kRackPoolRoundsRemainingBound",
+  "jm05l": "unswitched 4b5c57a8d"
+ },
+ "rows": [
+  {
+   "row": "usn04",
+   "log": "local\\g33_af_usn04.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "50",
+    "hit records": "1041",
+    "hull hits": "149",
+    "damage": "13707.8",
+    "shots": "13694",
+    "first hit": "98.70 s",
+    "torpedo-task releases": "5 of 16",
+    "dive-bomb-task releases": "0 of 19",
+    "torpedo drops": "5",
+    "plane water contacts": "15",
+    "controlled moved": "Lexington-class01 3295.50",
+    "units": "81",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1054 / 481"
+   }
+  },
+  {
+   "row": "e2",
+   "log": "local\\g33_af_e2.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "52",
+    "hit records": "1044",
+    "hull hits": "149",
+    "damage": "13743.9",
+    "shots": "13743",
+    "first hit": "98.70 s",
+    "torpedo-task releases": "5 of 16",
+    "dive-bomb-task releases": "0 of 19",
+    "torpedo drops": "5",
+    "plane water contacts": "19",
+    "controlled moved": "Lexington-class01 5736.48",
+    "units": "81",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1054 / 481"
+   }
+  },
+  {
+   "row": "usn01",
+   "log": "local\\g33_af_usn01.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "29",
+    "hit records": "1412",
+    "hull hits": "341",
+    "damage": "34487.7",
+    "shots": "2302",
+    "first hit": "12.90 s",
+    "torpedo-task releases": "0 of 5",
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "3",
+    "controlled moved": "ScoutDauntless 3171.32",
+    "units": "64",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1042 / 491"
+   }
+  },
+  {
+   "row": "usn02",
+   "log": "local\\g33_af_usn02.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "3",
+    "hit records": "5266",
+    "hull hits": "335",
+    "damage": "41913.3",
+    "shots": "4382",
+    "first hit": "37.45 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "(none) 839.37",
+    "units": "28",
+    "mission end": "failed at 74.30 s (Mission.MissionStatus) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 reached at 113.90 s (recorded); Mission.EndMission at 74.30 s",
+    "host methods concrete/unimplemented": "1116 / 489"
+   }
+  },
+  {
+   "row": "jm06",
+   "log": "local\\g33_af_jm06.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "2",
+    "hit records": "88",
+    "hull hits": "79",
+    "damage": "2229.2",
+    "shots": "120",
+    "first hit": "10.10 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "PlayerSub 01 0.00",
+    "units": "26",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1006 / 447"
+   }
+  },
+  {
+   "row": "jm08",
+   "log": "local\\g33_af_jm08.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "20",
+    "hit records": "431",
+    "hull hits": "147",
+    "damage": "9609.0",
+    "shots": "1592",
+    "first hit": "5.25 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "1",
+    "controlled moved": "Headquarter 01 0.00",
+    "units": "392",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1104 / 451"
+   }
+  },
+  {
+   "row": "usn13",
+   "log": "local\\g33_af_usn13.log",
+   "af_vs_ae": 3,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "18",
+    "hit records": "288",
+    "hull hits": "33",
+    "damage": "4550.9",
+    "shots": "3142",
+    "first hit": "98.90 s",
+    "torpedo-task releases": "0 of 24",
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "6",
+    "controlled moved": "Enterprise 925.78",
+    "units": "373",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "989 / 468"
+   }
+  },
+  {
+   "row": "bsm01",
+   "log": "local\\g33_af_bsm01.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "0",
+    "hit records": "0",
+    "hull hits": "0",
+    "damage": "0.0",
+    "shots": "0",
+    "first hit": "-1.00 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "HenryPT 0.00",
+    "units": "277",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "929 / 445"
+   }
+  },
+  {
+   "row": "lomp06",
+   "log": "local\\g33_af_lomp06.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "0",
+    "hit records": "0",
+    "hull hits": "0",
+    "damage": "0.0",
+    "shots": "9",
+    "first hit": "-1.00 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "Narwhal 770.42",
+    "units": "198",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "965 / 438"
+   }
+  },
+  {
+   "row": "lomp10",
+   "log": "local\\g33_af_lomp10.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "2",
+    "hit records": "235",
+    "hull hits": "111",
+    "damage": "3145.8",
+    "shots": "4563",
+    "first hit": "91.95 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": "16 of 8",
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "(none) 8380.01",
+    "units": "326",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1127 / 471"
+   }
+  },
+  {
+   "row": "jm05",
+   "log": "local\\g33_af_jm05.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "16",
+    "hit records": "517",
+    "hull hits": "77",
+    "damage": "17421.8",
+    "shots": "2544",
+    "first hit": "5.85 s",
+    "torpedo-task releases": "0 of 8",
+    "dive-bomb-task releases": "0 of 9",
+    "torpedo drops": "0",
+    "plane water contacts": "3",
+    "controlled moved": "Mogami-class 01 1522.75",
+    "units": "398",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1200 / 503"
+   }
+  },
+  {
+   "row": "usn12",
+   "log": "local\\g33_af_usn12.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "3",
+    "hit records": "56",
+    "hull hits": "9",
+    "damage": "1526.0",
+    "shots": "132",
+    "first hit": "7.85 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "Montpelier 1499.41",
+    "units": "93",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "891 / 439"
+   }
+  },
+  {
+   "row": "lomp10l",
+   "log": "local\\g33_af_lomp10l.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "4",
+    "hit records": "248",
+    "hull hits": "116",
+    "damage": "3762.1",
+    "shots": "4627",
+    "first hit": "91.95 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": "16 of 8",
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "(none) 8380.01",
+    "units": "326",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1160 / 486"
+   }
+  },
+  {
+   "row": "usnos",
+   "log": "local\\g33_af_usnos.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "87",
+    "hit records": "1490",
+    "hull hits": "234",
+    "damage": "45850.4",
+    "shots": "5062",
+    "first hit": "5.00 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "6",
+    "controlled moved": "NH 1497.26",
+    "units": "453",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1186 / 505"
+   }
+  },
+  {
+   "row": "usnosl",
+   "log": "local\\g33_af_usnosl.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "114",
+    "hit records": "2191",
+    "hull hits": "310",
+    "damage": "55447.4",
+    "shots": "9198",
+    "first hit": "5.00 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "8",
+    "controlled moved": "NH 4492.07",
+    "units": "453",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1197 / 512"
+   }
+  },
+  {
+   "row": "ijn01",
+   "log": "local\\g33_af_ijn01.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "1",
+    "hit records": "161",
+    "hull hits": "149",
+    "damage": "1763.3",
+    "shots": "5017",
+    "first hit": "80.20 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": null,
+    "controlled moved": "A7M_1 8788.23",
+    "units": "334",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "967 / 433"
+   }
+  },
+  {
+   "row": "jm05l",
+   "log": "local\\g33_af_jm05l.log",
+   "af_vs_ae": 3,
+   "anchor_vs_ae": 3,
+   "headline": {
+    "deaths": "51",
+    "hit records": "1174",
+    "hull hits": "392",
+    "damage": "36001.4",
+    "shots": "18058",
+    "first hit": "5.85 s",
+    "torpedo-task releases": "5 of 20",
+    "dive-bomb-task releases": "2 of 19",
+    "torpedo drops": "5",
+    "plane water contacts": "20",
+    "controlled moved": "Mogami-class 01 4565.71",
+    "units": "435",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1235 / 530"
+   }
+  },
+  {
+   "row": "jm08l",
+   "log": "local\\g33_af_jm08l.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "143",
+    "hit records": "15617",
+    "hull hits": "747",
+    "damage": "120797.7",
+    "shots": "8708",
+    "first hit": "5.25 s",
+    "torpedo-task releases": null,
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "1",
+    "controlled moved": "Headquarter 01 0.00",
+    "units": "407",
+    "mission end": "failed at 1026.93 s (Mission.MissionStatus) text=\"Mission Failed - The HQ has been destroyed!\" entity=\"Headquarter 01\" objectives=5; EndScene 008B01B0 reached at 1066.52 s (recorded); Mission.EndMission never true",
+    "host methods concrete/unimplemented": "1203 / 494"
+   }
+  },
+  {
+   "row": "usn13l",
+   "log": "local\\g33_af_usn13l.log",
+   "af_vs_ae": 3,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "46",
+    "hit records": "1649",
+    "hull hits": "222",
+    "damage": "35938.9",
+    "shots": "9799",
+    "first hit": "98.90 s",
+    "torpedo-task releases": "0 of 24",
+    "dive-bomb-task releases": null,
+    "torpedo drops": "0",
+    "plane water contacts": "15",
+    "controlled moved": "Enterprise 2777.59",
+    "units": "373",
+    "mission end": "failed at 341.59 s (Mission.MissionStatus) text=\"Game Over\" entity=\"\" objectives=6; EndScene 008B01B0 reached at 381.18 s (recorded); Mission.EndMission at 341.59 s",
+    "host methods concrete/unimplemented": "1075 / 505"
+   }
+  },
+  {
+   "row": "esmp08l",
+   "log": "local\\g33_af_esmp08l.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "12",
+    "hit records": "489",
+    "hull hits": "95",
+    "damage": "3600.0",
+    "shots": "3470",
+    "first hit": "417.17 s",
+    "torpedo-task releases": "0 of 18",
+    "dive-bomb-task releases": "0 of 21",
+    "torpedo drops": "0",
+    "plane water contacts": "6",
+    "controlled moved": "Zuikaku 4599.38",
+    "units": "104",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "927 / 458"
+   }
+  },
+  {
+   "row": "usnrm01",
+   "log": "local\\g33_af_usnrm01.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "149",
+    "hit records": "1731",
+    "hull hits": "1370",
+    "damage": "31862.8",
+    "shots": "60842",
+    "first hit": "166.96 s",
+    "torpedo-task releases": "5 of 11",
+    "dive-bomb-task releases": "5 of 19",
+    "torpedo drops": "9",
+    "plane water contacts": "104081",
+    "controlled moved": "West Virginia 0.00",
+    "units": "523",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1092 / 501"
+   }
+  },
+  {
+   "row": "ijn11",
+   "log": "local\\g33_af_ijn11.log",
+   "af_vs_ae": 1,
+   "anchor_vs_ae": 1,
+   "headline": {
+    "deaths": "6",
+    "hit records": "128",
+    "hull hits": "31",
+    "damage": "5183.0",
+    "shots": "1077",
+    "first hit": "65.20 s",
+    "torpedo-task releases": "0 of 5",
+    "dive-bomb-task releases": "0 of 6",
+    "torpedo drops": "0",
+    "plane water contacts": "2",
+    "controlled moved": "Zao 1497.27",
+    "units": "229",
+    "mission end": "none (Mission.EndMission never true)",
+    "host methods concrete/unimplemented": "1154 / 496"
+   }
+  }
+ ],
+ "wins": {
+  "u2": {
+   "log": "local\\g33_afw_u2.log",
+   "mission end": "completed at 727.60 s (Mission.MissionStatus) text=\"Well we did what we could... - Mission Complete\" entity=\"Houston\" objectives=5; EndScene 008B01B0 reached at 762.14 s (recorded); Mission.EndMission at 727.60 s",
+   "deaths": "18"
+  },
+  "u1": {
+   "log": "local\\g33_afw_u1.log",
+   "mission end": "completed at 648.42 s (Mission.MissionStatus) text=\"We showed we can fight back! - Mission Complete!\" entity=\"Enterprise\" objectives=6; EndScene 008B01B0 reached at 682.96 s (recorded); Mission.EndMission at 648.42 s",
+   "deaths": "89"
+  },
+  "l6": {
+   "log": "local\\g33_afw_l6.log",
+   "mission end": "completed at 267.41 s (Mission.MissionStatus) text=\"missionglobals.obj_compl\" entity=\"Narwhal\" objectives=4; EndScene 008B01B0 reached at 301.95 s (recorded); Mission.EndMission never true",
+   "deaths": "3"
+  },
+  "l10": {
+   "log": "local\\g33_afw_l10.log",
+   "mission end": "completed at 1452.89 s (Mission.MissionStatus) text=\"missionglobals.obj_compl\" entity=\"Ashigara\" objectives=4; EndScene 008B01B0 reached at 1487.48 s (recorded); Mission.EndMission never true",
+   "deaths": "42"
+  },
+  "u12": {
+   "log": "local\\g33_afw_u12.log",
+   "mission end": "completed at 1544.78 s (Mission.MissionStatus) text=\"We have destroyed the enemy counter attack! - Mission Complete!\" entity=\"Converse\" objectives=6; EndScene 008B01B0 reached at 1579.37 s (recorded); Mission.EndMission at 1544.78 s",
+   "deaths": "136"
+  },
+  "b1": {
+   "log": "local\\g33_afw_b1.log",
+   "mission end": "nil at 875.91 s (Mission.EndMission) text=\"\" entity=\"\" objectives=6; EndScene 008B01B0 not reached (narrative callbacks=0); Mission.EndMission at 875.91 s",
+   "deaths": "257"
+  },
+  "e8": {
+   "log": "local\\g33_afw_e8.log",
+   "mission end": "completed at 2371.69 s (Mission.MissionStatus) text=\"missionglobals.obj_compl\" entity=\"\" objectives=3; EndScene 008B01B0 reached at 2406.27 s (recorded); Mission.EndMission never true",
+   "deaths": "518"
+  }
+ },
+ "doc": "docs/GAME_EXECUTABLE.md '2026-10-06 af'"
+}
