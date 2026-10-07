@@ -142,3 +142,5 @@ may require complete009B2E50/006C0B50 services; an actual game adapter must firs
 supply them. Source code producing all five identities itself additionally
 needs primary numeric recovery of009F9CE0/009AFE70, then the connected lower and
 outer constructor port. This packet does not manufacture that binding.
+
+Primary integration: d314dc6e834a24e974b1a6f8d5aa3ca241aff171; actual main sources independently recompiled for the manifested focused probe, PASS. MSVC Win32 Release and all three existing CTests passed. Executable SHA256 b0b07345ff367f9e0e255a70d44fab8eed4d89f531281d55e463d2f633978cbc. Original ABI, runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_identity_d2_integrated_build.log.

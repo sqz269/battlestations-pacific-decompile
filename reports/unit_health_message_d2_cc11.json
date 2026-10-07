@@ -274,5 +274,32 @@
     "checked": 10,
     "failed": 0,
     "exit_code": 0
+  },
+  "primary_integration": {
+    "source_revision": "d314dc6e834a24e974b1a6f8d5aa3ca241aff171",
+    "included_packets": [
+      "cc11_land_canonical_identity",
+      "cc11_health_message_d2"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_identity_d2_integrated_build.log",
+    "utc": "2026-10-07T08:40:26.581243+00:00",
+    "executable_sha256": "b0b07345ff367f9e0e255a70d44fab8eed4d89f531281d55e463d2f633978cbc",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "417d1f48dc0a6fd3182c734c0c863a0343bd4cfc",
+    "independent_production_probe": "Root recompiled actual main source/dependencies and isolated copied probe /W4/WX/fpstrict:71checks0fail,all5profile slots,owner/sharedcell/reservedbytes/29bitcodec/fullDWORD/releaseflags/borrowedsetterconstructor path",
+    "probe_command": "local/cc11_d2_root.cmd",
+    "probe_checks": 71,
+    "probe_failures": 0,
+    "native_direct_calls_checked": 10,
+    "native_call_failures": 0,
+    "cmake_registered": true,
+    "original_allocator_identity_proved": false,
+    "original_profile_binary_abi_proved": false,
+    "complete_router_bound": false
   }
 }

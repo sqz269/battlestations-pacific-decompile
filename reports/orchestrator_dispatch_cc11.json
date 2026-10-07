@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:38:09.285823+00:00",
+  "updated_utc": "2026-10-07T08:40:26.581243+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -888,6 +888,56 @@
     "worker_ghidra_read_only": true,
     "canonical_packet_worker_revision": "dfe6a1c8bf3cafd6c797d412a654edc5814c2fcf",
     "canonical_packet_primary_probe_passed": true,
-    "canonical_packet_full_main_build_pending": true
+    "canonical_packet_full_main_build_pending": false
+  },
+  "land_canonical_identity_integration": {
+    "source_revision": "d314dc6e834a24e974b1a6f8d5aa3ca241aff171",
+    "included_packets": [
+      "cc11_land_canonical_identity",
+      "cc11_health_message_d2"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_identity_d2_integrated_build.log",
+    "utc": "2026-10-07T08:40:26.581243+00:00",
+    "executable_sha256": "b0b07345ff367f9e0e255a70d44fab8eed4d89f531281d55e463d2f633978cbc",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "dfe6a1c8bf3cafd6c797d412a654edc5814c2fcf",
+    "independent_production_probe": "Root recompiled actual main TU and isolated copied existing fixture: same404cell hookA/B/C ->cruiseC/D ->validityD/A/B/C, existingretained/deferred/numeric fixtures PASS",
+    "probe_command": "local/cc11_identity_root.cmd",
+    "native_direct_calls_checked": 9,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 8,
+    "numeric_kernels_changed": false
+  },
+  "health_message_d2_integration": {
+    "source_revision": "d314dc6e834a24e974b1a6f8d5aa3ca241aff171",
+    "included_packets": [
+      "cc11_land_canonical_identity",
+      "cc11_health_message_d2"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_identity_d2_integrated_build.log",
+    "utc": "2026-10-07T08:40:26.581243+00:00",
+    "executable_sha256": "b0b07345ff367f9e0e255a70d44fab8eed4d89f531281d55e463d2f633978cbc",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "417d1f48dc0a6fd3182c734c0c863a0343bd4cfc",
+    "independent_production_probe": "Root recompiled actual main source/dependencies and isolated copied probe /W4/WX/fpstrict:71checks0fail,all5profile slots,owner/sharedcell/reservedbytes/29bitcodec/fullDWORD/releaseflags/borrowedsetterconstructor path",
+    "probe_command": "local/cc11_d2_root.cmd",
+    "probe_checks": 71,
+    "probe_failures": 0,
+    "native_direct_calls_checked": 10,
+    "native_call_failures": 0,
+    "cmake_registered": true,
+    "original_allocator_identity_proved": false,
+    "original_profile_binary_abi_proved": false,
+    "complete_router_bound": false
   }
 }
