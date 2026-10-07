@@ -1,0 +1,468 @@
+{
+  "packet": "cc11_scene_enum_symbol_insertion",
+  "source_baseline": "8cdccbcbdac56cf31761d5965a8885d14b3138fd",
+  "doc": "docs/NATIVE_ENUM_SYMBOL_INSERTION_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "008F2850",
+    "008F4DD0"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_symbol_insertion.hpp",
+    "src/native_enum_symbol_insertion.cpp",
+    "docs/NATIVE_ENUM_SYMBOL_INSERTION_CC11.md",
+    "reports/native_enum_symbol_insertion_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "008F2850",
+      "inclusive_end": "008F28E2",
+      "bytes": 147,
+      "sha256": "7cf8b2ec21b1d814c3b8559d64106afcacb7d543dcaa4871a1227ea158966667",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 55,
+      "end_exclusive": "008F28E3",
+      "source_name": "insert_native_enum_symbol_word_008f2850",
+      "coverage": "complete ordinary normal body; original prolog/tails inspected; exceptional/fault domains external",
+      "observed_inputs": "ECX nested map receiver; two stack DWORDs: actual8h key-header pointer, opaque mapped word",
+      "observed_return": "EAX current map count; RET8 at008F2873/008F28E0",
+      "observed_boundary_not_formal_ABI": true,
+      "assembly_pin": "local/cc11_scene_enum_symbol_insertion/run02/inputs/008F2850.asm.log"
+    },
+    {
+      "entry": "008F4DD0",
+      "inclusive_end": "008F4E6C",
+      "bytes": 157,
+      "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 48,
+      "end_exclusive": "008F4E6D",
+      "source_name": "initialize_native_scene_enum_owner_008f4dd0",
+      "coverage": "complete ordinary normal body; original prolog/tails inspected; exceptional/fault domains external",
+      "observed_inputs": "ECX actual raw19Ch allocation",
+      "observed_return": "EAX same owner; RET at008F4E6C",
+      "observed_boundary_not_formal_ABI": true,
+      "assembly_pin": "local/cc11_scene_enum_symbol_insertion/run02/inputs/008F4DD0.asm.log"
+    }
+  ],
+  "whole_native_bytes": 304,
+  "original_bodies_executed": false,
+  "call_sites": [
+    {
+      "address": "008F285E",
+      "native": "0048D480",
+      "function": "008F2850",
+      "path": "unconditional symbol finder; local bucket captured before mutation"
+    },
+    {
+      "address": "008F287C",
+      "native": "004E7C00",
+      "function": "008F2850",
+      "path": "miss only, ECX actual global00E17578; genuine14h slot"
+    },
+    {
+      "address": "008F28A3",
+      "native": "0041DD40",
+      "function": "008F2850",
+      "path": "fresh header differs from query; current query length, preserve1; RET8 in provider"
+    },
+    {
+      "address": "008F28B8",
+      "native": "00BF7680",
+      "function": "008F2850",
+      "path": "current source length nonzero after resize; CURRENT destination length/source pointer/destination pointer, ADD ESP0Ch"
+    },
+    {
+      "address": "008F4E36",
+      "native": "0041DD40",
+      "function": "008F4DD0",
+      "path": "owning type header114/118; pushed preserve0,length1; RET8 in provider"
+    },
+    {
+      "address": "008F4E4B",
+      "native": "00BF7680",
+      "function": "008F4DD0",
+      "path": "CURRENT type data nonnull, CURRENT length,00D162D4 source; ADD ESP0Ch"
+    }
+  ],
+  "raw_owner_view": {
+    "native_allocation_extent": "19Ch witnessed, not original C++sizeof/class ABI",
+    "fields": [
+      {
+        "offset": "00",
+        "value": "00D16508 opaque native class profile"
+      },
+      {
+        "offset": "04",
+        "value": "00D162C0 opaque nested map profile; actual insertion receiver owner+4"
+      },
+      {
+        "offset": "08",
+        "value": "DWORD count0"
+      },
+      {
+        "offset": "0C..108",
+        "value": "64 null DWORD bucket heads, last head spans108..10B"
+      },
+      {
+        "offset": "10C",
+        "value": "DWORD9999, no invented range semantics"
+      },
+      {
+        "offset": "110",
+        "value": "DWORD0, no invented range semantics"
+      },
+      {
+        "offset": "114/118",
+        "value": "genuine owning8h NativeString header, length1/dataE plus resize terminator"
+      },
+      {
+        "offset": "11C..19B",
+        "value": "inline authored-name128byte field; ONLYfirstbyte initialized0, remaining127 untouched"
+      }
+    ],
+    "map_field_extent": "owner04..10B; receiver0profile/4count/8heads",
+    "Source_type_header_lifetime": "placement NativeString in actual114 header then real raw-pool resize; current data check/current length copy; explicit cleanup REQUIRED",
+    "profiles": "physical exact native DWORD stores only; no fabricated virtual callback/profile stand-in",
+    "type_bytes": {
+      "entry": "00D162D4",
+      "inclusive_end": "00D162D7",
+      "exclusive_end": "00D162D8",
+      "bytes": 4,
+      "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "value_hex": "45000000"
+    },
+    "unknown_tail_preserved": true,
+    "does_not_claim_type_namespace_or_enum_identity": true
+  },
+  "initializer_order": [
+    "outer profileD16508",
+    "nested map profileD162C0/count0",
+    "64 null bucket heads",
+    "10C9999/1100 observed words",
+    "genuine8h type header zero0/4",
+    "real raw resize(length1,preserve0)",
+    "if CURRENT data nonnull copy CURRENT length from verified00D162D4",
+    "ONLYfirst authored-name11C bytezero",
+    "return same owner"
+  ],
+  "insertion_order": {
+    "hit": [
+      "lookup/capturebucket",
+      "replace node+8 only",
+      "reload receiver+4 count",
+      "return count"
+    ],
+    "miss": [
+      "real14h slot from actualE17578-compatible pool",
+      "if nonnull begin genuine8h NativeString lifetime with zero0/4 only",
+      "preserve node==query header identity guard",
+      "resize from current source length with preserve1",
+      "recheck current source length; if nonzero read CURRENT destination length and both CURRENT pointers then copy",
+      "store opaque node+8",
+      "reload current bucket head to node+C",
+      "publish node in captured bucket",
+      "DWORD count++ then reload return"
+    ],
+    "slot10": "allocator-owned page ID preserved, not a node-class sizeof10h claim",
+    "no_CString_rescan_shared_key_default_reset_or_rollback": true
+  },
+  "native_caller_context": {
+    "pins": [
+      {
+        "entry": "008F2E40",
+        "end_exclusive": "008F2F68",
+        "bytes": 296,
+        "sha256": "38c37a1c272bde559079351d9af289e79fb4141030ef1fc5b52cf2539248024b",
+        "role": "actual higher caller duplicate rejection and receiverowner+4 setup",
+        "live_PE_equal": true,
+        "reconstructed": false
+      },
+      {
+        "entry": "008F69A7",
+        "end_exclusive": "008F69D0",
+        "bytes": 41,
+        "sha256": "f43886641697f9b122627d459c423f7b5a8b36c958dbd053233a0a79ec7afce2",
+        "role": "library PUSH19Ch/allocation69AC/constructor69C9",
+        "live_PE_equal": true,
+        "reconstructed": false
+      },
+      {
+        "entry": "008F5F29",
+        "end_exclusive": "008F5F50",
+        "bytes": 39,
+        "sha256": "d3273ec19b541f5f7729d674d3b546b68609abb81a92e2c501ed469e76454f78",
+        "role": "property-parser PUSH19Ch/allocation5F2E/constructor5F4B",
+        "live_PE_equal": true,
+        "reconstructed": false
+      }
+    ],
+    "insertion": "sole caller008F2E40; LEAEBP,[ESI+4] at008F2E75, MOVECX,EBP at008F2F1D, CALL008F2850 at008F2F27",
+    "higher_policy": "008F2E83 duplicate lookup/008F2EB4 guard rejects duplicate before low-level insertion; first-symbol retention separate; semanticPropertyLibrary unchanged",
+    "initializer": "CPropTreeLibrary_Load008F67B0 PUSH19Ch at008F69A7/CALLBF681B at008F69AC/ctor008F69C9;BSP_ScenePropertyBag_Parse008F5A00 PUSH19Ch at008F5F29/CALLBF681B at008F5F2E/ctor008F5F4B",
+    "historical_shorthand_correction": "69A7/5F29 are PUSH allocation size;69AC/5F2E are allocation CALL sites",
+    "contexts_read_only_not_new_reconstruction_ownership": true
+  },
+  "required_providers": [
+    {
+      "native": "0048D480",
+      "source": "find_native_enum_symbol_node_0048d480",
+      "path": "src/native_enum_dictionary_lookup.cpp",
+      "contract": "complete borrowed actual receiver/key lookup, hash and compare, captured bucket; ASCII/C-locale/finite coherent chains"
+    },
+    {
+      "native": "004E7C00",
+      "source": "allocate_native_enum_node_004e7c00",
+      "path": "src/native_enum_node_pool.cpp",
+      "contract": "genuine constructed raw38h owner/584h pages/14h slots and allocator-owned+10; Source fixture real allocator-list/CS/currentCRT; actual originalE17578 static-global binding still external"
+    },
+    {
+      "native": "0041DD40",
+      "source": "resize_native_string_header_0041dd40(raw context)",
+      "path": "src/native_string.cpp",
+      "contract": "complete ordinary actual8h header schedule; concrete raw00419CC0/BD1120/BD1510 providers; preserve flags and current post-provider fields; existing zero-byte preserve-copy omission qualified"
+    },
+    {
+      "native": "00BF7680",
+      "historical_library_name": "_memcpy",
+      "source": "current std::memmove",
+      "contract": "admitted nonzero current-length copies with stable/disjoint owning headers; original helper also permits overlap; no historicalCRT/fault parity/full original graph claim"
+    },
+    {
+      "native": "00D162D4",
+      "source": "explicit verified original type-byte binding",
+      "contract": "oneE byte; actual image45000000, no default enum/type provider"
+    },
+    {
+      "native": "0041E870/0041DD20/BD1480/BD14C0",
+      "source": "current actual raw-string constructors/explicit header destruction/real pool owner",
+      "contract": "natural fixture owning query/type/key lifetimes, no opaque callbacks"
+    },
+    {
+      "native": "0048E840/0048E8D0",
+      "source": "closed normal word/membership getters",
+      "contract": "actual new constructor owner+4 connection, temporary cleanup; found words/missing membership; original whole wrappers not executed"
+    },
+    {
+      "native": "00BF681B allocation/00BF65AC free",
+      "source": "singleton_lifetime_allocate/free",
+      "path": "src/singleton_lifetime.cpp",
+      "contract": "actual currentCRT raw19Ch fixture allocations/normal free; native allocation failures/private EH and original owner deletion unbound"
+    }
+  ],
+  "remaining_providers": {
+    "original_global_initialization": "actual E17578 raw global must be genuinely constructed via411050/static wrapperCC8A50; new fixture constructs a local genuine same-shape/current Source owner, not original global/class runtime",
+    "owner_E_cleanup": "Native CEnum cleanup008F4E70/inner map008F4B60/scalar deleting008F59C0 remain Source-unbound; fixture explicitly destroys owning114 header with actual0041DD20 instead of faking the owner destructor",
+    "insertion_higher_wrapper": "008F2E40 full normal metadata/EH binding outside this packet; its duplicate-retention source projection remains independently valid",
+    "other_open": "8F17E0 table-owner mapped virtual replacement/destruction; full library/native declaration identity+typing; namespace ownership;traffic factory/hierarchy/VFS/game bindings",
+    "no_original_body_replay": "actual original globalpool/registerABI/privateFH3/failingCRT graph not closed, no fake services/prolog omission to execute it"
+  },
+  "admission": {
+    "domain": "aligned actual19Ch owners, genuine constructed14h-node pool, stable/disjoint coherent successful nonoverflowing storage, finite consistent chains, C-locale closed NUL-free ASCII keys, null data only for empty keys",
+    "query_key_node_buffers_independent": true,
+    "outside": "originalglobals/classABI,malformed/null/foreign/aliased metadata,integer/allocation overflow,new-handler failures,reentry/concurrency,privateFH3/EH/SEH/fault/CRT parity,enum namespace/declaration identity,virtualowner cleanup,traffic/game",
+    "no_new_failure_rollback_default_reset_policy": true
+  },
+  "fixture": {
+    "source": "local/cc11_scene_enum_symbol_insertion/insertion_probe.cpp",
+    "recipe": "local/cc11_scene_enum_symbol_insertion/run_probe.py",
+    "run": "local/cc11_scene_enum_symbol_insertion/run02",
+    "manifest": "local/cc11_scene_enum_symbol_insertion/run02/inputs/manifest.json",
+    "manifest_sha256": "f1e01d5e531bef0f39464a7f0f8b765f14686e9d3f9083d84c21e9ab3cf18ff0",
+    "sealed_pre_execution_manifest_sha256": "07ef75f57c56b21ae626b23708409fc7c904e593bfefdb4c28f03f15d97cc5c7",
+    "outcomes": {
+      "owners": 2,
+      "installed_symbols": 28,
+      "fresh_empty_key": 1,
+      "case_replacements": 1,
+      "query_cleanups": 30,
+      "chain_collisions": 5,
+      "word_reads": 57,
+      "memberships": 57,
+      "complete_temporary_pool_prefix_checks": 114,
+      "real_ctor_pool_key_ownership_cleanup": true,
+      "native_CEnum_destructor_executed": false,
+      "original_bodies_executed": false
+    },
+    "outcomes_sha256": "4c439ddf59332fb14c68702b0f54ec39506fa7dee29a3603a13cf00efe53059f",
+    "exe_sha256": "970248b75a1103c5e48ea5afcd6684de16b0f88b29c8dc7efdc33c7474d1d59c",
+    "embedded_manifest_sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+    "installed_input": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+      "sha256_pre": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_copy": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_post": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+    },
+    "actual_owner_constructor_used": true,
+    "actual14h_pool_and_currentRawString_used": true,
+    "query_cleanup_and_independent_owning_key_bytes_checked": true,
+    "key_slot_chain_bucket_count_and_only_hit_word_change_checked": true,
+    "owning_E_headers_and_name_tail_preservation_checked": true,
+    "explicit_manual_cleanup": "fixture unpublishes heads/count, real0041DD20 destroys keys/Eheaders, real43B0A0 returns slots, realCE37A4 trim/shutdown/unlink, currentCRT raw-owner free; NOTnativeCEnum destructor/virtualcleanup",
+    "image_cells": "checkedMEM_FREE exact native VA allocations for distinct empty cells andD162D4; actual imagebytes/ROpre/post checked, no occupied mapping modified; image fixture not live captured globals",
+    "original_bodies_or_wrappers_executed": false
+  },
+  "verification": {
+    "compile_exit": [
+      {
+        "source": "native_enum_symbol_insertion.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_node_pool.cpp",
+        "exit": 0
+      },
+      {
+        "source": "allocator_list.cpp",
+        "exit": 0
+      },
+      {
+        "source": "singleton_lifetime.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_membership.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_word_getters.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_lookup.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_storage.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_owner.cpp",
+        "exit": 0
+      },
+      {
+        "source": "scene_file.cpp",
+        "exit": 0
+      },
+      {
+        "source": "insertion_probe.cpp",
+        "exit": 0
+      }
+    ],
+    "flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/showIncludes"
+    ],
+    "link_exit": 0,
+    "coff_exit": 0,
+    "source_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\run02\\insertion.coff.log",
+      "sha256": "83c069424db6ceb92a23e5cdf51bf6a02ffdcb3fa41fd61c1528993f80c1e09e",
+      "machine": "014C",
+      "normal_provider_symbols_present": true
+    },
+    "probe_exit": 0,
+    "manifest_extract_exit": 0,
+    "inventory_counts": {
+      "actual_production_headers": 41,
+      "fresh_production_CPPs": 11,
+      "unique_production_inputs": 52,
+      "fixture_CPP_and_recipe": 2,
+      "unique_fixture_inclusive_inputs": 54
+    },
+    "actual_includes_pinned": true,
+    "source_pre_copy_post_equal": true,
+    "support_freeze": {
+      "utc": "2026-10-07T21:55:31.579746+00:00",
+      "worker_baseline": "8cdccbcbdac56cf31761d5965a8885d14b3138fd",
+      "main_baseline": "8cdccbcbdac56cf31761d5965a8885d14b3138fd",
+      "build_provenance": "Primary488abdcb0 complete main Win32 build/all3CTests; same Source through8cdccbcbd metadata registration; explicitly authorized current supports",
+      "entries": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\support\\bsp_core.lib",
+          "size": 73392620,
+          "sha256_pre": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+          "sha256_copy": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+          "sha256_post": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+          "sha256_pre_link_run": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+          "sha256_post_link_run": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\support\\bsp_lua511.lib",
+          "size": 454824,
+          "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\support\\bsp_zlib121.lib",
+          "size": 71766,
+          "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ]
+    },
+    "historical_files_checked_unchanged": 458,
+    "history_scope": "all307 prior lookup/word/membership receipts plus Sourcepoolrun01 and frozen older supports/binaries,458 files total",
+    "failed_attempt": "run01 compile-only C2400 because inline-asm parameteroffset was reserved; changed tobyte_offset before cleanrun02; failedrun never linked/executed; retained immutable",
+    "direct_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_enum_symbol_insertion_cc11.json",
+      "rows": 6,
+      "failed": 0,
+      "log": "local/cc11_scene_enum_symbol_insertion/native_calls.log",
+      "sha256": "100be224f2996d9c76b7d8263ea781c4a4ad63577b9c9f7c5215ba441fc98dcf"
+    },
+    "diff_check": "git diff --cached --check: PASS",
+    "full_main_build_and_CMake_registration": "pending primary integration, no worker fullbuild"
+  },
+  "qualification": {
+    "native_whole_byte_and_assembly_pins": true,
+    "reconstructed": "two complete ordinary normal bodies through new interfaces",
+    "Source_strict_compile_link_connected_fixture_passed": true,
+    "whole_original_bodies_executed": false,
+    "CEnum_class_vtable_or_original_EH_ABI_compatible": false,
+    "native_CEnum_virtual_destruction_namespace_enum_identity_or_traffic_bound": false,
+    "game_validated": false
+  },
+  "new_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\src\\native_enum_symbol_insertion.cpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\run02\\inputs\\native_enum_symbol_insertion.cpp",
+      "sha256_pre": "be5a3657639bab5063bb1ca13c0c6179a8e94196c95fd3f5a03a50791d21a200",
+      "sha256_copy": "be5a3657639bab5063bb1ca13c0c6179a8e94196c95fd3f5a03a50791d21a200",
+      "sha256_post": "be5a3657639bab5063bb1ca13c0c6179a8e94196c95fd3f5a03a50791d21a200"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\include\\bsp\\native_enum_symbol_insertion.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_symbol_insertion\\run02\\inputs\\native_enum_symbol_insertion.hpp",
+      "sha256_pre": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa",
+      "sha256_copy": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa",
+      "sha256_post": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa"
+    }
+  ]
+}
