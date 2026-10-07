@@ -72,6 +72,16 @@ bool hidden_property_bool(const SceneProperty* prop) noexcept {
     return scene_property_bool(prop);
 }
 
+bool director_property_bool(const SceneProperty* prop) noexcept {
+    // 008238FD..008239A7 uses stored director bytes. Keep the existing
+    // defaults, class8 override and raw fallback outside owning B data.
+    if (prop != nullptr && equal_insensitive(prop->type_letter, "B")
+        && prop->has_boolean) {
+        return prop->boolean_value != 0;
+    }
+    return scene_property_bool(prop);
+}
+
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
@@ -1719,10 +1729,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             bag.find("TorpedoDirector"), bag.find("DCDirector")};
         if (keys[0] != nullptr || keys[1] != nullptr || keys[2] != nullptr || keys[3] != nullptr) {
             SceneDirectorEnables enables;
-            if (keys[0] != nullptr) enables.artillery = scene_property_bool(keys[0]);
-            if (keys[1] != nullptr) enables.anti_air = scene_property_bool(keys[1]);
+            if (keys[0] != nullptr) enables.artillery = director_property_bool(keys[0]);
+            if (keys[1] != nullptr) enables.anti_air = director_property_bool(keys[1]);
             if (keys[2] != nullptr) {
-                enables.torpedo = scene_property_bool(keys[2]);
+                enables.torpedo = director_property_bool(keys[2]);
                 if constexpr (kShipDirectorClass8Bound) {
                     // 00823941..00823955: an explicit false becomes 1 only
                     // when the instantiated unit's vt[5Ch](8) answers true.
@@ -1744,7 +1754,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                     }
                 }
             }
-            if (keys[3] != nullptr) enables.depth_charge = scene_property_bool(keys[3]);
+            if (keys[3] != nullptr) enables.depth_charge = director_property_bool(keys[3]);
             scene_director_enables_set(entity.name, enables);
         }
     }
