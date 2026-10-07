@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:18:37.481718+00:00",
+  "updated_utc": "2026-10-07T09:21:09.893095+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1243,5 +1243,32 @@
     "unchanged_external_tail_rows": 13,
     "full_engine_function_reconstructed": false,
     "historical_vs2005_crt_parity_proved": false
+  },
+  "health_peer_send_handoff": {
+    "id": "cc11_health_peer_send",
+    "done": false,
+    "state": "approved_connected_complete_ordinary_peer_selector_actual_transport_required",
+    "worker": "health_guard",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "00770b50"
+    ],
+    "output_files": [
+      "include/bsp/native_unit_health_message.hpp",
+      "src/native_unit_health_message.cpp",
+      "docs/UNIT_HEALTH_MESSAGE_PEER_SEND_CC11.md",
+      "reports/unit_health_message_peer_send_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_health_route_flags4"
+    ],
+    "reuses_worker_from": "cc11_health_route_flags4",
+    "contract": "Opt-in ABSTRACT Flags4-derived adapterimplements formerlyrequired COMPLETEordinary770B50 selector using actual borrowed session188/18C and capturedprimary10count/0Csentinel fields. Keepcapturedsession argument, NOglobalreread/newmodegate insideB50. CapturedprimarynonNULL:unsignedcount0->localtargetNULL;nonzero capturedsentinel->next check againstcapturedsentinel,requiredBF6713ifviolated,actualnodepayload8DIRECTlocaltarget(nopeer50 translation). Ifcapturedtargetequal return;elseFRESHsession188->requiredCOMPLETE783DC0(transport,target,actualmessageheader),return. InitialprimaryNULL:actualsecondary18Cnullreturn;elsecurrentmessageprofileCquery29;trueFRESHsecondary18C->requiredCOMPLETE783DC0;false return. Sourcecommonprotectedbody actualNativeSessionMessageStorage* permits real reconstructedbase type29/equalityprofile fixture without fakequery orreceivepayloadfactory claim; D2finalpasses SAMEborrowedmessagebase. Purefieldsbindersnoearlyreads/callback/allocation/default. Existinghealth/setter/constructor/router/sourceprefix unchanged, allother services abstract. Complete783DC0 requirementincludes actualtarget4 Enter/increment18/783C80/reloadtarget4/decrement18/Leave; no invented RAII or serialization or transport success/clone/arena/criticalsections. Retaincallerframe onlysynchronouslyconsume/serialize orownedrepresentation; never retain/releaseborrowedframe. Oneuniqueignored manifested actual-TU focusedprobe connectedsetter/router/B50/requiredsend and ordinarylocal/empty/null/secondaryrealD2false/realbasetype29true branches; no tracked tests/CMake. Ghidra/metadata/mainbuild primary. OriginalABI/privateEH/fault/locking/profile/allocator/network/game unproved.",
+    "worker_ghidra_read_only": true,
+    "primary_independent_full_b50_assembly_review": true,
+    "parent_end_exclusive": "00770bc9",
+    "required_serialization_body": "00783dc0..00783df8",
+    "required_serialization_and_transport_bound": false
   }
 }
