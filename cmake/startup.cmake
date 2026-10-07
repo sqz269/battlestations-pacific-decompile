@@ -253,6 +253,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_follow
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_approach_lifetime.cpp
     src/native_land_approach_scalar_lifetime.cpp
     src/native_land_approach_reference_point.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_plane_leader.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_constructor.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_scalar_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_observer_callback.cpp)
@@ -262,10 +263,12 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictio
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_word_getters.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_membership.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_node_pool.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_symbol_insertion.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_id_tables.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_participant_binding.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_role_permission.cpp
-    src/native_unit_group_owner.cpp)
+    src/native_unit_group_owner.cpp
+    src/native_unit_group_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_deferred_message_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_append.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_history.cpp)
