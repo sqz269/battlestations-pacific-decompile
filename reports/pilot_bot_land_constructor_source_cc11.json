@@ -1,0 +1,75 @@
+{
+  "packet": "cc11_land_outer_constructor",
+  "date": "2026-10-07",
+  "status": "complete_conditional_ordinary_outer_caller_and_nonnull_alias_binder_source_same_actual_borrowed_storage_required_services_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verified target before live prototype/call batches",
+    "worker_ghidra_writes": false,
+    "primary_recovery": "c0ec2c2a2; complete fivebody assembly/disk-live receipts; annotationssaved/exportsrefreshed",
+    "primary_report": "reports/pilot_bot_land_constructor_recovery_cc11.json"
+  },
+  "source_files": ["include/bsp/native_land_task_constructor.hpp", "src/native_land_task_constructor.cpp"],
+  "functions": [
+    {"entry": "009B3240", "end_exclusive": "009B3307", "bytes": 199, "primary_disk_live_match": true, "sha256": "c720447858efbe295ce5c4c4c51290b6e5adb679591e333aadfd9ed071fc6c60", "abi": "ECXtask,stackowner/block,EAXoriginaltask,RET8,preservesESI/EDI,privatex86EH", "coverage": "Complete ordinary caller; required actual base/composite/profile/entry services", "source": "construct_native_land_task_009b3240"},
+    {"entry": "009F9980", "end_exclusive": "009F99A6", "bytes": 38, "primary_disk_live_match": true, "sha256": "39e8fe278b59d4acb8ea72abf9b80a47f1c73d36b8d37640c7c08bbfb95c25df", "abi": "ECXapproach,stacktask,RET4", "coverage": "Complete nonnull-task domain only; nullable address-word behavior excluded", "source": "bind_native_land_approach_to_nonnull_task_009f9980"}
+  ],
+  "host_steps": [
+    {"address": "009B3265", "native": "0099C6F0", "function": "009B3240", "contract": "REQUIREDcompletebase on SAME actual task, originalowner and kind3"},
+    {"address": "009B3283", "native": "009B2E50", "function": "009B3240", "contract": "REQUIREDcompletecomposite on SAME approach3F8, freshpost-baseowner50plane and originalblock"},
+    {"address": "009B32C8", "native": "007B8AD0", "function": "009B3240", "contract": "Only true embeddedcontrolgate; FRESH3FC after predicate; ALleader selects4C4 else500"},
+    {"address": "009B32ED", "native": "009F9980", "function": "009B3240", "contract": "Capturedsameapproach/task aliasbinding AFTERentry; no mutation restoration"},
+    {"address": "009B32B4", "native": "virtual+38", "function": "009B3240", "contract": "Capturedplane3FC BEFOREprofile stores; actual EMBEDDEDplane72C receiver, not loadedpointer"},
+    {"address": "009B32E8", "native": "virtual+04", "function": "009B3240", "contract": "Publish310 THENactual selectedstateentry; requiredcompleteentry not no-op"}
+  ],
+  "field_steps": [
+    {"site": "009B326A", "operation": "faithfulfreshowner50 AFTERcompletebase"},
+    {"site": "009B3288", "operation": "capture3FCcontrolplane BEFOREprofile stores"},
+    {"site": "009B3294", "operation": "store REQUIREDactual executable00D1FFA0 identity to rootprofilecell0"},
+    {"site": "009B329A", "operation": "store REQUIREDactual executable00D1FF94 identity to approachprofilecell3F8"},
+    {"site": "009B32A0", "operation": "store REQUIREDactual executable00D1FF90 identity to registryprofilecell4B0"},
+    {"site": "009B32BA", "operation": "falsepredicate choosespark620 with no leaderprobe"},
+    {"site": "009B32C2", "operation": "truepredicate RELOAD3FCleaderreceiver"},
+    {"site": "009B32DD", "operation": "selectedstateidentity ->310 BEFOREentry"},
+    {"site": "009F998F", "operation": "nonnull actualtaskcommand4 ->approach18/task410"},
+    {"site": "009F999D", "operation": "nonnull actualtaskgun314 ->approach1C/task414"},
+    {"site": "009F99A0", "operation": "nonnull actualtaskcontrol38C ->approach20/task418"}
+  ],
+  "contract": {
+    "storage": "Borrow SAME actual caller-owned stabletask handle/subobjects/profile/currentstate/alias and retained3FC40442442842C cells; canonical404 ONEconst-void*volatilecell directly shared with existinghook/cruise/validity",
+    "profiles": "Required nonnull actual executabletable identities corresponding00D1FFA0/00D1FF94/00D1FF90, invariant by-value bindings; orderedvolatile stores, no fabricated addressliteral/default/descriptive-onlytable/no-oppublisher; executability/receiverbinding external",
+    "base_composite": "Complete actual9C6F0/9B2E50 services receive SAMEview; rawowner50 faithful afterbase; composite includes fullactualretainedproducers, queue-record, registry/states/profiles/observer/name work",
+    "entry": "Actual park620/MoveTo4C4/Follow500 and currentstate310; entry beforealiases; no restoration of currentstate/cache updates; return capturedoriginal task handle",
+    "binder_domain": "Nonnulltask actual command4/gun314/control38C mappings only; nativeNULLcase0/314h/38Ch words excluded, no guard/all-nullfallback",
+    "normal_domain": "Nonzero stabletask/owner/plane/block/subobject/profile and coherentlivecells/capturedobjects through normalreturns; rawreads/mappings/profilebindings have no inventedcallbackeffects; no structuralreentry/identityinvalidation/concurrency/corruption/fault/unwind/death-lifetime",
+    "abi_game": "NewC++sourceAPI, not original ABI or game adapter"
+  },
+  "required_unbound_dependencies": [
+    {"entry": "0099C6F0", "end_exclusive": "0099C8A4", "boundary": "complete command/gun/control/random/descriptor base; sparseBotTaskHost excluded"},
+    {"entry": "009B2E50", "end_exclusive": "009B302B", "boundary": "full lower/registry/states/profiles/observer/namecomposite; sameactualstorage"},
+    {"entry": "009F9CE0", "end_exclusive": "009F9D78", "boundary": "retainedplane/class/squad/owner/row and primaryrecoverednumericconstructor unimplemented here"},
+    {"entry": "009AFE70", "end_exclusive": "009AFFEB", "boundary": "block/owner/actualqueuerecord plus tuning/random/pose/geometry constructor unimplemented here"},
+    {"entry": "006C0B50", "boundary": "COMPLETE actual record+queue/slot/observer/message service and record lifetime; currenthostqueueentry+4/slottailomissions excluded"},
+    {"entry": "009BED80", "end_exclusive": "009BEE25", "boundary": "complete actual Followentry required; tuning/reindex/leaderobserver work"},
+    {"entry": "009B21A0", "end_exclusive": "009B21BA", "boundary": "complete actual Parkentry stores required"},
+    {"entry": "007B3DB0", "end_exclusive": "007B3DB1", "boundary": "proved-empty MoveToentry only; doesnotauthorize empty otherentries"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86 /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "object": "PASSactualsrc/native_land_task_constructor.cpp ->local/native_land_task_constructor_cc11.obj",
+    "manifested_fixture": "PASSexisting hookfixture linked newobject+canonicalobject+primarybsp_core.lib /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "focused_scenario": "sameview/basekind3; baseowner50mutationbeforefreshread; compositecanonicalfields; capturecontrolplaneA/profile stores; predicatechanges3FCtoB/404toY; leaderobservesB selectsFollow;310before executableC++fixtureentry;aliasesunboundduringentry;entrycurrentstate/cachemutationspreserved;actualsubobjectaliasesafterward",
+    "probe_output": "PASS outer same-task construction/fresh plane/profile/state entry-before-alias; canonical404 linked callers and numeric fixtures",
+    "fixture_boundary": "C++fixture executabletables/provider effects test SOURCEcaller only; do not implement/execute original nativebase/composite/profiles/state/arena/ABI/EH/game",
+    "existing_checks": "retainedhook/deferredroute/canonical/validity/numericfixture checks remainpassing",
+    "source_coff_receipt": "Caller sourceobjectoffset39 captures3FC beforeprofilestores43/4C/55 and predicatecall5F; fresh3FCload6D beforeleadercall78; statepublication8A beforeentry91; aliasstores9E/A6/AF afterentry. Standalonebinder stores0A/12/1A. CompiledSOURCE offsets, notoriginal ABI/runtimeproof.",
+    "live_call_verifier": "PASS4direct rows,0failed;2virtualrows explicitlyunresolved",
+    "json_diff": "PASS JSONparse and gitdiff--check",
+    "full_build_cmake": "Primaryowned; workerdidnoteditCMake or runfullbuild",
+    "runtime_abi_lifetime": "Not tested/proved"
+  },
+  "remaining_adapters": ["actual stabletask arena670/factory/scalar destruction", "actual executableprofile bindings and rawmember mappings", "complete lower/composite/base/provider domains", "ownerFIFO/scheduler/controller/world/observer routing", "retained404/plane3FC/queuerecord lifetime afterdeath", "privateEH/fault/unwind parity", "originalbinaryABI and livegame behavior"]
+}
