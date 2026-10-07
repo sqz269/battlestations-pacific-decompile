@@ -95,4 +95,84 @@ void* NativeUnitHealthMessageConstructorCalls::construct_health_message_00876d30
     return construct_native_unit_health_message_00876d30(message, static_cast<U>(health),
         NativeSessionMessageContext{globals_.current_game_00e188a8}, profile_);
 }
+
+NativeUnitHealthMessageFlags4Calls::NativeUnitHealthMessageFlags4Calls(
+    NativeUnitHealthSetterGlobals globals, NativeUnitHealthRouteGlobals route_globals,
+    const NativeUnitHealthMessageProfile& profile) noexcept
+    : NativeUnitHealthMessageConstructorCalls(globals, profile),
+      current_game_00e188a8_(globals.current_game_00e188a8), route_globals_(route_globals) {}
+
+void NativeUnitHealthMessageFlags4Calls::route_health_message_0077c2a0(
+    void* receiver, void* message, U flags, void** clear_on_local_delivery) {
+    // This opt-in adapter is admitted only for00877B90's flags4 call. With4,
+    // native local delivery and its out-pointer access are unreachable.
+    (void)flags;
+    (void)clear_on_local_delivery;
+    route_d2_flags4_0077c2a0(receiver, static_cast<M*>(message));
+}
+
+void NativeUnitHealthMessageFlags4Calls::route_d2_flags4_0077c2a0(void* receiver, M* message) {
+    auto* game = static_cast<std::byte*>(current_game_00e188a8_);
+    if (game == nullptr) return;
+    if (*reinterpret_cast<const volatile std::int32_t*>(game + 0x5d4) < 10) return;
+
+    const auto fields = bind_route_fields(receiver);
+    auto* table = primary_table(receiver);
+    const U kind5 = table[0x5c / 4];
+    if (call_entity_is_kind_5c(kind5, receiver, 5) && fields.player_slot_528 >= 0) {
+        table = primary_table(receiver);
+        const U kind1c = table[0x5c / 4];
+        if (call_entity_is_kind_5c(kind1c, receiver, 0x1c)) {
+            const volatile U* profile = static_cast<const volatile M&>(*message).base.profile_00;
+            using Query = bool(__thiscall*)(const M*, U);
+            (void)reinterpret_cast<Query>(profile[3])(message, 0xd3);
+        }
+    }
+
+    //0077C302 ALWAYS reads the default before CMOVNZ selects the literal4.
+    // Retain this actual volatile observation even though its value is dead.
+    const U overridden_default = route_globals_.default_flags_00e0af1c;
+    (void)overridden_default;
+    game = static_cast<std::byte*>(current_game_00e188a8_);
+    if (session_mode_1fe4(game) != 1) return;
+    const auto second_mode = session_mode_1fe4(game);
+    (void)second_mode;
+    // The two native mode reads use this same captured game. With no callback
+    // or concurrent write between them, the second is1 too. Flags4 therefore
+    // reaches neither privilege query nor relay rewrite; no extra guard added.
+
+    if (route_globals_.audit_latch_00e18db7 != 0) {
+        const volatile U* profile = static_cast<const volatile M&>(*message).base.profile_00;
+        using Query = bool(__thiscall*)(const M*, U);
+        (void)reinterpret_cast<Query>(profile[3])(message, 0x49);
+        // Actual active D2 predicate returnsfalse. The generic router's BYTE
+        // write at+1C is outside this admitted D2 branch, not a default action.
+    }
+
+    //0077C39C/C3A2 observes a fresh game/mode before testing the host-send bit.
+    // Flags4 has no bit2, but that memory read still occurs in the native path.
+    game = static_cast<std::byte*>(current_game_00e188a8_);
+    const auto host_mode = session_mode_1fe4(game);
+    (void)host_mode;
+    game = static_cast<std::byte*>(current_game_00e188a8_);
+    if (session_mode_1fe4(game) != 1) return;
+
+    auto* sentinel = fields.sentinel_2a8;
+    auto* node = static_cast<const volatile NativeUnitHealthRoutePeerNode&>(*sentinel).next_00;
+    for (;;) {
+        sentinel = fields.sentinel_2a8;
+        // Native self-CMP atC3E0 makes only the C3EB violation call dead.
+        if (node == sentinel) break;
+        if (node == fields.sentinel_2a8) invalid_route_iterator_00bf6713();
+        const auto sender = fields.sender_174;
+        auto* peer = static_cast<const volatile NativeUnitHealthRoutePeerNode&>(*node).peer_08;
+        static_cast<volatile M&>(*message).sender_18 = sender;
+        void* target = peer_target_50(peer);
+        game = static_cast<std::byte*>(current_game_00e188a8_);
+        send_message_to_nonlocal_peer_00770b50(game + 0x1ef0, target, message);
+        if (node == fields.sentinel_2a8) invalid_route_iterator_00bf6713();
+        node = static_cast<const volatile NativeUnitHealthRoutePeerNode&>(*node).next_00;
+    }
+    // Flags4 has no local bit, so no enqueue, clone, out-clear or frame release.
+}
 } // namespace bsp

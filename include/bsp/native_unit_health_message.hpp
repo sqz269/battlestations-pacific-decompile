@@ -62,6 +62,62 @@ private:
     NativeUnitHealthSetterGlobals globals_;
     const NativeUnitHealthMessageProfile& profile_;
 };
+
+// Actual borrowed native list nodes; the sentinel and reached nodes stay live.
+// No owner, sentinel, peer array or links are manufactured by this interface.
+struct NativeUnitHealthRoutePeerNode {
+    NativeUnitHealthRoutePeerNode* next_00;
+    NativeUnitHealthRoutePeerNode* previous_04;
+    void* peer_08;
+};
+static_assert(sizeof(NativeUnitHealthRoutePeerNode) == 0x0c);
+static_assert(offsetof(NativeUnitHealthRoutePeerNode, peer_08) == 8);
+struct NativeUnitHealthRouteFields {
+    const volatile std::int32_t& player_slot_528;
+    const volatile std::uint16_t& sender_174;
+    NativeUnitHealthRoutePeerNode* const volatile& sentinel_2a8;
+};
+struct NativeUnitHealthRouteGlobals {
+    const volatile std::uint32_t& default_flags_00e0af1c;
+    const volatile std::uint8_t& audit_latch_00e18db7;
+};
+
+// Opt-in D2/exact-flags4 branch of parent0077C2A0, not a generic router.
+// bind()->00877B90 supplies the admitted flags4 call and borrowed D2 frame.
+// Other flags are outside this API. out is untouched on every admitted path.
+// Game backing must expose actual signed+5D4, +1FE4 and embedded+1EF0 fields,
+// as well as the owner fields already required by the constructor. The active
+// message table must remain a live translated D2 profile (queries D3/49 false).
+class NativeUnitHealthMessageFlags4Calls : public NativeUnitHealthMessageConstructorCalls {
+public:
+    NativeUnitHealthMessageFlags4Calls(NativeUnitHealthSetterGlobals,
+        NativeUnitHealthRouteGlobals, const NativeUnitHealthMessageProfile&) noexcept;
+    void route_health_message_0077c2a0(void* receiver, void* message,
+        std::uint32_t flags, void** clear_on_local_delivery) final;
+protected:
+    // Pure alias binding/access to actual backing: no value snapshots,
+    // callbacks, allocation, ownership changes or FP changes.
+    virtual NativeUnitHealthRouteFields bind_route_fields(void* receiver) noexcept = 0;
+    virtual void* const volatile& peer_target_50(void* actual_peer) noexcept = 0;
+    virtual bool call_entity_is_kind_5c(std::uint32_t entry, void* receiver,
+        std::uint32_t kind) = 0;
+    // Complete required operation, including native transport selection,
+    // local-peer exclusion and any secondary type29/00783DC0 behavior.
+    // Synchronously consume/serialize or make an owned copy; never retain or
+    // release the caller's borrowed frame. No default transport/clone exists.
+    virtual void send_message_to_nonlocal_peer_00770b50(void* actual_session,
+        void* actual_target, NativeUnitHealthMessage* borrowed_message) = 0;
+    // Reached native iterator violation service. No assumed no-return,
+    // exception or recovery policy; original invalid-storage faults unproved.
+    virtual void invalid_route_iterator_00bf6713() = 0;
+private:
+    void route_d2_flags4_0077c2a0(void* receiver, NativeUnitHealthMessage*);
+    void* volatile& current_game_00e188a8_;
+    NativeUnitHealthRouteGlobals route_globals_;
+};
+// Callbacks may replace game/sender/valid links while all reached backing stays
+// live. Concurrent mutation between ordinary field observations, other message
+// profiles, invalid or nonterminating traversals and fault paths are outside.
 // New source interfaces cover ordinary returning calls on valid live backing.
 // Cursor bounds/error contracts are those of the existing native cursor
 // services. Original allocation identity, private EH/fault behavior, complete

@@ -1,0 +1,289 @@
+{
+  "packet": "cc11_health_route_flags4",
+  "created_utc": "2026-10-07T09:06:11.482732+00:00",
+  "base_commit": "a79b434fe",
+  "branch": "agent/cc11_health_guard",
+  "status": "reconstructed ordinary D2 exact-flags4 parent fragment; connected actual-TU probe passed; primary integration pending",
+  "parent": {
+    "entry": "0077C2A0",
+    "end_exclusive": "0077C46A",
+    "source_fragment": "NativeUnitHealthMessageFlags4Calls::route_d2_flags4_0077c2a0",
+    "native_abi": "ECX receiver; stack message, flags, out; RET0C",
+    "coverage": "only exactflags4 and current active translated D2 profile in ordinary valid backing domain",
+    "whole_parent_reconstructed": false
+  },
+  "files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_unit_health_message.cpp",
+    "docs/UNIT_HEALTH_MESSAGE_ROUTE_FLAGS4_CC11.md",
+    "reports/unit_health_message_route_flags4_cc11.json"
+  ],
+  "evidence": {
+    "full_live_assembly_reviewed": {
+      "0077C2A0": 145,
+      "0076E520": 130
+    },
+    "primary_independent_full_router_review": true,
+    "related_readonly_entries": [
+      "00779FF0",
+      "00779F90",
+      "00770B50",
+      "0075FC80"
+    ],
+    "worker_ghidra_mutations": false,
+    "source_interfaces": "new C++ member fragment and abstract adapter; native ABI compatibility not claimed"
+  },
+  "host_steps": [
+    {
+      "address": "0077C423",
+      "native": "00770B50",
+      "function": "0077C2A0",
+      "contract": "required complete actual session,target,borrowed message peer operation"
+    },
+    {
+      "address": "0077C3FB",
+      "native": "00BF6713",
+      "function": "0077C2A0",
+      "contract": "conditional reloaded sentinel violation service; no inferred noreturn/fault policy"
+    },
+    {
+      "address": "0077C42D",
+      "native": "00BF6713",
+      "function": "0077C2A0",
+      "contract": "post-send reloaded sentinel violation service before fresh node-next read"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "0077C2CC",
+      "dispatch": "receiver current table+5C(kind5)",
+      "contract": "required actual entity dispatch"
+    },
+    {
+      "address": "0077C2E8",
+      "dispatch": "fresh receiver table+5C(kind1C)",
+      "contract": "only after kind5 true and fresh signedDWORD528 nonnegative"
+    },
+    {
+      "address": "0077C2FB",
+      "dispatch": "current active D2 profile+0C(queryD3)",
+      "contract": "actual executable source-profile query, discarded result"
+    },
+    {
+      "address": "0077C392",
+      "dispatch": "current active D2 profile+0C(query49)",
+      "contract": "reached only for actual audit byte nonzero; real D2 predicate false, no payload write"
+    }
+  ],
+  "actual_borrowed_fields": [
+    {
+      "storage": "00E188A8",
+      "shape": "mutable pointer cell",
+      "use": "same reference in setter,constructor and router; fresh per specified native site"
+    },
+    {
+      "storage": "00E0AF1C",
+      "shape": "volatile DWORD",
+      "use": "always read after class queries even though flags4 overrides value"
+    },
+    {
+      "storage": "00E18DB7",
+      "shape": "volatile BYTE",
+      "use": "audit query gate"
+    },
+    {
+      "storage": "game+5D4",
+      "shape": "signed DWORD",
+      "use": "initial >=10 state gate"
+    },
+    {
+      "storage": "game+1FE4",
+      "shape": "signed DWORD via pure actual-cell accessor",
+      "use": "two reads from post-query captured game, later two fresh game/mode observations"
+    },
+    {
+      "storage": "game+1EF0",
+      "shape": "embedded actual session",
+      "use": "fresh per-peer operation receiver"
+    },
+    {
+      "storage": "receiver+0/table+5C",
+      "shape": "actual table pointer and dispatch token",
+      "use": "fresh for each reached entity-kind call"
+    },
+    {
+      "storage": "receiver+528",
+      "shape": "signed DWORD alias",
+      "use": "read after first kind callback"
+    },
+    {
+      "storage": "receiver+174",
+      "shape": "WORD alias",
+      "use": "fresh per-peer sender source"
+    },
+    {
+      "storage": "receiver+2A8",
+      "shape": "volatile sentinel pointer alias",
+      "use": "initial node and repeated before/after-call guards"
+    },
+    {
+      "storage": "list node+00/+08",
+      "shape": "actual next pointer / peer payload",
+      "use": "next read after send, payload read before sender store"
+    },
+    {
+      "storage": "peer+50",
+      "shape": "actual pointer cell via pure alias accessor",
+      "use": "transport target loaded before fresh session"
+    },
+    {
+      "storage": "message+00/+18",
+      "shape": "actual profile pointer / WORD",
+      "use": "fresh profile queries and sender stores on actual constructed D2"
+    }
+  ],
+  "ordinary_sequence": [
+    "initial game pointer null return; signed game+5D4<10 return before entity/profile access",
+    "kind5 current table; signed528; kind1C fresh table; optional current D2 queryD3",
+    "always volatile-read default flags; captured post-query game mode1 gate then second mode read on same game",
+    "no callbacks/concurrent writes between paired mode observations; reached second mode1 implies flags4 skips privilege/relay",
+    "actual audit byte; current executable D2 query49 returnsfalse; no invented payload-byte store",
+    "fresh global/mode observation for host-bit gate despite dead bit2; second fresh global/mode1 peer gate",
+    "initial sentinel->next capture; every loop reload sentinel for end and second guard",
+    "fresh sender WORD, node payload, message sender WORD store, actualpeer50 pointer, fresh global+1EF0, required00770B50",
+    "post-send actual sentinel guard then current node->next reload; repeat until current sentinel",
+    "no local bit, so no0076E520/clone/factory/out-clear/borrowed-frame release"
+  ],
+  "iteration": {
+    "node_size": 12,
+    "next_offset": 0,
+    "retained_previous_offset": 4,
+    "payload_offset": 8,
+    "sentinel_owner_cell": "receiver+2A8",
+    "array_or_snapshot": false,
+    "callbacks": "may replace game cell, sender, active D2 profile, sentinel and valid links while reached backing lives",
+    "dead_guard": "0077C3E0 CMP EDI,EDI makes0077C3EB call dead",
+    "retained_conditional_guards": [
+      "0077C3F6->0077C3FB",
+      "0077C428->0077C42D"
+    ],
+    "invalid_iterator_semantics": "required actual service, original fault/throw/noreturn behavior unproved outside normal retained-storage domain"
+  },
+  "adapter": {
+    "class": "NativeUnitHealthMessageFlags4Calls",
+    "base": "NativeUnitHealthMessageConstructorCalls",
+    "abstract": true,
+    "consumption": "inherited bind()->set_native_unit_health_00877b90->actual D2 constructor->final route override->private flags4 fragment",
+    "same_global_cell_by_construction": true,
+    "flags_precondition": 4,
+    "other_flags_behavior": "outside API; no fallback generic router claimed",
+    "out_argument": "never read or cleared in admitted flags4 branch",
+    "required_added_operations": [
+      "pure actual receiver-field binding",
+      "pure actual peer+50-cell binding",
+      "actual entity-kind5C dispatch",
+      "complete00770B50 peer operation",
+      "native invalid-iterator service if reached"
+    ],
+    "health_hook_provider_still_required": true,
+    "existing_constructor_profile_bodies_changed": false
+  },
+  "required_transport": {
+    "entry": "00770B50",
+    "arguments": [
+      "actual embedded session",
+      "actual peer+50 target",
+      "same live borrowed D2 message"
+    ],
+    "provider_owns": [
+      "session+188/+18C transport selection",
+      "first/local-peer exclusion",
+      "secondary actual profile query29",
+      "00783DC0 transport effects"
+    ],
+    "lifetime": "synchronous consumption/serialization or separately owned representation; never retain/release caller frame",
+    "default_success_clone_allocator_factory": false,
+    "runtime_bound": false
+  },
+  "validation": {
+    "command": "local/cc11_health_message_route_flags4_check.cmd",
+    "toolchain": "MSVC Win32 VS18 Community /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict /FAs /link /MANIFEST:EMBED /OPT:REF",
+    "receipt": {
+      "checks": 66,
+      "failures": 0,
+      "direct_branch_cases": 6,
+      "connected_setter_cases": 1,
+      "peer_sends": 2,
+      "borrowed_frame_releases": 0,
+      "build_exit_code": 0,
+      "probe_exit_code": 0,
+      "embedded_manifest": true,
+      "requested_execution_level": "asInvoker",
+      "accepted_constructor_profile_source_prefix_unchanged": true
+    },
+    "direct_cases": [
+      "initial null game",
+      "negative signed game state",
+      "kind5 callback switches actual game to client; fresh gate rejects",
+      "kind5 callback makes signed player slot negative",
+      "kind1C false on empty actual list",
+      "active D2 profile replacement and fresh captured game on empty actual list"
+    ],
+    "connected_case": "actual setter+constructor+router; two real nodes; first send changes game to mode2, sender WORD, sentinel and current-node next; second uses fresh session/sender/next, skips old next and stops at new sentinel without added mode gate; replacement circular list retains current node with consistent forward/back links and keeps old sentinel alive",
+    "serialization_fixture": "actual D2 writer synchronously produces verified29-bit fields; fixture is not actual network transport",
+    "profile_queries": "actual translated source entries called; false D3/49 domain derives from reviewed predicate, no synthetic query callbacks",
+    "mode_access_instrumentation": "records pure-accessor argument identities; not runtime plain-cell hardware-read counts",
+    "generated_assembly_review": [
+      "dead default volatile MOV retained before post-query game load",
+      "signed state/slot branches",
+      "fresh table+5C loads and current profile+0C calls forD3/49",
+      "first gate and second volatile mode load from same captured pointer",
+      "two later fresh global/mode observations",
+      "WORD sender load/store then actualpeer50 pointer then fresh game+1EF0",
+      "sentinel reloads and conditional service calls; next dereferenced after send"
+    ],
+    "tracked_tests_added": false,
+    "full_repository_build": "primary responsibility",
+    "rerun_reason": "tightened fixture list replacement to keep both directions consistent; implementation source/generated assembly unchanged; final66/0 receipt from rerun"
+  },
+  "excluded": {
+    "generic_parent_paths": [
+      "other route flags",
+      "privileged-kind queries",
+      "relay conversion",
+      "host-send call",
+      "audit payload write for nonD2 profiles",
+      "local enqueue/out-clear"
+    ],
+    "legacy_workflows": [
+      "run_route_0077c2a0 snapshot inputs",
+      "run_enqueue_local_0076e520 supplied stream and null guard"
+    ],
+    "receive_factory": "distinctD2arm00769F25 allocation32 ->00769F39 receive constructor0075FC80 ->0076A283 reader; not registered or implemented here; receive constructor leavesDWORD1C untouched before reader",
+    "type46": "D2-or46 predicate does not establish type46 constructor/factory",
+    "fault_abi_game": [
+      "concurrent mutation between ordinary observations",
+      "freed/current-node corruption or malformed list cycles",
+      "original register ABI and privateEH/fault behavior",
+      "native invalid-iterator service outcome",
+      "actual transport/allocator identity",
+      "gameplay"
+    ]
+  },
+  "artifacts_sha256": {
+    "include/bsp/native_unit_health_message.hpp": "b157801472d9b15495f3bb8f35d50d697c8181363e453acfb611898fb961295e",
+    "src/native_unit_health_message.cpp": "169361d45df2d4c100d353ac427d6b38a2587fe1c813b9a6173e856f85645154",
+    "local/cc11_health_message_route_flags4_probe.cpp": "aa87b29fc7078f4a3250dac7cbfd113303c0653ff3d27a54f8d5843ab3b8fa4e",
+    "local/cc11_health_message_route_flags4_check.cmd": "7c1d5349b7cd092725d444d559b88d8672493f02c405fe940acf1321edcf7c81",
+    "local/cc11_health_message_route_flags4_probe.exe": "46fe6c90a49a638123bd84cb08e0dc1afe725ab0983eb478cdcddb9735504a52",
+    "local/cc11_health_message_route_flags4_results.json": "16fd47e3f470329820d3822e6b436d5299c7f204e034ecc8ab8f57be10daa1a2",
+    "local/cc11_health_message_route_flags4_asm/native_unit_health_message.asm": "58bc13b146f15638cb1d1516f482c3336142b94c278ebe237e0ac70725f0ffe4"
+  },
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_message_route_flags4_cc11.json",
+    "live_project_program_verified_by_client": true,
+    "checked": 3,
+    "failed": 0,
+    "exit_code": 0
+  }
+}
