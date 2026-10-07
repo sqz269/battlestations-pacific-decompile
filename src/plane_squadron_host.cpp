@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "bsp/plane_squadron_entity.hpp"
+#include "bsp/native_session_message_be.hpp"
 
 // 007F4580 mode 1, bound to a process whose "plane instance" is a scene entity
 // record. docs/PLANE_SQUADRON_HOST.md.
@@ -371,6 +372,22 @@ void land_task_retained_hook_009b33f0(const LandTaskRetainedHookView& task,
     if (task.squadron_404 != nullptr) {
         plane_squadron_end_landing_007efb60(*task.squadron_404, host); // 009B342D
     }
+}
+
+void plane_squadron_promote_and_reindex_007ed610(
+    PlaneSquadronEntity& squadron, int index, PlaneSquadronPromotionReceiptHost& host) {
+    // The existing helper covers007ED614..007ED63F only. Its count/slot guard
+    // agrees with the native bounds in the admitted five-member domain.
+    if (!plane_squadron_promote_flight_leader_007ed610(squadron, index)) return;
+    host.assign_formation_indices_007ed260(squadron); //007ED645, after rotation
+}
+
+bool plane_squadron_receive_leader_promotion_be_007f0030(
+    PlaneSquadronEntity& squadron, const NativeSessionMessageBE& message,
+    PlaneSquadronPromotionReceiptHost& host) {
+    //007F0077 loads msg+1Ch,007F007B calls007ED610,007F0083 sets AL=1.
+    plane_squadron_promote_and_reindex_007ed610(squadron, message.member_index_1c, host);
+    return true;
 }
 
 }  // namespace bsp
