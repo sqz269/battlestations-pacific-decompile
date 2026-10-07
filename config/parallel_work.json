@@ -13016,8 +13016,8 @@
     },
     {
       "id": "cc11_health_guard",
-      "state": "dispatched_bounded_evidence_and_implementation",
-      "done": false,
+      "state": "integrated_reviewed_partial_host_binding_OFF_pending_runtime_pair",
+      "done": true,
       "worker": "health_guard",
       "owner": "agent/cc11_health_guard",
       "model": "gpt-6-astra",
@@ -13035,12 +13035,15 @@
       ],
       "depends_on": [],
       "contract": "Preserve native unchanged-health callback gate; verify x87 comparison and clamp/invincibility behavior.",
-      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable."
+      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable.",
+      "code_revision": "01b53daac0f65a6ba384ea8d1339375d8a3e1667",
+      "report": "reports/gunnery_health_callback_guard_cc11.json",
+      "game_validated": false
     },
     {
       "id": "cc11_director_props",
-      "state": "dispatched_bounded_evidence_and_implementation",
-      "done": false,
+      "state": "integrated_reviewed_native_producer_audit_source_comments_only",
+      "done": true,
       "worker": "director_props",
       "owner": "agent/cc11_director_props",
       "model": "gpt-6.1-sol",
@@ -13057,12 +13060,15 @@
       ],
       "depends_on": [],
       "contract": "Settle shipyard-created unit property precedence and TorpedoDirector default from original producer and installed assets.",
-      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable."
+      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable.",
+      "code_revision": "1b7d88ed52a11bc090783c732ef429e55929d0ed",
+      "report": "reports/shipyard_director_properties_cc11.json",
+      "game_validated": false
     },
     {
       "id": "cc11_land_retirement",
-      "state": "dispatched_bounded_evidence_and_implementation",
-      "done": false,
+      "state": "integrated_reviewed_retirement_lifetime_audit_no_cpp_change",
+      "done": true,
       "worker": "land_retirement",
       "owner": "agent/cc11_land_retirement",
       "model": "gpt-6.1-sol",
@@ -13074,7 +13080,13 @@
         "006c7680",
         "007bcaa0",
         "007f3970",
-        "00926c80"
+        "00926c80",
+        "0099a4c0",
+        "00999ee0",
+        "0099acd0",
+        "00999e40",
+        "009b33f0",
+        "007efb60"
       ],
       "output_files": [
         "src/game_hosts_units.cpp",
@@ -13084,7 +13096,83 @@
       ],
       "depends_on": [],
       "contract": "Recover complete live landing-task retirement queue cleanup; keep deferred-death ordering provisional until proved.",
-      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable."
+      "reuse_policy": "Reuse the same worker for related follow-up packets while its model and remaining context are suitable.",
+      "code_revision": "c63fedd05",
+      "report": "reports/landing_task_retirement_cc11.json",
+      "game_validated": false
+    },
+    {
+      "id": "cc11_health_pair",
+      "state": "dispatched_to_reused_worker",
+      "done": false,
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00877b90",
+        "00879070",
+        "008777d0"
+      ],
+      "output_files": [
+        "src/game_hosts_gunnery.cpp",
+        "include/bsp/game_hosts_gunnery.hpp",
+        "docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md",
+        "docs/GUNNERY_HEALTH_CALLBACK_PAIR_CC11.md",
+        "reports/gunnery_health_callback_pair_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_guard"
+      ],
+      "contract": "Build and compare guard OFF/ON with capture-party switch ON in both variants using existing USNOS f12 orders; enable only after reviewed paired evidence.",
+      "reuses_worker_from": "cc11_health_guard"
+    },
+    {
+      "id": "cc11_director_class8",
+      "state": "dispatched_to_reused_worker",
+      "done": false,
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00822c20"
+      ],
+      "output_files": [
+        "src/game_hosts_scene_contents.cpp",
+        "include/bsp/game_hosts_scene_contents.hpp",
+        "docs/TORPEDO_DIRECTOR_CLASS8_CC11.md",
+        "reports/torpedo_director_class8_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_director_props"
+      ],
+      "contract": "Recover the actual class-id8 probe and explicit-false TorpedoDirector override; preserve missing-key behavior and property precedence.",
+      "reuses_worker_from": "cc11_director_props"
+    },
+    {
+      "id": "cc11_land_retained_hook",
+      "state": "dispatched_to_reused_worker",
+      "done": false,
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "009b33f0",
+        "007efb60",
+        "007eee50"
+      ],
+      "output_files": [
+        "src/game_hosts_units.cpp",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_squadron_host.hpp",
+        "src/plane_squadron_host.cpp",
+        "docs/LANDING_TASK_RETAINED_HOOK_CC11.md",
+        "reports/landing_task_retained_hook_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_retirement"
+      ],
+      "contract": "Recover the complete task-owned retained-squadron pre-destructor hook and its producer/observer lifetime; no immediate dequeue approximation.",
+      "reuses_worker_from": "cc11_land_retirement"
     }
   ],
   "snapshot_after_analysis": {
