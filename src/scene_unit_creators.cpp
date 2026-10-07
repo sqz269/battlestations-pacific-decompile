@@ -35,6 +35,15 @@ bool equal_insensitive(const std::string& lhs, const char* rhs) noexcept
     return rhs[i] == '\0';
 }
 
+bool stationary_property_bool(const SceneProperty* prop) noexcept
+{
+    if (prop != nullptr && equal_insensitive(prop->type_letter, "B") &&
+        prop->has_boolean) {
+        return prop->boolean_value != 0;
+    }
+    return scene_property_bool(prop);
+}
+
 // 004F2800's ten `via unit` rows, in class-id order. `register_address` is the
 // descriptor's +8 slot from docs/SCENE_ENTITY_FACTORY.md; 004E5BA0 is the body
 // LandFort and CommandBuilding share with the typed classes and is not analysed
@@ -387,7 +396,7 @@ SceneUnitCreationResult create_scene_unit_004f0520(const SceneUnitCreatorRow& ro
     if (row.extra_key != nullptr && equal_insensitive(kSceneUnitStationaryKey, row.extra_key) &&
         inputs.properties != nullptr) {
         const SceneProperty* prop = inputs.properties->find(kSceneUnitStationaryKey);
-        stationary = scene_property_bool(prop);
+        stationary = stationary_property_bool(prop);
     }
 
     if (stationary) {
