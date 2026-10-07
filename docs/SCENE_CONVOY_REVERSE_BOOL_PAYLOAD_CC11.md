@@ -91,3 +91,7 @@ Uninvoked real support establishes linkage, not execution. Recipes and hashes
 are in the ignored manifest/report. Primary post-merge full main build/CTest
 and independent verification remain pending; native ABI and original-game
 validation remain unclaimed.
+
+## Primary integration
+
+Main `b02e3154636139d964b1e32f0f91b710dd71985e` passed the full Win32 build and all three existing CTests. Root independently rebuilt three actual parser/consumer/probe translation units and reproduced the installed Bfalse ownership, copied-child, cleared/opposite diagnostic, recognized case variants and exact legacy fallback checks. It pinned 179 Source/header/fixture inputs, 17 installed files and 77 current support inputs before and after, with 177 actual compiler includes. All 21 native fragment bytes and the Reverse key match disk/live; one direct call row passed. Existing convoy policies and nonboolean compatibility remain preserved; whole host/units, enum and game binding remain unproved. The PE32 asInvoker manifest was verified. No tracked tests were added.

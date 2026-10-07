@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T17:52:44.321970+00:00",
   "base_commit": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
   "branch": "agent/cc11_health_guard",
-  "status": "Complete three-body current host/client transport step reconstructed; strict worker build and six connected original/Source cases pass; integrator review and main build separate; native ABI/game unbound",
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3 CTests passed; native ABI/game unbound",
   "owned_files": [
     "include/bsp/native_session_transport_step.hpp",
     "src/native_session_transport_step.cpp",
@@ -548,7 +548,7 @@
     "compiler": "MSVC Win32 19.51.36244.0",
     "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /link /MANIFEST:EMBED /OPT:REF",
     "embedded_manifest": "asInvoker",
-    "fresh_actual_translation_units": 6,
+    "fresh_actual_translation_units": 7,
     "immutable_inputs": 30,
     "fresh_sources": [
       "src/native_session_transport_step.cpp",
@@ -689,7 +689,9 @@
       "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
       "bytes": 12223752,
       "unchanged": true
-    }
+    },
+    "fresh_repository_translation_units": 6,
+    "fresh_total_compilation_units": 7
   },
   "uncertainties": [
     "New cdecl Source interfaces, not ECX native class ABI replacements; actual mapped numeric profiles are Source admission tokens only.",
@@ -937,5 +939,271 @@
       "path": "src/native_session_transport_step.cpp",
       "sha256": "88ca9dcee9551648d0d289fb8651d55c0513948df78280c35bc94615847febbe"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T18:21:39.781550+00:00",
+    "worker_revision": "b9a672a3807511dce99850b8182e5d938f496087",
+    "integrated_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_build_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_reverse_scalar_step_integrated_build.log",
+    "game_executable_sha256": "913731198e41bc46547d182f269ea63089d4826ad778ccf5512384e2cd238fd7",
+    "probe_recipe": "local/cc11_transport_step_root.cmd",
+    "probe_log": "local/cc11_transport_step_root_compile.log",
+    "probe_sha256": "ed4f1679a7e524f732ec94d2e2c7d1845958bc9ee3e541cb70f10ca7e1315bc1",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_whole_fixture_review": true,
+    "fresh_actual_translation_units": 7,
+    "stable_current_Source_provider_header_fixture_inputs": 30,
+    "actual_compiler_includes": 23,
+    "stable_installed_inputs": 0,
+    "stable_current_link_inputs": 3,
+    "native_bodies": [
+      {
+        "address": "00782870",
+        "bytes": 7,
+        "sha256": "c62bd3a42affff51a0486b206546003bc30b47978a4ac2577aa0e7c845dab20a",
+        "disk_live": "MATCH",
+        "end_exclusive": "00782877"
+      },
+      {
+        "address": "00A42280",
+        "bytes": 52,
+        "sha256": "e49cbef10c29f9c4ebaf6843904a3924e03fd6e8a189e57e685f846361dff8f1",
+        "disk_live": "MATCH",
+        "end_exclusive": "00A422B4"
+      },
+      {
+        "address": "00A41130",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "disk_live": "MATCH",
+        "end_exclusive": "00A41131"
+      }
+    ],
+    "actual_cells": [
+      {
+        "address": "00CE3910",
+        "bytes": 4,
+        "sha256": "08e21eeb808e4a7f66f95c58d9fc585c31f50045de5d8828c81d7a6d97efb559",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00D243EC",
+        "bytes": 32,
+        "sha256": "4134758696a5d1d3637e9db53e732d48a212384201f5a44aa3dd963ba5a3f13e",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00D24448",
+        "bytes": 32,
+        "sha256": "232d4c32c5a6f4ac137acac9016db46b920693a87689176fbb2a6576dce0cdf9",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "before_after_receipts": [
+      "local/cc11_transport_step_root/inputs_before_link.json",
+      "local/cc11_transport_step_root/inputs_after_link.json"
+    ],
+    "native_abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "primary_COFF": [
+      {
+        "symbol": "?step_host_native_session_peers_00a42280@bsp@@YAXABUNativeSessionPrimaryPeerFields@1@ADM@Z",
+        "machine": "I386",
+        "section": 25,
+        "bytes": 79,
+        "sha256": "c11c8aa2d19b4ddb78b9312ca858d0cfde182a10931f9e9a85d613e082724faf",
+        "relocations": [
+          {
+            "operand_offset": "1E",
+            "coff_kind": "0014",
+            "symbol": "?current_crt_invalid_parameter@?A0x2cb19a58@bsp@@YAXXZ"
+          }
+        ],
+        "instruction_count": 30,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 8]",
+          "04: push esi",
+          "05: push edi",
+          "06: mov edi, dword ptr [esp + 0xc]",
+          "0A: mov dword ptr [esp + 0x10], eax",
+          "0E: mov eax, dword ptr [edi]",
+          "10: mov eax, dword ptr [eax]",
+          "12: mov esi, dword ptr [eax]",
+          "14: cmp esi, eax",
+          "16: sete al",
+          "19: test al, al",
+          "1B: je 0x22",
+          "1D: call 0x22",
+          "22: mov esi, dword ptr [esi]",
+          "24: mov eax, dword ptr [edi]",
+          "26: cmp esi, dword ptr [eax]",
+          "28: je 0x4c",
+          "2A: mov eax, dword ptr [esi + 8]",
+          "2D: add eax, 0xd4c",
+          "32: mov dword ptr [esp + 0xc], eax",
+          "36: mov eax, dword ptr [esp + 0x10]",
+          "3A: mov ecx, dword ptr [esp + 0xc]",
+          "3E: movss xmm0, dword ptr [eax]",
+          "42: movss dword ptr [ecx], xmm0",
+          "46: mov eax, dword ptr [edi]",
+          "48: cmp esi, dword ptr [eax]",
+          "4A: jmp 0x16",
+          "4C: pop edi",
+          "4D: pop esi",
+          "4E: ret "
+        ]
+      },
+      {
+        "symbol": "?step_client_native_session_transport_00a41130@bsp@@YAXXZ",
+        "machine": "I386",
+        "section": 22,
+        "bytes": 3,
+        "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+        "relocations": [],
+        "instruction_count": 1,
+        "disassembly": [
+          "00: ret 0"
+        ]
+      },
+      {
+        "symbol": "?step_current_native_session_transport_00782870@bsp@@YAXABUNativeSessionTransportStepView@1@ADM@Z",
+        "machine": "I386",
+        "section": 23,
+        "bytes": 148,
+        "sha256": "b61734cfae7ecb6433802b7899ec297edc4660737bae290bd934f85a313dae48",
+        "relocations": [
+          {
+            "operand_offset": "30",
+            "coff_kind": "0014",
+            "symbol": "?current_crt_invalid_parameter@?A0x2cb19a58@bsp@@YAXXZ"
+          },
+          {
+            "operand_offset": "6C",
+            "coff_kind": "0014",
+            "symbol": "?step_client_native_session_transport_00a41130@bsp@@YAXXZ"
+          },
+          {
+            "operand_offset": "77",
+            "coff_kind": "0006",
+            "symbol": "??_C@_0DI@FNFPNPGJ@unsupported?5current?5native?5sessi@"
+          },
+          {
+            "operand_offset": "80",
+            "coff_kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": "85",
+            "coff_kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": "8F",
+            "coff_kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instruction_count": 50,
+        "disassembly": [
+          "00: sub esp, 0x10",
+          "03: push edi",
+          "04: mov edi, dword ptr [esp + 0x18]",
+          "08: mov eax, dword ptr [edi]",
+          "0A: mov eax, dword ptr [eax]",
+          "0C: mov eax, dword ptr [eax + 0x1c]",
+          "0F: cmp eax, 0xa42280",
+          "14: jne 0x60",
+          "16: mov eax, dword ptr [esp + 0x1c]",
+          "1A: mov dword ptr [esp + 0x18], eax",
+          "1E: mov eax, dword ptr [edi + 4]",
+          "21: push esi",
+          "22: mov eax, dword ptr [eax]",
+          "24: mov esi, dword ptr [eax]",
+          "26: cmp esi, eax",
+          "28: sete al",
+          "2B: test al, al",
+          "2D: je 0x34",
+          "2F: call 0x34",
+          "34: mov esi, dword ptr [esi]",
+          "36: mov eax, dword ptr [edi + 4]",
+          "39: cmp esi, dword ptr [eax]",
+          "3B: je 0x70",
+          "3D: mov eax, dword ptr [esi + 8]",
+          "40: add eax, 0xd4c",
+          "45: mov dword ptr [esp + 8], eax",
+          "49: mov eax, dword ptr [esp + 0x1c]",
+          "4D: mov ecx, dword ptr [esp + 8]",
+          "51: movss xmm0, dword ptr [eax]",
+          "55: movss dword ptr [ecx], xmm0",
+          "59: mov eax, dword ptr [edi + 4]",
+          "5C: cmp esi, dword ptr [eax]",
+          "5E: jmp 0x28",
+          "60: cmp eax, 0xa41130",
+          "65: jne 0x76",
+          "67: pop edi",
+          "68: add esp, 0x10",
+          "6B: jmp 0x70",
+          "70: pop esi",
+          "71: pop edi",
+          "72: add esp, 0x10",
+          "75: ret ",
+          "76: push 0",
+          "7B: lea ecx, [esp + 0xc]",
+          "7F: call 0x84",
+          "84: push 0",
+          "89: lea eax, [esp + 0xc]",
+          "8D: push eax",
+          "8E: call 0x93",
+          "93: int3 "
+        ]
+      },
+      {
+        "symbol": "?current_crt_invalid_parameter@?A0x2cb19a58@bsp@@YAXXZ",
+        "machine": "I386",
+        "section": 20,
+        "bytes": 6,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "relocations": [
+          {
+            "operand_offset": "2",
+            "coff_kind": "0006",
+            "symbol": "__imp___invalid_parameter_noinfo"
+          }
+        ],
+        "instruction_count": 1,
+        "disassembly": [
+          "00: jmp dword ptr [0]"
+        ]
+      }
+    ],
+    "checks": 511,
+    "failures": 0,
+    "original_dispatch_cases": 6,
+    "complete_native_bytes": 60,
+    "native_direct_rows_checked": 2,
+    "native_indirect_tail_jump_profile_rows_checked": 2,
+    "native_rows_failed": 0,
+    "original_code_relocated_bytes": 8,
+    "original_code_unchanged_bytes": 52,
+    "original_profile_slots_relocated": 2,
+    "Source_operation_profile_thunks": 0,
+    "full_inline_payload_compared": true,
+    "Source_client_encoding": "C20000 RET0",
+    "original_client_encoding": "C3 RET",
+    "historical_CRT_failure_path_exercised": false,
+    "host_empty_list_exercised": false,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T182151Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "00782870",
+      "00a42280",
+      "00a41130"
+    ],
+    "index_rebuilt_after_ledger_and_exports": true
+  }
 }

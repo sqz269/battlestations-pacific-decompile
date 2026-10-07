@@ -111,3 +111,7 @@ commands, hashes and limits. Ignored artifact paths share
 `local/cc11_land_moveto_scalar_lifetime_manifest.json` and executable ends
 `probe.exe`. Root owns CMake registration, independent probe/full main build
 and integration. This packet changes exactly four owned files.
+
+## Primary integration
+
+Main `b02e3154636139d964b1e32f0f91b710dd71985e` passed the full Win32 build and all three existing CTests. Root independently compiled six actual translation units against 27 pinned Source/header/fixture inputs, 21 compiler includes and three current libraries, then reproduced 68 checks. All 38 original bytes match disk/live/fixture literals. The original callback adjustor reaches the copied original whole-root scalar; both scalar release branches run through different entry routes. Two direct calls and one tail jump passed static verification. Full fresh COFF review confirms cleanup before the low-byte flag test, root identity return, and the complete scalar body inlined into the valid adjustor path. Root fields are observed before free; after free only numeric identity and independent live owners are used. The existing CG scalar name and tag stay preserved; ABI and game qualification remain. The PE32 asInvoker manifest was verified. No tracked tests were added.
