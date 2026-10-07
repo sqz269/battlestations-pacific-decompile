@@ -1,0 +1,55 @@
+{
+  "packet": "cc11_air_ops_holder_local_less_t",
+  "status": "complete ordinary Source reconstruction; verification pending",
+  "source_files": [
+    "include/bsp/native_air_ops_holder_geometry.hpp",
+    "src/native_air_ops_holder_geometry.cpp"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "entry": "006BCC90",
+      "end_exclusive": "006BCCD9",
+      "bytes": 73,
+      "instructions": 22,
+      "sha256": "d47ca7fe6192ca917f94323d2bb694095aa60fa9c27c234716c57e6cf166ebee",
+      "disk_live": "MATCH",
+      "native_abi": "ECX actual holder; stack destination XYZ/source XYZ; EAX destination; RET8; Source fastcall EDX unused",
+      "source": "native_air_ops_holder_local_less_t_006bcc90",
+      "source_file": "src/native_air_ops_holder_geometry.cpp",
+      "calls": [
+        {
+          "address": "006BCCA3",
+          "native": "004142E0",
+          "function": "006BCC90"
+        }
+      ]
+    }
+  ],
+  "complete_existing_dependency": {
+    "entry": "004142E0",
+    "end_exclusive": "00414364",
+    "bytes": 132,
+    "sha256": "918c584a4b36931271d55da548684ecad60b7e02dd1fe7548aff6601a7364004",
+    "disk_live": "MATCH",
+    "source": "transform_native_point_004142e0",
+    "source_file": "src/native_traceline_render.cpp"
+  },
+  "contract": "Actual holder matrix48 through existing complete raw affine transform to scratch, then fresh actual translationA4/A8/AC with sequential x87 FLD/FSUB/FSTP. All original instructions retained apart from Source CALL target. No typed holder projection/profile/cache/provider or ownership.",
+  "natural_native_consumers": [
+    "009AFAF0 approach geometry",
+    "007C71E0 touchdown and other actual holder callers"
+  ],
+  "boundaries": [
+    "actual holder storage/lifetime/executable binding",
+    "whole approach geometry/lower/composite",
+    "native faults/privateEH/unmaskedexceptions/stack exhaustion",
+    "EFLAGS/GPR/XMM/FIP/FDP not compared",
+    "GameUnitsHost semantic pose projection unchanged; no game proof"
+  ]
+}
