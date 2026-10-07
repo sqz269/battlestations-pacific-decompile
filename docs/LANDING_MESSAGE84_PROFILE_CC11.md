@@ -6,7 +6,9 @@ The implementation is [native_session_message84.hpp](../include/bsp/native_sessi
 
 ## Complete native coverage
 
-All bounds below are end-exclusive. The original PE and current live program bytes matched across all 622 bytes/219 instructions. Live queries verified `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`; the disk PE is the configured original Steam executable. The raw type predicate remains a reviewed raw body, rather than a claimed worker-created Ghidra definition.
+All bounds below are end-exclusive. The original PE and current live program bytes matched across all 622 bytes/219 instructions. Live queries verified `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`; the disk PE is the configured original Steam executable. The primary subsequently defined and saved the complete type predicate after byte verification; see `reports/landing_message84_type_definition_cc11.json`.
+
+Primary integration at `e3fb214986affdc0ef964f023dddda2b75529448` passed the full Win32 build and all three existing CTests. An independent four-TU probe used 27 current-main source/header inputs and three current-main libraries, all hashed before and after linking. It compiled both decimal-84 and hexadecimal-0x84 headers together and passed the complete constructor/profile/codec/bank/release fixture. The x86 executable has an embedded id-1 `asInvoker` manifest. All 22 native direct call rows passed again. These are Source and build checks; actual providers, native ABI and game behavior remain unbound.
 
 | Entry | End | Instructions | Original inputs/return |
 |---|---|---:|---|
