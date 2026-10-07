@@ -11295,3 +11295,81 @@ give the symmetric `+-0.3c` that the host has.
   `local\g33_when.py` and `local\g33_firstdiff.py` (first divergence of a line class).
 - Several lanes building at once take about 30 minutes per fresh export. Two lanes in parallel with the shared three
   slots finished a six-group round in about 45 minutes.
+
+## 161. JM08's Gyoraitei tubes, and the TorpedoBot's own launch test (lead queue item 1; cc9-gunnery34, 2026-10-06)
+
+**The question.** On JM08 (cc9-lua47, SQUADRON_LAND_TASK 5fd, `local\l47_F1_j8.log`), the player-built `Gyoraitei #Y1..#Y4`
+fire only their guns. Their four category-7 rows (device 67, `"Jap single torpedo catapult"`) log `assigns 0`. How does
+the image's AI fire a torpedo boat's fixed tubes?
+
+### 161.1 Why the Gyoraitei tubes are never assigned: the director's torpedo enable
+
+- **A tube is reached only through a director target.** Category 7 skips the recon sweep (`008651F5`,
+  docs/TORPEDO_GUN_ASSIGNMENT.md), so a tube's only candidates are step 8.6's fire target and command target. Each goes
+  through `00863990`, whose first test is the category mask `008633D0` at `008639A2`.
+- **`mask[7]` is the director's `+222h`.**
+  - `00861D70` pushes it as 3 or 0.
+  - Pass B stores the merged bag's `TorpedoDirector` there (SENTITY_INIT_PASSES section 7).
+  - `universe/library/ship.props` (2024-07-13) authors `TorpedoDirector = B false` for every ship.
+  - A shipyard boat runs InitAll like any `GenerateObject` ship.
+- **Nothing on JM08 re-opens the mask.**
+  - The mission tree loads `Scripts/missions/COTP-IJN/PRCPIJN/PRCPJM08.lua` (2024-08-26 in this installation; the
+    log's `mission script name` line). That script has no `TorpedoEnable` and no `luaShutUp`.
+  - The `luaJM8Checktorp` / `TorpedoEnable(unit, true)` arm exists only in the non-PRCP `COTP-IJN/jm08.lua` and
+    `ijn/JM/jm08.lua`. This mission loads neither, and that arm enables the US `USNPts` only.
+  - The lua47 run logs `ship director torpedo writes lua_enable=0 close_attack_sends=0` and
+    `torpedo_candidates ... mask=374`.
+  - Two writers remain:
+    - the HUD's director state message (`00721980` / `007219C0`, vtable slots `00CFDBA0` and `00CFDBAC`), for which the
+      harness has no line;
+    - CLOSEATTACK's tail `00A11AF0`, and the player's boats are in no CLOSEATTACK group.
+- **So the image does not auto-launch the player's Gyoraitei tubes either,** unless the player switches the torpedo
+  director on. The host's `assigns 0` is faithful.
+- A new per-unit line, `summary unit gunnery torpedo candidates <unit> scored masked accepted mask`, shows this boat by
+  boat (161.4).
+
+### 161.2 The divergence found on the way: `008FFF20` ignores `0085ABA0`'s answer
+
+- **The listing**, read from disk at `009003CE..00900433` (`python tools/bsp.py disasm-raw 009003A0 --length 192`):
+
+  | site | what it does |
+  | --- | --- |
+  | `009003DD` | `CALL 0085ABA0` with `(bot+60h, 0.0f)` |
+  | `009003E2` | `MOV ECX,[ESI+58h]` reloads the gun; `AL` is never tested |
+  | `009003F8` | `00438B10(bot+60h, [gun+480h])`, absolute, `COMISS [00CE3984]` (1 degree), `JBE 00900974` (abort) |
+  | `0090042F` | `CALL [vtable+1D0h](1)` (`0085A830`, CanFire), then `JE 00900974` |
+
+- **`0085ABA0` refuses an axis whose class rotation speed is exactly 0** (`0085ACA5` / `0085ACB9`: `UCOMISS` against 0,
+  then `LAHF; TEST AH,44h; JNP` to the refusal).
+  - The PT and submarine catapults (devices 66 and 67 in the arcade `deviceclasses.lua`, modified 2026-05-09) author
+    `HorzRotSpeed = 0` and `VertRotSpeed = 0`.
+  - In the image such a tube never turns. Its `+480h` stays at the rest angle, which is the point window's `h` (155).
+  - `007F6190` snaps any bearing within pi/4 of `h` onto `h`. So `bot+60h == +480h`, and the shot goes.
+- **The host used the generic test:** `want_fire = have_target && accepted && settled && may_fire_here`. Here
+  `accepted` is `0085ABA0`'s answer, and `settled` means both axes are within 0.1 degree of the commanded pair.
+  - A zero-speed tube could therefore never launch: JM06 had `torpedo_gate targeted=23208 accepted=0` (155.1), and
+    LOMP10 long had 636 / 0 (AF).
+  - A turning mount waited for a band ten times tighter than the image's, on two axes instead of one.
+  - `gun_bot_torpedo_ready_008fff20` (`src/gun_bot_ticks.cpp`) already held the image's test, but nothing called it.
+
+### 161.3 The binding, `kTorpedoBotReadyGateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+- **ON**, for a category-7 gun the player's seat does not hold:
+  `want_fire = have_target && gun_bot_torpedo_ready_008fff20(bot+60h, horz, may_fire_here) && !inhibited`.
+  - `bot+60h` is the snapped heading, `want_horz` after `007F6190`.
+  - `may_fire_here` is `007F60A0` at the current angles, the window part of `0085A830`.
+  - The friendly-crossing hold and the rest of the launch path follow unchanged.
+- **OFF**, the generic test stands, and both answers are counted on the line `summary mission gunnery torpedo bot ready
+  bound targeted image generic image_refused_angles`.
+- **Still unmodelled, as before:** the `0.2 s` think timer (step 4) and the two range gates (steps 5 and 7,
+  docs/TORPEDO_LAUNCH_GATE.md).
+
+**Predictions (before any run).**
+- **Rows whose AF torpedo funnel has `targeted=0`** (BSM01, E2, ESMP08 long, IJN01, JM05, JM08, LOMP10, USN01, USN04,
+  USN12, USN13, USNOS, USNRM01): the counters stay 0. Exit 0 or 1.
+- **JM06 3000:** `image_refused_angles > 0`, and new submarine launches appear ON (`torpedo_gun_shots` from 0 to more
+  than 0). Exit 3.
+- **USN02 3000, IJN11 and LOMP06:** the turning mounts launch earlier (`image >= generic`). Expect exit 3, with the
+  torpedo launch times moving. That is the mechanism working, not a regression.
+- **JM08 with the boats (lua47 `g9` orders):** the tubes are identical (`assigns 0`), because 161.1's mask refuses
+  first. The per-unit line shows `masked == scored` for every Gyoraitei.
