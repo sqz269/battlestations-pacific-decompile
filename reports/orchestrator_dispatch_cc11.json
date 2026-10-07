@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T06:14:54.527705+00:00",
+  "updated_utc": "2026-10-07T06:17:59.456310+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -353,7 +353,25 @@
     "health_primary_probe": "336prefix,672mode,240byte checks passed;4knownmarker differences retained",
     "health_direct_calls_checked": 2,
     "health_call_failures": 0,
-    "full_main_build": "pending",
+    "full_main_build": {
+      "source_revision": "477c3bd373310af7d75db8d3e1642a1d5672cc67",
+      "configuration": "MSVC Win32 Release",
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "executable_sha256": "88b16dd1a031e3d255a9ebfecf5e393d02d15cace2807b5fa803c40f14dc8d81",
+      "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_unordered_integrated_build.log",
+      "utc": "2026-10-07T06:17:59.456310+00:00",
+      "primary_source_probe": "336prefix/672mode/240byte checks passed;4knownmarker gaps retained",
+      "direct_calls_checked": 2,
+      "direct_call_failures": 0,
+      "abi_compatible": false,
+      "game_validated": false
+    },
     "schedule_revision": "7e742a25379037153edb14f46873635c0e5d4be8",
     "schedule_direct_tail_calls_checked": 60,
     "schedule_call_failures": 0,
@@ -363,6 +381,7 @@
     "next_worker_packets": {
       "health_guard": "cc11_health_marker",
       "land_retirement": "cc11_land_active_retirement"
-    }
+    },
+    "ghidra_annotations_saved": "local/ghidra-annotations-20261007T061554Z.json"
   }
 }

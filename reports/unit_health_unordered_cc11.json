@@ -385,5 +385,24 @@
     "00876260": "982d7735a7c88d1efb74224275196c7dfc3cca2149bc1085d838e1ffe7b986c4",
     "00bf7420": "9526bae9cc075980a54dd797422525e950f177a27c8dd94e8fdf32a76dd2ae6f",
     "00bf7456": "42cd5fa06b1abd4347e57dc411c4f22dec6174f99fb55441da8312ddf963cb82"
+  },
+  "primary_integration": {
+    "source_revision": "477c3bd373310af7d75db8d3e1642a1d5672cc67",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "executable_sha256": "88b16dd1a031e3d255a9ebfecf5e393d02d15cace2807b5fa803c40f14dc8d81",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_unordered_integrated_build.log",
+    "utc": "2026-10-07T06:17:59.456310+00:00",
+    "primary_source_probe": "336prefix/672mode/240byte checks passed;4knownmarker gaps retained",
+    "direct_calls_checked": 2,
+    "direct_call_failures": 0,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

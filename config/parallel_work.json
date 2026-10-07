@@ -13384,7 +13384,7 @@
     },
     {
       "id": "cc11_health_nan",
-      "state": "integrated_unordered_data_correction_main_build_pending",
+      "state": "integrated_masked_unordered_data_correction_main_build_passed",
       "done": true,
       "worker": "health_guard",
       "model": "gpt-6-astra",
@@ -13408,7 +13408,9 @@
       "code_revision": "e842ab075387ffaa536db38055bc59c6dd72ca59",
       "abi_compatible": false,
       "game_validated": false,
-      "full_main_build_pending": true
+      "full_main_build_pending": false,
+      "full_main_build_revision": "477c3bd373310af7d75db8d3e1642a1d5672cc67",
+      "full_main_ctests_passed": 3
     },
     {
       "id": "cc11_land_scheduler",
@@ -13489,7 +13491,7 @@
     {
       "id": "cc11_health_marker",
       "done": false,
-      "state": "ready_for_reused_health_worker",
+      "state": "dispatched_to_reused_worker",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -13534,7 +13536,13 @@
         "cc11_land_owner_cpp"
       ],
       "reuses_worker_from": "cc11_land_scheduler",
-      "contract": "Port complete conditional active append and leading/finished-head retirement using stable borrowed owner handles and required actual command/predicate/install providers. Preserve growth2n+2, current-head reloads, captured predicate target, deferred retirement and tail install. No fake arena/providers, immediate drain, Boolean GameUnitsHost, prepend substitution or broad tick binding."
+      "contract": "Port complete conditional active append and leading/finished-head retirement using stable borrowed owner handles and required actual command/predicate/install providers. Preserve growth2n+2, current-head reloads, captured predicate target, deferred retirement and tail install. No fake arena/providers, immediate drain, Boolean GameUnitsHost, prepend substitution or broad tick binding.",
+      "local_validation_artifacts": [
+        "local/cc11_land_owner_probe.cpp",
+        "local/cc11_land_owner_probe.obj",
+        "local/cc11_land_owner_probe.exe",
+        "local/native_pilot_bot_task_owner_cc11.obj"
+      ]
     }
   ],
   "snapshot_after_analysis": {
