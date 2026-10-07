@@ -15901,8 +15901,8 @@
     },
     {
       "id": "cc11_health_target_timestamp",
-      "done": false,
-      "state": "ready complete42B actualclock timestamp consumer; primary reviewed, no callerreachability claim",
+      "done": true,
+      "state": "integrated independently Source/native/wholefixture reviewed; currentmain fixture/fullWin32all3CTests passed; nativeABIgame qualified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -15919,12 +15919,80 @@
         "cc11_health_target_lifetime",
         "cc11_health_target_tick_history"
       ],
-      "contract": "Complete7839A0..7839CA42B16inst ECXtarget/RET: currentactual01090AB0 clock slot20\u2192realexistingpublication sampler/BEE080, consumeRETURNED16Bsample withFILDqword/FILDqword/FDIVP/FSTPactualD68. RequireactualD68D50table/currentpublication/methodcontext and explicitactual16Bstackpreimage as existingtransportstamper, nozero/defaultclock/providerseam. Actualclockconstructor/fixedmode sample plusSourceownedtarget andfulloriginal42+BEE080copies onlyrealglobal/operationrelocs, PC/RC/maskedstackfixture; QPCsequentialorderingonly, actualemptyxrefs no reachabilityclaim. No trackedtests/clockproducer/derivedsocket/nativeABI/gameclosure."
+      "contract": "Complete7839A0..7839CA42B16inst ECXtarget/RET: currentactual01090AB0 clock slot20\u2192realexistingpublication sampler/BEE080, consumeRETURNED16Bsample withFILDqword/FILDqword/FDIVP/FSTPactualD68. RequireactualD68D50table/currentpublication/methodcontext and explicitactual16Bstackpreimage as existingtransportstamper, nozero/defaultclock/providerseam. Actualclockconstructor/fixedmode sample plusSourceownedtarget andfulloriginal42+BEE080copies onlyrealglobal/operationrelocs, PC/RC/maskedstackfixture; QPCsequentialorderingonly, actualemptyxrefs no reachabilityclaim. No trackedtests/clockproducer/derivedsocket/nativeABI/gameclosure.",
+      "primary_integration": {
+        "utc": "2026-10-07T15:31:07.734042+00:00",
+        "worker_revision": "8a980ea2a9fe5dad1d76403b74c97b75fb1fb336",
+        "integrated_revision": "ac58ee9db8a9818a074aeba4e07ba52e4d29d527",
+        "full_main_build_revision": "ac58ee9db8a9818a074aeba4e07ba52e4d29d527",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_timestamp_stationary_integrated_build.log",
+        "executable_sha256": "6e5110d9d22c331798129d6dccc1a7efaa95c4be19044c5d51a9de5d60d49934",
+        "root_probe": "local/cc11_timestamp_root.cmd",
+        "probe_log": "local/cc11_timestamp_root_compile.log",
+        "probe_sha256": "c194a9213b41041dbd6affa8af80553f70badba16c3b303d43e4c87b4d85dab9",
+        "root_manifest_id1_asInvoker_verified": true,
+        "primary_source_native_and_whole_fixture_review": true,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "fresh_actual_translation_units": 15,
+        "stable_current_Source_header_fixture_inputs": 55,
+        "stable_current_main_libraries": 3,
+        "complete_native_bodies": [
+          {
+            "address": "007839A0",
+            "end_exclusive": "007839CA",
+            "bytes": 42,
+            "sha256": "ae0cbb391dbc34f11edf44fd001b216ad3ccf0188c9a479254eea084c394008c",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00BEE080",
+            "end_exclusive": "00BEE0DD",
+            "bytes": 93,
+            "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "source_original_composition_cases": 71,
+        "source_original_checks": 391,
+        "masked_x87_overflow_cases": 24,
+        "primary_coff": {
+          "bytes": 64,
+          "sha256": "32a09a240f41e77ec742d40786964a393b7b679a25a9d2ba50df457cee41f260",
+          "sole_REL32_operand": "18",
+          "real_symbol": "?sample_published_native_frame_clock@bsp@@YAPAUClockTimestamp@1@ABUNativeFrameClockPublicationContext@1@PAU21@@Z",
+          "returned_pointer_reloaded": true,
+          "x87_offsets": [
+            "33",
+            "35",
+            "38",
+            "3a"
+          ],
+          "no_float_spill": true
+        },
+        "native_indirect_rows_checked": 1,
+        "direct_rows_proved": 0,
+        "runtime_indirect_target_proved": false,
+        "QPC_import_row_skipped": true,
+        "QPC_sequential_smoke_only": true,
+        "current_native_xrefs_empty": true,
+        "original_135B_code_only_two_absolute_operand_relocations": true,
+        "copied_profile_slot_relocation_separately_qualified": true,
+        "unmasked_QPC_failure_caller_producer_lifetimes_unbound": true,
+        "ghidra_annotations_prior": "local/ghidra-annotations-20261007T153120Z.json",
+        "ghidra_saved": true,
+        "affected_exports_refreshed": [
+          "007839a0"
+        ]
+      }
     },
     {
       "id": "cc11_scene_landfort_stationary_bool_payload",
-      "done": false,
-      "state": "ready boundedoneactualStationary Bread; preservecurrentcreatororder/services",
+      "done": true,
+      "state": "integrated independently Source/native/wholefixture reviewed; currentmain fixture/fullWin32all3CTests passed; nativeABIgame qualified",
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -15940,7 +16008,60 @@
         "cc11_scene_typed_bool_payload",
         "cc11_scene_generation_bool_payload"
       ],
-      "contract": "Oneprivatecalledreader compatiblecase-insensitiveB+has_boolean\u2192ownbyte ELSEunchangedscene_property_bool, replaceONLYexistingStationarycall. Preserve descriptorresolutionFIRST/nullstop/row.extra_key/propertygates/false/rawtype/missing/empty/placementnamecommandpolicies. Native4F0FC9..4F0FDB18B Find4F0FD0\u21928F2260/CMPbyte+C4F0FD5/JZ4F0FD9 no null/typeguard; containing4F0FB0..4F10A990inst/RET10 notwholebinding. Prefix48E9F0/43B8B0/missingnamedSCENE_STATIONARY_FORT doc remainincomplete. Actualparser/privatecalledreader/compiledrealcaller/propertyLibrary/groupfixture, real15libs22groups+USN1/JM06: landfort.props12 inheritedBtrue,12activeLandFortauthoredUSN1Bfalse,oneCB2falseignoredrowgate; independentcopy/clearedoppositediagnostics andlegacyfallback. No fake descriptor/allocation/class/enum/provider toexecutewholecreator; EBasic remainsunresolveddeclarationidentity despiteinstalledBasic0. No trackedtests/nativeABI/gameclosure."
+      "contract": "Oneprivatecalledreader compatiblecase-insensitiveB+has_boolean\u2192ownbyte ELSEunchangedscene_property_bool, replaceONLYexistingStationarycall. Preserve descriptorresolutionFIRST/nullstop/row.extra_key/propertygates/false/rawtype/missing/empty/placementnamecommandpolicies. Native4F0FC9..4F0FDB18B Find4F0FD0\u21928F2260/CMPbyte+C4F0FD5/JZ4F0FD9 no null/typeguard; containing4F0FB0..4F10A990inst/RET10 notwholebinding. Prefix48E9F0/43B8B0/missingnamedSCENE_STATIONARY_FORT doc remainincomplete. Actualparser/privatecalledreader/compiledrealcaller/propertyLibrary/groupfixture, real15libs22groups+USN1/JM06: landfort.props12 inheritedBtrue,12activeLandFortauthoredUSN1Bfalse,oneCB2falseignoredrowgate; independentcopy/clearedoppositediagnostics andlegacyfallback. No fake descriptor/allocation/class/enum/provider toexecutewholecreator; EBasic remainsunresolveddeclarationidentity despiteinstalledBasic0. No trackedtests/nativeABI/gameclosure.",
+      "primary_integration": {
+        "utc": "2026-10-07T15:31:08.400304+00:00",
+        "worker_revision": "9a30aa374a8961f3f0a16fcdca0b392c6a895a7c",
+        "integrated_revision": "ac58ee9db8a9818a074aeba4e07ba52e4d29d527",
+        "full_main_build_revision": "ac58ee9db8a9818a074aeba4e07ba52e4d29d527",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_timestamp_stationary_integrated_build.log",
+        "executable_sha256": "6e5110d9d22c331798129d6dccc1a7efaa95c4be19044c5d51a9de5d60d49934",
+        "root_probe": "local/cc11_stationary_root.cmd",
+        "probe_log": "local/cc11_stationary_root_compile.log",
+        "probe_sha256": "19365e3b9be9654e449c63f7d96651ece42cf2176be873e6daa9789bbcf8737e",
+        "root_manifest_id1_asInvoker_verified": true,
+        "primary_source_native_and_whole_fixture_review": true,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "fresh_actual_translation_units": 3,
+        "stable_current_Source_Lua_fixture_inputs": 180,
+        "actual_compiler_includes": 178,
+        "stable_installed_inputs": 17,
+        "stable_current_compiled_supports": 77,
+        "current_libraries": 3,
+        "current_game_objects": 74,
+        "complete_native_fragments": [
+          {
+            "address": "004F0FC9",
+            "end_exclusive": "004F0FDB",
+            "bytes": 18,
+            "sha256": "95d0e54e69d53561e4c2a7f31627b40a09b818b75c9ddff79dfa9cc1fe165cdd",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "actual_libraries": 15,
+        "actual_groups": 22,
+        "actual_inherited_Stationary_true": true,
+        "actual_active_USN1_LandFort_false": 12,
+        "actual_CB2_excluded_by_row": true,
+        "JM06_regression": true,
+        "real_private_called_reader_executed": true,
+        "real_public_creator_compiled": true,
+        "real_public_creator_executed": false,
+        "native_direct_rows_checked": 7,
+        "native_direct_rows_failed": 0,
+        "descriptor_first_order_preserved": true,
+        "enum_EBasic_unresolved": true,
+        "whole_body_service_runtime_lifetimes_unbound": true,
+        "ghidra_annotations_prior": "local/ghidra-annotations-20261007T153120Z.json",
+        "ghidra_saved": true,
+        "affected_exports_refreshed": [
+          "004f0fb0"
+        ]
+      }
     },
     {
       "id": "cc11_land_follow_observer_lifetime",
@@ -15963,6 +16084,28 @@
         "cc11_land_parameter_x87_kernel"
       ],
       "contract": "Complete6CDD70..6CDDC8 88B24inst and6CDDF0..6CDE0E30B11inst. Actual component prefix and same+14 FIRST endpoint identity cell, pure projection from actual Follow callback18/watched2C; mandatory existing NativeObserverLifetime. RawCF8900stamp then onefresh14 capture then optional real6952A0(componentEDX) then complete695870; preserve finalbaseprofile/fields, no watchedclear or ordinaryselffree. Scalar ordinarycleanup then flagslowbytebit0 optional canonicalSourceCRTreceiverfree and capturedidentityreturn. Flags1 requires separateactualCRTcomponent, excludes embeddedFollow/approach and interiorfree. Real694A60 registration producesCF7E64 edge withcomplete693CA0 deletion; unregister/detach invokeEDGEslot0, notmissingCF8900ownerhooks. Otheredgeprofiles keep mandatoryexistingdeletionservices, no profile/defaultobserverworld/providerstub. Primaryscalarreturningfreegap repaired saved/exported reports/follow_callback_scalar_flow_recovery_cc11.json. One ignored contiguousactualcomponent/realFollowregistration fixture and original118B copies withonlyreal6952A0/695870/freeCALL bridges, actual lock restoration/pendingdispatch suppression/flags0and1. Whole9B2C80/24Bstateelement/privateEH/callableimageprofile/fullFollowconstructor/lifetimes/nativeABI/game remainunbound. No trackedtests or workerGhidra/CMake/metadata mutation."
+    },
+    {
+      "id": "cc11_scene_hidden_bool_payload",
+      "done": false,
+      "state": "ready bounded oneHidden owningB read; native-before/Source-after gate order qualified",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046cf40"
+      ],
+      "output_files": [
+        "src/game_hosts_scene_contents.cpp",
+        "docs/SCENE_HIDDEN_BOOL_PAYLOAD_CC11.md",
+        "reports/scene_hidden_bool_payload_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_typed_bool_payload",
+        "cc11_scene_generation_bool_payload",
+        "cc11_scene_landfort_stationary_bool_payload"
+      ],
+      "contract": "Addoneprivateactuallycalledhidden_property_bool existingcaseinsensitive B+has_boolean->ownbyte!=0 ELSEunchangedscene_property_bool; replaceONLYcurrentHiddenread. Preservecurrentregistration/class/gate/rejectedreturn/typepartyownerskillpath/pool/counters/wingdeckpolicies andSourceAFTERgateorder. Partialfragment46D3B5..46D3CB22B FindD3BC->8F2260/CMPbyte+CD3C1/JNZD3C5->D5E4; nativepassflagD39D/readBEFOREgateD426. Parent46CF40..46D928729storedinstructions/RET58notwholeABIclosure. Actualparser/productionSceneContentsprivatecalledreader+compiledSceneReader connection andrealPropertyLibrarygroupmerge/copyfixture15libs22groups/17installedUSN1JM06; lexical56recognizedHidden B(35true21false)mustconfirmactualresolvedbags separately. Preservetruefalsecase/copiedownbyte/clearedopposites/legacyBnonBmissingemptyfallback; Common/LandConvoyinheritedfalse/authoredoverwrite. No fakeVFS/enum/class/descriptor/allocation/provider, no wholeSceneReader/holdback/emitter/runtime/ABI/gameexecutionclaim. Only3ownedfiles, no trackedtests/workerCMakeGhidrametadatawrites. FreezeCURRENTfullyrebuiltpostI/Bsupports before rootfutureCppbuild andhashpre/copy/post."
     }
   ],
   "snapshot_after_analysis": {

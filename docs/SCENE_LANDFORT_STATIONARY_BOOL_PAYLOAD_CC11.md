@@ -121,3 +121,7 @@ allocation/instance layout, original parser context/type/fault/alias/ownership/E
 reentry, historical numerical/FP behavior, ABI and original-game parity remain
 unclaimed. Prior source group capture/merge proof keeps its partial native
 merge-tail qualification (decoded exclusive008F566F, stored body ending008F5658).
+
+## Primary integration
+
+Main `ac58ee9db8a9818a074aeba4e07ba52e4d29d527` passed the full Win32 build and all three existing CTests. Root independently reviewed all new code, native instructions and the entire connected fixture, rebuilt it against current main inputs, verified before/after Source, support and original PE hashes, and checked the embedded asInvoker PE32 manifest. Detailed independent counts and the executable hash are recorded in the primary_integration receipt. The scope and native ABI/game limitations above remain. No tracked tests were added.

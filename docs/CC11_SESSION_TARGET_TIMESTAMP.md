@@ -111,3 +111,7 @@ not established. No tracked tests, shared metadata, CMake, or Ghidra state were
 edited by this worker. Primary integration and the full main build remain the
 integrator's responsibility. Machine-readable evidence is in
 `reports/cc11_session_target_timestamp.json`.
+
+## Primary integration
+
+Main `ac58ee9db8a9818a074aeba4e07ba52e4d29d527` passed the full Win32 build and all three existing CTests. Root independently reviewed all new code, native instructions and the entire connected fixture, rebuilt it against current main inputs, verified before/after Source, support and original PE hashes, and checked the embedded asInvoker PE32 manifest. Detailed independent counts and the executable hash are recorded in the primary_integration receipt. The scope and native ABI/game limitations above remain. No tracked tests were added.
