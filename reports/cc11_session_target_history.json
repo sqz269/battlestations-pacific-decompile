@@ -1,0 +1,303 @@
+{
+  "packet": "cc11_health_target_history_lifetime",
+  "created_utc": "2026-10-07T12:51:53.003297+00:00",
+  "base_commit": "68288a1b7769f44b8a174e5b2b2e623e17c96167",
+  "branch": "agent/cc11_health_guard",
+  "status": "two complete ordinary SOURCE bodies freshly compiled and27 complete original initializer comparisons passed; primary integration/full main build pending; historical CRT, stored scalar-body tail and native ABI/game remain qualified",
+  "bounds_are_end_exclusive": true,
+  "functions": [
+    {
+      "entry": "00782F40",
+      "end_exclusive": "00782FD8",
+      "bytes": 152,
+      "instructions": 48,
+      "source": "initialize_native_session_target_history_00782f40",
+      "source_file": "src/native_session_target_history.cpp",
+      "native_abi": "ECX history; stack count,float word; RET8; native return value not established",
+      "coverage": "complete ordinary native body",
+      "original_bytes_sha256": "43a034763824ca168e3f4d1d104c4cb454dd138c5f5d1e2a8b818ede4aa56aaf"
+    },
+    {
+      "entry": "00783970",
+      "end_exclusive": "0078399B",
+      "bytes": 43,
+      "instructions": 15,
+      "source": "scalar_delete_native_session_target_history_00783970",
+      "source_file": "src/native_session_target_history.cpp",
+      "native_abi": "ECX history; stack flags; EAX captured history even after self-release; RET4",
+      "coverage": "complete ordinary native body",
+      "original_bytes_sha256": "5f6a09a648055700a59f0fdcc8e62b09dfbca7d74715f97ea5cccf94d5e64020"
+    }
+  ],
+  "storage": {
+    "size": 24,
+    "profile_offset": 0,
+    "count_offset": 4,
+    "initial_float_word_offset": 8,
+    "sample_float_word_pointer_offset": 12,
+    "index_offset": 16,
+    "total_float_word_offset": 20,
+    "defaults": false,
+    "automatic_lifetime": false,
+    "executable_profile_invented": false,
+    "scalar_numeric_stamp": "00D04268",
+    "native_profile_slot_zero": "00783970",
+    "initializer_profile_preimage": "preserved; fixtureA5A5A5A5 is raw nonexecuted storage only"
+  },
+  "allocation_boundary": {
+    "header": "include/bsp/singleton_lifetime.hpp",
+    "source": "src/singleton_lifetime.cpp",
+    "allocate": "singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes})",
+    "release": "singleton_lifetime_free(captured_array); optional singleton_lifetime_free(captured_history)",
+    "array_allocate_thunk": "00BF55BE JMP00BF681B",
+    "array_release_thunk": "00BF6989 JMP00BF65AC",
+    "bytes": "unsigned count*4, overflow saturatedFFFFFFFF; zero still allocates",
+    "implementation": "existing host malloc/_callnewh retry/std::bad_alloc and matching std::free",
+    "no_new_domain_or_fallback": true,
+    "original_crt_handler_exception_identity": false
+  },
+  "operation_order": [
+    "preserve profile; publish original count04 and initial08 before allocation",
+    "publish actual array0C after allocation; signed unrolled4/remainder filling; fresh array0C each store; use original input word",
+    "FILD signed original count argument; index10=0; FMUL original initialfloat argument; FSTP actual total14",
+    "no null guard, separate overflow exception, zero-allocation bypass, catch, rollback or old-array release",
+    "scalar: capture array0C BEFORE numericD04268 stamp; freecapturedarray; flagsbit0 optionalself-free; returncapturedhistory; no clears"
+  ],
+  "live_stored_body_call_checks": [
+    {
+      "address": "00782F69",
+      "native": "00BF55BE",
+      "function": "00782F40",
+      "contract": "canonical raw sample allocation"
+    },
+    {
+      "address": "0078397D",
+      "native": "00BF6989",
+      "function": "00783970",
+      "contract": "release captured array after numeric profile stamp"
+    },
+    {
+      "address": "00BF55BE",
+      "native": "00BF681B",
+      "function": "00BF55BE",
+      "kind": "tail_jump",
+      "contract": "exact existing array-allocation thunk"
+    },
+    {
+      "address": "00BF6989",
+      "native": "00BF65AC",
+      "function": "00BF6989",
+      "kind": "tail_jump",
+      "contract": "exact existing array-release thunk"
+    }
+  ],
+  "complete_raw_body_call_evidence": [
+    {
+      "site": "00782F69",
+      "callee": "00BF55BE",
+      "bytes": "e850264700",
+      "enclosing_complete_raw_body": "00782F40"
+    },
+    {
+      "site": "0078397D",
+      "callee": "00BF6989",
+      "bytes": "e807304700",
+      "enclosing_complete_raw_body": "00783970"
+    },
+    {
+      "site": "0078398D",
+      "callee": "00BF65AC",
+      "bytes": "e81a2c4700",
+      "enclosing_complete_raw_body": "00783970"
+    }
+  ],
+  "missing_stored_body_tail_call": {
+    "site": "0078398D",
+    "callee": "00BF65AC",
+    "raw_bytes": "e81a2c4700",
+    "complete_scalar_live_bytes_match_disk": true,
+    "stored_body_call_verification": false,
+    "qualification": "Outside current stored Ghidra body; supported by full43-byte disk/live evidence and complete disassembly only"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "primary_recovery_report": "reports/transport_buffer_destructor_flow_recovery_cc11.json",
+    "stored_scalar_body_inclusive": "00783970..00783981",
+    "stored_scalar_body_end_exclusive": "00783982",
+    "stored_scalar_body_tail_complete": false,
+    "full_flow_repair": false,
+    "worker_mutations": false,
+    "bridge_script_execution_enabled": false,
+    "body_extension_performed": false
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244 Win32",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /MANIFEST:EMBED /OPT:REF",
+    "fresh_translation_units": 2,
+    "snapshot_source_header_files": 10,
+    "embedded_manifest_asInvoker": true,
+    "fixture": {
+      "checks": 229,
+      "failures": 0,
+      "complete_original_initializer_comparisons": 27,
+      "matrix_cases": 24,
+      "pc_values": 3,
+      "rc_values": 4,
+      "occupied_stack_cases": 2,
+      "additional_input_cases": 3,
+      "scalar_self_release_cases": 1,
+      "native_bytes": 152,
+      "external_call_displacement_bytes_relocated": 4,
+      "native_original_allocator_used": false,
+      "null_or_throw_injection": false,
+      "gameplay_validated": false
+    },
+    "native_comparison": {
+      "original_bytes": 152,
+      "changed_bytes": 4,
+      "changed_region": "00782F6A..00782F6E exclusive: soleCALL displacement",
+      "allocator_bridge": "cdecl raw byte count -> existing singleton_lifetime_allocate(object,bytes,bytes)",
+      "original_allocator_executed": false,
+      "internal_branches_and_RET8_unchanged": true,
+      "matrix": "count50/floatword3EAAAAAB across3PC x4RC x2occupied-stack modes(0or3 entries)",
+      "extra_inputs": [
+        "count50/+0 actual observed caller",
+        "count3/-0 remainder-only",
+        "count0/-0 real zero-byte allocation"
+      ],
+      "compared": [
+        "profile preimage",
+        "count and initialfloat words",
+        "every sample word",
+        "index",
+        "stored totalfloat bits",
+        "x87 CW/SW/FTW/TOP and all8 80-bit register images",
+        "MXCSR"
+      ],
+      "excluded": [
+        "x87 instruction/data pointer addresses",
+        "native initializer identity return",
+        "original CRT/EH/failure ABI"
+      ],
+      "scalar_flags": "27 flag-bit0-clear array releases, one canonical18h self-release withbit0set; no freed-storage reads"
+    },
+    "generated_assembly_review": "saturatedunsignedbytes; originalarguments; signedloops; fresharrayreloads; exactFILD/indexzero/FMUL/FSTP; scalarcapturebeforestamp andoptionalself-free",
+    "live_call_verifier": {
+      "tool": "python tools/verify_report_calls.py reports/cc11_session_target_history.json",
+      "status": "passed",
+      "checked_rows": 4,
+      "call_rows": 2,
+      "tail_jump_rows": 2,
+      "failures": 0,
+      "excluded_raw_tail_call": "0078398D"
+    },
+    "full_main_build": "pending primary registration and integration"
+  },
+  "provenance": {
+    "native_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "native_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a",
+    "input_manifest": {
+      "source_head": "68288a1b7",
+      "sources": [
+        "src/native_session_target_history.cpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "snapshot": "local/cc11_target_history_20261007_a/inputs_01",
+      "sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_session_target_history.hpp": "bc2937719050f440098f5c6d1b91fd93d2d9d00d1995c5534d18ea3c0cea7e1e",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "src/native_session_target_history.cpp": "4975e74e2a79e8ff8dbf3fbc226b29d3904f7469738da51088fb752ccc9b8f7c",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    },
+    "after_link": {
+      "main_head_after": "c38906dfd2973e8236702afa5f014cfb7051b9bd",
+      "libraries_stable": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 10,
+      "support_before": {
+        "main_head": "c38906dfd2973e8236702afa5f014cfb7051b9bd",
+        "worker_head": "68288a1b7769f44b8a174e5b2b2e623e17c96167",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_core.lib",
+            "sha256": "907454bfe867fa731bdd80846f522903cd10aef032311bbf93c6413275743d61",
+            "bytes": 73190554
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "support_libraries": {
+      "main_head": "c38906dfd2973e8236702afa5f014cfb7051b9bd",
+      "worker_head": "68288a1b7769f44b8a174e5b2b2e623e17c96167",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_core.lib",
+          "sha256": "907454bfe867fa731bdd80846f522903cd10aef032311bbf93c6413275743d61",
+          "bytes": 73190554
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_history_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "artifact_sha256": {
+      "probe.cpp": "4a636fb48c95a660d0e45ca8e656a4b433f732163736b214cd26a8c36bc61521",
+      "probe.exe": "13ef04c921e2cb205ab865e942ef34b75aeec0c876665077f91cc9f0f1d4072c",
+      "probe.log": "b0fd63008c41c26e475d89cb9ce0fdaecfbea16a0b3f18e900c11cb7ebd4e9cd",
+      "build.cmd": "d535f87a80aefa870d790e24b9e1adeaaa7cf367df7040e56392fa086a7f11e0",
+      "build.log": "c9d042df350fb64c10f3f638bbb8b02dc701925e7c9628f1b5a07b236be7cbb4",
+      "prepare_artifacts.py": "3fa0d46edac7d7dd33390530f26db83f6be0b3f79c415ef7a6e054230622bf2f",
+      "prepare_build.py": "bb4b2fff323294996756b3bd3b3354b5ca853de17259116f1e6a1ca31d66207f",
+      "pin_support.py": "c94759722442aacf9cb3e92ac1e723fed9245496ebcf0102138cbbfeeacf51b2",
+      "write_report.py": "3839d3fe1c5be5580843334f24003dd7583543cc178a8d910a62924f0c5c1234",
+      "inputs_before_link.json": "038a65a32b50cdb028598cd2883dd07621fc9c7c58ebc8f5ab038c21a3b8616e",
+      "inputs_after_link.json": "070aaa2f86ed9b9f61df514e89995416263ffc96bc574e69679d2b71b6729b02",
+      "support_before_link.json": "c300660820b033235ab19c06c56c60d220fad88764d08bae42f4b23aa990e5b5",
+      "embedded_manifest.xml": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290",
+      "original_initializer.bin": "43a034763824ca168e3f4d1d104c4cb454dd138c5f5d1e2a8b818ede4aa56aaf",
+      "original_scalar.bin": "5f6a09a648055700a59f0fdcc8e62b09dfbca7d74715f97ea5cccf94d5e64020",
+      "asm/native_session_target_history.asm": "c0014228b604feca21d634819a9b2a8866ecf196826af4883f36778643d53f65",
+      "obj/native_session_target_history.obj": "69143c410707802a1acdf74032cf9ee97d186ee046f475df5e35e4f872c4cb16"
+    }
+  },
+  "limitations": [
+    "Masked exceptions and availablex87 capacity only; no NaN/unmasked-exception/negative-or-overflow allocation matrix",
+    "No null or throw injection; original CRT handler/exception/heap identity and private EH unbound",
+    "Stored Ghidra scalar-body tail incomplete; optionalself-free CALL has raw evidence, not passed stored-body validation",
+    "No executable profile, whole target/lock/mask/derived publication or lifetime construction",
+    "New source interfaces; native initializer return not inferred; no whole-body native replacement ABI",
+    "No concurrency, networking or gameplay proof"
+  ]
+}
