@@ -321,6 +321,8 @@ void retain_scene_raw_word(const SceneProperty* prop, bool& present, std::int32_
     // 006F27FC/006F2823 copy the stored +0Ch DWORD without type conversion.
     if (equal_insensitive(prop->type_letter, "F") && prop->has_float) {
         std::memcpy(&value, &prop->float_value, sizeof value);
+    } else if (equal_insensitive(prop->type_letter, "I") && prop->has_integer) {
+        value = prop->integer_value;
     } else {
         if (prop->values.empty()) return;
         float as_float = 0.0f;

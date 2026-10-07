@@ -96,6 +96,8 @@ private:
 // One recognized explicit B literal with a closing ';' retains an owning byte
 // (native type 3, +0Ch). Presence marks stored data, not a parser action flag;
 // empty/context-dependent Boolean assignments remain outside this binding.
+// One successfully read nonempty explicit I with a closing ';' owns its int32.
+// Empty/existing declaration context and historical CRT parity remain unbound.
 struct SceneProperty {
     std::string key;
     std::string type_letter;
@@ -106,6 +108,8 @@ struct SceneProperty {
     bool has_float{false};
     std::uint8_t boolean_value{0};
     bool has_boolean{false};
+    std::int32_t integer_value{0};
+    bool has_integer{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.

@@ -315,6 +315,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.has_boolean = true;
             }
         }
+        // 008F5BB2 reads %d and 008F5BC6/008F3730 store the type-0 DWORD.
+        // Keep the existing source CRT provider and raw diagnostics; bare I
+        // and failed/context-dependent assignments receive no owning payload.
+        if (equal_insensitive(prop.type_letter, "I") && cur.at(";")
+            && prop.values.size() == 1 && !prop.values.front().empty()) {
+            prop.has_integer = scene_scan_int(prop.values.front(), prop.integer_value);
+        }
         cur.expect(";");
         block.values.push_back(std::move(prop));
     }
