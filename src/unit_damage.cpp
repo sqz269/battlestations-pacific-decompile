@@ -6,6 +6,10 @@
 // session, effect and message calls are contracts on UnitDamageHost.
 #include "bsp/unit_damage.hpp"
 
+#if !defined(_MSC_VER) || !defined(_M_IX86)
+#error Unit health marker requires MSVC Win32 x87 assembly.
+#endif
+
 namespace bsp {
 namespace {
 
@@ -13,6 +17,24 @@ namespace {
 // against 0, 1 and 2 and nothing else.
 bool is_campaign(UnitSessionMode mode) noexcept {
     return mode == UnitSessionMode::campaign;
+}
+
+// 00877C00..00877C1E: preserve both float loads and the double FSUB operand.
+// The caller's actual x87 PC/RC selects the subtraction result. SETA is the
+// predicate complementary to the native JBE, including its unordered case.
+// This consumes only its two temporary stack entries and never changes CW.
+bool full_health_marker_00877c00(float stored, float maximum) noexcept {
+    unsigned char set_marker;
+    __asm {
+        fld dword ptr stored
+        fld dword ptr maximum
+        fsub qword ptr kUnitFullHealthEpsilon
+        fxch st(1)
+        fcomip st(0), st(1)
+        fstp st(0)
+        seta set_marker
+    }
+    return set_marker != 0;
 }
 
 }  // namespace
@@ -170,11 +192,9 @@ UnitHealthWrite set_health_00877b90(const UnitHealth& health,
     write.wrote = true;
     write.stored_health = stored;
 
-    // 00877C0C: FSUB uses double 1.0 at 00D7A210 but ambient x87 precision.
-    // This existing double projection differs at some large finite maxima
-    // (e.g. max=stored=2^25, PC24 nearest); cc11_health_nan does not change it.
-    write.full_health_marker =
-        static_cast<double>(stored) > static_cast<double>(health.max_health) - kUnitFullHealthEpsilon;
+    // 00877C00..00877C1E: ambient-x87 marker predicate, without installing a
+    // control policy. Native set-only semantics remain a result for the host.
+    write.full_health_marker = full_health_marker_00877c00(stored, health.max_health);
 
     // 00877C2F: the health-changed hook runs for everyone but a client.
     write.dispatch_health_changed = session_mode != UnitSessionMode::multiplayer_client;

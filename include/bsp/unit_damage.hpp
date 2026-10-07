@@ -151,7 +151,10 @@ struct UnitHealthWrite {
 // Ordered equality returns before clamp, including opposite signed zeros.
 // Under masked FP, unordered requests preserve their original NaN storage bits;
 // this is a data-result projection, not native exception/status/ABI parity.
-// The marker's double arithmetic and callback timing retain their known limits.
+// Marker comparison uses the original float-load/double-subtract x87 sequence
+// under the caller's ambient control word; it consumes no caller stack entries.
+// Callback timing and full exception/status/ABI behavior remain partial.
+// docs/UNIT_HEALTH_MARKER_X87_CC11.md.
 UnitHealthWrite set_health_00877b90(const UnitHealth& health,
                                     float requested,
                                     UnitSessionMode session_mode,
