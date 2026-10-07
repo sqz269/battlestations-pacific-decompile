@@ -317,6 +317,54 @@ void plane_squadron_request_leader_promotion_007eee50(
     PlaneSquadronEntity& squadron, const void* candidate,
     PlaneSquadronLandingHookHost& host);
 
+// cc11_land_cruise_profile: additional borrowed fields of the retained task's
+// actual cached squadron. These are live storage, not a command/Task+48h view.
+struct PlaneSquadronCruiseProfileView {
+    float& field_37c;
+    float& field_380;
+    std::uint8_t& field_38c;
+    std::uint8_t& field_38d;
+    float& field_394;
+    float& field_398;
+    std::uint8_t& field_3a9;
+    std::uint8_t& field_3aa;
+    std::uint8_t& field_3ad;
+};
+
+struct LandTaskCruiseProfileView {
+    // Borrow the slots themselves: actual provider calls may change their
+    // contents. +404h is reloaded AFTER each tuning call, never from plane+9D4h.
+    const void* const& plane_3fc;
+    PlaneSquadronCruiseProfileView* const& squadron_404;
+};
+
+struct LandCruiseTuningView {
+    const float& field_514;
+};
+
+class LandTaskCruiseProfileHost {
+   public:
+    virtual ~LandTaskCruiseProfileHost() = default;
+    // Actual 007B8AD0 observes plane+9D8h == 0 and returns the predicate in AL.
+    virtual bool plane_is_leader_007b8ad0(const void* plane) = 0;
+    // Execute the complete actual singleton acquisition (including any lazy
+    // construction/publication), then borrow its +514h. No fixed/default tune.
+    virtual LandCruiseTuningView game_tuning_0042e740() = 0;
+};
+
+// 0099B660 is proved one-byte RET. 009B3C60..009B3CE5 is ECX=task, plain RET;
+// these source signatures are not native ABI entries or game bindings.
+// Required: live nonnull plane; after each tuning call a nonnull, valid cached
+// squadron and tuning field through that segment; faithfully mapped fields.
+// MSVC Win32 COMISS and FLD/byte-store/FSTP keep ambient numeric behavior.
+// Admit masked FP exceptions, no pending unmasked exception, and an available
+// x87 stack slot. Providers may replace tune/cache between calls, but storage
+// must remain valid during each segment. No concurrent mutation/fault/reentry
+// or observer/death-time lifetime guarantee is supplied. See the packet doc.
+void pilot_bot_task_update_cruise_profile_base_0099b660() noexcept;
+void land_task_update_cruise_profile_009b3c60(
+    const LandTaskCruiseProfileView& task, LandTaskCruiseProfileHost& host);
+
 struct NativeSessionMessageBE;
 
 // Receipt needs actual per-plane +9D0h/+9D8h publications. PlaneSquadronEntity

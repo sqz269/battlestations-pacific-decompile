@@ -5,6 +5,10 @@
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/native_session_message_be.hpp"
 
+#if !defined(_MSC_VER) || !defined(_M_IX86)
+#error Retained land cruise profile requires MSVC Win32 COMISS/x87 assembly.
+#endif
+
 // 007F4580 mode 1, bound to a process whose "plane instance" is a scene entity
 // record. docs/PLANE_SQUADRON_HOST.md.
 
@@ -371,6 +375,69 @@ void land_task_retained_hook_009b33f0(const LandTaskRetainedHookView& task,
     }
     if (task.squadron_404 != nullptr) {
         plane_squadron_end_landing_007efb60(*task.squadron_404, host); // 009B342D
+    }
+}
+
+namespace {
+// Preserve COMISS zero,[field]/JBE, including unordered and ambient MXCSR
+// denormal/exception behavior. By-value float comparisons would lose this.
+__declspec(noinline) bool cruise_gate_ordered_negative(const float* field) {
+    unsigned char advances;
+    __asm {
+        mov eax, field
+        xorps xmm0, xmm0
+        comiss xmm0, dword ptr [eax]
+        seta advances
+    }
+    return advances != 0;
+}
+
+// 009B3C9D/A3/A7 and 009B3CD3/D9/DD. FLD quiets a signaling NaN under
+// masked exceptions; the dirty-byte publication occurs before FSTP.
+__declspec(noinline) void cruise_load_publish_store(
+    const float* tuning, std::uint8_t* dirty, float* destination) {
+    __asm {
+        mov eax, tuning
+        mov ecx, dirty
+        mov edx, destination
+        fld dword ptr [eax]
+        mov byte ptr [ecx], 1
+        fstp dword ptr [edx]
+    }
+}
+} // namespace
+
+void pilot_bot_task_update_cruise_profile_base_0099b660() noexcept {
+    // Actual empty native RET, not an unresolved provider or substitute stub.
+}
+
+void land_task_update_cruise_profile_009b3c60(
+    const LandTaskCruiseProfileView& task, LandTaskCruiseProfileHost& host) {
+    pilot_bot_task_update_cruise_profile_base_0099b660();       // 009B3C63
+    if (!host.plane_is_leader_007b8ad0(task.plane_3fc)) return; // 009B3C68..75
+
+    const LandCruiseTuningView first_tuning = host.game_tuning_0042e740();
+    PlaneSquadronCruiseProfileView& first = *task.squadron_404; // AFTER C77
+    if (first.field_38d == 0) {
+        if (cruise_gate_ordered_negative(&first.field_380)
+            && first.field_3a9 == 0) {
+            cruise_load_publish_store(&first_tuning.field_514,
+                                      &first.field_3ad, &first.field_394);
+        }
+        first.field_3a9 = 0;                                 // 009B3CAA
+    }
+
+    // Always called for a leader, including a blocked first channel. Both the
+    // returned tuning and task's cached squadron may differ from the first.
+    const LandCruiseTuningView second_tuning = host.game_tuning_0042e740();
+    PlaneSquadronCruiseProfileView& second = *task.squadron_404; // AFTER CAE
+    if (second.field_38c == 0) {
+        if (cruise_gate_ordered_negative(&second.field_37c)
+            && second.field_3aa == 0) {
+            cruise_load_publish_store(&second_tuning.field_514,
+                                      &second.field_3ad, &second.field_398);
+        }
+        second.field_3aa = 0;                                // 009B3CE0
     }
 }
 

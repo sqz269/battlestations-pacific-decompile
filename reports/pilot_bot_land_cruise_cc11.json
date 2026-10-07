@@ -1,0 +1,93 @@
+{
+  "packet": "cc11_land_cruise_profile",
+  "date": "2026-10-07",
+  "status": "complete_conditional_normal_cruise_caller_source_required_providers_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verifies configured project/program/language/base before live batches; two entry exports refreshed, complete caller listing and live base bytes reviewed",
+    "worker_ghidra_writes": false
+  },
+  "changed_files": [
+    "include/bsp/plane_squadron_host.hpp",
+    "src/plane_squadron_host.cpp",
+    "docs/PILOT_BOT_LAND_CRUISE_CC11.md",
+    "reports/pilot_bot_land_cruise_cc11.json"
+  ],
+  "ignored_validation_artifacts": [
+    "local/cc11_land_hook_probe.cpp",
+    "local/cc11_land_hook_probe.obj",
+    "local/cc11_land_hook_probe.exe",
+    "local/plane_squadron_host_cc11.obj"
+  ],
+  "routines": [
+    {
+      "entry": "009B3C60",
+      "end_exclusive": "009B3CE6",
+      "coverage": "Complete 37-instruction normal body through RET009B3CE5; complete conditional source caller",
+      "abi": "ECX=land task, plain RET; ESI preserved; new source/provider signatures not native ABI entries",
+      "source": "land_task_update_cruise_profile_009b3c60"
+    },
+    {
+      "entry": "0099B660",
+      "end_exclusive": "0099B661",
+      "coverage": "Complete actual empty RET; livebytes C3CCCCCCCCCCCCCC; no unresolved/default provider",
+      "abi": "Plain RET base member entry",
+      "source": "pilot_bot_task_update_cruise_profile_base_0099b660"
+    },
+    {
+      "entry": "007B8AD0",
+      "end_exclusive": "007B8ADC",
+      "coverage": "Complete four-instruction read-only assembly evidence; required actual provider, no new body port",
+      "abi": "ECX=plane; EAX cleared then AL=(plane+9D8==0), RET"
+    },
+    {
+      "entry": "0042E740",
+      "end_exclusive": "0042E800",
+      "coverage": "Complete normal listing read for singleton contract; actual construction/arena/world/private EH provider external",
+      "abi": "EAX=singleton, RET"
+    }
+  ],
+  "host_steps": [
+    {"address": "009B3C63", "native": "0099B660", "function": "009B3C60", "contract": "First base call; actual one-byte empty RET"},
+    {"address": "009B3C6E", "native": "007B8AD0", "function": "009B3C60", "contract": "Plane loaded from task+3FC at C68; actual plane+9D8==0 AL predicate; false returns before tuning"},
+    {"address": "009B3C77", "native": "0042E740", "function": "009B3C60", "contract": "Always first tuning call for leader, THEN reload task+404 at C7C"},
+    {"address": "009B3CAE", "native": "0042E740", "function": "009B3C60", "contract": "Always second tuning call for leader even first-blocked, THEN fresh reload task+404 at CB3"}
+  ],
+  "profile": {"base": "00D1FFA0", "slot": "54", "cell": "00D1FFF4", "target": "009B3C60", "evidence": "Live data xref; separate from Task+48 null endpoint and Task+58 retained hook"},
+  "channels": [
+    {"number": 1, "blocked_byte": "38D", "gate_float": "380", "latch_byte": "3A9", "destination_float": "394", "dirty_byte": "3AD", "compare": "009B3C8E XORPS / C91 COMISS / C95 JBE", "publication": "C9D FLD tuning514 -> CA3 dirty=1 -> CA7 FSTP output", "reset": "CAA latch=0 whenever unblocked"},
+    {"number": 2, "blocked_byte": "38C", "gate_float": "37C", "latch_byte": "3AA", "destination_float": "398", "dirty_byte": "3AD", "compare": "009B3CC5 XORPS / CC8 COMISS / CCB JBE", "publication": "CD3 FLD tuning514 -> CD9 dirty=1 -> CDD FSTP output", "reset": "CE0 latch=0 whenever unblocked"}
+  ],
+  "source_contract": {
+    "task_identity": "Borrow actual live plane3FC/cached-squad404 slots; never current plane9D4 or Task48 endpoint. Each tuning return precedes fresh cache reload; first snapshot not reused.",
+    "required_providers": "Actual plane leader predicate and complete actual tuning singleton acquisition with borrowed514 field; no default/fixed value/snapshot adapter",
+    "controller_views": "Actual borrowed refs for37C/380/38C/38D/394/398/3A9/3AA/3AD. Existing retained hook view remains unchanged.",
+    "predicates": "COMISS zero,[gate] followed by complement-of-JBE SETA: ordered above, ordinary strict-negative input. Comparison precedes zero-latch test. Unblocked latch cleared even on skipped update; blocked channel untouched.",
+    "numeric": "Pointer MSVC Win32 XORPS/COMISS/SETA and FLD/MOVbyte/FSTP kernels. Ambient MXCSR/x87 control/denormal/status behavior retained; no by-value float/raw-bit-copy replacement or math policy.",
+    "normal_domain": "Live nonnull actual plane; per-post-call nonnull cached squadron and live tuning514 refs valid through segment; faithful fields/aliases. Masked FP exceptions, no pending unmasked x87 exception, available x87 stack slot.",
+    "mutations": "Actual providers may change tune and task slots across calls. Fixture controlled replacements are SOURCE contract examples, not observed native reentrancy. Concurrent/structural reentry, invalid lifetime/mapping, traps, SEH/fault/allocation failure domains excluded."
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86; /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "source_object": "PASS compiled actual src/plane_squadron_host.cpp to local/plane_squadron_host_cc11.obj",
+    "fixture_link": "Existing hook fixture only; explicit changed object plus main build/win32/Release/bsp_core.lib; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "probe_result": "PASS retained hook; fresh cruise tuning/cache; blocked/reset order; x87 quieting/control/stack; COMISS unordered",
+    "numeric_fixture": "FXSAVE/FXRSTOR saves/restores fixture environment. Masked x87CW0B7F/MXCSR5F80; sNaN tuning7F801234 -> quiet output7FC01234, source bits unchanged; CW/TOP preserved and x87 invalid set. qNaN gate7FC05678 skips/clears latch, source unchanged, COMISS sets MXCSR invalid.",
+    "object_receipt": "Dumpbin changed TU: gate offset05 XORPS,08 COMISS,[eax],0B SETA; store offset0C FLD[eax],0E MOVbyte[ecx],1,11 FSTP[edx]. Dirty-before-float-store proved in compiled source, no fault/concurrency observer fixture.",
+    "live_call_verifier": "PASS4 direct rows,0 failed; no indirect rows in caller report",
+    "json_parse": "PASS report parsed",
+    "diff_check": "PASS git diff --check; owned files only",
+    "full_build": "Worker did not run; primary serialized main build/integration",
+    "game_run": "Not run; required actual adapters/lifetimes/ABI/game binding remain unbound"
+  },
+  "remaining_boundaries": [
+    "Actual singleton lazy constructor007E2A20, arena/world registration, selected live tuning profile/fields, private EH and allocation failure contract",
+    "Native plane/squadron observer validity and cached task404/retained3FC lifetime after base death notification",
+    "Actual task arena/owner/scheduler/head54 adapter and profile/ABI dispatch; preserve existing deferred drain schedule",
+    "Unmasked numeric traps/SEH/fault/concurrency and exact native FP environment address/register/stack layout",
+    "Original-game runtime and gameplay validation; no GameUnitsHost, task install, BE routing/receipt or death cleanup changes"
+  ]
+}
