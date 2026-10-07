@@ -143,3 +143,5 @@ game run was started; the primary owns integrated Win32 build/CTest validation.
 The result is source-, focused fixture- and installed path-tested. It supplies
 original normal text-rule evidence, not original-game differential execution,
 native allocator/fault fidelity or ABI compatibility.
+
+Primary review/integration: 3f07b3b71709ebe6afcda21be1ece878da5a871a; MSVC Win32 Release and all three existing CTests passed. Actual parser/consumer TU PASS: one existing scene fixture, 16 installed inputs and 191 quoted S values; 190 unchanged, JM06 script path decodes to accessible installed 80310B Lua file; 96 entities/11 classes/14 submarine instances/0 errors retained. Executable SHA256 086aa79f815f76f700754e3f6cac0f98506332a1879367e49fb6670bcad7fa23. Native ABI and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_strings_validity_integrated_build.log.

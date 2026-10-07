@@ -171,3 +171,5 @@ or original-game gameplay validation. The primary owns full main build and
 integration. Task construction/profile/arena, owner scheduler binding,
 deferred hook/BE routing, and observer/death contexts remain separate and
 unbound; existing Boolean host flows are unchanged.
+
+Primary review/integration: 3f07b3b71709ebe6afcda21be1ece878da5a871a; MSVC Win32 Release and all three existing CTests passed. Actual retained hook/cruise TU PASS; fresh command probes, result2 versus0, mutable resolver/fresh target, ordered x87 24B descriptor copy, sequential admission clears. Executable SHA256 086aa79f815f76f700754e3f6cac0f98506332a1879367e49fb6670bcad7fa23. Native ABI and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_strings_validity_integrated_build.log.

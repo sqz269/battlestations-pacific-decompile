@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T07:56:10.184884+00:00",
+  "updated_utc": "2026-10-07T08:14:28.556725+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -648,5 +648,53 @@
     "full_fp_status_equivalent": false,
     "arbitrary_extended_provider_abi_equivalent": false,
     "next_reused_read_only_work": "Samehealthworker: completeD2 constructor00876D30/shared0075B430 message storage and actualowner/global contract proposal"
+  },
+  "scene_typed_strings_integration": {
+    "source_revision": "3f07b3b71709ebe6afcda21be1ece878da5a871a",
+    "included_packets": [
+      "cc11_scene_typed_strings",
+      "cc11_land_command_validity"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "086aa79f815f76f700754e3f6cac0f98506332a1879367e49fb6670bcad7fa23",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_strings_validity_integrated_build.log",
+    "utc": "2026-10-07T08:14:28.556725+00:00",
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "5cbb4c24b7a11b87e4554bb63a6ccba3c5e7f0b5",
+    "independent_production_probe": "Actual parser/consumer TU PASS: one existing scene fixture, 16 installed inputs and 191 quoted S values; 190 unchanged, JM06 script path decodes to accessible installed 80310B Lua file; 96 entities/11 classes/14 submarine instances/0 errors retained",
+    "native_direct_calls_checked": 22,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 1,
+    "primary_flow_repair": "reports/scene_typed_string_flow_repair_cc11.json",
+    "repaired_returning_crt_call_gaps": 5,
+    "remaining_stored_call_gaps": 0,
+    "native_scratch_ownership_bound": false,
+    "full_typed_parser": false,
+    "lua_runtime_validated": false
+  },
+  "land_command_validity_integration": {
+    "source_revision": "3f07b3b71709ebe6afcda21be1ece878da5a871a",
+    "included_packets": [
+      "cc11_scene_typed_strings",
+      "cc11_land_command_validity"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "086aa79f815f76f700754e3f6cac0f98506332a1879367e49fb6670bcad7fa23",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_strings_validity_integrated_build.log",
+    "utc": "2026-10-07T08:14:28.556725+00:00",
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "ad2e919bf188f91c9407d50ab9510b1840f76999",
+    "independent_production_probe": "Actual retained hook/cruise TU PASS; fresh command probes, result2 versus0, mutable resolver/fresh target, ordered x87 24B descriptor copy, sequential admission clears",
+    "native_direct_calls_checked": 4,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 6,
+    "actual_game_binding": false,
+    "native_observer_lifetime_bound": false
   }
 }

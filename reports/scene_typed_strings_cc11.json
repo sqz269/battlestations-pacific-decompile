@@ -520,5 +520,31 @@
       "bytes": 71766,
       "sha256_observed_after_probe": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
     }
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "3f07b3b71709ebe6afcda21be1ece878da5a871a",
+    "included_packets": [
+      "cc11_scene_typed_strings",
+      "cc11_land_command_validity"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "086aa79f815f76f700754e3f6cac0f98506332a1879367e49fb6670bcad7fa23",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_strings_validity_integrated_build.log",
+    "utc": "2026-10-07T08:14:28.556725+00:00",
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "5cbb4c24b7a11b87e4554bb63a6ccba3c5e7f0b5",
+    "independent_production_probe": "Actual parser/consumer TU PASS: one existing scene fixture, 16 installed inputs and 191 quoted S values; 190 unchanged, JM06 script path decodes to accessible installed 80310B Lua file; 96 entities/11 classes/14 submarine instances/0 errors retained",
+    "native_direct_calls_checked": 22,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 1,
+    "primary_flow_repair": "reports/scene_typed_string_flow_repair_cc11.json",
+    "repaired_returning_crt_call_gaps": 5,
+    "remaining_stored_call_gaps": 0,
+    "native_scratch_ownership_bound": false,
+    "full_typed_parser": false,
+    "lua_runtime_validated": false
+  }
 }
