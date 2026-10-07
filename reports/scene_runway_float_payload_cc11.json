@@ -15,7 +15,7 @@
     "docs/SCENE_RUNWAY_FLOAT_PAYLOAD_CC11.md",
     "reports/scene_runway_float_payload_cc11.json"
   ],
-  "status": "bounded_source_data_binding_and_focused_probe_passed",
+  "status": "integrated bounded owning-F runway data adoption; independent fresh actual-main-TU manifested probe and full Win32/all three CTests passed; wider native providers/ABI/game remain unbound",
   "result": "Called private runway-pair helper adopts successful nonempty explicit F owning float payload, independent of diagnostics; all raw fallback/pair/no-reset policy retained.",
   "reused_support": {
     "report": "reports/scene_start_speed_float_payload_cc11.json; original convoy snapshot receipt reports/scene_convoy_float_payload_cc11.json",
@@ -1040,5 +1040,40 @@
       "native CRT, original ABI and full-game differential"
     ],
     "executable_sha256": "65726924CAB0DA13FE7FE04DBCA6C1EDFE80A4F085F1CE692C9EABDC9D0849F5"
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T11:12:58.279918+00:00",
+    "worker_revision": "a3691d213a9993c54163347caf0a3540fa34fe5e",
+    "integrated_revision": "3cd991f43e66de4229d0b0708f7d9556308badf2",
+    "full_main_build_revision": "3cd991f43e66de4229d0b0708f7d9556308badf2",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_runway_integrated_build.log",
+    "executable_sha256": "2cfaba17a72d583409ba2e58e2883f276977ce18f28d8bac4a51104eab039aa9",
+    "independent_root_probe": "local/cc11_runway_root.cmd",
+    "probe_log": "local/cc11_runway_root_compile.log",
+    "probe_sha256": "d69bf4cd9eb2810ae5df272e6f6cae11d5604c389a31671a32cf25205ffa53e5",
+    "stable_main_link_inputs": 77,
+    "installed_inputs_verified_against_worker_hashes": 17,
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_and_fixture_review": true,
+    "primary_native_kind_gate_value_pair_and_complete_setter_review": true,
+    "worker_complete_containing_function_review": true,
+    "native_direct_call_rows": 16,
+    "native_direct_call_failures": 0,
+    "unresolved_virtual_call_rows": 3,
+    "installed_airfield_source_bag_only": true,
+    "authored_jm06_entities": 96,
+    "authored_jm06_runway_bags": 0,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_annotation": {
+    "history": "local/ghidra-annotations-20261007T111301Z.json",
+    "project_saved": true,
+    "exports_refreshed": [
+      "006d3c10"
+    ],
+    "existing_hypothesis_name_preserved": true
   }
 }

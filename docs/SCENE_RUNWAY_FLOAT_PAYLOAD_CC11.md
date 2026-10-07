@@ -102,3 +102,5 @@ their paths and hashes. This validates source bag retention through the actual
 helper. It does not execute the whole scene emitter, unit class/mode admission,
 native holder refresh, landing task, original CRT, ABI, or game differential.
 Native allocator/global/EH/fault/reentry/ownership behavior remains external.
+
+Primary integration 3cd991f43e66de4229d0b0708f7d9556308badf2: full MSVC Win32 and all three existing CTests passed. The reviewed focused fixture was independently compiled from fresh actual-main parser/consumer TUs; all77 main link-input hashes stayed stable and17 installed inputs matched worker receipts. Manifest type24/id1/asInvoker verified. Source bag/helper checks passed with the existing admission/math/CRT/ABI/game limits. Executable SHA256 2cfaba17a72d583409ba2e58e2883f276977ce18f28d8bac4a51104eab039aa9. Probe local/cc11_runway_root.cmd; build log local/cc11_runway_integrated_build.log.
