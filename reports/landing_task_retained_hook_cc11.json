@@ -1,0 +1,76 @@
+{
+  "packet": "cc11_land_retained_hook",
+  "date": "2026-10-06",
+  "status": "conditional_source_reconstruction_unbound",
+  "target": {"project": "bsp", "project_file": "C:/Users/sqz269/bsp.gpr", "program_path": "/battlestationspacific.exe", "language": "x86:LE:32:default", "image_base": "00400000", "verified_by": "bsp.py Client.verify before live reads", "ghidra_writes": false},
+  "changed_files": ["include/bsp/plane_squadron_host.hpp", "src/plane_squadron_host.cpp", "docs/LANDING_TASK_RETAINED_HOOK_CC11.md", "reports/landing_task_retained_hook_cc11.json"],
+  "routines": [
+    {"entry": "009B33F0", "range": "009B33F0-009B3433", "coverage": "complete", "source": "land_task_retained_hook_009b33f0", "abi": "ECX=old task; RET/tail jump", "limit": "caller-owned old view and actual command controller required; no runtime adapter"},
+    {"entry": "007EFB60", "range": "007EFB60-007EFB9A", "coverage": "complete", "source": "plane_squadron_end_landing_007efb60", "abi": "ECX=squadron; RET", "limit": "actual member facts and byte references required"},
+    {"entry": "007EEE50", "range": "007EEE50-007EEF2D", "coverage": "complete", "source": "plane_squadron_request_leader_promotion_007eee50", "abi": "__thiscall(squadron,candidate plane), RET4 at007EEF2B", "limit": "conditional control flow; actual message construction/routing is required external contract"},
+    {"entry": "009F9CE0", "range": "009F9CE0-009F9D77", "coverage": "complete", "role": "whole raw cache producer read; no observer/refcount call in this body"},
+    {"entry": "009B3240", "range": "009B3240-009B3306", "coverage": "complete", "role": "task construction listing; approach at+3F8h"},
+    {"entry": "009F9980", "range": "009F9980-009F99A5", "coverage": "complete", "role": "only binds task controller pointers; no pointer-lifetime ownership supplied"},
+    {"entry": "0071BE40", "range": "0071BE40-0071BE5A", "coverage": "complete", "role": "reuse existing command_queue_current_command; native interned singleton pointer token"},
+    {"entry": "0077C2A0", "range": "0077C2A0-0077C469", "coverage": "complete", "role": "whole route listing; ECX sender/message/flags/status, RET12"},
+    {"entry": "0076E520", "range": "0076E520-0076E70C", "coverage": "partial: serialization/rebuild/sender-stamp/queue-head route", "role": "copy enqueued; allocation tail remains external existing contract"},
+    {"entry": "007F0030", "range": "007F0030-007F01E5", "coverage": "partial: BE arm007F0077-007F0089", "role": "later receipt consumes index+1Ch"},
+    {"entry": "007ED610", "range": "007ED610-007ED64E", "coverage": "complete", "role": "later receiver rotates then calls007ED260; existing typed rotation omits reindex"}
+  ],
+  "path_steps": [
+    {"address": "009B342D", "native": "007EFB60", "function": "009B33F0", "kind": "tail_jump", "contract": "old retained squadron on absent/non-land current command"},
+    {"address": "007EFB95", "native": "007EEE50", "function": "007EFB60", "contract": "second member only after count>1 and landed leader mode5; both clears already happened"},
+    {"address": "007EEEDE", "native": "0075B430", "function": "007EEE50", "contract": "base BE message using real current-game selected-owner context"},
+    {"address": "007EEF16", "native": "0077C2A0", "function": "007EEE50", "contract": "sender=squadron, flags5/statusnull; no synchronous promotion"},
+    {"address": "009B3283", "native": "009B2E50", "function": "009B3240", "contract": "task+3F8h approach with bot plane/block"},
+    {"address": "009AFE8A", "native": "009F9CE0", "function": "009AFE70", "contract": "direct raw plane/squadron cache producer"},
+    {"address": "009B32ED", "native": "009F9980", "function": "009B3240", "contract": "bind approach to this task's controller components"},
+    {"address": "0077C44D", "native": "0076E520", "function": "0077C2A0", "contract": "local delivery serializes/rebuilds copy with original message and distinct sender arguments"},
+    {"address": "0076E5A4", "native": "00768530", "function": "0076E520", "contract": "rebuild message before receive enqueue"},
+    {"address": "007F007B", "native": "007ED610", "function": "007F0030", "contract": "BE receive arm; rotation occurs at receipt"},
+    {"address": "007ED645", "native": "007ED260", "function": "007ED610", "contract": "reindex after receiver-side rotation; existing typed helper does not carry this call"}
+  ],
+  "raw_fragments": [
+    {"entry": "007ED580", "range": "007ED580-007ED58A", "coverage": "complete raw fragment", "defined_in_ghidra": false, "bytes": "8B8948030000E9B5E8F2FF", "instructions": ["007ED580 MOV ECX,[ECX+348h]", "007ED586 JMP0071BE40"], "next_padding": "INT3 at007ED58B", "source_abi_entry": false},
+    {"entry": "007EF6F0", "range": "007EF6F0-007EF70F", "coverage": "complete raw fragment", "defined_in_ghidra": false, "steps": [{"site": "007EF6F9", "callee": "0075B480", "contract": "extended header write"}, {"site": "007EF706", "callee": "00429090", "contract": "write message+1Ch with3 bits"}], "source_abi_entry": false},
+    {"entry": "007EF710", "range": "007EF710-007EF730", "coverage": "complete raw fragment", "defined_in_ghidra": false, "steps": [{"site": "007EF719", "callee": "0075B4C0", "contract": "extended header read"}, {"site": "007EF727", "callee": "00428D30", "contract": "read3 bits into message+1Ch using wrapper+4h cursor"}], "source_abi_entry": false}
+  ],
+  "indirect_evidence": [
+    {"site": "009B3405", "callee": "squadron+vtable174", "table_dword": "00D08934=007ED580", "second_site": "009B3419", "result": "native interned pointer, not host class", "containing_function": "009B33F0"},
+    {"table": "00D02E5C", "slots": ["0075ADC0", "007EF6F0", "007EF710", "0075ADA0", "004499C0"], "translated_profile_supplied": false}
+  ],
+  "corrections": [
+    {"was": "007EEE50 promotes the parked leader immediately before task destruction", "is": "007EEE50 only constructs/routes BE; local delivery enqueues a copied message; receiver007F0030 later rotates", "evidence": "007EEF16 ->0077C2A0;0077C44D ->0076E520;007F007B ->007ED610"},
+    {"was": "Captured task+404h proves the task owns the squadron's lifetime", "is": "009F9CFC is a direct raw cache store without observer/refcount registration in that producer; actual lifetime/invalidations are still separate", "evidence": "whole009F9CE0 and009F9980 bodies"},
+    {"was": "Use current plane attack class or RTB census for the hook command comparison", "is": "Read retained squadron+348h via007ED580/0071BE40 including override+188h and compare the interned singleton token", "evidence": "raw007ED580 thunk;0071BE40 listing;existing CommandSlot::command token contract"}
+  ],
+  "caller_contracts": {
+    "old_task_identity": "caller supplies distinct retired and installed views; no FIFO/refcount/observer invalidation invented",
+    "lifetime": "old view, squadron, byte references, controller, planes and host remain valid through hook; registry vector pointers alone do not ensure this",
+    "member_domain": "five-wing PlaneSquadronEntity with live_count0..5 and valid occupied planes",
+    "command_domain": "real retained squadron CommandQueueState including mode1 head and mode2 override singleton tokens; GameCommandsHost zero-override getter not bound",
+    "message_domain": "required external provider preserves BE base/derived profile, selected-owner and sender identities, delivery1/sender0/relay0/index fields, flags5/statusnull, router readiness and copied deferred receive queue",
+    "excluded_world_domain": "null current game when base constructor would be reached; unknown game/controller/object lifetime is unsupported",
+    "routing_adapter_supplied": false,
+    "game_units_host_wired": false
+  },
+  "validation": {
+    "source_compile": "MSVC x86 /std:c++17 /MD /O2; src/plane_squadron_host.cpp object compiled",
+    "focused_probe": "ignored local/cc11_land_hook_probe.cpp linked existing main bsp_core.lib; /MANIFEST:EMBED /INCREMENTAL:NO",
+    "probe_result": "PASS mode2 interned-token read; old task identity; both clears before deferred BE(index1); members unchanged",
+    "fixture_scope": "one old-task mode2/non-land case, distinct new task, admitted getter values; diagnostic queue only",
+    "native_runtime_test": false,
+    "native_message_profile_test": false,
+    "report_call_check": "python tools/verify_report_calls.py reports/landing_task_retained_hook_cc11.json",
+    "report_call_check_result": "11 checked, 0 failed; raw/indirect fragments separately labeled",
+    "whitespace_check": "git diff --check",
+    "full_main_build": "primary integrator pending; no competing CMake build",
+    "abi_compatible": false,
+    "game_validated": false,
+    "landing_loop_fixed": false
+  },
+  "next_packets": [
+    {"name": "land_be_message_and_receive_binding", "raw_definition_review": ["007ED580", "007EF6F0", "007EF710"], "contract": "primary serializes definitions; implement native BE profile/factory and deferred receive binding using existing message/bit providers; preserve selected-owner/sender copy and3-bit member index; finish reindex after rotation"},
+    {"name": "land_old_task_ownership_and_retired_fifo", "contract": "recover actual bot active/retired task ownership/destruction and stable identities; preserve00999EE0 drain-before-install/retirement; connect hook before old destructor only after lifetime contract is established; death invalidation separate"}
+  ]
+}
