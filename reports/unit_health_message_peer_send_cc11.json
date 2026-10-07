@@ -1,0 +1,166 @@
+{
+  "packet": "cc11_health_peer_send",
+  "created_utc": "2026-10-07T09:31:53.228874+00:00",
+  "base_commit": "9e46e8bc0",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete ordinary peer selector reconstructed and connected actual-TU probe passed; primary integration pending",
+  "function": {
+    "entry": "00770B50",
+    "end_exclusive": "00770BC9",
+    "source": "NativeUnitHealthMessagePeerSendCalls::send_session_message_to_nonlocal_peer_00770b50",
+    "native_abi": "ECX actual session; stack target,message; RET8",
+    "coverage": "complete ordinary selector with actual borrowed fields and required full transport provider",
+    "whole_ordinary_body_reconstructed": true,
+    "native_binary_abi_compatible": false
+  },
+  "files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_unit_health_message.cpp",
+    "docs/UNIT_HEALTH_MESSAGE_PEER_SEND_CC11.md",
+    "reports/unit_health_message_peer_send_cc11.json"
+  ],
+  "evidence": {
+    "full_native_instruction_count": 45,
+    "required_transport_00783DC0_full_instruction_count": 22,
+    "source_parent_prefix_byte_preserved": 8582,
+    "worker_ghidra_mutations": false,
+    "new_source_interfaces": true
+  },
+  "host_steps": [
+    {
+      "address": "00770B6D",
+      "native": "00BF6713",
+      "function": "00770B50",
+      "contract": "required reached iterator violation; no inferred noreturn or repair"
+    },
+    {
+      "address": "00770B8D",
+      "native": "00783DC0",
+      "function": "00770B50",
+      "contract": "required complete locked transport operation with fresh primary, actual target and same message"
+    },
+    {
+      "address": "00770BBF",
+      "native": "00783DC0",
+      "function": "00770B50",
+      "contract": "required complete locked transport operation with fresh secondary after actual type29 query"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00770BAD",
+      "dispatch": "current actual message profile+0C(29)",
+      "contract": "real executable translated predicate; TEST AL"
+    }
+  ],
+  "actual_borrowed_fields": [
+    {
+      "storage": "captured session+188",
+      "access": "initial primary read and fresh read before primary send"
+    },
+    {
+      "storage": "captured session+18C",
+      "access": "secondary null gate and fresh read only after true profile query"
+    },
+    {
+      "storage": "captured primary+10",
+      "access": "unsigned zero/nonzero count"
+    },
+    {
+      "storage": "captured primary+0C then sentinel+00",
+      "access": "only for nonzero count; captured sentinel and first node"
+    },
+    {
+      "storage": "captured first node+08",
+      "access": "actual local target directly, without peer+50 translation"
+    },
+    {
+      "storage": "current message+00 then profile+0C",
+      "access": "current executable type29 query"
+    }
+  ],
+  "contracts": [
+    "Inherited flags4 route supplies actual embedded session and same borrowed D2 frame.",
+    "Generic protected entry also accepts a real common message header/profile; it is not a concrete type29 factory.",
+    "Field binders expose actual live cells only; no early value observations, providers, allocation, ownership changes or FP changes.",
+    "No current-game global reread, session-mode gate or substituted session inside the selector.",
+    "Primary count0 yields local null; countFFFFFFFF is nonzero; target equality suppresses send.",
+    "Reached invalid-iterator service is required and may return; captured first-node payload is then read.",
+    "Complete required783DC0 captures target+4 for Enter/increment18, invokes783C80, reloads target+4 for decrement18/Leave.",
+    "Complete required transport must consume synchronously or create owned representation; no retaining/releasing borrowed frame.",
+    "No default transport success, clone, arena, receive factory, serializer, allocator, lock or RAII policy."
+  ],
+  "focused_probe": {
+    "command": "cmd /c local\\cc11_health_message_peer_send_check.cmd",
+    "compiler": "MSVC14.51.36231 Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict /FAs",
+    "link": "/MANIFEST:EMBED /OPT:REF",
+    "embedded_manifest": "actual PE RT_MANIFEST parsed: asInvoker; machine014C",
+    "exit_code": 0,
+    "receipt": {
+      "checks": 46,
+      "failures": 0,
+      "direct_cases": 7,
+      "connected_setter_cases": 1,
+      "connected_selected_sends": 1,
+      "borrowed_releases": 0
+    },
+    "direct_cases": [
+      "Nonzero count local target suppressed with node+8 direct target.",
+      "Zero count null target suppressed with null sentinel never read.",
+      "Zero count remote target sends through actual primary.",
+      "Null primary and secondary returns.",
+      "Real D2 profile type29 false blocks present secondary.",
+      "Real reconstructed0075B430 base type29 equality profile true sends through present secondary; actual writer emits29.",
+      "Unsigned countFFFFFFFF remains nonzero and excludes actual local target."
+    ],
+    "captured_session_case": "Every direct call passes gameA.session while actual game cell is gameB in mode2; source uses A fields and performs zero mode accessors.",
+    "connected_case": "Real setter50/max100 ->cache.5/byte128 ->D2 ownerA on actual caller frame ->flags4 two actual nodes ->local target excluded ->one required783DC0 fixture call with exact transport,target,sender,profile,owner,payload ->actual synchronous29bit writer.",
+    "fixture_boundaries": "Required send implementation is an explicit receipt and serialization fixture; no claim of native locking, transport or owned queue. Base type29 fixture proves common header/control only, no concrete payload factory.",
+    "no_tracked_tests_added": true
+  },
+  "generated_assembly_review": {
+    "file": "local/cc11_health_message_peer_send_asm/native_unit_health_message.asm",
+    "functions": [
+      "generic protected selector",
+      "inlined D2 final override"
+    ],
+    "checks": [
+      "conditional primary field binding",
+      "unsigned zero-count branch skips sentinel load",
+      "captured sentinel and first node; required conditional violation call",
+      "direct node+8 target equality",
+      "fresh primary read immediately before required send",
+      "actual current profile+0C call with29 and AL test",
+      "fresh secondary read after query",
+      "same message and target forwarded",
+      "no added global or mode observation"
+    ]
+  },
+  "validation_boundaries": [
+    "source reconstructed",
+    "actual-TU MSVC Win32 compile passed",
+    "source fixture46 checks passed",
+    "primary owns full repository build and metadata",
+    "original ABI and private EH unproved",
+    "invalid storage, iterator recovery and faults unproved",
+    "actual locking and serializer transport incomplete required dependencies",
+    "native allocation/profile identity unproved",
+    "network ownership and game runtime unvalidated"
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_unit_health_message.hpp": "0ab3e11011551eb68b2b5bbda4338a248b3287ca2900d0fc9faf4b486fd543de",
+    "src/native_unit_health_message.cpp": "80c0bd7af8b7b73ae71527d0d5d0eb1159ffe2381a498599f1433b0beb574eac",
+    "local/cc11_health_message_peer_send_probe.cpp": "0f4247914ee405a43581bbb0eaccc344da512112736e5862a7ff0163e6a2ff3b",
+    "local/cc11_health_message_peer_send_check.cmd": "3f5e44697c6439396b8d5f7455ab1502db7ca3c66a2939805159854fcc845589",
+    "local/cc11_health_message_peer_send_probe.exe": "13aad98b12b078578954c1ea94f5551151b3333ee7b6d8fc96fba8968b99a2b0",
+    "local/cc11_health_message_peer_send_results.json": "c5e59616dfad3dfd1882bbae76f09aa394bb687c6704a4c1a4ae253ba0be3d06",
+    "local/cc11_health_message_peer_send_asm/native_unit_health_message.asm": "be716b590656e7eca3b1e0efeaca4e24cb5fdd711ec77496487c1f64821827a5"
+  },
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_message_peer_send_cc11.json",
+    "exit_code": 0,
+    "checked": 3,
+    "failed": 0,
+    "receipt": "reports/unit_health_message_peer_send_cc11.json: 3 call rows checked, 0 failed"
+  }
+}
