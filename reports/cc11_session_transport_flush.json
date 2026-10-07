@@ -1,0 +1,483 @@
+{
+  "packet": "cc11_health_transport_flush_enqueue",
+  "created_utc": "2026-10-07T11:30:59.940153+00:00",
+  "base_commit": "46ee1f77d59b9833046707c47b9dcd40eb6b642b",
+  "branch": "agent/cc11_health_guard",
+  "status": "six complete ordinary bodies implemented; strict actual-TU fixture and original x87 kernel comparisons passed; primary integration/full main build pending",
+  "functions": [
+    {
+      "entry": "00783E00",
+      "end_exclusive": "00783E94",
+      "bytes": 148,
+      "instructions": 57,
+      "source": "NativeUnitHealthMessageTransportCalls::flush_host_transport_00783e00",
+      "native_abi": "ECX transport; stack target,cursor,delivery; RET0C",
+      "coverage": "complete ordinary host current virtual20 wrapper",
+      "original_bytes_sha256": "428868ec0bc15f2c78f20554a65768c4b0736554db0609194c1684f53cb91bc5"
+    },
+    {
+      "entry": "00783EA0",
+      "end_exclusive": "00783F1C",
+      "bytes": 124,
+      "instructions": 49,
+      "source": "NativeUnitHealthMessageTransportCalls::flush_client_transport_00783ea0",
+      "native_abi": "ECX transport; stack target,cursor,delivery; RET0C",
+      "coverage": "complete ordinary client current virtual20 wrapper",
+      "original_bytes_sha256": "d68a82dbbf41c065bf6e2c81cf5a9f452af99fcd924a62bb0f14249d1a6796c1"
+    },
+    {
+      "entry": "00A41AB0",
+      "end_exclusive": "00A41B99",
+      "bytes": 233,
+      "instructions": 89,
+      "source": "NativeUnitHealthMessageTransportCalls::deliver_host_transport_00a41ab0",
+      "native_abi": "ECX transport; stack target,cursor,delivery; RET0C",
+      "coverage": "complete ordinary host current virtual24 delivery dispatch",
+      "original_bytes_sha256": "a64a0d9c421d1b641ccf8bd936e4b72fa45ac55eb6bdba4eb18c903161bd8e18"
+    },
+    {
+      "entry": "00A419B0",
+      "end_exclusive": "00A41AA1",
+      "bytes": 241,
+      "instructions": 87,
+      "source": "NativeUnitHealthMessageTransportCalls::deliver_client_transport_00a419b0",
+      "native_abi": "ECX transport; stack target,cursor,delivery; RET0C",
+      "coverage": "complete ordinary client current virtual24 delivery dispatch",
+      "original_bytes_sha256": "06235b5de994b436a5c60892fcb96024621b6e81ee729e8c8a002afea7143b91"
+    },
+    {
+      "entry": "00A39120",
+      "end_exclusive": "00A39154",
+      "bytes": 52,
+      "instructions": 16,
+      "source": "NativeUnitHealthMessageTransportCalls::enqueue_direct_transport_00a39120",
+      "native_abi": "ECX embedded transport; stack type,target,payload,length; RET10",
+      "coverage": "complete ordinary direct embedded enqueue adapter",
+      "original_bytes_sha256": "710677a2d96b66c9b3c9bed3e02abb69f9ffdf1fa66e77be72551226dcfb5a19"
+    },
+    {
+      "entry": "00A39160",
+      "end_exclusive": "00A39191",
+      "bytes": 49,
+      "instructions": 15,
+      "source": "NativeUnitHealthMessageTransportCalls::enqueue_normal_transport_00a39160",
+      "native_abi": "ECX embedded transport; stack type,target,payload,length; RET10",
+      "coverage": "complete ordinary normal embedded enqueue adapter",
+      "original_bytes_sha256": "7d90fbb6bb30c06c5099748b370344247eedee48005a18493d92db51fa1a6e72"
+    }
+  ],
+  "files": [
+    "include/bsp/native_session_transport_flush.hpp",
+    "src/native_session_transport_flush.cpp",
+    "docs/CC11_SESSION_TRANSPORT_FLUSH.md",
+    "reports/cc11_session_transport_flush.json"
+  ],
+  "evidence": {
+    "complete_original_body_bytes": 847,
+    "full_native_listings_reviewed": true,
+    "primary_independent_full_native_and_source_order_review": true,
+    "definition_evidence": "reports/health_transport_dispatch_definitions_cc11.json",
+    "primary_definition_commit": "5d4e9ceec",
+    "worker_ghidra_mutations": false,
+    "worker_shared_metadata_or_cmake_mutations": false,
+    "original_game_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_game_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "source_interfaces_are_new_not_native_binary_abi": true,
+    "profile_evidence": [
+      {
+        "session_slot": "188",
+        "session_set_mode": 1,
+        "factory": "00A42170",
+        "constructor": "00A41CE0",
+        "allocation_bytes": 2336,
+        "primary_profile": "00D243EC",
+        "virtual20": "00783E00",
+        "virtual24": "00A41AB0",
+        "embedded_offset": "A4",
+        "socket_offset": "8FC"
+      },
+      {
+        "session_slot": "18C",
+        "session_set_mode": 2,
+        "factory": "00A41C70",
+        "constructor": "00A414D0",
+        "allocation_bytes": 2656,
+        "primary_profile": "00D24448",
+        "virtual20": "00783EA0",
+        "virtual24": "00A419B0",
+        "embedded_offset": "C8",
+        "socket_offset": "920",
+        "constructed_target_bytes": 3520,
+        "current_destination_offset": "93C"
+      }
+    ]
+  },
+  "host_steps": [
+    {
+      "address": "00783E79",
+      "native": "00786CA0",
+      "function": "00783E00",
+      "contract": "original RET0C no-op; preserve preceding actual ordered observations"
+    },
+    {
+      "address": "00783F01",
+      "native": "00786CA0",
+      "function": "00783EA0",
+      "contract": "same original no-op with client observer load order"
+    },
+    {
+      "address": "00A41AF6",
+      "native": "00A39120",
+      "function": "00A41AB0",
+      "contract": "delivery2 direct type5; caller target; embedded+A4"
+    },
+    {
+      "address": "00A41B27",
+      "native": "00A39160",
+      "function": "00A41AB0",
+      "contract": "delivery1 normal type6; caller target; embedded+A4"
+    },
+    {
+      "address": "00A41B73",
+      "native": "00A39160",
+      "function": "00A41AB0",
+      "contract": "delivery0 normal type5; caller target; embedded+A4"
+    },
+    {
+      "address": "00A419F5",
+      "native": "00A39120",
+      "function": "00A419B0",
+      "contract": "delivery2 direct type5; caller target; embedded+C8"
+    },
+    {
+      "address": "00A41A27",
+      "native": "00A39160",
+      "function": "00A419B0",
+      "contract": "delivery1 normal type6; current+93C target; embedded+C8"
+    },
+    {
+      "address": "00A41A78",
+      "native": "00A39160",
+      "function": "00A419B0",
+      "contract": "delivery0 normal type5; current+93C target; embedded+C8"
+    },
+    {
+      "address": "00A3914C",
+      "native": "00A3C1A0",
+      "function": "00A39120",
+      "contract": "existing complete owned enqueue; currentF8ABDC; direct1; discard Boolean"
+    },
+    {
+      "address": "00A39189",
+      "native": "00A3C1A0",
+      "function": "00A39160",
+      "contract": "existing complete owned enqueue; currentF8ABDC; direct0; discard Boolean"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00783E25",
+      "current_publication": "01090AB0",
+      "slot": "20",
+      "existing_provider": "sample_published_native_frame_clock",
+      "returned_pointer_consumed": true
+    },
+    {
+      "address": "00783EC6",
+      "current_publication": "01090AB0",
+      "slot": "20",
+      "existing_provider": "sample_published_native_frame_clock",
+      "returned_pointer_consumed": true
+    },
+    {
+      "address": "00783E88",
+      "current_object": "captured transport",
+      "slot": "24",
+      "admitted_targets": [
+        "00A41AB0",
+        "00A419B0"
+      ],
+      "reload_after_clock_observer": true
+    },
+    {
+      "address": "00783F10",
+      "current_object": "captured transport",
+      "slot": "24",
+      "admitted_targets": [
+        "00A41AB0",
+        "00A419B0"
+      ],
+      "reload_after_clock_observer": true
+    }
+  ],
+  "ordering_contract": [
+    "Delivery1 current clock sample RETURNED pointer -> signed-qword x87 division -> sole D68 float spill -> fresh game E188A8 -> wrapping DWORD217C increment.",
+    "Hostdelivery0 actual A0 gate precedes cursor,observer,table/enqueue reads.",
+    "Observer preparation host bit/base/F871B4/current; client bit/base/current/F871B4. Original786CA0 no-op folded without replacement callback; ordered volatile loads retained.",
+    "Clientdelivery1 bit/base/current93C/current cursor; clientdelivery0 bit/base/current cursor/current93C.",
+    "Postenqueue actual cursor bit -> original caller target D6C -> cursor base -> current -> wrapping counter4C/50+index8, even false/drop.",
+    "A39120 socket858 -> target+D74 address -> fresh F8ABDC; A39160 socket858 -> fresh F8ABDC -> target+D74 address.",
+    "All bindings are pure actual aliases; no snapshots, policy callbacks, FP changes, allocation or early field observations."
+  ],
+  "validation": {
+    "native_call_validation": {
+      "tool": "python tools/verify_report_calls.py reports/cc11_session_transport_flush.json",
+      "rows_checked": 10,
+      "failed": 0,
+      "result": "passed"
+    },
+    "compile": {
+      "result": "passed",
+      "translation_units_freshly_compiled": 20,
+      "toolchain": "MSVC Win32 x86, Visual Studio 18 Community",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Gy",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/FAs"
+      ],
+      "link_flags": [
+        "/MANIFEST:EMBED",
+        "/OPT:REF"
+      ],
+      "embedded_as_invoker_manifest_verified": true,
+      "command_file": "local/cc11_transport_flush_20261007_a/build_final.cmd",
+      "log": "local/cc11_transport_flush_20261007_a/build_final.log"
+    },
+    "fixture": {
+      "checks": 180,
+      "failures": 0,
+      "fixture_cases": 17,
+      "original_x87_kernel_cases": 72,
+      "pc_values": 3,
+      "rc_values": 4,
+      "ambient_stack_cases": 2,
+      "timestamp_pairs": 3,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "fixture_coverage": [
+      "both final families, delivery0/1/2, host suppression, unsupported delivery and direct helper non5",
+      "actual existing normal/direct owned queues, complete metadata/sockaddr/payload copy, native direct record index and channel head",
+      "client alternate destination but original caller target counter index",
+      "false unregistered-socket enqueue and actual unsequenced profile-drop path still update counters; modulo32 wrap",
+      "recording SDK conversion on an actual lookup miss mutates cursor/base/bit/index/publications; source rereads after enqueue and retains captured owner",
+      "fresh E188A8 and F8ABDC publications",
+      "captured host20/current original client24 independently dispatched; change BEFORE source entry, not during fixed-clock sample",
+      "complete executable D2 profile/nonlocal selector/target lock/threshold serializer -> existing owned enqueue; copied bytes survive cursor reset and overwrite",
+      "unsupported current20/current24 reject source contract without fallback"
+    ],
+    "x87_differential": {
+      "original_kernel_start": "00783E27",
+      "original_kernel_end_exclusive": "00783E34",
+      "client_identical_kernel_start": "00783EC8",
+      "client_identical_kernel_end_exclusive": "00783ED5",
+      "original_kernel_bytes": 13,
+      "cases": 72,
+      "precision_bits": [
+        24,
+        53,
+        64
+      ],
+      "rounding_modes": [
+        "nearest",
+        "down",
+        "up",
+        "zero"
+      ],
+      "ambient_stack_values": [
+        0,
+        3
+      ],
+      "timestamp_pairs": [
+        [
+          7,
+          3
+        ],
+        [
+          -9007199254740991,
+          10000003
+        ],
+        [
+          9223372036854775807,
+          17
+        ]
+      ],
+      "compared": [
+        "stored_float_bits",
+        "x87_control_word",
+        "x87_status_word",
+        "abridged_tag_word",
+        "all_eight_80bit_register_values"
+      ],
+      "source_path": "actual compiled flush method plus concrete fixed-clock sampler and real enqueue rejection",
+      "domain": "masked exceptions, positive nonzero frequencies, at least two available x87 stack entries; no full-body ABI or unmasked-trap claim"
+    },
+    "emitted_code_review": {
+      "file": "local/cc11_transport_flush_20261007_a/asm/native_session_transport_flush.asm",
+      "timestamp_x87_instructions": [
+        [
+          "fild",
+          "QWORD PTR [eax]"
+        ],
+        [
+          "fild",
+          "QWORD PTR [eax+8]"
+        ],
+        [
+          "fdivp",
+          "ST(1), ST(0)"
+        ],
+        [
+          "fstp",
+          "DWORD PTR [edx]"
+        ]
+      ],
+      "manual_checks_passed": [
+        "EAX sampler result retained and used for both qword loads",
+        "no extra float spill, double conversion or control-word changes",
+        "fresh game read after actual D68 FSTP",
+        "host/client observer volatile-load ordering",
+        "separate client93C ordering for deliveries0/1",
+        "independent current24 table/entry load after wrapper body",
+        "socket/global ordering in helpers",
+        "fresh cursor/index/base/current before post-enqueue counter addition"
+      ],
+      "qualification": "compiler folds unused no-op argument arithmetic; preserves ordered actual loads. Original EFLAGS, registers and whole-method ABI are not claimed."
+    },
+    "immutable_inputs": {
+      "snapshot_files": 61,
+      "before_after_and_workspace_match": true,
+      "snapshot_directory": "local/cc11_transport_flush_20261007_a/inputs_01",
+      "snapshot_sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_bit_cursor_fields.hpp": "e8f170001981470be8db80f359aa3b261660e7be4507b79fe551f39b16780544",
+        "include/bsp/native_bit_cursor_read.hpp": "664f03d12e9fb5c6b75cbbdfa2f179cd9f0c5352542885e62db77f454c663b21",
+        "include/bsp/native_bit_cursor_write.hpp": "26bc0fb69b30b5d33f2b8b38d57622e21374d615814546fc6f725192e6c8fbce",
+        "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "include/bsp/native_event_owner.hpp": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+        "include/bsp/native_frame_clock_actual.hpp": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1",
+        "include/bsp/native_frame_clock_publication.hpp": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b",
+        "include/bsp/native_network_console_owner.hpp": "1a16c56b9621c534002fd629c8038cfc91f9239912c3afa3c7e528e245c217d1",
+        "include/bsp/native_network_console_runtime.hpp": "9eba126ddee36962e4f51dcc88f57becf17a3a5733a58c27a2d1bdf5d73cf143",
+        "include/bsp/native_network_console_send.hpp": "ec8b1ba3c838b2769ec79035fb57246d03ae3995221851b418bef0a7bb92038f",
+        "include/bsp/native_network_console_storage.hpp": "e2c134b1ddf600967a65b1f2106e4f12eeb4f0adfb237ba872fb0aef0582b9e3",
+        "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+        "include/bsp/native_render_batch_lifetime.hpp": "1644ae033ccae7e02110b14aefac49bd1df1f6aa005b1c36d28926379ac3ae29",
+        "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40",
+        "include/bsp/native_renderer_control_worker.hpp": "2de24b2af336ebd7e7713bd1c4bc033935b468dff6ae619fd703177e34c51f36",
+        "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "include/bsp/native_renderer_worker_lifetime.hpp": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "include/bsp/native_session_message_base.hpp": "6b99806a76b491030dcdbd1335161e58fdbb0d4141d8dcf8a46658b930dd3f74",
+        "include/bsp/native_session_message_tags_12_13_14_15.hpp": "2e0d0249141c4674eefcc0f21130f9aaee21757cf5df3edc6de0f41d57372284",
+        "include/bsp/native_session_transport_flush.hpp": "e0b2668cebf7421415ccab854c0b9750b714b196b6c65fed43482c07a42c501b",
+        "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "include/bsp/native_singleton_removal_reorder.hpp": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "include/bsp/native_tracked_critical_section_release.hpp": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+        "include/bsp/native_unit_health_message.hpp": "e97b5ab18ff80359f4aba7062242c6025a7ecddb2eaa4b7b14597af9710cb3c8",
+        "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "include/bsp/unit_damage.hpp": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9",
+        "src/frame_clock.cpp": "85689c22573c3724489e6341e0fd48573033c893f5fe7ca81a6793f714c903a6",
+        "src/native_bit_cursor_fields.cpp": "e734aab56456aab557c636ea90470ccb708678901c921efcc34bdba00238a552",
+        "src/native_bit_cursor_read.cpp": "87b94e73476ef97a917fdcf94e8b9f7eb93fdbb2794914fc3bfa11177bca95d0",
+        "src/native_bit_cursor_write.cpp": "20423e0e8678743832a4cda6ff7b1c8166a6068b68b19ba14364e564baf363fc",
+        "src/native_frame_clock_actual.cpp": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6",
+        "src/native_frame_clock_publication.cpp": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55",
+        "src/native_network_console_owner.cpp": "b5c219cd194cd67852a02e1abf849511f04c19f225f51f082611d706ec3fb2dc",
+        "src/native_network_console_runtime.cpp": "eaa45e4bdab3330f95b16f2fff6f3a8022025d493cc8a8ec6708b20a2c563847",
+        "src/native_network_console_send.cpp": "66809a4c769cb9930cbd623ad4b655b01ac07175e2178a5375a6c12ea3b6583e",
+        "src/native_network_console_storage.cpp": "42a372d3d622f1d71ca33d2233a9283c6c37953763b07a6d77a1b2625e425735",
+        "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+        "src/native_renderer_control_worker.cpp": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+        "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "src/native_session_message_base.cpp": "0941562100e45fff7a4cc2ac9d8d848c6ee11baec94dc986fdbda1c912df4290",
+        "src/native_session_message_tags_12_13_14_15.cpp": "8abfb3f2889dbbef81106a8774af1bad13e2b175c337be37b8399bad98c5b0c6",
+        "src/native_session_transport_flush.cpp": "da1a7a6844f2b04c6315a2fd88f4a5836117f684b2845c7b12ae4e8574af0883",
+        "src/native_tracked_critical_section_release.cpp": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+        "src/native_unit_health_message.cpp": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "src/unit_damage.cpp": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577"
+      },
+      "libraries": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/local/cc11_transport_flush_20261007_a/support_bsp_core.lib",
+          "before_link_sha256": "be3419234bd2690e1270ce8680865f282eb19a5b94c7e2feab197669461ad90c",
+          "after_link_sha256": "be3419234bd2690e1270ce8680865f282eb19a5b94c7e2feab197669461ad90c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_flush_20261007_a\\support_bsp_lua511.lib",
+          "before_link_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "after_link_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_flush_20261007_a\\support_bsp_zlib121.lib",
+          "before_link_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "after_link_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ],
+      "support_role": "existing copied libraries resolve other support references; the six new bodies, serializer, enqueue and concrete clock sampler are freshly compiled from pinned source"
+    },
+    "full_main_build": "owned by primary; pending at worker handoff",
+    "native_socket_delivery": false,
+    "network_exchange": false,
+    "gameplay_validated": false
+  },
+  "source_sha256_by_path": {
+    "include/bsp/native_session_transport_flush.hpp": "e0b2668cebf7421415ccab854c0b9750b714b196b6c65fed43482c07a42c501b",
+    "src/native_session_transport_flush.cpp": "da1a7a6844f2b04c6315a2fd88f4a5836117f684b2845c7b12ae4e8574af0883",
+    "docs/CC11_SESSION_TRANSPORT_FLUSH.md": "2c1c8d6df933b3c27e83aa0807d389604482867ed4cde9986068c157c6ca6f13"
+  },
+  "source_lf_sha256_by_path": {
+    "include/bsp/native_session_transport_flush.hpp": "e0b2668cebf7421415ccab854c0b9750b714b196b6c65fed43482c07a42c501b",
+    "src/native_session_transport_flush.cpp": "da1a7a6844f2b04c6315a2fd88f4a5836117f684b2845c7b12ae4e8574af0883",
+    "docs/CC11_SESSION_TRANSPORT_FLUSH.md": "2c1c8d6df933b3c27e83aa0807d389604482867ed4cde9986068c157c6ca6f13"
+  },
+  "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_flush_20261007_a",
+  "artifact_sha256_by_path": {
+    "local/cc11_transport_flush_20261007_a/probe.cpp": "8efeaed38ad04ae6d17c84d94b43f1ee0a17d47a5881df1b39dedc0b7bf01be9",
+    "local/cc11_transport_flush_20261007_a/build_final.cmd": "595427b7c164286ba5d3239b5fb608cacbf76e8fda995b0f9f425e2237a330d4",
+    "local/cc11_transport_flush_20261007_a/build_final.log": "d050ad83ca1865c55662846dd93164f8cefa961cd012852f424757d95c0bb5f6",
+    "local/cc11_transport_flush_20261007_a/probe.exe": "4f1237dec2bcd594b6276b602251daaf5a50694ef17190334a806fdc59ba6e89",
+    "local/cc11_transport_flush_20261007_a/probe.log": "eba8df7d19b51d19ad1d9e4b6bcda67375def228bebba3473694c9172268d4b9",
+    "local/cc11_transport_flush_20261007_a/inputs_before_link.json": "4ad8c85fb78e42bcd92f14082814bae3d848c9fa12d950e5b7969555967df7e0",
+    "local/cc11_transport_flush_20261007_a/inputs_after_link.json": "e7fce779cd91a28ce03073bb6b4a00d3148f46bfd3c8cf1df7b189d35d674b97",
+    "local/cc11_transport_flush_20261007_a/support_library_before_link.json": "b83f8f7e347bfc33e67d1ce5424a61abfb7aea761f0ce3d79ca81c09835a0387",
+    "local/cc11_transport_flush_20261007_a/extra_support_before_link.json": "c220735979cb492667a701b616f1058248775ada90f5302329635d8c4816a035",
+    "local/cc11_transport_flush_20261007_a/asm/native_session_transport_flush.asm": "e9eb4eb862517977f1a4bd725440dab3e91b177ed56d2d8a3d99863768cefc0b",
+    "local/cc11_transport_flush_20261007_a/obj/native_session_transport_flush.obj": "d5098a4d432228850f475612561e04d5a15059d7fec077388ac849a6f5e7bf0f",
+    "local/cc11_transport_flush_20261007_a/embedded_manifest.xml": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290"
+  },
+  "remaining_required_bindings": [
+    "existing pure actual transport table/cursor/routing/lock aliases and all added actual field views",
+    "actual transport factories, registration/publication and lifetime",
+    "actual clock/global/network-console storage, valid channels/records/profiles and socket context",
+    "complete A3C5E0 send-worker/socket/packet-recording/thread composition"
+  ],
+  "limits": [
+    "Source SDK mutation is a controlled fixture effect, not observed native reentry.",
+    "Concrete fixed clock provides no callback; no native table change during the clock call was exercised and no clock hook was invented.",
+    "Actual payload copying into queue ownership is established in the fixture; network exchange and gameplay are not.",
+    "Actual fitting payloads, valid finite lists/native indices/backing are required. No bounds clamp, default profile/context/map/socket/clock or delivery success policy is introduced.",
+    "Complete ordinary source effects only; original private exception/unwind/fault paths, unmasked FP traps, full method binary ABI and concurrent ownership changes remain unproved.",
+    "The worker made no Ghidra, CMake or shared ledger edits. Primary owns integration, annotation and full main build."
+  ]
+}
