@@ -150,6 +150,28 @@ private:
     void send_message_to_nonlocal_peer_00770b50(void* actual_session,
         void* actual_target, NativeUnitHealthMessage* borrowed_message) final;
 };
+struct TrackedCriticalSection;
+// Opt-in complete ordinary00783DC0 wrapper using the canonical native lock.
+// Every reached section is live and initialized; each Leave must have valid
+// current-thread ownership. No null fallback, RAII or exception cleanup.
+class NativeUnitHealthMessageLockedSendCalls : public NativeUnitHealthMessagePeerSendCalls {
+public:
+    using NativeUnitHealthMessagePeerSendCalls::NativeUnitHealthMessagePeerSendCalls;
+protected:
+    // Pure alias to the actual target+4 cell, without early value observation,
+    // callbacks, allocation, ownership changes or FP changes.
+    virtual TrackedCriticalSection* const volatile& target_critical_section_04(
+        void* actual_target) noexcept = 0;
+    // Required COMPLETE00783C80: actual delivery-indexed cursors, tick/prefix,
+    // executable profile writer, overflow copy/rewind/flush/restore and
+    // threshold effects. No default D2-only serializer or transport success.
+    // Same synchronous borrowed-frame/owned-representation contract as above.
+    virtual void serialize_session_message_00783c80(void* actual_transport,
+        void* actual_target, NativeSessionMessageStorage* borrowed_message) = 0;
+private:
+    void send_locked_session_message_00783dc0(void* actual_transport,
+        void* actual_target, NativeSessionMessageStorage* borrowed_message) final;
+};
 // In the flags4 route, callbacks may replace game/sender/valid links while all
 // backing stays live. Its concurrent field mutation, other message
 // profiles, invalid or nonterminating traversals and fault paths are outside.

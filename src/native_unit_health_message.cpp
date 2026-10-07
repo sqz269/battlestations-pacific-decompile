@@ -1,4 +1,5 @@
 #include "bsp/native_unit_health_message.hpp"
+#include "bsp/random_threads.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 #include <new>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -204,5 +205,21 @@ void NativeUnitHealthMessagePeerSendCalls::send_session_message_to_nonlocal_peer
     if (!reinterpret_cast<Query>(profile[3])(message, 0x29)) return;
     void* secondary = fields.secondary_transport_18c;
     send_locked_session_message_00783dc0(secondary, target, message);
+}
+void NativeUnitHealthMessageLockedSendCalls::send_locked_session_message_00783dc0(
+    void* transport, void* target, NativeSessionMessageStorage* message) {
+    static_assert(sizeof(TrackedCriticalSection) == 0x1c);
+    static_assert(offsetof(TrackedCriticalSection, native) == 0);
+    static_assert(offsetof(TrackedCriticalSection, depth) == 0x18);
+    auto& section_field = target_critical_section_04(target);
+    auto* captured = section_field;
+    ::EnterCriticalSection(&captured->native);  // native IAT00CE2218
+    auto& enter_depth = *reinterpret_cast<volatile U*>(&captured->depth);
+    enter_depth = enter_depth + 1u;
+    serialize_session_message_00783c80(transport, target, message);
+    auto* current = section_field;  //00783DE4 reloads target+4 after serialization
+    auto& leave_depth = *reinterpret_cast<volatile U*>(&current->depth);
+    leave_depth = leave_depth - 1u;
+    ::LeaveCriticalSection(&current->native);  // native IAT00CE2210
 }
 } // namespace bsp
