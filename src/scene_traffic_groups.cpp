@@ -209,10 +209,10 @@ void apply_traffic_properties(const ScenePropertyBlock& block, SceneTrafficHost&
 
         // 0049D25A LandVehicleClasses first, 0049D2AC SoldierTypes on a miss.
         if (!host.resolve_template_class(entry.name, entry.land_vehicle_class, entry.class_id)) {
-            // The native has no miss arm: 0048E840 returns whatever the table
-            // holds for an absent symbol. A reconstruction that invented an id
-            // would be worse than one that drops the row, so it drops it and the
-            // divergence is recorded in docs/SCENE_TRAFFIC_BLOCK.md.
+            // Native 0048E840 reads found-node+8 without a null guard; a
+            // missing symbol faults rather than supplying a default value.
+            // This Source host drops unresolved rows. The behavior difference
+            // is recorded in docs/SCENE_TRAFFIC_BLOCK.md.
             continue;
         }
         if (entry.land_vehicle_class) {
