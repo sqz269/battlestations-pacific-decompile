@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:21:09.893095+00:00",
+  "updated_utc": "2026-10-07T09:28:20.862356+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1270,5 +1270,39 @@
     "parent_end_exclusive": "00770bc9",
     "required_serialization_body": "00783dc0..00783df8",
     "required_serialization_and_transport_bound": false
+  },
+  "scene_float_nonempty_handoff": {
+    "id": "cc11_scene_float_nonempty_payload",
+    "done": false,
+    "state": "approved_successful_nonempty_explicit_float_and_actual_map_consumer",
+    "worker": "director_props",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "008f5a00",
+      "008f3770",
+      "008ef170",
+      "004e6c00"
+    ],
+    "output_files": [
+      "src/scene_file.cpp",
+      "include/bsp/scene_file.hpp",
+      "src/world_map_bounds.cpp",
+      "include/bsp/world_map_bounds.hpp",
+      "docs/SCENE_FLOAT_NONEMPTY_PAYLOAD_CC11.md",
+      "reports/scene_float_nonempty_payload_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_scene_typed_vectors",
+      "cc11_scene_map_vector_payload"
+    ],
+    "reuses_worker_from": "cc11_scene_map_vector_payload",
+    "contract": "Append owningbinary32 float_value/has_float only for SUCCESSFULNONEMPTYexplicitF. CurrentfiniteC-localeordinarydecimalprefix/closedNULfree<400h directmodernMSVC%f provider, keepone diagnosticrawtoken/followingkey. No newx87/ABIrecovery/sharedscene_scan_float rewrite. Actualmapreaderafterrequired/typevalidation copieshas_float withFloat/kind;rawFfallback+I/CVTSI2SSpolicy retained. BareFsemicolon remainscurrentrawpartial/nohas_float/no nativeemptyzerooroverwriteclaim. Nativeper-keyok0,successfulscalarwrite iffok,absent3770type1create andscalarowningcopycontext primaryreviewed. Existing-F empty nativepreservation needs contextualparser/write boundary;NOpersistentread-success/emptyaction inresolved groupdata. Admitunique rawkeys/compatibleexistingtype1 andsuccessfulnonemptydomain;duplicate/implicit/conflictingrecord/enum/Lua contexts remainpartial. Existingowningclone/capture/redeclare/orderedparents carryfloat+presence. OneuniqueignoredactualTU manifestedprobe and830nonempty/4rawempty F installedinventory +Map sizes/corners, no tracked tests/GameSceneContents edits. Headerstridechange requiresprimaryFULLmain rebuild beforelinking freshprobe; focusedworker sourceTUs only. HistoricalVS2005BF7533 numeric/FP/error/extendedST0parity/nativeallocator/bag/globaltail/fault/ABI/game unproved. WorkerGhidraread-only/CMake/rootmetadata untouched.",
+    "worker_ghidra_read_only": true,
+    "primary_full_f_branch_review": "008F5BE0..5C91; per-keyok008F5AF4=0;successfulscalarbinary32store/copy only;emptycontextdeferred",
+    "installed_f_literals": 834,
+    "installed_nonempty_f_literals": 830,
+    "installed_raw_empty_f_literals": 4,
+    "historical_crt_provider_parity_proved": false
   }
 }
