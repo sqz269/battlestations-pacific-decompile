@@ -386,6 +386,13 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         if (prop != nullptr && !prop->values.empty()) scene_scan_int(prop->values.back(), i);
         return i;
     };
+    const auto retained_integer = [&](const char* key, std::int32_t fallback) {
+        const SceneProperty* prop = bag.find(key);
+        // 007434F8/00743514 copy the stored dimension words at +0Ch.
+        if (prop != nullptr && equal_insensitive(prop->type_letter, "I") && prop->has_integer)
+            return prop->integer_value;
+        return integer(bag, key, fallback);
+    };
     const auto retained_scalar = [&](const char* key, float fallback) {
         const SceneProperty* prop = bag.find(key);
         // 007434CC..007435DE consume +0Ch, not parser diagnostics. This
@@ -395,8 +402,8 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         return scalar(key, fallback);
     };
     record.land_convoy_keys = true;
-    record.convoy_rows = integer(bag, "Rows", 0);
-    record.convoy_columns = integer(bag, "Columns", 0);
+    record.convoy_rows = retained_integer("Rows", 0);
+    record.convoy_columns = retained_integer("Columns", 0);
     record.convoy_row_gap = retained_scalar("RowGap", 0.0f);
     record.convoy_column_gap = retained_scalar("ColumnGap", 0.0f);
     record.convoy_hp = retained_scalar("HP", 0.0f);
