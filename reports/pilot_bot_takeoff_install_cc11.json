@@ -1,0 +1,67 @@
+{
+  "packet": "cc11_land_takeoff_install",
+  "date": "2026-10-07",
+  "status": "complete_conditional_normal_takeoff_install_source_required_factory_unbound",
+  "target": {"project_file": "C:/Users/sqz269/bsp.gpr", "program_path": "/battlestationspacific.exe", "language": "x86:LE:32:default", "image_base": "00400000", "verification": "BSP client verified target before every live batch; whole wrapper/factory/ctor assembly and exact caller xrefs reviewed", "worker_ghidra_writes": false},
+  "changed_files": ["include/bsp/native_pilot_bot_task_owner.hpp", "src/native_pilot_bot_task_owner.cpp", "docs/PILOT_BOT_TAKEOFF_INSTALL_CC11.md", "reports/pilot_bot_takeoff_install_cc11.json"],
+  "ignored_validation_artifacts": ["local/cc11_land_owner_probe.cpp", "local/cc11_land_owner_probe.obj", "local/cc11_land_owner_probe.exe", "local/native_pilot_bot_task_owner_cc11.obj"],
+  "routines": [
+    {"entry": "0099A4A0", "range_end_exclusive": "0099A4A0-0099A4B4", "coverage": "Complete conditional normal caller source flow with REQUIRED actual same-owner factory", "abi": "ECX=bot, RET", "source": "install_native_pilot_bot_takeoff_task_0099a4a0"},
+    {"entry": "009CFF40", "range_end_exclusive": "009CFF40-009CFFA6", "coverage": "Complete native normal factory body read; actual allocation/ctor/arena/private EH source binding not supplied", "abi": "ECX=bot, DL=flag byte, rawEDX forwarded as ctor stackword; EAX=task or0, RET", "source": "Required NativePilotBotTakeoffInstallCalls::create_takeoff_task_009cff40, not a factory C++ implementation"},
+    {"entry": "009CF8E0", "range_end_exclusive": "009CF8E0-009CF9B4", "coverage": "Complete assembly read for low-byte flag consumption/return/called-init boundaries; no constructor layout/profile/world source port", "abi": "ECX=task, stack owner/flagword, RET8; EAX=task", "source": null}
+  ],
+  "host_steps": [
+    {"address": "0099A4A5", "native": "009CFF40", "function": "0099A4A0", "contract": "SAME ownerECX; lowbyteDL exactly1 set0099A4A1; complete actual factory required"},
+    {"address": "0099A4AD", "native": "00999F50", "function": "0099A4A0", "contract": "Push returnedEAX and restore sameownerECX; UNCONDITIONAL evenNULL result; no taskslot/drain"},
+    {"address": "009CFF61", "native": "00BF681B", "function": "009CFF40", "contract": "Allocate4D4h, ADD ESP4 at009CFF66; NULL arm returns0; task allocation separate from required valid array allocation"},
+    {"address": "009CFF7D", "native": "009CF8E0", "function": "009CFF40", "contract": "NonNULL newtaskECX, PUSHrawEDX/PUSHowner ->ctor task(this,owner,flagword); constructor returns task; original FH3 excluded"},
+    {"address": "007CA5BA", "native": "0099A4A0", "function": "007CA3F0", "contract": "Wrapper's sole livecaller; ECX loaded planeDF4 at007CA5B4; no direct count/capacity orDF4null guard proved by caller assembly"},
+    {"address": "0099B10B", "native": "009CFF40", "function": "0099ACD0", "contract": "Factory's othercaller: SAMEbotECX, DL0 at0099B107; tick/constructor path not ported here"},
+    {"address": "009CF905", "native": "0099C6F0", "function": "009CF8E0", "contract": "Constructor calls withowner/literalD; actual called initialization service external, not implemented by new wrapper"},
+    {"address": "009CF91E", "native": "009CF710", "function": "009CF8E0", "contract": "ECX=task3F8 subobject, stackowner50plane; actual subobject/called service/lifetime external"},
+    {"address": "009CF995", "native": "selected_embedded_state+vtable4", "function": "009CF8E0", "contract": "Real selected state callback aftertask310 publication; profile/state/world service external, no no-op"},
+    {"address": "009CF99A", "native": "009F9980", "function": "009CF8E0", "contract": "ECX=task3F8 subobject, stacktask; actual called contract external/unported; no observer/lifetime inference"}
+  ],
+  "required_factory_contract": {
+    "same_owner": "Provider receives same stable borrowed NativePilotBotTaskOwnerView as prepend and must bind the actual matching bot/plane/context; no native layout/global/arena stub",
+    "flag": "EXACT low native byte1. Factory saves rawEDX/pushesword, but complete ctor onlytestsBYTE secondarg at009CF95E; no other ordinary flagword use. Sourceuint8 preserves observed admitted byte semantics; original upperregister/privateEH ABI remains unbound",
+    "normal_factory": "Actual4D4h allocation00BF681B ->ifnonnull actual009CF8E0(newtask,owner,flag) and mapped live task result; ifNULL return nativeNULLtoken0. Complete constructor/profile/plane/state/called services/task arena required; no default/no-op/generic command producer substitute",
+    "constructor_observations": "Owner firststackarg; basecall owner/typeD; subobject init owner50plane; rawprofile stamps00D21228/00D2121C/00D21218; native retained-plane904/900/flagbyte/AA0SSE gates select embeddedstate; publishtask310 ->state4 ->009F9980 ->EAXthis. Source does not fabricate or port these object/world/layout services.",
+    "null_task": "FactoryNULL outcome returnsnormally and is passed toprepend unconditionally. Handle0 means copied nativeNULL, not a live task and not invalidNULLarray storage.",
+    "other_provider_domains": "Unknown owner/controller/world/profile/plane/state/lifetime domains excluded. Method's required actual factory promise is not fulfilled by the SOURCE fixture NULL outcome or current-command class projection."
+  },
+  "wrapper_domain": {
+    "post_factory": "Prepend observesfields AFTER factory. Require count<=capacity and full count==capacity orvalid nonzero spare0<count<capacity; stable live disjoint array storage; successful representable2*n+1/native4-byte/sourcehost allocation",
+    "invalid_empty_spare": "Nativecount0<capacity readsbeforebase/underflows. No wrapperguard/fallback/pre-factory-only validation or capacity reset added.",
+    "null_tokens": "NativeNULL handle copied unchanged and countincremented; later nonnull-only consumers require separate profile/lifetime validity. Existing member cleanup skipsNULL; no later head predicate/hook is invoked by wrapper.",
+    "identity": "Same owner preserved across actual factory call; source result copied byvalue into existing prepend; actual task mapping and any factory effects must keep post-factory borrowed fields valid",
+    "exceptions_faults": "All required services return normally; original privateFH3/SEH/new-handler/fault/invalid placement/arrayNULL/overflow/concurrency and binary register ABI not reconstructed",
+    "scope": "No generic command installer, current-command probe, taskheader/slot54/tick/BE/death logic or actual arena adapter"
+  },
+  "caller_receipts": {
+    "wrapper_xrefs": "Exactly007CA5BA inside007CA3F0; whole caller assembly reviewed for owner/count domain only, no touchdown/physics source reconstruction",
+    "factory_xrefs": "Exactly0099A4A5(flagDL1) and0099B10B(flagDL0); later native tickprepend0099B113 remains separate unported caller",
+    "lifetime_limit": "Caller ECXplaneDF4 publication does not prove live owner/task/plane/current command or cached404/3FC lifetime after base deathnotification; called-service effects and true world domains remain external"
+  },
+  "corrections": [
+    {"was": "Only prepend a nonzero takeoff task", "is": "Wrapper alwaysprepends returnedEAX, includingNULL", "evidence": "Whole0099A4A0 listing0099A4A5/A4AA/A4AD; oneNULL-result fixture detects addedguard"},
+    {"was": "NULLtask result means invalidNULLarray allocation or successful no-op install", "is": "NULLtask token is copied into valid array and incrementscount; array allocation and later task consumers have separate domains", "evidence": "FactoryNULLreturn009CFF93/98; sourcefixture count0/cap0 ->validarray count1/cap1/head0"},
+    {"was": "Factory takes an inferred generic command/mode", "is": "Wrapper writes exactbyteDL1; other tickcaller writesDL0; ctor reads onlylowBYTE flag, without invented semanticenum", "evidence": "0099A4A1,0099B107,009CF95E; complete ctor stackargument reads"},
+    {"was": "Pre-factory counts or callerplaneDF4 imply validprepend domain", "is": "Require actual post-factory full/nonzero-spare domain; wrapper supplies no countguard/fallback or lifetime proof", "evidence": "Wrappercall order and prependemptyspare underflow; bounded/callerassembly has no direct count/capacity guard"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86/toolset14.51.36231; /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "source_object": "PASS local/native_pilot_bot_task_owner_cc11.obj compiled",
+    "fixture_link": "Extended existing owner fixture only; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; compiled local/cc11_land_owner_probe.obj/.exe",
+    "probe_result": "PASS owner/active/prepend; takeoff same-owner flag1/factoryNULL/unconditional prepend/distinct valid storage/no drain",
+    "focused_case": "Explicit sourcefactoryasserts sameowner/flag1 and returnsNULL ->required arraygrowth1 ->count1/cap1/nonnullarray/head0, eventsfactory-before-allocate. NoNULLtaskpredicate/hook orinvalidemptyspare execution; priorfixturechecks retained",
+    "fixture_limits": "SOURCE providerNULLoutcome/arrays/new-delete/maps/cleanup only; not native allocationNULL/OOM runtime, actual constructor/factory/arena, original ABI, world/task lifetime or gameplay proof",
+    "live_call_verifier": "PASS9 exact direct call rows,0 failed;1 ctor state virtual row explicit indirect/not checked",
+    "json_parse": "PASS3 routine records/10 host_steps parsed",
+    "diff_check": "PASS git diff --check and git diff --cached --check; only four owned tracked files staged",
+    "full_build": "Worker did not run; primary owns serialized main integration/build",
+    "game_run": "Not run; source factory and live caller binding unbound"
+  },
+  "remaining": ["Actual same-owner takeoff factory/task arena and complete constructor/called profile/plane/state services", "Actual source owner/array/world mapping and valid post-factory prepend/later task-consumer/lifetime domains", "Cached task+404 squadron/task+3FC plane lifetime, parked component ownership and deferred scheduler/observer/BE route/receipt/reindex bindings", "Original register/stack/bot-task layout/profile ABI, privateFH3/SEH/fault/allocator/overflow/concurrency and native runtime/gameplay checks"],
+  "prior_reports": ["reports/pilot_bot_active_prepend_cc11.json", "reports/pilot_bot_prepend_flow_repair_cc11.json", "reports/pilot_bot_active_retirement_cc11.json", "reports/pilot_bot_command_producer_cc11.json", "reports/pilot_bot_task_owner_source_cc11.json"]
+}
