@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T10:44:11.534723+00:00",
+  "updated_utc": "2026-10-07T10:50:41.492862+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1735,5 +1735,40 @@
     "actual_game_binding": false,
     "abi_compatible": false,
     "game_validated": false
+  },
+  "health_transport_flush_approval": {
+    "id": "cc11_health_transport_flush_enqueue",
+    "done": false,
+    "state": "approved_complete_host_client_flush_delivery_and_existing_owned_enqueue_composition",
+    "worker": "health_guard",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "00783e00",
+      "00783ea0",
+      "00a41ab0",
+      "00a419b0",
+      "00a39120",
+      "00a39160"
+    ],
+    "output_files": [
+      "include/bsp/native_session_transport_flush.hpp",
+      "src/native_session_transport_flush.cpp",
+      "docs/CC11_SESSION_TRANSPORT_FLUSH.md",
+      "reports/cc11_session_transport_flush.json"
+    ],
+    "depends_on": [
+      "cc11_health_complete_serializer"
+    ],
+    "reuses_worker_from": "cc11_health_complete_serializer",
+    "root_source_registration": "cmake/startup.cmake",
+    "definition_evidence": "reports/health_transport_dispatch_definitions_cc11.json",
+    "required_unbound_dependencies": [
+      "actual transport construction/publication/lifetime",
+      "actual target/cursor/clock/global backing and providers",
+      "actual network console records/channels/recording/socket context",
+      "complete A3C5E0 send-worker/socket delivery composition"
+    ],
+    "contract": "ABSTRACT NativeUnitHealthMessageTransportCalls extends existing SerializedCalls and completes SIX ordinary bodies only. Validate actual serializer-supplied20 entry783E00/783EA0; delivery1 samples fresh01090AB0 through existing publication adapter and explicit actual timestamp stack preimage; consume RETURNEDpointer through native signedqword FILD/FILD/FDIVP/FSTP into actual targetD68, preserve x87 environment, increment fresh gameE188A8/217C modulo32. Hostdelivery0 fresh byteA0 suppresses before observer/cursor/table reads. Preserve exact actual cursorbit/base/current and F871B4 discarded argument reads before original786CA0 RET0Ch no-op; no invented observer callback. Reload actual transport table and independently validate current24 A41AB0/A419B0, never cache family across providers. Deliveries0/1 normal enqueue tags5/6; client destination freshly93C, counter index remains FRESH originalcaller targetD6C; reread actual cursor length after enqueue, update actual transport4C/50+index8 even false/drop. Delivery2 direct tag5 same originaltarget, no counter; other deliveries return. A39120 direct onlytype5; A39160 normal all reachedtypes. Pure actual aliases to embedded socket858 (host8FC/client920), fresh actual F8ABDC via existing SendContext, targetD74 sockaddr; call COMPLETEexisting A3C1A0 directly, discard bool. Existing actual queue copies owned82Ch record or returns pool; no default socket/queue/profile/clock/success/mapping, no reset or borrowed retention in six bodies. Unsupported source profiles logic_error qualified, not native faultABI. One ignored manifested fresh actualTU fixture covers bothfamilies/deliveries, suppress/defaultreturn/clientdestination, real existing owned normal/direct queue/drop/reject, one SDK boundary effect for post-enqueue cursor/index freshness, connected D2 threshold serializer queue data survives reset/overwrite. Original PE x87kernel differential across meaningful PC/RC/populatedstack and valid signedqword values with explicit maskedexceptions domain; inspect actual generated arithmetic. SOURCEfixture provider effects are not observed native reentry; queuecopy not socketdelivery/network/game. Primary independently reviewed six complete native listings; missing24 definitions byteverified/saved/exported5d4e9ceec. Worker Ghidraread-only/noCMake/sharedmetadata; new unique ignored artifacts claim, immutable existing support inputs pin before/afterlink, full main Win32 build/rootindependentprobe integration owned by primary."
   }
 }
