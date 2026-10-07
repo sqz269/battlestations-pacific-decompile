@@ -78,6 +78,13 @@ void prepend_native_pilot_bot_active_task_00999f50(
     }
 }
 
+void install_native_pilot_bot_takeoff_task_0099a4a0(
+    NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
+    NativePilotBotTakeoffInstallCalls& takeoff_calls) {
+    const auto task = takeoff_calls.create_takeoff_task_009cff40(owner, 1u); //0099A4A1/A5
+    prepend_native_pilot_bot_active_task_00999f50(owner, calls, task);       //0099A4AA/AD, no null guard
+}
+
 void retire_native_pilot_bot_leading_tasks_0099a0a0(
     NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
     NativePilotBotActiveRetirementCalls& task_calls) {

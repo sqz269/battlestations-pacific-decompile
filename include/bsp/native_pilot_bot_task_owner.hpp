@@ -3,7 +3,8 @@
 #include <cstdint>
 
 namespace bsp {
-// SOURCE identity, not a native task layout or an owning smart pointer. Caller
+// SOURCE identity, not a native task layout or an owning smart pointer. Zero is
+// the native NULL task token; copying it does not supply a live task. Caller
 // supplies a stable live mapping; nonzero identities cannot be reused while any
 // active/retired task reference or required callback can still reach them.
 struct NativePilotBotTaskHandle { std::uintptr_t identity; };
@@ -77,6 +78,18 @@ class NativePilotBotActiveRetirementCalls {
         NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&) = 0;
 };
 
+// REQUIRED actual takeoff factory, bound to this same owner. Complete ordinary
+//009CFF40 behavior allocates4D4h via00BF681B, then009CF8E0(this,owner,flag);
+// null allocation returns the NULL task token. Constructor consumes the low
+// flag byte; actual owner/plane/profile/state/callback/task arena services remain
+// external, with no default/no-op factory or generic command installer supplied.
+class NativePilotBotTakeoffInstallCalls {
+   public:
+    virtual ~NativePilotBotTakeoffInstallCalls() = default;
+    virtual NativePilotBotTaskHandle create_takeoff_task_009cff40(
+        NativePilotBotTaskOwnerView&, std::uint8_t constructor_flag) = 0;
+};
+
 // Complete conditional normal control flow, original ECX=bot, plain RET (830
 // tail-jumps EE0). New C++ signatures are not original entry/profile ABI.
 // Allocation must succeed with disjoint live storage. Capacity2*n+2 and its
@@ -114,11 +127,22 @@ void append_native_pilot_bot_active_task_0099a020(
 // then increments count BEFORE publishing replacement base. No task dereference,
 // slot callback, hook, delete or drain. Spare branch requires count>0: native
 // count0<capacity reads before base and underflows; no safe fallback is supplied.
-// Providers cannot reenter or change array fields/occupied entries. Valid task
-// mappings and any subsequent real producer/head54/lifetime context are external.
+// Providers cannot reenter or change array fields/occupied entries. Handle0 is
+// copied as nativeNULL; later consumers require their own nonnull/profile domain.
+// Nonzero task mappings and real producer/head54/lifetime context are external.
 // Null allocation/invalid placement/overflow/fault/private EH domains excluded.
 void prepend_native_pilot_bot_active_task_00999f50(
     NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&, NativePilotBotTaskHandle);
+
+//0099A4A0, complete conditional normal SOURCE caller; nativeECX=bot, RET.
+// Call same-owner factory with EXACT low native byte1, then prepend its result
+// UNCONDITIONALLY, including handle0. Post-factory owner fields must admit prepend:
+// full count==capacity or nonzero spare count<capacity, with successful valid array
+// allocation and stable fields. No guard, safe fallback, drain or task slot callback.
+// Original register/EH ABI, actual factory arena and later lifetimes remain unbound.
+void install_native_pilot_bot_takeoff_task_0099a4a0(
+    NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&,
+    NativePilotBotTakeoffInstallCalls&);
 
 void retire_native_pilot_bot_leading_tasks_0099a0a0(
     NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&,
