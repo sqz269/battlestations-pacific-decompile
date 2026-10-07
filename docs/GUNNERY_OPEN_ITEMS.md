@@ -11255,3 +11255,43 @@ give the symmetric `+-0.3c` that the host has.
   of `max_bank`, which is 148's steady 0.19-0.33 rad bank, and it is the image's law.
 - Of the lead's two upstream levers, the steady roll needs no host change.
 - The other lever, the pitch response to a held `+29Ch` (157), is in the flight model. It has not been read here.
+
+## 160. Handoff (cc9-gunnery33, 2026-10-06, at about 65% context)
+
+### 160.1 Landed on agent/cc9-gunnery33
+
+| item | commits | state |
+| --- | --- | --- |
+| 155 the meshless gun's point fire window (152's tube question) | `696dde849`, `57c010ddf` | **ON**; ten idle rows exit 1; the player's group 4 launches on JM06 |
+| 156 148's terrain-probe bank terms | `cca408a91` | faithful, nothing bound |
+| 157 the aimdive steering `009C58D0..009C5DB2` | `3655d3b6d` | faithful, nothing bound |
+| 158 USN13's carrier burn-out (lead 2b) | `6c41a24b1`, `cbb3d1920` | the fire / damage-control model is faithful |
+| Reference AF (GAME_EXECUTABLE "2026-10-06 af", `reports/cc9_reference_rebaseline_33.json`) | `70ac91c85`, `33a0ed280` | done: anchor = AE on 21 rows; AF moves USN13, USN13 long and JM05 long; BSM01 p6 and LOMP10 p2 are `pool` |
+| 159 the steady small-error bank | `86764100a` | the roll arm's law, nothing bound |
+
+### 160.2 Next, in order
+
+1. **`kPlayerTorpedoGroupFireBound`.**
+   - The harness line (`local\g33_harness_edit.py`, routed to cc9-ships41) adds `torpedo <ship> at <target>` and
+     `torpedo <ship> release`.
+   - When its sha lands, pair JM06 3000 with `local\g33_ord_j6t4.txt`. Expect ON `tube_fires=4 order_launches=2`.
+   - Add an idle control, and flip the switch by verdict.
+2. **The pitch response to a held `+29Ch` (157's lever).**
+   - Start at `0099E3BF` in `BSP_PilotBot_PlanControls`: mode 0 (`+2D0h == 0`).
+   - When `[ESI+2ECh] > [00E0E2F4]`, the slot moves from `+298h` toward `+29Ch` (`+2A0h` picks `+29Ch`). Below 0.1
+     (`00D7A3A0`) it snaps and stamps `+2ECh`.
+   - Then follow `+298h` into the control law. Planes code: the lead routes.
+3. **USN13's hit volume.**
+   - The Bettys' level-bomb accuracy from about 1400 m: 135 direct hull hits, carrier burn-out by 341.59 s.
+   - Separately, the component Explosion rolled on Intrepid's first hit at full health (`kComponentFailureBound`,
+     `0093BED0`).
+4. **BSM01 p6 is a knife-edge** (AF): the MiniSub dies by contact with HenryPT. A sturdier order file (a depth charge
+   or a ram line) would make the win time stable.
+
+### 160.3 Notes
+
+- Run tools in this tree: `local\g33_queue.ps1` (three at a time through `tools/run_game.ps1`), `local\g33_ref_jobs.py`
+  (AE's 22 rows plus the seven wins), `local\g33_lane.ps1` (leave-one-out lanes, `-Round`), `local\g33_diffrows.ps1`,
+  `local\g33_when.py` and `local\g33_firstdiff.py` (first divergence of a line class).
+- Several lanes building at once take about 30 minutes per fresh export. Two lanes in parallel with the shared three
+  slots finished a six-group round in about 45 minutes.
