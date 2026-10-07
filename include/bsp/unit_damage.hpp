@@ -81,14 +81,18 @@ struct UnitHealth {
     float invincibility{0.0f};    // +150h, a fraction of max_health
 };
 
-// 00876260 (00CFC3D0+110h): FLD [+370h] / FDIV [+36Ch]. No zero guard in the
-// native code, so a zero maximum divides by zero there as well.
+// 00876260 (00CFC3D0+110h): FLD [+370h] / FDIV [+36Ch], then float spill/reload.
+// No zero guard. The typed division does not reproduce ambient x87 precision.
 float health_fraction_00876260(const UnitHealth& health) noexcept;
 
-// 00923BE0: a released entity (+5Dh set) reports 0.0 without dispatching.
+// Partial 00923BE0: a released entity (+5Dh set) reports 0.0 without dispatching.
+// Native floor/cap to [0,1] and cache +164h write are not represented here.
 float entity_health_00923be0(const UnitHealth& health, bool released) noexcept;
 
-// 00877C53..00877C77: clamp((int)(fraction * 256.0), 0, 255).
+// Partial 00877C53..00877C77: finite cast/clamp projection plus explicit NaN->0,
+// matching both masked native CRT branches after byte clamp. Finite conversion
+// requires the scaled value to fit int; native mode-dependent overflow, FP flags
+// and unmasked exceptions are not reproduced. docs/UNIT_HEALTH_UNORDERED_CC11.md.
 int replicated_health_byte_00877b90(float health_fraction) noexcept;
 
 // 008790E3..008790FD, written exactly as the x87 does it: the intermediate
@@ -133,7 +137,7 @@ UnitDifficultyScale scale_damage_by_difficulty(float amount, const float* table,
                                                std::size_t count, std::size_t level,
                                                bool enabled) noexcept;
 
-// The result of 00877B90. `health_changed` drives the vtable[1B0h] dispatch and
+// The result of 00877B90. `dispatch_health_changed` drives vtable[1B0h] and
 // `replicated_byte_changed` drives the host's session message.
 struct UnitHealthWrite {
     bool wrote{false};
@@ -144,6 +148,10 @@ struct UnitHealthWrite {
     int replicated_byte{0};
 };
 
+// Ordered equality returns before clamp, including opposite signed zeros.
+// Under masked FP, unordered requests preserve their original NaN storage bits;
+// this is a data-result projection, not native exception/status/ABI parity.
+// The marker's double arithmetic and callback timing retain their known limits.
 UnitHealthWrite set_health_00877b90(const UnitHealth& health,
                                     float requested,
                                     UnitSessionMode session_mode,

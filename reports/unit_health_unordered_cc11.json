@@ -1,0 +1,389 @@
+{
+  "packet": "cc11_health_nan",
+  "status": "partial_unordered_storage_and_byte_projection_corrected_strict_win32_probe_passed",
+  "base_commit": "73e3f199d07840ee3f9b1375f6ec83318b2ebace",
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "document": "docs/UNIT_HEALTH_UNORDERED_CC11.md",
+  "target": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra proto/export/bytes and Client.verify project/program/language/image-base checks",
+    "ghidra_mutated": false,
+    "ledger_mutated": false
+  },
+  "routines": [
+    {
+      "address": "00877B90",
+      "native_abi": "ECX this, stack float request, RET 4",
+      "body": "00877B90..00877CC8",
+      "coverage": "Partial typed equality/clamp/marker/callback/byte result; unordered storage and byte result corrected only"
+    },
+    {
+      "address": "00923BE0",
+      "native_abi": "ECX this, ST0 result, RET 0",
+      "body": "00923BE0..00923C4B",
+      "coverage": "Read-only native getter recovery; existing typed floor/cap/cache omission retained"
+    }
+  ],
+  "readonly_dependencies": [
+    {
+      "address": "00876260",
+      "body": "00876260..00876274",
+      "contract": "Unit vtable110h: x87 current/max, float spill and reload; no zero guard"
+    },
+    {
+      "address": "00BF7420",
+      "body": "00BF7420..00BF743B",
+      "contract": "Runtime0109EEA4 selects double-spill/CVTTSD2SI versus tail branch to00BF7456; input ST0, consumes it, EAX low signed result"
+    },
+    {
+      "address": "00BF7456",
+      "body": "00BF7456..00BF74CA",
+      "contract": "x87 signed64 FISTP and residual correction, integer-indefinite low-word-zero shortcut; input ST0, consumes it, EDX:EAX result"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00877C53",
+      "native": "00923BE0",
+      "function": "00877B90",
+      "operation": "Host reads current getter result after health callback"
+    },
+    {
+      "address": "00877C5E",
+      "native": "00BF7420",
+      "function": "00877B90",
+      "operation": "Runtime-selected native integer conversion of getter result times double256"
+    },
+    {
+      "address": "00923BF7",
+      "native": "00923BE0+vtable110",
+      "function": "00923BE0",
+      "operation": "Virtual raw health getter",
+      "verification": "Indirect CALL EDX checked in exported listing; slot load at00923BF1"
+    }
+  ],
+  "behavior_changes": [
+    {
+      "was": "!(0 <= requested) replaced NaN requests with positive zero",
+      "is": "Only ordered requested < 0 selects positive zero; retain original NaN request storage bits",
+      "evidence": [
+        "00877BD0 COMISS 0,request",
+        "00877BD3 JBE keeps unordered",
+        "00877BE9 FCOMIP request,max and00877BED JBE keep unordered",
+        "00877BF7 MOVAPS XMM0,XMM1 and00877C04 MOVSS health preserve request bits"
+      ]
+    },
+    {
+      "was": "Unordered replicated fraction reached undefined C++ floating-to-int cast",
+      "is": "Explicit unordered branch returns byte0 before cast",
+      "evidence": [
+        "Native getter keeps masked unordered values through both clamps",
+        "00BF7435 CVTTSD2SI NaN gives EAX80000000h then signed clamp0",
+        "00BF7465 FISTP qword NaN gives integer-indefinite low EAX0 and special shortcut then clamp0"
+      ]
+    }
+  ],
+  "setter_contract": {
+    "equality": {
+      "sites": "00877BAB..00877BC1",
+      "condition": "Ordered current == request only",
+      "unordered": "Continues even for matching payloads",
+      "signed_zero": "Opposite signs compare equal and retain current bits on early return",
+      "infinity": "Same signed infinities return before clamp"
+    },
+    "lower_clamp": {
+      "sites": "00877BC7..00877BD7",
+      "condition": "Ordered request < 0",
+      "replacement": "positive zero",
+      "unordered": "Passes through"
+    },
+    "upper_clamp": {
+      "sites": "00877BD9..00877BF7",
+      "condition": "Ordered request > maximum",
+      "replacement": "maximum after native float spill",
+      "unordered_request_or_maximum": "Keep request",
+      "negative_maximum": "No validity guard added; ordered upper comparison can select a negative maximum"
+    },
+    "storage": {
+      "site": "00877C04",
+      "source": "Original XMM request bits unless an ordered clamp selected zero/maximum",
+      "masked_nan_bits": "Payload, sign and signaling bit preserved in health+370h; x87 operand copies can quiet independently"
+    },
+    "marker": {
+      "sites": "00877C0C..00877C20",
+      "operation": "Ambient-x87 maximum minus double1, then ordered stored > result",
+      "unordered": "No marker write",
+      "state": "Only set+2E8h=-1; never clears it",
+      "projection_gap_retained": true
+    },
+    "callback_and_replication": {
+      "sites": "00877C2A..00877C77",
+      "native": "Mode2 skips callback; otherwise call vtable1B0h, reload mode, host1 calls getter and conversion",
+      "source_limit": "Explicit input snapshots and existing callback timing retained; no full mutation/ownership/timing port"
+    }
+  },
+  "getter_contract": {
+    "release_gate": {
+      "sites": "00923BE4..00923BEE",
+      "result": "+0",
+      "cache_write": false
+    },
+    "raw_fraction": {
+      "sites": "00876261..00876270",
+      "operation": "FLD current / FDIV max / FSTP float / FLD float"
+    },
+    "getter_spill": "00923BF9 FSTP float after virtual call",
+    "lower_clamp": "00923C03 FCOMIP 0,value /00923C07 JBE: only ordered negative -> +0",
+    "upper_clamp": "00923C2F COMISS value,float1 /00923C32 JBE: only ordered greater ->1",
+    "cache": "00923C16 or00923C41 MOVSS writes float bits to+164h, not numeric int conversion",
+    "masked_unordered": "Survives both clamps; signaling NaN has been quieted by x87 load/arithmetic/spill before replication",
+    "existing_typed_gap": "entity_health_00923be0 returns raw unit fraction without native floor/cap/cache; unchanged"
+  },
+  "masked_nan_replication": {
+    "multiply": "00877C58 FMUL double256 at00D0DEE0",
+    "runtime_mode_address": "0109EEA4",
+    "nonzero_mode": {
+      "sites": "00BF7429..00BF743B",
+      "operation": "FSTP double then CVTTSD2SI",
+      "raw_eax": "80000000",
+      "final_signed_byte_clamp": 0
+    },
+    "zero_mode": {
+      "sites": "00BF7456..00BF74CA",
+      "operation": "FISTP qword ->8000000000000000; EAX0 and high-sign-masked zero shortcut at00BF74B5..00BF74BF",
+      "raw_eax": "00000000",
+      "final_signed_byte_clamp": 0
+    },
+    "clamp_sites": "00877C63..00877C77",
+    "verified_nan_patterns": [
+      "7fc12345",
+      "7f812345",
+      "ffc12345",
+      "ff812345"
+    ],
+    "native_getter_cache_patterns": [
+      "7fc12345",
+      "7fc12345",
+      "ffc12345",
+      "ffc12345"
+    ],
+    "integer_cast_bypassed_in_compiled_source": true,
+    "generated_assembly": {
+      "path": "local/unit_damage.asm",
+      "helper_guard_line": 229,
+      "helper_cast_line": 240,
+      "pure_setter_guard_line": 660,
+      "pure_setter_cast_line": 676,
+      "host_setter_guard_line": 2571,
+      "host_setter_cast_line": 2587
+    }
+  },
+  "constants": [
+    {
+      "address": "00D7A24C",
+      "bytes": "00 00 80 3f",
+      "type": "float32",
+      "value": 1
+    },
+    {
+      "address": "00D7A210",
+      "bytes": "00 00 00 00 00 00 f0 3f",
+      "type": "float64",
+      "value": 1
+    },
+    {
+      "address": "00D0DEE0",
+      "bytes": "00 00 00 00 00 00 70 40",
+      "type": "float64",
+      "value": 256
+    }
+  ],
+  "floating_point_scope": {
+    "native_control_policy": "These routines do not install CW/MXCSR; x87 arithmetic and SSE operations use their ambient domains",
+    "probe_exception_masks": "All x87 and MXCSR exceptions masked",
+    "probe_x87_precision": [
+      24,
+      53,
+      64
+    ],
+    "probe_rounding": [
+      "nearest_even",
+      "down",
+      "up",
+      "toward_zero"
+    ],
+    "probe_mxcsr_rounding": "Matched x87 RC in each case",
+    "probe_daz": false,
+    "probe_ftz": false,
+    "prior_reconstruction_log_observation": {
+      "path": "local/cc11_health_pair_on_usnos_f12.log",
+      "before_d3d_line": 26,
+      "before_d3d_pc": 53,
+      "fixed_step_line": 5978,
+      "fixed_step_pc": 24,
+      "scope": "Reconstruction observation, not original setter runtime proof"
+    },
+    "unmasked_exceptions_tested": false,
+    "status_flags_or_trap_order_parity": false,
+    "limitations": [
+      "Native signaling loads and ordered compares may raise invalid; source instruction domains/timing differ",
+      "NaN byte guard skips native invalid conversion effects",
+      "Unmasked conditions can interrupt before nominal write/dispatch",
+      "DAZ/FTZ variants and independently differing x87/MXCSR rounding untested"
+    ]
+  },
+  "known_gaps": [
+    {
+      "name": "marker ambient precision",
+      "sites": "00877C0C..00877C20",
+      "witnesses": [
+        {
+          "current": 0,
+          "request_and_maximum": "2^25",
+          "control_words": [
+            "007f",
+            "087f"
+          ],
+          "native_marker_set": false,
+          "typed_marker_set": true
+        },
+        {
+          "current": 0,
+          "request_and_maximum": "2^54",
+          "control_words": [
+            "037f",
+            "0b7f"
+          ],
+          "native_marker_set": true,
+          "typed_marker_set": false
+        }
+      ],
+      "changed": false
+    },
+    {
+      "name": "getter clamp/cache and virtual state",
+      "sites": "00923BE0..00923C4B",
+      "witness": "current200/max100 -> typed2 bits40000000, native getter/cache1 bits3f800000",
+      "changed": false
+    },
+    {
+      "name": "fraction ambient precision",
+      "sites": "00876261..00876270",
+      "detail": "SSE2 typed division does not reproduce all x87 PC/RC spill behavior",
+      "changed": false
+    },
+    {
+      "name": "finite conversion overflow and infinity",
+      "sites": "00877C58..00877C77",
+      "detail": "Existing finite C++ cast requires scaled value to fit int; native mode-dependent overflow/lowword behavior not ported",
+      "changed": false
+    }
+  ],
+  "probe": {
+    "command": "cmd /c local\\cc11_health_nan_check.cmd",
+    "source": "local/cc11_health_nan_probe.cpp",
+    "exe": "local/cc11_health_nan_probe.exe",
+    "toolchain": "MSVC Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict; /MANIFEST:EMBED /OPT:REF",
+    "reference": "Assembly transcription of setter prefix and getter/fraction; existing recovered native_render_batch_keys.cpp CRT helpers",
+    "reference_limit": "Bounded instruction comparison, not original complete routine execution or original-game validation",
+    "input_rows": 28,
+    "pc_rc_settings": 12,
+    "prefix_comparisons": 336,
+    "before_prefix_failures": 60,
+    "after_prefix_failures": 0,
+    "mode_data_and_callback_checks": 672,
+    "before_mode_failures": 120,
+    "after_mode_failures": 0,
+    "both_crt_byte_comparisons": 240,
+    "byte_failures": 0,
+    "released_getter_cache_preservation_checked": true,
+    "known_marker_differences": 4,
+    "unexpected_marker_differences": 0,
+    "before_exit_code": 1,
+    "after_exit_code": 0,
+    "new_tracked_tests": 0
+  },
+  "validation": {
+    "strict_win32_compile_and_probe": "Passed",
+    "source_change_scope_assertion": "Passed: non-comment changes exactly ordered-negative clamp and unordered-byte branch",
+    "header_noncomment_abi_assertion": "Passed: comments only",
+    "generated_assembly_review": "Helper and both inlined paths bypass conversion on unordered input",
+    "native_callsite_check": "Passed: 2 direct rows checked, 0 failed; 1 indirect row checked manually in listing",
+    "diff_check": "Passed",
+    "full_cmake_build_ctest": "Primary integrator responsibility after merge",
+    "long_game_run": "Not requested or run",
+    "binary_abi_compatible": false,
+    "original_game_validated": false,
+    "blanket_ieee_conformance": false
+  },
+  "next_bounded_work": {
+    "suggested_packet": "cc11_health_marker_pc",
+    "address": "00877B90",
+    "range": "00877C00..00877C20",
+    "contract": "Stored-float load, max load, FSUB double1, FCOMIP/JBE marker write under actual caller x87 control word; do not change control word or replace expression algebraically",
+    "reuse_witnesses": [
+      "max=request2^25 at PC24",
+      "max=request2^54 at PC64"
+    ],
+    "separate_getter_work": "00923BE0 release/cache/virtual contract plus00876260 division/spill precision"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_health_nan_probe.cpp",
+      "sha256": "31df22f16f76045cbfd306d82eb1913af2190376faa4cc3608d4d7fc21ffa4a9",
+      "bytes": 10246
+    },
+    {
+      "path": "local/cc11_health_nan_probe.exe",
+      "sha256": "4ddfe3edf7a71493583cbebe07e13d7ac4e045d8da347bba5e3ccc08bb909c2a",
+      "bytes": 121344
+    },
+    {
+      "path": "local/cc11_health_nan_check.cmd",
+      "sha256": "491e040a8a4dc4f259a16c8fd4f1c4d905b0281a05f74e8ef1ef3f34c31d69f9",
+      "bytes": 468
+    },
+    {
+      "path": "local/cc11_health_nan_before.log",
+      "sha256": "dc32121a91d79f1e00dd2495a966e7e4d1df91178d1e0573806a6853271784c6",
+      "bytes": 1454
+    },
+    {
+      "path": "local/cc11_health_nan_after.log",
+      "sha256": "fbce9515ab75c98cd2c1394041c4a522c17cea49a2178ccb68ad338314cbf7c5",
+      "bytes": 1082
+    },
+    {
+      "path": "local/unit_damage.asm",
+      "sha256": "c7bd6d578036ba3662e66f17179dd073913e39dbb35dfa0e498ff55d8cca35b1",
+      "bytes": 106655
+    },
+    {
+      "path": "src/unit_damage.cpp",
+      "sha256": "dcd072bcf01bf16d0e3b4738eb808ae5d7562e103661f63ee91c8776f7c82513",
+      "bytes": 23801
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "sha256": "cb27439b0e764ddc5e2304a394373efb2b6a9ef06912caa452e75e91a0865dcc",
+      "bytes": 19835
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "bytes": 5004
+    }
+  ],
+  "native_listing_sha256": {
+    "00877b90": "6b9a44b9f2fe15e71e560695e25396ae1aa65a8867f206e54c920050ef8f96e3",
+    "00923be0": "9bfe71571b47fc1d4b2c8379ac492bcde5cc15f124c7760902a7845e88b83bc1",
+    "00876260": "982d7735a7c88d1efb74224275196c7dfc3cca2149bc1085d838e1ffe7b986c4",
+    "00bf7420": "9526bae9cc075980a54dd797422525e950f177a27c8dd94e8fdf32a76dd2ae6f",
+    "00bf7456": "42cd5fa06b1abd4347e57dc411c4f22dec6174f99fb55441da8312ddf963cb82"
+  }
+}
