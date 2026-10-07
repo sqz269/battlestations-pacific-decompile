@@ -11373,3 +11373,51 @@ the image's AI fire a torpedo boat's fixed tubes?
   torpedo launch times moving. That is the mechanism working, not a regression.
 - **JM08 with the boats (lua47 `g9` orders):** the tubes are identical (`assigns 0`), because 161.1's mask refuses
   first. The per-unit line shows `masked == scored` for every Gyoraitei.
+
+## 162. The shipyard's entries never return to idle: `008455A0`, the observer release (lead queue item 2; cc9-gunnery34, 2026-10-06)
+
+**The question.** In JM08 (5fd) only 4 of the 12 ordered `Gyoraitei` are ever built. One builds at once and three
+queue. After that, all four entries stay non-idle, and every later `build` is refused with "no idle entry (0067442D
+returns)": 113 refusals in `l47_F1_j8.log`, with `builds=4 launches=4 hangar_releases=4`. What returns an entry to
+state 0 in the image?
+
+### 162.1 The read
+
+- **AAh `008437D0`** (`008437D0..008438AF`, read in full): the build's replication. It does five things:
+  - sets the entry's state to 3 (`00843812`) and its hangar `+2Ch` (`00843843`);
+  - resolves the handle into `+30h` and into the hangar's `+0Ch` (`00843881`, `00843884`);
+  - registers the shipyard's secondary interface (`this+10h`) as an observer of the unit: `00694A60` at `00843893`;
+  - calls the unit's `vtable[0D8h]`.
+- **The observer slot 08 is `008455A0`** (`008455A0..0084566D`, `RET 4`, secondary table `00D0B754`, docs/NATIVE_UNIT_
+  OBSERVER_ENDPOINT.md). `ECX` is `shipyard+10h`, so its `+774h` is the shipyard's hangars (`+784h`) and its `+784h`
+  is the entries (`+794h`).
+  - It finds the first hangar whose `+0Ch` is the notifying unit and stores 0 there (`008455FC`).
+  - It finds the first entry whose `+30h` is the unit and stores 0 into `+4` (the state), `+8` (the class) and `+30h`
+    (`0084565C..00845664`).
+- **When slot 08 fires:** `00926390` sets `+5Dh` (dead) and `+60h`, then runs the conditional slot-08 notifier
+  `00925C90` (docs/NATIVE_SCENE_LIFECYCLE_NOTIFY.md). So the slot fires at the built unit's death.
+- **So in the image an entry stays in state 4 only while its boat lives.** When the boat dies, the entry is idle again,
+  and the next purchase (`00673A10`'s first-idle search at `006743E0..00674416`) can use it. The stock record is not
+  given back. The host had no release at all.
+- **Uncertainty.** That `00925C90`'s slot-08 dispatch reaches the shipyard's secondary table is inferred from the
+  registration pair (`00694A60` with `EDX = this+10h`) and the slot table. The dispatch loop itself was not re-read.
+
+### 162.2 The binding, `kShipyardDeathReleaseBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+- `shipyard_release_dead_008455a0(yard)` runs at the top of each yard's tick walk, and in `shipyard_order` before the
+  idle search.
+  - For an entry whose `unit` is dead, ON clears the first hangar holding that unit and sets the entry to Idle, with
+    class 0 and no unit.
+  - OFF, each death is counted and logged once, and nothing changes.
+- **LABELLED:** the host polls its dead flags at those two points instead of reacting to the death itself. Nothing reads
+  the entries in between.
+- **Census:** `summary shipyard death release bound unit_deaths entry_reidles hangar_clears`. The first time each built
+  unit is seen dead, the run logs a `shipyard unit died:` line.
+
+**Predictions (before any run).**
+- **Rows with no `build` line (all reference rows):** no shipyard builds a unit, so `unit_deaths=0`. Exit 0 or 1.
+- **JM08 with lua47's `g9` orders** (24000 frames; `build` every 100 frames up to frame 11900, i.e. 595 s):
+  - OFF: `builds=4`, `unit_deaths` = the boats that die (about 4, at 346-396 s), and 113 refusals.
+  - ON: the same deaths, `entry_reidles = unit_deaths`, and new builds after the first death.
+  - So expect `builds > 4` (at most 12, the stock), fewer refusals, and new `Gyoraitei #Y5...` units. Exit 3.
+- **LOMP10 with a build pair:** the same pattern if a built unit dies before the last `build` line. Otherwise exit 1.

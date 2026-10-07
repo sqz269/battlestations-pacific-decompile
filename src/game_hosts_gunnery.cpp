@@ -688,6 +688,14 @@ constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 
 //    (the two range gates) and the 0.2 s think timer stay unmodelled as before.
 //    docs/GUNNERY_OPEN_ITEMS.md 161.
 constexpr bool kTorpedoBotReadyGateBound = false;
+//  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
+//    shipyard's observer slot 08 on each unit it built (registered by AAh
+//    008437D0), runs when the unit dies (00926390): it clears the first hangar
+//    record holding the unit and returns the first entry holding it to state 0
+//    with class 0. The host never did, so an entry stayed in state 4 forever and
+//    00673A10's idle search (0067442D) ran dry after NumSlots builds. OFF: the
+//    deaths are counted only. docs/GUNNERY_OPEN_ITEMS.md 162.
+constexpr bool kShipyardDeathReleaseBound = false;
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
@@ -1248,6 +1256,9 @@ struct GameGunneryHost::Impl {
         unsigned long long walks{0}, orders{0}, orders_refused{0}, a7{0}, a8{0}, a9{0};
         unsigned long long builds{0}, builds_at_order{0}, builds_refused{0};
         unsigned long long hangar_releases{0}, launches{0}, launch_orders_unbound{0};
+        // Packet cc9_g34_shipyard_reidle: built units seen dead, the entries
+        // and hangar records 008455A0 clears for them (both states).
+        unsigned long long unit_deaths{0}, entry_reidles{0}, hangar_death_clears{0};
     } shipyard;
     // Packet cc9_depth_charge_bot (kDepthChargeBotTickBound).
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
@@ -1274,6 +1285,8 @@ struct GameGunneryHost::Impl {
     bool shipyard_build_00844fc0(bsp::ShipyardState& yard, std::size_t shipyard_unit,
                                  std::size_t entry);
     void shipyard_walk_00846320();
+    void shipyard_release_dead_008455a0(bsp::ShipyardState& yard);
+    std::set<std::size_t> shipyard_deaths_seen;   // OFF census: each death once
 
     // One entry per created unit, index aligned with GameUnitsHost.
     struct UnitState {
@@ -11374,12 +11387,50 @@ bool GameGunneryHost::Impl::shipyard_build_00844fc0(bsp::ShipyardState& yard,
     return true;
 }
 
+// Packet cc9_g34_shipyard_reidle. 008455A0 is the shipyard's secondary observer
+// slot 08 (table 00D0B754), registered on each built unit by AAh 008437D0
+// (00694A60 at 00843893). 00926390 fires slot 08 when the unit's +5Dh (dead)
+// is first set. ECX = shipyard+10h, so its +774h/+784h are the shipyard's
+// hangars (+784h) and entries (+794h): the first hangar whose +0Ch is the unit
+// gets +0Ch = 0 (008455FC), and the first entry whose +30h is the unit gets
+// +4 = +8 = +30h = 0 (0084565C..00845664), i.e. Idle with no class.
+// LABELLED: the host polls its dead flags from the shipyard tick and the
+// order, not from the death itself; nothing reads the entries in between.
+void GameGunneryHost::Impl::shipyard_release_dead_008455a0(bsp::ShipyardState& yard) {
+    for (std::size_t i = 0; i < yard.entries.size(); ++i) {
+        const std::size_t u = yard.entries[i].unit;
+        if (u == bsp::kShipyardNone || u >= unit_state.size() || !unit_state[u].dead) continue;
+        const bool first_seen = shipyard_deaths_seen.insert(u).second;
+        if (first_seen) {
+            ++shipyard.unit_deaths;
+            log.notef("shipyard unit died: unit=%s entry=%zu made=%s state=%d bound=%d "
+                "(008455A0)", yard.owner_name.c_str(), i + 1,
+                unit_state[u].row.name.c_str(), static_cast<int>(yard.entries[i].state),
+                kShipyardDeathReleaseBound ? 1 : 0);
+        }
+        if constexpr (!kShipyardDeathReleaseBound) continue;
+        for (bsp::ShipyardHangar& h : yard.hangars) {
+            if (h.launched_unit != u) continue;
+            h.launched_unit = bsp::kShipyardNone;   // 008455FC
+            ++shipyard.hangar_death_clears;
+            break;
+        }
+        bsp::ShipyardEntry& e = yard.entries[i];      // the first match
+        e.state = bsp::ShipyardEntryState::Idle;      // 0084565E
+        e.class_id = 0;                               // 00845661
+        e.unit = bsp::kShipyardNone;                  // 00845664
+        ++shipyard.entry_reidles;
+        done("Shipyard::observer_release_008455a0", 0x008455a0u);
+    }
+}
+
 void GameGunneryHost::Impl::shipyard_walk_00846320() {
     bsp::ShipyardRegistry& registry = bsp::shipyards();
     for (std::size_t y = 0; y < registry.size(); ++y) {
         bsp::ShipyardState* yard = registry.mutable_at(y);
         if (yard == nullptr) continue;
         shipyard_complete(*yard);
+        shipyard_release_dead_008455a0(*yard);
         const std::size_t self = unit_by_name(yard->owner_name);
         if (self >= units.count()) continue;
         // 00846337: the walk runs only while shipyard+5Dh is clear. LABELLED:
@@ -11460,6 +11511,7 @@ bool GameGunneryHost::shipyard_order(std::size_t shipyard, int entry, int count,
     bsp::ShipyardState* yard = bsp::shipyards().find_mutable(row->name);
     if (yard == nullptr) return refuse("the unit has no shipyard state");
     host.shipyard_complete(*yard);
+    host.shipyard_release_dead_008455a0(*yard);
     // 006743E0..00674416: the first entry in state 0 (006534E0), else return.
     std::size_t e = bsp::kShipyardNone;
     if (entry > 0) {
@@ -12599,6 +12651,10 @@ void GameGunneryHost::report() {
             "cc9_shipyard_production)", bsp::shipyards().size(), y.walks, y.orders,
             y.orders_refused, y.a7, y.a8, y.a9, y.builds, y.builds_at_order, y.builds_refused,
             y.hangar_releases, y.launches, y.launch_orders_unbound);
+        host.log.notef("summary shipyard death release bound=%d unit_deaths=%llu "
+            "entry_reidles=%llu hangar_clears=%llu (008455A0, packet cc9_g34_shipyard_reidle)",
+            kShipyardDeathReleaseBound ? 1 : 0, y.unit_deaths, y.entry_reidles,
+            y.hangar_death_clears);
     }
     host.log.notef("summary mission gunnery units=%zu guns=%zu passes=%zu ticks=%llu "
         "bodies=%llu bridge=%llu sweeps=%llu candidates=%llu rejected=%llu "
