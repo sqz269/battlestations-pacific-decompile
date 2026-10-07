@@ -1,0 +1,640 @@
+{
+  "packet": "cc11_land_state_registry",
+  "baseline": "86f0c692c",
+  "status": "complete conditional ordinary SOURCE storage/registrar reconstruction; unbound original class profile/ABI/runtime/gameplay",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "owned_files": [
+    "include/bsp/native_land_state_registry.hpp",
+    "src/native_land_state_registry.cpp",
+    "docs/LANDING_STATE_REGISTRY_CC11.md",
+    "reports/landing_state_registry_cc11.json"
+  ],
+  "functions": [
+    {
+      "address": "00410400",
+      "end_exclusive": "00410455",
+      "bytes": 85,
+      "decoded_instructions": 25,
+      "disk_sha256": "6874d0d6002bc1d646c4557ee56432a6837acf724953de4ae9ed87d7afb73f4c",
+      "live_sha256": "6874d0d6002bc1d646c4557ee56432a6837acf724953de4ae9ed87d7afb73f4c",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=count; EAX=allocation; RET; native overflow exception path excluded",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00410C00",
+      "end_exclusive": "00410C2C",
+      "bytes": 44,
+      "decoded_instructions": 17,
+      "disk_sha256": "b1fd2d696770390c5c8300ab494b66faf73583a21b8432cca21af50e5c518a13",
+      "live_sha256": "b1fd2d696770390c5c8300ab494b66faf73583a21b8432cca21af50e5c518a13",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=first, EDX=last; stack destination/metadata/unused words; EAX=destination end; RET10",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00410FA0",
+      "end_exclusive": "00410FC4",
+      "bytes": 36,
+      "decoded_instructions": 15,
+      "disk_sha256": "50d69d54b8aa663e515794293cb968e215715a6e7552f516cca75c987dc96a37",
+      "live_sha256": "50d69d54b8aa663e515794293cb968e215715a6e7552f516cca75c987dc96a37",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "cdecl first/last/pair; incidental register return not adopted",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00410FE0",
+      "end_exclusive": "0041100C",
+      "bytes": 44,
+      "decoded_instructions": 17,
+      "disk_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "live_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=destination, EDX=count; stack pair/metadata/unused words; RET10; incidental EAX not adopted",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "004112E0",
+      "end_exclusive": "0041131E",
+      "bytes": 62,
+      "decoded_instructions": 27,
+      "disk_sha256": "4c1900facf60d5fc05bd5b00edc1693cce2375cdcbb9d132b8e0d6745ff87989",
+      "live_sha256": "4c1900facf60d5fc05bd5b00edc1693cce2375cdcbb9d132b8e0d6745ff87989",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "cdecl first/last/destination end; EAX=destination start",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "004114D0",
+      "end_exclusive": "00411502",
+      "bytes": 50,
+      "decoded_instructions": 21,
+      "disk_sha256": "8e0e3b6629cc11e22d6dc1e409ce5e0258a42b482ab85b7e231f58a9447a0238",
+      "live_sha256": "8e0e3b6629cc11e22d6dc1e409ce5e0258a42b482ab85b7e231f58a9447a0238",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=unread vector metadata; stack destination/count/pair; EAX=destination+8count; RETC; primary reviewed",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411670",
+      "end_exclusive": "00411695",
+      "bytes": 37,
+      "decoded_instructions": 14,
+      "disk_sha256": "f234c94270009165a34768473e4016a1cea05e447a71aa0c87d3f1cba55577a5",
+      "live_sha256": "f234c94270009165a34768473e4016a1cea05e447a71aa0c87d3f1cba55577a5",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=unread vector metadata; stack first/last/destination; EAX=destination end; RETC; primary reviewed",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411960",
+      "end_exclusive": "00411BA1",
+      "bytes": 577,
+      "decoded_instructions": 225,
+      "disk_sha256": "0a9c42fc795f2ce4e1883e1f663f5e5f1e2f50877117ad35b3988c8cff77ad60",
+      "live_sha256": "0a9c42fc795f2ce4e1883e1f663f5e5f1e2f50877117ad35b3988c8cff77ad60",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=vector; stack iterator owner(unread)/position/count/pair; RET10; private EH/diagnostics/register return excluded; primary reviewed complete branches",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411BB0",
+      "end_exclusive": "00411C87",
+      "bytes": 215,
+      "decoded_instructions": 78,
+      "disk_sha256": "7e01c691afc9720ebaf70d785b9abd50d7a2970526ed74db8fb48f5b97517952",
+      "live_sha256": "7e01c691afc9720ebaf70d785b9abd50d7a2970526ed74db8fb48f5b97517952",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=vector; stack requested capacity; RET4; private EH/diagnostics excluded",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411CA0",
+      "end_exclusive": "00411D29",
+      "bytes": 137,
+      "decoded_instructions": 56,
+      "disk_sha256": "8f8ee00598b1edfd3b8c8a2990b1528ceb97f1fd5249834ef2bbd360a05a1586",
+      "live_sha256": "8f8ee00598b1edfd3b8c8a2990b1528ceb97f1fd5249834ef2bbd360a05a1586",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=vector; stack output/iterator owner/position/pair; EAX=output iterator; RET10",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411D90",
+      "end_exclusive": "00411E13",
+      "bytes": 131,
+      "decoded_instructions": 53,
+      "disk_sha256": "86001c4f0a9652ab345726b8a0c29bdfdec8e79a464cc95a37144fff0ff7f9e8",
+      "live_sha256": "86001c4f0a9652ab345726b8a0c29bdfdec8e79a464cc95a37144fff0ff7f9e8",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=vector; stack pair; RET4; incidental register return not adopted",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411E20",
+      "end_exclusive": "00411E6E",
+      "bytes": 78,
+      "decoded_instructions": 24,
+      "disk_sha256": "0791e588d4e3f433386da5a311e2eda7d620fa344ada26013325a073b4adcf57",
+      "live_sha256": "0791e588d4e3f433386da5a311e2eda7d620fa344ada26013325a073b4adcf57",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=registry; EAX=same registry; RET; private construction EH excluded",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "00411E70",
+      "end_exclusive": "00411E9C",
+      "bytes": 44,
+      "decoded_instructions": 15,
+      "disk_sha256": "5f5b685e14224992070b6c7fc55e6dfd7d7af6579bcd5290079ad2172b06788f",
+      "live_sha256": "5f5b685e14224992070b6c7fc55e6dfd7d7af6579bcd5290079ad2172b06788f",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=registry; stack name/state; EAX=same registry; RET8",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    },
+    {
+      "address": "009AF9A0",
+      "end_exclusive": "009AFA45",
+      "bytes": 165,
+      "decoded_instructions": 47,
+      "disk_sha256": "28c5629053925fec3e0dc77346fb2fbd8141b3f7cd46ed3fc1dd709651f99b2a",
+      "live_sha256": "28c5629053925fec3e0dc77346fb2fbd8141b3f7cd46ed3fc1dd709651f99b2a",
+      "disk_live": "MATCH",
+      "source": "complete ordinary admitted SOURCE body; private EH/diagnostics excluded",
+      "original_abi": "ECX=same actual approach; RET; incidental register return not adopted",
+      "source_abi": "new C++ interface, not an original ABI bridge"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00410411",
+      "native": "00BF681B",
+      "function": "00410400"
+    },
+    {
+      "address": "004114F4",
+      "native": "00410FE0",
+      "function": "004114D0"
+    },
+    {
+      "address": "0041168C",
+      "native": "00410C00",
+      "function": "00411670"
+    },
+    {
+      "address": "00411A2B",
+      "native": "00410400",
+      "function": "00411960"
+    },
+    {
+      "address": "00411A50",
+      "native": "00410C00",
+      "function": "00411960"
+    },
+    {
+      "address": "00411A60",
+      "native": "004114D0",
+      "function": "00411960"
+    },
+    {
+      "address": "00411A78",
+      "native": "00410C00",
+      "function": "00411960"
+    },
+    {
+      "address": "00411A9A",
+      "native": "00BF65AC",
+      "function": "00411960"
+    },
+    {
+      "address": "00411AFE",
+      "native": "00411670",
+      "function": "00411960"
+    },
+    {
+      "address": "00411B21",
+      "native": "004114D0",
+      "function": "00411960"
+    },
+    {
+      "address": "00411B37",
+      "native": "00410FA0",
+      "function": "00411960"
+    },
+    {
+      "address": "00411B68",
+      "native": "00411670",
+      "function": "00411960"
+    },
+    {
+      "address": "00411B76",
+      "native": "004112E0",
+      "function": "00411960"
+    },
+    {
+      "address": "00411B86",
+      "native": "00410FA0",
+      "function": "00411960"
+    },
+    {
+      "address": "00411BFC",
+      "native": "00410400",
+      "function": "00411BB0"
+    },
+    {
+      "address": "00411C3D",
+      "native": "00410C00",
+      "function": "00411BB0"
+    },
+    {
+      "address": "00411C5A",
+      "native": "00BF65AC",
+      "function": "00411BB0"
+    },
+    {
+      "address": "00411CF0",
+      "native": "00411960",
+      "function": "00411CA0"
+    },
+    {
+      "address": "00411DD9",
+      "native": "00410FE0",
+      "function": "00411D90"
+    },
+    {
+      "address": "00411E06",
+      "native": "00411CA0",
+      "function": "00411D90"
+    },
+    {
+      "address": "00411E57",
+      "native": "00411BB0",
+      "function": "00411E20"
+    },
+    {
+      "address": "00411E8E",
+      "native": "00411D90",
+      "function": "00411E70"
+    },
+    {
+      "address": "009AF9B8",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AF9CB",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AF9DE",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AF9F1",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AFA04",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AFA17",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AFA2A",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    },
+    {
+      "address": "009AFA3D",
+      "native": "00411E70",
+      "function": "009AF9A0"
+    }
+  ],
+  "excluded_native_calls": [
+    {
+      "site": "00410439",
+      "operand": "0xbf6340",
+      "function": "00410400",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00410450",
+      "operand": "0xbf6885",
+      "function": "00410400",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "004119CA",
+      "operand": "0x411860",
+      "function": "00411960",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411ACB",
+      "operand": "0xbf65ac",
+      "function": "00411960",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411AD7",
+      "operand": "0xbf6885",
+      "function": "00411960",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411BDE",
+      "operand": "0x411860",
+      "function": "00411BB0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411C15",
+      "operand": "0xbf6713",
+      "function": "00411BB0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411C25",
+      "operand": "0xbf6713",
+      "function": "00411BB0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411CC6",
+      "operand": "0xbf6713",
+      "function": "00411CA0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411CD3",
+      "operand": "0xbf6713",
+      "function": "00411CA0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411CFD",
+      "operand": "0xbf6713",
+      "function": "00411CA0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411D13",
+      "operand": "0xbf6713",
+      "function": "00411CA0",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    },
+    {
+      "site": "00411DF3",
+      "operand": "0xbf6713",
+      "function": "00411D90",
+      "reason": "native diagnostic/overflow/private EH branch outside admitted normal SOURCE domain"
+    }
+  ],
+  "primary_flow_repair": "reports/state_vector_flow_recovery_cc11.json",
+  "storage": {
+    "pair_bytes": 8,
+    "vector_bytes": 16,
+    "registry_bytes": 20,
+    "registry_offsets": {
+      "profile_word": 0,
+      "retained_proxy": 4,
+      "begin": 8,
+      "end": 12,
+      "capacity_end": 16
+    },
+    "numeric_profile_stamp": "00CE37DC",
+    "profile_word0_native_target": "00411810",
+    "profile_status": "raw numeric stamp explicitly UNCALLABLE; full class profile/scalar destructor unsupported"
+  },
+  "registration": [
+    {
+      "name_identity": "00D1FE1C",
+      "state_offset": "CC"
+    },
+    {
+      "name_identity": "00D1FE0C",
+      "state_offset": "108"
+    },
+    {
+      "name_identity": "00D1FE00",
+      "state_offset": "1A0"
+    },
+    {
+      "name_identity": "00D1FDF0",
+      "state_offset": "1C0"
+    },
+    {
+      "name_identity": "00D1FDE4",
+      "state_offset": "1E0"
+    },
+    {
+      "name_identity": "00D1FDD8",
+      "state_offset": "200"
+    },
+    {
+      "name_identity": "00D1FDCC",
+      "state_offset": "228"
+    },
+    {
+      "name_identity": "00D1FDC0",
+      "state_offset": "254"
+    }
+  ],
+  "native_consumers": [
+    {
+      "site": "009B3010",
+      "caller": "009B2E50",
+      "target": "009AF9A0"
+    },
+    {
+      "site": "009B3204",
+      "caller": "009B3040",
+      "target": "009AF9A0"
+    }
+  ],
+  "ordinary_contract": [
+    "caller-owned SAME actual approach/registry/embedded state identities; required immutable actual name pointers",
+    "stable coherent Win32 backing fields/ranges and native signed SUB/SAR3/modulo32 LEA arithmetic",
+    "capacity, requested capacity, count AND total size+insert count <=1FFFFFFF with native-valid coherent terminating ranges",
+    "actual allocation returns normally; all arrays share existing singleton_lifetime_allocate/free CRT ownership domain",
+    "disjoint allocation/copy destinations and intentional native in-place shift overlap; captured input pair may alias an existing element",
+    "no structural reentry or concurrent mutation; fresh field observations and captured values preserved"
+  ],
+  "unbound": [
+    "native class profile/scalar destructor00411810; numeric stamp is uncallable",
+    "native CRT diagnostics and overflow/bad allocation exception construction",
+    "private construction/insertion/reserve EH cleanup and arbitrary faults/invalid iterator/null placement",
+    "pointee retention, state/observer/arena/controller/lower/composite ownership and lifetimes",
+    "whole009B2E50/lower009AFE70 construction adoption and actual game storage bindings",
+    "original register/EFLAGS/binary ABI/drop-in replacement and native runtime/gameplay"
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0, Win32 toolset14.51.36231; /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
+    "fresh_tus": [
+      "src/native_land_state_registry.cpp",
+      "local/cc11_land_state_registry_probe.cpp"
+    ],
+    "compiler_exit_codes": [
+      0,
+      0
+    ],
+    "link_exit_code": 0,
+    "link": "link /INCREMENTAL:NO /OPT:REF /MANIFEST:EMBED; fresh registry/probe objects plus three uniquely pinned libraries; user32 d3d9 PowrProf shell32 advapi32",
+    "native_call_verifier": "python tools/verify_report_calls.py reports/landing_state_registry_cc11.json:30 checked,0 failed",
+    "full_build": "not run by worker; root owns CMake registration/full main build/CTest/integration",
+    "fixture_kind": "one connected actual-TU SOURCE fixture, not native runtime/differential/provider/table proof",
+    "fixture_checks": 39,
+    "fixture_flow": "real ctor reserve16, nine prefix Add calls, eight ordered same-approach registrations;17th element grows16->24; same vector nonempty/sufficient reserve and both in-place insertion branches; captured pair alias survives backward shift; same task404 cell/profile/proxy retained",
+    "probe_stdout": "PASS SOURCE connected registry ctor/reserve/Add/eight-state registrar: 16to24 growth, retained identities, reserve and both insertion branches, captured self-alias, canonical404; 39 checks",
+    "probe_exit_code": 0,
+    "manifest": {
+      "machine": "014C",
+      "count": 1,
+      "requested_execution_level": "asInvoker"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_land_state_registry.obj",
+      "bytes": 8884,
+      "sha256": "15fc1341dc388e8d0f35554717e24e71160012f389d57a0a0d1ac788abc311a8"
+    },
+    {
+      "path": "local/cc11_land_state_registry_bsp_core.lib",
+      "bytes": 73222074,
+      "sha256": "7ee35484d51bbf5785d22076ee75e5f9fcd03a8c6864028c4c35d9203ca737e8"
+    },
+    {
+      "path": "local/cc11_land_state_registry_bsp_lua511.lib",
+      "bytes": 454824,
+      "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "local/cc11_land_state_registry_bsp_zlib121.lib",
+      "bytes": 71766,
+      "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    {
+      "path": "local/cc11_land_state_registry_probe.cpp",
+      "bytes": 5932,
+      "sha256": "a07214624becd72d754976c421ecc8687ef772aaed33d4742752f077030402d7"
+    },
+    {
+      "path": "local/cc11_land_state_registry_probe.exe",
+      "bytes": 15360,
+      "sha256": "d069593414a9999119cde6129cc835ecbc715b21774191a5a42e11edd7bfa0f1"
+    },
+    {
+      "path": "local/cc11_land_state_registry_probe.obj",
+      "bytes": 16379,
+      "sha256": "4c2d9e875b9a2ca8cd4120fc4f631a5943e6b52902eb75fc35e874a0c3132155"
+    },
+    {
+      "path": "include/bsp/native_land_state_registry.hpp",
+      "bytes": 5489,
+      "sha256": "db9990b17e59fbeefee9cfa389bf8ea839700625d49d91a98edd33df6baf44b7"
+    },
+    {
+      "path": "src/native_land_state_registry.cpp",
+      "bytes": 13106,
+      "sha256": "b51361087f65c05bd8612d23c82df2cf084e5fd9e65ceffbdf81b2d1eb7a19dd"
+    },
+    {
+      "path": "docs/LANDING_STATE_REGISTRY_CC11.md",
+      "bytes": 8649,
+      "sha256": "d4fd2698777091d4e21d3d784024badd42567a65b7256329e79c44a65cd9547a"
+    }
+  ],
+  "support_libraries": [
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "copy": "local/cc11_land_state_registry_bsp_core.lib",
+      "original_pre_copy_sha256": "7ee35484d51bbf5785d22076ee75e5f9fcd03a8c6864028c4c35d9203ca737e8",
+      "original_post_copy_sha256": "7ee35484d51bbf5785d22076ee75e5f9fcd03a8c6864028c4c35d9203ca737e8",
+      "copy_pre_compile_link_sha256": "7ee35484d51bbf5785d22076ee75e5f9fcd03a8c6864028c4c35d9203ca737e8",
+      "copy_post_compile_link_run_sha256": "7ee35484d51bbf5785d22076ee75e5f9fcd03a8c6864028c4c35d9203ca737e8",
+      "baseline": "ae90949a7 root-reported stable build; originals may subsequently rebuild"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+      "copy": "local/cc11_land_state_registry_bsp_lua511.lib",
+      "original_pre_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "original_post_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "copy_pre_compile_link_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "copy_post_compile_link_run_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "baseline": "ae90949a7 root-reported stable build; originals may subsequently rebuild"
+    },
+    {
+      "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+      "copy": "local/cc11_land_state_registry_bsp_zlib121.lib",
+      "original_pre_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "original_post_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "copy_pre_compile_link_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "copy_post_compile_link_run_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "baseline": "ae90949a7 root-reported stable build; originals may subsequently rebuild"
+    }
+  ],
+  "source_coff": {
+    "object": "local/cc11_land_state_registry.obj",
+    "status": "observed SOURCE compiler order only; not native register/ABI/EH proof",
+    "receipts": {
+      "insert_native_bot_state_pairs_00411960": [
+        "0000001C: mov         ecx,dword ptr [eax+4]",
+        "0000001F: mov         eax,dword ptr [eax]",
+        "00000027: mov         edi,dword ptr [ebp+4]",
+        "00000150: call        ?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "00000162: mov         dword ptr [ebp+0Ch],eax",
+        "00000169: mov         dword ptr [ebp+8],eax",
+        "0000016D: mov         dword ptr [ebp+4],ecx"
+      ],
+      "reserve_native_bot_state_pairs_00411bb0": [
+        "0000009C: call        ?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "000000A7: mov         dword ptr [esi+0Ch],eax",
+        "000000AE: mov         dword ptr [esi+8],eax",
+        "000000B2: mov         dword ptr [esi+4],ebx"
+      ],
+      "construct_native_bot_state_registry_00411e20": [
+        "00000013: mov         dword ptr [esi],0CE37DCh",
+        "00000019: mov         dword ptr [esi+8],0",
+        "00000020: mov         dword ptr [esi+0Ch],0",
+        "00000027: mov         dword ptr [esi+10h],0",
+        "00000065: call        ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+      ],
+      "register_native_land_states_009af9a0": [
+        "0000001B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000002B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000003B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000004B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000005B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000006B: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000007E: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z",
+        "0000008E: call        ?add_native_bot_state_00411e70@bsp@@YAPAUNativeBotStateRegistryStorage@1@AAU21@PBDPAX@Z"
+      ]
+    }
+  }
+}
