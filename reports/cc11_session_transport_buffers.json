@@ -1,0 +1,305 @@
+{
+  "packet": "cc11_health_transport_buffer_lifetime",
+  "created_utc": "2026-10-07T12:12:57.180937+00:00",
+  "base_commit": "f97d970fc7a40914f0de66ba4d2ae244c9a59f78",
+  "branch": "agent/cc11_health_guard",
+  "status": "two complete ordinary SOURCE bodies freshly compiled and connected fixture passed; primary registration/integration/full main build pending; historical CRT, actual target/derived lifetime and native ABI/game unbound",
+  "functions": [
+    {
+      "entry": "00783080",
+      "end_exclusive": "007830E3",
+      "bytes": 99,
+      "instructions": 34,
+      "source": "construct_native_session_transport_buffers_00783080",
+      "source_file": "src/native_session_transport_buffers.cpp",
+      "native_abi": "ECX actual member; no stack arguments; RET; EAX returns original member",
+      "coverage": "complete ordinary native body",
+      "original_bytes_sha256": "feee9d70fe7ab2a23fac5d5dc5e9ec36fab52e52e7860845580ec1e8a92f1510"
+    },
+    {
+      "entry": "007830F0",
+      "end_exclusive": "00783119",
+      "bytes": 41,
+      "instructions": 15,
+      "source": "destroy_native_session_transport_buffers_007830f0",
+      "source_file": "src/native_session_transport_buffers.cpp",
+      "native_abi": "ECX actual member; no stack arguments; RET",
+      "coverage": "complete ordinary native body",
+      "original_bytes_sha256": "27b01585e41e681ae34edabfc20c290054bacf21b6a9cb34b577a1a9b9e4cc66"
+    }
+  ],
+  "allocation_boundary": {
+    "header": "include/bsp/singleton_lifetime.hpp",
+    "source": "src/singleton_lifetime.cpp",
+    "allocate": "singleton_lifetime_allocate({SingletonAllocationKind::object,0x10,sizeof(NativeBitCursor)})",
+    "allocation_size": 16,
+    "release": "singleton_lifetime_free(actual_current_cursor_cell)",
+    "implementation": "Existing malloc/_callnewh retry/std::bad_alloc and matching std::free services; no lifetime manager/domain or alternate allocation service",
+    "qualifications": "Host CRT service boundary; original CRT handler globals/exception object and vtable identity not replaced"
+  },
+  "call_sites": [
+    {
+      "address": "007830A2",
+      "native": "00BF681B",
+      "function": "00783080",
+      "contract": "Allocate 10h before cursor initialization and publication"
+    },
+    {
+      "address": "00783106",
+      "native": "00BF65AC",
+      "function": "007830F0",
+      "contract": "Fresh actual cursor cell; returning free then ascending loop"
+    }
+  ],
+  "storage": {
+    "size": 3388,
+    "actual_target_member_offset": 16,
+    "profile_offset": 0,
+    "recovered_numeric_profile_stamp": "00D04264",
+    "executable_host_vtable": false,
+    "member_buffer_offsets": [
+      4,
+      1128,
+      2252
+    ],
+    "buffer_bytes": 1124,
+    "member_cursor_cells": [
+      3376,
+      3380,
+      3384
+    ],
+    "target_cursor_cells": [
+      3392,
+      3396,
+      3400
+    ],
+    "ownership": "Caller-owned member and embedded bytes; separately owned cursor allocations; no default initialization or automatic destructor"
+  },
+  "operation_order": [
+    "profile stamp before allocation; each allocation before any writes for that iteration",
+    "nonnull: base,length,bit; clear only first backing byte; reload base into current; publish cursor",
+    "null: no cursor/backing writes; publish null; compiled null branch retained; no fixture injection",
+    "throw: no catch or rollback; earlier publications and remaining preimages retained; no fixture injection",
+    "destructor: stamp; load current cell then free; increment cell by4; exactly3 ascending iterations; no clears or enclosing free"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "primary_evidence": "reports/transport_buffer_destructor_flow_recovery_cc11.json",
+    "primary_verified_complete_disk_live_bytes": true,
+    "local_returning_free_override_cleared": true,
+    "decoded_native_tail": true,
+    "stored_destructor_body": "007830F0..0078310A",
+    "stored_destructor_body_tail_complete": false,
+    "full_flow_repair": false,
+    "bridge_script_execution_enabled": false,
+    "body_extension_performed": false,
+    "worker_mutations": false
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244 Win32",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /MANIFEST:EMBED /OPT:REF",
+    "fresh_translation_units": 21,
+    "source_snapshot_files": 63,
+    "embedded_manifest_asInvoker": true,
+    "fixture": {
+      "checks": 191,
+      "failures": 0,
+      "fixture_cases": 17,
+      "original_x87_kernel_cases": 72,
+      "pc_values": 3,
+      "rc_values": 4,
+      "ambient_stack_cases": 2,
+      "timestamp_pairs": 3,
+      "constructed_buffer_member_cases": 1,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "connected_case": "One adapted existing D2 case uses member at actual target+10 with independent D40/D44/D48; all backing bytes and outer preimages; complete D2/profile/lock/serializer/owned enqueue; overwrite all backing before explicit free; owned data survives",
+    "ascending_free_proof": "Native and generated assembly inspection; no interception/default free callback",
+    "retained_regression_scope": "Existing transport route cases and72 original timestamp x87 kernel comparisons, not new buffer native differential tests",
+    "generated_assembly_review": "Order and retained null branch,10h/10h request,base reload,publication,and fresh ascending free loop confirmed",
+    "native_call_validation": {
+      "tool": "python tools/verify_report_calls.py reports/cc11_session_transport_buffers.json",
+      "status": "passed",
+      "call_rows": 2,
+      "failures": 0
+    },
+    "full_main_build": "pending primary registration/integration"
+  },
+  "provenance": {
+    "native_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "native_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a",
+    "input_manifest": {
+      "source_head": "f97d970fc",
+      "sources": [
+        "src/native_session_transport_buffers.cpp",
+        "src/native_session_transport_flush.cpp",
+        "src/native_unit_health_message.cpp",
+        "src/native_session_message_base.cpp",
+        "src/native_session_message_tags_12_13_14_15.cpp",
+        "src/native_bit_cursor_read.cpp",
+        "src/native_bit_cursor_write.cpp",
+        "src/native_bit_cursor_fields.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/unit_damage.cpp",
+        "src/native_render_batch_keys.cpp",
+        "src/native_network_console_send.cpp",
+        "src/native_network_console_runtime.cpp",
+        "src/native_network_console_storage.cpp",
+        "src/native_network_console_owner.cpp",
+        "src/native_frame_clock_publication.cpp",
+        "src/native_frame_clock_actual.cpp",
+        "src/native_renderer_control_worker.cpp",
+        "src/native_renderer_worker_lifetime.cpp",
+        "src/native_tracked_critical_section_release.cpp",
+        "src/frame_clock.cpp"
+      ],
+      "snapshot": "local/cc11_transport_buffers_20261007_a/inputs_01",
+      "sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_bit_cursor_fields.hpp": "e8f170001981470be8db80f359aa3b261660e7be4507b79fe551f39b16780544",
+        "include/bsp/native_bit_cursor_read.hpp": "664f03d12e9fb5c6b75cbbdfa2f179cd9f0c5352542885e62db77f454c663b21",
+        "include/bsp/native_bit_cursor_write.hpp": "26bc0fb69b30b5d33f2b8b38d57622e21374d615814546fc6f725192e6c8fbce",
+        "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "include/bsp/native_event_owner.hpp": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+        "include/bsp/native_frame_clock_actual.hpp": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1",
+        "include/bsp/native_frame_clock_publication.hpp": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b",
+        "include/bsp/native_network_console_owner.hpp": "1a16c56b9621c534002fd629c8038cfc91f9239912c3afa3c7e528e245c217d1",
+        "include/bsp/native_network_console_runtime.hpp": "9eba126ddee36962e4f51dcc88f57becf17a3a5733a58c27a2d1bdf5d73cf143",
+        "include/bsp/native_network_console_send.hpp": "ec8b1ba3c838b2769ec79035fb57246d03ae3995221851b418bef0a7bb92038f",
+        "include/bsp/native_network_console_storage.hpp": "e2c134b1ddf600967a65b1f2106e4f12eeb4f0adfb237ba872fb0aef0582b9e3",
+        "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+        "include/bsp/native_render_batch_lifetime.hpp": "1644ae033ccae7e02110b14aefac49bd1df1f6aa005b1c36d28926379ac3ae29",
+        "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40",
+        "include/bsp/native_renderer_control_worker.hpp": "2de24b2af336ebd7e7713bd1c4bc033935b468dff6ae619fd703177e34c51f36",
+        "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "include/bsp/native_renderer_worker_lifetime.hpp": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "include/bsp/native_session_message_base.hpp": "6b99806a76b491030dcdbd1335161e58fdbb0d4141d8dcf8a46658b930dd3f74",
+        "include/bsp/native_session_message_tags_12_13_14_15.hpp": "2e0d0249141c4674eefcc0f21130f9aaee21757cf5df3edc6de0f41d57372284",
+        "include/bsp/native_session_transport_buffers.hpp": "a2971d8d8187bf4561a3c60614f81c7c2fea528138ecf6c67c01d8786a275d8c",
+        "include/bsp/native_session_transport_flush.hpp": "e0b2668cebf7421415ccab854c0b9750b714b196b6c65fed43482c07a42c501b",
+        "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "include/bsp/native_singleton_removal_reorder.hpp": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "include/bsp/native_tracked_critical_section_release.hpp": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+        "include/bsp/native_unit_health_message.hpp": "e97b5ab18ff80359f4aba7062242c6025a7ecddb2eaa4b7b14597af9710cb3c8",
+        "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "include/bsp/unit_damage.hpp": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9",
+        "src/frame_clock.cpp": "85689c22573c3724489e6341e0fd48573033c893f5fe7ca81a6793f714c903a6",
+        "src/native_bit_cursor_fields.cpp": "e734aab56456aab557c636ea90470ccb708678901c921efcc34bdba00238a552",
+        "src/native_bit_cursor_read.cpp": "87b94e73476ef97a917fdcf94e8b9f7eb93fdbb2794914fc3bfa11177bca95d0",
+        "src/native_bit_cursor_write.cpp": "20423e0e8678743832a4cda6ff7b1c8166a6068b68b19ba14364e564baf363fc",
+        "src/native_frame_clock_actual.cpp": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6",
+        "src/native_frame_clock_publication.cpp": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55",
+        "src/native_network_console_owner.cpp": "b5c219cd194cd67852a02e1abf849511f04c19f225f51f082611d706ec3fb2dc",
+        "src/native_network_console_runtime.cpp": "eaa45e4bdab3330f95b16f2fff6f3a8022025d493cc8a8ec6708b20a2c563847",
+        "src/native_network_console_send.cpp": "66809a4c769cb9930cbd623ad4b655b01ac07175e2178a5375a6c12ea3b6583e",
+        "src/native_network_console_storage.cpp": "42a372d3d622f1d71ca33d2233a9283c6c37953763b07a6d77a1b2625e425735",
+        "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+        "src/native_renderer_control_worker.cpp": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+        "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "src/native_session_message_base.cpp": "0941562100e45fff7a4cc2ac9d8d848c6ee11baec94dc986fdbda1c912df4290",
+        "src/native_session_message_tags_12_13_14_15.cpp": "8abfb3f2889dbbef81106a8774af1bad13e2b175c337be37b8399bad98c5b0c6",
+        "src/native_session_transport_buffers.cpp": "9e95d272f075d61cfb8641286c52a91367d33fe1588831c5fdcb3fffb518a551",
+        "src/native_session_transport_flush.cpp": "da1a7a6844f2b04c6315a2fd88f4a5836117f684b2845c7b12ae4e8574af0883",
+        "src/native_tracked_critical_section_release.cpp": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+        "src/native_unit_health_message.cpp": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "src/unit_damage.cpp": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577"
+      }
+    },
+    "after_link": {
+      "main_head_after": "5faf2691678bc3352adbead7908a992dfc084cb2",
+      "libraries_stable": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 63,
+      "support_before": {
+        "main_head": "5faf2691678bc3352adbead7908a992dfc084cb2",
+        "worker_head": "f97d970fc7a40914f0de66ba4d2ae244c9a59f78",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_core.lib",
+            "sha256": "2436d978fd1079b6367258b2b8d1a94b740e3699b6a6d54e48365cf288eb04b8",
+            "bytes": 73168422
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "support_libraries": {
+      "main_head": "5faf2691678bc3352adbead7908a992dfc084cb2",
+      "worker_head": "f97d970fc7a40914f0de66ba4d2ae244c9a59f78",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_core.lib",
+          "sha256": "2436d978fd1079b6367258b2b8d1a94b740e3699b6a6d54e48365cf288eb04b8",
+          "bytes": 73168422
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_buffers_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "artifact_sha256": {
+      "probe.cpp": "7f6e20d17e7a1701b1776fbd351f966ec889bf24f3be9dbda0e4af94f80d1e27",
+      "probe.exe": "af5becd5f184817f7f3934924356c00b8b4698ff6e60d8a80d323ab9bae2e035",
+      "probe.log": "23df7a5438de54ef6a9633fc384b743fd78b537fb4d42ad6c11427b4a037cc4e",
+      "build.cmd": "73ec44ac7ccc661918fcc66d57ef1f6e9bc1396ee0694fb179402e12d558bcb9",
+      "build.log": "f03e5862e98c22314b8538d5ab3ff6d1607c794720aab2c6d2ccb0138b023c2d",
+      "prepare_fixture.py": "e249f18ae347531e0aeb0de129c7f0548a0493ba3db61570852cb0f0712933da",
+      "prepare_build.py": "fc6e90118c8c53b9ce62c5598883fa23d674d944888273630fa3346539ba9f19",
+      "pin_support.py": "c5da5570b49c644c3885d8c616ef34e4b550df213f55b3cad79fa3b4ff85db84",
+      "inputs_before_link.json": "18052d4aa9a2c131a9ead414a2d3dd299afe6a5c2460a94da6f9b2864f5596a2",
+      "inputs_after_link.json": "3f65c3bfa3f192555ab1f51ae3cc9357d47ee17bb0a89e772514b3bcba1edb0d",
+      "support_before_link.json": "212a504d0f8c1f16bfd687d437dccd4f731703345009956156c29d3de22b6bf9",
+      "embedded_manifest.xml": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290",
+      "asm/native_session_transport_buffers.asm": "95e18193c13d4f060a8bdea7d2b69cba0a3ffb33a6e918d92b32f97b24bcbb08",
+      "obj/native_session_transport_buffers.obj": "ee9e945ff75360227bf1e558cfd4ddbdd1ae01587f937c962ed4b661e99d8af5"
+    }
+  },
+  "limitations": [
+    "No null/throw fault-injection result; ordinary successful construction and explicit destruction exercised",
+    "Original CRT handler/exception/heap identity and private EH unbound",
+    "No automatic enclosing target,history or derived transport lifetime",
+    "Recovered numeric profile stamp is not executable host vtable dispatch",
+    "Stored Ghidra destructor body remains truncated despite complete raw native evidence",
+    "New source interfaces; no native whole-body ABI, concurrency, network transmission or gameplay proof"
+  ]
+}
