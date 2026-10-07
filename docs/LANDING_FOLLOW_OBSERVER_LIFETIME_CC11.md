@@ -165,3 +165,5 @@ The ignored receipt is
 fixture and its support hashes above are historical results; they were not
 rerun, relinked or expanded for this packet. The completed MoveTo/Follow callback
 artifacts were left unchanged. No new Source execution or build is claimed.
+
+Primary reuse review independently matched both whole30-byte live/disk bodies and their actual calls, normalized only the two relative operands, and proved comment-only C++token equality plus every historical report field unchanged. Current full Win32/all3 CTests passed at `e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956`. The old43-check fixture was not replayed; existing provider/name/highCGtag remain retained.

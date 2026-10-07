@@ -677,6 +677,75 @@
     ],
     "abi_compatible": false,
     "actual_game_binding": false,
-    "game_validated": false
+    "game_validated": false,
+    "primary_integration": {
+      "revision": "b27c6382ec1a11f5079a73b25600605d78350407",
+      "native_spans": [
+        {
+          "address": "006ceeb0",
+          "bytes": 30,
+          "sha256": "da8c55e3384ec9944ea956271ae2f7e73f36d9128661128c07aca5a89f669e5a",
+          "disk_live": "MATCH"
+        },
+        {
+          "address": "006cddf0",
+          "bytes": 30,
+          "sha256": "6434990cad4b66401d7d38ad7084a45c6adad43c549d0b532213b2c96d6410ac",
+          "disk_live": "MATCH"
+        }
+      ],
+      "normalized_operands": [
+        [
+          4,
+          8
+        ],
+        [
+          17,
+          21
+        ]
+      ],
+      "normalized_sha256": "b40481af87cc4bcd23da7d559dd5ce54f616e2f51cadc2008081b4c4e057f65d",
+      "all_nonoperand_bytes_equal": true,
+      "actual_targets": [
+        "006cdd70",
+        "00bf65ac"
+      ],
+      "existing_provider_reused": true,
+      "source_tokens_unchanged": [
+        "include/bsp/native_land_follow_observer_lifetime.hpp",
+        "src/native_land_follow_observer_lifetime.cpp"
+      ],
+      "historical_report_fields_preserved": true,
+      "historical_43_check_fixture_rerun": false,
+      "traffic_source_tokens_unchanged": true,
+      "CG_name_and_high_library_tag_preserved": true,
+      "new_Source_wrapper": false,
+      "primary_build_revision": "e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956",
+      "full_MSVC_Win32_build": "PASS",
+      "existing_CTests": "3/3 PASS",
+      "native_report_direct_rows": 8,
+      "new_address_direct_rows": 2,
+      "native_call_failures": 0,
+      "historical_fixture_rerun": false,
+      "Ghidra_closure": {
+        "saved": true,
+        "annotation_receipt": "local/ghidra-annotations-20261007T202204Z.json",
+        "annotation_sha256": "921ca5e791d92362cf93589c3170c2d88c84f1283b61f08085bdbcb1761d1c44",
+        "annotation_addresses": [
+          "0048e840",
+          "0048e960",
+          "006ceeb0",
+          "0077bac0",
+          "0077dda0",
+          "00780830",
+          "00780860",
+          "007808c0",
+          "009b2c80"
+        ],
+        "prior_values_recorded": true,
+        "library_names_and_tags_preserved": true,
+        "affected_exports_refreshed": true
+      }
+    }
   }
 }

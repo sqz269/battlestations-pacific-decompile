@@ -572,5 +572,233 @@
       "bytes": 86,
       "sha256": "5d0301c73770fc2a4873734e549a4e7722d1bddfb1843ef820f6b47c58ca27c0"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T20:21:41.921330+00:00",
+    "main_build_revision": "e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956",
+    "worker_commit": "1e381ba4ead267c59a72b1dbf0eb1f9ed3606738",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 7,
+    "stable_current_Source_header_fixture_inputs": 45,
+    "actual_compiler_includes": 38,
+    "current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "987223e17d34c4cfe7b128a835dd3177c416287fff1bc85acd23ce87a2501991",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "0048e960",
+        "bytes": 129,
+        "sha256": "9ffe199f6c9124ae8bc8a92939ba39ad6f943ca21dc5483d5f464a0593590027",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0048e840",
+        "bytes": 129,
+        "sha256": "1af840ac4f1fcd6434fc3b8f923ab125e771ab4efb7c7d0af2350de8106cb62f",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e186ed",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e17654",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "probe_sha256": "78983b7ef2c52ea2883aab21eb2743496dda1db8d5c1777b575757bccd7d8742",
+    "native_direct_call_rows": 8,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "artifacts": [
+      {
+        "path": "local/cc11_enum_words_primary/0048e840_original.bin",
+        "sha256": "1af840ac4f1fcd6434fc3b8f923ab125e771ab4efb7c7d0af2350de8106cb62f",
+        "bytes": 129
+      },
+      {
+        "path": "local/cc11_enum_words_primary/0048e960_original.bin",
+        "sha256": "9ffe199f6c9124ae8bc8a92939ba39ad6f943ca21dc5483d5f464a0593590027",
+        "bytes": 129
+      },
+      {
+        "path": "local/cc11_enum_words_primary/00e17654_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_words_primary/00e186ed_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_words_primary/build.cmd",
+        "sha256": "439e7ff65b4c4b340914a97b82d61f209f33fc3835fdd3550bc206825321e3d0",
+        "bytes": 1550
+      },
+      {
+        "path": "local/cc11_enum_words_primary/coff_evidence.json",
+        "sha256": "97447349b924cb49a3bd195e3bc4b3dd9aff3320059130ef12503b9aca87ddfb",
+        "bytes": 5893
+      },
+      {
+        "path": "local/cc11_enum_words_primary/compile.log",
+        "sha256": "bc5f446bd6112bbfdf06cb4ef50cbd431b9e0abe12771ff541c3aa80fde79944",
+        "bytes": 145594
+      },
+      {
+        "path": "local/cc11_enum_words_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_enum_words_primary/inputs_after_link.json",
+        "sha256": "63b4178f0be9a5f59328332abc6e47505b4bb981b240bf88f80c527aca75ab5a",
+        "bytes": 13417
+      },
+      {
+        "path": "local/cc11_enum_words_primary/inputs_before_link.json",
+        "sha256": "2e9869b1115311cb04cd7d5b7d22af1fe387b8cd5db99e5921268ef4caf1aa69",
+        "bytes": 9892
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_lookup.asm",
+        "sha256": "30df526e6a35652f0b3c51a9ed34f60528b87a4ebd034efe18300260e04067db",
+        "bytes": 18464
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_lookup.obj",
+        "sha256": "74634d9dcfe0b60450c093113b75057c1e01a8cfe39ad04e4884e88ff51f07f1",
+        "bytes": 5804
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_word_getters.asm",
+        "sha256": "7b3a6f853b2af04508ec6c9c1161f9ea6a20498c58d228329367ce1bef9eaf73",
+        "bytes": 14916
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_word_getters.obj",
+        "sha256": "2690dc595d4443700daffbb5214bf2b108f56ed1cce6e68a5a26158c4d73e561",
+        "bytes": 3001
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_word_getters_read_native_enum_symbol_word_0048e840_coff.bin",
+        "sha256": "4a6f94779081cda7b896e52b38d8cf4ca75cae990c80bcd4e29c0f90f5eca208",
+        "bytes": 96
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_word_getters_read_native_enum_table_word_0048e960_coff.bin",
+        "sha256": "4a6f94779081cda7b896e52b38d8cf4ca75cae990c80bcd4e29c0f90f5eca208",
+        "bytes": 96
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_enum_dictionary_word_getters_read_word_coff.bin",
+        "sha256": "8d9c8935957fa60e6cdc4575523d8e034682760f4efcd9553fe33f5226a791ef",
+        "bytes": 95
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string.asm",
+        "sha256": "589c7c829d6544c6a1d93ee295f5eec6461b4b2752039dbf1201993873be3e7d",
+        "bytes": 89721
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string.obj",
+        "sha256": "0f3e33245db0d8049fd3d2e31ed9466f4a004a71fb7df2512437cda19a2130bc",
+        "bytes": 22715
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string_pool_owner.asm",
+        "sha256": "34f6bb893c51363782cb050a19131e1d11fcc18f850a66222e4e0fff60206f8a",
+        "bytes": 61967
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string_pool_owner.obj",
+        "sha256": "13e6302f3bae015ffd88b5fe25b909d6ea4cf517d1eb0bef598003d64625f3c9",
+        "bytes": 17475
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string_pool_storage.asm",
+        "sha256": "527c53ba35a9c953cfd030e4bf7be20ce4a59383a41d0ba5b112fb02c2058dc6",
+        "bytes": 38584
+      },
+      {
+        "path": "local/cc11_enum_words_primary/native_string_pool_storage.obj",
+        "sha256": "b56d8afcbc3cdbd5bf478cd3b259d553009da6a0d39c8144bf5d8a2dde40df8b",
+        "bytes": 10083
+      },
+      {
+        "path": "local/cc11_enum_words_primary/probe.asm",
+        "sha256": "e0b1b75e659712eb64b439545a7a4936047a8269dcbdf0eff0d807f8908d9075",
+        "bytes": 1940272
+      },
+      {
+        "path": "local/cc11_enum_words_primary/probe.cpp",
+        "sha256": "168b902eb110d264811d71838791d404c509fd0640536f38eac224d81f0b6dac",
+        "bytes": 9325
+      },
+      {
+        "path": "local/cc11_enum_words_primary/probe.exe",
+        "sha256": "78983b7ef2c52ea2883aab21eb2743496dda1db8d5c1777b575757bccd7d8742",
+        "bytes": 244224
+      },
+      {
+        "path": "local/cc11_enum_words_primary/probe.obj",
+        "sha256": "e3b082a6c1734a0ecca8fd5c95379cf19cdc2b057d185fcd439ad9a72ab3a2c3",
+        "bytes": 317327
+      },
+      {
+        "path": "local/cc11_enum_words_primary/scene_file.asm",
+        "sha256": "7a703423e06af7f20dde7ee6750d0b314eca2080b1033b2c68f0eb27202e5f79",
+        "bytes": 2121814
+      },
+      {
+        "path": "local/cc11_enum_words_primary/scene_file.obj",
+        "sha256": "011918bae77123816b443a83df36ab533f260ae3db67108454262319b57f7c42",
+        "bytes": 291735
+      },
+      {
+        "path": "local/cc11_enum_words_primary/word_outcomes.txt",
+        "sha256": "da065631725307f1dd05042a7f8cd19bd3b7e95f121549e96f72017aa718b882",
+        "bytes": 2850
+      }
+    ],
+    "qualification": "Two complete129B normal CString wrappers: actual owner4\u2192genuine temporary string/finder; unguarded node8 opaque DWORD captured before real raw-pool temporary release. Required actual aliases/distinct readonly E186ED/E17654 empty cells, ASCII/C-locale stable known-found chains. Installed2tables28symbols;60installed+2empty found getter calls, returned table pointer directly feeds symbol getter, full raw-pool prefix restored each call and complete node/owner/key backing unchanged. Missing finder returnsnull but wrappers not called on miss. Original129 wrappers/FS/EH graph NOT executed; native enum owner/insertion/declaration identity and production traffic binding remain unbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "known_found_Source_getter_calls": 62,
+    "original_wrappers_executed": false,
+    "Source_getter_COFF_bytes": 96,
+    "Source_getter_instructions": 29,
+    "mapped_word_before_destroy_offset": "49 before51",
+    "production_enum_identity_bound": false,
+    "Ghidra_closure": {
+      "saved": true,
+      "annotation_receipt": "local/ghidra-annotations-20261007T202204Z.json",
+      "annotation_sha256": "921ca5e791d92362cf93589c3170c2d88c84f1283b61f08085bdbcb1761d1c44",
+      "annotation_addresses": [
+        "0048e840",
+        "0048e960",
+        "006ceeb0",
+        "0077bac0",
+        "0077dda0",
+        "00780830",
+        "00780860",
+        "007808c0",
+        "009b2c80"
+      ],
+      "prior_values_recorded": true,
+      "library_names_and_tags_preserved": true,
+      "affected_exports_refreshed": true
+    }
+  },
+  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified"
 }

@@ -109,3 +109,8 @@ All ten current native direct call rows passed, with zero failures.
 No tracked tests, shared metadata, Ghidra mutations, CMake changes or full build
 were performed. Root owns independent review, registration, integration and
 the full Win32 build.
+
+Primary integration at `e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956` passed the complete MSVC Win32 build and all three existing CTests. The independent current-library fixture freshly compiled 9 actual TUs and passed 287 checks, with 53 Source/header/fixture pins and 38 actual compiler includes. All Source, recipe, installed inputs, three current support libraries and the original PE remained unchanged. New Source COFF, exact native byte agreement, manifest, logs and receipts are recorded in the report.
+Current cleanup COFF is94 bytes/39 instructions, calling all concrete providers before the final profile store at56h. The fixture checks the whole226-byte original with only ten natural CALL operands changed and186 bytes untouched, with real providers and before-free-only observation. No remaining constructor/task/world/native-class-ABI/game claim is added.
+
+Profile identity remains qualified: the fixture deliberately uses a borrowed raw D1FF94 preimage and does not invoke the native inner constructor. Current producer evidence at9B2E50 instead publishes D1FF88 atroot and D1FF84 atregistry+B8. This distinction does not change the ordinary cleanup assertions or establish class ABI.

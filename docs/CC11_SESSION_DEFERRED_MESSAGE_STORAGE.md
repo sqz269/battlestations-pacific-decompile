@@ -106,3 +106,6 @@ It does not include failure injection, corrupt/wrapped storage, concurrent
 mutation, native private CRT exception execution, complete category-47
 dispatch, either session consumer, original process-global registration,
 full game/session destruction, or game-runtime validation.
+
+Primary integration at `e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956` passed the complete MSVC Win32 build and all three existing CTests. The independent current-library fixture freshly compiled 13 actual TUs and passed 164 checks, with 37 Source/header/fixture pins and 24 actual compiler includes. All Source, recipe, installed inputs, three current support libraries and the original PE remained unchanged. New Source COFF, exact native byte agreement, manifest, logs and receipts are recorded in the report.
+All five original bodies total318 bytes; five mechanical natural call operands change20 bytes and retain298. The original count body remains147 bytes unchanged on success. Independent primary live/disk/FH comparison confirms canonical count reuse structurally. Ghidra stored destructor membership still ends78089B; this does not claim complete Ghidra flow closure, native error/EH execution or either consumer.

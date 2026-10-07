@@ -128,3 +128,6 @@ the real returning raw pool and nonaliasing/no-reentry/no-concurrency conditions
 Missing/invalid/null keys, allocation failure, namespace/type conflict, native
 enum identity/ownership, EH/SEH/fault behavior, whole ABI and gameplay remain
 outside the claim. Full main registration/build is pending primary integration.
+
+Primary integration at `e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956` passed the complete MSVC Win32 build and all three existing CTests. The independent current-library fixture freshly compiled 7 actual TUs and passed 62 known-found Source getter calls, with 45 Source/header/fixture pins and 38 actual compiler includes. All Source, recipe, installed inputs, three current support libraries and the original PE remained unchanged. New Source COFF, exact native byte agreement, manifest, logs and receipts are recorded in the report.
+The current public Source getters each emit 96 bytes/29 instructions with direct constructor/finder/destroy calls; the unguarded node+8 word load at49h precedes destroy at51h. Original wrappers are not replayed; declaration identity and production traffic binding remain unbound.

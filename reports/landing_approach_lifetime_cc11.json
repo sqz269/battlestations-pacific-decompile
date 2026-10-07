@@ -476,5 +476,233 @@
     "git_diff_check": "checked on staged four-file handoff",
     "Source_COFF_calls_before_final_stamp_verified": true,
     "git_diff_check_passed": true
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T20:21:45.851071+00:00",
+    "main_build_revision": "e240b8c81d6d43464ae5eb6a6e9db8b7c56cd956",
+    "worker_commit": "1cf2f2c6ab677698273c1f3ed57c99e970927fe9",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 9,
+    "stable_current_Source_header_fixture_inputs": 53,
+    "actual_compiler_includes": 38,
+    "current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "987223e17d34c4cfe7b128a835dd3177c416287fff1bc85acd23ce87a2501991",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "009b2c80",
+        "bytes": 226,
+        "sha256": "b816aff23cc930c8b1d3fa44a92510b0d8ab930722328abe39e916b594bdf733",
+        "disk_live": "MATCH"
+      }
+    ],
+    "probe_sha256": "656b2632d4701a6cd3594c4d90e02af97f9a724542c98cfeae534acdc25f0dbf",
+    "native_direct_call_rows": 10,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "artifacts": [
+      {
+        "path": "local/cc11_approach_lifetime_primary/009b2c80_original.bin",
+        "sha256": "b816aff23cc930c8b1d3fa44a92510b0d8ab930722328abe39e916b594bdf733",
+        "bytes": 226
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/build.cmd",
+        "sha256": "c17dfe635b257022a10016ca0d617466dd33a81e8fb8905d9d338cb19e962620",
+        "bytes": 1571
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/coff_evidence.json",
+        "sha256": "e37cce6f72d4e0ae8e0ac1e16c6c0d723a4b8856c9bb7b7e8cfde5d0f6ef4a2c",
+        "bytes": 14941
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/compile.log",
+        "sha256": "5b81869dfc860ee46b691c9f3d2b62bb016147cf765f69601750de2924268fef",
+        "bytes": 194224
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/inputs_after_link.json",
+        "sha256": "71e2e8f924265d857dbe14c1922d9e3ba997a8cc32233b2da6dee9b2f89b62e0",
+        "bytes": 14337
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/inputs_before_link.json",
+        "sha256": "01bf2d6525bc706b6497f4e3d61f0fbde6a0420c10cf8a94527d2c44259ff5e7",
+        "bytes": 10752
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_approach_lifetime.asm",
+        "sha256": "2054b48fb43000ea8ae3b72c482af1872689389a612674ddbde53c6f39723cd5",
+        "bytes": 40757
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_approach_lifetime.obj",
+        "sha256": "73ca62a5f800ddf81bd9307f61adf83dd3845d85d59b7e2d1b1667824ee2d714",
+        "bytes": 12750
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_approach_lifetime_destroy_native_land_approach_009b2c80_coff.bin",
+        "sha256": "7b805e5332aa0ca15f23f4e1cb5dc9eeda00699368ab5e5ac60830dcd109fbdf",
+        "bytes": 94
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_approach_lifetime_native_land_approach_cleanup_view_coff.bin",
+        "sha256": "54d95916784fed05a3d94dc46e9a0180bf8a0ba5a99aac0551c11fb5ea211568",
+        "bytes": 376
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_follow_observer_lifetime.asm",
+        "sha256": "eed83fd0a64c18b3b1f819c54d20af177aee097a5d204e0224217dcc0673629d",
+        "bytes": 12988
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_follow_observer_lifetime.obj",
+        "sha256": "254a9cf167b0c8f0d1b748616a396340b78ee0fe6aa320012b27808648d5d901",
+        "bytes": 3493
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_moveto_constructor.asm",
+        "sha256": "4b04de85d9af8250f1c5371de63b47f3ff0f87c20624fb043c9f259121dc7098",
+        "bytes": 25638
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_moveto_constructor.obj",
+        "sha256": "7aca490d9b12a3445929c1ff08e6fdf5acd7843b06802ddc790724edc4e06ef6",
+        "bytes": 8924
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_lifetime.asm",
+        "sha256": "56832f662e18b9170b612128ae32d9f9f8dea0e6ad87d9d8461648efb21582de",
+        "bytes": 52526
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_lifetime.obj",
+        "sha256": "6d3410db65f9c693efbebc952dd7ae476e09be2d91ea5a3ed7e60b67f70e9504",
+        "bytes": 12479
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_registry.asm",
+        "sha256": "108b30f0a5bf4525b04b11781c856fc4f7818d086a8c75f80ea982e1e64eb503",
+        "bytes": 61141
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_registry.obj",
+        "sha256": "f89ada87d23ad5d7adaa842b53e0f3fcde99ebb3a6426dd65b31387c9216f7f1",
+        "bytes": 8896
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_registry_lifetime.asm",
+        "sha256": "956fbf324a6fb447bdfb00c45254ad24e5b0d6edbe7bcba9f2f9bdd1bb0ff2f9",
+        "bytes": 6615
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/native_land_state_registry_lifetime.obj",
+        "sha256": "840e47027b833d216d8bc879f996276d1d5d3c2acda893912bc3ab2d5d212e19",
+        "bytes": 2125
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/observer_edges.asm",
+        "sha256": "0a4659a7ae5cbca484875d25fc610fba8d15aef55371e8c999782b932bf235e9",
+        "bytes": 25687
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/observer_edges.obj",
+        "sha256": "03c60a20d505ddc29b3a43733f6496c8e1e22899db3ca20e04aecb4aedda704b",
+        "bytes": 7136
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/observer_lifetime.asm",
+        "sha256": "ad9bf57373f17290e6648ff76356e96050b700a0dab9643c109c47d19ad7d947",
+        "bytes": 132068
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/observer_lifetime.obj",
+        "sha256": "3355afea9f605c0b9f6611d46638555252ca003fa00f0f028e04c0be06a5b971",
+        "bytes": 28252
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe.asm",
+        "sha256": "9cd9452074c466931bf5fad5e2c76638d689d7433fa75c6cb4d89a976f07707b",
+        "bytes": 191699
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe.cpp",
+        "sha256": "d92b7921b38ede4f27a44ff07811a22a1e22285245af23a2d684d7d81e3762e5",
+        "bytes": 19531
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe.exe",
+        "sha256": "656b2632d4701a6cd3594c4d90e02af97f9a724542c98cfeae534acdc25f0dbf",
+        "bytes": 234496
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe.obj",
+        "sha256": "60c4dbc0bc822ba9fd757ad6a1e7bec186dcc7ac5969828226a3bc33d2efbaa6",
+        "bytes": 48493
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe_follow_bridge_coff.bin",
+        "sha256": "7fdbac8fe9041d974a732af56942a2acf4540a36d35f27b31917c41763c7ee2c",
+        "bytes": 55
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe_move_bridge_coff.bin",
+        "sha256": "2411c44e810817da25307dc2c069b6f28f9a3e3d8842ba4275bc3a9b2c9c170b",
+        "bytes": 111
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe_registry_bridge_coff.bin",
+        "sha256": "32b76f579e981c9805a68ee3b5888203c1eb85271e0d93ecb87371b5df4aacf5",
+        "bytes": 20
+      },
+      {
+        "path": "local/cc11_approach_lifetime_primary/probe_shared_bridge_coff.bin",
+        "sha256": "fe18a4bc2b513ca3eb8c56f7a08a422356e4094e2d81d329cce6b87e92d795c2",
+        "bytes": 47
+      }
+    ],
+    "qualification": "Complete226B52inst ordinary9B2C80: six actual shared members254,228,200,1E0,1C0,1A0 in order, Followobserver120 then shared108, MoveCC, RegistryB8, LAST D1FDB8stamp; all10directcalls completeexisting concrete providers. Pure same>=26Ch coherentaliases; valid24B vectors and realrequired observer/publication/recursive-lock/pending context. GenuineRegistryCtor/Add+MoveCtor/register/eightvectors/tenpairs/retainedFollowpair/fullprovider cleanup. Whole original226B only10natural4BCALLoperands40changed/186unchanged, ordinaryFSframe retained; before-real-free CRT observation alwaysforwards and no retiredreads. Fullremaining livebytes/borrowedidentities and numericdanglingheaders preserved. Remainingconstructors/wholeapproachselfFree/task/dequeue/death/base/privateEH/nativeprofileABI/game unbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 287,
+    "original_whole_body_bytes": 226,
+    "original_operand_ranges": 10,
+    "original_unchanged_bytes": 186,
+    "Source_complete_cleanup_COFF_bytes": 94,
+    "Source_cleanup_instructions": 39,
+    "Source_final_stamp_after_providers_offset": "56",
+    "runtime_constructor_graph_bound": false,
+    "Ghidra_closure": {
+      "saved": true,
+      "annotation_receipt": "local/ghidra-annotations-20261007T202204Z.json",
+      "annotation_sha256": "921ca5e791d92362cf93589c3170c2d88c84f1283b61f08085bdbcb1761d1c44",
+      "annotation_addresses": [
+        "0048e840",
+        "0048e960",
+        "006ceeb0",
+        "0077bac0",
+        "0077dda0",
+        "00780830",
+        "00780860",
+        "007808c0",
+        "009b2c80"
+      ],
+      "prior_values_recorded": true,
+      "library_names_and_tags_preserved": true,
+      "affected_exports_refreshed": true
+    },
+    "fixture_initial_profile_is_instrumentation_only": "D1FF94 is explicit borrowed fixture preimage, not actual native inner-constructor profile identity; actual9B2E50 publishes D1FF88 atroot and D1FF84 atregistryB8."
+  },
+  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified"
 }
