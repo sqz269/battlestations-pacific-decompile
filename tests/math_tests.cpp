@@ -1323,7 +1323,9 @@ int main() {
             "  localframe 1,0,0,0, 0,1,0,0, 0,0,1.-,0, 1,2,3,1 ;\n"
             "  properties (Common, Landscape) {\n"
             "    -- Skill = E SkillLevels : Stun ;\n"
-            "    FilePath = S \"islands/a\" ;\n"
+            "    FilePath = S \"islands/\" \"a\" ;\n"
+            R"(    GuiName = S "head" ";" "{" "}" "\n\q\\tail\x\N\Q" ; )" "\n"
+            "    SceneGroupNum = I 7 ;\n"
             "  }\n"
             "}\n";
         const SceneDocument doc = parse_scene_document(scene_text);
@@ -1337,6 +1339,16 @@ int main() {
             check(ent.properties.find("Skill") != nullptr
                     && ent.properties.find("--") == nullptr,
                 "a \"--\" prefix drops only the junk key, leaving the property applied");
+            const SceneProperty* path = ent.properties.find("FilePath");
+            const SceneProperty* name = ent.properties.find("GuiName");
+            const SceneProperty* following = ent.properties.find("SceneGroupNum");
+            check(path != nullptr && path->values.size() == 1 && path->values[0] == "islands/a"
+                    && name != nullptr && name->values.size() == 1
+                    && name->values[0] == "head;{}\n\"\\tail"
+                    && following != nullptr && following->values.size() == 1
+                    && following->values[0] == "7",
+                "008EFB00 joins quoted S runs, decodes exact-case escapes, treats quoted "
+                "punctuation as data and retains the following key");
         }
     }
 

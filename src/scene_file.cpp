@@ -10,6 +10,7 @@
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
+#include <stdexcept>
 #include <utility>
 
 namespace bsp {
@@ -163,19 +164,46 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         SceneProperty prop;
         prop.key = key;
         prop.type_letter = cur.read_token();
-        // 008f5a00 reads a fixed number of value tokens for the letter it
-        // dispatched on and then runs ExpectToken(";"), which peeks and
-        // consumes only on a match (008d9930): a property authored without its
-        // terminator costs one reported error and nothing else. This generic
-        // scan stands in for the per-letter reads, so it has to stop at a brace
-        // as well as at ';' - no value of any letter contains one. Without the
-        // brace stop the scan swallows the closing brace of the block it is in
-        // and every later block nests one level too deep; that is what cost the
-        // nine entities in scene175.scn and scene907.scn (packet
-        // cc_scene_records, docs/SCENE_FILE_READER.md "Corrections").
-        while (!cur.at(";") && !cur.at("{") && !cur.at("}") && !cur.at_end()
-            && !cur.exhausted()) {
-            prop.values.push_back(cur.read_token());
+        if (equal_insensitive(prop.type_letter, "S") && cur.lexer().peek().quoted) {
+            // 008F5CF6 -> 008EFB00: consume quoted runs by +4h, not token text.
+            // 008EE670 decodes each run before the builder appends without a
+            // separator. The lexer itself retains raw tokens/backslashes.
+            std::string value;
+            do {
+                const SceneToken fragment = cur.lexer().next();
+                // The native cached/read buffers are 400h (+5h/+405h, cache
+                // +805h). Overflow, embedded NUL and a trailing single escape
+                // are outside this source binding, not safe native recovery.
+                if (fragment.text.size() >= 0x400
+                    || fragment.text.find('\0') != std::string::npos) {
+                    throw std::runtime_error("unsupported quoted scene string fragment");
+                }
+                for (std::size_t i = 0; i < fragment.text.size();) {
+                    const char ch = fragment.text[i++];
+                    if (ch != '\\') {
+                        value.push_back(ch);
+                        continue;
+                    }
+                    if (i == fragment.text.size()) {
+                        throw std::runtime_error("unsupported trailing scene string escape");
+                    }
+                    const char escape = fragment.text[i++];
+                    if (escape == '\\') value.push_back('\\');
+                    else if (escape == 'n') value.push_back('\n');
+                    else if (escape == 'q') value.push_back('"');
+                    // All other backslash pairs emit nothing in 008EE670.
+                }
+            } while (cur.lexer().peek().quoted);
+            prop.values.push_back(std::move(value));
+        } else {
+            // Other typed/implicit paths remain a partial token scan. Stop at
+            // braces as well as ';' so a missing terminator cannot swallow the
+            // current closing brace and nest later blocks one level too deep
+            // (scene175/scene907; docs/SCENE_FILE_READER.md Corrections).
+            while (!cur.at(";") && !cur.at("{") && !cur.at("}") && !cur.at_end()
+                && !cur.exhausted()) {
+                prop.values.push_back(cur.read_token());
+            }
         }
         cur.expect(";");
         block.values.push_back(std::move(prop));

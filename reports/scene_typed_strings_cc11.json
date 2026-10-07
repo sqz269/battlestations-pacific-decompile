@@ -1,0 +1,524 @@
+{
+  "packet": "cc11_scene_typed_strings",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_TYPED_STRINGS_CC11.md",
+  "source_baseline": "c6cdf63d3ad89b14a8242a311437d19b249c7eca",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified": "config/target.json and bsp.py ghidra ensure --status before live read-only batches; client verifies target",
+    "ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "owned_addresses": [
+    "008F5A00",
+    "008EFB00",
+    "008EE670"
+  ],
+  "owned_files": [
+    "src/scene_file.cpp",
+    "include/bsp/scene_file.hpp",
+    "tests/math_tests.cpp",
+    "docs/SCENE_TYPED_STRINGS_CC11.md",
+    "reports/scene_typed_strings_cc11.json"
+  ],
+  "ignored_owned_artifacts": [
+    "local/cc11_scene_string_probe.cpp",
+    "local/cc11_scene_string_probe.obj",
+    "local/cc11_scene_string_probe.exe",
+    "local/cc11_scene_string_probe.log",
+    "local/cc11_scene_string_compile.cmd",
+    "local/cc11_scene_string_compile.log"
+  ],
+  "result": "Bind explicit S quoted runs through SceneToken.quoted, per-fragment exact-case decode and separator-free concatenation into one owning value. Lexer remains raw; whole typed parser remains partial.",
+  "coverage": [
+    {
+      "routine": "008F5A00",
+      "stored_body": "008F5A00..008F6786",
+      "coverage": "partial source projection: explicit type2 quoted arm008F5CC2..008F5D4A only; other dispatch/storage/implicit forms outside this binding"
+    },
+    {
+      "routine": "008EFB00",
+      "body": "008EFB00..008EFBBE",
+      "coverage": "complete normal body read; text-run semantics bound; allocator/EH/fault/native ownership external"
+    },
+    {
+      "routine": "008EE670",
+      "body": "008EE670..008EE6D2",
+      "bytes": 99,
+      "coverage": "complete leaf body read; nonnullable normal text rule bound; globalscratch/ABI/NULL-special/fault behavior external"
+    },
+    {
+      "routine": "008D8A70",
+      "coverage": "complete supporting token producer read; raw text and quoted byte+4; existing SceneLexer source projection retained"
+    },
+    {
+      "routine": "008D9980",
+      "coverage": "complete supporting consumer read; raw token returned/copied; no new tokenizer reconstruction"
+    },
+    {
+      "routine": "0094FF10",
+      "body": "0094FF10..0094FF49",
+      "coverage": "complete supporting normal append read; no new ownership"
+    },
+    {
+      "routine": "0094FDC0",
+      "body": "0094FDC0..0094FF04 (discontiguous jump to0094FEC8)",
+      "coverage": "complete supporting normal body read; zero-depth indentation established from collector producer"
+    },
+    {
+      "routine": "009502E0",
+      "body": "009502E0..0095031F",
+      "coverage": "complete supporting normal initial-page body read; allocation failures external"
+    },
+    {
+      "routine": "00950240",
+      "body": "00950240..009502DD",
+      "coverage": "complete supporting normal raw paged append read; indirect target pinned by vtable bytes"
+    },
+    {
+      "routine": "009500A0",
+      "body": "009500A0..009500EC",
+      "coverage": "complete supporting normal flatten body read; allocation/EH external"
+    },
+    {
+      "routine": "00950320",
+      "body": "00950320..00950343",
+      "coverage": "complete supporting normal cleanup body read; virtual deletion/lifetime external"
+    },
+    {
+      "routine": "008F3370",
+      "body": "008F3370..008F33B7",
+      "coverage": "complete supporting normal body read; only type2 free/copy supports this binding; enum fallback external"
+    },
+    {
+      "routine": "008F38A0",
+      "body": "008F38A0..008F3930",
+      "coverage": "complete supporting normal record producer read; raw38h layout/insert/allocator/uninitialized metadata not ported"
+    },
+    {
+      "routine": "00438E40",
+      "coverage": "complete supporting duplicate body read; owning CRT copy; no new reconstruction ownership"
+    },
+    {
+      "routine": "008D9F20",
+      "body": "008D9F20..008DA0F2",
+      "coverage": "supporting buffer producer008D9F53..008D9F86 freshly verified; prior complete native tokenizer contract retained"
+    },
+    {
+      "routine": "008F67B0",
+      "coverage": "prior complete normal loader caller inspected; no loader source extension"
+    }
+  ],
+  "calls": [
+    {
+      "address": "008F6AD7",
+      "native": "008F5A00",
+      "function": "008F67B0",
+      "contract": "one-file loader calls ECX bag with tokenizer/flag0/library resolver; prior caller evidence"
+    },
+    {
+      "address": "008F5CE6",
+      "native": "008D8A70",
+      "function": "008F5A00",
+      "contract": "peek before quoted byte+4 gate"
+    },
+    {
+      "address": "008F5CF6",
+      "native": "008EFB00",
+      "function": "008F5A00",
+      "contract": "push tokenizer; caller ECX bag is unused by collector"
+    },
+    {
+      "address": "008F5D04",
+      "native": "008F3370",
+      "function": "008F5A00",
+      "contract": "existing record receives collected value"
+    },
+    {
+      "address": "008F5D0A",
+      "native": "00BF6989",
+      "function": "008F5A00",
+      "contract": "free collector allocation after existing-record copy; returning gap checked as bytes"
+    },
+    {
+      "address": "008F5D1E",
+      "native": "008F38A0",
+      "function": "008F5A00",
+      "contract": "new type2 record receives key and collected value"
+    },
+    {
+      "address": "008F5D24",
+      "native": "00BF6989",
+      "function": "008F5A00",
+      "contract": "free collector allocation after new-record copy; returning gap checked as bytes"
+    },
+    {
+      "address": "008EFB4D",
+      "native": "009502E0",
+      "function": "008EFB00",
+      "contract": "initialize temporary paged builder"
+    },
+    {
+      "address": "008EFB58",
+      "native": "008D8A70",
+      "function": "008EFB00",
+      "contract": "peek quoted flag at tokenizer+4"
+    },
+    {
+      "address": "008EFB64",
+      "native": "008D9980",
+      "function": "008EFB00",
+      "contract": "consume raw quoted token"
+    },
+    {
+      "address": "008EFB6B",
+      "native": "008EE670",
+      "function": "008EFB00",
+      "contract": "ECX raw fragment; EAX global decoded scratch"
+    },
+    {
+      "address": "008EFB75",
+      "native": "0094FF10",
+      "function": "008EFB00",
+      "contract": "append decoded fragment; indentation depth zero"
+    },
+    {
+      "address": "008EFB7C",
+      "native": "008D8A70",
+      "function": "008EFB00",
+      "contract": "next quoted flag controls run loop"
+    },
+    {
+      "address": "008EFB8A",
+      "native": "009500A0",
+      "function": "008EFB00",
+      "contract": "flatten pages to total+1 owned allocation"
+    },
+    {
+      "address": "008EFBA5",
+      "native": "00950320",
+      "function": "008EFB00",
+      "contract": "release temporary builder pages"
+    },
+    {
+      "address": "0094FF13",
+      "native": "0094FDC0",
+      "function": "0094FF10",
+      "contract": "indent helper emits nothing at caller depth zero"
+    },
+    {
+      "address": "008F3381",
+      "native": "00BF6989",
+      "function": "008F3370",
+      "contract": "type2 arm frees old record value"
+    },
+    {
+      "address": "008F3394",
+      "native": "00438E40",
+      "function": "008F3370",
+      "contract": "type2 arm duplicates new record value"
+    },
+    {
+      "address": "008F38F5",
+      "native": "00438E40",
+      "function": "008F38A0",
+      "contract": "constructor duplicates value into record+0Ch"
+    },
+    {
+      "address": "008F3918",
+      "native": "008F33F0",
+      "function": "008F38A0",
+      "contract": "insert allocated string record"
+    },
+    {
+      "address": "008D9F67",
+      "native": "00BF79F0",
+      "function": "008D9F20",
+      "contract": "memset owner+5,0,400h"
+    },
+    {
+      "address": "008D9F79",
+      "native": "00BF79F0",
+      "function": "008D9F20",
+      "contract": "memset owner+405h,0,400h; ADD ESP18h at008D9F7E"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "0094FF43",
+      "native": "vt[00h]",
+      "function": "0094FF10",
+      "resolved_target": "00950240",
+      "evidence": "00D162CC bytes40 02 95 00; builder initialized to that vtable at008EFB31; complete append body checked; excluded from mechanical direct-call verification"
+    }
+  ],
+  "abi": {
+    "008F5A00": "caller ECX bag, three stack args;008F6784 RET0Ch; semantic return value not established; source tree interface differs",
+    "008EFB00": "incoming ECX never read; sole tokenizer stack arg loaded008EFB52 [ESP+38h]; EAX flattened allocation from008EFBAE;008EFBBC RET4; do not infer bag receiver from caller ECX",
+    "008EE670": "ECX input, EAX00F88C50 globalscratch, RET no stack cleanup; NULL input clears first byte; source is nonnullable owning string storage, not native ABI",
+    "native_string_records": "existing type2 at+4 frees/duplicates+0Ch; new38h type2 record duplicates+0Ch and inserts; collected allocation freed; uninitialized+28h metadata/retyping outside binding"
+  },
+  "corrections": [
+    {
+      "was": "generic raw token scan produced one value per quoted fragment, stopped on quoted punctuation and retained escape bytes",
+      "is": "explicit S uses quoted flag; decodes each fragment, concatenates no separators, stores one owning value; following unquoted key retained",
+      "evidence": "008F5CEB gate; full008EFB00/008EE670; builder depth0/raw append; existing amended scene fixture and actual-production-TU probe"
+    }
+  ],
+  "source_admission": {
+    "forms": "well-formed closed explicit S quoted runs, including empty quoted text and quoted punctuation; existing source finite token budget",
+    "fragment_byte_limit": 1023,
+    "bound_evidence": "008D9F53..008D9F79 two400h memset producers at owner+5/+405; cache+805 at008D9F86; docs/NATIVE_SCENE_TOKENIZER_R158.md storage/overflow and include/bsp/native_scene_tokenizer.hpp400h admission",
+    "rejects": "fragment length>=400h, embedded NUL, solitary trailing backslash throw source runtime_error; no claimed native recovery",
+    "unbound_forms": [
+      "unquoted S",
+      "implicit descriptor-driven S",
+      "other typed numeric/enum/reference/child semantics",
+      "existing-record metadata/retyping",
+      "malformed or unterminated input"
+    ],
+    "external_contracts": [
+      "native globalscratch capacity/lifetime/alias/reentry/thread safety",
+      "NULL scratch special case",
+      "native allocator/EH/fault behavior",
+      "native partial publication/rollback",
+      "original register/record ABI",
+      "VFS/archive/provider loading"
+    ]
+  },
+  "flow_qualification": {
+    "parser_gap008F5D0F": "83 c4 04 e9 88 09 00 00 = ADD ESP4; JMP008F669F; currently omitted from stored listing",
+    "parser_gap008F5D29": "83 c4 04 e9 6e 09 00 00 = ADD ESP4; JMP008F669F; currently omitted from stored listing",
+    "prior_group_merge": "root cleared CALL_RETURN008F5654 and decoded tail ending exclusive008F566F; stored008F54F0 body still ends008F5658; partialtaildecode not fullbodyrepair; closed report unchanged"
+  },
+  "installed": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "inventory_scope": "global.enums + all14 library.props + JM06; literal regex quoted-S records, then actual production parser per inventoried assignment; not full VFS scan",
+    "inventory_file_count": 16,
+    "quoted_S_records": 191,
+    "adjacent_runs": 0,
+    "escaped_assignments": 1,
+    "values_unchanged": 190,
+    "values_changed": 1,
+    "changed_property": {
+      "file": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "line": 548,
+      "key": "StageScript",
+      "authored_raw_value": "COTP-IJN\\\\PRCPIJN\\\\JM06",
+      "decoded_value": "COTP-IJN\\PRCPIJN\\JM06"
+    },
+    "actual_mission_consumer": "src/game_hosts_mission.cpp1229..1235: GameStageScript then StageScript, values.front into record.script_names[8];1718..1725 enabled existing flag chooses slot8 and mission_script_path; no host policy changes",
+    "path_composer": "actual linked bsp::mission_script_path, src/mission_scene_load.cpp97..100, prefix Scripts/missions/ + verbatim name + .lua",
+    "decoded_script_path": "Scripts/missions/COTP-IJN\\PRCPIJN\\JM06.lua",
+    "filesystem_open_bytes": 80310,
+    "scene_probe": {
+      "entities": 96,
+      "classes": 11,
+      "SubmarineGen": 14,
+      "parse_errors": 0
+    },
+    "limits": "probe follows actual host selection statements and runs production composer; full GameMissionHost/VFS/Lua/gameplay not executed; Windows ifstream verifies exact decoded path and installed file only"
+  },
+  "verification": {
+    "production_TU_probe": "local/cc11_scene_string_probe.cpp includes actual src/scene_file.cpp and amended tests/math_tests.cpp with renamed main; no generated implementation/stubs",
+    "compile_cmd": "local/cc11_scene_string_compile.cmd",
+    "compile_command": "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /DWIN32 /Iinclude /Folocal/cc11_scene_string_probe.obj local/cc11_scene_string_probe.cpp J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib advapi32.lib shell32.lib /link /MANIFEST:EMBED /OUT:local/cc11_scene_string_probe.exe",
+    "compile_exit": 0,
+    "probe_exit": 0,
+    "existing_check": "all amended existing reconstructed_math semantic test statements passed; focused extension to one scene fixture",
+    "initial_compile_limit": "first ad hoc link omitted advapi32/shell32; final actual library list resolves existing imports without stubs",
+    "PE_machine": "014C",
+    "embedded_manifest": "asInvoker; inspected RT_MANIFEST resource24",
+    "log": "Reconstructed math semantic tests passed (not binary equivalence).\ninstalled files=16 quoted_S=191 adjacent=0 escaped=1 changed=1\nJM06 entities=96 classes=11 submarines=14 errors=0\nStageScript=COTP-IJN\\PRCPIJN\\JM06\nmission_script_path=Scripts/missions/COTP-IJN\\PRCPIJN\\JM06.lua\ninstalled_script_bytes=80310\n",
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/scene_typed_strings_cc11.json",
+      "exit": 0,
+      "direct_rows_checked": 22,
+      "failed": 0,
+      "indirect_rows_excluded": 1
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "full_build": "not run; primary serializes integrated Win32 build and all CTests",
+    "game_run": "not run",
+    "native_differential": "not run for new binding"
+  },
+  "qualification": {
+    "source": "bounded explicit S normal semantics implemented",
+    "fixture": "actual production parser plus amended existing test TU and installed input/path probe passed",
+    "runtime": "probe executable only; no complete reconstructed mission/gameplay validation",
+    "original_game": "original native normal bodies/producer evidence, not original-game execution or equivalence",
+    "ABI": "not ABI-compatible; owning C++ fields replace native globalscratch/allocations/records"
+  },
+  "assets": [
+    {
+      "path": "universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "literal_quoted_S_records": 3
+    },
+    {
+      "path": "universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "literal_quoted_S_records": 4
+    },
+    {
+      "path": "universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "literal_quoted_S_records": 1
+    },
+    {
+      "path": "universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "literal_quoted_S_records": 90
+    },
+    {
+      "path": "universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "literal_quoted_S_records": 0
+    },
+    {
+      "path": "universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "literal_quoted_S_records": 1
+    },
+    {
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "literal_quoted_S_records": 92
+    },
+    {
+      "path": "Scripts/missions/COTP-IJN/PRCPIJN/JM06.lua",
+      "bytes": 80310,
+      "sha256": "23DFB3436AC763D3299FFDA6DBE959604500AAD0AF4E6CBE18745270F8E641E5",
+      "role": "actual decoded mission_script_path filesystem input"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 27982,
+      "sha256": "946BD6CE28458A4AEDF4364C14AB9877C8E03C93E86035779EF31257CE68C263"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 17722,
+      "sha256": "EC6FF5F5DD3EB73D6C00E626690B8C804D26CA67452733A013E228B562CE5171"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 199575,
+      "sha256": "61A465DE5A8A4614B5C091BB0C8EF4D6C4495BCEEA68834A7D714F9CD2582080"
+    },
+    {
+      "path": "local/cc11_scene_string_probe.cpp",
+      "bytes": 4458,
+      "sha256": "D2FB14127E82E007C63CAA8EE1C6E42ADB73741E1E7DE2E959DA631B4DF1D80E"
+    },
+    {
+      "path": "local/cc11_scene_string_probe.obj",
+      "bytes": 2369012,
+      "sha256": "97D441754FEF1FE788567CA11EC6F02F79FE0938EFA05B126E613F686B8086CC"
+    },
+    {
+      "path": "local/cc11_scene_string_probe.exe",
+      "bytes": 887808,
+      "sha256": "8EF69964487484FDAD18F0D28807F81361616CA186BF2563C428C7383A502C79"
+    },
+    {
+      "path": "local/cc11_scene_string_probe.log",
+      "bytes": 313,
+      "sha256": "5ABAC38E7F575EF6EF0863DFF5D48E75F6F7FE9598A026A7BEEB2E04DBBA6881"
+    },
+    {
+      "path": "local/cc11_scene_string_compile.cmd",
+      "bytes": 667,
+      "sha256": "B1D7035C494A54DA4340A14AF3E11CA8BE2B8CB3415F044EF982CFECF373F064"
+    },
+    {
+      "path": "local/cc11_scene_string_compile.log",
+      "bytes": 29,
+      "sha256": "C8DA23B5DE24FC88C300AC431C4D48EF50A13B8A56CC12111E6C64E43EE1B5D4"
+    }
+  ],
+  "linked_library_hash_observations": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "bytes": 73048974,
+      "sha256_observed_after_probe": "74DA0BDC9E2CE18953E817C7E00721E336845F002FA0ACC76165E0BED97D5039"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+      "bytes": 454824,
+      "sha256_observed_after_probe": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+      "bytes": 71766,
+      "sha256_observed_after_probe": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
+    }
+  ]
+}
