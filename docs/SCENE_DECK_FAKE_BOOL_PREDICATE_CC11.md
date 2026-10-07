@@ -10,6 +10,8 @@ NumSlots, first-hole behavior, stock/slot order, Type resolution, Count, Arm,
 defaults and created/held-back gates remain unchanged. No owning B payload or
 parser metadata is added.
 
+Primary integration at `c7b97feff4e2715e6be523459f78c45ee8486735` passed the full Win32 build and all three existing CTests. Its independent three-TU probe pinned 181 current-main source/header inputs, 77 current-main link inputs and 17 installed files before and after linking. The actual private reader and existing Source air-ops loader passed all fixture cases and eight installed false witnesses; all 14 native call rows passed again. The x86 probe has an embedded id-1 `asInvoker` manifest. Whole emitter, actual class provider, diagnostic removal, native ABI and gameplay remain unverified.
+
 Ownership: native `006CADD0`, `src/game_hosts_scene_contents.cpp`, this document
 and `reports/scene_deck_fake_bool_predicate_cc11.json`. No header/API, tracked
 test, CMake, shared metadata, ledger or Ghidra writes accompany this packet.
