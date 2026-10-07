@@ -145,3 +145,7 @@ connected Capture/Level/Landing word adoption, and owning B (fully rebuilt and
 independently checked by root before this packet). The previous group merge
 flow repair remains partial tail decode ending exclusive `008F566F`; stored
 `008F54F0` body still ends `008F5658`, as recorded in its separate closed report.
+
+## Primary integration
+
+Main `f3027c0f415f6760a83eb3021b09728c86ab47a3` passed the full Win32 build and all three CTests after every SceneProperty consumer rebuilt. Root independently compiled four actual TUs; 182 current Source/header inputs, 77 current main link inputs, 17 installed inputs and the response file were stable before/after the manifested PE32 probe. All seven actual common-reader fields, copies and diagnostic-removal/opposing-raw cases, compatible group capture/overwrite/fill-missing, decimal-prefix/zero and legacy Source fallback/no-reset checks passed. Twelve installed I witnesses retained their words; Level E Basic stayed a separate unresolved Source skip with no enum provider. The actual creation connection compiled, while whole SceneReader/initializer/units/AI/game remained unexecuted. All26 native direct calls verified. Prior worker pending statements above are historical preparation receipts, now closed only within this bounded Source domain.
