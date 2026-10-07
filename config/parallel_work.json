@@ -13498,8 +13498,8 @@
     },
     {
       "id": "cc11_health_marker",
-      "done": false,
-      "state": "dispatched_to_reused_worker",
+      "done": true,
+      "state": "integrated_ambient_x87_marker_main_build_and_probe_passed",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -13519,7 +13519,15 @@
         "cc11_health_nan"
       ],
       "reuses_worker_from": "cc11_health_nan",
-      "contract": "Reproduce marker stored-float/max loads, FSUB double1, FXCH and FCOMIP/JBE using actual ambient x87 control word. Remove the four proved precision data-result mismatches without installing a precision policy or changing clamp/getter/callback contracts; reuse meaningful existing probe witnesses."
+      "contract": "Reproduce marker stored-float/max loads, FSUB double1, FXCH and FCOMIP/JBE using actual ambient x87 control word. Remove the four proved precision data-result mismatches without installing a precision policy or changing clamp/getter/callback contracts; reuse meaningful existing probe witnesses.",
+      "code_revision": "724d4e1f42717c34d70bf2d15898305b62278f03",
+      "integrated_revision": "851540eef5d6a298bd62bfbd6bb78dcf9a2b2eda",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "851540eef5d6a298bd62bfbd6bb78dcf9a2b2eda",
+      "full_main_ctests_passed": 3,
+      "remaining_marker_differences": 0,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_active_retirement",
@@ -13571,6 +13579,30 @@
       ],
       "reuses_worker_from": "cc11_scene_empty_bag",
       "contract": "Recover complete normal native008F67B0 loader control flow/caller/ABI and actual VFS/parser/group-resolution contracts. Compare current property-library source projection and installed enum/group inputs. Identify and implement only a proved bounded missing producer/loader contract after explicit file ownership; no invented generic filesystem scan or unrelated scene/mode/switch changes."
+    },
+    {
+      "id": "cc11_health_fraction_getter",
+      "done": false,
+      "state": "dispatched_to_reused_health_worker",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00876260",
+        "00923be0"
+      ],
+      "output_files": [
+        "src/unit_damage.cpp",
+        "include/bsp/unit_damage.hpp",
+        "docs/UNIT_HEALTH_FRACTION_GETTER_CC11.md",
+        "reports/unit_health_fraction_getter_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_marker",
+        "cc11_health_nan"
+      ],
+      "reuses_worker_from": "cc11_health_marker",
+      "contract": "Port proved ambient x87 unit fraction and entity numeric floor/cap ordering; preserve released no-dispatch/no-cache branch and explicit actual virtual/cache provider boundaries. No invented snapshot cache, broader callback rewrite or full ABI/game/exception-state claim."
     }
   ],
   "snapshot_after_analysis": {

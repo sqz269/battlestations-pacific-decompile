@@ -250,5 +250,24 @@
       "bytes": 20028
     }
   ],
-  "native_listing_sha256": "6b9a44b9f2fe15e71e560695e25396ae1aa65a8867f206e54c920050ef8f96e3"
+  "native_listing_sha256": "6b9a44b9f2fe15e71e560695e25396ae1aa65a8867f206e54c920050ef8f96e3",
+  "primary_integration": {
+    "source_revision": "851540eef5d6a298bd62bfbd6bb78dcf9a2b2eda",
+    "worker_revision": "724d4e1f42717c34d70bf2d15898305b62278f03",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "executable_sha256": "952137e542d0bc438a581c3e1fdd2fe47212d33ba2754157702a1f38e0995f10",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_marker_integrated_build.log",
+    "utc": "2026-10-07T06:33:22.205382+00:00",
+    "independent_probe": "336prefix+672mode+240byte+336control/stack checks passed;0marker differences",
+    "abi_compatible": false,
+    "game_validated": false,
+    "full_fp_state_parity": false
+  }
 }

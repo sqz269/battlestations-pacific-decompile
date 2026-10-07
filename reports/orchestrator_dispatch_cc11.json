@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T06:25:17.222417+00:00",
+  "updated_utc": "2026-10-07T06:33:22.205382+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -413,5 +413,25 @@
     },
     "next_worker_packet": "cc11_scene_library_loader",
     "ghidra_comments_saved": "local/ghidra-annotations-20261007T062226Z.json"
+  },
+  "health_marker_integration": {
+    "source_revision": "851540eef5d6a298bd62bfbd6bb78dcf9a2b2eda",
+    "worker_revision": "724d4e1f42717c34d70bf2d15898305b62278f03",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "executable_sha256": "952137e542d0bc438a581c3e1fdd2fe47212d33ba2754157702a1f38e0995f10",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_marker_integrated_build.log",
+    "utc": "2026-10-07T06:33:22.205382+00:00",
+    "independent_probe": "336prefix+672mode+240byte+336control/stack checks passed;0marker differences",
+    "abi_compatible": false,
+    "game_validated": false,
+    "full_fp_state_parity": false,
+    "next_reused_packet": "cc11_health_fraction_getter"
   }
 }
