@@ -98,3 +98,5 @@ There is no invalid-storage, concurrent-mutation, original exception-unwind,
 ABI replacement, or game-runtime claim.0076C500 is not executed: its unchanged
 slot address still requires genuine consumer progress unavailable from the
 currently closed message scalar providers.
+
+Primary integration at `b7f1bb6c945b684dbe232f7b44f82b417af8bff5`: the complete Win32 build and all three existing CTests passed. An independent current-library probe freshly compiled 10 actual translation units and passed 151 checks. It pinned 31 Source/header/fixture inputs, three current support libraries and the original PE before and after; 21 actual compiler includes were verified. The report records native byte/literal checks, new Source COFF, manifest, logs and immutable receipts. Original ABI, whole ownership/world binding and gameplay remain unproved.

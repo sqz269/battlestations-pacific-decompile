@@ -324,5 +324,124 @@
     "no concurrency/structural reentry/lifetime invalidation/fault/privateEH/invalid allocation behavior admission",
     "raw production profile tokens remain uncallable despite relocated original fixture",
     "no whole9B2C80/approach/task arena/death/cache/plane404 lifetime/native class ABI/game claim"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T19:43:46.898080+00:00",
+    "worker_revision": "51a80fdaca5d05990846e8c191baf89ed316de04",
+    "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+    "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+    "probe_recipe": "local/cc11_moveto_callback_primary/build.cmd",
+    "probe_log": "local/cc11_moveto_callback_primary/compile.log",
+    "probe_sha256": "8f72e6ca1361b20704572a17b592111af2bc1a147517adc4e60e33fbde3903f7",
+    "primary_whole_source_native_fixture_review": true,
+    "root_x86_id1_asInvoker_manifest_verified": true,
+    "fresh_actual_translation_units": 8,
+    "stable_current_Source_header_fixture_inputs": 33,
+    "actual_compiler_includes": 25,
+    "recipe_generated_inputs": 1,
+    "stable_installed_inputs": 0,
+    "stable_current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "00d19000",
+        "bytes": 4096,
+        "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d23000",
+        "bytes": 4096,
+        "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0042b000",
+        "bytes": 4096,
+        "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00522000",
+        "bytes": 4096,
+        "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009bdeb0",
+        "bytes": 30,
+        "sha256": "9bf5918e0baa257210dffb98d20fea0396c2b9e68e542ebb5c2fd6bcc3475045",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "immutable_before_after_receipts": [
+      "local/cc11_moveto_callback_primary/inputs_before_link.json",
+      "local/cc11_moveto_callback_primary/inputs_after_link.json"
+    ],
+    "primary_COFF": [
+      {
+        "symbol": "?native_land_moveto_observer_callback_009bdeb0@bsp@@YAXABUNativeLandMoveToConstructorView@1@AAUNativeObserverOwnerStorage@1@AAVNativeLandMoveToObserverCallbackBindings@1@@Z",
+        "bytes": 34,
+        "instruction_count": 11,
+        "sha256": "9e74f21aa7c503bc40adea6ce0d9f016b266b5bcc1e0357fb9133b84c41c7594",
+        "object": "native_land_moveto_observer_callback.obj",
+        "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_native_land_moveto_observer_callback_009bdeb0_coff.bin"
+      },
+      {
+        "symbol": "?native_land_moveto_observer_callback_access@bsp@@YA?AUObserverEndpointCallbackAccess@1@AAVNativeLandMoveToObserverCallbackBindings@1@@Z",
+        "bytes": 25,
+        "instruction_count": 6,
+        "sha256": "7ca77dcfdf8ebb95b75b858c4cdb86072728258d4b08fd9b6ff30f5247f98ac6",
+        "object": "native_land_moveto_observer_callback.obj",
+        "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_native_land_moveto_observer_callback_access_coff.bin"
+      },
+      {
+        "symbol": "?callback04@?A0x9730c706@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+        "bytes": 134,
+        "instruction_count": 47,
+        "sha256": "e29112ddcf86266d6a547a1261075b80e528486b53c8fa8c43604daf4ce35294",
+        "object": "native_land_moveto_observer_callback.obj",
+        "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_callback04_coff.bin"
+      },
+      {
+        "symbol": "?callback08@?A0x9730c706@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+        "bytes": 22,
+        "instruction_count": 7,
+        "sha256": "d89411fcc9159751bb77101a9b3ca6e23430924e423983a081eb08973d97d9ce",
+        "object": "native_land_moveto_observer_callback.obj",
+        "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_callback08_coff.bin"
+      }
+    ],
+    "primary_COFF_detail": "local/cc11_moveto_callback_primary/coff_evidence.json",
+    "native_direct_rows_checked": 0,
+    "native_rows_failed": 0,
+    "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+    "native_ABI_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 85,
+    "indirect_getter_row_explicitly_unresolved": true,
+    "original_table_data_DWORD_relocations": 2,
+    "original_getter_instruction_relocations": 0,
+    "raw_production_profiles_callable": false,
+    "original_caller_instruction_relocations": 0,
+    "constructor_and_actual_source_delivery_executed": true,
+    "unregister_on_match": false
+  },
+  "primary_source_status": "conditional complete Source providers integrated/reviewed/current build and bounded fixture passed; actual ABI/game binding unproved",
+  "primary_annotation": {
+    "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+    "previous_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
 }

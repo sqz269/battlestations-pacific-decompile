@@ -158,3 +158,6 @@ traffic record publication/runtime ownership (`00951220`, `004A5620`,
 `004A50D0`) and the surrounding VFS/loader contracts remain explicit dependencies.
 Current PropertyLibrary's narrow first-table/symbol retention and group capture
 bindings do not manufacture this native dictionary storage or enum metadata.
+
+Primary integration at `b7f1bb6c945b684dbe232f7b44f82b417af8bff5`: the complete Win32 build and all three existing CTests passed. An independent current-library probe freshly compiled 3 actual translation units and passed 68 matched reader cases. It pinned 38 Source/header/fixture inputs, three current support libraries and the original PE before and after; 36 actual compiler includes were verified. The report records native byte/literal checks, new Source COFF, manifest, logs and immutable receipts. Original ABI, whole ownership/world binding and gameplay remain unproved.
+The 36 compiler includes comprise 35 production headers and one generated original-byte header; the Source/header/fixture inventory is 38, with recipe/generated inputs counted separately. PE virtual zero-filled empty cells are saved-analysis/image values, not live-game captures.

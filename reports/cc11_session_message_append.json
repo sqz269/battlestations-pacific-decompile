@@ -1319,5 +1319,98 @@
       "bytes": 2104,
       "sha256": "a73dc670b96dbf7eb8bee65fe136d5e48f9a66b81e94e61ef9b609b6e560fb33"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T19:43:47.220755+00:00",
+    "worker_revision": "9d0d657fe8593b8cef69d8e18b680cba4458a976",
+    "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+    "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+    "probe_recipe": "local/cc11_session_append_primary/build.cmd",
+    "probe_log": "local/cc11_session_append_primary/compile.log",
+    "probe_sha256": "6572c5c347bd32cd157f99a257a5c0ee98cc23cfef6db874741ff4b7e2da625c",
+    "primary_whole_source_native_fixture_review": true,
+    "root_x86_id1_asInvoker_manifest_verified": true,
+    "fresh_actual_translation_units": 10,
+    "stable_current_Source_header_fixture_inputs": 31,
+    "actual_compiler_includes": 21,
+    "recipe_generated_inputs": 1,
+    "stable_installed_inputs": 0,
+    "stable_current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "0076e470",
+        "bytes": 173,
+        "sha256": "f50aa693351298a653c259d97a98b5e03b9fd10b8cf1b7e776eb15877e4562ac",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d039cc",
+        "bytes": 44,
+        "sha256": "40e2560f3a7ec6276d5bf674c122564000a26522eec044f9929a43cecefee539",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "immutable_before_after_receipts": [
+      "local/cc11_session_append_primary/inputs_before_link.json",
+      "local/cc11_session_append_primary/inputs_after_link.json"
+    ],
+    "primary_COFF": [
+      {
+        "symbol": "?append_native_session_message_0076e470@bsp@@YAXPAXPAUNativeSessionMessageStorage@1@@Z",
+        "bytes": 221,
+        "instruction_count": 59,
+        "sha256": "fb97295c97c0fc405540ac96b8f2db62324c1794ced99d5f184fb6154d798c29",
+        "object": "native_session_message_append.obj",
+        "code_file": "local/cc11_session_append_primary/native_session_message_append_append_native_session_message_0076e470_coff.bin"
+      },
+      {
+        "symbol": "?original_allocate@@YAPAXI@Z",
+        "bytes": 61,
+        "instruction_count": 17,
+        "sha256": "b81a3398b3546b5381416ce9188d01e37ffbaf3562823f564086240dfcf75dc3",
+        "object": "probe.obj",
+        "code_file": "local/cc11_session_append_primary/probe_original_allocate_coff.bin"
+      },
+      {
+        "symbol": "?original_free@@YAXPAX@Z",
+        "bytes": 5,
+        "instruction_count": 1,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "object": "probe.obj",
+        "code_file": "local/cc11_session_append_primary/probe_original_free_coff.bin"
+      }
+    ],
+    "primary_COFF_detail": "local/cc11_session_append_primary/coff_evidence.json",
+    "native_direct_rows_checked": 2,
+    "native_rows_failed": 0,
+    "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+    "native_ABI_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 151,
+    "original_outer_body_bytes": 173,
+    "reachable_instructions": 48,
+    "alignment_bytes": 8,
+    "original_natural_CALL_operand_relocations": 2,
+    "nonrelocated_original_bytes": 165,
+    "actual_session_constructor_executed": true,
+    "outgoing_consumer_progress_bound": false
+  },
+  "primary_source_status": "conditional complete Source providers integrated/reviewed/current build and bounded fixture passed; actual ABI/game binding unproved",
+  "primary_annotation": {
+    "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+    "previous_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
 }

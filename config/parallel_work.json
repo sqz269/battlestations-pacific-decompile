@@ -17778,8 +17778,8 @@
     },
     {
       "id": "cc11_land_moveto_observer_callback",
-      "done": false,
-      "state": "ready approved complete same-root MoveTo observer notification callback",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -17796,12 +17796,130 @@
         "cc11_land_moveto_constructor",
         "cc11_land_moveto_scalar_lifetime"
       ],
-      "contract": "Complete9BDEB0..9BDECE30B11inst receives actualcallback18/original FIRST; calls actualFIRST slot04 once, freshly compares returned identity with SAME root2C, clears only equal, no unregister/delete. Required pure actualcallback->constructor view mapping and complete actual FIRST getter; known42B970 identity/522E90 null only proved actualprofiles, other04/08 routes required actual delegates. Connect real696330/695F90/693550 dispatcher to constructor/register/current same-root cleanup. No edge-as-FIRST/default/fake table. One genuine retained-edge matching/mismatching notification fixture with real pending/OSlocks; exact readonly original PE table pages and RX original getter pages at native VAs approved fixture-only in relocated manifested probe, pin bytes/address/protections and execute only whole known getters. No fake callable profiles if mapping fails; mark originalcaller unexecuted. Currentb02 libraries frozen pre/copy/post. Four new files; no trackedtests/CMake/sharedmetadata/Ghidrawrites. Whole arena/privateEH/nativeABI/game unbound."
+      "contract": "Complete9BDEB0..9BDECE30B11inst receives actualcallback18/original FIRST; calls actualFIRST slot04 once, freshly compares returned identity with SAME root2C, clears only equal, no unregister/delete. Required pure actualcallback->constructor view mapping and complete actual FIRST getter; known42B970 identity/522E90 null only proved actualprofiles, other04/08 routes required actual delegates. Connect real696330/695F90/693550 dispatcher to constructor/register/current same-root cleanup. No edge-as-FIRST/default/fake table. One genuine retained-edge matching/mismatching notification fixture with real pending/OSlocks; exact readonly original PE table pages and RX original getter pages at native VAs approved fixture-only in relocated manifested probe, pin bytes/address/protections and execute only whole known getters. No fake callable profiles if mapping fails; mark originalcaller unexecuted. Currentb02 libraries frozen pre/copy/post. Four new files; no trackedtests/CMake/sharedmetadata/Ghidrawrites. Whole arena/privateEH/nativeABI/game unbound.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:46.898080+00:00",
+        "worker_revision": "51a80fdaca5d05990846e8c191baf89ed316de04",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_moveto_callback_primary/build.cmd",
+        "probe_log": "local/cc11_moveto_callback_primary/compile.log",
+        "probe_sha256": "8f72e6ca1361b20704572a17b592111af2bc1a147517adc4e60e33fbde3903f7",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 8,
+        "stable_current_Source_header_fixture_inputs": 33,
+        "actual_compiler_includes": 25,
+        "recipe_generated_inputs": 1,
+        "stable_installed_inputs": 0,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "00d19000",
+            "bytes": 4096,
+            "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00d23000",
+            "bytes": 4096,
+            "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "0042b000",
+            "bytes": 4096,
+            "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00522000",
+            "bytes": 4096,
+            "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "009bdeb0",
+            "bytes": 30,
+            "sha256": "9bf5918e0baa257210dffb98d20fea0396c2b9e68e542ebb5c2fd6bcc3475045",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_moveto_callback_primary/inputs_before_link.json",
+          "local/cc11_moveto_callback_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?native_land_moveto_observer_callback_009bdeb0@bsp@@YAXABUNativeLandMoveToConstructorView@1@AAUNativeObserverOwnerStorage@1@AAVNativeLandMoveToObserverCallbackBindings@1@@Z",
+            "bytes": 34,
+            "instruction_count": 11,
+            "sha256": "9e74f21aa7c503bc40adea6ce0d9f016b266b5bcc1e0357fb9133b84c41c7594",
+            "object": "native_land_moveto_observer_callback.obj",
+            "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_native_land_moveto_observer_callback_009bdeb0_coff.bin"
+          },
+          {
+            "symbol": "?native_land_moveto_observer_callback_access@bsp@@YA?AUObserverEndpointCallbackAccess@1@AAVNativeLandMoveToObserverCallbackBindings@1@@Z",
+            "bytes": 25,
+            "instruction_count": 6,
+            "sha256": "7ca77dcfdf8ebb95b75b858c4cdb86072728258d4b08fd9b6ff30f5247f98ac6",
+            "object": "native_land_moveto_observer_callback.obj",
+            "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_native_land_moveto_observer_callback_access_coff.bin"
+          },
+          {
+            "symbol": "?callback04@?A0x9730c706@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+            "bytes": 134,
+            "instruction_count": 47,
+            "sha256": "e29112ddcf86266d6a547a1261075b80e528486b53c8fa8c43604daf4ce35294",
+            "object": "native_land_moveto_observer_callback.obj",
+            "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_callback04_coff.bin"
+          },
+          {
+            "symbol": "?callback08@?A0x9730c706@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+            "bytes": 22,
+            "instruction_count": 7,
+            "sha256": "d89411fcc9159751bb77101a9b3ca6e23430924e423983a081eb08973d97d9ce",
+            "object": "native_land_moveto_observer_callback.obj",
+            "code_file": "local/cc11_moveto_callback_primary/native_land_moveto_observer_callback_callback08_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_moveto_callback_primary/coff_evidence.json",
+        "native_direct_rows_checked": 0,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "checks": 85,
+        "indirect_getter_row_explicitly_unresolved": true,
+        "original_table_data_DWORD_relocations": 2,
+        "original_getter_instruction_relocations": 0,
+        "raw_production_profiles_callable": false,
+        "original_caller_instruction_relocations": 0,
+        "constructor_and_actual_source_delivery_executed": true,
+        "unregister_on_match": false
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
     },
     {
       "id": "cc11_health_transport_broadcast",
-      "done": false,
-      "state": "ready approved complete actual-peer broadcast using unchanged complete final serializer",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -17818,12 +17936,132 @@
         "cc11_health_complete_serializer",
         "cc11_health_transport_step"
       ],
-      "contract": "Complete784830..78489F111B43inst actualC sentinel/allnodes including first, count unused; deadselfcompare initialCRT guard, validation continuations preserved; capturetarget lock enter/increment, genuine complete783C80 serializer, FRESHtargetlock reload decrement/leave, validateadvance. Add actual classmember on NativeUnitHealthMessageSerializedCalls; private unchanged final serializer remains private unless concrete nativeABI fixture bridge requires public caller. Pure backing/provider aliases, genuine complete flush/enqueue/clock, no operation callback/fake profile/world/clock/partialcallee. Whole original111B loop plus fixed nativeABI bridge to unchanged complete Source serializer fixture composition approved, ONLYsix4B natural operands3CRT/2OSIAT/1serializer,87unchanged; explicitly not all-original serializer graph. Few connected empty/one/multi/countmismatch/targetalias cases with genuine target/cursor/inlinepayload/history/OSlocks/current providers/owned queue and teardown. Currentb02 libraries frozen pre/copy/post. Native76C500 nonadvancing array/deletion contract stays OPEN. Four ownedfiles; no trackedtests/CMake/sharedmetadata/Ghidrawrites. New ABI/historicalCRT/fault/runtime/network/game qualified."
+      "contract": "Complete784830..78489F111B43inst actualC sentinel/allnodes including first, count unused; deadselfcompare initialCRT guard, validation continuations preserved; capturetarget lock enter/increment, genuine complete783C80 serializer, FRESHtargetlock reload decrement/leave, validateadvance. Add actual classmember on NativeUnitHealthMessageSerializedCalls; private unchanged final serializer remains private unless concrete nativeABI fixture bridge requires public caller. Pure backing/provider aliases, genuine complete flush/enqueue/clock, no operation callback/fake profile/world/clock/partialcallee. Whole original111B loop plus fixed nativeABI bridge to unchanged complete Source serializer fixture composition approved, ONLYsix4B natural operands3CRT/2OSIAT/1serializer,87unchanged; explicitly not all-original serializer graph. Few connected empty/one/multi/countmismatch/targetalias cases with genuine target/cursor/inlinepayload/history/OSlocks/current providers/owned queue and teardown. Currentb02 libraries frozen pre/copy/post. Native76C500 nonadvancing array/deletion contract stays OPEN. Four ownedfiles; no trackedtests/CMake/sharedmetadata/Ghidrawrites. New ABI/historicalCRT/fault/runtime/network/game qualified.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:47.121529+00:00",
+        "worker_revision": "0b8e48235153b92c8583ac5a6052f1b0e343a196",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_transport_broadcast_primary/build.cmd",
+        "probe_log": "local/cc11_transport_broadcast_primary/compile.log",
+        "probe_sha256": "263f5976b5ed81efd1ca2d82df7879fc26aea11cf18915ce8a383b2a9c239952",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 25,
+        "stable_current_Source_header_fixture_inputs": 69,
+        "actual_compiler_includes": 44,
+        "recipe_generated_inputs": 1,
+        "stable_installed_inputs": 0,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "00784830",
+            "bytes": 111,
+            "sha256": "6593857daa87512b5d619516243d90d12f4fcb9806ed72f2f602f97a8d190f4d",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_transport_broadcast_primary/inputs_before_link.json",
+          "local/cc11_transport_broadcast_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?broadcast_session_message_00784830@NativeUnitHealthMessageSerializedCalls@bsp@@QAEXPAXPAUNativeSessionMessageStorage@2@@Z",
+            "bytes": 163,
+            "instruction_count": 63,
+            "sha256": "cf4f2eaf9660e76cd848cc1fc0d108ff28e013cec687619e37e5be6df3211f44",
+            "object": "native_session_transport_broadcast.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/native_session_transport_broadcast_broadcast_session_message_00784830_coff.bin"
+          },
+          {
+            "symbol": "?broadcast_invalid_parameter@?A0x4d5aa056@bsp@@YAXXZ",
+            "bytes": 6,
+            "instruction_count": 1,
+            "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+            "object": "native_session_transport_broadcast.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/native_session_transport_broadcast_broadcast_invalid_parameter_coff.bin"
+          },
+          {
+            "symbol": "?serialize_session_message_00783c80@NativeUnitHealthMessageSerializedCalls@bsp@@EAEXPAX0PAUNativeSessionMessageStorage@2@@Z",
+            "bytes": 682,
+            "instruction_count": 242,
+            "sha256": "2a73471138ed648f68514435c9f745679e6cb6459be6e01208b60c9181f13a19",
+            "object": "native_unit_health_message.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/native_unit_health_message_serialize_session_message_00783c80_coff.bin"
+          },
+          {
+            "symbol": "?bind_peer_send_primary@Calls@@MAE?AUNativeSessionPrimaryPeerFields@bsp@@PAX@Z",
+            "bytes": 22,
+            "instruction_count": 7,
+            "sha256": "e7c3b2cee997504ddbde9e1db69f281134ec86d644f110b59a8fcc3253044586",
+            "object": "probe.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/probe_bind_peer_send_primary_coff.bin"
+          },
+          {
+            "symbol": "?target_critical_section_04@Calls@@MAEADSAUTrackedCriticalSection@bsp@@PAX@Z",
+            "bytes": 10,
+            "instruction_count": 3,
+            "sha256": "45c337544374ac43fb0aadc73ba9f577181ce24508344f3b8c111de97cc8df6f",
+            "object": "probe.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/probe_target_critical_section_04_coff.bin"
+          },
+          {
+            "symbol": "?complete_serializer_bridge@@YIXPAX00PAUNativeSessionMessageStorage@bsp@@@Z",
+            "bytes": 23,
+            "instruction_count": 7,
+            "sha256": "48d0c53c4fed3b474d494d62950bd093b86099a32816c17dc604085bed10dbf3",
+            "object": "probe.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/probe_complete_serializer_bridge_coff.bin"
+          },
+          {
+            "symbol": "?original_crt_service@@YAXXZ",
+            "bytes": 6,
+            "instruction_count": 1,
+            "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+            "object": "probe.obj",
+            "code_file": "local/cc11_transport_broadcast_primary/probe_original_crt_service_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_transport_broadcast_primary/coff_evidence.json",
+        "native_direct_rows_checked": 5,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "checks": 698,
+        "original_outer_loop_cases": 5,
+        "original_outer_loop_natural_operand_relocations": 6,
+        "nonrelocated_original_bytes": 87,
+        "all_original_serializer_graph": false,
+        "Source_complete_serializer_COFF_bytes": 682,
+        "source_private_final_serializer_unchanged": true,
+        "real_threshold_flush_and_owned_enqueue_exercised": true,
+        "reentrant_lock_replacement_observed": false,
+        "original_dead_CRT_row_checked_unexecuted": true
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
     },
     {
       "id": "cc11_scene_enum_dictionary_lookup",
-      "done": false,
-      "state": "approved bounded implementation awaiting primary integration and current build",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -17840,12 +18078,193 @@
         "reports/native_enum_dictionary_lookup_cc11.json"
       ],
       "depends_on": [],
-      "contract": "Four complete normal borrowed dictionary readers; actual8B string headers, receiver heads8/node key0,4/opaque mapped8/nextC in producer-proved14h slots. Existing complete raw-pool strings/DataOrEmpty/comparator/current CRT, distinct actual empty cells; ASCII/C-locale stable finite chains and nonaliasing output. Original583B nine-body graph uses one checked common code delta30000000, unchanged instructions/relative edges, actual absolute empty/image-initial-zero-locale cells remain native readonly. No default/insertion/allocation/enumidentity/traffic/world/classABI/game claim. Worker3freshTUs/68cases/8directrows; immutable b02 supports. Root review/current main build pending."
+      "contract": "Four complete normal borrowed dictionary readers; actual8B string headers, receiver heads8/node key0,4/opaque mapped8/nextC in producer-proved14h slots. Existing complete raw-pool strings/DataOrEmpty/comparator/current CRT, distinct actual empty cells; ASCII/C-locale stable finite chains and nonaliasing output. Original583B nine-body graph uses one checked common code delta30000000, unchanged instructions/relative edges, actual absolute empty/image-initial-zero-locale cells remain native readonly. No default/insertion/allocation/enumidentity/traffic/world/classABI/game claim. Worker3freshTUs/68cases/8directrows; immutable b02 supports. Root review/current main build pending.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:47.309488+00:00",
+        "worker_revision": "10e65d80ea21dd92dcac6414a52cb0796bd5810b",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_enum_lookup_primary/build.cmd",
+        "probe_log": "local/cc11_enum_lookup_primary/compile.log",
+        "probe_sha256": "5c3eae28c2c0ada0d3186b74d2c453750469fa068601d76c3650e5b50c151c0c",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 3,
+        "stable_current_Source_header_fixture_inputs": 38,
+        "actual_compiler_includes": 36,
+        "recipe_generated_inputs": 2,
+        "stable_installed_inputs": 1,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "004895b0",
+            "bytes": 89,
+            "sha256": "d88b7af5c4717b4f48d95a0d622a5551ef40fe006991eb08dc1fd4707273448a",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00489610",
+            "bytes": 89,
+            "sha256": "0cb4d3318f831531ef3a42fe43549ee11b2e317fcc8959f4b025a02401b78fe9",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "0048d480",
+            "bytes": 93,
+            "sha256": "eb17091190d93fa686d8c6f841161abd8d0629797b5caacd505c55a5cb94ed6a",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "0048d4e0",
+            "bytes": 93,
+            "sha256": "cd7b4a446c2d966136acdd0e6099a7005eba1a810a5fda3996d4de916cfb3e71",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00419ca0",
+            "bytes": 13,
+            "sha256": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00438e10",
+            "bytes": 34,
+            "sha256": "94e8a5ab6688cce154e9a580bc5e0e08cfcc8be7af08e28c7d7be7ce29f4bea7",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00bf924e",
+            "bytes": 39,
+            "sha256": "3158c03a0ab276bb10aad57b86e81c495f0343f5f9feb34720cab39390b07d20",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00bf7fbf",
+            "bytes": 80,
+            "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00bf7eb7",
+            "bytes": 53,
+            "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00e186ed",
+            "bytes": 1,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00e17654",
+            "bytes": 1,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "0109de1c",
+            "bytes": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_enum_lookup_primary/inputs_before_link.json",
+          "local/cc11_enum_lookup_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?native_enum_symbol_bucket_004895b0@bsp@@YAIABVNativeString@1@PBD@Z",
+            "bytes": 5,
+            "instruction_count": 1,
+            "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_native_enum_symbol_bucket_004895b0_coff.bin"
+          },
+          {
+            "symbol": "?native_enum_table_bucket_00489610@bsp@@YAIABVNativeString@1@PBD@Z",
+            "bytes": 5,
+            "instruction_count": 1,
+            "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_native_enum_table_bucket_00489610_coff.bin"
+          },
+          {
+            "symbol": "?find_native_enum_symbol_node_0048d480@bsp@@YAPBXPBXABVNativeString@1@AAIPBD3@Z",
+            "bytes": 34,
+            "instruction_count": 9,
+            "sha256": "c62a2d89f2bfb6d4a1d87ccead64b4cbefd5bd87525cb639fd88c1451b3610e7",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_find_native_enum_symbol_node_0048d480_coff.bin"
+          },
+          {
+            "symbol": "?find_native_enum_table_node_0048d4e0@bsp@@YAPBXPBXABVNativeString@1@AAIPBD3@Z",
+            "bytes": 34,
+            "instruction_count": 9,
+            "sha256": "c62a2d89f2bfb6d4a1d87ccead64b4cbefd5bd87525cb639fd88c1451b3610e7",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_find_native_enum_table_node_0048d4e0_coff.bin"
+          },
+          {
+            "symbol": "?bucket_for@?A0xc83ed590@bsp@@YAIABVNativeString@2@PBD@Z",
+            "bytes": 85,
+            "instruction_count": 38,
+            "sha256": "53d9d1a05e8114cf559807aee036c6807b924f40abd42d0ec3a8118242795b94",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_bucket_for_coff.bin"
+          },
+          {
+            "symbol": "?find_node@?A0xc83ed590@bsp@@YAPBXPBXABVNativeString@2@AAIPBD3P6AI13@Z@Z",
+            "bytes": 107,
+            "instruction_count": 46,
+            "sha256": "774024de5c7931878cc9643878b44c7b3a7333ebcf2f00377f2ccde1cb0ec30e",
+            "object": "native_enum_dictionary_lookup.obj",
+            "code_file": "local/cc11_enum_lookup_primary/native_enum_dictionary_lookup_find_node_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_enum_lookup_primary/coff_evidence.json",
+        "native_direct_rows_checked": 8,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "matched_reader_cases": 68,
+        "production_compiler_header_includes": 35,
+        "generated_compiler_header_includes": 1,
+        "original_normal_code_bytes": 583,
+        "common_original_code_relocation_delta": "30000000",
+        "unchanged_relative_edges": 10,
+        "absolute_native_cells_relocated": false,
+        "image_initial_zero_locale_not_game_capture": true,
+        "PE_virtual_zero_filled_cell_spans": [
+          "00e186ed",
+          "0109de1c"
+        ],
+        "native_dictionary_insertion_or_allocator_executed": false
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
     },
     {
       "id": "cc11_land_follow_observer_callback",
-      "done": false,
-      "state": "approved bounded implementation awaiting primary integration and current build",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -17861,12 +18280,151 @@
       "depends_on": [
         "cc11_land_follow_observer_lifetime"
       ],
-      "contract": "Complete39B14inst callback receives actual callback18/original FIRST, captured genuine getter then fresh SAME>=98h root2C compare; nonnull match clears BEFORE direct genuine6952A0. CF89B4 active profile, pure field alias required, actual FIRST identity without semantic unit translation; other04/all08 complete delegates required. Connected existing notifier/dispatch/observer lifetime/OS locks/cleanup. Original whole39B sole natural direct-call operand relocation to complete Source unregister plus two mechanical original-table DWORD relocations to unchanged original3B getters, not synthetic operation profiles. Null mismatch admitted; invalid NULL==NULL excluded without invented guard. No full constructor/tuning entry/rootfree/privateEH/nativeABI/game claim. Worker9freshTUs/80checks; b02 supports frozen. Root review/current build pending."
+      "contract": "Complete39B14inst callback receives actual callback18/original FIRST, captured genuine getter then fresh SAME>=98h root2C compare; nonnull match clears BEFORE direct genuine6952A0. CF89B4 active profile, pure field alias required, actual FIRST identity without semantic unit translation; other04/all08 complete delegates required. Connected existing notifier/dispatch/observer lifetime/OS locks/cleanup. Original whole39B sole natural direct-call operand relocation to complete Source unregister plus two mechanical original-table DWORD relocations to unchanged original3B getters, not synthetic operation profiles. Null mismatch admitted; invalid NULL==NULL excluded without invented guard. No full constructor/tuning entry/rootfree/privateEH/nativeABI/game claim. Worker9freshTUs/80checks; b02 supports frozen. Root review/current build pending.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:47.014135+00:00",
+        "worker_revision": "c9a9cd96b4c105542a1d354497b1c858224e5ddb",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_follow_callback_primary/build.cmd",
+        "probe_log": "local/cc11_follow_callback_primary/compile.log",
+        "probe_sha256": "08057cc3747ee51717124237fdc64dd41dc2f453778075b14c24911378076c46",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 9,
+        "stable_current_Source_header_fixture_inputs": 49,
+        "actual_compiler_includes": 40,
+        "recipe_generated_inputs": 1,
+        "stable_installed_inputs": 0,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "006ceed0",
+            "bytes": 39,
+            "sha256": "1e1501763b222c92eeb1251fb27321f61cd3e0b0890b0538c25030b85e480490",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00cf89b4",
+            "bytes": 24,
+            "sha256": "0386669f312c96db42bdf163f761ad31a7da708f0ee38e6cfafa424dc8a985c8",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "009c29cf",
+            "bytes": 7,
+            "sha256": "41a61c4162d72d37d7383acf80ed82cfe02b4055038ceddccdfb913b46b2b306",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00d19000",
+            "bytes": 4096,
+            "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00d23000",
+            "bytes": 4096,
+            "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "0042b000",
+            "bytes": 4096,
+            "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00522000",
+            "bytes": 4096,
+            "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_follow_callback_primary/inputs_before_link.json",
+          "local/cc11_follow_callback_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?native_land_follow_observer_callback_006ceed0@bsp@@YAXABUNativeLandFollowEntryView@1@AAUNativeObserverOwnerStorage@1@AAVNativeLandFollowObserverCallbackBindings@1@@Z",
+            "bytes": 52,
+            "instruction_count": 20,
+            "sha256": "613bc9e9f7e512ed7e45b4d25d2ec1c14d61c939c9be8f6c2c3ea3e1ba1ce695",
+            "object": "native_land_follow_observer_callback.obj",
+            "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_native_land_follow_observer_callback_006ceed0_coff.bin"
+          },
+          {
+            "symbol": "?native_land_follow_observer_callback_access@bsp@@YA?AUObserverEndpointCallbackAccess@1@AAVNativeLandFollowObserverCallbackBindings@1@@Z",
+            "bytes": 25,
+            "instruction_count": 6,
+            "sha256": "7ca77dcfdf8ebb95b75b858c4cdb86072728258d4b08fd9b6ff30f5247f98ac6",
+            "object": "native_land_follow_observer_callback.obj",
+            "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_native_land_follow_observer_callback_access_coff.bin"
+          },
+          {
+            "symbol": "?callback04@?A0x83a9e8b7@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+            "bytes": 147,
+            "instruction_count": 51,
+            "sha256": "b67d1ae33451dd7aacb71f1837307c2fc2aaa82d2315dff19e8eb943ed15ac73",
+            "object": "native_land_follow_observer_callback.obj",
+            "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_callback04_coff.bin"
+          },
+          {
+            "symbol": "?callback08@?A0x83a9e8b7@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+            "bytes": 22,
+            "instruction_count": 7,
+            "sha256": "d89411fcc9159751bb77101a9b3ca6e23430924e423983a081eb08973d97d9ce",
+            "object": "native_land_follow_observer_callback.obj",
+            "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_callback08_coff.bin"
+          },
+          {
+            "symbol": "?original_unregister_bridge@?A0xc3b140ae@@YIXPAUNativeObserverOwnerStorage@bsp@@0@Z",
+            "bytes": 100,
+            "instruction_count": 29,
+            "sha256": "302cdf43ff84f1a1da905e59b14325d5ce0930472e2bc1c380ba379fc2b458de",
+            "object": "probe.obj",
+            "code_file": "local/cc11_follow_callback_primary/probe_original_unregister_bridge_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_follow_callback_primary/coff_evidence.json",
+        "native_direct_rows_checked": 1,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "checks": 80,
+        "indirect_getter_row_explicitly_unresolved": true,
+        "original_table_data_DWORD_relocations": 2,
+        "original_getter_instruction_relocations": 0,
+        "raw_production_profiles_callable": false,
+        "original_caller_natural_CALL_operand_relocations": 1,
+        "constructor_or_tuning_entry_executed": false,
+        "matched_nonnull_clear_before_direct_unregister": true,
+        "invalid_null_equals_null_executed": false
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
     },
     {
       "id": "cc11_primary_tuning_soft_roll",
-      "done": false,
-      "state": "approved bounded implementation awaiting primary integration and current build",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "primary",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -17880,12 +18438,99 @@
         "reports/cc11_game_tuning_soft_roll.json"
       ],
       "depends_on": [],
-      "contract": "Restore actual soft-roll derived580 store in existing Source PlaneGlobals key loader after57C row. Native partial39B9inst within7E2A20, five x87 operations22B preserve precision until sole FSTP: FLDmul,FLD1,FSUBRP,FMULctrl,FSTPderived. WholeSourceloader provenance is semantic port, not complete native constructor/factory. Fixed installed0.7/0.05 produce offset~0.015; existing GameUnits/PilotBot source consumes derived580. Root2freshTUs/391checks/96hardware cases incl full meaningful x87/SSE state. Original39B untouched plus4B fixture stack-return trailer; no Lua call in fragment. Production Lua/VFS/controller runtime unexecuted, no full native factory/ABI/game claim. Current joint main build pending."
+      "contract": "Restore actual soft-roll derived580 store in existing Source PlaneGlobals key loader after57C row. Native partial39B9inst within7E2A20, five x87 operations22B preserve precision until sole FSTP: FLDmul,FLD1,FSUBRP,FMULctrl,FSTPderived. WholeSourceloader provenance is semantic port, not complete native constructor/factory. Fixed installed0.7/0.05 produce offset~0.015; existing GameUnits/PilotBot source consumes derived580. Root2freshTUs/391checks/96hardware cases incl full meaningful x87/SSE state. Original39B untouched plus4B fixture stack-return trailer; no Lua call in fragment. Production Lua/VFS/controller runtime unexecuted, no full native factory/ABI/game claim. Current joint main build pending.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:47.395552+00:00",
+        "worker_revision": "783c4f35d",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_soft_roll_primary/build.cmd",
+        "probe_log": "local/cc11_soft_roll_primary/compile.log",
+        "probe_sha256": "a7bc3b3fd93a95066f713ed590901b8f10ea652933adba3b84a267efeacb129b",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 2,
+        "stable_current_Source_header_fixture_inputs": 3,
+        "actual_compiler_includes": 2,
+        "recipe_generated_inputs": 1,
+        "stable_installed_inputs": 1,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "007e6fb3",
+            "bytes": 39,
+            "sha256": "90a2db8316c54eb3c3b99ace8ec291f5974c695da11f05beb4cb4de0ef72cdf3",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_soft_roll_primary/inputs_before_link.json",
+          "local/cc11_soft_roll_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?game_tuning_load_007e2a20@bsp@@YAXAAUGameTuningLuaHost@1@AAUGameTuningBlock@1@@Z",
+            "bytes": 996,
+            "instruction_count": 306,
+            "sha256": "d4e788519031b4565ddcd6c372b84a95c45b78cfc38e96b25264a25ccdc40eba",
+            "object": "producer.obj",
+            "code_file": "local/cc11_soft_roll_primary/producer_game_tuning_load_007e2a20_coff.bin"
+          },
+          {
+            "symbol": "?store_soft_roll_offset_007e6fb3@?A0xf96f14bb@bsp@@YAXAAUGameTuningBlock@2@@Z",
+            "bytes": 27,
+            "instruction_count": 7,
+            "sha256": "fdd006f0457424ed834399e63ff880f6e5e6928d4651afdbd126fde92d93466f",
+            "object": "producer.obj",
+            "code_file": "local/cc11_soft_roll_primary/producer_store_soft_roll_offset_007e6fb3_coff.bin"
+          },
+          {
+            "symbol": "?store_soft_roll_offset_007e6fb3@?A0x66d711a6@bsp@@YAXAAUGameTuningBlock@2@@Z",
+            "bytes": 27,
+            "instruction_count": 7,
+            "sha256": "fdd006f0457424ed834399e63ff880f6e5e6928d4651afdbd126fde92d93466f",
+            "object": "probe.obj",
+            "code_file": "local/cc11_soft_roll_primary/probe_store_soft_roll_offset_007e6fb3_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_soft_roll_primary/coff_evidence.json",
+        "native_direct_rows_checked": 0,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "checks": 391,
+        "original_fragment_cases": 96,
+        "partial_native_fragment_bytes": 39,
+        "original_instruction_relocations": 0,
+        "appended_fixture_stack_return_bytes": 4,
+        "full_meaningful_x87_SSE_state_checked": true,
+        "installed_offset_bits": "3C75C290",
+        "Source_loader_runtime_executed": false,
+        "whole_native_constructor_or_factory_replayed": false
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
     },
     {
       "id": "cc11_health_session_message_append",
-      "done": false,
-      "state": "approved bounded implementation awaiting primary integration and current build",
+      "done": true,
+      "state": "primary reviewed and integrated on main; current full Win32/all3 CTests and independent bounded fixture passed; native ABI/game qualified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -17899,7 +18544,167 @@
         "reports/cc11_session_message_append.json"
       ],
       "depends_on": [],
-      "contract": "Complete173B actual session outgoing pointer vector25C/count260/capacity264 append, growth2*cap+2, exact unsigned overflow/allocation/publication/copy/free/fresh reads/retained raw message identity. Use existing complete actual embedded-session76EDE0, fixed current allocation/free/message providers/realOS lock; no operation callbacks/defaultservices. Root supported locked returning-free3B listing repair saved separately, eight alignment bytes untouched. Single actual-session A/B/C/nullptr sequence capacities0->2->6, whole original173B only two natural4B allocator/free operands relocated,165bytes unchanged. Stable ordinary-success borrowed message/null insertion domain, no consumer progress invented or76C500 nonempty execution, exception/classABI/game qualified. Worker implementing with immutable b02 supports; Root integration pending."
+      "contract": "Complete173B actual session outgoing pointer vector25C/count260/capacity264 append, growth2*cap+2, exact unsigned overflow/allocation/publication/copy/free/fresh reads/retained raw message identity. Use existing complete actual embedded-session76EDE0, fixed current allocation/free/message providers/realOS lock; no operation callbacks/defaultservices. Root supported locked returning-free3B listing repair saved separately, eight alignment bytes untouched. Single actual-session A/B/C/nullptr sequence capacities0->2->6, whole original173B only two natural4B allocator/free operands relocated,165bytes unchanged. Stable ordinary-success borrowed message/null insertion domain, no consumer progress invented or76C500 nonempty execution, exception/classABI/game qualified. Worker implementing with immutable b02 supports; Root integration pending.",
+      "primary_integration": {
+        "utc": "2026-10-07T19:43:47.220755+00:00",
+        "worker_revision": "9d0d657fe8593b8cef69d8e18b680cba4458a976",
+        "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+        "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+        "probe_recipe": "local/cc11_session_append_primary/build.cmd",
+        "probe_log": "local/cc11_session_append_primary/compile.log",
+        "probe_sha256": "6572c5c347bd32cd157f99a257a5c0ee98cc23cfef6db874741ff4b7e2da625c",
+        "primary_whole_source_native_fixture_review": true,
+        "root_x86_id1_asInvoker_manifest_verified": true,
+        "fresh_actual_translation_units": 10,
+        "stable_current_Source_header_fixture_inputs": 31,
+        "actual_compiler_includes": 21,
+        "recipe_generated_inputs": 1,
+        "stable_installed_inputs": 0,
+        "stable_current_support_libraries": {
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        "native_spans": [
+          {
+            "address": "0076e470",
+            "bytes": 173,
+            "sha256": "f50aa693351298a653c259d97a98b5e03b9fd10b8cf1b7e776eb15877e4562ac",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00d039cc",
+            "bytes": 44,
+            "sha256": "40e2560f3a7ec6276d5bf674c122564000a26522eec044f9929a43cecefee539",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "immutable_before_after_receipts": [
+          "local/cc11_session_append_primary/inputs_before_link.json",
+          "local/cc11_session_append_primary/inputs_after_link.json"
+        ],
+        "primary_COFF": [
+          {
+            "symbol": "?append_native_session_message_0076e470@bsp@@YAXPAXPAUNativeSessionMessageStorage@1@@Z",
+            "bytes": 221,
+            "instruction_count": 59,
+            "sha256": "fb97295c97c0fc405540ac96b8f2db62324c1794ced99d5f184fb6154d798c29",
+            "object": "native_session_message_append.obj",
+            "code_file": "local/cc11_session_append_primary/native_session_message_append_append_native_session_message_0076e470_coff.bin"
+          },
+          {
+            "symbol": "?original_allocate@@YAPAXI@Z",
+            "bytes": 61,
+            "instruction_count": 17,
+            "sha256": "b81a3398b3546b5381416ce9188d01e37ffbaf3562823f564086240dfcf75dc3",
+            "object": "probe.obj",
+            "code_file": "local/cc11_session_append_primary/probe_original_allocate_coff.bin"
+          },
+          {
+            "symbol": "?original_free@@YAXPAX@Z",
+            "bytes": 5,
+            "instruction_count": 1,
+            "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+            "object": "probe.obj",
+            "code_file": "local/cc11_session_append_primary/probe_original_free_coff.bin"
+          }
+        ],
+        "primary_COFF_detail": "local/cc11_session_append_primary/coff_evidence.json",
+        "native_direct_rows_checked": 2,
+        "native_rows_failed": 0,
+        "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+        "native_ABI_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "tracked_tests_added": 0,
+        "checks": 151,
+        "original_outer_body_bytes": 173,
+        "reachable_instructions": 48,
+        "alignment_bytes": 8,
+        "original_natural_CALL_operand_relocations": 2,
+        "nonrelocated_original_bytes": 165,
+        "actual_session_constructor_executed": true,
+        "outgoing_consumer_progress_bound": false
+      },
+      "primary_annotation": {
+        "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+        "previous_names_comments_preserved": true,
+        "project_saved": true,
+        "affected_exports_refreshed": true,
+        "index_rebuilt": true
+      }
+    },
+    {
+      "id": "cc11_scene_enum_dictionary_word_getters",
+      "done": false,
+      "state": "approved related packet in reused worker; primary integration pending",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0048e840",
+        "0048e960"
+      ],
+      "output_files": [
+        "include/bsp/native_enum_dictionary_word_getters.hpp",
+        "src/native_enum_dictionary_word_getters.cpp",
+        "docs/NATIVE_ENUM_DICTIONARY_WORD_GETTERS_CC11.md",
+        "reports/native_enum_dictionary_word_getters_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_enum_dictionary_lookup"
+      ],
+      "contract": "Two complete129B known-found CString getters, actual owner+4 dictionary and genuine temporary8B raw-pool string, real corresponding finder, unguarded foundnode+8 opaque DWORD, actual complete temporary release then return. Missing/null+8 native fault excluded without guard/default; no insertion/ordinal/enumidentity/productiontraffic swap. Wholeoriginal assembly/normalcleanup/call evidence; complete ORIGINAL wrappers unexecuted because reached constructor/getter/pool-return/EH graph unbound. One connected installed2table28symbol sequence feeds genuine borrowed tableowner pointer from first getter into symbol getter, actual owningstrings/proved14h externalfixture slots and pool lifecycle/unchangedbytes, no native map allocator/ownership claim. Worker7freshTUs/62calls with immutable b02 supports; four NEW disjoint files."
+    },
+    {
+      "id": "cc11_land_follow_active_scalar_reuse",
+      "done": false,
+      "state": "approved related packet in reused worker; primary integration pending",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "006ceeb0"
+      ],
+      "output_files": [
+        "include/bsp/native_land_follow_observer_lifetime.hpp",
+        "src/native_land_follow_observer_lifetime.cpp",
+        "docs/LANDING_FOLLOW_OBSERVER_LIFETIME_CC11.md",
+        "reports/landing_follow_observer_lifetime_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_follow_observer_lifetime"
+      ],
+      "contract": "Complete30B11inst activeCF89B4 slot0 matches existing complete6CDDF0 after ONLYtwo rel32 operand normalization and identical real6CDD70/BF65AC targets. Reuse existing scalar Source provider, no new wrapper/profile/table. Incoming/returned COMPONENT; flags0 borrowedcomponent cleanup; flags1 only separate actual CRT component, NEVER rootadjustor/interiorfree. Root saved supported returning-free3B repair and full listing. Header/CPP comments only/C++ token equality, historical43fixture remains historical; no build/probe rerun/newtests. Four EXISTING paths; preserve all priorreportfields/libraryCGname."
+    },
+    {
+      "id": "cc11_health_session_deferred_message_storage",
+      "done": false,
+      "state": "approved related packet in reused worker; primary integration pending",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0077bac0",
+        "0077dda0",
+        "00780830",
+        "00780860",
+        "007808c0"
+      ],
+      "output_files": [
+        "include/bsp/native_session_deferred_message_storage.hpp",
+        "src/native_session_deferred_message_storage.cpp",
+        "docs/CC11_SESSION_DEFERRED_MESSAGE_STORAGE.md",
+        "reports/cc11_session_deferred_message_storage.json"
+      ],
+      "depends_on": [
+        "cc11_health_session_message_append"
+      ],
+      "contract": "Five complete51/147/26/72/22B deferred storage bodies318B. Genuine12B node captures next/previous/MESSAGE POINTER-CELL ADDRESS, real self-linked sentinel, actualowner+4 head/+8 count, exact count/error provider reuse only after completebyte/FH/fieldcontract equivalence to4CEE30. Destructor clears selflinks/count before node/sentinel frees, zerohead afterreturn; Source fixed realalloc/free no operation/defaultservices. ActualstaticCD04C0 publishesF871A4/F871A8 and exitCDD8F0 calls destructor, does notinvoke7808C0. Root locked11Bgap+12Btail decoded/saved, storedGhidrabody STILLends78089B: no fullbodyflowclosure claim. One minimal genuine sentinel/two message-cell nodes, explicit audited callerlink fixture setup, complete destroy/unchangedpayload genuine scalars; unresolved category47/gate/world unexecuted. Currentb7 rebuiltlibs frozen; four NEW files, no trackedtests."
     }
   ],
   "snapshot_after_analysis": {

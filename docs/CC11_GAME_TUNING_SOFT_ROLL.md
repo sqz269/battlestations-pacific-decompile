@@ -52,3 +52,6 @@ Full main build and primary annotation closure are pending. Existing Lua key
 order, defaults, missing-value policies and other derived fields are preserved.
 No tracked tests were added. Native factory/lifetime, full Lua instruction or
 FP parity, structural reentry, concurrency, register ABI and gameplay remain open.
+
+Primary integration at `b7f1bb6c945b684dbe232f7b44f82b417af8bff5`: the complete Win32 build and all three existing CTests passed. An independent current-library probe freshly compiled 2 actual translation units and passed 391 checks. It pinned 3 Source/header/fixture inputs, three current support libraries and the original PE before and after; 2 actual compiler includes were verified. The report records native byte/literal checks, new Source COFF, manifest, logs and immutable receipts. Original ABI, whole ownership/world binding and gameplay remain unproved.
+The current production compiler inlines all five original x87 operations into the actual loader row. The focused probe executes the private store, not production Lua/VFS loading or the full native tuning constructor.

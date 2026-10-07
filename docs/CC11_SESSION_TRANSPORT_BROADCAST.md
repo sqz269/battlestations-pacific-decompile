@@ -116,3 +116,5 @@ relocations, hashes and build inputs are in the JSON report and ignored receipts
 The primary owns shared build registration, annotations and the full main build.
 The nonadvancing array/message-deletion contract in `0076C500`, native class ABI,
 network delivery and game execution remain open.
+
+Primary integration at `b7f1bb6c945b684dbe232f7b44f82b417af8bff5`: the complete Win32 build and all three existing CTests passed. An independent current-library probe freshly compiled 25 actual translation units and passed 698 checks. It pinned 69 Source/header/fixture inputs, three current support libraries and the original PE before and after; 44 actual compiler includes were verified. The report records native byte/literal checks, new Source COFF, manifest, logs and immutable receipts. Original ABI, whole ownership/world binding and gameplay remain unproved.

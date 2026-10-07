@@ -1,7 +1,7 @@
 {
   "packet": "cc11_primary_tuning_soft_roll",
   "utc": "2026-10-07T18:57:07.233952+00:00",
-  "status": "Source producer restored; strict original-fragment fixture passed; joint main build and annotations pending",
+  "status": "integrated semantic loader FP store; partial native fragment/current hardware fixture and compiler evidence; whole constructor/factory/Lua runtime unbound",
   "baseline": "b982327be6c08cfa7a6ebc00ac70a8eaab6f5430",
   "source": "src/game_tuning_singleton.cpp",
   "document": "docs/CC11_GAME_TUNING_SOFT_ROLL.md",
@@ -152,5 +152,92 @@
   "call_sites": [],
   "native_abi_compatible": false,
   "game_validated": false,
-  "tracked_tests_added": 0
+  "tracked_tests_added": 0,
+  "primary_integration": {
+    "utc": "2026-10-07T19:43:47.395552+00:00",
+    "worker_revision": "783c4f35d",
+    "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+    "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+    "probe_recipe": "local/cc11_soft_roll_primary/build.cmd",
+    "probe_log": "local/cc11_soft_roll_primary/compile.log",
+    "probe_sha256": "a7bc3b3fd93a95066f713ed590901b8f10ea652933adba3b84a267efeacb129b",
+    "primary_whole_source_native_fixture_review": true,
+    "root_x86_id1_asInvoker_manifest_verified": true,
+    "fresh_actual_translation_units": 2,
+    "stable_current_Source_header_fixture_inputs": 3,
+    "actual_compiler_includes": 2,
+    "recipe_generated_inputs": 1,
+    "stable_installed_inputs": 1,
+    "stable_current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "007e6fb3",
+        "bytes": 39,
+        "sha256": "90a2db8316c54eb3c3b99ace8ec291f5974c695da11f05beb4cb4de0ef72cdf3",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "immutable_before_after_receipts": [
+      "local/cc11_soft_roll_primary/inputs_before_link.json",
+      "local/cc11_soft_roll_primary/inputs_after_link.json"
+    ],
+    "primary_COFF": [
+      {
+        "symbol": "?game_tuning_load_007e2a20@bsp@@YAXAAUGameTuningLuaHost@1@AAUGameTuningBlock@1@@Z",
+        "bytes": 996,
+        "instruction_count": 306,
+        "sha256": "d4e788519031b4565ddcd6c372b84a95c45b78cfc38e96b25264a25ccdc40eba",
+        "object": "producer.obj",
+        "code_file": "local/cc11_soft_roll_primary/producer_game_tuning_load_007e2a20_coff.bin"
+      },
+      {
+        "symbol": "?store_soft_roll_offset_007e6fb3@?A0xf96f14bb@bsp@@YAXAAUGameTuningBlock@2@@Z",
+        "bytes": 27,
+        "instruction_count": 7,
+        "sha256": "fdd006f0457424ed834399e63ff880f6e5e6928d4651afdbd126fde92d93466f",
+        "object": "producer.obj",
+        "code_file": "local/cc11_soft_roll_primary/producer_store_soft_roll_offset_007e6fb3_coff.bin"
+      },
+      {
+        "symbol": "?store_soft_roll_offset_007e6fb3@?A0x66d711a6@bsp@@YAXAAUGameTuningBlock@2@@Z",
+        "bytes": 27,
+        "instruction_count": 7,
+        "sha256": "fdd006f0457424ed834399e63ff880f6e5e6928d4651afdbd126fde92d93466f",
+        "object": "probe.obj",
+        "code_file": "local/cc11_soft_roll_primary/probe_store_soft_roll_offset_007e6fb3_coff.bin"
+      }
+    ],
+    "primary_COFF_detail": "local/cc11_soft_roll_primary/coff_evidence.json",
+    "native_direct_rows_checked": 0,
+    "native_rows_failed": 0,
+    "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+    "native_ABI_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 391,
+    "original_fragment_cases": 96,
+    "partial_native_fragment_bytes": 39,
+    "original_instruction_relocations": 0,
+    "appended_fixture_stack_return_bytes": 4,
+    "full_meaningful_x87_SSE_state_checked": true,
+    "installed_offset_bits": "3C75C290",
+    "Source_loader_runtime_executed": false,
+    "whole_native_constructor_or_factory_replayed": false
+  },
+  "primary_annotation": {
+    "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+    "previous_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
 }

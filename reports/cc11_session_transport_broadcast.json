@@ -1072,5 +1072,126 @@
       "path": "src/native_session_transport_broadcast.cpp",
       "sha256": "b3077afc2bbf293fc535232a576de03bea2ebf7f25c93b46e597927bd96652c7"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T19:43:47.121529+00:00",
+    "worker_revision": "0b8e48235153b92c8583ac5a6052f1b0e343a196",
+    "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+    "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+    "probe_recipe": "local/cc11_transport_broadcast_primary/build.cmd",
+    "probe_log": "local/cc11_transport_broadcast_primary/compile.log",
+    "probe_sha256": "263f5976b5ed81efd1ca2d82df7879fc26aea11cf18915ce8a383b2a9c239952",
+    "primary_whole_source_native_fixture_review": true,
+    "root_x86_id1_asInvoker_manifest_verified": true,
+    "fresh_actual_translation_units": 25,
+    "stable_current_Source_header_fixture_inputs": 69,
+    "actual_compiler_includes": 44,
+    "recipe_generated_inputs": 1,
+    "stable_installed_inputs": 0,
+    "stable_current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "00784830",
+        "bytes": 111,
+        "sha256": "6593857daa87512b5d619516243d90d12f4fcb9806ed72f2f602f97a8d190f4d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "immutable_before_after_receipts": [
+      "local/cc11_transport_broadcast_primary/inputs_before_link.json",
+      "local/cc11_transport_broadcast_primary/inputs_after_link.json"
+    ],
+    "primary_COFF": [
+      {
+        "symbol": "?broadcast_session_message_00784830@NativeUnitHealthMessageSerializedCalls@bsp@@QAEXPAXPAUNativeSessionMessageStorage@2@@Z",
+        "bytes": 163,
+        "instruction_count": 63,
+        "sha256": "cf4f2eaf9660e76cd848cc1fc0d108ff28e013cec687619e37e5be6df3211f44",
+        "object": "native_session_transport_broadcast.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/native_session_transport_broadcast_broadcast_session_message_00784830_coff.bin"
+      },
+      {
+        "symbol": "?broadcast_invalid_parameter@?A0x4d5aa056@bsp@@YAXXZ",
+        "bytes": 6,
+        "instruction_count": 1,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "object": "native_session_transport_broadcast.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/native_session_transport_broadcast_broadcast_invalid_parameter_coff.bin"
+      },
+      {
+        "symbol": "?serialize_session_message_00783c80@NativeUnitHealthMessageSerializedCalls@bsp@@EAEXPAX0PAUNativeSessionMessageStorage@2@@Z",
+        "bytes": 682,
+        "instruction_count": 242,
+        "sha256": "2a73471138ed648f68514435c9f745679e6cb6459be6e01208b60c9181f13a19",
+        "object": "native_unit_health_message.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/native_unit_health_message_serialize_session_message_00783c80_coff.bin"
+      },
+      {
+        "symbol": "?bind_peer_send_primary@Calls@@MAE?AUNativeSessionPrimaryPeerFields@bsp@@PAX@Z",
+        "bytes": 22,
+        "instruction_count": 7,
+        "sha256": "e7c3b2cee997504ddbde9e1db69f281134ec86d644f110b59a8fcc3253044586",
+        "object": "probe.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/probe_bind_peer_send_primary_coff.bin"
+      },
+      {
+        "symbol": "?target_critical_section_04@Calls@@MAEADSAUTrackedCriticalSection@bsp@@PAX@Z",
+        "bytes": 10,
+        "instruction_count": 3,
+        "sha256": "45c337544374ac43fb0aadc73ba9f577181ce24508344f3b8c111de97cc8df6f",
+        "object": "probe.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/probe_target_critical_section_04_coff.bin"
+      },
+      {
+        "symbol": "?complete_serializer_bridge@@YIXPAX00PAUNativeSessionMessageStorage@bsp@@@Z",
+        "bytes": 23,
+        "instruction_count": 7,
+        "sha256": "48d0c53c4fed3b474d494d62950bd093b86099a32816c17dc604085bed10dbf3",
+        "object": "probe.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/probe_complete_serializer_bridge_coff.bin"
+      },
+      {
+        "symbol": "?original_crt_service@@YAXXZ",
+        "bytes": 6,
+        "instruction_count": 1,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "object": "probe.obj",
+        "code_file": "local/cc11_transport_broadcast_primary/probe_original_crt_service_coff.bin"
+      }
+    ],
+    "primary_COFF_detail": "local/cc11_transport_broadcast_primary/coff_evidence.json",
+    "native_direct_rows_checked": 5,
+    "native_rows_failed": 0,
+    "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+    "native_ABI_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 698,
+    "original_outer_loop_cases": 5,
+    "original_outer_loop_natural_operand_relocations": 6,
+    "nonrelocated_original_bytes": 87,
+    "all_original_serializer_graph": false,
+    "Source_complete_serializer_COFF_bytes": 682,
+    "source_private_final_serializer_unchanged": true,
+    "real_threshold_flush_and_owned_enqueue_exercised": true,
+    "reentrant_lock_replacement_observed": false,
+    "original_dead_CRT_row_checked_unexecuted": true
+  },
+  "primary_source_status": "conditional complete Source providers integrated/reviewed/current build and bounded fixture passed; actual ABI/game binding unproved",
+  "primary_annotation": {
+    "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+    "previous_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
 }
