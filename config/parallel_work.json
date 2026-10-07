@@ -13440,8 +13440,8 @@
     },
     {
       "id": "cc11_scene_empty_bag",
-      "state": "dispatched_to_reused_director_worker",
-      "done": false,
+      "state": "integrated_native_source_presence_and_inherited_movie_admission_verified",
+      "done": true,
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13462,7 +13462,13 @@
         "cc11_director_jm06_pair"
       ],
       "reuses_worker_from": "cc11_director_jm06_pair",
-      "contract": "Recover actual property-block producer presence/empty-block preservation and mode9 gate admission for JM06 tutorial rows; correct a proved parser/gate mismatch with a bounded source change. Distinguish missing versus present-empty MultiType, GenerateInGame, group merge, Hidden and host mode policy. No class8 or unrelated switches changed."
+      "contract": "Recover actual property-block producer presence/empty-block preservation and mode9 gate admission for JM06 tutorial rows; correct a proved parser/gate mismatch with a bounded source change. Distinguish missing versus present-empty MultiType, GenerateInGame, group merge, Hidden and host mode policy. No class8 or unrelated switches changed.",
+      "code_revision": "f46ce8e38cd6d951119b6e8bb882f2bc17744260",
+      "integrated_revision": "a73ba158d6a97c1f7db1ceec843a62729064dd2b",
+      "behavior_changed": false,
+      "full_main_build_pending": true,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_parked_callback",
@@ -13516,7 +13522,7 @@
     {
       "id": "cc11_land_active_retirement",
       "done": false,
-      "state": "ready_for_reused_landing_worker",
+      "state": "dispatched_to_reused_worker",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13543,6 +13549,26 @@
         "local/cc11_land_owner_probe.exe",
         "local/native_pilot_bot_task_owner_cc11.obj"
       ]
+    },
+    {
+      "id": "cc11_scene_library_loader",
+      "done": false,
+      "state": "dispatched_to_reused_director_worker",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f67b0"
+      ],
+      "output_files": [
+        "docs/SCENE_PROPERTY_LIBRARY_LOADER_CC11.md",
+        "reports/scene_property_library_loader_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_empty_bag"
+      ],
+      "reuses_worker_from": "cc11_scene_empty_bag",
+      "contract": "Recover complete normal native008F67B0 loader control flow/caller/ABI and actual VFS/parser/group-resolution contracts. Compare current property-library source projection and installed enum/group inputs. Identify and implement only a proved bounded missing producer/loader contract after explicit file ownership; no invented generic filesystem scan or unrelated scene/mode/switch changes."
     }
   ],
   "snapshot_after_analysis": {
