@@ -13805,8 +13805,8 @@
     },
     {
       "id": "cc11_land_cruise_profile",
-      "done": false,
-      "state": "approved_complete_conditional_cruise_source_in_progress",
+      "done": true,
+      "state": "integrated_complete_conditional_cruise_main_build_and_existing_instruction_fixture_passed",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13824,7 +13824,15 @@
         "cc11_land_takeoff_install"
       ],
       "reuses_worker_from": "cc11_land_takeoff_install",
-      "contract": "Port complete normal nonempty land-profile cruise009B3C60 after proved empty base0099B660, required actual plane leader/singleton providers, borrowed task3FC/404 and controller37C/380/38C/38D/394/398/3A9/3AA/3AD. Fresh404 reload after EACH singleton call, pointerCOMISS/SETA and FLD->dirty byte->FSTP preserve ordering; no fixed tune/default/facade snapshot. Existing hook view unchanged; admitted masked exceptions/valid stack/lifetimes; actual singleton/arena/scheduler/ABI/game binding external."
+      "contract": "Port complete normal nonempty land-profile cruise009B3C60 after proved empty base0099B660, required actual plane leader/singleton providers, borrowed task3FC/404 and controller37C/380/38C/38D/394/398/3A9/3AA/3AD. Fresh404 reload after EACH singleton call, pointerCOMISS/SETA and FLD->dirty byte->FSTP preserve ordering; no fixed tune/default/facade snapshot. Existing hook view unchanged; admitted masked exceptions/valid stack/lifetimes; actual singleton/arena/scheduler/ABI/game binding external.",
+      "code_revision": "61e5fe96a753c7e93b8cfcdc9d9200087b660fff",
+      "integrated_revision": "fb5ba287d6fde1f0113bb4dba1a1e20f51b2cc67",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "fb5ba287d6fde1f0113bb4dba1a1e20f51b2cc67",
+      "full_main_ctests_passed": 3,
+      "actual_singleton_controller_arena_bound": false,
+      "abi_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
