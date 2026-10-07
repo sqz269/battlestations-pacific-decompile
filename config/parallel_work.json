@@ -14232,8 +14232,8 @@
     },
     {
       "id": "cc11_land_parameter_x87_kernel",
-      "done": false,
-      "state": "primary_x87_register_contract_kernel_with_original_instruction_probe",
+      "done": true,
+      "state": "integrated_reviewed_connected_source_independent_probes_full_main_build_passed",
       "worker": "primary_integrator",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -14249,12 +14249,18 @@
       "depends_on": [
         "cc11_land_initial_state_entries"
       ],
-      "contract": "Primary owns recovered ECX destination / stack source / EAX return / RET4 kernel. Forty ordered float FLD/FSTP pairs, intervening bytes68/69, holes6A/B untouched; execute on exact self alias too. Valid A4-byte blocks, masked x87 exceptions and a free stack slot, ordinary returns; no memory-copy substitution, singleton default, block allocation or state6C pointer replacement. Compare the compiled instruction body with the complete independently verified 315-byte original and run one ignored manifested Win32 differential fixture for disjoint and exact-self-alias storage and ambient FP effects. Original body is position-independent and has no calls. Interface is a declared source fastcall bridge with unused EDX, not a whole game ABI claim. Kernel must feed the existing connected Follow entry through the worker caller-adoption packet before closeout."
+      "contract": "Primary owns recovered ECX destination / stack source / EAX return / RET4 kernel. Forty ordered float FLD/FSTP pairs, intervening bytes68/69, holes6A/B untouched; execute on exact self alias too. Valid A4-byte blocks, masked x87 exceptions and a free stack slot, ordinary returns; no memory-copy substitution, singleton default, block allocation or state6C pointer replacement. Compare the compiled instruction body with the complete independently verified 315-byte original and run one ignored manifested Win32 differential fixture for disjoint and exact-self-alias storage and ambient FP effects. Original body is position-independent and has no calls. Interface is a declared source fastcall bridge with unused EDX, not a whole game ABI claim. Kernel must feed the existing connected Follow entry through the worker caller-adoption packet before closeout.",
+      "integrated_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+      "full_main_build_pending": false,
+      "full_main_ctests_passed": 3,
+      "actual_game_binding": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_scene_convoy_float_payload",
-      "done": false,
-      "state": "approved_connected_convoy_retained_float_consumer",
+      "done": true,
+      "state": "integrated_reviewed_connected_source_independent_probes_full_main_build_passed",
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -14270,12 +14276,18 @@
         "cc11_scene_float_nonempty_payload"
       ],
       "reuses_worker_from": "cc11_scene_float_nonempty_payload",
-      "contract": "Adopt retained type1 float payload only for actual convoy Speed, ColumnGap, HP, RowGap and Offset consumers, preserving existing raw fallback, integer conversion, missing/malformed handling, Rows/Columns, enum roster, Path and other policy. Reverse remains on its original distinct raw byte path. No header/layout change or contextual empty-F/default action. Actual native five lookup/type1 MOVSS or CVTSI2SS/store fragments in 00743450; full function, allocator/global/provider/ABI/game unbound. One ignored production-TU probe uses installed landconvoy.props, diagnostic removal/replacement, nonempty authored overwrite, and existing raw/I/missing/malformed/Reverse cases. JM06 has no LandConvoy and is only an unrelated source regression. Preserve admitted parser modern CRT qualification. Worker is Ghidra read-only, no CMake or shared metadata edits."
+      "contract": "Adopt retained type1 float payload only for actual convoy Speed, ColumnGap, HP, RowGap and Offset consumers, preserving existing raw fallback, integer conversion, missing/malformed handling, Rows/Columns, enum roster, Path and other policy. Reverse remains on its original distinct raw byte path. No header/layout change or contextual empty-F/default action. Actual native five lookup/type1 MOVSS or CVTSI2SS/store fragments in 00743450; full function, allocator/global/provider/ABI/game unbound. One ignored production-TU probe uses installed landconvoy.props, diagnostic removal/replacement, nonempty authored overwrite, and existing raw/I/missing/malformed/Reverse cases. JM06 has no LandConvoy and is only an unrelated source regression. Preserve admitted parser modern CRT qualification. Worker is Ghidra read-only, no CMake or shared metadata edits.",
+      "integrated_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+      "full_main_build_pending": false,
+      "full_main_ctests_passed": 3,
+      "actual_game_binding": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_parameter_copy_adoption",
-      "done": false,
-      "state": "approved_caller_adoption_of_primary_instruction_proved_x87_kernel",
+      "done": true,
+      "state": "integrated_reviewed_connected_source_independent_probes_full_main_build_passed",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -14294,7 +14306,13 @@
         "cc11_land_initial_state_entries"
       ],
       "reuses_worker_from": "cc11_land_initial_state_entries",
-      "contract": "Opt-in abstract state-entry constructor adapter final copy_follow_parameters_009be150 directly invokes primary full instruction-exact kernel on passed existing destination and actual source, with unused EDX nullptr. Same borrowed outer-task view/profiles; all other providers stay abstract. Fixed primary contract only, no new x87 recovery. Use actual A4-byte blocks and preserve exact self alias (normal constructor caches singleton380) and disjoint changed publication with valid lifetimes. Update ignored source fixture from 12-byte partial copy to real kernel, check outer->Follow connected route, all lanes/bytes/holes and self alias; no fake allocator/tuning/queue/profile, lifetime or complete private constructor. Ghidra read-only; no CMake/root metadata; fresh kernel and active entry/outer translation units, pinned stable read-only libraries."
+      "contract": "Opt-in abstract state-entry constructor adapter final copy_follow_parameters_009be150 directly invokes primary full instruction-exact kernel on passed existing destination and actual source, with unused EDX nullptr. Same borrowed outer-task view/profiles; all other providers stay abstract. Fixed primary contract only, no new x87 recovery. Use actual A4-byte blocks and preserve exact self alias (normal constructor caches singleton380) and disjoint changed publication with valid lifetimes. Update ignored source fixture from 12-byte partial copy to real kernel, check outer->Follow connected route, all lanes/bytes/holes and self alias; no fake allocator/tuning/queue/profile, lifetime or complete private constructor. Ghidra read-only; no CMake/root metadata; fresh kernel and active entry/outer translation units, pinned stable read-only libraries.",
+      "integrated_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+      "full_main_build_pending": false,
+      "full_main_ctests_passed": 3,
+      "actual_game_binding": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_health_complete_serializer",

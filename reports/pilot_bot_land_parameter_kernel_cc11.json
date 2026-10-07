@@ -3,7 +3,7 @@
   "address": "009be150",
   "source": "src/native_land_follow_parameters.cpp",
   "header": "include/bsp/native_land_follow_parameters.hpp",
-  "status": "primary_instruction_exact_kernel_differential_passed_connected_adoption_pending",
+  "status": "integrated instruction-exact kernel; native differential and connected caller fixture plus full main build passed",
   "native_evidence": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -91,9 +91,30 @@
     "Masked x87 exceptions, no pending unmasked exception, free stack slot, ordinary returning paths.",
     "No source/destination default, allocation, singleton binding, pointer replacement or copy elision.",
     "Kernel instruction and focused routine behavior proof is separate from actual full-game provider/lifetime integration, fault/unwind behavior and game validation.",
-    "Caller adaptation and full main build remain pending."
+    "Connected actual source caller adoption and full main build/all three CTests passed; actual game providers, lifetimes, full-task ABI and game validation remain unbound."
   ],
   "actual_game_binding": false,
   "game_validated": false,
-  "full_main_build_pending": true
+  "full_main_build_pending": false,
+  "primary_integration": {
+    "utc": "2026-10-07T10:24:42.043176+00:00",
+    "integrated_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+    "full_main_build_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+    "build_log": "local/cc11_copy_convoy_integrated_build.log",
+    "full_main_ctests_passed": 3,
+    "executable_sha256": "4a241ef9e5fe16e8cb058fbd07b7876d682a614e6f11d24f74e4b9cb1f7fc2cf",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "kernel_source_revision": "2cd789583",
+    "native_original_instruction_bytes_equal": 315,
+    "native_differential_cases": 144,
+    "native_differential_failures": 0,
+    "connected_actual_caller_adoption": true,
+    "root_connected_probe": "local/cc11_copy_root.cmd",
+    "root_connected_probe_sha256": "641aad7d64f134660833ad5ba288c53a754121597f6245e061d24fdf89f54894",
+    "exact_self_alias_and_disjoint_validated": true,
+    "partial_overlap_admitted": false,
+    "full_game_provider_or_task_abi_proved": false
+  }
 }

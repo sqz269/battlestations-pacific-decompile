@@ -34,17 +34,18 @@ denormal sticky flag. Returns, every block byte, holes, NaN quieting, CW/SW/TOP,
 tags and 80-bit register payloads match. FIP/FDP differ by executable/data
 address and reserved register padding is excluded. All 144 cases preserve the
 holes and quiet signaling NaNs; there are zero failures. No tracked tests were
-added. The full main build and connected caller receipt remain pending.
+added. The full main build and independent connected caller SOURCE fixture now pass.
 
 The real Follow entry calls this operation on its existing state+6C block and
 fresh singleton+380h source. Constructor009C2980 stores singleton+380h as that
 existing pointer rather than allocating a block; normal unchanged publication
 therefore means exact self alias. A changed singleton requires both old and new
 blocks to remain valid. No default tuning, allocation, pointer replacement,
-singleton or state lifetime is supplied by this kernel. The existing worker
-will connect its opt-in abstract entry adapter to this fixed complete contract.
+singleton or state lifetime is supplied by this kernel. The opt-in abstract entry adapter now connects this fixed complete contract.
 
 Reproduce with `python local/cc11_land_parameter_x87_extract.py` and
 `cmd /c local\cc11_land_parameter_x87_probe.cmd`. The JSON report records the
 ignored artifacts and hashes. Actual game binding and game validation remain
 unclaimed.
+
+Primary integration 80f59d1500079e8852d97c2afd803c1509fcd35a: full MSVC Win32 build and all three existing CTests passed; independent actual-main source probes passed. Kernel retains its 144/0 original-body differential proof and is now connected through the real final copy provider. Executable SHA256 4a241ef9e5fe16e8cb058fbd07b7876d682a614e6f11d24f74e4b9cb1f7fc2cf. Build log local/cc11_copy_convoy_integrated_build.log. Source/caller/provider qualification, original full task/game ABI and game validation limits remain.

@@ -123,3 +123,5 @@ dependency call sites, with the outer profile+4 row explicitly indirect.
 JSON parsing and staged diff checks pass. Original full task ABI, arena,
 singleton/private constructor, queue, observer/death lifetimes and gameplay
 remain unbound despite the complete adopted copy kernel.
+
+Primary integration 80f59d1500079e8852d97c2afd803c1509fcd35a: full MSVC Win32 build and all three existing CTests passed; independent actual-main source probes passed. Kernel retains its 144/0 original-body differential proof and is now connected through the real final copy provider. Executable SHA256 4a241ef9e5fe16e8cb058fbd07b7876d682a614e6f11d24f74e4b9cb1f7fc2cf. Build log local/cc11_copy_convoy_integrated_build.log. Source/caller/provider qualification, original full task/game ABI and game validation limits remain.

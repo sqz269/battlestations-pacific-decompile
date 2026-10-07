@@ -1,0 +1,50 @@
+{
+  "repairs": [
+    {
+      "function": "00743450",
+      "owner": "main",
+      "when": "2026-10-07T10:21:28Z",
+      "decompile_lines_before": 338,
+      "gaps": [
+        {
+          "site": "00743b46",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00743b4b",
+          "gap_end_exclusive": "00743b5a",
+          "bytes": 15,
+          "after_call": true,
+          "sha256": "2eef16e725811237a8590c4b588a22fe2d06a388b6487a5491f544cca132c159"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00743b46",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00743b4b",
+            "gap_end_exclusive": "00743b5a",
+            "bytes": 15,
+            "after_call": true,
+            "sha256": "2eef16e725811237a8590c4b588a22fe2d06a388b6487a5491f544cca132c159"
+          },
+          "clear": "Success: Cleared flow override at 00743b46 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 15 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 338,
+      "gaps_remaining": 0
+    }
+  ],
+  "primary_qualification": {
+    "call_gaps_remaining": 0,
+    "alignment_gaps_after_unconditional_jumps": 2,
+    "prior_documentation": "local/cc11_convoy_documentation_before.json",
+    "prior_context": "local/cc11_convoy_prior_context.json",
+    "saved_project": true,
+    "exports_refreshed": true,
+    "whole_function_reconstructed": false,
+    "actual_game_binding": false
+  }
+}

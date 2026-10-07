@@ -16,7 +16,7 @@
     "docs/SCENE_CONVOY_FLOAT_PAYLOAD_CC11.md",
     "reports/scene_convoy_float_payload_cc11.json"
   ],
-  "status": "bounded source adoption complete; focused actual-production-TU fixture and8direct native calls PASS; primary integration/full build/independent rerun pending",
+  "status": "integrated five-field retained F adoption; independent actual-main source fixture and full main build passed",
   "pinned_link_inputs": [
     {
       "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
@@ -1053,13 +1053,14 @@
     {
       "address": "00743450",
       "body_inclusive": "00743450..00743B6F",
-      "decoded_instructions": 519,
+      "decoded_instructions": 522,
       "read_complete_spans": [
         "00743450..007434A1 setup",
         "007434A4..007435DE scalar fragment"
       ],
       "port": "bounded SOURCE stored-value adoption for five F fields; not a whole-body/holder/allocator/EH/ABI/game binding",
-      "flow_limit": "15-byte gap00743B4B..00743B59 after CALL00743B46->00BF6989; terminal RET decoded00743B6F; no repair"
+      "flow_limit": "Primary returning-free continuation repaired; 522 decoded instructions, zero call gaps, two three-byte alignment gaps after unconditional jumps left unchanged. Whole function/ABI/game remains unbound.",
+      "worker_flow_limit": "15-byte gap00743B4B..00743B59 after CALL00743B46->00BF6989; terminal RET decoded00743B6F; no repair"
     },
     {
       "address": "008F2260",
@@ -1243,7 +1244,7 @@
     "reconstructed": "bounded five-field SOURCE adoption with accepted nonempty F parser provider",
     "focused_TU_compile": "PASS MSVC Win32",
     "fixture": "PASS final source scenario",
-    "full_build": "not run by worker; primary serialized integration pending",
+    "full_build": "Primary serialized MSVC Win32 build and all three existing CTests passed",
     "runtime": "source probe only, no game run",
     "native_ABI": "not established",
     "original_game": "not validated"
@@ -1265,5 +1266,41 @@
     "worker_game_run": false,
     "Ghidra_mutations": false,
     "tracked_tests_added": false
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T10:24:42.043176+00:00",
+    "integrated_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+    "full_main_build_revision": "80f59d1500079e8852d97c2afd803c1509fcd35a",
+    "build_log": "local/cc11_copy_convoy_integrated_build.log",
+    "full_main_ctests_passed": 3,
+    "executable_sha256": "4a241ef9e5fe16e8cb058fbd07b7876d682a614e6f11d24f74e4b9cb1f7fc2cf",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "7e598c303a733fc8cf956880e9a8d2d8f6aecc2f",
+    "independent_root_probe": "local/cc11_convoy_root.cmd",
+    "probe_log": "local/cc11_convoy_root_compile.log",
+    "root_probe_sha256": "a2bd179ecba755c7226086f584697bc9b6b0c64b96d46131dc7ab96a1106b64f",
+    "fresh_active_parser_and_consumer_tus": true,
+    "exact_link_inputs": "local/cc11_convoy_root_inputs.json",
+    "all_77_actual_main_link_inputs_unchanged": true,
+    "installed_library_inputs": 15,
+    "groups": 22,
+    "convoy_float_fields": 5,
+    "prior_source_bits_equal": true,
+    "diagnostic_removal_and_owning_authored_overwrite_passed": true,
+    "raw_integer_boolean_path_policies_preserved": true,
+    "jm06_authored_entities": 96,
+    "jm06_convoy_entities": 0,
+    "convoy_runtime_admission_tested": false,
+    "native_direct_call_rows": 8,
+    "native_direct_call_failures": 0,
+    "manifest_id1_asInvoker_verified": true,
+    "free_call_gap_repaired": true,
+    "call_gaps_remaining": 0,
+    "alignment_gaps_left_unchanged": 2,
+    "historical_crt_parity_proved": false,
+    "empty_float_context_proved": false
+  },
+  "full_main_build_pending": false
 }

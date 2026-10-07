@@ -46,9 +46,12 @@ providers. The scalar fragment dereferences found records without a per-key
 null check. The host's existing missing/malformed fallback is preserved source
 policy, not proof of native graceful failure.
 
-The stored containing body is `00743450..00743B6F`, 519 decoded instructions.
-Its terminal RET is `00743B6F`; a 15-byte gap `00743B4B..00743B59` follows the
-returning-free call `00743B46 -> 00BF6989`. No repair was attempted. Later
+The containing body ends with RET at `00743B6F`. Primary repaired the
+15-byte returning-free continuation at `00743B4B..00743B59`: three additional
+instructions restore the stack and publish the +3BCh field from +3B8h. The
+stored listing now has 522 instructions and zero call gaps; two three-byte
+alignment spans after unconditional jumps remain untouched. The project was
+saved and exports refreshed. Receipt: `convoy_scalar_containing_flow_recovery_cc11.json`. Later
 allocation, roster creation, EH, holder ABI and whole-body behavior remain
 outside this scalar adoption. The preceding `0077E830` Lua/self attachment is
 also external. Prior group-merge tail/body qualifications remain unchanged.
@@ -121,3 +124,5 @@ are not repaired or claimed by this packet.
 `git diff --check` and the eight direct-call verifier rows pass. No tracked
 test, full build, game run, native replacement/ABI test or Ghidra mutation was
 performed. Primary owns the integrated build and independent probe rerun.
+
+Primary integration 80f59d1500079e8852d97c2afd803c1509fcd35a: full MSVC Win32 build and all three existing CTests passed; independent actual-main source probes passed. Executable SHA256 4a241ef9e5fe16e8cb058fbd07b7876d682a614e6f11d24f74e4b9cb1f7fc2cf. Build log local/cc11_copy_convoy_integrated_build.log. Source/caller/provider qualification, original full task/game ABI and game validation limits remain.
