@@ -1,0 +1,314 @@
+{
+  "packet": "cc11_scene_library_loader",
+  "date": "2026-10-06",
+  "doc": "docs/SCENE_PROPERTY_LIBRARY_LOADER_CC11.md",
+  "source_baseline": "a4e43b5d6908e3a9e5ca116f8f7ec02ba1cdf1de",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified": "config/target.json, bsp.py ghidra ensure --status before batches, live xrefs",
+    "ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "owned_addresses": [
+    "008F67B0",
+    "008F2E40"
+  ],
+  "result": "One-file loader audited; bounded first-table/first-symbol source correction. Whole native loader remains unreconstructed.",
+  "coverage": [
+    {"routine":"008F67B0","body":"008F67B0..008F6B97","bytes":1000,"coverage":"complete normal body read; source projection partial; external failure/unwind contracts not closed"},
+    {"routine":"008F2E40","body":"008F2E40..008F2F67","coverage":"partial source projection: duplicate branch008F2E83..008F2EE4; range/reverse-map insertion/allocation not bound"},
+    {"routine":"008F6FC0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F7100","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F31A0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"0048D480","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"0048D4E0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"004895B0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"00489610","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F4DD0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"0048E960","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"00469B60","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F2B90","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F2C10","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F2DB0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F29A0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008F17E0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"004254B0","coverage":"complete supporting read; no new source reconstruction ownership"},
+    {"routine":"008D9CF0","coverage":"supporting file/VFS/allocation paths; source file constructor remains unbound"},
+    {"routine":"008F5A00","coverage":"supporting group resolver008F5A47..008F5ACD; other parser arms remain existing partial work"},
+    {"routine":"008F54F0","coverage":"supporting clone/recursive/overwrite body read; no new ABI/source ownership"}
+  ],
+  "calls": [
+    {"address":"008F7092","native":"008F67B0","function":"008F6FC0","contract":"One-file entry, ECX=library; caller ignores return"},
+    {"address":"008F701B","native":"00886280","function":"008F6FC0","contract":"Enumerate folder/extension, caller flag1"},
+    {"address":"008F710E","native":"008F6FC0","function":"008F7100","contract":".enums first"},
+    {"address":"008F711B","native":"008F6FC0","function":"008F7100","contract":".props second"},
+    {"address":"008F68DA","native":"008D9CF0","function":"008F67B0","contract":"Construct owned 838h file tokenizer"},
+    {"address":"008F6906","native":"008D8A70","function":"008F67B0","contract":"Outer cached-token peek"},
+    {"address":"008F6944","native":"00438E10","function":"008F67B0","contract":"Compare enum keyword"},
+    {"address":"008F697C","native":"008F2C10","function":"008F67B0","contract":"Test table in global00E1867C"},
+    {"address":"008F699E","native":"0048E960","function":"008F67B0","contract":"Resolve existing table"},
+    {"address":"008F69C9","native":"008F4DD0","function":"008F67B0","contract":"Construct new19Ch enum object"},
+    {"address":"008F69FF","native":"008F31A0","function":"008F67B0","contract":"Parse IDs into existing/new table"},
+    {"address":"008F6A18","native":"008F2B90","function":"008F67B0","contract":"Publish only new table"},
+    {"address":"008F6A69","native":"008F2DB0","function":"008F67B0","contract":"Test group in global00E18678"},
+    {"address":"008F6A7F","native":"00469B60","function":"008F67B0","contract":"Resolve existing bag"},
+    {"address":"008F6AD7","native":"008F5A00","function":"008F67B0","contract":"Parse bag, stack tokenizer/0/library resolver"},
+    {"address":"008F6B42","native":"008F29A0","function":"008F67B0","contract":"Publish only new group, ECX=receiver+4h"},
+    {"address":"008F6B7B","native":"00D15FE4+vtable00","function":"008F67B0","contract":"Tokenizer scalar delete with flag1; target008D9F00"},
+    {"address":"008F31FF","native":"008D9AD0","function":"008F31A0","contract":"Read integer ID"},
+    {"address":"008F322C","native":"008F2E40","function":"008F31A0","contract":"Insert symbol"},
+    {"address":"008F2E83","native":"0048D480","function":"008F2E40","contract":"Look up case-insensitive duplicate"},
+    {"address":"008F2ECA","native":"004254B0","function":"008F2E40","contract":"Duplicate marker; actual callee empty"},
+    {"address":"008F5AA9","native":"00469B60","function":"008F5A00","contract":"Eager parent lookup"},
+    {"address":"008F5AB3","native":"008F54F0","function":"008F5A00","contract":"Parent merge flag0; later parent overwrites"},
+    {"address":"0046D30C","native":"008F54F0","function":"0046CF40","contract":"Separate entity merge flag1 fills absent fields"},
+    {"address":"008D9DCF","native":"0109CEEC+vtable04","function":"008D9CF0","contract":"Provider open mode32h; target unbound"},
+    {"address":"008D9DE6","native":"stream+vtable30","function":"008D9CF0","contract":"Stream length"},
+    {"address":"008D9E17","native":"stream+vtable24","function":"008D9CF0","contract":"Read owned bytes"}
+  ],
+  "abi": {
+    "routine": "008F67B0",
+    "convention": "__thiscall",
+    "receiver": "ECX library saved at008F67D6",
+    "stack": "Pathname C-string slot read at008F67CD",
+    "cleanup": "008F6B95 RET4",
+    "formal_types": "Unknown, including const qualification",
+    "semantic_return": "Not established;008F7097 overwrites EAX; normal terminal path deletes tokenizer before return",
+    "symbol_binding": "008F2E40 thiscall: ECX enum saved008F2E60; caller008F3224..008F322C pushes integer-read result/symbol C-string; duplicate branch008F2EE4 RET8; semantic return/formal types unestablished. Host table/string helper is not that ABI.",
+    "symbol": "CPropTreeLibrary::Load recovered from00D1653C/008F6812 literal; no logging-output claim"
+  },
+  "data_receipts": [
+    {"address":"00D15FE4","bytes":"009F8D00","meaning":"Tokenizer slot0 ->008D9F00 scalar-delete"},
+    {"address":"008F68FD","bytes":"8D4900","meaning":"3-byte LEA ECX,[ECX] padding; no flow repair"},
+    {"span":"008F690B..008F6930","meaning":"Exit on +80Ah or unquoted empty token"},
+    {"span":"008F6A35","meaning":"Unknown keyword returns to cached peek without consumption"},
+    {"span":"008F2EB4..008F2EE4","meaning":"Existing symbol returns before insertion"},
+    {"span":"004895B0/00489610","meaning":"toupper hash folding;0048D480/0048D4E0 compare equal-length names with00438E10"}
+  ],
+  "native_contract": {
+    "one_file": true,
+    "enumeration": "008F6FC0 pop-front entries/cleanup, native flag1;008F7100 enums then props; no sort call",
+    "enums": "Global00E1867C; reopen table; retain first case-insensitive symbol value; new table published after parser",
+    "groups": "Global00E18678; reuse bag; new bag registered at receiver+4h",
+    "parser": "ECX bag, stack tokenizer/flag0/receiver group resolver; eager lookup and flag0 parent merge, then authored writes",
+    "entity_distinction": "0046CF40 separately merges groups with flag1; prior JM06 first-present/default verdict preserved",
+    "reset": "No whole-library clear, parser-success gating or rollback; existing records mutate directly",
+    "duplicate_marker": "004254B0 actual empty callee; no emitted native warning claim",
+    "errors": "Unknown top-level token can stall. Missing-open/allocator/unwind contracts not established as graceful failure.",
+    "vfs": "008D9CF0 opens through0109CEEC slot4 mode32h, owns stream/buffer/label/delimiters, reads size slot30 and bytes slot24. Null-open leaves successful-stream buffer/size/cursor setup unreached; loader still peeks.",
+    "projections_unchanged": [
+      "Host VFS fragment flag0/sort/mode2 opener/fallback paths",
+      "Host lazy multiple-base/group redeclarations",
+      "Host typed parser/error recovery",
+      "Native enum layout/min/max/reverse maps",
+      "Mode/Hidden/class8/other switches"
+    ]
+  },
+  "corrections": [
+    {"was":"Host parser overwrote repeated exact-spelling symbol.","is":"Ignore later case-insensitive duplicate; first spelling/value retained.","evidence":"008F2E83..008F2EE4;0048D480;004895B0"},
+    {"was":"Host add_enum appended inaccessible same-name table.","is":"Reopen first case-insensitive table and add new symbols without overwriting existing values.","evidence":"008F697C/008F699E/008F69FF/008F6A18;0048D4E0;00489610"},
+    {"was":"Source comment said native skips unknown top-level tokens.","is":"Native008F6A35 loops without consumption; host recovery unchanged.","evidence":"008F6904..008F694D;008F6A22..008F6A35"},
+    {"was":"Old library doc described a single parent and extension order only affecting enum values.","is":"Multiple parents are installed; global.enums also supplies parent groups.","evidence":"global.enums1753..1798;landscape.props1;commandbuilding.props1;008F5A60..008F5AB8"}
+  ],
+  "installed": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "qualification": "Read-only installed-text declaration scan; not a native or source parser fixture.",
+    "files": [
+      {
+        "path": "universe/library/global.enums",
+        "bytes": 33471,
+        "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+        "enums": 26,
+        "groups": 4
+      },
+      {
+        "path": "universe/library/commandbuilding.props",
+        "bytes": 311,
+        "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/commandbuildinginferior.props",
+        "bytes": 133,
+        "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/commandunit.props",
+        "bytes": 545,
+        "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+        "enums": 1,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/foam.props",
+        "bytes": 553,
+        "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/foamsource.props",
+        "bytes": 609,
+        "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/landconvoy.props",
+        "bytes": 1320,
+        "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/landfort.props",
+        "bytes": 423,
+        "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/landingzone.props",
+        "bytes": 1301,
+        "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/landscape.props",
+        "bytes": 1198,
+        "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/path.props",
+        "bytes": 356,
+        "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+        "enums": 0,
+        "groups": 3
+      },
+      {
+        "path": "universe/library/plane.props",
+        "bytes": 416,
+        "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+        "enums": 1,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/scene.props",
+        "bytes": 24634,
+        "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+        "enums": 0,
+        "groups": 1
+      },
+      {
+        "path": "universe/library/ship.props",
+        "bytes": 3358,
+        "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+        "enums": 5,
+        "groups": 3
+      },
+      {
+        "path": "universe/library/stationaries.props",
+        "bytes": 107,
+        "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+        "enums": 0,
+        "groups": 1
+      }
+    ],
+    "counts": {
+      "files": 15,
+      "enums_files": 1,
+      "props_files": 14,
+      "enum_tables": 33,
+      "property_groups": 22,
+      "unique_enum_symbols": 1522
+    },
+    "duplicate_table_names": [],
+    "duplicate_group_names": [],
+    "duplicate_symbols": [
+      {
+        "table": "VehicleClasses",
+        "symbol": "Otenjo",
+        "lines": [
+          48,
+          324
+        ],
+        "values": [
+          349,
+          349
+        ]
+      },
+      {
+        "table": "ShipClasses",
+        "symbol": "Otenjo",
+        "lines": [
+          381,
+          582
+        ],
+        "values": [
+          349,
+          349
+        ]
+      }
+    ],
+    "effect": "No installed value changes; repeated Otenjo values equal349; no repeated table/group names.",
+    "context": "global.enums contains26 enums and4 property groups including Common/MultiEntity; both extensions can contain both declaration kinds.",
+    "scan": "local/cc11_scene_library_assets.json",
+    "scan_sha256": "D78402F36532CEF1242A3EC4DC653D011B28E5D2A2E2E9566C241D379CFD9D33",
+    "earlier_runtime": "Prior JM06 source-host logs:15 files/22 groups/33 enums/1522 symbols; context only, no new game run."
+  },
+  "source": {
+    "file": "src/game_hosts_scene_contents.cpp",
+    "coverage": "partial_projection_enum_retention",
+    "helper": "insert_library_enum_symbol checks existing case-insensitive names, emplaces only absent symbols",
+    "table": "add_enum reuses first matching table and adds only new symbols",
+    "parser": "parse_library_file uses the helper instead of map assignment; sole production add_enum caller",
+    "resolution": "Scoped and unqualified resolve_symbol retain one table",
+    "status": "Whole-loader unimplemented policy retained; no public API or tracked test",
+    "required_providers_for_whole_port": [
+      "0109CEEC slot4 and008D9CF0 file constructor",
+      "Owned enum/group registries and map bindings",
+      "Typed008F5A00 parser/group resolver",
+      "Allocation/exception/unwind contracts"
+    ]
+  },
+  "fixture": {
+    "source": "local/cc11_scene_library_probe.cpp",
+    "source_sha256": "68A9CD6EB283DFFB9D791634DE84CDE67861C68A54553645D28B93DF1209921C",
+    "method": "Actual production TU included; one valid enum-redeclaration scenario; no extraction/stubs",
+    "input": "Retention Keep7 thenKEEP99; reopened retention withkeep101 andAdded8",
+    "assertions": "One table/two symbols; scoped mixed-case and unqualified lookups retain7 and expose8",
+    "compile_flags": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy",
+    "dependencies": "74 existing primary game objects excluding game_main/scene TU; existing core/Lua/zlib and actual Windows libraries",
+    "response_file": "local/cc11_scene_library_link.rsp",
+    "response_sha256": "ED422FCF58A0B659238C00C9674BF6AF33AA317F327F849757336EBFBCAF50E0",
+    "compile_log": "local/cc11_scene_library_compile.log",
+    "compile_log_sha256": "09261AEC8FD07D6935CF68DED25F00A80044271BB2E2F30E06305E56E217B0FC",
+    "compile_exit": 0,
+    "executable": "local/cc11_scene_library_probe.exe",
+    "executable_sha256": "20FFACC55E199793FAC294E2E76CC2272C029255282D3CC4521634F320423D8C",
+    "object_sha256": "B6E933290DBFB4B6BBD2E98A330DEC82EB98D8D8EF0BC28384E882D36B55C50A",
+    "pe_machine": "014C",
+    "embedded_manifest_count": 1,
+    "execution_level": "asInvoker",
+    "link_flag": "/MANIFEST:EMBED",
+    "log": "local/cc11_scene_library_probe.log",
+    "log_sha256": "7193A7F454E8E704C8ACB7C3492D4D50E4D375F11ED218386AE6DD8D1019360C",
+    "exit_code": 0,
+    "output": "tables=1 symbols=2 original=7 added=8 unqualified=7 retained=1",
+    "qualification": "Ignored focused source/compile fixture; no native differential/ABI/original-game proof"
+  },
+  "verification": {
+    "verify_report_calls": "PASS:23 direct call rows checked, zero failed;4 indirect rows separately identified",
+    "git_diff_check": "PASS",
+    "full_build": "Not run; primary owns serialized integration.",
+    "game_run": "Not run.",
+    "qualification": "Native normal-body audit and bounded source fixture; no whole parser/loader, original ABI or original-game closure."
+  }
+}
