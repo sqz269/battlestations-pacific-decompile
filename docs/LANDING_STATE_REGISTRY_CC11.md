@@ -126,3 +126,7 @@ domain. Complete class destruction, lower/composite/queue state construction,
 native executable profile binding, owner scheduler/death lifetime, original
 ABI and in-game behavior remain separate unfinished dependencies. Root owns
 CMake registration, full main build and independent integration validation.
+
+## Primary integration
+
+Main `d87f925047dfcf3c79d345e3ba5c0b62a3e1fa3a` passed the full Win32 build and all three existing CTests. Root independently compiled the real registry and complete connected fixture with ten current Source/header inputs and three current main libraries, verified all inputs and the original PE before/after linking, and checked the embedded asInvoker PE32 manifest. The fixture passed39Source checks. All14 complete bodies (1705bytes) independently matched original disk and live Ghidra bytes;30ordinary native CALL checks passed. The13excluded diagnostic/overflow/privateEH calls remain unsupported. Native class/profile/lifetimes/lower/composite/ABI/runtime/game qualifications above remain. No tracked tests were added.
