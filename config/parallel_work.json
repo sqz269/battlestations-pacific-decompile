@@ -13569,8 +13569,8 @@
     },
     {
       "id": "cc11_scene_library_loader",
-      "done": false,
-      "state": "dispatched_to_reused_director_worker",
+      "done": true,
+      "state": "integrated_partial_enum_retention_native_loader_audit_main_build_and_probe_passed",
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13585,12 +13585,20 @@
         "cc11_scene_empty_bag"
       ],
       "reuses_worker_from": "cc11_scene_empty_bag",
-      "contract": "Recover complete normal native008F67B0 loader control flow/caller/ABI and actual VFS/parser/group-resolution contracts. Compare current property-library source projection and installed enum/group inputs. Identify and implement only a proved bounded missing producer/loader contract after explicit file ownership; no invented generic filesystem scan or unrelated scene/mode/switch changes."
+      "contract": "Recover complete normal native008F67B0 loader control flow/caller/ABI and actual VFS/parser/group-resolution contracts. Compare current property-library source projection and installed enum/group inputs. Identify and implement only a proved bounded missing producer/loader contract after explicit file ownership; no invented generic filesystem scan or unrelated scene/mode/switch changes.",
+      "code_revision": "0917bb88a019848b17dd5f1b8aef876152916f71",
+      "integrated_revision": "fbe20367f8aa4f7e87603857aca8b3886013fccb",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "fbe20367f8aa4f7e87603857aca8b3886013fccb",
+      "full_main_ctests_passed": 3,
+      "whole_loader_reconstructed": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_health_fraction_getter",
-      "done": false,
-      "state": "dispatched_to_reused_health_worker",
+      "done": true,
+      "state": "integrated_unit_numeric_fraction_getter_main_build_and_probe_passed",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -13609,7 +13617,14 @@
         "cc11_health_nan"
       ],
       "reuses_worker_from": "cc11_health_marker",
-      "contract": "Port proved ambient x87 unit fraction and entity numeric floor/cap ordering; preserve released no-dispatch/no-cache branch and explicit actual virtual/cache provider boundaries. No invented snapshot cache, broader callback rewrite or full ABI/game/exception-state claim."
+      "contract": "Port proved ambient x87 unit fraction and entity numeric floor/cap ordering; preserve released no-dispatch/no-cache branch and explicit actual virtual/cache provider boundaries. No invented snapshot cache, broader callback rewrite or full ABI/game/exception-state claim.",
+      "code_revision": "960718702e710f1971587af14200e397211935ef",
+      "integrated_revision": "fbe20367f8aa4f7e87603857aca8b3886013fccb",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "fbe20367f8aa4f7e87603857aca8b3886013fccb",
+      "full_main_ctests_passed": 3,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_active_prepend",
@@ -13688,6 +13703,56 @@
       ],
       "reuses_worker_from": "cc11_land_active_prepend",
       "contract": "Recover exact normal takeoff factory009CFF40 DL1 then unconditional prepend00999F50; propose/port only required actual same-owner factory caller facade with explicit zero-result/count/lifetime domain. No invented arena, slot54/tick/BE/GameUnits binding."
+    },
+    {
+      "id": "cc11_health_replication_byte",
+      "done": false,
+      "state": "dispatched_to_reused_health_worker",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00877c53"
+      ],
+      "address_ranges": [
+        "00877c53-00877c84"
+      ],
+      "output_files": [
+        "src/unit_damage.cpp",
+        "include/bsp/unit_damage.hpp",
+        "docs/UNIT_HEALTH_REPLICATION_BYTE_CC11.md",
+        "reports/unit_health_replication_byte_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_fraction_getter",
+        "cc11_health_nan"
+      ],
+      "reuses_worker_from": "cc11_health_fraction_getter",
+      "contract": "Recover numeric FMUL double256, shared actual mode-dependent CRT helper and signed-lowEAX byteclamp; require volatile actual0109EEA4 address and preserve ambient controls/stack. No duplicate CRT implementation/hardcodedpolicy/fakecache or callback setter sequencing rewrite."
+    },
+    {
+      "id": "cc11_scene_group_loading",
+      "done": false,
+      "state": "dispatched_read_only_to_reused_scene_worker",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f67b0",
+        "008f5a00",
+        "008f54f0"
+      ],
+      "output_files": [
+        "src/game_hosts_scene_contents.cpp",
+        "docs/SCENE_GROUP_LOADING_CC11.md",
+        "reports/scene_group_loading_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_library_loader",
+        "cc11_scene_empty_bag"
+      ],
+      "reuses_worker_from": "cc11_scene_library_loader",
+      "contract": "Audit group redeclarations and declaration-time eager parent flag0 merge/later-parent and authored overwrite against current lazy source traversal. Propose only proved bounded source contract before editing. Keep entityflag1/default/JM06 behavior separate; no VFS/parserfailure/policy/mode rewrite or fakefallback."
     }
   ],
   "snapshot_after_analysis": {
