@@ -1,0 +1,537 @@
+{
+  "packet": "cc11_scene_empty_bag",
+  "date": "2026-10-06",
+  "doc": "docs/SCENE_EMPTY_MULTITYPE_CC11.md",
+  "source_baseline": "696e72ee3c28a0f8bffc08ff35df9251dfd409ba",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified": "config/target.json and bsp.py ghidra ensure --status before analysis batches",
+    "ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "owned_addresses": [
+    "0046CF40",
+    "008F5A00",
+    "0046C550"
+  ],
+  "verdict": {
+    "behavior_change": false,
+    "presence": "Present empty authored child is retained; it is distinct from absent MultiType.",
+    "defaults": "Native parser reuses an existing child; empty authored syntax does not clear inherited MultiEntity defaults.",
+    "tutorial_admission": "JM06 tutorial GenerateInGame=false reaches mode9's GenerateInEngineMovie lookup; inherited B true explains admission.",
+    "switches": "No class8, effective-mode, Hidden or other switch changes."
+  },
+  "coverage": [
+    {
+      "routine": "0046CF40",
+      "coverage": "partial: bag creation/group merges 0046D2C3..0046D34E and gate call 0046D426; remaining entity/registration arms not closed here"
+    },
+    {
+      "routine": "008F5A00",
+      "coverage": "partial: entry/stack setup, child branch 008F66B9..008F6747, empty-body/terminal exit 008F6760..008F6784; scalar/enum/error arms not closed here"
+    },
+    {
+      "routine": "0046C550",
+      "coverage": "partial: MultiType presence 0046C58C..0046C6AB, mode9 0046CB43..0046CC58; other mode/class/geometry arms are existing work"
+    },
+    {
+      "routine": "008F3B60",
+      "coverage": "supporting read: allocate property record, type tag6, child pointer+C, insert call; no new reconstruction ownership"
+    }
+  ],
+  "calls": [
+    {
+      "address": "0046D2C3",
+      "native": "008F41A0",
+      "function": "0046CF40",
+      "contract": "Existing property-bag constructor before group application"
+    },
+    {
+      "address": "0046D304",
+      "native": "00469B60",
+      "function": "0046CF40",
+      "contract": "Resolve listed group before authored body"
+    },
+    {
+      "address": "0046D30C",
+      "native": "008F54F0",
+      "function": "0046CF40",
+      "contract": "Existing group merge before authored body; not newly reconstructed"
+    },
+    {
+      "address": "0046D34E",
+      "native": "008F5A00",
+      "function": "0046CF40",
+      "contract": "Mutate populated ECX bag; stack tokenizer, allowUntyped=1, nullable resolver=0"
+    },
+    {
+      "address": "0046D426",
+      "native": "0046C550",
+      "function": "0046CF40",
+      "contract": "Generation gate consumes producer bag; caller tests AL"
+    },
+    {
+      "address": "008F5B1B",
+      "native": "008F2260",
+      "function": "008F5A00",
+      "contract": "Look up authored key in current bag"
+    },
+    {
+      "address": "008F672E",
+      "native": "008F3B60",
+      "function": "008F5A00",
+      "contract": "Attach missing typed child before recursive parsing"
+    },
+    {
+      "address": "008F6740",
+      "native": "008F5A00",
+      "function": "008F5A00",
+      "contract": "Parse existing/new child in ECX; stack tokenizer, inherited allow flag, resolver=0"
+    },
+    {
+      "address": "008F6767",
+      "native": "008D9930",
+      "function": "008F5A00",
+      "contract": "Terminal closing-token consumption before unwind and RET0Ch"
+    },
+    {
+      "address": "0046C59D",
+      "native": "008F2260",
+      "function": "0046C550",
+      "contract": "First MultiType lookup determines presence branch"
+    },
+    {
+      "address": "0046C69D",
+      "native": "008F2260",
+      "function": "0046C550",
+      "contract": "Present MultiType record supplies child+C"
+    },
+    {
+      "address": "0046CB4A",
+      "native": "008F2260",
+      "function": "0046C550",
+      "contract": "Mode9 parent-bag GenerateInGame lookup"
+    },
+    {
+      "address": "0046CC3E",
+      "native": "008F2260",
+      "function": "0046C550",
+      "contract": "Mode9 fallback parent-bag GenerateInEngineMovie lookup"
+    }
+  ],
+  "data_receipts": [
+    {
+      "address": "008F66D2..008F66D9",
+      "meaning": "Existing record uses child pointer +0Ch; no clear"
+    },
+    {
+      "address": "008F66DB..008F672E",
+      "meaning": "Missing record allocates 114h child and attaches before parsing"
+    },
+    {
+      "address": "008F3B60",
+      "meaning": "Supporting decompile writes property tag6 and child pointer+0Ch; inserts via 008F33F0"
+    },
+    {
+      "address": "008F5AE7",
+      "meaning": "Empty child jumps to closing-token exit 008F6760 after record is already present"
+    },
+    {
+      "address": "0046C5A6",
+      "meaning": "Record-presence test; missing selects deferred path"
+    },
+    {
+      "address": "0046C684",
+      "meaning": "Missing-MultiType path returns AL1"
+    },
+    {
+      "address": "0046CB53",
+      "meaning": "False GenerateInGame branches to movie fallback 0046CC37"
+    },
+    {
+      "address": "0046CC43",
+      "meaning": "AL is movie property's byte+C"
+    }
+  ],
+  "abi": {
+    "routine": "008F5A00",
+    "calling_convention": "__thiscall",
+    "receiver": "ECX=property bag; saved to EBX at008F5A25",
+    "stack_slots": [
+      "entry+4: tokenizer (008F5A1E)",
+      "entry+8: allow-untyped flag (recursive reload008F6733)",
+      "entry+0Ch: nullable group resolver (008F5A47)"
+    ],
+    "caller_setup": "0046D347 PUSH0;0046D349 PUSH1;0046D34B PUSHEBP;0046D34C MOVECX,EBX;0046D34E CALL",
+    "recursive_setup": "008F6733..008F6740 passes tokenizer/allow flag/0, ECX=child",
+    "terminal": "008F6767 terminal tokenizer call; unwind;008F6784 RET0Ch",
+    "semantic_return": "Not established. Entity caller0046D353 and recursive caller008F6745 do not consume parser EAX.",
+    "host_interface": "C++ returns a new ScenePropertyBlock tree; this is not the native binary calling interface."
+  },
+  "corrections": [
+    {
+      "was": "Saved description: __fastcall(Tokenizer* ECX, char allowUntypedValues, int parseGroupList).",
+      "is": "ECX is the mutated bag; tokenizer, allow-untyped flag and nullable group resolver are three stack slots; __thiscall, RET0Ch; meaningful return unestablished.",
+      "evidence": [
+        "0046D347..0046D353",
+        "008F5A1E..008F5A47",
+        "008F6733..008F6747",
+        "008F6767..008F6784"
+      ],
+      "metadata_action": "Primary owns later ledger/Ghidra correction."
+    },
+    {
+      "was": "Candidate suspicion: empty tutorial MultiType or authored GenerateInGame=false should reject tutorials in mode9.",
+      "is": "Empty authored child retains group defaults; absent authored movie flag inherits MultiEntity true, and mode9 falls back to it.",
+      "evidence": [
+        "global.enums1772..1787",
+        "JM06 tutorial rows5994,6018,6042",
+        "008F66D2..008F6740",
+        "0046CB53..0046CC43"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "path": "universe/library/global.enums",
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "evidence": "Common1753..1762;MultiEntity1772..1787;ShipClasses Gato30/Narwhal31/TypeB_Jake93 at109/110/158"
+    },
+    {
+      "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "evidence": "Fourteen SubmarineGen records, all Common/Sub/Command/MultiEntity groups and authored empty MultiType"
+    },
+    {
+      "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.ema",
+      "sha256": "23C77AD2BED6F2D91A0BD81CF9B00F752D8B60AE3A59A972AFE65D1129BFC8CA",
+      "evidence": "Entity-map present input to existing native004D52F4..004D5493 single-player/unregistered-key mode9 policy; policy unchanged"
+    }
+  ],
+  "group_contract": {
+    "groups": [
+      "Common",
+      "Sub",
+      "Command",
+      "MultiEntity"
+    ],
+    "generation_defaults": {
+      "GenerateInGame": {
+        "type": "B",
+        "value": true
+      },
+      "GenerateInEngineMovie": {
+        "type": "B",
+        "value": true
+      }
+    },
+    "multitype_defaults": [
+      "MultiIslandCapture1v1",
+      "MultiIslandCapture2v2",
+      "MultiIslandCapture3v3",
+      "MultiIslandCapture4v4",
+      "MultiDuel",
+      "MultiEscort",
+      "MultiSiege",
+      "MultiCompetitive"
+    ],
+    "multitype_value": {
+      "type": "B",
+      "value": true
+    },
+    "common_hidden": {
+      "type": "B",
+      "value": false
+    },
+    "precedence": "Existing ordinary merge: group's own fields before base fields; listed groups fill absent keys; authored scalar assignments overwrite; nested child merge retains inherited values when authored child is empty.",
+    "source": "src/game_hosts_scene_contents.cpp merge_property_block/merge_group_into and bag application; read only, not owned or changed.",
+    "shipyard_distinction": "Sparse launched-unit bag does not automatically receive this ordinary scene-group merge."
+  },
+  "records": [
+    {
+      "name": "Narwhal-class Submarine 01",
+      "line": 5143,
+      "type_enum": 31,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": null,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": false
+    },
+    {
+      "name": "Gato-class Submarine 01",
+      "line": 5163,
+      "type_enum": 30,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": null,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": false
+    },
+    {
+      "name": "Submarine TypeB w Jake 04",
+      "line": 5615,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "Submarine TypeB w Jake 05",
+      "line": 5638,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "Submarine TypeB w Jake 06",
+      "line": 5661,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "Submarine TypeB w Jake 07",
+      "line": 5684,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "Submarine TypeB w Jake 08",
+      "line": 5707,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "Submarine TypeB w Jake 09",
+      "line": 5730,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": true,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": true
+    },
+    {
+      "name": "PlayerSub 01",
+      "line": 5925,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": false,
+      "authored_hidden": null,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": false,
+      "merged_hidden": false
+    },
+    {
+      "name": "PlayerSub 03",
+      "line": 5948,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": false,
+      "authored_hidden": null,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": false,
+      "merged_hidden": false
+    },
+    {
+      "name": "PlayerSub 02",
+      "line": 5971,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": null,
+      "authored_generate_in_engine_movie": false,
+      "authored_hidden": null,
+      "merged_generate_in_game": true,
+      "merged_generate_in_engine_movie": false,
+      "merged_hidden": false
+    },
+    {
+      "name": "Submarine TypeB w Jake 01",
+      "line": 5994,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": false,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": null,
+      "merged_generate_in_game": false,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": false
+    },
+    {
+      "name": "Submarine TypeB w Jake 02",
+      "line": 6018,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": false,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": null,
+      "merged_generate_in_game": false,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": false
+    },
+    {
+      "name": "Submarine TypeB w Jake 03",
+      "line": 6042,
+      "type_enum": 93,
+      "authored_multitype": {
+        "present": true,
+        "scalar_count": 0,
+        "child_count": 0
+      },
+      "authored_generate_in_game": false,
+      "authored_generate_in_engine_movie": null,
+      "authored_hidden": null,
+      "merged_generate_in_game": false,
+      "merged_generate_in_engine_movie": true,
+      "merged_hidden": false
+    }
+  ],
+  "absent_representation": "null authored flags mean absent, not false; all authored_multitype entries are explicitly present.",
+  "source": {
+    "files_changed": [
+      "src/scene_file.cpp",
+      "include/bsp/scene_file.hpp",
+      "include/bsp/scene_entity_factory.hpp"
+    ],
+    "changes": "Comments only: retained empty child, native parser ABI/host-interface distinction, present-empty mode gate.",
+    "parser": "parse_property_body stores an empty child; typed scalar records and source order unchanged.",
+    "gate": "find_scene_property_block returns address even for empty child; absence branch unchanged.",
+    "mode_enum": {
+      "InGameGeneration": 8,
+      "EngineMovie": 9,
+      "Unrestricted": 10
+    }
+  },
+  "incomplete_dependencies": [
+    "008F67B0 property-library loader",
+    "008F54F0 existing group merge",
+    "008F3B60 child attachment",
+    "004693C0 deferred constructor",
+    "0046C450 append",
+    "0046BF20 stock registration"
+  ],
+  "verification": {
+    "installed_scene_probe": {
+      "executable": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_mission_scene_probe.exe",
+      "executable_sha256": "D2F3EA1BD1F5A9A16246489898A43280132D30832E150AAC646CB0A516DDA05E",
+      "command": "bsp_mission_scene_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn\"",
+      "exit_code": 0,
+      "entities": 96,
+      "classes": 11,
+      "submarine_gen": 14,
+      "multitype_submarine_records": 14,
+      "registration_kept": 46,
+      "unregistered": 0,
+      "recovered_errors": 0,
+      "log": "local/cc11_scene_empty_probe.log",
+      "log_sha256": "30D01823EA516687D9B957F67137B935C94D6F88D5AB5EE6FEA4B2D998354EDE",
+      "qualification": "Existing primary build binary; source parser fixture, not native ABI/original-game proof; not rebuilt in this packet."
+    },
+    "ignored_raw_diagnostic": "Fourteen raw present-empty children and absent-vs-empty preservation confirmed; redundant diagnostic not retained as a tracked test.",
+    "earlier_runtime": {
+      "report": "reports/torpedo_director_jm06_pair_cc11.json",
+      "qualification": "Completed prior source-host pair, mode9; scene14/actual8/active7; six Hidden held. No new runtime run or original-game admission claim."
+    },
+    "verify_report_calls": "PASS: 13 direct call rows checked, zero failed; live Ghidra read only.",
+    "git_diff_check": "PASS",
+    "full_build": "Not run; comments/evidence only, primary serializes integration verification.",
+    "qualification": "Valid installed-input producer/source evidence and parser fixture. No whole-parser closure, native binary replacement, original-game execution or new gameplay validation.",
+    "open_limits": [
+      "Native allocation failure/malformed or type-conflicting bags not closed",
+      "Full scalar/enum/error parser and library-loader contracts not reconstructed",
+      "Native semantic return value not established"
+    ]
+  }
+}

@@ -88,6 +88,7 @@ struct SceneProperty {
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.
+// A present empty child is retained; it is distinct from an absent key.
 struct ScenePropertyBlock {
     std::vector<SceneProperty> values;
     std::vector<std::pair<std::string, ScenePropertyBlock>> blocks;
@@ -220,6 +221,8 @@ SceneHeader parse_scene_header_00469bf0(SceneLexer& lexer, std::vector<std::stri
 SceneEntity parse_scene_entity_0046cf40(SceneLexer& lexer, std::vector<std::string>& errors);
 std::vector<SceneGroupEntry> parse_scene_groups_00467e10(SceneLexer& lexer,
     std::vector<std::string>& errors);
+// Host tree interface. Native 008F5A00 mutates the ECX bag, takes three stack
+// arguments and returns with RET 0Ch; no semantic return value is established.
 ScenePropertyBlock parse_scene_property_block_008f5a00(SceneLexer& lexer,
     std::vector<std::string>& errors);
 

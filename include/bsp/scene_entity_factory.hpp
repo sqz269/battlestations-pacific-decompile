@@ -142,7 +142,7 @@ bool scene_point_in_mode_area(const SceneModeArea& area, float x, float z) noexc
 
 // The nested `"MultiType" { ... }` sub-bag. 126098 of the 133664 entities in the
 // 259 installed .scn files carry one. Its absence, not its contents, selects the
-// deferred-record branch of 0046C550.
+// deferred-record branch of 0046C550; a present empty child follows the mode gate.
 inline constexpr const char* kSceneMultiTypeKey = "MultiType";
 const ScenePropertyBlock* find_scene_property_block(const ScenePropertyBlock& bag,
                                                     const std::string& key) noexcept;
