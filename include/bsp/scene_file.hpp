@@ -93,6 +93,9 @@ private:
 // and native storage/ABI are unverified. Other forms retain partial coverage.
 // Successful nonempty explicit F also retains one owning binary32 value.
 // Bare F ';' stays raw: existing-record empty assignment needs parser context.
+// One recognized explicit B literal with a closing ';' retains an owning byte
+// (native type 3, +0Ch). Presence marks stored data, not a parser action flag;
+// empty/context-dependent Boolean assignments remain outside this binding.
 struct SceneProperty {
     std::string key;
     std::string type_letter;
@@ -101,6 +104,8 @@ struct SceneProperty {
     bool has_vector3{false};
     float float_value{0.0f};
     bool has_float{false};
+    std::uint8_t boolean_value{0};
+    bool has_boolean{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.
