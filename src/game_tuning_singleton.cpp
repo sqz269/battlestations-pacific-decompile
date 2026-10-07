@@ -491,6 +491,22 @@ GameTuningLuaHost::Handle resolve(GameTuningLuaHost& host, GameTuningLuaHost::Ha
 float* slot(GameTuningBlock& block, std::uint16_t offset) {
     return reinterpret_cast<float*>(reinterpret_cast<unsigned char*>(&block) + offset);
 }
+
+// The five x87 operations at 007E6FB3..007E6FDA. Keep the subtraction and
+// product extended until the sole binary32 store, as in the native loader.
+void store_soft_roll_offset_007e6fb3(GameTuningBlock& block) noexcept {
+    static_assert(offsetof(GameTuningBlock, pilot_general_soft_roll_mul) == 0x57c);
+    static_assert(offsetof(GameTuningBlock, pilot_general_soft_roll_ctrl) == 0x578);
+    static_assert(offsetof(GameTuningBlock, derived_580) == 0x580);
+    __asm {
+        mov eax, block
+        fld dword ptr [eax + 057ch]
+        fld1
+        fsubrp st(1), st(0)
+        fmul dword ptr [eax + 0578h]
+        fstp dword ptr [eax + 0580h]
+    }
+}
 } // namespace
 
 void game_tuning_load_007e2a20(GameTuningLuaHost& host, GameTuningBlock& block) {
@@ -564,6 +580,9 @@ void game_tuning_load_007e2a20(GameTuningLuaHost& host, GameTuningBlock& block) 
         }
         for (int d = depth - 1; d >= 0; --d) {
             host.release(trail[d]);
+        }
+        if (key.offset == 0x57c) {
+            store_soft_roll_offset_007e6fb3(block);
         }
     }
     host.release(root);

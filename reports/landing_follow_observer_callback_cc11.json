@@ -319,5 +319,145 @@
     "completeconditional9BED80 tuning/reindex/services are not invoked or madeconcrete by thispacket",
     "unsupportedprofiles/getters/concurrency/extra structuralreentry/fault/privateEH/invalidallocation domains excluded",
     "no inventedplane9FAprefix, gunfield, liveBooleanhost orwhole9B2C80/retirementadmission"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T19:43:47.014135+00:00",
+    "worker_revision": "c9a9cd96b4c105542a1d354497b1c858224e5ddb",
+    "integrated_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_build_revision": "b7f1bb6c945b684dbe232f7b44f82b417af8bff5",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_callbacks_broadcast_enum_integrated_build.log",
+    "game_executable_sha256": "c9fcbc9023f57b33716432bdb96610b0c06ae085505d5b033766ac45a3285845",
+    "probe_recipe": "local/cc11_follow_callback_primary/build.cmd",
+    "probe_log": "local/cc11_follow_callback_primary/compile.log",
+    "probe_sha256": "08057cc3747ee51717124237fdc64dd41dc2f453778075b14c24911378076c46",
+    "primary_whole_source_native_fixture_review": true,
+    "root_x86_id1_asInvoker_manifest_verified": true,
+    "fresh_actual_translation_units": 9,
+    "stable_current_Source_header_fixture_inputs": 49,
+    "actual_compiler_includes": 40,
+    "recipe_generated_inputs": 1,
+    "stable_installed_inputs": 0,
+    "stable_current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "858a86e1fc394d7cc6497d503b3e4e7de9a8df4fe5cc72b0cbbfff814772aa2b",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "006ceed0",
+        "bytes": 39,
+        "sha256": "1e1501763b222c92eeb1251fb27321f61cd3e0b0890b0538c25030b85e480490",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00cf89b4",
+        "bytes": 24,
+        "sha256": "0386669f312c96db42bdf163f761ad31a7da708f0ee38e6cfafa424dc8a985c8",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009c29cf",
+        "bytes": 7,
+        "sha256": "41a61c4162d72d37d7383acf80ed82cfe02b4055038ceddccdfb913b46b2b306",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d19000",
+        "bytes": 4096,
+        "sha256": "9395c36453812d4f78230db19d63dcc1607b9ff0b4c6169593fabf2d12397f27",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d23000",
+        "bytes": 4096,
+        "sha256": "8ecc677b77aeda13c3e196b8b172e9a891dfe2cac8876173c4495f105d380c97",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0042b000",
+        "bytes": 4096,
+        "sha256": "33a32f1acf41ab223aa213beb5dca1a66ff7deddd3212d66d9e2b158bf844229",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00522000",
+        "bytes": 4096,
+        "sha256": "c91a9b96401dd77d1e839b9d0fa9740c97e12790af9e7f52b91321114e146b9a",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "immutable_before_after_receipts": [
+      "local/cc11_follow_callback_primary/inputs_before_link.json",
+      "local/cc11_follow_callback_primary/inputs_after_link.json"
+    ],
+    "primary_COFF": [
+      {
+        "symbol": "?native_land_follow_observer_callback_006ceed0@bsp@@YAXABUNativeLandFollowEntryView@1@AAUNativeObserverOwnerStorage@1@AAVNativeLandFollowObserverCallbackBindings@1@@Z",
+        "bytes": 52,
+        "instruction_count": 20,
+        "sha256": "613bc9e9f7e512ed7e45b4d25d2ec1c14d61c939c9be8f6c2c3ea3e1ba1ce695",
+        "object": "native_land_follow_observer_callback.obj",
+        "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_native_land_follow_observer_callback_006ceed0_coff.bin"
+      },
+      {
+        "symbol": "?native_land_follow_observer_callback_access@bsp@@YA?AUObserverEndpointCallbackAccess@1@AAVNativeLandFollowObserverCallbackBindings@1@@Z",
+        "bytes": 25,
+        "instruction_count": 6,
+        "sha256": "7ca77dcfdf8ebb95b75b858c4cdb86072728258d4b08fd9b6ff30f5247f98ac6",
+        "object": "native_land_follow_observer_callback.obj",
+        "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_native_land_follow_observer_callback_access_coff.bin"
+      },
+      {
+        "symbol": "?callback04@?A0x83a9e8b7@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+        "bytes": 147,
+        "instruction_count": 51,
+        "sha256": "b67d1ae33451dd7aacb71f1837307c2fc2aaa82d2315dff19e8eb943ed15ac73",
+        "object": "native_land_follow_observer_callback.obj",
+        "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_callback04_coff.bin"
+      },
+      {
+        "symbol": "?callback08@?A0x83a9e8b7@bsp@@YAXPAXAAUNativeObserverOwnerStorage@2@I1@Z",
+        "bytes": 22,
+        "instruction_count": 7,
+        "sha256": "d89411fcc9159751bb77101a9b3ca6e23430924e423983a081eb08973d97d9ce",
+        "object": "native_land_follow_observer_callback.obj",
+        "code_file": "local/cc11_follow_callback_primary/native_land_follow_observer_callback_callback08_coff.bin"
+      },
+      {
+        "symbol": "?original_unregister_bridge@?A0xc3b140ae@@YIXPAUNativeObserverOwnerStorage@bsp@@0@Z",
+        "bytes": 100,
+        "instruction_count": 29,
+        "sha256": "302cdf43ff84f1a1da905e59b14325d5ce0930472e2bc1c380ba379fc2b458de",
+        "object": "probe.obj",
+        "code_file": "local/cc11_follow_callback_primary/probe_original_unregister_bridge_coff.bin"
+      }
+    ],
+    "primary_COFF_detail": "local/cc11_follow_callback_primary/coff_evidence.json",
+    "native_direct_rows_checked": 1,
+    "native_rows_failed": 0,
+    "call_verifier_log": "local/cc11_callbacks_broadcast_enum_native_calls.log",
+    "native_ABI_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "checks": 80,
+    "indirect_getter_row_explicitly_unresolved": true,
+    "original_table_data_DWORD_relocations": 2,
+    "original_getter_instruction_relocations": 0,
+    "raw_production_profiles_callable": false,
+    "original_caller_natural_CALL_operand_relocations": 1,
+    "constructor_or_tuning_entry_executed": false,
+    "matched_nonnull_clear_before_direct_unregister": true,
+    "invalid_null_equals_null_executed": false
+  },
+  "primary_source_status": "conditional complete Source providers integrated/reviewed/current build and bounded fixture passed; actual ABI/game binding unproved",
+  "primary_annotation": {
+    "receipt": "local/ghidra-annotations-20261007T194412Z.json",
+    "previous_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
 }
