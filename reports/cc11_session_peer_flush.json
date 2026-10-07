@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T16:40:05.949613+00:00",
   "base_commit": "7b39bf48c89317494943bec26524dfc672165479",
   "branch": "agent/cc11_health_guard",
-  "status": "Complete ordinary Source peer-list flush freshly compiled; full original203-byte LOOP with shared complete downstream Source providers passed6cases; primary integration/full main build pending.",
+  "status": "complete ordinary peer-list Source integrated; independent current-main592checks6original-loopcases/fullWin32all3CTests passed; CRT/nativeABI/game qualified",
   "owned_files": [
     "include/bsp/native_session_peer_flush.hpp",
     "src/native_session_peer_flush.cpp",
@@ -1092,5 +1092,61 @@
       "path": "local/cc11_peer_flush_20261007_a/verify_calls.log",
       "sha256": "cf63f5d3aa669940481e2c4dcc87a9005f7df9b70b45213200ffa64f3151f66b"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T16:50:09.174616+00:00",
+    "worker_revision": "867665373956dfc24b2121c63dceaef28f9d7849",
+    "integrated_revision": "55afb410e3cb242ff5c60fcabef8502962a92d3a",
+    "full_main_build_revision": "55afb410e3cb242ff5c60fcabef8502962a92d3a",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_peer_flush_integrated_build.log",
+    "game_executable_sha256": "e71690e79d031d0a6073f21dee8de4a5fb46733328cf582a57eb3bbd9ce1d04a",
+    "probe_recipe": "local/cc11_peer_flush_root.cmd",
+    "probe_log": "local/cc11_peer_flush_root_compile.log",
+    "probe_sha256": "1e2c4b4c28b810e6d82b6330171a732a6aed1d69ea4746fc6f2fa1693cdc39bc",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "whole_fixture_review": "all prior base fixture code plus all327changed diff lines reviewed",
+    "fresh_actual_translation_units": 31,
+    "stable_current_Source_provider_header_fixture_inputs": 86,
+    "actual_compiler_includes": 55,
+    "stable_current_libraries": 3,
+    "native_bodies": [
+      {
+        "address": "007848f0",
+        "end_exclusive": "007849bb",
+        "bytes": 203,
+        "sha256": "cd87fa4ef3a418a9ad911054af628066b6d37adbcb7abef381046ea2fd9c1848",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "checks": 592,
+    "original_loop_cases": 6,
+    "whole_original_loop_bytes": 203,
+    "original_operand_relocations": 5,
+    "modified_operand_bytes": 20,
+    "unchanged_original_bytes": 183,
+    "native_inbound_CALLs": 10,
+    "native_inbound_tail_JMPs": 1,
+    "native_direct_CALL_rows_total": 13,
+    "native_explicit_indirect_profile_rows": 2,
+    "native_verified_rows_total": 16,
+    "native_rows_failed": 0,
+    "inbound_0076D217_verified_tail_jump": true,
+    "current_SDK_CRT_wrapper_emitted_as_IAT_tail_jump": true,
+    "Source_peer_loop_new_member_abi_RET4": true,
+    "ordinary_fixture_triggers_CRT_validation": false,
+    "shared_genuine_downstream_Source_providers": true,
+    "all_original_transport_stack": false,
+    "runtime_reentry_exercised": false,
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T165010Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "007848f0"
+    ]
+  }
 }

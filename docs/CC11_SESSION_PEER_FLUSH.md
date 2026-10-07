@@ -122,3 +122,7 @@ changed no shared metadata, CMake, ledgers, tracked tests or Ghidra state.
 Machine-readable evidence: `reports/cc11_session_peer_flush.json`. Ignored
 receipt: `local/cc11_peer_flush_20261007_a/`. Main integration and full main
 build belong to the primary integrator.
+
+## Primary integration
+
+Main `55afb410e3cb242ff5c60fcabef8502962a92d3a` passed the full Win32 build and all three existing CTests. Root independently reviewed the Source, native body and entire fixture, rebuilt31fresh TUs with86current Source/header/fixture inputs (55compiler includes),3current libraries and the installed PE pinned before/after, and reproduced592checks across6whole-original-loop cases. All203disk/live bytes match and the PE32 asInvoker manifest was verified. Native rows are13direct CALLs,1tail JMP and2qualified indirect profiles; all16checks passed. The diskE9 operand at0076D217 independently confirms the tail transfer. Fresh emitted guard/target/next order and real SDK IAT tail wrapper were inspected. All ordinary quiescent backing/CRT/ABI/runtime/network/game limits above remain; no tracked tests were added.
