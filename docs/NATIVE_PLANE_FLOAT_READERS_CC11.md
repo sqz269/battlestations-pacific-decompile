@@ -53,5 +53,7 @@ are hashed. It links no BSP support library. Complete Source COFF code is
 byte-for-byte equal to each original seven-byte body. The probe is manifested
 PE32 I386 with `asInvoker`. No tracked test was added.
 
-Full repository build and ledger/annotation closure are pending in this source
-commit. The report records the component evidence and its explicit limits.
+Primary integration at `563687e8f703c161ea7217cea71908e832e22cd2` passed the full MSVC Win32 build and all
+three existing CTests. All component Source, compiler-header, linker-input,
+toolchain, probe and installed-PE pins remain unchanged. Saved annotation
+and refreshed export provenance is recorded in the report.

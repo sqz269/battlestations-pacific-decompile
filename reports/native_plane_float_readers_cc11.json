@@ -1,6 +1,6 @@
 {
   "packet": "cc11_primary_plane_float_readers",
-  "status": "complete raw leaf Source; independent strict component fixture passed; full repository build and annotation closure pending",
+  "status": "complete raw leaf Source integrated; full Win32/all three CTests and independent strict native/Source fixture passed; ABI/game qualified",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "source": "src/native_plane_float_readers.cpp",
@@ -461,5 +461,68 @@
   },
   "abi_compatible": false,
   "game_validated": false,
-  "qualification": "Raw ECX/ST0 leaves only. Exact seven-byte Source code and masked-exception component agreement do not establish original class/profile binding, whole geometry, plane constructor, world/lifetime/fault/native ABI or gameplay compatibility."
+  "qualification": "Raw ECX/ST0 leaves only. Exact seven-byte Source code and masked-exception component agreement do not establish original class/profile binding, whole geometry, plane constructor, world/lifetime/fault/native ABI or gameplay compatibility.",
+  "primary_integration": {
+    "utc": "2026-10-07T22:44:43.069866+00:00",
+    "main_build_revision": "563687e8f703c161ea7217cea71908e832e22cd2",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_plane_float_readers_integrated_build.log",
+    "source_fixture_receipt": "local/cc11_plane_float_readers_current_primary_v2/inputs_after_link.json",
+    "source_fixture_receipt_sha256": "4333fed0a075e19c8ad07ef4b724c0ec9a73f2e33d03a55066a30c5b395e8e75",
+    "fresh_actual_translation_units": 2,
+    "stable_Source_header_fixture_inputs": 3,
+    "actual_compiler_project_includes": 1,
+    "host_headers_hashed": 213,
+    "host_linker_libraries_hashed": 7,
+    "original_whole_body_bytes": 14,
+    "original_designated_operand_bytes": 0,
+    "linked_BSP_support_libraries": {},
+    "current_build_core_sha256": "dbefddf4517e42b928bc8f33ebfd20fb5deac1ffae9ba776c091373641ae1bb8",
+    "one_connected_fixture": true,
+    "internal_checks": 61,
+    "failures": 0,
+    "whole_Source_COFF_bytes_equal_original": true,
+    "Source_COFF": [
+      {
+        "symbol": "?native_plane_heading_0074e260@bsp@@YIMPBXPAX@Z",
+        "machine": "I386",
+        "section": 4,
+        "bytes": 7,
+        "sha256": "c7651d608c4934be6978d575b50c7e892e5d7265d9901a82e0c927e95a21e131",
+        "relocations": [],
+        "instruction_count": 2,
+        "disassembly": [
+          "00: fld dword ptr [ecx + 0xc6c]",
+          "06: ret "
+        ],
+        "original_address": "0074e260",
+        "complete_Source_bytes_equal_original": true
+      },
+      {
+        "symbol": "?native_plane_cached_speed_007b8e60@bsp@@YIMPBXPAX@Z",
+        "machine": "I386",
+        "section": 3,
+        "bytes": 7,
+        "sha256": "480f5cb788ccdeb913e53e112d15ad29be9327fc15c54358d56ecc2295a4d833",
+        "relocations": [],
+        "instruction_count": 2,
+        "disassembly": [
+          "00: fld dword ptr [ecx + 0xb1c]",
+          "06: ret "
+        ],
+        "original_address": "007b8e60",
+        "complete_Source_bytes_equal_original": true
+      }
+    ],
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "saved_annotation_prior_values_receipt": "local/ghidra-annotations-20261007T224454Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_plane_float_readers_primary_snapshot.log",
+    "saved_function_count": 64719
+  }
 }
