@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "bsp/fixed_step_job_waves.hpp"
+#include "bsp/observer_event_producer.hpp"
 
 // What a tick element actually does per fixed step: the six-slot interface at
 // 00D0DEC8, the seven concrete vtables that override it, and the per-step slot
@@ -289,6 +290,43 @@ struct ProjectileTickHost {
     // 00926D90(projectile, 2), the expiry pair.
     virtual void projectile_expire_00696350() = 0;
     virtual void projectile_release_00926d90(int code) = 0;
+};
+
+// Borrow the SAME actual tick node's [-8] pointer cell. No cached projectile,
+// semantic unit reinterpretation, owned observer prefix or default storage.
+struct NativeProjectileTickObserverView {
+    const void* volatile& projectile_minus_08;
+};
+class NativeProjectileTickObserverServices {
+public:
+    virtual ~NativeProjectileTickObserverServices() = default;
+    // REQUIRED PURE alias: returned address equals identity exactly (actual
+    // observed prefix is entity+0). No field read, native call, allocation,
+    // callback or translated identity. Nonnull/live actual storage is admitted.
+    virtual NativeObserverOwnerStorage& observed_prefix(const void* identity) const noexcept = 0;
+    // REQUIRED COMPLETE actual00926D90 on this freshly read identity/code.
+    // Deferred deletion/world routing/lifetimes are external, not a no-op or
+    // synchronous substitute. Original entry/body ABI is not supplied here.
+    virtual void release_projectile_00926d90(const void* identity, int code) = 0;
+};
+
+// Opt-in ABSTRACT adoption used by the existing006E6490 source caller's expiry
+// pair. Final expiry reads [-8] at006E6598, delivers event0/value0 at006E659F;
+// final release independently reloads SAME cell at006E65A4, calls required
+// release at006E65A9. Other tick/pose/world services remain abstract. This does
+// not port new arithmetic, bind a native tick profile or install a game host.
+// Node/cell, endpoints, callback owners and dispatch owner must remain valid
+// through notification; source callback field changes are not runtime proof.
+class NativeProjectileObserverTickHost : public ProjectileTickHost {
+public:
+    NativeProjectileObserverTickHost(NativeProjectileTickObserverView,
+        ObserverEventWordDeliveryContext&, NativeProjectileTickObserverServices&) noexcept;
+    void projectile_expire_00696350() final;
+    void projectile_release_00926d90(int code) final;
+private:
+    NativeProjectileTickObserverView observer_view_;
+    ObserverEventWordDeliveryContext& observer_delivery_;
+    NativeProjectileTickObserverServices& observer_services_;
 };
 
 // 006E6750, __thiscall void(node, float step), RET 4, body 006E6750..006E67CC.
