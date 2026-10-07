@@ -1,0 +1,469 @@
+{
+  "packet": "cc11_health_target_tick_history",
+  "created_utc": "2026-10-07T14:34:54.998514+00:00",
+  "base_commit": "e7ce15904665997509d01e2c3d8904429f6f19ca",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete ordinary SOURCE consumer freshly compiled; full original consumer/history/dual-CRT composition passed100cases; primary integration/full main build pending; caller and derived/runtime/wholeABI claims excluded",
+  "bounds_are_end_exclusive": true,
+  "functions": [
+    {
+      "entry": "007833E0",
+      "end_exclusive": "0078348F",
+      "bytes": 175,
+      "instruction_count": 59,
+      "source": "update_native_session_target_tick_history_007833e0",
+      "source_file": "src/native_session_target_tick_history.cpp",
+      "original_ordinary_abi": "ECX actualtarget, fullDWORD stackargument, RET4",
+      "new_source_abi": true,
+      "coverage": "complete ordinary native body",
+      "original_bytes_sha256": "952084b5ebc613982b241c623f918920754de37e8ce2e7a85a7b963c016d26b2"
+    }
+  ],
+  "borrowed_cells": {
+    "captured_step": "constvolatileDWORD F876B0 read once",
+    "time": "constvolatilefloat F876A8 read on non-reset path",
+    "divisor": "actual constvolatilefloat D0DE84 rawword3D4CCCCD",
+    "conversion_mode": "actual constvolatileDWORD0109EEA4 read inside sharedconverter at calltime"
+  },
+  "dependencies": {
+    "reset": "complete existing reset_native_session_target_history_00783230",
+    "append": "complete existing append_native_session_target_history_007831e0",
+    "converter": "existing native_crt_truncate_st0_00bf7420 in native_render_batch_keys.cpp/header",
+    "converter_abi": "ST0input; SourceECXactualmodeaddress; consumesST0; native low EAX word returned",
+    "nonzero_mode": "actual FSTPdouble/CVTTSD2SI sequence",
+    "zero_mode": "complete existing native_x87_truncate_st0_00bf7456",
+    "no_new_time_provider": true,
+    "no_replacement_converter": true,
+    "no_cached_mode": true,
+    "no_new_allocation_lifetime": true
+  },
+  "instruction_contract": [
+    "capturestep once and use signed<10 reset threshold including negativeDWORDpatterns",
+    "reset uses FLDZ/FSTP actualzeroargument then completehistoryreset; does not evaluate time/divisor/mode",
+    "FLDtime/FDIVactualdivisor extendedST0 survives until genuine existingconverter without intermediatefloatspill",
+    "first modulo32 difference=(capturedstep&FFFF)-fullargument; second=fullargument-(convertedEAX&FFFF)",
+    "each difference normalized once with signed>32768 subtract65536 or signed<-32768 add65536; bothendpointsretained",
+    "positivefirst takespriority asnegative sample, elsepositivesecond, elsezero; completehistoryappend"
+  ],
+  "caller_domain": {
+    "sole_observed_caller": "007858C0",
+    "unsigned16_load": "00785994 MOVZX EDX,word[ESP+14]",
+    "callsite": "0078599C",
+    "guard": "decoded3-bit deliveryfield equalszero",
+    "observed_argument_range": [
+      0,
+      65535
+    ],
+    "source_preserves_full_dword": true,
+    "caller_receiver_reconstruction_claim": false
+  },
+  "live_stored_body_call_checks": [
+    {
+      "address": "007833F5",
+      "native": "00783230",
+      "function": "007833E0"
+    },
+    {
+      "address": "0078340B",
+      "native": "00BF7420",
+      "function": "007833E0"
+    },
+    {
+      "address": "00783466",
+      "native": "007831E0",
+      "function": "007833E0"
+    },
+    {
+      "address": "00783477",
+      "native": "007831E0",
+      "function": "007833E0"
+    },
+    {
+      "address": "00783485",
+      "native": "007831E0",
+      "function": "007833E0"
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_writes": false,
+    "verified_before_live_batches": true,
+    "stored_body_end_exclusive": "0078348F",
+    "complete_live_consumer_bytes_match_disk": true,
+    "full_crt171byte_span_reread": true
+  },
+  "validation": {
+    "fresh_actual_translation_units": [
+      "src/native_session_target_tick_history.cpp",
+      "src/native_render_batch_keys.cpp",
+      "src/native_session_target_operations.cpp",
+      "src/native_session_target_lifetime.cpp",
+      "src/native_session_target_history.cpp",
+      "src/native_session_transport_buffers.cpp",
+      "src/singleton_lifetime.cpp",
+      "src/native_renderer_worker_lifetime.cpp"
+    ],
+    "fresh_tu_count": 8,
+    "immutable_source_header_inputs": 31,
+    "probe_sha256": "c74922389de9cdf9bb494b63fff06d6f1bde72bc11f8100baf6106753423a9ff",
+    "compiler": "MSVC19.51.36244 Win32 /std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs",
+    "build_exit": 0,
+    "probe_exit": 0,
+    "embedded_manifest": "asInvoker",
+    "probe_result": {
+      "checks": 333,
+      "failures": 0,
+      "original_consumer_matrix_cases": 48,
+      "original_consumer_edge_cases": 44,
+      "full_dword_helper_cases": 8,
+      "consumer_bytes": 175,
+      "history_code_relocations": 0,
+      "global_operand_relocations": 4,
+      "call_displacement_relocations": 5,
+      "crt_modes": 2,
+      "pc_values": 3,
+      "x87_rc_values": 4,
+      "ambient_stack_cases": 2,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "actual_storage": "two fullSource-constructed targets with actualcanonical histories/cursors/locks; bothdestructed",
+    "history_seed": "valid50-elements of1.0,total50.0,index0or49; realD54ownershipretained;D58untouched",
+    "original_composition": {
+      "bodies": [
+        {
+          "entry": "007833E0",
+          "end_exclusive": "0078348F",
+          "bytes": 175,
+          "executable_copy_offset": "0",
+          "sha256": "952084b5ebc613982b241c623f918920754de37e8ce2e7a85a7b963c016d26b2",
+          "artifact": "original_consumer.bin"
+        },
+        {
+          "entry": "00783230",
+          "end_exclusive": "00783274",
+          "bytes": 68,
+          "executable_copy_offset": "100",
+          "sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+          "artifact": "original_reset.bin"
+        },
+        {
+          "entry": "007831E0",
+          "end_exclusive": "00783226",
+          "bytes": 70,
+          "executable_copy_offset": "180",
+          "sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+          "artifact": "original_append.bin"
+        },
+        {
+          "entry": "00BF7420",
+          "end_exclusive": "00BF74CB",
+          "bytes": 171,
+          "executable_copy_offset": "200",
+          "sha256": "79bef72f6967ef5ec8414c36f64fdb35a6167893f6dca509f73ef9312a2786c2",
+          "artifact": "original_crt_span.bin"
+        }
+      ],
+      "global_operand_relocations": [
+        {
+          "original_operand_site": "007833E3",
+          "original_cell": "00F876B0",
+          "bytes": 4,
+          "copy_offset": "3",
+          "fixture_binding": "pair.native_cells.step"
+        },
+        {
+          "original_operand_site": "00783401",
+          "original_cell": "00F876A8",
+          "bytes": 4,
+          "copy_offset": "21",
+          "fixture_binding": "pair.native_cells.time"
+        },
+        {
+          "original_operand_site": "00783407",
+          "original_cell": "00D0DE84",
+          "bytes": 4,
+          "copy_offset": "27",
+          "fixture_binding": "pair.divisor"
+        },
+        {
+          "original_operand_site": "00BF7422",
+          "original_cell": "0109EEA4",
+          "bytes": 4,
+          "copy_offset": "202",
+          "fixture_binding": "pair.native_cells.mode"
+        }
+      ],
+      "call_displacement_relocations": [
+        {
+          "instruction": "007833F5",
+          "operand_site": "007833F6",
+          "original_target": "00783230",
+          "bytes": 4,
+          "copy_operand_offset": "16",
+          "replacement_copy_target_offset": "100",
+          "original_call_bytes": "e836feffff"
+        },
+        {
+          "instruction": "0078340B",
+          "operand_site": "0078340C",
+          "original_target": "00BF7420",
+          "bytes": 4,
+          "copy_operand_offset": "2C",
+          "replacement_copy_target_offset": "200",
+          "original_call_bytes": "e810404700"
+        },
+        {
+          "instruction": "00783466",
+          "operand_site": "00783467",
+          "original_target": "007831E0",
+          "bytes": 4,
+          "copy_operand_offset": "87",
+          "replacement_copy_target_offset": "180",
+          "original_call_bytes": "e875fdffff"
+        },
+        {
+          "instruction": "00783477",
+          "operand_site": "00783478",
+          "original_target": "007831E0",
+          "bytes": 4,
+          "copy_operand_offset": "98",
+          "replacement_copy_target_offset": "180",
+          "original_call_bytes": "e864fdffff"
+        },
+        {
+          "instruction": "00783485",
+          "operand_site": "00783486",
+          "original_target": "007831E0",
+          "bytes": 4,
+          "copy_operand_offset": "A6",
+          "replacement_copy_target_offset": "180",
+          "original_call_bytes": "e856fdffff"
+        }
+      ],
+      "consumer_and_crt_changed_bytes": 36,
+      "history_changed_bytes": 0,
+      "copies_sealed_execute_read": true,
+      "crt_gap": "[BF743C,BF7456) alternateentry bytes retainedunchanged but unreachable from selected BF7420entry routes; notanadditionalimplementationclaim",
+      "actual_executed_crt_bodies": [
+        {
+          "entry": "00BF7420",
+          "end_exclusive": "00BF743C",
+          "bytes": 28
+        },
+        {
+          "entry": "00BF7456",
+          "end_exclusive": "00BF74CB",
+          "bytes": 117
+        }
+      ],
+      "source_bridge_inside_original_numerical_composition": false,
+      "original_game_crt_allocator_invoked": false
+    },
+    "matrix": {
+      "cases": 48,
+      "input": "step1000,timefloatword42480000=50.0,tick1000,actualnative3D4CCCCDdivisor",
+      "controls": "PC24/53/64 x fourx87RC x actualmode0/1 x empty/threeoccupied x87slots"
+    },
+    "edge_cases": {
+      "cases": 44,
+      "crt_modes": [
+        0,
+        1
+      ],
+      "reset_steps": [
+        "00000000",
+        "00000009",
+        "FFFFFFFF",
+        "80000000"
+      ],
+      "reset_time_word": "7F812345 signalingvalue deliberatelyunevaluated",
+      "branches": [
+        "threshold10",
+        "positivefirst over positivesecond",
+        "secondpositiveonly",
+        "bothnonpositive",
+        "bothplus/minus32768endpoints",
+        "adjacentoutsidewrapbounds",
+        "incomingFFFF",
+        "capturedstep7FFFFFFF"
+      ],
+      "timing_words": [
+        "00000000",
+        "3F800000",
+        "44CCCCCD",
+        "44CCCE67",
+        "00000001",
+        "7F800000",
+        "7FC12345",
+        "7F812345",
+        "7F7FFFFF",
+        "BF800000"
+      ],
+      "helper_state_qualification": "exceptional/negative timing fixtures establish valid-storagebody behavior under maskedFP, not nativeproducer reachability"
+    },
+    "full_dword_helper_cases": {
+      "cases": 8,
+      "arguments": [
+        "00020000",
+        "80000000",
+        "7FFFFFFF",
+        "FFFFFFFF"
+      ],
+      "crt_modes": [
+        0,
+        1
+      ],
+      "distinction": "outsideobserveduint16caller domain; onlyfullDWORDhelper arithmeticclaimed"
+    },
+    "compared": [
+      "bothhistoryfields andall50plus3samples",
+      "primaryarrayidentities",
+      "outertargetbytes",
+      "unchangedsecondaryhistorystorage/array",
+      "unchangedborrowedtiming/mode/divisor",
+      "x87CW",
+      "x87SW",
+      "x87FTW",
+      "all8raw80bitx87registerimages",
+      "MXCSR",
+      "all16bytesXMM0"
+    ],
+    "excluded": [
+      "FPinstruction/data pointeraddresses",
+      "unmaskedexceptions",
+      "insufficientx87stack",
+      "DAZ/FTZenabled",
+      "concurrentmutation",
+      "whole timingproducer or packetreceiver",
+      "originalclassABI/game"
+    ],
+    "coff_evidence": {
+      "machine": "I386",
+      "section_number": 3,
+      "section": ".text$mn",
+      "bytes": 224,
+      "sha256": "fcf5b72b0e8b749d76baded8f71a75d370e723afeb58892de3a757d95851ebaf",
+      "relocations": [
+        {
+          "operand_offset": "2F",
+          "coff_kind": "0014",
+          "symbol": "?reset_native_session_target_history_00783230@bsp@@YAXPAUNativeSessionTargetStorage@1@I@Z"
+        },
+        {
+          "operand_offset": "5A",
+          "coff_kind": "0014",
+          "symbol": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z"
+        },
+        {
+          "operand_offset": "D5",
+          "coff_kind": "0014",
+          "symbol": "?append_native_session_target_history_007831e0@bsp@@YAXPAUNativeSessionTargetStorage@1@H@Z"
+        }
+      ],
+      "instruction_count": 74,
+      "actual_step_load_offset": "11",
+      "reset_floating_offsets": [
+        "23:FLDZ",
+        "25:FSTP"
+      ],
+      "conversion_floating_offsets": [
+        "4F:FLD",
+        "54:FDIV",
+        "59:CALLsharedconverter"
+      ],
+      "floating_spill_before_conversion": false,
+      "full_disassembly_reviewed": true
+    },
+    "support_frozen_at_main_head": "e7ce15904665997509d01e2c3d8904429f6f19ca",
+    "support_before_after": {
+      "main_head_after": "9c04403d32fdbd71d33442a2b8178173abd481e7",
+      "copied_libraries_stable": true,
+      "current_main_libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_after": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "matches_frozen_before": false
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "matches_frozen_before": true
+        }
+      ],
+      "main_rebuild_permitted_after_support_snapshot": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 31,
+      "support_before": {
+        "main_head": "e7ce15904665997509d01e2c3d8904429f6f19ca",
+        "worker_head": "e7ce15904665997509d01e2c3d8904429f6f19ca",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_tick_history_20261007_a\\support_bsp_core.lib",
+            "sha256": "338f924e70ca4fcb4642ed79126ab44d634b3ebb466c893ce552d65ac1f0d821",
+            "bytes": 73224464
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_tick_history_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_tick_history_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "support_qualification": "alllinkedcopiesandfreshinputsunchanged; laterauthorizedmainregistryrebuild changedmainbsp_core only, recordedseparately",
+    "full_main_build_run_by_worker": false,
+    "tracked_tests_added": false,
+    "network_send_calls": 0,
+    "game_validated": false
+  },
+  "limitations": [
+    "newSourceABI, notdropinnativeentry",
+    "actualborrowedcellsrequired;notimingprovider/defaults",
+    "observedcalleruint16 distinctfromfullDWORDhelperfixtures",
+    "privateCRT/EH/unmaskedfaultbehaviorunbound",
+    "caller/derivedtargetlifetime/registration/socket/gameoutsidepacket"
+  ],
+  "artifact_root": "local/cc11_target_tick_history_20261007_a",
+  "artifacts_sha256": {
+    "probe.cpp": "c74922389de9cdf9bb494b63fff06d6f1bde72bc11f8100baf6106753423a9ff",
+    "probe.exe": "d575e88666c0c1a9f39447ac3cd8ea43e70a0eaeb33531e88d606e31aae7f9b9",
+    "probe.log": "d757fa5970c8102a3308a43c8c24be01d2b36c23911caf58bb4bbb965201d26d",
+    "build.cmd": "1c64d5d4094224a1ac86313876b12dabbf8b01fa9da08698cf52d785b7ddb981",
+    "build.log": "db621c362988987bb1ea09cfbd2caebfd421c41298dbdb65618b3549087950e7",
+    "prepare_fixture.py": "5e3751941a30b4aa94068422533c71e4a9158bb606f67db71cdc106b05de98c8",
+    "prepare_build.py": "bfc93e48190def895f0170b82102d3f1cbd272e4eb43a31d915b0a810fa0fb8f",
+    "pin_support.py": "dbc9f79bdfb5e9b24cc6387f70780d3bfa6e24e3222d9eed1b463dd02c050024",
+    "write_report.py": "e048bbc6e96554e57c9370a868a04fac0899c77800ca9466708e5048b0738838",
+    "inputs_before_link.json": "df83378ae92480d3f70772fd4377472285b013c25d263fdb31f54cfb1ccc0baf",
+    "inputs_after_link.json": "6c80f6ff4805980ca01881bf18cce75221d7320443b66f2f3dbef4718441f678",
+    "support_before_link.json": "d4fd0ec0e0be40cfd90c9a0fd231aecf1caebf7ef972d1da014f241710f7bc83",
+    "embedded_manifest.xml": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290",
+    "original_consumer.bin": "952084b5ebc613982b241c623f918920754de37e8ce2e7a85a7b963c016d26b2",
+    "original_reset.bin": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+    "original_append.bin": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+    "original_crt_span.bin": "79bef72f6967ef5ec8414c36f64fdb35a6167893f6dca509f73ef9312a2786c2",
+    "asm/native_session_target_tick_history.asm": "e7abfba3f17dbe5213202822e863dbe3ca8b4d8c2ab7177d21a0b55c03cabdef",
+    "obj/native_session_target_tick_history.obj": "3cc63dbb752e969894d2da2661a1a0a0d144cf1fc93f5cf2020d15a3ca8e0b35",
+    "inspect_coff.cmd": "ecaba1bff10a9b29eceb3e66009feffed3bf7fc2eaa702973f3782f4c4611af6",
+    "coff_symbols.txt": "39a1663d8219c077f9fd9f750eec1c0be3aff87ad64ea76f86139e155e81beff",
+    "coff_disasm.txt": "310dc98d6f7b535cae13e79e1b771214aaae331bbd48dcfdd4ee3ccca301016e",
+    "coff_relocations.txt": "a1a9e0bb88442c3bc0cd61485006e7a01dc7e947f4544d2515e106ff14a87352",
+    "coff_evidence.json": "2d5c9fdca3aae29f3b36c76b61d2be215ab59d98204b030de5d7cdeffbf5474c",
+    "source_coff_text.bin": "fcf5b72b0e8b749d76baded8f71a75d370e723afeb58892de3a757d95851ebaf"
+  }
+}
