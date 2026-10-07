@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:29:12.956175+00:00",
+  "updated_utc": "2026-10-07T08:38:09.285823+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -861,5 +861,33 @@
     ],
     "source_implemented": false,
     "next": "Canonical identity packet first; full retained storage producers need same stable arena/real profiles/complete queue and lower services"
+  },
+  "land_outer_constructor_handoff": {
+    "id": "cc11_land_outer_constructor",
+    "done": false,
+    "state": "approved_conditional_complete_outer_constructor_same_canonical_storage",
+    "worker": "land_retirement",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "009b3240",
+      "009f9980"
+    ],
+    "output_files": [
+      "include/bsp/native_land_task_constructor.hpp",
+      "src/native_land_task_constructor.cpp",
+      "docs/PILOT_BOT_LAND_CONSTRUCTOR_SOURCE_CC11.md",
+      "reports/pilot_bot_land_constructor_source_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_land_canonical_identity"
+    ],
+    "reuses_worker_from": "cc11_land_canonical_identity",
+    "contract": "Completeordinary009B3240 caller+nonnull009F9980 bindsSAMEcaller-owned stabletask/canonical3FC40442442842C storage. REQUIREDcomplete0099C6F0(basekind3)->faithfulfreshowner50->COMPLETE009B2E50(compositeactualsameapproach/originalblock). Capturecurrent3FC BEFOREthreeordered actualexecutableprofile stores0/3F8/4B0. Capturedplaneembedded72C+38predicate: falsepark620;trueFRESH3FCactual007B8AD0 ->leaderMoveTo4C4/elseFollow500. Publish310 BEFOREactualselectedentry4; thenaliases410/414/418=actualtask4/314/38C, no restorationofentrymutations. Profiles/field mappingspure-required, no inventedcallback/defaulttable/arena/nullablefallback. Full9F9CE0/9AFE70/006C0B50 transitiveproducers remainREQUIREDunbound; current sparseBotTaskHost/currentqueueexcluded. New4files only,CMakeprimary;reuseexistingmanifestedhookprobe+oneobject. Primaryalreadyrecoveredfixedinteger/registercontract, no newdelegatedx87/ABIrecovery. No originalABI/privateEH/fault/lifetime/game adapterclaim.",
+    "primary_recovery": "reports/pilot_bot_land_constructor_recovery_cc11.json",
+    "worker_ghidra_read_only": true,
+    "canonical_packet_worker_revision": "dfe6a1c8bf3cafd6c797d412a654edc5814c2fcf",
+    "canonical_packet_primary_probe_passed": true,
+    "canonical_packet_full_main_build_pending": true
   }
 }
