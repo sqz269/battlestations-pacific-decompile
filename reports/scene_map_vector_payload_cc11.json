@@ -523,5 +523,33 @@
       "bytes": 73075656,
       "sha256": "D343E0A1E7E9DE4FD50B983392109442A39BA49971986615EA403920FDB03D51"
     }
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "ac4197a647b28e631d95f3d295a99200814a02d8",
+    "included_packets": [
+      "cc11_health_route_flags4",
+      "cc11_scene_map_vector_payload"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_flags4_map_integrated_build.log",
+    "utc": "2026-10-07T09:18:37.481718+00:00",
+    "executable_sha256": "97b412a3aaf2d3550b95b9c23b7e29558d40b07599a1d17df5f7b82f0ff6a585",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "41d8b8237af2b26a3506f1007e704e63b9250c93",
+    "probe_command": "local/cc11_map_root.cmd",
+    "independent_production_probe": "Fresh actual main parser/map-reader TUs and isolated copied manifested Win32 fixture /W4/WX/fpstrict:present-emptypositivezero3,typedpayloadindependentdiagnostics,missing/typeerrors,rawfallback,absentsubbagpreservationPASS; scene.props/JM06 all32corner triples/96binary32lanes+border sizes unchanged",
+    "installed_map_inputs": 2,
+    "installed_corner_triples": 32,
+    "installed_binary32_lanes": 96,
+    "native_direct_call_rows_checked": 32,
+    "native_call_failures": 0,
+    "native_lookup_rows": 19,
+    "unchanged_external_tail_rows": 13,
+    "full_engine_function_reconstructed": false,
+    "historical_vs2005_crt_parity_proved": false
+  }
 }

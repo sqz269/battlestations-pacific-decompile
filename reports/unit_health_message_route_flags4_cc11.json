@@ -285,5 +285,34 @@
     "checked": 3,
     "failed": 0,
     "exit_code": 0
+  },
+  "primary_integration": {
+    "source_revision": "ac4197a647b28e631d95f3d295a99200814a02d8",
+    "included_packets": [
+      "cc11_health_route_flags4",
+      "cc11_scene_map_vector_payload"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_flags4_map_integrated_build.log",
+    "utc": "2026-10-07T09:18:37.481718+00:00",
+    "executable_sha256": "97b412a3aaf2d3550b95b9c23b7e29558d40b07599a1d17df5f7b82f0ff6a585",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "a8a3a1fb35ca08aac7c2b2edc5f26bb43d2df34d",
+    "probe_command": "local/cc11_flags4_root.cmd",
+    "independent_production_probe": "Fresh actual main message/base/cursor/setter TUs and isolated copied Win32 manifested fixture compiled /W4/WX/fpstrict:66checks0fail,sixguard/profile/empty-list cases plus setter->constructor->flags4 two-peer source scenario; current game/sender/sentinel/next observed after send; borrowed frame never released",
+    "probe_checks": 66,
+    "probe_failures": 0,
+    "peer_sends": 2,
+    "borrowed_frame_releases": 0,
+    "native_direct_calls_checked": 3,
+    "native_call_failures": 0,
+    "indirect_rows_unresolved": 4,
+    "generic_parent_reconstructed": false,
+    "actual_transport_bound": false,
+    "original_iterator_fault_semantics_proved": false
   }
 }

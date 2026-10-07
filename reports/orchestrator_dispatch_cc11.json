@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:10:22.897902+00:00",
+  "updated_utc": "2026-10-07T09:18:37.481718+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1186,5 +1186,62 @@
       "game_validated": false,
       "evidence": "CC11 primary complete assembly and exact disk/live bytes: Follow009BED80 calls actual singleton then COMPLETE009BE150 into EXISTINGstate6C, does NOT replace6C. Reload6C and capturestate4 before ordered94/90zero stores, actualFLDparameter8/FSTPstate88,84zero/8CactualD7A24C1; capturedtaskC read AFTERstores. InitialCnull skips reindex/observer;nonnull C3E4=1 then complete7ED260;FRESHstate4/C/3D0leader afterreindex. Capturednewleader comparedold2C;unregisterold with SAMEembedded18 observer,storecapturedleader2C,registercapturednew iffnonnull;85zeroLAST. MoveTo7B3DB0soleRET;Park9B21A0 writes1Cpositivezero,readsactualCE3854=3,byte18zero,28=3. 9BE150 is forty orderedx87FLD/FSTPfloatcopies (0..64,6C..A0),byte68/69; NOTrawmemcpy orpointerreplacement. Completecopy/reindex/observer/services and actualsameborrowedviews/stableprofiles/lifetimes remain required; no source/nativeABI/game proof from this recovery."
     }
+  },
+  "health_route_flags4_integration": {
+    "source_revision": "ac4197a647b28e631d95f3d295a99200814a02d8",
+    "included_packets": [
+      "cc11_health_route_flags4",
+      "cc11_scene_map_vector_payload"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_flags4_map_integrated_build.log",
+    "utc": "2026-10-07T09:18:37.481718+00:00",
+    "executable_sha256": "97b412a3aaf2d3550b95b9c23b7e29558d40b07599a1d17df5f7b82f0ff6a585",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "a8a3a1fb35ca08aac7c2b2edc5f26bb43d2df34d",
+    "probe_command": "local/cc11_flags4_root.cmd",
+    "independent_production_probe": "Fresh actual main message/base/cursor/setter TUs and isolated copied Win32 manifested fixture compiled /W4/WX/fpstrict:66checks0fail,sixguard/profile/empty-list cases plus setter->constructor->flags4 two-peer source scenario; current game/sender/sentinel/next observed after send; borrowed frame never released",
+    "probe_checks": 66,
+    "probe_failures": 0,
+    "peer_sends": 2,
+    "borrowed_frame_releases": 0,
+    "native_direct_calls_checked": 3,
+    "native_call_failures": 0,
+    "indirect_rows_unresolved": 4,
+    "generic_parent_reconstructed": false,
+    "actual_transport_bound": false,
+    "original_iterator_fault_semantics_proved": false
+  },
+  "scene_map_vector_payload_integration": {
+    "source_revision": "ac4197a647b28e631d95f3d295a99200814a02d8",
+    "included_packets": [
+      "cc11_health_route_flags4",
+      "cc11_scene_map_vector_payload"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_flags4_map_integrated_build.log",
+    "utc": "2026-10-07T09:18:37.481718+00:00",
+    "executable_sha256": "97b412a3aaf2d3550b95b9c23b7e29558d40b07599a1d17df5f7b82f0ff6a585",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "41d8b8237af2b26a3506f1007e704e63b9250c93",
+    "probe_command": "local/cc11_map_root.cmd",
+    "independent_production_probe": "Fresh actual main parser/map-reader TUs and isolated copied manifested Win32 fixture /W4/WX/fpstrict:present-emptypositivezero3,typedpayloadindependentdiagnostics,missing/typeerrors,rawfallback,absentsubbagpreservationPASS; scene.props/JM06 all32corner triples/96binary32lanes+border sizes unchanged",
+    "installed_map_inputs": 2,
+    "installed_corner_triples": 32,
+    "installed_binary32_lanes": 96,
+    "native_direct_call_rows_checked": 32,
+    "native_call_failures": 0,
+    "native_lookup_rows": 19,
+    "unchanged_external_tail_rows": 13,
+    "full_engine_function_reconstructed": false,
+    "historical_vs2005_crt_parity_proved": false
   }
 }

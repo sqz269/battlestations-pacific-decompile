@@ -132,3 +132,5 @@ other profile classes, freed/current-node corruption and malformed cycles are
 outside the domain. The full router, original register ABI, invalid-iterator
 faults/private EH, actual transport/allocator identity and gameplay remain
 unproved. Primary integration and full-repository checks are separate.
+
+Primary integration: ac4197a647b28e631d95f3d295a99200814a02d8; actual main sources independently recompiled for manifested focused probes, PASS. Full MSVC Win32 Release and all three existing CTests passed. Executable SHA256 97b412a3aaf2d3550b95b9c23b7e29558d40b07599a1d17df5f7b82f0ff6a585. Original ABI, actual runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_flags4_map_integrated_build.log.
