@@ -746,6 +746,13 @@ struct GameGunnerySummary {
     unsigned long long torpedo_gun_window{0};      // + 007F60A0 allowed the bearing
     unsigned long long torpedo_gun_sent{0};        // + 0072D130 sent the 0ADh arm
     unsigned long long torpedo_gun_shots{0};       // + 00730160 made a projectile
+    // Packet cc9_g34_torpedo_bot_ready, both states: category-7 ticks with a
+    // target, those 008FFF20's own test (009003F8..0090042F) would launch on,
+    // those the generic test launches on, and image launches 0085ABA0 refused.
+    unsigned long long torpedo_ready_targeted{0};
+    unsigned long long torpedo_ready_image{0};
+    unsigned long long torpedo_ready_generic{0};
+    unsigned long long torpedo_ready_refused_angles{0};
     unsigned long long torpedo_friendly_scans{0};  // 008FFF20 0090058A walked the own list
     unsigned long long torpedo_friendly_holds{0};  // 009007F6 held the launch for a friendly
     // The air drop. 007BBBA0 accepted the request and a round left the plane.

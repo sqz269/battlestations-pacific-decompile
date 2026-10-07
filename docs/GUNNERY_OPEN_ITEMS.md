@@ -11295,3 +11295,186 @@ give the symmetric `+-0.3c` that the host has.
   `local\g33_when.py` and `local\g33_firstdiff.py` (first divergence of a line class).
 - Several lanes building at once take about 30 minutes per fresh export. Two lanes in parallel with the shared three
   slots finished a six-group round in about 45 minutes.
+
+## 161. JM08's Gyoraitei tubes, and the TorpedoBot's own launch test (lead queue item 1; cc9-gunnery34, 2026-10-06)
+
+**The question.** On JM08 (cc9-lua47, SQUADRON_LAND_TASK 5fd, `local\l47_F1_j8.log`), the player-built `Gyoraitei #Y1..#Y4`
+fire only their guns. Their four category-7 rows (device 67, `"Jap single torpedo catapult"`) log `assigns 0`. How does
+the image's AI fire a torpedo boat's fixed tubes?
+
+### 161.1 Why the Gyoraitei tubes are never assigned: the director's torpedo enable
+
+- **A tube is reached only through a director target.** Category 7 skips the recon sweep (`008651F5`,
+  docs/TORPEDO_GUN_ASSIGNMENT.md), so a tube's only candidates are step 8.6's fire target and command target. Each goes
+  through `00863990`, whose first test is the category mask `008633D0` at `008639A2`.
+- **`mask[7]` is the director's `+222h`.**
+  - `00861D70` pushes it as 3 or 0.
+  - Pass B stores the merged bag's `TorpedoDirector` there (SENTITY_INIT_PASSES section 7).
+  - `universe/library/ship.props` (2024-07-13) authors `TorpedoDirector = B false` for every ship.
+  - A shipyard boat runs InitAll like any `GenerateObject` ship.
+- **Nothing on JM08 re-opens the mask.**
+  - The mission tree loads `Scripts/missions/COTP-IJN/PRCPIJN/PRCPJM08.lua` (2024-08-26 in this installation; the
+    log's `mission script name` line). That script has no `TorpedoEnable` and no `luaShutUp`.
+  - The `luaJM8Checktorp` / `TorpedoEnable(unit, true)` arm exists only in the non-PRCP `COTP-IJN/jm08.lua` and
+    `ijn/JM/jm08.lua`. This mission loads neither, and that arm enables the US `USNPts` only.
+  - The lua47 run logs `ship director torpedo writes lua_enable=0 close_attack_sends=0` and
+    `torpedo_candidates ... mask=374`.
+  - Two writers remain:
+    - the HUD's director state message (`00721980` / `007219C0`, vtable slots `00CFDBA0` and `00CFDBAC`), for which the
+      harness has no line;
+    - CLOSEATTACK's tail `00A11AF0`, and the player's boats are in no CLOSEATTACK group.
+- **So the image does not auto-launch the player's Gyoraitei tubes either,** unless the player switches the torpedo
+  director on. The host's `assigns 0` is faithful.
+- A new per-unit line, `summary unit gunnery torpedo candidates <unit> scored masked accepted mask`, shows this boat by
+  boat (161.4).
+
+### 161.2 The divergence found on the way: `008FFF20` ignores `0085ABA0`'s answer
+
+- **The listing**, read from disk at `009003CE..00900433` (`python tools/bsp.py disasm-raw 009003A0 --length 192`):
+
+  | site | what it does |
+  | --- | --- |
+  | `009003DD` | `CALL 0085ABA0` with `(bot+60h, 0.0f)` |
+  | `009003E2` | `MOV ECX,[ESI+58h]` reloads the gun; `AL` is never tested |
+  | `009003F8` | `00438B10(bot+60h, [gun+480h])`, absolute, `COMISS [00CE3984]` (1 degree), `JBE 00900974` (abort) |
+  | `0090042F` | `CALL [vtable+1D0h](1)` (`0085A830`, CanFire), then `JE 00900974` |
+
+- **`0085ABA0` refuses an axis whose class rotation speed is exactly 0** (`0085ACA5` / `0085ACB9`: `UCOMISS` against 0,
+  then `LAHF; TEST AH,44h; JNP` to the refusal).
+  - The PT and submarine catapults (devices 66 and 67 in the arcade `deviceclasses.lua`, modified 2026-05-09) author
+    `HorzRotSpeed = 0` and `VertRotSpeed = 0`.
+  - In the image such a tube never turns. Its `+480h` stays at the rest angle, which is the point window's `h` (155).
+  - `007F6190` snaps any bearing within pi/4 of `h` onto `h`. So `bot+60h == +480h`, and the shot goes.
+- **The host used the generic test:** `want_fire = have_target && accepted && settled && may_fire_here`. Here
+  `accepted` is `0085ABA0`'s answer, and `settled` means both axes are within 0.1 degree of the commanded pair.
+  - A zero-speed tube could therefore never launch: JM06 had `torpedo_gate targeted=23208 accepted=0` (155.1), and
+    LOMP10 long had 636 / 0 (AF).
+  - A turning mount waited for a band ten times tighter than the image's, on two axes instead of one.
+  - `gun_bot_torpedo_ready_008fff20` (`src/gun_bot_ticks.cpp`) already held the image's test, but nothing called it.
+
+### 161.3 The binding, `kTorpedoBotReadyGateBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+- **ON**, for a category-7 gun the player's seat does not hold:
+  `want_fire = have_target && gun_bot_torpedo_ready_008fff20(bot+60h, horz, may_fire_here) && !inhibited`.
+  - `bot+60h` is the snapped heading, `want_horz` after `007F6190`.
+  - `may_fire_here` is `007F60A0` at the current angles, the window part of `0085A830`.
+  - The friendly-crossing hold and the rest of the launch path follow unchanged.
+- **OFF**, the generic test stands, and both answers are counted on the line `summary mission gunnery torpedo bot ready
+  bound targeted image generic image_refused_angles`.
+- **Still unmodelled, as before:** the `0.2 s` think timer (step 4) and the two range gates (steps 5 and 7,
+  docs/TORPEDO_LAUNCH_GATE.md).
+
+**Predictions (before any run).**
+- **Rows whose AF torpedo funnel has `targeted=0`** (BSM01, E2, ESMP08 long, IJN01, JM05, JM08, LOMP10, USN01, USN04,
+  USN12, USN13, USNOS, USNRM01): the counters stay 0. Exit 0 or 1.
+- **JM06 3000:** `image_refused_angles > 0`, and new submarine launches appear ON (`torpedo_gun_shots` from 0 to more
+  than 0). Exit 3.
+- **USN02 3000, IJN11 and LOMP06:** the turning mounts launch earlier (`image >= generic`). Expect exit 3, with the
+  torpedo launch times moving. That is the mechanism working, not a regression.
+- **JM08 with the boats (lua47 `g9` orders):** the tubes are identical (`assigns 0`), because 161.1's mask refuses
+  first. The per-unit line shows `masked == scored` for every Gyoraitei.
+
+### 161.4 Pairs on `405865d4c` and the verdict
+
+- **Smoke:** JM06, 300 frames, exit 0.
+- **Pairs:** `--flip kTorpedoBotReadyGateBound=true`; logs `local\g34_t1{off,on}_<row>.log`; AF launch form.
+
+| row | pair_diff | OFF `targeted / image / generic / refused_angles`, shots | ON shots | deaths |
+| --- | --- | --- | --- | --- |
+| JM06 3000 | 3 | 23208 / 23208 / 0 / 23208, 0 | **24** (PlayerSub 02 and 03, all twelve bow tubes, 2 each) | identical |
+| LOMP10 9000 | 3 | 636 / 636 / 0 / 636, 0 | **4** (PT 02's four `US single torpedo catapult` tubes) | PT 02 dies 245.76 -> 247.61 s; the rest identical |
+| USN02 9000 | 3 | 34627 / 32915 / 28429 / 0, 113 | 110 | identical (Kawakaze, Yamakaze, Houston at 70.00 s) |
+| IJN11 3000 | 3 | 194 / 102 / 30 / 0, 3 | 7 | identical |
+| LOMP06 1000 | 1 | 783 / 666 / 659 / 0, 9 | 9 | identical |
+| USN01 3000 (control) | 1 | 0 | 0 | identical |
+| JM08 24000, lua47 `g9` orders | 1 | 0 | 0 | identical |
+
+- **Mechanism:** each prediction holds. Zero-speed tubes now launch: the AI's submarines on JM06, and an AI US PT boat
+  on LOMP10. Every refused-angle tick passes the image's test. The turning mounts on USN02 and IJN11 open their windows
+  on the image's 1-degree band, and no death moves.
+- **Verdict: ON.** The scripted wins that carry torpedo ships (USN02, LOMP06, LOMP10) are for reference AG to re-time.
+
+**Correction to 161.1 (the run contradicts the static reading).** The host does not mask the Gyoraitei.
+- The new per-unit line gives `mask=3` and `masked=0` for all four boats (`g34_t2off_j8.log`).
+  - The scene host's director table has no entry for a shipyard-built name, so the stance push keeps the
+    constructor's 1 (SENTITY_INIT_PASSES section 7).
+  - Whether the image's pass B gives a built boat the library `TorpedoDirector = false` is **unread**. The bag that
+    `00844FC0` builds is LAND_AND_STRUCTURES section 3's. The question is routed to the scene-contents lane.
+- **What does stop the tubes in the host is the pass byte `+7Dh` (GUNNERY 103).**
+  - The diagnostic `g34_diag2_j8y4.log` used `BSP_AA_TRACE_UNIT` and `BSP_FIRE_GATE_TRACE` = `Gyoraitei #Y4`,
+    `BSP_FIRE_GATE_TARGET` = `USTroopTransport 04`, on the OFF build, at 8800 frames.
+  - `00863990` accepts USTroopTransport 04 at 1762, 1578 and 1486 m (category range 1852).
+  - On each of the four tubes, `00729BC0`'s slot answer is `in_range=1 accepts=1`.
+  - No assignment follows. The candidate is the director's fire target, and `+7Dh` is 0 on every frame of the boat's
+    life (`zero_frames=1113`). `00865809` skips it.
+  - `+7Dh` is set only while the torpedo gate is set and the approach goal lies within the clearance (300..920 m) plus
+    50 m (`009F2FDB..009F301B`).
+  - The boats die (368-457 s) before they close that far. Whether the host's goal range `+127Ch` is the image's is the
+    ships lane's question.
+
+## 162. The shipyard's entries never return to idle: `008455A0`, the observer release (lead queue item 2; cc9-gunnery34, 2026-10-06)
+
+**The question.** In JM08 (5fd) only 4 of the 12 ordered `Gyoraitei` are ever built. One builds at once and three
+queue. After that, all four entries stay non-idle, and every later `build` is refused with "no idle entry (0067442D
+returns)": 113 refusals in `l47_F1_j8.log`, with `builds=4 launches=4 hangar_releases=4`. What returns an entry to
+state 0 in the image?
+
+### 162.1 The read
+
+- **AAh `008437D0`** (`008437D0..008438AF`, read in full): the build's replication. It does five things:
+  - sets the entry's state to 3 (`00843812`) and its hangar `+2Ch` (`00843843`);
+  - resolves the handle into `+30h` and into the hangar's `+0Ch` (`00843881`, `00843884`);
+  - registers the shipyard's secondary interface (`this+10h`) as an observer of the unit: `00694A60` at `00843893`;
+  - calls the unit's `vtable[0D8h]`.
+- **The observer slot 08 is `008455A0`** (`008455A0..0084566D`, `RET 4`, secondary table `00D0B754`, docs/NATIVE_UNIT_
+  OBSERVER_ENDPOINT.md). `ECX` is `shipyard+10h`, so its `+774h` is the shipyard's hangars (`+784h`) and its `+784h`
+  is the entries (`+794h`).
+  - It finds the first hangar whose `+0Ch` is the notifying unit and stores 0 there (`008455FC`).
+  - It finds the first entry whose `+30h` is the unit and stores 0 into `+4` (the state), `+8` (the class) and `+30h`
+    (`0084565C..00845664`).
+- **When slot 08 fires:** `00926390` sets `+5Dh` (dead) and `+60h`, then runs the conditional slot-08 notifier
+  `00925C90` (docs/NATIVE_SCENE_LIFECYCLE_NOTIFY.md). So the slot fires at the built unit's death.
+- **So in the image an entry stays in state 4 only while its boat lives.** When the boat dies, the entry is idle again,
+  and the next purchase (`00673A10`'s first-idle search at `006743E0..00674416`) can use it. The stock record is not
+  given back. The host had no release at all.
+- **Uncertainty.** That `00925C90`'s slot-08 dispatch reaches the shipyard's secondary table is inferred from the
+  registration pair (`00694A60` with `EDX = this+10h`) and the slot table. The dispatch loop itself was not re-read.
+
+### 162.2 The binding, `kShipyardDeathReleaseBound`, committed OFF (`src/game_hosts_gunnery.cpp`)
+
+- `shipyard_release_dead_008455a0(yard)` runs at the top of each yard's tick walk, and in `shipyard_order` before the
+  idle search.
+  - For an entry whose `unit` is dead, ON clears the first hangar holding that unit and sets the entry to Idle, with
+    class 0 and no unit.
+  - OFF, each death is counted and logged once, and nothing changes.
+- **LABELLED:** the host polls its dead flags at those two points instead of reacting to the death itself. Nothing reads
+  the entries in between.
+- **Census:** `summary shipyard death release bound unit_deaths entry_reidles hangar_clears`. The first time each built
+  unit is seen dead, the run logs a `shipyard unit died:` line.
+
+**Predictions (before any run).**
+- **Rows with no `build` line (all reference rows):** no shipyard builds a unit, so `unit_deaths=0`. Exit 0 or 1.
+- **JM08 with lua47's `g9` orders** (24000 frames; `build` every 100 frames up to frame 11900, i.e. 595 s):
+  - OFF: `builds=4`, `unit_deaths` = the boats that die (about 4, at 346-396 s), and 113 refusals.
+  - ON: the same deaths, `entry_reidles = unit_deaths`, and new builds after the first death.
+  - So expect `builds > 4` (at most 12, the stock), fewer refusals, and new `Gyoraitei #Y5...` units. Exit 3.
+- **LOMP10 with a build pair:** the same pattern if a built unit dies before the last `build` line. Otherwise exit 1.
+
+### 162.3 The pair on `405865d4c` and the verdict
+
+`--flip kShipyardDeathReleaseBound=true`, JM08 at 24000 frames with lua47's `g9` orders (`local\g34_t2{off,on}_j8.log`).
+`pair_diff` exit 3.
+
+| | OFF | ON |
+| --- | --- | --- |
+| builds | 4 | **10** (`#Y5`..`#Y10`) |
+| refused orders | 113 | 107 |
+| `unit_deaths` / `entry_reidles` / `hangar_clears` | 4 / 0 / 0 | 7 / 7 / 1 |
+
+- **Mechanism:** each boat's death returns its entry to idle, and the next `build` line reuses the entry. `#Y7` died in
+  state 3, while still on the hangar path, and its hangar record was cleared too (`hangar_clears=1`).
+- **Mission:** the deaths of transports 01-06 before 690 s are the same on both sides. ON, three more boats die
+  (514-633 s), and the run reaches `EndScene` earlier.
+- **Rows without `build` lines** do not reach the path. Every reference row has `unit_deaths=0`, as the 300-frame smoke
+  and the torpedo pairs' OFF logs show.
+- **Verdict: ON.**

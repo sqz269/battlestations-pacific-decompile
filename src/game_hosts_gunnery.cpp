@@ -672,6 +672,30 @@ constexpr bool kPlayerTorpedoGroupFireBound = false;
 //    007F6CA0 but see the same frame, so the list is identical). OFF: counted
 //    only. docs/GUNNERY_OPEN_ITEMS.md 155.
 constexpr bool kMeshlessGunPointWindowBound = true;   // ON: GUNNERY_OPEN_ITEMS 155.1
+//  * kTorpedoBotReadyGateBound: packet cc9_g34_torpedo_bot_ready. 008FFF20 (the
+//    TorpedoBot tick) ignores 0085ABA0's answer: 009003DD calls it with
+//    (bot+60h, 0.0f) and 009003E2 reloads ECX without testing AL. The launch
+//    test is 009003F8..0090041C, |00438B10(bot+60h, gun+480h)| < 00CE3984
+//    (1 degree, horizontal only), then vtable[1D0h](1) at 0090042F
+//    (0085A830 CanFire: the fire window at the current angles). The host's
+//    generic want_fire also required 0085ABA0 to accept and both axes to sit
+//    within 0.1 degree of the commanded pair, so a tube whose class authors
+//    HorzRotSpeed = 0 (0085ACA5 / 0085ACB9 refuse it: the PT and submarine
+//    catapults, devices 66 and 67) could never fire, and a turning mount
+//    waited for a tighter settle. ON: a category-7 gun off the player seat
+//    fires on gun_bot_torpedo_ready_008fff20 (bot+60h = the snapped heading).
+//    OFF: the generic test, and the image's answer is counted. Steps 5 and 7
+//    (the two range gates) and the 0.2 s think timer stay unmodelled as before.
+//    docs/GUNNERY_OPEN_ITEMS.md 161.
+constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161.4
+//  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
+//    shipyard's observer slot 08 on each unit it built (registered by AAh
+//    008437D0), runs when the unit dies (00926390): it clears the first hangar
+//    record holding the unit and returns the first entry holding it to state 0
+//    with class 0. The host never did, so an entry stayed in state 4 forever and
+//    00673A10's idle search (0067442D) ran dry after NumSlots builds. OFF: the
+//    deaths are counted only. docs/GUNNERY_OPEN_ITEMS.md 162.
+constexpr bool kShipyardDeathReleaseBound = true;   // ON: GUNNERY_OPEN_ITEMS 162.3
 //  * kDepthChargeInWaterBound: packet cc9_depth_charge_in_water. A round of a
 //    "Depthcharge" class follows MDepthCharge: the activate 006FD9B0 scales the
 //    launch velocity by U(1 - V0RandomFactor, 1 + V0RandomFactor) and draws
@@ -1232,6 +1256,9 @@ struct GameGunneryHost::Impl {
         unsigned long long walks{0}, orders{0}, orders_refused{0}, a7{0}, a8{0}, a9{0};
         unsigned long long builds{0}, builds_at_order{0}, builds_refused{0};
         unsigned long long hangar_releases{0}, launches{0}, launch_orders_unbound{0};
+        // Packet cc9_g34_shipyard_reidle: built units seen dead, the entries
+        // and hangar records 008455A0 clears for them (both states).
+        unsigned long long unit_deaths{0}, entry_reidles{0}, hangar_death_clears{0};
     } shipyard;
     // Packet cc9_depth_charge_bot (kDepthChargeBotTickBound).
     std::map<std::size_t, bsp::DepthChargeBotState> depth_charge_bot_by_gun;
@@ -1258,6 +1285,8 @@ struct GameGunneryHost::Impl {
     bool shipyard_build_00844fc0(bsp::ShipyardState& yard, std::size_t shipyard_unit,
                                  std::size_t entry);
     void shipyard_walk_00846320();
+    void shipyard_release_dead_008455a0(bsp::ShipyardState& yard);
+    std::set<std::size_t> shipyard_deaths_seen;   // OFF census: each death once
 
     // One entry per created unit, index aligned with GameUnitsHost.
     struct UnitState {
@@ -1271,6 +1300,11 @@ struct GameGunneryHost::Impl {
         bool torpedo_takes_fire_target_7d{true};
         unsigned long long byte_7d_zero_frames{0};
         unsigned long long byte_7d_fire_target_assigns_at_0{0};
+        // Packet cc9_g34_torpedo_bot_ready: this unit's category-7 00863990
+        // calls, the mask refusals among them, and the acceptances.
+        unsigned long long torpedo_cat_scored{0};
+        unsigned long long torpedo_cat_masked{0};
+        unsigned long long torpedo_cat_accepted{0};
         bsp::UnitGunneryCategoryState category{};
         int bridge_countdown{0};         // adapter+8h
         bool allow_fire_cache{false};    // adapter+0Ch
@@ -4944,7 +4978,10 @@ public:
         // counter, so the run says which guard refuses and not merely that one
         // did. The counters are instrumentation; no native address produces them.
         const bool torpedo_cat = category == bsp::kUnitGunneryTorpedoCategory;
-        if (torpedo_cat) ++owner_.summary.torpedo_cat_score_calls;
+        if (torpedo_cat) {
+            ++owner_.summary.torpedo_cat_score_calls;
+            ++state_.torpedo_cat_scored;
+        }
         const std::size_t other = unit_of(target);
         if (other >= owner_.units.count()) {
             if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_unknown;
@@ -5001,7 +5038,10 @@ public:
         }
         if (!bsp::category_mask_admits_target_008633d0(state_.category.mask[slot],
                 is_plane)) {
-            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_mask;
+            if (torpedo_cat) {
+                ++owner_.summary.torpedo_cat_reject_mask;
+                ++state_.torpedo_cat_masked;
+            }
             return false;
         }
         float mine[3], theirs[3];
@@ -5105,6 +5145,7 @@ public:
             // rejections is what turns "the range refused" into a number.
             if (out.accepted) {
                 ++owner_.summary.torpedo_cat_score_accepted;
+                ++state_.torpedo_cat_accepted;
             } else {
                 ++owner_.summary.torpedo_cat_reject_range;
                 if (owner_.summary.torpedo_cat_reject_range <= 3) {
@@ -7062,6 +7103,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
+        if (torpedo_gun && gun.category == bsp::kUnitGunneryTorpedoCategory && !player_seat) {
+            // Packet cc9_g34_torpedo_bot_ready: 008FFF20's own launch test,
+            // 009003F8..0090042F. want_horz is bot+60h, the snapped heading.
+            const bool image_ready = have_target
+                && bsp::gun_bot_torpedo_ready_008fff20(want_horz, gun.angles.horz,
+                       may_fire_here)
+                && !inhibited;
+            if (have_target) {
+                ++summary.torpedo_ready_targeted;
+                if (image_ready) ++summary.torpedo_ready_image;
+                if (want_fire) ++summary.torpedo_ready_generic;
+                if (image_ready && !accepted) ++summary.torpedo_ready_refused_angles;
+            }
+            if constexpr (kTorpedoBotReadyGateBound) want_fire = image_ready;
+            done("TorpedoBot::launch_test_008fff20", 0x009003f8u);
+        }
         // DIAGNOSTIC, env-gated: BSP_FIRE_GATE_TRACE=<owner unit name> prints each of
         // that unit's guns once a second with the gates of want_fire. Reads only.
         static const std::string fire_gate_unit = aa_env("BSP_FIRE_GATE_TRACE");
@@ -11330,12 +11387,50 @@ bool GameGunneryHost::Impl::shipyard_build_00844fc0(bsp::ShipyardState& yard,
     return true;
 }
 
+// Packet cc9_g34_shipyard_reidle. 008455A0 is the shipyard's secondary observer
+// slot 08 (table 00D0B754), registered on each built unit by AAh 008437D0
+// (00694A60 at 00843893). 00926390 fires slot 08 when the unit's +5Dh (dead)
+// is first set. ECX = shipyard+10h, so its +774h/+784h are the shipyard's
+// hangars (+784h) and entries (+794h): the first hangar whose +0Ch is the unit
+// gets +0Ch = 0 (008455FC), and the first entry whose +30h is the unit gets
+// +4 = +8 = +30h = 0 (0084565C..00845664), i.e. Idle with no class.
+// LABELLED: the host polls its dead flags from the shipyard tick and the
+// order, not from the death itself; nothing reads the entries in between.
+void GameGunneryHost::Impl::shipyard_release_dead_008455a0(bsp::ShipyardState& yard) {
+    for (std::size_t i = 0; i < yard.entries.size(); ++i) {
+        const std::size_t u = yard.entries[i].unit;
+        if (u == bsp::kShipyardNone || u >= unit_state.size() || !unit_state[u].dead) continue;
+        const bool first_seen = shipyard_deaths_seen.insert(u).second;
+        if (first_seen) {
+            ++shipyard.unit_deaths;
+            log.notef("shipyard unit died: unit=%s entry=%zu made=%s state=%d bound=%d "
+                "(008455A0)", yard.owner_name.c_str(), i + 1,
+                unit_state[u].row.name.c_str(), static_cast<int>(yard.entries[i].state),
+                kShipyardDeathReleaseBound ? 1 : 0);
+        }
+        if constexpr (!kShipyardDeathReleaseBound) continue;
+        for (bsp::ShipyardHangar& h : yard.hangars) {
+            if (h.launched_unit != u) continue;
+            h.launched_unit = bsp::kShipyardNone;   // 008455FC
+            ++shipyard.hangar_death_clears;
+            break;
+        }
+        bsp::ShipyardEntry& e = yard.entries[i];      // the first match
+        e.state = bsp::ShipyardEntryState::Idle;      // 0084565E
+        e.class_id = 0;                               // 00845661
+        e.unit = bsp::kShipyardNone;                  // 00845664
+        ++shipyard.entry_reidles;
+        done("Shipyard::observer_release_008455a0", 0x008455a0u);
+    }
+}
+
 void GameGunneryHost::Impl::shipyard_walk_00846320() {
     bsp::ShipyardRegistry& registry = bsp::shipyards();
     for (std::size_t y = 0; y < registry.size(); ++y) {
         bsp::ShipyardState* yard = registry.mutable_at(y);
         if (yard == nullptr) continue;
         shipyard_complete(*yard);
+        shipyard_release_dead_008455a0(*yard);
         const std::size_t self = unit_by_name(yard->owner_name);
         if (self >= units.count()) continue;
         // 00846337: the walk runs only while shipyard+5Dh is clear. LABELLED:
@@ -11416,6 +11511,7 @@ bool GameGunneryHost::shipyard_order(std::size_t shipyard, int entry, int count,
     bsp::ShipyardState* yard = bsp::shipyards().find_mutable(row->name);
     if (yard == nullptr) return refuse("the unit has no shipyard state");
     host.shipyard_complete(*yard);
+    host.shipyard_release_dead_008455a0(*yard);
     // 006743E0..00674416: the first entry in state 0 (006534E0), else return.
     std::size_t e = bsp::kShipyardNone;
     if (entry > 0) {
@@ -12555,6 +12651,10 @@ void GameGunneryHost::report() {
             "cc9_shipyard_production)", bsp::shipyards().size(), y.walks, y.orders,
             y.orders_refused, y.a7, y.a8, y.a9, y.builds, y.builds_at_order, y.builds_refused,
             y.hangar_releases, y.launches, y.launch_orders_unbound);
+        host.log.notef("summary shipyard death release bound=%d unit_deaths=%llu "
+            "entry_reidles=%llu hangar_clears=%llu (008455A0, packet cc9_g34_shipyard_reidle)",
+            kShipyardDeathReleaseBound ? 1 : 0, y.unit_deaths, y.entry_reidles,
+            y.hangar_death_clears);
     }
     host.log.notef("summary mission gunnery units=%zu guns=%zu passes=%zu ticks=%llu "
         "bodies=%llu bridge=%llu sweeps=%llu candidates=%llu rejected=%llu "
@@ -13268,6 +13368,18 @@ void GameGunneryHost::report() {
             s.torpedo_cat_reject_liveness, s.torpedo_cat_reject_class,
             s.torpedo_cat_reject_rank, s.torpedo_cat_reject_mask,
             s.torpedo_cat_reject_range);
+        host.log.notef("summary mission gunnery torpedo bot ready bound=%d targeted=%llu "
+            "image=%llu generic=%llu image_refused_angles=%llu (009003F8..0090042F, packet "
+            "cc9_g34_torpedo_bot_ready)", kTorpedoBotReadyGateBound ? 1 : 0,
+            s.torpedo_ready_targeted, s.torpedo_ready_image, s.torpedo_ready_generic,
+            s.torpedo_ready_refused_angles);
+        for (const Impl::UnitState& u : host.unit_state) {
+            if (u.torpedo_cat_scored == 0) continue;
+            host.log.notef("summary unit gunnery torpedo candidates %s scored=%llu masked=%llu "
+                "accepted=%llu mask=%u (00863990)", u.row.name.c_str(), u.torpedo_cat_scored,
+                u.torpedo_cat_masked, u.torpedo_cat_accepted,
+                static_cast<unsigned>(u.category.mask[bsp::kUnitGunneryTorpedoCategory]));
+        }
     }
     host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
         "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
