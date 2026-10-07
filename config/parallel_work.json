@@ -13103,8 +13103,8 @@
     },
     {
       "id": "cc11_health_pair",
-      "state": "completed_80000_step_simulation_pair_causal_review_pending_renderer_failures",
-      "done": false,
+      "state": "integrated_reviewed_source_full_main_build_pending",
+      "done": true,
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -13124,7 +13124,15 @@
         "cc11_health_guard"
       ],
       "contract": "Build and compare guard OFF/ON with capture-party switch ON in both variants using existing USNOS f12 orders; enable only after reviewed paired evidence.",
-      "reuses_worker_from": "cc11_health_guard"
+      "reuses_worker_from": "cc11_health_guard",
+      "integrated_revision": "1c6ad075507e67c1e8f30b0a6286f966262e51e1",
+      "full_main_build_pending": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "code_revision": "ac2c8521734d6eb277a151f96b3cd8a6de3f1a4f",
+      "switch_enabled": true,
+      "renderer_pair_exit_pass": false,
+      "simulation_mechanism_reviewed": true
     },
     {
       "id": "cc11_director_class8",
@@ -13205,7 +13213,7 @@
     },
     {
       "id": "cc11_director_jm06_pair",
-      "state": "dispatched_to_reused_worker_export_preparation",
+      "state": "completed_pair_reviewed_class8_switch_enable_authorized",
       "done": false,
       "worker": "director_props",
       "model": "gpt-6.1-sol",
@@ -13216,14 +13224,19 @@
       ],
       "output_files": [
         "docs/TORPEDO_DIRECTOR_JM06_PAIR_CC11.md",
-        "reports/torpedo_director_jm06_pair_cc11.json"
+        "reports/torpedo_director_jm06_pair_cc11.json",
+        "include/bsp/game_hosts_scene_contents.hpp",
+        "src/game_hosts_scene_contents.cpp",
+        "docs/TORPEDO_DIRECTOR_CLASS8_CC11.md",
+        "reports/torpedo_director_class8_cc11.json"
       ],
       "depends_on": [
         "cc11_director_class8"
       ],
       "pair_commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
       "contract": "Prepare identical pinned JM06 class8 OFF/ON exports and inputs; no full build until the primary grants the serialized compile slot. Run 3000 mission frames at 0.05 seconds and compare actual class8 override/director/torpedo behavior before proposing a switch change.",
-      "reuses_worker_from": "cc11_director_class8"
+      "reuses_worker_from": "cc11_director_class8",
+      "primary_review": "Both runtime exits0; expected tutorial mask/range changes; mode9 generation limitation retained"
     },
     {
       "id": "cc11_land_be_profile",
@@ -13315,8 +13328,8 @@
     },
     {
       "id": "cc11_land_owner_cpp",
-      "state": "dispatched_to_reused_landing_worker",
-      "done": false,
+      "state": "integrated_reviewed_source_full_main_build_pending",
+      "done": true,
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13347,7 +13360,57 @@
         "local/cc11_land_owner_probe.obj",
         "local/cc11_land_owner_probe.exe",
         "local/native_pilot_bot_task_owner_cc11.obj"
-      ]
+      ],
+      "integrated_revision": "1c6ad075507e67c1e8f30b0a6286f966262e51e1",
+      "full_main_build_pending": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "code_revision": "185daf651c5b36f88dbad3644dcffeef168ee727"
+    },
+    {
+      "id": "cc11_health_nan",
+      "state": "dispatched_to_reused_health_worker",
+      "done": false,
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00877b90",
+        "00923be0"
+      ],
+      "output_files": [
+        "src/unit_damage.cpp",
+        "include/bsp/unit_damage.hpp",
+        "docs/UNIT_HEALTH_UNORDERED_CC11.md",
+        "reports/unit_health_unordered_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_pair"
+      ],
+      "reuses_worker_from": "cc11_health_pair",
+      "contract": "Recover ordered/unordered clamp, marker and replication semantics from x87/SSE listings; fix the existing NaN-to-zero source mismatch only within a proved floating-point domain, preserve finite behavior, and document signaling/exception/precision limits. No GameHosts switch/timing changes."
+    },
+    {
+      "id": "cc11_land_scheduler",
+      "state": "dispatched_to_reused_landing_worker",
+      "done": false,
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0099acd0",
+        "0099a4c0",
+        "0099a170"
+      ],
+      "output_files": [
+        "docs/PILOT_BOT_RETIREMENT_SCHEDULE_CC11.md",
+        "reports/pilot_bot_retirement_schedule_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_owner_cpp"
+      ],
+      "reuses_worker_from": "cc11_land_owner_cpp",
+      "contract": "Recover normal pilot-bot deferred-drain, install and finished-head retirement ordering, actual task identity publication and relevant callback contracts. Audit named-but-incomplete dependencies before a bounded source extension. Do not bind Boolean GameUnitsHost tasks or assume retained cached references survive death."
     }
   ],
   "snapshot_after_analysis": {

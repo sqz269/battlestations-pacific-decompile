@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:34:54.174561+00:00",
+  "updated_utc": "2026-10-07T05:50:26.259534+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -265,5 +265,38 @@
     "exports_refreshed": true,
     "stale_source_comments_corrected": true,
     "worker_reuse": "cc11_land_owner_cpp"
+  },
+  "health_and_owner_integration": {
+    "revision": "1c6ad075507e67c1e8f30b0a6286f966262e51e1",
+    "full_main_build": "pending next serialized build",
+    "health_guard": {
+      "worker_revision": "ac2c8521734d6eb277a151f96b3cd8a6de3f1a4f",
+      "enabled": true,
+      "repeat_neutralizations_off_on": [
+        45,
+        0
+      ],
+      "genuine_initial_neutralizations_off_on": [
+        3,
+        3
+      ],
+      "both_simulations_complete": true,
+      "renderer_exit_codes": [
+        1,
+        1
+      ]
+    },
+    "task_owner": {
+      "worker_revision": "185daf651c5b36f88dbad3644dcffeef168ee727",
+      "primary_fixture": "passed",
+      "direct_calls_checked": 9,
+      "call_failures": 0,
+      "live_task_lifetime_binding": false
+    },
+    "worker_reuse": {
+      "health_guard": "cc11_health_nan",
+      "land_retirement": "cc11_land_scheduler"
+    },
+    "director_review": "Class8 enable authorized after both exit0; tutorial mask/range changes and mode9 generation remain qualified"
   }
 }
