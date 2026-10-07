@@ -1,0 +1,1044 @@
+{
+  "packet": "cc11_scene_runway_float_payload",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_RUNWAY_FLOAT_PAYLOAD_CC11.md",
+  "source_baseline": "a7cf82d9a",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "006D3C10"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_RUNWAY_FLOAT_PAYLOAD_CC11.md",
+    "reports/scene_runway_float_payload_cc11.json"
+  ],
+  "status": "bounded_source_data_binding_and_focused_probe_passed",
+  "result": "Called private runway-pair helper adopts successful nonempty explicit F owning float payload, independent of diagnostics; all raw fallback/pair/no-reset policy retained.",
+  "reused_support": {
+    "report": "reports/scene_start_speed_float_payload_cc11.json; original convoy snapshot receipt reports/scene_convoy_float_payload_cc11.json",
+    "snapshot_source_baseline": "e036b2964baff72f2bccd5b92a805d5cbb225df7",
+    "inputs": [
+      {
+        "path": "local/cc11_scene_convoy_float_core.lib",
+        "bytes": 73110072,
+        "sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "runway_pre_link_sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "runway_post_link_sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/bsp_lua511.lib",
+        "bytes": 454824,
+        "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "runway_pre_link_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "runway_post_link_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/bsp_zlib121.lib",
+        "bytes": 71766,
+        "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "runway_pre_link_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "runway_post_link_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_close_attack_tick.obj",
+        "bytes": 8132,
+        "sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "runway_pre_link_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "runway_post_link_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_lifetime.obj",
+        "bytes": 1792,
+        "sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "runway_pre_link_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "runway_post_link_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_object.obj",
+        "bytes": 3331,
+        "sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "runway_pre_link_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "runway_post_link_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_tick.obj",
+        "bytes": 17020,
+        "sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "runway_pre_link_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "runway_post_link_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_group_think.obj",
+        "bytes": 6283,
+        "sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "runway_pre_link_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "runway_post_link_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "runway_pre_link_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "runway_post_link_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_tuning_globals.obj",
+        "bytes": 15089,
+        "sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "runway_pre_link_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "runway_post_link_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/airfield_taxi.obj",
+        "bytes": 4187,
+        "sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "runway_pre_link_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "runway_post_link_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/command_completion.obj",
+        "bytes": 77466,
+        "sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "runway_pre_link_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "runway_post_link_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_aimdive_tail.obj",
+        "bytes": 7480,
+        "sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "runway_pre_link_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "runway_post_link_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_goaway_turn.obj",
+        "bytes": 4628,
+        "sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "runway_pre_link_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "runway_post_link_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_task.obj",
+        "bytes": 32543,
+        "sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "runway_pre_link_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "runway_post_link_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dogfight_task.obj",
+        "bytes": 20326,
+        "sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "runway_pre_link_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "runway_post_link_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_avoid_zone_runtime.obj",
+        "bytes": 363663,
+        "sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "runway_pre_link_sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "runway_post_link_sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts.obj",
+        "bytes": 926101,
+        "sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "runway_pre_link_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "runway_post_link_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ai.obj",
+        "bytes": 1403099,
+        "sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "runway_pre_link_sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "runway_post_link_sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_avoid_zones.obj",
+        "bytes": 82422,
+        "sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "runway_pre_link_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "runway_post_link_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_commands.obj",
+        "bytes": 633940,
+        "sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "runway_pre_link_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "runway_post_link_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fixed_step.obj",
+        "bytes": 47500,
+        "sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "runway_pre_link_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "runway_post_link_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fonts.obj",
+        "bytes": 147168,
+        "sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "runway_pre_link_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "runway_post_link_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_frontend.obj",
+        "bytes": 705688,
+        "sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "runway_pre_link_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "runway_post_link_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_gunnery.obj",
+        "bytes": 3307078,
+        "sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "runway_pre_link_sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "runway_post_link_sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud.obj",
+        "bytes": 661386,
+        "sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "runway_pre_link_sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "runway_post_link_sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud_world.obj",
+        "bytes": 246452,
+        "sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "runway_pre_link_sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "runway_post_link_sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_init_tail.obj",
+        "bytes": 123679,
+        "sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "runway_pre_link_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "runway_post_link_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_lua.obj",
+        "bytes": 1570061,
+        "sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "runway_pre_link_sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "runway_post_link_sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_menu.obj",
+        "bytes": 521505,
+        "sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "runway_pre_link_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "runway_post_link_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission.obj",
+        "bytes": 776775,
+        "sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "runway_pre_link_sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "runway_post_link_sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_frame.obj",
+        "bytes": 928403,
+        "sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "runway_pre_link_sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "runway_post_link_sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_result.obj",
+        "bytes": 241488,
+        "sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "runway_pre_link_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "runway_post_link_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ready.obj",
+        "bytes": 223211,
+        "sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "runway_pre_link_sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "runway_post_link_sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_script_orders.obj",
+        "bytes": 1541428,
+        "sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "runway_pre_link_sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "runway_post_link_sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ship_ai.obj",
+        "bytes": 1792521,
+        "sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "runway_pre_link_sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "runway_post_link_sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_singletons.obj",
+        "bytes": 36465,
+        "sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "runway_pre_link_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "runway_post_link_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_text.obj",
+        "bytes": 148570,
+        "sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "runway_pre_link_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "runway_post_link_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_trajectory.obj",
+        "bytes": 122691,
+        "sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "runway_pre_link_sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "runway_post_link_sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_units.obj",
+        "bytes": 3203137,
+        "sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "runway_pre_link_sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "runway_post_link_sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_vfs.obj",
+        "bytes": 418499,
+        "sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "runway_pre_link_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "runway_post_link_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_world.obj",
+        "bytes": 174829,
+        "sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "runway_pre_link_sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "runway_post_link_sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_graphics_pools.obj",
+        "bytes": 27840,
+        "sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "runway_pre_link_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "runway_post_link_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_hardware_layout_tree.obj",
+        "bytes": 12716,
+        "sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "runway_pre_link_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "runway_post_link_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_globals.obj",
+        "bytes": 15929,
+        "sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "runway_pre_link_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "runway_post_link_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_services.obj",
+        "bytes": 23120,
+        "sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "runway_pre_link_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "runway_post_link_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_material_process.obj",
+        "bytes": 22165,
+        "sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "runway_pre_link_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "runway_post_link_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_renderer_application.obj",
+        "bytes": 326318,
+        "sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "runway_pre_link_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "runway_post_link_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_shader_process.obj",
+        "bytes": 20624,
+        "sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "runway_pre_link_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "runway_post_link_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_string_process.obj",
+        "bytes": 4089,
+        "sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "runway_pre_link_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "runway_post_link_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_vertex_declarations.obj",
+        "bytes": 17088,
+        "sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "runway_pre_link_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "runway_post_link_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_vfs_application.obj",
+        "bytes": 52166,
+        "sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "runway_pre_link_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "runway_post_link_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_observer_runtime.obj",
+        "bytes": 15845,
+        "sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "runway_pre_link_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "runway_post_link_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/gameplay_loose_ends_2.obj",
+        "bytes": 1742,
+        "sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "runway_pre_link_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "runway_post_link_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/geom_mesh_resource.obj",
+        "bytes": 261693,
+        "sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "runway_pre_link_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "runway_post_link_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hit_hull_segment.obj",
+        "bytes": 1820,
+        "sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "runway_pre_link_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "runway_post_link_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_ship_screen.obj",
+        "bytes": 14623,
+        "sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "runway_pre_link_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "runway_post_link_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_warning_screen.obj",
+        "bytes": 13095,
+        "sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "runway_pre_link_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "runway_post_link_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_weapon_group_screen.obj",
+        "bytes": 18543,
+        "sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "runway_pre_link_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "runway_post_link_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hull_terrain_contact.obj",
+        "bytes": 1102762,
+        "sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "runway_pre_link_sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "runway_post_link_sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/kill_credit.obj",
+        "bytes": 33814,
+        "sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "runway_pre_link_sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "runway_post_link_sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/mission_camera.obj",
+        "bytes": 48286,
+        "sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "runway_pre_link_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "runway_post_link_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/narrowphase_unit_part_shape.obj",
+        "bytes": 2064,
+        "sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "runway_pre_link_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "runway_post_link_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/near_field_probe.obj",
+        "bytes": 3929,
+        "sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "runway_pre_link_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "runway_post_link_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/part_damage_reachability.obj",
+        "bytes": 4140,
+        "sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "runway_pre_link_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "runway_post_link_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/pilot_command_path.obj",
+        "bytes": 8834,
+        "sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "runway_pre_link_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "runway_post_link_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_hold.obj",
+        "bytes": 10325,
+        "sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "runway_pre_link_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "runway_post_link_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_law.obj",
+        "bytes": 23046,
+        "sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "runway_pre_link_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "runway_post_link_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_ground_ops.obj",
+        "bytes": 13372,
+        "sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "runway_pre_link_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "runway_post_link_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_wanderer.obj",
+        "bytes": 10014,
+        "sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "runway_pre_link_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "runway_post_link_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ship_hit_record.obj",
+        "bytes": 7907,
+        "sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "runway_pre_link_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "runway_post_link_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ship_sub_entity_list.obj",
+        "bytes": 1461,
+        "sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "runway_pre_link_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "runway_post_link_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_group_slot_swap.obj",
+        "bytes": 5218,
+        "sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "runway_pre_link_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "runway_post_link_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_gunnery_pass.obj",
+        "bytes": 11730,
+        "sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "runway_pre_link_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "runway_post_link_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_instance_step11.obj",
+        "bytes": 43473,
+        "sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "runway_pre_link_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "runway_post_link_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_message_arms.obj",
+        "bytes": 25766,
+        "sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "runway_pre_link_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "runway_post_link_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "runway_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_neighbour_fields.obj",
+        "bytes": 1314,
+        "sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "runway_pre_link_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "runway_post_link_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "runway_pre_post_link_stable": true
+      }
+    ],
+    "response": {
+      "path": "local/cc11_scene_convoy_float_support/link.rsp",
+      "objects": 74,
+      "sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "runway_pre_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "runway_post_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3"
+    },
+    "count": 77,
+    "cached_project_inputs": "3 libraries+74 uninvoked Game objects; active parser/library/scene-retention TUs fresh; no enlarged record crosses stale active object interface",
+    "pre_link_all_hashes_match": true,
+    "post_link_all_hashes_match": true,
+    "usage": "Pinned cached 77 link inputs; active parser and consumer/library production TUs compiled fresh. No enlarged SceneProperty passed to cached objects; GameUnits methods are not invoked."
+  },
+  "installed_inputs": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "post_probe_sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "post_probe_sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "post_probe_sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "post_probe_sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "post_probe_sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "post_probe_sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "post_probe_sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "post_probe_sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "post_probe_sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "post_probe_sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "post_probe_sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "post_probe_sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "post_probe_sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "post_probe_sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "post_probe_sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/usn/usn_1_marshall.scn",
+      "bytes": 318167,
+      "sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+      "post_probe_sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "post_probe_sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "stable": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "006D3C2D",
+      "native": "00955420",
+      "function": "006D3C10",
+      "contract": "Base scene binding initialization, unchanged"
+    },
+    {
+      "address": "006D3C70",
+      "native": "006C0D20",
+      "function": "006D3C10",
+      "contract": "Initial air-ops holder setup from class dimensions, unchanged"
+    },
+    {
+      "address": "006D3C7E",
+      "native": "006CADD0",
+      "function": "006D3C10",
+      "contract": "Air-ops scene loading, unchanged"
+    },
+    {
+      "address": "006D3CCF",
+      "native": "006BF0D0",
+      "function": "006D3C10",
+      "contract": "Kind-2 descriptor runway dimensions, unchanged"
+    },
+    {
+      "address": "006D3CF0",
+      "native": "00927A80",
+      "function": "006D3C10",
+      "contract": "Kind-1 skill reader, unchanged"
+    },
+    {
+      "address": "006D3D0E",
+      "native": "008F2260",
+      "function": "006D3C10",
+      "contract": "RunwayWidth lookup; type0 CVTSI2SS 006D3D19 versus stored float MOVSS 006D3D20"
+    },
+    {
+      "address": "006D3D39",
+      "native": "008F2260",
+      "function": "006D3C10",
+      "contract": "RunwayLength lookup; type0 CVTSI2SS 006D3D44 versus stored float MOVSS 006D3D4B"
+    },
+    {
+      "address": "006D3D6A",
+      "native": "006BF0D0",
+      "function": "006D3C10",
+      "contract": "Kind-1 selected runway pair passed to holder setter"
+    },
+    {
+      "address": "006D3D71",
+      "native": "00BF681B",
+      "function": "006D3C10",
+      "contract": "Shape allocation, unchanged/unported"
+    },
+    {
+      "address": "006D3DD9",
+      "native": "006D1990",
+      "function": "006D3C10",
+      "contract": "Shape construction, unchanged/unported"
+    },
+    {
+      "address": "006D3E0F",
+      "native": "0098B7D0",
+      "function": "006D3C10",
+      "contract": "Spatial node bounds union, unchanged/unported"
+    },
+    {
+      "address": "006D3E14",
+      "native": "0042E630",
+      "function": "006D3C10",
+      "contract": "Spatial index singleton, unchanged/unported"
+    },
+    {
+      "address": "006D3E28",
+      "native": "0098BA10",
+      "function": "006D3C10",
+      "contract": "Spatial node attachment, unchanged/unported"
+    },
+    {
+      "address": "006D3E53",
+      "native": "00BF681B",
+      "function": "006D3C10",
+      "contract": "Gunnery AI allocation, unchanged/unported"
+    },
+    {
+      "address": "006D3E6D",
+      "native": "00864580",
+      "function": "006D3C10",
+      "contract": "Gunnery AI construction, unchanged/unported"
+    },
+    {
+      "address": "006BF0F2",
+      "native": "006BC960",
+      "function": "006BF0D0",
+      "contract": "Existing holder refresh after B0/B4 stores; read-only supporting target, not a body port"
+    },
+    {
+      "address": "006D3CE5",
+      "native": "006D3C10+vtable128",
+      "function": "006D3C10",
+      "contract": "Kind-2 skill setter; unresolved indirect target, excluded from direct-call proof"
+    },
+    {
+      "address": "006D3CFE",
+      "native": "006D3C10+vtable128",
+      "function": "006D3C10",
+      "contract": "Kind-1 skill setter; unresolved indirect target, excluded from direct-call proof"
+    },
+    {
+      "address": "006D3E8E",
+      "native": "006D3C10+vtable04",
+      "function": "006D3C10",
+      "contract": "Gunnery AI initialization; unresolved indirect target, excluded from direct-call proof"
+    }
+  ],
+  "native": {
+    "containing_function": "006D3C10..006D3EA1 inclusive, exclusive end 006D3EA2; all 175 instructions and 108 pseudocode lines read",
+    "setup": "006D3C2B ECX->ESI, EBX=entity+72C at 006D3C5A; kind1 gate 006D3C83..006D3C8F, property bag holder+8",
+    "literals": {
+      "RunwayWidth": "00CF8AE8",
+      "RunwayLength": "00CF8AD8"
+    },
+    "setter_support": "006BF0D0..006BF0F9 inclusive, seven instructions; holder=[ECX+80], MOVSS B0 at 006BF0DC, MOVSS B4 at 006BF0EA, refresh 006BF0F2->006BC960, RET8 at 006BF0F7",
+    "original_abi": "ECX object and register/stack evidence only; reconstructed helper is an ordinary private C++ interface, not a native ABI binding"
+  },
+  "source_connection": {
+    "producer": "SceneReaderBinding::instantiate_entity, existing deck.is_airfield gate",
+    "binding": "retain_airfield_runway; explicit F+has_float first, otherwise exact old nonempty token and scene_scan_float; width then length scans short-circuit; all three outputs commit only after both succeed",
+    "downstream": "src/game_hosts_units.cpp landing holder copies deck.runway_width/length into width_b0/length_b4 at 11737/11738; existing sequencer math unchanged",
+    "ownership": "SceneProperty owning float copied through existing ordinary group capture/merge/authored overwrite; no new metadata or persistent action flag"
+  },
+  "provider": {
+    "accepted_report": "reports/scene_float_nonempty_payload_cc11.json",
+    "native_storage_support": [
+      "008F5BE0..008F5C91",
+      "008F3770 heap type1/+0C MOVSS",
+      "008EF170 scalar constructor, not existing-record-copy helper",
+      "008F4F60 clone separate",
+      "008F0700 assignment separate"
+    ],
+    "source": "modern MSVC std::sscanf %f direct into float once for admitted successful nonempty explicit F; consumer does not rescan diagnostic float text",
+    "domain": "finite ordinary C-locale decimal-prefix tokens, closed NUL-free/<400h input and compatible unique-key source declarations/owning group updates",
+    "metadata": "has_float is SOURCE value availability, not an empty-F action/declaration identity"
+  },
+  "unresolved": [
+    "Empty F existing-record read-success/context and duplicate/implicit type conflicts; raw empty F stays unchanged with no has_float",
+    "Historical VS2005 BF7533 numerical, FP status/error and extended ST0 parity; no new x87 recovery",
+    "Enum namespace/declaration storage and Lua/VFS provider integration",
+    "Native actual class/kind/mode admission, holder construction/refresh/lifetime, wider containing body/dependencies",
+    "Native allocator/global scratch/EH/fault/reentry/ownership, original ABI and full-game behavior"
+  ],
+  "installed_effect": {
+    "USN1": "usn_1_marshall.scn Airfield2 (AirField), groups Common/LandingZone/MotherShipPlanes/CommandBuildingInferior/MultiEntity, F RunwayLength420 line1193 and F RunwayWidth30 line1194; authored/source bag witness only",
+    "JM06": "Fresh parser verified 96 authored entities and zero authored runway bags; no entity admission, mode/class or game claim.",
+    "native_missing": "Native lookup results are dereferenced without null checks. SOURCE skip/refusal for missing or malformed/raw-empty pair is preserved host policy, not native graceful-error or default behavior."
+  },
+  "qualification": {
+    "source": "bounded actual called consumer binding",
+    "fixture": "PASS source-only fresh production-TU probe; no whole emitter or landing task run",
+    "build": "PASS focused MSVC Win32 /W4 /WX /fp:strict; full integrated build/CTests remain primary-owned",
+    "abi": "unproved",
+    "game": "unproved"
+  },
+  "verification": {
+    "compile_exit": 0,
+    "probe_exit": 0,
+    "pe_machine": "014C",
+    "embedded_manifest": "RT_MANIFEST 24/id1 contains asInvoker",
+    "support_inputs": 77,
+    "pre_post_link_hashes_stable": true,
+    "installed_inputs_stable": 17,
+    "native_direct_rows": 16,
+    "native_direct_failed": 0,
+    "native_virtual_excluded": 3,
+    "native_verifier_exit": 0,
+    "diff_check_exit": 0,
+    "tracked_test_changes": 0,
+    "full_build_by_worker": false,
+    "game_run_by_worker": false
+  },
+  "artifacts": [
+    {
+      "path": "docs/SCENE_RUNWAY_FLOAT_PAYLOAD_CC11.md",
+      "bytes": 6402,
+      "sha256": "CB2EADACC6E6886C3097D7AD27919EE42C8C6A91B00808C67C0C1ADFB5B1A75E"
+    },
+    {
+      "path": "include/bsp/air_operations.hpp",
+      "bytes": 56915,
+      "sha256": "F5BBD0097A972FE8E4E14B69EE843EF6977C0EB440772E88D4C4E4AF2EA67D2B"
+    },
+    {
+      "path": "include/bsp/game_hosts_scene_contents.hpp",
+      "bytes": 40196,
+      "sha256": "3024F4477E0462951D29D612356DD5AA51FC0481D613AC987C7DBA780C12D4FF"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18330,
+      "sha256": "583182041F1A0413F352EEB4EC1342CCDFC6CF50775E53FBCF5E3B80C510B0C0"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_compile.log",
+      "bytes": 51,
+      "sha256": "E256F83DDE1472F0F4E80594B3CD3CC6AC1E9F5A348B77D19B80A71236192F90"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_probe.cmd",
+      "bytes": 1037,
+      "sha256": "93A1F30412A81E324FE1A1C2C58F28C66321A869A9DC9D94C899E5F71F586F4B"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_probe.cpp",
+      "bytes": 9895,
+      "sha256": "77265218D0214B75CB823C5AFF0957F6D9934199D3210348C98B46040D4DF606"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_probe.exe",
+      "bytes": 480768,
+      "sha256": "65726924CAB0DA13FE7FE04DBCA6C1EDFE80A4F085F1CE692C9EABDC9D0849F5"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_probe.log",
+      "bytes": 428,
+      "sha256": "2A8155278857064C5A6BAE852691C0D6816340D33ABD36F6C81D520DC65F28FA"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_probe.obj",
+      "bytes": 2218804,
+      "sha256": "1002DD9211717DCDDF82D45395E74299B901ACEDAC59A0CC325BE2CA406B701D"
+    },
+    {
+      "path": "local/cc11_scene_runway_float_scene.obj",
+      "bytes": 290804,
+      "sha256": "4272CB51859B6F73D94881B88A2950CD436D4F639302AD47DAAA82821EA39465"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 242519,
+      "sha256": "DC59131B4EF787F17ED993AF506E202B9AB908055138EE0B123844AB3B675DA1"
+    },
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 33393,
+      "sha256": "E31C16F2FB9CDB3ABB9FEE72999D1E36207042CD6B07542486D6368A8CA5AA23"
+    }
+  ],
+  "fixture": {
+    "source": "local/cc11_scene_runway_float_probe.cpp",
+    "compile_exit": 0,
+    "run_exit": 0,
+    "log": "local/cc11_scene_runway_float_probe.log",
+    "stdout": "installed library_files=15 groups=22 USN1_Airfield2_F30_F420=1 prior_SOURCE_bits_match=1 diagnostic_removal=1\nfocused owning_capture=1 owning_overwrite=1 prefix=1 signed_zero=1 mixed_raw_I=1\nSOURCE_only raw_F_I_non_I=1 malformed_missing_rawempty=1 pair_failure_no_reset=1 unrelated_fields=1 native_empty_F_claim=0\nJM06 authored_entities=96 authored_runway_bags=0 emitter_class_mode_admission=0 landing_math_ABI_game_claim=0\n",
+    "coverage": [
+      "actual called private consumer helper and fresh production parser/library TU",
+      "installed15 library files/22 groups and USN1 Airfield2 F30/F420 versus prior SOURCE float bits",
+      "diagnostic removal, owning group capture/redeclaration, signed zero and decimal prefix",
+      "mixed retained/raw, exact SOURCE raw F/I/non-I scanner results, malformed/missing/raw-empty pair failure/no-reset",
+      "unchanged unrelated deck fields",
+      "fresh JM06 authored96/zero runway bags"
+    ],
+    "excluded": [
+      "whole SceneReaderBinding/GameUnits emitter/admission",
+      "native/host landing-sequencer execution and math",
+      "native CRT, original ABI and full-game differential"
+    ],
+    "executable_sha256": "65726924CAB0DA13FE7FE04DBCA6C1EDFE80A4F085F1CE692C9EABDC9D0849F5"
+  }
+}
