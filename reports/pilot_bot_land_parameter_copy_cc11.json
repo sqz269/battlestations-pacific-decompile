@@ -1,0 +1,95 @@
+{
+  "packet": "cc11_land_parameter_copy_adoption",
+  "date": "2026-10-07",
+  "status": "complete_opt_in_source_caller_adoption_of_primary_proved_parameter_copy_other_constructor_and_runtime_services_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verifies project/program before live prototype and native-call batches",
+    "worker_ghidra_writes": false,
+    "worker_cmake_or_shared_metadata_writes": false
+  },
+  "changed_source_files": ["include/bsp/native_land_state_entries.hpp", "src/native_land_state_entries.cpp"],
+  "adapter": {
+    "class": "NativeLandTaskParameterCopyConstructorCalls",
+    "base": "NativeLandTaskStateEntryConstructorCalls",
+    "final_method": "copy_follow_parameters_009be150(destination,source)",
+    "implementation": "Directcopy_native_land_follow_parameters_009be150(destination,nullptr,source); returnedidentityignored; no guard/allocation/pointerreplacement/selfshortcut",
+    "same_storage": "Inherited SAME actual outer-task borrowedview/profiles, separate3FC and ONEcanonical404 cell; no added translatedpointer cache",
+    "remaining_services": "Allother base/composite/owner/controller/leader/singleton/mappings/reindex/observer services stay REQUIREDabstract",
+    "source_abi": "New C++ thiscall provider/constructor-entry facade, not original task/profile/constructor binary interface"
+  },
+  "primary_kernel": {
+    "revision": "2cd789583",
+    "header": "include/bsp/native_land_follow_parameters.hpp",
+    "source": "src/native_land_follow_parameters.cpp",
+    "report": "reports/pilot_bot_land_parameter_kernel_cc11.json",
+    "entry": "009BE150",
+    "end_exclusive": "009BE28B",
+    "bytes": 315,
+    "sha256": "48dfafc30042b9594b4ee2dbcee1ab2252b8039676f27a6134b1fabd9601cf1a",
+    "native_abi": "ECXdestination,stacksource,EAXdestination,RET4; sourcefastcall reservesunusedEDX",
+    "primary_independent_original_pe_body_differential_cases": 144,
+    "primary_failures": 0,
+    "primary_compiled_instruction_bytes_equal": true,
+    "worker_fresh_coff_symbol_315_bytes_equal_original_pe_extraction": true,
+    "worker_new_fp_or_register_abi_recovery": false
+  },
+  "native_scopes": [
+    {"entry": "009BED80", "end_exclusive": "009BEE25", "coverage": "Existing complete ordinary Followcaller unchanged; requiredcopy now concretely adopted only by opt-in class", "native_abi": "ECXstate,RET,preservesEBX/ESI/branchEBP/EDI"},
+    {"entry": "009C2980", "end_exclusive": "009C2A55", "coverage": "Read-only storage/dependency evidence ONLY; complete constructor NOT ported; livebody bound verified, no worker disk/live constructor hash claim"}
+  ],
+  "host_steps": [
+    {"address": "009BED84", "native": "0042E740", "function": "009BED80", "contract": "Actual singleton/freshsource380 remains required; destination6C read AFTERcall"},
+    {"address": "009BED92", "native": "009BE150", "function": "009BED80", "contract": "Existingdestination/source passed unchanged through final adopted method to complete primarykernel"},
+    {"address": "009BEDE4", "native": "007ED260", "function": "009BED80", "contract": "Complete actual liveformationfield reindex remains required"},
+    {"address": "009BEE05", "native": "006952A0", "function": "009BED80", "contract": "Existing actual oldendpoint/SAMEcallback18 unregister; actualcontext/lifetime required"},
+    {"address": "009BEE15", "native": "00694A60", "function": "009BED80", "contract": "Existing actual capturednewendpoint/SAMEcallback18 register; actualcontext/lifetime required"},
+    {"address": "009C29DB", "native": "0042E740", "function": "009C2980", "contract": "Constructor storage evidence: actualsingleton then+380 ->state6C; ctor remains unimplemented"},
+    {"address": "009C2A0A", "native": "00BD2F10", "function": "009C2980", "contract": "External completector random/x87 phase; no worker recovery/port"},
+    {"address": "009B32E8", "native": "virtual+04", "function": "009B3240", "contract": "Existing SAMEtask connected entry dispatch; actualexecutableprofiles/domain required;310beforeentry/aliasesafter"}
+  ],
+  "storage_evidence": {
+    "constructor_site": "009C29FC",
+    "publication": "Actual0042E740 return ADD380 at29F5 ->existingstate6C at29FC; no parameterallocation inctor",
+    "normal_alias": "Unchangedsingletonpublication gives exactselfalias atFollowentry; copy still executes for sNaN/status behavior",
+    "changed_publication": "Existing olddestination and freshnewsource are disjoint, bothmustremainlive/writableorreadable asrequired; no retaining/repair byadapter",
+    "typed_layout": "Existing GameTuningBlock fields+380..420 spanA4; padding+3EA/3EB corresponds holes6A/6B; layout doesnotbind actualsingleton/runtime",
+    "ctor_dependencies": "ActualD20AB8/CF89B4 profiles, observerprefixfields, privateEH/randomx87/fullstate/arena/lifetimes remain completeexternal9C2980 requirement"
+  },
+  "kernel_domain": {
+    "spans": "NonnullliveA4bytes: writabledestination/readablesource; exactselfalias anddisjoint only; partialoverlap excluded",
+    "writes": "Fortyorderedbinary32FLD/FSTP lanes00..64/6C..A0 step4; rawbytes68/69 betweenranges; holes6A/6Buntouched",
+    "numeric": "Primaryfixedcontract: maskedx87exceptions, no pendingunmasked exception, free stackslot; ambientCW/existingstack preserved, status followsactualoperations",
+    "exclusions": "No default tuning/parameterallocator/pointerreplacement/Booleannormalization/paddingclear/rawcopyshortcut; invalidmemory/faults/privateEH/concurrency/structuralreentry/game lifetime unbound"
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 Win32 x86 /O2 /MD /std:c++17 /EHsc /DNDEBUG; kernel additionally/Gy /W4 /WX /fp:strict",
+    "fresh_actual_tus": ["src/native_land_follow_parameters.cpp", "src/native_land_state_entries.cpp", "src/native_land_task_constructor.cpp"],
+    "objects": ["local/native_land_parameters_for_entry_cc11.obj", "local/native_land_state_entries_cc11.obj", "local/native_land_outer_for_state_entry_cc11.obj"],
+    "probe": "local/cc11_land_state_entry_probe.cpp/.obj/.exe",
+    "link": "Pinned core/Lua/zlib plus user32,d3d9,PowrProf,shell32,advapi32; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "connected_fixture": "PASS realkernel through opt-inadapter and actualouter->Follow; all164bytes/fortylanes/rawbytes/holes for disjointoldnew andnormalselfalias/sNaN; sourceunchanged fordisjoint; existingfreshstate4/C/observerreplacement/skips/Park/MoveTo/profileguard/alias/final85/CW/TOPchecks",
+    "probe_output": "PASS SOURCE outer->Follow real A4 copy: forty lanes/two bytes/holes, disjoint and normal self-alias/sNaN; fresh state4/C/observer/skips/Park/MoveTo/profile/alias/x87 order",
+    "fixture_boundary": "No fixturecopyoverride remains; constructor/singleton/reindex/sourceprofileeffects are SOURCEonly, not completenativeconstructor or observedreentry. Realexistingobserverprefix/register/unregister executes on explicitfixturestorage/prepublishedlock; realworldbinding/lifetimes unbound.",
+    "existing_probe": "PASS olderhook/cruise/validity/canonical/outerfixture",
+    "source_coff_receipt": "Finalprovider sourceobject+00pushesreceivedsource/+04ECXreceiveddestination/+08EDXzero/+0Acallsprimarykernel/+0FRET8 fornewC++method. Freshkernel315B equals originalPE extraction/hash. Not originaltask/provider ABI proof.",
+    "native_call_verifier": "PASS7directnative call rows,0failed;1outervirtualrow explicitlyindirect/unresolved; read-onlycorrectproject/program verified",
+    "json_diff": "PASS JSONparse, pinnedlibraryhashchecks and stagedgitdiff--check",
+    "full_build": "Primaryowned; worker nofullbuild",
+    "source_adoption_complete": true,
+    "source_fixture_tested": true,
+    "whole_native_caller_differential_tested": false,
+    "actual_game_bound": false,
+    "full_task_abi_compatible": false,
+    "game_validated": false
+  },
+  "pinned_support_libraries": [
+    {"path": "local/cc11_land_copy_bsp_core.lib", "sha256": "1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"},
+    {"path": "local/cc11_land_copy_bsp_lua511.lib", "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"},
+    {"path": "local/cc11_land_copy_bsp_zlib121.lib", "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"}
+  ],
+  "remaining_boundaries": ["actual670taskarena/factory/scalardestruction", "complete9C2980/privateEH/randomx87/fullstateconstruction", "actualsingleton publication andoldblock lifetime", "completebase/composite/lowerqueue/controller services", "actualexecutableprofiles andpurefaithfulfieldmaps", "complete liveformationreindex", "observercallback/worldrouting/death/cache lifetimes", "fulltaskABI andlivegameplay"]
+}

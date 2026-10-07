@@ -106,4 +106,20 @@ class NativeLandTaskStateEntryConstructorCalls
     const NativeLandInitialExecutableProfiles profiles_;
 };
 
+// Opt-in adoption of the primary-proved COMPLETE009BE150 kernel at the
+// existing Follow entry's required copy call. Forward the SAME borrowed task
+// view/profiles; every other constructor/entry service remains abstract.
+// No allocation, pointer replacement, singleton, profile or lifetime binding.
+// Both passed blocks expose A4h live bytes. Exact self alias (normal unchanged
+// singleton publication) and disjoint spans are admitted; partial overlap is
+// excluded. Forty ordered float lanes and bytes68/69 execute even for self
+// alias, leaving holes6A/6B untouched, under the primary masked-x87 contract.
+class NativeLandTaskParameterCopyConstructorCalls
+    : public NativeLandTaskStateEntryConstructorCalls {
+   public:
+    using NativeLandTaskStateEntryConstructorCalls::NativeLandTaskStateEntryConstructorCalls;
+    void copy_follow_parameters_009be150(void* destination,
+        const void* source) final;
+};
+
 } // namespace bsp
