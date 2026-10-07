@@ -1,0 +1,277 @@
+{
+  "packet": "cc11_health_setter_sequence",
+  "date_utc": "2026-10-07",
+  "base_commit": "389e2fd16ab5f784e37a9b317e65284cf4aea8ab",
+  "status": "complete_ordinary_caller_under_required_actual_bindings_fixture_tested",
+  "native_parent": "00877B90",
+  "getter_shared_suffix_parent": "00923BE0",
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "documentation": "docs/UNIT_HEALTH_SETTER_SEQUENCE_CC11.md",
+  "new_entry": "set_native_unit_health_00877b90(NativeUnitHealthSetterBinding, float)",
+  "wrapper": "unit_set_health_00877b90 now requires bind_health_setter_00877b90 and forwards complete flow",
+  "name_status": "descriptive_hypothesis",
+  "native_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py live client verifies project/program before each batch",
+    "read_only_queries": [
+      "ghidra disasm 00877B90 --lines 100",
+      "ghidra disasm 00923BE0 --lines 50",
+      "ghidra disasm 00876D30 --lines 28",
+      "ghidra disasm 0075B430 --lines 30",
+      "ghidra disasm 0077C2A0 --lines 65",
+      "ghidra disasm 0077C2A0 --start 65 --lines 80"
+    ],
+    "full_setter_instruction_count": 86,
+    "ordinary_stack_message_bytes": 32,
+    "getter_load_before_cache_store_sites": [
+      [
+        "00923C12",
+        "00923C16"
+      ],
+      [
+        "00923C3D",
+        "00923C41"
+      ]
+    ],
+    "getter_released_branch": "00923BE4..00923BEE: positive zero; no provider or cache access",
+    "constructor_evidence": "00876D30 calls base0075B430 with typeD2, initializes sender/relay, payload+1C, delivery1, profile00D032A0, returns identity in EAX",
+    "router_boundary": "ECX receiver, message returned by constructor, flags4, null final pointer; router owns state gates/transport/ownership",
+    "ghidra_mutations": false
+  },
+  "host_steps": [
+    {
+      "address": "00877C53",
+      "native": "00923BE0",
+      "function": "00877B90",
+      "contract": "complete released/provider/binary32 clamp/cache flow after live postcallback mode1"
+    },
+    {
+      "address": "00877C5E",
+      "native": "00BF7420",
+      "function": "00877B90",
+      "contract": "shared converter reads actual mutable state at conversion time"
+    },
+    {
+      "address": "00877C8A",
+      "native": "00876D30",
+      "function": "00877B90",
+      "contract": "required complete constructor receives exact20h caller frame after byte store"
+    },
+    {
+      "address": "00877C9E",
+      "native": "0077C2A0",
+      "function": "00877B90",
+      "contract": "required complete router receives returned identity, receiver, flags4, null"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00877C40",
+      "native": "vtable[1B0h]",
+      "function": "00877B90",
+      "contract": "table and entry captured only after live mode2 gate; required operation may mutate/reenter"
+    },
+    {
+      "address": "00923BF7",
+      "native": "vtable[110h]",
+      "function": "00923BE0",
+      "contract": "fresh table/provider after +5D gate, binary32 return spill, cache after provider"
+    }
+  ],
+  "ordinary_contract": {
+    "receiver": "borrowed actual +5D/+164/+2E8/+36C/+370/+374 cells and stable live identity",
+    "globals": "actual mutable current-game pointer cell; actual readable mutable0109EEA4 address",
+    "view_accessors": "pure actual current table/session backing, no callbacks/allocation/snapshots/FP changes",
+    "operations": "all dispatch/provider/constructor/router operations required; no default/no-op services",
+    "reentrancy": "callbacks/provider/constructor may reenter and mutate actual cells; reached backing stays live; no added receiver-death/reentry guard",
+    "provider_domain": "admitted float return spilled to binary32 before shared clamp; not arbitrary extended ST0 ABI equivalence",
+    "message_frame": "uninitialized align4 20h automatic storage; no invented profile/arena/owner; constructor-returned identity forwarded",
+    "lifetime": "frame valid through route return only; actual router owns clone/transport/ownership",
+    "normal_return": "all reached calls return normally; original faults/privateEH/unmasked resumption outside contract",
+    "concurrency": "unsynchronized concurrent writes outside ordinary domain",
+    "abi": "new C++ source interfaces; original ECX/RET4/register ABI not supplied"
+  },
+  "source_checks": {
+    "all_other_function_bodies_preserved": true,
+    "existing_projections_unchanged": true,
+    "shared_marker_fraction_and_byte_kernels_preserved": true,
+    "numeric_only_getter_reuses_clamp_with_its_own_spill": true,
+    "existing_UnitDamageHost_virtual_order_preserved": true,
+    "required_binding_appended_to_UnitDamageHost": true,
+    "exact_inheritance_search_scope": [
+      "src",
+      "include",
+      "tests"
+    ],
+    "UnitDamageHost_subclasses_found": 0,
+    "wrapper_no_longer_uses_precomputed_UnitHealthWrite": true,
+    "ordered_source_observations": [
+      "unit.health_370 = stored",
+      "full_health_marker_00877c00",
+      "calls.session_mode_1fe4",
+      "calls.call_health_changed_1b0",
+      "calls.session_mode_1fe4",
+      "unit.released_5d",
+      "calls.call_health_fraction_110",
+      "unit_health_clamp_cache_x87",
+      "replicated_health_byte_numeric_00877c58",
+      "unit.replicated_byte_374 == byte",
+      "unit.replicated_byte_374 = byte",
+      "calls.construct_health_message_00876d30",
+      "calls.route_health_message_0077c2a0"
+    ],
+    "generated_provider_binary32_spill_then_clamp": true,
+    "generated_FLD_before_cache_MOVSS": true,
+    "generated_two_live_game_pointer_and_mode_reads": true,
+    "generated_byte_compare_store_after_CRT_before_constructor": true,
+    "generated_constructor_returned_EAX_then_push0_push4_pushEAX": true,
+    "generated_clamp_caller_and_wrapper_have_no_FP_control_writes": true,
+    "shared_CRT_sources_and_game_host_policy_unchanged": true
+  },
+  "existing_host_admission": {
+    "GameGunneryHost": "five direct campaign snapshot sites retain separate policy; no actual released/cache/session/message ownership supplied",
+    "GameScriptOrdersHost": "mirrored provider and no-op cache store cannot satisfy actual binding",
+    "runtime_binding_added": false,
+    "invented_CPU_state_cache_or_arena": false
+  },
+  "focused_probe": {
+    "command": "local/cc11_health_setter_sequence_check.cmd",
+    "compiler": "MSVC Win32 /std:c++17 /O2 /Gy /W4 /WX /fp:strict",
+    "sources": [
+      "src/unit_damage.cpp",
+      "src/native_render_batch_keys.cpp"
+    ],
+    "manifest": "embedded RT_MANIFEST verified, requestedExecutionLevel=asInvoker",
+    "bound_prefix": "336 comparisons against original instruction transcription over existing28 rows and12PC/RC combinations; masked FP; matchingMXCSR rounding; DAZ/FTZoff",
+    "full_flow_cases": 11,
+    "full_flow_controls": "PC53/nearest, masked, two live x87 sentinels/TOP/fullCW/MXCSR controls preserved in every case",
+    "event_key": {
+      "1": "gameA mode observation",
+      "2": "gameB mode observation",
+      "3": "current table observation",
+      "4": "health-changed hook",
+      "5": "provider",
+      "6": "message constructor",
+      "7": "router"
+    },
+    "case_key": {
+      "1": "callback game-pointer/health/max mutation",
+      "2": "callback changes client",
+      "3": "callback releases",
+      "4": "provider mutates release/cache/session/+374 and suppresses send",
+      "5": "provider changes client but still reaches router",
+      "6": "nested setter produces only one message",
+      "7": "constructor mutations survive into router",
+      "8": "initial client store-only",
+      "9": "mode3 callback-only",
+      "10": "callback table rebind changes provider",
+      "11": "opposite signed-zero equality early return"
+    },
+    "case_receipts": [
+      "SETTER_CASE action=1 pass=1 events=13423567 health=42480000 max=43480000 cache=3e800000 byte=64 hooks=1 providers=1 constructors=1 routes=1 payload=64",
+      "SETTER_CASE action=2 pass=1 events=1342 health=42480000 max=42c80000 cache=7fcabcde byte=7 hooks=1 providers=0 constructors=0 routes=0 payload=-1",
+      "SETTER_CASE action=3 pass=1 events=134167 health=42480000 max=42c80000 cache=7fcabcde byte=0 hooks=1 providers=0 constructors=1 routes=1 payload=0",
+      "SETTER_CASE action=4 pass=1 events=134135 health=40e00000 max=41100000 cache=3f000000 byte=128 hooks=1 providers=1 constructors=0 routes=0 payload=-1",
+      "SETTER_CASE action=5 pass=1 events=13413567 health=40e00000 max=41100000 cache=3f000000 byte=128 hooks=1 providers=1 constructors=1 routes=1 payload=128",
+      "SETTER_CASE action=6 pass=1 events=13413413567135 health=41c80000 max=42c80000 cache=3e800000 byte=64 hooks=2 providers=2 constructors=1 routes=1 payload=64",
+      "SETTER_CASE action=7 pass=1 events=13413567 health=40e00000 max=41100000 cache=3f000000 byte=199 hooks=1 providers=1 constructors=1 routes=1 payload=128",
+      "SETTER_CASE action=8 pass=1 events=1 health=42c80000 max=42c80000 cache=7fcabcde byte=7 hooks=0 providers=0 constructors=0 routes=0 payload=-1",
+      "SETTER_CASE action=9 pass=1 events=1341 health=42480000 max=42c80000 cache=7fcabcde byte=7 hooks=1 providers=0 constructors=0 routes=0 payload=-1",
+      "SETTER_CASE action=10 pass=1 events=13413567 health=42480000 max=42c80000 cache=3f800000 byte=255 hooks=1 providers=1 constructors=1 routes=1 payload=255",
+      "SETTER_CASE action=11 pass=1 events= health=00000000 max=42c80000 cache=7fcabcde byte=7 hooks=0 providers=0 constructors=0 routes=0 payload=-1"
+    ],
+    "summary_lines": [
+      "SUMMARY prefix_checks=336 data_fail=0 marker_gaps=0 unexpected_marker=0 mode_checks=672 mode_fail=0 byte_checks=240 byte_fail=0 released_cache_checked=1",
+      "STATE state_checks=336 control_fail=0 stack_fail=0 two_live_sentinels=1",
+      "FRACTION fraction_checks=192 fraction_fail=0 getter_checks=192 getter_fail=0 released_checks=192 released_fail=0",
+      "NUMERIC_STATE state_checks=576 control_fail=0 stack_fail=0 released_status_fail=0",
+      "CONVERSION_SUMMARY checks=624 result_fail=0 control_fail=0 stack_fail=0 status_fail=0 reload_checks=48 reload_fail=0 two_live_sentinels=1",
+      "SETTER_SUMMARY bound_prefix_checks=336 bound_prefix_fail=0 control_fail=0 stack_fail=0 sequence_cases=11 sequence_fail=0"
+    ],
+    "exit_code": 0,
+    "reference_limits": "instruction fixture plus explicit instrumented call-site operations; not original game or native network execution",
+    "tracked_test_suite_added": false
+  },
+  "validation_boundaries": {
+    "reconstructed_complete_ordinary_caller_with_required_bindings": true,
+    "production_linked_probe": true,
+    "fixture_tested": true,
+    "full_cmake_build": "primary integrator responsibility",
+    "actual_game_binding": false,
+    "drop_in_ABI_compatible": false,
+    "game_validated": false,
+    "unmasked_fault_resumption_or_private_EH_tested": false,
+    "full_FP_status_equivalence_claimed": false,
+    "arbitrary_extended_provider_return_equivalence_claimed": false,
+    "remaining": "primary build/metadata/annotations/integration; complete runtime field/provider/constructor/router binding before actual game use"
+  },
+  "artifacts": [
+    {
+      "path": "src/unit_damage.cpp",
+      "bytes": 29489,
+      "sha256": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577"
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "bytes": 24800,
+      "sha256": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "bytes": 5004,
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+    },
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "bytes": 1858,
+      "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_probe.cpp",
+      "bytes": 35043,
+      "sha256": "24c5c4c1835332c2455a6ad2be6719280119de300aeaf4e65e63fc635a1b9a32"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_probe.exe",
+      "bytes": 133120,
+      "sha256": "d0f00ab93050f9d779948b0da3c94f53a4a2a99c999f407c2335632b13311822"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_check.cmd",
+      "bytes": 568,
+      "sha256": "5a75c36823228e8014e6c2540e021e85d615eb2d3c88d495c625db6423c12b20"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_results.json",
+      "bytes": 10814,
+      "sha256": "bf6b0e3e7d56846453ad4e8b42bc746f195dc0a22a628081c6946b3a058672f1"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_asm/unit_damage.asm",
+      "bytes": 124465,
+      "sha256": "62f9031b022d67285a2ac82667c1a50fe177feb88380bbe70ef010474126cad4"
+    },
+    {
+      "path": "local/cc11_health_setter_sequence_asm/native_render_batch_keys.asm",
+      "bytes": 15228,
+      "sha256": "cd097a62e15f5f3e5ec0b32964f0faf859f7a8a4de43d6ef0e685cc1e1ef460f"
+    }
+  ],
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_setter_sequence_cc11.json",
+    "exit_code": 0,
+    "checked": 4,
+    "failed": 0,
+    "indirect_slots_not_resolved_by_verifier": 2,
+    "output": [
+      "  indirect  report.indirect_steps[0]: native='vtable[1B0h]' (not checked)",
+      "  indirect  report.indirect_steps[1]: native='vtable[110h]' (not checked)",
+      "reports/unit_health_setter_sequence_cc11.json: 4 call rows checked, 0 failed"
+    ]
+  }
+}

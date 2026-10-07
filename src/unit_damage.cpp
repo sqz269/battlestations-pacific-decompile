@@ -57,9 +57,37 @@ __declspec(naked) float __fastcall unit_health_fraction_x87(const UnitHealth*) n
     }
 }
 
-// Numeric-only, unit-specialized 00923BE0. ECX is the snapshot and DL is the
-// release flag. This deliberately selects the verified unit provider above;
-// it is not arbitrary native vtable[110h] dispatch and writes no cache +164h.
+// Shared 00923BFD..00923C49 clamp/cache suffix. ECX addresses the provider's
+// binary32 spill; EDX addresses the actual cache, or that same spill for the
+// separately contracted numeric-only getter. Load ST0 before the cache store
+// just as the original does. Neither this helper nor its callers set FP policy.
+__declspec(naked) float __fastcall unit_health_clamp_cache_x87(
+    float*, volatile float*) noexcept {
+    __asm {
+        fld dword ptr [ecx]
+        fldz
+        fcomip st(0), st(1)
+        fstp st(0)
+        jbe cap_fraction
+        xorps xmm0, xmm0
+        jmp store_fraction
+    cap_fraction:
+        movss xmm0, dword ptr [ecx]
+        movss xmm1, dword ptr kUnitHealthNumericCeiling00923be0
+        comiss xmm0, xmm1
+        jbe store_fraction
+        movaps xmm0, xmm1
+    store_fraction:
+        movss dword ptr [ecx], xmm0
+        fld dword ptr [ecx]
+        movss dword ptr [edx], xmm0
+        ret
+    }
+}
+
+// Numeric-only, unit-specialized 00923BE0. The shared suffix writes only this
+// caller's spill, never a fabricated entity cache. The full bound caller below
+// supplies the actual +164h cell and resolves the live virtual provider.
 __declspec(naked) float __fastcall unit_health_getter_numeric_x87(const UnitHealth*, bool) noexcept {
     __asm {
         push ecx
@@ -75,26 +103,9 @@ __declspec(naked) float __fastcall unit_health_getter_numeric_x87(const UnitHeal
         mov ecx, esi
         call unit_health_fraction_x87
         fstp dword ptr [esp + 4]
-        fld dword ptr [esp + 4]
-        fldz
-        fcomip st(0), st(1)
-        fstp st(0)
-        jbe cap_fraction
-        xorps xmm0, xmm0
-        movss dword ptr [esp + 4], xmm0
-        fld dword ptr [esp + 4]
-        pop esi
-        pop ecx
-        ret
-    cap_fraction:
-        movss xmm0, dword ptr [esp + 4]
-        movss xmm1, dword ptr kUnitHealthNumericCeiling00923be0
-        comiss xmm0, xmm1
-        jbe return_fraction
-        movaps xmm0, xmm1
-    return_fraction:
-        movss dword ptr [esp + 4], xmm0
-        fld dword ptr [esp + 4]
+        lea ecx, [esp + 4]
+        mov edx, ecx
+        call unit_health_clamp_cache_x87
         pop esi
         pop ecx
         ret
@@ -247,7 +258,8 @@ UnitDifficultyScale scale_damage_by_difficulty(float amount, const float* table,
     return result;
 }
 
-// 00877B90 body.
+// Partial data-result projection of 00877B90 over caller-supplied snapshots.
+// The complete bound caller below observes mutation across actual call sites.
 UnitHealthWrite set_health_00877b90(const UnitHealth& health,
                                     float requested,
                                     UnitSessionMode session_mode,
@@ -386,28 +398,63 @@ void unit_apply_damage_00879070(UnitDamageHost& host, std::uint32_t entity, floa
                          after.current_health / health.max_health);  // 008791EB
 }
 
-// 00877B90. __thiscall(this, float), RET 4. The only writer of +370h.
+// Complete ordinary 00877B90 caller over actual borrowed fields and required
+// operations. The pure UnitHealthWrite result above cannot encode mutations
+// made by virtual calls. Do not cache session, release, provider or byte state.
+void set_native_unit_health_00877b90(NativeUnitHealthSetterBinding binding,
+    float requested) {
+    const auto& unit = binding.unit;
+    const auto& globals = binding.globals;
+    auto& calls = binding.calls;
+
+    if (unit.health_370 == requested) {  // 00877BB9, before any session observation
+        return;
+    }
+    float stored = requested;
+    if (requested < 0.0f) {
+        stored = 0.0f;
+    } else if (requested > unit.maximum_36c) {
+        stored = unit.maximum_36c;
+    }
+    unit.health_370 = stored;  // 00877C04, before the marker comparison
+    if (full_health_marker_00877c00(stored, unit.maximum_36c)) {
+        unit.full_marker_2e8 = 0xffffffffu;  // set-only 00877C20
+    }
+    if (calls.session_mode_1fe4(globals.current_game_00e188a8) == 2) {
+        return;
+    }
+    const auto changed_entry = calls.primary_table(unit.identity)[0x1b0 / 4];
+    calls.call_health_changed_1b0(changed_entry, unit.identity);  // 00877C40
+
+    // Both the game-global pointer and its mode are reloaded after the hook.
+    if (calls.session_mode_1fe4(globals.current_game_00e188a8) != 1) {
+        return;
+    }
+
+    // Complete ordinary 00923BE0: release is tested once before the provider.
+    // A provider may change release, vtable, health, mode or +374h. Its returned
+    // value is still clamped/cached; there is no second release/session gate.
+    float fraction = 0.0f;
+    if (unit.released_5d == 0) {
+        const auto provider_entry = calls.primary_table(unit.identity)[0x110 / 4];
+        float provider_spill = calls.call_health_fraction_110(provider_entry, unit.identity);
+        fraction = unit_health_clamp_cache_x87(&provider_spill, &unit.cached_fraction_164);
+    }
+    const int byte = replicated_health_byte_numeric_00877c58(fraction,
+        globals.actual_0109eea4);
+    if (unit.replicated_byte_374 == byte) {  // 00877C77, after the provider/CRT
+        return;
+    }
+    unit.replicated_byte_374 = byte;  // 00877C84, before the constructor
+    NativeUnitHealthMessageFrame message_frame;  // original uninitialized 20h caller frame
+    void* const message = calls.construct_health_message_00876d30(message_frame, byte);
+    calls.route_health_message_0077c2a0(unit.identity, message, 4, nullptr);
+}
+
+// 00877B90 host wrapper. A read/write snapshot host alone cannot supply the
+// native provider/cache/session/message ownership contract, so require it.
 void unit_set_health_00877b90(UnitDamageHost& host, std::uint32_t entity, float health_value) {
-    const UnitHealth health = host.read_health(entity);
-    const UnitHealthWrite write =
-        set_health_00877b90(health, health_value, host.session_mode(),
-                            host.last_replicated_health_byte(entity), host.entity_released(entity));
-    if (!write.wrote) {
-        return;
-    }
-    host.write_health(entity, write.stored_health);  // 00877C04
-    if (write.full_health_marker) {
-        host.write_full_health_marker(entity);  // 00877C20
-    }
-    if (!write.dispatch_health_changed) {
-        return;
-    }
-    host.dispatch_health_changed(entity);  // 00877C40, vtable[1B0h]
-    if (!write.replicated_byte_changed) {
-        return;
-    }
-    host.write_replicated_health_byte(entity, write.replicated_byte);  // 00877C84
-    host.send_health_message(entity, write.replicated_byte);           // 00877C8A + 00877C9E
+    set_native_unit_health_00877b90(host.bind_health_setter_00877b90(entity), health_value);
 }
 
 // 00827A90, 00CFC3D0+1B0h. __fastcall(this), RET 0.
