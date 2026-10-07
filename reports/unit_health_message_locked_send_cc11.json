@@ -1,0 +1,170 @@
+{
+  "packet": "cc11_health_locked_send",
+  "created_utc": "2026-10-07T09:56:25.917113+00:00",
+  "base_commit": "23587a06a",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete ordinary locked wrapper reconstructed and connected actual-TU Win32 source fixture passed; primary integration pending",
+  "function": {
+    "entry": "00783DC0",
+    "end_exclusive": "00783DF8",
+    "instruction_count": 22,
+    "source": "NativeUnitHealthMessageLockedSendCalls::send_locked_session_message_00783dc0",
+    "native_abi": "ECX captured transport; stack target,message; RET8",
+    "coverage": "complete ordinary returning wrapper using actual lock fields and real Win32 imports; complete serializer remains required",
+    "whole_ordinary_body_reconstructed": true,
+    "native_binary_abi_compatible": false
+  },
+  "files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_unit_health_message.cpp",
+    "docs/UNIT_HEALTH_MESSAGE_LOCKED_SEND_CC11.md",
+    "reports/unit_health_message_locked_send_cc11.json"
+  ],
+  "evidence": {
+    "live_function_body": "00783DC0-00783DF7 inclusive; one basic block,22 instructions",
+    "native_full_assembly_reviewed": true,
+    "primary_independent_native_review": true,
+    "canonical_layout": "include/bsp/random_threads.hpp: TrackedCriticalSection size1C/native00/depth18",
+    "layout_static_assertions_compiled": true,
+    "source_parent_prefix_byte_preserved_after_removing_only_new_include": 10202,
+    "worker_ghidra_mutations": false
+  },
+  "host_steps": [
+    {
+      "address": "00783DDF",
+      "native": "00783C80",
+      "function": "00783DC0",
+      "contract": "required complete actual serializer with unchanged captured transport,target,same borrowed message"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00783DCD",
+      "iat": "00CE2218",
+      "dispatch": "KERNEL32.dll!EnterCriticalSection",
+      "contract": "actual Win32 Enter on captured target+4 section.native00"
+    },
+    {
+      "address": "00783DEC",
+      "iat": "00CE2210",
+      "dispatch": "KERNEL32.dll!LeaveCriticalSection",
+      "contract": "actual Win32 Leave on freshly reloaded target+4 section.native00"
+    }
+  ],
+  "original_pe_import_verification": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "machine": "014C",
+    "imports": {
+      "00CE2210": {
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      "00CE2218": {
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    }
+  },
+  "actual_borrowed_fields": [
+    {
+      "storage": "target+04",
+      "access": "pure alias; actual captured pointer before Enter and fresh pointer after required serializer"
+    },
+    {
+      "storage": "captured section+00",
+      "access": "real Win32 EnterCriticalSection"
+    },
+    {
+      "storage": "captured section+18",
+      "access": "actual volatile unsigned modulo32 increment before serializer"
+    },
+    {
+      "storage": "freshly reloaded section+18",
+      "access": "actual volatile unsigned modulo32 decrement after serializer"
+    },
+    {
+      "storage": "freshly reloaded section+00",
+      "access": "real Win32 LeaveCriticalSection"
+    }
+  ],
+  "contracts": [
+    "Abstract PeerSend-derived adapter implements required783DC0 while complete783C80 remains pure.",
+    "Actual target-field accessor binds alias without early values, callbacks, allocation, ownership or FP changes.",
+    "Every reached section is live and initialized; each reached Leave has valid current-thread ownership.",
+    "Counter representation accessed as corresponding unsigned volatile type; native modulo behavior retained.",
+    "Captured transport,target and same message passed unchanged; no current-game/session lookup or mode gate.",
+    "No null guard/defaultlock, RAII, cached exit lock, cleanup-onthrow, implicit imbalance repair, clone or release.",
+    "Required complete783C80 includes delivery-indexed cursors, tick/prefix, executable profile writer, overflow copy/rewind/flush/restore and threshold effects.",
+    "Required services consume borrowed frame synchronously or create owned representation; no borrowed pointer retention/free."
+  ],
+  "focused_probe": {
+    "command": "cmd /c local\\cc11_health_message_locked_send_check.cmd",
+    "compiler": "MSVC14.51.36231 Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict /FAs",
+    "link": "/MANIFEST:EMBED /OPT:REF",
+    "embedded_manifest": "actual RT_MANIFEST parsed: asInvoker; machine014C",
+    "actual_imports": [
+      "EnterCriticalSection",
+      "LeaveCriticalSection",
+      "TryEnterCriticalSection"
+    ],
+    "exit_code": 0,
+    "receipt": {
+      "checks": 29,
+      "failures": 0,
+      "unchanged_lock_cases": 1,
+      "connected_lock_replacement_cases": 1,
+      "connected_serializations": 1,
+      "borrowed_releases": 0
+    },
+    "unchanged_lock_case": "Actual D2 constructor/profile and B50 ->real EnterA; counterFFFFFFFF->0 visible to required serializer fixture; synchronous real D2 writer; same-lock counter->FFFFFFFF and real LeaveA. OS recursion count1 during provider and0 after. No message change/release.",
+    "connected_case": "Real setter50/max100/cache.5/byte128 ->actual D2 ownerA ->flags4 two peers ->exclude actual local target ->real B50 ->locked wrapper entersA/increments1 ->required serializer fixture checks exact transport,target,profile,owner,sender,payload and actual29bit writer ->controlled target4 replacement with pre-ownedB ->fresh counterB1->0/LeaveB. A remains1/owned until external fixture cleanup.",
+    "other_thread_observation": "Exactly one joined Win32 thread uses TryEnter after connected wrapper: A fails, B succeeds and is released by observer. Five-second completion bound; no concurrent message/field mutation.",
+    "controlled_source_fixture_only": "Provider changes target4 from enteredA to pre-ownedB while both live; this is not evidence of native serializer mutation. External fixture balances retainedA and deletes sections; implementation does not repair.",
+    "serializer_fixture_boundary": "Synchronous actual D2 writer and receipts only; not complete native783C80, queue, overflow, flush or network behavior.",
+    "borrowed_frame_retained_or_released": false,
+    "no_tracked_tests_added": true
+  },
+  "generated_assembly_review": {
+    "file": "local/cc11_health_message_locked_send_asm/native_unit_health_message.asm",
+    "function": "NativeUnitHealthMessageLockedSendCalls::send_locked_session_message_00783dc0",
+    "checks": [
+      "pure field binder then captured actual pointer read",
+      "real imported EnterCriticalSection",
+      "captured+18 volatile load/increment/store before required serializer call",
+      "unchanged transport,target,message pushed to required virtual serializer",
+      "fresh read through saved actual target field alias after call",
+      "fresh+18 volatile load/decrement/store",
+      "real imported LeaveCriticalSection on fresh pointer",
+      "no nullguard/RAII/cached exit lock/global mode reads"
+    ]
+  },
+  "validation_boundaries": [
+    "source complete ordinary wrapper reconstructed",
+    "actual-TU MSVC Win32 compile passed",
+    "29 source-fixture checks including actual OS locks passed",
+    "controlled replacement is source-provider evidence only",
+    "primary owns full repository build and metadata",
+    "complete serializer/overflow/flush/network still required and unimplemented",
+    "native ABI/privateEH/unwind/fault/invalid-ownership behavior unproved",
+    "native allocator/profile identity and game runtime unproved"
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_unit_health_message.hpp": "1f0321d0432169246fa93d3a78aea49ba4cc9d78cffc7e3f7e50575204584803",
+    "src/native_unit_health_message.cpp": "88f9730403f837ae4ba6bb27d4fa8d9324efa6b3baf9d5aa7b2329ce8ec865f9",
+    "local/cc11_health_message_locked_send_probe.cpp": "7cf7ef760a0fe5e83becbb1cf470f3fa807c08bc5d93c9e506ba699e1a1fa364",
+    "local/cc11_health_message_locked_send_check.cmd": "22307ee10fd60c10c1ce60b37e20ddf5f4767ba571eb7756d76794a78ec4f7a0",
+    "local/cc11_health_message_locked_send_probe.exe": "7df3b50de4d0b82d60cc69bb24fa80d0bd277631b0d3f6666c02a89a64b7b5fa",
+    "local/cc11_health_message_locked_send_results.json": "639ed65955d1d55ee1b8cf277e50fb87b79738a2b75926a77f86368e524374be",
+    "local/cc11_health_message_locked_send_asm/native_unit_health_message.asm": "19ace99e1e5786d5b0a7ad45ba7fc0cb1af7b97506871a86c7c72f08a2edfe1d"
+  },
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_message_locked_send_cc11.json",
+    "exit_code": 0,
+    "checked": 1,
+    "failed": 0,
+    "receipt": "reports/unit_health_message_locked_send_cc11.json: 1 call rows checked, 0 failed",
+    "imported_calls_verified_separately": "two IAT destinations in original_pe_import_verification; not counted as native direct-call rows"
+  }
+}
