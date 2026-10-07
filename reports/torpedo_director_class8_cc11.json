@@ -1,0 +1,88 @@
+{
+  "packet": "cc11_director_class8",
+  "date": "2026-10-06",
+  "doc": "docs/TORPEDO_DIRECTOR_CLASS8_CC11.md",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "verified": "bsp.py live queries", "ghidra_changes": false},
+  "owned_addresses": ["00822C20", "00853050"],
+  "coverage": [
+    {"routine": "00822C20", "coverage": "partial: 00823924..0082395A and enable stores/publication through 00823B6B; remaining initialization arms not reconstructed"},
+    {"routine": "00853050", "body": "00853050..0085308A", "coverage": "complete"},
+    {"routine": "00852F10", "coverage": "complete supporting read"},
+    {"routine": "008531A0", "coverage": "complete supporting read"},
+    {"routine": "00853630", "coverage": "partial: entry through base call 0085364C"},
+    {"routine": "004F05F0", "coverage": "complete supporting read"},
+    {"routine": "00964790", "coverage": "partial: Type row read and Submarine comparison/constructor branch"}
+  ],
+  "calls": [
+    {"address": "00823932", "native": "008F2260", "function": "00822C20", "contract": "TorpedoDirector lookup; absence and nonzero select true"},
+    {"address": "0082394A", "native": "00D0BF80+vtable5C", "function": "00822C20", "resolved_target": "00853050", "contract": "only explicit false invokes class query 8; indirect resolution proven by object constructor and vtable bytes"},
+    {"address": "0085364C", "native": "00822C20", "function": "00853630", "contract": "submarine init calls shared unit initialization preserving ECX=this"},
+    {"address": "004F0601", "native": "008F2260", "function": "004F05F0", "contract": "read bag Type integer"},
+    {"address": "004F060D", "native": "00964790", "function": "004F05F0", "contract": "resolve Type descriptor independent of scene label"},
+    {"address": "00964B06", "native": "00425850", "function": "00964790", "contract": "compare VehicleClass.Type with Submarine string at 00CEB7B0; existing recovered equality routine"},
+    {"address": "00964B2F", "native": "00963DB0", "function": "00964790", "contract": "construct Submarine descriptor with vtable 00D1AE38"},
+    {"address": "008531ED", "native": "00852F10", "function": "008531A0", "contract": "allocate/construct actual unit; constructor stamps primary vtable and class id 8"},
+    {"address": "00823A9F", "native": "007214C0", "function": "00822C20", "contract": "build state message before enable overwrite"},
+    {"address": "00823B6B", "native": "00D09F58+vtable3C", "function": "00822C20", "contract": "submit state message; existing controller/message contract"}
+  ],
+  "data_receipts": [
+    {"address": "00CEB7B0", "bytes": "5375626D6172696E65000000", "meaning": "Submarine string compared at 00964B06"},
+    {"address": "00D1AE60", "bytes": "A0318500", "meaning": "Submarine descriptor +28h -> 008531A0"},
+    {"address": "00D0BFDC", "bytes": "50308500", "meaning": "constructed unit vtable +5Ch -> 00853050"},
+    {"address": "00D0C020", "bytes": "30368500", "meaning": "constructed unit vtable +A0h -> 00853630"},
+    {"address": "00852F96", "instruction": "MOV dword ptr [ESI + 0xc4],0x8", "meaning": "actual dynamic unit class id 8"}
+  ],
+  "native_predicate": {
+    "abi": "__thiscall(unit, int query), bool in AL, RET 4",
+    "accepts": [0, 1, 2, 4, 5, 6, 8],
+    "additional_rule": "or query equals unit+C4h",
+    "query8": "00853054 CMP EAX,8 -> 00853083 MOV EAX,1 -> 00853088 RET4",
+    "torpedo_default": "missing/nonzero -> true; explicit zero -> unit vtable query8 result",
+    "host_helper": "existing unit_is_kind_of resolved descriptor kind, 8"
+  },
+  "corrections": [
+    {"was": "Every present false TorpedoDirector is retained false by the scene table.", "is": "Native initialization forces true when the actual unit answers class query8. A candidate binds that exception using resolved Type and the verified kind helper.", "evidence": "00823941..00823955; ctor00852F10; slot00D0BFDC->00853050; class set {0,1,2,4,5,6,8}"},
+    {"was": "Sub group or SubmarineGen name might identify the override class.", "is": "The bag's resolved Type selects VehicleClass.Type and its actual leaf allocator; names/groups are not a class predicate.", "evidence": "004F0601..004F060D, 00964790 Type read, 00964AFD..00964B2F, 008531ED, 00852F96"}
+  ],
+  "installed_assets": [
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "universe/library/ship.props", "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460", "evidence": "2..9 Ship(Common) torpedo=false; 199..203 Sub(Ship) adds Dive and NavigatorAllowMaxDepth, inherits false"},
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "universe/library/global.enums", "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027", "evidence": "Gato=30, Narwhal=31, TypeB_Jake=93"},
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "scripts/datatables/autoload/vehicleclasses.lua", "sha256": "0649DDDF3A765A8340DB2E6D545D04AC86503B4F8BA2E867C88ECBD2D2983650", "evidence": "rows30/31/93 Type=Submarine at lines18468/18768/43772"},
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn", "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C", "evidence": "5143 Narwhal, 5163 Gato, 5615 TypeB Jake; Sub group and resolved Type present"}
+  ],
+  "source": {
+    "files": ["src/game_hosts_scene_contents.cpp", "include/bsp/game_hosts_scene_contents.hpp"],
+    "binding": "Only present false enters class test; read VehicleClass row, map Type string to existing descriptor kind, test existing unit_is_kind_of(kind,8); true result promotes to true.",
+    "admission": "Scene UnitClassFactory creator, Lua host present, known descriptor kind; missing or unknown row keeps raw false.",
+    "precedence": "Merged bag built first; authored assignments retain existing precedence; class override follows final raw value.",
+    "absence": "Unchanged native true, including sparse shipyard bag.",
+    "gunnery": "Existing ship-family query6 and per-name table stance copy admits actual class8; kShipDirectorEnablesBound=true unchanged.",
+    "runtime_writers": "Existing TorpedoEnable/CLOSEATTACK table writes unchanged.",
+    "switch": {"name": "kShipDirectorClass8Bound", "state": "OFF", "reason": "Await focused JM06 runtime pair"}
+  },
+  "validation_plan": {
+    "row": "JM06",
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "compare": "Hold all other switches and inputs fixed; pair_diff and existing per-unit director/gunnery diagnostics",
+    "prediction": "ON logs class8 raw-false overrides and enables inherited-false submarine torpedo masks; known non-submarine false remains false and absent keys remain true.",
+    "gameplay": "Submarine tube eligibility may move gameplay; review before enabling switch."
+  },
+  "verification": {
+    "verify_report_calls": "PASS: 8 direct call rows checked, zero failed; two indirect rows explicitly excluded",
+    "git_diff_check": "PASS",
+    "off_object": {"path": "local/class8_check/off.obj", "bytes": 1840519, "sha256": "6D972AB160BBDC13A73669D92E71BD12ABD0B928E5A2647B0CCA063B35C4E571"},
+    "on_object": {"path": "local/class8_check/on.obj", "bytes": 1841049, "sha256": "FE7652C160DF06B38206D56278282C135B8E683851AA7BFA4D86A94546CC2866"},
+    "on_header": "Ignored local/class8_check/on_include/bsp/game_hosts_scene_contents.hpp changes only kShipDirectorClass8Bound to true; tracked header stays false",
+    "compiler": "MSVC Win32, /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /DWIN32 /D_WINDOWS /DNDEBUG; separate ignored objects, no link or full build"
+  },
+  "qualification": {
+    "source": "Original producer/class contract established; minimal candidate implemented",
+    "compile": "Focused MSVC Win32 scene translation unit compiled for OFF and ignored local ON header with /W4 /WX /fp:strict",
+    "fixture": "No new broad tests; live direct call receipts checked separately",
+    "linked_build": "Primary integrator serializes full Win32 build",
+    "runtime": "OFF/ON JM06 pair pending; switch OFF",
+    "abi": "Process binding and pure kind helper; no native ABI replacement",
+    "game_validated": false
+  }
+}
