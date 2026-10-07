@@ -41,6 +41,37 @@ void invoke_observer_slot08_00693560(NativeObserverOwnerStorage& first,
 void notify_observer_slot04_00696330(NativeObserverOwnerStorage&, ObserverEventDeliveryContext&);
 void notify_observer_slot08_00696340(NativeObserverOwnerStorage&, ObserverEventDeliveryContext&);
 
+// Separate event-word path: existing slot04/08 providers and aggregates remain
+// unchanged. The actual current callback owner's captured table selects +0C.
+// Its native protocol is ECX=callback owner, stack=(first,event,value), callee
+// consumes12 bytes. Each real target/provider remains required; this does not
+// fabricate tables or claim every selected callback body has been recovered.
+struct ObserverEventWordCallbackAccess {
+    void* context;
+    void (*callback_virtual_0c)(void*, NativeObserverOwnerStorage& callback_owner,
+        std::uint32_t captured_table, NativeObserverOwnerStorage& first,
+        std::uint32_t event, std::uint32_t value);
+};
+struct ObserverEventWordDeliveryContext {
+    NativeObserverLifetime& lifetime;
+    NativeObserverDispatchStorage* volatile& global_00e198e4;
+    const ObserverEventWordCallbackAccess& callbacks;
+};
+
+// Complete ordinary00696120..006962B1(exclusive), native ECX=first, two stack
+// words event/value, RET8. Reuses the equivalent00695F90 normal schedule over
+// the SAME actual lock/publication/edges; captures no independent endpoint or
+// queue. Current edge+8 owner/table is sampled at delivery; callback EAX ignored.
+// Native-valid live storage, ordinary returns and the existing dispatcher's
+// vector/provider domain are required. Private stack aliases, malformed-memory
+// validation mutations, original FH3/SEH/fault transport remain excluded.
+void dispatch_observer_event_words_00696120(NativeObserverOwnerStorage& first,
+    std::uint32_t event, std::uint32_t value, ObserverEventWordDeliveryContext&);
+// Complete00696350..0069635E(exclusive): ECX=first, EDX=event, stack=value,
+// forwards event/value to00696120 then RET4. New C++ ABI, no native thunk.
+void notify_observer_slot0c_00696350(NativeObserverOwnerStorage& first,
+    std::uint32_t event, std::uint32_t value, ObserverEventWordDeliveryContext&);
+
 // Partial source API for00925C45..00925C71 only: capture actual lock, enter/
 // increment if nonnull, sample unsigned count+8>0, decrement/leave the captured
 // lock, return the saved predicate. No notification is performed here. This

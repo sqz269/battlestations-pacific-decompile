@@ -246,6 +246,21 @@ void projectile_tick_place_pose_006e6750(ProjectileTickState& state, float step,
     host.attached_node_set_transform_34();
 }
 
+NativeProjectileObserverTickHost::NativeProjectileObserverTickHost(
+    NativeProjectileTickObserverView view, ObserverEventWordDeliveryContext& delivery,
+    NativeProjectileTickObserverServices& services) noexcept
+    : observer_view_(view), observer_delivery_(delivery), observer_services_(services) {}
+
+void NativeProjectileObserverTickHost::projectile_expire_00696350() {
+    const void* const identity = observer_view_.projectile_minus_08;
+    auto& first = observer_services_.observed_prefix(identity);
+    notify_observer_slot0c_00696350(first, 0u, 0u, observer_delivery_);
+}
+void NativeProjectileObserverTickHost::projectile_release_00926d90(int code) {
+    const void* const identity = observer_view_.projectile_minus_08;
+    observer_services_.release_projectile_00926d90(identity, code);
+}
+
 void projectile_tick_advance_sim_006e6490(ProjectileTickState& state, float step,
                                           ProjectileTickHost& host) {
     const float scaled = state.class_time_scale * step;

@@ -1,0 +1,115 @@
+{
+  "packet": "cc11_observer_slot0c_projectile_adoption",
+  "date": "2026-10-07",
+  "base_revision": "b06eee8d1",
+  "status": "Complete conditional ordinary SOURCE event-word dispatch and connected abstract projectile expiry/release adoption; runtime providers and original ABI unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "BSP client verifies project/program before each live analysis and call-verification batch",
+    "worker_ghidra_writes": false,
+    "worker_cmake_or_shared_metadata_writes": false
+  },
+  "native_scopes": [
+    {
+      "entry": "00696120",
+      "end_exclusive": "006962B1",
+      "instructions": 143,
+      "coverage": "Complete ordinary native-valid schedule via primary-confirmed equivalent existing00695F90 source",
+      "native_abi": "ECX original first, stack event/value, RET8 at006962AE",
+      "callback_protocol": "ECX current edge+8 owner; captured current owner table+0C; stack first,event,value, required callee consumes12; no claim every callback body recovered"
+    },
+    {
+      "entry": "00696350",
+      "end_exclusive": "0069635E",
+      "instructions": 5,
+      "coverage": "Complete ordinary forwarding wrapper",
+      "native_abi": "ECX first, EDX event, stack value, RET4 at0069635B"
+    },
+    {
+      "entry": "006E6490",
+      "end_exclusive": "006E65B5",
+      "coverage": "ONLY expiry/release source provider adoption; actual native pair006E6598..006E65AE reviewed; existing whole tick/math projection unchanged",
+      "native_abi": "Original ECX tick node, stack step, RET4; source tick/new host ABI is not a native replacement"
+    }
+  ],
+  "host_steps": [
+    {"address":"00696142","native":"00694280","function":"00696120","contract":"Existing actual observer lock getter; capture returned section+4"},
+    {"address":"006961E0","native":"00BF6713","function":"00696120","contract":"Existing validation service; malformed/returning mutation domain excluded"},
+    {"address":"006961F3","native":"00695BC0","function":"00696120","contract":"Existing canonical checked single insertion equivalence; captured owner/end/value-slot"},
+    {"address":"00696247","native":"00BF6713","function":"00696120","contract":"Indexed-access validation; same excluded invalid mutation domain"},
+    {"address":"0069626E","native":"edge+8 owner vtable+0C","function":"00696120","kind":"indirect","contract":"REQUIRED actual captured-table target; ECX owner, stack(first,event,value), callee consumes12; individual targets unresolved"},
+    {"address":"00696284","native":"00695D00","function":"00696120","contract":"Existing private resize-to-saved-size consumption; stack(saved_count,0), native RET8; no standalone STL port"},
+    {"address":"00696356","native":"00696120","function":"00696350","contract":"Push value then event, same ECX first; wrapper RET4"},
+    {"address":"006E659F","native":"00696350","function":"006E6490","contract":"Fresh node[-8] first, event0/value0"},
+    {"address":"006E65A9","native":"00926D90","function":"006E6490","contract":"Separate fresh SAME node[-8] identity, cause/code2; REQUIRED COMPLETE actual release provider"}
+  ],
+  "adapter": {
+    "class": "NativeProjectileObserverTickHost",
+    "base": "ProjectileTickHost",
+    "abstract": true,
+    "cell": "NativeProjectileTickObserverView::projectile_minus_08 borrows the SAME actual stable node[-8] pointer cell",
+    "expiry": "Read cell once; REQUIRED PURE identical-address observed-prefix alias; notify event0/value0 using same NativeObserverLifetime/E198E4 context",
+    "release": "Independently read SAME cell; REQUIRED COMPLETE release_projectile_00926d90(identity,code); other tick/pose/world methods remain abstract",
+    "existing_release_source": "native_pending_entity_kill_00926d90 can be adopted only with same actual entity fields/pending owners/lock/children/current virtual providers; not manufactured here",
+    "old_api": "Existing04/08 callback/delivery aggregates and methods unchanged; separate event-word types added",
+    "new_source_abi": true,
+    "native_profile_or_game_binding": false,
+    "native_stack_alias_mutations": "Excluded; event/value source parameters captured by value"
+  },
+  "source_coff_receipts": {
+    "expiry": "Fresh compiled method loads borrowed cell at+06; calls required pure alias at+0E; calls new notifier at+19 with two zeros",
+    "release": "Fresh compiled method independently loads SAME borrowed cell at+07; calls required release provider at+0F with passed code",
+    "original_native_byte_match_claim": false,
+    "new_fp_or_register_abi_recovery": false
+  },
+  "validation": {
+    "compiler": "MSVC x86 19.51.36244.0, toolset14.51.36231",
+    "flags": "/nologo /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
+    "fresh_tus": ["src/observer_event_producer.cpp","src/tick_element_overrides.cpp"],
+    "focused_fixture": "PASS SOURCE tick->slot0C: exact first/event0/value0/current table; real unregister suppresses pending; SAME cell A->B, fresh release B/code2; interval/lock restored",
+    "fixture_scope": "ONE ignored connected caller scenario: actual source prefixes, real prepublished recursive section, real register/unregister, saved nonzero vector prefix; table tags/world/callback/release effects SOURCE-only, not complete actual native providers",
+    "link_flags": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "embedded_manifest": "PASS read-only PE resource check:RT_MANIFEST requestedExecutionLevel asInvoker, x86 machine014C",
+    "support_libraries": "Pinned copies of prior validated fixture support archives, not fresh main build libraries; two changed TUs freshly compiled",
+    "native_call_verification": "PASS existing verify_report_calls.py:8 direct call rows checked,0 failed;1 required slot0C indirect row explicitly not checked",
+    "git_diff_check": "PASS final working diff",
+    "existing_previous_fixture_executable": "Previous manifested land state-entry/copy fixture PASS; pre-existing binary sanity only, not a test of new event-word API",
+    "full_build": "Primary-owned; no worker full CMake build",
+    "native_whole_caller_differential_tested": false,
+    "actual_callbacks_or_release_bound": false,
+    "original_binary_abi_compatible": false,
+    "game_validated": false
+  },
+  "ignored_artifacts": [
+    "local/cc11_slot0c_projectile_probe.cpp",
+    "local/cc11_slot0c_projectile_probe.obj",
+    "local/cc11_slot0c_projectile_probe.exe",
+    "local/cc11_slot0c_event_producer.obj",
+    "local/cc11_slot0c_tick_overrides.obj",
+    "local/cc11_slot0c_bsp_core.lib",
+    "local/cc11_slot0c_bsp_lua511.lib",
+    "local/cc11_slot0c_bsp_zlib121.lib"
+  ],
+  "pinned_support_libraries": [
+    {"path":"local/cc11_slot0c_bsp_core.lib","sha256":"1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"},
+    {"path":"local/cc11_slot0c_bsp_lua511.lib","sha256":"e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"},
+    {"path":"local/cc11_slot0c_bsp_zlib121.lib","sha256":"c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"}
+  ],
+  "remaining_boundaries": [
+    "Actual captured table+0C callback targets and game routing",
+    "Actual tick-node cell/endpoint/callback-owner/publication/backing storage lifetimes",
+    "Actual926D90 release views/pending owners/children/virtual/lock context",
+    "Other tick/pose/world providers and original numeric eligibility/ABI",
+    "Private FH3/SEH/fault/invalid-validation/allocation-failure behavior",
+    "Queue006C0B50 event4/value0 lower-constructor adoption/message84/routing/holder lifetime, separate cached404 and fresh9D4/record4/returned80 identities",
+    "No changes to prior land parameter-copy kernel/adoption qualification or death ordering"
+  ],
+  "corrections": [
+    {
+      "was": "Prior metadata called00923BD0 the base SetParty caller as if a routine entry",
+      "is": "00923BD0 is a CALL to00696350 inside complete00923B80..00923BDB",
+      "evidence": "Primary41-instruction review and worker read-only live full listing; party54/race58 stores, child traversal then event6/valueparty"
+    }
+  ]
+}

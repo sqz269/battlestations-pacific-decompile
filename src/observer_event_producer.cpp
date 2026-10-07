@@ -20,6 +20,19 @@ void selected08(void* context, NativeObserverOwnerStorage& first,
     auto& delivery = *static_cast<ObserverEventDeliveryContext*>(context);
     invoke_observer_slot08_00693560(first, callback_owner, delivery.callbacks);
 }
+struct CapturedEventWords {
+    ObserverEventWordDeliveryContext& delivery;
+    std::uint32_t event;
+    std::uint32_t value;
+};
+void selected0c(void* context, NativeObserverOwnerStorage& first,
+    NativeObserverOwnerStorage& callback_owner) {
+    auto& words = *static_cast<CapturedEventWords*>(context);
+    const std::uint32_t table = callback_owner.native_vtable_00;
+    const auto& access = words.delivery.callbacks;
+    access.callback_virtual_0c(access.context, callback_owner, table, first,
+        words.event, words.value);
+}
 } // namespace
 
 void invoke_observer_slot04_00693550(NativeObserverOwnerStorage& first,
@@ -42,6 +55,17 @@ void notify_observer_slot08_00696340(NativeObserverOwnerStorage& first,
     ObserverEventDeliveryContext& delivery) {
     dispatch_observer_edges_00695f90(delivery.lifetime, delivery.global_00e198e4,
         first, selected08, &delivery);
+}
+
+void dispatch_observer_event_words_00696120(NativeObserverOwnerStorage& first,
+    std::uint32_t event, std::uint32_t value, ObserverEventWordDeliveryContext& delivery) {
+    CapturedEventWords words{delivery, event, value};
+    dispatch_observer_edges_00695f90(delivery.lifetime, delivery.global_00e198e4,
+        first, selected0c, &words);
+}
+void notify_observer_slot0c_00696350(NativeObserverOwnerStorage& first,
+    std::uint32_t event, std::uint32_t value, ObserverEventWordDeliveryContext& delivery) {
+    dispatch_observer_event_words_00696120(first, event, value, delivery);
 }
 
 bool sample_observer_endpoint_presence_00925c45(
