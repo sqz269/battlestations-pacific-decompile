@@ -72,3 +72,5 @@ artifact directory `local/cc11_session_participant_binding_20261007_a`.
 Full project registration/build and shared Ghidra annotations belong to the
 primary integrator. No game validation, entity construction, session dispatcher,
 or ABI-compatible release replacement is established by this packet.
+
+Primary integration at `d5dcfed201deaa7746f112ca92cca54a8264e5d1` passed the complete MSVC Win32 build and all three existing CTests. One independent connected current-library fixture freshly compiled14 actual TUs and passed143 internal checks, retaining40 original nonoperand bytes. The295 Source/header/fixture pins,282 actual project compiler includes (281 production headers plus generated PE reader), three current support libraries, original PE,394 worker artifacts and334 prior artifacts were unchanged. Source61B/27inst and the three fixture bridges match worker COFF exactly; unregisterCALL1F precedes actual+4C store24 and registerCALL31. Original ABI, complete entities, dispatchers/gates and gameplay remain qualified.
