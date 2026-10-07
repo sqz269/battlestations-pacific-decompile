@@ -105,3 +105,5 @@ allocator/EH/fault/reentry/global/lifetime interfaces, native admission, origina
 ABI, and game behavior remain separate boundaries. Native group-merge tail
 repair remains qualified by the existing partial-flow receipt; owning-copy
 fixture results do not establish whole native group-merge flow or ABI parity.
+
+Primary integration f97d970fc7a40914f0de66ba4d2ae244c9a59f78: full MSVC Win32/all three existing CTests passed. Independent fresh actual-main helper/library TU plus parser manifested probe passed;77 main link-input hashes and17 installed inputs were reverified. Machine014C/resource24/id1/asInvoker verified;14 direct native calls passed. The whole production selector loop was compiled, not executed; real reader/selected-field fixtures do not establish enum storage, emitter/level tick, historical CRT, original ABI or game parity. Executable SHA256 003425c15423a93ae2f21e833e716950ac445b60409fae744b3470d9b408823e. Probe local/cc11_level_root.cmd; build log local/cc11_level_integrated_build.log.
