@@ -704,12 +704,13 @@ SceneWorldClassLists& scene_world_class_lists() noexcept;
 // docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md. The explicit-false class-id-8
 // exception at 00823941..00823955 is gated by kShipDirectorClass8Bound below.
 // Cleared with the scene.
-// Packet cc11_director_class8: OFF pending the JM06 3000-frame pair. When ON,
-// a present false TorpedoDirector is promoted only when the same resolved
+// Packet cc11_director_class8: ON after the reviewed JM06 3000-frame pair.
+// A present false TorpedoDirector is promoted only when the same resolved
 // VehicleClass.Type descriptor used by create_units answers unit_is_kind_of
 // (kind, 8). Unknown types retain false; group names and scene-class labels
-// never infer the actual leaf. docs/TORPEDO_DIRECTOR_CLASS8_CC11.md.
-inline constexpr bool kShipDirectorClass8Bound = false;
+// never infer the actual leaf. docs/TORPEDO_DIRECTOR_CLASS8_CC11.md and
+// docs/TORPEDO_DIRECTOR_JM06_PAIR_CC11.md.
+inline constexpr bool kShipDirectorClass8Bound = true;
 struct SceneDirectorEnables {
     bool artillery{true};
     bool anti_air{true};

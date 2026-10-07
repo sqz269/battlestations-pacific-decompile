@@ -1553,6 +1553,8 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 if constexpr (kShipDirectorClass8Bound) {
                     // 00823941..00823955: an explicit false becomes 1 only
                     // when the instantiated unit's vt[5Ch](8) answers true.
+                    // This host projects the bag before generation/Hidden
+                    // gates; its diagnostic can include deferred scene rows.
                     // Match create_units' actual descriptor resolution;
                     // Sub groups and SubmarineGen labels do not supply it.
                     if (!enables.torpedo && owner.lua != nullptr

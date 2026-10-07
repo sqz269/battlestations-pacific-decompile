@@ -7,10 +7,10 @@ Packet `cc11_director_class8`, 2026-10-06. Owned addresses: `00822C20`,
 **Finding:** the native explicitly enables a submarine's torpedo director even
 when its bag says `TorpedoDirector = false`. The test is the constructed unit's
 `vt[5Ch](8)`, not a scene class token or a property-group name. The scene host
-currently retains false from `Sub(Ship)` without that test. The candidate fix
+previously retained false from `Sub(Ship)` without that test. The binding
 uses the same resolved `VehicleClass.Type` descriptor as `create_units` and the
-existing decoded kind predicate. **`kShipDirectorClass8Bound` is OFF pending a
-JM06 3000-frame OFF/ON pair.** The existing director switch remains unchanged.
+existing decoded kind predicate. **`kShipDirectorClass8Bound` is ON after the
+reviewed JM06 3000-frame OFF/ON pair.** The existing director switch remains unchanged.
 
 ## Native producer and consumer
 
@@ -89,28 +89,41 @@ copies the four enables. Since `00853050` accepts 6, real submarines consume
 this table. Runtime TorpedoEnable/CLOSEATTACK updates keep their existing table
 writer and order; the new binding runs only while retaining initial scene bags.
 
-## Candidate and validation boundary
+## Binding and validation boundary
 
 The implementation is confined to scene source/header. Its false-to-true
-candidate is gated by `kShipDirectorClass8Bound = false`, and ON emits
+binding is gated by `kShipDirectorClass8Bound = true`, and ON emits
 `ship director class8 override: unit=... type_id=... class_id=8 raw_false=1 torpedo=1`.
 This is a process binding of native initialization, not a native ABI replacement.
 
-Use the existing **JM06 3000 mission frames at 0.05 s** row with all other
-switches, orders, timing and inputs fixed. Compare OFF/ON using `pair_diff` and
-the existing per-unit director/gunnery diagnostics. ON should produce class-8
-override lines and enable the inherited-false submarines' torpedo masks;
-surface ships with false retain false. Shipyard boats with absent keys keep
-true on both candidates. Gameplay may move because the previously masked
-submarine tubes become eligible; a change needs review before the switch is ON.
+The completed **JM06 3000 mission frames at 0.05 s** pair held every other
+switch and launch input fixed. Both Win32 builds passed 2/2 configured tests;
+both host runs exited 0 at difficulty 1 and mission frame 3000. ON logged 14
+class8 property projections; eight submarine unit rows were created, seven
+remained active after Gato's Lua kill, and six Hidden rows stayed deferred.
+The host's effective scene mode was 9. The projection diagnostic precedes
+generation/Hidden gates and does not count live native objects.
 
-The worker compiled the scene translation unit as MSVC Win32 with `/W4 /WX
+JM06 re-enabled Narwhal and PlayerSub 01-03 in Lua, so their later state
+matched while changed enable writes fell from 4 to 0. The three admitted
+tutorial TypeB rows received no Lua enable: final torpedo masks changed 0 to 3,
+168 masked candidates became range rejections, and their displayed category
+range changed 1600 to 1852. `pair_diff` correctly returned 3 for these actual
+gameplay fields. Shots, hits, damage and deaths stayed equal; this does not
+establish full gameplay identity. The primary integrator reviewed these native
+exception consequences and approved only this switch's promotion. Exact input,
+hash, runtime and comparison receipts are in
+[TORPEDO_DIRECTOR_JM06_PAIR_CC11.md](TORPEDO_DIRECTOR_JM06_PAIR_CC11.md).
+
+The initial worker packet compiled the scene translation unit as MSVC Win32 with `/W4 /WX
 /fp:strict`, for OFF and an ignored local ON-header variant. Direct native call
 receipts are checked by `verify_report_calls`; vtable resolution is separate
 byte/listing evidence. No new broad tests or concurrent full build were run.
 `verify_report_calls` passed eight direct rows with zero failures; two indirect
 rows were explicitly excluded. `git diff --check` passed. Both ignored object
 hashes and sizes are recorded in the report.
-Fresh linked build, the OFF/ON runtime pair and original-game validation remain
-with the primary integrator. These qualifications prevent treating successful
-source compilation as gameplay or ABI proof.
+The later pair supplies fresh linked builds and focused host-runtime evidence.
+Its scene-mode admission is explicitly qualified; regular original-game JM06
+admission and full original-game validation are not established. The kind helper
+and process binding remain reconstructed interfaces, without native ABI
+replacement proof.
