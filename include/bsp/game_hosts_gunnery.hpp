@@ -61,6 +61,12 @@
 // docs/PROJECTILE_HELPERS.md, docs/PROJECTILE_IMPACT.md,
 // docs/SHIP_HIT_RECORD.md, docs/UNIT_HIT_PATH.md, docs/UNIT_DAMAGE_AND_DEATH.md,
 // docs/KILL_CREDIT.md, docs/GAME_EXECUTABLE.md.
+//
+// cc11_health_guard: the partial 00877B90 callback binding carries the existing
+// UnitHealthWrite::dispatch_health_changed to the five damage/death endpoints.
+// It is OFF pending paired runtime validation. Callback timing remains at the
+// host's hit/pass end; this does not provide native per-write callback ordering
+// or binary ABI compatibility. docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md.
 
 #include <array>
 #include <cstddef>

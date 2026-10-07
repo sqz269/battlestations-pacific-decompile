@@ -385,6 +385,14 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    every site passes 0, as before. The floor itself is stored either way.
 //    ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 10).
 constexpr bool kUnitInvincibilityFloorBound = true;
+//  * kUnitHealthCallbackGuardBound (packet cc11_health_guard): carry the
+//    00877B90 result to the host's deferred health-zero callback. The native
+//    00877BB9..00877BC1 ordered equality test precedes clamping; neither a
+//    nominal damage amount nor a final health delta substitutes for its
+//    dispatch_health_changed decision. Refused damage never reaches SetHealth.
+//    OFF pending paired runtime validation (SHIP_AI_OPEN_ITEMS 205.2 / 206).
+//    Partial binding: callbacks stay coalesced at the existing hit/pass end.
+constexpr bool kUnitHealthCallbackGuardBound = false;
 //  * kGunneryLineOfSightBound (packet cc9_gunnery_line_of_sight,
 //    docs/GUNNERY_OPEN_ITEMS.md section 5): 00864D90's visibility test runs
 //    00864680 instead of answering visible. The target's point is its pose raised
@@ -2627,6 +2635,15 @@ struct GameGunneryHost::Impl {
     int override_hp_traced{0};
     unsigned long long invincibility_floored_writes{0};
     unsigned long long invincibility_sink_refusals{0};
+    unsigned long long health_callback_no_dispatch{0};
+    unsigned long long health_callback_suppressed{0};
+    bool health_zero_callback_allowed(bool dispatch_health_changed) {
+        if (dispatch_health_changed) return true;
+        ++health_callback_no_dispatch;
+        if (!kUnitHealthCallbackGuardBound) return true;
+        ++health_callback_suppressed;
+        return false;
+    }
     float invincibility_of(std::size_t unit) const {
         if (!kUnitInvincibilityFloorBound || unit >= invincibility_by_unit.size()) return 0.0f;
         return invincibility_by_unit[unit];
@@ -9304,6 +9321,7 @@ public:
         const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
+        dispatch_health_changed_ |= write.dispatch_health_changed;
         if (write.wrote) owner_.unit_state[victim_].health = write.stored_health;
         return true;
     }
@@ -9358,6 +9376,7 @@ public:
 
     void set_hit(const bsp::HitRecord& hit) noexcept { hit_ = hit; }
     float applied() const noexcept { return applied_; }
+    bool dispatch_health_changed() const noexcept { return dispatch_health_changed_; }
 
 private:
     GameGunneryHost::Impl& owner_;
@@ -9367,6 +9386,7 @@ private:
     float direction_[3]{};
     bsp::HitRecord hit_{};
     float applied_{0.0f};
+    bool dispatch_health_changed_{false};
 };
 
 }  // namespace
@@ -9535,7 +9555,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     bsp::UnitHealth health;
     health.current_health = target.health;
     health.max_health = target.max_health;
-    if (bsp::unit_is_dead(health)) kill_unit(victim);
+    if (bsp::unit_is_dead(health)
+        && health_zero_callback_allowed(binding.dispatch_health_changed())) kill_unit(victim);
 }
 
 // ---------------------------------------------------------------------------
@@ -9817,7 +9838,8 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     bsp::UnitHealth health;
     health.current_health = target.health;
     health.max_health = target.max_health;
-    if (bsp::unit_is_dead(health)) kill_unit(victim);
+    if (bsp::unit_is_dead(health)
+        && health_zero_callback_allowed(binding.dispatch_health_changed())) kill_unit(victim);
 }
 
 // 0084BC60 step 7, read from the listing at 0084BE25..0084BEE3.
@@ -10377,10 +10399,12 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             bsp::UnitDamageGates gates;
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
                 scaled_amount);
+            bool dispatch_health_changed = false;
             if (!outcome.refused) {
                 note_floor(health, scaled_amount, outcome.new_health);
                 const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                     outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+                dispatch_health_changed = write.dispatch_health_changed;
                 if (write.wrote) {
                     cf_explosion_damage += state.health - write.stored_health;
                     state.health = write.stored_health;
@@ -10391,7 +10415,8 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             bsp::UnitHealth after;
             after.current_health = state.health;
             after.max_health = state.max_health;
-            if (bsp::unit_is_dead(after)) {
+            if (bsp::unit_is_dead(after)
+                && health_zero_callback_allowed(dispatch_health_changed)) {
                 ++cf_deaths;
                 log.notef("gunnery: explosion death %s t=%.2f", state.row.name.c_str(),
                     static_cast<double>(clock_seconds));
@@ -10420,6 +10445,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
         DamageControl& dc = damage_control[i];
         UnitState& state = unit_state[i];
         if (!dc.enabled || state.dead) continue;
+        bool dispatch_health_changed = false;
         const auto damage = [&](float amount) {
             bsp::UnitHealth health;
             health.current_health = state.health;
@@ -10433,6 +10459,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             note_floor(health, scaled_amount, outcome.new_health);
             const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+            dispatch_health_changed |= write.dispatch_health_changed;
             if (write.wrote) state.health = write.stored_health;
         };
         if constexpr (kShipHullRepairBound) {
@@ -10481,7 +10508,8 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
         bsp::UnitHealth health;
         health.current_health = state.health;
         health.max_health = state.max_health;
-        if (bsp::unit_is_dead(health)) {
+        if (bsp::unit_is_dead(health)
+            && health_zero_callback_allowed(dispatch_health_changed)) {
             ++dc_deaths;
             log.notef("gunnery: damage control death %s t=%.2f water_total=%.0f "
                 "fire_total=%.0f repaired=%.0f", state.row.name.c_str(),
@@ -12115,10 +12143,12 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
     const float scaled = host.difficulty_scaled_damage(unit_index, amount);
     bsp::UnitDamageGates gates;
     const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates, scaled);
+    bool dispatch_health_changed = false;
     if (!outcome.refused) {
         host.note_floor(health, scaled, outcome.new_health);
         const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+        dispatch_health_changed = write.dispatch_health_changed;
         if (write.wrote) state.health = write.stored_health;
     }
     state.row.health = state.health;
@@ -12126,7 +12156,8 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
     bsp::UnitHealth after;
     after.current_health = state.health;
     after.max_health = state.max_health;
-    if (bsp::unit_is_dead(after)) host.kill_unit(unit_index);   // the death funnel
+    if (bsp::unit_is_dead(after)
+        && host.health_zero_callback_allowed(dispatch_health_changed)) host.kill_unit(unit_index);
 }
 
 void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
@@ -13147,6 +13178,10 @@ void GameGunneryHost::report() {
             "packet cc9_set_invincible_floor)", host.invincibility_sets,
             host.invincibility_floored_writes, host.invincibility_sink_refusals,
             kUnitInvincibilityFloorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery health callback no_dispatch=%llu "
+            "suppressed=%llu bound=%d (00877B90, packet cc11_health_guard)",
+            host.health_callback_no_dispatch, host.health_callback_suppressed,
+            kUnitHealthCallbackGuardBound ? 1 : 0);
         host.log.notef("summary mission gunnery turn average tests=%llu rotations=%llu "
             "bound=%d (00901CC1..00901EEE / 0085E4D0, packet cc9_aa_turn_average)",
             host.turn_average_tests, host.turn_average_rotations,

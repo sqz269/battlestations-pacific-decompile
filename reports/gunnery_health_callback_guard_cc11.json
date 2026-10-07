@@ -1,0 +1,59 @@
+{
+  "packet": "cc11_health_guard",
+  "status": "partial_host_binding_off_syntax_checked_rule_probe_passed",
+  "switch": { "name": "kUnitHealthCallbackGuardBound", "enabled": false },
+  "source": "src/game_hosts_gunnery.cpp",
+  "header": "include/bsp/game_hosts_gunnery.hpp",
+  "document": "docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md",
+  "target": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_by": "bsp.py ghidra proto and export; Client.verify checks project, program path, language and image base",
+    "ghidra_mutated": false
+  },
+  "routines": [
+    { "address": "00877B90", "coverage": "partial: transport existing setter callback decision only", "native_abi": "ECX this, stack float, RET 4 at 00877CC6", "evidence": ["00877BAB..00877BC1 ordered equality before clamp", "00877BC7..00877C04 clamp and store", "00877C2A..00877C40 mode gate and vtable dispatch"] },
+    { "address": "00879070", "coverage": "partial: preserve refusal versus setter dispatch at existing host calls", "native_abi": "ECX this, stack float, RET 4 at 0087923C", "evidence": ["008790B4..008790CA positive damage dead gate", "008790D0..00879121 invincibility floor", "00879123..0087914B subtraction and SetHealth call"] },
+    { "address": "008777D0", "coverage": "partial: propagate callback eligibility through existing hull and part host calls", "native_abi": "ECX this, stack hit pointer, RET 4 at 00877A41", "evidence": ["008778AD..008778D2 positive hull damage slot call", "00877A11..00877A37 positive winning-part damage slot call"] }
+  ],
+  "host_steps": [
+    { "address": "008778D2", "native": "008777D0+vtable1AC", "function": "008777D0", "operation": "positive hull damage virtual dispatch", "verification": "indirect CALL EDX checked in exported listing" },
+    { "address": "00877A37", "native": "008777D0+vtable1AC", "function": "008777D0", "operation": "positive winning-part damage virtual dispatch", "verification": "indirect CALL EAX checked in exported listing" },
+    { "address": "0087914B", "native": "00877B90", "function": "00879070", "operation": "SetHealth requested health after damage" },
+    { "address": "00877C40", "native": "00877B90+vtable1B0", "function": "00877B90", "operation": "health-changed virtual callback", "verification": "indirect CALL EAX; slot load is 00877C3A" }
+  ],
+  "corrections": [
+    { "was": "Five health-zero endpoints called kill_unit after no setter dispatch", "is": "When enabled, all five require the setter's dispatch_health_changed, accumulated over existing multi-write host passes", "evidence": "00877BB9..00877BC1 returns on ordered equality before 00877C40; refused 00879070 calls never reach SetHealth" },
+    { "was": "SHIP_AI_OPEN_ITEMS 205.2 suggests applied != 0 as the guard", "is": "Preserve actual setter dispatch eligibility; no nominal damage or final health delta substitution", "evidence": "00877BC1 compares requested to current before 00877BC7..00877C04 clamping; unequal clamp-to-same values dispatch; unordered does not return" }
+  ],
+  "host_endpoints": ["Impl::apply_hit", "Impl::apply_gunless_blast_hit", "Impl::run_damage_control pending explosions", "Impl::run_damage_control repair/water/fire pass", "GameGunneryHost::apply_script_damage_0095da00"],
+  "audited_exclusions": ["OverrideHP has no existing health-zero callback", "FailureBinding::set_health is explicitly unreached", "explicit kill/destroy APIs bypass this health-driven guard", "segment health is distinct from unit health"],
+  "validation": {
+    "diff_check": "passed",
+    "report_calls": "1 direct call checked, 0 failed; 3 indirect calls manually checked in listing and live function bounds",
+    "modified_host_msvc_x86_syntax": "passed /std:c++17 /W4 /WX /fp:strict /Zs",
+    "focused_existing_rule_probe": "12/12 passed, linked src/unit_damage.cpp with /MANIFEST:EMBED; ignored local/cc11_health_guard_probe.cpp",
+    "probe_command": "cmd /c local\\cc11_health_guard_check.cmd",
+    "full_win32_build_ctest": "deferred to serialized primary integration",
+    "modified_host_runtime": "not run",
+    "native_differential": "not run",
+    "binary_abi_compatible": false
+  },
+  "runtime_pair": {
+    "harness": "J:/PROG/battlestations-pacific-decompile-cc9-ships41/local/s41_rows.ps1",
+    "row": "osf12", "mission": "USNOS", "mission_frames": 80000, "frame_seconds": 0.05,
+    "outer_frames": 80200, "press_start_frame": 30,
+    "orders": "s41_os_f12.txt",
+    "hold_on_in_both_experimental_variants": "kCaptureStatePartyFromUnitBound",
+    "historical_observation": "s41_h12_osf12.log:292620 SetParty HQ2 2->0;293434 neutralized prior party0 at1706.15s;846107 health_zero478 neutralized49",
+    "acceptance": "Compare complete pair, guard counters, deaths and HQ resynchronizations; repeated prior-party-0 neutralization must cease before enabling baseline"
+  },
+  "limits": [
+    "Default OFF; no behavioral fix active until runtime pair accepted",
+    "Health-zero callbacks remain coalesced at existing host hit/pass boundaries",
+    "Positive-health callbacks and native multiplayer ownership are not bound",
+    "NaN equality eligibility matches native masked-unordered comparison, but existing pure setter NaN storage and signaling exception policy remain different",
+    "Existing hull-segment gate policy and damage arithmetic are retained"
+  ]
+}
