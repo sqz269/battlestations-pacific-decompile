@@ -1,0 +1,110 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00a419b0",
+        "end_address": "00a41aa1"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00a419b0",
+        "end_address": "00a41aa0",
+        "bytes_disassembled": 241,
+        "message": "Successfully disassembled 241 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00a419b0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00a419b0",
+        "function_name": "FUN_00a419b0",
+        "entry_point": "00a419b0",
+        "body_size": 241,
+        "message": "Function created successfully at 00a419b0"
+      }
+    },
+    {
+      "defined": "00a419b0",
+      "end": "00a41aa1",
+      "name": null,
+      "after": "Function: FUN_00a419b0 at 00a419b0\nSignature: undefined FUN_00a419b0(void)\nEntry: 00a419b0\nBody: 00a419b0 - 00a41aa0"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00a41ab0",
+        "end_address": "00a41b99"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00a41ab0",
+        "end_address": "00a41b98",
+        "bytes_disassembled": 233,
+        "message": "Successfully disassembled 233 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00a41ab0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00a41ab0",
+        "function_name": "FUN_00a41ab0",
+        "entry_point": "00a41ab0",
+        "body_size": 233,
+        "message": "Function created successfully at 00a41ab0"
+      }
+    },
+    {
+      "defined": "00a41ab0",
+      "end": "00a41b99",
+      "name": null,
+      "after": "Function: FUN_00a41ab0 at 00a41ab0\nSignature: undefined FUN_00a41ab0(void)\nEntry: 00a41ab0\nBody: 00a41ab0 - 00a41b98"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "primary_review": {
+    "date": "2026-10-07",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "complete_disk_listings_reviewed": true,
+    "live_starts_cross_checked": true,
+    "definition_only_not_source_or_game_reconstruction": true,
+    "client": {
+      "start": "00a419b0",
+      "end_exclusive": "00a41aa1",
+      "ret0c": "00a41a9e",
+      "bytes": 241
+    },
+    "host": {
+      "start": "00a41ab0",
+      "end_exclusive": "00a41b99",
+      "ret0c": "00a41b96",
+      "bytes": 233
+    },
+    "trailing_int3_excluded": true,
+    "disk_live_bytes_verified_by_define_tool": true,
+    "original_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "snapshot_internal_functions": 64270,
+    "snapshot_total_functions": 64712
+  }
+}
