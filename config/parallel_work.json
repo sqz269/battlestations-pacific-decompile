@@ -13633,6 +13633,32 @@
       ],
       "reuses_worker_from": "cc11_land_active_retirement",
       "contract": "Port conditional normal active prepend with native2*n+1 full growth, incoming-first prefix copy, count-before-base publication and valid spare tail shift. Exclude zero-count spare-capacity native underflow; keep actual parked producer/arena/lifetimes and broad scheduler binding explicit and unbound."
+    },
+    {
+      "id": "cc11_land_command_producer",
+      "done": true,
+      "state": "integrated_conditional_required_service_producer_main_build_and_probe_passed",
+      "worker": "primary",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0099a170"
+      ],
+      "output_files": [
+        "src/attack_commands.cpp",
+        "include/bsp/attack_commands.hpp",
+        "include/bsp/native_pilot_bot_command_producer.hpp",
+        "docs/PILOT_BOT_COMMAND_PRODUCER_CC11.md",
+        "reports/pilot_bot_command_producer_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_scheduler",
+        "cc11_land_active_retirement"
+      ],
+      "integrated_revision": "358e255cbc285e1479355d59c7ca360d2186b2ae",
+      "contract": "Complete normal caller16factory paths, fresh current squadron/descriptors, captured controller/target, EDXblock land factory and nonzero append with no retired drain.",
+      "abi_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
