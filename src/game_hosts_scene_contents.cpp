@@ -2208,55 +2208,16 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             retain_scene_raw_word(level_prop, present, raw);
         }
         // 006F2847-006F285F, `LandingRange`, the same way (routed from cc9-ships13).
-        const SceneProperty* landing_prop = bag.find("LandingRange");
-        if (landing_prop != nullptr && !landing_prop->values.empty()) {
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            if (landing_prop->type_letter == "I"
-                && scene_scan_int(landing_prop->values.back(), as_int)) {
-                stored.landing_range_present = true;
-                stored.landing_range_raw = as_int;
-            } else if (scene_scan_float(landing_prop->values.back(), as_float)) {
-                std::int32_t bits = 0;
-                std::memcpy(&bits, &as_float, sizeof bits);
-                stored.landing_range_present = true;
-                stored.landing_range_raw = bits;
-            }
-        }
+        retain_scene_raw_word(bag.find("LandingRange"), stored.landing_range_present,
+            stored.landing_range_raw);
         // Packet cc9_building_pad_model: 006F2895-006F28B3, `LandingPointRange`,
         // the same way.
-        const SceneProperty* pad_prop = bag.find("LandingPointRange");
-        if (pad_prop != nullptr && !pad_prop->values.empty()) {
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            if (pad_prop->type_letter == "I"
-                && scene_scan_int(pad_prop->values.back(), as_int)) {
-                stored.landing_point_range_present = true;
-                stored.landing_point_range_raw = as_int;
-            } else if (scene_scan_float(pad_prop->values.back(), as_float)) {
-                std::int32_t bits = 0;
-                std::memcpy(&bits, &as_float, sizeof bits);
-                stored.landing_point_range_present = true;
-                stored.landing_point_range_raw = bits;
-            }
-        }
+        retain_scene_raw_word(bag.find("LandingPointRange"), stored.landing_point_range_present,
+            stored.landing_point_range_raw);
         // Packet cc9_airfield_destruction_rule: 006F286E-006F288C, `InferiorRange`,
         // the same way (C8h when absent).
-        const SceneProperty* inferior_prop = bag.find("InferiorRange");
-        if (inferior_prop != nullptr && !inferior_prop->values.empty()) {
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            if (inferior_prop->type_letter == "I"
-                && scene_scan_int(inferior_prop->values.back(), as_int)) {
-                stored.inferior_range_present = true;
-                stored.inferior_range_raw = as_int;
-            } else if (scene_scan_float(inferior_prop->values.back(), as_float)) {
-                std::int32_t bits = 0;
-                std::memcpy(&bits, &as_float, sizeof bits);
-                stored.inferior_range_present = true;
-                stored.inferior_range_raw = bits;
-            }
-        }
+        retain_scene_raw_word(bag.find("InferiorRange"), stored.inferior_range_present,
+            stored.inferior_range_raw);
         // 009554C1: the `MinLevel` find that gates the unit+724h bag clone.
         stored.bag_min_level = bag.find("MinLevel") != nullptr;
         // Packet cc9_submarine_depth_level: 00853630's two scene finds, kept
