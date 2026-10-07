@@ -1,0 +1,110 @@
+{
+  "utc": "2026-10-07T04:28:56.998225+00:00",
+  "base": "e03e003987cb50e8b100be79d62a805009ed4054",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "concurrency": {
+    "primary": 1,
+    "workers": 3
+  },
+  "confirmed_previously_integrated_packets": [
+    {
+      "packet": "orch4_native_loading_queue_submission_br",
+      "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+      "report": "reports/native_loading_queue_submission_br.json"
+    },
+    {
+      "packet": "orch4_native_loading_queue_retirement_br",
+      "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+      "report": "reports/native_loading_queue_retirement_br.json"
+    },
+    {
+      "packet": "orch4_native_fileblock_copy_br",
+      "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+      "report": "reports/native_fileblock_copy_br.json"
+    },
+    {
+      "packet": "orch4_native_loading_queue_integration_br",
+      "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+      "report": "reports/native_loading_queue_integration_br.json"
+    },
+    {
+      "packet": "orch4_native_resource_stream_reads_bs",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "report": "reports/native_resource_stream_reads_bs.json"
+    },
+    {
+      "packet": "orch4_native_resource_root_owner_bs",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "report": "reports/native_resource_root_owner_bs.json"
+    },
+    {
+      "packet": "orch4_native_resource_root_integration_bs",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "report": "reports/native_resource_root_integration_bs.json"
+    },
+    {
+      "packet": "orch4_native_resource_node_traversal_bt",
+      "code_revision": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+      "report": "reports/native_resource_node_traversal_bt.json"
+    },
+    {
+      "packet": "orch4_native_resource_node_traversal_integration_bt",
+      "code_revision": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+      "report": "reports/native_resource_node_traversal_integration_bt.json"
+    },
+    {
+      "packet": "orch4_native_resource_value_reads_bu",
+      "code_revision": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+      "report": "reports/native_resource_value_reads_bu.json"
+    },
+    {
+      "packet": "orch4_native_resource_value_reads_integration_bu",
+      "code_revision": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+      "report": "reports/native_resource_value_reads_integration_bu.json"
+    },
+    {
+      "packet": "orch4_native_resource_hierarchy_parser_bv",
+      "code_revision": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+      "report": "reports/native_resource_hierarchy_parser_bv.json"
+    },
+    {
+      "packet": "orch4_native_resource_hierarchy_parser_integration_bv",
+      "code_revision": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+      "report": "reports/native_resource_hierarchy_parser_integration_bv.json"
+    },
+    {
+      "packet": "orch4_native_resource_root_dispatch_bw",
+      "code_revision": "8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3",
+      "report": "reports/native_resource_root_dispatch_bw.json"
+    },
+    {
+      "packet": "orch4_native_resource_root_dispatch_integration_bw",
+      "code_revision": "8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3",
+      "report": "reports/native_resource_root_dispatch_integration_bw.json"
+    },
+    {
+      "packet": "orch4_native_game_resource_classification_bx",
+      "code_revision": "81472938606e4fdbb3661253456cfa8a33da085d",
+      "report": "reports/native_game_resource_classification_bx.json"
+    },
+    {
+      "packet": "orch4_native_game_resource_lists_bx",
+      "code_revision": "81472938606e4fdbb3661253456cfa8a33da085d",
+      "report": "reports/native_game_resource_lists_bx.json"
+    },
+    {
+      "packet": "orch4_native_game_resource_classification_integration_bx",
+      "code_revision": "81472938606e4fdbb3661253456cfa8a33da085d",
+      "report": "reports/native_game_resource_classification_integration_bx.json"
+    }
+  ],
+  "unconfirmed_previous_packets": [],
+  "dispatched_packets": [
+    "cc11_health_guard",
+    "cc11_director_props",
+    "cc11_land_retirement"
+  ],
+  "readiness_correction": "brief reads the packets array; both commands honor explicit source blockers and prerequisite packets.",
+  "qualification": "Dispatch and prior commit ancestry are scheduling evidence, not new runtime, ABI, or original-game proof."
+}

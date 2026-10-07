@@ -960,6 +960,15 @@ def packet_done(packet):
     return bool(packet.get('done')) or 'integrated' in text or text in ('done', 'complete', 'completed')
 
 
+def packet_dependencies(packet):
+    return sorted(set(packet.get('depends_on', [])) | set(packet.get('prerequisite_packets', [])))
+
+
+def packet_source_blocked(packet):
+    scope = packet.get('scope')
+    return packet.get('source_ready') is False or (isinstance(scope, dict) and scope.get('ready') is False)
+
+
 def lease_cmd(args):
     sub = args.lease_command
     if sub == 'claim':
@@ -1018,13 +1027,15 @@ def packets_cmd(args):
     if args.packets_command in ('list', 'ready'):
         for p in packets:
             pid = p.get('id')
-            deps = p.get('depends_on', [])
+            deps = packet_dependencies(p)
             missing = [d for d in deps if not (d in by_id and packet_done(by_id[d]))]
             done = packet_done(p)
-            ready = not done and not missing and pid not in leased
+            source_blocked = packet_source_blocked(p)
+            ready = not done and not missing and not source_blocked and pid not in leased
             if args.packets_command == 'ready' and not ready:
                 continue
-            flag = 'done' if done else ('leased:' + leased[pid] if pid in leased else ('blocked:' + ','.join(missing) if missing else 'ready'))
+            flag = 'done' if done else ('leased:' + leased[pid] if pid in leased else
+                    ('blocked:' + ','.join(missing) if missing else ('blocked:source_contract' if source_blocked else 'ready')))
             print(f"{pid:<28} {flag:<34} {len(p.get('function_addresses', [])):3d} addrs  {str(p.get('state') or '')[:50]}")
         # Packets the integrator has proposed but not yet promoted into `packets`.
         for nd in work.get('next_dispatch', []) or []:
@@ -1160,13 +1171,13 @@ def brief(args):
         else:
             print(f"unmerged: none ({branch} fully in main)")
     print(branch_sync.tip_line(ROOT))
-    packets, _ = load_packets()
+    work, _ = load_packets()
+    packets = {p.get('id'): p for p in work.get('packets', [])}
     leased = {l['packet'] for l in coordination.active_leases()}
-    ready = [pid for pid, p in (packets or {}).items()
-             if isinstance(p, dict) and not p.get('done') and pid not in leased
-             and not [d for d in p.get('depends_on', []) if not (packets.get(d) or {}).get('done')]]
-    if ready:
-        print(f"ready packets ({len(ready)}): " + ' '.join(sorted(ready)[:args.limit]))
+    ready = [pid for pid, p in packets.items()
+             if not packet_done(p) and not packet_source_blocked(p) and pid not in leased
+             and all(d in packets and packet_done(packets[d]) for d in packet_dependencies(p))]
+    print(f"ready packets ({len(ready)}): " + ' '.join(sorted(ready)[:args.limit]))
     print('next: python tools/bsp.py cheatsheet   for the full command list')
 
 
