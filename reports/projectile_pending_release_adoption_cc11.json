@@ -2,7 +2,7 @@
   "packet": "cc11_projectile_pending_release_adoption",
   "date": "2026-10-07",
   "base_revision": "bd64c7aed",
-  "status": "conditional connected source adoption; focused compiled source fixture passed; actual providers/global/lifetime/ABI/game binding unbound",
+  "status": "integrated bounded connected SOURCE adoption; independent fresh actual-main-TU manifested probe and full Win32/all three CTests passed; actual providers/lifetimes/original ABI/game remain unbound",
   "target": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
     "program_path": "/battlestationspacific.exe",
@@ -29,15 +29,63 @@
     }
   ],
   "host_steps": [
-    {"address":"006E659F","native":"00696350","function":"006E6490","contract":"First fresh node[-8] identity/event0/value0; existing notifier unchanged"},
-    {"address":"006E65A9","native":"00926D90","function":"006E6490","contract":"Independent fresh SAME cell identity/cause2; new concrete service directly adopts complete existing source"},
-    {"address":"00926DBE","native":"009248D0","function":"00926D90","contract":"Required actual current pending owner; capture section+4 even on killed-flag gate"},
-    {"address":"00926DD7","native":"IAT00CE2218 EnterCriticalSection","function":"00926D90","kind":"indirect","contract":"Captured actual section; native imported call, not checked as direct function edge"},
-    {"address":"00926E05","native":"current actual entity vtable+70","function":"00926D90","kind":"indirect","contract":"Required current target, ECX entity/stack literal1; individual profile body remains unbound"},
-    {"address":"00926E19","native":"00926D90","function":"00926D90","contract":"DIRECT recursive child call receives original cause; fresh sibling follows"},
-    {"address":"00926E40","native":"00924B10","function":"00926D90","contract":"Existing canonical allocation body, captured next/previous and actual payload source cell"},
-    {"address":"00926E4E","native":"009267F0","function":"00926D90","contract":"Existing canonical count growth before captured-head/current-previous link publication"},
-    {"address":"00926E63","native":"IAT00CE2210 LeaveCriticalSection","function":"00926D90","kind":"indirect","contract":"Release same captured section; native imported call, not checked as direct edge"}
+    {
+      "address": "006E659F",
+      "native": "00696350",
+      "function": "006E6490",
+      "contract": "First fresh node[-8] identity/event0/value0; existing notifier unchanged"
+    },
+    {
+      "address": "006E65A9",
+      "native": "00926D90",
+      "function": "006E6490",
+      "contract": "Independent fresh SAME cell identity/cause2; new concrete service directly adopts complete existing source"
+    },
+    {
+      "address": "00926DBE",
+      "native": "009248D0",
+      "function": "00926D90",
+      "contract": "Required actual current pending owner; capture section+4 even on killed-flag gate"
+    },
+    {
+      "address": "00926DD7",
+      "native": "IAT00CE2218 EnterCriticalSection",
+      "function": "00926D90",
+      "kind": "indirect",
+      "contract": "Captured actual section; native imported call, not checked as direct function edge"
+    },
+    {
+      "address": "00926E05",
+      "native": "current actual entity vtable+70",
+      "function": "00926D90",
+      "kind": "indirect",
+      "contract": "Required current target, ECX entity/stack literal1; individual profile body remains unbound"
+    },
+    {
+      "address": "00926E19",
+      "native": "00926D90",
+      "function": "00926D90",
+      "contract": "DIRECT recursive child call receives original cause; fresh sibling follows"
+    },
+    {
+      "address": "00926E40",
+      "native": "00924B10",
+      "function": "00926D90",
+      "contract": "Existing canonical allocation body, captured next/previous and actual payload source cell"
+    },
+    {
+      "address": "00926E4E",
+      "native": "009267F0",
+      "function": "00926D90",
+      "contract": "Existing canonical count growth before captured-head/current-previous link publication"
+    },
+    {
+      "address": "00926E63",
+      "native": "IAT00CE2210 LeaveCriticalSection",
+      "function": "00926D90",
+      "kind": "indirect",
+      "contract": "Release same captured section; native imported call, not checked as direct edge"
+    }
   ],
   "adapter": {
     "class": "NativeProjectilePendingEntityServices",
@@ -72,13 +120,31 @@
   "validation": {
     "compiler": "MSVC x86 cl19.51.36244.0, toolset14.51.36231",
     "flags": "/nologo /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
-    "fresh_tus": ["src/native_projectile_pending_entity_services.cpp","src/native_pending_entity_producers.cpp","src/tick_element_overrides.cpp","src/observer_event_producer.cpp"],
+    "fresh_tus": [
+      "src/native_projectile_pending_entity_services.cpp",
+      "src/native_pending_entity_producers.cpp",
+      "src/tick_element_overrides.cpp",
+      "src/observer_event_producer.cpp"
+    ],
     "focused_fixture": "PASS SOURCE connected tick->slot0C->fresh B->real pending producers: observer suppression/A-to-B; destroy[B], kill[child,B]; flags/cause/rings/recursive locks; live payloads retained",
     "fixture_scope": "ONE adapted connected ignored scenario; actual-shaped A/B/child with static producer offsets, real prepublished observer/pending recursive locks, real observer register/unregister, actual producer bodies and canonical node/count/ring operations",
     "fixture_provider_limits": "SOURCE virtual70 instrumentation calls existing destroy body; SOURCE child78 observation declines destroy-recursion edge; profile tags/lock getter/tick observations/source CRT allocation are not actual native game providers, runtime reentry or global CRT registration proof",
-    "fixture_checks": ["Same actual A prefix/event0/value0; pending callback suppressed; SAME node cell A->B","Fresh B/current virtual tag/literal1; killed flag/cause2 BEFORE virtual70","Existing destroy body produces destroy[B]; child already60set retains cause; direct kill recursion produces kill[child,B]","Real canonical allocation/count/ring links; unconsumed owner words preserved","Observer saved vector interval and both captured recursive locks restored; pending depth1->2->1->2->1->0","Canonical queue destruction frees nodes/sentinels without payload deletion"],
+    "fixture_checks": [
+      "Same actual A prefix/event0/value0; pending callback suppressed; SAME node cell A->B",
+      "Fresh B/current virtual tag/literal1; killed flag/cause2 BEFORE virtual70",
+      "Existing destroy body produces destroy[B]; child already60set retains cause; direct kill recursion produces kill[child,B]",
+      "Real canonical allocation/count/ring links; unconsumed owner words preserved",
+      "Observer saved vector interval and both captured recursive locks restored; pending depth1->2->1->2->1->0",
+      "Canonical queue destruction frees nodes/sentinels without payload deletion"
+    ],
     "link_flags": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
-    "link_system_libraries": ["user32.lib","d3d9.lib","PowrProf.lib","shell32.lib","advapi32.lib"],
+    "link_system_libraries": [
+      "user32.lib",
+      "d3d9.lib",
+      "PowrProf.lib",
+      "shell32.lib",
+      "advapi32.lib"
+    ],
     "embedded_manifest": "PASS read-only PE resource check: x86 machine014C/RT_MANIFEST/requestedExecutionLevel asInvoker",
     "pinned_support_pre_post": "PASS hashes identical before compilation and after successful manifested probe; existing archives, not fresh main build",
     "native_call_verification": "PASS existing verify_report_calls.py:6 direct native call rows checked,0 failed;3 indirect rows explicitly not checked",
@@ -88,41 +154,88 @@
     "actual_game_providers_bound": false,
     "game_validated": false
   },
-  "ignored_artifacts": ["local/cc11_projectile_pending_probe.cpp","local/cc11_projectile_pending_probe.obj","local/cc11_projectile_pending_probe.exe","local/cc11_projectile_pending_services.obj","local/cc11_projectile_pending_producers.obj","local/cc11_projectile_pending_tick.obj","local/cc11_projectile_pending_events.obj"],
+  "ignored_artifacts": [
+    "local/cc11_projectile_pending_probe.cpp",
+    "local/cc11_projectile_pending_probe.obj",
+    "local/cc11_projectile_pending_probe.exe",
+    "local/cc11_projectile_pending_services.obj",
+    "local/cc11_projectile_pending_producers.obj",
+    "local/cc11_projectile_pending_tick.obj",
+    "local/cc11_projectile_pending_events.obj"
+  ],
   "pinned_support_libraries": [
-    {"path":"local/cc11_slot0c_bsp_core.lib","sha256":"1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"},
-    {"path":"local/cc11_slot0c_bsp_lua511.lib","sha256":"e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"},
-    {"path":"local/cc11_slot0c_bsp_zlib121.lib","sha256":"c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"}
+    {
+      "path": "local/cc11_slot0c_bsp_core.lib",
+      "sha256": "1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"
+    },
+    {
+      "path": "local/cc11_slot0c_bsp_lua511.lib",
+      "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "local/cc11_slot0c_bsp_zlib121.lib",
+      "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    }
   ],
   "separate_unfinished_work": "Landing queue006C0B50/append006BF720/message84, complete lower009AFE70/composite009B2E50, holder constructor/factory/refresh/lifecycle remain separate audited but unbound dependencies, not implemented by this packet",
   "artifact_hashes": {
-  "local/cc11_projectile_pending_probe.cpp": {
-    "bytes": 14102,
-    "sha256": "38eedcd296dcc573807a279562e99570004781bad8ec916bef12c21a21fe2c7e"
+    "local/cc11_projectile_pending_probe.cpp": {
+      "bytes": 14102,
+      "sha256": "38eedcd296dcc573807a279562e99570004781bad8ec916bef12c21a21fe2c7e"
+    },
+    "local/cc11_projectile_pending_probe.obj": {
+      "bytes": 41754,
+      "sha256": "078020d304f04ec5419fad2171d6a601a2d7f1d8661188241a08ee9a485bf419"
+    },
+    "local/cc11_projectile_pending_probe.exe": {
+      "bytes": 231936,
+      "sha256": "78cb072c1f3666e26c7341dc9446a05a434dc62bd3030bed4693747d0083ca51"
+    },
+    "local/cc11_projectile_pending_services.obj": {
+      "bytes": 6171,
+      "sha256": "ba45e9709829b7cddb52533c5fdc8c2e1246bde3e95e2c3091e5920061544653"
+    },
+    "local/cc11_projectile_pending_producers.obj": {
+      "bytes": 6571,
+      "sha256": "c6f17b6eb70f7fdbca7a34554b3bab1cc9c6472601f5f5f4d5dae113e3a86654"
+    },
+    "local/cc11_projectile_pending_tick.obj": {
+      "bytes": 14450,
+      "sha256": "a32bd690943f85ef5498e37d3687985102bda695e3d913350006660d92b08421"
+    },
+    "local/cc11_projectile_pending_events.obj": {
+      "bytes": 6752,
+      "sha256": "28f8f5f7280934b50e50391f91ab447dc336d2d14e3a9c9c7cbfd61570b38168"
+    }
   },
-  "local/cc11_projectile_pending_probe.obj": {
-    "bytes": 41754,
-    "sha256": "078020d304f04ec5419fad2171d6a601a2d7f1d8661188241a08ee9a485bf419"
-  },
-  "local/cc11_projectile_pending_probe.exe": {
-    "bytes": 231936,
-    "sha256": "78cb072c1f3666e26c7341dc9446a05a434dc62bd3030bed4693747d0083ca51"
-  },
-  "local/cc11_projectile_pending_services.obj": {
-    "bytes": 6171,
-    "sha256": "ba45e9709829b7cddb52533c5fdc8c2e1246bde3e95e2c3091e5920061544653"
-  },
-  "local/cc11_projectile_pending_producers.obj": {
-    "bytes": 6571,
-    "sha256": "c6f17b6eb70f7fdbca7a34554b3bab1cc9c6472601f5f5f4d5dae113e3a86654"
-  },
-  "local/cc11_projectile_pending_tick.obj": {
-    "bytes": 14450,
-    "sha256": "a32bd690943f85ef5498e37d3687985102bda695e3d913350006660d92b08421"
-  },
-  "local/cc11_projectile_pending_events.obj": {
-    "bytes": 6752,
-    "sha256": "28f8f5f7280934b50e50391f91ab447dc336d2d14e3a9c9c7cbfd61570b38168"
+  "primary_integration": {
+    "utc": "2026-10-07T11:39:43.336166+00:00",
+    "worker_revision": "77b4271e22d256a58fc73092c2ab75576c55be59",
+    "integrated_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_build_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_capture_pending_integrated_build.log",
+    "executable_sha256": "34b5050b7831097e592c17d5d821da13577da000c713cc54c54298b1d8d33ccc",
+    "independent_root_probe": "local/cc11_pending_root.cmd",
+    "probe_log": "local/cc11_pending_root_compile.log",
+    "probe_sha256": "41edb0734a56484238ef01b2c7f79fcc191d88f01c7ef1eb6859c7dd0edf82a5",
+    "stable_main_link_inputs": 3,
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_and_fixture_review": true,
+    "primary_relevant_native_scope_review": true,
+    "native_direct_call_rows": 6,
+    "native_direct_call_failures": 0,
+    "unresolved_indirect_rows": 3,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "fresh_actual_tus": [
+      "src/native_projectile_pending_entity_services.cpp",
+      "src/native_pending_entity_producers.cpp",
+      "src/tick_element_overrides.cpp",
+      "src/observer_event_producer.cpp"
+    ],
+    "controlled_source_fixture": true,
+    "actual_native_providers_bound": false
   }
-}
 }

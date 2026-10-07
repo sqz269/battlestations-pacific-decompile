@@ -95,3 +95,5 @@ The detailed receipts and native direct/indirect call checks are in
 [projectile_pending_release_adoption_cc11.json](../reports/projectile_pending_release_adoption_cc11.json).
 Root owns CMake registration, full build and independent validation. Landing
 queue/lower/composite/holder audits remain separate unfinished work.
+
+Primary integration bf95ff29f053dd139c37f52690fba901c5c9de91: full MSVC Win32 and all three existing CTests passed. The reviewed focused fixture passed an independent fresh actual-main-TU manifested compile/run, with all 3 main link-input hashes stable before/after linking. PE014C and resource24/id1/asInvoker verified. Native direct CALL rows verified with zero failures. This remains conditional SOURCE adoption with the provider, lifetime, historical CRT/FP, native fault, original ABI and game limits above. Executable SHA256 34b5050b7831097e592c17d5d821da13577da000c713cc54c54298b1d8d33ccc. Probe local/cc11_pending_root.cmd; build log local/cc11_capture_pending_integrated_build.log.

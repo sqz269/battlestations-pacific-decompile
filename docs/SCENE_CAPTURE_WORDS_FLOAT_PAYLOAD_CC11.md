@@ -106,3 +106,5 @@ existing-record typing, empty-F context, duplicate/implicit conflicts, alias/
 forward/cyclic group admission, enum declaration/namespace storage, Lua/VFS,
 native class/kind/mode admission, allocator/EH/fault/reentry/lifetime/global
 interfaces, original ABI, and whole-game behavior remain separate boundaries.
+
+Primary integration bf95ff29f053dd139c37f52690fba901c5c9de91: full MSVC Win32 and all three existing CTests passed. The reviewed focused fixture passed an independent fresh actual-main-TU manifested compile/run, with all 77 main link-input hashes stable before/after linking. PE014C and resource24/id1/asInvoker verified. Native direct CALL rows verified with zero failures. This remains conditional SOURCE adoption with the provider, lifetime, historical CRT/FP, native fault, original ABI and game limits above. Executable SHA256 34b5050b7831097e592c17d5d821da13577da000c713cc54c54298b1d8d33ccc. Probe local/cc11_capture_root.cmd; build log local/cc11_capture_pending_integrated_build.log.

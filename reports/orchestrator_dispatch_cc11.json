@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T11:14:32.937731+00:00",
+  "updated_utc": "2026-10-07T11:39:43.336166+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1932,5 +1932,95 @@
       "native initialization/drain/global registration/ABI/game context"
     ],
     "contract": "Concretefinal NativeProjectileTickObserverServices implementation borrows ONLY NativePendingEntityOwners& andNativePendingEntityProducerAccess&. Pure observed_prefix returns IDENTICALactualidentityprefix address with no semanticmetadata cast/read/effect; release directly invokes existing COMPLETE native_pending_entity_kill_00926d90 (sameowners,const_cast<void*>(identity),static_cast<uint32_t>(code),sameaccess), preserving modulo causebits. ExistingProjectileObserverTickHost SAMEcell fresh expiry/release loads unchanged; no cachedentityview/releasecallback substitute/arena/list/lock/default/gamehost or taskphase seams. Existing pendingbody preserves5F/60/cause7to2, rawcause child recursion, freshsiblings/currentvirtual/actualcaptured lock and real queue allocation/count/link behavior. Oneadapted ignoredconnected fixture actual-shaped A/Bwithobserverprefix0 andproducerfields3C/44/48/5F/60/70 staticoffsetasserts, realobserverregistration/pending suppression/A-to-B samecell mutation. Bchild already60set; requiredSOURCEvirtual70 observesB/literal1/killflag/cause2 and calls real native_pending_entity_destroy_00926c80 under SAMEreal recursive pending lock; explicitchild78 SOURCEobservation declinesdestroyrecursion. Realcanonical allocation/count produce destroy[B],kill[child,B], flags/count/ring andcapturedlockrestore; Aunchanged and no synchronouspayloadfree. Instrumentedvirtual/lock/CRT/profile observations SOURCEonly, not actualgameproviders. Freshadapter/producer/tick/event TUs, manifestedWin32probe, immutablepinnedsupporthashes pre/post. No broadcases duplicatingexistingcause7/sibling/lock differentialcoverage. WorkerGhidraread-only/noCMake/rootmetadata/ledger; own4NEWtrackedfiles/uniqueignoredartifacts, primarysource registration/fullWin32build/independentprobe. Actualglobals/provider/lifetimes/originalprivateEH/ABI/game remainunbound; queueconstructor audit separate."
+  },
+  "scene_capture_words_float_integration": {
+    "utc": "2026-10-07T11:39:43.336166+00:00",
+    "worker_revision": "5d5bfca5d16747462e042fffc65c0d1183ad29b2",
+    "integrated_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_build_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_capture_pending_integrated_build.log",
+    "executable_sha256": "34b5050b7831097e592c17d5d821da13577da000c713cc54c54298b1d8d33ccc",
+    "independent_root_probe": "local/cc11_capture_root.cmd",
+    "probe_log": "local/cc11_capture_root_compile.log",
+    "probe_sha256": "680ec1e48f0f2c7a2b9bc21470b95069863a5372dae672fae29ec4c600e7574f",
+    "stable_main_link_inputs": 77,
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_and_fixture_review": true,
+    "primary_relevant_native_scope_review": true,
+    "native_direct_call_rows": 14,
+    "native_direct_call_failures": 0,
+    "unresolved_indirect_rows": 0,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "installed_inputs_verified_against_worker_hashes": 17,
+    "authored_jm06_entities": 96,
+    "authored_jm06_capture_bags": 0,
+    "installed_F_claim": false,
+    "resolved_enum_claim": false,
+    "ghidra_prior_annotations": "local/ghidra-annotations-20261007T113951Z.json",
+    "ghidra_project_saved": true,
+    "affected_exports_refreshed": true
+  },
+  "projectile_pending_release_integration": {
+    "utc": "2026-10-07T11:39:43.336166+00:00",
+    "worker_revision": "77b4271e22d256a58fc73092c2ab75576c55be59",
+    "integrated_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_build_revision": "bf95ff29f053dd139c37f52690fba901c5c9de91",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_capture_pending_integrated_build.log",
+    "executable_sha256": "34b5050b7831097e592c17d5d821da13577da000c713cc54c54298b1d8d33ccc",
+    "independent_root_probe": "local/cc11_pending_root.cmd",
+    "probe_log": "local/cc11_pending_root_compile.log",
+    "probe_sha256": "41edb0734a56484238ef01b2c7f79fcc191d88f01c7ef1eb6859c7dd0edf82a5",
+    "stable_main_link_inputs": 3,
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_and_fixture_review": true,
+    "primary_relevant_native_scope_review": true,
+    "native_direct_call_rows": 6,
+    "native_direct_call_failures": 0,
+    "unresolved_indirect_rows": 3,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "fresh_actual_tus": [
+      "src/native_projectile_pending_entity_services.cpp",
+      "src/native_pending_entity_producers.cpp",
+      "src/tick_element_overrides.cpp",
+      "src/observer_event_producer.cpp"
+    ],
+    "controlled_source_fixture": true,
+    "actual_native_providers_bound": false,
+    "ghidra_prior_annotations": "local/ghidra-annotations-20261007T113951Z.json",
+    "ghidra_project_saved": true,
+    "affected_exports_refreshed": true
+  },
+  "scene_level_words_float_approval": {
+    "id": "cc11_scene_level_words_float_payload",
+    "done": false,
+    "state": "approved_connected_level_levelup_retained_F_raw_words",
+    "worker": "director_props",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "006f2780"
+    ],
+    "output_files": [
+      "src/game_hosts_scene_contents.cpp",
+      "docs/SCENE_LEVEL_WORDS_FLOAT_PAYLOAD_CC11.md",
+      "reports/scene_level_words_float_payload_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_scene_capture_words_float_payload"
+    ],
+    "reuses_worker_from": "cc11_scene_capture_words_float_payload",
+    "required_unbound_dependencies": [
+      "native Level enum storage/provider",
+      "native existing-type/empty-F declaration context",
+      "historical CRT/FP",
+      "actual command-building admission and downstream level timer/game validation"
+    ],
+    "contract": "Reuse UNCHANGED retain_scene_raw_word for existing Level/LevelUpSeconds loop only. Preserve which=0/1,key order,selectors,created.instance gate,defaults0/10,case-sensitive I-first then failed-I float fallback,non-I raw float fallback,success-only independent writes and no-reset. Select existing field references then call reader; CaptureRange/Value and all other behavior unchanged. Native Find27A8/+0C27B1/store77027BE absent0; Find27CC/+0C27D5/store76C27DF absent10, no typeconversion. Existing GameUnits/shipAI level/timer/armour/math/flags unchanged. Installed LevelUpSeconds I10/I600 witnesses; Level is E CommandBuildingLevels:Basic, no installed Level-I witness found; SOURCE Basic fallback skip/default0 not native enum resolution proof. One fresh actual production consumer/parser fixture with separate fresh F7.25/-0 no inherited E/I conflict =>40E80000/80000000 after diagnostics clear, owning capture/update,I-first/failedI/raw/non-I/failure/default/no-reset/independent-selector and CaptureRange/Value sentinels; JM06 authored inventory only. Pin77 immutable supports pre/post link, unique ignored artifact leases. Modern finite Cdecimalprefix only; no installed Level-I/F, resolved enum,emitter,level-tick,CRT/FP,ABI/game claim. Own3files/Ghidraread-only/no shared CMake/metadata/ledger; primary main build/independent probe."
   }
 }
