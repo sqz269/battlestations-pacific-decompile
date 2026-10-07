@@ -1325,6 +1325,8 @@ int main() {
             "    -- Skill = E SkillLevels : Stun ;\n"
             "    FilePath = S \"islands/\" \"a\" ;\n"
             R"(    GuiName = S "head" ";" "{" "}" "\n\q\\tail\x\N\Q" ; )" "\n"
+            "    VecEmpty = V3 ;\n"
+            "    VecFull = V3 1.25 -2.5 .75 ;\n"
             "    SceneGroupNum = I 7 ;\n"
             "  }\n"
             "}\n";
@@ -1349,6 +1351,20 @@ int main() {
                     && following->values[0] == "7",
                 "008EFB00 joins quoted S runs, decodes exact-case escapes, treats quoted "
                 "punctuation as data and retains the following key");
+            const SceneProperty* empty = ent.properties.find("VecEmpty");
+            const SceneProperty* full = ent.properties.find("VecFull");
+            check(empty != nullptr && empty->has_vector3 && empty->values.empty()
+                    && empty->vector3[0] == 0.0f && !std::signbit(empty->vector3[0])
+                    && empty->vector3[1] == 0.0f && !std::signbit(empty->vector3[1])
+                    && empty->vector3[2] == 0.0f && !std::signbit(empty->vector3[2])
+                    && ent.properties.find("VecMissing") == nullptr
+                    && full != nullptr && full->has_vector3 && full->values.size() == 3
+                    && full->vector3[0] == 1.25f && full->vector3[1] == -2.5f
+                    && full->vector3[2] == .75f
+                    && following != nullptr && following->values.size() == 1
+                    && following->values[0] == "7",
+                "explicit V3 stores three floats, present-empty positive zeros differ "
+                "from absence, and the following key survives");
         }
     }
 

@@ -1,0 +1,1041 @@
+{
+  "packet": "cc11_scene_typed_vectors",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_TYPED_VECTORS_CC11.md",
+  "source_baseline": "733539d5462462471094dd10c79ad0dd93c6d096",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified": "config/target.json and bsp.py ghidra ensure --status before live read-only batches; client target checks",
+    "ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "owned_addresses": [
+    "008F5A00",
+    "008F3690",
+    "007B34F0"
+  ],
+  "owned_files": [
+    "src/scene_file.cpp",
+    "include/bsp/scene_file.hpp",
+    "src/game_hosts_scene_contents.cpp",
+    "tests/math_tests.cpp",
+    "docs/SCENE_TYPED_VECTORS_CC11.md",
+    "reports/scene_typed_vectors_cc11.json"
+  ],
+  "result": "Direct explicit V3 source parsing stores owning three binary32 lanes plus presence; immediate-empty stores positivezero3 with zero scalar conversions. Actual path consumer copies payload; raw diagnostic tokens and all policy flags retained. Modern CRT conversion is not the original VS2005 provider.",
+  "primary_fixed_contract": "Primary independently reviewed original full branch/type7 constructor/scalar provider/path copy; worker implements this fixed data/storage contract, without independent new x87/ABI recovery.",
+  "coverage": [
+    {
+      "routine": "008F5A00",
+      "body": "008F5A00..008F6786",
+      "coverage": "partial projection: explicit V3 arm008F6276..008F631E and shared terminator; implicit existing-record typing and other unbound arms external"
+    },
+    {
+      "routine": "008F3690",
+      "body": "008F3690..008F3700",
+      "coverage": "complete normal producer read; type7 and three inline lane semantics bound through owning source fields; allocator/insert/failure/ABI external"
+    },
+    {
+      "routine": "007B34F0",
+      "body": "007B34F0..007B3727",
+      "coverage": "partial existing freshkind1 projection007B354A..007B3604 now consumes typed source Pos lanes; Group/holderkind2/3/derived refresh/allocation/virtual engine append external"
+    },
+    {
+      "routine": "008D8F40",
+      "body": "008D8F40..008D8F62",
+      "coverage": "complete supporting guard read; original CRT provider not reconstructed or claimed bound"
+    },
+    {
+      "routine": "008D9B40",
+      "body": "008D9B40..008D9BA5",
+      "coverage": "complete supporting reader read; original CRT/FP/status/error/extendedST0 parity unverified"
+    },
+    {
+      "routine": "00BF7533",
+      "body": "00BF7533..00BF7551",
+      "coverage": "supporting historicalVS2005 wrapper read; vscan_fn engine, numerical/FP/error behavior external"
+    },
+    {
+      "routine": "008EF270",
+      "body": "008EF270..008EF2AE",
+      "coverage": "complete supporting vector constructor read; owning inline lanes"
+    },
+    {
+      "routine": "008F0700",
+      "coverage": "prior complete supporting destination-type value assignment; V3 copies three inline dwords; enum+28 identity retained separately"
+    },
+    {
+      "routine": "008F4F60",
+      "coverage": "prior complete supporting twelve-arm clone; V3 constructor copies lanes; enum declaration shared; no merge/clone source changes"
+    },
+    {
+      "routine": "00415870",
+      "coverage": "complete supporting point-count leaf read; zero for nullstart, otherwise(end-start)>>2"
+    },
+    {
+      "routine": "004F9A80",
+      "body": "004F9A80..004F9A9C",
+      "coverage": "complete supporting80h vsprintf_s wrapper read; scanner/allocator/engine behavior external"
+    },
+    {
+      "routine": "008D8A70",
+      "coverage": "prior complete tokenizer producer evidence; existing owning SceneLexer remains source projection"
+    },
+    {
+      "routine": "008D9930",
+      "coverage": "prior complete peek/match/consume-only-on-match expectation; malformed recovery external"
+    },
+    {
+      "routine": "008F2260",
+      "coverage": "prior complete case-insensitive/dotted property lookup evidence; source path projection uses supported exact child keys"
+    },
+    {
+      "routine": "008D8F70",
+      "coverage": "named supporting conversion-failure recovery; not newly reconstructed; native fault/error parity outside admission"
+    },
+    {
+      "routine": "007AF150",
+      "coverage": "named other native holder-kind camera derivation dependency; not used/reconstructed by this partial consumer binding"
+    }
+  ],
+  "calls": [
+    {
+      "address": "008F6282",
+      "native": "00467CC0",
+      "function": "008F5A00",
+      "contract": "match explicit V3"
+    },
+    {
+      "address": "008F629A",
+      "native": "00467CC0",
+      "function": "008F5A00",
+      "contract": "optional matching V3 for existing type7 record"
+    },
+    {
+      "address": "008F62B6",
+      "native": "008D8F40",
+      "function": "008F5A00",
+      "contract": "first-token %f guard; immediate semicolon bypasses all three readers"
+    },
+    {
+      "address": "008F62C6",
+      "native": "008D9B40",
+      "function": "008F5A00",
+      "contract": "read X, stored binary32 by FSTP at008F62CB"
+    },
+    {
+      "address": "008F62D6",
+      "native": "008D9B40",
+      "function": "008F5A00",
+      "contract": "read Y, stored binary32 by FSTP at008F62DB"
+    },
+    {
+      "address": "008F62E6",
+      "native": "008D9B40",
+      "function": "008F5A00",
+      "contract": "read Z, stored binary32 by FSTP at008F62EB"
+    },
+    {
+      "address": "008F6319",
+      "native": "008F3690",
+      "function": "008F5A00",
+      "contract": "ECX bag; key/vector pointer; create type7 owning three-lane record"
+    },
+    {
+      "address": "008F66A6",
+      "native": "008D9930",
+      "function": "008F5A00",
+      "contract": "shared semicolon expectation"
+    },
+    {
+      "address": "008F3695",
+      "native": "00BF681B",
+      "function": "008F3690",
+      "contract": "allocate38h record; ADD ESP4 at008F369C"
+    },
+    {
+      "address": "008F36E5",
+      "native": "008F33F0",
+      "function": "008F3690",
+      "contract": "insert initialized type7 record"
+    },
+    {
+      "address": "008F36F8",
+      "native": "008F33F0",
+      "function": "008F3690",
+      "contract": "allocation-failure branch inserts null; failure contract not ported"
+    },
+    {
+      "address": "008D8F4A",
+      "native": "008D8A70",
+      "function": "008D8F40",
+      "contract": "peek scalar token"
+    },
+    {
+      "address": "008D8F50",
+      "native": "00BF7533",
+      "function": "008D8F40",
+      "contract": "historical VS2005 %f guard; ADD ESP10h at008D8F5F includes reserved4h + three scanner args"
+    },
+    {
+      "address": "008D9B4F",
+      "native": "008D8A70",
+      "function": "008D9B40",
+      "contract": "peek scalar token"
+    },
+    {
+      "address": "008D9B55",
+      "native": "00BF7533",
+      "function": "008D9B40",
+      "contract": "historical VS2005 %f reader; ADD ESP0Ch at008D9B5E"
+    },
+    {
+      "address": "008D9B96",
+      "native": "008D8F70",
+      "function": "008D9B40",
+      "contract": "conversion-failure recovery; error/fault parity external"
+    },
+    {
+      "address": "007B3552",
+      "native": "008F2260",
+      "function": "007B34F0",
+      "contract": "lookup PathPoints in kind1 bag"
+    },
+    {
+      "address": "007B355C",
+      "native": "00415870",
+      "function": "007B34F0",
+      "contract": "current point count for initial label"
+    },
+    {
+      "address": "007B356C",
+      "native": "004F9A80",
+      "function": "007B34F0",
+      "contract": "Point%002i label; three stack args, ADD ESP0Ch at007B3571"
+    },
+    {
+      "address": "007B357B",
+      "native": "008F2260",
+      "function": "007B34F0",
+      "contract": "lookup numbered point child"
+    },
+    {
+      "address": "007B35A3",
+      "native": "008F2260",
+      "function": "007B34F0",
+      "contract": "lookup Pos; immediately load stored three lanes at007B35A8/35B6/35C1"
+    },
+    {
+      "address": "007B35DC",
+      "native": "00415870",
+      "function": "007B34F0",
+      "contract": "current point count after append"
+    },
+    {
+      "address": "007B35EC",
+      "native": "004F9A80",
+      "function": "007B34F0",
+      "contract": "next Point%002i label; three stack args, ADD ESP0Ch at007B35F1"
+    },
+    {
+      "address": "007B35FB",
+      "native": "008F2260",
+      "function": "007B34F0",
+      "contract": "lookup next point child"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "007B35D8",
+      "native": "vt[08h]",
+      "function": "007B34F0",
+      "contract": "append stored XYZ to original path; actual engine target/allocator external; source retains local XYZ in its own vector; excluded from direct-call verifier"
+    }
+  ],
+  "native_data_receipts": {
+    "zero": "XORPS008F629F; MOVSS stores008F62A4/62AA/62B0; failed firstnumber guard jumps008F62EF; no008D9B40 calls for immediate semicolon",
+    "nonempty": "three unconditional reader calls after one successful guard; FSTP32 at008F62CB/62DB/62EB; not one guard per lane",
+    "existing_record": "MOV three dwords at008F62FF/6302/6305 to+0C/+10/+14",
+    "new_record": "008F3690 alloc38h, code7 at+4, copies vector dwords+0C/+10/+14, inserts; RET8",
+    "consumer": "loads+0C/+10/+14 at007B35A8/35B6/35C1, third destination store007B35D2, virtual append007B35D8",
+    "format": "00CE4334 bytes25 66 00 = %f"
+  },
+  "abi_qualification": {
+    "parser": "ECX bag/three stack args/RET0Ch; no semantic return established; source tree interface differs",
+    "scalar_reader": "ECX tokenizer/stack ok byte/ST0 result/RET4; primary-recovered receipt only; modern std::sscanf does not bind this original ABI/provider",
+    "new_record": "ECX bag/stack key+vector pointer/RET8; owning C++ fields are not original38h layout",
+    "path": "ECX path/stack source holder/RET4; current projection freshkind1 only, not original engine construction",
+    "historical_CRT": "VS2005 BF7533 numerical rounding/underflow/overflow/FPstatus/error/extendedST0 parity UNVERIFIED; no original-native differential execution"
+  },
+  "corrections": [
+    {
+      "was": "SceneProperty retained only raw vector tokens; present-empty V3 had zero tokens and no stored lanes",
+      "is": "owning std::array<float,3> plus has_vector3; empty retains positivezero3 and empty diagnostic values; missing entry remains missing",
+      "evidence": "original zero branch/type7 producer; existing amended fixture; actual production parser and installed3empty declarations"
+    },
+    {
+      "was": "retain_path_points required3 raw tokens and reparsed them through shared decimal-prefix/strtod helper",
+      "is": "copies typed payload directly; only source-authored raw bags without payload retain the explicit old fallback",
+      "evidence": "original007B35A8..007B35D2 field copies; empty/missing/direct-diagnostic-mutation/raw-fallback actual-consumer probe"
+    }
+  ],
+  "source_provider": {
+    "nonempty": "current MSVC std::sscanf(token.c_str(),%f,&float), direct float target; local MSVC CRT deprecation warning guard only",
+    "shared_helper": "scene_scan_float unchanged: manual decimal prefix then strtod->float; not used to reparse typed Pos payload",
+    "empty": "zero scalar conversions and no locale query; source value-init positivezero3; native guard attempts %f but no scalar readers; FPstatus parity not claimed",
+    "storage": "owning array float[3] plus presence flag, raw tokens retained; source object size changes, all consumers require integrated rebuild"
+  },
+  "source_admission": {
+    "normal": "immediate semicolon empty V3 or full finite ordinary decimal-prefix triple, numeric locale C; closed/NUL-free/<400h tokenizer fragments; existing finite source token budget; original record absent or compatible type7 descriptor",
+    "checks": "explicit runtime_error for unsupported locale, end/overlong/NUL token, nondecimal or hex prefix, failed/nonfinite conversion or incomplete triple",
+    "outside": [
+      "malformed/unterminated/extra-token input",
+      "NaN/Inf/overflow and underflow fidelity",
+      "other locales or concurrent locale changes",
+      "historical CRT rounding/FPstatus/error/extendedST0 parity",
+      "native allocator/EH/fault/partial publication/rollback",
+      "raw record ABI and engine alias/ownership",
+      "implicit descriptor-driven typing",
+      "conflicting native existing descriptors and structural aliases; source context has no original record pointer"
+    ],
+    "missing_identity": "missing Pos is still absent/rejected; typed present-empty Pos has payload and positivezero3, even though raw values vector is empty",
+    "raw_fallback": "only source-authored bags without has_vector3; existing exact V3+3tokens+scene_scan_float rule retained; not a native-derived payload conversion"
+  },
+  "affected_source_callers": [
+    {
+      "file": "src/scene_file.cpp",
+      "path": "scene header/entity/document property sections and exposed block parser"
+    },
+    {
+      "file": "src/game_hosts_scene_contents.cpp",
+      "path": "library groups, weather descriptor, class47 retain_path_points; only consumer branch changed"
+    },
+    {
+      "file": "src/game_hosts_mission.cpp",
+      "path": "scene header document parse; no shared mission policy edit"
+    },
+    {
+      "file": "src/mission_scene_probe.cpp",
+      "path": "existing source scene/generation census"
+    },
+    {
+      "file": "src/scene_traffic_groups.cpp",
+      "path": "property readers at264/543; no traffic semantics edits"
+    }
+  ],
+  "installed": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "inventory_scope": "15 library inputs +JM06; line-comment-filtered literal V3 inventory, then actual parser per assignment; not complete VFS scan",
+    "input_files": 16,
+    "library_groups": 22,
+    "V3_assignments": 1199,
+    "full_triples": 1196,
+    "empty_declarations": 3,
+    "empty_rows": [
+      {
+        "file": "universe/library/path.props",
+        "line": 11,
+        "group": "PathPoint",
+        "key": "Pos"
+      },
+      {
+        "file": "universe/library/path.props",
+        "line": 18,
+        "group": "PathPointCamera",
+        "key": "RotRefPos"
+      },
+      {
+        "file": "universe/library/path.props",
+        "line": 19,
+        "group": "PathPointCamera",
+        "key": "RotRefRot"
+      }
+    ],
+    "inherited_empty": "PathPointCamera.Pos also retains typed positivezero3 through actual eager group add",
+    "legacy_source_lane_bit_differences": 0,
+    "numerical_limit": "1196 nonempty values match prior SOURCE converter on corpus; does NOT prove native-exact conversion or historical VS2005 parity",
+    "JM06": {
+      "entities": 96,
+      "classes": 11,
+      "SubmarineGen": 14,
+      "tutorials": 3,
+      "retained_paths": 40,
+      "retained_points": 1163,
+      "parse_errors": 0,
+      "source_inheritance": "MultiType8/default torpedo false/Hidden and authored engine-movie precedence preserved; PlayerSub01 authors moviefalse, tutorial3 inherit movietrue"
+    },
+    "driver_limit": "probe discovery driver invokes actual property parser+PropertyLibrary::add_group, not private Impl::parse_library_file, enum loading, VFS/archive open or complete GameSceneContentsHost runtime"
+  },
+  "enum_integration_boundary": {
+    "status": "blocked_by_storage_provider_and_consumer_integration; no enum or Lua metadata added",
+    "native": "existing E update008F5E6F->008F3370 resolves retained record+28h; namespace before colon discarded; new008F5FA2->0048E960 then008F3A20 retains named declaration and resolved integer; clone008EF230 copies declaration+integer; assign008F0700 copies integer only",
+    "source_blockers": [
+      "raw SceneProperty lacks enum declaration identity/resolved integer",
+      "ScenePropertyBagModel lacks declaration handle; ScenePropertyBagHost lookup_enum_declaration/resolve_enum_value presently unused",
+      "library parent capture must precede declaration-aware authored parsing; current detached parse is callback-free",
+      "stable retained table handles and clone-vs-assign metadata needed",
+      "actual entity authored overlay and late table/symbol consumers need stored-integer adoption",
+      "LUA_S imports live Lua table through008F2F70; no provider binding"
+    ],
+    "prior_independent_verdict": "ordinary entity flag1/default/JM06 generation admission remains valid separately; no global-table default or unused helper substitute"
+  },
+  "flow_qualification": "primary repaired only returning-free S callsite gaps008F5D0A/24; worker read-only. Prior008F54F0 tail decode ends exclusive008F566F while stored body stillends008F5658; no full body-repair claim.",
+  "verification": {
+    "production_TU_probe": "fresh src/scene_file.cpp object linked; probe includes actual src/game_hosts_scene_contents.cpp and amended tests/math_tests.cpp; no copied implementation or stubs",
+    "fresh_raw_dependencies": [
+      "src/scene_unit_creators.cpp",
+      "src/scene_entity_factory.cpp",
+      "src/scene_record_side_blocks.cpp"
+    ],
+    "header_shape_limit": "raw dependencies on exercised fixture paths refreshed locally; other cached game objects link but complete host/game paths not executed; primary full integrated rebuild required",
+    "compile_cmd": "local/cc11_scene_vector_compile.cmd",
+    "compile_commands": [
+      "@echo off",
+      "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -no_logo -arch=x86 -host_arch=x64",
+      "if errorlevel 1 exit /b %errorlevel%",
+      "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /Iinclude /c /Folocal/cc11_scene_vector_scene_file.obj src/scene_file.cpp",
+      "if errorlevel 1 exit /b %errorlevel%",
+      "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /Iinclude /c /Folocal/cc11_scene_vector_unit_creators.obj src/scene_unit_creators.cpp",
+      "if errorlevel 1 exit /b %errorlevel%",
+      "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /Iinclude /c /Folocal/cc11_scene_vector_factory.obj src/scene_entity_factory.cpp",
+      "if errorlevel 1 exit /b %errorlevel%",
+      "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /Iinclude /c /Folocal/cc11_scene_vector_side_blocks.obj src/scene_record_side_blocks.cpp",
+      "if errorlevel 1 exit /b %errorlevel%",
+      "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /D_CRT_SECURE_NO_WARNINGS /Iinclude /I\"J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src\" /Folocal/cc11_scene_vector_probe.obj local/cc11_scene_vector_probe.cpp local/cc11_scene_vector_scene_file.obj local/cc11_scene_vector_unit_creators.obj local/cc11_scene_vector_factory.obj local/cc11_scene_vector_side_blocks.obj J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib user32.lib d3d9.lib advapi32.lib shell32.lib gdi32.lib ole32.lib PowrProf.lib @local\\cc11_scene_group_link.rsp /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF /OUT:local/cc11_scene_vector_probe.exe",
+      "exit /b %errorlevel%"
+    ],
+    "compile_exit": 0,
+    "probe_exit": 0,
+    "existing_check": "amended existing reconstructed_math semantic test TU passes; one existing scene-parser fixture extension",
+    "focused_receipts": [
+      "actual consumer empty vs absent",
+      "typed payload independent from diagnostic text",
+      "explicit raw fallback",
+      "one owning parent capture/redeclare/later-parent/entity overwrite scenario",
+      "1199 assignment parses +22 installed groups +JM06 40paths/1163points and14sub flags"
+    ],
+    "PE_machine": "014C",
+    "embedded_manifest_asInvoker": true,
+    "log": "Reconstructed math semantic tests passed (not binary equivalence).\nconsumer empty_points=1 positive_zero=1 missing_rejected=1 direct_payload=1 raw_fallback=1\ncapture old_child_zero=1 later_parent_xyz=1 entity_fill_missing=1 authored_empty_overwrite=1\ninstalled files=16 groups=22 V3=1199 full=1196 empty=3 legacy_source_lane_differences=0\nJM06 entities=96 classes=11 submarines=14 tutorial=3 paths=40 points=1163 errors=0 inheritance_unchanged=1\n",
+    "initial_probe_corrections": "include ordering avoided Lua macro collisions; installed discovery driver explicitly scoped; boolean comparisons use existing case-insensitive semantics and respect PlayerSub authored moviefalse. Standalone parser compile caught suppress-only pragma ineffectiveness; final local push/disable/pop builds without global CRT suppression.",
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/scene_typed_vectors_cc11.json",
+      "exit": 0,
+      "direct_rows_checked": 24,
+      "failed": 0,
+      "indirect_rows_excluded": 1
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "full_build": "not run by worker; primary owns serialized integrated Win32 and CTest",
+    "game_run": "not run",
+    "original_native_differential": "not run; VS2005 FP/numerical equivalence unverified"
+  },
+  "qualification": {
+    "source": "bounded explicit V3 data/storage and actual path-consumer adoption implemented",
+    "fixture": "actual production parser/path TU +one existing fixture extension +installed consumer/inheritance probe PASS",
+    "runtime": "probe executable only; no whole reconstructed host/Game/Lua/VFS execution",
+    "original_game": "primary native branch/storage receipts plus worker read-only exact calls; not original-game execution/equivalence",
+    "ABI": "owning C++ fields/interfaces/object size differ from original records; original ABI unclaimed"
+  },
+  "assets": [
+    {
+      "path": "universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "literal_V3": 1,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "literal_V3": 3,
+      "literal_empty_V3": 3
+    },
+    {
+      "path": "universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "literal_V3": 16,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "literal_V3": 0,
+      "literal_empty_V3": 0
+    },
+    {
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "literal_V3": 1179,
+      "literal_empty_V3": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 31038,
+      "sha256": "23FA8AF534829CD232108D7768946B3D080F739374F8600AB6B5C2F67AC82302"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18120,
+      "sha256": "EC3AE607808C7B16FEC8FAC7DE1E96A23818E3FC2439F791025D8BCB0FD68244"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 240889,
+      "sha256": "FE418C70F1CD0396CDE2D2645310AE278D7528DD74A439907AFCD7AB91BA319F"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 200707,
+      "sha256": "087D02DBE99FDB88B9CED9C4DBA4BFC89443351B459B53B1D97B9839D8F17905"
+    },
+    {
+      "path": "local/cc11_scene_vector_probe.cpp",
+      "bytes": 12220,
+      "sha256": "2A5D765E55E5122673CE8C8732E5B6C2881C9F531B6C20A5B7F63AB86A144AC6"
+    },
+    {
+      "path": "local/cc11_scene_vector_probe.obj",
+      "bytes": 3951780,
+      "sha256": "435B3DA41FF1E7885F6312CB747616F55ED7F85258EBF5564CCC4BE8D212E196"
+    },
+    {
+      "path": "local/cc11_scene_vector_probe.exe",
+      "bytes": 1003520,
+      "sha256": "CA6D31ADF9E0BF37785E530C8812D7F9682D17F820B543764CE04632E1A905DE"
+    },
+    {
+      "path": "local/cc11_scene_vector_probe.log",
+      "bytes": 451,
+      "sha256": "34088F1AF01A772A5875EDBC4A15EC5531BA34511D212835DA90113CB47D17CE"
+    },
+    {
+      "path": "local/cc11_scene_vector_compile.cmd",
+      "bytes": 1769,
+      "sha256": "3479BC0AB03D6C40824AD85130293E4506B615CE723F51850ABBF0415D0E9617"
+    },
+    {
+      "path": "local/cc11_scene_vector_compile.log",
+      "bytes": 126,
+      "sha256": "6387007AF53D57D4082DA7941E48B7ACAC7D79B06EE9C93006F0ADA813CAE838"
+    },
+    {
+      "path": "local/cc11_scene_vector_scene_file.obj",
+      "bytes": 288173,
+      "sha256": "7F28E341A67B3182016633AC4CDEDA75BE1E27F8DEEE481E76EC2FA663BE1351"
+    },
+    {
+      "path": "local/cc11_scene_vector_unit_creators.obj",
+      "bytes": 173977,
+      "sha256": "868DB2BB822B6B851E00497DA6569BC2C31AF0A69CA9FA73343970E47B40B7CE"
+    },
+    {
+      "path": "local/cc11_scene_vector_factory.obj",
+      "bytes": 96766,
+      "sha256": "827E94661F3D995EF4C6B22A73150D2C5BEB12BF59E7ED6CF40118A1E7F00529"
+    },
+    {
+      "path": "local/cc11_scene_vector_side_blocks.obj",
+      "bytes": 76637,
+      "sha256": "0DC277D4E5A67885B59EBC9E865586C197ABE7A0763E8476E3D229BE1AC5A40E"
+    }
+  ],
+  "read_only_probe_source_and_response_inputs": [
+    {
+      "path": "src/scene_unit_creators.cpp",
+      "bytes": 15234,
+      "sha256": "78E29B3A5048B31266027618403732869682E169998AA4ED52188329D46B5B1C"
+    },
+    {
+      "path": "src/scene_entity_factory.cpp",
+      "bytes": 13983,
+      "sha256": "A4C77C85F759D8FCE5347C7250546E9F93697FCC375752C26677D9C21B89CA13"
+    },
+    {
+      "path": "src/scene_record_side_blocks.cpp",
+      "bytes": 7605,
+      "sha256": "453910BCCD1B477ED0CA32B90963D24AA45A245680D47690F8A0F5E16A94B865"
+    },
+    {
+      "path": "local/cc11_scene_group_link.rsp",
+      "bytes": 7484,
+      "sha256": "ED422FCF58A0B659238C00C9674BF6AF33AA317F327F849757336EBFBCAF50E0"
+    }
+  ],
+  "cached_response_object_hashes_observed_after_probe": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_close_attack_tick.obj",
+      "bytes": 8132,
+      "sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_lifetime.obj",
+      "bytes": 1792,
+      "sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_object.obj",
+      "bytes": 3331,
+      "sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_command_tick.obj",
+      "bytes": 17020,
+      "sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_group_think.obj",
+      "bytes": 6283,
+      "sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_planners.obj",
+      "bytes": 12369,
+      "sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ai_tuning_globals.obj",
+      "bytes": 15089,
+      "sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+      "bytes": 4187,
+      "sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/command_completion.obj",
+      "bytes": 77466,
+      "sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_aimdive_tail.obj",
+      "bytes": 7480,
+      "sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_goaway_turn.obj",
+      "bytes": 4628,
+      "sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dive_bomb_task.obj",
+      "bytes": 32543,
+      "sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/dogfight_task.obj",
+      "bytes": 20326,
+      "sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+      "bytes": 363663,
+      "sha256": "45E7458AC5528FA50F741BF9C55ECBA49F782C4447271FEACA67E1EA4AA5189A"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "bytes": 926101,
+      "sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ai.obj",
+      "bytes": 1403099,
+      "sha256": "CC2D8819C4CAD422DBD56E1AE9A380041A314202677190ECC973414BD2875C7E"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_avoid_zones.obj",
+      "bytes": 82422,
+      "sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+      "bytes": 633940,
+      "sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+      "bytes": 47500,
+      "sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+      "bytes": 147168,
+      "sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+      "bytes": 705688,
+      "sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+      "bytes": 3307078,
+      "sha256": "E023D9DD6A65E365DDBEF5F650004F16488D9998BDEFF466A5DFDDC9E4E5D94A"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+      "bytes": 661386,
+      "sha256": "01E0F233953E7794DE6CD8A2FBA526E7B2908C6DAA9A9EC440F34D38C6ECF234"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+      "bytes": 246452,
+      "sha256": "BFE91C6424050DCB9A794C22ADD8AA1BFB37E53FE1C7622B62416CDCBAC27209"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+      "bytes": 123679,
+      "sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+      "bytes": 1570061,
+      "sha256": "FF0CE96B42A884768132CA49CDEABCC8BAFF55146183CED5B646A76B48DF75EB"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+      "bytes": 521505,
+      "sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+      "bytes": 776793,
+      "sha256": "8D8BACC9FDE0A812420332535FE51B41F62098D36580ECF3966F19D83AD99444"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+      "bytes": 928403,
+      "sha256": "E18A221073F0DBABE1F629010A81A7667DCEF67D31ABF0F635B90F33C0359E9F"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+      "bytes": 241488,
+      "sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+      "bytes": 223211,
+      "sha256": "819ECF724728A69940C04F239EF289D1D5042BE55F10C172636BD5526A571C0B"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+      "bytes": 1541428,
+      "sha256": "3E786A03A4A52F31F1E37E8C9EFD5BABD337436089D033573855E886D9551FA4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+      "bytes": 1792521,
+      "sha256": "304CF4C7A4EFCABE083D29BE6C615D17F78BFC68F4E98433E390C94DD8A59F99"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "bytes": 36465,
+      "sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+      "bytes": 148570,
+      "sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+      "bytes": 122691,
+      "sha256": "DE54B4002BF7EB688C1EAFF7F8B7CBCBB487E24C40DAD2F8E2D3345266B4971D"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+      "bytes": 3203137,
+      "sha256": "6AFD6A6D0C801492975E3F5095327DBA3B9B7D181DBC8C32C2538AAE0F6DEECA"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+      "bytes": 418499,
+      "sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+      "bytes": 174829,
+      "sha256": "043581E59AD3EB002FA0B2A3753610DFF816F6A5168EF0EE9B803623FDBBD997"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+      "bytes": 27840,
+      "sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+      "bytes": 12716,
+      "sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+      "bytes": 15929,
+      "sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+      "bytes": 23120,
+      "sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_material_process.obj",
+      "bytes": 22165,
+      "sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+      "bytes": 326318,
+      "sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+      "bytes": 20624,
+      "sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+      "bytes": 4089,
+      "sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+      "bytes": 17088,
+      "sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+      "bytes": 52166,
+      "sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+      "bytes": 15845,
+      "sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+      "bytes": 1742,
+      "sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+      "bytes": 261693,
+      "sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+      "bytes": 1820,
+      "sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_ship_screen.obj",
+      "bytes": 14623,
+      "sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_warning_screen.obj",
+      "bytes": 13095,
+      "sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hud_weapon_group_screen.obj",
+      "bytes": 18543,
+      "sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/hull_terrain_contact.obj",
+      "bytes": 1102762,
+      "sha256": "B7FEFA84080EF6EBC86AA855D11EF6841E46D48888F9D30E9924BB63E1386AC9"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/kill_credit.obj",
+      "bytes": 33814,
+      "sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/mission_camera.obj",
+      "bytes": 48286,
+      "sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+      "bytes": 2064,
+      "sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/near_field_probe.obj",
+      "bytes": 3929,
+      "sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+      "bytes": 4140,
+      "sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+      "bytes": 8834,
+      "sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_follow_hold.obj",
+      "bytes": 10325,
+      "sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_follow_law.obj",
+      "bytes": 23046,
+      "sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+      "bytes": 13372,
+      "sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/plane_wanderer.obj",
+      "bytes": 10014,
+      "sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+      "bytes": 7907,
+      "sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+      "bytes": 1461,
+      "sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_group_slot_swap.obj",
+      "bytes": 5218,
+      "sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+      "bytes": 11730,
+      "sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_instance_step11.obj",
+      "bytes": 43473,
+      "sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+      "bytes": 25766,
+      "sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+      "bytes": 1314,
+      "sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0"
+    }
+  ],
+  "linked_library_hashes_observed_after_probe": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "bytes": 73070032,
+      "sha256": "D92A66948C9940C4AB76DA902E81E3A0997B9B790E2C6EB587414DA8094999D1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+      "bytes": 454824,
+      "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+      "bytes": 71766,
+      "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
+    }
+  ]
+}

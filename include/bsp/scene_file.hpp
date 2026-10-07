@@ -5,6 +5,7 @@
 //            008d9ad0, 008d9b40.
 // Every name below is a hypothesis, not a recovered symbol. See
 // docs/SCENE_FILE_READER.md for the evidence behind each claim.
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -86,10 +87,16 @@ private:
 // This S binding admits closed fragments of at most 1023 bytes, without NUL or
 // a solitary trailing backslash. Those three byte risks throw a source error;
 // native overflow/overread and scratch ownership are not reproduced.
+// Explicit V3 has an owning binary32 payload, including a present empty V3's
+// three positive zeros (008F629F..008F6319). Raw tokens remain diagnostic data.
+// Nonempty conversion uses the modern source CRT; VS2005 numerical/FP parity
+// and native storage/ABI are unverified. Other forms retain partial coverage.
 struct SceneProperty {
     std::string key;
     std::string type_letter;
     std::vector<std::string> values;
+    std::array<float, 3> vector3{};
+    bool has_vector3{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.
