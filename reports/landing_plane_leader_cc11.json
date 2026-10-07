@@ -1,0 +1,309 @@
+{
+  "packet": "cc11_land_plane_leader_provider",
+  "status": "whole_source_leaf_and_connected_abstract_provider_adoption_strict_win32_focused_source_and_original_leaf_fixture_passed",
+  "source": [
+    "include/bsp/native_land_plane_leader.hpp",
+    "src/native_land_plane_leader.cpp"
+  ],
+  "documentation": "docs/LANDING_PLANE_LEADER_CC11.md",
+  "source_revision": "8cdccbcbdac56cf31761d5965a8885d14b3138fd",
+  "native": {
+    "address": "007b8ad0",
+    "end_exclusive": "007b8adc",
+    "bytes": 12,
+    "instructions": 4,
+    "sha256": "e36649fc9c52af877c6e5ba57286d8dca843f1c070891df8cdcfd3724900bc88",
+    "hex": "33c03981d80900000f94c0c3",
+    "disk_live_equal": true,
+    "assembly": [
+      "XOR EAX,EAX",
+      "CMP DWORD[ECX+9D8],EAX",
+      "SETZ AL",
+      "RET"
+    ],
+    "original_convention": "ECX actual plane;EAX exactly0/1;plainRET;no stacked inputs",
+    "current_descriptive_name": "BSP_Unit_IsSquadronFlightLeader",
+    "name_status": "hypothesis_not_recovered_symbol_preserve_current_name_and_comments",
+    "globals_calls_stores_numeric_instructions": 0,
+    "ghidra_mutations": 0,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source_contract": {
+    "view": "SAME nonnull actual plane and reference to genuine already-live volatile int32cell at+9D8;>=9DCh stable coherent backing;nativewordalignment;exactrepresentableaddress",
+    "mapping": "REQUIRED PURE current supplied plane identity->checked coherent live field view;no fieldreads/callbacks/nativecalls/allocation/default/cache/translated copied cells",
+    "leaf": "ONE actual volatile DWORD-zero read;all nonzero bit patterns including-1 false;no semantic squadron/index/membership query",
+    "guards": "Source admission checks report logic_error for invalid placement or mapper returned different plane identity;nativefault/forgedviewdomain excluded",
+    "adopters": [
+      "NativeLandTaskPlaneLeaderConstructorCalls derives NativeLandTaskParameterCopyConstructorCalls;ONLYfinalleadercallback closed",
+      "NativeLandPlaneLeaderCruiseHost derives LandTaskCruiseProfileHost;ONLYfinalleadercallback closed"
+    ],
+    "remaining_services": "Everyother inherited base/composite/control/tuning/current404/entry/observer/reindex/profile/lifetime service REQUIRED abstract;no new binding",
+    "abi": "NEWSource C++bool/classinterfaces;nativefullEAX0/1not guaranteed by Sourcebool;notECXdrop-in/registerABI/classvtable binding",
+    "excluded": [
+      "invalid/forged/mismapped/nonlive/undersized/unalignedstorage",
+      "concurrentmutation/fault/structuralreentry",
+      "observer/deathtime pointerlifetime",
+      "arena/defaultplane/synthetic callableprofile/sidecar",
+      "wholeconstructors/privateEH/geometry/world/gameplay binding"
+    ]
+  },
+  "native_leaf_call_rows": [],
+  "actual_caller_calls": [
+    {
+      "address": "009b32c8",
+      "native": "007b8ad0",
+      "function": "009b3240",
+      "scope": "originalcallerboundaryonly;notwholebodyclosure",
+      "observation": "task3FC freshreload aftercapturedcontrolpredicate"
+    },
+    {
+      "address": "009b3c6e",
+      "native": "007b8ad0",
+      "function": "009b3c60",
+      "scope": "originalcallerboundaryonly;notwholebodyclosure",
+      "observation": "actualtask3FC leaderprobe;existingtwotuning/current404 order unchanged"
+    }
+  ],
+  "fixture": {
+    "family": "local/cc11_land_plane_leader",
+    "recipe": "powershell -NoProfile -File local/cc11_land_plane_leader_probe_build.ps1",
+    "executable": "local/cc11_land_plane_leader_probe.exe",
+    "manifest": "local/cc11_land_plane_leader_probe_manifest.json",
+    "schema_version": 1,
+    "checks": 31,
+    "result": "PASS: 31 SOURCE connected leader/outer-entry/cruise checks; unrelocated original12B FULL EAX0/1; higher services SOURCE-only",
+    "fresh_tu_count": 6,
+    "fresh_tus": [
+      {
+        "source": "src/native_land_plane_leader.cpp",
+        "object": "local/cc11_land_plane_leader_leaf.obj"
+      },
+      {
+        "source": "src/native_land_task_constructor.cpp",
+        "object": "local/cc11_land_plane_leader_constructor.obj"
+      },
+      {
+        "source": "src/native_land_state_entries.cpp",
+        "object": "local/cc11_land_plane_leader_entries.obj"
+      },
+      {
+        "source": "src/native_land_follow_parameters.cpp",
+        "object": "local/cc11_land_plane_leader_follow_parameters.obj"
+      },
+      {
+        "source": "src/plane_squadron_host.cpp",
+        "object": "local/cc11_land_plane_leader_squadron.obj"
+      },
+      {
+        "source": "local/cc11_land_plane_leader_probe.cpp",
+        "object": "local/cc11_land_plane_leader_probe.obj"
+      }
+    ],
+    "compiler_link_inputs": 42,
+    "quoted_project_headers": 32,
+    "actual_compiler_project_includes": 32,
+    "inputs_before_after_equal": true,
+    "compiler_includes_all_pinned": true,
+    "manifest_resource": {
+      "machine": "I386",
+      "pe_magic": "PE32",
+      "resources": [
+        {
+          "type": 24,
+          "id": 1,
+          "language": 1033,
+          "xml": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n"
+        }
+      ]
+    },
+    "original_executed": "ONLYwhole12B7B8AD0 RXcopy,0relocations/0CALLbridges;qualifiedfastcallfixtureinvocation;FULLnativeEAX0/1checked",
+    "storage": "Source9DChplane shapes withgenuine liveint32+9D8;670htaskshape same3FC/404cells;Sourceborrowedcruisefields/nativeoffsets;notnativeclasses/constructors/sizeofclaim",
+    "connected_risk": "A nonzero beforecontrol;Sourcepredicate replacesSAMEtask3FC A->B zero;existingouter+actualemptyMoveentry selectsB;cruise nonzero gatesBOTHtuningcalls,zero admitsBOTH withfreshsamecanonical404anddistinctcontrollers",
+    "profile_data": "sixUNCHANGEDoriginal8BtableDATAprefixes copiedfromPE solelySourceidentityguardtokens;neverexecuted/callablerelocatedtable;doesNOTproveproductionexecutableprofile/providerdomain",
+    "higher_services": "requiredbase/composite/control/tuning effects SOURCEinstrumentation ONLY;notcompleteoriginalproviders/nativecallerreplay/runtime reentry",
+    "unexercised": "Follow/Park/observer/reindex andactualsingleton services report excludedfixturepath;no no-op default service supplied inproduction",
+    "numeric_scope": "existingunchangedcruisekernels compile/run finite17/23 Sourcecase;ambientmaskedadmission checked;NOnewFPkernel/control sweep/originalFPcallerproof",
+    "old_artifacts": "165pointandearliersealedfamiliesimmutable/notreplayed"
+  },
+  "support_provenance": {
+    "source_full_build": "488abdcb0",
+    "published_metadata": "8cdccbcbd"
+  },
+  "support_libraries": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "copy": "local\\cc11_land_plane_leader_core.lib",
+      "bytes": 73392620,
+      "source_sha256_before": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+      "copy_sha256": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1",
+      "source_sha256_after": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+      "copy": "local\\cc11_land_plane_leader_lua.lib",
+      "bytes": 454824,
+      "source_sha256_before": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "source_sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+      "copy": "local\\cc11_land_plane_leader_zlib.lib",
+      "bytes": 71766,
+      "source_sha256_before": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "source_sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    }
+  ],
+  "no_live_support_reads_after_freeze": true,
+  "native_receipt": "local/cc11_land_plane_leader_native_receipt.json",
+  "source_coff": {
+    "file": "local/cc11_land_plane_leader_probe_coff.txt",
+    "leaf": {
+      "cell_pointer_load_offset": "04",
+      "only_cell_cmp_offset": "07",
+      "sete_al_offset": "0a",
+      "ordinary_ret_offset": "0d",
+      "calls": 0,
+      "stores": 0,
+      "native_full_eax_zero_or_one_guarantee": false
+    },
+    "adopters": {
+      "pure_map_virtual_call_offset": "13",
+      "same_plane_identity_cmp_offset": "16",
+      "one_inlined_cell_cmp_offset": "21",
+      "sete_al_offset": "24",
+      "qualification": "NewSourceclass/boolABI;notoriginalregister/classABI"
+    },
+    "existing_outer_and_cruise_tus": "fresh unchanged compilation;field/callback schedule exercised by Source instrumentation only"
+  },
+  "lower_queue_identity_correction": {
+    "captured_block": "009afe8f ECX ORIGINALBLOCK;9afe99 approach2C;block7C->approach30at9afe9c/9f",
+    "incoming": "009afea2 FRESH ORIGINALinputplane9D4;PUSH9afea8;CALL6C0B50ECXstillBLOCKat9afea9;notqueuereceiver/cached404",
+    "return": "009afeb6 approach34/task42C RETURNEDHOLDER fromfirstmatchingnonnullvectorrecord4ORfreshblock80afternotify/message;notpointertovectorrecord",
+    "source_name": "Historicalqueue_record_42cnameunchanged;no unownedold doc edit",
+    "cached": "Canonicaltask404 separatelycapturedbyhead;neverreplacedwithincoming9D4orholder"
+  },
+  "larger_prerequisites": {
+    "reusable": [
+      "complete9F9CE0head",
+      "complete6C0B50/6BF720/77C7B0queuechain",
+      "411E20/9AF9A0registry",
+      "9C2AC0Move",
+      "414DB0pose",
+      "BD2F10withactualRandomThreads/scalarcontext"
+    ],
+    "still_unbound": [
+      "true42E740singleton->complete7E2A20allocation/publication/loader/lifetime;semanticLua keyloader notwholefactory",
+      "complete9AFAF0geometry/holder/realplanevirtualnumericdomain",
+      "Follow9C2980wholeconstructor",
+      "lower/compositecallerx87argument/random/transferregionsprimaryowned",
+      "fullbase9C6F0/composite9B2E50/runtimearena/profile/tasklifetimes/privateEH/registerABI/game"
+    ],
+    "no_sibling_port": [
+      "9AF970baseunwind",
+      "9AF980basescalar",
+      "9AFA50selector",
+      "whole9AFE70/9B2E50/9B3240originalbodypromotion"
+    ]
+  },
+  "validation": {
+    "strict_compilation": "/W4 /WX /permissive- /O2 /Gy /MD;6freshactualTUs",
+    "focused_probe": "PASS31",
+    "leaf_native_call_rows": 0,
+    "separate_caller_rows": 2,
+    "git_diff_check": "passed",
+    "full_build": "rootowned_notrunbyworker",
+    "native_register_class_abi": "unbound",
+    "private_eh_world_game": "unbound",
+    "native_call_verifier": {
+      "whole_leaf_rows": 0,
+      "actual_caller_rows_checked": 2,
+      "failed": 0,
+      "qualification": "CallerrowsverifyexactnativeCALLinstructions/targets;notwholelargerbodyclosure"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_land_plane_leader_constructor.obj",
+      "size": 1464,
+      "sha256": "d34658e260566c70df390bad749298c52c2b34b92cc2f0a5a40ee0c15dfb7285"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_core.lib",
+      "size": 73392620,
+      "sha256": "f1863c68b9064abcfc0b50c624b751e80a4c16b89ffee02ee7a1a531ead82ae1"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_entries.obj",
+      "size": 21124,
+      "sha256": "f8214e30715e3584023e3ff4edaf9bea748aa707a5b63c499a7cf4c8520056b1"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_follow_parameters.obj",
+      "size": 1037,
+      "sha256": "749c6e28a35b348e156196a8ef98e211a701b6a6d51ce83e2c462a4ac21be37c"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_leaf.obj",
+      "size": 10561,
+      "sha256": "e6a2d65614a5e605429006d482ff11f6706e8d09e1bfa9cd4eff279d6920c90b"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_lua.lib",
+      "size": 454824,
+      "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_native_receipt.json",
+      "size": 3243,
+      "sha256": "69f55bcb2bd9f4be79b4e62b468db4baba575a54dc94d7fd1460ea2d6180e5e6"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe.cpp",
+      "size": 14223,
+      "sha256": "19c904e89294d99d5f2e6b81a62d4af5a6d5c50e779a8859073428493cff5546"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe.exe",
+      "size": 242688,
+      "sha256": "f580978a8e5d8d21b1170ca776ba2d417b14d5395d525b75c7ec337c7557da65"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe.obj",
+      "size": 170832,
+      "sha256": "4a80b245340c60dab6b619944dcd5f74565be8f642ad1e7f86ab6627d84cf7cb"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe_build.ps1",
+      "size": 2916,
+      "sha256": "317d98890513f2b40a6f59b14df481b2a9d03403417d67693bb2bfd42bb3e3d3"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe_coff.txt",
+      "size": 1502247,
+      "sha256": "0c7bccb10610e5ccfbe2df09a4596b84a96b007c1b8beeee103ac3861300bd85"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe_compile.log",
+      "size": 110182,
+      "sha256": "61dd9fdff679f11cfe2f494aad4e1c4a7d744995cf30d2e36ff48987ad1a9178"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_probe_output.txt",
+      "size": 129,
+      "sha256": "be15e4d9262b2aacbe18bbc3b58c8eda2b4640b835e173355155a4143db2eabb"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_squadron.obj",
+      "size": 207783,
+      "sha256": "7e7b52ace110162219c9e18721a76e35e0f6f4cdf9e0d51061432cabd2d959ce"
+    },
+    {
+      "path": "local/cc11_land_plane_leader_zlib.lib",
+      "size": 71766,
+      "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    }
+  ]
+}
