@@ -1,0 +1,322 @@
+{
+  "packet": "cc11_landing_queue_source",
+  "status": "complete_connected_conditional_queue_append_route_source_new_cpp_abi_unbound",
+  "baseline": "e27fb129a",
+  "tracked_files": [
+    "include/bsp/native_landing_queue.hpp",
+    "src/native_landing_queue.cpp",
+    "docs/LANDING_QUEUE_SOURCE_CC11.md",
+    "reports/landing_queue_source_cc11.json"
+  ],
+  "native_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "worker_mode": "READ ONLY bsp.py queries; project/program verified each batch",
+    "snapshot_total": 64716
+  },
+  "native_bodies": [
+    {
+      "address": "006C0B50",
+      "end_exclusive": "006C0D1D",
+      "length": 461,
+      "instructions": 141,
+      "sha256": "58c03af63d94d588004463f6849bd2b39665add1745e6a9046173dc409c035a8",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006C0C1A",
+          "native": "006BF720",
+          "function": "006C0B50"
+        },
+        {
+          "address": "006C0CBB",
+          "native": "00696350",
+          "function": "006C0B50"
+        },
+        {
+          "address": "006C0CC6",
+          "native": "006BD520",
+          "function": "006C0B50"
+        },
+        {
+          "address": "006C0CD6",
+          "native": "0077C7B0",
+          "function": "006C0B50"
+        }
+      ],
+      "indirect": [
+        {
+          "site": "006C0B86",
+          "operand": "dword ptr [0xce2218]",
+          "status": "indirect evidence; runtime target not call-verified"
+        },
+        {
+          "site": "006C0C2E",
+          "operand": "dword ptr [0xce2210]",
+          "status": "indirect evidence; runtime target not call-verified"
+        },
+        {
+          "site": "006C0C65",
+          "operand": "dword ptr [0xce2218]",
+          "status": "indirect evidence; runtime target not call-verified"
+        },
+        {
+          "site": "006C0CFC",
+          "operand": "dword ptr [0xce2210]",
+          "status": "indirect evidence; runtime target not call-verified"
+        }
+      ],
+      "original_abi": "ECX actual block; stack incoming identity; EAX holder; RET4; original private EH excluded",
+      "source_status": "complete conditional ordinary Source body, unbound"
+    },
+    {
+      "address": "006BF720",
+      "end_exclusive": "006BF7E5",
+      "length": 197,
+      "instructions": 76,
+      "sha256": "66479002909faeb04cca2d0353c95bbea99c860b6ecf8282d7f655962c12a073",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006BF72C",
+          "native": "00694A60",
+          "function": "006BF720"
+        },
+        {
+          "address": "006BF749",
+          "native": "00BF55BE",
+          "function": "006BF720"
+        },
+        {
+          "address": "006BF7A4",
+          "native": "00BF6989",
+          "function": "006BF720"
+        }
+      ],
+      "indirect": [],
+      "original_abi": "ECX embedded block+84; stack pointer to14h record; RET4",
+      "source_status": "complete conditional ordinary Source body, unbound"
+    },
+    {
+      "address": "0077C7B0",
+      "end_exclusive": "0077C87F",
+      "length": 207,
+      "instructions": 72,
+      "sha256": "1843b403fb0af5eabfc44f5c179550019853c90673929d8efd8ad9736da6513b",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "0077C81B",
+          "native": "00BF6713",
+          "function": "0077C7B0"
+        },
+        {
+          "address": "0077C829",
+          "native": "00BF6713",
+          "function": "0077C7B0"
+        },
+        {
+          "address": "0077C83C",
+          "native": "00BF6713",
+          "function": "0077C7B0"
+        },
+        {
+          "address": "0077C864",
+          "native": "00770B50",
+          "function": "0077C7B0"
+        },
+        {
+          "address": "0077C86E",
+          "native": "00BF6713",
+          "function": "0077C7B0"
+        }
+      ],
+      "indirect": [
+        {
+          "site": "0077C7F2",
+          "operand": "eax",
+          "status": "indirect evidence; runtime target not call-verified"
+        }
+      ],
+      "original_abi": "ECX actual owner; stack(message,excluded identity); RET8",
+      "source_status": "complete conditional ordinary Source body, unbound"
+    }
+  ],
+  "complete_coverage": {
+    "bytes": 865,
+    "instructions": 289,
+    "direct_native_calls": 12,
+    "indirect_sites": 5,
+    "append_instruction_count_note": "proto summary75 was stale; fresh live disasm76 starts equals disk Capstone76,0differences; no repair"
+  },
+  "source_adoption": {
+    "class": "NativeLandingQueueCalls derives existing NativeUnitHealthMessageSerializedCalls",
+    "native_caller_chain": "complete006C0B50 directly consumes complete006BF720 and0077C7B0 in this packet; no unused route helper or arbitrary phase provider",
+    "existing_source_chain": [
+      "register_observer_pair_00694A60",
+      "notify_observer_slot0c_00696350/dispatch00696120",
+      "complete renamed hex84 NativeLandingSlotMessage84 constructor/profile/codec",
+      "protected common-header send_session_message_to_nonlocal_peer_00770B50",
+      "inherited complete00783DC0 and00783C80",
+      "existing complete singleton_lifetime_allocate/free via canonical BF55BE/BF6989 thunks"
+    ],
+    "untouched": "health sources/headers,GameUnitsHost,CMake/metadata/ledgers/Ghidra",
+    "inheritance_domain": "all actual inherited contexts/globals/D2 profile/pure actual bindings remain required borrowed Source references; SAME mutable game cell as queue message_base; unrelated health methods keep original domains; no defaults or production global/profile/arena construction",
+    "real_transport": "current virtual+20 complete actual operation remains REQUIRED, with actual Source transport adapters reusable separately; no invented success or retained borrowed frame"
+  },
+  "layout": {
+    "record": "14h:identity00,holder04,sequence08,zero rawbits0C,current-one rawbits10",
+    "vector": "20h:actual NativeObserverOwnerStorage prefix00,unconsumed10,base14,count18,capacity1C",
+    "block": "minimumA4h:queue lock4,slot lockC,slot base4C/count50,owner7C,holder80,actualembeddedcallback84,recordbase98/count9C/capA0",
+    "slot": "58h:descriptor4,count8,raw10,incoming28,state2C,timer rawbits30,flag34",
+    "assertions": "all consumed offsets/sizes statically asserted; no native object/owner/state construction"
+  },
+  "prefix_observations": [
+    "Capture nullable actual block4 queue section,Enter/depth++; capturedrecordbase98 and initialcount9C; nonempty rereadcount on same base",
+    "First matching record4 capture; nonnull return AFTERcapturedqueueLeave and skip entiretail; null break/duplicateappend without later matches or sequences",
+    "Nonmatching preceding records: signed rawsequence >=signed currentcandidate, then wrappedraw+1; initialcandidate0",
+    "Newrecord4 PREAPPENDblock80,recordC zerobits,record10 fresh actual D7A24C bits; no integer1/default",
+    "Actual incoming identical-address observer prefix and embedded block84 registration BEFORE vectorheaders",
+    "Fullgrowth2*n+2 cap publish BEFORE allocator; bytescap*20 modulo32, no historical saturation; fresh count/base each wordcopy iteration; currentoldbase free;replacementbase;input fivewords;fresh count increment",
+    "Leave CAPTUREDqueue section even if cell changed; no queue/owner clear or destruction"
+  ],
+  "tail_observations": [
+    "Capture separate nullable blockC section; Enter/depth++; initialslotcount50 BEFOREbase4C; old58 cursor/index",
+    "Match cursor28==originalincoming; capturebyte34; state2C4/timer30 zerobits; ifflag currentCE3850 rawbits→timer thenbyte34clear",
+    "FRESHowner7C →real event4/value0 using actual required dispatch/lifetime/callback contexts",
+    "Real borrowed38h hex84 ctor on originalblock/index; all base/getter/slot/profile contexts required",
+    "FRESHowner7C AGAIN AFTERctor →complete route(message,null); no ordinary scalar/frame retention",
+    "FRESHcount50/base4C end afterroute; OLDcursor+58/index+1; stableold/newbacking and termination required",
+    "Leave CAPTUREDslot section; FRESHblock80 returned; no cached task404 replacement/retain"
+  ],
+  "route_observations": [
+    "Actual gamecell/mode1FE4==1 gate, NO null-game fallback",
+    "Null excluded identity: capturetype10; raw82/81/A7/A8/A9 shortcircuit, elsecurrentprofile0C query raw4A/AL; true→freshselectedowner14",
+    "Initialactualowner2A8 sentinel and firstnode; fresh sentinel each loop/end/validation; Source omits only native proved-unreachableCMPEDI,EDI branch81B",
+    "Compareexcluded vs node8; before send fresh sentinel validation; ownerWORD174; freshnode8; messageWORD18 store; actualpeer50 target",
+    "FRESHgamecell+1EF0 perexisting complete genericpeerSend; freshsentinel validation then currentnode.next",
+    "Reached iterator violation service remains REQUIRED without assumed noreturn/fallback; malformed lifetime/list domain excluded",
+    "Hex84 payload admitted;49/46 raw typeacceptance and otherprofile branch mechanics do not establish semantics"
+  ],
+  "required_domains": [
+    "Actual live Source references to registration/dispatch global cells/recursive sections/current callback targets",
+    "Actual incoming first-prefix and embeddedblock84 observer/vector storage; nonnull endpoint for append; null token may compare on early-return path",
+    "Actual current game/owner/profile/slot/descriptor/class-registry/bank cells and reached lifetime; SAME inherited/message gamecell",
+    "Actual listnodes/peer50/session/primarylocaltarget/target lock/cursor/profile and writable carry-byte backing; complete virtualtransport operation and owned serialized representation contract",
+    "Existing Source CRT allocator/newhandler/free allocation domain; native modulo32 bytes and every selected copy/write address valid; no arbitrary allocation/invalid-placement fallback",
+    "Inputrecord live/disjoint across allocation/free; field publication effects allowed only while reached backing stays live; terminating ranges/lists; no concurrency or structural invalidation",
+    "Private FH3/SEH/fault/failedallocation/original ABI/global/arena/profile/runtime/network/game binding remain excluded/unbound"
+  ],
+  "source_coff": {
+    "artifact": "local/cc11_landing_queue.obj",
+    "public_append": [
+      "register+21",
+      "capacityread+26/countcompare+2C",
+      "capacitypublish+44",
+      "allocator+60",
+      "freshcountcomparisons+72/+A4",
+      "free+ B3",
+      "inputcopy before freshcount increment+EF/+F3"
+    ],
+    "inlined_queue": [
+      "preappendholder80 load+C6",
+      "register+F6",
+      "capacitypublish+119/allocator+133",
+      "event+282",
+      "message84 ctor+29D",
+      "freshowner7C+2A2",
+      "currentmodegate+2B2",
+      "existingpeerSender+369",
+      "freshcount50+391/base4C+397 andOLDcursor+58+394",
+      "capturedslotleave+3BC",
+      "FRESHholder80+3C2"
+    ],
+    "public_route": [
+      "modegate+10",
+      "currentprofilequery+4C",
+      "senderstore+AA",
+      "actualpeer50 getter+ B3",
+      "freshgame+1EF0+ C6",
+      "existingpeerSender+ CC"
+    ],
+    "qualification": "MSVC SOURCE ordering receipts only; compiler may inline append/route. No exact native register/EFLAGS/private EH/ABI equivalence claim."
+  },
+  "validation": {
+    "compiler": "MSVC cl19.51.36244.0/toolset14.51.36231 Win32",
+    "compile": "six fresh actual TUs: native_landing_queue, current native_session_message84, native_unit_health_message, observer_event_producer, observer_edges, probe; /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX, all0",
+    "link": "fresh six objects+three pinned slot0c core/lua511/zlib121 libraries; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; exit0",
+    "manifest": {
+      "machine": "0x14c",
+      "manifest_count": 1,
+      "manifest_asInvoker": true
+    },
+    "output": "PASS SOURCE connected landing queue/append/event4/hex84/route/real peer-send-lock-serializer: first-null duplicate, captured/fresh identities, old cursor/fresh bounds, recursive locks restored",
+    "one_ignored_fixture": [
+      "Same scenario firstnonnullrecord earlyreturn, thenfirstnull duplicate/fullcap3→8/count3→4; precedingseq3→4 ignoresmatching777/later900",
+      "Record4 remains PREAPPENDholder; controlled real-event callback eventholder/ownerA→B/gamepublication; requiredclass getter finalholder/ownerB→C/freshgamepublication",
+      "Real694A60 registration embedded84; realeventword dispatch and sharedrecursive interval restore",
+      "Realhex84 ctor actualshaped block/descriptor/registry; capturedslot aftergetterpublishesnewbase=old+58/count0; oldcursor meetsfreshend,secondslotuntouched",
+      "Complete actual Source00770B50/00783DC0/00783C80 +realprofile codec: 84bits/tickdelivery/sender/class/count/raw/squad decoded; oldowner/oldgame wouldsuppresssend",
+      "Capturedqueue/slot/send/observer depths restore; slotlockcellreboundtoanotherlive lock yetoldcapturedlock restored; no borrowedframe release"
+    ],
+    "limits": "SOURCE profile/callback/getter/CRT/provider-field instrumentation, not observed native reentry/runtime binding/differential original-body/network test. Fixture unused inheritedhealth and transportflush branches explicitly fail ifentered; production methods remain abstract required COMPLETE providers.",
+    "supports": "pre/post SHA256 identical for three pinned libraries",
+    "native_call_verifier": "tools/verify_report_calls.py:12 direct native call rows checked,0 failed;5indirect sites explicitly unverified",
+    "diff_checks": "working and staged git diff --check passed",
+    "full_build": "root owned; no worker full CMake/game run",
+    "artifacts": [
+      {
+        "path": "local/cc11_landing_queue_probe.cpp",
+        "sha256": "5364a757804ff2a40df5f128a0c4e54fc3da0e016f09c07dac96b1e11513ecbe"
+      },
+      {
+        "path": "local/cc11_landing_queue_probe.obj",
+        "sha256": "bb08c7bb60daf5be31284400e48991bed6112ffb428b890e3aacea8f9e14b0a3"
+      },
+      {
+        "path": "local/cc11_landing_queue_probe.exe",
+        "sha256": "f0e0693fac19ffeee34066224e2bbbb2d4d5964899d18ced1b76171fcc6fa007"
+      },
+      {
+        "path": "local/cc11_landing_queue.obj",
+        "sha256": "ee8dab5a4dd69bafa9e35e30dff71a796454520eae439c31c8e2fcc08b28e878"
+      },
+      {
+        "path": "local/cc11_landing_queue_message84.obj",
+        "sha256": "b7a72cc99f9f368f9233214c2851e5fd7512793075ff531651ad90440b8c6b0f"
+      },
+      {
+        "path": "local/cc11_landing_queue_health.obj",
+        "sha256": "cdde8d1c488bb1b44c23ecfe37039466577d9ef64322004567074063211fe088"
+      },
+      {
+        "path": "local/cc11_landing_queue_events.obj",
+        "sha256": "106427de0d7ed3fd4e092be0f91e9ccb70170df5d8cf6e41194dc6c96bb73dd0"
+      },
+      {
+        "path": "local/cc11_landing_queue_edges.obj",
+        "sha256": "8f22942c8c4fedebec487553ac60d5cd4301b7dd81f8ee11f5832879ea470dfe"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_core.lib",
+        "sha256": "1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_lua511.lib",
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_zlib121.lib",
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "remaining_connections": [
+    "Natural future Sourceconsumer009AFE70: fresh original input-plane9D4 →006C0B50 →publishreturnedholderapproach34/task42C; earliercanonicalapproachC/task404 remainsseparate",
+    "Full009AFE70/009B2E50/9AFAF0 geometry/math/state/observer/profile/arena lifetime remains separate required recovery; complete9F9CE0 head is reusable, not complete lower admission",
+    "Actual holder creation/destruction/refresh/globalintrusivelist still external; no implicit retained task/record/holder cleanup",
+    "Current sparseBotTaskHost/GameUnitsHost semantic queue projections excluded; no live Boolean/death/cache/scheduler/game wiring",
+    "Root owns CMake registration, full serialized Win32/existing CTests, independent probe/integration and Ghidra naming/export/ledger publication"
+  ]
+}
