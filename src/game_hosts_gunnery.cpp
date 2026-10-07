@@ -390,9 +390,11 @@ constexpr bool kUnitInvincibilityFloorBound = true;
 //    00877BB9..00877BC1 ordered equality test precedes clamping; neither a
 //    nominal damage amount nor a final health delta substitutes for its
 //    dispatch_health_changed decision. Refused damage never reaches SetHealth.
-//    OFF pending paired runtime validation (SHIP_AI_OPEN_ITEMS 205.2 / 206).
+//    ON after the cc11_health_pair 80,000-frame simulation comparison removed
+//    repeated HQ neutralization; renderer exit failures are qualified separately
+//    in GUNNERY_HEALTH_CALLBACK_PAIR_CC11.md (SHIP_AI_OPEN_ITEMS 205.2 / 206).
 //    Partial binding: callbacks stay coalesced at the existing hit/pass end.
-constexpr bool kUnitHealthCallbackGuardBound = false;
+constexpr bool kUnitHealthCallbackGuardBound = true;
 //  * kGunneryLineOfSightBound (packet cc9_gunnery_line_of_sight,
 //    docs/GUNNERY_OPEN_ITEMS.md section 5): 00864D90's visibility test runs
 //    00864680 instead of answering visible. The target's point is its pose raised

@@ -1,0 +1,657 @@
+{
+  "packet": "cc11_health_pair",
+  "status": "guard_enabled_after_reviewed_simulation_pair_renderer_exit_failed",
+  "switch": {
+    "name": "kUnitHealthCallbackGuardBound",
+    "enabled": true
+  },
+  "source": "src/game_hosts_gunnery.cpp",
+  "header": "include/bsp/game_hosts_gunnery.hpp",
+  "document": "docs/GUNNERY_HEALTH_CALLBACK_PAIR_CC11.md",
+  "prior_evidence_report": "reports/gunnery_health_callback_guard_cc11.json",
+  "prior_report_scope": "Historical OFF implementation checks; current switch decision and completed pair are recorded here",
+  "routines": [
+    {
+      "address": "00877B90",
+      "coverage": "partial: transport existing setter callback decision only",
+      "native_abi": "ECX this, stack float, RET 4 at 00877CC6",
+      "evidence": [
+        "00877BAB..00877BC1 ordered equality before clamp",
+        "00877BC7..00877C04 clamp and store",
+        "00877C2A..00877C40 mode gate and vtable dispatch"
+      ]
+    },
+    {
+      "address": "00879070",
+      "coverage": "partial: preserve refusal versus setter dispatch at existing host calls",
+      "native_abi": "ECX this, stack float, RET 4 at 0087923C",
+      "evidence": [
+        "008790B4..008790CA positive damage dead gate",
+        "008790D0..00879121 invincibility floor",
+        "00879123..0087914B subtraction and SetHealth call"
+      ]
+    },
+    {
+      "address": "008777D0",
+      "coverage": "partial: propagate callback eligibility through existing hull and part host calls",
+      "native_abi": "ECX this, stack hit pointer, RET 4 at 00877A41",
+      "evidence": [
+        "008778AD..008778D2 positive hull damage slot call",
+        "00877A11..00877A37 positive winning-part damage slot call"
+      ]
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "source": "Prior guard packet verified project/program, listings and native callsites; this packet adds runtime evidence only",
+    "ghidra_mutated": false,
+    "ledger_mutated": false,
+    "new_native_callsite_claims": 0
+  },
+  "setup": {
+    "pinned_commit": "f6c6d992aa18cc243c7854a6c1be83ef220830f9",
+    "worker_root": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard",
+    "export_tool": "tools/pair_export.py",
+    "exported_file_count": 11331,
+    "different_export_files": [
+      "src/game_hosts_gunnery.cpp"
+    ],
+    "export_comparison": "Byte-for-byte comparison of all exported tracked files; builds use separate directories",
+    "guard_in_exports": {
+      "off": false,
+      "on": true
+    },
+    "capture_party_in_both_exports": true,
+    "capture_party_in_tracked_source": false,
+    "other_tracked_behavior_switches_changed": [],
+    "build_order": [
+      "off",
+      "on"
+    ],
+    "build_serialization": "After primary build; no concurrent build trees",
+    "mission": "USNOS",
+    "mission_frames": 80000,
+    "mission_frame_seconds": 0.05,
+    "outer_frames": 80200,
+    "press_start_frame": 30,
+    "environment": {
+      "BSP_GUNNERY_RNG_STREAMS": "1",
+      "BSP_DEATH_TABLE": "1"
+    },
+    "rng_scope": "Existing deterministic measurement substitution, not native RNG parity",
+    "orders": "local/cc11_health_pair_orders.txt",
+    "orders_origin": "Unchanged 85-line s41_os_f12.txt from cc9-ships41 worktree",
+    "orders_sha256": "10f74bff851a2b414814e2105de8c8868ee9da2af72e155fc6aa3081100ebbaf",
+    "launcher": "local/cc11_health_pair_run.ps1 -> tools/run_game.ps1",
+    "launch_attempt_note": "An initial nested pwsh argument-binding failure preceded any executable run; corrected wrapper calls run_game.ps1 directly"
+  },
+  "variants": {
+    "off": {
+      "receipts": {
+        "commit": "f6c6d992aa18cc243c7854a6c1be83ef220830f9",
+        "flips": [
+          {
+            "name": "kUnitHealthCallbackGuardBound",
+            "file": "src/game_hosts_gunnery.cpp",
+            "line": 395,
+            "was": "false",
+            "now": "false"
+          },
+          {
+            "name": "kCaptureStatePartyFromUnitBound",
+            "file": "src/game_hosts_ship_ai.cpp",
+            "line": 676,
+            "was": "false",
+            "now": "true"
+          }
+        ],
+        "manifest_sha256": "b4db9078461d896269ad5c75ecc0ab8059c46c9d304a24c585ee10c5d68ed7dd",
+        "gunnery_sha256": "f0df72eb2b3b3590031c217288fdf8ef06a436306ee4cccca1b6f378a2bf9414",
+        "ship_ai_sha256": "6edbcda62eca6417f2c5ae7c7bec6d399936198d710649bc1048a8dcb4a3983f",
+        "exe_sha256": "63a2c96e7502ee1056ccc3521087a57e26cb4e428393efabc86173f3bb5f591e",
+        "xlive_stub_sha256": "bf977febfd9074a10861bec407ac46170431f6e9d2df176971a474da4d4d6fab",
+        "log_sha256": "23eb4815ea82756de80add1de0a67301b7175524afa0066047c5952ada836880",
+        "exit_code": 1
+      },
+      "export_manifest": "local/cc11_health_pair_off/.pair_export.json",
+      "build_log": "local/cc11_health_pair_off/pair_export_build.log",
+      "build_ctest_summary_line": 2179,
+      "exe": "local/cc11_health_pair_off/build/win32/Release/bsp_game.exe",
+      "log": "local/cc11_health_pair_off_usnos_f12.log",
+      "log_line_count": 935607,
+      "raw_exit_code": 1,
+      "simulation_completed": true,
+      "outer_frames_completed": 80200,
+      "mission_motion_steps_completed": 80000,
+      "simulation_seconds": 4002.73,
+      "clean_runtime_pass": false,
+      "renderer": {
+        "failed_native_present_frames": [
+          12983
+        ],
+        "presented": 12981,
+        "skipped": 67218,
+        "missing_failed_present_count": 1,
+        "loss_polls": 231,
+        "loss_holds": 221,
+        "resets": 1,
+        "loss_summary_line": 935606,
+        "failed_hresult": "0x88760868",
+        "create_failures": 0,
+        "reset_failures": 0
+      },
+      "renderer_exit_reason": "Failed Present increments neither presented nor skipped (game_hosts.cpp:1007); sum is below limit in game_main.cpp:700 despite complete outer loop",
+      "summary_evidence": {
+        "present_failures": [
+          {
+            "line": 115249,
+            "text": "present failed hr=0x88760868"
+          }
+        ],
+        "score_displays": [
+          {
+            "line": 906561,
+            "text": "summary mission score display posts=527 changes=6 hides=0 shown_at_end=3 (008C20D0 / 008C24B0, packet cc9_lua47_display_scores)"
+          },
+          {
+            "line": 906562,
+            "text": "summary mission score display id=2 \"Protect your transports and the Enterprise!|\""
+          },
+          {
+            "line": 906563,
+            "text": "summary mission score display id=3 \"Capture all bases!|Bases captured: 1.00\""
+          },
+          {
+            "line": 906564,
+            "text": "summary mission score display id=4 \"Crush Japans last stand!|\""
+          }
+        ],
+        "script_state": {
+          "line": 906649,
+          "text": "summary mission script state: MissionPhase=2 EndMission=nil Party=0 Distance=nil Measure=nil MissionCompleteRan=nil MissionFailedRan=nil MissionStatus=nil MusicEndTime=nil entity_resolves=686 self_table_entities=1041 recon_own_categories=19"
+        },
+        "capture": {
+          "line": 906681,
+          "text": "summary mission command building capture buildings=3 bound=1 health_zero=500 neutralized=48 countdown_fires=4165 progress_messages=0 flips=0 (packet cc9_command_building_capture_bind)"
+        },
+        "health_callback": {
+          "line": 911284,
+          "text": "summary mission gunnery health callback no_dispatch=805 suppressed=0 bound=0 (00877B90, packet cc11_health_guard)"
+        },
+        "damage": {
+          "line": 913017,
+          "text": "summary mission gunnery damage queued_hits=16666 dispatched=16666 hit_records=16666 hull=4788 part=751 fires=189 floods=325 attributions=16666 deaths=471 kill_credits=471 total_damage=511355.2 first_hit=5.00 s"
+        },
+        "objective_status": {
+          "line": 917063,
+          "text": "summary mission objective status (packet cc9_objectives_completed, 008BD340/008BD900 -> 008E20D0/008E2200): sets=3 misses=0 unit_drops=11"
+        },
+        "motion": {
+          "line": 917079,
+          "text": "unit motion: 80000 motion step(s) of 6143032 unit tick(s) over 4002.73 s of simulated time, 31480697 instance update(s) of 008255b0"
+        },
+        "loop": {
+          "line": 933688,
+          "text": "loop finished=1 frames=80200 presented=12981"
+        },
+        "window": {
+          "line": 933703,
+          "text": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=12981 presents_skipped=67218 loop_finished=1 exit_code=1"
+        }
+      },
+      "final_hq_rows": {
+        "HQ1": {
+          "line": 916408,
+          "text": "HQ1                     2     5  1:3 6:2              1500       70    278   251     387   12000        0     -1.00  -"
+        },
+        "HQ2": {
+          "line": 916409,
+          "text": "HQ2                     0     5  1:3 6:2              1500       78   1290   199   38434   12000        0     -1.00  -"
+        },
+        "CB2": {
+          "line": 916647,
+          "text": "CB2                     2     5  1:3 6:2              1500      281    771   219     625   12000        0     -1.00  -"
+        }
+      },
+      "objective_evidence": [
+        {
+          "line": 13285,
+          "text": "objective binding Objectives_Add         name=\"Troop\" slots=0x01 units=7"
+        },
+        {
+          "line": 236070,
+          "text": "objective binding Objectives_Add         name=\"Cap\" slots=0x01 units=3"
+        },
+        {
+          "line": 236072,
+          "text": "objective binding Objectives_Add         name=\"Fort\" slots=0x01 units=11"
+        },
+        {
+          "line": 236074,
+          "text": "objective binding Objectives_Add         name=\"Bruh\" slots=0x01 units=2"
+        },
+        {
+          "line": 236076,
+          "text": "objective binding Objectives_AddUnit     name=\"Path_markerz\" slots=0x01 units=0"
+        },
+        {
+          "line": 236077,
+          "text": "objective binding Objectives_AddUnit     name=\"Path_markerz\" slots=0x01 units=0"
+        },
+        {
+          "line": 236093,
+          "text": "objective binding Objectives_Add         name=\"Con\" slots=0x01 units=9"
+        },
+        {
+          "line": 239127,
+          "text": "objective binding Objectives_Add         name=\"Block\" slots=0x01 units=4"
+        },
+        {
+          "line": 297317,
+          "text": "objective binding Objectives_Completed   name=\"Bruh\" slots=0x01 units=0"
+        },
+        {
+          "line": 323945,
+          "text": "objective binding Objectives_Completed   name=\"Block\" slots=0x01 units=0"
+        },
+        {
+          "line": 324975,
+          "text": "objective binding Objectives_Completed   name=\"Troop\" slots=0x01 units=0"
+        },
+        {
+          "line": 328458,
+          "text": "objective binding Objectives_Add         name=\"Rein\" slots=0x01 units=12"
+        }
+      ]
+    },
+    "on": {
+      "receipts": {
+        "commit": "f6c6d992aa18cc243c7854a6c1be83ef220830f9",
+        "flips": [
+          {
+            "name": "kUnitHealthCallbackGuardBound",
+            "file": "src/game_hosts_gunnery.cpp",
+            "line": 395,
+            "was": "false",
+            "now": "true"
+          },
+          {
+            "name": "kCaptureStatePartyFromUnitBound",
+            "file": "src/game_hosts_ship_ai.cpp",
+            "line": 676,
+            "was": "false",
+            "now": "true"
+          }
+        ],
+        "manifest_sha256": "cb017d0698e701dd1c812f8014192a574489e8771ef914ff5e557bff2969d881",
+        "gunnery_sha256": "f10357708c8446353451c254f864809e365e9abcc6f71304b71554e3c62bb77c",
+        "ship_ai_sha256": "6edbcda62eca6417f2c5ae7c7bec6d399936198d710649bc1048a8dcb4a3983f",
+        "exe_sha256": "04f600208a1aa73fa7e907b6cd7a86cd8ce5e9ad79e1ab81ddd286f483215b4d",
+        "xlive_stub_sha256": "895a9e512a0287aa9302a86c3427134cc54a7a65cd5eb27dfad322e8dd849ad5",
+        "log_sha256": "0cb2ddaaf182d116f3701843dd09c89350ac2b265e32234e624dfa7dbce0877d",
+        "exit_code": 1
+      },
+      "export_manifest": "local/cc11_health_pair_on/.pair_export.json",
+      "build_log": "local/cc11_health_pair_on/pair_export_build.log",
+      "build_ctest_summary_line": 2179,
+      "exe": "local/cc11_health_pair_on/build/win32/Release/bsp_game.exe",
+      "log": "local/cc11_health_pair_on_usnos_f12.log",
+      "log_line_count": 865625,
+      "raw_exit_code": 1,
+      "simulation_completed": true,
+      "outer_frames_completed": 80200,
+      "mission_motion_steps_completed": 80000,
+      "simulation_seconds": 4002.73,
+      "clean_runtime_pass": false,
+      "renderer": {
+        "failed_native_present_frames": [
+          42444,
+          68889
+        ],
+        "presented": 80071,
+        "skipped": 127,
+        "missing_failed_present_count": 2,
+        "loss_polls": 122,
+        "loss_holds": 112,
+        "resets": 3,
+        "loss_summary_line": 865624,
+        "failed_hresult": "0x88760868",
+        "create_failures": 0,
+        "reset_failures": 0
+      },
+      "renderer_exit_reason": "Failed Present increments neither presented nor skipped (game_hosts.cpp:1007); sum is below limit in game_main.cpp:700 despite complete outer loop",
+      "summary_evidence": {
+        "present_failures": [
+          {
+            "line": 416554,
+            "text": "present failed hr=0x88760868"
+          },
+          {
+            "line": 724850,
+            "text": "present failed hr=0x88760868"
+          }
+        ],
+        "score_displays": [
+          {
+            "line": 837162,
+            "text": "summary mission score display posts=527 changes=5 hides=0 shown_at_end=3 (008C20D0 / 008C24B0, packet cc9_lua47_display_scores)"
+          },
+          {
+            "line": 837163,
+            "text": "summary mission score display id=2 \"Protect your transports and the Enterprise!|\""
+          },
+          {
+            "line": 837164,
+            "text": "summary mission score display id=3 \"Capture all bases!|Bases captured: 2.00\""
+          },
+          {
+            "line": 837165,
+            "text": "summary mission score display id=4 \"Crush Japans last stand!|\""
+          }
+        ],
+        "script_state": {
+          "line": 837250,
+          "text": "summary mission script state: MissionPhase=2 EndMission=nil Party=0 Distance=nil Measure=nil MissionCompleteRan=nil MissionFailedRan=nil MissionStatus=nil MusicEndTime=nil entity_resolves=695 self_table_entities=1032 recon_own_categories=19"
+        },
+        "capture": {
+          "line": 837282,
+          "text": "summary mission command building capture buildings=3 bound=1 health_zero=3 neutralized=3 countdown_fires=2673 progress_messages=0 flips=0 (packet cc9_command_building_capture_bind)"
+        },
+        "health_callback": {
+          "line": 841820,
+          "text": "summary mission gunnery health callback no_dispatch=857 suppressed=857 bound=1 (00877B90, packet cc11_health_guard)"
+        },
+        "damage": {
+          "line": 843361,
+          "text": "summary mission gunnery damage queued_hits=16430 dispatched=16430 hit_records=16430 hull=4835 part=875 fires=180 floods=331 attributions=16430 deaths=467 kill_credits=467 total_damage=507855.0 first_hit=5.00 s"
+        },
+        "objective_status": {
+          "line": 847356,
+          "text": "summary mission objective status (packet cc9_objectives_completed, 008BD340/008BD900 -> 008E20D0/008E2200): sets=3 misses=0 unit_drops=11"
+        },
+        "motion": {
+          "line": 847372,
+          "text": "unit motion: 80000 motion step(s) of 6102619 unit tick(s) over 4002.73 s of simulated time, 31439322 instance update(s) of 008255b0"
+        },
+        "loop": {
+          "line": 863706,
+          "text": "loop finished=1 frames=80200 presented=80071"
+        },
+        "window": {
+          "line": 863721,
+          "text": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=80071 presents_skipped=127 loop_finished=1 exit_code=1"
+        }
+      },
+      "final_hq_rows": {
+        "HQ1": {
+          "line": 846710,
+          "text": "HQ1                     0     5  1:3 6:2              1500       70     10   298    1041   12000        0     -1.00  -"
+        },
+        "HQ2": {
+          "line": 846711,
+          "text": "HQ2                     0     5  1:3 6:2              1500       78   1258   199   37578   12000        0     -1.00  -"
+        },
+        "CB2": {
+          "line": 846949,
+          "text": "CB2                     2     5  1:3 6:2              1500      281    771   219     625   12000        0     -1.00  -"
+        }
+      },
+      "objective_evidence": [
+        {
+          "line": 13285,
+          "text": "objective binding Objectives_Add         name=\"Troop\" slots=0x01 units=7"
+        },
+        {
+          "line": 220934,
+          "text": "objective binding Objectives_Add         name=\"Cap\" slots=0x01 units=3"
+        },
+        {
+          "line": 220936,
+          "text": "objective binding Objectives_Add         name=\"Fort\" slots=0x01 units=11"
+        },
+        {
+          "line": 220938,
+          "text": "objective binding Objectives_Add         name=\"Bruh\" slots=0x01 units=2"
+        },
+        {
+          "line": 220940,
+          "text": "objective binding Objectives_AddUnit     name=\"Path_markerz\" slots=0x01 units=0"
+        },
+        {
+          "line": 220941,
+          "text": "objective binding Objectives_AddUnit     name=\"Path_markerz\" slots=0x01 units=0"
+        },
+        {
+          "line": 220956,
+          "text": "objective binding Objectives_Add         name=\"Con\" slots=0x01 units=9"
+        },
+        {
+          "line": 223769,
+          "text": "objective binding Objectives_Add         name=\"Block\" slots=0x01 units=4"
+        },
+        {
+          "line": 277491,
+          "text": "objective binding Objectives_Completed   name=\"Bruh\" slots=0x01 units=0"
+        },
+        {
+          "line": 302001,
+          "text": "objective binding Objectives_Completed   name=\"Block\" slots=0x01 units=0"
+        },
+        {
+          "line": 303009,
+          "text": "objective binding Objectives_Completed   name=\"Troop\" slots=0x01 units=0"
+        },
+        {
+          "line": 306281,
+          "text": "objective binding Objectives_Add         name=\"Rein\" slots=0x01 units=12"
+        }
+      ]
+    }
+  },
+  "mechanism_comparison": {
+    "repeated_prior_party_zero_neutralizations": {
+      "off": 45,
+      "on": 0
+    },
+    "initial_prior_party_one_neutralizations": {
+      "off": 3,
+      "on": 3
+    },
+    "initial_neutralization_unit_times_equal": true,
+    "initial_neutralizations": [
+      {
+        "unit": "HQ2",
+        "time": 1484.75
+      },
+      {
+        "unit": "HQ1",
+        "time": 1885.3
+      },
+      {
+        "unit": "CB2",
+        "time": 2047.15
+      }
+    ],
+    "health_zero_callbacks": {
+      "off": 500,
+      "on": 3
+    },
+    "total_neutralizations": {
+      "off": 48,
+      "on": 3
+    },
+    "hq_resynchronizations": {
+      "off": {
+        "HQ2": 13,
+        "HQ1": 33
+      },
+      "on": {
+        "HQ2": 1,
+        "HQ1": 1
+      }
+    },
+    "no_dispatch_candidates": {
+      "off": 805,
+      "on": 857
+    },
+    "suppressed_callbacks": {
+      "off": 0,
+      "on": 857
+    },
+    "final_hq_parties": {
+      "off": {
+        "HQ1": 2,
+        "HQ2": 0,
+        "CB2": 2
+      },
+      "on": {
+        "HQ1": 0,
+        "HQ2": 0,
+        "CB2": 2
+      }
+    },
+    "score_bases_captured": {
+      "off": 1,
+      "on": 2
+    },
+    "first_hq2_resync": {
+      "off": {
+        "time": 1702.9,
+        "line": 313214
+      },
+      "on": {
+        "time": 1702.9,
+        "line": 292100
+      }
+    },
+    "first_false_neutralization_off": {
+      "unit": "HQ2",
+      "time": 1702.9,
+      "line": 313352
+    },
+    "hq1_resync": {
+      "off": {
+        "first_time": 2381.05,
+        "last_time": 2628.55,
+        "count": 33
+      },
+      "on": {
+        "time": 2386.0,
+        "line": 488697,
+        "count": 1
+      }
+    },
+    "hq_zero_health_scope": "HQ1/HQ2/CB2 remain living command buildings, not death rows"
+  },
+  "death_review": {
+    "deaths_and_kill_credits": {
+      "off": 471,
+      "on": 467
+    },
+    "all_deaths_before_first_false_neutralization_equal": true,
+    "matching_ordered_identity_time_killer_prefix": 275,
+    "whole_run_identity_time_killer_equal": false,
+    "differing_triple_counts": {
+      "off": 120,
+      "on": 116
+    },
+    "first_divergent_victim": {
+      "unit": "Storage - Raktar03 02",
+      "off": {
+        "time": 1790.72,
+        "killer": "HQ2",
+        "line": 341310
+      },
+      "on": {
+        "time": 1838.77,
+        "killer": "NH",
+        "line": 333092
+      },
+      "interpretation": "Occurs after ownership difference and involves HQ2; consistent with downstream targeting change, not complete causal proof"
+    },
+    "off_only_victims": [
+      "Airfield1_sqn45",
+      "Airfield1_sqn45|.-2",
+      "Airfield1_sqn45|.-3",
+      "Airfield1_sqn46",
+      "Airfield1_sqn46|.-2",
+      "Airfield1_sqn46|.-3"
+    ],
+    "off_only_victim_review": "All six names are absent everywhere in ON log including spawn records, rather than surviving at zero health; OFF first squadron45 spawn line507900, six death rows525457..555790",
+    "on_only_victims": [
+      "Cargo1",
+      "Cargo2"
+    ],
+    "cargo_review": {
+      "killer": "TroopTrans3",
+      "times": [
+        2783.04,
+        2816.12
+      ],
+      "nonzero_damage_death_lines_on": [
+        588372,
+        596697
+      ],
+      "final_health_off": 2400,
+      "final_health_on": 0,
+      "final_unit_lines_off": [
+        916741,
+        916742
+      ],
+      "final_unit_lines_on": [
+        847043,
+        847044
+      ]
+    },
+    "additional_observations": [
+      "Airfield1 dies2461.88 OFF versus2461.53 ON, both to NH",
+      "HQ2 destroys Hangar, Small, 02 04 at2360.83 OFF versus2333.10 ON",
+      "These observations do not establish every link in the missing-squadron spawn chain"
+    ]
+  },
+  "objective_review": {
+    "binding_event_count_each": 12,
+    "binding_event_text_sequence_equal": true,
+    "completed_objectives_each": [
+      "Bruh",
+      "Block",
+      "Troop"
+    ],
+    "mission_phase_each": 2,
+    "mission_success_or_failure_observed": false,
+    "cb2_capture_completed": false,
+    "campaign_completion_established": false
+  },
+  "decision": {
+    "accepted_by": "Primary integrator following independent review of complete summaries, death divergence, victim deltas, Cargo damage and objective sequence",
+    "bounded_mechanism_supported": true,
+    "guard_enabled": true,
+    "capture_party_enabled_in_tracked_source": false,
+    "clean_runtime_pass": false,
+    "renderer_accounting_changed": false,
+    "extra_runtime_launched": false
+  },
+  "validation": {
+    "variant_full_win32_builds": "Both passed",
+    "variant_ctests": "2/2 each: reconstructed_math and tool_tests",
+    "native_seeded_ctest_scope": "Absent from clean exports; primary checkout result is not counted as a variant result",
+    "enabled_host_msvc_win32_syntax": "Passed /std:c++17 /EHsc /W4 /WX /fp:strict /Zs",
+    "focused_existing_rule_probe": "12/12 passed; src/unit_damage.cpp; /MANIFEST:EMBED",
+    "probe_scope": "Existing setter equality/refusal and eligibility checks; not native differential or host endpoint execution",
+    "probe_command": "cmd /c local\\cc11_health_guard_check.cmd",
+    "full_integrated_main_checks": "Primary integrator responsibility after merge",
+    "native_differential": "Not run",
+    "original_game_validated": false,
+    "binary_abi_compatible": false
+  },
+  "limits": [
+    "Partial finite-request callback eligibility binding at five existing health-zero endpoints, not complete SetHealth reconstruction",
+    "Health-zero callbacks remain coalesced at existing hit/pass boundaries; no native per-write callback timing",
+    "Positive-health callbacks and native multiplayer ownership remain unbound",
+    "Unordered callback eligibility is preserved; existing pure setter NaN storage and signaling exception policy remain different",
+    "Existing damage arithmetic, hull-segment gate, attribution and explicit kill policy are retained",
+    "Both logs complete simulation but have raw exit1 from failed Direct3D Present calls; renderer/launcher qualification failed",
+    "Later combat/death/spawn differences are recorded; whole-gameplay equivalence and complete campaign completion are not established"
+  ]
+}

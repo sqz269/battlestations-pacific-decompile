@@ -64,9 +64,10 @@
 //
 // cc11_health_guard: the partial 00877B90 callback binding carries the existing
 // UnitHealthWrite::dispatch_health_changed to the five damage/death endpoints.
-// It is OFF pending paired runtime validation. Callback timing remains at the
-// host's hit/pass end; this does not provide native per-write callback ordering
-// or binary ABI compatibility. docs/GUNNERY_HEALTH_CALLBACK_GUARD_CC11.md.
+// It is ON after the qualified cc11_health_pair simulation comparison. Callback
+// timing remains at the host's hit/pass end; this does not provide native
+// per-write callback ordering or binary ABI compatibility. See the guard and
+// pair documents for the finite-request scope and retained NaN storage limit.
 
 #include <array>
 #include <cstddef>

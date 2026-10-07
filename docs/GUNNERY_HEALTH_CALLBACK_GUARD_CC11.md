@@ -7,7 +7,11 @@ its health-zero/death funnel whenever the final health was nonpositive. A living
 CommandBuilding at zero health can consequently be neutralized again after
 SetParty. This is the defect routed by `SHIP_AI_OPEN_ITEMS.md` 205.2 and 206.
 
-`kUnitHealthCallbackGuardBound` is **OFF** pending the paired runtime check.
+`kUnitHealthCallbackGuardBound` is **ON** after review of the completed
+`cc11_health_pair` simulation comparison. See `GUNNERY_HEALTH_CALLBACK_PAIR_CC11.md`
+and its report for the supported mechanism and separately failed renderer/exit
+qualification. The original packet landed OFF; the implementation checks below
+describe that stage.
 When enabled, the five existing health-driven death endpoints require at least
 one setter result with `dispatch_health_changed`. The damage rule, storage,
 attribution, hit notices, counters for applied damage and other switches retain
@@ -80,8 +84,11 @@ health is separate from unit `+370h` and does not fabricate a setter decision.
   `cmd /c local\cc11_health_guard_check.cmd`. This checks existing rule outputs,
   not execution of the changed host endpoints or the original executable.
 - No new tracked tests, shared CMake edits, ledger changes or Ghidra mutations.
-- Full Win32 build/CTest and runtime OFF/ON pairs remain for serialized primary
-  integration. No native differential, game validation or ABI parity claimed.
+- The subsequent paired exports passed full Win32 builds and two CTests each;
+  both completed 80,000 mission steps with renderer-related exit code 1. The
+  pair document distinguishes the accepted callback mechanism from that failed
+  exit qualification. No native differential, original-game validation or ABI
+  parity is claimed.
 
 This remains a partial binding: callbacks are coalesced at the existing hit/pass
 end and only the health-zero path is represented. Positive-health callbacks,
@@ -115,5 +122,7 @@ comparing. Keep `kCaptureStatePartyFromUnitBound` ON in both experimental varian
 to expose the routed defect, without enabling it in the committed baseline.
 HQ2 capture starts near 34,000 frames and HQ1 near 47,600. Compare the complete
 80,000-frame pair: no repeated prior-party-0 neutralization, the expected HQ
-resynchronizations, guard counters and deaths. The guard remains OFF until the
-primary records and reviews those results.
+resynchronizations, guard counters and deaths. That comparison has now been
+reviewed and the guard enabled; the capture-party switch remains OFF in tracked
+source. The completed pair's deaths diverge after capture, so its report makes
+no whole-gameplay identity claim.
