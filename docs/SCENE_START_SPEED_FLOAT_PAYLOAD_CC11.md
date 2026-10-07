@@ -119,3 +119,5 @@ admission, original CRT, native ABI and game behavior are untested here.
 `git diff --check` and both direct-call verifier rows pass. No tracked test,
 full build, game run, metadata or Ghidra mutation was performed. Primary owns
 integration, the full build and independent production-TU rerun.
+
+Primary integration 56d73adbdd0bf299193a14e3a0f6f505e3db329b: full MSVC Win32 build and all three existing CTests passed. The focused fixture was independently reviewed and compiled from fresh actual-main translation units, with 77 main link inputs hashed before and after linking. Win32 manifest type24/id1/asInvoker verified. Executable SHA256 c112c47034d76f9be29531829fe79ebd22bf2e6e0c452e50c4bee45cba737858. Probe local/cc11_start_speed_root.cmd; build log local/cc11_observer_start_speed_integrated_build.log. Source-only fixture, required providers, actual lifetimes, original full ABI and game validation qualifications remain.

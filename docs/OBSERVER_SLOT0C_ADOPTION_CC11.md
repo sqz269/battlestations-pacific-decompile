@@ -118,3 +118,5 @@ constructor adoption, message84/session routing and holder lifetimes are still
 required. Its cached task404, fresh input plane9D4 queue receiver, stored record+4
 and fresh returned block80 are not changed by this packet. The previous land
 parameter-copy kernel/adoption qualifications remain unchanged.
+
+Primary integration 56d73adbdd0bf299193a14e3a0f6f505e3db329b: full MSVC Win32 build and all three existing CTests passed. The focused fixture was independently reviewed and compiled from fresh actual-main translation units, with 3 main link inputs hashed before and after linking. Win32 manifest type24/id1/asInvoker verified. Executable SHA256 c112c47034d76f9be29531829fe79ebd22bf2e6e0c452e50c4bee45cba737858. Probe local/cc11_slot0c_root.cmd; build log local/cc11_observer_start_speed_integrated_build.log. Source-only fixture, required providers, actual lifetimes, original full ABI and game validation qualifications remain.

@@ -2,7 +2,7 @@
   "packet": "cc11_observer_slot0c_projectile_adoption",
   "date": "2026-10-07",
   "base_revision": "b06eee8d1",
-  "status": "Complete conditional ordinary SOURCE event-word dispatch and connected abstract projectile expiry/release adoption; runtime providers and original ABI unbound",
+  "status": "integrated reviewed conditional source adoption; independent fresh main actual-TU manifested probe and full MSVC Win32/all three CTests passed; native provider/ABI/game boundaries retained",
   "target": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
     "program_path": "/battlestationspacific.exe",
@@ -34,15 +34,61 @@
     }
   ],
   "host_steps": [
-    {"address":"00696142","native":"00694280","function":"00696120","contract":"Existing actual observer lock getter; capture returned section+4"},
-    {"address":"006961E0","native":"00BF6713","function":"00696120","contract":"Existing validation service; malformed/returning mutation domain excluded"},
-    {"address":"006961F3","native":"00695BC0","function":"00696120","contract":"Existing canonical checked single insertion equivalence; captured owner/end/value-slot"},
-    {"address":"00696247","native":"00BF6713","function":"00696120","contract":"Indexed-access validation; same excluded invalid mutation domain"},
-    {"address":"0069626E","native":"edge+8 owner vtable+0C","function":"00696120","kind":"indirect","contract":"REQUIRED actual captured-table target; ECX owner, stack(first,event,value), callee consumes12; individual targets unresolved"},
-    {"address":"00696284","native":"00695D00","function":"00696120","contract":"Existing private resize-to-saved-size consumption; stack(saved_count,0), native RET8; no standalone STL port"},
-    {"address":"00696356","native":"00696120","function":"00696350","contract":"Push value then event, same ECX first; wrapper RET4"},
-    {"address":"006E659F","native":"00696350","function":"006E6490","contract":"Fresh node[-8] first, event0/value0"},
-    {"address":"006E65A9","native":"00926D90","function":"006E6490","contract":"Separate fresh SAME node[-8] identity, cause/code2; REQUIRED COMPLETE actual release provider"}
+    {
+      "address": "00696142",
+      "native": "00694280",
+      "function": "00696120",
+      "contract": "Existing actual observer lock getter; capture returned section+4"
+    },
+    {
+      "address": "006961E0",
+      "native": "00BF6713",
+      "function": "00696120",
+      "contract": "Existing validation service; malformed/returning mutation domain excluded"
+    },
+    {
+      "address": "006961F3",
+      "native": "00695BC0",
+      "function": "00696120",
+      "contract": "Existing canonical checked single insertion equivalence; captured owner/end/value-slot"
+    },
+    {
+      "address": "00696247",
+      "native": "00BF6713",
+      "function": "00696120",
+      "contract": "Indexed-access validation; same excluded invalid mutation domain"
+    },
+    {
+      "address": "0069626E",
+      "native": "edge+8 owner vtable+0C",
+      "function": "00696120",
+      "kind": "indirect",
+      "contract": "REQUIRED actual captured-table target; ECX owner, stack(first,event,value), callee consumes12; individual targets unresolved"
+    },
+    {
+      "address": "00696284",
+      "native": "00695D00",
+      "function": "00696120",
+      "contract": "Existing private resize-to-saved-size consumption; stack(saved_count,0), native RET8; no standalone STL port"
+    },
+    {
+      "address": "00696356",
+      "native": "00696120",
+      "function": "00696350",
+      "contract": "Push value then event, same ECX first; wrapper RET4"
+    },
+    {
+      "address": "006E659F",
+      "native": "00696350",
+      "function": "006E6490",
+      "contract": "Fresh node[-8] first, event0/value0"
+    },
+    {
+      "address": "006E65A9",
+      "native": "00926D90",
+      "function": "006E6490",
+      "contract": "Separate fresh SAME node[-8] identity, cause/code2; REQUIRED COMPLETE actual release provider"
+    }
   ],
   "adapter": {
     "class": "NativeProjectileObserverTickHost",
@@ -66,7 +112,10 @@
   "validation": {
     "compiler": "MSVC x86 19.51.36244.0, toolset14.51.36231",
     "flags": "/nologo /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
-    "fresh_tus": ["src/observer_event_producer.cpp","src/tick_element_overrides.cpp"],
+    "fresh_tus": [
+      "src/observer_event_producer.cpp",
+      "src/tick_element_overrides.cpp"
+    ],
     "focused_fixture": "PASS SOURCE tick->slot0C: exact first/event0/value0/current table; real unregister suppresses pending; SAME cell A->B, fresh release B/code2; interval/lock restored",
     "fixture_scope": "ONE ignored connected caller scenario: actual source prefixes, real prepublished recursive section, real register/unregister, saved nonzero vector prefix; table tags/world/callback/release effects SOURCE-only, not complete actual native providers",
     "link_flags": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
@@ -92,9 +141,18 @@
     "local/cc11_slot0c_bsp_zlib121.lib"
   ],
   "pinned_support_libraries": [
-    {"path":"local/cc11_slot0c_bsp_core.lib","sha256":"1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"},
-    {"path":"local/cc11_slot0c_bsp_lua511.lib","sha256":"e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"},
-    {"path":"local/cc11_slot0c_bsp_zlib121.lib","sha256":"c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"}
+    {
+      "path": "local/cc11_slot0c_bsp_core.lib",
+      "sha256": "1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"
+    },
+    {
+      "path": "local/cc11_slot0c_bsp_lua511.lib",
+      "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "local/cc11_slot0c_bsp_zlib121.lib",
+      "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    }
   ],
   "remaining_boundaries": [
     "Actual captured table+0C callback targets and game routing",
@@ -111,5 +169,39 @@
       "is": "00923BD0 is a CALL to00696350 inside complete00923B80..00923BDB",
       "evidence": "Primary41-instruction review and worker read-only live full listing; party54/race58 stores, child traversal then event6/valueparty"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T10:53:36.947895+00:00",
+    "integrated_revision": "56d73adbdd0bf299193a14e3a0f6f505e3db329b",
+    "full_main_build_revision": "56d73adbdd0bf299193a14e3a0f6f505e3db329b",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_observer_start_speed_integrated_build.log",
+    "executable_sha256": "c112c47034d76f9be29531829fe79ebd22bf2e6e0c452e50c4bee45cba737858",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "1d10b9821d40dbba8a920076259e3d0e858cb84f",
+    "independent_root_probe": "local/cc11_slot0c_root.cmd",
+    "probe_log": "local/cc11_slot0c_root_compile.log",
+    "probe_sha256": "ed0e5858bfa5a15351bf24bc0961a3a800e231d306514eb97eaff83336e33a7c",
+    "stable_main_link_inputs": 3,
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_and_fixture_review": true,
+    "native_direct_call_rows": 8,
+    "native_direct_call_failures": 0,
+    "required_indirect_slot0c_not_verified": 1,
+    "controlled_identity_change_is_source_fixture_only": true,
+    "complete_actual_release_or_callbacks_bound": false,
+    "original_tick_math_unchanged": true
+  },
+  "primary_annotation": {
+    "history": "local/ghidra-annotations-20261007T105403Z.json",
+    "project_saved": true,
+    "exports_refreshed": [
+      "00696120",
+      "00696350",
+      "006e6490"
+    ],
+    "names_preserved_hypotheses": true
+  }
 }
