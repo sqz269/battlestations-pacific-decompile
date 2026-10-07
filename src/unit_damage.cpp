@@ -34,12 +34,15 @@ UnitKillCause kill_cause_from_lua_008ac5c0(bool has_second_argument, bool hard) 
     return hard ? UnitKillCause::hard : UnitKillCause::normal;
 }
 
-// 00876260: FLD [ecx+370h] / FDIV [ecx+36Ch] / RET. No zero guard.
+// 00876260: FLD current / FDIV max / FSTP float / FLD float / RET. No zero
+// guard. This typed projection does not reproduce ambient x87 precision.
 float health_fraction_00876260(const UnitHealth& health) noexcept {
     return health.current_health / health.max_health;
 }
 
-// 00923BE0: FLDZ and return when +5Dh is set, otherwise vtable[110h].
+// Partial 00923BE0: release gate and unit vtable[110h] fraction only. The native
+// getter additionally floors at zero, caps at 1.0f and writes cache +164h.
+// Those existing projection gaps remain outside cc11_health_nan.
 float entity_health_00923be0(const UnitHealth& health, bool released) noexcept {
     if (released) {
         return 0.0f;
@@ -47,8 +50,14 @@ float entity_health_00923be0(const UnitHealth& health, bool released) noexcept {
     return health_fraction_00876260(health);
 }
 
-// 00877C53..00877C77: FMUL qword [00D0DEE0] (256.0), __ftol2, clamp to [0,255].
+// 00877C53..00877C77: FMUL double 256, runtime-selected CRT conversion, byte
+// clamp. Masked unordered input yields EAX=80000000h via CVTTSD2SI or EAX=0
+// via 00BF7456; both clamp to zero. Avoid the undefined C++ NaN-to-int cast.
+// Finite conversion remains the existing projection, not a CRT/FP-state port.
 int replicated_health_byte_00877b90(float health_fraction) noexcept {
+    if (health_fraction != health_fraction) {
+        return 0;
+    }
     const int raw = static_cast<int>(static_cast<double>(health_fraction) * kUnitHealthByteScale);
     if (raw < 0) {
         return 0;
@@ -148,9 +157,11 @@ UnitHealthWrite set_health_00877b90(const UnitHealth& health,
         return write;
     }
 
-    // 00877BC7..00877BFA: clamp to [0, max].
+    // 00877BD0/BD3 COMISS 0,request / JBE: only ordered negative requests
+    // select +0. Unordered continues and the upper FCOMIP/JBE also keeps the
+    // original XMM request bits, including NaN payload/sign under masked FP.
     float stored = requested;
-    if (!(0.0f <= requested)) {
+    if (requested < 0.0f) {
         stored = 0.0f;
     } else if (requested > health.max_health) {
         stored = health.max_health;
@@ -159,7 +170,9 @@ UnitHealthWrite set_health_00877b90(const UnitHealth& health,
     write.wrote = true;
     write.stored_health = stored;
 
-    // 00877C0C: the operand of the FSUB is the double 1.0 at 00D7A210.
+    // 00877C0C: FSUB uses double 1.0 at 00D7A210 but ambient x87 precision.
+    // This existing double projection differs at some large finite maxima
+    // (e.g. max=stored=2^25, PC24 nearest); cc11_health_nan does not change it.
     write.full_health_marker =
         static_cast<double>(stored) > static_cast<double>(health.max_health) - kUnitFullHealthEpsilon;
 
