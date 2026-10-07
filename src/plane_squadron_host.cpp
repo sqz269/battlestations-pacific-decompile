@@ -4,9 +4,10 @@
 
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/native_session_message_be.hpp"
+#include "bsp/scene_deferred_refs.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
-#error Retained land cruise profile requires MSVC Win32 COMISS/x87 assembly.
+#error Retained land profiles and descriptor copy require MSVC Win32 assembly.
 #endif
 
 // 007F4580 mode 1, bound to a process whose "plane instance" is a scene entity
@@ -439,6 +440,101 @@ void land_task_update_cruise_profile_009b3c60(
         }
         second.field_3aa = 0;                                // 009B3CE0
     }
+}
+
+namespace {
+static_assert(sizeof(SceneCommandTarget) == 0x18);
+static_assert(sizeof(void*) == 4);
+static_assert(sizeof(float) == 4);
+static_assert(offsetof(SceneCommandTarget, kind) == 0);
+static_assert(offsetof(SceneCommandTarget, position_valid) == 1);
+static_assert(offsetof(SceneCommandTarget, object_id) == 2);
+static_assert(offsetof(SceneCommandTarget, object) == 4);
+static_assert(offsetof(SceneCommandTarget, position) == 8);
+static_assert(offsetof(SceneCommandTarget, position) + sizeof(float) == 0x0c);
+static_assert(offsetof(SceneCommandTarget, position) + 2 * sizeof(float) == 0x10);
+static_assert(offsetof(SceneCommandTarget, trailing) == 0x14);
+
+// 007EEDCB..007EEDFA, after the actual0071EB60 provider returns. Retain
+// WORD0/WORD2/DWORD4 and each separate memory FLD/FSTP pair, in original order.
+__declspec(noinline) void copy_current_descriptor_fields(
+    const SceneCommandTarget* source, SceneCommandTarget* destination) {
+    __asm {
+        mov eax, source
+        mov ecx, destination
+        movzx edx, word ptr [eax]
+        mov word ptr [ecx], dx
+        movzx edx, word ptr [eax + 2]
+        mov word ptr [ecx + 2], dx
+        mov edx, dword ptr [eax + 4]
+        mov dword ptr [ecx + 4], edx
+        fld dword ptr [eax + 8]
+        fstp dword ptr [ecx + 8]
+        fld dword ptr [eax + 0ch]
+        fstp dword ptr [ecx + 0ch]
+        fld dword ptr [eax + 10h]
+        fstp dword ptr [ecx + 10h]
+        fld dword ptr [eax + 14h]
+        mov eax, ecx
+        fstp dword ptr [ecx + 14h]
+    }
+}
+} // namespace
+
+SceneCommandTarget* plane_squadron_copy_current_command_descriptor_007eedc0(
+    const PlaneSquadronEntity& squadron, SceneCommandTarget& output,
+    LandTaskCommandValidityHost& host) {
+    SceneCommandTarget& source = host.active_command_descriptor_0071eb60(squadron);
+    copy_current_descriptor_fields(&source, &output);
+    return &output;
+}
+
+void land_approach_validate_site_009b34d0(
+    const LandTaskCommandValidityView& task, LandTaskCommandValidityHost& host) {
+    PlaneSquadronEntity* const first_receiver = task.squadron_404;
+    if (first_receiver != nullptr
+        && command_queue_current_command(
+            host.command_queue_348(*first_receiver)) != 0u
+        && command_queue_current_command(
+            host.command_queue_348(*task.squadron_404)) == 0x00e08fa0u) {
+        SceneCommandTarget output;
+        SceneCommandTarget* const returned =
+            plane_squadron_copy_current_command_descriptor_007eedc0(
+                *task.squadron_404, output, host);            // 009B3512
+        const void* const resolved = host.resolve_command_target_00521ea0(*returned);
+        if (resolved == task.target_428) {                   // AFTER resolver
+            const void* const block = task.block_424;        // 009B3520
+            if (block != nullptr) {
+                const void* const owner = host.block_owner_7c(block);
+                if (owner != nullptr && host.owner_field_5d(owner) == 0
+                    && host.squadron_not_excluded_006c4790(
+                        block, task.squadron_404)) return;    // fresh C at3533
+            }
+            task.block_424 = nullptr;                       // 009B3540
+        }
+    }
+    task.block_424 = nullptr;                               // 009B3543
+    task.target_428 = nullptr;                              // 009B3546
+    task.field_42c = nullptr;                               // 009B3549
+}
+
+std::uint32_t land_task_is_command_current_009b3560(
+    const LandTaskCommandValidityView& task, LandTaskCommandValidityHost& host) {
+    PlaneSquadronEntity* const first_receiver = task.squadron_404;
+    if (first_receiver == nullptr
+        || command_queue_current_command(
+            host.command_queue_348(*first_receiver)) == 0u) return 2u;
+    // A changed second token (including NULL) means0, not the first-probe2.
+    if (command_queue_current_command(
+            host.command_queue_348(*task.squadron_404)) != 0x00e08fa0u
+        || task.block_424 == nullptr) return 0u;
+    SceneCommandTarget output;
+    SceneCommandTarget* const returned =
+        plane_squadron_copy_current_command_descriptor_007eedc0(
+            *task.squadron_404, output, host);                // 009B35B1
+    const void* const resolved = host.resolve_command_target_00521ea0(*returned);
+    return resolved == task.target_428
+        ? 1u : 0u;                                         // fresh428 at35BA
 }
 
 void plane_squadron_promote_and_reindex_007ed610(

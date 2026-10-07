@@ -365,6 +365,58 @@ void pilot_bot_task_update_cruise_profile_base_0099b660() noexcept;
 void land_task_update_cruise_profile_009b3c60(
     const LandTaskCruiseProfileView& task, LandTaskCruiseProfileHost& host);
 
+struct SceneCommandTarget;
+
+// One OLD task's live slots: approach+0Ch/2Ch/30h/34h at task+404h/424h/
+// 428h/42Ch. Pointer identities require the caller's actual live mappings.
+// Volatile pointer-field references preserve fresh observations/publications,
+// including the two native +2Ch clears on a failed matching-target admission.
+struct LandTaskCommandValidityView {
+    PlaneSquadronEntity* const volatile& squadron_404;
+    const void* volatile& block_424;
+    const void* volatile& target_428;
+    const void* volatile& field_42c;
+};
+
+class LandTaskCommandValidityHost {
+   public:
+    virtual ~LandTaskCommandValidityHost() = default;
+    // Actual retained squadron+348h, with real mode/head/override storage.
+    // command_queue_current_command reproduces +174h's 007ED580->0071BE40.
+    virtual const CommandQueueState& command_queue_348(
+        const PlaneSquadronEntity& squadron) = 0;
+    // COMPLETE actual0071EB60: mode1 +58h, mode2 +18Ch, other modes actual
+    // lazy empty singleton. Return its live descriptor; no empty-mode2 default.
+    virtual SceneCommandTarget& active_command_descriptor_0071eb60(
+        const PlaneSquadronEntity& squadron) = 0;
+    // COMPLETE00521EA0 receives the mutable descriptor returned by +178h.
+    // kind0 returns0; otherwise preserve existing object+4 or resolve uint16
+    // ID through actual tables AND cache the result in this descriptor+4.
+    virtual const void* resolve_command_target_00521ea0(SceneCommandTarget&) = 0;
+    virtual const void* block_owner_7c(const void* block) = 0;
+    virtual std::uint8_t owner_field_5d(const void* owner) = 0;
+    // COMPLETE actual006C4790, including null/list+B4h acceptance semantics.
+    virtual bool squadron_not_excluded_006c4790(
+        const void* block, const PlaneSquadronEntity* squadron) = 0;
+};
+
+// Complete conditional normal source bodies, unbound to task ownership/game.
+// 007EEDC0: ECX=squadron, stack output, EAX=output, RET4. Exact24B Win32
+// descriptor copy retains four x87 FLD/FSTP pairs; no raw struct-copy fallback.
+// 009B34D0: ECX=approach, RET. 009B3560: ECX=task, EAX=2/1/0, RET.
+// Providers may change live slots between actual calls. Each required receiver
+// and its fields must be valid at that call; native supplies no later null guard.
+// Raw field-reader providers must faithfully observe storage without invented
+// callback effects. Admit masked FP exceptions/available x87 stack, ordinary
+// returns and valid mappings; no observer/arena/fault/ABI/game guarantee.
+SceneCommandTarget* plane_squadron_copy_current_command_descriptor_007eedc0(
+    const PlaneSquadronEntity&, SceneCommandTarget& output,
+    LandTaskCommandValidityHost&);
+void land_approach_validate_site_009b34d0(
+    const LandTaskCommandValidityView&, LandTaskCommandValidityHost&);
+std::uint32_t land_task_is_command_current_009b3560(
+    const LandTaskCommandValidityView&, LandTaskCommandValidityHost&);
+
 struct NativeSessionMessageBE;
 
 // Receipt needs actual per-plane +9D0h/+9D8h publications. PlaneSquadronEntity
