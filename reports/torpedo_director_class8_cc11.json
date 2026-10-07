@@ -58,7 +58,7 @@
     "absence": "Unchanged native true, including sparse shipyard bag.",
     "gunnery": "Existing ship-family query6 and per-name table stance copy admits actual class8; kShipDirectorEnablesBound=true unchanged.",
     "runtime_writers": "Existing TorpedoEnable/CLOSEATTACK table writes unchanged.",
-    "switch": {"name": "kShipDirectorClass8Bound", "state": "OFF", "reason": "Await focused JM06 runtime pair"}
+    "switch": {"name": "kShipDirectorClass8Bound", "state": "ON", "reason": "Primary reviewed completed JM06 pair and approved only this default promotion"}
   },
   "validation_plan": {
     "row": "JM06",
@@ -66,22 +66,27 @@
     "mission_frame_seconds": 0.05,
     "compare": "Hold all other switches and inputs fixed; pair_diff and existing per-unit director/gunnery diagnostics",
     "prediction": "ON logs class8 raw-false overrides and enables inherited-false submarine torpedo masks; known non-submarine false remains false and absent keys remain true.",
-    "gameplay": "Submarine tube eligibility may move gameplay; review before enabling switch."
+    "gameplay": "Submarine tube eligibility may move gameplay; review before enabling switch.",
+    "status": "Completed",
+    "report": "reports/torpedo_director_jm06_pair_cc11.json",
+    "review": "Actual mask/range/candidate changes accepted as recovered native class8 exception consequences"
   },
   "verification": {
     "verify_report_calls": "PASS: 8 direct call rows checked, zero failed; two indirect rows explicitly excluded",
     "git_diff_check": "PASS",
     "off_object": {"path": "local/class8_check/off.obj", "bytes": 1840519, "sha256": "6D972AB160BBDC13A73669D92E71BD12ABD0B928E5A2647B0CCA063B35C4E571"},
     "on_object": {"path": "local/class8_check/on.obj", "bytes": 1841049, "sha256": "FE7652C160DF06B38206D56278282C135B8E683851AA7BFA4D86A94546CC2866"},
-    "on_header": "Ignored local/class8_check/on_include/bsp/game_hosts_scene_contents.hpp changes only kShipDirectorClass8Bound to true; tracked header stays false",
-    "compiler": "MSVC Win32, /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /DWIN32 /D_WINDOWS /DNDEBUG; separate ignored objects, no link or full build"
+    "on_header": "Ignored local/class8_check/on_include/bsp/game_hosts_scene_contents.hpp changes only kShipDirectorClass8Bound to true; tracked header stays false; this was the original packet capture. The later reviewed pair promoted the tracked default ON.",
+    "compiler": "MSVC Win32, /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /DWIN32 /D_WINDOWS /DNDEBUG; separate ignored objects, no link or full build",
+    "jm06_pair_report": "reports/torpedo_director_jm06_pair_cc11.json",
+    "jm06_pair_call_verifier": "PASS:8 direct rows, zero failures; two indirect rows excluded; original target verified"
   },
   "qualification": {
-    "source": "Original producer/class contract established; minimal candidate implemented",
+    "source": "Original producer/class contract established; minimal binding enabled after reviewed pair",
     "compile": "Focused MSVC Win32 scene translation unit compiled for OFF and ignored local ON header with /W4 /WX /fp:strict",
-    "fixture": "No new broad tests; live direct call receipts checked separately",
-    "linked_build": "Primary integrator serializes full Win32 build",
-    "runtime": "OFF/ON JM06 pair pending; switch OFF",
+    "fixture": "Existing math/tools checks passed; no class8 native differential fixture; live call receipts checked separately",
+    "linked_build": "Both pinned Win32 exports built exit0; each passed 2/2 configured CTests",
+    "runtime": "Both JM06 host runs exited0 at frame3000; difficulty1, scene mode9, scene14/created8/active7; pair_diff exit3 for real mask/range changes",
     "abi": "Process binding and pure kind helper; no native ABI replacement",
     "game_validated": false
   }

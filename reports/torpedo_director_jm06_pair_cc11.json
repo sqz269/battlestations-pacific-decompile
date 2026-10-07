@@ -1,0 +1,503 @@
+{
+  "packet": "cc11_director_jm06_pair",
+  "date": "2026-10-06",
+  "verified_at_utc": "2026-10-07T05:52:53.338991+00:00",
+  "doc": "docs/TORPEDO_DIRECTOR_JM06_PAIR_CC11.md",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "verified": "bsp.py live queries", "ghidra_changes": false},
+  "owned_addresses": ["00822C20", "00853050"],
+  "result": {"status": "Completed and reviewed by primary integrator", "pair_diff_exit": 3, "both_runtime_exit": 0, "tracked_default_before_capture": false, "tracked_default_after_review": true, "only_promoted_switch": "kShipDirectorClass8Bound", "reason": "Recovered native class8 explicit-false exception; observed mask/range/candidate changes reviewed as expected consequences", "full_gameplay_identity": false},
+  "source_comparison": {
+    "commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+    "exports": {"off": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_off", "on": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_on"},
+    "source_file_count": 11335,
+    "changed_source_files": ["include/bsp/game_hosts_scene_contents.hpp"],
+    "source_tree_sha256": {"off": "C0C64BEC7D40669CF4347A82712A31C6C101116AA1191B68E250C47F3CE55032", "on": "A8CB41778EC788128139A4DB3DDA136488A0C06273D3FAB093909FAC053CC5D4"},
+    "manifests_sha256": {"off": "F283085A7219200CAFB495EF99C0387A95D9853DDAFBE5C85F8A8759377A8335", "on": "4E9AC05FAC2A8AACA16D11B9999B9208477E13AC83D0CC42D78B1E3B581B7D5E"},
+    "header_sha256": {"off": "96D88E55B24996AE276925B32E793C0A3F1972CB2A3C7A17B24F00A5C75194DB", "on": "FEE27277E79FAD657D1779E62C5980D5D9A0A129B9F4A5DAA1B97F30B4FC0FCB"},
+    "logical_tree_hash_format": "Sorted relative path + NUL + uppercase file SHA256 + LF for each archived source file"
+  },
+  "calls": [
+    {"address": "00823932", "native": "008F2260", "function": "00822C20", "contract": "TorpedoDirector lookup; absence and nonzero select true"},
+    {"address": "0082394A", "native": "00D0BF80+vtable5C", "function": "00822C20", "resolved_target": "00853050", "contract": "only explicit false invokes class query 8; indirect resolution proven by object constructor and vtable bytes"}
+  ],
+  "native_predicate": {"address": "00853050", "span": "00853050..0085308A", "query8_compare": "00853054", "true_return": "00853083", "ret4": "00853088", "resolution_evidence": "reports/torpedo_director_class8_cc11.json", "abi": "Actual submarine receiver in ECX, stack query8, EAX boolean, RET4; host kind helper is a reconstructed interface"},
+  "inputs": {
+    "installed_root": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+    "assets": {
+      "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn": {"bytes": 173026, "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C"},
+      "scripts/missions/COTP-IJN/PRCPIJN/jm06.lua": {"bytes": 80310, "sha256": "23DFB3436AC763D3299FFDA6DBE959604500AAD0AF4E6CBE18745270F8E641E5"},
+      "universe/library/commandbuilding.props": {"bytes": 311, "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087"},
+      "universe/library/commandbuildinginferior.props": {"bytes": 133, "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E"},
+      "universe/library/commandunit.props": {"bytes": 545, "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A"},
+      "universe/library/foam.props": {"bytes": 553, "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948"},
+      "universe/library/foamsource.props": {"bytes": 609, "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607"},
+      "universe/library/global.enums": {"bytes": 33471, "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027"},
+      "universe/library/landconvoy.props": {"bytes": 1320, "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5"},
+      "universe/library/landfort.props": {"bytes": 423, "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887"},
+      "universe/library/landingzone.props": {"bytes": 1301, "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915"},
+      "universe/library/landscape.props": {"bytes": 1198, "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB"},
+      "universe/library/path.props": {"bytes": 356, "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E"},
+      "universe/library/plane.props": {"bytes": 416, "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41"},
+      "universe/library/scene.props": {"bytes": 24634, "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440"},
+      "universe/library/ship.props": {"bytes": 3358, "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460"},
+      "universe/library/stationaries.props": {"bytes": 107, "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90"},
+      "scripts/datatables/autoload/animclasses.lua": {"bytes": 154, "sha256": "7081F1378A90AE0BEF25A34C01C86E969DFD15CE1543762532725CE3C658EC5C"},
+      "scripts/datatables/autoload/bulletclasses.lua": {"bytes": 536, "sha256": "B7433122FCE77E49A4ACB9F78ED82C93DD6996045868DCAF3370DC6DF977FA7A"},
+      "scripts/datatables/autoload/buoyclasses.lua": {"bytes": 1415, "sha256": "148DBB4C7DD8D913373FDF9E34EEEFAE0B99B18037D99C91F724D47E8E82B573"},
+      "scripts/datatables/autoload/cloudclasses.lua": {"bytes": 5846, "sha256": "6850C75091CA94B68AEA8204FF4CEF2A51F70057A3B3D67C49741B48058B164C"},
+      "scripts/datatables/autoload/deviceclasses.lua": {"bytes": 547, "sha256": "90726ED41628E14ADB6379FEAE19EC78BDEBFD4C73E7AC8A67B160B20804A567"},
+      "scripts/datatables/autoload/effects.lua": {"bytes": 1569557, "sha256": "9A674C11067F54FEB526BCCD7CC9547B83AA885A0963C6C2F6C78D260D108C86"},
+      "scripts/datatables/autoload/landingtroopclasses.lua": {"bytes": 7304, "sha256": "00C269FB1AA682F157EA90C9A471324268A516C6AC66F05F99CF671508DFCA32"},
+      "scripts/datatables/autoload/mapicons.lua": {"bytes": 302, "sha256": "556B850B872ECBCFB202EAFEB25A329415F4491CC302339447DFDE955D1805E0"},
+      "scripts/datatables/autoload/markerclasses.lua": {"bytes": 409, "sha256": "CEA00E860E3DA46F75FD615384E841C6283577FE9752F3A91D929BD471BD723D"},
+      "scripts/datatables/autoload/noseart.lua": {"bytes": 4814, "sha256": "D1F3BCDC1414C9486249695E5C7A2D1CB5F77D18053306EFA567BD7D5CD276D4"},
+      "scripts/datatables/autoload/planepartclasses.lua": {"bytes": 14531, "sha256": "3FE6E2737E1834C1F9CC16B1609DEDFFD94EADBF2B2874343C5171877B6C71D0"},
+      "scripts/datatables/autoload/reconclasses.lua": {"bytes": 535, "sha256": "074053C7A30D723FB9341693D502F2D44FF6DF96A4E341087A2DCCDB322FBE99"},
+      "scripts/datatables/autoload/shippartclasses.lua": {"bytes": 7793, "sha256": "95BB90EF5B83F783B7F8F1D4098E8CCC9ADED8D53E80108458B751DC25CBADFC"},
+      "scripts/datatables/autoload/soldierclasses.lua": {"bytes": 2571, "sha256": "890FAA85B616CE85EA70AE581393858500F2EDC2325846C99270D1FEBBF429E4"},
+      "scripts/datatables/autoload/stationaryclasses.lua": {"bytes": 46679, "sha256": "FEBC693F02B05BAE334BECB6A41B3ED02ED106C4918644A20D38BF0E532A06A5"},
+      "scripts/datatables/autoload/vehicleclasses.lua": {"bytes": 3349364, "sha256": "0649DDDF3A765A8340DB2E6D545D04AC86503B4F8BA2E867C88ECBD2D2983650"},
+      "scripts/datatables/autoload/wreckclasses.lua": {"bytes": 1824, "sha256": "7AA667119E04F878797E025DB47EE7BB9075B5F78BD44C9654527CD29D49C5AB"}
+    },
+    "scene_submarine_records": [
+      {"name": "Narwhal-class Submarine 01", "scene_line": 5143, "type": "Narwhal", "hidden_authored": null, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Gato-class Submarine 01", "scene_line": 5163, "type": "Gato", "hidden_authored": null, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 04", "scene_line": 5615, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 05", "scene_line": 5638, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 06", "scene_line": 5661, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 07", "scene_line": 5684, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 08", "scene_line": 5707, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 09", "scene_line": 5730, "type": "TypeB_Jake", "hidden_authored": true, "generate_in_game_authored": null, "generate_in_engine_movie_authored": null},
+      {"name": "PlayerSub 01", "scene_line": 5925, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": null, "generate_in_engine_movie_authored": false},
+      {"name": "PlayerSub 03", "scene_line": 5948, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": null, "generate_in_engine_movie_authored": false},
+      {"name": "PlayerSub 02", "scene_line": 5971, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": null, "generate_in_engine_movie_authored": false},
+      {"name": "Submarine TypeB w Jake 01", "scene_line": 5994, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": false, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 02", "scene_line": 6018, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": false, "generate_in_engine_movie_authored": null},
+      {"name": "Submarine TypeB w Jake 03", "scene_line": 6042, "type": "TypeB_Jake", "hidden_authored": null, "generate_in_game_authored": false, "generate_in_engine_movie_authored": null}
+    ],
+    "common_cli": ["--frames", "3200", "--press-start-frame", "30", "--menu-select", "JM06", "--mission-frames", "3000", "--mission-frame-seconds", "0.05", "--frame-jitter", "0,1", "--present-interval", "immediate"],
+    "common_environment": {"BSP_GUNNERY_RNG_STREAMS": "1", "BSP_AA_TRACE_UNIT": "Narwhal-class Submarine 01", "BSP_FIRE_GATE_TRACE": "Narwhal-class Submarine 01", "BSP_AA_TRACE_TARGET": null, "BSP_FIRE_GATE_TARGET": null, "BSP_FRAME_JITTER": null},
+    "runtime_wrapper": {
+      "slots": 3,
+      "cores": [2, 4, 6],
+      "inputs": "No custom orders or input script",
+      "fixed_slot": 2,
+      "wrapper": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\run_game_slot2.ps1",
+      "wrapper_sha256": "2DCF128CECDDBD646ABFF0BC06E9DE5789F27576E0D4DCD18B769BFF5EC1BFF8",
+      "original_wrapper_sha256": "861E25045E4C86692EECAACB46C0C0A9D13828AC5F614D8F9192E30A587A7569",
+      "changes": ["Restrict slot search to slot 2", "Preserve original repository config path"]
+    },
+    "rng": {
+      "gunnery_streams": 1,
+      "gunnery_seed": "0x9E3779B9",
+      "script_orders_seed": "0x13579BDF",
+      "ai_seed": "0x2545F491",
+      "jitter": {"percent": 0, "seed": 1}
+    }
+  },
+  "input_coverage": "34 producer-focused mission/library/autoload assets rehashed before each launch; same installed root and source configuration, not a whole-installation hash proof",
+  "builds": {
+    "off": {
+      "side": "off",
+      "commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "exit_code": 0,
+      "source_files_rechecked": 11335,
+      "source_changes_after_build": [],
+      "artifacts": {
+        "bsp_game.exe": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_off\\build\\win32\\Release\\bsp_game.exe", "bytes": 5032448, "machine": "0x014C", "sha256": "6552ED9CB92D3DA998D29E3F1528093859BA0A6E59D18986B1D4356EF693918E", "pe_timestamp": 1791350744, "text_bytes": 3938816, "text_sha256": "75F6797ED78F96657E3716D610BBF67A61DA9B079A6FD37571024D879F97375B"},
+        "xlive_stub.dll": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_off\\build\\win32\\Release\\xlive_stub.dll", "bytes": 32768, "machine": "0x014C", "sha256": "58A7B39E5FE04334132DD469FC7B9E4E6B63F7CF043CDC42B73BC32B8F589D92", "pe_timestamp": 1791349927, "text_bytes": 4608, "text_sha256": "5FDD308418F00E08D0F4419680DA53B1304E454954E6F78640CD62A76B3C6A2B"}
+      },
+      "log": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\off_build.log", "bytes": 71151, "sha256": "6E65CE662A656B708D24D60F92A1D9F44B6334E341B2342DC2CA735AC29C9688"},
+      "tests": {
+        "passed": 2,
+        "total": 2,
+        "names": ["reconstructed_math", "tool_tests"],
+        "native_differential": "Not configured in fresh git-archive export"
+      }
+    },
+    "on": {
+      "side": "on",
+      "commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "exit_code": 0,
+      "source_files_rechecked": 11335,
+      "source_changes_after_build": [],
+      "artifacts": {
+        "bsp_game.exe": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_on\\build\\win32\\Release\\bsp_game.exe", "bytes": 5032448, "machine": "0x014C", "sha256": "1D0D7E1C6CAE71B2D77724A2D807379DB8A0CBA7E7B60C67E3C54409F62A0911", "pe_timestamp": 1791351602, "text_bytes": 3938816, "text_sha256": "5B5BAD823859A55FA08FDF6C5D22702CBD86C21E38CA81AD21C77EE1B4F8BB48"},
+        "xlive_stub.dll": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_on\\build\\win32\\Release\\xlive_stub.dll", "bytes": 32768, "machine": "0x014C", "sha256": "38F7B1F1E4F67C0D4A756067A9595DB8D45ED9B0E6347563C2D7067F6A70B701", "pe_timestamp": 1791350801, "text_bytes": 4608, "text_sha256": "5FDD308418F00E08D0F4419680DA53B1304E454954E6F78640CD62A76B3C6A2B"}
+      },
+      "log": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\on_build.log", "bytes": 71119, "sha256": "104F683F36AF0D1FC21CAAE8D15C9FDC202BC884610E7AF77DD0CC83F5FB5EE2"},
+      "tests": {
+        "passed": 2,
+        "total": 2,
+        "names": ["reconstructed_math", "tool_tests"],
+        "native_differential": "Not configured in fresh git-archive export"
+      }
+    }
+  },
+  "runtime": {
+    "off": {
+      "exit_code": 0,
+      "slot": 2,
+      "core": 6,
+      "log": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\off.log", "bytes": 4493594, "sha256": "36BB6228804612D705D1C084BBCB4AAD6E9AF7C8472B0DFB57681EE0874BBC8D"},
+      "launcher": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\off_launcher.log", "bytes": 830, "sha256": "F57E63BAF7C020B595F16CA8AE5D486F98F2AE42FD80EC00D5106F9921EE6566"},
+      "milestone": "bsp_game milestone 2l, frames=3200 press_start_frame=30 screenshot_frame=-1 screenshot_mission_frame=-1 menu_select=JM06 mission_frames=3000 mission_complete_frame=-1 order_frame=-1 order=throttle 0.000 rudder 0.000 mission_frame_seconds=0.0500 trajectory_csv=(none) log=~",
+      "jitter": "frame jitter off",
+      "step_count": 30,
+      "first_step": 100,
+      "last_step": 3000,
+      "overrides": [],
+      "torpedo_summaries": [
+        {"line": 30676, "text": "summary mission gunnery ordnance units_with torpedo=11 general_bomb=0 drop_kamikaze=0 paratrooper=0 (of 20 units with guns)"},
+        {"line": 30679, "text": "summary mission gunnery torpedo_ranges_derived=58 swims_started=0 snaps=23208 bullet_ranges_derived=148 base_tick_timers_live=0 expired=0"},
+        {"line": 30680, "text": "summary mission gunnery torpedo_gate guns=58 ticks=144000 targeted=23208 accepted=0 settled=0 window=0 sent=18480 shots=24"},
+        {"line": 30681, "text": "summary mission gunnery torpedo_friendly scans=23208 holds=4728"},
+        {"line": 30686, "text": "summary mission gunnery ship director enables torpedo_disabled_pushes=1036 bound=1 (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)"},
+        {"line": 30687, "text": "summary mission gunnery torpedo stock bound=1 sets=2 spent=24 emptied_barrels=0 ships_dry=0 (0081F8B0 / 0072D520 / 00810D80 / 00810DA0, packet cc9_torpedo_stock)"},
+        {"line": 30688, "text": "summary mission gunnery torpedo supply bound=1 ticks=60000 in_area=0 sets=0 unloaded=0 (00825450 / 00809C50 / 0081DCB0, packet cc9_torpedo_supply_tick)"},
+        {"line": 30690, "text": "summary mission gunnery forced torpedo marks=0 fires=0 (008A7200 -> 00730160, packet cc9_navigator_force_torpedo)"},
+        {"line": 30692, "text": "summary mission gunnery ship set torpedo stock bound=1 calls=0 (0089EEE0 -> 0081F8B0, packet cc9_ship_set_torpedo_stock)"},
+        {"line": 30693, "text": "summary mission gunnery ship director torpedo writes lua_enable=4 lua_disable=0 close_attack_sends=0 changed=4 bound=1 (0071E0D0 from 0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)"},
+        {"line": 30695, "text": "summary mission gunnery torpedo gyro launches=24 turn_steps=0 mean_launch_offset_deg=14.93 bound=1 (007311B0/00856637/00857061, packet cc9_usn02_sameside_torpedoes)"},
+        {"line": 30696, "text": "summary mission gunnery torpedo swim thrust bound=1 steps=0 kept_entry=0 mean_entry_speed=0.0 (00857480, packet cc9_torpedo_tube_turn)"},
+        {"line": 30697, "text": "summary mission gunnery bullet throw cone=209 fan=0 zero=24 mean_magnitude_deg=0.4099 mean_angle_deg=0.2231 seats aa=191 tail=0 flak=0 torpedo=24 depth=0 artillery=18 pilot=0 none=0 bound=1 (0073031D/00730540, packet cc9_bullet_throw)"},
+        {"line": 30699, "text": "summary mission gunnery torpedo_drop drops=0 refusals=0 water_entry_breakups=0"},
+        {"line": 30715, "text": "summary mission gunnery torpedo spread bound=1 flips=24 (00951FC0)"},
+        {"line": 30723, "text": "summary mission gunnery class arms torpedo_refusals=0 sub_tests=2100 sub_above=0 sub_refusals=1900 bound=1 (00862869..008628C5 / 00852820, packet cc9_gunnery_class_arms)"},
+        {"line": 30732, "text": "summary mission gunnery unit fire cooldown sets=18 torpedo_sets=24 refusals=1383 sub_delay=0.50 ship_delay=0.50 bound=1 (0072F830 / 00953CC0 / 00729ADD, packet cc9_unit_fire_cooldown)"},
+        {"line": 30763, "text": "summary mission gunnery torpedo_loadout_cleared=0 (drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)"},
+        {"line": 30767, "text": "summary mission gunnery torpedo_closest_approach swims=0 (centre to centre, horizontal)"},
+        {"line": 30773, "text": "summary mission gunnery torpedo_candidates pass_ticks=30000 command_target=3118 fire_target=13581 scored=335 accepted=96 reject unknown=0 liveness=0 class=0 rank=0 mask=168 range=71"},
+        {"line": 30774, "text": "summary mission gunnery torpedo bot ready bound=1 targeted=23208 image=23208 generic=0 image_refused_angles=23208 (009003F8..0090042F, packet cc9_g34_torpedo_bot_ready)"},
+        {"line": 30775, "text": "summary unit gunnery torpedo candidates PlayerSub 01 scored=55 masked=0 accepted=0 mask=3 (00863990)"},
+        {"line": 30776, "text": "summary unit gunnery torpedo candidates PlayerSub 03 scored=56 masked=0 accepted=51 mask=3 (00863990)"},
+        {"line": 30777, "text": "summary unit gunnery torpedo candidates PlayerSub 02 scored=56 masked=0 accepted=45 mask=3 (00863990)"},
+        {"line": 30778, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 01 scored=56 masked=56 accepted=0 mask=0 (00863990)"},
+        {"line": 30779, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 02 scored=56 masked=56 accepted=0 mask=0 (00863990)"},
+        {"line": 30780, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 03 scored=56 masked=56 accepted=0 mask=0 (00863990)"}
+      ],
+      "difficulty": [
+        {"line": 696, "text": "MissionStart::set_effective_difficulty game+6ACh=1"}
+      ],
+      "scene_contents": [
+        {"line": 1003, "text": "scene contents: mode=9 (004bca50 with raw=0 forced=0 multiplayer=0), 96 entities registered, 96 instantiated, 76 generated, 20 rejected, 26 created, 20 held back by Hidden (0046d3c5, the GenerateObject pool)"}
+      ],
+      "submarine_unit_rows": {
+        "Narwhal-class Submarine 01": {"unit": "Narwhal-class Submarine 01", "side": "0", "guns": "7", "cats": "6:1 7:6", "range": "1500", "nearest": "1460", "shots": "10", "hits": "0", "dealt": "140", "taken": "0", "health": "597", "sunk_at": "-1.00", "killed_by": "-"},
+        "Gato-class Submarine 01": {"unit": "Gato-class Submarine 01", "side": "0", "guns": "13", "cats": "1:2 2:1 7:10", "range": "0", "nearest": "0", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1200", "sunk_at": "0.00", "killed_by": "-"},
+        "PlayerSub 01": {"unit": "PlayerSub 01", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "2505", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "PlayerSub 03": {"unit": "PlayerSub 03", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "508", "shots": "101", "hits": "0", "dealt": "1902", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "PlayerSub 02": {"unit": "PlayerSub 02", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "300", "shots": "122", "hits": "0", "dealt": "1545", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 01": {"unit": "Submarine TypeB w Jake 01", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1600", "nearest": "2579", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 02": {"unit": "Submarine TypeB w Jake 02", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1600", "nearest": "2345", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 03": {"unit": "Submarine TypeB w Jake 03", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1600", "nearest": "2472", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"}
+      },
+      "runtime_session": 60374,
+      "mission_frames_requested": 3000,
+      "mission_frames_ran": 3000,
+      "mission_frames_simulated": 3000,
+      "mission_time": 150.0,
+      "active_submarine_units": ["Narwhal-class Submarine 01", "PlayerSub 01", "PlayerSub 03", "PlayerSub 02", "Submarine TypeB w Jake 01", "Submarine TypeB w Jake 02", "Submarine TypeB w Jake 03"]
+    },
+    "on": {
+      "exit_code": 0,
+      "slot": 2,
+      "core": 6,
+      "log": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\on.log", "bytes": 4495201, "sha256": "975E83E1B3945491673E67AF3EA0958962AE5BBC32CD490AE5242F10FFA1C5E8"},
+      "launcher": {"path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\on_launcher.log", "bytes": 829, "sha256": "454937B88923FEBAF3A8753D10DF0F7CE438719177668655CC999BED77ECD6D7"},
+      "milestone": "bsp_game milestone 2l, frames=3200 press_start_frame=30 screenshot_frame=-1 screenshot_mission_frame=-1 menu_select=JM06 mission_frames=3000 mission_complete_frame=-1 order_frame=-1 order=throttle 0.000 rudder 0.000 mission_frame_seconds=0.0500 trajectory_csv=(none) log=~",
+      "jitter": "frame jitter off",
+      "step_count": 30,
+      "first_step": 100,
+      "last_step": 3000,
+      "overrides": [
+        {"line": 975, "unit": "Narwhal-class Submarine 01", "type_id": 31, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 977, "unit": "Gato-class Submarine 01", "type_id": 30, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 986, "unit": "Submarine TypeB w Jake 04", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 987, "unit": "Submarine TypeB w Jake 05", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 988, "unit": "Submarine TypeB w Jake 06", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 989, "unit": "Submarine TypeB w Jake 07", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 990, "unit": "Submarine TypeB w Jake 08", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 991, "unit": "Submarine TypeB w Jake 09", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 998, "unit": "PlayerSub 01", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 999, "unit": "PlayerSub 03", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 1000, "unit": "PlayerSub 02", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 1001, "unit": "Submarine TypeB w Jake 01", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 1002, "unit": "Submarine TypeB w Jake 02", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true},
+        {"line": 1003, "unit": "Submarine TypeB w Jake 03", "type_id": 93, "class_id": 8, "raw_false": true, "torpedo": true}
+      ],
+      "torpedo_summaries": [
+        {"line": 30690, "text": "summary mission gunnery ordnance units_with torpedo=11 general_bomb=0 drop_kamikaze=0 paratrooper=0 (of 20 units with guns)"},
+        {"line": 30693, "text": "summary mission gunnery torpedo_ranges_derived=58 swims_started=0 snaps=23208 bullet_ranges_derived=148 base_tick_timers_live=0 expired=0"},
+        {"line": 30694, "text": "summary mission gunnery torpedo_gate guns=58 ticks=144000 targeted=23208 accepted=0 settled=0 window=0 sent=18480 shots=24"},
+        {"line": 30695, "text": "summary mission gunnery torpedo_friendly scans=23208 holds=4728"},
+        {"line": 30700, "text": "summary mission gunnery ship director enables torpedo_disabled_pushes=814 bound=1 (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)"},
+        {"line": 30701, "text": "summary mission gunnery torpedo stock bound=1 sets=2 spent=24 emptied_barrels=0 ships_dry=0 (0081F8B0 / 0072D520 / 00810D80 / 00810DA0, packet cc9_torpedo_stock)"},
+        {"line": 30702, "text": "summary mission gunnery torpedo supply bound=1 ticks=60000 in_area=0 sets=0 unloaded=0 (00825450 / 00809C50 / 0081DCB0, packet cc9_torpedo_supply_tick)"},
+        {"line": 30704, "text": "summary mission gunnery forced torpedo marks=0 fires=0 (008A7200 -> 00730160, packet cc9_navigator_force_torpedo)"},
+        {"line": 30706, "text": "summary mission gunnery ship set torpedo stock bound=1 calls=0 (0089EEE0 -> 0081F8B0, packet cc9_ship_set_torpedo_stock)"},
+        {"line": 30707, "text": "summary mission gunnery ship director torpedo writes lua_enable=4 lua_disable=0 close_attack_sends=0 changed=0 bound=1 (0071E0D0 from 0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)"},
+        {"line": 30709, "text": "summary mission gunnery torpedo gyro launches=24 turn_steps=0 mean_launch_offset_deg=14.93 bound=1 (007311B0/00856637/00857061, packet cc9_usn02_sameside_torpedoes)"},
+        {"line": 30710, "text": "summary mission gunnery torpedo swim thrust bound=1 steps=0 kept_entry=0 mean_entry_speed=0.0 (00857480, packet cc9_torpedo_tube_turn)"},
+        {"line": 30711, "text": "summary mission gunnery bullet throw cone=209 fan=0 zero=24 mean_magnitude_deg=0.4099 mean_angle_deg=0.2231 seats aa=191 tail=0 flak=0 torpedo=24 depth=0 artillery=18 pilot=0 none=0 bound=1 (0073031D/00730540, packet cc9_bullet_throw)"},
+        {"line": 30713, "text": "summary mission gunnery torpedo_drop drops=0 refusals=0 water_entry_breakups=0"},
+        {"line": 30729, "text": "summary mission gunnery torpedo spread bound=1 flips=24 (00951FC0)"},
+        {"line": 30737, "text": "summary mission gunnery class arms torpedo_refusals=0 sub_tests=2100 sub_above=0 sub_refusals=1900 bound=1 (00862869..008628C5 / 00852820, packet cc9_gunnery_class_arms)"},
+        {"line": 30746, "text": "summary mission gunnery unit fire cooldown sets=18 torpedo_sets=24 refusals=1383 sub_delay=0.50 ship_delay=0.50 bound=1 (0072F830 / 00953CC0 / 00729ADD, packet cc9_unit_fire_cooldown)"},
+        {"line": 30777, "text": "summary mission gunnery torpedo_loadout_cleared=0 (drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)"},
+        {"line": 30781, "text": "summary mission gunnery torpedo_closest_approach swims=0 (centre to centre, horizontal)"},
+        {"line": 30787, "text": "summary mission gunnery torpedo_candidates pass_ticks=30000 command_target=3118 fire_target=13581 scored=335 accepted=96 reject unknown=0 liveness=0 class=0 rank=0 mask=0 range=239"},
+        {"line": 30788, "text": "summary mission gunnery torpedo bot ready bound=1 targeted=23208 image=23208 generic=0 image_refused_angles=23208 (009003F8..0090042F, packet cc9_g34_torpedo_bot_ready)"},
+        {"line": 30789, "text": "summary unit gunnery torpedo candidates PlayerSub 01 scored=55 masked=0 accepted=0 mask=3 (00863990)"},
+        {"line": 30790, "text": "summary unit gunnery torpedo candidates PlayerSub 03 scored=56 masked=0 accepted=51 mask=3 (00863990)"},
+        {"line": 30791, "text": "summary unit gunnery torpedo candidates PlayerSub 02 scored=56 masked=0 accepted=45 mask=3 (00863990)"},
+        {"line": 30792, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 01 scored=56 masked=0 accepted=0 mask=3 (00863990)"},
+        {"line": 30793, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 02 scored=56 masked=0 accepted=0 mask=3 (00863990)"},
+        {"line": 30794, "text": "summary unit gunnery torpedo candidates Submarine TypeB w Jake 03 scored=56 masked=0 accepted=0 mask=3 (00863990)"}
+      ],
+      "difficulty": [
+        {"line": 696, "text": "MissionStart::set_effective_difficulty game+6ACh=1"}
+      ],
+      "scene_contents": [
+        {"line": 1017, "text": "scene contents: mode=9 (004bca50 with raw=0 forced=0 multiplayer=0), 96 entities registered, 96 instantiated, 76 generated, 20 rejected, 26 created, 20 held back by Hidden (0046d3c5, the GenerateObject pool)"}
+      ],
+      "submarine_unit_rows": {
+        "Narwhal-class Submarine 01": {"unit": "Narwhal-class Submarine 01", "side": "0", "guns": "7", "cats": "6:1 7:6", "range": "1500", "nearest": "1460", "shots": "10", "hits": "0", "dealt": "140", "taken": "0", "health": "597", "sunk_at": "-1.00", "killed_by": "-"},
+        "Gato-class Submarine 01": {"unit": "Gato-class Submarine 01", "side": "0", "guns": "13", "cats": "1:2 2:1 7:10", "range": "0", "nearest": "0", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1200", "sunk_at": "0.00", "killed_by": "-"},
+        "PlayerSub 01": {"unit": "PlayerSub 01", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "2505", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "PlayerSub 03": {"unit": "PlayerSub 03", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "508", "shots": "101", "hits": "0", "dealt": "1902", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "PlayerSub 02": {"unit": "PlayerSub 02", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "300", "shots": "122", "hits": "0", "dealt": "1545", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 01": {"unit": "Submarine TypeB w Jake 01", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "2579", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 02": {"unit": "Submarine TypeB w Jake 02", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "2345", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"},
+        "Submarine TypeB w Jake 03": {"unit": "Submarine TypeB w Jake 03", "side": "1", "guns": "8", "cats": "1:1 2:1 7:6", "range": "1852", "nearest": "2472", "shots": "0", "hits": "0", "dealt": "0", "taken": "0", "health": "1500", "sunk_at": "-1.00", "killed_by": "-"}
+      },
+      "runtime_session": 5703,
+      "mission_frames_requested": 3000,
+      "mission_frames_ran": 3000,
+      "mission_frames_simulated": 3000,
+      "mission_time": 150.0,
+      "active_submarine_units": ["Narwhal-class Submarine 01", "PlayerSub 01", "PlayerSub 03", "PlayerSub 02", "Submarine TypeB w Jake 01", "Submarine TypeB w Jake 02", "Submarine TypeB w Jake 03"]
+    }
+  },
+  "comparison": {
+    "report": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_director_jm06_pair\\pair_diff.json",
+    "report_sha256": "B2BDB2A3E84026F95CB90E1D109B25EEE7ABEDBB29549C925CCD371F2F3BA799",
+    "exit_code": 3,
+    "clock": {"anchor": "gunnery step 100", "offset": 0.0, "first_hit_delta": 0.0},
+    "headline": [
+      ["deaths", "2", "2"],
+      ["hit records", "149", "149"],
+      ["hull hits", "140", "140"],
+      ["damage", "3587.2", "3587.2"],
+      ["shots", "233", "233"],
+      ["first hit", "10.10 s", "10.10 s"],
+      ["torpedo-task releases", null, null],
+      ["dive-bomb-task releases", null, null],
+      ["torpedo drops", "0", "0"],
+      ["plane water contacts", null, null],
+      ["controlled moved", "PlayerSub 01 0.00", "PlayerSub 01 0.00"],
+      ["units", "26", "26"],
+      ["mission end", "none (Mission.EndMission never true)", "none (Mission.EndMission never true)"],
+      ["host methods concrete/unimplemented", "1009 / 448", "1009 / 448"]
+    ],
+    "counts": {
+      "native_rows": [1464, 1464],
+      "death_rows": [0, 0],
+      "plane_death_modes": [0, 0],
+      "unit_rows": [21, 21],
+      "summary_lines": [505, 505],
+      "other_lines": [29832, 29846]
+    },
+    "unit_changes": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        [
+          "Submarine TypeB w Jake 01",
+          [
+            ["range", "1600", "1852"]
+          ]
+        ],
+        [
+          "Submarine TypeB w Jake 02",
+          [
+            ["range", "1600", "1852"]
+          ]
+        ],
+        [
+          "Submarine TypeB w Jake 03",
+          [
+            ["range", "1600", "1852"]
+          ]
+        ]
+      ]
+    },
+    "summary_changes": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        [
+          "mission ship ai free",
+          [
+            ["empty", "37906", "36779"],
+            ["refills", "106", "108"]
+          ],
+          "mission ship ai free bearing scan_calls=0 arm_calls=40787 unready=0 empty=37906 refills=106 ahead_hits=94 corner_fwd=94 corner_back=0 lateral_turns=0 short_legs=0 answers=94 bound=1 (009DC2E0 at 009EC0C1 / 009DF0FA, packet cc9_free_bearing_query)",
+          "mission ship ai free bearing scan_calls=0 arm_calls=40787 unready=0 empty=36779 refills=108 ahead_hits=94 corner_fwd=94 corner_back=0 lateral_turns=0 short_legs=0 answers=94 bound=1 (009DC2E0 at 009EC0C1 / 009DF0FA, packet cc9_free_bearing_query)"
+        ],
+        [
+          "mission gunnery units=",
+          [
+            ["rejected", "4019", "4187"]
+          ],
+          "mission gunnery units=20 guns=148 passes=20 ticks=60000 bodies=1406 bridge=1406 sweeps=2590 candidates=1186 rejected=4019 assignment_passes=3256 gun_evaluations=911 slot_rejects=0 assigns=731 clears=9259",
+          "mission gunnery units=20 guns=148 passes=20 ticks=60000 bodies=1406 bridge=1406 sweeps=2590 candidates=1186 rejected=4187 assignment_passes=3256 gun_evaluations=911 slot_rejects=0 assigns=731 clears=9259"
+        ],
+        [
+          "mission gunnery ship director torpedo_disabled_pushes=",
+          [
+            ["torpedo_disabled_pushes", "1036", "814"]
+          ],
+          "mission gunnery ship director enables torpedo_disabled_pushes=1036 bound=1 (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)",
+          "mission gunnery ship director enables torpedo_disabled_pushes=814 bound=1 (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)"
+        ],
+        [
+          "mission gunnery ship director lua_enable=",
+          [
+            ["changed", "4", "0"]
+          ],
+          "mission gunnery ship director torpedo writes lua_enable=4 lua_disable=0 close_attack_sends=0 changed=4 bound=1 (0071E0D0 from 0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)",
+          "mission gunnery ship director torpedo writes lua_enable=4 lua_disable=0 close_attack_sends=0 changed=0 bound=1 (0071E0D0 from 0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)"
+        ],
+        [
+          "mission gunnery candidate range",
+          [
+            ["scored", "5205", "5373"]
+          ],
+          "mission gunnery candidate range origin scored=5205 verdict_flips=0 mean_abs_delta=0.02 bound=1 (008639EC..00863A32, packet cc9_aa_range_origin)",
+          "mission gunnery candidate range origin scored=5373 verdict_flips=0 mean_abs_delta=0.02 bound=1 (008639EC..00863A32, packet cc9_aa_range_origin)"
+        ],
+        [
+          "mission gunnery torpedo_candidates",
+          [
+            ["reject.mask", "168", "0"],
+            ["reject.range", "71", "239"]
+          ],
+          "mission gunnery torpedo_candidates pass_ticks=30000 command_target=3118 fire_target=13581 scored=335 accepted=96 reject unknown=0 liveness=0 class=0 rank=0 mask=168 range=71",
+          "mission gunnery torpedo_candidates pass_ticks=30000 command_target=3118 fire_target=13581 scored=335 accepted=96 reject unknown=0 liveness=0 class=0 rank=0 mask=0 range=239"
+        ],
+        [
+          "unit gunnery torpedo candidates scored=56#3",
+          [
+            ["masked", "56", "0"],
+            ["mask", "0 (#)", "3 (#)"]
+          ],
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 01 scored=56 masked=56 accepted=0 mask=0 (00863990)",
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 01 scored=56 masked=0 accepted=0 mask=3 (00863990)"
+        ],
+        [
+          "unit gunnery torpedo candidates scored=56#4",
+          [
+            ["masked", "56", "0"],
+            ["mask", "0 (#)", "3 (#)"]
+          ],
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 02 scored=56 masked=56 accepted=0 mask=0 (00863990)",
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 02 scored=56 masked=0 accepted=0 mask=3 (00863990)"
+        ],
+        [
+          "unit gunnery torpedo candidates scored=56#5",
+          [
+            ["masked", "56", "0"],
+            ["mask", "0 (#)", "3 (#)"]
+          ],
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 03 scored=56 masked=56 accepted=0 mask=0 (00863990)",
+          "unit gunnery torpedo candidates Submarine TypeB w Jake 03 scored=56 masked=0 accepted=0 mask=3 (00863990)"
+        ]
+      ]
+    },
+    "native_changes": {
+      "added": [],
+      "removed": [],
+      "status": [],
+      "calls": [
+        [
+          ["Gunnery::score_candidate_00863990", "00863990"],
+          5205,
+          5373
+        ]
+      ],
+      "noise": [
+        [
+          ["ShipAiSectorScan::clip_arc_zones_00415970", "00415970"],
+          7366,
+          13366
+        ],
+        [
+          ["ShipAiSectorScan::zone_segment_crossing_004158e0", "004158e0"],
+          3683,
+          6683
+        ],
+        [
+          ["ShipAiClearance::static_zone_blocks_009d57e0", "009d57e0"],
+          99,
+          100
+        ],
+        [
+          ["ShipAiClearance::static_zone_clearance_00415d70", "00415d70"],
+          99,
+          100
+        ]
+      ]
+    },
+    "other_line_counts": {"only_off": 6, "only_on": 20}
+  },
+  "admission": {
+    "scene_submarine_records": 14,
+    "override_rows_on": 14,
+    "created_submarine_rows": 8,
+    "active_after_gato_kill": 7,
+    "hidden_deferred_submarines": 6,
+    "scene_mode": 9,
+    "raw_mode": 0,
+    "forced": false,
+    "multiplayer": false,
+    "lua_difficulty": 1,
+    "tutorial_rows": "TypeB w Jake01-03 are actually admitted by this host despite authored GenerateInGame=false; normal original-game admission is not proved",
+    "diagnostic_stage": "Bag projection precedes generation and Hidden gates; override line is not proof of a live unit"
+  },
+  "mechanism": {
+    "lua_enables": [4, 4],
+    "changed_lua_writes": [4, 0],
+    "tutorial_final_masks": [0, 3],
+    "tutorial_each_scored": 56,
+    "tutorial_each_masked": [56, 0],
+    "tutorial_each_accepted": [0, 0],
+    "tutorial_unit_range": [1600, 1852],
+    "aggregate_torpedo_mask_rejects": [168, 0],
+    "aggregate_torpedo_range_rejects": [71, 239],
+    "torpedo_scored": [335, 335],
+    "torpedo_accepted": [96, 96],
+    "director_disabled_pushes": [1036, 814],
+    "gunnery_score_calls": [5205, 5373],
+    "interpretation": "Lua reopening masks later state for Narwhal/PlayerSub, while three tutorial rows demonstrate the unmasked host torpedo gate change"
+  },
+  "verification": {
+    "git_diff_check": "PASS",
+    "verify_report_calls": "PASS: class8 report8 direct plus pair report1 direct, zero failures; three indirect receipts excluded",
+    "native_differential": "Not configured in fresh git-archive exports",
+    "new_tests": 0,
+    "xlive_text_identical": true,
+    "process_cleanup": "Both finished before PID sampling; launcher confirms slot2/core6 exit0 and released lock; no restart",
+    "call_verifier_log_sha256": "01911964E68DCEF8780CDA6EE8458E2C3B8DC9F1487463BE6606A6A313B037C0",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr, existing file and configured target verified",
+    "ghidra_program": "/battlestationspacific.exe, live status verified"
+  },
+  "qualification": {
+    "source": "Native producer/descriptor predicate evidence supports explicit-false class8 override; group/authored precedence and absent true remain unchanged",
+    "fixture": "Existing reconstructed_math and tool_tests passed 2/2 for each export; no class8 native differential fixture",
+    "runtime": "Live reconstructed Windows host pair, 3000x0.05 s, difficulty1; real mask/range/candidate fields moved",
+    "abi": "Recovered original thiscall class probe; no native ABI replacement validation",
+    "original_game": "Original executable was not run by this pair; no full original-game behavior/admission proof",
+    "unknown_types": "Unknown descriptor kinds retain raw false"
+  }
+}
