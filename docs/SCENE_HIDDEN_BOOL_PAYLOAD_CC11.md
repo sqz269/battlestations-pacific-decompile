@@ -87,3 +87,7 @@ decode did not extend stored function-body metadata beyond `008F5658`. No new
 flow repair, metadata or Ghidra mutation occurs here. Whole SceneReader, actual
 holdback side effects, emitter, original ABI and original-game/runtime proof
 remain unclaimed.
+
+## Primary integration
+
+Main `7b835976e1268a2b7b3b7d9061cc9bc3f2ab0fbc` passed the full Win32 build and all three existing CTests. Root independently reviewed the code, native fragment and entire fixture, compiled three fresh translation units against current main, verified179current Source/Lua/fixture inputs (177actual includes),17installed files and77current compiled inputs before/after linking, and checked the PE32 asInvoker manifest. The actual parser/production group/private called reader checks passed all243resolved bags; the public caller is compiled, whole SceneReader remains unrun. All22native fragment bytes matched disk/live and both direct call rows passed. Source after-gate versus native before-gate order and all ABI/game limits above remain. No tracked tests were added.
