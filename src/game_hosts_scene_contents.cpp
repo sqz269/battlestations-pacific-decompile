@@ -264,9 +264,10 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     merge_property_block(bag, group->block, false);
 }
 
-// Packet cc9_land_convoy_members. 00743450's scene reads (00743497..007437B0):
-// the eight scalars (an `F` value is read as a float, an `I` as its integer,
-// 004F.. type word test), then the slot map: every slot -1, and for n = 1..4
+// Packet cc9_land_convoy_members. 00743450's scene reads (007434A4..007437B0):
+// five float fields read type 1's retained float32 or convert an integer;
+// Rows/Columns read integers and Reverse a byte. Then the slot map: every
+// slot -1, and for n = 1..4
 // the block "Type<n>" (type tag 6; absent gives a null bag) and its enum `Type`,
 // for m = 1..4 its integer "Position<m>": 0 fills every slot with the type, a
 // positive value fills slot m-1 (the later write wins), a negative one nothing.
@@ -291,14 +292,22 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         if (prop != nullptr && !prop->values.empty()) scene_scan_int(prop->values.back(), i);
         return i;
     };
+    const auto retained_scalar = [&](const char* key, float fallback) {
+        const SceneProperty* prop = bag.find(key);
+        // 007434CC..007435DE consume +0Ch, not parser diagnostics. This
+        // availability flag binds successful nonempty explicit F only.
+        if (prop != nullptr && equal_insensitive(prop->type_letter, "F") && prop->has_float)
+            return prop->float_value;
+        return scalar(key, fallback);
+    };
     record.land_convoy_keys = true;
     record.convoy_rows = integer(bag, "Rows", 0);
     record.convoy_columns = integer(bag, "Columns", 0);
-    record.convoy_row_gap = scalar("RowGap", 0.0f);
-    record.convoy_column_gap = scalar("ColumnGap", 0.0f);
-    record.convoy_hp = scalar("HP", 0.0f);
-    record.convoy_speed = scalar("Speed", 0.0f);
-    record.convoy_offset = scalar("Offset", 0.0f);
+    record.convoy_row_gap = retained_scalar("RowGap", 0.0f);
+    record.convoy_column_gap = retained_scalar("ColumnGap", 0.0f);
+    record.convoy_hp = retained_scalar("HP", 0.0f);
+    record.convoy_speed = retained_scalar("Speed", 0.0f);
+    record.convoy_offset = retained_scalar("Offset", 0.0f);
     record.convoy_reverse = scalar("Reverse", 0.0f) != 0.0f;
     if (const SceneProperty* path = bag.find("Path"); path != nullptr && !path->values.empty()) {
         std::string value = path->values.back();
