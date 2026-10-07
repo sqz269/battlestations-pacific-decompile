@@ -15541,8 +15541,8 @@
     },
     {
       "id": "cc11_health_target_tick_history",
-      "done": false,
-      "state": "approved complete175-byte history timing consumer with real existing rawCRT conversion",
+      "done": true,
+      "state": "completeordinaryconsumer integrated333checks100originalcompositioncases/fullWin32all3CTests; timingproducer/caller/derivedABIgamequalified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -15558,12 +15558,93 @@
       "depends_on": [
         "cc11_health_target_operations"
       ],
-      "contract": "Complete7833E0..78348F175B59inst,ECXtarget/stackDWORD/RET4; actual borrowedF876B0 once, signed<10 nativeFLDZreset, else F876A8/D0DE84 ST0 intoexisting native_crt_truncate_st0_00bf7420 with actual0109EEA4 readatconversion/BF7456fallback. Preserveboth modulo32sub/normalize loops with inclusive endpoints-32768,+32768 and samplepriority:firstpositive\u2192negative else secondpositive else0, directcompleteappend/reset. InputfullDWORDunmasked; fixtureobserved0..FFFFdomain from785994MOVZX. Wholeoriginalconsumer+originalappend/reset/CRTmodepaths comparisons. No timeproviders/opaquephases/defaultcells/wholederivedruntimeABIgame claim."
+      "contract": "Complete7833E0..78348F175B59inst,ECXtarget/stackDWORD/RET4; actual borrowedF876B0 once, signed<10 nativeFLDZreset, else F876A8/D0DE84 ST0 intoexisting native_crt_truncate_st0_00bf7420 with actual0109EEA4 readatconversion/BF7456fallback. Preserveboth modulo32sub/normalize loops with inclusive endpoints-32768,+32768 and samplepriority:firstpositive\u2192negative else secondpositive else0, directcompleteappend/reset. InputfullDWORDunmasked; fixtureobserved0..FFFFdomain from785994MOVZX. Wholeoriginalconsumer+originalappend/reset/CRTmodepaths comparisons. No timeproviders/opaquephases/defaultcells/wholederivedruntimeABIgame claim.",
+      "primary_integration": {
+        "utc": "2026-10-07T14:57:08.834024+00:00",
+        "worker_revision": "be32a0a29786989a3b9e75f5bb83df795b3fc22a",
+        "integrated_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+        "full_main_build_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_tick_gate_integrated_build.log",
+        "executable_sha256": "65da4a83c89ae9922a61285377aa33f041853289ff94d1b27e083577ffd23ba0",
+        "probe_sha256": "275a9cbdad71c4bee1029888fae33dfb9a94b3419ddb5bc9943cb6c8067389c3",
+        "root_manifest_id1_asInvoker_verified": true,
+        "primary_source_native_and_whole_fixture_review": true,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "root_probe": "local/cc11_tick_history_root.cmd",
+        "probe_log": "local/cc11_tick_history_root_compile.log",
+        "fresh_actual_translation_units": 9,
+        "stable_main_source_header_inputs": 32,
+        "stable_current_main_libraries": 3,
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "complete_disk_live_consumer_history_and_CRT_span": [
+          {
+            "address": "007833E0",
+            "end_exclusive": "0078348F",
+            "bytes": 175,
+            "sha256": "952084b5ebc613982b241c623f918920754de37e8ce2e7a85a7b963c016d26b2",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00783230",
+            "end_exclusive": "00783274",
+            "bytes": 68,
+            "sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "007831E0",
+            "end_exclusive": "00783226",
+            "bytes": 70,
+            "sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00BF7420",
+            "end_exclusive": "00BF74CB",
+            "bytes": 171,
+            "sha256": "79bef72f6967ef5ec8414c36f64fdb35a6167893f6dca509f73ef9312a2786c2",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_composition_result": {
+          "checks": 333,
+          "failures": 0,
+          "original_consumer_matrix_cases": 48,
+          "original_consumer_edge_cases": 44,
+          "full_dword_helper_cases": 8,
+          "consumer_bytes": 175,
+          "history_code_relocations": 0,
+          "global_operand_relocations": 4,
+          "call_displacement_relocations": 5,
+          "crt_modes": 2,
+          "pc_values": 3,
+          "x87_rc_values": 4,
+          "ambient_stack_cases": 2,
+          "network_send_calls": 0,
+          "gameplay_validated": false
+        },
+        "original_consumer_cases": 100,
+        "native_direct_call_rows_checked": 5,
+        "native_direct_call_rows_failed": 0,
+        "constructed_target_histories": true,
+        "observed_caller_unsigned16_domain": true,
+        "full_DWORD_helper_cases_not_producer_reachability": true,
+        "masked_exceptions": true,
+        "DAZ_FTZ_disabled": true,
+        "unexecuted_CRT_alternate_entry_bytes_preserved_not_additional_Source_entry": true,
+        "caller_derived_timeproducer_socket_nativeABI_game_unbound": true,
+        "ghidra_annotations_saved": true,
+        "prior_annotations": "local/ghidra-annotations-20261007T145751Z.json",
+        "affected_parent_export_refreshed": true
+      }
     },
     {
       "id": "cc11_scene_generation_bool_payload",
-      "done": false,
-      "state": "approved bounded generationgate owningB consumer preference with unchanged raw fallback and nativeprovider qualifications",
+      "done": true,
+      "state": "bounded4readOwningB integrated actualpublicgate14JM06bags/currentmainproof/fullWin32all3CTests; serviceswholebodyABIgamequalified",
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -15579,7 +15660,161 @@
         "cc11_scene_typed_bool_payload",
         "cc11_scene_typed_int_payload"
       ],
-      "contract": "Onlyprivatecalled reader compatibleB+has_boolean\u2192canonicalbyte elseunchanged scene_property_bool, exactlyfourexisting generationgate calls:mode8Game,mode9Game/MovieFallback,selectedMultiTypekey. Preservemode/geometry/class/deferred/stock/default/type/raw policy; noheaders/globalhelper/Hidden/directors changes. NativeelevenFind8F2260\u2192byte0Cspansinside46C550..46CCE1 areboundeddata evidence,nativeuntypednullfaultvsSourcepartialskips qualified. Actualpublicgate/parser/Sourceclassregistry+explicitadmittedSourcearea inputs fixture,modes0..7 finiteinside/selectedkey/oppositeother/outsideboundary,mode8/9clear/opposediagnostics/rawfallback and actual14JM06SubmarineGenbags. No inventednativeplayarea-table/enum/class/geometryprovider,wholemultiplayer/ABI/EH/game claim; productionareabindingremainsunresolved."
+      "contract": "Onlyprivatecalled reader compatibleB+has_boolean\u2192canonicalbyte elseunchanged scene_property_bool, exactlyfourexisting generationgate calls:mode8Game,mode9Game/MovieFallback,selectedMultiTypekey. Preservemode/geometry/class/deferred/stock/default/type/raw policy; noheaders/globalhelper/Hidden/directors changes. NativeelevenFind8F2260\u2192byte0Cspansinside46C550..46CCE1 areboundeddata evidence,nativeuntypednullfaultvsSourcepartialskips qualified. Actualpublicgate/parser/Sourceclassregistry+explicitadmittedSourcearea inputs fixture,modes0..7 finiteinside/selectedkey/oppositeother/outsideboundary,mode8/9clear/opposediagnostics/rawfallback and actual14JM06SubmarineGenbags. No inventednativeplayarea-table/enum/class/geometryprovider,wholemultiplayer/ABI/EH/game claim; productionareabindingremainsunresolved.",
+      "primary_integration": {
+        "utc": "2026-10-07T14:57:09.503669+00:00",
+        "worker_revision": "550c74c408127179551ef9f7560f50a56dd36cdf",
+        "integrated_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+        "full_main_build_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_tick_gate_integrated_build.log",
+        "executable_sha256": "65da4a83c89ae9922a61285377aa33f041853289ff94d1b27e083577ffd23ba0",
+        "probe_sha256": "125b0a5bcbd541c2048ebd84c107b31390952d1344f115cf5139a841507cd378",
+        "root_manifest_id1_asInvoker_verified": true,
+        "primary_source_native_and_whole_fixture_review": true,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "root_compile": "local/cc11_generation_gate_root_compile.cmd",
+        "root_link": "local/cc11_generation_gate_root_link.cmd",
+        "compile_log": "local/cc11_generation_gate_root_compile.log",
+        "link_log": "local/cc11_generation_gate_root_link.log",
+        "probe_log": "local/cc11_generation_gate_root_probe.log",
+        "fresh_actual_translation_units": 3,
+        "stable_main_source_header_lua_inputs": 181,
+        "actual_compiler_include_inputs": 178,
+        "stable_installed_inputs": 16,
+        "stable_current_main_libraries_and_game_objects": 77,
+        "current_libraries": 3,
+        "current_game_objects": 74,
+        "all_inputs_current_e0dfeae_build": true,
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "complete_disk_live_B_read_fragments": [
+          {
+            "address": "0046C9AC",
+            "end_exclusive": "0046C9C0",
+            "bytes": 20,
+            "sha256": "e29bb5445d684cdc8883e292d9ce80fbf050b8afa429b0375b7bba19c0f69394",
+            "disk_live": "MATCH",
+            "call_site": "0046C9B8",
+            "native": "008F2260",
+            "byte_read_site": "0046C9BD"
+          },
+          {
+            "address": "0046CA23",
+            "end_exclusive": "0046CA37",
+            "bytes": 20,
+            "sha256": "5e07ddde88307591d5e700af0c06a28d020033e3d614032dfe5d2c03334e38a6",
+            "disk_live": "MATCH",
+            "call_site": "0046CA2F",
+            "native": "008F2260",
+            "byte_read_site": "0046CA34"
+          },
+          {
+            "address": "0046CA9A",
+            "end_exclusive": "0046CAAE",
+            "bytes": 20,
+            "sha256": "0a9e0d09ecb7974dae467102c300f85a675dd267f33282e19f8781abbac1637f",
+            "disk_live": "MATCH",
+            "call_site": "0046CAA6",
+            "native": "008F2260",
+            "byte_read_site": "0046CAAB"
+          },
+          {
+            "address": "0046CB01",
+            "end_exclusive": "0046CB15",
+            "bytes": 20,
+            "sha256": "264ff86a3669b6b7c976bbca87a9a879850fc1b099f646c47f35ff00005e550e",
+            "disk_live": "MATCH",
+            "call_site": "0046CB0D",
+            "native": "008F2260",
+            "byte_read_site": "0046CB12"
+          },
+          {
+            "address": "0046C8BE",
+            "end_exclusive": "0046C8D2",
+            "bytes": 20,
+            "sha256": "2e376b4a1158bd629b8d532c0cbce54f9a750e968cb7e6145cdd97e0877ae088",
+            "disk_live": "MATCH",
+            "call_site": "0046C8CA",
+            "native": "008F2260",
+            "byte_read_site": "0046C8CF"
+          },
+          {
+            "address": "0046C935",
+            "end_exclusive": "0046C949",
+            "bytes": 20,
+            "sha256": "4e269c692cdebf0bb0c6994beaf30252773467d8f63531ea5751c3395d44dc70",
+            "disk_live": "MATCH",
+            "call_site": "0046C941",
+            "native": "008F2260",
+            "byte_read_site": "0046C946"
+          },
+          {
+            "address": "0046C7D0",
+            "end_exclusive": "0046C7E4",
+            "bytes": 20,
+            "sha256": "f5662bebc032f65c6849a3b6eb0ebe066a0fa87536e604d12b2f42abafa6437d",
+            "disk_live": "MATCH",
+            "call_site": "0046C7DC",
+            "native": "008F2260",
+            "byte_read_site": "0046C7E1"
+          },
+          {
+            "address": "0046C847",
+            "end_exclusive": "0046C85B",
+            "bytes": 20,
+            "sha256": "4b46002127af244fcdf9b7408a33d0ff80d2ecf9194ab98d7abecf2bab2aa0ab",
+            "disk_live": "MATCH",
+            "call_site": "0046C853",
+            "native": "008F2260",
+            "byte_read_site": "0046C858"
+          },
+          {
+            "address": "0046CC5B",
+            "end_exclusive": "0046CC71",
+            "bytes": 22,
+            "sha256": "5ff77550cd3d5b84c0d60066f5c082ee59703ffad31c45d62ce8360408a4af76",
+            "disk_live": "MATCH",
+            "call_site": "0046CC62",
+            "native": "008F2260",
+            "byte_read_site": "0046CC67"
+          },
+          {
+            "address": "0046CB43",
+            "end_exclusive": "0046CB59",
+            "bytes": 22,
+            "sha256": "8b547578347c1438aa484f721af66dbfc6f8494f7afef05f7c4893ac6013a17a",
+            "disk_live": "MATCH",
+            "call_site": "0046CB4A",
+            "native": "008F2260",
+            "byte_read_site": "0046CB4F"
+          },
+          {
+            "address": "0046CC37",
+            "end_exclusive": "0046CC46",
+            "bytes": 15,
+            "sha256": "afae9f794001c7367c90e98c7f91e7c03b22db484779273564e10d3dc7eaab73",
+            "disk_live": "MATCH",
+            "call_site": "0046CC3E",
+            "native": "008F2260",
+            "byte_read_site": "0046CC43"
+          }
+        ],
+        "native_direct_call_rows_checked": 11,
+        "native_direct_call_rows_failed": 0,
+        "installed_library_files": 15,
+        "installed_groups": 22,
+        "JM06_SubmarineGen_bags": 14,
+        "JM06_ordinary_game_true_movie_true": 8,
+        "JM06_PlayerSub_game_true_movie_false": 3,
+        "JM06_tutorial_game_false_movie_true": 3,
+        "production_play_area_provider_unresolved": true,
+        "whole_SceneReader_creator_stock_nativeallocation_EH_ABI_game_unbound": true,
+        "ghidra_annotations_saved": true,
+        "prior_annotations": "local/ghidra-annotations-20261007T145751Z.json",
+        "affected_parent_export_refreshed": true
+      }
     },
     {
       "id": "cc11_land_state_registry_lifetime",
@@ -15603,6 +15838,49 @@
         "cc11_land_state_registry"
       ],
       "contract": "Complete vector release411610..41163A42B, ordinary registry destructor4116D0..41170048B, scalar411810..41185468B, total158B. Actual borrowed Win32 vector/registry; canonical Source CRT free, captured begin->free->zero3headers; registry raw CE37DCstamp before buffer capture/free, proxy and pointees untouched; scalar TESTlowbyteflagsbit0 after bufferfree BEFORE headerzeros, optionalactualself-free then capturedidentityreturn. No fabricated profile/defaultarena/releasecallbacks/EHprovider. Native one-slot CE37DC->411810 remains numericUNCALLABLE; native constructor private unwind tail to411610 and conditional9B2D40/46 caller do not establish wholeEH/caller/lifetimes. Primary supported4freegap repairs saved/exported reports/state_registry_lifetime_flow_recovery_cc11.json. One focused ordinary Sourcector/Add/registrar->cleanup plus fulloriginal3body copies changing only realfreeCALL relocs, all158disk/livebytes and nativeCALLrows, originalscalarflags/profile/proxy/borrowedidentities. Ordinary validsameCRTownedallocation and stableliveobjectstorage; objectflags1requires realCRT-allocatedobject and no postfree dereference; no nativeABI/runtime/game claim, no trackedtests."
+    },
+    {
+      "id": "cc11_health_target_timestamp",
+      "done": false,
+      "state": "ready complete42B actualclock timestamp consumer; primary reviewed, no callerreachability claim",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "007839a0"
+      ],
+      "output_files": [
+        "include/bsp/native_session_target_timestamp.hpp",
+        "src/native_session_target_timestamp.cpp",
+        "docs/CC11_SESSION_TARGET_TIMESTAMP.md",
+        "reports/cc11_session_target_timestamp.json"
+      ],
+      "depends_on": [
+        "cc11_health_target_lifetime",
+        "cc11_health_target_tick_history"
+      ],
+      "contract": "Complete7839A0..7839CA42B16inst ECXtarget/RET: currentactual01090AB0 clock slot20\u2192realexistingpublication sampler/BEE080, consumeRETURNED16Bsample withFILDqword/FILDqword/FDIVP/FSTPactualD68. RequireactualD68D50table/currentpublication/methodcontext and explicitactual16Bstackpreimage as existingtransportstamper, nozero/defaultclock/providerseam. Actualclockconstructor/fixedmode sample plusSourceownedtarget andfulloriginal42+BEE080copies onlyrealglobal/operationrelocs, PC/RC/maskedstackfixture; QPCsequentialorderingonly, actualemptyxrefs no reachabilityclaim. No trackedtests/clockproducer/derivedsocket/nativeABI/gameclosure."
+    },
+    {
+      "id": "cc11_scene_landfort_stationary_bool_payload",
+      "done": false,
+      "state": "ready boundedoneactualStationary Bread; preservecurrentcreatororder/services",
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004f0fb0"
+      ],
+      "output_files": [
+        "src/scene_unit_creators.cpp",
+        "docs/SCENE_LANDFORT_STATIONARY_BOOL_PAYLOAD_CC11.md",
+        "reports/scene_landfort_stationary_bool_payload_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_scene_typed_bool_payload",
+        "cc11_scene_generation_bool_payload"
+      ],
+      "contract": "Oneprivatecalledreader compatiblecase-insensitiveB+has_boolean\u2192ownbyte ELSEunchangedscene_property_bool, replaceONLYexistingStationarycall. Preserve descriptorresolutionFIRST/nullstop/row.extra_key/propertygates/false/rawtype/missing/empty/placementnamecommandpolicies. Native4F0FC9..4F0FDB18B Find4F0FD0\u21928F2260/CMPbyte+C4F0FD5/JZ4F0FD9 no null/typeguard; containing4F0FB0..4F10A990inst/RET10 notwholebinding. Prefix48E9F0/43B8B0/missingnamedSCENE_STATIONARY_FORT doc remainincomplete. Actualparser/privatecalledreader/compiledrealcaller/propertyLibrary/groupfixture, real15libs22groups+USN1/JM06: landfort.props12 inheritedBtrue,12activeLandFortauthoredUSN1Bfalse,oneCB2falseignoredrowgate; independentcopy/clearedoppositediagnostics andlegacyfallback. No fake descriptor/allocation/class/enum/provider toexecutewholecreator; EBasic remainsunresolveddeclarationidentity despiteinstalledBasic0. No trackedtests/nativeABI/gameclosure."
     }
   ],
   "snapshot_after_analysis": {

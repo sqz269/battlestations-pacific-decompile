@@ -123,3 +123,7 @@ remain unproved. Prior group evidence still has the separately recorded partial
 merge-tail decode (end exclusive008F566F, stored body ending008F5658), not a full
 native merger flow repair. Source owning copy/merge proof does not remove that
 qualification.
+
+## Primary integration
+
+Main `e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1` passed the full Win32 build and all three existing CTests. Root independently compiled the real parser/factory and whole connected fixture containing the actual scene-contents TU, verified181current Source/Lua inputs (178compiler includes),16installed files and77current main compiled inputs before/after linking, and checked the embedded asInvoker PE32 manifest. The actual public gate and all14JM06 bags passed, including8ordinary/3PlayerSub/3tutorial policies. All11native stored-byte fragments separately matched disk/live and their CALLrows passed. Whole-body/provider/runtime/ABI/game qualifications above remain; no tracked tests were added.

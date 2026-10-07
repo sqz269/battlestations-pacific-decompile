@@ -102,3 +102,7 @@ whole native ABI, unmasked fault behavior or gameplay validation are included.
 Primary registration, full main build and integration are separate work.
 Evidence is in `reports/cc11_session_target_tick_history.json`; reproducible
 ignored artifacts are under `local/cc11_target_tick_history_20261007_a/`.
+
+## Primary integration
+
+Main `e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1` passed the full Win32 build and all three existing CTests. Root compiled nine fresh actual TUs including the whole fixture, verified32current Source/header inputs, three current main libraries and the original PE before/after linking, and verified the embedded asInvoker PE32 manifest. All333checks/100complete-original composition cases passed. All484consumer/history/CRT-span bytes independently matched live memory and disk; five native calls passed. Preserved but unentered CRT alternate bytes are not another reconstructed entry. Producer reachability, timing/derived/nativeABI/runtime/game qualifications above remain.

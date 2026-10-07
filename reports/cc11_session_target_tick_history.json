@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T14:34:54.998514+00:00",
   "base_commit": "e7ce15904665997509d01e2c3d8904429f6f19ca",
   "branch": "agent/cc11_health_guard",
-  "status": "complete ordinary SOURCE consumer freshly compiled; full original consumer/history/dual-CRT composition passed100cases; primary integration/full main build pending; caller and derived/runtime/wholeABI claims excluded",
+  "status": "complete ordinary tick consumer Source integrated; independent9freshTUs/32currentinputs/3currentlibs333checks100wholeoriginalcompositioncases and fullWin32all3CTests passed; caller/timeproducer/derived/runtime/nativeABI/game qualified",
   "bounds_are_end_exclusive": true,
   "functions": [
     {
@@ -465,5 +465,86 @@
     "coff_relocations.txt": "a1a9e0bb88442c3bc0cd61485006e7a01dc7e947f4544d2515e106ff14a87352",
     "coff_evidence.json": "2d5c9fdca3aae29f3b36c76b61d2be215ab59d98204b030de5d7cdeffbf5474c",
     "source_coff_text.bin": "fcf5b72b0e8b749d76baded8f71a75d370e723afeb58892de3a757d95851ebaf"
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T14:57:08.834024+00:00",
+    "worker_revision": "be32a0a29786989a3b9e75f5bb83df795b3fc22a",
+    "integrated_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+    "full_main_build_revision": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_tick_gate_integrated_build.log",
+    "executable_sha256": "65da4a83c89ae9922a61285377aa33f041853289ff94d1b27e083577ffd23ba0",
+    "probe_sha256": "275a9cbdad71c4bee1029888fae33dfb9a94b3419ddb5bc9943cb6c8067389c3",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "root_probe": "local/cc11_tick_history_root.cmd",
+    "probe_log": "local/cc11_tick_history_root_compile.log",
+    "fresh_actual_translation_units": 9,
+    "stable_main_source_header_inputs": 32,
+    "stable_current_main_libraries": 3,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_disk_live_consumer_history_and_CRT_span": [
+      {
+        "address": "007833E0",
+        "end_exclusive": "0078348F",
+        "bytes": 175,
+        "sha256": "952084b5ebc613982b241c623f918920754de37e8ce2e7a85a7b963c016d26b2",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00783230",
+        "end_exclusive": "00783274",
+        "bytes": 68,
+        "sha256": "b4f0d5234a27a9fdbd2848a893de2cf4ebb83a59b432fdabbb396491e6f57ac7",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007831E0",
+        "end_exclusive": "00783226",
+        "bytes": 70,
+        "sha256": "757c63a3224ba4113de93991ddd1864eb5afce415705a18e220e7861d186d1c8",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00BF7420",
+        "end_exclusive": "00BF74CB",
+        "bytes": 171,
+        "sha256": "79bef72f6967ef5ec8414c36f64fdb35a6167893f6dca509f73ef9312a2786c2",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_composition_result": {
+      "checks": 333,
+      "failures": 0,
+      "original_consumer_matrix_cases": 48,
+      "original_consumer_edge_cases": 44,
+      "full_dword_helper_cases": 8,
+      "consumer_bytes": 175,
+      "history_code_relocations": 0,
+      "global_operand_relocations": 4,
+      "call_displacement_relocations": 5,
+      "crt_modes": 2,
+      "pc_values": 3,
+      "x87_rc_values": 4,
+      "ambient_stack_cases": 2,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "original_consumer_cases": 100,
+    "native_direct_call_rows_checked": 5,
+    "native_direct_call_rows_failed": 0,
+    "constructed_target_histories": true,
+    "observed_caller_unsigned16_domain": true,
+    "full_DWORD_helper_cases_not_producer_reachability": true,
+    "masked_exceptions": true,
+    "DAZ_FTZ_disabled": true,
+    "unexecuted_CRT_alternate_entry_bytes_preserved_not_additional_Source_entry": true,
+    "caller_derived_timeproducer_socket_nativeABI_game_unbound": true,
+    "ghidra_annotations_saved": true,
+    "prior_annotations": "local/ghidra-annotations-20261007T145751Z.json",
+    "affected_parent_export_refreshed": true
   }
 }
