@@ -118,3 +118,7 @@ used. The prepared recipe and link command are
 consumer rebuild and freshly pinned link inputs. Linked probe/full build/CTest
 results remain pending root. Direct-call verification and `git diff --check`
 are recorded in `reports/scene_typed_bool_payload_cc11.json`.
+
+## Primary integration
+
+The pending worker checks above are now closed by primary integration at main `2f11cd1d7b0f328532f402073f09c2f5d39de748`. Every SceneProperty header consumer rebuilt before linking. Four fresh actual TUs, 182 current Source/header inputs, 77 current main link inputs and 17 installed inputs were stable before/after. The manifested PE32 probe passed owning-copy/diagnostic-removal and opposing-raw checks, compatible inheritance/overwrite/fill-missing, raw fallback and wrong types, all eight present installed false bytes, and the existing four-slot Source result. Native14-call verification and the full Win32/all3CTest build passed. Whole SceneReader/emitter, actual enum/class providers, historical ABI and gameplay remain unbound.

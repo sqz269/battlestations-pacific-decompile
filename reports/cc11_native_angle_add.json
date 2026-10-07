@@ -1,6 +1,6 @@
 {
   "packet": "cc11_raw_angle_add_root",
-  "status": "complete raw Source implementation; verification pending",
+  "status": "complete raw x87 Source integrated; original110-byte72case comparison and fullWin32/all3CTests passed; typed provider retained; livebinding historicalABI faults game unbound",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -47,5 +47,66 @@
     "new Source ECX context means no drop-in historical ABI claim",
     "faults/privateEH/unmaskedexceptions/stack exhaustion/nontermination/GPRflagsXMM/FIPFDP not compared",
     "holder path/wholegeometry/runtime/game not activated"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T13:32:54.415231+00:00",
+    "worker_revision": null,
+    "integrated_revision": "2f11cd1d7b0f328532f402073f09c2f5d39de748",
+    "full_main_build_revision": "2f11cd1d7b0f328532f402073f09c2f5d39de748",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_angle_integrated_build.log",
+    "executable_sha256": "918a5ad0e38b97e662859c9fafd450954d4a08da8dbeb279693333eeab1b6c50",
+    "root_probe": "local/cc11_angle_root.cmd",
+    "probe_log": "local/cc11_angle_root_compile.log",
+    "probe_sha256": "6137165a9f039ca983133620317f3f4edaa89d6304b77b249de58c747850a821",
+    "root_manifest_id1_asInvoker_verified": true,
+    "fresh_actual_translation_units": 2,
+    "stable_main_source_header_inputs": 4,
+    "stable_current_main_link_inputs": 3,
+    "stable_installed_inputs": 0,
+    "primary_source_native_and_whole_fixture_review": true,
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "original_relocated_component_result": {
+      "cases": 72,
+      "failures": 0,
+      "native_bytes": 110,
+      "absolute_relocations": 4
+    },
+    "original_absolute_constant_operands_relocated": 4,
+    "precision_controls": [
+      24,
+      53,
+      64
+    ],
+    "rounding_modes": 4,
+    "ambient_stack": [
+      "empty",
+      "three occupied"
+    ],
+    "inputs": [
+      "positive repeated wrap",
+      "negative repeated wrap",
+      "positive/negative zero sum"
+    ],
+    "compared": [
+      "ST0 return while live",
+      "x87 CW/SW/tag/TOP/all eight eighty-bit registers"
+    ],
+    "ignored": [
+      "otherGPR/EFLAGS/XMM/FIP/FDP/faults/privateEH"
+    ],
+    "masked_exceptions": true,
+    "minimum_free_x87_slots": 3,
+    "native_direct_call_rows": 0,
+    "native_direct_call_failures": 0,
+    "ghidra_annotations": {
+      "applied": true,
+      "saved": true,
+      "prior_values": "local/ghidra-annotations-20261007T133344Z.json",
+      "exports_refreshed": true,
+      "index_rebuilt": true
+    }
+  }
 }
