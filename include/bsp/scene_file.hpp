@@ -77,10 +77,15 @@ private:
 // ---------------------------------------------------------------------------
 
 // One "<key> = <letter> <value...> ;" assignment of a property block
-// (008f5a00). The letter is the authored type tag; the native validates it
-// against the type the property descriptor already declares, so it is kept
-// verbatim rather than interpreted here. Observed letters in the shipped
-// files: S F I E B R V3 RPath RFort RPlnShp IA LUA_S.
+// (008f5a00). The authored type tag is retained; native parsing may instead
+// select an existing descriptor and omit its matching letter. Shipped letters:
+// S F I E B R V3 RPath RFort RPlnShp IA LUA_S.
+// Explicit S quoted runs are decoded/concatenated into one owning value by
+// 008EFB00/008EE670's normal rule. Other typed/implicit descriptor paths remain
+// partial raw-token projections; native storage, faults and ABI are not bound.
+// This S binding admits closed fragments of at most 1023 bytes, without NUL or
+// a solitary trailing backslash. Those three byte risks throw a source error;
+// native overflow/overread and scratch ownership are not reproduced.
 struct SceneProperty {
     std::string key;
     std::string type_letter;
