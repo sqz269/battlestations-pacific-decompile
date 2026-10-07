@@ -408,6 +408,13 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
             return prop->float_value;
         return scalar(key, fallback);
     };
+    const auto retained_reverse = [&] {
+        const SceneProperty* prop = bag.find("Reverse");
+        // 007434B0 copies the stored Reverse byte; retain the old scalar fallback.
+        if (prop != nullptr && equal_insensitive(prop->type_letter, "B") && prop->has_boolean)
+            return prop->boolean_value != 0;
+        return scalar("Reverse", 0.0f) != 0.0f;
+    };
     record.land_convoy_keys = true;
     record.convoy_rows = retained_integer("Rows", 0);
     record.convoy_columns = retained_integer("Columns", 0);
@@ -416,7 +423,7 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
     record.convoy_hp = retained_scalar("HP", 0.0f);
     record.convoy_speed = retained_scalar("Speed", 0.0f);
     record.convoy_offset = retained_scalar("Offset", 0.0f);
-    record.convoy_reverse = scalar("Reverse", 0.0f) != 0.0f;
+    record.convoy_reverse = retained_reverse();
     if (const SceneProperty* path = bag.find("Path"); path != nullptr && !path->values.empty()) {
         std::string value = path->values.back();
         if (value.size() >= 2 && value.front() == '"' && value.back() == '"')

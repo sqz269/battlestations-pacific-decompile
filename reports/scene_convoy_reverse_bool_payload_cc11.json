@@ -1,0 +1,1026 @@
+{
+  "packet": "cc11_scene_convoy_reverse_bool_payload",
+  "date": "2026-10-07",
+  "source_baseline": "eb4c05ca272cfc9e9ef7b0295a09eb1509dffddd",
+  "doc": "docs/SCENE_CONVOY_REVERSE_BOOL_PAYLOAD_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "owned_addresses": [
+    "00743450"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_CONVOY_REVERSE_BOOL_PAYLOAD_CC11.md",
+    "reports/scene_convoy_reverse_bool_payload_cc11.json"
+  ],
+  "dependencies": [
+    "cc11_scene_typed_bool_payload",
+    "cc11_scene_convoy_dimensions_int_payload",
+    "cc11_scene_convoy_positions_int_payload",
+    "cc11_scene_convoy_float_payload",
+    "cc11_scene_group_loading",
+    "cc9_land_convoy_movement"
+  ],
+  "status": "bounded one Reverse owning-B read; fresh strict actual TUs/manifested pinned-support link/actual parser-library-called reader fixture PASS; primary main integration/fullbuild/CTest pending",
+  "correction": {
+    "was": "The actual Reverse read rescanned diagnostics despite recognized owning explicit-B data",
+    "is": "One local actually called compatible case-insensitive B plus has_boolean reader returns owning boolean_value!=0; otherwise exact prior scalar(Reverse,0)!=0; only one assignment replaced",
+    "evidence": "Native raw BYTE+0C->convoy+3A9, prior canonical recognized type3 Boolean producer/clone/assignment, installed Bfalse copy/diagnostic clear/opposite and true/false case-variant fixture"
+  },
+  "routines": [
+    {
+      "address": "00743450",
+      "body_start": "00743450",
+      "body_end_inclusive": "00743B6F",
+      "body_end_exclusive": "00743B70",
+      "listed_instruction_count": 522,
+      "terminal_ret_site": "00743B6F",
+      "terminal_ret": "RET",
+      "coverage": "partial:21-byte Reverse setup/Find/single BYTE copy; whole attach/class/roster/allocator/EH/ABI not reconstructed",
+      "original_abi_claimed": false
+    }
+  ],
+  "fragment": {
+    "start": "007434A4",
+    "end_inclusive": "007434B8",
+    "end_exclusive": "007434B9",
+    "byte_count": 21,
+    "key_literal": "00CFF2F0",
+    "key_literal_bytes": 8,
+    "key_push": "007434A4",
+    "bag_to_ECX": "007434A9",
+    "find": "007434AB",
+    "byte_load": "007434B0",
+    "byte_store": "007434B3",
+    "destination_offset": "3A9",
+    "native_read_width_bits": 8,
+    "native_type_guard": false,
+    "native_null_guard": false,
+    "native_numeric_conversion": false,
+    "contract": "Native copies raw byte unchanged; only canonical recognized type3 byte0/1 is native-linked to Source owning bool projection",
+    "untyped_limit": "I/F raw word low byte may differ from numeric Source truth; word0x100 low byte0 vs legacy numeric nonzero256 illustrates why no I/F-byte parity is claimed"
+  },
+  "call_sites": [
+    {
+      "address": "007434AB",
+      "native": "008F2260",
+      "function": "00743450",
+      "contract": "Reverse lookup then unconditional BYTE+0C load/store at007434B0/B3; no null/type check"
+    }
+  ],
+  "producer_support": {
+    "doc": "docs/SCENE_TYPED_BOOL_PAYLOAD_CC11.md",
+    "native_type": 3,
+    "payload": "BYTE+0C",
+    "canonical_recognized_literals": "true1/false0",
+    "B_arm": {
+      "start": "008F5D4F",
+      "end_inclusive": "008F5DDF",
+      "end_exclusive": "008F5DE0"
+    },
+    "fresh_producer": "008F3940",
+    "constructor": {
+      "start": "008EF1F0",
+      "end_inclusive": "008EF220",
+      "end_exclusive": "008EF221"
+    },
+    "clone_arm": {
+      "start": "008F4F8D",
+      "end_inclusive": "008F4FC1",
+      "end_exclusive": "008F4FC2"
+    },
+    "assignment_arm": {
+      "start": "008F0736",
+      "end_inclusive": "008F0745",
+      "end_exclusive": "008F0746"
+    },
+    "Source_storage": "Existing owning boolean_value/has_boolean, includingfalse; data not ephemeral match-success/+2C/default/replay action; no new header/storage",
+    "prior_body_limit": "Constructor/producer complete normal support and partial clone/parser arm are pre-reviewed support, not new whole parser/ABI recovery"
+  },
+  "preserved_Source_policy": [
+    "Only compatible case-insensitive B with has_boolean prefers owning byte",
+    "Exact old scalar(Reverse,0.0f)!=0.0f fallback remains, not global scene_property_bool",
+    "Missing/empty diagnostic fallback0; uppercase I LAST integer scan then float conversion; any-type LAST float scan; uppercase B exact-case LAST true; final0",
+    "Raw numeric I/F/non-B acceptance and B TRUE/lowercase b raw false remain",
+    "Wrong-type owning-B metadata ignored; owning F/I values still ignored by Reverse",
+    "Dimensions/Position/scalars/Path/Type/slots/reset/order/default/gate/class/Lua/flags and all other reader calls unchanged"
+  ],
+  "production_connection": {
+    "Source": "Real class1Ah SceneReader group/authored merge dispatches actual private roster reader ->public GameSceneEntityRecord.convoy_reverse",
+    "downstream": "GameUnitsHost motion binding source10971 copies to c.formation.reverse; existing movement calls11052/11056/11067 carry it",
+    "executed": "Actual parser/production library capture/merge/private called roster reader/public record and slot/symbol vectors",
+    "not_executed": "Whole public host/class/descriptor/VFS/Lua/units/emitter/native ABI/game; no new math or wholehost scaffold"
+  },
+  "admission": {
+    "native_linked": "One recognized nonempty explicit B true/false literal, closed semicolon, canonical byte0/1 and existing admitted Source group capture/copy domain",
+    "Source_compatibility_only": [
+      "no-own B raw LAST/case-sensitive letter/literal behavior",
+      "numeric I/F/non-B raw tokens",
+      "wrong-type owning metadata",
+      "ignored F/I cache values",
+      "missing/malformed/empty/bare-B fallback"
+    ],
+    "excluded": [
+      "native I/F/untyped low-byte numerical equivalence",
+      "noncanonical Boolean byte or malformed/nonliteral/multitoken input",
+      "implicit/declared-type conflicts or empty-existing context",
+      "enum declaration identity/ordinal provider",
+      "native null/type/allocator/fault/EH/ownership/reentry and whole attach/ABI/game semantics"
+    ]
+  },
+  "installed_witnesses": {
+    "inputs": 17,
+    "library_inputs": 15,
+    "groups": 22,
+    "Reverse_declaration": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landconvoy.props",
+      "line": 40,
+      "type": "B",
+      "literal": "false",
+      "own_byte": 0
+    },
+    "effect": "Actual parser/group capture/merge gives owning Bfalse; independent copy/parent overwrite/clear/opposite retainsfalse; original library capture unchanged",
+    "mission_regression": "Actual USN1/JM06 parser succeeds and contains zero LandConvoy, not an installed mission/game witness",
+    "enum_limit": "Existing unresolved-Type0 and authored symbols remain, no enum table/ordinal or default services supplied"
+  },
+  "fixture": {
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload",
+    "recipe": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\recipe.md",
+    "fresh_compile_TUs": [
+      "src/scene_file.cpp",
+      "src/game_hosts_scene_contents.cpp",
+      "probe.cpp including actual changed TU"
+    ],
+    "linked_fresh_objects": [
+      "scene.obj",
+      "probe.obj"
+    ],
+    "standalone_compile_only": "consumer_standalone.obj",
+    "cases": [
+      "genuine prior dimensions/Position/scalar scenario",
+      "installed Reverse Bfalse copy/clear/opposite and original library independence",
+      "B true/TRUE/b true and false/FALSE/b false recognized owning literals",
+      "actual public record Reverse and dimensions/scalars/Type/Path/slots sentinels",
+      "no-own raw LAST true/false/TRUE and lowercase letter behavior",
+      "numeric ANY-type I/F/non-B prefix",
+      "wrong-type B metadata/ignored F,I cache",
+      "missing/malformed/empty/bare-B Source fallback"
+    ],
+    "compile_flags": "Win32 MSVC /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /showIncludes; existing CRT warning definition",
+    "compile_exit": 0,
+    "link_exit": 0,
+    "probe_exit": 0,
+    "pe_machine": "0x14c",
+    "embedded_manifest_asInvoker": true,
+    "stubs_or_fake_providers": false,
+    "tracked_tests_added": false,
+    "full_main_build_worker_run": false
+  },
+  "input_receipt": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\inputs.json",
+    "manifest_sha256": "E50F7D4A6AE225BB787C90C3573869F884149907F70951672FD8FCA5387888B9",
+    "unique_active_production_inputs": 178,
+    "production_headers": 176,
+    "production_CPP": 2,
+    "actual_project_include_entries": 177,
+    "included_CPP": [
+      "src/game_hosts_scene_contents.cpp"
+    ],
+    "fixture_inclusive_Source_inputs": 179,
+    "count_rule": "Include inventory177 already contains consumer CPP;176 headers+2 unique CPP=178, add probe=179 fixture-inclusive",
+    "pre_scanned_context_count": 3868,
+    "direct_recipe_inputs": 8,
+    "installed_inputs": 17,
+    "pinned_support_inputs": 77,
+    "pre_post_stable": true,
+    "support_freeze": {
+      "utc": "2026-10-07T17:40:17.827653+00:00",
+      "source_head": "eb4c05ca272cfc9e9ef7b0295a09eb1509dffddd",
+      "observed_main_head": "eb4c05ca272cfc9e9ef7b0295a09eb1509dffddd",
+      "primary_verified_build_commit": "99bef9d8d",
+      "provenance": "Current complete99bef9d8d main build/3CTest supplied by primary, fully I/B rebuilt unchanged SceneProperty layout through metadata eb4c05ca2. All77 CURRENT inputs copied together, prior records supply filenames only verified against actual current Game object inventory. Fresh parser/SceneContents replace active TUs, game_main/oldSceneContents excluded.",
+      "libraries": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\bsp_core.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73285414,
+          "sha256": "7DC991F27772E86C073E6FC561EAEA1F39BF087441E8A452D4398BABE7A9E604",
+          "source_pre_sha256": "7DC991F27772E86C073E6FC561EAEA1F39BF087441E8A452D4398BABE7A9E604",
+          "source_post_sha256": "7DC991F27772E86C073E6FC561EAEA1F39BF087441E8A452D4398BABE7A9E604",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\bsp_lua511.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "source_pre_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "source_post_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\bsp_zlib121.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "source_pre_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "source_post_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "stable": true
+        }
+      ],
+      "game_objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_close_attack_tick.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_close_attack_tick.obj",
+          "bytes": 8132,
+          "sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+          "source_pre_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+          "source_post_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_command_lifetime.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_command_lifetime.obj",
+          "bytes": 1792,
+          "sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+          "source_pre_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+          "source_post_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_command_object.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_command_object.obj",
+          "bytes": 3331,
+          "sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+          "source_pre_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+          "source_post_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_command_tick.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_command_tick.obj",
+          "bytes": 17020,
+          "sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+          "source_pre_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+          "source_post_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_group_think.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_group_think.obj",
+          "bytes": 6283,
+          "sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+          "source_pre_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+          "source_post_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_planners.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_planners.obj",
+          "bytes": 12369,
+          "sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+          "source_pre_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+          "source_post_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ai_tuning_globals.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ai_tuning_globals.obj",
+          "bytes": 15089,
+          "sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+          "source_pre_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+          "source_post_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\airfield_taxi.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\airfield_taxi.obj",
+          "bytes": 4187,
+          "sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+          "source_pre_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+          "source_post_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\command_completion.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\command_completion.obj",
+          "bytes": 77466,
+          "sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+          "source_pre_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+          "source_post_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\dive_bomb_aimdive_tail.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\dive_bomb_aimdive_tail.obj",
+          "bytes": 7480,
+          "sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+          "source_pre_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+          "source_post_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\dive_bomb_goaway_turn.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\dive_bomb_goaway_turn.obj",
+          "bytes": 4628,
+          "sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+          "source_pre_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+          "source_post_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\dive_bomb_task.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\dive_bomb_task.obj",
+          "bytes": 32543,
+          "sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+          "source_pre_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+          "source_post_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\dogfight_task.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\dogfight_task.obj",
+          "bytes": 20326,
+          "sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+          "source_pre_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+          "source_post_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_avoid_zone_runtime.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_avoid_zone_runtime.obj",
+          "bytes": 363663,
+          "sha256": "0174A8D531BC42580F941F7F06748CA658086A19D6927300B0745FF16740B0C6",
+          "source_pre_sha256": "0174A8D531BC42580F941F7F06748CA658086A19D6927300B0745FF16740B0C6",
+          "source_post_sha256": "0174A8D531BC42580F941F7F06748CA658086A19D6927300B0745FF16740B0C6",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_ai.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_ai.obj",
+          "bytes": 1403099,
+          "sha256": "EB06BAA4C8EF13ABD4AE667C1C8AEDE83AA77DDDD2D0B84CB17A8F1E3F60F5C6",
+          "source_pre_sha256": "EB06BAA4C8EF13ABD4AE667C1C8AEDE83AA77DDDD2D0B84CB17A8F1E3F60F5C6",
+          "source_post_sha256": "EB06BAA4C8EF13ABD4AE667C1C8AEDE83AA77DDDD2D0B84CB17A8F1E3F60F5C6",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_avoid_zones.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_avoid_zones.obj",
+          "bytes": 82422,
+          "sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+          "source_pre_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+          "source_post_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_commands.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_commands.obj",
+          "bytes": 633940,
+          "sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+          "source_pre_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+          "source_post_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_fixed_step.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_fixed_step.obj",
+          "bytes": 47500,
+          "sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+          "source_pre_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+          "source_post_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_fonts.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_fonts.obj",
+          "bytes": 147168,
+          "sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+          "source_pre_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+          "source_post_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_frontend.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_frontend.obj",
+          "bytes": 705688,
+          "sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+          "source_pre_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+          "source_post_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_gunnery.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_gunnery.obj",
+          "bytes": 3307078,
+          "sha256": "86B2B730EF8F0F30B6243C77DBBBF38B252AAA58B747EA4DDA8A25B8373F45F1",
+          "source_pre_sha256": "86B2B730EF8F0F30B6243C77DBBBF38B252AAA58B747EA4DDA8A25B8373F45F1",
+          "source_post_sha256": "86B2B730EF8F0F30B6243C77DBBBF38B252AAA58B747EA4DDA8A25B8373F45F1",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_hud_world.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_hud_world.obj",
+          "bytes": 246452,
+          "sha256": "060BFFE1A13923C2EA2B6D3E73EC816487723ADDCC54A743DA73C3D5EF2AB480",
+          "source_pre_sha256": "060BFFE1A13923C2EA2B6D3E73EC816487723ADDCC54A743DA73C3D5EF2AB480",
+          "source_post_sha256": "060BFFE1A13923C2EA2B6D3E73EC816487723ADDCC54A743DA73C3D5EF2AB480",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_hud.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_hud.obj",
+          "bytes": 661386,
+          "sha256": "735F7FE764EDF116AAF53CF215944AF732179B613AAC5771C15DFEE7DCE3E251",
+          "source_pre_sha256": "735F7FE764EDF116AAF53CF215944AF732179B613AAC5771C15DFEE7DCE3E251",
+          "source_post_sha256": "735F7FE764EDF116AAF53CF215944AF732179B613AAC5771C15DFEE7DCE3E251",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_init_tail.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_init_tail.obj",
+          "bytes": 123679,
+          "sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+          "source_pre_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+          "source_post_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_lua.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_lua.obj",
+          "bytes": 1570061,
+          "sha256": "C1768860ECA1FC268614D1FD24823A3ADABD974A9694522E09FD629BE39C6CA3",
+          "source_pre_sha256": "C1768860ECA1FC268614D1FD24823A3ADABD974A9694522E09FD629BE39C6CA3",
+          "source_post_sha256": "C1768860ECA1FC268614D1FD24823A3ADABD974A9694522E09FD629BE39C6CA3",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_menu.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_menu.obj",
+          "bytes": 521505,
+          "sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+          "source_pre_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+          "source_post_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_mission_frame.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission_frame.obj",
+          "bytes": 928403,
+          "sha256": "FA7E7659977E6105F374B6616CB3F2EF9B4687FFE4206ECC470A032B12F9FBBF",
+          "source_pre_sha256": "FA7E7659977E6105F374B6616CB3F2EF9B4687FFE4206ECC470A032B12F9FBBF",
+          "source_post_sha256": "FA7E7659977E6105F374B6616CB3F2EF9B4687FFE4206ECC470A032B12F9FBBF",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_mission_result.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission_result.obj",
+          "bytes": 241488,
+          "sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+          "source_pre_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+          "source_post_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_mission.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission.obj",
+          "bytes": 776777,
+          "sha256": "A0B14EF633243860E462ACF9BD5B9913779709449D2085D5BF0582C783AE4D47",
+          "source_pre_sha256": "A0B14EF633243860E462ACF9BD5B9913779709449D2085D5BF0582C783AE4D47",
+          "source_post_sha256": "A0B14EF633243860E462ACF9BD5B9913779709449D2085D5BF0582C783AE4D47",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_ready.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_ready.obj",
+          "bytes": 223211,
+          "sha256": "44FBBDBB57143491A4153ADBFA8AA99BE40ACFCBB80DC4908B301DDF1BFAF2E7",
+          "source_pre_sha256": "44FBBDBB57143491A4153ADBFA8AA99BE40ACFCBB80DC4908B301DDF1BFAF2E7",
+          "source_post_sha256": "44FBBDBB57143491A4153ADBFA8AA99BE40ACFCBB80DC4908B301DDF1BFAF2E7",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_script_orders.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_script_orders.obj",
+          "bytes": 1541428,
+          "sha256": "01B8AEE5175970E8CFA871F0CE50977FCF920F0E8F0810E99762EF458500254A",
+          "source_pre_sha256": "01B8AEE5175970E8CFA871F0CE50977FCF920F0E8F0810E99762EF458500254A",
+          "source_post_sha256": "01B8AEE5175970E8CFA871F0CE50977FCF920F0E8F0810E99762EF458500254A",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_ship_ai.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_ship_ai.obj",
+          "bytes": 1792521,
+          "sha256": "38F3348079DC87B45D325425E1BCD9171EDA77D0603D760B24F9AA4671CB4F70",
+          "source_pre_sha256": "38F3348079DC87B45D325425E1BCD9171EDA77D0603D760B24F9AA4671CB4F70",
+          "source_post_sha256": "38F3348079DC87B45D325425E1BCD9171EDA77D0603D760B24F9AA4671CB4F70",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_singletons.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_singletons.obj",
+          "bytes": 36465,
+          "sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+          "source_pre_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+          "source_post_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_text.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_text.obj",
+          "bytes": 148570,
+          "sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+          "source_pre_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+          "source_post_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_trajectory.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_trajectory.obj",
+          "bytes": 122691,
+          "sha256": "E394DD546814353BC7E5170564750CA73D6C2D27A4F04F0ED6C1AA215F2909A1",
+          "source_pre_sha256": "E394DD546814353BC7E5170564750CA73D6C2D27A4F04F0ED6C1AA215F2909A1",
+          "source_post_sha256": "E394DD546814353BC7E5170564750CA73D6C2D27A4F04F0ED6C1AA215F2909A1",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_units.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_units.obj",
+          "bytes": 3203137,
+          "sha256": "87581297EFED8BEF9D4D24BDF0659405BE773895E928E6938637FD05B212A15D",
+          "source_pre_sha256": "87581297EFED8BEF9D4D24BDF0659405BE773895E928E6938637FD05B212A15D",
+          "source_post_sha256": "87581297EFED8BEF9D4D24BDF0659405BE773895E928E6938637FD05B212A15D",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_vfs.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_vfs.obj",
+          "bytes": 418499,
+          "sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+          "source_pre_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+          "source_post_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts_world.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts_world.obj",
+          "bytes": 174829,
+          "sha256": "01D7EDEA8A3CC5F36E783380F1807EADF79489FE4E5273CF6BCBEF7F95F8796B",
+          "source_pre_sha256": "01D7EDEA8A3CC5F36E783380F1807EADF79489FE4E5273CF6BCBEF7F95F8796B",
+          "source_post_sha256": "01D7EDEA8A3CC5F36E783380F1807EADF79489FE4E5273CF6BCBEF7F95F8796B",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_hosts.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_hosts.obj",
+          "bytes": 926101,
+          "sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+          "source_pre_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+          "source_post_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_graphics_pools.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_graphics_pools.obj",
+          "bytes": 27840,
+          "sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+          "source_pre_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+          "source_post_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_hardware_layout_tree.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_hardware_layout_tree.obj",
+          "bytes": 12716,
+          "sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+          "source_pre_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+          "source_post_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_lua_globals.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_globals.obj",
+          "bytes": 15929,
+          "sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+          "source_pre_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+          "source_post_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_lua_services.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_services.obj",
+          "bytes": 23120,
+          "sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+          "source_pre_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+          "source_post_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_material_process.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_material_process.obj",
+          "bytes": 22165,
+          "sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+          "source_pre_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+          "source_post_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_renderer_application.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+          "bytes": 326318,
+          "sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+          "source_pre_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+          "source_post_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_shader_process.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_shader_process.obj",
+          "bytes": 20624,
+          "sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+          "source_pre_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+          "source_post_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_string_process.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_string_process.obj",
+          "bytes": 4089,
+          "sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+          "source_pre_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+          "source_post_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_vertex_declarations.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_vertex_declarations.obj",
+          "bytes": 17088,
+          "sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+          "source_pre_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+          "source_post_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_native_vfs_application.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_native_vfs_application.obj",
+          "bytes": 52166,
+          "sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+          "source_pre_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+          "source_post_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\game_observer_runtime.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\game_observer_runtime.obj",
+          "bytes": 15845,
+          "sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+          "source_pre_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+          "source_post_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\gameplay_loose_ends_2.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\gameplay_loose_ends_2.obj",
+          "bytes": 1742,
+          "sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+          "source_pre_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+          "source_post_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\geom_mesh_resource.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\geom_mesh_resource.obj",
+          "bytes": 261693,
+          "sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+          "source_pre_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+          "source_post_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\hit_hull_segment.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\hit_hull_segment.obj",
+          "bytes": 1820,
+          "sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+          "source_pre_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+          "source_post_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\hud_ship_screen.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\hud_ship_screen.obj",
+          "bytes": 14623,
+          "sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+          "source_pre_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+          "source_post_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\hud_warning_screen.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\hud_warning_screen.obj",
+          "bytes": 13095,
+          "sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+          "source_pre_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+          "source_post_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\hud_weapon_group_screen.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\hud_weapon_group_screen.obj",
+          "bytes": 18543,
+          "sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+          "source_pre_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+          "source_post_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\hull_terrain_contact.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\hull_terrain_contact.obj",
+          "bytes": 1102762,
+          "sha256": "5957918F3173255B644FA4B2196CA1A0F81BD75B58A1DDE98C384233C3D0274E",
+          "source_pre_sha256": "5957918F3173255B644FA4B2196CA1A0F81BD75B58A1DDE98C384233C3D0274E",
+          "source_post_sha256": "5957918F3173255B644FA4B2196CA1A0F81BD75B58A1DDE98C384233C3D0274E",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\kill_credit.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\kill_credit.obj",
+          "bytes": 33814,
+          "sha256": "6338241DB7B5E2A5AF496CF5368ECF1C073673927CFF77BC5870FF045EE79CAC",
+          "source_pre_sha256": "6338241DB7B5E2A5AF496CF5368ECF1C073673927CFF77BC5870FF045EE79CAC",
+          "source_post_sha256": "6338241DB7B5E2A5AF496CF5368ECF1C073673927CFF77BC5870FF045EE79CAC",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\mission_camera.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\mission_camera.obj",
+          "bytes": 48286,
+          "sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+          "source_pre_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+          "source_post_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\narrowphase_unit_part_shape.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\narrowphase_unit_part_shape.obj",
+          "bytes": 2064,
+          "sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+          "source_pre_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+          "source_post_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\near_field_probe.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\near_field_probe.obj",
+          "bytes": 3929,
+          "sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+          "source_pre_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+          "source_post_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\part_damage_reachability.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\part_damage_reachability.obj",
+          "bytes": 4140,
+          "sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+          "source_pre_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+          "source_post_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\pilot_command_path.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\pilot_command_path.obj",
+          "bytes": 8834,
+          "sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+          "source_pre_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+          "source_post_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\plane_follow_hold.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\plane_follow_hold.obj",
+          "bytes": 10325,
+          "sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+          "source_pre_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+          "source_post_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\plane_follow_law.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\plane_follow_law.obj",
+          "bytes": 23046,
+          "sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+          "source_pre_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+          "source_post_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\plane_ground_ops.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\plane_ground_ops.obj",
+          "bytes": 13372,
+          "sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+          "source_pre_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+          "source_post_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\plane_wanderer.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\plane_wanderer.obj",
+          "bytes": 10014,
+          "sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+          "source_pre_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+          "source_post_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ship_hit_record.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ship_hit_record.obj",
+          "bytes": 7907,
+          "sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+          "source_pre_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+          "source_post_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\ship_sub_entity_list.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\ship_sub_entity_list.obj",
+          "bytes": 1461,
+          "sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+          "source_pre_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+          "source_post_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\unit_group_slot_swap.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\unit_group_slot_swap.obj",
+          "bytes": 5218,
+          "sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+          "source_pre_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+          "source_post_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\unit_gunnery_pass.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\unit_gunnery_pass.obj",
+          "bytes": 11730,
+          "sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+          "source_pre_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+          "source_post_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\unit_instance_step11.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\unit_instance_step11.obj",
+          "bytes": 43473,
+          "sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+          "source_pre_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+          "source_post_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\unit_message_arms.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\unit_message_arms.obj",
+          "bytes": 25766,
+          "sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+          "source_pre_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+          "source_post_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support\\game_objects\\unit_neighbour_fields.obj",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_game.dir\\Release\\unit_neighbour_fields.obj",
+          "bytes": 1314,
+          "sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+          "source_pre_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+          "source_post_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+          "stable": true
+        }
+      ]
+    },
+    "fresh_outputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\scene.obj",
+        "bytes": 291763,
+        "sha256": "9937A270B81396095E09D7A79487DB5A6ACDD9CA76B4C27E39E90F4C79CAA5AC"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\consumer_standalone.obj",
+        "bytes": 1862997,
+        "sha256": "DE881891F302BEC4122AC88107675C07FB4B51F1DECDB9CD9ED330F383CEA3C3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\probe.obj",
+        "bytes": 2323963,
+        "sha256": "007DDFE276F2F3808808C95B0BC10A59167542BD9C82B668C032C31212C03F3B"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\probe.exe",
+        "bytes": 515584,
+        "sha256": "679DD850CF18E2DF72A0F93360256445196BBA45A45DDCA06C998CBC6FA2DC87"
+      }
+    ],
+    "support_domain": "All current99bef9d8d three libs+74 actual Game objects frozen original-pre/copy/original-post equal; prior records supply filenames only, not old binaries. I/B-rebuilt layout unchanged; fresh parser/SceneContents replace active paths; game_main/oldSceneContents excluded. Uninvoked real support is linkage only"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\probe.cpp",
+      "bytes": 20244,
+      "sha256": "D3DD4286AF6D0E40797ADB59138FC985C4068179BFF94A7CB69B3B3B12E7B3B7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\compile.cmd",
+      "bytes": 1059,
+      "sha256": "9C4CA2962150BB1FACE904E3D9883327E0E2C336E9018253643C82EFCB292BD4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\link.cmd",
+      "bytes": 790,
+      "sha256": "1150ACD3A199D81D1481E13066FE97FF62C05DCBC6AA1B4C850C4C5C3D7A74DB"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\recipe.md",
+      "bytes": 1598,
+      "sha256": "6802990EB4A41A9ECB995E899043B6F09245B9060BCA3FC8C021E41F9B8FD066"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\receipt.py",
+      "bytes": 4429,
+      "sha256": "2F436919CB890D870A7E62434A93FE543A7F1147DDD794E075527F6AD407F8FD"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\make_report.py",
+      "bytes": 10555,
+      "sha256": "3E1A3E95ABA405A9C055C3458646DD3DB111074F2ABFD141734AC85610823294"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\inputs.json",
+      "bytes": 223671,
+      "sha256": "E50F7D4A6AE225BB787C90C3573869F884149907F70951672FD8FCA5387888B9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\support_freeze.json",
+      "bytes": 50142,
+      "sha256": "B9DD38E0CF36F0989554DD90AC76F11F56C1337D238CEE03698E1E57EA585609"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\game_objects.rsp",
+      "bytes": 11406,
+      "sha256": "D5B3A6038E9E09D06F11C61B93CD822D0E9F389EC2F5779AEC16C69A51684F73"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\compile.log",
+      "bytes": 105899,
+      "sha256": "1B0B5113AC7048FF4246904EC243616AF5350611869EB8002FC4E2BFEFABCB3A"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\link.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\probe.log",
+      "bytes": 1111,
+      "sha256": "8D35E6149B10092B338FA1538FF35026D52D5AA4C7A0CD8124E9FC20B7C308CB"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\native_fragment.log",
+      "bytes": 110,
+      "sha256": "8299E4132ADE8401D8E3E27893596BB26A4594EEE7A2D87B5CF691BE33582484"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\native_key.log",
+      "bytes": 45,
+      "sha256": "26ABFA3052D29D816EADAF0209567C27055FC11A81166C32824AC83CA7498AB6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\native_listing.log",
+      "bytes": 887,
+      "sha256": "341356C7A667313FCF813B4DF6F083F259784730B24C2FBA21BDEB11340FABFF"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\probe.exe",
+      "bytes": 515584,
+      "sha256": "679DD850CF18E2DF72A0F93360256445196BBA45A45DDCA06C998CBC6FA2DC87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_convoy_reverse_bool_payload\\native_calls.log",
+      "bytes": 84,
+      "sha256": "EAE15DFCBF94E9C0944B0A1DBE585AFC131C2BB203F9657B9E23E8148EB8E293"
+    }
+  ],
+  "checks": {
+    "git_diff_check": "PASS",
+    "verify_report_calls": "1 direct row PASS,0 failed"
+  },
+  "qualification": {
+    "exported": "Exact live21B/key bytes and five-instruction byte-copy listing verified read-only",
+    "reconstructed": "One actual compatible owning-B Reverse read, original scalar fallback/policy unchanged; native parent and providers partial",
+    "build_tested": "Fresh strict actual3TUs/manifested pinned-support link PASS; primary post-merge full main build/CTest pending",
+    "fixture_tested": "Actual parser/15lib22group/private called reader/public record PASS; installed Bfalse and recognized true/false ownership; Source raw and prior convoy regressions",
+    "ABI_compatible": false,
+    "game_validated": false
+  }
+}
