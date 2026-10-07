@@ -11478,3 +11478,64 @@ state 0 in the image?
 - **Rows without `build` lines** do not reach the path. Every reference row has `unit_deaths=0`, as the 300-frame smoke
   and the torpedo pairs' OFF logs show.
 - **Verdict: ON.**
+
+## 163. Handoff (cc9-gunnery34, 2026-10-06, paused by the user at about 35% context)
+
+### 163.1 Landed (main `f3c1deca7`)
+
+| item | commits | state |
+| --- | --- | --- |
+| 161 the TorpedoBot's own launch test (`kTorpedoBotReadyGateBound`) | `3f0220a4a`, `060c4b712` | **ON** |
+| 162 the shipyard's death release (`kShipyardDeathReleaseBound`) | `405865d4c`, `060c4b712` | **ON** |
+
+### 163.2 Remaining queue
+
+1. **JM08's Gyoraitei, held by the pass byte `+7Dh`** (161.4). Two questions to route:
+   - **Ships lane:** is the host's goal range `+127Ch`, set from `+11E0h` at `009F1CDE` and copied at `009F2A0A`, the
+     image's? The boats close to 1486 m, but `+7Dh` needs the goal within the clearance (300-920 m) plus 50 m
+     (`009F2FDB..009F301B`).
+   - **Scene-contents lane:** does the image's pass B give a shipyard-built boat the library `ship.props`
+     `TorpedoDirector = false`? `00844FC0` builds the bag (LAND_AND_STRUCTURES section 3). The host keeps the
+     constructor's 1 for any name missing from its director table (`mask=3` on all four boats).
+     - If the image's answer is false, the tubes would be masked too, and `+7Dh` would be moot for these boats.
+2. **Friendly fire.**
+   - The AA line-of-fire cache: `line_of_fire_cache` in `src/game_hosts_gunnery.cpp` is keyed by (gun, target)
+     and never invalidated. Check it against `0072F6E0`'s per-call test.
+   - The artillery path has no line-of-fire check. `00729560` installs the decision for kinds 1, 5 and 6 only; read
+     what the artillery bot does in its place before calling this a gap.
+3. **`kPlayerTorpedoGroupFireBound`** flips once cc9-ships41's `torpedo` harness line lands.
+   - Pair JM06 3000 with `cc9-gunnery33\local\g33_ord_j6t4.txt`, plus an idle control.
+   - 155's expectation was `tube_fires=4 order_launches=2`. 161 now also lets the bot launch these tubes, so
+     re-check the counts on both sides.
+4. **Reference AG** must re-time the scripted wins that carry torpedo ships: USN02 (727.60), LOMP06 (267.41) and
+   LOMP10 (1452.89, or 1013.58 with the throttle fix). On the 3000/9000 idle pairs, 161 moved torpedo launches on
+   USN02, IJN11, JM06 and LOMP10 with no death moving, except PT 02 on LOMP10 (245.76 -> 247.61 s).
+5. **`0093BED0` (160.3, second half).** R8 (`00827432..00827450`) rolls before `008777D0` applies the hull damage
+   (`src/ship_hit_record.cpp` keeps that order). So the log's `health=8000/8000` at Intrepid's Explosion is the
+   image's order, not a defect.
+   - `p = damage / 100` (ShipGlobals FailureChance 1.0, threshold 100), so any hit of 100 hp or more on a
+     `magazine` element explodes.
+   - Still open: whether a level bomb's element trace should land on a `magazine` element (`hit+30h`, the
+     `kHullElementSegmentBound` trace). The Explosion is 0.35 x `unit+36Ch`, about 1700 hp after the difficulty
+     scale.
+6. **The 160 items, still open:**
+   - **The pitch response to a held `+29Ch`.** Correction to 160.2 item 2: mode 0 (`0099E3D7..0099E483`, read from
+     disk) does not move `+298h`.
+     - It picks `+29Ch` (when `+2A0h` is set) or `+298h`, takes the wrapped difference from `+298h`, and only
+       stamps `+2ECh` from `[00E0E2F4]` or `[00E0E2F0]` (0.1-rad test at `00D7A3A0`).
+     - `tools/store_census.py 0x298` finds one plan writer, `0099B4C2` (`BSP_PilotBot_SeedPlanSlots`). An indexed
+       slot writer is not excluded.
+     - The host does not keep `+2ECh` (`src/game_hosts_units.cpp`, the gate comment). Next: the readers of `+2ECh`,
+       then the control law. Planes code.
+   - **USN13's level-bomb hit volume:** 135 direct hull hits from about 1400 m (158).
+   - **BSM01 p6's knife-edge.** The MiniSub dies by HenryPT's contact (`killer_gun=0`, 21 m) at 547.39 s.
+     - HenryPT carries a depth-charge rack (gunrow 7, cat 8, dev 55: 3 shots, 1 hit in AF).
+     - A sturdier order file would add `depthcharge HenryPT` presses (`src/game_hosts_mission_frame.cpp`, a
+       one-frame group-5 press) once `takehelm ... stop 40` has parked it by the halted MiniSub at (1072, -3017).
+       Untried.
+
+### 163.3 Notes
+
+- Tools in this tree: `local\g34_queue.ps1` (gunnery33's queue, retargeted) and job files `local\g34_*.jobs`.
+- The JM08 diagnostic form: `BSP_AA_TRACE_UNIT`, `BSP_FIRE_GATE_TRACE` and `BSP_FIRE_GATE_TARGET`, with the lua47
+  `g9` orders, 8800 frames (`local\g34_diag2_j8y4.log`).
