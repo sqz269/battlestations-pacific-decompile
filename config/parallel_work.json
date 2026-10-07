@@ -22937,6 +22937,26 @@
       "contract": "Whole 007ED0D0..007ED151, 129 bytes/42 instructions, zero calls or absolute globals; PE/live SHA256 25a888843fd7f3e017f78bfbd8429c4528096526da55f53b7805d4b184c420ee. Native ECX actual squadron, stack plane/index, RET8. Dirty byte3EC is set even for null plane; null reads/writes no other fields. Nonnull publishes incoming plane9D4=squadron before9D8=requested signed index, captures count3CC, scans member array3D0 using fresh current signed plane9D8 and FIRST STRICTLY greater entry, shifts suffix backward, publishes incoming member, then increments fresh count. No capacity/duplicate guard, allocation, callback, ownership or reindex policy. Pure borrowed views must expose actual squadron fields (extent >=3ED), SAME incoming live9D4/9D8 cells (extent>=9DC), and current-member identity to genuine leader view, with no mapped reads/effects/cache. Admit nonnull count0..4, live occupied planes and coherent disjoint storage; native overflow/fault/concurrency/reentry excluded. Existing semantic squadron projection cannot substitute actual backing. One original/Source fixture: unchanged unrelocated129B, insert index0 before existing1/4, preserve other indices/padding, then read SAME published cell through existing Source/original leader and current adopter; also null dirty-only branch. Native direct caller 7CDF82 in7CDF20 is witnessed, that caller is D05F20+9C; sorted insert has NO table xref. Whole higher caller/plane constructor/world/math/native ABI/game unbound; sealed31/165-check and all older families unchanged.",
       "done": false,
       "state": "ready: primary reviewed whole assembly and genuine providers; independent four-file packet; sync main and claim lease before implementation"
+    },
+    {
+      "id": "cc11_primary_plane_float_readers",
+      "worker": "main",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0074e260",
+        "007b8e60"
+      ],
+      "output_files": [
+        "include/bsp/native_plane_float_readers.hpp",
+        "src/native_plane_float_readers.cpp",
+        "docs/NATIVE_PLANE_FLOAT_READERS_CC11.md",
+        "reports/native_plane_float_readers_cc11.json"
+      ],
+      "depends_on": [],
+      "done": false,
+      "state": "primary raw x87 implementation and independent component fixture passed; full main build and annotation closure pending",
+      "contract": "Raw ECX/ST0 leaves only. Exact seven-byte Source code and masked-exception component agreement do not establish original class/profile binding, whole geometry, plane constructor, world/lifetime/fault/native ABI or gameplay compatibility."
     }
   ],
   "snapshot_after_analysis": {

@@ -254,6 +254,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_approa
     src/native_land_approach_scalar_lifetime.cpp
     src/native_land_approach_reference_point.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_plane_leader.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_plane_float_readers.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_constructor.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_scalar_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_moveto_observer_callback.cpp)
