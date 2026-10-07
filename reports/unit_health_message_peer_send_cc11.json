@@ -162,5 +162,25 @@
     "checked": 3,
     "failed": 0,
     "receipt": "reports/unit_health_message_peer_send_cc11.json: 3 call rows checked, 0 failed"
+  },
+  "primary_integration": {
+    "source_revision": "5276f253521c5f6114f4b422e302ed64bb5b72b4",
+    "worker_revision": "69bd73d9e5ae72ef52a3ecf957fa78794e4421f7",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_peer_integrated_build.log",
+    "utc": "2026-10-07T09:44:04.829574+00:00",
+    "executable_sha256": "5b320d1e1ea1a1228618bfe206498ced1803ca5793511ddb20d62468890d400d",
+    "independent_production_probe": "Root freshly compiled actual main message/base/cursor/setter TUs and isolated copied manifested fixture /W4/WX/fpstrict:46checks0fail; seven direct branches plus setter->D2->flags4->selector, local target skipped and one remote send, borrowed frame never released",
+    "probe_command": "local/cc11_peer_root.cmd",
+    "probe_checks": 46,
+    "probe_failures": 0,
+    "native_direct_calls_checked": 3,
+    "native_call_failures": 0,
+    "actual_complete_locked_serializer_bound": false,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

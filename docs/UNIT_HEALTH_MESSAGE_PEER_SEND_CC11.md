@@ -112,3 +112,5 @@ The JSON report includes receipts and artifact SHA-256 values. Primary
 integration owns metadata, Ghidra annotations, registration and the full build.
 Original binary ABI, private EH, invalid-storage/fault behavior, real locking,
 allocator/profile identity, networking and game integration remain unproved.
+
+Primary integration: 5276f253521c5f6114f4b422e302ed64bb5b72b4; actual main sources independently recompiled for manifested focused probe, PASS46/0. Full MSVC Win32 Release and all three existing CTests passed. Executable SHA256 5b320d1e1ea1a1228618bfe206498ced1803ca5793511ddb20d62468890d400d. Complete locked serializer, original ABI, runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_peer_integrated_build.log.
