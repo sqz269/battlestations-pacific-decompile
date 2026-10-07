@@ -718,5 +718,210 @@
     "new_tracked_tests": false,
     "shared_edits": false,
     "Ghidra_mutations": false
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T18:21:39.576927+00:00",
+    "worker_revision": "9f1281fee272a1656f456caec6e5ed51de60a539",
+    "integrated_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_build_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_reverse_scalar_step_integrated_build.log",
+    "game_executable_sha256": "913731198e41bc46547d182f269ea63089d4826ad778ccf5512384e2cd238fd7",
+    "probe_recipe": "local/cc11_moveto_scalar_root.cmd",
+    "probe_log": "local/cc11_moveto_scalar_root_compile.log",
+    "probe_sha256": "e90cf55302d35f47b673a58819c82a42ff9f8e44eb8f9cf88bff7219383e2767",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_whole_fixture_review": true,
+    "fresh_actual_translation_units": 6,
+    "stable_current_Source_provider_header_fixture_inputs": 27,
+    "actual_compiler_includes": 21,
+    "stable_installed_inputs": 0,
+    "stable_current_link_inputs": 3,
+    "native_bodies": [
+      {
+        "address": "009C2B70",
+        "bytes": 8,
+        "sha256": "c1b4a36c1867e4fa81138d76ef8a293e2a2851c4d890140cc26217f7c1796ec4",
+        "disk_live": "MATCH",
+        "end_exclusive": "009C2B78"
+      },
+      {
+        "address": "009C3D10",
+        "bytes": 30,
+        "sha256": "d587dac263917d288c20204466ffd2b440fcb8d1426960e8137146ae4c9db2b1",
+        "disk_live": "MATCH",
+        "end_exclusive": "009C3D2E"
+      }
+    ],
+    "actual_cells": [],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "before_after_receipts": [
+      "local/cc11_moveto_scalar_root/inputs_before_link.json",
+      "local/cc11_moveto_scalar_root/inputs_after_link.json"
+    ],
+    "native_abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "primary_COFF": [
+      {
+        "symbol": "?scalar_delete_native_land_moveto_009c3d10@bsp@@YAPAXABUNativeLandMoveToConstructorView@1@IAAVNativeObserverLifetime@1@@Z",
+        "machine": "I386",
+        "section": 20,
+        "bytes": 66,
+        "sha256": "783989f8f9f1e1a937547c76b06f7df43a57fbd3c6c21d990a225abceee743c9",
+        "relocations": [
+          {
+            "operand_offset": "15",
+            "coff_kind": "0014",
+            "symbol": "?native_land_moveto_cleanup_view@bsp@@YA?AUNativeLandMoveToCleanupView@1@ABUNativeLandMoveToConstructorView@1@@Z"
+          },
+          {
+            "operand_offset": "1E",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_land_moveto_007b65e0@bsp@@YAXABUNativeLandMoveToCleanupView@1@AAVNativeObserverLifetime@1@@Z"
+          },
+          {
+            "operand_offset": "34",
+            "coff_kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "instruction_count": 24,
+        "disassembly": [
+          "00: sub esp, 0xc",
+          "03: mov eax, dword ptr [esp + 0x10]",
+          "07: push esi",
+          "08: push dword ptr [esp + 0x1c]",
+          "0C: mov esi, dword ptr [eax]",
+          "0E: push eax",
+          "0F: lea eax, [esp + 0xc]",
+          "13: push eax",
+          "14: call 0x19",
+          "19: add esp, 8",
+          "1C: push eax",
+          "1D: call 0x22",
+          "22: mov cl, byte ptr [esp + 0x20]",
+          "26: add esp, 8",
+          "29: and cl, 1",
+          "2C: mov byte ptr [esp + 0x14], cl",
+          "30: je 0x3b",
+          "32: push esi",
+          "33: call 0x38",
+          "38: add esp, 4",
+          "3B: mov eax, esi",
+          "3D: pop esi",
+          "3E: add esp, 0xc",
+          "41: ret "
+        ]
+      },
+      {
+        "symbol": "?scalar_delete_native_land_moveto_callback_adjustor_009c2b70@bsp@@YAPAXABUNativeLandMoveToConstructorView@1@PAUNativeObserverOwnerStorage@1@IAAVNativeObserverLifetime@1@@Z",
+        "machine": "I386",
+        "section": 22,
+        "bytes": 116,
+        "sha256": "dc2e83b3f021b6646be3fde3105f1f04358ceae984d004ab274c0b66997b357e",
+        "relocations": [
+          {
+            "operand_offset": "29",
+            "coff_kind": "0014",
+            "symbol": "?native_land_moveto_cleanup_view@bsp@@YA?AUNativeLandMoveToCleanupView@1@ABUNativeLandMoveToConstructorView@1@@Z"
+          },
+          {
+            "operand_offset": "32",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_land_moveto_007b65e0@bsp@@YAXABUNativeLandMoveToCleanupView@1@AAVNativeObserverLifetime@1@@Z"
+          },
+          {
+            "operand_offset": "48",
+            "coff_kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": "57",
+            "coff_kind": "0006",
+            "symbol": "??_C@_0DI@NMKALAIE@native?5MoveTo?5callback?5adjustor?5@"
+          },
+          {
+            "operand_offset": "60",
+            "coff_kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": "65",
+            "coff_kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": "6F",
+            "coff_kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instruction_count": 40,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 8]",
+          "04: sub esp, 0xc",
+          "07: push esi",
+          "08: test eax, eax",
+          "0A: je 0x56",
+          "0C: mov ecx, dword ptr [esp + 0x14]",
+          "10: cmp eax, dword ptr [ecx + 0x14]",
+          "13: jne 0x56",
+          "15: mov esi, dword ptr [ecx]",
+          "17: add eax, -0x18",
+          "1A: cmp eax, esi",
+          "1C: jne 0x56",
+          "1E: push dword ptr [esp + 0x20]",
+          "22: lea eax, [esp + 8]",
+          "26: push ecx",
+          "27: push eax",
+          "28: call 0x2d",
+          "2D: add esp, 8",
+          "30: push eax",
+          "31: call 0x36",
+          "36: mov cl, byte ptr [esp + 0x24]",
+          "3A: add esp, 8",
+          "3D: and cl, 1",
+          "40: mov byte ptr [esp + 0x18], cl",
+          "44: je 0x4f",
+          "46: push esi",
+          "47: call 0x4c",
+          "4C: add esp, 4",
+          "4F: mov eax, esi",
+          "51: pop esi",
+          "52: add esp, 0xc",
+          "55: ret ",
+          "56: push 0",
+          "5B: lea ecx, [esp + 8]",
+          "5F: call 0x64",
+          "64: push 0",
+          "69: lea eax, [esp + 8]",
+          "6D: push eax",
+          "6E: call 0x73",
+          "73: int3 "
+        ]
+      }
+    ],
+    "checks": 68,
+    "complete_native_bytes": 38,
+    "native_direct_rows_checked": 2,
+    "native_tail_jump_rows_checked": 1,
+    "native_rows_failed": 0,
+    "original_natural_CALL_relocations": 2,
+    "original_adjustor_JMP_relocations": 1,
+    "original_adjustor_target": "complete copied ORIGINAL root scalar, not a Source scalar thunk",
+    "post_root_free_reads": false,
+    "raw_profiles_callable": false,
+    "original_callback_flags0_separately_exercised": false,
+    "Source_adjustor_inlines_complete_root_body": true,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T182151Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "009c2b70",
+      "009c3d10"
+    ],
+    "index_rebuilt_after_ledger_and_exports": true
+  },
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3 CTests passed; native ABI/game unbound"
 }
