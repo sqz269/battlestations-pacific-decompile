@@ -205,5 +205,30 @@
       "sha256": "e613586a2242b9b8dfe63f5ba72c0a8b97a0e0712fd9634779f3c22a9db077ac",
       "bytes": 15229
     }
-  ]
+  ],
+  "host_steps": [
+    {
+      "address": "00877C5E",
+      "native": "00BF7420",
+      "function": "00877B90",
+      "contract": "Original direct CRT conversion after qword FMUL256; source numeric adapter calls shared mode-pointer helper, originalABI not claimed"
+    }
+  ],
+  "primary_integration": {
+    "source_revision": "1373410e4e2eb17b6d2ee24ef67c555229917ff3",
+    "worker_revision": "3b8c068ae194ab509304e75d5df03fad8100cd01",
+    "included_packet": "cc11_health_replication_byte",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "21ce5e1fdb4bca0bbdfb73766c94dfa90e7ebadfc94ccdeb8ec3949d51fa6df5",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_byte_takeoff_integrated_build.log",
+    "utc": "2026-10-07T07:18:48.413842+00:00",
+    "independent_production_probe": "624conversions+48same-address mode-reloads PASS; previoushealth checks PASS",
+    "native_direct_calls_checked": 1,
+    "native_call_failures": 0,
+    "actual_conversion_state_bound": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }
