@@ -16599,6 +16599,26 @@
           "0064a610",
           "0064b5f0"
         ]
+      },
+      "current_primary_Ghidra_stored_body_review": {
+        "utc": "2026-10-07T21:19:00.969328+00:00",
+        "supported_locked_tool": "ghidra_define_function.py --recreate",
+        "definition_report": "reports/cc11_shared_state_destructor_definition.json",
+        "definition_sha256": "b85e9b5959be710e4f1ff9ef4f178622175c0299f7dab86d82a9bf618ef61435",
+        "previous_function_values_recorded": true,
+        "existing_name_signature_and_plate_preserved": true,
+        "stored_body_end_inclusive": "007b4643",
+        "stored_body_bytes": 84,
+        "stored_body_complete": true,
+        "live_disk_agreement": {
+          "address": "007b45f0",
+          "bytes": 84,
+          "sha256": "9a26106b940f796897e713c0935c247c5fef6c173c3a4e8f3741fccdc81a0ab0",
+          "disk_live": "MATCH"
+        },
+        "complete_native_decode_instructions": 26,
+        "decoded_all_original_bytes": true,
+        "qualification": "Current stored membership complete; historical partial-flow receipts preserved. No additional CFG/privateEH/native ABI/reentry/game claim. Source unchanged; no fixture replay required or performed."
       }
     },
     {
@@ -19454,6 +19474,26 @@
           "library_names_and_tags_preserved": true,
           "affected_exports_refreshed": true
         }
+      },
+      "current_primary_Ghidra_stored_body_review": {
+        "utc": "2026-10-07T21:19:00.194972+00:00",
+        "supported_locked_tool": "ghidra_define_function.py --recreate",
+        "definition_report": "reports/cc11_deferred_storage_destructor_definition.json",
+        "definition_sha256": "234dbe73c48f97a36ed448022ad4d3af27ce9e1e25866269f9dfce6ce8629e1e",
+        "previous_function_values_recorded": true,
+        "existing_name_signature_and_plate_preserved": true,
+        "stored_body_end_inclusive": "007808a7",
+        "stored_body_bytes": 72,
+        "stored_body_complete": true,
+        "live_disk_agreement": {
+          "address": "00780860",
+          "bytes": 72,
+          "sha256": "4047a45ca8d28c74743ca73662a6a97176093fe5ec8eefe157d578e0a317b9de",
+          "disk_live": "MATCH"
+        },
+        "complete_native_decode_instructions": 27,
+        "decoded_all_original_bytes": true,
+        "qualification": "Current stored membership complete; historical partial-flow receipts preserved. No additional CFG/privateEH/native ABI/reentry/game claim. Source unchanged; no fixture replay required or performed."
       }
     },
     {
@@ -20962,6 +21002,49 @@
         "cc11_health_session_entity_id_table_storage"
       ],
       "contract": "Whole35B/10inst role-permission at0059BBD0, nativeECX actualunit/stackrole,candidateslot/RET8/fullEAX0or1. Read actualunit+188+4*role DWORD; policy9 ORexactDWORDcandidate. Validborrowedstable ninepolicy slots roles0..8. Actual928630\u2192vslot148\u2192927D20 nine9 initialization and78020B role1/message28 caller arestructuralwitnesses, notclosedconstructor/setter/dispatcher. Onefocused nine-real-offset candidate fixture with EXACToriginal35B unrelocated; no helper/global/profile/default/guard/incomplete-provider bypass; Source semantic lambdas unchanged. OriginalclassABI/runtimeunit/dispatcher/EH/game remainqualified."
+    },
+    {
+      "id": "cc11_land_approach_reference_point",
+      "done": false,
+      "state": "approved existing x87 transfer provider reuse awaiting primary function definition",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "009afad0"
+      ],
+      "output_files": [
+        "include/bsp/native_land_approach_reference_point.hpp",
+        "src/native_land_approach_reference_point.cpp",
+        "docs/LANDING_APPROACH_REFERENCE_POINT_CC11.md",
+        "reports/landing_approach_reference_point_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_approach_lifetime",
+        "cc11_land_approach_scalar_lifetime"
+      ],
+      "contract": "Whole24B/8inst009AFAD0 orderedFLD32 root38/FSTPoutput0,root3C/out4,root40/out8; EAXcalleroutput/RET4. Reuseunchanged actual copy_point_record_xyz_0049c1db existingnaked6-transferkernel, withpureactualroot>=44h andgenuinelivearrayalias38, no temporaryvaluecopy/newFPkernel/callabletable/defaultworld. Oneconnected actualsame-root fixture before/after completeapproachcleanup/exactselfalias; original24B entirelyunrelocated; Sourceprovider/native x87equivalence primaryreviewed. DistinctbaseD1FDB8/innerD1FF88/outerD1FF94 sharethisrawslot0 body withoutclassidentityconflation; all profiles UNCALLABLE. Validmaskedx87/stack/coherentobjectlife/writeable12Boutputdomain. ExistingSourcehead2C andcleanup26C bounds notgeometry/ctor/classsizeproof; nophysical/depthcharge projection, fullconstructor/lifetime/world/productiondispatch/nativeABI/gameunbound."
+    },
+    {
+      "id": "cc11_health_unit_group_owner_predicate",
+      "done": false,
+      "state": "worker handoff awaiting primary integration and full build",
+      "worker": "health_guard",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00778890"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_group_owner.hpp",
+        "src/native_unit_group_owner.cpp",
+        "docs/CC11_UNIT_GROUP_OWNER_PREDICATE.md",
+        "reports/cc11_unit_group_owner_predicate.json"
+      ],
+      "depends_on": [
+        "cc11_health_unit_role_permission"
+      ],
+      "contract": "Whole24B10inst actualunit+284 capturedgroup/nonnullcapturedgroup+14 equalitytoSAMEunit; nativeALonly, MOVALDL carriesnonnullgrouppointer upperEAX; plainRET. Sourceboolexplicitnewinterface, no addedguard/default/virtuals orsemantichelperchanges. Actual7805A0 dispatcher97armcaller/TESTAL and70DAB0/70D7B0/77EED0 producer witnesses structuralonly; realpublishervirtual5C andformation70EFD0 remainunclosed. Oneabsent/other/selfborrowed-prefix fixture runsEXACToriginal24B unrelocated/no bridges/BSP libs, comparesonlyAL. Correctold17B/MOVEAXEDXnameledgertext byappendingcurrentevidence, preservehistoricalrecords. ClassABI/constructor/publisher/dispatcher/world/gameunbound."
     }
   ],
   "snapshot_after_analysis": {

@@ -805,5 +805,25 @@
       "0064a610",
       "0064b5f0"
     ]
+  },
+  "current_primary_Ghidra_stored_body_review": {
+    "utc": "2026-10-07T21:19:00.969328+00:00",
+    "supported_locked_tool": "ghidra_define_function.py --recreate",
+    "definition_report": "reports/cc11_shared_state_destructor_definition.json",
+    "definition_sha256": "b85e9b5959be710e4f1ff9ef4f178622175c0299f7dab86d82a9bf618ef61435",
+    "previous_function_values_recorded": true,
+    "existing_name_signature_and_plate_preserved": true,
+    "stored_body_end_inclusive": "007b4643",
+    "stored_body_bytes": 84,
+    "stored_body_complete": true,
+    "live_disk_agreement": {
+      "address": "007b45f0",
+      "bytes": 84,
+      "sha256": "9a26106b940f796897e713c0935c247c5fef6c173c3a4e8f3741fccdc81a0ab0",
+      "disk_live": "MATCH"
+    },
+    "complete_native_decode_instructions": 26,
+    "decoded_all_original_bytes": true,
+    "qualification": "Current stored membership complete; historical partial-flow receipts preserved. No additional CFG/privateEH/native ABI/reentry/game claim. Source unchanged; no fixture replay required or performed."
   }
 }

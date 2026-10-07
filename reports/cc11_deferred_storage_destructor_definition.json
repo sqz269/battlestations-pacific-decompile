@@ -1,0 +1,79 @@
+{
+ "events": [
+  {
+   "recreate": "00780860",
+   "previous": "Function: BSP_SessionDeferred_DestroyStorage at 00780860\nSignature: undefined BSP_SessionDeferred_DestroyStorage(void)\nEntry: 00780860\nBody: 00780860 - 0078089b",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00780860"
+   },
+   "result": {
+    "success": true,
+    "address": "00780860",
+    "deleted_function": "BSP_SessionDeferred_DestroyStorage",
+    "body_size": 49,
+    "message": "Function 'BSP_SessionDeferred_DestroyStorage' deleted at 00780860"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00780860",
+    "end_address": "007808a8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00780860",
+    "end_address": "007808a7",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00780860",
+    "disassemble_first": false,
+    "name": "BSP_SessionDeferred_DestroyStorage"
+   },
+   "result": {
+    "success": true,
+    "address": "00780860",
+    "function_name": "BSP_SessionDeferred_DestroyStorage",
+    "entry_point": "00780860",
+    "body_size": 72,
+    "message": "Function created successfully at 00780860",
+    "warnings": [
+     "Function name 'BSP_SessionDeferred_DestroyStorage' \u2014 main part 'SessionDeferred_DestroyStorage' is not PascalCase. Expected: SessiondeferredDestroystorage",
+     "Function name 'BSP_SessionDeferred_DestroyStorage' \u2014 main part 'SessionDeferred_DestroyStorage' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SessionDeferred_DestroyStorage' does not start with a recognized verb. First word 'Session' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00780860",
+   "end": "007808a8",
+   "name": "BSP_SessionDeferred_DestroyStorage",
+   "after": "Function: BSP_SessionDeferred_DestroyStorage at 00780860\nSignature: undefined BSP_SessionDeferred_DestroyStorage(void)\nEntry: 00780860\nBody: 00780860 - 007808a7"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

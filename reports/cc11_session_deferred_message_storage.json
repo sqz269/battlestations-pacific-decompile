@@ -2532,5 +2532,25 @@
       "affected_exports_refreshed": true
     }
   },
-  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified"
+  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified",
+  "current_primary_Ghidra_stored_body_review": {
+    "utc": "2026-10-07T21:19:00.194972+00:00",
+    "supported_locked_tool": "ghidra_define_function.py --recreate",
+    "definition_report": "reports/cc11_deferred_storage_destructor_definition.json",
+    "definition_sha256": "234dbe73c48f97a36ed448022ad4d3af27ce9e1e25866269f9dfce6ce8629e1e",
+    "previous_function_values_recorded": true,
+    "existing_name_signature_and_plate_preserved": true,
+    "stored_body_end_inclusive": "007808a7",
+    "stored_body_bytes": 72,
+    "stored_body_complete": true,
+    "live_disk_agreement": {
+      "address": "00780860",
+      "bytes": 72,
+      "sha256": "4047a45ca8d28c74743ca73662a6a97176093fe5ec8eefe157d578e0a317b9de",
+      "disk_live": "MATCH"
+    },
+    "complete_native_decode_instructions": 27,
+    "decoded_all_original_bytes": true,
+    "qualification": "Current stored membership complete; historical partial-flow receipts preserved. No additional CFG/privateEH/native ABI/reentry/game claim. Source unchanged; no fixture replay required or performed."
+  }
 }
