@@ -1,0 +1,534 @@
+{
+  "packet": "cc11_scene_hidden_bool_payload",
+  "date": "2026-10-07",
+  "source_baseline": "4036fa1a4d9d62d6d4c732c46b4ddd65a287f3e3",
+  "doc": "docs/SCENE_HIDDEN_BOOL_PAYLOAD_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "owned_addresses": [
+    "0046CF40"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_HIDDEN_BOOL_PAYLOAD_CC11.md",
+    "reports/scene_hidden_bool_payload_cc11.json"
+  ],
+  "dependencies": [
+    "cc11_scene_typed_bool_payload",
+    "cc11_scene_typed_int_payload",
+    "cc11_scene_group_loading",
+    "cc11_scene_generation_bool_payload",
+    "cc11_scene_landfort_stationary_bool_payload"
+  ],
+  "status": "bounded owning-B Hidden adoption; strict fresh compile/link and actual parser/library/private-called-reader fixture PASS; primary main fullbuild/CTest pending",
+  "correction": {
+    "was": "Actual instantiate-pass Hidden read ignores owning B byte/presence and reparses diagnostics",
+    "is": "One private actually called reader prefers compatible case-insensitive B plus has_boolean; exact old scene_property_bool fallback otherwise",
+    "evidence": "Native0046D3BC Find followed by byte+0C0046D3C1; prior type3 producer/clone/assignment; actual parsed installed bags/copies survive clear/opposite diagnostics"
+  },
+  "routines": [
+    {
+      "address": "0046CF40",
+      "coverage": "partial: Hidden stored-byte fragment0046D3B5..0046D3CA only; all other parser/registry/allocation/EH/services/body not newly bound",
+      "body_start": "0046CF40",
+      "body_end_inclusive": "0046D927",
+      "body_end_exclusive": "0046D928",
+      "listed_instruction_count": 729,
+      "terminal_ret_site": "0046D925",
+      "terminal_ret": "RET58h",
+      "stored_signature": "undefined BSP_SceneFile_ReadEntityBlock(void)",
+      "original_abi_claimed": false
+    }
+  ],
+  "fragment": {
+    "start": "0046D3B5",
+    "end_inclusive": "0046D3CA",
+    "end_exclusive": "0046D3CB",
+    "byte_count": 22,
+    "key_literal": "00CE5708 Hidden",
+    "lookup": "0046D3BC",
+    "byte_compare": "0046D3C1 CMP byte[EAX+0C],0",
+    "nonzero_branch": "0046D3C5 JNZ0046D5E4",
+    "type_guard": false,
+    "null_guard": false,
+    "pass_guard": {
+      "start": "0046D39D",
+      "end_inclusive": "0046D3B4",
+      "end_exclusive": "0046D3B5",
+      "test": "CMP byte[EDI+4],0",
+      "zero_skip": "0046D3B3 JZ0046D3CB"
+    }
+  },
+  "call_sites": [
+    {
+      "address": "0046D3BC",
+      "native": "008F2260",
+      "function": "0046CF40",
+      "contract": "Hidden no-dot key lookup; byte+0C load follows; no native null/type guard"
+    },
+    {
+      "address": "0046D426",
+      "native": "0046C550",
+      "function": "0046CF40",
+      "contract": "Supporting order only: native generation gate occurs after Hidden load; result TEST0046D42B/JZ0046D42D"
+    }
+  ],
+  "ordering": {
+    "native": "Pass-conditioned Hidden byte read before0046D426 generation gate; nonzero branches0046D5E4",
+    "Source": "Existing class lookup/gate/registration return/record metadata and path retention/gate-rejected return precede Hidden",
+    "changed": false,
+    "whole_SceneReader_parity_claimed": false
+  },
+  "producer_support": {
+    "doc": "docs/SCENE_TYPED_BOOL_PAYLOAD_CC11.md",
+    "native_type": 3,
+    "native_payload": "byte+0C",
+    "B_arm": {
+      "start": "008F5D4F",
+      "end_inclusive": "008F5DDF",
+      "end_exclusive": "008F5DE0"
+    },
+    "fresh_producer": "008F3940",
+    "constructor": "008EF1F0",
+    "clone_arm": {
+      "start": "008F4F8D",
+      "end_inclusive": "008F4FC1",
+      "end_exclusive": "008F4FC2"
+    },
+    "assignment_arm": {
+      "start": "008F0736",
+      "end_inclusive": "008F0745",
+      "end_exclusive": "008F0746"
+    },
+    "Source_storage": "boolean_value/has_boolean independent owning data, including false; not native ephemeral success/+2C/replay metadata",
+    "new_ownership": false
+  },
+  "preserved_Source_policy": [
+    "Only compatible case-insensitive B with has_boolean prefers own byte",
+    "Otherwise identical unchanged global first-literal raw reader, with no raw type gate",
+    "Missing/empty raw false; no new defaults or type policy",
+    "Only current instantiate-pass Hidden call changes; registration/class/gate/order unchanged",
+    "Record type/party/owner/skill/path retention and prior gate-rejected return unchanged",
+    "Rejected counters/held-back summary/pool entry/wing/deck retention and return unchanged",
+    "Directors/FakeAllocated/generation helpers/global reader and all other Source untouched"
+  ],
+  "admission": {
+    "native_bound": "Explicit recognized single true/false B, closed semicolon, ordinary ASCII case spellings; existing admitted group domain",
+    "Source_compatibility_only": "No-own B, Source-authored non-B/raw/multitoken first-literal/empty/missing fixture; no native malformed/type/fault parity",
+    "excluded": [
+      "Implicit B",
+      "Nonliteral/multitoken/unclosed B",
+      "Empty-existing context/declaration conflict",
+      "Enum identity/Lua provider",
+      "Locale/NUL/native tokenizer buffers/reentry/faults",
+      "Native untyped/no-null-check fault equivalence",
+      "Native allocator/EH/registry/stock/descriptor integration",
+      "Whole SceneReader/holdback effects/emitter/runtime/original ABI/original-game proof"
+    ]
+  },
+  "installed": {
+    "input_count": 17,
+    "libraries": 15,
+    "groups": 22,
+    "lexical_recognized_Hidden_B": {
+      "total": 56,
+      "true": 35,
+      "false": 21
+    },
+    "group_witnesses": [
+      {
+        "file": "global.enums",
+        "group": "Common",
+        "line": 1759,
+        "literal": "B FALSE"
+      },
+      {
+        "file": "landconvoy.props",
+        "group": "LandConvoy",
+        "line": 4,
+        "literal": "B false"
+      }
+    ],
+    "actual_parsed_authored_mission_bags": {
+      "USN1": {
+        "true": 15,
+        "false": 19
+      },
+      "JM06": {
+        "true": 20,
+        "false": 0
+      }
+    },
+    "actual_resolved_bags": {
+      "USN1": {
+        "entities": 147,
+        "true": 15,
+        "false": 132,
+        "inherited_false": 113,
+        "missing": 0
+      },
+      "JM06": {
+        "entities": 96,
+        "true": 20,
+        "false": 76,
+        "inherited_false": 76,
+        "missing": 0
+      }
+    },
+    "actual_true_class_spellings": {
+      "USN1": {
+        "PlaneSquadronGen": 15
+      },
+      "JM06": {
+        "TBoatGen": 4,
+        "DestroyerGen": 9,
+        "SubmarineGen": 6,
+        "MotherShipGen": 1
+      }
+    },
+    "class_meaning": "Parsed installed class strings only; no fake native class/enum/provider",
+    "representative": {
+      "file": "usn_1_marshall.scn",
+      "name": "ScoutDauntless",
+      "Hidden_line": 10735
+    },
+    "all243_resolved_bags": "Actual ordered groups plus authored merge, owning-copy, cleared/opposite Hidden diagnostics PASS",
+    "input_hashes": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\commandbuilding.props",
+        "bytes": 311,
+        "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+        "post_sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\commandbuildinginferior.props",
+        "bytes": 133,
+        "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+        "post_sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\commandunit.props",
+        "bytes": 545,
+        "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+        "post_sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\foam.props",
+        "bytes": 553,
+        "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+        "post_sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\foamsource.props",
+        "bytes": 609,
+        "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+        "post_sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\landconvoy.props",
+        "bytes": 1320,
+        "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+        "post_sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\landfort.props",
+        "bytes": 423,
+        "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+        "post_sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\landingzone.props",
+        "bytes": 1301,
+        "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+        "post_sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\landscape.props",
+        "bytes": 1198,
+        "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+        "post_sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\path.props",
+        "bytes": 356,
+        "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+        "post_sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\plane.props",
+        "bytes": 416,
+        "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+        "post_sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\scene.props",
+        "bytes": 24634,
+        "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+        "post_sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\ship.props",
+        "bytes": 3358,
+        "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+        "post_sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\stationaries.props",
+        "bytes": 107,
+        "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+        "post_sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+        "bytes": 33471,
+        "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+        "post_sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\usn\\usn_1_marshall.scn",
+        "bytes": 318167,
+        "sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+        "post_sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+        "stable": true
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\COTP-IJN\\PRCPIJN\\ijn_06_prelude_to_midway.scn",
+        "bytes": 173026,
+        "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+        "post_sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+        "stable": true
+      }
+    ]
+  },
+  "fixture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.cpp",
+    "recipe": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\recipe.md",
+    "actual_execution": "Fresh actual parser, production PropertyLibrary add_group/merge/copy and private actually-called Hidden reader",
+    "compiled_connection": "Fresh actual SceneContents TU contains real SceneReaderBinding/current Hidden call site; standalone changed consumer also strict compiles",
+    "unrun": "Whole SceneReader/actual holdback counters/pool/wing/deck effects/emitter/native services/original game",
+    "checks": [
+      "Recognized true/TRUE/false/FALSE and case-insensitive B",
+      "Independent owning copy/clear/opposite",
+      "No-own B raw FIRST behavior/empty",
+      "Source-authored non-B metadata cannot change exact raw fallback",
+      "Missing and bare B Source fallback only",
+      "Common/LandConvoy inherited false",
+      "All243 resolved installed bags/authored overwrite"
+    ],
+    "tracked_tests_added": false,
+    "compile_exit": 0,
+    "link_exit": 0,
+    "probe_exit": 0,
+    "probe_output": [
+      "actual_called_Hidden_reader_compiled_SceneReader=1 owning_copy_clear_opposite=1 recognized_case_literal_domain=1 exact_legacy_FIRST_type_missing_empty_fallback=1",
+      "USN1 entities=147 authored_true=15 authored_false=19 resolved_true=15 resolved_false=132 inherited_false=113 missing=0",
+      "USN1 true_class=PlaneSquadronGen count=15",
+      "JM06 entities=96 authored_true=20 authored_false=0 resolved_true=20 resolved_false=76 inherited_false=76 missing=0",
+      "JM06 true_class=DestroyerGen count=9",
+      "JM06 true_class=MotherShipGen count=1",
+      "JM06 true_class=SubmarineGen count=6",
+      "JM06 true_class=TBoatGen count=4",
+      "installed_libraries15_groups22_Common_LandConvoy_false=1 actual_authored56_including2groups=1 all_resolved_Hidden_copy_clear_opposite=1 whole_SceneReader_holdback_emitter_native_ABI_game_claim=0"
+    ],
+    "PE_machine": "0x14c",
+    "manifest_asInvoker": true
+  },
+  "input_receipt": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\inputs.json",
+    "manifest_sha256": "F1B7191B56076B7D330FE765E4A920F0B82D80EE48E967E0715DF6CCA9B9A2B0",
+    "active_Source_count": 178,
+    "actual_project_Lua_includes": 177,
+    "installed_count": 17,
+    "frozen_link_count": 77,
+    "all_pre_post_equal": true,
+    "freeze": {
+      "utc": "2026-10-07T15:34:05.847062+00:00",
+      "source_head": "4036fa1a4d9d62d6d4c732c46b4ddd65a287f3e3",
+      "observed_main_head": "4036fa1a4d9d62d6d4c732c46b4ddd65a287f3e3",
+      "primary_verified_build_commit": "ac58ee9db",
+      "provenance": "Current whole main ac58ee9db full build; current post-B/I headers; all77 current support snapshots frozen together. Prior manifest supplies source filename inventory only, no prior binaries reused. Fresh parser and probe containing actual SceneContents replace those active TUs; game_main/SceneContents excluded.",
+      "libraries": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\support\\bsp_core.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73240584,
+          "sha256": "4CF2C6F43BC86A5FDDA31690F643DEC4417B39AAC5264E4A1605302F4CC2C4A0",
+          "source_pre_sha256": "4CF2C6F43BC86A5FDDA31690F643DEC4417B39AAC5264E4A1605302F4CC2C4A0",
+          "source_post_sha256": "4CF2C6F43BC86A5FDDA31690F643DEC4417B39AAC5264E4A1605302F4CC2C4A0",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\support\\bsp_lua511.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "bytes": 454824,
+          "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "source_pre_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "source_post_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+          "stable": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\support\\bsp_zlib121.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "bytes": 71766,
+          "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "source_pre_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "source_post_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+          "stable": true
+        }
+      ],
+      "game_object_count": 74,
+      "all77_hash_rows_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\support_freeze.json",
+      "all77_hash_rows_manifest_sha256": "BF8AD6C16DB8DF200834A6F7AF30D9177E414F47A9F89CBD05B7F4000F06F983"
+    },
+    "fresh_objects_and_executable": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\scene.obj",
+        "bytes": 291755,
+        "sha256": "D607E0AF0D57A0764328C47AD5305C7CD5B6CC2F0345B5B6C46F91476763434F"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\consumer_standalone.obj",
+        "bytes": 1855593,
+        "sha256": "82A7BE468264CF55EDCEE123221A54B614C2EF2E91680C7C4100FAC62136296D"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.obj",
+        "bytes": 2234258,
+        "sha256": "4D0BAA193A531DA310AF68F4D64393BE639243CF07336D526EFBFC989CF10547"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.exe",
+        "bytes": 480768,
+        "sha256": "232A8A704AB9323144FDE3DFF0704EA4DEAB314AC42C4F518B62C515B76A4B75"
+      }
+    ],
+    "link_policy": "Only fresh probe/parser objects plus frozen3libs74gameobjects; current ac58ee9db post-B/I compatible whole build. Standalone consumer object not linked twice; no prior binaries/live build library input"
+  },
+  "named_incomplete": [
+    {
+      "entry": "0046CF40",
+      "contract": "Whole entity parser/registry/remaining creation/pass/global/allocator/EH/ABI outside partial Hidden binding"
+    },
+    {
+      "entry": "0046BF70",
+      "contract": "Other Hidden references/stock registration not adopted"
+    },
+    {
+      "entry": "008F2260",
+      "contract": "Existing Find no-dot normal branch inspected; map0043B8B0/string/allocator/native integration not rebound"
+    },
+    {
+      "entry": "0046C550",
+      "contract": "Existing gate Source partial adoption/order; no new native enum/ModeArea/pose/provider closure"
+    },
+    {
+      "entry": "008F54F0",
+      "contract": "Prior tail decoded through exclusive008F566F; stored function metadata still ends008F5658, not full-body repair"
+    }
+  ],
+  "qualification": {
+    "native_fragment": "stored value evidence inspected;2 direct call rows checked separately",
+    "Source_reconstructed": "one reader/one Hidden call preference only",
+    "strict_compile": "fresh3TUs PASS",
+    "linked_Source_fixture": "PASS with all current compatible compiled consumers pinned; no header/layout change",
+    "main_fullbuild_CTest": "pending primary integration",
+    "runtime_game_validated": false,
+    "original_ABI_compatible": false,
+    "original_game_proof": false,
+    "Ghidra_shared_metadata_mutated": false
+  },
+  "checks": {
+    "git_diff_check": "PASS",
+    "verify_report_calls": "2 direct rows PASS,0 failed"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.cpp",
+      "bytes": 10491,
+      "sha256": "B84DD21ED83DE7CF1355941ED1A1EDD59BBE34871155836CD26AA0167E9AD40D"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\compile.cmd",
+      "bytes": 1027,
+      "sha256": "0A63A4054ADEF7DEC2BE556C1CCFC391C819AF8D9B90BE0BE3A0DB97A5C35B2B"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\link.cmd",
+      "bytes": 734,
+      "sha256": "B7C0047BDD4075045192A4E8F6AF4BAAF04E6449D4761D1E7FC572CB8099A644"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\recipe.md",
+      "bytes": 1370,
+      "sha256": "8824003C3B1223E12C0CB76F0AE03F032907AEBC6F217FC0C328B2589BD6B06D"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\receipt.py",
+      "bytes": 4410,
+      "sha256": "6B61CD35B0EBD4EA86B2633C941C469AE0BC5510FB10A87D43BB4EC0BC73331B"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\make_report.py",
+      "bytes": 10374,
+      "sha256": "703A79482A392F090253360FEE8B59F8CE00B12884F6E46CBD880EAA4E50E4EB"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\inputs.json",
+      "bytes": 221952,
+      "sha256": "F1B7191B56076B7D330FE765E4A920F0B82D80EE48E967E0715DF6CCA9B9A2B0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\support_freeze.json",
+      "bytes": 49484,
+      "sha256": "BF8AD6C16DB8DF200834A6F7AF30D9177E414F47A9F89CBD05B7F4000F06F983"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\game_objects.rsp",
+      "bytes": 10814,
+      "sha256": "07E26C25984152AA14D391D7926611F32147BC4E4F8B1C76B9083CA6BC4C0B6D"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\compile.log",
+      "bytes": 105891,
+      "sha256": "E8900EEF9FFEA0F5F97A25775C2414503F854E3E02513AB5D1F81D73B9E0E836"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\link.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.log",
+      "bytes": 787,
+      "sha256": "48F5618E38F90E6756DA4DA77E86A8D4719996832A9B473E1C2027AF845A7D03"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\probe.exe",
+      "bytes": 480768,
+      "sha256": "232A8A704AB9323144FDE3DFF0704EA4DEAB314AC42C4F518B62C515B76A4B75"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_hidden_bool_payload\\native_calls.log",
+      "bytes": 76,
+      "sha256": "1A27B8C21786613BF52F06CA8E8A48201DF40230B16F8A3158935063EB1A7B07"
+    }
+  ]
+}

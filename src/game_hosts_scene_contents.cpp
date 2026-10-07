@@ -62,6 +62,16 @@ bool equal_insensitive(const std::string& a, const std::string& b) noexcept {
     return true;
 }
 
+bool hidden_property_bool(const SceneProperty* prop) noexcept {
+    // 0046D3BC..0046D3CA reads Hidden's retained byte. Keep this host's
+    // existing after-gate ordering and raw fallback outside owning B data.
+    if (prop != nullptr && equal_insensitive(prop->type_letter, "B")
+        && prop->has_boolean) {
+        return prop->boolean_value != 0;
+    }
+    return scene_property_bool(prop);
+}
+
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
@@ -1884,7 +1894,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // host reaches the creator from that pass alone, so the pass condition is the
     // call site rather than a flag here. The record is kept, exactly as the
     // native keeps it. docs/LUA_GENERATE_OBJECT_HOST.md.
-    if (scene_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))) {
+    if (hidden_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))) {
         record.skipped_because = "Hidden: held back for GenerateObject";
         // `generated` means the instantiate pass took the entity, which is what
         // puts it on the pending list 00925F20 walks and what makes a
