@@ -1,0 +1,93 @@
+{
+  "packet": "cc11_land_owner_cpp",
+  "date": "2026-10-06",
+  "status": "complete_conditional_normal_owner_control_flow_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py client verifies project/program before each live batch",
+    "worker_ghidra_writes": false,
+    "prior_native_audit": "docs/LANDING_TASK_OWNER_CC11.md; reports/landing_task_owner_cc11.json; primary saved annotations/exports"
+  },
+  "changed_files": [
+    "include/bsp/native_pilot_bot_task_owner.hpp",
+    "src/native_pilot_bot_task_owner.cpp",
+    "cmake/startup.cmake",
+    "docs/PILOT_BOT_TASK_OWNER_SOURCE_CC11.md",
+    "reports/pilot_bot_task_owner_source_cc11.json"
+  ],
+  "routines": [
+    {"entry": "00999E40", "range_end_exclusive": "00999E40-00999EE0", "coverage": "complete conditional normal assembly flow", "source": "retire_all_native_pilot_bot_tasks_00999e40", "abi": "ECX=bot; RET", "limit": "Successful disjoint required allocation; representable capacity/request; stable source handles/borrowed views; no immediate task deletion"},
+    {"entry": "00999EE0", "range_end_exclusive": "00999EE0-00999F42", "coverage": "complete conditional normal assembly flow", "source": "drain_native_pilot_bot_retired_tasks_00999ee0", "abi": "ECX=bot; RET", "limit": "Required valid head hook; reload after hook before null guard/delete1; structural reentrancy/faults excluded"},
+    {"entry": "0099A830", "range_end_exclusive": "0099A830-0099A848", "coverage": "complete conditional assembly flow", "source": "disable_and_drain_native_pilot_bot_tasks_0099a830", "abi": "ECX=bot; tail JMP00999EE0", "limit": "Flag writes then retire/drain; does not free bot or wire death path"},
+    {"entry": "0099A720", "range_end_exclusive": "0099A720-0099A7F8", "coverage": "complete conditional normal member flow; original private EH excluded", "source": "destroy_native_pilot_bot_task_owner_members_0099a720", "abi": "ECX=bot; RET", "limit": "Separate one-shot member cleanup; required actual task/profile/embedded/callback/base providers; dangling views afterward; no retired task deletion"},
+    {"entry": "0099A010", "range_end_exclusive": "0099A010-0099A015", "coverage": "complete raw thunk reviewed; no new source entry wrapper", "abi": "ECX=plan; tail JMP004B7EF0", "limit": "Required real observer-base destructor context for embedded1Ch records; Ghidra has no function at entry"},
+    {"entry": "00695870", "range_end_exclusive": "00695870-00695931", "coverage": "existing normal callback-owner contract reviewed; required provider", "abi": "ECX=actual callback owner; RET", "limit": "Existing NativeObserverLifetime service needs actual owner/graph/lock; not fabricated by facade"},
+    {"entry": "00875B30", "range_end_exclusive": "00875B30-00875B84", "coverage": "complete assembly contract reviewed; required provider", "abi": "ECX=owner base; RET", "limit": "Actual base fields/membership/lock service required; source facade supplies no raw layout"}
+  ],
+  "host_steps": [
+    {"address": "00999E68", "native": "00BF55BE", "function": "00999E40", "contract": "operator new request4*(2*capacity+2); ADD ESP,4 at00999E71"},
+    {"address": "00999E9F", "native": "00BF6989", "function": "00999E40", "contract": "free old retired array; ADD ESP,4 at00999EA4; then publish replacement"},
+    {"address": "00999EFA", "native": "retired_head+vtable58", "function": "00999EE0", "contract": "unconditional valid current head hook; task profile supplied by caller"},
+    {"address": "00999F0B", "native": "reloaded_retired_head+vtable00", "function": "00999EE0", "contract": "reload head AFTER hook; null guard then scalar-delete flag1"},
+    {"address": "0099A83B", "native": "00999E40", "function": "0099A830", "contract": "retire-all after10=1/11=0"},
+    {"address": "0099A843", "native": "00999EE0", "function": "0099A830", "kind": "tail_jump", "contract": "disable then drain; no owner deletion"},
+    {"address": "0099A776", "native": "active_task+vtable00", "function": "0099A720", "contract": "member cleanup scalar-delete1 WITHOUT58 hook; clear slot at0099A778"},
+    {"address": "0099A7A3", "native": "00BF7C6E", "function": "0099A720", "contract": "reverse array destruction owner+84h/stride1Ch/count2/dtor0099A010; RET10h helper"},
+    {"address": "0099A7B0", "native": "00BF6989", "function": "0099A720", "contract": "free retired array only; no retired object loop; ADD ESP,4 at0099A7B5"},
+    {"address": "0099A7C0", "native": "00BF6989", "function": "0099A720", "contract": "free active array next; ADD ESP,4 at0099A7C5"},
+    {"address": "0099A7D2", "native": "00695870", "function": "0099A720", "contract": "actual owner+1Ch callback cleanup after array frees"},
+    {"address": "0099A7E1", "native": "00875B30", "function": "0099A720", "contract": "actual owner base cleanup last"}
+  ],
+  "raw_and_order_evidence": [
+    {"site": "00999EA4", "bytes": "83C404897E64", "meaning": "ADD ESP,4 then store new retired pointer; continuation after free, despite stale no-return gap"},
+    {"site": "0099A7B5", "bytes": "83C4048B4658", "meaning": "ADD ESP,4 then load active pointer; continuation after retired free"},
+    {"site": "0099A7C5", "bytes": "83C4048BCDC7", "meaning": "ADD ESP,4 then callback receiver setup; continuation after active free"},
+    {"site": "0099A010", "bytes": "E9DBDEB1FF", "target": "004B7EF0", "first_padding": "INT3 at0099A015", "coverage": "complete raw thunk; not an automatic function-membership call row"},
+    {"site": "0099A742", "meaning": "member entry stamps owner profile00D1F348"},
+    {"site": "0099A748", "meaning": "member entry stamps callback subobject profile00D1F32C"},
+    {"site": "00BF7C8E-00BF7C99", "meaning": "CRT helper decrements count, subtracts stride, invokes destructor with ECX=last element; reverse normal iteration"}
+  ],
+  "source_contracts": {
+    "identity": "Caller provides stable live task identity mapping independent of active/retired array relocation; no smart-pointer/cache lifetime inferred; occupied hook heads nonnull",
+    "state": "Borrowed SOURCE pointer/count/capacity roles; not native overlays; valid disjoint storage, count<=capacity; references outlive every call/provider",
+    "growth": "Publish2*n+2 before required allocation; native_bytes=4*capacity and host_bytes=sizeof(handle)*capacity; copy only retired used prefix, free old array, publish new pointer; old growing capacity<=1FFFFFFEh suffices for native request arithmetic",
+    "retire": "Append active in order behind old retired prefix, then active count0; do not invoke hook/delete or normalize unused slots",
+    "drain": "Unconditional head+58, reload head, null guard/delete1, shift/decrement; unused tail unchanged",
+    "controlled_head_change": "Hook may replace/clear only current retired head; valid replacement mapping required. This is an admitted source fixture/domain, not observed native runtime reentrancy",
+    "mutation_exclusions": "No provider may reenter owner methods or alter array base/count/capacity; no arbitrary structural mutation/concurrency/private alias/fault behavior inferred",
+    "cleanup": "One-shot member cleanup: actual profile entry, active-delete1/no58/slotclear, reverse embedded plans, retired-array free/no retired task deletion, active-array free, callback, base; no bot scalar free",
+    "after_member_cleanup": "Native array pointer/count/capacity publications retained; arrays dangling and owner view unusable; no retry or implicit RAII destruction/normalization",
+    "provider_boundaries": "All allocation/free/task/profile/embedded/callback/base providers REQUIRED; no successful empty/no-op/default binding. Existing game-array adapter rejects1Ch/0099A010; actual observer services may be reused only with real storage/context",
+    "exceptions": "Normal successful allocation and returning providers admitted; native new-handler/private FH3/SEH/exception/fault behavior not reconstructed; source capacity already changed before allocation, no rollback invented",
+    "abi": "Public C++ facade/opaque handles/reference views are new source ABI; original bot profile/layout/task entries/scalar owner wrapper remain unbound"
+  },
+  "corrections": [
+    {"was": "Use captured pre-hook task for scalar deletion", "is": "Reload retired head after+58 before null guard/delete1", "evidence": "00999EFC/FF; controlled source head20->40 fixture"},
+    {"was": "Member destruction can use ordinary retired drain", "is": "Native member path deletes active without58 and frees retired array without deleting retired tasks", "evidence": "complete0099A720 assembly; distinct fixture teardown trace"},
+    {"was": "Stop source control flow at CRT free because pseudocode marks it no-return", "is": "Native ADD ESP,4 continuations proceed to pointer publication/next cleanup", "evidence": "live bytes00999EA4/0099A7B5/0099A7C5 and primary full audit"},
+    {"was": "Existing game-array iterator supports any destructor/stride", "is": "It rejects1Ch/0099A010; this owner requires the actual reverse embedded provider", "evidence": "native_game_array_lifetime.cpp supported-pair predicates; native helper listing and raw0099A010 thunk"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86/toolset14.51.36231 HostX64/x86, /EHsc /std:c++17 /MD /O2 /DNDEBUG",
+    "source_object": "local/native_pilot_bot_task_owner_cc11.obj compiled successfully",
+    "focused_fixture": "local/cc11_land_owner_probe.cpp/.obj/.exe; one owner lifecycle fixture",
+    "link": "probe object + source object; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; no CMake/full build",
+    "probe_result": "PASS native growth4/prefix/append; deferred old-new identity; reloaded head delete40; disable flags-before-drain; distinct member teardown/no retired delete",
+    "probe_limit": "SOURCE fixture task map/arrays/new-delete allocator/plan-callback-base records and controlled head change; not native runtime, allocator identity, original ABI, observed reentrancy, cached lifetime or gameplay proof",
+    "live_call_verifier": "passed9 direct/tail call rows,0 failed;3 task virtual-call rows explicitly indirect/not checked",
+    "diff_check": "passed git diff --check; final staged check recorded in commit closeout",
+    "full_build": "worker did not run; primary serializes main integration/full Win32 build"
+  },
+  "remaining": [
+    "Concrete actual task arena/stable identity map, active/retired ownership and live provider binding; source handle possession does not prove cached pointee lifetime",
+    "Actual task+58/scalar profiles and cached land-task plane/squadron observer context through hook/delete; native death notification can have earlier observer effects",
+    "Actual allocator/profile publication/embedded observer/callback/base cleanup services and layout; no unsupported stride/destructor/default adapter supplied",
+    "Actual drain invocation schedule including normal think/retirement; no GameUnitsHost Boolean/death repair or immediate retirement destruction",
+    "Deferred BE selected-owner/readiness/sender-copy/receive route and live reindex provider from previous source packet remain separate unbound dependencies",
+    "Raw0099A010 Ghidra definition/annotation review by primary if desired; no worker mutation",
+    "Original scalar owner deletion, private EH/fault/allocation failure, arbitrary structural reentrancy/concurrency, full ABI and game behavior unproved"
+  ]
+}
