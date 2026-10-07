@@ -81,12 +81,17 @@ struct UnitHealth {
     float invincibility{0.0f};    // +150h, a fraction of max_health
 };
 
-// 00876260 (00CFC3D0+110h): FLD [+370h] / FDIV [+36Ch], then float spill/reload.
-// No zero guard. The typed division does not reproduce ambient x87 precision.
+// Numeric unit provider 00876260 (00CFC3D0+110h): ambient-x87 FLD current /
+// FDIV maximum / float spill/reload. No zero guard or FP control-word change.
+// Typed UnitHealth snapshot offsets are adapted; this is not native entity ABI.
 float health_fraction_00876260(const UnitHealth& health) noexcept;
 
-// Partial 00923BE0: a released entity (+5Dh set) reports 0.0 without dispatching.
-// Native floor/cap to [0,1] and cache +164h write are not represented here.
+// Partial unit-specialized numeric 00923BE0: released returns positive zero
+// before reading the provider; otherwise use 00876260 and native floor/cap.
+// This API neither dispatches an arbitrary native vtable[110h] provider nor
+// writes cache +164h. UnitHealth has no such cache or native entity pointer.
+// Full provider/cache integration and FP exception/status/ABI claims remain
+// outside this projection. docs/UNIT_HEALTH_FRACTION_GETTER_CC11.md.
 float entity_health_00923be0(const UnitHealth& health, bool released) noexcept;
 
 // Partial 00877C53..00877C77: finite cast/clamp projection plus explicit NaN->0,

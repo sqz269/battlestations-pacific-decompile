@@ -1,0 +1,300 @@
+{
+  "packet": "cc11_health_fraction_getter",
+  "status": "unit_specialized_numeric_fraction_and_getter_corrected_strict_win32_probe_passed",
+  "base_commit": "851540eef5d6a298bd62bfbd6bb78dcf9a2b2eda",
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "document": "docs/UNIT_HEALTH_FRACTION_GETTER_CC11.md",
+  "target": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra proto/export/bytes through Client.verify before live queries",
+    "ghidra_mutated": false,
+    "ledger_mutated": false
+  },
+  "routines": [
+    {
+      "address": "00876260",
+      "body": "00876260..00876274",
+      "native_abi": "ECX native unit, ST0 float result, RET0",
+      "source_api": "health_fraction_00876260(const UnitHealth&)",
+      "kernel": "private unit_health_fraction_x87",
+      "coverage": "Numeric division plus binary32 spill/reload under actual ambient x87 CW; typed offsets adapted, not native entity ABI"
+    },
+    {
+      "address": "00923BE0",
+      "body": "00923BE0..00923C4B",
+      "native_abi": "ECX actual entity, ST0 float result, RET0",
+      "source_api": "entity_health_00923be0(const UnitHealth&, bool released)",
+      "kernel": "private unit_health_getter_numeric_x87",
+      "coverage": "Unit-specific numeric release/floor/cap result; arbitrary virtual provider and entity cache write not bound"
+    }
+  ],
+  "caller_audit": {
+    "baseline_source_fraction_caller": "entity_health_00923be0 only",
+    "source_getter_caller": "set_health_00877b90 host replication result",
+    "after_provider_route": "Both public wrappers use the private known-unit x87 provider; host-result paths call the numeric getter kernel",
+    "existing_timing_limit": "Native getter is read after callback; typed setter computes a snapshot result before host consumption, unchanged",
+    "native_getter_callers_index_count": 23,
+    "generic_lua_route": "lua_binding_get_hp_percentage uses LuaBindingMissionHost actual-provider and cache-store methods plus separate unit_health_value_00923be0; untouched",
+    "no_claim_for_all_native_getter_callers": true
+  },
+  "provider_and_cache_boundary": {
+    "native_virtual_call": {
+      "address": "00923BF7",
+      "instruction": "CALL EDX",
+      "slot_load": "00923BF1",
+      "slot": "vtable+110h",
+      "verification": "Native listing checked; not treated as a direct call"
+    },
+    "known_unit_vtable": "00CFC3D0",
+    "slot_storage": "00CFC4E0",
+    "slot_bytes": "60 62 87 00",
+    "known_provider": "00876260",
+    "typed_specialization": "UnitHealth snapshot explicitly selects this provider only; no arbitrary override dispatch",
+    "native_cache_sites": [
+      "00923C16",
+      "00923C41"
+    ],
+    "native_cache_field": "+164h float bits",
+    "cache_added_to_UnitHealth": false,
+    "native_cache_write_implemented": false,
+    "mutable_generic_cache_invented": false,
+    "released_numeric_result": "+0 via FLDZ before provider calculation",
+    "released_native_provider_call": false,
+    "released_native_cache_write": false
+  },
+  "fraction_contract": {
+    "native_bytes": "51 d9 81 70 03 00 00 d8 b1 6c 03 00 00 d9 1c 24 d9 04 24 59 c3",
+    "native_sequence": [
+      "PUSH ECX",
+      "FLD float current+370h",
+      "FDIV float maximum+36Ch",
+      "FSTP float scratch",
+      "FLD float scratch",
+      "POP ECX",
+      "RET"
+    ],
+    "typed_offsets": {
+      "maximum": 0,
+      "current": 4
+    },
+    "layout_guard": "static_assert offsetof maximum0 and current4",
+    "kernel_abi": "Private __fastcall ECX snapshot pointer; ST0 result",
+    "zero_guard_added": false,
+    "ambient_precision_and_rounding": true,
+    "explicit_float_spill_preserved": true
+  },
+  "getter_numeric_contract": {
+    "kernel_abi": "Private __fastcall ECX snapshot pointer, DL release bool; ST0 result",
+    "release": "TEST DL / FLDZ return before known provider call",
+    "provider_result_spill": "00923BF9 FSTP float retained after known provider ST0 result",
+    "lower": "FLD raw / FLDZ / FCOMIP 0,raw / FSTP / JBE; only ordered negative selects positive0",
+    "upper": "MOVSS raw and float1 / COMISS raw,1 / JBE; only ordered greater selects1",
+    "return": "MOVSS selected float to scratch then FLD result",
+    "ceiling": {
+      "address": "00D7A24C",
+      "bytes": "00 00 80 3f",
+      "type": "float32",
+      "value": 1
+    },
+    "masked_nan": "Native x87 division/load/spill quieting and payload selection; unordered survives both clamps",
+    "signed_zero": "Negative zero is not ordered negative and remains negative zero",
+    "infinities": "Positive infinity caps to1; negative infinity floors to+0",
+    "source_cache_side_effect": "None: interface has no native entity cache"
+  },
+  "baseline_compiler_evidence": {
+    "assembly": "local/cc11_health_fraction_getter_asm/unit_damage_before.asm",
+    "standalone_fraction": "Already emitted x87 FDIV with spill/reload and passed192 numeric cases in this build",
+    "getter_division": "Inlined division emitted DIVSS at line204; numeric getter failed73/192",
+    "interpretation": "Correction fixes getter clamp and context-dependent division; does not falsely claim old standalone function failed the probe"
+  },
+  "fixed_witnesses_pc24_nearest": [
+    {
+      "current": "43480000",
+      "maximum": "42c80000",
+      "old_getter": "40000000",
+      "native_and_corrected": "3f800000",
+      "reason": "Cap ratio2 to1"
+    },
+    {
+      "current": "c2c80000",
+      "maximum": "42c80000",
+      "old_getter": "bf800000",
+      "native_and_corrected": "00000000",
+      "reason": "Floor negative ratio to positive0"
+    },
+    {
+      "current": "00800004",
+      "maximum": "40000001",
+      "old_getter": "00400001",
+      "native_and_corrected": "00400002",
+      "reason": "x87 PC24 divide followed by separate float-store rounding"
+    },
+    {
+      "current": "7fc12345",
+      "maximum": "7fc54321",
+      "old_getter": "7fc12345",
+      "native_and_corrected": "7fc54321",
+      "reason": "Native x87 NaN operand/payload behavior rather than SSE numerator selection"
+    }
+  ],
+  "probe": {
+    "command": "cmd /c local\\cc11_health_fraction_getter_check.cmd",
+    "source": "local/cc11_health_fraction_getter_probe.cpp",
+    "reused_from": "cc11_health_marker probe with same prior28 rows and checks",
+    "extension": "16 fraction/getter operand pairs across12 PC/RC settings, plus released result and live-stack/control checks",
+    "reference": "Independent assembly transcription of original fraction and existing native getter/cache capture; not a call to new kernels",
+    "reference_cache_scope": "Probe captures native getter cache to compare numeric result; no production cache introduced",
+    "build": "MSVC Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict; /MANIFEST:EMBED /OPT:REF",
+    "before_exit_code": 1,
+    "after_exit_code": 0,
+    "fraction_checks": 192,
+    "before_fraction_failures": 0,
+    "after_fraction_failures": 0,
+    "getter_checks": 192,
+    "before_getter_failures": 73,
+    "after_getter_failures": 0,
+    "released_checks": 192,
+    "released_failures": 0,
+    "added_state_checks": 576,
+    "added_control_failures": 0,
+    "added_stack_failures": 0,
+    "released_fp_status_failures": 0,
+    "state_detail": "Complete CW, MXCSR non-status control bits, TOP and exact11.25/-3.5 live sentinels preserved after consuming ST0 return",
+    "retained_prefix_checks": 336,
+    "retained_mode_checks": 672,
+    "retained_byte_checks": 240,
+    "retained_setter_state_checks": 336,
+    "retained_failures": 0,
+    "pc_values": [
+      24,
+      53,
+      64
+    ],
+    "rounding_values": [
+      "nearest_even",
+      "down",
+      "up",
+      "toward_zero"
+    ],
+    "exception_masks": "All x87 and MXCSR exceptions masked",
+    "mxcsr_rc": "Matches x87 RC",
+    "daz": false,
+    "ftz": false,
+    "inputs": [
+      "ratio2 cap",
+      "negative ratio floor",
+      "one third",
+      "subnormal division/store boundary",
+      "zero/zero",
+      "+1/+0",
+      "-1/+0",
+      "negative zero",
+      "smallest subnormal underflow",
+      "finite overflow",
+      "quiet NaN numerator",
+      "negative signaling NaN numerator",
+      "quiet NaN denominator",
+      "signaling NaN denominator",
+      "dual NaN payloads",
+      "infinity/infinity"
+    ]
+  },
+  "emitted_assembly": {
+    "path": "local/cc11_health_fraction_getter_asm/unit_damage.asm",
+    "fraction_wrapper_line": 152,
+    "getter_wrapper_line": 166,
+    "fraction_kernel_lines": [
+      4044,
+      4075
+    ],
+    "getter_kernel_lines": [
+      4081,
+      4223
+    ],
+    "host_numeric_kernel_call_lines": [
+      661,
+      2618
+    ],
+    "review": "Public wrappers tail-jump; fraction retains7-instruction schedule; getter release branch precedes provider call, then original spill/floor/cap/return sequence without cache stores",
+    "control_instruction_scan": "No FLDCW/LDMXCSR/FINIT/FNINIT in emitted translation unit"
+  },
+  "validation": {
+    "strict_win32_compile_and_probe": "Passed",
+    "source_scope_assertion": "Passed: only private numeric kernels/constant/layout guard and two public wrapper bodies; setter/clamp/marker/callback/replication body unchanged",
+    "header_noncomment_abi_assertion": "Passed",
+    "report_json": "Parsed",
+    "diff_check": "Passed",
+    "native_callsite_verifier": "No new direct native call claims; virtual slot and known unit provider verified by listing and data bytes",
+    "full_cmake_build_ctest": "Primary integrator responsibility after merge",
+    "game_run": "Not requested or run",
+    "new_tracked_tests": 0,
+    "binary_abi_compatible": false,
+    "full_fp_state_parity": false,
+    "original_game_validated": false
+  },
+  "remaining_dependencies": [
+    "Actual entity+5Dh release field, arbitrary native virtual110 provider and +164h cache/lifetime/store timing remain outside UnitHealth snapshot APIs",
+    "Setter snapshot computation still precedes host callback; no callback/ownership sequencing rewrite",
+    "Generic Lua getter route remains separate and unchanged",
+    "Finite replicated-byte overflow/runtime-converter behavior remains bounded as previously documented",
+    "Unmasked exceptions/trap-resume, status/FIP/FDP/integer-EFLAGS and native ABI/game parity not established",
+    "DAZ/FTZ variants and independent rounding domains untested; limited matrix is not exhaustive IEEE proof",
+    "Adequate x87 stack space required; kernels leave one ST0 result for caller consumption; stack overflow/underflow not separately tested"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc11_health_fraction_getter_probe.cpp",
+      "sha256": "02ca8371874fb90d1ca5dcc68076adfa6651d0b542bfeee38f4f371afff4f22b",
+      "bytes": 16118
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_probe.exe",
+      "sha256": "3133ea10018b526d7cbc1f620c1d31119a883636d21f31f4a03eb9893f9816f7",
+      "bytes": 123904
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_before.log",
+      "sha256": "5779752a82a26fe7560a99342c88756f4b8014b21598bf1fd963cf3456f34ae8",
+      "bytes": 3136
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_probe.log",
+      "sha256": "82b722fe903f4dafc58cc4f2672a0246f87b5dbaf147bd42bbe5affb1a93f22a",
+      "bytes": 3135
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_check.cmd",
+      "sha256": "87a6b6789141dd836e6726118401f19398c0cec6462fd89994c36a5974da384d",
+      "bytes": 568
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_asm/unit_damage_before.asm",
+      "sha256": "cf732e0e39672f9acb55bf74530e4554b8061b1054851ef574334f961a433b0d",
+      "bytes": 109394
+    },
+    {
+      "path": "local/cc11_health_fraction_getter_asm/unit_damage.asm",
+      "sha256": "c269c04839f4d8bdafa385e1b0fc4f0e619fc4111087683d6d9f36bf1ecfb0e8",
+      "bytes": 114217
+    },
+    {
+      "path": "src/unit_damage.cpp",
+      "sha256": "3a6c3dc4e8e59840f0d06f57b3a3eaad5cfbb825aedd4ac25afae7845e5f8cb5",
+      "bytes": 26244
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "sha256": "9ba29ab934ffa7a47ce74e3f8ca2399978b0f2c77905af23f990f1f8871b6ae6",
+      "bytes": 20400
+    }
+  ],
+  "native_listing_sha256": {
+    "00876260": "982d7735a7c88d1efb74224275196c7dfc3cca2149bc1085d838e1ffe7b986c4",
+    "00923be0": "9bfe71571b47fc1d4b2c8379ac492bcde5cc15f124c7760902a7845e88b83bc1"
+  }
+}
