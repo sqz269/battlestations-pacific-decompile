@@ -243,6 +243,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_tar
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_state_registry_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_timestamp.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_flush_all.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_peer_flush.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_frame_transpose_inverse.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_follow_observer_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_land_state_lifetime.cpp)
