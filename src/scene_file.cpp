@@ -150,6 +150,8 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         const std::string key = cur.read_token();
         if (cur.at("{")) {
             cur.expect("{");
+            // Native 008F672E attaches a missing child before recursion, so an
+            // empty body still produces a present child (008F6740).
             block.blocks.emplace_back(key, parse_property_body(cur));
             continue;
         }
