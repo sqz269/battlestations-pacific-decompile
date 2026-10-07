@@ -1,0 +1,426 @@
+{
+  "packet": "cc11_landing_message84_profile",
+  "status": "conditional_complete_seven_body_source_profile_new_source_abi_unbound",
+  "source_files": [
+    "include/bsp/native_session_message84.hpp",
+    "src/native_session_message84.cpp"
+  ],
+  "owned_tracked_files": [
+    "include/bsp/native_session_message84.hpp",
+    "src/native_session_message84.cpp",
+    "docs/LANDING_MESSAGE84_PROFILE_CC11.md",
+    "reports/landing_message84_profile_cc11.json"
+  ],
+  "baseline": "dc4f8d989",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "analysis_mode": "worker read only via bsp.py; verified each live batch",
+    "snapshot_total": 64715
+  },
+  "native_bodies": [
+    {
+      "address": "006BD520",
+      "end_exclusive": "006BD5C4",
+      "length": 164,
+      "instructions": 50,
+      "sha256": "c2b2871b26ee96a9ec27d2bc972ba1c4bdf985fb731eb06d8d99793d1156ce28",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006BD544",
+          "native": "0075B430",
+          "function": "006BD520"
+        },
+        {
+          "address": "006BD582",
+          "native": "0095B9C0",
+          "function": "006BD520"
+        }
+      ],
+      "original_abi": "ECX message; stack actual block,index; EAX original message; RET8; private EH excluded",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "006BD5D0",
+      "end_exclusive": "006BD5F2",
+      "length": 34,
+      "instructions": 11,
+      "sha256": "57bf3ce3d2181909e2910e2fc9d008578b0d80100c76b88fa37533fc9f90d542",
+      "disk_live": "MATCH",
+      "calls": [],
+      "original_abi": "stack raw type; receiver unused; EAX 0/1; RET4; reviewed raw undefined body",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "006BD600",
+      "end_exclusive": "006BD61F",
+      "length": 31,
+      "instructions": 11,
+      "sha256": "9da36522d47dce6a1c95156a5d1ee8e783ba512bbbc5ac14a98e16e572d31111",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006BD611",
+          "native": "00BF65AC",
+          "function": "006BD600"
+        }
+      ],
+      "original_abi": "ECX message; stack flags; EAX original identity; RET4; flags bit0 release",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "006BD680",
+      "end_exclusive": "006BD70C",
+      "length": 140,
+      "instructions": 54,
+      "sha256": "f7c2c9c8ca09f447d1b72d7e72367396ceccd1948c0586a687b4bfaaa7699369",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006BD68A",
+          "native": "0075B480",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD696",
+          "native": "004290B0",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6A3",
+          "native": "00429070",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6B0",
+          "native": "00429070",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6BD",
+          "native": "00429070",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6CA",
+          "native": "00429070",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6D7",
+          "native": "00429070",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD6EF",
+          "native": "004290B0",
+          "function": "006BD680"
+        },
+        {
+          "address": "006BD701",
+          "native": "00429120",
+          "function": "006BD680"
+        }
+      ],
+      "original_abi": "ECX message; stack cursor; RET4",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "006BD710",
+      "end_exclusive": "006BD79D",
+      "length": 141,
+      "instructions": 54,
+      "sha256": "ccf7ef57a45d71ef6697884de8b3f91218dd3506423f0af485cb89d2fb77f8ad",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "006BD719",
+          "native": "0075B4C0",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD727",
+          "native": "00428D70",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD734",
+          "native": "00428D10",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD741",
+          "native": "00428D10",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD74E",
+          "native": "00428D10",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD75B",
+          "native": "00428D10",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD768",
+          "native": "00428D10",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD774",
+          "native": "00428D70",
+          "function": "006BD710"
+        },
+        {
+          "address": "006BD788",
+          "native": "00428E30",
+          "function": "006BD710"
+        }
+      ],
+      "original_abi": "ECX message; stack read-stream wrapper; RET4",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "006BD7A0",
+      "end_exclusive": "006BD7F4",
+      "length": 84,
+      "instructions": 27,
+      "sha256": "3ea78b528629a9d782c27aea15e4d496a5d6d2e1846fddb90bbcf5573669b687",
+      "disk_live": "MATCH",
+      "calls": [],
+      "original_abi": "ECX message; AL bool; RET; upper EAX unspecified",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    },
+    {
+      "address": "0095B9C0",
+      "end_exclusive": "0095B9DC",
+      "length": 28,
+      "instructions": 12,
+      "sha256": "31bb8aedeae85fedd9c938959899f007db9f339e3d43e087e40d088ffba33bd9",
+      "disk_live": "MATCH",
+      "calls": [
+        {
+          "address": "0095B9CB",
+          "native": "00437F50",
+          "function": "0095B9C0"
+        }
+      ],
+      "original_abi": "ECX descriptor; EAX raw registry result; RET",
+      "coverage": "complete ordinary body",
+      "source_status": "conditional source reconstruction, unbound"
+    }
+  ],
+  "total_reviewed": {
+    "bytes": 622,
+    "instructions": 219,
+    "direct_call_rows": 22
+  },
+  "native_profile": {
+    "identity": "00CF8610",
+    "word_addresses": [
+      "006BD600",
+      "006BD680",
+      "006BD710",
+      "006BD5D0",
+      "006BD7A0"
+    ],
+    "live_bytes": "00d66b0080d66b0010d76b00d0d56b00a0d76b00",
+    "source_layout": "five executable uint32 fastcall bridges, then borrowed actual ObjectHandleTables and required release metadata; new SOURCE ABI"
+  },
+  "native_message_extent": {
+    "size_hex": "38",
+    "queue_stack_scratch": "ESP+2C..63, saved EH at+64",
+    "independent_factory_evidence": "00769252 PUSH38; allocator00769254; nonnull CALL00769266->00763380",
+    "receive_factory_ctor": "00763380..007633D9 remains external; no default payload/allocator admission",
+    "retained_bytes": [
+      "11..13",
+      "1B",
+      "1D..1F",
+      "36..37"
+    ]
+  },
+  "constructor_order": [
+    "Complete existing0075B430 type84 using borrowed actual current-game cell",
+    "WORD18=0; BYTE1A=0; DWORD04=1; BYTE1C=0; DWORD20=original index",
+    "006BD56A profile stamp BEFORE006BD570 fresh original block+4C slot-base read",
+    "Capture actual slot base+index*58; captured slot+2C ->message24; captured slot+4 descriptor",
+    "0095B9C0 null->0; else required COMPLETE00437F50 getter THEN fresh original descriptor70 and raw registry2010+index*4",
+    "Store class28; fresh SAME captured slot8/10/28 ->message2C/30/squad; squad nonnull actual WORD174 ->message34, else0"
+  ],
+  "serialization": {
+    "header": "existing complete0075B480/0075B4C0: type8,sender12,relay1",
+    "payload": [
+      {
+        "field": "1C",
+        "bits": 1
+      },
+      {
+        "field": "20",
+        "bits": 6
+      },
+      {
+        "field": "24",
+        "bits": 4
+      },
+      {
+        "field": "28",
+        "bits": 10
+      },
+      {
+        "field": "2C",
+        "bits": 6
+      },
+      {
+        "field": "30",
+        "bits": 4
+      },
+      {
+        "field": "34 presence",
+        "bits": 1
+      },
+      {
+        "field": "34 optional WORD",
+        "bits": 12
+      }
+    ],
+    "read_unsigned_dword_helper": "00428D10",
+    "writer_presence": "predicate captured before004290B0, branch on capture, optional fresh WORD34 read",
+    "absent_presence": "explicit WORD34=0",
+    "type_acceptance": "raw84/49/46 only; no49/46 semantic payload admission",
+    "padding": "retained",
+    "domain": "valid disjoint message/stream/cursor/backing, native carry byte available; existing ordinary unchecked helper contracts"
+  },
+  "validity": {
+    "zero_word34": "true, no bank dereference",
+    "nonzero": "approved object_from_handle_006AD080 against references to actual F89A0C/F89A10/F89A54/F89A60/F89AA8 globals; signed threshold/modulo32 index*16 and entry+C pointer",
+    "excluded": "no clamp, private banks, census, always-true gate, invalid raw selected address, unspecified native upper EAX bits"
+  },
+  "scalar": {
+    "native_root_stamp": "006BD608 ->00CE4974",
+    "native_release": "006BD611 ->00BF65AC when flags&1",
+    "source": "capture required release metadata BEFORE distinct existing00CE4974 source-root stamp; no default allocator; required actual release; return original possibly dangling identity",
+    "normal_producer": "no explicit scalar/destructor call in006C0B50 normal message tail; private EH external"
+  },
+  "required_services": [
+    {
+      "name": "NativeSessionMessageContext",
+      "contract": "actual current-game cell and complete existing0075B430 selected-owner reads; no fake game or owner",
+      "runtime_binding": "unbound"
+    },
+    {
+      "name": "NativeMessage84ClassRegistryAccess::get_00437f50",
+      "contract": "COMPLETE actual getter and ordinary observable effects; actual registry storage/live descriptor70 across call",
+      "runtime_binding": "unbound"
+    },
+    {
+      "name": "ObjectHandleTables",
+      "contract": "pure references to actual globals with actual bank population/ownership/lifetime and valid selected unchecked addresses",
+      "runtime_binding": "unbound"
+    },
+    {
+      "name": "NativeMessage84Release::free_00bf65ac",
+      "contract": "REQUIRED complete actual allocator-release contract; no fallback heap; profile/context lifetime valid before root restamp",
+      "runtime_binding": "unbound"
+    }
+  ],
+  "source_coff_ordering": {
+    "object": "local/cc11_message84.obj",
+    "constructor": [
+      "base call+11",
+      "profile store+37",
+      "fresh block4C load+40",
+      "captured slot2C load+45/store message24+48",
+      "required getter virtual call+5C",
+      "original descriptor70 load+61",
+      "actual registry indexed load+64",
+      "same captured slot8/10/28 loads+6E/+74/+7A"
+    ],
+    "class_lookup": [
+      "required getter virtual call+13",
+      "original descriptor70 load+16",
+      "registry indexed load+1A"
+    ],
+    "scalar_bridge": [
+      "capture profile/release+26/+28",
+      "root-profile accessor call+32",
+      "root stamp+3B",
+      "required release virtual call+44"
+    ],
+    "qualification": "MSVC generated SOURCE ordering receipt; not original register ABI equivalence or game runtime proof"
+  },
+  "validation": {
+    "compilation": "fresh native_session_message84.cpp/native_session_message_base.cpp/object_handle_resolvers.cpp/probe.cpp: MSVC Win32 /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX; all0",
+    "compiler": "cl19.51.36244.0, toolset14.51.36231",
+    "link": "fresh four objects + pinned existing slot0c core/lua511/zlib121 libraries; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; exit0",
+    "fixture_output": "message84 real-codec/profile/constructor-order/bank/release SOURCE probe: PASS",
+    "fixture_scope": "one ignored actual-TU scenario: base owner/order/padding; original descriptor re-probe; captured slot across base rebind; fresh slot fields; all five SOURCE callbacks; real codec present/absent words/cursor widths; bank rebind/zero bypass; raw type predicate; distinct root-before-release and flagbit0",
+    "controlled_effects": "SOURCE provider-field/callback/CRT instrumentation; not observed native runtime reentry, actual allocator/profile/provider binding, differential original body or game test",
+    "manifest": {
+      "machine": "0x14c",
+      "manifest_asInvoker": true,
+      "manifest_count": 1
+    },
+    "immutable_support_inputs": "three pinned support library pre/post SHA256 identical",
+    "native_call_verifier": "tools/verify_report_calls.py:22 native direct call rows checked,0 failed",
+    "git_diff_check": "working and staged git diff --check passed",
+    "full_build": "root owned; worker did no full CMake/game build",
+    "artifacts": [
+      {
+        "path": "local/cc11_message84_probe.cpp",
+        "sha256": "1e34d58b6554f6e215b58c44ce1b0e2aec532bef54de6edf97f6833dd28c60e3"
+      },
+      {
+        "path": "local/cc11_message84_probe.obj",
+        "sha256": "686e2e0cd62a567e82948d49bb3f3a8b2efec070763b0bb8a7ecdeac7bbc4582"
+      },
+      {
+        "path": "local/cc11_message84_probe.exe",
+        "sha256": "e791ee889ff4ab20914cdd53049edb4c7b8137d55b9c55ee8342ca4d3090bb12"
+      },
+      {
+        "path": "local/cc11_message84.obj",
+        "sha256": "238bf74fe7acf41ab64275050e24a8ab3bd434f37e9b64a4de1779a483b17144"
+      },
+      {
+        "path": "local/cc11_message84_base.obj",
+        "sha256": "dc1cc91bd45a8167bffceff574a7631f1673655a5d81674b24c5940644498fbd"
+      },
+      {
+        "path": "local/cc11_message84_handles.obj",
+        "sha256": "d6482632c9987e512f7199c6b56b711224f566db584e00637c381a045a3a7629"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_core.lib",
+        "sha256": "1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_lua511.lib",
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "path": "local/cc11_slot0c_bsp_zlib121.lib",
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "remaining_boundaries": [
+    "Complete lower/composite/head caller recovery009F9CE0/009AFE70/009B2E50 and actual ctor/state/registry/geometry providers plus primary-owned fixed x87 regions",
+    "No complete006C0B50/006BF720 queue adoption, allocator/default profile, actual observer/lock/lifetime context, event4/value0 dispatch, or complete0077C7B0 routing/sender-copy/transport peer lifetime",
+    "Canonical cached task404 vs fresh original input-plane9D4 receiver vs record4 captured preappend holder vs fresh block80 post-notify/message returned holder remain distinct",
+    "Holder replacement does not destroy prior holder; destructor/unlink does not clear borrowed cells; no invented death/cache cleanup",
+    "Actual SOURCE profile has context metadata/new ABI; no original executable profile/arena/getter/free/runtime binding, GameUnitsHost binding, private EH/fault/concurrency/structural reentry or gameplay validation",
+    "Validity models AL bool only;49/46 raw acceptance does not admit their semantics"
+  ],
+  "primary_recovery_reference": "reports/landing_message_profile_definitions_cc11.json (missing bodies defined/saved/exported mainb9ba233a5)",
+  "root_handoff": "CMake registration, serialized full Win32 build/existing CTests, independent fixture, review/integration and Ghidra/ledger updates are primary-owned"
+}
