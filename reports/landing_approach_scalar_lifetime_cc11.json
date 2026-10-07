@@ -361,5 +361,266 @@
     "outer/taskD1FF90/D1FF94 and9B34B0/9B4100 callers",
     "task/death/dequeue/base/EH cleanup",
     "original image class ABI and game admission"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T20:58:18.191867+00:00",
+    "main_build_revision": "b728a6343161f29f251a29d40c17ceffc1590584",
+    "worker_commit": "b779a5459c916d9b462dda9c00966eed8799c11f",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 10,
+    "stable_current_Source_header_fixture_inputs": 55,
+    "stable_generated_recipe_inputs": 1,
+    "actual_compiler_project_includes": 39,
+    "current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "009b3030",
+        "bytes": 11,
+        "sha256": "4e20972b7bddde27696ed028fefcba8dc476d1760fc244cf166f29ffd29427d2",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009b3220",
+        "bytes": 30,
+        "sha256": "51f377ca3191eb63c83b30d5487c4bd185cfefc7c2aa1caac102e533e3efbb67",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d1ff84",
+        "bytes": 20,
+        "sha256": "d0566b3cb91a8ecd302985faf2e571f7a5dbafc1a38dc1ab758b495ee56e2867",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "009b2eb8",
+        "bytes": 19,
+        "sha256": "493a145f423d6f0a8f48a157f3d1b9811f1ce1cf1033ddd2cb7601f962a713de",
+        "disk_live": "MATCH"
+      }
+    ],
+    "probe_sha256": "a78e366073a14b75c0a0001b4d44ce8d71598d051b9868a574290d121a8652fa",
+    "native_direct_call_and_tail_rows": 3,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "qualification": "Whole11B registry SUB ECX,B8/tailJMP9B3220 plus whole30B ROOTscalar capture\u2192complete9B2C80\u2192LOWbytebit0 AFTERhelper\u2192optional sameCRT WHOLErootfree\u2192numericROOT return. PURE address-only same-root registryB8 admission, no native guard claim. ActualD1FF84slot0 adjustor; innerD1FF88slot0AFAD0/+4scalar3220, witnessed9B2E50 stores2EB8/2EC3; outerD1FF90/D1FF94 excluded. One connected Source/whole-original flags0 borrowed andflags1 independent278h actual-shaped CRTroot family: three natural4B operands12B/29 otherB retained, genuine registry/Move/24B vectors/observer edges/pending/recursiveOSlock with before-free-only instrumentation. Cleanup26C/fixture278h not recoveredclasssizeof; uncallable rawprofiles, remaining constructors/math/world/manager/arena/structuralreentry/privateEH/nativeABI/game unbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "source_COFF_exact_worker_match": true,
+    "one_connected_fixture": true,
+    "internal_assertions": 581,
+    "original_code_bytes": 41,
+    "original_designated_operand_bytes": 12,
+    "original_retained_nonoperand_bytes": 29,
+    "Source_root_COFF_bytes": 46,
+    "Source_root_COFF_instructions": 17,
+    "Source_validated_adjustor_COFF_bytes": 104,
+    "Source_validated_adjustor_instructions": 35,
+    "helper_before_flag_before_free": true,
+    "complete_constructor_graph_bound": false,
+    "artifacts": [
+      {
+        "path": "local/cc11_approach_scalar_current_primary/009b2eb8_original.bin",
+        "sha256": "493a145f423d6f0a8f48a157f3d1b9811f1ce1cf1033ddd2cb7601f962a713de",
+        "bytes": 19
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/009b3030_original.bin",
+        "sha256": "4e20972b7bddde27696ed028fefcba8dc476d1760fc244cf166f29ffd29427d2",
+        "bytes": 11
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/009b3220_original.bin",
+        "sha256": "51f377ca3191eb63c83b30d5487c4bd185cfefc7c2aa1caac102e533e3efbb67",
+        "bytes": 30
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/00d1ff84_original.bin",
+        "sha256": "d0566b3cb91a8ecd302985faf2e571f7a5dbafc1a38dc1ab758b495ee56e2867",
+        "bytes": 20
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/build.cmd",
+        "sha256": "ebf417320e0074dd9e23a560260080d4e6d7af378efa469b79a1ffcced74935d",
+        "bytes": 1702
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/coff_evidence.json",
+        "sha256": "537f1ef683a4d4fd064d509f7408b03f5cd6c0a6b327fa2f36cde90c11ca053a",
+        "bytes": 7585
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/compile.log",
+        "sha256": "e9f3fc25130d50792bbcf20b05f9c9570f9c9723b9055f4df7cea1c2e1bcda84",
+        "bytes": 221942
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/inputs_after_link.json",
+        "sha256": "9e2332c0ad948c09ada5549ae7e1ecd48c6c9061ce9fc2a971d14a06f282409e",
+        "bytes": 15675
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/inputs_before_link.json",
+        "sha256": "d603bb681b36d3e3f1e359949a3b1a15d90a742dad6b672b2b2ea2b389b80c34",
+        "bytes": 11983
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_lifetime.asm",
+        "sha256": "a28ad8a505d062dd3a8f28b07c02fa4735a5ccda1fc1f65693d47eb25f6e9864",
+        "bytes": 44074
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_lifetime.obj",
+        "sha256": "0fa832f0ae356496a1c9d8503ed8e5e9a0b38566785c4739b19cdb8c84e0e92f",
+        "bytes": 13726
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_scalar_lifetime.asm",
+        "sha256": "9fba2a11a3d228fda15b4a3d944d6d8c009694654c11802fa0f33bb9aeafc76b",
+        "bytes": 25972
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_scalar_lifetime.obj",
+        "sha256": "4c44504bfdb729fc1226c9f5bc8a872f301f4703aa5976f7f11ed0826faab73e",
+        "bytes": 9279
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_scalar_lifetime_scalar_delete_native_land_approach_009b3220_coff.bin",
+        "sha256": "25826b8927ce5d3d676d6ac90376394ee870e55b122b253360054fe275a9c6f2",
+        "bytes": 46
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_approach_scalar_lifetime_scalar_delete_native_land_approach_from_registry_009b3030_coff.bin",
+        "sha256": "5f274779fb07f2781ebd12bfff1297e9077c04cb57334cdb89363075d26cf1d8",
+        "bytes": 104
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_follow_observer_lifetime.asm",
+        "sha256": "963c5ed9d153338abf69a14b7f43ffa69c3d156ecfcf546d0bed72e6540c44cf",
+        "bytes": 12994
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_follow_observer_lifetime.obj",
+        "sha256": "f5b7240943cedae2cec1eb213abe71dca99f8eeaf6073e50f9e0d4b7d0514c57",
+        "bytes": 3501
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_moveto_constructor.asm",
+        "sha256": "c061f319d49fff941c4fb8e811578d94da8b87873daab583dadf37d6224bec91",
+        "bytes": 25644
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_moveto_constructor.obj",
+        "sha256": "eb8c903bab0d2f7a1193b00f20b20ee17d83de0170d1a654c8ac6825742c3b34",
+        "bytes": 8928
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_lifetime.asm",
+        "sha256": "05ead6cc1d021b7dd3f23d43781d826786b5a85210c6ee8c3fa0051debfda337",
+        "bytes": 52532
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_lifetime.obj",
+        "sha256": "5c9b8251e440a6fb71efd120a32bd7d24910e57ab325318510bbd5ec930011a0",
+        "bytes": 12483
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_registry.asm",
+        "sha256": "dad3fc049b0470e2043c016f7cae5be52a9abc1a25a8bb2c18bad8b899f5fa28",
+        "bytes": 61147
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_registry.obj",
+        "sha256": "10ae94da2587ab62f912edbb1916bb36b19e3c47fe6bbdede31f8b8a534f5c07",
+        "bytes": 8900
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_registry_lifetime.asm",
+        "sha256": "d15f0fad28646de89ba309dc0c1a27a5a7906c1be48c1d401f1b362aa2c8d646",
+        "bytes": 6621
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/native_land_state_registry_lifetime.obj",
+        "sha256": "5b91f400822647112fe9a5ee4f8395d825da06dfe68fbcf4ee5412f07a8c98db",
+        "bytes": 2129
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/observer_edges.asm",
+        "sha256": "349a5cc9c4861c5f14dd6e03034d910ddf81ca526c261f59f309c81451d7b7f1",
+        "bytes": 25693
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/observer_edges.obj",
+        "sha256": "b363a2cd1272e774ea41833bd32867bf24436a66df642fbf598173de59fd296e",
+        "bytes": 7140
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/observer_lifetime.asm",
+        "sha256": "64a904c334816521b075af37ff00982ca4100a002b2cd3654de661d0aeb2c294",
+        "bytes": 132074
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/observer_lifetime.obj",
+        "sha256": "f9d375d5e27f279258e99cd4711d003c8dcd22ef550420005ba2292e89232a56",
+        "bytes": 28260
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/probe.asm",
+        "sha256": "696579b7792978211feaa7df0451b95043b60afbe474198dcfecdaca3a769de8",
+        "bytes": 195560
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/probe.cpp",
+        "sha256": "912efa4390fa7eb0698336f969dc6562dcda97c8b60f69663beeab8c15d27ed8",
+        "bytes": 19804
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/probe.exe",
+        "sha256": "a78e366073a14b75c0a0001b4d44ce8d71598d051b9868a574290d121a8652fa",
+        "bytes": 235008
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/probe.obj",
+        "sha256": "d453ece673495a37c2d90510b42d2b418c4cea7f20a61380a03df105daa63a48",
+        "bytes": 49437
+      },
+      {
+        "path": "local/cc11_approach_scalar_current_primary/probe_cleanup_bridge_coff.bin",
+        "sha256": "7309779913b3c131a4183c41022b3421ce06da654427f8e7cc5902a5bafb3213",
+        "bytes": 134
+      }
+    ],
+    "Ghidra_closure": {
+      "saved": true,
+      "annotation_receipt": "local/ghidra-annotations-20261007T205849Z.json",
+      "annotation_sha256": "76eacbe0410f7e99cbbd1a3df9473b4ff5e230b57d4887a8c05cb54263adb2cd",
+      "annotation_addresses": [
+        "0048e8d0",
+        "00521e30",
+        "00951560",
+        "00951660",
+        "009516d0",
+        "00951720",
+        "00951790",
+        "009517c0",
+        "009b3030",
+        "009b3220"
+      ],
+      "prior_values_recorded": true,
+      "compiler_library_names_and_tags_preserved": true,
+      "affected_exports_refreshed": true
+    }
+  },
+  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified"
 }

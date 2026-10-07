@@ -114,3 +114,5 @@ Source compiler/lifecycle fixture, not original-wrapper differential, original
 ABI, map/declaration ownership, production traffic execution or gameplay proof.
 Main CMake registration, integrated full build and independent verification are
 owned by the primary agent.
+
+Primary integration at `b728a6343161f29f251a29d40c17ceffc1590584` passed the complete MSVC Win32 build and all three existing CTests. The independent current-library fixture freshly compiled 8 actual TUs, with 47 Source/header/fixture pins and 39 actual compiler project includes. Source, generated recipe inputs, original PE and three current libraries remained unchanged; COFF matched the worker output and native direct calls/tail transfers passed. The report records the complete receipts. Seven membership witnesses and six known-found word calls passed. SETNE50 precedes real destroyCALL53; the original native wrapper remains unexecuted. Original ABI, full remaining constructors/world/consumer binding and gameplay remain qualified.

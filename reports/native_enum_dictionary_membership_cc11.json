@@ -657,5 +657,248 @@
     ],
     "execution_log": "local\\cc11_scene_enum_dictionary_membership\\run02\\execution.log",
     "outcomes": "local\\cc11_scene_enum_dictionary_membership\\run02\\membership_outcomes.txt"
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T20:58:13.798914+00:00",
+    "main_build_revision": "b728a6343161f29f251a29d40c17ceffc1590584",
+    "worker_commit": "d67cf4ba047680453b23bda60a54fb19c961d58a",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 8,
+    "stable_current_Source_header_fixture_inputs": 47,
+    "stable_generated_recipe_inputs": 1,
+    "actual_compiler_project_includes": 39,
+    "current_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "0048e8d0",
+        "bytes": 133,
+        "sha256": "ad39abf90584ec004a7a14ac94c2d3aff197417d2595ad3ef662cf0b6963468b",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0048e960",
+        "bytes": 129,
+        "sha256": "9ffe199f6c9124ae8bc8a92939ba39ad6f943ca21dc5483d5f464a0593590027",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0048e840",
+        "bytes": 129,
+        "sha256": "1af840ac4f1fcd6434fc3b8f923ab125e771ab4efb7c7d0af2350de8106cb62f",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e186ed",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e17654",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "probe_sha256": "7ef1e715d89d0ad46c572f34807c85deba113d79c475316b2a9397a6bdf9fd27",
+    "native_direct_call_and_tail_rows": 4,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "qualification": "Whole133B ordinary membership: actualowner4 genuine temporary ctor\u2192complete finder\u2192capture node!=NULL BEFORE genuine raw-pool release; Boolean native AL only, no node8 read. Source98B30inst has TEST49/SETNE50 before actualdestroyCALL53. Installed2tables28symbols; seven membership witnesses and six known-found word getter calls with whole pool prefix restored. Original133B wrapper/privateEH NOT executed. Stable ASCII/C-locale/normal successful lifetime domain; raw profiles/data and owner constructor/declaration identity/production traffic/native ABI/game remain unbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "source_COFF_exact_worker_match": true,
+    "membership_calls": 7,
+    "known_found_word_calls": 6,
+    "original_wrapper_executed": false,
+    "Source_COFF_bytes": 98,
+    "Source_COFF_instructions": 30,
+    "result_capture_offset": "SETNE50 before destroyCALL53",
+    "actual_headers": 39,
+    "artifacts": [
+      {
+        "path": "local/cc11_enum_membership_current_primary/0048e840_original.bin",
+        "sha256": "1af840ac4f1fcd6434fc3b8f923ab125e771ab4efb7c7d0af2350de8106cb62f",
+        "bytes": 129
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/0048e8d0_original.bin",
+        "sha256": "ad39abf90584ec004a7a14ac94c2d3aff197417d2595ad3ef662cf0b6963468b",
+        "bytes": 133
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/0048e960_original.bin",
+        "sha256": "9ffe199f6c9124ae8bc8a92939ba39ad6f943ca21dc5483d5f464a0593590027",
+        "bytes": 129
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/00e17654_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/00e186ed_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/build.cmd",
+        "sha256": "149498acb57234f1ad8610cfb5e780190cff67dcf7dec743ebd45d75fcb37d44",
+        "bytes": 1726
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/coff_evidence.json",
+        "sha256": "352358357fa15bd0a3552807159c1522f8e239d5be131ddc289a7d949642fc93",
+        "bytes": 2041
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/compile.log",
+        "sha256": "ceea8c44a487a014851865171519c88a7da080036b05f11c31056da1b7840ee3",
+        "bytes": 157136
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/inputs_after_link.json",
+        "sha256": "95379cc46d122a02083d45aa72b23239e6ef04771fba60092ebc7d29c8a68ce3",
+        "bytes": 15085
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/inputs_before_link.json",
+        "sha256": "cbbabbd68e69622c569b6cf989c8ae84ba75d3ef15734f45ac26fe2fc530899a",
+        "bytes": 11456
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/membership_outcomes.txt",
+        "sha256": "cefdd47b68152dbae8d24f2e360fd693cdd1df853356cb4974c35f5c9e8ad81a",
+        "bytes": 454
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_lookup.asm",
+        "sha256": "9549c4440b49533449bd1e0faeb0c1cc7ca0e4105a13f747337278353a092b91",
+        "bytes": 17674
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_lookup.obj",
+        "sha256": "0ae3271767e588a62ede4e463ccd06c549d023d3331b5f32f0f01e63b539841a",
+        "bytes": 5537
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_membership.asm",
+        "sha256": "ef39bc6abec97aba8219043728adbf95ec27c45d4501862880266e7e38e10ed7",
+        "bytes": 7671
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_membership.obj",
+        "sha256": "18ba0dfc5ebf8d164dd48201fe8a6f10ee9143c30f759d7a1448a09f4db80b36",
+        "bytes": 2057
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_membership_contains_native_enum_symbol_0048e8d0_coff.bin",
+        "sha256": "bf99f9b27b5aaa9373ea793296ca753f523b3447ec0fa02eabf18555822d470a",
+        "bytes": 98
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_word_getters.asm",
+        "sha256": "5b3605cd7bbb60a02ddc82a14ee94c1e722ef4de8dab613dc0e8c4433f444df5",
+        "bytes": 14929
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_enum_dictionary_word_getters.obj",
+        "sha256": "2559fba1e9fe4588cc516d6488cb1823b5fba452d23ca0dc06b9be964ec89c37",
+        "bytes": 3013
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string.asm",
+        "sha256": "112f4088f531958522ea2c494871a3f558e01a22c972ba151e6ed1907ef7bbca",
+        "bytes": 89734
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string.obj",
+        "sha256": "ba8ea18f794b7c46fb5742f18093cdee18e96b822b5dc8325e0832a74ea1ac47",
+        "bytes": 22727
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string_pool_owner.asm",
+        "sha256": "18254d3fd4e3639aee0a4dbc72d9d5eec5bb7347e2e5c64b6ecf451abed149bb",
+        "bytes": 61980
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string_pool_owner.obj",
+        "sha256": "304ba09fc6ab3e78a17b2a82bad421b5441f737be4a6db8490ba01cd7b51ad98",
+        "bytes": 17491
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string_pool_storage.asm",
+        "sha256": "d06c47ac24cf69d7925af737608a5e92d1206675a523479822c82274a3ed2f9c",
+        "bytes": 38597
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/native_string_pool_storage.obj",
+        "sha256": "47cd91bfe9c231a39d23e0ebcbe3f8f5033d42f94089bd38f02a39c71681857a",
+        "bytes": 10095
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/probe.asm",
+        "sha256": "0a58e665a9ac337758029ad40d8cff09f89956f97ef99b081ee8c5c9d3bebd7e",
+        "bytes": 2001581
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/probe.cpp",
+        "sha256": "6541fabb49fe5f34d54c30657bf4811812bc87471e685f2a5846d9ac8f0ea0ec",
+        "bytes": 9345
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/probe.exe",
+        "sha256": "7ef1e715d89d0ad46c572f34807c85deba113d79c475316b2a9397a6bdf9fd27",
+        "bytes": 245248
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/probe.obj",
+        "sha256": "5888bd5ab50eff1440e6c81481b19c6ab816033c49e55bbe718a4b3cc9443e22",
+        "bytes": 320725
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/scene_file.asm",
+        "sha256": "884dd5e241e1416ca47ca2c2f059be4fdd4885c20266b5b3272d63370ff2aed2",
+        "bytes": 2132946
+      },
+      {
+        "path": "local/cc11_enum_membership_current_primary/scene_file.obj",
+        "sha256": "3cac0f894525d0783adb2c9b8ce68545d0e913de27a3143af2516c930c445f31",
+        "bytes": 292531
+      }
+    ],
+    "Ghidra_closure": {
+      "saved": true,
+      "annotation_receipt": "local/ghidra-annotations-20261007T205849Z.json",
+      "annotation_sha256": "76eacbe0410f7e99cbbd1a3df9473b4ff5e230b57d4887a8c05cb54263adb2cd",
+      "annotation_addresses": [
+        "0048e8d0",
+        "00521e30",
+        "00951560",
+        "00951660",
+        "009516d0",
+        "00951720",
+        "00951790",
+        "009517c0",
+        "009b3030",
+        "009b3220"
+      ],
+      "prior_values_recorded": true,
+      "compiler_library_names_and_tags_preserved": true,
+      "affected_exports_refreshed": true
+    }
+  },
+  "primary_source_status": "conditional complete Source integrated; bounded current-build fixture passed; original ABI/game qualified"
 }
