@@ -1,0 +1,76 @@
+{
+  "packet": "cc11_land_constructor_math",
+  "utc": "2026-10-07T08:29:12.956175+00:00",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "native_ranges": [
+    {
+      "address": "009f9ce0",
+      "end_exclusive": "009f9d78",
+      "bytes": 152,
+      "disk_live_match": true,
+      "sha256": "318b1252ca7f1847fc8b943c100d93062955ea0d60f11e5b70f93157519c0240"
+    },
+    {
+      "address": "009afe70",
+      "end_exclusive": "009affeb",
+      "bytes": 379,
+      "disk_live_match": true,
+      "sha256": "b4d5593707443070df5b8af50c4e18f6277d57a550a796a06dce87988e2f07d5"
+    },
+    {
+      "address": "009b2e50",
+      "end_exclusive": "009b302b",
+      "bytes": 475,
+      "disk_live_match": true,
+      "sha256": "27148fc25b361d6e7be119624fce4b2b9ec34a7afebbe88c6c8d088f333fe9b1"
+    },
+    {
+      "address": "009b3240",
+      "end_exclusive": "009b3307",
+      "bytes": 199,
+      "disk_live_match": true,
+      "sha256": "c720447858efbe295ce5c4c4c51290b6e5adb679591e333aadfd9ed071fc6c60"
+    },
+    {
+      "address": "009f9980",
+      "end_exclusive": "009f99a6",
+      "bytes": 38,
+      "disk_live_match": true,
+      "sha256": "39e8fe278b59d4acb8ea72abf9b80a47f1c73d36b8d37640c7c08bbfb95c25df"
+    }
+  ],
+  "reviewed_representation": "Complete assembly; original register/stack/x87 sequence and fresh/captured field observations",
+  "source_implemented": false,
+  "build_tested": false,
+  "fixture_tested": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "cached_squadron_source": "009F9CF6: captured original plane+9D4 ->approach+C/task404",
+  "queue_squadron_source": "009AFEA2: independent fresh original inputplane+9D4 ->complete006C0B50; returned record->approach34/task42C",
+  "required_complete_services": [
+    "0099c6f0 commonbase",
+    "006c0b50 queue-record producer incl +4 record identity/tail observers",
+    "0042e740 singleton",
+    "00bd2f10 actual current random domain",
+    "00414db0 pose refresh",
+    "009afaf0 complete land geometry",
+    "state constructors/registration/entry/observer bindings"
+  ],
+  "source_projections_not_admitted": [
+    "BotTaskHost current sparse storage",
+    "GameUnitsHost queue lacking native record+4/tail notifications",
+    "three independently cached translated task404 views"
+  ],
+  "numeric_constants": {
+    "00d7a24c": "binary32 0x3f800000 (1)",
+    "00d7a260": "binary32 0xbf800000 (-1)",
+    "00ce3860": "binary32 0x3f666666 (0.8999999761581421)",
+    "00ce6448": "binary32 0x3f8ccccd (1.100000023841858)",
+    "00ce38b8": "binary32 0x41200000 (10)",
+    "00ce3800": "binary32 0x3f000000 (0.5)",
+    "00cec9d8": "binary64 0x3fe8000000000000 (0.75)"
+  },
+  "random_shared_service_evidence": "Existing native_particle_random_range_00bd2f10 and native_particle_random_state_range_00bd2e60 retain x87 path and binary32 spill/reload before return; caller must retain multiply/FCHS/FSTP, actual shared RandomThreads/constants and ambient state",
+  "uncertainty": "No source constructor/arena/profile adapter, unmasked fault/private EH cleanup, full FP status, aliasing/concurrency/observer lifetime or original ABI/game proof. Exact field types beyond observed words/pointers are hypotheses."
+}

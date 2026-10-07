@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:21:03.226262+00:00",
+  "updated_utc": "2026-10-07T08:29:12.956175+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -818,5 +818,48 @@
     "clone_copies_declaration_and_value": true,
     "overwrite_preserves_destination_declaration": true,
     "lua_table_import_008f2f70_unbound": true
+  },
+  "land_constructor_native_recovery": {
+    "report": "reports/pilot_bot_land_constructor_recovery_cc11.json",
+    "document": "docs/PILOT_BOT_LAND_CONSTRUCTOR_RECOVERY_CC11.md",
+    "ranges": [
+      {
+        "address": "009f9ce0",
+        "end_exclusive": "009f9d78",
+        "bytes": 152,
+        "disk_live_match": true,
+        "sha256": "318b1252ca7f1847fc8b943c100d93062955ea0d60f11e5b70f93157519c0240"
+      },
+      {
+        "address": "009afe70",
+        "end_exclusive": "009affeb",
+        "bytes": 379,
+        "disk_live_match": true,
+        "sha256": "b4d5593707443070df5b8af50c4e18f6277d57a550a796a06dce87988e2f07d5"
+      },
+      {
+        "address": "009b2e50",
+        "end_exclusive": "009b302b",
+        "bytes": 475,
+        "disk_live_match": true,
+        "sha256": "27148fc25b361d6e7be119624fce4b2b9ec34a7afebbe88c6c8d088f333fe9b1"
+      },
+      {
+        "address": "009b3240",
+        "end_exclusive": "009b3307",
+        "bytes": 199,
+        "disk_live_match": true,
+        "sha256": "c720447858efbe295ce5c4c4c51290b6e5adb679591e333aadfd9ed071fc6c60"
+      },
+      {
+        "address": "009f9980",
+        "end_exclusive": "009f99a6",
+        "bytes": 38,
+        "disk_live_match": true,
+        "sha256": "39e8fe278b59d4acb8ea72abf9b80a47f1c73d36b8d37640c7c08bbfb95c25df"
+      }
+    ],
+    "source_implemented": false,
+    "next": "Canonical identity packet first; full retained storage producers need same stable arena/real profiles/complete queue and lower services"
   }
 }
