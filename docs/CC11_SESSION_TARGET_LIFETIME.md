@@ -113,3 +113,7 @@ main build and integration are separate from this worker evidence.
 
 Machine-readable evidence: `reports/cc11_session_target_lifetime.json`.
 Ignored reproducible artifacts: `local/cc11_target_lifetime_20261007_a/`.
+
+## Primary integration
+
+Main `ae90949a78adb347af2c0ba04ef218229a5b9a34` passed the full Win32 build and all three CTests. Root independently compiled 24 actual TUs and verified 68 current Source/header inputs, three current libraries and the original PE before/after. The manifested PE32 connected fixture passed the same 232 checks, including 24 original inline-history and 72 transport comparisons. All 696 complete target bytes independently matched disk/live. The scalar ADD ESP,4 listing gap was repaired with the supported locked tool, saved and exported; the target destructor stored-body truncation remains qualified. Whole derived allocation/publication, original private EH/CRT, runtime tables, network and gameplay remain unbound.
