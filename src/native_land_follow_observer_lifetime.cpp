@@ -25,6 +25,10 @@ void destroy_native_land_follow_observer_006cdd70(
     lifetime.destroy_callback_owner_00695870(component.callback_00);
 }
 
+// Reused unchanged for active scalar006CEEB0's complete normal contract:
+// same actual COMPONENT capture, 006CDD70 call, post-helper low-byte test,
+// optional BF65AC component free and COMPONENT return. It is not an adjustor
+// to Follow root+0; only a separate actual CRT component admits flags1.
 NativeObserverOwnerStorage* scalar_delete_native_land_follow_observer_006cddf0(
     const NativeLandFollowObserverCleanupView& component, std::uint32_t flags,
     NativeObserverLifetime& lifetime) {
