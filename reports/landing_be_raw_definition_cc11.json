@@ -1,0 +1,101 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0075ada0",
+    "end_address": "0075adbd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0075ada0",
+    "end_address": "0075adbc",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0075ada0",
+    "disassemble_first": false,
+    "name": "BSP_LeaderPromotionMessage_AcceptsType"
+   },
+   "result": {
+    "success": true,
+    "address": "0075ada0",
+    "function_name": "BSP_LeaderPromotionMessage_AcceptsType",
+    "entry_point": "0075ada0",
+    "body_size": 29,
+    "message": "Function created successfully at 0075ada0",
+    "warnings": [
+     "Function name 'BSP_LeaderPromotionMessage_AcceptsType' \u2014 main part 'LeaderPromotionMessage_AcceptsType' is not PascalCase. Expected: LeaderpromotionmessageAcceptstype",
+     "Function name 'BSP_LeaderPromotionMessage_AcceptsType' \u2014 main part 'LeaderPromotionMessage_AcceptsType' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LeaderPromotionMessage_AcceptsType' does not start with a recognized verb. First word 'Leader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0075ada0",
+   "end": "0075adbd",
+   "name": "BSP_LeaderPromotionMessage_AcceptsType",
+   "after": "Function: BSP_LeaderPromotionMessage_AcceptsType at 0075ada0\nSignature: undefined BSP_LeaderPromotionMessage_AcceptsType(void)\nEntry: 0075ada0\nBody: 0075ada0 - 0075adbc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0075adc0",
+    "end_address": "0075addf"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0075adc0",
+    "end_address": "0075adde",
+    "bytes_disassembled": 31,
+    "message": "Successfully disassembled 31 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0075adc0",
+    "disassemble_first": false,
+    "name": "CG_scalar_deleting_dtor_0075adc0"
+   },
+   "result": {
+    "success": true,
+    "address": "0075adc0",
+    "function_name": "CG_scalar_deleting_dtor_0075adc0",
+    "entry_point": "0075adc0",
+    "body_size": 28,
+    "message": "Function created successfully at 0075adc0",
+    "warnings": [
+     "Function name 'CG_scalar_deleting_dtor_0075adc0' \u2014 main part 'CG_scalar_deleting_dtor_0075adc0' is not PascalCase. Expected: CgScalarDeletingDtor0075adc0",
+     "Function name 'CG_scalar_deleting_dtor_0075adc0' \u2014 main part 'CG_scalar_deleting_dtor_0075adc0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0075adc0",
+   "end": "0075addf",
+   "name": "CG_scalar_deleting_dtor_0075adc0",
+   "after": "Function: CG_scalar_deleting_dtor_0075adc0 at 0075adc0\nSignature: undefined CG_scalar_deleting_dtor_0075adc0(void)\nEntry: 0075adc0\nBody: 0075adc0 - 0075adde"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

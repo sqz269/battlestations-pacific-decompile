@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:02:30.514834+00:00",
+  "updated_utc": "2026-10-07T05:15:46.157723+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -173,7 +173,23 @@
         "call_failures": 0
       }
     ],
-    "full_main_build": "pending serialized compile slot after health ON export",
+    "full_main_build": {
+      "code_revision": "74810291f",
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/cc11_second_integrated_build.log",
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "bsp_game_sha256": "f2c98ed908ba0ca93d9136f39ae70ab2abf31f22334b11ab75e2b6ee02191beb",
+      "source_defaults": "health callback guard OFF; capture party OFF; class8 director OFF",
+      "qualification": "New main link and existing checks only; no callback/task native ABI or mission result claimed."
+    },
     "worker_reuse": {
       "director_props": "cc11_director_jm06_pair",
       "land_retirement": "cc11_land_be_profile"
@@ -202,6 +218,16 @@
         "internal_function_count": 64257,
         "call_graph_edges": 134344,
         "index_rebuilt": true
+      },
+      "additional_profile_review": {
+        "already_defined_constructor": "0075ad60",
+        "newly_defined": [
+          "0075ada0",
+          "0075adc0"
+        ],
+        "definition_receipt": "reports/landing_be_raw_definition_cc11.json",
+        "saved_and_exported": true,
+        "source_profile": "reused landing worker in progress"
       }
     }
   }

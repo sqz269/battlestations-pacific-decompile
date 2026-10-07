@@ -13150,9 +13150,11 @@
       "reuses_worker_from": "cc11_director_props",
       "code_revision": "acb8b24a2d4202042b8bd8793ac79102c7fa4924",
       "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
-      "full_main_build_pending": true,
+      "full_main_build_pending": false,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "build_validation_revision": "74810291f",
+      "build_validation_report": "reports/orchestrator_dispatch_cc11.json"
     },
     {
       "id": "cc11_land_retained_hook",
@@ -13195,9 +13197,11 @@
       "reuses_worker_from": "cc11_land_retirement",
       "code_revision": "d4e9094b1",
       "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
-      "full_main_build_pending": true,
+      "full_main_build_pending": false,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "build_validation_revision": "74810291f",
+      "build_validation_report": "reports/orchestrator_dispatch_cc11.json"
     },
     {
       "id": "cc11_director_jm06_pair",
@@ -13234,7 +13238,10 @@
         "007f0030",
         "007ed610",
         "007ed260",
-        "007ed580"
+        "007ed580",
+        "0075ad60",
+        "0075ada0",
+        "0075adc0"
       ],
       "output_files": [
         "include/bsp/plane_squadron_host.hpp",
@@ -13249,7 +13256,18 @@
         "cc11_land_retained_hook"
       ],
       "contract": "Implement a bounded BE source message/profile using existing extended header and bit-cursor providers; recover the complete deferred BE receiver and required reindex contract. Keep routing/retired FIFO lifetime binding external. Never emit an integer-only message or perform promotion synchronously in the pre-destructor hook.",
-      "reuses_worker_from": "cc11_land_retained_hook"
+      "reuses_worker_from": "cc11_land_retained_hook",
+      "code_ranges": [
+        "00769aab-00769ad0",
+        "0076a27b-0076a29b"
+      ],
+      "local_validation_artifacts": [
+        "local/cc11_land_be_probe.cpp",
+        "local/cc11_land_be_probe.obj",
+        "local/cc11_land_be_probe.exe",
+        "local/native_session_message_be_cc11.obj",
+        "local/plane_squadron_host_cc11.obj"
+      ]
     }
   ],
   "snapshot_after_analysis": {
