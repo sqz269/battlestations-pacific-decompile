@@ -24,7 +24,7 @@
     "cc11_scene_group_loading",
     "cc9_land_convoy_movement"
   ],
-  "status": "bounded one Reverse owning-B read; fresh strict actual TUs/manifested pinned-support link/actual parser-library-called reader fixture PASS; primary main integration/fullbuild/CTest pending",
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3 CTests passed; native ABI/game unbound",
   "correction": {
     "was": "The actual Reverse read rescanned diagnostics despite recognized owning explicit-B data",
     "is": "One local actually called compatible case-insensitive B plus has_boolean reader returns owning boolean_value!=0; otherwise exact prior scalar(Reverse,0)!=0; only one assignment replaced",
@@ -1022,5 +1022,65 @@
     "fixture_tested": "Actual parser/15lib22group/private called reader/public record PASS; installed Bfalse and recognized true/false ownership; Source raw and prior convoy regressions",
     "ABI_compatible": false,
     "game_validated": false
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T18:21:39.316906+00:00",
+    "worker_revision": "ba33ce4af767b525387c872f9000f654a20b25d0",
+    "integrated_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_build_revision": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_reverse_scalar_step_integrated_build.log",
+    "game_executable_sha256": "913731198e41bc46547d182f269ea63089d4826ad778ccf5512384e2cd238fd7",
+    "probe_recipe": "local/cc11_convoy_reverse_root.cmd",
+    "probe_log": "local/cc11_convoy_reverse_root_compile.log",
+    "probe_sha256": "ca9d0f62c67eeeb03da0b543bfd1d27020f1a1a08eb7e115f53cfad6475a73fd",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_whole_fixture_review": true,
+    "fresh_actual_translation_units": 3,
+    "stable_current_Source_provider_header_fixture_inputs": 179,
+    "actual_compiler_includes": 177,
+    "stable_installed_inputs": 17,
+    "stable_current_link_inputs": 77,
+    "native_bodies": [
+      {
+        "address": "007434A4",
+        "bytes": 21,
+        "sha256": "33172fc23e25937c4971febecd45073bf95d4ef99c623f7bd32946424dd440f1",
+        "disk_live": "MATCH",
+        "end_exclusive": "007434B9"
+      }
+    ],
+    "actual_cells": [
+      {
+        "address": "00CFF2F0",
+        "bytes": 8,
+        "sha256": "aea1926cad02335a52d57d630b3b7c4994a6673c5e861497fd26bb0b67752dad",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "before_after_receipts": [
+      "local/cc11_convoy_reverse_root/inputs_before_link.json",
+      "local/cc11_convoy_reverse_root/inputs_after_link.json"
+    ],
+    "native_abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "native_direct_rows_checked": 1,
+    "native_direct_rows_failed": 0,
+    "installed_libraries": 15,
+    "installed_groups": 22,
+    "installed_Reverse_B_witnesses": 1,
+    "actual_called_reader_and_public_record_executed": true,
+    "whole_GameUnits_executed": false,
+    "enum_provider_bound": false,
+    "native_I_F_byte_parity_claimed": false,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T182151Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "00743450"
+    ],
+    "index_rebuilt_after_ledger_and_exports": true
   }
 }

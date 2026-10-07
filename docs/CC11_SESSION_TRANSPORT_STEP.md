@@ -129,3 +129,7 @@ claim four direct calls. The full enclosing `0076FFC0` phase, transport factory,
 all-profile native ABI, networking, failure paths and gameplay remain open.
 The worker changes only its two Source files and this document/report; the
 integrator owns shared build registration, annotations and main-build review.
+
+## Primary integration
+
+Main `b02e3154636139d964b1e32f0f91b710dd71985e` passed the full Win32 build and all three existing CTests. Root independently compiled six repository translation units plus the probe: seven actual compilation units. Thirty current Source/header/fixture inputs, 23 compiler includes, three current libraries and the PE stayed unchanged before and after. The six connected dispatcher/profile cases reproduced 511 checks, including the skipped first node, ignored count, later target alias, client empty/populated return, whole inline payload and separate cursor state, all histories/locks, and full captured x87/MXCSR/XMM comparison. All 60 native code bytes, both actual 32-byte profiles and the constant match disk/live. Fresh Source COFF byte hashes match the reviewed worker output; Source client RET0 is three bytes, original RET is one. Two direct calls and two qualified indirect profile tail jumps passed. Historical invalid-handler and whole factory/session/network/ABI/game remain open. The PE32 asInvoker manifest was verified. No tracked tests were added.
