@@ -1,0 +1,991 @@
+{
+  "packet": "cc11_health_transport_countdown",
+  "created_utc": "2026-10-07T17:11:10.553518+00:00",
+  "base_commit": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+  "branch": "agent/cc11_health_guard",
+  "status": "Both complete Source functions freshly compiled; connected full-original83+34-byte composition and direct leaf passed84cases; primary integration/full main build pending.",
+  "owned_files": [
+    "include/bsp/native_session_transport_countdown.hpp",
+    "src/native_session_transport_countdown.cpp",
+    "docs/CC11_SESSION_TRANSPORT_COUNTDOWN.md",
+    "reports/cc11_session_transport_countdown.json"
+  ],
+  "functions": [
+    {
+      "entry": "0076C4A0",
+      "end_exclusive": "0076C4F3",
+      "bytes": 83,
+      "instructions": 25,
+      "source": "bsp::tick_native_session_transport_countdowns_0076c4a0",
+      "name_hypothesis": "Session transport countdown fanout",
+      "original_abi": "ECX actual session, one raw float stack argument, RET4",
+      "source_abi": "cdecl actual session/raw DWORD step/borrowed bindings; plain RET",
+      "original_sha256": "11f71db6c6fd0bf2910e46d86c7041c4c4951db9c77bfef5ed25428da48a08d9",
+      "disk_live_full_bytes_match": true
+    },
+    {
+      "entry": "00782840",
+      "end_exclusive": "00782862",
+      "bytes": 34,
+      "instructions": 10,
+      "source": "bsp::tick_native_transport_countdown_00782840",
+      "name_hypothesis": "Transport countdown tick",
+      "original_abi": "ECX actual transport, one raw float stack argument, RET4",
+      "source_abi": "cdecl actual transport/raw DWORD step/borrowed bindings; plain RET",
+      "original_sha256": "cf3c6aff9485356dd6b51e78c7dab2543b13035aecbd6eaaa8938d52b4839b36",
+      "disk_live_full_bytes_match": true
+    }
+  ],
+  "native_context": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "constants": [
+    {
+      "name": "maximum",
+      "address": "00D7A280",
+      "bytes": 8,
+      "raw_bits": "3FE0000000000000",
+      "disk_live_full_bytes_match": true
+    },
+    {
+      "name": "replacement",
+      "address": "00CE3800",
+      "bytes": 4,
+      "raw_bits": "3F000000",
+      "disk_live_full_bytes_match": true
+    },
+    {
+      "name": "threshold",
+      "address": "00D7A260",
+      "bytes": 4,
+      "raw_bits": "BF800000",
+      "disk_live_full_bytes_match": true
+    }
+  ],
+  "actual_fields": [
+    "session+18C secondary pointer cell, read first",
+    "session+188 primary pointer cell, freshly read AFTER first leaf return",
+    "transport+48 float countdown; actual primary and secondary pointers may alias"
+  ],
+  "behavior": [
+    "Load actual double D7A280, load raw argument as float, FCOMIP ST0/ST1, FSTP ST0, JBE preserves below/equal/unordered argument.",
+    "Only ordered above loads actual float CE3800 with MOVSS and overwrites the local raw step word. No C++ min/NaN shortcut.",
+    "Visit actual secondary then freshly read primary; each reached call separately FLDs the selected step and FSTPs its own stack argument.",
+    "Complete leaf captures actual+48 with MOVSS, COMISSes actual FLOAT D7A260, MOVSSes captured local BEFORE JBE; <=threshold or unordered skips write.",
+    "Otherwise FLD captured value, FSUB step, FSTP actual+48. No lower/zero clamp. Native SSE/x87 controls, flags, NaN and denormal effects are retained."
+  ],
+  "call_rows": [
+    {
+      "address": "0077007E",
+      "native": "0076C4A0",
+      "function": "0076FFC0",
+      "kind": "direct",
+      "contract": "Sole observed native parent CALL; preceding00770074 FLD and0077007B FSTP stage the caller step; whole caller remains open."
+    },
+    {
+      "address": "0076C4D3",
+      "native": "00782840",
+      "function": "0076C4A0",
+      "kind": "direct",
+      "contract": "Actual secondary+18C after its separate FLD/FSTP stage."
+    },
+    {
+      "address": "0076C4EB",
+      "native": "00782840",
+      "function": "0076C4A0",
+      "kind": "direct",
+      "contract": "Fresh primary+188 after previous return and separate FLD/FSTP stage."
+    }
+  ],
+  "fixture": {
+    "artifact_directory": "local/cc11_transport_countdown_20261007_a",
+    "full_original_connected_composition": true,
+    "original_parent_bytes": 83,
+    "original_leaf_bytes": 34,
+    "source_operation_thunks": 0,
+    "code_relocations": [
+      {
+        "body": "parent",
+        "original_operand": "0076C4A2",
+        "copy_operand_offset": "02",
+        "bytes": 4,
+        "replacement": "actual PAGE_READONLY mapped PE double D7A280 address"
+      },
+      {
+        "body": "parent",
+        "original_operand": "0076C4B7",
+        "copy_operand_offset": "17",
+        "bytes": 4,
+        "replacement": "actual PAGE_READONLY mapped PE float CE3800 address"
+      },
+      {
+        "body": "parent",
+        "original_operand": "0076C4D4",
+        "copy_operand_offset": "34",
+        "bytes": 4,
+        "replacement": "REL32 complete original leaf copy"
+      },
+      {
+        "body": "parent",
+        "original_operand": "0076C4EC",
+        "copy_operand_offset": "4C",
+        "bytes": 4,
+        "replacement": "REL32 same complete original leaf copy"
+      },
+      {
+        "body": "leaf",
+        "original_operand": "00782849",
+        "copy_operand_offset": "09",
+        "bytes": 4,
+        "replacement": "actual PAGE_READONLY mapped PE FLOAT D7A260 address"
+      }
+    ],
+    "relocated_operand_bytes": 20,
+    "all_other_97_code_bytes_asserted_exact": true,
+    "writable_then_executable_readonly": true,
+    "setup": [
+      "Frozen original file is actually mapped PAGE_READONLY; both implementations borrow the SAME real PE constant cells without value stubs or mutations.",
+      "Two actual0xA60 transport-layout backings expose+48; actual0x190 session backing exposes188/18C. All other bytes are distinct canaries; no full transport/session factory is claimed.",
+      "Null layouts, secondary only, primary only, distinct pointers, and aliased actual transport pointers use direct backing, not synthetic operation callbacks.",
+      "Inspected integer-only ABI fixture drivers FXRSTOR the identical hardware seed immediately before execution and FXSAVE immediately afterward.",
+      "Seed setup uses actual FNINIT/FLDCW/LDMXCSR and optional0/0 invalid operation; occupied live x87 values are genuinely loaded. Host environment is restored before fixture checks.",
+      "No reconstructed CRT/provider dependency, clock, queue, host phase, virtual operation or network send is reached by either body."
+    ],
+    "scenario_rows": [
+      {
+        "name": "null transports still execute NaN cap comparison",
+        "layout": 0,
+        "step": "7F812345",
+        "first": "3F800000",
+        "second": "BF800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "ordered cap",
+        "layout": 1,
+        "step": "3F000001",
+        "first": "3F000000",
+        "second": "3F800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "primary equal lower threshold",
+        "layout": 2,
+        "step": "3F000000",
+        "first": "BF800000",
+        "second": "3F800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "secondary then primary distinct",
+        "layout": 3,
+        "step": "3E800000",
+        "first": "3F400000",
+        "second": "BF600000",
+        "direct_leaf": false
+      },
+      {
+        "name": "alias crosses threshold",
+        "layout": 4,
+        "step": "3E800000",
+        "first": "BF600000",
+        "second": "3F800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "alias ticks twice",
+        "layout": 4,
+        "step": "3E800000",
+        "first": "3F400000",
+        "second": "3F800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "positive infinity is capped",
+        "layout": 3,
+        "step": "7F800000",
+        "first": "3F800000",
+        "second": "BF800001",
+        "direct_leaf": false
+      },
+      {
+        "name": "negative infinity remains uncapped",
+        "layout": 3,
+        "step": "FF800000",
+        "first": "3F800000",
+        "second": "BF000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "step qNaN argument stages",
+        "layout": 3,
+        "step": "7FC12345",
+        "first": "3F800000",
+        "second": "3E800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "step sNaN argument stages",
+        "layout": 3,
+        "step": "7F812345",
+        "first": "3F800000",
+        "second": "3E800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "timer qNaN and sNaN COMISS",
+        "layout": 3,
+        "step": "3E800000",
+        "first": "7FC12345",
+        "second": "FF812345",
+        "direct_leaf": false
+      },
+      {
+        "name": "positive step zero and signed countdown zeros",
+        "layout": 3,
+        "step": "00000000",
+        "first": "80000000",
+        "second": "00000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "negative step zero and signed countdown zeros",
+        "layout": 3,
+        "step": "80000000",
+        "first": "80000000",
+        "second": "00000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "subnormal step and countdown",
+        "layout": 3,
+        "step": "00000001",
+        "first": "00000001",
+        "second": "80000001",
+        "direct_leaf": false
+      },
+      {
+        "name": "large negative step overflow",
+        "layout": 3,
+        "step": "FF7FFFFF",
+        "first": "7F7FFFFF",
+        "second": "00000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "precision subtraction",
+        "layout": 3,
+        "step": "33000001",
+        "first": "3F800000",
+        "second": "3F000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "signed zero rounding",
+        "layout": 4,
+        "step": "00000000",
+        "first": "80000000",
+        "second": "00000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "large negative step overflow",
+        "layout": 3,
+        "step": "FF7FFFFF",
+        "first": "7F7FFFFF",
+        "second": "00000000",
+        "direct_leaf": false
+      },
+      {
+        "name": "subnormal step and countdown",
+        "layout": 3,
+        "step": "00000001",
+        "first": "00000001",
+        "second": "80000001",
+        "direct_leaf": false
+      },
+      {
+        "name": "timer qNaN and sNaN COMISS",
+        "layout": 3,
+        "step": "3E800000",
+        "first": "7FC12345",
+        "second": "FF812345",
+        "direct_leaf": false
+      },
+      {
+        "name": "step sNaN argument stages",
+        "layout": 3,
+        "step": "7F812345",
+        "first": "3F800000",
+        "second": "3E800000",
+        "direct_leaf": false
+      },
+      {
+        "name": "leaf does not cap step",
+        "layout": 2,
+        "step": "3F400000",
+        "first": "3F800000",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf lower-bound equal skip",
+        "layout": 2,
+        "step": "BF000000",
+        "first": "BF800000",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf below lower-bound skip",
+        "layout": 2,
+        "step": "BF000000",
+        "first": "BF800001",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf positive neighbor of lower bound",
+        "layout": 2,
+        "step": "3E800000",
+        "first": "BF7FFFFF",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf sNaN step without parent staging",
+        "layout": 2,
+        "step": "7F812345",
+        "first": "3F800000",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf qNaN countdown",
+        "layout": 2,
+        "step": "3E800000",
+        "first": "7FC12345",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf sNaN countdown",
+        "layout": 2,
+        "step": "3E800000",
+        "first": "7F812345",
+        "second": "00000000",
+        "direct_leaf": true
+      },
+      {
+        "name": "leaf denormal countdown with FTZ/DAZ",
+        "layout": 2,
+        "step": "00000001",
+        "first": "00000001",
+        "second": "00000000",
+        "direct_leaf": true
+      }
+    ],
+    "case_groups": [
+      {
+        "name": "ordinary connected composition",
+        "cases": 15,
+        "control": "x87CW037F/MXCSR1F80, two occupied x87 values"
+      },
+      {
+        "name": "three arithmetic cases across PC/RC",
+        "cases": 36,
+        "control": "PC24/53/64 crossed with all4 RC modes; independent MXCSR1F80, x87 invalid pre-existing, two occupied values"
+      },
+      {
+        "name": "three SIMD/NaN/denormal cases across independent MXCSR",
+        "cases": 24,
+        "control": "fixed x87CW077F; all4 MXCSR rounding modes, DAZ/FTZ off or both on, pre-existing sticky flags, two occupied values"
+      },
+      {
+        "name": "ordinary connected empty incoming x87 stack",
+        "cases": 1,
+        "control": "x87CW037F/MXCSR1F80, no occupied values"
+      },
+      {
+        "name": "direct complete leaf edge cases",
+        "cases": 8,
+        "control": "x87CW0B7F/MXCSR9FC0, one occupied value; no parent cap/argument staging"
+      }
+    ],
+    "comparisons": [
+      "Both complete actual transport backings match bit-for-bit. Actual session and both transport byte preimages remain unchanged except exact+48 output cells.",
+      "Full x87 control and status words, including TOP, all exception/condition/stack status bits; register tag occupancy and all eight raw80-bit register values compare exactly.",
+      "Incoming occupied80-bit values, TOP and tags are preserved; all control words remain unchanged. Scratch remnants also match the original in tested cases.",
+      "Full MXCSR controls/sticky flags and hardware mask; all eight128-bit XMM register results compare exactly.",
+      "Named direct expected effects establish the real0.5 cap, aliased double decrement, and alias threshold crossing that makes the second call skip."
+    ],
+    "excluded_fp_metadata": "FXSAVE instruction pointer, data pointer, last-opcode/address metadata and reserved/padding bytes are not compared: original and Source execute at different addresses and use different valid stack addressing. No CPU EFLAGS/native register ABI contract is claimed.",
+    "fp_domain": "Masked x87/SSE exceptions and at least two free x87 stack slots; directed PC/RC/MXCSR variations retain controls. No unmasked traps, stack-overflow faults or concurrent backing mutation proof.",
+    "result": {
+      "checks": 1696,
+      "failures": 0,
+      "original_session_cases": 76,
+      "original_leaf_cases": 8
+    }
+  },
+  "build": {
+    "toolchain": "MSVC19.51.36244 Win32",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /MANIFEST:EMBED /OPT:REF",
+    "repo_translation_units": 1,
+    "fixture_translation_units": 1,
+    "source_header_fixture_inputs": 3,
+    "inputs": {
+      "source_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+      "sources": [
+        "src/native_session_transport_countdown.cpp"
+      ],
+      "snapshot": "local/cc11_transport_countdown_20261007_a/inputs_01",
+      "sha256_by_path": {
+        "include/bsp/native_session_transport_countdown.hpp": "bf7e79e5291bc9d3097ee1ed8ddacef21fadc23855bc197293f11e55d87ab721",
+        "local/cc11_transport_countdown_20261007_a/probe.cpp": "1080db0a251cb03bc730993177403245d6a83ff2942e92405909ddb7c0100d49",
+        "src/native_session_transport_countdown.cpp": "ef9b3699a0d50bdccf73d9883929bbfcd2219ac5be73d35a2dffcb24e65112cc"
+      },
+      "probe_sha256": "1080db0a251cb03bc730993177403245d6a83ff2942e92405909ddb7c0100d49"
+    },
+    "support_before": {
+      "main_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+      "worker_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_core.lib",
+          "sha256": "5fe4493bfb4ff780b968545cebe4763334fa7321f87f13c8fed12fcc3f16feeb",
+          "bytes": 73264154
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "support_after": {
+      "main_head_after": "a121efaa03744877e75c4ef324181d9744d863f0",
+      "copied_libraries_stable": true,
+      "current_main_libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_after": "4159cc5daee3d4f38ff7059095cd1aa5c9b98211c95424d5c7c3ade0b723c793",
+          "matches_frozen_before": false
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "matches_frozen_before": true
+        }
+      ],
+      "main_rebuild_permitted_after_support_snapshot": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 3,
+      "support_before": {
+        "main_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+        "worker_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_core.lib",
+            "sha256": "5fe4493bfb4ff780b968545cebe4763334fa7321f87f13c8fed12fcc3f16feeb",
+            "bytes": 73264154
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "parent_reported_support_full_build_codepoint": "55afb410e3cb242ff5c60fcabef8502962a92d3a",
+    "observed_metadata_head": "46737404342bbca8f7bd0d5599c99b4eb2c0c9bf",
+    "support_scope": "Three read-only current main library copies frozen before main rebuild permission and passed to link. The new body has no imported/provider dependency; these are support link inputs, not a claim that old implementations supplied the countdowns.",
+    "original_pe": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_countdown_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752,
+      "unchanged": true
+    },
+    "manifest_as_invoker": true,
+    "build_exit": 0,
+    "probe_exit": 0,
+    "main_build_run_by_worker": false
+  },
+  "coff": {
+    "source": [
+      {
+        "symbol": "?tick_native_transport_countdown_00782840@bsp@@YAXPAXIABUNativeSessionTransportCountdownBindings@1@@Z",
+        "machine": "I386",
+        "section": 4,
+        "bytes": 49,
+        "sha256": "5d75a279bf1320af87c4f457a075e8c270112308c7f6410db1c10858cf489177",
+        "relocations": [],
+        "instruction_count": 18,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: sub esp, 0x10",
+          "06: mov eax, dword ptr [ebp + 0x10]",
+          "09: mov eax, dword ptr [eax + 8]",
+          "0C: mov dword ptr [ebp + 0x10], eax",
+          "0F: mov ecx, dword ptr [ebp + 8]",
+          "12: mov edx, dword ptr [ebp + 0x10]",
+          "15: movss xmm0, dword ptr [ecx + 0x48]",
+          "1A: comiss xmm0, dword ptr [edx]",
+          "1D: movss dword ptr [ebp - 0x10], xmm0",
+          "22: jbe 0x2d",
+          "24: fld dword ptr [ebp - 0x10]",
+          "27: fsub dword ptr [ebp + 0xc]",
+          "2A: fstp dword ptr [ecx + 0x48]",
+          "2D: mov esp, ebp",
+          "2F: pop ebp",
+          "30: ret "
+        ],
+        "review": {
+          "capture": "15 MOVSS actual transport+48;1A COMISS actual FLOAT threshold;1D MOVSS captured stack word BEFORE22 JBE.",
+          "subtract": "24 FLD captured word;27 FSUB original step word;2A FSTP actual transport+48.",
+          "calls": "No calls or COFF relocations; no floating-point helper or C++ branch.",
+          "stack": "Source cdecl three-stack-argument interface; plain RET at30.",
+          "full_disassembly_reviewed": true
+        },
+        "role": "leaf"
+      },
+      {
+        "symbol": "?tick_native_session_transport_countdowns_0076c4a0@bsp@@YAXPAXIABUNativeSessionTransportCountdownBindings@1@@Z",
+        "machine": "I386",
+        "section": 3,
+        "bytes": 117,
+        "sha256": "ca7f1a5658b5e8a07108637af006def09b386a33f99e8bce1c11f706d144851d",
+        "relocations": [
+          {
+            "operand_offset": "4A",
+            "coff_kind": "0014",
+            "symbol": "?tick_native_transport_countdown_00782840@bsp@@YAXPAXIABUNativeSessionTransportCountdownBindings@1@@Z"
+          },
+          {
+            "operand_offset": "6A",
+            "coff_kind": "0014",
+            "symbol": "?tick_native_transport_countdown_00782840@bsp@@YAXPAXIABUNativeSessionTransportCountdownBindings@1@@Z"
+          }
+        ],
+        "instruction_count": 43,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: sub esp, 8",
+          "06: mov ecx, dword ptr [ebp + 0x10]",
+          "09: mov dword ptr [ebp + 0x10], ecx",
+          "0C: mov eax, dword ptr [ecx]",
+          "0E: mov dword ptr [ebp - 4], eax",
+          "11: mov eax, dword ptr [ecx + 4]",
+          "14: mov dword ptr [ebp - 8], eax",
+          "17: mov eax, dword ptr [ebp - 4]",
+          "1A: fld qword ptr [eax]",
+          "1C: fld dword ptr [ebp + 0xc]",
+          "1F: fcompi st(1)",
+          "21: fstp st(0)",
+          "23: jbe 0x31",
+          "25: mov eax, dword ptr [ebp - 8]",
+          "28: movss xmm0, dword ptr [eax]",
+          "2C: movss dword ptr [ebp + 0xc], xmm0",
+          "31: mov eax, dword ptr [ebp + 8]",
+          "34: mov ecx, dword ptr [eax + 0x18c]",
+          "3A: test ecx, ecx",
+          "3C: je 0x51",
+          "3E: push dword ptr [ebp + 0x10]",
+          "41: fld dword ptr [ebp + 0xc]",
+          "44: push ecx",
+          "45: fstp dword ptr [esp]",
+          "48: push ecx",
+          "49: call 0x4e",
+          "4E: add esp, 0xc",
+          "51: mov eax, dword ptr [ebp + 8]",
+          "54: mov ecx, dword ptr [eax + 0x188]",
+          "5A: test ecx, ecx",
+          "5C: je 0x71",
+          "5E: push dword ptr [ebp + 0x10]",
+          "61: fld dword ptr [ebp + 0xc]",
+          "64: push ecx",
+          "65: fstp dword ptr [esp]",
+          "68: push ecx",
+          "69: call 0x6e",
+          "6E: add esp, 0xc",
+          "71: mov esp, ebp",
+          "73: pop ebp",
+          "74: ret "
+        ],
+        "review": {
+          "cap": "1A FLD actual double;1C FLD step;1F FCOMIP;21 FSTP ST0;23 JBE;28/2C MOVSS replacement only on ordered above.",
+          "secondary": "34 fresh actual session+18C;41 FLD step;45 FSTP stack argument;49 complete Source leaf CALL.",
+          "primary": "54 fresh actual session+188 AFTER first return;61 FLD step;65 FSTP stack argument;69 complete Source leaf CALL.",
+          "stack": "Source cdecl three-stack-argument interface; plain RET at74; no native ABI claim.",
+          "full_disassembly_reviewed": true
+        },
+        "role": "parent"
+      }
+    ],
+    "fixture_drivers": [
+      {
+        "symbol": "?make_seed@@YAXGI_NIPAUFp@@@Z",
+        "machine": "I386",
+        "section": 63,
+        "bytes": 146,
+        "sha256": "03d45980d95ea9c97c01dc3be21bacd5bfc619d880d27a09cdebd473f1ef0359",
+        "relocations": [],
+        "instruction_count": 38,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: sub esp, 0x1c",
+          "06: mov dword ptr [ebp - 0xc], 0x54442d18",
+          "0D: mov dword ptr [ebp - 8], 0x400921fb",
+          "14: mov dword ptr [ebp - 4], 0xbf912345",
+          "1B: mov dword ptr [ebp - 0x1c], 0x1234567",
+          "22: mov dword ptr [ebp - 0x18], 0x89abcdef",
+          "29: mov dword ptr [ebp - 0x14], 0xfedcba98",
+          "30: mov dword ptr [ebp - 0x10], 0x76543210",
+          "37: fninit ",
+          "39: fldcw word ptr [ebp + 8]",
+          "3C: ldmxcsr dword ptr [ebp + 0xc]",
+          "40: cmp byte ptr [ebp + 0x10], 0",
+          "44: je 0x4e",
+          "46: fldz ",
+          "48: fldz ",
+          "4A: fdivp st(1)",
+          "4C: fstp st(0)",
+          "4E: cmp dword ptr [ebp + 0x14], 0",
+          "52: je 0x60",
+          "54: fld qword ptr [ebp - 0xc]",
+          "57: cmp dword ptr [ebp + 0x14], 1",
+          "5B: je 0x60",
+          "5D: fld dword ptr [ebp - 4]",
+          "60: movdqu xmm0, xmmword ptr [ebp - 0x1c]",
+          "65: movdqu xmm1, xmmword ptr [ebp - 0x1c]",
+          "6A: movdqu xmm2, xmmword ptr [ebp - 0x1c]",
+          "6F: movdqu xmm3, xmmword ptr [ebp - 0x1c]",
+          "74: movdqu xmm4, xmmword ptr [ebp - 0x1c]",
+          "79: movdqu xmm5, xmmword ptr [ebp - 0x1c]",
+          "7E: movdqu xmm6, xmmword ptr [ebp - 0x1c]",
+          "83: movdqu xmm7, xmmword ptr [ebp - 0x1c]",
+          "88: mov eax, dword ptr [ebp + 0x18]",
+          "8B: fxsave [eax]",
+          "8E: mov esp, ebp",
+          "90: pop ebp",
+          "91: ret "
+        ]
+      },
+      {
+        "symbol": "?invoke_original@@YAXPBXPAXIPBUFp@@PAU1@@Z",
+        "machine": "I386",
+        "section": 59,
+        "bytes": 26,
+        "sha256": "367f29aa822c77022fd1d2d265afb2e5b6ce4c16e2bd8b49d37300568b3550da",
+        "relocations": [],
+        "instruction_count": 11,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: mov eax, dword ptr [ebp + 0x14]",
+          "06: fxrstor [eax]",
+          "09: mov ecx, dword ptr [ebp + 0xc]",
+          "0C: push dword ptr [ebp + 0x10]",
+          "0F: call dword ptr [ebp + 8]",
+          "12: mov eax, dword ptr [ebp + 0x18]",
+          "15: fxsave [eax]",
+          "18: pop ebp",
+          "19: ret "
+        ]
+      },
+      {
+        "symbol": "?invoke_source@@YAXP6AXPAXIABUNativeSessionTransportCountdownBindings@bsp@@@_E0IPBU12@PBUFp@@PAU3@@Z",
+        "machine": "I386",
+        "section": 60,
+        "bytes": 32,
+        "sha256": "4ff104d3b6bcc1ac3384e73f19ee07b7a1acc7bd157fad8432e668e0b5602624",
+        "relocations": [],
+        "instruction_count": 13,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: mov eax, dword ptr [ebp + 0x18]",
+          "06: fxrstor [eax]",
+          "09: push dword ptr [ebp + 0x14]",
+          "0C: push dword ptr [ebp + 0x10]",
+          "0F: push dword ptr [ebp + 0xc]",
+          "12: call dword ptr [ebp + 8]",
+          "15: add esp, 0xc",
+          "18: mov eax, dword ptr [ebp + 0x1c]",
+          "1B: fxsave [eax]",
+          "1E: pop ebp",
+          "1F: ret "
+        ]
+      }
+    ],
+    "original_bodies": [
+      {
+        "role": "parent",
+        "entry": "0076C4A0",
+        "end_exclusive": "0076C4F3",
+        "bytes": 83,
+        "instructions": 25,
+        "sha256": "11f71db6c6fd0bf2910e46d86c7041c4c4951db9c77bfef5ed25428da48a08d9",
+        "disk_live_full_bytes_match": true,
+        "disassembly": [
+          "0076C4A0: fld qword ptr [0xd7a280]",
+          "0076C4A6: push esi",
+          "0076C4A7: fld dword ptr [esp + 8]",
+          "0076C4AB: mov esi, ecx",
+          "0076C4AD: fcompi st(1)",
+          "0076C4AF: fstp st(0)",
+          "0076C4B1: jbe 0x76c4c1",
+          "0076C4B3: movss xmm0, dword ptr [0xce3800]",
+          "0076C4BB: movss dword ptr [esp + 8], xmm0",
+          "0076C4C1: mov ecx, dword ptr [esi + 0x18c]",
+          "0076C4C7: test ecx, ecx",
+          "0076C4C9: je 0x76c4d8",
+          "0076C4CB: fld dword ptr [esp + 8]",
+          "0076C4CF: push ecx",
+          "0076C4D0: fstp dword ptr [esp]",
+          "0076C4D3: call 0x782840",
+          "0076C4D8: mov ecx, dword ptr [esi + 0x188]",
+          "0076C4DE: test ecx, ecx",
+          "0076C4E0: pop esi",
+          "0076C4E1: je 0x76c4f0",
+          "0076C4E3: fld dword ptr [esp + 4]",
+          "0076C4E7: push ecx",
+          "0076C4E8: fstp dword ptr [esp]",
+          "0076C4EB: call 0x782840",
+          "0076C4F0: ret 4"
+        ]
+      },
+      {
+        "role": "leaf",
+        "entry": "00782840",
+        "end_exclusive": "00782862",
+        "bytes": 34,
+        "instructions": 10,
+        "sha256": "cf3c6aff9485356dd6b51e78c7dab2543b13035aecbd6eaaa8938d52b4839b36",
+        "disk_live_full_bytes_match": true,
+        "disassembly": [
+          "00782840: push ecx",
+          "00782841: movss xmm0, dword ptr [ecx + 0x48]",
+          "00782846: comiss xmm0, dword ptr [0xd7a260]",
+          "0078284D: movss dword ptr [esp], xmm0",
+          "00782852: jbe 0x78285e",
+          "00782854: fld dword ptr [esp]",
+          "00782857: fsub dword ptr [esp + 8]",
+          "0078285B: fstp dword ptr [ecx + 0x48]",
+          "0078285E: pop ecx",
+          "0078285F: ret 4"
+        ]
+      }
+    ],
+    "constants": [
+      {
+        "name": "maximum",
+        "address": "00D7A280",
+        "bytes": 8,
+        "raw_bits": "3FE0000000000000",
+        "disk_live_full_bytes_match": true
+      },
+      {
+        "name": "replacement",
+        "address": "00CE3800",
+        "bytes": 4,
+        "raw_bits": "3F000000",
+        "disk_live_full_bytes_match": true
+      },
+      {
+        "name": "threshold",
+        "address": "00D7A260",
+        "bytes": 4,
+        "raw_bits": "BF800000",
+        "disk_live_full_bytes_match": true
+      }
+    ]
+  },
+  "call_verifier": {
+    "exit": 0,
+    "rows_checked": 3,
+    "direct_calls": 3,
+    "indirect": 0,
+    "tail_jumps": 0,
+    "imports": 0,
+    "scope": "Read-only exact static CALL instruction and containing-function checks; does not close the whole incoming caller."
+  },
+  "limits": [
+    "New cdecl Source APIs are not native ABI replacements; descriptive names are hypotheses.",
+    "Whole0076FFC0 remains open at other host producers and00782870 transport+1C dispatch; hostA42280/clientA41130 providers are unbound.",
+    "No full session/transport factory, imported CRT behavior, private faults, unmasked floating-point traps, network delivery or gameplay is reconstructed by this packet.",
+    "Exceptional raw-word direct helper inputs exercise the complete body, not a claim that every bit pattern is produced by the observed incoming caller, which already FLD/FSTPs its argument.",
+    "No Source-computed FP branch, copied stack result, fabricated global, success stub, operation thunk or SDK callback mutation.",
+    "No tracked tests, CMake/shared metadata/ledger edits, Ghidra writes, whole main build or push by this worker."
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/probe.cpp",
+      "sha256": "1080db0a251cb03bc730993177403245d6a83ff2942e92405909ddb7c0100d49"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/probe.exe",
+      "sha256": "721b0c75bd9225cdf5e8d52c2bb953b2c4890d258cf3476579c6f939e1418a19"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/probe.log",
+      "sha256": "68fcfd36a28103537d8dfc2912bb043e16ae722a4af00498d9ada674e4d80b8c"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/build.cmd",
+      "sha256": "c355df470db3c3908f68b3654722b6e38a126099a06cd714e5165a2eab686c10"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/build.log",
+      "sha256": "e01615878f2dc232aa475da520ef8939b7d0a5e7fe869ad2505ba7b10b843201"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/prepare_build.py",
+      "sha256": "b7909516cd1be668dce8156ea9b7c24ecb8db2eabfd39ee9cf80bc829b32cd31"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/pin_support.py",
+      "sha256": "dbc9f79bdfb5e9b24cc6387f70780d3bfa6e24e3222d9eed1b463dd02c050024"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/pin_native.py",
+      "sha256": "2c69eb14ae4c197b7e064e40f4690f02cdc4be295cd022e82162c04764e36f22"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/inspect_evidence.py",
+      "sha256": "568ef6a7f643f26e7ac18fcd8d0f1be78a36eb5058abd08c1aa6a2b3226daea4"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/write_report.py",
+      "sha256": "59922e0fb0297136882697b1014b875b0ef8a1e0302a7b26620b9ce9ac4072c3"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/inputs_before_link.json",
+      "sha256": "53f348d1682a1493b069e286552705f65dbd943f56fcd035a98dd593b3829eee"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/inputs_after_link.json",
+      "sha256": "44b937524c490d900e8ccf12a62e0fffcdd39ac5df6e5d9c2ed1d2d099f15dbe"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/support_before_link.json",
+      "sha256": "93957f8ac7ffdf6448cea666ddd0d86346d1f7f03ce4f3effb25c2c59506deac"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/native_before_run.json",
+      "sha256": "785d64c0607d0c27b31d28e3ed3830982638f667f7747128e6f1e8812aa5e610"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/native_after_run.json",
+      "sha256": "4b69b8436451dcff5dfa39f276143d932622ee87323b9f0d28648f22728249b3"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_parent_bytes.txt",
+      "sha256": "692c080390be0d2358ed638115177041131052c8a8a6630bc8bdc43fa4d12a42"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_leaf_bytes.txt",
+      "sha256": "df67790cdc6c674779c97f7f8d018fdc100868fff84fed2550de7f351e3dd01c"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_parent_proto.txt",
+      "sha256": "003e0b8cb799bf0f27aff79fdf9fe5feee8a4a520f3e4760abeabb530876a251"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_leaf_proto.txt",
+      "sha256": "6c1268ddbc6c3167369180b725eb55654857fffe8fccc9c2ed0dc28c33e9364b"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_parent_xrefs.txt",
+      "sha256": "2eff6ad1ddd56ae9c93a52bcb0b21c577287db362a2f8ed5f813b6d6006508cc"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_leaf_xrefs.txt",
+      "sha256": "504c79beda0134833fd2397cc5389ad73a99265cf21f9787ee9fa807e9d8856a"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_maximum_bytes.txt",
+      "sha256": "81fea576b44cac3a69373898ff463326bafee9c1c5551e0a5b946fd7c530e90f"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_replacement_bytes.txt",
+      "sha256": "a83a9c1098467bf8c93a91c60a1f74a0b20fbfea93a5ab30152439fd35fb57f8"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/live_threshold_bytes.txt",
+      "sha256": "90071f406f4f041b108ed68b33991d361286aa04206bb39036f73ba957c52cba"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/original_parent.bin",
+      "sha256": "11f71db6c6fd0bf2910e46d86c7041c4c4951db9c77bfef5ed25428da48a08d9"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/original_leaf.bin",
+      "sha256": "cf3c6aff9485356dd6b51e78c7dab2543b13035aecbd6eaaa8938d52b4839b36"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/embedded_manifest.xml",
+      "sha256": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/coff_evidence.json",
+      "sha256": "58a7f4d484f5256144d2a4cdc7d362a099050230d3627c1bab874261db6fb67a"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/source_parent_coff.bin",
+      "sha256": "ca7f1a5658b5e8a07108637af006def09b386a33f99e8bce1c11f706d144851d"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/source_leaf_coff.bin",
+      "sha256": "5d75a279bf1320af87c4f457a075e8c270112308c7f6410db1c10858cf489177"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/asm/native_session_transport_countdown.asm",
+      "sha256": "90911c15fedb3381f725f413fe307280a6aa8900d58e96714acec9344836f620"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/obj/native_session_transport_countdown.obj",
+      "sha256": "2dc211c1cc1c943442cfa3a7e846fdcf7e0d56d55589b2b076c78bf397d3ac66"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/asm/probe.asm",
+      "sha256": "9a889efce0e966771f40cbd15cdfc55014d72cfe24f896cd18b55e7810e9ae18"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/obj/probe.obj",
+      "sha256": "178ff7da235f09094a0362cf8cae4ab28bb59444e4552f450ad42d56c7fe6c8a"
+    },
+    {
+      "path": "local/cc11_transport_countdown_20261007_a/verify_calls.log",
+      "sha256": "9b081ad120475721b955d0309c40c330b55f5d8d220191b19621df25ac20f791"
+    }
+  ]
+}
