@@ -1,0 +1,51 @@
+{
+  "packet": "cc11_raw_angle_add_root",
+  "status": "complete raw Source implementation; verification pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "entry": "00438AA0",
+      "end_exclusive": "00438B0E",
+      "bytes": 110,
+      "instructions": 38,
+      "sha256": "366372c0137d0cfa4b711b4e15d4adc779303b3446435026d69edcbbb70f5102",
+      "disk_live": "MATCH",
+      "source": "native_angle_add_00438aa0",
+      "source_file": "src/native_angle_add.cpp",
+      "calls": [],
+      "native_abi": "two stacked float words, ST0 result, RET8; Source adds ECX pure constant aliases and scratch EDX"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00CE3D18",
+      "raw_hex": "00000060fb2109c0"
+    },
+    {
+      "address": "00CE3D28",
+      "raw_hex": "00000060fb210940"
+    },
+    {
+      "address": "00CE3828",
+      "raw_hex": "00000060fb211940"
+    }
+  ],
+  "contract": "Complete native initial binary32 sum spill, double comparisons and both repeated correction/spill loops with original x87 stack schedule. No clamp, finite guard, cap, cached numeric constants, typed result replacement or FP control changes.",
+  "retained_typed_interface": {
+    "source": "src/unit_rudder.cpp",
+    "function": "wrapped_angle_add_00438aa0",
+    "ledger_status": "reconstructed_build_tested_explicit_host_boundaries"
+  },
+  "boundaries": [
+    "live actual cells and terminating inputs",
+    "masked exceptions and at least three free x87 stack entries in component comparison",
+    "new Source ECX context means no drop-in historical ABI claim",
+    "faults/privateEH/unmaskedexceptions/stack exhaustion/nontermination/GPRflagsXMM/FIPFDP not compared",
+    "holder path/wholegeometry/runtime/game not activated"
+  ]
+}
