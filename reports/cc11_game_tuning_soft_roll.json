@@ -1,0 +1,156 @@
+{
+  "packet": "cc11_primary_tuning_soft_roll",
+  "utc": "2026-10-07T18:57:07.233952+00:00",
+  "status": "Source producer restored; strict original-fragment fixture passed; joint main build and annotations pending",
+  "baseline": "b982327be6c08cfa7a6ebc00ac70a8eaab6f5430",
+  "source": "src/game_tuning_singleton.cpp",
+  "document": "docs/CC11_GAME_TUNING_SOFT_ROLL.md",
+  "native_fragment": {
+    "start": "007E6FB3",
+    "end_exclusive": "007E6FDA",
+    "bytes": 39,
+    "instructions": 9,
+    "FP_instructions": 5,
+    "sha256": "90a2db8316c54eb3c3b99ace8ec291f5974c695da11f05beb4cb4de0ef72cdf3",
+    "disk_live_full_match": true,
+    "whole_constructor_replayed": false,
+    "original_code_relocations": 0,
+    "appended_fixture_epilogue": "83C408C3 ADD ESP8;RET"
+  },
+  "source_connection": {
+    "producer": "game_tuning_load_007e2a20 after row57C trail release",
+    "consumer": "game_hosts_units.cpp copies derived580 into PilotBotRollInputs.soft_roll_offset; plane_ai_control.cpp consumes it",
+    "production_Lua_VFS_loader_fixture_executed": false,
+    "whole_controller_fixture_executed": false,
+    "old_unused_scalar_helper_changed": false
+  },
+  "fixture": {
+    "checks": 391,
+    "failures": 0,
+    "original_fragment_cases": 96,
+    "x87_precisions": [
+      24,
+      53,
+      64
+    ],
+    "x87_rounding_modes": 4,
+    "raw_input_pairs": 8,
+    "full_x87_MXCSR_XMM_match": true,
+    "only_word580_written": true,
+    "installed_words": [
+      "3F333333",
+      "3D4CCCCD"
+    ],
+    "installed_result_PC53_nearest": "3C75C290",
+    "original_fragment_unchanged": true,
+    "borrowed_block_size": "6D0",
+    "qualifications": [
+      "masked ordinary FP with at least two free x87 slots",
+      "FIP FDP opcode/GPR metadata excluded",
+      "no original lookup/privateLua/factory/EH/wholeclass/runtime proof"
+    ]
+  },
+  "compiler": {
+    "fresh_actual_translation_units": 2,
+    "production_CPP_compiled_separately": true,
+    "probe_includes_actual_CPP": true,
+    "private_kernel": {
+      "symbol": "?store_soft_roll_offset_007e6fb3@?A0xf96f14bb@bsp@@YAXAAUGameTuningBlock@2@@Z",
+      "machine": "I386",
+      "section": 444,
+      "bytes": 27,
+      "sha256": "fdd006f0457424ed834399e63ff880f6e5e6928d4651afdbd126fde92d93466f",
+      "relocations": [],
+      "instruction_count": 7,
+      "disassembly": [
+        "00: mov eax, dword ptr [esp + 4]",
+        "04: fld dword ptr [eax + 0x57c]",
+        "0A: fld1 ",
+        "0C: fsubrp st(1)",
+        "0E: fmul dword ptr [eax + 0x578]",
+        "14: fstp dword ptr [eax + 0x580]",
+        "1A: ret "
+      ]
+    },
+    "producer_kernel_inline_window": [
+      "360: call dword ptr [eax + 0x1c]",
+      "363: sub esi, 1",
+      "366: jns 0x358",
+      "368: mov eax, dword ptr [esp + 0x50]",
+      "36C: mov ecx, 0x57c",
+      "371: cmp word ptr [eax + 4], cx",
+      "378: jne 0x394",
+      "37A: mov eax, dword ptr [esp + 0x5c]",
+      "37E: fld dword ptr [eax + 0x57c]",
+      "384: fld1 ",
+      "386: fsubrp st(1)",
+      "388: fmul dword ptr [eax + 0x578]",
+      "38E: fstp dword ptr [eax + 0x580]",
+      "394: mov ebx, dword ptr [esp + 0x54]",
+      "398: mov eax, dword ptr [esp + 0x4c]",
+      "39C: inc eax"
+    ],
+    "producer_COFF_sha256": "d4e788519031b4565ddcd6c372b84a95c45b78cfc38e96b25264a25ccdc40eba",
+    "producer_COFF_bytes": 996,
+    "producer_COFF_instruction_count": 306
+  },
+  "immutable_inputs": {
+    "count": 9,
+    "before": {
+      "baseline": "b982327be6c08cfa7a6ebc00ac70a8eaab6f5430",
+      "sha256_by_path": {
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\game_tuning_singleton.cpp": "05264cf272cda0428bc3e99e799a46595ea7c13cde586d0001b208e0a9ab423e",
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_tuning_singleton.hpp": "49984f13fd047407d7dd56075aaef7ed3cd01a2398c2f25e5fee3095130f9d8b",
+        "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_tuning_soft_roll_root\\probe.cpp": "0a39f35a2d74fb9e290fb2aacdcf03fe014b4cc518aa7bfc0a6cd4c47406158f",
+        "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_tuning_soft_roll_root\\build.cmd": "947e981bb2dcf5a4067386ec4b08d707307c9ad70cf93160d24a1cd59e334f76",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\Scripts\\datatables\\PlaneGlobals.lua": "dd560df03ce946ffc6a4fe1ade8615577a5ff90068b8d91bf84b2117eeeb5407"
+      },
+      "native_fragment_sha256": "90a2db8316c54eb3c3b99ace8ec291f5974c695da11f05beb4cb4de0ef72cdf3",
+      "native_fragment": "d9857c050000d9e868cc75d000dee18d9424740b0000528d4c2418d88d78050000d99d80050000",
+      "fresh_actual_compilation_units": 2,
+      "production_CPP_compiled_separately": true,
+      "probe_includes_actual_CPP": true,
+      "Source_loader_runtime_executed": false,
+      "fixture_revision_note": "multiline MASM instructions corrected after strict compile failed before link or execution"
+    },
+    "after": {
+      "baseline": "b982327be6c08cfa7a6ebc00ac70a8eaab6f5430",
+      "sha256_by_path": {
+        "J:\\PROG\\battlestations-pacific-decompile\\src\\game_tuning_singleton.cpp": "05264cf272cda0428bc3e99e799a46595ea7c13cde586d0001b208e0a9ab423e",
+        "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_tuning_singleton.hpp": "49984f13fd047407d7dd56075aaef7ed3cd01a2398c2f25e5fee3095130f9d8b",
+        "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_tuning_soft_roll_root\\probe.cpp": "0a39f35a2d74fb9e290fb2aacdcf03fe014b4cc518aa7bfc0a6cd4c47406158f",
+        "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_tuning_soft_roll_root\\build.cmd": "947e981bb2dcf5a4067386ec4b08d707307c9ad70cf93160d24a1cd59e334f76",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\Scripts\\datatables\\PlaneGlobals.lua": "dd560df03ce946ffc6a4fe1ade8615577a5ff90068b8d91bf84b2117eeeb5407"
+      },
+      "native_fragment_sha256": "90a2db8316c54eb3c3b99ace8ec291f5974c695da11f05beb4cb4de0ef72cdf3",
+      "native_fragment": "d9857c050000d9e868cc75d000dee18d9424740b0000528d4c2418d88d78050000d99d80050000",
+      "fresh_actual_compilation_units": 2,
+      "production_CPP_compiled_separately": true,
+      "probe_includes_actual_CPP": true,
+      "Source_loader_runtime_executed": false,
+      "fixture_revision_note": "multiline MASM instructions corrected after strict compile failed before link or execution",
+      "post_link_unchanged": true,
+      "probe_sha256": "34016a6d28d5c982fafb2b909206e8eb5be1ad0d00dd5fad12a8963ca886645f"
+    }
+  },
+  "artifacts": {
+    "local\\cc11_tuning_soft_roll_root\\probe.exe": "34016a6d28d5c982fafb2b909206e8eb5be1ad0d00dd5fad12a8963ca886645f",
+    "local\\cc11_tuning_soft_roll_root\\producer.obj": "8731e210f70667b4480601ac1ca14f43425a92af3d8d07a68db952446e3b78da",
+    "local\\cc11_tuning_soft_roll_root\\probe.obj": "1b4934be43304a9e1e65820ad7d2c498988c41da0921ab9ec3fe6ffd3361a19f",
+    "local\\cc11_tuning_soft_roll_root\\producer.obj_coff.json": "691b7ce5096b25f3e9b50412d8527fae8b48356205e1afa66b6f1b66c5c47d42",
+    "local\\cc11_tuning_soft_roll_root\\probe.obj_coff.json": "5ec7c3a5bd6b8ecd2932958809282e57264563eafc710e05c14b270e291712be",
+    "local\\cc11_tuning_soft_roll_root\\build.log": "1734ac968e16635ae28355eabfbf39dd892b3d4276fcb162083e1a59b484ed59"
+  },
+  "call_sites": [],
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "tracked_tests_added": 0
+}
