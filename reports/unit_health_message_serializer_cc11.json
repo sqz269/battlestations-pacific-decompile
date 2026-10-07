@@ -1,0 +1,265 @@
+{
+  "packet": "cc11_health_complete_serializer",
+  "created_utc": "2026-10-07T10:24:18.330846+00:00",
+  "base_commit": "852189d2b",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete ordinary serializer and exact helpers reconstructed; connected actual-TU source fixture and original-PE helper differential passed; primary integration pending",
+  "functions": [
+    {
+      "entry": "00783C80",
+      "end_exclusive": "00783DC0",
+      "instructions": 113,
+      "source": "NativeUnitHealthMessageSerializedCalls::serialize_session_message_00783c80",
+      "native_abi": "ECX transport; stack target,message; RET8",
+      "coverage": "complete ordinary sequence with required full virtual20 flush"
+    },
+    {
+      "entry": "00428EC0",
+      "end_exclusive": "00428F45",
+      "instructions": 53,
+      "source": "copy_native_message_bit_slice_00428ec0",
+      "native_abi": "ECX cursor; stack destination,absolute_bit,bits; RET0C",
+      "coverage": "complete MSB absolute-base extraction"
+    },
+    {
+      "entry": "00429540",
+      "end_exclusive": "004295BF",
+      "instructions": 52,
+      "source": "append_native_message_msb_bits_00429540",
+      "native_abi": "ECX cursor; stack source,bits; RET8",
+      "coverage": "complete MSB-packed input to LSB cursor append"
+    }
+  ],
+  "files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_unit_health_message.cpp",
+    "docs/UNIT_HEALTH_MESSAGE_SERIALIZER_CC11.md",
+    "reports/unit_health_message_serializer_cc11.json"
+  ],
+  "evidence": {
+    "full_native_listings_reviewed": true,
+    "primary_independent_full_native_review": true,
+    "listing_gaps": false,
+    "integer_only_no_x87_or_sse_repair": true,
+    "decompiler_register_artifacts": "savedECX is captured transport; original first stack argument is target; no invented unaff inputs",
+    "native_scratch_bytes": 512,
+    "native_local_reservation_bytes": 516,
+    "extra_reserved_bytes": "saved transport DWORD, not payload",
+    "source_interfaces_are_new_not_native_binary_abi": true,
+    "source_parent_prefix_byte_preserved_after_only_new_include_removed": 11197,
+    "worker_ghidra_mutations": false
+  },
+  "host_steps": [
+    {
+      "address": "00783CC0",
+      "native": "00429030",
+      "function": "00783C80",
+      "contract": "existing complete signed-word writer, actual tick WORD16"
+    },
+    {
+      "address": "00783CCE",
+      "native": "00429030",
+      "function": "00783C80",
+      "contract": "existing complete signed-word writer, fresh delivery WORD3"
+    },
+    {
+      "address": "00783D0A",
+      "native": "00428EC0",
+      "function": "00783C80",
+      "contract": "complete exact MSB extraction at captured pre-write absolute position"
+    },
+    {
+      "address": "00783D12",
+      "native": "00428B80",
+      "function": "00783C80",
+      "contract": "existing complete rewind with captured modulo delta"
+    },
+    {
+      "address": "00783D4C",
+      "native": "00429030",
+      "function": "00783C80",
+      "contract": "post-flush fresh tick WORD16"
+    },
+    {
+      "address": "00783D5A",
+      "native": "00429030",
+      "function": "00783C80",
+      "contract": "post-flush fresh delivery WORD3"
+    },
+    {
+      "address": "00783D67",
+      "native": "00429540",
+      "function": "00783C80",
+      "contract": "complete exact MSB-scratch to LSB-cursor restoration"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00783CE8",
+      "dispatch": "actual current message profile+4",
+      "contract": "executable writer receives same actual message and captured raw cursor"
+    },
+    {
+      "address": "00783D2F",
+      "dispatch": "fresh actual transport table+20",
+      "contract": "required complete flush with same captured transport,target,cursor and fresh full delivery"
+    },
+    {
+      "address": "00783DA3",
+      "dispatch": "fresh actual transport table+20",
+      "contract": "required complete final flush with captured cursor and final fresh delivery"
+    }
+  ],
+  "actual_borrowed_fields": [
+    "actual target+D40+4*initial full delivery DWORD: select and capture cursor once",
+    "actual low WORD at00F876B0: initial empty prefix and post-overflow fresh prefix only",
+    "actual message delivery low WORD for each prefix, full DWORD for selection and each flush decision",
+    "actual current executable message profile+4",
+    "actual current transport table+20 at each reached flush",
+    "captured cursor current/base/bit live observations; current/bit/first-byte reset from fresh post-flush base; length never reset"
+  ],
+  "arithmetic_and_bit_contracts": [
+    "Position and after+20h use modulo32; overflow comparison is signed >=2320h.",
+    "Overflow delta=after-before modulo32; valid admitted delta<=1000h bits fits uninitialized200h scratch.",
+    "Final delivery2 bypasses rounded-byte observations; otherwise unsigned partial-base+current >=380h flushes.",
+    "Extract clears destination byte before each new-byte source load, rereads actual base per bit, visits source/destination MSB-first and leaves unused low tail bits zero.",
+    "Append consumes MSB-packed source, ORs into actual LSB cursor bit, reloads actual low byte after OR, increments DWORD, preserves carry-byte writes including zero.",
+    "Zero helper count performs no writes; no cursor-length bounds/clamp/default failure policy.",
+    "Valid live spans include carry byte; selected cursor identity survives actual cell changes; no source frame ownership/retention/free."
+  ],
+  "original_pe_helper_differential": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "machine": "014C",
+    "helpers": {
+      "00428EC0": {
+        "length": 133,
+        "sha256": "ab4deffa586dbc8f09c31534388a7c102e6c42506dafd34657c851dd77848267",
+        "native_return_bytes": "c20c00"
+      },
+      "00429540": {
+        "length": 127,
+        "sha256": "38048848f36b112f1f89344730bea829cf8b9a245075c59bfad5e8725ce51cf1",
+        "native_return_bytes": "c20800"
+      }
+    },
+    "execution": "exact pure helper bytes copied from PE into one isolated RW then RX page; no imports, relocations, external dependencies, whole-game execution or process injection",
+    "rows": [
+      {
+        "absolute_bit": 5,
+        "append_bit": 3,
+        "count": 0
+      },
+      {
+        "absolute_bit": 0,
+        "append_bit": 7,
+        "count": 8
+      },
+      {
+        "absolute_bit": 5,
+        "append_bit": 3,
+        "count": 29
+      },
+      {
+        "absolute_bit": 37,
+        "append_bit": 7,
+        "count": 4096
+      }
+    ],
+    "comparisons": [
+      "entire extraction buffer including untouched tail",
+      "unchanged extraction cursor",
+      "entire append buffer including carry/partial bytes",
+      "append current offset,bit,length"
+    ],
+    "result": "all four rows match both exact original helper bodies; full-game ABI not claimed"
+  },
+  "focused_probe": {
+    "command": "cmd /c local\\cc11_health_message_serializer_check.cmd",
+    "compiler": "MSVC14.51.36231 Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict /FAs",
+    "link": "/MANIFEST:EMBED /OPT:REF",
+    "embedded_manifest": "actual RT_MANIFEST parsed asInvoker; machine014C",
+    "exit_code": 0,
+    "receipt": {
+      "checks": 53,
+      "failures": 0,
+      "native_helper_rows": 4,
+      "caller_cases": 3,
+      "connected_setter_cases": 1,
+      "overflow_flushes": 2,
+      "borrowed_releases": 0
+    },
+    "linked_profile_dependency": "actual existing src/native_session_message_tags_12_13_14_15.cpp; no fake writer",
+    "caller_cases": [
+      {
+        "case": "connected empty D2",
+        "contract": "actual setter50/max100/cache.5/byte128 ->D2 ->flags4 local exclusion ->B50 ->actual locked wrapper ->serializer; actual16+3 prefix plus actualD2 writer29 =48bits, carry0, no flush, lock balanced"
+      },
+      {
+        "case": "exact threshold nonempty D2",
+        "contract": "start7139bits +D2 29 =7168bits (380h bytes); one actual executable source flush fixture; fresh base reset, length/following bytes preserved, lock balanced"
+      },
+      {
+        "case": "real variable profile overflow",
+        "contract": "actual type15 decimal0F constructor/profile writer withcount232 ->1880bits atbefore7159; signed overflow then rewind7159; first fixture flush changes tickC35A,delivery2,transport table,target cursorcell,captured cursorbase; native-helper oracle bytes match fresh19bit prefix+1880 restore; newtable secondflush delivery2 belowbyte threshold; fresh finalbase reset; alternate cursor untouched; lock balanced"
+      }
+    ],
+    "fixture_ownership": "D2 setter frame never retained/released. Controlled type15 mutation targets a separately owned direct-case object. Flush fixtures synchronously inspect/copy bytes using actual executable source table entries.",
+    "provider_mutations_source_only_not_observed_native_reentry": true,
+    "no_tracked_tests_added": true
+  },
+  "generated_assembly_review": {
+    "listing": "local/cc11_health_message_serializer_asm/native_unit_health_message.asm",
+    "raw_object_disassembly": "local/cc11_health_message_serializer_asm/native_unit_health_message.disasm.txt",
+    "full_functions_reviewed": [
+      "both standalone helpers",
+      "complete serializer including inlined helper loops"
+    ],
+    "checks": [
+      "single captured cursor selection",
+      "actual WORD tick/delivery loads",
+      "actual profile+4 dispatch",
+      "modulo LEA then signed JL at2320h",
+      "preserved overflow delta for rewind/restore",
+      "fresh delivery and current table before flush",
+      "fresh base reset then fresh WORD prefix",
+      "delivery2 branches around bytecount reads",
+      "unsigned JB at380h",
+      "exact post-flush current/bit/firstbyte writes"
+    ],
+    "listing_name_collision_resolved": "MSVC FAs reuses _bits$1$ for inlined locals; raw bytes show immutable delta atESP+24h, loop counter atESP+30h, and rewind reload fromESP+24h. Probe independently verifies rewind and restore.",
+    "source_scratch_bytes": 512,
+    "compiler_total_local_reservation": 552,
+    "compiler_frame_not_native_abi_claim": true
+  },
+  "validation_boundaries": [
+    "complete ordinary source serializer and two helpers reconstructed",
+    "actual-TU Win32 compilation passed",
+    "53 focused checks passed",
+    "two original pure helpers differentially executed for four rows including partial/carry",
+    "complete actual transport virtual20 still required and unimplemented",
+    "controlled callback changes are source fixture only",
+    "original full ABI/privateEH/fault/invalid-span behavior unproved",
+    "native network ownership/delivery,allocator/profile identity and gameplay unvalidated",
+    "primary owns full build,registration,metadata and annotations"
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_unit_health_message.hpp": "e97b5ab18ff80359f4aba7062242c6025a7ecddb2eaa4b7b14597af9710cb3c8",
+    "src/native_unit_health_message.cpp": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+    "local/cc11_health_message_serializer_probe.cpp": "71029b98db6083b716fec82e17fcc9e383b5c1f0045e85272e300e51ef3a47ba",
+    "local/cc11_health_message_serializer_check.cmd": "9e080d2955dc5a24dbeaf6be2b347d5e758cebede36edd0e940b0765a71e712f",
+    "local/cc11_health_message_serializer_probe.exe": "3d61863301f3ec90898aa4a99aa6335dc047542e1806ed01268a3eada72534a1",
+    "local/cc11_health_message_serializer_results.json": "44e10c1b87644b754b020cd201ae306105f7c7a1f8e264b7c45453bee398789d",
+    "local/cc11_health_message_serializer_asm/native_unit_health_message.asm": "3a9ac4a664d418c412ff83632b665ca9d70bec0fbfb886de1cb4eb7e2c11cb76",
+    "local/cc11_health_message_serializer_asm/native_unit_health_message.disasm.txt": "bbcbe4de531a898a1410638553d62f35a5a57390e085c39803ace622b7967d28"
+  },
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_message_serializer_cc11.json",
+    "exit_code": 0,
+    "checked": 7,
+    "failed": 0,
+    "receipt": "reports/unit_health_message_serializer_cc11.json: 7 call rows checked, 0 failed",
+    "indirect_steps": "profile writer and two virtual20 calls recorded separately; not counted as direct rows"
+  }
+}
