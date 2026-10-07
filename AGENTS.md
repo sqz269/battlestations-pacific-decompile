@@ -12,7 +12,7 @@
   packet states to advance archive streams/entries, font layout and VFS loading
   independently where their contracts permit. Recheck actual concurrency
   limits when resuming; do not assume whole partition segments are independent.
-- Spawn workers on `gpt-6-sol` with `fork_turns: "none"` and a self-contained brief: the packet,
+- Spawn workers on `gpt-6.1-sol` with `fork_turns: "none"` and a self-contained brief: the packet,
   its addresses and files, and the contract. Keep the orchestrator and integrator on `gpt-6-astra`.
   Spawn on `gpt-6-astra` instead when the packet's evidence is x87 arithmetic, register-ABI recovery,
   control-flow or listing repair, or a body too large to decompile. A full-history fork inherits the
