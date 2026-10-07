@@ -106,6 +106,20 @@ void disable_and_drain_native_pilot_bot_tasks_0099a830(
 // Other structural mutation, private EH/faults, ABI and pointee lifetimes excluded.
 void append_native_pilot_bot_active_task_0099a020(
     NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&, NativePilotBotTaskHandle);
+
+//00999F50, complete conditional normal SOURCE prepend; native ECX=bot,
+// stack task, RET4. REQUIRED successful disjoint allocation and representable
+//2*n+1/native4-byte/source host requests. Full branch publishes capacity,
+// writes incoming replacement[0], copies old prefix behind it, frees old array,
+// then increments count BEFORE publishing replacement base. No task dereference,
+// slot callback, hook, delete or drain. Spare branch requires count>0: native
+// count0<capacity reads before base and underflows; no safe fallback is supplied.
+// Providers cannot reenter or change array fields/occupied entries. Valid task
+// mappings and any subsequent real producer/head54/lifetime context are external.
+// Null allocation/invalid placement/overflow/fault/private EH domains excluded.
+void prepend_native_pilot_bot_active_task_00999f50(
+    NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&, NativePilotBotTaskHandle);
+
 void retire_native_pilot_bot_leading_tasks_0099a0a0(
     NativePilotBotTaskOwnerView&, NativePilotBotTaskOwnerCalls&,
     NativePilotBotActiveRetirementCalls&);

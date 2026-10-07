@@ -1,0 +1,78 @@
+{
+  "packet": "cc11_land_active_prepend",
+  "date": "2026-10-06",
+  "status": "complete_conditional_normal_active_prepend_source_unbound",
+  "target": {"project_file": "C:/Users/sqz269/bsp.gpr", "program_path": "/battlestationspacific.exe", "language": "x86:LE:32:default", "image_base": "00400000", "verification": "BSP client verified target before every live batch; whole owned assembly,8directxrefs, bounded caller setup and parked fragment read", "worker_ghidra_writes": false},
+  "changed_files": ["include/bsp/native_pilot_bot_task_owner.hpp", "src/native_pilot_bot_task_owner.cpp", "docs/PILOT_BOT_ACTIVE_PREPEND_CC11.md", "reports/pilot_bot_active_prepend_cc11.json"],
+  "ignored_validation_artifacts": ["local/cc11_land_owner_probe.cpp", "local/cc11_land_owner_probe.obj", "local/cc11_land_owner_probe.exe", "local/native_pilot_bot_task_owner_cc11.obj"],
+  "routines": [
+    {"entry": "00999F50", "range_end_exclusive": "00999F50-0099A001", "coverage": "Complete conditional normal active-prepend body; invalid placement/null-allocation/overflow/fault domains excluded", "abi": "ECX=bot, stack task, RET4", "source": "prepend_native_pilot_bot_active_task_00999f50"},
+    {"entry": "0099ACD0", "range_end_exclusive": "0099ACD0-0099B1A6", "coverage": "Read-only partial paired parked-producer fragment0099ADC7-0099AE2D plus bounded caller setup at0099B113; no tick/x87/planner source port", "abi": "ECX=bot, stack floatdt, RET4", "source": null}
+  ],
+  "host_steps": [
+    {"address": "00999F6A", "native": "00BF55BE", "function": "00999F50", "contract": "Native allocation4*(2*oldcapacity+1); capacity published00999F61 before call; ADD ESP4 at00999F71"},
+    {"address": "00999FB2", "native": "00BF6989", "function": "00999F50", "contract": "Free old array after incoming/prefix copied; ADD ESP4 at00999FB7 then count++00999FBA BEFORE replacement base00999FBE"},
+    {"address": "007B6223", "native": "00999F50", "kind": "no_ghidra_function", "contract": "Exact live listing CALL plus stacknonnull result009BC030/ECX owner throughobject4->10; no containing Ghidra body, membership checker cannot establish caller"},
+    {"address": "007B657D", "native": "00999F50", "function": "007B6240", "contract": "Nonzero result009BC030 pushed; same owner passedECX throughobject4->10; unrelated caller arithmetic excluded"},
+    {"address": "009BB47F", "native": "00999F50", "function": "009BB380", "contract": "ESI constructed/profile00D205E0 task value pushed; zero allocation arm can pass0; actual producer/lifetime external"},
+    {"address": "009CBB19", "native": "00999F50", "function": "009CB8B0", "contract": "Nonzero result009BC030 pushed; owner throughobject4->10"},
+    {"address": "009CBE27", "native": "00999F50", "function": "009CBB30", "contract": "Nonzero result009BC030 pushed; owner throughobject4->10"},
+    {"address": "0099A4AD", "native": "00999F50", "function": "0099A4A0", "contract": "Result009CFF40(DL1) pushed without nullguard; no task arena/producer adapter supplied"},
+    {"address": "0099AE1C", "native": "00999F50", "function": "0099ACD0", "contract": "Actual parked producer result009BBFC0 pushed; prior activecount>0 admits valid spare-capacity branch; ensuing actualhead54 external"},
+    {"address": "0099B113", "native": "00999F50", "function": "0099ACD0", "contract": "Bounded later caller setup: slot30 gate, result009CFF40(DL0) pushed; broad planner/tick unported"},
+    {"address": "0099ADD9", "native": "007B8AD0", "function": "0099ACD0", "contract": "Paired producer currentplane formation-index0 predicate; native existing callee contract"},
+    {"address": "0099ADEC", "native": "current_active_head+vtable38", "function": "0099ACD0", "contract": "Paired producer requires actual headAL true; actual profile/provider external"},
+    {"address": "0099ADF4", "native": "00BF681B", "function": "0099ACD0", "contract": "Allocate8-byte component; actualprofile00D1F31C and plane4 published0099AE03/AE09; construction/lifetime external"},
+    {"address": "0099AE14", "native": "009BBFC0", "function": "0099ACD0", "contract": "ECX=bot, EDX=component; actual418h typeF producer; complete task arena/component ownership external"},
+    {"address": "0099AE2B", "native": "reloaded_current_active_head+vtable54", "function": "0099ACD0", "contract": "Reload actual head after prepend then invoke actual state callback; no no-op/promotion substitute"}
+  ],
+  "source_contract": {
+    "owner_fields": "Existing NativePilotBotTaskOwnerView/NativePilotBotTaskHandle, active58/5C/60; borrowed opaque handles, no native overlay or task header/slot interpretation",
+    "required_services": "Reuse existing REQUIRED NativePilotBotTaskOwnerCalls allocate_task_array_00bf55be/free_task_array_00bf6989; no new optional/default/factory/arena/global adapter",
+    "full": "Ifcount==capacity: capacity2*n+1 BEFOREallocate; incoming stack task ->replacement0 FIRST; oldoccupiedprefix ->replacement1..count; freeold ifnonnull; count++ BEFOREpublish replacement base",
+    "spare": "REQUIRES0<count<capacity: oldtail ->entries[count] FIRST; unsigned count-1 backward predecessor copies; incoming stacktask ->entries0 LAST; count++",
+    "task_value": "Incoming native stack task is readESP+C full/ESP+8 spare and copied unchanged; SOURCE by-value handle remains captured across allocation/free; pointee remains external caller mapping",
+    "retired": "Retired owner storage untouched; no retirement/task58/scalar/delete/drain/slot54 called inside prepend",
+    "capacity_difference": "Native prepend2*n+1 and count-before-base/incoming-first order differ from active append2*n+2; existing grow_full_task_array cannot substitute"
+  },
+  "admitted_domain": {
+    "normal": "Count<=capacity; stable live disjoint allocated storage/borrowed fields/occupied task maps; successful disjoint representable2*n+1/native4-byte/sourcehost allocation; all required services return normally",
+    "empty": "Count0/capacity0 full branch grows1; count0<capacity INVALID: native readsbase-4 and unsigned counter underflows. Explicitly excluded, no safe empty-spare fallback added or tested",
+    "mutation": "No provider reentry, array base/count/capacity/occupied-entry mutation or concurrency; required free destroys old ARRAY only after copy; no actual task destructor",
+    "placement_faults": "Native placement-null/wrap guards, nullallocations, overflow, invalid storage/handle/privateFH3/SEH/new-handler/fault timing excluded; source does not emulate or repair these domains",
+    "caller_limits": "Eight known xrefs do not prove every caller's count/task/allocator/lifetime domain. NULLfactory outcomes and real producer ownership require separate complete bindings; callback-bearing paired path requires real live task/component/plane/head54",
+    "ABI": "Source signatures/uintptr_t handles and separate hostbytes are new interfaces, not original bot/task/array ABI; native stack capture/instruction timing/game lifetime unproved"
+  },
+  "raw_return_continuation": {"site": "00999FB7", "hex": "83C40483465C01897E58", "meaning": "ADD ESP4 ->INC activecount ->publish replacement activebase", "worker_repair": false},
+  "paired_parked_dependency": {
+    "read_range_end_exclusive": "0099ADC7-0099AE2D",
+    "gates": "Activecount>0; plane184 nonzero; actual leader9D8==0; current head38 true",
+    "producer": "8-byte component profile00D1F31C/plane4 ->009BBFC0 ECXbot EDXcomponent ->418h typeF ctor009BB640 storescomponent task3F8 ->prepend ->RELOADactualhead54; real arena/producer/callback services unbound",
+    "profile": "Primary four-entry parked predicate/planeID methods recovered separately; stream methods do not prove observer invalidation/component/task/plane lifetime",
+    "domain": "Native may passNULLcomponent/task on allocation paths, then unguarded head54; source paired path requires actual ordinary successful construction and live mappings; no invented NULLfallback or no-op callback",
+    "source_status": "Read-only evidence only; no broad tick/x87/factory/arena port, no synchronous rotation or GameUnitsHost Boolean/death binding"
+  },
+  "corrections": [
+    {"was": "Use active append2*n+2 helper for prepend", "is": "Distinct2*n+1 block with incoming-first and count-before-base publication", "evidence": "00999F5D/F61/F7C/FBA/FBE versus0099A02F/A077/A08C/A08E"},
+    {"was": "Safe right-shift loop admits empty spare-capacity array", "is": "Native zero-count spare branch readsbeforebase/underflows; excluded, firsttail copy/counter shape retained", "evidence": "00999FC9/FD0/FD8/FE0..FEE; paired countguard0099ADC7"},
+    {"was": "Task header/profile/callback is reconstructed by copying a head handle", "is": "Prepend performs pointer-value array operations only; producer/profile/head54/lifetime binding remains external", "evidence": "Whole00999F50 body; bounded parked0099AE14/AE1C/AE2B; eightcaller setups"},
+    {"was": "Raw caller007B6223 is attributed to adjacent007B6240", "is": "No containing Ghidra function; exact live CALL separately verified; no whole-body attribution or worker definition", "evidence": "Liveproto007B6223 body?; instruction-context CALL00999F50 and bounded inputs"},
+    {"was": "No-return CRT gap ends prepend atfree", "is": "Live ADD ESP4 continues through count increment then base publication", "evidence": "Raw00999FB7 83C40483465C01897E58; no worker mutation"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86/toolset14.51.36231; /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "source_object": "PASS local/native_pilot_bot_task_owner_cc11.obj compiled",
+    "fixture_link": "Extended existing owner probe only; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; compiled local/cc11_land_owner_probe.obj/.exe",
+    "probe_result": "PASS owner/active retirement; prepend growth0->1->3/incoming-first copy/captured task/free publication/valid spare shift/no drain",
+    "focused_case": "Full0->1 and1->3; freeprovider observes oldcount1/baseold and new81/80; SOURCE external incoming slot81->90 during allocate leaves copied81; validspare2<3 ->82/81/80 unchangedbase/cap; nohook/delete/drain; existing owner/active fixtures still pass",
+    "fixture_limits": "SOURCE arrays/new-delete/taskmaps/externalinput-slot mutation/cleanup only; not observed native mutation, native stack/ABI, task arena, actual producer completeness, allocator identity, pointee lifetime or gameplay proof; no invalidzero-spare execution",
+    "live_call_verifier": "PASS13 nonvirtual rows,0 failed:12 full exact-site/function checks and1 raw callee-only check without caller containment;2 virtual rows explicit indirect/not checked",
+    "raw_site_receipt": "007B6223 exact live CALL and bounded setup verified via instruction-context; no containing function, automated membership unavailable",
+    "json_parse": "PASS15 host_steps parsed",
+    "diff_check": "PASS git diff --check and git diff --cached --check; only four owned tracked files staged",
+    "full_build": "Worker did not run; root owns serialized main build/integration",
+    "game_run": "Not run; source facade unbound"
+  },
+  "remaining": ["Actual stable task arena/owner/producer and every admitted caller/profile/world domain", "Paired parked component/typeF ownership, real head54/state services and cached plane/squadron lifetimes after base death notification", "Deferred BE owner/readiness/sender-copy/FIFO/receipt/reindex and scheduler/observer publication", "Original bot/task/array ABI, privateFH3/SEH/new-handler/fault/allocation/concurrency domains and native runtime/gameplay checks", "Primary optional prepend CRT call-site flow repair/annotation; worker keeps Ghidra read-only"],
+  "prior_reports": ["reports/pilot_bot_task_owner_source_cc11.json", "reports/pilot_bot_active_retirement_cc11.json", "reports/pilot_bot_retirement_schedule_cc11.json", "reports/pilot_bot_parked_callback_cc11.json", "reports/pilot_bot_active_flow_repair_cc11.json"]
+}
