@@ -1,0 +1,302 @@
+{
+ "repairs": [
+  {
+   "function": "00783b90",
+   "owner": "main",
+   "when": "2026-10-07T11:50:45Z",
+   "decompile_lines_before": 46,
+   "gaps": [
+    {
+     "site": "00783bde",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00783be3",
+     "gap_end_exclusive": "00783be9",
+     "bytes": 6,
+     "after_call": true,
+     "sha256": "db16f99065ce5243f28e014917058b08701b2e86b86892bfcf908932a436cc28"
+    },
+    {
+     "site": "00783c35",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00783c3a",
+     "gap_end_exclusive": "00783c3d",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00783bde",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00783be3",
+      "gap_end_exclusive": "00783be9",
+      "bytes": 6,
+      "after_call": true,
+      "sha256": "db16f99065ce5243f28e014917058b08701b2e86b86892bfcf908932a436cc28"
+     },
+     "clear": "Success: Cleared flow override at 00783bde (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 6 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00783c35",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00783c3a",
+      "gap_end_exclusive": "00783c3d",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00783c35 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 45,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "007830f0",
+   "owner": "main",
+   "when": "2026-10-07T11:51:29Z",
+   "decompile_lines_before": 9,
+   "gaps": [
+    {
+     "site": "00783106",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0078310b",
+     "gap_end_exclusive": "00783119",
+     "bytes": 14,
+     "after_call": true,
+     "sha256": "fb49f3bdc833934babf3dd40e4642146a155cfeeb758258c799ac84fb6df03b6"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00783106",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0078310b",
+      "gap_end_exclusive": "00783119",
+      "bytes": 14,
+      "after_call": true,
+      "sha256": "fb49f3bdc833934babf3dd40e4642146a155cfeeb758258c799ac84fb6df03b6"
+     },
+     "clear": "Success: Cleared flow override at 00783106 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 14 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00783106",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00783106 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00783119",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "27b01585e41e681ae34edabfc20c290054bacf21b6a9cb34b577a1a9b9e4cc66",
+   "body_before": "Function: FUN_007830f0 at 007830f0\nSignature: undefined FUN_007830f0(void)\nEntry: 007830f0\nBody: 007830f0 - 0078310a",
+   "decompile_lines_after": 17,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_007830f0 at 007830f0\nSignature: undefined FUN_007830f0(void)\nEntry: 007830f0\nBody: 007830f0 - 0078310a",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00783970",
+   "owner": "main",
+   "when": "2026-10-07T11:51:37Z",
+   "decompile_lines_before": 9,
+   "gaps": [
+    {
+     "site": "0078397d",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00783982",
+     "gap_end_exclusive": "0078399b",
+     "bytes": 25,
+     "after_call": true,
+     "sha256": "7727b65ccf4c3d46abd5d84abab6b21dd0c367111e6f1889034a75d7309dfdfd"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "0078397d",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00783982",
+      "gap_end_exclusive": "0078399b",
+      "bytes": 25,
+      "after_call": true,
+      "sha256": "7727b65ccf4c3d46abd5d84abab6b21dd0c367111e6f1889034a75d7309dfdfd"
+     },
+     "clear": "Success: Cleared flow override at 0078397d (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 25 byte(s)"
+    },
+    {
+     "explicit_tail_call": "0078397d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 0078397d (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "0078398d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 0078398d (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "0078399b",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "5f6a09a648055700a59f0fdcc8e62b09dfbca7d74715f97ea5cccf94d5e64020",
+   "body_before": "Function: CG_scalar_deleting_dtor_00783970 at 00783970\nSignature: undefined CG_scalar_deleting_dtor_00783970(void)\nEntry: 00783970\nBody: 00783970 - 00783981",
+   "decompile_lines_after": 12,
+   "gaps_remaining": 1,
+   "body_after": "Function: CG_scalar_deleting_dtor_00783970 at 00783970\nSignature: undefined CG_scalar_deleting_dtor_00783970(void)\nEntry: 00783970\nBody: 00783970 - 00783981",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00783b90",
+   "owner": "main",
+   "when": "2026-10-07T11:51:45Z",
+   "decompile_lines_before": 45,
+   "gaps": [
+    {
+     "site": "00783c53",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00783c58",
+     "gap_end_exclusive": "00783c75",
+     "bytes": 29,
+     "after_call": true,
+     "sha256": "7a6e68a85a8586934abcc6aa557975bccdeb7cb5d11e38e3da03d74be7a66d65"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00783c53",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00783c58",
+      "gap_end_exclusive": "00783c75",
+      "bytes": 29,
+      "after_call": true,
+      "sha256": "7a6e68a85a8586934abcc6aa557975bccdeb7cb5d11e38e3da03d74be7a66d65"
+     },
+     "clear": "Success: Cleared flow override at 00783c53 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 29 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00783bde",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00783bde (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00783c35",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00783c35 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00783c53",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00783c53 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00783c75",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "82cd8bfa86fa51d94b91e3f8c7d4ee559ff7bbe8d8dc971454502b50c5a254a7",
+   "body_before": "Function: FUN_00783b90 at 00783b90\nSignature: undefined FUN_00783b90(void)\nEntry: 00783b90\nBody: 00783b90 - 00783c57",
+   "decompile_lines_after": 53,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00783b90 at 00783b90\nSignature: undefined FUN_00783b90(void)\nEntry: 00783b90\nBody: 00783b90 - 00783c57",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "007830f0",
+   "owner": "main",
+   "when": "2026-10-07T11:54:22Z",
+   "decompile_lines_before": 17,
+   "gaps": [
+    {
+     "site": "00783106",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0078310b",
+     "gap_end_exclusive": "00783119",
+     "bytes": 14,
+     "after_call": true,
+     "sha256": "fb49f3bdc833934babf3dd40e4642146a155cfeeb758258c799ac84fb6df03b6"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00783106",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0078310b",
+      "gap_end_exclusive": "00783119",
+      "bytes": 14,
+      "after_call": true,
+      "sha256": "fb49f3bdc833934babf3dd40e4642146a155cfeeb758258c799ac84fb6df03b6"
+     },
+     "clear": "Success: Cleared flow override at 00783106 (was: NONE, now: NONE)",
+     "disassemble": "Successfully disassembled 14 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00783106",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00783106 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00783119",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "27b01585e41e681ae34edabfc20c290054bacf21b6a9cb34b577a1a9b9e4cc66",
+   "body_before": "Function: FUN_007830f0 at 007830f0\nSignature: undefined FUN_007830f0(void)\nEntry: 007830f0\nBody: 007830f0 - 0078310a",
+   "body_extension_source": "\nimport ghidra.app.script.GhidraScript;\nimport ghidra.program.model.address.Address;\nimport ghidra.program.model.address.AddressSet;\nimport ghidra.program.model.listing.Function;\nimport ghidra.program.model.listing.FunctionIterator;\nimport ghidra.program.model.listing.Instruction;\nimport java.util.Objects;\npublic class BspExtendBody_1791374062671556400 extends GhidraScript {\n    private String q(Object value) {\n        if (value == null) return \"null\";\n        return \"\\\"\" + value.toString().replace(\"\\\\\", \"\\\\\\\\\").replace(\"\\\"\", \"\\\\\\\"\")\n            .replace(\"\\n\", \"\\\\n\").replace(\"\\r\", \"\\\\r\").replace(\"\\t\", \"\\\\t\") + \"\\\"\";\n    }\n    @Override public void run() throws Exception {\n        if (!currentProgram.getDomainFile().getPathname().equals(\"/battlestationspacific.exe\") ||\n            !currentProgram.getLanguageID().toString().equals(\"x86:LE:32:default\") ||\n            currentProgram.getImageBase().getOffset() != 4194304L)\n            throw new IllegalStateException(\"Wrong BSP target for body extension\");\n        Address first = toAddr(7876848L), last = toAddr(7876888L);\n        Function f = currentProgram.getFunctionManager().getFunctionAt(first);\n        if (f == null || f.isThunk()) throw new IllegalStateException(\"Requires existing non-thunk function\");\n        AddressSet span = new AddressSet(first, last);\n        AddressSet oldBody = new AddressSet(f.getBody());\n        if (!span.contains(oldBody)) throw new IllegalStateException(\"Body extension would remove existing addresses\");\n        FunctionIterator overlaps = currentProgram.getFunctionManager().getFunctionsOverlapping(span);\n        while (overlaps.hasNext()) if (!overlaps.next().getEntryPoint().equals(first))\n            throw new IllegalStateException(\"Another function overlaps the explicit native body\");\n        long[] starts = {7876848L,7876849L,7876850L,7876856L,7876862L,7876867L,7876869L,7876870L,7876875L,7876878L,7876881L,7876884L,7876886L,7876887L,7876888L};\n        int[] sizes = {1,1,6,6,5,2,1,5,3,3,3,2,1,1,1};\n        for (int i = 0; i < starts.length; ++i) {\n            Instruction instruction = currentProgram.getListing().getInstructionAt(toAddr(starts[i]));\n            if (instruction == null || instruction.getLength() != sizes[i])\n                throw new IllegalStateException(\"Missing or mismatched native instruction at \" + Long.toHexString(starts[i]));\n        }\n        String oldName = f.getName(), oldSignature = f.getSignature().toString(), oldComment = f.getComment();\n        boolean oldNoReturn = f.hasNoReturn();\n        String prior = \"{\\\"entry\\\":\" + q(first) + \",\\\"old_body\\\":\" + q(oldBody) +\n            \",\\\"name\\\":\" + q(oldName) + \",\\\"signature\\\":\" + q(oldSignature) +\n            \",\\\"comment\\\":\" + q(oldComment) + \",\\\"no_return\\\":\" + oldNoReturn;\n        int transaction = currentProgram.startTransaction(\"Extend verified BSP native function body\");\n        boolean success = false;\n        try {\n            f.setBody(span);\n            if (!f.getBody().equals(span) || !oldName.equals(f.getName()) ||\n                !oldSignature.equals(f.getSignature().toString()) || !Objects.equals(oldComment, f.getComment()) ||\n                oldNoReturn != f.hasNoReturn()) throw new IllegalStateException(\"Function metadata changed unexpectedly\");\n            success = true;\n        } finally { currentProgram.endTransaction(transaction, success); }\n        println(\"BSP_FUNCTION_BODY_EXTENDED \" + prior + \",\\\"new_body\\\":\" + q(f.getBody()) +\n            \",\\\"native_instructions\\\":\" + starts.length + \"}\");\n    }\n}\n",
+   "body_extension_result": "bridge script execution disabled; no body extension performed",
+   "stored_body_tail_complete": false
+  }
+ ],
+ "primary_qualification": {
+  "complete_disk_live_raw_bounds": [
+   "007830F0..00783119",
+   "00783970..0078399B",
+   "00783B90..00783C75"
+  ],
+  "end_exclusive": true,
+  "local_call_return_overrides_cleared": true,
+  "verified_native_tail_instructions_disassembled": true,
+  "stored_function_body_tail_complete": false,
+  "full_ghidra_flow_repair": false,
+  "body_extension_bridge_error": "Script execution disabled. GHIDRA_MCP_ALLOW_SCRIPTS is not enabled.",
+  "body_extension_program_mutation": false,
+  "unexecuted_body_extension_tool_change_reverted": true,
+  "callee_global_no_return_names_comments_preserved": true,
+  "actual_source_lifetime_reconstruction": false,
+  "abi_compatible": false,
+  "game_validated": false
+ }
+}

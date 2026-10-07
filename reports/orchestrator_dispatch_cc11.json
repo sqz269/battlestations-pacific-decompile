@@ -2079,5 +2079,15 @@
     "actual_profile_type_semantics_unresolved": true,
     "vehicle_class_lookup_0095b9c0_is_not_destructor": true,
     "game_validated": false
+  },
+  "transport_buffer_lifetime_analysis": {
+    "report": "reports/transport_buffer_destructor_flow_recovery_cc11.json",
+    "native_complete_raw_bodies_reviewed": 4,
+    "full_ghidra_flow_repair": false,
+    "stored_function_body_tail_complete": false,
+    "body_extension_program_mutation": false,
+    "bridge_script_execution_disabled": true,
+    "source_implemented": false,
+    "game_validated": false
   }
 }
