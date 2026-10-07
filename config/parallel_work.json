@@ -13128,13 +13128,14 @@
     },
     {
       "id": "cc11_director_class8",
-      "state": "dispatched_to_reused_worker",
-      "done": false,
+      "state": "integrated_source_object_checked_OFF_pending_full_link_and_runtime",
+      "done": true,
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "function_addresses": [
-        "00822c20"
+        "00822c20",
+        "00853050"
       ],
       "output_files": [
         "src/game_hosts_scene_contents.cpp",
@@ -13146,19 +13147,38 @@
         "cc11_director_props"
       ],
       "contract": "Recover the actual class-id8 probe and explicit-false TorpedoDirector override; preserve missing-key behavior and property precedence.",
-      "reuses_worker_from": "cc11_director_props"
+      "reuses_worker_from": "cc11_director_props",
+      "code_revision": "acb8b24a2d4202042b8bd8793ac79102c7fa4924",
+      "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "full_main_build_pending": true,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_retained_hook",
-      "state": "dispatched_to_reused_worker",
-      "done": false,
+      "state": "integrated_conditional_source_unbound_object_and_focused_probe_checked",
+      "done": true,
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
       "function_addresses": [
         "009b33f0",
         "007efb60",
-        "007eee50"
+        "007eee50",
+        "009f9ce0",
+        "009afe70",
+        "009b3240",
+        "009f9980",
+        "007f0030",
+        "007ed610",
+        "007f2c60",
+        "007ed580",
+        "0077c2a0",
+        "0071be40",
+        "0075b430",
+        "0076e520",
+        "007ef6f0",
+        "007ef710"
       ],
       "output_files": [
         "src/game_hosts_units.cpp",
@@ -13172,7 +13192,64 @@
         "cc11_land_retirement"
       ],
       "contract": "Recover the complete task-owned retained-squadron pre-destructor hook and its producer/observer lifetime; no immediate dequeue approximation.",
-      "reuses_worker_from": "cc11_land_retirement"
+      "reuses_worker_from": "cc11_land_retirement",
+      "code_revision": "d4e9094b1",
+      "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "full_main_build_pending": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "cc11_director_jm06_pair",
+      "state": "dispatched_to_reused_worker_export_preparation",
+      "done": false,
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00822c20",
+        "00853050"
+      ],
+      "output_files": [
+        "docs/TORPEDO_DIRECTOR_JM06_PAIR_CC11.md",
+        "reports/torpedo_director_jm06_pair_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_director_class8"
+      ],
+      "pair_commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "contract": "Prepare identical pinned JM06 class8 OFF/ON exports and inputs; no full build until the primary grants the serialized compile slot. Run 3000 mission frames at 0.05 seconds and compare actual class8 override/director/torpedo behavior before proposing a switch change.",
+      "reuses_worker_from": "cc11_director_class8"
+    },
+    {
+      "id": "cc11_land_be_profile",
+      "state": "dispatched_to_reused_worker_after_primary_raw_definitions",
+      "done": false,
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "007ef6f0",
+        "007ef710",
+        "007f0030",
+        "007ed610",
+        "007ed260",
+        "007ed580"
+      ],
+      "output_files": [
+        "include/bsp/plane_squadron_host.hpp",
+        "src/plane_squadron_host.cpp",
+        "include/bsp/native_session_message_be.hpp",
+        "src/native_session_message_be.cpp",
+        "cmake/startup.cmake",
+        "docs/LANDING_BE_PROFILE_CC11.md",
+        "reports/landing_be_profile_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_retained_hook"
+      ],
+      "contract": "Implement a bounded BE source message/profile using existing extended header and bit-cursor providers; recover the complete deferred BE receiver and required reindex contract. Keep routing/retired FIFO lifetime binding external. Never emit an integer-only message or perform promotion synchronously in the pre-destructor hook.",
+      "reuses_worker_from": "cc11_land_retained_hook"
     }
   ],
   "snapshot_after_analysis": {

@@ -154,5 +154,55 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T04:41:38.621073+00:00"
+  "updated_utc": "2026-10-07T05:02:30.514834+00:00",
+  "second_batch": {
+    "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+    "packets": [
+      {
+        "packet": "cc11_director_class8",
+        "worker_revision": "acb8b24a2d4202042b8bd8793ac79102c7fa4924",
+        "status": "integrated_source_object_checked_OFF_pending_full_link_and_runtime",
+        "primary_direct_calls_checked": 8,
+        "call_failures": 0
+      },
+      {
+        "packet": "cc11_land_retained_hook",
+        "worker_revision": "d4e9094b1",
+        "status": "integrated_conditional_source_unbound_object_and_focused_probe_checked",
+        "primary_direct_calls_checked": 11,
+        "call_failures": 0
+      }
+    ],
+    "full_main_build": "pending serialized compile slot after health ON export",
+    "worker_reuse": {
+      "director_props": "cc11_director_jm06_pair",
+      "land_retirement": "cc11_land_be_profile"
+    },
+    "evidence_limits": [
+      "Class8 switch remains OFF pending a matched JM06 pair.",
+      "Landing hooks are conditional source projections without a runtime lifetime or message adapter."
+    ],
+    "native_annotations": {
+      "functions": [
+        "00822c20",
+        "00853050",
+        "009b33f0",
+        "007efb60",
+        "007eee50",
+        "007ed580",
+        "007ef6f0",
+        "007ef710"
+      ],
+      "saved_project": true,
+      "refreshed_exports": true,
+      "raw_definition_receipt": "reports/landing_raw_definition_cc11.json",
+      "qualifications": "Prior comments and names retained where present; old annotations recorded by locked tools; source hooks remain conditional and unbound.",
+      "snapshot": {
+        "total_function_count": 64699,
+        "internal_function_count": 64257,
+        "call_graph_edges": 134344,
+        "index_rebuilt": true
+      }
+    }
+  }
 }

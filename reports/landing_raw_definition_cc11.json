@@ -1,0 +1,143 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007ed580",
+    "end_address": "007ed58b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007ed580",
+    "end_address": "007ed58a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007ed580",
+    "disassemble_first": false,
+    "name": "BSP_PlaneSquadron_CurrentCommandToken"
+   },
+   "result": {
+    "success": true,
+    "address": "007ed580",
+    "function_name": "BSP_PlaneSquadron_CurrentCommandToken",
+    "entry_point": "007ed580",
+    "body_size": 11,
+    "message": "Function created successfully at 007ed580",
+    "warnings": [
+     "Function name 'BSP_PlaneSquadron_CurrentCommandToken' \u2014 main part 'PlaneSquadron_CurrentCommandToken' is not PascalCase. Expected: PlanesquadronCurrentcommandtoken",
+     "Function name 'BSP_PlaneSquadron_CurrentCommandToken' \u2014 main part 'PlaneSquadron_CurrentCommandToken' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneSquadron_CurrentCommandToken' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007ed580",
+   "end": "007ed58b",
+   "name": "BSP_PlaneSquadron_CurrentCommandToken",
+   "after": "Function: BSP_PlaneSquadron_CurrentCommandToken at 007ed580\nSignature: undefined BSP_PlaneSquadron_CurrentCommandToken(void)\nEntry: 007ed580\nBody: 007ed580 - 007ed58a"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007ef6f0",
+    "end_address": "007ef710"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007ef6f0",
+    "end_address": "007ef70f",
+    "bytes_disassembled": 32,
+    "message": "Successfully disassembled 32 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007ef6f0",
+    "disassemble_first": false,
+    "name": "BSP_LeaderPromotionMessage_Write"
+   },
+   "result": {
+    "success": true,
+    "address": "007ef6f0",
+    "function_name": "BSP_LeaderPromotionMessage_Write",
+    "entry_point": "007ef6f0",
+    "body_size": 32,
+    "message": "Function created successfully at 007ef6f0",
+    "warnings": [
+     "Function name 'BSP_LeaderPromotionMessage_Write' \u2014 main part 'LeaderPromotionMessage_Write' is not PascalCase. Expected: LeaderpromotionmessageWrite",
+     "Function name 'BSP_LeaderPromotionMessage_Write' \u2014 main part 'LeaderPromotionMessage_Write' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LeaderPromotionMessage_Write' does not start with a recognized verb. First word 'Leader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007ef6f0",
+   "end": "007ef710",
+   "name": "BSP_LeaderPromotionMessage_Write",
+   "after": "Function: BSP_LeaderPromotionMessage_Write at 007ef6f0\nSignature: undefined BSP_LeaderPromotionMessage_Write(void)\nEntry: 007ef6f0\nBody: 007ef6f0 - 007ef70f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007ef710",
+    "end_address": "007ef731"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007ef710",
+    "end_address": "007ef730",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007ef710",
+    "disassemble_first": false,
+    "name": "BSP_LeaderPromotionMessage_Read"
+   },
+   "result": {
+    "success": true,
+    "address": "007ef710",
+    "function_name": "BSP_LeaderPromotionMessage_Read",
+    "entry_point": "007ef710",
+    "body_size": 33,
+    "message": "Function created successfully at 007ef710",
+    "warnings": [
+     "Function name 'BSP_LeaderPromotionMessage_Read' \u2014 main part 'LeaderPromotionMessage_Read' is not PascalCase. Expected: LeaderpromotionmessageRead",
+     "Function name 'BSP_LeaderPromotionMessage_Read' \u2014 main part 'LeaderPromotionMessage_Read' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LeaderPromotionMessage_Read' does not start with a recognized verb. First word 'Leader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007ef710",
+   "end": "007ef731",
+   "name": "BSP_LeaderPromotionMessage_Read",
+   "after": "Function: BSP_LeaderPromotionMessage_Read at 007ef710\nSignature: undefined BSP_LeaderPromotionMessage_Read(void)\nEntry: 007ef710\nBody: 007ef710 - 007ef730"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
