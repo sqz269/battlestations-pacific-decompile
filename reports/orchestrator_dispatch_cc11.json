@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T10:29:54.920295+00:00",
+  "updated_utc": "2026-10-07T10:44:11.534723+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1705,5 +1705,35 @@
     ],
     "reuses_worker_from": "cc11_land_parameter_copy_adoption",
     "contract": "Complete ordinary00696120/00696350 using existing equivalent00695F90 SOURCE dispatch snapshot/append/captured interval/nulledpending skip/current publication/resize-to-saved-size/capturedrecursive-lock schedule, with actualcapturedowner table0C callback(first,event,value). Nativecaller pushes value,event,originalfirst to ECXcurrentedge8 owner, callbackconsumes12B andreturnignored; normalnotify ECXfirst/EDXevent/stackvalueRET4 confirmedprimaryfull143+5instructions. Newseparate eventword callback/delivery contexts preferred; preserve existing04/08 aggregate ABI/providers. Opt-in ABSTRACT ProjectileTickHost-derived adapter finalexpire reads SAMEborrowed actualticknode[-8] identitycell ->REQUIREDPURE actualprefixalias mapping preserving exactoriginalfirst pointer ->notify event0/value0 with SAMEactualNativeObserverLifetime/E198E4 context/currenttabletarget; finalrelease independentlyFRESHreads samecell ->REQUIREDCOMPLETE926D90(identity,code). Existingactualprojectile tick callsnotifythenrelease2; primary6598/659F/65A4/65A9 reviewed. Otherpose/world/tick providersabstract; no arithmeticchanges/newx87/native tickwholebodyclaim. Actualprefixes/callbackowners/lock/dispatchvector/globalpublication/alivebacking/ordinaryreturns/nestedinterval domainrequired; no semanticunit reinterpret/defaultobserver/mapping/queue/callback/release. PrivateEH/faults/invalidvalidation/allocator/gameABIruntime unproved; existingRAII source cleanup notnativeEH claim. Oneignoredmanifested actualTU SOURCEfixture liveprefixes/prepublishedrecursive lock/existingregister-unregister, callback suppressespendingowner andchanges actualidentitycellA->B; releasefreshB/code2, vectorrestore/lockdepthchecked. Existingnestedschedulecoverage enough, addnestedonlyconcreteneed. Ghidraread-only/noCMake/rootmetadata. Queueevent4/lowerconstructor/message84/routing remainseparateunbound."
+  },
+  "health_complete_serializer_integration": {
+    "utc": "2026-10-07T10:44:11.534723+00:00",
+    "worker_revision": "263bc228a26a08a67d17274a1f969196f5404136",
+    "integrated_revision": "41a4089b4a2b1b08d10882cb3c883313e454bc45",
+    "full_main_build_revision": "41a4089b4a2b1b08d10882cb3c883313e454bc45",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_serializer_integrated_build.log",
+    "executable_sha256": "ead4962a3a6e9e345544b98ccf0ed2e86f7b3248748e451cc068efbcb3da3934",
+    "independent_root_probe": "local/cc11_serializer_root.cmd",
+    "root_probe_log": "local/cc11_serializer_root_compile.log",
+    "root_probe_sha256": "dfee4acbe6185e293786d2a812cfc5d87ca49a38c553c3bfd45033e6402d08a6",
+    "source_fixture_checks": 53,
+    "source_fixture_failures": 0,
+    "original_helper_differential_rows": 4,
+    "caller_cases": 3,
+    "connected_setter_cases": 1,
+    "overflow_flushes": 2,
+    "borrowed_releases": 0,
+    "primary_full_native_listings_reviewed": true,
+    "primary_generated_signed_overflow_unsigned_threshold_reviewed": true,
+    "worker_generated_complete_delta_stack_reviewed": true,
+    "root_manifest_id1_asInvoker_verified": true,
+    "native_direct_call_rows": 7,
+    "native_direct_call_failures": 0,
+    "controlled_flush_mutations_are_source_fixture_only": true,
+    "complete_actual_transport_flush_bound": false,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

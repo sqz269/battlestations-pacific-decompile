@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T10:24:18.330846+00:00",
   "base_commit": "852189d2b",
   "branch": "agent/cc11_health_guard",
-  "status": "complete ordinary serializer and exact helpers reconstructed; connected actual-TU source fixture and original-PE helper differential passed; primary integration pending",
+  "status": "integrated complete ordinary serializer and exact bit helpers; independent actual-TU source/original-helper probe and full main Win32 build passed; actual transport flush and game binding required",
   "functions": [
     {
       "entry": "00783C80",
@@ -261,5 +261,45 @@
     "failed": 0,
     "receipt": "reports/unit_health_message_serializer_cc11.json: 7 call rows checked, 0 failed",
     "indirect_steps": "profile writer and two virtual20 calls recorded separately; not counted as direct rows"
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T10:44:11.534723+00:00",
+    "worker_revision": "263bc228a26a08a67d17274a1f969196f5404136",
+    "integrated_revision": "41a4089b4a2b1b08d10882cb3c883313e454bc45",
+    "full_main_build_revision": "41a4089b4a2b1b08d10882cb3c883313e454bc45",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_serializer_integrated_build.log",
+    "executable_sha256": "ead4962a3a6e9e345544b98ccf0ed2e86f7b3248748e451cc068efbcb3da3934",
+    "independent_root_probe": "local/cc11_serializer_root.cmd",
+    "root_probe_log": "local/cc11_serializer_root_compile.log",
+    "root_probe_sha256": "dfee4acbe6185e293786d2a812cfc5d87ca49a38c553c3bfd45033e6402d08a6",
+    "source_fixture_checks": 53,
+    "source_fixture_failures": 0,
+    "original_helper_differential_rows": 4,
+    "caller_cases": 3,
+    "connected_setter_cases": 1,
+    "overflow_flushes": 2,
+    "borrowed_releases": 0,
+    "primary_full_native_listings_reviewed": true,
+    "primary_generated_signed_overflow_unsigned_threshold_reviewed": true,
+    "worker_generated_complete_delta_stack_reviewed": true,
+    "root_manifest_id1_asInvoker_verified": true,
+    "native_direct_call_rows": 7,
+    "native_direct_call_failures": 0,
+    "controlled_flush_mutations_are_source_fixture_only": true,
+    "complete_actual_transport_flush_bound": false,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "primary_annotation": {
+    "history": "local/ghidra-annotations-20261007T104415Z.json",
+    "project_saved": true,
+    "exports_refreshed": [
+      "00783c80",
+      "00428ec0",
+      "00429540"
+    ],
+    "names_are_hypotheses": true
   }
 }

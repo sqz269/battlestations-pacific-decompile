@@ -132,3 +132,5 @@ flush success, transport, queue, clone, allocator or retained borrowed cursor
 is supplied. Actual network delivery, original full ABI, private EH, faults,
 invalid backing/concurrent mutation and gameplay remain unproved. Primary
 integration owns the full build, metadata and Ghidra annotations.
+
+Primary integration 41a4089b4a2b1b08d10882cb3c883313e454bc45: full MSVC Win32 and all three existing CTests passed. Independent fresh actual-main-TU manifested probe: 53 checks/zero failures, four original-helper differential rows, three caller cases, one connected setter case, two overflow flushes and zero borrowed releases. Complete native listings, critical generated branch behavior and preserved delta evidence reviewed. Executable SHA256 ead4962a3a6e9e345544b98ccf0ed2e86f7b3248748e451cc068efbcb3da3934. Build log: local/cc11_serializer_integrated_build.log. Actual complete transport flush, actual backing/profile/provider lifetimes, original full ABI, faults/private EH, network and game validation remain required.
