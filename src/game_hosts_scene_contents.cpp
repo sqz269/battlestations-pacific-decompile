@@ -315,6 +315,27 @@ bool retain_airfield_runway(const ScenePropertyBlock& bag, bsp::AirOpsDeck& deck
     return true;
 }
 
+void retain_scene_raw_word(const SceneProperty* prop, bool& present, std::int32_t& raw) {
+    if (prop == nullptr) return;
+    std::int32_t value = 0;
+    // 006F27FC/006F2823 copy the stored +0Ch DWORD without type conversion.
+    if (equal_insensitive(prop->type_letter, "F") && prop->has_float) {
+        std::memcpy(&value, &prop->float_value, sizeof value);
+    } else {
+        if (prop->values.empty()) return;
+        float as_float = 0.0f;
+        if (prop->type_letter == "I" && scene_scan_int(prop->values.back(), value)) {
+            // Preserve the existing I-first scan and its integer word.
+        } else if (scene_scan_float(prop->values.back(), as_float)) {
+            std::memcpy(&value, &as_float, sizeof value);
+        } else {
+            return;
+        }
+    }
+    present = true;
+    raw = value;
+}
+
 // Packet cc9_land_convoy_members. 00743450's scene reads (007434A4..007437B0):
 // five float fields read type 1's retained float32 or convert an integer;
 // Rows/Columns read integers and Reverse a byte. Then the slot map: every
@@ -2172,38 +2193,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // record's +0Ch dword as is. An `I` value is that integer; an `F` value's
         // dword is its float bit pattern, which the FILD at 00A03760 would read as
         // an integer, so it is kept the same way.
-        const SceneProperty* capture_prop = bag.find("CaptureRange");
-        if (capture_prop != nullptr && !capture_prop->values.empty()) {
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            if (capture_prop->type_letter == "I"
-                && scene_scan_int(capture_prop->values.back(), as_int)) {
-                stored.capture_range_present = true;
-                stored.capture_range_raw = as_int;
-            } else if (scene_scan_float(capture_prop->values.back(), as_float)) {
-                std::int32_t bits = 0;
-                std::memcpy(&bits, &as_float, sizeof bits);
-                stored.capture_range_present = true;
-                stored.capture_range_raw = bits;
-            }
-        }
+        retain_scene_raw_word(bag.find("CaptureRange"), stored.capture_range_present,
+            stored.capture_range_raw);
         // Packet cc9_command_building_capture_bind: `CaptureValue` -> unit+7A4h,
         // the same way (006F2780, 1000 when absent).
-        const SceneProperty* value_prop = bag.find("CaptureValue");
-        if (value_prop != nullptr && !value_prop->values.empty()) {
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            if (value_prop->type_letter == "I"
-                && scene_scan_int(value_prop->values.back(), as_int)) {
-                stored.capture_value_present = true;
-                stored.capture_value_raw = as_int;
-            } else if (scene_scan_float(value_prop->values.back(), as_float)) {
-                std::int32_t bits = 0;
-                std::memcpy(&bits, &as_float, sizeof bits);
-                stored.capture_value_present = true;
-                stored.capture_value_raw = bits;
-            }
-        }
+        retain_scene_raw_word(bag.find("CaptureValue"), stored.capture_value_present,
+            stored.capture_value_raw);
         // Packet cc9_command_building_level: 006F2780's `Level` (unit+770h) and
         // `LevelUpSeconds` (unit+76Ch), the same way.
         for (int which = 0; which < 2; ++which) {
