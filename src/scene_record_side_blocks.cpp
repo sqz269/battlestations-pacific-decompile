@@ -25,6 +25,16 @@ bool integer_letter(const std::string& letter) noexcept
     return letter == "I" || letter == "i";
 }
 
+std::int32_t max_player_property_int32(const SceneProperty* prop) noexcept
+{
+    // 004F214C..004F2154 copies the stored MaxPlayerNum word. Preserve the
+    // existing I-only raw fallback and caller's missing-key default.
+    if (prop != nullptr && integer_letter(prop->type_letter) && prop->has_integer) {
+        return prop->integer_value;
+    }
+    return scene_property_int32(prop);
+}
+
 std::string indexed_key(const char* prefix, std::size_t index)
 {
     std::string key(prefix);
@@ -174,10 +184,10 @@ SceneRecordSlotTable read_scene_record_slot_table_004f1d70(
         = scene_root_props.find(kSceneCompetitiveModePartyKey);
     table.competitive_mode_party = scene_property_int32(competitive);
 
-    // 004f2145: an absent `MaxPlayerNum` stores the literal 8.
+    // 004f2157: an absent `MaxPlayerNum` stores the literal 8.
     const SceneProperty* max_players = scene_root_props.find(kSceneMaxPlayerNumKey);
     if (max_players != nullptr) {
-        table.max_player_num = scene_property_int32(max_players);
+        table.max_player_num = max_player_property_int32(max_players);
         table.max_player_num_authored = true;
     }
 

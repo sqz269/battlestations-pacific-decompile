@@ -1,0 +1,391 @@
+{
+  "packet": "cc11_scene_max_players_int_payload",
+  "date": "2026-10-07",
+  "source_baseline": "b7b612e3176b67fd9a0ce9e976655e5fe2cec741",
+  "doc": "docs/SCENE_MAX_PLAYERS_INT_PAYLOAD_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "owned_addresses": [
+    "004F1D70"
+  ],
+  "owned_files": [
+    "src/scene_record_side_blocks.cpp",
+    "docs/SCENE_MAX_PLAYERS_INT_PAYLOAD_CC11.md",
+    "reports/scene_max_players_int_payload_cc11.json"
+  ],
+  "dependencies": [
+    "cc11_scene_typed_int_payload",
+    "existing SceneRecordSlotTable public reader and Source Mission count path"
+  ],
+  "status": "bounded MaxPlayerNum owning-I consumer adoption; fresh strict compile/link/actual-parser public-reader fixture PASS; primary integration/full main build/CTest pending",
+  "correction": {
+    "was": "The actually called MaxPlayerNum read ignored successful owning I storage and reparsed diagnostic tokens",
+    "is": "One called private compatible I/i plus has_integer reader prefers integer_value; otherwise exact unchanged public scene_property_int32 raw fallback",
+    "evidence": "Native Find and stored +0C DWORD copy with missing literal8; prior recognized explicit-I producer/clone/assignment; three installed I8 inputs and copied/cleared/opposite diagnostic fixture"
+  },
+  "routines": [
+    {
+      "address": "004F1D70",
+      "body_start": "004F1D70",
+      "body_end_inclusive": "004F2406",
+      "body_end_exclusive": "004F2407",
+      "coverage": "partial: MaxPlayerNum setup/lookup/raw-word/default slice only; whole other side blocks, record/EH/provider/ABI not rebound",
+      "terminal_returns": [
+        {
+          "site": "004F23E0",
+          "end_inclusive": "004F23E2",
+          "end_exclusive": "004F23E3",
+          "instruction": "RET 4"
+        },
+        {
+          "site": "004F2404",
+          "end_inclusive": "004F2406",
+          "end_exclusive": "004F2407",
+          "instruction": "RET 4"
+        }
+      ],
+      "original_abi_claimed": false
+    }
+  ],
+  "fragment": {
+    "start": "004F2136",
+    "end_inclusive": "004F2160",
+    "end_exclusive": "004F2161",
+    "byte_count": 43,
+    "key_literal": "00CEA450",
+    "key_bytes": "MaxPlayerNum\\0",
+    "key_byte_count": 13,
+    "find_site": "004F2143",
+    "null_test": "004F2148",
+    "null_branch": "004F214A",
+    "stored_word_load": "004F214C",
+    "destination_store": "004F214F",
+    "word_copy_start": "004F214C",
+    "word_copy_end_inclusive": "004F2154",
+    "word_copy_end_exclusive": "004F2155",
+    "destination_offset": "988",
+    "absent_default_store": "004F2157",
+    "absent_default": 8,
+    "type_guard": false,
+    "prior_field_support_only": "004F213D stores prior CompetitiveModeParty result at record+98C; unchanged Source reader"
+  },
+  "call_sites": [
+    {
+      "address": "004F2143",
+      "native": "008F2260",
+      "function": "004F1D70",
+      "contract": "Find MaxPlayerNum; present raw DWORD+0C copied to record+988; absent literal8; no native type conversion"
+    }
+  ],
+  "ABI_observations": {
+    "source": "Primary/Astra complete entry/caller/terminal assembly audit; supporting receipt only, not new worker formal ABI reconstruction",
+    "entry_observations": [
+      "004F1D8F MOV EBX,ECX",
+      "004F1D96 MOV EBP,EDX"
+    ],
+    "sole_call_site": "00469D45",
+    "caller_setup": [
+      "00469D3C loads DWORD [ESP+24]",
+      "00469D40 PUSH EDX",
+      "00469D41 MOV EDX,EBP",
+      "00469D43 MOV ECX,ESI"
+    ],
+    "observed_boundary": "ECX bag / EDX record / one pushed DWORD / both terminal RET4",
+    "history": "Old record-on-stack/RET8 ledger and comment interpretation contradicted; primary preserves historical evidence and appends correction after lease release",
+    "unestablished": [
+      "semantic meaning/formal type of pushed DWORD",
+      "full exception/allocator/record ABI",
+      "drop-in binary compatibility"
+    ]
+  },
+  "producer_support": {
+    "doc": "docs/SCENE_TYPED_INT_PAYLOAD_CC11.md",
+    "native_type": 0,
+    "payload": "DWORD+0C",
+    "I_arm": {
+      "start": "008F5B48",
+      "end_inclusive": "008F5BDF",
+      "end_exclusive": "008F5BE0"
+    },
+    "scalar_guard": {
+      "start": "008D8F10",
+      "end_inclusive": "008D8F32",
+      "end_exclusive": "008D8F33"
+    },
+    "scalar_reader": {
+      "start": "008D9AD0",
+      "end_inclusive": "008D9B35",
+      "end_exclusive": "008D9B36"
+    },
+    "actual_format": "%d at00CE3A34",
+    "fresh_producer": {
+      "start": "008F3710",
+      "end_inclusive": "008F376C",
+      "end_exclusive": "008F376D",
+      "word_store": "008F3730"
+    },
+    "scalar_constructor": {
+      "start": "008EF140",
+      "end_inclusive": "008EF16C",
+      "end_exclusive": "008EF16D",
+      "word_store": "008EF151"
+    },
+    "clone_arm": {
+      "start": "008F4FF9",
+      "end_inclusive": "008F502C",
+      "end_exclusive": "008F502D"
+    },
+    "assignment_arm": {
+      "start": "008F0716",
+      "end_inclusive": "008F0725",
+      "end_exclusive": "008F0726"
+    },
+    "Source_storage": "Already owning integer_value/has_integer; presence is not native ephemeral read success, +2C metadata or replay action; no new header/storage change"
+  },
+  "preserved_Source_policy": [
+    "Only compatible I/i with has_integer prefers own value",
+    "Exact unchanged legacy FIRST strtol base10 I-only fallback; no F conversion or widening",
+    "Absent key leaves default8 and authored=false; present failed/malformed/empty/non-I raw retains0 and authored=true",
+    "No clamp, reset, new fallback/default, field ordering or Multiplay traversal change",
+    "CompetitiveModeParty and all other global scene_property_int32 callers unchanged",
+    "Existing scene_slot_records_written nonpositive0 policy unchanged"
+  ],
+  "downstream": {
+    "production": "game_hosts_mission.cpp public reader at1225; participant_scene_counts map assignment at1238; lookup1789 and existing frame_host run_scene_load_004dfb70 count pointer1792",
+    "fixture": "Real public reader plus actual existing scene_slot_records_written helper executed on plain Source data; no whole Mission/VFS/frame participant copy execution",
+    "count_helper_scope": "scene_slot_records_written is used by scene_slot_copy_overruns, not claimed to be the production Mission helper"
+  },
+  "admission": {
+    "native_producer_bound": "Existing parser admission: one recognized nonempty explicit I, closed semicolon, ordinary C-locale signed decimal-prefix token in int32 range, NUL-free and existing scanner bound",
+    "Source_provider": "Unchanged modern MSVC scene_scan_int std::sscanf(%d); consumer owning read performs no conversion",
+    "Source_compatibility_only": "Legacy raw malformed/missing/bare-I/non-I/F/metadata/type mismatches exercise preserved Source fallback only",
+    "excluded": [
+      "historical BF7533 CRT numeric/error/overflow/locale parity",
+      "implicit/conflicting declaration and empty-existing parser context",
+      "enum E declaration identity/provider",
+      "whole native record allocation/sideblock/EH/null/type fault parity",
+      "overcapacity participant copying",
+      "original-game runtime/gameplay and binary ABI compatibility"
+    ]
+  },
+  "installed_witnesses": {
+    "inventory": "Three bounded authored explicit I8 declarations, not a broad installed corpus claim",
+    "rows": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\scene.props",
+        "bytes": 24634,
+        "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+        "post_sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+        "stable": true,
+        "authored_key": "MaxPlayerNum",
+        "authored_type": "I",
+        "authored_value": "8",
+        "line": 4
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\usn\\usn_1_marshall.scn",
+        "bytes": 318167,
+        "sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+        "post_sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+        "stable": true,
+        "authored_key": "MaxPlayerNum",
+        "authored_type": "I",
+        "authored_value": "8",
+        "line": 401
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\scenes\\missions\\COTP-IJN\\PRCPIJN\\ijn_06_prelude_to_midway.scn",
+        "bytes": 173026,
+        "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+        "post_sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+        "stable": true,
+        "authored_key": "MaxPlayerNum",
+        "authored_type": "I",
+        "authored_value": "8",
+        "line": 401
+      }
+    ],
+    "effects": "scene.props first SceneRootProps parsed I8; actual USN1 and JM06 header I8 retain8 after independent copied owning data and cleared/opposite diagnostics; authored=true and count8; existing Multiplay/raw Party fields unchanged",
+    "no_claim": "No library/group provider execution is required or claimed; no enum resolver or installed F/invalid-type witness invented"
+  },
+  "fixture": {
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload",
+    "recipe": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\recipe.md",
+    "actual_fresh_TUs": [
+      "src/scene_file.cpp",
+      "src/scene_record_side_blocks.cpp",
+      "probe.cpp"
+    ],
+    "cases": [
+      "Owning explicit I8, lowercase i2, decimal-prefix I2tail and I0",
+      "Independent copy survives parent overwrite; diagnostic clear/opposite preserves owning value",
+      "Raw fallback FIRST2tail returns2; malformed/empty/bareI0 authored policy; wrong F/B/S/E rejects owning-I metadata",
+      "Missing Max default8 authoredfalse; global generic reader remains0 when own I diagnostics cleared; CompetitiveModeParty unchanged",
+      "Actual installed scene.props/USN1/JM06 I8 and existing count helper"
+    ],
+    "initial_compile_correction": "Probe-only assumptions corrected: C array uses existing kSceneRecordSideBlockCount and Party compares present/type/symbol fields rather than absent operator==; no production change to satisfy fixture",
+    "compile_flags": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /DWIN32 /showIncludes",
+    "compile_exit": 0,
+    "link_exit": 0,
+    "probe_exit": 0,
+    "link_manifest": "/MANIFEST:EMBED; embedded asInvoker confirmed",
+    "pe_machine": "0x14c",
+    "stubs_or_fake_providers": false,
+    "full_main_build_or_CTests_worker_run": false
+  },
+  "input_receipt": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\inputs.json",
+    "manifest_sha256": "53A3C982CDA6C8A18DF2952B70FD9022BD377B9E912F4C1161B26637364C4D76",
+    "active_production_source_inputs": 22,
+    "actual_project_includes": 20,
+    "pre_scanned_context_count": 3858,
+    "direct_recipe_inputs": 7,
+    "installed_inputs": 3,
+    "pinned_support_inputs": 1,
+    "pre_post_stable": true,
+    "support_freeze": {
+      "utc": "2026-10-07T16:22:46.236310+00:00",
+      "source_head": "b7b612e3176b67fd9a0ce9e976655e5fe2cec741",
+      "observed_main_head": "b7b612e3176b67fd9a0ce9e976655e5fe2cec741",
+      "primary_verified_build_commit": "bc083d99d",
+      "provenance": "Current whole main bc083d99d full Win32/3CTest PASS; same C++ through b7b612e31 metadata. Fully B/I-rebuilt SceneProperty consumers. Data-only public reader probe links fresh parser/changed reader objects and only frozen required actual core support; no Game object/services/stubs.",
+      "libraries": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\support\\bsp_core.lib",
+          "source_path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73249206,
+          "sha256": "6529F34DCEFEE294B46BF97B5993278ABCDB480D49F91C47F627F389CDD4B342",
+          "source_pre_sha256": "6529F34DCEFEE294B46BF97B5993278ABCDB480D49F91C47F627F389CDD4B342",
+          "source_post_sha256": "6529F34DCEFEE294B46BF97B5993278ABCDB480D49F91C47F627F389CDD4B342",
+          "stable": true
+        }
+      ]
+    },
+    "fresh_outputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\scene.obj",
+        "bytes": 291759,
+        "sha256": "B68BBA603F4D38F8C4D923C1D30669EBF0E02DC79F967CF2FA0DDB1D8E61CDA3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\reader.obj",
+        "bytes": 77254,
+        "sha256": "8600F341BCD34C687B39A914AFA57086FBCFCAC907C36CCBB45A9508767C9FAD"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\probe.obj",
+        "bytes": 347390,
+        "sha256": "9AC61053450622B154721D3D7FB91464B5C4F428141C4EFB13753A3EFE5664E4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\probe.exe",
+        "bytes": 101888,
+        "sha256": "19997C8530E3255C4C0D11D10C82E3192B381F3B5EB86F591260B6D9C1E1EB59"
+      }
+    ],
+    "source_domain": "20 actual project headers +2 fresh production .cpp; original source/header pre-scan3858 filtered by compiler actual includes",
+    "support_domain": "Only frozen current B/I-rebuilt actual bsp_core.lib, source pre/copy/post equal and pinned pre/post equal; no Game objects, no mixed old SceneProperty consumer objects"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\probe.cpp",
+      "bytes": 7259,
+      "sha256": "891E305EDFA19086736E7440182378191F57B5BB9F1326DE50295DB2F4387BCE"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\compile.cmd",
+      "bytes": 821,
+      "sha256": "CF3A99ABAB0E327145606FD48324F0709A4C8AC76EA97EBAAE8A6B018D946FC5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\link.cmd",
+      "bytes": 548,
+      "sha256": "F7F70C72EE17F888EC0906C6EE17496FDFACBE632930515DFDE5827452BF33E4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\recipe.md",
+      "bytes": 1290,
+      "sha256": "EF05B909796D9A735FEF8EEBDC810802D06D899C6FDA0DFF667C696444B45A87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\receipt.py",
+      "bytes": 4290,
+      "sha256": "CBD7C8C4953677813D8F2764F9AF9F0F661D5839C1114D0751C29EEB6CA75216"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\make_report.py",
+      "bytes": 10959,
+      "sha256": "3ECE3DDA1789CC6A7C3A2D269B9CB5ACC498DDF2D9C34CD768A49DC598874DAF"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\inputs.json",
+      "bytes": 19611,
+      "sha256": "53A3C982CDA6C8A18DF2952B70FD9022BD377B9E912F4C1161B26637364C4D76"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\support_freeze.json",
+      "bytes": 1149,
+      "sha256": "7F56E5EFE98E256C1BB6CCB2B078820B84137C375B27D2F7BDF437ADF0673F53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\compile.log",
+      "bytes": 47251,
+      "sha256": "2FA9A598E428FE9D73ADE34EE6A0592B1EA1191EE3B42BD67BFC3B2337802797"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\link.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\probe.log",
+      "bytes": 622,
+      "sha256": "932B60E0CBA1824EB0383DF60386546C1F67835580C4B7A1C4A9A32393866EBC"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\native_fragment.log",
+      "bytes": 211,
+      "sha256": "51E83697EB4ADB20319C161B12615D399F1E9C9CE37B1F1E6DE0D0A601B0FC44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\native_key.log",
+      "bytes": 65,
+      "sha256": "D48FE1F58C1ABAD4A00816FF25331CD23C7F329D2F1DBA0E81D6F8F55300F488"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\native_return1.log",
+      "bytes": 25,
+      "sha256": "5CF79BADEB9B71B2FA2C8482C1B56D707F49D7FC63A1474195C10A30EDBAFCD7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\native_return2.log",
+      "bytes": 25,
+      "sha256": "007970DB6798B135B7182AB6CB21FBEB15681299F52C7592EC6AB11242DD21C9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\probe.exe",
+      "bytes": 101888,
+      "sha256": "19997C8530E3255C4C0D11D10C82E3192B381F3B5EB86F591260B6D9C1E1EB59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_max_players_int_payload\\native_calls.log",
+      "bytes": 80,
+      "sha256": "AC4C63F153DE23FB789A93667B5CCAB372FCA8FE39EAAA012A626A450A523037"
+    }
+  ],
+  "checks": {
+    "git_diff_check": "PASS",
+    "verify_report_calls": "1 direct row PASS,0 failed"
+  },
+  "qualification": {
+    "exported": "Native fragment/key/RET bytes and exact Find attribution inspected read-only",
+    "reconstructed": "Only one actual owning-I MaxPlayerNum Source consumer read; remaining body and external providers partial",
+    "build_tested": "Fresh strict parser/changed consumer/probe TUs plus manifested pinned-core link PASS; root post-merge full main build/CTest pending",
+    "fixture_tested": "Actual parser/public reader/owning copy/count helper and3 installed explicit I8 witnesses PASS",
+    "ABI_compatible": false,
+    "game_validated": false
+  }
+}
