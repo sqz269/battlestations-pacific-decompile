@@ -1,0 +1,78 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00a41130",
+        "end_address": "00a41131"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00a41130",
+        "end_address": "00a41130",
+        "bytes_disassembled": 1,
+        "message": "Successfully disassembled 1 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00a41130",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00a41130",
+        "function_name": "FUN_00a41130",
+        "entry_point": "00a41130",
+        "body_size": 1,
+        "message": "Function created successfully at 00a41130"
+      }
+    },
+    {
+      "defined": "00a41130",
+      "end": "00a41131",
+      "name": null,
+      "after": "Function: FUN_00a41130 at 00a41130\nSignature: undefined FUN_00a41130(void)\nEntry: 00a41130\nBody: 00a41130 - 00a41130"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "packet": "cc11_transport_client_tick_boundary",
+  "status": "verified missing one-byte client RET boundary defined with supported locked tool; saved/exported/snapshotted",
+  "utc": "2026-10-07T17:21:44.126966+00:00",
+  "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "entry": "00a41130",
+  "end_exclusive": "00a41131",
+  "bytes": 1,
+  "following_alignment_bytes": 15,
+  "opcode": "C3",
+  "data_cell": "00d24464",
+  "data_cell_value": "00a41130",
+  "tool": "tools/ghidra_define_function.py",
+  "inline_script_used": false,
+  "body_extension_attempted": false,
+  "ghidra_saved": true,
+  "exports_refreshed": [
+    "00a41130"
+  ],
+  "snapshot_internal_function_count": 64275,
+  "snapshot_total_function_count": 64717,
+  "Source_provider_integrated": false,
+  "native_abi_proved": false,
+  "game_validated": false
+}
