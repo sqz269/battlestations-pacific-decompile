@@ -177,3 +177,5 @@ live Lua table through `008F2F70`; it is absent from this bounded installed
 inventory. Those storage/provider gaps are explicit blockers, not filled by a
 global namespace search, fake metadata or an unused wrapper. The prior ordinary
 entity flag-1/default and JM06 admission verdicts remain independent.
+
+Primary integration: 7a7b06aaf63200e18847fb6b4630c28bd3a814e9; actual main sources independently compiled for manifested focused probe, PASS. Complete MSVC Win32 Release rebuild and all three existing CTests passed. Executable SHA256 e4c52573577519e7435eeda2f7bf1aaba70ad8fd52cb782252fdb19b386edbef. Original ABI, actual runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_vectors_outer_integrated_build.log.

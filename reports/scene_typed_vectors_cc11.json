@@ -380,7 +380,7 @@
     ],
     "prior_independent_verdict": "ordinary entity flag1/default/JM06 generation admission remains valid separately; no global-table default or unused helper substitute"
   },
-  "flow_qualification": "primary repaired only returning-free S callsite gaps008F5D0A/24; worker read-only. Prior008F54F0 tail decode ends exclusive008F566F while stored body stillends008F5658; no full body-repair claim.",
+  "flow_qualification": "Primary verified BF6989 CRT free and repaired ALL five returning callsite gaps at 008F5D0A/008F5D24/008F63B0/008F648A/008F655E; zero remaining gaps in stored 008F5A00 body. Worker was read-only. Prior008F54F0 tail decoded through exclusive008F566F but stored body still ends008F5658; no full body-repair claim.",
   "verification": {
     "production_TU_probe": "fresh src/scene_file.cpp object linked; probe includes actual src/game_hosts_scene_contents.cpp and amended tests/math_tests.cpp; no copied implementation or stubs",
     "fresh_raw_dependencies": [
@@ -1037,5 +1037,42 @@
       "bytes": 71766,
       "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
     }
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "7a7b06aaf63200e18847fb6b4630c28bd3a814e9",
+    "included_packets": [
+      "cc11_scene_typed_vectors",
+      "cc11_land_outer_constructor"
+    ],
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_vectors_outer_integrated_build.log",
+    "utc": "2026-10-07T09:05:24.548990+00:00",
+    "executable_sha256": "e4c52573577519e7435eeda2f7bf1aaba70ad8fd52cb782252fdb19b386edbef",
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "68935904bfb41bba54f1e9baa320e56852dedeb2",
+    "probe_command": "local/cc11_vectors_root.cmd",
+    "independent_production_probe": "Root freshly compiled actual main parser/dependencies and copied isolated fixture including actual game_hosts_scene_contents TU; typed empty/direct payload/raw fallback/group inheritance and existing math checks PASS",
+    "installed_inputs": 16,
+    "installed_groups": 22,
+    "installed_v3": 1199,
+    "installed_full_v3": 1196,
+    "installed_empty_v3": 3,
+    "legacy_source_lane_differences": 0,
+    "jm06_entities": 96,
+    "jm06_classes": 11,
+    "jm06_submarines": 14,
+    "jm06_paths": 40,
+    "jm06_points": 1163,
+    "jm06_errors": 0,
+    "complete_scene_property_consumers_rebuilt": true,
+    "native_direct_calls_checked": 24,
+    "native_call_failures": 0,
+    "unresolved_indirect_calls": 1,
+    "historical_vs2005_crt_conversion_parity_proved": false,
+    "native_record_allocator_and_insert_bound": false
+  }
 }
