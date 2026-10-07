@@ -1,6 +1,81 @@
 #include "bsp/native_pilot_bot_task_owner.hpp"
+#include "bsp/command_execution.hpp"
 
 namespace bsp {
+namespace {
+// Shared SOURCE copy of the native normal array-growth block. All admitted
+// arrays/placement destinations are live; native null/fault allocation excluded.
+void grow_full_task_array(NativePilotBotTaskArrayView& array,
+    NativePilotBotTaskOwnerCalls& calls) {
+    if (array.count != array.capacity) return;
+    array.capacity = array.capacity * 2u + 2u; // publish before allocation
+    const NativePilotBotTaskArrayAllocation request{
+        array.capacity, array.capacity * 4u,
+        static_cast<std::size_t>(array.capacity) * sizeof(NativePilotBotTaskHandle)};
+    auto* replacement = calls.allocate_task_array_00bf55be(request);
+    for (std::uint32_t i = 0; i < array.count; ++i) replacement[i] = array.entries[i];
+    if (array.entries != nullptr) calls.free_task_array_00bf6989(array.entries);
+    array.entries = replacement; // after actual free returns
+}
+
+void retire_current_active_head(NativePilotBotTaskOwnerView& owner,
+    NativePilotBotTaskOwnerCalls& calls) {
+    auto& active = owner.active_58_5c_60;
+    auto& retired = owner.retired_64_68_6c;
+    //0099A0CA/0099A548 captures the active BASE after the task predicates and
+    // before possible retired allocation.0099A128/0099A5A6 later reads its head.
+    auto* const active_base = active.entries;
+    grow_full_task_array(retired, calls);
+    retired.entries[retired.count] = active_base[0];
+    ++retired.count; //0099A12C/0099A5AA
+    for (std::uint32_t i = 0; i + 1u < active.count; ++i) {
+        active.entries[i] = active.entries[i + 1u]; //0099A140/0099A5C0
+    }
+    --active.count; //0099A156/0099A5D6; unused tail remains untouched
+}
+}  // namespace
+
+void append_native_pilot_bot_active_task_0099a020(
+    NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
+    NativePilotBotTaskHandle task) {
+    auto& active = owner.active_58_5c_60;
+    //0099A02F publishes2*n+2;0099A038 allocate;0099A06F free;0099A077 publish.
+    grow_full_task_array(active, calls);
+    active.entries[active.count] = task; //0099A08C
+    ++active.count;                     //0099A08E
+}
+
+void retire_native_pilot_bot_leading_tasks_0099a0a0(
+    NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
+    NativePilotBotActiveRetirementCalls& task_calls) {
+    auto& active = owner.active_58_5c_60;
+    while (active.count != 0) {
+        const NativePilotBotTaskHandle head = active.entries[0];
+        if (!task_calls.task_predicate_34(head)) break; //0099A0BA, no null guard
+        retire_current_active_head(owner, calls);
+    }
+}
+
+void retire_native_pilot_bot_finished_tasks_0099a4c0(
+    NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls,
+    NativePilotBotActiveRetirementCalls& task_calls) {
+    const auto controller = task_calls.current_command_controller_114(); //0099A4D4
+    if (task_calls.current_command_token_0071be40(controller) == kCommandStop) { //0099A4D8/DD
+        retire_native_pilot_bot_leading_tasks_0099a0a0(owner, calls, task_calls); //0099A4E6
+    }
+    auto& active = owner.active_58_5c_60;
+    while (active.count != 0) {
+        const NativePilotBotTaskHandle captured = active.entries[0]; //0099A500
+        if (captured.identity == 0) break;                          //0099A502/504
+        if (!task_calls.task_predicate_38(captured)) break;         //0099A511/515
+        if (task_calls.task_predicate_34(captured)) break;          //0099A522/526
+        if (active.count <= 1u && task_calls.task_state_40(captured) == 1u) break; //0099A52C..53C
+        retire_current_active_head(owner, calls); // reload head, not captured predicate task
+    }
+    if (active.count == 0) {
+        task_calls.install_current_command_task_0099a170(owner, calls); //0099A5EB tail
+    }
+}
 
 void retire_all_native_pilot_bot_tasks_00999e40(
     NativePilotBotTaskOwnerView& owner, NativePilotBotTaskOwnerCalls& calls) {

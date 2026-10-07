@@ -1,0 +1,99 @@
+{
+  "packet": "cc11_land_active_retirement",
+  "date": "2026-10-06",
+  "status": "complete_conditional_normal_active_append_retirement_source_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verifies project/program before each live batch; refreshed owned exports and inspected complete caller assembly",
+    "worker_ghidra_writes": false
+  },
+  "changed_files": [
+    "include/bsp/native_pilot_bot_task_owner.hpp",
+    "src/native_pilot_bot_task_owner.cpp",
+    "docs/PILOT_BOT_ACTIVE_RETIREMENT_CC11.md",
+    "reports/pilot_bot_active_retirement_cc11.json"
+  ],
+  "ignored_validation_artifacts": ["local/cc11_land_owner_probe.cpp", "local/cc11_land_owner_probe.obj", "local/cc11_land_owner_probe.exe", "local/native_pilot_bot_task_owner_cc11.obj"],
+  "routines": [
+    {"entry": "0099A020", "range_end_exclusive": "0099A020-0099A096", "coverage": "Complete conditional normal caller flow", "source": "append_native_pilot_bot_active_task_0099a020", "abi": "ECX=bot, stack task, RET4", "limit": "Successful disjoint representable2*n+2 storage; actual live task identity/arena external; no prepend/drain"},
+    {"entry": "0099A0A0", "range_end_exclusive": "0099A0A0-0099A168", "coverage": "Complete conditional normal caller flow with required actual task predicate", "source": "retire_native_pilot_bot_leading_tasks_0099a0a0", "abi": "ECX=bot, RET", "limit": "Nonnull valid head for native slot34; append current head to retired, shift/decrement, no install/hook/delete/drain"},
+    {"entry": "0099A4C0", "range_end_exclusive": "0099A4C0-0099A5F2", "coverage": "Complete conditional normal caller flow with required actual controller/token/task predicates and complete installer", "source": "retire_native_pilot_bot_finished_tasks_0099a4c0", "abi": "ECX=bot, RET or tail JMP0099A170", "limit": "Captured task predicates/current-head retirement distinction; actual called world/profile/producer lifetimes remain external"}
+  ],
+  "host_steps": [
+    {"address": "0099A038", "native": "00BF55BE", "function": "0099A020", "contract": "Allocate4*(2*old active capacity+2); native capacity published0099A02F before allocation"},
+    {"address": "0099A06F", "native": "00BF6989", "function": "0099A020", "contract": "Free old active array; ADD ESP4 at0099A074; replacement publication0099A077"},
+    {"address": "0099A0BA", "native": "active_head+vtable34", "function": "0099A0A0", "contract": "AL boolean; valid nonnull head; leading true tasks retire and repeat"},
+    {"address": "0099A0DE", "native": "00BF55BE", "function": "0099A0A0", "contract": "Retired capacity2*n+2 published0099A0DB before allocate; preserve occupied prefix"},
+    {"address": "0099A110", "native": "00BF6989", "function": "0099A0A0", "contract": "Free old retired array; ADD ESP4 at0099A115; replacement publication0099A118"},
+    {"address": "0099A4D4", "native": "current_squadron+vtable114", "function": "0099A4C0", "contract": "Real bot50 plane ->CURRENTplane9D4 squadron; established entry007ECFD0 returns squadron348 command controller"},
+    {"address": "0099A4D8", "native": "0071BE40", "function": "0099A4C0", "contract": "ECX=returned controller; native interned singleton token; stop00E08F88 comparison0099A4DD"},
+    {"address": "0099A4E6", "native": "0099A0A0", "function": "0099A4C0", "contract": "Stop token first retires leading slot34-true tasks without drain/install"},
+    {"address": "0099A511", "native": "captured_active_head+vtable38", "function": "0099A4C0", "contract": "Captured EDI head; AL false exits main loop"},
+    {"address": "0099A522", "native": "captured_active_head+vtable34", "function": "0099A4C0", "contract": "Same captured EDI head, not replacement current head; AL true exits loop"},
+    {"address": "0099A538", "native": "captured_active_head+vtable40", "function": "0099A4C0", "contract": "Only sole active task in ordinary stable-count domain; full EAX1 keeps; other results retire; multiple heads skip"},
+    {"address": "0099A55C", "native": "00BF55BE", "function": "0099A4C0", "contract": "Retired capacity2*n+2 published0099A559 before allocate; active BASE captured after predicates0099A548"},
+    {"address": "0099A58E", "native": "00BF6989", "function": "0099A4C0", "contract": "Free old retired array; ADD ESP4 at0099A593; replacement publication0099A596; current head reloaded0099A5A6"},
+    {"address": "0099A5EB", "native": "0099A170", "function": "0099A4C0", "kind": "tail_jump", "contract": "Empty active count requires COMPLETE actual current-command producer; no intermediate drain or lossy projection substitute"}
+  ],
+  "source_provider_contracts": {
+    "allocation": "Reuse required NativePilotBotTaskOwnerCalls allocate_task_array_00bf55be/free_task_array_00bf6989. Native capacity2*n+2 and4-byte request separate from source sizeof(handle) bytes; publish capacity before successful disjoint allocation, replacement pointer after old-array free.",
+    "controller": "Required current_command_controller_114 follows actual same owner bot50/plane9D4/current squadron.007ECFD0 complete live body007ECFD0-007ECFD7 loads348 then RET. No old cached task404/current-class substitute.",
+    "singleton": "Required current_command_token_0071be40 returns actual interned identity: mode1 controller54, mode2 controller188, other0. Live final RET0071BE5A ->endexclusive0071BE5B. Existing typed getter may serve actual admitted state projections; no enum reinterpretation.",
+    "predicates": "Required slot34/38 nativeAL bool and slot40 fullEAX from actual captured task profile. All callbacks stay ordered and captured identity remains valid even under admitted head-slot replacement. Unsupported task/world/controller profiles excluded.",
+    "installer": "Required install_current_command_task_0099a170 supplies COMPLETE actual ordinary native producer: initial current token/descriptor/resolved target; attackmove/returntobase resolution; all16 admitted factory arms and real target predicates; default/moveto descriptor re-probes; captured target ->real air block/current squadron admission for land; stable actual task arena; append only nonzero result. Initial null command returns, resolved-null takes default, zero factory result appends nothing. No retired drain.",
+    "existing_projection_limit": "AttackCommandHost class/precondition API omits distinct fresh descriptor, captured target, returned block and current squadron inputs. New facades do not call it as a complete native installer.",
+    "no_defaults": "Every provider pure virtual; no source arena/global/type stub, no-op/default callback, Boolean host wiring or synchronous destruction supplied."
+  },
+  "normal_flow": {
+    "append": "Grow full active array2*n+2 ->copy prefix ->freeold ->publish replacement ->incoming entry atcount ->count++",
+    "leading": "While active count nonzero: valid captured head34 ->iftrue capture current active BASE ->grow retired2*n+2 ->reload its head for append ->retiredcount++ ->shift active ->activecount--; false exits; no install",
+    "finished": "Read actual current controller/token ->ifstop retire-leading ->loop capturedhead/nullguard/38/34 ->ifcount<=1 state40, result1keeps ->append current head after predicates ->shift/decrement/repeat ->ifempty required tail installer",
+    "deferred_lifetime": "No58/scalar/drain added; existing later FIFO drain still decides hook/delete timing; identity must not be recycled while active/retired/captured callbacks reachable",
+    "unused_tail": "Native shifted-out tail slot left untouched; source does not normalize"
+  },
+  "admitted_domain": {
+    "storage": "Count<=capacity, live disjoint allocated active/retired storage, stable borrowed field references and live task mappings; emptyzero-cap array may have nullbase",
+    "success": "Successful disjoint allocation and representable2*n+2/native4-byte/sourcehost requests; all required services return normally; private FH3/SEH/new-handler/fault/allocationfailure not reconstructed",
+    "mutation": "Providers cannot reenter owner/active operations or mutate array bases/counts/capacities. Task predicate may replace ONLY current active head slot with both captured/replacement mappings live throughout operation. Explicit installer may append through0099A020 at empty-list boundary. Other structural mutation/concurrency excluded.",
+    "source_fixture_replacement": "Controlled81->83 active-head replacement confirms captured predicate/current-head append observation in SOURCE only; not observed native mutation or a displaced-task ownership solution",
+    "nulls": "Leading helper has no native null-head guard; require validnonnull task for34. Finished helper preserves native null-head break. Actual current plane/squadron/controller context required; facade does not invent nullable world behavior.",
+    "pointees": "Handle possession does not prove task404 retained squadron or task3FC plane lifetime, component ownership, observer invalidation after base death notification, native arena reclamation or actual current-command context"
+  },
+  "raw_return_continuations": [
+    {"site": "0099A074", "hex": "83C404897E58", "contract": "ADD ESP4 ->publish replacement active array"},
+    {"site": "0099A115", "hex": "83C404897E64", "contract": "ADD ESP4 ->publish replacement retired array"},
+    {"site": "0099A593", "hex": "83C404897E64", "contract": "ADD ESP4 ->publish replacement retired array"}
+  ],
+  "corrections": [
+    {"was": "Append captured predicate task to retired", "is": "Capture active base after predicates and reload CURRENT head after retired growth for append", "evidence": "0099A0CA/A128 and0099A548/A5A6; source fixture captured81/current83"},
+    {"was": "Use sole-task state40 to gate every retirement", "is": "Multiple active tasks skip40; sole fullEAX1 keeps, every other value retires", "evidence": "0099A52C/52F/538/53A/53C; focused multihead/sole-state fixture"},
+    {"was": "Retirement can immediately drain/destroy or use prepend growth", "is": "Append retired prefix2*n+2 and defer hook/delete; active append2*n+2 is separate from prepend2*n+1", "evidence": "Complete three caller listings; scheduler drain0099ADC2 precedes finish0099AE7E; existing later FIFO source"},
+    {"was": "Existing AttackCommandHost projection is complete install binding", "is": "Required actual complete producer retains missing descriptor/block/current-squadron observations and real stable arena", "evidence": "Complete0099A170 caller audit and reports/pilot_bot_retirement_schedule_cc11.json; API argument limits"},
+    {"was": "Stop at no-return CRT pseudocode/free gap", "is": "Live ADD ESP4 continuations publish replacement and continue", "evidence": "Live raw bytes0099A074/0099A115/0099A593; no worker listing repair"}
+  ],
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86/toolset14.51.36231; /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "source_object": "PASS local/native_pilot_bot_task_owner_cc11.obj compiled",
+    "existing_fixture": "Extended only local/cc11_land_owner_probe.cpp; source object plus fixture object linked /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "probe_result": "PASS owner growth/reloaded drain/distinct teardown; active growth2n+2/stop/multihead/captured predicates/current-head reload/sole-state1/tail install/deferred FIFO old-new identity",
+    "probe_receipt": "Active0->2->6 prefix; retired90 prefix then80/83/82; captured81 remains externally live; state1 keeps82, state0 retires82; required boundary fixture install100; delayed hooks/deletes90/80/83/82 leave100 active; original owner checks retained",
+    "probe_limits": "SOURCE new-delete arrays/task-controller maps/constant stop-token/controlled head change/fixture installer and cleanup effects only; no complete native producer, observed runtime reentry, allocator identity, original ABI, pointee lifetime or game proof",
+    "artifact_headers": "PE machine014C, optionalmagic010B, resourceRVA0000B000,size1E0; linked embedded manifest and successfully executed; no native ABI inference",
+    "live_call_verifier": "PASS9 direct/tail rows,0 failed;5 virtual rows explicitly indirect/not checked",
+    "json_parse": "PASS3 routines/14 host_steps parsed",
+    "diff_check": "PASS git diff --check and git diff --cached --check; only four owned tracked files staged",
+    "full_build": "Worker did not run; primary serializes main full Win32 build/integration",
+    "game_run": "Not run; facade remains unbound"
+  },
+  "remaining": [
+    "Actual stable task arena/identity and owner binding, all admitted native predicate profiles, actual current controller and complete command producer",
+    "Native active/retired/captured task ownership, cached squadron404/plane3FC lifetime after base death notification, displaced task lifetime under any real mutation",
+    "Eligible tick schedule/parked producer/prepend/head54/party/mode/old-new identity/final observer plan services; no broad tick or x87 port",
+    "Deferred BE selected-owner/readiness/sender-copy/retired route/receipt/reindex and parked component input/output resolver/lifetime domains",
+    "Original bot/task profiles/layout/register ABI, private FH3/SEH/fault/allocation behavior, arbitrary structural mutation/concurrency, native differential/runtime/gameplay checks"
+  ],
+  "prior_reports": ["reports/pilot_bot_task_owner_source_cc11.json", "reports/pilot_bot_retirement_schedule_cc11.json", "reports/pilot_bot_parked_callback_cc11.json", "reports/pilot_bot_owner_flow_repair_cc11.json", "reports/landing_task_retained_hook_cc11.json", "reports/landing_be_profile_cc11.json"]
+}
