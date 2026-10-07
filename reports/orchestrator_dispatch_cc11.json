@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:44:49.384297+00:00",
+  "updated_utc": "2026-10-07T09:50:41.113705+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1372,5 +1372,33 @@
     "primary_full_native_body_review": true,
     "canonical_lock_layout_verified": true,
     "complete_native_serializer_bound": false
+  },
+  "scene_float_nonempty_integration": {
+    "source_revision": "23587a06a8463dee5a7740e77f1cfc5f6b918317",
+    "worker_revision": "07469549993b4734097580cb5c962aa359a0c257",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_float_integrated_build.log",
+    "utc": "2026-10-07T09:50:41.113705+00:00",
+    "executable_sha256": "55735178cb7d901a6e35041cc76234a4a5837cf61d132f2126992c7f191c49df",
+    "independent_production_probe": "Root freshly compiled actual main parser/map TUs and isolated copied fixture including actual PropertyLibrary TU, linked only after full stride refresh; normal/prefix/diagnostic/directmap/rawfallback/Int/required/type/bareF/S/V3 and owning capture/redeclare/parent/entity cases PASS",
+    "probe_command": "local/cc11_float_root.cmd",
+    "complete_scene_property_consumers_rebuilt": true,
+    "installed_inputs": 16,
+    "installed_groups": 22,
+    "installed_f_literals": 834,
+    "retained_nonempty_f": 830,
+    "raw_empty_f": 4,
+    "prior_source_binary32_differences": 0,
+    "installed_v3": 1199,
+    "native_direct_rows_checked": 28,
+    "native_call_failures": 0,
+    "historical_vs2005_crt_parity_proved": false,
+    "native_empty_f_context_bound": false,
+    "native_allocator_bag_and_global_tail_bound": false,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

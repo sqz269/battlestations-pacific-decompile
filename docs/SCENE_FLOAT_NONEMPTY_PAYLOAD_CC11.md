@@ -135,3 +135,5 @@ stored body ending `008F5658`. Worker did not run a full build, game, native
 differential, Ghidra mutation or push. Integrated build belongs to the primary.
 The direct-call verifier checks 28 rows with zero failures; `git diff --check`
 also passes.
+
+Primary integration: 23587a06a8463dee5a7740e77f1cfc5f6b918317; complete main rebuild refreshed every SceneProperty consumer. Fresh actual main parser/map/library manifested probe passed with all 830 nonempty F source comparisons unchanged. MSVC Win32 Release and all three existing CTests passed. Executable SHA256 55735178cb7d901a6e35041cc76234a4a5837cf61d132f2126992c7f191c49df. Historical CRT, native empty context, original ABI, runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_float_integrated_build.log.
