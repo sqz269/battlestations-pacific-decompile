@@ -1,0 +1,78 @@
+{
+  "packet": "cc11_land_command_validity",
+  "date": "2026-10-07",
+  "status": "complete_conditional_normal_land_command_validity_and_descriptor_copy_source_required_services_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verified target before live batches; complete three entry assemblies/prototypes reviewed",
+    "worker_ghidra_writes": false,
+    "descriptor_primary_recovery": "Main4e404e4ce: defined/saved007EEDC0..007EEE00; complete19-instruction body matched disk/live64B; export refreshed"
+  },
+  "changed_files": [
+    "include/bsp/plane_squadron_host.hpp",
+    "src/plane_squadron_host.cpp",
+    "docs/PILOT_BOT_LAND_COMMAND_VALIDITY_CC11.md",
+    "reports/pilot_bot_land_command_validity_cc11.json"
+  ],
+  "ignored_validation_artifacts": [
+    "local/cc11_land_hook_probe.cpp",
+    "local/cc11_land_hook_probe.obj",
+    "local/cc11_land_hook_probe.exe",
+    "local/plane_squadron_host_cc11.obj"
+  ],
+  "routines": [
+    {"entry": "009B34D0", "end_exclusive": "009B3552", "coverage": "Complete normal approach-validation source; actual required token/descriptor/resolver/block/owner/admission services", "abi": "ECX=approach, plainRET, preservesEBX/ESI", "source": "land_approach_validate_site_009b34d0"},
+    {"entry": "009B3560", "end_exclusive": "009B35DD", "coverage": "Complete normal land task+40 predicate source; exact first-probe2/second-mismatch0/target-match1 outcomes", "abi": "ECX=task,EAX=2/1/0,plainRET,preservesESI", "source": "land_task_is_command_current_009b3560"},
+    {"entry": "007EEDC0", "end_exclusive": "007EEE00", "coverage": "Complete fixed19-instruction normal descriptor-copy contract, required actual0071EB60 acquisition and ordered pointer x87 kernel", "abi": "ECX=squadron,stackoutput,EAX=output,RET4", "source": "plane_squadron_copy_current_command_descriptor_007eedc0"}
+  ],
+  "host_steps": [
+    {"address": "007EEDC6", "native": "0071EB60", "function": "007EEDC0", "contract": "Fresh retained squadron348 controller acquisition; actual mode1/mode2/lazy-empty descriptor required"},
+    {"address": "009B3516", "native": "00521EA0", "function": "009B34D0", "contract": "Mutable RETURNED descriptor ECX; preserve lazy object4 cache; compare fresh approach30 AFTER resolution"},
+    {"address": "009B3537", "native": "006C4790", "function": "009B34D0", "contract": "Captured live blockECX, fresh approachC squadron stackarg, AL admission; actual listB4 service"},
+    {"address": "009B35B5", "native": "00521EA0", "function": "009B3560", "contract": "Mutable RETURNED descriptor ECX; preserve cache write; compare fresh task428 AFTER resolution"},
+    {"address": "009B34E8", "native": "virtual+174", "function": "009B34D0", "contract": "Initial approachC receiver; nonzero first token gate"},
+    {"address": "009B34F9", "native": "virtual+174", "function": "009B34D0", "contract": "RELOADapproachC; repeated real interned token probe"},
+    {"address": "009B3512", "native": "virtual+178", "function": "009B34D0", "contract": "RELOADapproachC; copied local descriptor returned by007EEDC0 established profile"},
+    {"address": "009B3578", "native": "virtual+174", "function": "009B3560", "contract": "Initial task404 receiver; null FIRST result returns2"},
+    {"address": "009B358C", "native": "virtual+174", "function": "009B3560", "contract": "RELOADtask404; SECOND result other thanland, includingNULL, returns0"},
+    {"address": "009B35B1", "native": "virtual+178", "function": "009B3560", "contract": "RELOADtask404 after land/nonNULL424 guards; copied descriptor returned identity"}
+  ],
+  "source_contract": {
+    "retained_fields": "Live slots task404/424/428/42C = approachC/2C/30/34; raw third pointer meaning not renamed. Actual old-task identity/mappings required; no currentplane9D4/census/name/class substitution.",
+    "initial_receiver": "Initial cached slot read once for null guard and first174 call; second174,178 and admission reload separately; required receiver lifetime at each actual call",
+    "predicate40": "NULLcache or firstNULLtoken ->2; secondnonland(includingNULL) or NULL424 ->0; else actual descriptor/resolve, fresh428 equality ->1 else0. No later424 recheck/clears.",
+    "validation": "Command/target mismatch ->common2C/30/34 clears. Targetmatch ->captureblock, owner7Cnonnull, owner5Dzero, actual006C4790(capturedblock,freshcachedsquadron). TrueAL keeps fields. Failedmatching admission ->2Cclear3540 THEN common2Cclear3543/30/34.",
+    "volatile_qualification": "Borrowed pointer slots are volatile to retain observed reloads/publications and duplicate2C writes. No atomicity/concurrency/fault/ownership/ABI implication.",
+    "copy_layout": "Win32 SceneCommandTarget sizeof18h/voidpointer4/float4; asserted offsets0/1/2/4/8/C/10/14h; WORD0,WORD2,DWORD4 then four FLD/FSTP pairs8/C/10/14, MOV EAX,destination before final FSTP",
+    "third_field_evidence": "Bounded producer009AFEB6 stores returnfrom006C0B50 at approach34; its ownership/lifetime remains external",
+    "resolver": "Required COMPLETE00521EA0 receives mutable returned local descriptor: kind0 ->0, nonzero uses cache4 or actual uint16 ID/split/base/table object0C resolution and writes result(backincludingNULL) to SAMEdescriptor4. Pure handle-slot helper/host index is not complete resolver.",
+    "descriptor_provider": "Required actual0071EB60 mode1+58/mode2+18C/actual lazy-empty singleton. Existing GameCommandsHost empty-mode2/omittedoverride projections excluded.",
+    "admission_provider": "Actual live block7C owner, owner5D byte, complete006C4790 null refusal/listB4 identity walk; no hardcoded SP false/empty list.",
+    "normal_domain": "Valid profiles/receiver/field/descriptor/table/block/owner/list mappings at each operation; source provider replacements can change slots between calls but do not prove native reentry. Raw field readers have no invented callback effects. Masked FP exceptions, no pendingunmasked exception, available x87 slot; ordinary return/no concurrent mutation, corruption, mappingreuse, structural reentry or faults.",
+    "unbound": "Actual task arena/base/profile constructors, owner scheduler/retiredFIFO, controller/provider/lifetime and observer/death/game adapters; no synchronous drain/dequeue/BE promotion or Boolean GameUnitsHost binding"
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86; /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "source_object": "PASS actual src/plane_squadron_host.cpp compiled to local/plane_squadron_host_cc11.obj",
+    "fixture_link": "Existing hook fixture extended only; changedobject+main build/win32/Release/bsp_core.lib; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "probe_result": "PASS retained hook/cruise; validity fresh probes/result2vs0; mutable resolver; ordered x87 descriptor copy; admission clears",
+    "focused_scenario": "Source receiversA->B->C->D; firstNULL2/secondNULL0; true mode2 descriptor payload; mutable returned local descriptorcache; fresh target428 afterresolver; nonempty source list admission then exclusion/threeclears. Source fixture services/maps are not native runtime proof.",
+    "numeric_fixture": "Saved/restoredFXSAVE environment; maskedCW0B7F/MXCSR5F80. Copied sNaN7F801234 ->quiet7FC01234; negativezero80000000/denormal00000001/qNaN7FC05678 preserved; source unchanged. x87control/TOP unchanged, invalid/denormal statusset; MXCSR unchanged.",
+    "object_receipt": "Copy helper WORD/WORD/DWORD offsets08..19; x87pairs1C/1F,22/25,28/2B,2E/33 with MOV EAX,ECX31. Validation compiled2C storesDD/E6 then targetEF and thirdstore follows; separate volatilewrites.",
+    "live_call_verifier": "PASS4 directcall rows,0failed;6virtualcalls excluded",
+    "json_parse": "PASS report parsed",
+    "diff_check": "PASS git diff --check and stagedcheck; only four owned tracked files",
+    "full_build": "Not run by worker; root owns serialized main integration/build",
+    "game_run": "Not run; actual original entries/services/lifetimes/ABI/gameplay unbound"
+  },
+  "remaining_boundaries": [
+    "Actual descriptorcontroller348/head58/override18C/lazy-empty singleton and profile adapters",
+    "Mutable native00521EA0 table/cache resolver, actual object identities and stale handle/lifetime domains",
+    "Actual block7C/owner5D/exclusionB4 state/services; no default SP/list state",
+    "Stable actual task construction/arena/active-retired owner/FIFO/drain and cached404/retained3FC observer lifetime after base deathnotification",
+    "Native register/stack/profile/FPinstruction-address ABI, unmaskednumeric/SEH/fault/concurrency domains and originalgame validation"
+  ]
+}
