@@ -14452,3 +14452,33 @@ The run reproduces F1's death row exactly (`t=442.42 killer=Gleaves killer_gun=2
      line.
   2. The artillery kinds (cat 3/4/6) carry no line-of-fire predicate at all (`00729560` installs it for kinds 1, 5 and
      6 only). Whether the image has another friendly gate for them is unread.
+
+## 5fh. Handoff (cc9-lua48, 2026-10-06, paused by the user at about 20% context)
+
+Branch `agent/cc9-lua48`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua48`. Everything is committed, and no
+leases are held. No switch was added. The g12-g14 runs finished before the pause; 5fg records them.
+
+| item | state | where |
+| --- | --- | --- |
+| JM08: who shells the HQ | done: Nevada (bullets 1, 15), then Missouri (100), Helena (13), and the DDs (15) | 5fg |
+| JM08 strike runs g10-g14 | furthest is g10/g12 (Nevada sunk at 508 s, T01-T03 sunk, HQ falls at 1167.66 s) | 5fg |
+| T05 killed by Gleaves | friendly AA fire, credited correctly | 5fg |
+
+**Routed by the lead:**
+- cc9-gunnery34 has two items:
+  - AI ship torpedoes are never aimed (`torpedo_gate targeted=0`).
+  - Friendly fire: the AA line-of-fire cache, and no line-of-fire check on artillery.
+- cc9-ships41 has the player's `torpedo` harness line.
+
+**Next, once those land:**
+1. Rerun the g10 orders (`local\l48_j8_g10.txt`). Add Gyoraitei and Isokaze/Fubuki torpedo strikes on Missouri,
+   through the AI tubes or the player's torpedo line.
+2. Then go for the landships and the Dakota group, as in 5fg.
+3. A completion must show the exec guard's sus_prog.exe refusal line.
+
+**Scripts** are in `local\`, prefix `l48_`, and none is for commit:
+- `l48_lane.ps1` is 5fd's launch form.
+- `l48_j8gen.py` writes order files from priority lists (`--air`, `--hosho`, `--ships`, `--boats`).
+- `l48_diag_hq.py` makes the diagnostic export `local\l48_D0` (main `62988a6fa`). It adds an `l48diag hit` line per
+  hit, and the env var `BSP_L48_VICTIMS=|A|B|` adds victims to it.
+- `l48_hqdmg.py` gives per-shooter damage to one victim, and `l48_j8sum.py` gives a run's deaths and its outcome.
