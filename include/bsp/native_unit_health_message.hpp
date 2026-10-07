@@ -172,6 +172,42 @@ private:
     void send_locked_session_message_00783dc0(void* actual_transport,
         void* actual_target, NativeSessionMessageStorage* borrowed_message) final;
 };
+// Complete sole-caller helpers used by00783C80. Extraction visits absolute
+// base bits MSB-first and packs MSB-first; append consumes those packed bits
+// MSB-first but ORs them into the cursor's LSB bit positions. No cursor-length
+// check or generic bit read/write substitution. New source interfaces.
+void copy_native_message_bit_slice_00428ec0(const NativeBitCursor*, void* destination,
+    std::uint32_t absolute_bit, std::uint32_t bits);
+void append_native_message_msb_bits_00429540(NativeBitCursor*, const void* source,
+    std::uint32_t bits);
+
+// Complete ordinary00783C80 with actual live cursor/profile/tick bindings.
+// The selected cursor stays captured across provider changes to its cell.
+// Backing includes the native writable carry byte. An overflow copy's delta
+// fits the actual200h-byte scratch (at most1000h bits); no clamp is introduced.
+class NativeUnitHealthMessageSerializedCalls : public NativeUnitHealthMessageLockedSendCalls {
+public:
+    NativeUnitHealthMessageSerializedCalls(NativeUnitHealthSetterGlobals,
+        NativeUnitHealthRouteGlobals, const NativeUnitHealthMessageProfile&,
+        const volatile std::uint16_t& actual_tick_low_00f876b0) noexcept;
+protected:
+    // Pure aliases/access to actual backing, without early value snapshots,
+    // callbacks, allocation, ownership changes or FP changes.
+    virtual NativeBitCursor* const volatile& delivery_cursor_d40(void* actual_target,
+        std::uint32_t actual_delivery) noexcept = 0;
+    virtual const volatile std::uint32_t* transport_primary_table(void*) noexcept = 0;
+    // Required COMPLETE current transport virtual+20 operation. Consume the
+    // cursor bytes synchronously or create owned data; keep reached transport,
+    // target, cursor and backing live through post-call resets. No default
+    // flush/network success or retained borrowed message/cursor ownership.
+    virtual void call_transport_flush_20(std::uint32_t actual_entry,
+        void* actual_transport, void* actual_target, NativeBitCursor*,
+        std::uint32_t actual_delivery) = 0;
+private:
+    void serialize_session_message_00783c80(void* actual_transport,
+        void* actual_target, NativeSessionMessageStorage* borrowed_message) final;
+    const volatile std::uint16_t& tick_low_00f876b0_;
+};
 // In the flags4 route, callbacks may replace game/sender/valid links while all
 // backing stays live. Its concurrent field mutation, other message
 // profiles, invalid or nonterminating traversals and fault paths are outside.

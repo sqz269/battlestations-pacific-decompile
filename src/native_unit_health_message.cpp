@@ -2,6 +2,7 @@
 #include "bsp/random_threads.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 #include <new>
+#include <cstring>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native unit health message profiles require MSVC Win32.
 #endif
@@ -221,5 +222,135 @@ void NativeUnitHealthMessageLockedSendCalls::send_locked_session_message_00783dc
     auto& leave_depth = *reinterpret_cast<volatile U*>(&current->depth);
     leave_depth = leave_depth - 1u;
     ::LeaveCriticalSection(&current->native);  // native IAT00CE2210
+}
+namespace {
+std::int32_t message_signed_bits(U bits) noexcept {
+    std::int32_t value;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
+U message_cursor_position(const NativeBitCursor* cursor) noexcept {
+    const volatile auto& c = *cursor;
+    const U current = reinterpret_cast<U>(c.current_08);
+    const U base = reinterpret_cast<U>(c.base_00);
+    const U bit = static_cast<U>(c.bit_0c);
+    return (current - base) * 8u + bit;
+}
+void reset_message_cursor(NativeBitCursor* cursor) noexcept {
+    volatile auto& c = *cursor;
+    const auto* base = c.base_00;
+    c.current_08 = base;
+    c.bit_0c = 0;
+    *const_cast<volatile std::uint8_t*>(base) = 0;
+}
+std::uint16_t message_delivery_word(const NativeSessionMessageStorage* message) noexcept {
+    return *reinterpret_cast<const volatile std::uint16_t*>(
+        reinterpret_cast<const std::uint8_t*>(message) + 4);
+}
+}
+
+void copy_native_message_bit_slice_00428ec0(const NativeBitCursor* cursor,
+    void* destination, U absolute_bit, U bits) {
+    using B = std::uint8_t;
+    const volatile auto& c = *cursor;
+    auto* out = static_cast<volatile B*>(destination);
+    U source_byte = absolute_bit >> 3;
+    U source_bit = 7u - (absolute_bit & 7u);
+    U output_bit = 7;
+    while (bits != 0) {
+        --bits;
+        if (output_bit == 7) *out = 0;
+        const U base = reinterpret_cast<U>(c.base_00); // reload after byte clear
+        const B value = *reinterpret_cast<const volatile B*>(base + source_byte);
+        if (((static_cast<U>(value) >> source_bit) & 1u) != 0)
+            *out = static_cast<B>(*out + static_cast<B>(1u << output_bit));
+        if (output_bit == 0) {
+            output_bit = 7;
+            out = reinterpret_cast<volatile B*>(reinterpret_cast<U>(out) + 1u);
+        } else --output_bit;
+        if (source_bit == 0) { source_bit = 7; ++source_byte; }
+        else --source_bit;
+    }
+}
+
+void append_native_message_msb_bits_00429540(NativeBitCursor* cursor,
+    const void* source, U bits) {
+    using B = std::uint8_t;
+    volatile auto& c = *cursor;
+    auto* in = static_cast<const volatile B*>(source);
+    U source_bit = 7;
+    while (bits != 0) {
+        const B input = *in;
+        auto* out = const_cast<volatile B*>(c.current_08);
+        const B value = static_cast<B>((static_cast<U>(input) >> source_bit) & 1u);
+        const U shift = static_cast<U>(c.bit_0c);
+        --bits;
+        *out = static_cast<B>(*out | static_cast<B>(static_cast<U>(value) << (shift & 31u)));
+        // Native reloads the actual low byte after the possibly aliased OR.
+        const B low_bit = *reinterpret_cast<const volatile B*>(&c.bit_0c);
+        const U carry_shift = (8u - static_cast<U>(low_bit)) & 31u;
+        c.bit_0c = message_signed_bits(static_cast<U>(c.bit_0c) + 1u);
+        const B carry = static_cast<B>(static_cast<U>(value) >> carry_shift);
+        const auto offset = c.bit_0c;
+        if (offset > 7) {
+            c.current_08 = reinterpret_cast<const B*>(reinterpret_cast<U>(c.current_08) + 1u);
+            c.bit_0c = message_signed_bits(static_cast<U>(offset) - 8u);
+            *const_cast<volatile B*>(c.current_08) = carry;
+        }
+        if (source_bit == 0) {
+            in = reinterpret_cast<const volatile B*>(reinterpret_cast<U>(in) + 1u);
+            source_bit = 7;
+        } else --source_bit;
+    }
+}
+
+NativeUnitHealthMessageSerializedCalls::NativeUnitHealthMessageSerializedCalls(
+    NativeUnitHealthSetterGlobals globals, NativeUnitHealthRouteGlobals route_globals,
+    const NativeUnitHealthMessageProfile& profile,
+    const volatile std::uint16_t& tick_low) noexcept
+    : NativeUnitHealthMessageLockedSendCalls(globals, route_globals, profile),
+      tick_low_00f876b0_(tick_low) {}
+
+void NativeUnitHealthMessageSerializedCalls::serialize_session_message_00783c80(
+    void* transport, void* target, NativeSessionMessageStorage* message) {
+    std::uint8_t scratch[0x200]; // saved native transport DWORD is not scratch
+    volatile auto& m = *message;
+    const U initial_delivery = m.delivery_04;
+    auto* const cursor = delivery_cursor_d40(target, initial_delivery);
+    U before = message_cursor_position(cursor);
+    if (before == 0) {
+        write_native_signed_word_bits_00429030(cursor, tick_low_00f876b0_, 16);
+        write_native_signed_word_bits_00429030(cursor, message_delivery_word(message), 3);
+        before = message_cursor_position(cursor);
+    }
+    const volatile U* profile = m.profile_00;
+    using Writer = void(__thiscall*)(const NativeSessionMessageStorage*, NativeBitCursor*);
+    reinterpret_cast<Writer>(profile[1])(message, cursor);
+    const U after = message_cursor_position(cursor);
+    if (message_signed_bits(after + 0x20u) >= 0x2320) {
+        const U delta = after - before;
+        copy_native_message_bit_slice_00428ec0(cursor, scratch, before, delta);
+        rewind_native_bits_00428b80(cursor, delta);
+        const U delivery = m.delivery_04;
+        const volatile U* table = transport_primary_table(transport);
+        const U entry = table[0x20 / 4];
+        call_transport_flush_20(entry, transport, target, cursor, delivery);
+        reset_message_cursor(cursor);
+        write_native_signed_word_bits_00429030(cursor, tick_low_00f876b0_, 16);
+        write_native_signed_word_bits_00429030(cursor, message_delivery_word(message), 3);
+        append_native_message_msb_bits_00429540(cursor, scratch, delta);
+    }
+    const U delivery = m.delivery_04;
+    if (delivery != 2) {
+        const volatile auto& c = *cursor;
+        const U partial = (static_cast<U>(c.bit_0c) & 7u) != 0 ? 1u : 0u;
+        const U base = reinterpret_cast<U>(c.base_00);
+        const U current = reinterpret_cast<U>(c.current_08);
+        if (partial - base + current < 0x380u) return;
+    }
+    const volatile U* table = transport_primary_table(transport);
+    const U entry = table[0x20 / 4];
+    call_transport_flush_20(entry, transport, target, cursor, delivery);
+    reset_message_cursor(cursor);
 }
 } // namespace bsp
