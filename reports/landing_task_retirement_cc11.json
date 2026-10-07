@@ -1,0 +1,89 @@
+{
+  "packet": "cc11_land_retirement",
+  "status": "evidence_only_retained_task_lifetime_blocker",
+  "date": "2026-10-06",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py live Client.verify before each query; count 64696 matches snapshot",
+    "ghidra_writes": false
+  },
+  "changed_source": false,
+  "documentation": "docs/LANDING_TASK_RETIREMENT_CC11.md",
+  "routines": [
+    {"entry": "009B3F50", "range": "009B3F50-009B3FE3", "coverage": "complete", "limit": "control flow read; base cleanup bodies not reconstructed", "abi": "member destructor ECX=task, RET"},
+    {"entry": "006C8800", "range": "006C8800-006C8831", "coverage": "complete", "abi": "single register helper ECX=squadron, RET"},
+    {"entry": "006C7680", "range": "006C7680-006C77DE", "coverage": "complete", "abi": "__thiscall(block,squadron), RET 4 at006C77DC"},
+    {"entry": "009B34D0", "range": "009B34D0-009B3551", "coverage": "complete", "abi": "member helper ECX=approach"},
+    {"entry": "0099A4C0", "range": "0099A4C0-0099A5F1", "coverage": "complete", "limit": "virtual eligibility callees are contracts", "abi": "ECX=bot, RET or tail-jump0099A170"},
+    {"entry": "00999E40", "range": "00999E40-00999EDF", "coverage": "complete", "abi": "member helper ECX=bot"},
+    {"entry": "00999EE0", "range": "00999EE0-00999F41", "coverage": "complete", "limit": "virtual hooks resolved only for land task", "abi": "member helper ECX=bot, RET"},
+    {"entry": "0099ACD0", "range": "0099ACD0-0099B1A5", "coverage": "partial: lifetime gates and0099AD68-0099AEC2", "abi": "__thiscall(bot,float dt), RET 4"},
+    {"entry": "009B33F0", "range": "009B33F0-009B3433", "coverage": "complete", "limit": "listing only; no C++ hook projection", "abi": "ECX=task, RET or tail-jump007EFB60"},
+    {"entry": "007EFB60", "range": "007EFB60-007EFB9A", "coverage": "complete", "limit": "007EEE50 branch callee remains unread", "abi": "member helper ECX=squadron"},
+    {"entry": "007BCAA0", "range": "007BCAA0-007BCB27", "coverage": "complete", "limit": "detach virtual targets and deletion lifetime unproven", "abi": "member hook ECX=plane, RET"},
+    {"entry": "007F3970", "range": "007F3970-007F3A5B", "coverage": "complete", "limit": "helper internals outside packet", "abi": "__thiscall(squadron,plane,landing byte), RET 8"},
+    {"entry": "00926C80", "range": "00926C80-00926D8A", "coverage": "complete", "limit": "request body only; downstream task destruction not proven", "abi": "__thiscall(entity,recurse), RET 4"}
+  ],
+  "path_steps": [
+    {"address": "009B4103", "native": "009B3F50", "function": "009B4100", "contract": "scalar deleting destructor invokes body before optional free"},
+    {"address": "009B3F9E", "native": "007B8AD0", "function": "009B3F50", "contract": "task+3FCh plane; plane+9D8h==0"},
+    {"address": "009B3FB3", "native": "006C8800", "function": "009B3F50", "contract": "ECX from retained plane's current+9D4h"},
+    {"address": "009B3FBF", "native": "009B2C80", "function": "009B3F50", "contract": "approach cleanup after dequeue; not reconstructed"},
+    {"address": "009B3FCE", "native": "007B4030", "function": "009B3F50", "contract": "base cleanup after approach cleanup; not reconstructed"},
+    {"address": "006C8820", "native": "006C7680", "function": "006C8800", "contract": "all eligible blocks; skip null squadron/block/owner"},
+    {"address": "006C7711", "native": "006BF7F0", "function": "006C7680", "contract": "only after queue hit; observer-aware last-record queue erase"},
+    {"address": "006C771D", "native": "006C7540", "function": "006C7680", "contract": "only after queue hit; erase assignments by plane current+9D4h"},
+    {"address": "006C7790", "native": "006BF150", "function": "006C7680", "contract": "publish each matching slot; slot+28h retained"},
+    {"address": "0099A5EB", "native": "0099A170", "function": "0099A4C0", "kind": "tail_jump", "contract": "install replacement when active vector empty; retired task remains"},
+    {"address": "0099AD9C", "native": "00999E40", "function": "0099ACD0", "contract": "under bot+7Ch retire all active tasks"},
+    {"address": "0099ADA3", "native": "00999EE0", "function": "0099ACD0", "contract": "under bot+7Ch drain before install"},
+    {"address": "0099ADAA", "native": "0099A170", "function": "0099ACD0", "contract": "under bot+7Ch install after drain"},
+    {"address": "0099ADC2", "native": "00999EE0", "function": "0099ACD0", "contract": "ordinary drain before finished-head retirement"},
+    {"address": "0099AE7E", "native": "0099A4C0", "function": "0099ACD0", "contract": "finished-head retirement after this think's drain"},
+    {"address": "009B342D", "native": "007EFB60", "function": "009B33F0", "kind": "tail_jump", "contract": "task+404h retained squadron if current command absent/non-land"},
+    {"address": "007BCAEB", "native": "007F3970", "function": "007BCAA0", "contract": "remove plane before +DF4h/+6DCh detach virtuals"},
+    {"address": "007F3A11", "native": "007ED260", "function": "007F3970", "contract": "reindex survivors after dying plane+9D4h cleared at007F3A07"}
+  ],
+  "indirect_steps": [
+    {"site": "00999EFA", "callee": "retired_task+vtable58", "resolved_land_target": "009B33F0", "evidence": "00D1FFA0+58h dword at00D1FFF8=009B33F0; listing CALL EAX"},
+    {"site": "00999F0B", "callee": "retired_task+vtable0", "resolved_land_target": "009B4100", "evidence": "00D1FFA0 first dword009B4100; PUSH1 then CALL EAX"},
+    {"site": "007BCB1A", "callee": "plane+6DCh subobject+vtable10", "resolved_target": null, "uncertainty": "not proven to delete bot/tasks; common0071C4A0 only sets retirement bytes"}
+  ],
+  "corrections": [
+    {"was": "Bind006C8800 at land_task_installed Boolean clears", "is": "Retain old task and drain later, running+58h before destructor", "evidence": "0099A4C0 appends old head to+64h/+68h;00999EE0 calls+58h then scalar destructor;0099ADC2 precedes0099AE7E"},
+    {"was": "Task squadron may stand in for plane+9D4h during cleanup", "is": "Task+404h retained squadron is consumed by pre-destructor hook; destructor independently reads retained plane's current+9D4h", "evidence": "009B33F3/009B3422 versus009B3F8C/009B3FAD"},
+    {"was": "Only retreat/invalid Boolean clears are live retirement sites", "is": "Different-target land install also overwrites old land task resources", "evidence": "install_land_task_core_009b41c0 same-target keep versus replacement path near11413/11426"},
+    {"was": "006C7680 is just queue cleanup", "is": "Queue hit guards assignment erase and state3 slot publication; slot+28h is retained", "evidence": "006C7711/006C771D/006C7756-006C7790"},
+    {"was": "Deferred destroy request proves tasks are deleted after squadron detach", "is": "Destroyed-hook route and in-hook detach order proven; task deletion/observer invalidation remains unresolved", "evidence": "00926C80 queues hook;007BCAEB removes plane before007BCB1A; actual bot/destructor ownership not recovered"}
+  ],
+  "source_audit": {
+    "explicit_clear_sites": ["install_retreat_task_009c9d00 near7472", "run_land_task_tick_009b3eb0 near29063"],
+    "replacement_site": "install_land_task_core_009b41c0 different target path",
+    "missing_storage": ["stable old land task generation", "retained old plane identity", "retained old squadron identity", "retired FIFO/drain stage", "squadron+3B0h/+3B8h pre-destructor hook state"],
+    "current_leader_helper_limit": "host uses first surviving member; native007B8AD0 reads stored plane+9D8h"
+  },
+  "next_packet": {
+    "name": "cc11_land_retained_hook",
+    "addresses": ["009B33F0", "007EFB60", "007EEE50"],
+    "proposed_output_files": ["src/game_hosts_units.cpp", "include/bsp/game_hosts_units.hpp", "include/bsp/plane_squadron_host.hpp", "src/plane_squadron_host.cpp", "docs/LANDING_TASK_RETAINED_HOOK_CC11.md", "reports/landing_task_retained_hook_cc11.json"],
+    "contract": "recover retained-task+58h hook before adding per-bot retired task identity/FIFO; preserve hook-before-destructor and native drain-before-install/retire schedules",
+    "death_followup": "resolve actual+6DCh subobject vtable, pending detach service, bot destructor, task observer invalidation and entity kill/delete phase"
+  },
+  "validation": {
+    "report_call_check": "python tools/verify_report_calls.py reports/landing_task_retirement_cc11.json",
+    "report_call_check_result": "18 checked, 0 failed",
+    "whitespace_check": "git diff --check",
+    "new_tests": false,
+    "build_run": false,
+    "build_reason": "evidence-only packet; no C++ change; primary integrator serializes builds",
+    "original_runtime_proof": false,
+    "fixture_runtime_proof": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "landing_loop_fixed": false
+  }
+}
