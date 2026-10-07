@@ -464,5 +464,296 @@
       "sha256_copy": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa",
       "sha256_post": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T22:28:30.761094+00:00",
+    "main_build_revision": "d2d2fa396457f95ac46bb709f4a62fc9adf1c7b4",
+    "worker_commit": "570a9db1bb3d321e79418d7da70cce879653651c",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "fresh_actual_translation_units": 12,
+    "stable_current_Source_header_fixture_inputs": 53,
+    "actual_compiler_project_includes": 41,
+    "stable_generated_recipe_inputs": 1,
+    "current_BSP_support_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "40c16f99d6788c1444173bcf48353147b315fd00b28fd535dca0d9b5f53668b0",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "stable_historical_worker_inputs": 622,
+    "host_compiler_headers_hashed": 254,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "address": "008f2850",
+        "bytes": 147,
+        "sha256": "7cf8b2ec21b1d814c3b8559d64106afcacb7d543dcaa4871a1227ea158966667",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f4dd0",
+        "bytes": 157,
+        "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d162d4",
+        "bytes": 4,
+        "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e186ed",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e17654",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "one_connected_fixture": true,
+    "internal_checks": null,
+    "Source_COFF_exact_worker_bytes": true,
+    "native_call_rows": 6,
+    "native_leaf_call_rows": null,
+    "native_call_failures": 0,
+    "embedded_manifest": "PE32 I386 RT_MANIFEST24 ID1 asInvoker",
+    "probe_sha256": "c27f1bba643308ce02e25d64e4597959babf0b7e97ce59fa4103e94325b8aae6",
+    "qualification": "Complete ordinary147B55inst008F2850 and157B48inst008F4DD0 total304nativeB. Truealigned19Ch owner; outerrawD16508/map4rawD162C0/count8=0/64nullbuckets0C..108/10C9999/1100; genuineowningNativeString114/118 realresize(length1,preserve0) then current-data-conditioned current-length copyfromverifiedD162D4 Ebytes; ONLYfirst authoredname11Cclear/tailpreserved. Trueactual14hpool/RawString/lookup providers; insertionmapreceiverowner+4, capturedhashbucket; hitchangesonlynode8/countreturn, missownskey/currentpost-resize fields/chainC\u2192bucketpublication\u2192countincrement/reload;slot10preserved. Currentmemmove underexistingadmittedsuccessfulcopy domain, BF7680 historical_memcpy name retained/CRTparity unproved. Oneconnectedactual2Ctor/28installedsymbol/5collision/30querycleanup/57word57membership/114wholetemporaryprefixchecks/caseword-onlyreplacement+emptykey fixture; explicitactualkey/typeheadercleanup+slotreturns/trim/unlink NOTCEnumdestructor. Original2functionsbodies NOTexecuted; no inventedMap/virtual/defaultservices. ASCII-C-locale/stable-disjoint/coherent nonoverflow successful domain; originalglobalstartup/wholehigherwrapper/namespace/declaration/EH/failure/originalABI/gameunbound.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "source_fixture_outcomes": {
+      "owners": 2,
+      "installed_symbols": 28,
+      "fresh_empty_key": 1,
+      "case_replacements": 1,
+      "query_cleanups": 30,
+      "chain_collisions": 5,
+      "word_reads": 57,
+      "memberships": 57,
+      "complete_temporary_pool_prefix_checks": 114,
+      "real_ctor_pool_key_ownership_cleanup": true,
+      "native_CEnum_destructor_executed": false,
+      "original_bodies_executed": false
+    },
+    "original_function_bodies_executed": false,
+    "artifacts": [
+      {
+        "path": "local/cc11_enum_insertion_current_primary/008f2850_original.bin",
+        "sha256": "7cf8b2ec21b1d814c3b8559d64106afcacb7d543dcaa4871a1227ea158966667",
+        "bytes": 147
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/008f4dd0_original.bin",
+        "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+        "bytes": 157
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/00d162d4_original.bin",
+        "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+        "bytes": 4
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/00e17654_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/00e186ed_original.bin",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "bytes": 1
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/allocator_list.asm",
+        "sha256": "48679735452429e6030fbc2e7fb41f9b9faee43be95d339e412ced1fa2b690b7",
+        "bytes": 659197
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/allocator_list.obj",
+        "sha256": "18c7afb495c535de7fd3d5cf94bd784840c46b5b4b6a905941e0805e1395fb54",
+        "bytes": 122136
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/build.cmd",
+        "sha256": "5b3aa04428e24242d8b567dfb7e5a0df0297a2da02bd9c0929eec8f8c4678516",
+        "bytes": 2087
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/coff_evidence.json",
+        "sha256": "89a7b17a9cd0032cb10d6845cd94e1f3790b38551e43e992e61e5c8fa3fa5eb3",
+        "bytes": 7478
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/compile.log",
+        "sha256": "bf38d4fd36b33136dc9989457f9a8c633b9d1b7637ba12a201318452bfb0f0a5",
+        "bytes": 228546
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/embedded_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/global.enums",
+        "sha256": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+        "bytes": 33471
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/initialize_native_scene_enum_owner_008f4dd0_bsp__YAPAXPAXAAUNativeStringRawPoolContext_1_PBX_Z_coff.bin",
+        "sha256": "cd241effe6b09a2cd08c48dfa87a79b3d4ccc49ee3db9b6bbad59f2ac95895a4",
+        "bytes": 206
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/inputs_after_link.json",
+        "sha256": "ec58e3692607b25ff894ac1f4a3f6c98f02ecd7b6a92bdf1d01a0fc765dfae97",
+        "bytes": 198534
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/inputs_before_link.json",
+        "sha256": "3bee9bdc3f2c3324941a05b88bb43d0a3287e7c576b85afe35d4d848f7887f17",
+        "bytes": 151243
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/insert_native_enum_symbol_word_008f2850_bsp__YAIPAXABVNativeString_1_I0AAUNativeStringRawPoolContext_1_PBD3_Z_coff.bin",
+        "sha256": "7bf1e3bc6a1d8d72c2e56b5613008172a433f265de0cc7d39ba2751f1ded0f89",
+        "bytes": 329
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_lookup.asm",
+        "sha256": "53641a767a64c4c770a26ba25b8eb6d0ebba126a59be32f80641e2c8338e370f",
+        "bytes": 17673
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_lookup.obj",
+        "sha256": "17aaf55c8583bda303f0d7302612fdc39d324556b09f4600f28f0a4cca2cc095",
+        "bytes": 5537
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_membership.asm",
+        "sha256": "b2df5dd40f39872f4e1a7f4e9ef75a08347f26a504b7c2ce106277146e852970",
+        "bytes": 7670
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_membership.obj",
+        "sha256": "18e20dad7326f61ae19131b5f5d6a1f0b40f7b6327b12a919165158d8a4be40f",
+        "bytes": 2057
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_word_getters.asm",
+        "sha256": "0af2d04e786696cbab74dfe065302900f9f3fec7c9872acdd20b7de2f9eb4b70",
+        "bytes": 14928
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_dictionary_word_getters.obj",
+        "sha256": "0e04b2318f0748f3e49ce9230c48e4cddf9112425772230e4d352c0bf72f1834",
+        "bytes": 3013
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_node_pool.asm",
+        "sha256": "262b85268b272244ac72bfdfea1378ae5cbdcea97ff7d34151714268845fa4d5",
+        "bytes": 74305
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_node_pool.obj",
+        "sha256": "d14ff67239949b94e8ba7e12ef6a650fa45bf3620628af546aa5d1023f552c01",
+        "bytes": 10140
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_symbol_insertion.asm",
+        "sha256": "506a1c2753d1ad091e17a947e55ed3a3f46b7cc401a50f154ee2e0a07c7254f2",
+        "bytes": 19706
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_enum_symbol_insertion.obj",
+        "sha256": "923bc5cc078de1e4a321b925cdddcec19cda2e127f3d8e0a2aead00589a67fe7",
+        "bytes": 4840
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string.asm",
+        "sha256": "0a371d3471a691887a852c1a2b148349c66344d10b94be8c2fb9eda1813e7dcb",
+        "bytes": 89733
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string.obj",
+        "sha256": "47bd3a19e071b66b41effeca88d89d8f28e0dc12d18ad00467ae2a0d42ffbe82",
+        "bytes": 22727
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string_pool_owner.asm",
+        "sha256": "7832c12b258f18d73a18aaa7d5d9111924b044c8ef46db9885aff865497f7670",
+        "bytes": 61979
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string_pool_owner.obj",
+        "sha256": "9aca3d53bfe419c73dcbcd9780a37e0d49f6121872a911001cce9aab12699d2f",
+        "bytes": 17487
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string_pool_storage.asm",
+        "sha256": "3ef9c6c2931648e3e150789d45e4602585f22f041dfd09488dcf90c374e88e98",
+        "bytes": 38596
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/native_string_pool_storage.obj",
+        "sha256": "b5aefcd0cefd853bcddc8e19f177a1b90435aab1e0d9734a5ea07a825be7421e",
+        "bytes": 10095
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/outcomes.json",
+        "sha256": "4c439ddf59332fb14c68702b0f54ec39506fa7dee29a3603a13cf00efe53059f",
+        "bytes": 315
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/probe.asm",
+        "sha256": "4f30c607a197820941dfc7876ddb8b11e0655cde05f108a5728731fffbeb2610",
+        "bytes": 1902651
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/probe.cpp",
+        "sha256": "b0039ed5298c4356f64ffa33872f975a076bc631e3043f566486b5bf2464da7b",
+        "bytes": 14448
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/probe.exe",
+        "sha256": "c27f1bba643308ce02e25d64e4597959babf0b7e97ce59fa4103e94325b8aae6",
+        "bytes": 254464
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/probe.obj",
+        "sha256": "5f7ff60e22538cda8b97db74f133020920109d435ed072fea0976063c2c921b6",
+        "bytes": 304887
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/scene_file.asm",
+        "sha256": "d4ef5ee964590c607b4ff7e97428c186b6ff9d923e8dac686a6274b7fc5d4179",
+        "bytes": 2132945
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/scene_file.obj",
+        "sha256": "a46679220e01fb8fec22a2140ab2078fab10a7653ff02b95a7f2e700b7967000",
+        "bytes": 292531
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/singleton_lifetime.asm",
+        "sha256": "01538b6670c7c11ffb341ca3efeda932a738568d3c1ab0429ba94aa9cabef26c",
+        "bytes": 132961
+      },
+      {
+        "path": "local/cc11_enum_insertion_current_primary/singleton_lifetime.obj",
+        "sha256": "33a4c5dc33dbd198f9d1e5bf2a24063b2ad9edcd49b98dfe2a0e89e19f0ef763",
+        "bytes": 36839
+      }
+    ],
+    "saved_annotation_prior_values_receipt": "local/ghidra-annotations-20261007T223342Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_insertion_group_leader_primary_snapshot.log",
+    "saved_function_count": 64719
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests/independent current primary fixture passed; original ABI/game qualified"
 }
