@@ -271,7 +271,9 @@ struct PlaneSquadronLandingHookView {
 };
 
 struct LandTaskRetainedHookView {
-    PlaneSquadronLandingHookView* squadron_404;
+    // The same canonical identity CELL used by this task's cruise/validity
+    // views. No copied identity or separately cached translated view pointer.
+    const void* const volatile& squadron_404;
 };
 
 // All providers are required, with no fallback values or live-game adapter.
@@ -281,6 +283,11 @@ struct LandTaskRetainedHookView {
 class PlaneSquadronLandingHookHost {
    public:
     virtual ~PlaneSquadronLandingHookHost() = default;
+    // REQUIRED PURE mappings of a nonnull canonical identity. Return live
+    // borrowed storage for that SAME squadron, without field reads, callbacks,
+    // native calls, allocation, defaults, or translated-pointer caches.
+    virtual PlaneSquadronEntity& squadron_entity(const void* identity) = 0;
+    virtual PlaneSquadronLandingHookView landing_hook_view(const void* identity) = 0;
     virtual const CommandQueueState& command_queue_348(
         const PlaneSquadronEntity& squadron) = 0;
     virtual bool plane_landed_904(const void* plane) = 0;
@@ -334,8 +341,8 @@ struct PlaneSquadronCruiseProfileView {
 struct LandTaskCruiseProfileView {
     // Borrow the slots themselves: actual provider calls may change their
     // contents. +404h is reloaded AFTER each tuning call, never from plane+9D4h.
-    const void* const& plane_3fc;
-    PlaneSquadronCruiseProfileView* const& squadron_404;
+    const void* const volatile& plane_3fc;
+    const void* const volatile& squadron_404;
 };
 
 struct LandCruiseTuningView {
@@ -345,6 +352,9 @@ struct LandCruiseTuningView {
 class LandTaskCruiseProfileHost {
    public:
     virtual ~LandTaskCruiseProfileHost() = default;
+    // REQUIRED PURE mapping to this identity's live borrowed fields. No
+    // field reads, callbacks, native calls, allocation, defaults, or cache.
+    virtual PlaneSquadronCruiseProfileView cruise_profile_view(const void* identity) = 0;
     // Actual 007B8AD0 observes plane+9D8h == 0 and returns the predicate in AL.
     virtual bool plane_is_leader_007b8ad0(const void* plane) = 0;
     // Execute the complete actual singleton acquisition (including any lazy
@@ -372,7 +382,7 @@ struct SceneCommandTarget;
 // Volatile pointer-field references preserve fresh observations/publications,
 // including the two native +2Ch clears on a failed matching-target admission.
 struct LandTaskCommandValidityView {
-    PlaneSquadronEntity* const volatile& squadron_404;
+    const void* const volatile& squadron_404;
     const void* volatile& block_424;
     const void* volatile& target_428;
     const void* volatile& field_42c;
@@ -381,6 +391,10 @@ struct LandTaskCommandValidityView {
 class LandTaskCommandValidityHost {
    public:
     virtual ~LandTaskCommandValidityHost() = default;
+    // REQUIRED PURE mapping to the same live squadron represented by the
+    // canonical task+404h identity; no field reads/callbacks/native calls,
+    // allocation, default receiver, or translated-pointer cache.
+    virtual PlaneSquadronEntity& squadron_entity(const void* identity) = 0;
     // Actual retained squadron+348h, with real mode/head/override storage.
     // command_queue_current_command reproduces +174h's 007ED580->0071BE40.
     virtual const CommandQueueState& command_queue_348(
