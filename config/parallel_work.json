@@ -13613,8 +13613,8 @@
     },
     {
       "id": "cc11_land_active_prepend",
-      "done": false,
-      "state": "dispatched_to_reused_landing_worker",
+      "done": true,
+      "state": "integrated_conditional_prepend_main_build_and_fixture_passed",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13632,7 +13632,14 @@
         "cc11_land_scheduler"
       ],
       "reuses_worker_from": "cc11_land_active_retirement",
-      "contract": "Port conditional normal active prepend with native2*n+1 full growth, incoming-first prefix copy, count-before-base publication and valid spare tail shift. Exclude zero-count spare-capacity native underflow; keep actual parked producer/arena/lifetimes and broad scheduler binding explicit and unbound."
+      "contract": "Port conditional normal active prepend with native2*n+1 full growth, incoming-first prefix copy, count-before-base publication and valid spare tail shift. Exclude zero-count spare-capacity native underflow; keep actual parked producer/arena/lifetimes and broad scheduler binding explicit and unbound.",
+      "code_revision": "da01aedc0bad1d1a200f1b4701623d5d1fff0881",
+      "integrated_revision": "be2a8ff8260c004ae60324c42a177db3a47e36c0",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "be2a8ff8260c004ae60324c42a177db3a47e36c0",
+      "full_main_ctests_passed": 3,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_command_producer",
@@ -13659,6 +13666,28 @@
       "contract": "Complete normal caller16factory paths, fresh current squadron/descriptors, captured controller/target, EDXblock land factory and nonzero append with no retired drain.",
       "abi_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc11_land_takeoff_install",
+      "done": false,
+      "state": "dispatched_read_only_to_reused_landing_worker",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0099a4a0"
+      ],
+      "output_files": [
+        "include/bsp/native_pilot_bot_task_owner.hpp",
+        "src/native_pilot_bot_task_owner.cpp",
+        "docs/PILOT_BOT_TAKEOFF_INSTALL_CC11.md",
+        "reports/pilot_bot_takeoff_install_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_active_prepend"
+      ],
+      "reuses_worker_from": "cc11_land_active_prepend",
+      "contract": "Recover exact normal takeoff factory009CFF40 DL1 then unconditional prepend00999F50; propose/port only required actual same-owner factory caller facade with explicit zero-result/count/lifetime domain. No invented arena, slot54/tick/BE/GameUnits binding."
     }
   ],
   "snapshot_after_analysis": {

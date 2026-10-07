@@ -124,3 +124,10 @@ JSON parsing and diff checks passed. Exact receipts accompany
 producer/profile/lifetime domains, parked component ownership, cached task+404h squadron and
 task+3FCh plane lifetime, deferred BE routing/receipt/reindex, scheduler/observer services,
 original ABI and game validation remain external. No live Boolean host or death cleanup is wired.
+
+Primary integration: main be2a8ff8260c004ae60324c42a177db3a47e36c0 Win32 Release passes all3existing CTests.
+The independent existing owner fixture and12full+1rawcallee-only native checks pass;
+two virtual calls remain excluded. Primary cleared00999FB2 CALL_RETURN and decoded
+its ADD ESP4 continuation, saved the project and refreshed the export. Global CRT flags
+remain intact; repair receipt: reports/pilot_bot_prepend_flow_repair_cc11.json.
+Original ABI and actual producer/arena/lifetime/game binding remain unproved.
