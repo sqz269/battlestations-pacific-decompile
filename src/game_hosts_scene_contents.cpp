@@ -1536,7 +1536,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
 
     // The instantiate pass, 0046d57e.
     // Packet cc9_ship_weapon_director_enable: the four director keys pass B
-    // reads (008238F0..008239A3), kept by name when the bag carries any.
+    // reads (008238FD..008239A8), kept by name when the bag carries any.
+    // Missing keys take 1 in that native arm. This merged scene bag is not the
+    // sparse launch bag constructed by 00844FC0: shipyard-created boats do not
+    // inherit the Ship group here. docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md.
     {
         const SceneProperty* keys[4] = {bag.find("ArtilleryDirector"), bag.find("AADirector"),
             bag.find("TorpedoDirector"), bag.find("DCDirector")};

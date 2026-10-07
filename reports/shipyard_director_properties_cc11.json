@@ -1,0 +1,85 @@
+{
+  "packet": "cc11_director_props",
+  "date": "2026-10-06",
+  "doc": "docs/SHIPYARD_DIRECTOR_PROPERTIES_CC11.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra ensure --status and verified live bsp.py ghidra queries",
+    "ghidra_changes": false
+  },
+  "verdict": {
+    "library_ship_torpedo_false_inherited_by_shipyard_boat": false,
+    "shipyard_director_key_present": false,
+    "native_absent_torpedo_enable": true,
+    "host_missing_name_fallback_matches_this_path": true,
+    "behavior_change_required": false,
+    "queue": "GUNNERY_OPEN_ITEMS.md 163.2 item 1 scene-contents question",
+    "remaining": "Ships lane goal range / pass-byte +7Dh question is unaffected."
+  },
+  "coverage": [
+    {"routine": "00844FC0", "body": "00844FC0..0084559D", "coverage": "complete producer inspection; pose arithmetic not reconstructed"},
+    {"routine": "004F06C0", "body": "004F06C0..004F0780", "coverage": "complete supporting read"},
+    {"routine": "00822C20", "body": "00822C20..00824B57", "coverage": "partial: 008238B1..00823B6B; other initialization arms not reconstructed"},
+    {"routine": "008F41A0", "coverage": "complete supporting read"},
+    {"routine": "008F2260", "coverage": "complete supporting read"},
+    {"routine": "008F41F0", "coverage": "complete supporting read"},
+    {"routine": "00922E20", "coverage": "complete supporting read"},
+    {"routine": "0046CF40", "coverage": "partial: 0046D2A2..0046D353"}
+  ],
+  "calls": [
+    {"address": "00845014", "native": "008F41A0", "function": "00844FC0", "contract": "construct empty 114h bag, owner 0"},
+    {"address": "00845037", "native": "008F3710", "function": "00844FC0", "contract": "write Type from production class +70h"},
+    {"address": "00845055", "native": "008F3710", "function": "00844FC0", "contract": "write Skill"},
+    {"address": "0084506A", "native": "008F3710", "function": "00844FC0", "contract": "write Race"},
+    {"address": "0084507F", "native": "008F3710", "function": "00844FC0", "contract": "write Party from shipyard +54h"},
+    {"address": "00845097", "native": "008F3710", "function": "00844FC0", "contract": "write OwnerPlayer from shipyard +188h"},
+    {"address": "008450AA", "native": "008F3940", "function": "00844FC0", "contract": "write ShipYardLaunch = true"},
+    {"address": "008453AA", "native": "004F06C0", "function": "00844FC0", "contract": "TBoatGen creator gets the sparse bag as stack argument 3; RET 10h"},
+    {"address": "00845440", "native": "00922E20", "function": "00844FC0", "contract": "construct holder with cloned sparse launch bag; publish unit+C0h at 0084544C"},
+    {"address": "004F06D1", "native": "008F2260", "function": "004F06C0", "contract": "read Type from incoming bag"},
+    {"address": "004F0773", "native": "004E6B30", "function": "004F06C0", "contract": "apply Command property; absent Command queues nothing"},
+    {"address": "00922E2D", "native": "008F41F0", "function": "00922E20", "contract": "deep clone existing entries; no library defaults"},
+    {"address": "0082390B", "native": "008F2260", "function": "00822C20", "contract": "ArtilleryDirector lookup; absent defaults true at 0082391F"},
+    {"address": "00823932", "native": "008F2260", "function": "00822C20", "contract": "TorpedoDirector lookup; absent defaults true at 00823955"},
+    {"address": "00823968", "native": "008F2260", "function": "00822C20", "contract": "AADirector lookup; absent defaults true at 0082397C"},
+    {"address": "0082398F", "native": "008F2260", "function": "00822C20", "contract": "DCDirector lookup; absent defaults true at 008239A3"},
+    {"address": "0046D304", "native": "00469B60", "function": "0046CF40", "contract": "return map entry +8 for the explicitly named scene property group; callee body read"},
+    {"address": "0046D30C", "native": "008F54F0", "function": "0046CF40", "contract": "merge named group into ordinary scene bag before authored body"},
+    {"address": "0046D34E", "native": "008F5A00", "function": "0046CF40", "contract": "parse authored body after scene group-list stage; callee parser prefix/body loop inspected"},
+    {"address": "00823A9F", "native": "007214C0", "function": "00822C20", "contract": "build director state message before overwriting enable bytes; callee body read"},
+    {"address": "0082394A", "native": "00822C20+vtable5C", "function": "00822C20", "contract": "class-id-8 probe only for explicit false TorpedoDirector; indirect callee unresolved in this packet"},
+    {"address": "00823B6B", "native": "00D09F58+vtable3C", "function": "00822C20", "contract": "publish state message through director slot 3Ch; indirect attribution follows SENTITY_INIT_PASSES section 7"}
+  ],
+  "corrections": [
+    {"was": "Possibly every shipyard-built Gyoraitei inherits Ship's TorpedoDirector=false and the host missing-name true fallback is spurious.", "is": "Shipyard launch bypasses scene group-list merging. Its sparse bag has no director keys, and native pass B explicitly defaults absent TorpedoDirector to true.", "evidence": "00845001..008450AA, 00845395..008453AA, 00845436..0084544C, 004F06C0..004F0780, 00823924..0082395A"},
+    {"was": "Approximate four-key span 008238F0..008239A3.", "is": "The exact four-key span is 008238FD..008239A8 inside 00822C20; 008238F0 is not an instruction start.", "evidence": "Live instruction-context 008238F0 reports No instruction; complete listing identifies four find calls and default branches."}
+  ],
+  "installed_assets": [
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "universe/library/ship.props", "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460", "bytes": 3358, "mtime_utc": "2024-07-13T15:27:26Z", "evidence": "lines 2..9 Ship(Common): ArtilleryDirector=true, TorpedoDirector=false, AADirector=true, DCDirector=true"},
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn", "sha256": "5934D8C9848D5612B64C1B007CD85B40457AD160944FCFA665243C5FF32CA327", "bytes": 816108, "mtime_utc": "2024-08-09T13:00:48Z", "evidence": "26498..26502 Shipyard 01 groups Common, LandingZone, MultiEntity, CommandBuildingInferior; 26590..26594 Stock 1 Count=12, Names=Gyoraitei, Type=VehicleClasses:JapPT"},
+    {"root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific", "path": "scripts/missions/COTP-IJN/PRCPIJN/prcpjm08.lua", "sha256": "7F846A3C8395D3CB13AC32AC99C1E2644388A6E94C86503E34CD5236B2B97479", "bytes": 32372, "mtime_utc": "2024-08-26T23:10:32Z", "evidence": "495 binds Shipyard 01; zero TorpedoEnable occurrences"}
+  ],
+  "source_changes": "Comments only in src/game_hosts_scene_contents.cpp and include/bsp/game_hosts_scene_contents.hpp; no runtime defaults, bag precedence, or director entries changed.",
+  "verification": {
+    "verify_report_calls": "PASS: 20 direct call rows checked, zero failed; two indirect rows explicitly excluded",
+    "git_diff_check": "PASS",
+    "new_tests": 0
+  },
+  "next_packet": {
+    "question": "Explicit false TorpedoDirector class-id-8 override versus unconditional raw false retention in scene host.",
+    "addresses": ["00822C20"],
+    "span": "00823924..0082395A; recover the actual unit vtable[5Ch] callee before extending address ownership",
+    "files": ["src/game_hosts_scene_contents.cpp", "include/bsp/game_hosts_scene_contents.hpp", "docs/TORPEDO_DIRECTOR_CLASS8_CC11.md", "reports/torpedo_director_class8_cc11.json"],
+    "dependencies": "Root-controlled lease refresh and shared ledger/Ghidra mutations; game_hosts_gunnery.cpp consumer read-only unless owner integration is needed.",
+    "qualification": "Candidate only; class-probe callee and installed Sub-group effect not established here."
+  },
+  "qualification": {
+    "source_evidence": "Original producer, clone, consumer defaults established; exact direct calls checked separately.",
+    "fixture": "No new fixture or behavioral test; no behavior change.",
+    "build": "No new build; primary integrator serializes required Win32 checks.",
+    "runtime": "No fresh JM08 run; earlier mask=3 logs only corroborate, not new evidence.",
+    "abi": "Host interfaces remain process substitutions; no drop-in native ABI replacement claimed.",
+    "game_validated": false
+  }
+}
