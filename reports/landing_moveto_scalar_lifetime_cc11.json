@@ -1,0 +1,722 @@
+{
+  "packet": "cc11_land_moveto_scalar_lifetime",
+  "base_commit": "eb4c05ca2",
+  "source_status": "complete_conditional_root_scalar_and_same_root_callback_adjustor_connected_to_genuine_ctor_registration_cleanup_CRT",
+  "original_abi_status": "new_SOURCE_interfaces_guards_and_encoding_not_original_binary_class_interfaces",
+  "runtime_status": "raw_tables_uncallable; arena_manager_lifetime_privateEH_ABI_game_unbound",
+  "owned_files": [
+    "include/bsp/native_land_moveto_scalar_lifetime.hpp",
+    "src/native_land_moveto_scalar_lifetime.cpp",
+    "docs/LANDING_MOVETO_SCALAR_LIFETIME_CC11.md",
+    "reports/landing_moveto_scalar_lifetime_cc11.json"
+  ],
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "read_only_verified_bsp.py_cli",
+    "worker_mutations": false,
+    "primary_recovery": "reports/moveto_scalar_boundaries_cc11.json",
+    "snapshot_total": 64718
+  },
+  "native_bodies": [
+    {
+      "address": "009C2B70",
+      "end_exclusive": "009C2B78",
+      "bytes": 8,
+      "instructions": 2,
+      "listing_gaps": 0,
+      "disk_live_fixture_literal_equal": true,
+      "sha256": "c1b4a36c1867e4fa81138d76ef8a293e2a2851c4d890140cc26217f7c1796ec4",
+      "original_abi": "ECX actual callback18; SUB ECX,18h; JMP9C3D10; same stackedflags/inheritedRET4; ROOT return",
+      "source": "scalar_delete_native_land_moveto_callback_adjustor_009c2b70",
+      "native_calls": [
+        {
+          "address": "009C2B73",
+          "native": "009C3D10",
+          "function": "009C2B70",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "009C3D10",
+      "end_exclusive": "009C3D2E",
+      "bytes": 30,
+      "instructions": 11,
+      "listing_gaps": 0,
+      "disk_live_fixture_literal_equal": true,
+      "sha256": "d587dac263917d288c20204466ffd2b440fcb8d1426960e8137146ae4c9db2b1",
+      "original_name": "CG_scalar_deleting_dtor_009c3d10",
+      "name_tag_history_preserved": true,
+      "original_abi": "ECX ROOT; stackedDWORDflags; capturedESI ROOT ->EAX ROOT; RET4",
+      "source": "scalar_delete_native_land_moveto_009c3d10",
+      "native_calls": [
+        {
+          "address": "009C3D13",
+          "native": "007B65E0",
+          "function": "009C3D10"
+        },
+        {
+          "address": "009C3D20",
+          "native": "00BF65AC",
+          "function": "009C3D10"
+        }
+      ]
+    }
+  ],
+  "whole_native_total": {
+    "bytes": 38,
+    "instructions": 13,
+    "no_neighbor_padding": true
+  },
+  "native_order": [
+    "save original ROOT inESI",
+    "complete7B65E0 at3D13",
+    "TEST lowbyteflagsbit0 at3D18 AFTERhelper",
+    "optional currentCRTfree captured ROOT at3D20",
+    "ADDESP4 at3D25",
+    "EAX captured ROOT; RET4"
+  ],
+  "storage": {
+    "minimum_root_backing_bytes": 60,
+    "natural_ctor": "complete009C2AC0",
+    "native_interval": "approach+CC to nextFollow+108",
+    "view": "existing NativeLandMoveToConstructorView and pure native_land_moveto_cleanup_view",
+    "actual_callback": "same ROOT+18 NativeObserverOwnerStorage prefix; no separate allocation",
+    "adjustor_mapper": "address-only incoming callback/ref match and modulo32 minus18 ->same ROOT; no represented reads/native calls/default/cache/allocation",
+    "standalone_callback_admitted": false,
+    "flags0": "live coherent borrowed whole root; no root free",
+    "flags1": "separately allocated complete actual currentCRT >=3Ch root, NEVER callback18/task4C4/approachCC/vector/interior arena",
+    "post_free": "numeric captured ROOT identity only; no receiver/view/freed-array dereference"
+  },
+  "profiles": {
+    "root_slot0": "D20AEC->009C3D10",
+    "callback_slot0": "D20AD4->009C2B70 adjustor->same ROOT scalar",
+    "source_callable": false,
+    "whole_class_table_unbound": true,
+    "final_provider_fields": "genuine695870 callbackCE3CD4 and shared7B45F0 ROOTD056D0, unchanged FIRST2C/owner4/payload/padding",
+    "other_methods": "not fabricated or supplied by this packet"
+  },
+  "required_complete_providers": [
+    {
+      "source": "src/native_land_moveto_constructor.cpp",
+      "operation": "construct_native_land_moveto_009c2ac0/native_land_moveto_cleanup_view",
+      "contract": "actualsame>=3Ch field aliases and genuine694A60 registration, pure cleanup mapping"
+    },
+    {
+      "source": "src/native_land_state_lifetime.cpp",
+      "operation": "destroy_native_land_moveto_007b65e0",
+      "contract": "actual callback18 genuine695870 before shared7B45F0; preserve final provider fields"
+    },
+    {
+      "source": "src/observer_edges.cpp/src/observer_lifetime.cpp",
+      "operation": "canonical real registration/lifetime/edge delete",
+      "contract": "live actual FIRST/callback identities, captured recursive sections/current publications/counts/pending slots; no fake profile dispatcher"
+    },
+    {
+      "source": "src/singleton_lifetime.cpp",
+      "operation": "singleton_lifetime_free",
+      "contract": "current genuine CRT boundary; captured ROOT optionalfree, no synchronous unrelated object cleanup"
+    }
+  ],
+  "source_admission": {
+    "required": [
+      "existing pure same-root constructor view with actual stable >=3Ch backing/callback18/vectorC",
+      "live coherent actual registrations/endpoints/native-valid vector element/range domain",
+      "mandatory genuine NativeObserverLifetime with actual published manager/lock/dispatch/currentCRT contexts",
+      "ordinary successful operations; flags1 separate complete matchingCRT root"
+    ],
+    "excluded": [
+      "structural reentry/concurrency/field mutation/invalid allocation/overflow/fault/privateEH",
+      "standalone callback/component or interior-root flags1 free",
+      "whole composite/approach/task arena/classprofile/observerdeath lifetime/native ABI/game binding"
+    ],
+    "invalid_adjustor": "SOURCE admission exception, no recovered native guard/fallback"
+  },
+  "fixture": {
+    "path": "local/cc11_land_moveto_scalar_lifetime_probe.cpp",
+    "executable": "local/cc11_land_moveto_scalar_lifetime_probe.exe",
+    "manifest": "local/cc11_land_moveto_scalar_lifetime_manifest.json",
+    "checks": 68,
+    "result": "PASS: 68 SAME3Ch MoveTo ROOT/adjustor SOURCE-original38B cleanup-release checks",
+    "routes": [
+      "Source/full-original ROOTflags0 borrowed actual3Ch root",
+      "Source/full-original callback-adjustedflags1 separately actualCRTwhole3Ch ROOT"
+    ],
+    "original_adjustor_target": "copied full30B original root scalar",
+    "original_relocations": [
+      {
+        "body": "root30B",
+        "offset": "0003",
+        "kind": "CALL_operand_only",
+        "target": "SOURCE ABI bridge to complete genuine7B65E0"
+      },
+      {
+        "body": "root30B",
+        "offset": "0010",
+        "kind": "CALL_operand_only",
+        "target": "genuine current singleton_lifetime_free"
+      },
+      {
+        "body": "adjustor8B",
+        "offset": "0003",
+        "kind": "JMP_operand_only",
+        "target": "full copied original30B root scalar"
+      }
+    ],
+    "connected_behavior": "genuine constructor/register/CF7E64 edge/remove/pending suppression/complete cleanup/actualOSrecursive lock",
+    "free_observation": "ownexe CRTfree IAT temporarily traced, alwaysforward captured actualfree; inspect provider-final live fields BEFORE ROOTfree; restore IAT; no reentry/mutation/postfree fields",
+    "identity": "ROOT returned on direct/adjusted routes; never callback input; numeric comparison only afterfree",
+    "not_separately_exercised": "adjustorflags0 route; both root flag branches exercised through stated direct/adjusted paths",
+    "limits": [
+      "owned prepublished actual SOURCE OS-lock path; manager lookup unexercised",
+      "copied owner token not constructed approach/arena or task state-entry claim",
+      "Source observations/new ABI/currentCRT not historical CRT/loader/privateEH/imageprofile/game equivalence",
+      "no unsupported callback profile dispatch/no default providers/no freed-array access"
+    ]
+  },
+  "compiler_receipts": {
+    "toolchain": "MSVC18Community14.51.36231 Win32",
+    "vcvars": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars32.bat",
+    "fresh_tus": [
+      "src/native_land_moveto_scalar_lifetime.cpp",
+      "src/native_land_moveto_constructor.cpp",
+      "src/observer_edges.cpp",
+      "src/observer_lifetime.cpp",
+      "src/native_land_state_lifetime.cpp",
+      "local/cc11_land_moveto_scalar_lifetime_probe.cpp"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime.obj",
+          "src/native_land_moveto_scalar_lifetime.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime_constructor.obj",
+          "src/native_land_moveto_constructor.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime_observer_edges.obj",
+          "src/observer_edges.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime_observer_lifetime.obj",
+          "src/observer_lifetime.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime_shared_state.obj",
+          "src/native_land_state_lifetime.cpp"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "cl",
+          "/nologo",
+          "/c",
+          "/EHsc",
+          "/std:c++17",
+          "/MD",
+          "/O2",
+          "/Gy",
+          "/DNDEBUG",
+          "/W4",
+          "/WX",
+          "/Iinclude",
+          "/Folocal/cc11_land_moveto_scalar_lifetime_probe.obj",
+          "local/cc11_land_moveto_scalar_lifetime_probe.cpp"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "link": {
+      "argv": [
+        "link",
+        "/NOLOGO",
+        "/INCREMENTAL:NO",
+        "/OPT:REF",
+        "/MANIFEST:EMBED",
+        "/OUT:local/cc11_land_moveto_scalar_lifetime_probe.exe",
+        "local/cc11_land_moveto_scalar_lifetime.obj",
+        "local/cc11_land_moveto_scalar_lifetime_constructor.obj",
+        "local/cc11_land_moveto_scalar_lifetime_observer_edges.obj",
+        "local/cc11_land_moveto_scalar_lifetime_observer_lifetime.obj",
+        "local/cc11_land_moveto_scalar_lifetime_shared_state.obj",
+        "local/cc11_land_moveto_scalar_lifetime_probe.obj",
+        "local/cc11_land_moveto_scalar_lifetime_bsp_core.lib",
+        "local/cc11_land_moveto_scalar_lifetime_bsp_lua511.lib",
+        "local/cc11_land_moveto_scalar_lifetime_bsp_zlib121.lib",
+        "user32.lib",
+        "d3d9.lib",
+        "PowrProf.lib",
+        "shell32.lib",
+        "advapi32.lib"
+      ],
+      "exit_code": 0
+    },
+    "probe_exit_code": 0,
+    "executable": {
+      "machine": "0x14c",
+      "asInvoker": true,
+      "uiAccess_false": true
+    },
+    "coff": {
+      "ROOT": "0C ESIcapturesROOT before14 pureview/1D full7B65E0;22lowbyte flags load/29mask AFTERhelper;33 realfree;3B EAXcapturedESI; no freed-state read",
+      "adjustor": "10 incomingcallback/addressrefcompare;15 ESI ROOT;17 modulo32 minus18/1A ROOTcompare; compiler inlines complete root body;31 helper BEFORE36lowbyte/3Dmask/47 realfree/4F capturedreturn",
+      "ABI_limit": "newcdecl/guard/inlined encoding not nativeECX SUB/JMP/TEST/RET4"
+    }
+  },
+  "support_freeze": {
+    "build": "99bef9d8d",
+    "source_before_copy_after_equal": true,
+    "libraries": [
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+        "copy": "local/cc11_land_moveto_scalar_lifetime_bsp_core.lib",
+        "bytes": 73285414,
+        "source_before_copy_source_after_sha256": "7dc991f27772e86c073e6fc561eaea1f39bf087441e8a452d4398babe7a9e604"
+      },
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+        "copy": "local/cc11_land_moveto_scalar_lifetime_bsp_lua511.lib",
+        "bytes": 454824,
+        "source_before_copy_source_after_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+        "copy": "local/cc11_land_moveto_scalar_lifetime_bsp_zlib121.lib",
+        "bytes": 71766,
+        "source_before_copy_source_after_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "immutable_inputs": {
+    "count": 30,
+    "all_equal": true,
+    "before": [
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/native_land_moveto_constructor.hpp",
+        "bytes": 3044,
+        "sha256": "19e7dbb4dddad630729b2a087bc2dc39fa69accb13e403914833c3ad0a1423ad"
+      },
+      {
+        "path": "include/bsp/native_land_moveto_scalar_lifetime.hpp",
+        "bytes": 2238,
+        "sha256": "cfc462bebd0726143a33897074acec1581f7cafab7c5485304eedfd6b28f91aa"
+      },
+      {
+        "path": "include/bsp/native_land_state_lifetime.hpp",
+        "bytes": 5099,
+        "sha256": "82d5a58ab58ee4e975a6eb5a760f772766e14cb56a76627bdc104b901579c1f5"
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_tracked_critical_section_release.hpp",
+        "bytes": 794,
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "bytes": 1700,
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "bytes": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_core.lib",
+        "bytes": 73285414,
+        "sha256": "7dc991f27772e86c073e6fc561eaea1f39bf087441e8a452d4398babe7a9e604"
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_lua511.lib",
+        "bytes": 454824,
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_zlib121.lib",
+        "bytes": 71766,
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_probe.cpp",
+        "bytes": 12996,
+        "sha256": "975d13500c35e03fd4183bf2040834dc5e4a45b391e64824a04782a409b74c9c"
+      },
+      {
+        "path": "src/native_land_moveto_constructor.cpp",
+        "bytes": 2838,
+        "sha256": "a107614b4e42dff239989a6911dcdd536c9c029c30a5d11ed2fc381bfc3fd062"
+      },
+      {
+        "path": "src/native_land_moveto_scalar_lifetime.cpp",
+        "bytes": 1502,
+        "sha256": "bfc91260037bf1139c5ea2c9cdac32c658b8bbe059ef1d0d71df75cd0e8f7c82"
+      },
+      {
+        "path": "src/native_land_state_lifetime.cpp",
+        "bytes": 5326,
+        "sha256": "9e3a1a3056011eb4a10232386b72663415757c09eaccc6af8027fb05052f4f19"
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "bytes": 3890,
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+      }
+    ],
+    "after": [
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_land_moveto_constructor.hpp",
+        "sha256": "19e7dbb4dddad630729b2a087bc2dc39fa69accb13e403914833c3ad0a1423ad",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_land_moveto_scalar_lifetime.hpp",
+        "sha256": "cfc462bebd0726143a33897074acec1581f7cafab7c5485304eedfd6b28f91aa",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_land_state_lifetime.hpp",
+        "sha256": "82d5a58ab58ee4e975a6eb5a760f772766e14cb56a76627bdc104b901579c1f5",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_tracked_critical_section_release.hpp",
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_core.lib",
+        "sha256": "7dc991f27772e86c073e6fc561eaea1f39bf087441e8a452d4398babe7a9e604",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_lua511.lib",
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_bsp_zlib121.lib",
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "unchanged": true
+      },
+      {
+        "path": "local/cc11_land_moveto_scalar_lifetime_probe.cpp",
+        "sha256": "975d13500c35e03fd4183bf2040834dc5e4a45b391e64824a04782a409b74c9c",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_land_moveto_constructor.cpp",
+        "sha256": "a107614b4e42dff239989a6911dcdd536c9c029c30a5d11ed2fc381bfc3fd062",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_land_moveto_scalar_lifetime.cpp",
+        "sha256": "bfc91260037bf1139c5ea2c9cdac32c658b8bbe059ef1d0d71df75cd0e8f7c82",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_land_state_lifetime.cpp",
+        "sha256": "9e3a1a3056011eb4a10232386b72663415757c09eaccc6af8027fb05052f4f19",
+        "unchanged": true
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47",
+        "unchanged": true
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+        "unchanged": true
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime.obj",
+      "bytes": 8530,
+      "sha256": "5156acc68832779dbd90fff3c0fcdfde223ab04267727b407d2f68a416290f9a"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_constructor.obj",
+      "bytes": 8928,
+      "sha256": "420ea57464aeb67da3004df7cac694366127f2b7b276c288383566e6e06883a7"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_observer_edges.obj",
+      "bytes": 7156,
+      "sha256": "976e80139f38e9480335067292b55d2b730046e5fe4eebe6f9af612e12db697c"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_observer_lifetime.obj",
+      "bytes": 28276,
+      "sha256": "28bae63d8d611147a4b5e12e2025ed9f7d9a5fb5613414d9064eb5e40f57efd1"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_shared_state.obj",
+      "bytes": 12487,
+      "sha256": "f79818767ca004601512bba736f48f57baa8ecd0df3d0c24bc01b04b85d7d9c5"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_probe.obj",
+      "bytes": 32554,
+      "sha256": "f99e3bb4eeb2865418dcf3a96ada91c3b39b9870a375f597269ad7160e14ce39"
+    },
+    {
+      "path": "local\\cc11_land_moveto_scalar_lifetime_probe.exe",
+      "bytes": 227840,
+      "sha256": "9367c77cb52d835650d098dc7d01d11245a824a68637082757ff534789c0cc3e"
+    }
+  ],
+  "validation": {
+    "strict_six_TUs": "passed",
+    "focused_probe": "68checks passed",
+    "native_call_verifier": "passed3rows0failed;2directCALLs+1tailJMP",
+    "git_diff_check": "passed including final staged owned files",
+    "root_full_build_independent_probe": "primary-owned pending integration",
+    "worker_full_build": false,
+    "new_tracked_tests": false,
+    "shared_edits": false,
+    "Ghidra_mutations": false
+  }
+}
