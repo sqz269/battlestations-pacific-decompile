@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T10:04:05.050561+00:00",
+  "updated_utc": "2026-10-07T10:07:54.806778+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1510,5 +1510,29 @@
     "actual_game_binding": false,
     "abi_compatible": false,
     "game_validated": false
+  },
+  "health_complete_serializer_handoff": {
+    "id": "cc11_health_complete_serializer",
+    "done": false,
+    "state": "approved_connected_complete_serializer_and_exact_bit_helpers_required_flush",
+    "worker": "health_guard",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "00783c80",
+      "00428ec0",
+      "00429540"
+    ],
+    "output_files": [
+      "include/bsp/native_unit_health_message.hpp",
+      "src/native_unit_health_message.cpp",
+      "docs/UNIT_HEALTH_MESSAGE_SERIALIZER_CC11.md",
+      "reports/unit_health_message_serializer_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_health_locked_send"
+    ],
+    "reuses_worker_from": "cc11_health_locked_send",
+    "contract": "Additional ABSTRACT LockedSend-derived adapter completes ordinary783C80 plus exact sole-caller bit helpers428EC0/429540. Pure alias actual targetD40 delivery-indexed cell; actualtickWORD F876B0/current transport executable table; requiredCOMPLETEvirtual20 flush. Capture cursor once from first full deliveryDWORD and keep it across callback cell replacement. Initial empty prefix actualtick16bits then freshdeliveryWORD3bits, actualcurrentprofile4 writer same cursor. Modulo32 after_bits+20h interpreted signed >=2320h overflow: capture delta after-before, exactMSB-first absolute-base extraction to uninitialized200h scratch (saved transport is additional4B), actual rewind, freshtable20 and deliveryDWORD flush, freshcapturedcursorbase reset/current/bit/firstbyte, freshtick/WORD prefix, exactMSBscratch-to-LSBcursor restore. Final freshdeliveryDWORD2 bypasses bytecount; otherwise unsigned roundedbytes>=380h flush; each freshtable/capturedcursor/target/delivery retained and freshpostflushbase reset. Existing signedwordwriter/rewind complete bodies reused, previous implementations unchanged. Helpers no genericreadwrite substitute; preserve byte initialization/carry/trailing partial bits. Valid reached delivery indices/live actualbacking with writablecarrybyte; copied delta<=1000h bits fits actual200h scratch; no invented clamps/defaultcursor/transport/profile/flush success. Requiredflush synchronouslyconsumes or createsowneddata and keeps all reached backing alive; no borrowedframe retention/free. Oneignored fresh actualTU Win32 probe emptyD2, exactthresholdD2, overflow usingexisting actualvariable-length profile with controlled flush provider tick/delivery/table/cursor-cell/backing changes and partial-bit helper tail. Prefer original pure-helper native differential in same probe or independent byte evidence to distinguish unusual bit conventions. Mutations areSOURCEfixture only, actualnetwork/provider/ABI/privateEH/fault/game unbound. Primary reviewed complete113/53/52 instructions, intact listings, integer only. Worker Ghidra read-only, no CMake/rootmetadata; unique ignored artifacts and stable pinned support inputs if needed."
   }
 }
