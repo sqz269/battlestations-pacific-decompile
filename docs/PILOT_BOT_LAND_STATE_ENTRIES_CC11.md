@@ -184,3 +184,5 @@ The next packet should recover/adopt one of those complete construction/copy
 services with its real storage and lifetime domain. Sparse `BotTaskHost`,
 current registry/queue projections, fabricated profiles and Boolean task
 presence cannot supply them.
+
+Primary integration: fe373c5e3c3a7f956760731fdd477b5a55f60838; actual main state-entry and outer sources independently recompiled for manifested focused SOURCE probe, PASS. Full MSVC Win32 Release and all three existing CTests passed. Executable SHA256 e7d1a53cb30ab695c674a64fca7d67e5a084054ec81dbc51d845374fc3d82c70. Actual complete providers, original ABI, runtime binding and game validation remain unclaimed. Build receipt: J:\PROG\battlestations-pacific-decompile\local\cc11_land_entries_integrated_build.log.
