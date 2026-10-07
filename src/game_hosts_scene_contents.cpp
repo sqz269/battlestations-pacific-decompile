@@ -102,12 +102,31 @@ struct EnumTable {
     std::map<std::string, int> symbols;
 };
 
+// 008F2E40 retains the first case-insensitive symbol. This host projection
+// covers duplicate retention, not the native CEnum layout or allocation ABI.
+void insert_library_enum_symbol(EnumTable& table, const std::string& name, int value) {
+    for (const auto& entry : table.symbols) {
+        if (equal_insensitive(entry.first, name)) return;
+    }
+    table.symbols.emplace(name, value);
+}
+
 class PropertyLibrary {
 public:
     void add_group(PropertyGroupDefinition group) {
         groups_.push_back(std::move(group));
     }
-    void add_enum(EnumTable table) { enums_.push_back(std::move(table)); }
+    void add_enum(EnumTable table) {
+        // 008F697C/008F699E reopen an existing table before parsing more IDs.
+        for (EnumTable& row : enums_) {
+            if (!equal_insensitive(row.name, table.name)) continue;
+            for (const auto& entry : table.symbols) {
+                insert_library_enum_symbol(row, entry.first, entry.second);
+            }
+            return;
+        }
+        enums_.push_back(std::move(table));
+    }
 
     const PropertyGroupDefinition* group(const std::string& name) const {
         for (const PropertyGroupDefinition& row : groups_) {
@@ -480,15 +499,15 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
                 const SceneToken value = lexer.next();
                 std::int32_t parsed = 0;
                 if (scene_scan_int(value.text, parsed)) {
-                    table.symbols[symbol.text] = static_cast<int>(parsed);
+                    insert_library_enum_symbol(table, symbol.text, static_cast<int>(parsed));
                 }
             }
             if (!lexer.at_end()) lexer.next();
             library.add_enum(std::move(table));
             continue;
         }
-        // 008f67b0 dispatches on those two keywords only; anything else is the
-        // caller's problem and is skipped here as the top-level loop skips it.
+        // Host recovery skips unknown top-level tokens. Native 008F6A35 loops
+        // without consuming that token; malformed-input recovery is not ported.
     }
     static_cast<void>(name);
 }
@@ -502,8 +521,8 @@ void GameSceneContentsHost::Impl::load_property_library() {
     if (manager == nullptr) return;
     // 008f7100 calls 008f6fc0 twice, first with ".enums" (00d1655c at 008f7106)
     // and then with ".props" (00d16554 at 008f7113), so the enum tables are
-    // loaded before the property groups. The order is kept because a later file
-    // that redeclared a name would otherwise win.
+    // loaded before .props inputs. Preserve that order: enum redeclarations
+    // retain their first values, and global.enums also supplies property groups.
     const char* extensions[] = {".enums", ".props"};
     std::vector<std::string> names;
     for (const char* extension : extensions) {
