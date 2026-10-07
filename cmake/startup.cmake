@@ -261,6 +261,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictio
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_word_getters.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_dictionary_membership.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_id_tables.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_participant_binding.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_deferred_message_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_append.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_target_history.cpp)
