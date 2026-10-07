@@ -1,0 +1,128 @@
+{
+  "packet": "cc11_projectile_pending_release_adoption",
+  "date": "2026-10-07",
+  "base_revision": "bd64c7aed",
+  "status": "conditional connected source adoption; focused compiled source fixture passed; actual providers/global/lifetime/ABI/game binding unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "BSP client verifies project/program before live analysis and call-verification batches",
+    "worker_ghidra_writes": false,
+    "worker_cmake_or_shared_metadata_writes": false
+  },
+  "native_scopes": [
+    {
+      "entry": "006E6490",
+      "end_exclusive": "006E65B5",
+      "coverage": "Only connected expiry/release provider adoption; existing whole tick/math source unchanged",
+      "native_abi": "ECX actual tick node, stack float step, RET4 at006E65B2",
+      "reviewed_pair": "006E6598 first cell load;006E659F notify0/0;006E65A4 separate SAME cell load;006E65A9 kill cause2"
+    },
+    {
+      "entry": "00926D90",
+      "end_exclusive": "00926E7E",
+      "instructions": 79,
+      "bytes": 238,
+      "coverage": "Complete ordinary native-valid body reused unchanged from existing native_pending_entity_producers.cpp",
+      "native_abi": "ECX actual entity, stack raw DWORD cause, RET4 at00926E7B, no defined return",
+      "existing_proof": "reports/native_pending_entity_producers.json and reports/pending_entity_library_reuse.json; native/source differential not rerun here"
+    }
+  ],
+  "host_steps": [
+    {"address":"006E659F","native":"00696350","function":"006E6490","contract":"First fresh node[-8] identity/event0/value0; existing notifier unchanged"},
+    {"address":"006E65A9","native":"00926D90","function":"006E6490","contract":"Independent fresh SAME cell identity/cause2; new concrete service directly adopts complete existing source"},
+    {"address":"00926DBE","native":"009248D0","function":"00926D90","contract":"Required actual current pending owner; capture section+4 even on killed-flag gate"},
+    {"address":"00926DD7","native":"IAT00CE2218 EnterCriticalSection","function":"00926D90","kind":"indirect","contract":"Captured actual section; native imported call, not checked as direct function edge"},
+    {"address":"00926E05","native":"current actual entity vtable+70","function":"00926D90","kind":"indirect","contract":"Required current target, ECX entity/stack literal1; individual profile body remains unbound"},
+    {"address":"00926E19","native":"00926D90","function":"00926D90","contract":"DIRECT recursive child call receives original cause; fresh sibling follows"},
+    {"address":"00926E40","native":"00924B10","function":"00926D90","contract":"Existing canonical allocation body, captured next/previous and actual payload source cell"},
+    {"address":"00926E4E","native":"009267F0","function":"00926D90","contract":"Existing canonical count growth before captured-head/current-previous link publication"},
+    {"address":"00926E63","native":"IAT00CE2210 LeaveCriticalSection","function":"00926D90","kind":"indirect","contract":"Release same captured section; native imported call, not checked as direct edge"}
+  ],
+  "adapter": {
+    "class": "NativeProjectilePendingEntityServices",
+    "base": "NativeProjectileTickObserverServices",
+    "final": true,
+    "stored_state": "ONLY borrowed NativePendingEntityOwners& and NativePendingEntityProducerAccess&",
+    "observed_prefix": "Pure identical-address actual NativeObserverOwnerStorage prefix alias; no read/lookup/allocation/callback",
+    "release": "Direct native_pending_entity_kill_00926d90(same owners,const_cast<void*>(identity),static_cast<uint32_t>(code),same access)",
+    "cause_conversion": "Win32 int size asserted equal DWORD; C++ unsigned conversion preserves modulo2^32 cause bits",
+    "caller_unchanged": "NativeProjectileObserverTickHost and both separate fresh node-cell loads; no tick/observer source edits",
+    "entity_or_view_cache": false,
+    "release_callback_substitute": false,
+    "new_default_provider_or_arena": false,
+    "native_profile_or_game_binding": false,
+    "original_binary_abi_compatible": false
+  },
+  "required_domains": [
+    "Nonnull live mutable actual identities with observer prefix0 and producer fields3C/44/48/5F/60/70; pure mapping into SAME storage, no semantic reinterpretation/sidecars",
+    "Same actual initialized F899A8/F899B4 owner bytes, valid finite sentinel rings and backing lifetime",
+    "Actual current9248D0 getter, valid lock owner and captured section lifetime; null section allowed, null owner invalid",
+    "Required actual current entity virtual70/child virtual78 providers and live parent/child/sibling identities",
+    "Existing allocation/count failure and captured lock/flags/queue nonrollback behavior; no adapter exception interception",
+    "Global initialization/CRT/drain/profile/arena/world observer lifetime/native FH3/SEH/original ABI/game remain external"
+  ],
+  "source_coff_receipts": {
+    "prefix_alias": "MOV EAX,[ESP+4] at+00;RET4 at+04, no field load or callback",
+    "release": "Push borrowed access at+00, unchanged cause DWORD at+03, unchanged identity at+07, borrowed owners at+0B;direct existing producer CALL at+0E;ADD ESP,10h at+13;RET8 at+16",
+    "unchanged_tick_expiry": "Fresh compiled borrowed cell load at+06;pure alias call+0E;notify0/0 call+19",
+    "unchanged_tick_release": "Independent fresh SAME cell load+07;required service call+0F with code",
+    "new_fp_or_register_abi_recovery": false
+  },
+  "validation": {
+    "compiler": "MSVC x86 cl19.51.36244.0, toolset14.51.36231",
+    "flags": "/nologo /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
+    "fresh_tus": ["src/native_projectile_pending_entity_services.cpp","src/native_pending_entity_producers.cpp","src/tick_element_overrides.cpp","src/observer_event_producer.cpp"],
+    "focused_fixture": "PASS SOURCE connected tick->slot0C->fresh B->real pending producers: observer suppression/A-to-B; destroy[B], kill[child,B]; flags/cause/rings/recursive locks; live payloads retained",
+    "fixture_scope": "ONE adapted connected ignored scenario; actual-shaped A/B/child with static producer offsets, real prepublished observer/pending recursive locks, real observer register/unregister, actual producer bodies and canonical node/count/ring operations",
+    "fixture_provider_limits": "SOURCE virtual70 instrumentation calls existing destroy body; SOURCE child78 observation declines destroy-recursion edge; profile tags/lock getter/tick observations/source CRT allocation are not actual native game providers, runtime reentry or global CRT registration proof",
+    "fixture_checks": ["Same actual A prefix/event0/value0; pending callback suppressed; SAME node cell A->B","Fresh B/current virtual tag/literal1; killed flag/cause2 BEFORE virtual70","Existing destroy body produces destroy[B]; child already60set retains cause; direct kill recursion produces kill[child,B]","Real canonical allocation/count/ring links; unconsumed owner words preserved","Observer saved vector interval and both captured recursive locks restored; pending depth1->2->1->2->1->0","Canonical queue destruction frees nodes/sentinels without payload deletion"],
+    "link_flags": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "link_system_libraries": ["user32.lib","d3d9.lib","PowrProf.lib","shell32.lib","advapi32.lib"],
+    "embedded_manifest": "PASS read-only PE resource check: x86 machine014C/RT_MANIFEST/requestedExecutionLevel asInvoker",
+    "pinned_support_pre_post": "PASS hashes identical before compilation and after successful manifested probe; existing archives, not fresh main build",
+    "native_call_verification": "PASS existing verify_report_calls.py:6 direct native call rows checked,0 failed;3 indirect rows explicitly not checked",
+    "git_diff_check": "PASS staged four-file git diff --cached --check",
+    "full_build": "Root-owned CMake registration/full build/independent validation; none run by worker",
+    "native_whole_caller_differential_tested": false,
+    "actual_game_providers_bound": false,
+    "game_validated": false
+  },
+  "ignored_artifacts": ["local/cc11_projectile_pending_probe.cpp","local/cc11_projectile_pending_probe.obj","local/cc11_projectile_pending_probe.exe","local/cc11_projectile_pending_services.obj","local/cc11_projectile_pending_producers.obj","local/cc11_projectile_pending_tick.obj","local/cc11_projectile_pending_events.obj"],
+  "pinned_support_libraries": [
+    {"path":"local/cc11_slot0c_bsp_core.lib","sha256":"1e9b7eeefd33856d0e2d7d827b21db01f913a3f84d5d5d465b39be397a028da0"},
+    {"path":"local/cc11_slot0c_bsp_lua511.lib","sha256":"e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"},
+    {"path":"local/cc11_slot0c_bsp_zlib121.lib","sha256":"c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"}
+  ],
+  "separate_unfinished_work": "Landing queue006C0B50/append006BF720/message84, complete lower009AFE70/composite009B2E50, holder constructor/factory/refresh/lifecycle remain separate audited but unbound dependencies, not implemented by this packet",
+  "artifact_hashes": {
+  "local/cc11_projectile_pending_probe.cpp": {
+    "bytes": 14102,
+    "sha256": "38eedcd296dcc573807a279562e99570004781bad8ec916bef12c21a21fe2c7e"
+  },
+  "local/cc11_projectile_pending_probe.obj": {
+    "bytes": 41754,
+    "sha256": "078020d304f04ec5419fad2171d6a601a2d7f1d8661188241a08ee9a485bf419"
+  },
+  "local/cc11_projectile_pending_probe.exe": {
+    "bytes": 231936,
+    "sha256": "78cb072c1f3666e26c7341dc9446a05a434dc62bd3030bed4693747d0083ca51"
+  },
+  "local/cc11_projectile_pending_services.obj": {
+    "bytes": 6171,
+    "sha256": "ba45e9709829b7cddb52533c5fdc8c2e1246bde3e95e2c3091e5920061544653"
+  },
+  "local/cc11_projectile_pending_producers.obj": {
+    "bytes": 6571,
+    "sha256": "c6f17b6eb70f7fdbca7a34554b3bab1cc9c6472601f5f5f4d5dae113e3a86654"
+  },
+  "local/cc11_projectile_pending_tick.obj": {
+    "bytes": 14450,
+    "sha256": "a32bd690943f85ef5498e37d3687985102bda695e3d913350006660d92b08421"
+  },
+  "local/cc11_projectile_pending_events.obj": {
+    "bytes": 6752,
+    "sha256": "28f8f5f7280934b50e50391f91ab447dc336d2d14e3a9c9c7cbfd61570b38168"
+  }
+}
+}
