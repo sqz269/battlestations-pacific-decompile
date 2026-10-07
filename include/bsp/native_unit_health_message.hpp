@@ -190,6 +190,13 @@ public:
     NativeUnitHealthMessageSerializedCalls(NativeUnitHealthSetterGlobals,
         NativeUnitHealthRouteGlobals, const NativeUnitHealthMessageProfile&,
         const volatile std::uint16_t& actual_tick_low_00f876b0) noexcept;
+    // Complete [00784830,0078489F): native ECX transport, stack message, RET4.
+    // Every actual peer node, including the first, uses the real target lock
+    // and the complete final serializer below. Existing bind_peer_send_primary
+    // only aliases actual +0C/+10; the count is never read. The message remains
+    // synchronously borrowed. New Source ABI; native CRT/fault/EH unbound.
+    void broadcast_session_message_00784830(void* actual_transport,
+        NativeSessionMessageStorage* borrowed_message);
 protected:
     // Pure aliases/access to actual backing, without early value snapshots,
     // callbacks, allocation, ownership changes or FP changes.

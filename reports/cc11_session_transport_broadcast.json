@@ -1,0 +1,1076 @@
+{
+  "packet": "cc11_health_transport_broadcast",
+  "created_utc": "2026-10-07T18:44:35.410473+00:00",
+  "base_commit": "b02e3154636139d964b1e32f0f91b710dd71985e",
+  "branch": "agent/cc11_health_guard",
+  "status": "Complete111-byte broadcast reconstructed; strict25-unit worker build and698checks/five original-loop plus complete Source provider cases pass; primary integration/main build separate; native ABI/game unbound",
+  "owned_files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_session_transport_broadcast.cpp",
+    "docs/CC11_SESSION_TRANSPORT_BROADCAST.md",
+    "reports/cc11_session_transport_broadcast.json"
+  ],
+  "functions": [
+    {
+      "entry": "00784830",
+      "end_exclusive": "0078489F",
+      "bytes": 111,
+      "instructions": 43,
+      "sha256": "6593857daa87512b5d619516243d90d12f4fcb9806ed72f2f602f97a8d190f4d",
+      "disk_live_full_bytes_match": true,
+      "disassembly": [
+        "00784830: push ecx",
+        "00784831: mov eax, dword ptr [ecx + 0xc]",
+        "00784834: push ebx",
+        "00784835: mov ebx, dword ptr [eax]",
+        "00784837: push ebp",
+        "00784838: lea ebp, [ecx + 8]",
+        "0078483B: push esi",
+        "0078483C: push edi",
+        "0078483D: mov dword ptr [esp + 0x10], ecx",
+        "00784841: cmp ebp, ebp",
+        "00784843: mov esi, dword ptr [ebp + 4]",
+        "00784846: je 0x78484d",
+        "00784848: call 0xbf6713",
+        "0078484D: cmp ebx, esi",
+        "0078484F: je 0x784897",
+        "00784851: cmp ebx, dword ptr [ebp + 4]",
+        "00784854: jne 0x78485b",
+        "00784856: call 0xbf6713",
+        "0078485B: mov esi, dword ptr [ebx + 8]",
+        "0078485E: mov edi, dword ptr [esi + 4]",
+        "00784861: push edi",
+        "00784862: call dword ptr [0xce2218]",
+        "00784868: mov ecx, dword ptr [esp + 0x18]",
+        "0078486C: add dword ptr [edi + 0x18], 1",
+        "00784870: push ecx",
+        "00784871: mov ecx, dword ptr [esp + 0x14]",
+        "00784875: push esi",
+        "00784876: call 0x783c80",
+        "0078487B: mov esi, dword ptr [esi + 4]",
+        "0078487E: add dword ptr [esi + 0x18], -1",
+        "00784882: push esi",
+        "00784883: call dword ptr [0xce2210]",
+        "00784889: cmp ebx, dword ptr [ebp + 4]",
+        "0078488C: jne 0x784893",
+        "0078488E: call 0xbf6713",
+        "00784893: mov ebx, dword ptr [ebx]",
+        "00784895: jmp 0x784841",
+        "00784897: pop edi",
+        "00784898: pop esi",
+        "00784899: pop ebp",
+        "0078489A: pop ebx",
+        "0078489B: pop ecx",
+        "0078489C: ret 4"
+      ],
+      "source": "bsp::NativeUnitHealthMessageSerializedCalls::broadcast_session_message_00784830",
+      "name_hypothesis": "Session transport broadcast",
+      "whole_body": true,
+      "original_abi": "ECX actual transport, one borrowed message stack argument, RET4",
+      "source_abi": "ECX Source adapter, transport and borrowed message stack arguments, RET8"
+    }
+  ],
+  "native_context": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only_worker": true
+  },
+  "call_rows": [
+    {
+      "address": "0076C529",
+      "native": "00784830",
+      "function": "0076C500",
+      "kind": "direct",
+      "contract": "Sole observed incoming CALL; enclosing nonadvancing array/message-deletion contract remains open."
+    },
+    {
+      "address": "00784848",
+      "native": "00BF6713",
+      "function": "00784830",
+      "kind": "direct",
+      "contract": "Provably unreachable: preceding CMP EBP,EBP / JZ always skips this direct call."
+    },
+    {
+      "address": "00784856",
+      "native": "00BF6713",
+      "function": "00784830",
+      "kind": "direct",
+      "contract": "Live fresh sentinel guard before target lookup; may return."
+    },
+    {
+      "address": "0078488E",
+      "native": "00BF6713",
+      "function": "00784830",
+      "kind": "direct",
+      "contract": "Live fresh sentinel guard before node.next advance; may return."
+    },
+    {
+      "address": "00784876",
+      "native": "00783C80",
+      "function": "00784830",
+      "kind": "direct",
+      "contract": "Actual complete serializer CALL with ECX transport and stack target/message; fixture fixed ABI bridge reaches unchanged complete final Source provider."
+    }
+  ],
+  "sdk_iat_sites": [
+    {
+      "address": "00784862",
+      "iat": "00CE2218",
+      "service": "EnterCriticalSection"
+    },
+    {
+      "address": "00784883",
+      "iat": "00CE2210",
+      "service": "LeaveCriticalSection"
+    }
+  ],
+  "actual_fields": [
+    "transport+0C sentinel pointer cell: first node capture, fresh loop end-test and both fresh validations",
+    "transport+10 count reference exists in existing view but is never loaded",
+    "actual0C-byte node.next+00 and node.target+08",
+    "genuine target+04 lock pointer: initial capture and fresh post-serializer reload",
+    "actual OS critical section at lock+00; raw wrapping depth DWORD+18",
+    "synchronously borrowed genuine D2 message using existing executable Source profile"
+  ],
+  "behavior": [
+    "First node is included; empty actual list is a no-op regardless of stored count.",
+    "Initial native CMP EBP,EBP proves owner-identity guard dead; Source omits that unreachable comparison/call.",
+    "Fresh sentinel guard precedes node.target load. Fixed SDK invalid_parameter_noinfo may return.",
+    "Capture actual target+4 lock, real EnterCriticalSection, increment raw depth modulo32, direct call unchanged complete private final783C80.",
+    "After complete serialization, reload actual target+4, decrement its depth modulo32 and real LeaveCriticalSection.",
+    "Fresh sentinel validation precedes fresh node.next advance; later aliased targets are visited once per actual node.",
+    "Existing pure reference binders introduce no list, early field read, allocation, clock or transport operation.",
+    "Borrowed message is neither retained nor released; backing and actual provider contracts remain required; no exception RAII added."
+  ],
+  "source_coff": [
+    {
+      "symbol": "?broadcast_session_message_00784830@NativeUnitHealthMessageSerializedCalls@bsp@@QAEXPAXPAUNativeSessionMessageStorage@2@@Z",
+      "machine": "I386",
+      "section": 5,
+      "symbol_value": 0,
+      "bytes": 163,
+      "sha256": "cf4f2eaf9660e76cd848cc1fc0d108ff28e013cec687619e37e5be6df3211f44",
+      "relocations": [
+        {
+          "operand_offset": "39",
+          "coff_kind": "0014",
+          "symbol": "?broadcast_invalid_parameter@?A0x63463255@bsp@@YAXXZ"
+        },
+        {
+          "operand_offset": "4F",
+          "coff_kind": "0006",
+          "symbol": "__imp__EnterCriticalSection@4"
+        },
+        {
+          "operand_offset": "68",
+          "coff_kind": "0014",
+          "symbol": "?serialize_session_message_00783c80@NativeUnitHealthMessageSerializedCalls@bsp@@EAEXPAX0PAUNativeSessionMessageStorage@2@@Z"
+        },
+        {
+          "operand_offset": "78",
+          "coff_kind": "0006",
+          "symbol": "__imp__LeaveCriticalSection@4"
+        },
+        {
+          "operand_offset": "85",
+          "coff_kind": "0014",
+          "symbol": "?broadcast_invalid_parameter@?A0x63463255@bsp@@YAXXZ"
+        }
+      ],
+      "instruction_count": 63,
+      "disassembly": [
+        "00: sub esp, 0xc",
+        "03: push ebx",
+        "04: push esi",
+        "05: push dword ptr [esp + 0x18]",
+        "09: mov ebx, ecx",
+        "0B: lea eax, [esp + 0x10]",
+        "0F: push eax",
+        "10: mov dword ptr [esp + 0x10], ebx",
+        "14: mov eax, dword ptr [ebx]",
+        "16: call dword ptr [eax + 0x34]",
+        "19: mov eax, dword ptr [esp + 0xc]",
+        "1D: mov esi, dword ptr [eax]",
+        "1F: mov esi, dword ptr [esi]",
+        "21: mov eax, dword ptr [esp + 0xc]",
+        "25: mov eax, dword ptr [eax]",
+        "27: cmp esi, eax",
+        "29: je 0x9b",
+        "2B: push ebp",
+        "2C: push edi",
+        "2D: nop dword ptr [eax]",
+        "30: mov eax, dword ptr [esp + 0x14]",
+        "34: cmp esi, dword ptr [eax]",
+        "36: jne 0x3d",
+        "38: call 0x3d",
+        "3D: mov ebp, dword ptr [esi + 8]",
+        "40: mov ecx, ebx",
+        "42: mov eax, dword ptr [ebx]",
+        "44: push ebp",
+        "45: call dword ptr [eax + 0x3c]",
+        "48: mov ebx, eax",
+        "4A: mov edi, dword ptr [ebx]",
+        "4C: push edi",
+        "4D: call dword ptr [0]",
+        "53: push dword ptr [esp + 0x24]",
+        "57: mov ecx, dword ptr [edi + 0x18]",
+        "5A: inc ecx",
+        "5B: push ebp",
+        "5C: push dword ptr [esp + 0x28]",
+        "60: mov dword ptr [edi + 0x18], ecx",
+        "63: mov ecx, dword ptr [esp + 0x1c]",
+        "67: call 0x6c",
+        "6C: mov ecx, dword ptr [ebx]",
+        "6E: push ecx",
+        "6F: mov eax, dword ptr [ecx + 0x18]",
+        "72: dec eax",
+        "73: mov dword ptr [ecx + 0x18], eax",
+        "76: call dword ptr [0]",
+        "7C: mov eax, dword ptr [esp + 0x14]",
+        "80: cmp esi, dword ptr [eax]",
+        "82: jne 0x89",
+        "84: call 0x89",
+        "89: mov esi, dword ptr [esi]",
+        "8B: mov eax, dword ptr [esp + 0x14]",
+        "8F: mov ebx, dword ptr [esp + 0x10]",
+        "93: mov eax, dword ptr [eax]",
+        "95: cmp esi, eax",
+        "97: jne 0x30",
+        "99: pop edi",
+        "9A: pop ebp",
+        "9B: pop esi",
+        "9C: pop ebx",
+        "9D: add esp, 0xc",
+        "A0: ret 8"
+      ],
+      "review": "16 pure primary-field binder;19/1D/1F actual head then first node;21/25/27 fresh head end-test;30/34 fresh guard and38 fixed SDK may-return call.3D captures target;45 pure target+4 alias;4A captures section;4D actual Enter;57/5A/60 wrapping depth increment;67 direct CALL complete private final783C80.6C reloads actual target+4 through retained alias;6F/72/73 wrapping decrement;76 actual Leave;7C/80 fresh head guard and84 fixed SDK may-return call;89 node.next AFTER validation;8B/93 fresh end-test. Count never loaded; dead native self-owner comparison omitted by proof. New Source thiscall ECX adapter, two stack args, RET8. All163 bytes reviewed."
+    },
+    {
+      "symbol": "?broadcast_invalid_parameter@?A0x63463255@bsp@@YAXXZ",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": "2",
+          "coff_kind": "0006",
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ],
+      "instruction_count": 1,
+      "disassembly": [
+        "00: jmp dword ptr [0]"
+      ]
+    }
+  ],
+  "fixture_bridges": [
+    {
+      "symbol": "?bind_peer_send_primary@Calls@@MAE?AUNativeSessionPrimaryPeerFields@bsp@@PAX@Z",
+      "machine": "I386",
+      "section": 121,
+      "symbol_value": 0,
+      "bytes": 22,
+      "sha256": "e7c3b2cee997504ddbde9e1db69f281134ec86d644f110b59a8fcc3253044586",
+      "relocations": [],
+      "instruction_count": 7,
+      "disassembly": [
+        "00: mov edx, dword ptr [esp + 8]",
+        "04: mov eax, dword ptr [esp + 4]",
+        "08: lea ecx, [edx + 0xc]",
+        "0B: mov dword ptr [eax], ecx",
+        "0D: lea ecx, [edx + 0x10]",
+        "10: mov dword ptr [eax + 4], ecx",
+        "13: ret 8"
+      ],
+      "review": "Pure22-byte view binding: LEA actual transport+0C/+10, stores only reference addresses into Source return view; reads neither field and invokes nothing."
+    },
+    {
+      "symbol": "?target_critical_section_04@Calls@@MAEADSAUTrackedCriticalSection@bsp@@PAX@Z",
+      "machine": "I386",
+      "section": 177,
+      "symbol_value": 0,
+      "bytes": 10,
+      "sha256": "45c337544374ac43fb0aadc73ba9f577181ce24508344f3b8c111de97cc8df6f",
+      "relocations": [],
+      "instruction_count": 3,
+      "disassembly": [
+        "00: mov eax, dword ptr [esp + 4]",
+        "04: add eax, 4",
+        "07: ret 4"
+      ],
+      "review": "Pure10-byte target+4 field alias: argument+4 returned, no field value load and no call."
+    },
+    {
+      "symbol": "?complete_serializer_bridge@@YIXPAX00PAUNativeSessionMessageStorage@bsp@@@Z",
+      "machine": "I386",
+      "section": 143,
+      "symbol_value": 0,
+      "bytes": 23,
+      "sha256": "48d0c53c4fed3b474d494d62950bd093b86099a32816c17dc604085bed10dbf3",
+      "relocations": [
+        {
+          "operand_offset": "B",
+          "coff_kind": "0006",
+          "symbol": "?reached_calls@@3PAVCalls@@A"
+        }
+      ],
+      "instruction_count": 7,
+      "disassembly": [
+        "00: push dword ptr [esp + 8]",
+        "04: push dword ptr [esp + 8]",
+        "08: push ecx",
+        "09: mov ecx, dword ptr [0]",
+        "0F: mov eax, dword ptr [ecx]",
+        "11: call dword ptr [eax + 0x40]",
+        "14: ret 8"
+      ],
+      "review": "Fixed __fastcall ignored-EDX native ABI bridge:00/04 push borrowed message/target;08 push native ECX transport;09 load actual live concrete Calls;11 CALL compiler Source vftable+40 proven above to PRIVATE FINAL complete783C80;14 RET8. No override, recording hook, list mutation or partial serializer. New packet compares complete original outer loop composed with existing complete Source providers, not an all-original serializer graph."
+    },
+    {
+      "symbol": "?original_crt_service@@YAXXZ",
+      "machine": "I386",
+      "section": 163,
+      "symbol_value": 0,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": "2",
+          "coff_kind": "0006",
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ],
+      "instruction_count": 1,
+      "disassembly": [
+        "00: jmp dword ptr [0]"
+      ]
+    }
+  ],
+  "source_fixture_vtable": {
+    "symbol": "??_7Calls@@6B@",
+    "machine": "I386",
+    "section": 234,
+    "symbol_value": 4,
+    "bytes": 108,
+    "sha256": "77133f431d5e12dd850002c0d3d4e0fecbe3a7a699d604dc8c5eae9976e1d260",
+    "review": "Compiler-generated Source Calls vftable, not a native transport profile. Symbol starts at section+4 after RTTI pointer. Actual +40 resolves unchanged complete private final783C80; +34/+3C pure actual field binders; +4C existing complete transport flush dispatcher.",
+    "reached_slots": [
+      {
+        "slot": "34",
+        "symbol": "?bind_peer_send_primary@Calls@@MAE?AUNativeSessionPrimaryPeerFields@bsp@@PAX@Z"
+      },
+      {
+        "slot": "3C",
+        "symbol": "?target_critical_section_04@Calls@@MAEADSAUTrackedCriticalSection@bsp@@PAX@Z"
+      },
+      {
+        "slot": "40",
+        "symbol": "?serialize_session_message_00783c80@NativeUnitHealthMessageSerializedCalls@bsp@@EAEXPAX0PAUNativeSessionMessageStorage@2@@Z"
+      },
+      {
+        "slot": "4C",
+        "symbol": "?call_transport_flush_20@NativeUnitHealthMessageTransportCalls@bsp@@MAEXIPAX0PAUNativeBitCursor@2@I@Z"
+      }
+    ]
+  },
+  "existing_complete_serializer": {
+    "symbol": "?serialize_session_message_00783c80@NativeUnitHealthMessageSerializedCalls@bsp@@EAEXPAX0PAUNativeSessionMessageStorage@2@@Z",
+    "machine": "I386",
+    "section": 85,
+    "symbol_value": 0,
+    "bytes": 682,
+    "sha256": "2a73471138ed648f68514435c9f745679e6cb6459be6e01208b60c9181f13a19",
+    "relocations": [
+      {
+        "operand_offset": "7",
+        "coff_kind": "0006",
+        "symbol": "___security_cookie"
+      },
+      {
+        "operand_offset": "6A",
+        "coff_kind": "0014",
+        "symbol": "?write_native_signed_word_bits_00429030@bsp@@YAXPAUNativeBitCursor@1@II@Z"
+      },
+      {
+        "operand_offset": "7A",
+        "coff_kind": "0014",
+        "symbol": "?write_native_signed_word_bits_00429030@bsp@@YAXPAUNativeBitCursor@1@II@Z"
+      },
+      {
+        "operand_offset": "14D",
+        "coff_kind": "0014",
+        "symbol": "?rewind_native_bits_00428b80@bsp@@YAXPAUNativeBitCursor@1@I@Z"
+      },
+      {
+        "operand_offset": "199",
+        "coff_kind": "0014",
+        "symbol": "?write_native_signed_word_bits_00429030@bsp@@YAXPAUNativeBitCursor@1@II@Z"
+      },
+      {
+        "operand_offset": "1AD",
+        "coff_kind": "0014",
+        "symbol": "?write_native_signed_word_bits_00429030@bsp@@YAXPAUNativeBitCursor@1@II@Z"
+      },
+      {
+        "operand_offset": "29D",
+        "coff_kind": "0014",
+        "symbol": "@__security_check_cookie@4"
+      }
+    ],
+    "instruction_count": 242,
+    "review": "Existing complete final serializer Source file is unchanged from frozen b02 base and freshly compiled here. COFF identity recorded; broadcast packet does not claim independent all-original differential proof for this provider.",
+    "source_file": "src/native_unit_health_message.cpp",
+    "source_file_sha256": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+    "source_file_unchanged_from_base": true
+  },
+  "fixture": {
+    "artifact_directory": "local/cc11_transport_broadcast_20261007_a",
+    "checks": 698,
+    "failures": 0,
+    "original_loop_cases": 5,
+    "composition": "COMPLETE original111-byte outer loop + fixed native-ABI bridge to UNCHANGED COMPLETE Source final783C80 + existing complete flush/current-clock/owned-enqueue providers, compared with new complete Source outer loop.",
+    "qualification": "Not an all-original serializer/provider graph. The new evidence closes this loop and its composition; existing providers retain their separate prior evidence/limits.",
+    "original_code_relocations": [
+      {
+        "operand_offset": "19",
+        "bytes": 4,
+        "kind": "REL32",
+        "replacement": "fixed real current SDK invalid_parameter_noinfo"
+      },
+      {
+        "operand_offset": "27",
+        "bytes": 4,
+        "kind": "REL32",
+        "replacement": "fixed real current SDK invalid_parameter_noinfo"
+      },
+      {
+        "operand_offset": "34",
+        "bytes": 4,
+        "kind": "absolute IAT-cell address",
+        "replacement": "fixed cell containing real EnterCriticalSection address"
+      },
+      {
+        "operand_offset": "47",
+        "bytes": 4,
+        "kind": "REL32",
+        "replacement": "fixed complete_serializer_bridge to existing private final Source783C80"
+      },
+      {
+        "operand_offset": "55",
+        "bytes": 4,
+        "kind": "absolute IAT-cell address",
+        "replacement": "fixed cell containing real LeaveCriticalSection address"
+      },
+      {
+        "operand_offset": "5F",
+        "bytes": 4,
+        "kind": "REL32",
+        "replacement": "fixed real current SDK invalid_parameter_noinfo"
+      }
+    ],
+    "original_nonrelocation_bytes_unchanged": 87,
+    "native_profile_mutations": 0,
+    "profiles": "Actual readonly PE hostD243EC and clockD68D50 entry words are supplied to existing complete Source admission rules; no native table rewrite. Existing executable Source D2 profile is genuinely constructed.",
+    "serializer_access": "Production final serializer remains private. Concrete fixture uses inherited protected declaration via C++ using; emitted bridge calls compiler Source vftable+40, whose relocation is precisely that final complete serializer. No new operation override or partial body.",
+    "mapping": "Frozen original image CreateFileMapping PAGE_READONLY / MapView FILE_MAP_READ; copied111-byte body plus fixed real IAT cells changed RW to PAGE_EXECUTE_READ before execution.",
+    "scenarios": [
+      {
+        "name": "empty list ignores count77",
+        "nodes": 0,
+        "stored_count": 77,
+        "delivery": 1
+      },
+      {
+        "name": "one peer count0 includes first",
+        "nodes": 1,
+        "stored_count": 0,
+        "delivery": 1
+      },
+      {
+        "name": "three peers count1 nonempty buffers",
+        "nodes": 3,
+        "stored_count": 1,
+        "delivery": 0,
+        "initial_bits": 43
+      },
+      {
+        "name": "later node aliases first target",
+        "nodes": 3,
+        "stored_count": 77,
+        "delivery": 1,
+        "node1_target_aliases_target0": true
+      },
+      {
+        "name": "three peers complete reliable threshold flush",
+        "nodes": 3,
+        "stored_count": 0,
+        "delivery": 1,
+        "initial_bits": 7139
+      }
+    ],
+    "genuine_targets": "Each world freshly constructs three D74 target bases through7839D0 with real owned OS locks, nine allocated cursor objects, six histories/all159 samples, actual indices0/1/2 and mask7. Full783B90 teardown returns mask0.",
+    "target_layout": "Three0x464-byte slices are INLINE in each D74 common target. Borrowed sockaddr+16bytes and retained derived tail follow at+D74 insideDC0 live backing; full derived target constructor not claimed.",
+    "provider_backing": "Actual fixed-clock storage/profile and complete existing methods, actual network-owner storage/SDK lock/local UDP socket, sixteen genuinely constructed channels and three genuinely constructed82C queue records. Existing complete host+20/+24/current-clock/enqueue reached; full owner/transport constructor or lifetime not claimed.",
+    "sdk_services": "Actual Enter/LeaveCriticalSection, ntohs/htons and local socket handle. No recording SDK hook, invented clock callback, send/connect or default network-success provider.",
+    "comparisons": [
+      "Exact per-target cursor positions prove per-node visit counts, including first node and repeated target alias.",
+      "Expected existing D2 bit writes and prefix/reset effects compare every byte of all nine inline payload slices per world.",
+      "Whole target and derived backing unchanged except exact selected payload and expected threshold timestamp; all allocated cursor fields exact.",
+      "Whole actual lock bytes preserved, recursion/depth balanced; both histories/all53samples per target unchanged.",
+      "Whole transport changed only by expected sent-byte counters; sentinel/allnodes/count and borrowed message unchanged.",
+      "Flush cases reach real fixed clock ratio7/2, three timestamp stores/game increments and three real reliable queue records in peer order.",
+      "Queue socket/sockaddr/type/length/sequence/head/tail/links and complete copied payload verified; pool consumed and owner lock balanced.",
+      "Each owned payload survives post-return serializer cursor reset and subsequent overwrite of its borrowed inline source storage.",
+      "Normalized complete result bytes agree between original-loop and Source-loop worlds; full genuine target teardown returns slot mask0."
+    ],
+    "limits": "No arithmetic matrix, injected iterator/lock replacement hook, empty-invalid-handler execution, original whole serializer graph, runtime network delivery or game claim."
+  },
+  "build": {
+    "compiler": "MSVC Win32 19.51.36244.0",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /link /MANIFEST:EMBED /OPT:REF",
+    "fresh_repository_translation_units": 24,
+    "probe_compilation_units": 1,
+    "total_compilation_units": 25,
+    "immutable_inputs": 69,
+    "headers": 44,
+    "embedded_manifest": "asInvoker",
+    "sources": [
+      "src/native_session_transport_broadcast.cpp",
+      "src/native_session_transport_flush.cpp",
+      "src/native_unit_health_message.cpp",
+      "src/native_session_message_base.cpp",
+      "src/native_session_message_tags_12_13_14_15.cpp",
+      "src/native_bit_cursor_read.cpp",
+      "src/native_bit_cursor_write.cpp",
+      "src/native_bit_cursor_fields.cpp",
+      "src/singleton_lifetime.cpp",
+      "src/unit_damage.cpp",
+      "src/native_render_batch_keys.cpp",
+      "src/native_network_console_send.cpp",
+      "src/native_network_console_runtime.cpp",
+      "src/native_network_console_storage.cpp",
+      "src/native_network_console_owner.cpp",
+      "src/native_frame_clock_publication.cpp",
+      "src/native_frame_clock_actual.cpp",
+      "src/native_renderer_control_worker.cpp",
+      "src/native_renderer_worker_lifetime.cpp",
+      "src/native_tracked_critical_section_release.cpp",
+      "src/frame_clock.cpp",
+      "src/native_session_target_lifetime.cpp",
+      "src/native_session_target_history.cpp",
+      "src/native_session_transport_buffers.cpp"
+    ],
+    "final_snapshot": "inputs_02",
+    "initial_failed_snapshot": "inputs_01",
+    "initial_compile_correction": "Only new Source lock-definition include changed from singleton_lifetime.hpp to random_threads.hpp. Original failed immutable snapshot/log retained; no fixture behavior change.",
+    "inputs_before": {
+      "source_head": "b02e3154636139d964b1e32f0f91b710dd71985e",
+      "sources": [
+        "src/native_session_transport_broadcast.cpp",
+        "src/native_session_transport_flush.cpp",
+        "src/native_unit_health_message.cpp",
+        "src/native_session_message_base.cpp",
+        "src/native_session_message_tags_12_13_14_15.cpp",
+        "src/native_bit_cursor_read.cpp",
+        "src/native_bit_cursor_write.cpp",
+        "src/native_bit_cursor_fields.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/unit_damage.cpp",
+        "src/native_render_batch_keys.cpp",
+        "src/native_network_console_send.cpp",
+        "src/native_network_console_runtime.cpp",
+        "src/native_network_console_storage.cpp",
+        "src/native_network_console_owner.cpp",
+        "src/native_frame_clock_publication.cpp",
+        "src/native_frame_clock_actual.cpp",
+        "src/native_renderer_control_worker.cpp",
+        "src/native_renderer_worker_lifetime.cpp",
+        "src/native_tracked_critical_section_release.cpp",
+        "src/frame_clock.cpp",
+        "src/native_session_target_lifetime.cpp",
+        "src/native_session_target_history.cpp",
+        "src/native_session_transport_buffers.cpp"
+      ],
+      "snapshot": "local/cc11_transport_broadcast_20261007_a/inputs_02",
+      "sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_bit_cursor_fields.hpp": "e8f170001981470be8db80f359aa3b261660e7be4507b79fe551f39b16780544",
+        "include/bsp/native_bit_cursor_read.hpp": "664f03d12e9fb5c6b75cbbdfa2f179cd9f0c5352542885e62db77f454c663b21",
+        "include/bsp/native_bit_cursor_write.hpp": "26bc0fb69b30b5d33f2b8b38d57622e21374d615814546fc6f725192e6c8fbce",
+        "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "include/bsp/native_event_owner.hpp": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+        "include/bsp/native_frame_clock_actual.hpp": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1",
+        "include/bsp/native_frame_clock_publication.hpp": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b",
+        "include/bsp/native_network_console_owner.hpp": "1a16c56b9621c534002fd629c8038cfc91f9239912c3afa3c7e528e245c217d1",
+        "include/bsp/native_network_console_runtime.hpp": "9eba126ddee36962e4f51dcc88f57becf17a3a5733a58c27a2d1bdf5d73cf143",
+        "include/bsp/native_network_console_send.hpp": "ec8b1ba3c838b2769ec79035fb57246d03ae3995221851b418bef0a7bb92038f",
+        "include/bsp/native_network_console_storage.hpp": "e2c134b1ddf600967a65b1f2106e4f12eeb4f0adfb237ba872fb0aef0582b9e3",
+        "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+        "include/bsp/native_render_batch_lifetime.hpp": "1644ae033ccae7e02110b14aefac49bd1df1f6aa005b1c36d28926379ac3ae29",
+        "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40",
+        "include/bsp/native_renderer_control_worker.hpp": "2de24b2af336ebd7e7713bd1c4bc033935b468dff6ae619fd703177e34c51f36",
+        "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "include/bsp/native_renderer_worker_lifetime.hpp": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "include/bsp/native_session_message_base.hpp": "6b99806a76b491030dcdbd1335161e58fdbb0d4141d8dcf8a46658b930dd3f74",
+        "include/bsp/native_session_message_tags_12_13_14_15.hpp": "2e0d0249141c4674eefcc0f21130f9aaee21757cf5df3edc6de0f41d57372284",
+        "include/bsp/native_session_target_history.hpp": "bc2937719050f440098f5c6d1b91fd93d2d9d00d1995c5534d18ea3c0cea7e1e",
+        "include/bsp/native_session_target_lifetime.hpp": "c9ff703666c031057be935340b20aa7f9a88ab0dbc1357b59252ce3a88986b76",
+        "include/bsp/native_session_transport_buffers.hpp": "a2971d8d8187bf4561a3c60614f81c7c2fea528138ecf6c67c01d8786a275d8c",
+        "include/bsp/native_session_transport_flush.hpp": "e0b2668cebf7421415ccab854c0b9750b714b196b6c65fed43482c07a42c501b",
+        "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "include/bsp/native_singleton_removal_reorder.hpp": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "include/bsp/native_tracked_critical_section_release.hpp": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+        "include/bsp/native_unit_health_message.hpp": "63d80401c5a032eda2f6a64fc3925d657850e8d78f52d1dab6cad068f732b839",
+        "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "include/bsp/unit_damage.hpp": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9",
+        "local/cc11_transport_broadcast_20261007_a/probe.cpp": "a6a22d3f21d8bd4ade63a73715ba7e9661b4be326db8805023b43a2cb3eb87a7",
+        "src/frame_clock.cpp": "85689c22573c3724489e6341e0fd48573033c893f5fe7ca81a6793f714c903a6",
+        "src/native_bit_cursor_fields.cpp": "e734aab56456aab557c636ea90470ccb708678901c921efcc34bdba00238a552",
+        "src/native_bit_cursor_read.cpp": "87b94e73476ef97a917fdcf94e8b9f7eb93fdbb2794914fc3bfa11177bca95d0",
+        "src/native_bit_cursor_write.cpp": "20423e0e8678743832a4cda6ff7b1c8166a6068b68b19ba14364e564baf363fc",
+        "src/native_frame_clock_actual.cpp": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6",
+        "src/native_frame_clock_publication.cpp": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55",
+        "src/native_network_console_owner.cpp": "b5c219cd194cd67852a02e1abf849511f04c19f225f51f082611d706ec3fb2dc",
+        "src/native_network_console_runtime.cpp": "eaa45e4bdab3330f95b16f2fff6f3a8022025d493cc8a8ec6708b20a2c563847",
+        "src/native_network_console_send.cpp": "66809a4c769cb9930cbd623ad4b655b01ac07175e2178a5375a6c12ea3b6583e",
+        "src/native_network_console_storage.cpp": "42a372d3d622f1d71ca33d2233a9283c6c37953763b07a6d77a1b2625e425735",
+        "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+        "src/native_renderer_control_worker.cpp": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+        "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "src/native_session_message_base.cpp": "0941562100e45fff7a4cc2ac9d8d848c6ee11baec94dc986fdbda1c912df4290",
+        "src/native_session_message_tags_12_13_14_15.cpp": "8abfb3f2889dbbef81106a8774af1bad13e2b175c337be37b8399bad98c5b0c6",
+        "src/native_session_target_history.cpp": "4975e74e2a79e8ff8dbf3fbc226b29d3904f7469738da51088fb752ccc9b8f7c",
+        "src/native_session_target_lifetime.cpp": "78fcbd504223882a9543a418524a3ddfdbdf9ad9694c856a11be31b09abce4f3",
+        "src/native_session_transport_broadcast.cpp": "b3077afc2bbf293fc535232a576de03bea2ebf7f25c93b46e597927bd96652c7",
+        "src/native_session_transport_buffers.cpp": "9e95d272f075d61cfb8641286c52a91367d33fe1588831c5fdcb3fffb518a551",
+        "src/native_session_transport_flush.cpp": "da1a7a6844f2b04c6315a2fd88f4a5836117f684b2845c7b12ae4e8574af0883",
+        "src/native_tracked_critical_section_release.cpp": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+        "src/native_unit_health_message.cpp": "8878953c5d29c5b7c38cdce13da5cb4206803d1cd72a90263db61cc911738dfe",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "src/unit_damage.cpp": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577"
+      },
+      "probe_sha256": "a6a22d3f21d8bd4ade63a73715ba7e9661b4be326db8805023b43a2cb3eb87a7"
+    },
+    "inputs_after": {
+      "main_head_after": "b982327be6c08cfa7a6ebc00ac70a8eaab6f5430",
+      "copied_libraries_stable": true,
+      "current_main_libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_after": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "matches_frozen_before": true
+        }
+      ],
+      "main_rebuild_permitted_after_support_snapshot": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 69,
+      "support_before": {
+        "main_head": "b02e3154636139d964b1e32f0f91b710dd71985e",
+        "worker_head": "b02e3154636139d964b1e32f0f91b710dd71985e",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_core.lib",
+            "sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+            "bytes": 73302410
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "support_before": {
+      "main_head": "b02e3154636139d964b1e32f0f91b710dd71985e",
+      "worker_head": "b02e3154636139d964b1e32f0f91b710dd71985e",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_core.lib",
+          "sha256": "4556abfda3e62f38d6b6a4ddaf7e83a75f34e78cc127586ac74b17a8ff150f98",
+          "bytes": 73302410
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "support_full_build_codepoint": "b02e3154636139d964b1e32f0f91b710dd71985e",
+    "support_scope": "Three current main libraries frozen readonly with source pre/copy/post equality before further main rebuild permission; 24 repository TUs plus probe freshly compiled. Full providers used here are among fresh TUs. Copies and all final69inputs rechecked unchanged.",
+    "original_before": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752
+    },
+    "original_after": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_broadcast_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752,
+      "unchanged": true
+    }
+  },
+  "uncertainties": [
+    "New Source adapter thiscall interface is not native ECX transport ABI. No complete derived target/transport/network-owner factory or lifetime claim.",
+    "Complete original OUTER body is composed with existing complete Source783C80/providers through a fixed ABI bridge; not all-original provider graph proof.",
+    "Current SDK invalid-parameter behavior used; historical BF6713 globals/Watson/private fault/EH remain unbound. Dead native owner guard proved unreachable.",
+    "Reentrant/concurrent list or lock replacement is not injected or game-proven; emitted Source retains required fresh field loads and valid-backing contract.",
+    "Whole76C500 nonadvancing array/message-deletion contract remains open; whole76FFC0/world untouched.",
+    "No network transmission, live game, whole native class ABI or failure-path validation. Primary owns shared build registration, metadata, annotations and full main build."
+  ],
+  "call_verification": {
+    "checked": 5,
+    "failed": 0,
+    "direct_call_rows": 5,
+    "indirect_rows": 0,
+    "qualification": "Includes one proved unreachable CRT instruction; two actual OS IAT calls recorded separately as imports.",
+    "output": "reports/cc11_session_transport_broadcast.json: 5 call rows checked, 0 failed"
+  },
+  "artifact_hashes": [
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/probe.cpp",
+      "bytes": 25504,
+      "sha256": "a6a22d3f21d8bd4ade63a73715ba7e9661b4be326db8805023b43a2cb3eb87a7"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/probe.exe",
+      "bytes": 234496,
+      "sha256": "bf970bfe95eea102b68b834e7b46064fb9b15a718da3cf6760c13117d22b4836"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/probe.log",
+      "bytes": 45,
+      "sha256": "8882a3c70e0fb776164fd2d8ff469d91a2521c40e6af24e06dbf52c16b9694db"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/build.cmd",
+      "bytes": 2971,
+      "sha256": "a8a2decc0eb15b8ac8b40c025c9e6ca21a774d4cb4752b0f653a2127dcda5536"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/build.log",
+      "bytes": 859,
+      "sha256": "26574beb1557127edec5be4393373f1f707cccbca286004f35a721dbb0f47c1b"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/prepare_fixture.py",
+      "bytes": 24286,
+      "sha256": "cd408551e76351503ad0d17e76f508f759ed16c211984f7bba30e0bef8b9989b"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/prepare_build.py",
+      "bytes": 3351,
+      "sha256": "0cd1b66f4b9e6deff6fe2589eb41889b7225bfc3a2ad20a2316d739cbf2c2342"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/pin_support.py",
+      "bytes": 2514,
+      "sha256": "dbc9f79bdfb5e9b24cc6387f70780d3bfa6e24e3222d9eed1b463dd02c050024"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/pin_native.py",
+      "bytes": 1033,
+      "sha256": "2c69eb14ae4c197b7e064e40f4690f02cdc4be295cd022e82162c04764e36f22"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/inspect_evidence.py",
+      "bytes": 7910,
+      "sha256": "17373a999d1544e730354e6f04bd5b0acdf7cb112bcd1036e7cab77b43956edb"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/write_receipts.py",
+      "bytes": 14016,
+      "sha256": "a62921d42d0b00eb4336339bd4a1b6eefeb43d8aa838f1934f1368573a4efd1b"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/inputs_before_link.json",
+      "bytes": 9321,
+      "sha256": "116a45da2e564b53525f6ef843be5e261e54af3ee816ee54605f7afcb2188123"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/inputs_after_link.json",
+      "bytes": 2339,
+      "sha256": "ff20a97b9e2bfd53fcbba453def9d0af47aa9c70782e21198147d9e0cb77f36d"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/support_before_link.json",
+      "bytes": 1271,
+      "sha256": "1c40e46fdbb3d50efb359e4c93421a116d0b52a4d67c6964f752997548415f41"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/native_before_run.json",
+      "bytes": 354,
+      "sha256": "f241dd59d58bac95e6f3f47fc929c13c51a02f86f2d6a7e359a8d0b7d7669952"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/native_after_run.json",
+      "bytes": 376,
+      "sha256": "77c62eb13ce27f8d3d0783e381a0aac07408941c21adf1166501e7e6c77add2e"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/live_prototype.txt",
+      "bytes": 1369,
+      "sha256": "ee1eff5a856b46b9705f88f09a7bfd429a18ae774c13020c83ff2511f541cdac"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/live_body_bytes.txt",
+      "bytes": 535,
+      "sha256": "0eb6b9b0646cb957d99f40f360fb4490bc69309328e5daae9e5c2e9a9a943a0c"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/live_caller_bytes.txt",
+      "bytes": 33,
+      "sha256": "f388c153ba265c4b09745f1ad06ef9fc5bf244fcffece21354b580a593ff51a5"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/live_xrefs.txt",
+      "bytes": 52,
+      "sha256": "0c3b52d887c9939b1b3179c00331a51a7365b4dd51eadf9d65e100eb1567b7e6"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/coff_evidence.json",
+      "bytes": 25266,
+      "sha256": "2f17d31533cf9d71981e707264f2a7f01f212683c3541fd3fb29ba5314f9b5c5"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/embedded_manifest.xml",
+      "bytes": 391,
+      "sha256": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/original_broadcast.bin",
+      "bytes": 111,
+      "sha256": "6593857daa87512b5d619516243d90d12f4fcb9806ed72f2f602f97a8d190f4d"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/fixture_calls_vtable_coff.bin",
+      "bytes": 108,
+      "sha256": "77133f431d5e12dd850002c0d3d4e0fecbe3a7a699d604dc8c5eae9976e1d260"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/asm/native_session_transport_broadcast.asm",
+      "bytes": 6326,
+      "sha256": "b9555a0f6b91c8da77d3d394904251793101f3b5d77306b915e022da14bc2425"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/bridge_bind_peer_send_primary_coff.bin",
+      "bytes": 22,
+      "sha256": "e7c3b2cee997504ddbde9e1db69f281134ec86d644f110b59a8fcc3253044586"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/bridge_complete_serializer_bridge_coff.bin",
+      "bytes": 23,
+      "sha256": "48d0c53c4fed3b474d494d62950bd093b86099a32816c17dc604085bed10dbf3"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/bridge_original_crt_service_coff.bin",
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/bridge_target_critical_section_04_coff.bin",
+      "bytes": 10,
+      "sha256": "45c337544374ac43fb0aadc73ba9f577181ce24508344f3b8c111de97cc8df6f"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/provider_serialize_session_message_00783c80_coff.bin",
+      "bytes": 682,
+      "sha256": "2a73471138ed648f68514435c9f745679e6cb6459be6e01208b60c9181f13a19"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/source_broadcast_invalid_parameter_coff.bin",
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/source_broadcast_session_message_00784830_coff.bin",
+      "bytes": 163,
+      "sha256": "cf4f2eaf9660e76cd848cc1fc0d108ff28e013cec687619e37e5be6df3211f44"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_transport_broadcast.obj",
+      "bytes": 1701,
+      "sha256": "a9f6a828d63e410987954e8c538d9a97bc2e3661928440419cf1ff9dbe7f330c"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_transport_flush.obj",
+      "bytes": 23399,
+      "sha256": "2cf2d27e154340a8edea76fdd8d5fbde98c8326c1f6796dc32ac6ddefc987395"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_unit_health_message.obj",
+      "bytes": 27211,
+      "sha256": "b8f19ab0b20028b6ca80f910f71ddd6320ec39fb0aaec1ae09cb7992f18e8591"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_message_base.obj",
+      "bytes": 12721,
+      "sha256": "51fc8b17f8f304b0b1541957a38a9d4a62b7ffa8ee60c17bdb2ae77f5c264dcf"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_message_tags_12_13_14_15.obj",
+      "bytes": 16662,
+      "sha256": "caa7bf93405c9b0284e3cd457242c6ba9f39757fe4ddfcf775e38fa1c212c4b7"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_bit_cursor_read.obj",
+      "bytes": 7576,
+      "sha256": "dcd78851fc1dce941b40a5ab63ac793ef71b17ea40a5938a9879d27049eadd95"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_bit_cursor_write.obj",
+      "bytes": 3259,
+      "sha256": "80cb1228c7bc6b49c9b3790611da63c7542d17c0ce2731645f19b6db434acd1a"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_bit_cursor_fields.obj",
+      "bytes": 2310,
+      "sha256": "62f5c338afde03661fac5f9367221069c18e4bd51723822c46e681b540e5473c"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/singleton_lifetime.obj",
+      "bytes": 36800,
+      "sha256": "65c0713ed05c952d667a6dc5cc145b47808d5ac3220100980b095fcb2b973298"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/unit_damage.obj",
+      "bytes": 18949,
+      "sha256": "7cdc7764e0e76eb0e46e89bcfa2fb5b8a4b599fa96e9a28f266041d5ae7a03cf"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_render_batch_keys.obj",
+      "bytes": 3066,
+      "sha256": "bea751e6dd1d275caee0c482dc1ed0d8e998948148d5c1f8eae2e4484f45f93e"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_network_console_send.obj",
+      "bytes": 12425,
+      "sha256": "5b3da46d8e3ebcfc5a8676d8ced1524acf493540ab8bead70c97aa00dee82c8f"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_network_console_runtime.obj",
+      "bytes": 24081,
+      "sha256": "5e9a10aa109de2b53d28f1d5ff21e4334f3ec865da073ec92781668bdc85c378"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_network_console_storage.obj",
+      "bytes": 7142,
+      "sha256": "c624eac75998c1f37162b69a7f5188c6273e472226ff8caf8655fb452959caa0"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_network_console_owner.obj",
+      "bytes": 9635,
+      "sha256": "cffbdcc0e39c14d1cebfce51b0f78700d150623658117c6b5db003e7efefb85a"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_frame_clock_publication.obj",
+      "bytes": 10669,
+      "sha256": "5993e30591d2c578fd81f303b8c7c9c2eb59899b7c0da321a28b8fdac3cf926f"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_frame_clock_actual.obj",
+      "bytes": 5849,
+      "sha256": "df275bce21131e6aac49ede9a88aea9d0b554e29d2ebaf81db778774f4ff0588"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_renderer_control_worker.obj",
+      "bytes": 17658,
+      "sha256": "2215d0425ed4bcaf5f3ce837ed97ab427081dc8cb8d18f69f1a63d1d868c1eb7"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_renderer_worker_lifetime.obj",
+      "bytes": 6875,
+      "sha256": "db6f710be7c40940f2bd9ef755706fe0cf746a90f9f410b6a81537babd6c4870"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_tracked_critical_section_release.obj",
+      "bytes": 1419,
+      "sha256": "84a7bab653684be69637e448ead050b9616271e3bf7d39b9fc3876d9b76a8732"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/frame_clock.obj",
+      "bytes": 6257,
+      "sha256": "c515a063f5898d3970527a503f72b89ec3815c3bcb684041b702a5cb75ed363d"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_target_lifetime.obj",
+      "bytes": 8032,
+      "sha256": "58bb694f5f811da037cbe811bf3cdcbb62c36bac753b1ffd41d778a3ba41309f"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_target_history.obj",
+      "bytes": 2138,
+      "sha256": "46495ade93ef95ce7adade3594122381182ea1903f5dd0d9b7d819d3a9b8dd55"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/native_session_transport_buffers.obj",
+      "bytes": 2075,
+      "sha256": "7a3a1239f5beb878a45da222c8006f61b50c03e30f86848853398e634a7a9ce0"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/obj/probe.obj",
+      "bytes": 74432,
+      "sha256": "ce3a60b3f1e009d6a3dd0f2d7389f98275b4411c55a9197afa72b373a13176a8"
+    },
+    {
+      "path": "local/cc11_transport_broadcast_20261007_a/verify_calls.log",
+      "bytes": 78,
+      "sha256": "1d83f01c6d6b20fcd48a51d479453edff18feffce7cf8436233a9a042c4884b0"
+    }
+  ],
+  "owned_source_hashes": [
+    {
+      "path": "include/bsp/native_unit_health_message.hpp",
+      "sha256": "63d80401c5a032eda2f6a64fc3925d657850e8d78f52d1dab6cad068f732b839"
+    },
+    {
+      "path": "src/native_session_transport_broadcast.cpp",
+      "sha256": "b3077afc2bbf293fc535232a576de03bea2ebf7f25c93b46e597927bd96652c7"
+    }
+  ]
+}
