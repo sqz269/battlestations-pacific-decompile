@@ -11232,3 +11232,26 @@ fire is about a third. The rest is direct bomb hits, their bursts (13.8 hp each)
 - Second, check the component-failure rolls, which fire an Explosion on Intrepid's first hit at full health
   (`kComponentFailureBound`, 0093BED0).
 - No USN13 pair was run: there is nothing to bind.
+
+## 159. The steady bank on a small heading error is the roll arm's own proportional law (156's upstream lever; cc9-gunnery33, 2026-10-06, read only, nothing bound)
+
+**Read.** `BSP_PilotBot_PlanControls` (`0099D300-0099EBAB`), `0099E07E..0099E1CC`: the listing (`local\g33_plan.txt`) and
+Ghidra's pseudocode, against `pilot_plan_roll_0099e2ba` (`src/plane_ai_control.cpp`).
+
+| step | image | host |
+| --- | --- | --- |
+| roll-out bank | `w = min(1.5 |bank|, max_bank)` (`0099E087..0099E0B1`, `[00CE3D78]` = 1.5) | same |
+| sweep scale | `c = 0099D0A0(w)`; when `-0.01 <= c <= 0.01` (`[00D7A300]`, `[00D7A238]`), `c = c >= 0 ? 0.01 : -0.1` (`[00CE3CB4]`) | same, including the asymmetric -0.1 |
+| deadband | `s = interp(-c, -0.3c, c, 0.3c; h)` (`0099E10E..0099E17B`, `[00CE3DC8]` = 0.3 double) | same |
+| bank asked | `clamp((h - s) / c, -1, 1) * max_bank` (`0099E180..0099E19E`, `00415620`) | same |
+
+**Note on the x87 read.** At `0099E14C` the one-operand `FMUL ST1` is the `DC` form, which writes **ST1**. Read as
+`ST0 *= ST1`, it gives an asymmetric deadband (`-0.3c^2 .. c`). Ghidra's pseudocode and the operand direction both
+give the symmetric `+-0.3c` that the host has.
+
+**Result.** The arm asks for a bank in proportion to `(h - s) / c`. Here `c` is the heading sweep a roll-out from
+`1.5 |bank|` would add (`0099D0A0`), so it shrinks as the bank shrinks.
+- A gently banked aircraft has a small `c`. A heading error of 0.02-0.05 rad then still asks for a sizeable fraction
+  of `max_bank`, which is 148's steady 0.19-0.33 rad bank, and it is the image's law.
+- Of the lead's two upstream levers, the steady roll needs no host change.
+- The other lever, the pitch response to a held `+29Ch` (157), is in the flight model. It has not been read here.
