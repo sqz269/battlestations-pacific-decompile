@@ -1,0 +1,209 @@
+{
+  "packet": "cc11_health_replication_byte",
+  "date_utc": "2026-10-07",
+  "base_commit": "fbe20367f8aa4f7e87603857aca8b3886013fccb",
+  "status": "reconstructed_numeric_fragment_fixture_tested",
+  "native_parent": "00877B90",
+  "numeric_fragment": [
+    "00877C58",
+    "00877C77"
+  ],
+  "reviewed_boundary": [
+    "00877C53",
+    "00877C84"
+  ],
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "documentation": "docs/UNIT_HEALTH_REPLICATION_BYTE_CC11.md",
+  "new_api": "replicated_health_byte_numeric_00877c58(float, const volatile std::uint32_t*) noexcept",
+  "name_status": "descriptive_hypothesis",
+  "native_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py client() invokes Client.verify() before live query batches",
+    "read_only_queries": [
+      "ghidra proto 00877B90",
+      "ghidra disasm 00877C53 --lines 22",
+      "ghidra bytes 00D0DEE0 --length 8",
+      "ghidra bytes 0109EEA4 --length 4",
+      "ghidra disasm 00BF7420 --lines 24",
+      "ghidra disasm 00BF7456 --lines 67",
+      "ghidra export 00877B90 00BF7420 00BF7456"
+    ],
+    "scale_address": "00D0DEE0",
+    "scale_bytes": "0000000000007040",
+    "scale_type": "binary64",
+    "scale_value": 256,
+    "conversion_dispatch": "00BF7420",
+    "conversion_state_address": "0109EEA4",
+    "image_state_bytes": "00000000",
+    "image_bytes_do_not_establish_runtime_value": true,
+    "zero_mode_target": "00BF7456",
+    "nonzero_mode": "FSTP binary64; CVTTSD2SI signed EAX",
+    "clamp": "signed low EAX: negative becomes 0; greater than 255 becomes 255",
+    "following_effects": "00877C77 compare +374h; 00877C84 store only if changed; outside numeric fragment",
+    "ghidra_mutations": false
+  },
+  "contract": {
+    "input": "binary32 fraction; adapter loads it into x87 ST0",
+    "conversion_state": "caller supplies actual readable mutable dword address; shared helper reads at conversion time",
+    "state_policy": "zero selects x87 fallback; any nonzero selects SSE2; no copied mode, null fallback or invented global",
+    "test_state_words": "local volatile fixture words, not production bindings",
+    "abi": "new MSVC Win32 cdecl(float,pointer), EAX int result, caller stack cleanup; not native setter ABI",
+    "stack": "two free x87 slots required; net stack change zero",
+    "control": "does not change x87 CW or MXCSR controls",
+    "exception_domain": "native hardware instructions retained; returning results and flag comparisons validated only with exceptions masked",
+    "numeric_boundary": "arbitrary binary32 converter inputs; not arbitrary extended ST0, no getter/provider/cache/store/message integration"
+  },
+  "implementation_checks": {
+    "all_preexisting_unit_damage_source_preserved": true,
+    "shared_crt_source_and_header_unchanged": true,
+    "setter_callback_order_and_session_policy_unchanged": true,
+    "new_function_emitted_instructions": [
+      "fld",
+      "fmul",
+      "mov",
+      "call",
+      "test",
+      "jge",
+      "xor",
+      "ret",
+      "cmp",
+      "jle",
+      "mov",
+      "ret"
+    ],
+    "emitted_dword_load_qword_fmul_actual_pointer_shared_call_signed_clamp": true,
+    "new_function_has_no_control_state_write": true,
+    "no_duplicate_crt_body_or_numeric_cast": true,
+    "shared_helper_already_built_by": "CMakeLists.txt:64"
+  },
+  "focused_probe": {
+    "command": "local/cc11_health_replication_byte_check.cmd",
+    "compiler": "MSVC Win32 /std:c++17 /O2 /Gy /W4 /WX /fp:strict",
+    "linked_production_sources": [
+      "src/unit_damage.cpp",
+      "src/native_render_batch_keys.cpp"
+    ],
+    "reference": "original numeric assembly sequence with shared recovered CRT helper; not original game execution",
+    "manifest": "embedded RT_MANIFEST verified; requestedExecutionLevel=asInvoker",
+    "matrix": {
+      "binary32_inputs": 26,
+      "x87_precision_bits": [
+        24,
+        53,
+        64
+      ],
+      "x87_rounding_modes": 4,
+      "matched_mxcsr_rounding": true,
+      "exceptions": "all masked",
+      "DAZ": false,
+      "FTZ": false,
+      "conversion_modes": [
+        0,
+        1
+      ]
+    },
+    "conversion_comparisons": 624,
+    "same_word_reload_checks": 48,
+    "reload_word_sequence": [
+      "00000000",
+      "00000001",
+      "80000000",
+      "00000000"
+    ],
+    "state_checks": "two live x87 sentinels; TOP; full CW; MXCSR non-status bits; masked x87 and MXCSR exception bits compared",
+    "summary_lines": [
+      "SUMMARY prefix_checks=336 data_fail=0 marker_gaps=0 unexpected_marker=0 mode_checks=672 mode_fail=0 byte_checks=240 byte_fail=0 released_cache_checked=1",
+      "STATE state_checks=336 control_fail=0 stack_fail=0 two_live_sentinels=1",
+      "FRACTION fraction_checks=192 fraction_fail=0 getter_checks=192 getter_fail=0 released_checks=192 released_fail=0",
+      "NUMERIC_STATE state_checks=576 control_fail=0 stack_fail=0 released_status_fail=0",
+      "CONVERSION_SUMMARY checks=624 result_fail=0 control_fail=0 stack_fail=0 status_fail=0 reload_checks=48 reload_fail=0 two_live_sentinels=1"
+    ],
+    "witnesses": [
+      "CONVERSION int32_positive_overflow mode=0 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=00",
+      "CONVERSION int32_positive_overflow mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION positive_wrap_to_512 mode=0 raw=00000200 expected=255 actual=255 x87_flags=00 mxcsr_flags=00",
+      "CONVERSION positive_wrap_to_512 mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION negative_wrap_to_positive mode=0 raw=7fffff00 expected=255 actual=255 x87_flags=00 mxcsr_flags=00",
+      "CONVERSION negative_wrap_to_positive mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION int64_positive_overflow mode=0 raw=00000000 expected=0 actual=0 x87_flags=01 mxcsr_flags=00",
+      "CONVERSION int64_positive_overflow mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION positive_infinity mode=0 raw=00000000 expected=0 actual=0 x87_flags=01 mxcsr_flags=00",
+      "CONVERSION positive_infinity mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION positive_qnan mode=0 raw=00000000 expected=0 actual=0 x87_flags=01 mxcsr_flags=00",
+      "CONVERSION positive_qnan mode=1 raw=80000000 expected=0 actual=0 x87_flags=00 mxcsr_flags=01",
+      "CONVERSION positive_snan mode=0 raw=00000000 expected=0 actual=0 x87_flags=01 mxcsr_flags=00",
+      "CONVERSION positive_snan mode=1 raw=80000000 expected=0 actual=0 x87_flags=01 mxcsr_flags=01"
+    ],
+    "exit_code": 0
+  },
+  "validation_boundaries": {
+    "reconstructed": true,
+    "msvc_production_linked_probe": true,
+    "fixture_tested": true,
+    "full_cmake_build": "primary integrator responsibility",
+    "game_validated": false,
+    "drop_in_abi_compatible": false,
+    "unmasked_fault_resumption_tested": false,
+    "actual_game_conversion_state_bound": false,
+    "arbitrary_initial_status_or_other_mxcsr_settings_tested": false,
+    "tracked_test_files_added": false,
+    "remaining": "primary metadata/annotation/build/integration; actual provider/cache/state and native setter integration remain separate"
+  },
+  "artifacts": [
+    {
+      "path": "src/unit_damage.cpp",
+      "sha256": "414947b969419392ae9305bbe7dcf67b68083f91422880de7fe9683dde91e55f",
+      "bytes": 27081
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "sha256": "71ad2f5a48e2c88e2c6e0e388c2a2302d28c2b0210c6d55f386f25f2d8c8b9a3",
+      "bytes": 21224
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "bytes": 5004
+    },
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "bytes": 1858
+    },
+    {
+      "path": "local/cc11_health_replication_byte_probe.cpp",
+      "sha256": "3b2c902d5315160e3e30283db8c1ec17353b32b9cfdd2f52ea16e0ed51203e54",
+      "bytes": 21753
+    },
+    {
+      "path": "local/cc11_health_replication_byte_probe.exe",
+      "sha256": "2f0fa632213ef69010756ec2915ac18e843aa27c52cf38a9cb963abc2c9f43d5",
+      "bytes": 125440
+    },
+    {
+      "path": "local/cc11_health_replication_byte_check.cmd",
+      "sha256": "68f40f4429b6288a964456f090fdd28128cd55b4d51c0f4ba23bfd559cf87522",
+      "bytes": 573
+    },
+    {
+      "path": "local/cc11_health_replication_byte_results.json",
+      "sha256": "359ada0893d661b9393c7bff299631d290cced70c355682d7dd90722e9e5805b",
+      "bytes": 8955
+    },
+    {
+      "path": "local/cc11_health_replication_byte_asm/unit_damage.asm",
+      "sha256": "020ae2de6b98b5ecc0e0a647528e46fff37c60d62d4d405b6ee90404244f8362",
+      "bytes": 116128
+    },
+    {
+      "path": "local/cc11_health_replication_byte_asm/native_render_batch_keys.asm",
+      "sha256": "e613586a2242b9b8dfe63f5ba72c0a8b97a0e0712fd9634779f3c22a9db077ac",
+      "bytes": 15229
+    }
+  ]
+}

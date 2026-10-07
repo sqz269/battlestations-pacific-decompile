@@ -100,6 +100,18 @@ float entity_health_00923be0(const UnitHealth& health, bool released) noexcept;
 // and unmasked exceptions are not reproduced. docs/UNIT_HEALTH_UNORDERED_CC11.md.
 int replicated_health_byte_00877b90(float health_fraction) noexcept;
 
+// Numeric 00877C58..00877C77: load a binary32 fraction, native x87 FMUL double
+// 256, shared runtime-selected CRT conversion, signed low-EAX clamp to 0..255.
+// actual_0109eea4 must address the actual readable mutable conversion-state word;
+// the converter reads it at conversion time (zero selects x87, nonzero SSE2).
+// Leaves ambient FP controls unchanged and preserves existing x87 values; needs
+// two free x87 stack slots. Masked exception results are fixture-checked. Native
+// exception instructions remain, but unmasked fault/resumption is unvalidated.
+// No getter/cache/+374h/store/message work; new C++ ABI, not a binary replacement.
+// docs/UNIT_HEALTH_REPLICATION_BYTE_CC11.md.
+int replicated_health_byte_numeric_00877c58(float health_fraction,
+    const volatile std::uint32_t* actual_0109eea4) noexcept;
+
 // 008790E3..008790FD, written exactly as the x87 does it: the intermediate
 // 1.0f - invincibility is rounded through a float store before the second
 // subtraction, so this is not simply invincibility * max_health.

@@ -5,6 +5,7 @@
 // names are hypotheses. Nothing here is a drop-in binary replacement, and the
 // session, effect and message calls are contracts on UnitDamageHost.
 #include "bsp/unit_damage.hpp"
+#include "bsp/native_render_batch_keys.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Unit health marker requires MSVC Win32 x87 assembly.
@@ -146,6 +147,30 @@ int replicated_health_byte_00877b90(float health_fraction) noexcept {
         return kUnitHealthByteMax;
     }
     return raw;
+}
+
+// Numeric 00877C58..00877C77, adapted from a float argument to native ST0.
+// The shared CRT helper reads actual_0109eea4 itself at conversion time.
+// Preserve its signed low-EAX result and the native branches after conversion.
+// No native +374h access, setter dispatch, mode snapshot or FP control change.
+__declspec(naked) int replicated_health_byte_numeric_00877c58(
+    float, const volatile std::uint32_t*) noexcept {
+    __asm {
+        fld dword ptr [esp + 4]
+        fmul qword ptr kUnitHealthByteScale
+        mov ecx, dword ptr [esp + 8]
+        call native_crt_truncate_st0_00bf7420
+        test eax, eax
+        jge cap_byte
+        xor eax, eax
+        ret
+    cap_byte:
+        cmp eax, 0ffh
+        jle return_byte
+        mov eax, 0ffh
+    return_byte:
+        ret
+    }
 }
 
 // 008790E3..008790FD. The native sequence is FLD inv / FLD1 / FLD ST0 /
