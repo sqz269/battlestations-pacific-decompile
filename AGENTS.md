@@ -12,6 +12,13 @@
   packet states to advance archive streams/entries, font layout and VFS loading
   independently where their contracts permit. Recheck actual concurrency
   limits when resuming; do not assume whole partition segments are independent.
+- The integrator should prefer reusing an available existing subagent for related
+  packets in the same work stream to maximize context reuse and preserve accumulated
+  evidence, contracts, and decisions. Use `followup_task` to assign the next bounded
+  packet, and refresh its leases and file/address ownership before work begins.
+  Spawn a new subagent when no suitable existing worker is available, the required
+  model differs, the work stream changes materially, or the worker is nearing its
+  context window limit; use a short handoff when replacing a worker.
 - Spawn workers on `gpt-6.1-sol` with `fork_turns: "none"` and a self-contained brief: the packet,
   its addresses and files, and the contract. Keep the orchestrator and integrator on `gpt-6-astra`.
   Spawn on `gpt-6-astra` instead when the packet's evidence is x87 arithmetic, register-ABI recovery,
