@@ -1,0 +1,73 @@
+{
+  "packet": "cc11_land_canonical_identity",
+  "date": "2026-10-07",
+  "status": "complete_conditional_source_callers_one_canonical_borrowed_identity_cell_required_pure_mappings_unbound",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "BSP client verified target before live prototype and call-check batches",
+    "worker_ghidra_writes": false
+  },
+  "source_files": ["include/bsp/plane_squadron_host.hpp", "src/plane_squadron_host.cpp"],
+  "functions": [
+    {"entry": "009B33F0", "end_exclusive": "009B3434", "abi": "ECXtask,RET,preservesESI,conditionaltailJMP", "source": "land_task_retained_hook_009b33f0"},
+    {"entry": "009B3C60", "end_exclusive": "009B3CE6", "abi": "ECXtask,RET,preservesESI", "source": "land_task_update_cruise_profile_009b3c60"},
+    {"entry": "009B34D0", "end_exclusive": "009B3552", "abi": "ECXapproach,RET,preservesEBX/ESI", "source": "land_approach_validate_site_009b34d0"},
+    {"entry": "009B3560", "end_exclusive": "009B35DD", "abi": "ECXtask,EAX2/1/0,RET,preservesESI", "source": "land_task_is_command_current_009b3560"}
+  ],
+  "host_steps": [
+    {"address": "009B342D", "native": "007EFB60", "function": "009B33F0", "kind": "tail_jump", "contract": "final404captured3422 once; guard then mapping and EndLanding on same identity"},
+    {"address": "009B3C63", "native": "0099B660", "function": "009B3C60", "contract": "existing proved-empty base"},
+    {"address": "009B3C6E", "native": "007B8AD0", "function": "009B3C60", "contract": "separate retained plane3FC cell"},
+    {"address": "009B3C77", "native": "0042E740", "function": "009B3C60", "contract": "first tuning BEFORE canonical404load/mapping"},
+    {"address": "009B3CAE", "native": "0042E740", "function": "009B3C60", "contract": "second tuning ALWAYS for leader BEFORE fresh canonical404load/mapping"},
+    {"address": "007EEDC6", "native": "0071EB60", "function": "007EEDC0", "contract": "unchanged reused descriptor helper and primary numeric kernel"},
+    {"address": "009B3516", "native": "00521EA0", "function": "009B34D0", "contract": "mutable returned descriptor; resolver BEFORE fresh428 comparison"},
+    {"address": "009B3537", "native": "006C4790", "function": "009B34D0", "contract": "fresh canonical404mapped for nonnull; null passed unchanged; required full admission"},
+    {"address": "009B35B5", "native": "00521EA0", "function": "009B3560", "contract": "mutable returned descriptor; resolver BEFORE fresh428 comparison"},
+    {"address": "009B3405", "native": "virtual+174", "function": "009B33F0", "contract": "captured first404 for guard AND firstprobe"},
+    {"address": "009B3419", "native": "virtual+174", "function": "009B33F0", "contract": "fresh second404; actual interned land comparison"},
+    {"address": "009B34E8", "native": "virtual+174", "function": "009B34D0", "contract": "initial approachC captured once"},
+    {"address": "009B34F9", "native": "virtual+174", "function": "009B34D0", "contract": "fresh approachC"},
+    {"address": "009B3512", "native": "virtual+178", "function": "009B34D0", "contract": "fresh approachC; copied returned descriptor"},
+    {"address": "009B3578", "native": "virtual+174", "function": "009B3560", "contract": "firstprobe NULL returns2"},
+    {"address": "009B358C", "native": "virtual+174", "function": "009B3560", "contract": "fresh404; secondNULL returns0"},
+    {"address": "009B35B1", "native": "virtual+178", "function": "009B3560", "contract": "fresh404; no frozen descriptor receiver"}
+  ],
+  "contract": {
+    "canonical_storage": "ONE caller-owned const-void*volatile404 identity CELL borrowed by hook/cruise/validity; separate plane3FC cell; installed and retired task storage distinct",
+    "pure_mappings": "Required identity->entity/hook/cruise borrowed references belonging to SAME live squadron; no represented native field reads, callbacks, native calls, allocation, defaults or translated-pointer cache",
+    "source_correction": "Removed copied hook pointer and separately typed hook/cruise/entity cache representations; explicit native first/second/final hook captures",
+    "numeric": "Primary COMISS/FLD-dirty-FSTP and24Bdescriptor kernels unchanged; existing masked/no pendingunmasked/availablex87-slot domain retained",
+    "lifetime": "Each observed identity and mapped reference remains valid through its native segment; no concurrent mutation, stale reuse, structural reentry, corruption, faults or unwind; fixture replacements do not prove native reentry",
+    "unbound": "Actual task arena/base/composite/state/profile constructors, canonical storage owner, scheduler/FIFO, command/controller/world bindings, observer/death lifetime, original ABI and game validation"
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 x86 /EHsc /std:c++17 /MD /O2 /DNDEBUG /Iinclude",
+    "object": "PASS actualsrc/plane_squadron_host.cpp ->local/plane_squadron_host_cc11.obj",
+    "manifested_fixture": "PASS existinglocal/cc11_land_hook_probe.exe linked changed object+mainbsp_core.lib /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF",
+    "scenario": "Same borrowed404slot address: hookA->B->C clears/routesonlyC; cruise startsC and second tuning changesD; validity startsD then D->A->B->C through fresh probes and admission",
+    "probe_output": "PASS one canonical404 cell: hook A/B/C, cruise C/D, validity D/A/B/C; retained/deferred order and numeric fixtures",
+    "source_fixture_limit": "All replacement/provider/queue/map effects SOURCEonly; no original native runtime execution",
+    "numeric_kernel_text_comparison": "PASS both primary kernel blocks identical to starting HEAD",
+    "diff_check": "PASS",
+    "live_call_verifier": "PASS9direct/tail rows,0failed;8virtualrows explicitly unresolved",
+    "full_build": "Root owned; not run by worker",
+    "game_abi_lifetime": "Not tested/proved"
+  },
+  "next_constructor_dependencies": [
+    {"entry": "0099C6F0", "end_exclusive": "0099C8A4", "boundary": "REQUIREDcomplete common base, command/gun/control/random/descriptor storage; old generic BotTaskHost insufficient"},
+    {"entry": "009F9CE0", "end_exclusive": "009F9D78", "boundary": "raw retainedplane/class/squad/owner/row publication plus x87ratio; primary numeric recovery before sourceport; noobserverregistration"},
+    {"entry": "009AFE70", "end_exclusive": "009AFFEB", "boundary": "block424/owner428/COMPLETE006C0B50returnedrecord42C; independent inputplane9D4reload; tuning/random/pose/geometry primary recovery"},
+    {"entry": "009B2E50", "end_exclusive": "009B302B", "boundary": "complete lower approach, registry, actual MoveTo/Follow/land state/profile/name construction required"},
+    {"entry": "009B3240", "end_exclusive": "009B3307", "boundary": "base->freshowner50->fullapproach->profiles->embeddedplane72Cpredicate->park620 or freshplaneleader4C4/500->310publication->stateentry->bind"},
+    {"entry": "009F9980", "end_exclusive": "009F99A6", "boundary": "nonnulltask aliasbinding approach18/1C/20 to task4/314/38C AFTERentry"}
+  ],
+  "queue_observer_boundary": {
+    "queue": "Current hostqueue omits nativeentry+4returnedrecord and slottail observer/message transitions; excluded as COMPLETE006C0B50 provider; actual record lifetime external",
+    "observer": "Existing actual endpoint storage/register/unregister services usable for MoveTo+18 target+2C;009BDEB0 clears callback+14=state2C on observed virtual4 equality, nottask404/plane3FC",
+    "constructor_choice": "Conditional complete009B3240 caller can require COMPLETE009B2E50/006C0B50 services; actual adapter must bind them. Source-owned fivefield publication also needs primary009F9CE0/009AFE70 recovery. No arena/profile/fault/lifetime substitute."
+  }
+}

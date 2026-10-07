@@ -366,16 +366,20 @@ void land_task_retained_hook_009b33f0(const LandTaskRetainedHookView& task,
                                      PlaneSquadronLandingHookHost& host) {
     // 009B33F3, 009B340B and 009B3422 reload the OLD task's +404h. Preserve
     // both command probes; do not replace them with a current plane lookup.
-    if (task.squadron_404 != nullptr
+    const void* const first_receiver = task.squadron_404;   // 009B33F3
+    if (first_receiver != nullptr
         && command_queue_current_command(
-            host.command_queue_348(task.squadron_404->squadron)) != 0u) {
+            host.command_queue_348(host.squadron_entity(first_receiver))) != 0u) {
+        const void* const second_receiver = task.squadron_404; // 009B340B
         if (command_queue_current_command(
-                host.command_queue_348(task.squadron_404->squadron)) == 0x00e08fa0u) {
+                host.command_queue_348(host.squadron_entity(second_receiver))) == 0x00e08fa0u) {
             return;                                                // 009B3420
         }
     }
-    if (task.squadron_404 != nullptr) {
-        plane_squadron_end_landing_007efb60(*task.squadron_404, host); // 009B342D
+    const void* const final_receiver = task.squadron_404;   // 009B3422
+    if (final_receiver != nullptr) {
+        auto final_view = host.landing_hook_view(final_receiver);
+        plane_squadron_end_landing_007efb60(final_view, host); // 009B342D
     }
 }
 
@@ -418,7 +422,8 @@ void land_task_update_cruise_profile_009b3c60(
     if (!host.plane_is_leader_007b8ad0(task.plane_3fc)) return; // 009B3C68..75
 
     const LandCruiseTuningView first_tuning = host.game_tuning_0042e740();
-    PlaneSquadronCruiseProfileView& first = *task.squadron_404; // AFTER C77
+    const void* const first_receiver = task.squadron_404; // AFTER C77
+    auto first = host.cruise_profile_view(first_receiver);
     if (first.field_38d == 0) {
         if (cruise_gate_ordered_negative(&first.field_380)
             && first.field_3a9 == 0) {
@@ -431,7 +436,8 @@ void land_task_update_cruise_profile_009b3c60(
     // Always called for a leader, including a blocked first channel. Both the
     // returned tuning and task's cached squadron may differ from the first.
     const LandCruiseTuningView second_tuning = host.game_tuning_0042e740();
-    PlaneSquadronCruiseProfileView& second = *task.squadron_404; // AFTER CAE
+    const void* const second_receiver = task.squadron_404; // AFTER CAE
+    auto second = host.cruise_profile_view(second_receiver);
     if (second.field_38c == 0) {
         if (cruise_gate_ordered_negative(&second.field_37c)
             && second.field_3aa == 0) {
@@ -491,24 +497,29 @@ SceneCommandTarget* plane_squadron_copy_current_command_descriptor_007eedc0(
 
 void land_approach_validate_site_009b34d0(
     const LandTaskCommandValidityView& task, LandTaskCommandValidityHost& host) {
-    PlaneSquadronEntity* const first_receiver = task.squadron_404;
+    const void* const first_receiver = task.squadron_404;
     if (first_receiver != nullptr
         && command_queue_current_command(
-            host.command_queue_348(*first_receiver)) != 0u
+            host.command_queue_348(host.squadron_entity(first_receiver))) != 0u
         && command_queue_current_command(
-            host.command_queue_348(*task.squadron_404)) == 0x00e08fa0u) {
+            host.command_queue_348(host.squadron_entity(task.squadron_404))) == 0x00e08fa0u) {
         SceneCommandTarget output;
         SceneCommandTarget* const returned =
             plane_squadron_copy_current_command_descriptor_007eedc0(
-                *task.squadron_404, output, host);            // 009B3512
+                host.squadron_entity(task.squadron_404), output, host); // 009B3512
         const void* const resolved = host.resolve_command_target_00521ea0(*returned);
         if (resolved == task.target_428) {                   // AFTER resolver
             const void* const block = task.block_424;        // 009B3520
             if (block != nullptr) {
                 const void* const owner = host.block_owner_7c(block);
-                if (owner != nullptr && host.owner_field_5d(owner) == 0
-                    && host.squadron_not_excluded_006c4790(
-                        block, task.squadron_404)) return;    // fresh C at3533
+                if (owner != nullptr && host.owner_field_5d(owner) == 0) {
+                    const void* const admission_identity = task.squadron_404; // 3533
+                    const PlaneSquadronEntity* const admission_receiver =
+                        admission_identity != nullptr
+                            ? &host.squadron_entity(admission_identity) : nullptr;
+                    if (host.squadron_not_excluded_006c4790(
+                            block, admission_receiver)) return;
+                }
             }
             task.block_424 = nullptr;                       // 009B3540
         }
@@ -520,18 +531,18 @@ void land_approach_validate_site_009b34d0(
 
 std::uint32_t land_task_is_command_current_009b3560(
     const LandTaskCommandValidityView& task, LandTaskCommandValidityHost& host) {
-    PlaneSquadronEntity* const first_receiver = task.squadron_404;
+    const void* const first_receiver = task.squadron_404;
     if (first_receiver == nullptr
         || command_queue_current_command(
-            host.command_queue_348(*first_receiver)) == 0u) return 2u;
+            host.command_queue_348(host.squadron_entity(first_receiver))) == 0u) return 2u;
     // A changed second token (including NULL) means0, not the first-probe2.
     if (command_queue_current_command(
-            host.command_queue_348(*task.squadron_404)) != 0x00e08fa0u
+            host.command_queue_348(host.squadron_entity(task.squadron_404))) != 0x00e08fa0u
         || task.block_424 == nullptr) return 0u;
     SceneCommandTarget output;
     SceneCommandTarget* const returned =
         plane_squadron_copy_current_command_descriptor_007eedc0(
-            *task.squadron_404, output, host);                // 009B35B1
+            host.squadron_entity(task.squadron_404), output, host); // 009B35B1
     const void* const resolved = host.resolve_command_target_00521ea0(*returned);
     return resolved == task.target_428
         ? 1u : 0u;                                         // fresh428 at35BA
