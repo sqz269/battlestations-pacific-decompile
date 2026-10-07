@@ -78,12 +78,10 @@ void format_address(std::uint32_t address, char (&out)[16]) {
 // also in its body. Its caller 008f6fc0 enumerates the directory through
 // 00886280 and hands it one file at a time.
 //
-// **008f67b0 is not reconstructed and this reader is not a reconstruction of
-// it.** It is the executable's own top-level dispatch over the two recovered
-// pieces, and it exists because without the schema the bag an entity hands
-// 0046c550 has none of the defaulted keys the gate reads, which changes what
-// the gate decides. Everything below the `properties`/`enum` dispatch is
-// recovered code: bsp::SceneLexer and bsp::parse_scene_property_block_008f5a00.
+// The whole one-file loader/VFS contract remains unreconstructed. This host
+// dispatch uses partial tokenizer/property-parser projections. Enum retention
+// and declaration-time group capture are bounded bindings; see
+// docs/SCENE_PROPERTY_LIBRARY_LOADER_CC11.md and SCENE_GROUP_LOADING_CC11.md.
 constexpr const char* kPropertyLibraryDirectory = "universe/library";
 // 008f67b0's own delimiter literal. The scene reader's set adds the comma;
 // this one does not, which is why it is written out rather than reused.
@@ -113,9 +111,7 @@ void insert_library_enum_symbol(EnumTable& table, const std::string& name, int v
 
 class PropertyLibrary {
 public:
-    void add_group(PropertyGroupDefinition group) {
-        groups_.push_back(std::move(group));
-    }
+    void add_group(PropertyGroupDefinition group);
     void add_enum(EnumTable table) {
         // 008F697C/008F699E reopen an existing table before parsing more IDs.
         for (EnumTable& row : enums_) {
@@ -169,16 +165,27 @@ private:
 // The bag an entity hands 0046c550 is built in two steps by 0046cf40. Step 6
 // merges each name of the `properties ( ... )` list into it through 008f54f0,
 // which is the group schema; step 7 parses the authored body into the same bag
-// through 008f5a00, and a parse writes the key whatever was there before. So a
-// group merge adds and an authored assignment overwrites, which is what
-// `overwrite` selects here. A group's own key beats its base's for the same
-// reason the derived declaration wins in `properties Ship(Common)`.
+// through 008f5a00, and a parse writes the key whatever was there before. An
+// entity group merge fills missing keys and an authored assignment overwrites.
+// Library parent merges instead pass native flag 0: later parents overwrite,
+// then the authored group body overwrites (008F5AB3, 008F6AD7).
 void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& other,
-    bool overwrite) {
+    bool overwrite, bool require_compatible_types = false) {
     for (const SceneProperty& value : other.values) {
+        if (require_compatible_types) {
+            for (const auto& child : bag.blocks) {
+                if (equal_insensitive(child.first, value.key)) {
+                    throw std::runtime_error("unsupported library scalar/child conflict: " + value.key);
+                }
+            }
+        }
         SceneProperty* existing = nullptr;
         for (SceneProperty& candidate : bag.values) {
             if (equal_insensitive(candidate.key, value.key)) { existing = &candidate; break; }
+        }
+        if (require_compatible_types && existing != nullptr
+            && existing->type_letter != value.type_letter) {
+            throw std::runtime_error("unsupported library scalar type conflict: " + value.key);
         }
         if (existing == nullptr) {
             bag.values.push_back(value);
@@ -187,6 +194,13 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
         }
     }
     for (const auto& block : other.blocks) {
+        if (require_compatible_types) {
+            for (const SceneProperty& value : bag.values) {
+                if (equal_insensitive(value.key, block.first)) {
+                    throw std::runtime_error("unsupported library child/scalar conflict: " + block.first);
+                }
+            }
+        }
         ScenePropertyBlock* target = nullptr;
         for (auto& existing : bag.blocks) {
             if (equal_insensitive(existing.first, block.first)) {
@@ -198,19 +212,56 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
             bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
             target = &bag.blocks.back().second;
         }
-        merge_property_block(*target, block.second, overwrite);
+        merge_property_block(*target, block.second, overwrite, require_compatible_types);
+    }
+}
+
+bool group_parent_reaches(const PropertyLibrary& library,
+    const PropertyGroupDefinition& parent, const std::string& name) {
+    if (equal_insensitive(parent.name, name)) return true;
+    for (const std::string& base : parent.bases) {
+        const PropertyGroupDefinition* ancestor = library.group(base);
+        if (ancestor != nullptr && group_parent_reaches(library, *ancestor, name)) return true;
+    }
+    return false;  // add_group admits only already-present, acyclic parents.
+}
+
+void PropertyLibrary::add_group(PropertyGroupDefinition group) {
+    if (group.name.empty()) throw std::runtime_error("unsupported unnamed library group");
+    for (const std::string& base : group.bases) {
+        const PropertyGroupDefinition* parent = this->group(base);
+        if (equal_insensitive(base, group.name) || parent == nullptr
+            || group_parent_reaches(*this, *parent, group.name)) {
+            throw std::runtime_error("unsupported library parent graph: " + group.name + "(" + base + ")");
+        }
+    }
+    PropertyGroupDefinition* existing = nullptr;
+    for (PropertyGroupDefinition& row : groups_) {
+        if (equal_insensitive(row.name, group.name)) { existing = &row; break; }
+    }
+    // 008F6A7F reopens the existing bag. 008F5AB3 captures each parent with
+    // flag 0 before the authored writes; 008F5110/008F4263 recursively clone.
+    // This owning-tree projection validates its supported domain on a copy;
+    // native malformed-input failure, aliases and rollback are not modeled.
+    ScenePropertyBlock captured = existing != nullptr ? existing->block : ScenePropertyBlock{};
+    for (const std::string& base : group.bases) {
+        merge_property_block(captured, this->group(base)->block, true, true);
+    }
+    merge_property_block(captured, group.block, true, true);
+    if (existing != nullptr) {
+        existing->block = std::move(captured);
+        existing->bases = std::move(group.bases);
+    } else {
+        group.block = std::move(captured);
+        groups_.push_back(std::move(group));
     }
 }
 
 void merge_group_into(const PropertyLibrary& library, const std::string& name,
-    ScenePropertyBlock& bag, int depth) {
-    if (depth > 8) return;  // the shipped library nests one level
+    ScenePropertyBlock& bag) {
     const PropertyGroupDefinition* group = library.group(name);
     if (group == nullptr) return;
     merge_property_block(bag, group->block, false);
-    for (const std::string& base : group->bases) {
-        merge_group_into(library, base, bag, depth + 1);
-    }
 }
 
 // Packet cc9_land_convoy_members. 00743450's scene reads (00743497..007437B0):
@@ -483,7 +534,10 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
                 }
                 if (!lexer.at_end()) lexer.next();
             }
+            // The source block parser has no library callbacks. On supported
+            // input, parsing first cannot change the native parent snapshots.
             group.block = parse_scene_property_block_008f5a00(lexer, errors);
+            if (!errors.empty()) throw std::runtime_error("unsupported library group syntax: " + name);
             library.add_group(std::move(group));
             continue;
         }
@@ -1399,7 +1453,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // over the group default.
     ScenePropertyBlock bag;
     for (const std::string& group : entity.groups) {
-        merge_group_into(owner.library, group, bag, 0);
+        merge_group_into(owner.library, group, bag);
     }
     merge_property_block(bag, entity.properties, true);
 
