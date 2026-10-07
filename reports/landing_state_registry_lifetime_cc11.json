@@ -1,0 +1,421 @@
+{
+  "packet": "cc11_land_state_registry_lifetime",
+  "baseline": "d949d180b",
+  "date": "2026-10-07",
+  "status": "complete conditional ordinary SOURCE services; strict Win32 Source/original-copy fixture passed; raw profile remains uncallable; whole caller/private EH/original ABI/lifetime/game bindings unbound",
+  "scope": {
+    "addresses": [
+      "00411610",
+      "004116D0",
+      "00411810"
+    ],
+    "owned_files": [
+      "include/bsp/native_land_state_registry_lifetime.hpp",
+      "src/native_land_state_registry_lifetime.cpp",
+      "docs/LANDING_STATE_REGISTRY_LIFETIME_CC11.md",
+      "reports/landing_state_registry_lifetime_cc11.json"
+    ],
+    "total_original_bytes": 158,
+    "total_complete_disk_instructions": 47,
+    "new_tracked_tests": 0,
+    "root_metadata_cmake_ghidra_writes": 0
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "every bsp ghidra bytes call invokes Client.verify for configured project/program"
+  },
+  "entries": [
+    {
+      "address": "00411610",
+      "end_exclusive": "0041163A",
+      "bytes": 42,
+      "instructions": 13,
+      "sha256": "eedf442da954f569e25c64c924af589d417c133e00a13b3261a28b7d4d186701",
+      "disk_live": "MATCH",
+      "probe_full_original_copy": "MATCH before only free CALL operand relocations",
+      "calls": [
+        {
+          "address": "0041161B",
+          "native": "00BF65AC",
+          "function": "00411610"
+        }
+      ],
+      "original_abi": "ECX actual vector subobject; no stack arguments; RET",
+      "source_api": "release_native_bot_state_vector_00411610",
+      "source_status": "complete ordinary admitted body; new C++ interface, not drop-in original ABI",
+      "instruction_count_method": "full PE byte disassembly including returning free continuations, not cached summary count"
+    },
+    {
+      "address": "004116D0",
+      "end_exclusive": "00411700",
+      "bytes": 48,
+      "instructions": 14,
+      "sha256": "f26003b576ab78c629ec12a6ae3a1c9db217cdf2bbeb02a4810e3bf4cd541ace",
+      "disk_live": "MATCH",
+      "probe_full_original_copy": "MATCH before only free CALL operand relocations",
+      "calls": [
+        {
+          "address": "004116E1",
+          "native": "00BF65AC",
+          "function": "004116D0"
+        }
+      ],
+      "original_abi": "ECX actual registry; no stack arguments; RET",
+      "source_api": "destroy_native_bot_state_registry_004116d0",
+      "source_status": "complete ordinary admitted body; new C++ interface, not drop-in original ABI",
+      "instruction_count_method": "full PE byte disassembly including returning free continuations, not cached summary count"
+    },
+    {
+      "address": "00411810",
+      "end_exclusive": "00411854",
+      "bytes": 68,
+      "instructions": 20,
+      "sha256": "7f72d861302003ce1b62e2c99207aa7de4803aa2f98d81e8928bf8cca2354efc",
+      "disk_live": "MATCH",
+      "probe_full_original_copy": "MATCH before only free CALL operand relocations",
+      "calls": [
+        {
+          "address": "00411821",
+          "native": "00BF65AC",
+          "function": "00411810"
+        },
+        {
+          "address": "00411846",
+          "native": "00BF65AC",
+          "function": "00411810"
+        }
+      ],
+      "original_abi": "ECX actual registry; DWORD stack flags; TEST low byte bit0; EAX captured original identity; RET4",
+      "source_api": "scalar_delete_native_bot_state_registry_00411810",
+      "source_status": "complete ordinary admitted body; new C++ interface, not drop-in original ABI",
+      "instruction_count_method": "full PE byte disassembly including returning free continuations, not cached summary count"
+    }
+  ],
+  "profile": {
+    "address": "00CE37DC",
+    "bytes": 24,
+    "sha256": "61ab75619eb06c8c957923f5bab968c58767c830ce3a8a378760b0e6181ab8e8",
+    "hex": "10184100766563746f723c543e20746f6f206c6f6e670000",
+    "disk_live": "MATCH",
+    "sole_slot": "00411810",
+    "following_ascii": "vector<T> too long",
+    "source": "raw numeric UNCALLABLE image identity; no fabricated Source table"
+  },
+  "repair": {
+    "report": "reports/state_registry_lifetime_flow_recovery_cc11.json",
+    "primary_commit": "ac77bffe0",
+    "returning_free_gaps": [
+      "00411620..00411623",
+      "004116E6..004116E9",
+      "00411826..00411829",
+      "0041184B..0041184E"
+    ],
+    "remaining_call_gaps": 0,
+    "worker_mutations": 0
+  },
+  "contracts": {
+    "storage": "existing actual Win32 NativeBotStateVectorStorage (10h) and NativeBotStateRegistryStorage (14h); registry+4 vector; registry+8/C/10 correspond vector+4/8/C",
+    "vector": "capture begin once -> optional actual array free -> begin/end/capacity clears; no proxy/name/state pointee destruction",
+    "ordinary_registry": "raw CE37DC stamp -> captured array -> optional actual array free -> three ordered header clears; proxy and receiver untouched",
+    "scalar_registry": "raw CE37DC stamp -> captured array -> optional actual array free -> low-byte bit0 flag capture -> three ordered header clears -> optional actual captured receiver free -> original identity return",
+    "free": {
+      "native": "00BF65AC (_free)",
+      "source": "existing complete singleton_lifetime_free -> std::free; backing allocations from same singleton_lifetime_allocate/free Source CRT domain",
+      "defaults": "none; no injected production callback/free/arena provider"
+    },
+    "scalar_flags": "bit0 is tested only in low byte; flags1 requires separate actual CRT-allocated registry, not embedded approach/task member; returned identity after self free is dangling and not dereferenced",
+    "borrowed": "proxy word and name/state pointers/pointees retained; no membership-to-ownership inference; canonical task404 identity cell untouched"
+  },
+  "reachability": {
+    "fragments": [
+      {
+        "start": "009B2D36",
+        "end_exclusive": "009B2D4B",
+        "bytes": 21,
+        "sha256": "5d73d5ed9803afba7e079752509baa871b81fd871dbd429b14887f53fd1d2055",
+        "purpose": "known ordinary caller gate through CALL",
+        "instructions": [
+          "009B2D36: xor ecx, ecx",
+          "009B2D38: cmp esi, ecx",
+          "009B2D3A: mov byte ptr [esp + 0x1c], cl",
+          "009B2D3E: je 0x9b2d46",
+          "009B2D40: lea ecx, [esi + 0xb8]",
+          "009B2D46: call 0x4116d0"
+        ]
+      },
+      {
+        "start": "00C5E090",
+        "end_exclusive": "00C5E09B",
+        "bytes": 11,
+        "sha256": "8add1632cbb366cf217401d37efe6121c2d6b95bb560d8c7cf4cb486a2cfc0b1",
+        "purpose": "private constructor unwind reachability only",
+        "instructions": [
+          "00C5E090: mov ecx, dword ptr [ebp - 0x10]",
+          "00C5E093: add ecx, 4",
+          "00C5E096: jmp 0x411610"
+        ]
+      }
+    ],
+    "ordinary_call": {
+      "address": "009B2D46",
+      "native": "004116D0",
+      "function": "009B2C80"
+    },
+    "qualification": "conditional native caller reachability only; complete Source009B2C80 absent, no whole lifetime or nonnull receiver guarantee; private constructor unwind saved-frame tail jump is EH reachability only; no midinstruction prefix inference"
+  },
+  "domain": {
+    "admitted": [
+      "nonnull stable live coherent actual receiver/vector storage",
+      "nonnull begin allocations and scalar flags1 actual receiver in same existing Source CRT allocation/free domain",
+      "ordinary returning free; null begin skips free",
+      "no structural reentry or concurrent mutation; borrowed fields/pointees remain live as required"
+    ],
+    "excluded": [
+      "null or invalid receiver/placement/allocation",
+      "self-free of embedded approach/task registry",
+      "private EH/unwind-frame integration, faults and allocator/CRT historical equivalence",
+      "original class image binding/callable CE37DC, original binary register ABI and loader binding",
+      "whole009B2C80/009B3F50 task/approach lifetime and unrelated observer/death ownership",
+      "game/runtime validation"
+    ]
+  },
+  "validation": {
+    "compiler": "MSVC19.51.36244.0 / Win32 toolset14.51.36231; /c /EHsc /std:c++17 /MD /O2 /Gy /DNDEBUG /W4 /WX /Iinclude",
+    "fresh_tus": [
+      "src/native_land_state_registry_lifetime.cpp",
+      "src/native_land_state_registry.cpp",
+      "local/cc11_land_registry_lifetime_probe.cpp"
+    ],
+    "compiler_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "link": "link /INCREMENTAL:NO /OPT:REF /MANIFEST:EMBED; three fresh objects plus three immutable copied support libraries; user32 d3d9 PowrProf shell32 advapi32",
+    "link_exit_code": 0,
+    "probe": {
+      "path": "local/cc11_land_registry_lifetime_probe.exe",
+      "exit_code": 0,
+      "checks": 122,
+      "output": "PASS: 122 connected SOURCE/original-copy lifecycle checks; 3 full bodies/158 bytes, only 4 genuine Source CRT free CALL relocations",
+      "machine": "0x14c",
+      "manifest": "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n",
+      "flow": "existing actual registry ctor/Add/eight-state registrar -> reserve16/grow24 -> vector/ordinary/scalar flags0 cleanup; null-buffer repeats; separately actual CRT-allocated receiver scalar flags1; same flow through three complete original bodies",
+      "original_copy": "all 158 original bytes MATCH disk/live/probe before relocation; ONLY four BF65AC CALL rel32 operands target existing genuine singleton_lifetime_free; original branches/profile stores/flag TEST/zeros/returns intact",
+      "instrumentation": "ignored fixture ONLY: temporarily trace executable's imported CRT free, always forward captured real CRT operation and restore slot/protection after each body; record live profile/headers/proxy/pair identities BEFORE real free; no post-free dereference or behavioral reentry/mutation",
+      "qualification": "Source instrumentation and complete original copies at same genuine Source CRT boundary; not historical CRT/loader/private EH/original class ABI/native game proof"
+    },
+    "inputs": {
+      "pre_post_equal": true,
+      "count": 15,
+      "source_tus": 3,
+      "source_headers": 9,
+      "pinned_libraries": 3,
+      "rows": [
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+          "bytes": 2413,
+          "pre_sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+          "post_sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+          "bytes": 7028,
+          "pre_sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+          "post_sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+          "bytes": 2475,
+          "pre_sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+          "post_sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+          "bytes": 5510,
+          "pre_sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+          "post_sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/native_land_state_registry.hpp",
+          "sha256": "db9990b17e59fbeefee9cfa389bf8ea839700625d49d91a98edd33df6baf44b7",
+          "bytes": 5489,
+          "pre_sha256": "db9990b17e59fbeefee9cfa389bf8ea839700625d49d91a98edd33df6baf44b7",
+          "post_sha256": "db9990b17e59fbeefee9cfa389bf8ea839700625d49d91a98edd33df6baf44b7"
+        },
+        {
+          "path": "include/bsp/native_land_state_registry_lifetime.hpp",
+          "sha256": "cfd6ea63d58c471edf48f1e866b778e87d1a367fd308c630714624f0955f8a9d",
+          "bytes": 1576,
+          "pre_sha256": "cfd6ea63d58c471edf48f1e866b778e87d1a367fd308c630714624f0955f8a9d",
+          "post_sha256": "cfd6ea63d58c471edf48f1e866b778e87d1a367fd308c630714624f0955f8a9d"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+          "bytes": 15566,
+          "pre_sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+          "post_sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "bytes": 4372,
+          "pre_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "post_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+          "bytes": 4800,
+          "pre_sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+          "post_sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_core.lib",
+          "sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "bytes": 73234296,
+          "pre_sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "post_sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824,
+          "pre_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "post_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766,
+          "pre_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "post_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_probe.cpp",
+          "sha256": "c0ff28dbe8a6f33a52eb3814bcd28cf120fb094f074a0a907ee9aecdacc428de",
+          "bytes": 12837,
+          "pre_sha256": "c0ff28dbe8a6f33a52eb3814bcd28cf120fb094f074a0a907ee9aecdacc428de",
+          "post_sha256": "c0ff28dbe8a6f33a52eb3814bcd28cf120fb094f074a0a907ee9aecdacc428de"
+        },
+        {
+          "path": "src/native_land_state_registry.cpp",
+          "sha256": "b51361087f65c05bd8612d23c82df2cf084e5fd9e65ceffbdf81b2d1eb7a19dd",
+          "bytes": 13106,
+          "pre_sha256": "b51361087f65c05bd8612d23c82df2cf084e5fd9e65ceffbdf81b2d1eb7a19dd",
+          "post_sha256": "b51361087f65c05bd8612d23c82df2cf084e5fd9e65ceffbdf81b2d1eb7a19dd"
+        },
+        {
+          "path": "src/native_land_state_registry_lifetime.cpp",
+          "sha256": "28306d4158001f8236f1e97f1bc314f91efc908e8ed02a8df141beabf100c750",
+          "bytes": 2151,
+          "pre_sha256": "28306d4158001f8236f1e97f1bc314f91efc908e8ed02a8df141beabf100c750",
+          "post_sha256": "28306d4158001f8236f1e97f1bc314f91efc908e8ed02a8df141beabf100c750"
+        }
+      ]
+    },
+    "support_freeze": {
+      "root_reported_build": "d87f92504",
+      "timing": "unique copies frozen before root's next tick/gate rebuild; original before/after copy hashes equaled copied hash; subsequent originals may rebuild",
+      "rows": [
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_core.lib",
+          "sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "bytes": 73234296,
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+          "original_pre_copy_sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "original_post_copy_sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26",
+          "copy_post_link_run_sha256": "d9e6a72efc0534e8411fbffdf72ffbfe485965f02956185d89d9b265e60cea26"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824,
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+          "original_pre_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "original_post_copy_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "copy_post_link_run_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "path": "local/cc11_land_registry_lifetime_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766,
+          "original": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_zlib121.lib",
+          "original_pre_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "original_post_copy_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "copy_post_link_run_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ]
+    },
+    "native_call_verifier": "python tools/verify_report_calls.py reports/landing_state_registry_lifetime_cc11.json:5 checked,0 failed (4 complete-body free calls plus qualified9B2D46 caller; private EH tail JMP excluded)",
+    "diff_check": "git diff --check and staged git diff --cached --check passed; only four owned new tracked files staged",
+    "full_build": "root owns source registration/full main Win32 build/CTest/integration; worker did not run full build"
+  },
+  "source_coff": {
+    "object": "local/cc11_land_registry_lifetime.obj",
+    "method": "MSVC dumpbin /DISASM, observed current strict Source object",
+    "qualified_only": "new C++ ABI; compiler ordering evidence, not native ABI/EH equivalence",
+    "vector": {
+      "capture": "+05 MOV EAX,[ESI+4]",
+      "free": "+0D CALL singleton_lifetime_free",
+      "clears": [
+        "+15 vector+4",
+        "+1C vector+8",
+        "+23 vector+C"
+      ]
+    },
+    "ordinary": {
+      "stamp": "+05 raw CE37DC",
+      "capture": "+0B registry+8",
+      "free": "+13",
+      "clears": [
+        "+1B registry+8",
+        "+22 registry+C",
+        "+29 registry+10"
+      ]
+    },
+    "scalar": {
+      "stamp": "+05",
+      "capture": "+0B",
+      "array_free": "+13",
+      "flag_capture": "+1B low-byte MOV -> +1F AND CL,1 -> +22 volatile capture; before all clears",
+      "clears": [
+        "+26 registry+8",
+        "+2D registry+C",
+        "+34 registry+10"
+      ],
+      "self_free": "+3E optional actual receiver free",
+      "return": "+46 EAX captured ESI; Source RET, original RET4"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_land_registry_lifetime.obj",
+      "sha256": "070f246f32245ad71d1eca1c35b51a6a78036311767bea957376d4f05c2a080a",
+      "bytes": 2105
+    },
+    {
+      "path": "local/cc11_land_registry_lifetime_registry.obj",
+      "sha256": "7878511567db55d529db6e51ea34744ffdcfbfe7e0c061d12046a97de27eafa5",
+      "bytes": 8896
+    },
+    {
+      "path": "local/cc11_land_registry_lifetime_probe.obj",
+      "sha256": "293d1e90317e015232263108e53f4d24078eb115af8039f52110d7c4f4b9e0b4",
+      "bytes": 31516
+    },
+    {
+      "path": "local/cc11_land_registry_lifetime_probe.exe",
+      "sha256": "952687854330bfb95102b09ddc384f4838e4fd80d5c9293f897ccc5ae5082c57",
+      "bytes": 17408
+    }
+  ],
+  "remaining": "root independent review/build/annotations; raw CE37DC uncallable, complete approach/task caller and arena/profile/private EH/observer lifetimes/original ABI/game remain unbound"
+}
