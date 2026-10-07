@@ -99,3 +99,7 @@ manifest, compiler results
 and artifact paths are in [the packet report](../reports/landing_state_registry_lifetime_cc11.json).
 Worker verification includes `git diff --check`; root owns full main build,
 CTest, source registration, annotations and integration. No tracked tests added.
+
+## Primary integration
+
+Main `beff7fbc9a65046bf731fb1a500b4961bc071613` passed the full Win32 build and all three existing CTests. Root independently compiled the real lifetime/registry/whole connected fixture, verified12current Source/header inputs, three current main libraries and the original PE before/after linking, and checked the embedded asInvoker PE32 manifest. All122Source/original-copy checks passed. All158complete native bytes independently matched disk, live Ghidra memory and the fixture literals. Five native CALLrows passed; the conditional enclosing caller remains unbound. The earlier registry header/doc now distinguish direct Source cleanup from the still-uncallable image profile/class binding. No tracked tests added.

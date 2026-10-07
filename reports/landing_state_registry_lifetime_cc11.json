@@ -2,7 +2,7 @@
   "packet": "cc11_land_state_registry_lifetime",
   "baseline": "d949d180b",
   "date": "2026-10-07",
-  "status": "complete conditional ordinary SOURCE services; strict Win32 Source/original-copy fixture passed; raw profile remains uncallable; whole caller/private EH/original ABI/lifetime/game bindings unbound",
+  "status": "complete ordinary3cleanup Sourceproviders integrated; independentcurrentmain122Source-originalchecks/fullWin32all3CTests passed; rawprofile/fullcaller/privateEH/lifetimes/ABI/game unbound",
   "scope": {
     "addresses": [
       "00411610",
@@ -18,7 +18,7 @@
     "total_original_bytes": 158,
     "total_complete_disk_instructions": 47,
     "new_tracked_tests": 0,
-    "root_metadata_cmake_ghidra_writes": 0
+    "worker_metadata_cmake_ghidra_writes": 0
   },
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -417,5 +417,65 @@
       "bytes": 17408
     }
   ],
-  "remaining": "root independent review/build/annotations; raw CE37DC uncallable, complete approach/task caller and arena/profile/private EH/observer lifetimes/original ABI/game remain unbound"
+  "remaining": "root independent review/build/annotations; raw CE37DC uncallable, complete approach/task caller and arena/profile/private EH/observer lifetimes/original ABI/game remain unbound",
+  "primary_integration": {
+    "utc": "2026-10-07T15:16:46.612599+00:00",
+    "worker_revision": "989a09e508726c6958d3d58c806dffb05c93c3d3",
+    "integrated_revision": "beff7fbc9a65046bf731fb1a500b4961bc071613",
+    "full_main_build_revision": "beff7fbc9a65046bf731fb1a500b4961bc071613",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_land_registry_lifetime_integrated_build.log",
+    "executable_sha256": "0a08c12b1713783dfbee0c6f0772c69cce15559396b143fb901e7d66de74ea3a",
+    "root_probe": "local/cc11_registry_lifetime_root.cmd",
+    "probe_log": "local/cc11_registry_lifetime_root_compile.log",
+    "probe_sha256": "b8bc4693ce038e403c48f651e4063eb14a14702a9c4041048010839aace94165",
+    "root_manifest_id1_asInvoker_verified": true,
+    "fresh_actual_translation_units": 3,
+    "stable_main_source_header_inputs": 12,
+    "stable_current_main_libraries": 3,
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_disk_live_and_fixture_bodies": [
+      {
+        "address": "00411610",
+        "end_exclusive": "0041163A",
+        "bytes": 42,
+        "sha256": "eedf442da954f569e25c64c924af589d417c133e00a13b3261a28b7d4d186701",
+        "disk_live_and_fixture": "MATCH"
+      },
+      {
+        "address": "004116D0",
+        "end_exclusive": "00411700",
+        "bytes": 48,
+        "sha256": "f26003b576ab78c629ec12a6ae3a1c9db217cdf2bbeb02a4810e3bf4cd541ace",
+        "disk_live_and_fixture": "MATCH"
+      },
+      {
+        "address": "00411810",
+        "end_exclusive": "00411854",
+        "bytes": 68,
+        "sha256": "7f72d861302003ce1b62e2c99207aa7de4803aa2f98d81e8928bf8cca2354efc",
+        "disk_live_and_fixture": "MATCH"
+      }
+    ],
+    "primary_source_native_and_whole_fixture_review": true,
+    "source_and_original_copy_checks": 122,
+    "native_call_rows_checked": 5,
+    "native_call_rows_failed": 0,
+    "conditional_caller_row_not_whole_caller_or_nonnull_guarantee": true,
+    "original_copies_only_four_free_CALL_relocations": true,
+    "source_IAT_trace_always_forwards_actual_CRT": true,
+    "trace_reads_only_before_free": true,
+    "raw_CE37DC_image_profile_uncallable": true,
+    "whole_caller_privateEH_lifetimes_unbound": true,
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T152322Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "00411610",
+      "004116d0",
+      "00411810"
+    ]
+  }
 }

@@ -15818,8 +15818,8 @@
     },
     {
       "id": "cc11_land_state_registry_lifetime",
-      "done": false,
-      "state": "ready bounded3completeordinarySourceproviders; primary repaired/reviewed158nativebytes, classprofile/wholecaller/EH/lifetimes ABI game qualified",
+      "done": true,
+      "state": "complete3ordinarycleanupSourceproviders integrated122currentmainchecks/fullWin32all3CTests; imageprofile EH wholecaller lifetimes ABI game qualified",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -15837,7 +15837,67 @@
       "depends_on": [
         "cc11_land_state_registry"
       ],
-      "contract": "Complete vector release411610..41163A42B, ordinary registry destructor4116D0..41170048B, scalar411810..41185468B, total158B. Actual borrowed Win32 vector/registry; canonical Source CRT free, captured begin->free->zero3headers; registry raw CE37DCstamp before buffer capture/free, proxy and pointees untouched; scalar TESTlowbyteflagsbit0 after bufferfree BEFORE headerzeros, optionalactualself-free then capturedidentityreturn. No fabricated profile/defaultarena/releasecallbacks/EHprovider. Native one-slot CE37DC->411810 remains numericUNCALLABLE; native constructor private unwind tail to411610 and conditional9B2D40/46 caller do not establish wholeEH/caller/lifetimes. Primary supported4freegap repairs saved/exported reports/state_registry_lifetime_flow_recovery_cc11.json. One focused ordinary Sourcector/Add/registrar->cleanup plus fulloriginal3body copies changing only realfreeCALL relocs, all158disk/livebytes and nativeCALLrows, originalscalarflags/profile/proxy/borrowedidentities. Ordinary validsameCRTownedallocation and stableliveobjectstorage; objectflags1requires realCRT-allocatedobject and no postfree dereference; no nativeABI/runtime/game claim, no trackedtests."
+      "contract": "Complete vector release411610..41163A42B, ordinary registry destructor4116D0..41170048B, scalar411810..41185468B, total158B. Actual borrowed Win32 vector/registry; canonical Source CRT free, captured begin->free->zero3headers; registry raw CE37DCstamp before buffer capture/free, proxy and pointees untouched; scalar TESTlowbyteflagsbit0 after bufferfree BEFORE headerzeros, optionalactualself-free then capturedidentityreturn. No fabricated profile/defaultarena/releasecallbacks/EHprovider. Native one-slot CE37DC->411810 remains numericUNCALLABLE; native constructor private unwind tail to411610 and conditional9B2D40/46 caller do not establish wholeEH/caller/lifetimes. Primary supported4freegap repairs saved/exported reports/state_registry_lifetime_flow_recovery_cc11.json. One focused ordinary Sourcector/Add/registrar->cleanup plus fulloriginal3body copies changing only realfreeCALL relocs, all158disk/livebytes and nativeCALLrows, originalscalarflags/profile/proxy/borrowedidentities. Ordinary validsameCRTownedallocation and stableliveobjectstorage; objectflags1requires realCRT-allocatedobject and no postfree dereference; no nativeABI/runtime/game claim, no trackedtests.",
+      "primary_integration": {
+        "utc": "2026-10-07T15:16:46.612599+00:00",
+        "worker_revision": "989a09e508726c6958d3d58c806dffb05c93c3d3",
+        "integrated_revision": "beff7fbc9a65046bf731fb1a500b4961bc071613",
+        "full_main_build_revision": "beff7fbc9a65046bf731fb1a500b4961bc071613",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_land_registry_lifetime_integrated_build.log",
+        "executable_sha256": "0a08c12b1713783dfbee0c6f0772c69cce15559396b143fb901e7d66de74ea3a",
+        "root_probe": "local/cc11_registry_lifetime_root.cmd",
+        "probe_log": "local/cc11_registry_lifetime_root_compile.log",
+        "probe_sha256": "b8bc4693ce038e403c48f651e4063eb14a14702a9c4041048010839aace94165",
+        "root_manifest_id1_asInvoker_verified": true,
+        "fresh_actual_translation_units": 3,
+        "stable_main_source_header_inputs": 12,
+        "stable_current_main_libraries": 3,
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "complete_disk_live_and_fixture_bodies": [
+          {
+            "address": "00411610",
+            "end_exclusive": "0041163A",
+            "bytes": 42,
+            "sha256": "eedf442da954f569e25c64c924af589d417c133e00a13b3261a28b7d4d186701",
+            "disk_live_and_fixture": "MATCH"
+          },
+          {
+            "address": "004116D0",
+            "end_exclusive": "00411700",
+            "bytes": 48,
+            "sha256": "f26003b576ab78c629ec12a6ae3a1c9db217cdf2bbeb02a4810e3bf4cd541ace",
+            "disk_live_and_fixture": "MATCH"
+          },
+          {
+            "address": "00411810",
+            "end_exclusive": "00411854",
+            "bytes": 68,
+            "sha256": "7f72d861302003ce1b62e2c99207aa7de4803aa2f98d81e8928bf8cca2354efc",
+            "disk_live_and_fixture": "MATCH"
+          }
+        ],
+        "primary_source_native_and_whole_fixture_review": true,
+        "source_and_original_copy_checks": 122,
+        "native_call_rows_checked": 5,
+        "native_call_rows_failed": 0,
+        "conditional_caller_row_not_whole_caller_or_nonnull_guarantee": true,
+        "original_copies_only_four_free_CALL_relocations": true,
+        "source_IAT_trace_always_forwards_actual_CRT": true,
+        "trace_reads_only_before_free": true,
+        "raw_CE37DC_image_profile_uncallable": true,
+        "whole_caller_privateEH_lifetimes_unbound": true,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "ghidra_annotations_prior": "local/ghidra-annotations-20261007T152322Z.json",
+        "ghidra_saved": true,
+        "affected_exports_refreshed": [
+          "00411610",
+          "004116d0",
+          "00411810"
+        ]
+      }
     },
     {
       "id": "cc11_health_target_timestamp",
@@ -15881,6 +15941,28 @@
         "cc11_scene_generation_bool_payload"
       ],
       "contract": "Oneprivatecalledreader compatiblecase-insensitiveB+has_boolean\u2192ownbyte ELSEunchangedscene_property_bool, replaceONLYexistingStationarycall. Preserve descriptorresolutionFIRST/nullstop/row.extra_key/propertygates/false/rawtype/missing/empty/placementnamecommandpolicies. Native4F0FC9..4F0FDB18B Find4F0FD0\u21928F2260/CMPbyte+C4F0FD5/JZ4F0FD9 no null/typeguard; containing4F0FB0..4F10A990inst/RET10 notwholebinding. Prefix48E9F0/43B8B0/missingnamedSCENE_STATIONARY_FORT doc remainincomplete. Actualparser/privatecalledreader/compiledrealcaller/propertyLibrary/groupfixture, real15libs22groups+USN1/JM06: landfort.props12 inheritedBtrue,12activeLandFortauthoredUSN1Bfalse,oneCB2falseignoredrowgate; independentcopy/clearedoppositediagnostics andlegacyfallback. No fake descriptor/allocation/class/enum/provider toexecutewholecreator; EBasic remainsunresolveddeclarationidentity despiteinstalledBasic0. No trackedtests/nativeABI/gameclosure."
+    },
+    {
+      "id": "cc11_land_follow_observer_lifetime",
+      "done": false,
+      "state": "ready complete2integer callback cleanup bodies; real observer domain reviewed",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "006cdd70",
+        "006cddf0"
+      ],
+      "output_files": [
+        "include/bsp/native_land_follow_observer_lifetime.hpp",
+        "src/native_land_follow_observer_lifetime.cpp",
+        "docs/LANDING_FOLLOW_OBSERVER_LIFETIME_CC11.md",
+        "reports/landing_follow_observer_lifetime_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_parameter_x87_kernel"
+      ],
+      "contract": "Complete6CDD70..6CDDC8 88B24inst and6CDDF0..6CDE0E30B11inst. Actual component prefix and same+14 FIRST endpoint identity cell, pure projection from actual Follow callback18/watched2C; mandatory existing NativeObserverLifetime. RawCF8900stamp then onefresh14 capture then optional real6952A0(componentEDX) then complete695870; preserve finalbaseprofile/fields, no watchedclear or ordinaryselffree. Scalar ordinarycleanup then flagslowbytebit0 optional canonicalSourceCRTreceiverfree and capturedidentityreturn. Flags1 requires separateactualCRTcomponent, excludes embeddedFollow/approach and interiorfree. Real694A60 registration producesCF7E64 edge withcomplete693CA0 deletion; unregister/detach invokeEDGEslot0, notmissingCF8900ownerhooks. Otheredgeprofiles keep mandatoryexistingdeletionservices, no profile/defaultobserverworld/providerstub. Primaryscalarreturningfreegap repaired saved/exported reports/follow_callback_scalar_flow_recovery_cc11.json. One ignored contiguousactualcomponent/realFollowregistration fixture and original118B copies withonlyreal6952A0/695870/freeCALL bridges, actual lock restoration/pendingdispatch suppression/flags0and1. Whole9B2C80/24Bstateelement/privateEH/callableimageprofile/fullFollowconstructor/lifetimes/nativeABI/game remainunbound. No trackedtests or workerGhidra/CMake/metadata mutation."
     }
   ],
   "snapshot_after_analysis": {
