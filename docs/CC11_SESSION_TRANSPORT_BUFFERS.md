@@ -94,3 +94,5 @@ target/history/derived construction, native executable profile dispatch, native
 whole-body ABI, socket transmission and gameplay are not verified. Main CMake
 registration, primary integration and the full main build remain the primary's
 responsibility.
+
+Primary integration 2efd789db1bb71e592baec015def28e79ff67fd8: full MSVC Win32 and all three existing CTests passed. The reviewed fixture passed fresh actual-main-TU compilation/run, with inputs stable pre/post link. Machine014C/resource24/id1/asInvoker verified and native direct CALL rows passed. All scope/provider/lifetime/CRT/FP/stored-Ghidra-body/ABI/game limits above remain explicit. Executable SHA256 8f80de24aae8f4bcfebc23efae4ae16fc487698379111084120ffa5f9879d664. Probe local/cc11_buffers_root.cmd; build log local/cc11_buffers_landing_integrated_build.log.

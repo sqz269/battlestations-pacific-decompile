@@ -111,3 +111,5 @@ integration remain incomplete. Prior native `008F54F0` tail decoding remains
 qualified by its partial flow-repair receipt, not whole group-body/ABI proof.
 This packet establishes a connected Source data adoption and focused fixture
 proof, not native ABI compatibility or original-game validation.
+
+Primary integration 2efd789db1bb71e592baec015def28e79ff67fd8: full MSVC Win32 and all three existing CTests passed. The reviewed fixture passed fresh actual-main-TU compilation/run, with inputs stable pre/post link. Machine014C/resource24/id1/asInvoker verified and native direct CALL rows passed. All scope/provider/lifetime/CRT/FP/stored-Ghidra-body/ABI/game limits above remain explicit. Executable SHA256 8f80de24aae8f4bcfebc23efae4ae16fc487698379111084120ffa5f9879d664. Probe local/cc11_landing_root.cmd; build log local/cc11_buffers_landing_integrated_build.log.

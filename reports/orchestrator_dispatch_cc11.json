@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T12:02:17.878877+00:00",
+  "updated_utc": "2026-10-07T12:24:48.324488+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -2229,5 +2229,69 @@
     "actual_game_binding": false,
     "abi_compatible": false,
     "game_validated": false
+  },
+  "transport_buffer_lifetime_integration": {
+    "utc": "2026-10-07T12:24:48.324488+00:00",
+    "integrated_revision": "2efd789db1bb71e592baec015def28e79ff67fd8",
+    "full_main_build_revision": "2efd789db1bb71e592baec015def28e79ff67fd8",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_buffers_landing_integrated_build.log",
+    "executable_sha256": "8f80de24aae8f4bcfebc23efae4ae16fc487698379111084120ffa5f9879d664",
+    "primary_source_native_and_fixture_review": true,
+    "root_manifest_id1_asInvoker_verified": true,
+    "native_direct_call_failures": 0,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "f7bbbec36bdeb5d6026d704b5bc300d3ebc9226b",
+    "independent_root_probe": "local/cc11_buffers_root.cmd",
+    "probe_log": "local/cc11_buffers_root_compile.log",
+    "probe_sha256": "84375712a8a4c832c1c097f547b012f1ea81ff168194f735ce6f44f8af4a59f7",
+    "stable_actual_main_source_header_inputs": 63,
+    "stable_current_main_support_libraries": 3,
+    "fresh_actual_translation_units": 21,
+    "root_fixture": {
+      "checks": 191,
+      "failures": 0,
+      "fixture_cases": 17,
+      "original_x87_kernel_cases": 72,
+      "pc_values": 3,
+      "rc_values": 4,
+      "ambient_stack_cases": 2,
+      "timestamp_pairs": 3,
+      "constructed_buffer_member_cases": 1,
+      "network_send_calls": 0,
+      "gameplay_validated": false
+    },
+    "native_direct_call_rows": 2,
+    "full_ghidra_function_body_repair": false,
+    "stored_ghidra_destructor_body_truncated": true,
+    "native_CRT_handler_exception_identity_proved": false,
+    "actual_target_or_derived_lifetime_bound": false
+  },
+  "scene_landing_words_float_integration": {
+    "utc": "2026-10-07T12:24:48.324488+00:00",
+    "integrated_revision": "2efd789db1bb71e592baec015def28e79ff67fd8",
+    "full_main_build_revision": "2efd789db1bb71e592baec015def28e79ff67fd8",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_buffers_landing_integrated_build.log",
+    "executable_sha256": "8f80de24aae8f4bcfebc23efae4ae16fc487698379111084120ffa5f9879d664",
+    "primary_source_native_and_fixture_review": true,
+    "root_manifest_id1_asInvoker_verified": true,
+    "native_direct_call_failures": 0,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "worker_revision": "6d2da12475adecd7da792336883c6078b10b4060",
+    "independent_root_probe": "local/cc11_landing_root.cmd",
+    "probe_log": "local/cc11_landing_root_compile.log",
+    "probe_sha256": "b950ef4674fc4ad791c64947551b8c9b8ee4b492334c8679b870beb38d6fa5aa",
+    "stable_main_link_inputs": 77,
+    "installed_inputs_verified_against_worker_hashes": 17,
+    "native_direct_call_rows": 14,
+    "whole_SceneReader_emitter_AI_executed": false,
+    "authored_jm06_entities": 96,
+    "authored_jm06_landing_bags": 0,
+    "installed_F_claim": false
   }
 }
