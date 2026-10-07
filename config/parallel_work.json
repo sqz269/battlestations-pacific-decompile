@@ -14202,8 +14202,8 @@
     },
     {
       "id": "cc11_health_locked_send",
-      "done": false,
-      "state": "approved_connected_actual_win32_locked_wrapper_complete_serializer_required",
+      "done": true,
+      "state": "integrated_actual_win32_ordinary_lock_wrapper_independent_source_probe_full_main_build_passed",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -14220,7 +14220,15 @@
         "cc11_health_peer_send"
       ],
       "reuses_worker_from": "cc11_health_peer_send",
-      "contract": "Additional abstract PeerSend-derived adapter completes ordinary783DC0 on unchanged captured transport/target/same borrowed Base message. Pure alias actualtarget4 ->capture actual TrackedCriticalSection* ->realWin32Enter(native+0) ->actualvolatile unsignedcounter18 modulo increment ->REQUIREDCOMPLETE783C80 ->FRESHtarget4 ->thatlockcounter18 modulo decrement ->realWin32Leave(native+0). CanonicalTrackedCriticalSection size1C/depth18 verified; signeddepth representation accessed as correspondingunsigned type to avoid signedoverflow. No nullguard/RAII/cleanup-onthrow/defaultlock/globalmode/session substitution/borrowedframe retentionorfree. ActualimportsCE2218Enter/CE2210Leave verified byworker PE; root full22instruction783DC0..3DF8 reviewed. Complete783C80 mustretain actualdeliveryindexedcursors/profilewriter/tickprefix/overflowcopyrewindflushrestore/threshold effects; no D2-only defaultserializer/clone/factory/success. Oneignoredmanifested actualTU sourcefixture realOS locks: ordinary unchangedlock wrap plus connectedsetter/D2/flags4/selector/lock wrapper; controlledserializer rebinds target4 fromenteredA topreownedB, bothlive/validownership, counters/freshLeave checked, fixturebalancesremaininglock outside implementation. One shortlivedTryEnter thread if needed toproveownership; no broadtrackedtests. This is SOURCElocking/provider effect proof, notobservednativereentry/serializer/network. Purebinders/profiles/fields/locklifetimes completeordinaryreturns required; faults/privateEH/unwind/concurrency ownership violations/originalABI/game unproved. Worker Ghidraread-only/CMake/rootmetadata untouched."
+      "contract": "Additional abstract PeerSend-derived adapter completes ordinary783DC0 on unchanged captured transport/target/same borrowed Base message. Pure alias actualtarget4 ->capture actual TrackedCriticalSection* ->realWin32Enter(native+0) ->actualvolatile unsignedcounter18 modulo increment ->REQUIREDCOMPLETE783C80 ->FRESHtarget4 ->thatlockcounter18 modulo decrement ->realWin32Leave(native+0). CanonicalTrackedCriticalSection size1C/depth18 verified; signeddepth representation accessed as correspondingunsigned type to avoid signedoverflow. No nullguard/RAII/cleanup-onthrow/defaultlock/globalmode/session substitution/borrowedframe retentionorfree. ActualimportsCE2218Enter/CE2210Leave verified byworker PE; root full22instruction783DC0..3DF8 reviewed. Complete783C80 mustretain actualdeliveryindexedcursors/profilewriter/tickprefix/overflowcopyrewindflushrestore/threshold effects; no D2-only defaultserializer/clone/factory/success. Oneignoredmanifested actualTU sourcefixture realOS locks: ordinary unchangedlock wrap plus connectedsetter/D2/flags4/selector/lock wrapper; controlledserializer rebinds target4 fromenteredA topreownedB, bothlive/validownership, counters/freshLeave checked, fixturebalancesremaininglock outside implementation. One shortlivedTryEnter thread if needed toproveownership; no broadtrackedtests. This is SOURCElocking/provider effect proof, notobservednativereentry/serializer/network. Purebinders/profiles/fields/locklifetimes completeordinaryreturns required; faults/privateEH/unwind/concurrency ownership violations/originalABI/game unproved. Worker Ghidraread-only/CMake/rootmetadata untouched.",
+      "code_revision": "e0c64d6362382162a8a02a14eaff61099aa5e336",
+      "integrated_revision": "2b00cc36b88094aee4ecb235b2fa283dce308483",
+      "full_main_build_pending": false,
+      "full_main_ctests_passed": 3,
+      "complete_native_serializer_bound": false,
+      "actual_game_binding": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_land_parameter_x87_kernel",

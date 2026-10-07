@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T09:56:25.917113+00:00",
   "base_commit": "23587a06a",
   "branch": "agent/cc11_health_guard",
-  "status": "complete ordinary locked wrapper reconstructed and connected actual-TU Win32 source fixture passed; primary integration pending",
+  "status": "integrated conditional complete ordinary locked wrapper; primary actual-TU real Win32 lock fixture and full main build passed; complete serializer and game binding unbound",
   "function": {
     "entry": "00783DC0",
     "end_exclusive": "00783DF8",
@@ -166,5 +166,30 @@
     "failed": 0,
     "receipt": "reports/unit_health_message_locked_send_cc11.json: 1 call rows checked, 0 failed",
     "imported_calls_verified_separately": "two IAT destinations in original_pe_import_verification; not counted as native direct-call rows"
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T10:04:05.050561+00:00",
+    "worker_revision": "e0c64d6362382162a8a02a14eaff61099aa5e336",
+    "integrated_revision": "2b00cc36b88094aee4ecb235b2fa283dce308483",
+    "full_main_build_revision": "2b00cc36b88094aee4ecb235b2fa283dce308483",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_kernel_locked_integrated_build.log",
+    "executable_sha256": "5779bef17d3dae2104f1acf703fbe5b7639dc4cb3f9e77e193584be8f6adc2e2",
+    "independent_root_probe": "local/cc11_locked_root.cmd",
+    "root_probe_log": "local/cc11_locked_root_compile.log",
+    "root_probe_sha256": "22eff79a640411b5d99d8b129809c77a20a7196a5b783cbdcfd428a77bdacb72",
+    "source_fixture_checks": 29,
+    "source_fixture_failures": 0,
+    "root_generated_assembly_review": true,
+    "root_original_full_22_instructions_review": true,
+    "root_manifest_id1_asInvoker_verified": true,
+    "native_direct_call_rows": 1,
+    "native_direct_call_failures": 0,
+    "imported_calls_verified_separately": 2,
+    "controlled_lock_replacement_is_source_fixture_only": true,
+    "complete_native_serializer_bound": false,
+    "actual_game_binding": false,
+    "abi_compatible": false,
+    "game_validated": false
   }
 }

@@ -108,3 +108,5 @@ python tools/verify_report_calls.py reports/unit_health_message_locked_send_cc11
 
 The JSON report records the direct-call/IAT evidence and artifact SHA-256 values.
 Primary integration owns the full repository build, metadata and annotations.
+
+Primary integration: 2b00cc36b88094aee4ecb235b2fa283dce308483; fresh actual-main translation units independently compiled for real Win32 SOURCE lock probe, 29 checks/zero failures. Generated assembly and complete native listing reviewed; embedded manifest id1/asInvoker verified. Full MSVC Win32 and all three existing CTests passed. Executable SHA256 5779bef17d3dae2104f1acf703fbe5b7639dc4cb3f9e77e193584be8f6adc2e2. Complete native serializer, actual binding, original ABI, faults/unwind and game behavior remain unproved. Build log: local/cc11_kernel_locked_integrated_build.log.
