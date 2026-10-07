@@ -264,6 +264,32 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     merge_property_block(bag, group->block, false);
 }
 
+bool retain_start_speed(const ScenePropertyBlock& bag, GameSceneEntityRecord& record) {
+    const SceneProperty* prop = bag.find(kSceneUnitStartSpeedKey);
+    const bool retained_float = prop != nullptr
+        && equal_insensitive(prop->type_letter, "F") && prop->has_float;
+    if (prop == nullptr || (!retained_float && prop->values.empty())) return false;
+    record.start_speed_present = true;
+    // 00823599 compares the record type with zero. Type 0 (`I`) takes
+    // CVTSI2SS at 0082359E; every other type takes MOVSS at 008235A5.
+    record.start_speed_type = prop->type_letter == "I"
+        ? static_cast<int>(ScenePropertyType::Int)
+        : static_cast<int>(ScenePropertyType::Float);
+    if (!prop->values.empty()) {
+        // Preserve the existing incidental integer reading when available.
+        std::int32_t as_int = 0;
+        if (scene_scan_int(prop->values.back(), as_int)) record.start_speed_int = as_int;
+        if (!retained_float) {
+            float as_float = 0.0f;
+            if (scene_scan_float(prop->values.back(), as_float)) record.start_speed_float = as_float;
+        }
+    }
+    // Successful nonempty explicit F owns +0Ch's float32 independently of
+    // diagnostics. This availability is not an empty-F parse action.
+    if (retained_float) record.start_speed_float = prop->float_value;
+    return true;
+}
+
 // Packet cc9_land_convoy_members. 00743450's scene reads (007434A4..007437B0):
 // five float fields read type 1's retained float32 or convert an integer;
 // Rows/Columns read integers and Reverse a byte. Then the slot map: every
@@ -2124,27 +2150,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 stored.shipyard_launch = launch_prop->values.back() == "true";
             }
         }
-        const SceneProperty* speed_prop = bag.find(kSceneUnitStartSpeedKey);
-        if (speed_prop != nullptr && !speed_prop->values.empty()) {
-            stored.start_speed_present = true;
-            // 0082359C CMP [EAX+4h],EDI with EDI zero: type 0 (`I`) takes the
-            // CVTSI2SS at 0082359E, every other type the float32 load at
-            // 008235A5. The bag keeps the authored letter, so the letter is
-            // what selects the arm here.
-            stored.start_speed_type
-                = (speed_prop->type_letter == "I")
-                      ? static_cast<int>(ScenePropertyType::Int)
-                      : static_cast<int>(ScenePropertyType::Float);
-            std::int32_t as_int = 0;
-            if (scene_scan_int(speed_prop->values.back(), as_int)) {
-                stored.start_speed_int = as_int;
-            }
-            float as_float = 0.0f;
-            if (scene_scan_float(speed_prop->values.back(), as_float)) {
-                stored.start_speed_float = as_float;
-            }
-            ++owner.summary.start_speed_entities;
-        }
+        if (retain_start_speed(bag, stored)) ++owner.summary.start_speed_entities;
         // Packet cc9_units_capture_accessors: 006F2780 copies the `CaptureRange`
         // record's +0Ch dword as is. An `I` value is that integer; an `F` value's
         // dword is its float bit pattern, which the FILD at 00A03760 would read as
