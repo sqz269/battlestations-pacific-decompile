@@ -157,3 +157,18 @@ Direct call rows are verified separately from byte-tail evidence.
 the primary owns integrated Win32/CTest verification. This packet establishes
 bounded source/fixture behavior supported by original assembly, not native ABI
 compatibility, original-game execution or new gameplay validation.
+
+## Primary integration receipt
+
+Primary merged the packet and passed the complete MSVC Win32 build and all
+three existing CTests. The actual production-TU snapshot/installed-input
+fixture was independently rerun, and the rebuilt mission scene probe passes.
+See the report for the source revision, executable hash and build log.
+
+After verifying BSP project/program and matching disk/live bytes, primary
+cleared only the CALL_RETURN override at `008F5654` and decoded the 22-byte
+returning tail. `008F566F` is its exclusive end; RET8 occupies `008F566C..008F566E`.
+The saved flow report records that stored Ghidra function-body metadata still
+ends at `008F5658`. This is partial tail decoding, not a full body repair or
+a new native return-type/ABI claim. Whole loader/parser/VFS/storage/failure
+and original-game boundaries remain open.

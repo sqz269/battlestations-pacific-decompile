@@ -590,5 +590,25 @@
       "bytes": 173026,
       "sha256": "14ae7c12ac9ad51dca08f5b9fac7b00ace3739cce5c4f84c4f7fb4af479eef0c"
     }
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "f2e81244706beb23982f474a6055bbf23edee37d",
+    "worker_revision": "cf27229199cbe7efcf2cd376249f9fcbee381207",
+    "included_packet": "cc11_scene_group_loading",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "executable_sha256": "8fa064cd3fd63f2e1f7094ca460359bd0fb0838d58d3636f4599b49075baa2df",
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_scene_group_integrated_build.log",
+    "utc": "2026-10-07T07:32:17.684968+00:00",
+    "independent_production_probe": "Manifested actual-TU probe rerun PASS: ordered parents/authored writes, retained reopened row, independent10-level snapshots; installed15files/22groups/14JM06bags unchanged",
+    "integrated_mission_probe": "Rebuilt main bsp_mission_scene_probe PASS:96entities/11classes/14submarine generators/46registration records/0errors",
+    "native_direct_calls_checked": 22,
+    "native_call_failures": 0,
+    "native_flow_repair": "Cleared only CALL_RETURN008F5654 and decoded22 disk/live-matched bytes throughRET8 ending exclusive008F566F; saved; storedbody stillends5658, NOT fullbodyrepair",
+    "native_flow_report": "reports/scene_group_merge_flow_repair_cc11.json",
+    "whole_loader_parser_vfs_bound": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
 }
