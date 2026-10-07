@@ -1,0 +1,624 @@
+{
+  "packet": "cc11_scene_enum_node_pool",
+  "source_baseline": "085519c25a14e8c255b41de2cd71592d52ce8ba9",
+  "doc": "docs/NATIVE_ENUM_NODE_POOL_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "00411050",
+    "00410A60",
+    "00410CD0",
+    "004E6370",
+    "004E7C00",
+    "0043B0A0"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_node_pool.hpp",
+    "src/native_enum_node_pool.cpp",
+    "docs/NATIVE_ENUM_NODE_POOL_CC11.md",
+    "reports/native_enum_node_pool_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "00411050",
+      "inclusive_end": "00411122",
+      "bytes": 211,
+      "sha256": "7db4c80c98c7af00adabc5c9da406b55ae5c778cca74c25cb3a335c73fe4ea7d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 68,
+      "end_exclusive": "00411123",
+      "source_name": "initialize_native_enum_node_pool_00411050",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX raw owner",
+      "observed_return": "EAX owner; RET at00411122",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 68,
+      "decoded_instructions_include_alignment": true
+    },
+    {
+      "entry": "00410A60",
+      "inclusive_end": "00410AE9",
+      "bytes": 138,
+      "sha256": "42409af34e86ac5d22a9e075a1cabab9872630320e56911f3d0baaa5ca92c20f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 51,
+      "end_exclusive": "00410AEA",
+      "source_name": "destroy_native_enum_node_pool_00410a60",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX constructed owner",
+      "observed_return": "RET at00410AE9; return value unspecified",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 51,
+      "decoded_instructions_include_alignment": true
+    },
+    {
+      "entry": "00410CD0",
+      "inclusive_end": "00410D6F",
+      "bytes": 160,
+      "sha256": "2011c1fc2361528fdea6aef595620c9bb187e9e304429ab157781fdb5ca66e4a",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 58,
+      "end_exclusive": "00410D70",
+      "source_name": "trim_native_enum_node_pool_00410cd0",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX owner; externally synchronized",
+      "observed_return": "RET at00410D69/00410D6F; return value unspecified",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 55,
+      "decoded_instructions_include_alignment": true
+    },
+    {
+      "entry": "004E6370",
+      "inclusive_end": "004E63AF",
+      "bytes": 64,
+      "sha256": "af8e0a120365ff1fdb692067e2a1f627499a3031245da52661d5d0353a222334",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 23,
+      "end_exclusive": "004E63B0",
+      "source_name": "initialize_native_enum_node_page_004e6370",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX page; one pushed page-index DWORD",
+      "observed_return": "EAX same page; RET4 at004E63AD",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 23,
+      "decoded_instructions_include_alignment": true
+    },
+    {
+      "entry": "004E7C00",
+      "inclusive_end": "004E7D3B",
+      "bytes": 316,
+      "sha256": "80996fe0a989343dfbe1d6dd43559ba636819ba3c60d6016e5b87f47dbd4010f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 111,
+      "end_exclusive": "004E7D3C",
+      "source_name": "allocate_native_enum_node_004e7c00",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX constructed pool",
+      "observed_return": "EAX borrowed raw slot; RET at004E7D27/004E7D3B",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 109,
+      "decoded_instructions_include_alignment": true
+    },
+    {
+      "entry": "0043B0A0",
+      "inclusive_end": "0043B104",
+      "bytes": 101,
+      "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 33,
+      "end_exclusive": "0043B105",
+      "source_name": "return_native_enum_node_0043b0a0",
+      "coverage": "complete ordinary normal body; exceptional/fault domains excluded",
+      "observed_inputs": "ECX constructed pool; one pushed slot pointer",
+      "observed_return": "RET4 at0043B102; return value unspecified",
+      "observed_boundary_not_formal_ABI": true,
+      "stored_listing_instructions": 33,
+      "decoded_instructions_include_alignment": true
+    }
+  ],
+  "whole_native_bytes": 990,
+  "original_bodies_executed": false,
+  "call_sites": [
+    {
+      "address": "004110D2",
+      "native": "00BF55BE",
+      "function": "00411050",
+      "path": "reserve32 pointer cells, 80h bytes; capacity published first"
+    },
+    {
+      "address": "00411104",
+      "native": "00BF6989",
+      "function": "00411050",
+      "path": "nonnull old pointer table; ADD ESP4 at00411109 before new table store"
+    },
+    {
+      "address": "00410A78",
+      "native": "00BF65AC",
+      "function": "00410A60",
+      "path": "remaining page loop, table/count reloaded"
+    },
+    {
+      "address": "00410A90",
+      "native": "00BF6989",
+      "function": "00410A60",
+      "path": "nonnull pointer-table free; ADD ESP4 at00410A95 then section cleanup"
+    },
+    {
+      "address": "00410CF1",
+      "native": "00BF65AC",
+      "function": "00410CD0",
+      "path": "wholly free page; reloaded table/count swap and all64 moved owner IDs follow"
+    },
+    {
+      "address": "004E7C2B",
+      "native": "00BF681B",
+      "function": "004E7C00",
+      "path": "new584h page; earliest index published before allocation"
+    },
+    {
+      "address": "004E7C3D",
+      "native": "004E6370",
+      "function": "004E7C00",
+      "path": "nonnull page only; ECX raw page and reloaded current page index pushed"
+    },
+    {
+      "address": "004E7C5F",
+      "native": "00BF55BE",
+      "function": "004E7C00",
+      "path": "2*capacity+2 DWORD growth, capacity*4 bytes; cap published before allocation"
+    },
+    {
+      "address": "004E7C91",
+      "native": "00BF6989",
+      "function": "004E7C00",
+      "path": "nonnull old pointer-table free; ADD ESP4 at004E7C96 then replacement publish"
+    }
+  ],
+  "indirect_or_import_steps": [
+    {
+      "site": "004110A2",
+      "cell": "00CE220C",
+      "containing_function": "00411050",
+      "provider": "InitializeCriticalSection",
+      "path": "ECX owner+0C pushed; actual OS section initialization",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "00410AAD",
+      "cell": "00CE2210",
+      "containing_function": "00410A60",
+      "provider": "LeaveCriticalSection",
+      "path": "CALL EBX, loaded00410AA2 from IAT; positive signed depth drain",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "00410AB7",
+      "cell": "00CE2214",
+      "containing_function": "00410A60",
+      "provider": "DeleteCriticalSection",
+      "path": "after positive signed depth drain",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "004E7C0A",
+      "cell": "00CE2218",
+      "containing_function": "004E7C00",
+      "provider": "EnterCriticalSection",
+      "path": "allocation section+0C",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "004E7D1B",
+      "cell": "00CE2210",
+      "containing_function": "004E7C00",
+      "provider": "LeaveCriticalSection",
+      "path": "exhausted-page scan reaches end; decrement depth before leave",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "004E7D2F",
+      "cell": "00CE2210",
+      "containing_function": "004E7C00",
+      "provider": "LeaveCriticalSection",
+      "path": "remaining/found-later page; decrement depth before leave",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "0043B0A9",
+      "cell": "00CE2218",
+      "containing_function": "0043B0A0",
+      "provider": "EnterCriticalSection",
+      "path": "return section+0C",
+      "excluded_from_direct_call_verifier": true
+    },
+    {
+      "site": "0043B0F9",
+      "cell": "00CE2210",
+      "containing_function": "0043B0A0",
+      "provider": "LeaveCriticalSection",
+      "path": "return depth decremented",
+      "excluded_from_direct_call_verifier": true
+    }
+  ],
+  "flow_repair": {
+    "owner": "primary",
+    "worker_Ghidra_read_only": true,
+    "supporting_reports": [
+      {
+        "path": "reports/cc11_enum_pool_constructor_flow_repair.json",
+        "sha256": "c733f623c41e6ff5dfef0e6cd8498d630d2712d62b4c512e0c8dd7deb115572f"
+      },
+      {
+        "path": "reports/cc11_enum_pool_destructor_flow_repair.json",
+        "sha256": "ac901c0662ba31fdebda1649100b6c329a9a1814b3f793e13ccb6d270e9fb3ef"
+      },
+      {
+        "path": "reports/cc11_enum_pool_trim_flow_repair.json",
+        "sha256": "ff0156e24ee36c54720b398edb0ee0fa692899175cf08294404abf20d49b310e"
+      },
+      {
+        "path": "reports/cc11_enum_pool_allocate_flow_repair.json",
+        "sha256": "7c1986de83a3b01e7694f7626dea04904380374c31c2f583b822dce12a8739f4"
+      }
+    ],
+    "restored_gaps": [
+      {
+        "start": "00411109",
+        "bytes": 3
+      },
+      {
+        "start": "00410A7D",
+        "bytes": 11
+      },
+      {
+        "start": "00410A95",
+        "bytes": 3
+      },
+      {
+        "start": "00410CF6",
+        "bytes": 55
+      },
+      {
+        "start": "004E7C96",
+        "bytes": 3
+      }
+    ],
+    "normal_tails_currently_decoded": true,
+    "historical_metadata_instruction_count_not_complete_evidence": true
+  },
+  "storage_contract": {
+    "owner_field_extent": "38h",
+    "allocator_list_header": "00 profile,04 previous,08 next; SAME00E188B4 domain",
+    "real_CS": "0Ch,18h bytes",
+    "nesting_depth": "24h DWORD, positive signed drain in destructor",
+    "page_table": "28h pointer,2Ch count,30h capacity,34h earliest nonfull page orFFFFFFFF",
+    "initial_capacity": 32,
+    "page_bytes": "584h",
+    "slots_per_page": 64,
+    "slot_stride": "14h",
+    "slot_payload": "00..0F borrowed, not initialized or destroyed by pool",
+    "slot_owner_id": "10h DWORD page index, rewritten for all64 moved slots",
+    "free_stack": "500h..57Fh 64 ushort cells, initialized63..0",
+    "free_count": "580h ushort initialized64",
+    "page_padding_preserved": "582h..583h"
+  },
+  "normal_order": {
+    "constructor": "base profile/list prepend -> CE37A4 -> real CS -> depth/table/count/cap zero,currentFFFFFFFF -> capacity32 before80h allocation -> reloaded copy -> old free -> replacement publish",
+    "allocation": "enter/depth++ -> current=count before page allocation -> reloaded page index to ctor -> cap2*cap+2 and bytescap*4 asDWORD -> publishcap -> reloaded copy -> oldtablefree -> publishtable -> reloaded append/count++ -> pop ushort free index -> later-page scan if full -> depth--/leave -> slot",
+    "return": "enter/depth++ -> slot+10 -> page -> signed offset/20 under valid aligned domain -> ushort free index push/count++ -> earliest=min(earliest,page) -> depth--/leave",
+    "trim": "no internal lock -> whole-free page free -> RELOADtable/count -> lastpagepointer into hole BEFORE count-- -> all64 moved +10 IDs rewrite -> retry moved page -> earliestFFFFFFFF -> captured cursor/reloaded-count scan",
+    "destructor": "capture count before CE37A4 store -> reloaded page frees -> nonnulltablefree -> positive signed depth drain/Leave -> DeleteCS -> baseprofile/unlink -> metadata/links remain stale; no payload destruction or raw owner free"
+  },
+  "profile_binding": {
+    "native_cell": "00CE37A4",
+    "native_target": "00410CD0",
+    "native_bytes_sha256": "7c0830012d662ce644b4a402d88c25c62addc3bf60197f9177d03621acc9c501",
+    "Source_host_setup": "bind_native_enum_node_pool_virtual0_00ce37a4",
+    "real_dispatch": "AllocatorListDomain::trim_all_004b46b0 -> actual complete trim_native_enum_node_pool_00410cd0",
+    "no_foreign_profile_or_default_callback": true,
+    "requires_explicit_host_unbind_after_owner_destruction": true,
+    "not_original_virtual_or_class_ABI": true
+  },
+  "native_producer_context": {
+    "receipts": "local/cc11_scene_enum_node_pool/caller_witnesses/manifest.json",
+    "pins": [
+      {
+        "entry": "00CC8A50",
+        "end_exclusive": "00CC8A66",
+        "bytes": 22,
+        "sha256": "358af6d29f498df5472a4afed1442bff211e015cfbc1a0e723d2ac1f0d2f3d9f",
+        "role": "E17578 constructor and registered destructor",
+        "live_PE_equal": true,
+        "source_ported": false
+      },
+      {
+        "entry": "00CC8A90",
+        "end_exclusive": "00CC8AA6",
+        "bytes": 22,
+        "sha256": "970bb8e4993ead9999acf8315ffda1f9b6cc535758afede30c7ec212e6f2fb09",
+        "role": "E175E8 constructor and registered destructor",
+        "live_PE_equal": true,
+        "source_ported": false
+      },
+      {
+        "entry": "00CD9280",
+        "end_exclusive": "00CD928A",
+        "bytes": 10,
+        "sha256": "c504cbd7f1b980f9be8b3c50462831f979441b7fbf72a8316a9a4e4565a61eac",
+        "role": "E17578 destructor tail",
+        "live_PE_equal": true,
+        "source_ported": false
+      },
+      {
+        "entry": "00CD92D0",
+        "end_exclusive": "00CD92DA",
+        "bytes": 10,
+        "sha256": "1d5c9a8d2b455288254ef5878cc21b9fc451c19938be3dc84cd7eb03af02ccce",
+        "role": "E175E8 registered destructor tail",
+        "live_PE_equal": true,
+        "source_ported": false
+      },
+      {
+        "entry": "008F2850",
+        "end_exclusive": "008F28E3",
+        "bytes": 147,
+        "sha256": "7cf8b2ec21b1d814c3b8559d64106afcacb7d543dcaa4871a1227ea158966667",
+        "role": "symbol insertion actual pool/key/payload publication",
+        "live_PE_equal": true,
+        "source_ported": false
+      },
+      {
+        "entry": "008F17E0",
+        "end_exclusive": "008F188C",
+        "bytes": 172,
+        "sha256": "9e83aa51d4fea8ac9c75ecdaaaef8cfdd14b956b65af605b47459983af6a0e5a",
+        "role": "table insertion actual pool/key/payload publication",
+        "live_PE_equal": true,
+        "source_ported": false
+      }
+    ],
+    "symbol_pool": "008F2877 MOV ECX,E17578;008F287C CALL4E7C00",
+    "table_pool": "008F1820 MOV ECX,E175E8;008F1825 CALL4E7C00",
+    "node_key_header": "00 length,04 genuine owning string;08 opaque mappedword,0C next; allocator10 untouched",
+    "static_initialization": "CC8A50/CC8A55 -> E17578 ctor411050/atexitCD9280;CC8A90/CC8A95 -> E175E8 ctor411050/atexitCD92D0",
+    "correction": {
+      "was": "prior worker shorthand attributed table initializer toCC8A70",
+      "is": "CC8A90;CC8A70 loadsE17540",
+      "evidence": "fresh live=PE wrapper bytes/relative target decoding"
+    },
+    "read_only_witnesses_not_reconstructed_or_original_runtime_registration": true,
+    "unresolved": "8F17E0 duplicate mapped-owner vt[0](1) deletion;8F2850/8F17E0 insertion/key-copy/replacement;CEnum ctor19Ch/typeE/name114/11C ownership;declaration/namespace identity"
+  },
+  "required_providers": [
+    {
+      "native_entry_or_role": "00E188B4/004B46B0/00403970",
+      "Source": "AllocatorListDomain",
+      "Source_path": "src/allocator_list.cpp",
+      "binding": "same borrowed head reference; real prepend/unlink/trim dispatch; no invented manager"
+    },
+    {
+      "native_entry_or_role": "00BF55BE ->00BF681B;00BF6989 ->00BF65AC",
+      "Source": "singleton_lifetime_allocate/free",
+      "Source_path": "src/singleton_lifetime.cpp",
+      "binding": "genuine current malloc/_callnewh/std::free, native_bytes=host_bytes; normal currentCRT only, original failingCRT graph unbound"
+    },
+    {
+      "native_entry_or_role": "CE220C/CE2218/CE2210/CE2214 imports",
+      "Source": "Initialize/Enter/Leave/DeleteCriticalSection",
+      "binding": "real current Win32 OS CS, no callbacks"
+    },
+    {
+      "native_entry_or_role": "current0041E870/0041DD20 and BD1480/BD14C0",
+      "Source": "actual NativeString raw pool/header providers",
+      "binding": "fresh production TUs; raw8AD4A0 owner and owning8-byte headers"
+    },
+    {
+      "native_entry_or_role": "004895B0/00489610/0048D480/0048D4E0/0048E960/0048E840/0048E8D0",
+      "Source": "previously closed exact hash/find/word/membership providers",
+      "binding": "fresh actual current CPPs; ASCII/C-locale known-found words/found-membership; original wrappers not executed"
+    }
+  ],
+  "admission": {
+    "domain": "coherent constructed raw owners/pages in same list; successful nonoverflowing current allocations; externally synchronized trim; valid unique aligned allocated slots; finite tables, no alias/reentry/concurrent mutation",
+    "raw_DWORD_growth_and_publication_preserved": true,
+    "no_added_overflow_guard_reset_rollback_or_payload_destruction": true,
+    "outside": "overflow,malformed metadata,misaligned/foreign/double-returned slots,alias/reentry/concurrency,CRT/new-handler failure,FH3/EH/SEH/native fault/historicalCRT parity; original class/static-owner/vtable ABI and game"
+  },
+  "fixture": {
+    "recipe": "local/cc11_scene_enum_node_pool/run_probe.py",
+    "source": "local/cc11_scene_enum_node_pool/enum_pool_probe.cpp",
+    "run": "local/cc11_scene_enum_node_pool/run01",
+    "manifest": "local/cc11_scene_enum_node_pool/run01/inputs/manifest.json",
+    "manifest_sha256": "356f37d28e9325b735e63d44dcb2e6f3850b6751af8b28d2df14e46a1d44e4a6",
+    "sealed_pre_execution_manifest_sha256": "64cf95a1aeae59ca5fa0b357883c3ac2dacc00bdcec770b4656fbadf0d5a0f9b",
+    "outcomes": {
+      "slots": 2049,
+      "pages_before": 33,
+      "pages_after_middle_trim": 32,
+      "capacity": 66,
+      "moved_owner_ids": 64,
+      "installed_tables": 2,
+      "installed_symbols": 28,
+      "word_calls": 60,
+      "membership_calls": 56,
+      "complete_temporary_pool_prefix_checks": 116,
+      "real_profile_trim": true,
+      "shutdown_unlink": true,
+      "original_bodies_executed": false
+    },
+    "outcomes_sha256": "8d04560698aee6fcda3cc97a8ce2b2c9b722044ec01d6785517ea6df8b0f95f9",
+    "exe_sha256": "242ca871de9e84949397fb5ff649aae037dec11a64061630cec6b907e6885c65",
+    "embedded_manifest_sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+    "installed_input": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+      "sha256_pre": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_copy": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_post": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+    },
+    "external_backing": "only borrowed receiver/bucket fields and fixture key publication; all14h slots now come from genuine new enum pool, keys from real current raw strings; not original map construction/insert/ownership",
+    "real_native_profile_trim_tested": true,
+    "live_page_destructor_and_positive_depth_drain_tested": true,
+    "same_list_head_nonhead_unlink_and_stale_metadata_tested": true,
+    "empty_image_cells": "distinct exact native empty VAs mapped only after checked MEM_FREE; image-zero PE bytes, PAGE_READONLY verified pre/post; fixture not captured live game globals",
+    "no_original_body_or_wrapper_replay": true
+  },
+  "verification": {
+    "compile_exit": [
+      {
+        "source": "native_enum_node_pool.cpp",
+        "exit": 0
+      },
+      {
+        "source": "allocator_list.cpp",
+        "exit": 0
+      },
+      {
+        "source": "singleton_lifetime.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_membership.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_word_getters.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_lookup.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_storage.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_owner.cpp",
+        "exit": 0
+      },
+      {
+        "source": "scene_file.cpp",
+        "exit": 0
+      },
+      {
+        "source": "enum_pool_probe.cpp",
+        "exit": 0
+      }
+    ],
+    "flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/showIncludes"
+    ],
+    "link_exit": 0,
+    "coff_exit": 0,
+    "source_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\run01\\enum_pool.coff.log",
+      "sha256": "146477960a9685105b79a8b014a3ec1a026e3fe9bb59e9a7506838235e8caa21",
+      "machine": "014C",
+      "normal_provider_symbols_present": true
+    },
+    "probe_exit": 0,
+    "manifest_extract_exit": 0,
+    "inventory_counts": {
+      "actual_production_headers": 40,
+      "fresh_production_CPPs": 10,
+      "unique_production_inputs": 50,
+      "fixture_CPP_and_recipe": 2,
+      "unique_fixture_inclusive_inputs": 52
+    },
+    "actual_includes_pinned": true,
+    "source_pre_copy_post_equal": true,
+    "support_freeze": {
+      "utc": "2026-10-07T21:02:01.754218+00:00",
+      "build_provenance": "Primary current b728 complete main build, explicitly authorized; all pre/copy/post hashes equal; no live support linking.",
+      "worker_baseline": "085519c25a14e8c255b41de2cd71592d52ce8ba9",
+      "main_baseline": "085519c25a14e8c255b41de2cd71592d52ce8ba9",
+      "entries": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\support\\bsp_core.lib",
+          "size": 73370346,
+          "sha256_pre": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+          "sha256_copy": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+          "sha256_post": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+          "sha256_pre_link_run": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36",
+          "sha256_post_link_run": "9fa07850bd6427de0da6157ae55abdbb9e8aec37f0c1ba3f40dfc779eddb5c36"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\support\\bsp_lua511.lib",
+          "size": 454824,
+          "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\support\\bsp_zlib121.lib",
+          "size": 71766,
+          "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ]
+    },
+    "historical_files_checked_unchanged": 307,
+    "direct_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_enum_node_pool_cc11.json",
+      "rows": 9,
+      "failed": 0,
+      "log": "local/cc11_scene_enum_node_pool/native_calls.log",
+      "sha256": "8675f5108f587016738f6de47936d39360d14d7fafd1306b42e038e0ded012cc"
+    },
+    "diff_check": "git diff --cached --check: PASS",
+    "full_main_build_and_CMake_registration": "pending primary integration, no worker full build"
+  },
+  "qualification": {
+    "native_exported_and_full_assembly_inspected": true,
+    "reconstructed_new_interfaces": "six complete ordinary normal bodies",
+    "Source_strict_compile_and_connected_fixture_passed": true,
+    "native_whole_bodies_or_wrappers_executed": false,
+    "original_EH_failure_or_ABI_compatible": false,
+    "native_map_insert_declaration_identity_or_traffic_owner_bound": false,
+    "game_or_mission_validated": false,
+    "whole_original_fixture_not_attempted": "CRT/failing allocator/FH3/global/static wrapper graph not closed; no omitted prolog/stubbed providers/fake profiles"
+  },
+  "new_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\src\\native_enum_node_pool.cpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\run01\\inputs\\native_enum_node_pool.cpp",
+      "sha256_pre": "c7fd6a1825dc5d0a3d0045665ad9da5777b82d861c6777860a2293b2d7e870be",
+      "sha256_copy": "c7fd6a1825dc5d0a3d0045665ad9da5777b82d861c6777860a2293b2d7e870be",
+      "sha256_post": "c7fd6a1825dc5d0a3d0045665ad9da5777b82d861c6777860a2293b2d7e870be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\include\\bsp\\native_enum_node_pool.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_node_pool\\run01\\inputs\\native_enum_node_pool.hpp",
+      "sha256_pre": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb",
+      "sha256_copy": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb",
+      "sha256_post": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb"
+    }
+  ]
+}
