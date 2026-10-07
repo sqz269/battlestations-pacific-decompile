@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T10:07:54.806778+00:00",
+  "updated_utc": "2026-10-07T10:10:30.519949+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1534,5 +1534,44 @@
     ],
     "reuses_worker_from": "cc11_health_locked_send",
     "contract": "Additional ABSTRACT LockedSend-derived adapter completes ordinary783C80 plus exact sole-caller bit helpers428EC0/429540. Pure alias actual targetD40 delivery-indexed cell; actualtickWORD F876B0/current transport executable table; requiredCOMPLETEvirtual20 flush. Capture cursor once from first full deliveryDWORD and keep it across callback cell replacement. Initial empty prefix actualtick16bits then freshdeliveryWORD3bits, actualcurrentprofile4 writer same cursor. Modulo32 after_bits+20h interpreted signed >=2320h overflow: capture delta after-before, exactMSB-first absolute-base extraction to uninitialized200h scratch (saved transport is additional4B), actual rewind, freshtable20 and deliveryDWORD flush, freshcapturedcursorbase reset/current/bit/firstbyte, freshtick/WORD prefix, exactMSBscratch-to-LSBcursor restore. Final freshdeliveryDWORD2 bypasses bytecount; otherwise unsigned roundedbytes>=380h flush; each freshtable/capturedcursor/target/delivery retained and freshpostflushbase reset. Existing signedwordwriter/rewind complete bodies reused, previous implementations unchanged. Helpers no genericreadwrite substitute; preserve byte initialization/carry/trailing partial bits. Valid reached delivery indices/live actualbacking with writablecarrybyte; copied delta<=1000h bits fits actual200h scratch; no invented clamps/defaultcursor/transport/profile/flush success. Requiredflush synchronouslyconsumes or createsowneddata and keeps all reached backing alive; no borrowedframe retention/free. Oneignored fresh actualTU Win32 probe emptyD2, exactthresholdD2, overflow usingexisting actualvariable-length profile with controlled flush provider tick/delivery/table/cursor-cell/backing changes and partial-bit helper tail. Prefer original pure-helper native differential in same probe or independent byte evidence to distinguish unusual bit conventions. Mutations areSOURCEfixture only, actualnetwork/provider/ABI/privateEH/fault/game unbound. Primary reviewed complete113/53/52 instructions, intact listings, integer only. Worker Ghidra read-only, no CMake/rootmetadata; unique ignored artifacts and stable pinned support inputs if needed."
+  },
+  "landing_queue_producer_audit": {
+    "primary_review": {
+      "utc": "2026-10-07T10:10:30.513509+00:00",
+      "source_reconstruction": false,
+      "primary_full_append_76_instruction_review": true,
+      "primary_full_producer_141_instruction_review": true,
+      "repaired_instruction": "006BF7A9: ADD ESP,4",
+      "saved_project": true,
+      "exports_refreshed": [
+        "006bf720"
+      ],
+      "prior_documentation": "local/cc11_landing_queue_append_documentation_before.json",
+      "prior_instruction_context": "local/cc11_landing_queue_append_prior_context.json",
+      "exact_flow_query": "script endpoint disabled; no mutation fallback used; supported repair response records actual prior CALL_RETURN and new NONE",
+      "preserves_callee_no_return_flags": true,
+      "preserves_function_names_and_comments": true,
+      "complete_source_boundary_still_unbound": true,
+      "actual_game_binding": false,
+      "game_validated": false
+    },
+    "reuses_worker": "land_retirement",
+    "actual_host_queue_compatible": false,
+    "first_match_null_identity_appends": true,
+    "return_is_holder_value_not_record": true,
+    "appended_identity_is_captured_before_tail": true,
+    "returned_holder_is_fresh_after_tail": true,
+    "observer_register_existing": "00694a60",
+    "remaining_native_dependencies": [
+      "00696350",
+      "00696120",
+      "006bd520",
+      "0095b9c0",
+      "0077c7b0"
+    ],
+    "actual_lower_constructor_adoption_pending": "009afe70",
+    "source_packet_approved": false,
+    "report": "reports/landing_queue_append_flow_recovery_cc11.json",
+    "document": "docs/LANDING_QUEUE_PRODUCER_BOUNDARIES_CC11.md"
   }
 }

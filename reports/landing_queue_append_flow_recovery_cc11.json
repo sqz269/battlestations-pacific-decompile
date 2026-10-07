@@ -1,0 +1,59 @@
+{
+  "repairs": [
+    {
+      "function": "006bf720",
+      "owner": "main",
+      "when": "2026-10-07T10:07:01Z",
+      "decompile_lines_before": 51,
+      "gaps": [
+        {
+          "site": "006bf7a4",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "006bf7a9",
+          "gap_end_exclusive": "006bf7ac",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "006bf7a4",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "006bf7a9",
+            "gap_end_exclusive": "006bf7ac",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 006bf7a4 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 50,
+      "gaps_remaining": 0
+    }
+  ],
+  "primary_review": {
+    "utc": "2026-10-07T10:10:30.513509+00:00",
+    "source_reconstruction": false,
+    "primary_full_append_76_instruction_review": true,
+    "primary_full_producer_141_instruction_review": true,
+    "repaired_instruction": "006BF7A9: ADD ESP,4",
+    "saved_project": true,
+    "exports_refreshed": [
+      "006bf720"
+    ],
+    "prior_documentation": "local/cc11_landing_queue_append_documentation_before.json",
+    "prior_instruction_context": "local/cc11_landing_queue_append_prior_context.json",
+    "exact_flow_query": "script endpoint disabled; no mutation fallback used; supported repair response records actual prior CALL_RETURN and new NONE",
+    "preserves_callee_no_return_flags": true,
+    "preserves_function_names_and_comments": true,
+    "complete_source_boundary_still_unbound": true,
+    "actual_game_binding": false,
+    "game_validated": false
+  }
+}
