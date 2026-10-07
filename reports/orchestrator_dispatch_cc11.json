@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T08:14:28.556725+00:00",
+  "updated_utc": "2026-10-07T08:19:11.455406+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -696,5 +696,87 @@
     "unresolved_indirect_calls": 6,
     "actual_game_binding": false,
     "native_observer_lifetime_bound": false
+  },
+  "health_message_d2_handoff": {
+    "id": "cc11_health_message_d2",
+    "done": false,
+    "state": "approved_full_d2_storage_profile_and_setter_constructor_adapter",
+    "worker": "health_guard",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "00876d30",
+      "0075fce0",
+      "0075fd10",
+      "0075fd60",
+      "0075fe50"
+    ],
+    "output_files": [
+      "include/bsp/native_unit_health_message.hpp",
+      "src/native_unit_health_message.cpp",
+      "docs/UNIT_HEALTH_MESSAGE_D2_CC11.md",
+      "reports/unit_health_message_d2_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_health_setter_sequence"
+    ],
+    "reuses_worker_from": "cc11_health_setter_sequence",
+    "contract": "Complete32B actualD2 constructor/storage and executable five-slot translated00D032A0 profile using complete0075B430 actual-global owner services; preserve11..13/1B and fullDWORD1C; delivery1/typeD2; predicateD2 OR46; cursorwriter8/12/1+payload8 and readercursor+4 orderedwidthwrites. Scalarflagsbit0->rootstamp->REQUIREDactualallocation-domain release service capturedbeforestamp; no defaultstd::free/inferredallocator. Opt-in ABSTRACTexistinghealthsetter constructor adapter bindsSAMEactual mutablegamepointerCELL and constructsinborrowed20hframe, forwardsreturnedidentity; otherdispatch/provider/router services remainrequired. No fakeowner/profile/arena/runtime clone policy, originalABI/unmasked faults/privateEH/game/lifetime claims. Primary owns CMake registration and all Ghidra mutations; root independently defined3 exact gap entries/save/export before source handoff.",
+    "primary_definition_report": "reports/unit_health_message_d2_definition_cc11.json",
+    "native_profile": "00d032a0",
+    "native_entries": [
+      "0075fe50",
+      "0075fd10",
+      "0075fd60",
+      "0075fce0",
+      "004499c0"
+    ],
+    "new_functions_defined": 3,
+    "worker_ghidra_read_only": true
+  },
+  "land_canonical_identity_handoff": {
+    "id": "cc11_land_canonical_identity",
+    "done": false,
+    "state": "approved_same_retained_404_identity_correction",
+    "worker": "land_retirement",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "009b33f0",
+      "009b3c60",
+      "009b34d0",
+      "009b3560"
+    ],
+    "output_files": [
+      "include/bsp/plane_squadron_host.hpp",
+      "src/plane_squadron_host.cpp",
+      "docs/PILOT_BOT_LAND_IDENTITY_CC11.md",
+      "reports/pilot_bot_land_identity_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_land_command_validity",
+      "cc11_land_cruise_profile",
+      "cc11_land_active_retirement"
+    ],
+    "reuses_worker_from": "cc11_land_command_validity",
+    "contract": "Bind all three existing land hook/cruise/validity callers to ONE canonical const-void*volatile actualtask404 identity CELL; retain separate borrowed3FC cell. REQUIRED PURE identity-to-entity/hook/cruise field mappings return borrowed views without callback/fieldread/default/native-call/allocation/profile/cache synthesis. Hook capturesfirst404 forguard+first174; freshsecond404 forsecond174; capturefinal404 onceforguard+EndLanding. Cruise fresh404 AFTEREACHactualtuningcall. Validity fresh174/178/admission receivers and resolver-before-target retained; rawcommand/descriptor/block fields remain actualrequired. No translatedpointercache synchronization, runtimebinding/arena/profile/lifetime/constructor substitution. Preserve already recovered primary numeric kernels unchanged; reuse existing focusedhookprobe artifacts, no broadnewtests. AllGhidra mutation/metadata integrationprimaryonly.",
+    "worker_ghidra_read_only": true,
+    "primary_independent_hook_review": "Full009B33F0 verified:404 captured33F3->guard/first174;fresh340B->second174;captured3422->guard/tailEndLanding"
+  },
+  "land_constructor_dependency_boundary": {
+    "source_projections_not_admitted": [
+      "BotTaskHost",
+      "GameUnitsHost_queue"
+    ],
+    "numeric_primary_recovery_required": [
+      "009f9ce0",
+      "009afe70"
+    ],
+    "complete_lower_services_required": [
+      "0099c6f0",
+      "009b2e50",
+      "006c0b50"
+    ],
+    "canonical_storage_and_observer_lifetimes_unbound": true
   }
 }
