@@ -1,0 +1,378 @@
+{
+  "packet": "cc11_scene_landfort_stationary_bool_payload",
+  "date": "2026-10-07",
+  "source_baseline": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+  "doc": "docs/SCENE_LANDFORT_STATIONARY_BOOL_PAYLOAD_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "owned_addresses": [
+    "004F0FB0"
+  ],
+  "owned_files": [
+    "src/scene_unit_creators.cpp",
+    "docs/SCENE_LANDFORT_STATIONARY_BOOL_PAYLOAD_CC11.md",
+    "reports/scene_landfort_stationary_bool_payload_cc11.json"
+  ],
+  "dependencies": [
+    "cc11_scene_typed_bool_payload",
+    "cc11_scene_typed_int_payload",
+    "cc11_scene_group_loading",
+    "cc11_scene_generation_bool_payload",
+    "scene_unit_creators"
+  ],
+  "status": "bounded owning-B Stationary adoption; fresh strict compile/link and actual parser/library/private-called-reader fixture PASS; root integration/fullbuild/CTest pending",
+  "correction": {
+    "was": "Actual LandFort Stationary read ignores owning Boolean byte/presence and reads only diagnostics",
+    "is": "One private actually called reader prefers compatible case-insensitive B plus has_boolean byte; exact global fallback otherwise",
+    "evidence": "Native004F0FD0 lookup and004F0FD5 byte+0C; accepted native type3 producer/copy evidence; installed owning true/false and diagnostic-clear/opposite fixture"
+  },
+  "routines": [
+    {
+      "address": "004F0FB0",
+      "coverage": "partial: stored-byte fragment004F0FC9..004F0FDA only; surrounding native body inspected, not newly rebound",
+      "body_start": "004F0FB0",
+      "body_end_inclusive": "004F10A8",
+      "body_end_exclusive": "004F10A9",
+      "listed_instruction_count": 90,
+      "terminal_ret_site": "004F10A6",
+      "terminal_ret": "RET10h",
+      "stored_signature": "undefined BSP_SceneUnit_CreateLandFort(void)",
+      "original_abi_claimed": false
+    }
+  ],
+  "fragment": {
+    "start": "004F0FC9",
+    "end_inclusive": "004F0FDA",
+    "end_exclusive": "004F0FDB",
+    "key_literal": "00CEA044 Stationary",
+    "lookup": "004F0FD0",
+    "byte_compare": "004F0FD5",
+    "zero_branch": "004F0FD9 JZ004F0FFC",
+    "type_guard": false,
+    "null_guard": false
+  },
+  "call_sites": [
+    {
+      "address": "004F0FC0",
+      "native": "0048E9F0",
+      "function": "004F0FB0",
+      "contract": "Unchanged prefix call; AL is tested; underlying map/provider not bound"
+    },
+    {
+      "address": "004F0FD0",
+      "native": "008F2260",
+      "function": "004F0FB0",
+      "contract": "Stationary lookup; admitted byte+0C read at004F0FD5, no type/null guard"
+    },
+    {
+      "address": "004F0FE2",
+      "native": "008F2260",
+      "function": "004F0FB0",
+      "contract": "Unchanged Type lookup on true branch; DWORD+0C at004F0FE7"
+    },
+    {
+      "address": "004F0FEE",
+      "native": "00964790",
+      "function": "004F0FB0",
+      "contract": "Unchanged true-branch dispatch; descriptor provider unbound here"
+    },
+    {
+      "address": "004F0FF5",
+      "native": "00748C40",
+      "function": "004F0FB0",
+      "contract": "Unchanged true-branch dispatch; constructor/allocation contract unread here"
+    },
+    {
+      "address": "004F1003",
+      "native": "008F2260",
+      "function": "004F0FB0",
+      "contract": "Unchanged Type lookup on false branch; DWORD+0C at004F1008"
+    },
+    {
+      "address": "004F100F",
+      "native": "00964790",
+      "function": "004F0FB0",
+      "contract": "Unchanged false-branch descriptor dispatch; provider unbound here"
+    }
+  ],
+  "indirect_support": [
+    {
+      "call_site": "004F101D",
+      "expression": "descriptor vtable+28, pushed0",
+      "scope": "Existing false-branch dispatch only; not a direct-row/callee or new provider claim"
+    }
+  ],
+  "named_incomplete": [
+    {
+      "entry": "0048E9F0",
+      "prefix_range_start": "004F0FB7",
+      "prefix_end_inclusive": "004F0FC8",
+      "prefix_end_exclusive": "004F0FC9",
+      "known": "Caller tests AL; existing helper normal body creates key string, calls0043B8B0 and returns nonzero result",
+      "unbound": "Underlying0043B8B0 map/provider; no new prefix contract or reconstruction"
+    },
+    {
+      "entry": "0043B8B0",
+      "contract": "unread map/provider integration"
+    },
+    {
+      "entry": "00964790",
+      "contract": "existing descriptor service; not executed or bound by this packet"
+    },
+    {
+      "entry": "00748C40",
+      "contract": "native constructor/allocation/instance layout not bound"
+    },
+    {
+      "doc": "docs/SCENE_STATIONARY_FORT.md",
+      "status": "named by existing scene creator doc but missing; not closed evidence"
+    }
+  ],
+  "producer_support": {
+    "doc": "docs/SCENE_TYPED_BOOL_PAYLOAD_CC11.md",
+    "native_type": 3,
+    "native_payload": "byte+0C",
+    "parser_B_arm": {
+      "start": "008F5D4F",
+      "end_inclusive": "008F5DDF",
+      "end_exclusive": "008F5DE0"
+    },
+    "clone_B": {
+      "start": "008F4F8D",
+      "end_inclusive": "008F4FC1",
+      "end_exclusive": "008F4FC2"
+    },
+    "assign_B": {
+      "start": "008F0736",
+      "end_inclusive": "008F0745",
+      "end_exclusive": "008F0746"
+    },
+    "Source_storage": "boolean_value/has_boolean independent owning data, including real false; not ephemeral native parser success/+2C/replay flags",
+    "new_ownership": false
+  },
+  "preserved_Source_policy": [
+    "Descriptor resolution FIRST and null stop; native prefix-first ordering not newly matched",
+    "Existing row.extra_key and properties gates, only LandFort row admits Stationary",
+    "False default and exact first-literal/no-own B/non-B/missing/empty raw fallback",
+    "All variant dispatch, placement/hierarchy/name/command steps unchanged",
+    "No headers/global helper/other creator/default/enum changes"
+  ],
+  "admission": [
+    "One recognized nonempty explicit B true/false ASCII case variant, closed semicolon",
+    "Compatible unique typed declaration/group/authored copies using accepted existing Source capture/merge services",
+    "Bare/empty/non-B/manual incompatible metadata cases are preserved SOURCE fallback only",
+    "F true is manually Source-authored legacy data, not admitted by typed finite-decimal F parser",
+    "Malformed/multitoken/implicit/empty-existing/declaration-conflict/native fault semantics outside Native claim"
+  ],
+  "installed": {
+    "files": 17,
+    "libraries": 15,
+    "groups": 22,
+    "positive": {
+      "file": "universe/library/landfort.props",
+      "line": 12,
+      "group": "LandFort(Common,MultiEntity)",
+      "value": "B true",
+      "actual_merged_owning_reader_and_copy_clear_opposite": true
+    },
+    "active_authored_false": {
+      "file": "universe/scenes/missions/usn/usn_1_marshall.scn",
+      "class": "LandFort",
+      "count": 12,
+      "lines": [
+        1238,
+        2731,
+        2752,
+        2773,
+        2794,
+        2815,
+        2836,
+        3035,
+        3282,
+        3301,
+        3320,
+        3339
+      ],
+      "actual_ordered_group_authored_overwrite_and_clear_opposite": true
+    },
+    "ignored": {
+      "file": "universe/scenes/missions/usn/usn_1_marshall.scn",
+      "line": 1316,
+      "entity": "CB2",
+      "class": "CommandBuilding",
+      "B_value": false,
+      "actual_creator_row_extra_key": null,
+      "new_branch": false
+    },
+    "JM06": "Actual source syntax/regression parse; no authored Stationary witness",
+    "native_runtime_stationary_emitter_game_claim": false
+  },
+  "enum_boundary": {
+    "authored": "Level=E CommandBuildingLevels:Basic",
+    "installed_table": "global.enums1696..1700 Basic=0 is present",
+    "actual_native_declaration_provider_storage": "unresolved; Source raw enum table/symbol map does not retain native E declaration/+28 identity",
+    "invented_I_zero_default_or_provider": false
+  },
+  "verification": {
+    "strict_fresh_compile": {
+      "exit_code": 0,
+      "TUs": [
+        "src/scene_file.cpp",
+        "src/scene_unit_creators.cpp standalone",
+        "probe.cpp includes actual src/scene_unit_creators.cpp +src/game_hosts_scene_contents.cpp"
+      ],
+      "standalone_creator_object_linked": false,
+      "actual_public_creator_compiled": true,
+      "actual_public_creator_executed": false,
+      "flags": "/std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy /showIncludes; actual scene-contents Lua headers/_CRT_SECURE_NO_WARNINGS",
+      "actual_included_Source_Lua_paths": 178,
+      "active_Source_Lua_inputs": 179
+    },
+    "link": {
+      "exit_code": 0,
+      "immutable_compiled_supports": 77,
+      "PE_machine": "0x14c",
+      "embedded_asInvoker": true
+    },
+    "fixture": {
+      "exit_code": 0,
+      "scope": "actual parser/private-called-reader/production library-group data, real compiled caller; no fake descriptor/allocation/enum/class/provider or whole creator execution",
+      "checks": [
+        "true/TRUE/false/FALSE/lowercase B",
+        "independent owning copy and cleared/opposing diagnostics",
+        "legacy first literal/no-own B/non-B metadata/missing/raw-empty fallback",
+        "real LandFort group default true and12active USN1 authored false overrides",
+        "actual CommandBuilding row excludes CB2 Stationary",
+        "JM06 source regression"
+      ]
+    },
+    "hashes": {
+      "all_active_Source_Lua_stable": true,
+      "installed_inputs_stable": 17,
+      "all77_compiled_supports_stable": true,
+      "original_pre_post_pinned_equality": true
+    },
+    "native_direct_rows": {
+      "status": "PASS",
+      "expected": 7,
+      "checked": 7,
+      "failed": 0,
+      "log": "local/cc11_scene_landfort_stationary_bool_payload/native_calls.log"
+    },
+    "git_diff_check": "PASS exit0",
+    "integrated_fullbuild_CTests": "primary pending; no worker full build"
+  },
+  "support_provenance": {
+    "freeze_manifest": "local/cc11_scene_landfort_stationary_bool_payload/support_freeze.json",
+    "whole_current_build_commit_primary_verified": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+    "freeze_observed_main_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+    "libraries": [
+      {
+        "name": "bsp_core.lib",
+        "sha256": "8ECD635AD747085DF88F20E0B5460F4D888989AFB73871CBEC08940B02DAA717"
+      },
+      {
+        "name": "bsp_lua511.lib",
+        "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE"
+      },
+      {
+        "name": "bsp_zlib121.lib",
+        "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F"
+      }
+    ],
+    "game_objects": 74,
+    "all_copied_together_current_same_SceneProperty_header": true,
+    "mixed_older_supports_used": false,
+    "excluded": [
+      "game_main.obj",
+      "game_hosts_scene_contents.obj freshly included",
+      "fresh parser/creator core member replaced"
+    ],
+    "gate_code_in_current_factory_support_executed": false,
+    "old_pre_I_consumer_or_live_link_input_used": false
+  },
+  "artifacts": [
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/probe.cpp",
+      "bytes": 9951,
+      "sha256": "46C3377C46A2ABF9DE436BBA8D9FC212BD6233B7F4DCAFA7E48416786CBD1CD2"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/compile.cmd",
+      "bytes": 959,
+      "sha256": "85564A460D314831DDC972CFE562C2DACAB1FCC776E8EED9BEAAE3776B7C54CE"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/link.cmd",
+      "bytes": 820,
+      "sha256": "46F0922332E2A42F4333BD372E5735FC2F7791C9D9FCB185F95FB69A3F967D9D"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/recipe.md",
+      "bytes": 2382,
+      "sha256": "FEAAD831447A57CA5F4FEA466DA8F50302A7B4DF1D98A8AEAEF0DE19825AA7F7"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/receipt.py",
+      "bytes": 4397,
+      "sha256": "CAD25DAFE11B32F1DB77D5E14ACF172318EE0F8047F56F6E834FB6F1C691E3F1"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/make_report.py",
+      "bytes": 11213,
+      "sha256": "24C242BD4EB3C0DBB79FC8DD344F46B099E40C4C17D0445DBB2589EF22669953"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/inputs.json",
+      "bytes": 224490,
+      "sha256": "A8F9DB292C2FDC70615D1D51C997A101221905E025378ADBF793902C1555097A"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/support_freeze.json",
+      "bytes": 50336,
+      "sha256": "12D5414B8C0820BA5D41291490C59D44FDCC3C8E2B8972C82E3CB26C2BD92B3E"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/game_objects.rsp",
+      "bytes": 11776,
+      "sha256": "1EFAB291CF23D9EDED6CCA06638FFFF397C0A673700BFC4A88C9E37E21B1B1D9"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/compile.log",
+      "bytes": 72931,
+      "sha256": "6D304D8320C56376E55EFCD76DAA15BDE3D912E166E6CD3C5F0FC6C77D7AB7DF"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/link.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/probe.log",
+      "bytes": 388,
+      "sha256": "CA3E54CC896718C5BEADEE7F25ECD793B1D72E3E8883321A5F7E9C2DABF873AE"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/probe.exe",
+      "bytes": 476160,
+      "sha256": "D82955713B82DFF87D913B6D666B168A2588A92EAF55743E61B49A445FE8AF90"
+    },
+    {
+      "path": "local/cc11_scene_landfort_stationary_bool_payload/native_calls.log",
+      "bytes": 89,
+      "sha256": "FB86E8149242D69F049250B3EF05ABD095F154BFD82081BB811F0F22D45CAEB6"
+    }
+  ],
+  "unresolved": [
+    "Full native creator/prefix/map/descriptor/Stationary allocation and instance layout",
+    "Native missing/type/fault/context/alias/ownership/EH/reentry and original ABI",
+    "Source descriptor-first vs Native prefix-first order preserved, not claimed identical",
+    "Whole creator/SceneReader/emitter/mission/original-game validation",
+    "Actual E declaration/provider/storage including Level Basic; no table-value/default inference",
+    "Historical numerical CRT/FP parity remains separate and unclaimed",
+    "Prior group merger tail decoded through exclusive008F566F but stored body ends008F5658; not full native flow repair"
+  ]
+}
