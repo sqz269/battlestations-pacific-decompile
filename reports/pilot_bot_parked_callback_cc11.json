@@ -1,0 +1,248 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00999a60",
+        "end_address": "00999a71"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00999a60",
+        "end_address": "00999a70",
+        "bytes_disassembled": 17,
+        "message": "Successfully disassembled 17 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00999a60",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00999a60",
+        "function_name": "FUN_00999a60",
+        "entry_point": "00999a60",
+        "body_size": 17,
+        "message": "Function created successfully at 00999a60"
+      }
+    },
+    {
+      "defined": "00999a60",
+      "end": "00999a71",
+      "name": null,
+      "after": "Function: FUN_00999a60 at 00999a60\nSignature: undefined FUN_00999a60(void)\nEntry: 00999a60\nBody: 00999a60 - 00999a70"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00999a80",
+        "end_address": "00999a9f"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00999a80",
+        "end_address": "00999a9e",
+        "bytes_disassembled": 31,
+        "message": "Successfully disassembled 31 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00999a80",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00999a80",
+        "function_name": "FUN_00999a80",
+        "entry_point": "00999a80",
+        "body_size": 28,
+        "message": "Function created successfully at 00999a80"
+      }
+    },
+    {
+      "defined": "00999a80",
+      "end": "00999a9f",
+      "name": null,
+      "after": "Function: FUN_00999a80 at 00999a80\nSignature: undefined FUN_00999a80(void)\nEntry: 00999a80\nBody: 00999a80 - 00999a9e"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0099a940",
+        "end_address": "0099a97c"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0099a940",
+        "end_address": "0099a97b",
+        "bytes_disassembled": 60,
+        "message": "Successfully disassembled 60 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0099a940",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "0099a940",
+        "function_name": "FUN_0099a940",
+        "entry_point": "0099a940",
+        "body_size": 60,
+        "message": "Function created successfully at 0099a940"
+      }
+    },
+    {
+      "defined": "0099a940",
+      "end": "0099a97c",
+      "name": null,
+      "after": "Function: FUN_0099a940 at 0099a940\nSignature: undefined FUN_0099a940(void)\nEntry: 0099a940\nBody: 0099a940 - 0099a97b"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0099a980",
+        "end_address": "0099a9b0"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0099a980",
+        "end_address": "0099a9af",
+        "bytes_disassembled": 48,
+        "message": "Successfully disassembled 48 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0099a980",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "0099a980",
+        "function_name": "FUN_0099a980",
+        "entry_point": "0099a980",
+        "body_size": 48,
+        "message": "Function created successfully at 0099a980"
+      }
+    },
+    {
+      "defined": "0099a980",
+      "end": "0099a9b0",
+      "name": null,
+      "after": "Function: FUN_0099a980 at 0099a980\nSignature: undefined FUN_0099a980(void)\nEntry: 0099a980\nBody: 0099a980 - 0099a9af"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "packet": "cc11_parked_callback",
+  "status": "native_bodies_defined_reviewed_unbound",
+  "verified_at_utc": "2026-10-07T06:10:06.488990+00:00",
+  "document": "docs/PILOT_BOT_PARKED_CALLBACK_CC11.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "routines": [
+    {
+      "entry": "00999a60",
+      "end_exclusive": "00999a71",
+      "name": "BSP_PilotParkPredicate_PlaneByte184IsZero",
+      "original_abi": "ECX=predicate; plainRET; AL boolean, upperEAX pointer bits",
+      "evidence": "Loads predicate+4 and unconditionally tests referenced plane byte+184h for zero. Valid nonnull plane required; no lifetime retention/invalidation is established.",
+      "before_definition": "no function starting here; prior name absent"
+    },
+    {
+      "entry": "00999a80",
+      "end_exclusive": "00999a9f",
+      "name": "BSP_PilotParkPredicate_ScalarDelete",
+      "original_abi": "ECX=predicate; stack flags; RET4; EAX=original pointer",
+      "evidence": "Stamps00D05840, calls correct CRT_free00BF65AC when low flags bit0 set, then MOV EAX,ESI00999A99 andRET4. Current pseudocode extraout_EAX is misleading; complete assembly controls.",
+      "before_definition": "no function starting here; prior name absent"
+    },
+    {
+      "entry": "0099a940",
+      "end_exclusive": "0099a97c",
+      "name": "BSP_PilotParkPredicate_ReadPlaneID",
+      "original_abi": "ECX=predicate; stack input object; RET4",
+      "evidence": "Input vt+10 gets flattened operands0,planeID,literal4,&outputword; reloads output after implied callee-pop16 and stores predicate+4. Serializer/discriminator/missing-field policy unresolved; not an observer invalidation callback.",
+      "before_definition": "no function starting here; prior name absent"
+    },
+    {
+      "entry": "0099a980",
+      "end_exclusive": "0099a9b0",
+      "name": "BSP_PilotParkPredicate_WritePlaneID",
+      "original_abi": "ECX=predicate; stack output object; RET4",
+      "evidence": "Output vt+C gets flattened operands0,planeID,literal4,cached-plane-word BY VALUE. Fourth slot of00D1F31C is00D1F328; serializer/type/ID/byte-size meaning unresolved.",
+      "before_definition": "no function starting here; prior name absent"
+    }
+  ],
+  "profile": {
+    "address": "00d1f31c",
+    "entries": [
+      "00999a60",
+      "00999a80",
+      "0099a940",
+      "0099a980"
+    ],
+    "fourth_cell": "00d1f328"
+  },
+  "calls": [
+    {
+      "address": "00999a91",
+      "native": "00bf65ac",
+      "function": "00999a80"
+    },
+    {
+      "address": "0099a96d",
+      "native": "input+vtable10",
+      "function": "0099a940"
+    },
+    {
+      "address": "0099a9a9",
+      "native": "output+vtable0c",
+      "function": "0099a980"
+    }
+  ],
+  "limitations": [
+    "Native evidence only; no C++/ABI/stream/runtime/game fixture",
+    "Literal4 type-versus-size and actual serializer implementation unresolved",
+    "Plane/predicate ownership and cached lifetime not established",
+    "Read-only exact flow query rejected: bridge script execution disabled; no mutation fallback"
+  ],
+  "flow_property_response": "local/cc11_park_predicate_flow.json",
+  "ghidra_mutated": true,
+  "game_validated": false,
+  "abi_compatible": false
+}
