@@ -1,0 +1,254 @@
+{
+  "packet": "cc11_health_marker",
+  "status": "ambient_x87_marker_data_result_corrected_strict_win32_probe_passed",
+  "base_commit": "477c3bd373310af7d75db8d3e1642a1d5672cc67",
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "document": "docs/UNIT_HEALTH_MARKER_X87_CC11.md",
+  "target": {
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra proto/bytes through Client.verify before live queries",
+    "ghidra_mutated": false,
+    "ledger_mutated": false
+  },
+  "fragment": {
+    "address": "00877C00",
+    "through": "00877C20",
+    "containing_function": "00877B90",
+    "original_function_abi": "ECX this, stack float request, RET4",
+    "source_symbol": "private full_health_marker_00877c00",
+    "coverage": "Marker numeric predicate only; surrounding native health store remains a typed setter result; not a binary ABI entry"
+  },
+  "native_bytes": {
+    "address": "00877C00",
+    "length": 32,
+    "hex": "d9 44 24 34 f3 0f 11 86 70 03 00 00 d9 86 6c 03 00 00 dc 25 10 a2 d7 00 d9 c9 df f1 dd d8 76 0a"
+  },
+  "constant": {
+    "address": "00D7A210",
+    "type": "float64",
+    "bytes": "00 00 00 00 00 00 f0 3f",
+    "value": 1
+  },
+  "native_sequence": [
+    {
+      "address": "00877C00",
+      "instruction": "FLD float stored"
+    },
+    {
+      "address": "00877C04",
+      "instruction": "MOVSS this+370h,stored",
+      "scope": "Surrounding setter store, not part of private kernel"
+    },
+    {
+      "address": "00877C0C",
+      "instruction": "FLD float maximum"
+    },
+    {
+      "address": "00877C12",
+      "instruction": "FSUB double1 under ambient PC/RC"
+    },
+    {
+      "address": "00877C18",
+      "instruction": "FXCH ST1"
+    },
+    {
+      "address": "00877C1A",
+      "instruction": "FCOMIP ST0,ST1"
+    },
+    {
+      "address": "00877C1C",
+      "instruction": "FSTP ST0"
+    },
+    {
+      "address": "00877C1E",
+      "instruction": "JBE skip marker write for less/equal/unordered"
+    },
+    {
+      "address": "00877C20",
+      "instruction": "MOV this+2E8h,-1 on ordered greater; no else/reset"
+    }
+  ],
+  "implementation": {
+    "platform": "MSVC Win32 inline assembly, unsupported targets fail explicitly",
+    "kernel_sequence": [
+      "FLD float stored",
+      "FLD float maximum",
+      "FSUB double kUnitFullHealthEpsilon",
+      "FXCH ST1",
+      "FCOMIP ST0,ST1",
+      "FSTP ST0",
+      "SETA result"
+    ],
+    "branch_equivalence": "SETA is CF=0 and ZF=0, complement of native JBE; unordered CF=ZF=1 returns false",
+    "control_policy": "No FLDCW, LDMXCSR, FINIT/FNINIT or control-library call; actual ambient x87 precision/rounding applies",
+    "stack_contract": "Two temporary x87 entries pushed and popped; caller entries preserved with sufficient capacity",
+    "marker_write": "Existing bool requests set-to-minus-one; false means no native marker write, not clearing marker",
+    "scope_assertion": "Passed: only private kernel/platform guard and marker-expression replacement; public header non-comment content unchanged",
+    "getter_clamp_callback_replication_changed": false,
+    "host_switches_changed": false
+  },
+  "fixed_witnesses": [
+    {
+      "current": 0,
+      "request_and_maximum": "2^25",
+      "cw": "007f",
+      "pc": 24,
+      "rounding": "nearest",
+      "previous_marker": true,
+      "native_and_corrected_marker": false
+    },
+    {
+      "current": 0,
+      "request_and_maximum": "2^25",
+      "cw": "087f",
+      "pc": 24,
+      "rounding": "upward",
+      "previous_marker": true,
+      "native_and_corrected_marker": false
+    },
+    {
+      "current": 0,
+      "request_and_maximum": "2^54",
+      "cw": "037f",
+      "pc": 64,
+      "rounding": "nearest",
+      "previous_marker": false,
+      "native_and_corrected_marker": true
+    },
+    {
+      "current": 0,
+      "request_and_maximum": "2^54",
+      "cw": "0b7f",
+      "pc": 64,
+      "rounding": "upward",
+      "previous_marker": false,
+      "native_and_corrected_marker": true
+    }
+  ],
+  "probe": {
+    "command": "cmd /c local\\cc11_health_marker_check.cmd",
+    "source": "local/cc11_health_marker_probe.cpp",
+    "reused_from": "local/cc11_health_nan_probe.cpp",
+    "changes_to_probe": "Same28 rows and12 control settings; marker gaps now fail; add CW/MXCSR control and TOP/two-live-sentinel checks",
+    "reference": "Prior assembly transcription of native setter prefix plus recovered shared CRT assembly, independent of new helper",
+    "reference_limit": "Not complete original-routine execution or original-game runtime",
+    "build": "MSVC Win32 /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict; /MANIFEST:EMBED /OPT:REF",
+    "prefix_checks": 336,
+    "prefix_data_failures": 0,
+    "marker_differences": 0,
+    "previous_marker_differences": 4,
+    "mode_checks": 672,
+    "mode_failures": 0,
+    "byte_checks": 240,
+    "byte_failures": 0,
+    "state_checks": 336,
+    "control_failures": 0,
+    "stack_failures": 0,
+    "state_detail": "Entire x87 CW and MXCSR control bits unchanged; TOP and exact 11.25f/-3.5f caller-stack sentinels preserved",
+    "pc_values": [
+      24,
+      53,
+      64
+    ],
+    "rounding_values": [
+      "nearest_even",
+      "down",
+      "up",
+      "toward_zero"
+    ],
+    "exceptions": "All x87/MXCSR exceptions masked",
+    "mxcsr_rounding": "Matched x87 RC",
+    "daz": false,
+    "ftz": false,
+    "input_coverage": "Existing28 rows: finite, signed zero, least-positive subnormal request, infinity, signed qNaN/sNaN in current/request/maximum roles, two precision witnesses",
+    "remaining_known_getter_gap": "Fraction2 returns typed2 bits40000000 versus native getter/cache1 bits3f800000; unchanged",
+    "exit_code": 0
+  },
+  "emitted_assembly": {
+    "path": "local/cc11_health_marker_asm/unit_damage.asm",
+    "pure_setter_fp_lines": [
+      635,
+      641
+    ],
+    "host_setter_fp_lines": [
+      2582,
+      2588
+    ],
+    "standalone_helper_lines": [
+      3984,
+      4030
+    ],
+    "review": "Two float loads, qword FSUB, FXCH, FCOMIP, FSTP, SETA retained in standalone and both inline paths",
+    "control_instruction_scan": "No FLDCW/LDMXCSR/FINIT/FNINIT in emitted translation unit"
+  },
+  "validation": {
+    "strict_win32_compile_and_probe": "Passed",
+    "source_scope_and_header_abi_assertions": "Passed",
+    "report_json": "Parsed",
+    "diff_check": "Passed",
+    "native_callsite_verifier": "Not applicable: new fragment contains no calls and report makes no new callsite claims",
+    "full_integrated_build_ctest": "Primary integrator responsibility after merge",
+    "game_run": "Not requested or run",
+    "new_tracked_tests": 0,
+    "binary_abi_compatible": false,
+    "full_fp_state_parity": false,
+    "original_game_validated": false
+  },
+  "limits": [
+    "Private typed predicate, not original object layout or complete native routine/ABI",
+    "Surrounding health write occurs before kernel in source; native write lies between its two loads",
+    "Unmasked exception/trap-resume behavior, x87 status/FIP/FDP and integer-EFLAGS parity not established",
+    "Kernel does not clear exception flags; full setter still uses other FP instruction domains around it",
+    "At least two free x87 stack entries required; overflow/underflow not separately tested",
+    "DAZ/FTZ variants and independent x87/MXCSR rounding untested; bounded matrix is not blanket IEEE proof",
+    "Getter clamp/cache and fraction precision gaps, finite byte conversion limits and callback ownership/timing remain unchanged"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc11_health_marker_probe.cpp",
+      "sha256": "23ad34d2c71573f6462dba293bae155d704f61fb0ea73b6644fd07ff1467d6c7",
+      "bytes": 11497
+    },
+    {
+      "path": "local/cc11_health_marker_probe.exe",
+      "sha256": "c72031796296e9ea10bf7998808171c5a9de751ecb08b9568c5715a43c470878",
+      "bytes": 121344
+    },
+    {
+      "path": "local/cc11_health_marker_probe.log",
+      "sha256": "685e881b9f85238dd1197f7bb5b3f33a9c0fb24d1b5421bd5a31fb690d76d61e",
+      "bytes": 936
+    },
+    {
+      "path": "local/cc11_health_marker_check.cmd",
+      "sha256": "ddff41d695b325ffe72d8243aefa3ae1c541b91bb1e809a1cf66453f6801e039",
+      "bytes": 523
+    },
+    {
+      "path": "local/cc11_health_marker_asm/unit_damage.asm",
+      "sha256": "dcb2ba9b9fe10f503f07c0b0c91fcee7d0f922b1b04692f45ae0f14594d3017b",
+      "bytes": 109385
+    },
+    {
+      "path": "local/cc11_health_nan_after.log",
+      "sha256": "fbce9515ab75c98cd2c1394041c4a522c17cea49a2178ccb68ad338314cbf7c5",
+      "bytes": 1082
+    },
+    {
+      "path": "src/unit_damage.cpp",
+      "sha256": "53a11ef19941fe62c3463bd6f4eed3927daa7d428160507fd8c2fe0efb5d0e02",
+      "bytes": 24444
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "sha256": "9743af74cc30bf3c55c281ad994c36850905d82d546d980a7955bddfb285caf1",
+      "bytes": 20028
+    }
+  ],
+  "native_listing_sha256": "6b9a44b9f2fe15e71e560695e25396ae1aa65a8867f206e54c920050ef8f96e3"
+}
