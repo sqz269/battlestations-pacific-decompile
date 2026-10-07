@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T09:05:24.548990+00:00",
+  "updated_utc": "2026-10-07T09:10:22.897902+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -1055,5 +1055,136 @@
     "contract": "After existing required property/type validation, actual world-map decode consumes has_vector3 owning three binary32 lanes directly; no numeric reparse of retained payload. Preserve source-authored raw fallback, missing/type errors, absent subbag output preservation, F/I scalar handling and all other policy. Primary confirms native lookup/lane copy at4E6C72..7113 and excluded globals/twelve tail callbacks; existing read_world_map_settings is data projection only. One ignored actual-TU focused probe and installed16corner comparison; no new tracked tests/numeric ABI/provider recovery. HistoricalCRT/fullnative record/globals/tail/ABI/game remain unbound. Ghidra read-only worker.",
     "worker_ghidra_read_only": true,
     "primary_source_adapter_review": true
+  },
+  "land_state_entry_native_recovery": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ranges": [
+      {
+        "address": "009bed80",
+        "end_exclusive": "009bee25",
+        "bytes": 165,
+        "disk_live_match": true,
+        "sha256": "ca07807a443b51fe14018286b1783bc01d3d1eee7cbb8f17bebc23fb65cc730f"
+      },
+      {
+        "address": "009b21a0",
+        "end_exclusive": "009b21ba",
+        "bytes": 26,
+        "disk_live_match": true,
+        "sha256": "5c93d7039935c2239636db611b10e15b12438edd1a2b2dd54afabacdd19d3df7"
+      },
+      {
+        "address": "007b3db0",
+        "end_exclusive": "007b3db1",
+        "bytes": 1,
+        "disk_live_match": true,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+      },
+      {
+        "address": "009be150",
+        "end_exclusive": "009be28b",
+        "bytes": 315,
+        "disk_live_match": true,
+        "sha256": "48dfafc30042b9594b4ee2dbcee1ab2252b8039676f27a6134b1fabd9601cf1a"
+      }
+    ],
+    "constants": [
+      {
+        "address": "00ce3854",
+        "binary32_bits": "0x40400000",
+        "disk_live_match": true
+      },
+      {
+        "address": "00d7a24c",
+        "binary32_bits": "0x3f800000",
+        "disk_live_match": true
+      }
+    ],
+    "full_assembly_reviewed": true,
+    "source_implemented": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "evidence": "CC11 primary complete assembly and exact disk/live bytes: Follow009BED80 calls actual singleton then COMPLETE009BE150 into EXISTINGstate6C, does NOT replace6C. Reload6C and capturestate4 before ordered94/90zero stores, actualFLDparameter8/FSTPstate88,84zero/8CactualD7A24C1; capturedtaskC read AFTERstores. InitialCnull skips reindex/observer;nonnull C3E4=1 then complete7ED260;FRESHstate4/C/3D0leader afterreindex. Capturednewleader comparedold2C;unregisterold with SAMEembedded18 observer,storecapturedleader2C,registercapturednew iffnonnull;85zeroLAST. MoveTo7B3DB0soleRET;Park9B21A0 writes1Cpositivezero,readsactualCE3854=3,byte18zero,28=3. 9BE150 is forty orderedx87FLD/FSTPfloatcopies (0..64,6C..A0),byte68/69; NOTrawmemcpy orpointerreplacement. Completecopy/reindex/observer/services and actualsameborrowedviews/stableprofiles/lifetimes remain required; no source/nativeABI/game proof from this recovery."
+  },
+  "land_initial_state_entries_handoff": {
+    "id": "cc11_land_initial_state_entries",
+    "done": false,
+    "state": "approved_connected_initial_land_state_entries_required_native_services",
+    "worker": "land_retirement",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "xhigh",
+    "function_addresses": [
+      "009b21a0",
+      "007b3db0",
+      "009bed80"
+    ],
+    "output_files": [
+      "include/bsp/native_land_state_entries.hpp",
+      "src/native_land_state_entries.cpp",
+      "docs/PILOT_BOT_LAND_STATE_ENTRIES_CC11.md",
+      "reports/pilot_bot_land_state_entries_cc11.json"
+    ],
+    "depends_on": [
+      "cc11_land_outer_constructor"
+    ],
+    "reuses_worker_from": "cc11_land_outer_constructor",
+    "contract": "Opt-in abstract constructor-call adapter borrows SAME actual outer task view and final enter_state04 dispatches only actual matched MoveTo4C4/Follow500/Park620 executable-profile identities. Completebase/composite/owner/control/leader services remain abstract. CompleteordinaryFollow: actualsingleton->COMPLETE9BE150 into EXISTING6C (never cachepointer replacement);reload6C,capturestate4 BEFOREordered94/90zero,primaryfixedactual+8 FLD/FSTP tostate88,84zero,8Cactual1;readcapturedtaskC AFTERstores. InitialCnull skipreindex/observer;elseactualC3E4=1->COMPLETE7ED260->FRESHstate4/C/3D0capturednewleader. Ifdiffold2C:unregisterold withsameembedded18 observer,storecapturednew2C,registernewiffnonnull;85zeroLAST. Pureidentity-to-borrowedfields/address maps have no fieldreads/callbacks/allocation/default/profile simulation; services requiredcomplete and stable captured object lifetimes. MoveTosoleRET;Park1Cpositivezero,18bytezero,28actual3. Primary verified all3fullbodies,9BE150 fullorderedx8740float+2byte copy and disk/live constants. No delegatednewmath/ABI recovery; parametercopy/reindex/observer native services actualprofiles/arena/game remain unbound. Unsupported profiles/identities/structuralalias/fault/privateEH/concurrency/deathlifetimes excluded. Existing GameUnitsHost unchanged. One ignored actual-TU manifested focused outer->entry fixture; no new tracked tests. CMake/metadata/Ghidra primary, workerread-only.",
+    "worker_ghidra_read_only": true,
+    "primary_fixed_native_recovery": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "ranges": [
+        {
+          "address": "009bed80",
+          "end_exclusive": "009bee25",
+          "bytes": 165,
+          "disk_live_match": true,
+          "sha256": "ca07807a443b51fe14018286b1783bc01d3d1eee7cbb8f17bebc23fb65cc730f"
+        },
+        {
+          "address": "009b21a0",
+          "end_exclusive": "009b21ba",
+          "bytes": 26,
+          "disk_live_match": true,
+          "sha256": "5c93d7039935c2239636db611b10e15b12438edd1a2b2dd54afabacdd19d3df7"
+        },
+        {
+          "address": "007b3db0",
+          "end_exclusive": "007b3db1",
+          "bytes": 1,
+          "disk_live_match": true,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+        },
+        {
+          "address": "009be150",
+          "end_exclusive": "009be28b",
+          "bytes": 315,
+          "disk_live_match": true,
+          "sha256": "48dfafc30042b9594b4ee2dbcee1ab2252b8039676f27a6134b1fabd9601cf1a"
+        }
+      ],
+      "constants": [
+        {
+          "address": "00ce3854",
+          "binary32_bits": "0x40400000",
+          "disk_live_match": true
+        },
+        {
+          "address": "00d7a24c",
+          "binary32_bits": "0x3f800000",
+          "disk_live_match": true
+        }
+      ],
+      "full_assembly_reviewed": true,
+      "source_implemented": false,
+      "build_tested": false,
+      "fixture_tested": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "CC11 primary complete assembly and exact disk/live bytes: Follow009BED80 calls actual singleton then COMPLETE009BE150 into EXISTINGstate6C, does NOT replace6C. Reload6C and capturestate4 before ordered94/90zero stores, actualFLDparameter8/FSTPstate88,84zero/8CactualD7A24C1; capturedtaskC read AFTERstores. InitialCnull skips reindex/observer;nonnull C3E4=1 then complete7ED260;FRESHstate4/C/3D0leader afterreindex. Capturednewleader comparedold2C;unregisterold with SAMEembedded18 observer,storecapturedleader2C,registercapturednew iffnonnull;85zeroLAST. MoveTo7B3DB0soleRET;Park9B21A0 writes1Cpositivezero,readsactualCE3854=3,byte18zero,28=3. 9BE150 is forty orderedx87FLD/FSTPfloatcopies (0..64,6C..A0),byte68/69; NOTrawmemcpy orpointerreplacement. Completecopy/reindex/observer/services and actualsameborrowedviews/stableprofiles/lifetimes remain required; no source/nativeABI/game proof from this recovery."
+    }
   }
 }
