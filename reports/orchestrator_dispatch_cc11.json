@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T06:24:02.412297+00:00",
+  "updated_utc": "2026-10-07T06:25:17.222417+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -392,7 +392,26 @@
     "call_failures": 0,
     "tutorial_admission": "inherited GenerateInEngineMovie=true, ordinary mode9 fallback",
     "parser_abi": "canonical ECXbag plus3stackargs RET0Ch; no semanticreturn/formaltypes assigned",
-    "full_main_build": "pending current serialized build",
-    "next_worker_packet": "cc11_scene_library_loader"
+    "full_main_build": {
+      "source_revision": "a73ba158d6a97c1f7db1ceec843a62729064dd2b",
+      "configuration": "MSVC Win32 Release",
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "executable_sha256": "fea49b9f3100ffc3ad778e352a45670a314ba075ff25051e1ac5e805ff3ca898",
+      "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_scene_evidence_integrated_build.log",
+      "utc": "2026-10-07T06:25:17.222417+00:00",
+      "behavior_changed": false,
+      "direct_native_calls_checked": 13,
+      "call_failures": 0,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    "next_worker_packet": "cc11_scene_library_loader",
+    "ghidra_comments_saved": "local/ghidra-annotations-20261007T062226Z.json"
   }
 }
