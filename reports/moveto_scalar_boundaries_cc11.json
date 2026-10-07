@@ -1,0 +1,113 @@
+{
+  "packet": "cc11_moveto_scalar_boundaries",
+  "status": "supported actual callback-to-root adjustor definition and scalar returning-free gap repair; saved/exported/snapshotted",
+  "callback_adjustor": {
+    "entry": "009c2b70",
+    "end_exclusive": "009c2b78",
+    "bytes": 8,
+    "behavior": "SUB ECX,18h; tail JMP009C3D10; actual callback18 receiver adjusts to same whole MoveTo root",
+    "standalone_24b_receiver_valid": false
+  },
+  "definition_events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "009c2b70",
+        "end_address": "009c2b78"
+      },
+      "result": {
+        "success": true,
+        "start_address": "009c2b70",
+        "end_address": "009c2b77",
+        "bytes_disassembled": 8,
+        "message": "Successfully disassembled 8 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "009c2b70",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "009c2b70",
+        "function_name": "FUN_009c2b70",
+        "entry_point": "009c2b70",
+        "body_size": 8,
+        "message": "Function created successfully at 009c2b70"
+      }
+    },
+    {
+      "defined": "009c2b70",
+      "end": "009c2b78",
+      "name": null,
+      "after": "Function: FUN_009c2b70 at 009c2b70\nSignature: undefined FUN_009c2b70(void)\nEntry: 009c2b70\nBody: 009c2b70 - 009c2b77"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "scalar_flow_repairs": [
+    {
+      "function": "009c3d10",
+      "owner": "main",
+      "when": "2026-10-07T17:29:15Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "009c3d20",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "009c3d25",
+          "gap_end_exclusive": "009c3d28",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "009c3d20",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "009c3d25",
+            "gap_end_exclusive": "009c3d28",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 009c3d20 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "ghidra_saved": true,
+  "exports_refreshed": [
+    "009c2b70",
+    "009c3d10"
+  ],
+  "snapshot_internal_functions": 64276,
+  "snapshot_total_functions": 64718,
+  "no_inline_script_or_body_extension_attempt": true,
+  "Source_scalar_provider_integrated": false,
+  "native_abi_proved": false,
+  "game_validated": false
+}

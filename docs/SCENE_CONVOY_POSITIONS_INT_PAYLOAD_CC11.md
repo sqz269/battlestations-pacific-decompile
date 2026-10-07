@@ -104,3 +104,7 @@ older inputs; game_main and old SceneContents are excluded. Uninvoked real
 support establishes linkage, not execution. Recipes/hashes are in the ignored
 manifest and JSON report. Root post-merge full main build/CTest and independent
 verification remain pending; no whole native attach, ABI or game proof follows.
+
+## Primary integration
+
+Main `99bef9d8df06491eb890ffa88dda3bb3b627318b` passed the full Win32 build and all three existing CTests. Root rebuilt three actual parser/consumer/probe TUs with 179 current Source/header/fixture inputs (177 compiler includes), 17 installed files and 77 current support inputs pinned before/after. The independent fixture reproduced all 16 owning-I witnesses, fill/index/skip and authored-symbol precedence, plus unchanged fallback and compatibility policies. All 127 bytes across the three bounded native spans matched disk/live and all 17 inspected direct rows passed. Whole host/units, enum ordinal and game binding remain unproved. The PE32 asInvoker manifest was verified. No tracked tests were added.

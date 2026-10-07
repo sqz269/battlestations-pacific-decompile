@@ -124,3 +124,7 @@ checks, fresh-TU commands, hashes and limits. The ignored manifest is
 `local/cc11_land_moveto_constructor_manifest.json`; the manifested executable is
 `local/cc11_land_moveto_constructor_probe.exe`. Root owns source registration,
 independent probe and full main build. No tracked tests or shared files changed.
+
+## Primary integration
+
+Main `99bef9d8df06491eb890ffa88dda3bb3b627318b` passed the full Win32 build and all three existing CTests. Root independently rebuilt five actual constructor/observer-edges/observer-lifetime/shared-state/probe TUs, pinned 25 current Source/header/fixture inputs (20 compiler includes), three current libraries and the PE before/after, and reproduced 57 assertions. All 164 original bytes match disk/live/fixture literals and both direct rows passed. Fresh COFF has exactly one genuine registration-call relocation and retains the publication order through integer word stores. The original third-word label remains a hypothesis, with qualified MOVSS evidence appended to preserved history; manager/arena/private-EH/ABI/game qualifications remain. The PE32 asInvoker manifest was verified. No tracked tests were added.

@@ -663,5 +663,59 @@
   "next_boundaries": {
     "Follow009C2980": "213B complete native evidence but actual42E740 allocation/publication and caller x87 kernel remain external; not ported",
     "whole_constructor": "all composite/arena/privateEH/full profile/lifetime services still required; no promotion"
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T17:37:00.357178+00:00",
+    "worker_revision": "341636cc04955897ffcca51c14ffa65342d6039a",
+    "integrated_revision": "99bef9d8df06491eb890ffa88dda3bb3b627318b",
+    "full_main_build_revision": "99bef9d8df06491eb890ffa88dda3bb3b627318b",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_positions_moveto_integrated_build.log",
+    "game_executable_sha256": "707a328b316acb269274f1b74c2f07ee017133134e96a3eb8443b4b1b481ce19",
+    "probe_recipe": "local/cc11_moveto_constructor_root.cmd",
+    "probe_log": "local/cc11_moveto_constructor_root_compile.log",
+    "probe_sha256": "36a094e045132ab8a59da764dffb11f9f1eaa456596a6786ca483fc24c76b8c6",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "fresh_actual_translation_units": 5,
+    "stable_current_Source_provider_header_fixture_inputs": 25,
+    "actual_compiler_includes": 20,
+    "stable_installed_inputs": 0,
+    "stable_current_link_inputs": 3,
+    "native_bodies": [
+      {
+        "address": "009C2AC0",
+        "end_exclusive": "009C2B64",
+        "bytes": 164,
+        "sha256": "9160d22694c0335e800fa049a58458958603a352a1d2917e90043c038efda669",
+        "disk_live": "MATCH",
+        "fixture_literals_match": true
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "checks": 57,
+    "complete_native_bytes": 164,
+    "original_natural_CALL_relocations": 1,
+    "native_direct_rows_checked": 2,
+    "native_direct_rows_failed": 0,
+    "fresh_actual_constructor_observer_edges_observer_lifetime_shared_state_TUs": true,
+    "actual_runtime_manager_lookup_exercised": false,
+    "constructor_owner_token_only": true,
+    "raw_profiles_callable": false,
+    "emitted_field_publication_order_inspected": true,
+    "Source_COFF_bytes": 184,
+    "Source_COFF_instruction_count": 51,
+    "Source_COFF_registration_CALL_relocations": 1,
+    "Source_COFF_numeric_kernel_present": false,
+    "word38_semantic_mode_claimed": false,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T173719Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "009c2ac0"
+    ]
+  },
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3 CTests passed; native ABI/game unbound"
 }
