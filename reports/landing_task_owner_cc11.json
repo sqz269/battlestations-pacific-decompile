@@ -1,0 +1,61 @@
+{
+  "packet": "cc11_land_owner",
+  "status": "native_ownership_and_death_order_audit_no_cpp_binding",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "BSP Client.verify before each live batch; raw bytes decoded from original disk image"
+  },
+  "document": "docs/LANDING_TASK_OWNER_CC11.md",
+  "routines": [
+    {"entry": "0099A880", "range": "0099A880-0099A934", "coverage": "complete", "abi": "ECX storage, EAX=this, plain RET", "role": "owning pilot bot constructor; installs00D1F348, zeroes both task vectors"},
+    {"entry": "0099A830", "range": "0099A830-0099A847", "coverage": "complete", "abi": "ECX bot; tail jump to00999EE0", "role": "disable flags then retire-all/drain"},
+    {"entry": "00999E40", "range": "00999E40-00999EDF", "coverage": "complete assembly", "abi": "ECX bot; RET", "role": "append active pointers to retired in order, clear active count"},
+    {"entry": "00999EE0", "range": "00999EE0-00999F41", "coverage": "complete assembly", "abi": "ECX bot; RET", "role": "retired head hook+58 then scalar delete1 before shift/count decrement"},
+    {"entry": "0099A720", "range": "0099A720-0099A7F7", "coverage": "complete assembly", "abi": "ECX bot; RET", "role": "member destructor deletes active tasks only, destroys embedded state, frees both pointer arrays"},
+    {"entry": "0099A850", "range": "0099A850-0099A86D", "coverage": "complete assembly", "abi": "ECX bot, stack flags; RET4", "role": "scalar deleting wrapper, free bit0"},
+    {"entry": "007BCAA0", "range": "007BCAA0-007BCB27", "coverage": "complete destruction ordering", "abi": "ECX plane; RET", "role": "base notification -> squadron remove -> DF4 disable/drop ->6DC disable/drop"},
+    {"entry": "009B2C80", "range": "009B2C80-009B2D61", "coverage": "complete member cleanup listing", "abi": "ECX approach; RET", "role": "member destructors identified; their observer internals remain external"}
+  ],
+  "calls": [
+    {"address": "0099A8A4", "native": "0072BBD0", "function": "0099A880"},
+    {"address": "0099A8E8", "native": "00BF7CD1", "function": "0099A880"},
+    {"address": "0099A83B", "native": "00999E40", "function": "0099A830"},
+    {"address": "0099A843", "native": "00999EE0", "function": "0099A830", "kind": "tail_jump"},
+    {"address": "00999E68", "native": "00BF55BE", "function": "00999E40"},
+    {"address": "00999E9F", "native": "00BF6989", "function": "00999E40"},
+    {"address": "0099A7A3", "native": "00BF7C6E", "function": "0099A720"},
+    {"address": "0099A7B0", "native": "00BF6989", "function": "0099A720"},
+    {"address": "0099A7C0", "native": "00BF6989", "function": "0099A720"},
+    {"address": "0099A7D2", "native": "00695870", "function": "0099A720"},
+    {"address": "0099A7E1", "native": "00875B30", "function": "0099A720"},
+    {"address": "0099A853", "native": "0099A720", "function": "0099A850"},
+    {"address": "0099A860", "native": "00BF65AC", "function": "0099A850"},
+    {"address": "007BCAD9", "native": "00959450", "function": "007BCAA0"},
+    {"address": "007BCAEB", "native": "007F3970", "function": "007BCAA0"},
+    {"address": "007D66E7", "native": "0099A880", "function": "007D5D20"},
+    {"address": "007D71FE", "native": "0099A880", "function": "007D5D20"}
+  ],
+  "raw_and_indirect_evidence": [
+    {"range": "007CA28F-007CA2D4", "caller_claim": "slice associated with007C9770 init, outside its current truncated body", "call_site": "007CA2AE", "target": "0099A880", "post_call": "007CA2B7 storesEAX atplane+DF4;007CA2D3 bindsplane+310 throughvt+4", "instruction_starts_checked": true, "disk_listing_checked": true},
+    {"table": "00D1F348", "slot": "10h", "cell": "00D1F358", "target": "0099A830", "live_bytes_checked": true},
+    {"site": "007BCAFF", "receiver": "plane+DF4", "dispatch": "vtable+10h", "resolved_condition": "producer-established pilot-bot profile still installed"},
+    {"site": "00999EFA", "receiver": "retired head", "dispatch": "vtable+58h", "land_target": "009B33F0"},
+    {"site": "00999F0B", "receiver": "reloaded retired head", "dispatch": "scalar delete flag1", "land_target": "009B4100"}
+  ],
+  "corrections": [
+    "The relevant pilot bot is produced atplane+DF4, not inferred fromplane+6DC.",
+    "Pilot-bot vt+10 is0099A830, which retires and drains tasks; the base flag-only0071C4A0 does not define this override.",
+    "0099A880 is an object constructor that calls a CRT array helper, not the helper itself.",
+    "0099A720 is member cleanup with plainRET;0099A850 is its scalar deleting wrapper.",
+    "Assembly continues after CRT free in00999E40/0099A720; misleading no-return pseudocode was not copied."
+  ],
+  "limits": {
+    "cpp_changed": false,
+    "game_units_host_wired": false,
+    "native_runtime_test": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "remaining": ["cached task observer/lifetime effects from base destroyed notification", "session-node bot deletion service", "stable active/retired source identities", "reentrancy and alternative runtime profiles", "integration with actual task scheduler"]
+  }
+}

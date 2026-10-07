@@ -13268,6 +13268,43 @@
         "local/native_session_message_be_cc11.obj",
         "local/plane_squadron_host_cc11.obj"
       ]
+    },
+    {
+      "id": "cc11_land_owner",
+      "state": "native_ownership_and_death_order_audit_integrated_no_cpp_binding",
+      "done": true,
+      "worker": "primary",
+      "model": "gpt-6-astra",
+      "function_addresses": [
+        "0099a830",
+        "00999e40",
+        "00999ee0",
+        "0099a880",
+        "0099a720",
+        "0099a850",
+        "007bcaa0",
+        "007c9770",
+        "007d5d20",
+        "009b2c80"
+      ],
+      "code_ranges": [
+        "007ca28f-007ca2d5"
+      ],
+      "output_files": [
+        "docs/LANDING_TASK_OWNER_CC11.md",
+        "reports/landing_task_owner_cc11.json",
+        "config/names/00990000.jsonl",
+        "config/names/007b0000.jsonl"
+      ],
+      "depends_on": [
+        "cc11_land_retirement"
+      ],
+      "contract": "Resolve actual pilot-bot profile and active/retired task teardown after plane membership removal; preserve cached lifetime and alternative-profile uncertainty.",
+      "report": "reports/landing_task_owner_cc11.json",
+      "native_call_rows_checked": 17,
+      "cpp_changed": false,
+      "abi_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

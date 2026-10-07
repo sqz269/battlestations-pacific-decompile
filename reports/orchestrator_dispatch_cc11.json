@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:15:46.157723+00:00",
+  "updated_utc": "2026-10-07T05:24:38.288131+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -230,5 +230,16 @@
         "source_profile": "reused landing worker in progress"
       }
     }
+  },
+  "primary_task_owner_audit": {
+    "packet": "cc11_land_owner",
+    "report": "reports/landing_task_owner_cc11.json",
+    "direct_call_rows_checked": 17,
+    "failures": 0,
+    "finding": "Pilot bot atplane+DF4 usesprofile00D1F348+10 ->0099A830, retire-all/drain after squadron removal. Member destructor path is distinct.",
+    "native_annotations_saved": true,
+    "affected_exports_refreshed": true,
+    "cpp_changed": false,
+    "lifetime_and_runtime_binding": "pending"
   }
 }
