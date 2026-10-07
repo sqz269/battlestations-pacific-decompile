@@ -26,6 +26,7 @@
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/shipyard_production.hpp"
 #include "bsp/simulation_gate.hpp"
+#include "bsp/unit_kind_query.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/gun_fire_points.hpp"
@@ -1547,7 +1548,27 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             SceneDirectorEnables enables;
             if (keys[0] != nullptr) enables.artillery = scene_property_bool(keys[0]);
             if (keys[1] != nullptr) enables.anti_air = scene_property_bool(keys[1]);
-            if (keys[2] != nullptr) enables.torpedo = scene_property_bool(keys[2]);
+            if (keys[2] != nullptr) {
+                enables.torpedo = scene_property_bool(keys[2]);
+                if constexpr (kShipDirectorClass8Bound) {
+                    // 00823941..00823955: an explicit false becomes 1 only
+                    // when the instantiated unit's vt[5Ch](8) answers true.
+                    // Match create_units' actual descriptor resolution;
+                    // Sub groups and SubmarineGen labels do not supply it.
+                    if (!enables.torpedo && owner.lua != nullptr
+                            && klass->creator_kind == SceneEntityCreatorKind::UnitClassFactory) {
+                        const GameVehicleClassRow row = owner.lua->read_vehicle_class_row(type_id);
+                        const VehicleClassDescriptorRow* kind = row.found
+                            ? vehicle_class_kind_row(row.type.c_str()) : nullptr;
+                        if (kind != nullptr && unit_is_kind_of(static_cast<int>(kind->kind), 8)) {
+                            enables.torpedo = true;
+                            owner.log.notef("ship director class8 override: unit=%s type_id=%d "
+                                "class_id=%d raw_false=1 torpedo=1 (0082394A)",
+                                entity.name.c_str(), type_id, static_cast<int>(kind->kind));
+                        }
+                    }
+                }
+            }
             if (keys[3] != nullptr) enables.depth_charge = scene_property_bool(keys[3]);
             scene_director_enables_set(entity.name, enables);
         }
