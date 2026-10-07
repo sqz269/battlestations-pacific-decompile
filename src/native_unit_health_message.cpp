@@ -175,4 +175,34 @@ void NativeUnitHealthMessageFlags4Calls::route_d2_flags4_0077c2a0(void* receiver
     }
     // Flags4 has no local bit, so no enqueue, clone, out-clear or frame release.
 }
+void NativeUnitHealthMessagePeerSendCalls::send_message_to_nonlocal_peer_00770b50(
+    void* session, void* target, M* message) {
+    send_session_message_to_nonlocal_peer_00770b50(session, target, &message->base);
+}
+
+void NativeUnitHealthMessagePeerSendCalls::send_session_message_to_nonlocal_peer_00770b50(
+    void* session, void* target, NativeSessionMessageStorage* message) {
+    const auto fields = bind_peer_send_session(session);
+    void* primary = fields.primary_transport_188;
+    if (primary != nullptr) {
+        const auto peers = bind_peer_send_primary(primary);
+        void* local_target = nullptr;
+        if (peers.peer_count_10 != 0) {
+            auto* sentinel = peers.sentinel_0c;
+            auto* first = static_cast<const volatile NativeUnitHealthRoutePeerNode&>(*sentinel).next_00;
+            if (first == sentinel) invalid_route_iterator_00bf6713();
+            local_target = static_cast<const volatile NativeUnitHealthRoutePeerNode&>(*first).peer_08;
+        }
+        if (local_target == target) return;
+        primary = fields.primary_transport_188;
+        send_locked_session_message_00783dc0(primary, target, message);
+        return;
+    }
+    if (fields.secondary_transport_18c == nullptr) return;
+    const volatile U* profile = static_cast<const volatile NativeSessionMessageStorage&>(*message).profile_00;
+    using Query = bool(__thiscall*)(const NativeSessionMessageStorage*, U);
+    if (!reinterpret_cast<Query>(profile[3])(message, 0x29)) return;
+    void* secondary = fields.secondary_transport_18c;
+    send_locked_session_message_00783dc0(secondary, target, message);
+}
 } // namespace bsp

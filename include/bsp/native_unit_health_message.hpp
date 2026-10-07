@@ -115,8 +115,43 @@ private:
     void* volatile& current_game_00e188a8_;
     NativeUnitHealthRouteGlobals route_globals_;
 };
-// Callbacks may replace game/sender/valid links while all reached backing stays
-// live. Concurrent mutation between ordinary field observations, other message
+struct NativeSessionPeerSendFields {
+    void* const volatile& primary_transport_188;
+    void* const volatile& secondary_transport_18c;
+};
+struct NativeSessionPrimaryPeerFields {
+    NativeUnitHealthRoutePeerNode* const volatile& sentinel_0c;
+    const volatile std::uint32_t& peer_count_10;
+};
+
+// Opt-in complete ordinary00770B50 selector on the admitted health route.
+// The passed session stays captured; this body does not reread the game cell.
+// The primary list node+8 already IS the local target (no peer+50 lookup).
+class NativeUnitHealthMessagePeerSendCalls : public NativeUnitHealthMessageFlags4Calls {
+public:
+    using NativeUnitHealthMessageFlags4Calls::NativeUnitHealthMessageFlags4Calls;
+protected:
+    // Also accepts a real translated common message header/profile. This is
+    // the same complete selector, not a concrete type29 payload or factory.
+    void send_session_message_to_nonlocal_peer_00770b50(void* actual_session,
+        void* actual_target, NativeSessionMessageStorage* borrowed_message);
+    // Pure aliases to actual backing, without early value observations,
+    // callbacks, allocation, ownership changes or FP changes.
+    virtual NativeSessionPeerSendFields bind_peer_send_session(void*) noexcept = 0;
+    virtual NativeSessionPrimaryPeerFields bind_peer_send_primary(void*) noexcept = 0;
+    // Required COMPLETE operation: actual target+4 Enter, increment+18,
+    //00783C80 serialization, reload target+4, decrement+18 and Leave. No
+    // invented lock/RAII, stream, success, allocator or transport policy.
+    // Consume synchronously or retain an owned representation; never retain
+    // or release this borrowed message/frame. All reached backing stays live.
+    virtual void send_locked_session_message_00783dc0(void* actual_transport,
+        void* actual_target, NativeSessionMessageStorage* borrowed_message) = 0;
+private:
+    void send_message_to_nonlocal_peer_00770b50(void* actual_session,
+        void* actual_target, NativeUnitHealthMessage* borrowed_message) final;
+};
+// In the flags4 route, callbacks may replace game/sender/valid links while all
+// backing stays live. Its concurrent field mutation, other message
 // profiles, invalid or nonterminating traversals and fault paths are outside.
 // New source interfaces cover ordinary returning calls on valid live backing.
 // Cursor bounds/error contracts are those of the existing native cursor
