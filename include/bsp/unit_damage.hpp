@@ -154,8 +154,8 @@ UnitDifficultyScale scale_damage_by_difficulty(float amount, const float* table,
                                                std::size_t count, std::size_t level,
                                                bool enabled) noexcept;
 
-// The result of 00877B90. `dispatch_health_changed` drives vtable[1B0h] and
-// `replicated_byte_changed` drives the host's session message.
+// Snapshot result for the data rules of 00877B90. The callback/replication
+// booleans describe only these supplied values, not post-callback live state.
 struct UnitHealthWrite {
     bool wrote{false};
     float stored_health{0.0f};
@@ -170,7 +170,9 @@ struct UnitHealthWrite {
 // this is a data-result projection, not native exception/status/ABI parity.
 // Marker comparison uses the original float-load/double-subtract x87 sequence
 // under the caller's ambient control word; it consumes no caller stack entries.
-// Callback timing and full exception/status/ABI behavior remain partial.
+// This snapshot result cannot model callback mutations; the complete bound
+// ordinary caller below does not use it to precompute callback/byte decisions.
+// Full exception/status/ABI behavior remains partial.
 // docs/UNIT_HEALTH_MARKER_X87_CC11.md.
 UnitHealthWrite set_health_00877b90(const UnitHealth& health,
                                     float requested,
@@ -200,6 +202,62 @@ UnitSinkPivot sink_pivot_00891b20(float descriptor_half_width,
 // below reach. No default implementations: nothing here stands in for
 // unrecovered game behaviour.
 // ---------------------------------------------------------------------------
+// Borrowed ACTUAL cells of one live receiver, not a layout overlay or copied
+// game-host health record. Cells remain valid across callbacks and reentrancy.
+struct NativeUnitHealthSetterFields {
+    void* identity;
+    const volatile std::uint8_t& released_5d;
+    volatile float& cached_fraction_164;
+    volatile std::uint32_t& full_marker_2e8;
+    const volatile float& maximum_36c;
+    volatile float& health_370;
+    volatile std::int32_t& replicated_byte_374;
+};
+struct NativeUnitHealthSetterGlobals {
+    void* volatile& current_game_00e188a8;
+    const volatile std::uint32_t* actual_0109eea4;
+};
+// Exactly the original caller's 20h uninitialized stack storage. Construction
+// must publish the real complete D2 message profile/fields; no arena or profile
+// is fabricated here. The returned identity stays valid through route return.
+struct alignas(4) NativeUnitHealthMessageFrame { std::byte bytes[0x20]; };
+static_assert(sizeof(NativeUnitHealthMessageFrame) == 0x20);
+
+class NativeUnitHealthSetterCalls {
+public:
+    virtual ~NativeUnitHealthSetterCalls() = default;
+    // Pure access to actual current backing, with no callbacks, snapshots or
+    // FP changes. Table entries are dispatch tokens for the owning runtime.
+    virtual const volatile std::uint32_t* primary_table(void* receiver) noexcept = 0;
+    virtual const volatile std::int32_t& session_mode_1fe4(void* game) noexcept = 0;
+    // Complete required operations, not no-op/default providers. The admitted
+    // float return is spilled to binary32 before the shared native clamp/cache
+    // suffix; no arbitrary extended ST0 return/ABI equivalence is claimed.
+    virtual void call_health_changed_1b0(std::uint32_t entry, void* receiver) = 0;
+    virtual float call_health_fraction_110(std::uint32_t entry, void* receiver) = 0;
+    virtual void* construct_health_message_00876d30(NativeUnitHealthMessageFrame&,
+        std::int32_t byte) = 0;
+    // Receives the constructor's returned identity, flags4 and null final arg.
+    // Route/clone/transport ownership remains the complete actual router's
+    // responsibility; the stack frame cannot be retained beyond this call.
+    virtual void route_health_message_0077c2a0(void* receiver, void* message,
+        std::uint32_t flags, void** clear_on_local_delivery) = 0;
+};
+struct NativeUnitHealthSetterBinding {
+    NativeUnitHealthSetterFields unit;
+    NativeUnitHealthSetterGlobals globals;
+    NativeUnitHealthSetterCalls& calls;
+};
+
+// Complete ordinary caller including live getter/cache and message call sites.
+// Callbacks/provider/constructor may reenter and mutate actual fields. Required
+// reached identities/cells stay live; no added receiver-death or reentry guard.
+// All reached bindings must be complete and return normally. Masked FP data and
+// sequencing are checked; original faults/private EH, unmasked exceptions,
+// native ABI and gameplay integration remain outside this source contract.
+// docs/UNIT_HEALTH_SETTER_SEQUENCE_CC11.md.
+void set_native_unit_health_00877b90(NativeUnitHealthSetterBinding, float requested);
+
 struct UnitDamageHost {
     virtual ~UnitDamageHost() = default;
 
@@ -295,6 +353,12 @@ struct UnitDamageHost {
     virtual std::size_t group_vector_size(std::uint32_t group) = 0;       // ([+39Ch]-[+398h])/4
     virtual std::uint32_t group_vector_member(std::uint32_t group, std::size_t index) = 0;
     virtual void clear_group_vector_member(std::uint32_t group, std::size_t index) = 0;
+
+    // Required concrete binding for the setter wrapper, without observing field
+    // values, callbacks, allocation or FP changes while assembling the views.
+    // Appended so existing source-interface virtuals retain their order.
+    virtual NativeUnitHealthSetterBinding bind_health_setter_00877b90(
+        std::uint32_t entity) noexcept = 0;
 };
 
 // Class ids the Kill binding tests through vtable[5Ch] at 008AC729 / 008AC740.
