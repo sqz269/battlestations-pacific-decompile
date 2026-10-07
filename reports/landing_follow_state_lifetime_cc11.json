@@ -1,6 +1,6 @@
 {
   "packet": "cc11_land_follow_state_lifetime",
-  "status": "complete conditional ordinary SOURCE two-body Follow-root closure; native executable class/constructor/arena/observer lifetime/privateEH/ABI/game binding UNBOUND",
+  "status": "reviewed bounded Source integrated; independent current-main fixture and full Win32/all3 CTests passed; native ABI/game unbound",
   "baseline": "4f59c8d00aa1f98c51aba47bcb500235fe38b82c",
   "owned_files": [
     "include/bsp/native_land_follow_state_lifetime.hpp",
@@ -663,8 +663,73 @@
         "uiAccess": "false"
       }
     ],
-    "native_call_verifier": {"exit_code":0,"output":"reports/landing_follow_state_lifetime_cc11.json: 5 call rows checked, 0 failed"},
+    "native_call_verifier": {
+      "exit_code": 0,
+      "output": "reports/landing_follow_state_lifetime_cc11.json: 5 call rows checked, 0 failed"
+    },
     "diff_check": "git diff --check and staged git diff --cached --check passed; exactly four owned new files",
     "full_main_build": "Worker did NOT run full build; root owns CMake/serialized mainbuild/independent integration and annotation."
+  },
+  "primary_integration": {
+    "utc": "2026-10-07T17:11:00.300146+00:00",
+    "worker_revision": "9b0d0db420a757294b2358aad41f90b1bc94c8a0",
+    "integrated_revision": "a121efaa03744877e75c4ef324181d9744d863f0",
+    "full_main_build_revision": "a121efaa03744877e75c4ef324181d9744d863f0",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_convoy_follow_integrated_build.log",
+    "game_executable_sha256": "b75e5c0d121fe6dcf166ac6711a36d02362a05fc3d33725b11abfc56a91e3cdd",
+    "probe_recipe": "local/cc11_follow_state_root.cmd",
+    "probe_log": "local/cc11_follow_state_root_compile.log",
+    "probe_sha256": "024de73e977690038f762412903cb3b50a44e62e46f3cacee8442b14c7ab16bc",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "fresh_actual_translation_units": 5,
+    "stable_current_Source_provider_header_fixture_inputs": 43,
+    "actual_compiler_includes": 35,
+    "stable_installed_inputs": 0,
+    "stable_current_link_inputs": 3,
+    "native_bodies": [
+      {
+        "address": "007B6630",
+        "end_exclusive": "007B667C",
+        "bytes": 76,
+        "sha256": "e2d315bcb4d600b62dfbb3d4ab3797deea98e64d81a8fe651989156753f4ac72",
+        "disk_live": "MATCH",
+        "fixture_literals_match": true
+      },
+      {
+        "address": "009C2A60",
+        "end_exclusive": "009C2AC0",
+        "bytes": 96,
+        "sha256": "629d4d0d882d3dcb803430e04627201cf40047a30646d3c11580c5d86ff297e1",
+        "disk_live": "MATCH",
+        "fixture_literals_match": true
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "checks": 78,
+    "complete_ordinary_bodies": 2,
+    "complete_native_bytes": 172,
+    "original_natural_CALL_relocations": 5,
+    "original_ordinary_flags0_used": true,
+    "original_scalar_flags0_separately_executed": false,
+    "original_scalar_flags1_separate_actual_CRT_98h_root": true,
+    "source_scalar_flags0_embedded_borrowed_98h_root": true,
+    "native_direct_rows_checked": 5,
+    "native_direct_rows_failed": 0,
+    "actual_runtime_manager_lookup_exercised": false,
+    "structural_native_reentry_proved": false,
+    "fresh_genuine_follow_observer_shared_state_and_observer_lifetime_TUs": true,
+    "emitted_post_helper_low_flag_order_inspected": true,
+    "stored_shared_7B45F0_body_still_truncated": true,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T171110Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "007b6630",
+      "009c2a60"
+    ]
   }
 }

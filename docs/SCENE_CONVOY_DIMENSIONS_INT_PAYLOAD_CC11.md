@@ -96,8 +96,8 @@ entities. They provide parser regression inputs, not installed mission or game
 execution evidence for this change. No tracked tests are added.
 
 Strict Win32 compile/link/probe exit 0/0/0; PE014C embeds asInvoker via
-`/MANIFEST:EMBED`. All 179 active production Source inputs (177 actual project
-includes plus parser/changed CPP), 17 installed inputs and 77 support inputs
+`/MANIFEST:EMBED`. All 178 active production Source inputs (177 actual project
+includes, including the changed CPP, plus the parser), 17 installed inputs and 77 support inputs
 have equal pre/post hashes. Current d670 fully I/B-rebuilt support was frozen
 as three libraries and 74 actual Game objects with original-pre/copy/original-post
 equality; prior records provided only filenames, not reused binaries. Fresh
@@ -106,3 +106,7 @@ old SceneContents are excluded. Uninvoked real dependencies establish linkage,
 not game execution. Recipes and complete hashes are in the ignored manifest
 and JSON report. Primary post-merge full build/CTest and independent verification
 remain pending; whole native attach/ABI/original-game validation is unclaimed.
+
+## Primary integration
+
+Main `a121efaa03744877e75c4ef324181d9744d863f0` passed the full Win32 build and all three existing CTests. Root rebuilt three actual parser/consumer/probe TUs against main, pinned 179 Source/header/fixture inputs (177 compiler includes), 17 installed files and 77 current support inputs before/after, and reproduced the owning/raw/reset/six-slot checks. The worker production-input prose is corrected to 178; its report manifest already had that correct count. All 50 native bytes matched disk/live and both direct rows passed. Whole host/units and enum/runtime binding remain unproved. The PE32 asInvoker manifest was verified. No tracked tests were added.

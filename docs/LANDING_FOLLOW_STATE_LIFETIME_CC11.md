@@ -130,3 +130,7 @@ Probe paths are the ignored `local/cc11_land_follow_state_lifetime_probe.cpp`
 and `.exe`; Source object is `local/cc11_land_follow_state_lifetime.obj`.
 Root owns CMake registration, full main build, annotations, metadata and
 independent integration. Workers made no shared or Ghidra writes.
+
+## Primary integration
+
+Main `a121efaa03744877e75c4ef324181d9744d863f0` passed the full Win32 build and all three existing CTests. Root independently rebuilt five actual Follow-state/Follow-observer/shared-state/observer-lifetime/fixture TUs, verified 43 current Source/header/fixture inputs (35 compiler includes), three current libraries and the PE before/after, and reproduced 78 assertions. Both complete bodies (172 bytes) match disk/live/fixture literals; five direct calls passed. Fresh emitted helper, post-helper low flag, root free and returned identity ordering was inspected. Original scalar flags0 remains unexecuted, while original ordinary and scalar flags1 paths passed; all constructor/manager/EH/ABI/game qualifications remain. The PE32 asInvoker manifest was verified. No tracked tests were added.
