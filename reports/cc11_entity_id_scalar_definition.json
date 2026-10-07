@@ -1,0 +1,73 @@
+{
+ "events": [
+  {
+   "recreate": "00951790",
+   "previous": "Function: CG_scalar_deleting_dtor_00951790 at 00951790\nSignature: undefined CG_scalar_deleting_dtor_00951790(void)\nEntry: 00951790\nBody: 00951790 - 009517a1",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00951790"
+   },
+   "result": {
+    "success": true,
+    "address": "00951790",
+    "deleted_function": "CG_scalar_deleting_dtor_00951790",
+    "body_size": 18,
+    "message": "Function 'CG_scalar_deleting_dtor_00951790' deleted at 00951790"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00951790",
+    "end_address": "009517bb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00951790",
+    "end_address": "009517ba",
+    "bytes_disassembled": 43,
+    "message": "Successfully disassembled 43 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00951790",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00951790",
+    "function_name": "CG_scalar_deleting_dtor_00951790",
+    "entry_point": "00951790",
+    "body_size": 43,
+    "message": "Function created successfully at 00951790"
+   }
+  },
+  {
+   "defined": "00951790",
+   "end": "009517bb",
+   "name": null,
+   "after": "Function: CG_scalar_deleting_dtor_00951790 at 00951790\nSignature: undefined CG_scalar_deleting_dtor_00951790(void)\nEntry: 00951790\nBody: 00951790 - 009517ba"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

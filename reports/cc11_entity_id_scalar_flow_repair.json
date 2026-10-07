@@ -1,0 +1,61 @@
+{
+ "repairs": [
+  {
+   "function": "00951790",
+   "owner": "main",
+   "when": "2026-10-07T20:27:25Z",
+   "decompile_lines_before": 9,
+   "gaps": [
+    {
+     "site": "0095179d",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "009517a2",
+     "gap_end_exclusive": "009517bb",
+     "bytes": 25,
+     "after_call": true,
+     "sha256": "67b2dd9cf306fa3d5ea7cdff9317ab4023514c2015307bab759b3883d9de2854"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "0095179d",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "009517a2",
+      "gap_end_exclusive": "009517bb",
+      "bytes": 25,
+      "after_call": true,
+      "sha256": "67b2dd9cf306fa3d5ea7cdff9317ab4023514c2015307bab759b3883d9de2854"
+     },
+     "clear": "Success: Cleared flow override at 0095179d (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 25 byte(s)"
+    },
+    {
+     "explicit_tail_call": "0095179d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 0095179d (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "009517ad",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 009517ad (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "009517bb",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "897fdfdf94cf6eaa5180579d7263697a2ee0d906101f000c679bc389dd6a0746",
+   "body_before": "Function: CG_scalar_deleting_dtor_00951790 at 00951790\nSignature: undefined CG_scalar_deleting_dtor_00951790(void)\nEntry: 00951790\nBody: 00951790 - 009517a1",
+   "decompile_lines_after": 12,
+   "gaps_remaining": 1,
+   "body_after": "Function: CG_scalar_deleting_dtor_00951790 at 00951790\nSignature: undefined CG_scalar_deleting_dtor_00951790(void)\nEntry: 00951790\nBody: 00951790 - 009517a1",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

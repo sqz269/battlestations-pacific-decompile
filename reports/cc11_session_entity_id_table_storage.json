@@ -342,6 +342,14 @@
       "function": "009517C0",
       "instruction_bytes": "e855ffffff",
       "kind": "direct_call"
+    },
+    {
+      "address": "009517AD",
+      "native": "00BF65AC",
+      "function": "00951790",
+      "instruction_bytes": "e8fa4d2a00",
+      "kind": "direct_call",
+      "primary_added_after_supported_stored_body_repair": true
     }
   ],
   "complete_PE_tail_call_rows": [
@@ -2249,5 +2257,16 @@
       "bytes": 15894,
       "sha256": "e1d5818baec1c9c1ac182a77270661defad41a7e6444d30fae7728bc3cc2abdf"
     }
-  ]
+  ],
+  "primary_Ghidra_repair": {
+    "flow_record": "reports/cc11_entity_id_scalar_flow_repair.json",
+    "definition_record": "reports/cc11_entity_id_scalar_definition.json",
+    "stored_body": "00951790..009517BA inclusive",
+    "complete_native_bytes": 43,
+    "whole_stored_body_complete": true,
+    "signature_preserved": "undefined CG_scalar_deleting_dtor_00951790(void)",
+    "compiler_name_and_tag_preserved": true,
+    "initial_tail_decode_was_partial": true,
+    "recreated_using_supported_locked_tool": true
+  }
 }
