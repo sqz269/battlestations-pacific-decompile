@@ -71,3 +71,9 @@ and message-pointer words. The controlled component frame does not close those
 callers, promotion/removal, class dispatch, arena ownership or game behavior.
 The primary integration receipt records the full repository build, existing
 CTest results, saved annotations, exports and index refresh when completed.
+
+## Primary integration
+
+Complete raw 277-byte/83-instruction entry, Source code byte-identical, no relocations/bridges. Signed slot scans retain actual return/following caller words, fresh member/count loads and exact publications. One unchanged-original controlled real-frame family passes 32 checks/five cases, full storage/registers/flags/stack. Source array algorithm remains separate. Actual original caller frames/class/fault/concurrency/world/game remain unbound.
+
+Main build `fffe59921` passed the full Win32 build and all three existing CTests. The independent primary fixture used 2 fresh TUs; its pinned receipt is `local/cc11_primary_squadron_reindex_run03/inputs_after.json`. Saved annotation, refreshed export and snapshot/index evidence follow in the report.

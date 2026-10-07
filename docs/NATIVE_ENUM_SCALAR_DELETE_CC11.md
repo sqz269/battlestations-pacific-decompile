@@ -95,3 +95,9 @@ global startup/cleanup, original class dispatch/allocator/native ABI, mapped
 virtual destruction, enum namespace/declaration identity, traffic and game remain
 unbound. Source compile/lifecycle proof and original byte/call evidence are
 separate from those remaining contracts.
+
+## Primary integration
+
+Complete ordinary CEnum scalar Source through genuine 008F4E70/current free; captured opaque address; one installed 28-symbol/two-empty-key owning lifecycle, flags 2/257, real 30 slot returns and pool shutdown. Original 30-byte wrapper is pinned but not executed; original class/EH/historical CRT/namespace/mapped virtual/traffic/game remain external.
+
+Main build `fffe59921` passed the full Win32 build and all three existing CTests. The independent primary fixture used 14 fresh TUs; its pinned receipt is `local/cc11_enum_scalar_current_primary/inputs_after.json`. Saved annotation, refreshed export and snapshot/index evidence follow in the report.

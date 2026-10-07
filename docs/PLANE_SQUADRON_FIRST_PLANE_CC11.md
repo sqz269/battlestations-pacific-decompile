@@ -95,3 +95,9 @@ old +9D0 values `[0,1,2,3,4]` reach odd5 at ESP+24 (incoming return word), and
 candidate guard, replacement reindex, geometry or numeric kernel. Primary owns
 that native frame/read contract. Full build/integration, CMake/ledgers/Ghidra
 annotations and actual ABI/world/game validation also remain primary-owned.
+
+## Primary integration
+
+Complete conditional first-plane Source: one genuine live pointer cell +3D0, no count guard. Existing exact sorted producer publishes once, unchanged original 7-byte reader and Source return the same identity, Source leader observes it; retained count-zero/null setup qualified. D087C0+13C and indirect preflight structural only; original class/whole preflight/arena/lifetime/world/game remain external.
+
+Main build `fffe59921` passed the full Win32 build and all three existing CTests. The independent primary fixture used 4 fresh TUs; its pinned receipt is `local/cc11_first_plane_current_primary/inputs_after.json`. Saved annotation, refreshed export and snapshot/index evidence follow in the report.

@@ -313,5 +313,88 @@
     "No global build",
     "No trackedtests",
     "No old frozen fixture changes/reruns"
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T23:51:10.234925+00:00",
+    "main_build_revision": "fffe5992141681691c60bb33b18c918273e8e3d8",
+    "worker_commit": "acdeca9d4123b37a973e723757dcb59c37ef9190",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_scalar_first_reindex_integrated_build.log",
+    "current_core_sha256": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+    "fresh_translation_units": 4,
+    "native_direct_calls": 0,
+    "native_call_failures": 0,
+    "independent_component_manifest": "local/cc11_first_plane_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "92b2ecadfb90e153e972b37991925d2dfbd44ba477094af046ca8c2061f09993",
+    "qualification": "Complete conditional first-plane Source: one genuine live pointer cell +3D0, no count guard. Existing exact sorted producer publishes once, unchanged original 7-byte reader and Source return the same identity, Source leader observes it; retained count-zero/null setup qualified. D087C0+13C and indirect preflight structural only; original class/whole preflight/arena/lifetime/world/game remain external.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "stable_worker_paths": 139,
+    "actual_project_headers": 28,
+    "actual_host_headers": 214,
+    "actual_searched_linker_libraries": 16,
+    "selected_tools": 4,
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "007ed010",
+        "bytes": 7,
+        "sha256": "87d3c6e97fd5be315d08d84d87574053eb97cec9453657bc98938747fd16dd25",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d088fc",
+        "bytes": 4,
+        "sha256": "d9404d78973f18509f0b69fa8056490e16dce0e50caea18bda2750ea22ed9c08",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "007f2cad",
+        "bytes": 6,
+        "sha256": "aca4474274cca6a711042c6985d5c729f60f921310849052b81ee0d01cf79425",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00721a53",
+        "bytes": 18,
+        "sha256": "a0b3eaf0598da9c50b416a866a40cbe4d9ea83a29f98526749250908177db26a",
+        "disk_live": "MATCH"
+      }
+    ],
+    "whole_Source_COFF": {
+      "symbol": "?native_plane_squadron_first_plane_007ed010@bsp@@YAPBXABUNativePlaneSquadronFirstPlaneView@1@@Z",
+      "machine": "I386",
+      "section": 22,
+      "bytes": 10,
+      "sha256": "bf76bfb579d707c70f9455dd838f5a0476c2c80a374be27ca75236b59545998a",
+      "relocations": [],
+      "instruction_count": 4,
+      "disassembly": [
+        "00: mov eax, dword ptr [esp + 4]",
+        "04: mov eax, dword ptr [eax + 4]",
+        "07: mov eax, dword ptr [eax]",
+        "09: ret "
+      ]
+    },
+    "whole_Source_COFF_equals_worker": true,
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "resource_type": 24,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "asInvoker": true
+    },
+    "saved_prior_annotations": "local/ghidra-annotations-20261007T235132Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_scalar_first_reindex_snapshot.log",
+    "saved_function_count": 64720,
+    "index_refreshed": true
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests and independent primary component passed; original caller/class/game contracts qualified"
 }

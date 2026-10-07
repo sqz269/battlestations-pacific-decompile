@@ -698,5 +698,164 @@
       "path": "docs/NATIVE_ENUM_SCALAR_DELETE_CC11.md",
       "sha256": "ce0af6cfd73bf6826af05c8b63c439b5ed9bfb082ea9d9ce20c236542bb32252"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T23:51:09.610568+00:00",
+    "main_build_revision": "fffe5992141681691c60bb33b18c918273e8e3d8",
+    "worker_commit": "d1d545e355b77c7ab34c4cef482202d0fe368918",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_scalar_first_reindex_integrated_build.log",
+    "current_core_sha256": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+    "fresh_translation_units": 14,
+    "native_direct_calls": 2,
+    "native_call_failures": 0,
+    "independent_component_manifest": "local/cc11_enum_scalar_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "e5570afb1a0a6ab857e6964a2a9361ac5452a7824acf28f26fcb4e5f19f13b94",
+    "qualification": "Complete ordinary CEnum scalar Source through genuine 008F4E70/current free; captured opaque address; one installed 28-symbol/two-empty-key owning lifecycle, flags 2/257, real 30 slot returns and pool shutdown. Original 30-byte wrapper is pinned but not executed; original class/EH/historical CRT/namespace/mapped virtual/traffic/game remain external.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "stable_worker_paths": 1967,
+    "actual_project_headers": 43,
+    "actual_host_headers": 254,
+    "actual_searched_linker_libraries": 19,
+    "selected_tools": 4,
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "008f59c0",
+        "bytes": 30,
+        "sha256": "8143498e9637f10e9b376fd263a4ab56362378c47f2a01ed8d1b092cc0f67fed",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f4e70",
+        "bytes": 132,
+        "sha256": "26fd655fa6a6954eed562a9cbef47c154fa39b6749834a0ae5d7acfaa529715e",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f4b60",
+        "bytes": 233,
+        "sha256": "1079eaa4aead384715ddc2f8e81f2cc70e85614b13be0e567951e3f11d2fc1fd",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00bf65ac",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0041dd20",
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0043b0a0",
+        "bytes": 101,
+        "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f4dd0",
+        "bytes": 157,
+        "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f69a7",
+        "bytes": 41,
+        "sha256": "f43886641697f9b122627d459c423f7b5a8b36c958dbd053233a0a79ec7afce2",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "008f5f29",
+        "bytes": 39,
+        "sha256": "d3273ec19b541f5f7729d674d3b546b68609abb81a92e2c501ed469e76454f78",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d16508",
+        "bytes": 8,
+        "sha256": "7bb395196f5e5a656ab72239e6d3a29763ec049d06fd4ebc4f8e2774b1e2f660",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00d162d4",
+        "bytes": 4,
+        "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e186ed",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00e17654",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "whole_Source_COFF": {
+      "symbol": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z",
+      "machine": "I386",
+      "section": 4,
+      "bytes": 42,
+      "sha256": "a5ec9ede5993584a892639fe4fd29c80ff82111be43c7dee0a7ba48290dfc615",
+      "relocations": [
+        {
+          "operand_offset": "F",
+          "coff_kind": "0014",
+          "symbol": "?destroy_native_scene_enum_owner_008f4e70@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "operand_offset": "1F",
+          "coff_kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "instruction_count": 15,
+      "disassembly": [
+        "00: push esi",
+        "01: push dword ptr [esp + 0x14]",
+        "05: mov esi, dword ptr [esp + 0xc]",
+        "09: push dword ptr [esp + 0x14]",
+        "0D: push esi",
+        "0E: call 0x13",
+        "13: add esp, 0xc",
+        "16: test byte ptr [esp + 0xc], 1",
+        "1B: je 0x26",
+        "1D: push esi",
+        "1E: call 0x23",
+        "23: add esp, 4",
+        "26: mov eax, esi",
+        "28: pop esi",
+        "29: ret "
+      ]
+    },
+    "whole_Source_COFF_equals_worker": true,
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "resource_type": 24,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "asInvoker": true
+    },
+    "saved_prior_annotations": "local/ghidra-annotations-20261007T235132Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_scalar_first_reindex_snapshot.log",
+    "saved_function_count": 64720,
+    "index_refreshed": true
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests and independent primary component passed; original caller/class/game contracts qualified"
 }

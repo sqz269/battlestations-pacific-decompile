@@ -116,3 +116,9 @@ faults, allocation failures/new handlers, old CRT/SBH/heap equivalence, group
 publication through virtual +5C, group callback slot +4, world integration
 and live-game parity remain unbound. Current allocation and free use their
 matching existing Source CRT domain; original game heap blocks are not used.
+
+## Primary integration
+
+Complete normal group scalar Source through genuine 00695870/current free. Unchanged 28 native bytes and only eight natural CALL operand relocation bytes; one genuine production manager/dispatch/lock/CF7E64 repeated-reference lifecycle, flags 2/3, 134 checks. Retained full 508h preimage preserves stale array pointer/capacity; freed roots never read. Full original base/historical CRT/FH3/class/publisher+5C/callback+4/world/game remain external.
+
+Main build `fffe59921` passed the full Win32 build and all three existing CTests. The independent primary fixture used 2 fresh TUs; its pinned receipt is `local/cc11_group_lifetime_current_primary/inputs_after.json`. Saved annotation, refreshed export and snapshot/index evidence follow in the report.

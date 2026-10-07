@@ -12167,5 +12167,141 @@
       "bytes": 8671,
       "sha256": "05c24122b63bdfc5c2d08347e2bf8682d69769210ba2248e5867b2b5505920d4"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T23:51:10.791079+00:00",
+    "main_build_revision": "fffe5992141681691c60bb33b18c918273e8e3d8",
+    "worker_commit": "3abeaeca4cb48e094861f3e83f302459bf3d6bbf",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_scalar_first_reindex_integrated_build.log",
+    "current_core_sha256": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+    "fresh_translation_units": 2,
+    "native_direct_calls": 2,
+    "native_call_failures": 0,
+    "independent_component_manifest": "local/cc11_group_lifetime_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "013487a5c14e2a4805404426e2ec2a9787b3e33e0945268bda588bf60ed4802d",
+    "qualification": "Complete normal group scalar Source through genuine 00695870/current free. Unchanged 28 native bytes and only eight natural CALL operand relocation bytes; one genuine production manager/dispatch/lock/CF7E64 repeated-reference lifecycle, flags 2/3, 134 checks. Retained full 508h preimage preserves stale array pointer/capacity; freed roots never read. Full original base/historical CRT/FH3/class/publisher+5C/callback+4/world/game remain external.",
+    "original_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "stable_worker_paths": 2112,
+    "actual_project_headers": 57,
+    "actual_host_headers": 222,
+    "actual_searched_linker_libraries": 21,
+    "selected_tools": 4,
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_group_lifetime_current_primary\\game_support.lib": "55bf78308a7043046e0a64d690cf7706cc1b9c24cd5013b54e2bdfbbe4e8ab16",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_spans": [
+      {
+        "address": "0070d260",
+        "bytes": 36,
+        "sha256": "2c1e87faedd0dcf2a37825d5ce4182214c74b54e4117a48dc879a16a2ea05ea3",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00695870",
+        "bytes": 193,
+        "sha256": "ac2f2126dc573849014eec43e7f052e45ac0e9116643b42cdc8f1d5aab3ff032",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00bf65ac",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0070dab0",
+        "bytes": 108,
+        "sha256": "949fc68fe35570ff7ae5e461ea0073a49ce0b069ff340d68d42bca784846c86b",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "0070db20",
+        "bytes": 58,
+        "sha256": "e572ca7a7ec679cbe3cb7ae8d47127a9915620f5a56b8fc5447fb8971b00b969",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00cfd6f8",
+        "bytes": 8,
+        "sha256": "53be2071ea140cb1d92a6fff2fbaa7f87bb9e2ffb27e63e4a162d45f54ec614c",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00cf7e64",
+        "bytes": 4,
+        "sha256": "f6b3183043d3f802c53d3e40b57c0331989d29d3a7003bd9bf3d1ecae5cf18ac",
+        "disk_live": "MATCH"
+      },
+      {
+        "address": "00cf4888",
+        "bytes": 4,
+        "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d",
+        "disk_live": "MATCH"
+      }
+    ],
+    "whole_Source_COFF": {
+      "symbol": "?delete_native_unit_group_0070d260@bsp@@YAPAXPAXIAAVNativeObserverLifetime@1@@Z",
+      "machine": "I386",
+      "section": 4,
+      "bytes": 41,
+      "sha256": "256b715a7c2f5af345dffb1d41a5073826e96cd7d5a6055f1dc45049d04a881c",
+      "relocations": [
+        {
+          "operand_offset": "11",
+          "coff_kind": "0014",
+          "symbol": "?destroy_callback_owner_00695870@NativeObserverLifetime@bsp@@QAEXAAUNativeObserverOwnerStorage@2@@Z"
+        },
+        {
+          "operand_offset": "1E",
+          "coff_kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "instruction_count": 14,
+      "disassembly": [
+        "00: mov ecx, dword ptr [esp + 0xc]",
+        "04: push esi",
+        "05: mov esi, dword ptr [esp + 8]",
+        "09: push esi",
+        "0A: mov dword ptr [esi], 0xcfd6f8",
+        "10: call 0x15",
+        "15: test byte ptr [esp + 0xc], 1",
+        "1A: je 0x25",
+        "1C: push esi",
+        "1D: call 0x22",
+        "22: add esp, 4",
+        "25: mov eax, esi",
+        "27: pop esi",
+        "28: ret "
+      ]
+    },
+    "whole_Source_COFF_equals_worker": true,
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "resource_type": 24,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "asInvoker": true
+    },
+    "map_retained_members": {
+      "bsp_core": 443,
+      "game_support": 36,
+      "bsp_lua511": 28,
+      "bsp_zlib121": 4
+    },
+    "provider_build_qualification": "Current main core/lua/zlib and hash-stable genuine game_support archive. Map retention is static linkage, not dynamic execution. Existing worker full build-input/tlog provenance remains separately qualified; all 2054 sealed artifacts are pinned unchanged.",
+    "saved_prior_annotations": "local/ghidra-annotations-20261007T235132Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_scalar_first_reindex_snapshot.log",
+    "saved_function_count": 64720,
+    "index_refreshed": true
+  },
+  "primary_source_status": "complete conditional ordinary Source integrated; full Win32/all3 CTests and independent primary component passed; original caller/class/game contracts qualified"
 }
