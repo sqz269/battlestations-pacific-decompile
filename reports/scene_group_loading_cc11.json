@@ -1,0 +1,594 @@
+{
+  "packet": "cc11_scene_group_loading",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_GROUP_LOADING_CC11.md",
+  "source_baseline": "52bc66be17550bb6b8c210f203e23102e359f025",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified": "config/target.json and bsp.py ghidra ensure --status before live read-only batches; bsp.py client verifies project/program",
+    "ghidra_changes": false,
+    "ledger_changes": false
+  },
+  "owned_addresses": [
+    "008F67B0",
+    "008F5A00",
+    "008F54F0"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_GROUP_LOADING_CC11.md",
+    "reports/scene_group_loading_cc11.json"
+  ],
+  "result": "Bound supported eager group capture/redeclaration; remove late parent traversal; installed projected values unchanged. Whole loader/parser/VFS/ABI remain partial.",
+  "coverage": [
+    {
+      "routine": "008F67B0",
+      "body": "008F67B0..008F6B97",
+      "coverage": "complete normal body from prior audit; bounded source group semantics only; external failures/VFS/unwind unclosed"
+    },
+    {
+      "routine": "008F5A00",
+      "coverage": "parent loop008F5A47..008F5ACD and child branch008F66B9..008F6747 checked; whole typed parser remains partial"
+    },
+    {
+      "routine": "008F54F0",
+      "stored_body": "008F54F0..008F5658",
+      "normal_tail": "008F5659..008F566E",
+      "coverage": "complete normal merge checked including disk returning tail; binary layout/allocation/aliases/failure not bound"
+    },
+    {
+      "routine": "008F4F60",
+      "coverage": "supporting type6 arm008F50ED..008F5133 checked; prior complete12-arm merge evidence; no new clone reconstruction ownership"
+    },
+    {
+      "routine": "008F41F0",
+      "body": "008F41F0..008F4289",
+      "coverage": "complete supporting normal bag clone read; recursive record cloning; no new reconstruction ownership"
+    },
+    {
+      "routine": "008EF780",
+      "coverage": "complete supporting type6 constructor body read; type6/+0Ch child/+110h owner producer"
+    },
+    {
+      "routine": "00469B60",
+      "coverage": "complete supporting lookup read; missing result unguarded"
+    },
+    {
+      "routine": "00468ED0",
+      "body": "00468ED0..00468F2A",
+      "coverage": "complete supporting lookup read; case-insensitive comparison"
+    },
+    {
+      "routine": "008F0700",
+      "coverage": "complete supporting destination-type assignment switch read; metadata replacement unbound"
+    },
+    {
+      "routine": "0046CF40",
+      "coverage": "supporting entity merge/setup0046D2F4..0046D34E only; no new whole-reader claim"
+    }
+  ],
+  "calls": [
+    {
+      "address": "008F7092",
+      "native": "008F67B0",
+      "function": "008F6FC0",
+      "contract": "one-file library receiver/pathname call; caller overwrites EAX"
+    },
+    {
+      "address": "008F6A69",
+      "native": "008F2DB0",
+      "function": "008F67B0",
+      "contract": "test existing group in global library"
+    },
+    {
+      "address": "008F6A7F",
+      "native": "00469B60",
+      "function": "008F67B0",
+      "contract": "reuse existing bag before parse"
+    },
+    {
+      "address": "008F6AD7",
+      "native": "008F5A00",
+      "function": "008F67B0",
+      "contract": "ECX bag; stack tokenizer/flag0/saved library resolver"
+    },
+    {
+      "address": "008F6B42",
+      "native": "008F29A0",
+      "function": "008F67B0",
+      "contract": "publish only new group after parser returns"
+    },
+    {
+      "address": "008F5AA9",
+      "native": "00469B60",
+      "function": "008F5A00",
+      "contract": "resolve next parent before authored brace"
+    },
+    {
+      "address": "008F5AB3",
+      "native": "008F54F0",
+      "function": "008F5A00",
+      "contract": "capture parent immediately with keepExisting0; later parent overwrites"
+    },
+    {
+      "address": "008F55F6",
+      "native": "008F54F0",
+      "function": "008F54F0",
+      "contract": "recurse into existing type6 child with same flag"
+    },
+    {
+      "address": "008F560D",
+      "native": "008F0700",
+      "function": "008F54F0",
+      "contract": "present scalar assignment when keepExisting0"
+    },
+    {
+      "address": "008F561D",
+      "native": "008F4F60",
+      "function": "008F54F0",
+      "contract": "clone missing record rather than share it"
+    },
+    {
+      "address": "008F563B",
+      "native": "008F33F0",
+      "function": "008F54F0",
+      "contract": "insert cloned record after copying ordinal"
+    },
+    {
+      "address": "008F5654",
+      "native": "00BF65AC",
+      "function": "008F54F0",
+      "contract": "known returning free; Ghidra stored body ends after call"
+    },
+    {
+      "address": "008F5110",
+      "native": "008F41F0",
+      "function": "008F4F60",
+      "contract": "type6 clone recursively clones source+0Ch child bag in ECX"
+    },
+    {
+      "address": "008F5118",
+      "native": "008EF780",
+      "function": "008F4F60",
+      "contract": "wrap new child in new type6 record"
+    },
+    {
+      "address": "008F4263",
+      "native": "008F4F60",
+      "function": "008F41F0",
+      "contract": "clone each source node record"
+    },
+    {
+      "address": "008F426C",
+      "native": "008F33F0",
+      "function": "008F41F0",
+      "contract": "insert independent cloned record into fresh114h bag"
+    },
+    {
+      "address": "008F672E",
+      "native": "008F3B60",
+      "function": "008F5A00",
+      "contract": "attach missing child before authored recursion"
+    },
+    {
+      "address": "008F6740",
+      "native": "008F5A00",
+      "function": "008F5A00",
+      "contract": "parse existing/new child without clearing inherited records"
+    },
+    {
+      "address": "0046D304",
+      "native": "00469B60",
+      "function": "0046CF40",
+      "contract": "resolve ordinary entity group; earlier PUSH1 preserved"
+    },
+    {
+      "address": "0046D30C",
+      "native": "008F54F0",
+      "function": "0046CF40",
+      "contract": "entity fill-missing flag1, independent of library flag0"
+    },
+    {
+      "address": "0046D34E",
+      "native": "008F5A00",
+      "function": "0046CF40",
+      "contract": "authored entity body after fill-missing group merges"
+    },
+    {
+      "address": "00468F0D",
+      "native": "00438E10",
+      "function": "00468ED0",
+      "contract": "case-insensitive group lookup equality"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "parents resolved lazily during entity merge, first parent retains conflicting values",
+      "is": "parents captured during add_group, in authored order with overwrite; authored group writes last",
+      "evidence": [
+        "008F5AA9..008F5ACD",
+        "008F55FD..008F560D"
+      ]
+    },
+    {
+      "was": "every redeclaration appended; first lookup row made later declarations ineffective",
+      "is": "first case-insensitive group row reopened; existing omitted/nested fields retained",
+      "evidence": [
+        "008F6A69..008F6A86",
+        "008F6ADC..008F6ADE",
+        "008F6B42"
+      ]
+    },
+    {
+      "was": "depth8 late base traversal; no fixed parent snapshot",
+      "is": "owning recursive captured bags with no late traversal/depth8 cutoff",
+      "evidence": [
+        "008F510D..008F5121",
+        "008F423C..008F4289"
+      ]
+    }
+  ],
+  "native_contract": {
+    "group_order": "existing bag if redeclared, then each parent flag0 in authored order, then authored body; only new bags published after parser returns",
+    "copy_depth": "fresh114h bag/38h record; type6 recursively clones; no fixed cutoff on valid finite unaliased input",
+    "child_parse": "existing child reused; missing child attached before recursive parse; empty authored child retains defaults",
+    "entity_order": "separate ordered group flag1 fill-missing then authored overwrite",
+    "reset": "no whole-library reset/rollback/success-result gate in one-file loader",
+    "failure": "unguarded missing parent; partial mutations possible; malformed/type-conflicting/allocation/unwind contracts unclosed",
+    "registry_domain": "ordinary caller's global00E18678 and saved receiver identify consistent singleton library; arbitrary mismatched registry pointers not bound",
+    "record_limits": "native hash iteration/+34h ordinals, enum declaration/reference kind and typed storage layout not reconstructed by source string/tree projection"
+  },
+  "abi": {
+    "008F67B0": {
+      "shape": "thiscall ECX library, one pathname stack argument",
+      "cleanup": "008F6B95 RET4",
+      "return": "semantic value unknown; caller008F7097 overwrites EAX"
+    },
+    "008F5A00": {
+      "shape": "thiscall ECX bag, tokenizer/allowUntypedNumbers/nullableGroupRegistry stack arguments",
+      "cleanup": "008F6784 RET0Ch",
+      "return": "semantic value unknown; group/recursive/entity callers ignore EAX; formal semantic types not established"
+    },
+    "008F54F0": {
+      "shape": "thiscall ECX destination, source/keepExisting stack arguments",
+      "cleanup": "disk008F566C RET8",
+      "stored_body": "ends008F5658 after known returning free; no flow repair",
+      "return": "semantic value not established/used by these callers"
+    },
+    "source": "new private C++ interfaces; no drop-in binary ABI claim"
+  },
+  "source_admission": {
+    "supported": "well-formed typed finite owning property trees; already-present acyclic named parents; compatible scalar types/child structure; consistent library registry",
+    "explicit_rejections": [
+      "unnamed groups",
+      "missing/forward parents",
+      "self/cyclic parent-name graphs",
+      "reported group syntax errors",
+      "scalar/child collisions",
+      "incompatible scalar type letters"
+    ],
+    "rejection": "throw unsupported library error before candidate publication; host admission, not native graceful failure/transactional rollback",
+    "aliases": "native structurally aliased bags not representable in source owning containers; unsupported",
+    "ordering": "source parser only Cursor/SceneLexer/error vector, no registry mutation/callback; body-before-capture equivalent within admitted domain",
+    "unchanged": "enum retention, parser typing/tokenizer/VFS, entity flag1, Hidden/class8/effective-mode/other switches",
+    "unknown_entity_group": "existing host fallback remains unbound; parent admission is separate"
+  },
+  "installed_effect": {
+    "library_files": 15,
+    "enum_files": 1,
+    "props_files": 14,
+    "unique_group_names": 22,
+    "group_redeclarations": 0,
+    "group_bags_compared": 22,
+    "projected_values_unchanged": true,
+    "comparison": "baseline source own-first lazy fill-missing versus new eager captured source bags; case-insensitive keyed type letters/raw value vectors/nested fields; no native order/layout comparison",
+    "multiple_parents": "CommandBuilding(Common,PowerupHandler), LandFort(Common,MultiEntity), Landscape(Common,MultiEntity); parent fields disjoint",
+    "JM06": {
+      "submarine_generators": 14,
+      "tutorials": 3,
+      "hidden_stock": 6,
+      "player_subs": 3,
+      "multitype_flags_each": 8,
+      "library_torpedo_director": "B false before separately bound native class8 exception",
+      "tutorial_generation": "Game=false, Movie=true",
+      "player_generation": "Game=true, Movie=false",
+      "values_unchanged": true,
+      "mode_policy_changed": false
+    },
+    "declarations": [
+      {
+        "file": "universe/library/global.enums",
+        "line": 1753,
+        "name": "Common",
+        "parents": []
+      },
+      {
+        "file": "universe/library/global.enums",
+        "line": 1772,
+        "name": "MultiEntity",
+        "parents": []
+      },
+      {
+        "file": "universe/library/global.enums",
+        "line": 1789,
+        "name": "GameUnit",
+        "parents": [
+          "MultiEntity"
+        ]
+      },
+      {
+        "file": "universe/library/global.enums",
+        "line": 1795,
+        "name": "PowerupHandler",
+        "parents": []
+      },
+      {
+        "file": "universe/library/commandbuilding.props",
+        "line": 1,
+        "name": "CommandBuilding",
+        "parents": [
+          "Common",
+          "PowerupHandler"
+        ]
+      },
+      {
+        "file": "universe/library/commandbuildinginferior.props",
+        "line": 1,
+        "name": "CommandBuildingInferior",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/commandunit.props",
+        "line": 24,
+        "name": "Command",
+        "parents": []
+      },
+      {
+        "file": "universe/library/foam.props",
+        "line": 1,
+        "name": "Foam",
+        "parents": []
+      },
+      {
+        "file": "universe/library/foamsource.props",
+        "line": 1,
+        "name": "FoamSource",
+        "parents": []
+      },
+      {
+        "file": "universe/library/landconvoy.props",
+        "line": 1,
+        "name": "LandConvoy",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/landfort.props",
+        "line": 1,
+        "name": "LandFort",
+        "parents": [
+          "Common",
+          "MultiEntity"
+        ]
+      },
+      {
+        "file": "universe/library/landingzone.props",
+        "line": 1,
+        "name": "LandingZone",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/landscape.props",
+        "line": 1,
+        "name": "Landscape",
+        "parents": [
+          "Common",
+          "MultiEntity"
+        ]
+      },
+      {
+        "file": "universe/library/path.props",
+        "line": 1,
+        "name": "Path",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/path.props",
+        "line": 9,
+        "name": "PathPoint",
+        "parents": []
+      },
+      {
+        "file": "universe/library/path.props",
+        "line": 14,
+        "name": "PathPointCamera",
+        "parents": [
+          "PathPoint"
+        ]
+      },
+      {
+        "file": "universe/library/plane.props",
+        "line": 10,
+        "name": "PlaneSquadronWNavpoint",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/scene.props",
+        "line": 1,
+        "name": "SceneRootProps",
+        "parents": []
+      },
+      {
+        "file": "universe/library/ship.props",
+        "line": 2,
+        "name": "Ship",
+        "parents": [
+          "Common"
+        ]
+      },
+      {
+        "file": "universe/library/ship.props",
+        "line": 104,
+        "name": "MotherShipPlanes",
+        "parents": []
+      },
+      {
+        "file": "universe/library/ship.props",
+        "line": 199,
+        "name": "Sub",
+        "parents": [
+          "Ship"
+        ]
+      },
+      {
+        "file": "universe/library/stationaries.props",
+        "line": 1,
+        "name": "Stationary",
+        "parents": [
+          "Common"
+        ]
+      }
+    ]
+  },
+  "incomplete_dependencies": [
+    "008D9CF0 file tokenizer/provider mode32h and open/failure/ownership versus host mode2 opener",
+    "008F5A00 complete typed reader/tokenizer/error/unwind semantics",
+    "008F0700 value assignment metadata and type-conflicting input",
+    "008F4F60/008F41F0 allocation failure, arbitrary alias/cyclic structure and native layout",
+    "008F29A0 native registry allocation/map representation and singleton mismatch",
+    "existing unknown entity-group fallback and broader registration/deferred/stock ownership"
+  ],
+  "verification": {
+    "production_tu_probe": {
+      "compile": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /Gy; actual production TU included",
+      "link": "74 existing primary game objects plus bsp_core/bsp_lua511/bsp_zlib121 and systemlibs; /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF; no stubs",
+      "compile_exit": 0,
+      "runtime_exit": 0,
+      "scenario": "ordered conflict/authored overwrite/reopened retention/independent10child-level capture/later declaration sees updated parent/entity flag1 then authored overwrite",
+      "installed": "15 files/22 matched group bags/14 JM06 bags/3 tutorial flags/0 parser errors",
+      "artifacts": {
+        "local/cc11_scene_group_probe.cpp": "3010b536c2f302bb84990fa2d8ce53074db771ce28992c2a46d890c73aa13107",
+        "local/cc11_scene_group_probe.obj": "ff8655f78a7e1f2ba98dda095f4ac6e57061df2aee146ad1ccb2cce7668b9f5a",
+        "local/cc11_scene_group_probe.exe": "d0a0a9b60783627fb26e89e0818fe16949137512c9fe91783b29a4ba64b7e586",
+        "local/cc11_scene_group_probe.log": "5b6b6f27c21ad3fc9f768573d76719dc4782bed419b88d432e7754a64523df4f",
+        "local/cc11_scene_group_compile.cmd": "45c4aa86b2366bca18f08b7e67f430cbe591ae942b60d26216a3acefd73b4fa1",
+        "local/cc11_scene_group_compile.log": "21b917d89ff6789d2c40fe9c80c932fdc0798ae25cdf046dcc902c535ec97db2",
+        "local/cc11_scene_group_link.rsp": "ed422fcf58a0b659238c00c9674bf6af33aa317f327f849757336ebfbcaf50e0"
+      },
+      "source_sha256": "0198d22bfdcd96d6b8e3311f518d624d66d63f9f4681b6efd28d7e40a901e672",
+      "pe_machine": "0x14c",
+      "embedded_as_invoker_manifest": true
+    },
+    "existing_installed_scene_probe": {
+      "executable": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_mission_scene_probe.exe",
+      "command": "bsp_mission_scene_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn\"",
+      "exit_code": 0,
+      "entities": 96,
+      "classes": 11,
+      "submarine_generators": 14,
+      "registration_kept": 46,
+      "unregistered": 0,
+      "recovered_errors": 0,
+      "qualification": "existing main build parser/class fixture, not rebuilt here; no original-game/runtime admission claim",
+      "sha256": "1e6794cb7ea11976ec7ab38d36b709700e8efbd2938e736411a8520bdc0fbbf9"
+    },
+    "verify_report_calls": "PASS:22 direct call rows,0 failures; live Ghidra read only; raw return tail separate",
+    "git_diff_check": "PASS",
+    "full_build": "not run; primary owns integrated Win32/CTests",
+    "game_run": false,
+    "native_abi_compatible": false,
+    "original_game_validated": false
+  },
+  "assets": [
+    {
+      "path": "universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+    },
+    {
+      "path": "universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "e3cd937bbded00742f7f188be1869613172c4e010d20cc0c470fc791e8f8d087"
+    },
+    {
+      "path": "universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "e98698230830dd55d53bbcb268e550bac9e66d98f0761274cad97001b9c8556e"
+    },
+    {
+      "path": "universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "d707988c46b6c7a2fbb12f03f5e7d7d99412cb06a8c7f4162eeaaa793948053a"
+    },
+    {
+      "path": "universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3fab280f98604b12ab90f48cde5147ca54de3fc175de037cfd6b87022145a948"
+    },
+    {
+      "path": "universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418eb5f831f093024854efb5358ad89231fd46dd854ee4e7e68d82f2607"
+    },
+    {
+      "path": "universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4c938f56f07ee653bdace1529199fdee88bb2c62fe526e2305108c154966f2a5"
+    },
+    {
+      "path": "universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "d928856657a255d6949eaf08121224b1f2e83a302f3b54cd30ca826505090887"
+    },
+    {
+      "path": "universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "e3a09462a7f6c338849311082f40c3e9bebe2fa0856c8bf021250ff52d44f915"
+    },
+    {
+      "path": "universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085b6db22b8efe3eebb8b064240d8ed24dc5b19800c136f99a30c46264f6bb"
+    },
+    {
+      "path": "universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1e0600a3e8be79499b8ebc6720657bbb1e0cefddb2a81dd72a4685376b96f70e"
+    },
+    {
+      "path": "universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13abd4c40c32c5a0d389cacb04fedb1b6420dbb17bdf0d12d93940fcf4543e41"
+    },
+    {
+      "path": "universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "e6618d5b9059a6e7f6316d9e6aea35bb019ce12dfc1ecea884c04d953d1c5440"
+    },
+    {
+      "path": "universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752f232f66c8899ae4cf596c0c7e076df5a4c3c05c9e73d82b4008f163a1460"
+    },
+    {
+      "path": "universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078a649765569bd8f85f3e1b51727b2a8304cf3e179c5903f700f98fd75a90"
+    },
+    {
+      "path": "universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14ae7c12ac9ad51dca08f5b9fac7b00ace3739cce5c4f84c4f7fb4af479eef0c"
+    }
+  ]
+}
