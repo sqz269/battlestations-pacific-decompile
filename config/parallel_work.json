@@ -13103,7 +13103,7 @@
     },
     {
       "id": "cc11_health_pair",
-      "state": "integrated_reviewed_source_full_main_build_pending",
+      "state": "integrated_reviewed_source_main_build_and_source_checks_passed",
       "done": true,
       "worker": "health_guard",
       "model": "gpt-6-astra",
@@ -13126,13 +13126,15 @@
       "contract": "Build and compare guard OFF/ON with capture-party switch ON in both variants using existing USNOS f12 orders; enable only after reviewed paired evidence.",
       "reuses_worker_from": "cc11_health_guard",
       "integrated_revision": "1c6ad075507e67c1e8f30b0a6286f966262e51e1",
-      "full_main_build_pending": true,
+      "full_main_build_pending": false,
       "abi_compatible": false,
       "game_validated": false,
       "code_revision": "ac2c8521734d6eb277a151f96b3cd8a6de3f1a4f",
       "switch_enabled": true,
       "renderer_pair_exit_pass": false,
-      "simulation_mechanism_reviewed": true
+      "simulation_mechanism_reviewed": true,
+      "full_main_build_revision": "a9336b74b07f62ca9feae3deacfbdb7b2778b182",
+      "full_main_ctests_passed": 3
     },
     {
       "id": "cc11_director_class8",
@@ -13328,7 +13330,7 @@
     },
     {
       "id": "cc11_land_owner_cpp",
-      "state": "integrated_reviewed_source_full_main_build_pending",
+      "state": "integrated_reviewed_source_main_build_and_source_checks_passed",
       "done": true,
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
@@ -13362,10 +13364,12 @@
         "local/native_pilot_bot_task_owner_cc11.obj"
       ],
       "integrated_revision": "1c6ad075507e67c1e8f30b0a6286f966262e51e1",
-      "full_main_build_pending": true,
+      "full_main_build_pending": false,
       "abi_compatible": false,
       "game_validated": false,
-      "code_revision": "185daf651c5b36f88dbad3644dcffeef168ee727"
+      "code_revision": "185daf651c5b36f88dbad3644dcffeef168ee727",
+      "full_main_build_revision": "a9336b74b07f62ca9feae3deacfbdb7b2778b182",
+      "full_main_ctests_passed": 3
     },
     {
       "id": "cc11_health_nan",

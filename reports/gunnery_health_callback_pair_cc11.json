@@ -653,5 +653,19 @@
     "Existing damage arithmetic, hull-segment gate, attribution and explicit kill policy are retained",
     "Both logs complete simulation but have raw exit1 from failed Direct3D Present calls; renderer/launcher qualification failed",
     "Later combat/death/spawn differences are recorded; whole-gameplay equivalence and complete campaign completion are not established"
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "a9336b74b07f62ca9feae3deacfbdb7b2778b182",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_health_owner_integrated_build.log",
+    "executable_sha256": "2e8de08e4af505b96b919506c6994c833b9017fb45c411b9b17be99c43d44eb3",
+    "utc": "2026-10-07T05:56:07.952998+00:00"
+  }
 }
