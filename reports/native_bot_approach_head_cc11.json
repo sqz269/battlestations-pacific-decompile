@@ -1,0 +1,54 @@
+{
+  "packet": "cc11_native_bot_approach_head",
+  "utc": "2026-10-07T12:15:26.700805+00:00",
+  "status": "complete ordinary head Source and original component probe passed; full main build pending",
+  "native": {
+    "address": "009f9ce0",
+    "end_exclusive": "009f9d78",
+    "bytes": 152,
+    "instructions": 38,
+    "call_count": 0,
+    "abi": "ECX head,stack(unit,float reference),EAX identity,RET8 at9F9D75",
+    "original_sha256": "318b1252ca7f1847fc8b943c100d93062955ea0d60f11e5b70f93157519c0240"
+  },
+  "source": "src/native_bot_approach_head.cpp",
+  "header": "include/bsp/native_bot_approach_head.hpp",
+  "doc": "docs/NATIVE_BOT_APPROACH_HEAD_CC11.md",
+  "source_connection": "ABSTRACT NativeBotApproachHeadHost completes existing BotTaskHost construct_speed_reference natural complete call; other host services required; no opaque constructor phases",
+  "scope": "complete ordinary head only; profileD21C74 recovered numeric stamp, actual eleven-word prefix and fresh fields/global aliases/native x87; no lifetime/allocator/profile table construction",
+  "probe": {
+    "checks": 293,
+    "failures": 0,
+    "original_whole_body_cases": 73,
+    "x87_matrix_cases": 72,
+    "game_validated": false
+  },
+  "inputs": {
+    "paths": {
+      "include\\bsp\\native_bot_approach_head.hpp": "f9c889727169ea3c4223916df82c8842abeb9ce824ff90321ed8951838cb8b72",
+      "include\\bsp\\bot_tasks.hpp": "448700d318282043b55ceffc1fa4e32812a30127f30e8b8da963961b1f8405d7",
+      "src\\native_bot_approach_head.cpp": "c06822c7fd12c51aea67ea99df1e98f5d88fb62962d2148ea583f7db246c49f0",
+      "local/cc11_head_primary/probe.cpp": "8417782a19c60c9ae68577a2e702702aedd749f8378e95091c6c3c982d896c3e",
+      "local/cc11_head_primary/original.hpp": "24d92e5b24bd87b7186ae80c57e651d6d7480babe3a8dab366124ec1d4bd7dc0"
+    },
+    "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_bytes_sha256": "318b1252ca7f1847fc8b943c100d93062955ea0d60f11e5b70f93157519c0240",
+    "native_instructions": 38,
+    "relocated_absolute_data_operands": 3
+  },
+  "probe_sha256": "28db7c64b6d16f22327512a69831c6a562b69a7f7332895e831bc79a1e0c8ab4",
+  "root_manifest_id1_asInvoker_verified": true,
+  "original_data_operands_relocated": 3,
+  "original_instructions_branches_retained": true,
+  "source_sdk_or_provider_hooks_added": false,
+  "host_bridge_compiled_not_game_host_run": true,
+  "original_whole_body_binary_abi_proved": false,
+  "actual_globals_bound": false,
+  "game_validated": false,
+  "limits": [
+    "masked exceptions and two available x87 stack entries; valid actual reached storage",
+    "native EFLAGS/general/XMM regs, FIP/FDP and private faults/unwind not compared",
+    "fixture row/constant changes do not establish native runtime reentry or mutable game constants",
+    "whole lower/composite/queue caller and task/holder ownership unbound"
+  ]
+}
