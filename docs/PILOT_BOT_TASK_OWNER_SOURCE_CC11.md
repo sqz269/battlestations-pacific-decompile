@@ -87,9 +87,14 @@ run the drain implicitly, or fabricate deletion of remaining retired objects.
 | 0099A7D2 | 00695870 | actual callback owner+1Ch, observer detach/array release |
 | 0099A7E1 | 00875B30 | actual owner base; stamp00CFD99C; conditional locked detach and +4h clear |
 
-Listings mark gaps after CRT free because of a stale no-return property. Live bytes at
-00999EA4,0099A7B5,0099A7C5 are all `83 C4 04` (ADD ESP,4), followed by the documented
-normal continuations. The source includes those continuations; worker analysis changed no flow flags.
+The reviewed listings initially had gaps after CRT free because of call-site `CALL_RETURN`
+overrides. Live bytes at00999EA4,0099A7B5,0099A7C5 are all `83 C4 04` (ADD ESP,4),
+followed by the documented normal continuations. The primary cleared only those three
+call-site overrides under the Ghidra write lock, disassembled the three-byte continuations,
+saved the project and refreshed both function exports. No call-following gaps remain in
+these bodies; the non-call alignment gap at00999E7D is retained. The callee's own flags
+and the recovered source control flow are unchanged. See
+`reports/pilot_bot_owner_flow_repair_cc11.json`; worker analysis remained read-only.
 
 0099A010 is the raw five-byte JMP004B7EF0. Its existing normal observer-base wrapper and
 00695870's actual observer service can be reused when a caller supplies their real storage/context.
