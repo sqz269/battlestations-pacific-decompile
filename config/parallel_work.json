@@ -16914,8 +16914,8 @@
     },
     {
       "id": "cc11_health_transport_countdown",
-      "done": false,
-      "state": "ready117B complete direct x87-SSE countdown pair with actual backing and no provider gap",
+      "done": true,
+      "state": "complete countdown pair integrated; independent1696checks/full Win32all3 CTests; ABI/game qualified",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
@@ -16932,7 +16932,89 @@
       "depends_on": [
         "cc11_health_peer_flush_all"
       ],
-      "contract": "Complete76C4A0..76C4F383B25instructions and782840..78286234B10instructions,117Btotal. OriginalECXsession/transport plus stackedrawfloatword RET4. Actualsession18C/188pointercells/transport48floatword; borrowedactualD7A280double3FE0000000000000/CE3800float3F000000/D7A260FLOATBF800000, independently verifiedprimary. No defaultglobals/virtual/CRT/clock/queue/provider. Preserve exactx87 FLDdouble/FLDstep/FCOMIP/FSTP/JBE cap inclunordered, conditionalMOVSShalfstackreplacement, secondaryFIRST/freshprimaryAFTERreturn, distinctFLD/FSTP stackargumentstage forEACHcall. LeafMOVSScapture48/floatCOMISSactualthreshold/MOVSSstackBEFOREJBE/thenx87FLD FSUB FSTP48; no C++FPmin/NaNbranch/lowerclamp/intermediatespill. GenuinecompleteSourceleaf/kernel newextraactualcellABI qualified. Oneignored fulloriginal83+34B connectedcomposition with2parentCALLrelocs tooriginalleafcopy and3actualconstantoperandrelocs(20changedbytes/97unchanged), noSourceoperationthunk. Actualshapes/nullcombos/distinct/sharedtransports withfirstdecrement affecting secondthreshold. Comparefullbacking/outputbits/CW/SW/TOP/exceptionconditions/MXCSR/all8raw80x87 occupied values, XMM0 ifmeaningfulnewSourceencodingpreservesit. FocusedmaskedPC/RC/independentMXCSR/thresholds/zeros/infinity/qNaN/sNaN/denorm, finitefittingactualcells and2freex87slots; FIP/FDP/GPRflags/privateEH/unmaskedfaults/nativecallerexceptionalreachability/full770030/full76FFC0/782870transport1C A42280/A41130/ABIgame remainqualifiedunbound. Native3DIRECTrows77007E/76C4D3/76C4EB, leafnocalls. Fournewfiles/no trackedtests/GhidraCMake/sharedmetadata edits. FreezeCURRENT55afb410e mainlibs pre/copy/post before nextRootCppbuild."
+      "contract": "Complete76C4A0..76C4F383B25instructions and782840..78286234B10instructions,117Btotal. OriginalECXsession/transport plus stackedrawfloatword RET4. Actualsession18C/188pointercells/transport48floatword; borrowedactualD7A280double3FE0000000000000/CE3800float3F000000/D7A260FLOATBF800000, independently verifiedprimary. No defaultglobals/virtual/CRT/clock/queue/provider. Preserve exactx87 FLDdouble/FLDstep/FCOMIP/FSTP/JBE cap inclunordered, conditionalMOVSShalfstackreplacement, secondaryFIRST/freshprimaryAFTERreturn, distinctFLD/FSTP stackargumentstage forEACHcall. LeafMOVSScapture48/floatCOMISSactualthreshold/MOVSSstackBEFOREJBE/thenx87FLD FSUB FSTP48; no C++FPmin/NaNbranch/lowerclamp/intermediatespill. GenuinecompleteSourceleaf/kernel newextraactualcellABI qualified. Oneignored fulloriginal83+34B connectedcomposition with2parentCALLrelocs tooriginalleafcopy and3actualconstantoperandrelocs(20changedbytes/97unchanged), noSourceoperationthunk. Actualshapes/nullcombos/distinct/sharedtransports withfirstdecrement affecting secondthreshold. Comparefullbacking/outputbits/CW/SW/TOP/exceptionconditions/MXCSR/all8raw80x87 occupied values, XMM0 ifmeaningfulnewSourceencodingpreservesit. FocusedmaskedPC/RC/independentMXCSR/thresholds/zeros/infinity/qNaN/sNaN/denorm, finitefittingactualcells and2freex87slots; FIP/FDP/GPRflags/privateEH/unmaskedfaults/nativecallerexceptionalreachability/full770030/full76FFC0/782870transport1C A42280/A41130/ABIgame remainqualifiedunbound. Native3DIRECTrows77007E/76C4D3/76C4EB, leafnocalls. Fournewfiles/no trackedtests/GhidraCMake/sharedmetadata edits. FreezeCURRENT55afb410e mainlibs pre/copy/post before nextRootCppbuild.",
+      "primary_integration": {
+        "utc": "2026-10-07T17:18:17.264083+00:00",
+        "worker_revision": "ed1588de87a1867ed8350101313411367a4a0858",
+        "integrated_revision": "ea9896f474b29e787cc7fb05c2d386a532e7c177",
+        "full_main_build_revision": "ea9896f474b29e787cc7fb05c2d386a532e7c177",
+        "full_main_ctests_passed": 3,
+        "build_log": "local/cc11_countdown_integrated_build.log",
+        "game_executable_sha256": "2a8b538458ce3c47bfe8b7a045a7bdb785ce2617c88ad4fd69620d619495d9e1",
+        "probe_recipe": "local/cc11_countdown_root.cmd",
+        "probe_log": "local/cc11_countdown_root_compile.log",
+        "probe_sha256": "64592ead002bcfebabe88947092df4933d9de65e4f8a3ee5fd9dd08599e75908",
+        "root_manifest_id1_asInvoker_verified": true,
+        "primary_source_native_and_whole_299_line_fixture_review": true,
+        "fresh_actual_translation_units": 2,
+        "stable_current_Source_header_fixture_inputs": 3,
+        "actual_compiler_includes": 1,
+        "stable_current_libraries": 3,
+        "native_bodies": [
+          {
+            "address": "0076C4A0",
+            "end_exclusive": "0076C4F3",
+            "bytes": 83,
+            "sha256": "11f71db6c6fd0bf2910e46d86c7041c4c4951db9c77bfef5ed25428da48a08d9",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00782840",
+            "end_exclusive": "00782862",
+            "bytes": 34,
+            "sha256": "cf3c6aff9485356dd6b51e78c7dab2543b13035aecbd6eaaa8938d52b4839b36",
+            "disk_live": "MATCH"
+          }
+        ],
+        "actual_constants": [
+          {
+            "address": "00D7A280",
+            "bytes": 8,
+            "raw_bits": "3FE0000000000000",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00CE3800",
+            "bytes": 4,
+            "raw_bits": "3F000000",
+            "disk_live": "MATCH"
+          },
+          {
+            "address": "00D7A260",
+            "bytes": 4,
+            "raw_bits": "BF800000",
+            "disk_live": "MATCH"
+          }
+        ],
+        "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "checks": 1696,
+        "original_session_cases": 76,
+        "original_leaf_cases": 8,
+        "whole_original_connected_pair_bytes": 117,
+        "original_operand_relocations": 5,
+        "changed_operand_bytes": 20,
+        "unchanged_original_bytes": 97,
+        "Source_operation_thunks": 0,
+        "full_x87_CW_SW_TOP_tags_raw80_registers_match": true,
+        "full_MXCSR_and_all8_XMM_registers_match": true,
+        "original_constant_cells_borrowed_from_PAGE_READONLY_PE_mapping": true,
+        "Source_COFF_bodies_match_reviewed_worker_bytes": true,
+        "Source_parent_bytes": 117,
+        "Source_leaf_bytes": 49,
+        "native_direct_rows_checked": 3,
+        "native_direct_rows_failed": 0,
+        "unmasked_faults_proved": false,
+        "whole_session_factory_or_tick_proved": false,
+        "abi_compatible": false,
+        "actual_game_binding": false,
+        "game_validated": false,
+        "ghidra_annotations_prior": "local/ghidra-annotations-20261007T171820Z.json",
+        "ghidra_saved": true,
+        "affected_exports_refreshed": [
+          "0076c4a0",
+          "00782840"
+        ]
+      }
     },
     {
       "id": "cc11_scene_convoy_positions_int_payload",

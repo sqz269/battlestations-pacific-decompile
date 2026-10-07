@@ -120,3 +120,7 @@ Machine receipt: `reports/cc11_session_transport_countdown.json`. Ignored
 fixture: `local/cc11_transport_countdown_20261007_a/`. The worker changed no
 shared metadata, CMake, ledgers, tracked tests or Ghidra state. Main integration
 and the full main build belong to the primary integrator.
+
+## Primary integration
+
+Main `ea9896f474b29e787cc7fb05c2d386a532e7c177` passed the full Win32 build and all three existing CTests. Root independently reviewed the whole Source/native/299-line fixture and rebuilt two actual TUs with three current Source/header/fixture inputs (one compiler include), three current libraries and the original PE pinned before/after. The manifested independent run reproduced 1,696 checks across 76 connected original-pair cases and eight direct original-leaf cases. All 117 native bytes and three actual constant cells matched disk/live; fresh Source COFF bodies and integer-only fixture drivers were independently checked. All three direct calls passed. Floating-point, backing, caller, ABI and game qualifications above remain. No tracked tests were added.
