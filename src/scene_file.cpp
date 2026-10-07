@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include <cctype>
+#include <clocale>
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
@@ -195,6 +196,59 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 }
             } while (cur.lexer().peek().quoted);
             prop.values.push_back(std::move(value));
+        } else if (equal_insensitive(prop.type_letter, "V3")) {
+            // 008F629F..008F62B0 zero all lanes before the first-number guard.
+            // Immediate ';' retains a present positive-zero vector, with no
+            // scalar conversion. Preserve its empty authored token list.
+            prop.has_vector3 = true;
+            if (!cur.at(";")) {
+                const char* locale = std::setlocale(LC_NUMERIC, nullptr);
+                if (locale == nullptr || std::string(locale) != "C") {
+                    throw std::runtime_error("unsupported V3 numeric locale");
+                }
+                for (std::size_t lane = 0; lane < prop.vector3.size(); ++lane) {
+                    const SceneToken& token = cur.lexer().peek();
+                    if (token.is_end() || token.text.size() >= 0x400
+                        || token.text.find('\0') != std::string::npos) {
+                        throw std::runtime_error("unsupported V3 scalar token");
+                    }
+                    // This binding admits ordinary decimal prefixes, not hex,
+                    // NaN/Inf, or other CRT forms. Do not change the shared
+                    // scene_scan_float decimal-prefix/strtod projection.
+                    std::size_t first = 0;
+                    while (first < token.text.size()
+                        && std::isspace(static_cast<unsigned char>(token.text[first]))) ++first;
+                    if (first < token.text.size()
+                        && (token.text[first] == '+' || token.text[first] == '-')) ++first;
+                    const bool digit = first < token.text.size()
+                        && std::isdigit(static_cast<unsigned char>(token.text[first]));
+                    const bool fraction = first + 1 < token.text.size()
+                        && token.text[first] == '.'
+                        && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
+                    const bool hex = first + 1 < token.text.size()
+                        && token.text[first] == '0'
+                        && (token.text[first + 1] == 'x' || token.text[first + 1] == 'X');
+                    if ((!digit && !fraction) || hex) {
+                        throw std::runtime_error("unsupported V3 decimal prefix");
+                    }
+                    float value = 0.0f;
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+                    const int converted = std::sscanf(token.text.c_str(), "%f", &value);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+                    if (converted != 1 || !std::isfinite(value)) {
+                        throw std::runtime_error("unsupported V3 scalar conversion");
+                    }
+                    // Native readers at 008F62C6/62D6/62E6 store binary32.
+                    // Modern CRT parity with VS2005 BF7533 is not established.
+                    prop.vector3[lane] = value;
+                    prop.values.push_back(cur.read_token());
+                }
+            }
         } else {
             // Other typed/implicit paths remain a partial token scan. Stop at
             // braces as well as ';' so a missing terminator cannot swallow the

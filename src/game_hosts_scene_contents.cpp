@@ -368,10 +368,20 @@ void retain_path_points(const ScenePropertyBlock& bag, GameSceneEntityRecord& re
         if (point == nullptr) break;
         const SceneProperty* position = point->find("Pos");
         std::array<float, 3> value{};
-        bool valid = position != nullptr && position->type_letter == "V3"
-            && position->values.size() == value.size();
-        for (std::size_t lane = 0; valid && lane < value.size(); ++lane) {
-            valid = scene_scan_float(position->values[lane], value[lane]);
+        bool valid = position != nullptr && position->has_vector3;
+        if (valid) {
+            // 007B35A8..007B35D2 copies the three stored Pos lanes directly.
+            // A parsed present-empty V3 is a zero vector, not missing data.
+            value = position->vector3;
+        } else if (position != nullptr && position->type_letter == "V3"
+            && position->values.size() == value.size()) {
+            // Explicit legacy fallback for source-authored raw bags that did
+            // not pass through the typed parser. Native-derived payloads above
+            // never reparse their diagnostic tokens through strtod.
+            valid = true;
+            for (std::size_t lane = 0; valid && lane < value.size(); ++lane) {
+                valid = scene_scan_float(position->values[lane], value[lane]);
+            }
         }
         if (!valid) {
             // The native dereferences the schema-backed V3 value directly.
