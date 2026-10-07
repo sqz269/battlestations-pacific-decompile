@@ -1,0 +1,941 @@
+{
+  "packet": "cc11_health_transport_step",
+  "created_utc": "2026-10-07T17:52:44.321970+00:00",
+  "base_commit": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+  "branch": "agent/cc11_health_guard",
+  "status": "Complete three-body current host/client transport step reconstructed; strict worker build and six connected original/Source cases pass; integrator review and main build separate; native ABI/game unbound",
+  "owned_files": [
+    "include/bsp/native_session_transport_step.hpp",
+    "src/native_session_transport_step.cpp",
+    "docs/CC11_SESSION_TRANSPORT_STEP.md",
+    "reports/cc11_session_transport_step.json"
+  ],
+  "functions": [
+    {
+      "role": "dispatch",
+      "entry": "00782870",
+      "end_exclusive": "00782877",
+      "bytes": 7,
+      "instructions": 3,
+      "sha256": "c62bd3a42affff51a0486b206546003bc30b47978a4ac2577aa0e7c845dab20a",
+      "disk_live_full_bytes_match": true,
+      "disassembly": [
+        "00782870: mov eax, dword ptr [ecx]",
+        "00782872: mov edx, dword ptr [eax + 0x1c]",
+        "00782875: jmp edx"
+      ],
+      "source": "bsp::step_current_native_session_transport_00782870",
+      "name_hypothesis": "Current session transport step",
+      "original_abi": "ECX actual transport, no stack arguments, tail JMP current table+1C",
+      "source_abi": "New cdecl borrowed reference interface",
+      "whole_body": true
+    },
+    {
+      "role": "host",
+      "entry": "00A42280",
+      "end_exclusive": "00A422B4",
+      "bytes": 52,
+      "instructions": 19,
+      "sha256": "e49cbef10c29f9c4ebaf6843904a3924e03fd6e8a189e57e685f846361dff8f1",
+      "disk_live_full_bytes_match": true,
+      "disassembly": [
+        "00A42280: push esi",
+        "00A42281: push edi",
+        "00A42282: mov edi, ecx",
+        "00A42284: mov eax, dword ptr [edi + 0xc]",
+        "00A42287: mov esi, dword ptr [eax]",
+        "00A42289: cmp esi, eax",
+        "00A4228B: jne 0xa42292",
+        "00A4228D: call 0xbf6713",
+        "00A42292: mov esi, dword ptr [esi]",
+        "00A42294: cmp esi, dword ptr [edi + 0xc]",
+        "00A42297: je 0xa422b1",
+        "00A42299: mov ecx, dword ptr [esi + 8]",
+        "00A4229C: movss xmm0, dword ptr [0xce3910]",
+        "00A422A4: movss dword ptr [ecx + 0xd4c], xmm0",
+        "00A422AC: cmp esi, dword ptr [edi + 0xc]",
+        "00A422AF: jmp 0xa4228b",
+        "00A422B1: pop edi",
+        "00A422B2: pop esi",
+        "00A422B3: ret "
+      ],
+      "source": "bsp::step_host_native_session_peers_00a42280",
+      "name_hypothesis": "Host peer step reset",
+      "original_abi": "ECX actual transport, no stack arguments, RET",
+      "source_abi": "New cdecl borrowed reference interface",
+      "whole_body": true
+    },
+    {
+      "role": "client",
+      "entry": "00A41130",
+      "end_exclusive": "00A41131",
+      "bytes": 1,
+      "instructions": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_live_full_bytes_match": true,
+      "disassembly": [
+        "00A41130: ret "
+      ],
+      "source": "bsp::step_client_native_session_transport_00a41130",
+      "name_hypothesis": "Client transport step return",
+      "original_abi": "ECX ignored, no stack arguments, RET",
+      "source_abi": "New cdecl no-argument RET0",
+      "whole_body": true
+    }
+  ],
+  "native_total_bytes": 60,
+  "native_total_instructions": 23,
+  "native_context": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only_worker": true,
+    "host_existing_name_preserved": "STL_inst_00a42280",
+    "client_one_byte_function_recovered_by_primary_before_packet": true
+  },
+  "constants": [
+    {
+      "address": "00CE3910",
+      "bytes": 4,
+      "raw_bits": "3D23D70A",
+      "disk_live_full_bytes_match": true
+    }
+  ],
+  "actual_profiles": [
+    {
+      "role": "host",
+      "address": "00D243EC",
+      "bytes": 32,
+      "words": [
+        "00A41D60",
+        "00A41300",
+        "00A422C0",
+        "00A41440",
+        "00A414A0",
+        "00A41470",
+        "00A41320",
+        "00A42280"
+      ],
+      "sha256": "4134758696a5d1d3637e9db53e732d48a212384201f5a44aa3dd963ba5a3f13e",
+      "disk_live_full_bytes_match": true,
+      "fixture_relocation": "Only +1C copied pointer DWORD changed to corresponding COMPLETE copied ORIGINAL body; other seven DWORDs unchanged."
+    },
+    {
+      "role": "client",
+      "address": "00D24448",
+      "bytes": 32,
+      "words": [
+        "00A41FF0",
+        "00782880",
+        "007857F0",
+        "00A41BA0",
+        "00A41C00",
+        "00A41BD0",
+        "00784780",
+        "00A41130"
+      ],
+      "sha256": "232d4c32c5a6f4ac137acac9016db46b920693a87689176fbb2a6576dce0cdf9",
+      "disk_live_full_bytes_match": true,
+      "fixture_relocation": "Only +1C copied pointer DWORD changed to corresponding COMPLETE copied ORIGINAL body; other seven DWORDs unchanged."
+    }
+  ],
+  "call_rows": [
+    {
+      "address": "0077006F",
+      "native": "00782870",
+      "function": "0076FFC0",
+      "kind": "direct",
+      "contract": "Observed native CALL from whole-session phase, which remains unclosed."
+    },
+    {
+      "address": "00A4228D",
+      "native": "00BF6713",
+      "function": "00A42280",
+      "kind": "direct",
+      "contract": "Actual native invalid-parameter CALL; may return. Current SDK service substituted at fixed fixture/Source boundary; historical implementation unbound."
+    },
+    {
+      "address": "00782875",
+      "native": "00A42280",
+      "function": "00782870",
+      "kind": "tail_jump",
+      "profile_cell": "00D24408",
+      "profile_base": "00D243EC",
+      "contract": "Indirect JMP EDX, actual host table+1C word resolves target. Listing verifier cannot independently resolve indirect target."
+    },
+    {
+      "address": "00782875",
+      "native": "00A41130",
+      "function": "00782870",
+      "kind": "tail_jump",
+      "profile_cell": "00D24464",
+      "profile_base": "00D24448",
+      "contract": "Indirect JMP EDX, actual client table+1C word resolves literal one-byte RET. Listing verifier cannot independently resolve indirect target."
+    }
+  ],
+  "actual_fields": [
+    "transport+00 current profile pointer cell, freshly read once per dispatch",
+    "transport+0C sentinel pointer cell: initial capture, then fresh end-test and guard reads",
+    "transport+10 stored count borrowed in existing view but never read",
+    "actual 0C-byte list node next+00 and target+08",
+    "actual D74 target raw DWORD+D4C; borrowed actual float CE3910 loaded separately by MOVSS each write"
+  ],
+  "behavior": [
+    "Capture actual initial sentinel; first=node_at_captured_head.next; first equality check uses captured head.",
+    "On invalid node call fixed current SDK invalid_parameter_noinfo; retain return continuation.",
+    "Freshly advance node.next BEFORE fresh-head end-test and target lookup; return at sentinel.",
+    "Read actual node.target+08; MOVSS actual CE3910 -> XMM0 -> actual target+D4C; fresh sentinel compare becomes next guard.",
+    "Skip first NODE, not target identity; a later alias may therefore update that first target. Stored count is ignored.",
+    "Client literal original RET reads no list, target, clock, queue or lock.",
+    "Source current table+1C maps ONLY actual A42280/A41130 tokens to complete bodies; unsupported profiles throw logic_error outside admission.",
+    "Reference-only Source view binding observes no fields, creates no list and calls no callbacks; existing peer/node/target layouts reused."
+  ],
+  "source_coff": [
+    {
+      "symbol": "?step_host_native_session_peers_00a42280@bsp@@YAXABUNativeSessionPrimaryPeerFields@1@ADM@Z",
+      "machine": "I386",
+      "section": 25,
+      "bytes": 79,
+      "sha256": "c11c8aa2d19b4ddb78b9312ca858d0cfde182a10931f9e9a85d613e082724faf",
+      "relocations": [
+        {
+          "operand_offset": "1E",
+          "coff_kind": "0014",
+          "symbol": "?current_crt_invalid_parameter@?A0x539687a4@bsp@@YAXXZ"
+        }
+      ],
+      "instruction_count": 30,
+      "disassembly": [
+        "00: mov eax, dword ptr [esp + 8]",
+        "04: push esi",
+        "05: push edi",
+        "06: mov edi, dword ptr [esp + 0xc]",
+        "0A: mov dword ptr [esp + 0x10], eax",
+        "0E: mov eax, dword ptr [edi]",
+        "10: mov eax, dword ptr [eax]",
+        "12: mov esi, dword ptr [eax]",
+        "14: cmp esi, eax",
+        "16: sete al",
+        "19: test al, al",
+        "1B: je 0x22",
+        "1D: call 0x22",
+        "22: mov esi, dword ptr [esi]",
+        "24: mov eax, dword ptr [edi]",
+        "26: cmp esi, dword ptr [eax]",
+        "28: je 0x4c",
+        "2A: mov eax, dword ptr [esi + 8]",
+        "2D: add eax, 0xd4c",
+        "32: mov dword ptr [esp + 0xc], eax",
+        "36: mov eax, dword ptr [esp + 0x10]",
+        "3A: mov ecx, dword ptr [esp + 0xc]",
+        "3E: movss xmm0, dword ptr [eax]",
+        "42: movss dword ptr [ecx], xmm0",
+        "46: mov eax, dword ptr [edi]",
+        "48: cmp esi, dword ptr [eax]",
+        "4A: jmp 0x16",
+        "4C: pop edi",
+        "4D: pop esi",
+        "4E: ret "
+      ],
+      "role": "host",
+      "review": "0E/10 capture actual head;12 first node;14 compare captured head;1D fixed SDK call may return;22 fresh node.next;24/26 fresh head end-test;2A actual node+8 target;3E/42 MOVSS borrowed actual float to target+D4C;46/48 fresh head guard. Count is never read. Complete 79 bytes reviewed."
+    },
+    {
+      "symbol": "?step_client_native_session_transport_00a41130@bsp@@YAXXZ",
+      "machine": "I386",
+      "section": 22,
+      "bytes": 3,
+      "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "relocations": [],
+      "instruction_count": 1,
+      "disassembly": [
+        "00: ret 0"
+      ],
+      "role": "client",
+      "review": "Exactly C2 00 00: Source RET 0, three bytes, one instruction, no relocations; original body is C3, one byte. Equal return stack effect; not a byte-identical Source encoding claim."
+    },
+    {
+      "symbol": "?step_current_native_session_transport_00782870@bsp@@YAXABUNativeSessionTransportStepView@1@ADM@Z",
+      "machine": "I386",
+      "section": 23,
+      "bytes": 148,
+      "sha256": "b61734cfae7ecb6433802b7899ec297edc4660737bae290bd934f85a313dae48",
+      "relocations": [
+        {
+          "operand_offset": "30",
+          "coff_kind": "0014",
+          "symbol": "?current_crt_invalid_parameter@?A0x539687a4@bsp@@YAXXZ"
+        },
+        {
+          "operand_offset": "6C",
+          "coff_kind": "0014",
+          "symbol": "?step_client_native_session_transport_00a41130@bsp@@YAXXZ"
+        },
+        {
+          "operand_offset": "77",
+          "coff_kind": "0006",
+          "symbol": "??_C@_0DI@FNFPNPGJ@unsupported?5current?5native?5sessi@"
+        },
+        {
+          "operand_offset": "80",
+          "coff_kind": "0014",
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "operand_offset": "85",
+          "coff_kind": "0006",
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "operand_offset": "8F",
+          "coff_kind": "0014",
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "instruction_count": 50,
+      "disassembly": [
+        "00: sub esp, 0x10",
+        "03: push edi",
+        "04: mov edi, dword ptr [esp + 0x18]",
+        "08: mov eax, dword ptr [edi]",
+        "0A: mov eax, dword ptr [eax]",
+        "0C: mov eax, dword ptr [eax + 0x1c]",
+        "0F: cmp eax, 0xa42280",
+        "14: jne 0x60",
+        "16: mov eax, dword ptr [esp + 0x1c]",
+        "1A: mov dword ptr [esp + 0x18], eax",
+        "1E: mov eax, dword ptr [edi + 4]",
+        "21: push esi",
+        "22: mov eax, dword ptr [eax]",
+        "24: mov esi, dword ptr [eax]",
+        "26: cmp esi, eax",
+        "28: sete al",
+        "2B: test al, al",
+        "2D: je 0x34",
+        "2F: call 0x34",
+        "34: mov esi, dword ptr [esi]",
+        "36: mov eax, dword ptr [edi + 4]",
+        "39: cmp esi, dword ptr [eax]",
+        "3B: je 0x70",
+        "3D: mov eax, dword ptr [esi + 8]",
+        "40: add eax, 0xd4c",
+        "45: mov dword ptr [esp + 8], eax",
+        "49: mov eax, dword ptr [esp + 0x1c]",
+        "4D: mov ecx, dword ptr [esp + 8]",
+        "51: movss xmm0, dword ptr [eax]",
+        "55: movss dword ptr [ecx], xmm0",
+        "59: mov eax, dword ptr [edi + 4]",
+        "5C: cmp esi, dword ptr [eax]",
+        "5E: jmp 0x28",
+        "60: cmp eax, 0xa41130",
+        "65: jne 0x76",
+        "67: pop edi",
+        "68: add esp, 0x10",
+        "6B: jmp 0x70",
+        "70: pop esi",
+        "71: pop edi",
+        "72: add esp, 0x10",
+        "75: ret ",
+        "76: push 0",
+        "7B: lea ecx, [esp + 0xc]",
+        "7F: call 0x84",
+        "84: push 0",
+        "89: lea eax, [esp + 0xc]",
+        "8D: push eax",
+        "8E: call 0x93",
+        "93: int3 "
+      ],
+      "role": "current",
+      "review": "08/0A current table cell;0C exactly one table+1C read;0F host token. 16..75 contains complete inlined host loop, same captured/fresh head and may-return SDK sequence;51/55 MOVSS. 60 client token;67/68 restore Source frame;6B tail JMP to complete Source RET0. 76..93 logic_error admission failure only for unsupported entries. No host-call relocation exists because the body is inlined; complete 148 bytes reviewed."
+    },
+    {
+      "symbol": "?current_crt_invalid_parameter@?A0x539687a4@bsp@@YAXXZ",
+      "machine": "I386",
+      "section": 20,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": "2",
+          "coff_kind": "0006",
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ],
+      "instruction_count": 1,
+      "disassembly": [
+        "00: jmp dword ptr [0]"
+      ],
+      "role": "fixed_crt",
+      "review": "Exactly six-byte indirect IAT tail JMP to current SDK _invalid_parameter_noinfo. No injected callback; historical BF6713 internals are not reconstructed."
+    }
+  ],
+  "fixture_drivers": [
+    {
+      "symbol": "?original_crt_service@@YAXXZ",
+      "machine": "I386",
+      "section": 56,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": "2",
+          "coff_kind": "0006",
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ],
+      "instruction_count": 1,
+      "disassembly": [
+        "00: jmp dword ptr [0]"
+      ]
+    },
+    {
+      "symbol": "?invoke_original@@YAXPBXPAXPBUFp@@PAU1@@Z",
+      "machine": "I386",
+      "section": 53,
+      "bytes": 23,
+      "sha256": "2a21bcfa2255463da51d50c612a12c2070162a0587bf9e4a99e7455edd53590e",
+      "relocations": [],
+      "instruction_count": 10,
+      "disassembly": [
+        "00: push ebp",
+        "01: mov ebp, esp",
+        "03: mov eax, dword ptr [ebp + 0x10]",
+        "06: fxrstor [eax]",
+        "09: mov ecx, dword ptr [ebp + 0xc]",
+        "0C: call dword ptr [ebp + 8]",
+        "0F: mov eax, dword ptr [ebp + 0x14]",
+        "12: fxsave [eax]",
+        "15: pop ebp",
+        "16: ret "
+      ],
+      "review": "06 FXRSTOR seed;09 set native ECX transport;0C CALL complete copied original dispatcher;12 FXSAVE immediately after return. No hot Source operation thunk."
+    },
+    {
+      "symbol": "?invoke_source@@YAXPBUNativeSessionTransportStepView@bsp@@PDMPBUFp@@PAU3@@Z",
+      "machine": "I386",
+      "section": 54,
+      "bytes": 31,
+      "sha256": "faf29928d22475023e999f7147fa120f9e318fc3720d0d066f4e9200ad44a277",
+      "relocations": [
+        {
+          "operand_offset": "10",
+          "coff_kind": "0014",
+          "symbol": "?step_current_native_session_transport_00782870@bsp@@YAXABUNativeSessionTransportStepView@1@ADM@Z"
+        }
+      ],
+      "instruction_count": 12,
+      "disassembly": [
+        "00: push ebp",
+        "01: mov ebp, esp",
+        "03: mov eax, dword ptr [ebp + 0x10]",
+        "06: fxrstor [eax]",
+        "09: push dword ptr [ebp + 0xc]",
+        "0C: push dword ptr [ebp + 8]",
+        "0F: call 0x14",
+        "14: add esp, 8",
+        "17: mov eax, dword ptr [ebp + 0x14]",
+        "1A: fxsave [eax]",
+        "1D: pop ebp",
+        "1E: ret "
+      ],
+      "review": "06 FXRSTOR seed;09/0C push actual borrowed references;0F direct CALL complete Source current dispatcher;1A FXSAVE after stack-only cleanup. View bound before restore."
+    }
+  ],
+  "fixture": {
+    "artifact_directory": "local/cc11_transport_step_20261007_a",
+    "checks": 511,
+    "failures": 0,
+    "original_dispatch_cases": 6,
+    "original_composition": "Complete 7-byte dispatcher -> actual eight-DWORD PE profile prefix copy +1C -> complete original 52-byte host OR original one-byte client",
+    "original_code_relocations": [
+      {
+        "body": "00A42280",
+        "operand_offset": "0E",
+        "native_operand": "00A4228E",
+        "bytes": 4,
+        "kind": "REL32",
+        "replacement": "fixed real current SDK invalid_parameter_noinfo service bridge; no injected operation callback"
+      },
+      {
+        "body": "00A42280",
+        "operand_offset": "20",
+        "native_operand": "00A422A0",
+        "bytes": 4,
+        "kind": "absolute address",
+        "replacement": "actual PAGE_READONLY PE CE3910 float cell"
+      }
+    ],
+    "original_nonrelocation_code_bytes_unchanged": 52,
+    "original_profile_data_relocations": {
+      "count": 2,
+      "bytes_each": 4,
+      "slot": "1C",
+      "other_dwords_each": 7,
+      "replacement": "corresponding COMPLETE ORIGINAL copied host/client body; no Source operation thunk",
+      "qualification": "Reached 32-byte prefixes only; unrelated entries never invoked; not whole native class/profile factory proof"
+    },
+    "memory_permissions": {
+      "original_image": "CreateFileMapping PAGE_READONLY / MapView FILE_MAP_READ",
+      "original_code_and_profiles": "VirtualAlloc RW setup then VirtualProtect PAGE_EXECUTE_READ",
+      "source_profiles": "Actual readonly mapped original PE tokens, never invoked as Source function pointers"
+    },
+    "actual_world": "Each original/Source world owns three genuine D74 targets, actual slot mask7/indices0,1,2, real OS locks, nine allocated cursors, six histories and159 history samples.",
+    "payload_layout": "Three 0x464-byte payload slices are INLINE in each target buffers_10.backing_04. Whole D74 target snapshots cover ALL inline payload bytes. Separately allocated 0x10-byte cursor objects have separate exact snapshots.",
+    "preservation": "Only expected visited D4C words change; all other target bytes including nonempty inline payloads, all cursor state, complete lock bytes, both history headers and all50+3 samples per target, transport, sentinel, nodes and slot mask remain exact. Complete genuine target destructors return mask to zero.",
+    "target_seed_words": [
+      "11223344",
+      "AABBCCDD",
+      "7F812345"
+    ],
+    "scenarios": [
+      {
+        "name": "host one peer skips first node",
+        "profile": "host",
+        "nodes": 1,
+        "stored_count": 1
+      },
+      {
+        "name": "host three peers ignores stored count zero",
+        "profile": "host",
+        "nodes": 3,
+        "stored_count": 0
+      },
+      {
+        "name": "host two peers ignores stored count77",
+        "profile": "host",
+        "nodes": 2,
+        "stored_count": 77
+      },
+      {
+        "name": "host later node aliases first target",
+        "profile": "host",
+        "nodes": 3,
+        "stored_count": 3,
+        "later_node1_target_aliases_target0": true
+      },
+      {
+        "name": "client coherent empty list ignores count77",
+        "profile": "client",
+        "nodes": 0,
+        "stored_count": 77
+      },
+      {
+        "name": "client populated list return",
+        "profile": "client",
+        "nodes": 3,
+        "stored_count": 3
+      }
+    ],
+    "floating_point": {
+      "environments": 1,
+      "cw": "077F",
+      "mxcsr": "DFD5",
+      "seed": "Two occupied x87 values, genuine masked 0/0 sticky status, patterned XMM0..7; seed restored immediately before each hot call.",
+      "compared": [
+        "full x87 CW/SW/TOP/tag",
+        "all eight raw 80-bit x87 registers",
+        "full MXCSR",
+        "all XMM0..7 words Source versus original"
+      ],
+      "expected": "No x87/status/control/MXCSR changes; XMM1..7 preserved. If host writes, XMM0=actual constant low DWORD and zero upper96; otherwise all XMM0 seed bits preserved.",
+      "qualification": "Six list/profile cases under one fixed environment, not broad arithmetic/handler matrix"
+    },
+    "final_snapshot": "inputs_02",
+    "previous_snapshot": "inputs_01",
+    "final_delta": "Only probe assertion text narrowed to separately allocated cursor STATE. Whole-target snapshot already covered inline payload; no Source/functional/assertion/scenario expansion.",
+    "historical_crt": "Actual BF6713 encoded globals/Watson/fault/EH not executed or reconstructed; both native-fixture and Source use fixed real current SDK bridge. Ordinary host lists nonempty."
+  },
+  "build": {
+    "compiler": "MSVC Win32 19.51.36244.0",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /link /MANIFEST:EMBED /OPT:REF",
+    "embedded_manifest": "asInvoker",
+    "fresh_actual_translation_units": 6,
+    "immutable_inputs": 30,
+    "fresh_sources": [
+      "src/native_session_transport_step.cpp",
+      "src/native_session_target_lifetime.cpp",
+      "src/native_session_target_history.cpp",
+      "src/native_session_transport_buffers.cpp",
+      "src/singleton_lifetime.cpp",
+      "src/native_renderer_worker_lifetime.cpp"
+    ],
+    "inputs_before": {
+      "source_head": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+      "sources": [
+        "src/native_session_transport_step.cpp",
+        "src/native_session_target_lifetime.cpp",
+        "src/native_session_target_history.cpp",
+        "src/native_session_transport_buffers.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/native_renderer_worker_lifetime.cpp"
+      ],
+      "snapshot": "local/cc11_transport_step_20261007_a/inputs_02",
+      "sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_bit_cursor_read.hpp": "664f03d12e9fb5c6b75cbbdfa2f179cd9f0c5352542885e62db77f454c663b21",
+        "include/bsp/native_bit_cursor_write.hpp": "26bc0fb69b30b5d33f2b8b38d57622e21374d615814546fc6f725192e6c8fbce",
+        "include/bsp/native_renderer_worker_lifetime.hpp": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "include/bsp/native_session_message_base.hpp": "6b99806a76b491030dcdbd1335161e58fdbb0d4141d8dcf8a46658b930dd3f74",
+        "include/bsp/native_session_target_history.hpp": "bc2937719050f440098f5c6d1b91fd93d2d9d00d1995c5534d18ea3c0cea7e1e",
+        "include/bsp/native_session_target_lifetime.hpp": "c9ff703666c031057be935340b20aa7f9a88ab0dbc1357b59252ce3a88986b76",
+        "include/bsp/native_session_transport_buffers.hpp": "a2971d8d8187bf4561a3c60614f81c7c2fea528138ecf6c67c01d8786a275d8c",
+        "include/bsp/native_session_transport_step.hpp": "f5cb4468f353502899983fdde6079bf078a1438c31733224c62ed60f629b2892",
+        "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "include/bsp/native_unit_health_message.hpp": "e97b5ab18ff80359f4aba7062242c6025a7ecddb2eaa4b7b14597af9710cb3c8",
+        "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "include/bsp/unit_damage.hpp": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9",
+        "local/cc11_transport_step_20261007_a/probe.cpp": "a1c6a6412f567b7506f60284f6786e3cfafb898c69b9a12042e73ee359c5ed15",
+        "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "src/native_session_target_history.cpp": "4975e74e2a79e8ff8dbf3fbc226b29d3904f7469738da51088fb752ccc9b8f7c",
+        "src/native_session_target_lifetime.cpp": "78fcbd504223882a9543a418524a3ddfdbdf9ad9694c856a11be31b09abce4f3",
+        "src/native_session_transport_buffers.cpp": "9e95d272f075d61cfb8641286c52a91367d33fe1588831c5fdcb3fffb518a551",
+        "src/native_session_transport_step.cpp": "88ca9dcee9551648d0d289fb8651d55c0513948df78280c35bc94615847febbe",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "probe_sha256": "a1c6a6412f567b7506f60284f6786e3cfafb898c69b9a12042e73ee359c5ed15"
+    },
+    "inputs_after": {
+      "main_head_after": "eb4c05ca272cfc9e9ef7b0295a09eb1509dffddd",
+      "copied_libraries_stable": true,
+      "current_main_libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_after": "7dc991f27772e86c073e6fc561eaea1f39bf087441e8a452d4398babe7a9e604",
+          "matches_frozen_before": false
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "matches_frozen_before": true
+        }
+      ],
+      "main_rebuild_permitted_after_support_snapshot": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 30,
+      "support_before": {
+        "main_head": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+        "worker_head": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_core.lib",
+            "sha256": "37b89f6405c39cdf1f0099cfdd137fb7aa519f799c79529b4aeb51749aba9fd0",
+            "bytes": 73276356
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "support_before": {
+      "main_head": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+      "worker_head": "fccf4c1f83b02709522a808e6a4ad57d655950eb",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_core.lib",
+          "sha256": "37b89f6405c39cdf1f0099cfdd137fb7aa519f799c79529b4aeb51749aba9fd0",
+          "bytes": 73276356
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "support_full_build_codepoint": "ea9896f474b29e787cc7fb05c2d386a532e7c177",
+    "support_scope": "Three readonly main libraries frozen before main rebuild permission, original-before/copy/original-after hashes equal. Complete new step plus target lifetime/history/buffers/singleton/real tracked OS lock dependencies freshly compiled. Current main core may differ; copies linked by this receipt stay pinned.",
+    "original_before": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752
+    },
+    "original_after": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_transport_step_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752,
+      "unchanged": true
+    }
+  },
+  "uncertainties": [
+    "New cdecl Source interfaces, not ECX native class ABI replacements; actual mapped numeric profiles are Source admission tokens only.",
+    "Complete original code composition uses two code-operand relocations and two profile-pointer relocations; unrelated profile words never called.",
+    "Historical BF6713 encoded globals/Watson/private fault/EH implementation unbound; ordinary fixture excludes empty host and injected mutation hooks.",
+    "Whole enclosing session phase0076FFC0, transport construction/lifecycle, unsupported profiles, networking and game execution remain open.",
+    "No worker Ghidra writes, tracked tests, shared build registration or ledgers; primary owns integration/annotations/full main build."
+  ],
+  "call_verification": {
+    "checked": 4,
+    "failed": 0,
+    "direct_call_rows": 2,
+    "qualified_indirect_tail_jump_rows": 2,
+    "qualification": "Verifier recognizes JMP through EDX but does not itself resolve targets; actual disk/live profile words provide resolution.",
+    "output": "indirect  report.call_rows[2]: 00782875 uses JMP through a register or memory operand; the report resolves it to 00a42280 (not verifiable here)\n  indirect  report.call_rows[3]: 00782875 uses JMP through a register or memory operand; the report resolves it to 00a41130 (not verifiable here)\nreports/cc11_session_transport_step.json: 4 call rows checked, 0 failed"
+  },
+  "artifact_hashes": [
+    {
+      "path": "local/cc11_transport_step_20261007_a/probe.cpp",
+      "bytes": 17110,
+      "sha256": "a1c6a6412f567b7506f60284f6786e3cfafb898c69b9a12042e73ee359c5ed15"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/probe.exe",
+      "bytes": 220160,
+      "sha256": "a8901b9d36d7689148acaddfad3b54c4b4da0c4e4d9721c8965e547785eeabc7"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/probe.log",
+      "bytes": 49,
+      "sha256": "56e86b1caa3275073ba8c8771f59ce521ed360178d4e45a88fc06392cc6ebbba"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/build.cmd",
+      "bytes": 1286,
+      "sha256": "efee3641b885015f3d3dbb24658a419f61fe6e57bf0246a76f092b29852da733"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/build.log",
+      "bytes": 236,
+      "sha256": "7862028ad8632c383423c9794fb3cd302d502c2f1953534b3c1ec14172acb03d"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/prepare_fixture.py",
+      "bytes": 14610,
+      "sha256": "38ba0382cf71ed0c93a2a5fec25ab4a4c83b634a301bb21764e4556925b9299b"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/prepare_build.py",
+      "bytes": 2604,
+      "sha256": "6062b00ed9ea4d1b729a6fb8f6d26bf6e3331cebfc6031ed683758c5cfff9a39"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/pin_support.py",
+      "bytes": 2514,
+      "sha256": "dbc9f79bdfb5e9b24cc6387f70780d3bfa6e24e3222d9eed1b463dd02c050024"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/pin_native.py",
+      "bytes": 1033,
+      "sha256": "2c69eb14ae4c197b7e064e40f4690f02cdc4be295cd022e82162c04764e36f22"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/inspect_evidence.py",
+      "bytes": 8190,
+      "sha256": "0d610310bbea2eace20366d462a20d27b65018f162be762709d407ffbcfe053e"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/write_receipts.py",
+      "bytes": 12645,
+      "sha256": "d58730dd243c559ffeb23d4bac155eb23cd118a9b18d0a724547738965fcdbfa"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/inputs_before_link.json",
+      "bytes": 3939,
+      "sha256": "8e72aa7fa5bff1be65f91a2a56fa7e7405a449587a7404355b24c1165f457ef6"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/inputs_after_link.json",
+      "bytes": 2325,
+      "sha256": "239dcfe676509b7f88091b52a66fbe5015e33001fbbe64db62b59534218dfc07"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/support_before_link.json",
+      "bytes": 1256,
+      "sha256": "a405761084616dabc5431b3a431e9834e4984a257536890ec5ccc1cd7e1446f8"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/native_before_run.json",
+      "bytes": 349,
+      "sha256": "1a4e5d9d254af5e6e9e18b74a1056bf861a371e3c3662fc9538b9394734fc190"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/native_after_run.json",
+      "bytes": 371,
+      "sha256": "e3736946aeac944871a514ddba5e2bf6e5def1adf2dc3b41baedda1c1e1838d8"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_prototypes.txt",
+      "bytes": 2289,
+      "sha256": "6602371dc45ff724c9b2188f8ca8ac03a0e506a87f00595cc8f1a07769a277f6"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_dispatch_xrefs.txt",
+      "bytes": 69,
+      "sha256": "34669d74b4074d364f1edeca353118bfd475be203a42f3f2d4f59c2329b9a58b"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_host_xrefs.txt",
+      "bytes": 22,
+      "sha256": "123bd6138c7c9d93f1ce50e4d73b4c17e9cbe1fc783fe3382ce965dc00cb9c9e"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_client_xrefs.txt",
+      "bytes": 22,
+      "sha256": "263f10c6af34994af25831986dde5e149ca8a1a26084958f0c9341745ebf3d2e"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_dispatch_bytes.txt",
+      "bytes": 41,
+      "sha256": "1eefd8d786e1ebd49079d108a221b2b1f4194aaabfeb2913ffbeeb1f30360cf9"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_host_bytes.txt",
+      "bytes": 260,
+      "sha256": "6652acc1ec13357d04d9e658b08d791666c42c68cace7081f3fa313c44d06e8f"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_client_bytes.txt",
+      "bytes": 17,
+      "sha256": "6c611b8e21138c7d6f4c567605c95f222551a8d2ab794b44061dfd0fc16f2df7"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_constant_bytes.txt",
+      "bytes": 29,
+      "sha256": "18341472a20157111f73c8556ed042c4c4a3e4952b790cb915745dbc534f86c0"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_host_profile_bytes.txt",
+      "bytes": 154,
+      "sha256": "6991c89d1fda42bab3f960331d86c3266fee52f18da55959fb78ccc90a624bd8"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/live_client_profile_bytes.txt",
+      "bytes": 154,
+      "sha256": "dffdba8dd49a739dd6b0c188fab3ba03867464bba219d0b8ae6a049afe9f8e6c"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/coff_evidence.json",
+      "bytes": 12406,
+      "sha256": "bb89cb1c5f4662f6e6854c49124a773a74bdcb268f9d435ce995fda88676c252"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/embedded_manifest.xml",
+      "bytes": 391,
+      "sha256": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/original_dispatch.bin",
+      "bytes": 7,
+      "sha256": "c62bd3a42affff51a0486b206546003bc30b47978a4ac2577aa0e7c845dab20a"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/original_host.bin",
+      "bytes": 52,
+      "sha256": "e49cbef10c29f9c4ebaf6843904a3924e03fd6e8a189e57e685f846361dff8f1"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/original_client.bin",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/source_host_coff.bin",
+      "bytes": 79,
+      "sha256": "c11c8aa2d19b4ddb78b9312ca858d0cfde182a10931f9e9a85d613e082724faf"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/source_client_coff.bin",
+      "bytes": 3,
+      "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/source_current_coff.bin",
+      "bytes": 148,
+      "sha256": "b61734cfae7ecb6433802b7899ec297edc4660737bae290bd934f85a313dae48"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/source_fixed_crt_coff.bin",
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/native_session_transport_step.obj",
+      "bytes": 8649,
+      "sha256": "0b06a7e0bdb4b436e6b0a5b58ffd605a8d9dd33a1d7b10afa6ec7f15f1073d74"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/native_session_target_lifetime.obj",
+      "bytes": 8028,
+      "sha256": "c905b401801c0948e8b4281571d41bbc949009f729ce755dc3c5d8cce8817988"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/native_session_target_history.obj",
+      "bytes": 2134,
+      "sha256": "7126104a3de84ccdcd3408a3fb57386ec0d43e191f24e8e27e7c07bd60737ed2"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/native_session_transport_buffers.obj",
+      "bytes": 2071,
+      "sha256": "bed718ad74f6cc7a067aadc98dd91a4b721dc2f6e635ec049e912fd670aa640a"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/singleton_lifetime.obj",
+      "bytes": 36796,
+      "sha256": "511dc9a3f8e7325739b1940d4c776b0b0dc4809030f3966e3b90ac3fa020b522"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/native_renderer_worker_lifetime.obj",
+      "bytes": 6867,
+      "sha256": "099fa928649edf17db3bcdb044b9d41ba6c4395fb3dc098f88e260be1d9334f3"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/obj/probe.obj",
+      "bytes": 36820,
+      "sha256": "82af75fd6b9a039879281a16d9784c4afddbe0ff55eb6afbd4a5bf03ddd54e2a"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/asm/native_session_transport_step.asm",
+      "bytes": 24202,
+      "sha256": "08269d6b4f23a7214b1f8df76798d9dd01282546a3e9e4c82a6f2ef08f63cd82"
+    },
+    {
+      "path": "local/cc11_transport_step_20261007_a/verify_calls.log",
+      "bytes": 367,
+      "sha256": "cd6a2fcd7b602dcd1a98091d4990c6f29bf49d3383057c6b79074b3c85ecd472"
+    }
+  ],
+  "owned_source_hashes": [
+    {
+      "path": "include/bsp/native_session_transport_step.hpp",
+      "sha256": "f5cb4468f353502899983fdde6079bf078a1438c31733224c62ed60f629b2892"
+    },
+    {
+      "path": "src/native_session_transport_step.cpp",
+      "sha256": "88ca9dcee9551648d0d289fb8651d55c0513948df78280c35bc94615847febbe"
+    }
+  ]
+}
