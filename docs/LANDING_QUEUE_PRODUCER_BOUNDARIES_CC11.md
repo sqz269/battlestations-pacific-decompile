@@ -58,3 +58,5 @@ the tail or return a host registry index. No queue source, original full game
 ABI, provider binding or gameplay validation is claimed by this audit.
 
 Flow receipt: `reports/landing_queue_append_flow_recovery_cc11.json`.
+
+Primary holder-destructor listing repair: complete006C23D0..006C23FA (exclusive) now contains all14 instructions. The3-byte disk/live ADD ESP,4 at006C23F1 follows free CALL006C23EC; the supported locked repair clears its local flow override, saves the project and refreshes the export. Zero CALL gaps remain; existing scalar-deleting-destructor name and callee global NoReturn are preserved. The body stampsCF86A4, invokes006BF880 on globalE19948 and frees only for flagsbit0. This is analysis/listing evidence only, not a holder-lifetime reconstruction or evidence that queue-record/task-cache pointers own or retain the holder. Report: reports/landing_holder_destructor_flow_recovery_cc11.json.

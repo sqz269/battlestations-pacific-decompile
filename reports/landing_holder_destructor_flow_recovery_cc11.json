@@ -1,0 +1,57 @@
+{
+  "repairs": [
+    {
+      "function": "006c23d0",
+      "owner": "main",
+      "when": "2026-10-07T10:58:07Z",
+      "decompile_lines_before": 15,
+      "gaps": [
+        {
+          "site": "006c23ec",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "006c23f1",
+          "gap_end_exclusive": "006c23f4",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "006c23ec",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "006c23f1",
+            "gap_end_exclusive": "006c23f4",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 006c23ec (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 12,
+      "gaps_remaining": 0
+    }
+  ],
+  "primary_review": {
+    "scope": "definition/listing repair only; no reconstructed holder lifecycle or game proof",
+    "function": "006c23d0",
+    "end_exclusive": "006c23fa",
+    "before_instructions": 13,
+    "after_instructions": 14,
+    "call_site": "006c23ec",
+    "gap": "006c23f1..006c23f4 exclusive",
+    "bytes": "83 c4 04",
+    "decoded": "ADD ESP,4",
+    "remaining_call_gaps": 0,
+    "complete_disk_listing_and_postrepair_export_reviewed": true,
+    "original_function_name_and_callee_NoReturn_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "holder_queue_cache_lifetime_still_unbound": true
+  }
+}
