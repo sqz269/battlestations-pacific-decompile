@@ -101,4 +101,4 @@ SHA-256 values, original byte hashes, artifact paths and verification boundaries
 The whole target constructor, target profiles and virtual dispatch, tracked lock,
 shared slot mask, derived publication and lifetime, historical CRT/private EH,
 concurrency, native replacement ABI and gameplay remain outside this packet.
-Primary CMake registration, integration and the full main build are pending.
+Primary integration and registration at `e702215a6966f81cc11b3b22407966edb9a8d3dc` passed the full Win32 build and all three existing CTests. Its independent fresh history/allocator/probe compilation pinned 11 current-main source/header inputs and three current-main libraries before and after linking. The manifested x86 probe repeated all 229 checks and 27 complete original initializer comparisons successfully. Four stored-body CALL/JMP checks passed again; the optional self-free remains supported by complete raw/live bytes because stored Ghidra metadata is still truncated. Native CRT, enclosing target lifetimes, original ABI and gameplay remain unverified.
