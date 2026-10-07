@@ -65,7 +65,7 @@ struct PlaneSquadronEntity {
 int plane_squadron_wing_count_007f4754(bool present, int authored) noexcept;
 
 // 007F4B43..007F4B6E, the per-wing tail of 007F4580's mode-1 loop:
-//   plane+9D8h = squadron+3CCh   (the spawn-order id, never rewritten)
+//   plane+9D8h = squadron+3CCh   (initial index;007ED260 later reindexes)
 //   plane+9D4h = squadron        (the back pointer)
 //   squadron+3D0h[count] = plane
 //   squadron+3CCh += 1

@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:24:38.288131+00:00",
+  "updated_utc": "2026-10-07T05:29:42.993960+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -241,5 +241,18 @@
     "affected_exports_refreshed": true,
     "cpp_changed": false,
     "lifetime_and_runtime_binding": "pending"
+  },
+  "be_source_integration": {
+    "worker_revision": "8d10fac7e0e742aa733bdfbc02fa701a99856cce",
+    "merged_revision": "593a56eefaaabcca65916c6b5cbdcb2ec33ee41e",
+    "report": "reports/landing_be_profile_cc11.json",
+    "primary_calls_checked": 8,
+    "failures": 0,
+    "source_fixture": "BE BC3A/24bits; padding/BE46/virtual-reader/deferred-receipt/reindex/signed-edge; source-only",
+    "full_main_build": "queued; no native queue, lifetime, ABI or runtime binding claimed",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "stale_source_comments_corrected": true,
+    "worker_reuse": "cc11_land_owner_cpp"
   }
 }

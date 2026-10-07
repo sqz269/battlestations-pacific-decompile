@@ -21,7 +21,8 @@ bool plane_squadron_attach_plane_007f4b43(PlaneSquadronEntity& squadron, void* p
     // WingCount enum (" 1".." 5") is what keeps a sixth wing unreachable. This
     // process refuses instead of writing over +3E4h.
     if (static_cast<std::size_t>(squadron.live_count) >= kPlaneSquadronMaxWings) return false;
-    // 007F4B43: plane+9D8h = the CURRENT +3CCh, a spawn-order id.
+    // 007F4B43: initial plane+9D8h = the CURRENT +3CCh. Native007ED260
+    // later rewrites that index after changes to the member order.
     if (spawn_index != nullptr) *spawn_index = squadron.live_count;
     squadron.members[static_cast<std::size_t>(squadron.live_count)] = plane;  // 007F4B55
     squadron.live_count += 1;                                                 // 007F4B60
@@ -47,7 +48,9 @@ bool plane_squadron_promote_flight_leader_007ed610(PlaneSquadronEntity& squadron
             squadron.members[static_cast<std::size_t>(i - 1)];
     }
     squadron.members[0] = promoted;
-    // 007ED645 CALL 007ED260 on the squadron; contract: unread.
+    // Rotation-only projection. Native007ED645 then calls007ED260 to publish
+    // live plane indices; plane_squadron_promote_and_reindex_007ed610 supplies
+    // that required provider call (docs/LANDING_BE_PROFILE_CC11.md).
     return true;
 }
 
