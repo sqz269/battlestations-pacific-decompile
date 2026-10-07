@@ -1,0 +1,702 @@
+{
+  "packet": "cc11_scene_enum_scalar_delete",
+  "source_baseline": "8272aabe4513e4f72a269e212db85604057e49d1",
+  "doc": "docs/NATIVE_ENUM_SCALAR_DELETE_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "008F59C0"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_scalar_delete.hpp",
+    "src/native_enum_scalar_delete.cpp",
+    "docs/NATIVE_ENUM_SCALAR_DELETE_CC11.md",
+    "reports/native_enum_scalar_delete_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "008F59C0",
+      "inclusive_end": "008F59DD",
+      "bytes": 30,
+      "sha256": "8143498e9637f10e9b376fd263a4ab56362378c47f2a01ed8d1b092cc0f67fed",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 11,
+      "end_exclusive": "008F59DE",
+      "source_name": "delete_native_scene_enum_owner_008f59c0",
+      "coverage": "complete30B/11instruction ordinary normal scalar operation; whole prolog/branch/free cleanup/return inspected",
+      "observed_inputs": "ECX initialized19Ch owner; one stack DWORD consumed byRET4; native code tests only low byte bit0",
+      "observed_return": "EAX captured original owner address including freed branch; ESI restored, RET4 at008F59DB",
+      "formal_original_class_ABI_unclaimed": true,
+      "current_stored_Ghidra_listing_instructions": 11,
+      "assembly_pin": "local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\008F59C0.asm.log"
+    }
+  ],
+  "whole_native_bytes": 30,
+  "whole_native_decoded_instructions": 11,
+  "original_body_executed": false,
+  "call_sites": [
+    {
+      "address": "008F59C3",
+      "native": "008F4E70",
+      "function": "008F59C0",
+      "path": "unconditional ordinary destructor with captured owner; no flag guard"
+    },
+    {
+      "address": "008F59D0",
+      "native": "00BF65AC",
+      "function": "008F59C0",
+      "path": "only flags low-byte bit0 set; PUSH captured owner; genuine returning cdecl _free, ADD ESP4 at59D5"
+    }
+  ],
+  "native_definition_history": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\reports\\cc11_enum_scalar_delete_definition.json",
+    "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\cc11_enum_scalar_delete_definition.json",
+    "sha256_pre": "a0b83549edf8b07e0d6666c27bcd3da148ff0af81c729e02ebb7ad28bfbb9f06",
+    "sha256_copy": "a0b83549edf8b07e0d6666c27bcd3da148ff0af81c729e02ebb7ad28bfbb9f06",
+    "sha256_post": "a0b83549edf8b07e0d6666c27bcd3da148ff0af81c729e02ebb7ad28bfbb9f06",
+    "old_stored_listing_instructions": 10,
+    "old_missing_instruction": "008F59D5 ADD ESP,4;3B returning-free fallthrough after CALLBF65AC at59D0",
+    "original_bytes_changed": false,
+    "current_whole_membership_bytes": 30,
+    "current_listing_instructions": 11,
+    "repair_owner": "primary supported locked repair/recreate/save/export before this packet",
+    "existing_name": "CG_scalar_deleting_dtor_008f59c0",
+    "existing_tag": "cg_scalar_deleting_dtor",
+    "retained_library_name": "_free",
+    "worker_analysis_mutations": false
+  },
+  "source_contract": {
+    "interface": "new MSVC Win32 cdecl std::uintptr_t result; explicit owner/uint32flags/actual initialized pool/raw string context, original class ABI unclaimed",
+    "steps": [
+      "capture original owner address as uintptr_t BEFORE ordinary destruction",
+      "unconditionally genuine complete ordinary008F4E70",
+      "iff(flags &1u)!=0 call existing singleton_lifetime_free/currentstd::free",
+      "return captured integer address bits without deleted-root or invalid-pointer access"
+    ],
+    "preserved": [
+      "all ordinary-destruction key/slot/count/head/type-profile/stale-header/statistics/name policies inherited unchanged",
+      "only flags bit0 decides rootfree; all other bits irrelevant",
+      "no allocator/profile/global/phase callbacks, defaults, guard/reset/rollback or mapped-payload destructor"
+    ],
+    "result": "opaque address bits only; deleting result does not own storage and must not be dereferenced",
+    "retained_root": "live current-CRT allocation after ordinary destructor; explicitfree or genuine reconstruction before another owning-header destruction"
+  },
+  "existing_providers": [
+    {
+      "entry": "008F4E70",
+      "source": "src/native_enum_symbol_lifetime.cpp",
+      "header": "include/bsp/native_enum_symbol_lifetime.hpp",
+      "contract": "complete ordinary Source destructor; first mapclear/key+slot returns, current owning114/118 release, nestedD162C0 second emptyclear; no rootfree",
+      "prior_primary_integration": "lifetime accepted/fullmain/all3CTests and13TU independentfixture at6bf930f3518af4d99b0fa9df6c0b3d2c10b7f698"
+    },
+    {
+      "entry": "00BF65AC",
+      "historical_name": "_free",
+      "actual_thunk_target": "00BF9DC8",
+      "source": "src/singleton_lifetime.cpp:65",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "contract": "existing actual current std::free; complete historical5B thunk pin, current source/compiler/service boundary, not original CRT replay or fullCRTbodyparity"
+    },
+    {
+      "entry": "00BF681B",
+      "source": "src/singleton_lifetime.cpp:51",
+      "contract": "existing actual current malloc/_callnewh object allocation; actual19Ch successful coherent root domain, failure/historicalheapparity qualified"
+    },
+    {
+      "entry": "008F4DD0",
+      "source": "src/native_enum_symbol_insertion.cpp",
+      "contract": "genuine complete ordinary initialized19Ch owner/map/typeheader"
+    }
+  ],
+  "native_provider_pins": [
+    {
+      "entry": "008F4E70",
+      "inclusive_end": "008F4EF3",
+      "exclusive_end": "008F4EF4",
+      "bytes": 132,
+      "sha256": "26fd655fa6a6954eed562a9cbef47c154fa39b6749834a0ae5d7acfaa529715e",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 37
+    },
+    {
+      "entry": "008F4B60",
+      "inclusive_end": "008F4C48",
+      "exclusive_end": "008F4C49",
+      "bytes": 233,
+      "sha256": "1079eaa4aead384715ddc2f8e81f2cc70e85614b13be0e567951e3f11d2fc1fd",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 67
+    },
+    {
+      "entry": "00BF65AC",
+      "inclusive_end": "00BF65B0",
+      "exclusive_end": "00BF65B1",
+      "bytes": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 1
+    },
+    {
+      "entry": "0041DD20",
+      "inclusive_end": "0041DD3C",
+      "exclusive_end": "0041DD3D",
+      "bytes": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 12
+    },
+    {
+      "entry": "0043B0A0",
+      "inclusive_end": "0043B104",
+      "exclusive_end": "0043B105",
+      "bytes": 101,
+      "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 33
+    },
+    {
+      "entry": "008F4DD0",
+      "inclusive_end": "008F4E6C",
+      "exclusive_end": "008F4E6D",
+      "bytes": 157,
+      "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 48
+    }
+  ],
+  "native_allocation_lineage": [
+    {
+      "entry": "008F69A7",
+      "inclusive_end": "008F69CF",
+      "exclusive_end": "008F69D0",
+      "bytes": 41,
+      "sha256": "f43886641697f9b122627d459c423f7b5a8b36c958dbd053233a0a79ec7afce2",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 10,
+      "push": "008F69A7 PUSH19Ch",
+      "allocation": "008F69AC CALL00BF681B",
+      "constructor": "008F69C9 CALL008F4DD0",
+      "larger_library_loader_unbound": true
+    },
+    {
+      "entry": "008F5F29",
+      "inclusive_end": "008F5F4F",
+      "exclusive_end": "008F5F50",
+      "bytes": 39,
+      "sha256": "d3273ec19b541f5f7729d674d3b546b68609abb81a92e2c501ed469e76454f78",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "push": "008F5F29 PUSH19Ch",
+      "allocation": "008F5F2E CALL00BF681B",
+      "constructor": "008F5F4B CALL008F4DD0",
+      "larger_typed_parser_unbound": true
+    }
+  ],
+  "native_original_profile": {
+    "entry": "00D16508",
+    "inclusive_end": "00D1650F",
+    "exclusive_end": "00D16510",
+    "bytes": 8,
+    "sha256": "7bb395196f5e5a656ab72239e6d3a29763ec049d06fd4ebc4f8e2774b1e2f660",
+    "live_PE_image_equal": true,
+    "image_zero_fill_bytes": 0,
+    "first_DWORD": "008F59C0",
+    "next_DWORD": "008F6790",
+    "binding": "saved-program live=installedPE profile receipt only; Source numeric stores are not callable original class dispatch",
+    "external_next_method_unbound": true,
+    "native_profile_memory_or_vslot_modified": false
+  },
+  "coff": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\scalar.coff.log",
+    "sha256": "fe8a31e93cda5dcb4d71af293126a75ffd306653518a21f42083a9f084e1780e",
+    "machine": "014C",
+    "normal_provider_symbols_present": true,
+    "details": "local\\cc11_scene_enum_scalar_delete\\coff_provider_details.json",
+    "details_sha256": "47f2986845164b94e0f6a5194e03e4c42e10077df1684c7963596fcb6a08abcc",
+    "whole_dump": "complete native_enum_scalar_delete.obj dumpbin /headers /symbols /disasm",
+    "scalar": {
+      "object": "local\\cc11_scene_enum_scalar_delete\\run01\\native_enum_scalar_delete.obj",
+      "object_sha256": "fc5822043fe581aea49cad5c35b6512b31a3fd3d2d0dfc90bcbb5ad6d94e4158",
+      "symbol": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z",
+      "machine": "014C",
+      "section": 4,
+      "bytes": 42,
+      "code_hex": "56ff7424148b74240cff74241456e80000000083c40cf644240c01740956e80000000083c4048bc65ec3",
+      "code_sha256": "a5ec9ede5993584a892639fe4fd29c80ff82111be43c7dee0a7ba48290dfc615",
+      "relocations": [
+        {
+          "operand_offset": "F",
+          "kind": "0014",
+          "symbol": "?destroy_native_scene_enum_owner_008f4e70@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "operand_offset": "1F",
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "decoded_instructions": 15,
+      "disassembly": [
+        "00: push esi",
+        "01: push dword ptr [esp + 0x14]",
+        "05: mov esi, dword ptr [esp + 0xc]",
+        "09: push dword ptr [esp + 0x14]",
+        "0D: push esi",
+        "0E: call 0x13",
+        "13: add esp, 0xc",
+        "16: test byte ptr [esp + 0xc], 1",
+        "1B: je 0x26",
+        "1D: push esi",
+        "1E: call 0x23",
+        "23: add esp, 4",
+        "26: mov eax, esi",
+        "28: pop esi",
+        "29: ret "
+      ]
+    },
+    "current_free_provider": {
+      "object": "local\\cc11_scene_enum_scalar_delete\\run01\\singleton_lifetime.obj",
+      "object_sha256": "f3920b187460ad1e76e6bf01f411fd8a4c878d1544feb33ebc4522501c40cb25",
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "machine": "014C",
+      "section": 110,
+      "bytes": 6,
+      "code_hex": "ff2500000000",
+      "code_sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": "2",
+          "kind": "0006",
+          "symbol": "__imp__free"
+        }
+      ],
+      "decoded_instructions": 1,
+      "disassembly": [
+        "00: jmp dword ptr [0]"
+      ]
+    },
+    "schedule": "Source captureESI beforeordinaryCALL+0E; TESTflagslowbit0+16/JE+1B; currentfreeCALL+1E conditional; ADD ESP4+23; EAX=ESI+26/RET+29; no post-free root read",
+    "current_free_service": "fresh singleton_lifetime.obj complete6B helper, one actual IAT JMP__imp__free relocation operand+2; no callback/noop",
+    "native_binary_compatibility_claim": false
+  },
+  "fixture": {
+    "root": "local\\cc11_scene_enum_scalar_delete",
+    "recipe": "local\\cc11_scene_enum_scalar_delete\\run_probe.py",
+    "fixture_CPP": "local\\cc11_scene_enum_scalar_delete\\scalar_probe.cpp",
+    "run": "local\\cc11_scene_enum_scalar_delete\\run01",
+    "manifest": "local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\manifest.json",
+    "manifest_sha256": "9ab5f5054d78a12c38b98f5aa121575fef3dc2ce7fe43d2c0ee5fe37d6ffd427",
+    "sealed_pre_execution_manifest_sha256": "1323b40cf08b0a4680570ac776fcf96fe9a3a39e2d942155a400f60235983cc2",
+    "exe_sha256": "b1f858029bdc0be432c61384820013bec2c19f08c6e5a60a754caf53a6af0d53",
+    "outcomes": {
+      "owners": 2,
+      "installed_symbols": 28,
+      "empty_keys": 2,
+      "flags": [
+        2,
+        257
+      ],
+      "ordinary_Source_destructors": 2,
+      "returned_slots": 30,
+      "query_cleanups": 30,
+      "chain_collisions": 5,
+      "word_reads": 30,
+      "memberships": 30,
+      "complete_temporary_pool_prefix_checks": 60,
+      "original_address_bits_returned": true,
+      "retained_root_stale_bytes_preserved": true,
+      "all_stale_slots_preserved": true,
+      "deleted_root_never_accessed_or_freed_again": true,
+      "explicit_fixture_free_only_retained_root": true,
+      "actual_pool_return_trim_unlink_shutdown": true,
+      "original_bodies_executed": false
+    },
+    "outcomes_sha256": "ec0ee1a9a1d0be79cd3ba566d9cd83574bfd043df23ce297795295f2fefe0d03",
+    "compile_exit": [
+      {
+        "source": "native_enum_scalar_delete.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_symbol_lifetime.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_symbol_insertion.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_node_pool.cpp",
+        "exit": 0
+      },
+      {
+        "source": "allocator_list.cpp",
+        "exit": 0
+      },
+      {
+        "source": "singleton_lifetime.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_membership.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_word_getters.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_enum_dictionary_lookup.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_storage.cpp",
+        "exit": 0
+      },
+      {
+        "source": "native_string_pool_owner.cpp",
+        "exit": 0
+      },
+      {
+        "source": "scene_file.cpp",
+        "exit": 0
+      },
+      {
+        "source": "scalar_probe.cpp",
+        "exit": 0
+      }
+    ],
+    "link_exit": 0,
+    "probe_exit": 0,
+    "fresh_production_TUs": 13,
+    "fresh_total_TUs": 14,
+    "compiler_options": [
+      "MSVC Win32",
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "link_options": [
+      "/MACHINE:X86",
+      "/MANIFEST:EMBED",
+      "/DYNAMICBASE:NO",
+      "/BASE:0x20000000",
+      "/INCREMENTAL:NO",
+      "/VERBOSE:LIB"
+    ],
+    "manifest_exit": 0,
+    "manifest_request_execution_level": "asInvoker",
+    "embedded_manifest_sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+    "inventory_counts": {
+      "actual_production_headers": 43,
+      "fresh_production_CPPs": 13,
+      "unique_production_inputs": 56,
+      "fixture_CPP_and_recipe": 2,
+      "unique_fixture_inclusive_inputs": 58
+    },
+    "actual_compiler_headers": 202,
+    "actual_searched_linker_libraries": 16,
+    "toolchain_executables": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "sha256_pre": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+        "sha256_post": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "sha256_pre": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+        "sha256_post": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe",
+        "sha256_pre": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410",
+        "sha256_post": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x86\\mt.exe",
+        "sha256_pre": "2b51140fe58cd1ab255a4e66ed5d332224aa8621a1d46eba24bf3ab3dfe8fb46",
+        "sha256_post": "2b51140fe58cd1ab255a4e66ed5d332224aa8621a1d46eba24bf3ab3dfe8fb46"
+      }
+    ],
+    "Source_header_compiler_toolchain_searched_libs_pre_copy_post_equal": true,
+    "actual_source_storage": "two genuine currentCRT19Ch object allocations/actual008F4DD0 ctor; genuine rawpool and14h node pool/list/CS/trim; genuine owning key/query headers, actual008F2850 insertion; no handbuiltnodes/fakeprofile/defaultservices",
+    "actual_installed_witness": "global.enums LandVehicleClasses22 andSoldierTypes6; values opaque, no enum namespace/declaration/class identity",
+    "observations": [
+      "28installed+2empty=30actual poolnodes;64-slot page freecount34",
+      "real membership30/knownfoundword30 and complete queryprefix restoration60 before scalar operations; installedquerycleanup30 total",
+      "flags2 nondeleting: original integeraddressreturned,23slots returned/freecount57,22nonemptykey+Eheader23ring returns; root stale114/118/stat/name/profiles/allslots checked whilelive beforefixturefree",
+      "flags0x101 deleting: original integeraddressreturned,7slots returned/freecount64,6nonemptykey+Eheader7ringreturns; root neveraccessed/freedagain",
+      "both ordinarydestructors once; independentlyowned stale14h slots checked afterrootdeletion whilepoolpage remainslive",
+      "retainedroot independently unchanged afterotherrootdeletion; realCS depthszero",
+      "explicitfixturefree ONLY retainedroot afterallchecks; realtrim/pagecount0/unlink/stringpoolshutdown"
+    ],
+    "image_initial_cells": [
+      {
+        "entry": "00D162D4",
+        "inclusive_end": "00D162D7",
+        "exclusive_end": "00D162D8",
+        "bytes": 4,
+        "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+        "live_PE_image_equal": true,
+        "image_zero_fill_bytes": 0
+      },
+      {
+        "entry": "00E186ED",
+        "inclusive_end": "00E186ED",
+        "exclusive_end": "00E186EE",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_PE_image_equal": true,
+        "image_zero_fill_bytes": 1
+      },
+      {
+        "entry": "00E17654",
+        "inclusive_end": "00E17654",
+        "exclusive_end": "00E17655",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_PE_image_equal": true,
+        "image_zero_fill_bytes": 0
+      }
+    ],
+    "image_cell_domain": "checkedMEM_FREE mapping; distinctemptycellsandD162D4E read-only pre/post; not capturedlivegameglobals; originalprofile pinnedonly, not madecallable",
+    "historical_families": [
+      "entire prior lookup",
+      "entire wordgetters",
+      "entire membership",
+      "entire nodepool",
+      "entire insertion",
+      "entire ordinarylifetime"
+    ],
+    "historical_files_pre_post_equal": 1550,
+    "historical_preservation": "entire six prior worker Source/fixture/input/support familyroots; previous640worker and1019primaryhistoricalpath receipts preserved, nooldreruns",
+    "prior_fixture_reexecutions": false,
+    "worker_integrated_full_build": false,
+    "primary_integrated_build": "pending main CMake registration/fullbuild/independent Source fixture",
+    "original_wrapper_replay": false
+  },
+  "support_freeze": {
+    "utc": "2026-10-07T23:17:39.049295+00:00",
+    "worker_baseline": "8272aabe4513e4f72a269e212db85604057e49d1",
+    "main_baseline": "8272aabe4513e4f72a269e212db85604057e49d1",
+    "build_provenance": "Primary6bf complete main Win32 build/all3CTests and accepted lifetime/current13TU independent fixture; same C++ through8272aabe4 registration; current supports explicitly authorized for scalar delete",
+    "entries": [
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_core.lib",
+        "size": 73425766,
+        "sha256_pre": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "sha256_copy": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "sha256_post": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "sha256_pre_link_run": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "sha256_post_link_run": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_lua511.lib",
+        "size": 454824,
+        "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_zlib121.lib",
+        "size": 71766,
+        "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "actual_searched_linker_libraries": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_core.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\df108a1f77b9e3c1f86007a029dcf13749e79eac3754b6c8ae2c5c02e3691292\\bsp_core.lib",
+      "sha256_pre": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+      "sha256_copy": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+      "sha256_post": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_lua511.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\fd7fdc3e7f259d08994d62ef08c017d02a6c225cb66b8fd9722960ced02e4f82\\bsp_lua511.lib",
+      "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\support\\bsp_zlib121.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\93413a1df1c0b41374c8c2ce8c829883e8b8bcd4347743b8f38f9609d0512fae\\bsp_zlib121.lib",
+      "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\User32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\18bcd851218fbd1e3adbd5189ea83a14bf31f2de4ff40d7ff485a5d6b402cc28\\User32.Lib",
+      "sha256_pre": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "sha256_copy": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "sha256_post": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\565db118870c17b9446318f7d1b7446130e1410e8ea999f77d1ebec7f3c19f88\\d3d9.lib",
+      "sha256_pre": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af",
+      "sha256_copy": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af",
+      "sha256_post": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\AdvAPI32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\c9684146fd526dbfa6f3ade9a36eace76a43d9e87e2f10b22b4bca5c8a5768d6\\AdvAPI32.Lib",
+      "sha256_pre": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "sha256_copy": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "sha256_post": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\shell32.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\26ebafb9962146f9588c8943ff7f22c70af065a5edb975162130455ab3d10862\\shell32.lib",
+      "sha256_pre": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "sha256_copy": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "sha256_post": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\0f3ba1729b0b2c05ea8892215a932660ce51a9a9ecfe3f91d558c414841d6f16\\msvcprt.lib",
+      "sha256_pre": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "sha256_copy": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "sha256_post": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\71c082157242c9b1789f6fbd3cc0787f937fc98ba81f05537d4e5c7d7e17feed\\msvcrt.lib",
+      "sha256_pre": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha256_copy": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha256_post": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\ed510415f64da6d3779ccd797422c5dbfd36d96406612f33732f3470e3fe7512\\oldnames.lib",
+      "sha256_pre": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha256_copy": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha256_post": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\Uuid.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\eb2c6acea727138785d21138e8fc4936ac73a8b3376e342031ab359a5b1cbb10\\Uuid.Lib",
+      "sha256_pre": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0",
+      "sha256_copy": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0",
+      "sha256_post": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\dinput8.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\1d6f4175854f6253eb5ee647e2ec447208e41e124a4a6e67c60be2d2cf2ee9aa\\dinput8.lib",
+      "sha256_pre": "e18e93836e1aa52920cd2f8e320d4b18d6b2cba454affce527df6371c8de541b",
+      "sha256_copy": "e18e93836e1aa52920cd2f8e320d4b18d6b2cba454affce527df6371c8de541b",
+      "sha256_post": "e18e93836e1aa52920cd2f8e320d4b18d6b2cba454affce527df6371c8de541b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\dxguid.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\7e4787e073f1c2c789653a75c5902b50b3370d4c7b77343150189c5287d734dc\\dxguid.lib",
+      "sha256_pre": "4b66bbc675e4d7ff0c5d81765fc06fdd96dc77f9b1ef142db33b87aa58415a9e",
+      "sha256_copy": "4b66bbc675e4d7ff0c5d81765fc06fdd96dc77f9b1ef142db33b87aa58415a9e",
+      "sha256_post": "4b66bbc675e4d7ff0c5d81765fc06fdd96dc77f9b1ef142db33b87aa58415a9e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\2d6e4d237f81a12e82fa5c5c97f9f02cca41b97837113d2e978aa809f2dd5cc4\\kernel32.Lib",
+      "sha256_pre": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha256_copy": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha256_post": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\4f0a7df0984d4745cf483f5d82c3042da3b34dee9e6328ebcb9c2c248af0fa6d\\vcruntime.lib",
+      "sha256_pre": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha256_copy": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha256_post": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_scalar_delete\\run01\\inputs\\linker_libraries\\6e3c514fe84548c6e8378783fb35b7d7de682c39beaa956a7bcf1bb3c38ef51e\\ucrt.lib",
+      "sha256_pre": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha256_copy": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha256_post": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+    }
+  ],
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "installed_input": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+    "sha256_pre": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+    "sha256_copy": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+    "sha256_post": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+  },
+  "admission": [
+    "actual successful nonoverflowing current-CRT19Ch roots initialized via complete008F4DD0 and still-live owning114/118 header",
+    "inherited coherent finite unique valid allocated14h slots, genuine actual string/nodepool/list/CS services",
+    "stable disjoint storage/context/query ownership, externally synchronized; no alias/reentry/concurrentmutation",
+    "one ordinary destruction per live owning header; deleting return bits opaque, no postdelete access or freeagain",
+    "closedNULfreeASCII C-locale lookup/query domain with null data only emptykeys; no fabricated enum/class identity"
+  ],
+  "remaining_unbound": [
+    "original wrapper/ordinarybody execution; reached privateEH/SEH/fault/failure/concurrency/CRT/OS historicalparity",
+    "original ECX/stack/RET4 class/global/allocator ABI and livegame heap ownership; new sourcecdecl uintptr interface differs",
+    "globalstartup/cleanup/registration and originalclass dispatch/nextvslot008F6790",
+    "tablemapped virtual destructor, namespace/declaration identity, type/context registry",
+    "traffic loader/template/factory/runtime and gameplay"
+  ],
+  "verification": {
+    "native_direct_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_enum_scalar_delete_cc11.json",
+      "log": "local\\cc11_scene_enum_scalar_delete\\native_calls.log",
+      "log_sha256": "64b548681dc67e8556b913dfe9a319d52a565119c1398d08572f98cce4d91cca",
+      "direct_rows_checked": 2,
+      "failed": 0
+    },
+    "source_diff_check": "git diff --check PASS; exactly four new owned files; staged check follows",
+    "Ghidra_worker_mutations": false,
+    "shared_metadata_config_CMake_mutations": false,
+    "tracked_tests_added": false,
+    "full_build_by_worker": false
+  },
+  "owned_source_hashes": [
+    {
+      "path": "include/bsp/native_enum_scalar_delete.hpp",
+      "sha256": "27b1542e330be49a3d31931dd66a504393a972c7e7ed798c01fa2dc9a0cf59de"
+    },
+    {
+      "path": "src/native_enum_scalar_delete.cpp",
+      "sha256": "780c86dbede8d0c5691527a366621d022779d6b36b796a67cc9669f938859f64"
+    },
+    {
+      "path": "docs/NATIVE_ENUM_SCALAR_DELETE_CC11.md",
+      "sha256": "ce0af6cfd73bf6826af05c8b63c439b5ed9bfb082ea9d9ce20c236542bb32252"
+    }
+  ]
+}
