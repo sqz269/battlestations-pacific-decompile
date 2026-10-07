@@ -25,7 +25,7 @@
     "cc11_director_class8",
     "cc11_director_jm06_pair"
   ],
-  "status": "bounded four-director owning-B read adoption; fresh strict compile/link/connected Source fixture PASS; primary integration/main fullbuild/CTest pending",
+  "status": "integrated reviewed bounded Source; independent current-main fixture and full Win32/all3CTests passed; native ABI and game unbound",
   "correction": {
     "was": "Four actually called SceneReader director reads ignore independent owning B byte/presence and reparse diagnostics",
     "is": "One private compatible case-insensitive B plus has_boolean reader and four replacements; exact old raw fallback",
@@ -618,5 +618,52 @@
       "bytes": 78,
       "sha256": "3E80937AD911E9567946B06B3350EDBAA24F19E8EC65BFADC0A33B563C6A649A"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T16:24:02.700818+00:00",
+    "worker_revision": "84e9cce52ea378d6b9718b96b1d57dabd8f588c3",
+    "integrated_revision": "b7b612e3176b67fd9a0ce9e976655e5fe2cec741",
+    "full_main_build_revision": "bc083d99d",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_flush_director_integrated_build.log",
+    "executable_sha256": "c9e5c49ea8438c30817bb5b0766c509c576d17c5eda5af0109592c6e5ad819ee",
+    "probe_recipe": "local/cc11_director_root.cmd",
+    "probe_log": "local/cc11_director_root_compile.log",
+    "probe_sha256": "de7f43ee3bc159f4848b7fe625f3e86d8c69fbd0c8f51aa164dff76167317d0b",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "fresh_actual_translation_units": 3,
+    "stable_current_Source_header_fixture_inputs": 180,
+    "actual_compiler_includes": 178,
+    "stable_installed_inputs": 17,
+    "stable_current_compiled_supports": 77,
+    "native_bodies": [
+      {
+        "address": "008238FD",
+        "bytes": 171,
+        "sha256": "167d88cc7480627221be8c15159fea73051acc145ef24711897fdc5731e9dc50",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "actual_libraries": 15,
+    "actual_groups": 22,
+    "actual_resolved_bags": 243,
+    "actual_bags_with_directors": 54,
+    "owning_director_values": 216,
+    "real_named_table_and_plain_state_mask_bridge_executed": true,
+    "real_private_called_reader_executed": true,
+    "real_public_SceneReader_compiled": true,
+    "whole_SceneReader_Gunnery_class8_executed": false,
+    "native_direct_rows_checked": 4,
+    "native_direct_rows_failed": 0,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T162403Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "00822c20"
+    ]
+  }
 }

@@ -3,7 +3,7 @@
   "created_utc": "2026-10-07T15:56:05.888554+00:00",
   "base_commit": "016d0132d0d80266ae4b6ac4d16b01a89b43b0bf",
   "branch": "agent/cc11_health_guard",
-  "status": "complete ordinary Source target flush loop freshly compiled; full original123-byte LOOP with shared complete downstream Source providers passed8cases; primary integration/full main build pending",
+  "status": "integrated reviewed bounded Source; independent current-main fixture and full Win32/all3CTests passed; native ABI and game unbound",
   "owned_files": [
     "include/bsp/native_session_target_flush_all.hpp",
     "src/native_session_target_flush_all.cpp",
@@ -826,5 +826,53 @@
       "path": "local/cc11_target_flush_all_20261007_a/verify_calls.log",
       "sha256": "3247bf12ed25235595ea233e040039a5737310bed36660ca5a371285e0458da5"
     }
-  ]
+  ],
+  "primary_integration": {
+    "utc": "2026-10-07T16:24:01.962223+00:00",
+    "worker_revision": "07d1f7325258e3016a8e642ab4f0139e160a1154",
+    "integrated_revision": "b7b612e3176b67fd9a0ce9e976655e5fe2cec741",
+    "full_main_build_revision": "bc083d99d",
+    "full_main_ctests_passed": 3,
+    "build_log": "local/cc11_flush_director_integrated_build.log",
+    "executable_sha256": "c9e5c49ea8438c30817bb5b0766c509c576d17c5eda5af0109592c6e5ad819ee",
+    "probe_recipe": "local/cc11_flush_root.cmd",
+    "probe_log": "local/cc11_flush_root_compile.log",
+    "probe_sha256": "0acad27ab30a63406a218ff5fd2030c81a488b621acdc8cdcbeb8186afad6549",
+    "root_manifest_id1_asInvoker_verified": true,
+    "primary_source_native_and_whole_fixture_review": true,
+    "fresh_actual_translation_units": 30,
+    "stable_current_Source_header_fixture_inputs": 84,
+    "actual_compiler_includes": 54,
+    "stable_installed_inputs": 0,
+    "stable_current_compiled_supports": 3,
+    "native_bodies": [
+      {
+        "address": "00783490",
+        "bytes": 123,
+        "sha256": "97e15434546db53663d486f9618aa24812d3f4d008da3b704a2ed28abc2d22e5",
+        "disk_live": "MATCH"
+      }
+    ],
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "abi_compatible": false,
+    "actual_game_binding": false,
+    "game_validated": false,
+    "checks": 396,
+    "original_loop_cases": 8,
+    "whole_original_loop_bytes": 123,
+    "original_loop_lock_IAT_operand_relocations": 2,
+    "native_direct_rows_checked": 1,
+    "native_explicit_indirect_profile_rows": 2,
+    "native_direct_rows_failed": 0,
+    "shared_genuine_downstream_Source_providers": true,
+    "all_original_transport_stack": false,
+    "runtime_reentry_exercised": false,
+    "source_loop_emitted_bytes": 150,
+    "new_member_abi_ret": 8,
+    "ghidra_annotations_prior": "local/ghidra-annotations-20261007T162403Z.json",
+    "ghidra_saved": true,
+    "affected_exports_refreshed": [
+      "00783490"
+    ]
+  }
 }

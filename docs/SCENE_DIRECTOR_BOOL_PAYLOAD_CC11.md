@@ -94,3 +94,7 @@ stored body metadata beyond 008F5658; no flow repair occurs here. No whole
 initialization, class/message/controller ABI, whole SceneReader/Gunnery,
 original-game/runtime proof or new provider closure is claimed. Primary main
 full build/CTest and independent linked verification remain integration steps.
+
+## Primary integration
+
+Main C++ `bc083d99d` passed the full Win32 build and all three existing CTests; metadata head `b7b612e3176b67fd9a0ce9e976655e5fe2cec741` supplied the same Source. The independent fixture used3fresh TUs,180current Source/Lua/fixture inputs with178compiler includes,17installed files and77current supports. It reproduced243resolved bags and216owning values in54bags, plus the actual named table/plain-state gunnery mask bridge. All171fragment bytes matched disk/live and four direct Find rows passed. Whole SceneReader/Gunnery/class8 execution remains unclaimed. The PE32 asInvoker manifest was verified. Existing runtime/ABI/game qualifications remain. No tracked tests were added.

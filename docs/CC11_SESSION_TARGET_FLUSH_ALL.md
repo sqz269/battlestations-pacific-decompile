@@ -123,3 +123,7 @@ full session/transport/network-owner factory, send worker, socket exchange or
 caller reconstruction is claimed. Primary integration and the full main build
 remain with the integrator. Detailed evidence is in
 `reports/cc11_session_target_flush_all.json`.
+
+## Primary integration
+
+Main C++ `bc083d99d` passed the full Win32 build and all three existing CTests; metadata head `b7b612e3176b67fd9a0ce9e976655e5fe2cec741` supplied the same Source. The independent current-main fixture passed396checks across8whole-original-loop cases. All123disk/live bytes match. Thirty fresh TUs and84Source/header/fixture inputs plus3current libraries and the original PE remained stable before/after linking. Two lock IAT operand relocations and explicit genuine Source forwarding profile thunks are the original-loop boundary; the downstream transport stack is shared Source. One direct and two explicit indirect profile rows were checked separately. The PE32 asInvoker manifest was verified. Existing runtime/ABI/game qualifications remain. No tracked tests were added.
