@@ -1,0 +1,278 @@
+{
+  "packet": "cc11_health_message_d2",
+  "created_utc": "2026-10-07T08:30:01.687162+00:00",
+  "base_commit": "cc0d428cc",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete ordinary source storage/profile/constructor adapter; focused Win32 build and fixture passed; primary integration pending",
+  "files": [
+    "include/bsp/native_unit_health_message.hpp",
+    "src/native_unit_health_message.cpp",
+    "docs/UNIT_HEALTH_MESSAGE_D2_CC11.md",
+    "reports/unit_health_message_d2_cc11.json"
+  ],
+  "evidence": {
+    "definition_handoff": "reports/unit_health_message_d2_definition_cc11.json",
+    "primary_snapshot": {
+      "internal": 64268,
+      "total": 64710
+    },
+    "ghidra_worker_mutations": false,
+    "exported_pseudocode_and_assembly_reviewed": [
+      "00876D30",
+      "0075FD10",
+      "0075FD60",
+      "0075FE50"
+    ],
+    "predicate_export_reviewed": "0075FCE0",
+    "profile_address": "00D032A0",
+    "native_profile_entries": [
+      "0075FE50",
+      "0075FD10",
+      "0075FD60",
+      "0075FCE0",
+      "004499C0"
+    ],
+    "body_ranges_end_exclusive": [
+      [
+        "00876D30",
+        "00876D60"
+      ],
+      [
+        "0075FCE0",
+        "0075FCFD"
+      ],
+      [
+        "0075FD10",
+        "0075FD52"
+      ],
+      [
+        "0075FD60",
+        "0075FDA2"
+      ],
+      [
+        "0075FE50",
+        "0075FE6F"
+      ]
+    ],
+    "native_return_correction": "0075FE69 MOV EAX,ESI returns original identity after release; decompiler extraout_EAX is not the contract"
+  },
+  "host_steps": [
+    {
+      "address": "00876D38",
+      "native": "0075B430",
+      "function": "00876D30",
+      "contract": "complete existing base constructor with D2 and actual mutable game pointer cell"
+    },
+    {
+      "address": "0075FD21",
+      "native": "00428FF0",
+      "function": "0075FD10",
+      "contract": "type BYTE width8"
+    },
+    {
+      "address": "0075FD2F",
+      "native": "00429120",
+      "function": "0075FD10",
+      "contract": "sender WORD width12"
+    },
+    {
+      "address": "0075FD3B",
+      "native": "004290B0",
+      "function": "0075FD10",
+      "contract": "relay BYTE boolean width1"
+    },
+    {
+      "address": "0075FD48",
+      "native": "00429070",
+      "function": "0075FD10",
+      "contract": "full DWORD payload passed with width8"
+    },
+    {
+      "address": "0075FD73",
+      "native": "00428C70",
+      "function": "0075FD60",
+      "contract": "read BYTE width8"
+    },
+    {
+      "address": "0075FD80",
+      "native": "00428E30",
+      "function": "0075FD60",
+      "contract": "read WORD width12"
+    },
+    {
+      "address": "0075FD8B",
+      "native": "00428D70",
+      "function": "0075FD60",
+      "contract": "read Boolean width1"
+    },
+    {
+      "address": "0075FD98",
+      "native": "00428D10",
+      "function": "0075FD60",
+      "contract": "read unsigned DWORD width8"
+    },
+    {
+      "address": "0075FE61",
+      "native": "00BF65AC",
+      "function": "0075FE50",
+      "contract": "required allocation-domain release only when flags bit0 after root stamp"
+    }
+  ],
+  "layout": {
+    "size": 32,
+    "alignment": 4,
+    "base_size": 24,
+    "sender_word": 24,
+    "relay_byte": 26,
+    "retained_byte": 27,
+    "health_dword": 28,
+    "retained_constructor_bytes": [
+      "11",
+      "12",
+      "13",
+      "1B"
+    ],
+    "delivery_field": "04 is delivery=1, not a reference count"
+  },
+  "constructor": {
+    "type": 210,
+    "full_dword_preserved": true,
+    "write_order": [
+      "complete0075B430",
+      "WORD18=0",
+      "BYTE1A=0",
+      "DWORD1C=input",
+      "DWORD04=1",
+      "profile00=translated D2 table"
+    ],
+    "owner_context": "actual mutable game pointer cell; existing0075B430 loads signed18EC and pointer18CC+index*4 for0..7, otherwise native null branch; borrowed owner, no acquisition"
+  },
+  "profile": {
+    "five_executable_source_bridges": true,
+    "native_entry_order_preserved": true,
+    "predicate_queries": [
+      210,
+      70
+    ],
+    "predicate_uses_receiver": false,
+    "fifth_slot": "existing always-true004499C0",
+    "source_metadata": "required borrowed release-service pointer after five entry DWORDs",
+    "default_allocator": null,
+    "original_binary_profile_equivalence": false
+  },
+  "codec": {
+    "fields": [
+      {
+        "offset": "10",
+        "bits": 8,
+        "read_width_bytes": 1
+      },
+      {
+        "offset": "18",
+        "bits": 12,
+        "read_width_bytes": 2
+      },
+      {
+        "offset": "1A",
+        "bits": 1,
+        "read_width_bytes": 1
+      },
+      {
+        "offset": "1C",
+        "bits": 8,
+        "read_width_bytes": 4
+      }
+    ],
+    "wire_bits": 29,
+    "payload_write": "low8 of full incoming DWORD; storage not truncated",
+    "payload_read": "unsigned zero extension into whole DWORD",
+    "reader_cursor_offset": 4,
+    "existing_cursor_services": true,
+    "bounds_policy": "unchanged unchecked cursor carry/lookahead contract; live accessible backing required",
+    "new_error_conversion": false
+  },
+  "scalar": {
+    "bit_control": 0,
+    "root_stamp": "existing translated00CE4974",
+    "service_captured_before_stamp": true,
+    "release_only_if_bit_set": true,
+    "return": "same original identity after release; no liveness implication",
+    "source_precondition": "message currently carries complete translated D2 profile; profile and release service remain live; no later D2 operation after destruction until reconstruction",
+    "borrowed_setter_frame_deleting_flags_forbidden": true,
+    "actual_original_allocator_identity_proved": false
+  },
+  "adapter": {
+    "class": "NativeUnitHealthMessageConstructorCalls",
+    "abstract": true,
+    "bound_methods": "only final constructor implementation; other five access/operation methods remain required",
+    "same_pointer_cell": "bind(fields) returns stored globals reference; constructor context uses same mutable reference without cached pointer value",
+    "storage": "placement default-initialization in supplied exact20h frame; no value initialization/zeroing/allocation",
+    "returned_identity": "actual complete constructor identity",
+    "lifetime": "frame valid through required router return; no deleting flags or retained frame; complete clone/transport ownership stays with router",
+    "concrete_runtime_wiring_added": false
+  },
+  "validation": {
+    "command": "local/cc11_health_message_d2_check.cmd",
+    "toolchain": "MSVC Win32 VS18 Community /std:c++17 /EHsc /O2 /Gy /W4 /WX /fp:strict /FAs /link /MANIFEST:EMBED /OPT:REF",
+    "receipt": {
+      "checks": 71,
+      "failures": 0,
+      "constructor_owner_branches": 5,
+      "codec_bits": 29,
+      "scalar_flag_cases": 4,
+      "explicit_heap_releases": 2,
+      "setter_mode_reads": 2,
+      "setter_routes": 1,
+      "embedded_manifest": true,
+      "requested_execution_level": "asInvoker",
+      "build_exit_code": 0,
+      "probe_exit_code": 0
+    },
+    "cases": [
+      "poison-retained11..13/1B and fullDWORD constructor",
+      "owner indices0/7/-1/8 plus same-cell session swap to index3",
+      "independent expected unaligned29-bit wire and typed reader write widths",
+      "all five profile slots via source __thiscall dispatch",
+      "predicateD2/46 true andD3/100000D2 false",
+      "scalar flags0/2 no release;1/3 explicitHeapFree after root stamp",
+      "direct placement-frame identity and adapter shares exact pointer cell",
+      "complete setter changes gameA->B in notification thenB->C/released in provider; constructor capturesC owner7 and route observesbyte128"
+    ],
+    "release_fixture_domain": "explicit Windows HeapAlloc/GetProcessHeap and required HeapFree service; not native CRT identity",
+    "generated_assembly_review": [
+      "constructor exact store widths and native order after existingbasecall",
+      "release metadata capture before root stamp; bit0 controls required release call; EAX restored identity",
+      "ordered writer calls with live field loads",
+      "reader stream+4 and ordered destination/width calls",
+      "source scalar bridge ECX receiver/RET4",
+      "adapter frame identity passed directly to complete base constructor without storage allocation or clear"
+    ],
+    "new_tracked_tests": false,
+    "full_repository_build": "primary responsibility"
+  },
+  "limits": [
+    "new C++ source interfaces and source-only profile metadata, not drop-in complete native ABI",
+    "required explicit release provider does not prove original00BF65AC allocation identity",
+    "original invalid backing/fault/privateEH and exact unspecified return artifacts unproved",
+    "typed source bool bridge semantics checked in source domain; whole-register native ABI not claimed",
+    "existing setter binary32/masked numeric and callback contracts remain unchanged",
+    "receive factory registration, complete routing/cloning/transport ownership and gameplay unvalidated",
+    "no default no-op calls, concrete mirror, fake owner, allocator selection, arena or clone policy added"
+  ],
+  "artifacts_sha256": {
+    "include/bsp/native_unit_health_message.hpp": "c3f04fdc8a7531f962daa4e845e8de701c4cb3071598ea3ba0c5ab6e304e29c1",
+    "src/native_unit_health_message.cpp": "554a9d4e67b4befc0bf7855d54fc78b76cde1665e91be2e63d5e56e85fa5fa64",
+    "local/cc11_health_message_d2_probe.cpp": "131e8850090f28299dda5b07935f9a1ea8d06daef124619450c17c65c6420a0b",
+    "local/cc11_health_message_d2_check.cmd": "98743a786c473bf368a142076bc49e673bb7d7fde05eecbb03100db857e20264",
+    "local/cc11_health_message_d2_probe.exe": "4dd1c6957cf1a696041ee8b3807cea3412571df0251b04ca58de9b75f42fd8b2",
+    "local/cc11_health_message_d2_results.json": "caf319d2606e9d0ce8c17afcfc9e68a06f7684a26c045aab80321c72cf7e520b",
+    "local/cc11_health_message_d2_asm/native_unit_health_message.asm": "a87dfe9f77bd35ca3b5766f9606c4dc1bd4079fac2c6cb0e2a9e0af7f065d3b0"
+  },
+  "native_direct_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/unit_health_message_d2_cc11.json",
+    "live_project_program_verified_by_client": true,
+    "checked": 10,
+    "failed": 0,
+    "exit_code": 0
+  }
+}
