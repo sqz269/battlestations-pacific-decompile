@@ -1,0 +1,317 @@
+{
+  "schema": 1,
+  "packet": "cc11_plane_squadron_first_plane",
+  "base_revision": "8272aabe4",
+  "source_status": "Complete conditional ordinary Source leaf with exact live fields; new Source ABI; native class/profile/world/lifetime/game unbound",
+  "tracked_files": [
+    "include/bsp/native_plane_squadron_first_plane.hpp",
+    "src/native_plane_squadron_first_plane.cpp",
+    "docs/PLANE_SQUADRON_FIRST_PLANE_CC11.md",
+    "reports/plane_squadron_first_plane_cc11.json"
+  ],
+  "routine": {
+    "entry": "007ed010",
+    "end_exclusive": "007ed017",
+    "size": 7,
+    "instruction_count": 2,
+    "coverage": "complete",
+    "hex": "8b81d0030000c3",
+    "sha256": "87d3c6e97fd5be315d08d84d87574053eb97cec9453657bc98938747fd16dd25",
+    "disk_live_equal": true,
+    "native_convention": "ECX actual squadron, EAX=[ECX+3D0], plainRET; no stacked args",
+    "source_convention": "constvoid* __cdecl(view const&), new Source interface not image register/class ABI",
+    "native_calls": 0,
+    "absolute_globals": 0,
+    "direct_caller_refs": 0,
+    "profile_data_refs": 1,
+    "live_name": "FUN_007ed010",
+    "primary_definition_report": "reports/cc11_plane_squadron_first_plane_definition.json",
+    "stored_body": "007ed010..007ed016 inclusive; two instructions; neighbor/padding excluded"
+  },
+  "live_storage": {
+    "identity": "SAME actual squadron root",
+    "minimum_extent": "0x3d4",
+    "alignment": 4,
+    "field": "genuine already-live nullable pointer object exactlyactual+3D0",
+    "view": "actual root plus reference to pointer cell; no copied value",
+    "factory": "PURE placement checks (nonnull/root extent/wrap/alignment/exactcell) only; Source placement logic_error on invalid domain; normal path no represented read/effect/default/callback/native call/allocation/profile",
+    "operation": "ONE volatile actual pointer read; no count guard/nullable reinterpretation/projection or defaults",
+    "lifetime": "Caller supplies coherent LIVE cell and stable backing. Getter returns token only; actual returned-object lifetime/consumer field domain remain separate required contracts. No fault/concurrency/structural reentry/EH/world admission."
+  },
+  "existing_source_boundary": {
+    "producer": "native_plane_squadron_insert_sorted_007ed0d0 publishes SAME actual pointer slot3D0",
+    "consumer": "native_land_plane_is_leader_007b8ad0 and NativeLandPlaneLeaderCruiseHost final provider consume returned actual plane/current9D8",
+    "not_substitute": "plane_squadron_flight_leader(PlaneSquadronEntity&) guards live_count>0 and uses semantic backing; unsuitable for actual getter",
+    "scope": "No existing Source/provider edited; no whole constructor/cruise/weapon preflight invocation or binding"
+  },
+  "profile_witness": {
+    "profile": "00d087c0",
+    "offset": "13c",
+    "cell": "00d088fc",
+    "value": "007ed010",
+    "constructor_site": "007f2cad",
+    "constructor_instruction": "MOV[ESI],00D087C0",
+    "status": "Actual raw DATA/producer evidence only, Source uncallable; no profile/class construction or dispatch adapter",
+    "sorted_entry": "007ed0d0 distinct and has no tablexref"
+  },
+  "native_direct_call_rows": [],
+  "indirect_call_evidence": [
+    {
+      "call_site": "00721a63",
+      "containing_function": "00721a40",
+      "span_start": "00721a53",
+      "span_end_exclusive": "00721a65",
+      "span_size": 18,
+      "sequence": "TEST ECX/JZ;MOV EAX,[ECX];MOV EDX,[EAX+13C];CALL EDX",
+      "kind": "indirect",
+      "admitted_target": "007ED010 ONLYactualD087C0 receiver profile",
+      "status": "Excluded from direct-call verifier; actual owner34/returneddead-byte/preflight/nativeclass/world contracts not closed",
+      "source_boundary": "src/cruise_command.cpp gameunit_apply_set_command_00721a40 projects later5Ch arm and omits this preflight"
+    }
+  ],
+  "validation": {
+    "strict_compile": {
+      "passed": true,
+      "warnings": 0,
+      "target": "MSVC Win32",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/std:c++17",
+        "/permissive-",
+        "/showIncludes"
+      ],
+      "fresh_tu_count": 4,
+      "fresh_translation_units": [
+        "src/native_plane_squadron_first_plane.cpp",
+        "src/native_plane_squadron_insert.cpp",
+        "src/native_land_plane_leader.cpp",
+        "local/cc11_plane_squadron_first_plane_probe.cpp"
+      ],
+      "link_manifest": "/MANIFEST:EMBED"
+    },
+    "focused_fixture": {
+      "checks": 14,
+      "output": "PASS: 14 connected Source/original7B checks; exact Source sorted producer ONCE; old families not replayed",
+      "scope": "One connected setup; exact Source sorted producer ONCE per fixture invocation; only new unchanged original7B executes; same-cell producer/reader/leader consumer, count0 retained/null observations",
+      "original_instruction_changes": 0,
+      "original_call_relocations": 0,
+      "original_table_relocations": 0,
+      "old_families": "immutable/not replayed"
+    },
+    "case": "One new setup; genuine live shaped squadron/plane cells/static offsets/guards; existing exact Source sorted producer ONCE per invocation publishes index0 before1/4; reader view bound before publication; original/new getters receive SAME slot; existing Source leader consumer; count0 retained-pointer thenNULL-cell observations; full backing/guards unchanged by all readers",
+    "fixture_qualifications": [
+      "Shaped LIVE Source storage and pure mappings, not native constructors/profile/arena/world proof",
+      "Only new original7B getter executes; no code/CALL/table relocations/bridges",
+      "Raw profile/constructor bytes DATA evidence only",
+      "Controlled count0/null stores occur between operations, not observed native retirement/reentry/lifetime",
+      "Returned objects stay alive through consumers",
+      "Unexercised higher tuning/controller methods throw, no default production providers",
+      "Old24/31/165/136/all previous families immutable/unexecuted"
+    ],
+    "toolchain_provenance_correction": "Initial same14-check case passed, but toolchain pre-pin named Hostx64 bins; final identical case rebuilt after pinning actualHostx86 tools. Final checks not aggregated, no expanded cases/old-family replay.",
+    "manifest": {
+      "path": "local/cc11_plane_squadron_first_plane_manifest.json",
+      "schema": 1,
+      "sha256": "a20b15e1bbe5c5682151c2ee20ac0d1dfabbf0a5c04c3b372b01ce61869da77d",
+      "source_recipe_support_inputs": 36,
+      "selected_toolchain_inputs": 3,
+      "total_pinned_inputs": 39,
+      "quoted_project_headers": 28,
+      "actual_compiler_project_includes": 28,
+      "all_pre_post_equal": true,
+      "artifacts": 14
+    },
+    "toolchain_selection": "vcvars32 -> where cl/link/dumpbin:Hostx86/x86; actual selected files pinned before sealed rebuild",
+    "toolchain_inputs": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "size": 830824,
+        "before_sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+        "after_sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "size": 3208544,
+        "before_sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+        "after_sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe",
+        "size": 21336,
+        "before_sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410",
+        "after_sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410"
+      }
+    ],
+    "coff": {
+      "path": "local/cc11_plane_squadron_first_plane_coff.txt",
+      "getter": "view argument+00; cell-reference address+04; ONE actual pointer load+07; RET+09; no count/CALL/CMP/default",
+      "factory": "nonnull+07; extent+0B; wrap+15; alignment+1D; exactcellCMP+2C; normal stores root/reference only+34/+36 thenRET+3C; no cell-value read"
+    },
+    "executable": {
+      "path": "local/cc11_plane_squadron_first_plane_probe.exe",
+      "size": 31232,
+      "sha256": "cbd599b350641634cbd89f711af3a27d6a50986df061df0d62eff54cf7cbfedb",
+      "machine": "I386",
+      "pe_magic": "PE32",
+      "manifest_resources": [
+        {
+          "type": 24,
+          "id": 1,
+          "size": 381,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "asInvoker": true
+        }
+      ]
+    },
+    "frozen_support": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_first_plane_core.lib",
+        "size": 73425766,
+        "sha256": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "source_before": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43",
+        "source_after": "f1ed060c4d20b2a461b92cf35d3691d80d02daf113b08b53bc4dd5dab999da43"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_first_plane_lua.lib",
+        "size": 454824,
+        "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_before": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "source_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_squadron_first_plane_zlib.lib",
+        "size": 71766,
+        "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_before": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "source_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ],
+    "recipe": "local/cc11_plane_squadron_first_plane_build.ps1",
+    "compile_log": "local/cc11_plane_squadron_first_plane_compile.log",
+    "output": "local/cc11_plane_squadron_first_plane_output.txt",
+    "native_receipt": "local/cc11_plane_squadron_first_plane_native_receipt.json",
+    "native_receipt_sha256": "d972d1b09ab6957631678314781e4b543da7a7d6a6a61e390c352430dbc2e946",
+    "native_call_verifier": "PASS:0 direct-call rows,0 failed;1 true indirect preflight explicitly excluded; owned leaf0 native CALLs",
+    "diff_check": "PASS; final staged four-file check also required before commit",
+    "full_build": "Root-owned;not worker-run",
+    "game": "not run",
+    "original_pe_pre_post": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "before": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "after": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "equal": true
+    }
+  },
+  "general_reindex_boundary": {
+    "entry": "007ed260",
+    "end_exclusive": "007ed375",
+    "size": 277,
+    "instruction_count": 83,
+    "sha256": "34c211366b9eae72404ec5d797ff97716b371b4a96e986c57c5c2ea5d1f4887d",
+    "status": "Separate UNRESOLVED five-member native caller-stack read/frame contract at this handoff; primary owns recovery/implementation",
+    "odd_counterexample": {
+      "old_live_9d0": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "read": "candidate5 atcurrentESP+24 (incoming return word), beyond five-word tableESP+10..20"
+    },
+    "even_counterexample": {
+      "old_live_9d0": [
+        0,
+        2,
+        1,
+        4,
+        3
+      ],
+      "read": "candidate6 atcurrentESP+28 (following caller word)"
+    },
+    "this_packet": "No reindex/candidate guards/default replacement/math/geometry implementation"
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra call verifies project/program through Client.verify",
+    "base_revision": "8272aabe4",
+    "pe_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "start": "007ed010",
+        "end_exclusive": "007ed017",
+        "size": 7,
+        "hex": "8b81d0030000c3",
+        "sha256": "87d3c6e97fd5be315d08d84d87574053eb97cec9453657bc98938747fd16dd25",
+        "disk_live_equal": true,
+        "role": "complete owned first-plane getter"
+      },
+      {
+        "start": "00d088fc",
+        "end_exclusive": "00d08900",
+        "size": 4,
+        "hex": "10d07e00",
+        "sha256": "d9404d78973f18509f0b69fa8056490e16dce0e50caea18bda2750ea22ed9c08",
+        "disk_live_equal": true,
+        "role": "DATA-onlyD087C0+13C target"
+      },
+      {
+        "start": "007f2cad",
+        "end_exclusive": "007f2cb3",
+        "size": 6,
+        "hex": "c706c087d000",
+        "sha256": "aca4474274cca6a711042c6985d5c729f60f921310849052b81ee0d01cf79425",
+        "disk_live_equal": true,
+        "role": "actual constructor root-profile stamp"
+      },
+      {
+        "start": "00721a53",
+        "end_exclusive": "00721a65",
+        "size": 18,
+        "hex": "85c90f84f70100008b018b903c010000ffd2",
+        "sha256": "a0b3eaf0598da9c50b416a866a40cbe4d9ea83a29f98526749250908177db26a",
+        "disk_live_equal": true,
+        "role": "generic virtual preflight: not direct call or whole Source closure"
+      }
+    ],
+    "live_function": "Function: FUN_007ed010 at 007ed010\nSignature: undefined FUN_007ed010(void)\nEntry: 007ed010\nBody: 007ed010 - 007ed016\n{\n \"function_name\": \"FUN_007ed010\",\n \"address\": \"007ed010\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n... 15 more lines of 20 (use --start 5 or --lines)\n",
+    "xrefs": "From 00d088fc [DATA]\n",
+    "native_calls": 0,
+    "direct_caller_refs": 0,
+    "profile_refs": 1,
+    "virtual_preflight": {
+      "call_site": "00721a63",
+      "function": "00721a40",
+      "kind": "indirect CALL EDX",
+      "slot": "13c",
+      "receiver_domain": "getter target only actual D087C0 profile",
+      "status": "whole preflight/class/current5Ch projection not closed"
+    },
+    "primary_definition_report": "reports/cc11_plane_squadron_first_plane_definition.json"
+  },
+  "pending_original_runtime_abi": [
+    "Actual current borrowed object/backing and returned-object lifetimes",
+    "D087C0 imageprofile/class dispatch and full constructors/private EH",
+    "Whole00721A40 nativepreflight/currentSource5Ch projection and owner/returned-object domains",
+    "Actual whole Source-to-native ECX/register/class ABI replacement",
+    "Full world/arena/observer/death/runtime/game wiring",
+    "General277B reindex nativecallerframe behavior (separate primary-owned)"
+  ],
+  "shared_scope": [
+    "No Ghidra mutation",
+    "No config/ledger/CMake/sharedSource edits",
+    "No global build",
+    "No trackedtests",
+    "No old frozen fixture changes/reruns"
+  ]
+}
