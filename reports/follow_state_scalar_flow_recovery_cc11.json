@@ -1,0 +1,47 @@
+{
+  "packet": "cc11_follow_state_flow",
+  "status": "supported returning-free ADD ESP4 gap repair saved; zero remaining CALL gaps",
+  "repairs": [
+    {
+      "function": "009c2a60",
+      "owner": "main",
+      "when": "2026-10-07T16:43:54Z",
+      "decompile_lines_before": 24,
+      "gaps": [
+        {
+          "site": "009c2aa4",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "009c2aa9",
+          "gap_end_exclusive": "009c2aac",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "009c2aa4",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "009c2aa9",
+            "gap_end_exclusive": "009c2aac",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 009c2aa4 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 22,
+      "gaps_remaining": 0
+    }
+  ],
+  "ghidra_saved": true,
+  "exports_refreshed": [
+    "009c2a60"
+  ],
+  "no_inline_script_or_body_extension_attempt": true
+}
