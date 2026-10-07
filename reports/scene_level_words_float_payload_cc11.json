@@ -1,0 +1,1009 @@
+{
+  "packet": "cc11_scene_level_words_float_payload",
+  "date": "2026-10-07",
+  "doc": "docs/SCENE_LEVEL_WORDS_FLOAT_PAYLOAD_CC11.md",
+  "source_baseline": "1aa42b780",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "006F2780"
+  ],
+  "owned_files": [
+    "src/game_hosts_scene_contents.cpp",
+    "docs/SCENE_LEVEL_WORDS_FLOAT_PAYLOAD_CC11.md",
+    "reports/scene_level_words_float_payload_cc11.json"
+  ],
+  "status": "bounded_source_data_binding_and_focused_probe_passed",
+  "result": "Reuse unchanged called raw-word reader only in existing Level/LevelUpSeconds selector loop; successful explicit F payloads copied as DWORD bytes, all legacy independent success/fallback/no-reset/default/selector policy preserved.",
+  "reused_support": {
+    "report": "reports/scene_capture_words_float_payload_cc11.json; original snapshot copy lineage reports/scene_convoy_float_payload_cc11.json",
+    "snapshot_source_baseline": "e036b2964baff72f2bccd5b92a805d5cbb225df7",
+    "count": 77,
+    "inputs": [
+      {
+        "path": "local/cc11_scene_convoy_float_core.lib",
+        "bytes": 73110072,
+        "sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "level_pre_link_sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "level_post_link_sha256": "D341FCB42C9239CC45A9A43B81877C18F2175E61CC450A33A31753081C8A1841",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/bsp_lua511.lib",
+        "bytes": 454824,
+        "sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "level_pre_link_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "level_post_link_sha256": "E9786D9484EA0689BF98CE2CE83437E749D60A05859CFE028E356F12442C08DE",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/bsp_zlib121.lib",
+        "bytes": 71766,
+        "sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "level_pre_link_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "level_post_link_sha256": "C6B5A17D184C45A80E5A9FB6D269A35B85C9732E434396CB31DCC9754A37536F",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_close_attack_tick.obj",
+        "bytes": 8132,
+        "sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "level_pre_link_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "level_post_link_sha256": "9DD42659FEC6B63DDE707E1A67DBA961611F707427595F4918264B9FD3A9A883",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_lifetime.obj",
+        "bytes": 1792,
+        "sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "level_pre_link_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "level_post_link_sha256": "5C72043236758969F5645856BFFF521A040EDB09AFADC3B87DF81F94742282C2",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_object.obj",
+        "bytes": 3331,
+        "sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "level_pre_link_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "level_post_link_sha256": "276177B78CB8A72ABC399DBA2DA4B4EA0C560B7E2F90D483632821599319A3F7",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_command_tick.obj",
+        "bytes": 17020,
+        "sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "level_pre_link_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "level_post_link_sha256": "0EF1D306D07B17B2E295FE6E753B4DA330D74CF501DF547FC03BFF42541F40C6",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_group_think.obj",
+        "bytes": 6283,
+        "sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "level_pre_link_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "level_post_link_sha256": "443515C903EBCF2895849483726D0001B96CEBA488AFE30559D07E33F2F05388",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "level_pre_link_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "level_post_link_sha256": "58F5B93C9AB095D97CC5543114C8AEFA0B336EA8F80D107505C5088EA123C433",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ai_tuning_globals.obj",
+        "bytes": 15089,
+        "sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "level_pre_link_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "level_post_link_sha256": "2FEDC4574ECFD36F32D65353912423408BEB5BFBE720CE585C5953592B97DD95",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/airfield_taxi.obj",
+        "bytes": 4187,
+        "sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "level_pre_link_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "level_post_link_sha256": "BA4C3F90ACF142DDFDB14E10A0346ED3E9667216FF9D709B8BC7F7013DE73BB9",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/command_completion.obj",
+        "bytes": 77466,
+        "sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "level_pre_link_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "level_post_link_sha256": "F629E6431DBE0CC0192F8DE14FD4564E7C95C3A9D8A6EFF7EA5A9EC660E04DB2",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_aimdive_tail.obj",
+        "bytes": 7480,
+        "sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "level_pre_link_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "level_post_link_sha256": "8740919A4E06F3288722A11CA954B966B0A6A01CD8C0A0668D1907A526131FE1",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_goaway_turn.obj",
+        "bytes": 4628,
+        "sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "level_pre_link_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "level_post_link_sha256": "5F0BBD4DCDE2B24D6D10D03DF8697AC620F5A3371D8B3D69A4B5E1341ECF51FE",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dive_bomb_task.obj",
+        "bytes": 32543,
+        "sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "level_pre_link_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "level_post_link_sha256": "1954D24A6BD6469D7318B8F2BE78498025D3A21A5EF37ECF506CA3245BE7BD53",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/dogfight_task.obj",
+        "bytes": 20326,
+        "sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "level_pre_link_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "level_post_link_sha256": "7A94CE3FC182157C6114F551E0CD4C0914A5831B3B8AF6A8BF0F56B487801CB1",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_avoid_zone_runtime.obj",
+        "bytes": 363663,
+        "sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "level_pre_link_sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "level_post_link_sha256": "9C84EEFF2976E4E69611CCCE6C9E4433F793BF0C72DC26466EC102F03CEF9BD7",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts.obj",
+        "bytes": 926101,
+        "sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "level_pre_link_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "level_post_link_sha256": "EDD11A34DBDA404669EAE6872346C5F83CF1C60DD447D0AC383A1696D82BC387",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ai.obj",
+        "bytes": 1403099,
+        "sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "level_pre_link_sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "level_post_link_sha256": "758BEFF1E017051C1A0BC38ED1073D31A93AE24CDA966F4833E3A8EE3D94D208",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_avoid_zones.obj",
+        "bytes": 82422,
+        "sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "level_pre_link_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "level_post_link_sha256": "493E0E4C03AB9486D77F4F7101E5452A33A6F7C3D3BE503E8D7CC2FBB8174770",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_commands.obj",
+        "bytes": 633940,
+        "sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "level_pre_link_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "level_post_link_sha256": "56B32B792C85904BB1D339E19218AEC45254AD89470B3772FD8E5A0E883FADBC",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fixed_step.obj",
+        "bytes": 47500,
+        "sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "level_pre_link_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "level_post_link_sha256": "305C2CEDF02C2EBA75CCDE0EA7FB5139B4C9C2C922DF33D05AA9FE1D42DB976A",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_fonts.obj",
+        "bytes": 147168,
+        "sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "level_pre_link_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "level_post_link_sha256": "5AC135352C2F69CFECD38219AB7259D31CB0CDFE4E42BD786D486FCC6839E1C8",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_frontend.obj",
+        "bytes": 705688,
+        "sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "level_pre_link_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "level_post_link_sha256": "40212B84E6139DC25B710B70DE94F05B9374DB9F6EC2D4D02B8BC382DC91E894",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_gunnery.obj",
+        "bytes": 3307078,
+        "sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "level_pre_link_sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "level_post_link_sha256": "C272B8ADDB0CB43CA1BB1C811E4DD4F764B643BDA86B80F2D5FB63A307D8307A",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud.obj",
+        "bytes": 661386,
+        "sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "level_pre_link_sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "level_post_link_sha256": "D042921ACFCF0CA84702AD409748315EB6FB09807B01EB3A1D9CD32B2FA4E50F",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_hud_world.obj",
+        "bytes": 246452,
+        "sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "level_pre_link_sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "level_post_link_sha256": "BC25725395AB2241A78BF55046476D65B117C0EEA583CBEF17FF27F831C0A36A",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_init_tail.obj",
+        "bytes": 123679,
+        "sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "level_pre_link_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "level_post_link_sha256": "3AC18863FCDBF3BD76E43076C307091B3689FC33F41B04B875E1357D8A818047",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_lua.obj",
+        "bytes": 1570061,
+        "sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "level_pre_link_sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "level_post_link_sha256": "C52E44A37CFC02919A3368A1C56250849BEB0967EFFBEF7EB2DDD081E72081E7",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_menu.obj",
+        "bytes": 521505,
+        "sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "level_pre_link_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "level_post_link_sha256": "C973FDCDE1125618787224465BE85BB65951DC004F3E0B7783DCDF81982AB487",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission.obj",
+        "bytes": 776775,
+        "sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "level_pre_link_sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "level_post_link_sha256": "2E3D2323470DDE451D24108FC9DBA6857DC9AC9BBBF25BACFC365A2B69E83D28",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_frame.obj",
+        "bytes": 928403,
+        "sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "level_pre_link_sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "level_post_link_sha256": "3DCA838C516ABA089F584548FAEE4967A357C27EB0DE2068E8D796077BB9D0E1",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_mission_result.obj",
+        "bytes": 241488,
+        "sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "level_pre_link_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "level_post_link_sha256": "CCD06EFCA703DFD6ABD4F723F044E9746E13472E0001F55C9CC9B70865A7A644",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ready.obj",
+        "bytes": 223211,
+        "sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "level_pre_link_sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "level_post_link_sha256": "0977AA96572114AD8550BD62BAD949A823C2DD1A7856B47A6BC5D173F743372F",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_script_orders.obj",
+        "bytes": 1541428,
+        "sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "level_pre_link_sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "level_post_link_sha256": "B7C181FF7B3C15EE449459038C59C3D66A02293CA40F2B0E9B936E5E22E855A4",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_ship_ai.obj",
+        "bytes": 1792521,
+        "sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "level_pre_link_sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "level_post_link_sha256": "D2A82294F009CDEF326CF7E04E5038066B46C9A6B0DB8E891F37782C7B254E04",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_singletons.obj",
+        "bytes": 36465,
+        "sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "level_pre_link_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "level_post_link_sha256": "2190A8A9F2AA33532AC601E2DA32A0ACD77318AEABC930CA15C6A4F5983A402F",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_text.obj",
+        "bytes": 148570,
+        "sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "level_pre_link_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "level_post_link_sha256": "AD3C32938E7E6B6BC1D7F3375F16E0BCBE6CF58C000059C0C596E8F36488CC75",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_trajectory.obj",
+        "bytes": 122691,
+        "sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "level_pre_link_sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "level_post_link_sha256": "BD49AE04548E343FB179CDBC2AC815E56640F86D6B744E7D25534E8C810EAFCE",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_units.obj",
+        "bytes": 3203137,
+        "sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "level_pre_link_sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "level_post_link_sha256": "25704B83109104B51F124942F230B8B170025308252690AC9EC6FC320A45AABE",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_vfs.obj",
+        "bytes": 418499,
+        "sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "level_pre_link_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "level_post_link_sha256": "8DD184E9F0B8553C8A6E2D5A226FCA05D3091ED6C20992E4A1C5E6F1E40895C4",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_hosts_world.obj",
+        "bytes": 174829,
+        "sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "level_pre_link_sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "level_post_link_sha256": "2C39BC928433AF148F2A04987A925B5C30D6BDACF1B0DD258687274FA52BC977",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_graphics_pools.obj",
+        "bytes": 27840,
+        "sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "level_pre_link_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "level_post_link_sha256": "4528FEEBDF0CBCE15AEA3E8D762C971AA3A6E5E006C4DBE5002D82FBC7F01610",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_hardware_layout_tree.obj",
+        "bytes": 12716,
+        "sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "level_pre_link_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "level_post_link_sha256": "1B23F43E575ABF843D9A9324A01E5B98044B3DB5F84161F61B4F6AB7DC796692",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_globals.obj",
+        "bytes": 15929,
+        "sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "level_pre_link_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "level_post_link_sha256": "DAF99D98F10F0FCFF35AC662B6FA4939FB660CCA8822005D877CA4908AAAE980",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_lua_services.obj",
+        "bytes": 23120,
+        "sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "level_pre_link_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "level_post_link_sha256": "9EE628AA2A35B580EA547161A4FFDB219C720AFFC2F7F5A68522ADF257533D48",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_material_process.obj",
+        "bytes": 22165,
+        "sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "level_pre_link_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "level_post_link_sha256": "CB359717369079C97D698B71F2C0F8A9DD046CC7EAFA535108365F83CC1EAFC4",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_renderer_application.obj",
+        "bytes": 326318,
+        "sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "level_pre_link_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "level_post_link_sha256": "95E33D98FE4C03BEF28E18112C32B34FDAC9C7B781F5890056683F2EE63A5B62",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_shader_process.obj",
+        "bytes": 20624,
+        "sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "level_pre_link_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "level_post_link_sha256": "2654EC9E1EDE4712E3871A0BD90FE5643665877107F521314057ED2A0114F62E",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_string_process.obj",
+        "bytes": 4089,
+        "sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "level_pre_link_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "level_post_link_sha256": "BA80F3E08E4D6F8FB91563A024BBD609864CF1D965DFE1A5070982239C7720EC",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_vertex_declarations.obj",
+        "bytes": 17088,
+        "sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "level_pre_link_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "level_post_link_sha256": "FFF1FAB9AF0F94DDD40DCB2AE07456A7AD241B5837F44C7543D66BF95FAC2F2A",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_native_vfs_application.obj",
+        "bytes": 52166,
+        "sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "level_pre_link_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "level_post_link_sha256": "80A20A64B9F5590B09A900057FF2938DE116110921090946481554A7B82AB134",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/game_observer_runtime.obj",
+        "bytes": 15845,
+        "sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "level_pre_link_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "level_post_link_sha256": "DB528F6FEE3B6E927CE9BD2BA32FA82DE8BEAB37AAAB3FB292D0BAA65FC772FA",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/gameplay_loose_ends_2.obj",
+        "bytes": 1742,
+        "sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "level_pre_link_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "level_post_link_sha256": "77F6AA50FFBBADF826847DC32E2041D5F5B557B13F97D8AE8FD0B1115F768BB4",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/geom_mesh_resource.obj",
+        "bytes": 261693,
+        "sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "level_pre_link_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "level_post_link_sha256": "AEF170CE68E32F6DD57A6BCB531413AF09584B969ECF2ABEF937D1D429A6990C",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hit_hull_segment.obj",
+        "bytes": 1820,
+        "sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "level_pre_link_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "level_post_link_sha256": "81D7009D130FDAD31BCE4399EEA16911E0C4C623FB85366461CEE54C3EA65BC2",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_ship_screen.obj",
+        "bytes": 14623,
+        "sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "level_pre_link_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "level_post_link_sha256": "D0D42D240D43F2DC58CA5D79AC7C5025921B46E0020F3C91591D4E338A6097D5",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_warning_screen.obj",
+        "bytes": 13095,
+        "sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "level_pre_link_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "level_post_link_sha256": "13431E4EDBB01E15BD98EE7BDB2BCEE56975411137B726F02668E89C2401BEFD",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hud_weapon_group_screen.obj",
+        "bytes": 18543,
+        "sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "level_pre_link_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "level_post_link_sha256": "C32F8B705B885CD25432046BCE1F65ACADDC88DC3453F63C19505179F6F96169",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/hull_terrain_contact.obj",
+        "bytes": 1102762,
+        "sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "level_pre_link_sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "level_post_link_sha256": "9E02166EC6D5AD064ACC7641F49CD569D8B6706791257C07F07B468AE9BCF8C4",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/kill_credit.obj",
+        "bytes": 33814,
+        "sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "level_pre_link_sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "level_post_link_sha256": "16545FC566CBC20FB8B425FCB26B56BA5E2BD7D0635134DC782405F452D66363",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/mission_camera.obj",
+        "bytes": 48286,
+        "sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "level_pre_link_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "level_post_link_sha256": "FC3D60D360EC7CB912AAA096CAE5FFA1340FB2CED67575809B7B02CD913F319E",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/narrowphase_unit_part_shape.obj",
+        "bytes": 2064,
+        "sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "level_pre_link_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "level_post_link_sha256": "40F6F272830A31F037B9E3AAAE4FE155E757ACF6D98FAD596CDA16796DE163BD",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/near_field_probe.obj",
+        "bytes": 3929,
+        "sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "level_pre_link_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "level_post_link_sha256": "B56859450B1530E433F460D4DD6A05BE000F448C351022573C74AA5803564F85",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/part_damage_reachability.obj",
+        "bytes": 4140,
+        "sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "level_pre_link_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "level_post_link_sha256": "FD61F0D32EAAC8470524533B1B44EE8A644BF73944054F641A1904F27B2E3E8B",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/pilot_command_path.obj",
+        "bytes": 8834,
+        "sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "level_pre_link_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "level_post_link_sha256": "FFB2405B07CC953BCD4AD71A7482BF35C7C38F6AD9B16121ACC18D0567F6D143",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_hold.obj",
+        "bytes": 10325,
+        "sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "level_pre_link_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "level_post_link_sha256": "89E36C7BE0E11491BF94F6FA6E06BF2E2135BE212A559E54A449DFF2138F8396",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_follow_law.obj",
+        "bytes": 23046,
+        "sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "level_pre_link_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "level_post_link_sha256": "33470E8EA3B9514E23E81E3CC2F9F1B019E30644D5536E328CD98CFA65189DF6",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_ground_ops.obj",
+        "bytes": 13372,
+        "sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "level_pre_link_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "level_post_link_sha256": "0E9D255E8642CF651575CB93330E03348C3CF669FCE8E273BECCFAB9AC3432FA",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/plane_wanderer.obj",
+        "bytes": 10014,
+        "sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "level_pre_link_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "level_post_link_sha256": "21F0AA16216EE7FFB18CB56052E49EA8802BC6C74CCA35534205509224CD646A",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ship_hit_record.obj",
+        "bytes": 7907,
+        "sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "level_pre_link_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "level_post_link_sha256": "303A9BD35ABB1A7E969702E5EBE14B645AC61E2F3519D68B0532D58659D66BCC",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/ship_sub_entity_list.obj",
+        "bytes": 1461,
+        "sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "level_pre_link_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "level_post_link_sha256": "D804EA86222256CF6A3779244D7EC6C260001BE7D48CF6428425787C32824E89",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_group_slot_swap.obj",
+        "bytes": 5218,
+        "sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "level_pre_link_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "level_post_link_sha256": "77387150E8065831B2EC6047D7AC2C468DA2FCB3D1B9DDA586D41ADDB6505DB1",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_gunnery_pass.obj",
+        "bytes": 11730,
+        "sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "level_pre_link_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "level_post_link_sha256": "C85E56D66FFA9576ABAD330CFF90DE49613CFAC4AC8C6576E2DF26B270316C00",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_instance_step11.obj",
+        "bytes": 43473,
+        "sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "level_pre_link_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "level_post_link_sha256": "EDB262FBE488FE304B34391705EC4861746F348CDE04A577AF30D68BF15F5862",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_message_arms.obj",
+        "bytes": 25766,
+        "sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "level_pre_link_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "level_post_link_sha256": "937252627F58CEB6FFF1F88E4934136E46C49F17980750D53FFF0E2DDA6EDB8E",
+        "level_pre_post_link_stable": true
+      },
+      {
+        "path": "local/cc11_scene_convoy_float_support/unit_neighbour_fields.obj",
+        "bytes": 1314,
+        "sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "level_pre_link_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "level_post_link_sha256": "4C8AB42D66A43A40273D7989F4CC12471494E8E48C04E5C183E5EAD24F3F70D0",
+        "level_pre_post_link_stable": true
+      }
+    ],
+    "usage": "Three libraries and74 uninvoked Game object dependencies; active parser/library/consumer TUs fresh. No enlarged SceneProperty crosses cached active object interfaces.",
+    "response": {
+      "path": "local/cc11_scene_convoy_float_support/link.rsp",
+      "objects": 74,
+      "sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "level_pre_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3",
+      "level_post_link_sha256": "3D1BC7EEEBBD04A3EA086D785327CB0D1008CCFA6F198D7FF8DEBBDA15D16FD3"
+    },
+    "pre_link_all_hashes_match": true,
+    "post_link_all_hashes_match": true
+  },
+  "installed_inputs": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuilding.props",
+      "bytes": 311,
+      "sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "post_probe_sha256": "E3CD937BBDED00742F7F188BE1869613172C4E010D20CC0C470FC791E8F8D087",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandbuildinginferior.props",
+      "bytes": 133,
+      "sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "post_probe_sha256": "E98698230830DD55D53BBCB268E550BAC9E66D98F0761274CAD97001B9C8556E",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/commandunit.props",
+      "bytes": 545,
+      "sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "post_probe_sha256": "D707988C46B6C7A2FBB12F03F5E7D7D99412CB06A8C7F4162EEAAA793948053A",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foam.props",
+      "bytes": 553,
+      "sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "post_probe_sha256": "3FAB280F98604B12AB90F48CDE5147CA54DE3FC175DE037CFD6B87022145A948",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/foamsource.props",
+      "bytes": 609,
+      "sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "post_probe_sha256": "33212418EB5F831F093024854EFB5358AD89231FD46DD854EE4E7E68D82F2607",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landconvoy.props",
+      "bytes": 1320,
+      "sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "post_probe_sha256": "4C938F56F07EE653BDACE1529199FDEE88BB2C62FE526E2305108C154966F2A5",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landfort.props",
+      "bytes": 423,
+      "sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "post_probe_sha256": "D928856657A255D6949EAF08121224B1F2E83A302F3B54CD30CA826505090887",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landingzone.props",
+      "bytes": 1301,
+      "sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "post_probe_sha256": "E3A09462A7F6C338849311082F40C3E9BEBE2FA0856C8BF021250FF52D44F915",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/landscape.props",
+      "bytes": 1198,
+      "sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "post_probe_sha256": "39085B6DB22B8EFE3EEBB8B064240D8ED24DC5B19800C136F99A30C46264F6BB",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/path.props",
+      "bytes": 356,
+      "sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "post_probe_sha256": "1E0600A3E8BE79499B8EBC6720657BBB1E0CEFDDB2A81DD72A4685376B96F70E",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/plane.props",
+      "bytes": 416,
+      "sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "post_probe_sha256": "13ABD4C40C32C5A0D389CACB04FEDB1B6420DBB17BDF0D12D93940FCF4543E41",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/scene.props",
+      "bytes": 24634,
+      "sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "post_probe_sha256": "E6618D5B9059A6E7F6316D9E6AEA35BB019CE12DFC1ECEA884C04D953D1C5440",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/ship.props",
+      "bytes": 3358,
+      "sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "post_probe_sha256": "9752F232F66C8899AE4CF596C0C7E076DF5A4C3C05C9E73D82B4008F163A1460",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/stationaries.props",
+      "bytes": 107,
+      "sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "post_probe_sha256": "07078A649765569BD8F85F3E1B51727B2A8304CF3E179C5903F700F98FD75A90",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/library/global.enums",
+      "bytes": 33471,
+      "sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "post_probe_sha256": "A9F99C0E8FC650E2EF86E404990D56C7F2E4B518FF65BE685ACC3C6999ACE027",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/usn/usn_1_marshall.scn",
+      "bytes": 318167,
+      "sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+      "post_probe_sha256": "9235D9A6364B08CBD5CF3C6735BA9828ABA5A6E7B2569300DC2EECF6D8DAC17B",
+      "stable": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn",
+      "bytes": 173026,
+      "sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "post_probe_sha256": "14AE7C12AC9AD51DCA08F5B9FAC7B00ACE3739CCE5C4F84C4F7FB4AF479EEF0C",
+      "stable": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "006F2783",
+      "native": "007482B0",
+      "function": "006F2780",
+      "contract": "Base LandFort/static-body scene initialization; supporting dependency, unchanged"
+    },
+    {
+      "address": "006F2795",
+      "native": "008ED720",
+      "function": "006F2780",
+      "contract": "Entity+758 child setup with holder input; supporting dependency, unchanged"
+    },
+    {
+      "address": "006F27A8",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "Level literal00CFAE70; +0C DWORD load006F27B1, null0 at006F27B6, unit770 store006F27BE"
+    },
+    {
+      "address": "006F27CC",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "LevelUpSeconds literal00CFAE60; +0C DWORD load006F27D5, null10 at006F27DA, unit76C store006F27DF"
+    },
+    {
+      "address": "006F27F3",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "CaptureRange literal00CFAE50; +0C DWORD load006F27FC, absent500 at006F2801, unit7A0 store006F280C; prior capture data adoption unchanged"
+    },
+    {
+      "address": "006F281A",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "CaptureValue literal00CFAE40; +0C DWORD load006F2823, absent1000 at006F2828, unit7A4 store006F2836; prior capture data adoption unchanged"
+    },
+    {
+      "address": "006F284C",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "LandingRange lookup; unchanged"
+    },
+    {
+      "address": "006F2873",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "InferiorRange lookup; unchanged"
+    },
+    {
+      "address": "006F289A",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "LandingPointRange lookup; unchanged"
+    },
+    {
+      "address": "006F28C1",
+      "native": "008F2260",
+      "function": "006F2780",
+      "contract": "MinShootingRange lookup; unchanged"
+    },
+    {
+      "address": "006F28F4",
+      "native": "004BCA50",
+      "function": "006F2780",
+      "contract": "Effective-mode first test; unchanged"
+    },
+    {
+      "address": "006F2903",
+      "native": "004BCA50",
+      "function": "006F2780",
+      "contract": "Effective-mode1 test; unchanged"
+    },
+    {
+      "address": "006F2913",
+      "native": "004BCA50",
+      "function": "006F2780",
+      "contract": "Effective-mode2 test; unchanged"
+    },
+    {
+      "address": "006F2923",
+      "native": "004BCA50",
+      "function": "006F2780",
+      "contract": "Effective-mode3 test; unchanged"
+    }
+  ],
+  "native": {
+    "containing_function": "BSP_CommandBuilding_InitializeFromProperties,006F2780..006F2935 inclusive/exclusive2936; complete110-instruction normal body previously read and independently reviewed by primary",
+    "setup": "ECX object retained in ESI at006F2781, holder object+C0 and property bag holder+8",
+    "data": "Level27A8/+0C27B1/null0 at27B6/store77027BE; seconds27CC/+0C27D5/null10 at27DA/store76C27DF; raw DWORD copies without type conversion",
+    "original_abi": "Observed ECX/ESI setup and RET; private reconstructed interface is not original ABI-compatible."
+  },
+  "source_connection": {
+    "binding": "Existing which=0/1 loop and Level/LevelUpSeconds key order/gate preserved; existing bool/int32 field references selected and passed to unchanged retain_scene_raw_word",
+    "unchanged_reader_sha256": "2237C9A56554F7BAC97CAF54C3DC20FF33313977BCC52CC5B75E7DD07E939B33",
+    "reader_matches_baseline": true,
+    "policy": "Explicit case-insensitive F+has_float memcpy owning bytes independent of diagnostics; otherwise exact null/empty skip, case-sensitive I-first scan, failed-I/non-I float fallback+memcpy; successful flags/words independent, failure no-reset",
+    "capture_scope": "CaptureRange/Value calls and helper definition unchanged; no new Level defaults, public header/layout, replay/action metadata or consumer policy",
+    "downstream": "GameUnits assigns fields14947/14948; int32 getters33400/33407 with class/index0/10 fallbacks; game_hosts_ship_ai12238/12239 seed state; kCommandBuildingLevelBound=true at755, existing owned-building tick12365 timer comparison/Level>=3 guard/call12367 and existing handler12855. No timer/level/armour/math/flags changed or executed."
+  },
+  "provider": {
+    "accepted_report": "reports/scene_float_nonempty_payload_cc11.json",
+    "native_storage_support": [
+      "008F5BE0..008F5C91 type1/+0C",
+      "008F3770 heap scalar record",
+      "008EF170 scalar constructor, not existing-record-copy helper",
+      "008F4F60 clone separate",
+      "008F0700 assignment separate"
+    ],
+    "source": "Modern MSVC std::sscanf %f directly into float once for admitted nonempty explicit F; retained reader memcpy-copies all32 bits, no numeric float-to-int conversion",
+    "domain": "Finite ordinary C-locale decimal-prefix tokens in closed NUL-free/<400h input; compatible unique-key/owning ordinary groups. Fresh F has no inherited E/I conflict.",
+    "legacy": "Existing modern %d I-first and raw scene_scan_float decimal-prefix/strtod fallbacks preserved, with no new native typing/CRT parity claim."
+  },
+  "unresolved": [
+    "Native Level enum declaration/namespace/storage/provider integration: Basic SOURCE skip/default0 is not resolved native enum proof",
+    "Native existing-type/empty-F/context/duplicate/implicit conflicts, unsupported forward/self/cyclic/aliased groups",
+    "Historical VS2005 BF7533 numerical/error/FP-status/extended ST0 parity; no new math/x87/provider recovery",
+    "Lua/VFS integration, actual native class/kind/mode/whole emitter admission and wider initializer dependencies",
+    "Native allocator/EH/fault/reentry/global/ownership/lifetime/original ABI and level/timer/game behavior",
+    "Prior native008F54F0 group-merge partial tail-flow receipt remains qualified; source owning-copy fixture does not establish whole native group flow/ABI parity."
+  ],
+  "installed_effect": {
+    "library": "commandbuilding.props line3 Level=E CommandBuildingLevels:Basic; line4 LevelUpSeconds=I10. global.enums1696..1703 table Basic0/Medium1/Advanced2/Expert3/XLevel4. SOURCE enum Basic raw fallback skips; no resolved enum or presence claim.",
+    "USN1": "Fresh CB2 source bag verifies secondsI600 and Level enum Basic SOURCE skip/default0 unchanged; no native enum resolution/presence proof. Authored seconds line1305.",
+    "Level_I_query": "Prior exact anchored read-only rg over installed universe *.props/*.scn found no Level=I declarations; no installed-Level-I witness claimed. Not a parser/whole-game inventory proof.",
+    "fresh_F": "Separate fresh F Level7.25/seconds-0, no inherited enum/I conflict; source-only witness, no installed-F/native enum/game claim",
+    "JM06": "Fresh96 authored entities and zero authored Level/LevelUpSeconds bags, inventory only.",
+    "absence": "Native null keys write0/10; SOURCE skipped record no-reset is preserved separately. Fresh record and unit-sink defaults0/10 unchanged; no native repeated-initialization or malformed/empty-F claim."
+  },
+  "qualification": {
+    "source": "Connected data adoption in actual creation loop; helper definition unchanged",
+    "fixture": "PASS fresh production raw-word helper/library TU and parser source probe with selected field references; full production loop/emitter and downstream tick not executed",
+    "build": "PASS focused MSVC Win32 /W4 /WX /fp:strict compile/run; full integrated main build/CTests primary-owned",
+    "abi": "Unproved",
+    "game": "Unproved"
+  },
+  "verification": {
+    "compile_exit": 0,
+    "probe_exit": 0,
+    "pe_machine": "014C",
+    "embedded_manifest": "RT_MANIFEST24/id1 asInvoker through Win32 resource API",
+    "support_inputs_stable": 77,
+    "installed_inputs_stable": 17,
+    "unchanged_reader": true,
+    "tracked_test_changes": 0,
+    "full_build_by_worker": false,
+    "game_run_by_worker": false,
+    "native_direct_rows": 14,
+    "native_direct_failed": 0,
+    "native_verifier_exit": 0,
+    "diff_check_exit": 0
+  },
+  "artifacts": [
+    {
+      "path": "docs/SCENE_LEVEL_WORDS_FLOAT_PAYLOAD_CC11.md",
+      "bytes": 6710,
+      "sha256": "34EE8E59ADC0BEA8955FA120719B433769721E6066EDF05D11E310D393971459"
+    },
+    {
+      "path": "include/bsp/game_hosts_scene_contents.hpp",
+      "bytes": 40196,
+      "sha256": "3024F4477E0462951D29D612356DD5AA51FC0481D613AC987C7DBA780C12D4FF"
+    },
+    {
+      "path": "include/bsp/scene_file.hpp",
+      "bytes": 18330,
+      "sha256": "583182041F1A0413F352EEB4EC1342CCDFC6CF50775E53FBCF5E3B80C510B0C0"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_compile.log",
+      "bytes": 56,
+      "sha256": "AD4F361843BA160AB93A96B120F8C3AE5293616F5F581860522188CDF5F0C793"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_probe.cmd",
+      "bytes": 1062,
+      "sha256": "003D9BBF0F190AE238F76853D483E745CCFAFBFA0CF0FC8C9F60F7A940B619C6"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_probe.cpp",
+      "bytes": 11751,
+      "sha256": "75DAACA47B740A494811369A0E56DEB7C1C60219DA9806C32B8891243A153BF0"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_probe.exe",
+      "bytes": 483328,
+      "sha256": "4B3548E235DBD4E7E6C2D1C877A0CCC3C68F7A80E117B06EE3A2191789EC86A3"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_probe.log",
+      "bytes": 518,
+      "sha256": "34D130C54B4CC62D90A95E8485406CAEA610BB70616F356DA346D16CD76B4456"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_probe.obj",
+      "bytes": 2215559,
+      "sha256": "16E3A656DCE575D109A38ABE6BD80CE11B27A30E40E564042C974E4B42CE03BF"
+    },
+    {
+      "path": "local/cc11_scene_level_words_float_scene.obj",
+      "bytes": 290808,
+      "sha256": "649FDF4E05F2447B95A0CD182767A6347C601974D53A1384AB28CC59F04F2AFD"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 241547,
+      "sha256": "B6072DF60249A4A596B19529199E08F0431F8DAA228E3503824EA54E4F47306F"
+    },
+    {
+      "path": "src/scene_file.cpp",
+      "bytes": 33393,
+      "sha256": "E31C16F2FB9CDB3ABB9FEE72999D1E36207042CD6B07542486D6368A8CA5AA23"
+    }
+  ],
+  "fixture": {
+    "source": "local/cc11_scene_level_words_float_probe.cpp",
+    "compile_exit": 0,
+    "run_exit": 0,
+    "executable_sha256": "4B3548E235DBD4E7E6C2D1C877A0CCC3C68F7A80E117B06EE3A2191789EC86A3",
+    "log": "local/cc11_scene_level_words_float_probe.log",
+    "stdout": "installed library_files=15 groups=22 seconds_I10_I600=1 Level_E_Basic_SOURCE_skip_default0=1 native_enum_resolution_claim=0\nfresh_F words=40E80000/80000000 diagnostic_removal=1 owning_capture_update=1 prefix_signedzero=1 inherited_E_I_conflict=0 installed_Level_I_F_claim=0\nSOURCE_only I_first_failedI_float=1 raw_F_non_I_case=1 failure_missing_rawempty_no_reset=1 independent_selectors=1 defaults0_10=1 capture_sentinels=1\nJM06 authored_entities=96 authored_level_bags=0 emitter_class_level_tick_ABI_game_claim=0\n",
+    "coverage": [
+      "Fresh production helper/library TU and parser; fixture selects existing record field references, not whole emitter invocation",
+      "Installed library15/groups22, secondsI10/I600 unchanged versus old loop; enum Basic SOURCE skip/default0 separately recorded",
+      "Fresh F with no inherited E/I conflict:40E80000/80000000 after diagnostics removal, owning capture/redeclaration and prefix/signed zero",
+      "Synthetic I-first/failed-I raw float fallback, raw F/non-I/case policy, missing/raw-empty/malformed no-reset and independent selectors",
+      "SOURCE defaults0/10 and CaptureRange/Value sentinels unchanged",
+      "Fresh JM06 authored96/zero level bags"
+    ],
+    "excluded": [
+      "Production SceneReaderBinding/emitter/full selector-loop invocation and class/mode admission",
+      "Native enum resolution/declaration storage and installed Level-I/F witness",
+      "GameUnits/ship-AI level/timer/armour tick execution and original CRT/ABI/game proof"
+    ]
+  }
+}

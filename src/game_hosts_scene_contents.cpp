@@ -2203,25 +2203,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // `LevelUpSeconds` (unit+76Ch), the same way.
         for (int which = 0; which < 2; ++which) {
             const SceneProperty* level_prop = bag.find(which == 0 ? "Level" : "LevelUpSeconds");
-            if (level_prop == nullptr || level_prop->values.empty()) continue;
-            std::int32_t as_int = 0;
-            float as_float = 0.0f;
-            bool found = false;
-            if (level_prop->type_letter == "I"
-                && scene_scan_int(level_prop->values.back(), as_int)) {
-                found = true;
-            } else if (scene_scan_float(level_prop->values.back(), as_float)) {
-                std::memcpy(&as_int, &as_float, sizeof as_int);
-                found = true;
-            }
-            if (!found) continue;
-            if (which == 0) {
-                stored.level_present = true;
-                stored.level_raw = as_int;
-            } else {
-                stored.level_up_seconds_present = true;
-                stored.level_up_seconds_raw = as_int;
-            }
+            bool& present = which == 0 ? stored.level_present : stored.level_up_seconds_present;
+            std::int32_t& raw = which == 0 ? stored.level_raw : stored.level_up_seconds_raw;
+            retain_scene_raw_word(level_prop, present, raw);
         }
         // 006F2847-006F285F, `LandingRange`, the same way (routed from cc9-ships13).
         const SceneProperty* landing_prop = bag.find("LandingRange");
