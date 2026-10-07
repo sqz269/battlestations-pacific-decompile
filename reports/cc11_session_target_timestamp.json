@@ -1,0 +1,538 @@
+{
+  "packet": "cc11_health_target_timestamp",
+  "created_utc": "2026-10-07T15:14:20.204120+00:00",
+  "base_commit": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete Source consumer freshly compiled; full original42B+sampler93B composition passed71cases; primary integration/full main build pending; native ABI/game/caller reachability excluded",
+  "owned_files": [
+    "include/bsp/native_session_target_timestamp.hpp",
+    "src/native_session_target_timestamp.cpp",
+    "docs/CC11_SESSION_TARGET_TIMESTAMP.md",
+    "reports/cc11_session_target_timestamp.json"
+  ],
+  "original_function": {
+    "entry": "007839A0",
+    "end_exclusive": "007839CA",
+    "bytes": 42,
+    "instructions": 16,
+    "name_hypothesis": "BSP_SessionTarget_RefreshTimestamp",
+    "abi": "ECX actual target; no stack arguments; plain RET; void behavior",
+    "disk_live_bytes_match": true,
+    "evidence": "Current bsp.gpr /battlestationspacific.exe proto/disasm/bytes; full disk range exactly matched live42-byte hex",
+    "live_xrefs": [],
+    "reachability_claim": false,
+    "complete": true
+  },
+  "behavior": [
+    "Reload current actual01090AB0, then object profile and current slot+20.",
+    "Pass a writable16-byte caller output preimage; consume the returned pointer, not a chosen clock member.",
+    "Signed qword FILD numerator then denominator, FDIVP, one binary32 FSTP actual target+D68.",
+    "Keep ambient PC/RC and original masked-stack/status effects; no normalization or intermediate floating spill."
+  ],
+  "dependencies": [
+    {
+      "source": "src/native_frame_clock_publication.cpp",
+      "entry": "sample_published_native_frame_clock",
+      "contract": "Same borrowed actual publication/method context; current D68D50 identity and current slot8==BEE080; concrete real sampler; Source-only logic_error rejection"
+    },
+    {
+      "source": "src/native_renderer_control_worker.cpp",
+      "entry": "00BEE080",
+      "contract": "Complete actual80h raw clock sampler, returned output pointer, fixed copies current+20; nonfixed QPC/frequency+60 ignores BOOL"
+    },
+    {
+      "source": "src/native_frame_clock_lifetime.cpp",
+      "entry": "00BEDFB0",
+      "contract": "Fixture constructs and publishes actual raw clock through existing actual manager/registration services"
+    },
+    {
+      "source": "src/native_session_target_lifetime.cpp",
+      "entry": "007839D0",
+      "contract": "Fixture constructs both actualD74 targets with complete histories/cursors/owned locks"
+    }
+  ],
+  "call_rows": [
+    {
+      "address": "007839B6",
+      "native": "00BEE080",
+      "function": "007839A0",
+      "kind": "indirect",
+      "evidence": "CALL EAX; current actualD68D50+20 word resolvesBEE080 in admitted profile. Verifier can check containment and callee identity, not runtime virtual resolution."
+    },
+    {
+      "address": "00BEE0B3",
+      "native": "00CE2270+IAT_QueryPerformanceCounter",
+      "function": "00BEE080",
+      "kind": "indirect_import",
+      "evidence": "CALL dword[CE2270]; copied IAT operand points to the real Win32QueryPerformanceCounter function pointer."
+    }
+  ],
+  "fixture": {
+    "artifact_directory": "local/cc11_target_timestamp_20261007_a",
+    "bodies": [
+      {
+        "entry": "007839A0",
+        "end_exclusive": "007839CA",
+        "bytes": 42,
+        "executable_copy_offset": "0",
+        "sha256": "ae0cbb391dbc34f11edf44fd001b216ad3ccf0188c9a479254eea084c394008c",
+        "artifact": "original_consumer.bin"
+      },
+      {
+        "entry": "00BEE080",
+        "end_exclusive": "00BEE0DD",
+        "bytes": 93,
+        "executable_copy_offset": "100",
+        "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756",
+        "artifact": "original_sampler.bin"
+      }
+    ],
+    "total_original_code_bytes": 135,
+    "full_original_code_composition": true,
+    "original_numeric_code_has_source_bridges": false,
+    "code_operand_relocations": [
+      {
+        "original_site": "007839A8",
+        "copy_offset": "8",
+        "original": "01090AB0",
+        "replacement": "address of native clock actual publication cell",
+        "bytes": 4
+      },
+      {
+        "original_site": "00BEE0B5",
+        "copy_offset": "135",
+        "original": "00CE2270",
+        "replacement": "address of real QueryPerformanceCounter function pointer",
+        "bytes": 4
+      }
+    ],
+    "code_bytes_changed": 8,
+    "all_other_code_bytes_asserted_exact": true,
+    "code_rwx": false,
+    "fixture_dispatch_relocations": [
+      "Copy all10 originalD68D50 table DWORDs; replace only slot8 originalBEE080 with complete copied93-byte entry.",
+      "After genuine clock construction, native-side object profile DWORD points to that relocated table; restoreD68D50 before complete Source destruction.",
+      "Source-side object retains rawD68D50 identity and borrowed unchanged actualPE method table; no invented provider or callback."
+    ],
+    "preimage": "Explicit nonzero1122334455667788/7766554433221100 supplied to Source and seeded into exact original caller16-byte stack region before CALL; genuine fixed sampler overwrites all16.",
+    "setup": "Two actual constructed raw clocks with distinct genuine manager/publication cells, real fixed-mode method, two Source-constructed target/histories/cursors/locks; all destroyed via complete providers.",
+    "matrix": {
+      "cases": 60,
+      "pc": [
+        24,
+        53,
+        64
+      ],
+      "rounding": [
+        "nearest",
+        "down",
+        "up",
+        "towardzero"
+      ],
+      "occupied": [
+        0,
+        3,
+        6,
+        7,
+        8
+      ],
+      "ticks": -9007199254740991,
+      "frequency": 10000003,
+      "exceptions": "all masked",
+      "mxcsr": "00001F80; DAZ/FTZ disabled",
+      "observed_stack_overflow_cases": 24,
+      "overflow_flags": "SW invalid+stackfault bits0041 asserted on occupancies7/8"
+    },
+    "edges": {
+      "cases": 11,
+      "values": [
+        [
+          7,
+          3
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -7,
+          3
+        ],
+        [
+          7,
+          -3
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          -9223372036854775808,
+          1
+        ],
+        [
+          9223372036854775807,
+          1
+        ],
+        [
+          1,
+          9223372036854775807
+        ],
+        [
+          -9223372036854775808,
+          9223372036854775807
+        ]
+      ],
+      "scope": "Actual storage arithmetic inputs; zero/negative frequencies and extreme words do not establish normal clock-producer reachability."
+    },
+    "comparisons": [
+      "Raw D68 bits; full raw target bytes except expectedD68 store; both complete history headers and all53 samples per target.",
+      "Both actual clock backing stores and explicit preimage unchanged; same CW/SW/FTW/all8 raw80-bit x87 register fields/MXCSR.",
+      "FP instruction/data pointers excluded because executable/storage addresses differ; Source ABI caller-saved XMM registers excluded."
+    ],
+    "source_admission": "One current-publication-null case throws existing logic_error and leavesD68 unchanged; not an original fault-ABI test.",
+    "qpc": "One sequential real-QPC original/Source smoke with nonnegative/nondecreasing results; no equal-sample or QPC-failure proof.",
+    "result": {
+      "checks": 391,
+      "failures": 0,
+      "matrix": 60,
+      "edges": 11,
+      "masked_stack_overflow": 24
+    },
+    "full_original_case_count": 71,
+    "checks_include_pe_bounds_and_setup": true,
+    "final_command": "local/cc11_target_timestamp_20261007_a/probe.exe local/cc11_target_timestamp_20261007_a/original_image.bin"
+  },
+  "build": {
+    "toolchain": "MSVC19.51.36244 Win32",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /FAs /MANIFEST:EMBED /OPT:REF",
+    "repo_translation_units": 14,
+    "fixture_translation_units": 1,
+    "source_header_and_fixture_inputs": 55,
+    "inputs": {
+      "source_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+      "sources": [
+        "src/native_session_target_timestamp.cpp",
+        "src/native_frame_clock_publication.cpp",
+        "src/native_frame_clock_actual.cpp",
+        "src/native_frame_clock_lifetime.cpp",
+        "src/native_renderer_control_worker.cpp",
+        "src/native_session_target_lifetime.cpp",
+        "src/native_session_target_history.cpp",
+        "src/native_session_transport_buffers.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/native_renderer_worker_lifetime.cpp",
+        "src/native_singleton_publication.cpp",
+        "src/native_singleton_vector_reserve_construct.cpp",
+        "src/native_singleton_vector_registration_wrappers.cpp",
+        "src/native_singleton_removal_reorder.cpp"
+      ],
+      "snapshot": "local/cc11_target_timestamp_20261007_a/inputs_02",
+      "sha256_by_path": {
+        "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "include/bsp/native_bit_cursor_read.hpp": "664f03d12e9fb5c6b75cbbdfa2f179cd9f0c5352542885e62db77f454c663b21",
+        "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "include/bsp/native_event_owner.hpp": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+        "include/bsp/native_frame_clock_actual.hpp": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1",
+        "include/bsp/native_frame_clock_lifetime.hpp": "4373852fa08f86469a72840f2aeb187ff86dd4c871335f7d9fce851492a560fc",
+        "include/bsp/native_frame_clock_publication.hpp": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b",
+        "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40",
+        "include/bsp/native_renderer_control_worker.hpp": "2de24b2af336ebd7e7713bd1c4bc033935b468dff6ae619fd703177e34c51f36",
+        "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "include/bsp/native_renderer_worker_lifetime.hpp": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "include/bsp/native_resource_registry_construction.hpp": "50607201a87a306462eaba1a6dc83c733dd7307eb3078cf0966903b349a49cb3",
+        "include/bsp/native_session_target_history.hpp": "bc2937719050f440098f5c6d1b91fd93d2d9d00d1995c5534d18ea3c0cea7e1e",
+        "include/bsp/native_session_target_lifetime.hpp": "c9ff703666c031057be935340b20aa7f9a88ab0dbc1357b59252ce3a88986b76",
+        "include/bsp/native_session_target_timestamp.hpp": "be4e6c75d0e1609b45b835223dc9e5cba338789439ad5a6a8115b37bd30905af",
+        "include/bsp/native_session_transport_buffers.hpp": "a2971d8d8187bf4561a3c60614f81c7c2fea528138ecf6c67c01d8786a275d8c",
+        "include/bsp/native_singleton_destruction.hpp": "8b0c9e8bb2ec5952ba07859d2b981890d92cc0743c19abca09960922c623adc4",
+        "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "include/bsp/native_singleton_removal_reorder.hpp": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "include/bsp/native_singleton_vector_allocation.hpp": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+        "include/bsp/native_singleton_vector_insert_count.hpp": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12",
+        "include/bsp/native_singleton_vector_leaves.hpp": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "include/bsp/native_singleton_vector_reserve_construct.hpp": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+        "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+        "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "local/cc11_target_timestamp_20261007_a/probe.cpp": "335d86a8df55144def8b9b19d995dedf2023b6a13fd701c08dd9a54d8291a74a",
+        "src/native_frame_clock_actual.cpp": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6",
+        "src/native_frame_clock_lifetime.cpp": "3c2261b760e9a471965bbad4d475f6051d52b33fa56d6ece3b1c02c0e455a5a3",
+        "src/native_frame_clock_publication.cpp": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55",
+        "src/native_renderer_control_worker.cpp": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+        "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "src/native_session_target_history.cpp": "4975e74e2a79e8ff8dbf3fbc226b29d3904f7469738da51088fb752ccc9b8f7c",
+        "src/native_session_target_lifetime.cpp": "78fcbd504223882a9543a418524a3ddfdbdf9ad9694c856a11be31b09abce4f3",
+        "src/native_session_target_timestamp.cpp": "dffcc2473a755350a2a30dfaeccbac679d626f95f1a3c894fd11643dc78fd91f",
+        "src/native_session_transport_buffers.cpp": "9e95d272f075d61cfb8641286c52a91367d33fe1588831c5fdcb3fffb518a551",
+        "src/native_singleton_publication.cpp": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "src/native_singleton_removal_reorder.cpp": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "src/native_singleton_vector_registration_wrappers.cpp": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "src/native_singleton_vector_reserve_construct.cpp": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "probe_sha256": "335d86a8df55144def8b9b19d995dedf2023b6a13fd701c08dd9a54d8291a74a"
+    },
+    "support_before": {
+      "main_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+      "worker_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+      "libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_core.lib",
+          "sha256": "8ecd635ad747085df88f20e0b5460f4d888989afb73871cbec08940b02daa717",
+          "bytes": 73236320
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_lua511.lib",
+          "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "bytes": 454824
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_zlib121.lib",
+          "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "bytes": 71766
+        }
+      ]
+    },
+    "support_after": {
+      "main_head_after": "beff7fbc9a65046bf731fb1a500b4961bc071613",
+      "copied_libraries_stable": true,
+      "current_main_libraries": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_after": "657efb268528c19d82ce8e1d253e9651ded28f2cfadd01946f0941d8fd218730",
+          "matches_frozen_before": false
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256_after": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "matches_frozen_before": true
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256_after": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "matches_frozen_before": true
+        }
+      ],
+      "main_rebuild_permitted_after_support_snapshot": true,
+      "snapshot_and_workspace_inputs_stable": true,
+      "inputs": 55,
+      "support_before": {
+        "main_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+        "worker_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+        "libraries": [
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_core.lib",
+            "sha256": "8ecd635ad747085df88f20e0b5460f4d888989afb73871cbec08940b02daa717",
+            "bytes": 73236320
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_lua511.lib",
+            "sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+            "bytes": 454824
+          },
+          {
+            "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+            "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\support_bsp_zlib121.lib",
+            "sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+            "bytes": 71766
+          }
+        ]
+      }
+    },
+    "parent_reported_support_full_build_codepoint": "e0dfeae01eb2a1f0b87d8ecf86b1fe1056510cf1",
+    "observed_metadata_head": "50892f7c9cfbfaf3516e1df0c0fcb5577a6391e5",
+    "support_scope": "Read-only frozen three-library copies; current main bsp_core changed after permitted parallel rebuild; frozen copies and all source inputs remain exact.",
+    "original_pe": {
+      "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "copied": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_target_timestamp_20261007_a\\original_image.bin",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752,
+      "unchanged": true
+    },
+    "manifest_as_invoker": true,
+    "build_exit": 0,
+    "probe_exit": 0,
+    "main_build_run_by_worker": false
+  },
+  "coff": {
+    "machine": "I386",
+    "section_number": 3,
+    "section": ".text$mn",
+    "bytes": 64,
+    "sha256": "32a09a240f41e77ec742d40786964a393b7b679a25a9d2ba50df457cee41f260",
+    "relocations": [
+      {
+        "operand_offset": "18",
+        "coff_kind": "0014",
+        "symbol": "?sample_published_native_frame_clock@bsp@@YAPAUClockTimestamp@1@ABUNativeFrameClockPublicationContext@1@PAU21@@Z"
+      }
+    ],
+    "instruction_count": 19,
+    "preimage_copy": "07 MOVUPS load;12 MOVUPS16-byte stack store; no FP arithmetic",
+    "concrete_adapter_call": "17 CALL with REL32 operand18",
+    "returned_pointer": "1F saves returned EAX;2B reloads it into EAX",
+    "destination": "23 adds D68 to captured Source target argument;2F loads destination EDX",
+    "arithmetic": [
+      "33:FILD qword[EAX]",
+      "35:FILD qword[EAX+8]",
+      "38:FDIVP ST1,ST0",
+      "3A:FSTP dword[EDX]"
+    ],
+    "floating_spill_before_destination": false,
+    "source_abi_caller_saved_xmm0_clobber": true,
+    "full_disassembly_reviewed": true
+  },
+  "call_verifier": {
+    "exit": 0,
+    "rows_checked": 1,
+    "failures": 0,
+    "direct_calls_proved": 0,
+    "scope": "7839B6 containment and BEE080 entry checked; indirect runtime resolution not verified; QPC import skipped."
+  },
+  "limits": [
+    "Source interface is new cdecl ABI; not an original binary replacement or original private EH/fault contract.",
+    "No callers found for7839A0 in current Ghidra; no producer/publication/session/socket/derived target or game reachability proof.",
+    "Unmasked x87 exceptions, QPC failure private-stack contents and arbitrary invalid native profiles remain unverified.",
+    "The initialized caller preimage does not invent the separate internal QPC sample-stack preimage on Win32API failure.",
+    "Existing complete manager/clock/target providers are reused; no full session factory or opaque phase callback added.",
+    "No tracked tests, Ghidra writes, ledger/CMake/shared metadata edits or whole main build by this worker."
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/probe.cpp",
+      "sha256": "335d86a8df55144def8b9b19d995dedf2023b6a13fd701c08dd9a54d8291a74a"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/probe.exe",
+      "sha256": "4a2c8fea213628be115e0a87dce9e818548b1ac85b6406550ea570cf6a0f0170"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/probe.log",
+      "sha256": "24b25e74b1575a55db79446b84db9f6676c2d385c345563497f9c075ee75014a"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/build.cmd",
+      "sha256": "736da5af6022716d7183124aa10de227f38bcdca53307701dbaacc912ad86195"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/build.log",
+      "sha256": "f937ad1da2bc6023aa7705916a55913d668519a9d01b4a3906f4d85a769d9507"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/prepare_fixture.py",
+      "sha256": "7106fc302736065e0d36305e54cdaf68bd244531dea5777135caea004d47fafc"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/prepare_build.py",
+      "sha256": "eb2272d5a1f4b61972dfc524778335be6ede64e1cef0727d445341a89d774ea2"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/pin_support.py",
+      "sha256": "dbc9f79bdfb5e9b24cc6387f70780d3bfa6e24e3222d9eed1b463dd02c050024"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/pin_native.py",
+      "sha256": "2c69eb14ae4c197b7e064e40f4690f02cdc4be295cd022e82162c04764e36f22"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/write_report.py",
+      "sha256": "fd8b5a1c4616e381b628c5b20d2d3e2a721934eed2153de29d00f4fda85ef4b9"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/inputs_before_link.json",
+      "sha256": "a3817c9a4e02b6a66af8f88b9d7fdb057be270b002df3b8a4d63f37f64d5ca0c"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/inputs_after_link.json",
+      "sha256": "370b573c7597db76cf06deed15a58735252713415a6c50e6a2d93ca0752995ba"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/support_before_link.json",
+      "sha256": "61feb9e07a48db369b015ab3f9fccdea0e73ea34bcea64ace8f44aac84b5e17b"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/native_before_run.json",
+      "sha256": "b5f2002282f173d314a1179b0060303a995c618edfe2f5e50715f26f7589eb4e"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/native_after_run.json",
+      "sha256": "b510a812bd08b807a0fd31230af6b3f4bfbf9f8583da43c6463683926fd100ea"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/embedded_manifest.xml",
+      "sha256": "a513b386a81e9b8d2a6327e356bddb7163264803cb5aa747860ee74838160290"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/original_consumer.bin",
+      "sha256": "ae0cbb391dbc34f11edf44fd001b216ad3ccf0188c9a479254eea084c394008c"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/original_sampler.bin",
+      "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/asm/native_session_target_timestamp.asm",
+      "sha256": "55aae0bcdc4f6e4eb9db3aa13facfe223b3ce8610dc38c79b3c8f5edac4297f2"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/obj/native_session_target_timestamp.obj",
+      "sha256": "7ea473c82bc6dc49c1379776f9414de2100d83c2e82094ca9a0eaa54dcace3c2"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/inspect_coff.cmd",
+      "sha256": "11515b7d71f1fedf74e7a3c11b8e0cec2fb32d37b936c87a239b4c259ac57649"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/coff_symbols.txt",
+      "sha256": "66e93cb1a5703dcd6c98058324914c35a22267b99ac11123c5f41422e30518e7"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/coff_disasm.txt",
+      "sha256": "fd4bd8f07d617f318b7b337e450b19f8c501082ce45433c24d6e704db10f1fca"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/coff_relocations.txt",
+      "sha256": "23345480f78bcaa3b514ec69b651f7a33914706073216574f41482ee687943a8"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/coff_evidence.json",
+      "sha256": "2c0dff307504e045e7642c6b4dcf57bb2a2d7f16b106411016deb1eabbdba5f4"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/source_coff_text.bin",
+      "sha256": "32a09a240f41e77ec742d40786964a393b7b679a25a9d2ba50df457cee41f260"
+    },
+    {
+      "path": "local/cc11_target_timestamp_20261007_a/verify_calls.log",
+      "sha256": "74cb0cdc43c8b65cf5a677391ff29b62e9006c0d1c90387a2aae9975bffeceaa"
+    }
+  ]
+}
