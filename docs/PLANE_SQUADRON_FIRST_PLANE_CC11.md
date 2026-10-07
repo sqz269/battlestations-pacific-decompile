@@ -17,7 +17,7 @@ neighbor `007ED020` are excluded. Primary defined the exact body with supported
 locked tools, saved and exported it; see
 [the definition receipt](../reports/cc11_plane_squadron_first_plane_definition.json).
 Live `FUN_007ed010` covers `007ED010..007ED016` inclusive with two instructions.
-The still-stale local lookup index does not override this verified live body.
+Primary refreshed the lookup index after defining and exporting this body.
 
 The borrowed view stores the actual squadron identity and a REFERENCE to its
 already-live nullable pointer cell at +3D0h. Its pure factory checks nonnull root,
