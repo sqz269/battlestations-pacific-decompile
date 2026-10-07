@@ -364,7 +364,7 @@ void retain_scene_raw_word(const SceneProperty* prop, bool& present, std::int32_
 // slot -1, and for n = 1..4
 // the block "Type<n>" (type tag 6; absent gives a null bag) and its enum `Type`,
 // for m = 1..4 its integer "Position<m>": 0 fills every slot with the type, a
-// positive value fills slot m-1 (the later write wins), a negative one nothing.
+// positive value fills slot value-1 (the later write wins), a negative one nothing.
 // The bag here is already merged with the library group, which is what makes
 // the unauthored `Type1.Position1 = 0` of landconvoy.props apply.
 void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRecord& record,
@@ -392,6 +392,13 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         if (prop != nullptr && equal_insensitive(prop->type_letter, "I") && prop->has_integer)
             return prop->integer_value;
         return integer(bag, key, fallback);
+    };
+    const auto retained_position_integer = [&](const ScenePropertyBlock& block, const char* key) {
+        const SceneProperty* prop = block.find(key);
+        // 00743791 consumes the stored Position word before the slot branches.
+        if (prop != nullptr && equal_insensitive(prop->type_letter, "I") && prop->has_integer)
+            return prop->integer_value;
+        return integer(block, key, -1);
     };
     const auto retained_scalar = [&](const char* key, float fallback) {
         const SceneProperty* prop = bag.find(key);
@@ -437,7 +444,7 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         for (int m = 1; m <= 4; ++m) {
             char position_key[16];
             std::snprintf(position_key, sizeof(position_key), "Position%d", m);
-            const std::int32_t position = integer(*sub, position_key, -1);
+            const std::int32_t position = retained_position_integer(*sub, position_key);
             if (position == 0) {
                 for (std::size_t s = 0; s < record.convoy_slots.size(); ++s) {
                     record.convoy_slots[s] = type;
