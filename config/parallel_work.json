@@ -13684,8 +13684,8 @@
     },
     {
       "id": "cc11_land_takeoff_install",
-      "done": false,
-      "state": "dispatched_read_only_to_reused_landing_worker",
+      "done": true,
+      "state": "integrated_complete_conditional_takeoff_factory_prepend_caller_main_build_and_probe_passed",
       "worker": "land_retirement",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13702,7 +13702,15 @@
         "cc11_land_active_prepend"
       ],
       "reuses_worker_from": "cc11_land_active_prepend",
-      "contract": "Recover exact normal takeoff factory009CFF40 DL1 then unconditional prepend00999F50; propose/port only required actual same-owner factory caller facade with explicit zero-result/count/lifetime domain. No invented arena, slot54/tick/BE/GameUnits binding."
+      "contract": "Recover exact normal takeoff factory009CFF40 DL1 then unconditional prepend00999F50; propose/port only required actual same-owner factory caller facade with explicit zero-result/count/lifetime domain. No invented arena, slot54/tick/BE/GameUnits binding.",
+      "code_revision": "bca488e7e91798eb26fe23c711b1e5b3e58bae09",
+      "integrated_revision": "389e2fd16ab5f784e37a9b317e65284cf4aea8ab",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "389e2fd16ab5f784e37a9b317e65284cf4aea8ab",
+      "full_main_ctests_passed": 3,
+      "actual_factory_arena_bound": false,
+      "abi_compatible": false,
+      "game_validated": false
     },
     {
       "id": "cc11_health_replication_byte",
@@ -13765,12 +13773,13 @@
     {
       "id": "cc11_health_setter_sequence",
       "done": false,
-      "state": "dispatched_read_only_to_reused_health_worker",
+      "state": "approved_complete_ordinary_bound_setter_in_progress",
       "worker": "health_guard",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
       "function_addresses": [
-        "00877b90"
+        "00877b90",
+        "00923be0"
       ],
       "output_files": [
         "src/unit_damage.cpp",
@@ -13785,6 +13794,29 @@
       ],
       "reuses_worker_from": "cc11_health_replication_byte",
       "contract": "Recover and port complete admitted ordinary native setter write/marker/callback/getter/byte-store/message caller sequence with fresh post-callback observations and explicit actual field/provider/state/queue ownership; reuse verified numeric kernels. Bind existing real host services where complete; no fake state/cache/arena/no-op provider or source policy rewrite. Propose scope before edits."
+    },
+    {
+      "id": "cc11_land_cruise_profile",
+      "done": false,
+      "state": "approved_complete_conditional_cruise_source_in_progress",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "009b3c60",
+        "0099b660"
+      ],
+      "output_files": [
+        "include/bsp/plane_squadron_host.hpp",
+        "src/plane_squadron_host.cpp",
+        "docs/PILOT_BOT_LAND_CRUISE_CC11.md",
+        "reports/pilot_bot_land_cruise_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_land_takeoff_install"
+      ],
+      "reuses_worker_from": "cc11_land_takeoff_install",
+      "contract": "Port complete normal nonempty land-profile cruise009B3C60 after proved empty base0099B660, required actual plane leader/singleton providers, borrowed task3FC/404 and controller37C/380/38C/38D/394/398/3A9/3AA/3AD. Fresh404 reload after EACH singleton call, pointerCOMISS/SETA and FLD->dirty byte->FSTP preserve ordering; no fixed tune/default/facade snapshot. Existing hook view unchanged; admitted masked exceptions/valid stack/lifetimes; actual singleton/arena/scheduler/ABI/game binding external."
     }
   ],
   "snapshot_after_analysis": {
