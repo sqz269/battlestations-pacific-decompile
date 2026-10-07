@@ -154,7 +154,7 @@
       "Landing task lifetime remains an audited frontier rather than a gameplay fix."
     ]
   },
-  "updated_utc": "2026-10-07T05:56:07.952998+00:00",
+  "updated_utc": "2026-10-07T05:58:39.013381+00:00",
   "second_batch": {
     "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
     "packets": [
@@ -322,5 +322,29 @@
     "remaining_call_gaps": 0,
     "project_saved": true,
     "exports_refreshed": true
+  },
+  "director_pair_integration": {
+    "source_revision": "128bf558cae03fac641eb6e7a8d133942543fb65",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_director_integrated_build.log",
+    "executable_sha256": "323ae856113f313a2e7936a56c4f69b94a373fd5cb99799d623af6edad10a9ed",
+    "utc": "2026-10-07T05:58:39.013381+00:00",
+    "worker_revision": "5552191efe1a24c3bbe367f7afddba53a00c2f42",
+    "switch_enabled": true,
+    "pair_runtime_exit_codes": [
+      0,
+      0
+    ],
+    "pair_diff_exit_code": 3,
+    "reviewed_tutorial_mask_range_changes": true,
+    "mode9_admission_qualified": true,
+    "next_reused_worker_packet": "cc11_scene_empty_bag"
   }
 }

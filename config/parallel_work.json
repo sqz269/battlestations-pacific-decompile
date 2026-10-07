@@ -13138,7 +13138,7 @@
     },
     {
       "id": "cc11_director_class8",
-      "state": "integrated_source_object_checked_OFF_pending_full_link_and_runtime",
+      "state": "integrated_class8_enabled_after_reviewed_pair_main_build_passed",
       "done": true,
       "worker": "director_props",
       "model": "gpt-6.1-sol",
@@ -13159,12 +13159,15 @@
       "contract": "Recover the actual class-id8 probe and explicit-false TorpedoDirector override; preserve missing-key behavior and property precedence.",
       "reuses_worker_from": "cc11_director_props",
       "code_revision": "acb8b24a2d4202042b8bd8793ac79102c7fa4924",
-      "integrated_revision": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
+      "integrated_revision": "128bf558cae03fac641eb6e7a8d133942543fb65",
       "full_main_build_pending": false,
       "abi_compatible": false,
       "game_validated": false,
       "build_validation_revision": "74810291f",
-      "build_validation_report": "reports/orchestrator_dispatch_cc11.json"
+      "build_validation_report": "reports/orchestrator_dispatch_cc11.json",
+      "switch_enabled": true,
+      "full_main_build_revision": "128bf558cae03fac641eb6e7a8d133942543fb65",
+      "full_main_ctests_passed": 3
     },
     {
       "id": "cc11_land_retained_hook",
@@ -13215,8 +13218,8 @@
     },
     {
       "id": "cc11_director_jm06_pair",
-      "state": "completed_pair_reviewed_class8_switch_enable_authorized",
-      "done": false,
+      "state": "integrated_class8_enabled_after_reviewed_pair_main_build_passed",
+      "done": true,
       "worker": "director_props",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -13238,7 +13241,15 @@
       "pair_commit": "86d596624d90d49fed79d34cf8ef393b7ee92dd7",
       "contract": "Prepare identical pinned JM06 class8 OFF/ON exports and inputs; no full build until the primary grants the serialized compile slot. Run 3000 mission frames at 0.05 seconds and compare actual class8 override/director/torpedo behavior before proposing a switch change.",
       "reuses_worker_from": "cc11_director_class8",
-      "primary_review": "Both runtime exits0; expected tutorial mask/range changes; mode9 generation limitation retained"
+      "primary_review": "Both runtime exits0; expected tutorial mask/range changes; mode9 generation limitation retained",
+      "switch_enabled": true,
+      "integrated_revision": "128bf558cae03fac641eb6e7a8d133942543fb65",
+      "full_main_build_pending": false,
+      "full_main_build_revision": "128bf558cae03fac641eb6e7a8d133942543fb65",
+      "full_main_ctests_passed": 3,
+      "abi_compatible": false,
+      "game_validated": false,
+      "code_revision": "5552191efe1a24c3bbe367f7afddba53a00c2f42"
     },
     {
       "id": "cc11_land_be_profile",
@@ -13415,6 +13426,32 @@
       ],
       "reuses_worker_from": "cc11_land_owner_cpp",
       "contract": "Recover normal pilot-bot deferred-drain, install and finished-head retirement ordering, actual task identity publication and relevant callback contracts. Audit named-but-incomplete dependencies before a bounded source extension. Do not bind Boolean GameUnitsHost tasks or assume retained cached references survive death."
+    },
+    {
+      "id": "cc11_scene_empty_bag",
+      "state": "dispatched_to_reused_director_worker",
+      "done": false,
+      "worker": "director_props",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046cf40",
+        "008f5a00",
+        "0046c550"
+      ],
+      "output_files": [
+        "src/scene_file.cpp",
+        "include/bsp/scene_file.hpp",
+        "src/scene_entity_factory.cpp",
+        "include/bsp/scene_entity_factory.hpp",
+        "docs/SCENE_EMPTY_MULTITYPE_CC11.md",
+        "reports/scene_empty_multitype_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_director_jm06_pair"
+      ],
+      "reuses_worker_from": "cc11_director_jm06_pair",
+      "contract": "Recover actual property-block producer presence/empty-block preservation and mode9 gate admission for JM06 tutorial rows; correct a proved parser/gate mismatch with a bounded source change. Distinguish missing versus present-empty MultiType, GenerateInGame, group merge, Hidden and host mode policy. No class8 or unrelated switches changed."
     }
   ],
   "snapshot_after_analysis": {
