@@ -15920,3 +15920,79 @@ fallbacks on the following frames.
   or on a surface attack.
 - f16 (160000 frames, running) tries the surface attack: `select` + `attack` with Loui1 and NH at
   the Hakus in 600 s windows from 86000.
+### 205.4 USNOS completes (cc9-ships41, 2026-10-06)
+
+**Tree:** main `3f2069daa`, which contains the exec guard `bb30ca8c7`; exe `local\s41_exe_main3`. The
+launch form is reference AD through `local\s41_rows.ps1`. There is no frame jitter, and the step is
+0.05 s.
+
+| run | orders added | result |
+| --- | --- | --- |
+| f16 (`s41_os_f16.txt`, 160000) | f15 plus `select` + `attack` with Loui1 and NH at the Hakus in 600 s windows from 86000 (Loui1 Haku 1,2,3,4,1,2; NH Haku 3,4,1,2,3,4); 240 attack lines apply | Loui2 sinks Haku2 at 6069.13 s and Haku1 at 6107.18 s. Loui1 sinks Haku4 at 6573.41 s. Haku3 is alive at 8000 s |
+| **f17** (`s41_os_f17.txt`, 200000) | f16 with Loui1 and NH both on Haku3 from 132000 | Loui1 sinks Haku3 at 6627.69 s, and Loui2 sinks Haku4 at 6640.59 s. With `ReinDead` and `BaseCapped` both set, the script runs `luaBombFadeOut` and blacks out to `luaEnolaTheBitchesGay` (log line 1552268); the end follows. **`summary mission end: completed at 6716.49 s` ("The Japanese Empire is finished! - Mission Complete!", entity Essex, 9 objectives).** The exec guard logs `bsp: refused a mission script's process launch: sus_prog.exe` (log line 1563788) |
+
+**What the player plan uses:**
+- the Enterprise held east (`moveto`);
+- F2Gs at the wave-1 and wave-2 Judys;
+- the F2G recall with `order Enterprise <slot> 2`;
+- BTD strikes at Shima6;
+- NH (selected) onto HQ1, the Capture Posts and Ada3;
+- TroopTrans3 routed past HQ2, HQ1 and CB2 for the script's SetParty captures;
+- Loui1 and NH (selected) onto the Hakus.
+
+The Yamato and the Musashi fall to Loui1 unordered. Every line goes through a player form the helm harness already models. The labels:
+- the selection lines run every 600 frames;
+- the strike lines carry fallback targets.
+
+**Bound or substituted on this path:** the stock return, the held-slot orders, SetParty
+(`kSetPartyUnitBound`) and the queue erase. `kCaptureStatePartyFromUnitBound` is OFF.
+
+**Not used:**
+- The Enterprise's strikes never release, so none of the kills is theirs.
+- Primary 3 (Shimotsuke) is never added; its objective stays inactive.
+- `Scoring_SetMissionCompleted` (`008B8AD0`) is unimplemented (1 call).
+## 206. Handoff (cc9-ships41, 2026-10-06)
+
+### Landed or committed (`agent/cc9-ships41`)
+
+| section / sha | what |
+| --- | --- |
+| 204, `16a5e37a3` | who erases a deck's landing-queue record: `006C5950`'s head and the land-task destructor `009B3F50` -> `006C8800` -> `006C7680` |
+| 204.1, `a1b85eff1` | `kStockReturnQueueEraseBound` **ON** (f3 / USN01 identical, ESMP08 landing timing only) |
+| 205, `ee6de15b3` | USNOS f7 (the Enterprise survives phase 2); the SetParty gap, routed and landed by cc9-lua46 as `kSetPartyUnitBound`; `kCaptureStatePartyFromUnitBound` committed OFF |
+| 205.1-205.4, `9b08d33da`, `53f54d931`, this commit | USNOS f8-f17: all three HQs captured (primary 2 at 4234.58 s), Loui1/Loui2 sink the Hakus, and **USNOS completes at 6716.49 s** on `s41_os_f17.txt`, with the exec guard's `sus_prog.exe` refusal logged |
+
+### Open, in order
+
+1. **USNOS without the surface Haku kills.** Once the gunnery lane's US torpedo/dive release lands,
+   re-run f15 (Enterprise strikes only at the Hakus) to see whether the carriers' own strikes can
+   do it.
+2. **`kCaptureStatePartyFromUnitBound`** stays OFF until the gunnery lane's `00877B90`
+   unchanged-health early-out lands (205.2, routed). Then re-pair on `s41_os_f12.txt`. Expect one
+   resync per HQ and no "neutralized (prior party=0)".
+3. **The 202 loop.** The `006C5950` erase does not end it (204.1). What remains:
+   - **The destructor path.** `009B3F50` dequeues only while the dying task's plane still has
+     `+9D4h`. At a death, `007BCAA0` runs `007F3970` (which nulls `+9D4h`) inside the destroyed
+     hook. The entity's deletion is deferred (`00926C80` sets `+60h` and queues it), so a
+     shot-down leader's task is probably deleted after `+9D4h` is gone. Not proven.
+   - **A live retire.** The host's retire sites (retreat install; `009B34D0` invalid) skip the
+     destructor's `006C8800` call. That is a small binding, but those sites never ran in the test rows.
+4. **Primary 3 of USNOS is never added.** Shimotsuke and the blockade are sighted on the same frame
+   (1410.20 s), and the two movies overlap. `luaShimoMovieEnd` probably never runs. This is the Lua lane.
+5. 199's items (JM08 defence: its shipyard dies early and the airfield slots are scene-held; USN04
+   phase 2) are unchanged.
+
+### Tools (`local\`, `s41_` prefix)
+
+| tool | what it does |
+| --- | --- |
+| `s41_rows.ps1` | s40's launcher with this tree's rows (`osf7`..`osf16`, `osf3x`, `e8`, `u1`, `smoke`); `-Traj` writes per-unit CSVs |
+| `s41_os_f7.txt` .. `s41_os_f16.txt` | the USNOS helm files; each header line says what it adds |
+| `s41_patch_*.py` | the applied patches |
+
+**Helm-file lessons.**
+- `attack` needs the controlled unit, so put `select <unit>` 10 frames before each attack line.
+- The script reselects the Enterprise after every ingame movie.
+- A troop transport on a straight `moveto` runs aground. Route it through points from another
+  ship's track (the trajectory CSVs).
+- Never filter an order file with a pattern that can match the header.
