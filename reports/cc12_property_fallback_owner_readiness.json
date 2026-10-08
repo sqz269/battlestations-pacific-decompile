@@ -756,5 +756,33 @@
     "normal_function_containment": "EXPECTED_LIMITATION_3_MISSING_CALLER_FUNCTION_OBJECTS",
     "genuine_callee_function_start_checks": "PASS_00411050_00BF6FF5_00410A60",
     "Ghidra_mutations_Source_native_game_execution": false
+  },
+  "primary_review": {
+    "status": "PASS",
+    "archive_artifacts_rehashed": 34,
+    "current_Source_and_git_blobs_checked": 19,
+    "whole_native_initializer_bytes": 22,
+    "whole_native_exit_callback_bytes": 10,
+    "initial_PE_ranges_checked": 6,
+    "fallback_role": "E177E4 initial NUL CString cell, no header or record publication",
+    "pool_role": "Distinct E175B0 actual38h pool; genuine411050/410A60/CE37A4 trim providers and canonical E188B4 domain available",
+    "function_boundary_repair_pending": false,
+    "Source_native_game_execution": false
+  },
+  "primary_Ghidra_boundary_repair": {
+    "record": "reports/cc12_property_pool_static_definition.json",
+    "functions_created": [
+      "00cc8a30",
+      "00cd9260"
+    ],
+    "function_count": 64724,
+    "live_whole_instruction_counts": [
+      6,
+      2
+    ],
+    "call_rows_checked_after_repair": 3,
+    "call_row_failures": 0,
+    "Source_functions_added": 0,
+    "Original_bytes_modified": false
   }
 }

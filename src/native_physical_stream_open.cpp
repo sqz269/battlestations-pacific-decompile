@@ -255,6 +255,21 @@ std::uint64_t size_native_physical_stream_00bf4f90(const void* stream) noexcept 
     return static_cast<std::uint64_t>(low) | (static_cast<std::uint64_t>(high) << 32);
 }
 
+__declspec(naked) std::uint32_t __fastcall raw_query_native_physical_file_size_00bf4fa0(
+    const void*, std::uint32_t, std::uint32_t) noexcept {
+    __asm {
+        push ecx
+        mov ecx, dword ptr [ecx + 8]
+        lea eax, [esp]
+        push eax
+        push ecx
+        mov dword ptr [esp + 8], 0
+        call dword ptr [GetFileSize]
+        pop ecx
+        ret 4
+    }
+}
+
 std::uint32_t query_native_physical_file_size_00bf4fa0(void* stream, std::uint32_t) {
     const auto handle = pointer(stream, 8);
     DWORD high = 0;

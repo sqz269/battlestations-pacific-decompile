@@ -86,6 +86,16 @@ std::int32_t __fastcall raw_seek_native_physical_stream_00bf4f20(
     std::uint32_t distance_high, std::uint32_t origin) noexcept;
 
 std::uint64_t size_native_physical_stream_00bf4f90(const void*) noexcept;
+// Complete raw BF4FA0 provider: ECX actual backing; unused incoming EDX;
+// one unused stack DWORD; RET4. GetFileSize returns low DWORD in EAX and
+// this entry pops its initially-zero high-DWORD scratch into ECX. EDX is
+// volatile, not a high result. No backing/cache writes or cursor movement.
+// Requires a live HANDLE DWORD at +8h and the real Win32 API contract.
+// The C++ return type exposes only EAX; no class/table/lifetime admission.
+std::uint32_t __fastcall raw_query_native_physical_file_size_00bf4fa0(
+    const void* actual_backing, std::uint32_t unused_edx,
+    std::uint32_t unused_stack) noexcept;
+
 // Original ECX stream; stack unused DWORD; RET4; EAX GetFileSize low DWORD.
 // Performs a fresh OS query, discards high DWORD, and does not update cache.
 std::uint32_t query_native_physical_file_size_00bf4fa0(void*, std::uint32_t);

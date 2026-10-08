@@ -1,0 +1,85 @@
+{
+ "repairs": [
+  {
+   "function": "004837d0",
+   "owner": "main",
+   "when": "2026-10-08T09:02:31Z",
+   "decompile_lines_before": 25,
+   "gaps": [
+    {
+     "site": "004837fa",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "004837ff",
+     "gap_end_exclusive": "00483808",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "564c53bdd60b7d6d4740795adc9fbfd1611ccf35504a6a901d2ecedc8c8a72e8"
+    },
+    {
+     "site": "00483811",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00483816",
+     "gap_end_exclusive": "0048381f",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "564c53bdd60b7d6d4740795adc9fbfd1611ccf35504a6a901d2ecedc8c8a72e8"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "004837fa",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "004837ff",
+      "gap_end_exclusive": "00483808",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "564c53bdd60b7d6d4740795adc9fbfd1611ccf35504a6a901d2ecedc8c8a72e8"
+     },
+     "clear": "Success: Cleared flow override at 004837fa (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00483811",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00483816",
+      "gap_end_exclusive": "0048381f",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "564c53bdd60b7d6d4740795adc9fbfd1611ccf35504a6a901d2ecedc8c8a72e8"
+     },
+     "clear": "Success: Cleared flow override at 00483811 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    },
+    {
+     "explicit_tail_call": "004837fa",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004837fa (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00483811",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00483811 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "0048381f",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+   "body_before": "Function: FUN_004837d0 at 004837d0\nSignature: undefined FUN_004837d0(void)\nEntry: 004837d0\nBody: 004837d0 - 00483815",
+   "decompile_lines_after": 27,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_004837d0 at 004837d0\nSignature: undefined FUN_004837d0(void)\nEntry: 004837d0\nBody: 004837d0 - 00483815",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
