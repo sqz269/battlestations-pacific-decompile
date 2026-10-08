@@ -1,0 +1,2567 @@
+{
+  "packet": "cc12_native_wake_fill_readiness",
+  "created_utc": "2026-10-08T11:05:17.122115+00:00",
+  "status": "complete_readonly_whole_Original_and_current_typed_provider_audit_ready_for_independent_raw_storage_Source_pending_Root_acceptance",
+  "branch_start_before_audit": "5d1541af668252d65ef83d72c4fe43a8c63f87a7",
+  "source_implementation_changed": false,
+  "new_build_run": false,
+  "new_runtime_run": false,
+  "old_fixture_replayed": false,
+  "Ghidra_mutated": false,
+  "shared_ledgers_changed": false,
+  "Original": {
+    "address": "00810020",
+    "inclusive_end": "00810159",
+    "bytes": 314,
+    "instructions": 85,
+    "calls": 0,
+    "name": "BSP_UnitPoseHistoryRing_Fill",
+    "name_status": "Existing descriptive hypothesis; not a recovered symbol",
+    "live_prototype": "undefined BSP_UnitPoseHistoryRing_Fill(void)",
+    "recovered_ABI": "ECX=actual wake storage; stack const float* position, float heading; RET8. Saves/restores ESI; EBX/EDI/EBP untouched. Four free x87 slots required.",
+    "complete_body_and_data_ranges": [
+      {
+        "address": "00810020",
+        "bytes": 314,
+        "sha256": "fbcb23c15620a0b43c3e2ff56fc59687801382cce5ad07b6a3af7baa958813ae",
+        "hex": "83ec24d944242cc681cc03000000dc2d3038ce00c781c803000027000000d91c24d90424d9eedff1760bdc052838ce00d91c24eb02ddd856d9442404d9ffd95c2408d9442408d95c241cd9442404d9fed95c240cd944241c8b44242cdd053839ce00f30f10008b91c8030000dcc9f30f10542430d9c90f57c9d95c241cf30f11442410d9eef30f104004d8c9f30f11442414f30f104008f30f1144241833f6d95c2420d84c240cd95c2424d9442424d9442420d944241c85f68d04528d04c1f30f11501475050f28c1eb08f30f10059092d00085d2d9442410d8e1f30f114018f30f10442410f30f114008f30f10442414d95c2410d9442414f30f11400cf30f10442418d8e2f30f114010d95c2414d9442418d8e3d95c24187507ba27000000eb0383ea0183c60183fe287c8addda5eddd8ddd883c424c20800",
+        "live_pre_post_current_PE_equal": true,
+        "retained_path": "00810020_Original.bin"
+      },
+      {
+        "address": "00ce3830",
+        "bytes": 8,
+        "sha256": "ba1a5d6e5c15e527475ac665943b309f99f89f376a27a3f04c87f72b91f21a40",
+        "hex": "00000060fb21f93f",
+        "live_pre_post_current_PE_equal": true,
+        "retained_path": "00ce3830_Original.bin"
+      },
+      {
+        "address": "00ce3828",
+        "bytes": 8,
+        "sha256": "8b609471f492a677f3d33880bdb21889037d34e397491117a62b901fa2e85e7a",
+        "hex": "00000060fb211940",
+        "live_pre_post_current_PE_equal": true,
+        "retained_path": "00ce3828_Original.bin"
+      },
+      {
+        "address": "00ce3938",
+        "bytes": 8,
+        "sha256": "fe555d486cc8379252e92fe7c97b5e5b603a97a9f965105cfd169a1ab4327fb9",
+        "hex": "0000000000004940",
+        "live_pre_post_current_PE_equal": true,
+        "retained_path": "00ce3938_Original.bin"
+      },
+      {
+        "address": "00d09290",
+        "bytes": 4,
+        "sha256": "0c05e73c2748cbfd2e38c0afaf9cb594f78e14fefa3c24190ebc121d45dbee4f",
+        "hex": "00004842",
+        "live_pre_post_current_PE_equal": true,
+        "retained_path": "00d09290_Original.bin"
+      }
+    ],
+    "complete_instructions": [
+      {
+        "address": "00810020",
+        "bytes": "83ec24",
+        "mnemonic": "sub",
+        "operands": "esp, 0x24"
+      },
+      {
+        "address": "00810023",
+        "bytes": "d944242c",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x2c]"
+      },
+      {
+        "address": "00810027",
+        "bytes": "c681cc03000000",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ecx + 0x3cc], 0"
+      },
+      {
+        "address": "0081002e",
+        "bytes": "dc2d3038ce00",
+        "mnemonic": "fsubr",
+        "operands": "qword ptr [0xce3830]"
+      },
+      {
+        "address": "00810034",
+        "bytes": "c781c803000027000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 0x3c8], 0x27"
+      },
+      {
+        "address": "0081003e",
+        "bytes": "d91c24",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp]"
+      },
+      {
+        "address": "00810041",
+        "bytes": "d90424",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp]"
+      },
+      {
+        "address": "00810044",
+        "bytes": "d9ee",
+        "mnemonic": "fldz",
+        "operands": ""
+      },
+      {
+        "address": "00810046",
+        "bytes": "dff1",
+        "mnemonic": "fcompi",
+        "operands": "st(1)"
+      },
+      {
+        "address": "00810048",
+        "bytes": "760b",
+        "mnemonic": "jbe",
+        "operands": "0x810055"
+      },
+      {
+        "address": "0081004a",
+        "bytes": "dc052838ce00",
+        "mnemonic": "fadd",
+        "operands": "qword ptr [0xce3828]"
+      },
+      {
+        "address": "00810050",
+        "bytes": "d91c24",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp]"
+      },
+      {
+        "address": "00810053",
+        "bytes": "eb02",
+        "mnemonic": "jmp",
+        "operands": "0x810057"
+      },
+      {
+        "address": "00810055",
+        "bytes": "ddd8",
+        "mnemonic": "fstp",
+        "operands": "st(0)"
+      },
+      {
+        "address": "00810057",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00810058",
+        "bytes": "d9442404",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 4]"
+      },
+      {
+        "address": "0081005c",
+        "bytes": "d9ff",
+        "mnemonic": "fcos",
+        "operands": ""
+      },
+      {
+        "address": "0081005e",
+        "bytes": "d95c2408",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 8]"
+      },
+      {
+        "address": "00810062",
+        "bytes": "d9442408",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 8]"
+      },
+      {
+        "address": "00810066",
+        "bytes": "d95c241c",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "0081006a",
+        "bytes": "d9442404",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 4]"
+      },
+      {
+        "address": "0081006e",
+        "bytes": "d9fe",
+        "mnemonic": "fsin",
+        "operands": ""
+      },
+      {
+        "address": "00810070",
+        "bytes": "d95c240c",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00810074",
+        "bytes": "d944241c",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "00810078",
+        "bytes": "8b44242c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x2c]"
+      },
+      {
+        "address": "0081007c",
+        "bytes": "dd053839ce00",
+        "mnemonic": "fld",
+        "operands": "qword ptr [0xce3938]"
+      },
+      {
+        "address": "00810082",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00810086",
+        "bytes": "8b91c8030000",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 0x3c8]"
+      },
+      {
+        "address": "0081008c",
+        "bytes": "dcc9",
+        "mnemonic": "fmul",
+        "operands": "st(1), st(0)"
+      },
+      {
+        "address": "0081008e",
+        "bytes": "f30f10542430",
+        "mnemonic": "movss",
+        "operands": "xmm2, dword ptr [esp + 0x30]"
+      },
+      {
+        "address": "00810094",
+        "bytes": "d9c9",
+        "mnemonic": "fxch",
+        "operands": "st(1)"
+      },
+      {
+        "address": "00810096",
+        "bytes": "0f57c9",
+        "mnemonic": "xorps",
+        "operands": "xmm1, xmm1"
+      },
+      {
+        "address": "00810099",
+        "bytes": "d95c241c",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "0081009d",
+        "bytes": "f30f11442410",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x10], xmm0"
+      },
+      {
+        "address": "008100a3",
+        "bytes": "d9ee",
+        "mnemonic": "fldz",
+        "operands": ""
+      },
+      {
+        "address": "008100a5",
+        "bytes": "f30f104004",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 4]"
+      },
+      {
+        "address": "008100aa",
+        "bytes": "d8c9",
+        "mnemonic": "fmul",
+        "operands": "st(1)"
+      },
+      {
+        "address": "008100ac",
+        "bytes": "f30f11442414",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x14], xmm0"
+      },
+      {
+        "address": "008100b2",
+        "bytes": "f30f104008",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 8]"
+      },
+      {
+        "address": "008100b7",
+        "bytes": "f30f11442418",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x18], xmm0"
+      },
+      {
+        "address": "008100bd",
+        "bytes": "33f6",
+        "mnemonic": "xor",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "008100bf",
+        "bytes": "d95c2420",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "008100c3",
+        "bytes": "d84c240c",
+        "mnemonic": "fmul",
+        "operands": "dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "008100c7",
+        "bytes": "d95c2424",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x24]"
+      },
+      {
+        "address": "008100cb",
+        "bytes": "d9442424",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x24]"
+      },
+      {
+        "address": "008100cf",
+        "bytes": "d9442420",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "008100d3",
+        "bytes": "d944241c",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "008100d7",
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "008100d9",
+        "bytes": "8d0452",
+        "mnemonic": "lea",
+        "operands": "eax, [edx + edx*2]"
+      },
+      {
+        "address": "008100dc",
+        "bytes": "8d04c1",
+        "mnemonic": "lea",
+        "operands": "eax, [ecx + eax*8]"
+      },
+      {
+        "address": "008100df",
+        "bytes": "f30f115014",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x14], xmm2"
+      },
+      {
+        "address": "008100e4",
+        "bytes": "7505",
+        "mnemonic": "jne",
+        "operands": "0x8100eb"
+      },
+      {
+        "address": "008100e6",
+        "bytes": "0f28c1",
+        "mnemonic": "movaps",
+        "operands": "xmm0, xmm1"
+      },
+      {
+        "address": "008100e9",
+        "bytes": "eb08",
+        "mnemonic": "jmp",
+        "operands": "0x8100f3"
+      },
+      {
+        "address": "008100eb",
+        "bytes": "f30f10059092d000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [0xd09290]"
+      },
+      {
+        "address": "008100f3",
+        "bytes": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "address": "008100f5",
+        "bytes": "d9442410",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "008100f9",
+        "bytes": "d8e1",
+        "mnemonic": "fsub",
+        "operands": "st(1)"
+      },
+      {
+        "address": "008100fb",
+        "bytes": "f30f114018",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x18], xmm0"
+      },
+      {
+        "address": "00810100",
+        "bytes": "f30f10442410",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00810106",
+        "bytes": "f30f114008",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 8], xmm0"
+      },
+      {
+        "address": "0081010b",
+        "bytes": "f30f10442414",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00810111",
+        "bytes": "d95c2410",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00810115",
+        "bytes": "d9442414",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00810119",
+        "bytes": "f30f11400c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0xc], xmm0"
+      },
+      {
+        "address": "0081011e",
+        "bytes": "f30f10442418",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00810124",
+        "bytes": "d8e2",
+        "mnemonic": "fsub",
+        "operands": "st(2)"
+      },
+      {
+        "address": "00810126",
+        "bytes": "f30f114010",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x10], xmm0"
+      },
+      {
+        "address": "0081012b",
+        "bytes": "d95c2414",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "0081012f",
+        "bytes": "d9442418",
+        "mnemonic": "fld",
+        "operands": "dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00810133",
+        "bytes": "d8e3",
+        "mnemonic": "fsub",
+        "operands": "st(3)"
+      },
+      {
+        "address": "00810135",
+        "bytes": "d95c2418",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00810139",
+        "bytes": "7507",
+        "mnemonic": "jne",
+        "operands": "0x810142"
+      },
+      {
+        "address": "0081013b",
+        "bytes": "ba27000000",
+        "mnemonic": "mov",
+        "operands": "edx, 0x27"
+      },
+      {
+        "address": "00810140",
+        "bytes": "eb03",
+        "mnemonic": "jmp",
+        "operands": "0x810145"
+      },
+      {
+        "address": "00810142",
+        "bytes": "83ea01",
+        "mnemonic": "sub",
+        "operands": "edx, 1"
+      },
+      {
+        "address": "00810145",
+        "bytes": "83c601",
+        "mnemonic": "add",
+        "operands": "esi, 1"
+      },
+      {
+        "address": "00810148",
+        "bytes": "83fe28",
+        "mnemonic": "cmp",
+        "operands": "esi, 0x28"
+      },
+      {
+        "address": "0081014b",
+        "bytes": "7c8a",
+        "mnemonic": "jl",
+        "operands": "0x8100d7"
+      },
+      {
+        "address": "0081014d",
+        "bytes": "ddda",
+        "mnemonic": "fstp",
+        "operands": "st(2)"
+      },
+      {
+        "address": "0081014f",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00810150",
+        "bytes": "ddd8",
+        "mnemonic": "fstp",
+        "operands": "st(0)"
+      },
+      {
+        "address": "00810152",
+        "bytes": "ddd8",
+        "mnemonic": "fstp",
+        "operands": "st(0)"
+      },
+      {
+        "address": "00810154",
+        "bytes": "83c424",
+        "mnemonic": "add",
+        "operands": "esp, 0x24"
+      },
+      {
+        "address": "00810157",
+        "bytes": "c20800",
+        "mnemonic": "ret",
+        "operands": "8"
+      }
+    ],
+    "absolute_data_operands": [
+      {
+        "instruction": "0081002e",
+        "instruction_hex": "dc2d3038ce00",
+        "data_address": "00ce3830",
+        "bytes": 8,
+        "operand_offset_in_body": 16,
+        "operand_bytes": 4
+      },
+      {
+        "instruction": "0081004a",
+        "instruction_hex": "dc052838ce00",
+        "data_address": "00ce3828",
+        "bytes": 8,
+        "operand_offset_in_body": 44,
+        "operand_bytes": 4
+      },
+      {
+        "instruction": "0081007c",
+        "instruction_hex": "dd053839ce00",
+        "data_address": "00ce3938",
+        "bytes": 8,
+        "operand_offset_in_body": 94,
+        "operand_bytes": 4
+      },
+      {
+        "instruction": "008100eb",
+        "instruction_hex": "f30f10059092d000",
+        "data_address": "00d09290",
+        "bytes": 4,
+        "operand_offset_in_body": 207,
+        "operand_bytes": 4
+      }
+    ],
+    "all_live_instruction_addresses_equal_disk_decode": true,
+    "current_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "verified_target": {
+      "project": "bsp",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000"
+    },
+    "verification_mechanism": "Every live tools/bsp.py ghidra invocation constructs Client and calls verify; retained tool/config inputs identify project and program checks. Five pre/post byte ranges equal current PE."
+  },
+  "storage_contract": {
+    "object_argument": "actual wake pointer, not projected ShipAiWakeTrail",
+    "samples_offset": 8,
+    "record_count": 40,
+    "record_stride": 24,
+    "head_offset": "0x3C8",
+    "flag_offset": "0x3CC",
+    "entity_relationship": "If supplied at entity+BD0, samples=entity+BD8 and head=entity+F98; this relationship is not a game entity producer claim.",
+    "preimage": "All overwritten head/flag/XYZ/heading/segment preimage values are irrelevant unless position aliases them; caller supplies writable actual storage. Position is three readable binary32 words. Preserve all other bytes.",
+    "minimum_directly_touched_object_extent": "0x3CD bytes from wake base; no read/write of residual +3D0..3DB",
+    "preserved": [
+      "prefix +0..7",
+      "all 40 yaw words at sample+14",
+      "padding +3CD..3CF",
+      "residual +3D0..3DB",
+      "all other untouched bytes"
+    ],
+    "native_writes": [
+      {
+        "address": "00810027",
+        "write": "wake+3CC byte = 0",
+        "order": 1
+      },
+      {
+        "address": "00810034",
+        "write": "wake+3C8 dword = 39",
+        "order": 2
+      },
+      {
+        "address": "008100DF",
+        "write": "wake+slot*18+14 = raw heading argument",
+        "order": "each iteration 1"
+      },
+      {
+        "address": "008100FB",
+        "write": "wake+slot*18+18 = raw +0 first iteration, float 50 otherwise",
+        "order": "each iteration 2"
+      },
+      {
+        "address": "00810106",
+        "write": "wake+slot*18+8 = running X before subtraction spill",
+        "order": "each iteration 3"
+      },
+      {
+        "address": "00810119",
+        "write": "wake+slot*18+C = running Y before subtraction spill",
+        "order": "each iteration 4"
+      },
+      {
+        "address": "00810126",
+        "write": "wake+slot*18+10 = running Z before subtraction spill",
+        "order": "each iteration 5"
+      }
+    ],
+    "head_after": 39,
+    "flag_after": 0,
+    "record_visit_order": [
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "segment_after": "head slot39 raw +0; slots38..0 raw binary32 50",
+    "raw_heading_writes": "The raw heading argument is MOVSS-captured at 0081008E and written to all40 sample heading words; no normalized angle substitution.",
+    "alias_contract": "Position may overlap writable wake memory; head/flag writes occur before the position triple is captured. Copying the whole ring or capturing position earlier changes this contract. Private activation/return-address aliasing is not admitted.",
+    "caller_obligations": [
+      "actual addressed writable storage",
+      "readable position triple",
+      "preserved preimage initialization when its later consumers require it",
+      "lifetime",
+      "synchronization",
+      "four available x87 stack slots"
+    ]
+  },
+  "numerical_schedule": {
+    "angle": "FLD heading before flag store; FSUBR actual binary64 promoted-float half_pi; head store; one binary32 spill. FCOMIP compares zero against spilled angle; ordered negative adds actual binary64 promoted-float two_pi exactly once and spills. Unordered takes JBE. No general modulo.",
+    "trigonometry": "FCOS then binary32 spill, redundant cosine reload/spill, then independent FLD angle/FSIN/binary32 spill. No CALL or CRT/provider substitution.",
+    "critical_register_operand": {
+      "address": "0081008C",
+      "bytes": "dcc9",
+      "Capstone": "fmul st(1), st(0)",
+      "Ghidra": "FMUL ST1",
+      "meaning": "ST1 receives cosine*50; ST0 keeps50. Subsequent FXCH/FSTP stores X step and leaves50 on stack. Must not encode D8 C9, which multiplies ST0 instead."
+    },
+    "steps": "X=float(50*float(FCOS(angle))); Y=float(+0*50); Z=float(50*float(FSIN(angle))), with original extended intermediate operations and binary32 spills.",
+    "position_and_heading_capture": [
+      {
+        "address": "00810078",
+        "read": "position pointer stack argument"
+      },
+      {
+        "address": "00810082",
+        "read": "position[0] MOVSS"
+      },
+      {
+        "address": "00810086",
+        "read": "wake head dword"
+      },
+      {
+        "address": "0081008E",
+        "read": "heading argument MOVSS"
+      },
+      {
+        "address": "008100A5",
+        "read": "position[1] MOVSS"
+      },
+      {
+        "address": "008100B2",
+        "read": "position[2] MOVSS"
+      }
+    ],
+    "loop": "Step triple retained in x87 ST0=X, ST1=Y, ST2=Z. Each iteration FLDs running coordinate, subtracts ST1/ST2/ST3 respectively, stores current coordinate via prior MOVSS, spills next coordinate to binary32. All40 iterations including last compute next XYZ. TEST EDX flags survive FP/MOV instructions to select native wrap0->39 versus decrement.",
+    "exit": "FSTP ST2, POP ESI, FSTP ST0 twice, ADD ESP24, RET8. Restores original x87 depth; settings unchanged, native status/exception effects preserved.",
+    "scope": "This packet proves instruction/dataflow contract, not dynamic coverage of NaNs, signaling exceptions, large-angle FCOS/FSIN C2 behavior, every rounding mode, or signed zero."
+  },
+  "constants": [
+    {
+      "address": "00ce3830",
+      "bytes": 8,
+      "sha256": "ba1a5d6e5c15e527475ac665943b309f99f89f376a27a3f04c87f72b91f21a40",
+      "hex": "00000060fb21f93f",
+      "live_pre_post_current_PE_equal": true,
+      "retained_path": "00ce3830_Original.bin",
+      "value": 1.5707963705062866
+    },
+    {
+      "address": "00ce3828",
+      "bytes": 8,
+      "sha256": "8b609471f492a677f3d33880bdb21889037d34e397491117a62b901fa2e85e7a",
+      "hex": "00000060fb211940",
+      "live_pre_post_current_PE_equal": true,
+      "retained_path": "00ce3828_Original.bin",
+      "value": 6.2831854820251465
+    },
+    {
+      "address": "00ce3938",
+      "bytes": 8,
+      "sha256": "fe555d486cc8379252e92fe7c97b5e5b603a97a9f965105cfd169a1ab4327fb9",
+      "hex": "0000000000004940",
+      "live_pre_post_current_PE_equal": true,
+      "retained_path": "00ce3938_Original.bin",
+      "value": 50.0
+    },
+    {
+      "address": "00d09290",
+      "bytes": 4,
+      "sha256": "0c05e73c2748cbfd2e38c0afaf9cb594f78e14fefa3c24190ebc121d45dbee4f",
+      "hex": "00004842",
+      "live_pre_post_current_PE_equal": true,
+      "retained_path": "00d09290_Original.bin",
+      "value": 50.0
+    }
+  ],
+  "current_typed_source_comparison": {
+    "sample_definition": "ShipAiWakeSample has XYZ/heading/segment/yaw float words at offsets0/4/8/C/10/14 and sizeof0x18 static_assert",
+    "typed_layout": "Samples start0, compiled head3C0/flag3C4; native samples+8,head3C8/flag3CC. Host written3E0 is not a native field.",
+    "same_bounded_semantic_shape": [
+      "40 slots39..0",
+      "head39/flag0",
+      "head segment0 and39 segment50",
+      "per-sample raw heading",
+      "leaves existing yaw/residual words unchanged"
+    ],
+    "material_differences": [
+      "host class is not native addressed storage",
+      "host-only written40 store",
+      "genuine CRT cos/sin rather than x87 FCOS/FSIN",
+      "SSE angle/step/subtraction arithmetic under MXCSR rather than native x87 CW",
+      "current compiled segment store occurs after XYZ rather than beforeXYZ",
+      "does not by itself establish any native owner construction or admission"
+    ],
+    "no_original_constant_value_mismatch": "The two angle constants are exactly promoted binary32 constants in Original; they are not nearest binary64 mathematical pi/2 and2pi."
+  },
+  "current_production_providers": {
+    "created_utc": "2026-10-08T10:57:26.635787+00:00",
+    "providers": {
+      "worker": {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+          "bytes": 9722,
+          "sha256": "4d78d9eb54844c4ef80735a6a38175d03819c91cbbff76e097a6922c0a0074d3",
+          "retained_path": "providers\\worker\\ship_ai_wake_trail.obj"
+        },
+        "whole_typed_fill": {
+          "symbol": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+          "section": 14,
+          "name": ".text$mn",
+          "bytes": 286,
+          "raw_file_offset": 4572,
+          "sha256": "773c1b5feb5a4e321dd5666564ef9a44d66cc755c00f9b4447bb25d739847409",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 6,
+              "symbol": "__real@3fc90fdb"
+            },
+            {
+              "offset": 57,
+              "type": 6,
+              "symbol": "__real@40c90fdb"
+            },
+            {
+              "offset": 78,
+              "type": 20,
+              "symbol": "_cos"
+            },
+            {
+              "offset": 98,
+              "type": 6,
+              "symbol": "__real@42480000"
+            },
+            {
+              "offset": 121,
+              "type": 20,
+              "symbol": "_sin"
+            },
+            {
+              "offset": 182,
+              "type": 6,
+              "symbol": "__real@42480000"
+            },
+            {
+              "offset": 214,
+              "type": 6,
+              "symbol": "__real@42480000"
+            }
+          ],
+          "hex": "558bec83ec10f30f1005000000000f57c9f30f5c4510568b75080f2fc8c686c403000000c786c003000027000000f30f114508760df30f580500000000f30f1145080f5ac083ec08f20f110424e800000000dd5df8f20f1045f8660f5ac0f30f590500000000f30f1145fcf30f1045080f5ac0f20f110424e8000000008b450c83c408f30f106d1033d2f30f1075fc0f57e4dd5df0f20f107df0f30f1000f30f104804f30f1050088b86c0030000660f5afff30f593d00000000660f1f4400008d0c40f30f116cce0c85d275050f28dceb08f30f101d00000000f30f1104cef30f5cc6f30f114cce04f30f5cccf30f1154ce08f30f5cd7f30f115cce1085c07f07b827000000eb01484283fa287cb1c786e0030000280000005e8be55dc3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "push",
+              "operands": "ebp",
+              "bytes": "55"
+            },
+            {
+              "offset": 1,
+              "mnemonic": "mov",
+              "operands": "ebp, esp",
+              "bytes": "8bec"
+            },
+            {
+              "offset": 3,
+              "mnemonic": "sub",
+              "operands": "esp, 0x10",
+              "bytes": "83ec10"
+            },
+            {
+              "offset": 6,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f100500000000"
+            },
+            {
+              "offset": 14,
+              "mnemonic": "xorps",
+              "operands": "xmm1, xmm1",
+              "bytes": "0f57c9"
+            },
+            {
+              "offset": 17,
+              "mnemonic": "subss",
+              "operands": "xmm0, dword ptr [ebp + 0x10]",
+              "bytes": "f30f5c4510"
+            },
+            {
+              "offset": 22,
+              "mnemonic": "push",
+              "operands": "esi",
+              "bytes": "56"
+            },
+            {
+              "offset": 23,
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]",
+              "bytes": "8b7508"
+            },
+            {
+              "offset": 26,
+              "mnemonic": "comiss",
+              "operands": "xmm1, xmm0",
+              "bytes": "0f2fc8"
+            },
+            {
+              "offset": 29,
+              "mnemonic": "mov",
+              "operands": "byte ptr [esi + 0x3c4], 0",
+              "bytes": "c686c403000000"
+            },
+            {
+              "offset": 36,
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x3c0], 0x27",
+              "bytes": "c786c003000027000000"
+            },
+            {
+              "offset": 46,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp + 8], xmm0",
+              "bytes": "f30f114508"
+            },
+            {
+              "offset": 51,
+              "mnemonic": "jbe",
+              "operands": "0x42",
+              "bytes": "760d"
+            },
+            {
+              "offset": 53,
+              "mnemonic": "addss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f580500000000"
+            },
+            {
+              "offset": 61,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp + 8], xmm0",
+              "bytes": "f30f114508"
+            },
+            {
+              "offset": 66,
+              "mnemonic": "cvtps2pd",
+              "operands": "xmm0, xmm0",
+              "bytes": "0f5ac0"
+            },
+            {
+              "offset": 69,
+              "mnemonic": "sub",
+              "operands": "esp, 8",
+              "bytes": "83ec08"
+            },
+            {
+              "offset": 72,
+              "mnemonic": "movsd",
+              "operands": "qword ptr [esp], xmm0",
+              "bytes": "f20f110424"
+            },
+            {
+              "offset": 77,
+              "mnemonic": "call",
+              "operands": "0x52",
+              "bytes": "e800000000"
+            },
+            {
+              "offset": 82,
+              "mnemonic": "fstp",
+              "operands": "qword ptr [ebp - 8]",
+              "bytes": "dd5df8"
+            },
+            {
+              "offset": 85,
+              "mnemonic": "movsd",
+              "operands": "xmm0, qword ptr [ebp - 8]",
+              "bytes": "f20f1045f8"
+            },
+            {
+              "offset": 90,
+              "mnemonic": "cvtpd2ps",
+              "operands": "xmm0, xmm0",
+              "bytes": "660f5ac0"
+            },
+            {
+              "offset": 94,
+              "mnemonic": "mulss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f590500000000"
+            },
+            {
+              "offset": 102,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp - 4], xmm0",
+              "bytes": "f30f1145fc"
+            },
+            {
+              "offset": 107,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [ebp + 8]",
+              "bytes": "f30f104508"
+            },
+            {
+              "offset": 112,
+              "mnemonic": "cvtps2pd",
+              "operands": "xmm0, xmm0",
+              "bytes": "0f5ac0"
+            },
+            {
+              "offset": 115,
+              "mnemonic": "movsd",
+              "operands": "qword ptr [esp], xmm0",
+              "bytes": "f20f110424"
+            },
+            {
+              "offset": 120,
+              "mnemonic": "call",
+              "operands": "0x7d",
+              "bytes": "e800000000"
+            },
+            {
+              "offset": 125,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]",
+              "bytes": "8b450c"
+            },
+            {
+              "offset": 128,
+              "mnemonic": "add",
+              "operands": "esp, 8",
+              "bytes": "83c408"
+            },
+            {
+              "offset": 131,
+              "mnemonic": "movss",
+              "operands": "xmm5, dword ptr [ebp + 0x10]",
+              "bytes": "f30f106d10"
+            },
+            {
+              "offset": 136,
+              "mnemonic": "xor",
+              "operands": "edx, edx",
+              "bytes": "33d2"
+            },
+            {
+              "offset": 138,
+              "mnemonic": "movss",
+              "operands": "xmm6, dword ptr [ebp - 4]",
+              "bytes": "f30f1075fc"
+            },
+            {
+              "offset": 143,
+              "mnemonic": "xorps",
+              "operands": "xmm4, xmm4",
+              "bytes": "0f57e4"
+            },
+            {
+              "offset": 146,
+              "mnemonic": "fstp",
+              "operands": "qword ptr [ebp - 0x10]",
+              "bytes": "dd5df0"
+            },
+            {
+              "offset": 149,
+              "mnemonic": "movsd",
+              "operands": "xmm7, qword ptr [ebp - 0x10]",
+              "bytes": "f20f107df0"
+            },
+            {
+              "offset": 154,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax]",
+              "bytes": "f30f1000"
+            },
+            {
+              "offset": 158,
+              "mnemonic": "movss",
+              "operands": "xmm1, dword ptr [eax + 4]",
+              "bytes": "f30f104804"
+            },
+            {
+              "offset": 163,
+              "mnemonic": "movss",
+              "operands": "xmm2, dword ptr [eax + 8]",
+              "bytes": "f30f105008"
+            },
+            {
+              "offset": 168,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 0x3c0]",
+              "bytes": "8b86c0030000"
+            },
+            {
+              "offset": 174,
+              "mnemonic": "cvtpd2ps",
+              "operands": "xmm7, xmm7",
+              "bytes": "660f5aff"
+            },
+            {
+              "offset": 178,
+              "mnemonic": "mulss",
+              "operands": "xmm7, dword ptr [0]",
+              "bytes": "f30f593d00000000"
+            },
+            {
+              "offset": 186,
+              "mnemonic": "nop",
+              "operands": "word ptr [eax + eax]",
+              "bytes": "660f1f440000"
+            },
+            {
+              "offset": 192,
+              "mnemonic": "lea",
+              "operands": "ecx, [eax + eax*2]",
+              "bytes": "8d0c40"
+            },
+            {
+              "offset": 195,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 0xc], xmm5",
+              "bytes": "f30f116cce0c"
+            },
+            {
+              "offset": 201,
+              "mnemonic": "test",
+              "operands": "edx, edx",
+              "bytes": "85d2"
+            },
+            {
+              "offset": 203,
+              "mnemonic": "jne",
+              "operands": "0xd2",
+              "bytes": "7505"
+            },
+            {
+              "offset": 205,
+              "mnemonic": "movaps",
+              "operands": "xmm3, xmm4",
+              "bytes": "0f28dc"
+            },
+            {
+              "offset": 208,
+              "mnemonic": "jmp",
+              "operands": "0xda",
+              "bytes": "eb08"
+            },
+            {
+              "offset": 210,
+              "mnemonic": "movss",
+              "operands": "xmm3, dword ptr [0]",
+              "bytes": "f30f101d00000000"
+            },
+            {
+              "offset": 218,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8], xmm0",
+              "bytes": "f30f1104ce"
+            },
+            {
+              "offset": 223,
+              "mnemonic": "subss",
+              "operands": "xmm0, xmm6",
+              "bytes": "f30f5cc6"
+            },
+            {
+              "offset": 227,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 4], xmm1",
+              "bytes": "f30f114cce04"
+            },
+            {
+              "offset": 233,
+              "mnemonic": "subss",
+              "operands": "xmm1, xmm4",
+              "bytes": "f30f5ccc"
+            },
+            {
+              "offset": 237,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 8], xmm2",
+              "bytes": "f30f1154ce08"
+            },
+            {
+              "offset": 243,
+              "mnemonic": "subss",
+              "operands": "xmm2, xmm7",
+              "bytes": "f30f5cd7"
+            },
+            {
+              "offset": 247,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 0x10], xmm3",
+              "bytes": "f30f115cce10"
+            },
+            {
+              "offset": 253,
+              "mnemonic": "test",
+              "operands": "eax, eax",
+              "bytes": "85c0"
+            },
+            {
+              "offset": 255,
+              "mnemonic": "jg",
+              "operands": "0x108",
+              "bytes": "7f07"
+            },
+            {
+              "offset": 257,
+              "mnemonic": "mov",
+              "operands": "eax, 0x27",
+              "bytes": "b827000000"
+            },
+            {
+              "offset": 262,
+              "mnemonic": "jmp",
+              "operands": "0x109",
+              "bytes": "eb01"
+            },
+            {
+              "offset": 264,
+              "mnemonic": "dec",
+              "operands": "eax",
+              "bytes": "48"
+            },
+            {
+              "offset": 265,
+              "mnemonic": "inc",
+              "operands": "edx",
+              "bytes": "42"
+            },
+            {
+              "offset": 266,
+              "mnemonic": "cmp",
+              "operands": "edx, 0x28",
+              "bytes": "83fa28"
+            },
+            {
+              "offset": 269,
+              "mnemonic": "jl",
+              "operands": "0xc0",
+              "bytes": "7cb1"
+            },
+            {
+              "offset": 271,
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x3e0], 0x28",
+              "bytes": "c786e003000028000000"
+            },
+            {
+              "offset": 281,
+              "mnemonic": "pop",
+              "operands": "esi",
+              "bytes": "5e"
+            },
+            {
+              "offset": 282,
+              "mnemonic": "mov",
+              "operands": "esp, ebp",
+              "bytes": "8be5"
+            },
+            {
+              "offset": 284,
+              "mnemonic": "pop",
+              "operands": "ebp",
+              "bytes": "5d"
+            },
+            {
+              "offset": 285,
+              "mnemonic": "ret",
+              "operands": "",
+              "bytes": "c3"
+            }
+          ]
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73560190,
+          "sha256": "f7ac2fb37b378058e2fbc21ede4975ac8a7a30c7dbf55fb078b8e4e576bdb456",
+          "retained_path": "providers\\worker\\bsp_core.lib",
+          "members": [
+            {
+              "name": "bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+              "archive_header_offset": 21480784,
+              "bytes": 9722,
+              "sha256": "4d78d9eb54844c4ef80735a6a38175d03819c91cbbff76e097a6922c0a0074d3",
+              "retained_path": "providers/worker/ship_ai_wake_trail.obj.archive_member",
+              "exact_retained_object": true
+            }
+          ]
+        },
+        "current_inputs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_wake_trail.cpp",
+            "bytes": 14999,
+            "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+            "retained_path": "providers\\worker\\inputs\\src\\ship_ai_wake_trail.cpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_wake_trail.hpp",
+            "bytes": 11203,
+            "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+            "retained_path": "providers\\worker\\inputs\\include\\bsp\\ship_ai_wake_trail.hpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_formation.hpp",
+            "bytes": 29728,
+            "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+            "retained_path": "providers\\worker\\inputs\\include\\bsp\\ship_ai_formation.hpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\cmake\\startup.cmake",
+            "bytes": 196382,
+            "sha256": "6a77453a63e84781488f214332c47e6699f176a325d3d13fece4a7074d51a41f",
+            "retained_path": "providers\\worker\\inputs\\cmake\\startup.cmake"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.vcxproj",
+            "bytes": 292021,
+            "sha256": "5f6778f724401753086eaa4cda5017791881879fd8dad505856f9a4a39498dca",
+            "retained_path": "providers\\worker\\inputs\\build\\win32\\bsp_core.vcxproj"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\CMakeCache.txt",
+            "bytes": 19621,
+            "sha256": "2e74ccebd20f9c69f095c3511b17757ffc76cab6a72bb19b8465893f155046bf",
+            "retained_path": "providers\\worker\\inputs\\build\\win32\\CMakeCache.txt"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_game.exe",
+            "bytes": 5043712,
+            "sha256": "45fff3a42c7f2d8ff5716752ca888900384e0b966ccdb5780a344a683a184eec",
+            "retained_path": "providers\\worker\\inputs\\build\\win32\\Release\\bsp_game.exe"
+          }
+        ],
+        "existing_executable_trigonometric_imports": [
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "asin",
+            "iat": "103c5530"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "sin",
+            "iat": "103c5538"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "cos",
+            "iat": "103c553c"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "acos",
+            "iat": "103c5544"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_sin_precise",
+            "iat": "103c5568"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_cos_precise",
+            "iat": "103c558c"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_asin_precise",
+            "iat": "103c5594"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_acos_precise",
+            "iat": "103c5598"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_CIsinh",
+            "iat": "103c55a0"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_CIcosh",
+            "iat": "103c55a8"
+          }
+        ],
+        "scope": "Existing typed host fill compiled artifact; not a native-storage or FCOS/FSIN provider for the proposed raw leaf.",
+        "existing_executable_whole_typed_fill": {
+          "address": "102b9690",
+          "bytes": 286,
+          "sha256": "4a8a89492ffa94dec56ab2bfc6e7a8a31ad98391a384d0da1707f0664f027337",
+          "hex": "558bec83ec10f30f1005fc893e100f57c9f30f5c4510568b75080f2fc8c686c403000000c786c003000027000000f30f114508760df30f580548bc3c10f30f1145080f5ac083ec08f20f110424e8f09c0e00dd5df8f20f1045f8660f5ac0f30f59054cbc3c10f30f1145fcf30f1045080f5ac0f20f110424e8cb9c0e008b450c83c408f30f106d1033d2f30f1075fc0f57e4dd5df0f20f107df0f30f1000f30f104804f30f1050088b86c0030000660f5afff30f593d4cbc3c10660f1f4400008d0c40f30f116cce0c85d275050f28dceb08f30f101d4cbc3c10f30f1104cef30f5cc6f30f114cce04f30f5cccf30f1154ce08f30f5cd7f30f115cce1085c07f07b827000000eb01484283fa287cb1c786e0030000280000005e8be55dc3",
+          "physical_complete_body_occurrences": 1,
+          "complete_coff_equal_except_seven_resolved_relocation_operands": true,
+          "resolved_relocations": [
+            {
+              "offset": 10,
+              "type": 6,
+              "symbol": "__real@3fc90fdb",
+              "resolved_address": "103e89fc",
+              "bytes": "db0fc93f",
+              "float": 1.5707963705062866,
+              "readonly": true
+            },
+            {
+              "offset": 57,
+              "type": 6,
+              "symbol": "__real@40c90fdb",
+              "resolved_address": "103cbc48",
+              "bytes": "db0fc940",
+              "float": 6.2831854820251465,
+              "readonly": true
+            },
+            {
+              "offset": 78,
+              "type": 20,
+              "symbol": "_cos",
+              "resolved_address": "103a33d2",
+              "thunk_hex": "ff253c553c10",
+              "iat": "103c553c",
+              "import": {
+                "dll": "api-ms-win-crt-math-l1-1-0.dll",
+                "name": "cos"
+              }
+            },
+            {
+              "offset": 98,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            },
+            {
+              "offset": 121,
+              "type": 20,
+              "symbol": "_sin",
+              "resolved_address": "103a33d8",
+              "thunk_hex": "ff2538553c10",
+              "iat": "103c5538",
+              "import": {
+                "dll": "api-ms-win-crt-math-l1-1-0.dll",
+                "name": "sin"
+              }
+            },
+            {
+              "offset": 182,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            },
+            {
+              "offset": 214,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            }
+          ],
+          "scope": "Static existing executable only; no new link, load, or fixture run. This typed host fill is not the new raw native producer."
+        }
+      },
+      "primary": {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+          "bytes": 9702,
+          "sha256": "fb968422d87adcf4b7f5c143797ac8a30b7f7c3211e76fa3362712d24e47fa13",
+          "retained_path": "providers\\primary\\ship_ai_wake_trail.obj"
+        },
+        "whole_typed_fill": {
+          "symbol": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+          "section": 14,
+          "name": ".text$mn",
+          "bytes": 286,
+          "raw_file_offset": 4552,
+          "sha256": "773c1b5feb5a4e321dd5666564ef9a44d66cc755c00f9b4447bb25d739847409",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 6,
+              "symbol": "__real@3fc90fdb"
+            },
+            {
+              "offset": 57,
+              "type": 6,
+              "symbol": "__real@40c90fdb"
+            },
+            {
+              "offset": 78,
+              "type": 20,
+              "symbol": "_cos"
+            },
+            {
+              "offset": 98,
+              "type": 6,
+              "symbol": "__real@42480000"
+            },
+            {
+              "offset": 121,
+              "type": 20,
+              "symbol": "_sin"
+            },
+            {
+              "offset": 182,
+              "type": 6,
+              "symbol": "__real@42480000"
+            },
+            {
+              "offset": 214,
+              "type": 6,
+              "symbol": "__real@42480000"
+            }
+          ],
+          "hex": "558bec83ec10f30f1005000000000f57c9f30f5c4510568b75080f2fc8c686c403000000c786c003000027000000f30f114508760df30f580500000000f30f1145080f5ac083ec08f20f110424e800000000dd5df8f20f1045f8660f5ac0f30f590500000000f30f1145fcf30f1045080f5ac0f20f110424e8000000008b450c83c408f30f106d1033d2f30f1075fc0f57e4dd5df0f20f107df0f30f1000f30f104804f30f1050088b86c0030000660f5afff30f593d00000000660f1f4400008d0c40f30f116cce0c85d275050f28dceb08f30f101d00000000f30f1104cef30f5cc6f30f114cce04f30f5cccf30f1154ce08f30f5cd7f30f115cce1085c07f07b827000000eb01484283fa287cb1c786e0030000280000005e8be55dc3",
+          "instructions": [
+            {
+              "offset": 0,
+              "mnemonic": "push",
+              "operands": "ebp",
+              "bytes": "55"
+            },
+            {
+              "offset": 1,
+              "mnemonic": "mov",
+              "operands": "ebp, esp",
+              "bytes": "8bec"
+            },
+            {
+              "offset": 3,
+              "mnemonic": "sub",
+              "operands": "esp, 0x10",
+              "bytes": "83ec10"
+            },
+            {
+              "offset": 6,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f100500000000"
+            },
+            {
+              "offset": 14,
+              "mnemonic": "xorps",
+              "operands": "xmm1, xmm1",
+              "bytes": "0f57c9"
+            },
+            {
+              "offset": 17,
+              "mnemonic": "subss",
+              "operands": "xmm0, dword ptr [ebp + 0x10]",
+              "bytes": "f30f5c4510"
+            },
+            {
+              "offset": 22,
+              "mnemonic": "push",
+              "operands": "esi",
+              "bytes": "56"
+            },
+            {
+              "offset": 23,
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]",
+              "bytes": "8b7508"
+            },
+            {
+              "offset": 26,
+              "mnemonic": "comiss",
+              "operands": "xmm1, xmm0",
+              "bytes": "0f2fc8"
+            },
+            {
+              "offset": 29,
+              "mnemonic": "mov",
+              "operands": "byte ptr [esi + 0x3c4], 0",
+              "bytes": "c686c403000000"
+            },
+            {
+              "offset": 36,
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x3c0], 0x27",
+              "bytes": "c786c003000027000000"
+            },
+            {
+              "offset": 46,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp + 8], xmm0",
+              "bytes": "f30f114508"
+            },
+            {
+              "offset": 51,
+              "mnemonic": "jbe",
+              "operands": "0x42",
+              "bytes": "760d"
+            },
+            {
+              "offset": 53,
+              "mnemonic": "addss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f580500000000"
+            },
+            {
+              "offset": 61,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp + 8], xmm0",
+              "bytes": "f30f114508"
+            },
+            {
+              "offset": 66,
+              "mnemonic": "cvtps2pd",
+              "operands": "xmm0, xmm0",
+              "bytes": "0f5ac0"
+            },
+            {
+              "offset": 69,
+              "mnemonic": "sub",
+              "operands": "esp, 8",
+              "bytes": "83ec08"
+            },
+            {
+              "offset": 72,
+              "mnemonic": "movsd",
+              "operands": "qword ptr [esp], xmm0",
+              "bytes": "f20f110424"
+            },
+            {
+              "offset": 77,
+              "mnemonic": "call",
+              "operands": "0x52",
+              "bytes": "e800000000"
+            },
+            {
+              "offset": 82,
+              "mnemonic": "fstp",
+              "operands": "qword ptr [ebp - 8]",
+              "bytes": "dd5df8"
+            },
+            {
+              "offset": 85,
+              "mnemonic": "movsd",
+              "operands": "xmm0, qword ptr [ebp - 8]",
+              "bytes": "f20f1045f8"
+            },
+            {
+              "offset": 90,
+              "mnemonic": "cvtpd2ps",
+              "operands": "xmm0, xmm0",
+              "bytes": "660f5ac0"
+            },
+            {
+              "offset": 94,
+              "mnemonic": "mulss",
+              "operands": "xmm0, dword ptr [0]",
+              "bytes": "f30f590500000000"
+            },
+            {
+              "offset": 102,
+              "mnemonic": "movss",
+              "operands": "dword ptr [ebp - 4], xmm0",
+              "bytes": "f30f1145fc"
+            },
+            {
+              "offset": 107,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [ebp + 8]",
+              "bytes": "f30f104508"
+            },
+            {
+              "offset": 112,
+              "mnemonic": "cvtps2pd",
+              "operands": "xmm0, xmm0",
+              "bytes": "0f5ac0"
+            },
+            {
+              "offset": 115,
+              "mnemonic": "movsd",
+              "operands": "qword ptr [esp], xmm0",
+              "bytes": "f20f110424"
+            },
+            {
+              "offset": 120,
+              "mnemonic": "call",
+              "operands": "0x7d",
+              "bytes": "e800000000"
+            },
+            {
+              "offset": 125,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]",
+              "bytes": "8b450c"
+            },
+            {
+              "offset": 128,
+              "mnemonic": "add",
+              "operands": "esp, 8",
+              "bytes": "83c408"
+            },
+            {
+              "offset": 131,
+              "mnemonic": "movss",
+              "operands": "xmm5, dword ptr [ebp + 0x10]",
+              "bytes": "f30f106d10"
+            },
+            {
+              "offset": 136,
+              "mnemonic": "xor",
+              "operands": "edx, edx",
+              "bytes": "33d2"
+            },
+            {
+              "offset": 138,
+              "mnemonic": "movss",
+              "operands": "xmm6, dword ptr [ebp - 4]",
+              "bytes": "f30f1075fc"
+            },
+            {
+              "offset": 143,
+              "mnemonic": "xorps",
+              "operands": "xmm4, xmm4",
+              "bytes": "0f57e4"
+            },
+            {
+              "offset": 146,
+              "mnemonic": "fstp",
+              "operands": "qword ptr [ebp - 0x10]",
+              "bytes": "dd5df0"
+            },
+            {
+              "offset": 149,
+              "mnemonic": "movsd",
+              "operands": "xmm7, qword ptr [ebp - 0x10]",
+              "bytes": "f20f107df0"
+            },
+            {
+              "offset": 154,
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax]",
+              "bytes": "f30f1000"
+            },
+            {
+              "offset": 158,
+              "mnemonic": "movss",
+              "operands": "xmm1, dword ptr [eax + 4]",
+              "bytes": "f30f104804"
+            },
+            {
+              "offset": 163,
+              "mnemonic": "movss",
+              "operands": "xmm2, dword ptr [eax + 8]",
+              "bytes": "f30f105008"
+            },
+            {
+              "offset": 168,
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esi + 0x3c0]",
+              "bytes": "8b86c0030000"
+            },
+            {
+              "offset": 174,
+              "mnemonic": "cvtpd2ps",
+              "operands": "xmm7, xmm7",
+              "bytes": "660f5aff"
+            },
+            {
+              "offset": 178,
+              "mnemonic": "mulss",
+              "operands": "xmm7, dword ptr [0]",
+              "bytes": "f30f593d00000000"
+            },
+            {
+              "offset": 186,
+              "mnemonic": "nop",
+              "operands": "word ptr [eax + eax]",
+              "bytes": "660f1f440000"
+            },
+            {
+              "offset": 192,
+              "mnemonic": "lea",
+              "operands": "ecx, [eax + eax*2]",
+              "bytes": "8d0c40"
+            },
+            {
+              "offset": 195,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 0xc], xmm5",
+              "bytes": "f30f116cce0c"
+            },
+            {
+              "offset": 201,
+              "mnemonic": "test",
+              "operands": "edx, edx",
+              "bytes": "85d2"
+            },
+            {
+              "offset": 203,
+              "mnemonic": "jne",
+              "operands": "0xd2",
+              "bytes": "7505"
+            },
+            {
+              "offset": 205,
+              "mnemonic": "movaps",
+              "operands": "xmm3, xmm4",
+              "bytes": "0f28dc"
+            },
+            {
+              "offset": 208,
+              "mnemonic": "jmp",
+              "operands": "0xda",
+              "bytes": "eb08"
+            },
+            {
+              "offset": 210,
+              "mnemonic": "movss",
+              "operands": "xmm3, dword ptr [0]",
+              "bytes": "f30f101d00000000"
+            },
+            {
+              "offset": 218,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8], xmm0",
+              "bytes": "f30f1104ce"
+            },
+            {
+              "offset": 223,
+              "mnemonic": "subss",
+              "operands": "xmm0, xmm6",
+              "bytes": "f30f5cc6"
+            },
+            {
+              "offset": 227,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 4], xmm1",
+              "bytes": "f30f114cce04"
+            },
+            {
+              "offset": 233,
+              "mnemonic": "subss",
+              "operands": "xmm1, xmm4",
+              "bytes": "f30f5ccc"
+            },
+            {
+              "offset": 237,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 8], xmm2",
+              "bytes": "f30f1154ce08"
+            },
+            {
+              "offset": 243,
+              "mnemonic": "subss",
+              "operands": "xmm2, xmm7",
+              "bytes": "f30f5cd7"
+            },
+            {
+              "offset": 247,
+              "mnemonic": "movss",
+              "operands": "dword ptr [esi + ecx*8 + 0x10], xmm3",
+              "bytes": "f30f115cce10"
+            },
+            {
+              "offset": 253,
+              "mnemonic": "test",
+              "operands": "eax, eax",
+              "bytes": "85c0"
+            },
+            {
+              "offset": 255,
+              "mnemonic": "jg",
+              "operands": "0x108",
+              "bytes": "7f07"
+            },
+            {
+              "offset": 257,
+              "mnemonic": "mov",
+              "operands": "eax, 0x27",
+              "bytes": "b827000000"
+            },
+            {
+              "offset": 262,
+              "mnemonic": "jmp",
+              "operands": "0x109",
+              "bytes": "eb01"
+            },
+            {
+              "offset": 264,
+              "mnemonic": "dec",
+              "operands": "eax",
+              "bytes": "48"
+            },
+            {
+              "offset": 265,
+              "mnemonic": "inc",
+              "operands": "edx",
+              "bytes": "42"
+            },
+            {
+              "offset": 266,
+              "mnemonic": "cmp",
+              "operands": "edx, 0x28",
+              "bytes": "83fa28"
+            },
+            {
+              "offset": 269,
+              "mnemonic": "jl",
+              "operands": "0xc0",
+              "bytes": "7cb1"
+            },
+            {
+              "offset": 271,
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x3e0], 0x28",
+              "bytes": "c786e003000028000000"
+            },
+            {
+              "offset": 281,
+              "mnemonic": "pop",
+              "operands": "esi",
+              "bytes": "5e"
+            },
+            {
+              "offset": 282,
+              "mnemonic": "mov",
+              "operands": "esp, ebp",
+              "bytes": "8be5"
+            },
+            {
+              "offset": 284,
+              "mnemonic": "pop",
+              "operands": "ebp",
+              "bytes": "5d"
+            },
+            {
+              "offset": 285,
+              "mnemonic": "ret",
+              "operands": "",
+              "bytes": "c3"
+            }
+          ]
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73516124,
+          "sha256": "514aa9a66cda2d0c028200a955c82324b561fd06d6635ddcbfc4485a908dda6d",
+          "retained_path": "providers\\primary\\bsp_core.lib",
+          "members": [
+            {
+              "name": "bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+              "archive_header_offset": 21474390,
+              "bytes": 9702,
+              "sha256": "fb968422d87adcf4b7f5c143797ac8a30b7f7c3211e76fa3362712d24e47fa13",
+              "retained_path": "providers/primary/ship_ai_wake_trail.obj.archive_member",
+              "exact_retained_object": true
+            }
+          ]
+        },
+        "current_inputs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\ship_ai_wake_trail.cpp",
+            "bytes": 14999,
+            "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+            "retained_path": "providers\\primary\\inputs\\src\\ship_ai_wake_trail.cpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_wake_trail.hpp",
+            "bytes": 11203,
+            "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+            "retained_path": "providers\\primary\\inputs\\include\\bsp\\ship_ai_wake_trail.hpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_formation.hpp",
+            "bytes": 29728,
+            "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+            "retained_path": "providers\\primary\\inputs\\include\\bsp\\ship_ai_formation.hpp"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+            "bytes": 197916,
+            "sha256": "7161b9bcafeb109e933cdcfb899a4681d349df1920461cd65225d233cf6a1d21",
+            "retained_path": "providers\\primary\\inputs\\cmake\\startup.cmake"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.vcxproj",
+            "bytes": 248061,
+            "sha256": "da43735c99fe0f18b856481c117bd2d78aa32cb2973fa3d8aca05f23a8d7767a",
+            "retained_path": "providers\\primary\\inputs\\build\\win32\\bsp_core.vcxproj"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\CMakeCache.txt",
+            "bytes": 19445,
+            "sha256": "43d5646c48b94fb19905e79c6ac94a5a401abdd8139896e7f4f9ff95dfd6b8ff",
+            "retained_path": "providers\\primary\\inputs\\build\\win32\\CMakeCache.txt"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_game.exe",
+            "bytes": 5043712,
+            "sha256": "e9952963a351ade1b639f8dcc9ea97cf110b2d5d2848ae40c56e7fd7867b8343",
+            "retained_path": "providers\\primary\\inputs\\build\\win32\\Release\\bsp_game.exe"
+          }
+        ],
+        "existing_executable_trigonometric_imports": [
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "asin",
+            "iat": "103c5530"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "sin",
+            "iat": "103c5538"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "cos",
+            "iat": "103c553c"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "acos",
+            "iat": "103c5544"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_sin_precise",
+            "iat": "103c5568"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_cos_precise",
+            "iat": "103c558c"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_asin_precise",
+            "iat": "103c5594"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_libm_sse2_acos_precise",
+            "iat": "103c5598"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_CIsinh",
+            "iat": "103c55a0"
+          },
+          {
+            "dll": "api-ms-win-crt-math-l1-1-0.dll",
+            "name": "_CIcosh",
+            "iat": "103c55a8"
+          }
+        ],
+        "scope": "Existing typed host fill compiled artifact; not a native-storage or FCOS/FSIN provider for the proposed raw leaf.",
+        "existing_executable_whole_typed_fill": {
+          "address": "102b9690",
+          "bytes": 286,
+          "sha256": "4a8a89492ffa94dec56ab2bfc6e7a8a31ad98391a384d0da1707f0664f027337",
+          "hex": "558bec83ec10f30f1005fc893e100f57c9f30f5c4510568b75080f2fc8c686c403000000c786c003000027000000f30f114508760df30f580548bc3c10f30f1145080f5ac083ec08f20f110424e8f09c0e00dd5df8f20f1045f8660f5ac0f30f59054cbc3c10f30f1145fcf30f1045080f5ac0f20f110424e8cb9c0e008b450c83c408f30f106d1033d2f30f1075fc0f57e4dd5df0f20f107df0f30f1000f30f104804f30f1050088b86c0030000660f5afff30f593d4cbc3c10660f1f4400008d0c40f30f116cce0c85d275050f28dceb08f30f101d4cbc3c10f30f1104cef30f5cc6f30f114cce04f30f5cccf30f1154ce08f30f5cd7f30f115cce1085c07f07b827000000eb01484283fa287cb1c786e0030000280000005e8be55dc3",
+          "physical_complete_body_occurrences": 1,
+          "complete_coff_equal_except_seven_resolved_relocation_operands": true,
+          "resolved_relocations": [
+            {
+              "offset": 10,
+              "type": 6,
+              "symbol": "__real@3fc90fdb",
+              "resolved_address": "103e89fc",
+              "bytes": "db0fc93f",
+              "float": 1.5707963705062866,
+              "readonly": true
+            },
+            {
+              "offset": 57,
+              "type": 6,
+              "symbol": "__real@40c90fdb",
+              "resolved_address": "103cbc48",
+              "bytes": "db0fc940",
+              "float": 6.2831854820251465,
+              "readonly": true
+            },
+            {
+              "offset": 78,
+              "type": 20,
+              "symbol": "_cos",
+              "resolved_address": "103a33d2",
+              "thunk_hex": "ff253c553c10",
+              "iat": "103c553c",
+              "import": {
+                "dll": "api-ms-win-crt-math-l1-1-0.dll",
+                "name": "cos"
+              }
+            },
+            {
+              "offset": 98,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            },
+            {
+              "offset": 121,
+              "type": 20,
+              "symbol": "_sin",
+              "resolved_address": "103a33d8",
+              "thunk_hex": "ff2538553c10",
+              "iat": "103c5538",
+              "import": {
+                "dll": "api-ms-win-crt-math-l1-1-0.dll",
+                "name": "sin"
+              }
+            },
+            {
+              "offset": 182,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            },
+            {
+              "offset": 214,
+              "type": 6,
+              "symbol": "__real@42480000",
+              "resolved_address": "103cbc4c",
+              "bytes": "00004842",
+              "float": 50.0,
+              "readonly": true
+            }
+          ],
+          "scope": "Static existing executable only; no new link, load, or fixture run. This typed host fill is not the new raw native producer."
+        }
+      }
+    },
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+        "bytes": 9722,
+        "sha256": "4d78d9eb54844c4ef80735a6a38175d03819c91cbbff76e097a6922c0a0074d3",
+        "retained_path": "providers\\worker\\ship_ai_wake_trail.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 73560190,
+        "sha256": "f7ac2fb37b378058e2fbc21ede4975ac8a7a30c7dbf55fb078b8e4e576bdb456",
+        "retained_path": "providers\\worker\\bsp_core.lib"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_wake_trail.cpp",
+        "bytes": 14999,
+        "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+        "retained_path": "providers\\worker\\inputs\\src\\ship_ai_wake_trail.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_wake_trail.hpp",
+        "bytes": 11203,
+        "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+        "retained_path": "providers\\worker\\inputs\\include\\bsp\\ship_ai_wake_trail.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_formation.hpp",
+        "bytes": 29728,
+        "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+        "retained_path": "providers\\worker\\inputs\\include\\bsp\\ship_ai_formation.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\cmake\\startup.cmake",
+        "bytes": 196382,
+        "sha256": "6a77453a63e84781488f214332c47e6699f176a325d3d13fece4a7074d51a41f",
+        "retained_path": "providers\\worker\\inputs\\cmake\\startup.cmake"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.vcxproj",
+        "bytes": 292021,
+        "sha256": "5f6778f724401753086eaa4cda5017791881879fd8dad505856f9a4a39498dca",
+        "retained_path": "providers\\worker\\inputs\\build\\win32\\bsp_core.vcxproj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\CMakeCache.txt",
+        "bytes": 19621,
+        "sha256": "2e74ccebd20f9c69f095c3511b17757ffc76cab6a72bb19b8465893f155046bf",
+        "retained_path": "providers\\worker\\inputs\\build\\win32\\CMakeCache.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5043712,
+        "sha256": "45fff3a42c7f2d8ff5716752ca888900384e0b966ccdb5780a344a683a184eec",
+        "retained_path": "providers\\worker\\inputs\\build\\win32\\Release\\bsp_game.exe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+        "bytes": 9702,
+        "sha256": "fb968422d87adcf4b7f5c143797ac8a30b7f7c3211e76fa3362712d24e47fa13",
+        "retained_path": "providers\\primary\\ship_ai_wake_trail.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 73516124,
+        "sha256": "514aa9a66cda2d0c028200a955c82324b561fd06d6635ddcbfc4485a908dda6d",
+        "retained_path": "providers\\primary\\bsp_core.lib"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\ship_ai_wake_trail.cpp",
+        "bytes": 14999,
+        "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+        "retained_path": "providers\\primary\\inputs\\src\\ship_ai_wake_trail.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_wake_trail.hpp",
+        "bytes": 11203,
+        "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+        "retained_path": "providers\\primary\\inputs\\include\\bsp\\ship_ai_wake_trail.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_formation.hpp",
+        "bytes": 29728,
+        "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+        "retained_path": "providers\\primary\\inputs\\include\\bsp\\ship_ai_formation.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+        "bytes": 197916,
+        "sha256": "7161b9bcafeb109e933cdcfb899a4681d349df1920461cd65225d233cf6a1d21",
+        "retained_path": "providers\\primary\\inputs\\cmake\\startup.cmake"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.vcxproj",
+        "bytes": 248061,
+        "sha256": "da43735c99fe0f18b856481c117bd2d78aa32cb2973fa3d8aca05f23a8d7767a",
+        "retained_path": "providers\\primary\\inputs\\build\\win32\\bsp_core.vcxproj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\CMakeCache.txt",
+        "bytes": 19445,
+        "sha256": "43d5646c48b94fb19905e79c6ac94a5a401abdd8139896e7f4f9ff95dfd6b8ff",
+        "retained_path": "providers\\primary\\inputs\\build\\win32\\CMakeCache.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5043712,
+        "sha256": "e9952963a351ade1b639f8dcc9ea97cf110b2d5d2848ae40c56e7fd7867b8343",
+        "retained_path": "providers\\primary\\inputs\\build\\win32\\Release\\bsp_game.exe"
+      }
+    ],
+    "worker_primary_whole_typed_fill_code_relocations_and_three_Source_files_equal": true,
+    "build_or_runtime_executed": false
+  },
+  "provider_rechecks_at_finalization": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+      "captured_sha256": "4d78d9eb54844c4ef80735a6a38175d03819c91cbbff76e097a6922c0a0074d3",
+      "current_sha256": "4d78d9eb54844c4ef80735a6a38175d03819c91cbbff76e097a6922c0a0074d3",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+      "captured_sha256": "f7ac2fb37b378058e2fbc21ede4975ac8a7a30c7dbf55fb078b8e4e576bdb456",
+      "current_sha256": "f7ac2fb37b378058e2fbc21ede4975ac8a7a30c7dbf55fb078b8e4e576bdb456",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_wake_trail.cpp",
+      "captured_sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "current_sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_wake_trail.hpp",
+      "captured_sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "current_sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_formation.hpp",
+      "captured_sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "current_sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\cmake\\startup.cmake",
+      "captured_sha256": "6a77453a63e84781488f214332c47e6699f176a325d3d13fece4a7074d51a41f",
+      "current_sha256": "6a77453a63e84781488f214332c47e6699f176a325d3d13fece4a7074d51a41f",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.vcxproj",
+      "captured_sha256": "5f6778f724401753086eaa4cda5017791881879fd8dad505856f9a4a39498dca",
+      "current_sha256": "5f6778f724401753086eaa4cda5017791881879fd8dad505856f9a4a39498dca",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\CMakeCache.txt",
+      "captured_sha256": "2e74ccebd20f9c69f095c3511b17757ffc76cab6a72bb19b8465893f155046bf",
+      "current_sha256": "2e74ccebd20f9c69f095c3511b17757ffc76cab6a72bb19b8465893f155046bf",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_game.exe",
+      "captured_sha256": "45fff3a42c7f2d8ff5716752ca888900384e0b966ccdb5780a344a683a184eec",
+      "current_sha256": "45fff3a42c7f2d8ff5716752ca888900384e0b966ccdb5780a344a683a184eec",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+      "captured_sha256": "fb968422d87adcf4b7f5c143797ac8a30b7f7c3211e76fa3362712d24e47fa13",
+      "current_sha256": "fb968422d87adcf4b7f5c143797ac8a30b7f7c3211e76fa3362712d24e47fa13",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "captured_sha256": "514aa9a66cda2d0c028200a955c82324b561fd06d6635ddcbfc4485a908dda6d",
+      "current_sha256": "514aa9a66cda2d0c028200a955c82324b561fd06d6635ddcbfc4485a908dda6d",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\ship_ai_wake_trail.cpp",
+      "captured_sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "current_sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_wake_trail.hpp",
+      "captured_sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "current_sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\ship_ai_formation.hpp",
+      "captured_sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "current_sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+      "captured_sha256": "7161b9bcafeb109e933cdcfb899a4681d349df1920461cd65225d233cf6a1d21",
+      "current_sha256": "7161b9bcafeb109e933cdcfb899a4681d349df1920461cd65225d233cf6a1d21",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.vcxproj",
+      "captured_sha256": "da43735c99fe0f18b856481c117bd2d78aa32cb2973fa3d8aca05f23a8d7767a",
+      "current_sha256": "da43735c99fe0f18b856481c117bd2d78aa32cb2973fa3d8aca05f23a8d7767a",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\CMakeCache.txt",
+      "captured_sha256": "43d5646c48b94fb19905e79c6ac94a5a401abdd8139896e7f4f9ff95dfd6b8ff",
+      "current_sha256": "43d5646c48b94fb19905e79c6ac94a5a401abdd8139896e7f4f9ff95dfd6b8ff",
+      "still_current": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_game.exe",
+      "captured_sha256": "e9952963a351ade1b639f8dcc9ea97cf110b2d5d2848ae40c56e7fd7867b8343",
+      "current_sha256": "e9952963a351ade1b639f8dcc9ea97cf110b2d5d2848ae40c56e7fd7867b8343",
+      "still_current": true
+    }
+  ],
+  "source_input_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_wake_trail.cpp",
+      "repository_path": "src/ship_ai_wake_trail.cpp",
+      "bytes": 14999,
+      "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "retained_path": "inputs\\src\\ship_ai_wake_trail.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_wake_trail.hpp",
+      "repository_path": "include/bsp/ship_ai_wake_trail.hpp",
+      "bytes": 11203,
+      "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "retained_path": "inputs\\include\\bsp\\ship_ai_wake_trail.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_formation.cpp",
+      "repository_path": "src/ship_ai_formation.cpp",
+      "bytes": 22133,
+      "sha256": "6d41479307e6d7cd77a9ddd9e035ba838bcdde98be56b7115194412446d08981",
+      "retained_path": "inputs\\src\\ship_ai_formation.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_formation.hpp",
+      "repository_path": "include/bsp/ship_ai_formation.hpp",
+      "bytes": 29728,
+      "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "retained_path": "inputs\\include\\bsp\\ship_ai_formation.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_unit_wake_decomposition.cpp",
+      "repository_path": "src/native_unit_wake_decomposition.cpp",
+      "bytes": 47564,
+      "sha256": "3460d662c2f07cb83aff0a71899e49b199ea2d8f7a5b9dfe9499d59dd8236770",
+      "retained_path": "inputs\\src\\native_unit_wake_decomposition.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_unit_wake_decomposition.hpp",
+      "repository_path": "include/bsp/native_unit_wake_decomposition.hpp",
+      "bytes": 954,
+      "sha256": "7ee60813bb5c02290f4ab13e1274a43f778c0a35c4415cc90faefe5a6683fbce",
+      "retained_path": "inputs\\include\\bsp\\native_unit_wake_decomposition.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\docs\\CC12_NATIVE_WAKE_DECOMPOSITION.md",
+      "repository_path": "docs/CC12_NATIVE_WAKE_DECOMPOSITION.md",
+      "bytes": 6343,
+      "sha256": "f61602d276cae5517cd2940d9ebaab6fdaa8cd3c668d6c168641ed9b7f519fe1",
+      "retained_path": "inputs\\docs\\CC12_NATIVE_WAKE_DECOMPOSITION.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\reports\\cc12_native_wake_decomposition.json",
+      "repository_path": "reports/cc12_native_wake_decomposition.json",
+      "bytes": 155654,
+      "sha256": "00b40fda88aa39641b16349744389ffd8a108cfe1ac6a9fa543d3e371197677e",
+      "retained_path": "inputs\\reports\\cc12_native_wake_decomposition.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\cmake\\startup.cmake",
+      "repository_path": "cmake/startup.cmake",
+      "bytes": 196382,
+      "sha256": "6a77453a63e84781488f214332c47e6699f176a325d3d13fece4a7074d51a41f",
+      "retained_path": "inputs\\cmake\\startup.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\CMakeLists.txt",
+      "repository_path": "CMakeLists.txt",
+      "bytes": 15689,
+      "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03",
+      "retained_path": "inputs\\CMakeLists.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\scripts\\build.ps1",
+      "repository_path": "scripts/build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "retained_path": "inputs\\scripts\\build.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\config\\target.json",
+      "repository_path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "retained_path": "inputs\\config\\target.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\tools\\bsp.py",
+      "repository_path": "tools/bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "retained_path": "inputs\\tools\\bsp.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\tools\\ghidra_export.py",
+      "repository_path": "tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "retained_path": "inputs\\tools\\ghidra_export.py"
+    }
+  ],
+  "caller_xrefs": {
+    "raw_capture": "pre/00810020_xrefs.txt",
+    "identities": [
+      {
+        "callsite": "0081563A",
+        "caller": "00815600"
+      },
+      {
+        "callsite": "00819381",
+        "caller": "00818EA0"
+      },
+      {
+        "callsite": "008203F7",
+        "caller": "0081F980"
+      }
+    ],
+    "expanded": false,
+    "scope": "Caller identity only; existing annotations do not establish current owner/class/application wiring."
+  },
+  "readiness": {
+    "ready": true,
+    "bounded_target": "Complete raw in-place wake producer 00810020",
+    "first_missing_leaf_contract": null,
+    "unready_external_helpers": [],
+    "direct_calls": 0,
+    "necessary_external_global_owners": [],
+    "no_settings_owner_addresses_expanded": true,
+    "proposed_public_interface": "void bsp::fill_native_unit_wake_00810020(void* actual_wake, const float* position, float heading)",
+    "proposed_files": [
+      "include/bsp/native_unit_wake_fill.hpp",
+      "src/native_unit_wake_fill.cpp",
+      "docs/CC12_NATIVE_WAKE_FILL.md",
+      "reports/cc12_native_wake_fill.json"
+    ],
+    "implementation_constraints": [
+      "ordinary C++ public interface; private complete MSVC Win32 assembly kernel",
+      "preserve all85 original instructions and original raw ECX/stack arguments",
+      "four immutable genuine Original payloads only",
+      "explicit FMUL ST1,ST0 at0081008C",
+      "actual addressed in-place writes and aliased input read order",
+      "preserve all yaw/residual/prefix/padding preimage bytes",
+      "no typed host ring view/callback/appends/written/validity/global roles",
+      "no CRT trig substitution or idealized C++ angle arithmetic",
+      "no entity constructor/map/settings/currentglobalowner reconstruction"
+    ],
+    "next_validation": "Before any fresh comparison, full Original/COFF/unique linked body and4 resolved operands with physical input retention. Small focused all40-record+preserved-preimage comparison and metadata-overlapping input case. No old fixture replay; exact next test count remains Root implementation scope."
+  },
+  "exclusions": [
+    "Source implementation",
+    "new build or runtime execution",
+    "permanent tests",
+    "old fixture replay",
+    "Ghidra annotations",
+    "shared ledger mutation",
+    "constructor/owner/settings/global role claims",
+    "Original public ABI execution proof",
+    "startup or gameplay proof"
+  ],
+  "evidence_archive": {
+    "status": "retained_and_all_decompressed_artifact_hashes_reverified",
+    "path": "local\\cc12_native_wake_fill_readiness_evidence.zip",
+    "bytes": 35533520,
+    "sha256": "953aecd26baec8d725f799b2bb9664e27287a57124e618d0af08415f380c1f35",
+    "entries": 67,
+    "manifest_sha256": "31efe45b28f04b9550182a4c5e5be7a8e19885bd6c066db8d35b48e3c399e477",
+    "recursion_boundary": "Bundle contains report_before_archive_digest.json; final tracked report adds ZIP digest."
+  }
+}
