@@ -58,7 +58,7 @@ namespace game { class GameSoundRuntime; }
 // Other admitted objects carry these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
+// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C0, D190C4, D19284, CF81CC, D68B94,
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D63128,
 // D63084, D63094, D630A4, D630B4, D630C4, D630D4, CFEA34, CFEA44, D62B64, D5B56C, D68D50, CE752C, D5E60C, CE7550, D5E15C or CE44DC. D0DA64
 // requires its actual publication cell; registry and sound profiles require
@@ -71,6 +71,9 @@ namespace game { class GameSoundRuntime; }
 // D190C4 uses the actual process-static F899E8 publication directly. Owners
 // reconstructed against a different publication cell are outside that profile
 // binding; no new private pending-lock context or automatic teardown is added.
+// D190C0/D19284 likewise dispatch to the complete scalars using the permanent
+// NativeEntityRegistryProcess E4/FC cells. These distinct cells share the same
+// canonical game manager for construction; dispatch never creates a manager.
 // CE7548 likewise uses the actual process F878FC mission-entity lock cell;
 // its only slot is 004C4890. The adjacent CE754C is a different owner profile.
 // Profile identity is read when popped, not cached when registered. An unknown

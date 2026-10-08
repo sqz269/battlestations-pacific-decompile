@@ -85,3 +85,5 @@ NativePendingEntityLockOwner* get_process_native_pending_entity_lock_009248d0(
         manager_publication, process_native_pending_entity_lock_00f899e8());
 }
 } // namespace bsp
+
+#include "native_entity_registry_lifetime.inc"
