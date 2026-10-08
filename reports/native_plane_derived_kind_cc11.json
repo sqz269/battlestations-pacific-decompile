@@ -1761,5 +1761,127 @@
     "full_main_build": "root-owned, not run by worker",
     "gameplay": "not run",
     "report_call_verifier": "PASS:0 call rows/0 failed (no call-site rows exist); eight whole-body zero-CALL rows are separately verified."
-  }
+  },
+  "primary_integration": {
+    "source_revision": "eb7b2bd1210ea8eeea3971a0ac588506bfbb1a02",
+    "worker_revision": "a488a0e497d7c05b2cf4277b934cb98d0da07116",
+    "full_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_plane_derived_kind_integrated_build.log",
+    "current_core_sha256": "040d04351312176026dabb7fc4342da691827e5d6a470d000a002cb0b72564ff",
+    "independent_component_manifest": "local/cc11_plane_derived_kind_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "affd68e19cb711214c1a3edf7b3d565c0a150eab99be5e6ba6c389f28efcfec5",
+    "component_revision": "48d498becb086f8bd3edfb72428b62a5d40b3c0e",
+    "fresh_translation_units": 4,
+    "actual_project_headers": 29,
+    "actual_host_headers": 186,
+    "actual_searched_libraries": 6,
+    "selected_tools": 4,
+    "stable_worker_paths": 276,
+    "source_bookend_stable": true,
+    "whole_Source_COFF": [
+      {
+        "native_entry": "007d77f0",
+        "symbol": "?native_plane_derived_is_kind_007d77f0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "e171537216cbb4c9d0fc1efd10ebe982dd8287bf5b3343d071acff214ebb3568",
+        "relocations": [],
+        "linked_map_va": "00401080",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "009535c0",
+        "symbol": "?native_plane_derived_is_kind_009535c0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "d8aaffa4a01d6ab2e813049c1eda7df48ee7d94423be71ef7cff89935d7b4e71",
+        "relocations": [],
+        "linked_map_va": "004011c0",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "00953530",
+        "symbol": "?native_plane_derived_is_kind_00953530@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "ab42ceb58cd09c6a70a01f520b5010447798264cbe2cf9f9b89adf7e9f6040ad",
+        "relocations": [],
+        "linked_map_va": "00401180",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "007dda80",
+        "symbol": "?native_plane_derived_is_kind_007dda80@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "416922dd90860245349376f409e0aa809bd3f8a8a1190c9f5d1487f9bd548de3",
+        "relocations": [],
+        "linked_map_va": "004010c0",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "0074e480",
+        "symbol": "?native_plane_derived_is_kind_0074e480@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "a3752a5e142c27781a56a34f0084c00b1ee3e1ad2a9653237c62fb23c96255c5",
+        "relocations": [],
+        "linked_map_va": "00401000",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "0084c9f0",
+        "symbol": "?native_plane_derived_is_kind_0084c9f0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 64,
+        "instruction_count": 23,
+        "sha256": "33e2e1476898c7e9ac3a581da6336055a771f18a760fbc0496115f147e8ae490",
+        "relocations": [],
+        "linked_map_va": "00401100",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "0074e4e0",
+        "symbol": "?native_plane_derived_is_kind_0074e4e0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 64,
+        "instruction_count": 23,
+        "sha256": "4c50bd948a1b0d3a588f50014728ca61fad13de94e1699bda2856283634d0328",
+        "relocations": [],
+        "linked_map_va": "00401040",
+        "whole_original_COFF_linked_bytes_equal": true
+      },
+      {
+        "native_entry": "009534a0",
+        "symbol": "?native_plane_derived_is_kind_009534a0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 59,
+        "instruction_count": 21,
+        "sha256": "d7cfc3d95ad214b5eee00c9799d631eead7a69c63e03bbd68736319db7699b55",
+        "relocations": [],
+        "linked_map_va": "00401140",
+        "whole_original_COFF_linked_bytes_equal": true
+      }
+    ],
+    "native_call_rows": 0,
+    "native_call_failures": 0,
+    "zero_CALL_proof": "Eight whole482B172 exact-body disassemblies and Original/COFF/linked equal bytes, not generic empty call-verifier rows.",
+    "execution_output": "identity squadron=009BF104 published_first=009BF504 selected_receiver=009BF504 actual_C4=009BF5C8\ntarget 007d77f0 original_bytes=59 fixed=7 PASS\ntarget 009535c0 original_bytes=59 fixed=7 PASS\ntarget 00953530 original_bytes=59 fixed=7 PASS\ntarget 007dda80 original_bytes=59 fixed=7 PASS\ntarget 0074e480 original_bytes=59 fixed=7 PASS\ntarget 0084c9f0 original_bytes=64 fixed=8 PASS\ntarget 0074e4e0 original_bytes=64 fixed=8 PASS\ntarget 009534a0 original_bytes=59 fixed=7 PASS\n653 checks, 0 failures; 90 queries, 180 backend observations; 1 Source insertion; 8 targets\n",
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "asInvoker": true,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "current_link_inputs": {},
+    "qualification": "Eight DISTINCT complete raw derived-plane kind bodies482B172 match every Original PE/live, fresh Source COFF and linked text byte with zeroCALL/global/relocations. One independent four-current-TU653-check/90-query/180-observation family reaches all eight explicit leaves through genuine current SourceSortedInsert7ED0D0 and SourceFirstPlane7ED010 using SAME actual published plane/C4 and pure checked address aliases. Fixed ordered words precede sole fresh actual+C4; fullEAX0/1 andRET4 preserved. Stable actual aligned live backing/extent/lifetime/disjointness are caller preconditions. Unchanged prior654-check manifest resolves changed probe to exact historical snapshot; rejected C4335 syntax attempt retained; no old family replay/new tracked tests. Numeric Source names retain provisional descriptor11h/12h/17h. Profile words are uncallableDATA. Original planeCtor/classvft/lifetime/arena/privateEH/InitAll/virtualrouting/groupSpeedDetach/world/game remain external.",
+    "raw_leaf_ABI_verified": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "saved_prior_annotations": "local/ghidra-annotations-20261008T023158Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_plane_derived_kind_snapshot.log",
+    "saved_program": "/battlestationspacific.exe",
+    "saved_project": "C:/Users/sqz269/bsp.gpr"
+  },
+  "primary_source_status": "eight complete raw bodies integrated; independent current producer/getter fixture and full Win32/all3 CTests PASS; enclosing class/world/game qualified"
 }
