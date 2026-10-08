@@ -85,7 +85,9 @@ public:
     void factory_tail(VfsStartupState&, bool cached_load);
     void phase6(VfsStartupState&);
     bool ready() const noexcept { return core_ready_; }
-    bool requires_process_retention() const noexcept { return native_operation_failed_; }
+    bool requires_process_retention() const noexcept {
+        return native_operation_failed_ || title_fileblock_ != nullptr;
+    }
     std::uint32_t failure_site() const noexcept;
     VfsMountContext& context() noexcept { return consumer_context_; }
     // Unused by the native dispatch, retained only for legacy parser signatures.
@@ -97,6 +99,10 @@ public:
     std::vector<std::string> enumerate(const std::string&, const std::string&, std::uint32_t) override;
     std::array<std::uint32_t, 5> file_date(const std::string&) override;
     void pump_pending();
+    // The 004C9A70 normal pair. An open or interrupted frame is retained until
+    // explicit normal close; no destructor replays native scope cleanup.
+    void open_title_fileblock(const char* label);
+    void close_title_fileblock();
     GameVfsProbeResult resolve_and_read(const std::string&);
     const GameVfsProbeResult& probe(const std::string&);
     const std::vector<GameVfsProbeResult>& probes() const noexcept { return probes_; }
@@ -149,6 +155,8 @@ private:
     std::vector<GameMountRecord> mounts_;
     std::vector<GameVfsProbeResult> probes_;
     std::unique_ptr<GameHardwareProbe> hardware_probe_;
+    struct TitleFileBlock;
+    std::unique_ptr<TitleFileBlock> title_fileblock_;
 };
 
 // Settings startup over the retained game state, mounted catalog and recovered

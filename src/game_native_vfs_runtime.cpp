@@ -8,6 +8,9 @@
 #include "bsp/native_mpak_storage_services.hpp"
 #include "bsp/native_mpkg_runtime.hpp"
 #include "bsp/native_pak_registry.hpp"
+#include "bsp/native_pak_registry_block_callbacks.hpp"
+#include "bsp/native_vfs_fileblock_scope.hpp"
+#include "bsp/native_vfs_unmount_name.hpp"
 #include "bsp/native_physical_enumeration.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_provider.hpp"
@@ -207,6 +210,11 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
     bool core_registered{};
     bool archive_tail_registered{};
     bool retired{};
+    bool archive_cached_load{};
+    NativeVfsUnmountNameContext unmount_context;
+    NativePakRegistryBlockContext pak_block_context;
+    NativePakRegistryFileBlockObserverDispatch block_observers;
+    NativeVfsFileBlockScopeContext block_scopes;
 
     explicit Impl(const GameNativeVfsRuntimeInputs& source)
         : inputs(source),
@@ -289,7 +297,16 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
               required(inputs.data, 0x00d6846c, 12)},
           package_scan_context{inputs.owners.vfs_publication_0109ceec(),
               inputs.owners.strings(), inputs.invalid_parameters,
-              enumeration_context, mount_context} {
+              enumeration_context, mount_context},
+          unmount_context{canonicalizer, inputs.invalid_parameters, bindings,
+              static_cast<const char*>(required(inputs.data, 0x00ce7898, 2))},
+          pak_block_context{inputs.owners.vfs_publication_0109ceec(),
+              name_resolution_context, mount_context, unmount_context,
+              static_cast<const char*>(required(inputs.data, 0x00ce3a70, 2))},
+          block_observers(pak_block_context),
+          block_scopes{inputs.owners.strings(), inputs.invalid_parameters,
+              block_observers, inputs.actual_empty_name_0109cef0,
+              required(inputs.data, 0x00ce3a0c, 1)} {
         if (!inputs.actual_vfs_storage_a0 || !inputs.lowercase_00bf9611 ||
             !inputs.actual_mpkg_xor_key_00e144f0 ||
             !inputs.actual_mpak_null_pattern_00e17bf0 ||
@@ -399,6 +416,7 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         if (!create_shared_lock_00bb40b0(published, *lock))
             throw std::runtime_error("Cannot create actual MPAK registry lock");
         mpak_lock_010904e0 = published;
+        archive_cached_load = cached_load;
         archive_tail_registered = true;
     }
 };
@@ -435,6 +453,28 @@ GameNativeVfsRawServices GameNativeVfsRuntime::borrow_raw_services() noexcept {
         impl_->name_resolution_context, impl_->date_context, impl_->open, impl_->conversion,
         impl_->inputs.owners.strings(), impl_->inputs.retained_memory,
         impl_->enumeration_context, impl_->inputs.invalid_parameters};
+}
+NativeVfsFileBlockScopeContext& GameNativeVfsRuntime::borrow_fileblock_scopes() {
+    auto& p = *impl_;
+    if (!p.core_registered || !p.archive_tail_registered || p.retired)
+        throw std::logic_error("Native FileBlock requires the completed VFS archive tail");
+    void* const manager = p.inputs.owners.vfs_publication_0109ceec();
+    if (!manager || manager != p.inputs.actual_vfs_storage_a0)
+        throw std::logic_error("Native FileBlock publication is not the retained VFS owner");
+    void* const registry = p.pak_registry_010904d8;
+    if (!registry || word(manager, 0x88) != reinterpret_cast<std::uintptr_t>(registry) ||
+            word(registry) != 0x00d64190 ||
+            p.mpak_lock_010904e0 != &p.mpak_lock_storage_ ||
+            *reinterpret_cast<const volatile std::uint8_t*>(
+                static_cast<const std::byte*>(manager) + 0x78) !=
+                    static_cast<std::uint8_t>(p.archive_cached_load))
+        throw std::logic_error("Native FileBlock registry/cache domain is not the produced archive tail");
+    // This is the actual verified mapped table that BE0980/BDC9B0 read, not
+    // a host replacement table or a numerical identity used as callable code.
+    const void* const table = required(p.inputs.data, 0x00d64190, 0x10);
+    if (word(table, 8) != 0x00bb5770 || word(table, 0x0c) != 0x00bb5910)
+        throw std::logic_error("Native FileBlock observer entries differ from the supported image");
+    return p.block_scopes;
 }
 void GameNativeVfsRuntime::construct_and_register_core() {
     impl_->register_core();

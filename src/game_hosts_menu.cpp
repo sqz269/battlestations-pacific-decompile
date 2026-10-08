@@ -10,6 +10,7 @@
 #include "bsp/frontend_states.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_hud.hpp"
@@ -173,9 +174,10 @@ struct GameMenuHost::Impl {
     // --- milestone 2e, the scripted mission selection -----------------------
     std::unique_ptr<GameMissionHost> mission;
     bool mission_running{false};
+    GameVfsHost& vfs; // Append the existing borrow without moving older fields.
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
-        GameSingletonHost& singletons, long press_start_frame_in);
+        GameSingletonHost& singletons, long press_start_frame_in, GameVfsHost& vfs_in);
 
     MenuScreen* screen_at(int slot);
     // The executable's record of one registry slot. `external` is the object
@@ -681,11 +683,10 @@ public:
         : owner_(owner), layouts_(layouts), handover_(handover), commit_(commit) {}
 
     void open_named_block(const char* label) override {
-        owner_.log.unimplemented("TitleInit::open_named_block", "00be0a30");
-        owner_.log.notef("title init scope %s", label);
+        owner_.vfs.open_title_fileblock(label);
     }
     void close_named_block() override {
-        owner_.log.unimplemented("TitleInit::close_named_block", "00bdcb30");
+        owner_.vfs.close_title_fileblock();
     }
     void reset_player_profile() override {
         owner_.log.unimplemented("TitleInit::reset_player_profile", "007fdb20");
@@ -1503,10 +1504,11 @@ private:
 // ---------------------------------------------------------------------------
 
 GameMenuHost::Impl::Impl(GameHostLog& log_in, GameFrontendHost& frontend_in,
-    GameStateSlot& state_in, GameSingletonHost& singletons_in, long press_start_frame_in)
+    GameStateSlot& state_in, GameSingletonHost& singletons_in, long press_start_frame_in,
+    GameVfsHost& vfs_in)
     : log(log_in), frontend(frontend_in), state(state_in),
       press_start_frame(press_start_frame_in),
-      singletons(singletons_in) {
+      singletons(singletons_in), vfs(vfs_in) {
     summary.press_start_frame = press_start_frame_in;
     world.title = nullptr;
     // The press-start action record is enabled so 004c43c0's own gate at
@@ -1598,7 +1600,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     float order_throttle, float order_rudder, float mission_frame_seconds,
     std::string trajectory_csv, std::string order_command, std::string order_command_target,
     float order_speed, bool order_speed_set)
-    : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame)) {
+    : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame, vfs)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
