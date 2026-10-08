@@ -31382,8 +31382,8 @@
     },
     {
       "id": "cc12_scene_property_record_type0_storage",
-      "done": false,
-      "state": "ready bounded whole45B14 raw partial-storage primitive;37 written19 untouched; native class/heap/clear remain qualified",
+      "done": true,
+      "state": "complete whole45B14 raw partial-storage Source integrated; independent complementary3TU fixture and full Win32/all3 CTests PASS; native ownership/class/world/game qualified",
       "contract": {
         "hypothesis_name": "BSP_ScenePropertyRecord_ConstructType0",
         "whole": {
@@ -31615,7 +31615,795 @@
         "src/native_scene_property_record_type0_storage.cpp",
         "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE0_STORAGE_CC12.md",
         "reports/native_scene_property_record_type0_storage_cc12.json"
+      ],
+      "primary_integration": {
+        "source_revision": "709e2098d425ebd989d30a53eebd87d920bf05f3",
+        "build_source_revision": "709e2098d425ebd989d30a53eebd87d920bf05f3",
+        "worker_commit": "570b1418882d24e567e9b98659aa93bdb09c0a65",
+        "full_MSVC_Win32_build": "PASS",
+        "existing_CTests": "3/3 PASS",
+        "build_log": "local/cc12_property_record_type0_integrated_build_709e2098d.log",
+        "build_log_sha256": "509ed35c2c5960ece53ba7324a3b1e2d6e6dd7012553b4fa6d0332f496084d15",
+        "core_context_sha256": "0225c6fcfa0834cb73c274bed551679305fb252db0e51ac0e523e6d2d2fb29ae",
+        "independent_component_family": "local/cc12_property_record_type0_primary/run01",
+        "independent_receipt_sha256": "65f439c54ef0da89c212cee06fc0f71659f5b3a4120eb40ac87f3addf22dee3c",
+        "independent_artifact_manifest_sha256": "282eceb090ecc610f0559b5e166caa7c5891b0a4a0bddea3d37b6e7708da09c0",
+        "independent_component_manifest_sha256": "d11d0c69510dd71fc6482f251ffbddae357a5f6c54f8f5f7cd4c0774336e078d",
+        "independent_static_gate_sha256": "8f2f4e986cef4e24f77c8a6a017e6bffc72fd78825771b567caa36bc08bf7142",
+        "independent_observed_sha256": "ee910c31727d0326489a0051398f290aa723bca7ae740246edd44210c76ee537",
+        "fresh_translation_units": 3,
+        "BSP_archives_linked": 0,
+        "worker_objects_linked": 0,
+        "new_tracked_tests": 0,
+        "complementary_fixture_inputs": {
+          "Source": {
+            "value": "9ABCDEF0",
+            "DF": 1,
+            "poison": "B6"
+          },
+          "Original": {
+            "value": "12345678",
+            "DF": 0,
+            "poison": "72"
+          }
+        },
+        "original_raw_calls": 1,
+        "Source_raw_calls": 1,
+        "raw_entry_ABI_checked": true,
+        "original_class_ABI_compatible": false,
+        "game_validated": false,
+        "preserved_artifact_counts": {
+          "historical6209": 6209,
+          "prior341": 341,
+          "prior_array_consumed_inputs": 193,
+          "prior_array_frozen_supports": 3,
+          "audit_sealed_inputs": 23,
+          "old_attempts_immutable": 585,
+          "prior_frozen_Core_context": 2,
+          "accepted_worker_run04": 282,
+          "accepted_primary_run01": 282,
+          "current_Source_readonly_context": 10,
+          "readiness_audit": 182,
+          "accepted_type0_worker_run03": 300
+        },
+        "qualified_current_heap": {
+          "utc": "2026-10-08T07:48:43.5929974Z",
+          "process_bits": 32,
+          "actual_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "pinned_physical_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "same_physical_file_identity": true,
+          "volume_serial": 3906787040,
+          "file_index_high": 327680,
+          "file_index_low": 2895862,
+          "bytes_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "machine": "014C",
+          "optional_header_magic": "010B",
+          "exports": [
+            {
+              "name": "malloc",
+              "address": "0x767D0120",
+              "owner_is_ucrt": true
+            },
+            {
+              "name": "free",
+              "address": "0x767D00A0",
+              "owner_is_ucrt": true
+            }
+          ],
+          "BSP_allocations_or_constructors_executed": false
+        },
+        "old_families_replayed": false,
+        "qualification": "Whole raw supplied-storage initializer [008EF140,008EF16D), 45 bytes/14 instructions, zero CALLs/relocations; literal Original=Source COFF=unique linked body. Physical entry ECX is fresh unowned writable 56-byte root; one DWORD value at entry ESP+4; unused EDX fastcall padding formal; EAX root, ECX zero, EDX value, RET4. It writes 37 bytes and preserves 19, including exact native CE89D4 phase identity bits, tag0/value+C, owner+30 and ordinal+34 zero. Value is not owner. Native phase slot is not Source dispatch/class admission. Independent fresh three-TU main fixture swaps Source/Original value and DF cases and changes root poison; one Source and one unchanged RX Original execution. Complete byte, caller ABI and actual current malloc/free IAT/export/module/I386 same-physical-file gates precede allocations/construction. Full 56-byte results, other live root, external capture/stack canaries, registers, defined XOR flags and preserved DF/ES pass. Current canonical heap only; no adjacent allocation guard proof, private original CRT/EH, node pool, destructor, owning clear/insertion, clone whole body, class/world or game admission. Old families remain unchanged and are never replayed; no BSP archives or worker objects linked, no new tracked tests."
+      }
+    },
+    {
+      "id": "cc12_group_membership_producer_readiness",
+      "done": true,
+      "state": "actual membership producer/caller and observer Source correction audited; whole producer remains unready; Source0",
+      "function_addresses": [
+        "0070ef30",
+        "0077f940"
+      ],
+      "output_files": [
+        "docs/CC12_GROUP_MEMBERSHIP_PRODUCER_READINESS.md",
+        "reports/cc12_group_membership_producer_readiness.json",
+        "docs/CC12_GROUP_MEMBER_ADMISSION_AUDIT.md"
+      ],
+      "new_Source_bodies": 0,
+      "ready_count": 0,
+      "primary_review": {
+        "receipt_hash_verified": true,
+        "all_sealed_artifacts_unchanged": true,
+        "current_observer_Source_header_hashes_verified": true,
+        "Source_admission": false,
+        "game_validated": false
+      },
+      "worker_receipt_sha256": "2d95dcd52c2a412e70d59d7cd440bb20c719c62cd7184c47e39cfb3a32064650",
+      "worker_manifest_sha256": "42638f20266485497fd0b32bf8343d9c90c0ff62c6ed92429ed58b13e07926fc",
+      "unready_contracts": [
+        "0070ED30 actual whole slot production",
+        "0070DA00 member profile/class tuning",
+        "0070DB20 actual group factory/allocation/publication",
+        "00424C40 actual gameplay settings singleton",
+        "0077BD70 detach and lifecycle",
+        "0077F940 dynamic +114h/+58h post-join dispatch",
+        "0070DAB0 raw profile to callable original group ownership"
       ]
+    },
+    {
+      "id": "cc12_reproducible_startup",
+      "worker": "primary_integrator",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [],
+      "output_files": [
+        "scripts/run.ps1",
+        "tools/prepare_xlive_runtime.py",
+        "docs/CC12_REPRODUCIBLE_STARTUP.md",
+        "reports/cc12_reproducible_startup.json",
+        "docs/CC12_STARTUP_SOUND_BOUNDARY.md",
+        "reports/cc12_startup_sound_boundary.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "finite_source_title_startup_passed_genuine_private_sdk_launcher_integrated_gameplay_not_validated",
+      "worker_commit": "32094cc2e",
+      "audit_commit": "57e33064d9d7df6cbe1081d1d39b7af053ae813c",
+      "coverage": {
+        "fresh_offline_runtime_files_verified": 4,
+        "runtime_signatures_valid_microsoft": 4,
+        "title_run_frames": 3,
+        "title_presents": 2,
+        "menu_harness_frames": 30,
+        "menu_harness_presents": 29,
+        "audio_calls": 129,
+        "audio_errors": 0,
+        "startup_audit_artifacts_primary_rehashed": 50,
+        "startup_runtime_pins_primary_rehashed": 16,
+        "new_Original_functions": 0
+      },
+      "contract": {
+        "behavior": "Explicit genuine private Microsoft XLive and matching credential preload; supported fit display mode; actual GUI process exit code; extraction never executes installer.",
+        "limits": "Finite title startup and incomplete injected menu harness only. Full startup/shutdown, sign-in, scenario gameplay and save/load remain unvalidated."
+      }
+    },
+    {
+      "id": "cc12_property_lookup_readiness",
+      "worker": "property_payload",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0043B8B0"
+      ],
+      "output_files": [
+        "docs/CC12_PROPERTY_LOOKUP_READINESS.md",
+        "reports/cc12_property_lookup_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "whole_read_only_readiness_audit_complete_hash_and_populated_property_map_bindings_not_ready",
+      "worker_commit": "8a1476fdeb34cf62ec5a329d391b060e1a4c5e1e",
+      "coverage": {
+        "complete_Original_bytes": 105,
+        "instructions": 48,
+        "live_call_rows_primary_checked": 4,
+        "artifacts_primary_rehashed": 29,
+        "current_Source_contents_primary_compared": 17,
+        "new_Original_functions": 0
+      },
+      "contract": {
+        "behavior": "Hash always runs and publishes a bucket before head/chain lookup; borrowed node/null return, no mapped-record ownership.",
+        "limits": "First missing whole hash provider 0043B760 plus actual populated-map and E177E4 fallback binding. Replacement-record lifetime stays downstream; no fresh-key-only closure."
+      }
+    },
+    {
+      "id": "cc12_file_seek_raw_entry",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF4F20"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_FILE_SEEK_RAW_ENTRY.md",
+        "reports/cc12_file_seek_raw_entry.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "additional_raw_entry_whole_COFF_import_real_file_native_pairs_and_caller_ABI_checked",
+      "worker_commit": "9a1e7343a5f84958bb94df4412905f40d0540adb",
+      "coverage": {
+        "additional_raw_entries": 1,
+        "new_Original_functions": 0,
+        "whole_native_bytes": 32,
+        "native_pairs": 6,
+        "instrumented_raw_calls": 12,
+        "typed_Source_calls": 1,
+        "primary_input_pins_rehashed": 461,
+        "primary_artifacts_rehashed": 11,
+        "existing_CTests": 3
+      },
+      "contract": {
+        "behavior": "Complete raw BF4F20 additional entry: all32 Original/current production COFF/unique linked bytes agree except sole genuine SetFilePointerEx IAT operand at+25; ECX actual backing, low/high/origin stack, full BOOL EAX, direct+10h output, RET0Ch. Six real-file Native/Source pairs,12 instrumented calls,one typed Source call; primary rehashed461 input records and11 artifacts, verified real PE import and exact whole-object archive membership, normal Win32 build and all3 CTests PASS. Fixture explicitly consumes3 genuine production archives. Borrowed live HANDLE/output fields only; no class/table/producer/lifetime/raw substream/gameplay admission.",
+        "limits": "No Source class/table/producer/lifetime or raw substream/gameplay admission."
+      }
+    },
+    {
+      "id": "cc12_scene_property_record_type3_byte_storage",
+      "done": false,
+      "state": "ready bounded whole49B14 raw byte partial-storage primitive;34 written22 untouched; native ownership/class qualified",
+      "function_addresses": [
+        "008ef1f0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_record_type3_byte_storage.hpp",
+        "src/native_scene_property_record_type3_byte_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE3_BYTE_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type3_byte_storage_cc12.json"
+      ],
+      "contract": {
+        "schema": "bsp.cc12.property_record_type3_byte.readiness.v1",
+        "packet": "cc12_property_record_scalar_candidate_audit",
+        "kind": "single_bounded_readonly_candidate_readiness",
+        "Source_revision": "ca22b90d3c004ca6f54e25483e66e4329d77651b",
+        "readiness": "independently_ready_whole_ordinary_raw_byte_partial_storage_primitive_No_Source_yet",
+        "hypothesis_name": "BSP_ScenePropertyRecord_ConstructType3Byte",
+        "whole": {
+          "role": "whole_byte_initializer",
+          "kind": "whole",
+          "start": "008EF1F0",
+          "exclusive_end": "008EF221",
+          "bytes": 49,
+          "sha256": "77c57bbbe4e8f241db03c9753b6655903eb4e6028d32b1c6b256d083ce32e5ab",
+          "hex": "8bc18a4c240488480c33c9c700d489ce00c740040300000089481889481c894820894824894830894834c6402c01c20400",
+          "live_PE_equal": true,
+          "instructions": 14,
+          "disassembly": [
+            {
+              "address": "008EF1F0",
+              "bytes": "8bc1",
+              "instruction": "mov eax, ecx"
+            },
+            {
+              "address": "008EF1F2",
+              "bytes": "8a4c2404",
+              "instruction": "mov cl, byte ptr [esp + 4]"
+            },
+            {
+              "address": "008EF1F6",
+              "bytes": "88480c",
+              "instruction": "mov byte ptr [eax + 0xc], cl"
+            },
+            {
+              "address": "008EF1F9",
+              "bytes": "33c9",
+              "instruction": "xor ecx, ecx"
+            },
+            {
+              "address": "008EF1FB",
+              "bytes": "c700d489ce00",
+              "instruction": "mov dword ptr [eax], 0xce89d4"
+            },
+            {
+              "address": "008EF201",
+              "bytes": "c7400403000000",
+              "instruction": "mov dword ptr [eax + 4], 3"
+            },
+            {
+              "address": "008EF208",
+              "bytes": "894818",
+              "instruction": "mov dword ptr [eax + 0x18], ecx"
+            },
+            {
+              "address": "008EF20B",
+              "bytes": "89481c",
+              "instruction": "mov dword ptr [eax + 0x1c], ecx"
+            },
+            {
+              "address": "008EF20E",
+              "bytes": "894820",
+              "instruction": "mov dword ptr [eax + 0x20], ecx"
+            },
+            {
+              "address": "008EF211",
+              "bytes": "894824",
+              "instruction": "mov dword ptr [eax + 0x24], ecx"
+            },
+            {
+              "address": "008EF214",
+              "bytes": "894830",
+              "instruction": "mov dword ptr [eax + 0x30], ecx"
+            },
+            {
+              "address": "008EF217",
+              "bytes": "894834",
+              "instruction": "mov dword ptr [eax + 0x34], ecx"
+            },
+            {
+              "address": "008EF21A",
+              "bytes": "c6402c01",
+              "instruction": "mov byte ptr [eax + 0x2c], 1"
+            },
+            {
+              "address": "008EF21E",
+              "bytes": "c20400",
+              "instruction": "ret 4"
+            }
+          ],
+          "CALLs": []
+        },
+        "proposed_declaration": "void* __fastcall initialize_native_scene_property_record_type3_byte_storage_008ef1f0(void* actual_storage_root, std::uint32_t unused_edx, std::uint8_t value_bits) noexcept;",
+        "namespace": "bsp",
+        "native_formal_byte_interpretation": "Raw uint8 payload. Not assumed Boolean; no normalization to0/1 exists or is required.",
+        "effective_ABI": {
+          "ECX_entry": "actual supplied writable root",
+          "EAX_return": "full actual root, captured before CL is overwritten",
+          "value": "ONE ordinary stack slot consumed by RET4; only byte at entryESP+4 read, upper3 argument bytes ignored",
+          "ECX_return": "zero",
+          "EDX": "unchanged, never read or written by body",
+          "nonvolatiles": "EBX EBP ESI EDI unchanged",
+          "cleanup": "RET4",
+          "fastcall_padding": "Explicit unused EDX formal keeps uint8 value in one stack slot. Two-formal fastcall would place value in a register and is wrong.",
+          "defined_flags": "XOR ECX,ECX => CF0 PF1 ZF1 SF0 OF0; AF undefined and excluded",
+          "DF": "preserved; neither DF nor ES used; no CLD or direction precondition",
+          "decompiler_qualification": "Pseudocode void return is not the physical contract: exact assembly returns the initial ECX root in EAX."
+        },
+        "supplied_storage": {
+          "minimum_extent": 56,
+          "freshness": "actual supplied fresh/unowned writable storage, no native class ownership inferred",
+          "writes": [
+            {
+              "range": "[00,04)",
+              "value": "literal native DATA CE89D4 bits"
+            },
+            {
+              "range": "[04,08)",
+              "value": "DWORD tag3"
+            },
+            {
+              "range": "[0C,0D)",
+              "value": "stack low-byte value_bits, no dereference/normalization"
+            },
+            {
+              "range": "[18,28)",
+              "value": "four DWORD zeros"
+            },
+            {
+              "range": "[2C,2D)",
+              "value": "byte1, semantic meaning unestablished"
+            },
+            {
+              "range": "[30,38)",
+              "value": "owner and ordinal DWORD zeros"
+            }
+          ],
+          "written_bytes": 34,
+          "coalesced_written_ranges": [
+            "[00,08)",
+            "[0C,0D)",
+            "[18,28)",
+            "[2C,2D)",
+            "[30,38)"
+          ],
+          "untouched_bytes": 22,
+          "untouched_ranges": [
+            "[08,0C)",
+            "[0D,18)",
+            "[28,2C)",
+            "[2D,30)"
+          ],
+          "owner_qualification": "Byte value at+C is not owner; +30 owner is zero; supplied root is not separately owned by this leaf.",
+          "phase_DATA": {
+            "role": "native_record_phase_slot0_DATA",
+            "kind": "DATA",
+            "start": "00CE89D4",
+            "exclusive_end": "00CE89D8",
+            "bytes": 4,
+            "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+            "hex": "30674e00",
+            "live_PE_equal": true,
+            "DWORD_values": [
+              "004E6730"
+            ]
+          },
+          "Source_binding": "DATA bits only; no Source vft/dispatch/class/lifetime provider inferred.",
+          "allocation_size_qualification": "Native clone actual38h allocation witness is independent of leaf minimum write extent; does not admit a complete56-byte class. Pool owner38h and bag114h are different contracts."
+        },
+        "genuine_clone_caller": {
+          "entry": "008F4F60",
+          "entry_witness": {
+            "role": "genuine_clone_entry_and_dispatch",
+            "kind": "witness",
+            "start": "008F4F60",
+            "exclusive_end": "008F4F8D",
+            "bytes": 45,
+            "sha256": "a296709a04da69c1a8995e50e911fed3e5d8909a8759b44d026f81893c88332f",
+            "hex": "6aff686d4bca0064a100000000506489250000000051568bf18b460483f80b570f871d030000ff2485b8528f00",
+            "live_PE_equal": true,
+            "instructions": 13,
+            "disassembly": [
+              {
+                "address": "008F4F60",
+                "bytes": "6aff",
+                "instruction": "push -1"
+              },
+              {
+                "address": "008F4F62",
+                "bytes": "686d4bca00",
+                "instruction": "push 0xca4b6d"
+              },
+              {
+                "address": "008F4F67",
+                "bytes": "64a100000000",
+                "instruction": "mov eax, dword ptr fs:[0]"
+              },
+              {
+                "address": "008F4F6D",
+                "bytes": "50",
+                "instruction": "push eax"
+              },
+              {
+                "address": "008F4F6E",
+                "bytes": "64892500000000",
+                "instruction": "mov dword ptr fs:[0], esp"
+              },
+              {
+                "address": "008F4F75",
+                "bytes": "51",
+                "instruction": "push ecx"
+              },
+              {
+                "address": "008F4F76",
+                "bytes": "56",
+                "instruction": "push esi"
+              },
+              {
+                "address": "008F4F77",
+                "bytes": "8bf1",
+                "instruction": "mov esi, ecx"
+              },
+              {
+                "address": "008F4F79",
+                "bytes": "8b4604",
+                "instruction": "mov eax, dword ptr [esi + 4]"
+              },
+              {
+                "address": "008F4F7C",
+                "bytes": "83f80b",
+                "instruction": "cmp eax, 0xb"
+              },
+              {
+                "address": "008F4F7F",
+                "bytes": "57",
+                "instruction": "push edi"
+              },
+              {
+                "address": "008F4F80",
+                "bytes": "0f871d030000",
+                "instruction": "ja 0x8f52a3"
+              },
+              {
+                "address": "008F4F86",
+                "bytes": "ff2485b8528f00",
+                "instruction": "jmp dword ptr [eax*4 + 0x8f52b8]"
+              }
+            ],
+            "CALLs": []
+          },
+          "tag3_switch_DATA": {
+            "role": "selected_tag3_switch_target_DATA",
+            "kind": "DATA",
+            "start": "008F52C4",
+            "exclusive_end": "008F52C8",
+            "bytes": 4,
+            "sha256": "aa8536e9c33a2f0c3990fb0506535417dbbbfd02cead4eb74cd83098e1a3a00f",
+            "hex": "8d4f8f00",
+            "live_PE_equal": true,
+            "DWORD_values": [
+              "008F4F8D"
+            ]
+          },
+          "selected_arm": {
+            "role": "genuine_tag3_allocation_constructor_ordinal_arm",
+            "kind": "witness",
+            "start": "008F4F8D",
+            "exclusive_end": "008F4FC2",
+            "bytes": 53,
+            "sha256": "4a5090a1cf28d2612fa8c382589c0aa6a88c365e6e418021a896074495c0a1f0",
+            "hex": "6a38e88718300083c40485c00f84eb0200000fb64e0c518bc8e845a2ffff8b56345f8950345e8b4c240464890d0000000083c410c3",
+            "live_PE_equal": true,
+            "instructions": 17,
+            "disassembly": [
+              {
+                "address": "008F4F8D",
+                "bytes": "6a38",
+                "instruction": "push 0x38"
+              },
+              {
+                "address": "008F4F8F",
+                "bytes": "e887183000",
+                "instruction": "call 0xbf681b"
+              },
+              {
+                "address": "008F4F94",
+                "bytes": "83c404",
+                "instruction": "add esp, 4"
+              },
+              {
+                "address": "008F4F97",
+                "bytes": "85c0",
+                "instruction": "test eax, eax"
+              },
+              {
+                "address": "008F4F99",
+                "bytes": "0f84eb020000",
+                "instruction": "je 0x8f528a"
+              },
+              {
+                "address": "008F4F9F",
+                "bytes": "0fb64e0c",
+                "instruction": "movzx ecx, byte ptr [esi + 0xc]"
+              },
+              {
+                "address": "008F4FA3",
+                "bytes": "51",
+                "instruction": "push ecx"
+              },
+              {
+                "address": "008F4FA4",
+                "bytes": "8bc8",
+                "instruction": "mov ecx, eax"
+              },
+              {
+                "address": "008F4FA6",
+                "bytes": "e845a2ffff",
+                "instruction": "call 0x8ef1f0"
+              },
+              {
+                "address": "008F4FAB",
+                "bytes": "8b5634",
+                "instruction": "mov edx, dword ptr [esi + 0x34]"
+              },
+              {
+                "address": "008F4FAE",
+                "bytes": "5f",
+                "instruction": "pop edi"
+              },
+              {
+                "address": "008F4FAF",
+                "bytes": "895034",
+                "instruction": "mov dword ptr [eax + 0x34], edx"
+              },
+              {
+                "address": "008F4FB2",
+                "bytes": "5e",
+                "instruction": "pop esi"
+              },
+              {
+                "address": "008F4FB3",
+                "bytes": "8b4c2404",
+                "instruction": "mov ecx, dword ptr [esp + 4]"
+              },
+              {
+                "address": "008F4FB7",
+                "bytes": "64890d00000000",
+                "instruction": "mov dword ptr fs:[0], ecx"
+              },
+              {
+                "address": "008F4FBE",
+                "bytes": "83c410",
+                "instruction": "add esp, 0x10"
+              },
+              {
+                "address": "008F4FC1",
+                "bytes": "c3",
+                "instruction": "ret"
+              }
+            ],
+            "CALLs": [
+              {
+                "address": "008F4F8F",
+                "target": "0xbf681b"
+              },
+              {
+                "address": "008F4FA6",
+                "target": "0x8ef1f0"
+              }
+            ]
+          },
+          "allocation_PUSH": "008F4F8D PUSH38",
+          "allocation_CALL": "008F4F8F CALL00BF681B ending008F4F94",
+          "allocation_balance": "008F4F94 ADDESP4; 008F4F97 TESTEAX,EAX; 008F4F99 JZ008F528A",
+          "byte_value": "008F4F9F MOVZX ECX,byte[ESI+C]; 008F4FA3 PUSH ECX; upper argument bytes zero in this actual caller",
+          "same_actual_allocation_root": "008F4FA4 MOVECX,EAX",
+          "constructor_CALL": "008F4FA6 CALL008EF1F0 ending008F4FAB",
+          "ordinal_witness": "008F4FAB MOVEDX,[ESI+34]; 008F4FAF MOV[EAX+34],EDX; uses returned actual root after constructor",
+          "qualification": "Only genuine entry/selected arm; whole854-byte clone, original allocation/EH/class lifetime and other switch arms remain unexpanded."
+        },
+        "scope": {
+          "cap_function_codeentry_nodes_plus_traced_edges": 24,
+          "nodes": [
+            {
+              "address": "008F4F60",
+              "role": "genuine clone entry, bounded dispatch witness only"
+            },
+            {
+              "address": "008F4F8D",
+              "role": "selected genuine tag3 allocation/constructor/ordinal code arm"
+            },
+            {
+              "address": "008EF1F0",
+              "role": "complete ordinary raw byte supplied-storage leaf"
+            },
+            {
+              "address": "00BF681B",
+              "role": "named native operator_new, unexpanded"
+            },
+            {
+              "address": "004E6730",
+              "role": "named actual profile slot0 scalar teardown, unexpanded here"
+            },
+            {
+              "address": "00CA4B6D",
+              "role": "named clone EH handler, unexpanded"
+            },
+            {
+              "address": "008F28F0",
+              "role": "external insertion dependency, no claim/read"
+            },
+            {
+              "address": "008F33F0",
+              "role": "external insert/owner stamping dependency, no claim/read"
+            },
+            {
+              "address": "004E7C00",
+              "role": "named real node-pool allocator dependency, no claim/read"
+            },
+            {
+              "address": "008F0640",
+              "role": "named tagged record cleanup dependency, no claim/read"
+            },
+            {
+              "address": "008F3F30",
+              "role": "named unready whole owning clear, no claim/read"
+            }
+          ],
+          "traced_edges": [
+            {
+              "from": "008F4F60",
+              "to": "008F4F8D",
+              "evidence": "genuine native tag3 dispatch DATA008F52C4"
+            },
+            {
+              "from": "008F4F8D",
+              "to": "00BF681B",
+              "CALL_start": "008F4F8F",
+              "CALL_end": "008F4F94"
+            },
+            {
+              "from": "008F4F8D",
+              "to": "008EF1F0",
+              "CALL_start": "008F4FA6",
+              "CALL_end": "008F4FAB"
+            }
+          ],
+          "total": 14,
+          "other_switch_targets": {
+            "DATA": {
+              "role": "unexpanded_other_jump_table_targets_HINTS_ONLY",
+              "kind": "DATA_hints",
+              "start": "008F52B8",
+              "exclusive_end": "008F52E8",
+              "bytes": 48,
+              "sha256": "9ac9d8cc9146e16c450c4e8dcf7060262593c9f5f852a256ce8afcaa9dc60379",
+              "hex": "f94f8f00c24f8f0075508f008d4f8f00b5508f002d508f00ed508f0034518f0068518f00ae518f00fa518f0042528f00",
+              "live_PE_equal": true,
+              "DWORD_values": [
+                "008F4FF9",
+                "008F4FC2",
+                "008F5075",
+                "008F4F8D",
+                "008F50B5",
+                "008F502D",
+                "008F50ED",
+                "008F5134",
+                "008F5168",
+                "008F51AE",
+                "008F51FA",
+                "008F5242"
+              ]
+            },
+            "qualification": "Other DWORD targets are unvisited candidate hints, not expanded code nodes or traced edges. No other constructor/arm body read; no x87 boundary recovery."
+          },
+          "native_whole_reconstruction_credit": 0,
+          "whole_original_Source_build_execution": 0,
+          "x87_or_custom_register_or_listing_repair_needed": false
+        },
+        "proposed_Source_files": [
+          "include/bsp/native_scene_property_record_type3_byte_storage.hpp",
+          "src/native_scene_property_record_type3_byte_storage.cpp",
+          "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE3_BYTE_STORAGE_CC12.md",
+          "reports/native_scene_property_record_type3_byte_storage_cc12.json"
+        ],
+        "next_admission": [
+          "Root independently inspects all14 live instructions and registers packet after lease release.",
+          "Implement only whole49 literal raw partial-storage body; uint8 payload, no Boolean normalization or invented profile/provider/class.",
+          "Fresh connected3TU: new Source/current singleton_lifetime.cpp/ignored probe; no BSP or old objects. Current compiler/SDK/backend/header/library and Source/native/data/caller bookends.",
+          "Whole Original49/COFF49/unique-linked49/noCALL/no-relocation plus actual ordinary uint8 Source/Original caller and raw ECX/one-stack-slot/RET4 gates before any construction.",
+          "Actual loaded I386 UCRT same physical file/IAT/export/module gates before two fresh actual56-byte canonical currentheap raw roots.",
+          "Check all56 bytes including22 untouched and raw non-Boolean byte values; fullEAXroot/ECXzero/unchangedEDX/nonvolatiles/ESP/definedXORflags/DF/ES/externalcanaries/otherroot. No adjacent allocation red-zone or heap metadata claim.",
+          "Original unmodified49 RX stub needs no heap callee patch; explicit canonical free only raw actual roots, no scalar/destructor/dispatch/pool mock.",
+          "Seal one unique fresh family; preserve failed stages and old accepted Source/Original families; no replay."
+        ],
+        "named_incomplete_dependencies": [
+          "Original BF681B allocator/CRT/newhandler/EH and actual clone EH handler CA4B6D.",
+          "Whole clone854/all other arms/factory/parser and actual record class ownership.",
+          "CE89D4 actual slot0 scalar4E6730/thunk8F0DE0/type158 cleanup8F0640 and nested114 lifetime/ordinary clear8F3F30.",
+          "Actual E175B0 initialized pool/global list/CS/pages/14slots, external insertion8F28F0/33F0 and actual key/payload owners.",
+          "Source phase dispatch/class lifetime, private original heap/static/runtime/world/game admission."
+        ],
+        "preservation_counts": {
+          "historical6209": 6209,
+          "prior341": 341,
+          "prior_array_consumed_inputs": 193,
+          "prior_array_frozen_supports": 3,
+          "audit_sealed_inputs": 23,
+          "old_attempts_immutable": 585,
+          "prior_frozen_Core_context": 2,
+          "accepted_worker_run04": 282,
+          "accepted_primary_run01": 282,
+          "current_Source_readonly_context": 5,
+          "readiness_audit": 182,
+          "accepted_type0_worker_run03": 300,
+          "accepted_type0_primary_run01": 300,
+          "new_type0_failed_preparations": 78
+        },
+        "execution": {
+          "Source": 0,
+          "Original": 0,
+          "fixtures": 0,
+          "builds": 0,
+          "BSP_archives_consumed": 0,
+          "old_recipes_executed": 0,
+          "Ghidra_mutations": 0,
+          "tracked_edits": 0
+        },
+        "qualification": "Read-only static/native-byte supplied-storage readiness only. Literal DATA and allocator-size witnesses do not establish class or owning lifetime. Descriptive names remain hypotheses."
+      },
+      "approved_model": "gpt-6.1-sol",
+      "approved_reasoning_effort": "xhigh",
+      "reuse_existing_worker": "/root/property_bag_storage",
+      "model_rationale": "Straight-line whole49 byte-storage writes; exact ECX/one-stack-slot/RET4 ABI independently recovered and reviewed before assignment. Reuse the existing6.1-sol property-storage worker.",
+      "worker_readiness_family": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_scalar_candidate/local/cc12_property_record_scalar_candidate_audit",
+      "worker_seal_hashes": {
+        "proposal.json": "8accaa91e70f7e1a89c4a0dd83caba6f48f865a99a7d9da83cae0052100c7fea",
+        "receipt.json": "9089609b31b9b76a2f7f53102f00375728d928a6a1052bd87fe60bbd664a23b6",
+        "artifact_manifest.json": "30359913775a4fd70b18ea7b3c031f726b294292469a5814fa48996be6a61419"
+      },
+      "readiness_document": "docs/CC12_PROPERTY_RECORD_TYPE3_BYTE_READINESS.md",
+      "readiness_report": "reports/cc12_property_record_type3_byte_readiness.json",
+      "fixture_requirements": [
+        "Root independently inspects all14 live instructions and registers packet after lease release.",
+        "Implement only whole49 literal raw partial-storage body; uint8 payload, no Boolean normalization or invented profile/provider/class.",
+        "Fresh connected3TU: new Source/current singleton_lifetime.cpp/ignored probe; no BSP or old objects. Current compiler/SDK/backend/header/library and Source/native/data/caller bookends.",
+        "Whole Original49/COFF49/unique-linked49/noCALL/no-relocation plus actual ordinary uint8 Source/Original caller and raw ECX/one-stack-slot/RET4 gates before any construction.",
+        "Actual loaded I386 UCRT same physical file/IAT/export/module gates before two fresh actual56-byte canonical currentheap raw roots.",
+        "Check all56 bytes including22 untouched and raw non-Boolean byte values; fullEAXroot/ECXzero/unchangedEDX/nonvolatiles/ESP/definedXORflags/DF/ES/externalcanaries/otherroot. No adjacent allocation red-zone or heap metadata claim.",
+        "Original unmodified49 RX stub needs no heap callee patch; explicit canonical free only raw actual roots, no scalar/destructor/dispatch/pool mock.",
+        "Seal one unique fresh family; preserve failed stages and old accepted Source/Original families; no replay."
+      ],
+      "dependencies": [],
+      "named_incomplete_dependencies": [
+        "Original BF681B allocator/CRT/newhandler/EH and actual clone EH handler CA4B6D.",
+        "Whole clone854/all other arms/factory/parser and actual record class ownership.",
+        "CE89D4 actual slot0 scalar4E6730/thunk8F0DE0/type158 cleanup8F0640 and nested114 lifetime/ordinary clear8F3F30.",
+        "Actual E175B0 initialized pool/global list/CS/pages/14slots, external insertion8F28F0/33F0 and actual key/payload owners.",
+        "Source phase dispatch/class lifetime, private original heap/static/runtime/world/game admission."
+      ],
+      "native_class_ABI_admission": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
