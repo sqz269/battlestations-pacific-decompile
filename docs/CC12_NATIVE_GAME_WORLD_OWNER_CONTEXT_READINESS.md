@@ -79,3 +79,28 @@ The first following owner remains `004CB030` with its real vtable, callback admi
 Historical body sizes are header13/6, callback5/1, clear70/29, allocator90/37 and free6/1, unlinks83/29 each, projected World74/15, host caller2534/768, fog319/111, and vector-chain builder443/145. The audit does not establish that a new build consumed the captured Source, and it makes no runtime claim from these object files.
 
 ZIP SHA-256: `c00cf2420f3e1374a1ff8938ee93fbd58351e0a156bdf8af7a93caef01826ea7`. Manifest SHA-256: `c0275231b5adab9355256056b3fe0bab8cba067cf11c6dd0679f57601acc03e6`. Machine-readable details and whole-body schedules are in the accompanying report and sealed evidence. No Source, CMake, ledger, or Ghidra-program edits; no build, tests, probes, or execution.
+
+## Fresh whole-caller primary follow-up
+
+Root independently checked all 5,598 Native bytes and 1,454 instruction starts
+across the four complete bodies, including the entire 5,357-byte caller. The
+actual EDI allocation flows through the constructor EAX result to `Game+19CC`
+and immediately to ECX for `009037F0`. This is the same 4BC-byte physical World.
+`+4A8` is a DWORD store offset, not a second World allocation size. The two
+separate allocations in `009037F0` are 0C-byte intrusive headers.
+
+Root rehashed all 140 retained artifacts, all 141 ZIP payloads/CRCs, 78 physical
+pins, and 26 current whole Source files; seven unique historical core members
+match their complete objects, with the game-target vector object correctly
+absent. These historical artifacts are not current compiler-consumption proof.
+An initial reader assertion assumed every transfer had a direct-target key;
+indirect calls omit it. The failed method and corrected reader are retained;
+no Source, build or target execution changed.
+
+Primary receipt: `local/cc12_world_identity_primary_review/receipt.json`, SHA256
+`ae61faaad498ad2b37b76b64c8710a150b9db4d2bc704a0d42542cecaa59bd49`.
+The tracked earlier hierarchy audit already identified a 4BC-byte owner; this
+follow-up establishes the complete caller identity and supersedes any separate
+4A8-byte-base interpretation. Full caller callees, World vtable/lifetime,
+array/unwind and production context remain unready. No function, build,
+execution, startup or gameplay credit is added.

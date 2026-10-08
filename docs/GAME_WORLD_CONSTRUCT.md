@@ -42,11 +42,12 @@ shape `docs/MISSION_SCENE_LOAD.md` already recorded for `Scene initialization fa
 and `docs/GAME_WORLD_ENTITIES.md` for the decal manager's compiled-out loop: a diagnostic whose
 sink was inlined away, leaving only the allocation and the release.
 
-The ocean bring-up has no error branch at all. Both branches of `004DF421` construct an ocean
-owner with the same constructor `00BBDFF0`; they differ only in the second argument. What a caller
-can observe as "no ocean" is a null `game+19E8h`, which happens only if `operator new` returns
-null, and `docs/GAME_WORLD_OCEAN.md` shows the per-frame reader gating the whole ocean block on
-exactly that pointer. `bsp::ocean_failure_is_reported()` returns `false` to state this.
+The ocean bring-up has no diagnostic sink. Both branches of `004DF421` construct an ocean
+owner with the same constructor `00BBDFF0`; they differ only in the second argument. The listing
+contains a null-result branch and the per-frame reader gates the ocean block on `game+19E8h`.
+That literal branch is not evidence that allocation failure returns null: the qualified
+`00BF681B` allocator returns storage or throws. `bsp::ocean_failure_is_reported()` preserves the
+absence of the diagnostic sink; it does not establish graceful allocation-failure continuation.
 
 ## `004DE610` `BSP_Game_ConstructWorld`
 
@@ -56,9 +57,13 @@ exactly that pointer. `bsp::ocean_failure_is_reported()` returns `false` to stat
 
 Two allocators appear. `00BF55BE` is used once, for the world object; everything else uses
 `00BF681B` (cdecl, `add esp,4` after the call) except the Operator node, which comes from the
-scene-node class allocator `00B71930` with its size in ECX. Every allocation follows the same
-shape: `operator new`, a null test, the constructor on the non-null path, `XOR EAX,EAX` on the
-other, then the store. A failed allocation therefore stores a null and the routine continues.
+scene-node class allocator `00B71930` with its size in ECX. Null-result branches exist at
+several allocation sites, but they do not establish graceful failure continuation. In particular,
+the 4BC-byte World result is passed to `memset` before its later null test, then published and
+passed unconditionally to `009037F0`. The sentinel helper would write to address 4 after a literal
+zero result. The qualified `00BF681B` allocator returns storage or throws; no second-header
+rollback occurs inside `009037F0`. The class allocator and whole caller's ordinary unwind remain
+separate contracts. See [the complete World-owner follow-up](CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md).
 
 ### Ordered construction steps
 

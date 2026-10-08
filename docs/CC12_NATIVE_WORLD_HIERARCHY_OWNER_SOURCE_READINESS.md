@@ -198,5 +198,31 @@ the seven complete Native spans against the installed PE, and reviewing the
 34 selected current Source inputs and seven historical object modules. The
 primary receipt is `local/cc12_world_hierarchy_owner_primary_review/receipt.json`,
 SHA256 `9672e0b1f3f80c8f6ac2321e7b6c8b2861c1c4b01e901138997ad8f607283cbd`.
-The two unlink leaves are admitted for a bounded Source implementation next;
-this review itself adds no reconstructed-function or ready-owner credit.
+The two unlink leaves were subsequently implemented and independently qualified
+in main `5dd045365`; their normal game-map absence and zero entry-execution
+boundaries remain. This earlier readiness review adds no function or owner credit.
+
+## Fresh whole-caller primary follow-up
+
+Root independently checked all 5,598 Native bytes and 1,454 instruction starts
+across the four complete bodies, including the entire 5,357-byte caller. The
+actual EDI allocation flows through the constructor EAX result to `Game+19CC`
+and immediately to ECX for `009037F0`. This is the same 4BC-byte physical World.
+`+4A8` is a DWORD store offset, not a second World allocation size. The two
+separate allocations in `009037F0` are 0C-byte intrusive headers.
+
+Root rehashed all 140 retained artifacts, all 141 ZIP payloads/CRCs, 78 physical
+pins, and 26 current whole Source files; seven unique historical core members
+match their complete objects, with the game-target vector object correctly
+absent. These historical artifacts are not current compiler-consumption proof.
+An initial reader assertion assumed every transfer had a direct-target key;
+indirect calls omit it. The failed method and corrected reader are retained;
+no Source, build or target execution changed.
+
+Primary receipt: `local/cc12_world_identity_primary_review/receipt.json`, SHA256
+`ae61faaad498ad2b37b76b64c8710a150b9db4d2bc704a0d42542cecaa59bd49`.
+The tracked earlier hierarchy audit already identified a 4BC-byte owner; this
+follow-up establishes the complete caller identity and supersedes any separate
+4A8-byte-base interpretation. Full caller callees, World vtable/lifetime,
+array/unwind and production context remain unready. No function, build,
+execution, startup or gameplay credit is added.
