@@ -1,0 +1,392 @@
+{
+  "schema": "bsp.cc12.parent_header_callback.report.v1",
+  "packet": "cc12_parent_header_callback_readiness",
+  "baseline": "92ca45788a7a8e84328e61296be7552a51849638",
+  "status": "Complete ordinary raw12-byte initialization contract evidenced; proposed bounded Source leaf awaits Root independent review/registration. Owning parent and iterator/EH lifetime remain unready.",
+  "Source_bodies": 0,
+  "Source_bytes": 0,
+  "ready_Source_packets": 0,
+  "raw_leaf_contract_fully_evidenced": true,
+  "owning_parent_ready": false,
+  "whole": {
+    "entry": "004B7EC0",
+    "exclusive_end": "004B7ECD",
+    "bytes": 13,
+    "instructions": 6,
+    "SHA256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+    "hex": "8bc133c98908894804894808c3",
+    "disassembly": [
+      {
+        "address": "004B7EC0",
+        "bytes": "8bc1",
+        "instruction": "mov eax, ecx"
+      },
+      {
+        "address": "004B7EC2",
+        "bytes": "33c9",
+        "instruction": "xor ecx, ecx"
+      },
+      {
+        "address": "004B7EC4",
+        "bytes": "8908",
+        "instruction": "mov dword ptr [eax], ecx"
+      },
+      {
+        "address": "004B7EC6",
+        "bytes": "894804",
+        "instruction": "mov dword ptr [eax + 4], ecx"
+      },
+      {
+        "address": "004B7EC9",
+        "bytes": "894808",
+        "instruction": "mov dword ptr [eax + 8], ecx"
+      },
+      {
+        "address": "004B7ECC",
+        "bytes": "c3",
+        "instruction": "ret"
+      }
+    ],
+    "CALLs": [],
+    "live_PE_equal": true
+  },
+  "genuine_invocation": {
+    "entry": "00BF7CE8",
+    "exclusive_end": "00BF7D03",
+    "bytes": 27,
+    "instructions": 10,
+    "SHA256": "bd78961b5fb5c760a76724cdb9bcc4173415a74c8885f39051af695a881fbcaf",
+    "hex": "8b45e43b45107d138b75088bceff551403750c897508ff45e4ebe5",
+    "disassembly": [
+      {
+        "address": "00BF7CE8",
+        "bytes": "8b45e4",
+        "instruction": "mov eax, dword ptr [ebp - 0x1c]"
+      },
+      {
+        "address": "00BF7CEB",
+        "bytes": "3b4510",
+        "instruction": "cmp eax, dword ptr [ebp + 0x10]"
+      },
+      {
+        "address": "00BF7CEE",
+        "bytes": "7d13",
+        "instruction": "jge 0xbf7d03"
+      },
+      {
+        "address": "00BF7CF0",
+        "bytes": "8b7508",
+        "instruction": "mov esi, dword ptr [ebp + 8]"
+      },
+      {
+        "address": "00BF7CF3",
+        "bytes": "8bce",
+        "instruction": "mov ecx, esi"
+      },
+      {
+        "address": "00BF7CF5",
+        "bytes": "ff5514",
+        "instruction": "call dword ptr [ebp + 0x14]"
+      },
+      {
+        "address": "00BF7CF8",
+        "bytes": "03750c",
+        "instruction": "add esi, dword ptr [ebp + 0xc]"
+      },
+      {
+        "address": "00BF7CFB",
+        "bytes": "897508",
+        "instruction": "mov dword ptr [ebp + 8], esi"
+      },
+      {
+        "address": "00BF7CFE",
+        "bytes": "ff45e4",
+        "instruction": "inc dword ptr [ebp - 0x1c]"
+      },
+      {
+        "address": "00BF7D01",
+        "bytes": "ebe5",
+        "instruction": "jmp 0xbf7ce8"
+      }
+    ],
+    "CALLs": [],
+    "live_PE_equal": true
+  },
+  "whole_extent_qualification": "Historical body endpoint004B7ECC is inclusive RET. Complete half-open extent ends004B7ECD. Initial12-byte prefix retained and explicitly excluded from whole-body credit.",
+  "Ghidra_function_qualification": "Current live proto has actual function6 instructions/1 block/no CALL. Historical lookup no-function statement is stale provenance, not current assertion.",
+  "physical_ABI": {
+    "receiver": "ECX actual writable12-byte supplied-storage root; no stack arguments; incomingEDX is unused and untouched",
+    "return_value": "Full EAX equals incomingECX root; ECX=0 on return",
+    "preserved": "EDX,EBX,ESI,EDI,EBP unchanged; only EAX/ECX written; no temporary stack stores",
+    "stack": "No PUSH/POP/CALL; plain RET004B7ECC gives returnedESP=entryESP+4. No RET4 and no owner/value stackword.",
+    "flags": "XOR ECX,ECX is sole flag writer: CF0/PF1/ZF1/SF0/OF0. Defined arithmetic mask8C5 equals44; AF undefined and excluded. Later MOV/RET preserve those flags.",
+    "DF": "Unchanged, including DF0 or DF1; callback has no string/CRT calls. Current allocator/node providers separately require valid DF0.",
+    "segments": "Three ordinary DWORD stores use actual writable DS receiver; no ES/string operation or flatES requirement added",
+    "exception": "Callback contains no EH frame or heap call. Iterator/owner exception behavior is outside this leaf and not admitted."
+  },
+  "storage": {
+    "requested_extent": "exactly12 bytes [root,root+C)",
+    "writes": [
+      {
+        "offset": 0,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 4,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 8,
+        "bytes": 4,
+        "value": 0
+      }
+    ],
+    "written_bytes": 12,
+    "untouched_bytes_within_extent": 0,
+    "order": "MOV EAX,ECX; XOR ECX,ECX; zero DWORD+0,+4,+8 in that order; RET",
+    "precondition": "Actual live writable fresh/unowned12-byte storage. No guards, allocations, payload reads, node traversal, or teardown.",
+    "invalid_ownership_use": "Do not reset a populated owning root or treat this as node disposal; its three stores would discard links without freeing owned nodes.",
+    "extent_proof": "Complete13-byte body proves exactly three DWORD stores; no adjacent heap red-zone/metadata runtime claim"
+  },
+  "invocation_contract": {
+    "range": "[00BF7CE8,00BF7D03),27 bytes/10 instructions, one indirect CALL",
+    "guard": "Signed CMP index[EBP-1C] against count[EBP+10]; JGE exits window toBF7D03",
+    "receiver": "ESI=[EBP+8]; ECX=ESI; CALL DWORD[EBP+14] atBF7CF5, bytesFF5514; no argument PUSH between receiver load and CALL",
+    "indirect_call_opcode_offset": 13,
+    "indirect_call_span": [
+      13,
+      16
+    ],
+    "EBP_displacement_byte_offset": 15,
+    "indirect_call_encoding": "ff5514",
+    "stride": "ADD ESI,[EBP+C], writeback[EBP+8], INC index[EBP-1C], JMPBF7CE8",
+    "callback_return": "No stacked callback argument or callback-side adjustment. EAX returned root is ignored; preservedESI supplies next receiver.",
+    "descriptor_association": "Saved matched-library stdcall signature identifies dest,stride,count,ctor,dtor slots; actual owner pushes constructor004B7EC0 then invokes iterator. The live CALL operand establishesEBP+14, but actual SEH prolog creation ofEBP is not expanded.",
+    "strict_limit": "Only this27-byte live window is qualified; do not call it whole iterator recovery or runtime callback execution.",
+    "frozen_owner": "Actual destroot+18/strideC/count61=97, index1root+24, constructorPUSH004CB065/dtorPUSH004CB060 from immutable owner211-file audit. Wholeowner not requeried."
+  },
+  "current_owned_node_domain": {
+    "compatibility": "Accepted current append/erase/removal require coherent12-byte {count+0,head+4,tail+8}. All three zeros supply their empty raw-root state under fresh/unowned storage preconditions.",
+    "legitimate_production": "Future independent validation may allocate actual12-byte root using current canonical singleton_lifetime_allocate, call this initializer, then obtain nodes only through real accepted appendSource and dispose them via real accepted erase/removalSource. No fabricated node/root ownership or World object is supplied.",
+    "payload": "Borrowed live payload identity; callback never reads/destroys/frees it. Existing providers retain their own ownership/DF/current-UCRT gates.",
+    "teardown": "Callback itself neither owns nor frees nodes/root. Only actual empty raw root may be explicitly currentfreed after legitimate node dispositions; native array destructor/owner teardown remains unbound.",
+    "Source_context": "Current consumed append/erase/remove/singleton CPP/HPP and reports frozen and hash-bookended; no new live query to their addresses or old execution."
+  },
+  "proposed_Source": {
+    "declaration": "void* __fastcall initialize_native_parent_list_header_storage_004b7ec0(void* actual_storage_root, std::uint32_t unused_edx) noexcept;",
+    "interpretation": "Hypothetical raw supplied-storage name; two register formals keep ECX receiver and explicit unusedEDX, no stacked parameter. Literal13-byte naked x86 body is independently representable without globals/providers.",
+    "boundary": "Whole ordinary13-byte leaf only, not World/parent constructor, array/EH iterator replacement, vtable/phase binding, or original class ownership.",
+    "registration": "Root independent inspection and explicit registration required; current Source/registered ready counts remain0.",
+    "validation_prerequisites": [
+      "Fresh named connected family with current canonical allocation/free; no old objects/BSP archive/recipe replay.",
+      "Whole Original13/COFF/unique linked13/noCALL/no relocation and real ordinary/raw ECX/no-stack/plainRET caller byte gates before any target execution.",
+      "Actual loadedI386 UCRT/IAT/export/physical-file identity before allocations and after; fresh12-byte actual roots, all12bytes, EAX/ECX/EDX/nonvolatiles/ESP/definedXORflags/DF and external canaries; no adjacent allocation guards.",
+      "If node-domain integration is exercised, obtain every actual node through accepted current append and dispose through actual erase/removal; preserve other live root/payload identities, never inspect freed nodes, free only now-empty actual root.",
+      "All compiler/backend/header/system-library/Source/native/reference bookends and immutable complete seal; Root performs separate complementary family/full build."
+    ]
+  },
+  "graph": {
+    "nodes": [
+      {
+        "address": "004B7EC0",
+        "role": "selected ordinary header callback",
+        "qualification": "complete13B6 live/PE body; no CALL; no native runtime"
+      },
+      {
+        "address": "00BF7CD1",
+        "role": "actual constructor iterator",
+        "qualification": "only [00BF7CE8,00BF7D03)27B10 live invocation window; saved library signature and other rows remain historical context"
+      },
+      {
+        "address": "004CB030",
+        "role": "genuine owning constructor",
+        "qualification": "frozen whole126B39 owner audit; not rebrowsed; Source0 owning phase"
+      },
+      {
+        "address": "004C2D30",
+        "role": "actual destructor callback",
+        "qualification": "physical frozen owner PUSH004CB060; body/teardown unexpanded"
+      },
+      {
+        "address": "00C07C00",
+        "role": "SEH prolog4",
+        "qualification": "saved iterator direct CALL; actual frame-building ABI/EH unexpanded; named Astra prerequisite"
+      },
+      {
+        "address": "00C07C45",
+        "role": "SEH epilog4",
+        "qualification": "saved iterator direct CALL; body/EH unexpanded"
+      },
+      {
+        "address": "00BF7D1E",
+        "role": "iterator cleanup frontier",
+        "qualification": "saved direct CALL; body/failure cleanup unexpanded"
+      },
+      {
+        "address": "004C3080",
+        "role": "owner sentinel construction",
+        "qualification": "frozen owner direct CALL; heap/sentinel lifetime unadmitted"
+      },
+      {
+        "address": "00C65651",
+        "role": "owner exception handler",
+        "qualification": "frozen owner handler literal; exception closure unadmitted"
+      },
+      {
+        "address": "00BF55BE",
+        "role": "native owner allocation frontier",
+        "qualification": "frozen real direct caller allocates4BC; private heap/current-parent lifetime unbound"
+      },
+      {
+        "address": "00BF79F0",
+        "role": "native owner zero-fill frontier",
+        "qualification": "frozen real direct caller fills4BC before owner construction; body unexpanded"
+      }
+    ],
+    "edges": [
+      {
+        "origin": "004CB030",
+        "target": "00BF7CD1",
+        "kind": "frozen direct CALL",
+        "evidence": "004CB076; dest+18,strideC,count61,ctor004B7EC0,dtor004C2D30"
+      },
+      {
+        "origin": "004CB030",
+        "target": "004B7EC0",
+        "kind": "actual constructor descriptor",
+        "evidence": "PUSH004B7EC0 at004CB065, frozen owner instructions"
+      },
+      {
+        "origin": "004CB030",
+        "target": "004C2D30",
+        "kind": "actual destructor descriptor",
+        "evidence": "PUSH004C2D30 at004CB060, frozen owner instructions"
+      },
+      {
+        "origin": "004CB030",
+        "target": "004C3080",
+        "kind": "frozen direct CALL",
+        "evidence": "004CB088 stores actual sentinel result; not a Source binding"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00C65651",
+        "kind": "frozen EH handler literal",
+        "evidence": "PUSH at004CB032; unexpanded owner exception phase"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00BF55BE",
+        "kind": "frozen caller allocation provenance",
+        "evidence": "004DE651 PUSH4BC /004DE656 CALL; not a direct owner CALL"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00BF79F0",
+        "kind": "frozen caller zero-fill provenance",
+        "evidence": "004DE664 actual same root/zero/4BC; not a direct owner CALL"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "004B7EC0",
+        "kind": "genuine indirect callback witness",
+        "evidence": "00BF7CF0 loads receiver,00BF7CF3 ECX=ESI,00BF7CF5 CALL[EBP+14]; slot association uses saved library signature"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "00C07C00",
+        "kind": "saved context direct CALL",
+        "evidence": "00BF7CD8; frame creation not newly expanded"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "00C07C45",
+        "kind": "saved context direct CALL",
+        "evidence": "00BF7D16; epilog not newly expanded"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "00BF7D1E",
+        "kind": "saved context direct CALL",
+        "evidence": "00BF7D11; cleanup not newly expanded"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "004C2D30",
+        "kind": "saved signature/frozen descriptor dependency",
+        "evidence": "fifth incoming descriptor is destructor; actual exceptional invocation not inspected"
+      }
+    ],
+    "node_count": 11,
+    "edge_count": 12,
+    "total": 23,
+    "cap": 24,
+    "whole_live_functions": 1,
+    "bounded_live_invocation_windows": 1,
+    "historical_context": "Older owner wholebody and saved iterator rows outside witness remain frozen metadata, not additional current Native body admission."
+  },
+  "named_incomplete": {
+    "Astra": "Actual iterator SEH prolog/frame/epilog/cleanup and exceptional destructor invocation remain unexpanded. If these are needed for a whole iterator/owner Source binding, request bounded Astra ABI/EH recovery, do not infer them.",
+    "owner": "Sentinel allocation/free, original private heap, deleting-owner phase, parent/subject registration and observer/game lifetime remain unadmitted from the prior owner audit.",
+    "primitive": "No CALL, heap, sentinel, x87, EH, or control-flow uncertainty remains inside the complete13-byte ordinary raw callback."
+  },
+  "preservation": {
+    "prior_actual_pins": 9621,
+    "owner_actual_files": 211,
+    "earlier_pins": 9410,
+    "consumed_inputs": 24,
+    "frozen_historical_files": 16,
+    "additional_saved_reference_files": 2,
+    "all_bookends_equal": true,
+    "old_successful_recipe_or_Original_replays": 0,
+    "historical_metadata": "Original path/hash associations retained; stale metadata not repinned to live state."
+  },
+  "audit_limits": {
+    "Source_changes": 0,
+    "compiles": 0,
+    "fixtures": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "new_tests": 0,
+    "game_writes": 0
+  },
+  "not_admitted": [
+    "whole iterator/EH failure/destructor contracts",
+    "native owning World/parent lifetime or privateheap",
+    "subject+30/category1 registration/observer/game ownership",
+    "runtime/startup/gameplay"
+  ],
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_readiness\\local\\ph12",
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_readiness\\local\\ph12\\proposal.json",
+      "size": 16031,
+      "sha256": "78a474d57dc6886f68fc4263980132d625639cddc168fbe5ddfabf01beb6791b"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_readiness\\local\\ph12\\readiness_receipt.json",
+      "size": 2215,
+      "sha256": "a84da02497b92f34ed49ffde3bc2e8394913c8756d19db3fd43230dd12412a1f"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_readiness\\local\\ph12\\artifact_manifest.json",
+      "size": 41638,
+      "sha256": "1808a008f0f64f6c2c71a55bbbca4f74656f73a428fb8f8d884df4703fdfe1af"
+    },
+    "listed_artifacts": 133,
+    "actual_files_including_seals": 135
+  },
+  "current_audit_credit": {
+    "Source_bodies": 0,
+    "Source_bytes": 0,
+    "ready_Source_packets": 0,
+    "whole_native_functions": 1,
+    "whole_native_bytes": 13,
+    "whole_native_instructions": 6,
+    "bounded_invocation_bytes": 27,
+    "bounded_invocation_instructions": 10
+  }
+}

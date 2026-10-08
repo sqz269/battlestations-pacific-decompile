@@ -1,0 +1,535 @@
+{
+  "packet": "cc12_physical_failure_callable_publication_design",
+  "status": "read_only_design_ready_for_primary_review_no_implementation_or_runtime_admission",
+  "baseline": "5e69b571d24a0c6eeedfad01dae2369b67073038",
+  "completed_utc": "2026-10-08T13:48:25.194612+00:00",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "scope": {
+    "new_tracked_files": [
+      "docs/CC12_PHYSICAL_FAILURE_CALLABLE_PUBLICATION_DESIGN.md",
+      "reports/cc12_physical_failure_callable_publication_design.json"
+    ],
+    "new_native_address_scope": [
+      "0073D642"
+    ],
+    "Source_edits": 0,
+    "builds": 0,
+    "links": 0,
+    "probes": 0,
+    "entry_calls": 0,
+    "new_tests": 0,
+    "Ghidra_writes": 0,
+    "ledger_or_packet_registry_or_CMake_edits": 0,
+    "prior_owner_report_edited": false
+  },
+  "readiness": {
+    "design_ready_for_review": true,
+    "implementation_authorized_or_present": false,
+    "published_callable_owner_observed": false,
+    "loaded_target_qualified": false,
+    "raw_notifier_execution_ready": false,
+    "connected_raw_read_ready": false
+  },
+  "current_owner_contract": {
+    "application": "src/game_native_vfs_application.cpp:101 allocates real A0h via singleton_lifetime_allocate, retains runtime, binds it to existing singleton host, constructs/registers core, then binds resource registry domain. current runtime() checks only retained runtime, not successful startup.",
+    "runtime": "src/game_native_vfs_runtime.cpp:343 constructs the genuine supplied A0h owner, republishes it into the existing Source cell, runs identity installer, registers FileStore/MPKG, then marks core_registered. actual_manager simply returns retained storage; borrow_raw_services lends existing references and explicitly permits pre-core borrowing.",
+    "lifetime": "include/bsp/game_native_vfs_application.hpp:20 requires same host/data/application services through shutdown. src/game_hosts_singletons.cpp:116 drains registered owners before retiring VFS. Existing retire_after_drain clears matching publication and marks retired only after drain; caller quiescence before shutdown is indispensable.",
+    "failure": "Before construction/registration touches A0h, runtime-allocation failure frees it; after registration may start, existing application retains state for the existing shared drain. New completion flag remains false if any later initialization step throws. No ownership class or rollback is inferred."
+  },
+  "proposed_minimum_API": {
+    "GameNativeVfsApplication": "public: void* publish_and_borrow_raw_failure_manager();",
+    "GameNativeVfsRuntime": "private: friend class GameNativeVfsApplication; void* publish_and_borrow_raw_failure_manager();",
+    "visibility": "Only the existing application exposes public publication. Its completion flag is checked before calling the private runtime method; otherwise the current runtime() accessor could bypass that guard after a late initialization failure. No public free publisher or arbitrary owner parameter is introduced.",
+    "known_target_helper": "std::uintptr_t qualified_native_vfs_raw_failure_target();",
+    "finite_dispatch_helper": "bool invoke_native_vfs_startup_failure_target(std::uintptr_t captured_target);",
+    "helper_behavior": "Original 00530620 calls the existing ordinary typed ignore helper and returns true. Otherwise compare with the genuine raw symbol address; only that exact match gets C3 qualification followed by a direct named raw leaf call and true. Unknown values return false without dereference so both existing callers retain their current rejection diagnostics. Qualification failure throws before publication/call; no default fallback.",
+    "qualification_algorithm": "Obtain uintptr_t from the declared raw function symbol under the MSVC Win32 contract; read the single volatile code byte at that trusted linked function address and require 0xC3, otherwise throw logic_error. No caller-controlled address is dereferenced. Qualification is a code read, not an entry call. The executable/readable linked-image and code-lifetime requirement must be established for the actual future build; the current audit makes no loaded-image claim.",
+    "noexcept": "The new owner and qualification methods are not noexcept: invalid lifetime/phase/publication/preimage/code state must fail before publication. Existing raw C3 and notifier noexcept declarations/bodies remain unchanged.",
+    "default_and_opt_in": "Normal initialize_core continues installing numeric Original identities. Only explicit publish_and_borrow_raw_failure_manager transitions +90 to callable Source mode. The method publishes and returns a borrow but never calls the raw notifier or supplies its arguments.",
+    "code_lifetime": "Reuse bsp_core static-library membership and the normal bsp_game dependency. The exact symbol must be linked into the retained executable image; an unloadable callback-module contract is not introduced. Current whole-object membership does not itself prove that future loaded address."
+  },
+  "ordered_guard_and_publication_contract": [
+    "MSVC Win32 only; sizeof(void*) and sizeof(uintptr_t) equal four. Use the address of raw_ignore_native_vfs_mount_failure_00530620, never the ordinary typed ignore helper or a numeric Original identity.",
+    "Add application core_initialization_completed=false; set it only at the final successful end of Impl::initialize_core after bind_resource_registry_domain. initialization_attempted and runtime() non-null alone are insufficient. The application method rejects unless completed.",
+    "The runtime method rejects before touching owner storage unless core_registered is true and retired is false. Keep existing initialization_attempted/core_started one-attempt behavior; do not retry or allocate another manager.",
+    "Caller has exclusive access to this application and publication for the entire publish/borrow-use interval. No concurrent startup, publication replacement, callback mutation or shutdown. The existing model provides no synchronized borrow counter or lease.",
+    "Capture the existing volatile Source publication once; reject null or any value unequal to inputs.actual_vfs_storage_a0. This is the real retained A0 allocation. It does not establish Original fixed address0109CEEC.",
+    "Read this captured owner\u2019s initialized +90 and +8C words. Require +90 to be either Original 00530620 or the exact qualified Source raw symbol address, and +8C to remain Original 00735B30. Reject all other preimages; no overwrite or fallback.",
+    "Before a store, resolve the genuine raw function through its declared symbol and verify its first/complete code byte is C3 in the linked, loaded, readable executable code domain. This exact one-byte entry is in the retained whole object today; qualification of a future linked/loaded image remains required. Never manufacture executable bytes or cast an arbitrary supplied word to code.",
+    "After all checks, write only the captured owner\u2019s +90 DWORD with that actual symbol address (volatile Win32 word store) and return only the captured borrowed void*. Do not invoke a callback/notifier, write +8C/+18/global cells, or rerun the two-store installer. Repeating the API with the same qualified pointer is idempotent; no reverse-mode API is proposed.",
+    "The returned pointer owns nothing and grants no extra lifetime. Finish every use before GameSingletonHost.shutdown begins; keep application, runtime, host, their referenced data/services and the statically linked code image alive through uses and shared drain. After drain the runtime retired flag rejects new borrows before dereferencing freed owner storage."
+  ],
+  "Original_two_read_and_secondary_callback_contract": {
+    "fresh_store": {
+      "address": "0073D642",
+      "end": "0073D64B",
+      "bytes": 10,
+      "sha256": "780a5634e4ec94fac78fb2d11cf123139d6c3a7d2c0eff355a6d7e9625f88998",
+      "artifact": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_design_20261008a\\audit03\\inputs\\0073D642.bin",
+      "hex": "c7819000000020065300",
+      "decoded": [
+        {
+          "address": "0073D642",
+          "bytes": "c7819000000020065300",
+          "instruction": "mov dword ptr [ecx + 0x90], 0x530620"
+        }
+      ],
+      "live_Ghidra_equal_installed_PE": true,
+      "scope": "one store only; parent fragment and two reads reused from retained prior evidence"
+    },
+    "retained_prior_fragment": "0073D63C..0073D65B: ECX=actual global 0109CEEC; [ECX+90]=00530620; then fresh EDX=actual global 0109CEEC; [EDX+8C]=00735B30. The 32-byte fragment is retained from the preceding audit, not freshly queried outside this packet\u2019s address scope.",
+    "source": "Current Source installer independently reads the volatile publication twice and stores both literal identities. It is a whole 32-byte/9-instruction zero-relocation object function.",
+    "new_operation": "The future opt-in API captures and checks the current genuine owner once for its +90-only publication. It does not claim to be a replacement of the original four-instruction fragment and does not write +8C."
+  },
+  "raw_ABI_to_preserve": {
+    "C3": "raw_ignore_native_vfs_mount_failure_00530620 is exactly C3, no relocations. It reads no input and returns without popping arguments, preserving non-stack registers and flags.",
+    "notifier": "raw_notify_native_vfs_request_failure_00bd9e30 is exactly 8B8190000000FFD0C20400: MOV EAX,[ECX+90]; CALL EAX; RET4. ECX is borrowed actual manager; EDX is independently forwarded unchanged; one stack DWORD is discarded after return, not supplied as a callback argument.",
+    "not_inferred": "The publisher returns only a manager borrow. It supplies no EDX or discarded DWORD, no equality between those values, no field18 state and no fixed 109CEEC binding. With C3 only, EAX remains the loaded target; raw bodies and this contract must stay byte-exact.",
+    "typed_limit": "Finite typed dispatch may directly call the raw C3 leaf but retains an ordinary C++ interface; its register/flag behavior is not raw-notifier ABI evidence."
+  },
+  "compatibility_callers": [
+    {
+      "caller": "install_native_vfs_startup_callbacks_0073d63c",
+      "source": "src/native_vfs_startup_callbacks.cpp:15",
+      "current": "Two independent volatile publication reads; first owner+90=00530620, second owner+8C=00735B30.",
+      "proposed": "Leave installer and its default identity mode unchanged. Opt-in publisher is a later, separately guarded +90-only Source operation; never merge the two original reads or convert +8C."
+    },
+    {
+      "caller": "NativeVfsStartupCallbacks::mount_failure_00be18b8",
+      "source": "src/native_vfs_startup_callbacks.cpp:23",
+      "current": "Whitelist only 00530620, then typed no-op. Whole 49-byte COFF has the comparison and inlined no-op return.",
+      "proposed": "Use shared finite helper accepting Original identity or exact raw symbol. Unknown targets keep the existing mount-specific invalid_argument. Preserve captured-manager behavior; no owner recapture."
+    },
+    {
+      "caller": "NativeVfsRuntimeBindings::open_failure_entry",
+      "source": "src/native_vfs_runtime_bindings.cpp:81",
+      "current": "Whitelist only 00530620, then call the ordinary typed no-op. Whole 27-byte COFF relocates that helper and unsupported().",
+      "proposed": "Use the same finite helper; unknown targets retain unsupported() and its current diagnostic. No arbitrary indirect call."
+    },
+    {
+      "caller": "GameNativeVfsRuntime::Impl::invoke_manager_failure_callback / typed BD9E30",
+      "source": "src/game_native_vfs_runtime.cpp:340; src/native_filestore_request.cpp:304,417",
+      "current": "Typed FileStore notifier loads manager+90; runtime forwards captured target and manager to open_failure_entry. It discards its own scalar parameter.",
+      "proposed": "No caller changes. Shared whitelist supports either mode. This typed route is not raw BD9E30 and provides no register preservation proof."
+    },
+    {
+      "caller": "mount_native_vfs_system_path_00be1890 / open_native_vfs_resource_00bdf310",
+      "source": "src/native_vfs_mount_registration.cpp:99; src/native_vfs_open_route.cpp:209",
+      "current": "Failure paths capture publication then owner+90. Mounted route calls startup dispatch; open route uses runtime bindings when present, otherwise a direct two-register fastcall.",
+      "proposed": "No caller changes. Bound paths require the dual whitelist. Unbound direct fastcall becomes callable only with a real qualified +90 pointer; numeric identity mode alone never authorizes it."
+    },
+    {
+      "caller": "read_native_physical_stream_00bf5030 typed Source failure route",
+      "source": "src/native_physical_stream_open.cpp:324",
+      "current": "On ReadFile failure, reads its Source publication, owner+18, then owner+90; directly calls +90 as void(__fastcall*)(void*,void*). No runtime whitelist is used here.",
+      "proposed": "The qualified C3 pointer accepts that existing no-stack-argument call, but this does not establish exact Original BF5030 load/call ABI, fixed publication provenance, field18 preimages, or connected raw-read readiness."
+    }
+  ],
+  "disjoint_future_Source_file_sets": [
+    {
+      "group": "A finite target helpers and dispatch",
+      "paths": [
+        "include/bsp/native_vfs_startup_callbacks.hpp",
+        "src/native_vfs_startup_callbacks.cpp",
+        "include/bsp/native_vfs_runtime_bindings.hpp",
+        "src/native_vfs_runtime_bindings.cpp"
+      ],
+      "work": "Add qualified target/helper declarations, direct known-symbol dispatch and updated whitelist documentation. Leave the existing two-store installer body unchanged."
+    },
+    {
+      "group": "B genuine existing owner API",
+      "paths": [
+        "include/bsp/game_native_vfs_application.hpp",
+        "src/game_native_vfs_application.cpp",
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp"
+      ],
+      "work": "Add application completion flag and public forwarding method, plus private runtime guarded +90 publication and borrowed pointer return, accessible through GameNativeVfsApplication friendship. No new class, allocation, publication cell or owner family.",
+      "dependency": "Depends on the agreed helper signatures from A. File sets are disjoint; do not treat them as behaviorally independent until that contract is fixed."
+    }
+  ],
+  "untouched_future_files": [
+    "include/bsp/native_physical_failure_entries.hpp",
+    "src/native_physical_failure_entries.cpp",
+    "src/native_vfs_open_route.cpp",
+    "src/native_vfs_mount_registration.cpp",
+    "src/native_filestore_request.cpp",
+    "src/native_physical_stream_open.cpp",
+    "src/game_hosts_singletons.cpp"
+  ],
+  "future_validation_boundary": [
+    "Only Root acceptance authorizes a separate Source implementation packet. There is no source authorization here.",
+    "Use existing MSVC Win32 build; the proposed eight existing files require no new CMake source registration. Retain whole affected objects/archive members and link relocations to the known raw symbol.",
+    "Before any subsequent authorized execution, qualify the actual linked/loaded one-byte C3 symbol and byte-exact 11-byte notifier; whole archive evidence alone is insufficient. No fabricated manager or synthetic global can stand in for successful application startup.",
+    "Check identity defaults, both finite dispatcher branches and unknown-target rejection; check startup/retirement/publication/preimage guards on genuine owned state if runtime validation is separately authorized. Do not add a mock owner or broad fixture suite.",
+    "Raw BF5030 and gameplay remain separately unqualified even after publication design/source acceptance."
+  ],
+  "evidence": {
+    "family": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03",
+    "manifest": {
+      "path": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/manifest.json",
+      "sha256": "e50db2670af280526d5e7c7e7bc154a51d1bad2969be8ebc90585469837ca850"
+    },
+    "retained_rows": 66,
+    "roles": {
+      "whole_installed_Original_PE": 1,
+      "whole_current_Source_provider": 10,
+      "whole_current_Source_header": 10,
+      "selected_owner_contract_or_build_recipe": 9,
+      "prior_static_evidence_no_new_native_admission": 4,
+      "prior_owner_two_read_installer_evidence_not_recaptured": 5,
+      "whole_existing_core_archive_not_linked": 1,
+      "actual_COFF_parser": 1,
+      "whole_existing_provider_COFF": 10,
+      "current_actual_MSBuild_project_not_new_build": 2,
+      "prior_build_compile_record_not_new_capture": 4,
+      "selected_actual_audit_tool": 5,
+      "selected_actual_decoder_module": 2,
+      "selected_actual_audit_backend": 2
+    },
+    "capture_copy_after_equal": true,
+    "whole_source_and_header_pairs": 10,
+    "whole_objects": 10,
+    "unique_complete_core_archive_members": 8,
+    "direct_game_objects": 2,
+    "selected_complete_functions": 20,
+    "whole_selected_Source_COFF": {
+      "path": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/whole_selected_Source_COFF.json",
+      "sha256": "61d92bee926f4baa0974d3d484b7d1b156bd0b6085f350d5a4efa3f7c5550bf2"
+    },
+    "whole_provider_inventory": {
+      "path": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/whole_provider_inventory.json",
+      "sha256": "6a2d34d30a94f05b503ceb8e71a57ca3884ea5f854b781bb8068b849166e3f20"
+    },
+    "timing": "Current selected files were copied after earlier builds. No new build/link, compiler/OS closure or actual initialized runtime owner is claimed.",
+    "objects": [
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/99fb59829fc5cd33b0da491255f8abe90696e4b7832324410d8a5022aebc3ff8/game_native_vfs_runtime.obj",
+        "sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20",
+        "build_target": "bsp_core",
+        "functions": 505,
+        "code_bytes": 23049,
+        "archive_member": {
+          "offset": 60970018,
+          "name": "/77206",
+          "bytes": 210257,
+          "sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/aae60f1132e6484374b4ab35c0dc135e42a21880541b3449062ede38633b45ff/native_vfs_startup_callbacks.obj",
+        "sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711",
+        "build_target": "bsp_core",
+        "functions": 17,
+        "code_bytes": 632,
+        "archive_member": {
+          "offset": 25790542,
+          "name": "/12328",
+          "bytes": 9883,
+          "sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/d47b136305ac1f98b61d00addf7d3f20da49f27568c1d2fa59cb3efa05bdd353/native_vfs_runtime_bindings.obj",
+        "sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65",
+        "build_target": "bsp_core",
+        "functions": 68,
+        "code_bytes": 4256,
+        "archive_member": {
+          "offset": 25807972,
+          "name": "/12436",
+          "bytes": 40687,
+          "sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/4859f063252681cd743652f7032f9a66aa6be0a6731fcf72bce5605a430d5dc5/native_physical_failure_entries.obj",
+        "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b",
+        "build_target": "bsp_core",
+        "functions": 2,
+        "code_bytes": 12,
+        "archive_member": {
+          "offset": 15638694,
+          "name": "/0",
+          "bytes": 912,
+          "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/35eec292e457a0996463e709bae938d63cdec7aff237a9f2069ca2eb2c12c790/native_physical_stream_open.obj",
+        "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c",
+        "build_target": "bsp_core",
+        "functions": 52,
+        "code_bytes": 3627,
+        "archive_member": {
+          "offset": 57793678,
+          "name": "/68246",
+          "bytes": 22700,
+          "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/c14d24f1fcdf42548080135df55b424747e0bca44423292626cf86a1902b61b0/native_filestore_request.obj",
+        "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21",
+        "build_target": "bsp_core",
+        "functions": 60,
+        "code_bytes": 4410,
+        "archive_member": {
+          "offset": 35466572,
+          "name": "/41616",
+          "bytes": 27268,
+          "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/694ae5a3e0df83a680218870fadb29972ec81f076f282be53bdca9eabd8aeb13/native_vfs_open_route.obj",
+        "sha256": "2c49ffad48ab4cc66c802a7bcc6be1dad8a7a3aa4a07e1916df4d6360163dd5d",
+        "build_target": "bsp_core",
+        "functions": 34,
+        "code_bytes": 2696,
+        "archive_member": {
+          "offset": 25864778,
+          "name": "/12598",
+          "bytes": 18432,
+          "sha256": "2c49ffad48ab4cc66c802a7bcc6be1dad8a7a3aa4a07e1916df4d6360163dd5d"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/f1ee843bf6d697d6699269ca4e0025bf5a9bb35fb23931108ba182daf6675f45/native_vfs_mount_registration.obj",
+        "sha256": "255177e14ccaa270e045883b2050897864105a25e538e4ceb02eb56d1555dc8d",
+        "build_target": "bsp_core",
+        "functions": 21,
+        "code_bytes": 1350,
+        "archive_member": {
+          "offset": 25947364,
+          "name": "/12793",
+          "bytes": 13126,
+          "sha256": "255177e14ccaa270e045883b2050897864105a25e538e4ceb02eb56d1555dc8d"
+        },
+        "direct_game_no_archive_claim": false
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/fc061fca1c3c20f0f882d891a90e78dd3266881e65a616649c75318de48498d9/game_native_vfs_application.obj",
+        "sha256": "e2282e735ae4512b545cadecd15fc35e8b55fa89bdb1279cc4a6cce9311630f9",
+        "build_target": "bsp_game",
+        "functions": 111,
+        "code_bytes": 4901,
+        "archive_member": null,
+        "direct_game_no_archive_claim": true
+      },
+      {
+        "object": "local/cc12_physical_failure_callable_publication_design_20261008a/audit03/inputs/frozen/402f5344a0c0d5faa6938d574871ecccefc06e41f259620b525e380668d5a1bf/game_hosts_singletons.obj",
+        "sha256": "ca66d703cb63aad93aee6e574c4b2b657cd484adc439ca1253687113b70e0231",
+        "build_target": "bsp_game",
+        "functions": 93,
+        "code_bytes": 3138,
+        "archive_member": null,
+        "direct_game_no_archive_claim": true
+      }
+    ]
+  },
+  "selected_complete_Source_functions": [
+    {
+      "symbol": "?actual_manager@GameNativeVfsRuntime@game@bsp@@QBEPAXXZ",
+      "bytes": 6,
+      "instructions": 3,
+      "sha256": "cca3bea9b0b19e85887eb83f354b215c1c5232ceb2733741c09a4b1eed0c9b80",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?borrow_raw_services@GameNativeVfsRuntime@game@bsp@@QAE?AUGameNativeVfsRawServices@23@XZ",
+      "bytes": 98,
+      "instructions": 32,
+      "sha256": "cc8a7a48fd816633d7c9c1f671a94c81aaa19dadb79c3d8570ad6ce596b880b7",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?construct_and_register_core@GameNativeVfsRuntime@game@bsp@@QAEXXZ",
+      "bytes": 161,
+      "instructions": 50,
+      "sha256": "0cdc8c51bae3f675ddf3abd3f45ddc4eceee246da52116c9c5b6444b87db45c2",
+      "relocation_count": 10,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?retire_after_shared_drain@GameNativeVfsRuntime@game@bsp@@QAEXXZ",
+      "bytes": 159,
+      "instructions": 38,
+      "sha256": "e3e65e85fdd2514d6a4c4478a7abfda2b44b67f05d0b7b30e21b87b367150d49",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?invoke_manager_failure_callback@Impl@GameNativeVfsRuntime@game@bsp@@UAEXIPAX@Z",
+      "bytes": 15,
+      "instructions": 5,
+      "sha256": "6154bf15a289cf21e73c6310bed5a334afb41f8bf6e00be0a30a41be2c49ebd0",
+      "relocation_count": 1,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?register_core@Impl@GameNativeVfsRuntime@game@bsp@@QAEXXZ",
+      "bytes": 161,
+      "instructions": 50,
+      "sha256": "2e010483a666ce08379cd4b4bb8f55a5ab51a44a8866863acd6c7af53b39f8e3",
+      "relocation_count": 10,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+      "bytes": 32,
+      "instructions": 9,
+      "sha256": "10693a5d432a3db980c7f6ce0791ce9f6ae60bcf87b07bf304fa8d8d16eb1bf3",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+      "bytes": 49,
+      "instructions": 16,
+      "sha256": "194e6b8c6e77db4fa0d6338954045d3af499797d4d683a2c564067d2ddc366b5",
+      "relocation_count": 4,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+      "bytes": 27,
+      "instructions": 9,
+      "sha256": "ccb2bb8f9645c7e1ff3dbaaac52d37e9939bd65f4907a81c321e46b35281c0e2",
+      "relocation_count": 2,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+      "bytes": 1,
+      "instructions": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+      "bytes": 11,
+      "instructions": 3,
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?read_native_physical_stream_00bf5030@bsp@@YAIPAX0IPAIAAUNativePhysicalStreamOpenContext@1@@Z",
+      "bytes": 103,
+      "instructions": 42,
+      "sha256": "f1d54ee77cf9c9ac56473bb78971da69a2ae3531ddacc4a3caaeac1287fc974f",
+      "relocation_count": 1,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?notify_native_vfs_request_failure_00bd9e30@bsp@@YAXPAXIAAVNativeFileStoreRequestDispatch@1@@Z",
+      "bytes": 24,
+      "instructions": 11,
+      "sha256": "667e2b949f36ca8f3d4842fb4bdd350c3b21eb73d6d1a94746f94d9380a98bbc",
+      "relocation_count": 0,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?open_native_vfs_resource_00bdf310@bsp@@YAPAXPAXPBXIAAUNativeVfsOpenRouteContext@1@@Z",
+      "bytes": 495,
+      "instructions": 180,
+      "sha256": "a43bfad34a3529e7089a1bf00caee52121e542010f97f0ed3abcf6450698e8e1",
+      "relocation_count": 12,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?mount_native_vfs_system_path_00be1890@bsp@@YAPAXPAXPBX1IIIAAUNativeVfsMountRegistrationContext@1@@Z",
+      "bytes": 158,
+      "instructions": 66,
+      "sha256": "e1f236d1c792a30f5617d149ee94db80d46dd5aedfbd9efc38256c85901b9d3a",
+      "relocation_count": 6,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?initialize_core@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+      "bytes": 7,
+      "instructions": 2,
+      "sha256": "e1f6501c07bdc73228b657f6b51047dacc562286c3d561afd7e4e6d371615916",
+      "relocation_count": 1,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?runtime@GameNativeVfsApplication@game@bsp@@QAEAAVGameNativeVfsRuntime@23@XZ",
+      "bytes": 50,
+      "instructions": 18,
+      "sha256": "1e61f1f28a4dc314f5b2debe06a96ec14650db15566e632cc68409fc5f081490",
+      "relocation_count": 4,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+      "bytes": 535,
+      "instructions": 147,
+      "sha256": "d5a37f68b11e5193173a62442bf09591f0b463056818061579cbdb85ec78142c",
+      "relocation_count": 19,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?shutdown@GameSingletonHost@game@bsp@@QAEXXZ",
+      "bytes": 202,
+      "instructions": 71,
+      "sha256": "ef8e22c7b55ca500a36a8ae4102301fbf723e22819d9eff089f96ea9d28e524c",
+      "relocation_count": 10,
+      "complete_decode": true
+    },
+    {
+      "symbol": "?retire_vfs_after_drain@GameSingletonHost@game@bsp@@AAEXXZ",
+      "bytes": 28,
+      "instructions": 7,
+      "sha256": "002992ec3d3eb1a2bd6ff0f1ba8121018343e1a4fb789c40fe1dd92db9f5dd27",
+      "relocation_count": 1,
+      "complete_decode": true
+    }
+  ],
+  "capture_attempts": {
+    "accepted": "audit03",
+    "excluded": [
+      "audit01 stopped on an incorrect expected ModRM byte before any conclusion; fresh bytes correctly use ECX (C781)",
+      "audit02 completed selected decoding but stopped on an absent audit-helper path; no complete manifest"
+    ]
+  },
+  "validation": [
+    "Fresh exact 10-byte store matches live verified Ghidra and installed PE; client verifies project/program/language/base before bytes/disasm",
+    "All 66 transfer rows agree across current/capture/copy/after hashes",
+    "All 20 selected complete Source functions decode; genuine C3 and 11-byte raw notifier are exact with no relocations",
+    "All 10 whole objects retained; 8 uniquely match whole archive members, 2 are direct game objects",
+    "Prior pending owner report and raw-entry Source files unchanged; exactly 2 new tracked outputs"
+  ],
+  "primary_acceptance": {
+    "status": "PASS_design_accepted_for_separate_bounded_Source_packet",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_callable_failure_publication_design_primary_review\\receipt.json",
+      "bytes": 13904,
+      "sha256": "9af39a578def7573e8afb176dbd3b0f5cdf501da56b7ae28cef695e9389206dc"
+    },
+    "Source_followup_authorized_within_continuing_reconstruction_goal": true,
+    "new_Source_functions": 0,
+    "new_Original_function_records": 0,
+    "new_execution": false,
+    "game_validated": false,
+    "qualification": "READ_ONLY design accepted for explicit application opt-in on genuine completed retainedA0 owner. Private runtime publication method/friend, phase/retirement/publication/preimage/trusted exactC3-code guards, +90-only store and non-owning borrowed return with caller exclusivity/quiescence. Two finite dispatchers admit Originalidentity or exact qualified Source symbol via direct named call, preserving diagnostics/default installer and raw bodies. Source-only future feature; no live owner or loaded provider execution, connectedBF5030/class/OriginalABI/game promotion."
+  }
+}
