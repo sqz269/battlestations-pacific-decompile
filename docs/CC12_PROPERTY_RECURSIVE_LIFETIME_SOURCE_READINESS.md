@@ -20,8 +20,10 @@ performed by this packet.
 ## Complete native family
 
 Live queries use `tools/bsp.py ghidra`, which verifies project `bsp`, program
-`/battlestationspacific.exe`, image base and language before each batch. All
-23 retained native code/data spans equal the retained installed PE. The
+`/battlestationspacific.exe`, image base and language before each batch. The
+22 raw code/data spans equal the retained installed PE; the four-byte
+`00E188B4` span is separately qualified as loader-zero data inside the real
+virtual section beyond its raw file extent. The
 whole six-body family totals **571 bytes**.
 
 | Original | Whole bytes | Linear/stored instructions | Required behavior |
@@ -265,3 +267,9 @@ current recipes are retained. Unrelated newer main translation units are not
 claimed freshly built by the inherited archive. The separate primary
 acceptance receipt records its genuine 285 consumed inputs being pre-frozen;
 this packet does not relabel its own later copies as pre-build inputs.
+
+## Independent primary acceptance
+
+The integrator rehashed all 1,445 retained artifacts and 378 physical input copies. Twenty-two Native raw spans match the installed PE, and E188B4 is explicitly qualified from its actual virtual/raw section bounds as four loader-zero bytes. The exact selector/target tables, two outer scalar profile slots, and repaired contiguous record scalar are independently checked. All 54 selected current project inputs remain byte-equal. Eleven current whole objects, including the application string-process object, match all 485 complete extents and ordered relocations with explicit compiler-name bijections; the ten Core objects each have one exact current archive member.
+
+Primary receipt: `local/cc12_property_recursive_lifetime_readiness_primary_review/receipt.json`, SHA-256 `152216420124913c5b85c2485b49e8fc3414652e1e4e5e31df5f729679af3a81`. The retained first driver iteration exposed the raw-versus-loader-zero distinction; it caused no Source, build, execution or Ghidra change. The six complete ordinary bodies may proceed as one bounded Source packet under the concrete borrowed canonical-context and unique acyclic ownership conditions above. Original ABI/EH, populated-graph execution, startup and gameplay remain unvalidated.

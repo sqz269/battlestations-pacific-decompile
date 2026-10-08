@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_recursive_lifetime_source_readiness",
   "UTC": "2026-10-08T19:25:39.968793+00:00",
-  "status": "SIX_WHOLE_BODY_DESIGN_READY_FOR_INDEPENDENT_PRIMARY_REVIEW_AFTER_ACCEPTED_PRODUCER; ZERO_SOURCE_ADDED",
+  "status": "PRIMARY_ACCEPTED_COHESIVE_SIX_BODY_ORDINARY_SOURCE_DESIGN_ZERO_NEW_SOURCE",
   "source_baseline": "3649653337d98e9a0203021ba36fb61214592cc5",
   "producer_gate": {
     "main": "3649653337d98e9a0203021ba36fb61214592cc5",
@@ -1369,5 +1369,19 @@
     "bytes": 330603,
     "sha256": "cd6502b26def8236183c4556a46d940cd8c3dda6dc10a908027fe99c8f5b9cf3",
     "count": 1445
+  },
+  "primary_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_recursive_lifetime_readiness_primary_review\\receipt.json",
+    "sha256": "152216420124913c5b85c2485b49e8fc3414652e1e4e5e31df5f729679af3a81",
+    "sealed_artifacts_rehashed": 1445,
+    "Native_raw_PE_spans": 22,
+    "Native_loader_zero_span": "00E188B4 4bytes proven inside actual virtual data past raw size",
+    "current_whole_objects": 11,
+    "current_complete_extents": 485,
+    "current_unique_Core_members": 10,
+    "selected_current_project_inputs_unchanged": 54,
+    "new_Source_or_build_or_execution_or_credit": 0,
+    "future_Source_packet": "cc12_property_recursive_lifetime_source",
+    "full_cycle_required": true
   }
 }
