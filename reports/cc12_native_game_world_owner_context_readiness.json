@@ -1,0 +1,459 @@
+{
+  "packet": "cc12_native_game_world_owner_context_readiness",
+  "status": "read_only_whole_native_context_closed_actual_mission_world_source_unready",
+  "evidence_utc": "2026-10-08T23:11:14.183890+00:00",
+  "git_at_capture": {
+    "worker_head": "2a90c87d3bb5d690549360161a0d44f00695b472",
+    "main_head": "6bc5aa26a6205ef603ef94b2e6965966cfa64704",
+    "worker_status": "",
+    "main_status": "?? reports/native_light_shadow_view_build.txt"
+  },
+  "scope": {
+    "owned_native_addresses": [
+      "004de610",
+      "004cb030",
+      "004c3080",
+      "009037f0"
+    ],
+    "new_Source_definitions": 0,
+    "Source_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "Ghidra_program_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "entry_executions": 0,
+    "complete_native_bodies_and_call_schedules": 4,
+    "bytes": 5598,
+    "instructions": 1454,
+    "new_production_owners_ready": 0,
+    "registered_ready_packets": 0
+  },
+  "native": {
+    "004de610": {
+      "bytes": 5357,
+      "sha256": "e2dc6f267b4aac3fe7e22b17501b861d8654eb3e0a063fd6fcc049e942ebc963",
+      "exclusive_end": "004dfafd",
+      "instruction_count": 1370,
+      "fresh_memory_equals_installed_PE": true,
+      "all_exported_instruction_starts_equal_PE_decode": true
+    },
+    "004cb030": {
+      "bytes": 126,
+      "sha256": "2294a34491aee760a23d8f05b80e88bc1cbcab4445b2a85978d1ad7265ac6028",
+      "exclusive_end": "004cb0ae",
+      "instruction_count": 39,
+      "fresh_memory_equals_installed_PE": true,
+      "all_exported_instruction_starts_equal_PE_decode": true
+    },
+    "004c3080": {
+      "bytes": 26,
+      "sha256": "5a5cc009f2f21acf33ca74f2d277ca8fb843c93a8e12a798cd2d3d9978a7b090",
+      "exclusive_end": "004c309a",
+      "instruction_count": 11,
+      "fresh_memory_equals_installed_PE": true,
+      "all_exported_instruction_starts_equal_PE_decode": true
+    },
+    "009037f0": {
+      "bytes": 89,
+      "sha256": "a78634c872f6a342bbab2641f25a04679590a448431ae363b6a45fd3cd480689",
+      "exclusive_end": "00903849",
+      "instruction_count": 34,
+      "fresh_memory_equals_installed_PE": true,
+      "all_exported_instruction_starts_equal_PE_decode": true
+    }
+  },
+  "caller_schedule": {
+    "body": "004DE610..004DFAFC inclusive",
+    "ordinary_input": "ECX actual Game; no stack arguments; plain RET",
+    "return": "Native routine has no semantic result; publications are through actual Game/global storage",
+    "nonvolatile": "EBX, EBP, ESI, EDI saved/restored; stack aligned down to 8 in prologue and restored from frame",
+    "calls": 210,
+    "direct_calls": 184,
+    "indirect_calls": 26,
+    "distinct_direct_targets": 83,
+    "all_direct_branches_resolve_to_owned_instruction_starts": true,
+    "all_callees_semantically_closed": false,
+    "phases": [
+      {
+        "range": "004DE610..004DE6A0",
+        "behavior": "Optional renderer budget; allocate and memset real 4BC World, construct, publish Game+19CC, postinitialize SAME World"
+      },
+      {
+        "range": "004DE6A1..004DE943",
+        "behavior": "Scene root24, Operator458 using ECX-size allocator, child34 and reference release, actual renderer/settings calls, scene services and light"
+      },
+      {
+        "range": "004DE944..004DF420",
+        "behavior": "Record/default settings, actual pooled strings and resource references, caustics/shore placements, virtual setters and release operations"
+      },
+      {
+        "range": "004DF421..004DF6A2",
+        "behavior": "Ocean owner40 with record or sky_001 description; accessors and ordered scalar/vector/quality setters"
+      },
+      {
+        "range": "004DF6A3..004DF7B4",
+        "behavior": "Fog94 ownership transfer, release before initialization, x87 scalar/color schedule, four record layers, final Operator color"
+      },
+      {
+        "range": "004DF7B5..004DF90E",
+        "behavior": "SkyB8; record-gated discarded Ocean initialization failed literal; sky settings and scene attachment"
+      },
+      {
+        "range": "004DF90F..004DFAFC",
+        "behavior": "Eight channel30 objects, preexisting Game+21A0 service, six tail managers, input-context enable, frame restoration"
+      }
+    ],
+    "ordinary_EH_boundaries": [
+      "004DE610 installs handler 00C671A0 and changes state through 2C; external cleanup graph not newly qualified",
+      "004CB030 installs handler 00C65651; state0 before vector constructor iterator, state1 before sentinel allocation; cleanup graph remains prerequisite"
+    ],
+    "decompiler_warning": "The 004DF846 unreachable warning is not used to omit this native block. Whole listing and byte coverage include it; no flow repair performed."
+  },
+  "same_world_identity": {
+    "proven": true,
+    "allocation_bytes": 1212,
+    "sequence": [
+      "004DE651 PUSH4BC; 004DE656 CALL00BF55BE; EDI captures EAX",
+      "004DE664 memset(EDI,0,4BC) through00BF79F0; no null test precedes this memset",
+      "004DE67D ECX=EDI calls004CB030; 004CB09F returns ESI=this in EAX",
+      "004DE68D ECX=EAX; 004DE696 Game+19CC=EAX; 004DE69C calls009037F0 with stack1,1"
+    ],
+    "separate_4A8_World_allocation": false,
+    "postinitializer": "009037F0 is on that same4BC owner; it allocates two distinct0C headers, not a4A8 base object",
+    "offsets": [
+      {
+        "offset": "00",
+        "meaning": "Native vptr00CE7784; its actual first on-disk pointer is004CB0B0; no Source numeric-vtable waiver"
+      },
+      {
+        "offset": "04,08",
+        "meaning": "Pointers to separately allocated0C intrusive headers, initialized4/0/8; source vectors do not provide them"
+      },
+      {
+        "offset": "0C,10,14",
+        "meaning": "DWORD zero stores in004CB030"
+      },
+      {
+        "offset": "18..4A3",
+        "meaning": "97 category headers of12 bytes; constructor callback004B7EC0, destructor callback004C2D30 via00BF7CD1"
+      },
+      {
+        "offset": "4A4",
+        "meaning": "First stack argument BYTE written by00903802; incoming second DWORD is unused, both popped byRET8"
+      },
+      {
+        "offset": "4A8",
+        "meaning": "DWORD zero written by009037FC; reference ownership meaning comes only from older destructor context; not an allocation size or a newly established flag type"
+      },
+      {
+        "offset": "4AC",
+        "meaning": "Ready BYTE1 written004CB098 after successful sentinel allocation"
+      },
+      {
+        "offset": "4B0",
+        "meaning": "Untouched by004CB030 and004C3080; zero here follows the actual caller memset"
+      },
+      {
+        "offset": "4B4,4B8",
+        "meaning": "Actual6C sentinel pointer from004C3080, then DWORD count0"
+      }
+    ]
+  },
+  "sentinel_leaf": {
+    "address": "004C3080",
+    "bytes": 26,
+    "instructions": 11,
+    "ordinary_ABI": "Input ECX supplied as World+4B0 is never read; no stack args; EAX allocated base, ECX=EAX+4 at normal return, plain RET; nonvolatiles untouched",
+    "allocator": "CDECL00BF681B(6C); incoming ECX is not a list or World mutation target",
+    "writes": [
+      "If EAX!=0, [EAX]=EAX",
+      "ECX=EAX+4 in32-bit arithmetic; if ECX!=0, [ECX]=EAX"
+    ],
+    "remaining_storage": "Bytes08..6B remain allocator residue; no memset, count, payload constructor, publication, or destructor occurs here",
+    "failure": "Qualified existing host allocator returns real storage or throws. Literal Native EAX==0 path would still write address4; it is not graceful null success.",
+    "ownership": "Returns a new raw6C allocation in the existing matching allocate/free domain; only the actual caller subsequently publishes it at World+4B4",
+    "existing_Source": "No definition found; construct_world_object_004cb030 instead returns list_head=1 in a projected WorldObjectLayout"
+  },
+  "allocation_failure_contract": {
+    "return_or_throw": "Existing singleton_lifetime_allocate implements malloc/_callnewh retry and bad_alloc; prior Native105B allocator and5B free evidence rechecked against current installed PE",
+    "native_class_or_FH3_identity_replaced": false,
+    "not_graceful_null": [
+      "World allocation is memset before the caller tests it",
+      "Postinitializer is called after publication without a null guard",
+      "Sentinel null branch proceeds to write [4]"
+    ],
+    "postinitializer_partial_effects": "Writes +4A8 and+4A4 before first allocation. First allocation result is published at+4 before second allocation. An exception from the second does not roll back the first in009037F0.",
+    "constructor_partial_effects": "Vptr and0C/10/14 zero stores and97 callback initializations precede sentinel allocation; ready BYTE is only stored after it returns. Actual constructor/array unwind remains unclosed."
+  },
+  "current_Source": [
+    {
+      "file": "src/world_construct.cpp",
+      "finding": "WorldObjectLayout projection includes slot_count97 and sentinel1; no4BC allocation, actual97 raw headers, sentinel allocation, Source vtable, or ordinary constructor unwind"
+    },
+    {
+      "file": "include/bsp/world_construct.hpp",
+      "finding": "WorldConstructHost create_world/world_post_construct and other providers remain abstract; bounded production Source search found no implementation"
+    },
+    {
+      "file": "src/world_construct.cpp",
+      "finding": "run_world_construct returns projected uint32 handles and forwards host calls; it is not the originalECX Game ABI or a concrete owner for210 actual CALL sites"
+    },
+    {
+      "file": "src/game_hosts_world.cpp",
+      "finding": "build_entity_chains_009037f0 fills index vectors and counters; it produces no actual0C raw headers and does not write the real4BC World fields"
+    },
+    {
+      "file": "src/game_hosts_mission_frame.cpp",
+      "finding": "Creates the projected GameWorldHost after unit loading; active-world gate is projected; source explicitly says mission World teardown is not run"
+    },
+    {
+      "file": "src/game_native_game_runtime.cpp",
+      "finding": "Existing actual NativeGameStorage runtime owns construction/lifetime operation frames and canonical Dyn services. Its physics access reloads Game+18, distinct from mission World at+19CC. This audit does not claim every game/Dyn owner is absent."
+    },
+    {
+      "file": "src/system_fog_world_factory.cpp",
+      "finding": "Existing concrete004DF6A3 fog fragment preserves ownership and x87 details. It requires real receiver/camera/record fields and a real packed-color temporary; it does not produce World or whole004DE610 context."
+    },
+    {
+      "file": "src/native_parent_list_header_storage.cpp",
+      "finding": "Actual13B6 raw callback Source exists; current ledger says standalone complete-helper fixture admission reopened"
+    },
+    {
+      "file": "src/native_parent_header_destructor_callback.cpp",
+      "finding": "Actual5B1 tail to raw70 clear exists; current ledger says final Source admission pending standalone clear70 regate"
+    },
+    {
+      "file": "src/native_entity_intrusive_unlink.cpp",
+      "finding": "Two complete83B29 raw unlink Source leaves now exist; no actual mission World allocation/publication/lifetime follows from them"
+    }
+  ],
+  "destruction_boundary": {
+    "actual_constructor_vptr_first_target": "004CB0B0 from physical00CE7784 DWORD",
+    "prior_context_only": [
+      "Prior GAME_WORLD_CONSTRUCT pairs mission teardown004D2BB0 slot0(1) release of Game+19CC with004CB0B0 then00904C40",
+      "Prior CONSTRUCT_WORLD assigns+4A8 reference release and+4B0 matrix-list cleanup to00904C40"
+    ],
+    "current_lookup": "No Source function ledger for004CB0B0/00904C40/004D2BB0; current source searches yield constants/comments, not the full mission World lifetime implementation",
+    "new_whole_destructor_or_EH_qualification": false,
+    "required_before_owner_admission": [
+      "Actual Source primary table and deleting destructor",
+      "Complete00904C40 lifecycle and its nonempty entity/ref/list effects",
+      "Constructor00C65651 and array iterator ordinary exception contract",
+      "Game teardown publication clearing and partial construction ownership"
+    ],
+    "not_allowed": "No empty-container waiver, numeric native vtable, fake callback, or projection object substitutes for these contracts"
+  },
+  "historical_artifacts": {
+    "complete_archive": {
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\Release\\bsp_core.lib",
+      "retained": "archive/worker_bsp_core.lib",
+      "bytes": 73670972,
+      "sha256": "b84e7d1c9c28e4a4bca3a2155dc2cbea8416735543ba20dff6b900c77bde0eda",
+      "role": "Complete historical worker archive; no fresh build or consumed-input claim"
+    },
+    "modules": [
+      {
+        "module": "native_parent_list_header_storage",
+        "object_sha256": "3995dac6bc8494e5ddfe16dcb51a4dfcccd628ab6eaf2f9d2a347e99d9ccb5fe",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?initialize_native_parent_list_header_storage_004b7ec0@bsp@@YIPAXPAXI@Z",
+            "bytes": 13,
+            "instruction_count": 6,
+            "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+            "relocations": 0
+          }
+        ]
+      },
+      {
+        "module": "native_parent_header_destructor_callback",
+        "object_sha256": "5bc72cda37b3bad5ecc4cd2ec742b52814dcfd6c65bfcdc2e3bfd954c33d3d5c",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?destroy_native_parent_header_004c2d30@bsp@@YIXPAXI@Z",
+            "bytes": 5,
+            "instruction_count": 1,
+            "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+            "relocations": 1
+          }
+        ]
+      },
+      {
+        "module": "native_parent_header_clear",
+        "object_sha256": "160eeffdb2f1a29567705a4d7d694d48a154117f4b771e778483e81fb32ce429",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+            "bytes": 70,
+            "instruction_count": 29,
+            "sha256": "6c25baf6532cbd0f4d066eacb4b13f70b06245bbd24c94d6e1b49b96e0b38d81",
+            "relocations": 1
+          }
+        ]
+      },
+      {
+        "module": "singleton_lifetime",
+        "object_sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "bytes": 90,
+            "instruction_count": 37,
+            "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+            "relocations": 5
+          },
+          {
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "bytes": 6,
+            "instruction_count": 1,
+            "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+            "relocations": 1
+          }
+        ]
+      },
+      {
+        "module": "native_entity_intrusive_unlink",
+        "object_sha256": "375265be3c3543c9bd1bf74ec7e00b810fd4c0251c9066676379418c6c52f506",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?unlink_native_entity_world_chain_00903f30@bsp@@YIPAXPAXI0@Z",
+            "bytes": 83,
+            "instruction_count": 29,
+            "sha256": "1eb60de632316963b95f9385620d97fe53bb5188cd20ac3cc593f988489e4dc4",
+            "relocations": 0
+          },
+          {
+            "symbol": "?unlink_native_entity_sibling_chain_00924710@bsp@@YIPAXPAXI0@Z",
+            "bytes": 83,
+            "instruction_count": 29,
+            "sha256": "5662da33dd4d146824cdadff4440b6b95f0c20d14d1293674b9bff17bfbe6d31",
+            "relocations": 0
+          }
+        ]
+      },
+      {
+        "module": "world_construct",
+        "object_sha256": "1b0944b894c5bb8b84dbbe587e4f14f42ec03da66a9be482b675f847967067d5",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?construct_world_object_004cb030@bsp@@YA?AUWorldObjectLayout@1@XZ",
+            "bytes": 74,
+            "instruction_count": 15,
+            "sha256": "81d3d7d3fdb6519843e15a206349a1fe5f6b11c67156b2ae07c36f13f2350af4",
+            "relocations": 0
+          },
+          {
+            "symbol": "?run_world_construct@bsp@@YA?AUWorldConstructResult@1@AAUWorldConstructHost@1@@Z",
+            "bytes": 2534,
+            "instruction_count": 768,
+            "sha256": "d98b88349ce3fea0f1ca43c6649bcc35484fc7df4a3cb483e6cdd41136682e35",
+            "relocations": 42
+          }
+        ]
+      },
+      {
+        "module": "system_fog_world_factory",
+        "object_sha256": "db88449c1ba73f76f2c96054df0c8b60b10bccd07f82dff6da1336b13fa47341",
+        "core_member_count": 1,
+        "functions": [
+          {
+            "symbol": "?initialize_world_fog_004df6a3@bsp@@YAXABUWorldFogFactoryGameFields@1@AAI@Z",
+            "bytes": 319,
+            "instruction_count": 111,
+            "sha256": "6c049dd54efa821af7d5d36115dbfb0bf78e118927b0b9e42da14bf43c7a2803",
+            "relocations": 11
+          }
+        ]
+      },
+      {
+        "module": "game_hosts_world",
+        "object_sha256": "00040d94f4879022c7c25b325632c6cf7bc24c3b5115cc9e232cd7b13cdffd9f",
+        "core_member_count": 0,
+        "functions": [
+          {
+            "symbol": "?build_entity_chains_009037f0@GameWorldHost@game@bsp@@QAEXXZ",
+            "bytes": 443,
+            "instruction_count": 145,
+            "sha256": "a64d4bc23841ddbeae6196069345798b1527b445e0a928c27d4ee2696751eeae",
+            "relocations": 16
+          }
+        ]
+      }
+    ],
+    "whole_objects_and_unique_physical_core_members_checked": true,
+    "game_hosts_world_in_core": false,
+    "fresh_build_or_current_consumed_inputs_proved": false,
+    "role": "Historical physical artifacts show actual helper/projection shapes, not new compilation or runtime readiness"
+  },
+  "next_bounded_Source_proposal": {
+    "packet": "cc12_native_world_matrix_sentinel_source",
+    "native_address": "004C3080",
+    "whole_body": [
+      26,
+      11
+    ],
+    "scope": "Real independent6C allocation producer only; no production World/game admission",
+    "proposed_files": [
+      "include/bsp/native_world_matrix_sentinel.hpp",
+      "src/native_world_matrix_sentinel.cpp",
+      "docs/CC12_NATIVE_WORLD_MATRIX_SENTINEL_SOURCE.md",
+      "reports/cc12_native_world_matrix_sentinel_source.json"
+    ],
+    "Source_provider": "Bind the one original allocator CALL to a concrete CDECL size adapter using current singleton_lifetime_allocate({object,0x6C,0x6C}); no supplied test callback",
+    "dependency_closure": "Sole ordinary helper dependency is the existing real host CRT allocation boundary. Current Source complete90B37 historical provider, all5 relocations, matching free6B1, and prior Native allocator105/free5 pins are retained. Source CRT exception/vtable identity remains the explicit existing boundary.",
+    "ABI_requirements": [
+      "No consumed incomingECX or stack parameters",
+      "Return actualEAX allocation; preserve whole26B schedule and both literal branches",
+      "Keep+0 then+4 self-link stores; no initialization beyond+7",
+      "No noexcept on the throwing allocation path",
+      "No inferredWorld mutation, publication, payload constructor, or empty owning-class admission"
+    ],
+    "ownership_requirements": "Returned raw allocation transfers to the caller in the matching singleton allocation/free domain. The helper does not own a published World or provide its normal/EH destructor.",
+    "validation_for_future_authorized_task": [
+      "Normal scripts/build.ps1 with existing required checks",
+      "Fresh complete Source bridge/helper/provider COFF and unique physical archive members, exact current source/header/recipe inputs",
+      "Original26B whole body preserved outside the allocator relocation; no fixture/probe/runtime admission implied"
+    ],
+    "primary_registration_and_review_required": true,
+    "registered_ready_now": false,
+    "first_following_owner_blocker": "Actual4CB030 Source vtable/array-callback admission/EH cleanup and complete mission World destruction; then9037 raw header ownership and004DE610 concrete game/scene providers"
+  },
+  "verification": {
+    "pinned_files_verified": 78,
+    "owned_whole_Native_functions": 4,
+    "owned_Native_bytes": 5598,
+    "owned_Native_instructions": 1454,
+    "complete_caller_same_world_identity_proved": true,
+    "historical_provider_modules_checked": 8,
+    "historical_archive_members_matched": 7,
+    "current_Source_compile_or_consumption_claim": false,
+    "new_Source_definitions": 0,
+    "new_builds_tests_probes_executions": 0,
+    "actual_World_owner_ready": false,
+    "whole_game_caller_ready": false
+  },
+  "retained_data_boundaries": {
+    "Native": "Whole original PE, four live byte captures and complete fresh exports, all instructions/transfers",
+    "RO": "Exact original literal strings, scalar bytes, actual vtable pointer, and InterlockedIncrement/Decrement import identities",
+    "mutable": "On-disk initial storage bytes only; no current runtime global pointees/renderer/game objects claimed",
+    "Source": "78 physical pins, current definitions plus prior reports, complete historical archive/objects and build records",
+    "further_analysis": "No broad EH/control-flow repair, borrowed-body mutation, live game execution, or actual startup proof"
+  },
+  "sealed_evidence": {
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_game_world_owner_context_readiness_evidence.zip",
+    "bytes": 24731644,
+    "sha256": "c00cf2420f3e1374a1ff8938ee93fbd58351e0a156bdf8af7a93caef01826ea7",
+    "manifest_files": 140,
+    "zip_entries": 141,
+    "manifest_sha256": "c0275231b5adab9355256056b3fe0bab8cba067cf11c6dd0679f57601acc03e6",
+    "all_payload_hashes_and_CRC_pass": true
+  }
+}
