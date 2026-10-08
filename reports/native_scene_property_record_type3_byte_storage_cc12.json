@@ -1,0 +1,1232 @@
+{
+  "schema": "bsp.native.scene_property_record_type3_byte_storage.cc12.v1",
+  "packet": "cc12_scene_property_record_type3_byte_storage",
+  "Source_baseline": "15273df0d71b10d6ca1d9b8cc4aa42310163b03d",
+  "status": "whole raw partial-storage Source; strict fresh three-TU compiled, one component differential fixture and physical ABI checked; class/world/game unvalidated",
+  "owned_files": [
+    "include/bsp/native_scene_property_record_type3_byte_storage.hpp",
+    "src/native_scene_property_record_type3_byte_storage.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE3_BYTE_STORAGE_CC12.md",
+    "reports/native_scene_property_record_type3_byte_storage_cc12.json"
+  ],
+  "Source_sha256": {
+    "include/bsp/native_scene_property_record_type3_byte_storage.hpp": "2e6f87ee0429e245ae150f1b677416256e4e4c2a1f2b21db07b722e074a46288",
+    "src/native_scene_property_record_type3_byte_storage.cpp": "ffd50ed25d5caf4b120ae4f02f57c33509f72a98b0d0e522b37822ea4afebd94"
+  },
+  "declaration": "void* __fastcall initialize_native_scene_property_record_type3_byte_storage_008ef1f0(void* actual_storage_root, std::uint32_t unused_edx, std::uint8_t value_bits) noexcept;",
+  "descriptive_name_is_hypothesis": true,
+  "native_whole": {
+    "entry": "008EF1F0",
+    "exclusive_end": "008EF221",
+    "bytes": 49,
+    "sha256": "77c57bbbe4e8f241db03c9753b6655903eb4e6028d32b1c6b256d083ce32e5ab",
+    "kind": "whole",
+    "live_PE_equal": true,
+    "instructions": 14,
+    "disassembly": [
+      {
+        "address": "008EF1F0",
+        "bytes": "8bc1",
+        "instruction": "mov eax, ecx"
+      },
+      {
+        "address": "008EF1F2",
+        "bytes": "8a4c2404",
+        "instruction": "mov cl, byte ptr [esp + 4]"
+      },
+      {
+        "address": "008EF1F6",
+        "bytes": "88480c",
+        "instruction": "mov byte ptr [eax + 0xc], cl"
+      },
+      {
+        "address": "008EF1F9",
+        "bytes": "33c9",
+        "instruction": "xor ecx, ecx"
+      },
+      {
+        "address": "008EF1FB",
+        "bytes": "c700d489ce00",
+        "instruction": "mov dword ptr [eax], 0xce89d4"
+      },
+      {
+        "address": "008EF201",
+        "bytes": "c7400403000000",
+        "instruction": "mov dword ptr [eax + 4], 3"
+      },
+      {
+        "address": "008EF208",
+        "bytes": "894818",
+        "instruction": "mov dword ptr [eax + 0x18], ecx"
+      },
+      {
+        "address": "008EF20B",
+        "bytes": "89481c",
+        "instruction": "mov dword ptr [eax + 0x1c], ecx"
+      },
+      {
+        "address": "008EF20E",
+        "bytes": "894820",
+        "instruction": "mov dword ptr [eax + 0x20], ecx"
+      },
+      {
+        "address": "008EF211",
+        "bytes": "894824",
+        "instruction": "mov dword ptr [eax + 0x24], ecx"
+      },
+      {
+        "address": "008EF214",
+        "bytes": "894830",
+        "instruction": "mov dword ptr [eax + 0x30], ecx"
+      },
+      {
+        "address": "008EF217",
+        "bytes": "894834",
+        "instruction": "mov dword ptr [eax + 0x34], ecx"
+      },
+      {
+        "address": "008EF21A",
+        "bytes": "c6402c01",
+        "instruction": "mov byte ptr [eax + 0x2c], 1"
+      },
+      {
+        "address": "008EF21E",
+        "bytes": "c20400",
+        "instruction": "ret 4"
+      }
+    ]
+  },
+  "native_distinct_whole_bytes": 49,
+  "native_distinct_whole_instructions": 14,
+  "native_missing_callees_expanded": 0,
+  "effective_ABI": {
+    "ECX_entry": "actual supplied writable root",
+    "EAX_return": "full actual root, captured before CL is overwritten",
+    "value": "ONE ordinary stack slot consumed by RET4; only byte at entryESP+4 read, upper3 argument bytes ignored",
+    "ECX_return": "zero",
+    "EDX": "unchanged, never read or written by body",
+    "nonvolatiles": "EBX EBP ESI EDI unchanged",
+    "cleanup": "RET4",
+    "fastcall_padding": "Explicit unused EDX formal keeps uint8 value in one stack slot. Two-formal fastcall would place value in a register and is wrong.",
+    "defined_flags": "XOR ECX,ECX => CF0 PF1 ZF1 SF0 OF0; AF undefined and excluded",
+    "DF": "preserved; neither DF nor ES used; no CLD or direction precondition",
+    "decompiler_qualification": "Pseudocode void return is not the physical contract: exact assembly returns the initial ECX root in EAX."
+  },
+  "raw_storage": {
+    "minimum_extent": 56,
+    "freshness": "actual supplied fresh/unowned writable storage, no native class ownership inferred",
+    "writes": [
+      {
+        "range": "[00,04)",
+        "value": "literal native DATA CE89D4 bits"
+      },
+      {
+        "range": "[04,08)",
+        "value": "DWORD tag3"
+      },
+      {
+        "range": "[0C,0D)",
+        "value": "stack low-byte value_bits, no dereference/normalization"
+      },
+      {
+        "range": "[18,28)",
+        "value": "four DWORD zeros"
+      },
+      {
+        "range": "[2C,2D)",
+        "value": "byte1, semantic meaning unestablished"
+      },
+      {
+        "range": "[30,38)",
+        "value": "owner and ordinal DWORD zeros"
+      }
+    ],
+    "written_bytes": 34,
+    "coalesced_written_ranges": [
+      "[00,08)",
+      "[0C,0D)",
+      "[18,28)",
+      "[2C,2D)",
+      "[30,38)"
+    ],
+    "untouched_bytes": 22,
+    "untouched_ranges": [
+      "[08,0C)",
+      "[0D,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "owner_qualification": "Byte value at+C is not owner; +30 owner is zero; supplied root is not separately owned by this leaf.",
+    "phase_DATA": {
+      "role": "native_record_phase_slot0_DATA",
+      "kind": "DATA",
+      "start": "00CE89D4",
+      "exclusive_end": "00CE89D8",
+      "bytes": 4,
+      "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+      "hex": "30674e00",
+      "live_PE_equal": true,
+      "DWORD_values": [
+        "004E6730"
+      ]
+    },
+    "Source_binding": "DATA bits only; no Source vft/dispatch/class/lifetime provider inferred.",
+    "allocation_size_qualification": "Native clone actual38h allocation witness is independent of leaf minimum write extent; does not admit a complete56-byte class. Pool owner38h and bag114h are different contracts."
+  },
+  "genuine_clone_caller": {
+    "entry": "008F4F60",
+    "entry_witness": {
+      "role": "genuine_clone_entry_and_dispatch",
+      "kind": "witness",
+      "start": "008F4F60",
+      "exclusive_end": "008F4F8D",
+      "bytes": 45,
+      "sha256": "a296709a04da69c1a8995e50e911fed3e5d8909a8759b44d026f81893c88332f",
+      "hex": "6aff686d4bca0064a100000000506489250000000051568bf18b460483f80b570f871d030000ff2485b8528f00",
+      "live_PE_equal": true,
+      "instructions": 13,
+      "disassembly": [
+        {
+          "address": "008F4F60",
+          "bytes": "6aff",
+          "instruction": "push -1"
+        },
+        {
+          "address": "008F4F62",
+          "bytes": "686d4bca00",
+          "instruction": "push 0xca4b6d"
+        },
+        {
+          "address": "008F4F67",
+          "bytes": "64a100000000",
+          "instruction": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "008F4F6D",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "008F4F6E",
+          "bytes": "64892500000000",
+          "instruction": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "008F4F75",
+          "bytes": "51",
+          "instruction": "push ecx"
+        },
+        {
+          "address": "008F4F76",
+          "bytes": "56",
+          "instruction": "push esi"
+        },
+        {
+          "address": "008F4F77",
+          "bytes": "8bf1",
+          "instruction": "mov esi, ecx"
+        },
+        {
+          "address": "008F4F79",
+          "bytes": "8b4604",
+          "instruction": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "008F4F7C",
+          "bytes": "83f80b",
+          "instruction": "cmp eax, 0xb"
+        },
+        {
+          "address": "008F4F7F",
+          "bytes": "57",
+          "instruction": "push edi"
+        },
+        {
+          "address": "008F4F80",
+          "bytes": "0f871d030000",
+          "instruction": "ja 0x8f52a3"
+        },
+        {
+          "address": "008F4F86",
+          "bytes": "ff2485b8528f00",
+          "instruction": "jmp dword ptr [eax*4 + 0x8f52b8]"
+        }
+      ],
+      "CALLs": []
+    },
+    "tag3_switch_DATA": {
+      "role": "selected_tag3_switch_target_DATA",
+      "kind": "DATA",
+      "start": "008F52C4",
+      "exclusive_end": "008F52C8",
+      "bytes": 4,
+      "sha256": "aa8536e9c33a2f0c3990fb0506535417dbbbfd02cead4eb74cd83098e1a3a00f",
+      "hex": "8d4f8f00",
+      "live_PE_equal": true,
+      "DWORD_values": [
+        "008F4F8D"
+      ]
+    },
+    "selected_arm": {
+      "role": "genuine_tag3_allocation_constructor_ordinal_arm",
+      "kind": "witness",
+      "start": "008F4F8D",
+      "exclusive_end": "008F4FC2",
+      "bytes": 53,
+      "sha256": "4a5090a1cf28d2612fa8c382589c0aa6a88c365e6e418021a896074495c0a1f0",
+      "hex": "6a38e88718300083c40485c00f84eb0200000fb64e0c518bc8e845a2ffff8b56345f8950345e8b4c240464890d0000000083c410c3",
+      "live_PE_equal": true,
+      "instructions": 17,
+      "disassembly": [
+        {
+          "address": "008F4F8D",
+          "bytes": "6a38",
+          "instruction": "push 0x38"
+        },
+        {
+          "address": "008F4F8F",
+          "bytes": "e887183000",
+          "instruction": "call 0xbf681b"
+        },
+        {
+          "address": "008F4F94",
+          "bytes": "83c404",
+          "instruction": "add esp, 4"
+        },
+        {
+          "address": "008F4F97",
+          "bytes": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "address": "008F4F99",
+          "bytes": "0f84eb020000",
+          "instruction": "je 0x8f528a"
+        },
+        {
+          "address": "008F4F9F",
+          "bytes": "0fb64e0c",
+          "instruction": "movzx ecx, byte ptr [esi + 0xc]"
+        },
+        {
+          "address": "008F4FA3",
+          "bytes": "51",
+          "instruction": "push ecx"
+        },
+        {
+          "address": "008F4FA4",
+          "bytes": "8bc8",
+          "instruction": "mov ecx, eax"
+        },
+        {
+          "address": "008F4FA6",
+          "bytes": "e845a2ffff",
+          "instruction": "call 0x8ef1f0"
+        },
+        {
+          "address": "008F4FAB",
+          "bytes": "8b5634",
+          "instruction": "mov edx, dword ptr [esi + 0x34]"
+        },
+        {
+          "address": "008F4FAE",
+          "bytes": "5f",
+          "instruction": "pop edi"
+        },
+        {
+          "address": "008F4FAF",
+          "bytes": "895034",
+          "instruction": "mov dword ptr [eax + 0x34], edx"
+        },
+        {
+          "address": "008F4FB2",
+          "bytes": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "address": "008F4FB3",
+          "bytes": "8b4c2404",
+          "instruction": "mov ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "008F4FB7",
+          "bytes": "64890d00000000",
+          "instruction": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "008F4FBE",
+          "bytes": "83c410",
+          "instruction": "add esp, 0x10"
+        },
+        {
+          "address": "008F4FC1",
+          "bytes": "c3",
+          "instruction": "ret"
+        }
+      ],
+      "CALLs": [
+        {
+          "address": "008F4F8F",
+          "target": "0xbf681b"
+        },
+        {
+          "address": "008F4FA6",
+          "target": "0x8ef1f0"
+        }
+      ]
+    },
+    "allocation_PUSH": "008F4F8D PUSH38",
+    "allocation_CALL": "008F4F8F CALL00BF681B ending008F4F94",
+    "allocation_balance": "008F4F94 ADDESP4; 008F4F97 TESTEAX,EAX; 008F4F99 JZ008F528A",
+    "byte_value": "008F4F9F MOVZX ECX,byte[ESI+C]; 008F4FA3 PUSH ECX; upper argument bytes zero in this actual caller",
+    "same_actual_allocation_root": "008F4FA4 MOVECX,EAX",
+    "constructor_CALL": "008F4FA6 CALL008EF1F0 ending008F4FAB",
+    "ordinal_witness": "008F4FAB MOVEDX,[ESI+34]; 008F4FAF MOV[EAX+34],EDX; uses returned actual root after constructor",
+    "qualification": "Only genuine entry/selected arm; whole854-byte clone, original allocation/EH/class lifetime and other switch arms remain unexpanded."
+  },
+  "live_native_before_after": {
+    "target": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "supported_queries_verify_every_batch": true,
+      "physical_project_process_checked": true
+    },
+    "image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "entry": "008EF1F0",
+        "exclusive_end": "008EF221",
+        "bytes": 49,
+        "sha256": "77c57bbbe4e8f241db03c9753b6655903eb4e6028d32b1c6b256d083ce32e5ab",
+        "kind": "whole",
+        "live_PE_equal": true,
+        "instructions": 14,
+        "disassembly": [
+          {
+            "address": "008EF1F0",
+            "bytes": "8bc1",
+            "instruction": "mov eax, ecx"
+          },
+          {
+            "address": "008EF1F2",
+            "bytes": "8a4c2404",
+            "instruction": "mov cl, byte ptr [esp + 4]"
+          },
+          {
+            "address": "008EF1F6",
+            "bytes": "88480c",
+            "instruction": "mov byte ptr [eax + 0xc], cl"
+          },
+          {
+            "address": "008EF1F9",
+            "bytes": "33c9",
+            "instruction": "xor ecx, ecx"
+          },
+          {
+            "address": "008EF1FB",
+            "bytes": "c700d489ce00",
+            "instruction": "mov dword ptr [eax], 0xce89d4"
+          },
+          {
+            "address": "008EF201",
+            "bytes": "c7400403000000",
+            "instruction": "mov dword ptr [eax + 4], 3"
+          },
+          {
+            "address": "008EF208",
+            "bytes": "894818",
+            "instruction": "mov dword ptr [eax + 0x18], ecx"
+          },
+          {
+            "address": "008EF20B",
+            "bytes": "89481c",
+            "instruction": "mov dword ptr [eax + 0x1c], ecx"
+          },
+          {
+            "address": "008EF20E",
+            "bytes": "894820",
+            "instruction": "mov dword ptr [eax + 0x20], ecx"
+          },
+          {
+            "address": "008EF211",
+            "bytes": "894824",
+            "instruction": "mov dword ptr [eax + 0x24], ecx"
+          },
+          {
+            "address": "008EF214",
+            "bytes": "894830",
+            "instruction": "mov dword ptr [eax + 0x30], ecx"
+          },
+          {
+            "address": "008EF217",
+            "bytes": "894834",
+            "instruction": "mov dword ptr [eax + 0x34], ecx"
+          },
+          {
+            "address": "008EF21A",
+            "bytes": "c6402c01",
+            "instruction": "mov byte ptr [eax + 0x2c], 1"
+          },
+          {
+            "address": "008EF21E",
+            "bytes": "c20400",
+            "instruction": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00CE89D4",
+        "exclusive_end": "00CE89D8",
+        "bytes": 4,
+        "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+        "kind": "DATA",
+        "live_PE_equal": true,
+        "actual_DATA_DWORD": "004E6730"
+      },
+      {
+        "entry": "008F4F60",
+        "exclusive_end": "008F4F8D",
+        "bytes": 45,
+        "sha256": "a296709a04da69c1a8995e50e911fed3e5d8909a8759b44d026f81893c88332f",
+        "kind": "witness",
+        "live_PE_equal": true,
+        "instructions": 13,
+        "disassembly": [
+          {
+            "address": "008F4F60",
+            "bytes": "6aff",
+            "instruction": "push -1"
+          },
+          {
+            "address": "008F4F62",
+            "bytes": "686d4bca00",
+            "instruction": "push 0xca4b6d"
+          },
+          {
+            "address": "008F4F67",
+            "bytes": "64a100000000",
+            "instruction": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "008F4F6D",
+            "bytes": "50",
+            "instruction": "push eax"
+          },
+          {
+            "address": "008F4F6E",
+            "bytes": "64892500000000",
+            "instruction": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "008F4F75",
+            "bytes": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "address": "008F4F76",
+            "bytes": "56",
+            "instruction": "push esi"
+          },
+          {
+            "address": "008F4F77",
+            "bytes": "8bf1",
+            "instruction": "mov esi, ecx"
+          },
+          {
+            "address": "008F4F79",
+            "bytes": "8b4604",
+            "instruction": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "008F4F7C",
+            "bytes": "83f80b",
+            "instruction": "cmp eax, 0xb"
+          },
+          {
+            "address": "008F4F7F",
+            "bytes": "57",
+            "instruction": "push edi"
+          },
+          {
+            "address": "008F4F80",
+            "bytes": "0f871d030000",
+            "instruction": "ja 0x8f52a3"
+          },
+          {
+            "address": "008F4F86",
+            "bytes": "ff2485b8528f00",
+            "instruction": "jmp dword ptr [eax*4 + 0x8f52b8]"
+          }
+        ]
+      },
+      {
+        "entry": "008F4F8D",
+        "exclusive_end": "008F4FC2",
+        "bytes": 53,
+        "sha256": "4a5090a1cf28d2612fa8c382589c0aa6a88c365e6e418021a896074495c0a1f0",
+        "kind": "witness",
+        "live_PE_equal": true,
+        "instructions": 17,
+        "disassembly": [
+          {
+            "address": "008F4F8D",
+            "bytes": "6a38",
+            "instruction": "push 0x38"
+          },
+          {
+            "address": "008F4F8F",
+            "bytes": "e887183000",
+            "instruction": "call 0xbf681b"
+          },
+          {
+            "address": "008F4F94",
+            "bytes": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "address": "008F4F97",
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "address": "008F4F99",
+            "bytes": "0f84eb020000",
+            "instruction": "je 0x8f528a"
+          },
+          {
+            "address": "008F4F9F",
+            "bytes": "0fb64e0c",
+            "instruction": "movzx ecx, byte ptr [esi + 0xc]"
+          },
+          {
+            "address": "008F4FA3",
+            "bytes": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "address": "008F4FA4",
+            "bytes": "8bc8",
+            "instruction": "mov ecx, eax"
+          },
+          {
+            "address": "008F4FA6",
+            "bytes": "e845a2ffff",
+            "instruction": "call 0x8ef1f0"
+          },
+          {
+            "address": "008F4FAB",
+            "bytes": "8b5634",
+            "instruction": "mov edx, dword ptr [esi + 0x34]"
+          },
+          {
+            "address": "008F4FAE",
+            "bytes": "5f",
+            "instruction": "pop edi"
+          },
+          {
+            "address": "008F4FAF",
+            "bytes": "895034",
+            "instruction": "mov dword ptr [eax + 0x34], edx"
+          },
+          {
+            "address": "008F4FB2",
+            "bytes": "5e",
+            "instruction": "pop esi"
+          },
+          {
+            "address": "008F4FB3",
+            "bytes": "8b4c2404",
+            "instruction": "mov ecx, dword ptr [esp + 4]"
+          },
+          {
+            "address": "008F4FB7",
+            "bytes": "64890d00000000",
+            "instruction": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "008F4FBE",
+            "bytes": "83c410",
+            "instruction": "add esp, 0x10"
+          },
+          {
+            "address": "008F4FC1",
+            "bytes": "c3",
+            "instruction": "ret"
+          }
+        ]
+      },
+      {
+        "entry": "008F52C4",
+        "exclusive_end": "008F52C8",
+        "bytes": 4,
+        "sha256": "aa8536e9c33a2f0c3990fb0506535417dbbbfd02cead4eb74cd83098e1a3a00f",
+        "kind": "DATA",
+        "live_PE_equal": true,
+        "actual_DATA_DWORD": "008F4F8D"
+      }
+    ]
+  },
+  "Source_fidelity": {
+    "implementation": "MSVC Win32 naked whole literal body, not inferred C++ class construction",
+    "hex": "8bc18a4c240488480c33c9c700d489ce00c740040300000089481889481c894820894824894830894834c6402c01c20400",
+    "payload_byte_store_precedes_phase_and_tag_stores": true,
+    "Boolean_conversion": false,
+    "whole_Source_Original_COFF_unique_linked_equal": true,
+    "CALLs": 0,
+    "relocations": 0,
+    "Source_unique_linked_occurrence": [
+      "20001010"
+    ],
+    "native_DATA_is_Source_dispatch_binding": false,
+    "physical_callers": [
+      {
+        "symbol": "?capture@@YAXPAX0IPAURegisters@@I@Z",
+        "bytes": 141,
+        "instructions": 55,
+        "linked": {
+          "image_address": "200055F0",
+          "map_origin": "f   probe.obj",
+          "hex": "558bec53565768930271a66815dbc86a8b7514bbe0ac6824bfdf9b5713837d18007403fdeb01fc8926895e14897618897e1c896e209c58894634668cc00fb7c089463c8b4d0cba39d4c7b1ff7510ff5508896604894608894e0c895610895e24897628897e2c896e309c58894638fc668cc00fb7c08946408b04248946448b44240489464883c4085f5e5b5dc3",
+          "sha256": "9dd012f87004760eee1ae88f40c8ea7bda8254e74a4b02575677e38496c6c897",
+          "whole_body_normalized_COFF_equal": true
+        },
+        "ABI": {
+          "ECX": "second cdecl argument actualroot",
+          "value_bits": "third cdecl argument pushed exactly once from [EBP+10h]",
+          "EDX": "irrelevant poison 0xB1C7D439",
+          "before_call_DF0_and_DF1_branches": true,
+          "register_and_stack_canary_capture": true
+        }
+      },
+      {
+        "symbol": "?typed_source_call@@YAPAXPAXIE@Z",
+        "bytes": 18,
+        "instructions": 5,
+        "linked": {
+          "image_address": "20006C60",
+          "map_origin": "f   probe.obj",
+          "hex": "ff74240c8b54240c8b4c2408e89fa3ffffc3",
+          "sha256": "ed72e453b80e23d633d4185756318ac7777541612f1e3afe3e884f369eb8c7db",
+          "whole_body_normalized_COFF_equal": true
+        },
+        "ABI": [
+          {
+            "instruction_address": "20006C6C",
+            "target": 536875024,
+            "ECX": "root",
+            "EDX": "unused_edx",
+            "one_stack_value_bits": [
+              "word_low8",
+              "value_bits"
+            ],
+            "actual_unsigned_low_byte_provenance": true
+          }
+        ]
+      },
+      {
+        "symbol": "?typed_original_call@@YAPAXP6IPAXPAXIE@_E0IE@Z",
+        "bytes": 55,
+        "instructions": 21,
+        "linked": {
+          "image_address": "20006C20",
+          "map_origin": "f   probe.obj",
+          "hex": "558bec64a1000000008b55108b4d0c6aff68809e00205064892500000000ff7514ff55088b4df464890d000000008be55dc3cccccccccc",
+          "sha256": "586e63eeb607449fbfb55569ff03f823c3f1e67ed2edf409316ab2b68b8915d0",
+          "whole_body_normalized_COFF_equal": true
+        },
+        "ABI": [
+          {
+            "instruction_address": "20006C41",
+            "target": "target",
+            "ECX": "root",
+            "EDX": "unused_edx",
+            "one_stack_value_bits": [
+              "word_low8",
+              "value_bits"
+            ],
+            "actual_unsigned_low_byte_provenance": true
+          }
+        ]
+      }
+    ],
+    "compiler_uint8_qualification": "Both actual compiler callers PUSH the original DWORD argument slot containing the uint8 formal. Symbolic frame/stack tracking proves low8 identity, ECX receiver and EDX unused formal; upper24 padding is unspecified, and no zero extension is claimed. Genuine native clone uses actual MOVZX from [ESI+C].",
+    "raw_argument_words": {
+      "Source": "89ABCD80",
+      "Original": "123456FF"
+    },
+    "EDX_poison": "B1C7D439"
+  },
+  "fresh_validation": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04",
+    "immutable": true,
+    "seals": {
+      "receipt.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\receipt.json",
+        "sha256": "5e1400c6278dfb3cc3ae648eb2a6c2a6f9dd1a4d24fbc8c14a41ccd489cd6512"
+      },
+      "artifact_manifest.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\artifact_manifest.json",
+        "sha256": "19e1311d969b87dfc44cf1da1f0b8ca20f83bc8d848dc9802644679e9d29263e"
+      },
+      "inputs/manifest.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\manifest.json",
+        "sha256": "4c5e3a6570a4346e293bbf083f477e18d0ec1048ca63560ec454999e4e87e8b6"
+      },
+      "inputs/sealed_pre_execution_manifest.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\sealed_pre_execution_manifest.json",
+        "sha256": "8d4a30cc646e8e47e95f91e5366119ba26e82054b48a2bb79c6b1840e7e8fa31"
+      },
+      "whole_source_coff.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\whole_source_coff.json",
+        "sha256": "1b25de9c9375cf0bb3e9f7301a703050c3d185d2e65cd7f85400bf2509a5c45f"
+      }
+    },
+    "manifest_schema": "bsp.cc12.type3_byte_storage.family.v1",
+    "receipt_schema": "bsp.cc12.type3_byte_storage.receipt.v1",
+    "artifact_schema": "bsp.cc12.type3_byte_storage.artifacts.v1",
+    "artifact_inventory_entries": 297,
+    "metadata_seals": 2,
+    "family_total_files": 299,
+    "fresh_sources": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\src\\native_scene_property_record_type3_byte_storage.cpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\source_recipe\\8bb21a2ebef7593f\\native_scene_property_record_type3_byte_storage.cpp",
+        "sha256_pre": "ffd50ed25d5caf4b120ae4f02f57c33509f72a98b0d0e522b37822ea4afebd94",
+        "sha256_copy": "ffd50ed25d5caf4b120ae4f02f57c33509f72a98b0d0e522b37822ea4afebd94"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\src\\singleton_lifetime.cpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\source_recipe\\0736a90ee03c0c75\\singleton_lifetime.cpp",
+        "sha256_pre": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "sha256_copy": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\probe.cpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\source_recipe\\e5e4bfcb4d1db3de\\probe.cpp",
+        "sha256_pre": "9d7e4c2300b4a8012bcce896cce0ecde2d9826685278b1f1d02d630f203a564f",
+        "sha256_copy": "9d7e4c2300b4a8012bcce896cce0ecde2d9826685278b1f1d02d630f203a564f"
+      }
+    ],
+    "production_TUs": 2,
+    "fixture_TUs": 1,
+    "BSP_archives_linked": 0,
+    "old_objects_linked": 0,
+    "new_tracked_tests": 0,
+    "compiler": "Visual Studio18 Community14.51.36231 x86",
+    "SDK": "10.0.26100.0",
+    "strict_compile_flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/GL-",
+      "/GS-",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/permissive-"
+    ],
+    "link_flags": [
+      "/MACHINE:X86",
+      "/MANIFEST:EMBED",
+      "/MANIFESTUAC:level='asInvoker' uiAccess='false'",
+      "/DYNAMICBASE:NO",
+      "/INCREMENTAL:NO",
+      "/OPT:NOICF",
+      "/OPT:NOREF"
+    ],
+    "compiler_backends": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\92f0914226ca23af\\cl.exe",
+        "sha256_pre": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha256_copy": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\7c4d8e09c4e319a7\\c1xx.dll",
+        "sha256_pre": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2",
+        "sha256_copy": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\c70e9f146f50c84b\\c2.dll",
+        "sha256_pre": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0",
+        "sha256_copy": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdbcore.dll",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\7936936bfb4292a8\\mspdbcore.dll",
+        "sha256_pre": "e9811d8696f82a8d94bd31457e4e45c27d8f80df6c326c80f71c978a30b83603",
+        "sha256_copy": "e9811d8696f82a8d94bd31457e4e45c27d8f80df6c326c80f71c978a30b83603"
+      }
+    ],
+    "tool_executables": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\92f0914226ca23af\\cl.exe",
+        "sha256_pre": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha256_copy": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\2c76a3f91b1486ef\\cl.exe",
+        "sha256_pre": "9cf613fcbebece019712511eec4b1a32d0a9c94e65249a1aeb326305c2388d6b",
+        "sha256_copy": "9cf613fcbebece019712511eec4b1a32d0a9c94e65249a1aeb326305c2388d6b"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\35712be6ddbd9fd9\\link.exe",
+        "sha256_pre": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "sha256_copy": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\link.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\5e046cfa63c418e9\\link.exe",
+        "sha256_pre": "101461b51a18daaf033cb743690e20b449e9ac8783638e961bb65c5fd36e9cb5",
+        "sha256_copy": "101461b51a18daaf033cb743690e20b449e9ac8783638e961bb65c5fd36e9cb5"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\9bc039437b3c3f3f\\dumpbin.exe",
+        "sha256_pre": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c",
+        "sha256_copy": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\799bd698dc5c6cbf\\dumpbin.exe",
+        "sha256_pre": "fa56feba5e8c4f81b4be7abf65aa4ff118e0a644169a239a54f59355c701e839",
+        "sha256_copy": "fa56feba5e8c4f81b4be7abf65aa4ff118e0a644169a239a54f59355c701e839"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\mt.exe",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\tools\\db00f465772e656e\\mt.exe",
+        "sha256_pre": "fb1ab75294b78619bd6ac8cadf30cb95befbc7324703cbe2654ef800ddd2bf4d",
+        "sha256_copy": "fb1ab75294b78619bd6ac8cadf30cb95befbc7324703cbe2654ef800ddd2bf4d"
+      }
+    ],
+    "actual_compiler_headers": 209,
+    "actual_project_headers": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\native_scene_property_record_type3_byte_storage.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\6f197cd70f0ef6b5\\native_scene_property_record_type3_byte_storage.hpp",
+        "sha256_pre": "2e6f87ee0429e245ae150f1b677416256e4e4c2a1f2b21db07b722e074a46288",
+        "sha256_copy": "2e6f87ee0429e245ae150f1b677416256e4e4c2a1f2b21db07b722e074a46288"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\singleton_lifetime.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\96c586c8752bf2be\\singleton_lifetime.hpp",
+        "sha256_pre": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "sha256_copy": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\game_entry.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\d49d72931d084d44\\game_entry.hpp",
+        "sha256_pre": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+        "sha256_copy": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\system_time_constants.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\1e86b2561e603164\\system_time_constants.hpp",
+        "sha256_pre": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "sha256_copy": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\frame_clock.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\742c0bc1cad82269\\frame_clock.hpp",
+        "sha256_pre": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "sha256_copy": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\render_tail.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\fdc2796a6687b716\\render_tail.hpp",
+        "sha256_pre": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+        "sha256_copy": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\camera_transform.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\1adb2846a2f118ad\\camera_transform.hpp",
+        "sha256_pre": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+        "sha256_copy": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\include\\bsp\\camera_projection.hpp",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\project_headers\\1f0cd03d0628b598\\camera_projection.hpp",
+        "sha256_pre": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+        "sha256_copy": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      }
+    ],
+    "actual_searched_system_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\2d6e4d237f81a12e\\kernel32.Lib",
+        "sha256_pre": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+        "sha256_copy": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\71c082157242c9b1\\msvcrt.lib",
+        "sha256_pre": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+        "sha256_copy": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\ed510415f64da6d3\\oldnames.lib",
+        "sha256_pre": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+        "sha256_copy": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\0f3ba1729b0b2c05\\msvcprt.lib",
+        "sha256_pre": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+        "sha256_copy": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\4f0a7df0984d4745\\vcruntime.lib",
+        "sha256_pre": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+        "sha256_copy": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run04\\inputs\\system_libraries\\6e3c514fe84548c6\\ucrt.lib",
+        "sha256_pre": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+        "sha256_copy": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "three_TU_totals": {
+      "objects": 3,
+      "code_sections": 380,
+      "code_bytes": 27154,
+      "ordered_relocations": 1043,
+      "application_origin_functions": 424,
+      "physical_application_code_spans": 424,
+      "physical_application_code_bytes": 26837,
+      "physical_application_ordered_relocations": 1024
+    },
+    "static_gates_before_sole_execution": true,
+    "current_canonical_allocate_whole_bytes_instructions": [
+      90,
+      34
+    ],
+    "current_canonical_free_whole_bytes_instructions": [
+      6,
+      1
+    ],
+    "heap_gate": "Actual fresh COFF relocations reach named malloc/free API-set IAT slots; loaded PE32/I386 UCRT exports/module ownership and real-handle file identity equal pinned physical SysWOW64 image before root allocation or construction.",
+    "UCRT": {
+      "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+      "sha256_pre": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "loaded_module_runtime_gate_required": true,
+      "sha256_post": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+    },
+    "UCRT_identity": {
+      "utc": "2026-10-08T08:38:10.4637204Z",
+      "process_bits": 32,
+      "actual_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+      "pinned_physical_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+      "same_physical_file_identity": true,
+      "volume_serial": 3906787040,
+      "file_index_high": 327680,
+      "file_index_low": 2895862,
+      "bytes_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "machine": "014C",
+      "optional_header_magic": "010B",
+      "exports": [
+        {
+          "name": "malloc",
+          "address": "0x767D0120",
+          "owner_is_ucrt": true
+        },
+        {
+          "name": "free",
+          "address": "0x767D00A0",
+          "owner_is_ucrt": true
+        }
+      ],
+      "BSP_allocations_or_constructors_executed": false
+    },
+    "compile_exits": [
+      {
+        "source": "native_scene_property_record_type3_byte_storage.cpp",
+        "exit": 0
+      },
+      {
+        "source": "singleton_lifetime.cpp",
+        "exit": 0
+      },
+      {
+        "source": "probe.cpp",
+        "exit": 0
+      }
+    ],
+    "link_exit": 0,
+    "static_gate_exit": 0,
+    "sole_execution_exit": 0,
+    "observed": {
+      "Source_calls": 1,
+      "Original_calls": 1,
+      "allocations": 2,
+      "allocation_bytes_each": 56,
+      "Source_argument_word": 2309737856,
+      "Original_argument_word": 305420031,
+      "Source_root": 6694936,
+      "Original_root": 6695896,
+      "all56_bytes_each": true,
+      "written34_untouched22_each": true,
+      "other_live_root_bytes_preserved_each": true,
+      "EAX_root_ECX_zero_EDX_unchanged": true,
+      "nonvolatiles_preserved": true,
+      "ESP_RET4": true,
+      "DF_preserved_zero_and_one": true,
+      "ES_preserved": true,
+      "capture_and_stack_canaries": true,
+      "defined_XOR_flags_checked": true,
+      "undefined_AF_compared": false,
+      "adjacent_allocation_guard_proof": false,
+      "Original49_unmodified_RX": true,
+      "current_UCRT_heap_gate": true,
+      "mapped_UCRT_same_physical_file_identity": true,
+      "raw_unowned_roots_at_explicit_free": true,
+      "destructor_or_dispatch_invoked": false,
+      "freed_storage_read": false
+    },
+    "Source_df": 0,
+    "Original_df": 1,
+    "poison_bytes": {
+      "Source": "81",
+      "Original": "39"
+    },
+    "defined_flags_mask": "000008C5",
+    "defined_flags_expected": "00000044",
+    "AF_excluded": true,
+    "Original_body": "Unmodified whole49 RX stub; no allocator callee patch",
+    "root_extent_qualification": "Two genuine current canonical malloc roots each request exactly56 bytes. Every byte of the other live root and external capture/stack canaries is checked. Static whole-body stores prove intended write ranges; no adjacent allocation red-zone or heap-metadata proof is claimed.",
+    "free_qualification": "Only still raw/unowned actual allocation roots are explicitly currentfree released after checks; no destructor/phase dispatch, interior free or freed-memory inspection."
+  },
+  "preservation": {
+    "counts": {
+      "historical6209": 6209,
+      "prior341": 341,
+      "prior_array_consumed_inputs": 193,
+      "prior_array_frozen_supports": 3,
+      "audit_sealed_inputs": 23,
+      "old_attempts_immutable": 585,
+      "prior_frozen_Core_context": 2,
+      "accepted_worker_run04": 282,
+      "accepted_primary_run01": 282,
+      "current_Source_readonly_context": 5,
+      "readiness_audit": 182,
+      "accepted_type0_worker_run03": 300,
+      "accepted_type0_primary_run01": 300,
+      "new_type0_failed_preparations": 78,
+      "type3_readiness_audit": 42
+    },
+    "old_successful_families_replayed": false,
+    "old_receipts_or_frozen_files_modified": false,
+    "readiness_audit_seal": {
+      "proposal.json": "8accaa91e70f7e1a89c4a0dd83caba6f48f865a99a7d9da83cae0052100c7fea",
+      "receipt.json": "9089609b31b9b76a2f7f53102f00375728d928a6a1052bd87fe60bbd664a23b6",
+      "artifact_manifest.json": "30359913775a4fd70b18ea7b3c031f726b294292469a5814fa48996be6a61419"
+    },
+    "historical_original_association_qualification": [
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_enum_dictionary_lookup.cpp",
+        "historical_expected_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+        "verification_path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_dictionary_lookup\\run02\\inputs\\native_enum_dictionary_lookup.cpp",
+        "verification_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+        "current_main_sha256_before": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+        "current_main_change_commit": "998782c250618268e162b5dfb5be139788cc2f99",
+        "consumed": false,
+        "current_main_sha256_after": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+        "current_main_context_only": true
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_enum_dictionary_lookup.hpp",
+        "historical_expected_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+        "verification_path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_dictionary_lookup\\run02\\inputs\\native_enum_dictionary_lookup.hpp",
+        "verification_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+        "current_main_sha256_before": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+        "current_main_change_commit": "998782c250618268e162b5dfb5be139788cc2f99",
+        "consumed": false,
+        "current_main_sha256_after": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+        "current_main_context_only": true
+      }
+    ],
+    "Core_context": "Current main BSP archives are recorded as unconsumed external context. The fresh family links zero BSP archives; old frozen build receipts retain their own original Core identities.",
+    "failed_stages": [
+      {
+        "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run01",
+        "stage": "first_Source_compile",
+        "reason": "C1083: legacy compiler MAX_PATH exceeded by frozen source recipe path",
+        "compile_exit": 2,
+        "objects": 0,
+        "links": 0,
+        "canonical_roots": 0,
+        "Source_calls": 0,
+        "Original_calls": 0,
+        "Ghidra_writes": 0,
+        "replay": false
+      },
+      {
+        "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run02",
+        "stage": "post-link_static_uint8_caller_gate",
+        "reason": "Actual MSVC callers directly PUSH DWORD slots containing byte formal; gate incorrectly required explicit MOVZX",
+        "compile_exits": [
+          0,
+          0,
+          0
+        ],
+        "link_exit": 0,
+        "static_gate_exit": 1,
+        "canonical_roots": 0,
+        "Source_calls": 0,
+        "Original_calls": 0,
+        "Ghidra_writes": 0,
+        "replay": false
+      },
+      {
+        "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type3_byte_storage\\local\\cc12_property_record_type3_byte_storage\\run03",
+        "stage": "pre_build_historical_preservation_gate",
+        "reason": "Two prior341 original-main enum dictionary Source/header associations changed after successful prepare; all immutable historical family artifacts remain intact.",
+        "changed_original_associations": [
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/src/native_enum_dictionary_lookup.cpp",
+            "historical_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+            "observed_current_sha256": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad"
+          },
+          {
+            "path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_enum_dictionary_lookup.hpp",
+            "historical_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+            "observed_current_sha256": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6"
+          }
+        ],
+        "build_started": false,
+        "objects": 0,
+        "links": 0,
+        "canonical_roots": 0,
+        "Source_calls": 0,
+        "Original_calls": 0,
+        "Ghidra_writes": 0,
+        "replay": false
+      }
+    ]
+  },
+  "worker_changes": {
+    "Ghidra_writes": 0,
+    "shared_CMake_config_ledger_changes": 0,
+    "original_game_writes": 0
+  },
+  "named_incomplete_dependencies": [
+    "Original allocator 00BF681B/CRT/newhandler/EH and actual clone EH handler 00CA4B6D remain unexpanded.",
+    "Whole 854-byte clone, all other arms/factory/parser and actual record class ownership remain unadmitted.",
+    "Native scalar teardown 004E6730, thunk 008F0DE0, record cleanup 008F0640, nested 0x114 lifetime and ordinary clear 008F3F30 remain unexpanded.",
+    "Actual initialized pool 00E175B0/global list/CS/pages/14-byte slots, external insertion 008F28F0/008F33F0 and actual key/payload owners remain separate dependencies.",
+    "Source phase dispatch/class lifetime, private original heap/static/runtime, world and game admission remain unestablished."
+  ],
+  "remaining_integration": "Root independently validates a fresh complementary family, integrates build/CMake/ledger/name metadata, runs full MSVC Win32/all3 existing checks, and saves/exports/snapshots Ghidra.",
+  "qualification": "One whole raw partial-storage49 primitive. Two actual56-byte currentheap supplied roots; all34 writes/22 untouched bytes and other live root/external canaries checked. DF0 and DF1 preserved; defined XOR flags checked, AF excluded. No adjacent heap red-zone proof, heap metadata reads, Source dispatch/class/destructor/pool/clear/factory/nested/world/game/original-heap/EH admission. Accepted earlier families unchanged and never replayed."
+}
