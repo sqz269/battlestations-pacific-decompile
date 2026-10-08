@@ -1,0 +1,406 @@
+{
+  "packet": "cc12_native_physical_failure_entries_source",
+  "status": "additional_raw_entries_whole_production_COFF_and_archive_exact_normal_Win32_build_checked_static_only",
+  "baseline": "a539ea05d7b108d5aa7af6cbc90f3c6779b81e1c",
+  "completed_utc": "2026-10-08T12:34:34.762401+00:00",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "scope": {
+    "new_files": [
+      "include/bsp/native_physical_failure_entries.hpp",
+      "src/native_physical_failure_entries.cpp",
+      "docs/CC12_NATIVE_PHYSICAL_FAILURE_ENTRIES.md",
+      "reports/cc12_native_physical_failure_entries.json"
+    ],
+    "CMake_file": "cmake/startup.cmake",
+    "CMake_append_lines": 1,
+    "new_Original_functions": 0,
+    "additional_raw_Source_entries": 2,
+    "existing_typed_provider_changes": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_packet_registry_edits": 0,
+    "new_permanent_tests": 0,
+    "new_target_entry_calls": 0,
+    "corresponding_Original_entry_calls": 0,
+    "new_probe_links_or_executables": 0,
+    "old_ad_hoc_fixture_replays": 0
+  },
+  "qualification": {
+    "complete_Source_object_bodies_equal_Original_unconditionally": true,
+    "equality_bytes": 12,
+    "normalization_bytes": 0,
+    "complete_function_code_relocations": 0,
+    "whole_actual_production_object_retained": true,
+    "exact_unique_whole_object_archive_member": true,
+    "normal_Win32_build_passed": true,
+    "all3_existing_CTests_passed": true,
+    "additional_raw_entries_executed": false,
+    "corresponding_Original_entries_executed": false,
+    "new_entries_linked_or_loaded_bodies_claimed": false,
+    "runtime_ABI_or_gameplay_qualification": false,
+    "genuine_callable_domain_owner_available": false,
+    "callback_address_published_into_owner": false,
+    "owner_fabricated": false,
+    "global0109CEEC_synthesized": false,
+    "production_callback_domain_changed": false,
+    "BF5030_raw_Source_implemented_or_authorized": false,
+    "connected_raw_read_failure_path_validated": false,
+    "meaning": "Byte identity is established for both complete production COFF bodies. It is independent of any runtime owner and does not establish a valid owner, callback publication, linked/loaded body, or executed call."
+  },
+  "names_and_types": "Descriptive names and C++ types are hypotheses, not recovered symbols. The explicit Source fastcall signature models observed ECX/EDX and one callee-cleaned stack DWORD; void does not assign a recovered semantic return value.",
+  "entries": [
+    {
+      "Original_address": "00530620",
+      "Source_name": "raw_ignore_native_vfs_mount_failure_00530620",
+      "Source_physical_signature": "void __cdecl () noexcept",
+      "whole_Original_and_Source_hex": "c3",
+      "bytes": 1,
+      "instructions": 1,
+      "code_relocations": 0,
+      "normalization": null,
+      "implementation": "Naked function explicitly emits the genuine C3 opcode. The first build showed MSVC encodes plain inline-asm ret here as C20000; that failed result is retained.",
+      "contract": "Valid normal call stack only. No semantic arguments, owner, global or data pointer. Consumes only the return address; non-stack registers and arithmetic flags are unchanged.",
+      "not_a_fallback": "The Original function itself is exactly C3 and the true startup fragment installs its identity. No synthetic empty callback was invented."
+    },
+    {
+      "Original_address": "00BD9E30",
+      "Source_name": "raw_notify_native_vfs_request_failure_00bd9e30",
+      "Source_physical_signature": "void __fastcall (void* actual_manager, uint32_t forwarded_edx, uint32_t discarded_stack_word) noexcept",
+      "whole_Original_and_Source_hex": "8b8190000000ffd0c20400",
+      "bytes": 11,
+      "instructions": 3,
+      "code_relocations": 0,
+      "normalization": null,
+      "operations": [
+        "MOV EAX,[ECX+90h]",
+        "CALL EAX",
+        "RET4"
+      ],
+      "reads": "Only actual manager+90. No global0109CEEC or manager+18 read.",
+      "forwarding": "ECX remains actual manager and EDX is unchanged at callback entry. No callback stack arguments are pushed; the caller stack DWORD is discarded by RET4. EDX/stack-word equality is not required by this entry.",
+      "return": "No semantic return value. For the genuine C3 target only, EAX retains the loaded actual +90 target; ECX/EDX and other non-stack registers/flags are unchanged.",
+      "stack": "If entry ESP=S, CALL writes its return at S-4; callback must zero-pop and return to notifier; notifier RET4 leaves caller ESP=S+8.",
+      "genuine_input_requirement": "Borrow a genuine already-produced initialized actual manager with lifetime through the call and readable +90 DWORD. It must hold a directly callable executable address of the genuine C3 leaf (Original or separately qualified exact Source counterpart) in the same process/code domain. The callback returns without popping arguments. Readable fabricated storage or numeric identity alone is not an admitted input."
+    }
+  ],
+  "whole_current_production_COFF": [
+    {
+      "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+      "section": 3,
+      "offset": 0,
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "hex": "c3",
+      "relocations": [],
+      "instruction_count": 1,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "c3",
+          "instruction": "ret"
+        }
+      ],
+      "machine": "014C"
+    },
+    {
+      "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+      "section": 4,
+      "offset": 0,
+      "bytes": 11,
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "hex": "8b8190000000ffd0c20400",
+      "relocations": [],
+      "instruction_count": 3,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "8b8190000000",
+          "instruction": "mov eax, dword ptr [ecx + 0x90]"
+        },
+        {
+          "offset": 6,
+          "bytes": "ffd0",
+          "instruction": "call eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "c20400",
+          "instruction": "ret 4"
+        }
+      ],
+      "machine": "014C"
+    }
+  ],
+  "production_artifacts": {
+    "whole_object_bytes": 912,
+    "whole_object_sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b",
+    "whole_archive_sha256": "6f8cd8b48cb62eb5e8a952b6ba80c5813a0ad1448ae34ce1e7d316df7f997a55",
+    "unique_complete_archive_member": {
+      "offset": 15638694,
+      "name": "/0",
+      "bytes": 912,
+      "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b"
+    },
+    "code_sections": [
+      {
+        "section": 3,
+        "name": ".text$mn",
+        "bytes": 1,
+        "characteristics": "60501020",
+        "COMDAT": true
+      },
+      {
+        "section": 4,
+        "name": ".text$mn",
+        "bytes": 11,
+        "characteristics": "60501020",
+        "COMDAT": true
+      }
+    ],
+    "uncalled_COMDAT_boundary": "Only complete production object/archive proof is claimed. No dedicated link was made and no linked/loaded body claim is made for these uncalled COMDAT entries.",
+    "pins": [
+      {
+        "path": "src/native_physical_failure_entries.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/3f3e1c98c7f67a4149846a4bd0d652809fcafda3fd269a29029f0c7ee9be29c3/native_physical_failure_entries.cpp",
+        "sha256": "8588d39234692c2103176fb803d34830e43a3e8e6623265e6b910e470021cbbf",
+        "bytes": 941,
+        "capture_timing": "before_normal_build"
+      },
+      {
+        "path": "include/bsp/native_physical_failure_entries.hpp",
+        "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/8849132364ce5eff1b23f23ca32759fe144879592204cdfa237542b43599a8c2/native_physical_failure_entries.hpp",
+        "sha256": "475fe250cd3c060f5a227bbad5c6aee93496fb4d09da2f5d1456b1b8c07125d8",
+        "bytes": 1732,
+        "capture_timing": "before_normal_build"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_failure_entries.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/b67584028c9201ac817b98e834756b7af8e679498fa90a6938a759120d628cdd/native_physical_failure_entries.obj",
+        "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b",
+        "bytes": 912,
+        "capture_timing": "after_successful_normal_build_and_CTests"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/d69ceaeb817a8e6a1df1afbcd491b6dee8f70336201656bc4350ea9c87d455fb/bsp_core.lib",
+        "sha256": "6f8cd8b48cb62eb5e8a952b6ba80c5813a0ad1448ae34ce1e7d316df7f997a55",
+        "bytes": 73571416,
+        "capture_timing": "after_successful_normal_build_and_CTests"
+      }
+    ]
+  },
+  "Original_evidence": [
+    {
+      "address": "00530620",
+      "bytes": 1,
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/bd8f25298c4e3688cd76ad5160eaee2b317ea468ae40eb819f93c81322f67dbe/00530620.bin",
+      "prior_live_evidence_equal": true,
+      "current_installed_PE_equal": true
+    },
+    {
+      "address": "00BD9E30",
+      "bytes": 11,
+      "hex": "8b8190000000ffd0c20400",
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "frozen": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/frozen/09eea00b95394399a8717e7889571694a25ae5b1c414382e9d2bdbce0c56e840/00BD9E30.bin",
+      "prior_live_evidence_equal": true,
+      "current_installed_PE_equal": true
+    }
+  ],
+  "old_provider_preservation": {
+    "old_cpp_and_header_files_unchanged": 10,
+    "whole_old_provider_objects_unchanged": 5,
+    "whole_old_function_bodies_and_ordered_relocations_unchanged": 702,
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_filestore_request.obj",
+        "whole_object_pre_sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21",
+        "whole_object_post_sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21",
+        "whole_object_hash_equal": true,
+        "whole_function_count": 60,
+        "all_whole_function_bytes_and_ordered_relocations_equal": true,
+        "unique_complete_archive_member": {
+          "offset": 35466572,
+          "name": "/41616",
+          "bytes": 27268,
+          "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21"
+        },
+        "before_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\a8249ecae059a2ddada093d9e775506d2f4c9cc25571b9d581d2647895e8d485\\native_filestore_request.obj",
+        "after_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\a32909538c845762e9d8eab3ec11c7a8dc082f5c7f7bf59e1ec5b2efbe14ad2f\\native_filestore_request.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_vfs_startup_callbacks.obj",
+        "whole_object_pre_sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711",
+        "whole_object_post_sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711",
+        "whole_object_hash_equal": true,
+        "whole_function_count": 17,
+        "all_whole_function_bytes_and_ordered_relocations_equal": true,
+        "unique_complete_archive_member": {
+          "offset": 25790542,
+          "name": "/12328",
+          "bytes": 9883,
+          "sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711"
+        },
+        "before_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\d1c00f2f2078eb41deac8f08a391ca66d7269cbc08fe2a061cbdc136ec43cff1\\native_vfs_startup_callbacks.obj",
+        "after_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\14db804b2d963c76bc048ee62b096053c19516f76226adc8ec8f764e75f34c84\\native_vfs_startup_callbacks.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_vfs_runtime_bindings.obj",
+        "whole_object_pre_sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65",
+        "whole_object_post_sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65",
+        "whole_object_hash_equal": true,
+        "whole_function_count": 68,
+        "all_whole_function_bytes_and_ordered_relocations_equal": true,
+        "unique_complete_archive_member": {
+          "offset": 25807972,
+          "name": "/12436",
+          "bytes": 40687,
+          "sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65"
+        },
+        "before_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\79687daeca11b3042ecb38c6e16afdead45beecc661c8b9111989521b416f56a\\native_vfs_runtime_bindings.obj",
+        "after_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\35751c972ac1660ec5e28170ffbe7577a4d6cf9033c4aee45486c2c48cb30034\\native_vfs_runtime_bindings.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\game_native_vfs_runtime.obj",
+        "whole_object_pre_sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20",
+        "whole_object_post_sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20",
+        "whole_object_hash_equal": true,
+        "whole_function_count": 505,
+        "all_whole_function_bytes_and_ordered_relocations_equal": true,
+        "unique_complete_archive_member": {
+          "offset": 60970018,
+          "name": "/77206",
+          "bytes": 210257,
+          "sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20"
+        },
+        "before_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\b456ada11693e0881434d86a8d5bb201bd70897baebdf52c16b36296656023c7\\game_native_vfs_runtime.obj",
+        "after_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\8fd8e258fd219b359ce19395c34d20cc0d0d628440954f5d3c8467436cae7301\\game_native_vfs_runtime.obj"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+        "whole_object_pre_sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c",
+        "whole_object_post_sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c",
+        "whole_object_hash_equal": true,
+        "whole_function_count": 52,
+        "all_whole_function_bytes_and_ordered_relocations_equal": true,
+        "unique_complete_archive_member": {
+          "offset": 57793678,
+          "name": "/68246",
+          "bytes": 22700,
+          "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+        },
+        "before_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\60e6c0bd29adb124979dcdb9441a6f6770f4d4472884e845ebd0fc2b929102c8\\native_physical_stream_open.obj",
+        "after_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\fb838052288a44f9996e825131250ffd4501ac58305b6b7dd13d26c830f7af2b\\native_physical_stream_open.obj"
+      }
+    ],
+    "preserved_domain": "Old typed notifier, ordinary RET0 callback, numeric-identity installer, runtime identity binding, and typed physical direct-call helper remain unchanged."
+  },
+  "runtime_boundaries": {
+    "actual_owner_missing": "No genuine callable-domain manager or +90 preimage was supplied or fabricated. The new callback was not installed into an owner.",
+    "identity_vs_pointer": "Existing Source startup stores Original numeric00530620 identity; virtual identity dispatch maps it to ordinary Source. This remains distinct from a direct executable pointer in the raw notifier contract.",
+    "BF5030": "A connected raw read still needs actual0109CEEC publication and field18 provenance. BF5030 happens to place field18 in EDX and on the stack; neither load nor equality belongs in the notifier.",
+    "execution": "No new Source entry, corresponding Original entry, native/SDK probe, or connected failure fixture was run. Existing CTests retain their established normal scope."
+  },
+  "normal_build": {
+    "recipe": {
+      "argv": [
+        "C:\\Program Files\\PowerShell\\7\\pwsh.EXE",
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\scripts\\build.ps1",
+        "-Diagnostic"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries",
+      "configuration": "Release",
+      "platform": "Win32"
+    },
+    "exit_code": 0,
+    "completed_utc": "2026-10-08T12:30:11.078335+00:00",
+    "existing_CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "actual_compile_command": {
+      "path": "local/cc12_native_physical_failure_entries_source_20261008a/run02/inputs/actual_normal_module_compile_command.txt",
+      "sha256": "c6c935d4186e1df95a6b5031cf73a4dd505e45de850dcae29978503f77691eec"
+    },
+    "build_log": {
+      "path": "local/cc12_native_physical_failure_entries_source_20261008a/run02/normal_build.log",
+      "sha256": "5133c600b493657f8f2c118fd9fac92bbaed51f8e523007beedcce995de49f6f"
+    },
+    "configuration": "Release/Win32; MSVC /O2 /Ob2 /Oy- /W4 /WX /EHsc /MD /fp:strict /std:c++17",
+    "validation_scope": "Compilation/archive generation and the three existing checks. They provide no executed evidence for either additional raw entry."
+  },
+  "CMake_append": {
+    "baseline": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\startup.before_append.cmake",
+    "baseline_sha256": "847116a1cf69242238315fe21e525c150175a9cbfda27c2ab627eda610cf55c8",
+    "one_appended_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_physical_failure_entries.cpp)"
+  },
+  "evidence": {
+    "family": "local/cc12_native_physical_failure_entries_source_20261008a/run02",
+    "manifest": {
+      "path": "local/cc12_native_physical_failure_entries_source_20261008a/run02/manifest.json",
+      "sha256": "401692a00fc845be2347f4a4ca7353dee78fcc3f6843447cae9a9fbed73b3a91"
+    },
+    "whole_COFF_archive_proof": {
+      "path": "local/cc12_native_physical_failure_entries_source_20261008a/run02/whole_COFF_archive_proof.json",
+      "sha256": "e3a2829fbd6040c4de14fa4215e48b0672b74529d476bad0bebef26d3058d507"
+    },
+    "retained_rows": 315,
+    "capture_timing_counts": {
+      "before_normal_build": 296,
+      "after_successful_normal_build_and_CTests": 19
+    },
+    "pre_frozen_rows_postbuild_equal": true,
+    "postbuild_capture_rows_copy_and_later_hash_equal": true,
+    "actual_normal_module_read_inputs": 11,
+    "actual_pre_frozen_module_inputs": 9,
+    "ambient_inputs_captured_only_after_build": [
+      {
+        "path": "C:\\Windows\\Globalization\\Sorting\\SortDefault.nls",
+        "sha256": "5710c47f5c5c745854e11fc06c8d349cd61d084f5a90937396e88ab762298b67",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\f638fc828f515c53fe77ddfd0ec53e7c6ba458254725c52eca4dbf00a5c10943\\SortDefault.nls",
+        "capture_timing": "after_normal_build_no_prebuild_hash_claim",
+        "pre_copy_post_equal": null
+      },
+      {
+        "path": "C:\\Windows\\System32\\tzres.dll",
+        "sha256": "f3f5ef83a67c503991d728f62cf039cbb52a18d6eb82197dec23ede8f0996108",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\inputs\\frozen\\2c984f7949e31489085f707057964cd79654380e422daa8e9d94442c5b37b668\\tzres.dll",
+        "capture_timing": "after_normal_build_no_prebuild_hash_claim",
+        "pre_copy_post_equal": null
+      }
+    ],
+    "capture_timing_qualification": "Two CL read-log ambient inputs (SORTDEFAULT.NLS and TZRES.DLL) were copied only after compilation. No pre-build hash claim or exhaustive compiler/OS closure is made for them. All selected Source/header/recipe/tool preimages already frozen before build remained equal afterward.",
+    "candidate_rows_physically_copied": 203,
+    "candidate_qualification": "203 pre-frozen candidate headers are actual retained copies. Nine were selected by the new module CL read log. The remaining 194 are retained candidates, not claimed consumed inputs. No exhaustive compiler/OS closure is claimed.",
+    "distinct_source_input": "The new CPP itself is separately pre-frozen and appears as the actual normal compiler command input."
+  },
+  "preserved_failures": [
+    {
+      "run": "run01",
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run01\\failure_report.json",
+      "sha256": "ebca3f12eb3d98547ba000186a15a958f6cb5da431c4a69ea6471235e18ebdaf",
+      "result": "all3 checks passed, leaf COFF C20000 instead of required C3; corrected explicit opcode"
+    },
+    {
+      "run": "run02",
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_native_physical_failure_entries_source_20261008a\\run02\\input_gate_failure.json",
+      "sha256": "3ced9af296c45cec10803a8b259d7fcb7659afc0ef750e9c099c483258f5a4dd",
+      "result": "all3 checks passed; two compiler ambient files absent from pre-frozen header candidates; retained post-build with timing qualification, no third build"
+    }
+  ],
+  "next_boundary": "Independent static Source bodies now exist. Primary review/integration precedes any further packet. A notifier execution still requires a genuine borrowed callable-domain owner; this work supplies neither that owner nor connected BF5030 readiness."
+}
