@@ -101,6 +101,26 @@ class MergeResolveRefusals(unittest.TestCase):
         self.assertIn('OURS', text)
         self.assertIn('THEIRS', text)
 
+    def test_cmake_registry_preserves_complete_multiline_commands(self):
+        """The line union discarded actual source continuation lines on integration."""
+        base_target = 'cmake_language(DEFER CALL add_executable bsp_game src/main.cpp)\n'
+        base = '# Registry\n' + base_target
+        sources = ('cmake_language(DEFER CALL target_sources bsp_core PRIVATE\n'
+                   '  src/wake.cpp\n  src/actor.cpp)\n')
+        incoming_target = ('cmake_language(DEFER CALL add_executable bsp_game\n'
+                           '  src/main.cpp src/renderer.cpp)\n')
+        include = 'cmake_language(DEFER CALL include "placement(1).cmake")\n'
+        ours = base + sources + include
+        theirs = '# Registry\n' + incoming_target + include
+        how, text = self.resolve('cmake/startup.cmake', base, ours, theirs)
+        self.assertEqual(how, 'registry union')
+        self.assertIn(sources, text)
+        self.assertIn(incoming_target, text)
+        self.assertNotIn(base_target, text)
+        self.assertTrue(text.endswith(include), 'deferred includes must remain last')
+        self.assertEqual(len(merge_resolve.cmake_registration_blocks(text)), 3)
+        self.assertIsNone(merge_resolve.cmake_registration_blocks(sources[:-2]))
+
     def test_resolve_all_refuses_outside_a_merge(self):
         """Stage 1 is the merge base only during a merge; in a cherry-pick it is the pick's parent,
         which made the startup.cmake union mis-identify which side had changed a target."""

@@ -1,0 +1,180 @@
+{
+  "packet": "cc12_raw_handle_slot_initializer_00415680",
+  "created_utc": "2026-10-08T11:58:52.657619+00:00",
+  "status": "whole_raw_ECX_plain_RET_body_static_COFF_archive_and_normal_Win32_build_checked",
+  "address": "00415680",
+  "inclusive_end": "00415688",
+  "new_Original_function_records": 1,
+  "Original": {
+    "bytes": 9,
+    "instructions": 3,
+    "hex": "8bc1c70000000000c3",
+    "sha256": "cda72abcdbb1efdc80edc8549a889c40e93418986336d31914aa9a2d9e967cc7",
+    "direct_calls": 0,
+    "indirect_calls": 0,
+    "globals_constants_or_relocations": 0,
+    "source_of_entry_identity": "two actual array constructor callback DATA operands00424BC9/0064B7A8; separately ended preceding routine and alignment padding"
+  },
+  "Original_ABI": "ECX one writable4B slot; EAX same pointer; plainRET; no stack args; ECX/EDX/EFLAGS/nonvolatiles/x87/SSE untouched. __fastcall public Source declaration matches physical shape; Original C++ declaration/class type is not recovered.",
+  "Source": {
+    "header": "include/bsp/native_ref_counted_handle_initialize.hpp",
+    "file": "src/native_ref_counted_handle_initialize.cpp",
+    "symbol": "?raw_initialize_native_ref_counted_handle_00415680@bsp@@YIPAXPAX@Z",
+    "admission": "caller owns one live writable4-byte slot; initializer does not read or release its old word and supplies no surrounding allocation/lifetime",
+    "name_is_hypothesis": true,
+    "Ghidra_automatic_signature_limit": "After definition Ghidra inferred undefined(void), omitting ECX input/EAX output; exact3 assembly instructions determine actual ABI."
+  },
+  "whole_current_production_COFF": {
+    "symbol": "?raw_initialize_native_ref_counted_handle_00415680@bsp@@YIPAXPAX@Z",
+    "section": 3,
+    "offset": 0,
+    "bytes": 9,
+    "sha256": "cda72abcdbb1efdc80edc8549a889c40e93418986336d31914aa9a2d9e967cc7",
+    "hex": "8bc1c70000000000c3",
+    "relocations": [],
+    "instruction_count": 3,
+    "complete_decode": true,
+    "disassembly": [
+      {
+        "offset": 0,
+        "bytes": "8bc1",
+        "instruction": "mov eax, ecx"
+      },
+      {
+        "offset": 2,
+        "bytes": "c70000000000",
+        "instruction": "mov dword ptr [eax], 0"
+      },
+      {
+        "offset": 8,
+        "bytes": "c3",
+        "instruction": "ret"
+      }
+    ],
+    "machine": "014C",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\current\\native_ref_counted_handle_initialize.obj"
+  },
+  "complete_object": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\current\\native_ref_counted_handle_initialize.obj",
+    "sha256": "8e46972a9b22ac16826774eee79a0c9fad24bb214e374e75a021579fc179c5a7",
+    "machine": "014C",
+    "code_sections": 1,
+    "code_bytes": 9,
+    "ordered_relocations": 0,
+    "functions": 1
+  },
+  "all_code_is_the_complete9B_entry": true,
+  "whole_retained_archive_and_unique_exact_member": {
+    "whole_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\current\\bsp_core.lib",
+      "bytes": 73568290,
+      "sha256": "abe4bcba552ace7df864db01eb00486900d6afe38ef86ddb028ce87aaaa6ceb3"
+    },
+    "member_count": 1894,
+    "exact_unique_members": {
+      "native_ref_counted_handle_initialize": [
+        {
+          "header_offset": 15638222,
+          "bytes": 757,
+          "sha256": "8e46972a9b22ac16826774eee79a0c9fad24bb214e374e75a021579fc179c5a7",
+          "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\current\\native_ref_counted_handle_initialize.archive_member"
+        }
+      ]
+    }
+  },
+  "physically_retained_selected_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\include\\bsp\\native_ref_counted_handle_initialize.hpp",
+      "bytes": 471,
+      "sha256": "975f1f8e917c2b04edb55e0a2267f2e90d21fce75f3a9a7c08ff90a966af29f9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\src\\native_ref_counted_handle_initialize.cpp",
+      "bytes": 521,
+      "sha256": "1e938aa8585c4f24bb2c2e41d0b0cbef48c46bfada443b3b20511667012a3846"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\docs\\CC12_RAW_REF_COUNTED_HANDLE_INITIALIZE.md",
+      "bytes": 1741,
+      "sha256": "3a1c07ef7f3dad87b122bba34aa1171727c54041ca52950c0a8818ae3e8d5676"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\scripts\\build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\cmake\\startup.cmake",
+      "bytes": 198355,
+      "sha256": "c69d11b31e144e311f90de0dc028a7dd403baaae7f9e153cc7c30cfdfb66a4e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\build\\win32\\bsp_core.vcxproj",
+      "bytes": 294577,
+      "sha256": "bf6ccbf06bd8ab3c79b5f4a045ed36f2a431bcc7a1c236a7349f518f674d8c6d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+      "bytes": 3472904,
+      "sha256": "e5656c849cfc0d914fc5b2fd40fd30064fc0b8f3a85615069881ec3e1989839d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+      "bytes": 57090488,
+      "sha256": "dde432cda9e83ae03743076a7d1f0fc8790a5d180296e57b3dc8a77743d35eea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\tools\\ghidra_define_function.py",
+      "bytes": 7595,
+      "sha256": "52985e5bc0e3972ce00419b17c9737d352f3c13fa88df54c311a8ce2c363a79c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\inputs\\original\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  ],
+  "input_retention_limit": "Selected actual Source/header/generated recipe/tlogs/script/whole original image/exports are physically retained. Not an exhaustive compiler/SDK/backend closure; no new probe linked or executed.",
+  "function_definition": {
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\pre_definition.json",
+      "bytes": 669,
+      "sha256": "9430f2085ea6b5ab78232b9a2fef09d10b8e6c217d9bd4a45d305beab90b8e67"
+    },
+    "events": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\function_definition_events.json",
+      "bytes": 1060,
+      "sha256": "cdd0a2c3ea444ea0549658d17769593765045cfffd1c822c19f5dc60980e976c"
+    },
+    "tool": "tools/ghidra_define_function.py under coordination.ghidra_lock; verify program/project and installed/live bytes before bounded disassembly/create/save",
+    "range_only": "00415680..00415688; no deletion/reimport or enclosing body truncation"
+  },
+  "normal_build": {
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\build.txt",
+      "bytes": 3271,
+      "sha256": "ddab86a4dced0786e2d3b9612175e5338f82b8b127360beef4cfe1bb278b9574"
+    },
+    "target": "MSVC Win32 Release",
+    "existing_CTests_passed": 3,
+    "new_tests": 0
+  },
+  "Native_or_Source_entry_execution": false,
+  "app_link_or_COMDAT_presence_claim": false,
+  "larger_owner_limits": [
+    "No paired0041DE40 destructor raw-ABI admission here.",
+    "No gameplay-settings76Ch construction, array EH cleanup/iterator domain, whole0083B5E0 Lua read or canonical owner/publication claim.",
+    "No class identity proof, new heap/cleanup owner, app startup or gameplay."
+  ],
+  "Ghidra_annotation": {
+    "saved_old_values": "local/ghidra-annotations-20261008T120248Z.json",
+    "name": "BSP_RefCountedHandle_InitializeSlot",
+    "name_is_hypothesis": true,
+    "export_refreshed": true
+  },
+  "final_current_main_merge_build_and_provider": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_raw_handle_slot_initializer\\final_after_main\\receipt.json",
+    "bytes": 2484,
+    "sha256": "f6f07ed23cefe055d626699f24c6771e05748aa5a191981e1e8d8c16a241a4c2"
+  }
+}
