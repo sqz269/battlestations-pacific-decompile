@@ -1,126 +1,67 @@
-# Native property-record type-7 raw storage, CC12
+# Native property-record Type7 raw storage, CC12
 
-The whole leaf at `008EF270` partially initializes supplied 56-byte storage
-from a borrowed, disjoint 12-byte span. The new Win32 Source body exactly
-matches Original: 63 bytes, 19 instructions, no CALLs and no relocations.
-The descriptive name is a hypothesis; the operation copies raw words.
+Source admission is **1 for the bounded current-provider raw storage domain**.
+The whole initializer `[008EF270,008EF2AF)` is 63 bytes/19 instructions, all
+literal bytes, with no CALL or relocation. The existing CPP/HPP are unchanged. The provisional raw-storage name and
+evidence are saved in the configured Ghidra project; the affected export is refreshed.
 
-The worker implementation, strict three-TU build and bounded fixture passed.
-Source admission remains pending Root's independent complementary fixture,
-full main Win32 build/checks and publication. Parsing, native vector classes,
-phase dispatch, clone, native allocator/EH and owning lifetimes remain outside
-this leaf's contract.
+ECX supplies a fresh writable unowned 56-byte root; EDX is unused padding.
+The actual stable readable 12-byte input pointer at `T+4` supplies three opaque
+DWORDs copied inline to `+0C/+10/+14`; the pointer is not retained. `RET 4`
+returns the actual root in EAX, zero ECX and the middle word in EDX. It writes
+45 bytes and preserves 11. Nonvolatiles, ES and DF are preserved. Defined XOR
+flags satisfy `flags & 8C5 = 44`; undefined AF is unasserted. Byte `+2C=1`
+establishes no ownership. Quiet-NaN/negative-zero encodings remain raw bits.
 
-Whole range: `[008EF270,008EF2AF)`. Original, fresh Source COFF and unique
-linked body share SHA-256
-`9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872`.
+## Complete code and sole-process evidence
 
-```cpp
-void* __fastcall construct_native_scene_property_record_type7_storage_008ef270(
-    void* actual_record_ecx, void* unused_edx,
-    const void* actual_payload_words) noexcept;
-```
+Root generated three fresh TUs in `local/t7p2`, with 184 actual consumed headers
+and seven libraries. No BSP archive, old object or accepted process/stage was
+replayed. The exact all-files seal includes every pycache and retained failure:
+**491 files**, SHA-256 `e2be95c994eda25c018e7fff0ab27f2269cf4cec973eafb283bdf25b2d6c786e`.
+Its Source0 summary is immutable history before this external Source1 decision.
+All 24674 prior immutable pins and 28 exact prior
+families remained unchanged.
 
-ECX supplies actual fresh/unowned writable 56-byte destination storage. The
-DWORD at entry `ESP+4` is the actual pointer to a stable readable 12-byte input
-span. Input and destination must be disjoint from each other and the active
-target frame. The caller retains both lifetimes. The input pointer is neither
-retained nor freed; do not overwrite a live owning native property object.
+Independent raw readers derived 35 logical mapped symbols and 33 physical TU
+bodies, 243 logical relocation checks over 237 actual operand sites, six alias
+rechecks and 18 complete external helpers: **51 whole gated code spans**.
+The actual Main contains 3,359 bytes/877 instructions; Root manually reviewed
+its complete code, 18 phase-dominance pairs and 51 guard-failure edges.
+Both ordinary wrappers and the 29-byte/nine-instruction EH handler are retained
+but dynamically unexecuted. Ordinary Original has 66 bytes including five
+CFG-proven unreachable trailing INT3 bytes, all retained in its full gate.
+Stack43, cookie14, cold delete16 -> delete5 -> free6, std import thunks and
+every normal referenced helper are covered. The GS-failure frontier stays
+named, unexpanded and unadmitted; cold coverage is not execution proof.
 
-Incoming EDX is unused. EAX returns the destination, ECX becomes zero and EDX
-retains the **second** input DWORD, at `input+4`. `RET4` consumes the pointer.
-EBX, ESI, EDI, EBP and DF are preserved. Final defined XOR flags are
-CF=OF=SF=0 and ZF=PF=1; AF is undefined and excluded from checks.
+The sole recorded process calls Source with DF1 and unchanged Original RX
+with DF0. Two actual canonical 56-byte roots are allocated and freed; there
+are no child allocations. Both full roots, both 44-byte guarded inputs and
+both 116-byte captures decode independently. The actual pointer stack DWORD
+is captured before PUSHFD can overwrite its dead slot. Full EAX/ECX/EDX,
+nonvolatiles, ES, DF, stack guards and all live-buffer bookends agree.
+The gated probe saves all six blobs before freeing roots and releasing RX.
 
-| Destination | Exact effect |
-| --- | --- |
-| `+00,+04` | DWORD opaque phase identity `00CE89D4`, then DWORD tag 7 |
-| `+0C,+10,+14` | Raw input DWORDs at `+0,+4,+8`, respectively |
-| `+18,+1C,+20,+24,+30,+34` | Zero DWORDs |
-| `+2C` | Byte 1 |
-| `[08,0C),[28,2C),[2D,30)` | Preserve all 11 bytes |
+The three malloc/free/_callnewh bindings use frozen UCRT bytes and original
+generation NT-path/FileID/hash associations. Before target calls, the probe
+checks MEM_IMAGE/AllocationBase, mapped-versus-held-handle NT path, FileID,
+full file SHA, live I386 PE tuple, named export/GetProcAddress/IAT and adjusted
+live prefixes. After frees, it repeats IAT, held-handle FileID/size, mapped-file
+SHA and live prefix checks; MEM_IMAGE, mapped NT path and GetProcAddress are
+not repeated. The decoder opens only frozen DLL copies and creates no new
+live identity attestation. Serialized prefixes are expected adjusted bytes
+the probe compared with memory, not a separate live-memory dump.
 
-Exactly 45 bytes are written. Phase/tag writes precede the first input read,
-and the three loads and stores are interleaved. The Source retains this order.
-There is no overlapping-memory/snapshot-copy or invalid-input fault contract.
-No target SSE, x87, MXCSR or numeric conversion occurs. The opaque phase word
-must never be dispatched as a Source vtable.
+## Current build and lifetime boundary
 
-The separately sealed readiness audit established the genuine clone caller:
-tag-7 cell `008F52D4` selects `[008F5134,008F5168)`. That arm allocates `38h`,
-forms the actual pointer `source+0C`, supplies the returned destination in ECX
-and calls this leaf at `008F514C`. It then copies the ordinal at `+34`.
-No caller/provider boundary was expanded during this Source packet.
+Main Win32 build at `a4ba85f1f6cc5c140034dd6d9eaaead6dcf80d76` passed all three existing checks with
+4,041 Source/header/CMake input hashes unchanged. No new tests were added.
+The [lifetime audit](CC12_TYPE7_RECURSIVE_LIFETIME_DOMAIN_AUDIT.md) confirms
+tag7 takes the release default: it clears `+04/+0C/+28/+08`, leaves `+10/+14`
+and `+2C` untouched and frees no stored child. Scalar flags concern only the
+actual root's disposition in the existing initialized context contract.
 
-The ignored family `local/t7a/` compiled exactly the new constructor, unchanged
-current `singleton_lifetime.cpp`, and a new probe with MSVC 14.51.36231 / SDK
-10.0.26100.0, Win32 `/O2 /MD /W4 /WX /fp:strict /EHsc /Gy /GL-`. The executable
-has an embedded `asInvoker` manifest. No BSP archive, old object or tracked
-test was added. Complete code comparisons normalize all actual COFF
-relocations and gate nine linked spans before allocation and after freeing:
-constructor 63/19, allocator 90/34, free 6/1, direct ordinary caller 18/5,
-indirect ordinary caller 66/26, raw caller 156/59, bad_alloc helper 24/6,
-main 3359/877, and the full map-owned cookie helper 14/4 (bytes/instructions).
-The cookie's named failure tail JMP is included; its distinct failure body
-is not admitted. Ordinary callers and allocator exhaustion are static-only.
-
-The ordinary callers transport the full pointer DWORD. The raw caller saves
-the actual dead pointer slot at `[ESP-4]` before PUSHFD can overwrite it,
-captures return registers and flags, and checks `RET4`. Two stack guards and
-16-byte pre/post guards surround each 116-byte capture. Actual input arrays
-have three DWORDs with 16-byte guards on both sides, 44 bytes each.
-
-Actual malloc/free/_callnewh IAT addresses resolve to mapped I386
-`ucrtbase.dll`. Held physical files match the mapped NT path, file identity,
-full SHA-256, PE/export metadata and normalized live export prefixes before
-roots and after frees. The physical DLL hash is
-`60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b`.
-
-One process executed one Source and one unchanged RX Original call:
-
-| Case | Three raw input words | DF | Destination poison |
-| --- | --- | --- | --- |
-| Source | `D19A42C7 80000000 10203040` | 0 | `A6` |
-| Original | `2EB56C38 7FFFFFFF A5C37E91` | 1 | `59` |
-
-Both calls passed whole-56-byte destination checks, whole-input/guard checks,
-other-live-root and capture checks, actual pointer-slot checks, register,
-nonvolatile, DF, ES and defined-flag checks. Both observed EDX values equal
-the respective second input word. Exactly two actual canonical allocations
-and two matching frees occurred; the Original RX allocation was released.
-All nine linked code spans, Original bytes, CRT providers and native PE
-bookends remained unchanged. There was no floating-point test suite.
-
-Preparation pinned 43 inputs, 7,110 candidate headers and 540 candidate
-libraries; the fresh build consumed 184 headers and 7 libraries. Extensionless
-headers are included, and short frozen names are checked for collisions before
-compilation. All 3,216 earlier artifact pins remained unchanged, including
-the 225-file readiness audit, Root's accepted 342-file `t4p2` family and the
-316-file stopped, unexecuted `t4p1` family. Private worktree metadata was used.
-
-A receipt-only review script initially indexed PUSH ESI instead of the
-preceding malloc-IAT MOV. The stopped script and correction history are
-preserved; a separately named corrected review passed before execution.
-Compilation, linking, static gating and the successful target process were
-each performed once. No historical successful phase was replayed.
-
-The terminal seal inventories 343 artifacts; the complete directory contains
-344 files including the seal. Every artifact hash and the exact recursive
-file set were independently checked. Seal SHA-256:
-`0bb39bc58ae2e3591c1be0d15054d75a1477f6627b3f6f6e20efcdac773ac4dd`.
-Post stdout was kept outside the sealed family.
-
-The [machine-readable report](../reports/native_scene_property_record_type7_storage_cc12.json)
-contains physical contract details, actual captures, whole-span hashes and
-receipt paths. This is bounded raw-leaf fixture evidence; no whole-class ABI,
-private CRT/EH, native ownership, startup or gameplay validation is claimed.
-
-## Primary integration
-
-Whole type7 raw storage[008EF270,008EF2AF),63B19,zeroCALL/relocations, all bytes literal original Native SHA9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872. Physical ECX actualfresh/unowned writable56-byte destination, unusedEDX explicitpadding, actual borrowed stable readable12-byte wordspan stackarg atentryESP+4, RET4/EAXroot. Receiver/input/activeframe disjoint. Literal phase00CE89D4/tag7 stores precede threeinterleaved rawDWORD loads/stores at+C/+10/+14; no numeric/FP operations, pointer not retained. SixzeroDWORD18/1C/20/24/30/34; byte1+2C.45written11preserved[8,C),[28,2C),[2D,30). ECX0/EDXsecondword; nonvolatiles/DF/ES unchanged and definedXOR8C5=44 excludes undefinedAF. Independent complementary3TU/currentcanonical fixture Source13579BDF/FFFFFFFF/6BC82410 DF1 B6, unchangedRXOriginalECA86420/0/F00D55AA DF0 C7, oneeachentry/twoactual56malloc/twocanonicalfree. All116-byte guardedcaptures/44-byte guardedinputs/56storage independently decoded, pointerargument capturedbeforePUSHFD,9completecodegates including156B59rawcaller/twoordinarycallers/full14-byte mapownedcookie; actualphysicalI386UCRT IAT/export/fullhash/fileidentity and code/Native/inputbookends pass. Exact348artifacts+seal349;13481olderpins intact. Fixture scaffolding oldimagebase and exclusiveCOFFwrite attempts stopped beforetarget; separate corrected static review retained COFF/build unchanged. No successfulprepare/build/native/post replay. Currentcombinedmain strictWin32/all3checksPASS. Rawstorage only: no livephase/vtable/class/vector/refcount/destructor/fullclone/privateCRT/EH/gameABI/gameplay admission.
-
-Independent seal `057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf`, current build revision `7c79302e7276263fe41dc079c589920336c7a918`.
-
-## Complete linked helper validation reopened
-
-Reopen the historical Type7 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 17 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted.
+Bag publication, connected raw clone, native vector/declaration/float
+semantics, class/vtable ownership, arbitrary root lifecycle, private Original
+CRT/EH, drop-in ABI, game startup and gameplay remain unadmitted.
