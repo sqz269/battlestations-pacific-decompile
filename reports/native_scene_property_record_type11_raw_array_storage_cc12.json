@@ -1,0 +1,217 @@
+{
+  "schema": "bsp.cc12.native-scene-property-record-type11-raw-array-storage.v1",
+  "packet": "cc12_property_type10_type11_raw_storage_source",
+  "type": 11,
+  "status": "reconstructed_whole_raw_storage_Source_pending_primary_build_and_complete_helper_qualification",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source",
+  "branch": "agent/cc12_property_type10_type11_raw_storage_source",
+  "worker_base_revision": "4f21df543211402d96f1c27dd8751ff63070909b",
+  "Source_credit": 0,
+  "Source_admission_credit": 0,
+  "adapter_native_credit": 0,
+  "ready_Source_credit": 0,
+  "Root_independent_validation_pending": true,
+  "Root_Main_CMake_registration_build_publication_pending": true,
+  "tracked_outputs": [
+    "src/native_scene_property_record_type11_raw_array_storage.cpp",
+    "include/bsp/native_scene_property_record_type11_raw_array_storage.hpp",
+    "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE11_RAW_ARRAY_STORAGE_CC12.md",
+    "reports/native_scene_property_record_type11_raw_array_storage_cc12.json"
+  ],
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\src\\native_scene_property_record_type11_raw_array_storage.cpp",
+    "size": 2275,
+    "sha256": "77579cc3a2c4caa3ef07c19c458dc52b8db2f22fa0ea7743b7dc5953ac604306"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\include\\bsp\\native_scene_property_record_type11_raw_array_storage.hpp",
+    "size": 2779,
+    "sha256": "92d8cf0801c951a04f6beb8f1038607344b2d5fdea41fc405ca293453ca113b6"
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\docs\\NATIVE_SCENE_PROPERTY_RECORD_TYPE11_RAW_ARRAY_STORAGE_CC12.md",
+    "size": 6474,
+    "sha256": "033d78c97a2767209ab5f6aa7dc9ab3205a2d98e6de8055665fdb4b72044de1f"
+  },
+  "native": {
+    "address": "008ef460",
+    "end_exclusive": "008ef4d7",
+    "bytes": 119,
+    "instructions": 37,
+    "SHA256": "fdb6bb6f351939abd63f85028eea15df069113701aba2de727bb9a16393978da",
+    "Native_library_edges": {
+      "allocation_call": "008ef495",
+      "allocation_target": "00bf55be",
+      "allocation_thunk_target": "00bf681b",
+      "copy_call": "008ef4a4",
+      "copy_target": "00bf7680"
+    },
+    "planned_current_provider_CALL_operand_intervals": [
+      [
+        54,
+        58
+      ],
+      [
+        69,
+        73
+      ]
+    ],
+    "emitted_byte_equality_claim": false,
+    "evidence": "Root-verified complete Native body in immutable copied readiness; source instruction sequence compared independently per type."
+  },
+  "evidence_levels": {
+    "reconstructed": true,
+    "static_Source_listing_review": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "physical_register_stack_ABI_measured": false,
+    "emitted_code_inspected": false,
+    "complete_retained_helper_closure_qualified": false,
+    "Original_private_provider_ABI_admitted": false,
+    "native_class_or_drop_in_replacement": false,
+    "game_validated": false
+  },
+  "API": {
+    "symbol": "construct_native_scene_property_record_type11_raw_array_storage_008ef460",
+    "root_bytes": 56,
+    "transport": "MSVC Win32 naked fastcall; first root formal reserves ECX and explicit unused second void* formal reserves EDX.",
+    "entry_stack": [
+      "T+4: unsigned count DWORD",
+      "T+8: actual input pointer",
+      "T+C: full copy flag DWORD"
+    ],
+    "result": "EAX=root; both paths RET0C; caller ESP=T+16; ESI/EDI explicitly restored.",
+    "proposed_success_domain": {
+      "stride": 12,
+      "count_min": 1,
+      "count_max_hex": "15555555",
+      "largest_arithmetic_byte_count_hex": "fffffffc",
+      "bounds_are_preconditions_not_inserted_Native_checks": true,
+      "actual_memory": "Fresh unowned writable root; genuine stable readable input span of stride*count bytes; root,input,frame and copied output disjoint/nonwrapping; DF clear for current providers; successful normal execution.",
+      "raw_bits_only": true
+    },
+    "copy_policy": "Only low byte of full DWORD flag selects. Zero retains exact caller pointer without allocation/free/ownership transfer; nonzero allocates and copies exact scaled bytes.",
+    "owner": "Preserve root+30 allocation bytes and publish no owner. Literal phase00CE89D4 and byte+2C=1 in both branches do not prove vtable/class/free-marker/owner semantics.",
+    "lifetime": "Caller owns root. Copied child uses genuine current canonical allocation/free: observe live then free exactly once before root. Retained input remains caller-managed and must not be freed as a new child.",
+    "no_noexcept_promise": true,
+    "no_naked_frame_unwind_promise": true
+  },
+  "ordered_arithmetic": "Load count into EAX BEFORE pushing ESI/EDI; capture root; LEA3; ADD6; phase/tag11 stores; ADD12; low-byte CMP.",
+  "ordered_fields": {
+    "common": "After low-byte CMP: zero+18/+1C and store byte count+24, then branch.",
+    "retain": "Store exact input+20; restore EDI; zero+34; byte1+2C; EAX=root; restore ESI; RET0C.",
+    "copy": "Push byte count and call actual size adapter; load input only after allocation; push copy count/input/destination; store actual allocation+20 BEFORE genuine memcpy; ADD ESP,10h; ordered tail.",
+    "writes": [
+      [
+        "00",
+        "08"
+      ],
+      [
+        "18",
+        "28"
+      ],
+      [
+        "2c",
+        "2d"
+      ],
+      [
+        "34",
+        "38"
+      ]
+    ],
+    "preserves": [
+      [
+        "08",
+        "18"
+      ],
+      [
+        "28",
+        "2c"
+      ],
+      [
+        "2d",
+        "34"
+      ]
+    ],
+    "written_bytes": 29,
+    "preserved_bytes": 27,
+    "owner30_preserved": true
+  },
+  "machine_state": {
+    "retain": "ECX=root,EDX=input; CMP0,0 sets CF=OF=AF=SF=0,ZF=PF=1; arithmetic mask08D5 value0044.",
+    "copy": "ECX/EDX genuine provider residuals unasserted; final ADD ESP,10h defines all six arithmetic flags from entry T: (T-24)+16=T-8.",
+    "nonvolatile": "ESI/EDI explicit; EBX/EBP also depend on providers normal ABI.",
+    "other": "No blanket DF/ES/FPU/MXCSR preservation through providers; original native private CRT/EH and failure transport unadmitted."
+  },
+  "current_provider_binding": {
+    "size_adapter": "allocate_native_type11_array_bytes",
+    "adapter": "Private noinline cdecl(size_t) directly calls singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes}); Source-only glue, no Native credit.",
+    "memcpy": "Real memcpy call with <cstring> and #pragma function(memcpy), following frozen current Type9 transport pattern.",
+    "invented_globals_callbacks_or_service_stubs": false,
+    "compiler_support": "Actual MSVC/Win32 guards and transport in current Type9 CPP/HPP plus canonical singleton_lifetime CPP/HPP; no invented support TU.",
+    "private_Native_runtime_identity_proved": false
+  },
+  "static_review": {
+    "artifact": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\local\\t1011s\\static_Source_review.json",
+      "size": 19204,
+      "sha256": "4c141fd8000e6c9c02d2c24d0e49593b4fa5177aa8d18de8828ad8ace509dbad"
+    },
+    "instructions_matched": 37,
+    "own_Native_listing": true,
+    "normalized_only": "Whitespace/number notation, local retain label bound to identical instruction index, and the two actual current-provider CALL bindings.",
+    "mask_derived_from_Source": true,
+    "genuine_canonical_size_adapter_matches_current_pattern": true,
+    "emitted_code_or_helper_qualification": false
+  },
+  "inputs": {
+    "provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\local\\t1011s\\input_provenance.json",
+      "size": 4014,
+      "sha256": "fd6b1153032910eb91d9cc05903ca5e0c9ebf9bb3e0e9349a7a5d90cd2dc7b5d"
+    },
+    "bookends": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\local\\t1011s\\verification_bookends.json",
+      "size": 2077,
+      "sha256": "4b03436bb1b5e1a7eef940258213122b6a69935909b5f3e67e00020ed5fb4c02"
+    },
+    "current_Source_pins": 4,
+    "current_Source_before_after_equal": true,
+    "readiness_original_and_frozen_files": 328,
+    "readiness_before_after_equal": true,
+    "readiness_manifest_sha256": "ea578a4a65ebc0a1ce46ef20e2affb917e5ceb79c94a5c62a723c7729e3fbd2d",
+    "old_readiness_utilities_are_data_only": true,
+    "inherited_current_Main_metadata_references": "Historical data only; do not reopen fixture paths or perpetually pin mutable originals."
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\local\\t1011s",
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source\\local\\t1011s\\all_files_manifest.json",
+    "includes_all8_owned_output_snapshots": true,
+    "independent_SHA256": "Supplied in commit handoff; omitted here to avoid circular hashing with exact report snapshot."
+  },
+  "pending_primary_work": [
+    "Register Source in owned shared build metadata.",
+    "Compile normal MSVC Win32 production; inspect actual emitted whole body and all retained code/helper/provider closure.",
+    "Run fresh independent successful retain/copy qualification with real current providers and exact transport/storage/lifetime observations.",
+    "Award Source/name/ledger credit only after primary acceptance."
+  ],
+  "exclusions": [
+    "zero-size/overflow/invalid or overlapping spans",
+    "allocation failure, copy faults, reentry and exceptional unwind",
+    "Native private CRT/EH identities",
+    "class/vtable/free-marker or published owner lifetime",
+    "whole clone, insertion and recursive release",
+    "World/game execution"
+  ],
+  "performed": {
+    "new_Source_CPP_HPP": true,
+    "static_listing_comparison": true,
+    "compiler_or_build": false,
+    "tests": false,
+    "Source_Native_provider_runtime": false,
+    "old_fixture_read": false,
+    "old_helper_execution": false,
+    "Ghidra_write": false,
+    "names_reconstruction_parallel_metadata_or_shared_CMake_write": false
+  }
+}
