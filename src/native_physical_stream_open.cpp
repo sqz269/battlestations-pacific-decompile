@@ -214,6 +214,24 @@ __declspec(naked) std::uint32_t __fastcall raw_valid_native_physical_stream_00bf
     }
 }
 
+__declspec(naked) std::int32_t __fastcall raw_seek_native_physical_stream_00bf4f20(
+    void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t) noexcept {
+    __asm {
+        mov eax, dword ptr [esp + 0ch]
+        push eax
+        mov eax, dword ptr [esp + 0ch]
+        lea edx, [ecx + 10h]
+        push edx
+        mov edx, dword ptr [esp + 0ch]
+        push eax
+        mov eax, dword ptr [ecx + 8]
+        push edx
+        push eax
+        call dword ptr [SetFilePointerEx]
+        ret 0ch
+    }
+}
+
 std::uint64_t size_native_physical_stream_00bf4f90(const void* stream) noexcept {
     const auto low = word(stream, 0x18);
     const auto high = word(stream, 0x1c);
