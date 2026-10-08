@@ -2257,5 +2257,176 @@
     "locked Ghidra annotation/export/save",
     "full scripts/build.ps1 and required CTests",
     "integration and push to main"
-  ]
+  ],
+  "primary_integration": {
+    "passed": true,
+    "Source_admission_credit": 1,
+    "worker_commit": "abad4d43a48ac905be66cb02d103ed693c148cb9",
+    "independent_family": "local/dup57p1",
+    "independent_seal_sha256": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
+    "independent_inventory_artifacts": 95,
+    "independent_actual_files": 96,
+    "prior_artifacts_preserved": 13113,
+    "base_prior_artifacts": 12740,
+    "additional_artifacts": 373,
+    "fresh_translation_units": 3,
+    "accepted_processes": 1,
+    "target_entries": 5,
+    "returned_allocations": 3,
+    "canonical_frees": 3,
+    "complete_runtime_code_spans": 10,
+    "native_bytes": 57,
+    "native_instructions": 30,
+    "qualified_operand_bytes": 8,
+    "unchanged_bytes": 49,
+    "decoded_captures": [
+      {
+        "index": 0,
+        "phase": 0,
+        "null": true,
+        "ESP_and_nonvolatiles": true,
+        "defined_flags_independently_derived": true,
+        "volatile_nonnull_ECX_EDX_unasserted": true
+      },
+      {
+        "index": 1,
+        "phase": 0,
+        "null": false,
+        "ESP_and_nonvolatiles": true,
+        "defined_flags_independently_derived": true,
+        "volatile_nonnull_ECX_EDX_unasserted": true
+      },
+      {
+        "index": 2,
+        "phase": 1,
+        "null": true,
+        "ESP_and_nonvolatiles": true,
+        "defined_flags_independently_derived": true,
+        "volatile_nonnull_ECX_EDX_unasserted": true
+      },
+      {
+        "index": 3,
+        "phase": 1,
+        "null": false,
+        "ESP_and_nonvolatiles": true,
+        "defined_flags_independently_derived": true,
+        "volatile_nonnull_ECX_EDX_unasserted": true
+      }
+    ],
+    "fixture_context": {
+      "source_revision": "5aef9a87662331635a33b01598321c53d6bd8532",
+      "worker_commit": "abad4d43a48ac905be66cb02d103ed693c148cb9",
+      "full_main_build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_string_duplicate_integrated_build.log",
+      "build_log_sha256": "bde3f1f353edc06b1b0e2ad4cb65b50a15a10871b7ec490f2f4c4f0f7d8571fb",
+      "existing_checks": "3/3 PASS",
+      "core_context_only": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "sha256_at_capture": "a643a98a4a818a64e83770802ec15173198cb0a9511ae831cf48592aaaf24a65",
+        "consumed": false
+      },
+      "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a",
+      "worker_manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a\\artifact_manifest.json",
+        "size": 27429,
+        "sha256": "5cc2b60c8e9291ea0edf1fec7b916031d56e96df55788d56753686971ae100f1"
+      },
+      "new_input_hex": "93fe716da4c28000",
+      "new_input_bytes": 8,
+      "old_input_bytes": 6,
+      "new_incoming_EAX": "D1A2B3C4",
+      "new_unused_EDX": "89ABCDEF",
+      "new_nonvolatiles": [
+        "7531A9BC",
+        "2E4C6A80",
+        "B6D8F193"
+      ],
+      "borrowed_text_poison": "C7",
+      "historical_dispatch_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p1\\dispatch_context.json",
+        "size": 1696739,
+        "sha256": "979b303637aa3730245e2749d3c4a258b08526af3349433d2e779411f786b96e"
+      },
+      "old_recipes_or_processes_executed": false
+    },
+    "supplemental_current_main_build": {
+      "passed": true,
+      "source_revision": "b1c4e140710d84681710e0865e208ed45e0481ea",
+      "full_main_build_log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_duplicate57_type7_current_main_build.log",
+        "size": 2952,
+        "sha256": "3bebc45dbf9ad8a581938ef0808ea4848258f9c308dddfa8eb2cb4bcc8e8da26"
+      },
+      "checks": "3/3 PASS",
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_duplicate.cpp",
+        "size": 1554,
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_duplicate.hpp",
+        "size": 933,
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+      },
+      "canonical": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "CMake": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+        "size": 196888,
+        "sha256": "79e6d8f47cc2b176974f10500664eea376fe3913303497342a3ce097f31a191c"
+      },
+      "core_context_only": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "size": 73527626,
+        "sha256": "da087f1d2d0c5414a3b6ea0a4e83f7b278e12cc44ac30a88c3e390dafb7a8767",
+        "consumed_by_fixture": false
+      },
+      "historical_fixture_context": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p1\\context.json",
+        "size": 1618,
+        "sha256": "c36bf99b94bdb84ba8615aac24a770f3d7bfba85dd3ffb9491d3d7a2e4edea5a"
+      },
+      "older_fixture_seal_unchanged": true,
+      "target_processes_replayed": 0,
+      "reason": "Combined main added another harness initializer and type7 storage after the independent duplicate fixture; current build revalidates combined Source without replaying accepted Native execution."
+    },
+    "old_recipes_replayed": false,
+    "Source_provider_glue_native_credit": 0,
+    "native_class_ABI_admitted": false,
+    "original_private_CRT_EH_admitted": false,
+    "game_validated": false,
+    "qualification": "Whole physical string duplicate[00438E40,00438E79),57B30. ECX borrowed readable nullable NUL-terminated nonwrapping text; no stack arguments, plain RET0, EAX actual owned copy or0. Exactly CALL operands[34,38)/[44,48) bind genuine size adapter/current canonical allocation and actual VCRUNTIME140 memcpy import; all49 other bytes literal. Genuine private adapter61B17 has zero Native credit. Null XOR flags mask8C5=44 excludes undefined AF and preserves EDX; nonnull final ADD16 flags mask8D5 independently derived from copy-returnESP=T-32 and resultT-16; final RET returnsESP=T. Nonnull ECX/EDX volatile/unasserted. Current CRT DF0 only; no blanket FP/ES preservation. Independent fresh3TU strict Win32 process uses new guarded8-byte93fe716da4c28000 input/register sentinels,5 entries/3 real copies/3 current frees,10 complete code spans including full14-byte cookie and actual6-byte imports; complete physical UCRT/VCRUNTIME identity and code/input/Native bookends. Exact95 sealed artifacts plus seal,12740 original prior pins plus373 supplemental immutable pins=13113. Historical prelaunch basename failure stopped before target, separately recorded recovery, no successful phase or old target replay. Supplemental current merged-main Win32 build/all3 checks passed. Legacy CDECL duplicate_00438e40 remains unchanged; it is not the admitted physical interface. Normal current-provider domain only; original private CRT/EH, owning class/destructor/vtable and game ABI/gameplay remain unadmitted.",
+    "artifacts": {
+      "local/dup57p1/seal.json": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
+      "local/dup57p1/runtime.json": "6ec5228d17fda7680753c52021fdb231fd50b59f0c35577c74400998c94f3a16",
+      "local/dup57p1/static_gate.json": "981cc6d7a3170c906f90be1a021167f4c48facd7227b15cd1da07d6a13dbb729",
+      "local/dup57p1/post.json": "130f60c00b7d97f7514bc82a8a4bb72addd04bf35ae123359e3849c60becef17",
+      "local/dup57p1/Root_manual_static_review.json": "f3fc936b682be33d0827f8b700ef16354ffd06f959b0389508cdb5e076a7a6df",
+      "local/dup57p1/Root_preservation_extension_before.json": "be4e14a4a697176b62a826fd20b11d2b427a4d3957d479b15201dd08f89754d4",
+      "local/dup57p1/Root_launch_recovery_inputs.json": "b1e17010f89c8e4f765c3c8283fc0494af993578f6c62795ed9f7b877d0ff95c"
+    }
+  },
+  "primary_source_status": "complete qualified whole57B30 physical ECX/RET0 duplicate; independently validated current-owned copies and real VCRUNTIME memcpy; combined-main Win32/all3 checks PASS",
+  "Source_admission_credit": 1,
+  "worker_Source_admission_credit": 0,
+  "Root_independent_validation_pending": false,
+  "main_Win32_build_and_existing_checks_pending": false,
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T124133Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T124133Z.json": "bd629eec83675ff30336bfe01338793755a8f6f9756d417b866d8da6449e4442",
+      "local/cc12_duplicate57_source_final_annotations.log": "a650600244315987db505e78a4519e065ade371579d4780d28c30341fbb1f503",
+      "local/cc12_duplicate57_source_final_exports.log": "d4d3b6d7820265225c973c663816a56bd61cd3ffcab84975ba7feefa13943404",
+      "local/cc12_duplicate57_source_final_snapshot.log": "084b9184c00525b8d8ff8c6b1c49603e499813288b3f84e22b1c1e0b7fe03afa"
+    },
+    "name_is_behavior_hypothesis": true
+  }
 }
