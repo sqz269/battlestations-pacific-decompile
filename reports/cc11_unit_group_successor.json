@@ -1,0 +1,1653 @@
+{
+  "packet": "cc11_health_unit_group_successor",
+  "base_commit": "a8e2f949037d91a52f313ca177d93c3be83ebd3b",
+  "branch": "agent/cc11_health_guard",
+  "status": "complete_raw_entry_byte_identical_strict_win32_build_and_one_connected_original_comparison_passed_pending_primary_integration",
+  "owned_files": [
+    "include/bsp/native_unit_group_successor.hpp",
+    "src/native_unit_group_successor.cpp",
+    "docs/CC11_UNIT_GROUP_SUCCESSOR.md",
+    "reports/cc11_unit_group_successor.json"
+  ],
+  "functions": [
+    {
+      "name": "successor",
+      "address": "0070D8D0",
+      "end_exclusive": "0070D97D",
+      "bytes": 173,
+      "instruction_count": 62,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a",
+      "disassembly": [
+        "0070D8D0: push ecx",
+        "0070D8D1: mov edx, dword ptr [esp + 8]",
+        "0070D8D5: push esi",
+        "0070D8D6: xor esi, esi",
+        "0070D8D8: cmp edx, esi",
+        "0070D8DA: je 0x70d8eb",
+        "0070D8DC: mov eax, dword ptr [ecx + 0x14]",
+        "0070D8DF: cmp eax, esi",
+        "0070D8E1: je 0x70d8eb",
+        "0070D8E3: cmp edx, eax",
+        "0070D8E5: jne 0x70d978",
+        "0070D8EB: cmp dword ptr [ecx + 0x4fc], 0x18",
+        "0070D8F2: mov dword ptr [esp + 4], esi",
+        "0070D8F6: je 0x70d974",
+        "0070D8F8: push edi",
+        "0070D8F9: or edi, 0xffffffff",
+        "0070D8FC: cmp dword ptr [ecx + 0x4f8], esi",
+        "0070D902: mov dword ptr [ecx + 0x500], esi",
+        "0070D908: jle 0x70d973",
+        "0070D90A: push ebx",
+        "0070D90B: push ebp",
+        "0070D90C: mov ebp, 0xffffffc8",
+        "0070D911: lea ebx, [edi - 0x33]",
+        "0070D914: lea edx, [ecx + 0x38]",
+        "0070D917: sub ebp, ecx",
+        "0070D919: lea esp, [esp]",
+        "0070D920: mov eax, dword ptr [edx - 0x20]",
+        "0070D923: test eax, eax",
+        "0070D925: je 0x70d94e",
+        "0070D927: cmp byte ptr [eax + 0x5d], 0",
+        "0070D92B: jne 0x70d94e",
+        "0070D92D: cmp eax, dword ptr [esp + 0x18]",
+        "0070D931: je 0x70d94e",
+        "0070D933: cmp eax, dword ptr [ecx + 0x14]",
+        "0070D936: je 0x70d95e",
+        "0070D938: cmp edi, -1",
+        "0070D93B: je 0x70d949",
+        "0070D93D: fld dword ptr [edx]",
+        "0070D93F: fld dword ptr [ebx + ecx + 0x38]",
+        "0070D943: fcompi st(1)",
+        "0070D945: fstp st(0)",
+        "0070D947: jbe 0x70d94e",
+        "0070D949: mov edi, esi",
+        "0070D94B: lea ebx, [edx + ebp]",
+        "0070D94E: add esi, 1",
+        "0070D951: add edx, 0x34",
+        "0070D954: cmp esi, dword ptr [ecx + 0x4f8]",
+        "0070D95A: jl 0x70d920",
+        "0070D95C: jmp 0x70d962",
+        "0070D95E: mov dword ptr [esp + 0x10], eax",
+        "0070D962: test edi, edi",
+        "0070D964: pop ebp",
+        "0070D965: pop ebx",
+        "0070D966: jl 0x70d973",
+        "0070D968: imul edi, edi, 0x34",
+        "0070D96B: mov eax, dword ptr [edi + ecx + 0x18]",
+        "0070D96F: mov dword ptr [esp + 8], eax",
+        "0070D973: pop edi",
+        "0070D974: mov eax, dword ptr [esp + 4]",
+        "0070D978: pop esi",
+        "0070D979: pop ecx",
+        "0070D97A: ret 4"
+      ],
+      "executed": true,
+      "source_name": "native_unit_group_successor_0070d8d0",
+      "original_name": "FUN_0070d8d0"
+    }
+  ],
+  "native_calls": [],
+  "native_entry_call_count": 0,
+  "native_abi": {
+    "receiver": "ECX actual aligned508h group storage",
+    "argument": "actual excluded entity pointer at [entryESP+4]",
+    "return_value": "EAX actual entity pointer/null, not a float",
+    "cleanup": "RET4",
+    "source_declaration": "void* __fastcall native_unit_group_successor_0070d8d0(void* actual_group, void* unused_edx, const void* excluded_entity) noexcept",
+    "edx": "unused native input register explicitly represented in fastcall spelling; overwritten by the entry, not a provider",
+    "scratch_ecx": "original group on early follower return; popped local result otherwise, preserved exactly by byte-identical Source",
+    "original_class_integration": "not established by this raw-entry component"
+  },
+  "raw_contract": {
+    "early_follower": "nonnull excluded distinct from nonnull leader+14 returns leader before type/count/column access",
+    "type18": "otherwise type+4FC==18 returns null before count/500 access",
+    "count_and_column": "initial signed4F8 read at70D8FC precedes unconditional500=0 at70D902 on scan path; nonpositive count then returns null",
+    "iteration": "actual entity atgroup18+i34; skip null, byteentity5D!=0 and exclusion; current leader stops the scan",
+    "comparison": "first candidate has no key read; then actual candidateFLD, actualbestFLD, FCOMIPST0ST1, FSTPST0, JBE; equal/unordered retains earlier candidate",
+    "reloads": "70D954 reloads signed4F8 after every index/34h record advance; leader/key/entity loads remain actual original instructions",
+    "result": "final actual entity reload from selected best record overrides saved stopped-at leader when any earlier candidate exists",
+    "mutable_storage": "group+500 only",
+    "raw_copy_or_semantic_helper": false,
+    "new_provider_or_virtual_service": false,
+    "fp_environment_changes_by_source": false
+  },
+  "actual_caller_witnesses": [
+    {
+      "address": "0070E4DD",
+      "native": "0070D8D0",
+      "function": "0070E4C0",
+      "role": "separate actual caller witness, not a leaf dependency"
+    },
+    {
+      "address": "0077BDC5",
+      "native": "0070D8D0",
+      "function": "0077BD70",
+      "role": "separate actual caller witness, not a leaf dependency"
+    },
+    {
+      "address": "0077BDD7",
+      "native": "0070D8D0",
+      "function": "0077BD70",
+      "role": "separate actual caller witness, not a leaf dependency"
+    }
+  ],
+  "caller_witness_verification": "local/cc11_unit_group_successor_20261007_a/caller_witnesses.json: 3 call rows checked, 0 failed\n",
+  "structural_input_evidence": [
+    {
+      "name": "constructor",
+      "address": "0070DAB0",
+      "end_exclusive": "0070DB1C",
+      "bytes": 108,
+      "instruction_count": 35,
+      "sha256": "949fc68fe35570ff7ae5e461ea0073a49ce0b069ff340d68d42bca784846c86b",
+      "disassembly": [
+        "0070DAB0: movss xmm1, dword ptr [0xcf4888]",
+        "0070DAB8: xorps xmm0, xmm0",
+        "0070DABB: mov eax, ecx",
+        "0070DABD: push ebx",
+        "0070DABE: xor ebx, ebx",
+        "0070DAC0: push esi",
+        "0070DAC1: mov dword ptr [eax + 4], ebx",
+        "0070DAC4: mov dword ptr [eax + 8], ebx",
+        "0070DAC7: mov dword ptr [eax + 0xc], ebx",
+        "0070DACA: push edi",
+        "0070DACB: mov byte ptr [eax + 0x10], bl",
+        "0070DACE: mov dword ptr [eax], 0xcfd6f8",
+        "0070DAD4: lea esi, [eax + 0x18]",
+        "0070DAD7: lea ecx, [ebx + 0x17]",
+        "0070DADA: lea ebx, [ebx]",
+        "0070DAE0: mov dword ptr [esi], ebx",
+        "0070DAE2: movss dword ptr [esi + 0x30], xmm1",
+        "0070DAE7: lea edx, [esi + 0x10]",
+        "0070DAEA: mov edi, 4",
+        "0070DAEF: nop ",
+        "0070DAF0: movss dword ptr [edx + 0x10], xmm0",
+        "0070DAF5: movss dword ptr [edx], xmm0",
+        "0070DAF9: add edx, 4",
+        "0070DAFC: sub edi, 1",
+        "0070DAFF: jne 0x70daf0",
+        "0070DB01: add esi, 0x34",
+        "0070DB04: sub ecx, 1",
+        "0070DB07: jns 0x70dae0",
+        "0070DB09: pop edi",
+        "0070DB0A: pop esi",
+        "0070DB0B: mov dword ptr [eax + 0x14], ebx",
+        "0070DB0E: mov dword ptr [eax + 0x500], ebx",
+        "0070DB14: mov dword ptr [eax + 0x4f8], ebx",
+        "0070DB1A: pop ebx",
+        "0070DB1B: ret "
+      ],
+      "executed": false
+    },
+    {
+      "name": "detach_caller",
+      "address": "0070E4C0",
+      "end_exclusive": "0070E4E4",
+      "bytes": 36,
+      "instruction_count": 13,
+      "sha256": "8cb90eaefb37bd981515447cb7476cc8e1ba26ec4bd2b8b82217be3c41fb1db4",
+      "disassembly": [
+        "0070E4C0: push ebx",
+        "0070E4C1: push ebp",
+        "0070E4C2: mov ebp, dword ptr [esp + 0xc]",
+        "0070E4C6: push esi",
+        "0070E4C7: mov esi, ecx",
+        "0070E4C9: cmp ebp, dword ptr [esi + 0x14]",
+        "0070E4CC: push edi",
+        "0070E4CD: jne 0x70e556",
+        "0070E4D3: cmp dword ptr [esi + 0x4f8], 1",
+        "0070E4DA: jle 0x70e556",
+        "0070E4DC: push ebp",
+        "0070E4DD: call 0x70d8d0",
+        "0070E4E2: mov edi, eax"
+      ],
+      "executed": false
+    },
+    {
+      "name": "leave_callers",
+      "address": "0077BD70",
+      "end_exclusive": "0077BDDE",
+      "bytes": 110,
+      "instruction_count": 31,
+      "sha256": "d9fae70a29ce6aa3c62c73569775b73573f64a71fe5ffb472cf7003c9ff3642b",
+      "disassembly": [
+        "0077BD70: push esi",
+        "0077BD71: mov esi, ecx",
+        "0077BD73: mov ecx, dword ptr [esi + 0x284]",
+        "0077BD79: test ecx, ecx",
+        "0077BD7B: je 0x77be5f",
+        "0077BD81: push edi",
+        "0077BD82: mov edi, dword ptr [esp + 0xc]",
+        "0077BD86: cmp edi, esi",
+        "0077BD88: je 0x77bdc4",
+        "0077BD8A: test edi, edi",
+        "0077BD8C: je 0x77bdc4",
+        "0077BD8E: cmp byte ptr [edi + 0x5c], 0",
+        "0077BD92: je 0x77be5e",
+        "0077BD98: cmp byte ptr [edi + 0x5d], 0",
+        "0077BD9C: jne 0x77be5e",
+        "0077BDA2: cmp byte ptr [edi + 0x60], 0",
+        "0077BDA6: jne 0x77be5e",
+        "0077BDAC: cmp byte ptr [edi + 0x5e], 0",
+        "0077BDB0: jne 0x77be5e",
+        "0077BDB6: cmp dword ptr [edi + 0x284], ecx",
+        "0077BDBC: jne 0x77be5e",
+        "0077BDC2: jmp 0x77bdde",
+        "0077BDC4: push esi",
+        "0077BDC5: call 0x70d8d0",
+        "0077BDCA: mov edi, eax",
+        "0077BDCC: cmp edi, esi",
+        "0077BDCE: jne 0x77bdde",
+        "0077BDD0: mov ecx, dword ptr [esi + 0x284]",
+        "0077BDD6: push esi",
+        "0077BDD7: call 0x70d8d0",
+        "0077BDDC: mov edi, eax"
+      ],
+      "executed": false
+    }
+  ],
+  "existing_source_before_packet": {
+    "constructor": "src/native_unit_group_storage.cpp existing whole0070DAB0",
+    "semantic_host_successor": "src/game_hosts_units.cpp helper deliberately unused and unchanged; indexed host storage and type18/leader-first differences do not satisfy raw body",
+    "entry_dependencies": "none; no native calls, no absolute data references, no BSP library dependency"
+  },
+  "original_image": {
+    "original": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_unit_group_successor_20261007_a\\original_image.bin",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752,
+    "unchanged": true
+  },
+  "fixture": {
+    "directory": "local/cc11_unit_group_successor_20261007_a",
+    "connected_families": 1,
+    "executions": 1,
+    "cases": 8,
+    "checks": 261,
+    "failures": 0,
+    "pointer_comparisons": 16,
+    "group": "one actual aligned508h group built by existing whole Source constructor with true CF4888 bits4479C000; prefix/suffix16-byte guards give528h backing",
+    "units": "seven live guarded648h raw unit inputs with real pointer identities, borrowed byte5D and unit284; each668h backing checked, no complete unit constructor claim",
+    "raw_state_qualification": "member, leader, type/count and key words are explicit borrowed valid raw inputs; no full group publisher/world invocation is claimed",
+    "paired_inputs": "Original and Source use identical actual addresses and bytes; only500 is restored between pair invocations",
+    "native_code": "whole unchanged173B Original executes RX, zero relocation/patch bytes; complete Source COFF/link/runtime bytes identical",
+    "cases_evidence": [
+      {
+        "index": 0,
+        "name": "early_follower_over_type18",
+        "returned": "00EFDEE0",
+        "native_ecx": "00EFF0D8",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 1,
+        "name": "type18_excluded_leader",
+        "returned": "00000000",
+        "native_ecx": "00000000",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7520",
+        "status_after": "7520",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 2,
+        "name": "negative_count_resets_column",
+        "returned": "00000000",
+        "native_ecx": "00000000",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 3,
+        "name": "leader_first_no_key_read",
+        "returned": "00EFDEE0",
+        "native_ecx": "00EFDEE0",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 4,
+        "name": "holes_dead_excluded_first_tie",
+        "returned": "00EFC540",
+        "native_ecx": "00EFC540",
+        "stack_delta": 0,
+        "control": "007F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF1E0",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 5,
+        "name": "prior_best_overrides_leader_stop",
+        "returned": "00EFC540",
+        "native_ecx": "00EFC540",
+        "stack_delta": 0,
+        "control": "027F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF144",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 6,
+        "name": "unordered_candidate_then_denormal",
+        "returned": "00EFCBA8",
+        "native_ecx": "00EFCBA8",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7503",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF110",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 7,
+        "name": "first_nan_retained_with_signaling_candidate",
+        "returned": "00EFBED8",
+        "native_ecx": "00EFBED8",
+        "stack_delta": 0,
+        "control": "0A7F",
+        "status_before": "7520",
+        "status_after": "7521",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF110",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      }
+    ],
+    "floating_environment": {
+      "adapter": "complete FNSAVE/FRSTOR state capture/restoration; no typed float arithmetic or alternate comparison",
+      "tested_control_words": [
+        "037F",
+        "007F",
+        "027F",
+        "0A7F"
+      ],
+      "top_before_after": 6,
+      "tag_before_after": "0FFF",
+      "live_canary_count": 2,
+      "full_saved_register_bytes_compared": 80,
+      "sticky_examples": [
+        "7500 -> 7503: invalid and denormal",
+        "7520 -> 7521: old precision flag retained, invalid added"
+      ],
+      "instruction_pointer": "entry+75h after compared paths; seed IP retained on integer-only paths; code-copy address difference is explicitly normalized",
+      "compared_fields": [
+        "exact CW",
+        "exact SW including TOP and sticky/condition bits",
+        "exact tag word",
+        "all80 saved register bytes",
+        "two unchanged live values",
+        "opcode",
+        "actual operand address",
+        "integer EAX/ECX and stack balance"
+      ]
+    },
+    "state_snapshots": "all guarded group bytes checked against exact before image with only expected500 store; all seven guarded unit spans unchanged",
+    "prior_fixture_executions": 0,
+    "unmasked_exceptions_tested": false
+  },
+  "build": {
+    "fresh_translation_units": [
+      "local/cc11_unit_group_successor_20261007_a/probe.cpp",
+      "src/native_unit_group_storage.cpp",
+      "src/native_unit_group_successor.cpp"
+    ],
+    "production_translation_units": 2,
+    "probe_translation_units": 1,
+    "actual_frozen_input_count": 6,
+    "actual_host_include_count": 175,
+    "actual_toolchain_libraries_searched": 6,
+    "bsp_support_libraries": [],
+    "unused_primary_core": "Parent-supplied current core6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383 was not needed, copied or linked.",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /showIncludes",
+    "link_flags": "/MANIFEST:EMBED /OPT:REF /VERBOSE:LIB /MAP kernel32.lib",
+    "manifest": "I386 embedded asInvoker",
+    "global_build_run_by_worker": false,
+    "constructor_provider_coff": "fresh actual132B39-instruction body; older core compilation147B41 is not the consumed provider object",
+    "source_trial": "first standalone strict object compile was already byte-identical; final three-TU build matches it and required no repair/rerun",
+    "toolchain": {
+      "environment": {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat",
+        "bytes": 10163,
+        "sha256": "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2"
+      },
+      "tools": [
+        {
+          "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/cl.exe",
+          "bytes": 830824,
+          "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+          "host_pe_machine": "0x14c"
+        },
+        {
+          "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/link.exe",
+          "bytes": 3208544,
+          "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+          "host_pe_machine": "0x14c"
+        }
+      ],
+      "qualification": "Same vcvarsall.bat x86 PATH resolution as build, captured before fixture execution; agrees with actual searched library toolset. File/environment pins, not process-load tracing."
+    },
+    "provenance_qualification": "actual include/link outputs and frozen source/object/binary/toolchain hashes; static imports/file environment, not a process-load trace"
+  },
+  "coff": {
+    "source": [
+      {
+        "symbol": "?native_unit_group_successor_0070d8d0@bsp@@YIPAXPAX0PBX@Z",
+        "machine": "I386",
+        "section": 3,
+        "symbol_value": 0,
+        "bytes": 173,
+        "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a",
+        "relocations": [],
+        "instruction_count": 62,
+        "disassembly": [
+          "00: push ecx",
+          "01: mov edx, dword ptr [esp + 8]",
+          "05: push esi",
+          "06: xor esi, esi",
+          "08: cmp edx, esi",
+          "0A: je 0x1b",
+          "0C: mov eax, dword ptr [ecx + 0x14]",
+          "0F: cmp eax, esi",
+          "11: je 0x1b",
+          "13: cmp edx, eax",
+          "15: jne 0xa8",
+          "1B: cmp dword ptr [ecx + 0x4fc], 0x18",
+          "22: mov dword ptr [esp + 4], esi",
+          "26: je 0xa4",
+          "28: push edi",
+          "29: or edi, 0xffffffff",
+          "2C: cmp dword ptr [ecx + 0x4f8], esi",
+          "32: mov dword ptr [ecx + 0x500], esi",
+          "38: jle 0xa3",
+          "3A: push ebx",
+          "3B: push ebp",
+          "3C: mov ebp, 0xffffffc8",
+          "41: lea ebx, [edi - 0x33]",
+          "44: lea edx, [ecx + 0x38]",
+          "47: sub ebp, ecx",
+          "49: lea esp, [esp]",
+          "50: mov eax, dword ptr [edx - 0x20]",
+          "53: test eax, eax",
+          "55: je 0x7e",
+          "57: cmp byte ptr [eax + 0x5d], 0",
+          "5B: jne 0x7e",
+          "5D: cmp eax, dword ptr [esp + 0x18]",
+          "61: je 0x7e",
+          "63: cmp eax, dword ptr [ecx + 0x14]",
+          "66: je 0x8e",
+          "68: cmp edi, -1",
+          "6B: je 0x79",
+          "6D: fld dword ptr [edx]",
+          "6F: fld dword ptr [ebx + ecx + 0x38]",
+          "73: fcompi st(1)",
+          "75: fstp st(0)",
+          "77: jbe 0x7e",
+          "79: mov edi, esi",
+          "7B: lea ebx, [edx + ebp]",
+          "7E: add esi, 1",
+          "81: add edx, 0x34",
+          "84: cmp esi, dword ptr [ecx + 0x4f8]",
+          "8A: jl 0x50",
+          "8C: jmp 0x92",
+          "8E: mov dword ptr [esp + 0x10], eax",
+          "92: test edi, edi",
+          "94: pop ebp",
+          "95: pop ebx",
+          "96: jl 0xa3",
+          "98: imul edi, edi, 0x34",
+          "9B: mov eax, dword ptr [edi + ecx + 0x18]",
+          "9F: mov dword ptr [esp + 8], eax",
+          "A3: pop edi",
+          "A4: mov eax, dword ptr [esp + 4]",
+          "A8: pop esi",
+          "A9: pop ecx",
+          "AA: ret 4"
+        ]
+      }
+    ],
+    "existing_constructor_provider": [
+      {
+        "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z",
+        "machine": "I386",
+        "section": 3,
+        "symbol_value": 0,
+        "bytes": 132,
+        "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+        "relocations": [],
+        "instruction_count": 39,
+        "disassembly": [
+          "00: mov eax, dword ptr [esp + 8]",
+          "04: xor edx, edx",
+          "06: push ebx",
+          "07: mov ebx, dword ptr [esp + 8]",
+          "0B: push ebp",
+          "0C: mov ebp, dword ptr [eax]",
+          "0E: push esi",
+          "0F: mov dword ptr [ebx + 4], 0",
+          "16: mov dword ptr [ebx + 8], 0",
+          "1D: mov dword ptr [ebx + 0xc], 0",
+          "24: mov byte ptr [ebx + 0x10], 0",
+          "28: mov dword ptr [ebx], 0xcfd6f8",
+          "2E: push edi",
+          "2F: nop ",
+          "30: imul eax, edx, 0x34",
+          "33: mov ecx, 4",
+          "38: mov dword ptr [eax + ebx + 0x18], 0",
+          "40: lea esi, [eax + ebx]",
+          "43: mov dword ptr [eax + ebx + 0x48], ebp",
+          "47: lea edi, [eax + ebx]",
+          "4A: xor eax, eax",
+          "4C: nop dword ptr [eax]",
+          "50: mov dword ptr [eax + esi + 0x38], 0",
+          "58: lea eax, [eax + 4]",
+          "5B: mov dword ptr [eax + edi + 0x24], 0",
+          "63: sub ecx, 1",
+          "66: jne 0x50",
+          "68: inc edx",
+          "69: cmp edx, 0x18",
+          "6C: jne 0x30",
+          "6E: pop edi",
+          "6F: pop esi",
+          "70: mov dword ptr [ebx + 0x14], ecx",
+          "73: mov eax, ebx",
+          "75: mov dword ptr [ebx + 0x500], ecx",
+          "7B: pop ebp",
+          "7C: mov dword ptr [ebx + 0x4f8], ecx",
+          "82: pop ebx",
+          "83: ret "
+        ]
+      }
+    ],
+    "abi_and_state_adapters": [
+      {
+        "symbol": "?make_seed@@YAXPAUX87State@@II@Z",
+        "machine": "I386",
+        "section": 303,
+        "symbol_value": 0,
+        "bytes": 73,
+        "sha256": "f1429befbe34c7bfbc50d369cc5d75048a8a89358846778dfb47ac91560f9fa6",
+        "relocations": [],
+        "instruction_count": 19,
+        "disassembly": [
+          "00: sub esp, 0x74",
+          "03: mov dword ptr [esp], 0x3fa00000",
+          "0A: mov dword ptr [esp + 4], 0xc0200000",
+          "12: lea eax, [esp + 8]",
+          "16: fnsave dword ptr [eax]",
+          "18: fldcw word ptr [esp + 0x7c]",
+          "1C: fld dword ptr [esp]",
+          "1F: fld dword ptr [esp + 4]",
+          "23: mov eax, dword ptr [esp + 0x78]",
+          "27: fnsave dword ptr [eax]",
+          "29: lea eax, [esp + 8]",
+          "2D: frstor dword ptr [eax]",
+          "2F: mov ecx, dword ptr [esp + 0x78]",
+          "33: mov eax, dword ptr [ecx + 4]",
+          "36: or eax, dword ptr [esp + 0x80]",
+          "3D: or eax, 0x4500",
+          "42: mov dword ptr [ecx + 4], eax",
+          "45: add esp, 0x74",
+          "48: ret "
+        ]
+      },
+      {
+        "symbol": "?invoke_raw@@YAXPAX0PBXPBUX87State@@PAUResult@@@Z",
+        "machine": "I386",
+        "section": 300,
+        "symbol_value": 0,
+        "bytes": 59,
+        "sha256": "a53fd55a0483a8351d323cf9484878292b81ed67353b025ade83eeff01748557",
+        "relocations": [],
+        "instruction_count": 28,
+        "disassembly": [
+          "00: push ebp",
+          "01: mov ebp, esp",
+          "03: push ebx",
+          "04: push esi",
+          "05: push edi",
+          "06: sub esp, 0x6c",
+          "09: fnsave dword ptr [esp]",
+          "0C: mov esi, dword ptr [ebp + 0x14]",
+          "0F: frstor dword ptr [esi]",
+          "11: mov edi, dword ptr [ebp + 0x18]",
+          "14: mov ebx, esp",
+          "16: mov ecx, dword ptr [ebp + 0xc]",
+          "19: push dword ptr [ebp + 0x10]",
+          "1C: mov eax, dword ptr [ebp + 8]",
+          "1F: call eax",
+          "21: mov dword ptr [edi], eax",
+          "23: mov dword ptr [edi + 4], ecx",
+          "26: mov edx, esp",
+          "28: sub edx, ebx",
+          "2A: mov dword ptr [edi + 8], edx",
+          "2D: fnsave dword ptr [edi + 0xc]",
+          "30: frstor dword ptr [esp]",
+          "33: add esp, 0x6c",
+          "36: pop edi",
+          "37: pop esi",
+          "38: pop ebx",
+          "39: pop ebp",
+          "3A: ret "
+        ]
+      }
+    ],
+    "byte_account": {
+      "whole_original": 173,
+      "whole_source": 173,
+      "retained_original": 173,
+      "relocations": 0,
+      "patches": 0,
+      "installed_frozen_live_coff_linked_and_executed_body_bytes_identical": true
+    },
+    "cases": [
+      {
+        "index": 0,
+        "name": "early_follower_over_type18",
+        "returned": "00EFDEE0",
+        "native_ecx": "00EFF0D8",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 1,
+        "name": "type18_excluded_leader",
+        "returned": "00000000",
+        "native_ecx": "00000000",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7520",
+        "status_after": "7520",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 2,
+        "name": "negative_count_resets_column",
+        "returned": "00000000",
+        "native_ecx": "00000000",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 3,
+        "name": "leader_first_no_key_read",
+        "returned": "00EFDEE0",
+        "native_ecx": "00EFDEE0",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "001D1AAF",
+        "source_fpip": "001D1AAF",
+        "data_pointer": "00EF873C",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 4,
+        "name": "holes_dead_excluded_first_tie",
+        "returned": "00EFC540",
+        "native_ecx": "00EFC540",
+        "stack_delta": 0,
+        "control": "007F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF1E0",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 5,
+        "name": "prior_best_overrides_leader_stop",
+        "returned": "00EFC540",
+        "native_ecx": "00EFC540",
+        "stack_delta": 0,
+        "control": "027F",
+        "status_before": "7500",
+        "status_after": "7500",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF144",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 6,
+        "name": "unordered_candidate_then_denormal",
+        "returned": "00EFCBA8",
+        "native_ecx": "00EFCBA8",
+        "stack_delta": 0,
+        "control": "037F",
+        "status_before": "7500",
+        "status_after": "7503",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF110",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      },
+      {
+        "index": 7,
+        "name": "first_nan_retained_with_signaling_candidate",
+        "returned": "00EFBED8",
+        "native_ecx": "00EFBED8",
+        "stack_delta": 0,
+        "control": "0A7F",
+        "status_before": "7520",
+        "status_after": "7521",
+        "top": 6,
+        "tag": "0FFF",
+        "original_fpip": "01100075",
+        "source_fpip": "001D3F35",
+        "data_pointer": "00EFF110",
+        "all_result_bytes_match_except_fpip": true,
+        "group_changed_backing_offsets": [
+          1296,
+          1298,
+          1299
+        ],
+        "whole_guarded_group_bytes": 1320,
+        "whole_guarded_group_outputs_equal": true,
+        "all_80_saved_fp_register_bytes_equal": true,
+        "live_two_stack_canaries_unchanged": true
+      }
+    ]
+  },
+  "prior_artifact_preservation": [
+    {
+      "report": "reports/cc11_session_transport_broadcast.json",
+      "report_sha256": "60de5e358fab5045e535e9fe5675f085ff04b67b192b006c757b27f500a09a02",
+      "artifact_count": 58,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_message_append.json",
+      "report_sha256": "f6844ac079084c95582b3b558bd4adc6ee895ba47a0b4665a1ebc8fbdf98fe94",
+      "artifact_count": 73,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_deferred_message_storage.json",
+      "report_sha256": "641818ec312feed5d4425bd29a4c5baeb05339fc54e85f9f284fc5cf41de2f84",
+      "artifact_count": 100,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_entity_id_table_storage.json",
+      "report_sha256": "a246a90f2c1a08cac0c7248166ab0b9b805f52c274ce2e240ff0dfe934e1df5a",
+      "artifact_count": 103,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_session_participant_binding.json",
+      "report_sha256": "3faa6628b2773c05ae368b6f04c9897f86284e4e2c59163b83d89cdbc3ec46f3",
+      "artifact_count": 394,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_role_permission.json",
+      "report_sha256": "c8f23254131d12075bac98615647391741679724498e4572533a0e3e95d6e8d0",
+      "artifact_count": 44,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_owner_predicate.json",
+      "report_sha256": "032c761b5d7309af4f2e6b058e2a27bfc7cadbea997d56d28def0a49afd0c431",
+      "artifact_count": 42,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_storage.json",
+      "report_sha256": "a7465818f6a160af91323686fc86d627cfbba2eccd04af61826b20b311034005",
+      "artifact_count": 46,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_lookup.json",
+      "report_sha256": "579b77d50c51fc6bc398233fb5b6a20394ef1e726611a4f8b5ffc4d50f780d16",
+      "artifact_count": 57,
+      "before_after_match": true
+    },
+    {
+      "report": "reports/cc11_unit_group_lifetime.json",
+      "report_sha256": "9150364e8c1a534fd4bd910e830fd827b6591027122277e5401ddc64bf45fc19",
+      "artifact_count": 2054,
+      "before_after_match": true
+    }
+  ],
+  "limitations": [
+    "tested ordinary valid raw storage, with at least two free x87 slots when comparison is reached",
+    "native class replacement and complete unit/group ownership are external",
+    "historical CRT, faults and unmasked exception transport are external",
+    "concurrent mutations, world integration and game parity are external",
+    "full0070ECA0/0070E4C0 callback/detach remains unclosed through actual virtual+5C,815E20 wake and70DA00 speed providers",
+    "byte-identical raw entry does not establish external caller/provider/class integration"
+  ],
+  "source_hashes": {
+    "include/bsp/native_unit_group_successor.hpp": "12c99845084f25a5a03bc54d5fb91e05908bf7146a0c6b44d728c8e3ba29df33",
+    "src/native_unit_group_successor.cpp": "46d8aecf83d1b9aeb8af39986d8e5678aa5a063c096d9b06e2f8156ff39705c8",
+    "docs/CC11_UNIT_GROUP_SUCCESSOR.md": "d120ffe52d8bfe1276d2e413d0da48b3c984bbaf7c1381e80c15cfca85a2b31f"
+  },
+  "live_report_call_row_verification": "reports/cc11_unit_group_successor.json: 3 call rows checked, 0 failed\n",
+  "call_row_qualification": "The three checked rows are actual caller witnesses. The reconstructed entry itself has zero calls, established by the whole Original/Source body inspection.",
+  "artifact_hashes": [
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/asm/native_unit_group_storage.asm",
+      "bytes": 6511,
+      "sha256": "b2a540c9c9908a82a9365a366904e067cc3d487b4ab4a911c484dd29c337a858"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/asm/native_unit_group_successor.asm",
+      "bytes": 5979,
+      "sha256": "5f2896bde70e0958240f7569dc1ffabce6d8bd8a3422f1a7b67c6afdf2bb4bb6"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/asm/probe.asm",
+      "bytes": 604275,
+      "sha256": "b711b3485bf025305945726dea52612df376d5b65de28bd9d38b70ec7cc5986b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/build.cmd",
+      "bytes": 878,
+      "sha256": "593c8c74844d2dacd4375921f963513ba52a246959105c0f789ab7c6516a8d25"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/build.log",
+      "bytes": 28790,
+      "sha256": "f6a3553e5770c88033ff4e6d98449df55c3f0ff3ade506d581c1dd80abe15139"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/caller_witnesses.json",
+      "bytes": 559,
+      "sha256": "a3fec331b054dcf936c1d48eb1a3a123392b87e2a302d0d10fcab78dd3d39d4c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/coff_evidence.json",
+      "bytes": 12738,
+      "sha256": "367621620f0f3c5476352eeba8830d1d6b8ad4397e081818bc83fb6759ac9cc9"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/coff_utils.py",
+      "bytes": 1717,
+      "sha256": "97743a36a14308b3864257f8a93a2d2993b72a3e48e39423b5ca2e71eeca2c73"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/commit_message.txt",
+      "bytes": 446,
+      "sha256": "3bbfe7fb26b01529f126c0b0fac99b8ce97ab0ce8e820ea7f0c23c73a4fca734"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/constructor_provider_coff.bin",
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/constructor_provider_coff.txt",
+      "bytes": 944,
+      "sha256": "ac54af7708b36e5ae242537430d25446c1a91059cea25a84384e8f739bc479ce"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/embedded_manifest.xml",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/entry_adapter_coff.bin",
+      "bytes": 59,
+      "sha256": "a53fd55a0483a8351d323cf9484878292b81ed67353b025ade83eeff01748557"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/entry_adapter_coff.txt",
+      "bytes": 635,
+      "sha256": "0eeaa837aec5a1616eae16a7c72511fb83174e2cf000258fe49d1c8149c290ab"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/freeze_sources.py",
+      "bytes": 1347,
+      "sha256": "d1c570cb97bb3b2be728c3e9e562eedd63ac4207bb01c57813ea7a38897c0f0a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/ghidra_process_identity.json",
+      "bytes": 822,
+      "sha256": "6bca14aab18a14c1fecc2973ee5ed6c12ef1f151ab4f35f50c3d928ab5478aab"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/ghidra_program_verified.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/include/bsp/native_unit_group_storage.hpp",
+      "bytes": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/include/bsp/native_unit_group_successor.hpp",
+      "bytes": 1393,
+      "sha256": "12c99845084f25a5a03bc54d5fb91e05908bf7146a0c6b44d728c8e3ba29df33"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/local/cc11_unit_group_successor_20261007_a/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/local/cc11_unit_group_successor_20261007_a/probe.cpp",
+      "bytes": 12073,
+      "sha256": "290100493c6b6c9d476d3c985a555dcb701dd0d65af046a7e81ddf4864c2f292"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/src/native_unit_group_storage.cpp",
+      "bytes": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_01/src/native_unit_group_successor.cpp",
+      "bytes": 2448,
+      "sha256": "46d8aecf83d1b9aeb8af39986d8e5678aa5a063c096d9b06e2f8156ff39705c8"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_after_link.json",
+      "bytes": 31279,
+      "sha256": "84933563e9a49f806f3cd25ffde6bb1833a67cfd71a9a2ed7c62fe2becccaf20"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inputs_before_link.json",
+      "bytes": 1199,
+      "sha256": "739ce7de49152d8d1674b905b40fc371b61c720eecd20be95d9cdb3a21050084"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inspect_evidence.py",
+      "bytes": 4369,
+      "sha256": "ccbafde8195fc89d74bcb33e2db5e216065210807555b2b51a24dfd15ced9c11"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/inspect_trial.py",
+      "bytes": 912,
+      "sha256": "5ba23a1b5422a007b06b76e948a8a8d17a089838967067c61d222026cebda85b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/live_successor_bytes.txt",
+      "bytes": 835,
+      "sha256": "c34ae7d0844bf57dced7a8d823a4c1ce3cd9aa6859ccb4914c75a99bf2bbd564"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/native_after_run.json",
+      "bytes": 375,
+      "sha256": "51b65a59e72bcde83879240a039d477cea763c1ccae8fb00692b3fe3d96e1e6a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/native_before_run.json",
+      "bytes": 353,
+      "sha256": "67e8424aa898c6fe266c1c3b326346b493de3a056c2083c9a08ee3f098d9d21a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/native_static_evidence.json",
+      "bytes": 6470,
+      "sha256": "ec8d3bb747bd95709cee0c383dcc118f3a929a757eca5ea7e8c2247831b1c08f"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/obj/native_unit_group_storage.obj",
+      "bytes": 1239,
+      "sha256": "6acb7aa2da5278cf70ff39b8ca5e0e35a4e7c5f63eeac1386f4c630572a81d46"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/obj/native_unit_group_successor.obj",
+      "bytes": 912,
+      "sha256": "749b9b44ced8e3e6b0d2fff49fd2804012a19974e23606089d00ac6d686b5b11"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/obj/probe.obj",
+      "bytes": 96213,
+      "sha256": "99fdb9b6226ba65c94626e415976d5c15b7e42c758680be4007c0b78d2281e1f"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_constructor.bin",
+      "bytes": 108,
+      "sha256": "949fc68fe35570ff7ae5e461ea0073a49ce0b069ff340d68d42bca784846c86b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_constructor_constant.bin",
+      "bytes": 4,
+      "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_detach_caller.bin",
+      "bytes": 36,
+      "sha256": "8cb90eaefb37bd981515447cb7476cc8e1ba26ec4bd2b8b82217be3c41fb1db4"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_image.bin",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_leave_callers.bin",
+      "bytes": 110,
+      "sha256": "d9fae70a29ce6aa3c62c73569775b73573f64a71fe5ffb472cf7003c9ff3642b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/original_successor.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/prepare.py",
+      "bytes": 5374,
+      "sha256": "c84096f75bb712dedea32eba43b334fe09904d4987d80ee0d0d74e9ab372b985"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/prior_artifact_preservation.json",
+      "bytes": 2219,
+      "sha256": "6e8bf1e0ecadb93b6a0ddb38391642e60081f5924c0cdcd3a309fdf2998b14cd"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/prior_before.json",
+      "bytes": 736747,
+      "sha256": "f697f2d710459ad2ab55de4cdfa91f915c233b0c2c412822b2a45e5a4e6b9678"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/probe.cpp",
+      "bytes": 12073,
+      "sha256": "290100493c6b6c9d476d3c985a555dcb701dd0d65af046a7e81ddf4864c2f292"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/probe.exe",
+      "bytes": 28160,
+      "sha256": "38345fb6d235eb001192fc943248bd7da0290b3dd25e91e61625c3c9e4ec9b0a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/probe.log",
+      "bytes": 2184,
+      "sha256": "2ceb944d2a20ab09a328efbe99a71c16640c7a3d3c9ef3fe186ca4674a46a18d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/probe.map",
+      "bytes": 45507,
+      "sha256": "4bcf274f0932cf20d385e5eea4b459ad0411d3e5d0d987d9cb64ca4481522910"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/probe_pe_imports.json",
+      "bytes": 2140,
+      "sha256": "d34c53e79f7002ac35b9ae47738cd4b1d8ae47d51dd64505e72556502fa6e933"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_before_group.bin",
+      "bytes": 1320,
+      "sha256": "f39e191863badc9c6a18a75637ee19e9c55e777354243ecd2aa32f5a3d96de1d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_original_group.bin",
+      "bytes": 1320,
+      "sha256": "f39e191863badc9c6a18a75637ee19e9c55e777354243ecd2aa32f5a3d96de1d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_original_result.bin",
+      "bytes": 120,
+      "sha256": "ba61454b1096835adf172786bc4fa39045db05ce12a9d315881cb96bd46a0bc4"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "2c15e3b3b5d91bfd1532dad779b3a1bb057988998152cd7d7534a70c9f8c9b3c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_source_group.bin",
+      "bytes": 1320,
+      "sha256": "f39e191863badc9c6a18a75637ee19e9c55e777354243ecd2aa32f5a3d96de1d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/0_early_follower_over_type18_source_result.bin",
+      "bytes": 120,
+      "sha256": "ba61454b1096835adf172786bc4fa39045db05ce12a9d315881cb96bd46a0bc4"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_before_group.bin",
+      "bytes": 1320,
+      "sha256": "a595f54e62aa7e2b887f821ec6a4c0f82244cd477d1f2c5a6c0dbeffec508657"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_original_group.bin",
+      "bytes": 1320,
+      "sha256": "a595f54e62aa7e2b887f821ec6a4c0f82244cd477d1f2c5a6c0dbeffec508657"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_original_result.bin",
+      "bytes": 120,
+      "sha256": "26b1ca19d527ec9b9d0c58c4128b568fd5b3c8c1cfe6a48ea6232facb83e043f"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "dd921932918baee491451687db83f85972aaf78fd1d560984c2c6b9e0b49085b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_source_group.bin",
+      "bytes": 1320,
+      "sha256": "a595f54e62aa7e2b887f821ec6a4c0f82244cd477d1f2c5a6c0dbeffec508657"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/1_type18_excluded_leader_source_result.bin",
+      "bytes": 120,
+      "sha256": "26b1ca19d527ec9b9d0c58c4128b568fd5b3c8c1cfe6a48ea6232facb83e043f"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_before_group.bin",
+      "bytes": 1320,
+      "sha256": "1321fc5ae95df83917e0a377a26f06db06f40f60c127485238775fec15c2b6b0"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_original_group.bin",
+      "bytes": 1320,
+      "sha256": "db0dd6027adaa53f008d5b9b6bd979359f67dead93ea6e3598f78b56a56225c1"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_original_result.bin",
+      "bytes": 120,
+      "sha256": "6cb4e4ceb3a24868a210bfc00935317a3245e4a5b97179f4f9aeb2e84deac115"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "2c15e3b3b5d91bfd1532dad779b3a1bb057988998152cd7d7534a70c9f8c9b3c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_source_group.bin",
+      "bytes": 1320,
+      "sha256": "db0dd6027adaa53f008d5b9b6bd979359f67dead93ea6e3598f78b56a56225c1"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/2_negative_count_resets_column_source_result.bin",
+      "bytes": 120,
+      "sha256": "6cb4e4ceb3a24868a210bfc00935317a3245e4a5b97179f4f9aeb2e84deac115"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_before_group.bin",
+      "bytes": 1320,
+      "sha256": "4e97acac2085e3ae19e619237eca06b204617246b0189d62e2c5d9bf11336349"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_original_group.bin",
+      "bytes": 1320,
+      "sha256": "b2234cd62af01b221a3fe47d110bbb45faeea9d178bef1dddd6eda66e27a8dde"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_original_result.bin",
+      "bytes": 120,
+      "sha256": "87e67357d545f1b53f0cabc13a827fb1ac8b863cc46dc431055a64177fd35c7b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "2c15e3b3b5d91bfd1532dad779b3a1bb057988998152cd7d7534a70c9f8c9b3c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_source_group.bin",
+      "bytes": 1320,
+      "sha256": "b2234cd62af01b221a3fe47d110bbb45faeea9d178bef1dddd6eda66e27a8dde"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/3_leader_first_no_key_read_source_result.bin",
+      "bytes": 120,
+      "sha256": "87e67357d545f1b53f0cabc13a827fb1ac8b863cc46dc431055a64177fd35c7b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_before_group.bin",
+      "bytes": 1320,
+      "sha256": "d1f3a5f8139e3e2eed026a2c3fb835e4f29f94e66ed5583a54f021a5d79bfcea"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_original_group.bin",
+      "bytes": 1320,
+      "sha256": "575abf46097310dd2b0ba88ceae09e60de4b66bfcc2a611532c15c7815e3e86e"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_original_result.bin",
+      "bytes": 120,
+      "sha256": "17c16c167a63d6a1db4773c61397fcb8bd0c4e477354962fc9c63a0173d11e96"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "4dbf708112a1d9fafc4c6d63cd2d197bcdf3f3c6dc7df2d59a80a09aede1887f"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_source_group.bin",
+      "bytes": 1320,
+      "sha256": "575abf46097310dd2b0ba88ceae09e60de4b66bfcc2a611532c15c7815e3e86e"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/4_holes_dead_excluded_first_tie_source_result.bin",
+      "bytes": 120,
+      "sha256": "f445568fca3833f32071526785af884cec88f64189f6d76b44439f92b035b2fb"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_before_group.bin",
+      "bytes": 1320,
+      "sha256": "4f6ce4c6d02ca6997f7d6e2b95c4acd4261695d7cb3de69fe6476bf2031ae485"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_original_group.bin",
+      "bytes": 1320,
+      "sha256": "502021bf724d5f874ba4c4c7ada5e558890cb6b1bebec23bef03853715e6744c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_original_result.bin",
+      "bytes": 120,
+      "sha256": "b90927a53562bb6715e7e19b8a72960186ff71f5d390527ed42cba5c7b380662"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "4c6fa75657e3fc96f5cb4fdb1d9fe1f243f9b29be0aa5de63e9c37ad35464591"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_source_group.bin",
+      "bytes": 1320,
+      "sha256": "502021bf724d5f874ba4c4c7ada5e558890cb6b1bebec23bef03853715e6744c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/5_prior_best_overrides_leader_stop_source_result.bin",
+      "bytes": 120,
+      "sha256": "e4b4d66bfde938f5bd905ca9357ae447b3929b0636bda65b0e7e53254525e4c5"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_before_group.bin",
+      "bytes": 1320,
+      "sha256": "4c10cc7651505fb819a8206a2ddb4728e37870a0c4f366ab921d806d8d1f7ff5"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_original_group.bin",
+      "bytes": 1320,
+      "sha256": "95b970fefe4d618682c6ae114f1c747924c576a5fbcc4980cc1dd8e1634df1f3"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_original_result.bin",
+      "bytes": 120,
+      "sha256": "ed47b87a96fcf767425f40b11b826f29c1549876bd675f14668c08428059c84b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "2c15e3b3b5d91bfd1532dad779b3a1bb057988998152cd7d7534a70c9f8c9b3c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_source_group.bin",
+      "bytes": 1320,
+      "sha256": "95b970fefe4d618682c6ae114f1c747924c576a5fbcc4980cc1dd8e1634df1f3"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/6_unordered_candidate_then_denormal_source_result.bin",
+      "bytes": 120,
+      "sha256": "bcbf4b4613c7fea08c054c205d0be252c7644047835056c5b184e3d479d608d3"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_before_group.bin",
+      "bytes": 1320,
+      "sha256": "ac63d736f6961de5312a63771bca4bff66f1f0edfb4850930374242177c8bc75"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_original_group.bin",
+      "bytes": 1320,
+      "sha256": "f5f5c021b3b1e83fccfdc9bd0e0d719def8a8e46d7a9ddd155ca3c2b709d0e2b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_original_result.bin",
+      "bytes": 120,
+      "sha256": "46db26b9e7ea93676d8a16c97018da48a8ce76aaf4cb790d60d27fecd8901814"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_seed_fp.bin",
+      "bytes": 108,
+      "sha256": "58b160ede085012b7e124aae9e0c814f4f658cce7ccdb52f01e15992419af5f7"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_source_group.bin",
+      "bytes": 1320,
+      "sha256": "f5f5c021b3b1e83fccfdc9bd0e0d719def8a8e46d7a9ddd155ca3c2b709d0e2b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/7_first_nan_retained_with_signaling_candidate_source_result.bin",
+      "bytes": 120,
+      "sha256": "d9c4b52bf923befec9403000e8118dc5000ca8dad4c95d40727e1fb10251915d"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/borrowed_units_after.bin",
+      "bytes": 11480,
+      "sha256": "be1a9d1cd6c655c240f98e6141426a256f87122cb2bf31c449e3e8e171b7c5ac"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/borrowed_units_before.bin",
+      "bytes": 11480,
+      "sha256": "be1a9d1cd6c655c240f98e6141426a256f87122cb2bf31c449e3e8e171b7c5ac"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/constructed_group.bin",
+      "bytes": 1320,
+      "sha256": "6dd84c61ccad99a477fc42d57ec5ba7991893c32ea39815913ca777414e7da30"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/executed_original_body.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/runtime/executed_source_body.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/seed_adapter_coff.bin",
+      "bytes": 73,
+      "sha256": "f1429befbe34c7bfbc50d369cc5d75048a8a89358846778dfb47ac91560f9fa6"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/seed_adapter_coff.txt",
+      "bytes": 543,
+      "sha256": "36d50e567bad9b7521398f4cd09c5bd512e7f4ab4d8ff8a48fc1feb72f49e57c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_coff.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_coff.txt",
+      "bytes": 1353,
+      "sha256": "b2cabfbd34a7bea1afc1fdf1d56f325728e0889d31fa2e5401cc8365932d346c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_inputs_01/include/bsp/native_unit_group_storage.hpp",
+      "bytes": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_inputs_01/include/bsp/native_unit_group_successor.hpp",
+      "bytes": 1393,
+      "sha256": "12c99845084f25a5a03bc54d5fb91e05908bf7146a0c6b44d728c8e3ba29df33"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_inputs_01/src/native_unit_group_storage.cpp",
+      "bytes": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_inputs_01/src/native_unit_group_successor.cpp",
+      "bytes": 2448,
+      "sha256": "46d8aecf83d1b9aeb8af39986d8e5678aa5a063c096d9b06e2f8156ff39705c8"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_inputs_01.json",
+      "bytes": 1065,
+      "sha256": "59f1b5554d96c5d30385eb98aae1cdd9c4572c473ec09074f16f7b03e67f3b40"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_linked_body.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01.cmd",
+      "bytes": 479,
+      "sha256": "363aaa8829cca986c441f4cee9f39ef584de753ef1dd2842db3776bbd8568a2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01.log",
+      "bytes": 160,
+      "sha256": "328326f208f72e8c0b8ad2a067de4a9255986140bbc35090a02e3d1285490bc8"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01.obj",
+      "bytes": 896,
+      "sha256": "046de13f59c2d0385be750d52b8130edbe47d175a2b443cd0f7fdf9fb31fd977"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01_coff.bin",
+      "bytes": 173,
+      "sha256": "2ba0dbe85b2ea831d1a89b3336552f6c67d95416ddbe0d7ad25373795eb3bc2a"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01_coff.json",
+      "bytes": 2145,
+      "sha256": "cadcf3f5b68a08eefb6e3c65b8eef7d5eac62e5867a2e4cce27b295b80081f68"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/source_trial01_coff.txt",
+      "bytes": 1353,
+      "sha256": "b2cabfbd34a7bea1afc1fdf1d56f325728e0889d31fa2e5401cc8365932d346c"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/toolchain_files.json",
+      "bytes": 1018,
+      "sha256": "5f76e05f0fc765f28e38d0dbca0ed61215823c88dc14c1d3d5407d5e91741d82"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/toolchain_resolution.cmd",
+      "bytes": 172,
+      "sha256": "74fef702c8b10e529daa8d80d97ac5337f6ec5160a02cfdc0a48058b27b46042"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/toolchain_resolution.log",
+      "bytes": 210,
+      "sha256": "a5f29707ea22b942e5a5200430599449c03ea69ad41db7bdab00719f1d593bfa"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/verify_callers.log",
+      "bytes": 97,
+      "sha256": "073110b44b0eecbc2f6b018eefdceb1ad1a0e83abe31cdebb589ba02d9b9d035"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/verify_entry_calls.log",
+      "bytes": 71,
+      "sha256": "540df38311c8965635bbd756c3051eedb405de6c3ce5df911b462fb7cf1b1db8"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/verify_inputs.py",
+      "bytes": 4865,
+      "sha256": "0f3a2c2e60fcc4eeae10602d132efba8163a467d6a10e7b34d81d075b9bc7d1b"
+    },
+    {
+      "path": "local/cc11_unit_group_successor_20261007_a/write_report.py",
+      "bytes": 7755,
+      "sha256": "e44ce407c87b64eea06de8fe58c16cb511de20e75b389d4a6d4e22ebd118a681"
+    }
+  ]
+}
