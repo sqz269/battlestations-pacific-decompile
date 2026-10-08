@@ -32865,6 +32865,73 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_signin_request_source",
+      "worker": "group_membership",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00A3F100",
+        "00A3F3D0"
+      ],
+      "worker_commit": "138a72b6fb18a59e8c8e88461567d19d2d754057",
+      "output_files": [
+        "include/bsp/native_online_signin.hpp",
+        "src/native_online_signin.cpp",
+        "docs/CC12_NATIVE_SIGNIN_REQUEST_SOURCE.md",
+        "reports/cc12_native_signin_request_source.json"
+      ],
+      "contract": {
+        "new_Original_functions": 2,
+        "normal_return_ordinary_Source": true,
+        "Original_ABI": false,
+        "Source_only_test_calls": true,
+        "Original_request_executed": false,
+        "SDK_account_executed": false,
+        "production_owner_menu_wired": false,
+        "outside_scope_required_dependencies": [
+          "genuine_application_IPC_owner",
+          "F8ABE8_manager_publication",
+          "frontend_update_pump_publication"
+        ]
+      },
+      "done": true,
+      "state": "reviewed_complete_normal_return_ordinary_Source_build_and_bounded_fixture_checked",
+      "depends_on": [],
+      "game_validated": false
+    },
+    {
+      "id": "cc12_property_key_hash_source",
+      "worker": "property_payload",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0043B760"
+      ],
+      "worker_commit": "998782c250618268e162b5dfb5be139788cc2f99",
+      "output_files": [
+        "include/bsp/native_enum_dictionary_lookup.hpp",
+        "src/native_enum_dictionary_lookup.cpp",
+        "docs/CC12_PROPERTY_KEY_HASH_SOURCE.md",
+        "reports/cc12_property_key_hash_source.json"
+      ],
+      "contract": {
+        "new_Original_functions": 1,
+        "normal_return_ordinary_Source": true,
+        "Original_ABI": false,
+        "fresh_Original_Source_pairs": 13,
+        "domain": "valid ASCII, actual raw header/string producers, zero Original locale/current C locale",
+        "outside_scope_required_dependencies": [
+          "0043B8B0_lookup",
+          "actual_property_map_publication",
+          "separate_E175B0_recordpool_lifetime"
+        ]
+      },
+      "done": true,
+      "state": "reviewed_complete_normal_return_ordinary_Source_build_and_bounded_fixture_checked",
+      "depends_on": [],
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {

@@ -3678,5 +3678,118 @@
     "manifest_sha256": "504042d0c3ec0779d10d529d87567a74e08656643ccd2ff9fed6e354d8c6dba0",
     "artifact_hashes_revalidated": true,
     "production_objects_and_current_Source_revalidated": true
+  },
+  "primary_integration_review": {
+    "status": "PASS",
+    "sign_archive_artifacts": 51,
+    "sign_current_Source_pins": [
+      {
+        "path": "include/bsp/native_online_signin.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/native_online_signin.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/xlive_application_callbacks.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/xlive_application_callbacks.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/xlive_library.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/xlive_library.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/native_online_notifications.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/native_frame_clock_publication.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/native_online_manager_lifetime.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "include/bsp/native_online_manager_lifetime.hpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/game_hosts_menu.cpp",
+        "current_raw_equal": true
+      },
+      {
+        "path": "src/game_native_settings_process.cpp",
+        "current_raw_equal": true
+      }
+    ],
+    "sign_full_COFF_functions_checked": 8,
+    "sign_full_Original_bytes_checked": 174,
+    "property_artifacts": 31,
+    "property_selected_pre_post_inputs": 22,
+    "property_actual_compiler_input_pins": 461,
+    "property_whole_COFF_bytes": 92,
+    "historical_recipe_drift": [
+      {
+        "path": "cmake/startup.cmake",
+        "historical_pre_post_equal": true,
+        "current_append": "cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type0_storage.cpp)",
+        "frozen_recipe_reconstructed_from_git": "7e76bf5aed617e87074af50c8074a0f6c32b403f"
+      }
+    ],
+    "property_whole_Original_bytes": 89,
+    "primary_production_COFF_and_archive": [
+      {
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_online_signin.obj",
+        "sha256": "591358fb7dd2ea0fdde22b82e85a9bb860dbcdfc7946b7575868d0d36f5ce09d",
+        "whole_functions_checked": 8,
+        "exact_archive_member": true
+      },
+      {
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_enum_dictionary_lookup.obj",
+        "sha256": "c1f69e07273caaef334b3c66a1ea75be25ab0ae4e11fc0a36bdea9ec471206fe",
+        "whole_functions_checked": 1,
+        "exact_archive_member": true
+      }
+    ],
+    "sign_readiness_artifacts": 42,
+    "hash_readiness_artifacts": 33,
+    "stream_readiness_artifacts": 22,
+    "stream_complete_Original_constructor_bytes": 153,
+    "limits": "Request fixture is test-only Source; no SDK or Original request execution. Hash comparison is valid ASCII and initial-zero Original locale/current C locale. No game ABI, owner/menu or gameplay proof.",
+    "UTC": "2026-10-08T08:29:29.219996+00:00",
+    "combined_Win32_build_log": "local/cc12_request_hash_primary_build.txt",
+    "existing_CTests_passed": 3,
+    "removed_incorrect_generated_tag": {
+      "address": "00a3f3d0",
+      "name": "CG_adjustor_thunk_00a3f3d0",
+      "category": "cg_adjustor_thunk",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0032"
+    }
   }
 }
