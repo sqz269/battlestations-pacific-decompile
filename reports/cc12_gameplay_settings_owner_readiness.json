@@ -1,0 +1,312 @@
+{
+  "packet": "cc12_gameplay_settings_owner_readiness",
+  "utc": "2026-10-08T10:59:47.314718+00:00",
+  "status": "whole_lazy_owner_not_Source_ready_complete_ctor_and_Lua_lifetime_unresolved",
+  "scope": {
+    "whole_Normal_bodies_inspected": [
+      "00424C40",
+      "00424A10"
+    ],
+    "Lua_loader_body_not_newly_expanded": "0083B5E0..00842951",
+    "new_Source_build_tests_native_execution_Ghidra_mutation": false,
+    "new_Original_function_count": 0
+  },
+  "Original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Original_regions": [
+    {
+      "entry": "00424c40",
+      "bytes": 192,
+      "instructions": 51,
+      "label": "whole lazy getter normal body",
+      "sha256": "d7fa8592b0746c300c89c63185cec8cf4aa99db8a9685fd54e55d4feb767bd74",
+      "entire_hex": "64a1000000006aff6883e7c5005064892500000000a13c75f80083ec0c85c00f858c00000056e8e506ffff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d3c75f800007542686c070000e8771b7d0083c4048944240485c0c64424180174098bc8e855fdffffeb0233c0c644241800a33c75f800e88206ffff8b0d3c75f800518bc8e854bf7a0085f6740b834618ff56ff151022ce00a13c75f8005e8b4c240c64890d0000000083c418c3",
+      "live_pre_equal_installed_PE": true,
+      "live_post_equal_pre_and_installed_PE": true
+    },
+    {
+      "entry": "00424a10",
+      "bytes": 518,
+      "instructions": 96,
+      "label": "whole gameplay settings constructor normal body",
+      "sha256": "1b59cc33e6c5621547ef95c0e231b7f27cf139c9ebf7e15b34b4a83aaac40c5c",
+      "entire_hex": "6aff685ae7c50064a100000000506489250000000083ec085355568bf1578974241433ffc7069439ce00897c242089bee001000089bee401000089bee8010000c6442420018dae400200008d5f038bff8bcde88924410083c55883eb0179f189bea403000089bea803000089bee803000089beec03000089bef0030000f30f100d0438ce00f30f10054ca2d700f30f10150838ce00f30f118ea0050000f30f100d0038ce00f30f118ea8050000f30f100d1438ce00f30f118698050000f30f11869c050000f30f1186a4050000f30f118eac050000f30f100d1038ce00f30f118eb0050000f30f100d0c38ce00f30f118eb4050000f30f1196b805000089be6406000089be6806000089be6c06000089be7406000089be7806000089be7c060000f30f10151839ce0089beb806000089bebc06000089bec0060000f30f11968c060000f30f10151439ce00f30f119690060000f30f10151039ce00f30f1186a0060000f30f100538a2d700f30f119694060000f30f101560a2d700f30f118698060000f30f10050c39ce00c6868806000001f30f11969c060000f30f118eac060000f30f1186b0060000c786b40600000a0000006840de410068805641006a026a048d862c07000050c644243407e8ee307d0089be4007000089be4407000089be480700008bcec644242009e8df6941008b4c24185f8bc65e5d5b64890d0000000083c414c3",
+      "live_pre_equal_installed_PE": true,
+      "live_post_equal_pre_and_installed_PE": true
+    }
+  ],
+  "data_roles": [
+    {
+      "address": "00f8753c",
+      "bytes": 4,
+      "role": "image-initial gameplay singleton pointer",
+      "hex": "00000000",
+      "value": "00000000",
+      "storage": "image_initial_virtual_zero",
+      "not_live_game_publication": true
+    },
+    {
+      "address": "00ce3994",
+      "bytes": 4,
+      "role": "constructor vtable role first cell",
+      "hex": "204c4200",
+      "value": "00424c20",
+      "storage": "installed_PE_raw_data",
+      "not_live_game_publication": true
+    },
+    {
+      "address": "00ce37fc",
+      "bytes": 4,
+      "role": "getter scoped-lock wrapper profile role",
+      "hex": "001f4100",
+      "value": "00411f00",
+      "storage": "installed_PE_raw_data",
+      "not_live_game_publication": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00424c40",
+      "address": "00424c66",
+      "native": "00415350",
+      "kind": "call"
+    },
+    {
+      "function": "00424c40",
+      "address": "00424c9f",
+      "native": "00bf681b",
+      "kind": "call"
+    },
+    {
+      "function": "00424c40",
+      "address": "00424cb6",
+      "native": "00424a10",
+      "kind": "call"
+    },
+    {
+      "function": "00424c40",
+      "address": "00424cc9",
+      "native": "00415350",
+      "kind": "call"
+    },
+    {
+      "function": "00424c40",
+      "address": "00424cd7",
+      "native": "00bd0c30",
+      "kind": "call"
+    },
+    {
+      "function": "00424a10",
+      "address": "00424a62",
+      "native": "00836ef0",
+      "kind": "call"
+    },
+    {
+      "function": "00424a10",
+      "address": "00424bde",
+      "native": "00bf7cd1",
+      "kind": "call"
+    },
+    {
+      "function": "00424a10",
+      "address": "00424bfc",
+      "native": "0083b5e0",
+      "kind": "call"
+    }
+  ],
+  "Win32_IAT_calls": [
+    {
+      "address": "00424c7f",
+      "iat": "00ce2218",
+      "API": "EnterCriticalSection",
+      "after_call": "ADD[section+18h],1"
+    },
+    {
+      "address": "00424ce5",
+      "iat": "00ce2210",
+      "API": "LeaveCriticalSection",
+      "before_call": "ADD[section+18h],-1"
+    }
+  ],
+  "getter_contract": {
+    "ABI": "cdecl zero stack arguments; EAX published pointer; plain RET; normal body192B51 with own FS SEH chain, slow-path ESI preserved",
+    "fast_path": "Reads globalF8753C; nonnull returns without constructing, locking or registering.",
+    "slow_path": [
+      "Call00415350; capture actual manager+10h critical section; optional real EnterCriticalSection and section+18h increment.",
+      "Under lock reread same global; if still null call operator_new for76Ch, then whole00424A10 only if resultnonnull.",
+      "Publish returned pointer orNULL to same global before second00415350 call; register that exact pointer through actualBD0C30 even ifNULL.",
+      "Optional section+18h decrement and LeaveCriticalSection; reload global, restore FS and return."
+    ],
+    "failure_boundary": "Constructor allocation unwind and scoped-lock SEH handlers are outside the normal bodies; do not invent a callback, rollback, nullptr policy or typed projection owner."
+  },
+  "constructor_contract": {
+    "ABI": "ECX actual76Ch allocation; EAXsamepointer/plainRET; full normal body518B96 with own FS SEH state and EBX/EBP/ESI/EDI preserved",
+    "schedule": [
+      "Store CE3994 vtable; zero words1E0/1E4/1E8.",
+      "Call00836EF0 four times at240/298/2F0/348 with exact58h steps.",
+      "Zero3A4/3A8 and3E8/3EC/3F0; issue the actual scalar/default stores598..5B8 and664..6C0 in Original order.",
+      "Construct two4B elements at72C with real BF7CD1 iterator and explicit415680/41DE40 constructor/destructor roles.",
+      "Zero740/744/748; call whole0083B5E0 with ECXsameallocation before restoring FS and returningthis."
+    ],
+    "not_blanket_zero_initialized": true,
+    "unexpanded_EH_role": "00C5E75A; exact failure cleanup/lifetime remains required for whole constructor qualification"
+  },
+  "current_Source": {
+    "gameplay_settings_struct": "Explicit own-instance projection; offsets/sizeof76Ch are asserted but gaps contain native subobjects/containers not modeled.",
+    "apply_constructor_defaults_00424a10": "Partial scalar projection; no actual vtable, containers, canonical published pointer, full four-element construction, iterator, Lua lifecycle or EH ownership.",
+    "load_gameplay_tuning_settings": "Keyed injected GameplayTuningRowView projection. Header explicitly excludes complete native call/error order, failure descriptor vector, physics records, per-class sounds and effect-name reads.",
+    "game_hosts_ship_ai_neighbour_settings": "Own zero-initialized projection populated with19 floats at190h from read_ship_avoidance_block; this is not actual76Ch owner publication.",
+    "SingletonLifetimeDomain": "Existing current canonical lifetime-domain service may be shared by genuine owners, but its existence does not construct or publish gameplay settings.",
+    "whole_address_named_current_getter": "No complete current Source definition/reconstruction for00424C40 identified; observed Source call sites use host methods/projections.",
+    "new_genuine_child": {
+      "function": "raw_initialize_native_weapon_hit_accuracy_00836ef0",
+      "bytes": 136,
+      "instructions": 27,
+      "static_whole_COFF_qualified": true,
+      "normal_build_three_tests": true,
+      "report": "reports/cc12_weapon_hit_accuracy_raw_defaults.json",
+      "COFF_sha256": "98ff140e7c43af91c5daf073e668d91002e27e4bc619651a2ce19b36b32ae813",
+      "complete_settings_ctor_or_owner_qualified": false
+    }
+  },
+  "decision": {
+    "00424C40_ordinary_or_raw_whole_Source_ready": false,
+    "00424A10_whole_Source_ready": false,
+    "small_child_00836EF0_ready": true,
+    "parent_group_0070ED30_owner_dependency_closed": false,
+    "next_required": "Bounded loader/member-lifecycle readiness packets with actual Lua/VFS and allocator/element contracts. Reconstruct whole ctor and cleanup before publishing a76Ch object in the shared lifetime domain.",
+    "not_a_solution": [
+      "new GameplayTuningSettings projection cast as native allocation",
+      "fake loader/profile/default-zero container",
+      "opaque constructor/destructor callbacks in place of unresolved bodies",
+      "unregistered copied singleton or sibling lifetime domain"
+    ]
+  },
+  "physical_selected_input_copies": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\gameplay_settings.cpp",
+      "bytes": 25265,
+      "sha256": "1ca6a296520b9081ba7d2342e453e4dc48ac174c6da30b2fedd855cd5a09630f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\src\\gameplay_settings.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\gameplay_settings.hpp",
+      "bytes": 51261,
+      "sha256": "ba856a3545d1a862f463f55a327fe5900940d983107c3f6f49e3dfa5cf24b983",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\include\\bsp\\gameplay_settings.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\gameplay_settings_tail.cpp",
+      "bytes": 9447,
+      "sha256": "5a4176eca079e69a708517b2e146737d70708e5a2320ba9ced70436ba5bace73",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\src\\gameplay_settings_tail.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\gameplay_settings_tail.hpp",
+      "bytes": 12402,
+      "sha256": "babfb49f2f4ad155a7ab1e17450559f2c8bc25abda530b58c6a41a8431c4ee35",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\include\\bsp\\gameplay_settings_tail.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\src\\singleton_lifetime.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\include\\bsp\\singleton_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_hosts_ship_ai.cpp",
+      "bytes": 783695,
+      "sha256": "31eaba235889ac79c5165b20aa6dad8e05bea44d449876de88e60917d5aad347",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\src\\game_hosts_ship_ai.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\ship_ai_formation.cpp",
+      "bytes": 22133,
+      "sha256": "6d41479307e6d7cd77a9ddd9e035ba838bcdde98be56b7115194412446d08981",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\src\\ship_ai_formation.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\ship_ai_formation.hpp",
+      "bytes": 29728,
+      "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\include\\bsp\\ship_ai_formation.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_group_member_admission_audit.json",
+      "bytes": 24079,
+      "sha256": "461516a3ee2b9be4cf9862c6289ee6ac0ef883408fd0658356967e418349564f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\reports\\cc12_group_member_admission_audit.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_weapon_hit_accuracy_raw_defaults.json",
+      "bytes": 19867,
+      "sha256": "73ef5c47b9ea95b973939b7f2482415b33c56b49c686ccbcc0e3e4e5cb7b7fa8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\reports\\cc12_weapon_hit_accuracy_raw_defaults.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_source_address_matches.txt",
+      "bytes": 7729,
+      "sha256": "b9372ca6990da2edd1197a783dcbef33efa32e062ccdbec74d640db4b72af982",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\inputs\\local\\cc12_gameplay_settings_source_address_matches.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424c40\\decompiled.c",
+      "bytes": 5435,
+      "sha256": "642ed84612f0c6af58bfa823fc91dc66b3cf8c1404728d9d38b53be83dd007b8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424c40\\decompiled.c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424c40\\assembly.txt",
+      "bytes": 1507,
+      "sha256": "65c5d1030acbe945f903df7f46ff43305716a51987edbb0570275a635e2ac1b0",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424c40\\assembly.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424c40\\metadata.json",
+      "bytes": 227,
+      "sha256": "765b61e2731aced893dc8c032d4a990cf36a82b8e29f1e60438f51ac234e1185",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424c40\\metadata.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424a10\\decompiled.c",
+      "bytes": 2903,
+      "sha256": "49c586d25da13ef045b89f3230a62e5fd72ffb0a01b4744d6f86619bb32584a0",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424a10\\decompiled.c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424a10\\assembly.txt",
+      "bytes": 3488,
+      "sha256": "cfdbaee12b5aa373208287bae2524599ee75b06b7bdc728ad6bcbcd4e814621f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424a10\\assembly.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00424a10\\metadata.json",
+      "bytes": 234,
+      "sha256": "d5e3327f181d07e15b734abd8c074a2de832f266117870e12df1fe44845f93c3",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness\\exports\\00424a10\\metadata.json"
+    }
+  ],
+  "verification": {
+    "whole710B_147_instruction_Normal_bodies_gap_free": true,
+    "all_eight_direct_calls_decoded_against_installed_PE": true,
+    "three_image_data_roles_live_equal": true,
+    "selected_Source_and_exports_physically_copied_and_rechecked": 18,
+    "no_new_Source_or_native_fixture": true,
+    "no_full_Lua_or_EH_expansion": true
+  },
+  "retained_evidence": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_settings_owner_readiness",
+  "limits": [
+    "Image-initial zero pointer is not live-game ownership/publication evidence.",
+    "Names remain descriptive hypotheses; no Original ABI/class/CRT allocation/EH/world/game qualification is established by this audit.",
+    "The new raw child is an independently built static leaf; title capture and leaf checks do not qualify this owner."
+  ]
+}
