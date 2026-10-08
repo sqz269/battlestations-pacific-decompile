@@ -1,0 +1,629 @@
+{
+  "schema": "bsp.cc12.type5.selected_TEXT_pre_generation_audit.v1",
+  "Source_credit": 0,
+  "status": "Selected original recipe has a pre-helper/precompiler text-selection guard deficiency; current standalone duplicate admission prerequisite is unmet (Root verified0 versus required1). Recipe v3 is only a bounded TEXT proposal.",
+  "process_ready_approval": false,
+  "generation_compile_launch_authorization": false,
+  "evidence_kind": "Current Source plus selected TEXT and Python AST only. No emitted instruction, binary parser, helper, reader or process executed.",
+  "selection": {
+    "initial_frozen_files": 18,
+    "expanded_frozen_files": 19,
+    "initial_inputs_manifest": "inputs_before.json",
+    "helper_selection_expansion": "selection_expansion.json",
+    "original_probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\references\\t5fix_probe.cpp.txt",
+      "size": 27488,
+      "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+    },
+    "original_recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\references\\t5fix_recipe_v2.py.txt",
+      "size": 33529,
+      "sha256": "b09092f24d5c7ac0bc53319df6c7d588c58e1133efdd84682781174f97e27cc6"
+    },
+    "selected_helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\references\\t5fix_helpers.py.txt",
+      "size": 18589,
+      "sha256": "e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7"
+    },
+    "selected_six_readers": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\raw_formats.py.txt",
+        "size": 13707,
+        "sha256": "719c65ba0d49394ee891ff377fd80c9a9f57ff3d7c1ef91d5a530165142b369e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\register_imports.py.txt",
+        "size": 7150,
+        "sha256": "49944f52c7691c5c5ed9fc0234d4d9811e3e4c1f0f8043c63143db2af4431d7b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\caller_frames.py.txt",
+        "size": 4774,
+        "sha256": "3dac624f85852f2023ccd46d0254d29f91d3a09aa26e95c506c200d340dc046e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\code_gate.py.txt",
+        "size": 28939,
+        "sha256": "6018340ef76afbd167dda4d9551485a72d5ed5bdfb2cab4d7f013205c82a146d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\observations.py.txt",
+        "size": 16297,
+        "sha256": "f50a70b0e0067412c58b9c009db1fa28ea2c7bbb1af4dfc2b7e91c8d49bf14fa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\protocol_review.py.txt",
+        "size": 7814,
+        "sha256": "48139b9cd79f70f8c6c565b7e8ff2f54a86c629ee137e7c450a61d3fb9c1a5d2"
+      }
+    ],
+    "six_current_Source_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type5_storage.cpp",
+        "size": 1388,
+        "sha256": "bf0267a1f2362148b39599a3b9c3ae9ddefd01b6d26c6da0ede9e410f91407ce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type5_storage.hpp",
+        "size": 2382,
+        "sha256": "e013cde2dbb55bed44deba372d6fd7ed7162c5f770d0ef561a8dee0a047677e4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_duplicate.cpp",
+        "size": 1554,
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_duplicate.hpp",
+        "size": 933,
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      }
+    ],
+    "case_worksheet_used_as_secondary_TEXT_only": true
+  },
+  "findings": [
+    {
+      "id": "T5-TEXT-01",
+      "kind": "initial selected dependency gap",
+      "initial_status": "blocking selected implementation review",
+      "final_status": "resolved by explicit Root expansion to exact helper TEXT, original gap retained",
+      "evidence": [
+        "selected recipe line46 executes helpers.py",
+        "recipe lines171/181/230/268/273 consume helper COFF/body/import/cookie/closure implementations"
+      ],
+      "resolution": "Root selected t5fix_helpers.py.txt 18589 bytes e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7; frozen as nineteenth file and fully read/AST parsed without execution."
+    },
+    {
+      "id": "T5-TEXT-02",
+      "kind": "blocking guard-contract deficiency in selected original recipe",
+      "status": "original selection unchanged; proposed correction awaits Root choice/review",
+      "evidence": [
+        "recipe line46 executes helpers before any precompile receipt check",
+        "prepare lines93-95 and build148-150 iterate whatever reviewed_texts supplies",
+        "neither original stage requires nonempty unique exact recipe.py/probe.cpp/helpers.py membership",
+        "selected protocol review_ast lines38-49 proves the supplied loop precedes compiler but not the exact selected set",
+        "protocol review_receipts line71 rejects empty reviewed_texts only in later receipt review and still does not require the exact three names"
+      ],
+      "bounded_correction": "Proposed recipe v3 validates a passed pure_text_review with exactly three unique required basenames and each actual byte size/SHA before helper compile/exec, compiles the same checked helper byte string, and repeats exact set guards in prepare/build before existing pin loops. No original input changed.",
+      "proposal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\proposed_recipe_v3.py.txt",
+        "size": 34894,
+        "sha256": "1441eda8af500a16c89885ef1c7f752cfde0e35b2eaa506c437e4ace8c809151"
+      }
+    },
+    {
+      "id": "T5-TEXT-03",
+      "kind": "selected observation predicate qualification",
+      "status": "not a Source ABI guarantee or probe equality assertion",
+      "evidence": [
+        "probe machine_ok320-331 compares nonvolatiles/ESP/DF/defined XOR flags but not ES",
+        "probe captures ES at offsets76/80",
+        "selected observations165 requires ES before==after",
+        "Source HPP declines blanket DF/ES/FPU/MXCSR preservation through providers"
+      ],
+      "disposition": "Root must acknowledge ES equality as an additional selected-case recorded-decoder predicate. A future failed predicate is a stop, not permission to claim blanket Source preservation or silently remove the check."
+    },
+    {
+      "id": "T5-TEXT-04",
+      "kind": "blocking current standalone provider prerequisite",
+      "status": "unresolved; no Type5 generation or compiler authorization",
+      "evidence": [
+        "selected recipe117-118 asserts standalone primary_integration.Source_admission_credit==1",
+        "Root reports current live standalone value0 after coverage audit",
+        "the proposed recipe preserves that guard unchanged"
+      ],
+      "provenance": {
+        "Source_credit": 0,
+        "provenance": "Explicit Root message reports current live metadata verification; this worker does not open that report, execution fixtures, Native or providers",
+        "metadata": "reports/native_string_duplicate_cc12.json",
+        "field": "primary_integration.Source_admission_credit",
+        "Root_verified_current_value": 0,
+        "selected_recipe_required_value": 1,
+        "selected_recipe_lines": [
+          117,
+          118
+        ],
+        "current_dependency_unmet": true,
+        "old_qualified_consumer_admissions_are_separate": true,
+        "Root_reported_Type5_generation_or_compiler_runs": 0,
+        "guard_retained_in_proposed_v3": true
+      },
+      "disposition": "Do not fake admission, remove the guard or reuse old independently qualified consumer Source1 as standalone Source1. Root must resolve the actual standalone duplicate dependency before beginning this Type5 generation path. The TEXT guard correction does not resolve it."
+    }
+  ],
+  "source_and_frame": {
+    "constructor_claim_in_current_Source": "Native63/19 and sole CALL operand[35,39),59 literal positions are source comments/contracts; no actual Native or linked bytes inspected here",
+    "constructor_arguments": {
+      "ECX": "actual fresh writable56 root",
+      "EDX": "unused padding",
+      "T+4": "borrowed TEXT",
+      "T+8": "opaque WORD18",
+      "T+12": "opaque WORD08",
+      "cleanup": "RET12",
+      "EAX": "full root pointer"
+    },
+    "target_entry_algebra": {
+      "O": "raw CDECL entry ESP",
+      "EBP": "O-4",
+      "R": "O-24=EBP-20 after saved EBX/ESI/EDI and two canaries",
+      "Q": "R-12 after WORD08,WORD18,TEXT pushes",
+      "T": "Q-4=R-16 at target entry",
+      "after_target_RET12": "R",
+      "raw_epilogue": "add ESP,8; pop EDI,ESI,EBX,EBP; plain RET; outer six raw arguments remain CDECL caller cleanup"
+    },
+    "dead_argument_capture": "raw lines73-84 capture R-12/R-8/R-4 slots and values before post-target PUSHFD85 can overwrite the last dead argument",
+    "capture": {
+      "bytes": 132,
+      "pre": [
+        0,
+        16
+      ],
+      "registers": [
+        16,
+        116
+      ],
+      "register_DWORDs": 25,
+      "post": [
+        116,
+        132
+      ],
+      "ES_fields": [
+        76,
+        80
+      ],
+      "argument_slot_and_value_fields": [
+        92,
+        96,
+        100,
+        104,
+        108,
+        112
+      ]
+    },
+    "preservation": "EAX=root; ESP equal; EBX/ESI/EDI/EBP before/after equal. Selected decoder additionally checks EBX/EDI seeds. ECX/EDX residuals recorded unasserted. Probe and decoder require DF0 before/after only for selected cases. XOR mask8C5/value44 excludes undefined AF. No blanket ES/FPU/MXCSR promise.",
+    "ordinary_wrappers": "CDECL Source formals root,edx,text,word18,word08; Original prepends target. Both retained but absent from dynamic Main calls. Independent caller_frames symbolically checks actual ECX/EDX and three stack values until the actual CALL; unsupported branch/prologue stops. Full actual wrapper epilogues and bytes still need review.",
+    "additional_probe_frame_predicate": "machine_ok requires text>=EBP+32 and root disjoint [R-16,EBP+32); this is narrower than general Source disjointness and needs actual Main/raw frame evidence",
+    "duplicate_and_allocator": "Current duplicate source scans first NUL, allocates length+1 via private CDECL adapter passing object/native_bytes/host_bytes, copies length+1 through memcpy, preserves full EAX child result. Canonical allocate loops malloc/_callnewh with cold bad_alloc; canonical free calls free. No private Original CRT/EH or standalone duplicate admission inferred."
+  },
+  "probe_whole_Main_TEXT_review": {
+    "all_probe_lines_read": [
+      1,
+      436
+    ],
+    "Main_lines": [
+      346,
+      436
+    ],
+    "actual_future_Main_bytes_or_instructions": null,
+    "selected_cases": [
+      {
+        "entry": "Source",
+        "text8": "D7329A61E400BC58",
+        "child6": "D7329A61E400",
+        "word18": "3D92C7A4",
+        "word08": "A5E1703C",
+        "poison": "A6"
+      },
+      {
+        "entry": "bound Original RX",
+        "text8": "4BC625F89300E17A",
+        "child6": "4BC625F89300",
+        "word18": "C26D385B",
+        "word08": "5A1E8FC3",
+        "poison": "59"
+      }
+    ],
+    "root_mask": {
+      "bytes": 56,
+      "written_bytes": 33,
+      "untouched_bytes": 23,
+      "written_half_open": [
+        [
+          0,
+          12
+        ],
+        [
+          24,
+          40
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          52,
+          56
+        ]
+      ],
+      "preserved_half_open": [
+        [
+          12,
+          24
+        ],
+        [
+          40,
+          44
+        ],
+        [
+          45,
+          52
+        ]
+      ],
+      "phase": "00CE89D4",
+      "tag": 5,
+      "child_offset": 28,
+      "marker_byte_offset": 44,
+      "owner_DWORD48": "preserved poison, no ownership/class initialization"
+    },
+    "success_path_schedule": [
+      {
+        "lines": [
+          348,
+          362
+        ],
+        "action": "code/address/provider gates and original59 literal/Source duplicate CALL checks before roots"
+      },
+      {
+        "lines": [
+          363,
+          373
+        ],
+        "action": "reserve Original63 RW, bind sole operand to current duplicate57, protect RX, flush/query before roots"
+      },
+      {
+        "lines": [
+          374,
+          392
+        ],
+        "action": "two canonical56 roots; distinctness; two complete guarded40 inputs and Capture132 objects; poisons; all actual object disjointness"
+      },
+      {
+        "lines": [
+          393,
+          402
+        ],
+        "action": "one raw Source call; actualchild6; full root0 expected, root1 poison, child0, other Capture132 and both full input40 objects compared"
+      },
+      {
+        "lines": [
+          403,
+          413
+        ],
+        "action": "one raw Original RX call; actual secondchild6; both complete roots/children, other Capture132 and both full input40 objects compared"
+      },
+      {
+        "lines": [
+          414,
+          420
+        ],
+        "action": "code/RX bytes/protection checked; all Capture132/root56/input40/child6 artifacts plus boundOriginal63 saved while live"
+      },
+      {
+        "lines": [
+          421,
+          425
+        ],
+        "action": "save scalar root/RX addresses; free Source child, Original child, then both roots; release separate RX storage"
+      },
+      {
+        "lines": [
+          426,
+          435
+        ],
+        "action": "post-free provider bookends and all code gate; serialize saved scalar addresses and live provider/capture metadata; close held modules; return0"
+      }
+    ],
+    "entries": "two only on successful selected path: Source1/Original1, both DF0. Failure path can stop with0/1/2 entries. No actual entry observed; no null case or ordinary call added.",
+    "domain": "four explicit canonical allocations/frees: two56 roots and two6 children. RX storage separate. Borrowed text is never child-freed; all heap snapshots precede frees.",
+    "future_control_flow_obligation": "Derive whole actual Main raw extent and instruction CFG from fresh COFF/map/PE; prove all normal/failure paths, two target bindings, frame placement, every live snapshot/check before child/root frees, and post-free gates. Textual order and reader reachability classification are not actual Main dominance/dataflow proof."
+  },
+  "helper_and_reader_comparison": {
+    "selected_helper_whole_TEXT_review_lines": [
+      1,
+      240
+    ],
+    "required_normal_thunks": [
+      "memset",
+      "BCryptOpenAlgorithmProvider",
+      "BCryptGetProperty",
+      "BCryptCloseAlgorithmProvider",
+      "BCryptCreateHash",
+      "BCryptHashData",
+      "BCryptFinishHash",
+      "BCryptDestroyHash",
+      "K32GetMappedFileNameW",
+      "memcpy"
+    ],
+    "cold_required": [
+      "__std_exception_copy",
+      "__std_exception_destroy",
+      "_CxxThrowException",
+      "delete16->delete5->free6"
+    ],
+    "cookie_stack_contract": "helper requires cookie14/four instructions and stack43 with five alignment bytes; reader independently also requires cookie14+2 alignment and unsized delete5+11 alignment",
+    "no_missing_named_normal_thunk_contract": "helper190-240 closes actual REL32 seeds and helper direct edges, accepts any actual FF25 IAT thunk, and requires14 named imports including all normal observer/hash thunks. No fixed future span or relocation count inferred.",
+    "helper_strength_limits": [
+      "COFF helper is less bounded than independent raw_formats: slices raw bytes without explicit zero-pointer executable/backing checks; independent reader must close this",
+      "helper body follows only selected mapped weak chains, whereas reader inventories every raw weak chain and rejects unsupported modes/cycles/unbounded terminals",
+      "helper accepts named GS failure seeds generally; independent reader limits frontier to real cookie tail JMP",
+      "helper cookie routine derives reachable extent but does not itself assert next MAP f gap equals two bytes; independent reader does",
+      "helper generic extent requires gapless reached bytes and byte90/CC padding; independent reader handles proven internal unreachable NOPs and exact trap/trailing boundary semantics"
+    ],
+    "independent_reader_contract": [
+      "four actual fresh TUs source/duplicate/canonical/probe, whole raw bodies and complete mapped executable census including Main/EH where present",
+      "complete raw/linked byte equality with all actual I386 relocations, physical operand alias identity, all weak auxiliary chains",
+      "recursive closure of every mapped direct edge, exact same-section MAP f helper bounds, only explicit GS frontier",
+      "all IAT register origins joined across reachable CFG with caller-saved kills; raw/ordinary Original formal target proof; unknown/mixed indirect stops",
+      "actual CxxThrow guard distinguished from unreachable trailing INT3 and internal NOPs",
+      "exact packed-gate body membership and bytes; Source63/19/literal59, duplicate57/literal49, physical ordinary preCALL values, cold delete/std chain, stack/cookie complete extents"
+    ],
+    "scope_limit": "Independent reader labels the raw formal as Source_or_OriginalRX and classifies Main reachability; Root still proves actual Main dynamic values/order/frame from all emitted bytes. Future counts, helper sufficiency on actual link output, or parser acceptance are unclaimed.",
+    "helper_TEXT_change_proposed": false
+  },
+  "provider_semantics": {
+    "pre_root_lines": [
+      252,
+      284
+    ],
+    "post_free_lines": [
+      286,
+      293
+    ],
+    "before_roots": [
+      "actual IAT pointer to actual HMODULE",
+      "VirtualQuery MEM_IMAGE and AllocationBase",
+      "mapped NT path equals held physical-file NT path",
+      "volume/FileID/size and nonwide file size",
+      "mapped physical raw whole SHA256",
+      "physical/live I386 timestamp/image-size tuple",
+      "physical named nonforwarded export RVA and GetProcAddress/IAT equality",
+      "raw expected32 prefix adjusted for overlapping HIGHLOW ASLR relocations equals actual live prefix"
+    ],
+    "after_four_frees_and_RX_release": [
+      "same IAT",
+      "held-handle volume/FileID/size",
+      "whole mapped physical raw SHA",
+      "expected relocated raw32 prefix compared live"
+    ],
+    "not_repeated_post_free": [
+      "MEM_IMAGE/AllocationBase query",
+      "mapped/physical NT path discovery",
+      "GetProcAddress query",
+      "live PE header tuple query"
+    ],
+    "serialization": "normalized_live_prefix contains expected relocated physical bytes that the gated probe compares live; it is not an independent live-memory dump. before_after_equal records completion of actual distinct pre/post scopes.",
+    "selected_decoder": "reads only contained exact frozen provider bytes selected by original-path metadata; compares Gate/static/raw export/hash/PE tuple and original-generation handle identity; compares serialized mapped NT path and target/base/RVA/prefix; never opens historical installed provider paths. Missing live fields rely on complete probe review.",
+    "actual_provider_or_Native_queries_in_this_audit": 0
+  },
+  "launch_protocol": {
+    "header_TEXT": {
+      "kind": "Gate36v1",
+      "magic": "CC128E2B",
+      "base": "45000000",
+      "code_capacity": 64,
+      "max_span_bytes": 8192,
+      "CRT_rows": 4,
+      "CrtSpec_bytes": 104
+    },
+    "receipt": "manual_static_review.json with passed; Source_credit0; complete_retained_coverage_reviewed; named_library_edges_reviewed; complete_cold_delete_and_stack_code_reviewed",
+    "artifact_inputs_exact_nine": [
+      "static_gate.json",
+      "coverage.json",
+      "external_helper_coverage.json",
+      "build.json",
+      "gate.bin",
+      "t5_root_probe.exe",
+      "recipe.py",
+      "helpers.py",
+      "probe.cpp"
+    ],
+    "further_preprocess_checks": "runtime span count matches gate; reviewed_objects equal build actual objects; static/coverage pins; current inputs/headers/libs/prior pins; EXE/Gate/objects/original Native hash; physical provider identity/hash. Then sole run(process,[EXE]).",
+    "proposal_protocol_compatibility": "Selected protocol review_ast still finds original build pin loop and the launch basename/key/artifact equality/sole EXE call; the new pre-helper guard requires Root manual AST review because the selected protocol reader does not inspect it.",
+    "unresolved_Root_requirements": [
+      "Resolve actual standalone native_string_duplicate admission: selected recipe requires1, Root currently verified0. Preserve guard and do not substitute old consumer admissions.",
+      "Choose/review exact proposed recipe TEXT with selected unchanged probe/helper, or supply another bounded correction",
+      "Author a genuine precompile pure_text_review with exactly recipe.py/probe.cpp/helpers.py pins before importing/executing recipe/helpers; do not import recipe to manufacture that receipt",
+      "Keep all six selected reader TEXT identities and actual review outputs pinned in Root generation/review evidence",
+      "Recover actual fresh raw four-TU/map/PE/Gate complete function/helper/relocation/CFG/ABI proof before sole process; no old count inventory",
+      "Manually prove whole emitted Main ordering/target bindings/frame and exact provider gates; describe inlining from actual bytes",
+      "Acknowledge selected decoder ES equality without extending Source ABI promise",
+      "Preserve every actual generation stop and exact final family inventory; static TEXT cannot issue process-ready approval"
+    ]
+  },
+  "scope_limits": {
+    "Root_recipe_helper_reader_imports_or_executions": 0,
+    "Root_generation_compilers_targets": 0,
+    "Native_provider_Ghidra_operations": 0,
+    "accepted_rejected_or_active_execution_fixture_reads": 0,
+    "runtime_file_reads": 0,
+    "Root_t8p3_reads": 0,
+    "Source_edits": 0,
+    "shared_metadata_edits": 0,
+    "new_tests_or_builds": 0,
+    "Source_credit": 0,
+    "cold_EH_OOM_GS_class_World_game_admission": false
+  },
+  "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a",
+  "exact_recursive_files_including_seal": 41,
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\seal.json",
+    "size": 6856,
+    "sha256": "da41e9a1c047ee82be1230c79e2ed801c613d84c6449a6916affdebc1e67e989"
+  },
+  "audit_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\audit_receipt.json",
+    "size": 2171,
+    "sha256": "e18a0b4b79b8bec9103f0a02f2891817cb61cec5537f694f7ed3d9adf2b172f0"
+  },
+  "preservation": {
+    "Source_credit": 0,
+    "selected_originals_and_copies": 19,
+    "all_unchanged": true,
+    "six_current_Source_files_unchanged": true,
+    "proposed_recipe_pin_already_handed_to_Root_unchanged": true,
+    "rows": [
+      {
+        "key": "probe_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "recipe_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "raw_formats_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "register_imports_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "caller_frames_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "code_gate_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "observations_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "protocol_review_text",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "native_scene_property_record_type5_storage_cpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "native_scene_property_record_type5_storage_hpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "native_string_duplicate_cpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "native_string_duplicate_hpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "singleton_lifetime_cpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "singleton_lifetime_hpp",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "selected_modules",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "reader_API",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "case_worksheet_doc",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "case_worksheet_report",
+        "original_and_copy_equal_before_pins": true
+      },
+      {
+        "key": "helpers_text",
+        "original_and_copy_equal_before_pins": true
+      }
+    ],
+    "no_runtime_or_unselected_fixture_read": true
+  },
+  "proposed_selection": {
+    "Source_credit": 0,
+    "kind": "unexecuted_TEXT_proposal_requires_Root_selection_and_review",
+    "no_generation_compile_launch_authorization": true,
+    "recipe_proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\proposed_recipe_v3.py.txt",
+      "size": 34894,
+      "sha256": "1441eda8af500a16c89885ef1c7f752cfde0e35b2eaa506c437e4ace8c809151"
+    },
+    "probe_unchanged": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\00_probe_text.txt",
+      "size": 27488,
+      "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+    },
+    "helper_unchanged": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\18_helpers_text.txt",
+      "size": 18589,
+      "sha256": "e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7"
+    },
+    "six_readers_unchanged": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\02_raw_formats_text.txt",
+        "size": 13707,
+        "sha256": "719c65ba0d49394ee891ff377fd80c9a9f57ff3d7c1ef91d5a530165142b369e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\03_register_imports_text.txt",
+        "size": 7150,
+        "sha256": "49944f52c7691c5c5ed9fc0234d4d9811e3e4c1f0f8043c63143db2af4431d7b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\04_caller_frames_text.txt",
+        "size": 4774,
+        "sha256": "3dac624f85852f2023ccd46d0254d29f91d3a09aa26e95c506c200d340dc046e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\05_code_gate_text.txt",
+        "size": 28939,
+        "sha256": "6018340ef76afbd167dda4d9551485a72d5ed5bdfb2cab4d7f013205c82a146d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\06_observations_text.txt",
+        "size": 16297,
+        "sha256": "f50a70b0e0067412c58b9c009db1fa28ea2c7bbb1af4dfc2b7e91c8d49bf14fa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\07_protocol_review_text.txt",
+        "size": 7814,
+        "sha256": "48139b9cd79f70f8c6c565b7e8ff2f54a86c629ee137e7c450a61d3fb9c1a5d2"
+      }
+    ],
+    "original19_inputs_remain_unchanged": true,
+    "future_precompile_review_receipt_authored_by_Root": true,
+    "future_actual_raw_inputs_and_review_readouts_not_yet_present": true
+  }
+}
