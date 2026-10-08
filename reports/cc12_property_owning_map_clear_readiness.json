@@ -1218,7 +1218,7 @@
         "hex": "538bd985db750433c05bc38bc38d50018a0883c00184c975f7562bc28d70015756e858c77b00568bf85357e810e87b0083c4108bc75f5e5bc3"
       }
     ],
-    "whole_COFF_body_count": 25,
+    "whole_COFF_body_count": 26,
     "whole_COFF_providers": [
       {
         "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
@@ -2078,8 +2078,9 @@
       },
       {
         "symbol": "__unwindfunclet$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ$0",
-        "bytes": 46,
-        "sha256": "4aef15b43db3c8c56bec317f4b9fadfcbe8aaea050427f5273fa7bc5097cc181",
+        "bytes": 17,
+        "sha256": "ac9a051e4d8664276161db9e2ec16ccf96fa0d5696feca340c47f5405daccdb8",
+        "instructions": 9,
         "relocations": [
           {
             "operand_offset": 1,
@@ -2090,25 +2091,34 @@
             "operand_offset": 6,
             "kind": "0014",
             "symbol": "__Init_thread_abort"
-          },
+          }
+        ],
+        "body_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_map_clear_primary_review\\retained_split\\unwind.bin",
+        "whole_object_path": "local/cc12_property_owning_map_clear_readiness/frozen/objects/game_native_string_process.obj"
+      },
+      {
+        "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+        "bytes": 29,
+        "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+        "instructions": 9,
+        "relocations": [
           {
-            "operand_offset": 32,
+            "operand_offset": 15,
             "kind": "0014",
             "symbol": "@__security_check_cookie@4"
           },
           {
-            "operand_offset": 37,
+            "operand_offset": 20,
             "kind": "0006",
             "symbol": "__ehfuncinfo$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
           },
           {
-            "operand_offset": 42,
+            "operand_offset": 25,
             "kind": "0014",
             "symbol": "___CxxFrameHandler3"
           }
         ],
-        "instructions": 18,
-        "body_path": "local/cc12_property_owning_map_clear_readiness/COFF/game_native_string_process_1.bin",
+        "body_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_map_clear_primary_review\\retained_split\\handler.bin",
         "whole_object_path": "local/cc12_property_owning_map_clear_readiness/frozen/objects/game_native_string_process.obj"
       },
       {
@@ -2351,5 +2361,107 @@
     "Existing qualified providers/whole production objects are inspected and retained, not executed or rebuilt. Current Source ordinary/RawABI qualifications retain their own admission domains.",
     "Known bag/record/scalar bodies are reused from prior audit contracts and installed byte pins; no new Native destructor body expansion. 004E6730 full body/ABI qualification is a gate of the proposed future cohesive packet, not a new claimed whole byte pin here.",
     "Parent whole insertion/replacement, factory/dispatcher/tree construction, arbitrary profiles, recursive class ownership, Original EH and gameplay remain outside this packet."
-  ]
+  ],
+  "primary_inventory_correction": {
+    "reason": "One46B physical section contains two distinct code symbols at0/17. No single46B function. Exact17B unwind extent includes5CC padding after RET; exact29B handler is separate.",
+    "old_section_row_retained": {
+      "symbol": "__unwindfunclet$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ$0",
+      "bytes": 46,
+      "sha256": "4aef15b43db3c8c56bec317f4b9fadfcbe8aaea050427f5273fa7bc5097cc181",
+      "relocations": [
+        {
+          "operand_offset": 1,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 6,
+          "kind": "0014",
+          "symbol": "__Init_thread_abort"
+        },
+        {
+          "operand_offset": 32,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "operand_offset": 37,
+          "kind": "0006",
+          "symbol": "__ehfuncinfo$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+        },
+        {
+          "operand_offset": 42,
+          "kind": "0014",
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "instructions": 18,
+      "body_path": "local/cc12_property_owning_map_clear_readiness/COFF/game_native_string_process_1.bin",
+      "whole_object_path": "local/cc12_property_owning_map_clear_readiness/frozen/objects/game_native_string_process.obj"
+    },
+    "actual_functions": [
+      {
+        "symbol": "__unwindfunclet$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ$0",
+        "bytes": 17,
+        "sha256": "ac9a051e4d8664276161db9e2ec16ccf96fa0d5696feca340c47f5405daccdb8",
+        "instructions": 9,
+        "relocations": [
+          {
+            "operand_offset": 1,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 6,
+            "kind": "0014",
+            "symbol": "__Init_thread_abort"
+          }
+        ],
+        "body_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_map_clear_primary_review\\retained_split\\unwind.bin",
+        "whole_object_path": "local/cc12_property_owning_map_clear_readiness/frozen/objects/game_native_string_process.obj"
+      },
+      {
+        "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+        "bytes": 29,
+        "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+        "instructions": 9,
+        "relocations": [
+          {
+            "operand_offset": 15,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "operand_offset": 20,
+            "kind": "0006",
+            "symbol": "__ehfuncinfo$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+          },
+          {
+            "operand_offset": 25,
+            "kind": "0014",
+            "symbol": "___CxxFrameHandler3"
+          }
+        ],
+        "body_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_map_clear_primary_review\\retained_split\\handler.bin",
+        "whole_object_path": "local/cc12_property_owning_map_clear_readiness/frozen/objects/game_native_string_process.obj"
+      }
+    ],
+    "Original_manifest_187_artifacts_unchanged": true,
+    "new_Source_or_Original_function_credit": 0
+  },
+  "primary_acceptance": {
+    "status": "PASS_read_only_whole_clear_and_current_providers_after_inventory_correction",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_map_clear_primary_review\\receipt.json",
+      "bytes": 30507,
+      "sha256": "4bb643fce24f85cf5aa6b7199810db6fc14e4e98f90f88e02e8d854c484916a9"
+    },
+    "complete_current_COFF_bodies": 26,
+    "unique_current_archive_members": 14,
+    "new_Source_functions": 0,
+    "new_Original_function_records": 0,
+    "Source_ready": false,
+    "game_validated": false,
+    "qualification": "Whole clear and existing concrete key/node/pool providers qualified statically. Owning record and bag producer/profile code domain plus the complete six-body recursive lifetime family remain absent; no nullable/opaque callback shortcut or class admission."
+  }
 }

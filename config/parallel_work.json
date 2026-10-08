@@ -35350,6 +35350,28 @@
         "new_execution": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_property_owning_map_clear_readiness",
+      "worker": "primary",
+      "function_addresses": [
+        "008f3f30"
+      ],
+      "output_files": [
+        "docs/CC12_PROPERTY_OWNING_MAP_CLEAR_READINESS.md",
+        "reports/cc12_property_owning_map_clear_readiness.json"
+      ],
+      "depends_on": [
+        "cc12_property_release_body_readiness"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_whole_clear_owning_cycle_not_Source_ready",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
