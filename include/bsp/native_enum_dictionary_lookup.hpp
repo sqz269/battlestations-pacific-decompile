@@ -45,4 +45,21 @@ const void* find_native_enum_table_node_0048d4e0(const void* actual_receiver,
     const NativeString& key, std::uint32_t& bucket,
     const char* empty_00e186ed, const char* empty_00e17654);
 
+// Whole 0043B8B0 as an independent ordinary C++ reader of actual Win32 storage.
+// Hash the actual eight-byte query header unconditionally, store bucket before
+// loading actual_map+8+4*bucket, and capture length only after a nonnull head.
+// Node header +0/+4 and next +0C are borrowed; mapped +8 and allocator +10 are
+// untouched. Return the first matching mutable borrowed node, or null.
+// Supply the distinct actual property-node (00E177E4) and query (00E17654)
+// fallback roles. Pointer equality succeeds before null/real CRT stricmp gates.
+// Admit live actual 108h maps, finite consistent correctly bucketed chains,
+// matching closed NUL-free ASCII headers/buffers (null data only when empty),
+// stable nonnull NUL fallback cells and current CRT C locale. Bucket output is
+// writable and nonaliasing; external synchronization keeps all borrowed storage
+// and bindings stable. No allocation, ownership, populated-map producer,
+// replacement lifetime, class/Original ABI, fault/SEH or game claim is made.
+void* find_native_property_map_node_0043b8b0(const void* actual_map,
+    const void* actual_query_header, std::uint32_t& bucket,
+    const char* actual_empty_00e177e4, const char* actual_empty_00e17654);
+
 } // namespace bsp
