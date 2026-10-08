@@ -1,0 +1,72 @@
+{
+  "packet": "cc12_native_world_matrix_sentinel_source",
+  "status": "Source_implemented_from_primary_approved_design_build_pending_Root_registration",
+  "utc": "2026-10-08T23:47:03.910022+00:00",
+  "Source_files": {
+    "include/bsp/native_world_matrix_sentinel.hpp": {
+      "sha256": "41bcc5a4502e912a373e021bd53af9f19202b1e20f597df8e3df51df517bd575",
+      "bytes": 401,
+      "text_identical_to_primary_approved_proposal": true
+    },
+    "src/native_world_matrix_sentinel.cpp": {
+      "sha256": "8af67be4789be24f6d46c8751a06d22a536e0b38da74faeebf0993a5106b13cd",
+      "bytes": 1507,
+      "text_identical_to_primary_approved_proposal": true
+    }
+  },
+  "primary_design_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_design_primary_review\\receipt.json",
+    "sha256": "bc0ec586ebb1c7dd85255cdccd48faf3039d5727215eb3100b38dd23c611f835"
+  },
+  "native": {
+    "address": "004C3080",
+    "bytes": 26,
+    "instructions": 11,
+    "caller_addresses": [
+      "004CB030",
+      "004C8B50"
+    ],
+    "ABI": "Incoming ECX/EDX unused, no stack arguments, EAX actual allocated pointer, ECX=EAX+4 at normal return, plain RET",
+    "allocation_bytes": 108,
+    "self_links": [
+      0,
+      4
+    ],
+    "uninitialized_payload_range": [
+      8,
+      108
+    ],
+    "sole_rebound_CALL_operand": [
+      3,
+      7
+    ],
+    "remaining_literal_bytes": 22
+  },
+  "Source": {
+    "entry": "bsp::create_native_world_matrix_sentinel_004c3080",
+    "entry_ABI": "no-argument CDECL naked leaf",
+    "adapter": "concrete noinline CDECL allocate_sentinel_storage(uint32_t bytes)",
+    "request": "SingletonAllocationRequest{object,0x6C,0x6C}",
+    "provider": "existing singleton_lifetime_allocate; matching caller-owned singleton_lifetime_free domain",
+    "exception_contract": "Ordinary current host CRT allocation/handler exceptions propagate; neither helper nor adapter is noexcept",
+    "Native_static_exception_FH3_or_runtime_identity_reimplemented": false,
+    "World_publication_or_lifetime_implemented": false
+  },
+  "validation": {
+    "build": "pending explicit Root CMake registration notification",
+    "normal_builds": 0,
+    "new_tests": 0,
+    "probes": 0,
+    "target_executions": 0,
+    "fresh_emitted_code_qualified": false
+  },
+  "scope": {
+    "new_raw_leaf_Source_definitions": 1,
+    "real_private_adapters": 1,
+    "new_World_owners": 0,
+    "runtime_credit": 0,
+    "production_World_or_game_readiness": false,
+    "Ghidra_program_mutations": 0,
+    "worker_CMake_or_ledger_edits": 0
+  }
+}
