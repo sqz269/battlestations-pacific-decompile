@@ -5329,5 +5329,115 @@
       "sha256": "eeec359434899d3fd4c7d1de8661c75580464ea07ded53b833fa5cc71641c3a1"
     }
   ],
-  "next_owner": "Root: independently inspect and execute a fresh qualified fixture if admitted, register and run full main build, own ledger/packet/Ghidra annotation/save/exports, integrate and publish. Worker claims no Source credit before that acceptance."
+  "next_owner": "Root: independently inspect and execute a fresh qualified fixture if admitted, register and run full main build, own ledger/packet/Ghidra annotation/save/exports, integrate and publish. Worker claims no Source credit before that acceptance.",
+  "primary_integration": {
+    "passed": true,
+    "Source_admission_credit": 1,
+    "worker_commit": "23c9d87fbad2be7006c66661fc6bccc2618e4c3e",
+    "independent_family": "local/t8p1",
+    "independent_seal_sha256": "686c226f85185bd77f5bf4bc3e56037a63c99d9c07cde367aa4539fd7cddbf20",
+    "independent_inventory_artifacts": 380,
+    "independent_actual_files": 381,
+    "prior_artifacts_preserved": 17427,
+    "fresh_translation_units": 3,
+    "consumed_headers": 184,
+    "consumed_libraries": 7,
+    "BSP_archives_consumed": 0,
+    "old_objects_consumed": 0,
+    "accepted_processes": 1,
+    "target_entries": 4,
+    "actual_allocations": 6,
+    "actual_frees": 6,
+    "complete_code_spans": 13,
+    "native_bytes": 112,
+    "native_instructions": 34,
+    "qualified_CALL_operand_bytes": 8,
+    "literal_bytes": 104,
+    "independently_decoded": [
+      {
+        "case": "source_retained",
+        "full_capture140_verified": true,
+        "full_root56_verified": true,
+        "input_guard48_verified": true,
+        "full_child_bytes": 0,
+        "R_Q_T_all_actual_slots_RET12_EAX_nonvolatiles_DF0_verified": true,
+        "defined_flag_mask": "8D5",
+        "AF_defined": true,
+        "copy_provider_residual_ECX_EDX_unasserted": false
+      },
+      {
+        "case": "original_retained",
+        "full_capture140_verified": true,
+        "full_root56_verified": true,
+        "input_guard48_verified": true,
+        "full_child_bytes": 0,
+        "R_Q_T_all_actual_slots_RET12_EAX_nonvolatiles_DF0_verified": true,
+        "defined_flag_mask": "8D5",
+        "AF_defined": true,
+        "copy_provider_residual_ECX_EDX_unasserted": false
+      },
+      {
+        "case": "source_copy",
+        "full_capture140_verified": true,
+        "full_root56_verified": true,
+        "input_guard48_verified": true,
+        "full_child_bytes": 16,
+        "R_Q_T_all_actual_slots_RET12_EAX_nonvolatiles_DF0_verified": true,
+        "defined_flag_mask": "8D5",
+        "AF_defined": true,
+        "copy_provider_residual_ECX_EDX_unasserted": true
+      },
+      {
+        "case": "original_copy",
+        "full_capture140_verified": true,
+        "full_root56_verified": true,
+        "input_guard48_verified": true,
+        "full_child_bytes": 11,
+        "R_Q_T_all_actual_slots_RET12_EAX_nonvolatiles_DF0_verified": true,
+        "defined_flag_mask": "8D5",
+        "AF_defined": true,
+        "copy_provider_residual_ECX_EDX_unasserted": true
+      }
+    ],
+    "full_main_build": {
+      "context": {
+        "source_revision": "04392020cb3cf6b3a6432a470c3dc8ae1de3bf66",
+        "CMake": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+          "size": 197693,
+          "sha256": "a612dc4a6bc859564e876385adf087d0b1f9858daf3fd30708b60d770d1d340b"
+        },
+        "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_current_main_build.log"
+      },
+      "log_sha256": "e91c2623cfabd65fd94a94285870ca82b56cfc2b33ef2e0827dcc17b4f7dd079",
+      "checks": "3/3 PASS"
+    },
+    "old_accepted_processes_replayed": 0,
+    "Source_provider_glue_native_credit": 0,
+    "native_class_ABI_admitted": false,
+    "original_private_CRT_EH_admitted": false,
+    "game_validated": false,
+    "qualification": "Whole [008EF2F0,008EF360)112B34 raw byte-array record storage; 104 literal bytes, only CALL operands[47,51) real size-to-currentcanonical allocation adapter and[62,66) actual VCRUNTIME memcpy rebound. Fullfast ECX actualfresh56/unusedEDX/threeactualstackDWORDs input,count,fullflag/RET12/EAXroot. Initial CMP BYTE lowflag beforestores, borrow preserves actualpointer/nochildfree and CMP8D5=44 includingAF0; copy stores genuinechild+20 before actualmemcpy, final ADD actualT-24+16 derives all6definedflags8D5. Both paths +2C1 is not an ownership discriminator. Qualified positive actual byte-span/fresh/disjoint/nonwrapping domain; embedded NUL treated as bytes. Root complementary3TU oneprocess4entries/6realallocations-frees, four140captures/all56roots/96guardedinputbytes/full16+11copies independently decoded; Rpreargs,QpreCALL,Tentry separated, three deadargument slots beforePUSHFD/nonvols/ESP/DF0 verified. Full13 codegates including6083B1549 main,191B68raw,cookie14B4/failuretailJMP,chkstk48B24; actualI386UCRT heap and distinctVCRT memcpy IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/normalizedcode beforezeroentries/after. Exact380listed+seal381/17427priorpins stable; currentcombinedMainWin32/all3checksPASS. No oldacceptedhelpers/stages/objects/process replay. Original privateheap/CRT/EH/failure/owner/class/fullclone/World/gameABI/gameplay remain unadmitted."
+  },
+  "Source_admission_credit": 1,
+  "worker_Source_admission_credit": 0,
+  "primary_source_status": "complete qualified whole112B34 type8 borrow/copy raw storage; independent3TU/13codegates/currentMainWin32/all3checksPASS",
+  "Root_independent_validation_pending": false,
+  "main_build_pending": false,
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T152010Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T152010Z.json": "aabd27ea692dbe6c98bbf7e81c19e0ada8a102575c151c0de7c0ce5c954e5119",
+      "local/cc12_type8_source_final_annotations.log": "73514113368ba5bee9d758940f66afb25437efa79cfce2e894a6c2dae87585f8",
+      "local/cc12_type8_source_final_exports.log": "c928ba16f868dac9037c1cd7f5f5544460ef92a73e58619c41fdd5f9fdd6d359",
+      "local/cc12_type8_source_final_snapshot.log": "d9696a72d5d770778525f98613f8649ca52e8d37f30b12131b8e5b7a8b993d72"
+    },
+    "name_is_raw_storage_hypothesis": true
+  }
 }

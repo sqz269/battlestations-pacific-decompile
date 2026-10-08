@@ -167,3 +167,9 @@ A post-seal read-only report-verifier draft had an `IndentationError` before
 execution. Its separate receipt is linked by the report; a new complete
 verifier checks public references. The sealed families and target process
 were not changed or replayed.
+
+## Primary integration
+
+Whole [008EF2F0,008EF360)112B34 raw byte-array record storage; 104 literal bytes, only CALL operands[47,51) real size-to-currentcanonical allocation adapter and[62,66) actual VCRUNTIME memcpy rebound. Fullfast ECX actualfresh56/unusedEDX/threeactualstackDWORDs input,count,fullflag/RET12/EAXroot. Initial CMP BYTE lowflag beforestores, borrow preserves actualpointer/nochildfree and CMP8D5=44 includingAF0; copy stores genuinechild+20 before actualmemcpy, final ADD actualT-24+16 derives all6definedflags8D5. Both paths +2C1 is not an ownership discriminator. Qualified positive actual byte-span/fresh/disjoint/nonwrapping domain; embedded NUL treated as bytes. Root complementary3TU oneprocess4entries/6realallocations-frees, four140captures/all56roots/96guardedinputbytes/full16+11copies independently decoded; Rpreargs,QpreCALL,Tentry separated, three deadargument slots beforePUSHFD/nonvols/ESP/DF0 verified. Full13 codegates including6083B1549 main,191B68raw,cookie14B4/failuretailJMP,chkstk48B24; actualI386UCRT heap and distinctVCRT memcpy IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/normalizedcode beforezeroentries/after. Exact380listed+seal381/17427priorpins stable; currentcombinedMainWin32/all3checksPASS. No oldacceptedhelpers/stages/objects/process replay. Original privateheap/CRT/EH/failure/owner/class/fullclone/World/gameABI/gameplay remain unadmitted.
+
+Independent seal `686c226f85185bd77f5bf4bc3e56037a63c99d9c07cde367aa4539fd7cddbf20`.
