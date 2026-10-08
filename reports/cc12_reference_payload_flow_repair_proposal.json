@@ -1,0 +1,520 @@
+{
+  "schema": 1,
+  "audit": "cc12_reference_payload_flow_repair_proposal",
+  "Source_admission_credit": 0,
+  "ready_Source_credit": 0,
+  "Root_only": true,
+  "repair_executed": false,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function": "008F0340",
+    "whole_range": [
+      "008F0340",
+      "008F0377"
+    ],
+    "native": {
+      "name": "candidate",
+      "address": 9372480,
+      "size": 55,
+      "sha256": "40611ad298e15a07908bead1b10f73434e3574529a027779139398e0f3edd3c6",
+      "hex": "8b442404538b580456578b388bf18b460485c0741050e82e66300083c404c74604000000008bcbe8d48ab4ff893e5f8946045e5bc20400",
+      "instructions": [
+        {
+          "address": 9372480,
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": 9372484,
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": 9372485,
+          "bytes": "8b5804",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [eax + 4]"
+        },
+        {
+          "address": 9372488,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 9372489,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 9372490,
+          "bytes": "8b38",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax]"
+        },
+        {
+          "address": 9372492,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 9372494,
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": 9372497,
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": 9372499,
+          "bytes": "7410",
+          "mnemonic": "je",
+          "operands": "0x8f0365"
+        },
+        {
+          "address": 9372501,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": 9372502,
+          "bytes": "e82e663000",
+          "mnemonic": "call",
+          "operands": "0xbf6989"
+        },
+        {
+          "address": 9372507,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": 9372510,
+          "bytes": "c7460400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 0"
+        },
+        {
+          "address": 9372517,
+          "bytes": "8bcb",
+          "mnemonic": "mov",
+          "operands": "ecx, ebx"
+        },
+        {
+          "address": 9372519,
+          "bytes": "e8d48ab4ff",
+          "mnemonic": "call",
+          "operands": "0x438e40"
+        },
+        {
+          "address": 9372524,
+          "bytes": "893e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], edi"
+        },
+        {
+          "address": 9372526,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 9372527,
+          "bytes": "894604",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], eax"
+        },
+        {
+          "address": 9372530,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 9372531,
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": 9372532,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    "override_site": "008F0356",
+    "gap": [
+      "008F035B",
+      "008F0365"
+    ],
+    "gap_hex": "83c404c7460400000000",
+    "gap_sha256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344",
+    "new_starts": [
+      "008F035B",
+      "008F035E"
+    ],
+    "existing_continuation": "008F0365"
+  },
+  "observed": {
+    "frozen_live_PE55B22_saved20": true,
+    "frozen_gap_report": {
+      "returncode": 0,
+      "stdout": "008f0340: 20 listed instructions, 1 gap(s)\n  after CALL 0x00bf6989 at 008f0356: 008f035b..008f0365 (10 bytes)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+      "stderr": ""
+    },
+    "offline_current_tool_plan": [
+      {
+        "site": "008f0356",
+        "mnemonic": "CALL",
+        "operands": "0x00bf6989",
+        "gap_start": "008f035b",
+        "gap_end_exclusive": "008f0365",
+        "bytes": 10,
+        "after_call": true
+      }
+    ],
+    "current_function_documentation": {
+      "hash": "d491680fba516e3721e2e97292315fec8ec04716420e5ec045e25a5ba82c9268",
+      "source_program": "battlestationspacific.exe",
+      "source_address": "008f0340",
+      "function_name": "BSP_SceneProperty_CopyReferencePayload",
+      "return_type": "undefined",
+      "calling_convention": "unknown",
+      "plate_comment": "[BSP reconstruction 008f0340]\nHypothesis, not a recovered symbol. Packet cc2_property_bag_merge, read-only analysis. __thiscall(dword* destPayload /*ECX = record+18h*/, dword* sourcePayload), RET 4. Copies the two-dword reference payload: the tag at +18h verbatim and the target name at +1Ch as a fresh 00438E40 duplicate. The decompiler's early return after the free is wrong; the bytes at 008F0355 are 50 E8 2E663000 83C404 C746 04 00000000 (PUSH EAX / CALL free / ADD ESP,4 / MOV [ESI+4],0) falling through to the JZ target 008F0365, so it frees the old name, nulls it and then copies. It does NOT touch record+08h, so an assigned reference keeps the destination's kind. Caller: 008F0771, the type-5 arm of 008F0700.",
+      "parameters": [],
+      "local_variables": [
+        {
+          "name": "uVar2",
+          "type": "undefined4",
+          "storage": "(register, 0x0, 4)"
+        },
+        {
+          "name": "uVar1",
+          "type": "undefined4",
+          "storage": "(unique, 0x17200, 4)"
+        }
+      ],
+      "comments": [],
+      "labels": [
+        {
+          "relative_offset": 37,
+          "name": "LAB_008f0365"
+        }
+      ],
+      "completeness_score": 100.0
+    },
+    "current_doc_file": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\local\\cc12_reference_payload_flow_proposal20261008a\\current_documentation_payload.json",
+      "size": 1598,
+      "sha256": "df283ce0238a32cad28cf58802e58d1ca75958484cda9ce7a7be4e892da8cb2b"
+    },
+    "frozen_signature": "undefined BSP_SceneProperty_CopyReferencePayload(void)"
+  },
+  "unknowns": {
+    "exact_callsite_override": "Unknown; CALL_RETURN is inferred from tool history and gap, not observed",
+    "candidate_no_return": "Unknown; documentation does not expose it",
+    "callee_00BF6989_no_return": "Unknown; not queried/leased",
+    "undefined_gap_address_comments": "Unknown beyond function documentation comments[]; get_plate_comment at035B failed No function",
+    "bridge_end_address_inclusivity": "Unknown from tool description; cover existing0365 continuation in whole-function lease and verify22 exact starts"
+  },
+  "preserved": {
+    "full_existing_plate_comment": "[BSP reconstruction 008f0340]\nHypothesis, not a recovered symbol. Packet cc2_property_bag_merge, read-only analysis. __thiscall(dword* destPayload /*ECX = record+18h*/, dword* sourcePayload), RET 4. Copies the two-dword reference payload: the tag at +18h verbatim and the target name at +1Ch as a fresh 00438E40 duplicate. The decompiler's early return after the free is wrong; the bytes at 008F0355 are 50 E8 2E663000 83C404 C746 04 00000000 (PUSH EAX / CALL free / ADD ESP,4 / MOV [ESI+4],0) falling through to the JZ target 008F0365, so it frees the old name, nulls it and then copies. It does NOT touch record+08h, so an assigned reference keeps the destination's kind. Caller: 008F0771, the type-5 arm of 008F0700.",
+    "function_name": "BSP_SceneProperty_CopyReferencePayload",
+    "return_type": "undefined",
+    "calling_convention": "unknown",
+    "parameters": [],
+    "comments": [],
+    "labels": [
+      {
+        "relative_offset": 37,
+        "name": "LAB_008f0365"
+      }
+    ],
+    "old_documentation_hash": "d491680fba516e3721e2e97292315fec8ec04716420e5ec045e25a5ba82c9268",
+    "flow_property_denial": "Frozen script-disabled response retained, no retry or enablement"
+  },
+  "inferred": {
+    "likely_cause": "Saved call-site nonreturn flow override or stale analysis, exact property unknown",
+    "repair_rationale": "Full native fallthrough after free reaches stack cleanup, field clear, duplicate and RET4",
+    "tail_extension_required": false,
+    "callee_no_return_change_required": false
+  },
+  "Root_ownership": {
+    "function_entry": "008F0340",
+    "metadata_sites": [
+      "008F0356",
+      "008F035B",
+      "008F035E",
+      "008F0365"
+    ],
+    "full_envelope": [
+      "008F0340",
+      "008F0377"
+    ],
+    "actual_new_decode": [
+      "008F035B",
+      "008F0365"
+    ],
+    "files": [
+      "local/cc12_reference_payload_flow_root20261008a",
+      "exports/bsp/functions/008f0340"
+    ],
+    "callee_00BF6989_excluded": true
+  },
+  "supported_tool": {
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_flow_repair.py",
+      "size": 12710,
+      "sha256": "644b1761e5f558dcec4b28f1ed732d9832c225774c7d42d8ccc06cdcc3b648d7"
+    },
+    "report_only": "returns before every POST",
+    "apply": "takes coordination.ghidra_lock, check_writable(function entry), checks gap disk/live, clears site0356, disassembles gap, records, saves program",
+    "plan_computed_before_lock": true,
+    "Root_exact_lease_preflight_required": true,
+    "does_not_set_callee_noReturn_or_name_proto_comments": true,
+    "does_not_create_delete_functions": true,
+    "does_not_preserve_exact_old_override_value": true,
+    "apply_command": "python tools/ghidra_flow_repair.py 008f0340 --apply --record local/cc12_reference_payload_flow_root20261008a/repair.json",
+    "forbidden_options": [
+      "--tail-end",
+      "--tail-rethrow"
+    ],
+    "never_direct_call_clear_even_dry_run": true
+  },
+  "expected_write_requests": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "008f0356"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "008f035b",
+        "end_address": "008f0365"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {}
+    }
+  ],
+  "preflight_commands": [
+    "python tools/bsp.py ghidra count",
+    "python tools/bsp.py ghidra proto 008f0340 --lines 40",
+    "python tools/bsp.py ghidra documentation 008f0340 --output local/cc12_reference_payload_flow_root20261008a/before_documentation.json",
+    "python tools/bsp.py ghidra bytes 008f0340 --length 55",
+    "python tools/bsp.py ghidra disasm 008f0340 --lines 30",
+    "python tools/bsp.py ghidra flow 008f0340 --lines 10"
+  ],
+  "preflight_gate": "Exact55 hash and20 listed starts with only35B/35E absent, one10-byte gap; stop on drift; pin current tools/config/PE and preserve accessible documentation plus explicit unknown flags",
+  "post_commands": [
+    "python tools/bsp.py ghidra bytes 008f0340 --length 55",
+    "python tools/bsp.py ghidra disasm 008f0340 --lines 30",
+    "python tools/bsp.py ghidra instruction-context 008f035b 008f035e --context 1",
+    "python tools/bsp.py ghidra flow 008f0340 --lines 10",
+    "python tools/bsp.py ghidra proto 008f0340 --lines 40",
+    "python tools/bsp.py ghidra decompile 008f0340 --lines 70",
+    "python tools/bsp.py ghidra documentation 008f0340 --output local/cc12_reference_payload_flow_root20261008a/after_documentation.json"
+  ],
+  "post_gate": {
+    "exact_saved_starts": [
+      "008f0340",
+      "008f0344",
+      "008f0345",
+      "008f0348",
+      "008f0349",
+      "008f034a",
+      "008f034c",
+      "008f034e",
+      "008f0351",
+      "008f0353",
+      "008f0355",
+      "008f0356",
+      "008f035b",
+      "008f035e",
+      "008f0365",
+      "008f0367",
+      "008f036c",
+      "008f036e",
+      "008f036f",
+      "008f0372",
+      "008f0373",
+      "008f0374"
+    ],
+    "whole55_hash_unchanged": true,
+    "same_function_bounds": true,
+    "one_repaired_gap": "008f0356",
+    "gap_bytes": 10,
+    "gaps_remaining": 0,
+    "decompiler": "no false return afterfree; proceeds through cleanup/null/duplicate",
+    "preserve_fields": [
+      "function_name",
+      "return_type",
+      "calling_convention",
+      "parameters",
+      "plate_comment",
+      "existing comments",
+      "existing labels"
+    ],
+    "derived_locals_and_documentation_hash_may_change": true,
+    "noReturn_value_unchanged_not_directly_measurable": true,
+    "wrapper_exit_alone_insufficient": "bsp ghidra flow does not propagate child return code; inspect record/stdout/stderr/listing"
+  },
+  "save_export": {
+    "save": "apply tool saves while holding its own write lock",
+    "refresh_command": "python tools/bsp.py ghidra export 008f0340 --force",
+    "export_lock": "Root driver must hold global coordination lock around export subprocess; export itself does not acquire one and invokes force_decompile",
+    "avoid_nested_lock": "Do not parent-lock around flowrepair child; child acquires own lock",
+    "final_save": "If forced export leaves analysis dirty, save under same export lock",
+    "index_command": "python tools/bsp.py index",
+    "verify": "affected exported assembly has22 expected starts, metadata correct name; function count unchanged; normal snapshot skip does not substitute export",
+    "seal": "after save/export verification, exact inventory, Source0 repair-only status, release Root lease"
+  },
+  "failure_policy": "On drift or partial repair, preserve outputs and stop before blindly repeating apply. Unknown old override/noReturn values must not be invented for rollback. No direct write endpoint fallback or script enablement.",
+  "worker": {
+    "base_commit": "f893a986f6298b9afae35ef12b5dbf8df579b209",
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\local\\cc12_reference_payload_flow_proposal20261008a",
+    "main_private_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\local\\cc12_reference_payload_flow_proposal20261008a\\collect.py",
+        "size": 3668,
+        "sha256": "29760907f145f2bf49448004d32fcc0dbde2ca465f456dd932dc5db528e0b17f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\local\\cc12_reference_payload_flow_proposal20261008a\\collect_continue.py",
+        "size": 2766,
+        "sha256": "67923986c7db32909d11988eee47019e4330622c3b2851f1c94ac3364e913955"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "size": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\bsp.py",
+        "size": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\bsp.py",
+        "size": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_flow_repair.py",
+        "size": 12710,
+        "sha256": "644b1761e5f558dcec4b28f1ed732d9832c225774c7d42d8ccc06cdcc3b648d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_flow_repair.py",
+        "size": 12710,
+        "sha256": "644b1761e5f558dcec4b28f1ed732d9832c225774c7d42d8ccc06cdcc3b648d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_flow_properties.py",
+        "size": 9331,
+        "sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_flow_properties.py",
+        "size": 9331,
+        "sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_annotate.py",
+        "size": 5016,
+        "sha256": "aa170c357bb5e4ff20f170d77230570cdf8a1b2ee53e9b322581e1770b296bf6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_annotate.py",
+        "size": 5016,
+        "sha256": "aa170c357bb5e4ff20f170d77230570cdf8a1b2ee53e9b322581e1770b296bf6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\target.json",
+        "size": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\config\\target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    ],
+    "prior_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\local\\cc12_native_string_consumer_readiness20261008a\\artifact_manifest.json",
+      "size": 18568,
+      "sha256": "cce0620441b373411b8f1fa56f698c7ed11e21739a72f79e5141bba65c179ebb"
+    },
+    "prior_artifacts": 1055,
+    "new_readonly_query_batches": 2,
+    "documentation_success": 1,
+    "interior_comment_batch_failure": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\bsp.py\", line 1284, in <module>\n    main()\n    ~~~~^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\bsp.py\", line 1280, in main\n    args.func(args)\n    ~~~~~~~~~^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\bsp.py\", line 824, in ghidra_cmd\n    rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}\n                                               ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_flow_proposal\\tools\\ghidra_export.py\", line 96, in get\n    raise RuntimeError(f'{endpoint}: {result}')\nRuntimeError: get_plate_comment: {'error': 'No function at address: 008f035b'}\n"
+    },
+    "prequery_format_failure": {
+      "stage": "pre-query main/private consumed-input comparison",
+      "error": "AssertionError: config/target.json",
+      "cause": "byte hashes differ solely in formatting/newlines; decoded config objects equal",
+      "main_size": 467,
+      "private_size": 455,
+      "Ghidra_queries_before_failure": 0,
+      "Source_or_program_mutations": 0,
+      "original_collector_retained": true,
+      "recovery": "separately pin each actual main/private file, compare config semantics, resume only unexecuted documentation/comment reads"
+    },
+    "metadata_draft_failure": {
+      "stage": "metadata-only conclusion helper generation",
+      "error": "SyntaxError: closing parenthesis } does not match opening parenthesis ( in long proposed repair metadata expression",
+      "AST_compile_failed_before_helper_write": true,
+      "following_launch_attempt": "Python returned file-not-found for absent conclude.py; no helper was executed",
+      "files_written_by_failed_draft": 0,
+      "Ghidra_queries": 0,
+      "write_endpoints": 0,
+      "native_entries": 0,
+      "correction": "replace long nested expression with short multiline dictionaries; compile before exclusive write"
+    },
+    "old_query_or_recipe_or_process_replays": 0,
+    "write_endpoint_calls": 0,
+    "Ghidra_mutations": 0,
+    "Source_changes": 0,
+    "builds": 0,
+    "native_entries": 0
+  }
+}
