@@ -155,3 +155,11 @@ normal existing checks and current object/archive bindings. No application
 COMDAT/map/PDB full-body qualification, actual unit owner/producer, game
 wiring, startup or gameplay validation is claimed. Shared annotation,
 registration and integration remain with Root.
+
+## Primary acceptance
+
+Root independently verified all7,356 sealed artifacts,7,357 ZIP entries and CRCs, all103 current complete extents and six unique current archive members. All98 pre-existing whole extents and ordered relocations are preserved; compiler path and lambda names were reconciled with a consistent bijection. All28 Native constructor instructions map to the30-instruction current kernel, with the two explicit pointer save/restore additions, actual provider calls and three fresh seed loads. The complete plain destructor, live mutable12B cell, four readonly fill constants, seven real SDK import members in each phase and five fresh live Ghidra/installed spans match.
+
+The primary normal Win32 build passed all three existing checks. Its192 TU header dependencies plus Source and recipes were physically frozen before compilation. Three additional compiler-recorded environment resources (NLS, timezone DLL and compiler UI DLL) are honestly captured postbuild, without pretending they were Source/header preimages. The preceding failed auditor attempts are retained; they corrected a compiler-generated lambda identity comparison, parser filename access and an expected wrapper instruction order, without changing Source.
+
+Receipt: `local/cc12_native_wake_lifetime_primary_review/receipt.json`, SHA256 `df0eadf728d61ea534b5e428b6fb2294f77704210a99b9aa85276a71ec57f657`. The complete constructor replaces its existing semantic reconstruction record, preserving its existing count. The plain destructor adds one complete function record. Both older PoseHistoryRing analysis names remain documented shape hypotheses. No new entry execution, actual raw unit producer/wiring, full Original class/ABI, application loaded-image, failure/CRT/SEH or gameplay qualification follows.
