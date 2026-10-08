@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_reproducible_startup",
+  "source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+  "source_cpp_changed": false,
+  "original_install_written": false,
+  "installer_executed": false,
+  "initial_default_run": {
+    "exit_code_hex": "0xc0000005",
+    "fault_module": "installed game-local xlive.dll",
+    "fault_module_rva": "00319049",
+    "write_address": "10640f5e",
+    "source_image": [
+      "10000000",
+      "104d8000"
+    ],
+    "patch_target_exe_rva": "00640f5e",
+    "patch_bytes": "9090909090"
+  },
+  "system_sdk_only": {
+    "exit_code": 1,
+    "loader_win32_error": 182,
+    "missing_dependency_ordinal": 43
+  },
+  "genuine_sdk_960x540": {
+    "exit_code": 4,
+    "fmod_calls": 129,
+    "fmod_errors": 0,
+    "device_result_hex": "0x8876086c"
+  },
+  "genuine_sdk_fit": {
+    "exit_code": 0,
+    "requested_frames": 3,
+    "summaries": [
+      "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=2 presents_skipped=1 loop_finished=1 exit_code=0",
+      "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+      "summary options_file=0 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=1600x900 fullscreen=1 vsync=1 antialias=0",
+      "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+      "summary fonts_loaded=6 font_resource_opens=19 fingerprint_defined_bytes=240",
+      "summary gui_resources=9 pages=5/5 widgets=29 widgets_with_texture=22",
+      "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=61 frames=3",
+      "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+      "summary frontend title_init=1 press_start_slot=92 screens=0 screen_pages=3 pump_frames=3 enters=1 exits=0 commits=1",
+      "summary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=2",
+      "summary text bridge=1 widgets=2 runs=2 glyphs=55 quads=55",
+      "summary screenshot=1 frame=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.png",
+      "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+    ]
+  },
+  "launcher_fresh_extraction": {
+    "exit_code": 0,
+    "cab_sha256": "861bd4b7df0df76d65db4ed64e3d3d662973857e9b444b19b2091377e396d0ea",
+    "files_verified": 4,
+    "extractor": "C:/Program Files/7-Zip/7z.exe"
+  },
+  "launcher_three_frames": {
+    "exit_code": 0,
+    "arguments": {
+      "Frames": 3,
+      "RuntimeDirectory": "local/cc12_fresh_xlive_runtime",
+      "SettingsPersonalRoot": "local/cc12_reproducible_personal",
+      "LogPath": "local/cc12_reproducible_startup_game.log",
+      "GameArguments": [
+        "--screenshot",
+        "local/cc12_reproducible_startup.png",
+        "--screenshot-frame",
+        "1"
+      ]
+    },
+    "summaries": [
+      "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=2 presents_skipped=1 loop_finished=1 exit_code=0",
+      "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+      "summary options_file=0 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reproducible_personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=1600x900 fullscreen=1 vsync=1 antialias=0",
+      "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+      "summary fonts_loaded=6 font_resource_opens=19 fingerprint_defined_bytes=240",
+      "summary gui_resources=9 pages=5/5 widgets=29 widgets_with_texture=22",
+      "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=61 frames=3",
+      "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+      "summary frontend title_init=1 press_start_slot=92 screens=0 screen_pages=3 pump_frames=3 enters=1 exits=0 commits=1",
+      "summary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=2",
+      "summary text bridge=1 widgets=2 runs=2 glyphs=55 quads=55",
+      "summary screenshot=1 frame=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reproducible_startup.png",
+      "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+    ]
+  },
+  "launcher_menu_harness": {
+    "exit_code": 0,
+    "requested_frames": 30,
+    "press_start_injected_frame": 1,
+    "summaries": [
+      "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=29 presents_skipped=1 loop_finished=1 exit_code=0",
+      "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+      "summary options_file=1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reproducible_personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=1600x900 fullscreen=1 vsync=1 antialias=0",
+      "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+      "summary fonts_loaded=6 font_resource_opens=19 fingerprint_defined_bytes=240",
+      "summary gui_resources=9 pages=6/6 widgets=34 widgets_with_texture=23",
+      "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=14 frames=30",
+      "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+      "summary frontend title_init=1 press_start_slot=92 screens=7 screen_pages=4 pump_frames=30 enters=2 exits=1 commits=4",
+      "summary mainmenu press_start_frame=1 injected=1 shell=1 manager=1 screen=1 step=ScreenVisible state=5",
+      "summary text bridge=1 widgets=4 runs=2 glyphs=55 quads=9",
+      "summary screenshot=1 frame=15 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_menu_startup.png",
+      "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+    ],
+    "unimplemented_host_methods": 77,
+    "gameplay_validated": false
+  },
+  "qualification": {
+    "finite_startup_and_title_render": true,
+    "menu_harness_only": true,
+    "faithful_full_startup_shutdown": false,
+    "full_menu": false,
+    "account_signin": false,
+    "scenario_gameplay": false,
+    "save_load": false,
+    "overall_goal_complete": false
+  },
+  "pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\scripts\\run.ps1",
+      "bytes": 2632,
+      "sha256": "e7d3dc7cecdbe3ca479afee593cf9940aa412aebbcefdcf3dd3f124ae1f95f63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\prepare_xlive_runtime.py",
+      "bytes": 5265,
+      "sha256": "69fa8b31b72b088eb2dcdf67e9c0491a7400a00f4943773337081b065340c86d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "bytes": 5042176,
+      "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_exit_capture.json",
+      "bytes": 939,
+      "sha256": "479d571a0b085df5b827870c512f777c6e519b8f868c7b9f3db685d028cedeb8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_debug3.log",
+      "bytes": 19796,
+      "sha256": "6fdeeeee1abb584b94e35a9fc95d9a778cff62ae6f88c56c5f560b0391b86d96"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_av3.dmp",
+      "bytes": 233774274,
+      "sha256": "895305456d9c172914155351da0216d50abc908611cdff22270fe823cb28a940"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk.json",
+      "bytes": 992,
+      "sha256": "54a2d4d14889a4310de1e6bf2197fafc3389df04614a30722be686fb6b249cea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk_game.log",
+      "bytes": 11530,
+      "sha256": "8ab0b965dbfac8fb1ea751ec0e3febc00c7dd8bcd671f7256b6ae8aafb8cdb9c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk.json",
+      "bytes": 1213,
+      "sha256": "4d6dd871962807e49dd883fe084013129d4b2dbbb0a703802dd21e6b39bdf57f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_game.log",
+      "bytes": 9445,
+      "sha256": "2e8aa32b703bff34e8566db67804c362b4b298a60f13ffd83e3efefd19c73a5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.json",
+      "bytes": 1218,
+      "sha256": "0a4881bc921f8caac682cacfd5fd6a40e4da3a607dd1cd0c4c70e8e7092c3553"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit_game.log",
+      "bytes": 49404,
+      "sha256": "d7b49c01e9338dc599b21fc0a7ae955a4a02238f0fa58a29200a2a3740f06f47"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.png",
+      "bytes": 1610692,
+      "sha256": "47166e904a913122b4993a0a426b216667518469cc0219cb9dc3596fde4b55f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\provenance.json",
+      "bytes": 828,
+      "sha256": "2412efe622da6c4715c3857f93b6344553b54a75d2fcfd237a88cfce609978de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reproducible_startup_game.log",
+      "bytes": 49405,
+      "sha256": "cc7d77c7a093bc169be0def4e7542ab17caca275ce8f4367b124b900977fb6df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reproducible_startup.png",
+      "bytes": 1601223,
+      "sha256": "cfcb805a318af97e022297551b0465849633ee8899f2925c005412da4ce0746c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_menu_startup_game.log",
+      "bytes": 65747,
+      "sha256": "6af172d58dea6c1baa63dd092a5344e657ee4c0edb2134fc24dbfe17466e0c42"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_menu_startup.png",
+      "bytes": 881945,
+      "sha256": "a6be61c529aac0841bd8766ea78bc083a00fbd32dde4a29ccd9b3b6060509d3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "bytes": 1089440,
+      "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "bytes": 21408,
+      "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll",
+      "bytes": 13643936,
+      "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+      "bytes": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "bytes": 350544,
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "bytes": 238936,
+      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\redist\\gfwlivesetup.exe",
+      "bytes": 178631776,
+      "sha256": "82b3088d0af4bad22bf8058659fb80654040fbafdccbd0fc8df996153f597217"
+    }
+  ]
+}
