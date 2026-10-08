@@ -3,7 +3,8 @@
 This packet implements the fourteen complete ordinary Source behaviors below,
 with one permanent canonical owner, real CRT registrations and concrete deletion
 dispatch. The normal MSVC Win32 build and all three existing checks pass.
-The worker adds no ledger credit; primary acceptance and integration remain separate.
+Primary acceptance records fourteen complete ordinary Source functions; no new
+entry or game execution is claimed.
 
 The implementation is based on accepted main `7b244d3b8bc3204b1e37759a90842c28a0b78b63` and the primary-reviewed
 registry-owner readiness report. Descriptive role names remain Source hypotheses.
@@ -202,3 +203,33 @@ construction, descriptor/profile dispatch, raw InitAll consumption and withdrawa
 full startup/CRT composition, Original ABI and gameplay remain separate frontiers.
 Existing semantic application registries and entity call sites are unchanged. This
 packet does not make the larger native entity factory ready for execution.
+
+## Independent primary acceptance
+
+The integrator rehashed the sealed 13,456-artifact family and 13,457 ZIP entries,
+all 13,399 phase pins and fourteen additional pins. It froze 4,434 current physical
+inputs before one normal merged build; all 557 unique / 3,571 per-TU actual
+compiler inputs match those preimages. All three existing checks passed.
+
+Current proof covers 25 whole objects / 427 complete extents and 23 exact unique
+Core members. The difference from the worker cohort is the separately accepted
+canonical String fallback implementation: two changed complete constructor/factory
+bodies and two new accessors. Their current object is exactly the earlier primary
+artifact. Every other complete extent and its positive code/data graph matches,
+including exact compiler lambda bindings. The current normal PE/map resolves
+231 full extents and 745 ordered relocations; 196 compiled extents are absent.
+The unused native-behavior entry scope remains as described above.
+
+Guarded Ghidra work preserved old annotations, corrected two scalar call-site
+listing gaps, defined three previously missing CRT entries from their qualified
+spans, and repaired the truncated 17-byte plain ID destructor while preserving
+its comment. Fresh exports now have all instruction starts for all fourteen
+Native spans. The project is saved; the changed function-count snapshot and
+index are refreshed. Failed annotation/definition and first static-driver
+attempts remain retained; no Source changed and the successful build was not
+repeated during these corrections.
+
+Receipt: local/cc12_entity_registry_owner_source_primary_review/receipt.json,
+SHA256 907f9662c05bfd543877f523134522b8c2bada25714f80b4f59527acd69b8d2a.
+Fourteen ordinary Source ledger records add no Original ABI, CRT entry execution,
+application startup, actual entity/World producer or gameplay validation.
