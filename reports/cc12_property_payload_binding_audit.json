@@ -343,5 +343,21 @@
   "shared_metadata_CMake_ledger_export_writes": false,
   "native_class_ABI_compatible": false,
   "game_validated": false,
-  "qualification": "Complete native evidence and current Source readiness audit only. Installed byte equality is not execution, class closure, binary replacement ABI or game validation."
+  "qualification": "Complete native evidence and current Source readiness audit only. Installed byte equality is not execution, class closure, binary replacement ABI or game validation.",
+  "primary_review": {
+    "utc": "2026-10-08T05:31:09.141415+00:00",
+    "worker_commit": "a3c5f563281aac0258118215cfd74d2256144d7d",
+    "integration_base": "7fa076778",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "whole_owned_native_bodies_rehashed": 3,
+    "supporting_profile_slot_and_partial_arm_rehashed": true,
+    "actual_profile_slot_target_verified": "008F59E0",
+    "complete_live_owned_listings_independently_read": true,
+    "sealed_worker_artifacts_rehashed": 34,
+    "serialized_call_rows_checked": 10,
+    "serialized_call_rows_failed": 0,
+    "new_Source_or_native_execution": false,
+    "whole_Source_ready": false,
+    "qualification": "Static clone-produced payload binding only. Constructor, iterator, keyed insertion, recursive lifetime and class/world admission remain incomplete."
+  }
 }

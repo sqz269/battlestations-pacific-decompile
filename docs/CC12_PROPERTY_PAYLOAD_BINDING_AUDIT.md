@@ -2,8 +2,8 @@
 
 Addresses: 008F59E0 008F41F0 008EF780
 
-The successful native clone-produced type-6 path establishes that its nested
-payload has profile `00D16504`, whose actual slot 0 is `008F59E0`. All three
+The instructions on the successful native clone path establish that its nested
+type-6 payload has profile `00D16504`, whose actual slot 0 is `008F59E0`. All three
 owned routines remain **unready for whole raw current Source registration**.
 The scalar's first missing lifetime provider is `008F5410`; the clone's first
 missing raw direct provider after allocation is `00480690`; the type-6
@@ -11,6 +11,11 @@ constructor lacks a genuine current raw child-bag producer. No new
 Source, native execution, tests, Ghidra mutation, or shared ledger/export write
 was performed. Baseline is `d02cf8082`, which already contains the distinct
 raw property-array release `008F03F0`; that leaf does not close type 6.
+
+The integrator independently read all three complete live listings, rehashed
+the installed PE spans, profile slot and supporting arm, and verified all 34
+sealed worker artifacts. Ten serialized direct-call rows passed with zero
+failures. This is static evidence; no new native execution was performed.
 
 ## Native evidence and coverage
 
