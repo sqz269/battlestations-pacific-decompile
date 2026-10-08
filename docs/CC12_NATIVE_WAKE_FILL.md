@@ -112,3 +112,5 @@ an Original class/owner, append behavior, parent integration, startup, or
 gameplay. [The packet report](../reports/cc12_native_wake_fill.json) records the
 full receipts. Reproducible inputs and snapshots are retained under
 `local/cc12_native_wake_fill_Source_evidence` and its sibling ZIP.
+
+Primary review independently rehashed every saved artifact and ZIP entry, all 209 physical pre-execution inputs, the full Original map, all saved pair memory/register/FP snapshots, current full COFF and the exact unique current archive member. The combined current Win32 build and all three existing checks passed. Git converted Source/header line endings from CRLF to LF; complete text and whole emitted bodies still match. Receipts are under `local/cc12_wake_fill_publication_primary_review`. No new primary execution or owner/game qualification was added.

@@ -1,0 +1,586 @@
+{
+  "schema": 1,
+  "audit": "cc12_property_record_reference_readiness",
+  "status": "bounded_read_only_type5_storage_contract_pending_single_real_provider_admission",
+  "Source_credit": 0,
+  "ready_Source_credit": 0,
+  "independently_ready": false,
+  "proposal": {
+    "schema": 1,
+    "audit": "cc12_property_record_reference_readiness",
+    "baseline_commit": "883cdffe7",
+    "candidate": "008EF2B0",
+    "existing_name": "BSP_SceneProperty_ConstructReference",
+    "name_is_hypothesis": true,
+    "status": "bounded storage contract established; not independently ready until the single real duplicate provider is admitted",
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "independently_ready": false,
+    "contract_ready_for_future_dependency_packet": true,
+    "blockers": [
+      {
+        "kind": "single provider admission",
+        "packet": "cc12_raw_native_string_duplicate_00438e40",
+        "address": "00438E40",
+        "callsite": "008EF2D2",
+        "baseline_done": false,
+        "baseline_state": "ready independently audited qualified whole57B30 physical ECX/RET0 string duplicate; genuine current canonical allocation and mapped VCRUNTIME copy required",
+        "required": "Root completes independent provider validation/admission before registering or enabling dependent constructor Source packet; provider Source availability alone is not admission",
+        "existing_worker_status": "implemented and fresh standalone strict MSVC Win32 component fixture passed; Root integration/independent validation pending",
+        "provider_report": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/reports/native_string_duplicate_cc12.json",
+          "bytes": 70747,
+          "sha256": "12d2c3cd70a53699c98eb94eb6ce471924427bb85f64f322df57f514be381300"
+        }
+      }
+    ],
+    "native": {
+      "name": "candidate",
+      "address": "008EF2B0",
+      "end_exclusive": "008EF2EF",
+      "bytes": 63,
+      "hex": "8b44240c568bf18b4c240cc706d489ce00c7460405000000894608894e188b4c2408e8699bb4ff89461c33c0894620894624894634c6462c018bc65ec20c00",
+      "sha256": "a3f703ea58a3c6f7fab8ce6d36764b8b1445cd101e5a0236a493d45718138e15",
+      "live_equals_PE": true,
+      "instruction_count": 19,
+      "saved_Ghidra_starts_equal_Capstone": true,
+      "instructions": [
+        {
+          "address": "008EF2B0",
+          "bytes": "8b44240c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "008EF2B4",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF2B5",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "008EF2B7",
+          "bytes": "8b4c240c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "008EF2BB",
+          "bytes": "c706d489ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce89d4"
+        },
+        {
+          "address": "008EF2C1",
+          "bytes": "c7460405000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 5"
+        },
+        {
+          "address": "008EF2C8",
+          "bytes": "894608",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], eax"
+        },
+        {
+          "address": "008EF2CB",
+          "bytes": "894e18",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], ecx"
+        },
+        {
+          "address": "008EF2CE",
+          "bytes": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "008EF2D2",
+          "bytes": "e8699bb4ff",
+          "mnemonic": "call",
+          "operands": "0x438e40"
+        },
+        {
+          "address": "008EF2D7",
+          "bytes": "89461c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], eax"
+        },
+        {
+          "address": "008EF2DA",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "008EF2DC",
+          "bytes": "894620",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], eax"
+        },
+        {
+          "address": "008EF2DF",
+          "bytes": "894624",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], eax"
+        },
+        {
+          "address": "008EF2E2",
+          "bytes": "894634",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], eax"
+        },
+        {
+          "address": "008EF2E5",
+          "bytes": "c6462c01",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": "008EF2E9",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "008EF2EB",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF2EC",
+          "bytes": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "CALLs": [
+        {
+          "address": "008EF2D2",
+          "target": "00438E40",
+          "opcode": 232,
+          "operand_offset": 35,
+          "width": 4
+        }
+      ]
+    },
+    "physical_API": {
+      "proposed_declaration": "void* __fastcall construct_native_scene_property_record_type5_storage_008ef2b0(void* actual_record_ecx, void* unused_edx, const char* actual_text, std::uint32_t word_18_bits, std::uint32_t word_08_bits)",
+      "noexcept": false,
+      "entry": {
+        "ECX": "actual fresh/unowned writable56-byte destination",
+        "EDX": "incoming unused by constructor; provider may leave/change it",
+        "ESP_plus_4": "actual borrowed text pointer or nullptr",
+        "ESP_plus_8": "opaque DWORD to destination+18",
+        "ESP_plus_C": "opaque DWORD to destination+08"
+      },
+      "normal_return": {
+        "EAX": "actual destination",
+        "ECX": "provider residual; null provider contract yields0, nonnull unconstrained",
+        "EDX": "provider residual; null provider contract preserves incoming EDX, nonnull unconstrained",
+        "epilogue": "RET0C",
+        "ESP": "entryESP+16",
+        "nonvolatiles": "ESI explicitly saved/restored; EBX/EDI/EBP locally untouched and depend on genuine provider normal ABI",
+        "defined_flags": {
+          "CF": 0,
+          "OF": 0,
+          "SF": 0,
+          "ZF": 1,
+          "PF": 1,
+          "AF": "undefined excluded"
+        }
+      },
+      "DF_and_FP": "Require DF clear for current genuine CRT provider calls. No blanket DF, ES, FPU or MXCSR preservation promise for the complete call; constructor-local instructions do not operate on FP state.",
+      "preconditions": [
+        "Actual fresh/unowned writable56-byte destination, disjoint from active call frame; do not overwrite a live owning property object",
+        "nullptr or actual stable readable contiguous NUL-terminated byte object; n+1 and address range must not wrap",
+        "Non-null text through its first NUL must be disjoint from destination56 and active target frame and remain live through copying",
+        "Only normal/null execution with the admitted current raw duplicate provider; no new-handler reentry, allocation failure or naked-frame exception-unwind admission"
+      ],
+      "ownership": "Input pointer is borrowed and not stored directly. Returned null or actual owned duplicate pointer is retained at+1C. In the qualified current domain the caller must observe it live and release each nonnull child exactly once through unchanged singleton_lifetime_free, separately from root storage. No inferred native class/reference-count/World ownership."
+    },
+    "storage": {
+      "written_bytes": 33,
+      "preserved_bytes": 23,
+      "preserved_ranges": [
+        "[0C,18)",
+        "[28,2C)",
+        "[2D,34)"
+      ],
+      "phase": "literal DWORD00CE89D4 opaque identity",
+      "tag": "DWORD5",
+      "raw_words": [
+        {
+          "argument": "entryESP+C",
+          "destination": "08"
+        },
+        {
+          "argument": "entryESP+8",
+          "destination": "18"
+        }
+      ],
+      "provider_result": "full EAX DWORD to+1C",
+      "zero_DWORD_offsets": [
+        "20",
+        "24",
+        "34"
+      ],
+      "byte_store": {
+        "offset": "2C",
+        "value": 1
+      },
+      "exact_store_order": [
+        {
+          "address": "008EF2BB",
+          "offset": 0,
+          "width": 4,
+          "value": "0xce89d4"
+        },
+        {
+          "address": "008EF2C1",
+          "offset": 4,
+          "width": 4,
+          "value": "5"
+        },
+        {
+          "address": "008EF2C8",
+          "offset": 8,
+          "width": 4,
+          "value": "eax"
+        },
+        {
+          "address": "008EF2CB",
+          "offset": 24,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF2D7",
+          "offset": 28,
+          "width": 4,
+          "value": "eax"
+        },
+        {
+          "address": "008EF2DC",
+          "offset": 32,
+          "width": 4,
+          "value": "eax"
+        },
+        {
+          "address": "008EF2DF",
+          "offset": 36,
+          "width": 4,
+          "value": "eax"
+        },
+        {
+          "address": "008EF2E2",
+          "offset": 52,
+          "width": 4,
+          "value": "eax"
+        },
+        {
+          "address": "008EF2E5",
+          "offset": 44,
+          "width": 1,
+          "value": "1"
+        }
+      ],
+      "stack_read_order": [
+        {
+          "address": "008EF2B0",
+          "current_ESP_offset": 12,
+          "width": 4,
+          "destination_register": "eax",
+          "entry_ESP_offset": 12
+        },
+        {
+          "address": "008EF2B7",
+          "current_ESP_offset": 12,
+          "width": 4,
+          "destination_register": "ecx",
+          "entry_ESP_offset": 8
+        },
+        {
+          "address": "008EF2CE",
+          "current_ESP_offset": 8,
+          "width": 4,
+          "destination_register": "ecx",
+          "entry_ESP_offset": 4
+        }
+      ],
+      "ordering": "Load third stack word before PUSH ESI; load second after PUSH; store phase/tag/+08/+18 before loading first stack pointer and calling provider. Store provider result before XOR EAX and remaining stores.",
+      "partial_failure_boundary": "A provider failure occurs after the initial stores. This audit does not admit fault/unwind cleanup."
+    },
+    "caller": {
+      "function": "008F4F60",
+      "entry_range": "[008F4F60,008F4F8D)",
+      "selected_arm_range": "[008F502D,008F5075)",
+      "instructions": 23,
+      "switch_cell": "008F52CC",
+      "switch_value": "008F502D",
+      "direct_callsite": "008F5059",
+      "physical_arguments": {
+        "ECX": "actual newly allocated56-byte EAX result",
+        "arg1": "source DWORD+1C interpreted by provider as actual text pointer",
+        "arg2": "raw source DWORD+18",
+        "arg3": "raw source DWORD+08"
+      },
+      "stack_derivation": [
+        "Outer entry S: savedEH state S-4, handler S-8, oldFS S-12, scratch S-16, savedESI S-20, savedEDI S-24",
+        "Arm PUSH38 ->S-28; allocation CALL entryS-32; return then ADD4 ->S-24; store returned root at[ESP+8]=S-16 and EH state0 at[ESP+14h]=S-4",
+        "Push third raw word ->S-28, second ->S-32, first actual text pointer ->S-36; constructor entryT=S-40 has args T+4/T+8/T+C",
+        "Constructor PUSH ESI ->T-4; provider CALL entryP=T-8 with ECXtext and no stack arguments. Provider RET0 ->T-4; POP ESI ->T; RET0C ->T+16=S-24",
+        "Caller MOVEDX source+34, POPEDI, store destination+34, POPESI, restore oldFS from[ESP+4], ADDESP10h and RET0 ->S+4"
+      ],
+      "caller_final_registers": "EDX becomes source ordinal and ECX oldFS; do not confuse them with constructor provider residuals",
+      "unexpanded": [
+        "native allocator00BF681B",
+        "null008F528A",
+        "default008F52A3",
+        "EH00CA4B6D",
+        "whole clone"
+      ]
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "ctor",
+          "address": "008EF2B0",
+          "kind": "whole constructor",
+          "state": "audited bounded63B19; implementation not authorized by audit"
+        },
+        {
+          "id": "clone",
+          "address": "008F4F60",
+          "kind": "one established caller",
+          "state": "entry45B13 and selected tag5 arm72B23 only"
+        },
+        {
+          "id": "tag5",
+          "address": "008F52CC",
+          "kind": "actual switch cell",
+          "value": "008F502D",
+          "state": "four bytes verified"
+        },
+        {
+          "id": "phase",
+          "address": "00CE89D4",
+          "kind": "opaque phase identity cell",
+          "value": "004E6730",
+          "state": "four bytes only; no dispatch"
+        },
+        {
+          "id": "phase_handler",
+          "address": "004E6730",
+          "kind": "named incomplete boundary",
+          "state": "not queried, followed or admitted"
+        },
+        {
+          "id": "duplicate",
+          "address": "00438E40",
+          "kind": "single real provider dependency",
+          "state": "existing physical Source/header/report read only; packet Root admission pending at frozen baseline; callee body not queried"
+        },
+        {
+          "id": "native_allocation",
+          "address": "00BF681B",
+          "kind": "caller native allocation boundary",
+          "state": "named actual CALL; body and private allocation/EH not queried or admitted"
+        },
+        {
+          "id": "null",
+          "address": "008F528A",
+          "kind": "caller null branch",
+          "state": "named, not expanded"
+        },
+        {
+          "id": "default",
+          "address": "008F52A3",
+          "kind": "caller switch default",
+          "state": "named, not expanded"
+        },
+        {
+          "id": "EH",
+          "address": "00CA4B6D",
+          "kind": "caller EH handler",
+          "state": "saved allocation/state writes observed; handler unexpanded"
+        },
+        {
+          "id": "borrowed_text",
+          "kind": "input storage",
+          "state": "nullptr or actual borrowed stable NUL-terminated byte object; not a class receiver"
+        },
+        {
+          "id": "returned_text",
+          "kind": "provider result storage",
+          "state": "null or actual owned current-domain allocation retained at destination+1C; no reference-count or World inference"
+        }
+      ],
+      "edges": [
+        {
+          "source": "clone",
+          "target": "tag5",
+          "evidence": "008F4F86 unsigned tag switch; exact tag5 cell selects008F502D"
+        },
+        {
+          "source": "clone",
+          "target": "ctor",
+          "evidence": "008F5059 direct CALL with source+1C/+18/+08 physical values"
+        },
+        {
+          "source": "clone",
+          "target": "native_allocation",
+          "evidence": "008F502F CALL requests38h; result in EAX, scratch at caller S-16"
+        },
+        {
+          "source": "clone",
+          "target": "null",
+          "evidence": "008F5045 JZ after TEST allocation result"
+        },
+        {
+          "source": "clone",
+          "target": "default",
+          "evidence": "008F4F80 JA unsigned tag>B"
+        },
+        {
+          "source": "clone",
+          "target": "EH",
+          "evidence": "008F4F62 pushes handler;008F503D stores state0 at caller S-4"
+        },
+        {
+          "source": "ctor",
+          "target": "phase",
+          "evidence": "008EF2BB literal DWORD store before helper"
+        },
+        {
+          "source": "phase",
+          "target": "phase_handler",
+          "evidence": "single opaque DWORD read; no handler traversal"
+        },
+        {
+          "source": "ctor",
+          "target": "duplicate",
+          "evidence": "008EF2D2 CALL with actual text in ECX and no provider stack arguments"
+        },
+        {
+          "source": "ctor",
+          "target": "borrowed_text",
+          "evidence": "entryESP+4 loaded into ECX after initial stores; provider validates domain by caller precondition"
+        },
+        {
+          "source": "ctor",
+          "target": "returned_text",
+          "evidence": "008EF2D7 stores full returned EAX at destination+1C"
+        }
+      ],
+      "node_count": 12,
+      "edge_count": 11,
+      "total": 23,
+      "budget": 24,
+      "provider_node_scope": "The existing duplicate packet encapsulates its separately evidenced canonical allocation/copy/free contract. No provider internal body or transitive native closure was queried or admitted in this audit."
+    },
+    "future_packet": {
+      "id": "cc12_scene_property_record_type5_storage",
+      "register_now": false,
+      "prerequisite": "Root independently admits cc12_raw_native_string_duplicate_00438e40, then explicitly registers and assigns this separate Source packet",
+      "files": [
+        "include/bsp/native_scene_property_record_type5_storage.hpp",
+        "src/native_scene_property_record_type5_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE5_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type5_storage_cc12.json"
+      ],
+      "minimal_new_family": {
+        "TUs": [
+          "new constructor",
+          "unchanged admitted current raw native string duplicate TU",
+          "unchanged current canonical allocation/free TU",
+          "new ignored probe"
+        ],
+        "old_objects": 0,
+        "BSP_archives": 0,
+        "new_tracked_tests": 0,
+        "target_entries": "One Source and one current-domain-bound Original constructor call on actual guarded nonempty NUL-terminated input objects; ordinary padded-fastcall caller checked statically",
+        "allocations": "Two actual56-byte roots plus two genuine duplicate results from provider; count all four allocations and matching canonical frees; child freed once after live observation, then root",
+        "constructor_Original_binding": "A relocated RX copy must rebind exactly one genuine CALL operand [35,39) to the same admitted actual raw duplicate provider. All other59 bytes and E8 opcode remain literal; never call this unchanged Original63 or original-private-CRT proof.",
+        "checks": [
+          "Whole56 destination33written/23preserved and actual retained child pointer at+1C",
+          "Actual duplicated bytes including NUL, whole borrowed input/guards unchanged, other live root/child/capture unchanged",
+          "Three full DWORD stack args in exact order, RET12/EAXroot, ESI/nonvolatiles under provider ABI and final defined XOR flags AF excluded",
+          "Record nonnull ECX/EDX rather than asserting guessed values; DF clear at actual CRT entry",
+          "Complete fresh constructor/duplicate/provider/ordinary/raw caller and map-owned cookie code, actual current I386 CRT malloc/free/_callnewh/copy IAT/export/physical-file identity and before/after bookends",
+          "All consumed headers including extensionless/tools/libs/recipes/native PE/prior sealed evidence pinned with short frozen names"
+        ],
+        "excluded": [
+          "Invalid/unterminated/overlapping inputs",
+          "Forced allocation failure/new-handler reentry/naked-frame exception unwind",
+          "Reference-count/class/World or phase-dispatch behavior",
+          "Original private allocator/memcpy/free/EH execution",
+          "Any replay of accepted old families"
+        ]
+      }
+    },
+    "read_only_counts": {
+      "Source_files_created": 0,
+      "builds": 0,
+      "probe_processes": 0,
+      "native_entries": 0,
+      "Ghidra_mutations": 0,
+      "shared_metadata_edits": 0
+    },
+    "prior_pins": 3560,
+    "tooling_note": "One proto --start pagination query was rejected by CLI argument parsing; receipt retained. A separate supported proto --lines40 query returned the complete metadata. No analysis mutation or native execution resulted."
+  },
+  "proposal_artifact": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/proposal.json",
+    "bytes": 18880,
+    "sha256": "b461448c525dddb55ea3cbda839327aa1fbd81834baf8431187b4de4bc6fe894"
+  },
+  "physical_evidence": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/physical_evidence.json",
+    "bytes": 13500,
+    "sha256": "a94b1a7851f001ee9a204e43cd00140c67b4244c1bc0671746b4716dc3d0c47f"
+  },
+  "bookends": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/native_bookends.json",
+    "bytes": 1297,
+    "sha256": "0e474283dd11f148af8d41da62258827ed5aa9a3d6b03e23eaf1ad669521ef8e"
+  },
+  "provider_context": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/provider_context_before.json",
+    "bytes": 740,
+    "sha256": "4a491d077e9b4d6ccf48bf98f51005424da3aeca8555d6a013c75debd726b3d3"
+  },
+  "all_five_PE_live_spans_equal": true,
+  "whole_candidate_prototype_comments_listing_unchanged": true,
+  "caller_exact_listings_unchanged": true,
+  "protected_prior_files": 3560,
+  "historical_metadata_copies": 4,
+  "provider_context_copies": 3,
+  "tracked_files_changed": [
+    "docs/CC12_PROPERTY_RECORD_REFERENCE_READINESS.md",
+    "reports/cc12_property_record_reference_readiness.json"
+  ],
+  "Source_header_config_CMake_ledger_changes": 0,
+  "Ghidra_mutations": 0,
+  "builds": 0,
+  "probes": 0,
+  "native_executions": 0,
+  "read_only_CLI_query_failures": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/candidate_proto_tail_before_exit.json",
+      "returncode": 2
+    }
+  ],
+  "old_recipe_or_phase_replays": 0,
+  "provider_admission_and_Root_registration_required": true,
+  "artifact_family": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa",
+  "receipt_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/readiness_receipt.json",
+  "manifest_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa/artifact_manifest.json",
+  "manifest_policy": "All actual recursive family files, including historical and provider metadata, command logs including failed read-only CLI query, scripts, proposal, deliverable copies and receipt; only manifest itself excluded. Exact sealed hashes supplied at handoff."
+}
