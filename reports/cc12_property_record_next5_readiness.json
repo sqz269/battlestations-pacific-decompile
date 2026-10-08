@@ -1,0 +1,490 @@
+{
+  "schema": 1,
+  "audit": "cc12_property_record_next5_readiness",
+  "status": "bounded_read_only_raw_type7_storage_ready_for_Root_registration",
+  "Source_credit": 0,
+  "ready_Source_credit": 0,
+  "proposal": {
+    "schema": 1,
+    "audit": "cc12_property_record_next5_readiness",
+    "baseline_commit": "563070cc0",
+    "candidate": "008EF270",
+    "actual_native_tag": 7,
+    "status": "independently_ready_call_free_raw_three_word_storage_proposal",
+    "Root_registration_required": true,
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "Source_or_header_changes": 0,
+    "builds": 0,
+    "probes": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "root_census_or_other_candidate_scan": false,
+    "whole_range": "[008EF270,008EF2AF)",
+    "bytes": 63,
+    "instructions": 19,
+    "CALLs": 0,
+    "expected_COFF_relocations": 0,
+    "native_SHA256": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872",
+    "classification": "raw56-byte partial tag7 record initialization by three ordered DWORD loads from a borrowed12-byte input; no retained input pointer, allocation, owned-pointer provider or numeric operation",
+    "semantic_qualification": "Existing documentation calls tag7 V3/Vector3. This leaf proves three inline raw bitwords only, not float arithmetic, a C++ vector class, parser, record owner or native allocation lifetime.",
+    "proposed_API": {
+      "name": "construct_native_scene_property_record_type7_storage_008ef270",
+      "declaration": "void* __fastcall construct_native_scene_property_record_type7_storage_008ef270(void* actual_record_ecx, void* unused_edx, const void* actual_payload_words) noexcept",
+      "entry": {
+        "ECX": "actual fresh unowned writable56-byte destination",
+        "EDX": "incoming unused",
+        "ESP_plus_4": "actual pointer to readable12-byte three-DWORD span"
+      },
+      "return": {
+        "EAX": "actual destination",
+        "ECX": 0,
+        "EDX": "raw second source DWORD from input+4",
+        "epilogue": "RET4",
+        "ESP": "entryESP+8"
+      },
+      "preserved": [
+        "EBX",
+        "ESI",
+        "EDI",
+        "EBP",
+        "DF"
+      ],
+      "flags": {
+        "CF": 0,
+        "OF": 0,
+        "SF": 0,
+        "ZF": 1,
+        "PF": 1,
+        "AF": "undefined excluded"
+      },
+      "numeric_SSE_x87_MXCSR_operations": 0,
+      "preconditions": [
+        "actual caller-owned fresh/unowned writable56-byte root, disjoint from active target call frame",
+        "actual stable readable12-byte input span, disjoint from destination56; no fake address or reconstructed vector/receiver object",
+        "caller retains both storage lifetimes; source pointer is borrowed and never retained",
+        "do not overwrite a live owning native property object"
+      ],
+      "alias_scope": "Native reads are interleaved with destination writes and occur after phase/tag stores. Future Source must retain exact instruction order, but admission is scoped to disjoint input/output; no memmove/snapshot/overlap promise.",
+      "invalid_input_scope": "No null or length check; under invalid input the original can write phase/tag before a load faults. Such fault behavior is outside the proposed valid-span contract."
+    },
+    "storage": {
+      "written_bytes": 45,
+      "preserved_bytes": 11,
+      "preserved_ranges": [
+        "[08,0C)",
+        "[28,2C)",
+        "[2D,30)"
+      ],
+      "phase": "DWORD00CE89D4 opaque identity never mapped/dispatched",
+      "tag": "DWORD7",
+      "payload": "input DWORD0/4/8 -> destination0C/10/14 respectively",
+      "zero_DWORD_offsets": [
+        "18",
+        "1C",
+        "20",
+        "24",
+        "30",
+        "34"
+      ],
+      "byte_store": "1 at2C",
+      "source_pointer_retained": false,
+      "source_read_order": [
+        {
+          "address": "008EF283",
+          "source_offset": 0,
+          "width": 4,
+          "destination_register": "edx"
+        },
+        {
+          "address": "008EF288",
+          "source_offset": 4,
+          "width": 4,
+          "destination_register": "edx"
+        },
+        {
+          "address": "008EF28E",
+          "source_offset": 8,
+          "width": 4,
+          "destination_register": "ecx"
+        }
+      ],
+      "exact_store_order": [
+        {
+          "address": "008EF276",
+          "offset": 0,
+          "width": 4,
+          "value": "0xce89d4"
+        },
+        {
+          "address": "008EF27C",
+          "offset": 4,
+          "width": 4,
+          "value": "7"
+        },
+        {
+          "address": "008EF285",
+          "offset": 12,
+          "width": 4,
+          "value": "edx"
+        },
+        {
+          "address": "008EF28B",
+          "offset": 16,
+          "width": 4,
+          "value": "edx"
+        },
+        {
+          "address": "008EF291",
+          "offset": 20,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF296",
+          "offset": 24,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF299",
+          "offset": 28,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF29C",
+          "offset": 32,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF29F",
+          "offset": 36,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF2A2",
+          "offset": 48,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF2A5",
+          "offset": 52,
+          "width": 4,
+          "value": "ecx"
+        },
+        {
+          "address": "008EF2A8",
+          "offset": 44,
+          "width": 1,
+          "value": "1"
+        }
+      ]
+    },
+    "genuine_caller": {
+      "function": "008F4F60",
+      "entry_range": "[008F4F60,008F4F8D)45B13",
+      "selected_arm_range": "[008F5134,008F5168)52B17",
+      "selected_arm_SHA256": "727572ee7d84bb598612c231306aca65aad9ec181cb3d6ca4069a25452cae892",
+      "switch_cell": "008F52D4 DWORD008F5134",
+      "witness_count": 1,
+      "actual_flow": [
+        "ECXsource retained inESI at008F4F77",
+        "PUSH38/CALL00BF681B at008F5134/5136,ADDESP4,nullcheck",
+        "LEA ECX,[ESI+0C] at008F5146 forms actual borrowed input pointer",
+        "PUSH ECX at008F5149; ECX=actual returned allocation EAX at008F514A",
+        "CALL008EF270 at008F514C",
+        "after return source+34 ordinal copied to destination+34"
+      ],
+      "stack_proof": {
+        "outer_entry": "S",
+        "pre_arm": "EH record/scratch/nonvol saves leave ESP=S-24",
+        "allocation_call": "size pushS-28; allocation entryS-32,size[entry+4];return+ADD4 restoresS-24",
+        "constructor_call": "pointer pushS-28;CALL entryT=S-32,[T+4]=actual source+0C,[T+8]=savedEDI",
+        "constructor_return": "RET4 restoresS-24",
+        "clone_return": "POPEDI/POPESI;oldFS read[ESP+4];ADDESP10;RET0 ->S+4"
+      },
+      "caller_output_distinction": "after leaf EDX overwritten withsourceordinal andECXwithsavedFS; leaf EDXsecondword is not the clone finalEDX",
+      "full_clone_or_allocator_provider_admitted": false
+    },
+    "graph": {
+      "cap": 24,
+      "count_rule": "nodes plus edges, including named incomplete providers and borrowed storage",
+      "nodes": [
+        {
+          "id": "008EF270",
+          "kind": "candidate",
+          "state": "whole63B19 call-free raw storage leaf; no Source"
+        },
+        {
+          "id": "008F4F60",
+          "kind": "caller",
+          "state": "only entry45B13 plus established tag7 arm52B17; whole clone remains unexpanded"
+        },
+        {
+          "id": "008F52D4",
+          "kind": "data",
+          "state": "exact4-byte tag7 switch cell ->008F5134"
+        },
+        {
+          "id": "00CE89D4",
+          "kind": "data",
+          "state": "exact4-byte first phase cell ->004E6730, opaque identity only"
+        },
+        {
+          "id": "004E6730",
+          "kind": "frontier",
+          "state": "phase target not inspected or admitted"
+        },
+        {
+          "id": "00BF681B",
+          "kind": "frontier",
+          "state": "caller requests56; native allocator/privateCRT/EH body not inspected or admitted"
+        },
+        {
+          "id": "008F528A",
+          "kind": "frontier",
+          "state": "selected caller null branch not inspected"
+        },
+        {
+          "id": "008F52A3",
+          "kind": "frontier",
+          "state": "caller entry unsigned-tag default branch not inspected"
+        },
+        {
+          "id": "00CA4B6D",
+          "kind": "frontier",
+          "state": "caller pushed EH handler identity not inspected"
+        },
+        {
+          "id": "Source::singleton_lifetime_allocate",
+          "kind": "future_fixture_provider",
+          "state": "unchanged Source context only; future fresh complete provider/I386 actual CRT gate required"
+        },
+        {
+          "id": "Source::singleton_lifetime_free",
+          "kind": "future_fixture_provider",
+          "state": "unchanged Source context only; future fresh complete provider/I386 actual CRT gate required"
+        },
+        {
+          "id": "borrowed_three_word_span",
+          "kind": "input_storage",
+          "state": "actual readable12 bytes, not retained or owned; no fabricated receiver/vector class"
+        }
+      ],
+      "edges": [
+        {
+          "from": "008F4F60",
+          "to": "008EF270",
+          "kind": "actual CALL008F514C"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F52D4",
+          "kind": "unsigned tag7 exact jump-table cell"
+        },
+        {
+          "from": "008F52D4",
+          "to": "008F4F60",
+          "kind": "target008F5134 in the same bounded caller"
+        },
+        {
+          "from": "008F4F60",
+          "to": "00BF681B",
+          "kind": "CALL008F5136 with actual stack size56"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F528A",
+          "kind": "JZ008F5140, frontier only"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F52A3",
+          "kind": "JA008F4F80, frontier only"
+        },
+        {
+          "from": "008F4F60",
+          "to": "00CA4B6D",
+          "kind": "PUSH handler identity008F4F62, frontier only"
+        },
+        {
+          "from": "008EF270",
+          "to": "00CE89D4",
+          "kind": "store literal, no phase dereference"
+        },
+        {
+          "from": "00CE89D4",
+          "to": "004E6730",
+          "kind": "raw first-cell value, no dispatch"
+        },
+        {
+          "from": "008F4F60",
+          "to": "borrowed_three_word_span",
+          "kind": "LEA source+0C at008F5146; push pointer008F5149"
+        },
+        {
+          "from": "008EF270",
+          "to": "borrowed_three_word_span",
+          "kind": "three ordered DWORD loads offsets0/4/8, interleaved destination stores"
+        }
+      ],
+      "node_count": 12,
+      "edge_count": 11,
+      "total": 23
+    },
+    "readiness": {
+      "ready_raw_leaf": true,
+      "internal_provider_blockers": [],
+      "owned_pointer_or_allocator_blocker": false,
+      "layout_is_actual_bounded_raw_storage": true,
+      "before_Source_work": [
+        "Root independent review and explicit packet registration/authorization"
+      ],
+      "before_admission": [
+        "new Source/header implementation preserving exact63B19 and physical pointer ABI",
+        "fresh complete COFF/unique-linked/ordinary/raw caller and provider gates",
+        "new minimal actual-storage worker and independent Root fixture",
+        "mainWin32/existingchecks andRoot-owned metadata/Ghidra publication"
+      ]
+    },
+    "future_packet": {
+      "proposed_id": "cc12_scene_property_record_type7_storage",
+      "owned_files": [
+        "include/bsp/native_scene_property_record_type7_storage.hpp",
+        "src/native_scene_property_record_type7_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE7_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type7_storage_cc12.json"
+      ],
+      "minimal_new_fixture": {
+        "TUs": [
+          "newconstructor",
+          "unchanged currentcanonical allocation/free TU",
+          "newignoredprobe"
+        ],
+        "BSP_archives": 0,
+        "old_objects": 0,
+        "new_tracked_tests": 0,
+        "actual_destination_allocations": 2,
+        "destination_bytes_each": 56,
+        "matching_canonical_frees": 2,
+        "source_spans": "two actual guarded three-uint32 arrays, readable12 bytes each; assert disjoint destination ranges and retain all input/outer canaries",
+        "Source_entries": 1,
+        "unchanged_Original_RX_entries": 1,
+        "sample_input_words": [
+          [
+            "D19A42C7",
+            "80000000",
+            "10203040"
+          ],
+          [
+            "2EB56C38",
+            "7FFFFFFF",
+            "A5C37E91"
+          ]
+        ],
+        "DF": [
+          0,
+          1
+        ],
+        "root_poisons": [
+          "A6",
+          "59"
+        ],
+        "static_gates": [
+          "exact63B19 SourceCOFF=unchangedOriginal=uniqueLinked,noCALL/relocation",
+          "ordinary caller passes actual12-byte span pointer as fullDWORD stack argument,rootECX/unusedEDX padding",
+          "whole raw caller captures actual pointer slot beforePUSHFD,RET4,EAXroot/ECX0/EDXsecondword/nonvol/DF/definedXORflagsAFexcluded",
+          "full fresh canonicalallocator/free and mapped I386 malloc/free/_callnewh actualIAT/export/module/physicalfile/SHA/prefix before roots andafterfrees",
+          "any actual normal cookie helper uses map-owned fullCFG, includes failuretailJMP but stops distinct named external failurebody; before/aftergate",
+          "all actualconsumed headers inclnoextensions/tools/libs/Source/newrecipe/PE/oldimmutableartifacts pinned; short frozen paths and duplicate mapping checks before compiler"
+        ],
+        "runtime_checks": [
+          "entire56 destination incl45written11preserved",
+          "all12 sourcebytes and input guards unchanged",
+          "other live destination/source/capture storage unchanged",
+          "actual pointer argument/RET4/EAXroot/ECX0/EDXinputword1",
+          "nonvol/DF/definedXORflags AFexcluded",
+          "exact2actualcanonical56 allocations/2matchingfrees",
+          "OriginalRX/linkedcode/provider/PE/oldinput bookends"
+        ],
+        "FP_or_numeric_suite": "none; copy raw bitwords without numeric conversion",
+        "excluded": [
+          "native privateallocator/EH execution",
+          "phase dispatch",
+          "parser/float arithmetic/native vector class",
+          "whole clone/ownership/destructor/world/gameplay",
+          "overlapping or invalid input fault experiments"
+        ]
+      }
+    },
+    "old_metadata": {
+      "candidate_name": "FUN_008ef270",
+      "prototype": "undefined FUN_008ef270(void)",
+      "prototype_artifact": "candidate_proto_before_stdout.txt",
+      "comments_artifact": "candidate_comments_before_stdout.txt",
+      "hypothesis_for_future_annotation": "raw tag7 three-DWORD partial storage initializer,physicalECXdst/stackactual12span,RET4/EAXdst/ECX0/EDXsecondword,45written11preserved; no owningclass/provider",
+      "mutations_performed": 0
+    },
+    "artifact_family": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a",
+    "physical_evidence": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/physical_evidence.json",
+      "bytes": 11950,
+      "sha256": "49191ac30800ebbd391f89d52d74cb29724d57345da2ac58c1470a7008fcd280"
+    },
+    "prior_preservation": {
+      "files": 2333,
+      "previous_accepted_families_reexecuted": false,
+      "historical_frozen_Source_associations_rebound": false,
+      "type4_Source_or_family_mutated": false
+    },
+    "limitations": [
+      "Staticreadinessonly,noSource/ABI/runtime/gamecredit",
+      "callerallocation/phase/EH/default/nullfrontiersunexpanded",
+      "inputidentityborrowedreadable12bytesnotnativevectorobject",
+      "noothercandidateentries8EF2B0/8EF2F0/8EF360queried"
+    ],
+    "tracked_deliverables": [
+      "docs/CC12_PROPERTY_RECORD_NEXT5_READINESS.md",
+      "reports/cc12_property_record_next5_readiness.json"
+    ]
+  },
+  "proposal_artifact": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/proposal.json",
+    "bytes": 15239,
+    "sha256": "153d976852c32df07b7dafc103d6945e16c86fc37e5ca194b7b084a0e44e15c8"
+  },
+  "physical_evidence": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/physical_evidence.json",
+    "bytes": 11950,
+    "sha256": "49191ac30800ebbd391f89d52d74cb29724d57345da2ac58c1470a7008fcd280"
+  },
+  "bookends": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/native_bookends.json",
+    "bytes": 1237,
+    "sha256": "de3a9b303189ee16746cc035a7fbdb11d945df25d81c167812b7714100155803"
+  },
+  "all_five_PE_live_spans_equal": true,
+  "whole_candidate_prototype_comments_listing_unchanged": true,
+  "protected_prior_files": 2333,
+  "historical_metadata_copies": 6,
+  "tracked_files_changed": [
+    "docs/CC12_PROPERTY_RECORD_NEXT5_READINESS.md",
+    "reports/cc12_property_record_next5_readiness.json"
+  ],
+  "Source_header_config_CMake_ledger_changes": 0,
+  "Ghidra_mutations": 0,
+  "builds": 0,
+  "probes": 0,
+  "native_executions": 0,
+  "failed_attempts": 0,
+  "old_recipe_or_phase_replays": 0,
+  "Root_registration_required": true,
+  "artifact_family": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a",
+  "receipt_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/readiness_receipt.json",
+  "manifest_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next5_readiness/local/n5a/artifact_manifest.json",
+  "manifest_policy": "All actual recursive family files, including historical metadata, command logs, scripts, proposal, deliverable copies and receipt; only manifest itself excluded. Exact sealed hashes supplied at handoff."
+}
