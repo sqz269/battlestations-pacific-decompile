@@ -87,3 +87,9 @@ historical manifest's two changed live Source paths through its explicit archive
 snapshot mapping; the other 225 inputs remain at their original paths.
 No tracked test, Ghidra/CMake/
 ledger mutation or full build was made. Root owns integration and full validation.
+
+## Primary integration
+
+Nine DISTINCT raw ship type predicates,526B187, whole PE/live/Source COFF/linked/executed bytes equal with zero calls/globals/relocations. Each own fixed ordered list precedes one fresh actual+C4 comparison, fullEAX0/1/RET4. One608-check connected4TU family uses current genuine Source groupCtor/lookup and pinnedCF4888 data, same lookup record/receiver identity WITHIN each pass, not an unmeasured cross-pass address claim. Immutable successful first run and separate EOF-only compile receipt preserved; two old Source input paths resolve to exact historical snapshots. Constructor/profile/C4 witnesses ONLY06/07; corrected6FE460 witness is99B17, not old98B16. Tables are uncallableDATA; no base substitution/default/census/virtual router. Whole actual class/group/speed/detach/observer/owner/EH/world/game remain external.
+
+Main Source `3ef9afe67` passed the full MSVC Win32 build and all three existing CTests. The independent primary fixture consumed 4 freshly compiled TUs; its receipt is `local/cc11_ship_kind_current_primary/inputs_after.json`. Its actual consumed headers, toolchain, libraries and historical inputs remained stable. Saved annotations, exports and snapshot follow in the report.

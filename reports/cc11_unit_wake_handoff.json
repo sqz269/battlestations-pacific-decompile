@@ -3184,5 +3184,114 @@
       "sha256": "d1804724a932622f3ef3726f97ce7c6be2b9c3819af69979ccaf5864ead473e4"
     }
   ],
-  "worker_scope": "Only four registered new paths. No shared CMake/ledger/registry/Ghidra mutations or full build. Primary integrator owns annotation, registration, integration and broader validation."
+  "worker_scope": "Only four registered new paths. No shared CMake/ledger/registry/Ghidra mutations or full build. Primary integrator owns annotation, registration, integration and broader validation.",
+  "primary_integration": {
+    "utc": "2026-10-08T01:59:28.274017+00:00",
+    "main_build_revision": "3ef9afe67a8a8fb03d7ea4b093a0d902c2d058d9",
+    "worker_commit": "ed0a5dccc652363cfd64b5e105d59912916659c5",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_wake_ship_registry_scalar_integrated_build.log",
+    "current_core_sha256": "5a27ed8f86caa5fe76affd2328f4d1e8cc1377a1c910c213752b91165cf629ae",
+    "independent_component_manifest": "local/cc11_wake_handoff_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "f37d977dd8cf0f874ecc885ab4e873fd215c6b0c1bc371e2640f0695e519ab4d",
+    "component_revision": "86da6202af5b053a4d7bf244dee743e3f25632cf",
+    "fresh_translation_units": 6,
+    "actual_project_headers": 5,
+    "actual_host_headers": 175,
+    "actual_searched_libraries": 6,
+    "selected_tools": 4,
+    "stable_worker_paths": 477,
+    "source_bookend_stable": true,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z",
+        "bytes": 182,
+        "instruction_count": 42,
+        "sha256": "40ed41e0fd4e0e122c703a1d6798c05a9af22b4f129f3e1a88c080baae481f00",
+        "relocations": [
+          {
+            "operand_offset": "31",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "41",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "8B",
+            "coff_kind": "0014",
+            "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+        "bytes": 89,
+        "instruction_count": 28,
+        "sha256": "b0b6156c245037d3c8ff7508ddba31f8545509519f0ee5a818d52ad713ad3536",
+        "relocations": [
+          {
+            "operand_offset": "17",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "31",
+            "coff_kind": "0014",
+            "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z"
+          },
+          {
+            "operand_offset": "42",
+            "coff_kind": "0014",
+            "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z",
+        "bytes": 456,
+        "instruction_count": 135,
+        "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd",
+        "relocations": []
+      },
+      {
+        "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+        "bytes": 103,
+        "instruction_count": 35,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "relocations": []
+      },
+      {
+        "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+        "bytes": 874,
+        "instruction_count": 290,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "relocations": []
+      }
+    ],
+    "native_call_rows": 8,
+    "native_call_failures": 0,
+    "native_call_receipt": "local/cc11_wake_ship_registry_scalar_native_calls.log",
+    "execution_output": "GRAPH original_bodies=5 original_code_bytes=1704 island_bytes=4205030 original_CALL_patches=0 original_entry=02142930 source_entry=00E01000 edges=6 direct_Source_edges=6\nCASE 0 both_cached_cancellation new=008FD4E0 old=008FE4E0 parent_new=008FF4E0 parent_old=008FF4E0 CW=037F SW_before=7520 SW_after=7520 TOP=6 TAG=0FFF X=00000000 Y=00000000 Z=40800000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nCASE 1 new_dirty_root_old_cached new=008FD4E0 old=008FE4E0 parent_new=00000000 parent_old=00000000 CW=007F SW_before=7520 SW_after=7523 TOP=6 TAG=0FFF X=7FC00234 Y=00000000 Z=41D80000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nCASE 2 new_cached_old_dirty_root_upward new=008FD4E0 old=008FE4E0 parent_new=00000000 parent_old=00000000 CW=0A7F SW_before=7520 SW_after=7523 TOP=6 TAG=0FFF X=40000000 Y=00000000 Z=40800000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nCASE 3 both_dirty_independent_roots new=008FD4E0 old=008FE4E0 parent_new=00000000 parent_old=00000000 CW=027F SW_before=7520 SW_after=7523 TOP=6 TAG=0FFF X=41400000 Y=00000000 Z=40800000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nCASE 4 new_dirty_old_is_ancestor new=008FD4E0 old=008FE4E0 parent_new=008FE4E0 parent_old=008FF4E0 CW=037F SW_before=4520 SW_after=4523 TOP=0 TAG=FFFF X=40000000 Y=00000000 Z=C0400000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nCASE 5 both_dirty_shared_cached_parent new=008FD4E0 old=008FE4E0 parent_new=008FF4E0 parent_old=008FF4E0 CW=0A7F SW_before=5D20 SW_after=5D23 TOP=3 TAG=FFFF X=41400000 Y=00000000 Z=41880000 EFLAGS=00000216 ESPdelta=0 MXCSR=00001FA0 XMM0=zero FPIP_original=021429D9 FPIP_source=00E010A9 storage=8960_exact\nPASS checks=435 cases=6 comparisons=12 failures=0 families=1 Original_code_bytes=1704 CALL_patches=0\n",
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "asInvoker": true,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "current_link_inputs": {},
+    "qualification": "Whole182B42 raw handoff binds complete raw89 pose with fresh ancestor reload and whole456 ring copy. Original five-body exact-relative island preserves all1704 native code bytes and all6 CALL operands; Source five complete bodies and6 canonical edges independently verified. Preserve oldFA0/FA8 capture before pose, fresh oldC8 gate after new pose, x87 spill/difference/sum before inlineBD0 ring copy, then FA0/FA8 and positivezeroFA4/XMM0. One435-check/6-case/12-call family on actual8960 guarded backing verifies dirty roots/ancestors/shared parent and complete168-byte state except natural FPIP. Parent multiply requires EMPTYtagFFFF (nonzero emptyTOP permitted); other paths one free slot/two live canaries. EFLAGS matches within each common callsite; primary216 versus worker212 comes from distinct physical ESP. Constructor/lifetime/fullclass/faults/concurrency/group routing/world/game remain external.",
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "saved_prior_annotations": "local/ghidra-annotations-20261008T020046Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_wake_ship_registry_scalar_snapshot.log",
+    "saved_function_count": 64720,
+    "index_refreshed": true
+  },
+  "primary_source_status": "complete conditional normal Source integrated; independent current primary fixture/fullWin32/all3CTests PASS; wholeclass/world/game qualified"
 }

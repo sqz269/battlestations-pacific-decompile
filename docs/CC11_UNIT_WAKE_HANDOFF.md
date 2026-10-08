@@ -167,3 +167,9 @@ invalid pointers, cyclic ancestry, concurrent mutation, unmasked floating
 faults, SetLeader/type/speed/detach/observer/world integration and live game
 behavior remain outside the claim. Caller witnesses 0070D0D7 and 0070E54E
 were checked statically; their enclosing bodies were not executed here.
+
+## Primary integration
+
+Whole182B42 raw handoff binds complete raw89 pose with fresh ancestor reload and whole456 ring copy. Original five-body exact-relative island preserves all1704 native code bytes and all6 CALL operands; Source five complete bodies and6 canonical edges independently verified. Preserve oldFA0/FA8 capture before pose, fresh oldC8 gate after new pose, x87 spill/difference/sum before inlineBD0 ring copy, then FA0/FA8 and positivezeroFA4/XMM0. One435-check/6-case/12-call family on actual8960 guarded backing verifies dirty roots/ancestors/shared parent and complete168-byte state except natural FPIP. Parent multiply requires EMPTYtagFFFF (nonzero emptyTOP permitted); other paths one free slot/two live canaries. EFLAGS matches within each common callsite; primary216 versus worker212 comes from distinct physical ESP. Constructor/lifetime/fullclass/faults/concurrency/group routing/world/game remain external.
+
+Main Source `3ef9afe67` passed the full MSVC Win32 build and all three existing CTests. The independent primary fixture consumed 6 freshly compiled TUs; its receipt is `local/cc11_wake_handoff_current_primary/inputs_after.json`. Its actual consumed headers, toolchain, libraries and historical inputs remained stable. Saved annotations, exports and snapshot follow in the report.

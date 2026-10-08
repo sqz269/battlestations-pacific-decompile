@@ -341,5 +341,128 @@
     "rows": 2,
     "log": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_enum_registry_scalar_delete\\run04\\native_call_verification.log",
     "sha256": "6a172149fa36b22c65c0cd92e39771fee0c6c9beab0cdb70c4079760312586af"
-  }
+  },
+  "primary_integration": {
+    "utc": "2026-10-08T01:59:35.994028+00:00",
+    "main_build_revision": "3ef9afe67a8a8fb03d7ea4b093a0d902c2d058d9",
+    "worker_commit": "19bb31aef658eb0992cf55444935fd4f51167618",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_wake_ship_registry_scalar_integrated_build.log",
+    "current_core_sha256": "5a27ed8f86caa5fe76affd2328f4d1e8cc1377a1c910c213752b91165cf629ae",
+    "independent_component_manifest": "local/cc11_registry_scalar_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "8ad501e0f52cf621c406fcf8f50e223ad8d148887c63afcea3a43170de70b7fa",
+    "component_revision": "3ef9afe67a8a8fb03d7ea4b093a0d902c2d058d9",
+    "fresh_translation_units": 17,
+    "actual_project_headers": 46,
+    "actual_host_headers": 254,
+    "actual_searched_libraries": 19,
+    "selected_tools": 4,
+    "stable_worker_paths": 4934,
+    "source_bookend_stable": true,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?delete_native_scene_enum_registry_004d2620@bsp@@YAIPAXI00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 46,
+        "instruction_count": 16,
+        "sha256": "04d0ba070c0d9421cde5bcab63df14b6287c3fe7d0c799e1a6c5ea8f4e97ab2b",
+        "relocations": [
+          {
+            "operand_offset": "13",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_scene_enum_registry_008f4f00@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "23",
+            "coff_kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 231,
+        "instruction_count": 71,
+        "sha256": "a154df18edd88461f56cc763fb874f2fda3f5b5fed6956d1b86624c37f2cc40a",
+        "relocations": [
+          {
+            "operand_offset": "75",
+            "coff_kind": "0014",
+            "symbol": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "90",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "9A",
+            "coff_kind": "0014",
+            "symbol": "?return_native_enum_node_0043b0a0@bsp@@YAXPAX0@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?destroy_native_scene_enum_registry_008f4f00@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 90,
+        "instruction_count": 26,
+        "sha256": "f90a5b4129f6ff4547dbd759b07f7578383c8cfba53409215253936799957bb2",
+        "relocations": [
+          {
+            "operand_offset": "2B",
+            "coff_kind": "0014",
+            "symbol": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "51",
+            "coff_kind": "0014",
+            "symbol": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 42,
+        "instruction_count": 15,
+        "sha256": "a5ec9ede5993584a892639fe4fd29c80ff82111be43c7dee0a7ba48290dfc615",
+        "relocations": [
+          {
+            "operand_offset": "F",
+            "coff_kind": "0014",
+            "symbol": "?destroy_native_scene_enum_owner_008f4e70@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "operand_offset": "1F",
+            "coff_kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    ],
+    "native_call_rows": 2,
+    "native_call_failures": 0,
+    "native_call_receipt": "local/cc11_wake_ship_registry_scalar_native_calls.log",
+    "execution_output": "PASS two genuine registries/22+6 installed/colliding nonnull-null+empty/clear twice/B intact/fresh reinsert/scalar2-retain257-delete/captured addresses/full10C/live lifecycle\n",
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "asInvoker": true,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "5a27ed8f86caa5fe76affd2328f4d1e8cc1377a1c910c213752b91165cf629ae",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "qualification": "Whole normal Native30B11 through new contextual Source46B16: captureuintptr before genuine ordinary8F4F00, test flags lowbit1 after ordinary, conditional current std::free, return captured bits without deleted-root access. Preserve compiler-derived name; primary repaired returning-free override/gap and full11-instruction body, saved/exported. Independent17 freshTUs against CURRENT built Core plusLua/zlib consume genuine separate10Croots, real14h table/symbol pools/currentCRT19C CEnum and rawstrings. Flags2 retainedA validates whole10C after ordinary then explicitfree;257 deletedB snapshots fullinput BEFORE call and observes returnedbits only afterward. Ordinary-before-free forB is completeSource/COFF/link order evidence, no artificial callback snapshot. Real131prefix/50symbol/fiveTable returns and trim/unlink/string shutdown. CALL instruction offsets18/34 DECIMAL; operands19/35 DECIMAL=13/23hex. Worker four attempts preserved (setup pin error, Insiders backend omission, Hostx86 mismatch, final pinned Hostx64 PASS); primary setup schema correction before compile and inspector offset notation corrections changed no Source or fixture execution. Original30 not executed; original classABI/EH/historicalheap/startup/namespace/world/game unbound. Nested4D0EB0 interior108map deleteflag1 remains UNREADY; never freeowner+4.",
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "saved_prior_annotations": "local/ghidra-annotations-20261008T020046Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_wake_ship_registry_scalar_snapshot.log",
+    "saved_function_count": 64720,
+    "index_refreshed": true
+  },
+  "primary_source_status": "complete conditional normal Source integrated; independent current primary fixture/fullWin32/all3CTests PASS; wholeclass/world/game qualified"
 }
