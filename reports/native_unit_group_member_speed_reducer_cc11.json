@@ -626,5 +626,139 @@
   "full_project_build_run_by_worker": false,
   "Ghidra_writes": 0,
   "shared_metadata_edits": 0,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "source_revision": "caad94004f11df467f02059d5cff6f82dad960cd",
+    "build_source_revision": "caad94004f11df467f02059d5cff6f82dad960cd",
+    "component_revision": "1710dc51c7192ab284c4bd7400ded1aa4b9eed74",
+    "build_context_relation": "Component revision precedes CMake-only target registration; all compiled Source/header hash bookends are unchanged.",
+    "worker_revision": "572694bb8a9f81e47f5ea1d89e6058b042cc3a7b",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local\\cc11_member_reducer_integrated_build.log",
+    "build_log_sha256": "e43adb848f9b025157981fe1eba520a99c438c1da45520d640563dcb6f6b8663",
+    "current_core_sha256": "79c7ecb2f9e627f14e5e7b77488e15246130342b984b77cd80f0f1b0f69dd1f5",
+    "independent_component_manifest": "local\\cc11_member_reducer_current_primary\\inputs_after.json",
+    "independent_component_manifest_sha256": "920fab54dc1b0ad36035d54c1f9d7426d66ad0ffe4c8c2d8cefde3dcf7dc2416",
+    "fresh_translation_units": 4,
+    "actual_headers": 180,
+    "actual_searched_libraries": 6,
+    "selected_tool_backend_files": 4,
+    "stable_worker_paths": 435,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?reduce_native_unit_group_member_speeds_0070d140@bsp@@YIMPAX0@Z",
+        "bytes": 96,
+        "instruction_count": 28,
+        "sha256": "47b51f3e485a049f57c6a845b2baf5d17ba57214ada864d77b48eaa961c9da42",
+        "relocations": [],
+        "linked_va": "20001000",
+        "linked_sha256": "47b51f3e485a049f57c6a845b2baf5d17ba57214ada864d77b48eaa961c9da42",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z",
+        "bytes": 132,
+        "instruction_count": 39,
+        "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+        "relocations": [],
+        "linked_va": "200010d0",
+        "linked_sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?native_unit_group_member_at_0070d060@bsp@@YIPAXPBXPAXI@Z",
+        "bytes": 14,
+        "instruction_count": 4,
+        "sha256": "3478f5a57f4174b29a24bf0abf74f0ed2bc4fc22b4c7c08a0362c34376670b8e",
+        "relocations": [],
+        "linked_va": "20001060",
+        "linked_sha256": "3478f5a57f4174b29a24bf0abf74f0ed2bc4fc22b4c7c08a0362c34376670b8e",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?native_unit_group_record_at_0070d070@bsp@@YIPAXPAX0I@Z",
+        "bytes": 14,
+        "instruction_count": 4,
+        "sha256": "c31960a06274998f2babc199bb330a8f3db8a1edcc6d45b1f49bb4d3756aae48",
+        "relocations": [],
+        "linked_va": "20001070",
+        "linked_sha256": "c31960a06274998f2babc199bb330a8f3db8a1edcc6d45b1f49bb4d3756aae48",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?native_unit_group_retained_speed_0070d0f0@bsp@@YIMPBXPAX@Z",
+        "bytes": 7,
+        "instruction_count": 2,
+        "sha256": "c074d1dc3f3ea801f7719fa1f102b2448f4e2a14c25514c51caaa42956bd2bdc",
+        "relocations": [],
+        "linked_va": "20001080",
+        "linked_sha256": "c074d1dc3f3ea801f7719fa1f102b2448f4e2a14c25514c51caaa42956bd2bdc",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?publish_native_unit_group_member_speed_0070d100@bsp@@YIXPAX00I@Z",
+        "bytes": 51,
+        "instruction_count": 16,
+        "sha256": "09896db94172ea047100fab6c04807df54d3fe0b4bb81198e3bdab6e066c6a70",
+        "relocations": [],
+        "linked_va": "20001090",
+        "linked_sha256": "09896db94172ea047100fab6c04807df54d3fe0b4bb81198e3bdab6e066c6a70",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?make_seed@@YAXPAUSeed@@@Z",
+        "bytes": 142,
+        "instruction_count": 44,
+        "sha256": "c9173c4c6ec29eb51fec19fa1d306a2f7e5f79db30b0fa43c116f14dd4acdcfa",
+        "relocations": [
+          {
+            "offset": 21,
+            "type": 6,
+            "target": "?canaries@@3QAY09$$CBEA"
+          }
+        ],
+        "linked_va": "20002210",
+        "linked_sha256": "8d5d76fa5d2e5221fd165f999356e5bfade5ff2f3ec40aff1b57c30d74181eda",
+        "COFF_linked_verified": true
+      },
+      {
+        "symbol": "?invoke_raw@@YAXPAX0PBUSeed@@PAUResult@@@Z",
+        "bytes": 832,
+        "instruction_count": 140,
+        "sha256": "78fcb563cffbe7c289c407bd383ca30697a8d8e2d67f5ef799951b762c830e64",
+        "relocations": [],
+        "linked_va": "20001ed0",
+        "linked_sha256": "78fcb563cffbe7c289c407bd383ca30697a8d8e2d67f5ef799951b762c830e64",
+        "COFF_linked_verified": true
+      }
+    ],
+    "execution_output": "PHASE 0 group=001AE910 EAX=00000000 ECX=001AE910 EDX=EDED1122 flags=00000216 entryESP=001ADA14 CW=037F SW=4D20 TAG=0003 scratch=DCBA3344 min=4B18967F FPIP_Original=00B70059 FPIP_Source=20001059 full_capture=364 guards=64 group_bytes=1424\nPHASE 1 group=001AE910 EAX=00000005 ECX=001AEA5C EDX=00000000 flags=00000216 entryESP=001ADA14 CW=037F SW=4D21 TAG=0007 scratch=7FC12345 min=80000000 FPIP_Original=00B70059 FPIP_Source=20001059 full_capture=364 guards=64 group_bytes=1424\nPASS checks=6723 phases=2 Original_calls=2 Source_reducer_calls=2 families=1 raw_bytes=96 Source_constructor_calls=4 publisher_calls=8 view_calls=20 retained_getter_calls=4 failures=0\n",
+    "current_link_inputs": {},
+    "native_call_verification_log": "local\\cc11_member_reducer_native_calls.log",
+    "native_call_verification_log_sha256": "da0f3e5bed6fc760267d4e0026c43d8d8db7e660c11f0efb6a6f8b7d39b7313b",
+    "source_bookends_stable": true,
+    "old_families_replayed": false,
+    "tracked_tests_added": 0,
+    "qualification": "One complete whole raw96B28 member-record reducer with no CALL or relocation. ECX actual group, unused entryEDX/plainRET/ST0, count4F8 captured once, integer memberDWORD tests, real34h records, exact x87 scratch/FCOMIP/strict-decrease/equality/unordered-skip/null-record999 behavior. Every Original PE/live/Source COFF/linked byte matches. Independent new fresh4TU current Source constructor/views/publisher/getter family passed6723 checks, two phases, two Original/two Source reducer calls. Exact364-byte physical state comparison differs only at explicitly checked natural finalFLD FPIP; full GPR/flags/ESP/8XMM/MXCSR/80-bit ST0/six canaries/64 stackguards/1424 backing passed. Two free x87 slots, caller CW retained; positive signalingNaN quiets scratch and sets masked invalid flag, strict minimum returns exact negativezero. Standalone readonly exact-address native PE snapshot pages/cells stayed byte-identical. Production creates no mappings/globals/defaults/providers. Group504/4FC remain caller-retained; Source retained getter observes separate504, not a producer. Historical class/heap/constructor/lifetime/SEH/virtual/world/game and whole70DA00 remain unbound. Live whole Ghidra proto confirms28 instructions/CALL0; any older indexed callee hint is not native CALL evidence. No old fixture replay or new tracked tests.",
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "primary_source_status": "complete whole Source reducer integrated; independent physical4TU family/full Win32/all3 CTests PASS; native class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T045831Z.json",
+    "affected_export_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T045831Z.json": "322b1a91f54a39c4f1a6aeaf16c013b478d2fa048b2d8e1742c4d423ed81fa8b",
+      "local/cc11_member_reducer_annotations.log": "d29c863ab99cd0f74d68f8095dac2504236a373990a9f1b620e180eef3ece3b7",
+      "local/cc11_member_reducer_exports.log": "f5dcb352abe34e9614dc3cb9f384b501f21e3d2af895a87891d8b7ad5d3f62be",
+      "local/cc11_member_reducer_snapshot.log": "b67a26fbc1d75cdc9857f8071a0896df2e3bd6ab427cdb3b05e9a328e74afe39"
+    }
+  }
 }
