@@ -1,0 +1,583 @@
+{
+  "packet": "cc12_substream_seek_open_readiness",
+  "created_utc": "2026-10-08T06:12:49.892688+00:00",
+  "audited_commit": "4449f8b77ac2a81b78611a8a9213075799647be3",
+  "scope": "Selected physical file-stream D691B0 source route only; read-only readiness audit.",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "original_image_sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_image_sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00bf1090",
+      "inclusive_end": "00bf1099",
+      "exclusive_end": "00bf109a",
+      "bytes": 10,
+      "hex": "8b49088b018b5018ffe2",
+      "sha256": "8a7f285c4167ad79d802d45914d39bd73afddbbe2160e3c9a1531eee42cd1934",
+      "live_Ghidra_equals_installed_PE": true,
+      "name": "BSP_Substream_IsSourceOpen",
+      "coverage": "complete",
+      "raw_Source_status": "missing_original_register_entry",
+      "instruction_count": 4,
+      "complete_contiguous_decode": true,
+      "instructions": [
+        {
+          "address": "00bf1090",
+          "bytes": "8b4908",
+          "instruction": "mov ecx, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "00bf1093",
+          "bytes": "8b01",
+          "instruction": "mov eax, dword ptr [ecx]"
+        },
+        {
+          "address": "00bf1095",
+          "bytes": "8b5018",
+          "instruction": "mov edx, dword ptr [eax + 0x18]"
+        },
+        {
+          "address": "00bf1098",
+          "bytes": "ffe2",
+          "instruction": "jmp edx"
+        }
+      ],
+      "original_abi": "ECX substream; no stack arguments; JMP EDX tail to current source+18h; provider returns directly to caller.",
+      "current_ordinary_interface": "open_native_adopted_substream_00bf1090(void*, NativeAdoptedSubstreamDispatch&)",
+      "source": "src/native_adopted_substream.cpp",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf10e0",
+      "inclusive_end": "00bf1123",
+      "exclusive_end": "00bf1124",
+      "bytes": 68,
+      "hex": "8b44240c85c075088b41108b5114eb1383f80175088b41208b5124eb068b41188b511c03442404561354240c8941208951248b49088b316a0052508b461cffd05ec20c00",
+      "sha256": "ca824d2b1937a8533944c91a372e2f79eb432d3c8c0ae0549efed72f0ec76049",
+      "live_Ghidra_equals_installed_PE": true,
+      "name": "BSP_Substream_SeekAbsoluteSource",
+      "coverage": "complete",
+      "raw_Source_status": "missing_original_register_entry",
+      "instruction_count": 27,
+      "complete_contiguous_decode": true,
+      "instructions": [
+        {
+          "address": "00bf10e0",
+          "bytes": "8b44240c",
+          "instruction": "mov eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bf10e4",
+          "bytes": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "address": "00bf10e6",
+          "bytes": "7508",
+          "instruction": "jne 0xbf10f0"
+        },
+        {
+          "address": "00bf10e8",
+          "bytes": "8b4110",
+          "instruction": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00bf10eb",
+          "bytes": "8b5114",
+          "instruction": "mov edx, dword ptr [ecx + 0x14]"
+        },
+        {
+          "address": "00bf10ee",
+          "bytes": "eb13",
+          "instruction": "jmp 0xbf1103"
+        },
+        {
+          "address": "00bf10f0",
+          "bytes": "83f801",
+          "instruction": "cmp eax, 1"
+        },
+        {
+          "address": "00bf10f3",
+          "bytes": "7508",
+          "instruction": "jne 0xbf10fd"
+        },
+        {
+          "address": "00bf10f5",
+          "bytes": "8b4120",
+          "instruction": "mov eax, dword ptr [ecx + 0x20]"
+        },
+        {
+          "address": "00bf10f8",
+          "bytes": "8b5124",
+          "instruction": "mov edx, dword ptr [ecx + 0x24]"
+        },
+        {
+          "address": "00bf10fb",
+          "bytes": "eb06",
+          "instruction": "jmp 0xbf1103"
+        },
+        {
+          "address": "00bf10fd",
+          "bytes": "8b4118",
+          "instruction": "mov eax, dword ptr [ecx + 0x18]"
+        },
+        {
+          "address": "00bf1100",
+          "bytes": "8b511c",
+          "instruction": "mov edx, dword ptr [ecx + 0x1c]"
+        },
+        {
+          "address": "00bf1103",
+          "bytes": "03442404",
+          "instruction": "add eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00bf1107",
+          "bytes": "56",
+          "instruction": "push esi"
+        },
+        {
+          "address": "00bf1108",
+          "bytes": "1354240c",
+          "instruction": "adc edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bf110c",
+          "bytes": "894120",
+          "instruction": "mov dword ptr [ecx + 0x20], eax"
+        },
+        {
+          "address": "00bf110f",
+          "bytes": "895124",
+          "instruction": "mov dword ptr [ecx + 0x24], edx"
+        },
+        {
+          "address": "00bf1112",
+          "bytes": "8b4908",
+          "instruction": "mov ecx, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "00bf1115",
+          "bytes": "8b31",
+          "instruction": "mov esi, dword ptr [ecx]"
+        },
+        {
+          "address": "00bf1117",
+          "bytes": "6a00",
+          "instruction": "push 0"
+        },
+        {
+          "address": "00bf1119",
+          "bytes": "52",
+          "instruction": "push edx"
+        },
+        {
+          "address": "00bf111a",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "00bf111b",
+          "bytes": "8b461c",
+          "instruction": "mov eax, dword ptr [esi + 0x1c]"
+        },
+        {
+          "address": "00bf111e",
+          "bytes": "ffd0",
+          "instruction": "call eax"
+        },
+        {
+          "address": "00bf1120",
+          "bytes": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "address": "00bf1121",
+          "bytes": "c20c00",
+          "instruction": "ret 0xc"
+        }
+      ],
+      "original_abi": "ECX substream; stack low/high/origin; source EAX forwarded; preserves ESI; RET0Ch.",
+      "current_ordinary_interface": "seek_native_adopted_substream_00bf10e0(void*, low, high, origin, NativeAdoptedSubstreamDispatch&)",
+      "source": "src/native_adopted_substream.cpp",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf5020",
+      "inclusive_end": "00bf5029",
+      "exclusive_end": "00bf502a",
+      "bytes": 10,
+      "hex": "33c0837908ff0f95c0c3",
+      "sha256": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636",
+      "live_Ghidra_equals_installed_PE": true,
+      "name": "BSP_PhysicalStream_IsValid",
+      "coverage": "complete",
+      "raw_Source_status": "missing_original_register_entry",
+      "instruction_count": 4,
+      "complete_contiguous_decode": true,
+      "instructions": [
+        {
+          "address": "00bf5020",
+          "bytes": "33c0",
+          "instruction": "xor eax, eax"
+        },
+        {
+          "address": "00bf5022",
+          "bytes": "837908ff",
+          "instruction": "cmp dword ptr [ecx + 8], -1"
+        },
+        {
+          "address": "00bf5026",
+          "bytes": "0f95c0",
+          "instruction": "setne al"
+        },
+        {
+          "address": "00bf5029",
+          "bytes": "c3",
+          "instruction": "ret "
+        }
+      ],
+      "original_abi": "ECX actual physical stream; unused incoming EDX; full EAX exactly 0/1 from HANDLE+8 != FFFFFFFF; RET.",
+      "current_ordinary_interface": "valid_native_physical_stream_00bf5020(const void*)",
+      "source": "src/native_physical_stream_open.cpp",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf4f20",
+      "inclusive_end": "00bf4f3f",
+      "exclusive_end": "00bf4f40",
+      "bytes": 32,
+      "hex": "8b44240c508b44240c8d5110528b54240c508b41085250ff15d822ce00c20c00",
+      "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c",
+      "live_Ghidra_equals_installed_PE": true,
+      "name": "BSP_PhysicalStream_Seek",
+      "coverage": "complete",
+      "raw_Source_status": "missing_original_register_entry",
+      "instruction_count": 12,
+      "complete_contiguous_decode": true,
+      "instructions": [
+        {
+          "address": "00bf4f20",
+          "bytes": "8b44240c",
+          "instruction": "mov eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bf4f24",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "00bf4f25",
+          "bytes": "8b44240c",
+          "instruction": "mov eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bf4f29",
+          "bytes": "8d5110",
+          "instruction": "lea edx, [ecx + 0x10]"
+        },
+        {
+          "address": "00bf4f2c",
+          "bytes": "52",
+          "instruction": "push edx"
+        },
+        {
+          "address": "00bf4f2d",
+          "bytes": "8b54240c",
+          "instruction": "mov edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00bf4f31",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "00bf4f32",
+          "bytes": "8b4108",
+          "instruction": "mov eax, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "00bf4f35",
+          "bytes": "52",
+          "instruction": "push edx"
+        },
+        {
+          "address": "00bf4f36",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "00bf4f37",
+          "bytes": "ff15d822ce00",
+          "instruction": "call dword ptr [0xce22d8]"
+        },
+        {
+          "address": "00bf4f3d",
+          "bytes": "c20c00",
+          "instruction": "ret 0xc"
+        }
+      ],
+      "original_abi": "ECX actual physical stream; three stack DWORDs low/high/origin; full BOOL EAX; RET0Ch; IAT SetFilePointerEx pops five DWORDs.",
+      "current_ordinary_interface": "seek_native_physical_stream_00bf4f20(void*, low, high, origin)",
+      "source": "src/native_physical_stream_conversion.cpp",
+      "name_is_hypothesis": true
+    }
+  ],
+  "verified_data_spans": [
+    {
+      "address": "00d691b0",
+      "inclusive_end": "00d691cf",
+      "exclusive_end": "00d691d0",
+      "bytes": 32,
+      "hex": "a055bf009050bf00e04ebf00f04fbf00209d6f00f04ebf002050bf00204fbf00",
+      "sha256": "0ba75e71a34d986da66b53572522538d1eb3004fc319406a3664686bce9d1ae3",
+      "live_Ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00d68dc8",
+      "inclusive_end": "00d68dcf",
+      "exclusive_end": "00d68dd0",
+      "bytes": 8,
+      "hex": "9010bf00e010bf00",
+      "sha256": "7dcb3a4608fe795533a4a169edab1c840cbf42204726b5a0d39b282136ff0797",
+      "live_Ghidra_equals_installed_PE": true
+    },
+    {
+      "address": "00ce22d8",
+      "inclusive_end": "00ce22db",
+      "exclusive_end": "00ce22dc",
+      "bytes": 4,
+      "hex": "4c5aa000",
+      "sha256": "22b17ea0013611993b19d410093df91cfacae84fd91b14311bbabc0d6b46a34d",
+      "live_Ghidra_equals_installed_PE": true
+    }
+  ],
+  "complete_code_bytes": 120,
+  "verified_data_bytes": 44,
+  "installed_concrete_bindings": [
+    {
+      "table": "00d691b0",
+      "slot": "18",
+      "word_address": "00d691c8",
+      "entry": "00bf5020"
+    },
+    {
+      "table": "00d691b0",
+      "slot": "1c",
+      "word_address": "00d691cc",
+      "entry": "00bf4f20"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf1098",
+      "native": "00bf5020",
+      "function": "00bf1090",
+      "kind": "tail_jump",
+      "contract": "ECX=current owner+8 source; EDX=current source table+18 target; direct provider return.",
+      "resolution": "Installed D691B0 physical-table word at D691C8; receiver itself does not restrict profile."
+    },
+    {
+      "address": "00bf111e",
+      "native": "00bf4f20",
+      "function": "00bf10e0",
+      "kind": "indirect_call",
+      "contract": "ECX=current owner+8 source; EDX=absolute-high; stack absolute-low/high/0; source EAX forwarded; RET0Ch.",
+      "resolution": "Installed D691B0 physical-table word at D691CC."
+    },
+    {
+      "address": "00bf4f37",
+      "native": "KERNEL32!SetFilePointerEx",
+      "function": "00bf4f20",
+      "kind": "import_call",
+      "iat": "00ce22d8",
+      "contract": "HANDLE+8, signed64 distance bits, direct output pointer source+10h, full origin; stdcall cleanup14h; receiver RET0Ch."
+    }
+  ],
+  "verified_installed_imports": [
+    {
+      "dll": "KERNEL32.dll",
+      "name": "SetFilePointerEx",
+      "iat": "00ce22d8"
+    }
+  ],
+  "readiness": {
+    "raw_receiver_open_exists": false,
+    "raw_receiver_seek_exists": false,
+    "raw_physical_open_provider_exists": false,
+    "raw_physical_seek_provider_exists": false,
+    "first_missing_open_provider": {
+      "entry": "00bf5020",
+      "whole_bytes": 10,
+      "external_dependencies": []
+    },
+    "first_missing_seek_provider": {
+      "entry": "00bf4f20",
+      "whole_bytes": 32,
+      "external_dependencies": [
+        "KERNEL32!SetFilePointerEx via IAT00CE22D8"
+      ]
+    },
+    "genuine_callable_source_producer_path_admitted": false,
+    "ordinary_source_constructor": "BF50D0 writes numeric D691B0, refs1, invalid HANDLE+8, zero position/size, untouched+C. Existing ordinary raw20h storage contract only.",
+    "numeric_dispatch": "Current NativeVfsRuntimeBindings source_is_open/source_seek switches numeric entries to ordinary C++ helpers; not the original direct JMP/CALL entry path.",
+    "legacy_PhysicalFile": "Separate owning C++ type; seek uses a temporary position and explicit error result. Not raw provider admission.",
+    "smallest_next_packet": "Distinct complete raw BF5020 (10 literal bytes), preserving existing helper; memory-domain qualification only. Do not claim BF1090 composition without genuine source producer/table admission.",
+    "seek_followup": "Whole raw BF4F20 (32 bytes) with genuine OS import binding, direct +10h output, full BOOL and RET0Ch, before raw BF10E0 composition."
+  },
+  "corrections": [
+    {
+      "was": "Original ABI comments and historical semantic fixture status could be mistaken for current raw callable provider availability.",
+      "is": "Four ordinary Source receiver/provider interfaces remain separate from Original register entry ABI; neither physical provider currently has a raw entry.",
+      "evidence": "Current declarations/definitions and numeric dispatch; complete live/PE assembly and installed table words."
+    },
+    {
+      "was": "BF5020 described only as an AL Boolean.",
+      "is": "The complete Original XOR EAX,EAX plus SETNZ AL defines full EAX as 0/1; no OS handle validity check.",
+      "evidence": "00BF5020..00BF5029, 10 bytes; XOR/CMP/SETNZ/RET."
+    }
+  ],
+  "current_input_sha256_pre_post": {
+    "src/native_adopted_substream.cpp": {
+      "sha256_pre": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+      "sha256_post": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be"
+    },
+    "include/bsp/native_adopted_substream.hpp": {
+      "sha256_pre": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+      "sha256_post": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd"
+    },
+    "src/native_physical_stream_open.cpp": {
+      "sha256_pre": "a48b355aac4aa7c1ce4bc3e2495073dd96e2d3f71402cf17eaf7ad1e25c12f73",
+      "sha256_post": "a48b355aac4aa7c1ce4bc3e2495073dd96e2d3f71402cf17eaf7ad1e25c12f73"
+    },
+    "include/bsp/native_physical_stream_open.hpp": {
+      "sha256_pre": "18877d9eec136087d6947c5b44d7f390d92deb5ffa2e2bd5cea02ae21e209f4b",
+      "sha256_post": "18877d9eec136087d6947c5b44d7f390d92deb5ffa2e2bd5cea02ae21e209f4b"
+    },
+    "src/native_physical_stream_conversion.cpp": {
+      "sha256_pre": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a",
+      "sha256_post": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a"
+    },
+    "include/bsp/native_physical_stream_conversion.hpp": {
+      "sha256_pre": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac",
+      "sha256_post": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac"
+    },
+    "src/native_vfs_runtime_bindings.cpp": {
+      "sha256_pre": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b",
+      "sha256_post": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b"
+    },
+    "src/physical_file.cpp": {
+      "sha256_pre": "148dcecd456f394162245c50b0f3b8351262528ab6da95ec797d70629d685933",
+      "sha256_post": "148dcecd456f394162245c50b0f3b8351262528ab6da95ec797d70629d685933"
+    },
+    "include/bsp/physical_file.hpp": {
+      "sha256_pre": "6ee5bd45b642f537b3d0edb836ae6ec28a88db3ff473024d12ffa1bcbb8cb306",
+      "sha256_post": "6ee5bd45b642f537b3d0edb836ae6ec28a88db3ff473024d12ffa1bcbb8cb306"
+    },
+    "config/target.json": {
+      "sha256_pre": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "sha256_post": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "CMakeLists.txt": {
+      "sha256_pre": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03",
+      "sha256_post": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03"
+    },
+    "cmake/startup.cmake": {
+      "sha256_pre": "66ffda1f36027d942044651fce6136d7eeb4250fe76021740c12cb54f535e39a",
+      "sha256_post": "66ffda1f36027d942044651fce6136d7eeb4250fe76021740c12cb54f535e39a"
+    }
+  },
+  "verification": {
+    "Ghidra_read_only": true,
+    "live_disk_code_and_data_equal": true,
+    "fixture_replay": false,
+    "new_fixture": false,
+    "compiled": false,
+    "Original_executed": false,
+    "Source_executed": false,
+    "constructor_executed": false,
+    "new_build_or_tests_required": false,
+    "reason": "Documentation-only readiness audit; no production change.",
+    "call_check_note": "Report checker validates containing functions/provider starts, labels indirect targets not mechanically resolved; installed table bytes resolve those edges independently.",
+    "report_call_check": {
+      "checked": 2,
+      "failed": 0,
+      "indirect_resolutions_by_installed_table": 2,
+      "OS_import_resolved_by_installed_PE_directory": true,
+      "log": "local/cc12_substream_seek_open_readiness_20261008a/report_calls.log"
+    }
+  },
+  "limits": [
+    "No new raw Source implementation or ABI qualification.",
+    "No manufactured class/profile/table/callback admission.",
+    "No complete source producer/lifetime admission.",
+    "No pool/VFS/archive expansion.",
+    "No fault/concurrency/gameplay/world validation."
+  ],
+  "owned_tracked_files": [
+    "docs/CC12_SUBSTREAM_SEEK_OPEN_READINESS.md",
+    "reports/cc12_substream_seek_open_readiness.json"
+  ],
+  "evidence_artifacts_sha256": {
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF1090.assembly.log": "e7d502b7952509de9c1c2fc9b5c65a541ba8e56b0ba564c832c505f87ecff61b",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF1090.bin": "8a7f285c4167ad79d802d45914d39bd73afddbbe2160e3c9a1531eee42cd1934",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF1090.bytes.log": "ad59ea9243baf10b20c85ad703faab79a6e4b923723d2a31ebc789e5560d7306",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF10E0.assembly.log": "464126e4a68fb5c3d2ccc139eccd971110e21cab4979a342cf0f3691e7ed0097",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF10E0.bin": "ca824d2b1937a8533944c91a372e2f79eb432d3c8c0ae0549efed72f0ec76049",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF10E0.bytes.log": "fe31acee48d19eecbe3d31054024fc48ac498cf858ecc970603393e7d33b2385",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF4F20.assembly.log": "7a7308a17d315a1a2ac94edd5aacdd1a7af8d6bac77d0db449222c26518c6f54",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF4F20.bin": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF4F20.bytes.log": "f800e6978a1aafd7f9b6fc57b14a53d51b09e9357ab4742ef0754d637db90253",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF4F20.xrefs.log": "5b72cddcddff51f852ddd9648d22fcade43f1b5e2e2f914cdb36539f381851fd",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF5020.assembly.log": "66dc3e941fc6c566c869fab47d76bcdf0d7d6c083fc1e6c4baac698a59f64106",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF5020.bin": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF5020.bytes.log": "5d8eeed9b0d792ebda1bd0ff22c1a98232c4cd22c077c38b536cdabc591829cb",
+    "local/cc12_substream_seek_open_readiness_20261008a/00BF5020.xrefs.log": "658e76531447f4070012c66211b74ed85f350a91f1d30b7104d14072bca7c1ca",
+    "local/cc12_substream_seek_open_readiness_20261008a/00CE22D8.bin": "22b17ea0013611993b19d410093df91cfacae84fd91b14311bbabc0d6b46a34d",
+    "local/cc12_substream_seek_open_readiness_20261008a/00CE22D8.bytes.log": "450557efd890772a3ea844741d61b4b9a79584dbce0f293b113c545a014ba9cc",
+    "local/cc12_substream_seek_open_readiness_20261008a/00D68DC8.bin": "7dcb3a4608fe795533a4a169edab1c840cbf42204726b5a0d39b282136ff0797",
+    "local/cc12_substream_seek_open_readiness_20261008a/00D68DC8.bytes.log": "36104174d2d7a2a9fce3d3c12fec28d407ddbbec37ecfb614471b7d3e645d8d6",
+    "local/cc12_substream_seek_open_readiness_20261008a/00D691B0.bin": "0ba75e71a34d986da66b53572522538d1eb3004fc319406a3664686bce9d1ae3",
+    "local/cc12_substream_seek_open_readiness_20261008a/00D691B0.bytes.log": "f089c2f0fd4fbf9250ded81343a610b6d099dbfd9b15f9458231f8a3d33fb341",
+    "local/cc12_substream_seek_open_readiness_20261008a/capture.py": "0de451eafcb7442441e16916cdf96755ecc22009d0638332e3c8764df37229d8",
+    "local/cc12_substream_seek_open_readiness_20261008a/commit_message.txt": "a37ad04a08383b1cd2612674516dba152dd1a5a7eb872b8d5ef1c314029571bc",
+    "local/cc12_substream_seek_open_readiness_20261008a/current_source_address_matches.log": "af919317f92e511d7fd11e434bb7e2d1f8924c378f577e2067f5db9a5b52a2a2",
+    "local/cc12_substream_seek_open_readiness_20261008a/import_callee.log": "4307ff7bf70f4030c2ee84a4cb2ce9157d7b9e9a37074f6bd6ea82d7a730133e",
+    "local/cc12_substream_seek_open_readiness_20261008a/report_calls.log": "9b06431e4dc4c5911102e36b6449a66c738d39275d5786c78abee47f55ecfbcf",
+    "local/cc12_substream_seek_open_readiness_20261008a/seal.py": "8faa987c497ba801dce80e8937f91bfa9cdde09bc0f47a77db1b4e621da00145",
+    "local/cc12_substream_seek_open_readiness_20261008a/target_proto.log": "f48b36c1cf0f40a0d24bc8eb86262168b9257c901232c3f8f2f286e537cf2a1d",
+    "local/cc12_substream_seek_open_readiness_20261008a/target_status.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "contract_document_sha256": "f8158135feeeabcd972061a4017f0775a67b4cf05ff39c2c2d76a680739a429c",
+  "primary_review": {
+    "complete_live_listings_independently_read": [
+      "00BF1090",
+      "00BF10E0",
+      "00BF5020",
+      "00BF4F20"
+    ],
+    "whole_installed_code_bytes_rechecked": 120,
+    "installed_table_and_IAT_bytes_rechecked": 44,
+    "installed_SetFilePointerEx_import_rechecked": true,
+    "current_integration_Source_input_pins_rehashed": 11,
+    "historical_registration_pin_verified_and_update_reviewed": {
+      "path": "cmake/startup.cmake",
+      "audited_sha256": "66ffda1f36027d942044651fce6136d7eeb4250fe76021740c12cb54f535e39a",
+      "current_sha256": "eacc9c6a335208f2d574054735c45bcb5cbc63eef907e52690e582f4c3df5fbb",
+      "difference": "cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_bag_storage.cpp)",
+      "effect_on_audited_stream_providers": "none; only property bag constructor registration added"
+    },
+    "worker_artifacts_rehashed": 28,
+    "worker_contract_document_sha256_rechecked": "f8158135feeeabcd972061a4017f0775a67b4cf05ff39c2c2d76a680739a429c",
+    "accepted_readiness": "Physical raw providers and genuine source/table admission still missing at the audit snapshot. Isolated BF5020 memory-domain raw interface is a separate followup; it cannot promote receiver/class readiness.",
+    "runtime_or_fixture_execution": false,
+    "new_Original_reconstructions": 0
+  }
+}

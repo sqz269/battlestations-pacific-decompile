@@ -429,5 +429,14 @@
       "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
       "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
     }
-  ]
+  ],
+  "primary_review": {
+    "complete_live_listing_independently_read": "52 instructions; both AL exits; enter/depth increment/lookup/depth decrement/leave order; physical SEH restore in Original only",
+    "whole_installed_PE_bytes_rechecked": 157,
+    "call_site_bytes_rechecked": 5,
+    "current_integration_provider_source_pins_rehashed": 18,
+    "accepted_scope": "Normal-return actual-storage Source readiness; no implementation or runtime proof in this audit. Implementation is a separate packet.",
+    "Source_or_native_execution": false,
+    "new_Original_reconstructions": 0
+  }
 }
