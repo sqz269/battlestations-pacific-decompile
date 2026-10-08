@@ -297,6 +297,9 @@ struct GameExecutableOptions {
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.
     bool hardware_probe_commit{false};
+    // One genuine VFS owner diagnostic after the normal canonical-data handoff.
+    // Completes the shared drain before returning, without entering game startup.
+    bool qualify_vfs_failure_owner{false};
     bool parse(int argc, char** argv, std::string& error);
 };
 
