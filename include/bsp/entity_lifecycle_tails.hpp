@@ -152,9 +152,10 @@ struct IntrusiveChain {
     std::int32_t count{0};
 };
 
-// 00903F30 / 00924710 exactly, including the early-out at 00903F40: a node that is
-// unlinked on both sides is still unlinked when the chain holds more than one entry,
-// because the listing only skips the work when count <= 1.
+// The existing handle/vector Source interface follows 00903F30 / 00924710's
+// signed count guard: both links zero AND count > 1 skips removal. Count1 still
+// removes the sole node. Its handle bounds checks are Source admission, not an
+// Original pointer-layout or ABI replacement.
 void chain_unlink_00903f30(IntrusiveChain& chain, std::size_t node,
                            std::vector<IntrusiveChainNode>& nodes) noexcept;
 
