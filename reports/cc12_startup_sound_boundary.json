@@ -1,0 +1,460 @@
+{
+  "packet": "cc12_startup_sound_boundary",
+  "utc": "2026-10-08T06:51:02.328373+00:00",
+  "status": "Read-only bounded diagnosis complete: current child access violation confirmed; failing call not localized by available log; ordered pre-sound boundaries and static DLL/export prerequisites recorded",
+  "scope": {
+    "owned_tracked_files": [
+      "docs/CC12_STARTUP_SOUND_BOUNDARY.md",
+      "reports/cc12_startup_sound_boundary.json"
+    ],
+    "Source_edits": false,
+    "Ghidra_queries": false,
+    "Ghidra_mutations": false,
+    "native_body_expansions": false,
+    "game_processes_launched_by_worker": 0,
+    "audio_or_settings_changes": false,
+    "new_build_or_tests": false
+  },
+  "baselines": {
+    "worker_revision": "a8895ad237fd9d19c1c06c5ff4f668ed659df069",
+    "integrator_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+    "main_merged": "7ed2ec2002f64d7d90026224e92cbff594c3747f",
+    "inspected_chain_source_headers": 21,
+    "all_inspected_files_equal_integrator": true
+  },
+  "runtime_observation": {
+    "owner": "Primary integrator; worker consumed captured evidence only",
+    "capture_file": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_startup_exit_capture.json",
+    "capture_sha256": "479d571a0b085df5b827870c512f777c6e519b8f868c7b9f3db685d028cedeb8",
+    "paired_log": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_startup_captured.log",
+    "log_sha256": "7e04c51119f827e49305ed2c4790e42ef274d5841b420d10da7a5105bc1da93a",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+      "--window-monitor",
+      "smallest",
+      "--window-resolution",
+      "960x540",
+      "--present-interval",
+      "immediate",
+      "--screenshot",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.png",
+      "--screenshot-frame",
+      "1"
+    ],
+    "returncode": 3221225477,
+    "returncode_hex": "0xc0000005",
+    "classification": "Access violation, not successful startup",
+    "elapsed_seconds": 0.3433566093444824,
+    "stdout": "",
+    "stderr": "",
+    "last_completed_stage": "Settings summary after Phase5 load_game_settings",
+    "sound_complete_marker_present": false,
+    "run_summary_present": false,
+    "no_screenshot_or_live_process": "Reported by primary; worker did not launch or attach a process.",
+    "superseded_evidence": "Earlier GUI PowerShell shell0 did not reliably report child exit; replaced by captured 0xC0000005."
+  },
+  "static_bound": {
+    "start": "After settings summary at src/game_hosts.cpp:1984-1988",
+    "end": "Before Phase5 sound_system_initialize at src/game_hosts.cpp:2004",
+    "includes": "Math binding, SoundServices construction, startup including actual manager/clock operations, first and subsequent FMOD calls, resource/Lua startup.",
+    "actual_fault_module_or_function": "Unknown from these artifacts",
+    "earliest_explicit_foreign_loader": "XLiveLibrary::Impl LoadLibraryExW inside SoundServices construction, before fmodex load and before core.startup",
+    "first_FMOD_SDK_call": "_FMOD_EventSystem_Create@4, after actual owner registration, raw lifetime reorder and clock copy"
+  },
+  "ordered_boundaries": [
+    {
+      "order": 1,
+      "source": "src/game_hosts.cpp:1990",
+      "boundary": "bind_legacy_crt_math_runtime(application_math_runtime)",
+      "evidence": "Process-lifetime global word and current &_errno supplied; no missing binding in inspected Source."
+    },
+    {
+      "order": 2,
+      "source": "src/game_hosts.cpp:1339",
+      "boundary": "SoundServices constructor: XLiveLibrary::Impl LoadLibraryExW",
+      "evidence": "XLive member precedes core sound; constructor reads existing settings publication first. Earliest explicit foreign loader after last logged settings record."
+    },
+    {
+      "order": 3,
+      "source": "src/game_sound_runtime.cpp:61",
+      "boundary": "GameSoundRuntime::Impl and FmodConfigurationLibrary::Impl load fmodex.dll",
+      "evidence": "Source owner/state created, FMOD core loaded, real resource/clock/file/Lua contexts constructed; Event library not yet loaded by this provider."
+    },
+    {
+      "order": 4,
+      "source": "src/game_hosts.cpp:1355",
+      "boundary": "Dialog attach; profile SDK bind; singleton sound-runtime bind",
+      "evidence": "Completes SoundServices aggregate before core.startup."
+    },
+    {
+      "order": 5,
+      "source": "src/game_sound_runtime.cpp:307",
+      "boundary": "GameSoundRuntime::startup and bind_files",
+      "evidence": "One-shot and sole callback ownership checks; then construct_sound_system_00a88770."
+    },
+    {
+      "order": 6,
+      "source": "src/sound_startup.cpp:28",
+      "boundary": "Actual sound and auxiliary owner registrations; raw manager reorder; current clock copy",
+      "evidence": "All occur before initialize_sound_library. Raw manager slots at +4/+8/+C require valid objects and anchor; actual clock publication must remain live."
+    },
+    {
+      "order": 7,
+      "source": "src/fmod_configuration_library.cpp:90",
+      "boundary": "event_system_create -> lazy event_library -> _FMOD_EventSystem_Create@4",
+      "evidence": "First FMOD SDK call in core startup; actual event output pointer."
+    },
+    {
+      "order": 8,
+      "source": "src/audio_online_startup.cpp:193",
+      "boundary": "Remaining Event/System initialization",
+      "evidence": "Get System; enabled driver scan; speaker mode; Event init; file hooks; 3D settings; output queries. Only memory result0x2B gets the native checkpoint."
+    },
+    {
+      "order": 9,
+      "source": "src/sound_startup.cpp:40",
+      "boundary": "Resource owner creation and sound Lua configuration",
+      "evidence": "Required real VFS/Lua/resource work also occurs before the sound-complete marker."
+    }
+  ],
+  "DLL_path_provenance": {
+    "source": "game_main sets current directory to --game-root; selected_library_path turns missing override into absolute current-directory DLL path",
+    "captured_overrides": "No FMOD, FMOD Event or XLive override in captured arguments",
+    "requested_directory": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "actual_loaded_module_list_available": false,
+    "qualification": "Requested static paths and file identities only; successful DLL load and runtime module path not yet established."
+  },
+  "installed_DLLs": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "size": 350544,
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+      "machine": "0x14c",
+      "imports": [
+        "KERNEL32.DLL",
+        "ADVAPI32.dll",
+        "MSACM32.dll",
+        "MSVCRT.dll",
+        "ole32.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WSOCK32.dll"
+      ],
+      "startup_exports": {
+        "FMOD_System_Create": "0x5dc8b",
+        "FMOD_System_GetVersion": "0x5e8ed",
+        "FMOD_System_SetOutput": "0x5dd84",
+        "FMOD_System_Init": "0x5e537",
+        "FMOD_System_SetFileSystem": "0x5e109"
+      }
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "size": 238936,
+      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+      "machine": "0x14c",
+      "imports": [
+        "WINMM.dll",
+        "fmodex.dll",
+        "MSVCRT.dll",
+        "KERNEL32.dll"
+      ],
+      "startup_exports": {
+        "_FMOD_EventSystem_Create@4": "0x96a0",
+        "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
+        "_FMOD_EventSystem_Init@20": "0x96c0"
+      }
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+      "size": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "machine": "0x14c",
+      "imports": [
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "USER32.dll",
+        "GDI32.dll",
+        "SHELL32.dll",
+        "WS2_32.dll"
+      ],
+      "startup_exports": {}
+    }
+  ],
+  "startup_export_checks": [
+    {
+      "dll": "fmodex.dll",
+      "file_version": "0.4.18.4",
+      "required_exports": {
+        "FMOD_System_GetNumDrivers": "0x5ddfa",
+        "FMOD_System_GetDriverCaps": "0x5de7b",
+        "FMOD_System_SetSpeakerMode": "0x5e20e",
+        "FMOD_System_SetOutput": "0x5dd84",
+        "FMOD_System_SetFileSystem": "0x5e109",
+        "FMOD_System_Set3DSettings": "0x5e5e8",
+        "FMOD_System_GetDriver": "0x5deff",
+        "FMOD_System_GetOutput": "0x5ddbf",
+        "FMOD_System_GetSpeakerMode": "0x5e249",
+        "FMOD_Memory_GetStats": "0x5dc25"
+      },
+      "missing": []
+    },
+    {
+      "dll": "fmod_event.dll",
+      "file_version": "0.4.18.4",
+      "required_exports": {
+        "_FMOD_EventSystem_Create@4": "0x96a0",
+        "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
+        "_FMOD_EventSystem_Init@20": "0x96c0"
+      },
+      "missing": []
+    }
+  ],
+  "ABI_and_CRT": {
+    "FMOD_C_binding": "Current Function is uint32_t (__stdcall*)(Args...); stack-sized scalar/pointer inputs used for startup; no original game address invoked.",
+    "event_decorated_bytes": [
+      4,
+      8,
+      20
+    ],
+    "decorated_names_match_current_argument_sizes": true,
+    "static_export_presence_only": true,
+    "required_early_exports_checked": 13,
+    "missing_early_exports": 0,
+    "file_callback_binding": "Actual reconstructed open/close/read/seek pointers with stdcall ABI; original image integers are provenance only.",
+    "journal_order": "Result appended only after foreign call returns; access violation in a load/call can leave no call row.",
+    "legacy_math": "Process-lifetime bypass globals, current &_errno, legacy_crt_87except_00c27489; core checks required CRT pointers.",
+    "live_validity_limit": "Static binding presence is not a proof of valid live manager/clock/state/output memory.",
+    "legacy_math_prior_binding": "Same bind call at src/game_hosts.cpp:1885 precedes successfully logged renderer/settings work; later1990 call repeats same process-lifetime binding."
+  },
+  "known_data_prerequisites": [
+    "SoundServices existing settings process and profile SDK lifetime",
+    "Actual shared singleton manager section and begin/end/capacity; both sound/aux registrations must exist for raw reorder",
+    "Actual current frame-clock publication supplies sixteen bytes before FMOD initialization",
+    "Single bound live file/VFS/string context; installed DLL and callback functions remain alive through callbacks and release",
+    "Actual event/system output handles and later resource/Lua configuration must be valid"
+  ],
+  "historical_comparison": {
+    "document": "docs/AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
+    "same_FMOD_hashes_confirmed": true,
+    "historical_failures": "EventSystem Init61 and downstream CreateSound78/GetLength37; later finite application success",
+    "not_a_current_diagnosis": "Current process exits0xC0000005 and captures no FMOD result. Historical output-init failure or environmental recovery cannot be assigned as current cause."
+  },
+  "actionable_next_check": {
+    "owner": "Primary integrator debugger investigation",
+    "capture": [
+      "First access-violation exception address and read/write target",
+      "Loaded module path/base at fault",
+      "Registers and call stack",
+      "Reached boundary among SoundServices construction, core.startup, raw manager reorder, first EventSystem call"
+    ],
+    "preserve": "Current installed libraries and audio/options values",
+    "then": "Inspect immediate failing call inputs and predecessor using the actual fault location before selecting a Source fix."
+  },
+  "evidence_archive": {
+    "directory": "local\\cc12_startup_sound_boundary_evidence_20261008",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership",
+    "files": 29,
+    "manifest_sha256": "ee6ac2c38c44133146a8b1d595b9e62fa67618a1a6084229c327776b8ace0e2d",
+    "files_and_source_fingerprints": [
+      {
+        "path": "source\\src\\game_hosts.cpp",
+        "bytes": 120415,
+        "sha256": "f23560ddde033d7f1a45417386db190820f80b7e5c2ffed71db165fc0cc5736d",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts.cpp"
+      },
+      {
+        "path": "source\\src\\game_sound_runtime.cpp",
+        "bytes": 20078,
+        "sha256": "9999a87458b0c069d12bbe1b6be6c8154db00949654b3a05dd2c3b930b2fd3d1",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_runtime.cpp"
+      },
+      {
+        "path": "source\\src\\sound_startup.cpp",
+        "bytes": 2169,
+        "sha256": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_startup.cpp"
+      },
+      {
+        "path": "source\\src\\audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\audio_online_startup.cpp"
+      },
+      {
+        "path": "source\\src\\fmod_configuration_library.cpp",
+        "bytes": 24627,
+        "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\fmod_configuration_library.cpp"
+      },
+      {
+        "path": "source\\src\\sound_system_owner.cpp",
+        "bytes": 7279,
+        "sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_system_owner.cpp"
+      },
+      {
+        "path": "source\\src\\sound_lifetime_access.cpp",
+        "bytes": 2751,
+        "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_lifetime_access.cpp"
+      },
+      {
+        "path": "source\\src\\xlive_library.cpp",
+        "bytes": 3507,
+        "sha256": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_library.cpp"
+      },
+      {
+        "path": "source\\src\\legacy_crt_math.cpp",
+        "bytes": 11469,
+        "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\legacy_crt_math.cpp"
+      },
+      {
+        "path": "source\\src\\game_main.cpp",
+        "bytes": 38741,
+        "sha256": "00ee848953c111de0c3ff5a99d38ccf112fd1b27f36502c16dfb73b73158b10d",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_main.cpp"
+      },
+      {
+        "path": "source\\src\\native_online_signin.cpp",
+        "bytes": 7621,
+        "sha256": "e53a51625431b7fa4d4c11077bda2a64a64ee15a9f1bd9990fe94c21915dded7",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_signin.cpp"
+      },
+      {
+        "path": "source\\src\\native_xlive_device_adapter.cpp",
+        "bytes": 1405,
+        "sha256": "634eeb944ec1ef31db0364b8f564711071be93d9acc4dd6b45c7050f0074a703",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_xlive_device_adapter.cpp"
+      },
+      {
+        "path": "source\\src\\game_platform_services.cpp",
+        "bytes": 884,
+        "sha256": "92a862731d37619415f071bfbce560fb99fdbaec2b08ffb73723873fa2ed0451",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_platform_services.cpp"
+      },
+      {
+        "path": "source\\src\\game_sound_platform.cpp",
+        "bytes": 500,
+        "sha256": "92a270092a02bb3c3c63df4a347db1905d3aef69ee8b9fe0880e4bf23aab8e83",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_platform.cpp"
+      },
+      {
+        "path": "source\\src\\game_sound_dialog_runtime.cpp",
+        "bytes": 10044,
+        "sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_dialog_runtime.cpp"
+      },
+      {
+        "path": "source\\src\\sound_resource_runtime.cpp",
+        "bytes": 5587,
+        "sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_resource_runtime.cpp"
+      },
+      {
+        "path": "source\\src\\native_singleton_removal_reorder.cpp",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_singleton_removal_reorder.cpp"
+      },
+      {
+        "path": "source\\src\\sound_configuration.cpp",
+        "bytes": 16866,
+        "sha256": "5728388a223d9f39acd061117e5527f7e0fc564e8c3e0eeabad24cb1e9e10066",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_configuration.cpp"
+      },
+      {
+        "path": "source\\src\\game_hosts_singletons.cpp",
+        "bytes": 6608,
+        "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_singletons.cpp"
+      },
+      {
+        "path": "source\\include\\bsp\\audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\audio_online_startup.hpp"
+      },
+      {
+        "path": "source\\include\\bsp\\sound_file_callbacks.hpp",
+        "bytes": 4191,
+        "sha256": "3e84235420f7af0e1974efef14d3316744280e7240a0ee5229ba97fb6ba71ce4",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\sound_file_callbacks.hpp"
+      },
+      {
+        "path": "cc12_startup_exit_capture.json",
+        "bytes": 939,
+        "sha256": "479d571a0b085df5b827870c512f777c6e519b8f868c7b9f3db685d028cedeb8",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_exit_capture.json"
+      },
+      {
+        "path": "cc12_startup_captured.log",
+        "bytes": 7108,
+        "sha256": "7e04c51119f827e49305ed2c4790e42ef274d5841b420d10da7a5105bc1da93a",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log"
+      },
+      {
+        "path": "cc12_startup_smoke.log",
+        "bytes": 7103,
+        "sha256": "5a96dc9af7c85cff55d49c57e0e00daab667b83f7c4ab4cd4cb6ae2a87dcf591",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_smoke.log"
+      },
+      {
+        "path": "cc12_startup_sound_dll_static.json",
+        "bytes": 1607,
+        "sha256": "a7425f81185f44d80dd31797a609d94b9ce9b26cd72e14b5222f04230851bbcc",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_dll_static.json"
+      },
+      {
+        "path": "cc12_startup_sound_exports.json",
+        "bytes": 859,
+        "sha256": "e3a1cb6cefd04d737c480309950d0799e5616f77f5ff50a0073fdcd9e137a209",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_exports.json"
+      },
+      {
+        "path": "cc12_startup_sound_source_pins.json",
+        "bytes": 2833,
+        "sha256": "62aadb719cc98cc07ea5ab7cf10a8de9e1b0926c6e33eb25b00490e367e9d81b",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_source_pins.json"
+      },
+      {
+        "path": "docs\\AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
+        "bytes": 5227,
+        "sha256": "31a630430e40a1bb77a154f6c1ad9c3013301510d20391777bd187f2f32d13f6",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\docs\\AUDIO_STARTUP_DIAGNOSTIC_CC10.md"
+      },
+      {
+        "path": "docs\\COMPLETE_SOUND_STARTUP.md",
+        "bytes": 6580,
+        "sha256": "ed1bc5b5055dd6eae7203408103f6f2ef43f127aa956f6644fe8c286382ed9b9",
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\docs\\COMPLETE_SOUND_STARTUP.md"
+      }
+    ]
+  },
+  "verification": {
+    "static_source_order_inspected": true,
+    "source_byte_equality_with_integrator": true,
+    "PE_machine_versions_exports_hashes_checked": true,
+    "archive_manifest_hashes": "PASS: all29 archived files and manifest SHA256 verified",
+    "fault_localized": false,
+    "current_FMOD_initialization_succeeded": false,
+    "new_Source_fix_justified": false,
+    "game_startup_validated": false,
+    "gameplay_validated": false
+  },
+  "debugger_update_from_primary": {
+    "observation": "First cdb attempt stopped on debugger-only0xC0000008 InvalidHandle at ntdll!NtClose while loading xlive.dll; no AV dump captured by that attempt.",
+    "status": "Primary is adjusting initial exception filters before entry.",
+    "qualification": "This does not identify the no-debug0xC0000005 fault; no conflation or fix inferred."
+  }
+}
