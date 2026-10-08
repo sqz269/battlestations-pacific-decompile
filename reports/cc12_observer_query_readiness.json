@@ -1,0 +1,433 @@
+{
+  "packet": "cc12_observer_query_readiness",
+  "utc": "2026-10-08T05:38:32.525328+00:00",
+  "status": "Ready to implement complete normal-return Source query under explicit actual-storage admission; implementation/validation not yet done",
+  "source_revision": "5b6a854c8a297043ccfa51f8260ab95d2f3caa9a",
+  "scope": {
+    "owned_addresses": [
+      "00694AF0"
+    ],
+    "owned_tracked_files": [
+      "docs/CC12_OBSERVER_QUERY_READINESS.md",
+      "reports/cc12_observer_query_readiness.json"
+    ],
+    "other_native_bodies_expanded": false,
+    "Source_functions_added": 0,
+    "Source_fragments_added": 0,
+    "native_or_Source_execution": false,
+    "build_or_tests_run": false,
+    "old_families_replayed": false,
+    "Ghidra_mutations": false
+  },
+  "target": {
+    "address": "00694AF0",
+    "name": "BSP_Observer_IsPairRegistered",
+    "name_qualification": "Descriptive hypothesis, not recovered symbol",
+    "coverage": "complete",
+    "start": "00694AF0",
+    "end_inclusive": "00694B8C",
+    "end_exclusive": "00694B8D",
+    "bytes": 157,
+    "instructions": 52,
+    "original_ABI": {
+      "entry": "ECX actual first endpoint; EDX actual callback-owner base; no stacked explicit inputs",
+      "saved": "EBX,ESI,EDI saved/restored on both normal paths; EBP untouched",
+      "provenance": "EBX=entryECX at00694B0D, EDI=entryEDX at00694B0B; ESI=captured lockowner+4 at00694B14. Original endpoint registers restored at00694B32/34 for lookup.",
+      "exits": [
+        "00694B69 plainRET",
+        "00694B8C plainRET"
+      ],
+      "result": "AL only is canonical0/1, set AFTER outer leave. Upper24 EAX is not canonicalized; retain edge-pointer/voidAPI residue as native volatile detail, not uint32 return1/0.",
+      "normal_ECX_exit": "Saved previous FS:[0] exception-list link; not an endpoint result",
+      "stack": "Two native direct calls have no explicit stacked inputs. Each Win32 API call pushes capturedESI and consumes one DWORD under its imported ABI. Both final ADD ESP,14h remove locals/SEH beforeRET.",
+      "fp": "Zero x87/SSE instructions in this body; called providers retain their own ABI/ambient state requirements."
+    },
+    "blocks": [
+      {
+        "range": "00694AF0..00694B0A",
+        "effect": "Install FS:[0] exception registration: state-1, handler00C7E9B8, priorlink; reserve8byteguard; saveEBX/ESI/EDI."
+      },
+      {
+        "range": "00694B0B..00694B21",
+        "effect": "Capture endpoint identities; call00694280; read owner+4 intoESI with no nullowner guard; stamp localguardCE37FC and capturedsection."
+      },
+      {
+        "range": "00694B25..00694B31",
+        "effect": "Nullsection skips enter/depth only. Otherwise real EnterCriticalSection(ESI), then physicalDWORD[ESI+18]+=1 modulo32."
+      },
+      {
+        "range": "00694B32..00694B45",
+        "effect": "Restore actual endpoint identities toECX/EDX; arm state0; call006949D0 which independently takes a nested currentlock; TEST EAX selects nonnull/null before outerunlock."
+      },
+      {
+        "range": "00694B47..00694B69",
+        "effect": "True: if capturedsection nonnull, depth-=1 then realLeave; restoreEDI/ESI, setAL1, restoreEBX and priorFSlink, remove14hframe, RET."
+      },
+      {
+        "range": "00694B6A..00694B8C",
+        "effect": "False: if capturedsection nonnull, depth-=1 then realLeave; restore priorFSlink/registers, clearAL, remove14hframe, RET."
+      }
+    ],
+    "observable_effects": "Caller itself changes guard/exception-stack state and captured tracked-depth around lookup. It does not modify endpoint arrays, edge fields/refcounts, or call profiles. Existing getter may lazily construct/publish/register the lock owner.",
+    "scalar_proof": "TEST full returnededge EAX atB43 selects branch; both paths setAL after optionalLeave; nonzero cannot become false due to Leave clobberingEAX, and nullsection does not imply false."
+  },
+  "installed_PE": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "machine": "014C",
+    "body_start": "00694AF0",
+    "body_end_inclusive": "00694B8C",
+    "file_offset": "294AF0",
+    "body_size": 157,
+    "body_sha256": "01cfbb1d6cb08ff91919ca2d6606d3bb7cade7e62ca79caabfc83d0fd661e968",
+    "body_hex": "6aff68b8e9c70064a100000000506489250000000083ec085356578bfa8bd9e86cf7ffff8b700485f6c744240cfc37ce0089742410740b56ff151822ce00834618018bd78bcbc744241c00000000e88dfeffff85c0742385f6740b834618ff56ff151022ce005f5eb0015b8b4c240864890d0000000083c414c385f6740b834618ff56ff151022ce008b4c24145f5e32c05b64890d0000000083c414c3",
+    "live_ghidra_bytes_match": true,
+    "decoded_instruction_count": 52,
+    "decoded_bytes": 157,
+    "calls": [
+      {
+        "address": "00694B0F",
+        "function": "00694AF0",
+        "bytes": "e86cf7ffff",
+        "native": "00694280"
+      },
+      {
+        "address": "00694B28",
+        "function": "00694AF0",
+        "bytes": "ff151822ce00",
+        "native": "IAT[00CE2218]",
+        "iat_slot": "00CE2218",
+        "dll": "KERNEL32.dll",
+        "import": "EnterCriticalSection",
+        "kind": "indirect_import",
+        "pe_iat_initial_dword": "00A056B8"
+      },
+      {
+        "address": "00694B3E",
+        "function": "00694AF0",
+        "bytes": "e88dfeffff",
+        "native": "006949D0"
+      },
+      {
+        "address": "00694B50",
+        "function": "00694AF0",
+        "bytes": "ff151022ce00",
+        "native": "IAT[00CE2210]",
+        "iat_slot": "00CE2210",
+        "dll": "KERNEL32.dll",
+        "import": "LeaveCriticalSection",
+        "kind": "indirect_import",
+        "pe_iat_initial_dword": "00A05688"
+      },
+      {
+        "address": "00694B73",
+        "function": "00694AF0",
+        "bytes": "ff151022ce00",
+        "native": "IAT[00CE2210]",
+        "iat_slot": "00CE2210",
+        "dll": "KERNEL32.dll",
+        "import": "LeaveCriticalSection",
+        "kind": "indirect_import",
+        "pe_iat_initial_dword": "00A05688"
+      }
+    ],
+    "normal_exit_sites": [
+      "00694B69",
+      "00694B8C"
+    ],
+    "fp_instructions": []
+  },
+  "host_steps": [
+    {
+      "address": "00694B0F",
+      "function": "00694AF0",
+      "bytes": "e86cf7ffff",
+      "native": "00694280",
+      "ABI": "No nativeinputs; EAX=currentowner",
+      "contract": "Existing genuine actualpublication getter Source"
+    },
+    {
+      "address": "00694B28",
+      "function": "00694AF0",
+      "bytes": "ff151822ce00",
+      "native": "IAT[00CE2218]",
+      "iat_slot": "00CE2218",
+      "dll": "KERNEL32.dll",
+      "import": "EnterCriticalSection",
+      "kind": "indirect_import",
+      "pe_iat_initial_dword": "00A056B8",
+      "ABI": "StackcapturedESI, importedstdcallsingleDWORD",
+      "contract": "Real Win32 EnterCriticalSection; incrementphysicaldepth onlyaftercall"
+    },
+    {
+      "address": "00694B3E",
+      "function": "00694AF0",
+      "bytes": "e88dfeffff",
+      "native": "006949D0",
+      "ABI": "ECX=originalfirst, EDX=originalowner; EAX=edge/null",
+      "contract": "Existing genuine actualarrays lookup Source with own nestedgetter/guard"
+    },
+    {
+      "address": "00694B50",
+      "function": "00694AF0",
+      "bytes": "ff151022ce00",
+      "native": "IAT[00CE2210]",
+      "iat_slot": "00CE2210",
+      "dll": "KERNEL32.dll",
+      "import": "LeaveCriticalSection",
+      "kind": "indirect_import",
+      "pe_iat_initial_dword": "00A05688",
+      "ABI": "StackcapturedESI, importedstdcallsingleDWORD",
+      "contract": "RealLeave on truearm, afterphysicaldepthdecrement"
+    },
+    {
+      "address": "00694B73",
+      "function": "00694AF0",
+      "bytes": "ff151022ce00",
+      "native": "IAT[00CE2210]",
+      "iat_slot": "00CE2210",
+      "dll": "KERNEL32.dll",
+      "import": "LeaveCriticalSection",
+      "kind": "indirect_import",
+      "pe_iat_initial_dword": "00A05688",
+      "ABI": "StackcapturedESI, importedstdcallsingleDWORD",
+      "contract": "RealLeave on falsearm, afterphysicaldepthdecrement"
+    }
+  ],
+  "current_providers": [
+    {
+      "address": "00694280",
+      "source": "src/observer_lifetime.cpp:161",
+      "symbol": "NativeObserverLifetime::lock_owner_00694280",
+      "coverage": "Existing complete actualstorage provider",
+      "binding": "Borrow actual E198E0 publication and SoundLifetimeAccess actual01090AA0; lazy path captures manager lock, allocates raw8, constructs, publishes/registers, unlocks and finally reloads."
+    },
+    {
+      "address": "006949D0",
+      "source": "src/observer_lifetime.cpp:183",
+      "symbol": "NativeObserverLifetime::find_pair_006949d0",
+      "coverage": "Existing complete actualstorage provider",
+      "binding": "Fresh getter/nested realguard; unsigned smaller-count search, equality uses callbackownerarray; opposite-endpoint exactaddress match; edge/null result."
+    },
+    {
+      "address": "00BD1860",
+      "source": "src/native_renderer_worker_lifetime.cpp:74",
+      "symbol": "create_native_tracked_critical_section_00bd1860",
+      "coverage": "Existing raw provider",
+      "binding": "Actual1Ch allocation, real InitializeCriticalSection, trackedDWORD18=0; retained allocation-failure contract."
+    },
+    {
+      "address": "00411EE0",
+      "header": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "symbol": "destroy_native_singleton_guard_00411ee0",
+      "coverage": "Existing actual rawguard cleanup provider, native body not expanded",
+      "binding": "Capture rawguard+4 beforeCE37FCstamp, decrementphysical18 then realLeave; existence does not prove this query privateFH3handler."
+    },
+    {
+      "symbol": "ObserverEdgeGuard",
+      "source": "src/observer_edges.cpp:7",
+      "coverage": "Existing genuine local Source guard",
+      "binding": "Capture TrackedCriticalSection pointer; nonnull actualEnter then DWORDdepth+1; destructor DWORDdepth-1 then actualLeave; memcpy/uint32 arithmetic retains wrap."
+    },
+    {
+      "symbol": "GameObserverRuntime",
+      "source": "src/game_observer_runtime.cpp:18",
+      "header": "include/bsp/game_observer_runtime.hpp",
+      "coverage": "Existing application actualpublication/lifetime binding",
+      "binding": "Owns stable observer lock/dispatch cells; uses GameSingletonHost sound_lifetime actual managerpublication; binds borrowed destruction context before registration; no second domain."
+    },
+    {
+      "symbol": "CF7E70 deletion case",
+      "source": "src/native_singleton_destruction.cpp:442",
+      "coverage": "Existing real shutdown path",
+      "binding": "Borrow same observerlifetime; delete_lock_owner_00694ea0 calls matched realtrackedsectionrelease and clearsactualpublication. Context survives manager drain."
+    }
+  ],
+  "actual_admission": {
+    "endpoint_prefix": "Same actual aligned10h first/callbackowner bases with actual arrays +4data/+8count/+Ccapacity; no semantic handles, owner adjustments or copied objects.",
+    "array_edges": "Live valid allocated spans, unsigned count<=capacity, positivecount requires valid backing and valid reached10hedges with actual first+4/callback+8 identities. Null data/count0 is empty; no null-edge fallback.",
+    "section": "Nonnull captured pointer addresses real initialized18h Win32 CRITICAL_SECTION plus writable physicalDWORD18 (total1Ch); originalnullsection path preserved; never copy OS lock.",
+    "lifetime": "Borrow one currentactual manager publication and the current observerlifetime publicationcells; context/owners/reachedsections/endpoints/arrays remain live throughquery. Keep existing required dispatchowner valid for connected cleanup, clean endpoints before rawmanagerdrain.",
+    "nested_lock": "Lookup resolves current owner independently; do not replace with capturedoutersection or remove duplicateacquisition. Outer leave always uses capturedpointer even if a publication can change.",
+    "no_class_claim": "No profileword or virtual callback is invoked here. Validprefix/query outcome does not admit unit/group constructors, class lifetime, type routing, world registration or gameplay.",
+    "excluded": "Invalid backing, asynchronous faults, allocator exceptional-domain expansion, concurrent publication/teardown, original FH3/SEH identity and exactvolatile/fullentryABI."
+  },
+  "proposed_implementation": {
+    "files": [
+      "include/bsp/observer_edges.hpp",
+      "src/observer_edges.cpp"
+    ],
+    "signature": "bool observer_pair_registered_00694af0(NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner, NativeObserverLifetime& lifetime);",
+    "body": "ObserverEdgeGuard guard(lifetime.lock_owner_00694280()->section_04); return lifetime.find_pair_006949d0(first, callback_owner) != nullptr;",
+    "evaluation_order": "Boolean return expression is evaluated before localguard release, preserving TEST-before-unlock scalar behavior; ordinary C++ exception release uses existing guard.",
+    "not_noexcept": true,
+    "new_CMake_source_required": false,
+    "new_provider_or_dispatcher_required": false,
+    "interface_limit": "New explicit-lifetime C++ interface over actualstorage, not original ECX/EDX/AL thunk or literal157-byte replacement."
+  },
+  "minimal_connected_Source_fixture": {
+    "status": "Proposed only; not created/compiled/executed in readiness audit",
+    "safe_name": "local/cc12_observer_query_probe.exe",
+    "connection": "Use current GameSingletonHost/GameObserverRuntime with initialized actualdispatchowner and same rawmanager context; explicitrawendpointprefixes with emptyactualarrays, not copiedunit/group or semanticdomain.",
+    "sequence": [
+      "querymissing",
+      "genuine register_observer_pair_00694a60",
+      "querypresent",
+      "assert sameedge pointer/refcount and unchanged endpointarrays",
+      "genuine lifetime.unregister_pair_006952a0",
+      "querymissing",
+      "current endpoint teardown then rawmanagerdrain"
+    ],
+    "checks": [
+      "Boolean missing/present/missing",
+      "actual section identity and tracked depth balanced",
+      "no edge/reference/array mutation by query",
+      "same lifetime survives cleanup/drain"
+    ],
+    "scope": "One connected case; no new trackedtestframework, fake criticalsection, synthetic querycallback, original EH execution or old successfulfamily replay.",
+    "link_requirement": "Ad hoc Win32 executable /link /MANIFEST:EMBED"
+  },
+  "named_unexpanded": [
+    {
+      "address": "00694280",
+      "role": "Reused actual getter Source; nativecallee unexpanded"
+    },
+    {
+      "address": "006949D0",
+      "role": "Reused actual search Source; nativecallee unexpanded"
+    },
+    {
+      "address": "00C7E9B8",
+      "role": "Handler address pushed by caller; inside known Unwind@00C7E9B0; handler/table not expanded"
+    },
+    {
+      "address": "00411EE0",
+      "role": "Known guard cleanup Source; no claim of query-specific original EH execution"
+    },
+    {
+      "address": "0070EF30",
+      "role": "Prior audited consumer at0070EFAA; current packet does not re-expand it or admit whole group path"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Decompiler undefined4 return1/0",
+      "is": "OnlyAL canonical0/1; upper24EAX not normalized",
+      "evidence": "B43 fullpointerTEST; B58 MOVAL1; B7F XORAL,AL; no fullEAX normalization"
+    },
+    {
+      "was": "A direct find_pair!=nullptr is enough",
+      "is": "Independent outercaptured guard is necessary in addition to lookup own nestedcurrent guard",
+      "evidence": "B0F getter/B28 enter/B2E increment precedeB3E lookup; capturedESI released on both branches"
+    },
+    {
+      "was": "Semantic or absent observer lifetime assumed",
+      "is": "Current rawpublication/realcriticalsection/actualarrays providers already exist",
+      "evidence": "Literal current observer_lifetime.cpp, observer_edges.cpp, sound_lifetime_access.cpp and game_observer_runtime.cpp contracts"
+    }
+  ],
+  "verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "process_project_checked": true,
+    "ghidra_queries_auto_verify_project_program_language_imagebase": true,
+    "listing": "52 instructions,0 gaps; bothRET exits and allcontinuations decoded",
+    "byte_equality": "157/157 bytes versus liveGhidra and installedPE",
+    "call_site_ownership": "All5 sites liveproto ->00694AF0..00694B8C",
+    "direct_call_verifier": "PASS:4 serialized directcall rows (2 unique sites repeated),0 failures; imported calls separately byte/import verified",
+    "import_proof": "ThreeFF15 instructionbytes and installedPE imports retained; EnterCE2218/LeaveCE2210; Ghidra initialIAT bytes agree",
+    "required_listing_repair": null,
+    "provider_diff_against_main": "No differences for queried current observer/provider files",
+    "build_or_tests": false,
+    "native_execution": false,
+    "gameplay": false,
+    "diff_check": "PASS: staged git diff --check before commit"
+  },
+  "decision": {
+    "ready_to_implement_complete_normal_return_Source": true,
+    "whole_normal_return_body_has_current_providers": true,
+    "first_missing_normal_return_provider": null,
+    "implementation_exists_now": false,
+    "Source_build_or_fixture_pass_claimed": false,
+    "original_entry_ABI_ready": false,
+    "original_private_EH_ready": false,
+    "whole_group_0070EF30_ready": false,
+    "reason": "Existing genuine outer guard, current lockowner getter and nested actualpair lookup close every normal-return branch under explicit rawstorage/lifetime conditions. NewSource ABI/privateEH/classworld boundaries stay explicit."
+  },
+  "source_fingerprints": [
+    {
+      "path": "src/observer_edges.cpp",
+      "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+    },
+    {
+      "path": "include/bsp/observer_edges.hpp",
+      "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1"
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "sha256": "d1901241daf398bbb42967ec81258e399f4abb27f5d676ec1999804ccd9328ec"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "sha256": "8b0c9e8bb2ec5952ba07859d2b981890d92cc0743c19abca09960922c623adc4"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    }
+  ]
+}
