@@ -27306,6 +27306,65 @@
         },
         "counts_qualification": "Two new Ghidra functions and one repaired listing are analysis progress, separately from the single reconstructed Source36 leader function in this batch."
       }
+    },
+    {
+      "id": "cc11_entity_root_kind_leaves",
+      "worker": "land_retirement",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0042b8f0",
+        "0047f190"
+      ],
+      "output_files": [
+        "include/bsp/native_entity_root_kind.hpp",
+        "src/native_entity_root_kind.cpp",
+        "docs/NATIVE_ENTITY_ROOT_KIND_CC11.md",
+        "reports/native_entity_root_kind_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_unit_group_storage",
+        "cc11_health_unit_group_lookup"
+      ],
+      "done": false,
+      "state": "ready two independently audited complete raw63B20 root predicates",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_audit\\audit.json",
+      "audit_receipt_sha256": "58efe05ff85de0010ea97f5e87c731a5c5988ff19b7fe255cb1901cd0b48c4ef",
+      "contract": {
+        "packet": "cc11_entity_root_kind_leaves",
+        "addresses": [
+          "0042b8f0",
+          "0047f190"
+        ],
+        "exact_four_NEW_paths": [
+          "include/bsp/native_entity_root_kind.hpp",
+          "src/native_entity_root_kind.cpp",
+          "docs/NATIVE_ENTITY_ROOT_KIND_CC11.md",
+          "reports/native_entity_root_kind_cc11.json"
+        ],
+        "source_symbols": [
+          "native_entity_root_is_kind_0042b8f0",
+          "native_entity_root_is_kind_0047f190"
+        ],
+        "implementation": "TWO DISTINCT complete literal raw naked MSVC Win32 uint32 __fastcall(actualECX,unusedEDX,stackDWORD), preserve63 original bytes/20 instructions/fixed ordered words/actual freshC4/fullEAX0/1/RET4. No classifier/census/router/default/cache/substitute or collapse.",
+        "raw_admission": "Stable nonnull actual backing>=C8 with genuinely live aligned uint32 exactly+C4, common admitted domain covering dynamic branch. Fixed0 (and1 on01) branches do not read receiver; no invented guard/fallback. Actual class/constructor/virtual table/membership/lifetime unbound.",
+        "ready_native_callee_dependencies": "NONE; both whole leaves zeroCALL/global/relocations.",
+        "one_unique_connected_family": {
+          "fresh_TUs": [
+            "src/native_entity_root_kind.cpp",
+            "src/native_unit_group_storage.cpp",
+            "src/native_unit_group_lookup.cpp",
+            "unique ignored probe.cpp"
+          ],
+          "TU_count": 4,
+          "BSP_libraries": 0,
+          "producer_and_getter": "ONE current complete Source groupCtor70DAB0 on actual aligned508h live-word group/24 real34h records, borrowed exact CF4888 DATA snapshot. Publish actual receiver identity into record18/count1; current whole index70D030 and record70D080 recover SAME actual record/receiver. Then two explicitly selected raw leaves query SAME live receiver+C4.",
+          "relevance_and_limits": "Both bodies truly read C4, so this actual field/identity chain fits the code; no projected receiver/copied class field. Source memory-domain compatibility is not proof that original objects using00/01 profiles are valid native group members. Native group/class/world/virtual membership admission stays excluded.",
+          "comparisons": "Both full Original unmodified/unrelocated RX copies vs Source for fixedlists/currentC4/miss/freshhighbit/previous stale value; fullEAX/RET4/backing/guards. No original group/class ctor/vft execution or cross-pass equal-address inference.",
+          "providers": "Required real already-complete current groupCtor/lookup Source; group_scalar70D260 already complete/not a missing body and not called. No new arena/allocator/observer/default world or opaque callback."
+        },
+        "profile_notes": "All five +5C DATA cells validated; CE8BD0/CE8D68 labels SimpleEffect/PeriodicEffect are descriptive corpus lineage, not constructor/object-life proof. Native class methods and namespace admission remain separate."
+      }
     }
   ],
   "snapshot_after_analysis": {

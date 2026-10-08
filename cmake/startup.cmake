@@ -1644,3 +1644,6 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ship_kind.c
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_registry_scalar_delete.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_plane_derived_kind.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_set_leader.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_base_kind.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_map_lifetime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_direct_views.cpp)
