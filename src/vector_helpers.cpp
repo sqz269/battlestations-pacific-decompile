@@ -46,6 +46,14 @@ float length_2d_00414c60(const std::array<float, 2>& value) {
     return length_kernel(value.data());
 }
 
+// Keep the local kernel as the one math provider. This raw facade preserves
+// the ECX input, caller return address, integer stack and FP state at transfer.
+__declspec(naked) float __fastcall raw_length_2d_00414c60(const float*) noexcept {
+    __asm {
+        jmp length_kernel
+    }
+}
+
 void transform_point_copy_00414cd0(float* destination,
     const std::array<float, 3>& source, const CameraMatrix& matrix) {
     std::array<float, 3> transformed;

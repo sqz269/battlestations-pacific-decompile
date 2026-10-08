@@ -1,0 +1,489 @@
+{
+  "packet": "cc12_raw_vector2_tail_facade_Source",
+  "status": "Source complete; normal Win32 build and existing checks passed; static-only acceptance pending primary review",
+  "created_utc": "2026-10-08T14:48:14.815944+00:00",
+  "base_commit": "ed883eb85bee605f93d5a6839c4491e5e227b3af",
+  "owned_tracked_files": [
+    "include/bsp/vector_helpers.hpp",
+    "src/vector_helpers.cpp",
+    "docs/CC12_RAW_VECTOR2_TAIL_FACADE.md",
+    "reports/cc12_raw_vector2_tail_facade.json"
+  ],
+  "contract": {
+    "declaration": "float __fastcall bsp::raw_length_2d_00414c60(const float*) noexcept",
+    "implementation": "Same-TU public naked function; exactly one JMP to the actual existing local private length_kernel",
+    "ECX_entry": "Two readable actual float cells",
+    "ST0_exit": "Float-spilled result",
+    "ECX_exit": "Raw float bits of selected result; incoming pointer is not restored",
+    "return": "Plain RET; no caller argument cleanup",
+    "facade_added_effects": "No register/stack/EFLAGS/x87/SSE/FP-environment operation; neutral tail transfer only",
+    "kernel_local_x87_free_slots": 3,
+    "preconditions": "Caller-owned input lifetime/validity/synchronization and free local x87 slots; external CRT private requirements/policy remain external",
+    "no_input_copy_or_environment_reset": true
+  },
+  "physical_new_facade": {
+    "symbol": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+    "section": 11,
+    "bytes": 5,
+    "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+    "hex": "e900000000",
+    "instruction_count": 1,
+    "relocations": [
+      {
+        "offset": 1,
+        "type": 20,
+        "symbol": "?length_kernel@?A0xb6f1f0d0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?length_kernel@?A0xb6f1f0d0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 3
+        }
+      }
+    ],
+    "instructions": [
+      {
+        "offset": 0,
+        "size": 5,
+        "hex": "e900000000",
+        "mnemonic": "jmp",
+        "operands": "5"
+      }
+    ]
+  },
+  "preserved_whole_functions": [
+    {
+      "symbol": "?length_2d_00414c60@bsp@@YAMABV?$array@M$01@std@@@Z",
+      "bytes": 12,
+      "instructions": 5,
+      "complete_body_bytes_equal": true,
+      "normalized_ordered_relocations_equal": true
+    },
+    {
+      "symbol": "?transform_point_copy_00414cd0@bsp@@YAXPAMABV?$array@M$02@std@@ABV?$array@M$0BA@@3@@Z",
+      "bytes": 70,
+      "instructions": 27,
+      "complete_body_bytes_equal": true,
+      "normalized_ordered_relocations_equal": true
+    },
+    {
+      "symbol": "?length_kernel@<anonymous_namespace>@bsp@@YIMPBM@Z",
+      "bytes": 66,
+      "instructions": 26,
+      "complete_body_bytes_equal": true,
+      "normalized_ordered_relocations_equal": true
+    },
+    {
+      "symbol": "?data@?$array@M$01@std@@QBEPBMXZ",
+      "bytes": 3,
+      "instructions": 2,
+      "complete_body_bytes_equal": true,
+      "normalized_ordered_relocations_equal": true
+    },
+    {
+      "symbol": "?data@?$array@M$02@std@@QAEPAMXZ",
+      "bytes": 3,
+      "instructions": 2,
+      "complete_body_bytes_equal": true,
+      "normalized_ordered_relocations_equal": true
+    }
+  ],
+  "actual_private_kernel": {
+    "symbol": "?length_kernel@?A0xb6f1f0d0@bsp@@YIMPBM@Z",
+    "bytes": 66,
+    "instruction_count": 26,
+    "sha256": "0819ccd400edfe014e920943b80ec538ec1aa7d65071d4c7dcc312cac7deefe9",
+    "relocations": [
+      {
+        "offset": 19,
+        "type": 6,
+        "symbol": "?squared_length_cutoff@?A0xb6f1f0d0@bsp@@3NB",
+        "symbol_record": {
+          "name": "?squared_length_cutoff@?A0xb6f1f0d0@bsp@@3NB",
+          "value": 0,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 33,
+        "type": 20,
+        "symbol": "__CIsqrt",
+        "symbol_record": {
+          "name": "__CIsqrt",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    ]
+  },
+  "old_public_bridge": {
+    "symbol": "?length_2d_00414c60@bsp@@YAMABV?$array@M$01@std@@@Z",
+    "bytes": 12,
+    "instruction_count": 5,
+    "hex": "558bec8b4d085de900000000",
+    "relocations": [
+      {
+        "offset": 8,
+        "type": 20,
+        "symbol": "?length_kernel@?A0xb6f1f0d0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?length_kernel@?A0xb6f1f0d0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 3
+        }
+      }
+    ]
+  },
+  "actual_cutoff": {
+    "hex": "bbbdd7d9df7cdb3d",
+    "bytes": 8,
+    "readonly": true,
+    "symbol": {
+      "name": "?squared_length_cutoff@?A0xb6f1f0d0@bsp@@3NB",
+      "value": 0,
+      "section": 3,
+      "type": 0,
+      "storage": 3
+    },
+    "section_name": ".rdata"
+  },
+  "original_image_rechecked": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "accepted_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_append_raw_dependencies_evidence.zip",
+    "sha256": "da3bf045671b8b176f7bdb9ceb8d4ddd26951d30b3a96afc4857f98a22abb51b"
+  },
+  "native_kernel_mapping": {
+    "native_bytes": 66,
+    "native_sha256": "33ae787db85eab686aa928ac0452c6ad396e4947e4a7bf14be49bd3bb3158181",
+    "compiled_bytes": 66,
+    "identical_non_relocated_bytes": 58,
+    "relocated_operand_offsets": [
+      19,
+      33
+    ]
+  },
+  "native_return_and_x87_proof": {
+    "complete_CFG_instructions": 26,
+    "max_local_x87_slots_excluding_CRT_internals": 3,
+    "return_contracts": [
+      {
+        "ret_offset": 50,
+        "x87_depth": 1,
+        "local_ESP_delta": 0,
+        "caller_argument_cleanup": 0,
+        "last_scratch_write_offset": 43,
+        "ECX_exit": "raw float bits of selected result from overwritten scratch cell, not the incoming pointer"
+      },
+      {
+        "ret_offset": 65,
+        "x87_depth": 1,
+        "local_ESP_delta": 0,
+        "caller_argument_cleanup": 0,
+        "last_scratch_write_offset": 56,
+        "ECX_exit": "raw float bits of selected result from overwritten scratch cell, not the incoming pointer"
+      }
+    ],
+    "scope": "Static whole-native-body analysis with external ST0-in/ST0-out _CIsqrt contract. Both scratch-store/load/POP/RET arms checked. No execution."
+  },
+  "actual_CRT_import_provider": [
+    {
+      "phase": "pre_build_final",
+      "whole_library_bytes": 299244,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "exact_unique_import_member": {
+        "name": "api-ms-win-crt-math-l1-1-0.dll",
+        "header_offset": 154070,
+        "payload_file_offset": 154130,
+        "bytes": 60,
+        "sha256": "f6842daed5ce4aea93723ef31e1ddd23c79c3ad3d86aa679240c3ea5603f5bf1",
+        "retained_path": "pre_build_final/backend/_CIsqrt.import_member",
+        "symbol": "__CIsqrt",
+        "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+        "DLL_name": "_CIsqrt",
+        "machine": 332,
+        "version": 0,
+        "hint": 13,
+        "type_info": 8,
+        "import_type": 0,
+        "name_type": 2
+      }
+    },
+    {
+      "phase": "post_build_final",
+      "whole_library_bytes": 299244,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "exact_unique_import_member": {
+        "name": "api-ms-win-crt-math-l1-1-0.dll",
+        "header_offset": 154070,
+        "payload_file_offset": 154130,
+        "bytes": 60,
+        "sha256": "f6842daed5ce4aea93723ef31e1ddd23c79c3ad3d86aa679240c3ea5603f5bf1",
+        "retained_path": "post_build_final/backend/_CIsqrt.import_member",
+        "symbol": "__CIsqrt",
+        "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+        "DLL_name": "_CIsqrt",
+        "machine": 332,
+        "version": 0,
+        "hint": 13,
+        "type_info": 8,
+        "import_type": 0,
+        "name_type": 2
+      }
+    }
+  ],
+  "archive_snapshots": [
+    {
+      "phase": "baseline",
+      "bytes": 73573726,
+      "sha256": "cae4592f0dba2589b30676ec46f9aa90032c24274da6e5f5b7e802a7ecbec76b",
+      "member_count": 1898
+    },
+    {
+      "phase": "pre_build",
+      "bytes": 73573726,
+      "sha256": "cae4592f0dba2589b30676ec46f9aa90032c24274da6e5f5b7e802a7ecbec76b",
+      "member_count": 1898
+    },
+    {
+      "phase": "post_build",
+      "bytes": 73577712,
+      "sha256": "f14be845745d02010a057f13f671a4ffda18f6c09068a3ef5cf2701af8aff5e8",
+      "member_count": 1901
+    },
+    {
+      "phase": "pre_build_final",
+      "bytes": 73577712,
+      "sha256": "f14be845745d02010a057f13f671a4ffda18f6c09068a3ef5cf2701af8aff5e8",
+      "member_count": 1901
+    },
+    {
+      "phase": "post_build_final",
+      "bytes": 73577712,
+      "sha256": "05642bb18a659c0431b1f7c89b09f7a7df5294711c02acc5cbcc8ae6e5591941",
+      "member_count": 1901
+    }
+  ],
+  "exact_unique_archive_members": [
+    {
+      "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+      "header_offset": 18390036,
+      "payload_file_offset": 18390096,
+      "bytes": 2517,
+      "sha256": "fd507f16673c2ed1f34c6c45b62223307cc80b5f7d047ec29afe0583ecffa9bd",
+      "phase": "baseline",
+      "retained_path": "baseline/vector_helpers.archive_member",
+      "exact_unique_member_equal_whole_object": true
+    },
+    {
+      "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+      "header_offset": 18390036,
+      "payload_file_offset": 18390096,
+      "bytes": 2517,
+      "sha256": "fd507f16673c2ed1f34c6c45b62223307cc80b5f7d047ec29afe0583ecffa9bd",
+      "phase": "pre_build",
+      "retained_path": "pre_build/vector_helpers.archive_member",
+      "exact_unique_member_equal_whole_object": true
+    },
+    {
+      "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+      "header_offset": 18389674,
+      "payload_file_offset": 18389734,
+      "bytes": 2672,
+      "sha256": "a23556c45ec5550f24b28e4247106a0a38d88ad3e018f5fae2804ef486bd00b5",
+      "phase": "post_build",
+      "retained_path": "post_build/vector_helpers.archive_member",
+      "exact_unique_member_equal_whole_object": true
+    },
+    {
+      "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+      "header_offset": 18389674,
+      "payload_file_offset": 18389734,
+      "bytes": 2672,
+      "sha256": "a23556c45ec5550f24b28e4247106a0a38d88ad3e018f5fae2804ef486bd00b5",
+      "phase": "pre_build_final",
+      "retained_path": "pre_build_final/vector_helpers.archive_member",
+      "exact_unique_member_equal_whole_object": true
+    },
+    {
+      "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+      "header_offset": 18389674,
+      "payload_file_offset": 18389734,
+      "bytes": 2672,
+      "sha256": "8dd9f70a210cbc65919cab61f06e248ff20dd0e27a1315031823b872840394c4",
+      "phase": "post_build_final",
+      "retained_path": "post_build_final/vector_helpers.archive_member",
+      "exact_unique_member_equal_whole_object": true
+    }
+  ],
+  "current_Source_header_pins": [
+    {
+      "path": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\INCLUDE\\BSP\\VECTOR_HELPERS.HPP",
+      "retained_path": "post_build_final/consumed_headers/000_VECTOR_HELPERS.HPP",
+      "bytes": 1684,
+      "sha256": "e2b6380ecbd41a6204c6e68c249c85e967b6e198397a1b7924d47d0ee2307e28",
+      "role": "Actual vector_helpers.cpp CL.read dependency record"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\vector_helpers.cpp",
+      "retained_path": "post_build_final/src/vector_helpers.cpp",
+      "bytes": 1953,
+      "sha256": "7ec94b790d09917719b6f7d10559370f612101652dae252190319ea02440cdfa",
+      "role": "Actual snapshot after completed normal build"
+    }
+  ],
+  "capture_timing": {
+    "pre_build_final": {
+      "started": "2026-10-08T14:42:45.887983+00:00",
+      "finished": "2026-10-08T14:42:46.474040+00:00"
+    },
+    "build_final": {
+      "finished_utc": "2026-10-08T14:43:35.6728382Z",
+      "started_utc": "2026-10-08T14:43:04.4901351Z",
+      "command": "./scripts/build.ps1",
+      "exit_code": 0
+    },
+    "post_build_final": {
+      "started": "2026-10-08T14:43:54.330708+00:00",
+      "finished": "2026-10-08T14:43:55.035940+00:00"
+    },
+    "ordering_verified": true,
+    "first_build": {
+      "command": "./scripts/build.ps1",
+      "started_utc": "2026-10-08T14:35:06.2981511+00:00",
+      "finished_utc": "2026-10-08T14:35:42.9440503+00:00",
+      "exit_code": 0
+    },
+    "first_pre": {
+      "started": "2026-10-08T14:34:43.248441+00:00",
+      "finished": "2026-10-08T14:34:43.923918+00:00"
+    },
+    "first_post": {
+      "started": "2026-10-08T14:36:35.031186+00:00",
+      "finished": "2026-10-08T14:36:35.745365+00:00"
+    }
+  },
+  "input_evidence": {
+    "phase_pin_lists": [
+      "baseline/pins.json",
+      "pre_build/pins.json",
+      "post_build/pins.json",
+      "pre_build_final/pins.json",
+      "post_build_final/pins.json"
+    ],
+    "final_consumed_header_count": 75,
+    "all_consumed_header_paths_and_bytes_equal_across_final_build": true,
+    "selected_recipe_equal_across_final_build": true,
+    "physical_tools": [
+      "cl.exe",
+      "c1xx.dll",
+      "c2.dll",
+      "lib.exe",
+      "link.exe"
+    ],
+    "tool_scope": "Configured compiler/tool files and frontend/codegen siblings; no loaded-module identity claim",
+    "SDK_input": "Whole actual x86 ucrt.lib selected by normal link read record, plus extracted exact unique __CIsqrt import member",
+    "selected_compile_recipe": [
+      {
+        "phase": "pre_build_final",
+        "record_header": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\SRC\\VECTOR_HELPERS.CPP",
+        "command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_group_membership/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\SRC\\VECTOR_HELPERS.CPP"
+      },
+      {
+        "phase": "post_build_final",
+        "record_header": "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\SRC\\VECTOR_HELPERS.CPP",
+        "command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_group_membership/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_GROUP_MEMBERSHIP\\SRC\\VECTOR_HELPERS.CPP"
+      }
+    ]
+  },
+  "preservation_qualification": {
+    "all_five_preexisting_whole_functions_preserved": true,
+    "all_six_functions_and_ordered_relocations_equal_between_first_and_final_build": true,
+    "first_build_comment_correction": "First build incorrectly described incoming ECX as restored. Native scratch overwrite proves ECX receives selected result float bits. Only the new header/Source comments were corrected, then the same normal build/checks rerun. All real first and final captures retained.",
+    "aggregate_drift": "The baseline archive predates imported main additions: first normal build changes member count from 1898 to 1901. Final comment rebuild also changes complete object/archive hash. Whole archives, actual logs and per-phase inputs are retained; aggregate drift is not attributed solely to the new facade.",
+    "final_pre_post_drift": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+        "pre_sha256": "11d950325a665ebea29b278c5aa87613fe1961a2c4d4c74cb4b6a4aaa8b99172",
+        "post_sha256": "d5ee2cd35371a8293c6f23e6cb331e32a64c3a79f701b09d38f3b23d4f2e86e4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+        "pre_sha256": "69b034a353d37fb1aef7b2e7418899ebd064d770a80a603359e7f6bb1dc12562",
+        "post_sha256": "c4442b8469eaf5fdc37580ad49c9cbf66234558853f0050c47b871ae78a9389a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\vector_helpers.obj",
+        "pre_sha256": "a23556c45ec5550f24b28e4247106a0a38d88ad3e018f5fae2804ef486bd00b5",
+        "post_sha256": "8dd9f70a210cbc65919cab61f06e248ff20dd0e27a1315031823b872840394c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+        "pre_sha256": "f14be845745d02010a057f13f671a4ffda18f6c09068a3ef5cf2701af8aff5e8",
+        "post_sha256": "05642bb18a659c0431b1f7c89b09f7a7df5294711c02acc5cbcc8ae6e5591941"
+      }
+    ]
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "build_exit_code": 0,
+    "checks": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.22
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true,
+        "seconds": 0.04
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 7.87
+      }
+    ],
+    "warning": "Existing LNK4006 duplicate spawn_request_id_matches definition",
+    "new_tests_added": 0,
+    "new_Source_or_Original_entry_execution": false,
+    "new_fixture_or_old_fixture_replay": false,
+    "probe_or_forced_link": false
+  },
+  "scope": {
+    "additional_Original_address_credit": 0,
+    "reason": "00414C60 is already reconstructed; this is an additional Source tail interface",
+    "address_lookup_pre_post_equal": true,
+    "parent_geometry_reset_owner_host_or_raw_dependency_edits": false,
+    "CMake_registry_ledger_or_Ghidra_edits": false,
+    "application_linked_facade_claimed": false,
+    "loaded_backend_or_Original_CRT_policy_parity_claimed": false,
+    "runtime_ABI_differential_or_gameplay_claimed": false
+  },
+  "evidence": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_raw_vector2_tail_facade_evidence",
+    "analysis": "verified_static_analysis.json",
+    "whole_physical_inputs_retained": true,
+    "seal_status": "sealed and all member hashes/ZIP CRC verified",
+    "sealed_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_raw_vector2_tail_facade_evidence.zip",
+      "bytes": 142571469,
+      "sha256": "4abf69fab5a53b296c5de5c4a6ed2de51e0e4e208ebe19f649a65f0452e2ca9a",
+      "manifest_entries": 440,
+      "archive_entries": 441,
+      "all_member_hashes_and_zip_CRC_verified": true,
+      "artifact_manifest_sha256": "ead535439592788f59386ab5e2306ecd8af51b1b98c5b385d87da03b78085c6e"
+    }
+  }
+}
