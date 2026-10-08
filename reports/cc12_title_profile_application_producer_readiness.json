@@ -445,7 +445,7 @@
     {
       "provider": "Full game and embedded profile destruction",
       "status": "NORMAL_SOURCE_IMPLEMENTED_APPLICATION_DISPATCH_AND_LIFETIME_COMPOSITION_OPEN",
-      "evidence": "Normal4DCFE0 reaches raw7FD8A0(game+650), which uses same raw string cells and real collection cleanup. Runtime scalar deletion retains full lifetime operation. NativeGameLifetimeCalls still requires actual virtual_scalar/virtual_terminal dispatch for reached payloads; no production concrete implementation/context composition was found. Actual UI/movie/grid/game cells, resource/class/Lua/embedded/physics contexts and all borrowed owners must survive teardown. Normal-source completion is not native EH or binary ABI compatibility.",
+      "evidence": "Normal004DCF90 (scalar004DE270) reaches raw7FD8A0(game+650), which uses same raw string cells and real collection cleanup. Runtime scalar deletion retains full lifetime operation. NativeGameLifetimeCalls still requires actual virtual_scalar/virtual_terminal dispatch for reached payloads; no production concrete implementation/context composition was found. Actual UI/movie/grid/game cells, resource/class/Lua/embedded/physics contexts and all borrowed owners must survive teardown. Normal-source completion is not native EH or binary ABI compatibility.",
       "sources": [
         {
           "file": "include/bsp/native_game_lifetime.hpp",
@@ -859,5 +859,21 @@
   "capture_driver_correction": "First capture stopped before finishing when old ZIP manifest paths omitted the workspace/ prefix. Preserved capture_attempt01_archive_prefix.py, then required a unique exact-or-suffix archive-member match and verified every member byte count/hash. No code/game execution occurred in either capture.",
   "completion_boundary": "Read-only producer/lifetime readiness only. No Source connection is proposed as ready; first unresolved aggregate producer is concrete above. No standalone profile, sibling globals, synthetic SDK, semantic cast, callback substitution, premature game publication, parent weakening or menu wiring.",
   "local_whole_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_artifact_manifest.json",
-  "primary_review": "Required before integration; parent owns orchestration and startup/menu."
+  "primary_review": {
+    "status": "accepted_readiness_only_application_profile_owner_unready",
+    "receipt": "local/cc12_title_profile_application_producer_primary_review/receipt.json",
+    "receipt_sha256": "4aef870d87409928e7d65b3ae8da3926b3dd36ff49805c585fbb9474ab0d279c",
+    "rehashed_artifacts": 4098,
+    "historical_archives": 6,
+    "historical_members_rehashed": 1706,
+    "Native_whole_bytes_current_PE": 3503,
+    "selected_current_application_inputs": 13,
+    "other_snapshot_inputs_changed_through_accepted_integration": 8,
+    "inherited_third_lifetime_dispatch": "NativeGameEmbeddedLifetimeCalls.virtual_04(receiver,record)",
+    "corrected_prior_prose_label": "004DCF90 full lifetime;004DE270 scalar facade",
+    "new_Source": 0,
+    "new_build": 0,
+    "new_execution": 0,
+    "new_Original_function_credit": 0
+  }
 }

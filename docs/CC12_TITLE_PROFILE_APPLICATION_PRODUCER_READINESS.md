@@ -147,3 +147,17 @@ semantic return; settings routines use ECX and RET, with the control reset's tai
 jump and selected-user SDK signature preserved. These Source context interfaces
 are not binary entry replacements. No new Source/build/test/probe/game execution,
 Ghidra mutation, ledger edit, packet promotion or menu wiring occurred.
+
+Primary review accepted these readiness findings after rehashing all 4,098
+retained artifacts, six complete historical archives and their 1,706 recorded
+members, checking all seven Native spans against the current installed PE, and
+checking 13 selected current application/profile/host Source inputs. Eight
+other snapshot inputs differ through subsequent accepted string/shader and
+registry integration; the snapshot is not current compiler-input evidence.
+The full lifetime contract also includes inherited `virtual_04`, alongside
+scalar and terminal dispatch, as the following construction-context review
+establishes. The application owner remains unready.
+
+Primary receipt: `local/cc12_title_profile_application_producer_primary_review/receipt.json`,
+SHA256 `4aef870d87409928e7d65b3ae8da3926b3dd36ff49805c585fbb9474ab0d279c`.
+No Source change, new build, entry execution, or ready-owner credit is added.
