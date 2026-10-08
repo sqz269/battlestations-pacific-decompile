@@ -1,0 +1,571 @@
+{
+  "packet": "cc11_scene_enum_registry_lifetime",
+  "source_baseline": "6ea9a29928f0eed22f1848e7456b1e50c023e984",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "doc": "docs/NATIVE_ENUM_REGISTRY_LIFETIME_CC11.md",
+  "owned_addresses": [
+    "004D0760",
+    "008F4F00"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_registry_lifetime.hpp",
+    "src/native_enum_registry_lifetime.cpp",
+    "docs/NATIVE_ENUM_REGISTRY_LIFETIME_CC11.md",
+    "reports/native_enum_registry_lifetime_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "004D0760",
+      "inclusive_end": "004D085D",
+      "bytes": 254,
+      "sha256": "6a0f639cb57ac310d2f92897c8cb039c43707bf47c1bf071755db5d7930a1b07",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 75,
+      "coverage": "complete254B physicalextent normal tableclear ONLY actualCEnum/null producerdomain; raw75 includes3B unreachablealignment, stored/normal74",
+      "source_name": "clear_native_cenum_table_map_004d0760",
+      "observed_inputs": "ECX actual10Ch registry+4; receiver captured on stack, remaining64, constantEBP1",
+      "observed_return": "terminal EAX holds captured receiver at4D084B; countreset at0852/RET085D; semanticreturn/formalABI unclaimed; new Source void interface",
+      "end_exclusive": "004D085E"
+    },
+    {
+      "entry": "008F4F00",
+      "inclusive_end": "008F4F57",
+      "bytes": 88,
+      "sha256": "758d934bffb6f291b115a1999ebe6442fb6fc95d4770b644aa4a98fdbe26a57d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 22,
+      "coverage": "complete88B/22instructions ordinary normal registry destructor; actualFS/EH/privateCA4B0B graph external",
+      "source_name": "destroy_native_scene_enum_registry_008f4f00",
+      "observed_inputs": "ECX actual10Ch root, nestedreceiver capturedESI=owner+4",
+      "observed_return": "RET at8F4F57 afterrestoringFS chain; no rootfree; formaloriginalABI/semanticreturn unclaimed",
+      "end_exclusive": "008F4F58"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "004D07B6",
+      "native": "00419CC0",
+      "function": "004D0760",
+      "path": "only currentkeydata!=null; captureddata/currentlength+1/PUSH1; genuine storagepoolgetter"
+    },
+    {
+      "address": "004D07BD",
+      "native": "00BD1510",
+      "function": "004D0760",
+      "path": "capturedkeydata return through actualstoragepool; headerstale"
+    },
+    {
+      "address": "008F4F2E",
+      "native": "004D0760",
+      "function": "008F4F00",
+      "path": "first clear(owner+4) afterowner0=CE78BC"
+    },
+    {
+      "address": "008F4F43",
+      "native": "004D0760",
+      "function": "008F4F00",
+      "path": "SECOND empty clear(owner+4) after nested0=CE7514"
+    },
+    {
+      "address": "008F59C3",
+      "native": "008F4E70",
+      "function": "008F59C0",
+      "path": "genuine actualCEnum scalar unconditionalordinarydtor, consumedprovider"
+    },
+    {
+      "address": "008F59D0",
+      "native": "00BF65AC",
+      "function": "008F59C0",
+      "path": "genuine actualCEnum scalar flagsbit0 set; currentrootfree, capturedresult ignored"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "004D079F",
+      "containing_function": "004D0760",
+      "instruction": "CALL EDX",
+      "native_selector": "nonnullmapped->profile->slot0, PUSH EBP=1",
+      "producer_profile": "00D16508",
+      "verified_target": "008F59C0",
+      "source_binding": "ONLY actualunique current-CRT19Ch CEnums fromgenuine008F4DD0; direct completegenuine scalar, no originalprofile/slot loads/general virtualdispatch orfakecallback",
+      "verifier_excluded": true
+    }
+  ],
+  "import_calls": [
+    {
+      "site": "004D07C7",
+      "cell": "00CE2218",
+      "containing_function": "004D0760",
+      "service": "EnterCriticalSection",
+      "argument": "actualE175F4=E175E8+0C"
+    },
+    {
+      "site": "004D0820",
+      "cell": "00CE2210",
+      "containing_function": "004D0760",
+      "service": "LeaveCriticalSection",
+      "argument": "sameactualE175F4"
+    }
+  ],
+  "source_contract": {
+    "receiver": "actual initialized10Ch root+4; root0CE78BC/nested4CE7514/count8/64heads0C..108",
+    "clear_order": [
+      "currentmapped8, captureNEXT+C BEFOREscalar",
+      "nonnull actualCEnum -> complete008F59C0 flag1 -> node8zero ONLY AFTER returning",
+      "genuine41DD20 keyheader release currentdata/length+1, leaveallheaderbytesstale",
+      "genuine14h nodeReturn43B0A0 onactualdistincttablepool; exactinlinedOSCS/depth/pageID/currentWORDstack/count/earliest schedule",
+      "capturednext; bucketheadNULL AFTERchain; receiver4countzero AFTER64heads"
+    ],
+    "ordinary_order": [
+      "owner0=CE78BC",
+      "clearactualowner+4",
+      "nested0=CE7514",
+      "SECOND empty clearactualowner+4",
+      "no rootfree"
+    ],
+    "preserved": [
+      "nullpayload skipscalar/zero store",
+      "current keydata nullskip release; emptyheaders admitted",
+      "stale key/header/next/slot10, mapped8zero only afternonnull delete",
+      "no newguard/default/reset/rollback/trim/globalpublication"
+    ],
+    "new_interface": "explicit genuinepools/rawctx through MSVCWin32 cdecl void functions; originalclass/EH/ABI unclaimed"
+  },
+  "producer_admission": {
+    "payload": "null or uniquelyowned actual19Ch CEnums fromgenuine008F4DD0 oncurrentCRT roots, D16508->008F59C0, SAMEgenuine symbolpool/rawctx; originalprofile-slot/generaldispatch not replayed",
+    "registry": "genuine actual10Ch initializerfragment004D3069/currentCRT allocation; clear receiverroot+4 is interiorborrowed map, ordinary root staysalive",
+    "table_pool": "actualE175E8-compatible38h constructedowner, realOSCS/list/64slot14hpages; distinct actualsymbolpoolE17578",
+    "domain": "successful coherent/disjoint stable nonoverflowing allocatedslots/64bucketowners, validuniquepayloads/owningclosedNULfreeASCII C-locale keys; noalias/sharedownership/concurrency/reentry",
+    "excluded": [
+      "foreignclasses/profile/heaps/originaldeletingABI",
+      "failure/fault/overflow/rollback/transactions",
+      "actualFS/EH/privatecleanupABI",
+      "globalE175E8/E17578/E1867C startup/namespace/enumidentity/traffic/world/game",
+      "scalarwrappers004D2620/004D0EB0 andtheir returning-free gaps/allocationadmission"
+    ]
+  },
+  "complete_providers": {
+    "payload_scalar": "src/native_enum_scalar_delete.cpp008F59C0 ->symbol_lifetime.cpp8F4E70; actualsingleton_lifetime_free currentstd::free",
+    "key_release": "src/native_string.cpp destroy_native_string_header_0041dd20, actual29B; capturescurrentdata/currentlength+1/releasewithoutzero; matchesnative419CC0/BD1510; interior41DD60 notused",
+    "slot_return": "src/native_enum_node_pool.cpp complete101B43B0A0 actual14h; relativeCS+0C/depth24/table28/pageIDslot10/currentWORDcount580/stack500/earliest34; unchanged",
+    "constructors": "actual10Ch004D3069 fragment plusactual19Ch008F4DD0/typeD162D4, proper table8F17E0/symbol8F2850 producers; no wholemanager/defaultowner",
+    "query_readers": "genuine completebucket/table-word/symbolword/membership and rawstrings; no semanticPropertyLibrary orfakeenum table",
+    "wrong_provider_excluded": "008F4C50 usesE17540, notactualE175E8tableclear"
+  },
+  "native_pins": [
+    {
+      "entry": "004D0760",
+      "inclusive_end": "004D085D",
+      "bytes": 254,
+      "sha256": "6a0f639cb57ac310d2f92897c8cb039c43707bf47c1bf071755db5d7930a1b07",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 75,
+      "end_exclusive": "004D085E"
+    },
+    {
+      "entry": "008F4F00",
+      "inclusive_end": "008F4F57",
+      "bytes": 88,
+      "sha256": "758d934bffb6f291b115a1999ebe6442fb6fc95d4770b644aa4a98fdbe26a57d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 22,
+      "end_exclusive": "008F4F58"
+    },
+    {
+      "entry": "008F17E0",
+      "inclusive_end": "008F188B",
+      "bytes": 172,
+      "sha256": "9e83aa51d4fea8ac9c75ecdaaaef8cfdd14b956b65af605b47459983af6a0e5a",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 65,
+      "end_exclusive": "008F188C"
+    },
+    {
+      "entry": "004D3069",
+      "inclusive_end": "004D308A",
+      "bytes": 34,
+      "sha256": "609c490761e55a54bb4a29b4af24c128f1bdc5066f76e2607c531812a6f1956b",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "end_exclusive": "004D308B"
+    },
+    {
+      "entry": "008F2B90",
+      "inclusive_end": "008F2C0A",
+      "bytes": 123,
+      "sha256": "a6ff77983e2a2ac8e19572e4d5280f51f0a3ecf06846fbfdf934e72be8330788",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 36,
+      "end_exclusive": "008F2C0B"
+    },
+    {
+      "entry": "00CE78BC",
+      "inclusive_end": "00CE78C3",
+      "bytes": 8,
+      "sha256": "8c658994d2fed38e2050140695510defecbdfa3f0b5475616fd6a745db549807",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00CE78C4"
+    },
+    {
+      "entry": "00CE7514",
+      "inclusive_end": "00CE751B",
+      "bytes": 8,
+      "sha256": "96eaab0e550144e65fc938d94612b00a2312a55a49289f6be44116a72a728428",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00CE751C"
+    },
+    {
+      "entry": "008F59C0",
+      "inclusive_end": "008F59DD",
+      "bytes": 30,
+      "sha256": "8143498e9637f10e9b376fd263a4ab56362378c47f2a01ed8d1b092cc0f67fed",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 11,
+      "end_exclusive": "008F59DE"
+    },
+    {
+      "entry": "008F4E70",
+      "inclusive_end": "008F4EF3",
+      "bytes": 132,
+      "sha256": "26fd655fa6a6954eed562a9cbef47c154fa39b6749834a0ae5d7acfaa529715e",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 37,
+      "end_exclusive": "008F4EF4"
+    },
+    {
+      "entry": "008F4B60",
+      "inclusive_end": "008F4C48",
+      "bytes": 233,
+      "sha256": "1079eaa4aead384715ddc2f8e81f2cc70e85614b13be0e567951e3f11d2fc1fd",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 67,
+      "end_exclusive": "008F4C49"
+    },
+    {
+      "entry": "00BF65AC",
+      "inclusive_end": "00BF65B0",
+      "bytes": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 1,
+      "end_exclusive": "00BF65B1"
+    },
+    {
+      "entry": "0041DD20",
+      "inclusive_end": "0041DD3C",
+      "bytes": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 12,
+      "end_exclusive": "0041DD3D"
+    },
+    {
+      "entry": "0043B0A0",
+      "inclusive_end": "0043B104",
+      "bytes": 101,
+      "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 33,
+      "end_exclusive": "0043B105"
+    },
+    {
+      "entry": "008F4DD0",
+      "inclusive_end": "008F4E6C",
+      "bytes": 157,
+      "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 48,
+      "end_exclusive": "008F4E6D"
+    },
+    {
+      "entry": "008F69A7",
+      "inclusive_end": "008F69CF",
+      "bytes": 41,
+      "sha256": "f43886641697f9b122627d459c423f7b5a8b36c958dbd053233a0a79ec7afce2",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 10,
+      "end_exclusive": "008F69D0"
+    },
+    {
+      "entry": "008F5F29",
+      "inclusive_end": "008F5F4F",
+      "bytes": 39,
+      "sha256": "d3273ec19b541f5f7729d674d3b546b68609abb81a92e2c501ed469e76454f78",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "end_exclusive": "008F5F50"
+    },
+    {
+      "entry": "00D16508",
+      "inclusive_end": "00D1650F",
+      "bytes": 8,
+      "sha256": "7bb395196f5e5a656ab72239e6d3a29763ec049d06fd4ebc4f8e2774b1e2f660",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00D16510"
+    },
+    {
+      "entry": "00D162D4",
+      "inclusive_end": "00D162D7",
+      "bytes": 4,
+      "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00D162D8"
+    },
+    {
+      "entry": "00E186ED",
+      "inclusive_end": "00E186ED",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 1,
+      "end_exclusive": "00E186EE"
+    },
+    {
+      "entry": "00E17654",
+      "inclusive_end": "00E17654",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00E17655"
+    }
+  ],
+  "alignment_qualification": {
+    "range": "[004D078D,004D0790)",
+    "bytes": "8d4000",
+    "reason": "unreachablealignment bypassed byJMP4D0790 at078B; not returning-free gap; no repair",
+    "linear_decoded": 75,
+    "stored_normal": 74
+  },
+  "fixture": {
+    "root": "local/cc11_scene_enum_registry_lifetime",
+    "recipe": "local/cc11_scene_enum_registry_lifetime/run_probe.py",
+    "command": "python local/cc11_scene_enum_registry_lifetime/run_probe.py --out local/cc11_scene_enum_registry_lifetime/run02",
+    "active_attempt": "run02",
+    "flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /showIncludes",
+    "production_TUs": 15,
+    "fixture_TUs": 1,
+    "compile_all_exit0": true,
+    "link_exit": 0,
+    "probe_exit": 0,
+    "manifested_asInvoker": true,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_registry_lifetime\\run02\\inputs\\manifest.json",
+    "manifest_sha256": "35b8b6d6d607a9f94c0a430d7b24360d5804ea8e2c0a88e865abb5d0e4c95078",
+    "exe_sha256": "f5c1c6e1ebaf77eff831bfb153ade2459383c207f9094f111cb1e88d36b6887a",
+    "outcomes": {
+      "genuine_registries": 2,
+      "genuine_CEnum_constructors": 3,
+      "installed_symbols_original": 28,
+      "fresh_reinsert_symbols": 22,
+      "symbol_insertions": 50,
+      "table_insertions": 5,
+      "real_colliding_nonnull_null_chain": true,
+      "collision_key": "LifecycleNull4",
+      "genuine_bucket": 20,
+      "empty_key": true,
+      "standalone_clears": 2,
+      "ordinary_destructors_once_each": 2,
+      "ordinary_second_clears_empty": true,
+      "independent_B_preserved": true,
+      "table_word_reads": 7,
+      "symbol_word_reads": 62,
+      "memberships": 62,
+      "full_temporary_pool_prefix_checks": 131,
+      "symbol_slot_returns": 50,
+      "table_slot_returns": 5,
+      "mapped8_zero_header_next_slot10_stale": true,
+      "deleted_leaf_roots_never_read_or_freed_again": true,
+      "ordinary_keeps_roots_alive": true,
+      "explicit_fixture_root_free_after_checks": true,
+      "real_trim_unlink_shutdown": true,
+      "scalar_registry_wrappers_executed": false,
+      "original_bodies_executed": false
+    },
+    "input_inventory": {
+      "actual_production_headers": 45,
+      "fresh_production_CPPs": 15,
+      "unique_production_inputs": 60,
+      "fixture_CPP_and_recipe": 2,
+      "unique_fixture_inclusive_inputs": 62
+    },
+    "compiler_headers": 202,
+    "searched_linker_libraries": 16,
+    "historical_files_unchanged": 2871,
+    "prior_run01_files_unchanged": 423,
+    "prior_run01_result": "allcompile/link0; fixturefailedBEFOREfirstclear dueincorrectfirst-Lcollision assumption, no productionimplementationchange; preservedimmutable",
+    "collision_correction": "run02 usesgenuine native_enum_table_bucket_00489610 withcurrentowningNativeString andcleanup toselect LifecycleNull4/bucket20; step1 hashesfullshortquery, notjustfirstchar; no hashapproximation/default",
+    "actual_installed_input": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+      "sha256_pre": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_copy": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_post": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+    },
+    "cleanup": "genuineordinaryonceeach keepsactualrootsalive; explicitfixture singletonrootfree AFTERallchecks, realtrim/unlink/shutdown; no registry scalarwrappers executed",
+    "original_execution": false,
+    "image_cells": "checkedMEM_FREE exacttype/empty imagebytes atverifiedVAs ->PAGE_READONLY; nooccupiedmapping change; notcapturedlivegameglobal/profilecodeexecution"
+  },
+  "source_COFF": {
+    "receipt": "local/cc11_scene_enum_registry_lifetime/coff_provider_details.json",
+    "sha256": "d0fce130c37aa4d8d931fe86591bdcf24a802c30035a65490f5b01daee3ec912",
+    "clear": {
+      "symbols": [
+        "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+      ],
+      "bytes": 231,
+      "instructions": 71,
+      "sha256": "a154df18edd88461f56cc763fb874f2fda3f5b5fed6956d1b86624c37f2cc40a",
+      "relocations": [
+        {
+          "operand_offset": 117,
+          "kind": 20,
+          "target": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "operand_offset": 144,
+          "kind": 20,
+          "target": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "operand_offset": 154,
+          "kind": 20,
+          "target": "?return_native_enum_node_0043b0a0@bsp@@YAXPAX0@Z"
+        }
+      ]
+    },
+    "ordinary": {
+      "symbols": [
+        "?destroy_native_scene_enum_registry_008f4f00@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+      ],
+      "bytes": 90,
+      "instructions": 26,
+      "sha256": "f90a5b4129f6ff4547dbd759b07f7578383c8cfba53409215253936799957bb2",
+      "relocations": [
+        {
+          "operand_offset": 43,
+          "kind": 20,
+          "target": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "operand_offset": 81,
+          "kind": 20,
+          "target": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+        }
+      ]
+    },
+    "full_dump": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_registry_lifetime\\run02\\registry.coff.log",
+      "sha256": "7842bfeb35f373adcf823e755089e479b1e9b8cf46ddc096192805dfb0e8a26f",
+      "machine": "014C",
+      "normal_provider_symbols_present": true
+    },
+    "complete_fresh_scalar_key_return_node_return_currentrootfree_COFF": true,
+    "clear_order_offsets": {
+      "mapped8_read": 73,
+      "nextC_read": 93,
+      "captured_next_saved_to_EDI": 100,
+      "conditional_scalar_flag1_call": 116,
+      "mapped8zero_after_return": 138,
+      "key_header_release": 143,
+      "actual_slot_return": 153,
+      "headzero_after_chain": 185,
+      "countzero_after64": 224
+    },
+    "ordinary_order_offsets": {
+      "outerCE78BC_store": 15,
+      "first_clear_call": 42,
+      "nestedCE7514_store": 64,
+      "second_clear_call": 80,
+      "ret": 89
+    }
+  },
+  "support_freeze": {
+    "utc": "2026-10-08T00:34:15.665817+00:00",
+    "worker_baseline": "6ea9a29928f0eed22f1848e7456b1e50c023e984",
+    "main_baseline": "6ea9a29928f0eed22f1848e7456b1e50c023e984",
+    "build_provenance": "Primary5096df208 corrected table insertion full Win32/all3CTests and independent15TU lifecycle fixture; same C++ through6ea9a2992 registration; current55fe7e7f core explicitly authorized; Lua/zlib unchanged",
+    "entries": [
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_registry_lifetime\\support\\bsp_core.lib",
+        "size": 73453880,
+        "sha256_pre": "55fe7e7f5e465ce6f6660cb220659ffa4b1f22d8f741e50789e75ab6846c6800",
+        "sha256_copy": "55fe7e7f5e465ce6f6660cb220659ffa4b1f22d8f741e50789e75ab6846c6800",
+        "sha256_post": "55fe7e7f5e465ce6f6660cb220659ffa4b1f22d8f741e50789e75ab6846c6800",
+        "sha256_pre_link_run": "55fe7e7f5e465ce6f6660cb220659ffa4b1f22d8f741e50789e75ab6846c6800",
+        "sha256_post_link_run": "55fe7e7f5e465ce6f6660cb220659ffa4b1f22d8f741e50789e75ab6846c6800"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_registry_lifetime\\support\\bsp_lua511.lib",
+        "size": 454824,
+        "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_registry_lifetime\\support\\bsp_zlib121.lib",
+        "size": 71766,
+        "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verification": {
+    "git_diff_check": "PASS worktree/staged; exactly four owned NEW files",
+    "native_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_enum_registry_lifetime_cc11.json",
+      "direct_checked": 6,
+      "failed": 0,
+      "virtual_excluded": 1,
+      "imports_separate": 2,
+      "log": "local/cc11_scene_enum_registry_lifetime/native_calls.log",
+      "sha256": "71067ff55c1eb28caedf3ca17a071960306c9abd0ed979efaea1787466eef707"
+    },
+    "source_fixture": "PASSrun02",
+    "fullbuild": "pendingprimaryintegration; worker no globalbuild",
+    "original_class_ABI": "unclaimed newinterfaces only",
+    "game": "notexecuted",
+    "Source_scope": "fourownedNEWpaths only",
+    "Ghidra_changes": false,
+    "final_pinned_input_rechecks": 3586
+  },
+  "remaining": [
+    "scalar wrappers4D2620/4D0EB0 excluded;3B return-free membership gaps andnestedmap rootallocationadmission separate",
+    "general mappedvirtualclasses/nativeheaps andoriginalFS/EH/ABI",
+    "globalstartup/namespace/tableidentity/declarationcontexts/semanticPropertyLibrary/traffic/world/game"
+  ]
+}
