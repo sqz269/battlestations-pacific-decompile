@@ -365,6 +365,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_role_p
     src/native_unit_group_lookup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_copy.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_decomposition.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_fill.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_handoff.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vehicle_class_activation.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_derived_manager.cpp)
