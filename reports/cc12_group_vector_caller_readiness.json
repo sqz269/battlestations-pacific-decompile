@@ -1,0 +1,546 @@
+{
+  "schema": 1,
+  "packet": "cc12_group_vector_caller_readiness",
+  "status": "audited_unready_no_Source",
+  "new_Source_bodies": 0,
+  "ready_count": 0,
+  "qualification": "Whole caller00766FC0..00767381 is961B249, Original/live verified, retained unready. Exact CALL007672E0->0070D980 passes actual stack output and EBX actual entity identity. With S=caller entryESP, leaf T=S-34h, [T+4]=output S-18h=T+1Ch, [T+8]=EBX; RET8 restores S-28h. Returned EAX floats are FLD/FSTP-copied into receiverCC/D0/D4 at7672E5..7672F9; pointer is not retained. Outer returns receiverEAX/RET10h. Genuine group comes from actual entity+284 component virtual+5C(2), with leader/nonleader/kind18 conditions; no count/record producer is established here. Whole caller still needs five virtual calls/three slots, base context/native DATA, malloc/string ownership, CRT/math and EH. E188A8 is static loader-zero writable DATA, not a live game provider. Saved generic prototype and missing C88D53 handler entry remain qualified. Script-disabled response preserved without enabling/restart/Ghidra mutation. Nine nodes+14 edges=23/24; twelve live/disk span bookends,70 artifacts and1155prior pins preserved. Source0/fixtures0/replays0; no caller/class/world/game promotion.",
+  "family": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/local/cc12_group_vector_caller_audit_20261008_a",
+  "worker_receipt_sha256": "6d749c5a1de881d7e4038bbbebdc2672d681b55a709653975210e6c51ee30bae",
+  "worker_manifest_sha256": "58f672e2de7a8fce29695e5871fae3aeee5209a11d6c1709ae63a9b2181f6c66",
+  "reviewed_worker_receipt": {
+    "audit": "cc12_group_vector_caller_audit",
+    "status": "bounded_read_only_negative_Source_readiness",
+    "utc": "2026-10-08T07:07:25.782572+00:00",
+    "base_revision": "0a60c76905b3a1f8bf45c8dd62094a6fdb551342",
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit",
+    "branch": "agent/cc12_group_vector_caller_audit",
+    "caller": {
+      "address": "00766FC0",
+      "end_exclusive": "00767381",
+      "bytes": 961,
+      "instructions": 249,
+      "sha256": "b8813320d43e42778eff4bd584f88e289c8555c9f979e86e05bf7da33a1db560",
+      "saved_listing_all_instruction_starts_equal_Original_PE": true,
+      "literal_direct_CALL_sites": [
+        {
+          "site": "00766FE6",
+          "instruction": "call 0x75b430",
+          "target": "0075B430"
+        },
+        {
+          "site": "00767084",
+          "instruction": "call 0x42d2e0",
+          "target": "0042D2E0"
+        },
+        {
+          "site": "007670B5",
+          "instruction": "call 0xbf7030",
+          "target": "00BF7030"
+        },
+        {
+          "site": "0076724C",
+          "instruction": "call 0x438e40",
+          "target": "00438E40"
+        },
+        {
+          "site": "007672E0",
+          "instruction": "call 0x70d980",
+          "target": "0070D980"
+        },
+        {
+          "site": "00767306",
+          "instruction": "call 0x70d080",
+          "target": "0070D080"
+        }
+      ],
+      "virtual_CALL_sites": [
+        {
+          "site": "00767139",
+          "instruction": "call eax",
+          "target": "unresolved EAX virtual dispatch"
+        },
+        {
+          "site": "00767206",
+          "instruction": "call eax",
+          "target": "unresolved EAX virtual dispatch"
+        },
+        {
+          "site": "0076721D",
+          "instruction": "call eax",
+          "target": "unresolved EAX virtual dispatch"
+        },
+        {
+          "site": "00767248",
+          "instruction": "call eax",
+          "target": "unresolved EAX virtual dispatch"
+        },
+        {
+          "site": "00767270",
+          "instruction": "call eax",
+          "target": "unresolved EAX virtual dispatch"
+        }
+      ],
+      "saved_signature": "undefined FUN_00766fc0(void)",
+      "saved_param_count": 0,
+      "recovered_normal_return_ABI": "ECX actual writable message; four DWORD stack slots (type byte taken from arg1, WORD arg2, actual entity pointer arg3, copy-name byte arg4); EAX same message; RET10h; saves/restores EBX/EBP/EDI and temporary ESI; FS[0] SEH chain installed/restored. Incoming DF must satisfy REP MOVSD forward-copy ABI; no CLD.",
+      "writable_receiver_extent": "at least110h bytes for observed stores; actual construction/class/allocation remains unbound"
+    },
+    "actual_vector_call": {
+      "site": "007672E0",
+      "target": "0070D980",
+      "ECX": "actual group loaded from [EBX+284h] at0076727A",
+      "EBX": "actual entity from caller stack arg3; it is used unchanged as integer member identity",
+      "EDX": "actual stack output produced by LEA at007672DB; target ignores entryEDX",
+      "stack_words_at_target_entry": {
+        "ESP+4": "actual output pointer",
+        "ESP+8": "EBX actual entity pointer"
+      },
+      "stack_derivation": "Let S be00766FC0 entryESP. At vector-call setup restingESP=S-28h. PUSH EBX givesS-2Ch; LEA EDX,[ESP+14h] givesS-18h; PUSH EDX givesS-30h; CALL gives target-entryT=S-34h. Thus output=T+1Ch=S-18h, occupying12 bytes[S-18h,S-0Dh]. RET8 restoresS-28h.",
+      "lifetime": "Owned by current caller stack frame; output words immediately loaded from returnedEAX then x87stored to actual receiver+CC/+D0/+D4. Buffer pointer is not stored in receiver or returned. Only receiver EAX survives outer RET10h.",
+      "gates": [
+        "entity virtual slot+5Ch(argument2) returns nonzeroAL",
+        "actual group at entity+284h is nonnull",
+        "group+14h leader pointer is dereferenced at+174h without a null check",
+        "entity differs from group+14h leader",
+        "copied group+4FCh kind byte equals18h"
+      ],
+      "output_conversion": "Caller repeats three FLD/FSTP float conversions after the leaf; ambient x87 status/precision/rounding/exception effects remain part of whole caller.",
+      "membership_producer": "No visible direct store to group count4F8h or records18h in caller. Vector leaf captures count itself; direct record getter on kind06h also consumes existing membership. Unknown virtual effects and external producer/lifetime/concurrency remain unbound."
+    },
+    "direct_prerequisites": [
+      {
+        "address": "0075B430",
+        "state": "existing typed Source, new context interface",
+        "gap": "Original ECX message/RET4 loads actual current-game cell00E188A8 then dereferences game+18EC and selected slots18CC. Existing Source needs explicit NativeSessionMessageContext and translated profile; native global/class provider is not established."
+      },
+      {
+        "address": "0042D2E0",
+        "state": "existing bounded matrix Source contract",
+        "gap": "Actual caller uses ECX=entity+74,EDX=message+30,stackmessage+34/+38. Existing normalization/asin/CRT math qualifications persist; no whole message admission."
+      },
+      {
+        "address": "00BF7030",
+        "state": "existing raw ST0 kernel needs extra CRT access binding",
+        "gap": "Original receives its operand in ST0. Source forwarding interface additionally needs CameraAxesCrtAccess; actual dispatch global/exception handler policy cannot be fabricated."
+      },
+      {
+        "address": "00438E40",
+        "state": "existing ordinary Source strdup",
+        "gap": "Original ECX text/raw allocator ABI differs from ordinary Source malloc+bad_alloc implementation; string returned from entity virtual+10 and later ownership/EH cleanup unbound."
+      },
+      {
+        "address": "0070D080",
+        "state": "existing genuine actual-storage typed lookup",
+        "gap": "Original ECX group/one stackword member/RET4; ordinary Source is a new interface. Caller kind06h dereferences returned record without null check; membership promise is required."
+      },
+      {
+        "address": "0070D980",
+        "state": "closed conditional whole116 raw component",
+        "gap": "Production still needs actual readable nativeDATA00F87574/78/7C and valid reached native group records. Its accepted fixtures do not establish this caller entity/class/world lifetime."
+      }
+    ],
+    "virtual_gaps": [
+      {
+        "slot": "5Ch",
+        "sites": [
+          "00767139",
+          "00767206",
+          "00767270"
+        ],
+        "stack_arguments": [
+          "2Ah",
+          "05h",
+          "02h"
+        ],
+        "result": "AL",
+        "state": "dynamic actual entity profile/provider unbound; no chosen concrete target"
+      },
+      {
+        "slot": "12Ch",
+        "sites": [
+          "0076721D"
+        ],
+        "stack_arguments": [],
+        "result": "EAX storedmessage+B8h",
+        "state": "actual target and effects unbound"
+      },
+      {
+        "slot": "10h",
+        "sites": [
+          "00767248"
+        ],
+        "stack_arguments": [],
+        "result": "EAX passedasECX to00438E40",
+        "state": "actual returned string lifetime/ownership unbound"
+      }
+    ],
+    "native_DATA": [
+      {
+        "address": "00CE3820",
+        "role": "squared length floor",
+        "double_value": 1e-10,
+        "raw_hex": "bbbdd7d9df7cdb3d"
+      },
+      {
+        "address": "00D7A210",
+        "role": "length reference",
+        "double_value": 1.0,
+        "raw_hex": "000000000000f03f"
+      },
+      {
+        "address": "00D7A268",
+        "role": "absolute length deviation epsilon",
+        "double_value": 9.999999747378752e-05,
+        "raw_hex": "000000e0e2361a3f"
+      }
+    ],
+    "profile_gaps": {
+      "literal_message_profile": "00D03720",
+      "literal_base_profile": "00D02C68",
+      "state": "Only literal profile prefixes read; their pointed functions were not followed or admitted as class providers."
+    },
+    "EH": {
+      "registered_handler": "00C88D53",
+      "handler_bytes": "MOV EAX,00DB8AA8; JMP00BF6B43",
+      "saved_handler_function_entry": false,
+      "descriptor_address": "00DB8AA8",
+      "descriptor_words": [
+        "19930522",
+        "00000002",
+        "00DB8A98",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind_map": "00DB8A98, unexpanded",
+      "nearest_saved_function": "00C88D48..00C88D52 is separate adjacent unwindcode MOVECX,[EBP-1Ch]; ADDECX,48h; JMP00766880. It does not contain00C88D53; ownership by this handler was not inferred from adjacency.",
+      "state": "EH metadata/actions, cleanup and CRT frame handler remain unready; no saved analysis repair"
+    },
+    "saved_program_identity": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4555,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64722,
+        "symbol_count": 145545,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "identity_after_property_read": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4555,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64722,
+        "symbol_count": 145545,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "flow_property_limitation": {
+      "available": false,
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+      "preserved_response": "caller_flow_properties_payload.json",
+      "enable_or_mutation_attempted": false
+    },
+    "bounded_scope": {
+      "examined_function_or_code_entry_nodes": [
+        "00766FC0",
+        "0042D2E0",
+        "00438E40",
+        "0070D080",
+        "0070D980",
+        "0075B430",
+        "00BF7030",
+        "00C88D48",
+        "00C88D53"
+      ],
+      "call_control_edges": 14,
+      "counting": "6 caller direct CALL sites +5 dynamic CALL sites +1 registeredEH edge +1 handler tailJMP +1 adjacent saved-unwind tailJMP =14;9 examined function/code-entry nodes; total23<=24. Literal DATA attached as evidence; no pointed profile routines, indirect targets, caller census or transitive callee bodies explored.",
+      "combined_used": 23,
+      "combined_cap": 24
+    },
+    "count_record_producer_status": "No visible direct producer in this body; existing membership count/records, actual entity/group relation and unknown virtual side effects remain external unready prerequisites. No census or projected record facade was attempted.",
+    "current_game_DATA_qualification": "Actual00E188A8 saved-program/PE-loader cell is zero-filled mutable .data in this static snapshot. Original base constructor immediately dereferences the actual game. A copied snapshot or fake owning object cannot establish that runtime provider.",
+    "whole_caller_ready": false,
+    "next_Source_packet": null,
+    "Source_or_fixture_promotion": false,
+    "verdict": "Preserve whole961 caller, virtual/base-context/CRT/math/EH and count/record producer prerequisites as unready. No Source or fixture promotion.",
+    "bookends": {
+      "prior_pins_verified": 1155,
+      "worker_prior_pins": 821,
+      "worker_artifacts": 160,
+      "root_independent_artifacts": 162,
+      "current_checkout_pins_verified": 16,
+      "supplemental_source_pins_verified": 4,
+      "installed_PE_unchanged": true,
+      "live_Original_spans_unchanged": [
+        {
+          "address": "00766FC0",
+          "label": "caller",
+          "bytes": 961,
+          "sha256": "b8813320d43e42778eff4bd584f88e289c8555c9f979e86e05bf7da33a1db560",
+          "section": ".text",
+          "section_characteristics": "60000020",
+          "file_backed_bytes": 961,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "0070D980",
+          "label": "vector",
+          "bytes": 116,
+          "sha256": "5b1bb5bd45da881947218c7b24f695d163b08f9915483c699f147c4c06bb9e59",
+          "section": ".text",
+          "section_characteristics": "60000020",
+          "file_backed_bytes": 116,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "0070D080",
+          "label": "record_lookup",
+          "bytes": 54,
+          "sha256": "0c7dd9cc4d295d3f6c83485c466b918bcabd4a7ec7c4cb097aa10813cbf8055a",
+          "section": ".text",
+          "section_characteristics": "60000020",
+          "file_backed_bytes": 54,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "0075B430",
+          "label": "base_ctor",
+          "bytes": 80,
+          "sha256": "523008b2c0e6c87d3f56d32ab9ac1d23601b49579702386a9cd11dfede7e37d6",
+          "section": ".text",
+          "section_characteristics": "60000020",
+          "file_backed_bytes": 80,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00C88D48",
+          "label": "EH_adjacent_unwind_and_direct_handler",
+          "bytes": 21,
+          "sha256": "77ee7fb34d67a327c15758a0cc306307f7fa470533af150cefdd4383511073b4",
+          "section": ".text",
+          "section_characteristics": "60000020",
+          "file_backed_bytes": 21,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00DB8AA8",
+          "label": "EH_descriptor",
+          "bytes": 36,
+          "sha256": "3d080c90502b1bbf1ebf06bad3b7b64efc296e752813e140427ebcbaa67728ad",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 36,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00D03720",
+          "label": "message_profile_prefix",
+          "bytes": 20,
+          "sha256": "ba6e7ac5b9bd3445f3f0b2507cb908364e2668d8ee0278ace841bad928d34950",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 20,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00D02C68",
+          "label": "base_profile_prefix",
+          "bytes": 20,
+          "sha256": "42678d7bb528a8382a295a4bd9ec14c64f9e9db585a6f100e834151f53fbf751",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 20,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00CE3820",
+          "label": "length_floor",
+          "bytes": 8,
+          "sha256": "aaaa59f44fe6a5a2a13a35b4ddf2e077c232ea4d4f6e11847b4cc12257532c5e",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 8,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00D7A210",
+          "label": "length_reference",
+          "bytes": 8,
+          "sha256": "6c3c396ed6b5c36dcae172271f462051b1266b851e92df3deea8ac65478fd712",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 8,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00D7A268",
+          "label": "length_epsilon",
+          "bytes": 8,
+          "sha256": "564be83b341e452f4492fa81f7d5f215f446119f583c33a94b619cd1ee7287fd",
+          "section": ".rdata",
+          "section_characteristics": "40000040",
+          "file_backed_bytes": 8,
+          "loader_zero_bytes": 0,
+          "live_equals_PE_loader_image": true
+        },
+        {
+          "address": "00E188A8",
+          "label": "current_game_cell",
+          "bytes": 4,
+          "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+          "section": ".data",
+          "section_characteristics": "C0000040",
+          "file_backed_bytes": 0,
+          "loader_zero_bytes": 4,
+          "live_equals_PE_loader_image": true
+        }
+      ],
+      "working_tree_clean": true,
+      "Source_commits": 0,
+      "Source_mutations": 0,
+      "shared_metadata_mutations": 0,
+      "Ghidra_mutations": 0,
+      "fixtures_or_native_executions": 0,
+      "previous_family_replays": 0,
+      "audit_tool_inputs": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/tools/bsp.py",
+          "bytes": 72606,
+          "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        }
+      ]
+    },
+    "preserved_source_associations": {
+      "source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+      "component_source_revision": "7ed2ec2002f64d7d90026224e92cbff594c3747f",
+      "build_source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+      "worker_source_revision": "64b03ee6127c845f11203665b263f1ad25697d3f",
+      "build_context_relation": "Full main build refreshed after another harness integrated observer/file-open C++ changes; component Source and all eight actual fixture inputs remain byte-identical to sealed7ed2 family. No component replay.",
+      "build_log": "local/cc12_group_member_vector_main_refresh_7479af9.log",
+      "build_log_sha256": "675d332b663f15643ceef1f097c6726742de4e46f9822bc646beb88bc9b7de49",
+      "current_core_sha256": "1bfb1e7dcea045f39286211bc7e6de9d0ccf9f79a7d20b00a476f8e5f155ba0d",
+      "independent_component_family": "local/cc12_group_member_vector_primary20261008a",
+      "independent_seal_sha256": "81dcc457a04dce6347ac83a28ed592ab8e76c0639b2c94828791c02194b9c4d0",
+      "independent_static_gate_sha256": "8b963ecf587b5c64a05caf7a4018cef328fae1fbcba36bc6ae9fac6adb4faade",
+      "independent_post_sha256": "0ab9ca719e2c0bf84ca675bd04d5a28730e29d321e74a787e6b3644621710776",
+      "report_pin": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/reports/native_unit_group_member_vector_cc12.json",
+        "bytes": 40660,
+        "sha256": "28f88648aab233420968c29df60223cb4f80d33203dad475563993c838ac891f"
+      },
+      "historical_build_associations_changed": false,
+      "old_Core_file_repinned_as_current": false
+    },
+    "sealed_manifest": "J:/PROG/battlestations-pacific-decompile-cc12_group_vector_caller_audit/local/cc12_group_vector_caller_audit_20261008_a/artifact_manifest.json",
+    "sealed_manifest_sha256": "58f672e2de7a8fce29695e5871fae3aeee5209a11d6c1709ae63a9b2181f6c66",
+    "artifact_count": 70
+  },
+  "primary_review": {
+    "receipt_hash_verified": true,
+    "all_sealed_artifacts_unchanged": true,
+    "Source_admission": false,
+    "game_validated": false
+  }
+}
