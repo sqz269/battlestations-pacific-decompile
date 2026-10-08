@@ -1,0 +1,796 @@
+{
+  "schema": "cc12_type5_fresh_case_contract_review_v1",
+  "packet": "cc12_type5_fresh_case_contract_review",
+  "status": "SOURCE_TEXT_EXPECTED_WORKSHEET_NOT_PROCESS_OBSERVATIONS",
+  "Source_credit": 0,
+  "new_reconstruction_credit": 0,
+  "baseline_commit": "6bc5aa26a6205ef603ef94b2e6965966cfa64704",
+  "Main_generation_commit": "6bc5aa26a6205ef603ef94b2e6965966cfa64704",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review",
+  "branch": "agent/cc12_type5_fresh_case_contract_review",
+  "owned_files": [
+    "docs/CC12_TYPE5_FRESH_CASE_CONTRACT_REVIEW.md",
+    "reports/cc12_type5_fresh_case_contract_review.json"
+  ],
+  "addresses_leased_or_queried": [],
+  "constructor": {
+    "address_derived_from_current_CPP_HPP": "008EF2B0",
+    "symbol": "bsp::construct_native_scene_property_record_type5_storage_008ef2b0",
+    "Source_declaration": "void* __fastcall (void* root,void* unused_edx,const char* actual_text,uint32_t word_18_bits,uint32_t word_08_bits)",
+    "physical": "ECX actualfresh56 root, incomingEDX unused; TEXT T+4, WORD18 T+8, WORD08 T+C; fullEAXroot/RET12",
+    "successful_domain": "nonnullselected stable readable NUL-terminated text; length+1/ranges nonwrapping; root/text-throughNUL/activeframe disjoint; DF0/currentprovider normal success; no reentry/failure/unwind",
+    "nullable_general_contract": "nullTEXT returns nullchild via rawduplicate without provider calls; no selected nullcase or extra entry added",
+    "native_provenance_comments_only": "currentSource describes whole63B19; not freshly verified against Native/PE",
+    "phase": "literal00CE89D4 identity only",
+    "tag": 5,
+    "no_FP_or_logical_WORD_interpretation": true,
+    "order": "read WORD08 before PUSHESI; load WORD18 after savedESI; store phase/tag/WORD08/WORD18 before duplicate; ECX TEXT to rawduplicateRET0; child1C fullEAX then XOREAX zero20/24/34, byte2C1, EAXroot, restoreESI/RET12",
+    "written_half_open": [
+      [
+        0,
+        12
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        52,
+        56
+      ]
+    ],
+    "preserved_half_open": [
+      [
+        12,
+        24
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        45,
+        52
+      ]
+    ],
+    "written_offsets": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      44,
+      52,
+      53,
+      54,
+      55
+    ],
+    "preserved_offsets": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      40,
+      41,
+      42,
+      43,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+    ],
+    "written_bytes": 33,
+    "preserved_bytes": 23,
+    "root_bytes": 56,
+    "owner30": "all4 bytes preserved poison, never ownership publication or constructor dereference",
+    "marker2C": "oneBYTE1; upper2D..2F poison; not source of class/string/logical ownership"
+  },
+  "duplicate_and_canonical": {
+    "raw_entry": "bsp::duplicate_native_string_00438e40(const char*)",
+    "physical": "TEXT inECX, no stackarguments/plainRET; distinct from olderCDECL API",
+    "firstNUL": "scanbyte until firstzero; allocate/copy length+1 bytes INCLUDINGNUL; laterbytes not read as logical string length or copied",
+    "selected_copy": "both5nonzero+NUL produce live6-byte current-canonical child1C; actual address supplied by allocator, input remains caller-owned",
+    "adapter": "private Source-only CDECL allocate_native_string_bytes({object,native_bytes=count,host_bytes=count}); no standalone Native credit",
+    "allocation": "singleton_lifetime_allocate std::malloc(host_bytes); onnull _callnewh retry/nonzero or bad_alloc; successful worksheet excludes failures",
+    "free": "singleton_lifetime_free std::free; observe child whilelive, free once before actualrootbase; no automatic record destructor/phase dispatch",
+    "no_standalone_duplicate_admission_claim": true
+  },
+  "expected_cases": [
+    {
+      "index": 0,
+      "target": "Source",
+      "observation_status": "EXPECTED_ONLY_NO_PROCESS_OBSERVATIONS",
+      "full_input8_hex": "D7329A61E400BC58",
+      "first_NUL_offset": 5,
+      "duplicated_child_bytes": 6,
+      "child6_expected_hex": "D7329A61E400",
+      "later_preserved_input_bytes_hex": "BC58",
+      "WORD18_bits_hex": "3D92C7A4",
+      "WORD18_LE32": "A4C7923D",
+      "WORD08_bits_hex": "A5E1703C",
+      "WORD08_LE32": "3C70E1A5",
+      "root_initial_poison_hex": "A6",
+      "preserved_owner30_hex": "A6A6A6A6",
+      "root56_expected_hex_template": "D489CE00050000003C70E1A5A6A6A6A6A6A6A6A6A6A6A6A6A4C7923D{actual_child_LE32}0000000000000000A6A6A6A601A6A6A6A6A6A6A600000000",
+      "child1C": "actual distinct live current-canonical6-byte base",
+      "root20_24_34_DWORDs": 0,
+      "marker2C_byte": 1,
+      "marker_ownership_discriminator": false,
+      "input40": {
+        "total_bytes": 40,
+        "pre_half_open": [
+          0,
+          16
+        ],
+        "text_half_open": [
+          16,
+          24
+        ],
+        "post_half_open": [
+          24,
+          40
+        ],
+        "pre_DWORDs_hex": [
+          "E3911100",
+          "E3911101",
+          "E3911102",
+          "E3911103"
+        ],
+        "post_DWORDs_hex": [
+          "7C621100",
+          "7C621101",
+          "7C621102",
+          "7C621103"
+        ],
+        "all40_unchanged_after_each_target": true,
+        "recorded_file": "source_guarded_text.bin"
+      },
+      "capture132": {
+        "tag_hex": "100",
+        "pre_DWORDs_hex": [
+          "E3910100",
+          "E3910101",
+          "E3910102",
+          "E3910103"
+        ],
+        "post_DWORDs_hex": [
+          "7C620100",
+          "7C620101",
+          "7C620102",
+          "7C620103"
+        ],
+        "recorded_file": "source_capture.bin"
+      },
+      "storage_file": "source_storage.bin",
+      "child_file": "source_child.bin",
+      "return": "fullEAX actual root address, RET12 returnsR",
+      "ECX_EDX": "actual provider residuals recorded and unasserted for selected nonnull cases",
+      "DF": "entryCLD0; selected probe requires after0 for actual current bindings, no blanket provider preservation promise",
+      "defined_flags": "EFLAGS_after & 8C5 == 44; CF/OF/SF0, ZF/PF1, AFundefined excluded"
+    },
+    {
+      "index": 1,
+      "target": "bound Original",
+      "observation_status": "EXPECTED_ONLY_NO_PROCESS_OBSERVATIONS",
+      "full_input8_hex": "4BC625F89300E17A",
+      "first_NUL_offset": 5,
+      "duplicated_child_bytes": 6,
+      "child6_expected_hex": "4BC625F89300",
+      "later_preserved_input_bytes_hex": "E17A",
+      "WORD18_bits_hex": "C26D385B",
+      "WORD18_LE32": "5B386DC2",
+      "WORD08_bits_hex": "5A1E8FC3",
+      "WORD08_LE32": "C38F1E5A",
+      "root_initial_poison_hex": "59",
+      "preserved_owner30_hex": "59595959",
+      "root56_expected_hex_template": "D489CE0005000000C38F1E5A5959595959595959595959595B386DC2{actual_child_LE32}000000000000000059595959015959595959595900000000",
+      "child1C": "actual distinct live current-canonical6-byte base",
+      "root20_24_34_DWORDs": 0,
+      "marker2C_byte": 1,
+      "marker_ownership_discriminator": false,
+      "input40": {
+        "total_bytes": 40,
+        "pre_half_open": [
+          0,
+          16
+        ],
+        "text_half_open": [
+          16,
+          24
+        ],
+        "post_half_open": [
+          24,
+          40
+        ],
+        "pre_DWORDs_hex": [
+          "E3912200",
+          "E3912201",
+          "E3912202",
+          "E3912203"
+        ],
+        "post_DWORDs_hex": [
+          "7C622200",
+          "7C622201",
+          "7C622202",
+          "7C622203"
+        ],
+        "all40_unchanged_after_each_target": true,
+        "recorded_file": "original_guarded_text.bin"
+      },
+      "capture132": {
+        "tag_hex": "200",
+        "pre_DWORDs_hex": [
+          "E3910200",
+          "E3910201",
+          "E3910202",
+          "E3910203"
+        ],
+        "post_DWORDs_hex": [
+          "7C620200",
+          "7C620201",
+          "7C620202",
+          "7C620203"
+        ],
+        "recorded_file": "original_capture.bin"
+      },
+      "storage_file": "original_storage.bin",
+      "child_file": "original_child.bin",
+      "return": "fullEAX actual root address, RET12 returnsR",
+      "ECX_EDX": "actual provider residuals recorded and unasserted for selected nonnull cases",
+      "DF": "entryCLD0; selected probe requires after0 for actual current bindings, no blanket provider preservation promise",
+      "defined_flags": "EFLAGS_after & 8C5 == 44; CF/OF/SF0, ZF/PF1, AFundefined excluded"
+    }
+  ],
+  "capture_schema": {
+    "name": "Capture132/Registers100",
+    "bytes": 132,
+    "pre_half_open": [
+      0,
+      16
+    ],
+    "Registers_half_open": [
+      16,
+      116
+    ],
+    "post_half_open": [
+      116,
+      132
+    ],
+    "endianness": "little",
+    "word_bytes": 4,
+    "fields": [
+      {
+        "field": "esp_before",
+        "Registers_offset": 0,
+        "Capture_offset": 16,
+        "bytes": 4
+      },
+      {
+        "field": "esp_after",
+        "Registers_offset": 4,
+        "Capture_offset": 20,
+        "bytes": 4
+      },
+      {
+        "field": "eax_after",
+        "Registers_offset": 8,
+        "Capture_offset": 24,
+        "bytes": 4
+      },
+      {
+        "field": "ecx_after",
+        "Registers_offset": 12,
+        "Capture_offset": 28,
+        "bytes": 4
+      },
+      {
+        "field": "edx_after",
+        "Registers_offset": 16,
+        "Capture_offset": 32,
+        "bytes": 4
+      },
+      {
+        "field": "ebx_before",
+        "Registers_offset": 20,
+        "Capture_offset": 36,
+        "bytes": 4
+      },
+      {
+        "field": "esi_before",
+        "Registers_offset": 24,
+        "Capture_offset": 40,
+        "bytes": 4
+      },
+      {
+        "field": "edi_before",
+        "Registers_offset": 28,
+        "Capture_offset": 44,
+        "bytes": 4
+      },
+      {
+        "field": "ebp_before",
+        "Registers_offset": 32,
+        "Capture_offset": 48,
+        "bytes": 4
+      },
+      {
+        "field": "ebx_after",
+        "Registers_offset": 36,
+        "Capture_offset": 52,
+        "bytes": 4
+      },
+      {
+        "field": "esi_after",
+        "Registers_offset": 40,
+        "Capture_offset": 56,
+        "bytes": 4
+      },
+      {
+        "field": "edi_after",
+        "Registers_offset": 44,
+        "Capture_offset": 60,
+        "bytes": 4
+      },
+      {
+        "field": "ebp_after",
+        "Registers_offset": 48,
+        "Capture_offset": 64,
+        "bytes": 4
+      },
+      {
+        "field": "flags_before",
+        "Registers_offset": 52,
+        "Capture_offset": 68,
+        "bytes": 4
+      },
+      {
+        "field": "flags_after",
+        "Registers_offset": 56,
+        "Capture_offset": 72,
+        "bytes": 4
+      },
+      {
+        "field": "es_before",
+        "Registers_offset": 60,
+        "Capture_offset": 76,
+        "bytes": 4
+      },
+      {
+        "field": "es_after",
+        "Registers_offset": 64,
+        "Capture_offset": 80,
+        "bytes": 4
+      },
+      {
+        "field": "stack_guard0",
+        "Registers_offset": 68,
+        "Capture_offset": 84,
+        "bytes": 4
+      },
+      {
+        "field": "stack_guard1",
+        "Registers_offset": 72,
+        "Capture_offset": 88,
+        "bytes": 4
+      },
+      {
+        "field": "text_slot",
+        "Registers_offset": 76,
+        "Capture_offset": 92,
+        "bytes": 4
+      },
+      {
+        "field": "text_word",
+        "Registers_offset": 80,
+        "Capture_offset": 96,
+        "bytes": 4
+      },
+      {
+        "field": "word18_slot",
+        "Registers_offset": 84,
+        "Capture_offset": 100,
+        "bytes": 4
+      },
+      {
+        "field": "word18_word",
+        "Registers_offset": 88,
+        "Capture_offset": 104,
+        "bytes": 4
+      },
+      {
+        "field": "word08_slot",
+        "Registers_offset": 92,
+        "Capture_offset": 108,
+        "bytes": 4
+      },
+      {
+        "field": "word08_word",
+        "Registers_offset": 96,
+        "Capture_offset": 112,
+        "bytes": 4
+      }
+    ],
+    "initial_fill_hex": "B8",
+    "all25_Registers_DWORDs_written_by_rawtext": true,
+    "EBX_seed_hex": "57C29AE1",
+    "EDI_seed_hex": "B48630DF",
+    "ESI_before": "actualCapture address",
+    "EBP_before": "actual rawframeP",
+    "incoming_EDX_poison_hex": "8AD5F263",
+    "nonvolatiles": "actual EBX/ESI/EDI/EBP after equal before; genuine provider ABI precondition",
+    "stack_canary0_hex": "4E97C3A6",
+    "stack_canary1_hex": "F261B80D",
+    "ES": "recorded only; no machine_ok equality branch",
+    "flags_before": "DF0 only fixed assertion; remaining beforeflags not invented",
+    "Q_T_fields": "absent; never invent serialized offsets or entry values"
+  },
+  "stack_and_flags": {
+    "R": "esp_before after rawcanary pushes; P-20; actual captured",
+    "Q": "R-12 after PUSH WORD08,WORD18,TEXT; derived, not recorded",
+    "T": "Q-4=R-16 from actualCALL semantics; derived, not recorded",
+    "RET12": "restoresR=T+16; probe esp_after equalsesp_before",
+    "dead_slots": {
+      "TEXT": "R-12=T+4",
+      "WORD18": "R-8=T+8",
+      "WORD08": "R-4=T+C"
+    },
+    "dead_values": "exactinputpointer/fullopaque WORD18/WORD08 captured afterRET beforePUSHFD overwritesdeadWORD08 slot",
+    "defined_flags_mask_hex": "8C5",
+    "expected_masked_flags_hex": "44",
+    "AF": "undefined by finalXOR, excluded",
+    "final_flags_source": "constructorXOREAX after duplicate overwrites provider arithmetic residuals; subsequentMOV/POP/RET do not alter flags",
+    "copy_path_no_T_ADD_flag_formula": "Type8 ADD formula is not applicable"
+  },
+  "future_expected_schedule": {
+    "rawtargetentries": 2,
+    "ordinarydynamicentries": 0,
+    "targets": [
+      "Source",
+      "bound Original"
+    ],
+    "canonical_root_allocations": [
+      56,
+      56
+    ],
+    "canonical_child_allocations": [
+      6,
+      6
+    ],
+    "explicit_canonical_allocations": 4,
+    "explicit_canonical_frees": 4,
+    "order": "gate actualcode/providers first; allocate bothroots; prepare2input40/capture132 objects and poisonroots; Source createschild0 then Original createschild1",
+    "live_checks": "after Source checkroot0expected/root1poison, child0all6, full80 inputbytes, othercapture132; after Original checkbothcomplete56roots/both6children/full80inputs/othercapture132",
+    "save_live": [
+      "source_capture.bin132",
+      "original_capture.bin132",
+      "source_storage.bin56",
+      "original_storage.bin56",
+      "source_guarded_text.bin40",
+      "original_guarded_text.bin40",
+      "source_child.bin6",
+      "original_child.bin6",
+      "bound_original.bin63"
+    ],
+    "frees": [
+      "Source child0",
+      "Original child1",
+      "actual root0base",
+      "actual root1base"
+    ],
+    "borrowed_text_freed": false,
+    "Original_RX": "separate OS VirtualAlloc63/VirtualFree, not counted among4 explicit canonical heap calls",
+    "no_postfree_root_child_reads": true,
+    "no_ever_unique_retired_address_requirement": true,
+    "inputguards": "inside actual local40-byte GuardedText objects; no adjacentheap redzone/metadata claim",
+    "rootguards": "actualroot56 fullcomparison and otherrootpreservation; no serialized inside-root or external allocation guards invented"
+  },
+  "diagnostics": [
+    {
+      "id": "cases_and_mask",
+      "classification": "consistent",
+      "Source_TEXT_disagreement": false,
+      "finding": "both firstNUL offsets5 produce exact6-byte copies, fullopaque WORD18/WORD08 transport and33write/23preserve masks match current Source"
+    },
+    {
+      "id": "AF",
+      "classification": "consistent_exclusion",
+      "Source_TEXT_disagreement": false,
+      "finding": "finalXOR leaves AFundefined; machine_ok correctly checks8C5=44, not Type8 CMP/ADD8D5",
+      "Root_review_needed": "independent recorded decoder must excludeAF too; this audit does not inspect or execute that decoder"
+    },
+    {
+      "id": "ES",
+      "classification": "probe_assertion_coverage_limit",
+      "Source_TEXT_disagreement": false,
+      "finding": "es_before/es_after captured but machine_ok never compares them; Source header excludes blanketES preservation through providers",
+      "Root_review_needed": "distinguish probe predicate from any separately reviewed recorded ES equality assertion; uninspected here"
+    },
+    {
+      "id": "raw_frame_placement",
+      "classification": "additional_probe_precondition",
+      "Source_TEXT_disagreement": false,
+      "finding": "machine_ok requires TEXT>=EBP_before+32 and root disjointR-16..EBP+32; Source requires valid disjoint text-throughNUL/root/activeframe, not numeric address ordering",
+      "Root_review_needed": "actual freshMain/frame/local layout and observed addresses"
+    },
+    {
+      "id": "R_and_derived_T",
+      "classification": "capture_schema_limit",
+      "Source_TEXT_disagreement": false,
+      "finding": "Capture132 contains R esp_before but no Q/T fields; Q=R-12,T=R-16 are derived from threePUSHes/actualCALL rather than serialized entry samples",
+      "Root_review_needed": "complete actual raw caller and RET12 machine gate; do not invent capturedQ/T fields"
+    },
+    {
+      "id": "nonvolatile_seeds",
+      "classification": "probe_assertion_scope",
+      "Source_TEXT_disagreement": false,
+      "finding": "raw text seeds EBX57C29AE1,EDIB48630DF but machine_ok only checks before/after equality, not those initial constants",
+      "Root_review_needed": "actual full raw code and any independent seed assertions, without claiming the probe already checks them"
+    },
+    {
+      "id": "ordinary_wrappers",
+      "classification": "template_static_proof_limit",
+      "Source_TEXT_disagreement": false,
+      "finding": "recipe oneCALL/plainRET and selected opcode exclusions alone do not prove actual ECX receiver and TEXT/WORD18/WORD08 stack transport; ordinary calls remain code-only",
+      "Root_review_needed": "fresh complete ordinarySource/Original/raw callers and fullMain COFF/linked ownership/bytes/relocations"
+    },
+    {
+      "id": "DF_after",
+      "classification": "actual_provider_runtime_predicate",
+      "Source_TEXT_disagreement": false,
+      "finding": "afterDF0 is required for selected actualcurrent providers; Source header makes no blanket DF/ES/FPU/MXCSR preservation claim",
+      "Root_review_needed": "real currentprovider gates and recordedDF, not arbitrary/historicalOriginalCRT assumptions"
+    }
+  ],
+  "case_or_mask_disagreements": 0,
+  "Root_future_review": {
+    "active_or_accepted_fixtures_accessed": false,
+    "observed_values": false,
+    "actualmachine": "wholeSource63/59literalbytes+CALLoperand35..39; reboundOriginal63 same actualrawduplicate57; all fresh4TU fullbodies/Main/callers/adapter/canonical/helper/import code and relocations must be Rootreviewed/gated",
+    "actualproviders": "real mappedI386 malloc/free/_callnewh/memcpy IAT/export/MEM_IMAGE/NTphysicalfileID/fullSHA/ASLRnormalized32byte prefixes before0rootalloc/target and after4explicitfrees; not queried here",
+    "selectedrecipeguard": "manual_static_review.json keypassed; actualprecompileAST/gate/coverage/external_helper_coverage/build/objects/t5_root_probe.exe/recipe/helpers/probe bindings; no execution/materialization by worker",
+    "futurechanges": "Root finalgenerator must author actual generation/receipts; any case/probe change needsreview rather than silently using this worksheet",
+    "separate_EH_class_frontiers": "coded coldlibrary support is not EH execution/admission; privateOriginal CRT/class/refcount/clone/pooledpublication/World/game unchanged"
+  },
+  "evidence": [
+    {
+      "path": "src/native_scene_property_record_type5_storage.cpp",
+      "lines": [
+        14,
+        37
+      ],
+      "purpose": "actualstores/opaque stackorder/dup/XOR/RET12"
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_type5_storage.hpp",
+      "lines": [
+        18,
+        42
+      ],
+      "purpose": "generalnormal/nullsuccessful storage andphysicalcontract/limits"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "lines": [
+        11,
+        61
+      ],
+      "purpose": "privatecanonicalbridge/raw57/null/firstNUL/size/copy"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "lines": [
+        9,
+        18
+      ],
+      "purpose": "ECX/noargs/fullEAX/RET0 currentowningchild contract"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "lines": [
+        51,
+        66
+      ],
+      "purpose": "actualmalloc/newhandler/free"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "lines": [
+        11,
+        21
+      ],
+      "purpose": "explicitraw host/native allocation request"
+    },
+    {
+      "path": "t5fix_probe.cpp.txt",
+      "lines": [
+        17,
+        102
+      ],
+      "purpose": "ordinarydecls/Capture132/rawtextcaller"
+    },
+    {
+      "path": "t5fix_probe.cpp.txt",
+      "lines": [
+        308,
+        340
+      ],
+      "purpose": "guard/layout/machine assertions/rootexpectation"
+    },
+    {
+      "path": "t5fix_probe.cpp.txt",
+      "lines": [
+        378,
+        436
+      ],
+      "purpose": "selectedexactcasebytes/words/livechecks/saves/childfirstfree"
+    },
+    {
+      "path": "t5fix_recipe_v2.py.txt",
+      "lines": [
+        243,
+        248
+      ],
+      "purpose": "ordinary/raw template checks needactual machine review"
+    },
+    {
+      "path": "t5fix_recipe_v2.py.txt",
+      "lines": [
+        310,
+        341
+      ],
+      "purpose": "selected futurelaunchbinding/postprotocol, unexecuted"
+    }
+  ],
+  "preservation": {
+    "inputs": [
+      {
+        "kind": "Source",
+        "relative_path": "src/native_scene_property_record_type5_storage.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_record_type5_storage.cpp",
+        "frozen_path": "frozen/Source/src/native_scene_property_record_type5_storage.cpp",
+        "bytes": 1388,
+        "sha256": "bf0267a1f2362148b39599a3b9c3ae9ddefd01b6d26c6da0ede9e410f91407ce",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/src/native_scene_property_record_type5_storage.cpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "include/bsp/native_scene_property_record_type5_storage.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_record_type5_storage.hpp",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_record_type5_storage.hpp",
+        "bytes": 2382,
+        "sha256": "e013cde2dbb55bed44deba372d6fd7ed7162c5f770d0ef561a8dee0a047677e4",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/include/bsp/native_scene_property_record_type5_storage.hpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "src/native_string_duplicate.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_string_duplicate.cpp",
+        "frozen_path": "frozen/Source/src/native_string_duplicate.cpp",
+        "bytes": 1554,
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/src/native_string_duplicate.cpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "include/bsp/native_string_duplicate.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_string_duplicate.hpp",
+        "frozen_path": "frozen/Source/include/bsp/native_string_duplicate.hpp",
+        "bytes": 933,
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/include/bsp/native_string_duplicate.hpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "src/singleton_lifetime.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/singleton_lifetime.cpp",
+        "frozen_path": "frozen/Source/src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/src/singleton_lifetime.cpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "include/bsp/singleton_lifetime.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/singleton_lifetime.hpp",
+        "frozen_path": "frozen/Source/include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_fresh_case_contract_review/include/bsp/singleton_lifetime.hpp",
+        "TEXT_loaded_as_data_not_imported_executed": false
+      },
+      {
+        "kind": "TEXT",
+        "relative_path": "t5fix_probe.cpp.txt",
+        "original_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction/local/t5readerfix20261008a/references/t5fix_probe.cpp.txt",
+        "frozen_path": "frozen/TEXT/t5fix_probe.cpp.txt",
+        "bytes": 27488,
+        "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d",
+        "worktree_path": null,
+        "TEXT_loaded_as_data_not_imported_executed": true
+      },
+      {
+        "kind": "TEXT",
+        "relative_path": "t5fix_recipe_v2.py.txt",
+        "original_path": "J:/PROG/battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction/local/t5readerfix20261008a/references/t5fix_recipe_v2.py.txt",
+        "frozen_path": "frozen/TEXT/t5fix_recipe_v2.py.txt",
+        "bytes": 33529,
+        "sha256": "b09092f24d5c7ac0bc53319df6c7d588c58e1133efdd84682781174f97e27cc6",
+        "worktree_path": null,
+        "TEXT_loaded_as_data_not_imported_executed": true
+      }
+    ],
+    "Source_pins": 6,
+    "TEXT_pins": 2,
+    "generation_context": "local/t5cases/generation_context.json",
+    "context_sha256": "46b1d84e5fe094f36c9208758d7bb7a0217bab1b4356fa87940fee5629f5601b",
+    "before_after": "alloriginal/frozen8 plus6currentMain/worktreeSource hashes",
+    "Main_metadata": "only exact frozen generation context; no mutable reports/ledger assertions",
+    "old_helpers_readers_fixtures": "never imported/executed/opened"
+  },
+  "handoff": {
+    "family": "local/t5cases",
+    "receipt": "local/t5cases/receipt.json",
+    "manifest": "local/t5cases/artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_exclusions": [
+      "receipt.json",
+      "artifact_manifest.json"
+    ],
+    "all_actual_utilities_logs_copies_stops_commit_records_included": true,
+    "postconsoleoutsidefamily": true
+  },
+  "limits": [
+    "expectations only, no observedaddresses/registers/flags/processresults",
+    "no newSource/reconstruction/admission credit",
+    "no Native/emitted-control-flow/Ghidra/provider/compiler/target operation",
+    "no acceptedfixture or activefamily access",
+    "no oldhelper/reader import or execution",
+    "no Source/test/sharedledger edits",
+    "no implicitroot/class/refcount/pool/key/owner/clone/game admission",
+    "no FP semantics for opaque WORD18/WORD08",
+    "no standalone allocationbridge or rawduplicate credit from worksheet"
+  ]
+}
