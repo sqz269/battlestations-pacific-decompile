@@ -9539,5 +9539,19 @@
     "manifest_sha256": "0cec41886f865e7651c0cd753a0d2b45592e362dc89e93e26f52d12bfc4d9da4",
     "every_member_hash_and_crc_verified": true,
     "self_reference_boundary": "Sealed archive contains report_before_seal.json; external committed report adds this archive hash and size."
+  },
+  "primary_acceptance": {
+    "status": "PASS_read_only_readiness_independently_accepted",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_append_release_child_primary_review\\wake_append.json",
+      "bytes": 12748,
+      "sha256": "b52093c124cbdca895bfe3339b663e59bee1329ef1263dc6fcf2c19ec6900e14"
+    },
+    "qualification": "READ_ONLY readiness. Existing typed append and ordinary 3D differ from native. First missing raw3D and sequential copy identified; later raw-deps Source commit is a separate review. Parent whole Source, physical call adapters, application geometry consumption, Original CRT interior parity and game qualification remain absent.",
+    "new_Source_functions": 0,
+    "new_Source_fragments": 0,
+    "new_Original_function_records": 0,
+    "new_Source_or_Original_execution": false,
+    "game_validated": false
   }
 }

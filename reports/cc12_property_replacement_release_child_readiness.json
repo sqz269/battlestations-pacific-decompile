@@ -774,5 +774,20 @@
     "4_transfer_rows_PASS": true
   },
   "evidence_artifact_count": 77,
-  "evidence_manifest_sha256": "d85731c40663e1871d3995bebae3e0e2744dd7ff5f6517c2756a21b0346448e5"
+  "evidence_manifest_sha256": "d85731c40663e1871d3995bebae3e0e2744dd7ff5f6517c2756a21b0346448e5",
+  "primary_acceptance": {
+    "status": "PASS_read_only_readiness_independently_accepted",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_append_release_child_primary_review\\release_child.json",
+      "bytes": 7141,
+      "sha256": "24dd741b7a0ba08276d2af45d99f174f863bf66c916e00321e317682b21f4c09"
+    },
+    "qualification": "11B/2-instruction child stores00CE89D4 then tail-releases same ECX; no receiver adjustment. Whole child remains unready until8F0640 owning release including known type6 nested recursive chain. Exact E9 tail metadata is not a confirmed Ghidra flow defect; existing genuine EH name retained. Current admitted duplicate/array/raw constructors do not supply whole release, class ABI or gameplay.",
+    "new_Source_functions": 0,
+    "new_Source_fragments": 0,
+    "new_Original_function_records": 0,
+    "new_Source_or_Original_execution": false,
+    "game_validated": false,
+    "current_raw_duplicate_main_admission": "Historical worker pending status superseded by main bb285 admission already integrated before this review; current physical duplicate and allocation adapter whole bodies independently rechecked."
+  }
 }

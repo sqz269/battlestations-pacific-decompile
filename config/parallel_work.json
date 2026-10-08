@@ -34824,6 +34824,47 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_wake_append_readiness",
+      "worker": "primary",
+      "function_addresses": [
+        "00810190",
+        "00810160"
+      ],
+      "output_files": [
+        "docs/CC12_NATIVE_WAKE_APPEND_READINESS.md",
+        "reports/cc12_native_wake_append_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_whole_Source_unready",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "class_ABI_or_game_validated": false
+      }
+    },
+    {
+      "id": "cc12_property_replacement_release_child_readiness",
+      "worker": "primary",
+      "function_addresses": [
+        "008f0de0"
+      ],
+      "output_files": [
+        "docs/CC12_PROPERTY_REPLACEMENT_RELEASE_CHILD_READINESS.md",
+        "reports/cc12_property_replacement_release_child_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_whole_Source_unready",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "class_ABI_or_game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
