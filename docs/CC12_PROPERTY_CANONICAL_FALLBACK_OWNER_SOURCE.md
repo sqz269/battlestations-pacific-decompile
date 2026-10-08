@@ -1,7 +1,6 @@
 # CC12 canonical property/query fallback owners: Source
 
-Status: implemented and build-tested ordinary Source ownership; primary review
-pending. This packet adds no Original function or fragment ledger credit and
+Status: primary-accepted and build-tested ordinary Source ownership. This packet adds no Original function or fragment ledger credit and
 does not execute the proposed recursive-lifetime case.
 
 The accepted execution-readiness packet identified an actual owner gap:
@@ -187,3 +186,16 @@ probes, selected API/entry execution, startup, or gameplay validation occur.
 The manifest and report identify the actual physical evidence and the accepted
 readiness receipt. Primary acceptance and a separately authorized concrete
 five-root execution packet remain the next boundaries.
+
+Primary review rehashed all 13,634 sealed artifacts and 2,933 historical physical
+pins, froze 880 current inputs before one merged normal build, and checked all
+875 actual selected compiler inputs against those preimages. All three existing
+checks passed. The current 22 whole objects / 5,328 complete extents have a
+positive code/data graph bijection to the worker artifacts; all 13 actual Core
+members are uniquely present. Exact lambda token bindings are recovered from
+whole extents and ordered target graphs; differing RTTI spelling bytes are
+checked in full, rather than ignoring their hashes. Six failed static-driver
+attempts are retained; corrections changed neither Source nor the successful
+build count. The final primary receipt is local/cc12_property_canonical_fallback_owner_primary_review/receipt.json
+(SHA256 02c5d97fd432f7aa1d0fbb6d2c8638bfdcb1b7124c577bfd4f4f549161c50ba4).
+No new entry, startup or gameplay execution was performed.

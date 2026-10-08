@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "cc12_property_canonical_fallback_owner_source",
-  "status": "SOURCE_IMPLEMENTED_BUILD_AND_STATIC_QUALIFICATION_PASSED_PENDING_PRIMARY_REVIEW",
+  "status": "ordinary_source_primary_accepted_build_tested_no_entry_execution",
   "UTC": "2026-10-08T21:43:43.366421+00:00",
   "base_main": "7b244d3b8bc3204b1e37759a90842c28a0b78b63",
   "tracked_files": [
@@ -3469,5 +3469,19 @@
       "artifact_manifest.json": "self hash would be recursive",
       "final_check.log": "live post-seal verification output, deliberately excluded"
     }
+  },
+  "primary_review": {
+    "receipt": "local/cc12_property_canonical_fallback_owner_primary_review/receipt.json",
+    "bytes": 41643,
+    "sha256": "02c5d97fd432f7aa1d0fbb6d2c8638bfdcb1b7124c577bfd4f4f549161c50ba4",
+    "worker_report_sha256": "00fa62169f62c1adcd459629419f1b06c5d391db798cffaa0002233923c42f78",
+    "whole_objects": 22,
+    "whole_extents": 5328,
+    "actual_core_members": 13,
+    "actual_compiler_inputs_prefrozen": 875,
+    "normal_checks_passed": 3,
+    "new_entry_execution": 0,
+    "Original_function_credit": 0,
+    "Original_fragment_credit": 0
   }
 }
