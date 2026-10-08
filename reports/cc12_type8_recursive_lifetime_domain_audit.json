@@ -1,0 +1,609 @@
+{
+  "schema": "cc12_type8_recursive_lifetime_domain_audit_v1",
+  "packet": "cc12_type8_recursive_lifetime_domain_audit",
+  "status": "SOURCE_ONLY_DOMAIN_AUDIT_NO_NEW_ADMISSION",
+  "Source_credit": 0,
+  "new_reconstruction_credit": 0,
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit",
+  "branch": "agent/cc12_type8_recursive_lifetime_domain_audit",
+  "baseline_commit": "86da7c2800ad6bd959031c09ae86a5db7f81a387",
+  "Main_generation_commit": "3a722d640210c05e6e7372a0f703d20fe26acca8",
+  "owned_files": [
+    "docs/CC12_TYPE8_RECURSIVE_LIFETIME_DOMAIN_AUDIT.md",
+    "reports/cc12_type8_recursive_lifetime_domain_audit.json"
+  ],
+  "addresses_leased_or_queried": [],
+  "scope": {
+    "current_Source_only": true,
+    "Native_Ghidra_provider_queries": 0,
+    "compiler_or_target_executions": 0,
+    "old_helper_imports_or_executions": 0,
+    "accepted_fixtures_or_active_Root_t7p2_read": false,
+    "new_Source_changes_or_tests": 0,
+    "prior_sealed_families_changed": false
+  },
+  "constructor": {
+    "address_derived_from_current_CPP_HPP": "008EF2F0",
+    "symbol": "bsp::construct_native_scene_property_record_type8_byte_array_storage_008ef2f0",
+    "declaration": "void* __fastcall (void* actual_root_ecx, void* unused_edx, const void* actual_bytes, uint32_t byte_count, uint32_t copy_flag_bits)",
+    "noexcept": false,
+    "native_extent_from_frozen_report_only": {
+      "begin": "008EF2F0",
+      "end_exclusive": "008EF360",
+      "bytes": 112,
+      "instructions": 34,
+      "sha256": "4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928",
+      "fresh_Native_verification": false
+    },
+    "physical_contract_from_current_Source": {
+      "ECX": "actual fresh unowned writable56 root",
+      "incoming_EDX": "unused",
+      "entry_ESP_plus_4": "DATA pointer",
+      "entry_ESP_plus_8": "uint32 byte COUNT",
+      "entry_ESP_plus_C": "FLAG DWORD; only low byte read",
+      "return": "EAX=root; RET12; ESI/EDI saved/restored"
+    },
+    "positive_success_domain": "stable positive byte_count readable input; disjoint root/input/active frame; nonwrapping spans; DF0 for current providers; no failure, reentry or unwind",
+    "order": "read FLAG low byte before all root stores; phase/tag stores precede COUNT read; zero18/1C, publish count24; copy allocation20 precedes memcpy; marker/ordinal finish both paths",
+    "fields": [
+      {
+        "offset": "00",
+        "bytes": 4,
+        "after": "literal00CE89D4 phase identity; no callable Source vtable"
+      },
+      {
+        "offset": "04",
+        "bytes": 4,
+        "after": "tag8"
+      },
+      {
+        "offset": "18",
+        "bytes": 4,
+        "after": 0
+      },
+      {
+        "offset": "1C",
+        "bytes": 4,
+        "after": 0
+      },
+      {
+        "offset": "20",
+        "bytes": 4,
+        "after": "borrowed DATA exact pointer or allocated count-byte child"
+      },
+      {
+        "offset": "24",
+        "bytes": 4,
+        "after": "COUNT in bytes, no scaling/multiplication"
+      },
+      {
+        "offset": "2C",
+        "bytes": 1,
+        "after": 1
+      },
+      {
+        "offset": "34",
+        "bytes": 4,
+        "after": 0
+      }
+    ],
+    "written_bytes": 29,
+    "preserved_bytes": 27,
+    "written_half_open_ranges": [
+      [
+        0,
+        8
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        52,
+        56
+      ]
+    ],
+    "preserved_half_open_ranges": [
+      [
+        8,
+        24
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        45,
+        52
+      ]
+    ],
+    "owner_DWORD_30": "preserved; no owner publication or disposal authority",
+    "borrowed": "low flag byte0 retains DATA at20; no allocation/copy/free; DATA owner remains caller",
+    "copied": "low flag byte nonzero allocates exactly COUNT current-canonical bytes through private CDECL bridge; stores child20 then memcpy(child,DATA,COUNT); original DATA remains borrowed",
+    "flag_not_Boolean_normalization": true,
+    "marker_2C_ownership_discriminator": false,
+    "bridge": "allocate_native_byte_array_bytes is Source-only CDECL size bridge calling singleton_lifetime_allocate({object,count,count}); no standalone Native reconstruction credit"
+  },
+  "release": {
+    "symbol": "bsp::release_native_scene_property_record_value_008f0640",
+    "definitions_location": "src/native_scene_property_bag_storage.cpp, not a separate recursive_lifetime.cpp",
+    "tag8": "shares exact case8..11 array-release call on record+20 interior",
+    "array_leaf": "loads DWORD pointer20; any nonnull pointer is canonical-freed before pointer20/count24 reset; null skips free but both DWORDs clear",
+    "payload_dereference_or_count_control": "no byte payload read, no count-dependent decision; invalid/borrowed/nonbase free remains outside contract",
+    "ordered_common_DWORD_resets": [
+      "04",
+      "0C",
+      "28",
+      "08"
+    ],
+    "marker_2C_or_owner_30_read_or_write": false,
+    "remaining_ctor_values": "18/1C zero, byte2C1, ordinal34zero remain; other preserved bytes incl10/14,2D..33 unchanged by tag8 release",
+    "destroy": "publish literalCE89D4 before same complete value-release",
+    "scalar": "always destroy; flags&1 only controls actual root canonical free; flags0 does not prevent child free; capture full root bits before optional free",
+    "array_interior_free": false
+  },
+  "compatibility": {
+    "borrowed_pointer_still_caller_owned": {
+      "compatible_with_release": false,
+      "reason": "tag8 array leaf unconditionally frees nonnull20, irrespective of low constructor flag and marker2C1; flags0 protects only root",
+      "not_remedied_by_current_heap_origin_alone": "a caller-owned live canonical pointer still cannot be consumed without an established exclusive transfer",
+      "cleanup": "within successful raw-storage contract, dispose only caller-owned actual root/base as applicable; retain input owner/lifetime and never treat it as a copied child; no automatic class destructor",
+      "ownership_transfer": "possible structural header compatibility only after separately evidenced exclusive, live, same-current-canonical ownership transfer; not established by retained constructor or this audit"
+    },
+    "copied_child": {
+      "structurally_matches_array_release": true,
+      "new_connected_admission": false,
+      "predicates": [
+        "successful completed constructor",
+        "live exclusive undisposed actual current-canonical count-byte child at20",
+        "no other record or caller scheduled to free/use child after release",
+        "writable correct56 root remains live through ordered reset",
+        "valid genuine borrowed NativeScenePropertyLifetimeContext and accepted record/lifetime domain",
+        "if flags1 actual root is independently owned undisposed same-current-canonical allocation base",
+        "if flags0 root owner manages later base disposition; destruction still consumes child",
+        "no faults/reentry/concurrent mutation/overflow/unwind; current successful provider contract"
+      ],
+      "producer_admission_boundary": "generation Type8 standalone Source credit0/helper coverage reopened; structural match is not a new producer or class/connected lifecycle qualification"
+    },
+    "cleanup_alternatives_exclusive": [
+      "raw manual path: observe/save live child, canonical-free child once, then actual root base once; do not subsequently call release on stale child20",
+      "qualified lifetime path: release/destroy or scalar flags0 consumes child and clears20/24; later dispose retained actual root base once, no second saved-child free",
+      "qualified scalar flags1 path: child consumed first and actual owned root disposed once; use captured root bits only, never inspect retired root/child",
+      "qualified owning map path: map invokes scalar flags1 then pooled key destruction and slot return; no independent root/child disposition by caller"
+    ],
+    "no_root_census_fake_pool_or_fabricated_class": true
+  },
+  "class_pool_key_context": {
+    "binding": "NativeScenePropertyLifetimeContext captures canonical GameNativeStringProcess.raw_context and SAME GameNativePhysicalPoolProcess.property_node_pool_storage_00e175b0 after explicitCC8A30 returned",
+    "pool": "private real38h owner/SAMEE188B4 domain; a raw phase or zeroed pool does not establish ownership; nonzero registration status leaves initialized pool without CRT callback",
+    "populated_map": "real unique live14h slots, first8 real pooled key header, record+8,next+C, allocator membership+10; finite unshared acyclic owning graph; matching current-canonical record/buffer bases",
+    "order": "save next; scalar(record,1), zero mapped pointer only after return; destroy real key; return slot; no retired-slot read; all64 heads then count zero",
+    "lifetime": "payloads/keys/nodes finish beforeCD9260 releases pages; canonical processes/list/publication cells and correct small-return gate/generation outlive borrowers",
+    "type8_ctor_publication": "preserved30 and literalphase/tag/marker do not produce a pooled node/key/owner relation or bag insertion"
+  },
+  "clone_publication_frontiers": {
+    "clone_spec": "ByteArray spec.owned_block=true is Source classification only; no call to physical Type8 constructor or transfer",
+    "semantic_clone": "ScenePropertyBagModel copies C++ value/vectors/string; no raw56 producer or pool publication",
+    "host": "host.clone_record remains pure virtual, then set ordinal and host.insert_record pure virtual; no Type8-specific connected production binding found in bounded src/include symbol search",
+    "empty_bag_clone": "existing raw61 fragment requires empty count/all heads; cannot clone a Type8-containing populated bag",
+    "named_unclosed": "whole native/class clone allocation+Type8 producer+ordinal/owner/key/pool publication binding; privateOriginal heap/EH/class/dispatch/game remain separate",
+    "stale_numeric_comment_handling": "other semantic type labels such as FloatArray are not Type8 numeric or Type9 ownership proof"
+  },
+  "generation_metadata": {
+    "Type8_Source_admission_credit": 0,
+    "Type8_primary_source_status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after library-edge audit",
+    "Type8_complete_linked_helper_validation_pending": true,
+    "Type8_existing_evidence_holds": [
+      {
+        "passed": false,
+        "Source_admission_credit": 0,
+        "status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after library-edge audit",
+        "Root_audit_reviewed": true,
+        "audit_report": "reports/cc12_type8_complete_helper_library_edge_audit.json",
+        "historical_independent_family": "local/t8p2",
+        "historical_seal_sha256": "edae817c0fbc4d710e620dd54f02a547aca71f3e269ebc8ee5319360c0c241d7",
+        "historical_artifacts_preserved": true,
+        "source_body_unchanged": true,
+        "recorded_behavior_retained": true,
+        "fresh_complete_helper_validation_pending": true,
+        "no_blanket_consumer_family_propagation": true,
+        "qualification": "Root reviewed the independent Type8 library-edge audit: all31 retained symbol proofs/29 distinct TU bodies and whole112B34 storage body are gated, but nine normal import thunks are absent at17 physical direct operands. Three cold direct helper destinations at7 physical operands plus the unsized-delete/free-thunk continuation are also absent; GS failure/EH execution remain unadmitted. Counts are286 symbol-level relocation checks/280 distinct physical operands, with six alias rechecks and actual mode-1 fallback selection. Standalone complete-helper Source admission is reopened to0 pending a fresh complementary normal-helper gate. Historical four entries/full140-byte captures/full56-byte roots/guarded inputs and borrow/copy observations remain evidence; DATA/COUNT/FLAG stack order and unsigned low-byte flag semantics are unchanged. No Source edits or blanket later family propagation; no old process/stage replay or fresh Native/provider queries.",
+        "game_validated": false
+      }
+    ],
+    "recursive_status": "PRIMARY_ACCEPTED_SIX_COHESIVE_WHOLE_ORDINARY_SOURCE_BODIES_WIN32_AND_STATIC_PRODUCTION",
+    "recursive_existing_credit": 6,
+    "recursive_review_new_entry_execution": false,
+    "qualification_change_or_revocation_inferred": false,
+    "metadata_original_paths_may_advance": true
+  },
+  "evidence": [
+    {
+      "path": "src/native_scene_property_record_type8_byte_array_storage.cpp",
+      "first_line": 11,
+      "last_line": 16,
+      "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab",
+      "evidence": "actual current-canonical Source-only allocation bridge"
+    },
+    {
+      "path": "src/native_scene_property_record_type8_byte_array_storage.cpp",
+      "first_line": 28,
+      "last_line": 67,
+      "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab",
+      "evidence": "whole current literal raw112 Source schedule and two branches"
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+      "first_line": 14,
+      "last_line": 44,
+      "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91",
+      "evidence": "positive fresh56 storage, DATA/COUNT/FLAG physical/public interface, both marker stores and limits"
+    },
+    {
+      "path": "src/native_scene_property_bag_storage.cpp",
+      "first_line": 212,
+      "last_line": 240,
+      "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f",
+      "evidence": "canonical context and actual record/key/pool disposition order"
+    },
+    {
+      "path": "src/native_scene_property_bag_storage.cpp",
+      "first_line": 245,
+      "last_line": 258,
+      "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f",
+      "evidence": "record scalar flags and phase-before-release"
+    },
+    {
+      "path": "src/native_scene_property_bag_storage.cpp",
+      "first_line": 262,
+      "last_line": 303,
+      "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f",
+      "evidence": "whole current type switch and exact common resets"
+    },
+    {
+      "path": "src/native_scene_property_array_block_release.cpp",
+      "first_line": 14,
+      "last_line": 30,
+      "sha256": "9f65c8fe0a18183c2212fba612205da341e2b39cf9c4fe917109a6dc979b340e",
+      "evidence": "whole direct array canonical-free/reset leaf"
+    },
+    {
+      "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+      "first_line": 16,
+      "last_line": 74,
+      "sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1",
+      "evidence": "borrowed canonical context and qualified successful owning graph constraints"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "first_line": 51,
+      "last_line": 66,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "evidence": "real current malloc/newhandler/free boundary"
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "first_line": 33,
+      "last_line": 50,
+      "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d",
+      "evidence": "actual private property-pool startup/getter/lifetime contract"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "first_line": 6,
+      "last_line": 37,
+      "sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "evidence": "real private canonical publication/raw context"
+    },
+    {
+      "path": "include/bsp/native_enum_node_pool.hpp",
+      "first_line": 11,
+      "last_line": 37,
+      "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e",
+      "evidence": "real nodepool/slot domain; payload-before-slot disposition"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "first_line": 33,
+      "last_line": 41,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "evidence": "actual key context vs semantic pool projection"
+    },
+    {
+      "path": "src/scene_property_bag_merge.cpp",
+      "first_line": 52,
+      "last_line": 94,
+      "sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+      "evidence": "classification only including tag8"
+    },
+    {
+      "path": "src/scene_property_bag_merge.cpp",
+      "first_line": 269,
+      "last_line": 286,
+      "sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+      "evidence": "actual virtual clone/ordinal/publication call sequence"
+    },
+    {
+      "path": "include/bsp/scene_property_bag_merge.hpp",
+      "first_line": 150,
+      "last_line": 165,
+      "sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c",
+      "evidence": "unbound pure virtual host clone and insert"
+    },
+    {
+      "path": "include/bsp/scene_property_bag.hpp",
+      "first_line": 82,
+      "last_line": 113,
+      "sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88",
+      "evidence": "semantic model differs from raw56 record"
+    },
+    {
+      "path": "src/scene_property_bag.cpp",
+      "first_line": 363,
+      "last_line": 402,
+      "sha256": "7ce07cd97b31826d12cd2c0e9ba3ba74fc5928af07436613653cd9b5b7ad4759",
+      "evidence": "C++ semantic copy/clone only"
+    },
+    {
+      "path": "include/bsp/native_scene_property_bag_storage.hpp",
+      "first_line": 28,
+      "last_line": 39,
+      "sha256": "ce8f0562a7a39aca690f9b1cbbca924566bca257fcc82bf6ecc85f3a8d93e3a4",
+      "evidence": "empty-only raw61 clone fragment"
+    }
+  ],
+  "preservation": {
+    "Source_pin_count": 17,
+    "Source_pins": [
+      {
+        "relative_path": "src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "frozen_path": "frozen/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "bytes": 2114,
+        "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "frozen_path": "frozen/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "bytes": 2584,
+        "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "src/native_scene_property_bag_storage.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_bag_storage.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/native_scene_property_bag_storage.cpp",
+        "frozen_path": "frozen/src/native_scene_property_bag_storage.cpp",
+        "bytes": 12600,
+        "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_bag_storage.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_bag_storage.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_scene_property_bag_storage.hpp",
+        "frozen_path": "frozen/include/bsp/native_scene_property_bag_storage.hpp",
+        "bytes": 2199,
+        "sha256": "ce8f0562a7a39aca690f9b1cbbca924566bca257fcc82bf6ecc85f3a8d93e3a4",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "frozen_path": "frozen/include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "bytes": 4337,
+        "sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "src/native_scene_property_array_block_release.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_array_block_release.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/native_scene_property_array_block_release.cpp",
+        "frozen_path": "frozen/src/native_scene_property_array_block_release.cpp",
+        "bytes": 939,
+        "sha256": "9f65c8fe0a18183c2212fba612205da341e2b39cf9c4fe917109a6dc979b340e",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_array_block_release.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_array_block_release.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_scene_property_array_block_release.hpp",
+        "frozen_path": "frozen/include/bsp/native_scene_property_array_block_release.hpp",
+        "bytes": 618,
+        "sha256": "33487664e85d48efc22745d5aa2a4340b1636e00f96ed3f70441003eba9d8642",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "src/singleton_lifetime.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/singleton_lifetime.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/singleton_lifetime.cpp",
+        "frozen_path": "frozen/src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/singleton_lifetime.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/singleton_lifetime.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/singleton_lifetime.hpp",
+        "frozen_path": "frozen/include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "src/scene_property_bag.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/scene_property_bag.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/scene_property_bag.cpp",
+        "frozen_path": "frozen/src/scene_property_bag.cpp",
+        "bytes": 25972,
+        "sha256": "7ce07cd97b31826d12cd2c0e9ba3ba74fc5928af07436613653cd9b5b7ad4759",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/scene_property_bag.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/scene_property_bag.hpp",
+        "frozen_path": "frozen/include/bsp/scene_property_bag.hpp",
+        "bytes": 12832,
+        "sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "src/scene_property_bag_merge.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/scene_property_bag_merge.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/src/scene_property_bag_merge.cpp",
+        "frozen_path": "frozen/src/scene_property_bag_merge.cpp",
+        "bytes": 12335,
+        "sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag_merge.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/scene_property_bag_merge.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/scene_property_bag_merge.hpp",
+        "frozen_path": "frozen/include/bsp/scene_property_bag_merge.hpp",
+        "bytes": 10363,
+        "sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/game_native_physical_pool.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/game_native_physical_pool.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/game_native_physical_pool.hpp",
+        "frozen_path": "frozen/include/bsp/game_native_physical_pool.hpp",
+        "bytes": 3787,
+        "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/game_native_string_process.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/game_native_string_process.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/game_native_string_process.hpp",
+        "frozen_path": "frozen/include/bsp/game_native_string_process.hpp",
+        "bytes": 2017,
+        "sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_enum_node_pool.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_enum_node_pool.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_enum_node_pool.hpp",
+        "frozen_path": "frozen/include/bsp/native_enum_node_pool.hpp",
+        "bytes": 3553,
+        "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      },
+      {
+        "relative_path": "include/bsp/native_string.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_string.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_recursive_lifetime_domain_audit/include/bsp/native_string.hpp",
+        "frozen_path": "frozen/include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "worktree_equals_Main": true,
+        "pin_kind": "strict_inspected_Source_or_declared_contract"
+      }
+    ],
+    "frozen_metadata_count": 5,
+    "metadata": [
+      {
+        "relative_path": "reports/native_scene_property_record_type8_byte_array_storage_cc12.json",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/reports/native_scene_property_record_type8_byte_array_storage_cc12.json",
+        "frozen_path": "frozen_context/reports/native_scene_property_record_type8_byte_array_storage_cc12.json",
+        "bytes": 205582,
+        "sha256": "6e11c79592adf98bd6e18f9d7a2148f82c041616c29857c639b0ee3327c71912",
+        "pin_kind": "immutable_frozen_generation_context_only",
+        "later_Main_original_may_change": true
+      },
+      {
+        "relative_path": "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+        "frozen_path": "frozen_context/docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+        "bytes": 14514,
+        "sha256": "e140d32069038fc191b531acb3be25d51fdba59a2020db64b447138ec793dc93",
+        "pin_kind": "immutable_frozen_generation_context_only",
+        "later_Main_original_may_change": true
+      },
+      {
+        "relative_path": "reports/cc12_property_recursive_lifetime_source.json",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/reports/cc12_property_recursive_lifetime_source.json",
+        "frozen_path": "frozen_context/reports/cc12_property_recursive_lifetime_source.json",
+        "bytes": 143591,
+        "sha256": "fa72da0f50ca78d053962c4b5567d4b4509a4cef20f47e09a7a99eefb3c6915a",
+        "pin_kind": "immutable_frozen_generation_context_only",
+        "later_Main_original_may_change": true
+      },
+      {
+        "relative_path": "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE.md",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE.md",
+        "frozen_path": "frozen_context/docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE.md",
+        "bytes": 14143,
+        "sha256": "81647c762d362289c2c1b1b55ed238476bad93c3f836821c4828c4c22b7855fa",
+        "pin_kind": "immutable_frozen_generation_context_only",
+        "later_Main_original_may_change": true
+      },
+      {
+        "relative_path": "reports/native_scene_property_array_block_release_cc11.json",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/reports/native_scene_property_array_block_release_cc11.json",
+        "frozen_path": "frozen_context/reports/native_scene_property_array_block_release_cc11.json",
+        "bytes": 41158,
+        "sha256": "b37c02d95a6fa43081b5dfcb70931ff03f2fc1cc8c9432030f5cb88d60a7dfc9",
+        "pin_kind": "immutable_frozen_generation_context_only",
+        "later_Main_original_may_change": true
+      }
+    ],
+    "context": "local/t8domain/generation_context.json",
+    "context_sha256": "be0bb8c88596bd9ff9ed93591e9c6aa6e79fc50c74aefcf83a4f71f28fedf288",
+    "bookend": "local/t8domain/source_bookends.json",
+    "before_after_hash_equality_required_for_17_Source_HPP_and_frozen_images": true,
+    "old_accepted_families_not_read_replayed_or_repinned": true
+  },
+  "artifact_handoff": {
+    "directory": "local/t8domain",
+    "receipt": "local/t8domain/receipt.json",
+    "manifest": "local/t8domain/artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_exclusions": [
+      "receipt.json",
+      "artifact_manifest.json"
+    ],
+    "all_helpers_logs_frozen_sources_metadata_commit_info_included": true,
+    "post_console_outside_family": true
+  },
+  "limits": [
+    "no new constructor/runtime/Native proof",
+    "no current-provider live query",
+    "no whole clone/class or bag-publication admission",
+    "no privateOriginal allocator/EH/destructor/virtual transport",
+    "no standalone allocation-bridge reconstruction credit",
+    "no numeric semantics beyond byte DATA/COUNT/low FLAG",
+    "no startup/game validation",
+    "existing qualified Source domains unchanged"
+  ]
+}
