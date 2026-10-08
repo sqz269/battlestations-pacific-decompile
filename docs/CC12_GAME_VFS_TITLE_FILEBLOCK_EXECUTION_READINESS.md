@@ -169,3 +169,17 @@ count and a Python `finally` syntax omission); neither ran reconstructed code.
 Source normal ownership, historical build checks and fresh input identity do not
 establish Native FH3/SEH, raw register/stack ABI, complete title/asset/render behavior
 or game validation. This packet performs **zero** Source/probe/startup/game executions.
+
+## Primary review
+
+The integrator independently rehashed 9,302 retained historical files and
+4,372 worker input snapshots, compared 4,030 mapped current Source files,
+checked all ten installed Native spans and 27 retained exports, and verified
+the unchanged 67,814-file metadata inventory. All six whole installed inputs
+retain their actual read-only Windows handle identities. The only mapped
+Source differences are the independently accepted unlink guard/header fix,
+outside the title caller and owner providers.
+Receipt `local/cc12_title_execution_readiness_primary_review/receipt.json`:
+SHA-256 `d7aa02789989e776dede23b941f5bcf5f680986597a581ea2e8c962d6ebc4559`.
+The execution frontier and proposed producer audits are accepted; full actual
+title execution remains unready. No Source, build, runtime or ledger credit follows.
