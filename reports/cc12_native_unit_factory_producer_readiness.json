@@ -1,0 +1,964 @@
+{
+  "packet": "cc12_native_unit_factory_producer_readiness",
+  "status": "read_only_audit_complete_cohesive_unit_constructor_and_lifetime_domain_missing",
+  "created_utc": "2026-10-08T19:16:02.368247+00:00",
+  "observed_main": "23a82cd9a087333c258595ff07a50f1e86131a03",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast",
+  "leased_Native_addresses": [
+    "006fe590",
+    "006fe460"
+  ],
+  "tracked_files": [
+    "docs/CC12_NATIVE_UNIT_FACTORY_PRODUCER_READINESS.md",
+    "reports/cc12_native_unit_factory_producer_readiness.json"
+  ],
+  "admission": {
+    "new_Source": 0,
+    "new_Original_implementation_credit": 0,
+    "ready_Source_owner_or_wiring_packets": 0,
+    "proposed_Source_packet": null,
+    "whole_Native_factory_order_established": true,
+    "whole_Native_derived_constructor_order_established": true,
+    "genuine_current_Source_raw_unit_or_wake_producer_established": false,
+    "viable_complete_ordinary_Source_owner_qualified": false,
+    "reason": "Complete allocation order does not close real descriptor ownership, whole base construction and dispatch, one canonical unit publication/identity, or ordered root destruction. Existing application descriptor and instance callbacks remain explicit stubs returning a numeric token and metadata record."
+  },
+  "Native": {
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "class_scope": "Actual Destroyer factory/derived constructor only; no other vehicle sizes/classes admitted",
+    "whole_functions": [
+      {
+        "address": "006fe590",
+        "end_inclusive": "006fe612",
+        "bytes": 131,
+        "sha256": "d1602b77b8270815a9f3bcc274e636f592e18ebdbceebd4d66b380b617caed90",
+        "instruction_count": 40,
+        "fresh_Ghidra_instruction_starts_match_all_bytes": true
+      },
+      {
+        "address": "006fe460",
+        "end_inclusive": "006fe4c2",
+        "bytes": 99,
+        "sha256": "a58283397f3cc71fc80f0ba988f90c17a3ba75e0a7a67e34a79ae13652c13a7c",
+        "instruction_count": 17,
+        "fresh_Ghidra_instruction_starts_match_all_bytes": true
+      }
+    ],
+    "factory_order": [
+      "allocate4488 via00BF55BE",
+      "memset full4488 zero via00BF79F0 before testing allocation",
+      "save allocation in EH local; state0",
+      "call derived006FE460 on same root with unchanged caller flag when nonnull",
+      "clear EH state to-1",
+      "call descriptor owning setter009553D0",
+      "store same descriptor at root+354",
+      "return same successful root;RET4"
+    ],
+    "factory_calls": [
+      {
+        "address": "006fe5af",
+        "bytes": "e80a704f00",
+        "mnemonic": "call",
+        "operands": "0xbf55be",
+        "registers_written": [
+          "esp"
+        ]
+      },
+      {
+        "address": "006fe5be",
+        "bytes": "e82d944f00",
+        "mnemonic": "call",
+        "operands": "0xbf79f0",
+        "registers_written": [
+          "esp"
+        ]
+      },
+      {
+        "address": "006fe5dd",
+        "bytes": "e87efeffff",
+        "mnemonic": "call",
+        "operands": "0x6fe460",
+        "registers_written": [
+          "esp"
+        ]
+      },
+      {
+        "address": "006fe5f3",
+        "bytes": "e8d86d2500",
+        "mnemonic": "call",
+        "operands": "0x9553d0",
+        "registers_written": [
+          "esp"
+        ]
+      }
+    ],
+    "derived_calls": [
+      {
+        "address": "006fe468",
+        "bytes": "e8d3081200",
+        "mnemonic": "call",
+        "operands": "0x81ed40",
+        "registers_written": [
+          "esp"
+        ]
+      }
+    ],
+    "vptr_writes": [
+      {
+        "address": "006fe46d",
+        "offset": "0000",
+        "literal_Original_value": "00cfc3d0"
+      },
+      {
+        "address": "006fe473",
+        "offset": "0010",
+        "literal_Original_value": "00cfc3b8"
+      },
+      {
+        "address": "006fe47a",
+        "offset": "0024",
+        "literal_Original_value": "00cfc3b0"
+      },
+      {
+        "address": "006fe481",
+        "offset": "0170",
+        "literal_Original_value": "00cfc3ac"
+      },
+      {
+        "address": "006fe48b",
+        "offset": "01e4",
+        "literal_Original_value": "00cfc3a4"
+      },
+      {
+        "address": "006fe495",
+        "offset": "0310",
+        "literal_Original_value": "00cfc38c"
+      },
+      {
+        "address": "006fe49f",
+        "offset": "038c",
+        "literal_Original_value": "00cfc388"
+      },
+      {
+        "address": "006fe4a9",
+        "offset": "072c",
+        "literal_Original_value": "00cfc384"
+      }
+    ],
+    "class_id_store": {
+      "address": "006fe4b3",
+      "offset": "00c4",
+      "value": 7
+    },
+    "ABI": "Original__thiscall descriptor/root receiver; one unchanged32-bit stack flag; RET4. Descriptive Source names are hypotheses; no Source ABI replacement admitted.",
+    "allocation_request_bytes": 4488,
+    "zeroing_bytes": 4488,
+    "zeroing_precedes_allocation_null_test": true,
+    "initial_preimage": {
+      "bytes": 4488,
+      "stage": "Immediately before entering006FE460 and therefore before its0081ED40 call",
+      "wake_subrange_start": 3024,
+      "wake_subrange_end_exclusive": 4012,
+      "wake_subrange_bytes": 988,
+      "later_base_chain_interference_or_preservation_proved_here": false
+    },
+    "null_qualification": "memset(P,0,4488) precedes TEST/JZ. A hypothetical returned null reaches invalid positive-length memset before the displayed null arm; no safe failure behavior or allocator null return is admitted.",
+    "factory_EH": {
+      "handler": "00c83ab8",
+      "saved_allocation_entry_SP_offset": -16,
+      "state_entry_SP_offset": -4,
+      "state0_store": "006fe5cc",
+      "state_minus1_store": "006fe5eb",
+      "handler_or_unwind_table_newly_analyzed": false
+    },
+    "stack_checks": {
+      "saved_allocation_entry_SP_offset": -16,
+      "EH_state_entry_SP_offset": -4,
+      "caller_flag_entry_SP_offset": 4,
+      "success_return_stack_delta_including_return_and_argument": 8,
+      "cdecl_argument_cleanup_at_006fe5c3": 16,
+      "exceptional_stack_or_handler_execution": false
+    },
+    "descriptor_links": {
+      "owning_slot": "0538",
+      "owning_setter": "009553d0",
+      "owning_setter_evidence": "Existing qualified ledger/Source declaration, not a fresh helper-body analysis",
+      "borrowed_slot": "0354",
+      "borrowed_store_site": "006fe5fc",
+      "owning_setter_precedes_borrowed_store": true
+    },
+    "root_free": {
+      "explicit_normal_root_free_in_newly_read_functions": false,
+      "Destroyer_primary_vtable": "00cfc3d0",
+      "historical_scalar_deleting_wrapper": "006fe570",
+      "historical_flags_test": "006fe578:flags&1",
+      "historical_root_free_site": "006fe580",
+      "historical_parent_body": "0081f3a0",
+      "fresh_wrapper_parent_or_unwind_analysis": false,
+      "normal_or_exceptional_allocation_root_release_Source_closed": false
+    }
+  },
+  "qualified_existing_dependencies": [
+    {
+      "Native": "0081ed40",
+      "role": "Whole Original vehicle-base constructor retained and primary-accepted in preceding readiness",
+      "Source": "Subobject and navigator seed projections only",
+      "whole_live_Source_provider": false
+    },
+    {
+      "Native": "0095cc90 -> 0087b670 -> 0077eed0 -> 00928630 -> 00925ce0",
+      "role": "Existing documented lower constructor chain",
+      "Source": "Selected operations announced by UnitInstanceCreationHost; genuine observer-prefix fragments exist",
+      "whole_live_Source_chain_provider": false,
+      "new_Native_analysis": false
+    },
+    {
+      "Native": "009553d0",
+      "role": "Owning vehicle-class setter",
+      "Source": "UnitInstanceCreationHost::set_vehicle_class abstract method; result metadata fields",
+      "actual_application_binding": false
+    },
+    {
+      "Native": "006fe570 / 0081f3a0",
+      "role": "Destroyer root/base destruction and gated free",
+      "Source": "UnitReleaseHost semantic plan and abstract free_instance",
+      "actual_application_binding": false
+    },
+    {
+      "Native": "00bf55be / 00bf681b",
+      "role": "Heap allocation dependency",
+      "Source": "Existing singleton_lifetime_allocate malloc/new-handler provider and qualified allocator commentary",
+      "available_generic_storage_service": true,
+      "actual_unit_factory_binding": false,
+      "new_Native_helper_analysis": false
+    },
+    {
+      "Native": "00815600 / 00818100",
+      "role": "Raw wake subobject lifetime",
+      "Source": "Accepted complete ordinary Source APIs with genuine tracked-section and geometry providers",
+      "available_borrowed_raw_subobject_apis": true,
+      "unit_allocation_producer": false,
+      "new_leaf_review": false
+    }
+  ],
+  "current_Source_boundaries": [
+    {
+      "file": "src/game_hosts_scene_contents.cpp",
+      "line": 876,
+      "name": "SceneUnitCreatorBinding::vehicle_class_descriptor",
+      "actual_return": "type_id+1 numeric token for nonnegative IDs",
+      "Native_descriptor_produced": false,
+      "compiled_whole": {
+        "symbol": "?vehicle_class_descriptor@SceneUnitCreatorBinding@?A0xffb39cf1@game@bsp@@UAEPAXH_N@Z",
+        "section": 4610,
+        "section_offset": 0,
+        "bytes": 49,
+        "sha256": "64e89129d5d94308b723909c8e434e8c45456cea3fb24db2771684cdaf0a0739",
+        "instruction_count": 21,
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 6,
+            "symbol": "??_C@_08JAHDEKHN@00964790@",
+            "symbol_record": {
+              "name": "??_C@_08JAHDEKHN@00964790@",
+              "value": 0,
+              "section": 4941,
+              "type": 0,
+              "storage": 2
+            }
+          },
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "??_C@_0CE@MGOPLMLI@SceneUnit?3?3vehicle_class_descrip@",
+            "symbol_record": {
+              "name": "??_C@_0CE@MGOPLMLI@SceneUnit?3?3vehicle_class_descrip@",
+              "value": 0,
+              "section": 4942,
+              "type": 0,
+              "storage": 2
+            }
+          },
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+            "symbol_record": {
+              "name": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "file": "src/game_hosts_scene_contents.cpp",
+      "line": 889,
+      "name": "SceneUnitCreatorBinding::create_instance_from_descriptor",
+      "actual_return": "&GameSceneEntityRecord after created=true",
+      "Native_unit_produced": false,
+      "compiled_whole": {
+        "symbol": "?create_instance_from_descriptor@SceneUnitCreatorBinding@?A0xffb39cf1@game@bsp@@UAEPAXPAX@Z",
+        "section": 3952,
+        "section_offset": 0,
+        "bytes": 40,
+        "sha256": "91f0f2e5002da6598a5d6ab88f1399af360111ec1f88defb54605b9afadb8f3a",
+        "instruction_count": 12,
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "??_C@_08MFMPBMJD@006fe590@",
+            "symbol_record": {
+              "name": "??_C@_08MFMPBMJD@006fe590@",
+              "value": 0,
+              "section": 4943,
+              "type": 0,
+              "storage": 2
+            }
+          },
+          {
+            "offset": 9,
+            "type": 6,
+            "symbol": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+            "symbol_record": {
+              "name": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+              "value": 0,
+              "section": 4944,
+              "type": 0,
+              "storage": 2
+            }
+          },
+          {
+            "offset": 19,
+            "type": 20,
+            "symbol": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+            "symbol_record": {
+              "name": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "file": "src/unit_instance_layout.cpp",
+      "line": 49,
+      "name": "create_unit_instance",
+      "interface": "Pure virtual UnitInstanceCreationHost plus UnitInstanceCreationResult",
+      "whole_compiled_bytes": 561,
+      "whole_compiled_instructions": 186,
+      "whole_compiled_sha256": "bc4c1c49e0a400a5751d15dba75eb49060bf8df8891b0c35baed2e69ba459da5",
+      "whole_function_detail": "artifact_analysis.json:whole_abstract_creation_model",
+      "actual_application_host_implementation_or_caller_found": false
+    },
+    {
+      "file": "include/bsp/vehicle_class.hpp",
+      "line": 158,
+      "name": "VehicleClassDescriptor",
+      "interface": "Semantic subset omits Native primary/secondary vtables and full storage",
+      "actual_descriptor_factory_or_class_setter_for_this_unit_bound": false
+    },
+    {
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 2049,
+      "name": "GameUnitsHost construction",
+      "role": "Creates actual persistent application owner then passes scene records to create_units",
+      "Native_unit_factory_handoff": false
+    },
+    {
+      "file": "src/game_hosts_units.cpp",
+      "line": 14604,
+      "name": "make_unique<GameUnitSlot>",
+      "role": "Actual canonical persistent semantic unit identity, separately allocated from scene record",
+      "actual_raw_1188_unit_producer": false
+    },
+    {
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 219,
+      "name": "release_units",
+      "role": "Withdraws outward borrows then destroys actual Source units",
+      "Native_root_destructor_or_free_binding": false
+    }
+  ],
+  "missing_cohesive_domain": [
+    {
+      "gate": "Actual descriptor owner",
+      "required": "Genuine Destroyer descriptor/class storage and dispatch, owning+538/borrowed+354, actual refcount setter/release",
+      "current_gap": "Numeric descriptor token and semantic descriptor model do not supply this"
+    },
+    {
+      "gate": "Allocation and complete construction",
+      "required": "One real4488-byte Destroyer root and fullzero preimage before complete derived/base/subobject constructors, functional Source dispatch",
+      "current_gap": "No whole Source006FE460/0081ED40/lower chain; callbacks/result metadata are projections"
+    },
+    {
+      "gate": "Single identity and publication",
+      "required": "Actual unit identity shared by construction-time world/ID/tick registration, scene placement, runtime borrowers and existing stable application handoff",
+      "current_gap": "Scene record and independent semantic GameUnitSlot; adding rawshadowstorage would leave duplicate authorities"
+    },
+    {
+      "gate": "Withdrawal and root lifetime",
+      "required": "Withdraw borrows, destroy real subobjects/bases in established order, release descriptor and tracked section, free matched root; qualify actual unwind if admitted",
+      "current_gap": "Real frame/observer teardown exists, but no unit-root destructor/free binding or factory/base unwind contract"
+    },
+    {
+      "gate": "Wake consumer authority",
+      "required": "All fills/appends/handoff/decomposition/sampling/diagnostics borrow one actual valid persistent wake",
+      "current_gap": "Existing semantictrail is not rawlayout; no cast/copy/scratch or detachedreset allocation is admissible"
+    }
+  ],
+  "not_proposed": [
+    "Bare allocate1188+memset Source producer credit",
+    "Separate raw1188 shadow beside canonical GameUnitSlot",
+    "TypedTrail overlay or copied988 scratch",
+    "Literal Original vptr/global addresses as Source dispatch",
+    "Public callback owner or unimplemented constructor stubs to link",
+    "Fabricated failure rollback or bare leaf execution"
+  ],
+  "artifact_scope": {
+    "whole_worker_objects": 12,
+    "complete_selected_function_extents": 751,
+    "selected_application_methods": 6,
+    "selected_core_members_per_archive": 9,
+    "worker_archive_is_historical_before_current_main_merge": true,
+    "Root_archive_is_separately_retained_prior_primary_review": true,
+    "objects": [
+      {
+        "name": "game_hosts_mission_frame",
+        "bytes": 928431,
+        "sha256": "0f6970b02a4a367be2b5f3f512923000567412055aece557ddde5ce399df5d6f",
+        "complete_selected_function_extents": 2
+      },
+      {
+        "name": "game_hosts_scene_contents",
+        "bytes": 1668386,
+        "sha256": "38658b1843b919ca5e813f51e7c0764ccb601ba378a4536e1973f363c7d68d50",
+        "complete_selected_function_extents": 2
+      },
+      {
+        "name": "game_hosts_units",
+        "bytes": 3203165,
+        "sha256": "50573696799d3ff5261ec616c8fdc14070237d8a438a8e9ae472551a97d64a28",
+        "complete_selected_function_extents": 2
+      },
+      {
+        "name": "game_native_geometry_globals",
+        "bytes": 1466,
+        "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+        "complete_selected_function_extents": 1
+      },
+      {
+        "name": "native_unit_observer_endpoint",
+        "bytes": 2766,
+        "sha256": "9e752c467fae6d4ca8804383cc70c298555d31a5202a8648ba4eb5771506e560",
+        "complete_selected_function_extents": 6
+      },
+      {
+        "name": "native_unit_wake_fill",
+        "bytes": 3574,
+        "sha256": "fe7b3cddc0644aac407fdd800bf65f140c3dabfa04e40c255ffd606212c2b3ba",
+        "complete_selected_function_extents": 7
+      },
+      {
+        "name": "scene_unit_creators",
+        "bytes": 152650,
+        "sha256": "12fd1dc87de5e6e92bf6110e383afa12b1d3c242d73514b59c9e97bf4a601354",
+        "complete_selected_function_extents": 384
+      },
+      {
+        "name": "singleton_lifetime",
+        "bytes": 32971,
+        "sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582",
+        "complete_selected_function_extents": 67
+      },
+      {
+        "name": "unit_destructor_levels",
+        "bytes": 54814,
+        "sha256": "7b5fe290dc80e0f60fff94d8764f88069f12f87414ab58d8c8f47527b9762f84",
+        "complete_selected_function_extents": 144
+      },
+      {
+        "name": "unit_instance_layout",
+        "bytes": 10516,
+        "sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d",
+        "complete_selected_function_extents": 13
+      },
+      {
+        "name": "unit_instance_subobjects",
+        "bytes": 4581,
+        "sha256": "651c79479da6a6546c75c4f643d9b830bd0648bb97bd57a303b4eebdd0dfef7d",
+        "complete_selected_function_extents": 10
+      },
+      {
+        "name": "vehicle_class",
+        "bytes": 47964,
+        "sha256": "db6c998abd8ed68b68b06f3d8e880f6a21d210cd1d8d74edc1afa04ae3d5cd32",
+        "complete_selected_function_extents": 113
+      }
+    ],
+    "archives": {
+      "worker_bsp_core.lib": {
+        "bytes": 73604294,
+        "sha256": "46b565d40915f9e1472d75d9b0157328ec5ee3cc003968c31555a0d8ee57c8e8",
+        "member_count": 1905,
+        "application_objects_are_direct_and_absent": [
+          "game_hosts_units",
+          "game_hosts_scene_contents",
+          "game_hosts_mission_frame"
+        ],
+        "selected_unique_members": [
+          {
+            "object": "game_native_geometry_globals.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+              "header_offset": 61954342,
+              "payload_file_offset": 61954402,
+              "bytes": 1466,
+              "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\game_native_geometry_globals.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 1,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 1
+          },
+          {
+            "object": "native_unit_observer_endpoint.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\native_unit_observer_endpoint.obj",
+              "header_offset": 26211794,
+              "payload_file_offset": 26211854,
+              "bytes": 2766,
+              "sha256": "9e752c467fae6d4ca8804383cc70c298555d31a5202a8648ba4eb5771506e560"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\native_unit_observer_endpoint.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 6,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 1
+          },
+          {
+            "object": "native_unit_wake_fill.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\native_unit_wake_fill.obj",
+              "header_offset": 56327578,
+              "payload_file_offset": 56327638,
+              "bytes": 3574,
+              "sha256": "fe7b3cddc0644aac407fdd800bf65f140c3dabfa04e40c255ffd606212c2b3ba"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\native_unit_wake_fill.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 7,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 6
+          },
+          {
+            "object": "scene_unit_creators.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\scene_unit_creators.obj",
+              "header_offset": 21701184,
+              "payload_file_offset": 21701244,
+              "bytes": 152650,
+              "sha256": "12fd1dc87de5e6e92bf6110e383afa12b1d3c242d73514b59c9e97bf4a601354"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\scene_unit_creators.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 384,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 197
+          },
+          {
+            "object": "singleton_lifetime.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+              "header_offset": 67703546,
+              "payload_file_offset": 67703606,
+              "bytes": 32971,
+              "sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\singleton_lifetime.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 67,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 104
+          },
+          {
+            "object": "unit_destructor_levels.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_destructor_levels.obj",
+              "header_offset": 18620866,
+              "payload_file_offset": 18620926,
+              "bytes": 54814,
+              "sha256": "7b5fe290dc80e0f60fff94d8764f88069f12f87414ab58d8c8f47527b9762f84"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\unit_destructor_levels.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 144,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 105
+          },
+          {
+            "object": "unit_instance_layout.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_instance_layout.obj",
+              "header_offset": 18504952,
+              "payload_file_offset": 18505012,
+              "bytes": 10516,
+              "sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\unit_instance_layout.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 13,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 11
+          },
+          {
+            "object": "unit_instance_subobjects.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_instance_subobjects.obj",
+              "header_offset": 18500310,
+              "payload_file_offset": 18500370,
+              "bytes": 4581,
+              "sha256": "651c79479da6a6546c75c4f643d9b830bd0648bb97bd57a303b4eebdd0dfef7d"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\unit_instance_subobjects.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 10,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 2
+          },
+          {
+            "object": "vehicle_class.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\vehicle_class.obj",
+              "header_offset": 18344306,
+              "payload_file_offset": 18344366,
+              "bytes": 47964,
+              "sha256": "db6c998abd8ed68b68b06f3d8e880f6a21d210cd1d8d74edc1afa04ae3d5cd32"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\worker_bsp_core.lib\\vehicle_class.obj",
+            "worker_whole_object_equal": true,
+            "complete_function_extents": 113,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 111
+          }
+        ]
+      },
+      "root_after_incoming_main_bsp_core.lib": {
+        "bytes": 73613138,
+        "sha256": "e3a8d8e5f7e3702ffc43dc179b76abea23ffe3654a31bbe47406dcb3b56b7899",
+        "member_count": 1908,
+        "application_objects_are_direct_and_absent": [
+          "game_hosts_units",
+          "game_hosts_scene_contents",
+          "game_hosts_mission_frame"
+        ],
+        "selected_unique_members": [
+          {
+            "object": "game_native_geometry_globals.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+              "header_offset": 61964914,
+              "payload_file_offset": 61964974,
+              "bytes": 1462,
+              "sha256": "ffef9c203be90a1729bb62204d8cccee85db9991d485c91d5fc279944bc4971d"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\game_native_geometry_globals.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 1,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 1
+          },
+          {
+            "object": "native_unit_observer_endpoint.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\native_unit_observer_endpoint.obj",
+              "header_offset": 26211808,
+              "payload_file_offset": 26211868,
+              "bytes": 2762,
+              "sha256": "97a059aba2abc9c470686211d7a27e3d1b525fd5f5eee5e0e7c05f2df62b1b08"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\native_unit_observer_endpoint.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 6,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 2,
+            "actual_compared_target_sections": 1
+          },
+          {
+            "object": "native_unit_wake_fill.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\native_unit_wake_fill.obj",
+              "header_offset": 56323044,
+              "payload_file_offset": 56323104,
+              "bytes": 3570,
+              "sha256": "45dc02b35499014908167d0d3fd92baf28bd46e02b1413dd6634989f852e983b"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\native_unit_wake_fill.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 7,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 4,
+            "actual_compared_target_sections": 6
+          },
+          {
+            "object": "scene_unit_creators.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\scene_unit_creators.obj",
+              "header_offset": 21701790,
+              "payload_file_offset": 21701850,
+              "bytes": 152646,
+              "sha256": "93bc9560281f14b0e0475bd831bdd70f05d3c46523dfa33941a2ec56ad2cd9f3"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\scene_unit_creators.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 384,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 22,
+            "actual_compared_target_sections": 197
+          },
+          {
+            "object": "singleton_lifetime.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+              "header_offset": 67712830,
+              "payload_file_offset": 67712890,
+              "bytes": 32963,
+              "sha256": "11e58d1b1de805045e08cc442049bc4babfee39c527095ee3dba0aa637219f26"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\singleton_lifetime.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 67,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 9,
+            "actual_compared_target_sections": 104
+          },
+          {
+            "object": "unit_destructor_levels.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_destructor_levels.obj",
+              "header_offset": 18622080,
+              "payload_file_offset": 18622140,
+              "bytes": 54806,
+              "sha256": "c70c31ce9bdd2f8ca2258743fd0c09cd6f513cdbb2eb5931a5ededed723905bd"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\unit_destructor_levels.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 144,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 1,
+            "actual_compared_target_sections": 105
+          },
+          {
+            "object": "unit_instance_layout.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_instance_layout.obj",
+              "header_offset": 18506206,
+              "payload_file_offset": 18506266,
+              "bytes": 10512,
+              "sha256": "ba27cf0314ba218660d7eb75a1bfa827ef11593c385b8465d71d3222a8b64e77"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\unit_instance_layout.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 13,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 11
+          },
+          {
+            "object": "unit_instance_subobjects.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\unit_instance_subobjects.obj",
+              "header_offset": 18501568,
+              "payload_file_offset": 18501628,
+              "bytes": 4577,
+              "sha256": "50ee83fe393efd72d9e3818719781fc3771e2e5332d81244d8347c71c2b23738"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\unit_instance_subobjects.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 10,
+            "literal_function_identity_equal": true,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 0,
+            "actual_compared_target_sections": 2
+          },
+          {
+            "object": "vehicle_class.obj",
+            "member": {
+              "name": "bsp_core.dir\\Release\\vehicle_class.obj",
+              "header_offset": 18345636,
+              "payload_file_offset": 18345696,
+              "bytes": 47960,
+              "sha256": "95ddaab86faba0de5266274e54ed8d7e1c872c73d2e2bd232f2b5698eea5966d"
+            },
+            "physical_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\archive_members\\root_after_incoming_main_bsp_core.lib\\vehicle_class.obj",
+            "worker_whole_object_equal": false,
+            "complete_function_extents": 113,
+            "literal_function_identity_equal": false,
+            "whole_function_and_actual_target_graphs_equal": true,
+            "compiler_identifier_difference_functions": 2,
+            "actual_compared_target_sections": 111
+          }
+        ]
+      }
+    },
+    "compiler_identifier_qualification": "Private compiler anonymous-namespace/lambda identifiers paired one-to-one only with actual complete section bytes, symbol offsets/types/storage, flags and recursively ordered relocation targets. Unresolved external names are never normalized. Whole object hashes and literal relocation-symbol names are not asserted equal across worktrees.",
+    "historical_compile_records": [
+      {
+        "name": "unit_instance_layout",
+        "project": "bsp_core",
+        "recorded_dependency_count": 13
+      },
+      {
+        "name": "unit_instance_subobjects",
+        "project": "bsp_core",
+        "recorded_dependency_count": 13
+      },
+      {
+        "name": "unit_destructor_levels",
+        "project": "bsp_core",
+        "recorded_dependency_count": 89
+      },
+      {
+        "name": "scene_unit_creators",
+        "project": "bsp_core",
+        "recorded_dependency_count": 107
+      },
+      {
+        "name": "vehicle_class",
+        "project": "bsp_core",
+        "recorded_dependency_count": 111
+      },
+      {
+        "name": "native_unit_wake_fill",
+        "project": "bsp_core",
+        "recorded_dependency_count": 192
+      },
+      {
+        "name": "singleton_lifetime",
+        "project": "bsp_core",
+        "recorded_dependency_count": 181
+      },
+      {
+        "name": "native_unit_observer_endpoint",
+        "project": "bsp_core",
+        "recorded_dependency_count": 167
+      },
+      {
+        "name": "game_native_geometry_globals",
+        "project": "bsp_core",
+        "recorded_dependency_count": 73
+      },
+      {
+        "name": "game_hosts_units",
+        "project": "bsp_game",
+        "recorded_dependency_count": 489
+      },
+      {
+        "name": "game_hosts_scene_contents",
+        "project": "bsp_game",
+        "recorded_dependency_count": 445
+      },
+      {
+        "name": "game_hosts_mission_frame",
+        "project": "bsp_game",
+        "recorded_dependency_count": 504
+      }
+    ]
+  },
+  "validation": {
+    "new_Cpp_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_API_executions": 0,
+    "new_Original_executions": 0,
+    "Ghidra_mutations": 0,
+    "gameplay_validation": false,
+    "final_EXE_linkage_proof": false,
+    "whole_class_ABI_compatibility": false,
+    "Source_corpus_files": 4027,
+    "Native_physical_bytes_and_instruction_starts_verified": true
+  },
+  "evidence": {
+    "physical_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\physical_inputs.json",
+      "bytes": 2346395,
+      "sha256": "aee608a8f5b897c1e6fc8efe7f7ae7e21e5ad2411fe4a1f86d9dac08b00c35cd"
+    },
+    "native_factory_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\native_factory_analysis.json",
+      "bytes": 33983,
+      "sha256": "0737d03cc40adeff5dbef2c798de1812dd4772cb49a81e75f41cf08da0e3cb4b"
+    },
+    "complete_worker_objects.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\complete_worker_objects.json",
+      "bytes": 39351032,
+      "sha256": "35583784de66efdead677b3c48d917059db772caf31dc2cf10993880d57dac69"
+    },
+    "artifact_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\artifact_analysis.json",
+      "bytes": 782344,
+      "sha256": "5cf1f0514aff2428e4f348c03f3273b93522e30a0edc67320423ab74da8743a5"
+    },
+    "Source_inventory_and_search.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\Source_inventory_and_search.json",
+      "bytes": 739398,
+      "sha256": "9bd7b9540e2a0b752dffa8b87510480697a7d624b510120ec6875881abc70714"
+    }
+  },
+  "sealed_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence.zip",
+    "bytes": 72490876,
+    "sha256": "722c8ddf300b7dc98de695cb7b2deedcbbe3424bbbc9eebf6786a1c5ddc60f34",
+    "entries": 2518,
+    "all_CRC_and_member_hashes_verified": true,
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_factory_producer_readiness_evidence\\MANIFEST.json",
+      "sha256": "fccf2fab2c2d1d0513b3a8e5ab0b556cff689371f76c334cc7bcfecbf9e9d3c4"
+    },
+    "sealed_utc": "2026-10-08T19:14:49.711928+00:00"
+  },
+  "limits": [
+    "Only leased006FE590/006FE460 received new Original analysis. Other Native bodies/handlers/allocator/setter/destruction contracts remain qualified existing evidence or explicit gaps.",
+    "Initial allzero rootpreimage is established before the constructor chain, not automatically at every later subobject entry.",
+    "Current Source and historical compiler/dependency records are physically retained, without synthesizing consumed-input preimages or claiming a new build.",
+    "Object/archive/function-graph checks establish bounded physical artifacts, not runtime class/descriptor identity, loaded virtual tables, failure ABI or gameplay.",
+    "Source lexical search is corroborating scoped evidence; full corpus is hash-inventoried, selected physical files copied.",
+    "No narrow allocation-only implementation is admitted; ready Source remains zero until the connected owner domain is established."
+  ]
+}
