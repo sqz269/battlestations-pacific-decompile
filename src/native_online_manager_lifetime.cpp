@@ -130,6 +130,14 @@ NativeOnlineManagerStorage* construct_native_online_manager_00a40df0(
     return &owner;
 }
 
+void construct_native_online_application_nonnull_arm_0073dc70(
+    NativeOnlinePumpContext& pump, NativeOnlineManagerStartupContext& context) {
+    (void)construct_native_online_manager_00a40df0(
+        pump, 0x00735510u, 0x00735520u, context);
+    auto* const current = context.lifetime.base.current_manager_00f8abe8;
+    write(current, 0x18, std::uint32_t{0x00737d60});
+}
+
 void destroy_native_online_manager_00a3f9d0(NativeOnlineManagerStorage& owner,
     NativeOnlineManagerLifetimeContext& c) {
     BaseCleanup base_cleanup{owner, c.base};
