@@ -1,0 +1,90 @@
+{
+  "packet": "cc11_primary_plane_kind",
+  "status": "complete raw predicate/component passed; full main build and annotation closure pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "header": "include/bsp/native_plane_kind.hpp",
+  "source": "src/native_plane_kind.cpp",
+  "document": "docs/NATIVE_PLANE_KIND_CC11.md",
+  "functions": [
+    {
+      "address": "0074e400",
+      "end_exclusive": "0074e436",
+      "bytes": 54,
+      "instructions": 19,
+      "name": "native_plane_is_kind_0074e400",
+      "native_name": "BSP_PlaneInstance_IsKindOf",
+      "direct_calls": [],
+      "sha256": "286eac696db40b93f7100a7bac5761a6963a7cbf461ce260d645dfb3d227573e"
+    }
+  ],
+  "complete_Source_COFF": {
+    "symbol": "?native_plane_is_kind_0074e400@bsp@@YIIPBXPAXI@Z",
+    "machine": "I386",
+    "section": 3,
+    "bytes": 54,
+    "sha256": "286eac696db40b93f7100a7bac5761a6963a7cbf461ce260d645dfb3d227573e",
+    "relocations": [],
+    "instruction_count": 19,
+    "disassembly": [
+      "00: mov eax, dword ptr [esp + 4]",
+      "04: cmp eax, 0xf",
+      "07: je 0x2e",
+      "09: cmp eax, 5",
+      "0C: je 0x2e",
+      "0E: cmp eax, 4",
+      "11: je 0x2e",
+      "13: cmp eax, 2",
+      "16: je 0x2e",
+      "18: cmp eax, 1",
+      "1B: je 0x2e",
+      "1D: test eax, eax",
+      "1F: je 0x2e",
+      "21: cmp eax, dword ptr [ecx + 0xc4]",
+      "27: je 0x2e",
+      "29: xor eax, eax",
+      "2B: ret 4",
+      "2E: mov eax, 1",
+      "33: ret 4"
+    ]
+  },
+  "complete_Source_bytes_equal_original": true,
+  "component": {
+    "checks": 32,
+    "cases": 10,
+    "fresh_translation_units": 2,
+    "original_bytes": 54,
+    "original_relocations": 0,
+    "bridges": 0,
+    "project_includes": 2,
+    "host_headers": 213,
+    "searched_host_libraries": 7,
+    "selected_tools": 4,
+    "BSP_support_libraries": 0,
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "asInvoker": true,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "receipt": "local/cc11_primary_plane_kind_run01/inputs_after.json",
+    "receipt_sha256": "19248934cbb1b18f9d87a7b4ba1ccdcd300335d0974369daa703852a696bcde1"
+  },
+  "structural_witnesses": [
+    {
+      "address": "00d05f7c",
+      "bytes": 4,
+      "sha256": "18d54b41149344a7d8fd5854be0ae18501f2ea1c26b6ca81d0f956a7cd1f229c",
+      "disk_live": "MATCH"
+    },
+    {
+      "address": "007cfd78",
+      "bytes": 6,
+      "sha256": "68823d712fa96c4e2295bec2f493e71616ca339a6a90df1804feb2e99dfa1d38",
+      "disk_live": "MATCH"
+    }
+  ],
+  "original_ABI_compatible": false,
+  "game_validated": false,
+  "tracked_tests_added": 0,
+  "qualification": "Complete raw ECX/stack/RET4/full-EAX predicate, same actual live C4 cell and exact instruction order. D05F20+5C/constructor stamp are structural DATA only. Generic speed refresh, other profiles, enclosing constructor/class/native caller/lifetime/fault/concurrency/world/game remain unbound."
+}
