@@ -1,0 +1,2976 @@
+{
+  "packet": "cc12_native_entity_registry_owner_source_readiness",
+  "status": "READ_ONLY_COMPLETE_CONCRETE_REGISTRY_OWNER_DESIGN_CURRENT_SOURCE_AND_ROOT_WIRING_NOT_ADMITTED",
+  "generated_utc": "2026-10-08T20:53:36.910262+00:00",
+  "scope": {
+    "accepted_main": "9235c33285b99ed5568438761e8ff8345f98b73a",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_five_addresses": [
+      "00928080",
+      "00928240",
+      "00924100",
+      "00924810",
+      "00926be0"
+    ],
+    "owned_tracked_files": [
+      "docs/CC12_NATIVE_ENTITY_REGISTRY_OWNER_SOURCE_READINESS.md",
+      "reports/cc12_native_entity_registry_owner_source_readiness.json"
+    ],
+    "expanded_lease_evidence": "queries/leases.txt",
+    "Native_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "result": {
+    "Source_changes": 0,
+    "new_reconstructed_function_credit": 0,
+    "Ghidra_writes": 0,
+    "current_canonical_registry_owner_implemented": false,
+    "cohesive_ordinary_Source_design_reviewable": true,
+    "application_root_or_factory_wiring_ready": false,
+    "packet_or_ledger_status_changed": false,
+    "main_conclusion": "The actual registry/lock/CRT ownership and local exception cleanup are now bounded. Existing accepted Source leaves support a concrete process-owner design. Current app Source still lacks these owners and raw consumer/root authority; world/profile/full-entity EH closure is not supplied by this design."
+  },
+  "complete_Native_bodies": [
+    {
+      "address": "00928080",
+      "end_inclusive": "009280c4",
+      "reason": "SceneRegistry constructor",
+      "bytes": 69,
+      "sha256": "5ffb0e1aa8cfc48e167312da00aaf926f544ad450b8696455fc3de036e106e1e",
+      "instruction_count": 19,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "009280ab",
+          "bytes": "e8b0972a00",
+          "mnemonic": "call",
+          "operands": "0xbd1860",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd1860"
+        }
+      ],
+      "nominated_parent": true,
+      "ordinary_transfers": [
+        {
+          "address": "009280c4",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "0092809d",
+          "old_state": -1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "00928240",
+      "end_inclusive": "009282fc",
+      "reason": "SceneRegistry getter",
+      "bytes": 189,
+      "sha256": "e50b1c0a2d624f89ccca182062c3ba3b7ececb7101c8066676f9a855ba35f23e",
+      "instruction_count": 51,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00928266",
+          "bytes": "e8e5d0aeff",
+          "mnemonic": "call",
+          "operands": "0x415350",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00415350"
+        },
+        {
+          "address": "0092827f",
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "0092829c",
+          "bytes": "e87ae52c00",
+          "mnemonic": "call",
+          "operands": "0xbf681b",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf681b"
+        },
+        {
+          "address": "009282b3",
+          "bytes": "e8c8fdffff",
+          "mnemonic": "call",
+          "operands": "0x928080",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00928080"
+        },
+        {
+          "address": "009282b8",
+          "bytes": "eb02",
+          "mnemonic": "jmp",
+          "operands": "0x9282bc",
+          "registers_read": [],
+          "registers_written": [],
+          "direct": true,
+          "target": "009282bc"
+        },
+        {
+          "address": "009282c6",
+          "bytes": "e885d0aeff",
+          "mnemonic": "call",
+          "operands": "0x415350",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00415350"
+        },
+        {
+          "address": "009282d4",
+          "bytes": "e857892a00",
+          "mnemonic": "call",
+          "operands": "0xbd0c30",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd0c30"
+        },
+        {
+          "address": "009282e2",
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        }
+      ],
+      "nominated_parent": true,
+      "ordinary_transfers": [
+        {
+          "address": "009282fc",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00928289",
+          "old_state": -1,
+          "new_state": 0
+        },
+        {
+          "address": "009282aa",
+          "old_state": 0,
+          "new_state": 1
+        },
+        {
+          "address": "009282bc",
+          "old_state": 1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "00924100",
+      "end_inclusive": "00924144",
+      "reason": "Pending-init lock constructor",
+      "bytes": 69,
+      "sha256": "4c707c13eeee15069225dce511ed20b61b2d7886f6b47ea883e44a61ea9c2d7c",
+      "instruction_count": 19,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "0092412b",
+          "bytes": "e830d72a00",
+          "mnemonic": "call",
+          "operands": "0xbd1860",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd1860"
+        }
+      ],
+      "nominated_parent": true,
+      "ordinary_transfers": [
+        {
+          "address": "00924144",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "0092411d",
+          "old_state": -1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "00924810",
+      "end_inclusive": "009248cc",
+      "reason": "Pending-init lock getter",
+      "bytes": 189,
+      "sha256": "18e6fd08804406736651d0a350db9f15a69619539ddf3fea459028f1c2b8c6ca",
+      "instruction_count": 51,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00924836",
+          "bytes": "e8150bafff",
+          "mnemonic": "call",
+          "operands": "0x415350",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00415350"
+        },
+        {
+          "address": "0092484f",
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "0092486c",
+          "bytes": "e8aa1f2d00",
+          "mnemonic": "call",
+          "operands": "0xbf681b",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf681b"
+        },
+        {
+          "address": "00924883",
+          "bytes": "e878f8ffff",
+          "mnemonic": "call",
+          "operands": "0x924100",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924100"
+        },
+        {
+          "address": "00924888",
+          "bytes": "eb02",
+          "mnemonic": "jmp",
+          "operands": "0x92488c",
+          "registers_read": [],
+          "registers_written": [],
+          "direct": true,
+          "target": "0092488c"
+        },
+        {
+          "address": "00924896",
+          "bytes": "e8b50aafff",
+          "mnemonic": "call",
+          "operands": "0x415350",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00415350"
+        },
+        {
+          "address": "009248a4",
+          "bytes": "e887c32a00",
+          "mnemonic": "call",
+          "operands": "0xbd0c30",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd0c30"
+        },
+        {
+          "address": "009248b2",
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        }
+      ],
+      "nominated_parent": true,
+      "ordinary_transfers": [
+        {
+          "address": "009248cc",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00924859",
+          "old_state": -1,
+          "new_state": 0
+        },
+        {
+          "address": "0092487a",
+          "old_state": 0,
+          "new_state": 1
+        },
+        {
+          "address": "0092488c",
+          "old_state": 1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "00926be0",
+      "end_inclusive": "00926c7d",
+      "reason": "Pending-init append producer",
+      "bytes": 158,
+      "sha256": "0b083bf9b0adbb1ebf6f21e0f75a7ca0a6d337227e484dbdc901f3d387273e30",
+      "instruction_count": 49,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00926bfd",
+          "bytes": "e80edcffff",
+          "mnemonic": "call",
+          "operands": "0x924810",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924810"
+        },
+        {
+          "address": "00926c16",
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "00926c43",
+          "bytes": "e8c8deffff",
+          "mnemonic": "call",
+          "operands": "0x924b10",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924b10"
+        },
+        {
+          "address": "00926c51",
+          "bytes": "e89afbffff",
+          "mnemonic": "call",
+          "operands": "0x9267f0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "009267f0"
+        },
+        {
+          "address": "00926c66",
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        }
+      ],
+      "nominated_parent": true,
+      "ordinary_transfers": [
+        {
+          "address": "00926c7d",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00926c37",
+          "old_state": -1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "009285f0",
+      "end_inclusive": "00928626",
+      "reason": "SceneRegistry scalar destructor",
+      "bytes": 55,
+      "sha256": "2bf87ad0d8561bede89392b38621a7ab106de5b5698cb306f4bf5b54abeacf68",
+      "instruction_count": 15,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [
+        "0092861e"
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "009285fc",
+          "bytes": "e87f46afff",
+          "mnemonic": "call",
+          "operands": "0x41cc80",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "0041cc80"
+        },
+        {
+          "address": "00928619",
+          "bytes": "e88edf2c00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf65ac"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00928624",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 8
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00925660",
+      "end_inclusive": "00925696",
+      "reason": "Pending-init lock scalar destructor",
+      "bytes": 55,
+      "sha256": "b7edbd5318bae514ca1c8dda701a6d7621c7c9bca51e84d115ab8583dbef381c",
+      "instruction_count": 15,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [
+        "0092568e"
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "0092566c",
+          "bytes": "e80f76afff",
+          "mnemonic": "call",
+          "operands": "0x41cc80",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "0041cc80"
+        },
+        {
+          "address": "00925689",
+          "bytes": "e81e0f2d00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf65ac"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00925694",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 8
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00923640",
+      "end_inclusive": "00923650",
+      "reason": "Pending-init lock constructor base unwind",
+      "bytes": 17,
+      "sha256": "ce4d2a4e66b1b2346859fd6581ddaf9d726437b2c77e7d797a60cfb9ddae934e",
+      "instruction_count": 3,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00923650",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00927a60",
+      "end_inclusive": "00927a70",
+      "reason": "SceneRegistry constructor base unwind",
+      "bytes": 17,
+      "sha256": "f4743e3473247adb2b9dfff625abb36b3ea020c6f992db65a128c1907a0ff473",
+      "instruction_count": 3,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00927a70",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00924a50",
+      "end_inclusive": "00924a69",
+      "reason": "Pending node sentinel allocation",
+      "bytes": 26,
+      "sha256": "f72123d24923e48825baec486ffd0400ce41c931f3489376cac31b972ecf9f82",
+      "instruction_count": 11,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00924a52",
+          "bytes": "e8c41d2d00",
+          "mnemonic": "call",
+          "operands": "0xbf681b",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf681b"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00924a69",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00924a70",
+      "end_inclusive": "00924ab7",
+      "reason": "Pending list whole teardown",
+      "bytes": 72,
+      "sha256": "2d4cd955b1688d37f91e34dc0f4423eb0672a25dc30a93383c69f33c0cf193e2",
+      "instruction_count": 27,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [
+        "00924aac",
+        "00924aaf",
+        "00924ab6",
+        "00924ab7"
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00924a93",
+          "bytes": "e8141b2d00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf65ac"
+        },
+        {
+          "address": "00924aa7",
+          "bytes": "e8001b2d00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf65ac"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00924ab7",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00924b10",
+      "end_inclusive": "00924b42",
+      "reason": "Pending payload node allocation",
+      "bytes": 51,
+      "sha256": "9da069855279706a4cf34876bd99997d884a2fb01ef5e26e20b2ae1ac2991ab8",
+      "instruction_count": 19,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00924b12",
+          "bytes": "e8041d2d00",
+          "mnemonic": "call",
+          "operands": "0xbf681b",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf681b"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00924b40",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 16
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "009267f0",
+      "end_inclusive": "00926882",
+      "reason": "Pending count increment or length exception",
+      "bytes": 147,
+      "sha256": "93cfe623cf8b10e4902c9d2d64953ccc0c74c820f97a4314ea8899a0cd5acdc2",
+      "instruction_count": 37,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "0092683c",
+          "bytes": "e8df1eaeff",
+          "mnemonic": "call",
+          "operands": "0x408720",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00408720"
+        },
+        {
+          "address": "00926851",
+          "bytes": "e8aaaeaeff",
+          "mnemonic": "call",
+          "operands": "0x411700",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00411700"
+        },
+        {
+          "address": "00926868",
+          "bytes": "e818002d00",
+          "mnemonic": "call",
+          "operands": "0xbf6885",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf6885"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00926868",
+          "kind": "CxxThrowException nonreturn",
+          "entry_relative_ESP_before_transfer": -80,
+          "ESP_after_RET": null
+        },
+        {
+          "address": "00926880",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 8
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00926849",
+          "old_state": -1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "009516b0",
+      "end_inclusive": "009516c0",
+      "reason": "ID table plain destructor",
+      "bytes": 17,
+      "sha256": "27079563f4233b1fa26db238bff7c76978a085a9aa40771b629a3dd9603c7b0a",
+      "instruction_count": 6,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [
+        "009516bf",
+        "009516c0"
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "009516ba",
+          "bytes": "e8ca522a00",
+          "mnemonic": "call",
+          "operands": "0xbf6989",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf6989"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "009516c0",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00bf6989",
+      "end_inclusive": "00bf698d",
+      "reason": "ID allocation free alias",
+      "bytes": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "instruction_count": 1,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00bf6989",
+          "bytes": "e91efcffff",
+          "mnemonic": "jmp",
+          "operands": "0xbf65ac",
+          "registers_read": [],
+          "registers_written": [],
+          "direct": true,
+          "target": "00bf65ac"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00bf6989",
+          "kind": "external tail JMP, callee stack contract",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": null
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00bfbc47",
+      "end_inclusive": "00bfbcd8",
+      "reason": "CRT cinit table consumer",
+      "bytes": 146,
+      "sha256": "f7ec982f84c4a0c364ffb44ddb181f37268086f5ae5240bbc575143d373922f1",
+      "instruction_count": 50,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00bfbc55",
+          "bytes": "e876b10100",
+          "mnemonic": "call",
+          "operands": "0xc16dd0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00c16dd0"
+        },
+        {
+          "address": "00bfbc63",
+          "bytes": "ff15d893d600",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xd693d8]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "00bfbc6a",
+          "bytes": "e8a0ab0000",
+          "mnemonic": "call",
+          "operands": "0xc0680f",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00c0680f"
+        },
+        {
+          "address": "00bfbc79",
+          "bytes": "e814feffff",
+          "mnemonic": "call",
+          "operands": "0xbfba92",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bfba92"
+        },
+        {
+          "address": "00bfbc8b",
+          "bytes": "e865b3ffff",
+          "mnemonic": "call",
+          "operands": "0xbf6ff5",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf6ff5"
+        },
+        {
+          "address": "00bfbca7",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax",
+          "registers_read": [
+            "esp",
+            "eax"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "00bfbcc0",
+          "bytes": "e80bb10100",
+          "mnemonic": "call",
+          "operands": "0xc16dd0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00c16dd0"
+        },
+        {
+          "address": "00bfbcd0",
+          "bytes": "ff15d8fe0901",
+          "mnemonic": "call",
+          "operands": "dword ptr [0x109fed8]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00bfbcd8",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00cdf4c0",
+      "end_inclusive": "00cdf4c9",
+      "reason": "Pending-init CRT teardown wrapper",
+      "bytes": 10,
+      "sha256": "2b97497cba3737558a959de5436120c8f3bf63451256b828bc7cce87af2011b3",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cdf4c5",
+          "bytes": "e9a655c4ff",
+          "mnemonic": "jmp",
+          "operands": "0x924a70",
+          "registers_read": [],
+          "registers_written": [],
+          "direct": true,
+          "target": "00924a70"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00cdf4c5",
+          "kind": "external tail JMP, callee stack contract",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": null
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00cdf4d0",
+      "end_inclusive": "00cdf4f2",
+      "reason": "Rejected ID teardown routing candidate, owner F899C0",
+      "bytes": 35,
+      "sha256": "5389af7a1ddc77178af93a69919cb8859156ba385b50ab8c567e9f322687dcd7",
+      "instruction_count": 8,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": true,
+      "PE_instruction_starts_missing_from_export": [
+        "00cdf4e5",
+        "00cdf4e8",
+        "00cdf4f2"
+      ],
+      "calls_and_jumps": [
+        {
+          "address": "00cdf4d5",
+          "bytes": "e8f666c4ff",
+          "mnemonic": "call",
+          "operands": "0x925bd0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00925bd0"
+        },
+        {
+          "address": "00cdf4e0",
+          "bytes": "e8c770f1ff",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf65ac"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00cdf4f2",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00cd39a0",
+      "end_inclusive": "00cd39c4",
+      "reason": "Pending-init CRT initializer verified by table cell CE30CC",
+      "bytes": 37,
+      "sha256": "75814c34a380fad76f57a97ad0c244e8b02604355bc7f406ad2e1e5e66d49343",
+      "instruction_count": 8,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": false,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cd39a5",
+          "bytes": "e8a610c5ff",
+          "mnemonic": "call",
+          "operands": "0x924a50",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924a50"
+        },
+        {
+          "address": "00cd39be",
+          "bytes": "e83236f2ff",
+          "mnemonic": "call",
+          "operands": "0xbf6ff5",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf6ff5"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00cd39c4",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": []
+    },
+    {
+      "address": "00cd3a70",
+      "end_inclusive": "00cd3aca",
+      "reason": "ID pair CRT initializer verified by table cell CE3120",
+      "bytes": 91,
+      "sha256": "c389b609f4f90f3f24a8cd3809d0cd00433e8173c1fb5510324a084c68674b7b",
+      "instruction_count": 20,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": false,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cd3a91",
+          "bytes": "e8cadbc7ff",
+          "mnemonic": "call",
+          "operands": "0x951660",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00951660"
+        },
+        {
+          "address": "00cd3aad",
+          "bytes": "e8aedbc7ff",
+          "mnemonic": "call",
+          "operands": "0x951660",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00951660"
+        },
+        {
+          "address": "00cd3ab7",
+          "bytes": "e83935f2ff",
+          "mnemonic": "call",
+          "operands": "0xbf6ff5",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf6ff5"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00cd3aca",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00cd3aa5",
+          "old_state": -1,
+          "new_state": 0
+        }
+      ]
+    },
+    {
+      "address": "00cdf500",
+      "end_inclusive": "00cdf546",
+      "reason": "ID pair CRT teardown registered by CD3A70",
+      "bytes": 71,
+      "sha256": "1361867d2e4c1f3e55468207605740e0fefbc8abe9e67575871fd02db7045c02",
+      "instruction_count": 15,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "fresh_function_export_present": false,
+      "PE_instruction_starts_missing_from_export": [],
+      "calls_and_jumps": [
+        {
+          "address": "00cdf522",
+          "bytes": "e88921c7ff",
+          "mnemonic": "call",
+          "operands": "0x9516b0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "009516b0"
+        },
+        {
+          "address": "00cdf534",
+          "bytes": "e87721c7ff",
+          "mnemonic": "call",
+          "operands": "0x9516b0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "009516b0"
+        }
+      ],
+      "nominated_parent": false,
+      "ordinary_transfers": [
+        {
+          "address": "00cdf546",
+          "kind": "normal RET",
+          "entry_relative_ESP_before_transfer": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00cdf51a",
+          "old_state": -1,
+          "new_state": 0
+        },
+        {
+          "address": "00cdf52c",
+          "old_state": 0,
+          "new_state": -1
+        }
+      ]
+    }
+  ],
+  "complete_EH_handler_and_funclet_summary": [
+    {
+      "address": "00ca6ac0",
+      "end_inclusive": "00ca6ac7",
+      "reason": "Pending-init ctor state0 unwind",
+      "bytes": 8,
+      "sha256": "7a6191c944c18b9699c892e1765fb7b5e35b45310cfb058b8a82a4029bcf3c7d",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6ac0",
+          "bytes": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6ac3",
+          "bytes": "e978cbc7ff",
+          "mnemonic": "jmp",
+          "operands": "0x923640",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6ac8",
+      "end_inclusive": "00ca6ad1",
+      "reason": "Pending-init ctor FH3 handler",
+      "bytes": 10,
+      "sha256": "f0ca01212ff8324700b5ed3955b8061212af235647a279ce0c731a9bb4006fe9",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6ac8",
+          "bytes": "b8b89cdd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdd9cb8",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6acd",
+          "bytes": "e97100f5ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6b40",
+      "end_inclusive": "00ca6b47",
+      "reason": "Pending-init getter state0 guard unwind",
+      "bytes": 8,
+      "sha256": "6ff7ccfa464ff2539d2c7674351e82151134a94604fd8d5a29b8aecf240c92a0",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6b40",
+          "bytes": "8d4dec",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6b43",
+          "bytes": "e998b376ff",
+          "mnemonic": "jmp",
+          "operands": "0x411ee0",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6b48",
+      "end_inclusive": "00ca6b52",
+      "reason": "Pending-init getter state1 allocation unwind",
+      "bytes": 11,
+      "sha256": "f009b3b033c179cf3c09fb7a63bb820d25530b12dacd53d0d11c9ff6c014d484",
+      "instruction_count": 5,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6b48",
+          "bytes": "8b45e8",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x18]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6b4b",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "registers_read": [
+            "esp",
+            "eax"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        },
+        {
+          "address": "00ca6b4c",
+          "bytes": "e85bfaf4ff",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        },
+        {
+          "address": "00ca6b51",
+          "bytes": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp",
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6b52",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        }
+      ]
+    },
+    {
+      "address": "00ca6b53",
+      "end_inclusive": "00ca6b5c",
+      "reason": "Pending-init getter FH3 handler",
+      "bytes": 10,
+      "sha256": "f2c95f313e99a58f6f58ecc45ab560c6d43651bccf0a9c9ad5c52bce618b19d1",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6b53",
+          "bytes": "b8789ddd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdd9d78",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6b58",
+          "bytes": "e9e6fff4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6f50",
+      "end_inclusive": "00ca6f57",
+      "reason": "SceneRegistry ctor state0 unwind",
+      "bytes": 8,
+      "sha256": "b5c2a11a794ce9dcbeabceab73b7e01892a5995bce2fae7ed7b356c6454644cf",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6f50",
+          "bytes": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6f53",
+          "bytes": "e9080bc8ff",
+          "mnemonic": "jmp",
+          "operands": "0x927a60",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6f58",
+      "end_inclusive": "00ca6f61",
+      "reason": "SceneRegistry ctor FH3 handler",
+      "bytes": 10,
+      "sha256": "0b7bd49c0b7bb83cd49517f85ed76ddcaf69ea42e37911f70f7773cc4401b58c",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6f58",
+          "bytes": "b848a3dd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdda348",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6f5d",
+          "bytes": "e9e1fbf4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6f70",
+      "end_inclusive": "00ca6f77",
+      "reason": "SceneRegistry getter state0 guard unwind",
+      "bytes": 8,
+      "sha256": "de89e57f9cf08d6f0c9727c143d4bfc08b07fed7a394b3720e972392d45a827c",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6f70",
+          "bytes": "8d4dec",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6f73",
+          "bytes": "e968af76ff",
+          "mnemonic": "jmp",
+          "operands": "0x411ee0",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6f78",
+      "end_inclusive": "00ca6f82",
+      "reason": "SceneRegistry getter state1 allocation unwind",
+      "bytes": 11,
+      "sha256": "f22c341f9b4cff591385c806ffae047c0d3e0d41502f973b1325235cc0447f77",
+      "instruction_count": 5,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6f78",
+          "bytes": "8b45e8",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x18]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6f7b",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "registers_read": [
+            "esp",
+            "eax"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        },
+        {
+          "address": "00ca6f7c",
+          "bytes": "e82bf6f4ff",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        },
+        {
+          "address": "00ca6f81",
+          "bytes": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp",
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6f82",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ]
+        }
+      ]
+    },
+    {
+      "address": "00ca6f83",
+      "end_inclusive": "00ca6f8c",
+      "reason": "SceneRegistry getter FH3 handler",
+      "bytes": 10,
+      "sha256": "ef2df801ddbbb58f04950d9eb539becdfb41309b4018fd0d9204d29b36dd5857",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6f83",
+          "bytes": "b87ca3dd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdda37c",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6f88",
+          "bytes": "e9b6fbf4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6da0",
+      "end_inclusive": "00ca6da7",
+      "reason": "Pending append sole guard unwind",
+      "bytes": 8,
+      "sha256": "5be603cb9bf8bcc01105b0b837bd23777df04e5eb90b5053c388505b78b20ccf",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6da0",
+          "bytes": "8d4dec",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]",
+          "registers_read": [
+            "ebp"
+          ],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca6da3",
+          "bytes": "e938b176ff",
+          "mnemonic": "jmp",
+          "operands": "0x411ee0",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca6da8",
+      "end_inclusive": "00ca6db1",
+      "reason": "Pending append FH3 handler",
+      "bytes": 10,
+      "sha256": "fba44db942828ff1d8ab848e2f4d46383e99a8a016922b31cd3e29ef2e9b4dfa",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca6da8",
+          "bytes": "b8b8a0dd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdda0b8",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca6dad",
+          "bytes": "e991fdf4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca7250",
+      "end_inclusive": "00ca7259",
+      "reason": "ID pair initialization primary table unwind",
+      "bytes": 10,
+      "sha256": "784cac8f5c302e624f38e1ec67c15aad7754cc6b066c982acda52f339bdd0712",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca7250",
+          "bytes": "b9089af800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf89a08",
+          "registers_read": [],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca7255",
+          "bytes": "e956a4caff",
+          "mnemonic": "jmp",
+          "operands": "0x9516b0",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca725a",
+      "end_inclusive": "00ca7263",
+      "reason": "ID pair initialization FH3 handler",
+      "bytes": 10,
+      "sha256": "c4a9c82c989ab9ccb6bb62189a9da708b07a6280d32beb13222480cb596fba5c",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca725a",
+          "bytes": "b82ca7dd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdda72c",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca725f",
+          "bytes": "e9dff8f4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca7270",
+      "end_inclusive": "00ca7279",
+      "reason": "ID pair teardown primary table unwind",
+      "bytes": 10,
+      "sha256": "0d60ec20b4f190ddce46f14a29fa1c2e23911d254cf90cc7148bfa45dbdcbef7",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca7270",
+          "bytes": "b9089af800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf89a08",
+          "registers_read": [],
+          "registers_written": [
+            "ecx"
+          ]
+        },
+        {
+          "address": "00ca7275",
+          "bytes": "e936a4caff",
+          "mnemonic": "jmp",
+          "operands": "0x9516b0",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    },
+    {
+      "address": "00ca727a",
+      "end_inclusive": "00ca7283",
+      "reason": "ID pair teardown FH3 handler",
+      "bytes": 10,
+      "sha256": "68654ea07466dd319d5491c6fb1a8b89310422a2e89dadfd7439b7bceab96165",
+      "instruction_count": 2,
+      "fresh_Ghidra_memory_equals_whole_PE_extent": true,
+      "instructions": [
+        {
+          "address": "00ca727a",
+          "bytes": "b858a7dd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdda758",
+          "registers_read": [],
+          "registers_written": [
+            "eax"
+          ]
+        },
+        {
+          "address": "00ca727f",
+          "bytes": "e9bff8f4ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43",
+          "registers_read": [],
+          "registers_written": []
+        }
+      ]
+    }
+  ],
+  "ABI_and_whole_behavior_contracts": {
+    "00928080_and_00924100": {
+      "ABI": "ECX actual raw eight-byte owner; no stack formals; EAX captured same owner; RET.",
+      "sequence": [
+        "Install SEH frame, capture owner at entry ESP-16, enter EH state0 before owner profile store.",
+        "SceneRegistry stamps D19284; pending-init lock stamps D190C0. Call actual BD1860 and then store returned tracked section into owner+4.",
+        "Restore saved FS chain, return same owner. Incoming section+4 preimage is not written before successful create return."
+      ],
+      "failure": "State0 invokes 927A60 for SceneRegistry or 923640 for pending-init: unconditionally clear the respective actual publication FC/E4, then stamp CE3818. No section release, root free or unregister occurs in this base unwind."
+    },
+    "00928240_and_00924810": {
+      "ABI": "No inputs; EAX owner; RET. SceneRegistry actual publication F899FC; pending-init F899E4.",
+      "sequence": [
+        "Read own publication once. Nonzero fast path returns that captured read.",
+        "On null, call canonical manager getter415350, capture THAT manager+10 tracked section, Enter if nonnull then increment depth18.",
+        "Set state0; double-check own publication. Allocate actual eight bytes via BF681B. Capture allocation; set state1; construct if nonnull, otherwise retain null branch.",
+        "End allocation EH state1; publish EAX to own cell; call manager getter AGAIN; only after it returns reload own publication and register through BD0C30.",
+        "Decrement captured section depth BEFORE Leave; reload current publication after unlock for slow-path return."
+      ],
+      "exceptions": [
+        "Allocation throws in state0: guard cleanup only; no invented allocation free.",
+        "Constructor throws in state1: its base unwind runs; getter then frees captured raw8 and unwinds state0 guard.",
+        "Registration throws in state0 after publication: owner/publication remain, guard is released. No rollback/unregister/free.",
+        "Both graphs have state1->state0->-1, no catch maps. FH3 dispatch and hardware-fault behavior are not claimed as reproduced by the Source design."
+      ],
+      "identity_rule": "Borrow the existing GameNativeStringProcess actual manager_01090aa0 CELL, not a private manager, semantic fixture domain or the distinct F899E8 pending destroy/kill lock."
+    },
+    "009285F0_and_00925660": {
+      "ABI": "ECX actual popped owner; DWORD flags at entry ESP+4; test low-byte bit0; EAX captured owner address even after free; RET4.",
+      "sequence": [
+        "Stamp own D19284/D190C0 profile, release actual owner+4 through complete 41CC80.",
+        "Test flags bit0, clear own publication unconditionally, stamp singleton base CE3818.",
+        "Free owner only if bit0 set, repair no-return-disassembly gap ADD ESP,4 from PE/live bytes, return captured address."
+      ],
+      "forbidden_inferences": [
+        "No current-publication identity guard.",
+        "No unregister call.",
+        "No duplicate manual or CRT destruction of manager-owned lock allocations.",
+        "Original numeric profile is identity data, never a callable Source vtable."
+      ]
+    },
+    "00926BE0": {
+      "ABI": "ECX actual borrowed entity root, no stack arguments, RET. No pointee dereference, flag gate or deduplication in this body.",
+      "sequence": [
+        "Capture incoming root in ESI; get E4 lock through924810 and capture its actual section+4. Enter then increment tracked depth.",
+        "Read current sentinel F899D0 and previous link; capture address sentinel+4 in EBX.",
+        "Use actual local source cell at entry ESP-24 holding the captured entity pointer. Set EH state0 before calling924B10 with sentinel, previous and pointer-to-cell.",
+        "Create real 12-byte payload node; call9267F0 to increment current owner F899CC count before linking.",
+        "Write captured sentinel.previous=node, then reread node.previous and write its next=node.",
+        "Decrement captured section depth before Leave. Only the guard is in this parent unwind map."
+      ],
+      "failure_contract": "If node creation completes then count growth throws, the allocated unlinked node is not freed by this producer; the guard releases. Preserve that physical behavior rather than adding rollback.",
+      "caller_boundary": "Source API must receive the actual entity-root identity from a genuine producer. Current metadata records/semantic GameUnitSlot objects are not admitted substitutes. Outer SceneRegistry then inner pending-init lock order remains distinct."
+    },
+    "00CD39A0_and_00CDF4C0": {
+      "ABI": "CRT initializer no inputs, EAX actual _atexit result, RET. Teardown no inputs, tail JMP924A70.",
+      "sequence": [
+        "Initializer receives actual owner F899CC in ECX for sentinel allocator924A50 (callee does not consume owner).",
+        "Allocate/self-link 12-byte sentinel, preserving sentinel payload+8; publish F899D0, zero F899D4, preserve owner+0.",
+        "Register fixed CDF4C0 with real _atexit at CD39BE. Return status unchanged; Cinit ignores it.",
+        "Teardown targets SAME F899CC, detaches current ring and zeroes count, frees payload nodes in next-link order then sentinel, clears head. Borrowed entity payloads are never deleted."
+      ],
+      "failure_and_lifetime": "Allocation failure reaches no publication/registration. Registration failure retains the initialized list. Require once-only explicit startup, intact finite ring and quiescent shutdown; no fake registration callback, second hidden initializer or automatic extra destructor."
+    },
+    "00CD3A70_and_00CDF500": {
+      "ABI": "Initializer has no inputs, returns _atexit result in EAX, RET. Teardown has no inputs, RET.",
+      "sequence": [
+        "Primary actual raw54 owner F89A08: call951660(first DWORD0,count DWORD1000h).",
+        "Set EH state0, then alternate raw54 at F89A5C: call951660(first DWORD1000h,count DWORD1000h).",
+        "Register CDF500 at CD3AB7 while state0 is still active; no state1 for the completed alternate is installed.",
+        "At normal exit CDF500 sets state0 and destroys alternate through9516B0; then sets state-1 and destroys primary.",
+        "Plain17-byte9516B0 captures slots+4C, stamps D19B88, calls BF6989 alias->BF65AC, pops caller argument and returns. It does not free static header storage or clear dangling slot fields."
+      ],
+      "exceptions": [
+        "A first constructor throw sees state-1 and performs no primary cleanup.",
+        "A throw after state0 is installed (including second construction or subsequent registration) runs primary-only destructor through CA7250; no invented alternate rollback.",
+        "Teardown state0 invokes primary destructor via CA7270 if alternate destruction unwinds; before the explicit primary call state is -1.",
+        "No catch map in either graph. Existing Source scalar951790(flags=0) has the same admitted field/free effects for a plain-destruction reuse, with new C++ ABI and typed Source profile. A dedicated wrapper could expose that effect explicitly."
+      ],
+      "canonical_aliases": {
+        "primary_first": "F89A0C = primary+4",
+        "primary_split": "F89A10 = primary+8 current count, not a snapshot/computed end",
+        "primary_slots": "F89A54 = primary+4C",
+        "alternate_first": "F89A60 = alternate+4",
+        "alternate_slots": "F89AA8 = alternate+4C"
+      },
+      "lifetime_order": "CE3120 ID initialization follows CE30CC pending-init initialization; successful fixed atexit registrations therefore run ID teardown before pending-init list teardown. Application entity destruction/ID withdrawal must finish before that CRT phase."
+    }
+  },
+  "complete_FH3_graphs": [
+    {
+      "parent": "00924100",
+      "handler": "00ca6ac8",
+      "FuncInfo_address": "00dd9cb8",
+      "FuncInfo_bytes": "2205931901000000b09cdd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map_address": "00dd9cb0",
+      "unwind_map_bytes": "ffffffffc06aca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca6ac0"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00924810",
+      "handler": "00ca6b53",
+      "FuncInfo_address": "00dd9d78",
+      "FuncInfo_bytes": "2205931902000000689ddd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map_address": "00dd9d68",
+      "unwind_map_bytes": "ffffffff406bca0000000000486bca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca6b40"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00ca6b48"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00928080",
+      "handler": "00ca6f58",
+      "FuncInfo_address": "00dda348",
+      "FuncInfo_bytes": "220593190100000040a3dd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map_address": "00dda340",
+      "unwind_map_bytes": "ffffffff506fca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca6f50"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00928240",
+      "handler": "00ca6f83",
+      "FuncInfo_address": "00dda37c",
+      "FuncInfo_bytes": "22059319020000006ca3dd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map_address": "00dda36c",
+      "unwind_map_bytes": "ffffffff706fca0000000000786fca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca6f70"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00ca6f78"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00926be0",
+      "handler": "00ca6da8",
+      "FuncInfo_address": "00dda0b8",
+      "FuncInfo_bytes": "2205931901000000b0a0dd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map_address": "00dda0b0",
+      "unwind_map_bytes": "ffffffffa06dca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca6da0"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00cd3a70",
+      "handler": "00ca725a",
+      "FuncInfo_address": "00dda72c",
+      "FuncInfo_bytes": "220593190100000024a7dd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map_address": "00dda724",
+      "unwind_map_bytes": "ffffffff5072ca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca7250"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    },
+    {
+      "parent": "00cdf500",
+      "handler": "00ca727a",
+      "FuncInfo_address": "00dda758",
+      "FuncInfo_bytes": "220593190100000050a7dd00000000000000000000000000000000000000000001000000",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map_address": "00dda750",
+      "unwind_map_bytes": "ffffffff7072ca00",
+      "unwind_entries": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00ca7270"
+        }
+      ],
+      "try_blocks": 0,
+      "flags": 1,
+      "no_catch_map": true,
+      "live_memory_matches_PE": true
+    }
+  ],
+  "EH_qualification": "All seven scoped FuncInfo headers and nine unwind-map entries, sixteen handlers/funclets and their complete physical direct actions are retained and matched to live Ghidra memory. This is local static cleanup graph recovery, not execution, a new FH3 runtime, hardware-fault transport or closure of unrelated entity EH. Existing count/length-error deeper graph is accepted provider reuse in retained references, not newly reanalyzed outside this lease.",
+  "complete_CRT_registration": {
+    "consumer": "00bfbc47",
+    "table_begin_inclusive": "00ce2734",
+    "table_end_exclusive": "00ce36e4",
+    "table_bytes": 4016,
+    "table_sha256": "1cd1050e082b0044f85199f8575e894f3162063f254f3a98df89de22d344bab8",
+    "behavior": "After successful C initialization, walk every DWORD in ascending order, skip zero, call each nonzero entry with no arguments; ignore individual initializer return values.",
+    "pending_init": {
+      "table_cell": "00ce30cc",
+      "initializer": "00cd39a0",
+      "atexit_call_site": "00cd39be",
+      "shutdown": "00cdf4c0"
+    },
+    "ID_pair": {
+      "table_cell": "00ce3120",
+      "initializer": "00cd3a70",
+      "atexit_call_site": "00cd3ab7",
+      "shutdown": "00cdf500"
+    },
+    "rejected_routing_candidate": {
+      "address": "00cdf4d0",
+      "actual_owner": "00f899c0",
+      "reason": "Different owner, clears F899C4 after free. It does not destroy F89A08/F89A5C."
+    },
+    "complete_pointer_cell_count": 1004,
+    "all_1004_cells_retained_in": "CRT_registration_analysis.json",
+    "live_full_table_equals_PE": true
+  },
+  "actual_loader_zero_preimages": [
+    {
+      "address": "00f899cc",
+      "bytes": 12,
+      "role": "pending-init raw list",
+      "section": ".data",
+      "section_VA": "00e08000",
+      "section_raw_size": 65536,
+      "section_virtual_size": 2719452,
+      "offset_in_section": 1579468,
+      "backing": "No on-disk bytes: PE loader zero-fill in virtual .data tail; not a fabricated disk preimage.",
+      "Ghidra_loader_memory_is_zero": true
+    },
+    {
+      "address": "00f899e4",
+      "bytes": 4,
+      "role": "pending-init lock publication",
+      "section": ".data",
+      "section_VA": "00e08000",
+      "section_raw_size": 65536,
+      "section_virtual_size": 2719452,
+      "offset_in_section": 1579492,
+      "backing": "No on-disk bytes: PE loader zero-fill in virtual .data tail; not a fabricated disk preimage.",
+      "Ghidra_loader_memory_is_zero": true
+    },
+    {
+      "address": "00f899fc",
+      "bytes": 4,
+      "role": "SceneRegistry publication",
+      "section": ".data",
+      "section_VA": "00e08000",
+      "section_raw_size": 65536,
+      "section_virtual_size": 2719452,
+      "offset_in_section": 1579516,
+      "backing": "No on-disk bytes: PE loader zero-fill in virtual .data tail; not a fabricated disk preimage.",
+      "Ghidra_loader_memory_is_zero": true
+    },
+    {
+      "address": "00f89a08",
+      "bytes": 168,
+      "role": "adjacent primary/alternate raw ID pair",
+      "section": ".data",
+      "section_VA": "00e08000",
+      "section_raw_size": 65536,
+      "section_virtual_size": 2719452,
+      "offset_in_section": 1579528,
+      "backing": "No on-disk bytes: PE loader zero-fill in virtual .data tail; not a fabricated disk preimage.",
+      "Ghidra_loader_memory_is_zero": true
+    }
+  ],
+  "actual_Original_slot0_profile_cells": {
+    "00d19284": {
+      "bytes": "f0859200",
+      "slot0": "009285f0"
+    },
+    "00d190c0": {
+      "bytes": "60569200",
+      "slot0": "00925660"
+    }
+  },
+  "actual_Original_SDK_imports": {
+    "00ce2210": {
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection"
+    },
+    "00ce2218": {
+      "dll": "KERNEL32.dll",
+      "name": "EnterCriticalSection"
+    }
+  },
+  "current_Source_domains": [
+    {
+      "domain": "Real allocation and tracked critical sections",
+      "status": "existing concrete providers",
+      "sources": [
+        "src/singleton_lifetime.cpp",
+        "src/native_renderer_worker_lifetime.cpp",
+        "src/native_tracked_critical_section_release.cpp"
+      ],
+      "facts": [
+        "singleton_lifetime_allocate uses the current real malloc/new-handler/bad_alloc path; matching free is concrete.",
+        "BD1860 Source allocates actual28-byte tracked Win32 section, initializes it and depth0;41CC80 consumes actual slot and releases real section.",
+        "New lock owners must be actual eight-byte allocations, with these same providers and the captured real section."
+      ]
+    },
+    {
+      "domain": "Actual manager and deletion dispatch",
+      "status": "canonical manager exists; new FC/E4 profile cases do not",
+      "sources": [
+        "include/bsp/game_native_string_process.hpp",
+        "src/game_native_string_process.cpp",
+        "src/sound_lifetime_access.cpp",
+        "src/native_singleton_publication.cpp",
+        "src/native_singleton_vector_registration_wrappers.cpp",
+        "src/native_singleton_destruction.cpp"
+      ],
+      "facts": [
+        "GameNativeStringProcess owns actual permanent manager_01090aa0 cell; SoundLifetimeAccess raw mode borrows that same cell.",
+        "Current deletion switch has D190C4 for existing F899E8, but lacks D190C0 and D19284.",
+        "Future Source must add explicit direct deleter cases with their SAME process E4/FC cells, preserving popped allocation identity; literal Native profile calls and generic lifecycle callbacks are not acceptable."
+      ]
+    },
+    {
+      "domain": "Existing E8 lock",
+      "status": "accepted concrete pattern and distinct owner",
+      "sources": [
+        "include/bsp/native_pending_entity_lock.hpp",
+        "src/native_pending_entity_lock.cpp"
+      ],
+      "facts": [
+        "Existing924180/9248D0/9256D0 body and process cell F899E8 provide a concrete allocation/guard/registration/destruction pattern.",
+        "They do not implement new924100/924810/E4 or928080/928240/FC identities. Reusing the same E8 lock for either would change ownership and lock ordering."
+      ]
+    },
+    {
+      "domain": "Pending raw list and payload node providers",
+      "status": "accepted actual providers; missing CC owner and fixed real CRT binding",
+      "sources": [
+        "src/native_live_effect_manager.cpp",
+        "src/effect_deletion_queue.cpp",
+        "src/native_alias_count_growth.cpp",
+        "src/native_pending_entity_owners.cpp",
+        "src/game_pending_entity_runtime.cpp"
+      ],
+      "facts": [
+        "Current actual sentinel004C3200 and whole teardown004C5940 reuse accepted924A50/924A70 behavior; borrowed payloads are not deleted.",
+        "Current create_effect_deletion_node008665F0 and grow_effect_deletion_list_count008675E0 are accepted924B10/9267F0 library reuse with retained earlier exception proof.",
+        "Existing process runtime owns destroy F899A8 and kill F899B4 only and registers real fixed atexit callbacks. It does not own pending-init F899CC.",
+        "New pending-init ownership can use these concrete leaves with one real process storage and fixed CDF4C0 callback; it must not append CC contiguously to A8/B4 across the separate C0 owner or reuse their identities."
+      ]
+    },
+    {
+      "domain": "Raw ID pair",
+      "status": "real raw54 leaf APIs and typed Source profile exist; canonical pair owner/startup absent",
+      "sources": [
+        "include/bsp/native_entity_id_tables.hpp",
+        "src/native_entity_id_tables.cpp",
+        "include/bsp/object_handle_resolvers.hpp"
+      ],
+      "facts": [
+        "Existing construct/reset/allocate/release/scalar delete use actual raw54 storage and real allocation/free; they do not manufacture a canonical pair.",
+        "Current application Source has no construction caller/owner for this raw pair. ObjectHandleTables only borrows five current fields and must bind to these actual owner fields without copies.",
+        "New storage must own adjacent primary and alternate raw54 objects (A8 bytes total), stable for startup, every resolver/publisher and actual exit callback. Static headers are never passed scalar flag1."
+      ]
+    },
+    {
+      "domain": "Application producer and InitAll consumer",
+      "status": "current semantic callbacks do not establish raw root/ring authority",
+      "sources": [
+        "src/game_hosts_scene_contents.cpp",
+        "src/game_hosts_units.cpp",
+        "src/game_hosts_lua.cpp",
+        "src/lua_binding_mission_2.cpp",
+        "include/bsp/lua_binding_mission_2.hpp"
+      ],
+      "facts": [
+        "Current scene instance callback returns a metadata record; current units have semantic ShipAiWakeTrail and only partial observer storage.",
+        "GameMissionLuaHost pending push deduplicates IDs into a vector; raw926BE0 performs no deduplication and appends the borrowed root pointer.",
+        "Current925F20 Source is a host-mediated InitAll schedule. Its current app binding uses that semantic pending representation; actual raw pending-init consumer/entity dispatch has not been admitted here.",
+        "A future registry module is not permission to mirror these records into raw owners or wire incomplete roots. Full entity/world/profile/EH and consumer authority must close before application migration."
+      ]
+    }
+  ],
+  "cohesive_ordinary_Source_admission_design": {
+    "classification": "Concrete cohesive ordinary Source implementation design for integrator review; not implemented, not ledger-ready by this document alone, and not application-root admission.",
+    "one_owner": "One process-lifetime owner with private construction/copy prevention, stable zero-initialized CC raw0C list, adjacent primary/alternate raw54 headers, and separate volatile E4 and FC publication cells. It owns these domains; it does not copy or cast semantic game roots/registries. Lifetime must cover all CRT callbacks without a duplicate implicit C++ teardown.",
+    "initialization": "Explicit once-only startup functions implement CD39A0 and CD3A70 in verified CRT order using real providers. Register private fixed noncapturing real std::atexit callbacks against SAME storage, return actual registration status, and preserve registration-failure retention. No callback supplied by an external lifecycle host.",
+    "lock_lifetime": "Complete constructor/getter/base-unwind/scalar-delete implementations for both E4 and FC; actual allocations8, real tracked sections, canonical manager_01090aa0 binding, double lookup/order and exception cleanup. Add both concrete deletion switch cases to native_singleton_destruction; do not create a second lifetime manager.",
+    "producer": "Complete926BE0 over the owner CC list and real E4 section, actual entity pointer local, direct canonical node/count helpers, exact count-before-link and exceptional leak behavior. It is the raw producer boundary, not a metadata-to-root adapter.",
+    "ID_pair": "Construct4096-slot primary(first0) and alternate(first4096), preserve primary-only initialization unwind, reverse teardown and original dangling-field behavior. Expose borrowed ObjectHandleTables references to actual current owner fields, not a copied projection.",
+    "authority_gate": "Do not call the new storage the active game registry or migrate application consumers until genuine entity roots, raw InitAll, world/hierarchy withdrawal, functional entity profiles and remaining entity EH are admitted. All consumers must move to one authority; no shadow registry or semantic-root cast.",
+    "suggested_owned_source_surface_for_a_future_packet": [
+      "new include/bsp/native_entity_registry_lifetime.hpp and src/native_entity_registry_lifetime.cpp",
+      "new include/bsp/game_native_entity_registry_process.hpp and src/game_native_entity_registry_process.cpp",
+      "coordinated concrete profile cases in src/native_singleton_destruction.cpp and its profile contract comments",
+      "coordinated explicit startup integration only under the same owner/authority contract; CMake/metadata remain integrator-owned"
+    ],
+    "whole_behavior_addresses_for_followup": [
+      "00923640",
+      "00924100",
+      "00924810",
+      "00925660",
+      "00926BE0",
+      "00927A60",
+      "00928080",
+      "00928240",
+      "009285F0",
+      "009516B0",
+      "00CD39A0",
+      "00CDF4C0",
+      "00CD3A70",
+      "00CDF500"
+    ],
+    "reuse_without_new_leaf_credit": [
+      "00924A50 via actual004C3200 sentinel",
+      "00924A70 via actual004C5940 whole teardown",
+      "00924B10 via actual008665F0 node",
+      "009267F0 via actual008675E0 count/exception helper",
+      "existing raw951660/951790 tables and actual canonical allocator/manager/critical-section/guard providers"
+    ],
+    "required_review_before_implementation_acceptance": [
+      "Confirm the one permanent process owner and real fixed CRT callbacks are implementation, not declarations or opaque host callbacks.",
+      "Review whole native bodies, all seven local unwind graphs and full dependency/provider output, including concrete two-profile deletion dispatch.",
+      "Run the normal Win32 build after future C++ changes and distinguish that from fixture, ABI and game validation.",
+      "Keep current root/world/profile/InitAll/EH blockers explicit; no Source/build success should be reported as a working real entity factory."
+    ]
+  },
+  "remaining_frontier": [
+    {
+      "domain": "Registry-owner Source implementation",
+      "result": "Finite cohesive design is reviewable; current implementation remains missing.",
+      "addresses": [
+        "00923640",
+        "00924100",
+        "00924810",
+        "00925660",
+        "00926BE0",
+        "00927A60",
+        "00928080",
+        "00928240",
+        "009285F0",
+        "009516B0",
+        "00CD39A0",
+        "00CDF4C0",
+        "00CD3A70",
+        "00CDF500"
+      ],
+      "must_stay_together": [
+        "permanent CC/E4/FC/ID-pair ownership",
+        "real startup/atexit teardown",
+        "complete lock registration and concrete profile dispatch",
+        "same-root raw pending producer and current-field ID aliases"
+      ],
+      "no_current_credit": true
+    },
+    {
+      "domain": "Real entity producer and world/hierarchy authority",
+      "result": "Separate full-root admission remains blocked.",
+      "routing_addresses": [
+        "006FE590",
+        "006FE460",
+        "0081ED40",
+        "0095CC90",
+        "0087B670",
+        "0077EED0",
+        "009258F0",
+        "00928860",
+        "009037F0",
+        "00903F30",
+        "00924710",
+        "0081F3A0"
+      ],
+      "boundary": "Only existing accepted readiness is referenced; these bodies were not freshly analyzed in this packet. Need actual allocation identity, descriptor/profile closure, world publication and borrower withdrawal before normal destruction."
+    },
+    {
+      "domain": "Raw InitAll consumer and entity profiles/exceptions",
+      "result": "Not closed by registry storage/lifetime.",
+      "routing_addresses": [
+        "00925F20",
+        "00927D20",
+        "00925F00",
+        "009289E0",
+        "00740270",
+        "007400C0",
+        "00CA6CBA",
+        "00CA6FAE",
+        "00CA6C72",
+        "00CA6FD6"
+      ],
+      "boundary": "Scoped registry EH is recovered; prior SceneNode/GameEntity and full-root EH, role/child deleting profiles, raw InitAll entity behavior and canonical live-cell effects remain separate. No outside-body analysis or credit."
+    }
+  ],
+  "historical_provider_artifacts": {
+    "whole_provider_objects": 19,
+    "unique_exact_core_members": 17,
+    "app_objects_absent_from_core": 2,
+    "archive_member_count": 1905,
+    "archive_bytes": 73604294,
+    "archive_sha256": "46b565d40915f9e1472d75d9b0157328ec5ee3cc003968c31555a0d8ee57c8e8",
+    "selected_complete_function_extents": 276,
+    "selected_API_groups": 27,
+    "whole_object_placements": [
+      {
+        "module": "native_pending_entity_lock",
+        "project": "bsp_core",
+        "whole_object_bytes": 8766,
+        "whole_object_sha256": "2e36f4b6213f7de9f4987f258aabdd62fb1a482dacb9b956195cb932901824aa",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_pending_entity_lock.obj",
+            "header_offset": 57878208,
+            "payload_file_offset": 57878268,
+            "bytes": 8766,
+            "sha256": "2e36f4b6213f7de9f4987f258aabdd62fb1a482dacb9b956195cb932901824aa"
+          }
+        ],
+        "selected_complete_function_extents": 17
+      },
+      {
+        "module": "native_entity_id_tables",
+        "project": "bsp_core",
+        "whole_object_bytes": 5703,
+        "whole_object_sha256": "bbf66c8e2ec1b71b7c9bfd673230fc7789cc44982a7147d37a2186289394e1eb",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_entity_id_tables.obj",
+            "header_offset": 59616352,
+            "payload_file_offset": 59616412,
+            "bytes": 5703,
+            "sha256": "bbf66c8e2ec1b71b7c9bfd673230fc7789cc44982a7147d37a2186289394e1eb"
+          }
+        ],
+        "selected_complete_function_extents": 13
+      },
+      {
+        "module": "native_pending_entity_owners",
+        "project": "bsp_core",
+        "whole_object_bytes": 10661,
+        "whole_object_sha256": "e915c3b7dae0f3a981f43076133f0049869f6326e228a83194a1d9e53afa1dc5",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_pending_entity_owners.obj",
+            "header_offset": 30300562,
+            "payload_file_offset": 30300622,
+            "bytes": 10661,
+            "sha256": "e915c3b7dae0f3a981f43076133f0049869f6326e228a83194a1d9e53afa1dc5"
+          }
+        ],
+        "selected_complete_function_extents": 18
+      },
+      {
+        "module": "native_pending_entity_producers",
+        "project": "bsp_core",
+        "whole_object_bytes": 6067,
+        "whole_object_sha256": "b581990001a78ec103f07f72ea1819b26fda658b396d3aaab572ff36959cf8ff",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_pending_entity_producers.obj",
+            "header_offset": 30294434,
+            "payload_file_offset": 30294494,
+            "bytes": 6067,
+            "sha256": "b581990001a78ec103f07f72ea1819b26fda658b396d3aaab572ff36959cf8ff"
+          }
+        ],
+        "selected_complete_function_extents": 12
+      },
+      {
+        "module": "native_live_effect_manager",
+        "project": "bsp_core",
+        "whole_object_bytes": 4023,
+        "whole_object_sha256": "7878b52694aa4982d7bad015f19d3503796d32d38fa81c3b910fccd1b701ae36",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_live_effect_manager.obj",
+            "header_offset": 34193956,
+            "payload_file_offset": 34194016,
+            "bytes": 4023,
+            "sha256": "7878b52694aa4982d7bad015f19d3503796d32d38fa81c3b910fccd1b701ae36"
+          }
+        ],
+        "selected_complete_function_extents": 7
+      },
+      {
+        "module": "effect_deletion_queue",
+        "project": "bsp_core",
+        "whole_object_bytes": 11910,
+        "whole_object_sha256": "6340371e33576078e3fd8d1879ee29c5517d4b7ec589004326a8182dd9416cf8",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\effect_deletion_queue.obj",
+            "header_offset": 53260038,
+            "payload_file_offset": 53260098,
+            "bytes": 11910,
+            "sha256": "6340371e33576078e3fd8d1879ee29c5517d4b7ec589004326a8182dd9416cf8"
+          }
+        ],
+        "selected_complete_function_extents": 22
+      },
+      {
+        "module": "native_alias_count_growth",
+        "project": "bsp_core",
+        "whole_object_bytes": 4971,
+        "whole_object_sha256": "9c7387ae3883c7ff8a158e8a270acddfe863f277bb881d95a8c8254e4a5e4e70",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_alias_count_growth.obj",
+            "header_offset": 65653780,
+            "payload_file_offset": 65653840,
+            "bytes": 4971,
+            "sha256": "9c7387ae3883c7ff8a158e8a270acddfe863f277bb881d95a8c8254e4a5e4e70"
+          }
+        ],
+        "selected_complete_function_extents": 10
+      },
+      {
+        "module": "native_renderer_worker_lifetime",
+        "project": "bsp_core",
+        "whole_object_bytes": 6113,
+        "whole_object_sha256": "8223ff2cb29e52ddcd5ffd9b7f5a3c3fdd46fbcd3c24aa3f182bd85b229dded5",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_renderer_worker_lifetime.obj",
+            "header_offset": 66190244,
+            "payload_file_offset": 66190304,
+            "bytes": 6113,
+            "sha256": "8223ff2cb29e52ddcd5ffd9b7f5a3c3fdd46fbcd3c24aa3f182bd85b229dded5"
+          }
+        ],
+        "selected_complete_function_extents": 14
+      },
+      {
+        "module": "native_tracked_critical_section_release",
+        "project": "bsp_core",
+        "whole_object_bytes": 1415,
+        "whole_object_sha256": "dea7acd11ab4fdb6c2ab5198915388a3c526e3475d5b772e9447beb7b4cfc80c",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_tracked_critical_section_release.obj",
+            "header_offset": 65968084,
+            "payload_file_offset": 65968144,
+            "bytes": 1415,
+            "sha256": "dea7acd11ab4fdb6c2ab5198915388a3c526e3475d5b772e9447beb7b4cfc80c"
+          }
+        ],
+        "selected_complete_function_extents": 1
+      },
+      {
+        "module": "singleton_lifetime",
+        "project": "bsp_core",
+        "whole_object_bytes": 32971,
+        "whole_object_sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+            "header_offset": 67703546,
+            "payload_file_offset": 67703606,
+            "bytes": 32971,
+            "sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582"
+          }
+        ],
+        "selected_complete_function_extents": 67
+      },
+      {
+        "module": "sound_lifetime_access",
+        "project": "bsp_core",
+        "whole_object_bytes": 4303,
+        "whole_object_sha256": "74af5f9cf27d565c2821aad31111419f012891a0381b9930157232803e59f824",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\sound_lifetime_access.obj",
+            "header_offset": 19750280,
+            "payload_file_offset": 19750340,
+            "bytes": 4303,
+            "sha256": "74af5f9cf27d565c2821aad31111419f012891a0381b9930157232803e59f824"
+          }
+        ],
+        "selected_complete_function_extents": 9
+      },
+      {
+        "module": "native_singleton_publication",
+        "project": "bsp_core",
+        "whole_object_bytes": 5051,
+        "whole_object_sha256": "1b56545bfab12536ebd4747cff0f0163faf1341cbb56971e937d93342c9c49b3",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_singleton_publication.obj",
+            "header_offset": 66030896,
+            "payload_file_offset": 66030956,
+            "bytes": 5051,
+            "sha256": "1b56545bfab12536ebd4747cff0f0163faf1341cbb56971e937d93342c9c49b3"
+          }
+        ],
+        "selected_complete_function_extents": 8
+      },
+      {
+        "module": "native_singleton_vector_registration_wrappers",
+        "project": "bsp_core",
+        "whole_object_bytes": 1878,
+        "whole_object_sha256": "75084786272f34e948309d0d6bbf43e045444b148d1fd7694a91ed253f1ed4ad",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_singleton_vector_registration_wrappers.obj",
+            "header_offset": 66038652,
+            "payload_file_offset": 66038712,
+            "bytes": 1878,
+            "sha256": "75084786272f34e948309d0d6bbf43e045444b148d1fd7694a91ed253f1ed4ad"
+          }
+        ],
+        "selected_complete_function_extents": 4
+      },
+      {
+        "module": "native_singleton_destruction",
+        "project": "bsp_core",
+        "whole_object_bytes": 24731,
+        "whole_object_sha256": "219f395de2d392645a8fe74560318d2e0949665fd295d48ef3525eaf598274df",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_singleton_destruction.obj",
+            "header_offset": 65986858,
+            "payload_file_offset": 65986918,
+            "bytes": 24731,
+            "sha256": "219f395de2d392645a8fe74560318d2e0949665fd295d48ef3525eaf598274df"
+          }
+        ],
+        "selected_complete_function_extents": 24
+      },
+      {
+        "module": "native_diagnostic_sink_lifetime",
+        "project": "bsp_core",
+        "whole_object_bytes": 12246,
+        "whole_object_sha256": "6182f2923d6db1582ef854481496accf73f41c107be581d0a126f2a81eca89c1",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_diagnostic_sink_lifetime.obj",
+            "header_offset": 65889788,
+            "payload_file_offset": 65889848,
+            "bytes": 12246,
+            "sha256": "6182f2923d6db1582ef854481496accf73f41c107be581d0a126f2a81eca89c1"
+          }
+        ],
+        "selected_complete_function_extents": 20
+      },
+      {
+        "module": "native_legacy_exception_owner",
+        "project": "bsp_core",
+        "whole_object_bytes": 7100,
+        "whole_object_sha256": "fa40b55eb78e50e1669881a20511a13fd827b75125b7ea041b5ff03c30e9fca7",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+            "header_offset": 65660160,
+            "payload_file_offset": 65660220,
+            "bytes": 7100,
+            "sha256": "fa40b55eb78e50e1669881a20511a13fd827b75125b7ea041b5ff03c30e9fca7"
+          }
+        ],
+        "selected_complete_function_extents": 15
+      },
+      {
+        "module": "game_native_string_process",
+        "project": "bsp_game",
+        "whole_object_bytes": 4117,
+        "whole_object_sha256": "2aec5531a12a87990cdf58ce2e9403be4176a71b4f0d0427c48a8e91143af8ec",
+        "whole_exact_member_matches": [],
+        "selected_complete_function_extents": 6
+      },
+      {
+        "module": "game_pending_entity_runtime",
+        "project": "bsp_core",
+        "whole_object_bytes": 3480,
+        "whole_object_sha256": "d03c0f6cc0e4de38140b57512a2cb9f88bac4959a26790ec9f34f1cf48bd23f7",
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\game_pending_entity_runtime.obj",
+            "header_offset": 52307534,
+            "payload_file_offset": 52307594,
+            "bytes": 3480,
+            "sha256": "d03c0f6cc0e4de38140b57512a2cb9f88bac4959a26790ec9f34f1cf48bd23f7"
+          }
+        ],
+        "selected_complete_function_extents": 6
+      },
+      {
+        "module": "game_hosts_lua",
+        "project": "bsp_game",
+        "whole_object_bytes": 1570089,
+        "whole_object_sha256": "ab54e158373e341e15ff5a65391ce90812a1d6b0927b9b50d32134004b01d367",
+        "whole_exact_member_matches": [],
+        "selected_complete_function_extents": 3
+      }
+    ],
+    "qualification": "Complete historical worker objects/archive with all sections, symbols and relocation records retained; selected complete extents include separate compiler/EH helpers. Current Source and historical command/read records are separately pinned. No fresh compilation/current consumed preimages/final-link or loaded-target proof.",
+    "embedded_dispatcher_data": {
+      "previous_reader_rejection": "The complete 3109-byte singleton private dispatcher extent contains trailing compiler switch data. Linear decoding stopped at3108; interpreting the table bytes as code would be wrong even if it had decoded.",
+      "correction": "Retain original full extent, full raw section and all ordered relocations. Decode only verified 2972-byte code prefix; classify the trailing137 bytes as switch pointer/index tables and alignment. Four static data labels are positively referenced by MOVZX/JMP DIR32 operands; all seven pointer-table relocations target actual decoded code starts.",
+      "original_reader_preserved": "verification/coff_readers.py",
+      "new_family_only_reader": "verification/coff_readers_embedded_data.py",
+      "generator": "extend_reader.py",
+      "functions": [
+        {
+          "module": "native_singleton_destruction",
+          "symbol": "?delete_current_profile@?A0x9b902a04@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+          "whole_bytes": 3109,
+          "whole_sha256": "6012c2fc59144266d0f12a355405242eabc79c777b7d0a8832c70612361cd7ea",
+          "decoded_code_bytes": 2972,
+          "decoded_instruction_count": 901,
+          "embedded_data": [
+            {
+              "offset": 2972,
+              "bytes": 137,
+              "sha256": "e7e5d1bd26fa4503ac68e56472b29216de2c8c5bb7a6e55c8f79c5b37f432e7b",
+              "hex": "00000000000000000000000000000000000000000004040404040404010404040204040404040404040404040404040404040404040404040404040404040404040404040404040404040404030f1f00000000000000000000010101010101010101010101010101000101010101010101010101010101010001010101010101010101010101010100",
+              "local_data_symbols_and_code_references": [
+                {
+                  "symbol": "$LN177",
+                  "offset": 2992,
+                  "reference_offset": 1817,
+                  "instruction_offset": 1814,
+                  "instruction": "movzx eax, byte ptr [esi]"
+                },
+                {
+                  "symbol": "$LN178",
+                  "offset": 2972,
+                  "reference_offset": 1824,
+                  "instruction_offset": 1821,
+                  "instruction": "jmp dword ptr [eax*4]"
+                },
+                {
+                  "symbol": "$LN179",
+                  "offset": 3060,
+                  "reference_offset": 2499,
+                  "instruction_offset": 2496,
+                  "instruction": "movzx eax, byte ptr [eax]"
+                },
+                {
+                  "symbol": "$LN180",
+                  "offset": 3052,
+                  "reference_offset": 2506,
+                  "instruction_offset": 2503,
+                  "instruction": "jmp dword ptr [eax*4]"
+                }
+              ],
+              "qualification": "Compiler switch pointer/index tables and alignment retained as physical data, not disassembled as instructions. Boundaries follow same-section static data labels referenced by DIR32 operands of MOVZX/JMP; trailing DIR32 table entries all target decoded code starts."
+            }
+          ]
+        }
+      ],
+      "scope": "Local static evidence-reader correction only; no repository tool/Source edit, new test, build or execution."
+    },
+    "provenance": "Physical configured compiler/frontends/librarian/linker and historical19 command/read records are retained with current dependency bytes. They are not reconstructed compiler-consumed preimages or new build evidence."
+  },
+  "verification": {
+    "completed_utc": "2026-10-08T20:53:25.333069+00:00",
+    "worker_head_before_report_commit": "9235c33285b99ed5568438761e8ff8345f98b73a",
+    "tracked_worktree_clean_before_report_write": true,
+    "physical_pin_records_rehashed_current_and_retained": 3251,
+    "unique_current_physical_paths": 869,
+    "current_Source_inventory_records_rehashed": 4029,
+    "nominated_parent_count": 5,
+    "nominated_parent_bytes": 674,
+    "nominated_parent_instructions": 189,
+    "whole_owner_support_and_routing_bodies": 21,
+    "separate_complete_EH_handlers_and_funclets": 16,
+    "complete_Native_bytes": 1678,
+    "complete_Native_decoded_instructions": 467,
+    "all_whole_native_spans_equal_live_Ghidra_memory_and_installed_PE": true,
+    "complete_CRT_pointer_table_bytes": 4016,
+    "complete_CRT_pointer_table_cells": 1004,
+    "complete_CRT_table_equals_live_Ghidra_memory_and_PE": true,
+    "complete_FH3_FuncInfo_and_unwind_graphs": 7,
+    "physical_unwind_map_entries": 9,
+    "ordinary_stack_graphs": 21,
+    "ordinary_stack_returns_balanced_with_declared_callee_summaries": true,
+    "whole_historical_provider_objects": 19,
+    "unique_exact_complete_core_members": 17,
+    "application_objects_absent_from_core_as_expected": 2,
+    "selected_complete_COFF_function_extents": 276,
+    "private_dispatcher_complete_extent_bytes": 3109,
+    "private_dispatcher_code_bytes": 2972,
+    "private_dispatcher_embedded_switch_data_bytes": 137,
+    "Source_changes": 0,
+    "fresh_builds": 0,
+    "tests": 0,
+    "probes_or_Original_or_Source_entry_executions": 0,
+    "Ghidra_mutations": 0,
+    "new_reconstructed_function_credit": 0,
+    "qualification": "Static complete Native/Source readiness and historical artifact inspection. EH table decoding does not execute or reproduce FH3 transport. Historical objects do not prove current compiler-consumed inputs, final link/COMDAT choice, loaded targets or gameplay."
+  },
+  "evidence": {
+    "archive_path": "local/cc12_native_entity_registry_owner_source_readiness_evidence.zip",
+    "archive_bytes": 57828923,
+    "archive_sha256": "e9060a02e1327840cfb69a180bc75b71bcefd77c2de251a55d16577cb75ab30e",
+    "archive_members": 3410,
+    "manifest_sha256": "f253c89a1e47c42e25e50f439023354f877e2652eebaecd61c6624d4b79209ff",
+    "all_CRC_and_member_SHA256_verified": true,
+    "sealed_utc": "2026-10-08T20:53:25.464308+00:00",
+    "final_checks": {
+      "completed_utc": "2026-10-08T20:53:25.333069+00:00",
+      "worker_head_before_report_commit": "9235c33285b99ed5568438761e8ff8345f98b73a",
+      "tracked_worktree_clean_before_report_write": true,
+      "physical_pin_records_rehashed_current_and_retained": 3251,
+      "unique_current_physical_paths": 869,
+      "current_Source_inventory_records_rehashed": 4029,
+      "nominated_parent_count": 5,
+      "nominated_parent_bytes": 674,
+      "nominated_parent_instructions": 189,
+      "whole_owner_support_and_routing_bodies": 21,
+      "separate_complete_EH_handlers_and_funclets": 16,
+      "complete_Native_bytes": 1678,
+      "complete_Native_decoded_instructions": 467,
+      "all_whole_native_spans_equal_live_Ghidra_memory_and_installed_PE": true,
+      "complete_CRT_pointer_table_bytes": 4016,
+      "complete_CRT_pointer_table_cells": 1004,
+      "complete_CRT_table_equals_live_Ghidra_memory_and_PE": true,
+      "complete_FH3_FuncInfo_and_unwind_graphs": 7,
+      "physical_unwind_map_entries": 9,
+      "ordinary_stack_graphs": 21,
+      "ordinary_stack_returns_balanced_with_declared_callee_summaries": true,
+      "whole_historical_provider_objects": 19,
+      "unique_exact_complete_core_members": 17,
+      "application_objects_absent_from_core_as_expected": 2,
+      "selected_complete_COFF_function_extents": 276,
+      "private_dispatcher_complete_extent_bytes": 3109,
+      "private_dispatcher_code_bytes": 2972,
+      "private_dispatcher_embedded_switch_data_bytes": 137,
+      "Source_changes": 0,
+      "fresh_builds": 0,
+      "tests": 0,
+      "probes_or_Original_or_Source_entry_executions": 0,
+      "Ghidra_mutations": 0,
+      "new_reconstructed_function_credit": 0,
+      "qualification": "Static complete Native/Source readiness and historical artifact inspection. EH table decoding does not execute or reproduce FH3 transport. Historical objects do not prove current compiler-consumed inputs, final link/COMDAT choice, loaded targets or gameplay."
+    }
+  },
+  "retained_analysis": [
+    "physical_inputs.json",
+    "whole_native_analysis.json",
+    "exception_graphs.json",
+    "CRT_registration_analysis.json",
+    "actual_owner_loader_preimages.json",
+    "whole_stack_and_state_analysis.json",
+    "complete_provider_objects.json",
+    "provider_artifact_analysis.json",
+    "reader_extent_qualification.json",
+    "supplemental_analysis.json",
+    "current_Source_inventory.json",
+    "final_readiness_checks.json",
+    "manifest.json"
+  ],
+  "verification_programs": [
+    "capture.py",
+    "verify.py",
+    "extend_reader.py",
+    "supplement.py",
+    "finalize.py",
+    "verification/coff_readers.py",
+    "verification/coff_readers_embedded_data.py"
+  ],
+  "qualification": "Read-only Native/Source/artifact readiness. No C++/CMake edits, builds, tests, probes, Original/Source entry execution, Ghidra mutations, new ledger/function credit, deployment or game validation. Final tracked files are generated after sealing and intentionally outside the ZIP."
+}
