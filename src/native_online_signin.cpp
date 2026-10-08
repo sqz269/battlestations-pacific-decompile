@@ -61,12 +61,12 @@ std::uint32_t ordinal(void* module, std::uint16_t number, Args... args) {
 
 NativeOnlineSigninRuntime::NativeOnlineSigninRuntime(const XLiveLibrary& library,
     FrameClock* volatile& clock_slot)
-    : module_(library.module_handle()), projected_clock_slot_(&clock_slot) {
+    : module_(library.module_handle()), callback_context_(library), projected_clock_slot_(&clock_slot) {
     if (!module_) throw std::invalid_argument("Native sign-in needs the live XLive library");
 }
 NativeOnlineSigninRuntime::NativeOnlineSigninRuntime(const XLiveLibrary& library,
     const NativeFrameClockPublicationContext& clock)
-    : module_(library.module_handle()), actual_clock_(&clock) {
+    : module_(library.module_handle()), callback_context_(library), actual_clock_(&clock) {
     if (!module_) throw std::invalid_argument("Native sign-in needs the live XLive library");
 }
 std::uint32_t NativeOnlineSigninRuntime::user_get_signin_state_00a4d572(std::uint32_t user) {
@@ -89,6 +89,11 @@ void NativeOnlineSigninRuntime::call_callback20(std::uint32_t target, std::uint3
     if (target != 0x00735510u)
         throw std::runtime_error("Unbound native online manager callback20 identity");
     static_cast<void>(ordinal(module_, 5277, ecx, 0x8001u, 6u));
+}
+void NativeOnlineSigninRuntime::call_callback24(std::uint32_t target, std::uint32_t user) {
+    if (target != 0x00735520u)
+        throw std::runtime_error("Unbound native online manager callback24 identity");
+    set_online_context_four_00735520(user, callback_context_);
 }
 void NativeOnlineSigninRuntime::sample_clock_vslot20(ClockTimestamp& output) {
     if (actual_clock_) {
@@ -171,5 +176,37 @@ void toggle_native_online_signin_00a3f440(NativeOnlineManagerStorage& manager,
         calls.sample_clock_vslot20(sampled);
         write(manager, 8, sampled); // Includes frequency-low alias manager+10.
     }
+}
+
+void begin_native_online_signin_user_00a3f100(NativeOnlineManagerStorage& manager,
+    std::uint32_t user, NativeOnlineSigninRequestCalls& calls) {
+    constexpr auto last_user = (sizeof(NativeOnlineManagerStorage) - 0x8cu
+        - sizeof(std::uint32_t)) / sizeof(std::uint32_t);
+    if (user > last_user)
+        throw std::out_of_range("Native sign-in request indexed word is outside the manager");
+
+    // A3F109's result reaches only 004254B0, a verified bare RET sink. Keep
+    // the genuine query and its effects before selected-user and cache access.
+    static_cast<void>(calls.user_get_signin_state_00a4d572(user));
+    write(manager, 0x3b4, user);
+    if (read<std::uint32_t>(manager, 0x8cu + 4u * user) == 0) {
+        if (read<std::uint8_t>(manager, 0x3e9) == 0) {
+            byte(manager, 0x3e9, 1);
+            write(manager, 0x3b0, std::uint32_t{3});
+        } else {
+            write(manager, 0x3b0, std::uint32_t{1});
+        }
+    } else {
+        const auto callback = read<std::uint32_t>(manager, 0x24);
+        if (callback != 0) calls.call_callback24(callback, user);
+        write(manager, 0x3b0, std::uint32_t{4}); // After callback side effects.
+    }
+    // The remaining branch diagnostics also call the same no-effect sink.
+}
+
+void request_native_online_signin_00a3f3d0(NativeOnlineManagerStorage& manager,
+    std::uint32_t user, NativeOnlineSigninRequestCalls& calls) {
+    write(manager, 0x28, std::uint32_t{1});
+    begin_native_online_signin_user_00a3f100(manager, user, calls);
 }
 } // namespace bsp
