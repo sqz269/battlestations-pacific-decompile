@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "packet": "cc12_group_membership_producer_readiness",
+  "status": "audited_unready_no_Source",
+  "new_Source_bodies": 0,
+  "ready_count": 0,
+  "qualification": "Genuine membership producer 0070EF30 is whole 145 bytes/47 instructions; actual caller 0077F940 is whole 395 bytes/126 instructions, both Original/live verified. CALL 0077FA88 passes selected real group in ECX and actual native-array entity on the stack. Producer publishes group into entity+284 before duplicate scanning; append identity uses captured count, sentinel and slot production reload count, then ADD increments the current count. Duplicate query consumes AL only and registers actual endpoints when AL=0. Existing semantic members/count Host interface and count=index+1 behavior do not establish this physical ordering, original ABI or ownership. Current 00694AF0 actual-storage query Source is complete; the older missing-wrapper statement is superseded. Its explicit lifetime reference and ordinary C++ ABI/EH still differ from native ECX/EDX/plain RET/AL-only entry. Slot production 0070ED30, class speed refresh 0070DA00, factory 0070DB20, settings 00424C40, detach 0077BD70, group profile/lifetime and actual caller virtual +114/+58 targets remain unready. Caller x87 JA rejects ordered greater and permits unordered; post-join +114 dispatch uses original ordered entity, not each array member. Seven nodes plus fifteen edges use 22/24 scope; 43 artifacts and 1247 prior pins preserved. Source0, fixtures0, executions0, replays0; no runtime-global, class, world or game admission.",
+  "family": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit/local/cc12_group_membership_producer_audit_20261008_a",
+  "worker_receipt_sha256": "2d95dcd52c2a412e70d59d7cd440bb20c719c62cd7184c47e39cfb3a32064650",
+  "worker_manifest_sha256": "42638f20266485497fd0b32bf8343d9c90c0ff62c6ed92429ed58b13e07926fc",
+  "reviewed_worker_receipt": {
+    "audit": "cc12_group_membership_producer_audit",
+    "status": "genuine_producer_found_but_whole_Source_readiness_negative",
+    "utc": "2026-10-08T08:01:20.262406+00:00",
+    "base_revision": "daa0b1bf7149f0e94f37de9147bb19fab02458d6",
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit",
+    "branch": "agent/cc12_group_membership_producer_audit",
+    "candidate_scan": {
+      "start": "0070BC30",
+      "end_exclusive": "00714030",
+      "bytes": 33792,
+      "sha256": "a1932633b6ed678adbfec5f3fdc1fba3fcb528d78f2431e5c73aa237a4246b0b",
+      "selection": "Exact native memory-write displacement4F8h found at0070EF8A; saved listing independently resolves it inside0070EF30. The full body proves actual group18h record and entity284h publication, so this candidate is genuine. Other occurrences and partition membership remain candidate hints only.",
+      "candidate_count_store_addresses": [
+        "0070D82A",
+        "0070DB14",
+        "0070E589",
+        "0070E6F6",
+        "0070E855",
+        "0070EF8A"
+      ]
+    },
+    "producer": {
+      "entry": "0070EF30",
+      "end_exclusive": "0070EFC1",
+      "bytes": 145,
+      "instructions": 47,
+      "sha256": "7b49a52951ba9afae679364e494cd3bf2435fb2eb05b0cabc86dfe03521f10c6",
+      "saved_listing_all_starts_equal_Original": true,
+      "calls": [
+        {
+          "site": "0070EF85",
+          "target": "0070ED30",
+          "instruction": "call 0x70ed30"
+        },
+        {
+          "site": "0070EF95",
+          "target": "00694A60",
+          "instruction": "call 0x694a60"
+        },
+        {
+          "site": "0070EF9C",
+          "target": "0070DA00",
+          "instruction": "call 0x70da00"
+        },
+        {
+          "site": "0070EFAA",
+          "target": "00694AF0",
+          "instruction": "call 0x694af0"
+        },
+        {
+          "site": "0070EFB7",
+          "target": "00694A60",
+          "instruction": "call 0x694a60"
+        }
+      ]
+    },
+    "physical_ABI": {
+      "receiver": "ECX=actual writable group; captured intoESI",
+      "member": "[entryESP+4]=actual entity; PUSH ESI/PUSH EDI then MOV EDI,[ESP+Ch]",
+      "returns": "Both normal exits RET4 at0070EFA3 and0070EFBE; no promised EAX value, integer index or duplicate marker. Last callee output remains.",
+      "nonvolatiles": "ESI/EDI saved/restored; EBX/EBP untouched directly. Volatile registers/flags and x87 effects are inherited from actual callees.",
+      "local_FP": "No x87 instruction in this body; native MOVSS carries actual00CF4888 bits. Called producers retain their full FP requirements.",
+      "unhandled_cases": "No null/capacity guard, rollback, local EH or lock. Writable actual entity+284h is required; bounded ordinary append count0..23, existing-member count<=24 with valid records. Invalid counts keep literal address arithmetic."
+    },
+    "publication_order": [
+      {
+        "site": "0070EF38",
+        "effect": "Unconditionally store actual group pointer into actual entity+284h before duplicate scan. No old-group detach or ownership check here."
+      },
+      {
+        "site": "0070EF3E",
+        "effect": "Capture signed group+4F8h once inEDX for positive-count duplicate scan and initial identity store. Exact entity DWORDs at group+18h+i*34h; no member dereference or null filtering."
+      },
+      {
+        "site": "0070EF5E",
+        "effect": "Append-only actual nativeDATA00CF4888 MOVSS, after duplicate scan; bits4479C000."
+      },
+      {
+        "site": "0070EF69",
+        "effect": "Store entity identity at actual group+18h+captured_count*34h."
+      },
+      {
+        "site": "0070EF6D",
+        "effect": "Reload group count, then store native sentinel to group+48h+fresh_count*34h at0070EF76."
+      },
+      {
+        "site": "0070EF7C",
+        "effect": "Reload count again, push this join index, setECX=group; CALL0070EF85 ->0070ED30 before increment."
+      },
+      {
+        "site": "0070EF8A",
+        "effect": "ADD DWORD[group+4F8h],1 using then-current cell, modulo32. This is not count=captured_index+1."
+      },
+      {
+        "site": "0070EF95",
+        "effect": "CALL00694A60 withECX=entity,EDX=group."
+      },
+      {
+        "site": "0070EF9C",
+        "effect": "CALL0070DA00 withECX=group; no synthetic record-only reducer substituted."
+      }
+    ],
+    "duplicate_path": {
+      "target": "0070EFA6",
+      "query": "0070EFAA ->00694AF0, ECX=entity EDX=group, testsAL only",
+      "registration": "If AL==0,0070EFB7 ->00694A60 with same endpoints; otherwise returns.",
+      "effect": "No record/speed initialization, slot production, count increment or speed refresh. Initial entity+284h publication already happened."
+    },
+    "actual_caller": {
+      "entry": "0077F940",
+      "end_exclusive": "0077FACB",
+      "bytes": 395,
+      "instructions": 126,
+      "sha256": "ddb2e0b639951ffb3de50ad939061d5f24b3d901d500f5d18eccd3f6ababa975",
+      "saved_listing_all_starts_equal_Original": true,
+      "calls": [
+        {
+          "site": "0077F9AF",
+          "target": "00424C40",
+          "instruction": "call 0x424c40"
+        },
+        {
+          "site": "0077F9D9",
+          "target": "0070DB20",
+          "instruction": "call 0x70db20"
+        },
+        {
+          "site": "0077FA17",
+          "target": "0070D060",
+          "instruction": "call 0x70d060"
+        },
+        {
+          "site": "0077FA45",
+          "target": "0077BD70",
+          "instruction": "call 0x77bd70"
+        },
+        {
+          "site": "0077FA57",
+          "target": "0077BD70",
+          "instruction": "call 0x77bd70"
+        },
+        {
+          "site": "0077FA76",
+          "target": "0077BD70",
+          "instruction": "call 0x77bd70"
+        },
+        {
+          "site": "0077FA88",
+          "target": "0070EF30",
+          "instruction": "call 0x70ef30"
+        },
+        {
+          "site": "0077FA97",
+          "target": "eax",
+          "instruction": "call eax"
+        },
+        {
+          "site": "0077FAA7",
+          "target": "eax",
+          "instruction": "call eax"
+        },
+        {
+          "site": "0077FAB8",
+          "target": "edx",
+          "instruction": "call edx"
+        }
+      ]
+    },
+    "actual_caller_contract": {
+      "entry": "0077F940; ECX=actual ordered entity; stackDWORD=actual target entity; RET4",
+      "call_site": "0077FA88",
+      "target": "0070EF30",
+      "register_and_stack": "0077FA81 loads actual entity from the caller native stack array intoECX;0077FA85 PUSH ECX;0077FA86 MOV ECX,EBX. At leaf entry,ECX=selected actual group and[ESP+4]=actual array entity.",
+      "group_provenance": "Target entity+284h supplies existing group. If none,0077F9D9 calls0070DB20 withECX=actual target entity and captures returnedEAX as selected group. No null-result recovery follows. Factory/allocation/class/lifetime remain unexpanded unready requirements.",
+      "member_provenance": "The actual native24-pointer stack array starts with ordered entity and may receive nonnull/nonleader member identities from0070D060. Existing old-group detach calls0077BD70 precede joins. This packet creates no host nodes, copied records, manual membership census or projected count inputs.",
+      "native_array_lifetime": "Only caller stack pointers used during this native call. Actual entity objects and selected group require independently valid lifetimes. Captured bring-count can outlive array compaction; arbitrary null/invalid old membership is not admitted.",
+      "capacity_gate": "0077F9AF ->00424C40 supplies actual settings. DWORD counts are added modulo32 then FILD interprets signed total; FCOMIP at0077F9C4 and JA at0077F9C8 reject ordered greater. Unordered comparison proceeds (static x86 deduction), unlike a generic C++<= rewrite. This does not prove max-count settings, hard24 capacity or runtime singleton ownership.",
+      "post_join_virtuals": "0077FA97 and0077FAA7 dispatch profile+114h on the ORIGINAL ordered entity inESI each time, not on the indexed array member.0077FAB8 dispatches returned-object profile+58h with actual target/leader argument. All concrete profile/callback targets remain unbound.",
+      "saved_prototypes": "Both saved entries remain generic undefined(void), despite recovered receivers and stackwords. Full saved listings match Original instruction starts; no repair performed."
+    },
+    "current_dependency_status": [
+      {
+        "address": "00694AF0",
+        "status": "Complete normal-return actual-storage Source NOW EXISTS inobserver_edges.cpp; the older admission audit missing-wrapper statement is stale.",
+        "qualification": "Native ECX/EDX/plainRET/ALonly differs from Source explicit NativeObserverLifetime reference and C++ ABI/EH. Real endpoints, arrays, manager/publication/lock owners and lifetime remain required; no virtual/provider substitution."
+      },
+      {
+        "address": "00694A60",
+        "status": "Existing concrete actual-storage registration Source exists.",
+        "qualification": "Actual endpoint order entity first, group callback owner; borrow full lifetime/lock/allocation obligations. Does not construct entities or bind group callback profile."
+      },
+      {
+        "address": "0070ED30",
+        "status": "Existing semantic slot producer; whole native producer not admitted in this packet.",
+        "qualification": "Delegates positions and slot columns. Existing audit names actual00424C40 settings publication and00811180 wake/x87/ring-owner gaps. These were not silently closed or replaced by ShipAiFormationSlotHost."
+      },
+      {
+        "address": "0070DA00",
+        "status": "Whole actual member/class speed refresh remains unready.",
+        "qualification": "Actual virtual+5Ch kind dispatch, unit/class/linked-unit tuning and lifetime remain required. Closed0070D140 record-speed reducer is a different routine, not a substitute."
+      },
+      {
+        "address": "0070DAB0",
+        "status": "Existing genuine aligned508h storage constructor Source is complete under explicit nativeDATA admission.",
+        "qualification": "Raw00CFD6F8 profile remains uncallable; caller-provided storage does not close0070DB20 allocation/publication/formation/EH/lifetime path. Existing structural constructor/factory association preserved, not promoted."
+      }
+    ],
+    "observer_query_correction": {
+      "native_address": "00694AF0",
+      "audit_Source_baseline": "daa0b1bf7149f0e94f37de9147bb19fab02458d6",
+      "current_main_checked_revision": "ca22b90d3c004ca6f54e25483e66e4329d77651b",
+      "consumed_Source_header": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit/src/observer_edges.cpp",
+          "bytes": 4203,
+          "sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit/include/bsp/observer_edges.hpp",
+          "bytes": 2548,
+          "sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe"
+        }
+      ],
+      "current_main_Source_header_same_bytes": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/src/observer_edges.cpp",
+          "bytes": 4203,
+          "sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile/include/bsp/observer_edges.hpp",
+          "bytes": 2548,
+          "sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe"
+        }
+      ],
+      "superseded_claim": "docs/CC12_GROUP_MEMBER_ADMISSION_AUDIT.md says no complete current Source wrapper found for00694AF0. That is now stale.",
+      "corrected_status": "Complete normal-return actual-storage Source query exists as observer_pair_registered_00694af0 in observer_edges.cpp, using the actual existing guard and independent nested lookup.",
+      "native_ABI": "ECX=actual first endpoint; EDX=actual callback owner; no stack inputs; plainRET; AL canonical0/1 only, upperEAX not a bool contract; original EBX/ESI/EDI preservation under normal return.",
+      "Source_ABI": "ordinary C++ bool observer_pair_registered_00694af0(NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner, NativeObserverLifetime&). Explicit lifetime reference and compiler C++ABI/EH; not a native register-entry replacement.",
+      "remaining_admission": "Real endpoint/array/edge identities, initialized Win32 critical sections and actual manager/publication/lock/lifetime providers remain required. Original privateFH3/SEH, async faults, concurrent teardown, entity/group class profile and world ownership are not supplied by this query.",
+      "older_artifact_modified": false
+    },
+    "semantic_Source_limit": "Current ship_ai_formation_add_member uses separate members/count inputs and virtual Host methods, fixed sentinel, count=index+1, and returns index/-1. It cannot establish original physical ABI, fresh-count reload/add ordering, observer owner/class admission or failure effects.",
+    "named_unready_boundaries": [
+      "0070ED30 actual whole slot production",
+      "0070DA00 member profile/class tuning",
+      "0070DB20 actual group factory/allocation/publication",
+      "00424C40 actual gameplay settings singleton",
+      "0077BD70 detach and lifecycle",
+      "0077F940 dynamic +114h/+58h post-join dispatch",
+      "0070DAB0 raw profile to callable original group ownership"
+    ],
+    "scope": {
+      "examined_function_or_contract_nodes": [
+        "0070EF30",
+        "0077F940",
+        "0070ED30",
+        "0070DA00",
+        "00694A60",
+        "00694AF0",
+        "0070DAB0"
+      ],
+      "function_nodes": 7,
+      "call_control_edges": 15,
+      "combined_used": 22,
+      "combined_cap": 24,
+      "definition": "Five complete producer CALL sites plus ten complete actual-caller CALL sites; incoming0077FA88 counted once. Four producer dependencies only proto/current Source contract; existing constructor Source contract is charged as a node. No transitive native bodies, virtual targets, other candidate writers or enclosing caller graph expanded."
+    },
+    "whole_producer_ready": false,
+    "next_Source_proposal": null,
+    "Source_or_fixture_promotion": false,
+    "decision": "Seal named unready prerequisites; no Source or fixture promotion, no callback/provider substitute, no runtime-global assumption.",
+    "bookends": {
+      "prior_pins_verified": 1247,
+      "current_checkout_pins_verified": 10,
+      "supplemental_Source_and_report_pins_verified": 9,
+      "whole_live_Original_spans": [
+        {
+          "address": "0070EF30",
+          "label": "actual_membership_producer",
+          "bytes": 145,
+          "sha256": "7b49a52951ba9afae679364e494cd3bf2435fb2eb05b0cabc86dfe03521f10c6",
+          "section": ".text",
+          "file_backed": true,
+          "live_equals_installed_Original": true
+        },
+        {
+          "address": "0077F940",
+          "label": "actual_caller",
+          "bytes": 395,
+          "sha256": "ddb2e0b639951ffb3de50ad939061d5f24b3d901d500f5d18eccd3f6ababa975",
+          "section": ".text",
+          "file_backed": true,
+          "live_equals_installed_Original": true
+        },
+        {
+          "address": "00CF4888",
+          "label": "actual_native_DATA",
+          "bytes": 4,
+          "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d",
+          "section": ".rdata",
+          "file_backed": true,
+          "live_equals_installed_Original": true
+        }
+      ],
+      "installed_PE_and_candidate_band_unchanged": true,
+      "new_worktree_clean": true,
+      "Source_changes": 0,
+      "Source_commits": 0,
+      "shared_config_CMake_ledger_changes": 0,
+      "Ghidra_mutations": 0,
+      "fixtures_or_native_executions": 0,
+      "previous_family_replays": 0,
+      "offline_postprocessor_note": "One first-attempt mnemonic spelling assertion corrected from fcomip to Capstone fcompi for exact native bytesDF F1. Original failed script and diagnostic retained; existing assembly bytes reused only if equal. No native execution occurred."
+    },
+    "preserved_source_associations": {
+      "vector_report": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit/reports/native_unit_group_member_vector_cc12.json",
+        "bytes": 40660,
+        "sha256": "28f88648aab233420968c29df60223cb4f80d33203dad475563993c838ac891f"
+      },
+      "worker_source_revision": "64b03ee6127c845f11203665b263f1ad25697d3f",
+      "component_source_revision": "7ed2ec2002f64d7d90026224e92cbff594c3747f",
+      "build_source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+      "build_context_relation": "Full main build refreshed after another harness integrated observer/file-open C++ changes; component Source and all eight actual fixture inputs remain byte-identical to sealed7ed2 family. No component replay.",
+      "primary_family": "local/cc12_group_member_vector_primary20261008a",
+      "primary_seal_sha256": "81dcc457a04dce6347ac83a28ed592ab8e76c0639b2c94828791c02194b9c4d0",
+      "all_older_receipts_and_historical_build_associations_preserved": true,
+      "old_Core_repinned": false
+    },
+    "sealed_manifest": "J:/PROG/battlestations-pacific-decompile-cc12_group_membership_producer_audit/local/cc12_group_membership_producer_audit_20261008_a/artifact_manifest.json",
+    "sealed_manifest_sha256": "42638f20266485497fd0b32bf8343d9c90c0ff62c6ed92429ed58b13e07926fc",
+    "artifact_count": 43
+  },
+  "primary_review": {
+    "receipt_hash_verified": true,
+    "all_sealed_artifacts_unchanged": true,
+    "current_observer_Source_header_hashes_verified": true,
+    "Source_admission": false,
+    "game_validated": false
+  }
+}
