@@ -104,3 +104,12 @@ shared metadata edits or Ghidra mutations are part of this packet. These
 checks establish the complete three raw entry bodies and their stated
 memory-domain ABI; startup, gameplay and complete class compatibility remain
 unvalidated by this packet.
+
+Primary integration review independently rehashed 359 admitted input pins and
+64 worker artifacts, checked the whole 66-byte worker COFF/unique linked Original
+bodies, and confirmed the integrated Source files match the frozen inputs.
+The primary normal Release Win32 build passed all three existing CTests; its
+production `native_adopted_substream.obj` also contains all 66 literal Original
+bytes with zero relocations. No native fixture was replayed. These are three
+additional raw entry interfaces for already reconstructed functions, not three
+new Original functions or a class/startup/gameplay validation claim.
