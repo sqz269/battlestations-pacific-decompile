@@ -1664,3 +1664,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_list_a
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_list_erase.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_decomposition.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_list_remove.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type4_storage.cpp)
