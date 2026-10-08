@@ -159,3 +159,9 @@ those earlier compilations. No Source implementation, test, API invocation,
 Original execution, Ghidra mutation, final EXE linkage proof, ABI compatibility
 claim or gameplay claim was added. Existing last-test records are retained as
 historical evidence only. Implementation and ready-Source counts remain zero.
+
+## Primary acceptance
+
+Root independently verified all2,747 retained artifacts /2,748 ZIP entries and CRCs, both whole installed Native parent spans, and all646 selected current complete extents in seventeen whole objects. Fourteen current whole core objects match unique current archive members. The actual40B/12-instruction factory has only the logger call; the three application objects contain no raw wake API relocations. This confirms the Source producer boundary while preserving the older compile-record qualification. Receipt: `local/cc12_native_unit_wake_owner_primary_review/receipt.json`, SHA256 `8e734c74b4e70514f149d1dc4585305856cf87488285f16b7ac50ed813c17b3a`.
+
+No new Source, Original credit, build, entry execution, whole-class/lifetime ABI or gameplay admission is added. The next independent producer investigation can inspect006FE590/006FE460 and the actual application factory handoff; it cannot wire the semantic trail to the raw988B API.
