@@ -1,0 +1,274 @@
+{
+  "packet": "cc12_physical_write_primary_review",
+  "status": "PASS_independent_offline_review_of_frozen_raw_write_Source_packet",
+  "reviewed_source_commit": "776117627d7cc04a1adee8ac279d271e7543683b",
+  "reviewer_branch": "agent/cc12_write_primary_review",
+  "reviewed_utc": "2026-10-08T11:21:47.402916+00:00",
+  "scope": {
+    "address": "00bf4f50",
+    "inclusive_end": "00bf4f86",
+    "Original_bytes": 55,
+    "instructions": 21,
+    "Source_constructor_input_address": "00bf50d0",
+    "Source_constructor_input_bytes": 43,
+    "new_Original_functions": 0,
+    "reviewed_Source_raw_ABI_fragments": 1
+  },
+  "method": "Independent parser and SHA-256 audit of retained worker frozen artifacts; manual full probe/driver/source-diff and instruction review. No worker parser imported, builds, probe executions, Ghidra queries or mutations.",
+  "authoritative_worker_family": "J:/PROG/battlestations-pacific-decompile-cc12_substream_queries/local/cc12_physical_write_raw_entry_20261008a/run01",
+  "worker_report_physical": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\cc12_physical_write_raw_entry.json",
+    "bytes": 29018,
+    "sha256": "45054f9620031be21127ae97de62c9db5a57e50d874dfe75f4d218cac6e733f4"
+  },
+  "worker_report_Git_blob_sha256": "ff23c9f0de932148a88267ba568b8e3ecc3ebc97d37543fb936eda0b7d558a96",
+  "text_comparison": "CRLF/LF normalized for text only; frozen artifact pins compare actual bytes",
+  "source_review": {
+    "all_six_frozen_production_sources_match_commit_text": true,
+    "added_naked_fastcall_declaration_and_body_reviewed": true,
+    "API_declaration": "Actual consumed Windows SDK 10.0.26100.0 fileapi.h:1152-1161, WINBASEAPI BOOL WINAPI WriteFile with five parameters",
+    "compiler": "Retained /Bv: MSVC HostX64/x86 19.51.36244.0",
+    "genuine_constructor_profile": "Original literal 00CEB130 then 00D691B0 writes; no substituted class or function table"
+  },
+  "pins": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_write_raw_entry_20261008a\\run01\\inputs\\manifest.json",
+      "bytes": 309982,
+      "sha256": "1ed49aaafb39a4bea47b9c72959aaff8aa0309c4a733dbea26cad531df0d53b5"
+    },
+    "recorded_pre_copy_post_rows_physically_rehashed": 479,
+    "distinct_frozen_files_physically_rehashed": 308,
+    "all_equal": true,
+    "actual_probe_consumed_headers": 164,
+    "actual_searched_libraries": 19,
+    "selection_counts": {
+      "header_candidates_hashed_pre": 6030,
+      "actual_probe_headers_frozen": 164,
+      "unused_header_candidates_not_frozen_by_selector": 5866,
+      "library_candidates_hashed_pre": 550,
+      "actual_searched_libraries_frozen": 19,
+      "unused_library_candidates_not_frozen_by_selector": 531
+    },
+    "candidate_scope": "550 library / 6030 header candidates counted by retained driver. Unused candidate hash rows are transient, not in sealed manifest, and are not independently replayed or claimed as physical copies. All 19 selected libraries and 164 consumed headers physically rehashed.",
+    "normal_module_inputs": 202,
+    "production_sources": 6,
+    "recipe_tools": 16,
+    "compiler_linker_backends": 46,
+    "normal_configuration_tools": 2,
+    "normal_build_recipes": 2,
+    "OS_libraries": 2,
+    "explicit_fixture_objects": 2,
+    "generated_recipes": 9,
+    "genuine_BSP_archives": 3,
+    "selected_header_and_library_sets_reproduced_from_logs": true
+  },
+  "whole_object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_write_raw_entry_20261008a\\run01\\inputs\\frozen\\8df716015d2c4947bc3150bdba4821dcfa26fca0a6b20d9ad5b9c3107bcd876e\\native_physical_stream_open.obj",
+    "bytes": 22700,
+    "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+  },
+  "whole_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_write_raw_entry_20261008a\\run01\\inputs\\frozen\\2b2e3f3dd713455bbdb2895a392ecf19992fced8987716e07b29d3f2e58f9b36\\bsp_core.lib",
+    "bytes": 73558886,
+    "sha256": "92884169f7fba7e8f96a9b333556f88ca38259f33fcc6a3872a8b54e013e8dfe"
+  },
+  "frozen_executable": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_write_raw_entry_20261008a\\run01\\inputs\\frozen\\8212fa67ff63557b80338dec6afa6a78d4971c03a1d344d2f3fc98ff5e6705a9\\physical_write_probe.exe",
+    "bytes": 209408,
+    "sha256": "cc18055bb7097684133a8007c81df66ee7d21f036d91f3cc8bab1b79306f9883"
+  },
+  "coff_summary": {
+    "machine": "014c",
+    "sections": 93,
+    "code_sections": 52,
+    "code_bytes": 3627,
+    "code_relocations": 135
+  },
+  "archive_members_scanned": 1889,
+  "exact_whole_object_archive_membership": [
+    {
+      "offset": 57957096,
+      "bytes": 22700,
+      "raw_name": "/69791",
+      "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+    }
+  ],
+  "write_body": {
+    "Original_sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a",
+    "COFF_sha256": "41624a0b8b5e64e489722f78cf1ac6607f5bedca9db8b93b764fcd140ec4429b",
+    "linked_sha256": "559eaa44f9dcb3127d5fcc319a3074b9268e37580c042ba811d1ae153bd88592",
+    "COFF_section": 49,
+    "linked_VA": "20001030",
+    "unique_linked_byte_occurrences": 1,
+    "complete_equality_except_sole_import_operand": true,
+    "relocations": [
+      {
+        "offset": 26,
+        "type": 6,
+        "target": "__imp__WriteFile@20"
+      }
+    ],
+    "Original_IAT": "00ce2290",
+    "Source_IAT": "2001f024",
+    "real_PE_import": "KERNEL32.dll!WriteFile",
+    "map_provider": "kernel32:KERNEL32.dll"
+  },
+  "constructor_input": {
+    "bytes": 43,
+    "instructions": 11,
+    "sha256": "9f0a1e587ebcc5e8f5a5447de34adc30be4a0d7bc3ffdcbb605769ed4eb28716",
+    "whole_Original_COFF_linked_exact_equality": true,
+    "relocations": 0,
+    "normalizations": 0,
+    "linked_VA": "20001000",
+    "unique_linked_byte_occurrences": 1,
+    "Source_calls": 6,
+    "Original_calls": 0,
+    "full_64_byte_constructed_backing_and_guards_checked": true
+  },
+  "ABI_review": {
+    "input": "ECX actual stable 20h backing; incoming EDX unused; data/requested/optional pointer at entry ESP+4/+8/+0C",
+    "API_arguments": "HANDLE from backing+8, data, copied requested value, address of caller requested DWORD at entryESP+8, NULL OVERLAPPED",
+    "requested_slot_preinitialized_by_raw_entry": false,
+    "API_BOOL_branch_or_return": false,
+    "failure_callback_or_retry": false,
+    "update_order": "Read count from reused requested slot; ADD cache low+10; MOV optional pointer to ECX without altering carry; ADC cache high+14; TEST pointer; restore ESI; optional store; RET0C",
+    "EAX": "actual count",
+    "ECX": "actual optional pointer",
+    "EDX": "unqualified volatile; observed Source/Original mismatch on both successful pairs",
+    "EFLAGS": "unqualified",
+    "cached_size_refresh": false,
+    "stack_cleanup": "RET0Ch"
+  },
+  "preexecution_proof": {
+    "whole_static_proof_completed_utc": "2026-10-08T10:48:21.946178+00:00",
+    "probe_started_utc": "2026-10-08T10:48:21.948711+00:00",
+    "static_proof_precedes_first_execution": true,
+    "all_55_plus_43_loaded_Source_bytes_checked": true,
+    "Source_IAT_equals_GetProcAddress_kernel32_WriteFile": true,
+    "unmodified_Original55_in_private_RX_mapping": true,
+    "Original_IAT_readonly_real_OS_target": true,
+    "OS_module_paths_and_pins_checked": true,
+    "same_complete_bodies_and_import_cells_checked_after_execution": true,
+    "independent_parser_matches_retained_whole_proof": true
+  },
+  "fresh_real_OS_evidence": {
+    "retained_run": "run01",
+    "recorded_runtime_attempts": 1,
+    "meaningful_pairs": 3,
+    "instrumented_Source_write_calls": 3,
+    "instrumented_Original_write_calls": 3,
+    "Source_constructor_calls": 6,
+    "Source_graph_bytes": 98,
+    "Original_graph_bytes": 55,
+    "independent_CreateFileW_files": 6,
+    "pair_handles_simultaneously_live_and_distinct": true,
+    "backing_guards_payload_guards_count_guards_checked": true,
+    "actual_caller_requested_stack_slot_captured": true,
+    "full_file_bytes_length_and_cursor_checked": true,
+    "ESP_and_EBX_ESI_EDI_EBP_checked": true,
+    "ECX_checked_against_own_optional_pointer": true,
+    "last_error_captured_immediately": true,
+    "files_deleted_on_close": true,
+    "cases": [
+      {
+        "case": "null_output_position_wrap",
+        "requested": 8,
+        "actual_count": 8,
+        "cache_before": "ffffffff:fffffffc",
+        "cache_after": "00000000:00000004",
+        "file_cursor": "5 -> 13",
+        "optional": "NULL"
+      },
+      {
+        "case": "alias_position_low_after_carry",
+        "requested": 5,
+        "actual_count": 5,
+        "cache_before": "12345678:fffffffe",
+        "cache_after": "12345679:00000005",
+        "file_cursor": "3 -> 8",
+        "optional": "actual backing+10",
+        "intermediate_cache": "12345679:00000003 inferred from exact ADD/ADC; not separately instrumented"
+      },
+      {
+        "case": "invalid_handle_separate_output",
+        "requested": 7,
+        "actual_count": 0,
+        "Source_backing_HANDLE": "ffffffff",
+        "Original_backing_HANDLE": "ffffffff",
+        "cache_before_and_after": "89abcdef:76543210",
+        "file_cursor": "11 -> 11",
+        "last_error": 6,
+        "file_bytes_unchanged": true,
+        "optional": "separate guarded count DWORD",
+        "log_handle_column_scope": "Source_handle and Original_handle are valid live control-file HANDLEs; neither is the invalid HANDLE actually stored at backing+8"
+      }
+    ]
+  },
+  "retained_build_evidence": {
+    "normal_Win32_build_exit": 0,
+    "CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "probe_compile_exit": 0,
+    "failed_minimal_link_exit": 1120,
+    "failed_minimal_link_unresolved_externals": 10,
+    "failed_minimal_link_preserved": true,
+    "fallback": "Frozen genuine bsp_core.lib, bsp_lua511.lib, bsp_zlib121.lib; two explicit objects; no probe stubs or adapters",
+    "successful_link_exit": 0,
+    "embedded_manifest": "asInvoker"
+  },
+  "independent_audit_runs": {
+    "production_runtime_executions": 0,
+    "offline_audit_attempts": 3,
+    "final_result": "PASS",
+    "corrected_audit_only_assertions": [
+      "Git CRLF text comparison; physical hashes remain exact",
+      "Exclude existing __pycache__ when counting run directories"
+    ],
+    "all_failure_logs_preserved": true
+  },
+  "issues": [],
+  "limits": [
+    "Only the demonstrated synchronous real-HANDLE and valid-memory domain; partial/async/pipe/device/unbuffered behavior not sampled.",
+    "The cache-low alias case is bounded; no general alias qualification.",
+    "No Source physical-stream class, vtable, lifetime, raw substream, Source read BF5030, or ordinary linked-provider admission.",
+    "No universal EDX/EFLAGS, startup/gameplay or full game qualification.",
+    "This review binds the frozen worker packet, not later mutable worker/root build outputs. Root build/member acceptance remains separate.",
+    "Unused library/header candidates have retained counts and recipe evidence, not individually archived candidate hash rows or copies."
+  ],
+  "audit_artifacts": [
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit.py",
+      "bytes": 12941,
+      "sha256": "053fa6028fc8bdd9bc067e9bf566791f6ecb310f655851e20455d3d7c96a9d1a"
+    },
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit_receipt.json",
+      "bytes": 327021,
+      "sha256": "1b7ad707908fc8446d24cb5e858f87027af7599d0fbecf8a1fedc29c4e0ca0df"
+    },
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit_attempt01.log",
+      "bytes": 777,
+      "sha256": "856e2a7826752dcd92992ab1a28e12ea981eb40f854ca69eabe42cccc1eda78e"
+    },
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit_attempt02.log",
+      "bytes": 356,
+      "sha256": "d1c17ec05e67408062844c2ea25d418756eb51520bc07634e947a732fdf9a48f"
+    },
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit_attempt02_diagnosis.txt",
+      "bytes": 409,
+      "sha256": "2818e461cf04c393b1cf7705173b1189db867061771bda497dd195957a30f4ce"
+    },
+    {
+      "path": "local/cc12_physical_write_primary_review_20261008a/audit_attempt03.log",
+      "bytes": 322,
+      "sha256": "dee0b99940392d935e2e52b51e74e39f90dad3b659f584e4ae66922a20a105f2"
+    }
+  ]
+}
