@@ -1,0 +1,435 @@
+{
+  "packet": "cc11_entity_class03_kind_leaf",
+  "status": "complete literal raw Source entry, strict four-TU compile and whole Original connected fixture passed; class/profile/virtual/group-membership/lifetime/world/game unbound",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_baseline": "da75dc974262b3d4846a16a7dfbd67a5f7e38700",
+  "files": [
+    "include/bsp/native_entity_class03_kind.hpp",
+    "src/native_entity_class03_kind.cpp",
+    "docs/NATIVE_ENTITY_CLASS03_KIND_CC11.md",
+    "reports/native_entity_class03_kind_cc11.json"
+  ],
+  "functions": [
+    {
+      "address": "00888ea0",
+      "end_exclusive": "00888ec7",
+      "bytes": 39,
+      "instructions": 13,
+      "coverage": "complete raw ordinary leaf",
+      "sha256": "fd9a64f1f2cb9cace4183d7efc8e08f16407644b4d351b16dfc86875650054d1",
+      "body_hex": "8b44240483f803741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "fixed_words": [
+        "03",
+        "01",
+        "00"
+      ],
+      "only_dynamic_read": {
+        "address": "00888eb2",
+        "base": "ecx",
+        "offset": 196,
+        "width": 4
+      },
+      "native_protocol": "Actual ECX receiver, unused EDX, stacked DWORD, full EAX0/1, RET4",
+      "source_symbol": "native_entity_class03_is_kind_00888ea0",
+      "current_descriptive_name_preserved": "BSP_ClassId03_IsKindOf",
+      "name_and_proto_limit": "Descriptive hypothesis; current undefined(void) prototype does not encode the actual register/stack contract. No worker names/prototypes/tags changed.",
+      "profile_DATA_bindings": [
+        {
+          "raw_profile": "00d11138",
+          "plus5c_cell": "00d11194",
+          "target": "00888ea0",
+          "four_DATA_bytes": "a08e8800",
+          "sha256": "486f1969af92789a0f323e432d3c6df2d52027a54aa7f0daccf36e09f61f4d0c",
+          "PE_live_match": true,
+          "live_receipt": "00d11194  a0 8e 88 00  ....\n",
+          "profile_xrefs": "From 00898874 in BSP_LuaBinding_CreateScript [DATA]\nFrom 0092893f in BSP_ScriptEntity_Destruct [DATA]\n",
+          "admission": "DATA-only raw binding; uncallable Source. No native class/constructor/virtual/group-membership/lifetime admission."
+        }
+      ],
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0
+    }
+  ],
+  "totals": {
+    "bodies": 1,
+    "bytes": 39,
+    "instructions": 13,
+    "calls": 0,
+    "globals": 0,
+    "relocations": 0
+  },
+  "complete_Source_COFF": [
+    {
+      "symbol": "?native_entity_class03_is_kind_00888ea0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 39,
+      "bytes": "8b44240483f803741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "00888ea0",
+      "end_exclusive": "00888ec7",
+      "sha256": "fd9a64f1f2cb9cace4183d7efc8e08f16407644b4d351b16dfc86875650054d1",
+      "instruction_count": 13,
+      "instructions": [
+        {
+          "address": "00888ea0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00888ea4",
+          "bytes": "83f803",
+          "mnemonic": "cmp",
+          "operands": "eax, 3"
+        },
+        {
+          "address": "00888ea7",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x888ebf"
+        },
+        {
+          "address": "00888ea9",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00888eac",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x888ebf"
+        },
+        {
+          "address": "00888eae",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00888eb0",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x888ebf"
+        },
+        {
+          "address": "00888eb2",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "00888eb8",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x888ebf"
+        },
+        {
+          "address": "00888eba",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00888ebc",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00888ebf",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00888ec4",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "linked_Source_VA": "00401000",
+      "fixed_words": [
+        "03",
+        "01",
+        "00"
+      ]
+    }
+  ],
+  "all_COFF_and_unique_linked_entries_equal_Original": true,
+  "complete_bytes_verified_before_execution": true,
+  "static_before_execution": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\static_before_execution.json",
+    "size": 3530,
+    "sha256": "f852afc9acdec2153b111b7b2a2101cd01e5a9984f1680f26efd49d434596bf0"
+  },
+  "sealed_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_audit\\audit.json",
+    "sha256": "a260c4450f54f2526d5456e5265ff995f224a635d0c3346382dc62c7a3751075",
+    "size": 10896
+  },
+  "native_PE_live": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\native_receipt.json",
+    "sha256": "b81a682df127f1d72261aeceef58fc936478bb0542bc915c8228ccad88fb41e6",
+    "size": 3400
+  },
+  "PE_live_MATCH_rows": 3,
+  "native_call_rows": [],
+  "call_free_body_checks": [
+    {
+      "entry": "00888ea0",
+      "bytes": 39,
+      "full_body_call_count": 0,
+      "full_named_proto_call_count": 0,
+      "result": "PASS full PE/live/Capstone/SourceCOFF/linked proof"
+    }
+  ],
+  "native_call_verification": {
+    "native_call_sites": 0,
+    "whole_body_rows": 1,
+    "failures": 0,
+    "basis": "Complete39B/13 native instructions and full current live named prototype CALL0; generic zero-row call checker alone is not closure."
+  },
+  "admission": "Stable nonnull actual backing>=C8h with genuinely live aligned uint32 exactly+C4. Fixed words do not read ECX; common admitted domain covers dynamic branch. Fault/invalid/concurrency/object-lifetime/privateEH paths outside domain unvalidated.",
+  "profile_admission": "D11138+5C=D11194 targets888EA0 as raw UNCALLABLE Source DATA. Native descriptive class03 name remains a hypothesis and semantic class name unnamed. DATA xrefs in script-create/destruct names prove no class constructor/profile/virtual or group-membership admission.",
+  "source_dependencies": {
+    "native_leaf_callees": [],
+    "connected_fixture": [
+      "construct_native_unit_group_0070dab0",
+      "native_unit_group_member_index_0070d030",
+      "native_unit_group_member_record_0070d080"
+    ],
+    "group_scalar_0070d260": "Already complete; not invoked"
+  },
+  "fixture": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\manifest.json",
+      "sha256": "eb09b157ee56cbe7e1dbb5098e6111a4dde428a6838d6d9d67fa4402d5e888e2",
+      "size": 81023
+    },
+    "schema": "bsp.focused_fixture_manifest.v1",
+    "fresh_TUs": [
+      "src\\native_entity_class03_kind.cpp",
+      "src\\native_unit_group_storage.cpp",
+      "src\\native_unit_group_lookup.cpp",
+      "local\\cc11_entity_class03_kind_leaf\\probe.cpp"
+    ],
+    "TU_count": 4,
+    "family_count": 1,
+    "checks": 81,
+    "failures": 0,
+    "queries_per_backend": 7,
+    "backend_observations": 14,
+    "fixed_queries_per_backend": 3,
+    "other_queries_per_backend": 4,
+    "source_group_constructions": 1,
+    "actual_storage": {
+      "group": "Aligned508h live uint32 cells/24 actual34h records; coherent count1",
+      "receiver": "C8h actual Source backing/genuine live uint32+C4",
+      "record": "Actual group+18 identity DWORD; genuine current lookup recovers SAME receiver"
+    },
+    "Original": "Entire39B unchanged/unrelocated RX copy; noCALL/global/bridge",
+    "observations": [
+      "ordered fixed03/01/00",
+      "current actualC4 match",
+      "ordinary miss",
+      "freshhighbit actualC4 match",
+      "previous stalevalue misses",
+      "fullEAX0/1",
+      "ESP/RET4",
+      "ECX/EDX/EBX/ESI/EDI/EBP preservation",
+      "defined CF/PF/ZF/SF/OF comparison",
+      "whole group/receiver backing and guards",
+      "same in-pass record/receiver identity"
+    ],
+    "run": "identity group=00B3F3D8 actual_record=00B3F3F0 recovered_receiver=00B3F2F0 actual_C4=00B3F3B4\ntarget 00888ea0 original_bytes=39 fixed=3 PASS\n81 checks, 0 failures; 7 queries, 14 backend observations; 1 Source group construction; 1 target",
+    "qualification": "ONE genuine current Source groupCtor70DAB0 on aligned508h live word backing/24 real34h records uses borrowed exactCF4888 bits4479C000. Publish record18/count1 and current genuine70D030/70D080 recover SAME record/actual C8h receiver+C4. Controlled Source memory-domain setup only; no original group/class constructor or native group membership proof."
+  },
+  "compiler": {
+    "flags": "/std:c++17 /EHsc /permissive- /W4 /WX /fp:strict /O2 /MD /Gy /showIncludes",
+    "fresh_compile": true,
+    "inputs_before_equal_after": true,
+    "input_count": 199,
+    "observed_include_paths": 158,
+    "observed_project_headers": 3,
+    "Hostx86_tools": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe"
+    ],
+    "compiler_backends": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll"
+    ],
+    "system_libraries": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+    ],
+    "BSP_archives": []
+  },
+  "embedded_manifest": {
+    "resource_type": 24,
+    "resource_name": 1,
+    "language": 1033,
+    "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+    "requested_execution_level": "asInvoker",
+    "resource_bytes": 381
+  },
+  "historical_input_mapping": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\historical_input_mapping.json",
+    "size": 4393,
+    "sha256": "7031f6ec42060819faa09454e20b527810b7557bbd939127d9ac0c6c3e0a65ea"
+  },
+  "artifacts": {
+    "recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\build.cmd",
+      "sha256": "78230052d92540affaf980d24b41eba2a1b2bef5db205ccb8ad0223206445a68",
+      "size": 2335
+    },
+    "sealer": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\seal.py",
+      "sha256": "f660f017bd109b4af6d3ead0add38abbab0d624d63d57f286c8d7e59303d43b4",
+      "size": 11610
+    },
+    "probe_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\probe.cpp",
+      "sha256": "72e2d45cce8f035ed12f71b4662d87c922b1e36be92119c90c5bbdebfff0c3b7",
+      "size": 8157
+    },
+    "inputs_before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\inputs_before.json",
+      "sha256": "5787eb6fe0be952967d88d2d0c2efdcada5be96d7a77cfdf5cc61cffe658c9a5",
+      "size": 68647
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\manifest.json",
+      "sha256": "eb09b157ee56cbe7e1dbb5098e6111a4dde428a6838d6d9d67fa4402d5e888e2",
+      "size": 81023
+    },
+    "pre_execution_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\static_before_execution.json",
+      "size": 3530,
+      "sha256": "f852afc9acdec2153b111b7b2a2101cd01e5a9984f1680f26efd49d434596bf0"
+    },
+    "Source_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\obj\\native_entity_class03_kind.obj",
+      "sha256": "fba8b4084e1643a17ac4e6ef4a7f0914b2600af811689be6a6d245b78aa6d3d5",
+      "size": 782
+    },
+    "COFF_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\derived_coff.txt",
+      "sha256": "35af3d5cfeac1cf907556f365ad36009e6b56a5bf47b6c08e22897ec004a5556",
+      "size": 3323
+    },
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\probe.exe",
+      "sha256": "af1998dcfd20fd1a15c070ed7aeb36d38abad309a61f7393b3cc159c291c24cb",
+      "size": 13824
+    },
+    "run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\run.txt",
+      "sha256": "4afdf417a027a271b03d54c7dcca36134421e3762629167bf5659285c59bd391",
+      "size": 241
+    }
+  },
+  "failed_attempts": [],
+  "repeat_fixture_execution": 0,
+  "prior_sealed_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_audit\\audit.json",
+      "size": 10896,
+      "sha256": "a260c4450f54f2526d5456e5265ff995f224a635d0c3346382dc62c7a3751075"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\manifest.json",
+      "size": 79923,
+      "sha256": "4edbd73fa6dfc500a73b37caea969627c5908eed567a3a9a8f35405f1941b899"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\historical_input_mapping.json",
+      "size": 4376,
+      "sha256": "52d22c492534e4f5911b4852c65bdfb9133ccad2ef517a1a31a4cbd6e1911e68"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\handoff.json",
+      "size": 24410,
+      "sha256": "96dac0ec19b615968a7f89b320f85fef8b844140b06adc25bc7d719b2fa13550"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_audit\\seal.json",
+      "size": 5124,
+      "sha256": "736477d694cb8f742b35035a27f8ef4a7f44447cc17c9e1504fa903ba3044529"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\manifest.json",
+      "size": 76422,
+      "sha256": "9b3eb2868e17a5c74e7e49d04dbefd79d7cdd2d050d692d815cc4512304b78e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\handoff.json",
+      "size": 7300,
+      "sha256": "5422deb12b9ec27c4d9db129c49506eff9feba0a8112d5df6fc4cfb0eaa56c9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_audit.json",
+      "size": 55267,
+      "sha256": "4c353a25541ba899f4e1516d5d64491eca2d622abe5638a8b638222acde79c2a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\manifest.json",
+      "size": 118877,
+      "sha256": "3bf558c2f7c09b911d46c8178b127bb8ed2a126b808113b4a24e52506c0e2a72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\manifest.json",
+      "size": 125379,
+      "sha256": "32c91a987ef0d691514388112de3d0c9e6765aa7dd0193e09f79ace866b730e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\historical_input_mapping.json",
+      "size": 1620,
+      "sha256": "000a39be2eee188f190645a4178251cf40c6ae211ad6e8707e859041dfb15d20"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\first_success_source\\probe.cpp",
+      "size": 12010,
+      "sha256": "259e3e53f73508d9c7868fc9a339afaf66c95011eae559b9f5561c9e6976d78e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\handoff.json",
+      "size": 8296,
+      "sha256": "2cf19a815b81afb9c8f26dde076d049276fe953eb5f1a9430e3d81b1ac9adb0e"
+    }
+  ],
+  "no_prior_family_execution": true,
+  "limits": [
+    "One complete literal raw entry; ordered03/01/00 before ONE fresh actualDWORD+C4. No copied-value census/classifier/cache/default/routing policy/guard or ancestor collapse.",
+    "Stable nonnull actual backing>=C8h with genuinely live aligned uint32 exactly+C4. Fixed words do not read ECX; common admitted domain covers dynamic branch. Fault/invalid/concurrency/object-lifetime/privateEH paths outside domain unvalidated.",
+    "D11138+5C=D11194 targets888EA0 as raw UNCALLABLE Source DATA. Native descriptive class03 name remains a hypothesis and semantic class name unnamed. DATA xrefs in script-create/destruct names prove no class constructor/profile/virtual or group-membership admission.",
+    "ONE genuine current Source groupCtor70DAB0 on aligned508h live word backing/24 real34h records uses borrowed exactCF4888 bits4479C000. Publish record18/count1 and current genuine70D030/70D080 recover SAME record/actual C8h receiver+C4. Controlled Source memory-domain setup only; no original group/class constructor or native group membership proof.",
+    "Both explicitly chosen Original/Source leaf backends query SAME in-pass receiver/liveC4. No cross-pass equal-address/nativeclass lifetime claim. GroupCFD6F8 remains raw DATA; borrowedCF bits not a default/nativeglobal-address binding.",
+    "Only unchanged/unrelocated whole39B Original leaf executes. No synthetic callable table or class/type route; already-complete group scalar70D260 is not missing and not invoked.",
+    "No whole larger speed/detach/InitAll/class/arena/allocator/observer/world/privateEH/lifetime/gameplay closure. Raw Source instruction/register schedule matches Original; class/loader/virtual/world binding remains external.",
+    "Root owns CMake/full main build/CTest/shared ledgers/native annotation/integration. No worker shared edits/Ghidra mutations/tracked tests/global build/old-family replay."
+  ],
+  "validation": {
+    "strict_fresh_four_TUs": "PASS",
+    "full39B_byte_equivalence_before_execution": "PASS",
+    "whole_Original_connected_fixture": "81 checks/0 failures",
+    "PE_live": "3 MATCH rows",
+    "pre_post_consumed_inputs": "199 unchanged",
+    "actual_asInvoker_resource": "PASS RT_MANIFEST24/1/1033",
+    "git_diff_check": "PASS working and exact staged four-file diff",
+    "worker_full_build": "not run; root-owned",
+    "native_class_profile_group_world_game": "unbound",
+    "generic_call_checker": "0 call-site rows / 0 failed; separate whole39B CALL0 proof"
+  }
+}
