@@ -25,4 +25,17 @@ inline constexpr std::size_t native_scene_property_bag_storage_bytes = 0x114;
 void* __fastcall initialize_native_scene_property_bag_storage_008f41a0(
     void* root, std::uint32_t unused_edx, std::uint32_t borrowed_owner_bits) noexcept;
 
+// Only the successful EMPTY-source branch of Original 008F41F0, using its
+// real 114h allocation and whole raw61 initialization with owner bits zero.
+// Borrow a stable valid unaliased raw61-produced 114h source: count at +8=0,
+// all 64 heads zero, DF=0. Output initialization precedes the source count read.
+// Nonzero count is rejected; no populated clone/iterator/insert is supplied.
+// Return a DISTINCT mutable allocation in the canonical allocation/free domain.
+// Input remains borrowed/unowned. Later whole record/bag lifetime handoff is
+// separate; phase literals are not callable Source profiles or class ownership.
+// Only successful allocations/normal valid memory are Native branch admission;
+// this ordinary interface does not recover Native ABI/EH/failure or full clone.
+void* clone_empty_native_scene_property_bag_008f41f0_fragment(
+    const void* actual_source_bag);
+
 } // namespace bsp
