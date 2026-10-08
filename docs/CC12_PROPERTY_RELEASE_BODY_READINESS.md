@@ -51,3 +51,5 @@ Every live batch uses the `bsp.py` verified client for `C:/Users/sqz269/bsp.gpr`
 No Source, build/link/runtime/native/SDK/game execution, new tests, shared exports, CMake, registry, ledger, metadata or Ghidra mutation occurred. This is static readiness evidence, not complete native owning-class ABI or game validation.
 
 Final bookend: all 39 physical inputs, whole current archive/five unique members, ten retained Original ranges and complete live158B/body DATA remained unchanged. All four native transfer rows passed. The manifest seals 87 artifacts.
+
+Primary review independently rehashed87 artifacts/39 physical inputs, all10 retained Native spans, the whole158-byte/63-instruction body, actual20-byte targets/10-byte selectors, three direct calls and the real CALL EAX/PUSH1 type6 site. Seven complete current Source providers, retained/current unique whole archive members and full archives agree. Source/class ownership remains unready for the recursive nonnull type6 branch. Receipt: `local/cc12_release_body_and_failure_owner_primary_review/release_body.json`. Zero new Source/Original count, execution, build or tests.

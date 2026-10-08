@@ -34890,6 +34890,48 @@
         "new_entry_execution": false,
         "app_class_game_validated": false
       }
+    },
+    {
+      "id": "cc12_property_release_body_readiness",
+      "worker": "primary",
+      "function_addresses": [
+        "008f0640"
+      ],
+      "output_files": [
+        "docs/CC12_PROPERTY_RELEASE_BODY_READINESS.md",
+        "reports/cc12_property_release_body_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_whole_Source_or_callable_owner_unready",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_entry_execution": false,
+        "class_ABI_or_game_validated": false
+      }
+    },
+    {
+      "id": "cc12_physical_failure_owner_producer_readiness",
+      "worker": "primary",
+      "function_addresses": [
+        "00beda60",
+        "00be1dc0",
+        "00bda6f0"
+      ],
+      "output_files": [
+        "docs/CC12_PHYSICAL_FAILURE_OWNER_PRODUCER_READINESS.md",
+        "reports/cc12_physical_failure_owner_producer_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_whole_Source_or_callable_owner_unready",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_entry_execution": false,
+        "class_ABI_or_game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
