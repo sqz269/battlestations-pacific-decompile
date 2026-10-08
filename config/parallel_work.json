@@ -34735,8 +34735,8 @@
     },
     {
       "id": "cc12_scene_property_record_type5_storage",
-      "done": false,
-      "state": "ready qualified whole63B19 type5 raw owned-string plus opaque-word storage; admitted physical ECX duplicate/current-provider dependency",
+      "done": true,
+      "state": "complete qualified whole63B19 type5 raw owned-string/two-word storage; independent4TU and combinedMainWin32/all3checksPASS",
       "function_addresses": [
         "008ef2b0"
       ],
@@ -34959,7 +34959,74 @@
       },
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
-      "game_validated": false
+      "game_validated": false,
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 1,
+        "worker_commit": "05dbaa244073de2c99b283df1c22276f9088904e",
+        "independent_family": "local/t5p2",
+        "independent_seal_sha256": "b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab92",
+        "independent_inventory_artifacts": 361,
+        "independent_actual_files": 362,
+        "prior_artifacts_preserved": 15269,
+        "fresh_translation_units": 4,
+        "consumed_headers": 185,
+        "consumed_libraries": 7,
+        "BSP_archives_consumed": 0,
+        "old_objects_consumed": 0,
+        "accepted_processes": 1,
+        "target_entries": 2,
+        "actual_allocations": 4,
+        "actual_frees": 4,
+        "complete_code_spans": 14,
+        "native_bytes": 63,
+        "native_instructions": 19,
+        "qualified_CALL_operand_bytes": 4,
+        "literal_bytes": 59,
+        "independently_decoded": [
+          {
+            "kind": "Source",
+            "capture_bytes": 132,
+            "storage_bytes": 56,
+            "guarded_input_bytes": 40,
+            "copied_NUL_bytes": 6,
+            "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+            "undefined_AF_excluded": true,
+            "volatile_ECX_EDX_unasserted": true
+          },
+          {
+            "kind": "Original",
+            "capture_bytes": 132,
+            "storage_bytes": 56,
+            "guarded_input_bytes": 40,
+            "copied_NUL_bytes": 6,
+            "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+            "undefined_AF_excluded": true,
+            "volatile_ECX_EDX_unasserted": true
+          }
+        ],
+        "full_main_build": {
+          "context": {
+            "source_revision": "311e2fb701f7c097a679ea23f06d4cd0a2a60300",
+            "CMake": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+              "size": 197471,
+              "sha256": "39ddfa457e1b2777efe5b1e94d83942bf1aff5f9a5e296f37a0ef01a92ddfe2a"
+            },
+            "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type5_current_main_build.log"
+          },
+          "log_sha256": "1c4ec0d749f5a02af14cbf738fcefff4d2d6024d1190b5bbc6e88c532baea9e5",
+          "checks": "3/3 PASS"
+        },
+        "failed_primary_family": "local/t5p1/stopped_inventory.json",
+        "failed_primary_compilers_objects_processes_targets": 0,
+        "old_accepted_processes_replayed": 0,
+        "Source_provider_glue_native_credit": 0,
+        "native_class_ABI_admitted": false,
+        "original_private_CRT_EH_admitted": false,
+        "game_validated": false,
+        "qualification": "Whole type5 raw storage[008EF2B0,008EF2EF)63B19, paddedfastfastcall ECXactualfreshunowned56root/unusedEDX, threeactualstackwords nullabletext/rawword+18/rawword+08, RET12/EAXroot. SoleCALLoperand[35,39) same admittedphysical ECX/RET0duplicate57;59otherbytes literal. Phase00CE89D4/tag5/rawwords beforeprovider, actualchild+1C; finalXOR8C5=44 AFundefinedexcluded; zeros20/24/34,byte1+2C;33written23preserved incl+30. Whole57duplicate/61sizeadapter/90canonicalalloc/6free and genuineVCRUNTIMEcopy currentdomain only. Noexceptnotpromised; Source-onlyproviderglue Nativecredit0. Root complementary4freshTUs /185consumedheaders7libs/noBSParchivesoroldobjects: new6-byteA649E38CD500/3EF15B94C700 fullNUL copies, Sourcewords64F91AB7/FFFFFFFF vsOriginal9B06E548/0, rootpoisonsD3/6E and newGPRsentinels. Two real56roots+two real6-bytechildren=4actualalloc/frees, children observedlive andfreedoncebeforeroots;2rawentries and statically gated26B7/25B7ordinarycallers. All132captures/56storage/40guardedinput/6child independentlydecoded, genuine3stackDWORDslots beforePUSHFD/RET12/EAXroot/nonvols/definedflags/DF0 verified, ECXEDXproviderresidualunasserted. Full14codegates including whole4187B1123 main166relocs,raw181B65,cookie14B4/externalfailuretailJMP,chkstk48B24inclmapowned5INT3; fullphysicalI386UCRTmalloc/free/newhandler and distinctVCRUNTIMEcopy IAT/export/NTpath/ID/fullSHA/normalizedcode before0entries/after, Native/source/header/library/input/prior bookendsPASS. Exact361listed+seal362,15269olderpins preserved. FirstRootp1 metadata NameError retained beforeanycompiler/object/process/target; fresh correctedp2 noacceptedoldstage/recipe/helper/process replay. CurrentcombinedMainWin32/all3existingchecksPASS. Nullbranch is staticwholebody/admitteddup domain, minimal independentfixture invokes validnonnull only. No originalprivateCRT/EH/failure/unwind/phase/vtable/class/owner/destructor/fullclone/World/game ABI/gameplay admission."
+      }
     },
     {
       "id": "cc12_native_wake_append_readiness",
@@ -35194,6 +35261,69 @@
         "new_Original_function_records": 0,
         "new_execution": false,
         "game_validated": false
+      }
+    },
+    {
+      "id": "cc12_native_wake_append_binding_design",
+      "worker": "primary",
+      "function_addresses": [
+        "00810190",
+        "00414c60"
+      ],
+      "output_files": [
+        "docs/CC12_NATIVE_WAKE_APPEND_BINDING_DESIGN.md",
+        "reports/cc12_native_wake_append_binding_design.json"
+      ],
+      "depends_on": [
+        "cc12_native_wake_append_raw_dependencies_Source"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_binding_design_raw_2D_facade_next",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "game_validated": false
+      }
+    },
+    {
+      "id": "cc12_native_reference_payload_copy",
+      "done": false,
+      "state": "ready Root repaired and independently reviewed whole55B22 qualified reference payload copy",
+      "function_addresses": [
+        "008f0340"
+      ],
+      "output_files": [
+        "include/bsp/native_reference_payload_copy.hpp",
+        "src/native_reference_payload_copy.cpp",
+        "docs/NATIVE_REFERENCE_PAYLOAD_COPY_CC12.md",
+        "reports/native_reference_payload_copy_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "readiness_document": "docs/CC12_NATIVE_STRING_CONSUMER_READINESS.md",
+      "readiness_report": "reports/cc12_native_string_consumer_readiness.json",
+      "Root_flow_repair": {
+        "passed": true,
+        "family": "local\\cc12_reference_payload_flow_root20261008a",
+        "native_bytes": 55,
+        "instructions": 22,
+        "complete_documentation_exact": true,
+        "Source_admission_credit": 0
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "contract": "Whole [008F0340,008F0377)55B22 physical consumer. Root repaired callsite008F0356 CALL_RETURN toNONE and missing10B035B..0365, saved/force-exported underglobal lock; actual22starts/live55/completepriorfunctiondocumentation exact. ECX actualfresh8-byte destinationpayload (oldchildnull or soleownedcurrentadmitteddupe), unusedEDX pad; actualreadable8-byte sourcepayload insole stackDWORD, RET4/EAXactualnewcopyor0. Snapshot source+4 text/source+0 bits before oldfree; source/dest/text/frame disjoint. Whole55 literal exceptoperand23..27 actualcanonicalfree and40..44 same actualphysicalfastcall duplicate57;47literalbytes. Realoldcopyproducedbyfreshadmittedduplication, neverfakeownedpointer. No Source=Dest/sharedoldtextalias; oldcopyfree beforeduplicate wouldUAF. Newchild observedlive/canonicalfreeoncebeforepayloadreuse/disposal; nofreedread/noforcedallocationaddresscomparison (allocator mayreuse oldaddress). Destinationwritesexact8bytes, input/otherguards/captures preserved. Nullnewtext EAX0ECX0/XOR8C5=44 AFundefined; EDXseed preserved only ifoldnull, elsegenuinefreevolatileevenwhennewtextnull. Nonnullflags mask8D5 deriveactualcopyreturnT-48 ADD16=>T-32, T=actualstackargument-slotESPbeforetargetCALL; finalRET4T+4. No guessed providerresidualECXEDX, DF0currentCRT/no blanketFPES. New4TU consumer/currentdup+adapter/unchangedcanonical/newprobe;7entries3rawOriginal+Sourcepairs (oldnull/textnull,realold/textnull,realold/nonnulltext) plusordinarySource oldnull/nonnulltext. Fourrealoldcopies+fourtargetoldfrees and3newresults+3callerfrees; nooldNativeprocess/recipe/helper/object/BSParchive replay. FullactualCOFF/link/ordinary/raw/main/cookie/stackhelpers/imports/physicalI386UCRT+distinctVCRUNTIME IAT/export/NTpath/ID/fullhash/ASLRbefore0target/after. PinallconsumedSources/headers/libs/tools/PE andimmutableolderfamilies; freeze dispatch CMake/unconsumedmetadata copies. Currentqualifiedpayloadonly, no privatefree/class/type5producer/destructor/World/EH/fullcaller/game admission. Root freshindependent validation/mainbuild/annotation required beforeSourcecredit.",
+        "public_API": "char* __fastcall copy_native_reference_payload_008f0340(void* actual_destination_ecx, void* unused_edx, const void* actual_source_stack)",
+        "exactly_four_owned_files": [
+          "include/bsp/native_reference_payload_copy.hpp",
+          "src/native_reference_payload_copy.cpp",
+          "docs/NATIVE_REFERENCE_PAYLOAD_COPY_CC12.md",
+          "reports/native_reference_payload_copy_cc12.json"
+        ],
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
       }
     }
   ],

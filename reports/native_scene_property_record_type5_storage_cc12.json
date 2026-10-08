@@ -2,7 +2,7 @@
   "packet": "cc12_scene_property_record_type5_storage",
   "date": "2026-10-08",
   "status": "worker_reconstructed_fresh_strict_Win32_static_and_qualified_current_domain_fixture_passed_Root_admission_pending",
-  "Source_admission_credit": 0,
+  "Source_admission_credit": 1,
   "baseline": {
     "commit": "7c79302e7276263fe41dc079c589920336c7a918",
     "branch": "agent/cc12_type5_storage_source",
@@ -2736,5 +2736,92 @@
     "full_repository_build": "Root integration pending in this worker packet",
     "drop_in_private_native_replacement": false,
     "game_validated": false
+  },
+  "primary_integration": {
+    "passed": true,
+    "Source_admission_credit": 1,
+    "worker_commit": "05dbaa244073de2c99b283df1c22276f9088904e",
+    "independent_family": "local/t5p2",
+    "independent_seal_sha256": "b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab92",
+    "independent_inventory_artifacts": 361,
+    "independent_actual_files": 362,
+    "prior_artifacts_preserved": 15269,
+    "fresh_translation_units": 4,
+    "consumed_headers": 185,
+    "consumed_libraries": 7,
+    "BSP_archives_consumed": 0,
+    "old_objects_consumed": 0,
+    "accepted_processes": 1,
+    "target_entries": 2,
+    "actual_allocations": 4,
+    "actual_frees": 4,
+    "complete_code_spans": 14,
+    "native_bytes": 63,
+    "native_instructions": 19,
+    "qualified_CALL_operand_bytes": 4,
+    "literal_bytes": 59,
+    "independently_decoded": [
+      {
+        "kind": "Source",
+        "capture_bytes": 132,
+        "storage_bytes": 56,
+        "guarded_input_bytes": 40,
+        "copied_NUL_bytes": 6,
+        "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+        "undefined_AF_excluded": true,
+        "volatile_ECX_EDX_unasserted": true
+      },
+      {
+        "kind": "Original",
+        "capture_bytes": 132,
+        "storage_bytes": 56,
+        "guarded_input_bytes": 40,
+        "copied_NUL_bytes": 6,
+        "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+        "undefined_AF_excluded": true,
+        "volatile_ECX_EDX_unasserted": true
+      }
+    ],
+    "full_main_build": {
+      "context": {
+        "source_revision": "311e2fb701f7c097a679ea23f06d4cd0a2a60300",
+        "CMake": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+          "size": 197471,
+          "sha256": "39ddfa457e1b2777efe5b1e94d83942bf1aff5f9a5e296f37a0ef01a92ddfe2a"
+        },
+        "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type5_current_main_build.log"
+      },
+      "log_sha256": "1c4ec0d749f5a02af14cbf738fcefff4d2d6024d1190b5bbc6e88c532baea9e5",
+      "checks": "3/3 PASS"
+    },
+    "failed_primary_family": "local/t5p1/stopped_inventory.json",
+    "failed_primary_compilers_objects_processes_targets": 0,
+    "old_accepted_processes_replayed": 0,
+    "Source_provider_glue_native_credit": 0,
+    "native_class_ABI_admitted": false,
+    "original_private_CRT_EH_admitted": false,
+    "game_validated": false,
+    "qualification": "Whole type5 raw storage[008EF2B0,008EF2EF)63B19, paddedfastfastcall ECXactualfreshunowned56root/unusedEDX, threeactualstackwords nullabletext/rawword+18/rawword+08, RET12/EAXroot. SoleCALLoperand[35,39) same admittedphysical ECX/RET0duplicate57;59otherbytes literal. Phase00CE89D4/tag5/rawwords beforeprovider, actualchild+1C; finalXOR8C5=44 AFundefinedexcluded; zeros20/24/34,byte1+2C;33written23preserved incl+30. Whole57duplicate/61sizeadapter/90canonicalalloc/6free and genuineVCRUNTIMEcopy currentdomain only. Noexceptnotpromised; Source-onlyproviderglue Nativecredit0. Root complementary4freshTUs /185consumedheaders7libs/noBSParchivesoroldobjects: new6-byteA649E38CD500/3EF15B94C700 fullNUL copies, Sourcewords64F91AB7/FFFFFFFF vsOriginal9B06E548/0, rootpoisonsD3/6E and newGPRsentinels. Two real56roots+two real6-bytechildren=4actualalloc/frees, children observedlive andfreedoncebeforeroots;2rawentries and statically gated26B7/25B7ordinarycallers. All132captures/56storage/40guardedinput/6child independentlydecoded, genuine3stackDWORDslots beforePUSHFD/RET12/EAXroot/nonvols/definedflags/DF0 verified, ECXEDXproviderresidualunasserted. Full14codegates including whole4187B1123 main166relocs,raw181B65,cookie14B4/externalfailuretailJMP,chkstk48B24inclmapowned5INT3; fullphysicalI386UCRTmalloc/free/newhandler and distinctVCRUNTIMEcopy IAT/export/NTpath/ID/fullSHA/normalizedcode before0entries/after, Native/source/header/library/input/prior bookendsPASS. Exact361listed+seal362,15269olderpins preserved. FirstRootp1 metadata NameError retained beforeanycompiler/object/process/target; fresh correctedp2 noacceptedoldstage/recipe/helper/process replay. CurrentcombinedMainWin32/all3existingchecksPASS. Nullbranch is staticwholebody/admitteddup domain, minimal independentfixture invokes validnonnull only. No originalprivateCRT/EH/failure/unwind/phase/vtable/class/owner/destructor/fullclone/World/game ABI/gameplay admission."
+  },
+  "worker_Source_admission_credit": 0,
+  "primary_source_status": "complete qualified whole63B19 type5 raw owned-string/two-word storage; independent4TU and combinedMainWin32/all3checksPASS",
+  "Root_independent_validation_pending": false,
+  "main_build_pending": false,
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T142425Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T142425Z.json": "f22bc50dc1fb79146466f4cbb183ae73eebf2d46e8cf52ac30a6f7547f93b8bb",
+      "local/cc12_type5_source_final_annotations.log": "e9f0520994e38ffb6dcc121697f4541876c630a3d62b04d35919a4f6300a08c8",
+      "local/cc12_type5_source_final_exports.log": "dee58d7f27187cb72ca9ed684679ef073ce53dfc47075c6df739cf1b578e963f",
+      "local/cc12_type5_source_final_snapshot.log": "48969f1775d2452a4a0d31fd8cb73baa81ff1c681b27ac155529a8cdbf610b38"
+    },
+    "name_is_raw_storage_hypothesis": true
   }
 }

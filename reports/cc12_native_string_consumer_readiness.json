@@ -1,0 +1,737 @@
+{
+  "schema": 1,
+  "audit_id": "cc12_native_string_consumer_readiness",
+  "Source_admission_credit": 0,
+  "ready_Source_credit": 0,
+  "readiness_only": true,
+  "candidate": "008F0340",
+  "candidate_name": "BSP_SceneProperty_CopyReferencePayload",
+  "name_is_hypothesis": true,
+  "whole_native": {
+    "name": "candidate",
+    "address": 9372480,
+    "size": 55,
+    "sha256": "40611ad298e15a07908bead1b10f73434e3574529a027779139398e0f3edd3c6",
+    "hex": "8b442404538b580456578b388bf18b460485c0741050e82e66300083c404c74604000000008bcbe8d48ab4ff893e5f8946045e5bc20400",
+    "instructions": [
+      {
+        "address": 9372480,
+        "bytes": "8b442404",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 4]"
+      },
+      {
+        "address": 9372484,
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": 9372485,
+        "bytes": "8b5804",
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [eax + 4]"
+      },
+      {
+        "address": 9372488,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": 9372489,
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": 9372490,
+        "bytes": "8b38",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [eax]"
+      },
+      {
+        "address": 9372492,
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": 9372494,
+        "bytes": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": 9372497,
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": 9372499,
+        "bytes": "7410",
+        "mnemonic": "je",
+        "operands": "0x8f0365"
+      },
+      {
+        "address": 9372501,
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": 9372502,
+        "bytes": "e82e663000",
+        "mnemonic": "call",
+        "operands": "0xbf6989"
+      },
+      {
+        "address": 9372507,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": 9372510,
+        "bytes": "c7460400000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], 0"
+      },
+      {
+        "address": 9372517,
+        "bytes": "8bcb",
+        "mnemonic": "mov",
+        "operands": "ecx, ebx"
+      },
+      {
+        "address": 9372519,
+        "bytes": "e8d48ab4ff",
+        "mnemonic": "call",
+        "operands": "0x438e40"
+      },
+      {
+        "address": 9372524,
+        "bytes": "893e",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], edi"
+      },
+      {
+        "address": 9372526,
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": 9372527,
+        "bytes": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax"
+      },
+      {
+        "address": 9372530,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": 9372531,
+        "bytes": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": 9372532,
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ]
+  },
+  "native_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "original_calls": [
+    {
+      "instruction": 9372502,
+      "operand": [
+        23,
+        27
+      ],
+      "target": 12544393
+    },
+    {
+      "instruction": 9372519,
+      "operand": [
+        40,
+        44
+      ],
+      "target": 4427328
+    }
+  ],
+  "contract": {
+    "minimum_destination_payload_bytes": 8,
+    "minimum_source_payload_bytes": 8,
+    "Source_interface_proposal": "char* __fastcall copy_native_reference_payload_008f0340(void* actual_destination_ecx, void* unused_edx, const void* actual_source_stack)",
+    "no_noexcept": true,
+    "actual_ECX": "writable destination two-DWORD payload",
+    "actual_EDX": "unused incoming; potentially clobbered by current free and duplicate",
+    "actual_stack": "one DWORD source payload address",
+    "full_EAX": "actual new owned duplicate pointer or null, NOT receiver",
+    "RET_bytes": 4,
+    "normal_nonvolatiles": [
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "phase_constant": "none: no literal phase/vtable/type tag written",
+    "source_snapshot_order": [
+      "source pointer from entry[ESP+4]",
+      "source+4 text into EBX",
+      "source+0 scalar into EDI"
+    ],
+    "destination_order": [
+      "read old destination+4",
+      "if nonzero: genuine matching free(old); ADD ESP4; DWORD destination+4=0",
+      "ECX=snapshotted text; duplicate",
+      "DWORD destination+0=snapshotted scalar",
+      "DWORD destination+4=actual duplicate return"
+    ],
+    "normal_writes": {
+      "destination": [
+        0,
+        8
+      ],
+      "other_record_fields": "untouched by body"
+    },
+    "old_destination_domain": "null or a real sole-owner current allocation produced by admitted physical duplicate and not freed before entry",
+    "source_domain": "actual readable8 payload with scalarbits and nullable readable NUL text, length+1 representable/no address wrap",
+    "disjointness": "destination/source payload storage and borrowed text disjoint from live call frames and old allocation; source text must not be invalidated by old free; simplest domain uses disjoint payloads and a separate borrowed text object",
+    "cleanup": "the consumer frees nonnull old copy; caller then owns actual new copy, frees it exactly once through matching canonical free before receiver disposal/reuse/lifetime end; borrowed source stays live and is not freed here",
+    "alias_hazard": "self-assignment or shared text equal to old owned allocation is use-after-free when old nonnull; early scalar/pointer snapshot does not preserve the allocation",
+    "failure": "old name can already be freed and nulled when duplicate fails; old scalar not replaced until normal child return; no strong failure/EH guarantee",
+    "DF": 0,
+    "FP_MXCSR_segments": "unasserted"
+  },
+  "nested_stack": {
+    "T": "raw caller ESP immediately before CALL, actual source-payload argument slot",
+    "entry": "T-4",
+    "saved_EBX": "T-8",
+    "saved_ESI": "T-12",
+    "saved_EDI": "T-16",
+    "optional_free_argument": "T-20",
+    "optional_free_entry": "T-24",
+    "optional_free_return": "T-20",
+    "optional_free_ADD4": "T-16",
+    "duplicate_entry": "T-20",
+    "duplicate_saved_EBX": "T-24",
+    "duplicate_saved_ESI": "T-28",
+    "duplicate_saved_EDI": "T-32",
+    "size_argument": "T-36",
+    "copy_dest": "T-48",
+    "copy_src": "T-44",
+    "copy_length": "T-40",
+    "copy_entry": "T-52",
+    "copy_return": "T-48",
+    "final_ADD16": "T-32",
+    "duplicate_RET0": "T-16",
+    "outer_RET4": "T+4"
+  },
+  "flags": {
+    "null": {
+      "mask": "0x8C5",
+      "expected": "0x44",
+      "AF": "undefined excluded",
+      "EAX": 0,
+      "ECX": 0,
+      "EDX": "equals child-entry EDX; equals caller incoming only when old was null and no free occurred"
+    },
+    "nonnull": {
+      "mask": "0x8D5",
+      "expected": "ADD32(T-48,16)",
+      "AF": "defined",
+      "EAX": "actual duplicate allocation",
+      "ECX_EDX": "volatile unasserted"
+    },
+    "after_duplicate": "only MOV/POP/RET, no further arithmetic flag writes",
+    "no_blanket_EFLAGS_claim": true
+  },
+  "caller": {
+    "function": "008F0700",
+    "name": "BSP_SceneProperty_AssignValueFrom",
+    "spans": [
+      {
+        "name": "caller_entry",
+        "address": 9373440,
+        "size": 22,
+        "sha256": "001d543beac6ec2c944f3e52163e52d01ffc9cc1e0fbb4f73e8c188a3d28c8f0",
+        "hex": "568bf18b460483f80b0f87ac000000ff2485c4078f00",
+        "instructions": [
+          {
+            "address": 9373440,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 9373441,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": 9373443,
+            "bytes": "8b4604",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": 9373446,
+            "bytes": "83f80b",
+            "mnemonic": "cmp",
+            "operands": "eax, 0xb"
+          },
+          {
+            "address": 9373449,
+            "bytes": "0f87ac000000",
+            "mnemonic": "ja",
+            "operands": "0x8f07bb"
+          },
+          {
+            "address": 9373455,
+            "bytes": "ff2485c4078f00",
+            "mnemonic": "jmp",
+            "operands": "dword ptr [eax*4 + 0x8f07c4]"
+          }
+        ]
+      },
+      {
+        "name": "caller_type5_arm",
+        "address": 9373542,
+        "size": 22,
+        "sha256": "ce28bf0d86601264cf86037fdd3f4c5a210490fcb14a3a00726dbd0360f5d82d",
+        "hex": "8b44240883c018508d4e18e8cafbffff8bc65ec20400",
+        "instructions": [
+          {
+            "address": 9373542,
+            "bytes": "8b442408",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 8]"
+          },
+          {
+            "address": 9373546,
+            "bytes": "83c018",
+            "mnemonic": "add",
+            "operands": "eax, 0x18"
+          },
+          {
+            "address": 9373549,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 9373550,
+            "bytes": "8d4e18",
+            "mnemonic": "lea",
+            "operands": "ecx, [esi + 0x18]"
+          },
+          {
+            "address": 9373553,
+            "bytes": "e8cafbffff",
+            "mnemonic": "call",
+            "operands": "0x8f0340"
+          },
+          {
+            "address": 9373558,
+            "bytes": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "address": 9373560,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": 9373561,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      {
+        "name": "caller_type5_cell",
+        "address": 9373656,
+        "size": 4,
+        "sha256": "e2d33cca6db7721a23284ec20175410a9014599dcc62a6df45cbeba9e0354cf0",
+        "hex": "66078f00",
+        "instructions": []
+      }
+    ],
+    "type5_gate": "unsigned destination+4 <=0xB, tablebase8F07C4, cell8F07D8=8F0766",
+    "arguments": "source record pointer from caller entry stack; ADD18/PUSH; LEA ECX,dest+18; directCALL8F0771",
+    "callee_result_discarded": "MOV EAX,ESI returns outer destination record",
+    "source_type_checked": false,
+    "destination_kind_plus08_preserved_by_callee": true,
+    "whole_caller_admitted": false,
+    "unrelated_arms_not_audited": true
+  },
+  "saved_analysis": {
+    "current_body": "008F0340..008F0376 inclusive",
+    "signature": "undefined BSP_SceneProperty_CopyReferencePayload(void)",
+    "physical_instruction_count": 22,
+    "saved_instruction_count": 20,
+    "missing_saved_starts": [
+      "008F035B",
+      "008F035E"
+    ],
+    "gap": [
+      "008F035B",
+      "008F0365"
+    ],
+    "missing_instructions": [
+      "ADD ESP,4",
+      "MOV DWORD PTR [ESI+4],0"
+    ],
+    "decompiler_false_early_return": true,
+    "physical_fallthrough_proved_by_live_PE_bytes": true,
+    "exact_flow_override_or_callee_no_return_cause_unverified": true,
+    "optional_readonly_property_query_error": {
+      "read_only_optional_query_failure": true,
+      "failed_query": "callsite_flow_properties",
+      "actual_error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+      "raw_response_preserved": true,
+      "query_retried": false,
+      "settings_changed": false,
+      "Ghidra_mutation": false,
+      "missing_property": "Exact saved call-site flow override and callee no-return properties unobserved; do not assert their specific cause",
+      "conclusion": "Physical live/PE55B22 and saved20-start10-byte gap established independently",
+      "previous_successful_queries_not_replayed": true,
+      "metadata_only_recovery": true
+    },
+    "mutations": 0
+  },
+  "ownership_conclusion": {
+    "qualified_current_owned_payload_domain_is_bounded": true,
+    "does_not_require_class_semantic_substitute": true,
+    "future_Source_candidate_only": true,
+    "native_record_production_domain_still_blocked": true,
+    "reason": "actual byte payload with genuine current-owned old pointer and borrowed live text is bounded by real admitted duplicate/free; actual original native records have unclosed private allocation/owner/destructor/EH",
+    "no_fake_vtable_provider_callbacks_or_class_destructor": true
+  },
+  "dependency_graph": {
+    "nodes": [
+      {
+        "id": "consumer",
+        "address": "008F0340",
+        "name": "BSP_SceneProperty_CopyReferencePayload",
+        "status": "only selected unadmitted whole native candidate55B22; Source0"
+      },
+      {
+        "id": "caller",
+        "address": "008F0700",
+        "name": "BSP_SceneProperty_AssignValueFrom",
+        "status": "one type5 direct-call witness only; whole caller unadmitted"
+      },
+      {
+        "id": "duplicate",
+        "address": "00438E40",
+        "name": "duplicate_native_string_00438e40",
+        "status": "physical57 current-owned Source independently admitted; frozen provenance"
+      },
+      {
+        "id": "private_free",
+        "address": "00BF6989",
+        "name": "_free",
+        "status": "named original call target, body/heap/EH not audited or admitted here"
+      },
+      {
+        "id": "canonical_free",
+        "address": null,
+        "name": "bsp::singleton_lifetime_free",
+        "status": "existing actual current std::free service; future qualified free binding"
+      },
+      {
+        "id": "size_adapter",
+        "address": null,
+        "name": "allocate_native_string_bytes",
+        "status": "existing Source-only size adapter, no native credit"
+      },
+      {
+        "id": "canonical_allocate",
+        "address": null,
+        "name": "bsp::singleton_lifetime_allocate",
+        "status": "existing current allocator service normal domain"
+      },
+      {
+        "id": "ucrt",
+        "address": null,
+        "name": "actual SysWOW64 UCRT malloc/free/_callnewh",
+        "status": "frozen admitted duplicate provider proof, future fresh actual-IAT/file identity checks required"
+      },
+      {
+        "id": "vcruntime",
+        "address": null,
+        "name": "actual SysWOW64 VCRUNTIME140 memcpy",
+        "status": "frozen distinct physical copy provider proof, future fresh checks required"
+      },
+      {
+        "id": "type5_constructor",
+        "address": "008EF2B0",
+        "name": "BSP_SceneProperty_ConstructReference",
+        "status": "named incomplete native record producer; concurrent Source not dependency credit, not queried here"
+      },
+      {
+        "id": "native_owner",
+        "address": null,
+        "name": "native reference-record owner/destructor/EH lifetime",
+        "status": "unclosed native production prerequisite, no invented class or destructor"
+      }
+    ],
+    "edges": [
+      {
+        "source": "caller",
+        "target": "consumer",
+        "kind": "actual directCALL008F0771",
+        "evidence": "ECX=dest+18h and stack source+18h"
+      },
+      {
+        "source": "consumer",
+        "target": "duplicate",
+        "kind": "actual directCALL008F0367",
+        "evidence": "ECX=snapshotted source name"
+      },
+      {
+        "source": "consumer",
+        "target": "private_free",
+        "kind": "actual directCALL008F0356",
+        "evidence": "old dest+4 nonzero; stack pointer; physicalADD ESP4 and null field"
+      },
+      {
+        "source": "consumer",
+        "target": "canonical_free",
+        "kind": "future qualified Source-only binding",
+        "evidence": "replace operand[23,27) only for genuinely current-owned old pointer"
+      },
+      {
+        "source": "duplicate",
+        "target": "size_adapter",
+        "kind": "existing admitted Source binding"
+      },
+      {
+        "source": "size_adapter",
+        "target": "canonical_allocate",
+        "kind": "existing actual current service"
+      },
+      {
+        "source": "canonical_allocate",
+        "target": "ucrt",
+        "kind": "existing current allocation/new-handler imports; normal path only"
+      },
+      {
+        "source": "canonical_free",
+        "target": "ucrt",
+        "kind": "existing matching current free import"
+      },
+      {
+        "source": "duplicate",
+        "target": "vcruntime",
+        "kind": "existing actual memcpy import"
+      },
+      {
+        "source": "native_owner",
+        "target": "type5_constructor",
+        "kind": "required native producer/lifetime boundary not closed"
+      },
+      {
+        "source": "caller",
+        "target": "native_owner",
+        "kind": "native record ownership prerequisite beyond witness"
+      }
+    ],
+    "node_count": 11,
+    "edge_count": 11,
+    "combined_count": 22,
+    "bound": 24
+  },
+  "proposal": {
+    "id": "cc12_native_reference_payload_copy",
+    "enabled": false,
+    "Source_admission_credit": 0,
+    "ready_Source_credit": 0,
+    "conditional_qualified_domain_feasible": true,
+    "selected_address": "008F0340",
+    "suggested_files": [
+      "include/bsp/native_reference_payload_copy.hpp",
+      "src/native_reference_payload_copy.cpp",
+      "docs/NATIVE_REFERENCE_PAYLOAD_COPY_CC12.md",
+      "reports/native_reference_payload_copy_cc12.json"
+    ],
+    "whole_native_bytes": 55,
+    "instructions": 22,
+    "original_and_Source_bound_operands": [
+      {
+        "offset": [
+          23,
+          27
+        ],
+        "target": "same actual freshly linked canonical free CDECL service"
+      },
+      {
+        "offset": [
+          40,
+          44
+        ],
+        "target": "same actual freshly linked admitted physical duplicate57"
+      }
+    ],
+    "all_other_literal_bytes": 47,
+    "do_not_execute_original_private_free": true,
+    "first_prerequisites": [
+      "Root reviews/repairs the saved10-byte fall-through gap with recorded original values and locked annotation/listing workflow; do not assume exact cause from failed optional property query",
+      "Root registers the qualified current-owned payload contract and owns Source packet admission",
+      "Fresh future four-TU whole-body evidence plus actual free/allocator/copy service identity gates and live copy lifetime checks"
+    ],
+    "future_fresh_TUs": [
+      "candidate",
+      "unchanged admitted duplicate Source",
+      "unchanged canonical allocator/free Source",
+      "new ignored probe"
+    ],
+    "future_code_gates": "derive complete candidate/duplicate/adapter/allocator/free/callers/cookie/import extents from fresh COFF/map, no guessed sizes",
+    "future_provider_gates": "actual malloc/free/_callnewh IATs resolve same matching physical UCRT; memcpy distinct VCRUNTIME; GetProcAddress/MEM_IMAGE/I386/export RVA/NT path/file ID/fullSHA plus relocation prefix before0entries and after",
+    "minimal_future_cases": [
+      "raw Original/Source each oldnull+textnull",
+      "raw Original/Source each real oldcopy+textnull (null return after genuine free, EDX volatile)",
+      "raw Original/Source each real oldcopy+nonnulltext (actual replacement and ownership)",
+      "ordinary Source oldnull+nonnulltext"
+    ],
+    "future_entry_count": 7,
+    "future_real_old_copy_setups": 4,
+    "future_old_frees_in_target": 4,
+    "future_new_copies": 3,
+    "future_result_frees": 3,
+    "setup": "old copies must be produced fresh by the admitted actual duplicate service, never fake owned pointers; no post-free reads, pointer equality or forced outputs",
+    "native_original_production_ready": false,
+    "native_original_production_blocker": "native type5 producer/owner/destructor/EH and matching original private allocation family remain unclosed; current canonical free cannot accept arbitrary original-game pointers",
+    "type2_Source_credit": 0,
+    "type5_Source_credit": 0
+  },
+  "provenance": {
+    "base_commit": "3b2b12b14b0abd914f71c75ef46ad5e3d0e95876",
+    "private_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness",
+    "primary_duplicate_admitted": true,
+    "primary_duplicate_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\reports\\native_string_duplicate_cc12.json",
+      "size": 80228,
+      "sha256": "789744be86b9c53309a9f6ebe5a50aa1d454163d214243b002b35db9634b9ecf"
+    },
+    "physical_duplicate_Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\src\\native_string_duplicate.cpp",
+      "size": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    "physical_duplicate_header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\include\\bsp\\native_string_duplicate.hpp",
+      "size": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    "canonical": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "legacy_semantic_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\src\\scene_property_bag_merge.cpp",
+      "size": 12335,
+      "sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0"
+    },
+    "legacy_semantic_body_is_not_physical_Source_credit": true,
+    "frozen_type2_worker_credit": 0,
+    "previous_artifacts": 991,
+    "previous_families_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\artifact_manifest.json",
+      "size": 28370,
+      "sha256": "90303d385837259d5fc83bf9794eab8a260d12268b34c61e9e15adc7b8ce1423"
+    },
+    "historical_metadata": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\local\\cc12_native_string_consumer_readiness20261008a\\historical_metadata.json",
+      "size": 578916,
+      "sha256": "3bed359e382beddfb82906550039f64ef27631c046cffc8498174aee0d476963"
+    },
+    "old_external_associations_not_rebound": true,
+    "old_helpers_or_recipes_executed": false
+  },
+  "verification": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\\local\\cc12_native_string_consumer_readiness20261008a",
+    "prepare": {
+      "passed": true,
+      "input_count": 19,
+      "older_artifacts": 991,
+      "whole_candidate_bytes": 55,
+      "whole_candidate_physical_instructions": 22,
+      "saved_instructions": 20,
+      "missing_saved_starts": [
+        9372507,
+        9372510
+      ],
+      "saved_gap": [
+        9372507,
+        9372517
+      ],
+      "caller_witness_spans": 3,
+      "Source_admission_credit": 0,
+      "readiness_only": true,
+      "Ghidra_mutations": 0,
+      "Source_changes": 0,
+      "builds": 0,
+      "probes": 0,
+      "native_entries": 0,
+      "optional_flow_property_endpoint_disabled": true,
+      "exact_saved_no_return_cause_unverified": true
+    },
+    "post": {
+      "passed": true,
+      "native_before_after_equal": true,
+      "saved_gap_unchanged": true,
+      "all_inputs_and991older_artifacts_unchanged": true,
+      "Ghidra_mutations": 0,
+      "native_entries": 0,
+      "builds": 0,
+      "probes": 0,
+      "Source_admission_credit": 0
+    },
+    "input_count": 19,
+    "physical_live_PE_spans": 4,
+    "listing_gap_before_after_unchanged": true,
+    "Source_changes": 0,
+    "builds": 0,
+    "probes": 0,
+    "native_entries": 0,
+    "Ghidra_mutations": 0,
+    "settings_changes": 0,
+    "saved_property_query_failure_retained": true,
+    "prepare_metadata_recovery_no_successful_query_replay": true
+  },
+  "limits": [
+    "Ready Source credit remains0 pending Root saved-flow repair/review and packet registration",
+    "Current component ownership qualification cannot legalize original private heap pointers",
+    "No whole8F0700, type5 constructor, property release/destructor, broad class, private CRT/EH/OOM or game admission",
+    "Type2 newly merged Source and current type5 work receive no dependency admission credit here"
+  ],
+  "Root_flow_repair": {
+    "passed": true,
+    "family": "local\\cc12_reference_payload_flow_root20261008a",
+    "native_bytes": 55,
+    "instructions": 22,
+    "complete_documentation_exact": true,
+    "Source_admission_credit": 0
+  },
+  "Root_registered_ready_packet": "cc12_native_reference_payload_copy"
+}
