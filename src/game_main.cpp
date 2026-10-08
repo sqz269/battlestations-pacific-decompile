@@ -37,6 +37,7 @@
 #include <vector>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
@@ -52,6 +53,12 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
+#include "bsp/game_native_vfs_application.hpp"
+#include "bsp/game_native_vfs_runtime.hpp"
+#include "bsp/native_physical_failure_entries.hpp"
+#include "bsp/native_singleton_vector_leaves.hpp"
+#include "bsp/native_vfs_owner_services.hpp"
+#include "bsp/native_vfs_runtime_bindings.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp::game {
@@ -317,6 +324,220 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
     return static_cast<int>(exit_code);
 }
 
+// One Source-owner check, using the same concrete owners as ordinary startup.
+// The heap-owned application and host are outside the try block: an interrupted
+// native initialization/drain must reach the retention handler before either
+// owner is destroyed. Comparison buffers never become native owners.
+int qualify_vfs_failure_owner(bsp::game::GameHostLog& log,
+    bsp::game::GameNativeReadOnlyData& data, const std::filesystem::path& original_image) {
+    std::unique_ptr<bsp::game::GameSingletonHost> host;
+    std::unique_ptr<bsp::game::GameNativeVfsApplication> application;
+    const char* phase = "construct";
+    try {
+        const auto require = [](bool condition, const char* reason) {
+            if (!condition) throw std::runtime_error(reason);
+        };
+        const auto word = [](const void* owner, std::size_t offset) {
+            std::uint32_t value;
+            std::memcpy(&value, static_cast<const unsigned char*>(owner) + offset, sizeof value);
+            return value;
+        };
+        const auto record = [&](const char* stage, const char* kind,
+            const void* bytes, std::size_t count) {
+            constexpr char digits[] = "0123456789abcdef";
+            const auto* source = static_cast<const unsigned char*>(bytes);
+            for (std::size_t offset = 0; offset < count; offset += 64) {
+                const auto chunk = (count - offset < 64) ? count - offset : 64;
+                std::string hex(chunk * 2, '0');
+                for (std::size_t index = 0; index < chunk; ++index) {
+                    const auto value = source[offset + index];
+                    hex[index * 2] = digits[value >> 4];
+                    hex[index * 2 + 1] = digits[value & 15];
+                }
+                log.notef("vfs_failure_owner record phase=%s kind=%s offset=%zu hex=%s",
+                    stage, kind, offset, hex.c_str());
+            }
+        };
+        const auto unimplemented_before = log.unimplemented_count();
+        host = std::make_unique<bsp::game::GameSingletonHost>(log);
+        application = std::make_unique<bsp::game::GameNativeVfsApplication>(
+            log, *host, data, original_image);
+        phase = "initialize_core";
+        log.note("vfs_failure_owner initialize_core begin");
+        application->initialize_core();
+        const auto pool_status = application->physical_pool_registration_status();
+        require(pool_status.has_value(), "physical pool initialization did not return");
+        log.notef("vfs_failure_owner initialize_core completed physical_pool_atexit=%d",
+            *pool_status);
+
+        phase = "capture_owner";
+        auto& runtime = application->runtime();
+        auto services = application->borrow_raw_services();
+        auto& publication = application->owners().vfs_publication_0109ceec();
+        void* const manager = runtime.actual_manager();
+        void* const singleton = host->manager_publication_01090aa0();
+        require(manager && singleton && publication == manager &&
+            services.actual_vfs_publication_0109ceec == manager,
+            "application, runtime and service owner publications disagree");
+        require(word(manager, 0) == 0x00d68d04 && word(manager, 0x90) == 0x00530620 &&
+            word(manager, 0x8c) == 0x00735b30 && word(manager, 0x38) == 3,
+            "genuine VFS core profile, callbacks or factory count differ");
+        const auto begin = word(singleton, 4);
+        const auto end = word(singleton, 8);
+        const auto capacity = word(singleton, 0x0c);
+        require(begin && end >= begin && capacity >= end && (end - begin) % 4 == 0,
+            "actual singleton registration bounds are invalid");
+        const auto slot_count = bsp::count_native_singleton_slots_00bcf910(singleton, nullptr);
+        require(slot_count && slot_count == (end - begin) / 4,
+            "actual singleton registration count differs");
+        const auto* slots = reinterpret_cast<const void*>(begin);
+        bool registered = false;
+        for (std::uint32_t index = 0; index < slot_count; ++index)
+            registered = registered || word(slots, index * 4u) ==
+                reinterpret_cast<std::uintptr_t>(manager);
+        require(registered, "actual A0 owner is not registered in the shared manager");
+
+        std::array<unsigned char, 0xa0> original{};
+        std::array<unsigned char, 0x14> singleton_record{};
+        std::vector<unsigned char> registrations(end - begin);
+        std::memcpy(original.data(), manager, original.size());
+        std::memcpy(singleton_record.data(), singleton, singleton_record.size());
+        std::memcpy(registrations.data(), slots, registrations.size());
+        log.notef("vfs_failure_owner owner=%p singleton=%p vfs_cell=%p singleton_cell=%p "
+            "slots=%08X count=%u factories=3", manager, singleton,
+            const_cast<void*>(static_cast<const volatile void*>(&publication)),
+            const_cast<void*>(static_cast<const volatile void*>(&host->manager_publication_01090aa0())),
+            static_cast<unsigned>(begin), static_cast<unsigned>(slot_count));
+        record("original", "a0", original.data(), original.size());
+        record("original", "singleton", singleton_record.data(), singleton_record.size());
+        record("original", "registrations", registrations.data(), registrations.size());
+        const auto unchanged = [&](const char* stage, const auto& expected) {
+            require(publication == manager && services.actual_vfs_publication_0109ceec == manager &&
+                host->manager_publication_01090aa0() == singleton,
+                "owner publication changed during the borrowed use");
+            require(std::memcmp(manager, expected.data(), expected.size()) == 0,
+                "VFS owner record changed outside the expected publication");
+            require(std::memcmp(singleton, singleton_record.data(), singleton_record.size()) == 0,
+                "singleton registration header changed");
+            require(std::memcmp(slots, registrations.data(), registrations.size()) == 0,
+                "singleton registrations changed");
+            record(stage, "a0", manager, expected.size());
+            record(stage, "singleton", singleton, singleton_record.size());
+            record(stage, "registrations", slots, registrations.size());
+            log.notef("vfs_failure_owner phase=%s records_and_publications_equal=1", stage);
+        };
+
+        phase = "original_finite_dispatch";
+        services.bindings.open_failure_entry(word(manager, 0x90), manager);
+        unchanged(phase, original);
+
+        phase = "qualify_loaded_code";
+        const auto module = GetModuleHandleW(nullptr);
+        require(module != nullptr, "rebuilt game module is unavailable");
+        const auto module_base = reinterpret_cast<std::uintptr_t>(module);
+        const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(module);
+        require(dos->e_magic == IMAGE_DOS_SIGNATURE && dos->e_lfanew > 0 && dos->e_lfanew < 0x1000,
+            "rebuilt game DOS header is invalid");
+        const auto* pe = reinterpret_cast<const IMAGE_NT_HEADERS32*>(module_base + dos->e_lfanew);
+        require(pe->Signature == IMAGE_NT_SIGNATURE && pe->FileHeader.Machine == IMAGE_FILE_MACHINE_I386 &&
+            pe->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC,
+            "rebuilt game is not the expected Win32 module");
+        log.notef("vfs_failure_owner module=%s base=%08X preferred=%08X image_bytes=%u timestamp=%08X",
+            own_executable().string().c_str(), static_cast<unsigned>(module_base),
+            static_cast<unsigned>(pe->OptionalHeader.ImageBase),
+            static_cast<unsigned>(pe->OptionalHeader.SizeOfImage),
+            static_cast<unsigned>(pe->FileHeader.TimeDateStamp));
+        const auto qualify = [&](const char* symbol, std::uintptr_t address, const auto& expected) {
+            HMODULE actual_module = nullptr;
+            require(GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCSTR>(address),
+                &actual_module) && actual_module == module,
+                "named raw entry is outside the rebuilt game module");
+            require(address >= module_base && address - module_base < pe->OptionalHeader.SizeOfImage &&
+                expected.size() <= pe->OptionalHeader.SizeOfImage - (address - module_base),
+                "named raw entry exceeds the rebuilt module");
+            MEMORY_BASIC_INFORMATION page{};
+            require(VirtualQuery(reinterpret_cast<const void*>(address), &page, sizeof page) == sizeof page &&
+                page.State == MEM_COMMIT && page.AllocationBase == module && !(page.Protect & PAGE_GUARD) &&
+                ((page.Protect & 0xff) == PAGE_EXECUTE_READ ||
+                 (page.Protect & 0xff) == PAGE_EXECUTE_READWRITE ||
+                 (page.Protect & 0xff) == PAGE_EXECUTE_WRITECOPY) &&
+                address - reinterpret_cast<std::uintptr_t>(page.BaseAddress) <= page.RegionSize &&
+                expected.size() <= page.RegionSize - (address - reinterpret_cast<std::uintptr_t>(page.BaseAddress)),
+                "named raw entry is not in a readable executable module region");
+            const auto* code = reinterpret_cast<const volatile unsigned char*>(address);
+            for (std::size_t index = 0; index < expected.size(); ++index)
+                require(code[index] == expected[index], "named raw entry whole bytes differ");
+            log.notef("vfs_failure_owner code=%s address=%08X rva=%08X bytes=%zu protect=%08X",
+                symbol, static_cast<unsigned>(address), static_cast<unsigned>(address - module_base),
+                expected.size(), static_cast<unsigned>(page.Protect));
+            record("loaded_code", symbol, reinterpret_cast<const void*>(address), expected.size());
+        };
+        constexpr std::array<unsigned char, 1> c3{{0xc3}};
+        constexpr std::array<unsigned char, 11> notifier{{0x8b,0x81,0x90,0,0,0,0xff,0xd0,0xc2,4,0}};
+        const auto target = reinterpret_cast<std::uintptr_t>(&bsp::raw_ignore_native_vfs_mount_failure_00530620);
+        qualify("raw_ignore_native_vfs_mount_failure_00530620", target, c3);
+        qualify("raw_notify_native_vfs_request_failure_00bd9e30",
+            reinterpret_cast<std::uintptr_t>(&bsp::raw_notify_native_vfs_request_failure_00bd9e30), notifier);
+
+        phase = "publish";
+        require(application->publish_and_borrow_raw_failure_manager() == manager,
+            "application publisher returned another owner");
+        auto published = original;
+        const auto target_word = static_cast<std::uint32_t>(target);
+        std::memcpy(published.data() + 0x90, &target_word, sizeof target_word);
+        unchanged(phase, published);
+        phase = "repeat_publish";
+        require(application->publish_and_borrow_raw_failure_manager() == manager,
+            "repeated application publisher returned another owner");
+        unchanged(phase, published);
+        phase = "published_finite_dispatch";
+        services.bindings.open_failure_entry(word(manager, 0x90), manager);
+        unchanged(phase, published);
+
+        phase = "raw_notifier";
+        constexpr std::uint32_t forwarded_edx = 0x13579bdf;
+        constexpr std::uint32_t discarded_word = 0x2468ace0;
+        log.notef("vfs_failure_owner notifier begin forwarded_edx=%08X discarded_word=%08X",
+            static_cast<unsigned>(forwarded_edx), static_cast<unsigned>(discarded_word));
+        bsp::raw_notify_native_vfs_request_failure_00bd9e30(manager, forwarded_edx, discarded_word);
+        unchanged(phase, published);
+        log.note("vfs_failure_owner notifier returned calls=1");
+
+        // End all borrowed record use before this call. Only still-live owner
+        // publication cells and the guarded application API are inspected later.
+        phase = "shared_drain";
+        log.note("vfs_failure_owner shared_drain begin borrowed_uses_finished=1");
+        host->shutdown();
+        require(publication == nullptr && host->manager_publication_01090aa0() == nullptr,
+            "shared drain left an owner publication live");
+        phase = "retired_guard";
+        bool rejected = false;
+        try { (void)application->publish_and_borrow_raw_failure_manager(); }
+        catch (const std::logic_error& error) {
+            rejected = std::strcmp(error.what(),
+                "Native VFS core is not available for a failure-manager borrow") == 0;
+        }
+        require(rejected, "retired application did not reject before owner access");
+        require(log.unimplemented_count() == unimplemented_before,
+            "diagnostic reached an unimplemented host service");
+        log.note("vfs_failure_owner shared_drain completed vfs_null=1 singleton_null=1 retired_rejected=1");
+        phase = "destroy_drained_owners";
+        application.reset();
+        host.reset();
+        log.note("vfs_failure_owner PASS owners_destroyed=1 normal_CRT_exit=1");
+        return 0;
+    } catch (const std::exception& error) {
+        log.notef("vfs_failure_owner FAIL phase=%s reason=%s retention=_Exit", phase, error.what());
+    } catch (...) {
+        log.notef("vfs_failure_owner FAIL phase=%s reason=unknown retention=_Exit", phase);
+    }
+    log.close();
+    std::fflush(stdout);
+    std::fflush(stderr);
+    std::_Exit(3);
+}
+
 void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary& summary) {
     log.notef("summary window_created=%d device_created=%d device_hr=0x%08lx "
         "back_buffer=%ux%u frames_presented=%llu presents_skipped=%llu loop_finished=%d exit_code=%d",
@@ -447,7 +668,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--present-interval <vsync|immediate|native>]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
-            " [--screenshot-mission-frame N] [--hardware-probe-commit]\n");
+            " [--screenshot-mission-frame N] [--hardware-probe-commit]"
+            " [--qualify-vfs-failure-owner]\n");
         return 2;
     }
 
@@ -528,6 +750,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.close();
         return 2;
     }
+
+    if (options.qualify_vfs_failure_owner)
+        return qualify_vfs_failure_owner(log, *native_data, original_image);
 
     try {
         auto& particle_pools = bsp::game::game_native_particle_pool_process();

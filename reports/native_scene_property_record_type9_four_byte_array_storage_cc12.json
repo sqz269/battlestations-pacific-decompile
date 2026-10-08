@@ -1,0 +1,2653 @@
+{
+  "schema": "bsp.cc12.native-scene-property-record-type9-four-byte-array-storage.v1",
+  "packet": "cc12_scene_property_record_type9_four_byte_array_storage",
+  "status": "worker_qualified_whole_constructor_reconstructed_fresh_three_TU_differential_passed_Root_admission_pending",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source",
+  "branch": "agent/cc12_type9_four_byte_array_storage_source",
+  "baseline": "a62c294fa74fae4533d00c8d0cf65b7c72c99da8",
+  "tracked_outputs": [
+    "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+    "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE9_FOUR_BYTE_ARRAY_STORAGE_CC12.md",
+    "reports/native_scene_property_record_type9_four_byte_array_storage_cc12.json"
+  ],
+  "Source_admission_credit": 0,
+  "adapter_native_credit": 0,
+  "ready_Source_credit": 0,
+  "Root_independent_validation_pending": true,
+  "Root_Main_CMake_registration_build_publication_pending": true,
+  "evidence_levels": {
+    "reconstructed": true,
+    "standalone_three_TU_MSVC_Win32_build_tested": true,
+    "qualified_raw_storage_fixture_tested": true,
+    "physical_local_register_stack_ABI_measured": true,
+    "Original_private_provider_ABI_admitted": false,
+    "native_class_or_drop_in_replacement": false,
+    "game_validated": false
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\docs\\NATIVE_SCENE_PROPERTY_RECORD_TYPE9_FOUR_BYTE_ARRAY_STORAGE_CC12.md",
+    "size": 9935,
+    "sha256": "68515234ba39b73fb4cfbd009ba93a9630135814ea0eafef5af61b3d1b278ccf"
+  },
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\src\\native_scene_property_record_type9_four_byte_array_storage.cpp",
+    "size": 2190,
+    "sha256": "16fc191de1e1cbd856477ab9394572be4da589b657c7daeb09b4ea01532c293c"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\include\\bsp\\native_scene_property_record_type9_four_byte_array_storage.hpp",
+    "size": 2752,
+    "sha256": "ba6731df386adb814165454ed1840344c97777764afbc2dbc35824df680143f8"
+  },
+  "native": {
+    "address": "008EF360",
+    "end_exclusive": "008EF3D4",
+    "bytes": 116,
+    "instructions": 36,
+    "SHA256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3",
+    "installed_PE_SHA256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "only_CALL_operands": [
+      [
+        51,
+        55
+      ],
+      [
+        66,
+        70
+      ]
+    ],
+    "literal_other_bytes": 108,
+    "own_private_CDECL_size_adapter": true,
+    "native_heap_entry": "00BF55BE",
+    "native_memcpy_entry": "00BF7680",
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\native_before.json",
+      "size": 5179,
+      "sha256": "0745c9d8d24f977cdabc746aac94dad0cc69eeddc258a0463f78fa3b397b74a6"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\native_after.json",
+      "size": 5179,
+      "sha256": "0745c9d8d24f977cdabc746aac94dad0cc69eeddc258a0463f78fa3b397b74a6"
+    },
+    "live_owned_instruction_starts": 36,
+    "bookends_exact": true,
+    "Ghidra_mutations": 0
+  },
+  "contract": {
+    "API": "void* __fastcall construct_native_scene_property_record_type9_four_byte_array_storage_008ef360(void* root,void* unused_EDX,uint32 element_count,const void* data,uint32 full_flag)",
+    "entry": {
+      "ECX": "actual fresh/unowned56-byte root",
+      "EDX": "unused padding",
+      "T_plus4": "count DWORD",
+      "T_plus8": "actual data DWORD",
+      "T_plus12": "full flag DWORD"
+    },
+    "exit": {
+      "EAX": "actual root",
+      "callee_cleanup": 12,
+      "saved": [
+        "ESI",
+        "EDI"
+      ],
+      "EBX_EBP": "normal genuine provider ABI"
+    },
+    "domain": {
+      "count_min": 1,
+      "count_max": 1073741823,
+      "actual_readable_bytes": "nonwrapping4*count",
+      "root_bytes": 56,
+      "root_input_active_frame": "pairwise disjoint/nonwrapping",
+      "DF": "clear",
+      "elements": "opaque4-byte bits; no float/x87/numeric meaning",
+      "provider_success": "current real allocation/copy/free only"
+    },
+    "order": [
+      "load count",
+      "ADD EDI,EDI",
+      "phase00CE89D4 store",
+      "tag9 store",
+      "ADD EDI,EDI",
+      "CMP low flag BYTE",
+      "zero18/1C",
+      "store computed byte count24",
+      "branch"
+    ],
+    "written": 29,
+    "preserved": 27,
+    "preserved_ranges": [
+      [
+        8,
+        24
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        45,
+        52
+      ]
+    ],
+    "DWORD30_preserved": true,
+    "byte2C": 1,
+    "byte2C_is_ownership_discriminator": false,
+    "borrow": {
+      "input_pointer": "retained exactly at20",
+      "child_allocation": false,
+      "input_free": false,
+      "ECX": "actual root",
+      "EDX": "actual input",
+      "defined_arithmetic_mask": "8D5",
+      "defined_arithmetic_value": "044",
+      "AF": "defined zero"
+    },
+    "copy": {
+      "bridge": "owned noinline CDECL(std::size_t)->singleton_lifetime_allocate{object,bytes,bytes}",
+      "input_load": "after actual allocation",
+      "store20": "actual returned child before memcpy",
+      "bytes": "4*count",
+      "free": "actual child once before root",
+      "final_flags": "all six ADD flags from T-24+16=T-8",
+      "ECX_EDX": "observed provider residuals unasserted"
+    },
+    "no_extra_native_count_guard": true,
+    "two_original_DWORD_additions_preserved": true,
+    "no_noexcept_promise": true
+  },
+  "build_contexts": {
+    "fresh_three_TU": {
+      "TUs": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\src\\native_scene_property_record_type9_four_byte_array_storage.cpp",
+          "size": 2190,
+          "sha256": "16fc191de1e1cbd856477ab9394572be4da589b657c7daeb09b4ea01532c293c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\src\\singleton_lifetime.cpp",
+          "size": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\probe.cpp",
+          "size": 29865,
+          "sha256": "8bba55f75074c839b4617b4718ea82ea32ebd1b7f7d3cb3f8cfeecaab5936513"
+        }
+      ],
+      "objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source.obj",
+          "size": 1830,
+          "sha256": "a074f7a9acdfa288a96d95a5f71aa4181f95aeefce10b79563da1be792cb5a7a"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\canonical.obj",
+          "size": 36839,
+          "sha256": "a4481ef59ef3d59da6ff744104819b230e868b69ecac6cf06bd0861e135ef547"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\probe.obj",
+          "size": 41032,
+          "sha256": "47b6f646597e500d533b583dfe45f9428a7018dddff0f6b4058f5ff250772716"
+        }
+      ],
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\t9_probe.exe",
+        "size": 24064,
+        "sha256": "5c0b0f8722067b32e4546d300351fc66e8b14150183b7a048feb1cd1fc815c43"
+      },
+      "consumed_headers": 184,
+      "libraries": 7,
+      "BSP_archives": 0,
+      "old_objects": 0
+    },
+    "precompile_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review.json",
+      "size": 2572,
+      "sha256": "9bb7011931782f44bf6f5ca61281983725444cba20aa68ee1ab36d60e959699b"
+    },
+    "strict_inputs": 55,
+    "consumed_headers": 184,
+    "consumed_libraries": 7,
+    "BSP_archives": 0,
+    "old_objects": 0,
+    "baseline_private_repository": {
+      "checks": {
+        "passed": true,
+        "registered_checks": 3,
+        "registered_names": [
+          "native_math_differential",
+          "reconstructed_math",
+          "tool_tests"
+        ],
+        "configuration": "Release",
+        "platform": "Win32",
+        "baseline": "a62c294fa74fae4533d00c8d0cf65b7c72c99da8",
+        "new_Source_TU_in_CMake": false,
+        "build_and_CTest_execution_count": 1,
+        "receipt_recovery_from_existing_successful_log": true,
+        "CTestTestfile": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\build\\win32\\CTestTestfile.cmake",
+          "size": 7300,
+          "sha256": "e6afdd7a6c0c4b4a347c083f5491a47e45538d760bff2ee1e15583be0cf16136"
+        },
+        "files": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\build_attempt.json",
+            "size": 225,
+            "sha256": "26e825a43f80ce9b24c4d7ce75145f41d4f75aeae8e3777ff6974b1830ec1dd4"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\build_exit.json",
+            "size": 17,
+            "sha256": "c365161d39236fe0f1d32937fbc549796b8487d8faf65ed3879b96897c78ea5d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\build_stderr.txt",
+            "size": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\build_stdout.txt",
+            "size": 75454,
+            "sha256": "3b6b23e36802391bc710c7fc481378c45737280888e47d6d925552df97c437c6"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\checks_receipt_failure.json",
+            "size": 513,
+            "sha256": "841463b22c8ea3ef7d36ccb6bbcee559840a321cd6724560d9443d3ed1c54970"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\finish_checks_receipt.py",
+            "size": 1847,
+            "sha256": "384a05c272797a89dc58ba04f0c5c2ccf7bfcf61fab79a302979d34311b23b6d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\run_worker_checks.py",
+            "size": 1386,
+            "sha256": "b0b6575b60888c75c685b7723c3750aeb6b410fffe59f74d9bbf2fe6f151f7c8"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\seed_export\\seed_byte_comparison.json",
+            "size": 3288,
+            "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\verify_seeds_attempt.json",
+            "size": 305,
+            "sha256": "35bab8244363f51b69bea115f8334a3be6f96e46b288387c8f11b33383bb9d22"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\verify_seeds_exit.json",
+            "size": 17,
+            "sha256": "c365161d39236fe0f1d32937fbc549796b8487d8faf65ed3879b96897c78ea5d"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\verify_seeds_stderr.txt",
+            "size": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\verify_seeds_stdout.txt",
+            "size": 3034,
+            "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+          }
+        ]
+      },
+      "checks_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\checks.json",
+        "size": 3850,
+        "sha256": "2a3fdcab241468ea218f5d8495907a773b33fdf77a3bc3582de5590cdb5e4497"
+      },
+      "exact_build_family_manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\seal.json",
+        "size": 3566,
+        "sha256": "3b1a8d6c29bbb2b48bc1199259427ec95ef16fbc2402ef420105848120447737"
+      },
+      "build_family_files_including_seal": 14,
+      "registered_checks": 3,
+      "Source_TU_in_CMake": false,
+      "Root_combined_Main_build_pending": true
+    }
+  },
+  "fixture": {
+    "accepted_processes": 1,
+    "Source_entries": 2,
+    "bound_Original_entries": 2,
+    "real_roots": 4,
+    "real_children": 2,
+    "actual_allocations": 6,
+    "actual_frees": 6,
+    "children_freed_before_roots": true,
+    "element_counts": [
+      2,
+      3,
+      3,
+      2
+    ],
+    "byte_counts": [
+      8,
+      12,
+      12,
+      8
+    ],
+    "full_flag_words": [
+      "A638F200",
+      "B4926700",
+      "69C3F101",
+      "8725D480"
+    ],
+    "R": "0012905C",
+    "Q": "00129050",
+    "T": "0012904C",
+    "capture_bytes": 140,
+    "register_DWORDs": 27,
+    "three_dead_arguments_before_PUSHFD": true,
+    "all_root_bytes": 56,
+    "all_guarded_input_bytes": 96,
+    "source_child_bytes": 12,
+    "Original_child_bytes": 8,
+    "full_root_input_live_child_other_capture_checks": true,
+    "borrowed_inputs_never_freed_as_children": true,
+    "copy_ECX_EDX_unasserted": true,
+    "FP_numeric_suite": false,
+    "runtime": {
+      "passed": true,
+      "Source_calls": 2,
+      "Original_calls": 2,
+      "branches_each": 2,
+      "families": 1,
+      "allocations": 6,
+      "frees": 6,
+      "root_allocations": 4,
+      "child_allocations": 2,
+      "Original_RX": 7143424,
+      "allocation_entry": 620761088,
+      "copy_entry": 620775084,
+      "written": 29,
+      "preserved": 27,
+      "runtime_code_spans": 33,
+      "cases": [
+        {
+          "name": "Source_retained",
+          "root": 7339472,
+          "input": 1743280,
+          "count": 2,
+          "byte_count": 8,
+          "flag_word": 2788749824,
+          "stored_pointer": 1743280,
+          "owned_copy": false,
+          "ESP_before_arguments": 1216604,
+          "ESP_before_CALL": 1216592,
+          "entry_T": 1216588,
+          "ESP_after": 1216604,
+          "EFLAGS_after": 582,
+          "defined_flags_expected": 68,
+          "ECX_observed": 7339472,
+          "EDX_observed": 1743280
+        },
+        {
+          "name": "Original_retained",
+          "root": 7338896,
+          "input": 1743328,
+          "count": 3,
+          "byte_count": 12,
+          "flag_word": 3029493504,
+          "stored_pointer": 1743328,
+          "owned_copy": false,
+          "ESP_before_arguments": 1216604,
+          "ESP_before_CALL": 1216592,
+          "entry_T": 1216588,
+          "ESP_after": 1216604,
+          "EFLAGS_after": 582,
+          "defined_flags_expected": 68,
+          "ECX_observed": 7338896,
+          "EDX_observed": 1743328
+        },
+        {
+          "name": "Source_copy",
+          "root": 7340624,
+          "input": 1743328,
+          "count": 3,
+          "byte_count": 12,
+          "flag_word": 1774448897,
+          "stored_pointer": 7363968,
+          "owned_copy": true,
+          "ESP_before_arguments": 1216604,
+          "ESP_before_CALL": 1216592,
+          "entry_T": 1216588,
+          "ESP_after": 1216604,
+          "EFLAGS_after": 518,
+          "defined_flags_expected": 4,
+          "ECX_observed": 0,
+          "EDX_observed": 2439839972
+        },
+        {
+          "name": "Original_copy",
+          "root": 7339088,
+          "input": 1743280,
+          "count": 2,
+          "byte_count": 8,
+          "flag_word": 2267403392,
+          "stored_pointer": 7307952,
+          "owned_copy": true,
+          "ESP_before_arguments": 1216604,
+          "ESP_before_CALL": 1216592,
+          "entry_T": 1216588,
+          "ESP_after": 1216604,
+          "EFLAGS_after": 518,
+          "defined_flags_expected": 4,
+          "ECX_observed": 0,
+          "EDX_observed": 2840985811
+        }
+      ],
+      "modules": [
+        {
+          "name": "malloc",
+          "IAT_target": 1987903776,
+          "export": 1987903776,
+          "export_RVA": 196896,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+          "before_after_equal": true
+        },
+        {
+          "name": "free",
+          "IAT_target": 1987903648,
+          "export": 1987903648,
+          "export_RVA": 196768,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+          "before_after_equal": true
+        },
+        {
+          "name": "_callnewh",
+          "IAT_target": 1988276224,
+          "export": 1988276224,
+          "export_RVA": 569344,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+          "before_after_equal": true
+        },
+        {
+          "name": "memcpy",
+          "IAT_target": 1924293024,
+          "export": 1924293024,
+          "export_RVA": 90528,
+          "module_base": 1924202496,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+          "physical_SHA256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "normalized_live_prefix": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+          "before_after_equal": true
+        }
+      ],
+      "code_before_after_equal": true,
+      "bound_Original_only_CALL_operands": [
+        [
+          51,
+          55
+        ],
+        [
+          66,
+          70
+        ]
+      ],
+      "literal_constructor_bytes": 108,
+      "copied_ECX_EDX_residuals_unasserted": true,
+      "retained_inputs_never_freed_as_children": true,
+      "owned_children_observed_live_freed_before_roots": true,
+      "all_storage_input_child_capture_stack_checks_passed": true,
+      "three_dead_arguments_captured_before_PUSHFD": true,
+      "entry_ESP_independently_captured": true,
+      "FP_numeric_experiments": false,
+      "private_CRT_EH_executed": false
+    },
+    "independent_offline_capture_decode": {
+      "passed": true,
+      "runtime": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\runtime.json",
+        "size": 4709,
+        "sha256": "a95d05b8e0325b2bb34d7022a49b94b5b7948bed5d0e731e43a253459f8bd068"
+      },
+      "independent_offline_decode_no_process_replay": true,
+      "register_DWORDs": 27,
+      "capture_bytes": 140,
+      "input_guarded_bytes": [
+        {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\input0_guarded_bytes.bin",
+            "size": 48,
+            "sha256": "e66eea798c219e2a76905d624c377be2ac74f9c19d0a292ef6cc156d898ab148"
+          },
+          "full_hex": "0000a7460100a7460200a7460300a74600a5c219d30056a97ce112b465c83d92000038d9010038d9020038d9030038d9"
+        },
+        {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\input1_guarded_bytes.bin",
+            "size": 48,
+            "sha256": "5fe4f43d98521a820139bb43acf93f76cab83a81a0982fb9a86f6193e63cae9f"
+          },
+          "full_hex": "0001a7460101a7460201a7460301a746e700936c8019a63be4006d9128bc47da000138d9010138d9020138d9030138d9"
+        }
+      ],
+      "cases": [
+        {
+          "name": "source_retained",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_retained_capture.bin",
+            "size": 140,
+            "sha256": "9137b3d21e3312358f8a070a372e80e77c28b5aea371eb8b42ca2d4a7ef4c8c1"
+          },
+          "registers": {
+            "esp_before": "0012905C",
+            "esp_after": "0012905C",
+            "eax_after": "006FFDD0",
+            "ecx_after": "006FFDD0",
+            "edx_after": "001A99B0",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9A00",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00129070",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9A00",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00129070",
+            "flags_before": "00000206",
+            "flags_after": "00000246",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "count_slot": "00129050",
+            "count_word": "00000002",
+            "data_slot": "00129054",
+            "data_word": "001A99B0",
+            "flag_slot": "00129058",
+            "flag_word": "A638F200",
+            "esp_before_call": "00129050",
+            "entry_esp": "0012904C"
+          },
+          "preguards": [
+            "91C30100",
+            "91C30101",
+            "91C30102",
+            "91C30103"
+          ],
+          "postguards": [
+            "BC780100",
+            "BC780101",
+            "BC780102",
+            "BC780103"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_retained_storage.bin",
+            "size": 56,
+            "sha256": "b5b63ba05e609a0c47068c77830595ceb34abf0bc46123f9d604aa7bcc0abf51"
+          },
+          "full_root_hex": "d489ce0009000000d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d20000000000000000b0991a0008000000d2d2d2d201d2d2d2d2d2d2d200000000",
+          "defined_flags": "044",
+          "copy_ADD": null,
+          "child": null
+        },
+        {
+          "name": "original_retained",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original_retained_capture.bin",
+            "size": 140,
+            "sha256": "c79fd4b5320fe60ea1423405648ecbe52e07cbf17825cf91a9b16e05aa425fa9"
+          },
+          "registers": {
+            "esp_before": "0012905C",
+            "esp_after": "0012905C",
+            "eax_after": "006FFB90",
+            "ecx_after": "006FFB90",
+            "edx_after": "001A99E0",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9A8C",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00129070",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9A8C",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00129070",
+            "flags_before": "00000202",
+            "flags_after": "00000246",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "count_slot": "00129050",
+            "count_word": "00000003",
+            "data_slot": "00129054",
+            "data_word": "001A99E0",
+            "flag_slot": "00129058",
+            "flag_word": "B4926700",
+            "esp_before_call": "00129050",
+            "entry_esp": "0012904C"
+          },
+          "preguards": [
+            "91C30200",
+            "91C30201",
+            "91C30202",
+            "91C30203"
+          ],
+          "postguards": [
+            "BC780200",
+            "BC780201",
+            "BC780202",
+            "BC780203"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original_retained_storage.bin",
+            "size": 56,
+            "sha256": "b40c9ff78b192bddebe7c920a16e4e1d000a8bee720f726da822659d00d8f90c"
+          },
+          "full_root_hex": "d489ce0009000000696969696969696969696969696969690000000000000000e0991a000c00000069696969016969696969696900000000",
+          "defined_flags": "044",
+          "copy_ADD": null,
+          "child": null
+        },
+        {
+          "name": "source_copy",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_copy_capture.bin",
+            "size": 140,
+            "sha256": "25bdd285ddc228eaebc79c53c6ccd10c38761ee4b0a6e5f3d47fc769c4f0d109"
+          },
+          "registers": {
+            "esp_before": "0012905C",
+            "esp_after": "0012905C",
+            "eax_after": "00700250",
+            "ecx_after": "00000000",
+            "edx_after": "916D00E4",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9B18",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00129070",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9B18",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00129070",
+            "flags_before": "00000206",
+            "flags_after": "00000206",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "count_slot": "00129050",
+            "count_word": "00000003",
+            "data_slot": "00129054",
+            "data_word": "001A99E0",
+            "flag_slot": "00129058",
+            "flag_word": "69C3F101",
+            "esp_before_call": "00129050",
+            "entry_esp": "0012904C"
+          },
+          "preguards": [
+            "91C30300",
+            "91C30301",
+            "91C30302",
+            "91C30303"
+          ],
+          "postguards": [
+            "BC780300",
+            "BC780301",
+            "BC780302",
+            "BC780303"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_copy_storage.bin",
+            "size": 56,
+            "sha256": "313eadb7c54b7b87e49abc99b4b554735689718f78a659a034aa55a2b330a168"
+          },
+          "full_root_hex": "d489ce0009000000b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b40000000000000000805d70000c000000b4b4b4b401b4b4b4b4b4b4b400000000",
+          "defined_flags": "004",
+          "copy_ADD": {
+            "entry_T": 1216588,
+            "left": 1216564,
+            "right": 16,
+            "result": 1216580
+          },
+          "child": {
+            "artifact": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_owned_child.bin",
+              "size": 12,
+              "sha256": "ac1477d3f36a69c834038021b6036f322043b4f39caaf3f72900f949144bf429"
+            },
+            "full_hex": "e700936c8019a63be4006d91",
+            "actual_pointer": 7363968
+          }
+        },
+        {
+          "name": "original_copy",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original_copy_capture.bin",
+            "size": 140,
+            "sha256": "9bdaae0d2961f60599bdf4fd0758e6b40a9d249965468e45f6ae2ee1f75ff1e5"
+          },
+          "registers": {
+            "esp_before": "0012905C",
+            "esp_after": "0012905C",
+            "eax_after": "006FFC50",
+            "ecx_after": "00000000",
+            "edx_after": "A95600D3",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9BA4",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00129070",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9BA4",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00129070",
+            "flags_before": "00000202",
+            "flags_after": "00000206",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "count_slot": "00129050",
+            "count_word": "00000002",
+            "data_slot": "00129054",
+            "data_word": "001A99B0",
+            "flag_slot": "00129058",
+            "flag_word": "8725D480",
+            "esp_before_call": "00129050",
+            "entry_esp": "0012904C"
+          },
+          "preguards": [
+            "91C30400",
+            "91C30401",
+            "91C30402",
+            "91C30403"
+          ],
+          "postguards": [
+            "BC780400",
+            "BC780401",
+            "BC780402",
+            "BC780403"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original_copy_storage.bin",
+            "size": 56,
+            "sha256": "f53e7513590c21c58a83102995ce0842fe5bd7d8c3db1e134fa9b1cde87b0b8e"
+          },
+          "full_root_hex": "d489ce0009000000373737373737373737373737373737370000000000000000b0826f000800000037373737013737373737373700000000",
+          "defined_flags": "004",
+          "copy_ADD": {
+            "entry_T": 1216588,
+            "left": 1216564,
+            "right": 16,
+            "result": 1216580
+          },
+          "child": {
+            "artifact": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original_owned_child.bin",
+              "size": 8,
+              "sha256": "3f1e49cd1c00657fde785964a6ca3514e88699b20fe33bba5c2f029ad8b53b95"
+            },
+            "full_hex": "00a5c219d30056a9",
+            "actual_pointer": 7307952
+          }
+        }
+      ],
+      "actual_allocated_objects": [
+        {
+          "address": 7339472,
+          "bytes": 56,
+          "role": "source_retained_root"
+        },
+        {
+          "address": 7338896,
+          "bytes": 56,
+          "role": "original_retained_root"
+        },
+        {
+          "address": 7340624,
+          "bytes": 56,
+          "role": "source_copy_root"
+        },
+        {
+          "address": 7363968,
+          "bytes": 12,
+          "role": "source_copy_child"
+        },
+        {
+          "address": 7339088,
+          "bytes": 56,
+          "role": "original_copy_root"
+        },
+        {
+          "address": 7307952,
+          "bytes": 8,
+          "role": "original_copy_child"
+        }
+      ],
+      "bound_original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\bound_original.bin",
+        "size": 116,
+        "sha256": "72651f7f41333c6ae878f11344cebc49adda48d27771600afd0c12444c69af61"
+      },
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original.bin",
+        "size": 116,
+        "sha256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3"
+      },
+      "masked_CALL_operands": [
+        [
+          51,
+          55
+        ],
+        [
+          66,
+          70
+        ]
+      ],
+      "literal_other_bytes": 108,
+      "copied_provider_ECX_EDX_unasserted": true
+    }
+  },
+  "code_gate": {
+    "whole_runtime_spans": 33,
+    "retained_three_TU_functions": 29,
+    "retained_TU_breakdown": {
+      "Source": 2,
+      "canonical": 9,
+      "probe": 18
+    },
+    "all_retained_functions_covered": [
+      {
+        "TU": "source",
+        "symbol": "?construct_native_scene_property_record_type9_four_byte_array_storage_008ef360@bsp@@YIPAXPAX0IPBXI@Z",
+        "address": 620761152,
+        "size": 116,
+        "covered": true
+      },
+      {
+        "TU": "source",
+        "symbol": "?allocate_native_four_byte_array_bytes@?A0xad049e8c@bsp@@YAPAXI@Z",
+        "address": 620761088,
+        "size": 61,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": 620761536,
+        "size": 90,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 620761632,
+        "size": 6,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??0exception@std@@QAE@ABV01@@Z",
+        "address": 620761360,
+        "size": 42,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "?what@exception@std@@UBEPBDXZ",
+        "address": 620761648,
+        "size": 14,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??_Gexception@std@@UAEPAXI@Z",
+        "address": 620761488,
+        "size": 45,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??0bad_alloc@std@@QAE@XZ",
+        "address": 620761328,
+        "size": 24,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??1bad_alloc@std@@UAE@XZ",
+        "address": 620761408,
+        "size": 17,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "address": 620761280,
+        "size": 48,
+        "covered": true
+      },
+      {
+        "TU": "canonical",
+        "symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "address": 620761440,
+        "size": 45,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "___local_stdio_printf_options",
+        "address": 620765120,
+        "size": 6,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "_printf",
+        "address": 620771408,
+        "size": 47,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "_ordinary_source_call",
+        "address": 620771376,
+        "size": 26,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "_ordinary_original_call",
+        "address": 620771344,
+        "size": 25,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "_raw_capture_call",
+        "address": 620771456,
+        "size": 191,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?read_bytes@@YA_NPAX0K@Z",
+        "address": 620763456,
+        "size": 56,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+        "address": 620763520,
+        "size": 496,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+        "address": 620763200,
+        "size": 150,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+        "address": 620762848,
+        "size": 337,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+        "address": 620763360,
+        "size": 81,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+        "address": 620761824,
+        "size": 278,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+        "address": 620762176,
+        "size": 620,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+        "address": 620764144,
+        "size": 972,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+        "address": 620764016,
+        "size": 117,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?disjoint@@YA_NIIII@Z",
+        "address": 620762112,
+        "size": 54,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?add_flags@@YAIII@Z",
+        "address": 620761664,
+        "size": 160,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "?fail@@YAHPBDI@Z",
+        "address": 620762800,
+        "size": 34,
+        "covered": true
+      },
+      {
+        "TU": "probe",
+        "symbol": "_main",
+        "address": 620765136,
+        "size": 6195,
+        "covered": true
+      }
+    ],
+    "before_zero_target_and_domain_allocations": true,
+    "after_all_frees": true,
+    "unique_whole_Source_108_literal_bytes": true,
+    "whole_code": [
+      {
+        "index": 1,
+        "symbol": "?construct_native_scene_property_record_type9_four_byte_array_storage_008ef360@bsp@@YIPAXPAX0IPBXI@Z",
+        "address": "25001040",
+        "size": 116,
+        "instruction_count": 36,
+        "linked_SHA256": "53c557e69fb9fdac2bb95fa478a69b58bc0749c008c4dcdcdc1d710337fe5dff",
+        "COFF_relocation_count": 2,
+        "map": {
+          "address": 620761152,
+          "section": "0001",
+          "offset": 64,
+          "provenance": "f   source.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_1.asm",
+          "size": 1798,
+          "sha256": "0cc48dedf5d236566dfb44cbe3ef0e9e52eec4ae3751331bbd6d70345993074e"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 2,
+        "symbol": "?allocate_native_four_byte_array_bytes@?A0xad049e8c@bsp@@YAPAXI@Z",
+        "address": "25001000",
+        "size": 61,
+        "instruction_count": 17,
+        "linked_SHA256": "289d0f2be8ea2b6765ade6f39f502d92d2394c2b8271ece7ce13df4570398c6a",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620761088,
+          "section": "0001",
+          "offset": 0,
+          "provenance": "f   source.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_2.asm",
+          "size": 865,
+          "sha256": "ba6f0de3370e260118fe63c435413f7e8520eb2d31e9a0df457915f0f1326e48"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 3,
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": "250011C0",
+        "size": 90,
+        "instruction_count": 34,
+        "linked_SHA256": "bab6f0ce09d1f99fc6450956da28902bfcd241eb2b9a616f12a39338dd91925f",
+        "COFF_relocation_count": 5,
+        "map": {
+          "address": 620761536,
+          "section": "0001",
+          "offset": 448,
+          "provenance": "f   canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_3.asm",
+          "size": 1558,
+          "sha256": "d454cf3732031b5fd2debcac2e90b68f77f95bb2b3bf6a74a3df20471f2dd8e5"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 4,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": "25001220",
+        "size": 6,
+        "instruction_count": 1,
+        "linked_SHA256": "e377fea496095ec8f37c012f285e3759021b079109c18769eaf47584f0d5aa05",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620761632,
+          "section": "0001",
+          "offset": 544,
+          "provenance": "f   canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_4.asm",
+          "size": 58,
+          "sha256": "387a717c35b7181e800021c6acd5bc98116b79e5b7811ddfcbee41ca81405929"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 5,
+        "symbol": "_ordinary_source_call",
+        "address": "25003830",
+        "size": 26,
+        "instruction_count": 7,
+        "linked_SHA256": "f266f3a3035e7e6f65590a9abe4b68890091158a1fc597556a7264db56f73d90",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620771376,
+          "section": "0001",
+          "offset": 10288,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_5.asm",
+          "size": 384,
+          "sha256": "d0a414913ea7386e86fac709c597f69a1839a0f4a4ce197dcd5b9873719a1fd6"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 6,
+        "symbol": "_ordinary_original_call",
+        "address": "25003810",
+        "size": 25,
+        "instruction_count": 7,
+        "linked_SHA256": "68a7514f86b54bc99f397087d47257b3eae98fbac69ad257f79e6cab9dc63276",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620771344,
+          "section": "0001",
+          "offset": 10256,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_6.asm",
+          "size": 398,
+          "sha256": "18b31652344baf7e33abf2ede21d0e99b085f189a8398ed172f6ae0c528ca207"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 7,
+        "symbol": "_raw_capture_call",
+        "address": "25003880",
+        "size": 191,
+        "instruction_count": 68,
+        "linked_SHA256": "9091059a23cd1b8a33b7ad95e5b1ac316b15cc700a17f5f974a7e112d21959f6",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620771456,
+          "section": "0001",
+          "offset": 10368,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_7.asm",
+          "size": 3646,
+          "sha256": "4765ab134a0631ab9fe046db93568fa7ba8652b807a049ff928e1a0a96fff34b"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 8,
+        "symbol": "??0bad_alloc@std@@QAE@XZ",
+        "address": "250010F0",
+        "size": 24,
+        "instruction_count": 6,
+        "linked_SHA256": "547c9a8578b16553453438f5da6e67636c9ce31dbb107edb21114331fa45f12c",
+        "COFF_relocation_count": 2,
+        "map": {
+          "address": 620761328,
+          "section": "0001",
+          "offset": 240,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_8.asm",
+          "size": 320,
+          "sha256": "93a68eedd04afb101ba4aa67c0780f146c754382b5fccfc408471622ef7f12a0"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 9,
+        "symbol": "_main",
+        "address": "25001FD0",
+        "size": 6195,
+        "instruction_count": 1570,
+        "linked_SHA256": "4d30b888eb4cf93b0a53481a5063d5d02c86ef09b28a174cb42f3cdb1a52e620",
+        "COFF_relocation_count": 192,
+        "map": {
+          "address": 620765136,
+          "section": "0001",
+          "offset": 4048,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_9.asm",
+          "size": 78420,
+          "sha256": "91583f285cb2a0625a38f476d67b8f8bef08cb75f7da66a3dd84032ceb213316"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 10,
+        "symbol": "@__security_check_cookie@4",
+        "address": "25003970",
+        "size": 14,
+        "instruction_count": 4,
+        "linked_SHA256": "457cdfbc72e51bd295e3aceb5ab4f1292fd8744e042c39744405829dd651ddc4",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620771696,
+          "section": "0001",
+          "offset": 10608,
+          "provenance": "f   MSVCRT:secchk.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_10.asm",
+          "size": 191,
+          "sha256": "8ddf105047b5f6b0d8cbadefe05131c337aae62590e8fc83c24d6f302d16d6f0"
+        },
+        "extent": "Complete local cookie helper including successful RET and named external failure tail JMP; external body and alignment excluded"
+      },
+      {
+        "index": 11,
+        "symbol": "_memcpy",
+        "address": "250046AC",
+        "size": 6,
+        "instruction_count": 1,
+        "linked_SHA256": "b5ca79067324c0c0ea04fa02597b548f35180a100d51890917aa4e8484d3c3b0",
+        "COFF_relocation_count": 0,
+        "map": {
+          "symbol": "_memcpy",
+          "address": 620775084,
+          "section": "0001",
+          "offset": 13996,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_11.asm",
+          "size": 58,
+          "sha256": "f2e7ed569fb341d8ea3b149f25bbc6a2b287232e29975f3a11e25752d1504c94"
+        },
+        "extent": "Complete single terminal JMP through actual import IAT; no alignment bytes"
+      },
+      {
+        "index": 12,
+        "symbol": "__CxxThrowException@8",
+        "address": "250046BE",
+        "size": 6,
+        "instruction_count": 1,
+        "linked_SHA256": "ebbbdd319762e20e10a56e667a6a47823cf0780c2721e8b58dbc00141f24faf7",
+        "COFF_relocation_count": 0,
+        "map": {
+          "symbol": "__CxxThrowException@8",
+          "address": 620775102,
+          "section": "0001",
+          "offset": 14014,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_12.asm",
+          "size": 58,
+          "sha256": "bbdc81a27978adced46a0ebfcac071c7bedbe84810f784c35d22c90ab8f410bf"
+        },
+        "extent": "Complete single terminal JMP through actual import IAT; no alignment bytes"
+      },
+      {
+        "index": 13,
+        "symbol": "__chkstk",
+        "address": "250039C0",
+        "size": 48,
+        "instruction_count": 24,
+        "linked_SHA256": "d3ab6085747e2656aa1ab20d3a1c4404adeb75be69af9b113b6dc171a9004e43",
+        "COFF_relocation_count": 0,
+        "map": {
+          "symbol": "__alloca_probe",
+          "address": 620771776,
+          "section": "0001",
+          "offset": 10688,
+          "provenance": "f   MSVCRT:chkstk.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_13.asm",
+          "size": 1056,
+          "sha256": "e08d7caca55750941b5873c2279c9dcc6a88d5d61b4f20da3fd065a6d0342fa6"
+        },
+        "extent": "Complete actual map-owned compiler helper span, including any alignment before the next mapped function; no fixed-size heuristic"
+      },
+      {
+        "index": 14,
+        "symbol": "??0exception@std@@QAE@ABV01@@Z",
+        "address": "25001110",
+        "size": 42,
+        "instruction_count": 15,
+        "linked_SHA256": "adf2f6de64a09804cf0398cb1902aba335585067c60ab67d883e848eb94df780",
+        "COFF_relocation_count": 2,
+        "map": {
+          "address": 620761360,
+          "section": "0001",
+          "offset": 272,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_14.asm",
+          "size": 696,
+          "sha256": "5b7d13382135f54061c118d2fa484768c9656fc657085553afc2f1fcd1159479"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 15,
+        "symbol": "?what@exception@std@@UBEPBDXZ",
+        "address": "25001230",
+        "size": 14,
+        "instruction_count": 5,
+        "linked_SHA256": "dd49a05a90faf100397cb1f7c73107d11bbb738d6feb52538a045ecc2ef02e65",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620761648,
+          "section": "0001",
+          "offset": 560,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_15.asm",
+          "size": 239,
+          "sha256": "baa41578bcccb19cb2934ef8fc3937d1adcdac7e0462d5a0b97fab6bdb04f4a4"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 16,
+        "symbol": "??_Gexception@std@@UAEPAXI@Z",
+        "address": "25001190",
+        "size": 45,
+        "instruction_count": 16,
+        "linked_SHA256": "dc6012345051efd76d87085852f83728e644d8c6729ce142b2c47437079dba33",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620761488,
+          "section": "0001",
+          "offset": 400,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_16.asm",
+          "size": 718,
+          "sha256": "ce07ecfd5ec3de70bc6ea991695c419eaa576938565dee2cc7bb32a48c8f909a"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 17,
+        "symbol": "??1bad_alloc@std@@UAE@XZ",
+        "address": "25001140",
+        "size": 17,
+        "instruction_count": 6,
+        "linked_SHA256": "f4e3a660ff2c09d4399e884ac4c90e738d00722ceb5cdfc80d01d5f87d18838c",
+        "COFF_relocation_count": 2,
+        "map": {
+          "address": 620761408,
+          "section": "0001",
+          "offset": 320,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_17.asm",
+          "size": 275,
+          "sha256": "df3351612fc821bbed647c069d6c9a32e2bb769cf93ef4f4f7a825199d555828"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 18,
+        "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "address": "250010C0",
+        "size": 48,
+        "instruction_count": 16,
+        "linked_SHA256": "24f3b8c37bcf1802af1ac53864cdd9259881304cd9c36294471e011a3213c539",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620761280,
+          "section": "0001",
+          "offset": 192,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_18.asm",
+          "size": 759,
+          "sha256": "0adf43fffc3e441f2b1573fc9b8ac2ddea869fd81679dc6a048e4a6a8aadc81e"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 19,
+        "symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "address": "25001160",
+        "size": 45,
+        "instruction_count": 16,
+        "linked_SHA256": "d99b03360e2af440c53c3233270cb2678c65058cae0d489ace50129358652bbf",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620761440,
+          "section": "0001",
+          "offset": 352,
+          "provenance": "f i canonical.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_19.asm",
+          "size": 718,
+          "sha256": "8017052cb694f08cb1647daaf8315c61014f01916572c21954ce1a0b51d72734"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 20,
+        "symbol": "___local_stdio_printf_options",
+        "address": "25001FC0",
+        "size": 6,
+        "instruction_count": 2,
+        "linked_SHA256": "a9e88f33629e428df1e378611286cb3adfdd8efd2a6197ed8ac6d0913fa4e5f2",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620765120,
+          "section": "0001",
+          "offset": 4032,
+          "provenance": "f i probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_20.asm",
+          "size": 87,
+          "sha256": "4845799069ac6d05f64bfdaf3024956684a4baa8fcb0578a070af329a4470733"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 21,
+        "symbol": "_printf",
+        "address": "25003850",
+        "size": 47,
+        "instruction_count": 19,
+        "linked_SHA256": "a804a47d1acc7b27a0809950ad59bba6fbae6b5dfe10e50c15fba78c91f866bd",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620771408,
+          "section": "0001",
+          "offset": 10320,
+          "provenance": "f i probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_21.asm",
+          "size": 867,
+          "sha256": "fac87264bebf8f2098610d7091b3c8c4d44bad662813a6bee63a564e1ecc2c10"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 22,
+        "symbol": "?read_bytes@@YA_NPAX0K@Z",
+        "address": "25001940",
+        "size": 56,
+        "instruction_count": 23,
+        "linked_SHA256": "1a73e7a9be35a26aa1b4ed897c52d6ff0345348a179d72e57e13513bef8664f4",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620763456,
+          "section": "0001",
+          "offset": 2368,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_22.asm",
+          "size": 1056,
+          "sha256": "e38bd65237a3835387f5e120663f5b7a909ccf267b5dc1950f0a54fd8330cdfa"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 23,
+        "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+        "address": "25001980",
+        "size": 496,
+        "instruction_count": 169,
+        "linked_SHA256": "6d5ffc2f638774c6ce9309a6fd0431935d41b94fc528394e8b62662c9e430611",
+        "COFF_relocation_count": 10,
+        "map": {
+          "address": 620763520,
+          "section": "0001",
+          "offset": 2432,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_23.asm",
+          "size": 7897,
+          "sha256": "61ecfa8ca1a3acf1f923dd3b236628d7db34e1d5b77699a1799fe4ef3eb4f0f3"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 24,
+        "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+        "address": "25001840",
+        "size": 150,
+        "instruction_count": 65,
+        "linked_SHA256": "66f8c22f0b2ae7e9f97e6c9c04cffe21a6c293f8c620861a7c42f5fda5536711",
+        "COFF_relocation_count": 1,
+        "map": {
+          "address": 620763200,
+          "section": "0001",
+          "offset": 2112,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_24.asm",
+          "size": 3044,
+          "sha256": "b7af29807c5f0fef914a85c642c869c6ba63e8dd0403e6be3b166d591067041f"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 25,
+        "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+        "address": "250016E0",
+        "size": 337,
+        "instruction_count": 104,
+        "linked_SHA256": "e1ac8565876559ae3aa76aa7c971b2868696b618e4679e20381d090e9b5c50c4",
+        "COFF_relocation_count": 14,
+        "map": {
+          "address": 620762848,
+          "section": "0001",
+          "offset": 1760,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_25.asm",
+          "size": 4854,
+          "sha256": "2de3feb8f8433962eed282b65703e5ccf4a13b489ed5b1db0325235f150a7392"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 26,
+        "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+        "address": "250018E0",
+        "size": 81,
+        "instruction_count": 27,
+        "linked_SHA256": "75c5ebc6b549189bdf66bcb3f9268f10b67f1c65f8dd9a546eabf6b66040975a",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620763360,
+          "section": "0001",
+          "offset": 2272,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_26.asm",
+          "size": 1341,
+          "sha256": "f45528113997a2a415acdb4b411741ed3c07457a5337c9ae6665e147529100eb"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 27,
+        "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+        "address": "250012E0",
+        "size": 278,
+        "instruction_count": 96,
+        "linked_SHA256": "c975a5dad1124c0ade7bdd9f9050be07107e9f604e8ef0c5e6ecf006ca95b198",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620761824,
+          "section": "0001",
+          "offset": 736,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_27.asm",
+          "size": 4725,
+          "sha256": "e183517fbeedc13c9318aee8611f82e820561b5736cf58464f682eca8317e49a"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 28,
+        "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+        "address": "25001440",
+        "size": 620,
+        "instruction_count": 192,
+        "linked_SHA256": "3b8194768ee14073a15053bb9f9153437995acaec3214d5d47ec38a3eb8df6e3",
+        "COFF_relocation_count": 4,
+        "map": {
+          "address": 620762176,
+          "section": "0001",
+          "offset": 1088,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_28.asm",
+          "size": 9528,
+          "sha256": "ea640051cfc5d85831033dc6df1ccd6e77be1b1bed7e4114999dda1b22303ae9"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 29,
+        "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+        "address": "25001BF0",
+        "size": 972,
+        "instruction_count": 303,
+        "linked_SHA256": "f9eaee57833efdf700c9e4a99de5b810e81e26b441387250362d0fed7420416f",
+        "COFF_relocation_count": 20,
+        "map": {
+          "address": 620764144,
+          "section": "0001",
+          "offset": 3056,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_29.asm",
+          "size": 14929,
+          "sha256": "732f8bca208d1e53ef614a76aa83552d4f16d9bb601037156fa1aea03895e359"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 30,
+        "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+        "address": "25001B70",
+        "size": 117,
+        "instruction_count": 53,
+        "linked_SHA256": "21d54ffc9c5bbe48badbea37b798e50ca2df0ee115ae811be138f454a2e77f9d",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620764016,
+          "section": "0001",
+          "offset": 2928,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_30.asm",
+          "size": 2327,
+          "sha256": "edb8e3b3c891f7ee2327ecb3ac2ff3d32422d91d8bdbcc162236597045553d7d"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 31,
+        "symbol": "?disjoint@@YA_NIIII@Z",
+        "address": "25001400",
+        "size": 54,
+        "instruction_count": 23,
+        "linked_SHA256": "75d4e9ad020ee249bc10a59d2c3308ee2603155fe3ca01a45400e1854b66740c",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620762112,
+          "section": "0001",
+          "offset": 1024,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_31.asm",
+          "size": 1088,
+          "sha256": "f3c56dd5d5ee95c2b227c911f47377908ff0f63014c8f80f61a614a63b56a448"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 32,
+        "symbol": "?add_flags@@YAIII@Z",
+        "address": "25001240",
+        "size": 160,
+        "instruction_count": 67,
+        "linked_SHA256": "d024af342af90a2337573b5f6b5678b274d4c93c48cff6a8a42343fcd2716202",
+        "COFF_relocation_count": 0,
+        "map": {
+          "address": 620761664,
+          "section": "0001",
+          "offset": 576,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_32.asm",
+          "size": 2960,
+          "sha256": "8b29de4419d1a54d52301d7559140ef477521a332c7e7caf6c81bb2a14473144"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      },
+      {
+        "index": 33,
+        "symbol": "?fail@@YAHPBDI@Z",
+        "address": "250016B0",
+        "size": 34,
+        "instruction_count": 9,
+        "linked_SHA256": "1066737c0775e1f1f09d6fe5d52e4ae04b635594693fed944a2cab1cabd31309",
+        "COFF_relocation_count": 3,
+        "map": {
+          "address": 620762800,
+          "section": "0001",
+          "offset": 1712,
+          "provenance": "f   probe.obj"
+        },
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_33.asm",
+          "size": 435,
+          "sha256": "39e3e7418a1f0b98b2535a7e56922ccd912a1de9681d5045f49573d1a100c727"
+        },
+        "extent": "Complete COFF function body; every relocation resolved through exact linker map."
+      }
+    ],
+    "cookie_bytes": 14,
+    "cookie_failure_tail_JMP_included": true,
+    "external_cookie_failure_body_read": false,
+    "chkstk_map_owned": true,
+    "exception_support_cold_bytes_only": true,
+    "manual_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\manual_static_review.json",
+      "size": 19215,
+      "sha256": "cbf0fe5155586eb48cba7db551f252a778c53be693582e68943af9e0664229ec"
+    },
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\static_gate.json",
+      "size": 674412,
+      "sha256": "4bb1d19e08b453e7ebc355f725ce8ce17787a0aad8f2dc7d3cc35406816dd9aa"
+    },
+    "whole_COFF_map_relocation_checks": true
+  },
+  "actual_providers": {
+    "specifications": [
+      {
+        "name": "malloc",
+        "import_binding": {
+          "IAT": 620777628,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196896,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "name": "free",
+        "import_binding": {
+          "IAT": 620777636,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196768,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc"
+      },
+      {
+        "name": "_callnewh",
+        "import_binding": {
+          "IAT": 620777632,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 569344,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0521010ffd6f7d8"
+      },
+      {
+        "name": "memcpy",
+        "import_binding": {
+          "IAT": 620777592,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "export_RVA": 90528,
+        "machine": 332,
+        "timestamp": 2650349747,
+        "image_size": 118784,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+          "size": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 196608,
+          "index_low": 221458,
+          "size_high": 0,
+          "size_low": 123328,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll"
+        },
+        "physical_export_prefix32": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000"
+      }
+    ],
+    "actual_runtime": [
+      {
+        "name": "malloc",
+        "IAT_target": 1987903776,
+        "export": 1987903776,
+        "export_RVA": 196896,
+        "module_base": 1987706880,
+        "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "normalized_live_prefix": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+        "before_after_equal": true
+      },
+      {
+        "name": "free",
+        "IAT_target": 1987903648,
+        "export": 1987903648,
+        "export_RVA": 196768,
+        "module_base": 1987706880,
+        "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "normalized_live_prefix": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+        "before_after_equal": true
+      },
+      {
+        "name": "_callnewh",
+        "IAT_target": 1988276224,
+        "export": 1988276224,
+        "export_RVA": 569344,
+        "module_base": 1987706880,
+        "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "normalized_live_prefix": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+        "before_after_equal": true
+      },
+      {
+        "name": "memcpy",
+        "IAT_target": 1924293024,
+        "export": 1924293024,
+        "export_RVA": 90528,
+        "module_base": 1924202496,
+        "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+        "physical_SHA256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "normalized_live_prefix": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+        "before_after_equal": true
+      }
+    ],
+    "physical_I386": true,
+    "IAT_export_MEM_IMAGE": true,
+    "mapped_NT_equals_open_file_NT": true,
+    "file_ID_full_SHA256_ASLR_prefix32": true,
+    "before_after_all_frees": true,
+    "unchanged_canonical_Source_used": true,
+    "Type8_Source_admission_used": false
+  },
+  "preservation": {
+    "prior_artifacts": 18512,
+    "union": {
+      "families": [
+        {
+          "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r",
+          "seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\artifact_manifest.json",
+            "size": 64455,
+            "sha256": "c6f70a11050d84ec665e404a3dab905a7613ccceaca90c90e8ae687b86918dd9"
+          },
+          "actual_files": 252,
+          "prior_pins": 5765,
+          "exact_recursive_inventory": true
+        },
+        {
+          "family": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p1",
+          "seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p1\\seal.json",
+            "size": 81667,
+            "sha256": "686c226f85185bd77f5bf4bc3e56037a63c99d9c07cde367aa4539fd7cddbf20"
+          },
+          "actual_files": 381,
+          "prior_pins": 17427,
+          "exact_recursive_inventory": true
+        },
+        {
+          "family": "J:\\PROG\\battlestations-pacific-decompile\\local\\ref55p3",
+          "seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ref55p3\\seal.json",
+            "size": 21935,
+            "sha256": "0bc3f0ed3f0ae93a20d1ab519491103e18e6d930013b1069f96bf5042f4d75be"
+          },
+          "actual_files": 101,
+          "prior_pins": 18016,
+          "exact_recursive_inventory": true
+        }
+      ],
+      "deduplicated_count": 18512,
+      "historical_associations_unchanged": true
+    },
+    "Source_and_actual_consumed_inputs_unchanged": true,
+    "unconsumed_metadata_frozen_copies": 10,
+    "original_mutable_metadata_not_strict_after_pin": true,
+    "exact_new_family_artifacts": 420,
+    "files_including_seal": 421,
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\seal.json",
+      "size": 107053,
+      "sha256": "7d60a4b59f36e2c32f92acb106f5da0b771f6c592b2932dff4c96bbaa06b2880"
+    },
+    "exact_recursive_inventory_verified_after_seal": true,
+    "root_exclusions": [
+      "seal.json"
+    ],
+    "actual_pycache_files": [],
+    "all_failure_artifacts_included": true,
+    "accepted_stage_counts": {
+      "prepare": 1,
+      "build": 1,
+      "static_gate": 1,
+      "launch": 1,
+      "post": 1
+    },
+    "old_phase_helper_or_process_replays": 0,
+    "post": {
+      "passed": true,
+      "native_before_after_equal": true,
+      "all_strict_consumed_inputs_and_prior_artifacts_unchanged": true,
+      "unconsumed_metadata_copies_unchanged_originals_not_strict_after_pinned": true,
+      "prior_artifacts": 18512,
+      "accepted_processes": 1,
+      "executed_TUs": 3,
+      "complete_cookie_helper_gate": true,
+      "metadata_copies": 10,
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\src\\native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "size": 2190,
+        "sha256": "16fc191de1e1cbd856477ab9394572be4da589b657c7daeb09b4ea01532c293c"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\include\\bsp\\native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "size": 2752,
+        "sha256": "ba6731df386adb814165454ed1840344c97777764afbc2dbc35824df680143f8"
+      }
+    }
+  },
+  "failures": [
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\initial_discovery_receipt.json",
+        "size": 505,
+        "sha256": "9f8b37f83ba0e5fb7d9415ffb689308b3676ea3b69b448e4bec9451cfe1a5d18"
+      },
+      "details": {
+        "compiler_target_entries": 0,
+        "failures": [
+          {
+            "action": "python tools/bsp.py packets show packet-id",
+            "error": "invalid choice: show (choose from list, ready, done, depend)",
+            "effect": "No query/mutation; corrected with bounded JSON by-id selection"
+          },
+          {
+            "action": "Read-only Get-ChildItem guessed cc12_resume_integrator/local/t8p1 and ref55p3",
+            "error": "Paths do not exist",
+            "effect": "No mutation; Root supplied exact Main/local paths"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\derivation_failure.json",
+        "size": 535,
+        "sha256": "87f8fb50449863a230ea7d5ec3d24e6fbd3c9c0f891684e6abf6672cdb942eb7"
+      },
+      "details": {
+        "stage": "offline_text_generation",
+        "compiler_calls": 0,
+        "target_entries": 0,
+        "partial_generated_outputs": [],
+        "error": "derive_family.py line85 AssertionError: assert 'type8' not in probe+recipe and 'open_module(' not in probe",
+        "cause": "The assertion also rejected legitimate Root_type8_artifacts preservation metadata inserted into the new recipe.",
+        "recovery": "Original generator retained; fresh recovery generator narrows exclusion to the obsolete constructor name. No old helper/process/stage replay."
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review_failure.json",
+        "size": 499,
+        "sha256": "a1c4d14378043181269bb0f1c530de87169d6e8da337e4674ece7ae8492483dc"
+      },
+      "details": {
+        "stage": "offline_precompile_review",
+        "compiler_calls": 0,
+        "target_entries": 0,
+        "generated_review_receipts": 0,
+        "error": "precompile_review.py line24 AssertionError: assert 'source+55' not in probe",
+        "cause": "Incorrect negative substring test also matched the intended gate.header.source+55 expression.",
+        "correction": "Remove that redundant negative assertion; adjacent positive exact-expression checks remain in a fresh review helper. Original failure helper preserved."
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\manual_review_failure.json",
+        "size": 570,
+        "sha256": "bc3f4f929465f185c2c1209a9f4b7bbdb2feea6b596e16422cf459102977c3b9"
+      },
+      "details": {
+        "stage": "offline_static_review",
+        "target_entries": 0,
+        "manual_receipts_created": 0,
+        "error": "write_manual_review.py line30 AssertionError: len(closure)==30",
+        "cause": "Incorrect manually entered function count; retained definitions are source2+canonical9+probe18=29. Four additional external boundary/helper spans make33 total.",
+        "correction": "New review helper asserts29; whole-body coverage for every actual retained symbol was already checked successfully before this count assertion. Static gate/compiler stages unchanged and not replayed."
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_report\\report_syntax_failure.json",
+        "size": 472,
+        "sha256": "831742f39eb1d31cc06a56731a16a89d28e0261576579b82f77da38cdb0a8b27"
+      },
+      "details": {
+        "stage": "postseal_public_report_helper_syntax_review",
+        "Source_family_changed": false,
+        "report_helper_executed": false,
+        "target_process_replays": 0,
+        "error": "finish_report.py line58 SyntaxError: invalid non-printable character U+200B in a proposed report key.",
+        "correction": "Original draft retained; new report helper removes the invisible characters and includes this receipt. No report/build-seal file was written by the failed syntax review."
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build\\checks_receipt_failure.json",
+        "size": 513,
+        "sha256": "841463b22c8ea3ef7d36ccb6bbcee559840a321cd6724560d9443d3ed1c54970"
+      },
+      "details": {
+        "stage": "after_successful_full_build_and_CTest_receipt",
+        "build_exit": 0,
+        "CTest_passed": 3,
+        "compiler_or_test_failure": false,
+        "error": "run_worker_checks.py line17 AssertionError: tree.count('add_test(')==3",
+        "cause": "Visual Studio is multi-configuration; each unique test name appears in several configuration clauses.",
+        "correction": "Fresh receipt helper verifies the three unique registered names and actual successful Release CTest log. No build, CTest, seeds or fixture rerun."
+      }
+    },
+    {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_report\\report_dependency_failure.json",
+        "size": 673,
+        "sha256": "e0521ed0c41dcd2baf8c84cffd04aeafd6003a58d5ce30664660e47021210c42"
+      },
+      "details": {
+        "stage": "public_report_before_build_receipt_recovery",
+        "Source_family_changed": false,
+        "build_seal_created": false,
+        "public_report_created": false,
+        "compiler_or_target_replays": 0,
+        "error": "finish_report_recovery.py line13 FileNotFoundError: local/t9_build/checks.json",
+        "cause": "The full build and all three CTests passed, but its receipt helper rejected repeated multi-configuration test clauses before writing checks.json.",
+        "correction": "Fresh build receipt helper verifies actual successful log and three unique registered names. This fresh final report helper includes both retained failures and performs no build/test/fixture rerun."
+      }
+    }
+  ],
+  "compile_link_static_target_failures": 0,
+  "excluded": [
+    "008EF7F0 helper body and ABI",
+    "native private BF55BE heap and BF7680 copy bodies",
+    "selected arm EH/null/default paths",
+    "phase virtual behavior",
+    "native class/ownership/destruction",
+    "whole clone",
+    "World/startup/gameplay",
+    "zero/overflow/alias/reentry/failure/unwind domain"
+  ],
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "owned_constructor_bookends": 2,
+    "old_clone_helper_provider_queries": 0,
+    "existing_seed_verification": "Eight existing seed spans through private output for three baseline CTests; no shared export mutation"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\recipe.py",
+      "size": 25577,
+      "sha256": "b11ee77da128a93d04a60a77a4b6e579e5b1373696f99e32a20a40eea6c07053"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\helpers.py",
+      "size": 7636,
+      "sha256": "cde9d9e370c552f358018f964b3ee4bec96b1f5f51ec356be62a70da0b0d2195"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\probe.cpp",
+      "size": 29865,
+      "sha256": "8bba55f75074c839b4617b4718ea82ea32ebd1b7f7d3cb3f8cfeecaab5936513"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\derive_family.py",
+      "size": 10381,
+      "sha256": "3a5ae81f33352c162b6667eac19b4c60e83dd4e7efb3ba99797f5b032e000ee3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\derive_family_recovery.py",
+      "size": 10381,
+      "sha256": "1f4c9c759c4c475b954b752d3226af1488b2268b2f2d54815d39b2f04cf7e36d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\recover_derivation.py",
+      "size": 1294,
+      "sha256": "1524709a671bb5fc43fab24df19d2cf398af5eb0a22b34268f56ba206d797e02"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\family_derivation.json",
+      "size": 1004,
+      "sha256": "1a96e2631c5170f2a0f27b71ea10e4bcdb240cf1a1e00979a47089f8728f81fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\initial_discovery_receipt.json",
+      "size": 505,
+      "sha256": "9f8b37f83ba0e5fb7d9415ffb689308b3676ea3b69b448e4bec9451cfe1a5d18"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\derivation_failure.json",
+      "size": 535,
+      "sha256": "87f8fb50449863a230ea7d5ec3d24e6fbd3c9c0f891684e6abf6672cdb942eb7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review.py",
+      "size": 3647,
+      "sha256": "70aeb56816f563b170c0776a50782826167c2ee42faa2043149cc22b0db3fc63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review_recovery.py",
+      "size": 3571,
+      "sha256": "0e070308efb93d866369a2c5c0d8b9442556088f6f4340c6bb461b2f5eaefeb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\recover_precompile_review.py",
+      "size": 1021,
+      "sha256": "0832442abbae1a2c4410afa0f6b1ea76740c6f0dcf75cd0e4ef38f84906fc8a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review_failure.json",
+      "size": 499,
+      "sha256": "a1c4d14378043181269bb0f1c530de87169d6e8da337e4674ece7ae8492483dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\precompile_review.json",
+      "size": 2572,
+      "sha256": "9bb7011931782f44bf6f5ca61281983725444cba20aa68ee1ab36d60e959699b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\prelaunch_contract.json",
+      "size": 329,
+      "sha256": "b754fce30a528c1e4065fe81f05274b7c93b70cc1eab16c8b3b6605586604fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\prepare.json",
+      "size": 790,
+      "sha256": "da813168aaf75cc29f5f35fd5ac1cf15feb896209f41ca018839a0799bac8880"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\build.json",
+      "size": 1872,
+      "sha256": "9254328f427e8b49e4c76c7e87c7dd532841f83a637182b86b7810023dc02654"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\static_gate.json",
+      "size": 674412,
+      "sha256": "4bb1d19e08b453e7ebc355f725ce8ce17787a0aad8f2dc7d3cc35406816dd9aa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\manual_static_review.json",
+      "size": 19215,
+      "sha256": "cbf0fe5155586eb48cba7db551f252a778c53be693582e68943af9e0664229ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\write_manual_review.py",
+      "size": 6364,
+      "sha256": "4e1e5689d75d73e61671a113fe60e5d8873475a51f3af37eabd16a7b349eb54c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\write_manual_review_recovery.py",
+      "size": 6364,
+      "sha256": "62b956b31326b423abc983e7517721083e9908cc09527decee68b3c34a05a7af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\recover_manual_review.py",
+      "size": 1163,
+      "sha256": "0e0438295d2e926017032edae6726dd20ff04e15b3f134bc35b6a5935cf03a4f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\manual_review_failure.json",
+      "size": 570,
+      "sha256": "bc3f4f929465f185c2c1209a9f4b7bbdb2feea6b596e16422cf459102977c3b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\runtime.json",
+      "size": 4709,
+      "sha256": "a95d05b8e0325b2bb34d7022a49b94b5b7948bed5d0e731e43a253459f8bd068"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\observed_captures.json",
+      "size": 11335,
+      "sha256": "30261b2dd06a224325fa22c4856aeabfb3a2a37e65cf51072615ebcd6eb176c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\decode_captures.py",
+      "size": 6556,
+      "sha256": "9969ecf9d89e284437d046237af150a240c69650558db3b85e8d3c5fa01848e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\derive_decode.py",
+      "size": 2048,
+      "sha256": "faa3eede73b80184bbe48011738a2fe9a68d082ce5ade0d69ef93ead62ef6c8f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\decode_derivation.json",
+      "size": 578,
+      "sha256": "64b4c5f375355df84b940a61726c274ac1ee6035c7a8f063988939196a1bd798"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\post.json",
+      "size": 931,
+      "sha256": "7d718763987426d1fb68980e3b3721022c42a9c1970a02a302c00bc517df26ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\seal.json",
+      "size": 107053,
+      "sha256": "7d60a4b59f36e2c32f92acb106f5da0b771f6c592b2932dff4c96bbaa06b2880"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\prior_union.json",
+      "size": 1390,
+      "sha256": "bca6f539c467a2b150fb5b8f6074923a14aae5693e47aac217da97c811d71578"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\prior_before.json",
+      "size": 4925446,
+      "sha256": "1246991710c8e55958ecc3182333431a054685eaac415cabee16d44a774a5bd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\prior_after.json",
+      "size": 4925446,
+      "sha256": "1246991710c8e55958ecc3182333431a054685eaac415cabee16d44a774a5bd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\native_before.json",
+      "size": 5179,
+      "sha256": "0745c9d8d24f977cdabc746aac94dad0cc69eeddc258a0463f78fa3b397b74a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\native_after.json",
+      "size": 5179,
+      "sha256": "0745c9d8d24f977cdabc746aac94dad0cc69eeddc258a0463f78fa3b397b74a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\original.bin",
+      "size": 116,
+      "sha256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\bound_original.bin",
+      "size": 116,
+      "sha256": "72651f7f41333c6ae878f11344cebc49adda48d27771600afd0c12444c69af61"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\gate.bin",
+      "size": 11147,
+      "sha256": "8c79baed764e1dd37ad3152770c6e4e0a65c8732357462c6b4b3daa50eb1ae8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source_COFF.json",
+      "size": 6547,
+      "sha256": "db12cb9b8eb2079a59e8a32c0fe9ee83b1f6fc4fd0b1115cc5b89cc5a610fd63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\canonical_COFF.json",
+      "size": 162386,
+      "sha256": "f22912446fb4f6d01fac7b824e343446fe932cc29eda1bd3c4f02839a9e1e525"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\probe_COFF.json",
+      "size": 161059,
+      "sha256": "6c3e9b8c873a84ca84d2b196e72333cb59e869d15e33dd1a44b1fca1642574ef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\source.obj",
+      "size": 1830,
+      "sha256": "a074f7a9acdfa288a96d95a5f71aa4181f95aeefce10b79563da1be792cb5a7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\canonical.obj",
+      "size": 36839,
+      "sha256": "a4481ef59ef3d59da6ff744104819b230e868b69ecac6cf06bd0861e135ef547"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\probe.obj",
+      "size": 41032,
+      "sha256": "47b6f646597e500d533b583dfe45f9428a7018dddff0f6b4058f5ff250772716"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\t9_probe.exe",
+      "size": 24064,
+      "sha256": "5c0b0f8722067b32e4546d300351fc66e8b14150183b7a048feb1cd1fc815c43"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\t9_probe.map",
+      "size": 39166,
+      "sha256": "0c690e0c95d7a5c02edde80697e092769cc04d45e546a3fd31d6d9c5ea3bb42c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\inputs_before.json",
+      "size": 13191,
+      "sha256": "ddfb28bd6c7915590e93cb15b5aa4c14b300e04cf58b9cd061e702ee40e8848e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\inputs_after.json",
+      "size": 13191,
+      "sha256": "ddfb28bd6c7915590e93cb15b5aa4c14b300e04cf58b9cd061e702ee40e8848e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\consumed_headers_before.json",
+      "size": 40142,
+      "sha256": "f06b196d4c8e684b61c22c5b9563c9b389fffc8fbcd1ffca9eb94b622549dc3f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\consumed_headers_after.json",
+      "size": 40142,
+      "sha256": "f06b196d4c8e684b61c22c5b9563c9b389fffc8fbcd1ffca9eb94b622549dc3f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\consumed_libraries_before.json",
+      "size": 1573,
+      "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\consumed_libraries_after.json",
+      "size": 1573,
+      "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\metadata_copies.json",
+      "size": 6213,
+      "sha256": "b9b343979e637a6c4503bad810585ba1a51341226a235415c714cd7b863a6bce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\frozen_inputs.json",
+      "size": 36061,
+      "sha256": "e8ac493aba09940930cecf2e1d3ed431bb277f41f8390364e3ba026394d5e792"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\frozen_headers.json",
+      "size": 112277,
+      "sha256": "238dc6aaa1fcdc123ae1ab035d780c360fe121e07f0d1c2d69d806585c13e9b2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\frozen_libraries.json",
+      "size": 4375,
+      "sha256": "8ec2b413d288a3dc24b53a5e6be3cf279f7eb5843d7edb0717f70b4bf5ba52fa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\process_args.json",
+      "size": 4673,
+      "sha256": "a551e3da4d3b3dc185ab181a7d0889d4fc8406b606fcd3616a59c501350c1671"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\process_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\process_stdout.txt",
+      "size": 3660,
+      "sha256": "8a34f8a2fb040be099d491ccba9f78ceafe90f832532826ce37ded8cd387ca74"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\process_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\commit_message.txt",
+      "size": 629,
+      "sha256": "fc2367e2bb9e1878e07c799cf62dfba10347d0c4b5ed86a56070da6bbaa0965c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_1.asm",
+      "size": 1798,
+      "sha256": "0cc48dedf5d236566dfb44cbe3ef0e9e52eec4ae3751331bbd6d70345993074e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_2.asm",
+      "size": 865,
+      "sha256": "ba6f0de3370e260118fe63c435413f7e8520eb2d31e9a0df457915f0f1326e48"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_3.asm",
+      "size": 1558,
+      "sha256": "d454cf3732031b5fd2debcac2e90b68f77f95bb2b3bf6a74a3df20471f2dd8e5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_4.asm",
+      "size": 58,
+      "sha256": "387a717c35b7181e800021c6acd5bc98116b79e5b7811ddfcbee41ca81405929"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_5.asm",
+      "size": 384,
+      "sha256": "d0a414913ea7386e86fac709c597f69a1839a0f4a4ce197dcd5b9873719a1fd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_6.asm",
+      "size": 398,
+      "sha256": "18b31652344baf7e33abf2ede21d0e99b085f189a8398ed172f6ae0c528ca207"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_7.asm",
+      "size": 3646,
+      "sha256": "4765ab134a0631ab9fe046db93568fa7ba8652b807a049ff928e1a0a96fff34b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_8.asm",
+      "size": 320,
+      "sha256": "93a68eedd04afb101ba4aa67c0780f146c754382b5fccfc408471622ef7f12a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_9.asm",
+      "size": 78420,
+      "sha256": "91583f285cb2a0625a38f476d67b8f8bef08cb75f7da66a3dd84032ceb213316"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_10.asm",
+      "size": 191,
+      "sha256": "8ddf105047b5f6b0d8cbadefe05131c337aae62590e8fc83c24d6f302d16d6f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_11.asm",
+      "size": 58,
+      "sha256": "f2e7ed569fb341d8ea3b149f25bbc6a2b287232e29975f3a11e25752d1504c94"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_12.asm",
+      "size": 58,
+      "sha256": "bbdc81a27978adced46a0ebfcac071c7bedbe84810f784c35d22c90ab8f410bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_13.asm",
+      "size": 1056,
+      "sha256": "e08d7caca55750941b5873c2279c9dcc6a88d5d61b4f20da3fd065a6d0342fa6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_14.asm",
+      "size": 696,
+      "sha256": "5b7d13382135f54061c118d2fa484768c9656fc657085553afc2f1fcd1159479"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_15.asm",
+      "size": 239,
+      "sha256": "baa41578bcccb19cb2934ef8fc3937d1adcdac7e0462d5a0b97fab6bdb04f4a4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_16.asm",
+      "size": 718,
+      "sha256": "ce07ecfd5ec3de70bc6ea991695c419eaa576938565dee2cc7bb32a48c8f909a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_17.asm",
+      "size": 275,
+      "sha256": "df3351612fc821bbed647c069d6c9a32e2bb769cf93ef4f4f7a825199d555828"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_18.asm",
+      "size": 759,
+      "sha256": "0adf43fffc3e441f2b1573fc9b8ac2ddea869fd81679dc6a048e4a6a8aadc81e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_19.asm",
+      "size": 718,
+      "sha256": "8017052cb694f08cb1647daaf8315c61014f01916572c21954ce1a0b51d72734"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_20.asm",
+      "size": 87,
+      "sha256": "4845799069ac6d05f64bfdaf3024956684a4baa8fcb0578a070af329a4470733"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_21.asm",
+      "size": 867,
+      "sha256": "fac87264bebf8f2098610d7091b3c8c4d44bad662813a6bee63a564e1ecc2c10"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_22.asm",
+      "size": 1056,
+      "sha256": "e38bd65237a3835387f5e120663f5b7a909ccf267b5dc1950f0a54fd8330cdfa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_23.asm",
+      "size": 7897,
+      "sha256": "61ecfa8ca1a3acf1f923dd3b236628d7db34e1d5b77699a1799fe4ef3eb4f0f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_24.asm",
+      "size": 3044,
+      "sha256": "b7af29807c5f0fef914a85c642c869c6ba63e8dd0403e6be3b166d591067041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_25.asm",
+      "size": 4854,
+      "sha256": "2de3feb8f8433962eed282b65703e5ccf4a13b489ed5b1db0325235f150a7392"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_26.asm",
+      "size": 1341,
+      "sha256": "f45528113997a2a415acdb4b411741ed3c07457a5337c9ae6665e147529100eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_27.asm",
+      "size": 4725,
+      "sha256": "e183517fbeedc13c9318aee8611f82e820561b5736cf58464f682eca8317e49a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_28.asm",
+      "size": 9528,
+      "sha256": "ea640051cfc5d85831033dc6df1ccd6e77be1b1bed7e4114999dda1b22303ae9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_29.asm",
+      "size": 14929,
+      "sha256": "732f8bca208d1e53ef614a76aa83552d4f16d9bb601037156fa1aea03895e359"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_30.asm",
+      "size": 2327,
+      "sha256": "edb8e3b3c891f7ee2327ecb3ac2ff3d32422d91d8bdbcc162236597045553d7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_31.asm",
+      "size": 1088,
+      "sha256": "f3c56dd5d5ee95c2b227c911f47377908ff0f63014c8f80f61a614a63b56a448"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_32.asm",
+      "size": 2960,
+      "sha256": "8b29de4419d1a54d52301d7559140ef477521a332c7e7caf6c81bb2a14473144"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a\\whole_33.asm",
+      "size": 435,
+      "sha256": "39e3e7418a1f0b98b2535a7e56922ccd912a1de9681d5045f49573d1a100c727"
+    }
+  ],
+  "next_owner": "Root independent fresh proof family, shared CMake/Main full build and checks, metadata/Ghidra publication and integration before Source admission1.",
+  "public_report_generation": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_report\\seal.json",
+      "size": 2299,
+      "sha256": "3e6ff1de4a86f7ee41a5d644dab27659dfb7d69f2cb9ae7699700cfcd51457ce"
+    },
+    "files_including_seal": 9,
+    "exact_allfiles_including_failures": true,
+    "Source_fixture_family_unchanged": true,
+    "build_and_target_replays": 0
+  }
+}
