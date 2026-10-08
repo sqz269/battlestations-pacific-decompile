@@ -1,0 +1,119 @@
+{
+  "packet": "cc12_game_native_table_context_owner_source",
+  "status": "SOURCE_READY_AWAITING_INTEGRATOR_CMAKE_REGISTRATION_AND_BUILD",
+  "utc": "2026-10-08T22:40:34.365247+00:00",
+  "base_main": "71a082208",
+  "worker_merge": "534e455d94fbaeccf9c5ce36aed7d46e6550b702",
+  "source": [
+    {
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "bytes": 1612,
+      "sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb"
+    },
+    {
+      "path": "src/game_native_game_tables.cpp",
+      "bytes": 705,
+      "sha256": "8d36b08e9999ac5113ceed719b743f8fd211f887b858149460835fd16aa0c489"
+    }
+  ],
+  "owner_contract": {
+    "class": "bsp::game::GameNativeGameTables",
+    "unit_rows_bytes": 368,
+    "unit_rows_alignment": 4,
+    "append_count": "actual volatile uint32_t member initialized zero, borrowed by reference",
+    "rank_dwords": 1164,
+    "frame_word": "mandatory explicit uint32_t constructor input with no default, preserved intact in stored context",
+    "authored_unit_provider": "native_unit_conversion_definitions() by const reference",
+    "authored_preferences_provider": "native_gunnery_preference_words().data() directly",
+    "retained_context": "one actual NativeGameTablesContext member; one-shot borrowed by reference",
+    "borrow_rejection": "prior borrow OR nonzero actual append count throws logic_error",
+    "copy": false,
+    "move": false,
+    "reset": false,
+    "implicit_builder_call": false,
+    "owner_lifetime": "must outlive all retained contexts, consumers and failed-construction operations",
+    "raw_context_limit": "retained raw references/context copies can bypass issuance guard; no ABI overflow/replay interception",
+    "application_domain_limit": "future application must retain one actual owner; distinct owner instances are still distinct domains"
+  },
+  "unchanged_constructor_sites": {
+    "004DDFA1": "008D9150 unit append",
+    "004DE075": "00727BD0 raw rank builder"
+  },
+  "existing_evidence": [
+    {
+      "path": "docs/NATIVE_GAME_TABLES_R114.md",
+      "bytes": 4602,
+      "sha256": "5183673f673087ec9fee0708be2ffba494042bd4de839d2b28dd8eb3297359c1"
+    },
+    {
+      "path": "reports/native_game_tables_r114.json",
+      "bytes": 1346393,
+      "sha256": "0585ea3e92ae1e65563b6edf7908dd0b87c4bb6325dad8933c0f0f993991bce8"
+    },
+    {
+      "path": "reports/native_game_tables_flow_r114.json",
+      "bytes": 2364,
+      "sha256": "cd18fbc03b755cab7111c60cf572db6cd5ccaa869f9f6756b16cb5972fc54a77"
+    },
+    {
+      "path": "include/bsp/native_game_tables.hpp",
+      "bytes": 1948,
+      "sha256": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743"
+    },
+    {
+      "path": "src/native_game_tables.cpp",
+      "bytes": 6174,
+      "sha256": "c5f443a1b2e3b417b8885a83d24e74e212468fbc51813c809a5fe8bd705ed4b1"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 201187,
+      "sha256": "376eb787adf8322023f73fb20f4269fe50f35df67c0b365a457faeb2f2da79fa"
+    }
+  ],
+  "historical_r114": {
+    "qualification": "Historical 2026-09-17 evidence only; not a new execution or current owner test.",
+    "archive_utc": "2026-09-17T23:32:25.572801+00:00",
+    "source_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r114\\native-game-tables-tested-r114.zip",
+      "size": 36574407,
+      "sha256": "67a8cc6683feed6b7acac64742f31f10442e3eb6b3af05736b864160f3086dd5"
+    },
+    "retained_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\historical_r114\\native-game-tables-tested-r114.zip",
+      "size": 36574407,
+      "sha256": "67a8cc6683feed6b7acac64742f31f10442e3eb6b3af05736b864160f3086dd5"
+    },
+    "all_members_verified": 594
+  },
+  "evidence_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a",
+  "validation": {
+    "source_review": "passed for required constructor argument, storage dimensions/identity, retained reference, copy/move deletion and one-shot borrow without builder calls",
+    "strict_win32_build": "pending integrator registration",
+    "existing_ctests": "pending; reconstructed_math, native_math_differential, tool_tests",
+    "new_tests_or_probes": false,
+    "new_owner_execution": false,
+    "game_entry_execution": false,
+    "new_native_comparison": false,
+    "existing_table_tests_changed": false
+  },
+  "unready": [
+    "full application construction context",
+    "raw GlobalConfig ownership and effects/deletion domain",
+    "canonical sound cache string binding",
+    "actual lifetime dispatch",
+    "native unwind/ABI",
+    "startup and gameplay"
+  ],
+  "owned_files": [
+    "include/bsp/game_native_game_tables.hpp",
+    "src/game_native_game_tables.cpp",
+    "docs/CC12_GAME_NATIVE_TABLE_CONTEXT_OWNER_SOURCE.md",
+    "reports/cc12_game_native_table_context_owner_source.json"
+  ]
+}
