@@ -121,3 +121,9 @@ complete owned pseudocode, assembly and bytes; PE equality/flow receipts;
 all xrefs; exact caller instruction/body range; copied prior sealed clone
 listing/byte receipt; fresh Source search and file-hash receipts; and the
 artifact manifest pinned by the tracked report.
+
+Primary review independently read all22 live instructions, rechecked the whole
+65-byte installed body and all24 sealed artifact hashes. Main09d170c37 now
+contains the raw61-byte008F41A0 storage constructor, after this audit snapshot.
+Populated map production still needs008F33F0/008F28F0 and their dependencies;
+the original snapshot is retained and no Source/native runtime claim is added.

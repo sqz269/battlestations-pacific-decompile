@@ -29284,6 +29284,43 @@
       }
     },
     {
+      "id": "cc12_substream_raw_queries",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF1080",
+        "00BF10A0",
+        "00BF10B0"
+      ],
+      "output_files": [
+        "include/bsp/native_adopted_substream.hpp",
+        "src/native_adopted_substream.cpp",
+        "docs/CC12_SUBSTREAM_RAW_QUERY_ENTRIES.md",
+        "reports/cc12_substream_raw_queries.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "reviewed_complete_additional_raw_entry_interfaces_original_ABI_and_memory_domain_checked",
+      "worker_commit": "aceb0c0e18b77f4d0e47ce5e190b2f96e918c5ce",
+      "coverage": {
+        "additional_complete_raw_entry_interfaces": 3,
+        "new_Original_functions": 0,
+        "complete_native_bytes": 66,
+        "native_pairs": 28,
+        "instrumented_raw_calls": 56,
+        "typed_Source_calls": 12,
+        "primary_input_pins_rehashed": 359,
+        "primary_worker_artifacts_rehashed": 64,
+        "existing_CTests_passed": 3
+      },
+      "contract": {
+        "admission": "Stable actual >=28h backing with live aligned DWORD fields +10/+14/+18/+1C/+20/+24; fresh field reads and wrapping SUB/SBB; ECX receiver and EDX:EAX/RET or RET4.",
+        "preserved": "Existing ordinary C++ ports, constructor, dispatch and lifetime interfaces.",
+        "limits": "No class/profile/lifetime/fault/concurrency/startup/gameplay admission; not new Original function reconstructions."
+      }
+    },
+    {
       "id": "cc12_group_member_vector",
       "worker": "group_speed_contract",
       "model": "gpt-6-astra",
