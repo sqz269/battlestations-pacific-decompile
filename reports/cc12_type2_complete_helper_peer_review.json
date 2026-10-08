@@ -1,0 +1,696 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_type2_complete_helper_peer_review",
+  "native_address": "008ef1b0",
+  "status": "independent_sealed_artifact_review_passed",
+  "Source_credit": 0,
+  "metadata_only": true,
+  "peer_family": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_complete_helper_peer_review\\local\\t2peer",
+    "sealed_artifacts": 43,
+    "files_including_seal": 44,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_complete_helper_peer_review\\local\\t2peer\\seal.json",
+      "size": 11059,
+      "sha256": "a3b96cbde62ad2527b24d2521386a795adb4e8d491749689d7e7217cef8c9e5d"
+    }
+  },
+  "reviewed_Root_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t2p5\\seal.json",
+    "size": 28534,
+    "sha256": "77695fa9e0f34908b7b6d90221f3c688a564a33c5b43691d06c11525ec068eb3"
+  },
+  "preservation": {
+    "passed": true,
+    "kind": "fresh_peer_after_hashes_and_exact_inventory",
+    "counts": {
+      "root": 128,
+      "historical": 20715,
+      "drafts": 36
+    },
+    "unique_files_hashed": 20879,
+    "Root_family": 128,
+    "historical_pins": 20715,
+    "Type5_draft": 20,
+    "Type9_draft": 16,
+    "before_after_identical": true,
+    "elapsed_seconds": 12.394,
+    "compiler_or_target_execution": false,
+    "native_or_provider_queries": false,
+    "Source_credit": 0,
+    "public_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_complete_helper_peer_review\\docs\\CC12_TYPE2_COMPLETE_HELPER_PEER_REVIEW.md",
+      "size": 6596,
+      "sha256": "a43128466d7d3a2ad7e31f398cf9728f010f1aab42aa23b86a4489e23f17ad35"
+    }
+  },
+  "independent_reviews": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_complete_helper_peer_review\\local\\t2peer\\code_review.json",
+      "size": 898738,
+      "sha256": "97f3ae39638e80954b46dc18d3a67d1053f2779124ae1cb3f199e497654a78c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_complete_helper_peer_review\\local\\t2peer\\capture_provider_review.json",
+      "size": 13635,
+      "sha256": "65053e3b3da53802a8c233e81392b22cb727c58c183eb05bcdce4d6dc1be8e0a"
+    }
+  ],
+  "linked_code": {
+    "Root_executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t2p5\\type2_storage_probe.exe",
+      "size": 20992,
+      "sha256": "89374d7ee8d55f9c71a9e1bff31ee85dc4a992ffe910605ebdd962d2312a9d5d"
+    },
+    "gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t2p5\\gate.bin",
+      "size": 9618,
+      "sha256": "82296642a49b5b2a5d421c61837d756c3bc5bf4e9bd59c047168029e9a035b9c"
+    },
+    "map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t2p5\\type2_storage_probe.map",
+      "size": 36697,
+      "sha256": "dfe4596e8e390fe6742557b93ccbaf0923238a331f3bc207ccc595ef98e091df"
+    },
+    "header": {
+      "magic": 3423768305,
+      "version": 1,
+      "base": 1023410176,
+      "image_size": 36864,
+      "source": 1023414272,
+      "duplicate": 1023414400,
+      "adapter": 1023414336,
+      "free": 1023414816,
+      "copy": 1023426604,
+      "code_count": 47,
+      "crt_count": 4
+    },
+    "gate_exact_consumed_bytes": 9618,
+    "function_counts": {
+      "constructor": 1,
+      "duplicate": 2,
+      "canonical": 9,
+      "probe": 20
+    },
+    "weak_alias_counts": {
+      "constructor": 0,
+      "duplicate": 0,
+      "canonical": 2,
+      "probe": 0
+    },
+    "logical_function_symbols": 34,
+    "unique_TU_bodies": 32,
+    "logical_relocation_operand_checks": 280,
+    "distinct_physical_relocation_operands": 274,
+    "alias_repeated_operand_checks": 6,
+    "main_size": 3301,
+    "main_instructions": 928,
+    "raw_size": 140,
+    "raw_instructions": 52
+  },
+  "complete_extra_helpers": [
+    {
+      "address": 1023423216,
+      "size": 14,
+      "map_names": [
+        "@__security_check_cookie@4"
+      ],
+      "kind": "complete_cookie_CFG"
+    },
+    {
+      "address": 1023426628,
+      "size": 6,
+      "map_names": [
+        "_memset"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423296,
+      "size": 43,
+      "map_names": [
+        "__alloca_probe",
+        "__chkstk",
+        "$$000000"
+      ],
+      "kind": "complete_stack_probe_CFG"
+    },
+    {
+      "address": 1023423206,
+      "size": 6,
+      "map_names": [
+        "_K32GetMappedFileNameW@16"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423176,
+      "size": 6,
+      "map_names": [
+        "_BCryptCloseAlgorithmProvider@8"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423200,
+      "size": 6,
+      "map_names": [
+        "_BCryptDestroyHash@4"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423194,
+      "size": 6,
+      "map_names": [
+        "_BCryptFinishHash@16"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423188,
+      "size": 6,
+      "map_names": [
+        "_BCryptHashData@16"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423182,
+      "size": 6,
+      "map_names": [
+        "_BCryptCreateHash@28"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423170,
+      "size": 6,
+      "map_names": [
+        "_BCryptGetProperty@24"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023423164,
+      "size": 6,
+      "map_names": [
+        "_BCryptOpenAlgorithmProvider@16"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023426622,
+      "size": 6,
+      "map_names": [
+        "__CxxThrowException@8"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023426616,
+      "size": 6,
+      "map_names": [
+        "___std_exception_destroy"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023426610,
+      "size": 6,
+      "map_names": [
+        "___std_exception_copy"
+      ],
+      "kind": "complete_import_thunk"
+    },
+    {
+      "address": 1023426604,
+      "size": 6,
+      "map_names": [
+        "_memcpy"
+      ],
+      "kind": "complete_import_thunk"
+    }
+  ],
+  "unadmitted_direct_code_frontier": {
+    "sized_delete": [
+      {
+        "caller_aliases": [
+          "??_Gexception@std@@UAEPAXI@Z",
+          "??_Eexception@std@@UAEPAXI@Z"
+        ],
+        "instruction_operand": 1023414704,
+        "target": {
+          "name": "??3@YAXPAXI@Z",
+          "section": 1,
+          "offset": 8960,
+          "address": 1023423232,
+          "provenance": "f   MSVCRT:delete_scalar_size.obj",
+          "is_function": true
+        },
+        "body_or_EH_admitted": false
+      },
+      {
+        "caller_aliases": [
+          "??_Gbad_alloc@std@@UAEPAXI@Z",
+          "??_Ebad_alloc@std@@UAEPAXI@Z"
+        ],
+        "instruction_operand": 1023414656,
+        "target": {
+          "name": "??3@YAXPAXI@Z",
+          "section": 1,
+          "offset": 8960,
+          "address": 1023423232,
+          "provenance": "f   MSVCRT:delete_scalar_size.obj",
+          "is_function": true
+        },
+        "body_or_EH_admitted": false
+      }
+    ],
+    "GS_failure": [
+      {
+        "instruction": 1023423225,
+        "target": 1023424080,
+        "names": [
+          "___report_gsfailure"
+        ],
+        "body_admitted": false
+      }
+    ]
+  },
+  "capture_review": {
+    "captures80": [
+      {
+        "index": 0,
+        "phase": "Original",
+        "nonnull": false,
+        "serialized_field_words80_hex": "e6d5c4b360985700e1ac682496785a3c6493570078935700d7b5937102e4c6a86098570000000000e1ac682496785a3c6893570078935700d7b5937102e4c6a8d30a0000460200006493570000000000",
+        "register_order": [
+          "EAX",
+          "ECX",
+          "EDX",
+          "EBX",
+          "ESP",
+          "EBP",
+          "ESI",
+          "EDI"
+        ],
+        "before": [
+          3016021478,
+          5740640,
+          610839777,
+          1012562070,
+          5739364,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "after": [
+          5740640,
+          0,
+          610839777,
+          1012562070,
+          5739368,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "Q_captured_before_CALL": 5739364,
+        "R_before_argument_inferred_from_raw": 5739368,
+        "R_after_RET4_captured": 5739368,
+        "T_from_actual_CALL_push": 5739360,
+        "argument_slot": 5739364,
+        "argument_value": 0,
+        "EFLAGS_before": 2771,
+        "EFLAGS_after": 582,
+        "defined_mask": 2245,
+        "independent_expected_defined_flags": 68,
+        "AF_defined": false,
+        "nonnull_copy_return_ESP": 0,
+        "nonnull_ADD_result": 0,
+        "nonnull_ECX_EDX_residuals_not_asserted": false
+      },
+      {
+        "index": 1,
+        "phase": "Original",
+        "nonnull": true,
+        "serialized_field_words80_hex": "e6d5c4b360985700e1ac682496785a3c6493570078935700d7b5937102e4c6a86098570000000000f5318a6c96785a3c6893570078935700d7b5937102e4c6a8d30a0000060200006493570030985700",
+        "register_order": [
+          "EAX",
+          "ECX",
+          "EDX",
+          "EBX",
+          "ESP",
+          "EBP",
+          "ESI",
+          "EDI"
+        ],
+        "before": [
+          3016021478,
+          5740640,
+          610839777,
+          1012562070,
+          5739364,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "after": [
+          5740640,
+          0,
+          1820996085,
+          1012562070,
+          5739368,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "Q_captured_before_CALL": 5739364,
+        "R_before_argument_inferred_from_raw": 5739368,
+        "R_after_RET4_captured": 5739368,
+        "T_from_actual_CALL_push": 5739360,
+        "argument_slot": 5739364,
+        "argument_value": 5740592,
+        "EFLAGS_before": 2771,
+        "EFLAGS_after": 518,
+        "defined_mask": 2261,
+        "independent_expected_defined_flags": 4,
+        "AF_defined": true,
+        "nonnull_copy_return_ESP": 5739320,
+        "nonnull_ADD_result": 5739336,
+        "nonnull_ECX_EDX_residuals_not_asserted": true
+      },
+      {
+        "index": 2,
+        "phase": "Source",
+        "nonnull": false,
+        "serialized_field_words80_hex": "e6d5c4b360985700e1ac682496785a3c6493570078935700d7b5937102e4c6a86098570000000000e1ac682496785a3c6893570078935700d7b5937102e4c6a8d30a0000460200006493570000000000",
+        "register_order": [
+          "EAX",
+          "ECX",
+          "EDX",
+          "EBX",
+          "ESP",
+          "EBP",
+          "ESI",
+          "EDI"
+        ],
+        "before": [
+          3016021478,
+          5740640,
+          610839777,
+          1012562070,
+          5739364,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "after": [
+          5740640,
+          0,
+          610839777,
+          1012562070,
+          5739368,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "Q_captured_before_CALL": 5739364,
+        "R_before_argument_inferred_from_raw": 5739368,
+        "R_after_RET4_captured": 5739368,
+        "T_from_actual_CALL_push": 5739360,
+        "argument_slot": 5739364,
+        "argument_value": 0,
+        "EFLAGS_before": 2771,
+        "EFLAGS_after": 582,
+        "defined_mask": 2245,
+        "independent_expected_defined_flags": 68,
+        "AF_defined": false,
+        "nonnull_copy_return_ESP": 0,
+        "nonnull_ADD_result": 0,
+        "nonnull_ECX_EDX_residuals_not_asserted": false
+      },
+      {
+        "index": 3,
+        "phase": "Source",
+        "nonnull": true,
+        "serialized_field_words80_hex": "e6d5c4b360985700e1ac682496785a3c6493570078935700d7b5937102e4c6a86098570000000000f5318a6c96785a3c6893570078935700d7b5937102e4c6a8d30a0000060200006493570030985700",
+        "register_order": [
+          "EAX",
+          "ECX",
+          "EDX",
+          "EBX",
+          "ESP",
+          "EBP",
+          "ESI",
+          "EDI"
+        ],
+        "before": [
+          3016021478,
+          5740640,
+          610839777,
+          1012562070,
+          5739364,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "after": [
+          5740640,
+          0,
+          1820996085,
+          1012562070,
+          5739368,
+          5739384,
+          1905505751,
+          2831606786
+        ],
+        "Q_captured_before_CALL": 5739364,
+        "R_before_argument_inferred_from_raw": 5739368,
+        "R_after_RET4_captured": 5739368,
+        "T_from_actual_CALL_push": 5739360,
+        "argument_slot": 5739364,
+        "argument_value": 5740592,
+        "EFLAGS_before": 2771,
+        "EFLAGS_after": 518,
+        "defined_mask": 2261,
+        "independent_expected_defined_flags": 4,
+        "AF_defined": true,
+        "nonnull_copy_return_ESP": 5739320,
+        "nonnull_ADD_result": 5739336,
+        "nonnull_ECX_EDX_residuals_not_asserted": true
+      }
+    ],
+    "all5_receivers96": [
+      {
+        "index": 0,
+        "phase": 0,
+        "is_null": true,
+        "actual_input": 0,
+        "actual_root": 5740640,
+        "actual_child": 0,
+        "full96_SHA256": "f23671a650c9994c0a9833bc0bf6e1fb28270c3c691da8b1f1a3156337851de1",
+        "full96_expected_equal": true,
+        "full_copied_bytes": "",
+        "copied_NUL_included": false,
+        "child_read_before_its_own_free": true
+      },
+      {
+        "index": 1,
+        "phase": 0,
+        "is_null": false,
+        "actual_input": 5740592,
+        "actual_root": 5740640,
+        "actual_child": 9908312,
+        "full96_SHA256": "372590323db3e40229a635e8a0c869372cdc2491ae07a5518653bae039eb4e3c",
+        "full96_expected_equal": true,
+        "full_copied_bytes": "ba47d92ef5318a6c00",
+        "copied_NUL_included": true,
+        "child_read_before_its_own_free": true
+      },
+      {
+        "index": 2,
+        "phase": 1,
+        "is_null": true,
+        "actual_input": 0,
+        "actual_root": 5740640,
+        "actual_child": 0,
+        "full96_SHA256": "f23671a650c9994c0a9833bc0bf6e1fb28270c3c691da8b1f1a3156337851de1",
+        "full96_expected_equal": true,
+        "full_copied_bytes": "",
+        "copied_NUL_included": false,
+        "child_read_before_its_own_free": true
+      },
+      {
+        "index": 3,
+        "phase": 1,
+        "is_null": false,
+        "actual_input": 5740592,
+        "actual_root": 5740640,
+        "actual_child": 9908624,
+        "full96_SHA256": "cb86013a72fb828d04ac8cbadebabad6856512230b574c1198ec22390c73f35c",
+        "full96_expected_equal": true,
+        "full_copied_bytes": "ba47d92ef5318a6c00",
+        "copied_NUL_included": true,
+        "child_read_before_its_own_free": true
+      },
+      {
+        "index": 4,
+        "phase": 2,
+        "is_null": false,
+        "actual_input": 5740592,
+        "actual_root": 5740640,
+        "actual_child": 9908672,
+        "full96_SHA256": "e079fc1bfe66837411f45fefd56a0a536a59eebe8018463168aa0f51578848d9",
+        "full96_expected_equal": true,
+        "full_copied_bytes": "ba47d92ef5318a6c00",
+        "copied_NUL_included": true,
+        "child_read_before_its_own_free": true
+      }
+    ],
+    "borrowed48_hex": "59595959595959595959595959595959ba47d92ef5318a6c005959595959595959595959595959595959595959595959",
+    "borrowed_allocation": 5740576,
+    "actual_text": 5740592,
+    "actual_receiver": 5740640,
+    "meaningful_copy9_from_main_immediates": "ba47d92ef5318a6c00",
+    "actual_five_entries_three_results_three_frees": true,
+    "main_call_sites": {
+      "read_gate": "3D002554",
+      "code_pre": "3D00256C",
+      "four_CRT_pre": "3D00259D",
+      "raw_loop": "3D00293C",
+      "raw_observe": "3D002A56",
+      "raw_child_free": "3D002A96",
+      "ordinary": "3D002B3A",
+      "ordinary_observe": "3D002B70",
+      "ordinary_child_free": "3D002BB3",
+      "all_code_post": "3D002BD8",
+      "four_CRT_post": "3D002C51"
+    },
+    "actual_Original_bound": 8978432,
+    "bound_only39_43": true
+  },
+  "recorded_provider_review": [
+    {
+      "name": "malloc",
+      "gate_IAT": 1023430812,
+      "recorded_IAT": 1987903776,
+      "recorded_export": 1987903776,
+      "recorded_module_base": 1987706880,
+      "independently_parsed_export_RVA": 196896,
+      "frozen_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t5p2\\in\\920cb5b85a1599b3.dll",
+        "size": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "recorded_file_identity": {
+        "volume": 3906787040,
+        "index_high": 327680,
+        "index_low": 2895862,
+        "size": 1114240
+      },
+      "mapped_and_physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+      "independent_normalized_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+      "overlapping_base_relocations": [],
+      "recorded_before_after_equal": true,
+      "new_live_provider_query": false
+    },
+    {
+      "name": "free",
+      "gate_IAT": 1023430820,
+      "recorded_IAT": 1987903648,
+      "recorded_export": 1987903648,
+      "recorded_module_base": 1987706880,
+      "independently_parsed_export_RVA": 196768,
+      "frozen_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t5p2\\in\\920cb5b85a1599b3.dll",
+        "size": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "recorded_file_identity": {
+        "volume": 3906787040,
+        "index_high": 327680,
+        "index_low": 2895862,
+        "size": 1114240
+      },
+      "mapped_and_physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+      "independent_normalized_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+      "overlapping_base_relocations": [],
+      "recorded_before_after_equal": true,
+      "new_live_provider_query": false
+    },
+    {
+      "name": "_callnewh",
+      "gate_IAT": 1023430816,
+      "recorded_IAT": 1988276224,
+      "recorded_export": 1988276224,
+      "recorded_module_base": 1987706880,
+      "independently_parsed_export_RVA": 569344,
+      "frozen_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t5p2\\in\\920cb5b85a1599b3.dll",
+        "size": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "recorded_file_identity": {
+        "volume": 3906787040,
+        "index_high": 327680,
+        "index_low": 2895862,
+        "size": 1114240
+      },
+      "mapped_and_physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+      "independent_normalized_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+      "overlapping_base_relocations": [
+        {
+          "rva": 569368,
+          "type": 3
+        }
+      ],
+      "recorded_before_after_equal": true,
+      "new_live_provider_query": false
+    },
+    {
+      "name": "memcpy",
+      "gate_IAT": 1023430776,
+      "recorded_IAT": 1924293024,
+      "recorded_export": 1924293024,
+      "recorded_module_base": 1924202496,
+      "independently_parsed_export_RVA": 90528,
+      "frozen_file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t5p2\\in\\708424464e2892d8.dll",
+        "size": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      "recorded_file_identity": {
+        "volume": 3906787040,
+        "index_high": 196608,
+        "index_low": 221458,
+        "size": 123328
+      },
+      "mapped_and_physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+      "independent_normalized_prefix32": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+      "overlapping_base_relocations": [],
+      "recorded_before_after_equal": true,
+      "new_live_provider_query": false
+    }
+  ],
+  "provider_evidence_limit": "Recorded Root observations and whole linked verifier bytecode cross-checked against sealed frozen DLL bytes; no new live file identity/module/provider query or execution.",
+  "initial_peer_failure": {
+    "first_parser_retained_unchanged": true,
+    "first_stop": "34 symbols /32 bodies /274 distinct physical relocation operands; previous assertion compared to280 logical alias-inclusive checks.",
+    "recovery": "Independently require274 physical and280 logical checks; report6 alias repetitions explicitly.",
+    "Root_artifacts_changed": false,
+    "old_helper_or_stage_execution": false
+  },
+  "exclusions": [
+    "No peer Source admission",
+    "No compiler, linker, fixture, or native execution",
+    "No native, Ghidra, live module, provider, or file identity query",
+    "No imports or execution of Root recipe, manual/decode scripts, or old accepted helper implementations",
+    "No Source, header, CMake, ledger, or Ghidra mutation",
+    "No class, general ownership, private heap, EH, game, or gameplay admission"
+  ],
+  "tracked_paths": [
+    "docs/CC12_TYPE2_COMPLETE_HELPER_PEER_REVIEW.md",
+    "reports/cc12_type2_complete_helper_peer_review.json"
+  ]
+}

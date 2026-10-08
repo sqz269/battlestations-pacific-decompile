@@ -1,0 +1,960 @@
+{
+  "passed": true,
+  "Source_audit_credit": 0,
+  "current_published_Source_credit": 1,
+  "Native_bytes": 13,
+  "Native_instructions": 6,
+  "constructor_whole_literal_gated": true,
+  "retained_symbols": 26,
+  "unique_TU_bodies": 24,
+  "retained_weak_fallback_symbols": 2,
+  "existing_runtime_spans": 25,
+  "unique_TU_bodies_whole_gated": 24,
+  "recovered_external_helpers": 14,
+  "missing_functions": 16,
+  "missing_normal": 10,
+  "missing_cold": 6,
+  "diagnostics": [
+    {
+      "symbol": "__CxxThrowException@8",
+      "address": 771765688,
+      "VA": "2E0035B8",
+      "size": 6,
+      "category": "cold_std_EH_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "__CxxThrowException@8",
+          "address": 771765688,
+          "section": "0001",
+          "offset": 9656,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "a5cbc7833719d791cd9d53dd2963df29ab3e8e841a39f8f18f22b64cd696e0d3",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "caller_address": 771756304,
+          "operand": 771756389
+        }
+      ]
+    },
+    {
+      "symbol": "___std_exception_copy",
+      "address": 771765676,
+      "VA": "2E0035AC",
+      "size": 6,
+      "category": "cold_std_EH_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "___std_exception_copy",
+          "address": 771765676,
+          "section": "0001",
+          "offset": 9644,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        }
+      ],
+      "direct_reachable_from_main": false,
+      "SHA256": "09f6e8a6f163c20bffb786e9b773d0f7a755f18d816dafaf089028ef3820b45e",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "??0exception@std@@QAE@ABV01@@Z",
+          "caller_address": 771756128,
+          "operand": 771756157
+        },
+        {
+          "caller": "??0bad_alloc@std@@QAE@ABV01@@Z",
+          "caller_address": 771756048,
+          "operand": 771756077
+        }
+      ]
+    },
+    {
+      "symbol": "___std_exception_destroy",
+      "address": 771765682,
+      "VA": "2E0035B2",
+      "size": 6,
+      "category": "cold_std_EH_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "___std_exception_destroy",
+          "address": 771765682,
+          "section": "0001",
+          "offset": 9650,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        }
+      ],
+      "direct_reachable_from_main": false,
+      "SHA256": "7974517c266e871a93ee4423510814f7869798e706279c844571d05e9192e865",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "??_Gexception@std@@UAEPAXI@Z",
+          "caller_address": 771756256,
+          "operand": 771756270
+        },
+        {
+          "caller": "??1bad_alloc@std@@UAE@XZ",
+          "caller_address": 771756176,
+          "operand": 771756187
+        },
+        {
+          "caller": "??_Gbad_alloc@std@@UAEPAXI@Z",
+          "caller_address": 771756208,
+          "operand": 771756222
+        }
+      ]
+    },
+    {
+      "symbol": "__chkstk",
+      "address": 771762368,
+      "VA": "2E0028C0",
+      "size": 48,
+      "category": "normal_stack",
+      "map_owners": [
+        {
+          "symbol": "__alloca_probe",
+          "address": 771762368,
+          "section": "0001",
+          "offset": 6336,
+          "provenance": "f   MSVCRT:chkstk.obj"
+        },
+        {
+          "symbol": "__chkstk",
+          "address": 771762368,
+          "section": "0001",
+          "offset": 6336,
+          "provenance": "f   MSVCRT:chkstk.obj"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "d3ab6085747e2656aa1ab20d3a1c4404adeb75be69af9b113b6dc171a9004e43",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757382
+        }
+      ],
+      "physical_body_bytes": 43,
+      "physical_body_instructions": 19,
+      "mapped_span_bytes": 48,
+      "alignment_bytes": 5
+    },
+    {
+      "symbol": "_memset",
+      "address": 771765694,
+      "VA": "2E0035BE",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_memset",
+          "address": 771765694,
+          "section": "0001",
+          "offset": 9662,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "ad9c9bc96c8e9e7f190b142a4c8bd3cdd925496f12def62e904bb3425ac202a4",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757445
+        },
+        {
+          "caller": "_main",
+          "caller_address": 771759552,
+          "operand": 771760213
+        },
+        {
+          "caller": "_main",
+          "caller_address": 771759552,
+          "operand": 771760314
+        },
+        {
+          "caller": "_main",
+          "caller_address": 771759552,
+          "operand": 771761081
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptOpenAlgorithmProvider@16",
+      "address": 771762236,
+      "VA": "2E00283C",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptOpenAlgorithmProvider@16",
+          "address": 771762236,
+          "section": "0001",
+          "offset": 6204,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "c6652ebf060b42094adcb05f4e0642e3da9a9bbf6d5092157e12501e935140f0",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757483
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptGetProperty@24",
+      "address": 771762242,
+      "VA": "2E002842",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptGetProperty@24",
+          "address": 771762242,
+          "section": "0001",
+          "offset": 6210,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "4d3b51790f9411fc5eefb363602e54a93cd42d7e8e8168d3f9ea8bfe2535a78c",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757541
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptCreateHash@28",
+      "address": 771762254,
+      "VA": "2E00284E",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptCreateHash@28",
+          "address": 771762254,
+          "section": "0001",
+          "offset": 6222,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "382e27ed59f8ee8df2c4d83ed9b2c6314d14cc4da7f7b1714f1742c62441a3a8",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757589
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptHashData@16",
+      "address": 771762260,
+      "VA": "2E002854",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptHashData@16",
+          "address": 771762260,
+          "section": "0001",
+          "offset": 6228,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "52a872f9de35185a03e762a8978f13a475360582d4cc7d2bbe1e61dc6c52ab39",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757620
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptFinishHash@16",
+      "address": 771762266,
+      "VA": "2E00285A",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptFinishHash@16",
+          "address": 771762266,
+          "section": "0001",
+          "offset": 6234,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "00dc5dc9d1d32688f02172268e372db26e3dae1df7f7754566ab6711896f7496",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757646
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptDestroyHash@4",
+      "address": 771762272,
+      "VA": "2E002860",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptDestroyHash@4",
+          "address": 771762272,
+          "section": "0001",
+          "offset": 6240,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "1d6703c2847051d35a50314c755b7321f32f1a46a068c6ef03716f6f6450085c",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757672
+        }
+      ]
+    },
+    {
+      "symbol": "_BCryptCloseAlgorithmProvider@8",
+      "address": 771762248,
+      "VA": "2E002848",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_BCryptCloseAlgorithmProvider@8",
+          "address": 771762248,
+          "section": "0001",
+          "offset": 6216,
+          "provenance": "f   bcrypt:bcrypt.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "49332e3084e31bfee976caa17f97b58fa901b516f98f08b4299b173248fac58e",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "caller_address": 771757376,
+          "operand": 771757683
+        }
+      ]
+    },
+    {
+      "symbol": "_K32GetMappedFileNameW@16",
+      "address": 771762278,
+      "VA": "2E002866",
+      "size": 6,
+      "category": "normal_import_thunk",
+      "map_owners": [
+        {
+          "symbol": "_K32GetMappedFileNameW@16",
+          "address": 771762278,
+          "section": "0001",
+          "offset": 6246,
+          "provenance": "f   kernel32:KERNEL32.dll"
+        }
+      ],
+      "direct_reachable_from_main": true,
+      "SHA256": "78c27988f751e3e4e9b0c50dfddcc426ead5cb70731ddf6ed2fc461691f52ae2",
+      "whole_gate_covered": false,
+      "incoming": [
+        {
+          "caller": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "caller_address": 771758544,
+          "operand": 771758704
+        }
+      ]
+    },
+    {
+      "symbol": "??3@YAXPAXI@Z",
+      "address": 771762288,
+      "VA": "2E002870",
+      "size": 16,
+      "map_owners": [
+        {
+          "symbol": "??3@YAXPAXI@Z",
+          "address": 771762288,
+          "section": "0001",
+          "offset": 6256,
+          "provenance": "f   MSVCRT:delete_scalar_size.obj"
+        }
+      ],
+      "category": "cold_std_library_delete",
+      "whole_gate_covered": false,
+      "linked_hex": "558becff7508e85503000083c4045dc3",
+      "SHA256": "51a2031fa69dfcd2955c7b1a711cd7d82eca9705ccdf51d724e9fda2a36c4e07",
+      "instructions": [
+        {
+          "address": 771762288,
+          "mnemonic": "push",
+          "operands": "ebp",
+          "hex": "55"
+        },
+        {
+          "address": 771762289,
+          "mnemonic": "mov",
+          "operands": "ebp, esp",
+          "hex": "8bec"
+        },
+        {
+          "address": 771762291,
+          "mnemonic": "push",
+          "operands": "dword ptr [ebp + 8]",
+          "hex": "ff7508"
+        },
+        {
+          "address": 771762294,
+          "mnemonic": "call",
+          "operands": "0x2e002bd0",
+          "hex": "e855030000"
+        },
+        {
+          "address": 771762299,
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "hex": "83c404"
+        },
+        {
+          "address": 771762302,
+          "mnemonic": "pop",
+          "operands": "ebp",
+          "hex": "5d"
+        },
+        {
+          "address": 771762303,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "extent": "Exact map-owned cold compiler-library function through next mapped function, including alignment; no EH execution or class/free lifetime admission.",
+      "normal_observed_path": false,
+      "Source_credit": 0,
+      "physical_body_bytes": 16,
+      "physical_body_instructions": 7,
+      "mapped_span_bytes": 16,
+      "alignment_bytes": 0
+    },
+    {
+      "symbol": "??3@YAXPAX@Z",
+      "address": 771763152,
+      "VA": "2E002BD0",
+      "size": 16,
+      "map_owners": [
+        {
+          "symbol": "??3@YAXPAX@Z",
+          "address": 771763152,
+          "section": "0001",
+          "offset": 7120,
+          "provenance": "f   MSVCRT:delete_scalar.obj"
+        }
+      ],
+      "category": "cold_std_library_delete",
+      "whole_gate_covered": false,
+      "linked_hex": "e9010a0000cccccccccccccccccccccc",
+      "SHA256": "7894ad2260d41a696e858c345071093329c63bc6609ced4f3acc0a729e6c3e6d",
+      "instructions": [
+        {
+          "address": 771763152,
+          "mnemonic": "jmp",
+          "operands": "0x2e0035d6",
+          "hex": "e9010a0000"
+        },
+        {
+          "address": 771763157,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763158,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763159,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763160,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763161,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763162,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763163,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763164,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763165,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763166,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763167,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        }
+      ],
+      "extent": "Exact map-owned cold compiler-library function through next mapped function, including alignment; no EH execution or class/free lifetime admission.",
+      "normal_observed_path": false,
+      "Source_credit": 0,
+      "physical_body_bytes": 5,
+      "physical_body_instructions": 1,
+      "physical_body_hex": "e9010a0000",
+      "mapped_span_bytes": 16,
+      "alignment_bytes": 11
+    },
+    {
+      "symbol": "_free",
+      "address": 771765718,
+      "VA": "2E0035D6",
+      "size": 6,
+      "physical_body_bytes": 6,
+      "physical_body_instructions": 1,
+      "mapped_span_bytes": 6,
+      "alignment_bytes": 0,
+      "linked_hex": "ff259c40002e",
+      "SHA256": "9553d605d0d244a1405ff16c090fa89ba10a417f3933cfe428f0a3dd118df1af",
+      "IAT": 771768476,
+      "category": "cold_std_library_free_import_thunk",
+      "whole_gate_covered": false,
+      "map_owners": [
+        {
+          "symbol": "_free",
+          "provenance": "Actual local FF25 import thunk to PE import free; physical operand verified."
+        }
+      ],
+      "normal_observed_path": false,
+      "Source_credit": 0
+    }
+  ],
+  "all_missing_classified": true,
+  "symbol_relocation_checks": 191,
+  "distinct_physical_relocation_operands": 185,
+  "prior_actual_pins": 21343,
+  "old_family_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\h13p1\\seal.json",
+    "size": 28960,
+    "sha256": "3a0957e45617408c9fce00c33892cb8ca55a1fc507104567e66b27ffaacd3f11"
+  },
+  "report_generation_copy": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\frozen_context\\native_parent_list_header_storage_cc12.json",
+    "size": 38569,
+    "sha256": "f9982f6895fe75e2d1a70c2f7f42a975f1122b1b6d4c5eb48e81dc941f842c82"
+  },
+  "raw_analysis": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\raw_body_analysis.json",
+    "size": 1083952,
+    "sha256": "5aaed907346e5787a74f3b5d093da30d835d545d6b720b9f5230b4d6be80c789"
+  },
+  "decoded_observations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\decoded_observations.json",
+    "size": 4814,
+    "sha256": "6eb628c49e42d5e4dd224dc9ce3d2570aaa163899ffb9ad609d9208751b908c2"
+  },
+  "Root_only_credit_decision": true,
+  "blanket_clear70_or_callback_propagation": false,
+  "newtrackedtests": 0,
+  "schema": "bsp.cc12.parent_header_constructor.code_gate_audit.v1",
+  "precise_cold_library_chain": [
+    {
+      "symbol": "??3@YAXPAXI@Z",
+      "address": 771762288,
+      "VA": "2E002870",
+      "size": 16,
+      "map_owners": [
+        {
+          "symbol": "??3@YAXPAXI@Z",
+          "address": 771762288,
+          "section": "0001",
+          "offset": 6256,
+          "provenance": "f   MSVCRT:delete_scalar_size.obj"
+        }
+      ],
+      "category": "cold_std_library_delete",
+      "whole_gate_covered": false,
+      "linked_hex": "558becff7508e85503000083c4045dc3",
+      "SHA256": "51a2031fa69dfcd2955c7b1a711cd7d82eca9705ccdf51d724e9fda2a36c4e07",
+      "instructions": [
+        {
+          "address": 771762288,
+          "mnemonic": "push",
+          "operands": "ebp",
+          "hex": "55"
+        },
+        {
+          "address": 771762289,
+          "mnemonic": "mov",
+          "operands": "ebp, esp",
+          "hex": "8bec"
+        },
+        {
+          "address": 771762291,
+          "mnemonic": "push",
+          "operands": "dword ptr [ebp + 8]",
+          "hex": "ff7508"
+        },
+        {
+          "address": 771762294,
+          "mnemonic": "call",
+          "operands": "0x2e002bd0",
+          "hex": "e855030000"
+        },
+        {
+          "address": 771762299,
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "hex": "83c404"
+        },
+        {
+          "address": 771762302,
+          "mnemonic": "pop",
+          "operands": "ebp",
+          "hex": "5d"
+        },
+        {
+          "address": 771762303,
+          "mnemonic": "ret",
+          "operands": "",
+          "hex": "c3"
+        }
+      ],
+      "extent": "Exact map-owned cold compiler-library function through next mapped function, including alignment; no EH execution or class/free lifetime admission.",
+      "normal_observed_path": false,
+      "Source_credit": 0,
+      "physical_body_bytes": 16,
+      "physical_body_instructions": 7,
+      "mapped_span_bytes": 16,
+      "alignment_bytes": 0
+    },
+    {
+      "symbol": "??3@YAXPAX@Z",
+      "address": 771763152,
+      "VA": "2E002BD0",
+      "size": 16,
+      "map_owners": [
+        {
+          "symbol": "??3@YAXPAX@Z",
+          "address": 771763152,
+          "section": "0001",
+          "offset": 7120,
+          "provenance": "f   MSVCRT:delete_scalar.obj"
+        }
+      ],
+      "category": "cold_std_library_delete",
+      "whole_gate_covered": false,
+      "linked_hex": "e9010a0000cccccccccccccccccccccc",
+      "SHA256": "7894ad2260d41a696e858c345071093329c63bc6609ced4f3acc0a729e6c3e6d",
+      "instructions": [
+        {
+          "address": 771763152,
+          "mnemonic": "jmp",
+          "operands": "0x2e0035d6",
+          "hex": "e9010a0000"
+        },
+        {
+          "address": 771763157,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763158,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763159,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763160,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763161,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763162,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763163,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763164,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763165,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763166,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        },
+        {
+          "address": 771763167,
+          "mnemonic": "int3",
+          "operands": "",
+          "hex": "cc"
+        }
+      ],
+      "extent": "Exact map-owned cold compiler-library function through next mapped function, including alignment; no EH execution or class/free lifetime admission.",
+      "normal_observed_path": false,
+      "Source_credit": 0,
+      "physical_body_bytes": 5,
+      "physical_body_instructions": 1,
+      "physical_body_hex": "e9010a0000",
+      "mapped_span_bytes": 16,
+      "alignment_bytes": 11
+    },
+    {
+      "symbol": "_free",
+      "address": 771765718,
+      "VA": "2E0035D6",
+      "size": 6,
+      "physical_body_bytes": 6,
+      "physical_body_instructions": 1,
+      "mapped_span_bytes": 6,
+      "alignment_bytes": 0,
+      "linked_hex": "ff259c40002e",
+      "SHA256": "9553d605d0d244a1405ff16c090fa89ba10a417f3933cfe428f0a3dd118df1af",
+      "IAT": 771768476,
+      "category": "cold_std_library_free_import_thunk",
+      "whole_gate_covered": false,
+      "map_owners": [
+        {
+          "symbol": "_free",
+          "provenance": "Actual local FF25 import thunk to PE import free; physical operand verified."
+        }
+      ],
+      "normal_observed_path": false,
+      "Source_credit": 0
+    }
+  ],
+  "initial_13_direct_TU_external_omissions_preserved": true,
+  "classification": "All24 retained TU bodies and cookie14 covered. Missing10 normal linked helpers,3 direct cold std/EH thunks,3 separately qualified cold library deletion spans.",
+  "recommendation": "Recommend Root review/reopen Header13 fixture complete-code-gate admission; audit changes no credit/ledger and makes no blanket later clear70/callback propagation claim.",
+  "cold_library_scope": "Only sized16->unsized5(+11mapalignment)->freeImport6 recovered from linked artifacts. GS failure/EH and external DLL bodies remain unexpanded/unadmitted.",
+  "normal_graph": "Actual full linked direct CALL/JMP edges from main recovered; standard exception and probe-failure branches distinguished from successful observed malloc/guard/provider/leaf path.",
+  "new_native_provider_queries": 0,
+  "new_processes": 0,
+  "old_helper_or_phase_replays": 0,
+  "receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\receipt.json",
+    "size": 1674,
+    "sha256": "53a4d1d0af4ee38ba9d8aa7117ad56c98a7faccd1445f947b97d692f51e41ab5"
+  },
+  "artifact_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\artifact_manifest.json",
+    "size": 4086,
+    "sha256": "5b19953e215d42d32532be6c2ef1d28706adc59fc75bba0f8ab1dd9a21c3aeb8"
+  },
+  "sealed_actual_files": 22,
+  "sealed_listed_files": 20,
+  "preservation_after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_constructor_code_gate_audit\\local\\h13cov\\preservation_after.json",
+    "size": 643,
+    "sha256": "ee8703e6aa1ac6f9757c876c1a792b97507e18a894d8169894b162def4bb5b99"
+  },
+  "native_proof": {
+    "passed": true,
+    "post_only": true,
+    "new_native_execution": false,
+    "cases": [
+      {
+        "case": 0,
+        "kind": "raw_Source",
+        "base": 7747144,
+        "root": 7747160,
+        "full_buffer44": "d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5000000000000000000000000d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5",
+        "capture96": "597b3ac1d9c2b8a558367600759bc2e4c5b3917af0fd1a0008fe1a0082604f2d93a4e6c85836760000000000759bc2e4c5b3917af0fd1a0008fe1a0082604f2d93a4e6c8d70e00004606000015dbc86a930271a62b0000002b00000071c6a95e",
+        "before": [
+          2780349145,
+          7747160,
+          3837959029,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "after": [
+          7747160,
+          0,
+          3837959029,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "flags_before": 3799,
+        "flags_after": 1606,
+        "DF": 1,
+        "defined_XOR_flags_mask": "8C5=44, AF undefined excluded",
+        "full_GPR_ESP_ES_and_actual_serialized_capture_canaries_verified": true
+      },
+      {
+        "case": 1,
+        "kind": "unmodified_Original",
+        "base": 7747200,
+        "root": 7747216,
+        "full_buffer44": "e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9000000000000000000000000e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9",
+        "capture96": "597b3ac1d9c2b8a590367600f6d8a137c5b3917af0fd1a0008fe1a0082604f2d93a4e6c89036760000000000f6d8a137c5b3917af0fd1a0008fe1a0082604f2d93a4e6c8d70a00004602000015dbc86a930271a62b0000002b00000071c6a95e",
+        "before": [
+          2780349145,
+          7747216,
+          933353718,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "after": [
+          7747216,
+          0,
+          933353718,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "flags_before": 2775,
+        "flags_after": 582,
+        "DF": 0,
+        "defined_XOR_flags_mask": "8C5=44, AF undefined excluded",
+        "full_GPR_ESP_ES_and_actual_serialized_capture_canaries_verified": true
+      },
+      {
+        "case": 2,
+        "kind": "ordinary_Source",
+        "base": 7747256,
+        "root": 7747272,
+        "full_buffer44": "7272727272727272727272727272727200000000000000000000000072727272727272727272727272727272",
+        "capture96": "597b3ac1d9c2b8a5c83676004270b69cc5b3917af0fd1a0008fe1a0082604f2d93a4e6c8c8367600000000004270b69cc5b3917af0fd1a0008fe1a0082604f2d93a4e6c8d70a00004602000015dbc86a930271a62b0000002b00000071c6a95e",
+        "before": [
+          2780349145,
+          7747272,
+          2629201986,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "after": [
+          7747272,
+          0,
+          2629201986,
+          2056369093,
+          1768944,
+          1768968,
+          760176770,
+          3370558611
+        ],
+        "flags_before": 2775,
+        "flags_after": 582,
+        "DF": 0,
+        "defined_XOR_flags_mask": "8C5=44, AF undefined excluded",
+        "full_GPR_ESP_ES_and_actual_serialized_capture_canaries_verified": true
+      }
+    ],
+    "Native13_literal_SHA256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+    "unmodified_Original13_RX": true,
+    "existing_domain": "Actual fresh/unowned12-byte header interiors within3 actual44 canonical blocks; fullinallocationguards; SourceDF1 allowed call-free leaf, then CLD before CRT; no populatedowner/class/nativegame admission.",
+    "provider_lines_preserved": [
+      "UCRT=malloc IAT=767d0120 EXPORT=767d0120 RVA=00030120 MACHINE=014c FILEID=e8dcd6e0:00050000002c2ff6 NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll FILE_NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll SHA=60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b NORMALIZED_EXPORT_PREFIX32=8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+      "UCRT=free IAT=767d00a0 EXPORT=767d00a0 RVA=000300a0 MACHINE=014c FILEID=e8dcd6e0:00050000002c2ff6 NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll FILE_NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll SHA=60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b NORMALIZED_EXPORT_PREFIX32=8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+      "UCRT=_callnewh IAT=7682b000 EXPORT=7682b000 RVA=0008b000 MACHINE=014c FILEID=e8dcd6e0:00050000002c2ff6 NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll FILE_NT=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll SHA=60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b NORMALIZED_EXPORT_PREFIX32=8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8"
+    ],
+    "provider_query_or_execution": false
+  },
+  "normal_reopen_recommended": true,
+  "standard_EH_and_GS_failure": "Cold bodies and helpers only byte-classified; GS report and DLL bodies unexpanded/unadmitted.",
+  "current_domain_unchanged": true,
+  "Root_metadata_mutations": false
+}

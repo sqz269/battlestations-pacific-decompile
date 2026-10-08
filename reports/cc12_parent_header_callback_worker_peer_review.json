@@ -1,0 +1,264 @@
+{
+  "schema": "bsp.cc12.parent_header_callback.worker_peer_review.v1",
+  "passed": true,
+  "Source_admission_credit": 0,
+  "source_commit": "c787b1008d1a1f547c7fea957ac1362a779676ec",
+  "review_verdict": "Qualified worker artifact review with an ungated cold-library frontier",
+  "transitive_code_gate_closure": false,
+  "cold_library_frontier": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\cold_library_frontier.json",
+    "size": 6576,
+    "sha256": "66e33059bb6e77dbba06f792a0272701ade6a3ee9fbd8322ad140effd6ddf5fc"
+  },
+  "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s",
+  "accepted_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02",
+  "worker_exact_recursive_files": 424,
+  "worker_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\artifact_manifest.json",
+    "size": 76656,
+    "sha256": "79c45b3ea98fc9f1c2cde671a701d581ea82d280875204f3d06dd6532612eea1"
+  },
+  "worker_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\receipt.json",
+    "size": 6730,
+    "sha256": "c1aab370fb75e29f7413fa08d65d8f903aa76d19eab6cec666d7733f8fad25b8"
+  },
+  "prior_bookend_count": 19593,
+  "preserved_unique_files": 20290,
+  "before_after_equal": true,
+  "retained_function_symbols": 35,
+  "distinct_TU_bodies": 33,
+  "symbol_relocation_checks": 347,
+  "distinct_physical_relocation_operands": 341,
+  "weak_modes": [
+    1
+  ],
+  "weak_selected_fallbacks": [
+    {
+      "symbol": "??_Eexception@std@@UAEPAXI@Z",
+      "chain": [
+        {
+          "index": 293,
+          "name": "??_Eexception@std@@UAEPAXI@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 105,
+          "aux_count": 1,
+          "aux_hex": "240100000100000000000000000000000000",
+          "fallback_index": 292,
+          "search_mode": 1,
+          "decoded_search_mode": "IMAGE_WEAK_EXTERN_SEARCH_NOLIBRARY"
+        }
+      ],
+      "selected_defined_fallback": {
+        "index": 292,
+        "name": "??_Gexception@std@@UAEPAXI@Z",
+        "value": 0,
+        "section": 62,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      "fallback_map": {
+        "name": "??_Gexception@std@@UAEPAXI@Z",
+        "address": 1073746400,
+        "section": 1,
+        "offset": 480,
+        "origin": "canonical.obj",
+        "function": true,
+        "line": 90
+      },
+      "alias_map": {
+        "name": "??_Eexception@std@@UAEPAXI@Z",
+        "address": 1073746400,
+        "section": 1,
+        "offset": 480,
+        "origin": "canonical.obj",
+        "function": true,
+        "line": 89
+      },
+      "size": 45,
+      "linked_SHA256": "ec9cf6377da9afa098ac890928d29329133bc9169f0b9647e3dc021f9e9b8dbd",
+      "same_address_full_extent_all_bytes": true
+    },
+    {
+      "symbol": "??_Ebad_alloc@std@@UAEPAXI@Z",
+      "chain": [
+        {
+          "index": 299,
+          "name": "??_Ebad_alloc@std@@UAEPAXI@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 105,
+          "aux_count": 1,
+          "aux_hex": "2a0100000100000000000000000000000000",
+          "fallback_index": 298,
+          "search_mode": 1,
+          "decoded_search_mode": "IMAGE_WEAK_EXTERN_SEARCH_NOLIBRARY"
+        }
+      ],
+      "selected_defined_fallback": {
+        "index": 298,
+        "name": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "value": 0,
+        "section": 60,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      "fallback_map": {
+        "name": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "address": 1073746352,
+        "section": 1,
+        "offset": 432,
+        "origin": "canonical.obj",
+        "function": true,
+        "line": 88
+      },
+      "alias_map": {
+        "name": "??_Ebad_alloc@std@@UAEPAXI@Z",
+        "address": 1073746352,
+        "section": 1,
+        "offset": 432,
+        "origin": "canonical.obj",
+        "function": true,
+        "line": 87
+      },
+      "size": 45,
+      "linked_SHA256": "6eccbd64f1ce996430a15af0e6b074a6ba8756b2c6e4cb6b49434ce3701d2e98",
+      "same_address_full_extent_all_bytes": true
+    }
+  ],
+  "whole_runtime_spans": 47,
+  "full_main_bytes": 3950,
+  "cookie_code_bytes": 14,
+  "cookie_padding_bytes": 2,
+  "stack_code_bytes": 43,
+  "stack_padding_bytes": 5,
+  "stack_gated_span_bytes": 48,
+  "stack_gated_padding_bytes": 5,
+  "referenced_import_thunks": 12,
+  "Native5B1_direct_clear70": true,
+  "owned_counts": {
+    "ALLOCATIONS": 10,
+    "ROOT_ALLOCATIONS": 3,
+    "PRODUCERS": 7,
+    "TARGETS": 5,
+    "NODE_DISPOSITIONS": 7,
+    "ROOT_FREES": 3,
+    "RAW_SOURCE": 2,
+    "RAW_ORIGINAL": 2,
+    "ORDINARY_SOURCE": 1
+  },
+  "physical_UCRT_before_after_and_ASLR32_checked": true,
+  "CaptureBox_canary_scope": "Source predicate and successful gated control flow; full 88-byte Capture fields and caller44 images separately serialized",
+  "strict_fresh_TUs": 6,
+  "sealed_baseline_CTest": "3/3 PASS; does not establish callback integration into shared Main build",
+  "old_helpers_imported_or_executed": 0,
+  "new_Native_provider_Ghidra_queries": 0,
+  "new_compiler_or_target_processes": 0,
+  "new_tests": 0,
+  "preserved_text_drafts": {
+    "Type4": 18,
+    "Type7": 16,
+    "Source48": 17
+  },
+  "unadmitted": [
+    "Root complementary6TU validation and merged-Main admission",
+    "SourceOwner97",
+    "Original private heap",
+    "iterator/EH",
+    "class lifetime/dispatch",
+    "World/game",
+    "External GS-failure destination",
+    "External _CxxThrowException and CRT EH/OOM behavior",
+    "Ungated sized-delete16 -> unsized-delete5 -> free import-thunk6 chain"
+  ],
+  "proof_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\source_commit_proof.json",
+      "size": 3691,
+      "sha256": "773595a91717ba79e2d1f23fab4426335a357d52e68aeaae0141f93efa66958a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_TU_byte_proof.json",
+      "size": 886315,
+      "sha256": "f5d65d677884303e1aea396db7353789a79859dc369be6c506fbe4142ccdc7ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_native_tail_binding.json",
+      "size": 9044,
+      "sha256": "412741944c291391e2279da04481574432802ebd789b9927be692434ab5c3fd7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_packed_gate.json",
+      "size": 44759,
+      "sha256": "1de2bd04ddc24ae46982ba6d4609a006fb9f693d223db2a91e5c16c6bf984254"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\cold_library_frontier.json",
+      "size": 6576,
+      "sha256": "66e33059bb6e77dbba06f792a0272701ade6a3ee9fbd8322ad140effd6ddf5fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_runtime_decode.json",
+      "size": 13201,
+      "sha256": "34a57f9a46a04607c005b4ecb1be471db5e159e074a40c962dd65ebad216c109"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_build_provenance.json",
+      "size": 40603,
+      "sha256": "dc2d49cf560d27bf5f0e0d3866a663328f5e25d074151ebea04c7b2915a67a9a"
+    }
+  ],
+  "parser": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\a04\\independent_audit_v4.py",
+    "size": 42740,
+    "sha256": "76f7b4d49afd886767ebde0b4251a2174283608f7b9a55fcea088286851a75dc"
+  },
+  "independent_parser": true,
+  "accepted_decoded_or_manual_artifacts_used_as_oracles": false,
+  "review_date": "2026-10-08",
+  "metadata_only": true,
+  "audit_family_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\artifact_manifest.json",
+    "size": 13449,
+    "sha256": "0cb9f2fb87d1be456557fb6315e7f4b977f178f1874346e27b7531a21c503d63"
+  },
+  "audit_handoff": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\handoff.json",
+    "size": 1998,
+    "sha256": "0da41ef42721d9d89bd516effd29ef38f7fe552134686ea1fd8bae532f1b9086"
+  },
+  "final_preservation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a\\final_preservation.json",
+    "size": 1136,
+    "sha256": "5d8b808654106995de25d1153f69960f5c290194fe83f0b29df592b840204938"
+  },
+  "parser_attempts": 4,
+  "parser_attempt_history": [
+    {
+      "attempt": 1,
+      "status": "Stopped on uninitialized COFF BSS; corrected without reading nonexistent raw bytes"
+    },
+    {
+      "attempt": 2,
+      "status": "Stopped because stack gate48 includes code43 plus padding5; instruction extent now distinguished"
+    },
+    {
+      "attempt": 3,
+      "status": "Detected genuine ungated cold-library chain; retained as an explicit coverage frontier"
+    },
+    {
+      "attempt": 4,
+      "status": "Complete qualified independent audit; no full transitive-coverage claim"
+    }
+  ],
+  "all_stopped_artifacts_sealed": true,
+  "root_required_action": "Resolve the three cold local helper spans in fresh Root generation or explicitly retain the unadmitted frontier; Source remains zero until Root complementary validation and merged-Main admission",
+  "static_complete_retained_TU_coverage": true
+}
