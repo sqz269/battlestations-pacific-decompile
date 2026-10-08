@@ -34400,6 +34400,33 @@
         "existing_CTests_passed": 3,
         "owner_class_game_validated": false
       }
+    },
+    {
+      "id": "cc12_native_physical_failure_entries_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "00530620",
+        "00bd9e30"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_failure_entries.hpp",
+        "src/native_physical_failure_entries.cpp",
+        "docs/CC12_NATIVE_PHYSICAL_FAILURE_ENTRIES.md",
+        "reports/cc12_native_physical_failure_entries.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_additional_raw_entries_static_COFF_archive_Win32_build_qualified_execution_unready",
+      "contract": {
+        "new_Original_function_records": 0,
+        "additional_whole_raw_Source_entries": 2,
+        "exact_code_bytes": 12,
+        "existing_CTests_passed": 3,
+        "new_Source_or_Original_entry_execution": false,
+        "callable_manager_owner_available": false,
+        "BF5030_raw_ready": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
