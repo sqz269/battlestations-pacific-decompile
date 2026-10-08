@@ -1,0 +1,481 @@
+{
+  "schema": 1,
+  "packet": "cc12_raw_command_target_initialize_004f1830",
+  "status": "whole body reconstructed; strict standalone build and qualified readonly loader-snapshot fixture passed; integration owned by Root",
+  "source_baseline": "4a88f78f3",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize",
+  "source_files": [
+    "include/bsp/native_command_target_initialize.hpp",
+    "src/native_command_target_initialize.cpp"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "source_symbol": "bsp::initialize_native_command_target_004f1830",
+  "formal_declaration": "void* __fastcall initialize_native_command_target_004f1830(void* actual_ecx, void* unused_edx) noexcept",
+  "name_is_hypothesis": true,
+  "whole_native_body": {
+    "address": "004f1830",
+    "end_exclusive": "004f1870",
+    "bytes": 64,
+    "instructions": [
+      {
+        "address": "004f1830",
+        "hex": "f30f10057475f800",
+        "mnemonic": "movss",
+        "op_str": "xmm0, dword ptr [0xf87574]"
+      },
+      {
+        "address": "004f1838",
+        "hex": "8bc1",
+        "mnemonic": "mov",
+        "op_str": "eax, ecx"
+      },
+      {
+        "address": "004f183a",
+        "hex": "f30f114008",
+        "mnemonic": "movss",
+        "op_str": "dword ptr [eax + 8], xmm0"
+      },
+      {
+        "address": "004f183f",
+        "hex": "f30f10057875f800",
+        "mnemonic": "movss",
+        "op_str": "xmm0, dword ptr [0xf87578]"
+      },
+      {
+        "address": "004f1847",
+        "hex": "f30f11400c",
+        "mnemonic": "movss",
+        "op_str": "dword ptr [eax + 0xc], xmm0"
+      },
+      {
+        "address": "004f184c",
+        "hex": "f30f10057c75f800",
+        "mnemonic": "movss",
+        "op_str": "xmm0, dword ptr [0xf8757c]"
+      },
+      {
+        "address": "004f1854",
+        "hex": "f30f114010",
+        "mnemonic": "movss",
+        "op_str": "dword ptr [eax + 0x10], xmm0"
+      },
+      {
+        "address": "004f1859",
+        "hex": "0f57c0",
+        "mnemonic": "xorps",
+        "op_str": "xmm0, xmm0"
+      },
+      {
+        "address": "004f185c",
+        "hex": "33c9",
+        "mnemonic": "xor",
+        "op_str": "ecx, ecx"
+      },
+      {
+        "address": "004f185e",
+        "hex": "668908",
+        "mnemonic": "mov",
+        "op_str": "word ptr [eax], cx"
+      },
+      {
+        "address": "004f1861",
+        "hex": "894804",
+        "mnemonic": "mov",
+        "op_str": "dword ptr [eax + 4], ecx"
+      },
+      {
+        "address": "004f1864",
+        "hex": "8808",
+        "mnemonic": "mov",
+        "op_str": "byte ptr [eax], cl"
+      },
+      {
+        "address": "004f1866",
+        "hex": "66894802",
+        "mnemonic": "mov",
+        "op_str": "word ptr [eax + 2], cx"
+      },
+      {
+        "address": "004f186a",
+        "hex": "f30f114014",
+        "mnemonic": "movss",
+        "op_str": "dword ptr [eax + 0x14], xmm0"
+      },
+      {
+        "address": "004f186f",
+        "hex": "c3",
+        "mnemonic": "ret",
+        "op_str": ""
+      }
+    ],
+    "instruction_count": 15,
+    "CALL_count": 0,
+    "COFF_relocations": [],
+    "native_relocations": [],
+    "linked_relocations": [],
+    "sha256": "d63a15a125ffd391d4da60d40c27c914a8b8cd8c571f6fe0abdae1a582c723f0",
+    "hex": "f30f10057475f8008bc1f30f114008f30f10057875f800f30f11400cf30f10057c75f800f30f1140100f57c033c9668908894804880866894802f30f114014c3",
+    "linked_address": "20001000",
+    "linked_occurrences": 1
+  },
+  "contract": {
+    "receiver": "Actual ECX; stable aligned writable caller-owned raw storage covering 18h bytes. Native callers use LEA ECX into stack storage.",
+    "unused_edx": "Formal Source fastcall padding; actual native EDX is unused and preserved.",
+    "stack_operands": 0,
+    "return": "EAX is identical receiver; RET0",
+    "all_output_bytes": 24,
+    "ordered_global_load_store_offsets": [
+      [
+        "00f87574",
+        "+08"
+      ],
+      [
+        "00f87578",
+        "+0c"
+      ],
+      [
+        "00f8757c",
+        "+10"
+      ]
+    ],
+    "subsequent_sequence": [
+      "XORPS XMM0,XMM0",
+      "XOR ECX,ECX",
+      "WORD[receiver+00]=0",
+      "DWORD[receiver+04]=0",
+      "BYTE[receiver+00]=0",
+      "WORD[receiver+02]=0",
+      "MOVSS DWORD[receiver+14]=0",
+      "RET0"
+    ],
+    "preserved": [
+      "EDX",
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP",
+      "ESP",
+      "XMM1",
+      "XMM2",
+      "XMM3",
+      "XMM4",
+      "XMM5",
+      "XMM6",
+      "XMM7",
+      "x87",
+      "MXCSR",
+      "DF"
+    ],
+    "cleared": [
+      "ECX",
+      "all128bits of XMM0"
+    ],
+    "defined_final_flags": {
+      "CF": 0,
+      "PF": 1,
+      "ZF": 1,
+      "SF": 0,
+      "OF": 0
+    },
+    "AF": "undefined; not asserted",
+    "production_global_prerequisite": "Actual readable absolute F87574/78/7C. No mapping/default/replacement provider created. Aliased output also requires writable storage.",
+    "alias_order": "Literal interleaved global reads/output stores and overlapping header writes; complete identical code proves order. No pre-captured vector.",
+    "native_class_identity": "unbound",
+    "hostmake_command_target_delegation": false,
+    "allocations": 0,
+    "guards_or_fallbacks": 0,
+    "unresolved_stubs": 0
+  },
+  "data_evidence": {
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "qualified_page": {
+      "address": "00f87000",
+      "size": 4096,
+      "file_bytes": 0,
+      "zero_fill_bytes": 4096,
+      "section": ".data",
+      "characteristics": "0xc0000040",
+      "virtual_size": 2719452,
+      "raw_size": 65536,
+      "virtual_address": 10518528,
+      "raw_pointer": 10518528
+    },
+    "three_cells_saved_program_hex": "000000000000000000000000",
+    "three_cells_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+    "actual_file_bytes_for_cells": 0,
+    "loader_zero_fill_bytes_for_cells": 12,
+    "section_is_writable": true,
+    "not_immutable_constants": true,
+    "xref_limit": "Capped READ xrefs and escaping MOV/PUSH addresses are not a complete writer census.",
+    "runtime_global_state_provider_and_native_world": "unbound"
+  },
+  "fixture": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a",
+    "accepted_translation_units": [
+      "src/native_command_target_initialize.cpp",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\probe_v2.cpp"
+    ],
+    "BSP_archives": 0,
+    "new_tracked_tests": 0,
+    "compiler": "MSVC18 Community14.51.36231 Hostx64/x86",
+    "SDK": "10.0.26100.0",
+    "flags": [
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/permissive-"
+    ],
+    "manifest": "/MANIFEST:EMBED; default asInvoker XML parsed and exact requested attributes verified before accepted launch",
+    "mapping": "Reserve actual F80000 64KiB before opening artifacts; commit/copy actual PE loader F87000 page, protect PAGE_READONLY; Original unchanged64 separate PAGE_EXECUTE_READ.",
+    "receiver": "Aligned actual stack-owned caller allocation member,24 bytes,16 preceding and24 following guard bytes; SAME receiver reused for Original/Source.",
+    "static_gate_before_successful_process_entry": true,
+    "original_code_unmodified": true,
+    "whole_original_COFF_linked_equal": true,
+    "ordinary_source_caller": {
+      "address": "20001aa0",
+      "bytes": 13,
+      "sha256": "90a64b96cd1b77bde13b5b9844b5c5ebd8502f190917b49152d2b4236d8d3172",
+      "hex": "8b5424088b4c2404e953f5ffff",
+      "instructions": [
+        {
+          "address": "20001aa0",
+          "hex": "8b542408",
+          "mnemonic": "mov",
+          "op_str": "edx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "20001aa4",
+          "hex": "8b4c2404",
+          "mnemonic": "mov",
+          "op_str": "ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "20001aa8",
+          "hex": "e953f5ffff",
+          "mnemonic": "jmp",
+          "op_str": "0x20001000"
+        }
+      ],
+      "COFF_relocations": [
+        [
+          9,
+          65,
+          20
+        ]
+      ]
+    },
+    "raw_capture_caller": {
+      "address": "20001ae0",
+      "bytes": 229,
+      "sha256": "76ca1fbaab8884ad290a851f68edc24005e687329fe560e493516780100638b6",
+      "hex": "558bec5356579c81ec1002000083e4f00fae0424dbe3d9e8d9eb8b45140fae90d00400000f1080500400000f1088600400000f1090700400000f1098800400000f10a0900400000f10a8a00400000f10b0b00400000f10b8c00400008b4d0c8b5510bb44332211be88776655bfccbbaa9968030600009dc7004030201089480489500889580c89601089681489701889781c9c8f40400fae4050b840302010ff55089c508b451489482489502889582c89683489703889783c8b0c248948208d4c24088948308b4c24048948440fae805002000083c408fc0fae0c248d65f09d5f5e5b5dc3",
+      "COFF_relocations": []
+    },
+    "successful_process_launches": 1,
+    "actual_initializer_entries": {
+      "Original_raw": 1,
+      "Source_raw": 1,
+      "Source_ordinary_generated": 1
+    },
+    "actual_receiver": "001ae4e0",
+    "actual_edx": "d5c4b3a2",
+    "identical_raw_caller_entry_GPR_operands": true,
+    "outputs_hex": [
+      "000000000000000000000000000000000000000000000000",
+      "000000000000000000000000000000000000000000000000",
+      "000000000000000000000000000000000000000000000000"
+    ],
+    "real_adjacent_guards": [
+      true,
+      true,
+      true
+    ],
+    "ordinary_return_identity": true,
+    "raw_return_and_register_capture_passed": true,
+    "full128bit_XMM0_zero": true,
+    "other_XMM_preserved": true,
+    "nonempty_x87_preserved": true,
+    "MXCSR_seed": "00003f80",
+    "MXCSR_preserved": true,
+    "flags_before": "00000603",
+    "flags_after": "00000646",
+    "DF1_preserved": true,
+    "undefined_AF_not_asserted": true,
+    "full_page_before_after_equal": true,
+    "full_code_before_after_equal": true,
+    "readonly_zero_snapshot_case_count": 1,
+    "mutable_global_alias_runtime_cases": 0,
+    "nonzero_global_cases": 0,
+    "actual_consumed_header_count": 108,
+    "extensionless_standard_headers_pinned": true,
+    "actually_searched_system_libraries": [
+      "kernel32.Lib",
+      "msvcrt.lib",
+      "oldnames.lib",
+      "vcruntime.lib",
+      "ucrt.lib"
+    ],
+    "selected_compiler_and_resource_tools_pinned": true,
+    "before_after_protected_prior_artifacts": 119,
+    "old_family_replays": 0,
+    "post_native_replays": 0,
+    "preserved_failures": [
+      {
+        "stage": "probe compile",
+        "reason": "/WX C4324 implicit Capture tail padding",
+        "correction": "new probe_v2.cpp has explicit tail padding; accepted Source object retained"
+      },
+      {
+        "stage": "link",
+        "reason": "LNK1158 rc.exe not on explicit PATH",
+        "correction": "SDK resource tool directory added and tools pinned; accepted COFFs retained"
+      },
+      {
+        "stage": "CreateProcess preentry",
+        "reason": "WinError14001 malformed explicit UAC manifest attributes",
+        "correction": "new unique executable uses default asInvoker; XML preflight strengthened; no native execution before correction"
+      }
+    ],
+    "postprocessor": {
+      "passed": true,
+      "native_byte_bookends_equal": true,
+      "all_explicit_inputs_equal": true,
+      "consumed_headers_libraries_equal": true,
+      "prior_artifacts_equal": 119,
+      "live_full_snapshot_page_equals_qualified_PE_loader_page": true,
+      "old_family_executions": 0,
+      "accepted_compile_runs": 2,
+      "accepted_link_runs": 1,
+      "rejected_preentry_manifest_links": 1,
+      "CreateProcess_preentry_rejections": 1,
+      "accepted_launch_runs": 1,
+      "post_native_replays": 0,
+      "new_native_bytes": 64,
+      "new_native_instructions": 15,
+      "BSP_archives": 0,
+      "timestamp_ns": 1791439854216948700
+    }
+  },
+  "artifacts": {
+    "recipe.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\recipe.py",
+      "size": 20011,
+      "sha256": "bc6a16e0e4f4f214a735cb9a5a56f2e5fc2ade765a7b29feb235990654b98da4"
+    },
+    "recipe_v2.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\recipe_v2.py",
+      "size": 20354,
+      "sha256": "c74ddd70468d6a7b32488b6b0738642ab7a88e35571575281614272bff41e0d7"
+    },
+    "recipe_v3.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\recipe_v3.py",
+      "size": 20130,
+      "sha256": "1d5c856f2b1d6ec99bb0fba360c3fbecb4e38388521492ec297afa07e4a0e8af"
+    },
+    "recipe_v4.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\recipe_v4.py",
+      "size": 20488,
+      "sha256": "91d540638f49439e364659ecced84913fed41874c2354dc304b914cc6a96ee1d"
+    },
+    "inputs_before_manifest_recovery.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\inputs_before_manifest_recovery.json",
+      "size": 11153,
+      "sha256": "ce236640f59a92572e8dae35c4412f9f91527b8f6e945e48badeb904d997168d"
+    },
+    "compile_source.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\compile_source.json",
+      "size": 1671,
+      "sha256": "4321bcf23702ef06806bb29ae6519da6d31039fb26735c1c65b4882a16fe36df"
+    },
+    "compile_probe_v2.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\compile_probe_v2.json",
+      "size": 1709,
+      "sha256": "1a8b506c95eb58d72219347491fbe9b82bf4ec44202a385f57908bb2024b64e6"
+    },
+    "link_v4.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\link_v4.json",
+      "size": 1719,
+      "sha256": "0cc00f9a5b2b9f7542f0898ab35480772deb1410a029ea6a1b095bd862f2130d"
+    },
+    "build_v4.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\build_v4.json",
+      "size": 1183,
+      "sha256": "bd3826d3e9854372cae9c827f7a091d2b0b96f80602e651ab026d2c1833bffaa"
+    },
+    "static_gate_v4.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\static_gate_v4.json",
+      "size": 40157,
+      "sha256": "f143c1e1b98c62c41434ff306f9fa1ff8992b43dc30b7e4ea7ccb3f5198e5df1"
+    },
+    "runtime_v4.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\runtime_v4.json",
+      "size": 13635,
+      "sha256": "22571a6b4f4d41ff4f4cc0b7ad16598dabeaad8377965e21a85301e40246a9dd"
+    },
+    "launch_v4.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\launch_v4.json",
+      "size": 985,
+      "sha256": "ada08135d338fef4571500fa27f413d5740288cd6f8f556bee916355f3dc59f1"
+    },
+    "native_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\native_before.json",
+      "size": 978,
+      "sha256": "4b1899dad3e02c20dd65e8297df424e528abcb3bd816b2b3623156c906651a4e"
+    },
+    "native_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\native_after.json",
+      "size": 978,
+      "sha256": "4b1899dad3e02c20dd65e8297df424e528abcb3bd816b2b3623156c906651a4e"
+    },
+    "post.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\post.json",
+      "size": 585,
+      "sha256": "231bb7e5d27ef0e5547e73b196b789a5ab2d9cdc91339093946f8048ae01f988"
+    },
+    "seal.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_initialize_worker20261008a\\seal.json",
+      "size": 26937,
+      "sha256": "f2233c5d55629b8ac976b9b7f678933778056c98ece60bc957a902a44af3b310"
+    }
+  },
+  "sealed_artifact_count": 89,
+  "worker_validation_levels": {
+    "live_Ghidra_and_PE_bytes": true,
+    "whole_source_body": true,
+    "standalone_strict_Win32_build": true,
+    "qualified_fixture": true,
+    "physical_register_and_SSE_capture": true,
+    "full_CMake_build": "Root pending",
+    "existing_CTests": "Root pending",
+    "independent_Root_family": "Root pending",
+    "original_caller_integration": false,
+    "runtime_mutable_global_alias_proof": false,
+    "native_class_or_world": false,
+    "startup": false,
+    "gameplay": false
+  },
+  "worker_mutations": {
+    "tracked_files": 4,
+    "Ghidra": 0,
+    "original_game": 0,
+    "shared_CMake_or_ledger": 0
+  },
+  "integration_boundary": "Root owns CMake, shared metadata, independent fresh family, full Win32 build/existing tests, Ghidra annotation/save/export/snapshot and main integration. This report does not claim those results."
+}

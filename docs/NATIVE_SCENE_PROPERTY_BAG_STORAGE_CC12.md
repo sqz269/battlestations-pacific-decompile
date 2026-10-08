@@ -97,3 +97,9 @@ controlled Ghidra annotation/save/export/snapshot, and main publication are
 integration responsibilities. This packet does not admit the native whole
 class, ordinary/scalar record paths, whole type158, nested lifetime, historical
 heap, EH, parser/factory, world, startup or game behavior.
+
+## Primary integration
+
+Distinct whole61B15 raw supplied-storage constructor; actual ECX root, unused EDX C++ padding formal, owner DWORD on stack, RET4, EAX root/ECX0/EDXroot and EDI preservation; DF0/flatES required. All276 fields and literal DATA phases verified. Main independent fresh3TU Source-live-owner/Original-null cases complement sealed worker Source-null/Original-live cases; each uses two genuine exact276-byte currentheap roots, raw caller/capture/wholeCOFF/unique-linked gates BEFORE sole execution. Loaded I386 UCRT logical System32 and pinned SysWOW64 files proved identical by actual volume/file identity and bytehash, with actual malloc/free IAT/export/module gates. All prior artifacts preserved; no old family replay or new tracked tests. Other live allocation/stack/capture guards checked, adjacent allocation red zones not proved. Explicit currentfree of empty actualroots only; borrowed root+4 never freed. No profile dispatch, native class/historicalCRT/ordinary/scalar/type158/nested/parser/factory/EH/world/startup/game admission.
+
+Exact main Source build `0fa8ebb1b5e8e0d65b9b2f62df0e1242f197d140` (current main has only subsequent documentation/report changes) passed all three existing CTests. Independent three-TU family: `local/cc12_property_bag_storage_primary/run01/receipt.json`; Source nonzero live owner and unmodified Original null-owner both passed. Core `17c8897939e01c4adc9e270062db268b7f16098e7f164c2cb89fc93ec49aa862` is full-build context only; the component consumes no BSP archives. Saved analysis receipts follow in the report.
