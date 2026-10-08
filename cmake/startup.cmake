@@ -1651,3 +1651,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_root
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_property_tree_library_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_class03_kind.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_kind_4c_4e.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_member_speed_reducer.cpp)
