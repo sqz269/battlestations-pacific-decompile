@@ -1,0 +1,496 @@
+{
+  "schema": "bsp.cc12.parent_header_callback_root_artifact_independent_audit.v1",
+  "passed": true,
+  "Source_admission_credit": 0,
+  "kind": "Independent read-only sealed-artifact audit",
+  "Root_native_family": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile\\local\\h5p1",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\h5p1\\seal.json",
+      "size": 92781,
+      "sha256": "87e9f550950ffd98033d5efcf646044c7c66dfdab57cedc235cab481f00694ed"
+    },
+    "exact_files": 419
+  },
+  "audit_evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit",
+  "audit_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\seal.json",
+    "scope": "Exact recursive evidence inventory; excludes only seal itself. Final seal identity is provided with handoff."
+  },
+  "historical_Main_metadata": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_parent_header_destructor_callback_cc12.json",
+        "size": 24335,
+        "sha256": "20932605055edc4ae0d40667f9e97ed5e28206185be7187f2064e89c63f298e1"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\historical_native_parent_header_destructor_callback_cc12.json",
+        "size": 24335,
+        "sha256": "20932605055edc4ae0d40667f9e97ed5e28206185be7187f2064e89c63f298e1"
+      },
+      "live_immutable_requirement": false
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_PARENT_HEADER_DESTRUCTOR_CALLBACK_CC12.md",
+        "size": 9402,
+        "sha256": "e31ad8eb87b911963ac7cf0ecb0c1f3ad9c3c9267ccce7edd608cf8ad7efdba9"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\historical_NATIVE_PARENT_HEADER_DESTRUCTOR_CALLBACK_CC12.md",
+        "size": 9402,
+        "sha256": "e31ad8eb87b911963ac7cf0ecb0c1f3ad9c3c9267ccce7edd608cf8ad7efdba9"
+      },
+      "live_immutable_requirement": false
+    }
+  ],
+  "Main_metadata_immutability_policy": "Historical snapshots only; Root may update current admission after independent clear70 evidence. No recursive promotion of embedded old Main path hashes.",
+  "Native_artifact": {
+    "range": "004C2D30..004C2D35",
+    "bytes": 5,
+    "instructions": 1,
+    "hex": "e9abcbffff",
+    "sha256": "fcd4639035646b9e7bc377f6227d569bf4315202717b7b3298d19d59a6ad1f57"
+  },
+  "linked_callback": {
+    "address": "49001000",
+    "bytes": "e90b000000",
+    "size": 5,
+    "relocations": [
+      {
+        "offset": 1,
+        "site": 1224740865,
+        "type": 20,
+        "symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+        "resolved_symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+        "symbol_index": 9,
+        "object_addend": 0,
+        "expected_linked_operand": 11,
+        "actual_linked_operand": 11,
+        "target": {
+          "section": 1,
+          "offset": 16,
+          "symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+          "address": 1224740880,
+          "owner": "clear.obj",
+          "flags": [
+            "f"
+          ],
+          "line": "0001:00000010       ?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z 49001010 f   clear.obj"
+        },
+        "weak_reference": null
+      }
+    ],
+    "only_binding_operand": [
+      1,
+      5
+    ],
+    "unique_complete_code_occurrences": [
+      "49001000"
+    ],
+    "tail": "One E9 to actual Source clear70; zero callback stack movement; inherited plain RET"
+  },
+  "raw_code_findings": {
+    "raw_objects": 6,
+    "logical_symbols": 35,
+    "unique_TU_bodies": 33,
+    "mapped_code_or_EH_symbols_lacking_function_type": [],
+    "actual_weak_modes": {
+      "1": 2
+    },
+    "logical_relocation_checks": 347,
+    "unique_physical_relocation_operands": 341,
+    "alias_rechecks": 6,
+    "whole_runtime_spans": 50,
+    "helper_body_count": 17,
+    "helper_categories": {
+      "normal_security_cookie": 1,
+      "cold_std_import": 3,
+      "cold_sized_delete": 1,
+      "normal_import_thunk": 9,
+      "normal_stack_probe": 1,
+      "cold_unsized_delete": 1,
+      "cold_free_import": 1
+    },
+    "full_main_bytes": 3950,
+    "full_main_instructions": 994,
+    "raw_caller_bytes": 172,
+    "raw_caller_instructions": 62,
+    "ordinary_caller_bytes": 6,
+    "ordinary_caller_instructions": 2,
+    "cookie14_complete_CFG": true,
+    "chkstk43_complete_CFG": true,
+    "stack_alignment_excluded": 5,
+    "cold_delete16_5_free6_complete": true,
+    "GS_failure_frontier": [
+      {
+        "caller": 1224750160,
+        "caller_symbol": "@__security_check_cookie@4",
+        "site": 1224750169,
+        "mnemonic": "jmp",
+        "target": 1224751024,
+        "frontier": "named unexpanded ___report_gsfailure"
+      }
+    ]
+  },
+  "weak_mode_qualification": "Two actual mode1 NOLIBRARY aliases resolve via auxiliary TagIndex to defined same-VA complete fallback bodies with all relocations. No actual mode3 alias in this family; reader distinguishes and resolves mode3 explicitly when present.",
+  "mapped_code_definition_qualification": "Every mapped executable symbol owned by all six TU objects inspected regardless of type0x20; no retained code-only/EH definition lacking function type was found.",
+  "register_import_reaching_definition_proofs": [
+    {
+      "caller": 1224741392,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224741411,
+      "register": "ebx",
+      "binding": {
+        "name": "malloc",
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll",
+        "IAT": 1224757396
+      },
+      "all_reaching_load_sites": [
+        1224741396
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224741392,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224741429,
+      "register": "edi",
+      "binding": {
+        "name": "_callnewh",
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll",
+        "IAT": 1224757400
+      },
+      "all_reaching_load_sites": [
+        1224741420
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224741392,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224741441,
+      "register": "ebx",
+      "binding": {
+        "name": "malloc",
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll",
+        "IAT": 1224757396
+      },
+      "all_reaching_load_sites": [
+        1224741396
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224743472,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224743803,
+      "register": "edi",
+      "binding": {
+        "name": "lstrcmpiW",
+        "DLL": "KERNEL32.dll",
+        "IAT": 1224757348
+      },
+      "all_reaching_load_sites": [
+        1224743781
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224743472,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224743828,
+      "register": "edi",
+      "binding": {
+        "name": "lstrcmpiW",
+        "DLL": "KERNEL32.dll",
+        "IAT": 1224757348
+      },
+      "all_reaching_load_sites": [
+        1224743781
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224744672,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224744752,
+      "register": "edi",
+      "binding": {
+        "name": "ReadFile",
+        "DLL": "KERNEL32.dll",
+        "IAT": 1224757288
+      },
+      "all_reaching_load_sites": [
+        1224744727
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224744672,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224745025,
+      "register": "edi",
+      "binding": {
+        "name": "ReadFile",
+        "DLL": "KERNEL32.dll",
+        "IAT": 1224757288
+      },
+      "all_reaching_load_sites": [
+        1224745006
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    },
+    {
+      "caller": 1224744672,
+      "kind": "CFG-proven register PE import",
+      "mnemonic": "call",
+      "site": 1224745083,
+      "register": "edi",
+      "binding": {
+        "name": "ReadFile",
+        "DLL": "KERNEL32.dll",
+        "IAT": 1224757288
+      },
+      "all_reaching_load_sites": [
+        1224745006
+      ],
+      "CFG_all_paths_agree": true,
+      "volatile_registers_killed_after_each_call": true
+    }
+  ],
+  "cold_CFG_qualification": {
+    "all_retained_direct_edges_gated_except_named_GS_failure": true,
+    "stack43": "RET at+33; final internal JMP at+41 to+20; JB+22 to+34; five trailing CC alignment bytes excluded.",
+    "cookie14": "Normal RET+8, failure JMP+9 to named 490037B0 ___report_gsfailure, whose body remains unexpanded.",
+    "cold_delete_chain_addresses": [
+      "49003460",
+      "490037C0",
+      "490041B6"
+    ],
+    "cold_delete_body_bytes": [
+      16,
+      5,
+      6
+    ],
+    "unsized_delete_alignment_bytes": 11,
+    "terminal_compiler_guard": [
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "exits": [
+          {
+            "site": 1224741481,
+            "trap": "int3",
+            "operand": "",
+            "observed_execution": false
+          }
+        ]
+      }
+    ],
+    "gated_unreachable_alignment": [
+      {
+        "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+        "instructions": [
+          {
+            "address": 1224744825,
+            "hex": "0f1f8000000000",
+            "mnemonic": "nop",
+            "operands": "dword ptr [eax]"
+          }
+        ]
+      }
+    ],
+    "EH_or_trap_or_GS_failure_execution_claimed": false
+  },
+  "runtime_artifact_findings": {
+    "passed": true,
+    "Source_credit": 0,
+    "existing_native_processes_reviewed": 1,
+    "new_native_processes": 0,
+    "complete_capture88_records": 5,
+    "caller44_records": 5,
+    "producer_records": 7,
+    "borrowed_payload_bytes": 96,
+    "recorded_UCRT_bindings": 3,
+    "R_EBP_plus4_Q_Rminus28_T_Qminus4": true,
+    "ordinary_extra4_derived_not_independently_captured": true,
+    "empty_volatiles_preserved": true,
+    "populated_volatiles_unasserted": true,
+    "CMP_defined_mask": "8D5=44 including AF0",
+    "DF": 0,
+    "ES_preserved": true,
+    "CaptureBox_canaries_separately_serialized": false,
+    "CaptureBox_canaries_live_gated_only": true,
+    "ASLR_prefix_correctly_adjusted_to_actual_recorded_base": true,
+    "new_physical_provider_attestation": false,
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\capture_provider_audit.py",
+      "size": 12255,
+      "sha256": "46affe9b43e74112b6c43334698e64538e41c85205f70b63bf33f248d6bb6ec8"
+    }
+  },
+  "fixture": {
+    "cases": [
+      "empty Source",
+      "empty Original",
+      "populated Source3",
+      "populated Original3",
+      "ordinary Source singleton"
+    ],
+    "root_blocks": 3,
+    "actual_requested_bytes_each": 44,
+    "header_offset": 16,
+    "header_bytes": 12,
+    "inallocation_guards": [
+      16,
+      16
+    ],
+    "producer_nodes": 7,
+    "recorded_canonical_alloc_free_pairs": 10,
+    "node_dispositions": 7,
+    "caller_base_frees": 3,
+    "Source_borrowed_payload_order": [
+      "C",
+      "A",
+      "C"
+    ],
+    "Original_borrowed_payload_order": [
+      "A",
+      "C",
+      "A"
+    ],
+    "ordinary_payload": "B",
+    "CaptureBox_guards": "Only checked by whole-gated main; not separately serialized.",
+    "serialized_capture_payload_bytes_each": 88,
+    "serialized_caller_bytes_each": 44,
+    "payload_total_bytes": 96,
+    "stack": "R=observed EBP+4; Q=observed ESP=R-28; T=Q-4. Ordinary six-byte CALL/RET adds derived inner4; no independent inner ESP capture.",
+    "flags": "8D5=44 including AF0 from terminal CMP; DF0, ES and nonvolatiles preserved.",
+    "volatile_policy": "Empty EAX/ECX/EDX preserved. Populated volatile registers recorded without equality assertions.",
+    "historical_address_reuse": "No global node address uniqueness imposed across retirement; first six simultaneous nodes are distinct.",
+    "retired_storage": "No newly queried process, retired-node or freed-root memory."
+  },
+  "provider_evidence": {
+    "kind": "Recorded physical attestation checked against sealed frozen DLL bytes; no new live attestation",
+    "imports": [
+      "malloc",
+      "free",
+      "_callnewh"
+    ],
+    "I386": true,
+    "recorded_MEM_IMAGE": true,
+    "recorded_NT_paths_fileID_full_SHA": true,
+    "actual_recorded_module_base": "767A0000",
+    "frozen_preferred_base": "10000000",
+    "relocation_delta": "667A0000",
+    "prefix_field_correction": "ASLR_normalized_prefix contains bytes adjusted to recorded actual module base. _callnewh has one overlapping HIGHLOW fixup.",
+    "logical_System32_path_and_recorded_physical_SysWOW64_paths_kept_distinct": true
+  },
+  "named_dependency": {
+    "packet": "cc12_native_parent_header_clear",
+    "audit_admission_credit": 0,
+    "historical_Root_status": "Standalone clear70 fresh helper-complete admission pending at Root callback seal generation.",
+    "decision_owner": "Root alone; this peer audit neither replays callback nor awards dependency or callback Source credit."
+  },
+  "preservation": {
+    "Root419": true,
+    "base21343": true,
+    "additional468": true,
+    "combined21683": true,
+    "duplicate_draft59": true,
+    "Header13_draft39": true,
+    "strict_unique_files": 22200,
+    "current_Main_CPP_HPP_unchanged": 10,
+    "after_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\preservation_after.json",
+      "size": 770,
+      "sha256": "c385b350034ee808ba8cb1a00a34e136e7b1feff2670dfcc353629bdff538dbb"
+    }
+  },
+  "readers": {
+    "raw_formats.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\raw_formats.py",
+      "size": 6834,
+      "sha256": "7236e2b964d151fac4988bcdf08c9fd543be3661da4d77f0ff76aff25431d21d"
+    },
+    "register_imports.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\register_imports.py",
+      "size": 3045,
+      "sha256": "8c8f38af5e47df3c0c8ceadf513eb5f3b29eb3504021128f8144cd8e24c919c4"
+    },
+    "code_audit_r04.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\code_audit_r04.py",
+      "size": 19854,
+      "sha256": "60df7a9f5790ba922e3529d5d1edcd44fab8bb09bf92bf80a99c5448b0929282"
+    },
+    "capture_provider_audit.py": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\capture_provider_audit.py",
+      "size": 12255,
+      "sha256": "46affe9b43e74112b6c43334698e64538e41c85205f70b63bf33f248d6bb6ec8"
+    }
+  },
+  "evidence": {
+    "r04_code_audit_summary.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\r04_code_audit_summary.json",
+      "size": 2813,
+      "sha256": "056aa3a919d66abbb4a4157258537bbab71dafba025a7cebb13724fa6d2b35b4"
+    },
+    "r04_raw_COFF_relocation_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\r04_raw_COFF_relocation_analysis.json",
+      "size": 342460,
+      "sha256": "a541fa45cadf8a154fb3854b1cf35010e155e433921a4fb679620de3bc913157"
+    },
+    "r04_raw_code_CFG_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\r04_raw_code_CFG_analysis.json",
+      "size": 293645,
+      "sha256": "d366cd065a4f184587422519ff6c51d3319ac263091226dea1e05d4e1617d51b"
+    },
+    "r04_packed_gate_raw.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\r04_packed_gate_raw.json",
+      "size": 27898,
+      "sha256": "a85cfea42dd8f8b36c27310a1b2f2dc07e89e60c684f1c3134bc4235083549ac"
+    },
+    "decoded_captures_and_producers.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\decoded_captures_and_producers.json",
+      "size": 11379,
+      "sha256": "540fe6a7cadab8f57136994b043a65b79b35b16bcef077e5fb66bc7e06d53e48"
+    },
+    "decoded_recorded_providers.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\decoded_recorded_providers.json",
+      "size": 5040,
+      "sha256": "48addebd1be3aa8c453e0913284d547f985799d502ed3fcca727fd0c4debd206"
+    },
+    "runtime_artifact_audit_summary.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\runtime_artifact_audit_summary.json",
+      "size": 1017,
+      "sha256": "fd628a80cf715a109f8122ccdfde62087bb3fb80bfb59ce1c496e6ff993cd62d"
+    },
+    "execution_and_reader_corrections.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit\\execution_and_reader_corrections.json",
+      "size": 5474,
+      "sha256": "646d62f1eb191e9f75578a45d3acac65d23db808160f1b6b8d66ae63467709bb"
+    }
+  },
+  "scope_limits": [
+    "No new compiler/linker/native process or Native/provider/Ghidra query",
+    "No Source/CPP/HPP/CMake/shared-ledger or Source-credit mutation",
+    "No old accepted helper import, stage replay or object reuse",
+    "No native private CRT/EH/Owner/Class/World/startup/gameplay admission"
+  ],
+  "new_tracked_tests": 0
+}
