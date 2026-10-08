@@ -26,6 +26,7 @@ struct NativeVfsDateRouteContext;
 struct NativeVfsOpenRouteContext;
 struct NativeStoredStreamConversionContext;
 struct NativeVfsEnumerationContext;
+struct NativeVfsFileBlockScopeContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -101,6 +102,11 @@ public:
     // retain their own actual headers and acquired frames. Borrowing performs
     // no startup, I/O, retry or cleanup and is valid before core registration.
     GameNativeVfsRawServices borrow_raw_services() noexcept;
+    // Borrow the actual scope domain only after the complete archive tail.
+    // Checks the current retained manager/registry/lock and cached-load state;
+    // performs no allocation, publication, callback, I/O or cleanup. Keep this
+    // runtime and its borrowed inputs alive until all blocks close, before drain.
+    NativeVfsFileBlockScopeContext& borrow_fileblock_scopes();
     // Keep this object alive if startup throws: drain the shared singleton
     // manager before any bound context or publication cell is destroyed.
     void construct_and_register_core();

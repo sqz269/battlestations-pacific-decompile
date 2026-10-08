@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cstring>
 #include <cstdio>
+#include <exception>
 #include <stdexcept>
 #include <utility>
 
@@ -18,10 +19,84 @@
 #include "bsp/physical_file.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
+#include "bsp/native_fileblock_owner.hpp"
+#include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/vfs_search_defaults.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp::game {
+struct GameVfsHost::TitleFileBlock {
+    alignas(4) std::uint32_t owner[7]{}; // Actual 1Ch owner, never moved.
+    NativeString name{};
+    NativeFileBlockOwnerContext context;
+    NativeFileBlockOwnerAcquired construction;
+    NativeFileBlockOwnerAcquired destruction;
+    void* returned_name_data{};
+    std::uint32_t returned_name_bytes{};
+    NativeStringPoolStorage* return_pool{};
+    bool opened{};
+    bool closed{};
+
+    TitleFileBlock(GameNativeVfsRawServices services, NativeStringRawPoolContext& raw,
+        NativeVfsFileBlockScopeContext& scopes)
+        : context{services.actual_vfs_publication_0109ceec, services.strings, raw, scopes} {}
+    ~TitleFileBlock() {
+        // Production exits before shared drain while any frame remains open.
+        // Reject accidental C++ teardown too; never replay native destruction.
+        if (!closed) std::terminate();
+    }
+    TitleFileBlock(const TitleFileBlock&) = delete;
+    TitleFileBlock& operator=(const TitleFileBlock&) = delete;
+    void return_caller_name() {
+        // 004C9AD6..004C9AF5 returns the caller's temporary only after BE0A30.
+        // Capture before the possibly throwing getter and keep the frame alive.
+        returned_name_data = name.data();
+        if (!returned_name_data) return;
+        returned_name_bytes = name.length() + 1u;
+        return_pool = native_string_pool_get_or_create_00419cc0(
+            context.raw_pool.actual_published_01090aa8,
+            context.raw_pool.actual_manager_publication_01090aa0);
+        return_native_string_pool_00bd1510(return_pool, returned_name_data,
+            returned_name_bytes, context.raw_pool.actual_small_returns_disabled_01090aa4);
+        // Native leaves this temporary header unchanged after its normal return.
+    }
+};
+
+void GameVfsHost::open_title_fileblock(const char* label) {
+    invoke_native([&] {
+        if (title_fileblock_ || !label)
+            throw std::logic_error("Native title FileBlock cannot replay or accept a null label");
+        auto& runtime = active_runtime();
+        auto& scopes = runtime.borrow_fileblock_scopes();
+        title_fileblock_ = std::make_unique<TitleFileBlock>(
+            runtime.borrow_raw_services(), raw_strings(), scopes);
+        // Publish the complete immovable frame before constructing even the
+        // pooled caller name; every escaping native operation retains it.
+        auto& frame = *title_fileblock_;
+        frame.name.assign_0041e870(frame.context.raw_pool, label);
+        construct_native_fileblock_00be0a30(frame.owner, &frame.name, 1,
+            frame.context, frame.construction);
+        frame.return_caller_name();
+        frame.opened = true;
+    });
+}
+void GameVfsHost::close_title_fileblock() {
+    invoke_native([&] {
+        auto& runtime = active_runtime();
+        (void)runtime.borrow_fileblock_scopes();
+        if (!title_fileblock_ || !title_fileblock_->opened)
+            throw std::logic_error("Native title FileBlock requires completed construction");
+        auto& frame = *title_fileblock_;
+        // BDCB30 reloads CURRENT publication, leaves the real gate/observer
+        // scope, returns its owned name, then stamps the base. No scalar delete.
+        destroy_native_fileblock_00bdcb30(frame.owner, frame.context, frame.destruction);
+        frame.closed = true;
+        title_fileblock_.reset();
+    });
+}
+
 void* GameVfsHost::mount(const char* system,const char* virtual_path,
     std::uint32_t priority,std::uint32_t flags,std::uint32_t device_id) {
     return invoke_native([&] {return active_runtime().mount(system,virtual_path,priority,flags,device_id);});
@@ -120,6 +195,10 @@ std::size_t GameVfsHost::registered_parsers() const noexcept {
     return resources_->registered_parsers();
 }
 std::uint32_t GameVfsHost::failure_site() const noexcept {
+    if (title_fileblock_) {
+        const auto leaving = title_fileblock_->destruction.failure_site();
+        return leaving ? leaving : title_fileblock_->construction.failure_site();
+    }
     if (resources_->failure_entry()) return resources_->failure_entry();
     if (!core_ready_) return 0;
     const auto request_site = native_->runtime().file_store_request_failure_site();
