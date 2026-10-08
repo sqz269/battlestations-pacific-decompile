@@ -35195,6 +35195,46 @@
         "new_execution": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_native_reference_payload_copy",
+      "done": false,
+      "state": "ready Root repaired and independently reviewed whole55B22 qualified reference payload copy",
+      "function_addresses": [
+        "008f0340"
+      ],
+      "output_files": [
+        "include/bsp/native_reference_payload_copy.hpp",
+        "src/native_reference_payload_copy.cpp",
+        "docs/NATIVE_REFERENCE_PAYLOAD_COPY_CC12.md",
+        "reports/native_reference_payload_copy_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "readiness_document": "docs/CC12_NATIVE_STRING_CONSUMER_READINESS.md",
+      "readiness_report": "reports/cc12_native_string_consumer_readiness.json",
+      "Root_flow_repair": {
+        "passed": true,
+        "family": "local\\cc12_reference_payload_flow_root20261008a",
+        "native_bytes": 55,
+        "instructions": 22,
+        "complete_documentation_exact": true,
+        "Source_admission_credit": 0
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "contract": "Whole [008F0340,008F0377)55B22 physical consumer. Root repaired callsite008F0356 CALL_RETURN toNONE and missing10B035B..0365, saved/force-exported underglobal lock; actual22starts/live55/completepriorfunctiondocumentation exact. ECX actualfresh8-byte destinationpayload (oldchildnull or soleownedcurrentadmitteddupe), unusedEDX pad; actualreadable8-byte sourcepayload insole stackDWORD, RET4/EAXactualnewcopyor0. Snapshot source+4 text/source+0 bits before oldfree; source/dest/text/frame disjoint. Whole55 literal exceptoperand23..27 actualcanonicalfree and40..44 same actualphysicalfastcall duplicate57;47literalbytes. Realoldcopyproducedbyfreshadmittedduplication, neverfakeownedpointer. No Source=Dest/sharedoldtextalias; oldcopyfree beforeduplicate wouldUAF. Newchild observedlive/canonicalfreeoncebeforepayloadreuse/disposal; nofreedread/noforcedallocationaddresscomparison (allocator mayreuse oldaddress). Destinationwritesexact8bytes, input/otherguards/captures preserved. Nullnewtext EAX0ECX0/XOR8C5=44 AFundefined; EDXseed preserved only ifoldnull, elsegenuinefreevolatileevenwhennewtextnull. Nonnullflags mask8D5 deriveactualcopyreturnT-48 ADD16=>T-32, T=actualstackargument-slotESPbeforetargetCALL; finalRET4T+4. No guessed providerresidualECXEDX, DF0currentCRT/no blanketFPES. New4TU consumer/currentdup+adapter/unchangedcanonical/newprobe;7entries3rawOriginal+Sourcepairs (oldnull/textnull,realold/textnull,realold/nonnulltext) plusordinarySource oldnull/nonnulltext. Fourrealoldcopies+fourtargetoldfrees and3newresults+3callerfrees; nooldNativeprocess/recipe/helper/object/BSParchive replay. FullactualCOFF/link/ordinary/raw/main/cookie/stackhelpers/imports/physicalI386UCRT+distinctVCRUNTIME IAT/export/NTpath/ID/fullhash/ASLRbefore0target/after. PinallconsumedSources/headers/libs/tools/PE andimmutableolderfamilies; freeze dispatch CMake/unconsumedmetadata copies. Currentqualifiedpayloadonly, no privatefree/class/type5producer/destructor/World/EH/fullcaller/game admission. Root freshindependent validation/mainbuild/annotation required beforeSourcecredit.",
+        "public_API": "char* __fastcall copy_native_reference_payload_008f0340(void* actual_destination_ecx, void* unused_edx, const void* actual_source_stack)",
+        "exactly_four_owned_files": [
+          "include/bsp/native_reference_payload_copy.hpp",
+          "src/native_reference_payload_copy.cpp",
+          "docs/NATIVE_REFERENCE_PAYLOAD_COPY_CC12.md",
+          "reports/native_reference_payload_copy_cc12.json"
+        ],
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {

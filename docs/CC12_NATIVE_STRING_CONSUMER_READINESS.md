@@ -51,3 +51,7 @@ This bounds a useful **qualified payload operation**, not original-game property
 ## Provenance and verification
 
 Fresh private worktree base `3b2b12b14b0abd914f71c75ef46ad5e3d0e95876`. Family `J:\PROG\battlestations-pacific-decompile-cc12_native_string_consumer_readiness\local\cc12_native_string_consumer_readiness20261008a`. Four live/PE spans and saved starts are bookended;19 explicit inputs and991 older immutable artifacts retain their original hashes/associations. Older manifests and metadata remain historical; no accepted recipe/helper/process was rerun or old external association repinned. Every Ghidra batch verified the existing BSP project/program. Zero Source changes, builds, probes, native executions, Ghidra mutations or settings changes. The final family manifest covers the complete actual inventory, including the optional-query failure and metadata-only recovery.
+
+## Root flow repair and registration
+
+Root verified the immutable64-file readiness and23-file repair-proposal families, plus1055 older pins. Locked tool cleared the observed CALL_RETURN at008F0356 and decoded10 bytes, restoring the complete22-start listing. Name, prototype header and complete documentation stayed exact; derived CFG edge count changed2 to3 as expected. The cached signature fingerprint count20 is historical; physical listing and refreshed export supply the complete22 instructions. Saved project and forced export verified, whole live55 bytes match installed PE. The raw current-owned payload packet is now registered; Source0/privateCRT/class/game remain unadmitted.
