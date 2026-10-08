@@ -122,3 +122,9 @@ This is a current-canonical supplied-storage fixture and physical ordinary ABI
 qualification. It does not admit native owning parent/World, private heap,
 sentinel, array iterator/EH/class teardown, observers, registration, or gameplay.
 Root's separate complementary family and full combined build remain required.
+
+## Primary integration
+
+Whole supplied-storage header initializer[004B7EC0,004B7ECD)13B6 literal MOV EAX,ECX/XOR ECX/threezeroDWORDstores/plainRET, sameOriginal/COFF/uniqueLinked13;0calls/relocs. Hypothetical paddedfastcall interface ECXactualfreshunownedwritable12header/unusedEDXregister/noStackargs; EAXroot ECX0 EDX/allnonvols/ESP/ES/DF preserved, XORdefined8C5=44 AFundefinedexcluded. Currentcoherentempty{count,head,tail} layout only, no resettingpopulatedowner. Root complementary3freshTUs/184headers7libs/BSParchives0/oldobjects0 at2Ebase:3actual44buffers with12header+16+16inallocationcanaries; SourceDF1/OriginalDF0/ordinarySourceDF0, newD5/E9/72poisons and GPR/EDXsentinels,3actualalloc/3entries/3actualbasefrees. Original13 isunmodifiedRXcopy. All96capture/full44buffer/header12/guard32 independentlydecoded; EAXfullroot/ECX0/EDXseed/allnonvols/ESP/ES/definedflags/DF PASS. Whole25linkedapplication/canonical/probe/helpercodegates incl2454B682main106relocs, realordinary6B2directCALL/RET andraw172B62, complete14B4cookie/externalfailuretailJMP; physicalI386matchingUCRTmalloc/free/newhandler IAT/export/NTpath/fileID/fullSHA/normalized32code before0alloc/targets andafterfrees, Native/source/headers/libs/tools/input/code/priorbookendsPASS. Exact133listed+seal134,16385olderpins preserved. No oldsuccessfulstage/recipe/helper/process replay. CombinedMainWin32/all3existingchecksPASS. Actualgenuineownerdescriptor/iteratorcallback staticassociation retained, owningparent/iteratorEH/sentinel/privateheap/fullclass/World/game ABI/gameplay remain unadmitted.
+
+Independent seal `3a0957e45617408c9fce00c33892cb8ca55a1fc507104567e66b27ffaacd3f11`.
