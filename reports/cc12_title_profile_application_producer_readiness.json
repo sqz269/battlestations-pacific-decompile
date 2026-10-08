@@ -1,0 +1,863 @@
+{
+  "packet": "cc12_title_profile_application_producer_readiness",
+  "status": "READINESS_COMPLETE_APPLICATION_PROFILE_PRODUCER_NOT_READY",
+  "generated_utc": "2026-10-08T21:55:54.760967+00:00",
+  "accepted_main_at_start": "325879e864505033b834fc5b2a8cd8c482b42f66",
+  "owned_tracked_files": [
+    "docs/CC12_TITLE_PROFILE_APPLICATION_PRODUCER_READINESS.md",
+    "reports/cc12_title_profile_application_producer_readiness.json"
+  ],
+  "decision": {
+    "ready_for_source_binding": false,
+    "first_unresolved_producer": "The actual application game owner at the established73E150/73E163/73E1A1 schedule: allocate/zero/retain raw71A0h storage, actual8h name and fully composed constructor/lifetime contexts before invoking GameNativeGameRuntime. Current production startup supplies none of that aggregate.",
+    "next_bounded_work": "Establish the existing application owner/context/lifetime composition at the73D410 caller boundary, first resolving real table/config-load providers and reached lifetime virtual dispatch. Keep arithmetic and ABI on existing contracts; if new register/x87 recovery is required, hand that explicit address range to an Astra worker before analysis.",
+    "closure_requirements": [
+      "Keep the original complete allocation zeroing and actual name header schedule; do not create an F8h substitute profile.",
+      "Bind constructor and lifetime E188A8 plus profile settings current_game to the SAME GameNativeSettingsProcess cell, and use settings()/profile_context()/online cell from that owner.",
+      "Use the private VFS/canonical owning string storage and corresponding raw pool cells throughout game, profile, nested collections and lifetime.",
+      "Complete real table/config-loader/input/Lua/resource-parser/grid/Dyn providers and actual reached virtual destructors; retain all borrowed owners and operation frames through failure and destruction.",
+      "Preserve publication timing inside4DDB90. Its profile reset runs before the late E188A8 publication, so establish actual online/selected-user domain instead of publishing early or suppressing the branch.",
+      "Only after complete game construction, expose the same raw game+650 to actual MenuTitleInitHost and use a fresh retained reset operation; this report does not authorize or implement that menu edit.",
+      "Any future execution must retain exact newly compiled artifacts and prove complete real startup/title/close/destruction on the reached domain; historical fixtures alone do not qualify."
+    ],
+    "new_native_recovery_needed_for_this_readiness": false,
+    "blocked_claims": [
+      "current application game/profile production",
+      "actual title reset execution",
+      "selected-user SDK/account execution",
+      "full game cleanup",
+      "native EH compatibility",
+      "drop-in binary ABI",
+      "gameplay validation"
+    ]
+  },
+  "provider_readiness": [
+    {
+      "provider": "Actual 71A0h game allocation and application lifetime owner",
+      "status": "FIRST_UNRESOLVED_PRODUCER",
+      "evidence": "Current startup passes from GUI/diagnostic sink to world effects/decal/menu/title without constructing GameNativeGameRuntime; no production call constructs or attaches it. Established R105 caller fragment allocates at73E150 and clears at73E163 before4DDB90 at73E1A1. Raw NativeGameStorage itself is uninitialized; runtime borrows it.",
+      "sources": [
+        {
+          "file": "src/game_hosts.cpp",
+          "lines": "2186-2241",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp",
+            "bytes": 123278,
+            "sha256": "79a94372c8eefa87be3292e58ae4ce8816bfda387244e6a69a02ce1d6f67adfd",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp"
+          }
+        },
+        {
+          "file": "include/bsp/native_game_construction.hpp",
+          "lines": "14-20",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_construction.hpp",
+            "bytes": 7095,
+            "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_construction.hpp"
+          }
+        },
+        {
+          "file": "include/bsp/game_native_game_runtime.hpp",
+          "lines": "12-34",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_native_game_runtime.hpp",
+            "bytes": 2173,
+            "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_native_game_runtime.hpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Runtime constructor / publication / retained operation frames",
+      "status": "SOURCE_IMPLEMENTED_NOT_APPLICATION_COMPOSED",
+      "evidence": "construct binds the external storage and persistent constructor frame, calls4DDB90, and becomes live only after completion. The original game publication is written inside4DDB90 after profile/grids/mission Lua and before physics initialization. Failed construction remains retained; a destructor in live/failed phase terminates. Scalar deletion is explicit; diagnostic acknowledgement neither frees nor rolls back.",
+      "sources": [
+        {
+          "file": "src/game_native_game_runtime.cpp",
+          "lines": "13-82",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp",
+            "bytes": 4780,
+            "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp"
+          }
+        },
+        {
+          "file": "src/native_game_construction.cpp",
+          "lines": "114-230",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp",
+            "bytes": 14665,
+            "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Same embedded F8h profile",
+      "status": "NORMAL_SOURCE_IMPLEMENTED_CONTEXT_BINDING_OPEN",
+      "evidence": "4DDB90 calls7FEE20 on exactly game+650. Profile constructor initializes its sentinels/headers and calls7FDB20; its progress+64 preimage is not set before reset, so the established whole-game zeroing schedule matters. Context references and operations must outlive all reached callbacks and profile teardown. Title remains a log-only reset until actual game producer exists.",
+      "sources": [
+        {
+          "file": "src/native_game_construction.cpp",
+          "lines": "140-141",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp",
+            "bytes": 14665,
+            "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp"
+          }
+        },
+        {
+          "file": "src/native_player_profile_owner.cpp",
+          "lines": "81-199",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp",
+            "bytes": 12427,
+            "sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp"
+          }
+        },
+        {
+          "file": "include/bsp/native_player_profile_owner.hpp",
+          "lines": "1-90",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_player_profile_owner.hpp",
+            "bytes": 4505,
+            "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_player_profile_owner.hpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "F88980 settings and current F8ABE8 / E188A8 publications",
+      "status": "REAL_CANONICAL_SETTINGS_SERVICE_AVAILABLE_GAME_AND_ONLINE_COMPOSITION_OPEN",
+      "evidence": "GameNativeSettingsProcess owns the actual BCh settings, publication cells and profile settings context. Its settings startup borrows canonical string cells. A future profile must borrow these exact accessors; no sibling publication cells. Current application still explicitly leaves online publication null because window/parent pipe/IPC ownership is unresolved. Runtime currently checks constructor/lifetime game-cell identity but does not itself establish profile.settings current-game identity.",
+      "sources": [
+        {
+          "file": "src/game_native_settings_process.cpp",
+          "lines": "34-96",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp",
+            "bytes": 7791,
+            "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp"
+          }
+        },
+        {
+          "file": "src/game_native_game_runtime.cpp",
+          "lines": "22-36",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp",
+            "bytes": 4780,
+            "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp"
+          }
+        },
+        {
+          "file": "src/game_hosts.cpp",
+          "lines": "2132-2135",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp",
+            "bytes": 123278,
+            "sha256": "79a94372c8eefa87be3292e58ae4ce8816bfda387244e6a69a02ce1d6f67adfd",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Selected-user SDK settings",
+      "status": "TYPED_REAL_ADAPTER_AVAILABLE_REACHED_DOMAIN_UNPROVEN",
+      "evidence": "SoundServices binds its loaded XLive library and guards unbinding while an online owner exists. 8D4820 performs five sparse stores, then reloads actual online state/selection before8D45D0. The latter resolves real ordinal5331, makes two seven-DWORD calls, reloads the selected user and current game, and may write current game+6AC. Initial call status is ignored and the second-call failure leak is preserved. No synthetic response, force-null/force-unselected premise or early game publication is justified.",
+      "sources": [
+        {
+          "file": "src/game_hosts.cpp",
+          "lines": "1364-1372",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp",
+            "bytes": 123278,
+            "sha256": "79a94372c8eefa87be3292e58ae4ce8816bfda387244e6a69a02ce1d6f67adfd",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp"
+          }
+        },
+        {
+          "file": "src/native_profile_settings.cpp",
+          "lines": "18-64",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_settings.cpp",
+            "bytes": 3806,
+            "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_settings.cpp"
+          }
+        },
+        {
+          "file": "include/bsp/native_profile_settings.hpp",
+          "lines": "8-33",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_profile_settings.hpp",
+            "bytes": 2526,
+            "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_profile_settings.hpp"
+          }
+        },
+        {
+          "file": "src/game_native_settings_process.cpp",
+          "lines": "14-23",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp",
+            "bytes": 7791,
+            "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Private canonical owning strings/pool",
+      "status": "REAL_CANONICAL_PROCESS_AVAILABLE_FUTURE_BINDING_MUST_PRESERVE_IDENTITY",
+      "evidence": "GameNativeStringProcess holds canonical pool/disabled/manager cells. VFS App and singleton/settings services already borrow those cells. Future game.strings/profile.strings and raw profile lifetime context must reach these same cells, with each owned header retained until actual release. A distinct ActualNativeStringPoolStorage bridge is acceptable only over the same actual cells; a new pool or semantic string conversion is not.",
+      "sources": [
+        {
+          "file": "src/game_native_string_process.cpp",
+          "lines": "1-8",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_string_process.cpp",
+            "bytes": 235,
+            "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_string_process.cpp"
+          }
+        },
+        {
+          "file": "src/game_hosts_vfs.cpp",
+          "lines": "1-120",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts_vfs.cpp",
+            "bytes": 21158,
+            "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts_vfs.cpp"
+          }
+        },
+        {
+          "file": "src/game_native_settings_process.cpp",
+          "lines": "50-54",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp",
+            "bytes": 7791,
+            "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_settings_process.cpp"
+          }
+        },
+        {
+          "file": "src/native_game_profile_lifetime.cpp",
+          "lines": "1-105",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_profile_lifetime.cpp",
+            "bytes": 8707,
+            "sha256": "54999eff9593a5645d5acd4255b4dbee2d58fadedce7091a84e0d72a2726f406",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_profile_lifetime.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Mission-progress owner and score/counter lifetime",
+      "status": "NORMAL_SOURCE_IMPLEMENTED",
+      "evidence": "7FDB20 destroys captured old progress through7FD780, frees that captured24h owner, clears+64, allocates24h and invokes920E10. Progress constructor creates a2A0h score sentinel plus two1Ch counter sentinels. Destructor clears full ranges at+18,+C,+0 and frees current sentinel cells, but leaves outer owner deletion to profile caller. Score payload593570, counter owning-key and transient two-string release route to actual Source operations.",
+      "sources": [
+        {
+          "file": "src/native_player_profile_owner.cpp",
+          "lines": "99-107",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp",
+            "bytes": 12427,
+            "sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp"
+          }
+        },
+        {
+          "file": "src/native_mission_progress_owner.cpp",
+          "lines": "30-58",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_mission_progress_owner.cpp",
+            "bytes": 3069,
+            "sha256": "0eacb4d6e9b3364151af30dc1dc8a9a2e5b6e4a6d5b6d5ad87938f01e605ab0b",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_mission_progress_owner.cpp"
+          }
+        },
+        {
+          "file": "src/native_profile_collections.cpp",
+          "lines": "11-22",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_collections.cpp",
+            "bytes": 4909,
+            "sha256": "af4665083ea39ee1abd2c6d42b6c971486fab01829c0875eaf9f5d18332e523f",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_collections.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Profile counter-map/tree, vectors and owning strings",
+      "status": "NORMAL_SOURCE_IMPLEMENTED",
+      "evidence": "Reset clears three string sets, counter/transient trees, captured vector range and aliases using real Source; constructs RANK as an owning pooled key, indexes5070C0 and releases the temporary. Existing counter map node/string copy/balancing contracts are retained. Lobby old nodes are freed and default gates rebuilt. This is not a standalone profile producer.",
+      "sources": [
+        {
+          "file": "src/native_player_profile_owner.cpp",
+          "lines": "109-150",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp",
+            "bytes": 12427,
+            "sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_player_profile_owner.cpp"
+          }
+        },
+        {
+          "file": "src/native_profile_counter_map.cpp",
+          "lines": "1-138",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_counter_map.cpp",
+            "bytes": 7585,
+            "sha256": "d1ba1e30f93b6f7d59f7100c896f6fe8186d41df7976ae9f64345e08b674441b",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_counter_map.cpp"
+          }
+        },
+        {
+          "file": "src/native_profile_collections.cpp",
+          "lines": "1-88",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_collections.cpp",
+            "bytes": 4909,
+            "sha256": "af4665083ea39ee1abd2c6d42b6c971486fab01829c0875eaf9f5d18332e523f",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_profile_collections.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Grid, resource parser and Dyn service providers",
+      "status": "EXISTING_APPLICATION_PROVIDERS_AVAILABLE_NOT_YET_COMPOSED_IN_GAME_CONTEXT",
+      "evidence": "Renderer application exposes real game_grid_context bound to VFS strings and actual geometry owners. VFS exposes raw_game_resource_parsers_context; GameNativeDynProcess is initialized during process startup. Constructor must borrow these existing owners, preserve three grid publication identities and explicit two-word descriptor preimages per call, and maintain canonical engine/world/contact identity. Availability does not imply application GameNativeGameRuntime construction.",
+      "sources": [
+        {
+          "file": "src/game_native_renderer_grid.inc",
+          "lines": "1-31",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_renderer_grid.inc",
+            "bytes": 1778,
+            "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_renderer_grid.inc"
+          }
+        },
+        {
+          "file": "src/game_native_renderer_application.cpp",
+          "lines": "320-331",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_renderer_application.cpp",
+            "bytes": 36751,
+            "sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_renderer_application.cpp"
+          }
+        },
+        {
+          "file": "include/bsp/game_hosts_vfs.hpp",
+          "lines": "110-117",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_hosts_vfs.hpp",
+            "bytes": 11990,
+            "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_hosts_vfs.hpp"
+          }
+        },
+        {
+          "file": "src/game_main.cpp",
+          "lines": "1110-1120",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_main.cpp",
+            "bytes": 73914,
+            "sha256": "1db0e8df2ebbf650997c96e01dcde182cdc6026816e3c8a39ae3eb5f1bc64798",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_main.cpp"
+          }
+        },
+        {
+          "file": "src/game_native_game_runtime.cpp",
+          "lines": "22-36",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp",
+            "bytes": 4780,
+            "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Remaining constructor service composition",
+      "status": "APPLICATION_CONTEXT_PROVIDER_OPEN",
+      "evidence": "Required context includes native constants/array/embedded state, actual tablesF88A50/F88BC0/preferencesE092C8/ranksE19BF8, configuration getter432650 and Globals.lua loader87D7B0 with actual Lua/files/sound/FOV domains, resource parsers717E80, grids70BD70, ranks727BD0, mission Lua8882D0 and canonical physics. Implemented default call bodies exist; no production NativeGameTablesContext or NativeGlobalConfigLoadContext construction was found. No no-op callbacks can supply these contracts.",
+      "sources": [
+        {
+          "file": "include/bsp/native_game_construction.hpp",
+          "lines": "78-99",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_construction.hpp",
+            "bytes": 7095,
+            "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_construction.hpp"
+          }
+        },
+        {
+          "file": "src/native_game_construction.cpp",
+          "lines": "61-103",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp",
+            "bytes": 14665,
+            "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp"
+          }
+        },
+        {
+          "file": "include/bsp/native_game_tables.hpp",
+          "lines": "1-37",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_tables.hpp",
+            "bytes": 1948,
+            "sha256": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_tables.hpp"
+          }
+        },
+        {
+          "file": "include/bsp/native_global_config_load.hpp",
+          "lines": "1-52",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_global_config_load.hpp",
+            "bytes": 2693,
+            "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_global_config_load.hpp"
+          }
+        }
+      ]
+    },
+    {
+      "provider": "Full game and embedded profile destruction",
+      "status": "NORMAL_SOURCE_IMPLEMENTED_APPLICATION_DISPATCH_AND_LIFETIME_COMPOSITION_OPEN",
+      "evidence": "Normal4DCFE0 reaches raw7FD8A0(game+650), which uses same raw string cells and real collection cleanup. Runtime scalar deletion retains full lifetime operation. NativeGameLifetimeCalls still requires actual virtual_scalar/virtual_terminal dispatch for reached payloads; no production concrete implementation/context composition was found. Actual UI/movie/grid/game cells, resource/class/Lua/embedded/physics contexts and all borrowed owners must survive teardown. Normal-source completion is not native EH or binary ABI compatibility.",
+      "sources": [
+        {
+          "file": "include/bsp/native_game_lifetime.hpp",
+          "lines": "19-108",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_lifetime.hpp",
+            "bytes": 9292,
+            "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_lifetime.hpp"
+          }
+        },
+        {
+          "file": "src/native_game_lifetime.cpp",
+          "lines": "41-129",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_lifetime.cpp",
+            "bytes": 21673,
+            "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_lifetime.cpp"
+          }
+        },
+        {
+          "file": "src/native_game_profile_lifetime.cpp",
+          "lines": "1-105",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_profile_lifetime.cpp",
+            "bytes": 8707,
+            "sha256": "54999eff9593a5645d5acd4255b4dbee2d58fadedce7091a84e0d72a2726f406",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_profile_lifetime.cpp"
+          }
+        },
+        {
+          "file": "src/game_native_game_runtime.cpp",
+          "lines": "44-82",
+          "whole_file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp",
+            "bytes": 4780,
+            "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_whole_source\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_game_runtime.cpp"
+          }
+        }
+      ]
+    }
+  ],
+  "established_original_ABI": {
+    "004ddb90": {
+      "prior_report": "reports/native_player_profile_owner_r106.json",
+      "name": "BSP_Game_ConstructActualStorage",
+      "source": "src/native_game_construction.cpp",
+      "coverage": "Existing normal game parent now calls actual raw profile constructor/reset and retains nested failure stage",
+      "abi": "ECX game71A0, stack actual8h name, EAX same game, RET4; source interface not native ABI"
+    },
+    "007fee20": {
+      "prior_report": "reports/native_profile_defaults_r109.json",
+      "name": "BSP_PlayerProfile_Construct",
+      "source": "src/native_player_profile_owner.cpp",
+      "abi": "ECX actual F8h profile; EAX profile; RET; no original unwind ABI claimed",
+      "ledger_kind": "fragment",
+      "coverage": "Existing raw constructor/reset composition now uses concrete counter-map and settings defaults; all required profile methods have concrete normal defaults.",
+      "previous_name": "BSP_PlayerProfile_Construct"
+    },
+    "007fdb20": {
+      "prior_report": "reports/native_profile_defaults_r109.json",
+      "name": "BSP_PlayerProfile_ResetToDefaults",
+      "source": "src/native_player_profile_owner.cpp",
+      "abi": "ECX actual F8h profile; RET; no original unwind ABI claimed",
+      "ledger_kind": "fragment",
+      "coverage": "Existing raw constructor/reset composition now uses concrete counter-map and settings defaults; all required profile methods have concrete normal defaults.",
+      "previous_name": "BSP_PlayerProfile_ResetToDefaults"
+    },
+    "00436710": {
+      "prior_report": "reports/native_player_profile_owner_r106.json",
+      "name": "BSP_ProfileManager_ConstructEmptySaveName",
+      "source": "src/native_player_profile_owner.cpp",
+      "coverage": "Full empty-name constructor leaf using existing genuine41E870 primitive",
+      "abi": "ECX actual profile/output header, EAX same pointer for constructors; reset has no semantic return. No stack arguments, RET. Source context/operation interfaces are not native binary entries."
+    },
+    "008d4820": {
+      "prior_report": "reports/native_profile_defaults_r109.json",
+      "name": "BSP_Settings_ResetControlDefaults",
+      "source": "src/native_profile_settings.cpp",
+      "abi": "ECX settings; RET or tail jump to8D45D0",
+      "ledger_kind": "fragment",
+      "coverage": "Actual sparse raw settings stores, complete normal selected-user branch, inline current manager field getters, or typed real SDK import adapter as appropriate. Existing projected routines/library import do not add unique game-function counts.",
+      "previous_name": "BSP_Settings_ResetControlDefaults"
+    },
+    "008d41c0": {
+      "prior_report": "reports/native_profile_defaults_r109.json",
+      "name": "BSP_Settings_ResetGameDefaults",
+      "source": "src/native_profile_settings.cpp",
+      "abi": "ECX settings; RET",
+      "ledger_kind": "fragment",
+      "coverage": "Actual sparse raw settings stores, complete normal selected-user branch, inline current manager field getters, or typed real SDK import adapter as appropriate. Existing projected routines/library import do not add unique game-function counts.",
+      "previous_name": "BSP_Settings_ResetGameDefaults"
+    },
+    "008d45d0": {
+      "prior_report": "reports/native_profile_defaults_r109.json",
+      "name": "BSP_Settings_RestoreSelectedUserControls",
+      "source": "src/native_profile_settings.cpp",
+      "abi": "ECX captured settings; RET; SDK callees consume seven DWORD slots",
+      "ledger_kind": "fragment",
+      "coverage": "Actual sparse raw settings stores, complete normal selected-user branch, inline current manager field getters, or typed real SDK import adapter as appropriate. Existing projected routines/library import do not add unique game-function counts.",
+      "previous_name": "FUN_008d45d0"
+    }
+  },
+  "evidence": {
+    "capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\capture_receipt.json",
+      "bytes": 3944,
+      "sha256": "0dc3197ee9660b7ae31b8d95f5b7cf485d237f9d625d0342e92f9d1115e0fa3f"
+    },
+    "counts": {
+      "historical_archives": 6,
+      "historical_verified_members": 1706,
+      "whole_current_Source_and_support_files": 4037,
+      "whole_Native_bodies": 7,
+      "whole_Native_bytes": 3503,
+      "whole_existing_exports": 21
+    },
+    "current_Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\current_source.json",
+      "bytes": 2127898,
+      "sha256": "67ef01b0f4d00ac1cc4de99deaa08fc215aa795f7d3eb1839a35ef21173a47e7"
+    },
+    "historical_whole_archives": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_archives.json",
+      "bytes": 495313,
+      "sha256": "3df7442e5dcb8b3ef6dbffc98e42719322c54fd2a870835e4801433132d0ba46"
+    },
+    "Native": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\native_evidence.json",
+      "bytes": 14940,
+      "sha256": "9a9210e156cbfa4718e5daa70286441f450f12d79c9c82b8e2067c3ec4c2e68b"
+    },
+    "Source_searches": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\source_searches.json",
+      "bytes": 2993,
+      "sha256": "a41ae02538575cae4a6a4d62fd63e0cb00608cbf9225376735bf03f03f5ab23e"
+    },
+    "historical_archive_summaries": [
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_construction_r105.json",
+          "bytes": 244235,
+          "sha256": "695fa82856e0be0db8ec14c6285586dfbfbe80dc04a1603c68902b949d978018",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_construction_r105.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r105\\native-game-construction-tested-r105.zip",
+          "bytes": 22538232,
+          "sha256": "ec3b53580ff068e3a92f9b2c35bbb1695a279154ee2a1a4c5675c17ae6f421f8",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r105\\native-game-construction-tested-r105.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r105\\native-game-construction-tested-r105.zip",
+          "sha256": "ec3b53580ff068e3a92f9b2c35bbb1695a279154ee2a1a4c5675c17ae6f421f8",
+          "files": 177,
+          "uncompressed_bytes": 100602542,
+          "utc": "2026-09-17T19:51:43.095072+00:00",
+          "head": "c0c1565a15015668ed9c52c3beed7ed4ac63e299",
+          "scope": "Full normal game constructor parent over required services;1881 live/PE bytes,41 direct calls, strict Win32/3 CTests, four original/source cases135 observations6144440 bytes. Current application smoke failed existing null-device path; independent D3D returns8876086A. Subsystem providers/app game owner/native EH/gameplay open."
+        },
+        "verified_members": 177,
+        "archive_members": 178,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 59,
+        "executables": 5,
+        "libraries": 3
+      },
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_player_profile_owner_r106.json",
+          "bytes": 287171,
+          "sha256": "5c71aa293a7a2fee0c49fc7c12b64e728f397a6b59c4070d435886e28def991f",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_player_profile_owner_r106.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r106\\native-player-profile-tested-r106.zip",
+          "bytes": 22963816,
+          "sha256": "794ad7c16332270b6a56d74df9287289710c6d98d474fa6a79b4b291f1465437",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r106\\native-player-profile-tested-r106.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r106\\native-player-profile-tested-r106.zip",
+          "sha256": "794ad7c16332270b6a56d74df9287289710c6d98d474fa6a79b4b291f1465437",
+          "files": 197,
+          "uncompressed_bytes": 125819993,
+          "utc": "2026-09-17T20:18:09.511987+00:00",
+          "head": "35df2e736fa58611fe5695307de022cb70eef748",
+          "scope": "Raw profile construction/reset/empty-name composed into game parent;3233 live/PE bytes,83 direct calls, strict Win32/3 CTests, six original/source cases407 observations18601896 bytes. External services controlled; nested/late source failure retention. Real remaining providers/app game owner/native EH/gameplay open; no application runtime rerun."
+        },
+        "verified_members": 197,
+        "archive_members": 198,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 63,
+        "executables": 5,
+        "libraries": 3
+      },
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_mission_progress_owner_r107.json",
+          "bytes": 462765,
+          "sha256": "77805b9872feab2966bb4b7da398e261c842fa131846ace480d9af13f65acdf1",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_mission_progress_owner_r107.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r107\\native-mission-progress-tested-r107.zip",
+          "bytes": 23260545,
+          "sha256": "9d2d1e52c7a6383e0e135710696917d40dc84b519c8552dab16ad2522a646dc6",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r107\\native-mission-progress-tested-r107.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r107\\native-mission-progress-tested-r107.zip",
+          "sha256": "9d2d1e52c7a6383e0e135710696917d40dc84b519c8552dab16ad2522a646dc6",
+          "files": 244,
+          "uncompressed_bytes": 131221782,
+          "utc": "2026-09-17T20:51:35.254856+00:00",
+          "head": "60af1bfeaf82396e3b5fab681e66329fd31662dd",
+          "scope": "Raw mission-progress construction/destruction composed into profile/game parent;4681 live/PE bytes,126 direct calls, strict Win32/3 CTests, eight original/source cases437 observations20867992 bytes. Required services controlled; nested construction/payload/late source failure retention; source-only actual heap cleanup. Full score payload/app ownership/native EH/gameplay open; no runtime rerun."
+        },
+        "verified_members": 244,
+        "archive_members": 245,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 66,
+        "executables": 5,
+        "libraries": 3
+      },
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_profile_defaults_r109.json",
+          "bytes": 1066000,
+          "sha256": "6a1934441419ef9d95921654fa1705f43180509d51e82c26ee28596630b8df27",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_profile_defaults_r109.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r109\\native-profile-defaults-tested-r109.zip",
+          "bytes": 28363697,
+          "sha256": "35f98911eacee5ffa880cc0391ed93c5ad38ce26de498c66d14c67163cd9b18c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r109\\native-profile-defaults-tested-r109.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r109\\native-profile-defaults-tested-r109.zip",
+          "sha256": "35f98911eacee5ffa880cc0391ed93c5ad38ce26de498c66d14c67163cd9b18c",
+          "files": 386,
+          "uncompressed_bytes": 294581645,
+          "utc": "2026-09-17T21:51:16.645303+00:00",
+          "head": "7b271e80de6edef977168c3b07c0939c187c051d",
+          "scope": "Complete raw profile default providers over scoped library contracts and real typed SDK adapter.14060livePEbytes,386calls, strictWin32/3CTests;58copied bodies,15comparisons1487observations101473516bytes. Controlled SDK/remaining game providers; source failures/actual heap checks. Original EH/ABI/SDK runtime/application ownership/gameplay open; no runtime rerun."
+        },
+        "verified_members": 386,
+        "archive_members": 387,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 73,
+        "executables": 5,
+        "libraries": 3
+      },
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_profile_lifetime_r124.json",
+          "bytes": 198015,
+          "sha256": "68c9726f01f8c5c986f7a307b1dc6370da70c0adae69c750176380923d890aba",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_profile_lifetime_r124.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r124\\native-game-profile-lifetime-tested-r124.zip",
+          "bytes": 22293075,
+          "sha256": "7474438a4d94deca8ea6672809ac7dec95f45713af90aedc25845490fca299f7",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r124\\native-game-profile-lifetime-tested-r124.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r124\\native-game-profile-lifetime-tested-r124.zip",
+          "sha256": "7474438a4d94deca8ea6672809ac7dec95f45713af90aedc25845490fca299f7",
+          "files": 230,
+          "uncompressed_bytes": 360167545,
+          "utc": "2026-09-18T04:31:25.601375+00:00",
+          "head": "e7d4bb91a525a9a7c1bbb0108251bfa8a1040602",
+          "scope": "Four normal bodies889B plus201B library reference;56 copied-original actual-service cases1553004bytes;52 controlled parent cases141402076bytes;ordinary application admission and gameplay open"
+        },
+        "verified_members": 230,
+        "archive_members": 231,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 4,
+        "executables": 5,
+        "libraries": 3
+      },
+      {
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_runtime_r155.json",
+          "bytes": 488077,
+          "sha256": "4fb38aa66125f61979de61a721a8e7dbcf775df2bf4476af54793858f6fbd710",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_reports\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\native_game_runtime_r155.json"
+        },
+        "archive": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r155\\native-game-runtime-tested-r155.zip",
+          "bytes": 32419972,
+          "sha256": "c65b30b00163aa76804acfd498821db71ca53b2bec2b2c5e369f4e5d206ae03e",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\historical_whole_archives\\J\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r155\\native-game-runtime-tested-r155.zip"
+        },
+        "original_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r155\\native-game-runtime-tested-r155.zip",
+          "sha256": "c65b30b00163aa76804acfd498821db71ca53b2bec2b2c5e369f4e5d206ae03e",
+          "files": 472,
+          "uncompressed_bytes": 617550946,
+          "utc": "2026-09-18T18:36:04.536528+00:00",
+          "head": "0c50b0a88bfd658efa3ebe33df6e5ca1ec3c0e6a",
+          "scope": "Native game table ownership and completed-game fixed-step binding; no new native function body. Existing normal-body differential regressions and focused actual game/canonical physics/virtual deletion fixture; controlled nonphysics boundaries; ordinary application admission and gameplay remain open."
+        },
+        "verified_members": 472,
+        "archive_members": 473,
+        "all_recorded_members_verified": true,
+        "crc_ok": true,
+        "object_files": 90,
+        "executables": 6,
+        "libraries": 3
+      }
+    ],
+    "Native_bodies": [
+      {
+        "start": "004ddb90",
+        "end_inclusive": "004de266",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\004ddb90.bin",
+        "bytes": 1751,
+        "sha256": "a9e70e1dd6538f33e3b4b2acab1a4dededee9396c5e2083b9bc5d8eaaaf82d74"
+      },
+      {
+        "start": "007fee20",
+        "end_inclusive": "007fefb8",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\007fee20.bin",
+        "bytes": 409,
+        "sha256": "9416c6b22c935eb3da80e267f62998ec596a04ffa553b3a4d795bf6d7d8a31dc"
+      },
+      {
+        "start": "007fdb20",
+        "end_inclusive": "007fdef9",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\007fdb20.bin",
+        "bytes": 986,
+        "sha256": "ac726c62356a37997935682aeada593cedeb8aabf2654af991bd9a0fc59c476f"
+      },
+      {
+        "start": "00436710",
+        "end_inclusive": "0043672a",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\00436710.bin",
+        "bytes": 27,
+        "sha256": "2d4b82e21deccb9dcc844cfb7dc099980ac950bdb921ff4fadae6eb0fd66f76f"
+      },
+      {
+        "start": "008d4820",
+        "end_inclusive": "008d4862",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\008d4820.bin",
+        "bytes": 67,
+        "sha256": "c2fa2865ff46f786288c85a917ef230bd41552b29502ef1624ef26c821d4fc12"
+      },
+      {
+        "start": "008d45d0",
+        "end_inclusive": "008d46ab",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\008d45d0.bin",
+        "bytes": 220,
+        "sha256": "e6b2af334f0ad51939d6fa2a0dde67fa826ae31456c79b460a9ffb24da84a501"
+      },
+      {
+        "start": "008d41c0",
+        "end_inclusive": "008d41ea",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_native_bytes\\008d41c0.bin",
+        "bytes": 43,
+        "sha256": "8de2498f32b7c45118728e354d17eca22b037d7e45bda4810549d671172e90db"
+      }
+    ],
+    "prior_accepted_title_readiness": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\docs\\CC12_GAME_VFS_TITLE_FILEBLOCK_EXECUTION_READINESS.md",
+        "bytes": 13808,
+        "sha256": "fca359fe173c4996e43f19f3c53eebef0cbeecccf324e0e4dda3021659b4f7ba",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\accepted_prior_readiness\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\docs\\CC12_GAME_VFS_TITLE_FILEBLOCK_EXECUTION_READINESS.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\cc12_game_vfs_title_fileblock_execution_readiness.json",
+        "bytes": 127770,
+        "sha256": "5a6c66c122090dd6a4045bb20369be05a947cd21f662cd5d99e1039e9a60fbad",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\accepted_prior_readiness\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\reports\\cc12_game_vfs_title_fileblock_execution_readiness.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_vfs_title_fileblock_execution_readiness_20261008a\\capture_receipt.json",
+        "bytes": 1727,
+        "sha256": "eab4e88e8333662fff45ea9a61a3b86a4e93cce23c6a1a02195fbe4f9223bd3b",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\accepted_prior_readiness\\J\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_vfs_title_fileblock_execution_readiness_20261008a\\capture_receipt.json"
+      }
+    ]
+  },
+  "historical_interpretation": "R105/R106/R107/R109/R124/R155 were compiled/tested in September and have whole archives with exact retained Source/build objects/libraries/executables/log evidence. Rehashed here in October; not a current build or execution. Historical fixtures used controlled external boundaries and SDK results. R155 demonstrates actual runtime table/physics binding in its fixture, not ordinary application owner construction or complete actual nonphysics destruction. Current whole Source was captured separately and is not relabelled as the historical compiler input.",
+  "verification": {
+    "all_six_recorded_archive_sha256_match": true,
+    "all_1706_recorded_members_size_and_sha256_match": true,
+    "all_six_zip_crc_pass": true,
+    "whole_current_files_copied_and_source_rehashed": true,
+    "seven_live_Ghidra_extent_headers_retained": true,
+    "seven_complete_bodies_and_whole_PE_retained": true,
+    "whole_existing_exports_retained": 21,
+    "new_builds": 0,
+    "new_tests_probes_startup_game_executions": 0,
+    "new_Native_function_execution": 0,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_mutations": 0,
+    "packet_promotions": 0
+  },
+  "capture_driver_correction": "First capture stopped before finishing when old ZIP manifest paths omitted the workspace/ prefix. Preserved capture_attempt01_archive_prefix.py, then required a unique exact-or-suffix archive-member match and verified every member byte count/hash. No code/game execution occurred in either capture.",
+  "completion_boundary": "Read-only producer/lifetime readiness only. No Source connection is proposed as ready; first unresolved aggregate producer is concrete above. No standalone profile, sibling globals, synthetic SDK, semantic cast, callback substitution, premature game publication, parent weakening or menu wiring.",
+  "local_whole_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_title_profile_application_producer_readiness_20261008a\\whole_artifact_manifest.json",
+  "primary_review": "Required before integration; parent owns orchestration and startup/menu."
+}
