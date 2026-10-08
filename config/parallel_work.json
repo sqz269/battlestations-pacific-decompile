@@ -35195,6 +35195,29 @@
         "new_execution": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_native_wake_append_binding_design",
+      "worker": "primary",
+      "function_addresses": [
+        "00810190",
+        "00414c60"
+      ],
+      "output_files": [
+        "docs/CC12_NATIVE_WAKE_APPEND_BINDING_DESIGN.md",
+        "reports/cc12_native_wake_append_binding_design.json"
+      ],
+      "depends_on": [
+        "cc12_native_wake_append_raw_dependencies_Source"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_read_only_binding_design_raw_2D_facade_next",
+      "contract": {
+        "new_Source_functions": 0,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
