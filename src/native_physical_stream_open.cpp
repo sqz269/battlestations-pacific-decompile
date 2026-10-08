@@ -288,6 +288,34 @@ __declspec(naked) std::uint32_t __fastcall raw_query_native_physical_file_size_0
     }
 }
 
+__declspec(naked) std::uint32_t __fastcall raw_write_native_physical_stream_00bf4f50(
+    void*, std::uint32_t, const void*, std::uint32_t, std::uint32_t*) noexcept {
+    __asm {
+        mov edx, dword ptr [esp + 4]
+        push esi
+        push 0
+        mov esi, ecx
+        mov ecx, dword ptr [esp + 10h]
+        lea eax, [esp + 10h]
+        push eax
+        mov eax, dword ptr [esi + 8]
+        push ecx
+        push edx
+        push eax
+        call dword ptr [WriteFile]
+        mov eax, dword ptr [esp + 0ch]
+        add dword ptr [esi + 10h], eax
+        mov ecx, dword ptr [esp + 10h]
+        adc dword ptr [esi + 14h], 0
+        test ecx, ecx
+        pop esi
+        jz raw_write_done
+        mov dword ptr [ecx], eax
+    raw_write_done:
+        ret 0ch
+    }
+}
+
 std::uint32_t query_native_physical_file_size_00bf4fa0(void* stream, std::uint32_t) {
     const auto handle = pointer(stream, 8);
     DWORD high = 0;

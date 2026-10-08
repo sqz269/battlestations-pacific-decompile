@@ -106,6 +106,17 @@ std::uint32_t __fastcall raw_query_native_physical_file_size_00bf4fa0(
     const void* actual_backing, std::uint32_t unused_edx,
     std::uint32_t unused_stack) noexcept;
 
+// Complete raw BF4F50: ECX actual backing; unused incoming EDX; stacked
+// data/requested/optional count; EAX actual written count; ECX optional pointer;
+// RET0Ch. WriteFile overwrites the caller's requested DWORD with its count.
+// BOOL is ignored. Add/ADC updates cached position +10h/+14h before the
+// optional count store, including when that valid pointer aliases the cache.
+// Real synchronous HANDLE/API and valid memory are required. No size refresh,
+// failure callback, Source class/table/lifetime or substream admission follows.
+std::uint32_t __fastcall raw_write_native_physical_stream_00bf4f50(
+    void* actual_backing, std::uint32_t unused_edx, const void* data,
+    std::uint32_t requested, std::uint32_t* optional_count) noexcept;
+
 // Original ECX stream; stack unused DWORD; RET4; EAX GetFileSize low DWORD.
 // Performs a fresh OS query, discards high DWORD, and does not update cache.
 std::uint32_t query_native_physical_file_size_00bf4fa0(void*, std::uint32_t);
