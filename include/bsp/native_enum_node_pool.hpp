@@ -37,4 +37,25 @@ void bind_native_enum_node_pool_virtual0_00ce37a4(void* actual_pool,
 // Destroy owning payloads before returning/freeing their slots. Original EH/SEH,
 // class/vtable ABI, static owner wrappers, CRT fault/failure parity, dictionary
 // insertion/declaration ownership, traffic and game binding remain external.
+
+// Distinct borrowed host binding for Original 00E175B0: one actual aligned,
+// initially unconstructed38h property-map node pool and the SAME canonical
+// 00E188B4 domain. Establish the genuine CE37A4/00410CD0 trim binding before
+// publishing borrowed pointers. This neither constructs/reset the owner/list
+// nor supplies sibling pool storage, an empty CString or property records.
+// Bind once before startup; owner/list/binding remain alive through callback.
+void bind_static_native_property_record_pool_00e175b0(void* actual_pool,
+    AllocatorListDomain& actual_list);
+
+// Complete Original CC8A30..CC8A45: initialize the bound actual owner with
+// whole00411050, then real std::atexit for the matching CD9260 Source callback.
+// Return real registration status; no once guard, retry or failure rollback.
+// Construction failure propagates before registration; no own EH is added.
+int initialize_static_native_property_record_pool_00cc8a30();
+
+// Complete Original CD9260..CD9269: destroy SAME owner/list with whole00410A60.
+// Meet the raw helper's payload-before-pages precondition. These are new Win32
+// ordinary Source interfaces; original ABI/static-dispatcher/game publication,
+// rebinding/repeated lifecycle, populated maps and record lifetime stay external.
+void destroy_static_native_property_record_pool_00cd9260() noexcept;
 } // namespace bsp
