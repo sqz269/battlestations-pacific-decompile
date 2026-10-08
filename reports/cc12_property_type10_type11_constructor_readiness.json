@@ -1,0 +1,432 @@
+{
+  "packet": "cc12_property_type10_type11_constructor_readiness",
+  "Source_credit": 0,
+  "new_functions": 0,
+  "new_fragments": 0,
+  "new_names": 0,
+  "Source_ready_interfaces": 2,
+  "status": "whole_Native_constructor_readiness_only_no_Source_implementation_or_execution",
+  "names": "Type numbers, storage strides and descriptive suggestions are evidence-backed hypotheses, not recovered native symbols.",
+  "constructors": [
+    {
+      "tag": 10,
+      "entry": "008ef3e0",
+      "end_exclusive": "008ef454",
+      "byte_count": 116,
+      "instruction_count": 36,
+      "stride": 4,
+      "count_max": "3fffffff",
+      "allocation_call": "008ef412",
+      "copy_call": "008ef421",
+      "flag_compare": "008ef3f9",
+      "final_copy_add": "008ef426",
+      "retain_entry": "008ef43b",
+      "copy_return": "008ef438",
+      "retain_return": "008ef451",
+      "producer": "008f3590",
+      "producer_end_exclusive": "008f3604",
+      "producer_ctor_call": "008f35d4",
+      "producer_insert_call": "008f35ed",
+      "producer_eh": "00ca496b",
+      "clone_start": "008f51fa",
+      "clone_end_exclusive": "008f5242",
+      "clone_ctor_call": "008f5226",
+      "clone_count_call": "008f521e",
+      "clone_ordinal_store": "008f522f",
+      "clone_eh_state": 5,
+      "native_bytes_sha256": "00c1508701d10a6508b556eff0feb4737f51a4ec289059dce77a796cc571919b",
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "write_ranges_half_open": [
+        [
+          "00",
+          "08"
+        ],
+        [
+          "18",
+          "28"
+        ],
+        [
+          "2c",
+          "2d"
+        ],
+        [
+          "34",
+          "38"
+        ]
+      ],
+      "preserve_ranges_half_open": [
+        [
+          "08",
+          "18"
+        ],
+        [
+          "28",
+          "2c"
+        ],
+        [
+          "2d",
+          "34"
+        ]
+      ],
+      "ordered_body_root_stores": [
+        {
+          "address": "008ef3ea",
+          "offset": "00",
+          "width": 4,
+          "value": "0xce89d4"
+        },
+        {
+          "address": "008ef3f0",
+          "offset": "04",
+          "width": 4,
+          "value": "0xa"
+        },
+        {
+          "address": "008ef3fe",
+          "offset": "18",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef405",
+          "offset": "1c",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef40c",
+          "offset": "24",
+          "width": 4,
+          "value": "EDI"
+        },
+        {
+          "address": "008ef41e",
+          "offset": "20",
+          "width": 4,
+          "value": "EAX"
+        },
+        {
+          "address": "008ef42a",
+          "offset": "34",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef431",
+          "offset": "2c",
+          "width": 1,
+          "value": "0x1"
+        },
+        {
+          "address": "008ef43f",
+          "offset": "20",
+          "width": 4,
+          "value": "EDX"
+        },
+        {
+          "address": "008ef443",
+          "offset": "34",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef44a",
+          "offset": "2c",
+          "width": 1,
+          "value": "0x1"
+        }
+      ],
+      "static_checks": "Whole extent/count, both RET0C, byte flag compare, final ADD, allocation/copy rel32, mask, exact two xrefs, producer RET10/calls and clone calls/ordinal verified."
+    },
+    {
+      "tag": 11,
+      "entry": "008ef460",
+      "end_exclusive": "008ef4d7",
+      "byte_count": 119,
+      "instruction_count": 37,
+      "stride": 12,
+      "count_max": "15555555",
+      "allocation_call": "008ef495",
+      "copy_call": "008ef4a4",
+      "flag_compare": "008ef47c",
+      "final_copy_add": "008ef4a9",
+      "retain_entry": "008ef4be",
+      "copy_return": "008ef4bb",
+      "retain_return": "008ef4d4",
+      "producer": "008f3610",
+      "producer_end_exclusive": "008f3684",
+      "producer_ctor_call": "008f3654",
+      "producer_insert_call": "008f366d",
+      "producer_eh": "00ca498b",
+      "clone_start": "008f5242",
+      "clone_end_exclusive": "008f528a",
+      "clone_ctor_call": "008f526e",
+      "clone_count_call": "008f5266",
+      "clone_ordinal_store": "008f5277",
+      "clone_eh_state": 6,
+      "native_bytes_sha256": "fdb6bb6f351939abd63f85028eea15df069113701aba2de727bb9a16393978da",
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "write_ranges_half_open": [
+        [
+          "00",
+          "08"
+        ],
+        [
+          "18",
+          "28"
+        ],
+        [
+          "2c",
+          "2d"
+        ],
+        [
+          "34",
+          "38"
+        ]
+      ],
+      "preserve_ranges_half_open": [
+        [
+          "08",
+          "18"
+        ],
+        [
+          "28",
+          "2c"
+        ],
+        [
+          "2d",
+          "34"
+        ]
+      ],
+      "ordered_body_root_stores": [
+        {
+          "address": "008ef46d",
+          "offset": "00",
+          "width": 4,
+          "value": "0xce89d4"
+        },
+        {
+          "address": "008ef473",
+          "offset": "04",
+          "width": 4,
+          "value": "0xb"
+        },
+        {
+          "address": "008ef481",
+          "offset": "18",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef488",
+          "offset": "1c",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef48f",
+          "offset": "24",
+          "width": 4,
+          "value": "EDI"
+        },
+        {
+          "address": "008ef4a1",
+          "offset": "20",
+          "width": 4,
+          "value": "EAX"
+        },
+        {
+          "address": "008ef4ad",
+          "offset": "34",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef4b4",
+          "offset": "2c",
+          "width": 1,
+          "value": "0x1"
+        },
+        {
+          "address": "008ef4c2",
+          "offset": "20",
+          "width": 4,
+          "value": "EDX"
+        },
+        {
+          "address": "008ef4c6",
+          "offset": "34",
+          "width": 4,
+          "value": "0x0"
+        },
+        {
+          "address": "008ef4cd",
+          "offset": "2c",
+          "width": 1,
+          "value": "0x1"
+        }
+      ],
+      "static_checks": "Whole extent/count, both RET0C, byte flag compare, final ADD, allocation/copy rel32, mask, exact two xrefs, producer RET10/calls and clone calls/ordinal verified."
+    }
+  ],
+  "original_constructor_ABI": {
+    "entry": "ECX=actual fresh writable unowned 56-byte root; incoming EDX is unused.",
+    "stack": "At entry T=ESP: [T+4]=unsigned count bits, [T+8]=actual input pointer, [T+C]=copy flag DWORD. Only low byte of flag is read.",
+    "exit": "EAX=root; RET0C consumes three DWORD arguments. Final caller ESP=T+16. Both return paths restore EDI and ESI.",
+    "nonvolatile": "ESI/EDI are explicitly pushed/popped. EBX/EBP are not directly modified; copy path also depends on genuine provider normal ABI.",
+    "retaining_registers": "Low byte flag zero: ECX remains root; EDX becomes exact input pointer; EAX=root.",
+    "copying_registers": "Low byte flag nonzero: ECX/EDX are unconstrained genuine memcpy/provider residuals; EAX is replaced with root regardless of memcpy result.",
+    "retaining_flags": "Last flag writer is CMP byte(flag),0 with zero operand: CF=OF=AF=SF=0, ZF=PF=1; arithmetic mask08D5 value0044.",
+    "copying_flags": "Last flag writer is ADD ESP,10h at008EF426/008EF4A9. Immediately before it ESP=T-24; result=T-8. CF/PF/AF/ZF/SF/OF follow that exact 32-bit add. Subsequent MOV/POP/RET do not alter them.",
+    "other_machine_state": "No direct x87/SSE/MXCSR/segment/FS operation in either constructor. Retaining branch preserves DF; copying requires DF clear for actual current providers and gives no blanket provider DF/ES/FPU/MXCSR or exceptional-unwind promise."
+  },
+  "arithmetic": {
+    "type10": "Load count from T+4 after saving ESI/EDI; ADD EDI,EDI before phase/tag stores, then ADD EDI,EDI after tag store. Final byte_count=(4*count) mod2^32.",
+    "type11": "Load count into EAX at entry before saving ESI/EDI; LEA EDI,[EAX+2*EAX], then ADD EDI,EDI before phase/tag stores, then another ADD after tag store. Final byte_count=(12*count) mod2^32.",
+    "guards": "Neither body checks count positivity, overflow, input pointer, source length, destination validity or allocation result. Arithmetic flags are replaced by the flag-byte CMP before branch selection.",
+    "proposed_success_domain": "Choose positive counts: Type10 1..3FFFFFFFh; Type11 1..15555555h. Require actual readable input of stride*count bytes, nonwrapping addresses and genuine successful allocation. These are bounded future Source preconditions, not Native validation or guaranteed allocatability.",
+    "raw_bits": "No element-wise integer/float/vector operation occurs. Payloads are raw bytes; no numeric float semantics or alignment promise is inferred."
+  },
+  "ordered_effects": {
+    "common": "Compute first scale stage; store phase00CE89D4 and tag10/11; finish scale; read only low flag byte; zero+18 and+1C; store byte_count+24; branch.",
+    "retain": "Load input from T+8 to EDX and store exact pointer+20; restore EDI; zero ordinal+34; write byte1 at+2C; EAX=root; restore ESI; RET0C. No allocation/copy/free.",
+    "copy": "Push byte_count; call00BF55BE; load input from original T+8 after allocation; push byte_count,input,allocation; store returned allocation+20 BEFORE memcpy00BF7680; clean16 stack bytes; restore EDI; zero ordinal+34; write byte1+2C; return root.",
+    "preserve": "Neither branch initializes +08..+17, +28..+2B, or +2D..+33. In particular owner DWORD+30 is preserved allocation content, not zero/copied/published.",
+    "owner_byte": "Byte+2C is1 in both branches; it does not distinguish a copied child from a borrowed retained input or establish a native owning class."
+  },
+  "provider_followthrough": {
+    "allocation": "Constructor CALL00BF55BE -> whole five-byte JMP00BF681B. Root-producing callers directly CALL00BF681B. Native normal path calls malloc00BF9F1A and retries through callnewh00C055B1; failure construction/throw remains excluded.",
+    "copy": "Actual CALL00BF7680, named _memcpy with cdecl destination/source/size. Its entry observes ranges and native feature cell0109EEA4; metadata includes __VEC_memcpy dependency. Only entry slice inspected; complete private CRT/vector/overlap behavior is not admitted.",
+    "Source_design": "Existing singleton_lifetime_allocate/free provides a current malloc/callnewh/free domain. A future current-domain wrapper must make real calls to that allocator and genuine current memcpy, keep both caller root and copied child in the same actual domain, and never call native numeric addresses or fabricate native globals.",
+    "lifetime": "Copied child is observed while live, then freed once through matching current free before root disposal. Retained input stays caller-managed and must never be freed as a new copied child. Neither branch supplies object/destructor/recursive lifetime.",
+    "exceptions": "No constructor-local FS/SEH frame or saved child cleanup is installed. No noexcept, allocator failure, copy fault, reentry, partial-write recovery or exceptional unwind claim."
+  },
+  "clone_binding": {
+    "entry": "008F4F60",
+    "source": "Actual stable source ECX, tag10 or11 selected by fresh switch-table entries. Source root/payload, new root/child and active frame must be distinct.",
+    "route": "Allocate fresh38h root through00BF681B, save it in EDI and exception local, state5/6. Push1 then pointer source+20, call008EF7F0 with source ECX, push returned count, set ECX=new root, call matching constructor.",
+    "count_type10": "For tag10, helper returns unsigned source+24 >>2.",
+    "count_type11": "For tag11, helper computes MUL unsigned(source+24)*AAAAAAABh, takes high DWORD and shifts3: floor(unsigned byte_count/12).",
+    "divide12_proof": "12*AAAAAAABh=2^35+4. Product shifted35 equals x/12+x/(3*2^35); for0<=x<=FFFFFFFFh the added error is<1/24 and the largest x/12 fractional part is11/12, so floor is exactly x//12.",
+    "valid_input": "Source byte_count must be positive and exactly stride*n within the chosen count bound. Native helper floors nonmultiples and performs no validity check; do not silently broaden to malformed arrays.",
+    "ordinal": "Constructor zeros+34; clone then rereads source+34 and writes it to returned root+34 at008F522F/008F5277. Owner+30 remains unpublished/preserved.",
+    "null": "Both root-allocation-null arms jump008F528A; EAX=0 then MOV[EAX+34],EDX at008F5290. This is not a safe null-return contract.",
+    "limit": "Only these two selected72-byte normal arms and necessary common/count slices are examined. No whole clone ABI, provider, native EH state cleanup, model binding or class admission."
+  },
+  "producer_binding": {
+    "type10": "Whole inspected caller008F3590..008F3604,116B/36instructions, constructor call008F35D4, insert008F35ED.",
+    "type11": "Whole inspected caller008F3610..008F3684,116B/36instructions, constructor call008F3654, insert008F366D.",
+    "incoming": "Producer ECX=destination bag. At producer entry P: +4=key, +8=input, +C=count, +10=flag. RET10 consumes four DWORDs.",
+    "route": "Save bag in ESI, allocate38h, save fresh root/state0, rearrange original flag/input/count into constructor count,input,flag order; pass result plus original key to008F33F0 with bag ECX. No separate ordinal transfer; constructor initially supplies ordinal0.",
+    "publication": "Insertion stores destination bag to record+30 at008F345F. If record+34 was zero, it uses old bag+10C and increments the counter; nonzero ordinals leave both unchanged. Bag+110 is separate.",
+    "outcome": "Successful insertion returns destination bag. Producer allocation-null path clears EAX and still passes null record to insertion; no safe OOM behavior is established.",
+    "limits": "Borrow genuine bag/key/map/node ownership and all input spans. Native handlers00CA496B/00CA498B, complete insertion transaction/failure and recursive release are named incomplete dependencies. These callers receive no Source credit."
+  },
+  "Source_absence": {
+    "scope": "Current Main src/include entry-address search has only two semantic switch comments in scene_property_bag_merge.cpp. No callable Type10/11 raw constructor binding was found.",
+    "semantic": "IntArray/Vector3Array names and same-shape comments are descriptive model intent only. The present contracts were derived independently from each Native body.",
+    "design": "Two separate raw-storage interfaces may be reconstructed on MSVC Win32 with explicit unused EDX register formal if using the existing fastcall transport convention, leaving count/input/flag on stack. Interface syntax alone cannot establish exact flags/register ABI. Use real current providers and retain all untouched bytes. Do not add mock provider pointers, literal vtable dispatch, generic class ownership or scalar element conversions.",
+    "readiness": "Two whole bounded successful current-domain interfaces are contract-ready for primary implementation review, not implemented, compiled, linked, fixture-qualified or executed here."
+  },
+  "named_incomplete_dependencies": [
+    "Whole Native private allocator/malloc/new-handler/free and C++ exception identity; memcpy vector/overlap branches and feature-state binding.",
+    "Full008F33F0 key/map/node insertion, key provenance and owner publication transaction; whole008F3590/008F3610 provider/EH/native calling context.",
+    "Whole008F4F60 including other types, handler00CA4B6D, states5/6 cleanup, genuine admitted Source record producers and array-count Source binding.",
+    "Record/array release008F0640, destructor008F0DE0, scalar004E6730 and connected bag/key/node recursive lifetime; borrowed input is not automatically an owning record payload.",
+    "Original class/vtable ABI, numeric interpretation of element bytes, game/world execution and runtime provider identity."
+  ],
+  "validation_boundary": {
+    "static_whole_constructor_bytes_and_listing": true,
+    "caller_and_helper_slices": true,
+    "Source_implementation": false,
+    "compiler_or_build": false,
+    "Source_or_Native_API_execution": false,
+    "runtime_provider_queries": false,
+    "old_helper_or_fixture_execution": false,
+    "Root_fixture_access": false,
+    "Ghidra_writes": false,
+    "ledger_or_name_writes": false
+  },
+  "document": "docs/CC12_PROPERTY_TYPE10_TYPE11_CONSTRUCTOR_READINESS.md",
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011",
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\all_files_manifest.json",
+    "includes_exact_tracked_metadata_snapshots": true,
+    "scope": "Every file recursively in this exact family except the manifest itself.",
+    "independent_manifest_SHA256": "Supplied separately in commit handoff to avoid a circular hash with this snapshotted report."
+  },
+  "evidence_summary": {
+    "strict_current_Source_files": 5,
+    "frozen_inputs": 10,
+    "bookend_kind_counts": {
+      "bytes": 14,
+      "listing": 13,
+      "prototype": 5,
+      "xrefs": 2,
+      "instruction_context": 1
+    },
+    "Native_byte_total": 986,
+    "all_equal": true,
+    "read_only_queries": 72,
+    "Native_query_failures": 0,
+    "local_check_failures": 1,
+    "failure_correction": "Historical Main target JSON CRLF versus fresh checkout LF; parsed fields agree and query-tool source code is byte-identical. Strict Source pins unchanged."
+  },
+  "key_artifacts": {
+    "readiness_core.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\readiness_core.json",
+      "size": 16608,
+      "sha256": "0b3b3a89264be211dabfd665b65ee0518b1873d4ec49090516a14ba9d1390ba9"
+    },
+    "static_analysis_result.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\static_analysis_result.json",
+      "size": 397,
+      "sha256": "34e5dea4748d71e08513b6a1f3f48819cbe36e4266d4f42855218a4509bb255b"
+    },
+    "input_provenance.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\input_provenance.json",
+      "size": 7805,
+      "sha256": "7b67fda98a210f32e8ba9f52dfe41f63cadc0c2544730f77b3f559deea0af057"
+    },
+    "verification_bookends.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\verification_bookends.json",
+      "size": 28337,
+      "sha256": "5dd66d7c1495c3cf585f52a66753ed7e535d19f74fd5d41ad9a58c53653faacb"
+    },
+    "Source_inputs_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\Source_inputs_before.json",
+      "size": 1021,
+      "sha256": "d530cb603f6e630b07a679aa02cf804b98076e9e4980e82c20f7464d0be15a91"
+    },
+    "Source_inputs_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\Source_inputs_after.json",
+      "size": 1021,
+      "sha256": "d530cb603f6e630b07a679aa02cf804b98076e9e4980e82c20f7464d0be15a91"
+    },
+    "Source_entry_search_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\Source_entry_search_before.json",
+      "size": 577,
+      "sha256": "dc12ddb33aefe90b7d9562ba5de246762f760f1189b54e283fc1fee6bafad206"
+    },
+    "Source_entry_search_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_constructor_readiness\\local\\t1011\\Source_entry_search_after.json",
+      "size": 479,
+      "sha256": "fcfb55e68a79918b57b10afa9d93127bfae14cc2b66d14504ee08bed10050781"
+    }
+  },
+  "lease_scope": {
+    "addresses": [
+      "008ef3e0",
+      "008ef460"
+    ],
+    "files": [
+      "docs/CC12_PROPERTY_TYPE10_TYPE11_CONSTRUCTOR_READINESS.md",
+      "reports/cc12_property_type10_type11_constructor_readiness.json"
+    ],
+    "ownership_checked_before_and_after_queries": true,
+    "dependencies": "Read-only evidence outside the two owned addresses; no dependency mutation or reconstruction credit."
+  },
+  "current_Main_context": "Five chosen Source originals are strict live pins. Context/clone report originals are historical; only their frozen copies remain pinned."
+}
