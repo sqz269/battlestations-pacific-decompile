@@ -1,0 +1,214 @@
+{
+  "packet": "cc12_property_iterator_initializer_readiness",
+  "UTC": "2026-10-08T05:32:04.673088+00:00",
+  "status": "Whole zero-call65B iterator initializer established; NOT_READY for independently genuine-input current raw Source registration",
+  "owned_address": "00480690",
+  "native_body": {
+    "UTC": "2026-10-08T05:32:04.673088+00:00",
+    "entry": "00480690",
+    "inclusive_end": "004806D0",
+    "exclusive_end": "004806D1",
+    "bytes": 65,
+    "instructions": 22,
+    "calls": 0,
+    "flow_gaps": 0,
+    "sha256": "b9167301cb1875e13c9fd0c9075479b79b62210969d8a67cd5f3108c2aeaff2c",
+    "live_PE_image_equal": true,
+    "PE_file_offset": 525968,
+    "section": ".text",
+    "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "qualification": "Complete read-only saved current native body versus installed PE; no Source/native execution.",
+    "coverage": "complete"
+  },
+  "project_verification": {
+    "project": "bsp",
+    "configured_gpr": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "per_live_query": "bsp.py client verifies project name, program path, x86 language and00400000 image base; no project/program mutation"
+  },
+  "native_ABI": {
+    "inputs": "ECX writable actual0Ch iterator; DWORD[iterator+0] is actual108h embedded map pointer; no stack args; EDX is not an input",
+    "return": "plainRET; no declared value result. On count==0 originalEAX remains untouched. On count!=0 EAX is selected bucket index andEDX is selected head pointer.",
+    "preserved": "ECX and iterator+0 unchanged; EDI preserved on every branch; EBX/ESI/EBP untouched; ESP balanced.",
+    "clobbered": "EDX loaded from iterator+0 then finalhead on nonempty path; EAX and integerflags are pathdependent; DF untouched and unused.",
+    "shape": "No calls, allocations, frees, x87, SSE, string operations or global/profile reads; no DF-dependentREP requirement."
+  },
+  "memory_contract": {
+    "iterator_bytes": "0Ch writable actual caller stack output; initialized input only at+0; iterator+4 and+8 may initially contain unspecified bytes.",
+    "map_bytes": "Actual embedded108h raw64-bucket map at sourcebag+4; read countDWORD at map+4 and headDWORD at map+8+4*index.",
+    "empty_branch": "Only count==0 test is native. Write iterator+4=0; leave iterator+8 untouched; never read a bucket head; retain originalEAX.",
+    "nonempty_branch": "Any nonzero count enters this branch, including malformed negativeDWORDbit patterns. Write iterator+8=0; testhead0; otherwise increment index before probing head1 through eventual head64. Finally load head at selected index again and store it to iterator+4.",
+    "normal_coherent_input": "For an admitted stable populated actual map with nonzero count and at least one genuine nonnull head among0..63, current pointer is first such head, index its bucket. No node fields are dereferenced by this body.",
+    "inconsistent_input": "If count!=0 and every head0..63 isnull, native probes and reloads head64 at map+108. It leaves index64 and copies that DWORD as currentnode. In actual114h bag this aliases bag+10C ordinal. Do not silently clamp at63, substitute null, add bounds guards or claim malformed safety.",
+    "other_mutations": "Map count/profile/heads and all node bytes unchanged; iterator+0 unchanged. No locks or validation. Native actual caller supplies distinct stack iterator and heap/rootmap, so arbitrary overlapping iterator/map memory is outside the admitted caller contract.",
+    "profile_limit": "The body never reads map+0 or a node. That does not admit substituting a different profile/class or forged populated heads for the observed actual bag map."
+  },
+  "schedule": [
+    {
+      "site": "00480690",
+      "step": "EDX=[ECX] captures actual embeddedmap"
+    },
+    {
+      "site": "00480692",
+      "step": "CMP DWORD[EDX+4],0; JZ004806C9"
+    },
+    {
+      "site": "00480698",
+      "step": "nonzero-count write iterator+8=0"
+    },
+    {
+      "site": "0048069F",
+      "step": "test actual maphead0; nonnull skips scanning"
+    },
+    {
+      "site": "004806A5",
+      "step": "otherwise preserveEDI before scan"
+    },
+    {
+      "site": "004806A6",
+      "step": "EAX=iterator+8; unsigned compareEAX,40h; JNC restoreEDI"
+    },
+    {
+      "site": "004806AE",
+      "step": "incrementEAX; EDI=map; publishiterator+8=EAX"
+    },
+    {
+      "site": "004806B6",
+      "step": "test head atmap+8+EAX*4; repeat on zero"
+    },
+    {
+      "site": "004806BD",
+      "step": "restoreEDI"
+    },
+    {
+      "site": "004806BE",
+      "step": "EAX=iterator+8; EDX=actual selectedhead; publishiterator+4=EDX; RET"
+    },
+    {
+      "site": "004806C9",
+      "step": "empty path publishiterator+4=0; RET at004806D0, preservingiterator+8 andEAX"
+    }
+  ],
+  "actual_native_admission": {
+    "caller": "008F41F0",
+    "caller_body": "008F41F0..008F4289,154B49instructions, complete prior sealed live/PE evidence",
+    "caller_sha256": "2b8a332ed5807d4499150e6dfd5fd943c7d72c921c6cf3603c51dff2b4347157",
+    "input_provenance": "Callerentry ECX actualsourcebag ->ESI at008F41FA; ADD ESI,4 at008F423C; LEA ECX,[ESP+8] at008F423F; MOV[ESP+8],ESI at008F4243; CALL00480690 at008F4247.",
+    "output_use": "Caller reads iterator+4 at008F424C, tests it, then actualnode+4 key at008F4254 and actualnode+8 record at008F4260. Its iterator index lies atlocal+8; no semantic container is used.",
+    "root_producer_evidence": "Prior complete native clone initializes actual allocated114h newrootD16504 and embeddedmapD162C4/count/64heads/ordinal/owner. This establishes actual native layout; it does not supply a current raw Source populated map.",
+    "all_xrefs_saved": 10,
+    "other_callers": "All10live xref sites are saved, but argument layouts of the other9sites are not newly expanded. Owned body ABI comes from complete assembly; caller-specific admission claimed only for the sealed clone site."
+  },
+  "host_steps": [
+    {
+      "address": "008F4247",
+      "native": "00480690",
+      "function": "008F41F0",
+      "contract": "ECX distinct actual0Ch stack iterator; iterator+0=actualsourcebag+4; no stack arguments; containing function verified live"
+    }
+  ],
+  "call_verification": {
+    "own_native_calls": 0,
+    "direct_caller_rows": 1,
+    "status": "PASS existing tools/verify_report_calls.py:1checked,0failed"
+  },
+  "current_Source_freshness": {
+    "UTC": "2026-10-08T05:33:36.790787+00:00",
+    "live_main_head": "2b2b2aad0fc287d5a378cdeb0d9192f7aedb5723",
+    "registration_commit": "2b2b2aad0fc287d5a378cdeb0d9192f7aedb5723",
+    "registration_changes": [
+      "config/parallel_work.json"
+    ],
+    "actual_raw_bag_constructor_Source_found": false,
+    "actual_raw_bag_insertion_Source_found": false,
+    "actual_raw_iterator_initializer_Source_found": false,
+    "Source_files": [
+      {
+        "file": "src/native_property_tree_library_storage.cpp",
+        "live_main_sha256": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965",
+        "worker_sha256": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965"
+      },
+      {
+        "file": "include/bsp/native_property_tree_library_storage.hpp",
+        "live_main_sha256": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8",
+        "worker_sha256": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8"
+      },
+      {
+        "file": "src/scene_property_bag.cpp",
+        "live_main_sha256": "7ce07cd97b31826d12cd2c0e9ba3ba74fc5928af07436613653cd9b5b7ad4759",
+        "worker_sha256": "7ce07cd97b31826d12cd2c0e9ba3ba74fc5928af07436613653cd9b5b7ad4759"
+      },
+      {
+        "file": "include/bsp/scene_property_bag.hpp",
+        "live_main_sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88",
+        "worker_sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88"
+      },
+      {
+        "file": "src/scene_property_bag_merge.cpp",
+        "live_main_sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+        "worker_sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0"
+      },
+      {
+        "file": "include/bsp/scene_property_bag_merge.hpp",
+        "live_main_sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c",
+        "worker_sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c"
+      }
+    ],
+    "qualification": "Fresh Source searches in both named worktree and live main. Registration is workflow metadata, not an implementation. Source pointers and semantic models do not admit fabricated raw maps/nodes."
+  },
+  "current_Source_readiness": {
+    "algorithm_body": "COMPLETE_NATIVE_READINESS; zero missing native callees",
+    "whole_genuine_input_Source": "NOT_READY",
+    "exact_blocker": "No current genuine raw populated D162C4 actualbag map producer. Whole native clone008F41F0 and raw insertion008F33F0 ->008F28F0 are absent as actual current Source providers. Native producer evidence is not current Source production.",
+    "first_missing_empty_bag_producer": "008F41A0 actual114h raw constructor: freshly checked live main registration2b2b2aad changes config/parallel_work.json only; no Source implementation found at audit timestamp. External constructor audit/registration is preserved and not duplicated.",
+    "populated_branch_blocker_even_after_constructor": "Actual raw count/head/node publication via008F33F0 and its raw map insertion008F28F0 must admit genuine nonempty states. Constructor-created empty heads alone would exercise only count==0 and cannot close the whole initializer domain.",
+    "existing_raw_other_domain": "initialize_native_property_tree_library_storage_008f5670 exists and constructs an empty different10Ch rootD1650C/embeddedD162C8 map. It does not establish actual populated D162C4 record-map admission.",
+    "existing_semantics": "ScenePropertyBagModel and ScenePropertyMergeHost.iterator_open are semantic containers/abstract boundaries, not actual raw map/node producers.",
+    "no_ready_implementation_packet": true,
+    "next_required_evidence": "Freshly recheck actual008F41A0 Source integration, then a separately owned bounded readiness audit of actual raw008F33F0 ->008F28F0 map/count/head/node publication before declaring whole genuine-input Source readiness. Do not expand0047E480 in this packet."
+  },
+  "corrections": [
+    {
+      "was": "An iterator-open semantic interface or empty constructed bag might appear to close this zero-call helper",
+      "is": "Whole native helper is complete, but genuine current populated actualmap input is a separate missing Source admission; count==0 preservesbucketindex andEAX; nonzero-count incoherence can probehead64",
+      "evidence": "00480692,00480698,004806AE,004806B6,004806C1,004806C9; current Source search receipts"
+    }
+  ],
+  "named_UNEXPANDED_dependencies": [
+    "008F41A0 actual raw bag constructor Source integration owned externally",
+    "008F33F0 actual record-map insertion/owner/ordinal publication",
+    "008F28F0 underlying actual map count/head/node publication",
+    "0047E480 iteratoradvance deliberately not expanded",
+    "record cloning and recursive/map/scalar/type lifetimes"
+  ],
+  "required_Ghidra_repairs": [],
+  "evidence_paths": {
+    "root": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer",
+    "byte_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/byte_receipt.json",
+    "owned_pseudocode": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/00480690_decompiled.c",
+    "owned_listing": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/00480690_assembly.txt",
+    "owned_bytes": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/00480690_bytes.txt",
+    "flow_report": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/flow_report.txt",
+    "xref_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/all_xrefs.txt",
+    "caller_instruction": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/caller_instruction.json",
+    "caller_body_ranges": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/body_ranges.txt",
+    "prior_verified_clone_listing": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/prior_verified_actual_clone_008f41f0_assembly.txt",
+    "Source_freshness_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/Source_freshness_receipt.json",
+    "artifact_manifest": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/artifact_manifest.json",
+    "artifact_manifest_sha256": "fdcc430072e12626e688bfec149a13d791fd71cabef3f9abdb41c6298052f160",
+    "call_verification_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_iterator_initializer/call_verification_receipt.json"
+  },
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_execution": false,
+  "new_tests": 0,
+  "build_run": false,
+  "Ghidra_mutation": false,
+  "shared_metadata_CMake_ledger_export_writes": false,
+  "native_class_ABI_compatible": false,
+  "game_validated": false,
+  "qualification": "Static complete native/readiness audit only; byte equality and caller ownership are not runtime, Source input-provider, class/ABI/factory/world/game proof."
+}
