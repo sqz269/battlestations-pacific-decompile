@@ -101,3 +101,5 @@ function bytes and relocations.
 records hashes, actual symbols, capture timing and the sealed local evidence
 archive. Acceptance remains Source/static object/archive/build evidence;
 new-entry runtime, ABI differential and gameplay validation are unclaimed.
+
+Primary review independently verified all440 artifacts/all441 ZIP entries and five physical snapshot phases, all five preserved complete functions and six current compiled bodies, the same actual private66-byte kernel binding from both public entries, its readonly cutoff and the actual SDK unique60-byte CRT import member. Current combined MSVCWin32/all three existing checks pass. Root registered an additional raw tail-facade view with zero Original-function increment and preserved the existing Ghidra name. No facade execution, parent/class/game qualification. Receipt: `local/cc12_raw_vector2_tail_facade_primary_review/receipt.json`.

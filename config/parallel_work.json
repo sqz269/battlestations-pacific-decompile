@@ -35372,6 +35372,58 @@
         "new_execution": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_raw_vector2_tail_facade_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "00414c60"
+      ],
+      "output_files": [
+        "include/bsp/vector_helpers.hpp",
+        "src/vector_helpers.cpp",
+        "docs/CC12_RAW_VECTOR2_TAIL_FACADE.md",
+        "reports/cc12_raw_vector2_tail_facade.json"
+      ],
+      "depends_on": [
+        "cc12_native_wake_append_binding_design"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_raw_tail_facade_build_three_checks_no_new_entry_execution",
+      "contract": {
+        "new_Original_function_records": 0,
+        "new_entry_execution": false,
+        "game_validated": false
+      }
+    },
+    {
+      "id": "cc12_physical_failure_callable_publication_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "0073d642"
+      ],
+      "output_files": [
+        "include/bsp/native_vfs_startup_callbacks.hpp",
+        "src/native_vfs_startup_callbacks.cpp",
+        "include/bsp/native_vfs_runtime_bindings.hpp",
+        "src/native_vfs_runtime_bindings.cpp",
+        "include/bsp/game_native_vfs_application.hpp",
+        "src/game_native_vfs_application.cpp",
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp",
+        "docs/CC12_PHYSICAL_FAILURE_CALLABLE_PUBLICATION_SOURCE.md",
+        "reports/cc12_physical_failure_callable_publication_source.json"
+      ],
+      "depends_on": [
+        "cc12_physical_failure_callable_publication_design"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_guarded_Source_opt_in_build_three_checks_static_whole_providers_feature_execution_pending",
+      "contract": {
+        "new_Original_function_records": 0,
+        "new_feature_or_raw_entry_execution": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
