@@ -1,0 +1,803 @@
+{
+  "schema": "bsp-cc12-type7-prelaunch-code-audit-v1",
+  "Source_credit": 0,
+  "status": "independent_static_code_and_manual_review_complete_no_blocking_mismatch_found",
+  "owned_files": [
+    "docs/CC12_TYPE7_PRELAUNCH_CODE_AUDIT.md",
+    "reports/cc12_type7_prelaunch_code_audit.json"
+  ],
+  "audit_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit",
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\seal.json",
+    "size": 40626,
+    "sha256": "13553cc573948e97d64a83e2b595c114f9d170a0c66f90e61a285fa439861837"
+  },
+  "seal_schema": "bsp-independent-prelaunch-audit-family-seal-v1",
+  "exact_recursive_files_including_seal": 157,
+  "pycache_files_included": 0,
+  "findings": {
+    "schema": "bsp-independent-type7-prelaunch-code-findings-v1",
+    "Source_credit": 0,
+    "status": "independent_static_code_and_manual_review_complete_no_blocking_mismatch_found",
+    "prelaunch_acceptance": false,
+    "target_execution": 0,
+    "compiler_execution": 0,
+    "Root_recipe_helper_accepted_reader_import_or_execution": 0,
+    "Native_or_Ghidra_query": 0,
+    "current_installed_provider_query": 0,
+    "Root_writes": 0,
+    "counts": {
+      "raw_TUs": 3,
+      "logical_symbols": 35,
+      "unique_TU_bodies": 33,
+      "logical_relocations": 243,
+      "physical_relocation_operands": 237,
+      "gate_spans": 51,
+      "source_bytes": 63,
+      "source_instructions": 19,
+      "source_relocations": 0
+    },
+    "additional_counts": {
+      "alias_rechecks": 6,
+      "non_TU_helpers": 18,
+      "Main_bytes": 3359,
+      "Main_instructions": 877,
+      "mapped_EH_handlers": 1,
+      "dominance_pairs": 30,
+      "guard_failure_edges": 51,
+      "guard_failure_groups": 19,
+      "resolved_nonabsolute_indirect_calls": 8,
+      "reachable_CxxThrow_INT3_guards": 1,
+      "unreachable_whole_body_trailing_INT3_bytes": 5
+    },
+    "target_calls": {
+      "Source_site": 1191192745,
+      "Source_target": 1191186432,
+      "Source_DF": 1,
+      "Original_site": 1191193030,
+      "Original_target": "unchanged63 copied from pinned input into allocated, flushed RX buffer",
+      "Original_DF": 0,
+      "both_sites_not_in_cycles": true,
+      "Source_dominates_Original": true,
+      "counts_on_success_path_only": true
+    },
+    "actual_current_raw_pins": [
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\source.obj",
+          "size": 751,
+          "sha256": "02d96e2fe570d0b52609e9228ec2ecb7d4af061817be7a27e871a7e78f2c64f5"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\source.obj",
+          "size": 751,
+          "sha256": "02d96e2fe570d0b52609e9228ec2ecb7d4af061817be7a27e871a7e78f2c64f5"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\canonical.obj",
+          "size": 36799,
+          "sha256": "1bb066642b63bcc0c1f84a01ec22854285e3912f2033ec2c886e29980c4b3b1e"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\canonical.obj",
+          "size": 36799,
+          "sha256": "1bb066642b63bcc0c1f84a01ec22854285e3912f2033ec2c886e29980c4b3b1e"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\probe.obj",
+          "size": 32511,
+          "sha256": "a6602b759c883357e502eee43ef77a89704665a2589d242d785664eaefb4f0f9"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\probe.obj",
+          "size": 32511,
+          "sha256": "a6602b759c883357e502eee43ef77a89704665a2589d242d785664eaefb4f0f9"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\t7_probe.exe",
+          "size": 20480,
+          "sha256": "c891d2dd728e289e286eb41bf06c413fd03679a8df7dcd657feb8017b8740298"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\t7_probe.exe",
+          "size": 20480,
+          "sha256": "c891d2dd728e289e286eb41bf06c413fd03679a8df7dcd657feb8017b8740298"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\t7_probe.map",
+          "size": 36665,
+          "sha256": "04e15fa550172c1c5f91d6a05986429341655c3c430b86049be0f6e37e4bc630"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\t7_probe.map",
+          "size": 36665,
+          "sha256": "04e15fa550172c1c5f91d6a05986429341655c3c430b86049be0f6e37e4bc630"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\gate.bin",
+          "size": 9093,
+          "sha256": "53572247dead900fcaec97f0b8322258e3522aab1cd3023bd9043846787a2864"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\gate.bin",
+          "size": 9093,
+          "sha256": "53572247dead900fcaec97f0b8322258e3522aab1cd3023bd9043846787a2864"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\original.bin",
+          "size": 63,
+          "sha256": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\original.bin",
+          "size": 63,
+          "sha256": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\in\\0fff0dd52ae6fa34.exe",
+          "size": 12223752,
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_game.exe",
+          "size": 12223752,
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\in\\920cb5b85a1599b3.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_provider_0.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        }
+      }
+    ],
+    "finished_evidence": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\copied_inputs.json",
+        "size": 12377,
+        "sha256": "9223e4b0c3c1a86798bdd58d582365256925798f8674888e7cd0bc40c24998d3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\raw_v2\\summary.json",
+        "size": 6925,
+        "sha256": "65feed23bc744b7bb214baf6db8da31dd34c2cd1393dadc3c7b0f576ca5fa3c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\raw_v2\\raw_objects_and_relocations.json",
+        "size": 509913,
+        "sha256": "795f2d31a37fc3ae4bbb1500a520e7d166f1608f5651eb81af7f2d6899d97d56"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\raw_v2\\body_inventory.json",
+        "size": 576802,
+        "sha256": "f02e7aec9663142ef95b9d9e0affb2e2441d10716a464cf6f806910caa30bd49"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\raw_v2\\edges.json",
+        "size": 81406,
+        "sha256": "1eae19e45fe5908ca584cb320c44175e552183cb4ad640b79f3a5518b9791ec9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\Main_CFG_proofs.json",
+        "size": 19123,
+        "sha256": "0342b754ac3a97865c29104969fb0e1cf77fab8dd7e5ae6277b2a2affcbb8434"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\indirect_and_trap_proofs.json",
+        "size": 3007,
+        "sha256": "ca74a0b87bfdafa378d4a243b4cfce565788004798f11729e58a3a7a11f71d64"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\manual_Main_and_frame_review.json",
+        "size": 6306,
+        "sha256": "bc5006f4cda9ccb96473a3891da410f9ee024f183af19a409c4d34e9b4fb0210"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\extra_PE_gate_provider_checks.json",
+        "size": 2863,
+        "sha256": "a5271cc790e696f8d510f8ec023f9d7ab2bddfb80509bfe5f03b841bf3e3e813"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\preservation_after.json",
+        "size": 14167,
+        "sha256": "65403552beb1ad5b5325a1bdbfc4847b30958571c7e6e4479ea66121bfe5f794"
+      }
+    ],
+    "initial_raw_summary_pending_flags_closed_by": [
+      "Main_CFG_proofs.json",
+      "indirect_and_trap_proofs.json",
+      "manual_Main_and_frame_review.json"
+    ],
+    "remaining_scope": [
+      "Root owns its separate manual prelaunch decision.",
+      "A future single process must establish actual calls, capture contents, before/after live provider and code observations, save outputs and lifetime completion.",
+      "Allocation/free counts describe selected two canonical root operations, not total process heap instrumentation.",
+      "Post-free provider checks do not repeat MEM_IMAGE, mapped NT path, GetProcAddress or independent live PE header equality.",
+      "No ABI replacement, class, startup or gameplay proof."
+    ],
+    "preserved_stops": [
+      "Initial metadata revision anchor mismatch and attempted missing generated script; neither raw audit nor target executed during these stops.",
+      "audit_raw_v1.py remains the unexecuted initial draft; corrected audit_raw_v2.py and completed readouts are authoritative."
+    ],
+    "Root_final_inventory_claim": false
+  },
+  "manual_Main_frame_and_provider_scope": {
+    "passed_static_review": true,
+    "Source_credit": 0,
+    "raw_wrapper": {
+      "address": 1191194672,
+      "size": 156,
+      "instructions": 59,
+      "indirect_call": 1191194751,
+      "constructor_formal": "[wrapper entry ESP+4], proven as [EBP+8] with EBP=entry ESP-4",
+      "before_B": "EBP-20",
+      "pointer_push": "[EBP+16] at4700307C",
+      "target_entry_T": "B-8; one pointer DWORD at T+4; RET4 returns ESP to B",
+      "EBX_before": "D9A43C71",
+      "EDI_before": "AB6E852F",
+      "incoming_EDX": "E7B219C5",
+      "stack_guards": [
+        "6A18C5F2",
+        "B4E729D3"
+      ],
+      "DF_branch_sites": [
+        "4700304D",
+        "47003051",
+        "47003053 STD",
+        "47003056 CLD"
+      ],
+      "post_target_registers_saved_before_flags": "47003082..47003097",
+      "actual_dead_pointer_slot_load_store_before_PUSHFD": [
+        "4700309A LEA[B-4]",
+        "4700309E store+92",
+        "470030A1 load[B-4]",
+        "470030A5 store+96",
+        "470030A8 PUSHFD"
+      ],
+      "after_flags": "470030AA store+72, then470030AD CLD, then ES/guards; caller returns DF0",
+      "T_independently_captured": false,
+      "T_is_derived_from_captured_B": true
+    },
+    "Main_baseline": "S is ESP after prologue stack reservation and saved ESI/EDI; temporary argument pushes accounted for below",
+    "Main_slots_relative_to_S": {
+      "RX_pointer": "0xC",
+      "canonical_root_array": [
+        "0x14",
+        "0x18"
+      ],
+      "cached_root_pointers": [
+        "0x8",
+        "0x10"
+      ],
+      "guarded_input_pair": "0x80570..0x805C8 (88 bytes)",
+      "input_payloads": [
+        "0x80580",
+        "0x805AC"
+      ],
+      "captures": [
+        "0x805D0",
+        "0x80644"
+      ],
+      "snapshot_other_capture": "0x190 (116 bytes)",
+      "expected_roots": [
+        "0x40",
+        "0xE0"
+      ],
+      "untouched_Original_root": "0x120"
+    },
+    "Source_call": {
+      "site": 1191192745,
+      "pushed_target": 1191186432,
+      "root": "[S+8] from canonical allocation0",
+      "payload": "S+0x80580",
+      "capture": "S+0x805D0",
+      "DF": 1
+    },
+    "Original_call": {
+      "site": 1191193030,
+      "pushed_target": "[S+0xC] VirtualAlloc result, copied63 and protectedRX",
+      "root": "[S+0x10] from canonical allocation1",
+      "payload": "S+0x805AC",
+      "capture": "S+0x80644",
+      "DF": 0
+    },
+    "loop_semantics": [
+      {
+        "kind": "root allocation",
+        "call": 1191191809,
+        "request": [
+          3,
+          56,
+          56
+        ],
+        "counter": "ESI=S+14 to S+1C step4; exactly2 on success",
+        "failure": "null or low2 alignment bits -> entries0 failure"
+      },
+      {
+        "kind": "root free",
+        "call": 1191193543,
+        "counter": "ESI=S+14 to S+1C step4; exactly2; nulls each slot",
+        "sequence": "after all six snapshot successes"
+      },
+      {
+        "kind": "provider before/after",
+        "calls": [
+          1191191341,
+          1191193661
+        ],
+        "counter": "ESI starts0, increments1 until3; exactly3 on success"
+      }
+    ],
+    "byte_comparisons": {
+      "Original63": "15DWORD+WORD+BYTE before RX allocation and again after both target calls",
+      "Source_stage": [
+        "root0 full56 against expected0",
+        "root1 full56 still poisonA6",
+        "other capture full116 unchanged",
+        "guarded input pair full88 unchanged"
+      ],
+      "Original_stage": [
+        "root1 full56 against expected1",
+        "root0 full56 still expected0",
+        "other capture full116 unchanged",
+        "guarded input pair full88 unchanged"
+      ],
+      "loop_counts": "56=14DWORD (counter34h);116=29DWORD(counter70h);88=22DWORD(counter54h)"
+    },
+    "machine_ok": {
+      "address": 1191188656,
+      "bytes": 323,
+      "instructions": 100,
+      "checks": [
+        "all eight capture guards",
+        "B==ESPafter; pointer_slot=B-4; pointer_word=actual input",
+        "two wrapper stack guards",
+        "full EAX root, ECX0, EDX exact middle input DWORD",
+        "EBX/EDI seeds and all EBX/ESI/EDI/EBP preservation",
+        "DF before/after equals selected1 or0; ES equality",
+        "root56 and input12 disjoint from raw wrapper frame[T,EBP+28)",
+        "defined flags mask8C5==44; AF unasserted"
+      ]
+    },
+    "expected_root": {
+      "helper": 1191187296,
+      "bytes": 170,
+      "instructions": 42,
+      "written_bytes": 45,
+      "preserved_bytes": 11,
+      "phase": "CE89D4",
+      "tag": 7,
+      "payload_DWORD_destinations": [
+        12,
+        16,
+        20
+      ],
+      "zero_DWORD_offsets": [
+        24,
+        28,
+        32,
+        36,
+        48,
+        52
+      ],
+      "byte44": 1,
+      "poisons": [
+        "59",
+        "A6"
+      ]
+    },
+    "provider_code_scope": {
+      "verify_module": [
+        1191190080,
+        972,
+        303
+      ],
+      "export_prefix_equal": [
+        1191187472,
+        620,
+        192
+      ],
+      "module_unchanged": [
+        1191188992,
+        244,
+        82
+      ],
+      "initial_checks": [
+        "actual IAT provider module from address",
+        "MEM_IMAGE allocation base",
+        "mapped NT path equals opened physical final NT path",
+        "volume/file-index/size against packed expected values",
+        "physical fileSHA256",
+        "frozen raw and live machine/timestamp/image size",
+        "nonforwarded physical export RVA, GetProcAddress/IAT/base+RVA equality",
+        "32byte relocation-adjusted raw-to-live prefix including partial HIGHLOW overlap"
+      ],
+      "post_free_checks": [
+        "same IAT target",
+        "same open physical file volume/index/size",
+        "same mapped physical file SHA256",
+        "same relocation-adjusted export prefix"
+      ],
+      "post_free_not_repeated": [
+        "MEM_IMAGE",
+        "mapped NT path",
+        "GetProcAddress",
+        "independent live PE header comparison"
+      ],
+      "runtime_fields_not_independently_serialized": [
+        "physical file identity words",
+        "live PE headers"
+      ],
+      "CRT_EH_OOM_execution_claim": false
+    },
+    "ordinary_wrappers": {
+      "Source": [
+        1191194592,
+        18,
+        5
+      ],
+      "Original": [
+        1191194512,
+        66,
+        26
+      ],
+      "Original_tail_CC": 5,
+      "EHhandler": [
+        1191198656,
+        29,
+        9
+      ],
+      "retained_and_gated": true,
+      "Main_has_no_call_to_either_wrapper": true
+    },
+    "prelaunch_acceptance": false,
+    "target_execution": 0
+  },
+  "preservation": {
+    "passed": true,
+    "copied_Root_direct_files": 22,
+    "copied_Root_frozen_GAME_files": 1,
+    "copied_Root_frozen_provider_files": 1,
+    "all24_original_and_copy_sizes_hashes_unchanged": true,
+    "all_copies": [
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\recipe.py",
+          "size": 53675,
+          "sha256": "53cc10fa004029f613281e450847a9dac5c4844832318599b4362dc8ba101e99"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\recipe.py",
+          "size": 53675,
+          "sha256": "53cc10fa004029f613281e450847a9dac5c4844832318599b4362dc8ba101e99"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\probe.cpp",
+          "size": 24422,
+          "sha256": "f81298a5fd0e3c1ef1f3b7e78bbf93bc41b11731ebf316b67036c1cb987c126e"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\probe.cpp",
+          "size": 24422,
+          "sha256": "f81298a5fd0e3c1ef1f3b7e78bbf93bc41b11731ebf316b67036c1cb987c126e"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\source.obj",
+          "size": 751,
+          "sha256": "02d96e2fe570d0b52609e9228ec2ecb7d4af061817be7a27e871a7e78f2c64f5"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\source.obj",
+          "size": 751,
+          "sha256": "02d96e2fe570d0b52609e9228ec2ecb7d4af061817be7a27e871a7e78f2c64f5"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\canonical.obj",
+          "size": 36799,
+          "sha256": "1bb066642b63bcc0c1f84a01ec22854285e3912f2033ec2c886e29980c4b3b1e"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\canonical.obj",
+          "size": 36799,
+          "sha256": "1bb066642b63bcc0c1f84a01ec22854285e3912f2033ec2c886e29980c4b3b1e"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\probe.obj",
+          "size": 32511,
+          "sha256": "a6602b759c883357e502eee43ef77a89704665a2589d242d785664eaefb4f0f9"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\probe.obj",
+          "size": 32511,
+          "sha256": "a6602b759c883357e502eee43ef77a89704665a2589d242d785664eaefb4f0f9"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\t7_probe.exe",
+          "size": 20480,
+          "sha256": "c891d2dd728e289e286eb41bf06c413fd03679a8df7dcd657feb8017b8740298"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\t7_probe.exe",
+          "size": 20480,
+          "sha256": "c891d2dd728e289e286eb41bf06c413fd03679a8df7dcd657feb8017b8740298"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\t7_probe.map",
+          "size": 36665,
+          "sha256": "04e15fa550172c1c5f91d6a05986429341655c3c430b86049be0f6e37e4bc630"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\t7_probe.map",
+          "size": 36665,
+          "sha256": "04e15fa550172c1c5f91d6a05986429341655c3c430b86049be0f6e37e4bc630"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\gate.bin",
+          "size": 9093,
+          "sha256": "53572247dead900fcaec97f0b8322258e3522aab1cd3023bd9043846787a2864"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\gate.bin",
+          "size": 9093,
+          "sha256": "53572247dead900fcaec97f0b8322258e3522aab1cd3023bd9043846787a2864"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\original.bin",
+          "size": 63,
+          "sha256": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\original.bin",
+          "size": 63,
+          "sha256": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\static_gate.json",
+          "size": 796034,
+          "sha256": "e1133971c97d6f73b71a77e635f545e42adc779681e91fb091b1f0c626189e7b"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\static_gate.json",
+          "size": 796034,
+          "sha256": "e1133971c97d6f73b71a77e635f545e42adc779681e91fb091b1f0c626189e7b"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\complete_linked_code_inventory.json",
+          "size": 2349958,
+          "sha256": "792e816707a825b28402d94157c16fc0b23f568d4267e4e6e7d9380b41340c31"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\complete_linked_code_inventory.json",
+          "size": 2349958,
+          "sha256": "792e816707a825b28402d94157c16fc0b23f568d4267e4e6e7d9380b41340c31"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\retained_function_coverage.json",
+          "size": 1163604,
+          "sha256": "eb176451d82826b1d7134de8d8f7d0dc81ff3d2998c157ea64abc2fda4753bdf"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\retained_function_coverage.json",
+          "size": 1163604,
+          "sha256": "eb176451d82826b1d7134de8d8f7d0dc81ff3d2998c157ea64abc2fda4753bdf"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\build.json",
+          "size": 1566,
+          "sha256": "000fd0355141166cd6bc2dab601d95b2e2d8b87ef6f3961448d6276782ea74b0"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\build.json",
+          "size": 1566,
+          "sha256": "000fd0355141166cd6bc2dab601d95b2e2d8b87ef6f3961448d6276782ea74b0"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\inputs_before.json",
+          "size": 13929,
+          "sha256": "6770c31526f3cec30c9270891970780f73d316e062c55edc76f2a96b9fd050f1"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\inputs_before.json",
+          "size": 13929,
+          "sha256": "6770c31526f3cec30c9270891970780f73d316e062c55edc76f2a96b9fd050f1"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\consumed_headers_before.json",
+          "size": 39790,
+          "sha256": "580952f7d992ca1fcb40e36cc4dc7ccfbc113cb1c7de7e3f742cea46438f0502"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\consumed_headers_before.json",
+          "size": 39790,
+          "sha256": "580952f7d992ca1fcb40e36cc4dc7ccfbc113cb1c7de7e3f742cea46438f0502"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\consumed_libraries_before.json",
+          "size": 1573,
+          "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\consumed_libraries_before.json",
+          "size": 1573,
+          "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\frozen_inputs.json",
+          "size": 36227,
+          "sha256": "d8d6a08c9dad62cac036a1f9d20951ba9e01977764e16e259fa39bf8ccf22a62"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_inputs.json",
+          "size": 36227,
+          "sha256": "d8d6a08c9dad62cac036a1f9d20951ba9e01977764e16e259fa39bf8ccf22a62"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\frozen_headers.json",
+          "size": 104029,
+          "sha256": "9789a2413e0693765bef672e25d63f2cdcb1356bec76e528ea2710b4566162c9"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_headers.json",
+          "size": 104029,
+          "sha256": "9789a2413e0693765bef672e25d63f2cdcb1356bec76e528ea2710b4566162c9"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\frozen_libraries.json",
+          "size": 4088,
+          "sha256": "37596cf7793b5a8eed5b14d2aa13eb039e302f7fb8ffeb13f26275be40decba3"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_libraries.json",
+          "size": 4088,
+          "sha256": "37596cf7793b5a8eed5b14d2aa13eb039e302f7fb8ffeb13f26275be40decba3"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\generation_inputs.json",
+          "size": 7734,
+          "sha256": "d771bc42d9cdc30f3ab5621c789e46dc8cd9464fccdfa8626c0a7c541267f291"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\generation_inputs.json",
+          "size": 7734,
+          "sha256": "d771bc42d9cdc30f3ab5621c789e46dc8cd9464fccdfa8626c0a7c541267f291"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\identity.json",
+          "size": 1389,
+          "sha256": "36325fb17ebc2fa56f0c7da1f804ebe5623162d9ef8b73fb75c561dcd9aba887"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\identity.json",
+          "size": 1389,
+          "sha256": "36325fb17ebc2fa56f0c7da1f804ebe5623162d9ef8b73fb75c561dcd9aba887"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\launch_protocol.json",
+          "size": 897,
+          "sha256": "3dbeeb1629920689036f77dbfb3a975550c809f63c104f4d9fb654b9bb4a6c38"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\launch_protocol.json",
+          "size": 897,
+          "sha256": "3dbeeb1629920689036f77dbfb3a975550c809f63c104f4d9fb654b9bb4a6c38"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\in\\0fff0dd52ae6fa34.exe",
+          "size": 12223752,
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_game.exe",
+          "size": 12223752,
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p2\\in\\920cb5b85a1599b3.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_prelaunch_code_audit\\local\\t7preaudit\\inputs\\frozen_provider_0.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        }
+      }
+    ],
+    "current_Source4": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type7_storage.cpp",
+        "size": 1354,
+        "sha256": "1c28752683c9015cc8ab757762631ecd9c60995ad47aa3c27afa7f9f005dc94f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type7_storage.hpp",
+        "size": 1882,
+        "sha256": "315e9a12c16bb4b5076a081f33e7cd299f1b3f00fea82a371c957fb401980c34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      }
+    ],
+    "current_Source4_unchanged": true,
+    "selected_text_family31_unchanged": true,
+    "selected_recipe_and_probe_identical_to_Root_copies": true,
+    "raw_objects_and_exe_match_recorded_build_pins": true,
+    "Root_family_unsealed_no_final_inventory_claim": true,
+    "current_installed_Native_provider_toolchain_queries": 0
+  },
+  "prelaunch_acceptance": false,
+  "Root_final_inventory_claim": false
+}
