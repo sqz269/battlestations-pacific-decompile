@@ -1,0 +1,311 @@
+{
+  "packet": "cc11_plane_squadron_kind",
+  "status": "complete raw integer predicate; strict component PASS; root integration/full build pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "files": [
+    "include/bsp/native_plane_squadron_kind.hpp",
+    "src/native_plane_squadron_kind.cpp",
+    "docs/PLANE_SQUADRON_KIND_CC11.md",
+    "reports/plane_squadron_kind_cc11.json"
+  ],
+  "functions": [
+    {
+      "address": "007efb00",
+      "end_exclusive": "007efb2c",
+      "bytes": 44,
+      "instructions": 15,
+      "coverage": "complete",
+      "native_name": "BSP_PlaneSquadronGen_IsKindOf",
+      "source_name": "native_plane_squadron_is_kind_007efb00",
+      "sha256": "66fd7bfbfc5d413545f34c8605f0112e8a1d9d38ca7eef2347fbff09382843a0",
+      "native_protocol": "ECX actual receiver, stack raw DWORD, conventional unused EDX in Source declaration, full EAX0/1, RET4",
+      "calls": [],
+      "globals": [],
+      "numeric_instructions": 0
+    }
+  ],
+  "complete_Source_COFF": {
+    "symbol": "?native_plane_squadron_is_kind_007efb00@bsp@@YIIPBXPAXI@Z",
+    "section": 3,
+    "value": 0,
+    "section_size": 44,
+    "bytes": "8b44240483f818741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+    "relocation_count": 0,
+    "machine": "I386",
+    "sha256": "66fd7bfbfc5d413545f34c8605f0112e8a1d9d38ca7eef2347fbff09382843a0",
+    "instruction_count": 15,
+    "disassembly": [
+      {
+        "address": "007efb00",
+        "bytes": "8b442404",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 4]"
+      },
+      {
+        "address": "007efb04",
+        "bytes": "83f818",
+        "mnemonic": "cmp",
+        "operands": "eax, 0x18"
+      },
+      {
+        "address": "007efb07",
+        "bytes": "741b",
+        "mnemonic": "je",
+        "operands": "0x7efb24"
+      },
+      {
+        "address": "007efb09",
+        "bytes": "83f802",
+        "mnemonic": "cmp",
+        "operands": "eax, 2"
+      },
+      {
+        "address": "007efb0c",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0x7efb24"
+      },
+      {
+        "address": "007efb0e",
+        "bytes": "83f801",
+        "mnemonic": "cmp",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "007efb11",
+        "bytes": "7411",
+        "mnemonic": "je",
+        "operands": "0x7efb24"
+      },
+      {
+        "address": "007efb13",
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "007efb15",
+        "bytes": "740d",
+        "mnemonic": "je",
+        "operands": "0x7efb24"
+      },
+      {
+        "address": "007efb17",
+        "bytes": "3b81c4000000",
+        "mnemonic": "cmp",
+        "operands": "eax, dword ptr [ecx + 0xc4]"
+      },
+      {
+        "address": "007efb1d",
+        "bytes": "7405",
+        "mnemonic": "je",
+        "operands": "0x7efb24"
+      },
+      {
+        "address": "007efb1f",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "007efb21",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      },
+      {
+        "address": "007efb24",
+        "bytes": "b801000000",
+        "mnemonic": "mov",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "007efb29",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ]
+  },
+  "source_coff_equals_original": true,
+  "linked_source_equals_original": true,
+  "normal_domain": "Stable nonnull actual squadron; genuine live aligned raw DWORD+C4; backing>=C8. Fixed24/2/1/0 paths access no receiver field. No constructor/lifetime inference, default, census or eager field snapshot.",
+  "structural_witnesses": [
+    {
+      "label": "native_body",
+      "start": "007efb00",
+      "end_exclusive": "007efb2c",
+      "length": 44,
+      "bytes": "8b44240483f818741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "sha256": "66fd7bfbfc5d413545f34c8605f0112e8a1d9d38ca7eef2347fbff09382843a0",
+      "live_receipt": "local\\cc11_plane_squadron_kind\\live_native_body.txt",
+      "disk_live": "MATCH",
+      "receipt_sha256": "417bdc37b25750f8809330bf026ef4f3e465ef647b33f506299293947746f5f1"
+    },
+    {
+      "label": "profile_plus_5c",
+      "start": "00d0881c",
+      "end_exclusive": "00d08820",
+      "length": 4,
+      "bytes": "00fb7e00",
+      "sha256": "e1dc04b98bdf60b74cef5c887fc9f0dd535e5bd12f67c04317322ed7a7bcd997",
+      "live_receipt": "local\\cc11_plane_squadron_kind\\live_profile_plus_5c.txt",
+      "disk_live": "MATCH",
+      "receipt_sha256": "2a6d218bb4b49bd5ea9e02f7624381beaff4e0798e9225263f4f01f83927d01f"
+    },
+    {
+      "label": "constructor_profile_store",
+      "start": "007f2cad",
+      "end_exclusive": "007f2cb3",
+      "length": 6,
+      "bytes": "c706c087d000",
+      "sha256": "aca4474274cca6a711042c6985d5c729f60f921310849052b81ee0d01cf79425",
+      "live_receipt": "local\\cc11_plane_squadron_kind\\live_constructor_profile_store.txt",
+      "disk_live": "MATCH",
+      "receipt_sha256": "7f73a86b15357e3654f1f6d21f11e7813ed2a42135a1cd6699d9aec2a48b1144"
+    },
+    {
+      "label": "constructor_class_store",
+      "start": "007f2dec",
+      "end_exclusive": "007f2df6",
+      "length": 10,
+      "bytes": "c786c400000018000000",
+      "sha256": "5341e0d39bdd0220978e70e2c4d750a7c3734ac28a7a13ae41e0593ee873a57e",
+      "live_receipt": "local\\cc11_plane_squadron_kind\\live_constructor_class_store.txt",
+      "disk_live": "MATCH",
+      "receipt_sha256": "05e25f28c703f70c1204534046a106fb156b670bf97a78ee8e5d7d004bbea29d"
+    },
+    {
+      "label": "generic_kind_indirect_call",
+      "start": "0092627e",
+      "end_exclusive": "00926289",
+      "length": 11,
+      "bytes": "8b4e088b118b425c55ffd0",
+      "sha256": "bd431ad1544c1d851db9ae38ffe6966910952e1aa12540897a524b737d9590f9",
+      "live_receipt": "local\\cc11_plane_squadron_kind\\live_generic_kind_indirect_call.txt",
+      "disk_live": "MATCH",
+      "receipt_sha256": "1e05108c8cbd3eefc3151f34186a2f176ee03a88b638f3d033a23656e56fbdb4"
+    }
+  ],
+  "indirect_caller_witnesses": [
+    {
+      "containing_function": "00925f20",
+      "vtable_load_site": "00926283",
+      "actual_indirect_call_site": "00926287",
+      "argument": "EBP=2 normal callee-preserved domain, established00926131",
+      "actual_table_domain": "D087C0 only",
+      "qualification": "DATA target conditional on original receiver profile. No generic Source world/class vcall binding;009262AE is separate direct0077F090."
+    }
+  ],
+  "native_call_rows": [],
+  "native_call_verification": {
+    "leaf_direct_calls": 0,
+    "leaf_indirect_calls": 0,
+    "expected_rows": 0,
+    "status": "PASS: focused existing verifier checked0 rows/0 failed; complete leaf contains0 CALL instructions"
+  },
+  "fixture": {
+    "family": "one connected guarded actual squadron/count/member/C4 Source-shaped storage family",
+    "checks": 61,
+    "failures": 0,
+    "fresh_tu_count": 4,
+    "fresh_tus": [
+      "src\\native_plane_squadron_kind.cpp",
+      "src\\native_plane_squadron_insert.cpp",
+      "src\\native_land_plane_leader.cpp",
+      "local\\cc11_plane_squadron_kind\\probe.cpp"
+    ],
+    "producer": "existing exact Source007ED0D0 once per fresh Source/Original setup",
+    "original_body": 44,
+    "original_changed_bytes": 0,
+    "original_relocations": 0,
+    "operation_bridges": 0,
+    "result": "full EAX0/1, RET4 stack equality, fixed/dynamic/miss/changed high-bit C4, complete producer/reader backing and guards",
+    "qualification": "Not native constructor/class table/initializer/world replay. Pure mapping and caller-owned live cells are Source setup instrumentation. No game or private-EH/fault/concurrency admission."
+  },
+  "compiler": {
+    "architecture": "MSVC Win32 Hostx86/x86",
+    "options": "/std:c++17 /EHsc /permissive- /W4 /WX /fp:strict /O2 /MD /Gy /showIncludes",
+    "link_options": "/MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT",
+    "actual_tools": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe"
+    ],
+    "fresh_strict_compile": "PASS",
+    "compiler_include_paths": 246,
+    "project_headers": 28,
+    "unchanged_pre_post_inputs": 259,
+    "bsp_support_libraries": [],
+    "actual_searched_CRT_system_libraries": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+    ],
+    "all_searched_libraries_pinned_pre_post": true
+  },
+  "embedded_manifest": {
+    "PE32_I386": true,
+    "asInvoker": true,
+    "resource_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+    "path": "local\\cc11_plane_squadron_kind\\embedded_manifest.xml"
+  },
+  "artifacts": {
+    "recipe": "local\\cc11_plane_squadron_kind\\build.cmd",
+    "fixture_source": "local\\cc11_plane_squadron_kind\\probe.cpp",
+    "manifest": "local\\cc11_plane_squadron_kind\\manifest.json",
+    "manifest_sha256": "926077c1d206fc77fcb57b9d3e47a89363fc9a665cf499c1f43fe3993d0d52fe",
+    "native_live": "local\\cc11_plane_squadron_kind\\native_live.json",
+    "native_live_sha256": "b55dd971b774cc2bedb158be566399605871709bc002ff82fa67913a03495235",
+    "coff": "local\\cc11_plane_squadron_kind\\kind_coff.txt",
+    "run": "local\\cc11_plane_squadron_kind\\run.txt",
+    "executable": "local\\cc11_plane_squadron_kind\\probe.exe",
+    "executable_sha256": "95fa33b5c24ce0a1f4d815f595db0a254183a0e875bccd409fdeb52a26a96067"
+  },
+  "prior_sealed_audit": {
+    "path": "local/cc11_land_squadron_kind_init_audit.json",
+    "sha256": "6c6edc1446caa22f60f9d6fb9591a242193612cafb541dd4ff3eb8889344352d",
+    "lease": "released before new packet claim"
+  },
+  "unfinished_initializer": {
+    "start": "007f4ba0",
+    "end_exclusive": "007f5450",
+    "bytes": 2224,
+    "instructions": 606,
+    "sha256": "7d68a6ccd658f7ff25214535c1040a70a1d725459ebd587db9b0a748a1f5bf6f",
+    "direct_call_sites": 61,
+    "unique_direct_targets": 37,
+    "indirect_call_sites": 13,
+    "qualification": "Whole actual0077FAD0 base-init, Lua/property/registry/globals, plane+170 embedded controller, observer lifetimes, station/air-ops, allocation, pose/matrix and numeric/current-world services remain required. Raw reindex/observer providers close only individual natural callees; no opaque phases or partial whole-init substitute."
+  },
+  "limits": {
+    "raw_entry_protocol_reproduced": true,
+    "original_class_abi_bound": false,
+    "constructor_bound": false,
+    "virtual_routing_bound": false,
+    "init_all_adopter_added": false,
+    "private_EH_bound": false,
+    "lifetime_arena_world_bound": false,
+    "game_validated": false,
+    "full_build": "root-owned, worker did not run",
+    "tracked_tests_added": 0,
+    "old_families_executed": false,
+    "ghidra_mutations": false
+  },
+  "execution_notes": [
+    "Initial exact-LIB environment parser error occurred before object build/execution; corrected and repinned.",
+    "Final fresh strict four-TU build and one family execution PASS; no earlier sealed family replay."
+  ],
+  "validation": {
+    "git_diff_check": "PASS on owned staged files",
+    "native_call_verifier": "0 call rows checked,0 failed",
+    "full_body_PE_live": "5 spans MATCH",
+    "focused_fixture": "61 checks,0 failures",
+    "COFF": "44 bytes equal Original;15 instructions;0 relocations",
+    "full_build": "root-owned/pending"
+  }
+}
