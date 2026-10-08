@@ -183,3 +183,9 @@ receipt. Neither is a fresh build for this packet or a reconstructed
 consumed-input preimage. No C++ changes, build, tests, API/Original execution,
 Ghidra mutation, final executable linkage, whole-class ABI or gameplay
 validation occurred. Source and ready-packet counts remain zero.
+
+## Independent primary acceptance
+
+The integrator rehashed all 2,517 artifacts, verified all 2,518 ZIP entries and CRCs, and matched the current twelve whole objects across all 751 selected complete extents and ordered relocations, including explicit compiler-name bijections. The nine Core objects each have one exact current archive member. Both complete Native spans still match the installed executable: factory 131 bytes/40 instructions and derived constructor 99 bytes/17.
+
+The current descriptor callback is 49 bytes/21 instructions and the instance callback 40 bytes/12; each calls only the unimplemented logger. This confirms the missing descriptor/unit allocation, full construction, single publication identity and matching destruction domain. The next construction/lifetime frontier is recorded separately, not represented as implemented here. Primary receipt: `local/cc12_native_unit_factory_readiness_primary_review/receipt.json`, SHA-256 `ce948773e51168224fc33aee63649920cce85c49db2beb81fb591b277e06ac57`. Retained driver failures concern an omitted parser import and the evidence binary field path, without Source changes, a new build or execution. Source additions, implementation credit and ready unit wiring remain zero; no original class/ABI, startup or gameplay claim.
