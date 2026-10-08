@@ -35453,8 +35453,8 @@
     },
     {
       "id": "cc12_native_reference_payload_copy",
-      "done": false,
-      "state": "ready Root repaired and independently reviewed whole55B22 qualified reference payload copy",
+      "done": true,
+      "state": "complete qualified whole55B22 rawreference copy; independent4TU/7entries/38codegates/currentMainWin32/all3checksPASS",
       "function_addresses": [
         "008f0340"
       ],
@@ -35489,6 +35489,159 @@
         ],
         "Source_admission_credit": 0,
         "registration_owner": "Root"
+      },
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 1,
+        "worker_commit": "ef5272ca7d1e082aacdbfb0efb51ee1fe1ed82ad",
+        "independent_family": "local/ref55p3",
+        "independent_seal_sha256": "0bc3f0ed3f0ae93a20d1ab519491103e18e6d930013b1069f96bf5042f4d75be",
+        "independent_inventory_artifacts": 100,
+        "independent_actual_files": 101,
+        "prior_artifacts_preserved": 18016,
+        "fresh_translation_units": 4,
+        "consumed_headers": 185,
+        "consumed_libraries": 7,
+        "BSP_archives_consumed": 0,
+        "old_objects_consumed": 0,
+        "accepted_processes": 1,
+        "target_entries": 7,
+        "actual_old_setup_duplicates": 4,
+        "actual_inside_old_frees": 4,
+        "actual_new_copies": 3,
+        "actual_caller_result_frees": 3,
+        "complete_code_spans": 38,
+        "native_bytes": 55,
+        "native_instructions": 22,
+        "qualified_CALL_operand_bytes": 8,
+        "literal_bytes": 47,
+        "independently_decoded": [
+          {
+            "case": 0,
+            "phase": 0,
+            "had_old": false,
+            "nonnull": false,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 0,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 1,
+            "phase": 0,
+            "had_old": true,
+            "nonnull": false,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 0,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 2,
+            "phase": 0,
+            "had_old": true,
+            "nonnull": true,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 9,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 3,
+            "phase": 1,
+            "had_old": false,
+            "nonnull": false,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 0,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 4,
+            "phase": 1,
+            "had_old": true,
+            "nonnull": false,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 0,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 5,
+            "phase": 1,
+            "had_old": true,
+            "nonnull": true,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 9,
+            "raw_capture80_words_independently_verified": true,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": true,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          },
+          {
+            "case": 6,
+            "phase": 2,
+            "had_old": false,
+            "nonnull": true,
+            "complete_before_and_after_destination48_and_Source48_verified": true,
+            "full_new_NUL_copy_bytes": 9,
+            "raw_capture80_words_independently_verified": false,
+            "EAX_actual_child_and_RET4_GPR_defined_flags_DF0_verified": false,
+            "old_address_reuse_allowed": true,
+            "freed_old_bytes_never_required": true
+          }
+        ],
+        "independently_verified_providers": [
+          {
+            "name": "malloc",
+            "IAT_export_NTpaths_fileID_fullSHA_I386_ASLR_prefix32_verified": true
+          },
+          {
+            "name": "free",
+            "IAT_export_NTpaths_fileID_fullSHA_I386_ASLR_prefix32_verified": true
+          },
+          {
+            "name": "_callnewh",
+            "IAT_export_NTpaths_fileID_fullSHA_I386_ASLR_prefix32_verified": true
+          },
+          {
+            "name": "memcpy",
+            "IAT_export_NTpaths_fileID_fullSHA_I386_ASLR_prefix32_verified": true
+          }
+        ],
+        "full_main_build": {
+          "context": {
+            "source_revision": "af102e64be550396831de62829e153b5cf923d5b",
+            "CMake": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+              "size": 197790,
+              "sha256": "87548c79c0f750c6297963cead5c0a53ad01ebcad79a8e4de90f5fe17116c332"
+            },
+            "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_payload_copy_after_concurrent_main_build.log"
+          },
+          "log_sha256": "0ffa52d7e63ae5f798740e0f82696ff82377caef802639fa4a8089b95f379373",
+          "checks": "3/3 PASS"
+        },
+        "failed_primary_generation_families": [
+          "local/ref55p1",
+          "local/ref55p2"
+        ],
+        "failed_generators_compilers_objects_processes_targets": 0,
+        "old_accepted_processes_replayed": 0,
+        "native_class_ABI_admitted": false,
+        "original_private_CRT_EH_admitted": false,
+        "game_validated": false,
+        "qualification": "Whole [008F0340,008F0377)55B22 raw8-byte reference-payload copy. All47 nonCALLoperandbytes literal; operands[23,27)actualmatchingcanonicalfree/[40,44)admittedphysicalfastcallduplicate57 bound identically in Source/qualifiedOriginal55RX. ECXactualdest8/unusedEDX/oneactualSource8stackDWORD/RET4; snapshottext4/scalar0 before optionalactualoldownedcopyfree+clear4; writeSourceword0 andactualnewcopy4. EAXactualcopyorNULL, notroot. Source/dest/text/frame/oldallocation disjoint, borrowedtextoldalias/selfaliasUAF excluded; old+4 NULL orsoleownedcurrentdupe only. Root onefresh4TU7entryprocess/4realoldsetupdupes andinsidefrees/3newcopies andcallerfrees PASS; all6capture80 words/7completebefore-afterdestination48 andSource48/full3new9B NUL copies independently decoded. Fixture observedbothborrowedtext48 guardimages whilelive via mechanicallygatedobserve helper; those96inputguardbytes not separatelyserialized. NULL XORmask8C5 AFundefinedexcluded, ECX0; EDXseedONLYoldnull/newnull, oldfreeEDXvolatile. Nonnull flags8D5 all6 derivednestedADDactualfirstargT-48+16; actualRET4 ESP T+4/nonvol/DF0, noFP/ES blanket. Realallocatorreusedoldaddressesallowed/nofreedoldread. Full38 codegates includingmain5279B1295,raw140B52,ordinary18B5,cookie14B4/externalfailuretailJMP,chkstk43B19; actualUCRTheap anddistinctVCRTcopy IAT/export/MEM_IMAGE/I386/NTpath/fileID/fullSHA/ASLRcorrect32prefix before0setup/entries andafter PASS. Exact100listed+seal101/18016priorpins stable; Source/mainbuildcontextaf102e64b/currentcombinedWin32/all3checksPASS. Two stoppedRootgenerationfamilies retained0compiler/0object/0process/0target, newfreshp3; failedmanualoffsetmaskmetadataassertretained correctedofflinebeforetarget, noacceptedphase/object/helper/process replay. No originalprivateheap/CRT/EH/failure/class/owner/destructor/wholecaller/World/gameABI/gameplay admission."
       }
     },
     {
