@@ -84,7 +84,7 @@ separate requirements, not consequences of a successful raw store.
 | `0070EF85` | `0070ED30` | ECX=group; stacked current join index | Semantic slot producer exists; actual whole producer unbound |
 | `0070EF95` | `00694A60` | ECX=actual entity; EDX=actual group | Existing concrete observer registration; borrowed actual endpoint/lifetime services required |
 | `0070EF9C` | `0070DA00` | ECX=actual group; no stacked input | Previous whole-body audit remains unready |
-| `0070EFAA` | `00694AF0` | ECX=actual entity; EDX=actual group; consume AL | Named locked query; no complete current Source wrapper found; native body not expanded |
+| `0070EFAA` | `00694AF0` | ECX=actual entity; EDX=actual group; consume AL | Complete current actual-storage Source query exists; explicit lifetime/C++ ABI remains qualified; see CC12_GROUP_MEMBERSHIP_PRODUCER_READINESS.md |
 | `0070EFB7` | `00694A60` | Same actual endpoint identities | Registration occurs only after the duplicate query returns AL=0 |
 
 All five sites are inside the live `0070EF30..0070EFC0` body, independently of
@@ -165,3 +165,7 @@ Validation is complete-body static/export/PE and current-Source inspection,
 plus the call-row verifier. Existing build/fixture claims are not new test
 results. Native execution, original object ABI/lifetime, world and gameplay
 remain unvalidated by this packet.
+
+## Current dependency correction
+
+At main `ca22b90d3`, `observer_pair_registered_00694af0` in `src/observer_edges.cpp` is complete under its explicit lifetime/lock contract. The earlier missing-wrapper claim is superseded; it still is not an original register-ABI replacement. The complete producer and actual caller now have bounded native evidence in [CC12_GROUP_MEMBERSHIP_PRODUCER_READINESS.md](CC12_GROUP_MEMBERSHIP_PRODUCER_READINESS.md), with Source/header hashes and remaining prerequisites. Older sealed audit receipts and worktree artifacts remain unchanged.
