@@ -27365,6 +27365,139 @@
         },
         "profile_notes": "All five +5C DATA cells validated; CE8BD0/CE8D68 labels SimpleEffect/PeriodicEffect are descriptive corpus lineage, not constructor/object-life proof. Native class methods and namespace admission remain separate."
       }
+    },
+    {
+      "id": "cc11_property_tree_library_storage",
+      "worker": "enum_registry_scalar",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f5670"
+      ],
+      "output_files": [
+        "include/bsp/native_property_tree_library_storage.hpp",
+        "src/native_property_tree_library_storage.cpp",
+        "docs/NATIVE_PROPERTY_TREE_LIBRARY_STORAGE_CC11.md",
+        "reports/native_property_tree_library_storage_cc11.json"
+      ],
+      "depends_on": [],
+      "done": false,
+      "state": "ready independently audited complete raw39B12 constructor on fresh genuine 10C storage",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_enum_storage_008f5670_audit\\proposal.json",
+      "audit_receipt_sha256": "4060d661dca783f8ffd3b53280cc384b0fe102848fb5d6108d71703ce6ff4ffc",
+      "contract": {
+        "whole_constructor": {
+          "entry": "008F5670",
+          "inclusive_end": "008F5696",
+          "exclusive_end": "008F5697",
+          "bytes": 39,
+          "role": "whole constructor",
+          "sha256": "486d83626dc3930fe1a30a4613d80b8a3ff0ea9cb407046b2ea0b4d64beeb2b5",
+          "live_PE_equal": true,
+          "decoded_instructions": 12,
+          "disassembly": [
+            {
+              "address": "008F5670",
+              "bytes": "8bd1",
+              "instruction": "mov edx, ecx"
+            },
+            {
+              "address": "008F5672",
+              "bytes": "57",
+              "instruction": "push edi"
+            },
+            {
+              "address": "008F5673",
+              "bytes": "c7020c65d100",
+              "instruction": "mov dword ptr [edx], 0xd1650c"
+            },
+            {
+              "address": "008F5679",
+              "bytes": "33c0",
+              "instruction": "xor eax, eax"
+            },
+            {
+              "address": "008F567B",
+              "bytes": "8d7a0c",
+              "instruction": "lea edi, [edx + 0xc]"
+            },
+            {
+              "address": "008F567E",
+              "bytes": "b940000000",
+              "instruction": "mov ecx, 0x40"
+            },
+            {
+              "address": "008F5683",
+              "bytes": "c74204c862d100",
+              "instruction": "mov dword ptr [edx + 4], 0xd162c8"
+            },
+            {
+              "address": "008F568A",
+              "bytes": "c7420800000000",
+              "instruction": "mov dword ptr [edx + 8], 0"
+            },
+            {
+              "address": "008F5691",
+              "bytes": "f3ab",
+              "instruction": "rep stosd dword ptr es:[edi], eax"
+            },
+            {
+              "address": "008F5693",
+              "bytes": "8bc2",
+              "instruction": "mov eax, edx"
+            },
+            {
+              "address": "008F5695",
+              "bytes": "5f",
+              "instruction": "pop edi"
+            },
+            {
+              "address": "008F5696",
+              "bytes": "c3",
+              "instruction": "ret"
+            }
+          ]
+        },
+        "layout": {
+          "root_bytes": 268,
+          "root_hex": "0x10C",
+          "outer_profile_offset": 0,
+          "interior_map_offset": 4,
+          "interior_map_bytes": 264,
+          "interior_map_hex": "0x108",
+          "map_profile_offset": 4,
+          "count_offset": 8,
+          "heads_first": 12,
+          "heads_last": 264,
+          "heads_count": 64
+        },
+        "ABI": "ECX input copied to EDX; preserveEDI; write actualouter/interior phase words; countzero; REPSTOSD64heads underDF0; fullEAX returns exact input; plainRET, zeroCALL/alloc/free. No introduced policy or current map/pool assumptions.",
+        "allocation_lineage": {
+          "parent": "004D3040",
+          "root_size_push": "004D308F",
+          "operator_new_call": "004D309A",
+          "native_allocator": "00BF681B",
+          "ECX_from_same_EAX": "004D30B1",
+          "constructor_call": "004D30B3",
+          "global_publication": "004D30CB -> E18678",
+          "loader_call": "004D30D0 -> 008F7100",
+          "qualification": "Actual second10C allocation, distinct from firstenum10C allocation at4D305B/oldfragment4D3069. Parentfactory not Source-closed by constructor readiness."
+        },
+        "Source_admission": "New exact raw MSVCWin32 __fastcall naked initializer may use genuine current singleton_lifetime_allocate({object,0x10c,0x10c}); actualfresh/unownedstorage and explicitempty-root currentfree after allchecks. No constructor calls require a fake provider. Profiles are raw phase data; native deleting/global/loader/class dispatch stays unbound.",
+        "one_connected_family": {
+          "TUs": [
+            "src/native_property_tree_library_storage.cpp",
+            "src/singleton_lifetime.cpp",
+            "local/<unique_registered_family>/probe.cpp"
+          ],
+          "production_TUs": 2,
+          "fixture_TUs": 1,
+          "actual_storage": "Two fresh separately allocated currentCRT10C roots using current allocation provider matching actual native size. Whole Source/native39 unchangedRX on same actualroot from samepoison; full268fields/EAX/EDI/ESP/DF0 and otherlive-root guards; nativefixedphaseword data pinned. All live checks precede explicitcurrentfree; no 108map allocation/free.",
+          "providers": "Current actual allocation/free only; linked fresh singleton TU plus frozen actualcurrent Core/Lua/zlib and observed syslibs if required for that TU. No property node/pool/payload/clear provider needed by noCALL fresh-storage constructor.",
+          "evidence_required": "Before/after actualsources/headers/toolbackends/libs, wholeCOFF/linkedzeroRelocbyteidentity, actualcaller/allocrows, manifested Win32 exe. Root review/register must precede implementation or execution."
+        },
+        "limits": "Distinct from CE7514 map/CE78BC outer registry and prior inline fragment. Only this whole no-CALL constructor is ready; 8F6790, 8F56A0 and 8F4C50 lifetime contracts remain unready. Current allocation/free with explicit empty-root release; no substituted map phases, fake lifetime callbacks, parentfactory, native class, historical heap, world or game closure. Four new files; one fresh three-TU family; Root shared integration/build/annotations. Worker Ghidra read-only, no shared metadata or tracked tests; freeze actual current support archives before a Root rebuild and preserve all historical families."
+      }
     }
   ],
   "snapshot_after_analysis": {
