@@ -277,6 +277,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_prope
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_bag_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_parent_list_header_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_parent_header_clear.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_parent_header_destructor_callback.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type0_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type1_float_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_record_type2_string_storage.cpp)
