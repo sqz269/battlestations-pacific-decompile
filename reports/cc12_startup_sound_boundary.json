@@ -1,460 +1,1576 @@
 {
   "packet": "cc12_startup_sound_boundary",
-  "utc": "2026-10-08T06:51:02.328373+00:00",
-  "status": "Read-only bounded diagnosis complete: current child access violation confirmed; failing call not localized by available log; ordered pre-sound boundaries and static DLL/export prerequisites recorded",
+  "utc": "2026-10-08T07:08:40.734658+00:00",
+  "status": "Localized installed game-local XLive PROCESS_ATTACH fixed-RVA write AV; existing genuine Microsoft SDK plus matching legacy dependency route passes sound and bounded three-frame startup on unchanged Source; gameplay remains unvalidated",
+  "owned_tracked_files": [
+    "docs/CC12_STARTUP_SOUND_BOUNDARY.md",
+    "reports/cc12_startup_sound_boundary.json"
+  ],
   "scope": {
-    "owned_tracked_files": [
-      "docs/CC12_STARTUP_SOUND_BOUNDARY.md",
-      "reports/cc12_startup_sound_boundary.json"
-    ],
-    "Source_edits": false,
-    "Ghidra_queries": false,
+    "worker_Source_or_configuration_changes": false,
+    "worker_game_process_launches": 0,
+    "live_Ghidra_queries": false,
     "Ghidra_mutations": false,
-    "native_body_expansions": false,
-    "game_processes_launched_by_worker": 0,
-    "audio_or_settings_changes": false,
-    "new_build_or_tests": false
-  },
-  "baselines": {
-    "worker_revision": "a8895ad237fd9d19c1c06c5ff4f668ed659df069",
-    "integrator_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
-    "main_merged": "7ed2ec2002f64d7d90026224e92cbff594c3747f",
-    "inspected_chain_source_headers": 21,
-    "all_inspected_files_equal_integrator": true
-  },
-  "runtime_observation": {
-    "owner": "Primary integrator; worker consumed captured evidence only",
-    "capture_file": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_startup_exit_capture.json",
-    "capture_sha256": "479d571a0b085df5b827870c512f777c6e519b8f868c7b9f3db685d028cedeb8",
-    "paired_log": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_startup_captured.log",
-    "log_sha256": "7e04c51119f827e49305ed2c4790e42ef274d5841b420d10da7a5105bc1da93a",
-    "command": [
-      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
-      "--frames",
-      "3",
-      "--log",
-      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log",
-      "--game-root",
-      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
-      "--settings-personal-root",
-      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
-      "--window-monitor",
-      "smallest",
-      "--window-resolution",
-      "960x540",
-      "--present-interval",
-      "immediate",
-      "--screenshot",
-      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.png",
-      "--screenshot-frame",
-      "1"
+    "game_native_body_expansions": false,
+    "DLL_PE_regions_examined": [
+      "xlive+16B768 base capture",
+      "xlive+18C242 fixed five-NOP patch",
+      "xlive+31903B copy fault region"
     ],
-    "returncode": 3221225477,
-    "returncode_hex": "0xc0000005",
-    "classification": "Access violation, not successful startup",
-    "elapsed_seconds": 0.3433566093444824,
-    "stdout": "",
-    "stderr": "",
-    "last_completed_stage": "Settings summary after Phase5 load_game_settings",
-    "sound_complete_marker_present": false,
-    "run_summary_present": false,
-    "no_screenshot_or_live_process": "Reported by primary; worker did not launch or attach a process.",
-    "superseded_evidence": "Earlier GUI PowerShell shell0 did not reliably report child exit; replaced by captured 0xC0000005."
+    "original_game_target_bytes_examined": 5,
+    "original_installation_or_Windows_files_changed_by_worker": false,
+    "build_or_tests_run_by_worker": false,
+    "primary_runtime_captures_consumed": true
   },
-  "static_bound": {
-    "start": "After settings summary at src/game_hosts.cpp:1984-1988",
-    "end": "Before Phase5 sound_system_initialize at src/game_hosts.cpp:2004",
-    "includes": "Math binding, SoundServices construction, startup including actual manager/clock operations, first and subsequent FMOD calls, resource/Lua startup.",
-    "actual_fault_module_or_function": "Unknown from these artifacts",
-    "earliest_explicit_foreign_loader": "XLiveLibrary::Impl LoadLibraryExW inside SoundServices construction, before fmodex load and before core.startup",
-    "first_FMOD_SDK_call": "_FMOD_EventSystem_Create@4, after actual owner registration, raw lifetime reorder and clock copy"
-  },
-  "ordered_boundaries": [
-    {
-      "order": 1,
-      "source": "src/game_hosts.cpp:1990",
-      "boundary": "bind_legacy_crt_math_runtime(application_math_runtime)",
-      "evidence": "Process-lifetime global word and current &_errno supplied; no missing binding in inspected Source."
-    },
-    {
-      "order": 2,
-      "source": "src/game_hosts.cpp:1339",
-      "boundary": "SoundServices constructor: XLiveLibrary::Impl LoadLibraryExW",
-      "evidence": "XLive member precedes core sound; constructor reads existing settings publication first. Earliest explicit foreign loader after last logged settings record."
-    },
-    {
-      "order": 3,
-      "source": "src/game_sound_runtime.cpp:61",
-      "boundary": "GameSoundRuntime::Impl and FmodConfigurationLibrary::Impl load fmodex.dll",
-      "evidence": "Source owner/state created, FMOD core loaded, real resource/clock/file/Lua contexts constructed; Event library not yet loaded by this provider."
-    },
-    {
-      "order": 4,
-      "source": "src/game_hosts.cpp:1355",
-      "boundary": "Dialog attach; profile SDK bind; singleton sound-runtime bind",
-      "evidence": "Completes SoundServices aggregate before core.startup."
-    },
-    {
-      "order": 5,
-      "source": "src/game_sound_runtime.cpp:307",
-      "boundary": "GameSoundRuntime::startup and bind_files",
-      "evidence": "One-shot and sole callback ownership checks; then construct_sound_system_00a88770."
-    },
-    {
-      "order": 6,
-      "source": "src/sound_startup.cpp:28",
-      "boundary": "Actual sound and auxiliary owner registrations; raw manager reorder; current clock copy",
-      "evidence": "All occur before initialize_sound_library. Raw manager slots at +4/+8/+C require valid objects and anchor; actual clock publication must remain live."
-    },
-    {
-      "order": 7,
-      "source": "src/fmod_configuration_library.cpp:90",
-      "boundary": "event_system_create -> lazy event_library -> _FMOD_EventSystem_Create@4",
-      "evidence": "First FMOD SDK call in core startup; actual event output pointer."
-    },
-    {
-      "order": 8,
-      "source": "src/audio_online_startup.cpp:193",
-      "boundary": "Remaining Event/System initialization",
-      "evidence": "Get System; enabled driver scan; speaker mode; Event init; file hooks; 3D settings; output queries. Only memory result0x2B gets the native checkpoint."
-    },
-    {
-      "order": 9,
-      "source": "src/sound_startup.cpp:40",
-      "boundary": "Resource owner creation and sound Lua configuration",
-      "evidence": "Required real VFS/Lua/resource work also occurs before the sound-complete marker."
-    }
-  ],
-  "DLL_path_provenance": {
-    "source": "game_main sets current directory to --game-root; selected_library_path turns missing override into absolute current-directory DLL path",
-    "captured_overrides": "No FMOD, FMOD Event or XLive override in captured arguments",
-    "requested_directory": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
-    "actual_loaded_module_list_available": false,
-    "qualification": "Requested static paths and file identities only; successful DLL load and runtime module path not yet established."
-  },
-  "installed_DLLs": [
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
-      "size": 350544,
-      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
-      "machine": "0x14c",
-      "imports": [
-        "KERNEL32.DLL",
-        "ADVAPI32.dll",
-        "MSACM32.dll",
-        "MSVCRT.dll",
-        "ole32.dll",
-        "USER32.dll",
-        "WINMM.dll",
-        "WSOCK32.dll"
-      ],
-      "startup_exports": {
-        "FMOD_System_Create": "0x5dc8b",
-        "FMOD_System_GetVersion": "0x5e8ed",
-        "FMOD_System_SetOutput": "0x5dd84",
-        "FMOD_System_Init": "0x5e537",
-        "FMOD_System_SetFileSystem": "0x5e109"
-      }
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
-      "size": 238936,
-      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
-      "machine": "0x14c",
-      "imports": [
-        "WINMM.dll",
-        "fmodex.dll",
-        "MSVCRT.dll",
-        "KERNEL32.dll"
-      ],
-      "startup_exports": {
-        "_FMOD_EventSystem_Create@4": "0x96a0",
-        "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
-        "_FMOD_EventSystem_Init@20": "0x96c0"
-      }
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
-      "size": 3833856,
-      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
-      "machine": "0x14c",
-      "imports": [
-        "IPHLPAPI.DLL",
-        "KERNEL32.dll",
-        "USER32.dll",
-        "GDI32.dll",
-        "SHELL32.dll",
-        "WS2_32.dll"
-      ],
-      "startup_exports": {}
-    }
-  ],
-  "startup_export_checks": [
-    {
-      "dll": "fmodex.dll",
-      "file_version": "0.4.18.4",
-      "required_exports": {
-        "FMOD_System_GetNumDrivers": "0x5ddfa",
-        "FMOD_System_GetDriverCaps": "0x5de7b",
-        "FMOD_System_SetSpeakerMode": "0x5e20e",
-        "FMOD_System_SetOutput": "0x5dd84",
-        "FMOD_System_SetFileSystem": "0x5e109",
-        "FMOD_System_Set3DSettings": "0x5e5e8",
-        "FMOD_System_GetDriver": "0x5deff",
-        "FMOD_System_GetOutput": "0x5ddbf",
-        "FMOD_System_GetSpeakerMode": "0x5e249",
-        "FMOD_Memory_GetStats": "0x5dc25"
-      },
-      "missing": []
-    },
-    {
-      "dll": "fmod_event.dll",
-      "file_version": "0.4.18.4",
-      "required_exports": {
-        "_FMOD_EventSystem_Create@4": "0x96a0",
-        "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
-        "_FMOD_EventSystem_Init@20": "0x96c0"
-      },
-      "missing": []
-    }
-  ],
-  "ABI_and_CRT": {
-    "FMOD_C_binding": "Current Function is uint32_t (__stdcall*)(Args...); stack-sized scalar/pointer inputs used for startup; no original game address invoked.",
-    "event_decorated_bytes": [
-      4,
-      8,
-      20
-    ],
-    "decorated_names_match_current_argument_sizes": true,
-    "static_export_presence_only": true,
-    "required_early_exports_checked": 13,
-    "missing_early_exports": 0,
-    "file_callback_binding": "Actual reconstructed open/close/read/seek pointers with stdcall ABI; original image integers are provenance only.",
-    "journal_order": "Result appended only after foreign call returns; access violation in a load/call can leave no call row.",
-    "legacy_math": "Process-lifetime bypass globals, current &_errno, legacy_crt_87except_00c27489; core checks required CRT pointers.",
-    "live_validity_limit": "Static binding presence is not a proof of valid live manager/clock/state/output memory.",
-    "legacy_math_prior_binding": "Same bind call at src/game_hosts.cpp:1885 precedes successfully logged renderer/settings work; later1990 call repeats same process-lifetime binding."
-  },
-  "known_data_prerequisites": [
-    "SoundServices existing settings process and profile SDK lifetime",
-    "Actual shared singleton manager section and begin/end/capacity; both sound/aux registrations must exist for raw reorder",
-    "Actual current frame-clock publication supplies sixteen bytes before FMOD initialization",
-    "Single bound live file/VFS/string context; installed DLL and callback functions remain alive through callbacks and release",
-    "Actual event/system output handles and later resource/Lua configuration must be valid"
-  ],
-  "historical_comparison": {
-    "document": "docs/AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
-    "same_FMOD_hashes_confirmed": true,
-    "historical_failures": "EventSystem Init61 and downstream CreateSound78/GetLength37; later finite application success",
-    "not_a_current_diagnosis": "Current process exits0xC0000005 and captures no FMOD result. Historical output-init failure or environmental recovery cannot be assigned as current cause."
-  },
-  "actionable_next_check": {
-    "owner": "Primary integrator debugger investigation",
-    "capture": [
-      "First access-violation exception address and read/write target",
-      "Loaded module path/base at fault",
-      "Registers and call stack",
-      "Reached boundary among SoundServices construction, core.startup, raw manager reorder, first EventSystem call"
-    ],
-    "preserve": "Current installed libraries and audio/options values",
-    "then": "Inspect immediate failing call inputs and predecessor using the actual fault location before selecting a Source fix."
-  },
-  "evidence_archive": {
-    "directory": "local\\cc12_startup_sound_boundary_evidence_20261008",
-    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership",
-    "files": 29,
-    "manifest_sha256": "ee6ac2c38c44133146a8b1d595b9e62fa67618a1a6084229c327776b8ace0e2d",
-    "files_and_source_fingerprints": [
+  "tested_Source": {
+    "revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+    "tracked_dirty_paths_at_seal": [],
+    "inspected_source_header_count": 21,
+    "inspected_files_byte_equal_worker_and_primary": true,
+    "source_fingerprints": [
       {
         "path": "source\\src\\game_hosts.cpp",
         "bytes": 120415,
         "sha256": "f23560ddde033d7f1a45417386db190820f80b7e5c2ffed71db165fc0cc5736d",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_hosts.cpp"
       },
       {
         "path": "source\\src\\game_sound_runtime.cpp",
         "bytes": 20078,
         "sha256": "9999a87458b0c069d12bbe1b6be6c8154db00949654b3a05dd2c3b930b2fd3d1",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_runtime.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_sound_runtime.cpp"
       },
       {
         "path": "source\\src\\sound_startup.cpp",
         "bytes": 2169,
         "sha256": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_startup.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\sound_startup.cpp"
       },
       {
         "path": "source\\src\\audio_online_startup.cpp",
         "bytes": 17786,
         "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\audio_online_startup.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\audio_online_startup.cpp"
       },
       {
         "path": "source\\src\\fmod_configuration_library.cpp",
         "bytes": 24627,
         "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\fmod_configuration_library.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\fmod_configuration_library.cpp"
       },
       {
         "path": "source\\src\\sound_system_owner.cpp",
         "bytes": 7279,
         "sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_system_owner.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\sound_system_owner.cpp"
       },
       {
         "path": "source\\src\\sound_lifetime_access.cpp",
         "bytes": 2751,
         "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_lifetime_access.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\sound_lifetime_access.cpp"
       },
       {
         "path": "source\\src\\xlive_library.cpp",
         "bytes": 3507,
         "sha256": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_library.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\xlive_library.cpp"
       },
       {
         "path": "source\\src\\legacy_crt_math.cpp",
         "bytes": 11469,
         "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\legacy_crt_math.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\legacy_crt_math.cpp"
       },
       {
         "path": "source\\src\\game_main.cpp",
         "bytes": 38741,
         "sha256": "00ee848953c111de0c3ff5a99d38ccf112fd1b27f36502c16dfb73b73158b10d",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_main.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_main.cpp"
       },
       {
         "path": "source\\src\\native_online_signin.cpp",
         "bytes": 7621,
         "sha256": "e53a51625431b7fa4d4c11077bda2a64a64ee15a9f1bd9990fe94c21915dded7",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_signin.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\native_online_signin.cpp"
       },
       {
         "path": "source\\src\\native_xlive_device_adapter.cpp",
         "bytes": 1405,
         "sha256": "634eeb944ec1ef31db0364b8f564711071be93d9acc4dd6b45c7050f0074a703",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_xlive_device_adapter.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\native_xlive_device_adapter.cpp"
       },
       {
         "path": "source\\src\\game_platform_services.cpp",
         "bytes": 884,
         "sha256": "92a862731d37619415f071bfbce560fb99fdbaec2b08ffb73723873fa2ed0451",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_platform_services.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_platform_services.cpp"
       },
       {
         "path": "source\\src\\game_sound_platform.cpp",
         "bytes": 500,
         "sha256": "92a270092a02bb3c3c63df4a347db1905d3aef69ee8b9fe0880e4bf23aab8e83",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_platform.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_sound_platform.cpp"
       },
       {
         "path": "source\\src\\game_sound_dialog_runtime.cpp",
         "bytes": 10044,
         "sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_sound_dialog_runtime.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_sound_dialog_runtime.cpp"
       },
       {
         "path": "source\\src\\sound_resource_runtime.cpp",
         "bytes": 5587,
         "sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_resource_runtime.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\sound_resource_runtime.cpp"
       },
       {
         "path": "source\\src\\native_singleton_removal_reorder.cpp",
         "bytes": 7844,
         "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_singleton_removal_reorder.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\native_singleton_removal_reorder.cpp"
       },
       {
         "path": "source\\src\\sound_configuration.cpp",
         "bytes": 16866,
         "sha256": "5728388a223d9f39acd061117e5527f7e0fc564e8c3e0eeabad24cb1e9e10066",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\sound_configuration.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\sound_configuration.cpp"
       },
       {
         "path": "source\\src\\game_hosts_singletons.cpp",
         "bytes": 6608,
         "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_singletons.cpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\src\\game_hosts_singletons.cpp"
       },
       {
         "path": "source\\include\\bsp\\audio_online_startup.hpp",
         "bytes": 17176,
         "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\audio_online_startup.hpp"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\include\\bsp\\audio_online_startup.hpp"
       },
       {
         "path": "source\\include\\bsp\\sound_file_callbacks.hpp",
         "bytes": 4191,
         "sha256": "3e84235420f7af0e1974efef14d3316744280e7240a0ee5229ba97fb6ba71ce4",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\sound_file_callbacks.hpp"
-      },
-      {
-        "path": "cc12_startup_exit_capture.json",
-        "bytes": 939,
-        "sha256": "479d571a0b085df5b827870c512f777c6e519b8f868c7b9f3db685d028cedeb8",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_exit_capture.json"
-      },
-      {
-        "path": "cc12_startup_captured.log",
-        "bytes": 7108,
-        "sha256": "7e04c51119f827e49305ed2c4790e42ef274d5841b420d10da7a5105bc1da93a",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log"
-      },
-      {
-        "path": "cc12_startup_smoke.log",
-        "bytes": 7103,
-        "sha256": "5a96dc9af7c85cff55d49c57e0e00daab667b83f7c4ab4cd4cb6ae2a87dcf591",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_smoke.log"
-      },
-      {
-        "path": "cc12_startup_sound_dll_static.json",
-        "bytes": 1607,
-        "sha256": "a7425f81185f44d80dd31797a609d94b9ce9b26cd72e14b5222f04230851bbcc",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_dll_static.json"
-      },
-      {
-        "path": "cc12_startup_sound_exports.json",
-        "bytes": 859,
-        "sha256": "e3a1cb6cefd04d737c480309950d0799e5616f77f5ff50a0073fdcd9e137a209",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_exports.json"
-      },
-      {
-        "path": "cc12_startup_sound_source_pins.json",
-        "bytes": 2833,
-        "sha256": "62aadb719cc98cc07ea5ab7cf10a8de9e1b0926c6e33eb25b00490e367e9d81b",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_source_pins.json"
-      },
-      {
-        "path": "docs\\AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
-        "bytes": 5227,
-        "sha256": "31a630430e40a1bb77a154f6c1ad9c3013301510d20391777bd187f2f32d13f6",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\docs\\AUDIO_STARTUP_DIAGNOSTIC_CC10.md"
-      },
-      {
-        "path": "docs\\COMPLETE_SOUND_STARTUP.md",
-        "bytes": 6580,
-        "sha256": "ed1bc5b5055dd6eae7203408103f6f2ef43f127aa956f6644fe8c286382ed9b9",
-        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\docs\\COMPLETE_SOUND_STARTUP.md"
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_startup_sound_boundary_evidence_20261008\\source\\include\\bsp\\sound_file_callbacks.hpp"
       }
+    ],
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "bytes": 5042176,
+      "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a"
+    },
+    "worker_baseline": "a8895ad237fd9d19c1c06c5ff4f668ed659df069",
+    "main_merged_before_audit": "7ed2ec2002f64d7d90026224e92cbff594c3747f"
+  },
+  "original_failure": {
+    "capture": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "3",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "960x540",
+        "--present-interval",
+        "immediate",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.png",
+        "--screenshot-frame",
+        "1"
+      ],
+      "returncode": 3221225477,
+      "returncode_hex": "0xc0000005",
+      "elapsed_seconds": 0.3433566093444824,
+      "stdout": "",
+      "stderr": ""
+    },
+    "classification": "Real child access violation0xC0000005; earlier GUI shell0 superseded",
+    "last_stage": "Settings summary; no Phase5sound marker or run summary",
+    "preliminary_debugger_exception": "First debugger-only0xC0000008 InvalidHandle at NtClose while loading XLive is distinct from subsequently captured AV."
+  },
+  "localized_fault": {
+    "source_boundary": "XLiveLibrary::Impl LoadLibraryExW inside SoundServices construction, before core sound construction/startup",
+    "loaded_module_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/xlive.dll",
+    "module_base": "698A0000",
+    "module_end": "69D9E000",
+    "module_sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+    "exception_code": "C0000005",
+    "operation": "write",
+    "exception_address": "69BB9049",
+    "module_RVA": "00319049",
+    "instruction": "89 17 MOV DWORD PTR [EDI],EDX",
+    "registers": {
+      "EDI": "10640F5E",
+      "EDX": "90909090",
+      "ESI": "001ACF60",
+      "EAX": "00000005",
+      "ECX": "00000001"
+    },
+    "loader_reason": "1 PROCESS_ATTACH",
+    "Source_main_image": "10000000..104D8000",
+    "destination_outside_Source_image": true,
+    "FMOD_loaded_before_fault": false,
+    "game_sound_startup_reached": false,
+    "stack_qualification": "Debugger warns missing full unwind information; nearest exported-name label is not treated as actual faulting API. Instruction, registers, module bounds and PE-derived target independently establish the fixed-RVA write.",
+    "debug2_log": "local/cc12_startup_debug2.log",
+    "debug3_log": "local/cc12_startup_debug3.log",
+    "retained_dump": "local/cc12_startup_av3.dmp"
+  },
+  "fixed_RVA_patch_proof": {
+    "xlive_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+    "xlive_sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+    "raw_PE_disassembly_address_convention": "RVA and preferred-image absolute operands; loader relocates absolute references in the actual module.",
+    "module_base_import": {
+      "iat_preferred_VA": "104DD06C",
+      "DLL": "KERNEL32.dll",
+      "name": "GetModuleHandleA"
+    },
+    "base_capture_global_RVA": "004D8450",
+    "patch_length": 5,
+    "patch_data": "9090909090",
+    "fixed_patch_target_RVA": "00640F5E",
+    "regions": [
+      {
+        "name": "module_base_capture",
+        "rva": "0016B768",
+        "bytes": "8bf46a00ff156cd04d103bf4e82585feff99a350844d10891554844d10",
+        "sha256": "d68f9a04e16a825446774551dd3f9f7937a573d5e8fed6ab1bb4af9cd8e4523e",
+        "instructions": [
+          {
+            "rva": "0016B768",
+            "bytes": "8bf4",
+            "op": "mov esi, esp"
+          },
+          {
+            "rva": "0016B76A",
+            "bytes": "6a00",
+            "op": "push 0"
+          },
+          {
+            "rva": "0016B76C",
+            "bytes": "ff156cd04d10",
+            "op": "call dword ptr [0x104dd06c]"
+          },
+          {
+            "rva": "0016B772",
+            "bytes": "3bf4",
+            "op": "cmp esi, esp"
+          },
+          {
+            "rva": "0016B774",
+            "bytes": "e82585feff",
+            "op": "call 0x10153c9e"
+          },
+          {
+            "rva": "0016B779",
+            "bytes": "99",
+            "op": "cdq "
+          },
+          {
+            "rva": "0016B77A",
+            "bytes": "a350844d10",
+            "op": "mov dword ptr [0x104d8450], eax"
+          },
+          {
+            "rva": "0016B77F",
+            "bytes": "891554844d10",
+            "op": "mov dword ptr [0x104d8454], edx"
+          }
+        ]
+      },
+      {
+        "name": "five_nop_patch",
+        "rva": "0018C242",
+        "bytes": "c645f090c645f190c645f290c645f390c645f490e84465fcff8945e46a058d45f0508b0d50844d1081c15e0f640051e85b8dfcff",
+        "sha256": "ffaa258203b4d3a7e673535fba80ec04fb38b520340e039b75fd9149fa60ac3a",
+        "instructions": [
+          {
+            "rva": "0018C242",
+            "bytes": "c645f090",
+            "op": "mov byte ptr [ebp - 0x10], 0x90"
+          },
+          {
+            "rva": "0018C246",
+            "bytes": "c645f190",
+            "op": "mov byte ptr [ebp - 0xf], 0x90"
+          },
+          {
+            "rva": "0018C24A",
+            "bytes": "c645f290",
+            "op": "mov byte ptr [ebp - 0xe], 0x90"
+          },
+          {
+            "rva": "0018C24E",
+            "bytes": "c645f390",
+            "op": "mov byte ptr [ebp - 0xd], 0x90"
+          },
+          {
+            "rva": "0018C252",
+            "bytes": "c645f490",
+            "op": "mov byte ptr [ebp - 0xc], 0x90"
+          },
+          {
+            "rva": "0018C256",
+            "bytes": "e84465fcff",
+            "op": "call 0x1015279f"
+          },
+          {
+            "rva": "0018C25B",
+            "bytes": "8945e4",
+            "op": "mov dword ptr [ebp - 0x1c], eax"
+          },
+          {
+            "rva": "0018C25E",
+            "bytes": "6a05",
+            "op": "push 5"
+          },
+          {
+            "rva": "0018C260",
+            "bytes": "8d45f0",
+            "op": "lea eax, [ebp - 0x10]"
+          },
+          {
+            "rva": "0018C263",
+            "bytes": "50",
+            "op": "push eax"
+          },
+          {
+            "rva": "0018C264",
+            "bytes": "8b0d50844d10",
+            "op": "mov ecx, dword ptr [0x104d8450]"
+          },
+          {
+            "rva": "0018C26A",
+            "bytes": "81c15e0f6400",
+            "op": "add ecx, 0x640f5e"
+          },
+          {
+            "rva": "0018C270",
+            "bytes": "51",
+            "op": "push ecx"
+          },
+          {
+            "rva": "0018C271",
+            "bytes": "e85b8dfcff",
+            "op": "call 0x10154fd1"
+          }
+        ]
+      },
+      {
+        "name": "copy_fault",
+        "rva": "0031903B",
+        "bytes": "83e11f74308bc1c1e902740f8b16891783c70483c60483e90175f1",
+        "sha256": "5b7a06b165b95cabfc00fcdbc11e355a3585208bbb5f12b58ac239c26f66e53d",
+        "instructions": [
+          {
+            "rva": "0031903B",
+            "bytes": "83e11f",
+            "op": "and ecx, 0x1f"
+          },
+          {
+            "rva": "0031903E",
+            "bytes": "7430",
+            "op": "je 0x10319070"
+          },
+          {
+            "rva": "00319040",
+            "bytes": "8bc1",
+            "op": "mov eax, ecx"
+          },
+          {
+            "rva": "00319042",
+            "bytes": "c1e902",
+            "op": "shr ecx, 2"
+          },
+          {
+            "rva": "00319045",
+            "bytes": "740f",
+            "op": "je 0x10319056"
+          },
+          {
+            "rva": "00319047",
+            "bytes": "8b16",
+            "op": "mov edx, dword ptr [esi]"
+          },
+          {
+            "rva": "00319049",
+            "bytes": "8917",
+            "op": "mov dword ptr [edi], edx"
+          },
+          {
+            "rva": "0031904B",
+            "bytes": "83c704",
+            "op": "add edi, 4"
+          },
+          {
+            "rva": "0031904E",
+            "bytes": "83c604",
+            "op": "add esi, 4"
+          },
+          {
+            "rva": "00319051",
+            "bytes": "83e901",
+            "op": "sub ecx, 1"
+          },
+          {
+            "rva": "00319054",
+            "bytes": "75f1",
+            "op": "jne 0x10319047"
+          }
+        ]
+      }
+    ],
+    "target_images": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5042176,
+        "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a",
+        "preferred_base": "10000000",
+        "size_of_image": "004D8000",
+        "target_RVA": "00640F5E",
+        "target_VA": "10640F5E",
+        "target_inside_image": false,
+        "target_section": null,
+        "target_bytes": null
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "preferred_base": "00400000",
+        "size_of_image": "00E2F000",
+        "target_RVA": "00640F5E",
+        "target_VA": "00A40F5E",
+        "target_inside_image": true,
+        "target_section": ".text",
+        "target_bytes": "e8edb20000"
+      }
+    ],
+    "runtime_match": {
+      "xlive_base": "698A0000",
+      "fault_EIP": "69BB9049",
+      "fault_RVA": "00319049",
+      "instruction_hex": "8917",
+      "EDI": "10640F5E",
+      "EDX": "90909090",
+      "source_executable_base": "10000000",
+      "source_executable_end": "104D8000",
+      "operation": "write",
+      "proof": "runtime destination equals main executable base plus DLL literal RVA; destination outside actual main image; copy source starts five NOP bytes"
+    }
+  },
+  "Source_selection_audit": {
+    "default": "Empty XLive override -> filesystem::absolute(xlive.dll) after game_main changes current directory to --game-root",
+    "explicit_options": "--xlive-dll and repeated --xlive-dependency arguments normalized to absolute paths in GameOptions parsing",
+    "loader": "XLiveLibrary::Impl preloads explicit dependencies in order with LoadLibraryExW and then selected XLive; dependency objects outlive XLive unload.",
+    "lifetime": "SoundServices XLive member is constructed before core sound; math binding at1990 repeats prior successful binding at1885.",
+    "existing_wrapper_default": "tools/run_game.ps1 chooses adjacent xlive_stub.dll unless -XLiveDll is explicit; this is not the genuine-SDK route.",
+    "smallest_faithful_strategy": "Retain explicit genuine private SDK and matching dependency paths using existing options; no Source audio fix, DLL modification, skipped attach or fabricated success required."
+  },
+  "genuine_system_SDK": {
+    "path": "C:\\Windows\\SysWOW64\\xlive.dll",
+    "bytes": 14303392,
+    "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+    "machine": "0x14c",
+    "import_DLLs": [
+      "MSVCR90.dll",
+      "KERNEL32.dll",
+      "PSAPI.DLL",
+      "USER32.dll",
+      "ADVAPI32.dll",
+      "Secur32.dll",
+      "SHELL32.dll",
+      "VERSION.dll",
+      "WINHTTP.dll",
+      "ole32.dll",
+      "OLEAUT32.dll",
+      "IMM32.dll",
+      "d3dx9_37.dll",
+      "XINPUT1_3.dll",
+      "WINMM.dll",
+      "WS2_32.dll",
+      "IPHLPAPI.DLL",
+      "SHLWAPI.dll",
+      "GDI32.dll",
+      "COMCTL32.dll",
+      "msidcrl40.dll",
+      "DSOUND.dll",
+      "SETUPAPI.dll",
+      "WINTRUST.dll",
+      "CRYPT32.dll",
+      "MSASN1.dll",
+      "MSVCP90.dll"
+    ],
+    "original_xlive_import_ordinals": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      11,
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      22,
+      24,
+      26,
+      27,
+      38,
+      40,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      60,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      75,
+      78,
+      82,
+      84,
+      651,
+      1082,
+      1083,
+      5002,
+      5003,
+      5005,
+      5006,
+      5007,
+      5008,
+      5022,
+      5024,
+      5030,
+      5214,
+      5215,
+      5216,
+      5251,
+      5252,
+      5254,
+      5256,
+      5260,
+      5261,
+      5262,
+      5263,
+      5264,
+      5265,
+      5266,
+      5267,
+      5270,
+      5276,
+      5277,
+      5278,
+      5281,
+      5284,
+      5286,
+      5292,
+      5297,
+      5300,
+      5303,
+      5304,
+      5305,
+      5307,
+      5310,
+      5311,
+      5312,
+      5314,
+      5315,
+      5317,
+      5318,
+      5319,
+      5325,
+      5326,
+      5327,
+      5330,
+      5331,
+      5332,
+      5333,
+      5335,
+      5336,
+      5344,
+      5345,
+      5354,
+      5355,
+      5356,
+      5360,
+      5365
+    ],
+    "original_named_imports": [],
+    "missing_original_ordinals": [],
+    "exports": 236
+  },
+  "genuine_signatures": [
+    {
+      "Path": "C:\\Windows\\SysWOW64\\xlive.dll",
+      "Status": 0,
+      "Signer": "CN=Microsoft LIVE Gaming for Windows, OU=AOC, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    {
+      "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+      "Status": 0,
+      "Signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    {
+      "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\ppcrlconfig.dll",
+      "Status": 0,
+      "Signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    {
+      "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\xlivefnt.dll",
+      "Status": 0,
+      "Signer": "CN=Microsoft LIVE Gaming for Windows, OU=AOC, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    }
+  ],
+  "legacy_dependency_static_comparison": {
+    "xlive_msidcrl40_imports": [
+      {
+        "name": null,
+        "ordinal": 15,
+        "iat": "0x4017f8"
+      },
+      {
+        "name": null,
+        "ordinal": 13,
+        "iat": "0x4017fc"
+      },
+      {
+        "name": null,
+        "ordinal": 52,
+        "iat": "0x401800"
+      },
+      {
+        "name": null,
+        "ordinal": 34,
+        "iat": "0x401804"
+      },
+      {
+        "name": null,
+        "ordinal": 21,
+        "iat": "0x401808"
+      },
+      {
+        "name": null,
+        "ordinal": 24,
+        "iat": "0x40180c"
+      },
+      {
+        "name": null,
+        "ordinal": 5,
+        "iat": "0x401810"
+      },
+      {
+        "name": null,
+        "ordinal": 16,
+        "iat": "0x401814"
+      },
+      {
+        "name": null,
+        "ordinal": 4,
+        "iat": "0x401818"
+      },
+      {
+        "name": null,
+        "ordinal": 3,
+        "iat": "0x40181c"
+      },
+      {
+        "name": null,
+        "ordinal": 2,
+        "iat": "0x401820"
+      },
+      {
+        "name": null,
+        "ordinal": 29,
+        "iat": "0x401824"
+      },
+      {
+        "name": null,
+        "ordinal": 8,
+        "iat": "0x401828"
+      },
+      {
+        "name": null,
+        "ordinal": 43,
+        "iat": "0x40182c"
+      },
+      {
+        "name": null,
+        "ordinal": 41,
+        "iat": "0x401830"
+      },
+      {
+        "name": null,
+        "ordinal": 23,
+        "iat": "0x401834"
+      },
+      {
+        "name": null,
+        "ordinal": 38,
+        "iat": "0x401838"
+      }
+    ],
+    "system_dependency": {
+      "path": "C:\\Windows\\SysWOW64\\msidcrl40.dll",
+      "bytes": 15872,
+      "sha256": "f86c15642ddbe787d015a8e801835bed54e1a30d404d9d8fa6042a6794e27427",
+      "machine": "0x14c",
+      "exports": {
+        "114": "AddUserToSsoGroup",
+        "84": "AssociateDeviceToUser",
+        "13": "AuthIdentityToService",
+        "33": "AuthIdentityToServiceEx",
+        "38": "CancelPendingRequest",
+        "19": "CloseEnumIdentitiesHandle",
+        "8": "CloseIdentityHandle",
+        "4": "CreateIdentityHandle",
+        "113": "CreateIdentityHandleEx",
+        "68": "CreateLinkedIdentityHandle",
+        "101": "DeProvisionDeviceId",
+        "54": "DecryptWithSessionKey",
+        "85": "DisassociateDeviceFromUser",
+        "53": "EncryptWithSessionKey",
+        "17": "EnumIdentitiesWithCachedCredentials",
+        "62": "EnumerateCertificates",
+        "70": "EnumerateDeviceID",
+        "86": "EnumerateUserAssociatedDevices",
+        "94": "FlushIDCRLTraceBuffer",
+        "63": "GenerateCertToken",
+        "67": "GenerateDeviceToken",
+        "72": "GetAssertion",
+        "20": "GetAuthState",
+        "34": "GetAuthStateEx",
+        "96": "GetAuthenticationStatus",
+        "35": "GetCertificate",
+        "97": "GetConfigDWORDValue",
+        "104": "GetDefaultNoUISSOUser",
+        "82": "GetDefaultUserForTarget",
+        "64": "GetDeviceId",
+        "99": "GetDeviceIdEx",
+        "77": "GetDeviceShortLivedToken",
+        "60": "GetExtendedError",
+        "48": "GetExtendedProperty",
+        "78": "GetHIPChallenge",
+        "6": "GetIdentityProperty",
+        "41": "GetIdentityPropertyByName",
+        "112": "GetRealmInfo",
+        "76": "GetResponseForHttpChallenge",
+        "49": "GetServiceConfig",
+        "56": "GetUserExtendedProperty",
+        "115": "GetUsersFromSsoGroup",
+        "30": "GetWebAuthUrl",
+        "52": "GetWebAuthUrlEx",
+        "23": "HasPersistedCredential",
+        "1": "Initialize",
+        "61": "InitializeApp",
+        "29": "InitializeEx",
+        "93": "InitializeIDCRLTraceBuffer",
+        "69": "IsDeviceIDAdmin",
+        "95": "IsMappedError",
+        "21": "LogonIdentity",
+        "31": "LogonIdentityEx",
+        "108": "LogonIdentityExSSO",
+        "75": "LogonIdentityExWithUI",
+        "18": "NextIdentity",
+        "74": "OpenAuthenticatedBrowser",
+        "3": "PassportFreeMemory",
+        "15": "PersistCredential",
+        "98": "ProvisionDeviceId",
+        "58": "RemoveChangeNotificationCallback",
+        "16": "RemovePersistedCredential",
+        "116": "RemoveUserFromSsoGroup",
+        "100": "RenewDeviceId",
+        "117": "SendOneTimeCode",
+        "57": "SetChangeNotificationCallback",
+        "5": "SetCredential",
+        "81": "SetDefaultUserForTarget",
+        "65": "SetDeviceConsent",
+        "47": "SetExtendedProperty",
+        "79": "SetHIPSolution",
+        "51": "SetIdcrlOptions",
+        "24": "SetIdentityCallback",
+        "7": "SetIdentityProperty",
+        "55": "SetUserExtendedProperty",
+        "110": "StartTracing",
+        "111": "StopTracing",
+        "83": "UICollectCredential",
+        "92": "UIEndWaitDialog",
+        "91": "UIShowWaitDialog",
+        "102": "UnPackErrorBlob",
+        "2": "Uninitialize",
+        "87": "UpdateUserAssociatedDeviceProperties",
+        "73": "VerifyAssertion",
+        "40": "VerifyCertificate"
+      }
+    },
+    "missing_ordinals": [
+      43
     ]
   },
-  "verification": {
-    "static_source_order_inspected": true,
-    "source_byte_equality_with_integrator": true,
-    "PE_machine_versions_exports_hashes_checked": true,
-    "archive_manifest_hashes": "PASS: all29 archived files and manifest SHA256 verified",
-    "fault_localized": false,
-    "current_FMOD_initialization_succeeded": false,
-    "new_Source_fix_justified": false,
-    "game_startup_validated": false,
-    "gameplay_validated": false
+  "direct_dependency_availability": {
+    "SDK": "C:/Windows/SysWOW64/xlive.dll",
+    "candidate_dependencies": [
+      {
+        "name": "MSVCR90.dll",
+        "candidate": "C:\\Windows\\WinSxS\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.9635_none_508ff82ebcbafee0\\MSVCR90.dll",
+        "exists": true,
+        "selection": "WinSxS VC90 installed candidate; activation policy not re-executed by worker",
+        "sha256": "1e984b8d06618ed54733d00a2a3f44fde4c6cb11d9a2e4635c7c0312cde7b91a",
+        "machine": "0x14c",
+        "direct_imports": 117,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "KERNEL32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\KERNEL32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "machine": "0x14c",
+        "direct_imports": 156,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "PSAPI.DLL",
+        "candidate": "C:\\Windows\\SysWOW64\\PSAPI.DLL",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "2200307377f1d2aac1102b5c40ad73b265f784cf2385422e066687e832514565",
+        "machine": "0x14c",
+        "direct_imports": 3,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "USER32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\USER32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527",
+        "machine": "0x14c",
+        "direct_imports": 39,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "ADVAPI32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\ADVAPI32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "06e6ee5fcd0601e181e5dd8f9a6328dd79b6bcc8fcdfc2b1a7832f0556d0d049",
+        "machine": "0x14c",
+        "direct_imports": 30,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "Secur32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\Secur32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "74b2cd35d050c2ae3ef47a5ea7c462338b22efc5e6f5aeec680eca83d7a634c4",
+        "machine": "0x14c",
+        "direct_imports": 1,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "SHELL32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\SHELL32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "1d79d4611f64bb78c10a4688377cddd2e93b6dd12437c537f11d3d763772dea0",
+        "machine": "0x14c",
+        "direct_imports": 6,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "VERSION.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\VERSION.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "4f66b88731e84be8e1545eefc589a79e701cca426ce916e4ac9322e60ea9680b",
+        "machine": "0x14c",
+        "direct_imports": 6,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "WINHTTP.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\WINHTTP.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "b037ecd897b07fd0fb4ad671efbb24241327f18657116aa8c53e88a4efe93800",
+        "machine": "0x14c",
+        "direct_imports": 14,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "ole32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\ole32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "d178e227ede5073ecfed4528199b03327e1c2edff9ddd09d79d4af821fdde968",
+        "machine": "0x14c",
+        "direct_imports": 5,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "OLEAUT32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\OLEAUT32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "3e336f37041d83e4c699309a6b8d93c2300ba6098bf042731eb5ddce4228a3bf",
+        "machine": "0x14c",
+        "direct_imports": 10,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "IMM32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\IMM32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02",
+        "machine": "0x14c",
+        "direct_imports": 6,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "d3dx9_37.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\d3dx9_37.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "c2ccb84c672a9d8966e82a28005a4269886ee304972ac3590c0b8a9c1622a3d8",
+        "machine": "0x14c",
+        "direct_imports": 12,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "XINPUT1_3.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\XINPUT1_3.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "f76df8e21eab5f5ad4fd7efd8de24050236efd1d668c1309e393f136b6d6c14a",
+        "machine": "0x14c",
+        "direct_imports": 2,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "WINMM.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\WINMM.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "eefb711e78a3e2031ff2015d04471da7258945f40bce2dd54433f664c2d667bf",
+        "machine": "0x14c",
+        "direct_imports": 16,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "WS2_32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\WS2_32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "4da35234f9306c1de886560eb34ec105e80a2da3917f59de66b349e969b3dbc5",
+        "machine": "0x14c",
+        "direct_imports": 35,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "IPHLPAPI.DLL",
+        "candidate": "C:\\Windows\\SysWOW64\\IPHLPAPI.DLL",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "6e10553e0c45fc9595a977932633f8b2ac32da015b1d669f144aef806421879c",
+        "machine": "0x14c",
+        "direct_imports": 4,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "SHLWAPI.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\SHLWAPI.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "184748cce799bcf03100775e6a93288be314161d290cf27cc96a4fb0dbb45528",
+        "machine": "0x14c",
+        "direct_imports": 19,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "GDI32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\GDI32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c",
+        "machine": "0x14c",
+        "direct_imports": 6,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "COMCTL32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\COMCTL32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "edcc46516586b3a11ba583d0a1e288a081d48db00361c28dfbcb5177e5ba7b9c",
+        "machine": "0x14c",
+        "direct_imports": 3,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "msidcrl40.dll",
+        "candidate": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "exists": true,
+        "selection": "explicit legacy preload",
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "machine": "0x14c",
+        "direct_imports": 17,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "DSOUND.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\DSOUND.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "9bfb5022b0b6fea4cb9209b1eb4ffab0dbc018d0e9a7575703f6ee2985c298d6",
+        "machine": "0x14c",
+        "direct_imports": 3,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "SETUPAPI.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\SETUPAPI.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "39b3da6d10dd33e3be52ef1b6e6b064be3f2d9ee03d7eeb24cd7806605c64b9c",
+        "machine": "0x14c",
+        "direct_imports": 12,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "WINTRUST.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\WINTRUST.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "0a20c74f8fe8388e988d93062172ddd9f610d84b0150036bbf90d51374360c4b",
+        "machine": "0x14c",
+        "direct_imports": 7,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "CRYPT32.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\CRYPT32.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "23189fed3a48d7322e28a9d4be0e64d8b3984c3aff7cd67eb545edc2a463506b",
+        "machine": "0x14c",
+        "direct_imports": 3,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "MSASN1.dll",
+        "candidate": "C:\\Windows\\SysWOW64\\MSASN1.dll",
+        "exists": true,
+        "selection": "SysWOW64 file candidate",
+        "sha256": "ad134f21e46afa9d28e728243a6bc27739e57aaac07b0f6aff37c4381532eea4",
+        "machine": "0x14c",
+        "direct_imports": 27,
+        "missing_direct_exports": []
+      },
+      {
+        "name": "MSVCP90.dll",
+        "candidate": "C:\\Windows\\WinSxS\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.9635_none_508ff82ebcbafee0\\MSVCP90.dll",
+        "exists": true,
+        "selection": "WinSxS VC90 installed candidate; activation policy not re-executed by worker",
+        "sha256": "8ec03abe0a14325804b3d8819f0c3f3400b379105eca7452306f53c93408f238",
+        "machine": "0x14c",
+        "direct_imports": 2,
+        "missing_direct_exports": []
+      }
+    ],
+    "missing_candidates": [],
+    "direct_export_mismatches": {},
+    "limit": "Static direct dependency/export availability only; loader path, activation context, transitive forwarded exports and runtime functionality require the primary process capture."
   },
-  "debugger_update_from_primary": {
-    "observation": "First cdb attempt stopped on debugger-only0xC0000008 InvalidHandle at ntdll!NtClose while loading xlive.dll; no AV dump captured by that attempt.",
-    "status": "Primary is adjusting initial exception filters before entry.",
-    "qualification": "This does not identify the no-debug0xC0000005 fault; no conflation or fix inferred."
-  }
+  "retained_private_runtime": {
+    "discovered_origin_directory": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/gfwl-private-runtime",
+    "original_extraction_provenance_doc": "docs/XLIVE_PRIVATE_RUNTIME.md",
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "machine": "0x14c",
+        "file_version": "2.0.673.0",
+        "ordinal43": null,
+        "imports": [
+          "MSVCR90.dll",
+          "KERNEL32.dll",
+          "PSAPI.DLL",
+          "USER32.dll",
+          "ADVAPI32.dll",
+          "Secur32.dll",
+          "SHELL32.dll",
+          "VERSION.dll",
+          "WINHTTP.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "IMM32.dll",
+          "d3dx9_37.dll",
+          "XINPUT1_3.dll",
+          "WINMM.dll",
+          "WS2_32.dll",
+          "IPHLPAPI.DLL",
+          "SHLWAPI.dll",
+          "GDI32.dll",
+          "COMCTL32.dll",
+          "msidcrl40.dll",
+          "DSOUND.dll",
+          "SETUPAPI.dll",
+          "WINTRUST.dll",
+          "CRYPT32.dll",
+          "MSASN1.dll",
+          "MSVCP90.dll"
+        ]
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "bytes": 1089440,
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "machine": "0x14c",
+        "file_version": "5.0.737.6",
+        "ordinal43": "ExportAuthState",
+        "imports": [
+          "SHELL32.dll",
+          "KERNEL32.dll",
+          "OLEAUT32.dll",
+          "ADVAPI32.dll",
+          "SHLWAPI.dll",
+          "ole32.dll",
+          "USER32.dll",
+          "CRYPT32.dll",
+          "WININET.dll",
+          "OLEACC.dll",
+          "SensApi.dll",
+          "PSAPI.DLL",
+          "RPCRT4.dll",
+          "WINTRUST.dll",
+          "VERSION.dll"
+        ]
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\ppcrlconfig.dll",
+        "bytes": 21408,
+        "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+        "machine": "0x14c",
+        "file_version": "5.0.7498.0",
+        "ordinal43": null,
+        "imports": []
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\gfwl-private-runtime\\xlivefnt.dll",
+        "bytes": 13643936,
+        "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4",
+        "machine": "0x14c",
+        "file_version": "2.0.673.0",
+        "ordinal43": null,
+        "imports": []
+      }
+    ],
+    "primary_copied_directory": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/gfwl-private-runtime",
+    "primary_copy_hashes": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "bytes": 1089440,
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\ppcrlconfig.dll",
+        "bytes": 21408,
+        "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlivefnt.dll",
+        "bytes": 13643936,
+        "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      }
+    ],
+    "original_installer_executed": false,
+    "game_or_Windows_file_replacement": false
+  },
+  "runtime_steps": [
+    {
+      "name": "Game-local default",
+      "result": "Access violation during XLive attach",
+      "exit": 3221225477,
+      "seconds": 0.3433566093444824,
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "3",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.log",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "960x540",
+        "--present-interval",
+        "immediate",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_captured.png",
+        "--screenshot-frame",
+        "1"
+      ]
+    },
+    {
+      "name": "Explicit Microsoft system XLive only",
+      "result": "Source catches XLive load failure: Win32 error182; no same AV",
+      "exit": 1,
+      "seconds": 0.2089722000528127,
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "3",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk_game.log",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+        "--xlive-dll",
+        "C:/Windows/SysWOW64/xlive.dll",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "960x540",
+        "--present-interval",
+        "immediate",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk.png",
+        "--screenshot-frame",
+        "1"
+      ],
+      "qualification": "Static import/export audit identifies missing credential ordinal43; not a claim that all future SDK operations are compatible."
+    },
+    {
+      "name": "Genuine private XLive and credential preload,960x540",
+      "result": "Sound and streamed-dialog startup pass; D3D CreateDevice later fails8876086C in fullscreen960x540",
+      "exit": 4,
+      "seconds": 5.37608239997644,
+      "fmod_calls": 129,
+      "fmod_errors": 0,
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "3",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_game.log",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "960x540",
+        "--present-interval",
+        "immediate",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk.png",
+        "--screenshot-frame",
+        "1"
+      ]
+    },
+    {
+      "name": "Same genuine runtime and Source,fit resolution",
+      "result": "Bounded three-frame startup and presentation PASS",
+      "exit": 0,
+      "seconds": 6.691904200008139,
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "3",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit_game.log",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "fit",
+        "--present-interval",
+        "immediate",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.png",
+        "--screenshot-frame",
+        "1"
+      ],
+      "window": {
+        "width": 1600,
+        "height": 900,
+        "fullscreen": true
+      },
+      "device_created": 1,
+      "device_hr": "00000000",
+      "frames_presented": 2,
+      "presents_skipped": 1,
+      "loop_finished": 1,
+      "VFS_probes_passed": 3,
+      "VFS_probes_total": 3,
+      "fonts_loaded": 6,
+      "GUI_pages_loaded": 5,
+      "GUI_pages_total": 5,
+      "GUI_widgets": 29,
+      "text_glyphs": 55,
+      "screenshot_written": true,
+      "screenshot_dimensions": [
+        1600,
+        900
+      ],
+      "unimplemented_host_methods": 46,
+      "visual_inspection": "Primary reports title/map/login prompt; worker sealed PNG bytes/dimensions only.",
+      "gameplay_validated": false
+    }
+  ],
+  "FMOD_static_check": {
+    "installed_files": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "size": 350544,
+        "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+        "machine": "0x14c",
+        "imports": [
+          "KERNEL32.DLL",
+          "ADVAPI32.dll",
+          "MSACM32.dll",
+          "MSVCRT.dll",
+          "ole32.dll",
+          "USER32.dll",
+          "WINMM.dll",
+          "WSOCK32.dll"
+        ],
+        "startup_exports": {
+          "FMOD_System_Create": "0x5dc8b",
+          "FMOD_System_GetVersion": "0x5e8ed",
+          "FMOD_System_SetOutput": "0x5dd84",
+          "FMOD_System_Init": "0x5e537",
+          "FMOD_System_SetFileSystem": "0x5e109"
+        }
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "size": 238936,
+        "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+        "machine": "0x14c",
+        "imports": [
+          "WINMM.dll",
+          "fmodex.dll",
+          "MSVCRT.dll",
+          "KERNEL32.dll"
+        ],
+        "startup_exports": {
+          "_FMOD_EventSystem_Create@4": "0x96a0",
+          "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
+          "_FMOD_EventSystem_Init@20": "0x96c0"
+        }
+      }
+    ],
+    "startup_exports": [
+      {
+        "dll": "fmodex.dll",
+        "file_version": "0.4.18.4",
+        "required_exports": {
+          "FMOD_System_GetNumDrivers": "0x5ddfa",
+          "FMOD_System_GetDriverCaps": "0x5de7b",
+          "FMOD_System_SetSpeakerMode": "0x5e20e",
+          "FMOD_System_SetOutput": "0x5dd84",
+          "FMOD_System_SetFileSystem": "0x5e109",
+          "FMOD_System_Set3DSettings": "0x5e5e8",
+          "FMOD_System_GetDriver": "0x5deff",
+          "FMOD_System_GetOutput": "0x5ddbf",
+          "FMOD_System_GetSpeakerMode": "0x5e249",
+          "FMOD_Memory_GetStats": "0x5dc25"
+        },
+        "missing": []
+      },
+      {
+        "dll": "fmod_event.dll",
+        "file_version": "0.4.18.4",
+        "required_exports": {
+          "_FMOD_EventSystem_Create@4": "0x96a0",
+          "_FMOD_EventSystem_GetSystemObject@8": "0xa610",
+          "_FMOD_EventSystem_Init@20": "0x96c0"
+        },
+        "missing": []
+      }
+    ],
+    "current_call_result": "Primary genuine-SDK run:129 calls,zero errors",
+    "historical_result61": "Older output-initialization evidence is not the current fault."
+  },
+  "reproducible_launch_recommendation": {
+    "implementation_owner": "Primary; worker recommendation only",
+    "route": "Retained local launcher uses existing tools/run_game.ps1 with explicit -XLiveDll and forwarded --xlive-dependency, --window-resolution fit, --frames, isolated settings root, unique log and screenshot paths.",
+    "validate": "Resolve absolute local/gfwl-private-runtime file paths and verify four recorded genuine hashes before launch; fail explicitly if required runtime/dependency is unavailable.",
+    "selection": "Must supply both genuine paths; direct default picks incompatible game-local DLL and wrapper default picks stub.",
+    "preserve": "Do not change game installation, Windows runtime files, audio settings or SDK bytes.",
+    "proof_limit": "Existing CLI direct genuine route was executed by primary; retained launcher implementation/its own invocation belongs to a separate primary task."
+  },
+  "runtime_artifact_pins": {
+    "source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+    "tracked_dirty_paths": [],
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5042176,
+        "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_debug2.log",
+        "bytes": 21673,
+        "sha256": "4aa11bfee9688bbb03498b3ffcd9f91e7e5bfed4c4ceed1ae796fccd893ad29e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_debug3.log",
+        "bytes": 19796,
+        "sha256": "6fdeeeee1abb584b94e35a9fc95d9a778cff62ae6f88c56c5f560b0391b86d96"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_debug3.json",
+        "bytes": 19318,
+        "sha256": "16a4f5954958f0be6e73805c0034267d32a95b4a21247937f97de9a3ce3c2277"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_av3.dmp",
+        "bytes": 233774274,
+        "sha256": "895305456d9c172914155351da0216d50abc908611cdff22270fe823cb28a940"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk.json",
+        "bytes": 992,
+        "sha256": "54a2d4d14889a4310de1e6bf2197fafc3389df04614a30722be686fb6b249cea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_system_sdk_game.log",
+        "bytes": 11530,
+        "sha256": "8ab0b965dbfac8fb1ea751ec0e3febc00c7dd8bcd671f7256b6ae8aafb8cdb9c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk.json",
+        "bytes": 1213,
+        "sha256": "4d6dd871962807e49dd883fe084013129d4b2dbbb0a703802dd21e6b39bdf57f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_game.log",
+        "bytes": 9445,
+        "sha256": "2e8aa32b703bff34e8566db67804c362b4b298a60f13ffd83e3efefd19c73a5a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.json",
+        "bytes": 1218,
+        "sha256": "0a4881bc921f8caac682cacfd5fd6a40e4da3a607dd1cd0c4c70e8e7092c3553"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit_game.log",
+        "bytes": 49404,
+        "sha256": "d7b49c01e9338dc599b21fc0a7ae955a4a02238f0fa58a29200a2a3740f06f47"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_private_sdk_fit.png",
+        "bytes": 1610692,
+        "sha256": "47166e904a913122b4993a0a426b216667518469cc0219cb9dc3596fde4b55f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "bytes": 1089440,
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\ppcrlconfig.dll",
+        "bytes": 21408,
+        "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlivefnt.dll",
+        "bytes": 13643936,
+        "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      }
+    ],
+    "PNG_dimensions": [
+      1600,
+      900
+    ]
+  },
+  "evidence_archive": {
+    "directory": "local\\cc12_startup_sound_boundary_localized_20261008",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership",
+    "files": 50,
+    "bytes": 2272371,
+    "manifest_sha256": "4e640c9ba53f278d994a887c47c47a44baa0429719e0b4a945036104a2f42f3c",
+    "initial_log_only_archive": "local/cc12_startup_sound_boundary_evidence_20261008",
+    "initial_manifest_sha256": "ee6ac2c38c44133146a8b1d595b9e62fa67618a1a6084229c327776b8ace0e2d",
+    "large_artifact_policy": "Original bounded29-file archive is preserved separately. Current executable and233MB dump remain at primary paths and are SHA256 pinned, not duplicated here."
+  },
+  "verification": {
+    "fault_localized": true,
+    "fixed_RVA_target_derived_from_PE_bytes": true,
+    "runtime_destination_matches_fixed_RVA": true,
+    "genuine_SDK_all_original_import_ordinals_exported": true,
+    "original_game_XLive_import_ordinal_count": 106,
+    "missing_system_credential_ordinals": [
+      43
+    ],
+    "matching_legacy_credential_ordinal43_exported": true,
+    "all27_direct_dependency_candidates_available": true,
+    "all_direct_imports_present_in_selected_candidates": true,
+    "inspected21_source_files_match_tested_primary": true,
+    "private_runtime_four_hashes_match_retained_genuine_files": true,
+    "limited_sound_startup_and_three_frame_presentation": "PASS from primary capture",
+    "archive_and_external_runtime_hash_verification": "PASS: all50 archive files, manifest,16 external runtime artifacts and four genuine private-copy identities rechecked",
+    "new_Source_audio_fix_required": false,
+    "complete_gameplay_validated": false
+  },
+  "limits": [
+    "Native install XLive compatibility failure was a host-layout-specific attach patch, not proof of FMOD or raw manager failure.",
+    "SDK load and startup success do not establish account, network, overlay or authenticated service behavior.",
+    "The finite startup has46 unimplemented host methods and does not prove missions, gameplay, audible playback or full shutdown semantics.",
+    "No original-game runtime or original-vs-Source gameplay comparison occurred in this packet."
+  ]
 }

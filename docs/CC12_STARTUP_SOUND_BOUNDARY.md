@@ -1,129 +1,151 @@
-# CC12 startup: boundary before the sound-complete marker
+# CC12 startup sound boundary: XLive attach patch and genuine SDK route
 
-The captured current application exits with access violation `0xC0000005`
-before `Phase 5 sound_system_initialize`. The available log does not identify
-FMOD as the faulting component. Its last completed record is the settings
-summary; Source still has math binding, `SoundServices` construction, raw
-singleton operations and a clock read before the first FMOD Event call.
-This bounded diagnosis supplies the ordered debugger boundaries and verifies
-the DLL/export prerequisites. It changes no Source or configuration and runs
-no additional game process.
+The pre-sound access violation came from the installed game-local `xlive.dll`
+while Windows loaded it, before FMOD or the sound manager startup ran. Its
+attach code copies five NOP bytes to the host executable base plus fixed RVA
+`00640F5E`. That RVA belongs to the original game layout and falls outside the
+reconstructed executable. The current Source passes the sound/startup boundary
+when the existing options select genuine Microsoft XLive and its matching
+credential dependency. No audio Source fix or installed-file patch was needed.
 
-## Current runtime observation
+The primary agent subsequently completed a bounded three-frame run of the same
+unmodified Source with `--window-resolution fit`: device creation succeeded,
+two frames presented, one skipped, the loop finished with exit zero, and a
+1600x900 screenshot was written. Forty-six host methods remain unimplemented.
+This establishes limited startup/presentation, not gameplay or complete parity.
 
-The primary agent captured `bsp_game.exe` with Python `subprocess`, requesting
-three frames, a 960x540 window, installed game data and an isolated settings
-directory. `local/cc12_startup_exit_capture.json` in the integrator worktree
-records return code 3221225477 (`0xC0000005`), 0.3433566 seconds, and empty
-stdout/stderr. Its paired `cc12_startup_captured.log` stops after settings and
-contains neither the sound-complete marker nor a run summary. The primary
-reports no screenshot and no surviving process. The earlier PowerShell GUI
-invocation's shell exit zero is superseded by this actual child exit capture;
-it was not a successful startup result.
+## Fault and fixed-RVA evidence
 
-The sound-complete marker is emitted at `src/game_hosts.cpp:2004`, after both
-`std::make_unique<SoundServices>(*this)` and `sound_->core.startup(...)` return.
-Only the latter is inside the local FMOD diagnostic catch. An ordinary C++
-exception would be eligible for the outer `run_win_main` catch and a
-`startup failed` log, but the observed access violation is not evidence of
-that C++ recovery path. Absence of a sound marker alone does not prove that
-the first FMOD call was reached.
+The no-debug subprocess capture records `0xC0000005` after 0.3433566 seconds,
+with empty stdout/stderr and a last log record containing the settings summary.
+The earlier PowerShell GUI invocation's shell zero was not a reliable child
+exit code and is superseded by that capture. The first debugger-only
+`0xC0000008` at `NtClose` is separate from the subsequently captured AV.
 
-## Ordered boundaries for the next debugger capture
+Two later debugger captures stop on the same write AV at XLive EIP `69BB9049`,
+module RVA `00319049`, instruction `89 17` (`MOV [EDI],EDX`). EDI is `10640F5E`
+and EDX is `90909090`. XLive is loaded from the installed game directory at
+`698A0000`; loader frames carry DLL reason 1 (`PROCESS_ATTACH`). The stack
+reaches `LoadLibraryExW` through the Source XLive loader. Stack unwinding lacks
+full symbols, so the nearest exported-name label is not treated as the actual
+faulting function name. The instruction/registers, module bounds and retained
+dump provide the concrete fault evidence. No FMOD module load precedes it.
 
-| Order | Source boundary | Contract or observation |
-| --- | --- | --- |
-| 1 | `game_hosts.cpp:1990`, `bind_legacy_crt_math_runtime` | Binds process-lifetime globals and current `_errno`; the statically supplied pointers are nonnull. This is not proof against earlier heap/state corruption. |
-| 2 | `SoundServices::SoundServices`, `game_hosts.cpp:1339` | Dereferences the existing settings process and constructs XLive/sign-in/device/platform services before core sound. `XLiveLibrary::Impl` loads the selected DLL with `LoadLibraryExW`. This is the first explicit foreign loader boundary after the logged settings summary. |
-| 3 | `GameSoundRuntime::Impl`, `game_sound_runtime.cpp:61` | Creates Source state/manager and loads `fmodex.dll` in `FmodConfigurationLibrary::Impl`. It constructs resource/callback/clock/Lua contexts and checks the two CRT binding pointers. The Event DLL is still lazy. |
-| 4 | End of `SoundServices` construction | Attaches dialog contexts, binds the XLive profile SDK and binds this sound runtime to the existing singleton deletion dispatcher. No successful-construction marker is logged. |
-| 5 | `GameSoundRuntime::startup`, `game_sound_runtime.cpp:307` | Requires one-shot startup and sole ownership of the callback binding, then calls `construct_sound_system_00a88770`. |
-| 6 | `sound_startup.cpp:28..38` | Constructs/registers the sound base and auxiliary owner using the actual shared lifetime manager, moves the sound registration after the auxiliary registration, and copies the current clock words. All precede FMOD. |
-| 7 | `FmodConfigurationLibrary::event_system_create`, `fmod_configuration_library.cpp:90` | Lazily loads `fmod_event.dll`, resolves `_FMOD_EventSystem_Create@4` and calls it with the event-handle output pointer. This is the first FMOD SDK call in this startup sequence. |
-| 8 | Remaining `initialize_sound_library_00a8881e_fragment` | Gets the System object, queries drivers and speaker mode when enabled, initializes EventSystem, installs file callbacks and 3D settings, then queries output state. |
-| 9 | Resource and Lua initialization | Constructs the resource owner and opens/calls sound configuration through the current VFS/Lua/FMOD services before returning to the marker. |
+Read-only PE disassembly independently establishes how that address is made:
 
-The raw manager reorder deserves an explicit pre-FMOD breakpoint if the fault
-lands in that part of the call stack. `SoundLifetimeManagerView` invokes
-`move_native_singleton_object_after_00bd0d70`, whose raw implementation reads
-the live manager begin/end/capacity at +4/+8/+Ch, requires both object and
-anchor matches, closes the removed slot and reinserts after the anchor.
-Neither a copied manager nor a substitute semantic list is supplied. This is
-a concrete prerequisite and breakpoint, not a claim that reorder caused the
-observed access violation. The clock branch similarly reads the actual
-published frame-clock storage before FMOD startup.
+| XLive RVA | Evidence |
+| --- | --- |
+| `0016B76A..0016B77F` | Push null; call the `GetModuleHandleA` IAT entry; store the returned executable base at DLL global RVA `004D8450`. |
+| `0018C242..0018C252` | Construct five bytes of `90` in a local buffer. |
+| `0018C264..0018C271` | Read that executable-base global, add literal `00640F5E`, and pass destination, buffer and length five to the copy call. |
+| `00319047..00319049` | Read a source DWORD, then write it through EDI: the exact fault instruction. |
 
-The SDK call journal appends a result only after the foreign call returns.
-An access violation inside DLL loading or a foreign call can therefore leave
-no corresponding journal row; the lack of a logged FMOD result cannot exclude
-those calls. Conversely, the same lack does not establish that they ran.
+The reconstructed PE is based at `10000000`, with `SizeOfImage=004D8000`; the
+live debugger confirms `10000000..104D8000`. Its computed target `10640F5E`
+is outside that image. The original installed executable is based at `00400000`
+with `SizeOfImage=00E2F000`; target `00A40F5E` lies in `.text` and contains
+`E8 ED B2 00 00`, one five-byte CALL. Thus the fixed original-layout write is
+proved from the DLL bytes and runtime destination, rather than inferred merely
+from the absence of the sound marker.
 
-## DLL, ABI and data checks
+`SoundServices` constructs `XLiveLibrary` before core sound. Its loader calls
+`LoadLibraryExW` before `GameSoundRuntime::startup`, raw sound/auxiliary manager
+registration, the lifetime reorder, clock copy or the first EventSystem call.
+Those later boundaries were candidates in the initial log-only diagnosis;
+the AV capture rules them out as the site of this fault. The math binding at
+`game_hosts.cpp:1990` repeats the same binding already made before the logged
+renderer/settings work at line1885.
 
-The captured command specifies the installed game root and no FMOD/XLive
-overrides. `game_main.cpp:660` changes the process working directory to that
-root before creating the host; `selected_library_path` resolves empty
-overrides to an absolute path there. This establishes the paths Source asks
-the loader to open. No runtime loaded-module list has yet been supplied, so
-actual module selection and successful loading are not claimed.
+## Genuine SDK and required dependency
 
-Static PE checks of those installed files found:
+Current Source resolves an unspecified XLive path against the game working
+directory. `--xlive-dll` supplies an explicit absolute path instead;
+`--xlive-dependency` records absolute preload paths in order. `XLiveLibrary`
+loads those dependencies before XLive and keeps them alive until after XLive
+unloads. This existing route is sufficient for the verified launch.
 
-| File | Machine | Bytes | SHA-256 |
-| --- | --- | --- | --- |
-| `fmodex.dll` | Win32 x86 `014C` | 350544 | `31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8` |
-| `fmod_event.dll` | Win32 x86 `014C` | 238936 | `4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890` |
-| `xlive.dll` | Win32 x86 `014C` | 3833856 | `71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2` |
+The genuine `C:/Windows/SysWOW64/xlive.dll` is Win32 Microsoft GFWL
+2.0.0673.0, 14,303,392 bytes, SHA-256
+`79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385`.
+Its Windows Authenticode signature validates as Microsoft. It exports every
+ordinal imported by the original game. Its direct dependencies include the
+VC90 CRT through an embedded assembly manifest and `msidcrl40.dll`.
 
-Both FMOD PE version resources contain the four-word tuple `0.4.18.4`
-(the SDK's 4.18.4 release). The Event DLL imports `fmodex.dll`; both import
-`MSVCRT.dll`. All 13 inspected early startup exports are present: the three
-decorated EventSystem entries and ten System/memory entries. The three Event
-names carry `@4`, `@8` and `@20`, matching the current stdcall argument sizes.
-Current bindings use `__stdcall`, 32-bit scalar values and live output
-pointers; callbacks are real Source functions with their stdcall signatures.
-`SetFileSystem` passes those functions, not integer game-image provenance
-addresses. This is a source/PE compatibility check, not a complete live ABI
-or DLL dependency-resolution proof.
+Selecting that system XLive alone produced a normal Source error, Win32 182,
+and exit one. The current system credential DLL is a 15,872-byte module with
+SHA-256 `f86c15642ddbe787d015a8e801835bed54e1a30d404d9d8fa6042a6794e27427`.
+PE comparison finds exactly one missing ordinal among XLive's 17 imports
+from it: ordinal43, `ExportAuthState`. The retained genuine legacy credential
+DLL is 1,089,440 bytes, version5.0.737.6, exports that ordinal and has a valid
+Microsoft signature. Its SHA-256 is
+`623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee`.
 
-The math runtime uses process-lifetime bypass words, current `_errno` and
-`legacy_crt_87except_00c27489`. The same math-binding call already occurs at
-`game_hosts.cpp:1885`, before the logged renderer/settings work, so the later
-call is a repeat binding. Core construction rejects missing required CRT
-bindings. Startup binds the actual VFS/file callback context before FMOD may
-call it, and keeps the library/context alive through teardown. The actual
-manager, both registered objects, frame-clock publication, callback outputs
-and subsequent VFS/Lua data must remain valid. Static presence of those
-bindings does not establish their live contents at the crash.
+The primary copied four already extracted, genuine redistributable files into
+its ignored `local/gfwl-private-runtime/`; hashes were independently rechecked:
 
-`docs/AUDIO_STARTUP_DIAGNOSTIC_CC10.md` records the same FMOD DLL hashes and
-historical result 61 followed by 78/37. It also records a later successful
-finite application run. Those observations concern older executables and
-environment snapshots. The current observation is an access violation, with
-no captured FMOD result. Applying the historical output-initialization
-diagnosis or changing audio options is unsupported by this evidence.
+| File | SHA-256 |
+| --- | --- |
+| `xlive.dll` | `79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385` |
+| `msidcrl40.dll` | `623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee` |
+| `ppcrlconfig.dll` | `649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61` |
+| `xlivefnt.dll` | `a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4` |
 
-## Evidence and next check
+The matching files were found in the retained `orch3-20260910` worktree and
+match `docs/XLIVE_PRIVATE_RUNTIME.md`'s bundled-redist extraction provenance.
+No installer was run or game/Windows file changed. All 27 direct XLive
+import-DLL candidates are available, including installed x86 VC90 CRT
+9.0.30729.9635; with the legacy credential selected, each directly imported
+name/ordinal exists in its inspected candidate. Static dependency availability
+is distinct from the primary's successful live load below.
 
-The 21 inspected chain source/header files byte-match the integrator's
-`7479af9fd70b41091bc077e9ea98b84dbc45f0bf` snapshot. The worker baseline is
-`a8895ad237fd9d19c1c06c5ff4f668ed659df069`, after merging main `7ed2ec2002`.
-Read-only evidence is retained in the worker's
-`local/cc12_startup_sound_boundary_evidence_20261008/`: 29 files, manifest
-SHA-256 `ee6ac2c38c44133146a8b1d595b9e62fa67618a1a6084229c327776b8ace0e2d`.
-It contains the paired runtime capture/log, static DLL/export results, source
-snapshots and the cited historical documents. The tracked JSON records the
-individual hashes and observation limits.
+The installed FMOD DLL hashes remain
+`31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8`
+(core) and `4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890`
+(Event). Both are Win32 SDK4.18.4 and all13 inspected early exports are present.
+Historical FMOD result61 was not the current fault.
 
-The next discriminating check is the primary agent's debugger capture of the
-first access violation: exception address and read/write target, loaded-module
-path/base, registers and call stack. If symbols are available, break at
-`SoundServices` construction, `GameSoundRuntime::startup`, the raw manager
-reorder, and `event_system_create` in that order to identify the first reached
-boundary. Preserve the current DLLs and audio options. Once the fault belongs
-to a concrete call, inspect that call's inputs and immediate predecessor;
-there is no supported Source fix yet.
+## Tested boundary and reproducible launch recommendation
 
-This packet made no Ghidra query or mutation, expanded no native body, ran no
-build/test or additional process, and did not validate sound initialization,
-audible playback, frame presentation or gameplay.
+Every primary run here used Source revision
+`7479af9fd70b41091bc077e9ea98b84dbc45f0bf` and executable SHA-256
+`cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a`.
+The inspected21 chain source/header files match that clean integrator snapshot.
+With explicit private XLive and legacy credential preload, sound initialization
+and streamed-dialog initialization passed, followed by Phase6 parsers:
+129 FMOD calls, zero errors. The 960x540 fullscreen run then failed separately
+at D3D `CreateDevice`, `8876086C`, exit4. Changing only the requested resolution
+to `fit` completed the bounded startup run at1600x900: device HRESULT0,
+three loop ticks, two presents and one skipped present, exit0. The log records
+VFS probes3/3, six fonts, GUI pages5/5 with29 widgets, and55 text glyphs.
+The primary's screenshot review reports the title/map/login prompt; this
+worker pins the image and its dimensions rather than claiming a gameplay test.
+
+The practical retained launch route is a small local launcher that resolves
+and hash-checks those four private files, then invokes the existing serialized
+`tools/run_game.ps1` with explicit `-XLiveDll`, forwarding the matching
+`--xlive-dependency` and `--window-resolution fit`. Keep an isolated settings
+root and distinct log/screenshot names. The wrapper's current default selects
+`xlive_stub.dll`; a direct game launch's current default selects the game-local
+DLL that made the invalid write. Therefore the retained launcher must supply
+both genuine paths explicitly and fail if its checked runtime is unavailable.
+No new fallback, no-op DLL, skipped attach or binary patch is justified. This
+worker recommends the route only; the primary owns launcher implementation.
+
+The exact successful argument vector, DLL hashes, Source revision, executable,
+logs, debugger dump and screenshot hashes are in the tracked JSON report.
+The successful result/log/image hashes are respectively
+`0a4881bc921f8caac682cacfd5fd6a40e4da3a607dd1cd0c4c70e8e7092c3553`,
+`d7b49c01e9338dc599b21fc0a7ae955a4a02238f0fa58a29200a2a3740f06f47`, and
+`47166e904a913122b4993a0a426b216667518469cc0219cb9dc3596fde4b55f2`.
+
+Final evidence is retained in this worker's
+`local/cc12_startup_sound_boundary_localized_20261008/`:50 files,
+manifest SHA-256 `4e640c9ba53f278d994a887c47c47a44baa0429719e0b4a945036104a2f42f3c`.
+The 233,774,274-byte primary dump is externally pinned as
+`895305456d9c172914155351da0216d50abc908611cdff22270fe823cb28a940`;
+it is not duplicated. The initial log-only archive is preserved separately.
+
+This worker edited only this document and its report, ran no game process,
+made no Source/configuration change, and made no live Ghidra query or mutation.
+The finite startup evidence does not establish audible sound, complete
+shutdown semantics, account/network service operation, missions or gameplay.
