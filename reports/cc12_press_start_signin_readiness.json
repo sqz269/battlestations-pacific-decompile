@@ -1,0 +1,800 @@
+{
+  "packet": "cc12_press_start_signin_readiness",
+  "utc": "2026-10-08T07:32:03.339260+00:00",
+  "status": "Whole two-function normal-return Source provider ready under actual-manager admission; production menu binding not ready because owner publication and pump remain absent",
+  "owned_tracked_files": [
+    "docs/CC12_PRESS_START_SIGNIN_READINESS.md",
+    "reports/cc12_press_start_signin_readiness.json"
+  ],
+  "scope": {
+    "Source_implementation_changes": false,
+    "configuration_changes": false,
+    "Ghidra_mutations": false,
+    "native_bodies_expanded": [
+      "00a3f3d0",
+      "00a3f100"
+    ],
+    "worker_game_or_SDK_execution": false,
+    "account_or_network_calls": false,
+    "tests_or_build_run": false,
+    "reason": "Read-only audit and exact two-file documentation packet"
+  },
+  "analysis_identity": {
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every bsp.py ghidra batch constructs Client and calls verify before querying/exporting. verify_report_calls likewise verifies before live checks. No Ghidra write used."
+  },
+  "revisions": {
+    "worker": "07d1d559cc0af6815197afb21660a9be958e92f1",
+    "main_at_seal": "daa0b1bf7149f0e94f37de9147bb19fab02458d6",
+    "primary_at_seal": "29a59c36adadfd657cbe748f79ebfe8530c8c275",
+    "source_paths_match_primary": true
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "0x14c",
+    "image_base": "00400000"
+  },
+  "whole_functions": [
+    {
+      "entry": "00a3f3d0",
+      "end_inclusive": "00a3f3db",
+      "bytes": 12,
+      "sha256": "b00d59e6d3d7a49357f35fd8062973230e391a722c1d375d5e20aa812f1f69e2",
+      "original_pe_offset": "0063f3d0",
+      "label_role": "request_wrapper",
+      "live_name": "CG_adjustor_thunk_00a3f3d0",
+      "instructions": 2,
+      "entire_original_hex": "c7412801000000e924fdffff",
+      "disk_PE_equals_live_Ghidra_bytes": true,
+      "Capstone_gap_free_decode": true,
+      "Capstone_addresses_equal_live_listing": true,
+      "normal_returns": [],
+      "calls": [
+        {
+          "address": "00a3f3d7",
+          "native": "00a3f100",
+          "function": "00a3f3d0",
+          "kind": "tail_jump"
+        }
+      ],
+      "decoded_instructions": [
+        {
+          "address": "00a3f3d0",
+          "bytes": "c7412801000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x28], 1"
+        },
+        {
+          "address": "00a3f3d7",
+          "bytes": "e924fdffff",
+          "mnemonic": "jmp",
+          "operands": "0xa3f100"
+        }
+      ]
+    },
+    {
+      "entry": "00a3f100",
+      "end_inclusive": "00a3f1a1",
+      "bytes": 162,
+      "sha256": "6ff59834cc7e061ac37d4b63a67bf2294e14f6047840e9f6c65dcfc3e68ed339",
+      "original_pe_offset": "0063f100",
+      "label_role": "request_body",
+      "live_name": "FUN_00a3f100",
+      "instructions": 46,
+      "entire_original_hex": "56578b7c240c578bf1e864e40000505768e040d200e896639eff83c40c89beb403000083bcbe8c00000000754c80bee90300000075256a0368b040d200c686e903000001c786b003000003000000e85d639eff83c4085f5ec204006a0168b040d200c786b003000001000000e83f639eff83c4085f5ec204008b462485c074048bcfffd06a0468b040d200c786b003000004000000e816639eff83c4085f5ec20400",
+      "disk_PE_equals_live_Ghidra_bytes": true,
+      "Capstone_gap_free_decode": true,
+      "Capstone_addresses_equal_live_listing": true,
+      "normal_returns": [
+        "00a3f158",
+        "00a3f176",
+        "00a3f19f"
+      ],
+      "calls": [
+        {
+          "address": "00a3f109",
+          "native": "00a4d572",
+          "function": "00a3f100",
+          "kind": "call"
+        },
+        {
+          "address": "00a3f115",
+          "native": "004254b0",
+          "function": "00a3f100",
+          "kind": "call"
+        },
+        {
+          "address": "00a3f14e",
+          "native": "004254b0",
+          "function": "00a3f100",
+          "kind": "call"
+        },
+        {
+          "address": "00a3f16c",
+          "native": "004254b0",
+          "function": "00a3f100",
+          "kind": "call"
+        },
+        {
+          "address": "00a3f182",
+          "native": "manager+24",
+          "function": "00a3f100",
+          "kind": "indirect_call"
+        },
+        {
+          "address": "00a3f195",
+          "native": "004254b0",
+          "function": "00a3f100",
+          "kind": "call"
+        }
+      ],
+      "decoded_instructions": [
+        {
+          "address": "00a3f100",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00a3f101",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f102",
+          "bytes": "8b7c240c",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00a3f106",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f107",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00a3f109",
+          "bytes": "e864e40000",
+          "mnemonic": "call",
+          "operands": "0xa4d572"
+        },
+        {
+          "address": "00a3f10e",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00a3f10f",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f110",
+          "bytes": "68e040d200",
+          "mnemonic": "push",
+          "operands": "0xd240e0"
+        },
+        {
+          "address": "00a3f115",
+          "bytes": "e896639eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a3f11a",
+          "bytes": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00a3f11d",
+          "bytes": "89beb4030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3b4], edi"
+        },
+        {
+          "address": "00a3f123",
+          "bytes": "83bcbe8c00000000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + edi*4 + 0x8c], 0"
+        },
+        {
+          "address": "00a3f12b",
+          "bytes": "754c",
+          "mnemonic": "jne",
+          "operands": "0xa3f179"
+        },
+        {
+          "address": "00a3f12d",
+          "bytes": "80bee903000000",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esi + 0x3e9], 0"
+        },
+        {
+          "address": "00a3f134",
+          "bytes": "7525",
+          "mnemonic": "jne",
+          "operands": "0xa3f15b"
+        },
+        {
+          "address": "00a3f136",
+          "bytes": "6a03",
+          "mnemonic": "push",
+          "operands": "3"
+        },
+        {
+          "address": "00a3f138",
+          "bytes": "68b040d200",
+          "mnemonic": "push",
+          "operands": "0xd240b0"
+        },
+        {
+          "address": "00a3f13d",
+          "bytes": "c686e903000001",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x3e9], 1"
+        },
+        {
+          "address": "00a3f144",
+          "bytes": "c786b003000003000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3b0], 3"
+        },
+        {
+          "address": "00a3f14e",
+          "bytes": "e85d639eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a3f153",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00a3f156",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f157",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00a3f158",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00a3f15b",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00a3f15d",
+          "bytes": "68b040d200",
+          "mnemonic": "push",
+          "operands": "0xd240b0"
+        },
+        {
+          "address": "00a3f162",
+          "bytes": "c786b003000001000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3b0], 1"
+        },
+        {
+          "address": "00a3f16c",
+          "bytes": "e83f639eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a3f171",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00a3f174",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f175",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00a3f176",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00a3f179",
+          "bytes": "8b4624",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x24]"
+        },
+        {
+          "address": "00a3f17c",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00a3f17e",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0xa3f184"
+        },
+        {
+          "address": "00a3f180",
+          "bytes": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00a3f182",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00a3f184",
+          "bytes": "6a04",
+          "mnemonic": "push",
+          "operands": "4"
+        },
+        {
+          "address": "00a3f186",
+          "bytes": "68b040d200",
+          "mnemonic": "push",
+          "operands": "0xd240b0"
+        },
+        {
+          "address": "00a3f18b",
+          "bytes": "c786b003000004000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3b0], 4"
+        },
+        {
+          "address": "00a3f195",
+          "bytes": "e816639eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a3f19a",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00a3f19d",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00a3f19e",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00a3f19f",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    }
+  ],
+  "native_ABI": {
+    "wrapper": "ECX is unchanged actual manager; write DWORD [ECX+28]=1 then JMP A3F100 at A3F3D7; entry [ESP+4] is forwarded unchanged; no receiver adjustment, own RET, or global-manager reload.",
+    "body": "ECX manager, one full DWORD user/pad value at entry ESP+4. ESI captures receiver and EDI captures user; ESI/EDI saved/restored. All three normal exits RET 4. EBX/EBP untouched. No meaningful return value, x87, SSE, EH registration or F8ABE8 reload.",
+    "sdk_query": "A3F109 calls A4D572 with one DWORD pushed; XUserGetSigninState stdcall/ordinal5262. Returned EAX is passed only to existing bare-RET diagnostic sink at 4254B0.",
+    "callback24": "Only on nonzero indexed cache: capture current DWORD manager+24; when nonzero CALL EAX at A3F182 with ECX=user and no stack arguments, then write manager+3B0=4 after callback returns. Native callback must preserve ESI/EDI and balance its stack."
+  },
+  "field_contract": [
+    {
+      "offset": "28",
+      "width": 4,
+      "operation": "wrapper writes 1 before any target external call",
+      "meaning": "request phase; not completion"
+    },
+    {
+      "offset": "3b4",
+      "width": 4,
+      "operation": "body writes full user DWORD after SDK query and first diagnostic return",
+      "meaning": "selected user bits"
+    },
+    {
+      "offset": "8c + 4*user",
+      "width": 4,
+      "operation": "body compares then-current raw DWORD to zero",
+      "meaning": "indexed raw cache, not SDK return; do not project into assumed four-status array"
+    },
+    {
+      "offset": "3e9",
+      "width": 1,
+      "operation": "read only when indexed DWORD zero; if zero write 1",
+      "meaning": "request latch"
+    },
+    {
+      "offset": "3b0",
+      "width": 4,
+      "operation": "write 3 when zero cache/latch0; write 1 when zero cache/latch nonzero; write 4 after optional callback on cache nonzero",
+      "meaning": "body state distinct from request phase at28"
+    },
+    {
+      "offset": "24",
+      "width": 4,
+      "operation": "read callback identity only on nonzero indexed DWORD",
+      "meaning": "optional callback; not vtable slot or manager receiver"
+    }
+  ],
+  "branch_schedule": [
+    {
+      "condition": "indexed DWORD zero and latch byte zero",
+      "effects": "write latch=1; state=3; diagnostic; RET4"
+    },
+    {
+      "condition": "indexed DWORD zero and latch byte nonzero",
+      "effects": "preserve latch; state=1; diagnostic; RET4"
+    },
+    {
+      "condition": "indexed DWORD nonzero, callback24 zero",
+      "effects": "state=4; diagnostic; RET4"
+    },
+    {
+      "condition": "indexed DWORD nonzero, callback24 nonzero",
+      "effects": "capture callback24; call with ECX=user; state=4 after return; diagnostic; RET4"
+    }
+  ],
+  "caller_evidence": {
+    "wrapper_xrefs": [
+      "0067d2a9",
+      "0067d3a1",
+      "0067d3e4",
+      "0067cf88"
+    ],
+    "callers": [
+      "0067cfb0",
+      "0067cf50"
+    ],
+    "sole_direct_target": "00a3f100",
+    "target_sole_direct_caller": "00a3f3d0",
+    "boundary": "Caller xrefs and existing Source only; caller or callback full bodies were not expanded by this audit."
+  },
+  "current_Source": {
+    "menu_gate": "game_hosts_menu.cpp request_sign_in discards pad and logs unimplemented; sign_in_phase returns Idle; other adjacent online queries also neutral.",
+    "actual_publication": "GameNativeSettingsProcess::Impl owns canonical online F8ABE8 pointer cell initialized null, shared with NativeProfileSettingsContext. SoundServices and InputServices borrow the same cell.",
+    "manager_owner": "GameStartupHost phase5 explicitly leaves publication null: parent-process named-pipe peer and application IPC owner composition unresolved. NativeOnlinePumpContext pointer likewise null. A manager storage type or constructor provider does not establish a live owner.",
+    "profile_and_vtable": "NativeOnlineManagerStorage is actual 3F0 storage only. Existing constructor provider writes D2413C and callback20/callback24 but is not called by current production owner composition; normal C++ methods do not make native tables callable.",
+    "genuine_SDK": "SoundServices owns selected XLiveLibrary. Existing NativeOnlineSigninRuntime borrows same module and actual frame clock; settings profile SDK and input/platform borrow same library. online_signin_calls returns runtime when SoundServices exists, without constructing manager/account.",
+    "missing_request_provider": "No current A3F100 or A3F3D0 semantic provider. NativeOnlineSigninCalls exposes genuine query but only callback20, whose built-in identity is 00735510/context6.",
+    "existing_callback24_leaf": "set_online_context_four_00735520 already invokes XLiveApplicationContextHost::user_set_context(user,8001,4); genuine XLiveApplicationContextAdapter forwards ordinal5277 via borrowed same XLiveLibrary. Constructor makes no SDK call.",
+    "callback_binding_boundary": "Installed callback24 is 00735520. Reuse that existing context4 leaf in an explicit captured-callback24 adapter. Do not use the callback20/context6 method or borrow projected OnlineSystemState through the general profile callback invoker."
+  },
+  "smallest_next_packet": {
+    "readiness": "Ready for two bounded semantic normal-return providers and an explicit request-calls boundary, subject to primary ownership/lease selection; this audit implements none.",
+    "candidate_paths": [
+      "include/bsp/native_online_signin.hpp",
+      "src/native_online_signin.cpp"
+    ],
+    "providers": [
+      "request_native_online_signin_00a3f3d0(manager,user,request_calls)",
+      "begin_native_online_signin_user_00a3f100(manager,user,request_calls)"
+    ],
+    "names_are_hypotheses": true,
+    "required_external_operations": [
+      "genuine XUserGetSigninState(user) through existing selected module",
+      "dispatch captured callback24(target,user), allowing null identity without call"
+    ],
+    "binding": "Prefer a small request-specific Calls interface/adapter reusing NativeOnlineSigninRuntime query and existing context4 leaf+XLiveApplicationContextAdapter; adding callback24 to the existing interface would require reviewing its other consumers. Unknown nonzero identities require a supplied binding or exclusion from admitted calls.",
+    "admission": [
+      "actual constructed 3F0 manager/profile identity from real owner; retain it through SDK and callback normal returns",
+      "full DWORD user bits with every reached native indexed address valid and initialized under actual owner contract; do not invent bounds/clamping or assume four independent status fields",
+      "same genuine loaded XLive module retained across calls",
+      "callback24 contract and identity mapped explicitly; callback may mutate manager but must not retire it",
+      "preserve store/read/call order, unchanged captured receiver identity and postcallback state4 overwrite",
+      "source C++ does not promise native entry ABI, fault/unwind equivalence or arbitrary concurrently mutated storage"
+    ],
+    "diagnostic": "4254B0 has existing verified bare RET contract; omitting its no-effect semantic calls requires no invented logging or value substitution.",
+    "production_prerequisites": [
+      "real IPC/manager owner startup and teardown composition",
+      "publish actual manager to canonical F8ABE8 cell and corresponding actual pump to input/platform",
+      "host access to same manager and exact user/pad forwarding",
+      "neighboring menu read/reset methods bound to established actual manager semantics",
+      "live sign-in/menu progression evidence after genuine owner and pump exist"
+    ],
+    "forbidden_shortcuts": [
+      "zeroed surrogate manager",
+      "projected OnlineSystemState substituted for raw receiver",
+      "fake sign-in result or completion phase",
+      "callback20/context6 substituted for callback24/context4",
+      "use SDK result as cache branch",
+      "skip genuine SDK call because result is diagnostic-only",
+      "network/account SDK invocation during this audit"
+    ]
+  },
+  "observed_menu_reference": {
+    "source": "primary retained finite 30-frame injected press-start capture, read only",
+    "startup_online_owner_unimplemented": true,
+    "request_sign_in_unimplemented_count": 2,
+    "sign_in_phase_unimplemented_count": 6,
+    "summary_concrete_methods": 145,
+    "summary_unimplemented_methods": 77,
+    "summary_state": "ScreenVisible/state5",
+    "interpretation": "ScreenVisible and finite startup are not account sign-in completion, native online ownership, or gameplay equivalence. Wrapper phase1 differs from Completed phase2."
+  },
+  "source_fingerprints": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts.cpp",
+      "bytes": 120415,
+      "sha256": "f23560ddde033d7f1a45417386db190820f80b7e5c2ffed71db165fc0cc5736d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\game_hosts.cpp",
+      "repository_path": "src/game_hosts.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_menu.cpp",
+      "bytes": 88758,
+      "sha256": "870d614c88c99c6a51a5385c6bcb2043def01689f7133dc4915a3265a7cb9e3d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\game_hosts_menu.cpp",
+      "repository_path": "src/game_hosts_menu.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_hosts.hpp",
+      "bytes": 38143,
+      "sha256": "d918220a498a9cf52a908852f8aa4dffd3973e9db18bd0a0c4adac5b6d5a1b39",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\game_hosts.hpp",
+      "repository_path": "include/bsp/game_hosts.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_native_settings_process.cpp",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\game_native_settings_process.cpp",
+      "repository_path": "src/game_native_settings_process.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_native_settings_process.hpp",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\game_native_settings_process.hpp",
+      "repository_path": "include/bsp/game_native_settings_process.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_native_online_process.cpp",
+      "bytes": 4663,
+      "sha256": "32ccc83e1076e652ea4fdd92fde57e53a12be54b873bd925d9a78dbe3324d985",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\game_native_online_process.cpp",
+      "repository_path": "src/game_native_online_process.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_native_online_process.hpp",
+      "bytes": 1836,
+      "sha256": "e0fe8821def9d82f84479e555165d875d230997560517876c90193f2c3d03101",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\game_native_online_process.hpp",
+      "repository_path": "include/bsp/game_native_online_process.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_input_runtime.cpp",
+      "bytes": 8777,
+      "sha256": "a251c8c1e8dd6cdb8e853e55c5a94550be0fd0d45c86b612d23d9219d62909b0",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\game_input_runtime.cpp",
+      "repository_path": "src/game_input_runtime.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_input_runtime.hpp",
+      "bytes": 3456,
+      "sha256": "b9c2f1f29cb861d7075f8f641aff0956b2d8d9016e38e5759cdad2d925aee2b1",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\game_input_runtime.hpp",
+      "repository_path": "include/bsp/game_input_runtime.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_signin.cpp",
+      "bytes": 7621,
+      "sha256": "e53a51625431b7fa4d4c11077bda2a64a64ee15a9f1bd9990fe94c21915dded7",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\native_online_signin.cpp",
+      "repository_path": "src/native_online_signin.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_signin.hpp",
+      "bytes": 4086,
+      "sha256": "17b03e87a39bb920a011080b2fa6337cf8f448a7350add953c6a0b10ec641dc1",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\native_online_signin.hpp",
+      "repository_path": "include/bsp/native_online_signin.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_manager_lifetime.cpp",
+      "bytes": 6322,
+      "sha256": "496d53f5dac9e6cf0dee1a8f0f21172a45c2ae7ae51bd814582739413bb6f5a4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\native_online_manager_lifetime.cpp",
+      "repository_path": "src/native_online_manager_lifetime.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_manager_lifetime.hpp",
+      "bytes": 2916,
+      "sha256": "4838b475fae3e8be2d9af800b5c9ed27df810869de64ba97579be377e1de34d4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\native_online_manager_lifetime.hpp",
+      "repository_path": "include/bsp/native_online_manager_lifetime.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_notifications.cpp",
+      "bytes": 660,
+      "sha256": "997198aab281e2ab622b16bb769b02f5b30c24f46cecba0b46008bcc2f1f90fc",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\native_online_notifications.cpp",
+      "repository_path": "src/native_online_notifications.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_notifications.hpp",
+      "bytes": 2261,
+      "sha256": "ebdc2ad2b07aa53b7f033f32982c61908fc8d9abe19961a1585fc1ee2623b821",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\native_online_notifications.hpp",
+      "repository_path": "include/bsp/native_online_notifications.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_application_callbacks.cpp",
+      "bytes": 4851,
+      "sha256": "9e927cb21acb102dc53f6f9cda914f5298a42b36e71bcc4341a3406809ab083f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\xlive_application_callbacks.cpp",
+      "repository_path": "src/xlive_application_callbacks.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\xlive_application_callbacks.hpp",
+      "bytes": 3843,
+      "sha256": "4852909fd26586a11d00171502acb0123fe09c02a9e8c4ed006e17f4fd1a66b8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\xlive_application_callbacks.hpp",
+      "repository_path": "include/bsp/xlive_application_callbacks.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\audio_online_startup.cpp",
+      "bytes": 17786,
+      "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\audio_online_startup.cpp",
+      "repository_path": "src/audio_online_startup.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\audio_online_startup.hpp",
+      "bytes": 17176,
+      "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\audio_online_startup.hpp",
+      "repository_path": "include/bsp/audio_online_startup.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\press_start_screen.cpp",
+      "bytes": 12959,
+      "sha256": "2f7c1a03a8576334684b1f8aa07dd6e66acd2365e799df5d6e68b3a35d6761af",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\press_start_screen.cpp",
+      "repository_path": "src/press_start_screen.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\press_start_screen.hpp",
+      "bytes": 15241,
+      "sha256": "f06686a99f641ff5858f31596f975bfeaab911882cc99ac7931064d1c23d7fef",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\press_start_screen.hpp",
+      "repository_path": "include/bsp/press_start_screen.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_library.cpp",
+      "bytes": 3507,
+      "sha256": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\src\\xlive_library.cpp",
+      "repository_path": "src/xlive_library.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\xlive_library.hpp",
+      "bytes": 1849,
+      "sha256": "d399cfc4119e83d3770adc026fbe804c995472f5e2801d79890c61b0c2df591a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\source\\include\\bsp\\xlive_library.hpp",
+      "repository_path": "include/bsp/xlive_library.hpp",
+      "primary_same_bytes": true
+    }
+  ],
+  "runtime_reference_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_menu_startup_game.log",
+      "bytes": 65747,
+      "sha256": "6af172d58dea6c1baa63dd092a5344e657ee4c0edb2134fc24dbfe17466e0c42",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\runtime_reference\\cc12_menu_startup_game.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_menu_startup.png",
+      "bytes": 881945,
+      "sha256": "a6be61c529aac0841bd8766ea78bc083a00fbd32dde4a29ccd9b3b6060509d3c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence\\runtime_reference\\cc12_menu_startup.png"
+    }
+  ],
+  "genuine_SDK_file_pins": [
+    {
+      "path": "C:\\Windows\\SysWOW64\\xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    }
+  ],
+  "verification": {
+    "whole_function_bytes_equal_disk_PE": true,
+    "gap_free_decode_and_listing_addresses_equal": true,
+    "read_only_direct_call_report": {
+      "command": "python tools/verify_report_calls.py reports/cc12_press_start_signin_readiness.json",
+      "checked_direct_rows": 6,
+      "failed_rows": 0,
+      "indirect_callback_rows_skipped": 1,
+      "Ghidra_mutations": false
+    },
+    "account_authentication": false,
+    "SDK_runtime": false,
+    "native_entry_ABI": false,
+    "live_menu_signin": false,
+    "gameplay": false
+  },
+  "limits": [
+    "Read-only readiness evidence; no new reconstructed implementation or host binding",
+    "Ghidra undefined(void) prototypes omit observed inputs; assembly contract takes precedence",
+    "Existing CG_adjustor_thunk label is misleading; no receiver adjustment exists. Worker did not rename; primary may annotate with retained old value if accepting proposed semantics",
+    "Small body state4 is not proof of phase2 completion or actual sign-in",
+    "Downstream owner, pump and SDK bodies not newly expanded; existing checked-in contracts are source evidence only"
+  ],
+  "evidence_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_press_start_signin_evidence.zip",
+    "bytes": 1044904,
+    "sha256": "6729101bf99de1a450ed8a56e7350fd0df851458f56a4bad1c47575b8af25a9b",
+    "entries": 43,
+    "zip_integrity": true,
+    "all_manifest_artifact_hashes_verified": true,
+    "manifest_sha256": "eae3e9069866d56eb7c1f88f5280131da12c625a0125b5e8b1c9461c58b251f9"
+  }
+}
