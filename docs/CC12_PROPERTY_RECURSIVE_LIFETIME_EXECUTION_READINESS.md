@@ -297,3 +297,14 @@ Native PE, 17 fresh exact Native spans, per-query BSP verification receipts,
 fallback search and xrefs. The report and manifest distinguish every current
 read from earlier compile-consumed/prebuild evidence. No ledger credit follows
 from this design or these static copies.
+
+## Primary review
+
+The integrator independently rehashed all 1,554 sealed artifacts and 1,448
+physical pins, checked the 17 installed Native spans, and replayed 557 complete
+historical COFF extents from 18 whole objects and 17 unique Core members.
+All 295 accepted primary compile inputs still match their physical preimages.
+Receipt `local/cc12_property_execution_readiness_primary_review/receipt.json`:
+SHA-256 `4555093c17b7b71fa33e43287efb46cc4bab9aefb337b4517de877c93d0fe7af`.
+The finite design is accepted. Execution remains unready pending the canonical
+fallback owner and alias contract; no Source, build, runtime or ledger credit follows.
