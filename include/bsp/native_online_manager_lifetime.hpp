@@ -23,7 +23,8 @@ struct NativeOnlineManagerLifetimeContext final {
 // the native parent reads its version even after a failed/partial SDK write.
 struct NativeOnlineManagerStartupContext final {
     NativeOnlineManagerLifetimeContext& lifetime;
-    void* volatile& current_renderer_00f8d394;
+    // Borrow the renderer's canonical publication cell; this context only reads it.
+    void* const volatile& current_renderer_00f8d394;
     NativeOnlineStartupSdkCalls& sdk;
     NativeOnlineInitializeInfo1c& initialize_info;
     NativeOnlineWsadata400& wsadata;
@@ -37,6 +38,19 @@ struct NativeOnlineManagerStartupContext final {
 NativeOnlineManagerStorage* construct_native_online_manager_00a40df0(
     NativeOnlinePumpContext&, std::uint32_t callback20, std::uint32_t callback24,
     NativeOnlineManagerStartupContext&);
+
+// Complete nonnull startup arm 0073DC70..0073DC8D (30 bytes, six instructions),
+// not a standalone native function. The caller has allocated the actual 3F0h
+// manager bound by pump and prepared its full genuine startup/pump/lifetime
+// contexts, preimages, compatible IPC peer and raw deletion binding. All must
+// survive the complete constructor, including its initial SDK/IPC calls/pump.
+// After normal return, reload the ACTUAL F8ABE8 cell and write callback18 on
+// that current owner, which may differ from the constructor's captured owner.
+// The current publication must then designate writable retained manager storage.
+// No allocation/null arm, context factory, consumer publication, native entry
+// ABI or parent FH3/unwind equivalence is supplied by this ordinary C++ entry.
+void construct_native_online_application_nonnull_arm_0073dc70(
+    NativeOnlinePumpContext&, NativeOnlineManagerStartupContext&);
 
 // A3F840 takes the actual embedded header at manager+360h, not the manager.
 // Releases current header+4, then zeroes +4/+8/+C after release returns.

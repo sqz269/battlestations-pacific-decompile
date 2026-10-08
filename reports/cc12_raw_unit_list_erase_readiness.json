@@ -1,0 +1,275 @@
+{
+  "schema": 1,
+  "packet": "cc12_raw_unit_list_erase_004837d0",
+  "status": "Root repaired and registered one ready bounded raw erase Source packet; Source admission remains0 pending worker and independent Root validation",
+  "audit_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase_readiness\\local\\cc12_raw_unit_list_erase_readiness_20261008_a",
+  "audit_receipt_sha256": "454fdb9795a27a24c76907030bff58ab6c9382c85ccd714755c66d3c4697859d",
+  "audit_manifest_sha256": "fd79d898d8523f8c1c4c17ec649d63ad474aee6161d3dfb11856a2b85e436ed5",
+  "audit_inventory_count": 44,
+  "original_audit_ready_Source_packets": 0,
+  "accepted_append_Source_commit": "ed2b720361a01bf52da0a232cb22989afa217472",
+  "accepted_append_source": "src/native_unit_list_append.cpp",
+  "accepted_append_primary_seal_sha256": "936656ba18d22beb8557ba09bf36d711db3368e62b1b61b156f67fcaa41a6455",
+  "native": [
+    {
+      "name": "erase",
+      "start": "004837D0",
+      "end_exclusive": "0048381F",
+      "bytes": 79,
+      "instructions": 31,
+      "sha256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+      "Original_equals_saved_program_memory": true,
+      "saved_instruction_starts": 23,
+      "missing_instruction_starts": [
+        "004837FF",
+        "00483802",
+        "00483804",
+        "00483805",
+        "00483816",
+        "00483819",
+        "0048381B",
+        "0048381C"
+      ],
+      "missing_instruction_bytes": 18,
+      "calls": [
+        {
+          "site": "004837FA",
+          "target": "0xbf65ac",
+          "operand_offset": 43,
+          "operand_bytes": 4
+        },
+        {
+          "site": "00483811",
+          "target": "0xbf65ac",
+          "operand_offset": 66,
+          "operand_bytes": 4
+        }
+      ]
+    },
+    {
+      "name": "caller",
+      "start": "004845A0",
+      "end_exclusive": "004845CE",
+      "bytes": 46,
+      "instructions": 19,
+      "sha256": "021c3de90775c6eba0451ba26f707b87d2c72cc853246f4c0b784c2a411303db",
+      "Original_equals_saved_program_memory": true,
+      "saved_instruction_starts": 19,
+      "missing_instruction_starts": [],
+      "missing_instruction_bytes": 0,
+      "calls": [
+        {
+          "site": "004845C3",
+          "target": "0x4837d0",
+          "operand_offset": 36,
+          "operand_bytes": 4
+        }
+      ]
+    },
+    {
+      "name": "free",
+      "start": "00BF65AC",
+      "end_exclusive": "00BF65B1",
+      "bytes": 5,
+      "instructions": 1,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "Original_equals_saved_program_memory": true,
+      "saved_instruction_starts": null,
+      "missing_instruction_starts": [],
+      "missing_instruction_bytes": 0,
+      "calls": []
+    }
+  ],
+  "physical_ABI": {
+    "entry": "ECX=actual root; incoming EDX unused; [entryESP+4]=actual node. EAX=node before mutation; ESI saved explicitly; EBX/EDI/EBP untouched except inherited CDECL free preservation.",
+    "ordered_body": [
+      "Load node.prev into EDX; save ESI. If previous exists, load node.next into ESI and write previous.next. Otherwise load node.next into EDX and write root.head.",
+      "Compare freshly read node.next against0, then freshly reload node.prev into EDX without changing flags.",
+      "If next exists, freshly load it into ESI, write next.prev=EDX, ADD root.count,-1, PUSH actual node and CALL free at004837FA.",
+      "If next is zero, ADD root.count,-1, PUSH actual node, XOR ESI,ESI, write root.tail=EDX, CALL free at00483811.",
+      "Each normal return executes ADD ESP,4; MOV EAX,ESI; POP ESI; RET4. Captured successor or0 survives free; no post-free node access or payload destructor."
+    ],
+    "stack": "For entryESP=S, saved ESI isS-4, pushed node isS-8, free entryESP=S-12 and its actual pointer is[freeESP+4]. CDECL free returns toS-8; ADD4 restoresS-4, POP ESI restoresS, RET4 leaves callerESP=S+8.",
+    "return": "EAX=actual successor captured in ESI before free, or0 on tail/singleton. ESI restored. No blanket ECX/EDX/x87/SSE/MXCSR/DF preservation across actual CRT; ordinary ABI preconditions apply.",
+    "flags": "Final ADD ESP,4 determines arithmetic flags on normal return; MOV/POP/RET do not alter them. No inference that count-decrement flags survive free/epilogue.",
+    "native_DATA": "No absolute native DATA cell, vtable, class allocator, singleton or hidden context is read by the79-byte body."
+  },
+  "genuine_caller": {
+    "entry": "004845A0 whole46B/19. ECX=actual same root, [entryESP+4]=borrowed payload identity, ESI saved; RET4.",
+    "scan": "Load root.head fromECX+4; actual node+8 compare against payload inESI; actual node+4 next loop. First matching actual node only; empty/absent returns without erase.",
+    "call": "004845C2 PUSH EAX passes exact found node;004845C3 CALL004837D0 retains the same root inECX. For caller entryESP=S, erase entryESP=S-12, [eraseESP+4]=found node, [eraseESP+8]=saved caller ESI.",
+    "return": "Always returns original payload identity via MOV EAX,ESI; it discards erase successor. Saved comment claiming RET instead of RET4 is stale; whole physical bytes contain both RET4 sites004845BF/004845CB. No caller mutation made.",
+    "ownership_limit": "Caller establishes the real root/node/identity relationship, but it does not itself prove allocator origin or parent/world lifetime. That missing ownership is intentionally supplied only by a future accepted append-produced current-domain contract."
+  },
+  "bounded_graph": {
+    "node_count": 13,
+    "edge_count": 11,
+    "total": 24,
+    "cap": 24,
+    "nodes": [
+      {
+        "id": "004837D0",
+        "scope": "Whole physical erase 79B/31; saved listing still incomplete."
+      },
+      {
+        "id": "004845A0",
+        "scope": "Whole actual payload-removal caller 46B/19."
+      },
+      {
+        "id": "00BF65AC",
+        "scope": "Whole original free thunk 5B/1."
+      },
+      {
+        "id": "00BF9DC8",
+        "scope": "Private original CRT free frontier; not expanded or admitted."
+      },
+      {
+        "id": "00484540",
+        "scope": "Registered whole append contract dependency; no new byte/body query and no Source admission in this audit."
+      },
+      {
+        "id": "Source:append_size_adapter",
+        "scope": "Registered append contract dependency only; no current Source claim."
+      },
+      {
+        "id": "Source:singleton_lifetime_allocate",
+        "scope": "Existing complete current Source malloc/new-handler/retry/bad_alloc service; not historical CRT."
+      },
+      {
+        "id": "Source:singleton_lifetime_free",
+        "scope": "Existing complete current Source and recorded COFF inspected."
+      },
+      {
+        "id": "CRT:malloc",
+        "scope": "Current canonical allocator import boundary; not expanded."
+      },
+      {
+        "id": "CRT:_callnewh",
+        "scope": "Current canonical allocator import boundary; not expanded."
+      },
+      {
+        "id": "CRT:bad_alloc_constructor",
+        "scope": "Current canonical allocator exhaustion boundary from registered contract; not expanded."
+      },
+      {
+        "id": "CRT:_CxxThrowException",
+        "scope": "Current canonical allocator exhaustion boundary from registered contract; not expanded."
+      },
+      {
+        "id": "CRT:free",
+        "scope": "Current free import boundary; not expanded."
+      }
+    ],
+    "edges": [
+      {
+        "from": "004845A0",
+        "site": "004845C3",
+        "to": "004837D0",
+        "kind": "actual CALL"
+      },
+      {
+        "from": "004837D0",
+        "site": "004837FA",
+        "to": "00BF65AC",
+        "kind": "actual CALL"
+      },
+      {
+        "from": "004837D0",
+        "site": "00483811",
+        "to": "00BF65AC",
+        "kind": "actual CALL"
+      },
+      {
+        "from": "00BF65AC",
+        "site": "00BF65AC",
+        "to": "00BF9DC8",
+        "kind": "actual JMP"
+      },
+      {
+        "from": "00484540",
+        "to": "Source:append_size_adapter",
+        "kind": "registered conditional binding, not admitted Source"
+      },
+      {
+        "from": "Source:append_size_adapter",
+        "to": "Source:singleton_lifetime_allocate",
+        "kind": "registered conditional adapter dependency"
+      },
+      {
+        "from": "Source:singleton_lifetime_allocate",
+        "to": "CRT:malloc",
+        "kind": "existing Source call"
+      },
+      {
+        "from": "Source:singleton_lifetime_allocate",
+        "to": "CRT:_callnewh",
+        "kind": "existing Source call"
+      },
+      {
+        "from": "Source:singleton_lifetime_allocate",
+        "to": "CRT:bad_alloc_constructor",
+        "kind": "existing Source exhaustion dependency"
+      },
+      {
+        "from": "Source:singleton_lifetime_allocate",
+        "to": "CRT:_CxxThrowException",
+        "kind": "registered existing COFF exhaustion dependency"
+      },
+      {
+        "from": "Source:singleton_lifetime_free",
+        "to": "CRT:free",
+        "kind": "actual current COFF tail JMP via __imp__free"
+      }
+    ],
+    "counting": "Counts new native function/frontier queries, current Source/library boundaries and explicit registered ownership prerequisites conservatively. Unexpanded caller-name hints and preserved prior receipt contents are not new traversal. No whole private CRT/global/class graph."
+  },
+  "requirements": {
+    "native_whole": "[004837D0,0048381F),79 bytes/31 instructions. Preserve all71 bytes outside two genuine CALL operands at offsets43..46 and66..69. Both Source relocations target complete actual canonical singleton_lifetime_free; Original substitutes only those same eight operand bytes to the same fresh linked free.",
+    "storage": "Actual stable aligned12-byte caller root {count,head,tail}; actual nonnull coherent owned12-byte {prev,next,payload} nodes produced by the accepted complete append Source/current-domain bound Original in the same real canonical allocation domain. No manually fabricated nodes/count census, companion state, allocator stubs or forced pointer reuse. Payloads borrowed and never destroyed.",
+    "Source_interface": "void* __fastcall erase_native_unit_list_004837d0(void* actual_list_ecx, void* unused_edx, void* actual_node) noexcept. New external API maps ECX receiver/one DWORD node stack/RET4, not a native class ABI. Valid current canonical free contract only; original private CRT/EH unbound.",
+    "ordered_behavior": "Preserve fresh prev/next loads, link/count/tail writes, both branches, pre-free successor captured in ESI, both CALL sites, ADD ESP4/MOV EAX,ESI/POP ESI/RET4. EAX genuine successor or0, nonvolatiles preserved; volatile ECX/EDX not asserted across free. No post-free node read.",
+    "final_flags": "Final arithmetic flags come from ADD ESP4, not count decrement. For raw caller pre-target argument-top ESP=T, free-return ESP=T-12 and final ADD4 result=T-8. Derive flags from the actual captured stack addresses; valid CRT entry DF0, no blanket FP/DF claim across free.",
+    "fresh_component": "One exclusive fresh4TU family: new erase Source, accepted unchanged append Source with its actual size-only adapter, unchanged current singleton_lifetime.cpp, new ignored actual-caller probe. Zero BSP archives/old objects/new tracked tests. Pin actual consumed headers including extensionless standard headers, libraries/tools/Source/PE/recipe/all older artifacts before and after.",
+    "static_gate": "Before entry, inspect complete erase79/31 Source COFF/unique linked body/exact2 CALL relocation identities, complete append87/36/adapter/allocator/free/imports/security-cookie static helper and ordinary/raw caller code. Derive fresh sizes/counts. Both bound Original operands resolve to the same actual production current free.",
+    "minimal_genuine_family": "Original then Source phases reuse the same actual caller root and borrowed payload identities but create fresh genuine allocated nodes for each phase; do not require address reuse. Append four actual nodes; erase middle, head, tail, then singleton. Check all real surviving links/count/head/tail/payload identities and returned successor after each. Never read freed nodes. One ordinary Source erase of an additional actual appended singleton is sufficient for external compiler caller proof.",
+    "providers": "Gate actual I386 mapped malloc/free/_callnewh IAT=GetProcAddress=physical export, module NT path/file identity/full SHA/prefix before any target entry and afterward. Genuine allocations use current retry/exception behavior; no forced OOM/new-handler callback/reentry or historical private CRT/EH claim.",
+    "root_integration": "Root owns shared ledgers/CMake/config/locked Ghidra/save/export/full Win32 build/all3 existing checks and an independent fresh complementary4TU family. Worker changes only exact four files in named worktree, leases packet/family, and leaves Ghidra read-only."
+  },
+  "Root_repair": {
+    "original_bytes_unchanged": true,
+    "whole79B31": true,
+    "both_CALL_RETURN_overrides_cleared": true,
+    "override_cause_verified_by_actual_clear_responses": true,
+    "body_recreated_bounded": true,
+    "inferred_native_prototype": "void * __thiscall FUN_004837d0(void * this, void * actual_node)",
+    "implicit_ECX_receiver": true,
+    "one_stacked_node": true,
+    "RET4": true,
+    "saved_project": true,
+    "affected_exports_refreshed": true,
+    "first_prototype_attempt": "Two explicit arguments inadvertently duplicated Ghidra implicit this; recorded then corrected to one explicit actual_node. First save was busy; corrected saved retry completed under write lock. First attempt is not accepted prototype evidence.",
+    "original_free_library_name_and_global_attributes_unchanged": true,
+    "artifacts": {
+      "reports/cc12_raw_unit_list_erase_flow_repair.json": "00d407e6aa6084ddf0f1eb273e8a9b18ce6d27f4e7f5c5ca888483724725b5de",
+      "reports/cc12_raw_unit_list_erase_body_repair.json": "bd7a23feb63b533fc43927d85b12938a6d26596696d137e943c03bc6a1c09116",
+      "local/cc12_raw_unit_list_erase_proto_before.log": "28028363d928224c0b102164ae2008a4aa9c027abe361c6b058f3630788a736c",
+      "local/cc12_raw_unit_list_erase_comments_before.log": "f7e9d6a92c3d14f9fc75724e307a2919b14ceec6653fda773aa482dcc3e31d5d",
+      "local/cc12_raw_unit_list_erase_signature_before.json": "b0fef645e79158bc37a70c0a952dbfc46fa4be752cee4af3818abf34f90efc44",
+      "local/cc12_raw_unit_list_erase_signature_apply.json": "77257b22fdddb3233de60ff5e9c35ab45491e977fac2735b605b60b83c8799c0",
+      "local/cc12_raw_unit_list_erase_signature_after.json": "bdc174808c788b999aeb02ec7461e6797d6ce8aeae87e9a8883f2887f1150377",
+      "local/cc12_raw_unit_list_erase_signature2_before.json": "bdc174808c788b999aeb02ec7461e6797d6ce8aeae87e9a8883f2887f1150377",
+      "local/cc12_raw_unit_list_erase_signature2_apply.json": "77257b22fdddb3233de60ff5e9c35ab45491e977fac2735b605b60b83c8799c0",
+      "local/cc12_raw_unit_list_erase_signature2_after.json": "1b93ddd70042ad1f767472fa3ccd5846457322e6ab29216769a2a33e6c2c8d38",
+      "local/cc12_raw_unit_list_erase_signature2_save.json": "4eca4b0b5f3416239c713f4070cd8b670cda251c70ac74692cb5f2b948afa309",
+      "local/cc12_raw_unit_list_erase_final_proto.log": "b57e6908b226f1d4676239e91dd48fd52687e5b227c2b4fcde62a4dd62476d80",
+      "local/cc12_raw_unit_list_erase_final_flow.log": "a87393caa1d504c6d61d5688f6bddb1c1cbdd0d1cc67b84063f694505eefc801",
+      "local/cc12_raw_unit_list_erase_final_documentation.json": "3eb8d5a128e73f717fb466d2ac09876358fdd6e2c332bd133cea655736ea4ca8",
+      "local/cc12_raw_unit_list_erase_repaired_exports.log": "f09a9cb7cddbfaa7e6f4c5c050f7c79496d38c45051ee3a14fcb406a99e91ebd"
+    }
+  },
+  "Source_whole_bodies_added": 0,
+  "Source_implemented": false,
+  "original_class_ABI_compatible": false,
+  "game_validated": false,
+  "old_families_replayed": false
+}

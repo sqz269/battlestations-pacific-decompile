@@ -1,0 +1,1693 @@
+{
+  "packet": "cc12_online_application_owner_readiness",
+  "utc": "2026-10-08T08:39:51.410873+00:00",
+  "status": "Whole raw constructor already reconstructed; smallest missing Source work is actual application ownership/composition. A bounded entry is ready only with explicit genuine supplied contexts and peer admission, not immediate production menu wiring.",
+  "owned_tracked_files": [
+    "docs/CC12_ONLINE_APPLICATION_OWNER_READINESS.md",
+    "reports/cc12_online_application_owner_readiness.json"
+  ],
+  "scope": {
+    "read_only": true,
+    "Source_changes": false,
+    "Ghidra_mutations": false,
+    "SDK_account_network_or_game_execution": false,
+    "build_tests_or_fixtures_run": false,
+    "whole_native_body_expanded": [
+      "00a40df0"
+    ],
+    "bounded_caller_region": "0073dc50..0073dc9a",
+    "whole_0073D410_reconstructed_or_claimed": false,
+    "other_native_bodies_expanded": false,
+    "additional_inputs": "Five published loader-data cells only; downstream Source contracts inspected, not native bodies reconstructed"
+  },
+  "revisions": {
+    "worker": "31d1e0cfdc903fb16a1437e1358b202279cca507",
+    "main_at_seal": "b7d4663c272bcddae6b9fe52e9d9fcc54ee96098",
+    "primary_at_seal": "b7d4663c272bcddae6b9fe52e9d9fcc54ee96098",
+    "selected_Source_matches_primary": true
+  },
+  "analysis_identity": {
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_each_live_batch": true
+  },
+  "Original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Original_regions": [
+    {
+      "entry": "0073dc50",
+      "end_inclusive": "0073dc9a",
+      "function": "0073d410",
+      "bytes": 75,
+      "sha256": "84fefe1bb6fb1affc820814865633b2834b7a1b64f4122b25419e7284bf0f53a",
+      "coverage": "Bounded application allocation/constructor/callback18 publication fragment only; not whole0073D410",
+      "instruction_count": 15,
+      "entire_hex": "68f0030000e8c18b4b0083c404894424103bc7c7842444010000140000007411682055730068105573008bc8e86f3130008b0de8abf800c74118607d7300393ddcabf800899c2444010000",
+      "Original_equals_live_bytes": true,
+      "gap_free_decode_equals_live_instruction_addresses": true,
+      "calls": [
+        {
+          "address": "0073dc55",
+          "native": "00bf681b",
+          "function": "0073d410",
+          "kind": "call"
+        },
+        {
+          "address": "0073dc7c",
+          "native": "00a40df0",
+          "function": "0073d410",
+          "kind": "call"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0073dc50",
+          "bytes": "68f0030000",
+          "mnemonic": "push",
+          "operands": "0x3f0"
+        },
+        {
+          "address": "0073dc55",
+          "bytes": "e8c18b4b00",
+          "mnemonic": "call",
+          "operands": "0xbf681b"
+        },
+        {
+          "address": "0073dc5a",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0073dc5d",
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "0073dc61",
+          "bytes": "3bc7",
+          "mnemonic": "cmp",
+          "operands": "eax, edi"
+        },
+        {
+          "address": "0073dc63",
+          "bytes": "c784244401000014000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x144], 0x14"
+        },
+        {
+          "address": "0073dc6e",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x73dc81"
+        },
+        {
+          "address": "0073dc70",
+          "bytes": "6820557300",
+          "mnemonic": "push",
+          "operands": "0x735520"
+        },
+        {
+          "address": "0073dc75",
+          "bytes": "6810557300",
+          "mnemonic": "push",
+          "operands": "0x735510"
+        },
+        {
+          "address": "0073dc7a",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0073dc7c",
+          "bytes": "e86f313000",
+          "mnemonic": "call",
+          "operands": "0xa40df0"
+        },
+        {
+          "address": "0073dc81",
+          "bytes": "8b0de8abf800",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xf8abe8]"
+        },
+        {
+          "address": "0073dc87",
+          "bytes": "c74118607d7300",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x18], 0x737d60"
+        },
+        {
+          "address": "0073dc8e",
+          "bytes": "393ddcabf800",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [0xf8abdc], edi"
+        },
+        {
+          "address": "0073dc94",
+          "bytes": "899c2444010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x144], ebx"
+        }
+      ]
+    },
+    {
+      "entry": "00a40df0",
+      "end_inclusive": "00a41026",
+      "function": "00a40df0",
+      "bytes": 567,
+      "sha256": "871fc68e32ef282114bc89c112720e83f399ac0a6fa773c8f469ad8403f7e5ce",
+      "coverage": "Whole constructor normal body",
+      "instruction_count": 129,
+      "entire_hex": "6aff687c42cb0064a100000000506489250000000081ecb001000053568bf189742424e818e7ffff8b8c24c80100008b9424cc0100000f57c033dbc7063c41d200885e04895e08895e0c895e14b801000000894610895e18894e20895624885e2d885e2e885e2f885e30885e31889e86000000889e87000000f30f118688000000889e19010000889e20010000899c24c0010000899e64030000899e68030000899e6c030000685c43d200888424c4010000889ebc030000889ebd030000e8fd459eff33c0889ee8030000889ee9030000899ea003000089868403000089868803000089868c030000898690030000898694030000899ea4030000899ea80300008b0d94d3f80083c4048944240c8944241089442414894424188944241c89442420c74424081c000000e8d1ef0d0089442410a194d3f80005281a000089442414ff15a822ce0068009902208d4c240c516689442420e893c60000682c43d200e85b459eff83c4048d8eac030000e8edb20000e870c600008d542428526802020000e85bc60000668b4424283c0275043ae07405e843c6000068020c0000e801c5000050e82dc6000033c08986c00300008986c40300008986c80300008986cc0300008986d00300008986d40300008986d803000053899e8c0000006a2f889e28010000e8dbc500003bc389461c741283f8ff740d68ec42d200e8c1449eff83c4048bcee827f0ffff8bcee8f0f9ffff8b8c24b8010000899e4c010000899e2c0100008bc65e5b64890d0000000081c4bc010000c20800",
+      "Original_equals_live_bytes": true,
+      "gap_free_decode_equals_live_instruction_addresses": true,
+      "calls": [
+        {
+          "address": "00a40e13",
+          "native": "00a3f530",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40eae",
+          "native": "004254b0",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f1a",
+          "native": "00b1fef0",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f31",
+          "native": "00ce22a8 IAT GetUserDefaultLangID",
+          "function": "00a40df0",
+          "kind": "IAT_indirect_call"
+        },
+        {
+          "address": "00a40f46",
+          "native": "00a4d5de",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f50",
+          "native": "004254b0",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f5e",
+          "native": "00a4c250",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f63",
+          "native": "00a4d5d8",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f72",
+          "native": "00a4d5d2",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f84",
+          "native": "00a4d5cc",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f8e",
+          "native": "00a4d494",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40f94",
+          "native": "00a4d5c6",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40fd4",
+          "native": "00a4d5b4",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40fea",
+          "native": "004254b0",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40ff4",
+          "native": "00a40020",
+          "function": "00a40df0",
+          "kind": "call"
+        },
+        {
+          "address": "00a40ffb",
+          "native": "00a409f0",
+          "function": "00a40df0",
+          "kind": "call"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "00a40df0",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00a40df2",
+          "bytes": "687c42cb00",
+          "mnemonic": "push",
+          "operands": "0xcb427c"
+        },
+        {
+          "address": "00a40df7",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00a40dfd",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00a40dfe",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00a40e05",
+          "bytes": "81ecb0010000",
+          "mnemonic": "sub",
+          "operands": "esp, 0x1b0"
+        },
+        {
+          "address": "00a40e0b",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00a40e0c",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00a40e0d",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00a40e0f",
+          "bytes": "89742424",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], esi"
+        },
+        {
+          "address": "00a40e13",
+          "bytes": "e818e7ffff",
+          "mnemonic": "call",
+          "operands": "0xa3f530"
+        },
+        {
+          "address": "00a40e18",
+          "bytes": "8b8c24c8010000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x1c8]"
+        },
+        {
+          "address": "00a40e1f",
+          "bytes": "8b9424cc010000",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x1cc]"
+        },
+        {
+          "address": "00a40e26",
+          "bytes": "0f57c0",
+          "mnemonic": "xorps",
+          "operands": "xmm0, xmm0"
+        },
+        {
+          "address": "00a40e29",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "00a40e2b",
+          "bytes": "c7063c41d200",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xd2413c"
+        },
+        {
+          "address": "00a40e31",
+          "bytes": "885e04",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 4], bl"
+        },
+        {
+          "address": "00a40e34",
+          "bytes": "895e08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], ebx"
+        },
+        {
+          "address": "00a40e37",
+          "bytes": "895e0c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], ebx"
+        },
+        {
+          "address": "00a40e3a",
+          "bytes": "895e14",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x14], ebx"
+        },
+        {
+          "address": "00a40e3d",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00a40e42",
+          "bytes": "894610",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x10], eax"
+        },
+        {
+          "address": "00a40e45",
+          "bytes": "895e18",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], ebx"
+        },
+        {
+          "address": "00a40e48",
+          "bytes": "894e20",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], ecx"
+        },
+        {
+          "address": "00a40e4b",
+          "bytes": "895624",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], edx"
+        },
+        {
+          "address": "00a40e4e",
+          "bytes": "885e2d",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2d], bl"
+        },
+        {
+          "address": "00a40e51",
+          "bytes": "885e2e",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2e], bl"
+        },
+        {
+          "address": "00a40e54",
+          "bytes": "885e2f",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2f], bl"
+        },
+        {
+          "address": "00a40e57",
+          "bytes": "885e30",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x30], bl"
+        },
+        {
+          "address": "00a40e5a",
+          "bytes": "885e31",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x31], bl"
+        },
+        {
+          "address": "00a40e5d",
+          "bytes": "889e86000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x86], bl"
+        },
+        {
+          "address": "00a40e63",
+          "bytes": "889e87000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x87], bl"
+        },
+        {
+          "address": "00a40e69",
+          "bytes": "f30f118688000000",
+          "mnemonic": "movss",
+          "operands": "dword ptr [esi + 0x88], xmm0"
+        },
+        {
+          "address": "00a40e71",
+          "bytes": "889e19010000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x119], bl"
+        },
+        {
+          "address": "00a40e77",
+          "bytes": "889e20010000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x120], bl"
+        },
+        {
+          "address": "00a40e7d",
+          "bytes": "899c24c0010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x1c0], ebx"
+        },
+        {
+          "address": "00a40e84",
+          "bytes": "899e64030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x364], ebx"
+        },
+        {
+          "address": "00a40e8a",
+          "bytes": "899e68030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x368], ebx"
+        },
+        {
+          "address": "00a40e90",
+          "bytes": "899e6c030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x36c], ebx"
+        },
+        {
+          "address": "00a40e96",
+          "bytes": "685c43d200",
+          "mnemonic": "push",
+          "operands": "0xd2435c"
+        },
+        {
+          "address": "00a40e9b",
+          "bytes": "888424c4010000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x1c4], al"
+        },
+        {
+          "address": "00a40ea2",
+          "bytes": "889ebc030000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x3bc], bl"
+        },
+        {
+          "address": "00a40ea8",
+          "bytes": "889ebd030000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x3bd], bl"
+        },
+        {
+          "address": "00a40eae",
+          "bytes": "e8fd459eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a40eb3",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00a40eb5",
+          "bytes": "889ee8030000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x3e8], bl"
+        },
+        {
+          "address": "00a40ebb",
+          "bytes": "889ee9030000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x3e9], bl"
+        },
+        {
+          "address": "00a40ec1",
+          "bytes": "899ea0030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3a0], ebx"
+        },
+        {
+          "address": "00a40ec7",
+          "bytes": "898684030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x384], eax"
+        },
+        {
+          "address": "00a40ecd",
+          "bytes": "898688030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x388], eax"
+        },
+        {
+          "address": "00a40ed3",
+          "bytes": "89868c030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x38c], eax"
+        },
+        {
+          "address": "00a40ed9",
+          "bytes": "898690030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x390], eax"
+        },
+        {
+          "address": "00a40edf",
+          "bytes": "898694030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x394], eax"
+        },
+        {
+          "address": "00a40ee5",
+          "bytes": "899ea4030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3a4], ebx"
+        },
+        {
+          "address": "00a40eeb",
+          "bytes": "899ea8030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3a8], ebx"
+        },
+        {
+          "address": "00a40ef1",
+          "bytes": "8b0d94d3f800",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00a40ef7",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00a40efa",
+          "bytes": "8944240c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0xc], eax"
+        },
+        {
+          "address": "00a40efe",
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "00a40f02",
+          "bytes": "89442414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], eax"
+        },
+        {
+          "address": "00a40f06",
+          "bytes": "89442418",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x18], eax"
+        },
+        {
+          "address": "00a40f0a",
+          "bytes": "8944241c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x1c], eax"
+        },
+        {
+          "address": "00a40f0e",
+          "bytes": "89442420",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], eax"
+        },
+        {
+          "address": "00a40f12",
+          "bytes": "c74424081c000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], 0x1c"
+        },
+        {
+          "address": "00a40f1a",
+          "bytes": "e8d1ef0d00",
+          "mnemonic": "call",
+          "operands": "0xb1fef0"
+        },
+        {
+          "address": "00a40f1f",
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "00a40f23",
+          "bytes": "a194d3f800",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00a40f28",
+          "bytes": "05281a0000",
+          "mnemonic": "add",
+          "operands": "eax, 0x1a28"
+        },
+        {
+          "address": "00a40f2d",
+          "bytes": "89442414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], eax"
+        },
+        {
+          "address": "00a40f31",
+          "bytes": "ff15a822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce22a8]"
+        },
+        {
+          "address": "00a40f37",
+          "bytes": "6800990220",
+          "mnemonic": "push",
+          "operands": "0x20029900"
+        },
+        {
+          "address": "00a40f3c",
+          "bytes": "8d4c240c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0xc]"
+        },
+        {
+          "address": "00a40f40",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00a40f41",
+          "bytes": "6689442420",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x20], ax"
+        },
+        {
+          "address": "00a40f46",
+          "bytes": "e893c60000",
+          "mnemonic": "call",
+          "operands": "0xa4d5de"
+        },
+        {
+          "address": "00a40f4b",
+          "bytes": "682c43d200",
+          "mnemonic": "push",
+          "operands": "0xd2432c"
+        },
+        {
+          "address": "00a40f50",
+          "bytes": "e85b459eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a40f55",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00a40f58",
+          "bytes": "8d8eac030000",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0x3ac]"
+        },
+        {
+          "address": "00a40f5e",
+          "bytes": "e8edb20000",
+          "mnemonic": "call",
+          "operands": "0xa4c250"
+        },
+        {
+          "address": "00a40f63",
+          "bytes": "e870c60000",
+          "mnemonic": "call",
+          "operands": "0xa4d5d8"
+        },
+        {
+          "address": "00a40f68",
+          "bytes": "8d542428",
+          "mnemonic": "lea",
+          "operands": "edx, [esp + 0x28]"
+        },
+        {
+          "address": "00a40f6c",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00a40f6d",
+          "bytes": "6802020000",
+          "mnemonic": "push",
+          "operands": "0x202"
+        },
+        {
+          "address": "00a40f72",
+          "bytes": "e85bc60000",
+          "mnemonic": "call",
+          "operands": "0xa4d5d2"
+        },
+        {
+          "address": "00a40f77",
+          "bytes": "668b442428",
+          "mnemonic": "mov",
+          "operands": "ax, word ptr [esp + 0x28]"
+        },
+        {
+          "address": "00a40f7c",
+          "bytes": "3c02",
+          "mnemonic": "cmp",
+          "operands": "al, 2"
+        },
+        {
+          "address": "00a40f7e",
+          "bytes": "7504",
+          "mnemonic": "jne",
+          "operands": "0xa40f84"
+        },
+        {
+          "address": "00a40f80",
+          "bytes": "3ae0",
+          "mnemonic": "cmp",
+          "operands": "ah, al"
+        },
+        {
+          "address": "00a40f82",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0xa40f89"
+        },
+        {
+          "address": "00a40f84",
+          "bytes": "e843c60000",
+          "mnemonic": "call",
+          "operands": "0xa4d5cc"
+        },
+        {
+          "address": "00a40f89",
+          "bytes": "68020c0000",
+          "mnemonic": "push",
+          "operands": "0xc02"
+        },
+        {
+          "address": "00a40f8e",
+          "bytes": "e801c50000",
+          "mnemonic": "call",
+          "operands": "0xa4d494"
+        },
+        {
+          "address": "00a40f93",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00a40f94",
+          "bytes": "e82dc60000",
+          "mnemonic": "call",
+          "operands": "0xa4d5c6"
+        },
+        {
+          "address": "00a40f99",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00a40f9b",
+          "bytes": "8986c0030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3c0], eax"
+        },
+        {
+          "address": "00a40fa1",
+          "bytes": "8986c4030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3c4], eax"
+        },
+        {
+          "address": "00a40fa7",
+          "bytes": "8986c8030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3c8], eax"
+        },
+        {
+          "address": "00a40fad",
+          "bytes": "8986cc030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3cc], eax"
+        },
+        {
+          "address": "00a40fb3",
+          "bytes": "8986d0030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3d0], eax"
+        },
+        {
+          "address": "00a40fb9",
+          "bytes": "8986d4030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3d4], eax"
+        },
+        {
+          "address": "00a40fbf",
+          "bytes": "8986d8030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3d8], eax"
+        },
+        {
+          "address": "00a40fc5",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00a40fc6",
+          "bytes": "899e8c000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x8c], ebx"
+        },
+        {
+          "address": "00a40fcc",
+          "bytes": "6a2f",
+          "mnemonic": "push",
+          "operands": "0x2f"
+        },
+        {
+          "address": "00a40fce",
+          "bytes": "889e28010000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x128], bl"
+        },
+        {
+          "address": "00a40fd4",
+          "bytes": "e8dbc50000",
+          "mnemonic": "call",
+          "operands": "0xa4d5b4"
+        },
+        {
+          "address": "00a40fd9",
+          "bytes": "3bc3",
+          "mnemonic": "cmp",
+          "operands": "eax, ebx"
+        },
+        {
+          "address": "00a40fdb",
+          "bytes": "89461c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], eax"
+        },
+        {
+          "address": "00a40fde",
+          "bytes": "7412",
+          "mnemonic": "je",
+          "operands": "0xa40ff2"
+        },
+        {
+          "address": "00a40fe0",
+          "bytes": "83f8ff",
+          "mnemonic": "cmp",
+          "operands": "eax, -1"
+        },
+        {
+          "address": "00a40fe3",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0xa40ff2"
+        },
+        {
+          "address": "00a40fe5",
+          "bytes": "68ec42d200",
+          "mnemonic": "push",
+          "operands": "0xd242ec"
+        },
+        {
+          "address": "00a40fea",
+          "bytes": "e8c1449eff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "00a40fef",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00a40ff2",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00a40ff4",
+          "bytes": "e827f0ffff",
+          "mnemonic": "call",
+          "operands": "0xa40020"
+        },
+        {
+          "address": "00a40ff9",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00a40ffb",
+          "bytes": "e8f0f9ffff",
+          "mnemonic": "call",
+          "operands": "0xa409f0"
+        },
+        {
+          "address": "00a41000",
+          "bytes": "8b8c24b8010000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x1b8]"
+        },
+        {
+          "address": "00a41007",
+          "bytes": "899e4c010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x14c], ebx"
+        },
+        {
+          "address": "00a4100d",
+          "bytes": "899e2c010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x12c], ebx"
+        },
+        {
+          "address": "00a41013",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "00a41015",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00a41016",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00a41017",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00a4101e",
+          "bytes": "81c4bc010000",
+          "mnemonic": "add",
+          "operands": "esp, 0x1bc"
+        },
+        {
+          "address": "00a41024",
+          "bytes": "c20800",
+          "mnemonic": "ret",
+          "operands": "8"
+        }
+      ]
+    }
+  ],
+  "loader_publication_inputs": [
+    {
+      "address": "00e0e3ec",
+      "role": "first clock sample flag",
+      "bytes": 1,
+      "loader_hex": "01",
+      "live_Ghidra_equals_loader_image": true,
+      "section": ".data",
+      "section_virtual_size": 2719452,
+      "section_raw_size": 65536,
+      "loader_zero_bytes": 0
+    },
+    {
+      "address": "00f8abec",
+      "role": "notification9 callback publication",
+      "bytes": 4,
+      "loader_hex": "00000000",
+      "live_Ghidra_equals_loader_image": true,
+      "section": ".data",
+      "section_virtual_size": 2719452,
+      "section_raw_size": 65536,
+      "loader_zero_bytes": 4
+    },
+    {
+      "address": "00f8abf0",
+      "role": "notification11 callback publication",
+      "bytes": 4,
+      "loader_hex": "00000000",
+      "live_Ghidra_equals_loader_image": true,
+      "section": ".data",
+      "section_virtual_size": 2719452,
+      "section_raw_size": 65536,
+      "loader_zero_bytes": 4
+    },
+    {
+      "address": "00f8abfc",
+      "role": "saved callback-time float bits",
+      "bytes": 4,
+      "loader_hex": "00000000",
+      "live_Ghidra_equals_loader_image": true,
+      "section": ".data",
+      "section_virtual_size": 2719452,
+      "section_raw_size": 65536,
+      "loader_zero_bytes": 4
+    },
+    {
+      "address": "00f8a2fc",
+      "role": "actual session/client publication",
+      "bytes": 4,
+      "loader_hex": "00000000",
+      "live_Ghidra_equals_loader_image": true,
+      "section": ".data",
+      "section_virtual_size": 2719452,
+      "section_raw_size": 65536,
+      "loader_zero_bytes": 4
+    }
+  ],
+  "caller_contract": {
+    "allocation": "0073DC50 PUSH3F0;0073DC55 CALL BF681B; retain returned allocation atESP+10; compare with EDI0",
+    "constructor": "state14 atESP+144; null allocation skips constructor; push735520 then735510; ECX=allocation;0073DC7C CALL A40DF0",
+    "after_constructor": "0073DC81 reload CURRENT F8ABE8;0073DC87 store DWORD[current+18]=737D60. Do not use captured allocation or constructor EAX for this store. Reload is unconditional even on allocation-null path.",
+    "continuation": "0073DC8E begins next-system test;0073DC94 restores parent state EBX (-1 in this reached region). Parent prologue and bounded relevant state writes inspected; parent handler/whole initialization not reconstructed.",
+    "native_ABI": "Caller fragment is not a standalone function. Its fixed native ESI/application, EDI0, EBX-1, stack frame and EH temporaries are not an ordinary Source function ABI."
+  },
+  "constructor_contract": {
+    "bytes": 567,
+    "instructions": 129,
+    "native_ABI": "ECX=actual3F0 allocation; two DWORD callbacks on stack; ESI captures owner, EBX zero; EAX returns same owner; RET8. FS exception record references CB427C; scalar zero MOVSS follows XORPS, no inferred floating arithmetic.",
+    "schedule": "base constructor/publish/register; derived observed-field stores and callback20/24; actual renderer device and separately reloaded mutable+1A28; LANGID; XLiveInitializeEx; real IPC slot initialization; XOnlineStartup; XWSAStartup/raw-version test/conditional cleanup; full NTOHS return to port setter; listener store; concrete reset; COMPLETE online pump; only then +14C/+12C zero stores.",
+    "preimages": "Only observed fields are initialized. Preserve vector prefix+360, overlap words+398/+39C and other untouched allocation bytes. Full400-byte WSADATA preimage required because failure/partial SDK writes do not prevent version read. Pump may reach +12C before its final clear; reset does not initialize that field.",
+    "exception_boundary": "Observed state0 after base, state1 after vector initialization. Existing C++ provider has vector-then-base cleanup, retains native partial publication behavior, and does not invent IPC/SDK shutdown on constructor unwind. Original parent/FH3 machine handlers not executed or newly reconstructed."
+  },
+  "required_actual_inputs": [
+    {
+      "input": "allocation and real manager identity",
+      "existing": "NativeOnlineManagerStorage/default-initialized3F0 allocation; full raw A3F530 and A40DF0 providers",
+      "missing_application_binding": "allocate exactly one actual owner; keep actual allocation preimages defined without whole-blob zeroing; no projected XLiveOwnerAllocation",
+      "lifetime": "same receiver in notification/pump/startup/lifetime contexts; owner registration can publish before constructor completes"
+    },
+    {
+      "input": "base publication and singleton deletion",
+      "existing": "GameNativeSettingsProcess::online_00f8abe8; GameSingletonHost::manager_publication_01090aa0; native_deletion_bindings().native_online",
+      "missing_application_binding": "bind NativeOnlineManagerLifetimeContext before base registration, leave mutually exclusive xlive_owner null, retain context through shared scalar drain",
+      "lifetime": "A3F530 publishes before derived stores; A3F5D0 unregisters current publication and clears it; scalar flags1 consumes allocation"
+    },
+    {
+      "input": "renderer and startup SDK",
+      "existing": "actual GameNativeRendererApplication::publication_00f8d394; NativeOnlineStartupSdkRuntime(same XLiveLibrary)",
+      "missing_application_binding": "borrow canonical renderer cell and same live module; startup context currently wants mutable pointer-reference while public renderer accessor is const-volatile reference, requiring a faithful borrow/interface adjustment",
+      "lifetime": "read renderer separately for device and mutable +1A28 present parameters; module/renderer survive all SDK calls"
+    },
+    {
+      "input": "startup SDK methods",
+      "existing": "GetUserDefaultLangID and XLive ordinals5297,5310,1,2,38,84,5270",
+      "missing_application_binding": "construct genuine startup adapter from already loaded SoundServices XLive library; no substitute statuses",
+      "lifetime": "pass actual1Ch info image and400-byte WSADATA; preserve partial writes and full DWORD port result"
+    },
+    {
+      "input": "IPC process services and endpoint",
+      "existing": "GameNativeOnlineProcess real globals/CRT callbacks/pipe service adapters/immutable worker runtime; raw A4C250/A4C030 providers",
+      "missing_application_binding": "constructor must create its real endpoint into owner+3AC using process.ipc(); no endpoint exists merely because initialize_once returned",
+      "lifetime": "process services through process exit; endpoint close before CRT lock destruction; original1000ms wait is not guaranteed worker join"
+    },
+    {
+      "input": "compatible IPC peer",
+      "existing": "mode0 transport obtains actual parent PID and opens parent-PID-derived pipe name; framing/protocol services reconstructed",
+      "missing_application_binding": "establish genuine compatible server/protocol/bootstrap provenance, not a simulated peer or ignored error",
+      "lifetime": "negative open/creation failure enters cleanup then _exit(0); which component actually provides the genuine server is not established by this audit"
+    },
+    {
+      "input": "notification operation and publications",
+      "existing": "NativeOnlineNotificationRuntime; NativeOnlineNotificationOperation; notification9/11 and client publication references",
+      "missing_application_binding": "retain real id/parameter/invite-stack preimages and raw temporary headers; own canonical publication cells and bind their real producers",
+      "lifetime": "loader callback9/11/client cells are zero, but later004E555E producer installs004CEB40; only declaration/call exists for install_startup_callback in current production Source"
+    },
+    {
+      "input": "query and clock",
+      "existing": "SoundServices NativeOnlineSigninRuntime borrows genuine library and actual frame-clock publication; request +24 provider now exists",
+      "missing_application_binding": "use that same runtime/canonical clock; define and retain clock-output preimage used by both samples",
+      "lifetime": "pump samples twice; first_sample E0E3EC image1 and last_callback F8ABFC imagezero are mutable real cells"
+    },
+    {
+      "input": "profile/update notification leaf",
+      "existing": "NativeOnlineNotificationLeafRuntime(library, NativeOnlineProfileCallbackContext); complete00737D60 raw profile callback",
+      "missing_application_binding": "bind same current manager/game/string publications; actual game must have constructed profile+650 and mirror+1FF0 when callback is reached",
+      "lifetime": "constructor clears+18 before first pump; caller assigns737D60 after constructor returns by reloading current F8ABE8; first-pump and later callback requirements differ"
+    },
+    {
+      "input": "UI and locale",
+      "existing": "NativeOnlineSigninUiRuntime(library, LocaleTextResolver); LocaleLuaContext for caller-selected actual current Lua state",
+      "missing_application_binding": "stable genuine locale resolver/current Lua context; existing private GameLocaleTextRuntime returns neutral invalid on context substitution and cannot justify arbitrary online UI paths",
+      "lifetime": "explicit28-byte sign-in-info preimage copied before SDK; no invented zero default or unrelated page-script Lua state"
+    },
+    {
+      "input": "raw string pool",
+      "existing": "GameVfsHost::raw_strings() over actual AA8/AA4/AA0 publications",
+      "missing_application_binding": "borrow this same pool into notification, profile callback and UI contexts",
+      "lifetime": "headers/pool and publications remain alive across callbacks and cleanup"
+    },
+    {
+      "input": "storage/achievement/CRT",
+      "existing": "resolve_native_online_storage_sdk and resolve_native_online_achievements_sdk from loaded module; raw pump providers; standard sign-in UI CRT boundary",
+      "missing_application_binding": "bind actual SDK imports, matching allocation/free and invalid-parameter/memmove entries, without fake pending results",
+      "lifetime": "owner/module/buffers survive pending operations; preserve native lifetime hazards and timeout behavior"
+    },
+    {
+      "input": "application consumer publication",
+      "existing": "SoundServices canonical online cell and online_pump pointer; InputServices/GameInputRuntime and platform loading-message pump borrow them",
+      "missing_application_binding": "publish the actual constructed pump context and same manager, keep them available through users and shared drain, then retire consistently",
+      "lifetime": "current application initializes neither owner nor pump; menu read/reset/request methods remain neutral"
+    }
+  ],
+  "smallest_next_Source_packet": {
+    "classification": "Application composition/provider, not another missing A40DF0 native body",
+    "candidate_entry": "start_native_online_application_owner_0073dc50(actual allocation/factory, pump/startup/lifetime contexts, actual publication cells)",
+    "candidate_owner": "GameNativeOnlineApplication (descriptive proposed name), owning one actual manager and stable operation/context images while borrowing genuine application/process services",
+    "candidate_files": [
+      "include/bsp/game_native_online_application.hpp",
+      "src/game_native_online_application.cpp",
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts.hpp",
+      "include/bsp/native_online_manager_lifetime.hpp"
+    ],
+    "normal_contract": [
+      "prepare every stable context and raw deletion binding before base publication",
+      "allocate/default-initialize exact3F0 owner without blob zeroing; preserve/define actual current-process byte preimages with existing audited machine-byte capture if needed, without claiming original heap/stack equality",
+      "construct pump on that same allocation and call complete A40DF0 with callback20=735510,callback24=735520",
+      "after normal return reload canonicalF8ABE8 and store callback18=737D60 exactly there",
+      "publish that same actual pump to existing input/platform borrowers with required lifecycle/retirement",
+      "retain lifetime, SDK, pool, renderer, notification and process services through normal shared drain; do not drop a partially published graph on Source interruption"
+    ],
+    "ready_boundary": "The small caller schedule is fully evidenced and a context-injected normal-return composition provider can be implemented without re-expanding giant0073D410. It is honest only when callers supply the full actual contexts and genuine compatible IPC peer; no currently closed production factory/owner graph exists.",
+    "not_ready": "Unconditional GameStartupHost/menu activation with currentNULL publications: actual preimage/locale/profile/notification producer/teardown composition and genuine peer bootstrap remain open. An owner shell that suppresses initial pump or ignores IPC failure is not a complete provider.",
+    "next_independent_bounded_audits": [
+      "genuine peer/server bootstrap provenance for parent-PID pipe; existing Source only shows mode0 client callsites",
+      "actual constructor-pump context factory/preimage producers and readonly renderer-reference admission",
+      "later004E555E->004CEB40 system-UI callback producer and current game/profile/locale publication admission"
+    ],
+    "forbidden": [
+      "simulate peer",
+      "ignore missing peer",
+      "offline/fake success state",
+      "skip initial reset/pump",
+      "zero surrogate manager/preimages",
+      "replace callback18 with context4/6 or invented menu hook",
+      "substitute detached renderer/game/pool/publication copies"
+    ],
+    "ready_fragment": {
+      "name": "construct_native_online_application_nonnull_arm_0073dc70 (proposed)",
+      "range": "0073DC70..0073DC8D",
+      "ordinary_interface": "NativeOnlinePumpContext&, NativeOnlineManagerStartupContext&; manager already allocated and retained, same receiver as pump.notifications.manager",
+      "effects": "call complete raw A40DF0 with callbacks735510/735520; after return reload startup.lifetime.base.current_manager_00f8abe8 and store737D60 at current+18",
+      "coverage": "Full admitted normal nonnull arm and current-publication continuation fragment; not a whole native function or complete application owner",
+      "does_not_close": "allocation/failure policy, application context factory, genuine peer, pump publication and later consumer/lifecycle admission"
+    }
+  },
+  "selected_Source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts.cpp",
+      "bytes": 120415,
+      "sha256": "f23560ddde033d7f1a45417386db190820f80b7e5c2ffed71db165fc0cc5736d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_hosts.cpp",
+      "repository_path": "src/game_hosts.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_hosts.hpp",
+      "bytes": 38143,
+      "sha256": "d918220a498a9cf52a908852f8aa4dffd3973e9db18bd0a0c4adac5b6d5a1b39",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_hosts.hpp",
+      "repository_path": "include/bsp/game_hosts.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_menu.cpp",
+      "bytes": 88758,
+      "sha256": "870d614c88c99c6a51a5385c6bcb2043def01689f7133dc4915a3265a7cb9e3d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_hosts_menu.cpp",
+      "repository_path": "src/game_hosts_menu.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_native_online_process.cpp",
+      "bytes": 4663,
+      "sha256": "32ccc83e1076e652ea4fdd92fde57e53a12be54b873bd925d9a78dbe3324d985",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_native_online_process.cpp",
+      "repository_path": "src/game_native_online_process.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_native_online_process.hpp",
+      "bytes": 1836,
+      "sha256": "e0fe8821def9d82f84479e555165d875d230997560517876c90193f2c3d03101",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_native_online_process.hpp",
+      "repository_path": "include/bsp/game_native_online_process.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_native_settings_process.cpp",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_native_settings_process.cpp",
+      "repository_path": "src/game_native_settings_process.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_native_settings_process.hpp",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_native_settings_process.hpp",
+      "repository_path": "include/bsp/game_native_settings_process.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_singletons.cpp",
+      "bytes": 6608,
+      "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_hosts_singletons.cpp",
+      "repository_path": "src/game_hosts_singletons.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_hosts_singletons.hpp",
+      "bytes": 7474,
+      "sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_hosts_singletons.hpp",
+      "repository_path": "include/bsp/game_hosts_singletons.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_manager_owner.cpp",
+      "bytes": 4655,
+      "sha256": "dd4375f1ae6b1d5bd103cfb8e14b8a1fb3b2b224181edf003ee340f3826ac429",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_manager_owner.cpp",
+      "repository_path": "src/native_online_manager_owner.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_manager_owner.hpp",
+      "bytes": 2064,
+      "sha256": "2bf6141cf38b51a6d1417ffccd0420232d93e68162f1b7bbd41c4b2a0131374c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_manager_owner.hpp",
+      "repository_path": "include/bsp/native_online_manager_owner.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_manager_lifetime.cpp",
+      "bytes": 6322,
+      "sha256": "496d53f5dac9e6cf0dee1a8f0f21172a45c2ae7ae51bd814582739413bb6f5a4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_manager_lifetime.cpp",
+      "repository_path": "src/native_online_manager_lifetime.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_manager_lifetime.hpp",
+      "bytes": 2916,
+      "sha256": "4838b475fae3e8be2d9af800b5c9ed27df810869de64ba97579be377e1de34d4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_manager_lifetime.hpp",
+      "repository_path": "include/bsp/native_online_manager_lifetime.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_pump.cpp",
+      "bytes": 3038,
+      "sha256": "75ff2b640896de32dfab8def0eca8fe30242ee3418581cf62e1fc35501676e54",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_pump.cpp",
+      "repository_path": "src/native_online_pump.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_pump.hpp",
+      "bytes": 1154,
+      "sha256": "a438701729266afbb4ae0f61cf4e23feaecac49af40400c56bdb5313e44bb8ce",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_pump.hpp",
+      "repository_path": "include/bsp/native_online_pump.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_ipc.cpp",
+      "bytes": 10304,
+      "sha256": "bcc55f1bfdf22861b821f6295666d15e76f1bf3279f6a600654cd86d40af8e9f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_ipc.cpp",
+      "repository_path": "src/native_online_ipc.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_ipc.hpp",
+      "bytes": 3211,
+      "sha256": "baf6a1310e8b34b639300ef56b78a6fcc535070bb9dcdbfad083a9a4fe62c510",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_ipc.hpp",
+      "repository_path": "include/bsp/native_online_ipc.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_startup_sdk.cpp",
+      "bytes": 3666,
+      "sha256": "3d9826701cc6f137ba483707fee28158800974277cf9d0c684e8980a31ae9efc",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_startup_sdk.cpp",
+      "repository_path": "src/native_online_startup_sdk.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_startup_sdk.hpp",
+      "bytes": 4310,
+      "sha256": "f3ccb3f11d5131839b90636297b324d8942d24dc479761c988e743a919db2b08",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_startup_sdk.hpp",
+      "repository_path": "include/bsp/native_online_startup_sdk.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_signin.cpp",
+      "bytes": 9471,
+      "sha256": "7d17a3984230bd579956436415041c2730e276d1cad9d1c22b5587de1cebda3f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_signin.cpp",
+      "repository_path": "src/native_online_signin.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_signin.hpp",
+      "bytes": 6133,
+      "sha256": "93016405b3985f7f0914d0c93e1009d62dce9766719c525c002820c2669d300e",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_signin.hpp",
+      "repository_path": "include/bsp/native_online_signin.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_notification_dispatch.cpp",
+      "bytes": 9833,
+      "sha256": "7a4fba7612cdd337bdad1e5a41e8e9e59f41ac93ae56da8b441d0d1ad547299e",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_notification_dispatch.cpp",
+      "repository_path": "src/native_online_notification_dispatch.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_notification_dispatch.hpp",
+      "bytes": 4144,
+      "sha256": "6cbe1a9f87cd0fdd0f8084f5cb21f63d907e28ecfe0e2ea9960290f285e9f0f8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_notification_dispatch.hpp",
+      "repository_path": "include/bsp/native_online_notification_dispatch.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_notification_leaves.cpp",
+      "bytes": 7745,
+      "sha256": "6ee1c969b0c4c96d0e4e5981ad21f0a195cbf6f0fc619707e16eb6183c0c4026",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_notification_leaves.cpp",
+      "repository_path": "src/native_online_notification_leaves.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_notification_leaves.hpp",
+      "bytes": 4836,
+      "sha256": "1202b9a3b4af85c1f782477ef18fdbb3a410a76a4d67b4442533f99270135af3",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_notification_leaves.hpp",
+      "repository_path": "include/bsp/native_online_notification_leaves.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_profile_callback.cpp",
+      "bytes": 4959,
+      "sha256": "fe80c95862a10b959ac69dca311093ff73712f2bc68c07eb8d891cbbb76b09bd",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_profile_callback.cpp",
+      "repository_path": "src/native_online_profile_callback.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_profile_callback.hpp",
+      "bytes": 2802,
+      "sha256": "6f9fba80c3d96b71d438deb49902f4b66455d8177505777416e2d795b73b730b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_profile_callback.hpp",
+      "repository_path": "include/bsp/native_online_profile_callback.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_signin_ui.cpp",
+      "bytes": 13743,
+      "sha256": "5f1a3506d31363733456a39c2f5e542abdf3b66b488dddfe7a81b9f08060ea65",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_signin_ui.cpp",
+      "repository_path": "src/native_online_signin_ui.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_signin_ui.hpp",
+      "bytes": 4778,
+      "sha256": "3224e5916e8f1d3c19ab02b085242746a5c91e14ed011b6eebcd6604baa1a763",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_signin_ui.hpp",
+      "repository_path": "include/bsp/native_online_signin_ui.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_storage.cpp",
+      "bytes": 7176,
+      "sha256": "c7cadefda9a374925a478cb65bd6d8c6736a7752ecc519aaa1046e74113d5008",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_storage.cpp",
+      "repository_path": "src/native_online_storage.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_storage.hpp",
+      "bytes": 2786,
+      "sha256": "a5c35809c2b3795ba3fa151f373a0533640a61a531adcc92cd70d4b17deca381",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_storage.hpp",
+      "repository_path": "include/bsp/native_online_storage.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_online_achievements.cpp",
+      "bytes": 6494,
+      "sha256": "42629ca8565b87b87221e747dbd48636f39e5d119a124924d92f0f061b9bd678",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_online_achievements.cpp",
+      "repository_path": "src/native_online_achievements.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_achievements.hpp",
+      "bytes": 2069,
+      "sha256": "41349d4e59ce04a9f84c7acb9cca6d1b4239a649b65227ff9de37eea1a89efa3",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_achievements.hpp",
+      "repository_path": "include/bsp/native_online_achievements.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_singleton_destruction.cpp",
+      "bytes": 24236,
+      "sha256": "d1901241daf398bbb42967ec81258e399f4abb27f5d676ec1999804ccd9328ec",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\native_singleton_destruction.cpp",
+      "repository_path": "src/native_singleton_destruction.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_singleton_destruction.hpp",
+      "bytes": 17019,
+      "sha256": "8b0c9e8bb2ec5952ba07859d2b981890d92cc0743c19abca09960922c623adc4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_singleton_destruction.hpp",
+      "repository_path": "include/bsp/native_singleton_destruction.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_pipe_services.cpp",
+      "bytes": 2957,
+      "sha256": "c0a00dc4d85c7ac6fa56517840e5b952b606972d136b8464842fefdc30855d83",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\xlive_pipe_services.cpp",
+      "repository_path": "src/xlive_pipe_services.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\xlive_pipe_services.hpp",
+      "bytes": 1362,
+      "sha256": "8ff8629940e4e3e7c50c3aca733d1a67a8f69686441091a933f07be90c6c80fc",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\xlive_pipe_services.hpp",
+      "repository_path": "include/bsp/xlive_pipe_services.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_pipe_transport.cpp",
+      "bytes": 14927,
+      "sha256": "b60596c36243f17fb475d9ab2578a5e28d02cb19036f4b523b07b63bf33a04e5",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\xlive_pipe_transport.cpp",
+      "repository_path": "src/xlive_pipe_transport.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\xlive_pipe_transport.hpp",
+      "bytes": 6600,
+      "sha256": "16207b3bce9cdaf24c4cbc08e4a5f082a1597e27aee1fdab08a957d6e8d98e5c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\xlive_pipe_transport.hpp",
+      "repository_path": "include/bsp/xlive_pipe_transport.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\xlive_pipe_preimage.cpp",
+      "bytes": 1361,
+      "sha256": "d8d7708366641d3578cc9979dcce35e59a651043bbda485a62976c847d75e77a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\xlive_pipe_preimage.cpp",
+      "repository_path": "src/xlive_pipe_preimage.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\xlive_pipe_preimage.hpp",
+      "bytes": 1509,
+      "sha256": "fb03ca3eaa568546304b88243203a880f943e044f88362061c2731912b135068",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\xlive_pipe_preimage.hpp",
+      "repository_path": "include/bsp/xlive_pipe_preimage.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_input_runtime.cpp",
+      "bytes": 8777,
+      "sha256": "a251c8c1e8dd6cdb8e853e55c5a94550be0fd0d45c86b612d23d9219d62909b0",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_input_runtime.cpp",
+      "repository_path": "src/game_input_runtime.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_input_runtime.hpp",
+      "bytes": 3456,
+      "sha256": "b9c2f1f29cb861d7075f8f641aff0956b2d8d9016e38e5759cdad2d925aee2b1",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_input_runtime.hpp",
+      "repository_path": "include/bsp/game_input_runtime.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_native_renderer_application.hpp",
+      "bytes": 7462,
+      "sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_native_renderer_application.hpp",
+      "repository_path": "include/bsp/game_native_renderer_application.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_hosts_text.cpp",
+      "bytes": 18991,
+      "sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_hosts_text.cpp",
+      "repository_path": "src/game_hosts_text.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_hosts_vfs.hpp",
+      "bytes": 11628,
+      "sha256": "be2f3f87c74887a53bd7cd3137c482515b1fa22d97808baf6cc4df93b5e5a871",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_hosts_vfs.hpp",
+      "repository_path": "include/bsp/game_hosts_vfs.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\game_entry.cpp",
+      "bytes": 4474,
+      "sha256": "da35e8db068d745c0880cdf6c878ead3fa9bd4f2827582b5e68b15b80702a6d9",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\src\\game_entry.cpp",
+      "repository_path": "src/game_entry.cpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\game_entry.hpp",
+      "repository_path": "include/bsp/game_entry.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\locale_lua_context.hpp",
+      "bytes": 1399,
+      "sha256": "f382eccce79c771f9a7a01af17de410c0af796de084d36045b6692716173a880",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\locale_lua_context.hpp",
+      "repository_path": "include/bsp/locale_lua_context.hpp",
+      "primary_same_bytes": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_online_notifications.hpp",
+      "bytes": 2261,
+      "sha256": "ebdc2ad2b07aa53b7f033f32982c61908fc8d9abe19961a1585fc1ee2623b821",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence\\Source\\include\\bsp\\native_online_notifications.hpp",
+      "repository_path": "include/bsp/native_online_notifications.hpp",
+      "primary_same_bytes": true
+    }
+  ],
+  "validation": {
+    "Original_bytes_equal_live_and_gap_free": true,
+    "Source_inputs_rechecked": {
+      "files": 50,
+      "worker_and_primary_equal": true
+    },
+    "direct_transfer_report": {
+      "command": "python tools/verify_report_calls.py reports/cc12_online_application_owner_readiness.json",
+      "direct_rows_checked": 17,
+      "failed": 0,
+      "IAT_indirect_rows_skipped": 1,
+      "exit_code": 0
+    },
+    "new_Source_build": false,
+    "real_SDK_or_peer": false,
+    "runtime_owner_startup": false,
+    "functional_menu_or_gameplay": false
+  },
+  "historical_validation_boundary": "R103 checked-in report documents prior isolated constructor/IPC fixture and build results. They were not rerun and do not prove a genuine peer or current application owner startup. Root reports separately rebuilt request Source and fresh finite startup; this read-only packet does not upgrade that to online/menu/gameplay proof.",
+  "limits": [
+    "Current GameNativeOnlineProcess is a process-services owner, explicitly not an endpoint owner",
+    "Caller fragment and complete constructor are static evidence; actual normal-return live SDK/IPC path is unvalidated",
+    "Current readonly renderer publication accessor cannot directly bind startup context mutable reference without a faithful interface adjustment",
+    "Initial loader-null callbacks/client are not permission to leave later real producers permanently unbound",
+    "Do not assume ordinary RAII deletion of interrupted registered owners reproduces Original FH3; retain application graph or establish a separate interruption policy"
+  ],
+  "retained_evidence": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence",
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_online_application_owner_readiness_evidence.zip",
+    "bytes": 333633,
+    "sha256": "b5c9bafb32dead99d776f0f472b3e3ecb8b2b3d526e05be49f79ab478fbfe01c",
+    "entries": 74,
+    "zip_integrity": true,
+    "manifest_sha256": "1bc198735cde64da6b2b771997136a44d12d27553755843d58857ca2b2b5237f",
+    "all_artifact_hashes_rechecked": true
+  },
+  "primary_review": {
+    "status": "PASS",
+    "archive_artifacts_rehashed": 73,
+    "current_Source_and_retained_pins_checked": 50,
+    "complete_constructor_Original_bytes": 567,
+    "bounded_caller_Original_bytes": 75,
+    "direct_transfer_rows_checked": 17,
+    "production_owner_activation_closed": false,
+    "SDK_account_game_execution": false,
+    "limits": "Actual parent-derived IPC peer, full startup/pump producer and byte preimages, mutable renderer context binding, consumer publication, and retirement remain unclosed. Process services own no endpoint."
+  }
+}
