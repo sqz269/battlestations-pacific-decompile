@@ -1,0 +1,502 @@
+{
+  "packet": "cc12_weapon_hit_accuracy_raw_defaults",
+  "utc": "2026-10-08T10:43:46.689603+00:00",
+  "status": "whole_raw_entry_static_COFF_and_exact_archive_member_qualified_strict_Win32_build_and_three_existing_tests_passed",
+  "scope": {
+    "new_Source": "complete independent raw ECX initializer, 136 bytes, 27 instructions",
+    "new_original_function_count": 0,
+    "class_owner_Lua_or_game_qualification": false,
+    "new_native_or_Source_fixture_execution": false,
+    "new_test_cases": 0
+  },
+  "Original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Original": {
+    "entry": "00836ef0",
+    "end_inclusive": "00836f77",
+    "bytes": 136,
+    "sha256": "442eaa7841cbeabc07ff6ab3f7da200b95fb6bbf23e07a16feb8ff9a1233a6c4",
+    "hex": "f30f1005083dce008bc1f30f1100f30f10056c38ce00f30f114004f30f10050038ce00f30f114030f30f114008f30f114034f30f11400cf30f114038f30f114010f30f11403cf30f114014f30f114040f30f114018f30f114044f30f11401cf30f114048f30f114020f30f11404cf30f114024f30f114050f30f114028f30f114054f30f11402cc3",
+    "instructions": [
+      {
+        "address": "00836ef0",
+        "bytes": "f30f1005083dce00",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [0xce3d08]"
+      },
+      {
+        "address": "00836ef8",
+        "bytes": "8bc1",
+        "mnemonic": "mov",
+        "operands": "eax, ecx"
+      },
+      {
+        "address": "00836efa",
+        "bytes": "f30f1100",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax], xmm0"
+      },
+      {
+        "address": "00836efe",
+        "bytes": "f30f10056c38ce00",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [0xce386c]"
+      },
+      {
+        "address": "00836f06",
+        "bytes": "f30f114004",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 4], xmm0"
+      },
+      {
+        "address": "00836f0b",
+        "bytes": "f30f10050038ce00",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [0xce3800]"
+      },
+      {
+        "address": "00836f13",
+        "bytes": "f30f114030",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x30], xmm0"
+      },
+      {
+        "address": "00836f18",
+        "bytes": "f30f114008",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 8], xmm0"
+      },
+      {
+        "address": "00836f1d",
+        "bytes": "f30f114034",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x34], xmm0"
+      },
+      {
+        "address": "00836f22",
+        "bytes": "f30f11400c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0xc], xmm0"
+      },
+      {
+        "address": "00836f27",
+        "bytes": "f30f114038",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x38], xmm0"
+      },
+      {
+        "address": "00836f2c",
+        "bytes": "f30f114010",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x10], xmm0"
+      },
+      {
+        "address": "00836f31",
+        "bytes": "f30f11403c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x3c], xmm0"
+      },
+      {
+        "address": "00836f36",
+        "bytes": "f30f114014",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x14], xmm0"
+      },
+      {
+        "address": "00836f3b",
+        "bytes": "f30f114040",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x40], xmm0"
+      },
+      {
+        "address": "00836f40",
+        "bytes": "f30f114018",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x18], xmm0"
+      },
+      {
+        "address": "00836f45",
+        "bytes": "f30f114044",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x44], xmm0"
+      },
+      {
+        "address": "00836f4a",
+        "bytes": "f30f11401c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x1c], xmm0"
+      },
+      {
+        "address": "00836f4f",
+        "bytes": "f30f114048",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x48], xmm0"
+      },
+      {
+        "address": "00836f54",
+        "bytes": "f30f114020",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x20], xmm0"
+      },
+      {
+        "address": "00836f59",
+        "bytes": "f30f11404c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x4c], xmm0"
+      },
+      {
+        "address": "00836f5e",
+        "bytes": "f30f114024",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x24], xmm0"
+      },
+      {
+        "address": "00836f63",
+        "bytes": "f30f114050",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x50], xmm0"
+      },
+      {
+        "address": "00836f68",
+        "bytes": "f30f114028",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x28], xmm0"
+      },
+      {
+        "address": "00836f6d",
+        "bytes": "f30f114054",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x54], xmm0"
+      },
+      {
+        "address": "00836f72",
+        "bytes": "f30f11402c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [eax + 0x2c], xmm0"
+      },
+      {
+        "address": "00836f77",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "live_pre_and_post_equal_installed_PE": true
+  },
+  "production_whole_COFF": {
+    "symbol": "?raw_initialize_native_weapon_hit_accuracy_00836ef0@bsp@@YIPAXPAX@Z",
+    "section": 34,
+    "offset": 0,
+    "bytes": 136,
+    "sha256": "98ff140e7c43af91c5daf073e668d91002e27e4bc619651a2ce19b36b32ae813",
+    "hex": "f30f1005000000008bc1f30f1100f30f100500000000f30f114004f30f100500000000f30f114030f30f114008f30f114034f30f11400cf30f114038f30f114010f30f11403cf30f114014f30f114040f30f114018f30f114044f30f11401cf30f114048f30f114020f30f11404cf30f114024f30f114050f30f114028f30f114054f30f11402cc3",
+    "relocations": [
+      {
+        "offset": 4,
+        "type": 6,
+        "target": "?raw_weapon_small_size_00ce3d08@?A0x4de18758@bsp@@3MB"
+      },
+      {
+        "offset": 18,
+        "type": 6,
+        "target": "?raw_weapon_large_size_00ce386c@?A0x4de18758@bsp@@3MB"
+      },
+      {
+        "offset": 31,
+        "type": 6,
+        "target": "?raw_weapon_accuracy_00ce3800@?A0x4de18758@bsp@@3MB"
+      }
+    ],
+    "instruction_count": 27,
+    "complete_decode": true,
+    "disassembly": [
+      {
+        "offset": 0,
+        "bytes": "f30f100500000000",
+        "instruction": "movss xmm0, dword ptr [0]"
+      },
+      {
+        "offset": 8,
+        "bytes": "8bc1",
+        "instruction": "mov eax, ecx"
+      },
+      {
+        "offset": 10,
+        "bytes": "f30f1100",
+        "instruction": "movss dword ptr [eax], xmm0"
+      },
+      {
+        "offset": 14,
+        "bytes": "f30f100500000000",
+        "instruction": "movss xmm0, dword ptr [0]"
+      },
+      {
+        "offset": 22,
+        "bytes": "f30f114004",
+        "instruction": "movss dword ptr [eax + 4], xmm0"
+      },
+      {
+        "offset": 27,
+        "bytes": "f30f100500000000",
+        "instruction": "movss xmm0, dword ptr [0]"
+      },
+      {
+        "offset": 35,
+        "bytes": "f30f114030",
+        "instruction": "movss dword ptr [eax + 0x30], xmm0"
+      },
+      {
+        "offset": 40,
+        "bytes": "f30f114008",
+        "instruction": "movss dword ptr [eax + 8], xmm0"
+      },
+      {
+        "offset": 45,
+        "bytes": "f30f114034",
+        "instruction": "movss dword ptr [eax + 0x34], xmm0"
+      },
+      {
+        "offset": 50,
+        "bytes": "f30f11400c",
+        "instruction": "movss dword ptr [eax + 0xc], xmm0"
+      },
+      {
+        "offset": 55,
+        "bytes": "f30f114038",
+        "instruction": "movss dword ptr [eax + 0x38], xmm0"
+      },
+      {
+        "offset": 60,
+        "bytes": "f30f114010",
+        "instruction": "movss dword ptr [eax + 0x10], xmm0"
+      },
+      {
+        "offset": 65,
+        "bytes": "f30f11403c",
+        "instruction": "movss dword ptr [eax + 0x3c], xmm0"
+      },
+      {
+        "offset": 70,
+        "bytes": "f30f114014",
+        "instruction": "movss dword ptr [eax + 0x14], xmm0"
+      },
+      {
+        "offset": 75,
+        "bytes": "f30f114040",
+        "instruction": "movss dword ptr [eax + 0x40], xmm0"
+      },
+      {
+        "offset": 80,
+        "bytes": "f30f114018",
+        "instruction": "movss dword ptr [eax + 0x18], xmm0"
+      },
+      {
+        "offset": 85,
+        "bytes": "f30f114044",
+        "instruction": "movss dword ptr [eax + 0x44], xmm0"
+      },
+      {
+        "offset": 90,
+        "bytes": "f30f11401c",
+        "instruction": "movss dword ptr [eax + 0x1c], xmm0"
+      },
+      {
+        "offset": 95,
+        "bytes": "f30f114048",
+        "instruction": "movss dword ptr [eax + 0x48], xmm0"
+      },
+      {
+        "offset": 100,
+        "bytes": "f30f114020",
+        "instruction": "movss dword ptr [eax + 0x20], xmm0"
+      },
+      {
+        "offset": 105,
+        "bytes": "f30f11404c",
+        "instruction": "movss dword ptr [eax + 0x4c], xmm0"
+      },
+      {
+        "offset": 110,
+        "bytes": "f30f114024",
+        "instruction": "movss dword ptr [eax + 0x24], xmm0"
+      },
+      {
+        "offset": 115,
+        "bytes": "f30f114050",
+        "instruction": "movss dword ptr [eax + 0x50], xmm0"
+      },
+      {
+        "offset": 120,
+        "bytes": "f30f114028",
+        "instruction": "movss dword ptr [eax + 0x28], xmm0"
+      },
+      {
+        "offset": 125,
+        "bytes": "f30f114054",
+        "instruction": "movss dword ptr [eax + 0x54], xmm0"
+      },
+      {
+        "offset": 130,
+        "bytes": "f30f11402c",
+        "instruction": "movss dword ptr [eax + 0x2c], xmm0"
+      },
+      {
+        "offset": 135,
+        "bytes": "c3",
+        "instruction": "ret"
+      }
+    ],
+    "machine": "014C",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\gameplay_settings_tail.obj"
+  },
+  "three_real_constants": [
+    {
+      "native_address": "00ce3d08",
+      "symbol": "?raw_weapon_small_size_00ce3d08@?A0x4de18758@bsp@@3MB",
+      "object_section": 3,
+      "object_section_offset": 44,
+      "hex": "0000c842",
+      "value": 100.0
+    },
+    {
+      "native_address": "00ce386c",
+      "symbol": "?raw_weapon_large_size_00ce386c@?A0x4de18758@bsp@@3MB",
+      "object_section": 3,
+      "object_section_offset": 264,
+      "hex": "00004843",
+      "value": 200.0
+    },
+    {
+      "native_address": "00ce3800",
+      "symbol": "?raw_weapon_accuracy_00ce3800@?A0x4de18758@bsp@@3MB",
+      "object_section": 3,
+      "object_section_offset": 268,
+      "hex": "0000003f",
+      "value": 0.5
+    }
+  ],
+  "sole_normalization": "only the three actual DIR32 constant operands at bytes4,18,31; no other byte ignored",
+  "existing_function_bodies_unchanged": 5,
+  "existing_relocation_comparison": "anonymous translation-unit path names normalized only; complete target structure checked",
+  "exact_archive_members": {
+    "count": 1,
+    "header_offsets": [
+      51614796
+    ],
+    "whole_object_equals_member": true
+  },
+  "contract": {
+    "input": "ECX stable valid writable actual58h storage, disjoint from immutable code/constants; no current Source gameplay object producer required by this write-only leaf",
+    "return": "EAX input pointer, ECX and EDX retained; RET0; flags and ESP unchanged by these literal instructions",
+    "writes": "22 MOVSS stores in Original interleaved order, all88 receiver bytes initialized; no receiver reads",
+    "floating_point": "MOVSS only; XMM0 final scalar0.5 and zero upper lanes from memory load; no x87 or arithmetic",
+    "ownership": "borrowed writable storage; no allocator, profile, constructor owner, Lua, callback, EH or lifetime substitution"
+  },
+  "physical_selected_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\gameplay_settings_tail.cpp",
+      "bytes": 9447,
+      "sha256": "5a4176eca079e69a708517b2e146737d70708e5a2320ba9ced70436ba5bace73",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\src\\gameplay_settings_tail.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\gameplay_settings_tail.hpp",
+      "bytes": 12402,
+      "sha256": "babfb49f2f4ad155a7ab1e17450559f2c8bc25abda530b58c6a41a8431c4ee35",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\include\\bsp\\gameplay_settings_tail.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\dive_bomb_task.hpp",
+      "bytes": 94421,
+      "sha256": "d44c14517a018ba39d80c42a6472ec85e24ebe52223eab0a6743a6eccd4c65a4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\include\\bsp\\dive_bomb_task.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\CMakeLists.txt",
+      "bytes": 15689,
+      "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\CMakeLists.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\cmake\\startup.cmake",
+      "bytes": 196168,
+      "sha256": "d7bc0c024f3e54ae0e45ad32ace85360ad92ac37b04f2a654076b0e99e81e384",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\cmake\\startup.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\scripts\\build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\scripts\\build.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\CMakeCache.txt",
+      "bytes": 19629,
+      "sha256": "b314da85d69336e1ce3423bf44c916fbb4fbc0d90eb0054483acb4fba678997e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\build\\win32\\CMakeCache.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.vcxproj",
+      "bytes": 293888,
+      "sha256": "764fff64824eea7f709100322f3a5c9466dacf4ffe2ec8bca950f1b872dc2808",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\build\\win32\\bsp_core.vcxproj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary_build.txt",
+      "bytes": 3987,
+      "sha256": "377fb7b279a8ae5fe4fecee1fd0e9e64ae061cb88a178bda912ffffc9db8215d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\inputs\\local\\cc12_weapon_defaults_primary_build.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00836ef0\\assembly.txt",
+      "bytes": 1153,
+      "sha256": "63b4a66c9a72ffb8ba8c5a69d0095bb9b1d0bd2b66064d3adaf73afd4970f0dc",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\Original_export\\assembly.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00836ef0\\decompiled.c",
+      "bytes": 1284,
+      "sha256": "2d1b085f9050ba17c95e241975ad2e01f77c52cb1fceac3f5a70c368549190b4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\Original_export\\decompiled.c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00836ef0\\metadata.json",
+      "bytes": 282,
+      "sha256": "744deb521876f390d46e4c272ebc4076b5a14badd0db7975e5d218ac0615a2e3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\Original_export\\metadata.json"
+    }
+  ],
+  "physical_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\gameplay_settings_tail.obj",
+      "bytes": 9950,
+      "sha256": "ac4114948fa026b10a18bf9e776854e97e2ac569e208081dec778137b607918a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\gameplay_settings_tail.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\gameplay_settings_tail.obj",
+      "bytes": 9372,
+      "sha256": "36cfed6b4930401334aa77fed08993a945237f0d96f463668964be0bd1395eba",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\baseline\\gameplay_settings_tail.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 73559178,
+      "sha256": "447cbdce6a2d24db90fc1445151b92677688401361d74af663771696f2307c86",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_weapon_defaults_primary\\bsp_core.lib"
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/cc12_weapon_defaults_primary_build.txt",
+    "Win32_Release": "PASS",
+    "existing_CTests": "3/3 PASS"
+  },
+  "limits": [
+    "No native fixture or app linkage/runtime execution is claimed for this entry.",
+    "Original register shape and full instruction body are established statically, apart from the three bound constant addresses.",
+    "The complete76Ch gameplay settings constructor, Lua loader, global publication, recursive teardown and gameplay remain unqualified."
+  ]
+}

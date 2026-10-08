@@ -80,6 +80,16 @@ extern const char* const kWeaponHitAccuracyKeys[kWeaponHitAccuracyKeyCount];
 // 00836EF0, __fastcall(this). Twenty-two MOVSS stores, no calls.
 void apply_weapon_hit_accuracy_defaults_00836ef0(WeaponHitAccuracyProfile& out) noexcept;
 
+#if defined(_MSC_VER) && defined(_M_IX86)
+// Complete raw 00836EF0 entry: ECX names writable actual 58h storage; EAX returns
+// that same pointer, ECX/EDX and flags are retained, and RET consumes no arguments.
+// Preserves the native 22-store order and XMM0 behavior. No reads from the receiver,
+// calls, ownership, Lua load, settings singleton or enclosing-class qualification.
+// Evidence: docs/CC12_WEAPON_HIT_ACCURACY_RAW_DEFAULTS.md.
+void* __fastcall raw_initialize_native_weapon_hit_accuracy_00836ef0(
+    void* actual_storage) noexcept;
+#endif
+
 // Integration boundary for 00836F80. Each method is one native call site of the
 // repeated eleven-key block; there are no default implementations. The native
 // body wraps every read in a NativeString temporary and an SEH scope, which is

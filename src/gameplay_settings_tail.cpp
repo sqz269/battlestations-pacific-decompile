@@ -7,6 +7,47 @@
 
 namespace bsp {
 
+#if defined(_MSC_VER) && defined(_M_IX86)
+namespace {
+constexpr float raw_weapon_small_size_00ce3d08 = 100.0f;
+constexpr float raw_weapon_large_size_00ce386c = 200.0f;
+constexpr float raw_weapon_accuracy_00ce3800 = 0.5f;
+}
+
+__declspec(naked) void* __fastcall raw_initialize_native_weapon_hit_accuracy_00836ef0(
+    void*) noexcept {
+    __asm {
+        movss xmm0, dword ptr [raw_weapon_small_size_00ce3d08]
+        mov eax, ecx
+        movss dword ptr [eax], xmm0
+        movss xmm0, dword ptr [raw_weapon_large_size_00ce386c]
+        movss dword ptr [eax + 04h], xmm0
+        movss xmm0, dword ptr [raw_weapon_accuracy_00ce3800]
+        movss dword ptr [eax + 30h], xmm0
+        movss dword ptr [eax + 08h], xmm0
+        movss dword ptr [eax + 34h], xmm0
+        movss dword ptr [eax + 0Ch], xmm0
+        movss dword ptr [eax + 38h], xmm0
+        movss dword ptr [eax + 10h], xmm0
+        movss dword ptr [eax + 3Ch], xmm0
+        movss dword ptr [eax + 14h], xmm0
+        movss dword ptr [eax + 40h], xmm0
+        movss dword ptr [eax + 18h], xmm0
+        movss dword ptr [eax + 44h], xmm0
+        movss dword ptr [eax + 1Ch], xmm0
+        movss dword ptr [eax + 48h], xmm0
+        movss dword ptr [eax + 20h], xmm0
+        movss dword ptr [eax + 4Ch], xmm0
+        movss dword ptr [eax + 24h], xmm0
+        movss dword ptr [eax + 50h], xmm0
+        movss dword ptr [eax + 28h], xmm0
+        movss dword ptr [eax + 54h], xmm0
+        movss dword ptr [eax + 2Ch], xmm0
+        ret
+    }
+}
+#endif
+
 // The eleven keys in the order 00836F80 pushes them: 00D0A17C, then 00D0A160
 // down to 00D0A064 in steps of 1Ch.
 const char* const kWeaponHitAccuracyKeys[kWeaponHitAccuracyKeyCount] = {
