@@ -31832,8 +31832,8 @@
     },
     {
       "id": "cc12_scene_property_record_type3_byte_storage",
-      "done": false,
-      "state": "ready bounded whole49B14 raw byte partial-storage primitive;34 written22 untouched; native ownership/class qualified",
+      "done": true,
+      "state": "complete whole49B14 raw partial-storage uint8 Source integrated; independent complementary3TU fixture and full Win32/all3 CTests PASS; native ownership/class/world/game qualified",
       "function_addresses": [
         "008ef1f0"
       ],
@@ -32403,7 +32403,114 @@
         "Source phase dispatch/class lifetime, private original heap/static/runtime/world/game admission."
       ],
       "native_class_ABI_admission": false,
-      "game_validated": false
+      "game_validated": false,
+      "primary_integration": {
+        "source_revision": "632c59261397060f57cc65cb653f1eb7fff573e8",
+        "build_source_revision": "632c59261397060f57cc65cb653f1eb7fff573e8",
+        "worker_commit": "4828a02250e04045546d94d17d9d85accec68b4c",
+        "full_MSVC_Win32_build": "PASS",
+        "existing_CTests": "3/3 PASS",
+        "build_log": "local/cc12_type3_byte_integrated_build.log",
+        "build_log_sha256": "4875f6cd4ac3dc59c3147d4e4956579bfa80ad451e1c9e6dafdd560035b2a70a",
+        "core_context_sha256": "faeb275604b46407e737bffa27d7df96cb46869335216f9be4b5a8d0e9b1a3a4",
+        "independent_component_family": "local/cc12_type3_byte_primary/run01",
+        "independent_receipt_sha256": "894217fb45f82ac0ab40e56ef81b0629571012d6073a7675a0f770088f993e18",
+        "independent_artifact_manifest_sha256": "8c7867447868d63daf993537c6e272d8b1f3ef6e18d2bad9e057abb311c934ea",
+        "independent_component_manifest_sha256": "6a528c70c058c79a386252074b02880bdd9f6cef8711917014bf46102d37093c",
+        "independent_static_gate_sha256": "1337813e6a6c42bdf6709ccae01701dc58960cdbec2e2f12c5c81f46e760608c",
+        "independent_observed_sha256": "de6ab422e9355f43b87718da8fbe50af85921c46bee4c582d52b225d61afdb02",
+        "fresh_translation_units": 3,
+        "BSP_archives_linked": 0,
+        "worker_objects_linked": 0,
+        "new_tracked_tests": 0,
+        "complementary_fixture_inputs": {
+          "Source": {
+            "argument_word": "E13579FF",
+            "DF": 1,
+            "poison": "B6"
+          },
+          "Original": {
+            "argument_word": "2468AC80",
+            "DF": 0,
+            "poison": "72"
+          }
+        },
+        "original_raw_calls": 1,
+        "Source_raw_calls": 1,
+        "raw_entry_ABI_checked": true,
+        "original_class_ABI_compatible": false,
+        "game_validated": false,
+        "preserved_artifact_counts": {
+          "historical6209": 6209,
+          "prior341": 341,
+          "prior_array_consumed_inputs": 193,
+          "prior_array_frozen_supports": 3,
+          "audit_sealed_inputs": 23,
+          "old_attempts_immutable": 585,
+          "prior_frozen_Core_context": 2,
+          "accepted_worker_run04": 282,
+          "accepted_primary_run01": 282,
+          "current_Source_readonly_context": 5,
+          "readiness_audit": 182,
+          "accepted_type0_worker_run03": 300,
+          "accepted_type0_primary_run01": 300,
+          "new_type0_failed_preparations": 78,
+          "type3_readiness_audit": 42,
+          "accepted_type3_byte_worker_run04": 299
+        },
+        "qualified_current_heap": {
+          "utc": "2026-10-08T08:51:56.2754957Z",
+          "process_bits": 32,
+          "actual_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "pinned_physical_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "same_physical_file_identity": true,
+          "volume_serial": 3906787040,
+          "file_index_high": 327680,
+          "file_index_low": 2895862,
+          "bytes_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "machine": "014C",
+          "optional_header_magic": "010B",
+          "exports": [
+            {
+              "name": "malloc",
+              "address": "0x767D0120",
+              "owner_is_ucrt": true
+            },
+            {
+              "name": "free",
+              "address": "0x767D00A0",
+              "owner_is_ucrt": true
+            }
+          ],
+          "BSP_allocations_or_constructors_executed": false
+        },
+        "historical_original_association_qualification": [
+          {
+            "original_path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_enum_dictionary_lookup.cpp",
+            "historical_expected_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+            "verification_path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_dictionary_lookup\\run02\\inputs\\native_enum_dictionary_lookup.cpp",
+            "verification_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+            "current_main_sha256_before": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+            "current_main_change_commit": "998782c250618268e162b5dfb5be139788cc2f99",
+            "consumed": false,
+            "current_main_sha256_after": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+            "current_main_context_only": true
+          },
+          {
+            "original_path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_enum_dictionary_lookup.hpp",
+            "historical_expected_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+            "verification_path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_dictionary_lookup\\run02\\inputs\\native_enum_dictionary_lookup.hpp",
+            "verification_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+            "current_main_sha256_before": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+            "current_main_change_commit": "998782c250618268e162b5dfb5be139788cc2f99",
+            "consumed": false,
+            "current_main_sha256_after": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+            "current_main_context_only": true
+          }
+        ],
+        "old_families_replayed": false,
+        "qualification": "Whole raw supplied-storage initializer [008EF1F0,008EF221), 49 bytes/14 instructions, zero CALLs/relocations; literal Original=Source COFF=unique linked body. Physical entry ECX is fresh unowned writable 56-byte root; one rounded DWORD stack slot whose low byte is the uint8 payload at entry ESP+4; upper three bytes ignored; unused EDX fastcall padding formal; EAX root, ECX zero, EDX unchanged, RET4. The byte at +0C is written before the native phase/tag stores and is not normalized to bool. It writes 34 bytes and preserves 22, including native CE89D4 phase identity bits, tag3, owner+30 and ordinal+34 zero, and literal +2C byte1 whose meaning remains uncertain. Native phase slot is not Source dispatch/class admission. Independent fresh three-TU main fixture uses complementary Source/Original byte values, swapped DF cases and different root poison; one Source and one unchanged RX Original execution. Complete byte, caller ABI and actual current malloc/free IAT/export/module/I386 same-physical-file gates precede allocations/construction. Full 56-byte results, other live root, external capture/stack canaries, registers, defined XOR flags and preserved DF/ES pass; AF is undefined and excluded. Current canonical heap only; no adjacent allocation guard proof, private original CRT/EH, node pool, destructor, owning clear/insertion, clone whole body, class/world or game admission. Old families remain unchanged and are never replayed; no BSP archives or worker objects linked, no new tracked tests. Two historical main enum Source/header associations retain their existing frozen accepted bytes and original hashes; subsequent main changes are unconsumed context."
+      }
     },
     {
       "id": "cc12_raw_unit_list_append_00484540",
@@ -32932,6 +33039,34 @@
       "state": "reviewed_complete_normal_return_ordinary_Source_build_and_bounded_fixture_checked",
       "depends_on": [],
       "game_validated": false
+    },
+    {
+      "id": "cc12_physical_stream_raw_constructor",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF50D0"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_PHYSICAL_STREAM_RAW_CONSTRUCTOR.md",
+        "reports/cc12_physical_stream_raw_constructor.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_literal_raw_receiver_ABI_entry_build_and_bounded_Original_Source_checked",
+      "worker_commit": "818a7dbcd80ff99f3dbbb0e57355fa0abe664a66",
+      "contract": {
+        "additional_raw_interfaces": 1,
+        "new_Original_functions": 0,
+        "literal_Original_bytes": 43,
+        "fresh_Original_Source_pairs": 1,
+        "Source_class_table_lifetime_admitted": false,
+        "raw_substream_composition_admitted": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
