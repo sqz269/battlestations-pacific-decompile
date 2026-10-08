@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "packet": "cc12_scene_property_record_type1_float_storage",
+  "status": "Root registered one independently ready raw53B15 uint32-bits supplied-storage leaf; Source implementation/admission remains0",
+  "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_float_readiness\\local\\cc12_property_record_float_readiness_20261008_a",
+  "worker_hashes": {
+    "proposal.json": "320f8718037144e62ef97bea35d5175926a1c40a635e344936998db090f21e73",
+    "readiness_receipt.json": "d3091e065372f55b24f67c3e9c821abf60530e2b9d69572fc2e63f7aa373a8de",
+    "artifact_manifest.json": "cc08bd8d649b5675194bac19e6f12249fa1eef481661f5384adc34e6504cc103"
+  },
+  "inventory_count": 48,
+  "proposal": {
+    "schema": 1,
+    "packet": "cc12_property_record_float_readiness",
+    "base_revision": "2642b8c129ff3a16123fa2b636fa9010f2cf2235",
+    "readiness": "One independently ready complete raw supplied-storage leaf proposal; Source0 until Root explicit registration.",
+    "ready_leaf_count": 1,
+    "Source_implementation_count": 0,
+    "hypothesis_name": "Native scene property record tag1 float storage constructor; descriptive name is not a recovered symbol.",
+    "whole": {
+      "address": "008EF170",
+      "end_exclusive": "008EF1A5",
+      "bytes": 53,
+      "instructions": 15,
+      "CALLs": 0,
+      "branch_instructions_except_RET": 0,
+      "sha256": "684d66087700bdea183c40bc4344d965ad5ccf6f8aab80f0f7b9dbff9fe3c51f",
+      "Original_PE_saved_program_bytes_equal": true,
+      "all15_saved_instruction_starts_match_complete_decode": true
+    },
+    "proposed_declaration": "void* __fastcall construct_native_scene_property_record_type1_float_storage_008ef170(void* actual_record_ecx, void* unused_edx, std::uint32_t payload_bits) noexcept;",
+    "physical_argument_contract": "Exact4-byte raw word at entryESP+4 and RET4, returned actual root in EAX. uint32_t deliberately carries bits; float/double conversion, bool narrowing, extra hidden context, callback and native class adaptation are excluded. Incoming EDX is padding and is overwritten with1.",
+    "supplied_storage_contract": {
+      "owner": "Actual caller-owned stable fresh unowned writable56-byte allocation with suitable ordinary32-bit alignment, disjoint from active call frame. Pass its actual pointer in ECX; no host facade or companion record. The allocation itself remains caller-owned.",
+      "initialization": "Any initial byte pattern in fresh unowned raw storage is permitted; preserve19untouched bytes exactly. Do not call on a live owning native/Source property object or infer full initialization from this partial writer.",
+      "phase": "Write original literal00CE89D4 at+00 exactly. No native phase table needs mapping/readability for this leaf because it is never dereferenced; the stored word is not a callable Source vtable or ownership/destructor provider.",
+      "payload": "Every32-bit pattern is admitted as raw bits by this leaf, independent of whether the real clone could reach it unchanged after x87 conversion. No payload allocation, indirection, ownership or numeric parser is involved.",
+      "release": "Caller releases its raw allocation through its actual matching allocation domain without virtual dispatch through the stored native phase word. This is raw storage ownership, not reconstruction of native scalar deletion or whole clone lifetime."
+    },
+    "native_behavior": "37written/19preserved bytes; exact ordered stores and complete physical return/flags/XMM/MXCSR/x87 contract are in physical_evidence.json. Leaf has no x87 conversion; selected caller conversion is separately qualified in fp_static_qualifications.json.",
+    "future_admission_gates": [
+      "Root explicitly registers only this whole53-byte leaf and disjoint four output files. No Source work is authorized by this audit.",
+      "Preserve all53original bytes/15instructions, including legacy MOVSS load/store, literal phase immediate, all store widths/order, XOR flags and RET4. Expect zero COFF relocations and zero CALLs; use no C++ float conversion or replacement phase global.",
+      "Before any execution, inspect complete fresh Source COFF and unique linked53-byte body plus ordinary generated uint32-stack caller and raw capture caller to prove exact ECX/EDX/4-byte stack/RET4 provenance and absence of inserted conversion.",
+      "At most one unique ignored fresh3TU family: new constructor, unchanged current canonical allocation/free Source, new caller probe; zero BSP archives and no old recipe replay. Supply real canonical56-byte allocations, not fabricated native class owners.",
+      "Capture whole56-byte storage and guards, exact37written/19preserved map, EAX/ECX/EDX/nonvolatiles/RET4/DF, XMM0 low32 and upper96, actual MXCSR and x87 before/after. Representative raw special-value words may establish absence of unintended conversion; no x87 clone arm, private CRT, unmasked-trap or whole-class execution is implied.",
+      "Root independent family, full MSVC Win32 build/existing checks, ledgers, Ghidra annotation/export/save and publication are later Root work. No tracked tests, Source or executable are created by this audit."
+    ],
+    "proposed_files": [
+      "include/bsp/native_scene_property_record_type1_float_storage.hpp",
+      "src/native_scene_property_record_type1_float_storage.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE1_FLOAT_STORAGE_CC12.md",
+      "reports/native_scene_property_record_type1_float_storage_cc12.json"
+    ],
+    "named_incomplete_dependencies_outside_leaf": [
+      "Original00BF681B private CRT/allocation/new-handler/EH and actual clone handler00CA4B6D.",
+      "Whole owning clone854-byte span, all other arms, null/default/exception paths and post-construction ownership.",
+      "Actual phase00CE89D4 dispatch/004E6730 target, scalar/owning cleanup and destructor ABI.",
+      "Native record owners/keys/payloads, pool/global synchronization, publication/parent/world providers and class lifetimes.",
+      "Caller FLD/FSTP exceptional status/NaN/trap behavior beyond static qualifications; modern semantic SceneFloat/LandConvoy ownership does not supply native constructor/clone ABI.",
+      "Native world binding, startup, runtime class behavior or gameplay validation."
+    ],
+    "evidence": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_float_readiness/local/cc12_property_record_float_readiness_20261008_a/physical_evidence.json",
+      "bytes": 18596,
+      "sha256": "1357767714bc8a2841d5d11721c28950c345bab3e12afdba33fbcb53ade26a82"
+    },
+    "fp_qualifications": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_float_readiness/local/cc12_property_record_float_readiness_20261008_a/fp_static_qualifications.json",
+      "bytes": 4511,
+      "sha256": "0b82c4978addb07a1a4be80ea1d4ec81b95486ab43d0e2aa78f39ee8170dcb82"
+    },
+    "qualification": "Readiness and Original static evidence only. No reconstructed/built/fixture-tested/ABI-compatible/game-validated Source is claimed."
+  },
+  "requirements": {
+    "whole_body": "Preserve all53 bytes/15 instructions [008EF170,008EF1A5), zero CALLs/COFF relocations, unique linked body. Legacy MOVSS load/store, all store widths/order/literal CE89D4 identity word/XOR flags/RET4 stay exact. No replacement vft global or invented callback.",
+    "physical_interface": "void* __fastcall construct_native_scene_property_record_type1_float_storage_008ef170(void* actual_record_ecx, void* unused_edx, std::uint32_t payload_bits) noexcept; uint32 payload bits occupy exactly one DWORD at entryESP+4; no compiler float/bool conversion. ECX actual fresh unowned writable56-byte root; EDX incoming unused fastcall padding. EAXroot/ECX0/EDX1, nonvolatiles unchanged, RET4.",
+    "storage": "37 written/19 preserved: untouched [08,0C),[10,18),[28,2C),[2D,30). Raw payload DWORD+C/tag1; zero+18/+1C/+20/+24/+30/+34; byte1 at+2C, semantic meaning uncertain. Literal phase00CE89D4 is identity only; no Source dispatch/class/pool/owning lifetime.",
+    "machine_state": "Constructor MOVSS loads exact stacked raw32 into XMM0.low32 and zeros its upper96; stores raw32 without arithmetic, conversion, NaN normalization or own x87 operation. Capture XMM0 and actual MXCSR/x87 control/status before-after, DF0/DF1 and defined XOR flags; AF undefined and excluded. No YMM/ZMM, clone, private CRT/EH or unmasked-trap guarantee.",
+    "caller_boundary": "Genuine tag1 clone arm[008F4FC2,008F4FF9)55B18 selected by tablecell008F52BC allocates38h then FLD m32(source+C), PUSH ECX scratch, FSTP m32(stack), ECX actual allocation, CALL008EF170 at008F4FDD. The caller x87 capacity/CW/status/special-value/trap/rounding boundary is independently qualified; do not execute/admit it or whole clone854-span.",
+    "fresh_family": "One exclusive fresh3TU component family: new constructor Source, unchanged current singleton_lifetime.cpp, new ignored probe. Two actual current canonical56-byte supplied roots, full storage/other-live-root/declared capture/stack canaries, explicit matching free. Zero BSP archives/worker objects/new tracked tests. No heap adjacent-redzone or class-owner stand-ins.",
+    "gates_before_execution": "Whole Source COFF=Original53=unique linked code; ordinary compiled uint32 caller and complete raw caller prove ECX/EDX/one stackword/RET4 with no inserted conversion. Actual mapped I386 malloc/free/_callnewh IAT/export/module/physical-file identity/SHA gates before all target entries; complete current providers/callers/code/files before and after.",
+    "minimal_cases": "One new Source and one unchanged RX Original call with complementary representative raw special words, different root poison/DF cases; do not run broad numeric suites. Capture XMM0 upper96 nonzero initial poison and expected zero output, low32 exact raw word, MXCSR/x87 state comparison scoped to architectural defined fields. No FLD/FSTP clone arm or arithmetic experiments.",
+    "preservation": "Pin actual consumed project/extensionless standard headers, libraries/tools/source/PE/recipe, 48+manifest readiness artifacts and unchanged accepted earlier families. Retain historical frozen source associations and original hashes; current main metadata is unconsumed context. No old accepted phase/Original recipe replay or repinning.",
+    "root_integration": "Root owns independent complementary fresh3TU validation/full MSVC Win32 build/all3 existing checks/shared config/ledger/CMake/locked Ghidra annotation/save/export/publication. Worker exactly four files in named worktree; Ghidra read-only."
+  },
+  "Source_whole_bodies_added": 0,
+  "Source_implemented": false,
+  "original_class_ABI_compatible": false,
+  "game_validated": false,
+  "old_families_replayed": false
+}
