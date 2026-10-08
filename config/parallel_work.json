@@ -35026,6 +35026,50 @@
         "new_entry_execution": false,
         "app_class_game_validated": false
       }
+    },
+    {
+      "id": "cc12_parent_list_header_storage",
+      "done": false,
+      "state": "ready independently reviewed whole13B6 fresh raw parent-list header initializer",
+      "function_addresses": [
+        "004b7ec0"
+      ],
+      "output_files": [
+        "include/bsp/native_parent_list_header_storage.hpp",
+        "src/native_parent_list_header_storage.cpp",
+        "docs/NATIVE_PARENT_LIST_HEADER_STORAGE_CC12.md",
+        "reports/native_parent_list_header_storage_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_document": "docs/CC12_PARENT_HEADER_CALLBACK_READINESS.md",
+      "readiness_report": "reports/cc12_parent_header_callback_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "worker_commit": "8b258ce8bee621d7e770d7250c517fd020b8232f",
+        "manifest_sha256": "1808a008f0f64f6c2c71a55bbbca4f74656f73a428fb8f8d884df4703fdfe1af",
+        "exact_artifacts": 133,
+        "exact_actual_files": 135,
+        "complete_callback_bytes": 13,
+        "complete_callback_instructions": 6,
+        "Root_live_listing_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_parent_header_callback_primary_live.log",
+        "Root_live_listing_sha256": "28a7845602919a1a92006e38915245083f5bde2950fa00c64b01b1347918e0bc",
+        "installed_PE_and_iterator_witness_verified": true,
+        "Source_admission_credit": 0,
+        "parent_class_or_iterator_EH_admitted": false
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "exactly_four_owned_files": [
+          "include/bsp/native_parent_list_header_storage.hpp",
+          "src/native_parent_list_header_storage.cpp",
+          "docs/NATIVE_PARENT_LIST_HEADER_STORAGE_CC12.md",
+          "reports/native_parent_list_header_storage_cc12.json"
+        ],
+        "public_API": "void* __fastcall initialize_native_parent_list_header_storage_004b7ec0(void* actual_storage_root, std::uint32_t unused_edx) noexcept;",
+        "contract": "Whole [004B7EC0,004B7ECD)13B6 literal MSVC Win32 naked padded-fastcall body, ECX actual fresh/unowned writable12-byte header, unusedEDX explicit register formal, plain RET/no stacked args; EAX=root ECX0 EDX/nonvolatiles preserved; XOR defined8C5=44 AFexcluded DFunchanged. No call/relocation/phase/provider inside leaf. Three fresh TUs leaf/currentcanonical/newprobe, no BSP archives/oldobjects/helpers/process replay. Fresh genuine guarded heap buffers with actual12-byte header regions, external canaries inside writable allocated buffers, all12bytes and buffer canaries captured while live. Raw Original and Source plus ordinary Source (minimal3entries), DF1 in call-free raw leaf and restore before providers; full real ordinary/raw caller/cookie/import/canonical/provider physical I386 IAT/export/NTpath/ID/fullhash/code gates before0targets and after. Current canonical allocation/free every actual buffer once; no fabricated parent/sentinel/class or World. Exact complete immutable artifact seal, consumed headers/libraries/inputs/prior hashes. Root fresh independent complementary family and combined-main build required before Sourcecredit. Do not reset populated header or fabricate nodes; node integration optional and only actual accepted append/erase/removal may own/dispose nodes. Original private heap/iterator EH/owning lifetime/game remain unadmitted.",
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {
