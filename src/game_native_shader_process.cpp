@@ -6,7 +6,8 @@
 
 namespace bsp::game {
 GameNativeShaderProcess::GameNativeShaderProcess()
-    :pool_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),pool_storage_) {}
+    :pool_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),pool_storage_),
+     instance_empty_authority_00e17654_(game_native_string_process().query_empty_00e17654()) {}
 GameNativeShaderProcess& game_native_shader_process() {
     static auto* const process=new GameNativeShaderProcess;
     return *process;

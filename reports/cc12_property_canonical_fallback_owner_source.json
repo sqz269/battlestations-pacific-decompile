@@ -1,0 +1,3487 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_canonical_fallback_owner_source",
+  "status": "ordinary_source_primary_accepted_build_tested_no_entry_execution",
+  "UTC": "2026-10-08T21:43:43.366421+00:00",
+  "base_main": "7b244d3b8bc3204b1e37759a90842c28a0b78b63",
+  "tracked_files": [
+    "include/bsp/game_native_string_process.hpp",
+    "src/game_native_string_process.cpp",
+    "include/bsp/game_native_shader_process.hpp",
+    "src/game_native_shader_process.cpp",
+    "docs/CC12_PROPERTY_CANONICAL_FALLBACK_OWNER_SOURCE.md",
+    "reports/cc12_property_canonical_fallback_owner_source.json"
+  ],
+  "scope": "Canonical permanent Source fallback ownership and existing shader alias only. No selected-entry execution or new Native ledger credit.",
+  "accepted_preedit_design": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/ownership_design_acceptance.json",
+    "bytes": 659,
+    "sha256": "ad24b63d185fdeddcff7243755c54a3bcf1c6e78ac9bb17f5d39f3b05c62dcb8"
+  },
+  "accepted_execution_readiness_primary_receipt": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/baseline/accepted_readiness_primary/receipt.json",
+    "bytes": 20716,
+    "sha256": "4555093c17b7b71fa33e43287efb46cc4bab9aefb337b4517de877c93d0fe7af"
+  },
+  "source_and_document_identity": [
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 2017,
+      "sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 471,
+      "sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993"
+    },
+    {
+      "path": "include/bsp/game_native_shader_process.hpp",
+      "bytes": 2888,
+      "sha256": "1553718aae054081d17fd0302a3f0b0800b7d2b2e8b95b3080817793789e052a"
+    },
+    {
+      "path": "src/game_native_shader_process.cpp",
+      "bytes": 1983,
+      "sha256": "af04556c2737b782c3074a3ad61736fc6ac02662aa8c912ba74768b0256b5862"
+    },
+    {
+      "path": "docs/CC12_PROPERTY_CANONICAL_FALLBACK_OWNER_SOURCE.md",
+      "bytes": 10686,
+      "sha256": "e3a4df6d3874fcb10466b02b608aba76e3ddf3e4db31cbcae883477117d8f967"
+    }
+  ],
+  "ownership": {
+    "owner": "actual privately constructed permanent GameNativeStringProcess",
+    "property": {
+      "Native_role": "00E177E4",
+      "Source_offset": 44,
+      "accessor": "property_empty_00e177e4",
+      "private_const_char": true,
+      "initial_byte": 0
+    },
+    "query": {
+      "Native_role": "00E17654",
+      "Source_offset": 45,
+      "accessor": "query_empty_00e17654",
+      "private_const_char": true,
+      "initial_byte": 0
+    },
+    "distinct_stable_pointers": true,
+    "one_authority_per_role": true,
+    "existing_Shader_query": {
+      "borrowed_from": "same actual String owner query byte",
+      "actual_private_alias_offset": 1188,
+      "pointer_is_const": true,
+      "historical_byte_offset": 1185,
+      "historical_byte_name": "reserved_non_authoritative_instance_empty_",
+      "historical_byte_is_authority_or_alias": false,
+      "existing_accessor": "instance_empty_00e17654",
+      "accessor_allocation_or_factory_call": false,
+      "accessor_noexcept": true
+    },
+    "dependency_edges": [
+      "Shader -> PhysicalPool (existing)",
+      "Shader -> String (new)"
+    ],
+    "String_constructor_backedge_to_Shader_or_PhysicalPool": false,
+    "new_CRT_drain_registration": false,
+    "permanent_retention": true,
+    "Source_const_contract_is_not_Original_universal_immutability": true,
+    "property_lookups_still_require_explicit_actual_borrowed_owner_pointers": true
+  },
+  "actual_private_publication_proof": [
+    {
+      "factory": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+      "read_relocation": {
+        "operand_offset": 64,
+        "kind": "0006",
+        "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+      },
+      "write_relocation": {
+        "operand_offset": 192,
+        "kind": "0006",
+        "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+      },
+      "same_actual_private_static_pointer_section": {
+        "name": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A",
+        "value": 0,
+        "type": 0,
+        "role": "defined_data",
+        "section_name": ".bss",
+        "section_bytes": 4,
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ordered_section_edges": []
+      },
+      "no_CRT_drain_registration": true
+    },
+    {
+      "factory": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+      "read_relocation": {
+        "operand_offset": 66,
+        "kind": "0006",
+        "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+      },
+      "write_relocation": {
+        "operand_offset": 408,
+        "kind": "0006",
+        "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+      },
+      "same_actual_private_static_pointer_section": {
+        "name": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A",
+        "value": 0,
+        "type": 0,
+        "role": "defined_data",
+        "section_name": ".bss",
+        "section_bytes": 4,
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ordered_section_edges": []
+      },
+      "no_CRT_drain_registration": true
+    }
+  ],
+  "current_Native_role_attribution": [
+    {
+      "address": "00E177E4",
+      "file_offset": 10581988,
+      "initial_byte": 0,
+      "raw_backed": true,
+      "section": ".data",
+      "section_characteristics": "C0000040",
+      "section_writable": true,
+      "distinct_role_pointer": true,
+      "live_saved_analysis_equals_installed_raw_byte": true,
+      "current_indexed_refs": [
+        "From 0043b8f3 in BSP_PropertyMap_FindBorrowedKeyNode [DATA]",
+        "From 0043b4cf in FUN_0043b450 [DATA]",
+        "From 0043b784 in BSP_PropertyKey_ComputeBucket [READ]",
+        "From 0043b722 in FUN_0043b700 [READ]",
+        "From 0043b4aa in FUN_0043b450 [DATA]",
+        "From 0043b717 in FUN_0043b700 [DATA]",
+        "From 0043b779 in BSP_PropertyKey_ComputeBucket [DATA]",
+        "From 0043b8db in BSP_PropertyMap_FindBorrowedKeyNode [DATA]"
+      ],
+      "indexed_WRITE_count": 0,
+      "byte_query": "local/cc12_property_canonical_fallback_owner_source/native_current_E177E4.txt",
+      "xref_query": "local/cc12_property_canonical_fallback_owner_source/native_current_xrefs_E177E4.txt",
+      "limitation": "Indexed direct references and initial-file bytes do not exclude indirect Original writes or runtime mutation. Source closes its own const-only lifetime."
+    },
+    {
+      "address": "00E17654",
+      "file_offset": 10581588,
+      "initial_byte": 0,
+      "raw_backed": true,
+      "section": ".data",
+      "section_characteristics": "C0000040",
+      "section_writable": true,
+      "distinct_role_pointer": true,
+      "live_saved_analysis_equals_installed_raw_byte": true,
+      "current_indexed_refs": [
+        "From 00419ca7 in BSP_NativeString_DataOrEmpty [DATA]",
+        "From 0041d3e6 in FUN_0041d380 [DATA]",
+        "From 0041d3fa in FUN_0041d380 [DATA]",
+        "From 0041d41d in FUN_0041d380 [DATA]",
+        "From 00424d79 in BSP_AvoidZoneManager_RebuildFromScene [DATA]",
+        "From 00424d8d in BSP_AvoidZoneManager_RebuildFromScene [DATA]",
+        "From 00424dad in BSP_AvoidZoneManager_RebuildFromScene [DATA]",
+        "From 0041d3d3 in FUN_0041d380 [DATA]",
+        "From 00424d66 in BSP_AvoidZoneManager_RebuildFromScene [DATA]"
+      ],
+      "indexed_WRITE_count": 0,
+      "byte_query": "local/cc12_property_canonical_fallback_owner_source/native_current_E17654.txt",
+      "xref_query": "local/cc12_property_canonical_fallback_owner_source/native_current_xrefs_E17654.txt",
+      "limitation": "Indexed direct references and initial-file bytes do not exclude indirect Original writes or runtime mutation. Source closes its own const-only lifetime."
+    }
+  ],
+  "current_installed_Original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "retained_path": "local/cc12_property_canonical_fallback_owner_source/baseline/Native_prior/battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "current_installed_whole_image_matches_retained_copy": true
+  },
+  "Native_historical_attribution": {
+    "retained_whole_PE_and_spans_root": "local/cc12_property_canonical_fallback_owner_source/baseline/Native_prior",
+    "retained_query_root": "local/cc12_property_canonical_fallback_owner_source/baseline/Native_prior_queries",
+    "retained_readiness_report": {
+      "path": "local/cc12_property_canonical_fallback_owner_source/baseline/accepted_readiness/cc12_property_recursive_lifetime_execution_readiness.json",
+      "bytes": 68734,
+      "sha256": "b7e3087a5d7c2e51306b95a6377a64a21269c6430bd76d733d991c9c345afe6b"
+    },
+    "retained_readiness_physical_receipt": {
+      "path": "local/cc12_property_canonical_fallback_owner_source/baseline/accepted_readiness/physical_evidence.json",
+      "bytes": 1790299,
+      "sha256": "60e711bda8786a6bc0ef599b459501257396e5244d06320d70a0f52167921954"
+    },
+    "historical_paths_are_preserved_in_nested_receipts": true,
+    "path_remapping": [
+      {
+        "old_prefix": "local/cc12_property_recursive_lifetime_execution_readiness/Original/",
+        "current_prefix": "local/cc12_property_canonical_fallback_owner_source/baseline/Native_prior/"
+      },
+      {
+        "old_prefix": "local/cc12_property_recursive_lifetime_execution_readiness/Native/",
+        "current_prefix": "local/cc12_property_canonical_fallback_owner_source/baseline/Native_prior_queries/"
+      }
+    ],
+    "prior_capture_timing_not_relabelled_current": true
+  },
+  "complete_current_changed_or_affected_bodies": [
+    {
+      "role": "string_property",
+      "symbol": "?property_empty_00e177e4@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+      "bytes": 4,
+      "sha256": "8acf161f52368e8c95efb689a150a798b080039ec8193d4aa411a87496346c6a",
+      "relocations": [],
+      "section": 12,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 4,
+      "section_bytes": 4,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0002.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+      "instructions": 2,
+      "positive_code_data_graph": []
+    },
+    {
+      "role": "string_query",
+      "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+      "bytes": 4,
+      "sha256": "2dfab07a6910b38452fac5711893acc020269d7b3b48cce913f68569a11da19c",
+      "relocations": [],
+      "section": 14,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 4,
+      "section_bytes": 4,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0003.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+      "instructions": 2,
+      "positive_code_data_graph": []
+    },
+    {
+      "role": "string_factory",
+      "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+      "bytes": 209,
+      "sha256": "4c62b48a6aa4b6101b9873c0f342a1ed96eb5dfe6ce30d6c5fad2473fde85c14",
+      "relocations": [
+        {
+          "operand_offset": 6,
+          "kind": "0006",
+          "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+        },
+        {
+          "operand_offset": 19,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 37,
+          "kind": "0006",
+          "symbol": "__tls_array"
+        },
+        {
+          "operand_offset": 43,
+          "kind": "0006",
+          "symbol": "__tls_index"
+        },
+        {
+          "operand_offset": 51,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 57,
+          "kind": "000B",
+          "symbol": "__Init_thread_epoch"
+        },
+        {
+          "operand_offset": 64,
+          "kind": "0006",
+          "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+        },
+        {
+          "operand_offset": 85,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 90,
+          "kind": "0014",
+          "symbol": "__Init_thread_header"
+        },
+        {
+          "operand_offset": 99,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 116,
+          "kind": "0014",
+          "symbol": "??2@YAPAXI@Z"
+        },
+        {
+          "operand_offset": 169,
+          "kind": "0014",
+          "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+        },
+        {
+          "operand_offset": 186,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 192,
+          "kind": "0006",
+          "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+        },
+        {
+          "operand_offset": 197,
+          "kind": "0014",
+          "symbol": "__Init_thread_footer"
+        }
+      ],
+      "section": 10,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 209,
+      "section_bytes": 209,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0004.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+      "instructions": 60,
+      "positive_code_data_graph": [
+        {
+          "offset": 6,
+          "kind": 6,
+          "target": {
+            "name": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+            "type": 32,
+            "role": "defined_code",
+            "owner_symbols": [
+              "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            ],
+            "offset_from_owner": 0,
+            "owner_complete_hashes": [
+              "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355"
+            ]
+          }
+        },
+        {
+          "offset": 19,
+          "kind": 6,
+          "target": {
+            "name": "___security_cookie",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 37,
+          "kind": 6,
+          "target": {
+            "name": "__tls_array",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 43,
+          "kind": 6,
+          "target": {
+            "name": "__tls_index",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 51,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 57,
+          "kind": 11,
+          "target": {
+            "name": "__Init_thread_epoch",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 64,
+          "kind": 6,
+          "target": {
+            "name": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 85,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 90,
+          "kind": 20,
+          "target": {
+            "name": "__Init_thread_header",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 99,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 116,
+          "kind": 20,
+          "target": {
+            "name": "??2@YAPAXI@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 169,
+          "kind": 20,
+          "target": {
+            "name": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 186,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 192,
+          "kind": 6,
+          "target": {
+            "name": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 197,
+          "kind": 20,
+          "target": {
+            "name": "__Init_thread_footer",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        }
+      ]
+    },
+    {
+      "role": "string_ctor",
+      "symbol": "??0GameNativeStringProcess@game@bsp@@AAE@XZ",
+      "bytes": 57,
+      "sha256": "4e1156c27bc89d6821883c490e4f6df38bf7f3f581edc4da3e41a3a3feff0400",
+      "relocations": [
+        {
+          "operand_offset": 43,
+          "kind": "0014",
+          "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+        }
+      ],
+      "section": 4,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 57,
+      "section_bytes": 57,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0005.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+      "positive_code_data_graph": [
+        {
+          "offset": 43,
+          "kind": 20,
+          "target": {
+            "name": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        }
+      ]
+    },
+    {
+      "role": "shader_factory",
+      "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+      "bytes": 425,
+      "sha256": "dffd1f5ba9fd4c27978098e338b91596ecc5a1cece67ed843fe37bd096e6c5ef",
+      "relocations": [
+        {
+          "operand_offset": 6,
+          "kind": "0006",
+          "symbol": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+        },
+        {
+          "operand_offset": 21,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 39,
+          "kind": "0006",
+          "symbol": "__tls_array"
+        },
+        {
+          "operand_offset": 45,
+          "kind": "0006",
+          "symbol": "__tls_index"
+        },
+        {
+          "operand_offset": 53,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 59,
+          "kind": "000B",
+          "symbol": "__Init_thread_epoch"
+        },
+        {
+          "operand_offset": 66,
+          "kind": "0006",
+          "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+        },
+        {
+          "operand_offset": 88,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 93,
+          "kind": "0014",
+          "symbol": "__Init_thread_header"
+        },
+        {
+          "operand_offset": 102,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 122,
+          "kind": "0014",
+          "symbol": "??2@YAPAXI@Z"
+        },
+        {
+          "operand_offset": 152,
+          "kind": "0014",
+          "symbol": "_memset"
+        },
+        {
+          "operand_offset": 160,
+          "kind": "0014",
+          "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+        },
+        {
+          "operand_offset": 173,
+          "kind": "0014",
+          "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+        },
+        {
+          "operand_offset": 361,
+          "kind": "0014",
+          "symbol": "_memset"
+        },
+        {
+          "operand_offset": 378,
+          "kind": "0014",
+          "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+        },
+        {
+          "operand_offset": 385,
+          "kind": "0014",
+          "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+        },
+        {
+          "operand_offset": 402,
+          "kind": "0006",
+          "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+        },
+        {
+          "operand_offset": 408,
+          "kind": "0006",
+          "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+        },
+        {
+          "operand_offset": 413,
+          "kind": "0014",
+          "symbol": "__Init_thread_footer"
+        }
+      ],
+      "section": 41,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 425,
+      "section_bytes": 425,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0025.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+      "instructions": 98,
+      "positive_code_data_graph": [
+        {
+          "offset": 6,
+          "kind": 6,
+          "target": {
+            "name": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+            "type": 32,
+            "role": "defined_code",
+            "owner_symbols": [
+              "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+            ],
+            "offset_from_owner": 0,
+            "owner_complete_hashes": [
+              "221f30ce790e06217eba86f97655fb547d2391f49c249a5463e6445aeb5b41f6"
+            ]
+          }
+        },
+        {
+          "offset": 21,
+          "kind": 6,
+          "target": {
+            "name": "___security_cookie",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 39,
+          "kind": 6,
+          "target": {
+            "name": "__tls_array",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 45,
+          "kind": 6,
+          "target": {
+            "name": "__tls_index",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 53,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 59,
+          "kind": 11,
+          "target": {
+            "name": "__Init_thread_epoch",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 66,
+          "kind": 6,
+          "target": {
+            "name": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 88,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 93,
+          "kind": 20,
+          "target": {
+            "name": "__Init_thread_header",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 102,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 122,
+          "kind": 20,
+          "target": {
+            "name": "??2@YAPAXI@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 152,
+          "kind": 20,
+          "target": {
+            "name": "_memset",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 160,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 173,
+          "kind": 20,
+          "target": {
+            "name": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 361,
+          "kind": 20,
+          "target": {
+            "name": "_memset",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 378,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 385,
+          "kind": 20,
+          "target": {
+            "name": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 402,
+          "kind": 6,
+          "target": {
+            "name": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 408,
+          "kind": 6,
+          "target": {
+            "name": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A",
+            "value": 0,
+            "type": 0,
+            "role": "defined_data",
+            "section_name": ".bss",
+            "section_bytes": 4,
+            "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "ordered_section_edges": []
+          }
+        },
+        {
+          "offset": 413,
+          "kind": 20,
+          "target": {
+            "name": "__Init_thread_footer",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        }
+      ]
+    },
+    {
+      "role": "shader_ctor",
+      "symbol": "??0GameNativeShaderProcess@game@bsp@@AAE@XZ",
+      "bytes": 313,
+      "sha256": "b2086d9347ac7da1b2eedc5d97ffcd2e5db75a0c1de2a0ef3f3d2cd61d178387",
+      "relocations": [
+        {
+          "operand_offset": 6,
+          "kind": "0006",
+          "symbol": "__ehhandler$??0GameNativeShaderProcess@game@bsp@@AAE@XZ"
+        },
+        {
+          "operand_offset": 21,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 48,
+          "kind": "0014",
+          "symbol": "_memset"
+        },
+        {
+          "operand_offset": 56,
+          "kind": "0014",
+          "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+        },
+        {
+          "operand_offset": 69,
+          "kind": "0014",
+          "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+        },
+        {
+          "operand_offset": 260,
+          "kind": "0014",
+          "symbol": "_memset"
+        },
+        {
+          "operand_offset": 277,
+          "kind": "0014",
+          "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+        },
+        {
+          "operand_offset": 284,
+          "kind": "0014",
+          "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+        }
+      ],
+      "section": 9,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 313,
+      "section_bytes": 313,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0026.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+      "instructions": 72,
+      "positive_code_data_graph": [
+        {
+          "offset": 6,
+          "kind": 6,
+          "target": {
+            "name": "__ehhandler$??0GameNativeShaderProcess@game@bsp@@AAE@XZ",
+            "type": 32,
+            "role": "defined_code",
+            "owner_symbols": [
+              "__ehhandler$??0GameNativeShaderProcess@game@bsp@@AAE@XZ"
+            ],
+            "offset_from_owner": 0,
+            "owner_complete_hashes": [
+              "221f30ce790e06217eba86f97655fb547d2391f49c249a5463e6445aeb5b41f6"
+            ]
+          }
+        },
+        {
+          "offset": 21,
+          "kind": 6,
+          "target": {
+            "name": "___security_cookie",
+            "value": 0,
+            "type": 0,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 48,
+          "kind": 20,
+          "target": {
+            "name": "_memset",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 56,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 69,
+          "kind": 20,
+          "target": {
+            "name": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 260,
+          "kind": 20,
+          "target": {
+            "name": "_memset",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 277,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 284,
+          "kind": 20,
+          "target": {
+            "name": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        }
+      ]
+    },
+    {
+      "role": "shader_query",
+      "symbol": "?instance_empty_00e17654@GameNativeShaderProcess@game@bsp@@QBEPBDXZ",
+      "bytes": 7,
+      "sha256": "0e28ae6d970647be6cbf4557ee0c392348362ca146b2315a0118c3cda8b20799",
+      "relocations": [],
+      "section": 868,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 7,
+      "section_bytes": 7,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_renderer_application/0195.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_renderer_application.obj",
+      "positive_code_data_graph": []
+    },
+    {
+      "role": "compiler_ctor",
+      "symbol": "??0CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@3@UCanonicalProfiles@123@AAUGameNativeVfsRawServices@23@AAUNativeStringRawPoolContext@3@AAUNativeResourceSupportRawContext@3@ADSAX5PAUHINSTANCE__@@AAUNativeTextureCacheContext@3@@Z",
+      "bytes": 471,
+      "sha256": "1b4f58d628aca695499dff6d8b89510c0745e32bbb6c64c95baa392ac65ec06e",
+      "relocations": [
+        {
+          "operand_offset": 36,
+          "kind": "0014",
+          "symbol": "?game_native_graphics_pool_process@game@bsp@@YAAAVGameNativeGraphicsPoolProcess@12@XZ"
+        },
+        {
+          "operand_offset": 43,
+          "kind": "0014",
+          "symbol": "?material_pass_pool_0108fbf8@GameNativeGraphicsPoolProcess@game@bsp@@QAEAAVNativeMaterialPassPool@3@XZ"
+        },
+        {
+          "operand_offset": 82,
+          "kind": "0006",
+          "symbol": "?bind_states@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialPassBaseStorage@4@@Z"
+        },
+        {
+          "operand_offset": 95,
+          "kind": "0006",
+          "symbol": "?bind_state@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialStateOwnerStorage@4@@Z"
+        },
+        {
+          "operand_offset": 111,
+          "kind": "0014",
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "operand_offset": 134,
+          "kind": "0014",
+          "symbol": "??0NativeD3dx9ShaderConstantTableImport@bsp@@QAE@PAUHINSTANCE__@@@Z"
+        },
+        {
+          "operand_offset": 218,
+          "kind": "0014",
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "operand_offset": 239,
+          "kind": "0014",
+          "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+        },
+        {
+          "operand_offset": 264,
+          "kind": "0014",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+        },
+        {
+          "operand_offset": 283,
+          "kind": "0014",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+        },
+        {
+          "operand_offset": 299,
+          "kind": "0014",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+        },
+        {
+          "operand_offset": 321,
+          "kind": "0014",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+        },
+        {
+          "operand_offset": 347,
+          "kind": "0014",
+          "symbol": "??0NativeVertexShaderD3dxImports@bsp@@QAE@PAUHINSTANCE__@@@Z"
+        },
+        {
+          "operand_offset": 361,
+          "kind": "0014",
+          "symbol": "??0NativePixelShaderD3dxImports@bsp@@QAE@PAUHINSTANCE__@@@Z"
+        }
+      ],
+      "section": 368,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 471,
+      "section_bytes": 471,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_renderer_application/0391.bin",
+      "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_renderer_application.obj",
+      "instructions": 131,
+      "positive_code_data_graph": [
+        {
+          "offset": 36,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_graphics_pool_process@game@bsp@@YAAAVGameNativeGraphicsPoolProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 43,
+          "kind": 20,
+          "target": {
+            "name": "?material_pass_pool_0108fbf8@GameNativeGraphicsPoolProcess@game@bsp@@QAEAAVNativeMaterialPassPool@3@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 82,
+          "kind": 6,
+          "target": {
+            "name": "?bind_states@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialPassBaseStorage@4@@Z",
+            "type": 32,
+            "role": "defined_code",
+            "owner_symbols": [
+              "?bind_states@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialPassBaseStorage@4@@Z"
+            ],
+            "offset_from_owner": 0,
+            "owner_complete_hashes": [
+              "31ac073147dd4e3c7e7bd7f1f37123d9664e1d110e8d9095bf2e45ca025c2fc9"
+            ]
+          }
+        },
+        {
+          "offset": 95,
+          "kind": 6,
+          "target": {
+            "name": "?bind_state@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialStateOwnerStorage@4@@Z",
+            "type": 32,
+            "role": "defined_code",
+            "owner_symbols": [
+              "?bind_state@CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@SAXPAXAAUNativeMaterialStateOwnerStorage@4@@Z"
+            ],
+            "offset_from_owner": 0,
+            "owner_complete_hashes": [
+              "9d7f3b0b06741c79a5150e86037dd93b2a1842a4fbf8e9fde78764f94dba01ec"
+            ]
+          }
+        },
+        {
+          "offset": 111,
+          "kind": 20,
+          "target": {
+            "name": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 134,
+          "kind": 20,
+          "target": {
+            "name": "??0NativeD3dx9ShaderConstantTableImport@bsp@@QAE@PAUHINSTANCE__@@@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 218,
+          "kind": 20,
+          "target": {
+            "name": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 239,
+          "kind": 20,
+          "target": {
+            "name": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 264,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 283,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 299,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 321,
+          "kind": 20,
+          "target": {
+            "name": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 347,
+          "kind": 20,
+          "target": {
+            "name": "??0NativeVertexShaderD3dxImports@bsp@@QAE@PAUHINSTANCE__@@@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        },
+        {
+          "offset": 361,
+          "kind": 20,
+          "target": {
+            "name": "??0NativePixelShaderD3dxImports@bsp@@QAE@PAUHINSTANCE__@@@Z",
+            "value": 0,
+            "type": 32,
+            "role": "external"
+          }
+        }
+      ]
+    }
+  ],
+  "actual_positive_provider_edges": [
+    {
+      "caller": "??0GameNativeStringProcess@game@bsp@@AAE@XZ",
+      "CALL_instruction_offset": 42,
+      "actual_ordered_relocation": {
+        "operand_offset": 43,
+        "kind": "0014",
+        "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "native_string_pool_storage",
+          "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z",
+          "bytes": 40,
+          "sha256": "07fd80e1c1cb26407fb5e2af8ea9a475473ca816339ade19a1242c6d2c09d157",
+          "relocations": [
+            {
+              "operand_offset": 25,
+              "kind": "0006",
+              "symbol": "??_7ActualNativeStringPoolStorage@bsp@@6B@"
+            }
+          ],
+          "section": 5,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 40,
+          "section_bytes": 40,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/native_string_pool_storage/0007.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/native_string_pool_storage.obj"
+        }
+      ]
+    },
+    {
+      "caller": "??0GameNativeShaderProcess@game@bsp@@AAE@XZ",
+      "CALL_instruction_offset": 55,
+      "actual_ordered_relocation": {
+        "operand_offset": 56,
+        "kind": "0014",
+        "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_physical_pool",
+          "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ",
+          "bytes": 329,
+          "sha256": "acabfc46ec3c81f6ff061b55ec89d684353a77b666c2037bcf8a3140520fe41e",
+          "relocations": [
+            {
+              "operand_offset": 2,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 8,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 16,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 22,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 29,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 35,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 40,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 49,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 57,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 62,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 67,
+              "kind": "0014",
+              "symbol": "??0AllocatorListDomain@bsp@@QAE@AAPAUAllocatorListElement@1@@Z"
+            },
+            {
+              "operand_offset": 78,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 82,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 89,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 95,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 99,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 106,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 112,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 124,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 130,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 140,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 150,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 160,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 170,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 180,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 190,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 199,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 208,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 217,
+              "kind": "0006",
+              "symbol": "??__Fprocess@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ@YAXXZ"
+            },
+            {
+              "operand_offset": 224,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 230,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 242,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 248,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 258,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 268,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 278,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 288,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 298,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4V423@A"
+            },
+            {
+              "operand_offset": 307,
+              "kind": "0014",
+              "symbol": "_atexit"
+            },
+            {
+              "operand_offset": 312,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 317,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 68,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 329,
+          "section_bytes": 329,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_physical_pool/0036.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_physical_pool.obj"
+        }
+      ]
+    },
+    {
+      "caller": "??0GameNativeShaderProcess@game@bsp@@AAE@XZ",
+      "CALL_instruction_offset": 276,
+      "actual_ordered_relocation": {
+        "operand_offset": 277,
+        "kind": "0014",
+        "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_string_process",
+          "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+          "bytes": 209,
+          "sha256": "4c62b48a6aa4b6101b9873c0f342a1ed96eb5dfe6ce30d6c5fad2473fde85c14",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 19,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 37,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 43,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 51,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 57,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 64,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 85,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 90,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 99,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 116,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 169,
+              "kind": "0014",
+              "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+            },
+            {
+              "operand_offset": 186,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 192,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 197,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 10,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 209,
+          "section_bytes": 209,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0004.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+          "instructions": 60
+        }
+      ]
+    },
+    {
+      "caller": "??0GameNativeShaderProcess@game@bsp@@AAE@XZ",
+      "CALL_instruction_offset": 283,
+      "actual_ordered_relocation": {
+        "operand_offset": 284,
+        "kind": "0014",
+        "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_string_process",
+          "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+          "bytes": 4,
+          "sha256": "2dfab07a6910b38452fac5711893acc020269d7b3b48cce913f68569a11da19c",
+          "relocations": [],
+          "section": 14,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 4,
+          "section_bytes": 4,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0003.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+          "instructions": 2
+        }
+      ]
+    },
+    {
+      "caller": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+      "CALL_instruction_offset": 377,
+      "actual_ordered_relocation": {
+        "operand_offset": 378,
+        "kind": "0014",
+        "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_string_process",
+          "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+          "bytes": 209,
+          "sha256": "4c62b48a6aa4b6101b9873c0f342a1ed96eb5dfe6ce30d6c5fad2473fde85c14",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 19,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 37,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 43,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 51,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 57,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 64,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 85,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 90,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 99,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 116,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 169,
+              "kind": "0014",
+              "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+            },
+            {
+              "operand_offset": 186,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 192,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 197,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 10,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 209,
+          "section_bytes": 209,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0004.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+          "instructions": 60
+        }
+      ]
+    },
+    {
+      "caller": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+      "CALL_instruction_offset": 384,
+      "actual_ordered_relocation": {
+        "operand_offset": 385,
+        "kind": "0014",
+        "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_string_process",
+          "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ",
+          "bytes": 4,
+          "sha256": "2dfab07a6910b38452fac5711893acc020269d7b3b48cce913f68569a11da19c",
+          "relocations": [],
+          "section": 14,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 4,
+          "section_bytes": 4,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_string_process/0003.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_string_process.obj",
+          "instructions": 2
+        }
+      ]
+    },
+    {
+      "caller": "??0CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@3@UCanonicalProfiles@123@AAUGameNativeVfsRawServices@23@AAUNativeStringRawPoolContext@3@AAUNativeResourceSupportRawContext@3@ADSAX5PAUHINSTANCE__@@AAUNativeTextureCacheContext@3@@Z",
+      "CALL_instruction_offset": 263,
+      "actual_ordered_relocation": {
+        "operand_offset": 264,
+        "kind": "0014",
+        "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_shader_process",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+          "bytes": 425,
+          "sha256": "dffd1f5ba9fd4c27978098e338b91596ecc5a1cece67ed843fe37bd096e6c5ef",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+            },
+            {
+              "operand_offset": 21,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 39,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 45,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 53,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 59,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 66,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 88,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 93,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 102,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 122,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 152,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 160,
+              "kind": "0014",
+              "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "operand_offset": 173,
+              "kind": "0014",
+              "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+            },
+            {
+              "operand_offset": 361,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 378,
+              "kind": "0014",
+              "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 385,
+              "kind": "0014",
+              "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+            },
+            {
+              "operand_offset": 402,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 408,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 413,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 41,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 425,
+          "section_bytes": 425,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0025.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+          "instructions": 98
+        }
+      ]
+    },
+    {
+      "caller": "??0CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@3@UCanonicalProfiles@123@AAUGameNativeVfsRawServices@23@AAUNativeStringRawPoolContext@3@AAUNativeResourceSupportRawContext@3@ADSAX5PAUHINSTANCE__@@AAUNativeTextureCacheContext@3@@Z",
+      "CALL_instruction_offset": 282,
+      "actual_ordered_relocation": {
+        "operand_offset": 283,
+        "kind": "0014",
+        "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_shader_process",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+          "bytes": 425,
+          "sha256": "dffd1f5ba9fd4c27978098e338b91596ecc5a1cece67ed843fe37bd096e6c5ef",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+            },
+            {
+              "operand_offset": 21,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 39,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 45,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 53,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 59,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 66,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 88,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 93,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 102,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 122,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 152,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 160,
+              "kind": "0014",
+              "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "operand_offset": 173,
+              "kind": "0014",
+              "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+            },
+            {
+              "operand_offset": 361,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 378,
+              "kind": "0014",
+              "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 385,
+              "kind": "0014",
+              "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+            },
+            {
+              "operand_offset": 402,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 408,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 413,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 41,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 425,
+          "section_bytes": 425,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0025.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+          "instructions": 98
+        }
+      ]
+    },
+    {
+      "caller": "??0CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@3@UCanonicalProfiles@123@AAUGameNativeVfsRawServices@23@AAUNativeStringRawPoolContext@3@AAUNativeResourceSupportRawContext@3@ADSAX5PAUHINSTANCE__@@AAUNativeTextureCacheContext@3@@Z",
+      "CALL_instruction_offset": 298,
+      "actual_ordered_relocation": {
+        "operand_offset": 299,
+        "kind": "0014",
+        "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_shader_process",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+          "bytes": 425,
+          "sha256": "dffd1f5ba9fd4c27978098e338b91596ecc5a1cece67ed843fe37bd096e6c5ef",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+            },
+            {
+              "operand_offset": 21,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 39,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 45,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 53,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 59,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 66,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 88,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 93,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 102,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 122,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 152,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 160,
+              "kind": "0014",
+              "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "operand_offset": 173,
+              "kind": "0014",
+              "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+            },
+            {
+              "operand_offset": 361,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 378,
+              "kind": "0014",
+              "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 385,
+              "kind": "0014",
+              "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+            },
+            {
+              "operand_offset": 402,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 408,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 413,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 41,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 425,
+          "section_bytes": 425,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0025.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+          "instructions": 98
+        }
+      ]
+    },
+    {
+      "caller": "??0CompilerOwnersGraph@?A0x2cc08d3d@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@3@UCanonicalProfiles@123@AAUGameNativeVfsRawServices@23@AAUNativeStringRawPoolContext@3@AAUNativeResourceSupportRawContext@3@ADSAX5PAUHINSTANCE__@@AAUNativeTextureCacheContext@3@@Z",
+      "CALL_instruction_offset": 320,
+      "actual_ordered_relocation": {
+        "operand_offset": 321,
+        "kind": "0014",
+        "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+      },
+      "actual_whole_provider_definitions": [
+        {
+          "module": "game_native_shader_process",
+          "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ",
+          "bytes": 425,
+          "sha256": "dffd1f5ba9fd4c27978098e338b91596ecc5a1cece67ed843fe37bd096e6c5ef",
+          "relocations": [
+            {
+              "operand_offset": 6,
+              "kind": "0006",
+              "symbol": "__ehhandler$?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+            },
+            {
+              "operand_offset": 21,
+              "kind": "0006",
+              "symbol": "___security_cookie"
+            },
+            {
+              "operand_offset": 39,
+              "kind": "0006",
+              "symbol": "__tls_array"
+            },
+            {
+              "operand_offset": 45,
+              "kind": "0006",
+              "symbol": "__tls_index"
+            },
+            {
+              "operand_offset": 53,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 59,
+              "kind": "000B",
+              "symbol": "__Init_thread_epoch"
+            },
+            {
+              "operand_offset": 66,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 88,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 93,
+              "kind": "0014",
+              "symbol": "__Init_thread_header"
+            },
+            {
+              "operand_offset": 102,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 122,
+              "kind": "0014",
+              "symbol": "??2@YAPAXI@Z"
+            },
+            {
+              "operand_offset": 152,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 160,
+              "kind": "0014",
+              "symbol": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "operand_offset": 173,
+              "kind": "0014",
+              "symbol": "??0NativeShaderStateListPool@bsp@@QAE@AAVAllocatorListDomain@1@AAUNativeMaterialPoolStorage@1@@Z"
+            },
+            {
+              "operand_offset": 361,
+              "kind": "0014",
+              "symbol": "_memset"
+            },
+            {
+              "operand_offset": 378,
+              "kind": "0014",
+              "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "operand_offset": 385,
+              "kind": "0014",
+              "symbol": "?query_empty_00e17654@GameNativeStringProcess@game@bsp@@QBEPBDXZ"
+            },
+            {
+              "operand_offset": 402,
+              "kind": "0006",
+              "symbol": "?$TSS0@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4HA"
+            },
+            {
+              "operand_offset": 408,
+              "kind": "0006",
+              "symbol": "?process@?1??game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@23@XZ@4QAV423@A"
+            },
+            {
+              "operand_offset": 413,
+              "kind": "0014",
+              "symbol": "__Init_thread_footer"
+            }
+          ],
+          "section": 41,
+          "symbol_offset": 0,
+          "exclusive_end_offset": 425,
+          "section_bytes": 425,
+          "extent_method": "next distinct function-symbol offset or section end",
+          "path": "local/cc12_property_canonical_fallback_owner_source/post/COFF/game_native_shader_process/0025.bin",
+          "whole_object": "local/cc12_property_canonical_fallback_owner_source/post/objects/game_native_shader_process.obj",
+          "instructions": 98
+        }
+      ]
+    }
+  ],
+  "prior_field_write_proof": {
+    "string_ctor": {
+      "old_root_register": "esi",
+      "new_root_register": "esi",
+      "old_direct_field_writes": [
+        {
+          "instruction_offset": 10,
+          "offset": 0,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 33,
+          "offset": 12,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "edx"
+        },
+        {
+          "instruction_offset": 36,
+          "offset": 16,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        },
+        {
+          "instruction_offset": 39,
+          "offset": 20,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "THIS"
+        }
+      ],
+      "current_direct_field_writes": [
+        {
+          "instruction_offset": 10,
+          "offset": 0,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 33,
+          "offset": 12,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "edx"
+        },
+        {
+          "instruction_offset": 36,
+          "offset": 16,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        },
+        {
+          "instruction_offset": 39,
+          "offset": 20,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "THIS"
+        },
+        {
+          "instruction_offset": 47,
+          "offset": 44,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        }
+      ],
+      "previous_direct_field_write_order_offsets_widths_values_equal": true,
+      "added_field_writes": [
+        {
+          "instruction_offset": 47,
+          "offset": 44,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        }
+      ]
+    },
+    "shader_ctor": {
+      "old_root_register": "esi",
+      "new_root_register": "edi",
+      "old_direct_field_writes": [
+        {
+          "instruction_offset": 50,
+          "offset": 76,
+          "bytes": 16,
+          "operation": "movups",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 59,
+          "offset": 92,
+          "bytes": 8,
+          "operation": "movq",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 64,
+          "offset": 100,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 71,
+          "offset": 68,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 78,
+          "offset": 72,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 85,
+          "offset": 104,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 4294967295
+        },
+        {
+          "instruction_offset": 92,
+          "offset": 64,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 2
+        },
+        {
+          "instruction_offset": 99,
+          "offset": 108,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 106,
+          "offset": 112,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 113,
+          "offset": 116,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 120,
+          "offset": 120,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 124,
+          "offset": 121,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 128,
+          "offset": 122,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 132,
+          "offset": 123,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 136,
+          "offset": 124,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 143,
+          "offset": 128,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 153,
+          "offset": 132,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 163,
+          "offset": 136,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 173,
+          "offset": 140,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 183,
+          "offset": 144,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 192,
+          "offset": 148,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 202,
+          "offset": 152,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 210,
+          "offset": 156,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 77
+        },
+        {
+          "instruction_offset": 228,
+          "offset": 1184,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        }
+      ],
+      "current_direct_field_writes": [
+        {
+          "instruction_offset": 76,
+          "offset": 76,
+          "bytes": 16,
+          "operation": "movups",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 80,
+          "offset": 92,
+          "bytes": 8,
+          "operation": "movq",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 85,
+          "offset": 100,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 92,
+          "offset": 68,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 99,
+          "offset": 72,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 106,
+          "offset": 104,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 4294967295
+        },
+        {
+          "instruction_offset": 113,
+          "offset": 64,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 2
+        },
+        {
+          "instruction_offset": 120,
+          "offset": 108,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 127,
+          "offset": 112,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 134,
+          "offset": 116,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 141,
+          "offset": 120,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 145,
+          "offset": 121,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 149,
+          "offset": 122,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 153,
+          "offset": 123,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 157,
+          "offset": 124,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 164,
+          "offset": 128,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 174,
+          "offset": 132,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 184,
+          "offset": 136,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 194,
+          "offset": 140,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 204,
+          "offset": 144,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 222,
+          "offset": 148,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 234,
+          "offset": 152,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 249,
+          "offset": 156,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 77
+        },
+        {
+          "instruction_offset": 267,
+          "offset": 1184,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 288,
+          "offset": 1188,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        }
+      ],
+      "previous_direct_field_write_order_offsets_widths_values_equal": true,
+      "added_field_writes": [
+        {
+          "instruction_offset": 288,
+          "offset": 1188,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        }
+      ]
+    },
+    "shader_factory": {
+      "old_root_register": "esi",
+      "new_root_register": "edi",
+      "old_direct_field_writes": [
+        {
+          "instruction_offset": 184,
+          "offset": 76,
+          "bytes": 16,
+          "operation": "movups",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 193,
+          "offset": 92,
+          "bytes": 8,
+          "operation": "movq",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 198,
+          "offset": 100,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 205,
+          "offset": 68,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 212,
+          "offset": 72,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 219,
+          "offset": 104,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 4294967295
+        },
+        {
+          "instruction_offset": 226,
+          "offset": 64,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 2
+        },
+        {
+          "instruction_offset": 233,
+          "offset": 108,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 240,
+          "offset": 112,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 247,
+          "offset": 116,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 254,
+          "offset": 120,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 258,
+          "offset": 121,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 262,
+          "offset": 122,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 266,
+          "offset": 123,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 270,
+          "offset": 124,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 277,
+          "offset": 128,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 287,
+          "offset": 132,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 297,
+          "offset": 136,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 307,
+          "offset": 140,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 317,
+          "offset": 144,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 326,
+          "offset": 148,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 336,
+          "offset": 152,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 344,
+          "offset": 156,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 77
+        },
+        {
+          "instruction_offset": 362,
+          "offset": 1184,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        }
+      ],
+      "current_direct_field_writes": [
+        {
+          "instruction_offset": 180,
+          "offset": 76,
+          "bytes": 16,
+          "operation": "movups",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 184,
+          "offset": 92,
+          "bytes": 8,
+          "operation": "movq",
+          "value": "xmm0"
+        },
+        {
+          "instruction_offset": 189,
+          "offset": 100,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 196,
+          "offset": 68,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 203,
+          "offset": 72,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 210,
+          "offset": 104,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 4294967295
+        },
+        {
+          "instruction_offset": 217,
+          "offset": 64,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 2
+        },
+        {
+          "instruction_offset": 224,
+          "offset": 108,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 231,
+          "offset": 112,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 238,
+          "offset": 116,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 245,
+          "offset": 120,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 249,
+          "offset": 121,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 253,
+          "offset": 122,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 257,
+          "offset": 123,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 261,
+          "offset": 124,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 268,
+          "offset": 128,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 278,
+          "offset": 132,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 288,
+          "offset": 136,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 298,
+          "offset": 140,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 308,
+          "offset": 144,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 326,
+          "offset": 148,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 338,
+          "offset": 152,
+          "bytes": 1,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 350,
+          "offset": 156,
+          "bytes": 4,
+          "operation": "mov",
+          "value": 77
+        },
+        {
+          "instruction_offset": 368,
+          "offset": 1184,
+          "bytes": 2,
+          "operation": "mov",
+          "value": 0
+        },
+        {
+          "instruction_offset": 389,
+          "offset": 1188,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        }
+      ],
+      "previous_direct_field_write_order_offsets_widths_values_equal": true,
+      "added_field_writes": [
+        {
+          "instruction_offset": 389,
+          "offset": 1188,
+          "bytes": 4,
+          "operation": "mov",
+          "value": "eax"
+        }
+      ]
+    }
+  },
+  "complete_compiler_consumer_expression_proof": {
+    "old_bytes": 470,
+    "current_bytes": 471,
+    "old_add_4A1_at_145_replaced_by_load_4A4_at_14E": true,
+    "same_LEA_PUSH_MOV_scheduled_before_new_load": true,
+    "all_code_outside_145_to_154_equal": true,
+    "all_ordered_relocations_retained_with_one_byte_shift_after_153": true
+  },
+  "complete_static_qualification": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/qualification.json",
+    "bytes": 1687556,
+    "sha256": "f7f70f4e59494d633e8a23eca792fcb22bc02b56eadfb9517c4672ae5f0b0b9e"
+  },
+  "qualification_method": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/qualify.py",
+    "bytes": 21781,
+    "sha256": "6a9c0733d7135a6fa716d0374eafda0e74c91dcb2f8c356b3f3f592d06a60d4a"
+  },
+  "actual_Source_reference_search": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/qualified_source_use_search.txt",
+    "bytes": 1626,
+    "sha256": "8e21a7db894e785f24e1b38820ea21c6500f454fd13522f4c1fd4ab9a38f7f2e"
+  },
+  "preservation": {
+    "old_public_leaf_accessor_copies": 18,
+    "all_property_bag_TU_extents": 33,
+    "nine_supporting_TU_extents": 460,
+    "accepted_six_lifetime_bodies_and_provider_graphs_unchanged": true,
+    "old_String_fields": {
+      "manager": 0,
+      "pool": 4,
+      "disabled": 8,
+      "raw_context": 12,
+      "actual_storage": 24
+    },
+    "String_allocation_bytes_before": 44,
+    "String_allocation_bytes_after": 48,
+    "Shader_allocation_bytes_before": 1188,
+    "Shader_allocation_bytes_after": 1192,
+    "comparison_policy": "Actual section/relocation-index targets are independently resolved first. Only ?A0xHEX@ anonymous-namespace spelling is normalized for unchanged Source with whole code/data graphs equal. A differing lambda name is paired only to a unique same whole extent hash in the SAME unchanged Source TU, then all positive graph targets must match through those explicit bindings. Original symbols, pairing methods and both positive graphs are retained. No blind lambda regex or arbitrary import-name equivalence is assumed.",
+    "related_EH_and_unwind_extent_count": 12,
+    "no_Original_FS_SEH_or_register_ABI_claim": true
+  },
+  "whole_artifact_inventory": {
+    "old_objects": 22,
+    "current_objects": 22,
+    "old_complete_extents": 5323,
+    "current_complete_extents": 5328,
+    "unique_exact_current_Core_members": 13,
+    "actual_current_application_objects": 9,
+    "raw_exact_old_extent_and_relocation_matches": 4788,
+    "raw_not_exact_or_missing_same_name": 535,
+    "inventory_is_not_blanket_semantic_or_runtime_equivalence": true
+  },
+  "actual_header_consuming_TUs": [
+    {
+      "module": "game_native_input_settings_process",
+      "target": "bsp_core"
+    },
+    {
+      "module": "game_native_settings_application",
+      "target": "bsp_core"
+    },
+    {
+      "module": "game_native_settings_process",
+      "target": "bsp_core"
+    },
+    {
+      "module": "native_scene_property_bag_storage",
+      "target": "bsp_core"
+    },
+    {
+      "module": "game_hosts",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_hosts_singletons",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_main",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_lua_globals",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_renderer_application",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_shader_process",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_string_process",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_vertex_declarations",
+      "target": "bsp_game"
+    },
+    {
+      "module": "game_native_vfs_application",
+      "target": "bsp_game"
+    }
+  ],
+  "actual_unique_exact_Core_members": [
+    {
+      "module": "game_native_input_settings_process",
+      "header_offset": 61965286,
+      "bytes": 11944,
+      "sha256": "bc985dd931c1f5ccc4ecf19bf373857e2d5c9418e403a608716a817d527d1101",
+      "unique": true
+    },
+    {
+      "module": "game_native_settings_process",
+      "header_offset": 56738030,
+      "bytes": 67953,
+      "sha256": "ca0c8590b12df6d1c811d51d1a4d5c1943f1c45ad563fec9f92286a9c7d36c8d",
+      "unique": true
+    },
+    {
+      "module": "native_scene_property_bag_storage",
+      "header_offset": 57462916,
+      "bytes": 16168,
+      "sha256": "f72327299e10382f7f7f80a9e5ef1b6c8003e747891bc52b5ebd45505c981e73",
+      "unique": true
+    },
+    {
+      "module": "game_native_settings_application",
+      "header_offset": 56583992,
+      "bytes": 153978,
+      "sha256": "8c3816cfc091b3d67a24901343206317155deba32ed19808abd010b8a3a04531",
+      "unique": true
+    },
+    {
+      "module": "native_scene_property_array_block_release",
+      "header_offset": 57479144,
+      "bytes": 1264,
+      "sha256": "1e8e55427a84ff704222a97fbfb95057f7d973c444ef156e64b10dbd25e7adb5",
+      "unique": true
+    },
+    {
+      "module": "native_enum_node_pool",
+      "header_offset": 59634960,
+      "bytes": 9671,
+      "sha256": "b872a24fb45ea712e2f74f431721ec41fba630a7d9cf3fe4c1751ff33f57d94d",
+      "unique": true
+    },
+    {
+      "module": "native_enum_dictionary_lookup",
+      "header_offset": 59651350,
+      "bytes": 6314,
+      "sha256": "0dda8118ff120ede92bba514a1958cc2cc2b6f275d64e1461e79c5b3352d28ee",
+      "unique": true
+    },
+    {
+      "module": "native_string",
+      "header_offset": 26844320,
+      "bytes": 18842,
+      "sha256": "376360cd941ff32fec39b4076027367d34a68b8cfed712a2e46c744cfec5e517",
+      "unique": true
+    },
+    {
+      "module": "native_string_pool_owner",
+      "header_offset": 26824302,
+      "bytes": 15566,
+      "sha256": "d970d237a614ada5c530cc1d1c5f54a1619ea398c2e5577d90c2528e53500614",
+      "unique": true
+    },
+    {
+      "module": "native_string_pool_storage",
+      "header_offset": 26815070,
+      "bytes": 9171,
+      "sha256": "9ba3be5eafdf79e7b44d65e9ac6ea973b28dd1f0dde310aae00c055aa0008d95",
+      "unique": true
+    },
+    {
+      "module": "singleton_lifetime",
+      "header_offset": 67763646,
+      "bytes": 32983,
+      "sha256": "d7cb5e1b1c747ee900a2ea70f488bff61ceb1d54696aa2dcceb01c4efcb6fc89",
+      "unique": true
+    },
+    {
+      "module": "allocator_list",
+      "header_offset": 67463044,
+      "bytes": 109274,
+      "sha256": "1079b00c4c6b7083cb7fdd372d587d86301a07462d4e4a60d1fdc010f0105789",
+      "unique": true
+    },
+    {
+      "module": "game_native_physical_pool",
+      "header_offset": 61628310,
+      "bytes": 30116,
+      "sha256": "b06852ee89565a532217912d6d87e5cc9181010727cc2793fdd9b7e0bbefbd67",
+      "unique": true
+    }
+  ],
+  "production_provenance": {
+    "baseline": {
+      "UTC": "2026-10-08T21:19:11.936536+00:00",
+      "finish_utc": "2026-10-08T21:19:21.914368+00:00",
+      "physical_pins": 1014,
+      "candidate_inputs": 877,
+      "timing": "Current Source captured before edit; actual primary-tree object/archive copies are inherited production and are not claimed to have a new pre-edit compilation.",
+      "receipt": {
+        "path": "local/cc12_property_canonical_fallback_owner_source/baseline.json",
+        "bytes": 7086782,
+        "sha256": "603089763391828e5f69d21f7b9823b412854f4e2c333b5a330f45fab1ac11ed"
+      }
+    },
+    "prebuild": {
+      "UTC": "2026-10-08T21:21:29.863927+00:00",
+      "finish_utc": "2026-10-08T21:21:34.048576+00:00",
+      "physical_pins": 947,
+      "candidate_inputs": 877,
+      "receipt": {
+        "path": "local/cc12_property_canonical_fallback_owner_source/freeze.json",
+        "bytes": 1374224,
+        "sha256": "42394893c962d50acc5b60b10d5b08bd499e13fe515d05df78dabb3cb2e9c4b1"
+      }
+    },
+    "postbuild": {
+      "UTC": "2026-10-08T21:23:34.762481+00:00",
+      "finish_utc": "2026-10-08T21:23:43.881322+00:00",
+      "physical_pins": 972,
+      "actual_consumed_inputs": 875,
+      "every_actual_input_equals_physical_prebuild_copy": true,
+      "receipt": {
+        "path": "local/cc12_property_canonical_fallback_owner_source/post.json",
+        "bytes": 8812557,
+        "sha256": "bb67bd956e6b7bb2a58fb5d9450363fa3b2e4813571482acb8180901b18cc884"
+      }
+    },
+    "actual_compiler_linker_SDK_recipes_whole_objects_archives_application_CRT_retained": true,
+    "later_independent_main_composition_deferred_to_primary_build": true
+  },
+  "build": {
+    "result": {
+      "start_utc": "2026-10-08T21:21:50.9412860Z",
+      "finish_utc": "2026-10-08T21:22:35.2925381Z",
+      "elapsed_seconds": 44.3512521,
+      "exit_code": 0,
+      "status": "PASS",
+      "command": "./scripts/build.ps1",
+      "new_selected_entry_execution": false
+    },
+    "receipt": {
+      "path": "local/cc12_property_canonical_fallback_owner_source/build_result.json",
+      "bytes": 255,
+      "sha256": "ea2b9f78d9f1e9315a1b94df21c37d31aedf956a7039e0760e6cdcda4dbdfe49"
+    },
+    "log": {
+      "path": "local/cc12_property_canonical_fallback_owner_source/build.log",
+      "bytes": 4395,
+      "sha256": "8bb343ee8b5ce2b65e762492bc36ff1603453eab9308eceb7030908a02575b42"
+    },
+    "checks": [
+      {
+        "name": "reconstructed_math",
+        "status": "PASS",
+        "seconds": 0.19
+      },
+      {
+        "name": "native_math_differential",
+        "status": "PASS",
+        "seconds": 0.03
+      },
+      {
+        "name": "tool_tests",
+        "status": "PASS",
+        "seconds": 6.95
+      }
+    ],
+    "ctest_total_seconds": 7.23,
+    "existing_unrelated_warning": "LNK4006 spawn_request_id_matches",
+    "new_build_attempts": 1,
+    "Source_changed_after_successful_build": false,
+    "no_new_tests_or_targets": true
+  },
+  "static_qualifier_corrections": {
+    "no_Source_edits_or_build_rerun": true,
+    "retained_attempt_logs": [
+      "qualification_attempt1_factory_register.txt",
+      "qualification_attempt2_consumer_schedule.txt",
+      "qualification_attempt3_unique_lambda_binding.txt",
+      "qualification_attempt4_receipt_filename.txt"
+    ],
+    "explanations": [
+      "Historical shader factory uses ESI; current uses EDI.",
+      "Compiler schedules unchanged LEA/PUSH/MOV before new alias load.",
+      "Unique actual whole-lambda extent plus positive graph binding replaces name-only matching.",
+      "Current query receipt filenames omit leading address zeroes."
+    ]
+  },
+  "prohibited_changes": {
+    "ledger_writes": 0,
+    "Ghidra_writes": 0,
+    "CMake_edits": 0,
+    "new_tests": 0,
+    "probes_executed": 0,
+    "new_selected_API_or_entry_executions": 0,
+    "startup_runs": 0,
+    "gameplay_runs": 0
+  },
+  "review_boundary": {
+    "ready_for_primary_Source_review": true,
+    "new_Native_function_credit": 0,
+    "new_Native_fragment_credit": 0,
+    "execution_authorization": false,
+    "next": "Primary review/build of merged composition; then a separately authorized genuine five-root execution packet."
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_property_canonical_fallback_owner_source/artifact_manifest.json",
+    "bytes": 3085528,
+    "sha256": "5c8f18f731d3ab6247b5db3845deda30f8805e13b4fc91c64f26077d86b1e732",
+    "file_count": 13634,
+    "total_artifact_bytes": 534054186,
+    "exclusions": {
+      "artifact_manifest.json": "self hash would be recursive",
+      "final_check.log": "live post-seal verification output, deliberately excluded"
+    }
+  },
+  "primary_review": {
+    "receipt": "local/cc12_property_canonical_fallback_owner_primary_review/receipt.json",
+    "bytes": 41643,
+    "sha256": "02c5d97fd432f7aa1d0fbb6d2c8638bfdcb1b7124c577bfd4f4f549161c50ba4",
+    "worker_report_sha256": "00fa62169f62c1adcd459629419f1b06c5d391db798cffaa0002233923c42f78",
+    "whole_objects": 22,
+    "whole_extents": 5328,
+    "actual_core_members": 13,
+    "actual_compiler_inputs_prefrozen": 875,
+    "normal_checks_passed": 3,
+    "new_entry_execution": 0,
+    "Original_function_credit": 0,
+    "Original_fragment_credit": 0
+  }
+}
