@@ -1,4 +1,8 @@
 #include "bsp/native_scene_property_bag_storage.hpp"
+#include "bsp/singleton_lifetime.hpp"
+
+#include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 
@@ -80,6 +84,27 @@ __declspec(naked) void* __fastcall initialize_native_scene_property_bag_storage_
         _emit 0x04
         _emit 0x00
     }
+}
+
+void* clone_empty_native_scene_property_bag_008f41f0_fragment(
+    const void* actual_source_bag) {
+    void* const output = singleton_lifetime_allocate({SingletonAllocationKind::object,
+        native_scene_property_bag_storage_bytes, native_scene_property_bag_storage_bytes});
+    initialize_native_scene_property_bag_storage_008f41a0(output, 0, 0);
+
+    // Original initializes the new root before 480690 reads source map+4.
+    // Its genuine count-zero iterator exit reads no head or node. Whole raw61
+    // stores owner+110 then ordinal+10C, exactly like the clone's inline init.
+    std::uint32_t actual_count;
+    std::memcpy(&actual_count, static_cast<const std::byte*>(actual_source_bag) + 8,
+        sizeof(actual_count));
+    if (actual_count != 0) {
+        // Source-only unsupported-input rejection. This fresh empty raw
+        // allocation has no payload to destroy; no class callback is invented.
+        singleton_lifetime_free(output);
+        throw std::invalid_argument("empty property bag clone requires zero source count");
+    }
+    return output;
 }
 
 } // namespace bsp

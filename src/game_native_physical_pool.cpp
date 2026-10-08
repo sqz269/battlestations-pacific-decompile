@@ -1,6 +1,7 @@
 #include "bsp/game_native_physical_pool.hpp"
 
 #include "bsp/native_physical_provider_pool_lifecycle.hpp"
+#include "bsp/native_enum_node_pool.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -47,6 +48,30 @@ GameNativePhysicalPoolProcess::physical_provider_pool_context_0109dbf0() {
     if (startup_state_ != StartupState::returned)
         throw std::logic_error("physical pool requires completed explicit startup");
     return context_;
+}
+
+int GameNativePhysicalPoolProcess::initialize_property_node_pool_once_00cc8a30() {
+    std::lock_guard lock(property_startup_mutex_);
+    if (property_startup_state_ == StartupState::returned)
+        return property_registration_status_;
+    if (property_startup_state_ == StartupState::threw)
+        throw std::logic_error("property node pool startup previously threw");
+
+    // The canonical process and its C++ exit registration already exist.
+    // Bind the genuine trim service before publishing the same borrowed cell.
+    // Commit one attempt before either operation; do not repair a partial pool.
+    property_startup_state_ = StartupState::threw;
+    bind_static_native_property_record_pool_00e175b0(property_pool_00e175b0_, list_);
+    property_registration_status_ = initialize_static_native_property_record_pool_00cc8a30();
+    property_startup_state_ = StartupState::returned;
+    return property_registration_status_;
+}
+
+void* GameNativePhysicalPoolProcess::property_node_pool_storage_00e175b0() {
+    std::lock_guard lock(property_startup_mutex_);
+    if (property_startup_state_ != StartupState::returned)
+        throw std::logic_error("property node pool requires completed explicit startup");
+    return property_pool_00e175b0_;
 }
 
 } // namespace bsp::game
