@@ -1,0 +1,825 @@
+{
+  "schema": "cc12_type8_fresh_case_contract_review_v1",
+  "packet": "cc12_type8_fresh_case_contract_review",
+  "status": "SOURCE_TEXT_EXPECTED_WORKSHEET_NOT_PROCESS_OBSERVATIONS",
+  "Source_credit": 0,
+  "new_reconstruction_credit": 0,
+  "baseline_commit": "f3c2484d9db7e0b687324750e795bc3f5b478684",
+  "Main_generation_commit": "3e3b4c1a6bd6c4957553287ee093477ee48b8c79",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_type8_fresh_case_contract_review",
+  "branch": "agent/cc12_type8_fresh_case_contract_review",
+  "owned_files": [
+    "docs/CC12_TYPE8_FRESH_CASE_CONTRACT_REVIEW.md",
+    "reports/cc12_type8_fresh_case_contract_review.json"
+  ],
+  "addresses_leased_or_queried": [],
+  "constructor": {
+    "address_derived_from_current_Source": "008EF2F0",
+    "symbol": "bsp::construct_native_scene_property_record_type8_byte_array_storage_008ef2f0",
+    "physical_input": "ECX root, unused EDX padding, DATA atT+4, COUNT atT+8, FLAG atT+C; RET12/EAXroot",
+    "Source_public_interface": "void* __fastcall (void*,void*,const void*,uint32_t byte_count,uint32_t copy_flag_bits)",
+    "successful_domain": "fresh/unowned writable56, positive stable readable byte span, nonwrapping root/input/frame disjoint; DF0/current-provider success; no failure/reentry/unwind",
+    "phase": "literal00CE89D4 identity only",
+    "tag": 8,
+    "count_units": "bytes, no multiplication",
+    "flag": "unsigned low byte only; neither fullDWORD truthiness nor normalization0/1",
+    "root_written_half_open": [
+      [
+        0,
+        8
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        52,
+        56
+      ]
+    ],
+    "root_preserved_half_open": [
+      [
+        8,
+        24
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        45,
+        52
+      ]
+    ],
+    "root_written_offsets": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      44,
+      52,
+      53,
+      54,
+      55
+    ],
+    "root_preserved_offsets": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      40,
+      41,
+      42,
+      43,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+    ],
+    "written_bytes": 29,
+    "preserved_bytes": 27,
+    "full_root_size": 56,
+    "marker": "byte2C1 in both branches; not ownership discriminator; remaining2D..2F poison preserved",
+    "root_free": "actual allocation base only; no class destructor/phase dispatch or interior-header free"
+  },
+  "expected_cases": [
+    {
+      "index": 0,
+      "name": "Source_retained",
+      "target": "Source",
+      "observation_status": "EXPECTED_ONLY_NOT_EXECUTED_OR_OBSERVED",
+      "input_index": 0,
+      "input16_hex": "63D1008B2FA4E719B6004CF29538DA70",
+      "sample_COUNT_bytes_hex": "63D1008B2FA4E7",
+      "COUNT_bytes": 7,
+      "FLAG_DWORD_hex": "D6B23900",
+      "FLAG_low_byte_hex": "00",
+      "initial_root_poison_hex": "56",
+      "stored20": "exact actual DATA pointer",
+      "owned_child_allocations": 0,
+      "child_expected_hex": null,
+      "byte24_count_LE32": "07000000",
+      "byte2C": 1,
+      "complete56_root_hex_template": "D489CE0008000000565656565656565656565656565656560000000000000000{actual_pointer_LE32}0700000056565656015656565656565600000000",
+      "preserved_owner30_LE32": "56565656",
+      "capture_tag_hex": "170",
+      "capture_pre_DWORDs_hex": [
+        "D8A50170",
+        "D8A50171",
+        "D8A50172",
+        "D8A50173"
+      ],
+      "capture_post_DWORDs_hex": [
+        "275A0170",
+        "275A0171",
+        "275A0172",
+        "275A0173"
+      ],
+      "EAX": "actual root address; full32 identity",
+      "ECX": "actual DATA owner-independent root address",
+      "EDX": "actual DATA pointer, not incoming poison",
+      "arithmetic_flags": "(EFLAGS_after & 0x8D5) == 0x44; AF0",
+      "DF": "raw CLD makes entryDF0; selected probe requires afterDF0; copied result remains actual-provider predicate, no blanket preservation claim",
+      "capture_file": "source_retained_capture.bin",
+      "storage_file": "source_retained_storage.bin"
+    },
+    {
+      "index": 1,
+      "name": "Original_retained",
+      "target": "bound Original",
+      "observation_status": "EXPECTED_ONLY_NOT_EXECUTED_OR_OBSERVED",
+      "input_index": 1,
+      "input16_hex": "AE257900D364B80F42ED009731CA568D",
+      "sample_COUNT_bytes_hex": "AE257900D364B80F42ED00",
+      "COUNT_bytes": 11,
+      "FLAG_DWORD_hex": "7C48E100",
+      "FLAG_low_byte_hex": "00",
+      "initial_root_poison_hex": "8C",
+      "stored20": "exact actual DATA pointer",
+      "owned_child_allocations": 0,
+      "child_expected_hex": null,
+      "byte24_count_LE32": "0B000000",
+      "byte2C": 1,
+      "complete56_root_hex_template": "D489CE00080000008C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C0000000000000000{actual_pointer_LE32}0B0000008C8C8C8C018C8C8C8C8C8C8C00000000",
+      "preserved_owner30_LE32": "8C8C8C8C",
+      "capture_tag_hex": "2E0",
+      "capture_pre_DWORDs_hex": [
+        "D8A502E0",
+        "D8A502E1",
+        "D8A502E2",
+        "D8A502E3"
+      ],
+      "capture_post_DWORDs_hex": [
+        "275A02E0",
+        "275A02E1",
+        "275A02E2",
+        "275A02E3"
+      ],
+      "EAX": "actual root address; full32 identity",
+      "ECX": "actual DATA owner-independent root address",
+      "EDX": "actual DATA pointer, not incoming poison",
+      "arithmetic_flags": "(EFLAGS_after & 0x8D5) == 0x44; AF0",
+      "DF": "raw CLD makes entryDF0; selected probe requires afterDF0; copied result remains actual-provider predicate, no blanket preservation claim",
+      "capture_file": "original_retained_capture.bin",
+      "storage_file": "original_retained_storage.bin"
+    },
+    {
+      "index": 2,
+      "name": "Source_copy",
+      "target": "Source",
+      "observation_status": "EXPECTED_ONLY_NOT_EXECUTED_OR_OBSERVED",
+      "input_index": 1,
+      "input16_hex": "AE257900D364B80F42ED009731CA568D",
+      "sample_COUNT_bytes_hex": "AE257900D364B80F42ED00",
+      "COUNT_bytes": 11,
+      "FLAG_DWORD_hex": "A53D6C80",
+      "FLAG_low_byte_hex": "80",
+      "initial_root_poison_hex": "2B",
+      "stored20": "actual new live count-byte canonical child base",
+      "owned_child_allocations": 1,
+      "child_expected_hex": "AE257900D364B80F42ED00",
+      "byte24_count_LE32": "0B000000",
+      "byte2C": 1,
+      "complete56_root_hex_template": "D489CE00080000002B2B2B2B2B2B2B2B2B2B2B2B2B2B2B2B0000000000000000{actual_pointer_LE32}0B0000002B2B2B2B012B2B2B2B2B2B2B00000000",
+      "preserved_owner30_LE32": "2B2B2B2B",
+      "capture_tag_hex": "450",
+      "capture_pre_DWORDs_hex": [
+        "D8A50450",
+        "D8A50451",
+        "D8A50452",
+        "D8A50453"
+      ],
+      "capture_post_DWORDs_hex": [
+        "275A0450",
+        "275A0451",
+        "275A0452",
+        "275A0453"
+      ],
+      "EAX": "actual root address; full32 identity",
+      "ECX": "provider residual recorded, unasserted",
+      "EDX": "provider residual recorded, unasserted",
+      "arithmetic_flags": "(EFLAGS_after & 0x8D5) == ADD32_FLAGS((T-24) mod2^32,16); AF included; actualT needed",
+      "DF": "raw CLD makes entryDF0; selected probe requires afterDF0; copied result remains actual-provider predicate, no blanket preservation claim",
+      "capture_file": "source_copy_capture.bin",
+      "storage_file": "source_copy_storage.bin"
+    },
+    {
+      "index": 3,
+      "name": "Original_copy",
+      "target": "bound Original",
+      "observation_status": "EXPECTED_ONLY_NOT_EXECUTED_OR_OBSERVED",
+      "input_index": 0,
+      "input16_hex": "63D1008B2FA4E719B6004CF29538DA70",
+      "sample_COUNT_bytes_hex": "63D1008B2FA4E7",
+      "COUNT_bytes": 7,
+      "FLAG_DWORD_hex": "2E917F02",
+      "FLAG_low_byte_hex": "02",
+      "initial_root_poison_hex": "91",
+      "stored20": "actual new live count-byte canonical child base",
+      "owned_child_allocations": 1,
+      "child_expected_hex": "63D1008B2FA4E7",
+      "byte24_count_LE32": "07000000",
+      "byte2C": 1,
+      "complete56_root_hex_template": "D489CE0008000000919191919191919191919191919191910000000000000000{actual_pointer_LE32}0700000091919191019191919191919100000000",
+      "preserved_owner30_LE32": "91919191",
+      "capture_tag_hex": "5C0",
+      "capture_pre_DWORDs_hex": [
+        "D8A505C0",
+        "D8A505C1",
+        "D8A505C2",
+        "D8A505C3"
+      ],
+      "capture_post_DWORDs_hex": [
+        "275A05C0",
+        "275A05C1",
+        "275A05C2",
+        "275A05C3"
+      ],
+      "EAX": "actual root address; full32 identity",
+      "ECX": "provider residual recorded, unasserted",
+      "EDX": "provider residual recorded, unasserted",
+      "arithmetic_flags": "(EFLAGS_after & 0x8D5) == ADD32_FLAGS((T-24) mod2^32,16); AF included; actualT needed",
+      "DF": "raw CLD makes entryDF0; selected probe requires afterDF0; copied result remains actual-provider predicate, no blanket preservation claim",
+      "capture_file": "original_copy_capture.bin",
+      "storage_file": "original_copy_storage.bin"
+    }
+  ],
+  "guarded_inputs": [
+    {
+      "index": 0,
+      "total_bytes": 48,
+      "pre_half_open": [
+        0,
+        16
+      ],
+      "data_half_open": [
+        16,
+        32
+      ],
+      "post_half_open": [
+        32,
+        48
+      ],
+      "pre_DWORDs_hex": [
+        "9C710000",
+        "9C710001",
+        "9C710002",
+        "9C710003"
+      ],
+      "data16_hex": "63D1008B2FA4E719B6004CF29538DA70",
+      "post_DWORDs_hex": [
+        "638E0000",
+        "638E0001",
+        "638E0002",
+        "638E0003"
+      ],
+      "expected": "all48 unchanged before/after every target; both inputs total96 checked",
+      "storage": "actual local GuardedBytes arrays in future probe; no adjacent heap metadata/red-zone claim",
+      "recorded_name": "input0_guarded_bytes.bin"
+    },
+    {
+      "index": 1,
+      "total_bytes": 48,
+      "pre_half_open": [
+        0,
+        16
+      ],
+      "data_half_open": [
+        16,
+        32
+      ],
+      "post_half_open": [
+        32,
+        48
+      ],
+      "pre_DWORDs_hex": [
+        "9C710100",
+        "9C710101",
+        "9C710102",
+        "9C710103"
+      ],
+      "data16_hex": "AE257900D364B80F42ED009731CA568D",
+      "post_DWORDs_hex": [
+        "638E0100",
+        "638E0101",
+        "638E0102",
+        "638E0103"
+      ],
+      "expected": "all48 unchanged before/after every target; both inputs total96 checked",
+      "storage": "actual local GuardedBytes arrays in future probe; no adjacent heap metadata/red-zone claim",
+      "recorded_name": "input1_guarded_bytes.bin"
+    }
+  ],
+  "capture_schema": {
+    "name": "Capture140/Registers108",
+    "total_bytes": 140,
+    "pre_half_open": [
+      0,
+      16
+    ],
+    "Registers_half_open": [
+      16,
+      124
+    ],
+    "post_half_open": [
+      124,
+      140
+    ],
+    "endianness": "little",
+    "word_bytes": 4,
+    "fields": [
+      {
+        "field": "esp_before",
+        "Registers_offset": 0,
+        "Capture_offset": 16,
+        "bytes": 4
+      },
+      {
+        "field": "esp_after",
+        "Registers_offset": 4,
+        "Capture_offset": 20,
+        "bytes": 4
+      },
+      {
+        "field": "eax_after",
+        "Registers_offset": 8,
+        "Capture_offset": 24,
+        "bytes": 4
+      },
+      {
+        "field": "ecx_after",
+        "Registers_offset": 12,
+        "Capture_offset": 28,
+        "bytes": 4
+      },
+      {
+        "field": "edx_after",
+        "Registers_offset": 16,
+        "Capture_offset": 32,
+        "bytes": 4
+      },
+      {
+        "field": "ebx_before",
+        "Registers_offset": 20,
+        "Capture_offset": 36,
+        "bytes": 4
+      },
+      {
+        "field": "esi_before",
+        "Registers_offset": 24,
+        "Capture_offset": 40,
+        "bytes": 4
+      },
+      {
+        "field": "edi_before",
+        "Registers_offset": 28,
+        "Capture_offset": 44,
+        "bytes": 4
+      },
+      {
+        "field": "ebp_before",
+        "Registers_offset": 32,
+        "Capture_offset": 48,
+        "bytes": 4
+      },
+      {
+        "field": "ebx_after",
+        "Registers_offset": 36,
+        "Capture_offset": 52,
+        "bytes": 4
+      },
+      {
+        "field": "esi_after",
+        "Registers_offset": 40,
+        "Capture_offset": 56,
+        "bytes": 4
+      },
+      {
+        "field": "edi_after",
+        "Registers_offset": 44,
+        "Capture_offset": 60,
+        "bytes": 4
+      },
+      {
+        "field": "ebp_after",
+        "Registers_offset": 48,
+        "Capture_offset": 64,
+        "bytes": 4
+      },
+      {
+        "field": "flags_before",
+        "Registers_offset": 52,
+        "Capture_offset": 68,
+        "bytes": 4
+      },
+      {
+        "field": "flags_after",
+        "Registers_offset": 56,
+        "Capture_offset": 72,
+        "bytes": 4
+      },
+      {
+        "field": "es_before",
+        "Registers_offset": 60,
+        "Capture_offset": 76,
+        "bytes": 4
+      },
+      {
+        "field": "es_after",
+        "Registers_offset": 64,
+        "Capture_offset": 80,
+        "bytes": 4
+      },
+      {
+        "field": "stack_guard0",
+        "Registers_offset": 68,
+        "Capture_offset": 84,
+        "bytes": 4
+      },
+      {
+        "field": "stack_guard1",
+        "Registers_offset": 72,
+        "Capture_offset": 88,
+        "bytes": 4
+      },
+      {
+        "field": "data_slot",
+        "Registers_offset": 76,
+        "Capture_offset": 92,
+        "bytes": 4
+      },
+      {
+        "field": "data_word",
+        "Registers_offset": 80,
+        "Capture_offset": 96,
+        "bytes": 4
+      },
+      {
+        "field": "count_slot",
+        "Registers_offset": 84,
+        "Capture_offset": 100,
+        "bytes": 4
+      },
+      {
+        "field": "count_word",
+        "Registers_offset": 88,
+        "Capture_offset": 104,
+        "bytes": 4
+      },
+      {
+        "field": "flag_slot",
+        "Registers_offset": 92,
+        "Capture_offset": 108,
+        "bytes": 4
+      },
+      {
+        "field": "flag_word",
+        "Registers_offset": 96,
+        "Capture_offset": 112,
+        "bytes": 4
+      },
+      {
+        "field": "esp_before_call",
+        "Registers_offset": 100,
+        "Capture_offset": 116,
+        "bytes": 4
+      },
+      {
+        "field": "entry_esp",
+        "Registers_offset": 104,
+        "Capture_offset": 120,
+        "bytes": 4
+      }
+    ],
+    "initial_fill_hex": "4B",
+    "all27_Register_DWORDs_written_by_raw_capture": true,
+    "canaries": "pre/post fourDWORD each derived from case tag; other live captures unchanged",
+    "stack_canary0_hex": "78C43A6F",
+    "stack_canary1_hex": "D2B795E1",
+    "ESI_before": "actual Capture address",
+    "EBP_before": "actual raw capture frame P",
+    "EBX_before_hex": "D93A61E7",
+    "EDI_before_hex": "B74C28F5",
+    "incoming_EDX_poison_hex": "E6A9523B",
+    "nonvolatiles": "EBX,ESI,EDI,EBP after equal before; actual current-provider ABI precondition on copied path",
+    "ES": "recorded only, no machine_ok equality assertion; no fabricated concrete selector",
+    "flags_before": "only DF0 asserted; other flags not fixed expectations"
+  },
+  "stack_and_flags": {
+    "R": "ESP after raw prologue/canary pushes, before target arguments; equals P-20",
+    "Q": "R-12 after PUSH FLAG,COUNT,DATA; captured as esp_before_call",
+    "T": "Q-4 from preCALL LEA; physical actualCALL needed",
+    "after_RET12": "R = T+16 = captured ESP_after",
+    "dead_slot_addresses": {
+      "DATA": "T+4=R-12",
+      "COUNT": "T+8=R-8",
+      "FLAG": "T+C=R-4"
+    },
+    "dead_values": "exact DATA pointer/fullCOUNT/fullFLAG read afterRET12 and before PUSHFD can overwrite FLAG slot",
+    "copied_cleanup": "ESI saveT-4, EDI saveT-8, allocatorCOUNT T-12; after alloc returns T-12, memcpy3args T-24, memcpy entryT-28, returnT-24; ADD16 producesT-8, then pops andRET12 restoreR",
+    "defined_mask_hex": "8D5",
+    "borrowed_value_hex": "44",
+    "AF": "defined and included, unlike XOR/TEST AFundefined",
+    "copy_formula": "r=(a+16) mod2^32,a=(T-24) mod2^32; CF=wideCarry,PF=even parity low8(r),AF=(a^16^r)&10,ZF=r0,SF=r bit31,OF=(~(a^16)&(a^r)) bit31",
+    "no_fixed_copied_flag_numeric_value_without_actualT": true
+  },
+  "future_expected_allocation_and_free_order": {
+    "successful_current_canonical_heap_allocations": 6,
+    "roots": "allocate all4 actual56 roots before raw targets; poison each and initialize all captures",
+    "target_sequence": [
+      "Source_retained",
+      "Original_retained",
+      "Source_copy",
+      "Original_copy"
+    ],
+    "child_allocations": "Source_copy COUNT11 then Original_copy COUNT7; borrowed calls allocate none",
+    "copy_order": "publish actual child20 before memcpy(child,DATA,COUNT)",
+    "live_checks": "after each call compare all4 full56 roots, both complete48 inputs, every other live140 capture, all live children exactCOUNT bytes",
+    "save_order": "save4 live capture140/root56, both input48 and children11/7, bound Original112 before frees",
+    "free_sequence": [
+      "Source_copy child",
+      "Original_copy child",
+      "root0",
+      "root1",
+      "root2",
+      "root3"
+    ],
+    "heap_frees": 6,
+    "borrowed_inputs_freed_as_children": false,
+    "Original_RX": "separate OS VirtualAlloc112/VirtualFree, excluded from6 canonical heap allocations/frees",
+    "retired_memory_reads": "none; saved address bits/captures and live module/code checks only after frees",
+    "no_adjacent_heap_guard_metadata_claim": true
+  },
+  "future_Root_preconditions": {
+    "active_family_accessed": false,
+    "family_target_only_context": "Root preparing local/t8p3; uninspected",
+    "ordinary_wrappers": "both retained/code-gated, dynamically executed ordinary target count0",
+    "required_fresh_machine_review": "complete Source112, actual2CALL operands/providers, reboundOriginal112, unique linked extent, actualordinary/rawcallers, wholeMain/TU/helper code and all referenced normal/cold helper bodies",
+    "provider_checks": "actual I386 malloc/free/_callnewh heap module plus memcpy copy module IAT/export/MEM_IMAGE/NT path/physicalfile ID/full SHA/ASLR normalized code before0heap alloc/target and after6heap frees; this audit performs none",
+    "manual_protocol": "selected recipe prelaunch_review.json/accepted_for_single_process, oneacceptedprocess; actual fresh EXE/gate/inventory/objects and guard AST identity need Root bindings",
+    "selected_TEXT_identity": "future generated probe/recipe changes require Root review; pinned expected cases do not assert active Root text matches"
+  },
+  "diagnostics": [
+    {
+      "id": "case_values_and_root_mask",
+      "classification": "consistent",
+      "Source_TEXT_disagreement": false,
+      "finding": "counts, unsigned low-byte branch, byte-unit child length, pointer/count fields, marker byte and all29 writes/27 preserved agree with current Source; embeddedNUL stays data"
+    },
+    {
+      "id": "ES_capture",
+      "classification": "assertion_coverage_limit",
+      "Source_TEXT_disagreement": false,
+      "finding": "ES before/after is serialized but machine_ok does not compare it; borrowed Source has no ES update, copied header makes no blanket provider ES preservation promise",
+      "Root_review_needed": "inspect actual recorded ES and freshly emitted raw caller; distinguish missing machine_ok comparison from any independent recorded decoder assertion, uninspected here"
+    },
+    {
+      "id": "input_frame_placement",
+      "classification": "additional_probe_precondition",
+      "Source_TEXT_disagreement": false,
+      "finding": "machine_ok additionally requires address(DATA)>=EBP_before+32 and root disjoint T..EBP+32; Source only requires valid nonwrapping disjoint root/input/activeframe",
+      "Root_review_needed": "actual compiled Main/local/frame placement and observed raw capture addresses; this numeric ordering is not a general Source guarantee"
+    },
+    {
+      "id": "ordinary_caller_machine_proof",
+      "classification": "template_static_assertion_limit",
+      "Source_TEXT_disagreement": false,
+      "finding": "recipe ordinary checks singleCALL/plainRET and absence of selected numeric/MOVZX instructions, which alone do not prove ECX receiver and DATA/COUNT/FLAG stack transport",
+      "Root_review_needed": "review complete fresh ordinary Source/Original callers and raw caller in actual COFF/linked Main; both ordinary wrappers remain code-only, not extra target entries"
+    },
+    {
+      "id": "T_capture_label",
+      "classification": "capture_derivation_qualification",
+      "Source_TEXT_disagreement": false,
+      "finding": "entry_esp is LEA(preCALL_ESP-4) immediately before CALL, separately stored fromR/Q; it is not sampled inside callee entry",
+      "Root_review_needed": "whole actual raw CALL bytes establish T=Q-4 and stack slots; printed entry_T wording must retain this derivation"
+    },
+    {
+      "id": "copied_DF",
+      "classification": "qualified_runtime_predicate",
+      "Source_TEXT_disagreement": false,
+      "finding": "probe requires afterDF0 for selected actual current providers; Source header explicitly avoids blanket DF/ES/FPU/MXCSR preservation across providers",
+      "Root_review_needed": "actual provider identity/code gates and recorded DF, without extending to arbitrary provider or OriginalprivateCRT"
+    }
+  ],
+  "case_or_mask_disagreements_found": 0,
+  "evidence": [
+    {
+      "path": "src/native_scene_property_record_type8_byte_array_storage.cpp",
+      "lines": [
+        11,
+        67
+      ],
+      "purpose": "actualsize bridge and two literal branches"
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+      "lines": [
+        16,
+        44
+      ],
+      "purpose": "successful Source storage/public physical contracts and limits"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "lines": [
+        51,
+        66
+      ],
+      "purpose": "actual allocation retry/failure/free contract"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "lines": [
+        11,
+        21
+      ],
+      "purpose": "raw native/host byte allocation request"
+    },
+    {
+      "path": "probe.cpp.txt",
+      "lines": [
+        16,
+        105
+      ],
+      "purpose": "ordinary declarations, Capture140/Registers108, complete raw textual caller"
+    },
+    {
+      "path": "probe.cpp.txt",
+      "lines": [
+        311,
+        363
+      ],
+      "purpose": "capture/input guards, arithmetic flags, machine checks and expected root mask"
+    },
+    {
+      "path": "probe.cpp.txt",
+      "lines": [
+        368,
+        484
+      ],
+      "purpose": "four selected cases, live identity/fullspan checks, saves, cleanup and output-only residuals"
+    },
+    {
+      "path": "recipe.py.txt",
+      "lines": [
+        430,
+        442
+      ],
+      "purpose": "future manual/independent review bindings and required checks"
+    },
+    {
+      "path": "recipe.py.txt",
+      "lines": [
+        543,
+        572
+      ],
+      "purpose": "ordinary/raw/static template gates require real newmachine review"
+    },
+    {
+      "path": "recipe.py.txt",
+      "lines": [
+        613,
+        643
+      ],
+      "purpose": "future soleprocess guard/bookends, not executed by this audit"
+    }
+  ],
+  "preservation": {
+    "inputs": [
+      {
+        "kind": "Source",
+        "relative_path": "src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "frozen_path": "frozen/Source/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "bytes": 2114,
+        "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_fresh_case_contract_review/src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "Source_matches_Main_and_worktree": true,
+        "TEXT_loaded_as_data_never_imported_or_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "bytes": 2584,
+        "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_fresh_case_contract_review/include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "Source_matches_Main_and_worktree": true,
+        "TEXT_loaded_as_data_never_imported_or_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "src/singleton_lifetime.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/singleton_lifetime.cpp",
+        "frozen_path": "frozen/Source/src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_fresh_case_contract_review/src/singleton_lifetime.cpp",
+        "Source_matches_Main_and_worktree": true,
+        "TEXT_loaded_as_data_never_imported_or_executed": false
+      },
+      {
+        "kind": "Source",
+        "relative_path": "include/bsp/singleton_lifetime.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/singleton_lifetime.hpp",
+        "frozen_path": "frozen/Source/include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_fresh_case_contract_review/include/bsp/singleton_lifetime.hpp",
+        "Source_matches_Main_and_worktree": true,
+        "TEXT_loaded_as_data_never_imported_or_executed": false
+      },
+      {
+        "kind": "TEXT",
+        "relative_path": "probe.cpp.txt",
+        "original_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_complete_helper_text_draft/local/cc12_type8_complete_helper_text_draft20261008a/probe.cpp.txt",
+        "frozen_path": "frozen/TEXT/probe.cpp.txt",
+        "bytes": 29906,
+        "sha256": "4b50d1f627bfcc19a9cc2a1cd03c6d6b519342bf848dce18e5acae26a93f08d4",
+        "worktree_path": null,
+        "Source_matches_Main_and_worktree": false,
+        "TEXT_loaded_as_data_never_imported_or_executed": true
+      },
+      {
+        "kind": "TEXT",
+        "relative_path": "recipe.py.txt",
+        "original_path": "J:/PROG/battlestations-pacific-decompile-cc12_type8_complete_helper_text_draft/local/cc12_type8_complete_helper_text_draft20261008a/recipe.py.txt",
+        "frozen_path": "frozen/TEXT/recipe.py.txt",
+        "bytes": 54002,
+        "sha256": "96aa02347e03b5cbafbbaf8d766ba613d3656eece578d5b8659ec50e109247ed",
+        "worktree_path": null,
+        "Source_matches_Main_and_worktree": false,
+        "TEXT_loaded_as_data_never_imported_or_executed": true
+      }
+    ],
+    "Source_pins": 4,
+    "TEXT_pins": 2,
+    "generation_context": "local/t8cases/generation_context.json",
+    "context_sha256": "18c22c6f4e6de382f20aed922d03d3761c69e427a3eb41757589051efa699f48",
+    "strict_before_after": "all original/frozen6, plus currentMain/worktree4Source pins",
+    "mutable_Main_metadata": "only exact generation context; no evolving reports/ledger postpins",
+    "old_helpers_or_active_accepted_fixtures": "never imported/executed/opened"
+  },
+  "handoff": {
+    "family": "local/t8cases",
+    "receipt": "local/t8cases/receipt.json",
+    "manifest": "local/t8cases/artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_exclusions": [
+      "receipt.json",
+      "artifact_manifest.json"
+    ],
+    "all_actual_utilities_logs_stops_frozen_inputs_commit_info_included": true,
+    "post_console_outside": true
+  },
+  "limits": [
+    "all tables/formulas are expectations, no observed values",
+    "no new Source/reconstruction/fixture/runtime admission",
+    "no Native/control-flow/Ghidra/provider/compiler query or execution",
+    "no class/destructor/wholeclone/World/privateOriginalCRT/EH/game ownership",
+    "no FP numeric experiments",
+    "no arbitrary provider preservation assumption",
+    "no broad helper-coverage proof from TEXT alone"
+  ]
+}
