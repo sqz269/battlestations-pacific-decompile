@@ -1,0 +1,468 @@
+{
+  "packet": "cc12_file_seek_raw_entry",
+  "address": "00BF4F20",
+  "status": "additional_raw_provider_reconstructed_build_and_bounded_native_differential_pass",
+  "baseline": "c71d6d188030e581cafca72f5e16ac7e54562c26",
+  "evidence_utc": {
+    "before": "2026-10-08T07:23:34.092571+00:00",
+    "whole_proof_completed": "2026-10-08T07:24:04.988666+00:00",
+    "execution_started": "2026-10-08T07:24:04.989951+00:00",
+    "after": "2026-10-08T07:24:06.999557+00:00"
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "ghidra_mutation": false,
+  "owned_files": [
+    "include/bsp/native_physical_stream_open.hpp",
+    "src/native_physical_stream_open.cpp",
+    "docs/CC12_FILE_SEEK_RAW_ENTRY.md",
+    "reports/cc12_file_seek_raw_entry.json"
+  ],
+  "new_entry": "bsp::raw_seek_native_physical_stream_00bf4f20",
+  "source_symbol": "?raw_seek_native_physical_stream_00bf4f20@bsp@@YIHPAXIIII@Z",
+  "abi": {
+    "receiver": "ECX actual backing",
+    "incoming_EDX": "unused",
+    "stack": [
+      "distance_low DWORD",
+      "distance_high DWORD",
+      "origin DWORD"
+    ],
+    "return": "complete signed 32-bit Win32 BOOL in EAX",
+    "cleanup": "RET 0Ch",
+    "actual_handle_offset": 8,
+    "direct_output_offset": 16,
+    "nonvolatiles": [
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ]
+  },
+  "Original_spans": [
+    {
+      "address": "00bf4f20",
+      "bytes": 32,
+      "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c",
+      "hex": "8b44240c508b44240c8d5110528b54240c508b41085250ff15d822ce00c20c00",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce22d8",
+      "bytes": 4,
+      "sha256": "22b17ea0013611993b19d410093df91cfacae84fd91b14311bbabc0d6b46a34d",
+      "hex": "4c5aa000",
+      "live_disk_equal": true
+    }
+  ],
+  "Original_actual_PE_import": {
+    "dll": "KERNEL32.dll",
+    "name": "SetFilePointerEx",
+    "iat": "00ce22d8"
+  },
+  "whole_COFF": {
+    "symbol": "?raw_seek_native_physical_stream_00bf4f20@bsp@@YIHPAXIIII@Z",
+    "section": 43,
+    "offset": 0,
+    "bytes": 32,
+    "sha256": "27f9aebbf2cd5d8d3e6f4a74526839ffb0bfb47adcc0d07650305233c2a50852",
+    "hex": "8b44240c508b44240c8d5110528b54240c508b41085250ff1500000000c20c00",
+    "relocations": [
+      {
+        "offset": 25,
+        "type": 6,
+        "target": "__imp__SetFilePointerEx@20"
+      }
+    ],
+    "instruction_count": 12,
+    "complete_decode": true,
+    "disassembly": [
+      {
+        "offset": 0,
+        "bytes": "8b44240c",
+        "instruction": "mov eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "offset": 4,
+        "bytes": "50",
+        "instruction": "push eax"
+      },
+      {
+        "offset": 5,
+        "bytes": "8b44240c",
+        "instruction": "mov eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "offset": 9,
+        "bytes": "8d5110",
+        "instruction": "lea edx, [ecx + 0x10]"
+      },
+      {
+        "offset": 12,
+        "bytes": "52",
+        "instruction": "push edx"
+      },
+      {
+        "offset": 13,
+        "bytes": "8b54240c",
+        "instruction": "mov edx, dword ptr [esp + 0xc]"
+      },
+      {
+        "offset": 17,
+        "bytes": "50",
+        "instruction": "push eax"
+      },
+      {
+        "offset": 18,
+        "bytes": "8b4108",
+        "instruction": "mov eax, dword ptr [ecx + 8]"
+      },
+      {
+        "offset": 21,
+        "bytes": "52",
+        "instruction": "push edx"
+      },
+      {
+        "offset": 22,
+        "bytes": "50",
+        "instruction": "push eax"
+      },
+      {
+        "offset": 23,
+        "bytes": "ff1500000000",
+        "instruction": "call dword ptr [0]"
+      },
+      {
+        "offset": 29,
+        "bytes": "c20c00",
+        "instruction": "ret 0xc"
+      }
+    ],
+    "machine": "014C",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj"
+  },
+  "whole_production_object": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+    "sha256": "1a5a2e882275adce9002cf519c9220e6d12a50611d34b01a5e75aa2c9fa07b5a",
+    "machine": "014C",
+    "code_sections": 47,
+    "code_bytes": 3488,
+    "ordered_relocations": 133,
+    "functions": 47
+  },
+  "unique_linked_entry": {
+    "address": 536875008,
+    "origin": "f   native_physical_stream_open.obj",
+    "hex": "8b44240c508b44240c8d5110528b54240c508b41085250ff1520f00120c20c00",
+    "sha256": "58c69293d5ae4329f918fc4203af402f7b266e09a91956751999337cbe097b32",
+    "unique_occurrences": 1
+  },
+  "only_normalized_operand": {
+    "offset": 25,
+    "bytes": 4,
+    "Original_IAT": "00ce22d8",
+    "COFF_relocation": "__imp__SetFilePointerEx@20",
+    "actual_Source_IAT": "2001f020",
+    "actual_PE_import": {
+      "dll": "KERNEL32.dll",
+      "name": "SetFilePointerEx",
+      "iat": 536997920
+    }
+  },
+  "exact_whole_production_archive_membership": [
+    {
+      "member_header_offset": 57935906,
+      "member_size": 21682,
+      "raw_name": "/69553"
+    }
+  ],
+  "production_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+    "sha256_pre": "d54e2c1c9fec6afd86954140fef06d02c13600b9ca9b99f2f8b6cc2f5b253358",
+    "sha256_post": "d54e2c1c9fec6afd86954140fef06d02c13600b9ca9b99f2f8b6cc2f5b253358"
+  },
+  "whole_Original_COFF_linked_equal_except_that_import_operand": true,
+  "fixture": {
+    "new_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a",
+    "final_run": "run04",
+    "BSP_archives_supplied": 3,
+    "actual_archives": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+        "sha256_pre": "d54e2c1c9fec6afd86954140fef06d02c13600b9ca9b99f2f8b6cc2f5b253358",
+        "sha256_post": "d54e2c1c9fec6afd86954140fef06d02c13600b9ca9b99f2f8b6cc2f5b253358"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256_pre": "9f0a4b1bd84068ee136b5e49b9cc4217ad786b1d1b3b17c3f7c0148acb7c9127",
+        "sha256_post": "9f0a4b1bd84068ee136b5e49b9cc4217ad786b1d1b3b17c3f7c0148acb7c9127"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_zlib121.lib",
+        "sha256_pre": "f7ef727cd9d1d9530b0a80412b624c70025d0024c1c60d6883b27f394ac53654",
+        "sha256_post": "f7ef727cd9d1d9530b0a80412b624c70025d0024c1c60d6883b27f394ac53654"
+      }
+    ],
+    "explicit_objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+        "sha256_pre": "1a5a2e882275adce9002cf519c9220e6d12a50611d34b01a5e75aa2c9fa07b5a",
+        "sha256_post": "1a5a2e882275adce9002cf519c9220e6d12a50611d34b01a5e75aa2c9fa07b5a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a\\run04\\probe.obj",
+        "sha256_pre": "ab9809cb8119c90110014759d6e87e6fab006f28ad4fa507c59f96d3a064dd95",
+        "sha256_post": "ab9809cb8119c90110014759d6e87e6fab006f28ad4fa507c59f96d3a064dd95"
+      }
+    ],
+    "archive_dependents_are_unexecuted_ordinary_bodies_not_admitted_native_providers": true,
+    "original_32_bytes_unchanged": true,
+    "Original_actual_IAT_cell_rebound_only_to_real_OS_export": true,
+    "Source_loaded_IAT_equals_same_real_OS_export": true,
+    "no_callback_or_class_table": true,
+    "live_backing_size": 32,
+    "complete_guarded_storage_size": 64,
+    "genuine_temporary_file_size": 64,
+    "raw_comparisons": 6,
+    "instrumented_raw_calls": 12,
+    "typed_Source_calls": 1,
+    "cases": [
+      {
+        "case": "begin",
+        "eax": "00000001",
+        "output": "00000000:00000007",
+        "cursor": 7,
+        "failure_error": null,
+        "ABI": "PASS",
+        "guards": "PASS"
+      },
+      {
+        "case": "current_negative",
+        "eax": "00000001",
+        "output": "00000000:00000014",
+        "cursor": 20,
+        "failure_error": null,
+        "ABI": "PASS",
+        "guards": "PASS"
+      },
+      {
+        "case": "end_negative",
+        "eax": "00000001",
+        "output": "00000000:0000003b",
+        "cursor": 59,
+        "failure_error": null,
+        "ABI": "PASS",
+        "guards": "PASS"
+      },
+      {
+        "case": "high_word_beyond_eof",
+        "eax": "00000001",
+        "output": "00000001:00000007",
+        "cursor": 4294967303,
+        "failure_error": null,
+        "ABI": "PASS",
+        "guards": "PASS"
+      },
+      {
+        "case": "invalid_origin",
+        "eax": "00000000",
+        "output": "11223344:55667788",
+        "cursor": 11,
+        "failure_error": 87,
+        "ABI": "PASS",
+        "guards": "PASS"
+      },
+      {
+        "case": "invalid_handle",
+        "eax": "00000000",
+        "output": "11223344:55667788",
+        "cursor": 13,
+        "failure_error": 6,
+        "ABI": "PASS",
+        "guards": "PASS"
+      }
+    ],
+    "full_guarded_storage_compared": true,
+    "stack_and_nonvolatiles_pass": true,
+    "failure_errors_compared_only_on_failure": true,
+    "beyond_EOF_did_not_grow_file": true,
+    "temporary_file_absent_after_run": true,
+    "runtime_actual_OS_modules": [
+      "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "C:\\Windows\\SysWOW64\\kernel32.dll"
+    ],
+    "exe_sha256": "403512b7cece6ff75d92a716f3418a2465273e1f6f51c0045dd3a8a74892d71d",
+    "exit": 0
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "exit": 0,
+    "existing_CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "new_tracked_tests": 0
+  },
+  "provenance": {
+    "all_pre_post_pins_equal": true,
+    "normal_module_input_count": 202,
+    "actual_probe_header_count": 164,
+    "actual_searched_library_count": 19,
+    "compiler_linker_backend_count": 46,
+    "production_sources": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_physical_stream_open.cpp",
+        "sha256_pre": "32b0edcc4b50311222af6d5920506b799de201e3002ac9674ab7b4d79a5f7b40",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a\\run04\\inputs\\frozen\\fcb00677eceb3e4d84ccf3bb7561105e500fbee585df9c5eb2787914df80f4af\\native_physical_stream_open.cpp",
+        "sha256_copy": "32b0edcc4b50311222af6d5920506b799de201e3002ac9674ab7b4d79a5f7b40",
+        "sha256_post": "32b0edcc4b50311222af6d5920506b799de201e3002ac9674ab7b4d79a5f7b40"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_physical_stream_open.hpp",
+        "sha256_pre": "eaf21d02332fcb39b5318907e354700f9024fba28785432f6565e2abbcd344cc",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a\\run04\\inputs\\frozen\\c1e1251197996b04e6d50dfad55cb12298ded333cda9e9f7d47970dd5ac8bc4a\\native_physical_stream_open.hpp",
+        "sha256_copy": "eaf21d02332fcb39b5318907e354700f9024fba28785432f6565e2abbcd344cc",
+        "sha256_post": "eaf21d02332fcb39b5318907e354700f9024fba28785432f6565e2abbcd344cc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_physical_stream_conversion.cpp",
+        "sha256_pre": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a\\run04\\inputs\\frozen\\f9fd36704fc08cc1269b72c88db7760b8f13821e846f92e82efe67debb8d03ed\\native_physical_stream_conversion.cpp",
+        "sha256_copy": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a",
+        "sha256_post": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_physical_stream_conversion.hpp",
+        "sha256_pre": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_seek_raw_entry_20261008a\\run04\\inputs\\frozen\\d7c6fca61c5af2b6a017e3197f869612b4569e6c1d69ae73dc5db0e0400f3d55\\native_physical_stream_conversion.hpp",
+        "sha256_copy": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac",
+        "sha256_post": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac"
+      }
+    ],
+    "OS_providers": [
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "sha256_pre": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "sha256_post": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "sha256_pre": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "sha256_post": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      }
+    ],
+    "proof_completed_before_execution": true,
+    "historical_fixture_replay": false
+  },
+  "retained_attempts": [
+    {
+      "name": "initial driver",
+      "result": "Python inspect module shadowing failed before fixture creation or Original execution",
+      "path": "local/cc12_file_seek_raw_entry_20261008a/driver_run01.log"
+    },
+    {
+      "name": "run01",
+      "result": "probe compile failed missing explicit Windows.h; Original not executed"
+    },
+    {
+      "name": "run02",
+      "result": "zero-archive two-object link failed with ten unresolved genuine ordinary-module dependencies; Original not executed"
+    },
+    {
+      "name": "closure inspection",
+      "result": "642 production objects in object-level dependency closure; used existing genuine archives instead"
+    },
+    {
+      "name": "run03",
+      "result": "whole-body proof and execution passed; post-execution provenance rejected ambiguous WOW64 System32 module path; not accepted as sealed final evidence"
+    },
+    {
+      "name": "run04",
+      "result": "module identity resolved through actual 32-bit file handle; complete proof, execution, build and pre/post seals passed"
+    }
+  ],
+  "admitted": [
+    "complete raw BF4F20 provider for actual HANDLE/output storage under real SetFilePointerEx contract",
+    "bounded paired Original/Source real-file behavior and caller ABI observations"
+  ],
+  "not_admitted": [
+    "physical-stream or substream raw class/table",
+    "constructors/destructors/handle producer/lifetime",
+    "raw BF1090 or BF10E0 dispatch",
+    "faulting or stale receiver/handle behavior",
+    "concurrent shared-handle behavior",
+    "asynchronous I/O behavior",
+    "other Windows versions",
+    "game integration or gameplay validation"
+  ],
+  "ordinary_seek_helper_unchanged": true,
+  "existing_raw_BF5020_unchanged": true,
+  "API_contract_source": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfilepointerex",
+  "artifacts": [
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/inputs/manifest.json",
+      "sha256": "a3500db7e7075dd59bc537e330020266fcf5b0b08fa0b9c4eb4d31cb5c9a1d08",
+      "bytes": 210983
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/whole_import_proof.json",
+      "sha256": "9914d5efcb2130f7dad1449ec2b7a8c6d1b420a627ab20e46a13bae368f794ff",
+      "bytes": 4562
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/whole_import_proof.log",
+      "sha256": "bd9f0a785331232e6978fcd30a92ab83b3e63c680366d4839a2b28065e216570",
+      "bytes": 239
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/normal_build.log",
+      "sha256": "2339a30daa9aadc83e2cf895ccb20348ddfd6e6a606095134383ce6210dc8bbb",
+      "bytes": 2668
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/execution.log",
+      "sha256": "2c1f5c888dc69b8af6fa3898d298a88daf23e3bc7fd88a2fc11668f9007473ef",
+      "bytes": 918
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/probe.compile.log",
+      "sha256": "07d423135c42059f5bae5afdf3a56f0c94b122f59f99b3943824d180a954a88f",
+      "bytes": 22695
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/link.log",
+      "sha256": "251b539d28f0c367294cac0743030b036a4f2bae3be0211a5bc509757aab4a1c",
+      "bytes": 13947
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/link.rsp",
+      "sha256": "a5ccf5a5f9961692fe54d9513870e3428fbbcc3d807800e6e14ea914d4a40296",
+      "bytes": 1066
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/file_seek_probe.map",
+      "sha256": "5c1530616e3ffd1e8f0fd2bf7b47a478ebe2bb3d0f393e004d676cff030c6796",
+      "bytes": 283006
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/file_seek_probe.exe",
+      "sha256": "403512b7cece6ff75d92a716f3418a2465273e1f6f51c0045dd3a8a74892d71d",
+      "bytes": 205824
+    },
+    {
+      "path": "local/cc12_file_seek_raw_entry_20261008a/run04/embedded_manifest.xml",
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+      "bytes": 406
+    }
+  ]
+}

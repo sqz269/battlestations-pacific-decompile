@@ -69,6 +69,15 @@ bool valid_native_physical_stream_00bf5020(const void*) noexcept;
 std::uint32_t __fastcall raw_valid_native_physical_stream_00bf5020(
     const void* actual_backing, std::uint32_t unused_edx) noexcept;
 
+// Complete raw BF4F20 provider: ECX actual backing; unused incoming EDX;
+// stack distance-low/high/origin; full SetFilePointerEx BOOL in EAX; RET0Ch.
+// The real Win32 import receives current HANDLE+8 and writes directly to +10h.
+// Requires stable live HANDLE and position fields with the real API's contract;
+// no class/vtable, producer, lifetime or substream-dispatch admission follows.
+std::int32_t __fastcall raw_seek_native_physical_stream_00bf4f20(
+    void* actual_backing, std::uint32_t unused_edx, std::uint32_t distance_low,
+    std::uint32_t distance_high, std::uint32_t origin) noexcept;
+
 std::uint64_t size_native_physical_stream_00bf4f90(const void*) noexcept;
 // Original ECX stream; stack unused DWORD; RET4; EAX GetFileSize low DWORD.
 // Performs a fresh OS query, discards high DWORD, and does not update cache.
