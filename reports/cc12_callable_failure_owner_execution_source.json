@@ -13333,6 +13333,21 @@
     },
     "new_Original_functions": 0,
     "startup_validated": false,
-    "game_validated": false
+    "game_validated": false,
+    "after_incoming_main": {
+      "static_gate": {
+        "path": "local\\cc12_callable_failure_owner_execution_primary_review\\after_incoming_main\\static_gate.json",
+        "sha256": "ef60f707fd8b3cd620658c719765aa49b7d8bd812e0d70b62d3937525bdbc2a7"
+      },
+      "normal_build": {
+        "path": "local\\cc12_callable_owner_execution_after_incoming_main_build.txt",
+        "sha256": "380a8ed6e108ae3661336f4de15a221783cf5b161cc56f2cf3a36d19a7874a8c"
+      },
+      "all_three_existing_checks_passed": true,
+      "all_4123_selected_current_functions_unchanged": true,
+      "ten_whole_linked_bodies_and_RVAs_unchanged": true,
+      "additional_diagnostic_executions": 0,
+      "qualification": "After independent incoming-main reference and four-byte-array Source integration, normal build/all three checks passed. All selected current whole objects/archive members and ten complete linked bodies were requalified. Runtime receipt remains the one preceding primary image; no second diagnostic run."
+    }
   }
 }
