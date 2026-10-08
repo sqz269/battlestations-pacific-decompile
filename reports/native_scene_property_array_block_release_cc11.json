@@ -1,0 +1,619 @@
+{
+  "packet": "cc11_scene_property_array_block_release",
+  "status": "whole_reconstructed_fresh3TU_fixture_passed_pending_Root_integration",
+  "Source_revision_before_new_files": "925bc0b7853990a4e308d0cd7ddce7ed8fc79e8a",
+  "function": {
+    "entry": "008F03F0",
+    "exclusive_end": "008F0417",
+    "bytes": 39,
+    "instructions": 13,
+    "original_sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+    "Source": "src/native_scene_property_array_block_release.cpp",
+    "interface": "include/bsp/native_scene_property_array_block_release.hpp",
+    "native_ABI": "Single ECX actual8B header/record+20; plainRET; ESI saved. Canonical current cdeclfree PUSHptr/CALL/ADDESP4; volatile EAX/ECX/EDX/arithmeticflags unspecified.",
+    "complete_schedule": "Nonnull: free,ADDESP4,pointer0; both paths: byteSize0,pointer0; popESI/plainRET."
+  },
+  "Source_provider_binding": {
+    "canonical_current_free": "bsp::singleton_lifetime_free",
+    "whole_COFF_and_linked": [
+      {
+        "symbol": "?release_native_scene_property_array_block_008f03f0@bsp@@YIXPAX@Z",
+        "section": 4,
+        "offset": 0,
+        "bytes": 39,
+        "sha256": "84147d0c7f2f82c80f87a4c9085f8d4ad1b5e799d4b6ecb88b22f674882d60b6",
+        "hex": "568bf18b0685c0740f50e80000000083c404c70600000000c7460400000000c706000000005ec3",
+        "relocations": [
+          {
+            "offset": 11,
+            "type": 20,
+            "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "actual_link_target": "20001170",
+            "link_target_symbol_equals_COFF": true
+          }
+        ],
+        "instruction_count": 13,
+        "complete_decode": true,
+        "disassembly": [
+          {
+            "offset": 0,
+            "bytes": "56",
+            "instruction": "push esi"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bf1",
+            "instruction": "mov esi, ecx"
+          },
+          {
+            "offset": 3,
+            "bytes": "8b06",
+            "instruction": "mov eax, dword ptr [esi]"
+          },
+          {
+            "offset": 5,
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "offset": 7,
+            "bytes": "740f",
+            "instruction": "je 0x18"
+          },
+          {
+            "offset": 9,
+            "bytes": "50",
+            "instruction": "push eax"
+          },
+          {
+            "offset": 10,
+            "bytes": "e800000000",
+            "instruction": "call 0xf"
+          },
+          {
+            "offset": 15,
+            "bytes": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "offset": 18,
+            "bytes": "c70600000000",
+            "instruction": "mov dword ptr [esi], 0"
+          },
+          {
+            "offset": 24,
+            "bytes": "c7460400000000",
+            "instruction": "mov dword ptr [esi + 4], 0"
+          },
+          {
+            "offset": 31,
+            "bytes": "c70600000000",
+            "instruction": "mov dword ptr [esi], 0"
+          },
+          {
+            "offset": 37,
+            "bytes": "5e",
+            "instruction": "pop esi"
+          },
+          {
+            "offset": 38,
+            "bytes": "c3",
+            "instruction": "ret"
+          }
+        ],
+        "machine": "014C",
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\native_scene_property_array_block_release.obj",
+        "actual_link": {
+          "image_address": "20001010",
+          "map_origin": "f   native_scene_property_array_block_release.obj",
+          "hex": "568bf18b0685c0740f50e85101000083c404c70600000000c7460400000000c706000000005ec3",
+          "sha256": "6776284d3389ae19a505df9511251e27bd2031f7829d386bd9e01b5fc258a6ac",
+          "whole_body_normalized_COFF_equal": true
+        },
+        "whole_Original_equal_except_actual_CALL_rel32_operand": true,
+        "CALL_instruction_offset_decimal": 10,
+        "CALL_operand_offset_decimal": 11,
+        "sole_direct_canonical_current_free_relocation": true
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "section": 108,
+        "offset": 0,
+        "bytes": 90,
+        "sha256": "84bd9cbcc712d9283664090c1b35610db581ef80c3fde7bc888c0f90672f4e4e",
+        "hex": "83ec0c538b1d00000000568b74241857ff7608ffd383c40485c0751e8b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce80000000068000000008d44241050e800000000cc",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "target": "__imp__malloc",
+            "actual_link_absolute_target": "20006198",
+            "link_absolute_target_symbol_equals_COFF": true,
+            "PE_import": {
+              "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+              "name": "malloc",
+              "address": "20006198"
+            },
+            "actual_IAT_equals_named_import": true
+          },
+          {
+            "offset": 30,
+            "type": 6,
+            "target": "__imp___callnewh",
+            "actual_link_absolute_target": "20006190",
+            "link_absolute_target_symbol_equals_COFF": true
+          },
+          {
+            "offset": 70,
+            "type": 20,
+            "target": "??0bad_alloc@std@@QAE@XZ",
+            "actual_link_target": "20001070",
+            "link_target_symbol_equals_COFF": true
+          },
+          {
+            "offset": 75,
+            "type": 6,
+            "target": "__TI2?AVbad_alloc@std@@",
+            "actual_link_absolute_target": "20007438",
+            "link_absolute_target_symbol_equals_COFF": true
+          },
+          {
+            "offset": 85,
+            "type": 20,
+            "target": "__CxxThrowException@8",
+            "actual_link_target": "200055FA",
+            "link_target_symbol_equals_COFF": true
+          }
+        ],
+        "instruction_count": 34,
+        "complete_decode": true,
+        "disassembly": [
+          {
+            "offset": 0,
+            "bytes": "83ec0c",
+            "instruction": "sub esp, 0xc"
+          },
+          {
+            "offset": 3,
+            "bytes": "53",
+            "instruction": "push ebx"
+          },
+          {
+            "offset": 4,
+            "bytes": "8b1d00000000",
+            "instruction": "mov ebx, dword ptr [0]"
+          },
+          {
+            "offset": 10,
+            "bytes": "56",
+            "instruction": "push esi"
+          },
+          {
+            "offset": 11,
+            "bytes": "8b742418",
+            "instruction": "mov esi, dword ptr [esp + 0x18]"
+          },
+          {
+            "offset": 15,
+            "bytes": "57",
+            "instruction": "push edi"
+          },
+          {
+            "offset": 16,
+            "bytes": "ff7608",
+            "instruction": "push dword ptr [esi + 8]"
+          },
+          {
+            "offset": 19,
+            "bytes": "ffd3",
+            "instruction": "call ebx"
+          },
+          {
+            "offset": 21,
+            "bytes": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "offset": 24,
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "offset": 26,
+            "bytes": "751e",
+            "instruction": "jne 0x3a"
+          },
+          {
+            "offset": 28,
+            "bytes": "8b3d00000000",
+            "instruction": "mov edi, dword ptr [0]"
+          },
+          {
+            "offset": 34,
+            "bytes": "ff7608",
+            "instruction": "push dword ptr [esi + 8]"
+          },
+          {
+            "offset": 37,
+            "bytes": "ffd7",
+            "instruction": "call edi"
+          },
+          {
+            "offset": 39,
+            "bytes": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "offset": 42,
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "offset": 44,
+            "bytes": "7413",
+            "instruction": "je 0x41"
+          },
+          {
+            "offset": 46,
+            "bytes": "ff7608",
+            "instruction": "push dword ptr [esi + 8]"
+          },
+          {
+            "offset": 49,
+            "bytes": "ffd3",
+            "instruction": "call ebx"
+          },
+          {
+            "offset": 51,
+            "bytes": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "offset": 54,
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "offset": 56,
+            "bytes": "74e8",
+            "instruction": "je 0x22"
+          },
+          {
+            "offset": 58,
+            "bytes": "5f",
+            "instruction": "pop edi"
+          },
+          {
+            "offset": 59,
+            "bytes": "5e",
+            "instruction": "pop esi"
+          },
+          {
+            "offset": 60,
+            "bytes": "5b",
+            "instruction": "pop ebx"
+          },
+          {
+            "offset": 61,
+            "bytes": "83c40c",
+            "instruction": "add esp, 0xc"
+          },
+          {
+            "offset": 64,
+            "bytes": "c3",
+            "instruction": "ret"
+          },
+          {
+            "offset": 65,
+            "bytes": "8d4c240c",
+            "instruction": "lea ecx, [esp + 0xc]"
+          },
+          {
+            "offset": 69,
+            "bytes": "e800000000",
+            "instruction": "call 0x4a"
+          },
+          {
+            "offset": 74,
+            "bytes": "6800000000",
+            "instruction": "push 0"
+          },
+          {
+            "offset": 79,
+            "bytes": "8d442410",
+            "instruction": "lea eax, [esp + 0x10]"
+          },
+          {
+            "offset": 83,
+            "bytes": "50",
+            "instruction": "push eax"
+          },
+          {
+            "offset": 84,
+            "bytes": "e800000000",
+            "instruction": "call 0x59"
+          },
+          {
+            "offset": 89,
+            "bytes": "cc",
+            "instruction": "int3"
+          }
+        ],
+        "machine": "014C",
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\singleton_lifetime.obj",
+        "actual_link": {
+          "image_address": "20001110",
+          "map_origin": "f   singleton_lifetime.obj",
+          "hex": "83ec0c538b1d98610020568b74241857ff7608ffd383c40485c0751e8b3d90610020ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce816ffffff68387400208d44241050e891440000cc",
+          "sha256": "2fc90e3292907aa905a3e03c482de3e815a9385793d669bda321616461dfd667",
+          "whole_body_normalized_COFF_equal": true
+        }
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "section": 110,
+        "offset": 0,
+        "bytes": 6,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "hex": "ff2500000000",
+        "relocations": [
+          {
+            "offset": 2,
+            "type": 6,
+            "target": "__imp__free",
+            "actual_link_absolute_target": "20006194",
+            "link_absolute_target_symbol_equals_COFF": true,
+            "PE_import": {
+              "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+              "name": "free",
+              "address": "20006194"
+            },
+            "actual_IAT_equals_named_import": true
+          }
+        ],
+        "instruction_count": 1,
+        "complete_decode": true,
+        "disassembly": [
+          {
+            "offset": 0,
+            "bytes": "ff2500000000",
+            "instruction": "jmp dword ptr [0]"
+          }
+        ],
+        "machine": "014C",
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\singleton_lifetime.obj",
+        "actual_link": {
+          "image_address": "20001170",
+          "map_origin": "f   singleton_lifetime.obj",
+          "hex": "ff2594610020",
+          "sha256": "1218bd3af983c6beb9035d09bc1a611ae89f84bde490ae830ead274cabb04e75",
+          "whole_body_normalized_COFF_equal": true
+        }
+      }
+    ],
+    "only_native_difference": "Sole actual CALL rel32 operand at11dec/0Bh; instruction10dec/0Ah. All other35 bytes identical.",
+    "actual_heap_imports": [
+      {
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "name": "free",
+        "address": "20006194"
+      },
+      {
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "name": "malloc",
+        "address": "20006198"
+      }
+    ],
+    "runtime_resolved_IAT_gate": true
+  },
+  "native_evidence": [
+    {
+      "entry": "008F03F0",
+      "inclusive_end": "008F0416",
+      "exclusive_end": "008F0417",
+      "bytes": 39,
+      "sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 13
+    },
+    {
+      "entry": "008EF306",
+      "inclusive_end": "008EF331",
+      "exclusive_end": "008EF332",
+      "bytes": 44,
+      "sha256": "20fac06be4d5c71bf921fc09eaf13ad154a2e729f8c83636ff0b79ca886dc071",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 13
+    },
+    {
+      "entry": "00BF55BE",
+      "inclusive_end": "00BF55C2",
+      "exclusive_end": "00BF55C3",
+      "bytes": 5,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 1
+    },
+    {
+      "entry": "00BF6989",
+      "inclusive_end": "00BF698D",
+      "exclusive_end": "00BF698E",
+      "bytes": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 1
+    }
+  ],
+  "actual_owned_copy_admission": "Bounded008EF306..332 sizeEDI/record+24/PUSHsameSize/CALLBF55BE->BF681B/returnedEAX->record+20 beforememcpy. Only owned currentheap byte buffer domain; producer whole body is unexpanded/unimplemented.",
+  "fresh_connected_family": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01",
+    "TU_count": 3,
+    "TUs": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\src\\native_scene_property_array_block_release.cpp",
+      "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\src\\singleton_lifetime.cpp",
+      "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\probe.cpp"
+    ],
+    "BSP_archives_linked": 0,
+    "build_options": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /GL- /GS- /W4 /WX /fp:strict; /MANIFEST:EMBED /DYNAMICBASE:NO /INCREMENTAL:NO",
+    "first_compile_link_admission_execution_pass": true,
+    "outcomes": {
+      "genuine_currentheap_38_raw_storage": 2,
+      "owned_byte_buffers": 2,
+      "byteSize": 21,
+      "Source_owned_empty_calls": 2,
+      "qualifiedOriginal_owned_empty_calls": 2,
+      "whole39_onlyCALL_rel32_operand_patched": true,
+      "CALL_instruction_offset_decimal": 10,
+      "CALL_operand_offset_decimal": 11,
+      "actual_same_current_free_address": 536875376,
+      "Original_RX_address": 5570560,
+      "captured_input_pointer_bits_beforefree": [
+        7350504,
+        7350536
+      ],
+      "actual_malloc_free_IAT_runtime_gate": true,
+      "ECX_header_ESP_nonvolatile_ABI": true,
+      "volatile_register_or_fullflags_equality_claimed": false,
+      "full38_live_header_adjacentguards": true,
+      "no_freeddata_or_freedroot_access": true,
+      "rawstorage_explicitly_released_afterchecks": true,
+      "Original_historical_CRT_constructor_recordscalar_typerelease_nested_executed": false
+    },
+    "counts": {
+      "actual_production_headers": 8,
+      "fresh_production_CPPs": 2,
+      "unique_production_inputs": 10,
+      "fixture_CPP_and_recipe": 5,
+      "unique_fixture_inclusive_inputs": 15,
+      "host_headers": 166,
+      "searched_system_libraries": 6,
+      "selected_tools_backends": 4,
+      "historical_immutable_files": 5963,
+      "prior_consumed_pins": 341
+    },
+    "COFF_linked_membership": {
+      "objects": 3,
+      "code_sections": 354,
+      "code_bytes": 25542,
+      "ordered_relocations": 983,
+      "application_origin_map_symbols": 334,
+      "application_origin_functions": 140,
+      "physical_application_code_spans": 122,
+      "physical_application_code_bytes": 14498,
+      "physical_application_ordered_relocations": 615
+    },
+    "execution_count_qualification": "Only leaf owned/empty paths and genuine current allocation/free success path executed. COFF/link membership counts do not imply all code executed.",
+    "frozen_recipe_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\inputs\\manifest.json",
+    "manifest_sha256": "602abf61c03687429ac73897fe5a2008dbb66038faa050786ba29168989f361b",
+    "whole_COFF_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\whole_source_coff.json",
+    "whole_COFF_sha256": "b5b8a3fb6becaeb9fd39534372d0210aa0902f5bc7cc1ae02616f1fe140c17b1",
+    "exe_sha256": "7d88e5dab8b8c6482c8a45616f962089a2badfccfea7dbbbdffb59913a9b5c77",
+    "execution_log_sha256": "c6acce76e67aa73da2c23e7f1035448b16fef9a54ddf7054016d9088f430a9cc",
+    "failed_attempts": []
+  },
+  "qualified_Original39": {
+    "original_input_sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+    "patched_RX_sha256": "c8d21e387cfda5c1d59a33a7b7e08d76e733ca4df19b9fb4945ce3806a605543",
+    "only_modified_range": "CALL operand [11,15) decimal within whole39",
+    "patch_target": "20001170",
+    "RX_address_captured_before_release": "00550000",
+    "admission_before_execution": "CompleteCOFF/directcanonicalfree/allocator-free heapIAT gate, runtime resolvedimport gate and Source-owned/empty ESP+nonvolatile gate all passed before Originalcode allocation/execution.",
+    "unchanged_RX_after": true,
+    "historical_Original_free_bound_or_executed": false
+  },
+  "preservation": {
+    "frozen_supports_not_linked": {
+      "utc": "2026-10-08T04:44:39.484662+00:00",
+      "Source_revision": "925bc0b7853990a4e308d0cd7ddce7ed8fc79e8a",
+      "copies": [
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\support\\bsp_core.lib",
+          "sha256_before_copy": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5",
+          "sha256_copy": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5",
+          "sha256_after_copy": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5",
+          "sha256_pre_link_run": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5",
+          "sha256_post_link_run": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5"
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+          "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\support\\bsp_lua511.lib",
+          "sha256_before_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_after_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+          "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+        },
+        {
+          "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+          "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\support\\bsp_zlib121.lib",
+          "sha256_before_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_after_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+          "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+        }
+      ],
+      "usage": "Frozen support bookends only; zero BSP archives will link in this three-TU family. Current build association pending Root confirmation.",
+      "support_build_revision": "8a56f5aee3fdfe14cbc6e914af4cc4227e4829bf",
+      "association": "Root full Win32/all3 existingCTest PASS at8a56f5aee;925bc0b78 metadata successor. Supports preserved only; zero BSP archives link.",
+      "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_kind_4c_4e_integrated_build.log",
+      "build_log_sha256": "6bd077c0d5cbd868f37a2f02e6040202d8b6582517fa5b075df54cf0ffcfddd5"
+    },
+    "external_main_state_after": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "frozen_sha256": "071cf8b406cedeee5530a5ce624282cf9dc750ea9e23602aa060dd77927debd5",
+        "external_current_sha256": "79c7ecb2f9e627f14e5e7b77488e15246130342b984b77cd80f0f1b0f69dd1f5",
+        "consumed_frozen_copy_unchanged": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "frozen_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "external_current_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "consumed_frozen_copy_unchanged": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "frozen_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "external_current_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "consumed_frozen_copy_unchanged": true
+      }
+    ],
+    "prior_ordinary_record_release_audit_proposal": "53b5d3a4187e00c1a36ac6b062fc80300f3d736f4709bbb51aa4c0d9d4ee6e27",
+    "prior_audit_receipt": "8090f79775e2d7320cbc41b3b7995a55e468edd56ba61b829fbe661a1e35ff87",
+    "old_families_or_fixtures_replayed": false
+  },
+  "host_steps": [
+    {
+      "address": "008F03FA",
+      "native": "00BF6989",
+      "function": "008F03F0",
+      "description": "Actual Original directfree target; Source and qualified Original differential bind canonical SAMEcurrentfree explicitly; historical target not executed."
+    },
+    {
+      "address": "008EF31E",
+      "native": "00BF55BE",
+      "function": "008EF2F0",
+      "description": "Bounded actualownedcopy allocation witness"
+    },
+    {
+      "address": "008EF32D",
+      "native": "00BF7680",
+      "function": "008EF2F0",
+      "description": "Bounded publish-before-copy witness"
+    }
+  ],
+  "claim_limits": [
+    "No surrounding38h record constructor/scalar/thunk/type158 execution or Source closure",
+    "No nested114h bag/provider/class/factory/global/world/game closure",
+    "No historicalCRT/EH binding; currentheap success path only",
+    "No callbacks/adapters/dispatchdefaults/borrowedbuffer free/semantic SceneProperty lifetime substitute",
+    "No worker Ghidra/sharedmetadata/CMake/fullbuild/push or trackedtests"
+  ],
+  "worker_artifact_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_scene_property_array_block_release\\run01\\receipt.json"
+}
