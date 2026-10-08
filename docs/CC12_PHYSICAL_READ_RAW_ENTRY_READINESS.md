@@ -48,3 +48,5 @@ The archive is the existing normal-build result from the raw-write packet; it wa
 The smallest next child is the native failure notifier `00BD9E30` with the bounded startup callback `00530620`. Primary review must authorize any Source implementation. A genuine published owner and its field18/+90 preimage remain prerequisites before connected failure-path execution. If that producer is unavailable, identify it in a separate bounded owner audit; do not substitute a fake global, default owner, synthetic callback, typed adapter, or success-only test. No whole-VFS expansion is authorized by this audit.
 
 Machine-readable details: [cc12_physical_read_raw_entry_readiness.json](../reports/cc12_physical_read_raw_entry_readiness.json). This packet establishes static readiness limits, not raw ABI compatibility, runtime correctness, or gameplay validation.
+
+Primary review accepted the retained evidence after independent complete-body and physical-artifact checks. Receipt: local/cc12_ready_packet_primary_audits/physical_read.json. No new Source, build or runtime execution occurred during that review.

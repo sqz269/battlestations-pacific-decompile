@@ -132,3 +132,5 @@ from a seeded preimage, plus the metadata-overlapping position case that makes
 input-read ordering observable. No old fixture replay, current raw Source
 implementation, ABI execution, startup or gameplay result is claimed by this
 read-only readiness packet. Root acceptance is required before implementation.
+
+Primary review accepted the retained evidence after independent complete-body and physical-artifact checks. Receipt: local/cc12_ready_packet_primary_audits/wake_fill.json. No new Source, build or runtime execution occurred during that review.
