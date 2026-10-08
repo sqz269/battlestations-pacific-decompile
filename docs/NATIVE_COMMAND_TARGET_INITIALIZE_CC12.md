@@ -124,3 +124,9 @@ one frozen-loader-snapshot fixture. Root integration owns CMake registration,
 the full Win32 build, existing tests, independent fresh fixture and Ghidra
 annotation/export. Class integration, runtime global state, mutable-global alias
 execution, startup and gameplay are not validated here.
+
+## Primary integration
+
+Whole raw64B15 native-memory initializer, literal Original=SourceCOFF=unique linked body, zero CALLs/relocations. Actual ECX receiver, unused EDX padding formal, RET0/EAX receiver/ECX0, EDX and nonvolatiles/ESP/DF preserved; full XMM0 zero with other SSE/x87/MXCSR preserved. Literal interleaved MOVSS DATA reads and sized output writes retained. Production requires actual readable F87574/78/7C; writable alias destinations are caller prerequisites. PE .data cells/page are mutable loader-zero virtual fill, not immutable file constants. Independent fresh2TU main fixture uses complementary receiver/guard/EDX/XMM/MXCSR poison, actual same stack receiver and caller, one Original raw/one Source raw/one ordinary Source call; whole-body and both caller ABI gates before sole execution, complete output/guards and readonly qualified exact-VA loader-snapshot page bookends. All prior artifacts unchanged; worker objects/BSP archives not linked; no replay/new tracked tests. Mutable-global alias execution, live native DATA provider, class/world/startup/game admission remain unbound.
+
+Exact main Source build `2a2cf9277b43596887685c69e1919cd13f478709` passed all three existing CTests. Independent fresh two-TU family `local/cc12_command_target_initialize_primary20261008a` passed once, with seal `45c381e0c6098cfbda52c5c4e2c58e732dd1aa1dc568040fb60970bf59979fe8`. Full-build core `f6672d6f8a55c7caa1e2bac51e2f1555715f9bda72411c222991990479545636` is context only; the fixture consumes no BSP archives. Saved analysis receipts follow in the report.
