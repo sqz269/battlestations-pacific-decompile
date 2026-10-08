@@ -62,4 +62,23 @@ void* find_native_property_map_node_0043b8b0(const void* actual_map,
     const void* actual_query_header, std::uint32_t& bucket,
     const char* actual_empty_00e177e4, const char* actual_empty_00e17654);
 
+// Partial Original 008F28F0: only genuine miss tail [008F2930,008F299C).
+// Consume a fresh NULL result/bucket from whole property lookup for the SAME
+// synchronized actual map/query. Borrow genuine raw bag+4, actual8h owning query,
+// same initialized E175B0 38h pool/canonical E188B4 domain and concrete raw string
+// context. Allocate a real14h slot; zero only key0/4, preserve allocator+10,
+// own the copied key, then publish mapped8/nextC/head/count and return count.
+// Admit successful nonoverflowing allocator/getter/buffer domains, valid closed
+// ASCII/C locale and predecessor fallback bindings, unique slots, no reentry or
+// concurrent mutation/trim, and stable live owners/storage throughout the call.
+// Caller retains the published node/key and any opaque mapped pointee; release
+// the owning key before returning its slot or destroying the same pool. This
+// fragment supplies no map cleanup owner, record preimage/profile dispatcher,
+// replacement, outer wrapper, null-allocation/unwind, Original ABI or game proof.
+std::uint32_t publish_native_property_map_new_node_008f2930_fragment(
+    void* actual_map, const void* actual_query_header,
+    std::uint32_t lookup_bucket, std::uint32_t incoming_mapped_record_word,
+    void* actual_initialized_property_pool_00e175b0,
+    NativeStringRawPoolContext& actual_key_context);
+
 } // namespace bsp

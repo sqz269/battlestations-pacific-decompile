@@ -1,0 +1,6476 @@
+{
+  "packet": "cc12_native_wake_fill",
+  "created_utc": "2026-10-08T12:03:26.956068+00:00",
+  "status": "complete_new_raw_Source_fill_whole_Original_COFF_linked_constants_and_pre_execution_inputs_verified_three_fresh_pairs_and_existing_build_tests_passed_pending_Root_integration",
+  "base_main": "8ce20387e",
+  "address": "00810020",
+  "original_inclusive_end": "00810159",
+  "original_bytes": 314,
+  "original_instructions": 85,
+  "Original_calls": 0,
+  "public_interface": "void bsp::fill_native_unit_wake_00810020(void* actual_wake, const float* position, float heading)",
+  "private_kernel": "Full literal native MSVC Win32 body. Fastcall ECX carries actual wake and dummy EDX leaves position/heading in the original two stack slots; RET8. Public ordinary C++ interface is not an Original public-ABI admission.",
+  "storage_contract": {
+    "records_offset": 8,
+    "record_stride": 24,
+    "record_count": 40,
+    "head_offset": "0x3C8",
+    "flag_offset": "0x3CC",
+    "head_after": 39,
+    "flag_after": 0,
+    "record_order": "39 down to0",
+    "writes": "XYZ, raw heading, segment+0 atslot39 andbinary32 50 inother39 slots",
+    "preserves": "Every yaw word, residual word, prefix, padding andotherbyte outsidewrite set; no synthetic written/appends counter",
+    "alias": "Readable position triple may overlap writable actualwake. Metadata stores precede position reads. Caller owns lifetime, initialization of preserved preimage and synchronization.",
+    "x87_entry": "Four free slots required by static peak depth; executed cases use empty stack",
+    "entity_relationship": "If caller supplies wake at entity+BD0, records/head match decomposition entity+BD8/F98. Does not establish game entity production or owner."
+  },
+  "critical_x87_operand": {
+    "address": "0081008C",
+    "bytes": "dcc9",
+    "instruction": "FMUL ST(1),ST(0)",
+    "preserved": true
+  },
+  "constants": [
+    {
+      "symbol": "?half_pi_bits@?A0xf5722efa@bsp@@3_KB",
+      "Original_address": "00ce3830",
+      "bytes": "00000060fb21f93f",
+      "COFF_section": 3,
+      "COFF_offset": 0,
+      "readonly": true
+    },
+    {
+      "symbol": "?two_pi_bits@?A0xf5722efa@bsp@@3_KB",
+      "Original_address": "00ce3828",
+      "bytes": "00000060fb211940",
+      "COFF_section": 3,
+      "COFF_offset": 8,
+      "readonly": true
+    },
+    {
+      "symbol": "?step_double_bits@?A0xf5722efa@bsp@@3_KB",
+      "Original_address": "00ce3938",
+      "bytes": "0000000000004940",
+      "COFF_section": 3,
+      "COFF_offset": 16,
+      "readonly": true
+    },
+    {
+      "symbol": "?segment_float_bits@?A0xf5722efa@bsp@@3IB",
+      "Original_address": "00d09290",
+      "bytes": "00004842",
+      "COFF_section": 3,
+      "COFF_offset": 24,
+      "readonly": true
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_unit_wake_fill.hpp",
+      "bytes": 858,
+      "sha256": "c621c84de3f36fa2c95009bbd5f1152c8900beec8da5cc979d6bef2c21f05ccb"
+    },
+    {
+      "path": "src/native_unit_wake_fill.cpp",
+      "bytes": 8605,
+      "sha256": "f508c1db9e13c145da2d36dc49ab34ddf1316035455a1e3e78bdb30b825308bf"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WAKE_FILL.md",
+      "bytes": 6478,
+      "sha256": "be505617b8d5a1b3790d466843c85b8106358004b4c1f8dde2e385e2fbbe5561"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 196673,
+      "sha256": "d62b50479d7f46d54eae77353fb1540c3e463cd14ec443cd4a1e748b78f68cd5"
+    }
+  ],
+  "complete_pre_execution_gate": {
+    "status": "all_pre_execution_provider_and_input_gates_passed",
+    "created_utc": "2026-10-08T11:56:33.125831+00:00",
+    "first_Source_or_Original_call_not_yet_made": true,
+    "Original_PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "selected_complete_body_and_four_live_ranges_equal": true
+    },
+    "whole_COFF_functions": [
+      {
+        "symbol": "?fill_native_unit_wake_00810020@bsp@@YAXPAXPBMM@Z",
+        "section": 4,
+        "name": ".text$mn",
+        "bytes": 29,
+        "raw_file_offset": 539,
+        "sha256": "ad3e0b5789c631337fbfb92ed6950ac9c6ca25103beddceace2993e1a47933ea",
+        "relocations": [
+          {
+            "offset": 23,
+            "type": 20,
+            "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z"
+          }
+        ],
+        "hex": "558becf30f10451033d2518b4d08f30f110424ff750ce8000000005dc3",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "push",
+            "operands": "ebp",
+            "bytes": "55"
+          },
+          {
+            "offset": 1,
+            "mnemonic": "mov",
+            "operands": "ebp, esp",
+            "bytes": "8bec"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [ebp + 0x10]",
+            "bytes": "f30f104510"
+          },
+          {
+            "offset": 8,
+            "mnemonic": "xor",
+            "operands": "edx, edx",
+            "bytes": "33d2"
+          },
+          {
+            "offset": 10,
+            "mnemonic": "push",
+            "operands": "ecx",
+            "bytes": "51"
+          },
+          {
+            "offset": 11,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 8]",
+            "bytes": "8b4d08"
+          },
+          {
+            "offset": 14,
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp], xmm0",
+            "bytes": "f30f110424"
+          },
+          {
+            "offset": 19,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0xc]",
+            "bytes": "ff750c"
+          },
+          {
+            "offset": 22,
+            "mnemonic": "call",
+            "operands": "0x1b",
+            "bytes": "e800000000"
+          },
+          {
+            "offset": 27,
+            "mnemonic": "pop",
+            "operands": "ebp",
+            "bytes": "5d"
+          },
+          {
+            "offset": 28,
+            "mnemonic": "ret",
+            "operands": "",
+            "bytes": "c3"
+          }
+        ]
+      },
+      {
+        "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z",
+        "section": 5,
+        "name": ".text$mn",
+        "bytes": 314,
+        "raw_file_offset": 578,
+        "sha256": "0a028c76e3ef6f11c1a2c8572ee21f15fe7cc38859239f1721805f7ec44e116e",
+        "relocations": [
+          {
+            "offset": 16,
+            "type": 6,
+            "symbol": "?half_pi_bits@?A0xf5722efa@bsp@@3_KB"
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "?two_pi_bits@?A0xf5722efa@bsp@@3_KB"
+          },
+          {
+            "offset": 94,
+            "type": 6,
+            "symbol": "?step_double_bits@?A0xf5722efa@bsp@@3_KB"
+          },
+          {
+            "offset": 207,
+            "type": 6,
+            "symbol": "?segment_float_bits@?A0xf5722efa@bsp@@3IB"
+          }
+        ],
+        "hex": "83ec24d944242cc681cc03000000dc2d00000000c781c803000027000000d91c24d90424d9eedff1760bdc0500000000d91c24eb02ddd856d9442404d9ffd95c2408d9442408d95c241cd9442404d9fed95c240cd944241c8b44242cdd0500000000f30f10008b91c8030000dcc9f30f10542430d9c90f57c9d95c241cf30f11442410d9eef30f104004d8c9f30f11442414f30f104008f30f1144241833f6d95c2420d84c240cd95c2424d9442424d9442420d944241c85f68d04528d04c1f30f11501475050f28c1eb08f30f10050000000085d2d9442410d8e1f30f114018f30f10442410f30f114008f30f10442414d95c2410d9442414f30f11400cf30f10442418d8e2f30f114010d95c2414d9442418d8e3d95c24187507ba27000000eb0383ea0183c60183fe287c8addda5eddd8ddd883c424c20800",
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "sub",
+            "operands": "esp, 0x24",
+            "bytes": "83ec24"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x2c]",
+            "bytes": "d944242c"
+          },
+          {
+            "offset": 7,
+            "mnemonic": "mov",
+            "operands": "byte ptr [ecx + 0x3cc], 0",
+            "bytes": "c681cc03000000"
+          },
+          {
+            "offset": 14,
+            "mnemonic": "fsubr",
+            "operands": "qword ptr [0]",
+            "bytes": "dc2d00000000"
+          },
+          {
+            "offset": 20,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ecx + 0x3c8], 0x27",
+            "bytes": "c781c803000027000000"
+          },
+          {
+            "offset": 30,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp]",
+            "bytes": "d91c24"
+          },
+          {
+            "offset": 33,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp]",
+            "bytes": "d90424"
+          },
+          {
+            "offset": 36,
+            "mnemonic": "fldz",
+            "operands": "",
+            "bytes": "d9ee"
+          },
+          {
+            "offset": 38,
+            "mnemonic": "fcompi",
+            "operands": "st(1)",
+            "bytes": "dff1"
+          },
+          {
+            "offset": 40,
+            "mnemonic": "jbe",
+            "operands": "0x35",
+            "bytes": "760b"
+          },
+          {
+            "offset": 42,
+            "mnemonic": "fadd",
+            "operands": "qword ptr [0]",
+            "bytes": "dc0500000000"
+          },
+          {
+            "offset": 48,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp]",
+            "bytes": "d91c24"
+          },
+          {
+            "offset": 51,
+            "mnemonic": "jmp",
+            "operands": "0x37",
+            "bytes": "eb02"
+          },
+          {
+            "offset": 53,
+            "mnemonic": "fstp",
+            "operands": "st(0)",
+            "bytes": "ddd8"
+          },
+          {
+            "offset": 55,
+            "mnemonic": "push",
+            "operands": "esi",
+            "bytes": "56"
+          },
+          {
+            "offset": 56,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 4]",
+            "bytes": "d9442404"
+          },
+          {
+            "offset": 60,
+            "mnemonic": "fcos",
+            "operands": "",
+            "bytes": "d9ff"
+          },
+          {
+            "offset": 62,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 8]",
+            "bytes": "d95c2408"
+          },
+          {
+            "offset": 66,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 8]",
+            "bytes": "d9442408"
+          },
+          {
+            "offset": 70,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x1c]",
+            "bytes": "d95c241c"
+          },
+          {
+            "offset": 74,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 4]",
+            "bytes": "d9442404"
+          },
+          {
+            "offset": 78,
+            "mnemonic": "fsin",
+            "operands": "",
+            "bytes": "d9fe"
+          },
+          {
+            "offset": 80,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0xc]",
+            "bytes": "d95c240c"
+          },
+          {
+            "offset": 84,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x1c]",
+            "bytes": "d944241c"
+          },
+          {
+            "offset": 88,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 0x2c]",
+            "bytes": "8b44242c"
+          },
+          {
+            "offset": 92,
+            "mnemonic": "fld",
+            "operands": "qword ptr [0]",
+            "bytes": "dd0500000000"
+          },
+          {
+            "offset": 98,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [eax]",
+            "bytes": "f30f1000"
+          },
+          {
+            "offset": 102,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ecx + 0x3c8]",
+            "bytes": "8b91c8030000"
+          },
+          {
+            "offset": 108,
+            "mnemonic": "fmul",
+            "operands": "st(1), st(0)",
+            "bytes": "dcc9"
+          },
+          {
+            "offset": 110,
+            "mnemonic": "movss",
+            "operands": "xmm2, dword ptr [esp + 0x30]",
+            "bytes": "f30f10542430"
+          },
+          {
+            "offset": 116,
+            "mnemonic": "fxch",
+            "operands": "st(1)",
+            "bytes": "d9c9"
+          },
+          {
+            "offset": 118,
+            "mnemonic": "xorps",
+            "operands": "xmm1, xmm1",
+            "bytes": "0f57c9"
+          },
+          {
+            "offset": 121,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x1c]",
+            "bytes": "d95c241c"
+          },
+          {
+            "offset": 125,
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0x10], xmm0",
+            "bytes": "f30f11442410"
+          },
+          {
+            "offset": 131,
+            "mnemonic": "fldz",
+            "operands": "",
+            "bytes": "d9ee"
+          },
+          {
+            "offset": 133,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [eax + 4]",
+            "bytes": "f30f104004"
+          },
+          {
+            "offset": 138,
+            "mnemonic": "fmul",
+            "operands": "st(1)",
+            "bytes": "d8c9"
+          },
+          {
+            "offset": 140,
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0x14], xmm0",
+            "bytes": "f30f11442414"
+          },
+          {
+            "offset": 146,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [eax + 8]",
+            "bytes": "f30f104008"
+          },
+          {
+            "offset": 151,
+            "mnemonic": "movss",
+            "operands": "dword ptr [esp + 0x18], xmm0",
+            "bytes": "f30f11442418"
+          },
+          {
+            "offset": 157,
+            "mnemonic": "xor",
+            "operands": "esi, esi",
+            "bytes": "33f6"
+          },
+          {
+            "offset": 159,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x20]",
+            "bytes": "d95c2420"
+          },
+          {
+            "offset": 163,
+            "mnemonic": "fmul",
+            "operands": "dword ptr [esp + 0xc]",
+            "bytes": "d84c240c"
+          },
+          {
+            "offset": 167,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x24]",
+            "bytes": "d95c2424"
+          },
+          {
+            "offset": 171,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x24]",
+            "bytes": "d9442424"
+          },
+          {
+            "offset": 175,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x20]",
+            "bytes": "d9442420"
+          },
+          {
+            "offset": 179,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x1c]",
+            "bytes": "d944241c"
+          },
+          {
+            "offset": 183,
+            "mnemonic": "test",
+            "operands": "esi, esi",
+            "bytes": "85f6"
+          },
+          {
+            "offset": 185,
+            "mnemonic": "lea",
+            "operands": "eax, [edx + edx*2]",
+            "bytes": "8d0452"
+          },
+          {
+            "offset": 188,
+            "mnemonic": "lea",
+            "operands": "eax, [ecx + eax*8]",
+            "bytes": "8d04c1"
+          },
+          {
+            "offset": 191,
+            "mnemonic": "movss",
+            "operands": "dword ptr [eax + 0x14], xmm2",
+            "bytes": "f30f115014"
+          },
+          {
+            "offset": 196,
+            "mnemonic": "jne",
+            "operands": "0xcb",
+            "bytes": "7505"
+          },
+          {
+            "offset": 198,
+            "mnemonic": "movaps",
+            "operands": "xmm0, xmm1",
+            "bytes": "0f28c1"
+          },
+          {
+            "offset": 201,
+            "mnemonic": "jmp",
+            "operands": "0xd3",
+            "bytes": "eb08"
+          },
+          {
+            "offset": 203,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [0]",
+            "bytes": "f30f100500000000"
+          },
+          {
+            "offset": 211,
+            "mnemonic": "test",
+            "operands": "edx, edx",
+            "bytes": "85d2"
+          },
+          {
+            "offset": 213,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x10]",
+            "bytes": "d9442410"
+          },
+          {
+            "offset": 217,
+            "mnemonic": "fsub",
+            "operands": "st(1)",
+            "bytes": "d8e1"
+          },
+          {
+            "offset": 219,
+            "mnemonic": "movss",
+            "operands": "dword ptr [eax + 0x18], xmm0",
+            "bytes": "f30f114018"
+          },
+          {
+            "offset": 224,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [esp + 0x10]",
+            "bytes": "f30f10442410"
+          },
+          {
+            "offset": 230,
+            "mnemonic": "movss",
+            "operands": "dword ptr [eax + 8], xmm0",
+            "bytes": "f30f114008"
+          },
+          {
+            "offset": 235,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [esp + 0x14]",
+            "bytes": "f30f10442414"
+          },
+          {
+            "offset": 241,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x10]",
+            "bytes": "d95c2410"
+          },
+          {
+            "offset": 245,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x14]",
+            "bytes": "d9442414"
+          },
+          {
+            "offset": 249,
+            "mnemonic": "movss",
+            "operands": "dword ptr [eax + 0xc], xmm0",
+            "bytes": "f30f11400c"
+          },
+          {
+            "offset": 254,
+            "mnemonic": "movss",
+            "operands": "xmm0, dword ptr [esp + 0x18]",
+            "bytes": "f30f10442418"
+          },
+          {
+            "offset": 260,
+            "mnemonic": "fsub",
+            "operands": "st(2)",
+            "bytes": "d8e2"
+          },
+          {
+            "offset": 262,
+            "mnemonic": "movss",
+            "operands": "dword ptr [eax + 0x10], xmm0",
+            "bytes": "f30f114010"
+          },
+          {
+            "offset": 267,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x14]",
+            "bytes": "d95c2414"
+          },
+          {
+            "offset": 271,
+            "mnemonic": "fld",
+            "operands": "dword ptr [esp + 0x18]",
+            "bytes": "d9442418"
+          },
+          {
+            "offset": 275,
+            "mnemonic": "fsub",
+            "operands": "st(3)",
+            "bytes": "d8e3"
+          },
+          {
+            "offset": 277,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esp + 0x18]",
+            "bytes": "d95c2418"
+          },
+          {
+            "offset": 281,
+            "mnemonic": "jne",
+            "operands": "0x122",
+            "bytes": "7507"
+          },
+          {
+            "offset": 283,
+            "mnemonic": "mov",
+            "operands": "edx, 0x27",
+            "bytes": "ba27000000"
+          },
+          {
+            "offset": 288,
+            "mnemonic": "jmp",
+            "operands": "0x125",
+            "bytes": "eb03"
+          },
+          {
+            "offset": 290,
+            "mnemonic": "sub",
+            "operands": "edx, 1",
+            "bytes": "83ea01"
+          },
+          {
+            "offset": 293,
+            "mnemonic": "add",
+            "operands": "esi, 1",
+            "bytes": "83c601"
+          },
+          {
+            "offset": 296,
+            "mnemonic": "cmp",
+            "operands": "esi, 0x28",
+            "bytes": "83fe28"
+          },
+          {
+            "offset": 299,
+            "mnemonic": "jl",
+            "operands": "0xb7",
+            "bytes": "7c8a"
+          },
+          {
+            "offset": 301,
+            "mnemonic": "fstp",
+            "operands": "st(2)",
+            "bytes": "ddda"
+          },
+          {
+            "offset": 303,
+            "mnemonic": "pop",
+            "operands": "esi",
+            "bytes": "5e"
+          },
+          {
+            "offset": 304,
+            "mnemonic": "fstp",
+            "operands": "st(0)",
+            "bytes": "ddd8"
+          },
+          {
+            "offset": 306,
+            "mnemonic": "fstp",
+            "operands": "st(0)",
+            "bytes": "ddd8"
+          },
+          {
+            "offset": 308,
+            "mnemonic": "add",
+            "operands": "esp, 0x24",
+            "bytes": "83c424"
+          },
+          {
+            "offset": 311,
+            "mnemonic": "ret",
+            "operands": "8",
+            "bytes": "c20800"
+          }
+        ]
+      }
+    ],
+    "complete_kernel_Original_equal_except_four_actual_data_operands": true,
+    "COFF_constant_sections": [
+      {
+        "symbol": "?half_pi_bits@?A0xf5722efa@bsp@@3_KB",
+        "Original_address": "00ce3830",
+        "bytes": "00000060fb21f93f",
+        "COFF_section": 3,
+        "COFF_offset": 0,
+        "readonly": true
+      },
+      {
+        "symbol": "?two_pi_bits@?A0xf5722efa@bsp@@3_KB",
+        "Original_address": "00ce3828",
+        "bytes": "00000060fb211940",
+        "COFF_section": 3,
+        "COFF_offset": 8,
+        "readonly": true
+      },
+      {
+        "symbol": "?step_double_bits@?A0xf5722efa@bsp@@3_KB",
+        "Original_address": "00ce3938",
+        "bytes": "0000000000004940",
+        "COFF_section": 3,
+        "COFF_offset": 16,
+        "readonly": true
+      },
+      {
+        "symbol": "?segment_float_bits@?A0xf5722efa@bsp@@3IB",
+        "Original_address": "00d09290",
+        "bytes": "00004842",
+        "COFF_section": 3,
+        "COFF_offset": 24,
+        "readonly": true
+      }
+    ],
+    "archive": {
+      "whole_archive": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+        "retained_path": "sealed/providers/bsp_core.lib",
+        "bytes": 73567214,
+        "sha256": "1051700ef5cfeebee681819ed3e26f9313f12ce42148997d0e28f666a53b9705",
+        "role": "whole consumed production archive"
+      },
+      "exact_members": [
+        {
+          "archive_name": "bsp_core.dir\\Release\\native_unit_wake_fill.obj",
+          "header_offset": 15638172,
+          "bytes": 1628,
+          "sha256": "af0eb73a58c429e7b544ddfc692be31cfb0bbf6fdc9bd72ac5d4332634afa7c3",
+          "pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\archive_member.obj",
+            "retained_path": "sealed/providers/exact_archive_member.obj",
+            "bytes": 1628,
+            "sha256": "af0eb73a58c429e7b544ddfc692be31cfb0bbf6fdc9bd72ac5d4332634afa7c3",
+            "role": "exact physical archive member"
+          },
+          "exact_complete_object": true
+        }
+      ]
+    },
+    "unique_linked_providers": [
+      {
+        "symbol": "?fill_native_unit_wake_00810020@bsp@@YAXPAXPBMM@Z",
+        "address": "00401b10",
+        "bytes": 29,
+        "sha256": "9e51017f60a6dd8ad1220822737d80882eb262612b5670e8b0f62497794ea779",
+        "hex": "558becf30f10451033d2518b4d08f30f110424ff750ce8050000005dc3",
+        "all_map_aliases_at_address": [
+          {
+            "symbol": "?fill_native_unit_wake_00810020@bsp@@YAXPAXPBMM@Z",
+            "address": 4201232,
+            "row": "0001:00000b10       ?fill_native_unit_wake_00810020@bsp@@YAXPAXPBMM@Z 00401b10 f   bsp_core:native_unit_wake_fill.obj"
+          }
+        ],
+        "physical_complete_body_occurrences": [
+          "00401b10"
+        ],
+        "whole_relocated_COFF_equal": true,
+        "relocations": [
+          {
+            "offset": 23,
+            "type": 20,
+            "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z",
+            "target_address": "00401b30",
+            "target_map_rows": [
+              {
+                "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z",
+                "address": 4201264,
+                "row": "0001:00000b30       ?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z 00401b30 f   bsp_core:native_unit_wake_fill.obj"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z",
+        "address": "00401b30",
+        "bytes": 314,
+        "sha256": "7baa36bde2d7a20fb93dc9deaf33665b19974a9158f394e171e122d467df8b7d",
+        "hex": "83ec24d944242cc681cc03000000dc2d60334000c781c803000027000000d91c24d90424d9eedff1760bdc0568334000d91c24eb02ddd856d9442404d9ffd95c2408d9442408d95c241cd9442404d9fed95c240cd944241c8b44242cdd0570334000f30f10008b91c8030000dcc9f30f10542430d9c90f57c9d95c241cf30f11442410d9eef30f104004d8c9f30f11442414f30f104008f30f1144241833f6d95c2420d84c240cd95c2424d9442424d9442420d944241c85f68d04528d04c1f30f11501475050f28c1eb08f30f10057833400085d2d9442410d8e1f30f114018f30f10442410f30f114008f30f10442414d95c2410d9442414f30f11400cf30f10442418d8e2f30f114010d95c2414d9442418d8e3d95c24187507ba27000000eb0383ea0183c60183fe287c8addda5eddd8ddd883c424c20800",
+        "all_map_aliases_at_address": [
+          {
+            "symbol": "?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z",
+            "address": 4201264,
+            "row": "0001:00000b30       ?fill_wake_kernel@?A0xf5722efa@bsp@@YIXPAX0PBMM@Z 00401b30 f   bsp_core:native_unit_wake_fill.obj"
+          }
+        ],
+        "physical_complete_body_occurrences": [
+          "00401b30"
+        ],
+        "whole_relocated_COFF_equal": true,
+        "relocations": [
+          {
+            "offset": 16,
+            "type": 6,
+            "symbol": "?half_pi_bits@?A0xf5722efa@bsp@@3_KB",
+            "target_address": "00403360",
+            "target_map_rows": [
+              {
+                "symbol": "?half_pi_bits@?A0xf5722efa@bsp@@3_KB",
+                "address": 4207456,
+                "row": "0002:00000360       ?half_pi_bits@?A0xf5722efa@bsp@@3_KB 00403360     bsp_core:native_unit_wake_fill.obj"
+              }
+            ],
+            "actual_payload": "00000060fb21f93f",
+            "readonly": true
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "?two_pi_bits@?A0xf5722efa@bsp@@3_KB",
+            "target_address": "00403368",
+            "target_map_rows": [
+              {
+                "symbol": "?two_pi_bits@?A0xf5722efa@bsp@@3_KB",
+                "address": 4207464,
+                "row": "0002:00000368       ?two_pi_bits@?A0xf5722efa@bsp@@3_KB 00403368     bsp_core:native_unit_wake_fill.obj"
+              }
+            ],
+            "actual_payload": "00000060fb211940",
+            "readonly": true
+          },
+          {
+            "offset": 94,
+            "type": 6,
+            "symbol": "?step_double_bits@?A0xf5722efa@bsp@@3_KB",
+            "target_address": "00403370",
+            "target_map_rows": [
+              {
+                "symbol": "?step_double_bits@?A0xf5722efa@bsp@@3_KB",
+                "address": 4207472,
+                "row": "0002:00000370       ?step_double_bits@?A0xf5722efa@bsp@@3_KB 00403370     bsp_core:native_unit_wake_fill.obj"
+              }
+            ],
+            "actual_payload": "0000000000004940",
+            "readonly": true
+          },
+          {
+            "offset": 207,
+            "type": 6,
+            "symbol": "?segment_float_bits@?A0xf5722efa@bsp@@3IB",
+            "target_address": "00403378",
+            "target_map_rows": [
+              {
+                "symbol": "?segment_float_bits@?A0xf5722efa@bsp@@3IB",
+                "address": 4207480,
+                "row": "0002:00000378       ?segment_float_bits@?A0xf5722efa@bsp@@3IB 00403378     bsp_core:native_unit_wake_fill.obj"
+              }
+            ],
+            "actual_payload": "00004842",
+            "readonly": true
+          }
+        ]
+      }
+    ],
+    "linked_imports": [
+      {
+        "dll": "KERNEL32.dll",
+        "functions": [
+          "GetCurrentProcess",
+          "FlushInstructionCache",
+          "VirtualAlloc",
+          "VirtualProtect",
+          "VirtualFree",
+          "QueryPerformanceCounter",
+          "GetCurrentProcessId",
+          "GetCurrentThreadId",
+          "GetSystemTimeAsFileTime",
+          "InitializeSListHead",
+          "SetUnhandledExceptionFilter",
+          "GetModuleHandleW",
+          "IsProcessorFeaturePresent"
+        ]
+      },
+      {
+        "dll": "VCRUNTIME140.dll",
+        "functions": [
+          "memcpy",
+          "memset",
+          "__current_exception",
+          "__current_exception_context",
+          "_except_handler4_common"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-stdio-l1-1-0.dll",
+        "functions": [
+          "__acrt_iob_func",
+          "_set_fmode",
+          "fclose",
+          "__stdio_common_vsprintf",
+          "__stdio_common_vfprintf",
+          "fwrite",
+          "fopen",
+          "__p__commode",
+          "fread",
+          "fgetc"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "functions": [
+          "_seh_filter_exe",
+          "_crt_atexit",
+          "_controlfp_s",
+          "terminate",
+          "_configure_narrow_argv",
+          "_initialize_narrow_environment",
+          "_get_initial_narrow_environment",
+          "_initterm",
+          "_initterm_e",
+          "exit",
+          "_exit",
+          "__p___argc",
+          "__p___argv",
+          "_set_app_type",
+          "_c_exit",
+          "_register_thread_local_exe_atexit_callback",
+          "_cexit",
+          "_register_onexit_function",
+          "_initialize_onexit_table"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-math-l1-1-0.dll",
+        "functions": [
+          "__setusermatherr"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-locale-l1-1-0.dll",
+        "functions": [
+          "_configthreadlocale"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "functions": [
+          "_set_new_mode"
+        ]
+      }
+    ],
+    "Original_fixed_map": {
+      "base": "30000000",
+      "bytes": 4096,
+      "sha256": "a81fe615ba2a976771c38c5798cf4c349ab695979a61f7652ede887250985cff",
+      "all_bytes_verified_before_execution": true,
+      "only_relocations": [
+        {
+          "operand_offset": 16,
+          "data_address": "30000400",
+          "payload": "00000060fb21f93f"
+        },
+        {
+          "operand_offset": 44,
+          "data_address": "30000408",
+          "payload": "00000060fb211940"
+        },
+        {
+          "operand_offset": 94,
+          "data_address": "30000410",
+          "payload": "0000000000004940"
+        },
+        {
+          "operand_offset": 207,
+          "data_address": "30000418",
+          "payload": "00004842"
+        }
+      ],
+      "arithmetic_backend": "Original FCOS/FSIN instructions; no helper or CRT calls"
+    },
+    "legacy_unchanged": [
+      {
+        "path": "src/ship_ai_wake_trail.cpp",
+        "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/ship_ai_wake_trail.hpp",
+        "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+        "unchanged": true
+      }
+    ],
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\fill_probe.cpp",
+        "retained_path": "sealed/probe/fill_probe.cpp",
+        "bytes": 6388,
+        "sha256": "548e65388b7a5d6cb6b22a2a07d4e57f795c77814bb89c46a3e65434ddd2412f",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\fill_probe.i",
+        "retained_path": "sealed/probe/fill_probe.i",
+        "bytes": 3805086,
+        "sha256": "b57fca996098dd2ee25bf69547cb6f3b583d941ce0ccbdf539510e5d34070042",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\native_unit_wake_fill.i",
+        "retained_path": "sealed/probe/native_unit_wake_fill.i",
+        "bytes": 7512,
+        "sha256": "3ee2dc69426c8190841a78f091900fd1cb6ac81253c8bdc3bd484dc22b028620",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\fill_probe.obj",
+        "retained_path": "sealed/probe/fill_probe.obj",
+        "bytes": 11906,
+        "sha256": "3a718480d8ad92972ee83251b30bf6ce06b28c6914c19bd53d2cc230f906fed5",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\fill_probe.exe",
+        "retained_path": "sealed/probe/fill_probe.exe",
+        "bytes": 13312,
+        "sha256": "cb312fc838833513e4646de3ce3436266caff000f9a37e6059058445756fdbb2",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\fill_probe.map",
+        "retained_path": "sealed/probe/fill_probe.map",
+        "bytes": 26902,
+        "sha256": "84bb6b22b90f18f6d2a5f25c9bb160a7c797454db368a6e6551743f1becb007c",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\build_probe.cmd",
+        "retained_path": "sealed/probe/build_probe.cmd",
+        "bytes": 781,
+        "sha256": "60159f7a3eb2c39376f5e410219c05e760b79fcecffd9a16cc6eefc779f6a8a4",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\compiler_environment.log",
+        "retained_path": "sealed/probe/compiler_environment.log",
+        "bytes": 297,
+        "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\tool_paths.txt",
+        "retained_path": "sealed/probe/tool_paths.txt",
+        "bytes": 210,
+        "sha256": "a5f29707ea22b942e5a5200430599449c03ea69ad41db7bdab00719f1d593bfa",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\compile.log",
+        "retained_path": "sealed/probe/compile.log",
+        "bytes": 5563,
+        "sha256": "e6488ec64dbcdd310e722d9a9de96376b427dd26eaee23c8e76973ea4f0e6201",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\run_probe.py",
+        "retained_path": "sealed/probe/run_probe.py",
+        "bytes": 1296,
+        "sha256": "cf9aa4d5d1ecf5ef22c069a6de33305f538523e8b278d446ac035a2d0d85bb3e",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\verify_before_execution.py",
+        "retained_path": "sealed/probe/verify_before_execution.py",
+        "bytes": 13319,
+        "sha256": "f5ddb9da5c627f106e3415b91338e37786a2b724a14556390f9817e64df9afa0",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\coff_reader.py",
+        "retained_path": "sealed/probe/coff_reader.py",
+        "bytes": 2495,
+        "sha256": "1bb42addad8e97418a6f4a46a13a70160219b621d35e3c95552d6eafa025a386",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\original_map.bin",
+        "retained_path": "sealed/probe/original_map.bin",
+        "bytes": 4096,
+        "sha256": "a81fe615ba2a976771c38c5798cf4c349ab695979a61f7652ede887250985cff",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\cases.json",
+        "retained_path": "sealed/probe/cases.json",
+        "bytes": 913,
+        "sha256": "882e6930c68b1ba5aeb83366f50a4b1ca37e3b0af225549c5dd8d1c9d0413f0a",
+        "role": "pre-execution probe/recipe/tool/data"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\case_0_before.bin",
+        "retained_path": "sealed/probe/case_0_before.bin",
+        "bytes": 1056,
+        "sha256": "3a95f47e9e0134e53f1c901ef3f830f88952904a11b3afb1c1fcbd95235ee978",
+        "role": "seeded actual-memory preimage"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\case_1_before.bin",
+        "retained_path": "sealed/probe/case_1_before.bin",
+        "bytes": 1056,
+        "sha256": "539e3d36b3c10fcb103f25df0b7902ab6600d222d974aea8765f1483bb34ff04",
+        "role": "seeded actual-memory preimage"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\case_2_before.bin",
+        "retained_path": "sealed/probe/case_2_before.bin",
+        "bytes": 1056,
+        "sha256": "138e60dc249fe0296634fcc792b65e87bebf4803036a664cecfa27b0318200ae",
+        "role": "seeded actual-memory preimage"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00810020_Original.bin",
+        "retained_path": "sealed/original/00810020_Original.bin",
+        "bytes": 314,
+        "sha256": "fbcb23c15620a0b43c3e2ff56fc59687801382cce5ad07b6a3af7baa958813ae",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00810020_live.txt",
+        "retained_path": "sealed/original/00810020_live.txt",
+        "bytes": 1516,
+        "sha256": "4dbb0154e9e1852b1d99161168941eab2fa4337476f2807b32bb66cfeb49f4a2",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3830_Original.bin",
+        "retained_path": "sealed/original/00ce3830_Original.bin",
+        "bytes": 8,
+        "sha256": "ba1a5d6e5c15e527475ac665943b309f99f89f376a27a3f04c87f72b91f21a40",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3830_live.txt",
+        "retained_path": "sealed/original/00ce3830_live.txt",
+        "bytes": 45,
+        "sha256": "856ef4168f0c84093f2754962e1fd691b8b50d18c4a533f26999fd57de5716a6",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3828_Original.bin",
+        "retained_path": "sealed/original/00ce3828_Original.bin",
+        "bytes": 8,
+        "sha256": "8b609471f492a677f3d33880bdb21889037d34e397491117a62b901fa2e85e7a",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3828_live.txt",
+        "retained_path": "sealed/original/00ce3828_live.txt",
+        "bytes": 45,
+        "sha256": "6412a9bedf51ffb020711ab065b3ec4221b218aa6b1c71d444afbc525a3e12b4",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3938_Original.bin",
+        "retained_path": "sealed/original/00ce3938_Original.bin",
+        "bytes": 8,
+        "sha256": "fe555d486cc8379252e92fe7c97b5e5b603a97a9f965105cfd169a1ab4327fb9",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00ce3938_live.txt",
+        "retained_path": "sealed/original/00ce3938_live.txt",
+        "bytes": 45,
+        "sha256": "8b02574617dfcaa4632252f43a5c19edcb90e115dfa9c15443c544cbcc5ba9d7",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00d09290_Original.bin",
+        "retained_path": "sealed/original/00d09290_Original.bin",
+        "bytes": 4,
+        "sha256": "0c05e73c2748cbfd2e38c0afaf9cb594f78e14fefa3c24190ebc121d45dbee4f",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\00d09290_live.txt",
+        "retained_path": "sealed/original/00d09290_live.txt",
+        "bytes": 29,
+        "sha256": "0ecc60c6dfa1809b1fa24272141afc3ccf1acac9a9d647f07f0dfec312322273",
+        "role": "fresh live/PE Original input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\native_unit_wake_fill.hpp",
+        "retained_path": "sealed/inputs/include/bsp/native_unit_wake_fill.hpp",
+        "bytes": 858,
+        "sha256": "c621c84de3f36fa2c95009bbd5f1152c8900beec8da5cc979d6bef2c21f05ccb",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\native_unit_wake_fill.cpp",
+        "retained_path": "sealed/inputs/src/native_unit_wake_fill.cpp",
+        "bytes": 8605,
+        "sha256": "f508c1db9e13c145da2d36dc49ab34ddf1316035455a1e3e78bdb30b825308bf",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\src\\ship_ai_wake_trail.cpp",
+        "retained_path": "sealed/inputs/src/ship_ai_wake_trail.cpp",
+        "bytes": 14999,
+        "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_wake_trail.hpp",
+        "retained_path": "sealed/inputs/include/bsp/ship_ai_wake_trail.hpp",
+        "bytes": 11203,
+        "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\include\\bsp\\ship_ai_formation.hpp",
+        "retained_path": "sealed/inputs/include/bsp/ship_ai_formation.hpp",
+        "bytes": 29728,
+        "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\cmake\\startup.cmake",
+        "retained_path": "sealed/inputs/cmake/startup.cmake",
+        "bytes": 196673,
+        "sha256": "d62b50479d7f46d54eae77353fb1540c3e463cd14ec443cd4a1e748b78f68cd5",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\CMakeLists.txt",
+        "retained_path": "sealed/inputs/CMakeLists.txt",
+        "bytes": 15689,
+        "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\scripts\\build.ps1",
+        "retained_path": "sealed/inputs/scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\config\\target.json",
+        "retained_path": "sealed/inputs/config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\tools\\bsp.py",
+        "retained_path": "sealed/inputs/tools/bsp.py",
+        "bytes": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\tools\\ghidra_export.py",
+        "retained_path": "sealed/inputs/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_generate.py",
+        "retained_path": "sealed/inputs/local/cc12_native_wake_fill_Source_generate.py",
+        "bytes": 3291,
+        "sha256": "b5af003b690987115a0bba1240cbb651702c5e9954d39a18203d0968a04ab0ea",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_prepare.py",
+        "retained_path": "sealed/inputs/local/cc12_native_wake_fill_Source_prepare.py",
+        "bytes": 2642,
+        "sha256": "96b0d8b1fc989a11f5b2930138294dcd10849d3557ee54b43450802a22d58880",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_build.log",
+        "retained_path": "sealed/inputs/local/cc12_native_wake_fill_Source_build.log",
+        "bytes": 4803,
+        "sha256": "45f50b482cab1abc1b2c2088518ad2c0ae68285fe5bc36cfc4174a6df6bfc4ee",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\reports\\cc12_native_wake_fill_readiness.json",
+        "retained_path": "sealed/inputs/reports/cc12_native_wake_fill_readiness.json",
+        "bytes": 89634,
+        "sha256": "fe7e8af391cafb0a8637d0f539c330df10d4c5a412ce1bda5ee9541185f76464",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.vcxproj",
+        "retained_path": "sealed/inputs/build/win32/bsp_core.vcxproj",
+        "bytes": 292559,
+        "sha256": "1d568ac4a3b94ba7c7b3b7f85a6ba99ff935d0a6a6834094e8d61f3b9f3e4194",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\CMakeCache.txt",
+        "retained_path": "sealed/inputs/build/win32/CMakeCache.txt",
+        "bytes": 19621,
+        "sha256": "2e74ccebd20f9c69f095c3511b17757ffc76cab6a72bb19b8465893f155046bf",
+        "role": "actual Source/build/capture input"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\bsp_core.dir\\Release\\native_unit_wake_fill.obj",
+        "retained_path": "sealed/providers/native_unit_wake_fill.obj",
+        "bytes": 1628,
+        "sha256": "af0eb73a58c429e7b544ddfc692be31cfb0bbf6fdc9bd72ac5d4332634afa7c3",
+        "role": "whole production object"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\build\\win32\\Release\\bsp_core.lib",
+        "retained_path": "sealed/providers/bsp_core.lib",
+        "bytes": 73567214,
+        "sha256": "1051700ef5cfeebee681819ed3e26f9313f12ce42148997d0e28f666a53b9705",
+        "role": "whole consumed production archive"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_group_membership\\local\\cc12_native_wake_fill_Source_evidence\\archive_member.obj",
+        "retained_path": "sealed/providers/exact_archive_member.obj",
+        "bytes": 1628,
+        "sha256": "af0eb73a58c429e7b544ddfc692be31cfb0bbf6fdc9bd72ac5d4332634afa7c3",
+        "role": "exact physical archive member"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "retained_path": "sealed/toolchain/00_cl.exe",
+        "bytes": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1.dll",
+        "retained_path": "sealed/toolchain/01_c1.dll",
+        "bytes": 3131704,
+        "sha256": "37b06f075d24eb9ff01047a5747383309dcf78397ddb6de0c64144cb192e6b3a",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+        "retained_path": "sealed/toolchain/02_c1xx.dll",
+        "bytes": 11055928,
+        "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll",
+        "retained_path": "sealed/toolchain/03_c2.dll",
+        "bytes": 8720696,
+        "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "retained_path": "sealed/toolchain/04_link.exe",
+        "bytes": 3208544,
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdb140.dll",
+        "retained_path": "sealed/toolchain/05_mspdb140.dll",
+        "bytes": 378720,
+        "sha256": "558b54f4881fd2a85c48c44928291bcd38a3fe132a552adfd76e5398ad1c112c",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\1033\\clui.dll",
+        "retained_path": "sealed/toolchain/06_clui.dll",
+        "bytes": 629600,
+        "sha256": "d97a83494b8690624ef84e3dc3137338a25e4710843884ecd6e59dd574ba2825",
+        "role": "actual MSVC compiler/linker pass binary"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\Uuid.Lib",
+        "retained_path": "sealed/link_libraries/01_Uuid.Lib",
+        "bytes": 8973686,
+        "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "retained_path": "sealed/link_libraries/02_msvcrt.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "retained_path": "sealed/link_libraries/03_oldnames.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "retained_path": "sealed/link_libraries/04_kernel32.Lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "retained_path": "sealed/link_libraries/05_vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "retained_path": "sealed/link_libraries/06_ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+        "role": "library searched by actual probe link"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "retained_path": "sealed/runtime/kernel32.dll",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "role": "current Win32 OS/CRT probe backend, not a leaf arithmetic dependency"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "retained_path": "sealed/runtime/KernelBase.dll",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "role": "current Win32 OS/CRT probe backend, not a leaf arithmetic dependency"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "retained_path": "sealed/runtime/ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "role": "current Win32 OS/CRT probe backend, not a leaf arithmetic dependency"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "retained_path": "sealed/runtime/ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "role": "current Win32 OS/CRT probe backend, not a leaf arithmetic dependency"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "retained_path": "sealed/runtime/vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "role": "current Win32 OS/CRT probe backend, not a leaf arithmetic dependency"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "retained_path": "sealed/verification_backend/000_python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python3.dll",
+        "retained_path": "sealed/verification_backend/001_python3.dll",
+        "bytes": 70472,
+        "sha256": "fa84ea1a7e8ff6cd41ab04376557d635dfb3241c53e6cbabfcc0ba7b21a3b586",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python313.dll",
+        "retained_path": "sealed/verification_backend/002_python313.dll",
+        "bytes": 7120200,
+        "sha256": "7adfac2c4909e911aefe3b1eecd11cbb06057597e684f30b576e0773f112757d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\_bootstrap.py",
+        "retained_path": "sealed/verification_backend/003__bootstrap.py",
+        "bytes": 57082,
+        "sha256": "b84488f731914f6da30607e10f6f8d4c5c2ff7f4b0e913060aa66999c04f6252",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\_bootstrap_external.py",
+        "retained_path": "sealed/verification_backend/004__bootstrap_external.py",
+        "bytes": 73219,
+        "sha256": "a97a03ea9f9d38d90c8a50942183382ff5a479e7c4c5163c2ac5bae3561444ae",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\zipimport.py",
+        "retained_path": "sealed/verification_backend/005_zipimport.py",
+        "bytes": 32890,
+        "sha256": "ec9f157ff6d4ebd26a6fd1715247578068b5af2799d07ecf06f2b531a5605e13",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\codecs.py",
+        "retained_path": "sealed/verification_backend/006_codecs.py",
+        "bytes": 36978,
+        "sha256": "2f278497548b8313580b247a1097a0a304e5087a355ebb11a92ec685fa9e63ff",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\encodings\\aliases.py",
+        "retained_path": "sealed/verification_backend/007_aliases.py",
+        "bytes": 15713,
+        "sha256": "cac92d68c7ea5bc0f05b448b9144e3bdf236d0b7d27ab66112e96d43aad15b3f",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\encodings\\__init__.py",
+        "retained_path": "sealed/verification_backend/008___init__.py",
+        "bytes": 5884,
+        "sha256": "78c4744d407690f321565488710b5aaf6486b5afa8d185637aa1e7633ab59cd8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\encodings\\utf_8.py",
+        "retained_path": "sealed/verification_backend/009_utf_8.py",
+        "bytes": 1005,
+        "sha256": "ba0cac060269583523ca9506473a755203037c57d466a11aa89a30a5f6756f3d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\abc.py",
+        "retained_path": "sealed/verification_backend/010_abc.py",
+        "bytes": 6538,
+        "sha256": "e558702a95cdce3febd289da021715d2b92bc43995b8a1bc58dfa1c3d8010287",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\io.py",
+        "retained_path": "sealed/verification_backend/011_io.py",
+        "bytes": 3582,
+        "sha256": "7cec3cb8ac004058dd0a5af246e6d950fb59c7ddd0058fda48bcb3fcb98d8822",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\stat.py",
+        "retained_path": "sealed/verification_backend/013_stat.py",
+        "bytes": 6147,
+        "sha256": "f76eaa7f02d6ef4a8c3c3e82cae34ed72870b643b8c94937a34c697d1e9d6ca2",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\_collections_abc.py",
+        "retained_path": "sealed/verification_backend/014__collections_abc.py",
+        "bytes": 32610,
+        "sha256": "85774ad562a53d53ea6bcc2594b245046991811cd5ee823c4ca4aa8ac4dd21b1",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\genericpath.py",
+        "retained_path": "sealed/verification_backend/015_genericpath.py",
+        "bytes": 6247,
+        "sha256": "cdac5a68dd738051e0d66fc81d5947d6a1776248fc6fe862253477608d870ec4",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\ntpath.py",
+        "retained_path": "sealed/verification_backend/016_ntpath.py",
+        "bytes": 30886,
+        "sha256": "7c5c992b1b52f97d7dc73ad09ea8b97917475e7e4474563379e71b03015f04ca",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\os.py",
+        "retained_path": "sealed/verification_backend/017_os.py",
+        "bytes": 41627,
+        "sha256": "5e640713e89023372f493054ccedb7512ee27eb3ea6461677bc8c27c640d0605",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\_sitebuiltins.py",
+        "retained_path": "sealed/verification_backend/018__sitebuiltins.py",
+        "bytes": 3128,
+        "sha256": "b9388bc1d6d12ed6be12da420ab1feca40f99c0e33ec315d92b1e01cb69b25bc",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\encodings\\utf_8_sig.py",
+        "retained_path": "sealed/verification_backend/019_utf_8_sig.py",
+        "bytes": 4133,
+        "sha256": "1ef3da8d8aa08149e7f274dc64dbfce2155da812e5258ca8e8f832428d3b5c2d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\win32\\lib\\pywin32_bootstrap.py",
+        "retained_path": "sealed/verification_backend/020_pywin32_bootstrap.py",
+        "bytes": 772,
+        "sha256": "fd31f27bc85a6b9c974670838b6eefafb32991be4a9f840f96a4f5524df3b3c3",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\site-packages\\_distutils_hack\\__init__.py",
+        "retained_path": "sealed/verification_backend/021___init__.py",
+        "bytes": 6755,
+        "sha256": "df81e6bcba34ee3e3952f776551fb669143b9490fdd6c4caeb32609f97e985b4",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\site.py",
+        "retained_path": "sealed/verification_backend/022_site.py",
+        "bytes": 25556,
+        "sha256": "ea80b1f9fd676ec6d0c3ce8219d1ecfd103992e93e927c5d0a95a18443059f66",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\keyword.py",
+        "retained_path": "sealed/verification_backend/023_keyword.py",
+        "bytes": 1073,
+        "sha256": "18c2be738c04ad20ad375f6a71db34b3823c7f40b0340f5294d0e89f3c9b093b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\operator.py",
+        "retained_path": "sealed/verification_backend/024_operator.py",
+        "bytes": 10980,
+        "sha256": "c048f8a6852832d5fa750d6ae772d7658c52c3511d261cb902f7edfd262e9127",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\reprlib.py",
+        "retained_path": "sealed/verification_backend/025_reprlib.py",
+        "bytes": 8068,
+        "sha256": "76003eea30d186a99d125decc9def6ae32c7b389d3db00f91aaf02229bf2714f",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\collections\\__init__.py",
+        "retained_path": "sealed/verification_backend/026___init__.py",
+        "bytes": 52634,
+        "sha256": "a090a33d65e65cda1a1098d9505f99f5ae0003caa4c1d0885bc1eebf0de0aa28",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\functools.py",
+        "retained_path": "sealed/verification_backend/027_functools.py",
+        "bytes": 39062,
+        "sha256": "df5f4d24f8b6d8fd40e1296fb4fc00f12803674b5707b222b0584155050caebe",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\types.py",
+        "retained_path": "sealed/verification_backend/028_types.py",
+        "bytes": 11207,
+        "sha256": "74516af714d270b59d67e5ae5e60a02cb4ff32ecdd373e165ad1d780fbfd2c5d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\contextlib.py",
+        "retained_path": "sealed/verification_backend/029_contextlib.py",
+        "bytes": 27801,
+        "sha256": "c1e0d67b2007de11ae93cd36cf6faf38d9ab32656a832d592a49325eec579f96",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\enum.py",
+        "retained_path": "sealed/verification_backend/030_enum.py",
+        "bytes": 85593,
+        "sha256": "749f34920d33edc8c929116c900bec347b3cecc45f655ec9ba07977cd53b14d9",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\re\\_constants.py",
+        "retained_path": "sealed/verification_backend/031__constants.py",
+        "bytes": 5939,
+        "sha256": "1dbe236d34fa934e3e7172ba9d6b0dcfab338ecf7717f370f1fd4a9d24b2ecdb",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\re\\_parser.py",
+        "retained_path": "sealed/verification_backend/032__parser.py",
+        "bytes": 41237,
+        "sha256": "c7a6c80b3b448f50684c320265a7b5efb5d0b1daf0a36fb5dee8dd83628359d7",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\re\\_casefix.py",
+        "retained_path": "sealed/verification_backend/033__casefix.py",
+        "bytes": 5444,
+        "sha256": "1b12d9136f23db6c3f6f26053fefc15ca964b886838c7b9c1fabf8d2efc1e5c8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\re\\_compiler.py",
+        "retained_path": "sealed/verification_backend/034__compiler.py",
+        "bytes": 26290,
+        "sha256": "83537237a82294d084d40abaa42e86149be33eef338a5ef028a7fd2fad0dafd5",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\copyreg.py",
+        "retained_path": "sealed/verification_backend/035_copyreg.py",
+        "bytes": 7614,
+        "sha256": "c8eda41f05c6bf95a4da4726a530409d2485ae060b8d019b3a8034389a15d3e9",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\re\\__init__.py",
+        "retained_path": "sealed/verification_backend/036___init__.py",
+        "bytes": 17876,
+        "sha256": "dbe158a677c6aaacf717ea2abc23c56233453d38024aef75b7c3d93612cabb93",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\posixpath.py",
+        "retained_path": "sealed/verification_backend/037_posixpath.py",
+        "bytes": 18233,
+        "sha256": "69acb9e294987cd6056a2237048373cf8d6201faf1e43a49c38889b47d2fb28e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\fnmatch.py",
+        "retained_path": "sealed/verification_backend/038_fnmatch.py",
+        "bytes": 6180,
+        "sha256": "95391dac2ce9f60084d65eba2f4b9d9735e28136d55b684e1fde7d6342555963",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\glob.py",
+        "retained_path": "sealed/verification_backend/039_glob.py",
+        "bytes": 19911,
+        "sha256": "7cb62aa95d960ef68997b153b32cc94ecd000637cf8c4c9c36556f4c110e510e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\pathlib\\_abc.py",
+        "retained_path": "sealed/verification_backend/040__abc.py",
+        "bytes": 33565,
+        "sha256": "75e6bc728013d11446126d535f92b8907fb6dae7404df3d0268ac7b6865a2090",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\warnings.py",
+        "retained_path": "sealed/verification_backend/041_warnings.py",
+        "bytes": 27071,
+        "sha256": "e040f52be0199c69fa8c0d35428ba64e6f9b6412691a689ccbd7c23e07c6ed3f",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\pathlib\\_local.py",
+        "retained_path": "sealed/verification_backend/042__local.py",
+        "bytes": 31412,
+        "sha256": "0530b4186ec5845e000bedf5817ff1ac970b9a39a6891ba6789a1776abdea42b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\pathlib\\__init__.py",
+        "retained_path": "sealed/verification_backend/043___init__.py",
+        "bytes": 296,
+        "sha256": "07921047886282e3d324acf95f7d9f840faa806664ee7007e7333a7df4cdcaf6",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\ast.py",
+        "retained_path": "sealed/verification_backend/044_ast.py",
+        "bytes": 65339,
+        "sha256": "7514eb7df98b1b76eab160ca2a83e6e9a9f3219a4659808cd9fd278b524ede1b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\datetime.py",
+        "retained_path": "sealed/verification_backend/045_datetime.py",
+        "bytes": 268,
+        "sha256": "ef20dc6b3554cd585dddffdc573f1f9a7a54c522f2a3fb4576c44edbb1e14238",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\DLLs\\_hashlib.pyd",
+        "retained_path": "sealed/verification_backend/046__hashlib.pyd",
+        "bytes": 64328,
+        "sha256": "a2923373167ead19cc70b0363e2fbd88c7e25425c100e05d7bbd3deb1c41bd8d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\hashlib.py",
+        "retained_path": "sealed/verification_backend/047_hashlib.py",
+        "bytes": 9446,
+        "sha256": "f129b330e6ab878a96085843b3606acd7d157b8fe6edfa15e37fa13988cef19c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\__init__.py",
+        "retained_path": "sealed/verification_backend/048___init__.py",
+        "bytes": 4767,
+        "sha256": "72b07de4133a7e39b2f6a7920465669aa04626f217e800779587bc0713fe002e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\_abc.py",
+        "retained_path": "sealed/verification_backend/049__abc.py",
+        "bytes": 1354,
+        "sha256": "80aab7931dc999dee581c8b8b56fcd973fe156335a96ceeaf6acfc03cebf10e8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\util.py",
+        "retained_path": "sealed/verification_backend/050_util.py",
+        "bytes": 11199,
+        "sha256": "47eed68cfc84cdb4950edc092fc1a81abf37b47cadd6ff68d3460b1c9f536e9b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\json\\scanner.py",
+        "retained_path": "sealed/verification_backend/051_scanner.py",
+        "bytes": 2434,
+        "sha256": "572958017eae8842eeddd0e3d18d3c56cc0a197348224915e1d87ce937841764",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\json\\decoder.py",
+        "retained_path": "sealed/verification_backend/052_decoder.py",
+        "bytes": 12873,
+        "sha256": "302ce57cb6f411122d7ef2ad2997c1fc0f184849fab3f1f585752f18f2195c73",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\json\\encoder.py",
+        "retained_path": "sealed/verification_backend/053_encoder.py",
+        "bytes": 16199,
+        "sha256": "bfaf651515edeb7b8c4d4aef5fcd2a650d817e47ec85ac4606e5be2e4dd5bbb4",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\json\\__init__.py",
+        "retained_path": "sealed/verification_backend/054___init__.py",
+        "bytes": 14081,
+        "sha256": "3b5abc6441252283e4b83dd00317430c0c0145343a8f48274f2c4fac3d856631",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\struct.py",
+        "retained_path": "sealed/verification_backend/055_struct.py",
+        "bytes": 257,
+        "sha256": "9c231f9497caf513a22dee8f790b07f969b0e45854a0bdd6dd84b492e08c2856",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\_weakrefset.py",
+        "retained_path": "sealed/verification_backend/056__weakrefset.py",
+        "bytes": 5893,
+        "sha256": "91895a451d06e9f521a1171b31b9b19bc9740f35af00d4fa106338ab7167c9ac",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\weakref.py",
+        "retained_path": "sealed/verification_backend/057_weakref.py",
+        "bytes": 21513,
+        "sha256": "56f8d313fb74019e53eb9287400702fbce788b7fe30e097b0b6e06296f3f080c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\copy.py",
+        "retained_path": "sealed/verification_backend/058_copy.py",
+        "bytes": 8975,
+        "sha256": "d6b858961b91b48a4bf5a115b0420c890d677bdf058ab2323a8a75298eed47db",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\string.py",
+        "retained_path": "sealed/verification_backend/059_string.py",
+        "bytes": 11786,
+        "sha256": "24aeae1f0526250f442022022bf98df9a823b1cb330543ee79e70e44907462e9",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\DLLs\\_uuid.pyd",
+        "retained_path": "sealed/verification_backend/060__uuid.pyd",
+        "bytes": 25416,
+        "sha256": "93d05ab1104a416eaa38c7b5738063c4199d5db07f988ba9492cae55f9c9be31",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\uuid.py",
+        "retained_path": "sealed/verification_backend/061_uuid.py",
+        "bytes": 29458,
+        "sha256": "e0ba007b335da2754079072f3d8c9bd194594f435269924ae0eb118be08902f5",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\typing.py",
+        "retained_path": "sealed/verification_backend/062_typing.py",
+        "bytes": 133263,
+        "sha256": "9409784d64c375503c5bc9f937da17acce958e6d508d2943b57e8eac7eabff26",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\ordlookup\\oleaut32.py",
+        "retained_path": "sealed/verification_backend/063_oleaut32.py",
+        "bytes": 11759,
+        "sha256": "d3199a7ea2f1ef42a93cb8b20acc752de67789671cb4248584e2b43f441e5aaf",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\ordlookup\\ws2_32.py",
+        "retained_path": "sealed/verification_backend/064_ws2_32.py",
+        "bytes": 6003,
+        "sha256": "0879ce2fee63d738838f61332e69a149d463c177649c78935295d7f335604810",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\ordlookup\\wsock32.py",
+        "retained_path": "sealed/verification_backend/065_wsock32.py",
+        "bytes": 2034,
+        "sha256": "f029bc58669eae582a7087c630fd8be8f9f5aa2df6f7cecaa13f8f1e1199ed17",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\ordlookup\\__init__.py",
+        "retained_path": "sealed/verification_backend/066___init__.py",
+        "bytes": 786,
+        "sha256": "fe7e3869702abb571846d74bc34ea4966e8f75a6603530fe3f9e03c982d736a7",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\pefile.py",
+        "retained_path": "sealed/verification_backend/067_pefile.py",
+        "bytes": 301767,
+        "sha256": "0d0eb68f0f169182613dc64b3ab50b20855508c1c1d2faafe8fccf23edb6a345",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\threading.py",
+        "retained_path": "sealed/verification_backend/068_threading.py",
+        "bytes": 55343,
+        "sha256": "a979d5ab97993d7fbfd7601e928476c8dc90e1807df7c8c7d9f324e620331caa",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\sysconfig\\__init__.py",
+        "retained_path": "sealed/verification_backend/069___init__.py",
+        "bytes": 27037,
+        "sha256": "11a7ea1b66d868954bb3e3f87c4975571e9f02e1730320adccf1c616de23bdbf",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\DLLs\\_ctypes.pyd",
+        "retained_path": "sealed/verification_backend/070__ctypes.pyd",
+        "bytes": 141640,
+        "sha256": "03215bef66c9e9316bf143665096e90c78ce150bb1006f1850afc57104f432e9",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\ctypes\\_endian.py",
+        "retained_path": "sealed/verification_backend/071__endian.py",
+        "bytes": 2557,
+        "sha256": "499773a028a41ee18153fedfe0a00a26efb2a650f568b9bc17e2f3a914a23468",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\ctypes\\__init__.py",
+        "retained_path": "sealed/verification_backend/072___init__.py",
+        "bytes": 19440,
+        "sha256": "cc02b226ce7266e3e5c9a13825f34a66f58a108f39f2f44a163f6c23c342f48b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\_compression.py",
+        "retained_path": "sealed/verification_backend/073__compression.py",
+        "bytes": 5681,
+        "sha256": "3ad5d60627477a60939ee44fc1bb3a05dbe8fb52f0f75039b8f5d8f1a278b981",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\DLLs\\_bz2.pyd",
+        "retained_path": "sealed/verification_backend/074__bz2.pyd",
+        "bytes": 36168,
+        "sha256": "445182652e9a07c81a596cb516b6e0c6b65269779163261b8a88f3249b1bbb9a",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\bz2.py",
+        "retained_path": "sealed/verification_backend/075_bz2.py",
+        "bytes": 11969,
+        "sha256": "b217459e4c74ccb3da3a44b51dd335cfddcbe9d3014b3279dda1c1a7ca448c08",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\DLLs\\_lzma.pyd",
+        "retained_path": "sealed/verification_backend/076__lzma.pyd",
+        "bytes": 48968,
+        "sha256": "c4b836f0a541a94429251f3dedb7c44be7fd564abaf9b6d18320133f660d8eee",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\lzma.py",
+        "retained_path": "sealed/verification_backend/077_lzma.py",
+        "bytes": 13399,
+        "sha256": "6a923ba49b33897152a9398d2a39d08670238290c90c050b8f4d838046339db5",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\shutil.py",
+        "retained_path": "sealed/verification_backend/078_shutil.py",
+        "bytes": 57463,
+        "sha256": "ce110d23884b9bdc75f7b1654dbd2d7cf5d6762046a4cf8c316b96fd937d1e0b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\locale.py",
+        "retained_path": "sealed/verification_backend/079_locale.py",
+        "bytes": 79033,
+        "sha256": "ccffa53357828663c7a9d3f6817aab92dab378eaa950b460a72401d842f74365",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\signal.py",
+        "retained_path": "sealed/verification_backend/080_signal.py",
+        "bytes": 2495,
+        "sha256": "0363c964c90ac0b3e515de5749205e6e6454051a1211058375d84d91eab6071a",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\subprocess.py",
+        "retained_path": "sealed/verification_backend/081_subprocess.py",
+        "bytes": 90826,
+        "sha256": "afde6e689458e73946de684467af79d339e2643ec6abf8318f0a479d11479f4c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\ctypes\\util.py",
+        "retained_path": "sealed/verification_backend/082_util.py",
+        "bytes": 15229,
+        "sha256": "15d8a81d47407841f7eac0752f7afe145d3fdfdb3c05bfaeb0bc4d3d8e7db85c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\_opcode_metadata.py",
+        "retained_path": "sealed/verification_backend/083__opcode_metadata.py",
+        "bytes": 9265,
+        "sha256": "9a27d5830732442110b5945ddac1668db17abb51c44882ba9d4a8536bcc0ea1c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\opcode.py",
+        "retained_path": "sealed/verification_backend/084_opcode.py",
+        "bytes": 2825,
+        "sha256": "aaf8e6e0291b6ff439c27ad1657d5b1d2fc738f961bee3fa4863a51e494dc843",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\dis.py",
+        "retained_path": "sealed/verification_backend/085_dis.py",
+        "bytes": 40962,
+        "sha256": "1852129bf55039f192d90174334fbe459d5f982cae33a04e700fe7cdb2748a51",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\machinery.py",
+        "retained_path": "sealed/verification_backend/086_machinery.py",
+        "bytes": 934,
+        "sha256": "2e558d293587d18a5919f7093f8c5c10ea54dd9336f6b2c4ed9d6233c114652a",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\linecache.py",
+        "retained_path": "sealed/verification_backend/087_linecache.py",
+        "bytes": 7284,
+        "sha256": "0939f472e54b4aadbf261d3c45a92d5aafe16e749c199917df9f4e47ce4cc4da",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\token.py",
+        "retained_path": "sealed/verification_backend/088_token.py",
+        "bytes": 2489,
+        "sha256": "1d2ab814992e6afbd6f1e5323edcddd681f65f7679ad1eb87fe1357a433a5bdf",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\tokenize.py",
+        "retained_path": "sealed/verification_backend/089_tokenize.py",
+        "bytes": 21568,
+        "sha256": "1369f7f9e57c722d1627333b705aabfaf943c24680920942e773fd4e1776be2e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\inspect.py",
+        "retained_path": "sealed/verification_backend/090_inspect.py",
+        "bytes": 128640,
+        "sha256": "5ad68f75310423ad9f36b4d4bb14a22ebfefae7be01716a099bb0dcbcc740537",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\bisect.py",
+        "retained_path": "sealed/verification_backend/091_bisect.py",
+        "bytes": 3423,
+        "sha256": "f1cf7b85fc36b5da249813fc5ab97d9464f8cc1bc817f7146206fa2713e35999",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\random.py",
+        "retained_path": "sealed/verification_backend/092_random.py",
+        "bytes": 37006,
+        "sha256": "39f53b25d84a27e1be0b9116d74497c9466d749660692a25a0d14687175a6db0",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\tempfile.py",
+        "retained_path": "sealed/verification_backend/093_tempfile.py",
+        "bytes": 32406,
+        "sha256": "7149355dfc2ccbd82a9b3614c7710f2c92bc7ab06440e7f427766481638a1528",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\abc.py",
+        "retained_path": "sealed/verification_backend/094_abc.py",
+        "bytes": 5203,
+        "sha256": "a726c48590b21ba5532f0c654735991571bc0ecafe88145cb8891d82cd364e5e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\_common.py",
+        "retained_path": "sealed/verification_backend/095__common.py",
+        "bytes": 5616,
+        "sha256": "f476de9f54ce40631f28b7175eef8f2d3deeac748ea77e2f9b10938fb31297e8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\_functional.py",
+        "retained_path": "sealed/verification_backend/096__functional.py",
+        "bytes": 2651,
+        "sha256": "98b5380f04a587cff62175aac0a39f3d5c7246a004a41dc1e174df471af75f73",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\__init__.py",
+        "retained_path": "sealed/verification_backend/097___init__.py",
+        "bytes": 703,
+        "sha256": "dc9fb6eb542ace0fb59017a7315b0eb2f268d7d11b52662a8c792b6568851ce3",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\_adapters.py",
+        "retained_path": "sealed/verification_backend/098__adapters.py",
+        "bytes": 4482,
+        "sha256": "be9ac919b51e1db6a35fa5c2b8c3fa27794caea0a2f8ffcc4e5ce225447b8df9",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\__future__.py",
+        "retained_path": "sealed/verification_backend/099___future__.py",
+        "bytes": 5218,
+        "sha256": "981d4c398849f9ebcab72300d9c1fe288fd6d7f28957b3b3fa3a493a5836d95c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\zipfile\\_path\\glob.py",
+        "retained_path": "sealed/verification_backend/100_glob.py",
+        "bytes": 3314,
+        "sha256": "edefea638f250b9e011526141d83b222a06466a68e357b6d780a8b4173d802f7",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\zipfile\\_path\\__init__.py",
+        "retained_path": "sealed/verification_backend/101___init__.py",
+        "bytes": 11956,
+        "sha256": "ba59173a330a85dbde141add5359b6c1061d99842f27bd2ea723c3a5ad3e3c8c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\zipfile\\__init__.py",
+        "retained_path": "sealed/verification_backend/102___init__.py",
+        "bytes": 89791,
+        "sha256": "9f026f5b6aadb80224e187f703a2f7667f37418b8b6f0dfaed7a6ce194461dbd",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\_itertools.py",
+        "retained_path": "sealed/verification_backend/103__itertools.py",
+        "bytes": 1277,
+        "sha256": "7838ac57a46a88d64ea202d25dfe8b3861ce61cefd14680faca34bcc52e60ab5",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\resources\\readers.py",
+        "retained_path": "sealed/verification_backend/104_readers.py",
+        "bytes": 6243,
+        "sha256": "f64855ffaa44f6c21ffc49e77b8cbfeeca37183bf7f7d3aecb30cb079ab45939",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\Lib\\importlib\\readers.py",
+        "retained_path": "sealed/verification_backend/105_readers.py",
+        "bytes": 327,
+        "sha256": "d0d57d118d64916f7e6edb04f8bd1a760a1abb879125899ef50a36d09ef54df4",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\arm_const.py",
+        "retained_path": "sealed/verification_backend/106_arm_const.py",
+        "bytes": 17295,
+        "sha256": "1b00d7b48be4b72b730272486d4fd2057cb8019e67f1bd145bcabb1b988d1c67",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\arm.py",
+        "retained_path": "sealed/verification_backend/107_arm.py",
+        "bytes": 2154,
+        "sha256": "00ea7442a1496d84aca469bfa3542290eafe22898b5be0dece9294865b9508ba",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\arm64_const.py",
+        "retained_path": "sealed/verification_backend/108_arm64_const.py",
+        "bytes": 81768,
+        "sha256": "f358d461b1f45a8d91d8e308ca82e5b35c5d2e5c135d8ed07d8cdc86456a5418",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\arm64.py",
+        "retained_path": "sealed/verification_backend/109_arm64.py",
+        "bytes": 2428,
+        "sha256": "834979e887315fae9a447698502f6866c246cb99b65c84b8b6fdef8087181284",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\m68k_const.py",
+        "retained_path": "sealed/verification_backend/110_m68k_const.py",
+        "bytes": 10489,
+        "sha256": "79de0ea42977ad2875fd73a34ddb55fc2ace58dac45b0ee8aff0ae138c7a8faa",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\m68k.py",
+        "retained_path": "sealed/verification_backend/111_m68k.py",
+        "bytes": 2438,
+        "sha256": "0567bf26e32a274b086d296fdcc078dcbda2c66280f941e5986b30eecc647bc8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\mips_const.py",
+        "retained_path": "sealed/verification_backend/112_mips_const.py",
+        "bytes": 18592,
+        "sha256": "80a325c59a8a88918d1ebc55268e07461841ddde50d034a545d31cdf44668324",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\mips.py",
+        "retained_path": "sealed/verification_backend/113_mips.py",
+        "bytes": 1001,
+        "sha256": "c23b6e5d5df2be6f728dda2da2a8f805d4d1500e383aebf555da1fa9650639e8",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\ppc_const.py",
+        "retained_path": "sealed/verification_backend/114_ppc_const.py",
+        "bytes": 45023,
+        "sha256": "4284db74b7db3a0e3eda043970096c047df81d9b0a81c13b3b5b70ca623d4b0b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\ppc.py",
+        "retained_path": "sealed/verification_backend/115_ppc.py",
+        "bytes": 1384,
+        "sha256": "1ee21161d21902744379624d87048138272a99c6bd98623256baa065038bf03d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\sparc_const.py",
+        "retained_path": "sealed/verification_backend/116_sparc_const.py",
+        "bytes": 9738,
+        "sha256": "aef73803efe9a2e0e109fe05e0b791f33e62d41c54ed32cd2773837960d1ddae",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\sparc.py",
+        "retained_path": "sealed/verification_backend/117_sparc.py",
+        "bytes": 1127,
+        "sha256": "389867d194a7bef779466a5283953cb2b30d2e84368e80112677cfaa0334097c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\sysz_const.py",
+        "retained_path": "sealed/verification_backend/118_sysz_const.py",
+        "bytes": 56291,
+        "sha256": "98ad76240b48eff060f96fc0986933c904cbdfd654866eb49e7ee5879db2908e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\systemz.py",
+        "retained_path": "sealed/verification_backend/119_systemz.py",
+        "bytes": 1115,
+        "sha256": "9e75611fb8930ef665b04a80e14ca0735953f69d2f0fdb608f96ea172cef7f2d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\x86_const.py",
+        "retained_path": "sealed/verification_backend/120_x86_const.py",
+        "bytes": 45756,
+        "sha256": "83cf4550d9256f5f9b8e218b9b732e46d83ef602b463a01d6eeb778deb28e040",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\x86.py",
+        "retained_path": "sealed/verification_backend/121_x86.py",
+        "bytes": 2816,
+        "sha256": "08cbb0a02ff152bcf1fbd7c4f8850b3ade38c25b9f0a6a9b900a55ee75e87c67",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\xcore_const.py",
+        "retained_path": "sealed/verification_backend/122_xcore_const.py",
+        "bytes": 3424,
+        "sha256": "34367710ee0501621fb8b325890cae740ff38075d3ef66b36de9b8b4dcec227f",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\xcore.py",
+        "retained_path": "sealed/verification_backend/123_xcore.py",
+        "bytes": 1082,
+        "sha256": "67a3bab5ec77998bf88f320b61be7110318454be2252ff2a02f42ca4aab56a8c",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\tms320c64x_const.py",
+        "retained_path": "sealed/verification_backend/124_tms320c64x_const.py",
+        "bytes": 7257,
+        "sha256": "643aeb59e96e2eb10f6ca4e9d27db9c00d83195cf442dea453418ac2df0cb94b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\tms320c64x.py",
+        "retained_path": "sealed/verification_backend/125_tms320c64x.py",
+        "bytes": 1672,
+        "sha256": "597bf661d25e283c007c9ee76defb422f41e4279aae5bbd8b5736400109cf6b3",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\m680x_const.py",
+        "retained_path": "sealed/verification_backend/126_m680x_const.py",
+        "bytes": 8885,
+        "sha256": "a8ceebe6e6213da834406e7a56c1f808fad554c5ed85a986b0ef8647db3718da",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\m680x.py",
+        "retained_path": "sealed/verification_backend/127_m680x.py",
+        "bytes": 2065,
+        "sha256": "24d56b8f6e9c12d73f830f26de36d02461e4d73a3091943e6c90884181efe41d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\evm_const.py",
+        "retained_path": "sealed/verification_backend/128_evm_const.py",
+        "bytes": 3292,
+        "sha256": "b3a60498c0ac455098d884574829875deb83a4176a052480249a9d3e93f42b6d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\evm.py",
+        "retained_path": "sealed/verification_backend/129_evm.py",
+        "bytes": 383,
+        "sha256": "29f35d3953b2eeb976e02af3cdbf3a78066d4d5a750588da0672e48bc5aa0385",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\mos65xx_const.py",
+        "retained_path": "sealed/verification_backend/130_mos65xx_const.py",
+        "bytes": 3393,
+        "sha256": "22762e23dec6d011f75068cac995f4c05f6cf5c93c207502eeb11d0cd4a136f3",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\mos65xx.py",
+        "retained_path": "sealed/verification_backend/131_mos65xx.py",
+        "bytes": 998,
+        "sha256": "f9b525569fcae4768ac4b2230a46468a571e934717f14d52910e243d0b279e9a",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\wasm_const.py",
+        "retained_path": "sealed/verification_backend/132_wasm_const.py",
+        "bytes": 5132,
+        "sha256": "e03e231892153456070055f39a53ed3205feeb24e7d768a2b193adcbe26cffc5",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\wasm.py",
+        "retained_path": "sealed/verification_backend/133_wasm.py",
+        "bytes": 1627,
+        "sha256": "8fb19dfb59cd7175ab0e55b8b7c2d37e150c237ed6060862be6ec3e98bf21d6d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\bpf_const.py",
+        "retained_path": "sealed/verification_backend/134_bpf_const.py",
+        "bytes": 2160,
+        "sha256": "070717e28a68ee7e1e8b29cb9a299f5e462be81d9ad6c83dccce5f771fe22e7e",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\bpf.py",
+        "retained_path": "sealed/verification_backend/135_bpf.py",
+        "bytes": 1438,
+        "sha256": "f879595fbc413bfa74600b4cbaa7a2cdd7200b2f92e718ad31fb36844e7c0f9d",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\riscv_const.py",
+        "retained_path": "sealed/verification_backend/136_riscv_const.py",
+        "bytes": 10953,
+        "sha256": "6ac81243404207d74b3190c37180b6353a001191c7df5d04fd25f89b624abdd1",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\riscv.py",
+        "retained_path": "sealed/verification_backend/137_riscv.py",
+        "bytes": 1104,
+        "sha256": "c40beee7bd99d3f1cc329203020def06140a786d17e2ec963feefb12e0c8e872",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\sh_const.py",
+        "retained_path": "sealed/verification_backend/138_sh_const.py",
+        "bytes": 7154,
+        "sha256": "a19a1837892a0eaa9bc3e5cd3638625471d705a35b08aa26994ad108928125be",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\sh.py",
+        "retained_path": "sealed/verification_backend/139_sh.py",
+        "bytes": 1478,
+        "sha256": "d50212075a918e94b41f1e67f838a3b70bc44d19941f33b6d502e5359c967592",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\tricore_const.py",
+        "retained_path": "sealed/verification_backend/140_tricore_const.py",
+        "bytes": 12010,
+        "sha256": "95d640cfc8d698f162edc68646c4829cd25289ee47d2869815b33b7839d32bae",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\tricore.py",
+        "retained_path": "sealed/verification_backend/141_tricore.py",
+        "bytes": 1123,
+        "sha256": "6716ed4579dadec5c476a0a704c35421860cdaaf20796c7d9c5ebfceb5c4e3cb",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "retained_path": "sealed/verification_backend/142___init__.py",
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b",
+        "role": "loaded verification tool/interpreter input"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+        "retained_path": "sealed/verification_backend/143_capstone.dll",
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39",
+        "role": "loaded verification tool/interpreter input"
+      }
+    ],
+    "tool_backend_scope": "Actual selected MSVC pass binaries; full expanded Source/probe TUs; all link-searched libraries; loaded Python verification modules; retained current Win32 OS/CRT files for probe I/O. The leaf has no runtime arithmetic provider beyond the CPU x87 instructions. OS/kernel/CPU behavior is not reconstructed."
+  },
+  "fresh_execution_and_independent_retained_recheck": {
+    "status": "three_fresh_pairs_and_all_retained_memory_FP_provider_inputs_verified",
+    "created_utc": "2026-10-08T12:00:25.727223+00:00",
+    "run": {
+      "attempt": 1,
+      "started_utc": "2026-10-08T11:57:13.804756+00:00",
+      "elapsed_seconds": 0.13265889999456704,
+      "exit_code": 0,
+      "static_gate_sha256": "70a0368c2a22c8984c6b74a27b4901d5c39e73bf816c2caef1ed7728f3dd5c04",
+      "exe_sha256": "cb312fc838833513e4646de3ce3436266caff000f9a37e6059058445756fdbb2",
+      "stdout": "run_1.stdout",
+      "stderr": "run_1.stderr"
+    },
+    "all_209_pre_execution_pins_still_equal": true,
+    "Original_map_pre_execution_and_executed_equal": true,
+    "Original_map_sha256": "a81fe615ba2a976771c38c5798cf4c349ab695979a61f7652ede887250985cff",
+    "pre_post_live_ranges": [
+      {
+        "address": "00810020",
+        "bytes": 314,
+        "pre_post_and_executed_selected_Original_equal": true
+      },
+      {
+        "address": "00ce3830",
+        "bytes": 8,
+        "pre_post_and_executed_selected_Original_equal": true
+      },
+      {
+        "address": "00ce3828",
+        "bytes": 8,
+        "pre_post_and_executed_selected_Original_equal": true
+      },
+      {
+        "address": "00ce3938",
+        "bytes": 8,
+        "pre_post_and_executed_selected_Original_equal": true
+      },
+      {
+        "address": "00d09290",
+        "bytes": 4,
+        "pre_post_and_executed_selected_Original_equal": true
+      }
+    ],
+    "source_runtime_wrapper": "00261b10",
+    "source_preferred_wrapper": "00401b10",
+    "cases": [
+      {
+        "name": "nonzero_wrapped_heading",
+        "preimage_path": "case_0_before.bin",
+        "bytes": 1056,
+        "sha256": "3a95f47e9e0134e53f1c901ef3f830f88952904a11b3afb1c1fcbd95235ee978",
+        "position_offset_from_memory": 1040,
+        "heading_bits": "40100000",
+        "x87_CW": "037f",
+        "complete_1056_byte_Original_Source_equal": true,
+        "changed_byte_count": 792,
+        "changed_offsets": [
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          87,
+          88,
+          89,
+          90,
+          91,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          264,
+          265,
+          266,
+          267,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277,
+          278,
+          279,
+          280,
+          281,
+          282,
+          283,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          312,
+          313,
+          314,
+          315,
+          316,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341,
+          342,
+          343,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349,
+          350,
+          351,
+          352,
+          353,
+          354,
+          355,
+          360,
+          361,
+          362,
+          363,
+          364,
+          365,
+          366,
+          367,
+          368,
+          369,
+          370,
+          371,
+          372,
+          373,
+          374,
+          375,
+          376,
+          377,
+          378,
+          379,
+          384,
+          385,
+          386,
+          387,
+          388,
+          389,
+          390,
+          391,
+          392,
+          394,
+          395,
+          396,
+          397,
+          398,
+          399,
+          400,
+          401,
+          402,
+          403,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          418,
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          432,
+          433,
+          434,
+          435,
+          436,
+          437,
+          438,
+          439,
+          440,
+          441,
+          442,
+          443,
+          444,
+          445,
+          446,
+          447,
+          448,
+          449,
+          450,
+          451,
+          456,
+          457,
+          458,
+          459,
+          460,
+          461,
+          462,
+          463,
+          464,
+          465,
+          466,
+          467,
+          468,
+          469,
+          470,
+          471,
+          472,
+          473,
+          474,
+          475,
+          480,
+          481,
+          482,
+          483,
+          484,
+          485,
+          486,
+          487,
+          488,
+          489,
+          490,
+          491,
+          492,
+          493,
+          494,
+          495,
+          496,
+          497,
+          498,
+          499,
+          504,
+          505,
+          506,
+          507,
+          508,
+          509,
+          510,
+          511,
+          512,
+          513,
+          514,
+          515,
+          516,
+          517,
+          518,
+          519,
+          520,
+          521,
+          522,
+          523,
+          528,
+          529,
+          530,
+          531,
+          532,
+          533,
+          534,
+          535,
+          536,
+          537,
+          538,
+          539,
+          540,
+          541,
+          542,
+          543,
+          544,
+          545,
+          546,
+          547,
+          552,
+          553,
+          554,
+          555,
+          556,
+          557,
+          558,
+          559,
+          560,
+          561,
+          562,
+          563,
+          564,
+          565,
+          566,
+          567,
+          568,
+          569,
+          570,
+          571,
+          576,
+          577,
+          578,
+          579,
+          580,
+          581,
+          582,
+          583,
+          584,
+          585,
+          586,
+          587,
+          588,
+          589,
+          590,
+          591,
+          592,
+          593,
+          594,
+          595,
+          600,
+          601,
+          602,
+          603,
+          604,
+          605,
+          606,
+          607,
+          608,
+          609,
+          610,
+          611,
+          612,
+          613,
+          614,
+          615,
+          616,
+          617,
+          618,
+          619,
+          624,
+          625,
+          626,
+          627,
+          628,
+          629,
+          630,
+          631,
+          632,
+          633,
+          634,
+          635,
+          636,
+          637,
+          638,
+          639,
+          640,
+          641,
+          642,
+          643,
+          648,
+          649,
+          650,
+          651,
+          652,
+          653,
+          654,
+          655,
+          656,
+          657,
+          658,
+          659,
+          660,
+          661,
+          662,
+          663,
+          664,
+          665,
+          666,
+          667,
+          672,
+          673,
+          674,
+          675,
+          676,
+          677,
+          678,
+          679,
+          680,
+          681,
+          682,
+          683,
+          684,
+          685,
+          686,
+          687,
+          688,
+          689,
+          690,
+          691,
+          696,
+          697,
+          698,
+          699,
+          700,
+          701,
+          702,
+          703,
+          704,
+          705,
+          706,
+          707,
+          708,
+          709,
+          710,
+          711,
+          712,
+          713,
+          714,
+          715,
+          720,
+          721,
+          722,
+          723,
+          724,
+          725,
+          727,
+          728,
+          729,
+          730,
+          731,
+          732,
+          733,
+          734,
+          735,
+          736,
+          737,
+          738,
+          739,
+          744,
+          745,
+          746,
+          747,
+          748,
+          749,
+          750,
+          751,
+          752,
+          753,
+          754,
+          755,
+          756,
+          757,
+          758,
+          759,
+          760,
+          761,
+          762,
+          763,
+          768,
+          769,
+          770,
+          771,
+          772,
+          773,
+          774,
+          775,
+          776,
+          777,
+          778,
+          779,
+          780,
+          781,
+          782,
+          783,
+          784,
+          785,
+          786,
+          787,
+          792,
+          793,
+          794,
+          795,
+          796,
+          797,
+          798,
+          799,
+          800,
+          801,
+          802,
+          803,
+          804,
+          805,
+          806,
+          807,
+          808,
+          809,
+          810,
+          811,
+          816,
+          817,
+          818,
+          819,
+          820,
+          821,
+          822,
+          823,
+          824,
+          825,
+          826,
+          827,
+          828,
+          829,
+          830,
+          831,
+          832,
+          833,
+          834,
+          835,
+          840,
+          841,
+          842,
+          843,
+          844,
+          845,
+          846,
+          847,
+          848,
+          849,
+          850,
+          851,
+          852,
+          853,
+          855,
+          856,
+          857,
+          858,
+          859,
+          864,
+          865,
+          866,
+          867,
+          868,
+          869,
+          870,
+          871,
+          872,
+          873,
+          874,
+          875,
+          876,
+          877,
+          878,
+          879,
+          880,
+          881,
+          882,
+          883,
+          888,
+          889,
+          890,
+          891,
+          892,
+          893,
+          894,
+          895,
+          896,
+          897,
+          898,
+          899,
+          900,
+          901,
+          902,
+          903,
+          904,
+          905,
+          906,
+          907,
+          912,
+          913,
+          914,
+          915,
+          916,
+          917,
+          918,
+          919,
+          920,
+          921,
+          922,
+          923,
+          924,
+          925,
+          926,
+          927,
+          928,
+          929,
+          930,
+          931,
+          936,
+          937,
+          938,
+          939,
+          940,
+          941,
+          942,
+          943,
+          944,
+          945,
+          946,
+          947,
+          948,
+          949,
+          950,
+          951,
+          952,
+          953,
+          954,
+          955,
+          962,
+          966,
+          970,
+          971,
+          972,
+          973,
+          974,
+          975,
+          976,
+          977,
+          978,
+          979,
+          984,
+          986,
+          987,
+          988
+        ],
+        "all_251_bytes_outside_native_write_set_preserved": true,
+        "head_position_read_after_metadata_bits": [
+          "42f68000",
+          "c0900000",
+          "41000000"
+        ],
+        "states": [
+          {
+            "provider": "original",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "037f",
+            "CW_after": "037f",
+            "SW_before": "0000",
+            "SW_after": "0020",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          },
+          {
+            "provider": "source",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "037f",
+            "CW_after": "037f",
+            "SW_before": "0000",
+            "SW_after": "0020",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          }
+        ],
+        "all40_records": [
+          {
+            "slot": 0,
+            "XYZ_bits": [
+              "c4ae3fcb",
+              "c0900000",
+              "449a1e08"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "79685746"
+          },
+          {
+            "slot": 1,
+            "XYZ_bits": [
+              "c4a962e0",
+              "c0900000",
+              "449630f4"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1100efde"
+          },
+          {
+            "slot": 2,
+            "XYZ_bits": [
+              "c4a485f5",
+              "c0900000",
+              "449243e0"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a9988776"
+          },
+          {
+            "slot": 3,
+            "XYZ_bits": [
+              "c49fa90a",
+              "c0900000",
+              "448e56cc"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "41301f0e"
+          },
+          {
+            "slot": 4,
+            "XYZ_bits": [
+              "c49acc1f",
+              "c0900000",
+              "448a69b8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d9c8b7a6"
+          },
+          {
+            "slot": 5,
+            "XYZ_bits": [
+              "c495ef34",
+              "c0900000",
+              "44867ca4"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "71604f3e"
+          },
+          {
+            "slot": 6,
+            "XYZ_bits": [
+              "c4911249",
+              "c0900000",
+              "44828f90"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "09f8e7d6"
+          },
+          {
+            "slot": 7,
+            "XYZ_bits": [
+              "c48c355e",
+              "c0900000",
+              "447d44f8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a1907f6e"
+          },
+          {
+            "slot": 8,
+            "XYZ_bits": [
+              "c4875873",
+              "c0900000",
+              "44756ad0"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "39281706"
+          },
+          {
+            "slot": 9,
+            "XYZ_bits": [
+              "c4827b88",
+              "c0900000",
+              "446d90a8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d1c0af9e"
+          },
+          {
+            "slot": 10,
+            "XYZ_bits": [
+              "c47b3d3b",
+              "c0900000",
+              "4465b680"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "69584736"
+          },
+          {
+            "slot": 11,
+            "XYZ_bits": [
+              "c4718365",
+              "c0900000",
+              "445ddc58"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "01f0dfce"
+          },
+          {
+            "slot": 12,
+            "XYZ_bits": [
+              "c467c98f",
+              "c0900000",
+              "44560230"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "99887766"
+          },
+          {
+            "slot": 13,
+            "XYZ_bits": [
+              "c45e0fb9",
+              "c0900000",
+              "444e2808"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "31200ffe"
+          },
+          {
+            "slot": 14,
+            "XYZ_bits": [
+              "c45455e3",
+              "c0900000",
+              "44464de0"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c9b8a796"
+          },
+          {
+            "slot": 15,
+            "XYZ_bits": [
+              "c44a9c0d",
+              "c0900000",
+              "443e73b8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "61503f2e"
+          },
+          {
+            "slot": 16,
+            "XYZ_bits": [
+              "c440e237",
+              "c0900000",
+              "44369990"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f9e8d7c6"
+          },
+          {
+            "slot": 17,
+            "XYZ_bits": [
+              "c4372861",
+              "c0900000",
+              "442ebf68"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "91806f5e"
+          },
+          {
+            "slot": 18,
+            "XYZ_bits": [
+              "c42d6e8b",
+              "c0900000",
+              "4426e540"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "291807f6"
+          },
+          {
+            "slot": 19,
+            "XYZ_bits": [
+              "c423b4b5",
+              "c0900000",
+              "441f0b18"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c1b09f8e"
+          },
+          {
+            "slot": 20,
+            "XYZ_bits": [
+              "c419fadf",
+              "c0900000",
+              "441730f0"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "59483726"
+          },
+          {
+            "slot": 21,
+            "XYZ_bits": [
+              "c4104109",
+              "c0900000",
+              "440f56c8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f1e0cfbe"
+          },
+          {
+            "slot": 22,
+            "XYZ_bits": [
+              "c4068733",
+              "c0900000",
+              "44077ca0"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "89786756"
+          },
+          {
+            "slot": 23,
+            "XYZ_bits": [
+              "c3f99aba",
+              "c0900000",
+              "43ff44f1"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "2110ffee"
+          },
+          {
+            "slot": 24,
+            "XYZ_bits": [
+              "c3e6270e",
+              "c0900000",
+              "43ef90a2"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b9a89786"
+          },
+          {
+            "slot": 25,
+            "XYZ_bits": [
+              "c3d2b362",
+              "c0900000",
+              "43dfdc53"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "51402f1e"
+          },
+          {
+            "slot": 26,
+            "XYZ_bits": [
+              "c3bf3fb6",
+              "c0900000",
+              "43d02804"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e9d8c7b6"
+          },
+          {
+            "slot": 27,
+            "XYZ_bits": [
+              "c3abcc0a",
+              "c0900000",
+              "43c073b5"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "81705f4e"
+          },
+          {
+            "slot": 28,
+            "XYZ_bits": [
+              "c398585e",
+              "c0900000",
+              "43b0bf66"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1908f7e6"
+          },
+          {
+            "slot": 29,
+            "XYZ_bits": [
+              "c384e4b3",
+              "c0900000",
+              "43a10b17"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b1a08f7e"
+          },
+          {
+            "slot": 30,
+            "XYZ_bits": [
+              "c362e20f",
+              "c0900000",
+              "439156c8"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "49382716"
+          },
+          {
+            "slot": 31,
+            "XYZ_bits": [
+              "c33bfab8",
+              "c0900000",
+              "4381a279"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e1d0bfae"
+          },
+          {
+            "slot": 32,
+            "XYZ_bits": [
+              "c3151361",
+              "c0900000",
+              "4363dc54"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "79685746"
+          },
+          {
+            "slot": 33,
+            "XYZ_bits": [
+              "c2dc5814",
+              "c0900000",
+              "434473b6"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1100efde"
+          },
+          {
+            "slot": 34,
+            "XYZ_bits": [
+              "c28e8966",
+              "c0900000",
+              "43250b18"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a9988776"
+          },
+          {
+            "slot": 35,
+            "XYZ_bits": [
+              "c2017570",
+              "c0900000",
+              "4305a27a"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "41301f0e"
+          },
+          {
+            "slot": 36,
+            "XYZ_bits": [
+              "40d13f60",
+              "c0900000",
+              "42cc73b7"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d9c8b7a6"
+          },
+          {
+            "slot": 37,
+            "XYZ_bits": [
+              "4235c548",
+              "c0900000",
+              "428da27a"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "71604f3e"
+          },
+          {
+            "slot": 38,
+            "XYZ_bits": [
+              "42a8b152",
+              "c0900000",
+              "421da27a"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "09f8e7d6"
+          },
+          {
+            "slot": 39,
+            "XYZ_bits": [
+              "42f68000",
+              "c0900000",
+              "41000000"
+            ],
+            "heading_bits": "40100000",
+            "segment_bits": "00000000",
+            "yaw_bits_preserved": "a1907f6e"
+          }
+        ]
+      },
+      {
+        "name": "position_overlaps_metadata",
+        "preimage_path": "case_1_before.bin",
+        "bytes": 1056,
+        "sha256": "539e3d36b3c10fcb103f25df0b7902ab6600d222d974aea8765f1483bb34ff04",
+        "position_offset_from_memory": 984,
+        "heading_bits": "3e800000",
+        "x87_CW": "027f",
+        "complete_1056_byte_Original_Source_equal": true,
+        "changed_byte_count": 797,
+        "changed_offsets": [
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          264,
+          265,
+          266,
+          267,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277,
+          278,
+          279,
+          280,
+          281,
+          282,
+          283,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          312,
+          313,
+          314,
+          315,
+          316,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341,
+          342,
+          343,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349,
+          350,
+          351,
+          352,
+          353,
+          354,
+          355,
+          360,
+          361,
+          362,
+          363,
+          364,
+          365,
+          366,
+          367,
+          368,
+          369,
+          370,
+          371,
+          372,
+          373,
+          374,
+          375,
+          376,
+          377,
+          378,
+          379,
+          384,
+          385,
+          386,
+          387,
+          388,
+          389,
+          390,
+          391,
+          392,
+          393,
+          394,
+          395,
+          396,
+          397,
+          398,
+          399,
+          400,
+          401,
+          402,
+          403,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          418,
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          432,
+          433,
+          434,
+          435,
+          436,
+          437,
+          438,
+          439,
+          440,
+          441,
+          442,
+          443,
+          444,
+          445,
+          446,
+          447,
+          448,
+          449,
+          450,
+          451,
+          456,
+          457,
+          458,
+          459,
+          460,
+          461,
+          462,
+          463,
+          464,
+          465,
+          466,
+          467,
+          468,
+          469,
+          470,
+          471,
+          472,
+          473,
+          474,
+          475,
+          480,
+          481,
+          482,
+          483,
+          484,
+          485,
+          486,
+          487,
+          488,
+          489,
+          490,
+          491,
+          492,
+          493,
+          494,
+          495,
+          496,
+          497,
+          498,
+          499,
+          504,
+          505,
+          506,
+          507,
+          508,
+          509,
+          510,
+          511,
+          512,
+          513,
+          514,
+          515,
+          516,
+          517,
+          518,
+          519,
+          520,
+          521,
+          522,
+          523,
+          528,
+          529,
+          530,
+          531,
+          532,
+          533,
+          534,
+          535,
+          536,
+          537,
+          538,
+          539,
+          540,
+          541,
+          542,
+          543,
+          544,
+          545,
+          546,
+          547,
+          552,
+          553,
+          554,
+          555,
+          556,
+          557,
+          558,
+          559,
+          560,
+          561,
+          562,
+          563,
+          564,
+          565,
+          566,
+          567,
+          568,
+          569,
+          570,
+          571,
+          576,
+          577,
+          578,
+          579,
+          580,
+          581,
+          582,
+          583,
+          584,
+          585,
+          586,
+          587,
+          588,
+          589,
+          590,
+          591,
+          592,
+          593,
+          594,
+          595,
+          600,
+          601,
+          602,
+          603,
+          604,
+          605,
+          606,
+          607,
+          608,
+          609,
+          610,
+          611,
+          612,
+          613,
+          614,
+          615,
+          616,
+          617,
+          618,
+          619,
+          624,
+          625,
+          626,
+          627,
+          628,
+          629,
+          630,
+          631,
+          632,
+          633,
+          634,
+          635,
+          636,
+          637,
+          638,
+          639,
+          640,
+          641,
+          642,
+          643,
+          648,
+          649,
+          650,
+          651,
+          652,
+          653,
+          654,
+          655,
+          656,
+          657,
+          658,
+          659,
+          660,
+          661,
+          662,
+          663,
+          664,
+          665,
+          666,
+          667,
+          672,
+          673,
+          674,
+          675,
+          676,
+          677,
+          678,
+          679,
+          680,
+          681,
+          682,
+          683,
+          684,
+          685,
+          686,
+          687,
+          688,
+          689,
+          690,
+          691,
+          696,
+          697,
+          698,
+          699,
+          700,
+          701,
+          702,
+          703,
+          704,
+          705,
+          706,
+          707,
+          708,
+          709,
+          710,
+          711,
+          712,
+          713,
+          714,
+          715,
+          720,
+          721,
+          722,
+          723,
+          724,
+          725,
+          726,
+          727,
+          728,
+          729,
+          730,
+          731,
+          732,
+          733,
+          734,
+          735,
+          736,
+          737,
+          738,
+          739,
+          744,
+          745,
+          746,
+          747,
+          748,
+          749,
+          750,
+          751,
+          752,
+          753,
+          754,
+          755,
+          756,
+          757,
+          758,
+          759,
+          760,
+          761,
+          762,
+          763,
+          768,
+          769,
+          770,
+          771,
+          772,
+          773,
+          774,
+          775,
+          776,
+          777,
+          778,
+          779,
+          780,
+          781,
+          782,
+          783,
+          784,
+          785,
+          786,
+          787,
+          792,
+          793,
+          794,
+          795,
+          796,
+          797,
+          798,
+          799,
+          800,
+          801,
+          802,
+          803,
+          804,
+          805,
+          806,
+          807,
+          808,
+          809,
+          810,
+          811,
+          816,
+          817,
+          818,
+          819,
+          820,
+          821,
+          822,
+          823,
+          824,
+          825,
+          826,
+          827,
+          828,
+          829,
+          830,
+          831,
+          832,
+          833,
+          834,
+          835,
+          840,
+          841,
+          842,
+          843,
+          844,
+          845,
+          846,
+          847,
+          848,
+          849,
+          850,
+          851,
+          852,
+          853,
+          854,
+          855,
+          856,
+          857,
+          858,
+          859,
+          864,
+          865,
+          866,
+          867,
+          868,
+          869,
+          870,
+          871,
+          872,
+          873,
+          874,
+          875,
+          876,
+          877,
+          878,
+          879,
+          880,
+          881,
+          882,
+          883,
+          888,
+          889,
+          890,
+          891,
+          892,
+          893,
+          894,
+          895,
+          896,
+          897,
+          898,
+          899,
+          900,
+          901,
+          902,
+          903,
+          904,
+          905,
+          906,
+          907,
+          912,
+          913,
+          914,
+          915,
+          916,
+          917,
+          918,
+          919,
+          920,
+          921,
+          923,
+          924,
+          925,
+          926,
+          927,
+          928,
+          929,
+          930,
+          931,
+          936,
+          937,
+          938,
+          939,
+          940,
+          941,
+          942,
+          943,
+          944,
+          945,
+          946,
+          947,
+          948,
+          949,
+          950,
+          951,
+          952,
+          953,
+          954,
+          955,
+          960,
+          961,
+          962,
+          963,
+          966,
+          967,
+          970,
+          972,
+          973,
+          974,
+          975,
+          976,
+          977,
+          978,
+          979,
+          984,
+          986,
+          987,
+          988
+        ],
+        "all_251_bytes_outside_native_write_set_preserved": true,
+        "head_position_read_after_metadata_bits": [
+          "00000027",
+          "3f800000",
+          "40e00000"
+        ],
+        "states": [
+          {
+            "provider": "original",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "027f",
+            "CW_after": "027f",
+            "SW_before": "0000",
+            "SW_after": "0022",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          },
+          {
+            "provider": "source",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "027f",
+            "CW_after": "027f",
+            "SW_before": "0000",
+            "SW_after": "0022",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          }
+        ],
+        "all40_records": [
+          {
+            "slot": 0,
+            "XYZ_bits": [
+              "c3f1380b",
+              "3f800000",
+              "c4eb4c2b"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "98877665"
+          },
+          {
+            "slot": 1,
+            "XYZ_bits": [
+              "c3eb08a8",
+              "3f800000",
+              "c4e53de8"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "301f0efd"
+          },
+          {
+            "slot": 2,
+            "XYZ_bits": [
+              "c3e4d945",
+              "3f800000",
+              "c4df2fa5"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c8b7a695"
+          },
+          {
+            "slot": 3,
+            "XYZ_bits": [
+              "c3dea9e2",
+              "3f800000",
+              "c4d92162"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "604f3e2d"
+          },
+          {
+            "slot": 4,
+            "XYZ_bits": [
+              "c3d87a7f",
+              "3f800000",
+              "c4d3131f"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f8e7d6c5"
+          },
+          {
+            "slot": 5,
+            "XYZ_bits": [
+              "c3d24b1c",
+              "3f800000",
+              "c4cd04dc"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "907f6e5d"
+          },
+          {
+            "slot": 6,
+            "XYZ_bits": [
+              "c3cc1bb9",
+              "3f800000",
+              "c4c6f699"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "281706f5"
+          },
+          {
+            "slot": 7,
+            "XYZ_bits": [
+              "c3c5ec56",
+              "3f800000",
+              "c4c0e856"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c0af9e8d"
+          },
+          {
+            "slot": 8,
+            "XYZ_bits": [
+              "c3bfbcf3",
+              "3f800000",
+              "c4bada13"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "58473625"
+          },
+          {
+            "slot": 9,
+            "XYZ_bits": [
+              "c3b98d90",
+              "3f800000",
+              "c4b4cbd0"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f0dfcebd"
+          },
+          {
+            "slot": 10,
+            "XYZ_bits": [
+              "c3b35e2d",
+              "3f800000",
+              "c4aebd8d"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "88776655"
+          },
+          {
+            "slot": 11,
+            "XYZ_bits": [
+              "c3ad2eca",
+              "3f800000",
+              "c4a8af4a"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "200ffeed"
+          },
+          {
+            "slot": 12,
+            "XYZ_bits": [
+              "c3a6ff67",
+              "3f800000",
+              "c4a2a107"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b8a79685"
+          },
+          {
+            "slot": 13,
+            "XYZ_bits": [
+              "c3a0d004",
+              "3f800000",
+              "c49c92c4"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "503f2e1d"
+          },
+          {
+            "slot": 14,
+            "XYZ_bits": [
+              "c39aa0a1",
+              "3f800000",
+              "c4968481"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e8d7c6b5"
+          },
+          {
+            "slot": 15,
+            "XYZ_bits": [
+              "c394713e",
+              "3f800000",
+              "c490763e"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "806f5e4d"
+          },
+          {
+            "slot": 16,
+            "XYZ_bits": [
+              "c38e41db",
+              "3f800000",
+              "c48a67fb"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1807f6e5"
+          },
+          {
+            "slot": 17,
+            "XYZ_bits": [
+              "c3881278",
+              "3f800000",
+              "c48459b8"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b09f8e7d"
+          },
+          {
+            "slot": 18,
+            "XYZ_bits": [
+              "c381e315",
+              "3f800000",
+              "c47c96ea"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "48372615"
+          },
+          {
+            "slot": 19,
+            "XYZ_bits": [
+              "c3776765",
+              "3f800000",
+              "c4707a65"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e0cfbead"
+          },
+          {
+            "slot": 20,
+            "XYZ_bits": [
+              "c36b08a0",
+              "3f800000",
+              "c4645de0"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "78675645"
+          },
+          {
+            "slot": 21,
+            "XYZ_bits": [
+              "c35ea9db",
+              "3f800000",
+              "c458415b"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "10ffeedd"
+          },
+          {
+            "slot": 22,
+            "XYZ_bits": [
+              "c3524b16",
+              "3f800000",
+              "c44c24d6"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a8978675"
+          },
+          {
+            "slot": 23,
+            "XYZ_bits": [
+              "c345ec51",
+              "3f800000",
+              "c4400851"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "402f1e0d"
+          },
+          {
+            "slot": 24,
+            "XYZ_bits": [
+              "c3398d8c",
+              "3f800000",
+              "c433ebcc"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d8c7b6a5"
+          },
+          {
+            "slot": 25,
+            "XYZ_bits": [
+              "c32d2ec7",
+              "3f800000",
+              "c427cf47"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "705f4e3d"
+          },
+          {
+            "slot": 26,
+            "XYZ_bits": [
+              "c320d002",
+              "3f800000",
+              "c41bb2c2"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "08f7e6d5"
+          },
+          {
+            "slot": 27,
+            "XYZ_bits": [
+              "c314713d",
+              "3f800000",
+              "c40f963d"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a08f7e6d"
+          },
+          {
+            "slot": 28,
+            "XYZ_bits": [
+              "c3081278",
+              "3f800000",
+              "c40379b8"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "38271605"
+          },
+          {
+            "slot": 29,
+            "XYZ_bits": [
+              "c2f76766",
+              "3f800000",
+              "c3eeba65"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d0bfae9d"
+          },
+          {
+            "slot": 30,
+            "XYZ_bits": [
+              "c2dea9dc",
+              "3f800000",
+              "c3d6815b"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "68574635"
+          },
+          {
+            "slot": 31,
+            "XYZ_bits": [
+              "c2c5ec52",
+              "3f800000",
+              "c3be4851"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "00efdecd"
+          },
+          {
+            "slot": 32,
+            "XYZ_bits": [
+              "c2ad2ec8",
+              "3f800000",
+              "c3a60f47"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "98877665"
+          },
+          {
+            "slot": 33,
+            "XYZ_bits": [
+              "c294713e",
+              "3f800000",
+              "c38dd63d"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "301f0efd"
+          },
+          {
+            "slot": 34,
+            "XYZ_bits": [
+              "c2776768",
+              "3f800000",
+              "c36b3a65"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c8b7a695"
+          },
+          {
+            "slot": 35,
+            "XYZ_bits": [
+              "c245ec53",
+              "3f800000",
+              "c33ac851"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "604f3e2d"
+          },
+          {
+            "slot": 36,
+            "XYZ_bits": [
+              "c214713e",
+              "3f800000",
+              "c30a563d"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f8e7d6c5"
+          },
+          {
+            "slot": 37,
+            "XYZ_bits": [
+              "c1c5ec53",
+              "3f800000",
+              "c2b3c851"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "907f6e5d"
+          },
+          {
+            "slot": 38,
+            "XYZ_bits": [
+              "c145ec53",
+              "3f800000",
+              "c225c851"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "281706f5"
+          },
+          {
+            "slot": 39,
+            "XYZ_bits": [
+              "00000027",
+              "3f800000",
+              "40e00000"
+            ],
+            "heading_bits": "3e800000",
+            "segment_bits": "00000000",
+            "yaw_bits_preserved": "c0af9e8d"
+          }
+        ]
+      },
+      {
+        "name": "position_overlaps_head_raw_negative_zero_heading",
+        "preimage_path": "case_2_before.bin",
+        "bytes": 1056,
+        "sha256": "138e60dc249fe0296634fcc792b65e87bebf4803036a664cecfa27b0318200ae",
+        "position_offset_from_memory": 960,
+        "heading_bits": "80000000",
+        "x87_CW": "037f",
+        "complete_1056_byte_Original_Source_equal": true,
+        "changed_byte_count": 789,
+        "changed_offsets": [
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          233,
+          234,
+          235,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          264,
+          265,
+          266,
+          267,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277,
+          278,
+          279,
+          280,
+          281,
+          282,
+          283,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          312,
+          313,
+          314,
+          315,
+          316,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341,
+          342,
+          343,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349,
+          350,
+          351,
+          352,
+          353,
+          354,
+          355,
+          360,
+          361,
+          362,
+          363,
+          364,
+          365,
+          366,
+          367,
+          368,
+          369,
+          370,
+          371,
+          372,
+          373,
+          374,
+          375,
+          376,
+          377,
+          378,
+          379,
+          384,
+          385,
+          386,
+          387,
+          388,
+          389,
+          390,
+          391,
+          392,
+          393,
+          394,
+          395,
+          396,
+          397,
+          398,
+          399,
+          400,
+          401,
+          402,
+          403,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          418,
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          432,
+          433,
+          434,
+          435,
+          436,
+          437,
+          438,
+          439,
+          440,
+          441,
+          442,
+          443,
+          444,
+          445,
+          446,
+          447,
+          448,
+          449,
+          450,
+          451,
+          456,
+          457,
+          458,
+          459,
+          460,
+          461,
+          462,
+          463,
+          464,
+          465,
+          466,
+          467,
+          468,
+          469,
+          470,
+          471,
+          472,
+          473,
+          474,
+          475,
+          480,
+          481,
+          482,
+          483,
+          484,
+          485,
+          486,
+          487,
+          489,
+          490,
+          491,
+          492,
+          493,
+          494,
+          495,
+          496,
+          497,
+          498,
+          499,
+          504,
+          505,
+          506,
+          507,
+          508,
+          509,
+          510,
+          511,
+          512,
+          513,
+          514,
+          515,
+          516,
+          517,
+          518,
+          519,
+          520,
+          521,
+          522,
+          523,
+          528,
+          529,
+          530,
+          531,
+          532,
+          533,
+          534,
+          535,
+          536,
+          537,
+          538,
+          539,
+          540,
+          541,
+          542,
+          543,
+          544,
+          545,
+          546,
+          547,
+          552,
+          553,
+          554,
+          555,
+          556,
+          557,
+          558,
+          559,
+          560,
+          561,
+          562,
+          563,
+          564,
+          565,
+          566,
+          567,
+          568,
+          569,
+          570,
+          571,
+          576,
+          577,
+          578,
+          579,
+          580,
+          581,
+          582,
+          583,
+          584,
+          585,
+          586,
+          587,
+          588,
+          589,
+          590,
+          591,
+          592,
+          593,
+          594,
+          595,
+          600,
+          601,
+          602,
+          603,
+          604,
+          605,
+          606,
+          607,
+          608,
+          609,
+          610,
+          611,
+          612,
+          613,
+          614,
+          615,
+          616,
+          617,
+          618,
+          619,
+          624,
+          625,
+          626,
+          627,
+          628,
+          629,
+          630,
+          631,
+          632,
+          633,
+          634,
+          635,
+          636,
+          637,
+          638,
+          639,
+          640,
+          641,
+          642,
+          643,
+          648,
+          649,
+          650,
+          651,
+          652,
+          653,
+          654,
+          655,
+          656,
+          657,
+          658,
+          659,
+          660,
+          661,
+          662,
+          663,
+          664,
+          665,
+          666,
+          667,
+          672,
+          673,
+          674,
+          675,
+          676,
+          677,
+          678,
+          679,
+          680,
+          681,
+          682,
+          683,
+          684,
+          685,
+          686,
+          687,
+          688,
+          689,
+          690,
+          691,
+          696,
+          697,
+          698,
+          699,
+          700,
+          701,
+          702,
+          703,
+          704,
+          705,
+          706,
+          707,
+          708,
+          709,
+          710,
+          711,
+          712,
+          713,
+          714,
+          715,
+          720,
+          721,
+          722,
+          723,
+          724,
+          725,
+          726,
+          727,
+          728,
+          729,
+          730,
+          731,
+          732,
+          733,
+          734,
+          735,
+          736,
+          737,
+          738,
+          739,
+          745,
+          746,
+          747,
+          748,
+          749,
+          750,
+          751,
+          752,
+          753,
+          754,
+          755,
+          756,
+          757,
+          758,
+          759,
+          760,
+          761,
+          762,
+          763,
+          768,
+          769,
+          770,
+          771,
+          772,
+          773,
+          774,
+          775,
+          776,
+          777,
+          778,
+          779,
+          780,
+          781,
+          782,
+          783,
+          784,
+          785,
+          786,
+          787,
+          792,
+          793,
+          794,
+          795,
+          796,
+          797,
+          798,
+          799,
+          800,
+          801,
+          802,
+          803,
+          804,
+          805,
+          806,
+          807,
+          808,
+          809,
+          810,
+          811,
+          816,
+          817,
+          818,
+          819,
+          820,
+          821,
+          822,
+          823,
+          824,
+          825,
+          826,
+          827,
+          828,
+          829,
+          830,
+          831,
+          832,
+          833,
+          834,
+          835,
+          840,
+          841,
+          842,
+          843,
+          844,
+          845,
+          846,
+          847,
+          848,
+          849,
+          850,
+          851,
+          852,
+          853,
+          854,
+          855,
+          856,
+          857,
+          858,
+          859,
+          864,
+          865,
+          866,
+          867,
+          868,
+          869,
+          870,
+          871,
+          872,
+          873,
+          874,
+          875,
+          876,
+          877,
+          878,
+          879,
+          880,
+          881,
+          882,
+          883,
+          888,
+          889,
+          890,
+          891,
+          892,
+          893,
+          894,
+          895,
+          896,
+          897,
+          898,
+          899,
+          900,
+          901,
+          902,
+          903,
+          904,
+          905,
+          906,
+          907,
+          912,
+          913,
+          914,
+          915,
+          916,
+          917,
+          918,
+          919,
+          920,
+          921,
+          922,
+          923,
+          924,
+          925,
+          926,
+          927,
+          928,
+          929,
+          930,
+          931,
+          936,
+          937,
+          938,
+          939,
+          940,
+          941,
+          942,
+          943,
+          944,
+          945,
+          946,
+          947,
+          948,
+          949,
+          950,
+          951,
+          952,
+          953,
+          954,
+          955,
+          972,
+          973,
+          974,
+          975,
+          976,
+          977,
+          978,
+          979,
+          984,
+          986,
+          987,
+          988
+        ],
+        "all_251_bytes_outside_native_write_set_preserved": true,
+        "head_position_read_after_metadata_bits": [
+          "42c78000",
+          "c0000000",
+          "40600000"
+        ],
+        "states": [
+          {
+            "provider": "original",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "037f",
+            "CW_after": "037f",
+            "SW_before": "0000",
+            "SW_after": "0020",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          },
+          {
+            "provider": "source",
+            "ESP_before": "0036d134",
+            "ESP_after": "0036d134",
+            "EBX_ESI_EDI_EBP_preserved": true,
+            "CW_before": "037f",
+            "CW_after": "037f",
+            "SW_before": "0000",
+            "SW_after": "0020",
+            "empty_x87_tag_before_and_after": true,
+            "MXCSR_before": "00001f80",
+            "MXCSR_after": "00001f80"
+          }
+        ],
+        "all40_records": [
+          {
+            "slot": 0,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4f35000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b7a69584"
+          },
+          {
+            "slot": 1,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4ed1000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "4f3e2d1c"
+          },
+          {
+            "slot": 2,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4e6d000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e7d6c5b4"
+          },
+          {
+            "slot": 3,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4e09000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "7f6e5d4c"
+          },
+          {
+            "slot": 4,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4da5000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1706f5e4"
+          },
+          {
+            "slot": 5,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4d41000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "af9e8d7c"
+          },
+          {
+            "slot": 6,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4cdd000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "47362514"
+          },
+          {
+            "slot": 7,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4c79000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "dfcebdac"
+          },
+          {
+            "slot": 8,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4c15000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "77665544"
+          },
+          {
+            "slot": 9,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4bb1000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "0ffeeddc"
+          },
+          {
+            "slot": 10,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4b4d000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "a7968574"
+          },
+          {
+            "slot": 11,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4ae9000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "3f2e1d0c"
+          },
+          {
+            "slot": 12,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4a85000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "d7c6b5a4"
+          },
+          {
+            "slot": 13,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4a21000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "6f5e4d3c"
+          },
+          {
+            "slot": 14,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c49bd000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "07f6e5d4"
+          },
+          {
+            "slot": 15,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4959000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "9f8e7d6c"
+          },
+          {
+            "slot": 16,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c48f5000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "37261504"
+          },
+          {
+            "slot": 17,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4891000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "cfbead9c"
+          },
+          {
+            "slot": 18,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c482d000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "67564534"
+          },
+          {
+            "slot": 19,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4792000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "ffeeddcc"
+          },
+          {
+            "slot": 20,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c46ca000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "97867564"
+          },
+          {
+            "slot": 21,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4602000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "2f1e0dfc"
+          },
+          {
+            "slot": 22,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c453a000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "c7b6a594"
+          },
+          {
+            "slot": 23,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4472000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "5f4e3d2c"
+          },
+          {
+            "slot": 24,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c43aa000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "f7e6d5c4"
+          },
+          {
+            "slot": 25,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c42e2000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "8f7e6d5c"
+          },
+          {
+            "slot": 26,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c421a000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "271605f4"
+          },
+          {
+            "slot": 27,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c4152000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "bfae9d8c"
+          },
+          {
+            "slot": 28,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c408a000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "57463524"
+          },
+          {
+            "slot": 29,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3f84000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "efdecdbc"
+          },
+          {
+            "slot": 30,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3df4000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "87766554"
+          },
+          {
+            "slot": 31,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3c64000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1f0efdec"
+          },
+          {
+            "slot": 32,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3ad4000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "b7a69584"
+          },
+          {
+            "slot": 33,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3944000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "4f3e2d1c"
+          },
+          {
+            "slot": 34,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3768000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "e7d6c5b4"
+          },
+          {
+            "slot": 35,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3448000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "7f6e5d4c"
+          },
+          {
+            "slot": 36,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c3128000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "1706f5e4"
+          },
+          {
+            "slot": 37,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c2c10000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "af9e8d7c"
+          },
+          {
+            "slot": 38,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "c23a0000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "42480000",
+            "yaw_bits_preserved": "47362514"
+          },
+          {
+            "slot": 39,
+            "XYZ_bits": [
+              "42c78000",
+              "c0000000",
+              "40600000"
+            ],
+            "heading_bits": "80000000",
+            "segment_bits": "00000000",
+            "yaw_bits_preserved": "dfcebdac"
+          }
+        ]
+      }
+    ],
+    "scope": "One fresh bounded raw-memory family, three pairs, seeded initialized actual storage, no owner/constructor/append/parent/gameplay claim. Empty x87 entry in executed cases; static peak+4 contract preserved by full instruction equality."
+  },
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 Release",
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "new_permanent_tests": 0,
+    "native_runs": 1,
+    "fresh_family_count": 1,
+    "fresh_pairs": 3,
+    "failed_pairs": 0,
+    "historical_fixture_replay": false,
+    "pre_execution_physical_pins": 209,
+    "all_pins_rechecked_before_run_after_run_and_finalization": true,
+    "Original_map_generated_and_frozen_before_first_call": true,
+    "ordinary_wrapper_bytes": 29,
+    "complete_kernel_bytes": 314,
+    "runtime_covered_CWs": [
+      "0x037F",
+      "0x027F"
+    ],
+    "runtime_MXCSR": "0x1F80",
+    "registers": "ESP,EBX,ESI,EDI,EBP preserved; empty x87 tags/CW andMXCSR preserved; finalSW matched",
+    "all40_records_and_251_preserved_preimage_bytes_per_pair": true,
+    "warning": "Existing unrelated spawn_request_id_matches LNK4006 duplicate symbol",
+    "Source_changed_after_build_or_gate": false
+  },
+  "legacy_typed_files_unchanged": [
+    {
+      "path": "src/ship_ai_wake_trail.cpp",
+      "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/ship_ai_wake_trail.hpp",
+      "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4",
+      "unchanged": true
+    }
+  ],
+  "excluded_claims": [
+    "game-owned entity producer/construction/lifetime/synchronization",
+    "Original class or world/settings/global owner",
+    "append behavior",
+    "parent integration",
+    "Original public binary ABI",
+    "all numeric inputs/FP environments dynamically covered",
+    "runtime DLL-binding proof from copied OS files",
+    "startup validation",
+    "gameplay validation"
+  ],
+  "evidence_archive": {
+    "status": "sealed_CRC_and_every_decompressed_artifact_SHA256_reverified",
+    "path": "local/cc12_native_wake_fill_Source_evidence.zip",
+    "bytes": 41775492,
+    "sha256": "b819868b00334e9c05938ba47cbcfdb514e30642c660cdc199e357d760a6c132",
+    "entries": 268,
+    "manifest_sha256": "cbceb5475c76332f1b700b1fdacf1f00513e1f95e48ea6382da5c89d8a4ca4fd",
+    "hash_recursion_boundary": "Bundle keeps report_before_archive_digest.json; final tracked report adds ZIP digest."
+  },
+  "primary_acceptance": {
+    "status": "PASS_integrated_primary_reviewed_Source_and_current_Win32_build",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_fill_publication_primary_review\\wake_fill.json",
+      "bytes": 4648,
+      "sha256": "ea5553f2decd31873baa0497727806ed3a7e8d17bc8306dcee3d827cfee10625"
+    },
+    "current_combined_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_fill_publication_primary_review\\current_archive.json",
+      "bytes": 1807,
+      "sha256": "93c45e3aec8d09ad7e6c5672c9eea8e6df02d862f18e6a5707a4223cc0ad2d34"
+    },
+    "all_three_existing_CTests_passed": true,
+    "new_primary_Source_or_Original_execution": false,
+    "game_validated": false,
+    "qualification": "Complete Original00810020..00810159 raw wake fill:314B85instructions,zero calls. Current full Win32 COFF/private kernel equals every Original instruction except four DIR32 immutable actual readonly constant payloads; DC C9 at81008C is FMUL ST1,ST0. Head39 andflag0 stores precede position capture;40records+8/stride18h XYZ/rawheading/segment, all yaw/residual/prefix/padding preserved. Whole actual object/archive unique member and whole unique linked29B wrapper/314Bkernel/four actual constant addresses independently checked. 209 physical pre-execution pins and all267 retained artifacts plus all268 ZIP entries rehashed; full4096-byte Original fixed mapping independently reconstructed, pre-execution and executed maps equal. One saved fresh run/three pairs independently checked for all1056 memory bytes, all40records/251preserved bytes, metadata/head-record overlap, negativezero heading, ESP/nonvolatile/CW/SW/emptytags/MXCSR. Root current combined MSVC Win32 build/all3 existing CTests passed. Public interface ordinary C++, four free x87 slots; original physical ECX/stack/RET8 body retained privately. Older Ghidra default undefined(void) prototype is incomplete; assembly governs ECX/two stack inputs. Typed Source unchanged. Naming remains hypothesis; no entity/class/append/parent/startup/gameplay proof.",
+    "final_after_concurrent_main_integration": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_fill_publication_primary_review\\final_after_main\\receipt.json",
+      "bytes": 4397,
+      "sha256": "3a14df52478ae7027b1dd1b0efd3add670a63d7af473e6b27a989d843800fecd"
+    }
+  }
+}

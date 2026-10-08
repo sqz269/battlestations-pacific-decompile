@@ -2,6 +2,7 @@
 
 #include "bsp/entity_identity.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
+#include "bsp/native_enum_node_pool.hpp"
 #include <cctype>
 #include <cstring>
 
@@ -110,5 +111,38 @@ void* find_native_property_map_node_0043b8b0(const void* actual_map,
         node = load<void*>(node, 0x0c);
     } while (node);
     return nullptr;
+}
+
+std::uint32_t publish_native_property_map_new_node_008f2930_fragment(
+    void* actual_map, const void* actual_query_header,
+    std::uint32_t lookup_bucket, std::uint32_t incoming_mapped_record_word,
+    void* actual_initialized_property_pool_00e175b0,
+    NativeStringRawPoolContext& actual_key_context) {
+    const auto write_word = [](void* owner, std::uint32_t offset, std::uint32_t value) {
+        std::memcpy(static_cast<char*>(owner) + offset, &value, sizeof value);
+    };
+    void* node = allocate_native_enum_node_004e7c00(
+        actual_initialized_property_pool_00e175b0);
+    if (node) {
+        write_word(node, 0, 0);
+        write_word(node, 4, 0);
+    }
+    if (node != actual_query_header) {
+        resize_native_string_header_0041dd40(node, actual_key_context,
+            load<std::uint32_t>(actual_query_header, 0), true);
+        if (load<std::uint32_t>(actual_query_header, 0) != 0) {
+            const auto length = load<std::uint32_t>(node, 0);
+            const void* source = load<const void*>(actual_query_header, 4);
+            void* destination = load<void*>(node, 4);
+            std::memmove(destination, source, length);
+        }
+    }
+    write_word(node, 8, incoming_mapped_record_word);
+    const auto head_offset = 8u + lookup_bucket * 4u;
+    void* old_head = load<void*>(actual_map, head_offset);
+    std::memcpy(static_cast<char*>(node) + 0x0c, &old_head, sizeof old_head);
+    std::memcpy(static_cast<char*>(actual_map) + head_offset, &node, sizeof node);
+    write_word(actual_map, 4, load<std::uint32_t>(actual_map, 4) + 1u);
+    return load<std::uint32_t>(actual_map, 4);
 }
 } // namespace bsp
