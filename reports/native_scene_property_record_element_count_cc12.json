@@ -1,0 +1,241 @@
+{
+  "schema": "native_scene_property_record_element_count_cc12_v1",
+  "packet": "cc12_property_record_element_count_source",
+  "status": "literal_raw_Source_implementation_pending_primary_registration_and_complete_qualification",
+  "Source_credit": 0,
+  "worker_new_Source_body_count": 1,
+  "independently_admitted_new_Source_bodies": 0,
+  "context": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source",
+    "baseline_commit": "4a4b2bf60ca78940fa1f58b641913ba2c9178889",
+    "Main_generation_commit": "4a4b2bf60ca78940fa1f58b641913ba2c9178889"
+  },
+  "ownership": {
+    "address": "008EF7F0",
+    "exact_tracked_files": [
+      "src/native_scene_property_record_element_count.cpp",
+      "include/bsp/native_scene_property_record_element_count.hpp",
+      "docs/NATIVE_SCENE_PROPERTY_RECORD_ELEMENT_COUNT_CC12.md",
+      "reports/native_scene_property_record_element_count_cc12.json"
+    ],
+    "shared_files_or_other_addresses_changed": false
+  },
+  "symbol": "bsp::native_scene_property_record_element_count_008ef7f0",
+  "public_declaration": "std::uint32_t __fastcall native_scene_property_record_element_count_008ef7f0(const void* actual_record_ecx, std::uint32_t unused_edx) noexcept;",
+  "Source": {
+    "CPP": "src/native_scene_property_record_element_count.cpp",
+    "HPP": "include/bsp/native_scene_property_record_element_count.hpp",
+    "CPP_sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c",
+    "HPP_sha256": "3ae755f3044c40fdae17d4565be1d3a53ebea34b19f74060ef91d551a6a15696",
+    "style_only_pins": [
+      {
+        "path": "src/native_parent_list_header_storage.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source/src/native_parent_list_header_storage.cpp",
+        "frozen_path": "frozen_Source/src/native_parent_list_header_storage.cpp",
+        "bytes": 887,
+        "sha256": "e8adeb28a7deeb4b3fbe14c483fc6e0207de3c8347960787eb696a7611c2677d",
+        "role": "style_only",
+        "Main_path": "J:/PROG/battlestations-pacific-decompile/src/native_parent_list_header_storage.cpp"
+      },
+      {
+        "path": "include/bsp/native_parent_list_header_storage.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source/include/bsp/native_parent_list_header_storage.hpp",
+        "frozen_path": "frozen_Source/include/bsp/native_parent_list_header_storage.hpp",
+        "bytes": 1026,
+        "sha256": "f462efb6557acb2d52dbc4bd6c4e439aace97613652db6e82881ea4fd8c40aca",
+        "role": "style_only",
+        "Main_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_parent_list_header_storage.hpp"
+      }
+    ],
+    "new_Source_pins": [
+      {
+        "path": "src/native_scene_property_record_element_count.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source/src/native_scene_property_record_element_count.cpp",
+        "frozen_path": "frozen_Source/src/native_scene_property_record_element_count.cpp",
+        "bytes": 1491,
+        "sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c",
+        "role": "new_raw_Source"
+      },
+      {
+        "path": "include/bsp/native_scene_property_record_element_count.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source/include/bsp/native_scene_property_record_element_count.hpp",
+        "frozen_path": "frozen_Source/include/bsp/native_scene_property_record_element_count.hpp",
+        "bytes": 1456,
+        "sha256": "3ae755f3044c40fdae17d4565be1d3a53ebea34b19f74060ef91d551a6a15696",
+        "role": "new_raw_Source"
+      }
+    ]
+  },
+  "Native_provenance": {
+    "whole": {
+      "begin": "008EF7F0",
+      "end_exclusive": "008EF81A",
+      "bytes": 42,
+      "instructions": 17,
+      "hex": "8b410483e809741b83e801741683e801740333c0c3b8abaaaaaaf761248bc2c1e803c38b4124c1e802c3",
+      "sha256": "e84a191988638f684ec2d81e68f96fae767f4035f8d21a2ae736501afbeb8ce7",
+      "instruction_starts": [
+        "008EF7F0",
+        "008EF7F3",
+        "008EF7F6",
+        "008EF7F8",
+        "008EF7FB",
+        "008EF7FD",
+        "008EF800",
+        "008EF802",
+        "008EF804",
+        "008EF805",
+        "008EF80A",
+        "008EF80D",
+        "008EF80F",
+        "008EF812",
+        "008EF813",
+        "008EF816",
+        "008EF819"
+      ],
+      "live_disk_whole_equal": true,
+      "CALLs": 0,
+      "RET_starts": [
+        "008EF804",
+        "008EF812",
+        "008EF819"
+      ]
+    },
+    "installed_PE_frozen_audit_identity": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "014C",
+      "image_base": "00400000"
+    },
+    "Native_new_query_or_revalidation_in_this_packet": false,
+    "readiness_commit": "08c78f9e11a6da10936aa9bfd04cfeffe94d1779",
+    "readiness_family_original": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/local/t9count",
+    "readiness_receipt_SHA256": "54d5c4e3e11f595f4d9eba891a8851aac53bc112e6abdaa41cbd2232e9019afa",
+    "readiness_manifest_SHA256": "ddd2b365dca685b3d7a66900b71df472b6bb10f1f593c144ec5354e5cf45787d",
+    "readiness_frozen_copy": "frozen_readiness",
+    "unchanged_original_and_copied_files": 64
+  },
+  "implementation": {
+    "kind": "MSVC Win32 naked padded fastcall literal whole42 encodings",
+    "Source_literal_hex": "8b410483e809741b83e801741683e801740333c0c3b8abaaaaaaf761248bc2c1e803c38b4124c1e802c3",
+    "Source_literal_SHA256": "e84a191988638f684ec2d81e68f96fae767f4035f8d21a2ae736501afbeb8ce7",
+    "Source_text_exactly_matches_whole_Native": true,
+    "Source_CALL_binding_or_provider_or_fake_global": false,
+    "Native_CALL_count": 0,
+    "expected_machine_relocations": 0,
+    "machine_relocations_observed": false,
+    "compiled_COFF_linked_unique_body_or_caller_gate": "pending primary; not performed"
+  },
+  "physical_ABI": {
+    "ECX": "actual readable record root, preserved",
+    "EDX_formal": "unused incoming DWORD",
+    "stack_arguments": 0,
+    "RET": "three plain RETs at008EF804/008EF812/008EF819, no argument cleanup",
+    "EAX": "unsigned DWORD count",
+    "EDX_after": "unchanged except tag11 retains high32(uint64(byte_size)*AAAAAAAB)",
+    "nonvolatiles": "EBX/ESI/EDI/EBP preserved",
+    "ESP": "normal CALL/RET return-address pair only",
+    "DF_ES": "unchanged; no CLD or segment/string operation",
+    "flags": {
+      "default_XOR": {
+        "defined_mask": "000008C5",
+        "expected": "00000044",
+        "AF": "undefined/excluded"
+      },
+      "tags9_10_SHR2": {
+        "defined_mask": "000000C5",
+        "CF": "byte_size bit1",
+        "PF": "even parity of low8 result",
+        "ZF": "result==0",
+        "SF": 0,
+        "AF_OF": "undefined/excluded"
+      },
+      "tag11_SHR3": {
+        "defined_mask": "000000C5",
+        "CF": "MUL-high DWORD bit2",
+        "PF": "even parity of low8 result",
+        "ZF": "result==0",
+        "SF": 0,
+        "AF_OF": "undefined/excluded"
+      }
+    },
+    "qualification": "Physical facts from sealed complete Native and identical literal Source text. Compiler callers/COFF/linked/runtime remain unverified here."
+  },
+  "read_only_storage_contract": {
+    "always_read": "DWORD[root+0x04,root+0x08): tag",
+    "conditional_read": "DWORD[root+0x24,root+0x28) only for tag9/10/11",
+    "writes": 0,
+    "preconditions": "Accessed fields belong to genuine live readable storage and remain stable through the call; no invented owning class or modeled vector",
+    "not_read": [
+      "phase+00",
+      "DATA+20",
+      "marker+2C",
+      "owner+30",
+      "ordinal+34",
+      "child bytes"
+    ],
+    "heap_dispatch_class_or_lifetime_claim": false
+  },
+  "unsigned_arithmetic": {
+    "tags9_10": "uint32(byte_size)>>2, floor division4, maximum3FFFFFFF",
+    "tag11": "high32(uint64(byte_size)*AAAAAAAB)>>3, exact unsigned division12, maximum15555555",
+    "other_tags": "zero including8, without reading byte_size",
+    "complete_input_domain": "all32-bit unsigned tags/byte sizes subject only to actual readable fields",
+    "no_added_guards": [
+      "positive",
+      "divisible",
+      "signed-negative",
+      "saturation",
+      "overflow"
+    ],
+    "high_bit_examples": [
+      {
+        "B": "80000000",
+        "tag9_10": "20000000",
+        "tag11": "0AAAAAAA"
+      },
+      {
+        "B": "FFFFFFFF",
+        "tag9_10": "3FFFFFFF",
+        "tag11": "15555555"
+      }
+    ],
+    "examples_are": "sealed-body unsigned arithmetic derivations, not runtime observations"
+  },
+  "separate_domains": {
+    "semantic_rule": "bsp::scene_property_array_elements(type,byte_size) is a distinct two-value Source interface, not the physical receiver ABI",
+    "Type9_constructor": "separate008EF360 constructor has positiveN[1,3FFFFFFF],4N readable span and copy/lifetime/provider preconditions",
+    "faithful_clone_round_trip": "Stable tag9 B=4N>0 divisible4 plus independently established storage/copy/lifetime domain; helper itself truncates nonmultiples and accepts unsigned high bits",
+    "marker": "+2C not read and not an ownership discriminator",
+    "class_ownership_private_allocator_EH_whole_clone_publication_game": "not established by this leaf",
+    "existing_qualified_Source_domains_changed": false
+  },
+  "validation": {
+    "completed": [
+      "whole42 Source literal text equality and hash",
+      "four strict Source/style before-after pin checks",
+      "all64 old readiness original/frozen copy equality",
+      "owned-file-only metadata authoring"
+    ],
+    "not_run": [
+      "compiler/build/tests",
+      "COFF/linked/caller/helper machine gates",
+      "providers or runtime fixtures",
+      "Native/Ghidra queries or mutations",
+      "old accepted helper/stage/process"
+    ],
+    "primary_next": "Register and independently gate whole Source/linked/ordinary and raw ABI plus complete helper domain; primary chooses fresh qualification and fullMain integration after Type10/11 Source packet."
+  },
+  "seal": {
+    "family": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_element_count_source/local/cnt42s",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_exclusions": [
+      "receipt.json",
+      "artifact_manifest.json"
+    ],
+    "recursive_inclusion": "all other actual files, including frozen readiness's nested receipt/manifest, Source copies, utilities, logs and any failures"
+  }
+}
