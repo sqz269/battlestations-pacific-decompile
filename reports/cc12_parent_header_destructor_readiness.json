@@ -1,0 +1,523 @@
+{
+  "schema": "bsp.cc12.parent_header_destructor.readiness.v1",
+  "packet": "cc12_parent_header_destructor_readiness",
+  "baseline": "ed883eb85bee605f93d5a6839c4491e5e227b3af",
+  "Source": 0,
+  "registered_ready": 0,
+  "worker_readiness": "qualified connected candidate for Root review; callback alone lacks compatible production raw clear",
+  "current_native": {
+    "wrapper": {
+      "entry": "004C2D30",
+      "exclusive_end": "004C2D35",
+      "bytes": 5,
+      "instructions": 1,
+      "SHA256": "fcd4639035646b9e7bc377f6227d569bf4315202717b7b3298d19d59a6ad1f57",
+      "hex": "e9abcbffff",
+      "disassembly": [
+        {
+          "address": "004C2D30",
+          "bytes": "e9abcbffff",
+          "instruction": "jmp 0x4bf8e0"
+        }
+      ],
+      "CALLs": [],
+      "live_PE_equal": true
+    },
+    "tail": {
+      "entry": "004BF8E0",
+      "exclusive_end": "004BF926",
+      "bytes": 70,
+      "instructions": 29,
+      "SHA256": "d2bcd01aa9aa3c30eae420c969b256957f769149e7e8bc59be5029d2e473c9d3",
+      "hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e8906c730083c404833e0075c45ec3",
+      "disassembly": [
+        {
+          "address": "004BF8E0",
+          "bytes": "56",
+          "instruction": "push esi"
+        },
+        {
+          "address": "004BF8E1",
+          "bytes": "8bf1",
+          "instruction": "mov esi, ecx"
+        },
+        {
+          "address": "004BF8E3",
+          "bytes": "833e00",
+          "instruction": "cmp dword ptr [esi], 0"
+        },
+        {
+          "address": "004BF8E6",
+          "bytes": "743c",
+          "instruction": "je 0x4bf924"
+        },
+        {
+          "address": "004BF8E8",
+          "bytes": "8b4604",
+          "instruction": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "004BF8EB",
+          "bytes": "8b08",
+          "instruction": "mov ecx, dword ptr [eax]"
+        },
+        {
+          "address": "004BF8ED",
+          "bytes": "85c9",
+          "instruction": "test ecx, ecx"
+        },
+        {
+          "address": "004BF8EF",
+          "bytes": "7408",
+          "instruction": "je 0x4bf8f9"
+        },
+        {
+          "address": "004BF8F1",
+          "bytes": "8b5004",
+          "instruction": "mov edx, dword ptr [eax + 4]"
+        },
+        {
+          "address": "004BF8F4",
+          "bytes": "895104",
+          "instruction": "mov dword ptr [ecx + 4], edx"
+        },
+        {
+          "address": "004BF8F7",
+          "bytes": "eb06",
+          "instruction": "jmp 0x4bf8ff"
+        },
+        {
+          "address": "004BF8F9",
+          "bytes": "8b4804",
+          "instruction": "mov ecx, dword ptr [eax + 4]"
+        },
+        {
+          "address": "004BF8FC",
+          "bytes": "894e04",
+          "instruction": "mov dword ptr [esi + 4], ecx"
+        },
+        {
+          "address": "004BF8FF",
+          "bytes": "83780400",
+          "instruction": "cmp dword ptr [eax + 4], 0"
+        },
+        {
+          "address": "004BF903",
+          "bytes": "7409",
+          "instruction": "je 0x4bf90e"
+        },
+        {
+          "address": "004BF905",
+          "bytes": "8b5004",
+          "instruction": "mov edx, dword ptr [eax + 4]"
+        },
+        {
+          "address": "004BF908",
+          "bytes": "8b08",
+          "instruction": "mov ecx, dword ptr [eax]"
+        },
+        {
+          "address": "004BF90A",
+          "bytes": "890a",
+          "instruction": "mov dword ptr [edx], ecx"
+        },
+        {
+          "address": "004BF90C",
+          "bytes": "eb05",
+          "instruction": "jmp 0x4bf913"
+        },
+        {
+          "address": "004BF90E",
+          "bytes": "8b10",
+          "instruction": "mov edx, dword ptr [eax]"
+        },
+        {
+          "address": "004BF910",
+          "bytes": "895608",
+          "instruction": "mov dword ptr [esi + 8], edx"
+        },
+        {
+          "address": "004BF913",
+          "bytes": "8306ff",
+          "instruction": "add dword ptr [esi], -1"
+        },
+        {
+          "address": "004BF916",
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "004BF917",
+          "bytes": "e8906c7300",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "address": "004BF91C",
+          "bytes": "83c404",
+          "instruction": "add esp, 4"
+        },
+        {
+          "address": "004BF91F",
+          "bytes": "833e00",
+          "instruction": "cmp dword ptr [esi], 0"
+        },
+        {
+          "address": "004BF922",
+          "bytes": "75c4",
+          "instruction": "jne 0x4bf8e8"
+        },
+        {
+          "address": "004BF924",
+          "bytes": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "address": "004BF925",
+          "bytes": "c3",
+          "instruction": "ret"
+        }
+      ],
+      "CALLs": [
+        {
+          "address": "004BF917",
+          "opcode_offset": 55,
+          "operand_half_open": [
+            56,
+            60
+          ],
+          "target": "00BF65AC"
+        }
+      ],
+      "live_PE_equal": true
+    },
+    "total_bytes": 75,
+    "total_instructions": 30,
+    "whole_gapless_bookended": true
+  },
+  "physical_ABI": {
+    "receiver": "ECX actual caller-owned writable12-byte header: count+0, head+4, tail+8",
+    "incoming_EDX": "Not read by wrapper/tail; scratch in populated tail, unused padding formal for a future fastcall declaration",
+    "stack": "No stack arguments; wrapper JMP preserves caller return address; tail plain RET at004BF925",
+    "empty_outputs": "If coherent count/head/tail are zero: EAX incoming unchanged, ECX root unchanged, EDX incoming unchanged; no writes/free",
+    "populated_outputs": "EAX/ECX/EDX are volatile after real free; no root/payload/successor return is promised; natural semantic return void",
+    "nonvolatile": "Tail saves/restores ESI; EBX/EDI/EBP not directly modified; ordinary free must preserve nonvolatile GPRs",
+    "ESP": "Let S be callback entry ESP: savedESI S-4, pushed node S-8, free entry S-12, cdecl free return S-8, ADD4 S-4, POPESI S, plain RET S+4",
+    "defined_flags": {
+      "final_instruction": "CMP DWORD [ESI],0, initial empty or terminal post-free count comparison",
+      "mask_hex": "000008D5",
+      "expected_hex": "00000044",
+      "CF": 0,
+      "PF": 1,
+      "AF": 0,
+      "ZF": 1,
+      "SF": 0,
+      "OF": 0
+    },
+    "DF": "No CLD. Empty path preserves incoming DF; complete current-heap operation requires ordinary CRT DF0. No blanket DF/FP contract across free",
+    "no_x87_custom_register_ABI_or_flow_repair": true
+  },
+  "storage_and_disposition": {
+    "full_branches": "All prev/nonprev and next/nonnext relink branches retained; not an empty-only prefix",
+    "iteration": "Reads current count each pass; takes actual current head, rewires neighbors/header, decrements count before free, then reloads current count",
+    "root_writes": [
+      "count DWORD+0 decremented once per node",
+      "head DWORD+4 if node.prev is null",
+      "tail DWORD+8 if node.next is null"
+    ],
+    "node_writes_before_free": [
+      "prev.next DWORD+4 if prev nonnull",
+      "next.prev DWORD+0 if next nonnull"
+    ],
+    "payload": "Node+8 is never read, written, dereferenced, destroyed or separately freed; borrowed external live payload identity remains caller owned",
+    "current_domain_preconditions": [
+      "actual caller-owned12-byte root distinct from every node allocation",
+      "finite coherent doubly-linked list with count matching distinct nodes, head.prev=null and tail.next=null",
+      "each12-byte node is a genuine live current-canonical allocation base produced by accepted Source append",
+      "borrowed live payloads are external and do not alias root or any owned node allocation",
+      "normal DF0 canonical free; no reentrant mutation/concurrent use"
+    ],
+    "normal_result": "Each initial coherent node freed exactly once, without post-free node read; root survives as count/head/tail all zero",
+    "no_original_owner_or_parent_admission": true
+  },
+  "production_dependency": {
+    "same_native_free_identity": {
+      "report": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\frozen\\11_native_unit_list_erase_cc12.json",
+        "size": 52971,
+        "sha256": "6fedd6610f200ec5b9d7e80f5e9724a000fa506e905da0fb9d5dc4b0b1576525"
+      },
+      "native": {
+        "address": "004837D0",
+        "end_exclusive": "0048381F",
+        "whole_bytes": 79,
+        "whole_instructions": 31,
+        "SHA256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+        "CALL_sites": [
+          "004837FA",
+          "00483811"
+        ],
+        "native_free_target": "00BF65AC",
+        "relocated_operand_offsets": [
+          43,
+          66
+        ],
+        "changed_operand_bytes": 8,
+        "unchanged_bytes": 71,
+        "installed_PE": {
+          "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+          "size": 12223752,
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+        },
+        "saved_program_target": {
+          "project": "bsp",
+          "program": "battlestationspacific.exe",
+          "program_path": "/battlestationspacific.exe",
+          "language": "x86:LE:32:default",
+          "image_base": "00400000",
+          "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+          "ghidra_url": "http://127.0.0.1:8089",
+          "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "project_file": "C:/Users/sqz269/bsp.gpr",
+          "coordination_dir": "C:/Users/sqz269/.bsp"
+        },
+        "before_after_erase_and_append_bytes_equal": true
+      },
+      "ABI": {
+        "Source_signature": "void* __fastcall erase_native_unit_list_004837d0(void* actual_list_ecx, void* unused_edx, void* actual_node) noexcept",
+        "entry": "Actual coherent root ECX; unused EDX padding; one actual owned node stack DWORD",
+        "root_offsets": {
+          "count": 0,
+          "head": 4,
+          "tail": 8
+        },
+        "node_offsets": {
+          "previous": 0,
+          "next": 4,
+          "borrowed_payload": 8
+        },
+        "return": "EAX actual pre-free successor or0; RET4; preserve nonvolatile GPRs",
+        "volatile_outputs": [
+          "ECX",
+          "EDX"
+        ],
+        "final_flags": "CF/PF/AF/ZF/SF/OF from final ADD ESP,4 after actual free; never from count decrement",
+        "stack_relation": "Raw caller beforeESP=T; after target CALL/save ESI/push free argument and free return, ESP=T-12; final ADD4 result=T-8; target RET4 returns afterESP=T+4",
+        "no_post_free_node_reads": true,
+        "DF0_entry": true,
+        "blanket_FP_DF_ES_preservation": false,
+        "valid_domain": "Actual coherent live owned node produced by accepted append/current canonical allocation, valid normal canonical free; borrowed root/payload lifetime remains caller owned"
+      },
+      "qualification": "Historical accepted erase binds this same native target only for genuine canonical current append-produced node bases; no Original private heap or R125 virtual-provider binding credit."
+    },
+    "R125_CPP_gap": "Existing clear_native_game_unit_links_004bf8e0(void*, NativeGameContainerLifetimeCalls&, NativeGameContainerLifetimeProgress&) is a three-formal C++ profile/progress interface with virtual free and default operator delete. It does not supply the actual ECX/no-stack/plain-RET raw tail ABI and cannot be bound by the wrapper JMP",
+    "proposed_connected_whole_bodies": [
+      {
+        "entry": "004BF8E0",
+        "declaration": "void __fastcall clear_native_unit_list_004bf8e0(void* actual_list_ecx, std::uint32_t unused_edx) noexcept",
+        "literal_bytes": 70,
+        "sole_qualified_CALL_operand": [
+          56,
+          60
+        ],
+        "unchanged_bytes": 66,
+        "binding": "real bsp::singleton_lifetime_free(void*) noexcept with actual cdecl node stack and normal current-domain heap"
+      },
+      {
+        "entry": "004C2D30",
+        "declaration": "void __fastcall destroy_native_parent_list_header_004c2d30(void* actual_header_ecx, std::uint32_t unused_edx) noexcept",
+        "literal_bytes": 5,
+        "sole_qualified_JMP_operand": [
+          1,
+          5
+        ],
+        "unchanged_bytes": 1,
+        "binding": "actual separately admitted compatible physical Source clear, no shim/provider"
+      }
+    ],
+    "next_prerequisites": [
+      "Root independently review all complete5/70 bytes, physical ABI and conditional current-heap ownership contract, then decide whether to register connected75 or whole70 first",
+      "Implement and independently admit whole raw70 real canonical-free binding; existing R125 C++ credit is insufficient",
+      "Root independent admission of header13 if a future fresh family consumes that producer; its worker family338 remains immutable pending Root",
+      "A separately authorized fresh connected current-domain family must construct actual headers and genuine append nodes and gate whole Source/Original/caller/heap identities before any execution; no current execution here"
+    ]
+  },
+  "named_incomplete_frontiers": [
+    "Original00BF65AC private-heap lifetime",
+    "Original00BF681B allocation compatibility",
+    "whole00BF7CD1 and destructor iteration/exception unwinding",
+    "actual owner004CB030/97 header regions/root+18 and parent+24 lifetime",
+    "owner00C65651 EH and004C3080 sentinel",
+    "subject+30 publication/placement/observers/parent teardown",
+    "class/vtable/deleting destructor/world/game ownership"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "address": "004C2D30",
+        "status": "complete current read-only wrapper, 5 bytes / 1 instruction"
+      },
+      {
+        "address": "004BF8E0",
+        "status": "complete current read-only tail, 70 bytes / 29 instructions"
+      },
+      {
+        "address": "00BF65AC",
+        "status": "Original private free unexpanded; same literal target as accepted current-domain erase"
+      },
+      {
+        "address": "004CB030",
+        "status": "frozen owner126 descriptor witness; original owner/class not admitted"
+      },
+      {
+        "address": "004B7EC0",
+        "status": "frozen complete header13 / worker Source family338; Root admission pending"
+      },
+      {
+        "address": "00BF7CD1",
+        "status": "frozen iterator27 witness; whole iterator/EH not admitted"
+      },
+      {
+        "address": "00484540",
+        "status": "accepted current Source append produces genuine owned12 nodes; no live query here"
+      },
+      {
+        "address": "00BF681B",
+        "status": "Original allocator unexpanded; current append qualifies canonical current allocation only"
+      },
+      {
+        "address": "00C65651",
+        "status": "named frozen owner exception handler, unexpanded"
+      },
+      {
+        "address": "004C3080",
+        "status": "named frozen owner sentinel construction frontier, unexpanded"
+      }
+    ],
+    "edges": [
+      {
+        "from": "004C2D30",
+        "to": "004BF8E0",
+        "kind": "current complete physical tail JMP"
+      },
+      {
+        "from": "004BF8E0",
+        "to": "00BF65AC",
+        "kind": "current sole direct CALL at 004BF917"
+      },
+      {
+        "from": "004CB030",
+        "to": "004C2D30",
+        "kind": "frozen descriptor PUSH at 004CB060; destructor identity"
+      },
+      {
+        "from": "004CB030",
+        "to": "004B7EC0",
+        "kind": "frozen constructor descriptor PUSH at 004CB065"
+      },
+      {
+        "from": "004CB030",
+        "to": "00BF7CD1",
+        "kind": "frozen array initialization call; root+18, stride12, count97"
+      },
+      {
+        "from": "004CB030",
+        "to": "00C65651",
+        "kind": "frozen owner EH boundary"
+      },
+      {
+        "from": "004CB030",
+        "to": "004C3080",
+        "kind": "frozen independent sentinel construction frontier"
+      },
+      {
+        "from": "00484540",
+        "to": "00BF681B",
+        "kind": "historical Original allocation identity; accepted Source uses current canonical boundary"
+      }
+    ],
+    "total_nodes_plus_edges": 18,
+    "cap": 24,
+    "live_native_bodies": 2
+  },
+  "evidence": {
+    "bookend": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\bookend.json",
+      "size": 828,
+      "sha256": "0662bc513a3af8a80f63af8a521c89c41fec16e8f9cfbbf20b99a70106f32627"
+    },
+    "prior_actual_pins": 10190,
+    "Source13worker_actual": 338,
+    "earlier_pins": 9852,
+    "current_inputs": 25,
+    "additional_R125_inputs": 3,
+    "frozen_original_associations": 20,
+    "mutable_dispatch": "frozen generation bytes only, unconsumed context, not a current-main metadata assertion",
+    "failures": [
+      "tail_physical.py assertion26 vs actual listing29 retained; missing final3 rows recovered by new supported page, no repair",
+      "bookend.py syntax parse stopped before phase/query; retained unchanged, new bookend_v2.py only ran actual bookend"
+    ]
+  },
+  "actions": {
+    "Source_writes": 0,
+    "compiles": 0,
+    "fixtures": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "flow_repairs": 0,
+    "old_accepted_phase_replays": 0
+  },
+  "post_only_seal_correction": {
+    "stage": "initial seal final verifier only",
+    "reason": "audit.check compared inventory row containing relative_path with pin(path) containing only path/size/sha256; all216 original artifact file identities independently remain equal",
+    "initial_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\artifact_manifest.json",
+      "size": 67987,
+      "sha256": "76a02f83faec4353a251ee96d68cdaa5e30cc3c56219d7f269522d1d80afed9a"
+    },
+    "initial_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\readiness_receipt.json",
+      "size": 2087,
+      "sha256": "9b2cfb6adecca9db27bb9212b8d508dd9bf524ce1aaea793edf826826735a708"
+    },
+    "initial_seal_helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\seal.py",
+      "size": 2639,
+      "sha256": "fbc32b7c1ec31d5f1566d927e4327deccea788752b8f084ff2ab2b26f5da6acc"
+    },
+    "initial_unexecuted_report_helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\write_report.py",
+      "size": 7322,
+      "sha256": "68cf951fde26f19e1702a760b9c5a43286bfd36dc9777270cffc27c61cbb35b6"
+    },
+    "listed": 216,
+    "initial_actual": 218,
+    "exact_path_exclusion_correction": [
+      "readiness_receipt_final.json",
+      "artifact_manifest_final.json"
+    ],
+    "retains_original_seals_as_final_inventory_artifacts": true,
+    "queries_replayed": 0,
+    "native_runs": 0
+  },
+  "immutable_handoff": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\readiness_receipt_final.json",
+      "size": 3887,
+      "sha256": "265a0a3e4f7b08f4ad69972bedf88c473aef1e98e2cdd694ed2293f50cec58cb"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\artifact_manifest_final.json",
+      "size": 70404,
+      "sha256": "11f95ac16f4c348115d9e4645573fe8381da5126b509105940e3c7d54033b86d"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_readiness\\local\\hd12\\proposal.json",
+      "size": 17478,
+      "sha256": "d353419daa08e99d526f446be10f8107699ebc7bac03b7a4bc05bac8f71f5531"
+    },
+    "listed": 222,
+    "actual": 224,
+    "exact_inventory_verified": true
+  }
+}
