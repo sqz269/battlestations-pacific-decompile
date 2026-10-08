@@ -205,6 +205,6 @@ bindings were decoded against frozen physical DLLs; this is recorded binding
 evidence, not a new live-provider attestation.
 
 The current Main build at `882064808e466755abd99639a3c1d0fe3577a10f` passed
-Win32 compilation and all three existing checks with its 4,036 actual Source,
+Win32 compilation and all three existing checks with its 4,037 actual Source,
 header and CMake inputs unchanged during the build. That context is a historical
 build snapshot. Startup, gameplay and binary drop-in ABI remain unvalidated.
