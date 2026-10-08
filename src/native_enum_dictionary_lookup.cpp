@@ -52,6 +52,23 @@ const void* find_node(const void* receiver, const NativeString& key,
 }
 } // namespace
 
+std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,
+    const char* actual_empty_00e177e4) {
+    const char* data = load<const char*>(actual_key_header, 4);
+    std::uint32_t hash = load<std::uint32_t>(actual_key_header, 0);
+    const std::uint32_t step = (hash | 0x20u) >> 5;
+    std::uint32_t remaining = hash;
+    if (!data) data = actual_empty_00e177e4;
+    while (remaining >= step) {
+        const auto character = static_cast<unsigned char>(
+            std::toupper(static_cast<signed char>(*data)));
+        hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
+        remaining -= step;
+        ++data;
+    }
+    return hash & 0x3fu;
+}
+
 std::uint32_t native_enum_symbol_bucket_004895b0(const NativeString& key,
     const char* empty) {
     return bucket_for(key, empty);

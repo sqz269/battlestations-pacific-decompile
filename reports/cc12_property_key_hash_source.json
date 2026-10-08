@@ -1,0 +1,300 @@
+{
+  "packet": "cc12_property_key_hash_source",
+  "status": "WHOLE_ORDINARY_RAW_SOURCE_BUILT_3_CTESTS_PASSED_FRESH_13_CASE_ORIGINAL_SOURCE_MATCHED_ASCII_C_LOCALE",
+  "owned_addresses": [
+    "0043B760"
+  ],
+  "Source": {
+    "function": "native_property_key_bucket_0043b760",
+    "interface": "std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,const char* actual_empty_00e177e4);",
+    "files": [
+      "include/bsp/native_enum_dictionary_lookup.hpp",
+      "src/native_enum_dictionary_lookup.cpp"
+    ],
+    "existing_registered_module": true,
+    "CMake_changes": 0,
+    "existing_enum_helper_and_routine_text_preserved": true,
+    "no_enum_address_delegation_or_refactor": true,
+    "read_order": "Actualheader dataPointer+4 THEN lengthDWORD+0, onceeach",
+    "complete_schedule": [
+      "hash=remaining=length; step=(length|20h)>>5",
+      "Null data selects explicitpropertyfallbackrole",
+      "Unsignedremaining>=step: signedbyte->genuinestd::toupper->low8",
+      "DWORDhashXOR(low8+(hash<<5)+(hash>>2)); remaining-=step; cursor+=1",
+      "Returnhash&3Fh"
+    ],
+    "allocation_or_release": false,
+    "ownership": "Borrowed actual8h header/data; integerresult",
+    "manufactured_guard_global_table_or_storage": false,
+    "whole_domain": "Stable validactualWin32headers, closedNUL-freeASCIIbuffers withmatchinglengths, null data onlyempty, stablecurrentCRT C locale",
+    "empty": "Selectfallbackbutdereferencenothing; return0; noCRTcall",
+    "long": "Consecutiveprefixreads floor(length/step); length64 samples21bytes andcursoradvances1"
+  },
+  "native_evidence": {
+    "entry": "0043B760",
+    "inclusive_end": "0043B7B8",
+    "exclusive_end": "0043B7B9",
+    "bytes": 89,
+    "instructions": 39,
+    "direct_calls": 1,
+    "indirect_calls": 0,
+    "gaps": 0,
+    "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f",
+    "installed_PE_file_offset": 243552,
+    "section": ".text",
+    "live_installed_equal": true,
+    "physical_ABI": "One actual8h headerpointer onstack, EAXbucket, RET4; savesEBX/EBP/ESI/EDI; no incomingECX/EDXinput",
+    "Source_is_Original_ABI": false,
+    "read_only_project": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe; verifiedwrapper/client batches; no savedanalysiswrite"
+  },
+  "host_steps": [
+    {
+      "address": "0043B789",
+      "native": "00BF924E",
+      "function": "0043B760",
+      "binding": "SignedbytePUSH; genuineOriginal_toupper; callerADDESP4; low8 return"
+    },
+    {
+      "address": "0043B8BA",
+      "native": "0043B760",
+      "function": "0043B8B0",
+      "binding": "ActualqueryPUSH; ECXmapignored; physicalRET4; callerpublishesbucket"
+    }
+  ],
+  "production_COFF": {
+    "object": "build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+    "symbol": "?native_property_key_bucket_0043b760@bsp@@YAIPBXPBD@Z",
+    "machine": "I386",
+    "bytes": 92,
+    "instructions": 41,
+    "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a",
+    "genuine_CRT_relocation": "__imp__toupper",
+    "complete_disassembly_inspected": true,
+    "independent_body_equals_current_helper_code": true,
+    "equals_Original_machine_body_or_ABI": false,
+    "receipt": "local/cc12_property_key_hash_source/production_coff_evidence.json"
+  },
+  "build_checks": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "success": true,
+    "existing_CTests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS",
+      "tool_tests": "PASS"
+    },
+    "CTest_passed": 3,
+    "CTest_failed": 0,
+    "new_tracked_tests": 0,
+    "seed_verification": "Existing originalmath seedsverifiedthroughClient.verify; outputisolatedlocal and local/seed_reference.hpp generated; no sharedexportwrite",
+    "log": "local/cc12_property_key_hash_source/build_and_ctest.log"
+  },
+  "fresh_bounded_comparison": {
+    "family": "Propertyhashonly; oldenumfamilynotreplayed",
+    "matched": 13,
+    "failed": 0,
+    "Source_entry_executed": true,
+    "Original_body_executed": true,
+    "cases": "empty,a,A,mixed-case16bytepair,31/32/63bytekeys,variedASCII64/96/127/128/255bytekeys",
+    "actual_Source_input_producer": "Realcurrent00BD1480 rawpoolconstruction +0041E870 actual8h header/buffer constructor via NativeStringRawPoolContext; checkedactualheaderlength/data andreturnedbufferswith0041DD20",
+    "manufactured_map_semantic_bag_or_string_storage": false,
+    "Source_uppercase_allocation_callee_hooks": 0,
+    "original_code": "Complete89Bhash+genuine39BOriginal_toupper, exactapprovedinstalledbytes; no replacementcallee",
+    "common_original_code_delta": "30000000",
+    "relative_direct_call_preserved": true,
+    "absolute_native_DATA_relocated": false,
+    "mapping": "Privateprobechecksfull64Kspansfreebeforereserving; doesnotoverwriteoccupiedmemory; initial00E177E4/0109DE1Ccells",
+    "original_locale": "Initialzero0109DE1C checkedbefore/after, notlivegamecapture; nonzero__toupper_lunbound/unexecuted",
+    "Source_locale": "GenuinecurrentCRT C locale established andstable",
+    "probe_PE": "I386 imagebase20000000; realtoupperimportapi-ms-win-crt-string-l1-1-0.dll; embeddedmanifestverified",
+    "qualification_limit": "BoundedvalidASCII/zero-localeOriginalnormalgraph; no generalOriginalABI/class/factory/map/gameclaim",
+    "outcomes": "local/cc12_property_key_hash_source/probe_outcomes.txt",
+    "observed_outcomes": [
+      "mapping 30430000 previously_free=1 size=65536",
+      "mapping 30bf0000 previously_free=1 size=65536",
+      "mapping 00e10000 previously_free=1 size=65536",
+      "mapping 01090000 previously_free=1 size=65536",
+      "case 0 length=0 header=001AFDD4 buffer=00000000 producer=0041E870 native=0 source=0 match=1",
+      "case 1 length=1 header=001AFDD4 buffer=010A0008 producer=0041E870 native=32 source=32 match=1",
+      "case 2 length=1 header=001AFDD4 buffer=010A0008 producer=0041E870 native=32 source=32 match=1",
+      "case 3 length=16 header=001AFDD4 buffer=010A000A producer=0041E870 native=54 source=54 match=1",
+      "case 4 length=16 header=001AFDD4 buffer=010A000A producer=0041E870 native=54 source=54 match=1",
+      "case 5 length=31 header=001AFDD4 buffer=010A001B producer=0041E870 native=11 source=11 match=1",
+      "case 6 length=32 header=001AFDD4 buffer=010A003B producer=0041E870 native=27 source=27 match=1",
+      "case 7 length=63 header=001AFDD4 buffer=010A005C producer=0041E870 native=14 source=14 match=1",
+      "case 8 length=64 header=001AFDD4 buffer=010A009C producer=0041E870 native=5 source=5 match=1",
+      "case 9 length=96 header=001AFDD4 buffer=010A00DD producer=0041E870 native=6 source=6 match=1",
+      "case 10 length=127 header=001AFDD4 buffer=010A013E producer=0041E870 native=59 source=59 match=1",
+      "case 11 length=128 header=001AFDD4 buffer=010A01BE producer=0041E870 native=63 source=63 match=1",
+      "case 12 length=255 header=001AFDD4 buffer=00745630 producer=0041E870 native=15 source=15 match=1",
+      "matched=13 full_original_hash_bytes=89 genuine_original_crt_bytes=39 source_hooks=0 locale=C original_locale=initial_zero"
+    ]
+  },
+  "input_integrity": {
+    "selected_consumed_inputs": 22,
+    "all_pre_link_post_run_equal": true,
+    "pre_link": "local/cc12_property_key_hash_source/inputs_pre_link.json",
+    "post_run": "local/cc12_property_key_hash_source/inputs_post_run.json",
+    "actual_compiler_read_and_include_records": "local/cc12_property_key_hash_source/actual_compiler_include_inputs.json",
+    "compiler_record_pins": 461,
+    "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installation_unchanged": true
+  },
+  "limits": [
+    "NonASCII/otherchanginglocale",
+    "Invalidinput/null-nonempty/concurrentmutation/reentry",
+    "NativeSEH/faultidentity",
+    "Originalstdcall/dropinbinaryABI",
+    "Genuinepropertyfallbackpublicationforlookupcomparison",
+    "Wholelookup/populatedmapproduction/insertion",
+    "Recordreplacementprofile/lifetime/recursivedestruction",
+    "Class/EH/factory/world/startup/gameplay"
+  ],
+  "shared_writes": {
+    "CMake": 0,
+    "config": 0,
+    "ledger": 0,
+    "Ghidra": 0,
+    "exports": 0
+  },
+  "evidence_root": "local/cc12_property_key_hash_source",
+  "evidence": {
+    "artifact_manifest": "local/cc12_property_key_hash_source/artifact_manifest.json",
+    "artifact_manifest_sha256": "c829177fea23a54673a7919ce5ca38ca4471e5a621d0e413e646e914e030ac87",
+    "artifact_count": 31
+  },
+  "UTC": "2026-10-08T08:14:21.141166+00:00",
+  "worker_baseline": "7e76bf5aed617e87074af50c8074a0f6c32b403f",
+  "main_at_pre_link": "ca22b90d3c004ca6f54e25483e66e4329d77651b",
+  "selected_consumed_input_pins": [
+    {
+      "path": "src/native_enum_dictionary_lookup.cpp",
+      "bytes": 3557,
+      "sha256": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad"
+    },
+    {
+      "path": "include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 2723,
+      "sha256": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 195762,
+      "sha256": "b12c2902e5fefbb997093e9f8408a246fcacce8456b1f96b5822aa8014e027e0"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 15689,
+      "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+      "bytes": 4993,
+      "sha256": "23c6930847c6c2b5855c8f07a3b64883283659cd173f18355fb7582193e0b21a"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 73533588,
+      "sha256": "236d24d7884feec90f3bf5345d70686bb76702f5da1bbd30eff458e381b990ba"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455456,
+      "sha256": "2c02889bd7cb2b36902d435336d13a11899bb7ee1a43ae694c0c77f440337825"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 71978,
+      "sha256": "aa53e992429af231ad1e7bb2266a978faac9dd53fb7e2f537c4539be89ed8148"
+    },
+    {
+      "path": "local/cc12_property_key_hash_source/probe.cpp",
+      "bytes": 5650,
+      "sha256": "d41c30780bd6ef0652e9bb5ccceb06be4bbfa6a645c4a00afd01c9637a5575d5"
+    },
+    {
+      "path": "local/cc12_property_key_hash_source/native_bytes.hpp",
+      "bytes": 763,
+      "sha256": "2c09e4cf96e19d8c6c544b08c267b75b7ba36fcc512120ae792e593405214191"
+    },
+    {
+      "path": "local/cc12_property_key_hash_source/build_probe.cmd",
+      "bytes": 794,
+      "sha256": "e9f81d76c11ceedfb30d8f526bfc01e9aed81b99e6e742a655ad99d9dd7c4280"
+    },
+    {
+      "path": "local/cc12_property_key_hash_source/original_hash.bin",
+      "bytes": 89,
+      "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f"
+    },
+    {
+      "path": "local/cc12_property_key_hash_source/original_toupper.bin",
+      "bytes": 39,
+      "sha256": "3158c03a0ab276bb10aad57b86e81c495f0343f5f9feb34720cab39390b07d20"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    }
+  ],
+  "probe_PE": {
+    "machine": "0x14c",
+    "image_base": "0x20000000",
+    "probe_sha256": "4dc7f5e395dc5204eff985ca5dc234112cb752ab024c7c12693d92a591faf4b2",
+    "real_toupper_import": [
+      {
+        "DLL": "api-ms-win-crt-string-l1-1-0.dll",
+        "name": "toupper"
+      }
+    ],
+    "embedded_manifest": true
+  },
+  "verification": {
+    "direct_call_rows_checked": 2,
+    "direct_call_failures": 0,
+    "enum_text_removal_reproduces_baseline_exactly": true,
+    "all22_selected_inputs_pre_post_identical": true
+  }
+}
