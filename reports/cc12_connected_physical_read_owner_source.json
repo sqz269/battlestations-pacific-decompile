@@ -1,6 +1,6 @@
 {
   "packet": "cc12_connected_physical_read_owner_source",
-  "status": "implemented_build_tested_one_genuine_Source_read_passed_pending_primary_review",
+  "status": "PRIMARY_ACCEPTED_BUILD_AND_ONE_INTEGRATOR_GENUINE_SOURCE_READ_CLEANUP_QUALIFIED",
   "generated_utc": "2026-10-08T18:56:48.288719+00:00",
   "baseline_commit": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
   "address": "00BF5030",
@@ -548,5 +548,60 @@
   "Original_function_credit": 0,
   "new_tests": 0,
   "new_targets": 0,
-  "worker_diagnostic_executions": 1
+  "worker_diagnostic_executions": 1,
+  "primary_review": {
+    "status": "PRIMARY_ACCEPTED_ONE_GENUINE_INTEGRATOR_SOURCE_READ_AND_CLEANUP",
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_review\\static_gate.json",
+      "bytes": 5179357,
+      "sha256": "e0930e7e49b41dd4f6ef3066f04f338c26d42d919bc6b0f26c6d19d7be91cd7b"
+    },
+    "execution_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_review\\diagnostic01\\execution_receipt.json",
+      "bytes": 3350,
+      "sha256": "ab4116ac7bfe0ef00afcc08cb33e06af56b0a4164e0ae4d27aabe53d0491dab9"
+    },
+    "runtime_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_review\\audit01\\runtime_audit.json",
+      "bytes": 23915,
+      "sha256": "294063b8e91c8b96b11a6cfcefa81cd8db8dadd22041fe19b8e1b19ed2943081"
+    },
+    "precompile_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_review\\before_build.json",
+      "bytes": 2582519,
+      "sha256": "8c5a4683d2b1592c7a25236c4c619f44d331598d21013c6cd37b68cc138e7c89"
+    },
+    "normal_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_build.txt",
+      "bytes": 188061503,
+      "sha256": "be89fd3baf061864d273fdb2236e5c7c87f92795ed3c5cc5ec9c643458815c4a"
+    },
+    "worker_frozen_rows_rehashed": 22573,
+    "current_prefrozen_physical_inputs": 4494,
+    "actual_selected_compiler_inputs": 913,
+    "current_whole_objects": 43,
+    "current_complete_extents": 5096,
+    "current_unique_Core_members": 39,
+    "whole_current_linked_bodies": 124,
+    "ordered_current_relocations": 1345,
+    "all_124_body_gate_finished_before_integrator_run": true,
+    "worker_run_timing": "Preserved original75body-plus45provider pre-run gate; complete124body worker extension occurred after worker run.",
+    "worker_historic_executions": 1,
+    "integrator_current_executions": 1,
+    "total_diagnostic_parent_executions": 2,
+    "retries": 0,
+    "installed_PE_unchanged": true,
+    "one_current_64_byte_read": true,
+    "current_reference_zero_release_and_pool_reacquisition": true,
+    "current_shared_drain_and_retired_borrow_rejection": true,
+    "new_Original_function_credit": 0,
+    "raw_ABI_admitted": false,
+    "startup_or_gameplay": false,
+    "source_changes_after_current_build_or_run": 0,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_connected_physical_read_owner_source_primary_review\\receipt.json",
+      "bytes": 2602,
+      "sha256": "5d48e91f26c04e3e271439cd0eff156400a1be75f6ccea2299d0a4159900eb17"
+    }
+  }
 }
