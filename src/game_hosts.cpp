@@ -639,6 +639,8 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             hardware_probe_commit = true;
         } else if (std::strcmp(argument, "--qualify-vfs-failure-owner") == 0) {
             qualify_vfs_failure_owner = true;
+        } else if (std::strcmp(argument, "--qualify-vfs-physical-read-owner") == 0) {
+            qualify_vfs_physical_read_owner = true;
         } else if (std::strcmp(argument, "--instance-tag") == 0) {
             if (index + 1 >= argc) {
                 error = "--instance-tag needs a tag";
@@ -710,6 +712,10 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
         }
     }
     // BSP_PRESENT_INTERVAL, the same words, only when the option was not given.
+    if (qualify_vfs_failure_owner && qualify_vfs_physical_read_owner) {
+        error = "select only one VFS owner diagnostic";
+        return false;
+    }
     if (!present_interval_from_option) {
         char* text = nullptr;
         std::size_t length = 0;
