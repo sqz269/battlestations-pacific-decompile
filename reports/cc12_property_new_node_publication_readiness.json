@@ -1,0 +1,2937 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_new_node_publication_readiness",
+  "UTC": "2026-10-08T11:13:05.387600+00:00",
+  "status": "SOURCE_READY_DISTINCT_PARTIAL_FRAGMENT_ON_EXISTING_NORMAL_ADMISSION; ROOT_ACCEPTANCE_REQUIRED_BEFORE_SOURCE_WORK",
+  "owned_addresses": [
+    "008F28F0",
+    "008F33F0"
+  ],
+  "owned_files": [
+    "docs/CC12_PROPERTY_NEW_NODE_PUBLICATION_READINESS.md",
+    "reports/cc12_property_new_node_publication_readiness.json"
+  ],
+  "worker_and_main_baseline": {
+    "worker_HEAD": "3b94c74d29082442e3a240c4ac4f03e81f020374",
+    "current_main_HEAD": "920f067ca7897e06f0d57b96bc50d49f03eab20f"
+  },
+  "project_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "method": "bsp.py ghidra proto/bytes wraps Client.verify before every read-only query; installed PE/live bytes rechecked, no mutation."
+  },
+  "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "whole_native_bodies_reused_rehashed": [
+    {
+      "entry": "008F33F0",
+      "bytes": 155,
+      "instructions": 46,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc",
+      "PE_file_offset": 5190640,
+      "live_saved_installed_PE_equal": true,
+      "complete_listing": [
+        "008F33F0: push -1",
+        "008F33F2: push 0xca4908",
+        "008F33F7: mov eax, dword ptr fs:[0]",
+        "008F33FD: push eax",
+        "008F33FE: mov dword ptr fs:[0], esp",
+        "008F3405: sub esp, 8",
+        "008F3408: mov eax, dword ptr [esp + 0x18]",
+        "008F340C: push esi",
+        "008F340D: push edi",
+        "008F340E: mov esi, ecx",
+        "008F3410: push eax",
+        "008F3411: lea ecx, [esp + 0xc]",
+        "008F3415: call 0x41e870",
+        "008F341A: mov edi, dword ptr [esp + 0x24]",
+        "008F341E: push edi",
+        "008F341F: lea ecx, [esp + 0xc]",
+        "008F3423: push ecx",
+        "008F3424: lea ecx, [esi + 4]",
+        "008F3427: mov dword ptr [esp + 0x20], 0",
+        "008F342F: call 0x8f28f0",
+        "008F3434: mov eax, dword ptr [esp + 0xc]",
+        "008F3438: test eax, eax",
+        "008F343A: mov dword ptr [esp + 0x18], 0xffffffff",
+        "008F3442: je 0x8f345b",
+        "008F3444: mov edx, dword ptr [esp + 8]",
+        "008F3448: push 1",
+        "008F344A: add edx, 1",
+        "008F344D: push edx",
+        "008F344E: push eax",
+        "008F344F: call 0x419cc0",
+        "008F3454: mov ecx, eax",
+        "008F3456: call 0xbd1510",
+        "008F345B: cmp dword ptr [edi + 0x34], 0",
+        "008F345F: mov dword ptr [edi + 0x30], esi",
+        "008F3462: jne 0x8f3476",
+        "008F3464: mov eax, dword ptr [esi + 0x10c]",
+        "008F346A: lea ecx, [eax + 1]",
+        "008F346D: mov dword ptr [esi + 0x10c], ecx",
+        "008F3473: mov dword ptr [edi + 0x34], eax",
+        "008F3476: mov ecx, dword ptr [esp + 0x10]",
+        "008F347A: pop edi",
+        "008F347B: mov eax, esi",
+        "008F347D: pop esi",
+        "008F347E: mov dword ptr fs:[0], ecx",
+        "008F3485: add esp, 0x14",
+        "008F3488: ret 8"
+      ]
+    },
+    {
+      "entry": "008F28F0",
+      "bytes": 172,
+      "instructions": 65,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878",
+      "PE_file_offset": 5187824,
+      "live_saved_installed_PE_equal": true,
+      "complete_listing": [
+        "008F28F0: push ebx",
+        "008F28F1: mov ebx, dword ptr [esp + 8]",
+        "008F28F5: push esi",
+        "008F28F6: push edi",
+        "008F28F7: lea eax, [esp + 0x10]",
+        "008F28FB: push eax",
+        "008F28FC: push ebx",
+        "008F28FD: mov edi, ecx",
+        "008F28FF: call 0x43b8b0",
+        "008F2904: mov esi, eax",
+        "008F2906: test esi, esi",
+        "008F2908: je 0x8f2930",
+        "008F290A: mov ecx, dword ptr [esi + 8]",
+        "008F290D: test ecx, ecx",
+        "008F290F: je 0x8f2920",
+        "008F2911: mov edx, dword ptr [ecx]",
+        "008F2913: mov eax, dword ptr [edx]",
+        "008F2915: push 1",
+        "008F2917: call eax",
+        "008F2919: mov dword ptr [esi + 8], 0",
+        "008F2920: mov ecx, dword ptr [esp + 0x14]",
+        "008F2924: mov dword ptr [esi + 8], ecx",
+        "008F2927: mov eax, dword ptr [edi + 4]",
+        "008F292A: pop edi",
+        "008F292B: pop esi",
+        "008F292C: pop ebx",
+        "008F292D: ret 8",
+        "008F2930: mov ecx, 0xe175b0",
+        "008F2935: call 0x4e7c00",
+        "008F293A: test eax, eax",
+        "008F293C: je 0x8f294f",
+        "008F293E: mov dword ptr [eax], 0",
+        "008F2944: mov dword ptr [eax + 4], 0",
+        "008F294B: mov esi, eax",
+        "008F294D: jmp 0x8f2951",
+        "008F294F: xor esi, esi",
+        "008F2951: cmp esi, ebx",
+        "008F2953: je 0x8f2979",
+        "008F2955: mov edx, dword ptr [ebx]",
+        "008F2957: push 1",
+        "008F2959: push edx",
+        "008F295A: mov ecx, esi",
+        "008F295C: call 0x41dd40",
+        "008F2961: cmp dword ptr [ebx], 0",
+        "008F2964: je 0x8f2979",
+        "008F2966: mov eax, dword ptr [esi]",
+        "008F2968: mov ecx, dword ptr [ebx + 4]",
+        "008F296B: mov edx, dword ptr [esi + 4]",
+        "008F296E: push eax",
+        "008F296F: push ecx",
+        "008F2970: push edx",
+        "008F2971: call 0xbf7680",
+        "008F2976: add esp, 0xc",
+        "008F2979: mov eax, dword ptr [esp + 0x14]",
+        "008F297D: mov dword ptr [esi + 8], eax",
+        "008F2980: mov eax, dword ptr [esp + 0x10]",
+        "008F2984: mov ecx, dword ptr [edi + eax*4 + 8]",
+        "008F2988: mov dword ptr [esi + 0xc], ecx",
+        "008F298B: mov dword ptr [edi + eax*4 + 8], esi",
+        "008F298F: add dword ptr [edi + 4], 1",
+        "008F2993: mov eax, dword ptr [edi + 4]",
+        "008F2996: pop edi",
+        "008F2997: pop esi",
+        "008F2998: pop ebx",
+        "008F2999: ret 8"
+      ],
+      "actual_miss_fragment": {
+        "start": "008F2930",
+        "end_exclusive": "008F299C",
+        "bytes": 108,
+        "instructions": 38,
+        "sha256": "5b19bd880704f050dcd2db183fa9cbd68baf265eab0e4e573e45ea728bf3a2e9",
+        "entry_control_flow": "Whole predecessor 008F2908 JZ008F2930 after returned lookup node is tested zero; no arbitrary happy-path truncation.",
+        "complete_listing": [
+          "008F2930: mov ecx, 0xe175b0",
+          "008F2935: call 0x4e7c00",
+          "008F293A: test eax, eax",
+          "008F293C: je 0x8f294f",
+          "008F293E: mov dword ptr [eax], 0",
+          "008F2944: mov dword ptr [eax + 4], 0",
+          "008F294B: mov esi, eax",
+          "008F294D: jmp 0x8f2951",
+          "008F294F: xor esi, esi",
+          "008F2951: cmp esi, ebx",
+          "008F2953: je 0x8f2979",
+          "008F2955: mov edx, dword ptr [ebx]",
+          "008F2957: push 1",
+          "008F2959: push edx",
+          "008F295A: mov ecx, esi",
+          "008F295C: call 0x41dd40",
+          "008F2961: cmp dword ptr [ebx], 0",
+          "008F2964: je 0x8f2979",
+          "008F2966: mov eax, dword ptr [esi]",
+          "008F2968: mov ecx, dword ptr [ebx + 4]",
+          "008F296B: mov edx, dword ptr [esi + 4]",
+          "008F296E: push eax",
+          "008F296F: push ecx",
+          "008F2970: push edx",
+          "008F2971: call 0xbf7680",
+          "008F2976: add esp, 0xc",
+          "008F2979: mov eax, dword ptr [esp + 0x14]",
+          "008F297D: mov dword ptr [esi + 8], eax",
+          "008F2980: mov eax, dword ptr [esp + 0x10]",
+          "008F2984: mov ecx, dword ptr [edi + eax*4 + 8]",
+          "008F2988: mov dword ptr [esi + 0xc], ecx",
+          "008F298B: mov dword ptr [edi + eax*4 + 8], esi",
+          "008F298F: add dword ptr [edi + 4], 1",
+          "008F2993: mov eax, dword ptr [edi + 4]",
+          "008F2996: pop edi",
+          "008F2997: pop esi",
+          "008F2998: pop ebx",
+          "008F2999: ret 8"
+        ]
+      }
+    }
+  ],
+  "actual_fragment_boundary": {
+    "start": "008F2930",
+    "end_exclusive": "008F299C",
+    "bytes": 108,
+    "instructions": 38,
+    "sha256": "5b19bd880704f050dcd2db183fa9cbd68baf265eab0e4e573e45ea728bf3a2e9",
+    "entry_control_flow": "Whole predecessor 008F2908 JZ008F2930 after returned lookup node is tested zero; no arbitrary happy-path truncation.",
+    "complete_listing": [
+      "008F2930: mov ecx, 0xe175b0",
+      "008F2935: call 0x4e7c00",
+      "008F293A: test eax, eax",
+      "008F293C: je 0x8f294f",
+      "008F293E: mov dword ptr [eax], 0",
+      "008F2944: mov dword ptr [eax + 4], 0",
+      "008F294B: mov esi, eax",
+      "008F294D: jmp 0x8f2951",
+      "008F294F: xor esi, esi",
+      "008F2951: cmp esi, ebx",
+      "008F2953: je 0x8f2979",
+      "008F2955: mov edx, dword ptr [ebx]",
+      "008F2957: push 1",
+      "008F2959: push edx",
+      "008F295A: mov ecx, esi",
+      "008F295C: call 0x41dd40",
+      "008F2961: cmp dword ptr [ebx], 0",
+      "008F2964: je 0x8f2979",
+      "008F2966: mov eax, dword ptr [esi]",
+      "008F2968: mov ecx, dword ptr [ebx + 4]",
+      "008F296B: mov edx, dword ptr [esi + 4]",
+      "008F296E: push eax",
+      "008F296F: push ecx",
+      "008F2970: push edx",
+      "008F2971: call 0xbf7680",
+      "008F2976: add esp, 0xc",
+      "008F2979: mov eax, dword ptr [esp + 0x14]",
+      "008F297D: mov dword ptr [esi + 8], eax",
+      "008F2980: mov eax, dword ptr [esp + 0x10]",
+      "008F2984: mov ecx, dword ptr [edi + eax*4 + 8]",
+      "008F2988: mov dword ptr [esi + 0xc], ecx",
+      "008F298B: mov dword ptr [edi + eax*4 + 8], esi",
+      "008F298F: add dword ptr [edi + 4], 1",
+      "008F2993: mov eax, dword ptr [edi + 4]",
+      "008F2996: pop edi",
+      "008F2997: pop esi",
+      "008F2998: pop ebx",
+      "008F2999: ret 8"
+    ]
+  },
+  "whole_original_ABI": "ECX actual108h embeddedmap; stackactual8hqueryheader,incomingmappedrecordDWORD; EAXcurrentcount; RET8; EBX/ESI/EDI preserved; ECX/EDX/flags volatile; noSEHprologue here.",
+  "predecessor_and_actual_schedule": [
+    {
+      "address": "008F2908",
+      "operation": "Actual branch selection",
+      "contract": "008F28FF calls whole lookup with captured queryEBX and outbucket address in reused first parameter stack cell; TESTESI at2906/JZ2930 at2908 selects only actual returned-node==NULL. ECX map was savedEDI. Incoming mapped word remains [ESP+14], real bucket is [ESP+10]; query header itself is not overwritten."
+    },
+    {
+      "address": "008F2930",
+      "operation": "Same-role pool allocation",
+      "contract": "SetECX=actualE175B0, CALLwhole004E7C00 at2935; no input stack words. Same actual initialized38h owner and canonicalE188B4domain/binding; unique actual14h slot preserves allocator+10 page identity."
+    },
+    {
+      "address": "008F293A",
+      "operation": "Allocation result/header initialization",
+      "contract": "Test returnedEAX; nonnull zero only keyheader+0/+4 at293E/2944 and ESI=EAX. Null selects ESINULL at294F. Never clear allocator+10 or manufacture an owning key/header/profile. Do not add an allocation guard, cleanup or rollback."
+    },
+    {
+      "address": "008F2951",
+      "operation": "Self-header gate",
+      "contract": "Compare newnodeESI against actualqueryEBX; equal skips resize/copy to2979. Valid live preexisting query and unique freshly allocated slot are disjoint under admitted producer domain; preserve this actual gate in proposed Source."
+    },
+    {
+      "address": "008F2955",
+      "operation": "Owning key storage",
+      "contract": "Load current query length; PUSH1/PUSHlength; ECXactualnodeheader; CALL0041DD40 at295C, originalRET8. Use current concrete NativeStringRawPoolContext overload, not NativeStringStorage semantic adapter or BE0A30 semantic copy fragment. Fresh node starts length0/dataNULL; empty staysNULL, nonempty allocates true len+1 storage, writes current nodeheader and terminator."
+    },
+    {
+      "address": "008F2961",
+      "operation": "Actual key bytes",
+      "contract": "Reload current query length and skip copy when0. Otherwise load CURRENT node length at2966, CURRENT querydata at2968 and CURRENT nodedata at296B; PUSH count/source/destination; CALLBF7680 at2971, ADDESP0C at2976. Copy exactly destinationlength bytes via genuine current memmove; terminator already came from resize. Do not copy length+1 or bind node data to borrowed query buffer."
+    },
+    {
+      "address": "008F2979",
+      "operation": "Mapped-word publication",
+      "contract": "Reload actual incoming opaque mappedrecordDWORD [ESP+14] and store node+8 at297D. No record allocation, record-field/profile/read/dereference, destructor, null guard, owner stamp or ordinal stamp in fragment. Publication is not proof of record ownership/class/factory/lifetime."
+    },
+    {
+      "address": "008F2980",
+      "operation": "Node link before head",
+      "contract": "Reload genuine lookup bucket [ESP+10]; read CURRENT map+8+4*bucket at2984, set newnode+C=oldactualhead at2988, then publish maphead=newnode at298B. Do not snapshot head before allocation/copy. No concurrent mutation/reentry is admitted."
+    },
+    {
+      "address": "008F298F",
+      "operation": "Count and result",
+      "contract": "ADD map+4,1 in DWORD arithmetic only after head publication; reload CURRENT count at2993. Pop savedEDI/ESI/EBX and RET8 at2999 in Original. Proposed ordinary Source fragment returns uint32 currentcount, not node/bag or insertion-success boolean."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008F3415",
+      "native": "0041E870",
+      "function": "008F33F0",
+      "contract": "ECX actualfresh8h temporaryheader; PUSH originalCStringkey; originalRET4"
+    },
+    {
+      "address": "008F342F",
+      "native": "008F28F0",
+      "function": "008F33F0",
+      "contract": "ECX actualbag+4; PUSH actualrecord then temporary8hkeyheader; RET8"
+    },
+    {
+      "address": "008F344F",
+      "native": "00419CC0",
+      "function": "008F33F0",
+      "contract": "No arguments; three already-pushed words belong to following00BD1510; plainRET"
+    },
+    {
+      "address": "008F3456",
+      "native": "00BD1510",
+      "function": "008F33F0",
+      "contract": "ECX actualpoolreturnedEAX; pending stack data,length+1,unused1; RET0C"
+    },
+    {
+      "address": "008F28FF",
+      "native": "0043B8B0",
+      "function": "008F28F0",
+      "contract": "ECX actualmap; pushed queryheader and outbucketaddress; originalcallee not newly expanded"
+    },
+    {
+      "address": "008F2935",
+      "native": "004E7C00",
+      "function": "008F28F0",
+      "contract": "ECX actual recordnodepoolE175B0; no stack args; genuine14hslot return"
+    },
+    {
+      "address": "008F295C",
+      "native": "0041DD40",
+      "function": "008F28F0",
+      "contract": "ECX actualnode8hkeyheader; PUSH1 then querylength; originalRET8"
+    },
+    {
+      "address": "008F2971",
+      "native": "00BF7680",
+      "function": "008F28F0",
+      "contract": "PUSH destinationlength,querydata,nodedata; ADD ESP0C at008F2976"
+    }
+  ],
+  "whole_parent_indirect_replacement_step": {
+    "function": "008F28F0",
+    "address": "008F2917",
+    "kind": "indirect_call",
+    "target": "actualoldrecordprofile.slot0",
+    "argument": "PUSH1",
+    "status": "UNRESOLVED_WHOLE_OWNERSHIP_AND_DELETION_CONTRACT; NOT_IN_MISS_FRAGMENT"
+  },
+  "whole_memory_and_ownership_contract": [
+    "The exact fragment is only [008F2930,008F299C), the genuine JZ lookup-miss target through original return; whole008F28F0 entry, found-node branch [008F290A,008F2930), and whole008F33F0 are not implemented or promoted.",
+    "Caller supplies same actual108h map, live actual8h query and bucket0..63 produced by complete current property lookup returningNULL for this pair. Preserve epoch and external synchronization from lookup through publication; no replacement entry permitted. Genuine raw61 bag constructor produces first empty map at actualbag+4; subsequent genuine fragment output can be a later map preimage only after separate Source authorization/qualification.",
+    "Map/head/count and query are genuine producer output, not packed/manual semantic storage or cloned profile. Caller owns actual114h bag storage and retains it through all access; no app hierarchy/class/profile dispatch readiness inferred from raw constructor fields.",
+    "Query comes from whole raw0041E870 with real ownbuffer and canonical GameNativeStringProcess::raw_context() or another already admitted genuine raw context/header producer. Closed NUL-free ASCII/count-matching terminated storage, null only empty; live stable query and raw manager/publications/returns gate persist. No temporary NativeString class cast, semantic pool or callback adapter.",
+    "Exact initialized property-map node pool E175B0 is the same borrowed actual38h storage bound/initialized by current bookends, with canonical E188B4 list and genuine CE37A4/410CD0 trim binding. Actual slot is unique and valid14h, allocator+10 remains untouched; no enum/symbol sibling substitution or new default owner.",
+    "Successful nonoverflowing actual allocator/raw key-buffer/getter/OS domains from current qualified providers, valid capacities/page state, no callback/reentry/concurrent mutation/trim/locale change. Preserve self-header and null-allocation branches literally, but failed allocation/CRT fault/exception/nativeSEH parity is outside their admitted successful domain; no rollback or added null guard.",
+    "New node key owns independently allocated len+1 buffer; do not borrow querydata or infer that key bytes include copied terminator. Once head is published, caller must preserve node/key until map is no longer accessed and release owning key through genuine raw0041DD20 before returning slot/freeing its pool. Context, pool/list/bookends live through those releases. This contract does not supply a whole map cleanup/record destruction owner.",
+    "Incoming mapped DWORD is explicitly caller-provided opaque record-word role. Fragment only stores it; its independent owner must retain any nonnull pointee throughout consumers. Null is an actual lower-provider word value, never an invented record/default class; whole outer008F33F0 requires its real record fields and is not admitted for null. No type1/type6/header/profile preimage or destructor proof is needed or claimed by this store-only fragment.",
+    "Fallback roles remain predecessor-only: complete lookup/hash borrow actual distinct E177E4 hash/node and E17654 query CString cells with valid owner lifetime and stable CRT C locale. New-node key copy does not consume either fallback cell, manufacture them or turn a CString into a record/header. No missing global owner publication is silently supplied."
+  ],
+  "current_direct_provider_readiness": [
+    {
+      "dependency": "0043B8B0 /0043B760 predecessor",
+      "Source": "find_native_property_map_node_0043b8b0 /native_property_key_bucket_0043b760",
+      "status": "AVAILABLE_WHOLE_ORDINARY_SOURCE_ON_BORROWED_C_ASCII_DOMAIN",
+      "evidence": "Current195B87 lookup SHA3e021142... and92B41 hash d89ce... match physically retained committed90d275d Source/object evidence. Literal and optimized schedules remain distinct; no fixture replay."
+    },
+    {
+      "dependency": "004E7C00",
+      "Source": "allocate_native_enum_node_004e7c00(void* actual_initialized_pool)",
+      "status": "AVAILABLE_WHOLE_CONDITIONAL_NORMAL_ALLOCATOR",
+      "evidence": "Current complete1025B310 production COMDAT; genuine64x14h slots/584hslab/38hpool+OScritical section, preserves +10. Existing successful-allocation/nonoverflow/no-rollback contract retained."
+    },
+    {
+      "dependency": "E175B0 owner/domain",
+      "Source": "bind_static_native_property_record_pool_00e175b0 /initialize_static_native_property_record_pool_00cc8a30 /destroy_static_native_property_record_pool_00cd9260",
+      "status": "AVAILABLE_DISTINCT_SAME_POOL_SOURCE_BOOKENDS",
+      "evidence": "Current76B25/392B115/259B86 COMDATs; same borrowed38h owner/same canonical E188B4 and real trim binding. Real std::atexit status/no rollback preserved; payload-before-pages obligation remains caller-owned."
+    },
+    {
+      "dependency": "0041DD40",
+      "Source": "resize_native_string_header_0041dd40(void*,NativeStringRawPoolContext&,uint32,bool)",
+      "status": "AVAILABLE_WHOLE_GENUINE_RAW_CONTEXT_OVERLOAD",
+      "evidence": "Current complete212B85 COMDAT calls real00419CC0/BD1120/BD1510 Source and actual _memmove relocation. Freshnode0/4 init is performed before it; equalzero branch does not readdata. No semantic NativeStringStorage or copied header owner used."
+    },
+    {
+      "dependency": "00BF7680 copy",
+      "Source": "Direct genuine std::memmove(destination,source,current_destination_length)",
+      "status": "AVAILABLE_NORMAL_CURRENT_CRT_BOUNDARY",
+      "evidence": "Actual current I386 UCRT memmove export/import library retained; existing raw Source uses real _memmove. Nonzero valid count under stable source/own destination admission. No whole Original optimized CRT/SEH/failure/ABI proof."
+    },
+    {
+      "dependency": "Actual map preimage",
+      "Source": "initialize_native_scene_property_bag_storage_008f41a0",
+      "status": "AVAILABLE_GENUINE_EMPTY_MAP_PRODUCER",
+      "evidence": "Complete61B15 raw production body, actual114h(276byte) bag, map=bag+4/D162C4/count0/64zeroheads; physical DF0/flatES/explicitownerword contract external. No copied semantic bag/profile or game class claim."
+    },
+    {
+      "dependency": "Actual query preimage/context",
+      "Source": "construct_native_string_header_0041e870(void*,NativeStringRawPoolContext&,const char*) /game_native_string_process().raw_context()",
+      "status": "AVAILABLE_GENUINE_OWNING_RAW_QUERY_AND_CONTEXT",
+      "evidence": "Complete201B83 raw constructor/current concrete publication getter/allocator imports and203B59 canonical process provider retained. Existing manager/string pool roles, allocations, buffer lifetime and teardown contracts remain required."
+    }
+  ],
+  "current_production_provider_COFF": {
+    "whole_current_provider_sections": [
+      {
+        "symbol": "?native_property_key_bucket_0043b760@bsp@@YAIPBXPBD@Z",
+        "bytes": 92,
+        "instructions": 41,
+        "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a",
+        "relocations": [
+          {
+            "operand_offset": 41,
+            "kind": "0006",
+            "symbol": "__imp__toupper"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ebx",
+          "004: push esi",
+          "005: mov esi, dword ptr [ebp + 8]",
+          "008: push edi",
+          "009: mov edi, dword ptr [esi + 4]",
+          "00C: mov esi, dword ptr [esi]",
+          "00E: mov ebx, esi",
+          "010: or ebx, 0x20",
+          "013: mov dword ptr [ebp + 8], esi",
+          "016: shr ebx, 5",
+          "019: test edi, edi",
+          "01B: cmove edi, dword ptr [ebp + 0xc]",
+          "01F: cmp esi, ebx",
+          "021: jb 0x52",
+          "023: movsx eax, byte ptr [edi]",
+          "026: push eax",
+          "027: call dword ptr [0]",
+          "02D: movzx ecx, al",
+          "030: lea edi, [edi + 1]",
+          "033: mov eax, esi",
+          "035: add esp, 4",
+          "038: shl eax, 5",
+          "03B: add ecx, eax",
+          "03D: mov eax, esi",
+          "03F: shr eax, 2",
+          "042: add ecx, eax",
+          "044: mov eax, dword ptr [ebp + 8]",
+          "047: sub eax, ebx",
+          "049: xor esi, ecx",
+          "04B: mov dword ptr [ebp + 8], eax",
+          "04E: cmp eax, ebx",
+          "050: jae 0x23",
+          "052: and esi, 0x3f",
+          "055: pop edi",
+          "056: mov eax, esi",
+          "058: pop esi",
+          "059: pop ebx",
+          "05A: pop ebp",
+          "05B: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_dictionary_lookup_0_whole_coff.bin"
+      },
+      {
+        "symbol": "?find_native_property_map_node_0043b8b0@bsp@@YAPAXPBX0AAIPBD2@Z",
+        "bytes": 195,
+        "instructions": 87,
+        "sha256": "3e021142defe04b11454c8ea5ad51afc550ab42b18d298715bbc89433772aa12",
+        "relocations": [
+          {
+            "operand_offset": 44,
+            "kind": "0006",
+            "symbol": "__imp__toupper"
+          },
+          {
+            "operand_offset": 114,
+            "kind": "0006",
+            "symbol": "__imp___stricmp"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ecx",
+          "004: mov ecx, dword ptr [ebp + 0xc]",
+          "007: mov edx, dword ptr [ebp + 0x14]",
+          "00A: push ebx",
+          "00B: push esi",
+          "00C: mov esi, dword ptr [ecx]",
+          "00E: mov ebx, esi",
+          "010: or ebx, 0x20",
+          "013: mov dword ptr [ebp - 4], esi",
+          "016: push edi",
+          "017: mov edi, dword ptr [ecx + 4]",
+          "01A: shr ebx, 5",
+          "01D: test edi, edi",
+          "01F: cmove edi, edx",
+          "022: cmp esi, ebx",
+          "024: jb 0x5b",
+          "026: movsx eax, byte ptr [edi]",
+          "029: push eax",
+          "02A: call dword ptr [0]",
+          "030: movzx ecx, al",
+          "033: lea edi, [edi + 1]",
+          "036: mov eax, esi",
+          "038: add esp, 4",
+          "03B: shl eax, 5",
+          "03E: add ecx, eax",
+          "040: mov eax, esi",
+          "042: shr eax, 2",
+          "045: add ecx, eax",
+          "047: mov eax, dword ptr [ebp - 4]",
+          "04A: sub eax, ebx",
+          "04C: xor esi, ecx",
+          "04E: mov dword ptr [ebp - 4], eax",
+          "051: cmp eax, ebx",
+          "053: jae 0x26",
+          "055: mov ecx, dword ptr [ebp + 0xc]",
+          "058: mov edx, dword ptr [ebp + 0x14]",
+          "05B: mov eax, dword ptr [ebp + 0x10]",
+          "05E: and esi, 0x3f",
+          "061: mov dword ptr [eax], esi",
+          "063: mov eax, dword ptr [ebp + 8]",
+          "066: mov esi, dword ptr [eax + esi*4 + 8]",
+          "06A: test esi, esi",
+          "06C: je 0xba",
+          "06E: mov edi, dword ptr [ecx]",
+          "070: mov ebx, dword ptr [0]",
+          "076: cmp dword ptr [esi], edi",
+          "078: jne 0xa5",
+          "07A: mov eax, dword ptr [esi + 4]",
+          "07D: test eax, eax",
+          "07F: mov ecx, dword ptr [ecx + 4]",
+          "082: cmove eax, edx",
+          "085: test ecx, ecx",
+          "087: cmove ecx, dword ptr [ebp + 0x18]",
+          "08B: cmp ecx, eax",
+          "08D: je 0xb1",
+          "08F: test ecx, ecx",
+          "091: je 0xa2",
+          "093: test eax, eax",
+          "095: je 0xa2",
+          "097: push eax",
+          "098: push ecx",
+          "099: call ebx",
+          "09B: add esp, 8",
+          "09E: test eax, eax",
+          "0A0: je 0xb1",
+          "0A2: mov ecx, dword ptr [ebp + 0xc]",
+          "0A5: mov esi, dword ptr [esi + 0xc]",
+          "0A8: test esi, esi",
+          "0AA: je 0xba",
+          "0AC: mov edx, dword ptr [ebp + 0x14]",
+          "0AF: jmp 0x76",
+          "0B1: pop edi",
+          "0B2: mov eax, esi",
+          "0B4: pop esi",
+          "0B5: pop ebx",
+          "0B6: mov esp, ebp",
+          "0B8: pop ebp",
+          "0B9: ret ",
+          "0BA: pop edi",
+          "0BB: pop esi",
+          "0BC: xor eax, eax",
+          "0BE: pop ebx",
+          "0BF: mov esp, ebp",
+          "0C1: pop ebp",
+          "0C2: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_dictionary_lookup_1_whole_coff.bin"
+      },
+      {
+        "symbol": "?allocate_native_enum_node_004e7c00@bsp@@YAPAXPAX@Z",
+        "bytes": 1025,
+        "instructions": 310,
+        "sha256": "751cb39f6357ebf24360682d92ebac3d2f6f1d485d32d7b5b01da7484fc277c5",
+        "relocations": [
+          {
+            "operand_offset": 7,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 34,
+            "kind": "0006",
+            "symbol": "__imp__EnterCriticalSection@4"
+          },
+          {
+            "operand_offset": 153,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "operand_offset": 381,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "operand_offset": 512,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 1002,
+            "kind": "0006",
+            "symbol": "__imp__LeaveCriticalSection@4"
+          },
+          {
+            "operand_offset": 1017,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: sub esp, 0x34",
+          "006: mov eax, dword ptr [0]",
+          "00B: xor eax, ebp",
+          "00D: mov dword ptr [ebp - 4], eax",
+          "010: mov eax, dword ptr [ebp + 8]",
+          "013: push ebx",
+          "014: push esi",
+          "015: push edi",
+          "016: lea ebx, [eax + 0xc]",
+          "019: mov dword ptr [ebp - 0x14], eax",
+          "01C: push ebx",
+          "01D: mov dword ptr [ebp - 0x18], ebx",
+          "020: call dword ptr [0]",
+          "026: mov eax, dword ptr [ebp - 0x14]",
+          "029: mov edx, 0x24",
+          "02E: mov eax, dword ptr [eax + edx]",
+          "031: mov dword ptr [ebp - 0x1c], eax",
+          "034: inc dword ptr [ebp - 0x1c]",
+          "037: mov eax, dword ptr [ebp - 0x14]",
+          "03A: mov edx, 0x24",
+          "03F: mov ecx, dword ptr [ebp - 0x1c]",
+          "042: mov dword ptr [eax + edx], ecx",
+          "045: mov eax, dword ptr [ebp - 0x14]",
+          "048: mov edx, 0x34",
+          "04D: mov eax, dword ptr [eax + edx]",
+          "050: mov dword ptr [ebp - 0x1c], eax",
+          "053: cmp dword ptr [ebp - 0x1c], -1",
+          "057: jne 0x274",
+          "05D: mov eax, dword ptr [ebp - 0x14]",
+          "060: mov edx, 0x2c",
+          "065: mov eax, dword ptr [eax + edx]",
+          "068: mov dword ptr [ebp - 0x1c], eax",
+          "06B: mov eax, dword ptr [ebp - 0x1c]",
+          "06E: mov dword ptr [ebp - 0x1c], eax",
+          "071: mov eax, dword ptr [ebp - 0x14]",
+          "074: mov edx, 0x34",
+          "079: mov ecx, dword ptr [ebp - 0x1c]",
+          "07C: mov dword ptr [eax + edx], ecx",
+          "07F: lea eax, [ebp - 0x10]",
+          "082: mov dword ptr [ebp - 0x10], 3",
+          "089: push eax",
+          "08A: mov dword ptr [ebp - 0xc], 0x584",
+          "091: mov dword ptr [ebp - 8], 0x584",
+          "098: call 0x9d",
+          "09D: mov ebx, eax",
+          "09F: add esp, 4",
+          "0A2: mov dword ptr [ebp - 0x1c], ebx",
+          "0A5: test ebx, ebx",
+          "0A7: je 0x122",
+          "0A9: mov eax, dword ptr [ebp - 0x14]",
+          "0AC: mov edx, 0x34",
+          "0B1: mov eax, dword ptr [eax + edx]",
+          "0B4: mov dword ptr [ebp - 0x20], eax",
+          "0B7: mov ecx, dword ptr [ebp - 0x20]",
+          "0BA: mov dword ptr [ebp - 0x30], ecx",
+          "0BD: mov eax, dword ptr [ebp - 0x1c]",
+          "0C0: mov edx, 0x580",
+          "0C5: mov cx, 0x40",
+          "0C9: mov word ptr [eax + edx], cx",
+          "0CD: lea edi, [ebx + 0x500]",
+          "0D3: add ebx, 0x10",
+          "0D6: mov dword ptr [ebp - 0x20], edi",
+          "0D9: xor esi, esi",
+          "0DB: mov dword ptr [ebp - 0x28], ebx",
+          "0DE: nop ",
+          "0E0: mov eax, 0x3f",
+          "0E5: sub eax, esi",
+          "0E7: movzx eax, ax",
+          "0EA: mov dword ptr [ebp - 0x34], eax",
+          "0ED: mov eax, dword ptr [ebp - 0x20]",
+          "0F0: mov edx, 0",
+          "0F5: mov cx, word ptr [ebp - 0x34]",
+          "0F9: mov word ptr [eax + edx], cx",
+          "0FD: mov eax, dword ptr [ebp - 0x28]",
+          "100: mov edx, 0",
+          "105: mov ecx, dword ptr [ebp - 0x30]",
+          "108: mov dword ptr [eax + edx], ecx",
+          "10B: add edi, 2",
+          "10E: add ebx, 0x14",
+          "111: inc esi",
+          "112: mov dword ptr [ebp - 0x20], edi",
+          "115: mov dword ptr [ebp - 0x28], ebx",
+          "118: cmp esi, 0x40",
+          "11B: jb 0xe0",
+          "11D: mov ebx, dword ptr [ebp - 0x1c]",
+          "120: jmp 0x124",
+          "122: xor ebx, ebx",
+          "124: mov eax, dword ptr [ebp - 0x14]",
+          "127: mov edx, 0x30",
+          "12C: mov eax, dword ptr [eax + edx]",
+          "12F: mov dword ptr [ebp - 0x30], eax",
+          "132: mov ecx, dword ptr [ebp - 0x30]",
+          "135: mov eax, dword ptr [ebp - 0x14]",
+          "138: mov edx, 0x2c",
+          "13D: mov eax, dword ptr [eax + edx]",
+          "140: mov dword ptr [ebp - 0x30], eax",
+          "143: cmp dword ptr [ebp - 0x30], ecx",
+          "146: jne 0x215",
+          "14C: lea eax, [ecx*2 + 2]",
+          "153: mov dword ptr [ebp - 0x30], eax",
+          "156: lea esi, [eax*4]",
+          "15D: mov eax, dword ptr [ebp - 0x14]",
+          "160: mov edx, 0x30",
+          "165: mov ecx, dword ptr [ebp - 0x30]",
+          "168: mov dword ptr [eax + edx], ecx",
+          "16B: lea eax, [ebp - 0x10]",
+          "16E: mov dword ptr [ebp - 0x10], 1",
+          "175: push eax",
+          "176: mov dword ptr [ebp - 0xc], esi",
+          "179: mov dword ptr [ebp - 8], esi",
+          "17C: call 0x181",
+          "181: mov esi, eax",
+          "183: add esp, 4",
+          "186: mov dword ptr [ebp - 0x24], esi",
+          "189: xor edi, edi",
+          "18B: mov dword ptr [ebp - 0x1c], esi",
+          "18E: mov eax, dword ptr [ebp - 0x14]",
+          "191: mov edx, 0x2c",
+          "196: mov eax, dword ptr [eax + edx]",
+          "199: mov dword ptr [ebp - 0x30], eax",
+          "19C: cmp edi, dword ptr [ebp - 0x30]",
+          "19F: jae 0x1e9",
+          "1A1: test esi, esi",
+          "1A3: je 0x1e3",
+          "1A5: mov eax, dword ptr [ebp - 0x14]",
+          "1A8: mov edx, 0x28",
+          "1AD: mov eax, dword ptr [eax + edx]",
+          "1B0: mov dword ptr [ebp - 0x34], eax",
+          "1B3: mov eax, dword ptr [ebp - 0x34]",
+          "1B6: mov dword ptr [ebp - 0x20], eax",
+          "1B9: lea eax, [edi*4]",
+          "1C0: mov dword ptr [ebp - 0x28], eax",
+          "1C3: mov eax, dword ptr [ebp - 0x20]",
+          "1C6: mov edx, dword ptr [ebp - 0x28]",
+          "1C9: mov eax, dword ptr [eax + edx]",
+          "1CC: mov dword ptr [ebp - 0x2c], eax",
+          "1CF: mov eax, dword ptr [ebp - 0x2c]",
+          "1D2: mov dword ptr [ebp - 0x20], eax",
+          "1D5: mov eax, dword ptr [ebp - 0x1c]",
+          "1D8: mov edx, 0",
+          "1DD: mov ecx, dword ptr [ebp - 0x20]",
+          "1E0: mov dword ptr [eax + edx], ecx",
+          "1E3: add esi, 4",
+          "1E6: inc edi",
+          "1E7: jmp 0x18b",
+          "1E9: mov eax, dword ptr [ebp - 0x14]",
+          "1EC: mov edx, 0x28",
+          "1F1: mov eax, dword ptr [eax + edx]",
+          "1F4: mov dword ptr [ebp - 0x2c], eax",
+          "1F7: mov eax, dword ptr [ebp - 0x2c]",
+          "1FA: test eax, eax",
+          "1FC: je 0x207",
+          "1FE: push eax",
+          "1FF: call 0x204",
+          "204: add esp, 4",
+          "207: mov eax, dword ptr [ebp - 0x14]",
+          "20A: mov edx, 0x28",
+          "20F: mov ecx, dword ptr [ebp - 0x24]",
+          "212: mov dword ptr [eax + edx], ecx",
+          "215: mov eax, dword ptr [ebp - 0x14]",
+          "218: mov edx, 0x2c",
+          "21D: mov eax, dword ptr [eax + edx]",
+          "220: mov dword ptr [ebp - 0x2c], eax",
+          "223: mov eax, dword ptr [ebp - 0x14]",
+          "226: mov edx, 0x28",
+          "22B: mov eax, dword ptr [eax + edx]",
+          "22E: mov dword ptr [ebp - 0x24], eax",
+          "231: mov ecx, dword ptr [ebp - 0x24]",
+          "234: mov eax, dword ptr [ebp - 0x2c]",
+          "237: lea eax, [ecx + eax*4]",
+          "23A: mov dword ptr [ebp - 0x24], eax",
+          "23D: test eax, eax",
+          "23F: je 0x252",
+          "241: mov dword ptr [ebp - 0x2c], ebx",
+          "244: mov eax, dword ptr [ebp - 0x24]",
+          "247: mov edx, 0",
+          "24C: mov ecx, dword ptr [ebp - 0x2c]",
+          "24F: mov dword ptr [eax + edx], ecx",
+          "252: mov eax, dword ptr [ebp - 0x14]",
+          "255: mov edx, 0x2c",
+          "25A: mov eax, dword ptr [eax + edx]",
+          "25D: mov dword ptr [ebp - 0x24], eax",
+          "260: inc dword ptr [ebp - 0x24]",
+          "263: mov eax, dword ptr [ebp - 0x14]",
+          "266: mov edx, 0x2c",
+          "26B: mov ecx, dword ptr [ebp - 0x24]",
+          "26E: mov dword ptr [eax + edx], ecx",
+          "271: mov ebx, dword ptr [ebp - 0x18]",
+          "274: mov eax, dword ptr [ebp - 0x14]",
+          "277: mov edx, 0x34",
+          "27C: mov eax, dword ptr [eax + edx]",
+          "27F: mov dword ptr [ebp - 0x18], eax",
+          "282: mov eax, dword ptr [ebp - 0x14]",
+          "285: mov edx, 0x28",
+          "28A: mov eax, dword ptr [eax + edx]",
+          "28D: mov dword ptr [ebp - 0x24], eax",
+          "290: mov eax, dword ptr [ebp - 0x18]",
+          "293: shl eax, 2",
+          "296: mov dword ptr [ebp - 0x2c], eax",
+          "299: mov eax, dword ptr [ebp - 0x24]",
+          "29C: mov dword ptr [ebp - 0x18], eax",
+          "29F: mov eax, dword ptr [ebp - 0x18]",
+          "2A2: mov edx, dword ptr [ebp - 0x2c]",
+          "2A5: mov eax, dword ptr [eax + edx]",
+          "2A8: mov dword ptr [ebp - 0x24], eax",
+          "2AB: mov esi, dword ptr [ebp - 0x24]",
+          "2AE: mov dword ptr [ebp - 0x20], esi",
+          "2B1: mov eax, dword ptr [ebp - 0x20]",
+          "2B4: mov edx, 0x580",
+          "2B9: mov ax, word ptr [eax + edx]",
+          "2BD: mov word ptr [ebp - 0x28], ax",
+          "2C1: mov ax, word ptr [ebp - 0x28]",
+          "2C5: dec ax",
+          "2C7: movzx eax, ax",
+          "2CA: mov dword ptr [ebp - 0x18], eax",
+          "2CD: mov eax, dword ptr [ebp - 0x20]",
+          "2D0: mov edx, 0x580",
+          "2D5: mov cx, word ptr [ebp - 0x18]",
+          "2D9: mov word ptr [eax + edx], cx",
+          "2DD: mov eax, dword ptr [ebp - 0x20]",
+          "2E0: mov edx, 0x580",
+          "2E5: mov ax, word ptr [eax + edx]",
+          "2E9: mov word ptr [ebp - 0x28], ax",
+          "2ED: movzx ecx, word ptr [ebp - 0x28]",
+          "2F1: lea eax, [ecx*2 + 0x500]",
+          "2F8: mov dword ptr [ebp - 0x18], eax",
+          "2FB: mov eax, dword ptr [ebp - 0x20]",
+          "2FE: mov edx, dword ptr [ebp - 0x18]",
+          "301: mov ax, word ptr [eax + edx]",
+          "305: mov word ptr [ebp - 0x28], ax",
+          "309: movzx eax, word ptr [ebp - 0x28]",
+          "30D: lea eax, [eax + eax*4]",
+          "310: lea edi, [esi + eax*4]",
+          "313: test cx, cx",
+          "316: jne 0x3c8",
+          "31C: mov eax, dword ptr [ebp - 0x14]",
+          "31F: mov edx, 0x34",
+          "324: mov eax, dword ptr [eax + edx]",
+          "327: mov dword ptr [ebp - 0x18], eax",
+          "32A: mov esi, dword ptr [ebp - 0x18]",
+          "32D: inc esi",
+          "32E: mov dword ptr [ebp - 0x20], esi",
+          "331: mov eax, dword ptr [ebp - 0x14]",
+          "334: mov edx, 0x2c",
+          "339: mov eax, dword ptr [eax + edx]",
+          "33C: mov dword ptr [ebp - 0x18], eax",
+          "33F: mov eax, dword ptr [ebp - 0x14]",
+          "342: mov edx, 0x34",
+          "347: mov ecx, 0xffffffff",
+          "34C: mov dword ptr [eax + edx], ecx",
+          "34F: cmp esi, dword ptr [ebp - 0x18]",
+          "352: jae 0x3c8",
+          "354: mov eax, dword ptr [ebp - 0x14]",
+          "357: mov edx, 0x28",
+          "35C: mov eax, dword ptr [eax + edx]",
+          "35F: mov dword ptr [ebp - 0x18], eax",
+          "362: mov eax, dword ptr [ebp - 0x18]",
+          "365: lea ecx, [eax + esi*4]",
+          "368: mov dword ptr [ebp - 0x1c], ecx",
+          "36B: nop dword ptr [eax + eax]",
+          "370: mov eax, dword ptr [ebp - 0x1c]",
+          "373: mov edx, 0",
+          "378: mov eax, dword ptr [eax + edx]",
+          "37B: mov dword ptr [ebp - 0x18], eax",
+          "37E: mov eax, dword ptr [ebp - 0x18]",
+          "381: mov dword ptr [ebp - 0x24], eax",
+          "384: mov eax, dword ptr [ebp - 0x24]",
+          "387: mov edx, 0x580",
+          "38C: mov ax, word ptr [eax + edx]",
+          "390: mov word ptr [ebp - 0x28], ax",
+          "394: cmp word ptr [ebp - 0x28], 0",
+          "399: jne 0x3ba",
+          "39B: inc esi",
+          "39C: add ecx, 4",
+          "39F: mov dword ptr [ebp - 0x20], esi",
+          "3A2: mov dword ptr [ebp - 0x1c], ecx",
+          "3A5: mov eax, dword ptr [ebp - 0x14]",
+          "3A8: mov edx, 0x2c",
+          "3AD: mov eax, dword ptr [eax + edx]",
+          "3B0: mov dword ptr [ebp - 0x2c], eax",
+          "3B3: cmp esi, dword ptr [ebp - 0x2c]",
+          "3B6: jb 0x370",
+          "3B8: jmp 0x3c8",
+          "3BA: mov eax, dword ptr [ebp - 0x14]",
+          "3BD: mov edx, 0x34",
+          "3C2: mov ecx, dword ptr [ebp - 0x20]",
+          "3C5: mov dword ptr [eax + edx], ecx",
+          "3C8: mov eax, dword ptr [ebp - 0x14]",
+          "3CB: mov edx, 0x24",
+          "3D0: mov eax, dword ptr [eax + edx]",
+          "3D3: mov dword ptr [ebp - 0x18], eax",
+          "3D6: dec dword ptr [ebp - 0x18]",
+          "3D9: mov eax, dword ptr [ebp - 0x14]",
+          "3DC: mov edx, 0x24",
+          "3E1: mov ecx, dword ptr [ebp - 0x18]",
+          "3E4: mov dword ptr [eax + edx], ecx",
+          "3E7: push ebx",
+          "3E8: call dword ptr [0]",
+          "3EE: mov ecx, dword ptr [ebp - 4]",
+          "3F1: mov eax, edi",
+          "3F3: pop edi",
+          "3F4: pop esi",
+          "3F5: xor ecx, ebp",
+          "3F7: pop ebx",
+          "3F8: call 0x3fd",
+          "3FD: mov esp, ebp",
+          "3FF: pop ebp",
+          "400: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_0_whole_coff.bin"
+      },
+      {
+        "symbol": "?bind_static_native_property_record_pool_00e175b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z",
+        "bytes": 76,
+        "instructions": 25,
+        "sha256": "490e94df391cdb810bbfdf11dec2996e591568429725ae175a5718770a9f35f3",
+        "relocations": [
+          {
+            "operand_offset": 41,
+            "kind": "0006",
+            "symbol": "?invoke_trim@?A0x621e8b62@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 54,
+            "kind": "0014",
+            "symbol": "?bind_virtual0@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@UAllocatorListVirtual0Binding@2@@Z"
+          },
+          {
+            "operand_offset": 60,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA"
+          },
+          {
+            "operand_offset": 67,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: sub esp, 0x10",
+          "006: push esi",
+          "007: mov esi, dword ptr [ebp + 0xc]",
+          "00A: mov ecx, esi",
+          "00C: push edi",
+          "00D: mov edi, dword ptr [ebp + 8]",
+          "010: sub esp, 0x10",
+          "013: mov eax, esp",
+          "015: mov dword ptr [ebp - 0x10], 0xce37a4",
+          "01C: mov dword ptr [ebp - 0xc], 0x410cd0",
+          "023: mov dword ptr [ebp - 8], edi",
+          "026: mov dword ptr [ebp - 4], 0",
+          "02D: movups xmm0, xmmword ptr [ebp - 0x10]",
+          "031: push edi",
+          "032: movups xmmword ptr [eax], xmm0",
+          "035: call 0x3a",
+          "03A: mov dword ptr [0], edi",
+          "040: pop edi",
+          "041: mov dword ptr [0], esi",
+          "047: pop esi",
+          "048: mov esp, ebp",
+          "04A: pop ebp",
+          "04B: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_1_whole_coff.bin"
+      },
+      {
+        "symbol": "?initialize_static_native_property_record_pool_00cc8a30@bsp@@YAHXZ",
+        "bytes": 392,
+        "instructions": 115,
+        "sha256": "a7804fb0e0e47adf0167eb043e7518ef64ab4ff7687b21b5a99ff57b2a4618b9",
+        "relocations": [
+          {
+            "operand_offset": 7,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 18,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A"
+          },
+          {
+            "operand_offset": 25,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA"
+          },
+          {
+            "operand_offset": 34,
+            "kind": "0014",
+            "symbol": "?prepend_base_element@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z"
+          },
+          {
+            "operand_offset": 60,
+            "kind": "0006",
+            "symbol": "__imp__InitializeCriticalSection@4"
+          },
+          {
+            "operand_offset": 211,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "operand_offset": 343,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 365,
+            "kind": "0006",
+            "symbol": "?destroy_static_native_property_record_pool_00cd9260@bsp@@YAXXZ"
+          },
+          {
+            "operand_offset": 370,
+            "kind": "0014",
+            "symbol": "_atexit"
+          },
+          {
+            "operand_offset": 384,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: sub esp, 0x30",
+          "006: mov eax, dword ptr [0]",
+          "00B: xor eax, ebp",
+          "00D: mov dword ptr [ebp - 4], eax",
+          "010: mov ecx, dword ptr [0]",
+          "016: push esi",
+          "017: mov esi, dword ptr [0]",
+          "01D: push esi",
+          "01E: mov dword ptr [ebp - 0x14], esi",
+          "021: call 0x26",
+          "026: mov eax, dword ptr [ebp - 0x14]",
+          "029: mov edx, 0",
+          "02E: mov ecx, 0xce37a4",
+          "033: mov dword ptr [eax + edx], ecx",
+          "036: lea eax, [esi + 0xc]",
+          "039: push eax",
+          "03A: call dword ptr [0]",
+          "040: mov eax, dword ptr [ebp - 0x14]",
+          "043: mov edx, 0x24",
+          "048: mov ecx, 0",
+          "04D: mov dword ptr [eax + edx], ecx",
+          "050: mov eax, dword ptr [ebp - 0x14]",
+          "053: mov edx, 0x28",
+          "058: mov ecx, 0",
+          "05D: mov dword ptr [eax + edx], ecx",
+          "060: mov eax, dword ptr [ebp - 0x14]",
+          "063: mov edx, 0x2c",
+          "068: mov ecx, 0",
+          "06D: mov dword ptr [eax + edx], ecx",
+          "070: mov eax, dword ptr [ebp - 0x14]",
+          "073: mov edx, 0x30",
+          "078: mov ecx, 0",
+          "07D: mov dword ptr [eax + edx], ecx",
+          "080: mov eax, dword ptr [ebp - 0x14]",
+          "083: mov edx, 0x34",
+          "088: mov ecx, 0xffffffff",
+          "08D: mov dword ptr [eax + edx], ecx",
+          "090: mov eax, dword ptr [ebp - 0x14]",
+          "093: mov edx, 0x30",
+          "098: mov eax, dword ptr [eax + edx]",
+          "09B: mov dword ptr [ebp - 0x18], eax",
+          "09E: cmp dword ptr [ebp - 0x18], 0x20",
+          "0A2: jae 0x16c",
+          "0A8: push edi",
+          "0A9: mov eax, dword ptr [ebp - 0x14]",
+          "0AC: mov edx, 0x30",
+          "0B1: mov ecx, 0x20",
+          "0B6: mov dword ptr [eax + edx], ecx",
+          "0B9: lea eax, [ebp - 0x10]",
+          "0BC: mov dword ptr [ebp - 0x10], 1",
+          "0C3: push eax",
+          "0C4: mov dword ptr [ebp - 0xc], 0x80",
+          "0CB: mov dword ptr [ebp - 8], 0x80",
+          "0D2: call 0xd7",
+          "0D7: mov esi, eax",
+          "0D9: add esp, 4",
+          "0DC: mov dword ptr [ebp - 0x30], esi",
+          "0DF: xor edi, edi",
+          "0E1: mov dword ptr [ebp - 0x18], esi",
+          "0E4: mov eax, dword ptr [ebp - 0x14]",
+          "0E7: mov edx, 0x2c",
+          "0EC: mov eax, dword ptr [eax + edx]",
+          "0EF: mov dword ptr [ebp - 0x24], eax",
+          "0F2: cmp edi, dword ptr [ebp - 0x24]",
+          "0F5: jae 0x13f",
+          "0F7: test esi, esi",
+          "0F9: je 0x139",
+          "0FB: mov eax, dword ptr [ebp - 0x14]",
+          "0FE: mov edx, 0x28",
+          "103: mov eax, dword ptr [eax + edx]",
+          "106: mov dword ptr [ebp - 0x28], eax",
+          "109: lea eax, [edi*4]",
+          "110: mov dword ptr [ebp - 0x1c], eax",
+          "113: mov eax, dword ptr [ebp - 0x28]",
+          "116: mov dword ptr [ebp - 0x2c], eax",
+          "119: mov eax, dword ptr [ebp - 0x2c]",
+          "11C: mov edx, dword ptr [ebp - 0x1c]",
+          "11F: mov eax, dword ptr [eax + edx]",
+          "122: mov dword ptr [ebp - 0x20], eax",
+          "125: mov eax, dword ptr [ebp - 0x20]",
+          "128: mov dword ptr [ebp - 0x1c], eax",
+          "12B: mov eax, dword ptr [ebp - 0x18]",
+          "12E: mov edx, 0",
+          "133: mov ecx, dword ptr [ebp - 0x1c]",
+          "136: mov dword ptr [eax + edx], ecx",
+          "139: add esi, 4",
+          "13C: inc edi",
+          "13D: jmp 0xe1",
+          "13F: mov eax, dword ptr [ebp - 0x14]",
+          "142: mov edx, 0x28",
+          "147: mov eax, dword ptr [eax + edx]",
+          "14A: mov dword ptr [ebp - 0x20], eax",
+          "14D: mov eax, dword ptr [ebp - 0x20]",
+          "150: pop edi",
+          "151: test eax, eax",
+          "153: je 0x15e",
+          "155: push eax",
+          "156: call 0x15b",
+          "15B: add esp, 4",
+          "15E: mov eax, dword ptr [ebp - 0x14]",
+          "161: mov edx, 0x28",
+          "166: mov ecx, dword ptr [ebp - 0x30]",
+          "169: mov dword ptr [eax + edx], ecx",
+          "16C: push 0",
+          "171: call 0x176",
+          "176: mov ecx, dword ptr [ebp - 4]",
+          "179: add esp, 4",
+          "17C: xor ecx, ebp",
+          "17E: pop esi",
+          "17F: call 0x184",
+          "184: mov esp, ebp",
+          "186: pop ebp",
+          "187: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_2_whole_coff.bin"
+      },
+      {
+        "symbol": "?destroy_static_native_property_record_pool_00cd9260@bsp@@YAXXZ",
+        "bytes": 259,
+        "instructions": 86,
+        "sha256": "16b0fd63be521a6b64e97e39526b41940ee130b5a64244adb1d025b371d77684",
+        "relocations": [
+          {
+            "operand_offset": 7,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A"
+          },
+          {
+            "operand_offset": 14,
+            "kind": "0006",
+            "symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA"
+          },
+          {
+            "operand_offset": 110,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 160,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 169,
+            "kind": "0006",
+            "symbol": "__imp__LeaveCriticalSection@4"
+          },
+          {
+            "operand_offset": 239,
+            "kind": "0006",
+            "symbol": "__imp__DeleteCriticalSection@4"
+          },
+          {
+            "operand_offset": 248,
+            "kind": "0014",
+            "symbol": "?unlink_base_element_00403970@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: sub esp, 0x1c",
+          "006: mov eax, dword ptr [0]",
+          "00B: push ebx",
+          "00C: mov ebx, dword ptr [0]",
+          "012: push esi",
+          "013: push edi",
+          "014: mov dword ptr [ebp - 0x1c], eax",
+          "017: mov dword ptr [ebp - 4], ebx",
+          "01A: mov eax, dword ptr [ebp - 4]",
+          "01D: mov edx, 0x2c",
+          "022: mov eax, dword ptr [eax + edx]",
+          "025: mov dword ptr [ebp - 8], eax",
+          "028: mov eax, dword ptr [ebp - 4]",
+          "02B: mov edx, 0",
+          "030: mov ecx, 0xce37a4",
+          "035: mov dword ptr [eax + edx], ecx",
+          "038: cmp dword ptr [ebp - 8], 0",
+          "03C: je 0x89",
+          "03E: xor esi, esi",
+          "040: mov eax, dword ptr [ebp - 4]",
+          "043: mov edx, 0x28",
+          "048: mov eax, dword ptr [eax + edx]",
+          "04B: mov dword ptr [ebp - 8], eax",
+          "04E: lea eax, [esi*4]",
+          "055: mov dword ptr [ebp - 0x10], eax",
+          "058: mov eax, dword ptr [ebp - 8]",
+          "05B: mov dword ptr [ebp - 0xc], eax",
+          "05E: mov eax, dword ptr [ebp - 0xc]",
+          "061: mov edx, dword ptr [ebp - 0x10]",
+          "064: mov eax, dword ptr [eax + edx]",
+          "067: mov dword ptr [ebp - 0x14], eax",
+          "06A: push dword ptr [ebp - 0x14]",
+          "06D: call 0x72",
+          "072: add esp, 4",
+          "075: inc esi",
+          "076: mov eax, dword ptr [ebp - 4]",
+          "079: mov edx, 0x2c",
+          "07E: mov eax, dword ptr [eax + edx]",
+          "081: mov dword ptr [ebp - 0x18], eax",
+          "084: cmp esi, dword ptr [ebp - 0x18]",
+          "087: jb 0x40",
+          "089: mov eax, dword ptr [ebp - 4]",
+          "08C: mov edx, 0x28",
+          "091: mov eax, dword ptr [eax + edx]",
+          "094: mov dword ptr [ebp - 0x18], eax",
+          "097: mov eax, dword ptr [ebp - 0x18]",
+          "09A: test eax, eax",
+          "09C: je 0xa7",
+          "09E: push eax",
+          "09F: call 0xa4",
+          "0A4: add esp, 4",
+          "0A7: mov edi, dword ptr [0]",
+          "0AD: lea esi, [ebx + 0xc]",
+          "0B0: mov eax, dword ptr [ebp - 4]",
+          "0B3: mov edx, 0x24",
+          "0B8: mov eax, dword ptr [eax + edx]",
+          "0BB: mov dword ptr [ebp - 0x18], eax",
+          "0BE: cmp dword ptr [ebp - 0x18], 0",
+          "0C2: jle 0xec",
+          "0C4: mov eax, dword ptr [ebp - 4]",
+          "0C7: mov edx, 0x24",
+          "0CC: mov eax, dword ptr [eax + edx]",
+          "0CF: mov dword ptr [ebp - 0x14], eax",
+          "0D2: mov eax, dword ptr [ebp - 0x14]",
+          "0D5: dec eax",
+          "0D6: mov dword ptr [ebp - 0x10], eax",
+          "0D9: mov eax, dword ptr [ebp - 4]",
+          "0DC: mov edx, 0x24",
+          "0E1: mov ecx, dword ptr [ebp - 0x10]",
+          "0E4: mov dword ptr [eax + edx], ecx",
+          "0E7: push esi",
+          "0E8: call edi",
+          "0EA: jmp 0xb0",
+          "0EC: push esi",
+          "0ED: call dword ptr [0]",
+          "0F3: mov ecx, dword ptr [ebp - 0x1c]",
+          "0F6: push ebx",
+          "0F7: call 0xfc",
+          "0FC: pop edi",
+          "0FD: pop esi",
+          "0FE: pop ebx",
+          "0FF: mov esp, ebp",
+          "101: pop ebp",
+          "102: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_3_whole_coff.bin"
+      },
+      {
+        "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+        "bytes": 212,
+        "instructions": 85,
+        "sha256": "cc29f63149447f714c17c625e838f57f3e16aa8d47c0bc4ac420b1ea510bd65d",
+        "relocations": [
+          {
+            "operand_offset": 45,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 60,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          },
+          {
+            "operand_offset": 94,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 104,
+            "kind": "0014",
+            "symbol": "?allocate_native_string_pool_00bd1120@bsp@@YAPAXPAUNativeStringPoolStorage@1@I@Z"
+          },
+          {
+            "operand_offset": 141,
+            "kind": "0014",
+            "symbol": "_memmove"
+          },
+          {
+            "operand_offset": 169,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 188,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ebx",
+          "004: mov ebx, dword ptr [ebp + 0x10]",
+          "007: push edi",
+          "008: mov edi, dword ptr [ebp + 8]",
+          "00B: mov eax, dword ptr [edi]",
+          "00D: mov dword ptr [ebp + 8], eax",
+          "010: cmp ebx, eax",
+          "012: je 0xd0",
+          "018: push esi",
+          "019: test ebx, ebx",
+          "01B: jne 0x55",
+          "01D: mov ebx, dword ptr [edi + 4]",
+          "020: test ebx, ebx",
+          "022: je 0x43",
+          "024: mov esi, dword ptr [ebp + 0xc]",
+          "027: push dword ptr [esi + 8]",
+          "02A: push dword ptr [esi]",
+          "02C: call 0x31",
+          "031: push dword ptr [esi + 4]",
+          "034: mov ecx, dword ptr [ebp + 8]",
+          "037: inc ecx",
+          "038: push ecx",
+          "039: push ebx",
+          "03A: push eax",
+          "03B: call 0x40",
+          "040: add esp, 0x18",
+          "043: pop esi",
+          "044: mov dword ptr [edi + 4], 0",
+          "04B: mov dword ptr [edi], 0",
+          "051: pop edi",
+          "052: pop ebx",
+          "053: pop ebp",
+          "054: ret ",
+          "055: mov ecx, dword ptr [ebp + 0xc]",
+          "058: push dword ptr [ecx + 8]",
+          "05B: push dword ptr [ecx]",
+          "05D: call 0x62",
+          "062: lea ecx, [ebx + 1]",
+          "065: push ecx",
+          "066: push eax",
+          "067: call 0x6c",
+          "06C: add esp, 0x10",
+          "06F: mov esi, eax",
+          "071: cmp byte ptr [ebp + 0x14], 0",
+          "075: mov dword ptr [ebp + 0x10], esi",
+          "078: je 0x94",
+          "07A: mov ecx, dword ptr [edi]",
+          "07C: mov edx, ebx",
+          "07E: cmp ebx, ecx",
+          "080: cmova edx, ecx",
+          "083: test edx, edx",
+          "085: je 0x94",
+          "087: push edx",
+          "088: push dword ptr [edi + 4]",
+          "08B: push esi",
+          "08C: call 0x91",
+          "091: add esp, 0xc",
+          "094: mov eax, dword ptr [edi + 4]",
+          "097: mov dword ptr [ebp + 8], eax",
+          "09A: test eax, eax",
+          "09C: je 0xc6",
+          "09E: mov eax, dword ptr [ebp + 0xc]",
+          "0A1: mov esi, dword ptr [edi]",
+          "0A3: push dword ptr [eax + 8]",
+          "0A6: push dword ptr [eax]",
+          "0A8: call 0xad",
+          "0AD: mov ecx, dword ptr [ebp + 0xc]",
+          "0B0: push dword ptr [ecx + 4]",
+          "0B3: lea ecx, [esi + 1]",
+          "0B6: push ecx",
+          "0B7: push dword ptr [ebp + 8]",
+          "0BA: push eax",
+          "0BB: call 0xc0",
+          "0C0: mov esi, dword ptr [ebp + 0x10]",
+          "0C3: add esp, 0x18",
+          "0C6: mov dword ptr [edi + 4], esi",
+          "0C9: mov dword ptr [edi], ebx",
+          "0CB: mov byte ptr [esi + ebx], 0",
+          "0CF: pop esi",
+          "0D0: pop edi",
+          "0D1: pop ebx",
+          "0D2: pop ebp",
+          "0D3: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_0_whole_coff.bin"
+      },
+      {
+        "symbol": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z",
+        "bytes": 201,
+        "instructions": 83,
+        "sha256": "7cc33c8bcd8b9b0323a64d0bcf1f37f740bcbd4d3b8cf5c1141047bdde4f66a3",
+        "relocations": [
+          {
+            "operand_offset": 53,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 65,
+            "kind": "0014",
+            "symbol": "?allocate_native_string_pool_00bd1120@bsp@@YAPAXPAUNativeStringPoolStorage@1@I@Z"
+          },
+          {
+            "operand_offset": 96,
+            "kind": "0014",
+            "symbol": "_memmove"
+          },
+          {
+            "operand_offset": 124,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 145,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          },
+          {
+            "operand_offset": 186,
+            "kind": "0014",
+            "symbol": "_memmove"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ecx",
+          "004: mov edx, dword ptr [ebp + 0x10]",
+          "007: push ebx",
+          "008: mov ebx, dword ptr [ebp + 8]",
+          "00B: push esi",
+          "00C: mov esi, edx",
+          "00E: mov dword ptr [ebx], 0",
+          "014: mov dword ptr [ebx + 4], 0",
+          "01B: lea ecx, [esi + 1]",
+          "01E: nop ",
+          "020: mov al, byte ptr [esi]",
+          "022: inc esi",
+          "023: test al, al",
+          "025: jne 0x20",
+          "027: sub esi, ecx",
+          "029: je 0xa8",
+          "02B: mov eax, dword ptr [ebp + 0xc]",
+          "02E: push edi",
+          "02F: push dword ptr [eax + 8]",
+          "032: push dword ptr [eax]",
+          "034: call 0x39",
+          "039: mov ecx, eax",
+          "03B: lea eax, [esi + 1]",
+          "03E: push eax",
+          "03F: push ecx",
+          "040: call 0x45",
+          "045: mov edi, eax",
+          "047: add esp, 0x10",
+          "04A: mov eax, dword ptr [ebx]",
+          "04C: mov ecx, esi",
+          "04E: cmp esi, eax",
+          "050: mov dword ptr [ebp - 4], edi",
+          "053: cmova ecx, eax",
+          "056: test ecx, ecx",
+          "058: je 0x67",
+          "05A: push ecx",
+          "05B: push dword ptr [ebx + 4]",
+          "05E: push edi",
+          "05F: call 0x64",
+          "064: add esp, 0xc",
+          "067: mov eax, dword ptr [ebx + 4]",
+          "06A: mov dword ptr [ebp + 8], eax",
+          "06D: test eax, eax",
+          "06F: je 0x9b",
+          "071: mov eax, dword ptr [ebp + 0xc]",
+          "074: mov edi, dword ptr [ebx]",
+          "076: push dword ptr [eax + 8]",
+          "079: push dword ptr [eax]",
+          "07B: call 0x80",
+          "080: mov ecx, eax",
+          "082: mov eax, dword ptr [ebp + 0xc]",
+          "085: push dword ptr [eax + 4]",
+          "088: lea eax, [edi + 1]",
+          "08B: push eax",
+          "08C: push dword ptr [ebp + 8]",
+          "08F: push ecx",
+          "090: call 0x95",
+          "095: mov edi, dword ptr [ebp - 4]",
+          "098: add esp, 0x18",
+          "09B: mov edx, dword ptr [ebp + 0x10]",
+          "09E: mov dword ptr [ebx + 4], edi",
+          "0A1: mov dword ptr [ebx], esi",
+          "0A3: mov byte ptr [edi + esi], 0",
+          "0A7: pop edi",
+          "0A8: mov ecx, dword ptr [ebx + 4]",
+          "0AB: test ecx, ecx",
+          "0AD: je 0xc1",
+          "0AF: mov eax, dword ptr [ebx]",
+          "0B1: add eax, 1",
+          "0B4: je 0xc1",
+          "0B6: push eax",
+          "0B7: push edx",
+          "0B8: push ecx",
+          "0B9: call 0xbe",
+          "0BE: add esp, 0xc",
+          "0C1: pop esi",
+          "0C2: mov eax, ebx",
+          "0C4: pop ebx",
+          "0C5: mov esp, ebp",
+          "0C7: pop ebp",
+          "0C8: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_1_whole_coff.bin"
+      },
+      {
+        "symbol": "??0RawStringPoolAccess@?A0x297ca30d@bsp@@QAE@AAUNativeStringRawPoolContext@2@@Z",
+        "bytes": 14,
+        "instructions": 7,
+        "sha256": "78603997abf26bcb8cb909caff592370a0a6bf6a508556ada8021d4ddd751be1",
+        "relocations": [],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: mov eax, dword ptr [ebp + 8]",
+          "006: mov dword ptr [ecx], eax",
+          "008: mov eax, ecx",
+          "00A: pop ebp",
+          "00B: ret 4"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_2_whole_coff.bin"
+      },
+      {
+        "symbol": "?allocate@RawStringPoolAccess@?A0x297ca30d@bsp@@QAEPADI@Z",
+        "bytes": 31,
+        "instructions": 12,
+        "sha256": "e6e82d91a2acd6b9add02cd924ead3aaac0bc04762d6b9a648725c95223699fc",
+        "relocations": [
+          {
+            "operand_offset": 11,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 20,
+            "kind": "0014",
+            "symbol": "?allocate_native_string_pool_00bd1120@bsp@@YAPAXPAUNativeStringPoolStorage@1@I@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: mov eax, dword ptr [ecx]",
+          "005: push dword ptr [eax + 8]",
+          "008: push dword ptr [eax]",
+          "00A: call 0xf",
+          "00F: push dword ptr [ebp + 8]",
+          "012: push eax",
+          "013: call 0x18",
+          "018: add esp, 0x10",
+          "01B: pop ebp",
+          "01C: ret 4"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_3_whole_coff.bin"
+      },
+      {
+        "symbol": "?release@RawStringPoolAccess@?A0x297ca30d@bsp@@QAEXPADI@Z",
+        "bytes": 43,
+        "instructions": 18,
+        "sha256": "12e2097bcb57572f3126229ea6de2f449054600973a3d61d5a3a6b2f185bfca3",
+        "relocations": [
+          {
+            "operand_offset": 14,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 31,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push esi",
+          "004: mov esi, ecx",
+          "006: mov eax, dword ptr [esi]",
+          "008: push dword ptr [eax + 8]",
+          "00B: push dword ptr [eax]",
+          "00D: call 0x12",
+          "012: mov ecx, dword ptr [esi]",
+          "014: push dword ptr [ecx + 4]",
+          "017: push dword ptr [ebp + 0xc]",
+          "01A: push dword ptr [ebp + 8]",
+          "01D: push eax",
+          "01E: call 0x23",
+          "023: add esp, 0x18",
+          "026: pop esi",
+          "027: pop ebp",
+          "028: ret 8"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_4_whole_coff.bin"
+      },
+      {
+        "symbol": "?current_pool@RawStringPoolAccess@?A0x297ca30d@bsp@@AAEPAUNativeStringPoolStorage@3@XZ",
+        "bytes": 16,
+        "instructions": 6,
+        "sha256": "c6fdc315ac5d4376cc0843ca9c494fd611b83be3eef78cb6206503893551f7ab",
+        "relocations": [
+          {
+            "operand_offset": 8,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: mov eax, dword ptr [ecx]",
+          "002: push dword ptr [eax + 8]",
+          "005: push dword ptr [eax]",
+          "007: call 0xc",
+          "00C: add esp, 8",
+          "00F: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_5_whole_coff.bin"
+      },
+      {
+        "symbol": "??$resize_header@$00VRawStringPoolAccess@?A0x297ca30d@bsp@@@?A0x297ca30d@bsp@@YAXPAXAAVRawStringPoolAccess@01@I_N@Z",
+        "bytes": 222,
+        "instructions": 90,
+        "sha256": "d2fa0807f1d3d0be8610026b43e06d81aab6399097f9482f03de976063ad3ba6",
+        "relocations": [
+          {
+            "operand_offset": 47,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 64,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          },
+          {
+            "operand_offset": 100,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 110,
+            "kind": "0014",
+            "symbol": "?allocate_native_string_pool_00bd1120@bsp@@YAPAXPAUNativeStringPoolStorage@1@I@Z"
+          },
+          {
+            "operand_offset": 147,
+            "kind": "0014",
+            "symbol": "_memmove"
+          },
+          {
+            "operand_offset": 177,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 198,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ebx",
+          "004: mov ebx, dword ptr [ebp + 0x10]",
+          "007: push edi",
+          "008: mov edi, dword ptr [ebp + 8]",
+          "00B: mov eax, dword ptr [edi]",
+          "00D: mov dword ptr [ebp + 8], eax",
+          "010: cmp ebx, eax",
+          "012: je 0xda",
+          "018: push esi",
+          "019: test ebx, ebx",
+          "01B: jne 0x59",
+          "01D: mov ebx, dword ptr [edi + 4]",
+          "020: test ebx, ebx",
+          "022: je 0x47",
+          "024: mov esi, dword ptr [ebp + 0xc]",
+          "027: mov eax, dword ptr [esi]",
+          "029: push dword ptr [eax + 8]",
+          "02C: push dword ptr [eax]",
+          "02E: call 0x33",
+          "033: mov ecx, dword ptr [esi]",
+          "035: push dword ptr [ecx + 4]",
+          "038: mov ecx, dword ptr [ebp + 8]",
+          "03B: inc ecx",
+          "03C: push ecx",
+          "03D: push ebx",
+          "03E: push eax",
+          "03F: call 0x44",
+          "044: add esp, 0x18",
+          "047: pop esi",
+          "048: mov dword ptr [edi + 4], 0",
+          "04F: mov dword ptr [edi], 0",
+          "055: pop edi",
+          "056: pop ebx",
+          "057: pop ebp",
+          "058: ret ",
+          "059: mov ecx, dword ptr [ebp + 0xc]",
+          "05C: mov eax, dword ptr [ecx]",
+          "05E: push dword ptr [eax + 8]",
+          "061: push dword ptr [eax]",
+          "063: call 0x68",
+          "068: lea ecx, [ebx + 1]",
+          "06B: push ecx",
+          "06C: push eax",
+          "06D: call 0x72",
+          "072: add esp, 0x10",
+          "075: mov esi, eax",
+          "077: cmp byte ptr [ebp + 0x14], 0",
+          "07B: mov dword ptr [ebp + 0x10], esi",
+          "07E: je 0x9a",
+          "080: mov ecx, dword ptr [edi]",
+          "082: mov edx, ebx",
+          "084: cmp ebx, ecx",
+          "086: cmova edx, ecx",
+          "089: test edx, edx",
+          "08B: je 0x9a",
+          "08D: push edx",
+          "08E: push dword ptr [edi + 4]",
+          "091: push esi",
+          "092: call 0x97",
+          "097: add esp, 0xc",
+          "09A: mov eax, dword ptr [edi + 4]",
+          "09D: mov dword ptr [ebp + 8], eax",
+          "0A0: test eax, eax",
+          "0A2: je 0xd0",
+          "0A4: mov eax, dword ptr [ebp + 0xc]",
+          "0A7: mov esi, dword ptr [edi]",
+          "0A9: mov eax, dword ptr [eax]",
+          "0AB: push dword ptr [eax + 8]",
+          "0AE: push dword ptr [eax]",
+          "0B0: call 0xb5",
+          "0B5: mov ecx, dword ptr [ebp + 0xc]",
+          "0B8: mov ecx, dword ptr [ecx]",
+          "0BA: push dword ptr [ecx + 4]",
+          "0BD: lea ecx, [esi + 1]",
+          "0C0: push ecx",
+          "0C1: push dword ptr [ebp + 8]",
+          "0C4: push eax",
+          "0C5: call 0xca",
+          "0CA: mov esi, dword ptr [ebp + 0x10]",
+          "0CD: add esp, 0x18",
+          "0D0: mov dword ptr [edi + 4], esi",
+          "0D3: mov dword ptr [edi], ebx",
+          "0D5: mov byte ptr [esi + ebx], 0",
+          "0D9: pop esi",
+          "0DA: pop edi",
+          "0DB: pop ebx",
+          "0DC: pop ebp",
+          "0DD: ret "
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_string_6_whole_coff.bin"
+      },
+      {
+        "symbol": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z",
+        "bytes": 61,
+        "instructions": 15,
+        "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420",
+        "relocations": [],
+        "complete_listing": [
+          "000: mov edx, ecx",
+          "002: push edi",
+          "003: mov dword ptr [edx], 0xd16504",
+          "009: xor eax, eax",
+          "00B: mov dword ptr [edx + 4], 0xd162c4",
+          "012: mov dword ptr [edx + 8], 0",
+          "019: lea edi, [edx + 0xc]",
+          "01C: mov ecx, 0x40",
+          "021: rep stosd dword ptr es:[edi], eax",
+          "023: mov eax, dword ptr [esp + 8]",
+          "027: mov dword ptr [edx + 0x110], eax",
+          "02D: mov dword ptr [edx + 0x10c], 0",
+          "037: mov eax, edx",
+          "039: pop edi",
+          "03A: ret 4"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/native_scene_property_bag_storage_0_whole_coff.bin"
+      },
+      {
+        "symbol": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ",
+        "bytes": 203,
+        "instructions": 59,
+        "sha256": "fe2ea4306188b1a690aa2f95903817b6368cc32b9b74d24c9b84266a853457f9",
+        "relocations": [
+          {
+            "operand_offset": 6,
+            "kind": "0006",
+            "symbol": "__ehhandler$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+          },
+          {
+            "operand_offset": 19,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 37,
+            "kind": "0006",
+            "symbol": "__tls_array"
+          },
+          {
+            "operand_offset": 43,
+            "kind": "0006",
+            "symbol": "__tls_index"
+          },
+          {
+            "operand_offset": 51,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 57,
+            "kind": "000B",
+            "symbol": "__Init_thread_epoch"
+          },
+          {
+            "operand_offset": 64,
+            "kind": "0006",
+            "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+          },
+          {
+            "operand_offset": 85,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 90,
+            "kind": "0014",
+            "symbol": "__Init_thread_header"
+          },
+          {
+            "operand_offset": 99,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 116,
+            "kind": "0014",
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "operand_offset": 169,
+            "kind": "0014",
+            "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+          },
+          {
+            "operand_offset": 180,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 186,
+            "kind": "0006",
+            "symbol": "?process@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4QAV423@A"
+          },
+          {
+            "operand_offset": 191,
+            "kind": "0014",
+            "symbol": "__Init_thread_footer"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push -1",
+          "005: push 0",
+          "00A: mov eax, dword ptr fs:[0]",
+          "010: push eax",
+          "011: push esi",
+          "012: mov eax, dword ptr [0]",
+          "017: xor eax, ebp",
+          "019: push eax",
+          "01A: lea eax, [ebp - 0xc]",
+          "01D: mov dword ptr fs:[0], eax",
+          "023: mov eax, dword ptr fs:[0]",
+          "029: mov ecx, dword ptr [0]",
+          "02F: mov ecx, dword ptr [eax + ecx*4]",
+          "032: mov eax, dword ptr [0]",
+          "037: cmp eax, dword ptr [ecx]",
+          "03D: jg 0x54",
+          "03F: mov eax, dword ptr [0]",
+          "044: mov ecx, dword ptr [ebp - 0xc]",
+          "047: mov dword ptr fs:[0], ecx",
+          "04E: pop ecx",
+          "04F: pop esi",
+          "050: mov esp, ebp",
+          "052: pop ebp",
+          "053: ret ",
+          "054: push 0",
+          "059: call 0x5e",
+          "05E: add esp, 4",
+          "061: cmp dword ptr [0], -1",
+          "068: jne 0x3f",
+          "06A: push 0x2c",
+          "06C: mov dword ptr [ebp - 4], 0",
+          "073: call 0x78",
+          "078: mov esi, eax",
+          "07A: add esp, 4",
+          "07D: test esi, esi",
+          "07F: je 0xaf",
+          "081: lea edx, [esi + 4]",
+          "084: mov dword ptr [esi], 0",
+          "08A: lea ecx, [esi + 8]",
+          "08D: mov dword ptr [edx], 0",
+          "093: push esi",
+          "094: push ecx",
+          "095: mov dword ptr [ecx], 0",
+          "09B: mov dword ptr [esi + 0x10], ecx",
+          "09E: lea ecx, [esi + 0x18]",
+          "0A1: push edx",
+          "0A2: mov dword ptr [esi + 0xc], edx",
+          "0A5: mov dword ptr [esi + 0x14], esi",
+          "0A8: call 0xad",
+          "0AD: jmp 0xb3",
+          "0AF: xor esi, esi",
+          "0B1: jmp 0xb3",
+          "0B3: push 0",
+          "0B8: mov dword ptr [0], esi",
+          "0BE: call 0xc3",
+          "0C3: add esp, 4",
+          "0C6: jmp 0x3f"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/game_native_string_process_0_whole_coff.bin"
+      },
+      {
+        "symbol": "__unwindfunclet$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ$0",
+        "bytes": 46,
+        "instructions": 18,
+        "sha256": "4aef15b43db3c8c56bec317f4b9fadfcbe8aaea050427f5273fa7bc5097cc181",
+        "relocations": [
+          {
+            "operand_offset": 1,
+            "kind": "0006",
+            "symbol": "?$TSS0@?1??game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@23@XZ@4HA"
+          },
+          {
+            "operand_offset": 6,
+            "kind": "0014",
+            "symbol": "__Init_thread_abort"
+          },
+          {
+            "operand_offset": 32,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "operand_offset": 37,
+            "kind": "0006",
+            "symbol": "__ehfuncinfo$?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+          },
+          {
+            "operand_offset": 42,
+            "kind": "0014",
+            "symbol": "___CxxFrameHandler3"
+          }
+        ],
+        "complete_listing": [
+          "000: push 0",
+          "005: call 0xa",
+          "00A: pop ecx",
+          "00B: ret ",
+          "00C: int3 ",
+          "00D: int3 ",
+          "00E: int3 ",
+          "00F: int3 ",
+          "010: int3 ",
+          "011: nop ",
+          "012: nop ",
+          "013: mov edx, dword ptr [esp + 8]",
+          "017: lea eax, [edx + 0xc]",
+          "01A: mov ecx, dword ptr [edx - 8]",
+          "01D: xor ecx, eax",
+          "01F: call 0x24",
+          "024: mov eax, 0",
+          "029: jmp 0x2e"
+        ],
+        "object_physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "code_physical_copy_path": "local/cc12_property_new_node_publication_readiness/game_native_string_process_1_whole_coff.bin"
+      }
+    ],
+    "qualified_hash_and_lookup_identical": true,
+    "raw_key_resize_genuine_getter_allocate_and_real_memmove": true,
+    "actual_current_I386_CRT_exports": {
+      "memmove": 620848,
+      "_stricmp": 492384,
+      "toupper": 180416
+    },
+    "Source_providers_only_read_statically": true,
+    "Source_and_Original_execution": false,
+    "qualification_limit": "Complete selected provider COMDATs read from physically retained production objects. No new Native callee body expansion, no Source implementation, compilation or replay."
+  },
+  "Source_ready_next_packet": {
+    "decision": "SOURCE_READY_DISTINCT_PARTIAL_FRAGMENT_ON_EXISTING_NORMAL_ADMISSION; ROOT_ACCEPTANCE_REQUIRED_BEFORE_SOURCE_WORK",
+    "Original_parent": "008F28F0",
+    "Original_fragment_start": "008F2930",
+    "Original_fragment_end_exclusive": "008F299C",
+    "coverage": "partial: genuine lookup-miss/new-node publication tail only,108B38; no whole parent or wrapper coverage",
+    "candidate_registered_files": [
+      "include/bsp/native_enum_dictionary_lookup.hpp",
+      "src/native_enum_dictionary_lookup.cpp"
+    ],
+    "candidate_new_evidence_files": [
+      "docs/CC12_PROPERTY_NEW_NODE_PUBLICATION_SOURCE.md",
+      "reports/cc12_property_new_node_publication_source.json"
+    ],
+    "candidate_interface": "std::uint32_t publish_native_property_map_new_node_008f2930_fragment(void* actual_map, const void* actual_query_header, std::uint32_t lookup_bucket, std::uint32_t incoming_mapped_record_word, void* actual_initialized_property_pool_00e175b0, NativeStringRawPoolContext& actual_key_context);",
+    "candidate_body_contract": "Consume only genuinely fresh NULL-lookup predecessor state; invoke existing allocator with same actualpool; conditionallyzero actualnode0/4; retainnode==query gate; concrete raw resize(true), rereadactualquerylen/dataandcurrentnodelen/data, direct real memmove exactnodeLEN; storeincomingnode8; reloadcurrentmaphead, store+C thenhead; DWORDcount++ andreturncurrentcount. Add onlyrawloads/storesanddistinctpartialAPI/comments; existingenum/hash/lookup untouched; no CMake/default owner/callback/mappedRecordAdapter.",
+    "required_source_qualification": "Whole fragment static schedule/provider/COFF/import proof and normal Win32 build/existing3CTests only after separate authorization. No invented populated fixture or Native miss-branch test; any later witness requires genuinely composed actual map/key/samepool/fallback/ownership lifetimes and cannot qualify replacement/cleanup.",
+    "first_missing_child_inside_fragment": null,
+    "whole_parent_and_wrapper_status": "NOT_READY",
+    "first_missing_whole_replacement_contract": "008F2917 genuine oldrecordprofile slot0(PUSH1) and whole actual004E6730 ->008F0DE0 ->008F0640 release/lifetime contract; current ledger has no whole Source provider for that chain. Current record scalar audit remains blocked; type1 raw float storage does not establish this dispatcher/lifetime.",
+    "outer_missing_ownership_contract": "Whole008F33F0 nativeFH3temporarykeycleanup and record+30/34/bag+10C ownership/ordinal publication remain separate; fragment neither stamps record nor returns bag. Wholeclass/factory/app startup/world/game proof absent."
+  },
+  "record_preimage_scope": "No actual record/type1 storage body/header inspected or substituted: fragment performs exactly one opaque mappedword store and no pointee reads. Scalar-chain readiness refreshed only via capped ledger/status queries; no body expansion.",
+  "historical_missing_claims_refreshed": [
+    {
+      "was": "Old insertion audit called43B8B0/hash absent and E175B0 static owner unready.",
+      "is": "Current complete independent hash/lookup Source and distinct samepool bookends exist/qualified; selected current bytes physically copied.",
+      "evidence": "current module/provider COFF + current committed90d275d Source pins + current integrated pool bookendSource."
+    },
+    {
+      "was": "Quick message counted108B miss tail36 instructions.",
+      "is": "CompleteCapstone and saved65-instruction parent establish38 instructions in108B; zero gaps.",
+      "evidence": "008f2930_miss_tail.bin and full tail listing, initial failed count assertion preserved."
+    },
+    {
+      "was": "All production providers assumed bsp_core object location.",
+      "is": "Canonical GameNativeStringProcess provider is in bsp_game.dir; actual wholeobject was located and physically frozen.",
+      "evidence": "preserved initial path failure + actual current production COMDAT203B59."
+    }
+  ],
+  "physical_selected_input_copies": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_enum_dictionary_lookup.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 3947,
+      "sha256": "44e4e633a6cb12a19c075a0723ca613a97681a170c97362def793cc4c51a436c",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_enum_dictionary_lookup.hpp",
+      "worker_git_blob": "061934d8602faad275ae76b132cc874ce8521afd",
+      "current_main_git_blob": "b08cb8b70347e6e855d2bad56ca8373aadcf5d6f",
+      "worker_equals_main": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_enum_dictionary_lookup.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 4555,
+      "sha256": "49786af9ca9d36422a9af9c239e2f30dd1467ea5c8bd20fa0f4f371bb41e1c85",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_enum_dictionary_lookup.cpp",
+      "worker_git_blob": "47033f91f9453a09e063c6147827315cd1136aab",
+      "current_main_git_blob": "3c6543336801f259543c891fed1981075dd13e32",
+      "worker_equals_main": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_string.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string.hpp",
+      "worker_git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "current_main_git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_string.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string.cpp",
+      "worker_git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "current_main_git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_string_pool_storage.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string_pool_storage.hpp",
+      "worker_git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "current_main_git_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_string_pool_storage.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string_pool_storage.cpp",
+      "worker_git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "current_main_git_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_string_pool_owner.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string_pool_owner.hpp",
+      "worker_git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "current_main_git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_string_pool_owner.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string_pool_owner.cpp",
+      "worker_git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "current_main_git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\game_native_string_process.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 1513,
+      "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/game_native_string_process.hpp",
+      "worker_git_blob": "cbe3716ba88082d816f1fc6e393a088c3fecf515",
+      "current_main_git_blob": "cbe3716ba88082d816f1fc6e393a088c3fecf515",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\game_native_string_process.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 235,
+      "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/game_native_string_process.cpp",
+      "worker_git_blob": "94b98bfc31ac432ae78393f5c9b1b47cf0f5e250",
+      "current_main_git_blob": "94b98bfc31ac432ae78393f5c9b1b47cf0f5e250",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_enum_node_pool.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 3553,
+      "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_enum_node_pool.hpp",
+      "worker_git_blob": "5e7f1ea0e6f44ce8f3b492b3a59b173f2cd56994",
+      "current_main_git_blob": "5e7f1ea0e6f44ce8f3b492b3a59b173f2cd56994",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_enum_node_pool.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 11048,
+      "sha256": "82e2de5742d4a5a361c02d5280bfa09e06b5ceca13dd1d99def33a3f337c65e6",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_enum_node_pool.cpp",
+      "worker_git_blob": "dca364e21b6796d3bd20ef83d237c19c829765bd",
+      "current_main_git_blob": "dca364e21b6796d3bd20ef83d237c19c829765bd",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\allocator_list.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/allocator_list.hpp",
+      "worker_git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "current_main_git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\allocator_list.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/allocator_list.cpp",
+      "worker_git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "current_main_git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\singleton_lifetime.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/singleton_lifetime.hpp",
+      "worker_git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "current_main_git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\singleton_lifetime.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/singleton_lifetime.cpp",
+      "worker_git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "current_main_git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\game_native_physical_pool.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 2268,
+      "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/game_native_physical_pool.hpp",
+      "worker_git_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "current_main_git_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\game_native_physical_pool.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 1851,
+      "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/game_native_physical_pool.cpp",
+      "worker_git_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "current_main_git_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_scene_property_bag_storage.hpp",
+      "kind": "current_Source_provider_header",
+      "bytes": 1308,
+      "sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_scene_property_bag_storage.hpp",
+      "worker_git_blob": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+      "current_main_git_blob": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_scene_property_bag_storage.cpp",
+      "kind": "current_Source_provider_body",
+      "bytes": 2117,
+      "sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_scene_property_bag_storage.cpp",
+      "worker_git_blob": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+      "current_main_git_blob": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_key_hash_source.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 16723,
+      "sha256": "3bae46d7e4b6cf146017dea4930c72540b75ede1e5095c1581f313e32cde12df",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_hash_source.json",
+      "worker_git_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "current_main_git_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_key_lookup_source.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 564206,
+      "sha256": "8ced2424bf6dd27aa1883df0463bfcfcbc6c00879643f1f945d48432ff329b84",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_lookup_source.json",
+      "worker_git_blob": "9c979737a146fa6df7f2803358973494ab94a5a8",
+      "current_main_git_blob": null,
+      "worker_equals_main": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_key_lookup_readiness.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 61530,
+      "sha256": "9e49d4eef1e6722113cc24e47551b7878e07d96be73853a7cb47627e9f2c8e26",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_lookup_readiness.json",
+      "worker_git_blob": "4cbf90354cdcf388c1217e5dd6997bcf5da3798e",
+      "current_main_git_blob": "4cbf90354cdcf388c1217e5dd6997bcf5da3798e",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_record_pool_static_source.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 127741,
+      "sha256": "5f5db928ae3f149b94d12f69b6a1f36d80c74fba29393eec5519be34b70f50b7",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_record_pool_static_source.json",
+      "worker_git_blob": "7cdcfb7607bbb2474c176f98b4e8784603c910a3",
+      "current_main_git_blob": "7cdcfb7607bbb2474c176f98b4e8784603c910a3",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_string_raw_pool_context.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 10442,
+      "sha256": "849983082b940d53e3a204dde23e1b8d3bbdaf14416f0ad2f6cd6e3be1f1f113",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_string_raw_pool_context.json",
+      "worker_git_blob": "c0612330d4d3c01697980265b325bcf24e6aa051",
+      "current_main_git_blob": "c0612330d4d3c01697980265b325bcf24e6aa051",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_string_pool_owner.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 6358,
+      "sha256": "33b72b01cd30c79b5a7f7e769188edae440073533214dd49eba71920931a1552",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_string_pool_owner.json",
+      "worker_git_blob": "1ffcfbc6df2bf32b9c93e3d6a42bd59b6f1ca9b8",
+      "current_main_git_blob": "1ffcfbc6df2bf32b9c93e3d6a42bd59b6f1ca9b8",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_enum_node_pool_cc11.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 42162,
+      "sha256": "4aef223ccd41cfceef3d1aee1ba092af6ecc16ec8cd7ef7947aa6dbb1006d633",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_enum_node_pool_cc11.json",
+      "worker_git_blob": "b5d76e1c56c69b4166f3637ebb1bc9c45bbe16fc",
+      "current_main_git_blob": "b5d76e1c56c69b4166f3637ebb1bc9c45bbe16fc",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_scene_property_bag_storage_cc12.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 68801,
+      "sha256": "17c834199e31e4c53c17e35fb90e2d09073fdb9aa23f9ee1dfdbbee66a3ba18a",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_scene_property_bag_storage_cc12.json",
+      "worker_git_blob": "e1b3deea46ba4c4b257e675ccec3702b23880f1a",
+      "current_main_git_blob": "e1b3deea46ba4c4b257e675ccec3702b23880f1a",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_insertion_readiness.json",
+      "kind": "accepted_previous_qualification",
+      "bytes": 23390,
+      "sha256": "01d97619ae5fea5d7547065e810036f623e2e9533a7eb746d0da9fd6377ca0e8",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_insertion_readiness.json",
+      "worker_git_blob": "69d50d565edeefed948fa56796d985428a81335c",
+      "current_main_git_blob": "69d50d565edeefed948fa56796d985428a81335c",
+      "worker_equals_main": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_enum_dictionary_lookup.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 5566,
+      "sha256": "6dad795c26acfc8067f33df84d289088428a4ba1043fef8a34501be51d783f73",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_string.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 18822,
+      "sha256": "df9f762982d23f39bf6ef4a0851bebfb9e17b5fda4acb077440ad5234bf8c2b2",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_string_pool_storage.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 9151,
+      "sha256": "55c6a403bd54a7c56a9c51df05244abf6d6fa01d5953a0120ef2ecd6e4a36e5a",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string_pool_storage.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_string_pool_owner.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 15550,
+      "sha256": "7b7e6ef458af6b931e0f0898170276415a29f9cb39911b46bbee92ba70ad5e5f",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string_pool_owner.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_game.dir\\Release\\game_native_string_process.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 4109,
+      "sha256": "4dc557359415e7ba501364dd21503d5d9965831f911f16e31ccb9235f3afa96c",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_game.dir/Release/game_native_string_process.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_enum_node_pool.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 9651,
+      "sha256": "7bbdedbd0b675a5bfa709e647d8a610fbd3a09726e9385f61717e6b6773aac91",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\allocator_list.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 109254,
+      "sha256": "8f5fdf14271fdb33bdb6ab39f76756b551324fdb6c878c1be5f047090dfc7f23",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/allocator_list.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 32963,
+      "sha256": "8486cf1572bd3b3ce3a67c473ffe78d75e10db7a8872814f122cc2591054b2da",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\game_native_physical_pool.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 26443,
+      "sha256": "56f80eadf9facaf6fe958b8c46d3de27f29fe8a36f6cd2e2627d726fe8a3ce87",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/game_native_physical_pool.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_bag_storage.obj",
+      "kind": "current_whole_production_provider_object",
+      "bytes": 811,
+      "sha256": "7c0c88296c2e8a75c82b41947e70a9492ec10b64bcd31cfe7b70cfb9e6954daf",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "kind": "actual_current_I386_CRT_binary",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Windows/SysWOW64/ucrtbase.dll"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\stricmp.cpp",
+      "kind": "selected_current_CRT_source",
+      "bytes": 3787,
+      "sha256": "c305a4ad6c98d98b1458a2af50f955abd314f1ae282c8b1ec0aba534c274f1f2",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Program Files (x86)/Windows Kits/10/Source/10.0.26100.0/ucrt/string/stricmp.cpp"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "kind": "actual_current_CRT_import_library",
+      "bytes": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "physical_copy_path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x86/ucrt.lib"
+    }
+  ],
+  "physical_vs_identity": "Every selected input row has actual copy path,size,hash. Git main/worker identities are separately recorded; no full archive/allSDK/compiler-input retention or new build provenance is asserted. Whole prior lookup archives/executables remain physically retained in previous packet, not newly consumed as execution inputs.",
+  "checks": {
+    "whole_installed_live_saved_bytes": true,
+    "whole_parent_instruction_coverage": true,
+    "actual_JZ_target_fragment_boundary": true,
+    "all_required_miss_direct_Source_providers_current": true,
+    "same_property_node_pool_and_canonical_list": true,
+    "genuine_raw_header_buffer_producers": true,
+    "complete_fragment_ownership_schedule": true,
+    "whole_insertion_replacement_cleanup_NOT_READY": true
+  },
+  "Source_changes": 0,
+  "new_native_body_expansions": 0,
+  "new_tracked_tests": 0,
+  "new_build": false,
+  "Source_native_SDK_game_execution": false,
+  "old_fixtures_replayed": false,
+  "Ghidra_shared_metadata_CMake_ledger_export_writes": false,
+  "game_ABI_class_proof": false,
+  "preserved_failures": [
+    "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_1.log",
+    "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_2.log"
+  ],
+  "retained_limits": [
+    "Onlypartialmissfragment; not whole008F28F0/008F33F0.",
+    "Native OOM/null/fault/SEH/exceptioncleanup parity outside existing successful allocator/rawbuffer admission; no added rollback.",
+    "No mapped record lifetime/type/profile/dispatcher/class/factory readiness.",
+    "No complete map cleanup/destruction/application startup ownership or globalfallback provider created.",
+    "No Native branch execution, fabricated populated fixtures or whole Source runtime qualification."
+  ],
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\local\\cc12_property_new_node_publication_readiness",
+  "evidence_artifacts": [
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f28f0.bin",
+      "bytes": 172,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f28f0_assembly.txt",
+      "bytes": 1874,
+      "sha256": "68a13a021c80d405e2205c77453bd68224ebf9f05b6190dc686b9884fe742d6b"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f28f0_decompiled.c",
+      "bytes": 978,
+      "sha256": "d3e888002f75c7754a4e0085892a03e10da844efd62419b98d4bf8ff0f099705"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f2930_miss_tail.bin",
+      "bytes": 108,
+      "sha256": "5b19bd880704f050dcd2db183fa9cbd68baf265eab0e4e573e45ea728bf3a2e9"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f33f0.bin",
+      "bytes": 155,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f33f0_assembly.txt",
+      "bytes": 1344,
+      "sha256": "2ec563a74b2d2a36345726690a0bee9692954b832c55f9b258ecbc1df1dc727e"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/008f33f0_decompiled.c",
+      "bytes": 1503,
+      "sha256": "dc4d2e87d097956c3445ddd5abf75a8c6e5d3380234ca4c14b8213d3bf91d5c7"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/current_provider_COFF_receipt.json",
+      "bytes": 61322,
+      "sha256": "139a9368d083c2407382f4b33a963145fe3ee1095137e77cc5b39a62c2cec79f"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/finalize_audit.py",
+      "bytes": 1721,
+      "sha256": "ac144dcec7ee9aa375ac3d8199de7db75fac378ed21a4ac15c7b412bbf5fa504"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit.log",
+      "bytes": 449,
+      "sha256": "49a31c0b3b970ebc847c557b13a530ce6615f84b4aea38616715a29f29ff64a5"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit.py",
+      "bytes": 6718,
+      "sha256": "f3e70282c5a9187f89415c30874a985ded8c6eedd9378320dfa67ea40126627b"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_1.log",
+      "bytes": 374,
+      "sha256": "b3a9e17de3e9b47718d20c73056459e9dbdffbf92227d348608c2129a79fa1b4"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_1.py",
+      "bytes": 6638,
+      "sha256": "2b9a96789151913346df51eec0c7e807c5f8c8a0589af5ea9b2dff3ad4200f6d"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_2.log",
+      "bytes": 793,
+      "sha256": "a28efc8a44c57ed7a903af47aaf4d0df0f32c1772263f56f3ae3e78b56d5b758"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/freeze_audit_failure_2.py",
+      "bytes": 6638,
+      "sha256": "7b5cc15bcf9760853351c8db0f65005ced8733540b5897da0c0a37697fbf6338"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+      "bytes": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Program Files (x86)/Windows Kits/10/Source/10.0.26100.0/ucrt/string/stricmp.cpp",
+      "bytes": 3787,
+      "sha256": "c305a4ad6c98d98b1458a2af50f955abd314f1ae282c8b1ec0aba534c274f1f2"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/external/C/Windows/SysWOW64/ucrtbase.dll",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/allocator_list.obj",
+      "bytes": 109254,
+      "sha256": "8f5fdf14271fdb33bdb6ab39f76756b551324fdb6c878c1be5f047090dfc7f23"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/game_native_physical_pool.obj",
+      "bytes": 26443,
+      "sha256": "56f80eadf9facaf6fe958b8c46d3de27f29fe8a36f6cd2e2627d726fe8a3ce87"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+      "bytes": 5566,
+      "sha256": "6dad795c26acfc8067f33df84d289088428a4ba1043fef8a34501be51d783f73"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+      "bytes": 9651,
+      "sha256": "7bbdedbd0b675a5bfa709e647d8a610fbd3a09726e9385f61717e6b6773aac91"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+      "bytes": 811,
+      "sha256": "7c0c88296c2e8a75c82b41947e70a9492ec10b64bcd31cfe7b70cfb9e6954daf"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string.obj",
+      "bytes": 18822,
+      "sha256": "df9f762982d23f39bf6ef4a0851bebfb9e17b5fda4acb077440ad5234bf8c2b2"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+      "bytes": 15550,
+      "sha256": "7b7e6ef458af6b931e0f0898170276415a29f9cb39911b46bbee92ba70ad5e5f"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "bytes": 9151,
+      "sha256": "55c6a403bd54a7c56a9c51df05244abf6d6fa01d5953a0120ef2ecd6e4a36e5a"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "bytes": 32963,
+      "sha256": "8486cf1572bd3b3ce3a67c473ffe78d75e10db7a8872814f122cc2591054b2da"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+      "bytes": 4109,
+      "sha256": "4dc557359415e7ba501364dd21503d5d9965831f911f16e31ccb9235f3afa96c"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/game_native_physical_pool.hpp",
+      "bytes": 2268,
+      "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/game_native_string_process.hpp",
+      "bytes": 1513,
+      "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 3947,
+      "sha256": "44e4e633a6cb12a19c075a0723ca613a97681a170c97362def793cc4c51a436c"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_enum_node_pool.hpp",
+      "bytes": 3553,
+      "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_scene_property_bag_storage.hpp",
+      "bytes": 1308,
+      "sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_insertion_readiness.json",
+      "bytes": 23390,
+      "sha256": "01d97619ae5fea5d7547065e810036f623e2e9533a7eb746d0da9fd6377ca0e8"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_hash_source.json",
+      "bytes": 16723,
+      "sha256": "3bae46d7e4b6cf146017dea4930c72540b75ede1e5095c1581f313e32cde12df"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_lookup_readiness.json",
+      "bytes": 61530,
+      "sha256": "9e49d4eef1e6722113cc24e47551b7878e07d96be73853a7cb47627e9f2c8e26"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_key_lookup_source.json",
+      "bytes": 564206,
+      "sha256": "8ced2424bf6dd27aa1883df0463bfcfcbc6c00879643f1f945d48432ff329b84"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/cc12_property_record_pool_static_source.json",
+      "bytes": 127741,
+      "sha256": "5f5db928ae3f149b94d12f69b6a1f36d80c74fba29393eec5519be34b70f50b7"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_enum_node_pool_cc11.json",
+      "bytes": 42162,
+      "sha256": "4aef223ccd41cfceef3d1aee1ba092af6ecc16ec8cd7ef7947aa6dbb1006d633"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_scene_property_bag_storage_cc12.json",
+      "bytes": 68801,
+      "sha256": "17c834199e31e4c53c17e35fb90e2d09073fdb9aa23f9ee1dfdbbee66a3ba18a"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_string_pool_owner.json",
+      "bytes": 6358,
+      "sha256": "33b72b01cd30c79b5a7f7e769188edae440073533214dd49eba71920931a1552"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/reports/native_string_raw_pool_context.json",
+      "bytes": 10442,
+      "sha256": "849983082b940d53e3a204dde23e1b8d3bbdaf14416f0ad2f6cd6e3be1f1f113"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/game_native_physical_pool.cpp",
+      "bytes": 1851,
+      "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/game_native_string_process.cpp",
+      "bytes": 235,
+      "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_enum_dictionary_lookup.cpp",
+      "bytes": 4555,
+      "sha256": "49786af9ca9d36422a9af9c239e2f30dd1467ea5c8bd20fa0f4f371bb41e1c85"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_enum_node_pool.cpp",
+      "bytes": 11048,
+      "sha256": "82e2de5742d4a5a361c02d5280bfa09e06b5ceca13dd1d99def33a3f337c65e6"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_scene_property_bag_storage.cpp",
+      "bytes": 2117,
+      "sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen/repository/src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/frozen_input_receipt.json",
+      "bytes": 31798,
+      "sha256": "004da54fa8935f2162d2dc0af02327245545ac58bfca90652fcec77e0fb0b070"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/game_native_string_process_0_whole_coff.bin",
+      "bytes": 203,
+      "sha256": "fe2ea4306188b1a690aa2f95903817b6368cc32b9b74d24c9b84266a853457f9"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/game_native_string_process_1_whole_coff.bin",
+      "bytes": 46,
+      "sha256": "4aef15b43db3c8c56bec317f4b9fadfcbe8aaea050427f5273fa7bc5097cc181"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/inspect_provider_objects.log",
+      "bytes": 2119,
+      "sha256": "a57bfb5bd98f696ccce42f6fc831af3d123e51a30b5a171c1571be89acd863ed"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/inspect_provider_objects.py",
+      "bytes": 5333,
+      "sha256": "b84685b2e0c3d42e938507c5fe27c78999513e779a9d413db948f0eedf67620e"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/live_008f28f0_bytes.txt",
+      "bytes": 831,
+      "sha256": "05b2b627f6bc46204c4ac215ec22428b323a28771a9c8bb83a7a699f2928560d"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/live_008f33f0_bytes.txt",
+      "bytes": 750,
+      "sha256": "25a486bbfbb208eb88130b5f13850882b7e95c08e6939ba011398d6559bdb411"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/live_project_program_proto.txt",
+      "bytes": 188,
+      "sha256": "de65f66a55de4653bad923f22b46e9b1441ec28fef85c3006b4095faf8ae5907"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_dictionary_lookup_0_whole_coff.bin",
+      "bytes": 92,
+      "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_dictionary_lookup_1_whole_coff.bin",
+      "bytes": 195,
+      "sha256": "3e021142defe04b11454c8ea5ad51afc550ab42b18d298715bbc89433772aa12"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_0_whole_coff.bin",
+      "bytes": 1025,
+      "sha256": "751cb39f6357ebf24360682d92ebac3d2f6f1d485d32d7b5b01da7484fc277c5"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_1_whole_coff.bin",
+      "bytes": 76,
+      "sha256": "490e94df391cdb810bbfdf11dec2996e591568429725ae175a5718770a9f35f3"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_2_whole_coff.bin",
+      "bytes": 392,
+      "sha256": "a7804fb0e0e47adf0167eb043e7518ef64ab4ff7687b21b5a99ff57b2a4618b9"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_enum_node_pool_3_whole_coff.bin",
+      "bytes": 259,
+      "sha256": "16b0fd63be521a6b64e97e39526b41940ee130b5a64244adb1d025b371d77684"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_scene_property_bag_storage_0_whole_coff.bin",
+      "bytes": 61,
+      "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_0_whole_coff.bin",
+      "bytes": 212,
+      "sha256": "cc29f63149447f714c17c625e838f57f3e16aa8d47c0bc4ac420b1ea510bd65d"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_1_whole_coff.bin",
+      "bytes": 201,
+      "sha256": "7cc33c8bcd8b9b0323a64d0bcf1f37f740bcbd4d3b8cf5c1141047bdde4f66a3"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_2_whole_coff.bin",
+      "bytes": 14,
+      "sha256": "78603997abf26bcb8cb909caff592370a0a6bf6a508556ada8021d4ddd751be1"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_3_whole_coff.bin",
+      "bytes": 31,
+      "sha256": "e6e82d91a2acd6b9add02cd924ead3aaac0bc04762d6b9a648725c95223699fc"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_4_whole_coff.bin",
+      "bytes": 43,
+      "sha256": "12e2097bcb57572f3126229ea6de2f449054600973a3d61d5a3a6b2f185bfca3"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_5_whole_coff.bin",
+      "bytes": 16,
+      "sha256": "c6fdc315ac5d4376cc0843ca9c494fd611b83be3eef78cb6206503893551f7ab"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/native_string_6_whole_coff.bin",
+      "bytes": 222,
+      "sha256": "d2fa0807f1d3d0be8610026b43e06d81aab6399097f9482f03de976063ad3ba6"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/verify_call_rows.log",
+      "bytes": 90,
+      "sha256": "de731b5c4050a371090515985538d77aafb27d747889a1e13575b2f41492c722"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/write_audit.log",
+      "bytes": 276,
+      "sha256": "85202e386d7e1ec351a371e384ddbe1f23a47b183166e5fd96d04a490245c1af"
+    },
+    {
+      "path": "local/cc12_property_new_node_publication_readiness/write_audit.py",
+      "bytes": 24894,
+      "sha256": "8d126ee83d7cf5cce0a5ac3f025875aa3ae948fc1a81409661c86f993de2ec0a"
+    }
+  ],
+  "final_validation": {
+    "UTC": "2026-10-08T11:16:14.110310+00:00",
+    "physical_inputs_current_and_copies_equal": 42,
+    "raw_artifact_pins": 82,
+    "whole_original_instruction_counts": {
+      "008F28F0": 65,
+      "008F33F0": 46
+    },
+    "fragment_complete_instruction_count": 38,
+    "Original_direct_transfer_rows": 8,
+    "failed_transfers": 0,
+    "whole_existing_Source_provider_sections": 16,
+    "new_Source_or_Native_execution": false,
+    "new_Source_code": false,
+    "new_build": false
+  }
+}
