@@ -1,0 +1,2576 @@
+{
+  "schema": "bsp.cc12.property-record-tag9-readiness.v1",
+  "task": "cc12_property_record_tag9_readiness",
+  "status": "read_only_whole_producer_qualified_proposal_ready_for_future_Root_registration",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness",
+  "branch": "agent/cc12_property_record_tag9_readiness",
+  "baseline": "04392020cb3cf6b3a6432a470c3dc8ae1de3bf66",
+  "tracked_outputs": [
+    "docs/CC12_PROPERTY_RECORD_TAG9_READINESS.md",
+    "reports/cc12_property_record_tag9_readiness.json"
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\docs\\CC12_PROPERTY_RECORD_TAG9_READINESS.md",
+    "size": 9652,
+    "sha256": "a4712d725a777df8264ac4b5b410e6e979fae53cbc714acf64b8bb75f3fed841"
+  },
+  "Source_credit": 0,
+  "ready_Source_credit": 0,
+  "new_Source_packets_registered": 0,
+  "CXX_implemented": false,
+  "qualified_whole_producer_contract_closed": true,
+  "blocking_native_dependencies_for_qualified_raw_domain": [],
+  "outcome": "Tag9 cell008F52DC selects complete76-byte arm008F51AE; actual CALL008F51DE targets complete116-byte producer008EF360. One producer body inspected; future current-provider raw4-byte-element storage proposal only.",
+  "proposal": {
+    "passed": true,
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "registered_Source_packets": 0,
+    "qualified_whole_producer_contract_closed": true,
+    "independently_suitable_for_future_Source_packet": true,
+    "blocking_native_dependencies_for_qualified_raw_domain": [],
+    "implementation_done": false,
+    "candidate": "008EF360",
+    "genuine_arm": "008F51AE",
+    "actual_producer_CALL": "008F51DE",
+    "preceding_PUSH": "008F51DB",
+    "table_cell": {
+      "address": "008F52DC",
+      "size": 4,
+      "value": "008F51AE",
+      "bytes": "ae518f00",
+      "sha256": "31c8dd34688b0a9faa12c3d4aa690d04f47ef878dab0bd7e29061b68549afe2e"
+    },
+    "indexing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\indexing_contract.json",
+      "size": 3773,
+      "sha256": "84048864f52fcfee1162e5dbc2d54a0cca5d8f4e384fc23cbc547f9709fde57e"
+    },
+    "candidate_native": {
+      "passed": true,
+      "address": "008EF360",
+      "end_exclusive": "008EF3D4",
+      "size": 116,
+      "instruction_count": 36,
+      "sha256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3",
+      "bytes": "56578b7c240c8bf103ffc706d489ce00c746040900000003ff807c241400c7461800000000c7461c00000000897e24742a57e8276230008b4c2414575150894620e8da82300083c4105fc7463400000000c6462c018bc65ec20c008b5424108956205fc7463400000000c6462c018bc65ec20c00",
+      "instructions": [
+        {
+          "address": "008EF360",
+          "bytes": "56",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF361",
+          "bytes": "57",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF362",
+          "bytes": "8b7c240c",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "008EF366",
+          "bytes": "8bf1",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "008EF368",
+          "bytes": "03ff",
+          "size": 2,
+          "mnemonic": "add",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "008EF36A",
+          "bytes": "c706d489ce00",
+          "size": 6,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce89d4"
+        },
+        {
+          "address": "008EF370",
+          "bytes": "c7460409000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 9"
+        },
+        {
+          "address": "008EF377",
+          "bytes": "03ff",
+          "size": 2,
+          "mnemonic": "add",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "008EF379",
+          "bytes": "807c241400",
+          "size": 5,
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esp + 0x14], 0"
+        },
+        {
+          "address": "008EF37E",
+          "bytes": "c7461800000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], 0"
+        },
+        {
+          "address": "008EF385",
+          "bytes": "c7461c00000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], 0"
+        },
+        {
+          "address": "008EF38C",
+          "bytes": "897e24",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], edi"
+        },
+        {
+          "address": "008EF38F",
+          "bytes": "742a",
+          "size": 2,
+          "mnemonic": "je",
+          "operands": "0x8ef3bb"
+        },
+        {
+          "address": "008EF391",
+          "bytes": "57",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF392",
+          "bytes": "e827623000",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0xbf55be"
+        },
+        {
+          "address": "008EF397",
+          "bytes": "8b4c2414",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "008EF39B",
+          "bytes": "57",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF39C",
+          "bytes": "51",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "008EF39D",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "008EF39E",
+          "bytes": "894620",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], eax"
+        },
+        {
+          "address": "008EF3A1",
+          "bytes": "e8da823000",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "008EF3A6",
+          "bytes": "83c410",
+          "size": 3,
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "008EF3A9",
+          "bytes": "5f",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF3AA",
+          "bytes": "c7463400000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], 0"
+        },
+        {
+          "address": "008EF3B1",
+          "bytes": "c6462c01",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": "008EF3B5",
+          "bytes": "8bc6",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "008EF3B7",
+          "bytes": "5e",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF3B8",
+          "bytes": "c20c00",
+          "size": 3,
+          "mnemonic": "ret",
+          "operands": "0xc"
+        },
+        {
+          "address": "008EF3BB",
+          "bytes": "8b542410",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "008EF3BF",
+          "bytes": "895620",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], edx"
+        },
+        {
+          "address": "008EF3C2",
+          "bytes": "5f",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF3C3",
+          "bytes": "c7463400000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], 0"
+        },
+        {
+          "address": "008EF3CA",
+          "bytes": "c6462c01",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": "008EF3CE",
+          "bytes": "8bc6",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "008EF3D0",
+          "bytes": "5e",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF3D1",
+          "bytes": "c20c00",
+          "size": 3,
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "whole_body_matches_proto_extent": true,
+      "body_semantic_name_provisional": true,
+      "one_actual_callee_body_only": true,
+      "lease_check_before_query": "008ef360: unleased; 008ef7f0: unleased",
+      "claimed_packet": "cc12_tag9_direct_producer",
+      "claimed_owner": "agent/cc12_property_record_tag9_readiness",
+      "other_called_helper": "008EF7F0 stays named incomplete; no body query",
+      "excluded_external_callees": [
+        "008EF780",
+        "008F41F0"
+      ]
+    },
+    "caller_arm": {
+      "passed": true,
+      "table_cell": "008F52DC",
+      "cell_bytes": "ae518f00",
+      "cell_sha256": "31c8dd34688b0a9faa12c3d4aa690d04f47ef878dab0bd7e29061b68549afe2e",
+      "selected_start": "008F51AE",
+      "end_exclusive": "008F51FA",
+      "size": 76,
+      "sha256": "0856515378d5cccafc4934e298058a4d8a0a9448c5c6effcf695fd9468fa070c",
+      "bytes": "6a38e8661630008bf883c404897c240885ffc7442414040000000f84bc0000008b46206a01508bcee815a6ffff508bcfe87da1ffff8b56345f8950345e8b4c240464890d0000000083c410c3",
+      "instructions": [
+        {
+          "address": "008F51AE",
+          "bytes": "6a38",
+          "size": 2,
+          "mnemonic": "push",
+          "operands": "0x38"
+        },
+        {
+          "address": "008F51B0",
+          "bytes": "e866163000",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0xbf681b"
+        },
+        {
+          "address": "008F51B5",
+          "bytes": "8bf8",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "edi, eax"
+        },
+        {
+          "address": "008F51B7",
+          "bytes": "83c404",
+          "size": 3,
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "008F51BA",
+          "bytes": "897c2408",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], edi"
+        },
+        {
+          "address": "008F51BE",
+          "bytes": "85ff",
+          "size": 2,
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "008F51C0",
+          "bytes": "c744241404000000",
+          "size": 8,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], 4"
+        },
+        {
+          "address": "008F51C8",
+          "bytes": "0f84bc000000",
+          "size": 6,
+          "mnemonic": "je",
+          "operands": "0x8f528a"
+        },
+        {
+          "address": "008F51CE",
+          "bytes": "8b4620",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x20]"
+        },
+        {
+          "address": "008F51D1",
+          "bytes": "6a01",
+          "size": 2,
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "008F51D3",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "008F51D4",
+          "bytes": "8bce",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "008F51D6",
+          "bytes": "e815a6ffff",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0x8ef7f0"
+        },
+        {
+          "address": "008F51DB",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "008F51DC",
+          "bytes": "8bcf",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "008F51DE",
+          "bytes": "e87da1ffff",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0x8ef360"
+        },
+        {
+          "address": "008F51E3",
+          "bytes": "8b5634",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 0x34]"
+        },
+        {
+          "address": "008F51E6",
+          "bytes": "5f",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "008F51E7",
+          "bytes": "895034",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x34], edx"
+        },
+        {
+          "address": "008F51EA",
+          "bytes": "5e",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "008F51EB",
+          "bytes": "8b4c2404",
+          "size": 4,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "008F51EF",
+          "bytes": "64890d00000000",
+          "size": 7,
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "008F51F6",
+          "bytes": "83c410",
+          "size": 3,
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "008F51F9",
+          "bytes": "c3",
+          "size": 1,
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "extraction": "Only selected-arm instructions decoded incrementally until terminal RET or JMP; no other case interpreted."
+    },
+    "native_calls": [
+      {
+        "address": "008EF392",
+        "bytes": "e827623000",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf55be"
+      },
+      {
+        "address": "008EF3A1",
+        "bytes": "e8da823000",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf7680"
+      }
+    ],
+    "only_rebound_operands": [
+      [
+        51,
+        55
+      ],
+      [
+        66,
+        70
+      ]
+    ],
+    "literal_non_CALL_operand_bytes": 108,
+    "native_control_flow": {
+      "blocks": [
+        [
+          "008EF360",
+          "008EF391"
+        ],
+        [
+          "008EF391",
+          "008EF3BB"
+        ],
+        [
+          "008EF3BB",
+          "008EF3D4"
+        ]
+      ],
+      "conditional": "008EF38F JZ008EF3BB",
+      "return_instructions": [
+        "008EF3B8 RET0C",
+        "008EF3D1 RET0C"
+      ]
+    },
+    "proposed_packet": "cc12_scene_property_record_type9_four_byte_array_storage",
+    "proposed_outputs": [
+      "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+      "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE9_FOUR_BYTE_ARRAY_STORAGE_CC12.md",
+      "reports/native_scene_property_record_type9_four_byte_array_storage_cc12.json"
+    ],
+    "proposed_API": "void* __fastcall construct_native_scene_property_record_type9_four_byte_array_storage_008ef360(void* actual_root_ecx, void* unused_edx, uint32_t element_count_bits, const void* actual_element_bytes, uint32_t copy_flag_bits)",
+    "noexcept": false,
+    "names_are_hypotheses": true,
+    "inferred_float_numeric_semantics": false,
+    "domain": {
+      "root": "Actual fresh unowned writable56 bytes; disjoint from input and active target frame.",
+      "count": "Positive DWORD n in[1,0x3FFFFFFF] with actual readable nonwrapping4*n-byte input span. Native computes two ADD EDI,EDI modulo2^32; overflow and zero-size cases excluded by the external contract, with no extra guard inserted into the whole body.",
+      "data": "Opaque4-byte elements, no float loads/conversions/NUL scan. Input remains stable and caller-managed during copy or while retained pointer is used.",
+      "flag": "Full stack DWORD transported; only low byte selects retain0 vs copy nonzero. High24 ignored.",
+      "provider": "Genuine successful current allocation/copy/free domain; DF clear. Failure/reentry/unwind and private Original CRT/EH excluded."
+    },
+    "order": [
+      "PUSH ESI then EDI; read count from[T+4] BEFORE root stores.",
+      "ADD EDI,EDI at008EF368; write opaque phase at008EF36A and tag9 at008EF370; ADD EDI,EDI again at008EF377.",
+      "CMP byte[T+C],0 at008EF379 occurs AFTER those phase/tag stores and both additions; its flags govern JZ after MOV zeros18/1C and computed byte count24.",
+      "Copy branch reads data from[T+8] AFTER allocation returns; stores actual allocation at root20 BEFORE memcpy.",
+      "Both branches zero34, set byte2C=1, set EAX=root, restore EDI/ESI and RET0C."
+    ],
+    "storage": {
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "write_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          24,
+          40
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          52,
+          56
+        ]
+      ],
+      "preserve_ranges": [
+        [
+          8,
+          24
+        ],
+        [
+          40,
+          44
+        ],
+        [
+          45,
+          52
+        ]
+      ],
+      "values": {
+        "00": "00CE89D4 opaque phase",
+        "04": "9",
+        "18": "0",
+        "1C": "0",
+        "20": "actual retained or newly allocated pointer",
+        "24": "(n*4) moduloDWORD, not element count",
+        "2C": "one byte1 in both branches",
+        "34": "0"
+      },
+      "preserved_DWORD30": true
+    },
+    "ownership": {
+      "retain": "No provider call, exact actual input pointer stored; no new child or child free. Caller owns input lifetime. Byte2C=1 is not an ownership discriminator.",
+      "copy": "Own real4*n-byte allocation observed live and freed exactly once with matched canonical free before separately disposing root; no synthetic child/parent/class/provider/ordinal fixture.",
+      "phase": "Only observe literal phase bits; never invoke class/destructor/virtual dispatch."
+    },
+    "ABI": {
+      "entry": "ECX root; incoming EDX unused; [T+4]count, [T+8]actual data, [T+C]full flagDWORD.",
+      "save_return": "ESI/EDI saved atT-4/T-8, EBX/EBP locally untouched and genuine providers normal ABI; EAX=root, both RET0C -> T+16.",
+      "retain": "ECX=root, EDX=input; CMP0,0 defines CF0/PF1/AF0/ZF1/SF0/OF0, mask8D5=44. Earlier count-add flags are overwritten.",
+      "copy": "Actual provider ECX/EDX residuals recorded without assertions. Final ADD ESP,10h defines all6 arithmetic flags from(T-24)+16=T-8; do not use pre-CALL Q or pre-push R as T.",
+      "allocator_stack": "PUSH computed bytes ->T-12; allocation CALL A=T-16, size[A+4]; normal CDECL RET0 leaves old size atT-12.",
+      "copy_stack": "Push bytes,data,dest ->T-24; memcpy entry M=T-28, argsM+4/+8/+C; old allocation size M+10h. RET0 leavesT-24; ADD16 ->T-8.",
+      "no_blanket_provider_preservation": [
+        "DF",
+        "ES",
+        "x87",
+        "MXCSR"
+      ],
+      "no_local_FP_instructions": true
+    },
+    "caller_transport": {
+      "entry": "Frozen clone entry S gives arm A=S-24. Saved stateS-4/handlerS-8/oldFSS-12/scratchS-16/ESIS-20/EDIS-24.",
+      "allocation": "PUSH38S-28/CALLBF681B entryS-32; caller ADD4 after ordinary return ->S-24. EDI allocated root stored scratchS-16; state4 storeS-4 preserves TEST flags; null branch external528A.",
+      "staged_arguments": "Load EAX=[source+20]; PUSH1 at008F51D1 ->S-28; PUSH EAX at51D3 ->S-32; ECX=source; count-helper CALL51D6 entersH=S-36 with already-staged data atH+4 and flag atH+8.",
+      "helper_limit": "Caller requires helper to leave those staged words in place on normal return; exact helper body/RET/element semantics are unqueried. Name/count role remains a transport hypothesis.",
+      "producer": "After helper, PUSH EAX at51DB ->S-36; ECX=allocatedEDI; CALL51DE entryT=S-40. Actual producer has count[T4],data[T8],flag[TC] and RET12 ->S-24. EAX=root is established by whole producer normal return sequence.",
+      "tail": "EDX=[source+34]; POPEDI; store[EAX+34]; POPESI; restoreFS; ADD16; RET0. Full native clone/private heap/EH/class lifetime is not admitted.",
+      "other_caller": "Indexed008F3510 remains named incomplete; no query or invented ABI."
+    },
+    "provider_contract": {
+      "passed": true,
+      "evidence": "Current private-baseline canonical source/header and admitted raw-string provider report exactly match the earlier accepted provider contract hashes. No canonical/native heap body or transitive class graph is expanded here.",
+      "current_canonical_source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "current_canonical_header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      "current_admitted_context": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\reports\\native_string_duplicate_cc12.json",
+        "size": 80228,
+        "sha256": "789744be86b9c53309a9f6ebe5a50aa1d454163d214243b002b35db9634b9ecf"
+      },
+      "context_Source_admission": 1,
+      "context_Root_independent_pending": false,
+      "context_main_build_pending": false,
+      "type8_Source_admission_used": false,
+      "original_private_CRT_EH_admitted": false,
+      "proposed_own_adapter": "New private physical noinline CDECL size adapter in the future tag9 Source TU: actual_bytes -> singleton_lifetime_allocate({object,actual_bytes,actual_bytes}). No Native reconstruction credit. No fabricated external access to type8 TU-local adapter and no shared refactor.",
+      "proposed_copy": "Genuine standard x86 CDECL memcpy import copies exactly 4*n actual bytes between disjoint live spans, with future actual mapped export/IAT/full-file/identity attestation. No element numeric conversion.",
+      "free": "Copied actual child canonical-free once after live observation and before separate root disposal. Borrowed input remains caller-owned and is not a copied child.",
+      "domain": "Positive n <= 0x3fffffff, actual nonwrapping readable 4*n-byte span, actual fresh unowned writable56 root, root/input/frame disjoint, DF clear; successful current allocation/copy domain only.",
+      "current_disk_heap": {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "size": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "current_disk_copy": {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "size": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      "fresh_runtime_providers_attested": false,
+      "future_TUs": [
+        "New whole116 constructor with its OWN genuine size adapter",
+        "Unchanged canonical allocation/free",
+        "Fresh raw/ordinary fixture"
+      ],
+      "future_independent_families_required": [
+        "Worker fresh compile/static/process/post/seal",
+        "Root independently generated compile/static/process/post/seal and full main build/publication"
+      ],
+      "prototype_mismatch": "Do not substitute the contextual virtual NativeMpkgRuntimeServices wrapper for native BF55BE physical CDECL; no fake receiver/provider.",
+      "unresolved_native_boundaries": "Original BF55BE/BF7680 private interiors, caller count-helper8EF7F0 and full clone/class/World are unexpanded and unadmitted. They do not become hidden dependencies of the proposed raw count/data/flag constructor with explicitly rebound current providers."
+    },
+    "future_fixture": {
+      "actual_calls": 4,
+      "Source_calls": 2,
+      "qualified_bound_Original_calls": 2,
+      "branches_each": 2,
+      "fresh_TUs": [
+        "New constructor and its own physical noinline CDECL size adapter",
+        "Unchanged canonical allocation/free",
+        "New raw/ordinary probe"
+      ],
+      "allocations": "Four real fresh56-byte roots plus two actual4*n-byte copied children; six total canonical allocations/frees. Retained inputs never freed as children; child frees before root frees.",
+      "actual_inputs": "Two guarded actual byte payloads with arbitrary opaque4-byte elements; e.g counts2/3/3/2 yielding8/12/12/8 bytes, full nonzero high flag bits with low0/0/1/80. No fabricated native record/parent/owner/class or ordinal input.",
+      "raw_capture": "Fresh raw caller independently captures R before three pushes, Q=R-12 before CALL, T=Q-4. Capture count/data/flag dead words atT+4/+8/+C with MOV/LEA before PUSHFD. EAX root, nonvolatiles, ESP, guards, full roots and actual input/child bytes; borrow exact ECX/EDX; copied residuals unasserted.",
+      "flags": "Compare all6 arithmetic flags mask8D5. Borrow044; copy actual ADD flags(T-24)+16. No numeric float/FPU suite.",
+      "Original": "Fresh entire116-byte RW-to-RX span; only[51,55),[66,70) retargeted to SAME genuine fresh adapter/copy import; all108 other bytes literal. This is explicitly current-provider-bound Original, not unchanged private-CRT execution.",
+      "static_gates": "Whole Source/adapter/canonical/free/ordinary callers/raw caller/main, all COFF relocations and unique linked constructor; full map-owned cookie/stack helpers/import thunks, named cold EH boundaries; all actual consumed headers including extensionless, libraries/tools/source/PE pinned.",
+      "runtime_gates": "Before zero entries and after all frees: whole gated code spans and actual mapped I386 heap/copy providers, IAT/export identity, MEM_IMAGE, NT path/file-ID/fullhash and ASLR-normalized export bytes.",
+      "independent_steps": "Root registers concrete packet first. Worker and Root each generate independent fresh build/static/process/post/seal families; Root full main build and metadata/Ghidra publication before Source admission. No old family process/helper/phase replay."
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "producer",
+          "address": "008EF360",
+          "end_exclusive": "008EF3D4",
+          "status": "Whole116/36, both RET0C paths and two direct providers verified; Source not implemented."
+        },
+        {
+          "id": "clone_case",
+          "address": "008F4F60",
+          "owned_arm": [
+            "008F51AE",
+            "008F51FA"
+          ],
+          "owned_cell": "008F52DC",
+          "status": "Frozen entry/index contract plus fresh whole76/24 arm and4-byte cell; whole clone not expanded."
+        },
+        {
+          "id": "other_caller",
+          "address": "008F3510",
+          "status": "Named incomplete indexed caller only; no body/ABI query."
+        },
+        {
+          "id": "count_helper",
+          "address": "008EF7F0",
+          "status": "Actual CALL in owned arm; name/count role hypothesis from transport. Body, exact ABI and returned-count semantics unexpanded."
+        },
+        {
+          "id": "root_heap",
+          "address": "00BF681B",
+          "status": "Direct clone root allocation target; private body/failure/ownership not expanded."
+        },
+        {
+          "id": "native_allocation",
+          "address": "00BF55BE",
+          "status": "Direct producer CDECL size call, native private body unexpanded; qualified future domain uses own genuine current adapter."
+        },
+        {
+          "id": "native_copy",
+          "address": "00BF7680",
+          "status": "Direct producer copy call, native private interior/transitive copy closure unexpanded; qualified future domain uses genuine standard memcpy."
+        },
+        {
+          "id": "null_tail",
+          "address": "008F528A",
+          "status": "Named allocation-null branch target outside owned arm; no body or cleanup proof."
+        },
+        {
+          "id": "default",
+          "address": "008F52A3",
+          "status": "Frozen unsigned tag>0B branch target only; no expansion."
+        },
+        {
+          "id": "EH",
+          "address": "00CA4B6D",
+          "status": "Frozen clone handler registration and fresh state4 store; native unwind/cleanup not admitted."
+        },
+        {
+          "id": "phase_ownership",
+          "address": "00CE89D4",
+          "status": "Opaque literal stored by producer; no dereference or virtual dispatch. Native class/destructor/ownership contract unexpanded; raw storage lifetime stated separately."
+        },
+        {
+          "id": "current_real_providers",
+          "address": null,
+          "status": "Explicit proposed current canonical allocation/free and standard memcpy boundary, rehashed existing accepted context; no Native credit and no fresh runtime proof here."
+        }
+      ],
+      "edges": [
+        {
+          "source": "clone_case",
+          "target": "producer",
+          "evidence": "Actual CALL008F51DE after PUSH EAX008F51DB; proven producer arguments count/data/flag."
+        },
+        {
+          "source": "other_caller",
+          "target": "producer",
+          "evidence": "Existing bounded index names008F3510 as second caller; address-specific instruction not queried."
+        },
+        {
+          "source": "clone_case",
+          "target": "count_helper",
+          "evidence": "CALL008F51D6 after flag and data pushes; ECX=source; EAX subsequently pushed as count."
+        },
+        {
+          "source": "clone_case",
+          "target": "root_heap",
+          "evidence": "PUSH38; CALL008F51B0; caller ADD4."
+        },
+        {
+          "source": "clone_case",
+          "target": "null_tail",
+          "evidence": "TEST allocatedEDI; state4 MOV preserves flags; JZ008F51C8."
+        },
+        {
+          "source": "clone_case",
+          "target": "default",
+          "evidence": "Frozen index contract unsigned CMP0B/JA only."
+        },
+        {
+          "source": "clone_case",
+          "target": "EH",
+          "evidence": "Frozen registration, selected arm stores state4."
+        },
+        {
+          "source": "producer",
+          "target": "native_allocation",
+          "evidence": "CALL008EF392 with computed4*n byte count."
+        },
+        {
+          "source": "producer",
+          "target": "native_copy",
+          "evidence": "CALL008EF3A1 with actual allocation,data,computed4*n; pointer stored before call."
+        },
+        {
+          "source": "producer",
+          "target": "phase_ownership",
+          "evidence": "Literal phase write008EF36A; no virtual edge or class association invented."
+        },
+        {
+          "source": "producer",
+          "target": "current_real_providers",
+          "evidence": "Future qualification only: rebind exactly operands[51,55),[66,70) to own genuine CDECL size adapter and actual memcpy;108 other bytes literal."
+        }
+      ],
+      "node_count": 12,
+      "edge_count": 11,
+      "used": 23,
+      "budget": 24
+    },
+    "scope": {
+      "fresh_cell_bytes": 4,
+      "fresh_arm_bytes": 76,
+      "fresh_producer_bytes": 116,
+      "producer_bodies": 1,
+      "other_helper_bodies": 0,
+      "old_tag6_tag8_or_clone_entry_queries": 0,
+      "external8EF780_8F41F0_queries": 0,
+      "heap_class_World_expansion": 0,
+      "CXX": 0,
+      "compilers": 0,
+      "target_processes": 0,
+      "Ghidra_mutations": 0,
+      "Root_type8_independent_family_touched": false
+    },
+    "exact_remaining_admission_steps": [
+      "Root future Source registration",
+      "New Source implementation",
+      "Worker independent fresh fixture",
+      "Root independent fresh fixture",
+      "Main build/metadata/Ghidra publication"
+    ],
+    "native_unadmitted": [
+      "Private BF55BE/BF7680 interiors",
+      "Caller root heapBF681B",
+      "Count helper8EF7F0",
+      "Second caller8F3510",
+      "Null/default/EH tails",
+      "Full clone/class/virtual/destructor ownership",
+      "World/startup/gameplay"
+    ]
+  },
+  "readiness": {
+    "passed": true,
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "registered_Source_packets": 0,
+    "qualified_whole_producer_contract_closed": true,
+    "independently_suitable_for_future_Source_packet": true,
+    "candidate": "008EF360",
+    "whole_bytes": 116,
+    "instructions": 36,
+    "branches": 2,
+    "ret_cleanup_bytes": 12,
+    "only_call_operands": [
+      [
+        51,
+        55
+      ],
+      [
+        66,
+        70
+      ]
+    ],
+    "literal_bytes": 108,
+    "raw_element_bytes": 4,
+    "inferred_float_numeric_semantics": false,
+    "actual_clone_CALL": "008F51DE",
+    "preceding_PUSH": "008F51DB",
+    "helper8EF7F0_unexpanded": true,
+    "graph_budget_used": 23,
+    "new_CPP": 0,
+    "compilers": 0,
+    "target_processes": 0,
+    "Ghidra_mutations": 0,
+    "context_provider_Source_admission": 1,
+    "type8_Source_admission_used": false,
+    "new_Source_credit": 0
+  },
+  "provider_context": {
+    "passed": true,
+    "evidence": "Current private-baseline canonical source/header and admitted raw-string provider report exactly match the earlier accepted provider contract hashes. No canonical/native heap body or transitive class graph is expanded here.",
+    "current_canonical_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "current_canonical_header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\include\\bsp\\singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    "current_admitted_context": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\reports\\native_string_duplicate_cc12.json",
+      "size": 80228,
+      "sha256": "789744be86b9c53309a9f6ebe5a50aa1d454163d214243b002b35db9634b9ecf"
+    },
+    "context_Source_admission": 1,
+    "context_Root_independent_pending": false,
+    "context_main_build_pending": false,
+    "type8_Source_admission_used": false,
+    "original_private_CRT_EH_admitted": false,
+    "proposed_own_adapter": "New private physical noinline CDECL size adapter in the future tag9 Source TU: actual_bytes -> singleton_lifetime_allocate({object,actual_bytes,actual_bytes}). No Native reconstruction credit. No fabricated external access to type8 TU-local adapter and no shared refactor.",
+    "proposed_copy": "Genuine standard x86 CDECL memcpy import copies exactly 4*n actual bytes between disjoint live spans, with future actual mapped export/IAT/full-file/identity attestation. No element numeric conversion.",
+    "free": "Copied actual child canonical-free once after live observation and before separate root disposal. Borrowed input remains caller-owned and is not a copied child.",
+    "domain": "Positive n <= 0x3fffffff, actual nonwrapping readable 4*n-byte span, actual fresh unowned writable56 root, root/input/frame disjoint, DF clear; successful current allocation/copy domain only.",
+    "current_disk_heap": {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "size": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+    },
+    "current_disk_copy": {
+      "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "size": 123328,
+      "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+    },
+    "fresh_runtime_providers_attested": false,
+    "future_TUs": [
+      "New whole116 constructor with its OWN genuine size adapter",
+      "Unchanged canonical allocation/free",
+      "Fresh raw/ordinary fixture"
+    ],
+    "future_independent_families_required": [
+      "Worker fresh compile/static/process/post/seal",
+      "Root independently generated compile/static/process/post/seal and full main build/publication"
+    ],
+    "prototype_mismatch": "Do not substitute the contextual virtual NativeMpkgRuntimeServices wrapper for native BF55BE physical CDECL; no fake receiver/provider.",
+    "unresolved_native_boundaries": "Original BF55BE/BF7680 private interiors, caller count-helper8EF7F0 and full clone/class/World are unexpanded and unadmitted. They do not become hidden dependencies of the proposed raw count/data/flag constructor with explicitly rebound current providers."
+  },
+  "read_only_queries": {
+    "passed": true,
+    "commands": [
+      {
+        "label": "arm_bytes_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_args.json",
+          "size": 327,
+          "sha256": "9eb75529282b31d59fd594eef412543b60d3be5edd68b720a1e12d8afdf0808c"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_stdout.txt",
+          "size": 364,
+          "sha256": "81157139d4a2be7074727c6ec5daf4ec8ec29440bd52e23ca3108f379a6a729e"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_bytes_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_bytes_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_args.json",
+          "size": 327,
+          "sha256": "9eb75529282b31d59fd594eef412543b60d3be5edd68b720a1e12d8afdf0808c"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_stdout.txt",
+          "size": 364,
+          "sha256": "81157139d4a2be7074727c6ec5daf4ec8ec29440bd52e23ca3108f379a6a729e"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_bytes_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_bytes_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_comments_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_args.json",
+          "size": 361,
+          "sha256": "bd041417309d1e4a1d26ea56a8bfd0d776511275822e4a393ce6785c3011559d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_stdout.txt",
+          "size": 62,
+          "sha256": "5eebb4519e3128828fb32352415ff1ac9dd08b7e329c3b868b6eff9dd80d2fd1"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_comments_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_comments_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_args.json",
+          "size": 362,
+          "sha256": "865d6659881780ba7b09a678b8164af47706f0f0103bb6adedcde8478cfa7846"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_stdout.txt",
+          "size": 63,
+          "sha256": "d49270b0f0907d6df924167cf74703da8f0e2b8466c9dac87bf9241865620dd8"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_comments_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_listing_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_args.json",
+          "size": 765,
+          "sha256": "67271c41f2b517b140c408e91aedd9721f3fc14aa659a976559849a2a4a8bf7e"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_stdout.txt",
+          "size": 97,
+          "sha256": "2826b757c92e7a585ae30a78506be4952fa2c012bd53bd3954455dd145079793"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae",
+          "008f51b0",
+          "008f51b5",
+          "008f51b7",
+          "008f51ba",
+          "008f51be",
+          "008f51c0",
+          "008f51c8",
+          "008f51ce",
+          "008f51d1",
+          "008f51d3",
+          "008f51d4",
+          "008f51d6",
+          "008f51db",
+          "008f51dc",
+          "008f51de",
+          "008f51e3",
+          "008f51e6",
+          "008f51e7",
+          "008f51ea",
+          "008f51eb",
+          "008f51ef",
+          "008f51f6",
+          "008f51f9"
+        ]
+      },
+      {
+        "label": "arm_listing_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_listing_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_args.json",
+          "size": 766,
+          "sha256": "d78b28dc08c484c44c9f5eaa7919cdfbac969317d917cdc8a40d648960931c31"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_stdout.txt",
+          "size": 98,
+          "sha256": "bd2bf7096900ae7499226bc4f20dfc2d5bed17c62980ff08f3e7a729366fe307"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae",
+          "008f51b0",
+          "008f51b5",
+          "008f51b7",
+          "008f51ba",
+          "008f51be",
+          "008f51c0",
+          "008f51c8",
+          "008f51ce",
+          "008f51d1",
+          "008f51d3",
+          "008f51d4",
+          "008f51d6",
+          "008f51db",
+          "008f51dc",
+          "008f51de",
+          "008f51e3",
+          "008f51e6",
+          "008f51e7",
+          "008f51ea",
+          "008f51eb",
+          "008f51ef",
+          "008f51f6",
+          "008f51f9"
+        ]
+      },
+      {
+        "label": "arm_listing_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_proto_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_args.json",
+          "size": 326,
+          "sha256": "7aa93fbea47737fc2febd4f0fb758c7b136360b6772fad86423acd7c445b3dfb"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_stdout.txt",
+          "size": 234,
+          "sha256": "0e77eb068ba64fe88cd0a1ff70c59400ecd901a92938f434ca876147116b817e"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_proto_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "arm_proto_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_args.json",
+          "size": 326,
+          "sha256": "7aa93fbea47737fc2febd4f0fb758c7b136360b6772fad86423acd7c445b3dfb"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_stdout.txt",
+          "size": 234,
+          "sha256": "0e77eb068ba64fe88cd0a1ff70c59400ecd901a92938f434ca876147116b817e"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f51ae"
+        ]
+      },
+      {
+        "label": "arm_proto_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_proto_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_bytes_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_args.json",
+          "size": 328,
+          "sha256": "5e1e7e8de87c895d2a2cd0ab899eb36bf6bdf8f9fc620ac0d6653cc161b15f5a"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_stdout.txt",
+          "size": 560,
+          "sha256": "d78021ee3981ef9e347718102ddfe5ada9dc5a8d951af40a9e9bd1a40db2d132"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_bytes_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_bytes_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_args.json",
+          "size": 328,
+          "sha256": "5e1e7e8de87c895d2a2cd0ab899eb36bf6bdf8f9fc620ac0d6653cc161b15f5a"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_stdout.txt",
+          "size": 560,
+          "sha256": "d78021ee3981ef9e347718102ddfe5ada9dc5a8d951af40a9e9bd1a40db2d132"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_bytes_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_bytes_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_comments_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_args.json",
+          "size": 367,
+          "sha256": "4cb93d881c5f6c2fcaac547fa4a03fb2761988ce1becdab8445e33ce9d08a917"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_stdout.txt",
+          "size": 68,
+          "sha256": "a2e1152c49febd750a1017d77ca0854936de514c539c9fe5e849f6c0f0e998e4"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_comments_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_comments_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_args.json",
+          "size": 368,
+          "sha256": "ef9e2c160c309ebdf7332abe53009f3aaf008cf1ae6dfee372f03548d18bd177"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_stdout.txt",
+          "size": 69,
+          "sha256": "3bd63d4478c5db34478576bebaf6a39becd54a973f96aea3592a9f4f3a3f5d67"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_comments_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_decompile_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_args.json",
+          "size": 331,
+          "sha256": "980a440cb6910dcb0aa66b01ec0c34a4b0dd473d194f0fe4c698ae1e851fc86d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_stdout.txt",
+          "size": 1241,
+          "sha256": "48e93d38c89d6b9510cdfbc62a2355154311c39f5643257f642c88d845114d6b"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_decompile_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_decompile_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_args.json",
+          "size": 331,
+          "sha256": "980a440cb6910dcb0aa66b01ec0c34a4b0dd473d194f0fe4c698ae1e851fc86d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_stdout.txt",
+          "size": 1241,
+          "sha256": "48e93d38c89d6b9510cdfbc62a2355154311c39f5643257f642c88d845114d6b"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_decompile_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_listing_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_args.json",
+          "size": 963,
+          "sha256": "34c6bd6a1c7fd6356d2ac09e7f4b26340d85541f8687d5fa213a4b878b286c8e"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_stdout.txt",
+          "size": 103,
+          "sha256": "5335a60688836bc40e6867b16759386c7eec42929b3a4e443c18a9cd0a38071f"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360",
+          "008ef361",
+          "008ef362",
+          "008ef366",
+          "008ef368",
+          "008ef36a",
+          "008ef370",
+          "008ef377",
+          "008ef379",
+          "008ef37e",
+          "008ef385",
+          "008ef38c",
+          "008ef38f",
+          "008ef391",
+          "008ef392",
+          "008ef397",
+          "008ef39b",
+          "008ef39c",
+          "008ef39d",
+          "008ef39e",
+          "008ef3a1",
+          "008ef3a6",
+          "008ef3a9",
+          "008ef3aa",
+          "008ef3b1",
+          "008ef3b5",
+          "008ef3b7",
+          "008ef3b8",
+          "008ef3bb",
+          "008ef3bf",
+          "008ef3c2",
+          "008ef3c3",
+          "008ef3ca",
+          "008ef3ce",
+          "008ef3d0",
+          "008ef3d1"
+        ]
+      },
+      {
+        "label": "candidate_listing_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_listing_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_args.json",
+          "size": 964,
+          "sha256": "4f5e7b0f6a9b6bd5119f622bed4a6ea6f532cabde1af90a3e18d70b0c90c72d3"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_stdout.txt",
+          "size": 104,
+          "sha256": "fc6c2ae413940835bab2e122b48ade5eeea4a33cdefc231afb443c524ea58b77"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360",
+          "008ef361",
+          "008ef362",
+          "008ef366",
+          "008ef368",
+          "008ef36a",
+          "008ef370",
+          "008ef377",
+          "008ef379",
+          "008ef37e",
+          "008ef385",
+          "008ef38c",
+          "008ef38f",
+          "008ef391",
+          "008ef392",
+          "008ef397",
+          "008ef39b",
+          "008ef39c",
+          "008ef39d",
+          "008ef39e",
+          "008ef3a1",
+          "008ef3a6",
+          "008ef3a9",
+          "008ef3aa",
+          "008ef3b1",
+          "008ef3b5",
+          "008ef3b7",
+          "008ef3b8",
+          "008ef3bb",
+          "008ef3bf",
+          "008ef3c2",
+          "008ef3c3",
+          "008ef3ca",
+          "008ef3ce",
+          "008ef3d0",
+          "008ef3d1"
+        ]
+      },
+      {
+        "label": "candidate_listing_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_proto_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_args.json",
+          "size": 326,
+          "sha256": "31246dc5bf72dd68349c2c497234ef81e76f980248346974340934442245e992"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_stdout.txt",
+          "size": 875,
+          "sha256": "188ce233fe17de091916862ae334999dcfb6bb64c0710ef5cc0959d23d1ca813"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_proto_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "candidate_proto_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_args.json",
+          "size": 326,
+          "sha256": "31246dc5bf72dd68349c2c497234ef81e76f980248346974340934442245e992"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_stdout.txt",
+          "size": 875,
+          "sha256": "188ce233fe17de091916862ae334999dcfb6bb64c0710ef5cc0959d23d1ca813"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008ef360"
+        ]
+      },
+      {
+        "label": "candidate_proto_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "tag9_cell_after",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_args.json",
+          "size": 326,
+          "sha256": "770836a4bbad1c2b6bfe8d2116b1a9029a75c96937d35e7ffb9b1193ec10aee9"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_stdout.txt",
+          "size": 28,
+          "sha256": "9acebeb6f6e62772745fac15fff8fe4f58f2800ad7a024bdb13c8ccece53dbef"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f52dc"
+        ]
+      },
+      {
+        "label": "tag9_cell_after_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      },
+      {
+        "label": "tag9_cell_before",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_args.json",
+          "size": 326,
+          "sha256": "770836a4bbad1c2b6bfe8d2116b1a9029a75c96937d35e7ffb9b1193ec10aee9"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_stdout.txt",
+          "size": 28,
+          "sha256": "9acebeb6f6e62772745fac15fff8fe4f58f2800ad7a024bdb13c8ccece53dbef"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": [
+          "008f52dc"
+        ]
+      },
+      {
+        "label": "tag9_cell_before_count",
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_count_args.json",
+          "size": 285,
+          "sha256": "7703f7b8778f0b3ba7e1e906289cbe1304e3cfcfde54588256a1fddb01e5505d"
+        },
+        "exit": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_count_exit.json",
+          "size": 21,
+          "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+        },
+        "stdout": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_count_stdout.txt",
+          "size": 48,
+          "sha256": "7a3004d5630541c5e972e408504fe9fa21b149b352bc727e2c550c8928e76de3"
+        },
+        "stderr": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before_count_stderr.txt",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "target_addresses": []
+      }
+    ],
+    "target_queries": 20,
+    "target_verification_count_queries": 20,
+    "standard_live_project_program_verification_before_each": true,
+    "queried_native_addresses": [
+      "008ef360",
+      "008ef361",
+      "008ef362",
+      "008ef366",
+      "008ef368",
+      "008ef36a",
+      "008ef370",
+      "008ef377",
+      "008ef379",
+      "008ef37e",
+      "008ef385",
+      "008ef38c",
+      "008ef38f",
+      "008ef391",
+      "008ef392",
+      "008ef397",
+      "008ef39b",
+      "008ef39c",
+      "008ef39d",
+      "008ef39e",
+      "008ef3a1",
+      "008ef3a6",
+      "008ef3a9",
+      "008ef3aa",
+      "008ef3b1",
+      "008ef3b5",
+      "008ef3b7",
+      "008ef3b8",
+      "008ef3bb",
+      "008ef3bf",
+      "008ef3c2",
+      "008ef3c3",
+      "008ef3ca",
+      "008ef3ce",
+      "008ef3d0",
+      "008ef3d1",
+      "008f51ae",
+      "008f51b0",
+      "008f51b5",
+      "008f51b7",
+      "008f51ba",
+      "008f51be",
+      "008f51c0",
+      "008f51c8",
+      "008f51ce",
+      "008f51d1",
+      "008f51d3",
+      "008f51d4",
+      "008f51d6",
+      "008f51db",
+      "008f51dc",
+      "008f51de",
+      "008f51e3",
+      "008f51e6",
+      "008f51e7",
+      "008f51ea",
+      "008f51eb",
+      "008f51ef",
+      "008f51f6",
+      "008f51f9",
+      "008f52dc"
+    ],
+    "old_tag6_tag8_entry_type8_or_external_callee_queries": 0,
+    "other_producer_bodies": 0
+  },
+  "lease_scope": {
+    "utc": "2026-10-08T15:39:18.421238+00:00",
+    "own": [
+      {
+        "id": "agent/cc12_property_record_tag9_readiness:cc12_property_record_tag9_readiness",
+        "owner": "agent/cc12_property_record_tag9_readiness",
+        "packet": "cc12_property_record_tag9_readiness",
+        "addresses": [
+          "008f52dc"
+        ],
+        "ranges": [],
+        "files": [
+          "docs/CC12_PROPERTY_RECORD_TAG9_READINESS.md",
+          "local/t9r",
+          "reports/cc12_property_record_tag9_readiness.json"
+        ],
+        "claimed": "2026-10-08T15:15:30+00:00",
+        "expires": "2026-10-08T23:15:30+00:00",
+        "status": "active",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness",
+        "note": ""
+      },
+      {
+        "id": "agent/cc12_property_record_tag9_readiness:cc12_tag9_selected_arm",
+        "owner": "agent/cc12_property_record_tag9_readiness",
+        "packet": "cc12_tag9_selected_arm",
+        "addresses": [
+          "008f51ae"
+        ],
+        "ranges": [],
+        "files": [
+          "local/t9r/selected_arm_before.bin",
+          "local/t9r/selected_arm_before.json"
+        ],
+        "claimed": "2026-10-08T15:18:50+00:00",
+        "expires": "2026-10-08T23:18:50+00:00",
+        "status": "active",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness",
+        "note": ""
+      },
+      {
+        "id": "agent/cc12_property_record_tag9_readiness:cc12_tag9_direct_producer",
+        "owner": "agent/cc12_property_record_tag9_readiness",
+        "packet": "cc12_tag9_direct_producer",
+        "addresses": [
+          "008ef360"
+        ],
+        "ranges": [],
+        "files": [
+          "local/t9r/candidate_before.bin",
+          "local/t9r/candidate_before.json"
+        ],
+        "claimed": "2026-10-08T15:20:29+00:00",
+        "expires": "2026-10-08T23:20:29+00:00",
+        "status": "active",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness",
+        "note": ""
+      }
+    ],
+    "preserved_external_records": [
+      {
+        "id": "agent/cc12_property_payload:cc12_property_owning_producer_design",
+        "owner": "agent/cc12_property_payload",
+        "packet": "cc12_property_owning_producer_design",
+        "addresses": [
+          "008ef780",
+          "008f41f0",
+          "008f4f60",
+          "00cc8a30",
+          "00cd9260",
+          "00ce2748",
+          "00e175b0"
+        ],
+        "ranges": [],
+        "files": [
+          "docs/CC12_PROPERTY_OWNING_PRODUCER_DESIGN.md",
+          "reports/cc12_property_owning_producer_design.json"
+        ],
+        "claimed": "2026-10-08T14:42:17+00:00",
+        "expires": "2026-10-08T22:52:04+00:00",
+        "status": "released",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload",
+        "note": "",
+        "released": "2026-10-08T15:16:32+00:00"
+      }
+    ],
+    "before_candidate_query": "008EF360 and008EF7F0 explicitly checked unleased; only008EF360 claimed before proto/decompile/bytes/listing.",
+    "external_addresses_never_queried": [
+      "008EF780",
+      "008F41F0"
+    ],
+    "other_helper_body_queries": 0,
+    "mutable_registry_not_strict_after_pinned": true
+  },
+  "dispatch_snapshot": {
+    "baseline": "04392020cb3cf6b3a6432a470c3dc8ae1de3bf66",
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\config\\parallel_work.json",
+      "size": 1770148,
+      "sha256": "6f052d26ea3adcc844ca119677d7a19c587b44ea38e70928a0d1b8fba6c30e68"
+    },
+    "matching_rows": [],
+    "new_Source_packet_registered": false
+  },
+  "preservation": {
+    "prior_artifacts": 5765,
+    "prior_breakdown": {
+      "tag6_with_manifest": 143,
+      "earlier": 5622
+    },
+    "strict_inputs": 7,
+    "provider_inputs": 8,
+    "frozen_copies": 27,
+    "type8_Source_admission_used": false,
+    "Root_type8_independent_family_touched": false,
+    "original_associations_unchanged": true,
+    "post": {
+      "passed": true,
+      "Source_credit": 0,
+      "ready_Source_credit": 0,
+      "registered_Source_packets": 0,
+      "qualified_whole_producer_proposal": true,
+      "prior_artifacts": 5765,
+      "all_prior_original_associations_unchanged": true,
+      "strict_inputs": 7,
+      "provider_inputs": 8,
+      "frozen_context_copies": 19,
+      "frozen_provider_copies": 8,
+      "exact_owned_cell_bytes": 4,
+      "exact_owned_arm_bytes": 76,
+      "arm_instructions": 24,
+      "whole_producer_bytes": 116,
+      "producer_instructions": 36,
+      "whole_producer_bodies": 1,
+      "other_called_helper_bodies": 0,
+      "live_PE_all_starts_operands_bookends_match": true,
+      "proto_comments_pseudocode_before_after_equal": true,
+      "Ghidra_mutations": 0,
+      "compilers": 0,
+      "target_processes": 0,
+      "old_phase_or_helper_replays": 0,
+      "Root_type8_independent_family_touched": false,
+      "graph_budget_used": 23,
+      "current_provider_context_Source_admission": 1,
+      "type8_Source_admission_used": false,
+      "new_failure_artifacts": [],
+      "expected_diagnostic": "Selected arm is not a function entry; enclosing proto header plus signature unavailable at008F51AE has exit0 and exact before/after output.",
+      "document": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\docs\\CC12_PROPERTY_RECORD_TAG9_READINESS.md",
+        "size": 9652,
+        "sha256": "a4712d725a777df8264ac4b5b410e6e979fae53cbc714acf64b8bb75f3fed841"
+      },
+      "frozen_document": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\public_document.md",
+        "size": 9652,
+        "sha256": "a4712d725a777df8264ac4b5b410e6e979fae53cbc714acf64b8bb75f3fed841"
+      },
+      "metadata": "Generation metadata and lease records are snapshots; moving unconsumed originals are not strict after-pinned."
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\artifact_manifest.json",
+      "size": 64455,
+      "sha256": "c6f70a11050d84ec665e404a3dab905a7613ccceaca90c90e8ae687b86918dd9"
+    },
+    "actual_artifacts": 251,
+    "total_including_manifest": 252,
+    "exact_recursive_inventory_rehashed_after_seal": true,
+    "all_actual_files_included": true,
+    "actual_pycache_files": 0,
+    "metadata_snapshots_not_strict_live_after_pinned": true,
+    "old_phase_helper_or_target_replays": 0
+  },
+  "failures": [],
+  "expected_diagnostics": [
+    "Selected arm is not a function entry: enclosing Clone header is available, entry signature unavailable at008F51AE; both queries exit0 and agree exactly."
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\prepare.json",
+      "size": 441,
+      "sha256": "b6ad641a90e631366bbadd60b02b0f4b88110ae94fec4c1830dc54306dc28313"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\indexing_contract.json",
+      "size": 3773,
+      "sha256": "84048864f52fcfee1162e5dbc2d54a0cca5d8f4e384fc23cbc547f9709fde57e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\selected_arm_before.json",
+      "size": 4042,
+      "sha256": "496240ca6abf88de97009bf717660cf74215f220f8de6c4b0561f95b234a7c18"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\selected_arm_before.bin",
+      "size": 76,
+      "sha256": "0856515378d5cccafc4934e298058a4d8a0a9448c5c6effcf695fd9468fa070c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\selected_arm_after.bin",
+      "size": 76,
+      "sha256": "0856515378d5cccafc4934e298058a4d8a0a9448c5c6effcf695fd9468fa070c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_before.bin",
+      "size": 4,
+      "sha256": "31c8dd34688b0a9faa12c3d4aa690d04f47ef878dab0bd7e29061b68549afe2e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\tag9_cell_after.bin",
+      "size": 4,
+      "sha256": "31c8dd34688b0a9faa12c3d4aa690d04f47ef878dab0bd7e29061b68549afe2e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_before.json",
+      "size": 6115,
+      "sha256": "33bc3704f322fdb113444a746fda9c8996542d10f9fc536b50cd61c521d74af8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_before.bin",
+      "size": 116,
+      "sha256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_after.bin",
+      "size": 116,
+      "sha256": "dce8fb8621af17a5791a0e80cca91982def8914d2f3a9e516ee1a2344f05b5e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_before.asm",
+      "size": 1268,
+      "sha256": "3fa391170bd31ca3ab3556fd1aa06b2a12e0046a11dea7a6a69f7bc01d7c8063"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\proposal.json",
+      "size": 29687,
+      "sha256": "0177fd38ca453cb0e1ed4e005a27f2a1246da181dadc9be159aa2319da6ed6f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\readiness_receipt.json",
+      "size": 841,
+      "sha256": "8aee108c69944672de1b291d8cd627b500505d92a57571319bd6c5799e1028e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\provider_contract.json",
+      "size": 3411,
+      "sha256": "9e4e53e42850d33e343707cb07e0467ac523a5e07c16234761b718cac5b86b4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\provider_inputs_before.json",
+      "size": 1771,
+      "sha256": "64bf22d1fd2d603d9d1ca018803a88750751a4f186b2e2c4b7414ca570322283"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\provider_inputs_after.json",
+      "size": 1771,
+      "sha256": "64bf22d1fd2d603d9d1ca018803a88750751a4f186b2e2c4b7414ca570322283"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\frozen_provider_context.json",
+      "size": 4190,
+      "sha256": "c5b90f491341fe85833b0528aef80c5e82a1d0c95d5aa00f1337dbc828f79fa1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_dispatch_snapshot.json",
+      "size": 368,
+      "sha256": "0f5950838c8b0739ddffd712285122328b8b7d1103c9ae0781bda2111cc81839"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\lease_scope_snapshot.json",
+      "size": 3115,
+      "sha256": "fc82666063d84a0addb7ef3193582f92c3d6e0095906eec67eeabbc7b268299f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\read_only_queries.json",
+      "size": 51831,
+      "sha256": "bdc275b537ac17be6c3b316bbee89da0a6ea1d1f41ea2ea6002051af48d27462"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\post.json",
+      "size": 1773,
+      "sha256": "fd058cb8c20a3b56f294a90a8ba90d1fe1cd8b9288a1931584d8be2bd4ab7e74"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\artifact_manifest.json",
+      "size": 64455,
+      "sha256": "c6f70a11050d84ec665e404a3dab905a7613ccceaca90c90e8ae687b86918dd9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\inputs_before.json",
+      "size": 1510,
+      "sha256": "10a398de52e01617df1bffeb11119539fa5a178cbd043a9526c4b91e6eca6084"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\inputs_after.json",
+      "size": 1510,
+      "sha256": "10a398de52e01617df1bffeb11119539fa5a178cbd043a9526c4b91e6eca6084"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\prior_before.json",
+      "size": 1359442,
+      "sha256": "4f1516398dbab1904128cdbd02c02ae7c7d929a7e7f363e6d7dd88803fb76307"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\prior_after.json",
+      "size": 1359442,
+      "sha256": "4f1516398dbab1904128cdbd02c02ae7c7d929a7e7f363e6d7dd88803fb76307"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\frozen_context.json",
+      "size": 10650,
+      "sha256": "493a956c9834158917042f8bcdd6ebcb983c3590a80bcc0168665056df3e87a2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_before.json",
+      "size": 3808,
+      "sha256": "3c1f864c23ccf7ff885c1ff37c6dde193b30b54d282c2c119e9152658c180eba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_listing_after.json",
+      "size": 3808,
+      "sha256": "3c1f864c23ccf7ff885c1ff37c6dde193b30b54d282c2c119e9152658c180eba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_before.json",
+      "size": 2102,
+      "sha256": "c0bc80c985c392071c9caa2e6c316f3df395ca0a14423634a7e721c01a86c0e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\arm_comments_after.json",
+      "size": 2102,
+      "sha256": "c0bc80c985c392071c9caa2e6c316f3df395ca0a14423634a7e721c01a86c0e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_before.json",
+      "size": 5776,
+      "sha256": "e111bb593ef4222a942df8efb2c4abaae2f6044583eea48f3f4fbf23ca531d02"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_listing_after.json",
+      "size": 5776,
+      "sha256": "e111bb593ef4222a942df8efb2c4abaae2f6044583eea48f3f4fbf23ca531d02"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_before.json",
+      "size": 765,
+      "sha256": "6ed2456fa8a8d49faa065ff14a7fe8b7632d24108ef8f0b49d9a4e73c0113599"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_comments_after.json",
+      "size": 765,
+      "sha256": "6ed2456fa8a8d49faa065ff14a7fe8b7632d24108ef8f0b49d9a4e73c0113599"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_before_stdout.txt",
+      "size": 875,
+      "sha256": "188ce233fe17de091916862ae334999dcfb6bb64c0710ef5cc0959d23d1ca813"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_proto_after_stdout.txt",
+      "size": 875,
+      "sha256": "188ce233fe17de091916862ae334999dcfb6bb64c0710ef5cc0959d23d1ca813"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_before_stdout.txt",
+      "size": 1241,
+      "sha256": "48e93d38c89d6b9510cdfbc62a2355154311c39f5643257f642c88d845114d6b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\candidate_decompile_after_stdout.txt",
+      "size": 1241,
+      "sha256": "48e93d38c89d6b9510cdfbc62a2355154311c39f5643257f642c88d845114d6b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\audit.py",
+      "size": 6711,
+      "sha256": "5404f1f416a0a268dabdbc966dbab0bf10e2f8bcec9c6fe80f8309bd0bb30365"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\discover_arm.py",
+      "size": 2081,
+      "sha256": "12abdeeaaebe7e30f984e4761ba0a50aa1b05ee6ee39549e00b3d26fc924181f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\inspect_candidate.py",
+      "size": 2412,
+      "sha256": "50b925be0deee74ce5e913a47e55734c0e42816d80362d949410d6b5dece619d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\provider_context.py",
+      "size": 4738,
+      "sha256": "12aa249d2c35dcda6e30c6ad06d471cc016f14081e6363377d2eb476f456b092"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\derive_readiness.py",
+      "size": 19774,
+      "sha256": "6c77280541cf03994802a81d5be784785d38c1ae5d857c62e64c3cd1d504add3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\seal_audit.py",
+      "size": 5908,
+      "sha256": "6bac16b1d3274b217647de4cbbd9ad06c71f624627ea1406223364adff685a3e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\commit_message.txt",
+      "size": 509,
+      "sha256": "6adb8dfdaa923d19592c1a6f3e37ed4d871d10cc982861177ed7270696a8d2d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_tag9_readiness\\local\\t9r\\public_document.md",
+      "size": 9652,
+      "sha256": "a4712d725a777df8264ac4b5b410e6e979fae53cbc714acf64b8bb75f3fed841"
+    }
+  ],
+  "next_owner": "Root may register the proposed Source packet. Future new whole constructor/own physical CDECL adapter, canonical and probe are three fresh TUs; worker and Root independent fixture families plus full main build/publication are required before admission. No fabricated owner/class/provider/ordinal or reuse of type8 private adapter."
+}
