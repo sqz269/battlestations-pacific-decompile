@@ -89,4 +89,26 @@ const void* find_native_enum_table_node_0048d4e0(const void* receiver,
     return find_node(receiver, key, bucket, node_empty, key_empty,
         native_enum_table_bucket_00489610);
 }
+
+void* find_native_property_map_node_0043b8b0(const void* actual_map,
+    const void* actual_query_header, std::uint32_t& bucket,
+    const char* actual_empty_00e177e4, const char* actual_empty_00e17654) {
+    bucket = native_property_key_bucket_0043b760(
+        actual_query_header, actual_empty_00e177e4);
+    void* node = load<void*>(actual_map, 8u + bucket * 4u);
+    if (!node) return nullptr;
+    const auto query_length = load<std::uint32_t>(actual_query_header, 0);
+    do {
+        if (load<std::uint32_t>(node, 0) == query_length) {
+            const char* data = load<const char*>(node, 4);
+            if (!data) data = actual_empty_00e177e4;
+            const char* query = load<const char*>(actual_query_header, 4);
+            if (!query) query = actual_empty_00e17654;
+            if (query == data) return node;
+            if (query && data && ::_stricmp(query, data) == 0) return node;
+        }
+        node = load<void*>(node, 0x0c);
+    } while (node);
+    return nullptr;
+}
 } // namespace bsp
