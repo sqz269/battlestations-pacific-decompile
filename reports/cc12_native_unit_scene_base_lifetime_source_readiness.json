@@ -1,0 +1,1499 @@
+{
+  "packet": "cc12_native_unit_scene_base_lifetime_source_readiness",
+  "status": "READ_ONLY_SOURCE_READINESS_COMPLETE_NO_COHESIVE_PARENT_SOURCE_PACKET_ADMITTED",
+  "generated_utc": "2026-10-08T20:07:09.144099+00:00",
+  "scope": {
+    "owned_native_addresses": [
+      "00925ce0",
+      "00928630",
+      "00925780",
+      "009287b0"
+    ],
+    "owned_tracked_files": [
+      "docs/CC12_NATIVE_UNIT_SCENE_BASE_LIFETIME_SOURCE_READINESS.md",
+      "reports/cc12_native_unit_scene_base_lifetime_source_readiness.json"
+    ],
+    "started_from_merge_head": "89b5b6e56c81ff4fdaa6b06c3b8a7d54dee8d1a1",
+    "accepted_main_at_start": "b25c2f49ca89e5f9ba5f2f2de5d4bdeadc5bb29b",
+    "worker_head_before_report_commit": "89b5b6e56c81ff4fdaa6b06c3b8a7d54dee8d1a1",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "Native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "result": {
+    "Source_changes": 0,
+    "new_reconstructed_function_credit": 0,
+    "ready_parent_Source_packets": 0,
+    "ready_application_wiring_packets": 0,
+    "actual_ordinary_root_owner_designed_or_admitted": false,
+    "reason": "The four complete parents require canonical registry, pending-init, world-link, profile and exception ownership that the current application does not provide. Existing physical weak/string/observer leaves do not supply this missing closure.",
+    "disallowed_substitutes": [
+      "scratch or shadow root",
+      "semantic GameUnitSlot or ShipAiWakeTrail overlay/copy",
+      "public opaque lifecycle callbacks posing as owner",
+      "literal Original vtable words posing as functional Source profiles",
+      "tiny constructor prelude or unlink helper credited as whole parent",
+      "invented null handling, rollback or host lifecycle"
+    ]
+  },
+  "whole_Native_parents": [
+    {
+      "address": "00925ce0",
+      "end_inclusive": "00925ef3",
+      "bytes": 532,
+      "sha256": "be6e1f1a7377f229ecfa8acad8861d06144e46c26d524f4ae7fce3dee1547795",
+      "instruction_count": 127,
+      "all_fresh_Ghidra_starts_match_PE": true,
+      "name_hypothesis": "SceneNode constructor",
+      "receiver": "ECX actual same root",
+      "arguments": [],
+      "returns": "EAX same root; RET",
+      "EH_states_in_normal_body": [
+        -1,
+        0,
+        1,
+        4
+      ],
+      "unread_handler_entry": "00CA6CBA",
+      "all_calls": [
+        {
+          "address": "00925d34",
+          "bytes": "e857f7ffff",
+          "mnemonic": "call",
+          "operands": "0x925490",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00925490"
+        },
+        {
+          "address": "00925dca",
+          "bytes": "e821d7aeff",
+          "mnemonic": "call",
+          "operands": "0x4134f0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "004134f0"
+        },
+        {
+          "address": "00925ea0",
+          "bytes": "e84bd6aeff",
+          "mnemonic": "call",
+          "operands": "0x4134f0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "004134f0"
+        },
+        {
+          "address": "00925ea9",
+          "bytes": "e8927eafff",
+          "mnemonic": "call",
+          "operands": "0x41dd40",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "0041dd40"
+        },
+        {
+          "address": "00925eba",
+          "bytes": "e8c1172d00",
+          "mnemonic": "call",
+          "operands": "0xbf7680",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bf7680"
+        }
+      ],
+      "x87_instructions": [],
+      "ordinary_return_stack_deltas": [
+        {
+          "address": "00925ef3",
+          "ESP_before_RET": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00925d23",
+          "old_state": -1,
+          "new_state": 0
+        },
+        {
+          "address": "00925d2f",
+          "old_state": 0,
+          "new_state": 1
+        },
+        {
+          "address": "00925df1",
+          "old_state": 1,
+          "new_state": 4
+        }
+      ]
+    },
+    {
+      "address": "00928630",
+      "end_inclusive": "0092878f",
+      "bytes": 352,
+      "sha256": "223e12a15ea25f5a304a07b370888a5f85dbe96ddca0718eaf117be0df11516d",
+      "instruction_count": 81,
+      "all_fresh_Ghidra_starts_match_PE": true,
+      "name_hypothesis": "GameEntity constructor",
+      "receiver": "ECX actual same root",
+      "arguments": [
+        "entry ESP+4: full DWORD formal, only low byte selects primary versus alternate table",
+        "entry ESP+8: full DWORD requested ID passed unchanged to allocator"
+      ],
+      "returns": "EAX same root; RET 8",
+      "EH_states_in_normal_body": [
+        -1,
+        0,
+        1,
+        2
+      ],
+      "unread_handler_entry": "00CA6FAE",
+      "all_calls": [
+        {
+          "address": "00928651",
+          "bytes": "e88ad6ffff",
+          "mnemonic": "call",
+          "operands": "0x925ce0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00925ce0"
+        },
+        {
+          "address": "00928695",
+          "bytes": "e8a6fbffff",
+          "mnemonic": "call",
+          "operands": "0x928240",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00928240"
+        },
+        {
+          "address": "009286ae",
+          "bytes": "ff151822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2218]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "009286e4",
+          "bytes": "e8d7900200",
+          "mnemonic": "call",
+          "operands": "0x9517c0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "009517c0"
+        },
+        {
+          "address": "00928711",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax",
+          "registers_read": [
+            "esp",
+            "eax"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "00928760",
+          "bytes": "e87be4ffff",
+          "mnemonic": "call",
+          "operands": "0x926be0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00926be0"
+        },
+        {
+          "address": "00928774",
+          "bytes": "ff151022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2210]",
+          "registers_read": [
+            "esp"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        }
+      ],
+      "x87_instructions": [],
+      "ordinary_return_stack_deltas": [
+        {
+          "address": "0092878d",
+          "ESP_before_RET": 0,
+          "ESP_after_RET": 12
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "00928680",
+          "old_state": -1,
+          "new_state": 0
+        },
+        {
+          "address": "00928690",
+          "old_state": 0,
+          "new_state": 1
+        },
+        {
+          "address": "009286bc",
+          "old_state": 1,
+          "new_state": 2
+        }
+      ]
+    },
+    {
+      "address": "00925780",
+      "end_inclusive": "009258c2",
+      "bytes": 323,
+      "sha256": "db2df1034ece895218a27c4b4aeaf4fd7887502efccdcde51f213befc6e90b17",
+      "instruction_count": 94,
+      "all_fresh_Ghidra_starts_match_PE": true,
+      "name_hypothesis": "SceneNode plain destructor",
+      "receiver": "ECX actual same root",
+      "arguments": [],
+      "returns": "RET; no root free",
+      "EH_states_in_normal_body": [
+        4,
+        3,
+        2,
+        1,
+        0,
+        -1
+      ],
+      "unread_handler_entry": "00CA6C72",
+      "all_calls": [
+        {
+          "address": "009257cf",
+          "bytes": "e89caae1ff",
+          "mnemonic": "call",
+          "operands": "0x740270",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00740270"
+        },
+        {
+          "address": "009257ed",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax",
+          "registers_read": [
+            "esp",
+            "eax"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": false
+        },
+        {
+          "address": "009257fc",
+          "bytes": "e82fe7fdff",
+          "mnemonic": "call",
+          "operands": "0x903f30",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00903f30"
+        },
+        {
+          "address": "0092580c",
+          "bytes": "e8ffeeffff",
+          "mnemonic": "call",
+          "operands": "0x924710",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924710"
+        },
+        {
+          "address": "00925820",
+          "bytes": "e8ebeeffff",
+          "mnemonic": "call",
+          "operands": "0x924710",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00924710"
+        },
+        {
+          "address": "00925835",
+          "bytes": "e866edb5ff",
+          "mnemonic": "call",
+          "operands": "0x4845a0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "004845a0"
+        },
+        {
+          "address": "00925856",
+          "bytes": "e86544afff",
+          "mnemonic": "call",
+          "operands": "0x419cc0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00419cc0"
+        },
+        {
+          "address": "0092585d",
+          "bytes": "e8aebc2a00",
+          "mnemonic": "call",
+          "operands": "0xbd1510",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd1510"
+        },
+        {
+          "address": "0092587e",
+          "bytes": "e83d44afff",
+          "mnemonic": "call",
+          "operands": "0x419cc0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00419cc0"
+        },
+        {
+          "address": "00925885",
+          "bytes": "e886bc2a00",
+          "mnemonic": "call",
+          "operands": "0xbd1510",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd1510"
+        },
+        {
+          "address": "00925891",
+          "bytes": "e8aafcffff",
+          "mnemonic": "call",
+          "operands": "0x925540",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00925540"
+        },
+        {
+          "address": "0092589d",
+          "bytes": "e8ceffd6ff",
+          "mnemonic": "call",
+          "operands": "0x695870",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00695870"
+        },
+        {
+          "address": "009258ac",
+          "bytes": "e8affed6ff",
+          "mnemonic": "call",
+          "operands": "0x695760",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00695760"
+        }
+      ],
+      "x87_instructions": [],
+      "ordinary_return_stack_deltas": [
+        {
+          "address": "009258c2",
+          "ESP_before_RET": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "009257c7",
+          "old_state": -1,
+          "new_state": 4
+        },
+        {
+          "address": "00925842",
+          "old_state": 4,
+          "new_state": 3
+        },
+        {
+          "address": "0092586a",
+          "old_state": 3,
+          "new_state": 2
+        },
+        {
+          "address": "0092588c",
+          "old_state": 2,
+          "new_state": 1
+        },
+        {
+          "address": "00925898",
+          "old_state": 1,
+          "new_state": 0
+        },
+        {
+          "address": "009258a4",
+          "old_state": 0,
+          "new_state": -1
+        }
+      ]
+    },
+    {
+      "address": "009287b0",
+      "end_inclusive": "0092885b",
+      "bytes": 172,
+      "sha256": "a0130cba8bc37d65565bfb5aafb6b468dd468ae41fe0f5876c9f6d0e5ecc4e98",
+      "instruction_count": 42,
+      "all_fresh_Ghidra_starts_match_PE": true,
+      "name_hypothesis": "GameEntity plain destructor",
+      "receiver": "ECX actual same root",
+      "arguments": [],
+      "returns": "RET; no root free",
+      "EH_states_in_normal_body": [
+        1,
+        0,
+        -1
+      ],
+      "unread_handler_entry": "00CA6FD6",
+      "all_calls": [
+        {
+          "address": "00928810",
+          "bytes": "e8bb8e0200",
+          "mnemonic": "call",
+          "operands": "0x9516d0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "009516d0"
+        },
+        {
+          "address": "00928831",
+          "bytes": "e88a14afff",
+          "mnemonic": "call",
+          "operands": "0x419cc0",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00419cc0"
+        },
+        {
+          "address": "00928838",
+          "bytes": "e8d38c2a00",
+          "mnemonic": "call",
+          "operands": "0xbd1510",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00bd1510"
+        },
+        {
+          "address": "00928847",
+          "bytes": "e834cfffff",
+          "mnemonic": "call",
+          "operands": "0x925780",
+          "registers_read": [
+            "esp",
+            "eip"
+          ],
+          "registers_written": [
+            "esp"
+          ],
+          "direct": true,
+          "target": "00925780"
+        }
+      ],
+      "x87_instructions": [],
+      "ordinary_return_stack_deltas": [
+        {
+          "address": "0092885b",
+          "ESP_before_RET": 0,
+          "ESP_after_RET": 4
+        }
+      ],
+      "EH_state_writes": [
+        {
+          "address": "009287fb",
+          "old_state": -1,
+          "new_state": 1
+        },
+        {
+          "address": "0092881d",
+          "old_state": 1,
+          "new_state": 0
+        },
+        {
+          "address": "0092883f",
+          "old_state": 0,
+          "new_state": -1
+        }
+      ]
+    }
+  ],
+  "construction_order": [
+    {
+      "parent": "00925CE0",
+      "sequence": 1,
+      "sites": [
+        "00925D23",
+        "00925D2F",
+        "00925D34"
+      ],
+      "behavior": "Construct observed prefix at +00, callback prefix at +10, then real weak owner at +24. Weak handle target is the actual +24 subobject identity. Initial prefix profiles CECCC8 and CE3CD4 precede SceneNode profiles D19120/D19104/D190FC."
+    },
+    {
+      "parent": "00925CE0",
+      "sequence": 2,
+      "sites": [
+        "00925DCA"
+      ],
+      "behavior": "Clear child head/tail/count +48/+4C/+50 and copy first stack identity matrix to +74 using actual 004134F0. This body does not write world +30, hierarchy parent +3C or link pairs +34/+38/+40/+44."
+    },
+    {
+      "parent": "00925CE0",
+      "sequence": 3,
+      "sites": [
+        "00925DF1",
+        "00925EA0",
+        "00925EA9",
+        "00925EBA"
+      ],
+      "behavior": "Initialize NativeString headers +154/+158 and +15C/+160 and the physical scalar/flag stores. Make a second distinct stack identity copy to the SAME +74 destination. Call raw resize on actual +154 header with length 0 and preserve 0, then conditionally reread current data/length for memcpy(data,null,length). Preserve this physical arm; do not replace it with an invented unreachable assertion."
+    },
+    {
+      "parent": "00925CE0",
+      "sequence": 4,
+      "sites": [
+        "00925EF3"
+      ],
+      "behavior": "Final tail stores include +168/+16C, gate bytes +61/+62/+68 and float +64. Return the same root. Full store ordering remains in whole_native_analysis.json."
+    },
+    {
+      "parent": "00928630",
+      "sequence": 1,
+      "sites": [
+        "00928651",
+        "00928695",
+        "009286AE"
+      ],
+      "behavior": "Call SceneNode constructor; transient CFF378 profile at +170 is replaced by D192BC. Install root/callback/weak profiles D192E0/D192C8/D192C0, zero name header +178/+17C, call real SceneRegistry singleton getter 00928240, capture its +4 tracked section, Enter if nonnull, then increment depth +18."
+    },
+    {
+      "parent": "00928630",
+      "sequence": 2,
+      "sites": [
+        "009286B8",
+        "009286CE",
+        "009286E4",
+        "009286ED"
+      ],
+      "behavior": "Compare only low byte of first formal against zero. Nonzero uses primary F89A08, zero alternate F89A5C. Set class ID +C4=1. Pass same actual root payload and unchanged full requested-ID DWORD to 009517C0; store returned AX at root+174."
+    },
+    {
+      "parent": "00928630",
+      "sequence": 3,
+      "sites": [
+        "00928711",
+        "0092874E",
+        "00928760",
+        "00928774"
+      ],
+      "behavior": "After +184=0 and +180=9, call actual root vslot +148 with mask 1FF and value 9; Original profile cell D19428 points to 00927D20. Fill nine DWORD holders +1AC..+1CC with 8, load CURRENT F876A4 into +1D0, and call pending-init producer 00926BE0 while outer section is still held. Set byte +1D4=0, decrement depth before Leave on nonnull section, return same root with RET8."
+    }
+  ],
+  "destruction_order": [
+    {
+      "parent": "009287B0",
+      "sequence": 1,
+      "sites": [
+        "009287F5",
+        "00928809",
+        "00928810"
+      ],
+      "behavior": "Install GameEntity profiles. Zero-extend current low WORD ID +174; signed compare against CURRENT primary table count F89A10. Select primary F89A08 on JL and alternate F89A5C otherwise; call actual release 009516D0. No ID lock acquisition is present in this body; no ID clear or rollback is invented."
+    },
+    {
+      "parent": "009287B0",
+      "sequence": 2,
+      "sites": [
+        "00928831",
+        "00928838",
+        "00928847"
+      ],
+      "behavior": "If name data +17C is nonnull, capture data, length+1 and alignment/size argument 1 before calling singleton getter 00419CC0 and raw pool release 00BD1510. Then call SceneNode plain destructor. No root free."
+    },
+    {
+      "parent": "00925780",
+      "sequence": 1,
+      "sites": [
+        "009257CF",
+        "009257ED"
+      ],
+      "behavior": "Install SceneNode profiles. Load actual global E1AEA0 and release +168 through 00740270. While CURRENT child count +50 is nonzero, reread head +48 and, if nonnull, invoke child slot0 with deleting flag1. Reread count/head after each call. No cached loop bound or null-head progress repair."
+    },
+    {
+      "parent": "00925780",
+      "sequence": 2,
+      "sites": [
+        "009257F5",
+        "009257F8",
+        "009257FC"
+      ],
+      "behavior": "Unconditionally dereference root.world +30 then [world+4], and call 00903F30 with same actual root. Therefore a constructor-returned root with zero world is not proven valid for immediate destruction."
+    },
+    {
+      "parent": "00925780",
+      "sequence": 3,
+      "sites": [
+        "0092580C",
+        "00925820",
+        "00925835"
+      ],
+      "behavior": "If root.parent +3C is nonnull, unlink from parent+48 through 00924710 and clear +3C. Otherwise unlink through [world+8], and if parentless root+B8 is nonzero remove from the distinct embedded world+0C list through 004845A0. World chain pointer headers and embedded list have different field orders."
+    },
+    {
+      "parent": "00925780",
+      "sequence": 4,
+      "sites": [
+        "00925856",
+        "0092585D",
+        "0092587E",
+        "00925885",
+        "00925891",
+        "0092589D",
+        "009258AC"
+      ],
+      "behavior": "Release second string +15C/+160 then first +154/+158. For each nonnull data pointer capture block, length+1 and 1 before the real pool getter/release. Destroy actual weak +24, then callback +10, then observed root +00, in that exact order. No root free."
+    }
+  ],
+  "actual_Original_profile_cells": {
+    "00d192e0": {
+      "profile": "00d192e0",
+      "slot": "0",
+      "target": "009289e0",
+      "bytes": "e0899200"
+    },
+    "00d19428": {
+      "profile": "00d192e0",
+      "slot": "148",
+      "target": "00927d20",
+      "bytes": "207d9200"
+    },
+    "00d19120": {
+      "profile": "00d19120",
+      "slot": "0",
+      "target": "00925f00",
+      "bytes": "005f9200"
+    },
+    "00d192c0": {
+      "profile": "00d192c0",
+      "slot": "0",
+      "target": "00bd30e0",
+      "bytes": "e030bd00"
+    },
+    "00d190fc": {
+      "profile": "00d190fc",
+      "slot": "0",
+      "target": "00bd30e0",
+      "bytes": "e030bd00"
+    }
+  },
+  "actual_SDK_imports": {
+    "00ce2210": {
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection"
+    },
+    "00ce2218": {
+      "dll": "KERNEL32.dll",
+      "name": "EnterCriticalSection"
+    }
+  },
+  "Native_immutable_identity_float_D7A24C_bytes": "0000803f",
+  "stack_and_exception_qualification": {
+    "entry_ESP": "S is the incoming stack pointer before CALL body prologue; full per-instruction state graph retained.",
+    "all_normal_paths_stack_balanced": true,
+    "callee_cleanup": "Explicit physical argument/return-cleanup assumptions for external callees, not new Native analysis of their bodies.",
+    "pseudocode_correction": "00928630 saved FS exception chain is entry S-12. CE37FC is a stack guard profile at a distinct local slot; restore does not use that profile as the prior exception chain.",
+    "handlers": [
+      "00CA6CBA",
+      "00CA6FAE",
+      "00CA6C72",
+      "00CA6FD6"
+    ],
+    "nearest_named_funclets_only": [
+      "00CA6CAC",
+      "00CA6FA6",
+      "00CA6C64",
+      "00CA6FC8"
+    ],
+    "unwind_analysis_complete": false,
+    "qualification": "Exact handler entries are not exact named starts in current ledger. Only metadata was queried outside the leased four bodies. No fresh handler/table/funclet interpretation and no exception execution; full rollback/fault cleanup remains unresolved."
+  },
+  "current_Source_provider_closure": [
+    {
+      "domain": "Weak owner and physical pool",
+      "status": "actual canonical Source provider exists with contract restrictions",
+      "native": [
+        "00925490",
+        "00925540"
+      ],
+      "Source": [
+        "src/native_weak_owner.cpp",
+        "src/game_native_weak_pool.cpp",
+        "src/game_native_physical_pool.cpp",
+        "src/game_hosts_singletons.cpp",
+        "src/game_main.cpp"
+      ],
+      "facts": [
+        "GameSingletonHost::weak_owners owns one NativeWeakOwnerDomain bound to actual sound lifetime manager 01090AA0 shared with GameNativeStringProcess.",
+        "GameNativeWeakPoolProcess owns publication 0109CE90 and storage 0109CE94 and uses the same GameNativePhysicalPoolProcess private head cell E188B4. game_main initializes 00CD8A60 before consumers.",
+        "Construct uses actual contiguous +00/+04/+08 weak subobject words and targets that subobject identity; destroy nulls target/releases handle and preserves own +04/+08. A semantic GameUnitSlot is not such a view."
+      ]
+    },
+    {
+      "domain": "Observer and callback lifetime",
+      "status": "actual canonical Source provider exists for admitted edge profiles only",
+      "native": [
+        "00695870",
+        "00695760"
+      ],
+      "Source": [
+        "src/observer_lifetime.cpp",
+        "src/game_observer_runtime.cpp",
+        "src/game_hosts_singletons.cpp",
+        "src/game_hosts.cpp"
+      ],
+      "facts": [
+        "GameObserverRuntime owns actual E198DC/E198E0/E198E4 publications and NativeObserverLifetime; application initializes CCD6A0 dispatch.",
+        "Concrete CF7E64 edge deletion is handled; unknown deleting edge profiles raise logic_error. Complete child scalar or arbitrary parent profile dispatch is not supplied by this observer owner."
+      ]
+    },
+    {
+      "domain": "Native strings and matrix copy",
+      "status": "actual Source leaves and process owner exist",
+      "native": [
+        "0041DD40",
+        "00419CC0",
+        "00BD1510",
+        "004134F0"
+      ],
+      "Source": [
+        "src/native_string.cpp",
+        "src/native_string_pool_owner.cpp",
+        "src/native_string_pool_storage.cpp",
+        "src/game_native_string_process.cpp",
+        "src/native_camera_matrix_copy.cpp"
+      ],
+      "facts": [
+        "One private permanent GameNativeStringProcess heap instance owns actual manager 01090AA0, pool 01090AA8 and gate 01090AA4.",
+        "Raw resize consumes the actual eight-byte header; unchanged zero length returns before touching data. Parent conditional copy arm remains physically accounted for.",
+        "Actual matrix copy is a complete 103-byte/35-instruction provider with sixteen x87 load/store pairs; parent four bodies contain no x87 instructions."
+      ]
+    },
+    {
+      "domain": "Entity ID tables",
+      "status": "raw leaf storage/API exists; actual canonical pair owner and producer absent",
+      "native": [
+        "00951660",
+        "009517C0",
+        "009516D0",
+        "00951790"
+      ],
+      "Source": [
+        "include/bsp/native_entity_id_tables.hpp",
+        "src/native_entity_id_tables.cpp",
+        "src/entity_identity.cpp",
+        "src/unit_instance_layout.cpp",
+        "src/entity_lifecycle_tails.cpp"
+      ],
+      "facts": [
+        "NativeEntityIdTableStorage is 0x54 bytes with real raw constructor/allocate/release and typed deleting slot provider.",
+        "No application owner/call site constructs the actual F89A08/F89A5C pair. ObjectHandleTables borrows fields; semantic EntityHandleTablePair vectors and range/failure behavior do not establish that owner.",
+        "Current semantic selectors use full int != 0. Original 00928630 uses low byte only: formal 0x100 selects alternate in Original but primary in those semantic helpers. This packet records rather than repairs that mismatch."
+      ]
+    },
+    {
+      "domain": "SceneRegistry and pending-init publication",
+      "status": "actual parent-required owners and producer unresolved",
+      "native": [
+        "00928080",
+        "00928240",
+        "00924100",
+        "00924810",
+        "00926BE0"
+      ],
+      "Source": [
+        "src/native_pending_entity_owners.cpp",
+        "src/native_pending_entity_lock.cpp",
+        "src/native_pending_entity_producers.cpp",
+        "src/game_hosts_lua.cpp",
+        "src/game_pending_entity_runtime.cpp"
+      ],
+      "facts": [
+        "SceneRegistry getter 00928240 / constructor 00928080 is distinct from pending-init getter 00924810 / constructor 00924100 and from existing pending destroy/kill lock 009248D0 / F899E8.",
+        "Original pending-init is owner F899CC, head F899D0, count F899D4. Existing NativePendingEntityOwners covers destroy F899A8 and kill F899B4 only.",
+        "GameMissionLuaHost::push_pending_entity deduplicates IDs into std::vector<PendingEntity>; it is not Original raw pointer publication through 00926BE0."
+      ]
+    },
+    {
+      "domain": "World and hierarchy ownership",
+      "status": "actual root links/producer and complete unlink closure unresolved",
+      "native": [
+        "009037F0",
+        "00903F30",
+        "009258F0",
+        "00928860",
+        "00924710",
+        "004845A0"
+      ],
+      "Source": [
+        "src/game_hosts_world.cpp",
+        "src/entity_lifecycle_tails.cpp",
+        "src/native_unit_list_remove.cpp"
+      ],
+      "facts": [
+        "Current GameWorldHost::construct clears semantic vectors and index maps; it does not own the actual raw world+4/world+8 pointer headers and embedded world+0C list required here.",
+        "World chain headers have head/tail/count order; embedded list has count/head/tail order. Existing vector/index unlink projections are not pointer-body replacements.",
+        "Actual 004845A0 raw remove exists but requires genuine owned root/nodes and matching allocation/CRT. Existing parent relationship and subject unlink readiness already forbid reducing this closure to a header clear helper."
+      ]
+    },
+    {
+      "domain": "Profile behavior and miscellaneous lifetime",
+      "status": "functional Source profiles and required effects unresolved",
+      "native": [
+        "00927D20",
+        "00925F00",
+        "009289E0",
+        "00BD30E0",
+        "00740270",
+        "007400C0"
+      ],
+      "Source": [
+        "src/game_hosts_units.cpp",
+        "src/native_ref_counted.cpp"
+      ],
+      "facts": [
+        "Actual Original D192E0+148 cell points to 00927D20, but current GameUnits role method writes semantic policy fields and omits part of notification behavior; it is not a complete Native profile provider.",
+        "Literal Original vtable values do not provide functional Source dispatch. Scene/GameEntity scalar roots and child deleting profiles need actual admitted providers; weak profile slot0 BD30E0 still requires its explicit delete-vslot04 boundary.",
+        "Unconditional 00740270 uses actual E1AEA0 and +168; current lower 007400C0 ownership/effects are not closed.",
+        "Current F876A4 load is a live Native cell read; semantic app clock fields do not establish its canonical raw Source binding."
+      ]
+    }
+  ],
+  "current_application_identity": {
+    "actual_scene_instance_callback": "Still returns GameSceneEntityRecord metadata after logging unimplemented 006FE590, not a complete raw root.",
+    "actual_game_unit_storage": "GameUnitSlot owns only a partial 0x20 observer-prefix storage and semantic ShipAiWakeTrail. This readiness packet introduces no new root or wake owner.",
+    "evidence_scope": "Current Source inventory/selected providers rechecked; previously accepted factory and wake-owner documents establish callback/artifact details. Those entire earlier analyses were not repeated or credited here."
+  },
+  "required_owner_contract_before_Source_admission": [
+    "One actual allocation/subobject identity and preimage with functional Source profiles; no layout cast from semantic game objects.",
+    "Canonical process weak/string/observer owners outlive every root, edge and handle; actual weak view uses root+24 identity.",
+    "Actual raw ID pair and pending-init owners survive constructor publication through complete destruction; real lock scopes and exception cleanup are known.",
+    "Actual world and hierarchy membership is published before normal destructor use, and all users are quiescent/withdrawn before freeing links/root.",
+    "Live child-head/count loop dispatches complete deleting profiles; actual root/name strings and ID are withdrawn in Native order.",
+    "Lower-base construction, full root destruction/scalar free and exception paths remain part of the eventual cohesive root lifecycle; these four bodies do not allocate/free the root."
+  ],
+  "exact_next_cohesive_frontier": [
+    {
+      "order": 1,
+      "name": "Registry and pending-init ownership closure",
+      "kind": "next bounded read-only readiness packet, not Source authorization",
+      "fresh_body_candidates": [
+        "00928080",
+        "00928240",
+        "00924100",
+        "00924810",
+        "00926BE0"
+      ],
+      "required_followthrough": [
+        "Recover actual initializer/registration extents for ID-pair and pending-init owner rather than assuming scan nearest labels own bytes.",
+        "Connect one real F89A08/F89A5C pair and pending F899CC/F899D0/F899D4 to actual allocators, complete cleanup and Source process lifetime.",
+        "Preserve nested lock identity/order, low-byte selector, unchanged requested-ID DWORD, same root pointer payload, and constructor publication before outer unlock."
+      ],
+      "routing_sites_only": [
+        "00CD39A0 immediate F899CC",
+        "00CD39AF WRITE xref F899D0",
+        "00CD3A8C immediate F89A08",
+        "00CD3AA0 immediate F89A5C",
+        "00CDF4C0 and 00CDF4D0 shutdown ranges"
+      ],
+      "routing_caveat": "These are physical metadata/literal sites, not recovered initializer entries. CD3940 is an accepted 37-byte body and does not own the later sites merely because a scan prints it as nearest symbol."
+    },
+    {
+      "order": 2,
+      "name": "World root and hierarchy publication/withdrawal closure",
+      "kind": "independent readiness frontier before any ordinary root owner",
+      "addresses": [
+        "009037F0",
+        "009258F0",
+        "00928860",
+        "00903F30",
+        "00924710",
+        "004845A0"
+      ],
+      "required_followthrough": [
+        "Own actual world headers and allocated nodes with their distinct layout/allocation contracts.",
+        "Establish when root+30/world and hierarchy parent/links become valid, and how all borrowers are withdrawn before destruction.",
+        "Define valid failed-construction cleanup separately; complete constructor then immediate destructor is invalid while world remains zero."
+      ]
+    },
+    {
+      "order": 3,
+      "name": "Functional profiles, residual effect and exception closure",
+      "kind": "required readiness frontier",
+      "addresses": [
+        "00927D20",
+        "00925F00",
+        "009289E0",
+        "00740270",
+        "007400C0",
+        "00CA6CBA",
+        "00CA6FAE",
+        "00CA6C72",
+        "00CA6FD6"
+      ],
+      "required_followthrough": [
+        "Close actual role, child deletion, weak secondary deletion and parent scalar profiles over real Source owners.",
+        "Establish actual E1AEA0/+168 release and canonical F876A4 source.",
+        "Recover handler/funclet tables and cleanup order, including lock guard, base construction, strings, weak owner, ID and publication failures. Normal-body EH state values alone do not prove unwind behavior."
+      ]
+    }
+  ],
+  "artifact_evidence": {
+    "whole_historical_provider_objects": 21,
+    "whole_unique_exact_core_members": 16,
+    "direct_app_objects_expected_absent_from_core": 5,
+    "historical_core_archive_member_count": 1905,
+    "historical_core_archive_bytes": 73604294,
+    "historical_core_archive_sha256": "46b565d40915f9e1472d75d9b0157328ec5ee3cc003968c31555a0d8ee57c8e8",
+    "complete_function_extents": 608,
+    "selected_API_groups": 14,
+    "objects": [
+      {
+        "module": "native_weak_owner",
+        "project": "bsp_core",
+        "whole_object_bytes": 33306,
+        "whole_object_sha256": "e847e0880a6f4c3d1a939e8ce67347525355e0be85f9f247569268548d22fc49",
+        "selected_complete_function_extents": 74,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_weak_owner.obj",
+            "header_offset": 25698976,
+            "payload_file_offset": 25699036,
+            "bytes": 33306,
+            "sha256": "e847e0880a6f4c3d1a939e8ce67347525355e0be85f9f247569268548d22fc49"
+          }
+        ]
+      },
+      {
+        "module": "native_entity_id_tables",
+        "project": "bsp_core",
+        "whole_object_bytes": 5703,
+        "whole_object_sha256": "bbf66c8e2ec1b71b7c9bfd673230fc7789cc44982a7147d37a2186289394e1eb",
+        "selected_complete_function_extents": 13,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_entity_id_tables.obj",
+            "header_offset": 59616352,
+            "payload_file_offset": 59616412,
+            "bytes": 5703,
+            "sha256": "bbf66c8e2ec1b71b7c9bfd673230fc7789cc44982a7147d37a2186289394e1eb"
+          }
+        ]
+      },
+      {
+        "module": "native_camera_matrix_copy",
+        "project": "bsp_core",
+        "whole_object_bytes": 832,
+        "whole_object_sha256": "b93a1bc3163dd3eb7e0dee185d91437e1496f4dc1361ad1052e463fdeef37e49",
+        "selected_complete_function_extents": 1,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_camera_matrix_copy.obj",
+            "header_offset": 66344572,
+            "payload_file_offset": 66344632,
+            "bytes": 832,
+            "sha256": "b93a1bc3163dd3eb7e0dee185d91437e1496f4dc1361ad1052e463fdeef37e49"
+          }
+        ]
+      },
+      {
+        "module": "native_string",
+        "project": "bsp_core",
+        "whole_object_bytes": 18826,
+        "whole_object_sha256": "f8eeadf4cb6e096b705f60a5656b548eef98d040fd930102038e4777c7548ff9",
+        "selected_complete_function_extents": 45,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_string.obj",
+            "header_offset": 26833012,
+            "payload_file_offset": 26833072,
+            "bytes": 18826,
+            "sha256": "f8eeadf4cb6e096b705f60a5656b548eef98d040fd930102038e4777c7548ff9"
+          }
+        ]
+      },
+      {
+        "module": "native_string_pool_storage",
+        "project": "bsp_core",
+        "whole_object_bytes": 9159,
+        "whole_object_sha256": "e2ec3ca4970ba25c9c978d03e86b049c69f18617e22a93f8d4d15c7dd57c6adc",
+        "selected_complete_function_extents": 15,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_string_pool_storage.obj",
+            "header_offset": 26803814,
+            "payload_file_offset": 26803874,
+            "bytes": 9159,
+            "sha256": "e2ec3ca4970ba25c9c978d03e86b049c69f18617e22a93f8d4d15c7dd57c6adc"
+          }
+        ]
+      },
+      {
+        "module": "native_string_pool_owner",
+        "project": "bsp_core",
+        "whole_object_bytes": 15554,
+        "whole_object_sha256": "6042854970397b4edc646fb8763965c0c0055b64c08c32e9a534291654cca21f",
+        "selected_complete_function_extents": 27,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_string_pool_owner.obj",
+            "header_offset": 26813034,
+            "payload_file_offset": 26813094,
+            "bytes": 15554,
+            "sha256": "6042854970397b4edc646fb8763965c0c0055b64c08c32e9a534291654cca21f"
+          }
+        ]
+      },
+      {
+        "module": "observer_lifetime",
+        "project": "bsp_core",
+        "whole_object_bytes": 25335,
+        "whole_object_sha256": "dcabd6101d45afd7108ba4819686e6632d17a1aaf6d665e31941312fe93f759b",
+        "selected_complete_function_extents": 67,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\observer_lifetime.obj",
+            "header_offset": 25533700,
+            "payload_file_offset": 25533760,
+            "bytes": 25335,
+            "sha256": "dcabd6101d45afd7108ba4819686e6632d17a1aaf6d665e31941312fe93f759b"
+          }
+        ]
+      },
+      {
+        "module": "native_unit_observer_endpoint",
+        "project": "bsp_core",
+        "whole_object_bytes": 2766,
+        "whole_object_sha256": "9e752c467fae6d4ca8804383cc70c298555d31a5202a8648ba4eb5771506e560",
+        "selected_complete_function_extents": 6,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_observer_endpoint.obj",
+            "header_offset": 26211794,
+            "payload_file_offset": 26211854,
+            "bytes": 2766,
+            "sha256": "9e752c467fae6d4ca8804383cc70c298555d31a5202a8648ba4eb5771506e560"
+          }
+        ]
+      },
+      {
+        "module": "native_unit_list_remove",
+        "project": "bsp_core",
+        "whole_object_bytes": 858,
+        "whole_object_sha256": "feb191cf60405f77a52abf31e491cf51be771d11188be30ed4958975e53917ea",
+        "selected_complete_function_extents": 1,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_list_remove.obj",
+            "header_offset": 56413624,
+            "payload_file_offset": 56413684,
+            "bytes": 858,
+            "sha256": "feb191cf60405f77a52abf31e491cf51be771d11188be30ed4958975e53917ea"
+          }
+        ]
+      },
+      {
+        "module": "native_pending_entity_owners",
+        "project": "bsp_core",
+        "whole_object_bytes": 10661,
+        "whole_object_sha256": "e915c3b7dae0f3a981f43076133f0049869f6326e228a83194a1d9e53afa1dc5",
+        "selected_complete_function_extents": 18,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_pending_entity_owners.obj",
+            "header_offset": 30300562,
+            "payload_file_offset": 30300622,
+            "bytes": 10661,
+            "sha256": "e915c3b7dae0f3a981f43076133f0049869f6326e228a83194a1d9e53afa1dc5"
+          }
+        ]
+      },
+      {
+        "module": "native_pending_entity_producers",
+        "project": "bsp_core",
+        "whole_object_bytes": 6067,
+        "whole_object_sha256": "b581990001a78ec103f07f72ea1819b26fda658b396d3aaab572ff36959cf8ff",
+        "selected_complete_function_extents": 12,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\native_pending_entity_producers.obj",
+            "header_offset": 30294434,
+            "payload_file_offset": 30294494,
+            "bytes": 6067,
+            "sha256": "b581990001a78ec103f07f72ea1819b26fda658b396d3aaab572ff36959cf8ff"
+          }
+        ]
+      },
+      {
+        "module": "entity_lifecycle_tails",
+        "project": "bsp_core",
+        "whole_object_bytes": 62345,
+        "whole_object_sha256": "e309d5a12402fe9672759dac33d8ef26829f82dba643f6810302f534c46692f1",
+        "selected_complete_function_extents": 180,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\entity_lifecycle_tails.obj",
+            "header_offset": 53137134,
+            "payload_file_offset": 53137194,
+            "bytes": 62345,
+            "sha256": "e309d5a12402fe9672759dac33d8ef26829f82dba643f6810302f534c46692f1"
+          }
+        ]
+      },
+      {
+        "module": "unit_instance_layout",
+        "project": "bsp_core",
+        "whole_object_bytes": 10516,
+        "whole_object_sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d",
+        "selected_complete_function_extents": 13,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\unit_instance_layout.obj",
+            "header_offset": 18504952,
+            "payload_file_offset": 18505012,
+            "bytes": 10516,
+            "sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d"
+          }
+        ]
+      },
+      {
+        "module": "singleton_lifetime",
+        "project": "bsp_core",
+        "whole_object_bytes": 32971,
+        "whole_object_sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582",
+        "selected_complete_function_extents": 67,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+            "header_offset": 67703546,
+            "payload_file_offset": 67703606,
+            "bytes": 32971,
+            "sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582"
+          }
+        ]
+      },
+      {
+        "module": "game_native_weak_pool",
+        "project": "bsp_core",
+        "whole_object_bytes": 16110,
+        "whole_object_sha256": "a843d92899730778d3c333073d3fb804b5c0c4761b5d0686aa3815def878e86e",
+        "selected_complete_function_extents": 29,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\game_native_weak_pool.obj",
+            "header_offset": 52311074,
+            "payload_file_offset": 52311134,
+            "bytes": 16110,
+            "sha256": "a843d92899730778d3c333073d3fb804b5c0c4761b5d0686aa3815def878e86e"
+          }
+        ]
+      },
+      {
+        "module": "game_native_string_process",
+        "project": "bsp_game",
+        "whole_object_bytes": 4117,
+        "whole_object_sha256": "2aec5531a12a87990cdf58ce2e9403be4176a71b4f0d0427c48a8e91143af8ec",
+        "selected_complete_function_extents": 6,
+        "whole_exact_member_matches": []
+      },
+      {
+        "module": "game_observer_runtime",
+        "project": "bsp_game",
+        "whole_object_bytes": 15873,
+        "whole_object_sha256": "470209bbd6ec78846643d1b7f942cdf5fc81ae02a14a2ea23856e108abf021f4",
+        "selected_complete_function_extents": 20,
+        "whole_exact_member_matches": []
+      },
+      {
+        "module": "game_pending_entity_runtime",
+        "project": "bsp_core",
+        "whole_object_bytes": 3480,
+        "whole_object_sha256": "d03c0f6cc0e4de38140b57512a2cb9f88bac4959a26790ec9f34f1cf48bd23f7",
+        "selected_complete_function_extents": 6,
+        "whole_exact_member_matches": [
+          {
+            "name": "bsp_core.dir\\Release\\game_pending_entity_runtime.obj",
+            "header_offset": 52307534,
+            "payload_file_offset": 52307594,
+            "bytes": 3480,
+            "sha256": "d03c0f6cc0e4de38140b57512a2cb9f88bac4959a26790ec9f34f1cf48bd23f7"
+          }
+        ]
+      },
+      {
+        "module": "game_hosts_singletons",
+        "project": "bsp_game",
+        "whole_object_bytes": 36493,
+        "whole_object_sha256": "9ab4c0bb0cfa631c7937d55b566c2ca484eaf069df5d162a0b43c7288952f809",
+        "selected_complete_function_extents": 1,
+        "whole_exact_member_matches": []
+      },
+      {
+        "module": "game_hosts_lua",
+        "project": "bsp_game",
+        "whole_object_bytes": 1570089,
+        "whole_object_sha256": "ab54e158373e341e15ff5a65391ce90812a1d6b0927b9b50d32134004b01d367",
+        "selected_complete_function_extents": 3,
+        "whole_exact_member_matches": []
+      },
+      {
+        "module": "game_hosts_units",
+        "project": "bsp_game",
+        "whole_object_bytes": 3203165,
+        "whole_object_sha256": "50573696799d3ff5261ec616c8fdc14070237d8a438a8e9ae472551a97d64a28",
+        "selected_complete_function_extents": 4,
+        "whole_exact_member_matches": []
+      }
+    ],
+    "qualification": "Whole historical worker COFF objects and core archive; selected API function extents retain all bytes and ordered relocations. Current Source/header and historical compiler/read records physically retained separately. This does not claim fresh compilation, current compiler-consumed dependency preimages, final EXE/COMDAT selection, loaded targets or gameplay. Standard compiler helper/EH extents are separately bounded by next function or section end.",
+    "compiler_provenance": "Physical compiler/frontends/librarian/linker files and historical 21 CL command/read records retained alongside current physical dependency copies; no fresh build or consumed-input preimage claim."
+  },
+  "verification": {
+    "completed_utc": "2026-10-08T20:06:55.384442+00:00",
+    "worker_head_before_report_commit": "89b5b6e56c81ff4fdaa6b06c3b8a7d54dee8d1a1",
+    "tracked_worktree_clean_before_report_write": true,
+    "physical_pin_records_rehashed_current_and_retained": 3990,
+    "unique_current_paths_rehashed": 791,
+    "current_Source_inventory_records_rehashed": 4029,
+    "Native_whole_bytes": 1379,
+    "Native_whole_instructions": 344,
+    "Native_all_29_call_sites_retained": true,
+    "Native_fresh_Ghidra_starts_match_complete_installed_PE": true,
+    "ordinary_path_stack_graph_uses_explicit_callee_cleanup_assumptions": true,
+    "complete_historical_provider_objects": 21,
+    "unique_exact_complete_core_members": 16,
+    "application_direct_objects_absent_from_core_as_expected": 5,
+    "complete_provider_function_extents": 608,
+    "Source_changes": 0,
+    "fresh_builds": 0,
+    "tests": 0,
+    "new_probes_or_entry_executions": 0,
+    "Ghidra_mutations": 0,
+    "new_reconstructed_function_credit": 0,
+    "qualification": "Current physical inputs and retained historical artifacts agree. Existing objects and old compiler records are not claimed to have consumed the current Source in this packet. No final link, load, runtime, full ABI or game validation."
+  },
+  "evidence": {
+    "archive_path": "local/cc12_native_unit_scene_base_lifetime_source_readiness_evidence.zip",
+    "archive_bytes": 66252450,
+    "archive_sha256": "88f23f7f926b7a7c3cbeae75ce21523232b367e5cd450d6ecde2257f9e80d678",
+    "manifest_sha256": "b6d619f321dee019de9691c3c10455bb8a9daffac51c66791e7db423e1da500f",
+    "archive_members": 4071,
+    "CRC_and_all_member_SHA256_verified": true,
+    "sealed_utc": "2026-10-08T20:06:55.520378+00:00",
+    "final_checks": {
+      "completed_utc": "2026-10-08T20:06:55.384442+00:00",
+      "worker_head_before_report_commit": "89b5b6e56c81ff4fdaa6b06c3b8a7d54dee8d1a1",
+      "tracked_worktree_clean_before_report_write": true,
+      "physical_pin_records_rehashed_current_and_retained": 3990,
+      "unique_current_paths_rehashed": 791,
+      "current_Source_inventory_records_rehashed": 4029,
+      "Native_whole_bytes": 1379,
+      "Native_whole_instructions": 344,
+      "Native_all_29_call_sites_retained": true,
+      "Native_fresh_Ghidra_starts_match_complete_installed_PE": true,
+      "ordinary_path_stack_graph_uses_explicit_callee_cleanup_assumptions": true,
+      "complete_historical_provider_objects": 21,
+      "unique_exact_complete_core_members": 16,
+      "application_direct_objects_absent_from_core_as_expected": 5,
+      "complete_provider_function_extents": 608,
+      "Source_changes": 0,
+      "fresh_builds": 0,
+      "tests": 0,
+      "new_probes_or_entry_executions": 0,
+      "Ghidra_mutations": 0,
+      "new_reconstructed_function_credit": 0,
+      "qualification": "Current physical inputs and retained historical artifacts agree. Existing objects and old compiler records are not claimed to have consumed the current Source in this packet. No final link, load, runtime, full ABI or game validation."
+    }
+  },
+  "retained_analysis_files": [
+    "physical_inputs.json",
+    "whole_native_analysis.json",
+    "whole_stack_and_exception_state_analysis.json",
+    "dependency_ledger_summary.json",
+    "complete_provider_objects.json",
+    "provider_artifact_analysis.json",
+    "additional_dependency_metadata.json",
+    "canonical_source_pins.json",
+    "current_Source_inventory.json",
+    "final_readiness_checks.json",
+    "manifest.json"
+  ],
+  "verification_programs": [
+    "capture.py",
+    "verify_providers.py",
+    "analyze.py",
+    "finalize.py"
+  ],
+  "qualification": "Exported and physically inspected four complete Native parent bodies, with current Source and historical artifact readiness evidence. No parent reconstruction, build/test/fixture/ABI/game acceptance, new probe or Original/new entry execution, application wiring, Ghidra edits or count credit."
+}
