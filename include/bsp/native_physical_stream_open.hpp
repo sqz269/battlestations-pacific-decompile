@@ -31,6 +31,13 @@ void* acquire_native_physical_stream_00bf3770(void* actual_header,
 // Original ECX raw20h stream; EAX same; RET. Leaves +C untouched.
 void* construct_native_physical_stream_00bf50d0(void*) noexcept;
 
+// Complete raw BF50D0: ECX actual live20h backing, unused incoming EDX,
+// EAX same receiver, RET. Preserves the two Original numeric profile writes
+// CEB130 then D691B0 and leaves +C untouched. No Source-owned table/class,
+// virtual lifetime, handle producer or substream-dispatch admission follows.
+void* __fastcall raw_construct_native_physical_stream_00bf50d0(
+    void* actual_backing, std::uint32_t unused_edx) noexcept;
+
 // Original ECX raw header; stack requested DWORD; RET4. Signed comparisons,
 // wrapping arithmetic, current header reads, post-free publication retained.
 void reserve_native_physical_stream_slots_00bf30c0(void*, std::uint32_t);
