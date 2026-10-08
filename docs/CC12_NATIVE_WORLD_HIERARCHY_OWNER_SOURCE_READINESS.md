@@ -11,7 +11,11 @@ game execution, ledger or saved Ghidra program was changed.
 The worker baseline is `8c5e4353c1f8dd9366b9d307fb6c382b3a35b6ea`. Main was
 `86da7c2800ad6bd959031c09ae86a5db7f81a387` at capture. The prior registry Source candidate
 `cf1970bb9` remains distinct from accepted main admission. The worker core was
-built before the latest main merge and is explicitly historical.
+built before the latest main merge and is explicitly historical. The registry
+Source was subsequently accepted into main at `a4ba85f1f`; its primary receipt
+is `907f9662c05bfd543877f523134522b8c2bada25714f80b4f59527acd69b8d2a`.
+This closes that separate registry Source admission, while the World owner
+frontier described here remains unready.
 
 ## Whole physical evidence
 
@@ -187,3 +191,12 @@ The tracked doc/report are outside the archive to avoid a checksum cycle.
 
 This is static Native recovery and Source-readiness review. It adds no build,
 fixture, ABI execution, Native entry execution, game startup or gameplay proof.
+
+Primary review accepted the readiness findings after independently rehashing
+all 150 retained artifacts, 151 ZIP entries and 89 physical input pins, checking
+the seven complete Native spans against the installed PE, and reviewing the
+34 selected current Source inputs and seven historical object modules. The
+primary receipt is `local/cc12_world_hierarchy_owner_primary_review/receipt.json`,
+SHA256 `9672e0b1f3f80c8f6ac2321e7b6c8b2861c1c4b01e901138997ad8f607283cbd`.
+The two unlink leaves are admitted for a bounded Source implementation next;
+this review itself adds no reconstructed-function or ready-owner credit.
