@@ -3,12 +3,12 @@
   "packet": "cc12_scene_property_record_type2_string_storage",
   "address": "008EF1B0",
   "name": "construct_native_scene_property_record_type2_string_storage_008ef1b0",
-  "status": "worker_source_complete_qualified_native60_current_owned_copy_fixture_passed_Root_pending",
-  "Source_admission_credit": 0,
+  "status": "qualified type2 raw string storage independently validated with all retained linked TU and required normal helper code gated",
+  "Source_admission_credit": 1,
   "worker_implementation_count": 1,
-  "Root_independent_validation_pending": true,
+  "Root_independent_validation_pending": false,
   "main_build_pending": false,
-  "saved_analysis_publication_pending": true,
+  "saved_analysis_publication_pending": false,
   "branch": "agent/cc12_type2_string_storage_source",
   "base_commit": "7c79302e7276263fe41dc079c589920336c7a918",
   "scope": "Entire physical constructor with sole CALL operand rebound to admitted physical duplicate57; normal current CRT ownership only",
@@ -2886,19 +2886,260 @@
   },
   "game_validated": false,
   "primary_integration": {
-    "passed": false,
-    "Source_admission_credit": 0,
-    "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
-    "historical_family": "local/t2p4",
-    "missing_normal_fixture_bodies": 16,
-    "missing_cold_exception_bodies": 6,
-    "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
-    "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
-    "historical_inventory_preserved": true,
-    "old_accepted_helpers_phases_objects_processes_replayed": 0,
-    "qualification": "Reopen the historical Type2 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 16 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The entire Type2 main body3543B986 was omitted. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+    "passed": true,
+    "Source_admission_credit": 1,
+    "status": "qualified type2 raw string storage independently validated with all retained linked TU and required normal helper code gated",
+    "independent_family": "local/t2p5",
+    "independent_seal_sha256": "77695fa9e0f34908b7b6d90221f3c688a564a33c5b43691d06c11525ec068eb3",
+    "independent_inventory_artifacts": 127,
+    "independent_actual_files": 128,
+    "prior_artifacts_preserved": 20715,
+    "fresh_translation_units": 4,
+    "consumed_headers": 185,
+    "consumed_libraries": 7,
+    "retained_function_symbols": 34,
+    "all_retained_function_bodies_gated": 32,
+    "complete_code_spans": 47,
+    "full_main_bytes": 3301,
+    "full_main_instructions": 928,
+    "all280_relocations_independently_verified": true,
+    "actual_cookie_helper_bytes": 14,
+    "actual_stack_helper_bytes": 43,
+    "cold_support_gated_without_EH_execution_admission": true,
+    "qualified_generic_library_frontiers": [
+      {
+        "symbol": "___report_gsfailure",
+        "map": {
+          "address": 1023424080,
+          "section": "0001",
+          "offset": 9808,
+          "provenance": "f   MSVCRT:gs_report.obj"
+        },
+        "unexpanded": true,
+        "normal_or_cold_requires_Root_review": true,
+        "qualified_only_failure_or_EH": true,
+        "normal_target_execution_admitted": false,
+        "separate_destination_body_not_claimed_gated": true
+      },
+      {
+        "symbol": "??3@YAXPAXI@Z",
+        "map": {
+          "address": 1023423232,
+          "section": "0001",
+          "offset": 8960,
+          "provenance": "f   MSVCRT:delete_scalar_size.obj"
+        },
+        "unexpanded": true,
+        "normal_or_cold_requires_Root_review": true,
+        "qualified_only_failure_or_EH": true,
+        "normal_target_execution_admitted": false,
+        "separate_destination_body_not_claimed_gated": true
+      }
+    ],
+    "accepted_processes": 1,
+    "target_entries": 5,
+    "actual_allocations": 3,
+    "actual_frees": 3,
+    "native_bytes": 60,
+    "native_instructions": 20,
+    "literal_bytes": 56,
+    "qualified_CALL_operand_bytes": 4,
+    "independently_decoded": {
+      "passed": true,
+      "accepted_processes": 1,
+      "actual_target_entries": 5,
+      "actual_allocations": 3,
+      "actual_frees": 3,
+      "fresh_TUs": 4,
+      "retained_function_symbols": 34,
+      "retained_function_bodies": 32,
+      "complete_runtime_spans": 47,
+      "full_Main_bytes": 3301,
+      "full_Main_instructions": 928,
+      "four_all80_capture_fields_decoded": [
+        {
+          "index": 0,
+          "Original": true,
+          "null": true,
+          "capture_all80_serialized_fields_sha256": "5aea952473b1c06add02ed386e051d4e42a068943c469fd9ac3e7e4d3654876d",
+          "raw_entry_R": 5739388,
+          "argument_slot_Q": 5739364,
+          "target_entry_T": 5739360,
+          "target_RET4_ESP": 5739368,
+          "defined_arithmetic_flags": 68,
+          "nonnull_ECX_EDX_volatile_unasserted": false
+        },
+        {
+          "index": 1,
+          "Original": true,
+          "null": false,
+          "capture_all80_serialized_fields_sha256": "4da728d384ec9fbd0b396a112434be38855e985b209af821c9575a9a695cbf63",
+          "raw_entry_R": 5739388,
+          "argument_slot_Q": 5739364,
+          "target_entry_T": 5739360,
+          "target_RET4_ESP": 5739368,
+          "defined_arithmetic_flags": 4,
+          "nonnull_ECX_EDX_volatile_unasserted": true
+        },
+        {
+          "index": 2,
+          "Original": false,
+          "null": true,
+          "capture_all80_serialized_fields_sha256": "5aea952473b1c06add02ed386e051d4e42a068943c469fd9ac3e7e4d3654876d",
+          "raw_entry_R": 5739388,
+          "argument_slot_Q": 5739364,
+          "target_entry_T": 5739360,
+          "target_RET4_ESP": 5739368,
+          "defined_arithmetic_flags": 68,
+          "nonnull_ECX_EDX_volatile_unasserted": false
+        },
+        {
+          "index": 3,
+          "Original": false,
+          "null": false,
+          "capture_all80_serialized_fields_sha256": "4da728d384ec9fbd0b396a112434be38855e985b209af821c9575a9a695cbf63",
+          "raw_entry_R": 5739388,
+          "argument_slot_Q": 5739364,
+          "target_entry_T": 5739360,
+          "target_RET4_ESP": 5739368,
+          "defined_arithmetic_flags": 4,
+          "nonnull_ECX_EDX_volatile_unasserted": true
+        }
+      ],
+      "five_full96_receiver_snapshots_decoded": [
+        {
+          "index": 0,
+          "root56_and40_outer_guard_bytes_independently_checked": true,
+          "borrowed_full48_bytes_preserved": true,
+          "copied_all9_bytes_including_terminal_NUL": false,
+          "actual_child": 0,
+          "retired_child_not_read": true,
+          "address_reuse_allowed": true
+        },
+        {
+          "index": 1,
+          "root56_and40_outer_guard_bytes_independently_checked": true,
+          "borrowed_full48_bytes_preserved": true,
+          "copied_all9_bytes_including_terminal_NUL": true,
+          "actual_child": 9908312,
+          "retired_child_not_read": true,
+          "address_reuse_allowed": true
+        },
+        {
+          "index": 2,
+          "root56_and40_outer_guard_bytes_independently_checked": true,
+          "borrowed_full48_bytes_preserved": true,
+          "copied_all9_bytes_including_terminal_NUL": false,
+          "actual_child": 0,
+          "retired_child_not_read": true,
+          "address_reuse_allowed": true
+        },
+        {
+          "index": 3,
+          "root56_and40_outer_guard_bytes_independently_checked": true,
+          "borrowed_full48_bytes_preserved": true,
+          "copied_all9_bytes_including_terminal_NUL": true,
+          "actual_child": 9908624,
+          "retired_child_not_read": true,
+          "address_reuse_allowed": true
+        },
+        {
+          "index": 4,
+          "root56_and40_outer_guard_bytes_independently_checked": true,
+          "borrowed_full48_bytes_preserved": true,
+          "copied_all9_bytes_including_terminal_NUL": true,
+          "actual_child": 9908672,
+          "retired_child_not_read": true,
+          "address_reuse_allowed": true
+        }
+      ],
+      "full48_guarded_input_and_all9_copy_bytes_decoded": true,
+      "providers": [
+        {
+          "name": "malloc",
+          "actual_IAT": 1987903776,
+          "physical_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "actual_export_RVA": 196896,
+          "complete_DLL_identity_and_actual_ASLR_prefix_independently_checked": true,
+          "MEM_IMAGE_and_I386_gated_before_and_after_by_linked_whole_observer_code": true
+        },
+        {
+          "name": "free",
+          "actual_IAT": 1987903648,
+          "physical_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "actual_export_RVA": 196768,
+          "complete_DLL_identity_and_actual_ASLR_prefix_independently_checked": true,
+          "MEM_IMAGE_and_I386_gated_before_and_after_by_linked_whole_observer_code": true
+        },
+        {
+          "name": "_callnewh",
+          "actual_IAT": 1988276224,
+          "physical_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "actual_export_RVA": 569344,
+          "complete_DLL_identity_and_actual_ASLR_prefix_independently_checked": true,
+          "MEM_IMAGE_and_I386_gated_before_and_after_by_linked_whole_observer_code": true
+        },
+        {
+          "name": "memcpy",
+          "actual_IAT": 1924293024,
+          "physical_sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "actual_export_RVA": 90528,
+          "complete_DLL_identity_and_actual_ASLR_prefix_independently_checked": true,
+          "MEM_IMAGE_and_I386_gated_before_and_after_by_linked_whole_observer_code": true
+        }
+      ],
+      "prior_pins": 20715,
+      "normal_successful_current_owned_storage_only": true,
+      "cold_EH_and_GS_failure_destinations_unexecuted_unadmitted": true,
+      "original_private_CRT_heap_class_game_unadmitted": true,
+      "no_retired_allocations_read": true,
+      "no_global_result_address_uniqueness_claimed": true
+    },
+    "full_main_build": {
+      "source_revision": "fb8053305f33176da804ba6a4da29ed97acfb106",
+      "full_Main_build": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type2_complete_helpers_current_main_build.log",
+        "size": 3808,
+        "sha256": "172ad049fffa881c2dd0c5d03206d49842bbb126d2fe2deed4af87bf5c742478"
+      },
+      "all_three_checks_pass": true,
+      "CMake": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+        "size": 198110,
+        "sha256": "8d667f88c35ef85b368931e690e8e567ad6baa2dac4461b204b4a5f6093b6e8d"
+      },
+      "fresh_independent_family": true,
+      "whole_retained_TU_and_helper_code_required": true,
+      "base": "3D000000",
+      "new_text_hex": "BA47D92EF5318A6C00",
+      "new_text_bytes": 9,
+      "receiver_poison": "6D",
+      "borrowed_poison": "59",
+      "incoming_EAX": "B3C4D5E6",
+      "incoming_EDX": "2468ACE1",
+      "nonvolatiles": [
+        "3C5A7896",
+        "7193B5D7",
+        "A8C6E402"
+      ],
+      "raw_calls": 4,
+      "ordinary_Source_calls": 1,
+      "real_returned_copies": 3,
+      "old_helpers_executed": false,
+      "old_objects_consumed": 0,
+      "old_Original_processes_replayed": 0
+    },
+    "historical_incomplete_family": "local/t2p4",
+    "historical_seals_failures_and_original_associations_preserved": true,
+    "old_accepted_stages_processes_objects_replayed": 0,
+    "BSP_archives_consumed": 0,
+    "Source_provider_glue_native_credit": 0,
+    "abi_compatible": false,
+    "original_private_CRT_EH_admitted": false,
+    "game_validated": false,
+    "qualification": "Whole [008EF1B0,008EF1EC)60B20 qualified raw owned-string storage; only CALL operand[39,43) binds the same admitted physical ECX/RET0 duplicate57, all other56 bytes literal. Actual ECX fresh unowned56-byte receiver, padded unusedEDX, actual one nullable text stackDWORD and RET4/fullEAXroot. Current phase00CE89D4/tag2/+0Cchild/+2C1 are storage identities, not a native class or ownership discriminator. Root fresh local/t2p5 corrects historical local/t2p4 incomplete helper coverage: all34 retained symbols/32 distinct whole bodies across four new TUs, including full3301B928 Main and140B52 raw caller, plus15 complete map-owned cookie14/stack43/import helper spans;47 code spans gated before0 target entries and after targets/frees. All280 COFF relocations, real weak aliases/full sizes/bytes, packed gate and physical CALL binding independently decoded. Cold standard TU support is gated as code; separate GS failure and four cold standard deleting-destructor sized-delete edges explicitly qualified/unexecuted, without destination-body or EH admission. One fresh process/five entries (rawOriginal null/live, rawSource null/live, ordinarySource live), three real returned nine-byte copies/frees; full four80-byte serialized captures, five96-byte receiver snapshots including56 root+40 guard bytes, full48 guarded borrowed object and all9 BA47D92EF5318A6C00 bytes independently decoded. Distinct R/Q/T: Q actual argument slot, T=Q-4, RET4 Q+4; nonnull final ADD(Q-44,16) flags derive the actual nested duplicate frame, null XOR mask8C5 excludes undefinedAF. EAXroot/nonvolatiles/DF0 verified, nonnullECX/EDX volatile unasserted; real allocation address reuse allowed and no retired child reads. Four actual I386 loaded heap/copy providers checked by actual IAT/export/MEM_IMAGE/physicalNT/file identity/full DLL SHA and independently ASLR-adjusted32-byte export prefixes before/after. Exact127 artifacts+seal128 and20715 historical pins preserved, including incomplete historical families, stopped attempts and failed Root parser/log; no accepted old helper/stage/object/process replay. Current Main Win32 build passes all3 existing checks with no subsequent C++/header/CMake changes. Original private CRT/heap/EH/failure/owner/class/fullclone/native game ABI/startup/gameplay remain unadmitted."
   },
-  "primary_source_status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+  "primary_source_status": "qualified type2 raw string storage independently validated with all retained linked TU and required normal helper code gated",
   "worker_Source_admission_credit": 0,
   "saved_analysis_publication": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -3052,7 +3293,36 @@
       "original_private_CRT_EH_admitted": false,
       "game_validated": false,
       "qualification": "Whole type2 raw owned-string storage[008EF1B0,008EF1EC),60B20; soleCALL operand[39,43) binds same actual admitted physical ECX/RET0 duplicate57; other56bytes literal including00CE89D4 phaseidentity/tag2. ECXactualfreshunowned56-byte receiver, unusedEDX explicitpadding, oneactualnullableNULtext stackDWORD, RET4/EAXroot; disjointreceiver/borrowedtext/frame, nonwrapping readableNULdomain.37written19preserved[8,C),[10,18),[28,2C),[2D,30). SixzeroDWORD18/1C/20/24/30/34,+Cactualownedcopyor0,byte1+2Cevennull. Caller observes childlive, currentcanonical-free once before receiver reuse/disposal. Wholechild57B30/sizeadapter61B17/canonicalallocation90B34/free6B1/realVCRUNTIMEcopy; no legacyCDECL substitute. RawT isactualargument-slotESPbeforetargetCALL; copyreturnT-44/finalADD16=>T-28,childRET0=>T-12,outerRET4=>T+4. Null8C5=44 AFundefinedexcluded;nonnull8D5derivedactualADD AFdefined,ECXEDXvolatileunasserted/currentCRTDF0. Independentcomplementary4TU strictWin32 fixture guarded9-byte8DE723B46AF159C200,C7borrowed48/D8receiver96,newGPRsentinels:5entries/3realcopies/3canonicalfrees,full96receiver+48input+rawcaptures independentlydecoded,11completecodegates/full14cookie/imports,physicalUCRT+distinctVCRUNTIME IAT/export/NTpath/fileID/fullhash/code/Native/inputbookendsPASS. Exact100artifacts+seal101;14122olderpins preserved. TwohistoricalunexecutedRootfamilies retained: p1metadataNameError/precompilerbuildstop; p2successfulprepare/3freshTUobjects/newprobeMASMhexcompilefailure. Historical p3 had one passing five-entry process, but its capture contained only seven of nine copied bytes; its immutable seal remains unadmitted. Fresh p4 captures all nine bytes including NUL with different input. No old recipe, accepted stage, Native process or object was replayed or consumed. Strict p4 post stopped on concurrent unconsumed CMake drift; a new qualified post verifies every consumed pin and retains original before pins and failed console. A new current-main build passes all three checks. CombinedmainWin32/all3checksPASS. Rawstorage/currentownedcopydomainonly; originalprivateCRT/EH,livephase/vtable/class/destructor/fullclone/world/gameABI/gameplay unadmitted."
+    },
+    {
+      "passed": false,
+      "Source_admission_credit": 0,
+      "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+      "historical_family": "local/t2p4",
+      "missing_normal_fixture_bodies": 16,
+      "missing_cold_exception_bodies": 6,
+      "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
+      "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
+      "historical_inventory_preserved": true,
+      "old_accepted_helpers_phases_objects_processes_replayed": 0,
+      "qualification": "Reopen the historical Type2 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 16 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The entire Type2 main body3543B986 was omitted. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
     }
   ],
-  "complete_linked_helper_validation_pending": true
+  "complete_linked_helper_validation_pending": false,
+  "complete_helper_saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation": true,
+    "saved": true,
+    "prior_values": "local/ghidra-annotations-20261008T172647Z.json",
+    "exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/cc12_type2_complete_helpers_final_annotations.log": "7335d74d8d110b1a7c57da2a61aae8f5342870dc270c3c6f8c97c5045c3e58db",
+      "local/cc12_type2_complete_helpers_final_exports.log": "e02a217d117ae68a8f5c27efa12760b2bd494c0cc6be800e2c034c73dab5d466",
+      "local/cc12_type2_complete_helpers_final_snapshot.log": "98d645381a35f2b8831ebff280a0055e3f3f0f14f2bc0f57e78807bd992e0184",
+      "local/ghidra-annotations-20261008T172647Z.json": "c7c3064ea0e06b7f96475faeb7ecd1fecc5caa69edd1ab55448f027ea5336030"
+    },
+    "old_publication_retained": true
+  }
 }
