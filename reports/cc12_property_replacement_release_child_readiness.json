@@ -1,0 +1,778 @@
+{
+  "schema": 1,
+  "packet": "cc12_property_replacement_release_child_readiness",
+  "UTC": "2026-10-08T12:40:34.593029+00:00",
+  "baseline_worker_revision": "8ad4e14f1968d55a747722b0a7d58e1107b2837c",
+  "merged_main_revision": "b1c4e140710d84681710e0865e208ed45e0481ea",
+  "status": "READ_ONLY audit sealed: selected whole008F0DE0 NOT_READY; first missing whole callee008F0640; no independently ready Source packet",
+  "ownership": {
+    "addresses": [
+      "008F0DE0"
+    ],
+    "files": [
+      "docs/CC12_PROPERTY_REPLACEMENT_RELEASE_CHILD_READINESS.md",
+      "reports/cc12_property_replacement_release_child_readiness.json"
+    ],
+    "lease": "cc12_property_replacement_release_child_readiness; refreshed8h, release after exact two-file commit",
+    "excluded_owned_stream": [
+      "008F28F0",
+      "008F2930",
+      "publisher/lookup Source and just-completed reports/evidence"
+    ]
+  },
+  "project_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "method": "Each live bsp.py wrapper calls Client.verify before query; physical query/check recipe and actual target configuration retained. No export or Ghidra mutation.",
+    "live_evidence": [
+      "local/cc12_property_replacement_release_child_readiness/live_project_program_proto.txt",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_decompiled.c",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_assembly.txt",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_bytes.txt",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_callers.txt",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_xrefs.txt",
+      "local/cc12_property_replacement_release_child_readiness/live_008f0de0_callees.txt"
+    ]
+  },
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "whole_selected_body": {
+    "entry": "008F0DE0",
+    "exclusive_end": "008F0DEB",
+    "bytes": 11,
+    "PE_file_offset": 5180896,
+    "sha256": "4abd74aaaada8f496d594975c578825bfab9804569fe66790cbdd27d80560e5b",
+    "path": "local/cc12_property_replacement_release_child_readiness/Original/008f0de0_11B.bin",
+    "role": "ONLY newly analysed whole leased child",
+    "hex": "c701d489ce00e955f8ffff",
+    "instructions": 2,
+    "listing": [
+      "008F0DE0 mov dword ptr [ecx], 0xce89d4",
+      "008F0DE6 jmp 0x8f0640"
+    ],
+    "live_PE_equal": true
+  },
+  "stored_prototype_warning": "Stored undefined CG_adjustor_thunk_008f0de0(void) underspecifies the actual ECX receiver. Actual byte body has no receiver adjustment; pseudocode has genuine receiver input and unresolved tail callee.",
+  "contracts": {
+    "selected_child": {
+      "entry": "008F0DE0",
+      "whole_ready": false,
+      "role": "native phase-profile store followed by whole record-value-release tail transfer; no receiver adjustment",
+      "actual_ABI": "ECX is the same actual live writable38h record. No stack arguments consumed by this child; incoming EDX unused locally. Store [ECX]=00CE89D4, then JMP008F0640 with ECX/ESP/caller return address unchanged. No local RET, save/restore, allocation or receiver arithmetic. EAX result is whatever the target leaves, unspecified by the prior whole release audit.",
+      "local_register_flag_effects": "MOV/JMP do not change general registers, stack, flags, DF, x87 or SSE state locally; only receiver+0 DWORD changes. These are not promises about the tail callee or indirect nested destruction.",
+      "preimage": "Non-null actual38h record with valid per-tag owned fields and correctly admitted allocation/lifetime. Caller must permit the native phase transition. Fresh/unowned storage-constructor admission does not establish this live owning destructor preimage.",
+      "profile": "00CE89D4 is actual installed profile DATA; slot0 contains004E6730. Source raw storage leaves preserve this literal only as phase identity, never as a callable Source vtable/global.",
+      "first_missing_whole_callee": "008F0640 actual per-type record release, unchanged158B63. No current whole raw Source provider; cannot bind an opaque release callback or replace it with null-only/nonowning cleanup."
+    },
+    "known_record_release": {
+      "source": "prior sealed native_property_record_release_readiness_cc11.json; whole158B rehashed, no fresh body expansion",
+      "whole_ready": false,
+      "native_ABI": "Single ECX actual0x38 record; no stack parameters; plainRET; ESI holds receiver; EDI=0; both saved/restored. EAX/ECX/EDX unspecified; no SEH frame or vtable/phase writes in this leaf.",
+      "dispatch": "Actual record+4 type. uint32(type-2)>9 branches shared tail; otherwise byte selector at008F06F4 indexes exact five-target DWORD table008F06E0. DATA pinned, no generated/default table.",
+      "direct_dependencies": [
+        {
+          "entry": "00BF6989",
+          "calls": [
+            "008F0667",
+            "008F0689"
+          ],
+          "role": "actual type2+C and type5+1C free; current singleton_lifetime_free provides a qualified same-current-heap boundary, not the original private heap ABI"
+        },
+        {
+          "entry": "008F03F0",
+          "call": "008F06CA",
+          "role": "whole39B13 actual array header release; current raw Source is integrated and qualified for its current-heap domain"
+        }
+      ],
+      "indirect_dependency": {
+        "site": "008F06B3",
+        "role": "load type6 record+C, then its actual profile slot0; push1 and CALL EAX",
+        "established_binding": "Only the prior actual clone producer path binds the actual nested114h bag profile00D16504 slot0 to008F59E0. This is not a universal dispatcher.",
+        "missing_chain": [
+          "008F59E0 bag scalar flags1",
+          "008F5410 ordinary bag destruction",
+          "008F3F30 actual owning-record108h map clear",
+          "recursive record scalar/value lifetime and key/node ownership"
+        ],
+        "first_missing_whole_lifetime_body": "008F5410 for the already audited008F59E0 scalar entry; its first map-lifetime dependency008F3F30 remains absent as whole raw current Source"
+      },
+      "all_tags_and_field_schedule": {
+        "native_ABI": "Single ECX actual0x38 record; no stack parameters; plainRET; ESI holds receiver; EDI=0; both saved/restored. EAX/ECX/EDX unspecified; no SEH frame or vtable/phase writes in this leaf.",
+        "dispatch": "Actual record+4 type. uint32(type-2)>9 branches shared tail; otherwise byte selector at008F06F4 indexes exact five-target DWORD table008F06E0. DATA pinned, no generated/default table.",
+        "type2_nonnull_schedule": [
+          "load owned string+C",
+          "PUSH pointer; CALLBF6989 at008F0667",
+          "write+C=0 at008F066C BEFORE ADDESP4 at008F066F",
+          "write+4=0,+C=0,+28=0,+8=0; restoreESI/EDI; RET"
+        ],
+        "type2_null": "Shared tail zeroes+4,+C,+28,+8; no free.",
+        "type5_schedule": [
+          "load owned reference target+1C",
+          "if nonnull PUSH/CALLBF6989 at008F0689",
+          "ADDESP4 at008F068E then write+1C=0 at008F0691",
+          "for both paths zero+18,+4,+C,+28,+8; restoreESI/EDI; RET"
+        ],
+        "type6_schedule": [
+          "load nested payload+C",
+          "if nonnull load its actual profile and slot0",
+          "PUSH1/CALL EAX at008F06B3",
+          "after return zero+C at008F06B5",
+          "zero+4,+C,+28,+8; restoreESI/EDI; RET"
+        ],
+        "types8_B_schedule": [
+          "LEA ECX,record+20 at008F06C7",
+          "directCALL008F03F0 at008F06CA",
+          "after return shared tail zero+4,+C,+28,+8"
+        ],
+        "nonowning_types": "0,1,3,4,7 and out-of-range tags enter common field-reset tail; this is actual native switch evidence, not a proposed subset closure.",
+        "retained_fields": [
+          "profile+0",
+          "vector tail+10/+14",
+          "owner+30",
+          "ordinal+34",
+          "all other fields not explicitly listed"
+        ],
+        "shared_declaration28": "Pointer is zeroed by tail but never freed by this whole body.",
+        "whole_blocker": "Real type6 dynamic nested destruction has no genuine complete raw current Source lifetime chain. No null-only subset, semantic ScenePropertyValue facade, opaque cleanup callback, or substitute CEnum19C/bag114 destructor."
+      },
+      "ownership_constraints": [
+        "Type2 nonnull+C must be a live exclusively owned allocation in the admitted current heap, released once; raw duplicate alone is not a whole record owner producer.",
+        "Type5 nonnull+1C needs its actual owning reference-target producer/allocation provenance; zero initialization or borrowed target substitution is not closure.",
+        "Types8..B actual+20h header must own a current-heap array block; integrated release is not array/record construction or complete class lifetime.",
+        "Type6 needs the actual nested bag producer/profile and whole recursive destruction, including owning mapped records, raw key buffers and actual node/page pool identities; no cycles/aliases/default callbacks assumed.",
+        "The shared tail zeroes+4,+C,+28,+8; profile+0, owner+30, ordinal+34 and other unlisted fields remain. +28 is not freed here."
+      ]
+    },
+    "replacement_and_scalar_limits": "008F28F0 hit branch calls old-record actual profile slot0 with1 before clearing/publishing mapped+8. This audit does not own/expand008F28F0,008F2930,004E6730 or whole map cleanup, and supplies no old-record callback, wrapper/free or replacement lifetime completion."
+  },
+  "current_genuine_Source_providers": [
+    {
+      "native": "008EF170",
+      "Source": "construct_native_scene_property_record_type1_float_storage_008ef170",
+      "current_status": "Integrated whole53B15 raw uint32-bit storage; primary independent/cookie gate/full Win32/3 checks passed in pinned receipt",
+      "closes": "Raw supplied fresh unowned56-byte storage: tag1, literal phase word, payload bits and exact partial zero/presence writes; zero dependencies.",
+      "does_not_close": "Caller FLD/FSTP conversion, owning record/profile dispatch, allocator/clone/old-record destruction or whole release."
+    },
+    {
+      "native": "008EF230",
+      "Source": "construct_native_scene_property_record_type4_storage_008ef230",
+      "current_status": "Integrated whole56B16 literal raw two-DWORD storage; primary complementary/current canonical/full Win32/3 checks passed in pinned receipt",
+      "closes": "Fresh unowned56-byte storage with tag4; opaque declaration identity+28 and value+C; exact partial writes, no callee.",
+      "does_not_close": "Declaration ownership, enum binding, owning record construction/destruction, clone or dynamic profile/class ABI."
+    },
+    {
+      "native": "00438E40",
+      "Source": "duplicate_native_string_00438e40",
+      "current_status": "New actual physical ECX/RET0 Source is present on merged current main; worker fresh3TU normal current-CRT qualification is sealed. Main external lease remains active and report still assigns independent registration/full-main gates to that integrator; audit does not promote those pending gates.",
+      "closes": "Null returns null; nonnull terminated byte string normal successful allocation of n+1 and genuine memcpy including NUL. Current canonical owned result is freed once with singleton_lifetime_free. Header/source hashes match sealed worker identities.",
+      "does_not_close": "Original private CRT/EH/failure/overflow behavior, whole type2 record constructor or owner publication, type5 target allocation, nested type6 destruction."
+    },
+    {
+      "native": "008F03F0",
+      "Source": "release_native_scene_property_array_block_008f03f0",
+      "current_status": "Integrated whole39B13 raw register ABI; primary independent3TU/current heap and full Win32/3 checks passed",
+      "closes": "Actual eight-byte header at record+20h: optional current-heap free, exact pointer/byte-size clear schedule.",
+      "does_not_close": "Surrounding38h record construction/type dispatch, historical heap or recursive nested bag lifetime."
+    },
+    {
+      "Source": "singleton_lifetime_allocate / singleton_lifetime_free",
+      "current_status": "Actual unchanged current Source hash97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62 and complete current production90B37/6B1 COFF pinned",
+      "closes": "Canonical current malloc/free domain, normal successful allocation/free; actual imports__imp__malloc/__imp__free are retained.",
+      "named_not_expanded": [
+        "_callnewh",
+        "std::bad_alloc constructor",
+        "CxxThrowException and throw DATA",
+        "security cookie/check helper used by the concrete duplicate allocation adapter"
+      ],
+      "does_not_close": "Historical allocation/free ABI, class-specific scalar flags/owner, error/unwind/reentry or nested recursive release."
+    }
+  ],
+  "complete_current_COFF_provider_proof": [
+    {
+      "symbol": "?construct_native_scene_property_record_type1_float_storage_008ef170@bsp@@YIPAXPAX0I@Z",
+      "bytes": 53,
+      "sha256": "684d66087700bdea183c40bc4344d965ad5ccf6f8aab80f0f7b9dbff9fe3c51f",
+      "relocations": [],
+      "instructions": 15,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_record_type1_float_storage.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/construct_native_scene_property_record_type1_float_storage_008ef170.bin",
+      "Original_nonrelocation_bytes_equal": true
+    },
+    {
+      "symbol": "?construct_native_scene_property_record_type4_storage_008ef230@bsp@@YIPAXPAX0II@Z",
+      "bytes": 56,
+      "sha256": "b6b40a5cbb0a523d345de24f97ac879a4e5a56c8d9a1f121f636fd33ce4dfd98",
+      "relocations": [],
+      "instructions": 16,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_record_type4_storage.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/construct_native_scene_property_record_type4_storage_008ef230.bin",
+      "Original_nonrelocation_bytes_equal": true
+    },
+    {
+      "symbol": "?release_native_scene_property_array_block_008f03f0@bsp@@YIXPAX@Z",
+      "bytes": 39,
+      "sha256": "84147d0c7f2f82c80f87a4c9085f8d4ad1b5e799d4b6ecb88b22f674882d60b6",
+      "relocations": [
+        {
+          "operand_offset": 11,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "instructions": 13,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_array_block_release.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/release_native_scene_property_array_block_008f03f0.bin",
+      "Original_nonrelocation_bytes_equal": true
+    },
+    {
+      "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+      "bytes": 57,
+      "sha256": "afe72d638bb48a9acbd92f66e8319c7439dd332749f838efc39a205c3b4cea1c",
+      "relocations": [
+        {
+          "operand_offset": 34,
+          "kind": "0014",
+          "symbol": "?allocate_native_string_bytes@?A0xbd83ee15@bsp@@YAPAXI@Z"
+        },
+        {
+          "operand_offset": 44,
+          "kind": "0014",
+          "symbol": "_memcpy"
+        }
+      ],
+      "instructions": 30,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/native_string_duplicate.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/duplicate_native_string_00438e40.bin",
+      "Original_nonrelocation_bytes_equal": true
+    },
+    {
+      "symbol": "?allocate_native_string_bytes@?A0xbd83ee15@bsp@@YAPAXI@Z",
+      "bytes": 58,
+      "sha256": "7b121d1cbda959af3f6bfc76d0e9390da02b20036100aa2023f449029e9c915c",
+      "relocations": [
+        {
+          "operand_offset": 7,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 37,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "operand_offset": 50,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        }
+      ],
+      "instructions": 20,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/native_string_duplicate.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/allocate_native_string_bytes.bin"
+    },
+    {
+      "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "bytes": 90,
+      "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+      "relocations": [
+        {
+          "operand_offset": 9,
+          "kind": "0006",
+          "symbol": "__imp__malloc"
+        },
+        {
+          "operand_offset": 32,
+          "kind": "0006",
+          "symbol": "__imp___callnewh"
+        },
+        {
+          "operand_offset": 71,
+          "kind": "0014",
+          "symbol": "??0bad_alloc@std@@QAE@XZ"
+        },
+        {
+          "operand_offset": 76,
+          "kind": "0006",
+          "symbol": "__TI2?AVbad_alloc@std@@"
+        },
+        {
+          "operand_offset": 85,
+          "kind": "0014",
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "instructions": 37,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/singleton_lifetime.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/singleton_lifetime_allocate.bin"
+    },
+    {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "relocations": [
+        {
+          "operand_offset": 2,
+          "kind": "0006",
+          "symbol": "__imp__free"
+        }
+      ],
+      "instructions": 1,
+      "whole_object_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/singleton_lifetime.obj",
+      "body_path": "local/cc12_property_replacement_release_child_readiness/COFF/singleton_lifetime_free.bin"
+    }
+  ],
+  "genuine_current_CRT_static_identities": {
+    "ucrtbase.dll": {
+      "machine": "014C",
+      "selected_actual_exports": {
+        "malloc": "00030120",
+        "free": "000300A0",
+        "memcpy": "000973B0"
+      }
+    },
+    "vcruntime140.dll": {
+      "machine": "014C",
+      "selected_actual_exports": {
+        "memcpy": "000161A0"
+      }
+    }
+  },
+  "Original_reused_and_caller_ranges": [
+    {
+      "entry": "004E6733",
+      "exclusive_end": "004E6738",
+      "bytes": 5,
+      "PE_file_offset": 943923,
+      "sha256": "c7c5c45567849d4fec53455383fb21633478f4af3dd2d5538b2a930edb808911",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/004e6733_5B.bin",
+      "role": "actual direct caller transfer only; containing body NOT expanded",
+      "hex": "e8a8a64000",
+      "actual_transfer": "CALL rel32",
+      "live_xref_type": "UNCONDITIONAL_CALL",
+      "xref_flow_review_needed": false
+    },
+    {
+      "entry": "004EE421",
+      "exclusive_end": "004EE426",
+      "bytes": 5,
+      "PE_file_offset": 975905,
+      "sha256": "6348a06425c84897e7d1fc4677693cb1a532b0b6a14c0265e588bf506e53618b",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/004ee421_5B.bin",
+      "role": "actual direct caller transfer only; containing body NOT expanded",
+      "hex": "e8ba294000",
+      "actual_transfer": "CALL rel32",
+      "live_xref_type": "UNCONDITIONAL_CALL",
+      "xref_flow_review_needed": false
+    },
+    {
+      "entry": "00C67F33",
+      "exclusive_end": "00C67F38",
+      "bytes": 5,
+      "PE_file_offset": 8814387,
+      "sha256": "1dd5646c6986e90570f289c7b8cb9eb51b1f65f5ad872b6c24398dd71749667a",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/00c67f33_5B.bin",
+      "role": "actual direct caller transfer only; containing body NOT expanded",
+      "hex": "e9a88ec8ff",
+      "actual_transfer": "JMP rel32",
+      "live_xref_type": "UNCONDITIONAL_CALL",
+      "xref_flow_review_needed": true
+    },
+    {
+      "entry": "00CE89D4",
+      "exclusive_end": "00CE89D8",
+      "bytes": 4,
+      "PE_file_offset": 9341396,
+      "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/00ce89d4_4B.bin",
+      "role": "actual native phase profile slot0 data; not a Source callable table",
+      "hex": "30674e00"
+    },
+    {
+      "entry": "008F0640",
+      "exclusive_end": "008F06DE",
+      "bytes": 158,
+      "PE_file_offset": 5178944,
+      "sha256": "a04fa16e42a48885b025ec9be4ec3683b50db6cac380047a8ae0db44cc590026",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/008f0640_158B.bin",
+      "role": "prior sealed whole record-release bytes reused/rehashed only; no fresh body expansion",
+      "hex": "568bf18b46045783c0fe33ff83f809777e0fb680f4068f00ff2485e0068f008b460c3bc7746950e81d633000897e0c83c404897e04897e0c897e28897e085f5ec38b461c3bc7740c50e8fb62300083c404897e1c897e18897e04897e0c897e28897e085f5ec38b4e0c3bcf74228b118b026a01ffd0897e0c897e04897e0c897e28897e085f5ec38d4e20e821fdffff897e04897e0c897e28897e085f5ec3"
+    },
+    {
+      "entry": "008EF170",
+      "exclusive_end": "008EF1A5",
+      "bytes": 53,
+      "PE_file_offset": 5173616,
+      "sha256": "684d66087700bdea183c40bc4344d965ad5ccf6f8aab80f0f7b9dbff9fe3c51f",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/008ef170_53B.bin",
+      "role": "existing provider/profile evidence reused; NOT a newly expanded body",
+      "hex": "f30f104424048bc133c9c700d489ce00ba01000000895004f30f11400c89481889481c89482089482489483089483488502cc20400"
+    },
+    {
+      "entry": "008EF230",
+      "exclusive_end": "008EF268",
+      "bytes": 56,
+      "PE_file_offset": 5173808,
+      "sha256": "b6b40a5cbb0a523d345de24f97ac879a4e5a56c8d9a1f121f636fd33ce4dfd98",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/008ef230_56B.bin",
+      "role": "existing provider/profile evidence reused; NOT a newly expanded body",
+      "hex": "8b5424048bc133c9c700d489ce00c740040400000089481889481c8948208948248950288b54240889483089500c894834c6402c01c20800"
+    },
+    {
+      "entry": "00438E40",
+      "exclusive_end": "00438E79",
+      "bytes": 57,
+      "PE_file_offset": 233024,
+      "sha256": "28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/00438e40_57B.bin",
+      "role": "existing provider/profile evidence reused; NOT a newly expanded body",
+      "hex": "538bd985db750433c05bc38bc38d50018a0883c00184c975f7562bc28d70015756e858c77b00568bf85357e810e87b0083c4108bc75f5e5bc3"
+    },
+    {
+      "entry": "008F03F0",
+      "exclusive_end": "008F0417",
+      "bytes": 39,
+      "PE_file_offset": 5178352,
+      "sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/008f03f0_39B.bin",
+      "role": "existing provider/profile evidence reused; NOT a newly expanded body",
+      "hex": "568bf18b0685c0740f50e88a65300083c404c70600000000c7460400000000c706000000005ec3"
+    },
+    {
+      "entry": "00D16504",
+      "exclusive_end": "00D16508",
+      "bytes": 4,
+      "PE_file_offset": 9528580,
+      "sha256": "09be9d3a8e1c44b711c5e579561f83596d03ffbe028233eced23067de9bd7d1c",
+      "path": "local/cc12_property_replacement_release_child_readiness/Original/00d16504_4B.bin",
+      "role": "existing provider/profile evidence reused; NOT a newly expanded body",
+      "hex": "e0598f00"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "008F0DE0",
+      "address": "008F0DE6",
+      "native": "008F0640",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004E6730",
+      "address": "004E6733",
+      "native": "008F0DE0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "004EE300",
+      "address": "004EE421",
+      "native": "008F0DE0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00C67F30",
+      "address": "00C67F33",
+      "native": "008F0DE0",
+      "kind": "tail_jump"
+    }
+  ],
+  "call_verification": {
+    "method": "Fresh verify_report_calls.py; exact live listing CALL or explicit JMP and containing function checked; result added after checker",
+    "checked": 4,
+    "failed": 0,
+    "log": "local/cc12_property_replacement_release_child_readiness/native_transfer_check_attempt1.log",
+    "log_sha256": "9b6d00c6572744c6fbc1b22f8a75c200c1f3a87f84b2cefc615d112b208d2b3c"
+  },
+  "ready_Source_followup": null,
+  "ready_Source_packet_count": 0,
+  "smallest_missing_contract": {
+    "first_whole_provider": "008F0640",
+    "receiver": "same live owning actual38h record inECX; plainRET/no stack args",
+    "why_not_a_new_11B_Source_packet": "Binding its phase-only store while omitting/substituting the whole tail release would not reconstruct the whole child.",
+    "bounded_next_work": "Root may select the already sealed008F59E0/008F5410/008F3F30 owning-map lifetime branch as a separately leased audit. No fresh expansion here. Whole record release cannot be admitted from raw storage and array/string leaf readiness alone."
+  },
+  "Root_metadata_review": [
+    {
+      "entry": "008F0DE0",
+      "issue": "CG_adjustor_thunk role/name and void/no-arg prototype are misleading; actual2 instructions store phase profile and tail release same receiver. Correct boundary11B2 is present; Root may annotate/rename under lock."
+    },
+    {
+      "site": "00C67F33",
+      "issue": "Live xref UNCONDITIONAL_CALL versus actual installed E9 rel32 JMP008F0DE0. Preserve tail encoding; Root must review whether a deliberate call-return flow override is intended. No containing unwind body expanded or worker repair performed.",
+      "classification": "Actual E9/JMP is authoritative; Ghidra edge metadata is separately recorded. Not a confirmed listing defect; may be deliberate tail-call modeling.",
+      "Root_followup_note": "Root independently observed8-byte/two-instruction Unwind@00C67F30 and a call edge. Flow-properties query unavailable because run_script_inline is disabled; raw response retained by Root in local/cc12_property_release_caller_flow_before.json. No mutation or fallback."
+    }
+  ],
+  "physical_input_preservation": {
+    "physical_copy_count": 33,
+    "identity_only_candidate_count": 0,
+    "rows": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_scene_property_record_type1_float_storage.cpp",
+        "bytes": 1332,
+        "sha256": "131db65ba889b5765519b615d82d1c2900c14422c5761cc5d19cc64109025bdf",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_record_type1_float_storage.cpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_scene_property_record_type1_float_storage.hpp",
+        "bytes": 1721,
+        "sha256": "b8df90651224280f6503212fc322a36b78c6f37ea06243c60e01076dad2364fb",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_record_type1_float_storage.hpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_scene_property_record_type4_storage.cpp",
+        "bytes": 1294,
+        "sha256": "b66adbd44744b4d56351aeb50772fef1b6a3000268bc9bf119ea1e3dd760d784",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_record_type4_storage.cpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_scene_property_record_type4_storage.hpp",
+        "bytes": 1731,
+        "sha256": "6afc1b32b59b0f18832270c977918b6b2bec63a173f5eaf45e9584c0ddf61d24",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_record_type4_storage.hpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_scene_property_array_block_release.cpp",
+        "bytes": 939,
+        "sha256": "9f65c8fe0a18183c2212fba612205da341e2b39cf9c4fe917109a6dc979b340e",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_array_block_release.cpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_scene_property_array_block_release.hpp",
+        "bytes": 618,
+        "sha256": "33487664e85d48efc22745d5aa2a4340b1636e00f96ed3f70441003eba9d8642",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_scene_property_array_block_release.hpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\native_string_duplicate.cpp",
+        "bytes": 1554,
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_string_duplicate.cpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\native_string_duplicate.hpp",
+        "bytes": 933,
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/native_string_duplicate.hpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/singleton_lifetime.cpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/Source/singleton_lifetime.hpp",
+        "role": "current actual Source provider or declared raw domain"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\tools\\bsp.py",
+        "bytes": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/tools/bsp.py",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/tools/ghidra_export.py",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\tools\\verify_report_calls.py",
+        "bytes": 9777,
+        "sha256": "93cc9d105770c9da2a2360e1593c981666c65577d5c179955709092ccc15177f",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/tools/verify_report_calls.py",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\tools\\pe_const_read.py",
+        "bytes": 2398,
+        "sha256": "4084e3f4d8665ec474726f7314cacaa1d77b0153ffe840d8ffb5c112f5a5cb02",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/tools/pe_const_read.py",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/config/target.json",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\docs\\WORKER_VERIFICATION_CHECKLIST.md",
+        "bytes": 5240,
+        "sha256": "13a49a6784b1621bbde4191a9360d18bb703adfc60cf0884761801dcd07151fe",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/instructions/docs/WORKER_VERIFICATION_CHECKLIST.md",
+        "role": "actual query/check recipe or target/checklist"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_property_record_release_readiness_cc11.json",
+        "bytes": 14566,
+        "sha256": "4514894682ff89d1a8890a152363631a9baa6520f3da7587dc29d9edc5a5932b",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_property_record_release_readiness_cc11.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_property_bag_record_clear_readiness_cc11.json",
+        "bytes": 14315,
+        "sha256": "044b786b23fe9e0718fe452d682f5177689115b32f4e3a6f8b9be3f3ccb1608b",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_property_bag_record_clear_readiness_cc11.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_property_payload_binding_audit.json",
+        "bytes": 18216,
+        "sha256": "f7083fc89e64d53efa1b5cd0ea90c422dcf28503d799a24690e5ddd3ce26d785",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/cc12_property_payload_binding_audit.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_scene_property_record_type1_float_storage_cc12.json",
+        "bytes": 23848,
+        "sha256": "6e2ab2fa08b4f23dd0d7218584e1f9ccdbb3b26138aafd59d98a42061c37ac31",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_scene_property_record_type1_float_storage_cc12.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_scene_property_record_type4_storage_cc12.json",
+        "bytes": 29848,
+        "sha256": "5e762ae40d43645cfe6a5ac26d4cf5d186645ac25ef28199305dc1afffd846f2",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_scene_property_record_type4_storage_cc12.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_scene_property_array_block_release_cc11.json",
+        "bytes": 41158,
+        "sha256": "b37c02d95a6fa43081b5dfcb70931ff03f2fc1cc8c9432030f5cb88d60a7dfc9",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_scene_property_array_block_release_cc11.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\native_string_duplicate_cc12.json",
+        "bytes": 70747,
+        "sha256": "12d2c3cd70a53699c98eb94eb6ce471924427bb85f64f322df57f514be381300",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/native_string_duplicate_cc12.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\reports\\cc12_type2_string_storage_readiness.json",
+        "bytes": 29031,
+        "sha256": "58582c368b3d07d0f1383565300ec7303f74fce4cca5cc00ec930cc9987c3016",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/prior_audits/cc12_type2_string_storage_readiness.json",
+        "role": "current pinned audit receipt; historical worker status distinguished from current primary fields"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_record_type1_float_storage.obj",
+        "bytes": 833,
+        "sha256": "0ea73024ebc1a404bf720f96990aa8c188fbbb368e2a3d6a92531593b7a34e04",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_record_type1_float_storage.obj",
+        "role": "whole genuine existing production COFF; not executed/rebuilt in this audit"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_record_type4_storage.obj",
+        "bytes": 823,
+        "sha256": "d8c2766fc1e018ab46e9c4296d162ec39de00b4d14fe68100e18a48a77fa7ba7",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_record_type4_storage.obj",
+        "role": "whole genuine existing production COFF; not executed/rebuilt in this audit"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_array_block_release.obj",
+        "bytes": 1244,
+        "sha256": "16c53ffe19d3d5af5f35cde5842b855706408b1ee50888ac7f4677ef492b81d1",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/worker_current/native_scene_property_array_block_release.obj",
+        "role": "whole genuine existing production COFF; not executed/rebuilt in this audit"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_string_duplicate.obj",
+        "bytes": 1598,
+        "sha256": "2265c993a0ac3a54d5c729c025e352a9e47a76d1956be81efd1f760ccf4ac9dd",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/native_string_duplicate.obj",
+        "role": "whole current main production COFF with matching current Source preimage"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "bytes": 32943,
+        "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/main_current/singleton_lifetime.obj",
+        "role": "whole current main production COFF with matching current Source preimage"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a\\duplicate.obj",
+        "bytes": 1751,
+        "sha256": "943f5094002437e38c1951a4bc8d05373151e8bf1e79664a7a7a1c018790c7b5",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/raw_duplicate_qualified/duplicate.obj",
+        "role": "whole previously qualified genuine fresh-component provider COFF; no fixture replay"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a\\canonical.obj",
+        "bytes": 36875,
+        "sha256": "2367bd034a262390ef7658ccf0562bebaf068686aff0ba4bc2f3ecbaa4a009d0",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/objects/raw_duplicate_qualified/canonical.obj",
+        "role": "whole previously qualified genuine fresh-component provider COFF; no fixture replay"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/CRT/ucrtbase.dll",
+        "role": "actual I386 current installed CRT file; static provider identity only"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "frozen_copy_path": "local/cc12_property_replacement_release_child_readiness/frozen/CRT/vcruntime140.dll",
+        "role": "actual I386 current installed CRT file; static provider identity only"
+      }
+    ],
+    "Original_range_copies": 11,
+    "note": "All selected Source/header/receipt/recipe/whole-object/CRT rows have actual byte copies. The installed whole PE has a whole-image identity pin plus11 physically retained selected spans; it is not claimed as a full copied PE. No new compile/link inputs or historical fixture run."
+  },
+  "evidence_directory": "local/cc12_property_replacement_release_child_readiness",
+  "evidence_manifest": "local/cc12_property_replacement_release_child_readiness/artifact_manifest.json",
+  "preserved_failures": [
+    "local/cc12_property_replacement_release_child_readiness/preserved_query_failures.json",
+    "local/cc12_property_replacement_release_child_readiness/collect_attempt1.log"
+  ],
+  "qualification": {
+    "Source_functions_added": 0,
+    "Source_fragments_added": 0,
+    "native_or_Source_execution": false,
+    "new_tests": 0,
+    "old_families_replayed": false,
+    "build_or_link_run": false,
+    "Ghidra_shared_metadata_CMake_ledger_export_mutations": 0,
+    "whole_008f0de0_Source_ready": false,
+    "whole_008f0640_Source_ready": false,
+    "replacement_lifetime_ready": false,
+    "native_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "final_recheck": {
+    "path": "local/cc12_property_replacement_release_child_readiness/final_recheck.json",
+    "sha256": "0ab46c196d06a05777b0c40a39229c3cee096eb48d2ce0e5af0f4c74e77d6f4c",
+    "selected_physical_inputs_unchanged": true,
+    "installed_PE_unchanged": true,
+    "selected_live_bytes_unchanged": true,
+    "4_transfer_rows_PASS": true
+  },
+  "evidence_artifact_count": 77,
+  "evidence_manifest_sha256": "d85731c40663e1871d3995bebae3e0e2744dd7ff5f6517c2756a21b0346448e5"
+}
