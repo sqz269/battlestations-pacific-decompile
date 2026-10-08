@@ -210,5 +210,14 @@
   "shared_metadata_CMake_ledger_export_writes": false,
   "native_class_ABI_compatible": false,
   "game_validated": false,
-  "qualification": "Static complete native/readiness audit only; byte equality and caller ownership are not runtime, Source input-provider, class/ABI/factory/world/game proof."
+  "qualification": "Static complete native/readiness audit only; byte equality and caller ownership are not runtime, Source input-provider, class/ABI/factory/world/game proof.",
+  "primary_review": {
+    "complete_live_listing_independently_read": "22 instructions, both return branches, count-zero EAX/index residue and nonempty head64 probe",
+    "whole_installed_PE_bytes_rechecked": 65,
+    "artifact_manifest_sha256_rechecked": "fdcc430072e12626e688bfec149a13d791fd71cabef3f9abdb41c6298052f160",
+    "artifact_pins_rehashed": 24,
+    "snapshot_update": "Raw 008F41A0 constructor is now integrated on main (09d170c37), after the worker readiness snapshot. Populated-map production remains missing and is being audited separately through 008F33F0/008F28F0. The old snapshot is retained as evidence, not asserted current.",
+    "Source_or_native_execution": false,
+    "new_Original_reconstructions": 0
+  }
 }
