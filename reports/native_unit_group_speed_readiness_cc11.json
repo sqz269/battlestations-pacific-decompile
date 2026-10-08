@@ -1,0 +1,341 @@
+{
+  "status": "Read-only readiness audit complete; both whole Source bodies remain unready",
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_fixture_execution": false,
+  "old_families_replayed": false,
+  "target": {
+    "address": "0070DA00",
+    "name": "BSP_UnitGroup_RefreshSpeedCeiling",
+    "name_qualification": "Descriptive hypothesis, not a recovered original symbol.",
+    "end_exclusive": "0070DA9E",
+    "bytes": 158,
+    "instructions": 48,
+    "sha256": "2ee3701f28409b3530e6bacdf08ebef62eb7585e1caccd7b388a3a296de7b11c",
+    "live_saved_program_equal_installed_PE": true,
+    "ABI": {
+      "input": "ECX is the actual group receiver. No stacked explicit argument. EDX has no input role. Plain RET; no semantic return value established.",
+      "preservation": "EBP and EDI saved on every path; EBX and ESI saved/restored on positive-count path, otherwise untouched. Caller requires actual kind callee to preserve its own nonvolatile registers and consume the pushed kind DWORD with RET4.",
+      "ECX_spill": "PUSH ECX at0070DA00 reserves4 bytes. After EBP/EDI/EBX/ESI pushes, MOVSS[ESP+10h] at0070DA5D overwrites that initial slot with the exact loaded candidate speed bits. Final POP ECX therefore gives last live candidate DWORD on any live-member path, even if that candidate was not selected as minimum. With no live candidates the original ECX remains in the slot and is restored. Trailing null records do not overwrite it.",
+      "volatile_registers": "EAX/EDX depend on virtual callee and selected pointer chain. Null-only/early paths do not alter EAX or EDX. MOVSS memory loads clear upper96 of XMM0; on normal completion low32 is seed for nonpositive count, otherwise last visited candidate speed or null-record999 bits. No scalar FP arithmetic uses SSE here.",
+      "x87": "Each nonnull member pushes candidate then current group504, FCOMIP compares current ST0 against candidate ST1, then FSTP discards candidate. Requires two free x87 slots after a balanced kind callee. Net stack depth is unchanged; x87 status/exceptions are not assumed unchanged. No ST0 result is returned. MXCSR is not touched by the target's move-only SSE instructions; arbitrary virtual callees remain outside this statement.",
+      "flags": "Nonpositive path returns flags from signed group4F8 versus zero comparison. Positive path returns flags from final signed index versus freshly loaded group4F8 comparison; it does not return the FP comparison flags. No runtime register/flag comparison was executed."
+    },
+    "operations": [
+      "MOVSS reads actual00CFD6F4 once before any receiver write. Signed group4F8 is compared to zero before seed is written to group504; MOVSS store preserves CMP flags. Seed group504 regardless of count.",
+      "For positive count, visit actual group18+i*34 record pointer. Read memberDWORD once into ESI. Null writes actual00CF4888 bits to that record+30 and skips the comparison and virtual call.",
+      "Nonnull reads profileDWORD at actualunit+0 and codeDWORD at profile+5C. At0070DA33, CALL EDX with ECX=that SAME actual unit, EDX=actual code address, stacked DWORD6. AL alone selects the subsequent arm; there is no call to0070D1B0.",
+      "AL!=0: read pointer actualunit+538, then floatDWORD at class+500. AL==0: read pointer actualunit+3D0, then pointer linkedunit+538, then floatDWORD at linkedclass+188. No null fallback or validity/default checks exist.",
+      "Spill exact candidateDWORD, FLD candidate and current group504. FCOMIP plus JBE skips when current<=candidate or comparison unordered. Otherwise store the original candidateDWORD from XMM0 into actual group504.",
+      "Increment index and record address; compare against a fresh signed group4F8 each iteration. Count is not snapshotted and is not clamped to24. Do not replace this with a fixed-count collection loop when side effects can change count."
+    ],
+    "ordinary_numeric_contract": "With stable finite inputs and balanced ordinary callees, group504 becomes min(9999999.0f, every nonnull candidate). Equality retains current bits, including signed-zero identity. With masked invalid exceptions, unordered comparisons retain current bits. FLD/FCOMIP may raise x87 exceptions for NaN/denormal/invalid stack states; fault, unmasked exception and concurrent-lifetime behavior was not executed or broadened into an admission claim.",
+    "actual_call_sites": [
+      {
+        "address": "0070DA33",
+        "opcode": "FF D2",
+        "kind": "indirect",
+        "target": "DWORD[DWORD[actualunit]+5C]",
+        "receiver": "actualunit in ECX",
+        "stack": "DWORD6, callee cleanup4",
+        "result": "AL"
+      }
+    ],
+    "metadata_correction_for_consumers": "Ghidra proto reports call_count0, param_count0, signature undefined(void). Those omit the indirect call and register receiver. Complete assembly and PE bytes take precedence; no Ghidra mutation was made.",
+    "global_data": [
+      {
+        "address": "00CFD6F4",
+        "bytes": 4,
+        "uint32": "4B18967F",
+        "float": 9999999.0,
+        "read_at": "0070DA01",
+        "sha256": "ce1f8004d38f15d15b70acf91723b16919db9716180c2859ca6abdfd12b259ec",
+        "live_equal_PE": true
+      },
+      {
+        "address": "00CF4888",
+        "bytes": 4,
+        "uint32": "4479C000",
+        "float": 999.0,
+        "read_at": "0070DA7D for each null record",
+        "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d",
+        "live_equal_PE": true
+      }
+    ],
+    "receiver_accesses": [
+      {
+        "receiver": "actual group",
+        "read": "signedDWORD+4F8, memberDWORD+18+i*34, floatDWORD+504",
+        "write": "floatDWORD+504; floatDWORD+48+i*34 only for null member",
+        "ordinary_backing": "508-byte real group with live records and count in0..24 is a sufficient bounded storage domain, not a new native guard. Count<=0 also exits after seed store."
+      },
+      {
+        "receiver": "actual nonnull member unit",
+        "read": "profileDWORD+0 before call; +538 pointer on AL!=0, +3D0 pointer on AL==0",
+        "requirement": "Same live receiver, actual callable profile slot5C, true call ABI, stable reached pointer cells and backing. Complete class/constructor/ownership not supplied by raw kind leaves."
+      },
+      {
+        "receiver": "actual profile",
+        "read": "codeDWORD+5C",
+        "requirement": "Real callable type provider and valid original dispatch relationship. No synthesized routing table or callback admitted."
+      },
+      {
+        "receiver": "actual AL!=0 class",
+        "read": "floatDWORD+500",
+        "requirement": "Live original tuning storage through+504, ownership/lifetime chain supplied externally."
+      },
+      {
+        "receiver": "actual AL==0 linked unit",
+        "read": "pointerDWORD+538",
+        "requirement": "Live original linked receiver through+53C with genuine class pointer."
+      },
+      {
+        "receiver": "actual AL==0 linked class",
+        "read": "floatDWORD+188",
+        "requirement": "Live original tuning storage through+18C, ownership/lifetime chain supplied externally."
+      }
+    ]
+  },
+  "additional_audited_sibling": {
+    "address": "0070D1B0",
+    "name": "BSP_Unit_ClassMaxSpeed",
+    "end_exclusive": "0070D1E2",
+    "bytes": 50,
+    "instructions": 17,
+    "sha256": "25c02eea755d16383d8fa037c1bfce747df711b2e7d51d61e41c474f7d839249",
+    "live_saved_program_equal_installed_PE": true,
+    "original_ABI": "ECX actualunit, no explicit stacked input, ESI preserved, plainRET, FLD chosen scalar to ST0 requires one free slot. One indirect CALL EDX at0070D1BA, code from actualprofile+5C, ECX remains the actual unit, stacked6 consumed by callee.",
+    "body": "Same true unit538->500 and false unit3D0->538->188 chains. Zero global data reads. This returns inST0; target70DA00 uses inlined expression and never calls it.",
+    "Source_status": "No complete current Source body found; target dynamic admission and tuning ownership blockers apply unchanged. Not independently ready.",
+    "reads": "Live decompile/disasm/proto/bytes only; no shared export created. No second missing body expanded."
+  },
+  "current_Source_providers": {
+    "qualification": "Inspected literal current headers/Source at pinned c329ab385. Referenced bodies were not recompiled or rerun here; prior sealed direct-view evidence was hash-checked only.",
+    "complete_group_bodies": [
+      {
+        "addresses": [
+          "0070DAB0"
+        ],
+        "source": "src/native_unit_group_storage.cpp",
+        "contract": "Genuine actual508 group constructor as new C++ interface. Borrows actualCF4888 bits. RawCFD6F8 stamp uncallable. Leaves4FC and504 unchanged; cannot initialize/prove this producer."
+      },
+      {
+        "addresses": [
+          "0070D030",
+          "0070D080"
+        ],
+        "source": "src/native_unit_group_lookup.cpp",
+        "contract": "Complete actual group identity lookup bodies as new C++ interfaces; bounded valid group backing, first identity match. Not class/register-ABI replacements."
+      },
+      {
+        "addresses": [
+          "0070D0C0"
+        ],
+        "source": "src/native_unit_group_set_leader.cpp",
+        "contract": "Whole raw leader handoff through real wake dependency; does not bind member type/speed admission."
+      },
+      {
+        "addresses": [
+          "0070D060",
+          "0070D070",
+          "0070D0F0",
+          "0070D100"
+        ],
+        "source": "src/native_unit_group_direct_views.cpp",
+        "contract": "Whole raw member/record/getter/publisher. GetterFLD retained504 only; publisher changes matching record30 only. Neither produces group504."
+      }
+    ],
+    "complete_raw_type_bodies": [
+      {
+        "source": "src/native_ship_kind.cpp",
+        "header": "include/bsp/native_ship_kind.hpp",
+        "addresses": [
+          "006DFE50",
+          "006FE530",
+          "00853050",
+          "00758510",
+          "006FB3D0",
+          "006EB230",
+          "0074BC60",
+          "006DFE90",
+          "00857DC0"
+        ],
+        "contract": "Nine distinct full EAX0/1 RET4 leaves on same actualreceiver; kind6 is a fixed accepted ancestor. No whole actualprofile admission or tuning ownership."
+      },
+      {
+        "source": "src/native_plane_kind.cpp",
+        "header": "include/bsp/native_plane_kind.hpp",
+        "addresses": [
+          "0074E400"
+        ],
+        "contract": "Full actual plane predicate; kind6 depends on actual+C4 rather than profile name. Stable live aligned DWORD+C4 required for dynamic query."
+      },
+      {
+        "source": "src/native_plane_derived_kind.cpp",
+        "header": "include/bsp/native_plane_derived_kind.hpp",
+        "addresses": [
+          "007D77F0",
+          "009535C0",
+          "00953530",
+          "007DDA80",
+          "0074E480",
+          "0084C9F0",
+          "0074E4E0",
+          "009534A0"
+        ],
+        "contract": "Eight distinct raw derived leaves; ordered fixed words then actual+C4; no profile dispatch/class ownership."
+      },
+      {
+        "source": "src/native_plane_squadron_kind.cpp",
+        "header": "include/bsp/native_plane_squadron_kind.hpp",
+        "addresses": [
+          "007EFB00"
+        ],
+        "contract": "Fixed24/2/1/0 else actual+C4; kind6 is dynamic, no profile routing."
+      },
+      {
+        "source": "src/native_entity_base_kind.cpp",
+        "header": "include/bsp/native_entity_base_kind.hpp",
+        "addresses": [
+          "004F1750",
+          "006D1610",
+          "006D1650"
+        ],
+        "contract": "Three distinct02/04/05 leaves. Actual+C4 dynamic path. Profile data explicitly uncallable; no original constructor/world or virtual type admission."
+      }
+    ],
+    "insufficient_existing_adapters": [
+      {
+        "path": "src/ship_ai_formation.cpp",
+        "line": 216,
+        "symbol": "ship_ai_formation_speed_ceiling",
+        "reason": "This is0070D140 reducing supplied record30/count into ST0 semantic result. It is not0070DA00, has no actual member class graph and does not store group504."
+      },
+      {
+        "path": "include/bsp/ship_ai_formation.hpp",
+        "line": 464,
+        "symbol": "refresh_speed_ceiling_0070da00",
+        "reason": "Pure virtual host requirement only; the sole source use atsrc/ship_ai_formation.cpp:366 invokes it. No whole raw implementation established."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line": 33388,
+        "symbol": "GameUnitsHost::unit_class_max_speed_0500",
+        "reason": "Returns semantic slots[index]->fields.max_speed, with zero default on bad index. Not real unit538->class500 or fallback graph."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line": 33144,
+        "symbol": "GameUnitsHost::unit_is_kind_of",
+        "reason": "Generic classifier on semantic cached class_id. Not actual profile+5C call on original unit."
+      },
+      {
+        "path": "src/game_hosts_ship_ai.cpp",
+        "line": 2429,
+        "symbol": "formation_throttle_ceiling_009f4da0",
+        "reason": "Computes host ceiling on demand from semantic member handles and max-speed fields; does not retain original group504. It does not close this body."
+      }
+    ],
+    "stale_scope_note": "docs/NATIVE_PLANE_KIND_CC11.md formerly described other type providers as missing. Current ship/derived/squadron/base raw leaf headers exist; the broader actualprofile and class/tuning ownership gap remains explicit in each header. No historical missing-leaf statement was reused as a current whole-provider claim."
+  },
+  "named_unexpanded_dependencies": [
+    {
+      "address": "0070EF30",
+      "name": "BSP_UnitGroup_AddMember",
+      "role": "Known original caller; membership/observer/class lifetime not expanded."
+    },
+    {
+      "address": "0070E4C0",
+      "name": "BSP_UnitGroup_DetachMember",
+      "role": "Known original caller; removal/observer lifetime not expanded."
+    },
+    {
+      "address": "0070D140",
+      "name": "BSP_UnitGroup_ReduceMemberSpeeds",
+      "role": "Existing portable Source reducer on record30; native whole body not expanded or newly approved by this audit."
+    },
+    {
+      "address": "0070DAB0",
+      "name": "BSP_UnitGroup_Ctor",
+      "role": "Sealed actual508 storage provider reused through Source contract; no prior constructor fixture replay."
+    },
+    {
+      "address": "dynamic actualprofile+5C",
+      "name": "Original member kind-query dispatch",
+      "role": "Actual live profile ownership and executable dispatch binding remains unresolved despite existing direct raw type leaves."
+    },
+    {
+      "address": "actualunit+538 / actualunit+3D0->538",
+      "name": "Original tuning and linked-unit producers",
+      "role": "Whole constructor/loading/publication/lifetime contracts for these real pointer graphs not expanded; no assumed class/allocator/world provider."
+    }
+  ],
+  "decision": {
+    "whole_0070DA00_Source_ready": false,
+    "whole_0070D1B0_Source_ready": false,
+    "independently_ready_whole_body_followup": null,
+    "blockers": [
+      "Real same-receiver profile+5C admission and valid callable whole provider routing is not established by direct raw type predicates or structural profile DATA.",
+      "Actual live unit538->class500 and unit3D0->linkedunit538->class188 tuning storage and lifetime contracts are not established by semantic fields.max_speed or a copied view.",
+      "Any future whole body must retain x87 comparison/exceptions, exact scalarDWORD stores, saved-slot ECX result, fresh count reads and real call ABI. An opaque speed callback, fake dispatcher, copied/projected receiver, profile/class-ID census, or new default would change the contract."
+    ],
+    "useful_provider_contracts": "Exact ABI/fields/call row and two constant cells are sealed here. Existing actual508 group and direct raw kind predicates can be reused only inside their literal documented admissions. No ready packet is promoted from this audit."
+  },
+  "end_main_revalidation": {
+    "main_head": "10b5daad78445f4bb65e37a8dd5b9980e66d0bff",
+    "worker_head_retained": "c329ab3850106b34a6895969aecead5754b33e20",
+    "previously_inspected_Source_header_bytes": "All unchanged versus main. Differences in config/target.json and docs/NATIVE_PLANE_KIND_CC11.md are line-endings only. CMake and direct-view docs/report have primary integration additions.",
+    "new_type_provider": {
+      "addresses": [
+        "0042B8F0",
+        "0047F190"
+      ],
+      "source": "J:/PROG/battlestations-pacific-decompile/src/native_entity_root_kind.cpp",
+      "header": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_entity_root_kind.hpp",
+      "contract": "Two complete raw class00/01 EAX0/1 RET4 leaves, fixed0 or1/0 before fresh actual+C4 comparison. Kind6 is dynamic. Literal header still marks native profiles UNCALLABLE and original constructor/group membership/virtual admission/class lifetime/world unbound.",
+      "evidence": "New complete Source header/body inspected and hashed; no additional original missing body or fixture was expanded."
+    },
+    "new_unrelated_provider": "Property-tree-library storage constructor is outside this packet and was not inspected.",
+    "updated_prior_report": {
+      "sha256": "980e0605b64147ea755f0cac533ba34b04b9ecd5acfb84d5b711ef0d1cb0e1b3",
+      "status": "four_whole_raw_Source_bodies_strict_Win32_and_one_small_native_family_passed",
+      "speed_producer_0070da00_reconstructed": false,
+      "original_class_ABI_compatible": false,
+      "game_validated": false,
+      "primary_integration_source_revision": "c329ab3850106b34a6895969aecead5754b33e20",
+      "primary_integration_build_revision": "dd9061fc549414cdf8d4123087561dc1707e0e79",
+      "scope": "Reused primary published metadata as current status, did not replay or edit its receipt."
+    },
+    "decision_unchanged": "Target and standalone speed sibling remain whole-Source-unready; no independently ready whole-body followup established."
+  },
+  "sealed_worker_artifacts": {
+    "J:\\PROG\\battlestations-pacific-decompile-cc11_group_speed_contract\\local\\cc11_group_speed_contract_20261007_a\\proposal.json": "41ba443d6f81c81037d0260547ec82c585e802c78e828e50ef53b2e761ff1666",
+    "J:\\PROG\\battlestations-pacific-decompile-cc11_group_speed_contract\\local\\cc11_group_speed_contract_20261007_a\\receipt.json": "ba5d302f0c3e90e820571094b91c56828c69311fb0ae5fd3debcf0d8fabfd0ed",
+    "J:\\PROG\\battlestations-pacific-decompile-cc11_group_speed_contract\\local\\cc11_group_speed_contract_20261007_a\\artifact_manifest.json": "e1d2cb45cfc6d9a5bbbe1654194280a0d52f04186307c53e7666017456f9e229"
+  },
+  "qualified_source_build_context": "Primary supplied dd9061fc5 full Win32/all three tests pass and c329ab385 metadata head. This worker ran no build, test, Source/native fixture, or game.",
+  "class_ABI_compatible": false,
+  "game_validated": false,
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": [
+      "local/ghidra-annotations-20261008T035355Z.json",
+      "local/ghidra-annotations-20261008T035457Z.json"
+    ],
+    "three_new_Source_bodies_and_two_unready_audits_refreshed": true,
+    "snapshot_internal_functions": 64280,
+    "snapshot_total_functions": 64722,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T035355Z.json": "79ba88b7ab659623cce0f2087de5a978aebeebdbf5297a11efc6bfbc7913bdf7",
+      "local/ghidra-annotations-20261008T035457Z.json": "4619e108ee6ad406f02a25c3709dd956572b52fa8bf9ab6fd5f9cccf0a21b4e3",
+      "local/cc11_root_property_annotations.log": "f5e4fb5139e37a6779cdda0ed2d7fc6cc8e51dccf1acbb886f08cad41f27bf02",
+      "local/cc11_group_speed_readiness_annotations.log": "c7c4071087936346c7b962838f23fb7e124ffa10e67657cbf9909c824cbc0180",
+      "local/cc11_root_property_and_speed_exports.log": "73d72f69bdc54a4b0098348e5e12f8577204d9717ec8694b80eab55d9b60c0d8",
+      "local/cc11_root_property_and_speed_snapshot.log": "d12abf0aae42890a1db146f76a7e9c9c0f98676f09c53d94ebc016c6bac6ba22"
+    }
+  }
+}

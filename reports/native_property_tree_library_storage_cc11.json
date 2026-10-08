@@ -2017,5 +2017,117 @@
     "rows": 3,
     "log": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\native_call_verification.log",
     "sha256": "fe73f1a9f784aa4734a20e1879a8b1231996fbd49398a6ef6149c9d9cc206366"
+  },
+  "primary_integration": {
+    "source_revision": "74a70a4e5688f7d85631d872ebd98192bfb52615",
+    "build_source_revision": "10b5daad78445f4bb65e37a8dd5b9980e66d0bff",
+    "build_context_relation": "Later revision registers metadata only; compiled Source is unchanged.",
+    "worker_revision": "5566b42711c6a5bbc2a8116fb52240fabf5e911c",
+    "component_revision": "10b5daad78445f4bb65e37a8dd5b9980e66d0bff",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_root_property_integrated_build.log",
+    "build_log_sha256": "eae20d92ae29ad807d31bb8911a9962d273ec521888f302f6d4ff49711c6d718",
+    "current_core_sha256": "ff49ccf1217d21a74f7f56d4cd6a67bb92e7838e0117d164e79f4a4e18927ba2",
+    "independent_component_manifest": "local/cc11_property_storage_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "a6b0afe8346623b6255d2d5a2cc15b95a462a156e84c66db48b67061a652482c",
+    "fresh_translation_units": 3,
+    "actual_headers": 217,
+    "actual_searched_libraries": 16,
+    "selected_tool_backend_files": 4,
+    "stable_worker_paths": 6152,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?initialize_native_property_tree_library_storage_008f5670@bsp@@YIPAXPAX@Z",
+        "bytes": 39,
+        "instruction_count": 12,
+        "sha256": "486d83626dc3930fe1a30a4613d80b8a3ff0ea9cb407046b2ea0b4d64beeb2b5",
+        "relocations": []
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "bytes": 90,
+        "instruction_count": 34,
+        "sha256": "84bd9cbcc712d9283664090c1b35610db581ef80c3fde7bc888c0f90672f4e4e",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "target": "__imp__malloc"
+          },
+          {
+            "offset": 30,
+            "type": 6,
+            "target": "__imp___callnewh"
+          },
+          {
+            "offset": 70,
+            "type": 20,
+            "target": "??0bad_alloc@std@@QAE@XZ"
+          },
+          {
+            "offset": 75,
+            "type": 6,
+            "target": "__TI2?AVbad_alloc@std@@"
+          },
+          {
+            "offset": 85,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "bytes": 6,
+        "instruction_count": 1,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "relocations": [
+          {
+            "offset": 2,
+            "type": 6,
+            "target": "__imp__free"
+          }
+        ]
+      }
+    ],
+    "execution_output": "PASS two genuine10C roots/whole39 Source-Original/fullEAX-EDI-ESP-DF0/wholefields-guards/current empty release\n",
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "ff49ccf1217d21a74f7f56d4cd6a67bb92e7838e0117d164e79f4a4e18927ba2",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_call_verification_log": "local/cc11_root_property_native_calls.log",
+    "native_call_verification_log_sha256": "782857e447f3dc52a8c7ad70491eb0ef5cf71b763eb19d838d515b541cce1bb1",
+    "source_bookends_stable": true,
+    "old_families_replayed": false,
+    "tracked_tests_added": 0,
+    "qualification": "One distinct whole constructor:39 bytes /12 instructions, no calls/globals/relocations/alloc/free. Literal ECX entry captures actual fresh10C root in EDX, preserves EDI, writes real D1650C/D162C8 DATA phases/countzero/64 heads under DF0, returns full EAX receiver/plainRET. Every Original PE/live/Source COFF/linked byte matches. One independent fresh three-TU family compares both actual current-CRT10C roots using SAME storage, full EAX/EDI/ESP/DF0/268 fields and other-root guards; unchanged Original39RX and explicit still-empty root release after live checks. Genuine current allocation90B34/free6B1 Source bodies and linked malloc/free IAT targets in api-ms-win-crt-heap-l1-1-0.dll are proven before execution. Current rebuilt Core/Lua/zlib are pinned, older frozen supports preserved. This constructor is distinct from the enum registry/map and prior inline fragment. Property-map payload/node/pool cleanup, scalar/ordinary destructors, factory publication/loader, historical native allocation/class/private EH/world/game remain unclosed. A generated-parser path failed before any directory/build/execution; original recipe and exact failure are preserved, only the literal path corrected.",
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "primary_source_status": "complete whole Source bodies integrated; independent current fixture and full Win32/all3 CTests PASS; native class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": [
+      "local/ghidra-annotations-20261008T035355Z.json",
+      "local/ghidra-annotations-20261008T035457Z.json"
+    ],
+    "three_new_Source_bodies_and_two_unready_audits_refreshed": true,
+    "snapshot_internal_functions": 64280,
+    "snapshot_total_functions": 64722,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T035355Z.json": "79ba88b7ab659623cce0f2087de5a978aebeebdbf5297a11efc6bfbc7913bdf7",
+      "local/ghidra-annotations-20261008T035457Z.json": "4619e108ee6ad406f02a25c3709dd956572b52fa8bf9ab6fd5f9cccf0a21b4e3",
+      "local/cc11_root_property_annotations.log": "f5e4fb5139e37a6779cdda0ed2d7fc6cc8e51dccf1acbb886f08cad41f27bf02",
+      "local/cc11_group_speed_readiness_annotations.log": "c7c4071087936346c7b962838f23fb7e124ffa10e67657cbf9909c824cbc0180",
+      "local/cc11_root_property_and_speed_exports.log": "73d72f69bdc54a4b0098348e5e12f8577204d9717ec8694b80eab55d9b60c0d8",
+      "local/cc11_root_property_and_speed_snapshot.log": "d12abf0aae42890a1db146f76a7e9c9c0f98676f09c53d94ebc016c6bac6ba22"
+    }
   }
 }

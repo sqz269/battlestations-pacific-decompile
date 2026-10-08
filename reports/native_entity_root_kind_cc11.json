@@ -531,5 +531,74 @@
     "worker_full_build": "not run; root-owned",
     "native_class_profile_group_world_game": "unbound",
     "generic_call_checker": "0 call-site rows checked / 0 failed; two separate complete-body CALL0 proofs"
+  },
+  "primary_integration": {
+    "source_revision": "74a70a4e5688f7d85631d872ebd98192bfb52615",
+    "build_source_revision": "10b5daad78445f4bb65e37a8dd5b9980e66d0bff",
+    "build_context_relation": "Later revision registers metadata only; compiled Source is unchanged.",
+    "worker_revision": "bdc1efdb1f20b566693c9d76c45dba9db7ca792c",
+    "component_revision": "10b5daad78445f4bb65e37a8dd5b9980e66d0bff",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_root_property_integrated_build.log",
+    "build_log_sha256": "eae20d92ae29ad807d31bb8911a9962d273ec521888f302f6d4ff49711c6d718",
+    "current_core_sha256": "ff49ccf1217d21a74f7f56d4cd6a67bb92e7838e0117d164e79f4a4e18927ba2",
+    "independent_component_manifest": "local/cc11_entity_root_kind_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "5d68cff652e0f1f0a9b9c4d241ad9fa04452840e665d6cfaee36536b515164ab",
+    "fresh_translation_units": 4,
+    "actual_headers": 158,
+    "actual_searched_libraries": 6,
+    "selected_tool_backend_files": 4,
+    "stable_worker_paths": 210,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?native_entity_root_is_kind_0042b8f0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 29,
+        "instruction_count": 9,
+        "sha256": "d28a7b3badadca2c0de72c35e577c9a64caa29c029b299dcbaadbfe36b3c5d79",
+        "relocations": []
+      },
+      {
+        "symbol": "?native_entity_root_is_kind_0047f190@bsp@@YIIPBXPAXI@Z",
+        "bytes": 34,
+        "instruction_count": 11,
+        "sha256": "c9cd0d005c814fd759ebfb296c75d72cd8c3b31fbda0b47decbcaefbbd1c23b6",
+        "relocations": []
+      }
+    ],
+    "execution_output": "identity group=00B9F2D8 actual_record=00B9F2F0 recovered_receiver=00B9F1F0 actual_C4=00B9F2B4\ntarget 0042b8f0 original_bytes=29 fixed=1 PASS\ntarget 0047f190 original_bytes=34 fixed=2 PASS\n123 checks, 0 failures; 11 queries, 22 backend observations; 1 Source group construction; 2 targets\n",
+    "current_link_inputs": {},
+    "native_call_verification_log": "local/cc11_root_property_native_calls.log",
+    "native_call_verification_log_sha256": "782857e447f3dc52a8c7ad70491eb0ef5cf71b763eb19d838d515b541cce1bb1",
+    "source_bookends_stable": true,
+    "old_families_replayed": false,
+    "tracked_tests_added": 0,
+    "qualification": "Two DISTINCT complete raw root predicates: 63 bytes / 20 instructions, fixed zero or one/zero before one fresh actual aligned receiver+C4 read. Every Source COFF/linked byte equals original PE/live and unchanged Original RX; full EAX0/1 and RET4. One independent fresh four-TU family passed123 checks /11 queries per backend /22 observations through genuine current Source group constructor and lookups, SAME actual record/receiver/C4. Five actual profile+5C bindings remain DATA; native class, virtual/profile/group membership, constructor/lifetime, observer, historical heap/private EH, world and game remain unproved. A reused postprocessor selected the old base symbol prefix after the successful run; the read-only failure is preserved and only the symbol prefix corrected, without native replay.",
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "primary_source_status": "complete whole Source bodies integrated; independent current fixture and full Win32/all3 CTests PASS; native class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": [
+      "local/ghidra-annotations-20261008T035355Z.json",
+      "local/ghidra-annotations-20261008T035457Z.json"
+    ],
+    "three_new_Source_bodies_and_two_unready_audits_refreshed": true,
+    "snapshot_internal_functions": 64280,
+    "snapshot_total_functions": 64722,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T035355Z.json": "79ba88b7ab659623cce0f2087de5a978aebeebdbf5297a11efc6bfbc7913bdf7",
+      "local/ghidra-annotations-20261008T035457Z.json": "4619e108ee6ad406f02a25c3709dd956572b52fa8bf9ab6fd5f9cccf0a21b4e3",
+      "local/cc11_root_property_annotations.log": "f5e4fb5139e37a6779cdda0ed2d7fc6cc8e51dccf1acbb886f08cad41f27bf02",
+      "local/cc11_group_speed_readiness_annotations.log": "c7c4071087936346c7b962838f23fb7e124ffa10e67657cbf9909c824cbc0180",
+      "local/cc11_root_property_and_speed_exports.log": "73d72f69bdc54a4b0098348e5e12f8577204d9717ec8694b80eab55d9b60c0d8",
+      "local/cc11_root_property_and_speed_snapshot.log": "d12abf0aae42890a1db146f76a7e9c9c0f98676f09c53d94ebc016c6bac6ba22"
+    }
   }
 }
