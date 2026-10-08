@@ -29121,6 +29121,167 @@
         "original_class_ABI_compatible": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_scene_property_bag_storage",
+      "worker": "property_bag_storage",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008F41A0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_bag_storage.hpp",
+        "src/native_scene_property_bag_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_BAG_STORAGE_CC12.md",
+        "reports/native_scene_property_bag_storage_cc12.json"
+      ],
+      "depends_on": [
+        "singleton_lifetime"
+      ],
+      "done": false,
+      "state": "ready independently audited whole61B15 raw114h constructor ECX plus owner stackword RET4",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc12_property_bag_constructor_audit\\receipt.json",
+      "audit_receipt_sha256": "dbc73ecc7e8440407f4ddc83ffc8debd723bf40712c24fa578974293b76182d4",
+      "context_reuse_exception": "Existing enum_registry_scalar worker completed this common-stream audit and explicitly recommended a fresh Source thread because its reused context is near its limit.",
+      "contract": {
+        "proposal": {
+          "packet": "cc12_scene_property_bag_storage",
+          "addresses": [
+            "008F41A0"
+          ],
+          "files": [
+            "include/bsp/native_scene_property_bag_storage.hpp",
+            "src/native_scene_property_bag_storage.cpp",
+            "docs/NATIVE_SCENE_PROPERTY_BAG_STORAGE_CC12.md",
+            "reports/native_scene_property_bag_storage_cc12.json"
+          ],
+          "scope": "One NEW distinct whole61B15 constructor with exact raw body/noCALL/no relocations; correct owner-stack ABI, actualDATA phases and complete114h writes.",
+          "family": "ONE fresh connected3TU: new constructorCPP, current singleton_lifetimeCPP, new ignoredprobeCPP; zeroBSP archives. Allocate two genuine fresh276-byte currentheap storage roots matching actual114 allocation witness; Source+unmodifiedOriginal61 on same fresh/unowned storage for completefield/owner/root identity/EDI/nonvolatile/ESP/RET4/DF0 checks; preserve otherlive root and guards. Nullowner and genuine borrowed live-owner address bits are storage ABI cases, not owner class lifetime. Original noCALL code requires noheapcallee patch. Explicit release onlystill-empty roots afterall checks, neverroot+4.",
+          "required_evidence": "Exact native full61 PE/live/COFF/linked/noRelocations; owner-stack declaration/actual call-RET4 gate; full276 fields, guards, DF0/flatES/EAX identity/EDI/ESP; fresh consumedSource/header/compiler/backends/syslibs and actualmalloc/free IAT; priorfrozen/history preserved beforeafter.",
+          "implementation_not_assigned": true,
+          "Root_registration_and_review_required": true,
+          "exclusions": "No whole property record/scalar/type158/nested cleanup, parser/factory/owner/virtualclass/historicalCRT/EH/world/game promotion; prior39/82/61-fragment initializer counts not reused.",
+          "worker_handoff": "Use a fresh self-contained implementation thread rather than extend this heavily reused stream context."
+        },
+        "native_ABI": {
+          "receiver": "ECX=actual distinct fresh/unowned0x114 storage",
+          "owner": "One stackDWORD at entryESP+4; after PUSHEDI read ESP+8 at008F41C3; owner bits onlystored, never dereferenced.",
+          "return": "EAX=root identity; plain RET4 pops the single owner stackword.",
+          "registers": "IncomingEDX overwritten by MOVEDX,ECX; EDX=root scratch/output, ECX exhausted to0 byREP; EDI pushed/restored. ESI/EBX/EBP untouched. EAX=root output.",
+          "DF_ES": "DF=0 and flat validES required for REPSTOSD; routine does not issueCLD. No Original execution in this audit.",
+          "Source_declaration_requirement": "Preserve ECX receiver plus OWNER ON STACK and RET4. Ordinary two-argument __fastcall would place owner inEDX and is incompatible. Raw naked function or an explicitly qualified C++ interface with unusedEDX formal may preserve the actual register/stack contract; final declaration and COFF must be independently reviewed before execution."
+        },
+        "field_schedule": [
+          "MOVEDX,ECX; saveEDI",
+          "write root0=D16504",
+          "XOREAX,EAX",
+          "write root4=D162C4",
+          "write root8 count=0",
+          "EDI=root+C; ECX=40h; REPSTOSD zeros64 heads C..10B",
+          "load owner stackword intoEAX",
+          "write owner root+110",
+          "write ordinal root+10C=0",
+          "EAX=EDX/root; restoreEDI; RET4"
+        ],
+        "DATA_profiles": [
+          {
+            "entry": "00D16504",
+            "inclusive_end": "00D16507",
+            "exclusive_end": "00D16508",
+            "bytes": 4,
+            "role": "individual actual outer bag DATA profile slot0",
+            "sha256": "09be9d3a8e1c44b711c5e579561f83596d03ffbe028233eced23067de9bd7d1c",
+            "live_PE_equal": true,
+            "slot0_actual_target": "008F59E0"
+          },
+          {
+            "entry": "00D162C4",
+            "inclusive_end": "00D162C7",
+            "exclusive_end": "00D162C8",
+            "bytes": 4,
+            "role": "individual actual interior map DATA profile slot0",
+            "sha256": "7b20fa993ded6a78663497192bdddb339365cd45a26d86578e143d389ab4e3d0",
+            "live_PE_equal": true,
+            "slot0_actual_target": "008F4170"
+          }
+        ],
+        "allocation_witness": {
+          "entry": "00469CCE",
+          "inclusive_end": "00469CF3",
+          "exclusive_end": "00469CF4",
+          "bytes": 38,
+          "role": "bounded actual114h allocation/owner-stack/receiver/whole-ctor directcall witness",
+          "sha256": "c4ea45908d59f7174d9cd983062388bc1b24d2959ca661bd5899ea71ed62c90a",
+          "live_PE_equal": true,
+          "instructions": 10,
+          "disassembly": [
+            {
+              "address": "00469CCE",
+              "bytes": "6814010000",
+              "instruction": "push 0x114"
+            },
+            {
+              "address": "00469CD3",
+              "bytes": "e843cb7800",
+              "instruction": "call 0xbf681b"
+            },
+            {
+              "address": "00469CD8",
+              "bytes": "83c404",
+              "instruction": "add esp, 4"
+            },
+            {
+              "address": "00469CDB",
+              "bytes": "89442420",
+              "instruction": "mov dword ptr [esp + 0x20], eax"
+            },
+            {
+              "address": "00469CDF",
+              "bytes": "85c0",
+              "instruction": "test eax, eax"
+            },
+            {
+              "address": "00469CE1",
+              "bytes": "c744241400000000",
+              "instruction": "mov dword ptr [esp + 0x14], 0"
+            },
+            {
+              "address": "00469CE9",
+              "bytes": "740d",
+              "instruction": "je 0x469cf8"
+            },
+            {
+              "address": "00469CEB",
+              "bytes": "6a00",
+              "instruction": "push 0"
+            },
+            {
+              "address": "00469CED",
+              "bytes": "8bc8",
+              "instruction": "mov ecx, eax"
+            },
+            {
+              "address": "00469CEF",
+              "bytes": "e8aca44800",
+              "instruction": "call 0x8f41a0"
+            }
+          ],
+          "whole_calls": [
+            {
+              "address": "00469CD3",
+              "bytes": "e843cb7800",
+              "instruction": "call 0xbf681b"
+            },
+            {
+              "address": "00469CEF",
+              "bytes": "e8aca44800",
+              "instruction": "call 0x8f41a0"
+            }
+          ]
+        },
+        "scope": "Four new owned files; distinct whole storage initializer only; actual supplied114h storage, owner stack/RET4, no vft/class/lifetime/world substitutes. One fresh3TU constructor/currentSingleton/newprobe family, no BSP archives, no prior replay, no new tracked tests. Root alone owns CMake/full build/independent fixture/shared metadata/saved Ghidra/integration."
+      }
     }
   ],
   "snapshot_after_analysis": {
