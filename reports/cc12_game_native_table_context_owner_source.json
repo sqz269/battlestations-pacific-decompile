@@ -1,7 +1,7 @@
 {
   "packet": "cc12_game_native_table_context_owner_source",
-  "status": "SOURCE_READY_AWAITING_INTEGRATOR_CMAKE_REGISTRATION_AND_BUILD",
-  "utc": "2026-10-08T22:40:34.365247+00:00",
+  "status": "SOURCE_OWNER_BUILD_TESTED_APPLICATION_CONTEXT_UNREADY",
+  "utc": "2026-10-08T23:00:31.625379+00:00",
   "base_main": "71a082208",
   "worker_merge": "534e455d94fbaeccf9c5ce36aed7d46e6550b702",
   "source": [
@@ -94,13 +94,37 @@
   "evidence_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a",
   "validation": {
     "source_review": "passed for required constructor argument, storage dimensions/identity, retained reference, copy/move deletion and one-shot borrow without builder calls",
-    "strict_win32_build": "pending integrator registration",
-    "existing_ctests": "pending; reconstructed_math, native_math_differential, tool_tests",
+    "strict_win32_build": true,
+    "existing_ctests": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "seconds": 0.22
+        },
+        {
+          "name": "native_math_differential",
+          "seconds": 0.03
+        },
+        {
+          "name": "tool_tests",
+          "seconds": 7.94
+        }
+      ],
+      "total_seconds": 8.25
+    },
     "new_tests_or_probes": false,
     "new_owner_execution": false,
     "game_entry_execution": false,
     "new_native_comparison": false,
-    "existing_table_tests_changed": false
+    "existing_table_tests_changed": false,
+    "prebuild_current_source_hash_match": true,
+    "current_build_archive_all_members_verified": 6985,
+    "current_build_archive_crc_verified": true,
+    "historical_archive_all_members_verified": 594,
+    "historical_archive_crc_verified": true,
+    "owner_public_symbols_in_current_pe_map": false
   },
   "unready": [
     "full application construction context",
@@ -115,5 +139,354 @@
     "src/game_native_game_tables.cpp",
     "docs/CC12_GAME_NATIVE_TABLE_CONTEXT_OWNER_SOURCE.md",
     "reports/cc12_game_native_table_context_owner_source.json"
-  ]
+  ],
+  "validated_commit": "94e38c65ebfc4bbfffc1e027c2ab96da7742a266",
+  "source_commit": "82fe0003b021f2fd257c52c6075ce9f8ad45f44a",
+  "root_registration": {
+    "file": "CMakeLists.txt",
+    "target": "bsp_game",
+    "owner": "primary integrator",
+    "correction_commit": "94e38c65ebfc4bbfffc1e027c2ab96da7742a266",
+    "deferred_target_sources": true
+  },
+  "normal_build_artifacts": {
+    "utc": "2026-10-08T22:55:18.195597+00:00",
+    "head": "94e38c65ebfc4bbfffc1e027c2ab96da7742a266",
+    "build_receipt": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "platform": "Win32",
+      "started_utc": "2026-10-08T22:53:21.5347153Z",
+      "finished_utc": "2026-10-08T22:54:03.3076717Z",
+      "exit_code": 0,
+      "complete_log": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\build.log",
+      "new_test_or_probe": false,
+      "game_entry_execution": false
+    },
+    "qualification": "Normal current Win32 compilation and existing CTests only; no new owner fixture, Native comparison or game entry execution.",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\normal_win32_build_20261008.zip",
+      "size": 67886208,
+      "sha256": "efa1e204344da532bc59c17d49bd2ebbaac6a1681a1ab61f7e5568aa24ecb3e2"
+    },
+    "files": 6985,
+    "uncompressed_bytes": 320283043,
+    "new_owner_objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\game_native_game_tables.obj",
+        "size": 8202,
+        "sha256": "5a728cca1a3cefeea59e52f9be06fa64f46ed750922a9821f90ebd84a2cdb7db"
+      }
+    ],
+    "prebuild_current_sources_still_match": true
+  },
+  "normal_build_artifact_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\normal_build_artifact_receipt.json",
+    "size": 2733270,
+    "sha256": "82fc54f50bf71d55bce822224c822e45f5534f5f8ffc028fe52a2fbf075c915e"
+  },
+  "prebuild_freezes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\source_ready_manifest.json",
+      "size": 2541634,
+      "sha256": "79546923ce3f98efa241c23ed3a89035e8231e9b932307a638f1a81237e730db"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\prebuild_manifest.json",
+      "size": 2526348,
+      "sha256": "476de05c8f7c5347a22f2f1bdbc1acc0bd7b72d07c974620116d2a21b8de76a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\prebuild_attempt02_manifest.json",
+      "size": 2567508,
+      "sha256": "3486941f92af0aec75760776c7b2099debf760a989007afe112449804435887e"
+    }
+  ],
+  "failed_attempt": {
+    "commit": "5ec6014edd1e201675b0d0469abe523772eb4b13",
+    "stage": "CMake configure",
+    "reason": "Integrator target_sources referenced deferred bsp_game before creation",
+    "source_compiled": false,
+    "tests_executed": false,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\build_attempt01_configure_failed.log",
+      "size": 533,
+      "sha256": "12b299bdcce6d59115203d74ad14edeb854887102f29ef7fe83079af6cdf2b2e"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\build_attempt01_configure_failed_receipt.json",
+      "size": 443,
+      "sha256": "c34244d8fd6cde2a6ca45aaa2e39ed285b2ace8036e448b7681c81d4109bf68f"
+    }
+  },
+  "compiled_owner": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\game_native_game_tables.obj",
+      "size": 8202,
+      "sha256": "5a728cca1a3cefeea59e52f9be06fa64f46ed750922a9821f90ebd84a2cdb7db"
+    },
+    "constructor_body_bytes": 124,
+    "borrow_body_bytes": 69,
+    "owner_offsets": {
+      "unit_rows": 0,
+      "actual_append_count": 368,
+      "rank_dwords": 372,
+      "retained_context": 5028,
+      "borrowed_flag": 5052
+    },
+    "static_observations": [
+      "Constructor zeroes 368 unit bytes and 4656 rank bytes, initializes the actual count, retains the mandatory caller word unchanged and calls only the established two authored-data getters plus memset.",
+      "The six context fields use the actual storage/count and getter return values.",
+      "Borrow checks the actual flag and actual volatile count, marks the flag and returns the actual retained context address.",
+      "The rejection path binds the emitted logic_error constructor and CxxThrowException; no native table builder is called."
+    ],
+    "complete_machine_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\receipt.json",
+      "size": 87577,
+      "sha256": "10d966b0b3a2b430960e6d2189f0e3926487a06c0416f0eb49fb0826dddd1a79"
+    },
+    "unique_core_members": [
+      {
+        "member": "bsp_core.dir\\Release\\native_game_tables.obj",
+        "unique_member": true,
+        "matches_current_object": true,
+        "extracted": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\native_game_tables_unique_core_member.obj",
+          "size": 12452,
+          "sha256": "6aa1ddd8c9dc195610f1806c4393365a59da6cfba79fad5ee614daad72996692"
+        },
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_game_tables.obj",
+          "size": 12452,
+          "sha256": "6aa1ddd8c9dc195610f1806c4393365a59da6cfba79fad5ee614daad72996692"
+        }
+      },
+      {
+        "member": "bsp_core.dir\\Release\\gunnery_tables.obj",
+        "unique_member": true,
+        "matches_current_object": true,
+        "extracted": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\gunnery_tables_unique_core_member.obj",
+          "size": 9353,
+          "sha256": "4971c8f1e616d779f37d0f10c471fed3de6691b01b8e8069a1f4116575509310"
+        },
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\gunnery_tables.obj",
+          "size": 9353,
+          "sha256": "4971c8f1e616d779f37d0f10c471fed3de6691b01b8e8069a1f4116575509310"
+        }
+      }
+    ],
+    "actual_compiler_input_count": 98,
+    "tool_records": [
+      {
+        "source": {
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "size": 891752,
+          "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\tools\\cl.exe",
+          "size": 891752,
+          "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\lib.exe",
+          "size": 23424,
+          "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\tools\\lib.exe",
+          "size": 23424,
+          "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+          "size": 3698016,
+          "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\tools\\link.exe",
+          "size": 3698016,
+          "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+          "size": 23424,
+          "sha256": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\tools\\dumpbin.exe",
+          "size": 23424,
+          "sha256": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c"
+        }
+      }
+    ],
+    "retained_whole_objects": {
+      "game_native_game_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\objects\\game_native_game_tables.obj",
+        "size": 8202,
+        "sha256": "5a728cca1a3cefeea59e52f9be06fa64f46ed750922a9821f90ebd84a2cdb7db"
+      },
+      "native_game_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\objects\\native_game_tables.obj",
+        "size": 12452,
+        "sha256": "6aa1ddd8c9dc195610f1806c4393365a59da6cfba79fad5ee614daad72996692"
+      },
+      "gunnery_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\objects\\gunnery_tables.obj",
+        "size": 9353,
+        "sha256": "4971c8f1e616d779f37d0f10c471fed3de6691b01b8e8069a1f4116575509310"
+      }
+    }
+  },
+  "compiled_link_inputs": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\receipt.json",
+      "size": 6402,
+      "sha256": "c94a727c0c59efbefd882e8b2da5ba2a92d07a6786807ee7500c11b73d2389b8"
+    },
+    "libraries": [
+      {
+        "source": {
+          "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCPRT.LIB",
+          "size": 5365666,
+          "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\msvcprt.lib",
+          "size": 5365666,
+          "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+          "size": 8263656,
+          "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\msvcrt.lib",
+          "size": 8263656,
+          "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+          "size": 400312,
+          "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\vcruntime.lib",
+          "size": 400312,
+          "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+        }
+      },
+      {
+        "source": {
+          "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+          "size": 299244,
+          "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\ucrt.lib",
+          "size": 299244,
+          "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+        }
+      }
+    ],
+    "unique_static_members": [
+      {
+        "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\x86\\delete_scalar_size.obj",
+        "unique": true,
+        "extracted": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\delete_scalar_size.obj",
+          "size": 37752,
+          "sha256": "8cefc1938a9885f5d2c97750075df21dadaf032a0d44004602bf0d640e0aeb98"
+        }
+      },
+      {
+        "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\x86\\delete_scalar.obj",
+        "unique": true,
+        "extracted": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\delete_scalar.obj",
+          "size": 39083,
+          "sha256": "60bb03d8fd66e3a85c2ed07f583b4312cbf0efdea937a9b5482184bce1e934b1"
+        }
+      },
+      {
+        "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\x86\\std_type_info_static.obj",
+        "unique": true,
+        "extracted": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\machine_evidence\\link_inputs\\std_type_info_static.obj",
+          "size": 19705,
+          "sha256": "060a2d128c928a922e88ec2a14348e637973d12b4b4061b5beb5809971a5ec57"
+        }
+      }
+    ],
+    "imports": [
+      {
+        "dll": "VCRUNTIME140.dll",
+        "name": "memset",
+        "hint": 72,
+        "iat_va": "103CC448",
+        "iat_rva": "003CC448",
+        "original_thunk_rva": "004A7448"
+      },
+      {
+        "dll": "VCRUNTIME140.dll",
+        "name": "_CxxThrowException",
+        "hint": 1,
+        "iat_va": "103CC48C",
+        "iat_rva": "003CC48C",
+        "original_thunk_rva": "004A748C"
+      },
+      {
+        "dll": "VCRUNTIME140.dll",
+        "name": "__std_exception_destroy",
+        "hint": 34,
+        "iat_va": "103CC490",
+        "iat_rva": "003CC490",
+        "original_thunk_rva": "004A7490"
+      },
+      {
+        "dll": "VCRUNTIME140.dll",
+        "name": "__std_exception_copy",
+        "hint": 33,
+        "iat_va": "103CC494",
+        "iat_rva": "003CC494",
+        "original_thunk_rva": "004A7494"
+      },
+      {
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "name": "free",
+        "hint": 24,
+        "iat_va": "103CC4F4",
+        "iat_rva": "003CC4F4",
+        "original_thunk_rva": "004A74F4"
+      }
+    ],
+    "owner_and_provider_public_map_matches": {
+      "GameNativeGameTables": [],
+      "native_unit_conversion_definitions": [],
+      "native_gunnery_preference_words": []
+    },
+    "qualification": "Build-time objects/import libraries and linked-PE import tuples only; no loaded runtime DLL resolution or execution claim.",
+    "map_limitation": "These unreferenced owner/provider COMDATs have no public entries in this linked PE map. Evidence qualifies emitted COFF code and data, not a linked or instantiated application owner."
+  },
+  "final_seal": {
+    "whole_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\whole_artifact_manifest.json",
+    "validation_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\validation_receipt.json",
+    "qualification": "Artifact retention and Source/build checks only; no new owner or application execution."
+  },
+  "native_reconstruction_added": 0,
+  "native_address_ownership": [],
+  "source_interface_only": true
 }
