@@ -33179,6 +33179,33 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_physical_file_size_raw_entry",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF4FA0"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_PHYSICAL_FILE_SIZE_RAW_ENTRY.md",
+        "reports/cc12_physical_file_size_raw_entry.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_raw_receiver_Register_ABI_entry_build_and_real_OS_Original_Source_checked",
+      "worker_commit": "df33962bd6933047bcdbca7abccd2fd3fb118eb6",
+      "contract": {
+        "new_Original_functions": 0,
+        "additional_raw_interfaces": 1,
+        "complete_body_bytes": 27,
+        "fresh_real_OS_pairs": 3,
+        "class_table_lifetime_admitted": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
