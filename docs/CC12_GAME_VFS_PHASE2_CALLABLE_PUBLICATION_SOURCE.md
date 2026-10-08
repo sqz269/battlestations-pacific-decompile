@@ -93,3 +93,11 @@ This packet provides no runtime coverage for changed production phase2,
 `ReadFile` failure, partial-state retention, concurrent shutdown, general
 startup or gameplay. It adds no Original-function, raw ABI, flags/stack,
 binary-replacement or whole-bootstrap reconstruction credit.
+
+## Independent primary acceptance
+
+The integrator rehashed all 18,122 retained frozen rows and froze 4,497 actual current physical inputs before compilation; all 916 consumed selected compiler inputs were present. Its normal Win32 build passed all three existing checks. Forty-four current whole objects and all 6,129 function extents match the worker graph, including ordered relocations and explicit compiler-name bijections; the 39 Core objects each have one exact current archive member.
+
+The fresh executable/map replay qualifies all 133 complete bodies and 1,414 relocations. The complete 1,588-byte/43-relocation phase2 body calls the current initialize wrapper at operand offset 304, the current publish wrapper at 324, stores core_ready at instruction offset 347, and calls the first mount wrapper at operand offset 1203. All six phase2 invoke wrappers and the actual public publisher are part of that whole linked proof. The two unused lambda shells retain COFF-only qualification.
+
+Primary receipt: `local/cc12_game_vfs_phase2_callable_publication_source_primary_review/receipt.json`, SHA-256 `401a16359392080af28f866d4f5c281872a55ace6e5955d3a73f49946c75eaf7`; static gate SHA-256 `07437a8903eff69cc05be6b1ed9fc61bf815d452de5c79e0986fb128a26fc7fa`. This packet adds one Source wiring line. It ran no diagnostic, general startup or gameplay. The earlier connected-read executions belong to their separate preserved evidence family; they are not runtime coverage for this production call site. No new Original-function, whole-bootstrap or raw ABI credit.

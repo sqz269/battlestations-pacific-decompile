@@ -1,6 +1,6 @@
 {
   "packet": "cc12_game_vfs_phase2_callable_publication_source",
-  "status": "Source_wiring_build_tested_whole_static_proof_passed_pending_primary_review",
+  "status": "PRIMARY_ACCEPTED_SOURCE_WIRING_NORMAL_WIN32_AND_COMPLETE_STATIC_PRODUCTION_PROOF_NO_EXECUTION",
   "generated_utc": "2026-10-08T19:29:40.923966+00:00",
   "accepted_main_at_start": "3649653337d98e9a0203021ba36fb61214592cc5",
   "worker_baseline_commit": "bf868fa939d1c8cd8fc13f874114c6a35514997a",
@@ -551,5 +551,34 @@
     "No new raw calling-convention, flags/stack, Original EH, binary-drop-in, shutdown-concurrency or gameplay claim.",
     "Full compiler-input closure covers actual selected translation units, with current recipe/tool candidates; it is not an exhaustive OS/toolchain claim.",
     "Primary review/integration remains pending. No Original installation writes or Ghidra/metadata mutations occurred."
-  ]
+  ],
+  "primary_review": {
+    "status": "PRIMARY_ACCEPTED_PHASE2_CALLABLE_PUBLICATION_SOURCE_WIRING",
+    "static_gate": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_vfs_phase2_callable_publication_source_primary_review\\static_gate.json",
+    "static_gate_sha256": "07437a8903eff69cc05be6b1ed9fc61bf815d452de5c79e0986fb128a26fc7fa",
+    "worker_frozen_rows_rehashed": 18122,
+    "current_pre_frozen_physical_inputs": 4497,
+    "actual_selected_compiler_inputs": 916,
+    "current_whole_objects": 44,
+    "current_complete_extents": 6129,
+    "current_unique_Core_members": 39,
+    "current_linked_whole_bodies": 133,
+    "current_ordered_relocations": 1414,
+    "phase2_bytes": 1588,
+    "phase2_ordered_relocations": 43,
+    "initialize_relocation_operand_offset": 304,
+    "publish_relocation_operand_offset": 324,
+    "core_ready_store_instruction_offset": 347,
+    "first_mount_relocation_operand_offset": 1203,
+    "normal_Win32_all3_existing_checks": true,
+    "new_Source_line": 1,
+    "new_Original_function_credit": 0,
+    "raw_ABI_admitted": false,
+    "current_diagnostic_executions": 0,
+    "current_startup_executions": 0,
+    "gameplay_validated": false,
+    "previous_connected_read_current_run_remains_historical": true,
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_vfs_phase2_callable_publication_source_primary_review\\receipt.json",
+    "receipt_sha256": "401a16359392080af28f866d4f5c281872a55ace6e5955d3a73f49946c75eaf7"
+  }
 }
