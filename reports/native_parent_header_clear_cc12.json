@@ -1,0 +1,702 @@
+{
+  "schema": "bsp.cc12.native_parent_header_clear.qualification.v1",
+  "packet": "cc12_native_parent_header_clear",
+  "baseline": "d9cabb5e63da8fdce5cea6a6e845246f17f284e2",
+  "Source_admission_credit": 0,
+  "worker_implementation_completed": true,
+  "Root_independent_fixture_fullmain_annotation_integration_required": true,
+  "source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\src\\native_parent_header_clear.cpp",
+    "size": 1842,
+    "sha256": "8755aa1345bb5ad1897f5e6b7f77909a9a3bfd7f55977968e80a17edc1f28c4f"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\include\\bsp\\native_parent_header_clear.hpp",
+    "size": 1141,
+    "sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee"
+  },
+  "Source_symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+  "Source_VA": "23001000",
+  "native": {
+    "entry": "004BF8E0",
+    "end_exclusive": "004BF926",
+    "whole_bytes": 70,
+    "whole_instructions": 29,
+    "SHA256": "d2bcd01aa9aa3c30eae420c969b256957f769149e7e8bc59be5029d2e473c9d3",
+    "hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e8906c730083c404833e0075c45ec3",
+    "sole_CALL_site": "004BF917",
+    "sole_original_target": "00BF65AC",
+    "qualified_CALL_operand": [
+      56,
+      60
+    ],
+    "unchanged_bytes": 66,
+    "Source_COFF_hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e80000000083c404833e0075c45ec3",
+    "Source_linked_hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e82402000083c404833e0075c45ec3",
+    "Source_linked_SHA256": "a8e6d853fc6f0d7bcf3faf85433442352738a7ce6b711faaf17b5a07005a737f",
+    "COFF_relocations": [
+      {
+        "offset": 56,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 12
+      }
+    ],
+    "resolved_relocations": [
+      {
+        "offset": 56,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 12,
+        "target": {
+          "address": 587207264,
+          "section": "0001",
+          "offset": 608,
+          "provenance": "f   canonical.obj"
+        },
+        "object_addend": 0,
+        "linked_operand": 548
+      }
+    ],
+    "unique_linked": [
+      587206656
+    ],
+    "complete_before_after_PE_live_listing_equal": true,
+    "zero_listing_repairs": true
+  },
+  "ABI": {
+    "declaration": "void __fastcall clear_native_parent_header_004bf8e0(void* actual_header, std::uint32_t unused_edx) noexcept;",
+    "receiver": "ECX actual coherent writable12-byte count/head/tail root; no stack args/plainRET at004BF925",
+    "incoming_EDX": "unused padding formal, scratch on populated path",
+    "empty": "zero writes/free; incoming EAX/ECX/EDX unchanged",
+    "populated": "volatile EAX/ECX/EDX unpromised across real free; void interface",
+    "nonvolatile": "ESI saved/restored, other nonvolatiles preserved with ordinary CRT",
+    "direct_raw_stack": "entryS; savesEBP/EBX/ESI/EDI/flags/two canaries ->S-28; indirectCALL targetentryS-32; clear savedESI S-36; freeArg S-40; freeentryS-44; free returnsS-40; ADD4S-36; POP/RET returns rawS-28; capturepushes8 ->S-36; ADD16/pops restoreS; rawcdeclRET S+4",
+    "ordinary_stack": "The compiled6-byte ordinary caller adds one CALL return-address DWORD: rawS-28 before target; ordinary entryS-32; Source entryS-36; savedESI S-40; freeArg S-44; freeentryS-48; cdecl free returnS-44; ADD4S-40; POP/SourceRET returnsS-32; ordinaryRET returns rawS-28. TerminalCMP flags unaffected",
+    "defined_exit_flags": {
+      "mask": "000008D5",
+      "expected": "00000044",
+      "CF": 0,
+      "PF": 1,
+      "AF": 0,
+      "ZF": 1,
+      "SF": 0,
+      "OF": 0,
+      "source": "final CMP currentcount0, initial empty or terminal after free; ADD-ESP flags overwritten"
+    },
+    "DF": "complete current-heap operation DF0; no CLD; no blanket FP/DF promise across CRT",
+    "ordinary_compiler_caller": "actual6B2 CALL Source then plainRET, ECX/EDX register interface",
+    "raw_compiler_caller": "actual172B62, one indirect CALL/no stacked target arguments, GPR/ESP/flags/ES/two stack canaries captured"
+  },
+  "storage_contract": {
+    "header_offsets": {
+      "count": 0,
+      "head": 4,
+      "tail": 8
+    },
+    "node_offsets": {
+      "prev": 0,
+      "next": 4,
+      "borrowed_payload": 8
+    },
+    "preconditions": [
+      "actual distinct caller-owned12 header",
+      "finite coherent count/head/tail with distinct simultaneously live nodes and head.prev0/tail.next0",
+      "each node actual live12-byte allocation base produced by admitted current Source append",
+      "live borrowed payloads external/disjoint from headers and every owned node",
+      "ordinary DF0 real canonical free, no concurrent/reentrant list mutation"
+    ],
+    "ordering": "take currenthead; repair prev.next or head; repair next.prev or tail; decrement count; push actual nodebase; realfree; reload currentcount; loop",
+    "writes": [
+      "root.count DWORD+0 per node",
+      "root.head DWORD+4 for prevNULL",
+      "root.tail DWORD+8 for nextNULL",
+      "prev.next DWORD+4 when prev exists",
+      "next.prev DWORD+0 when next exists"
+    ],
+    "payload": "node+8 never read/store/deref/destroy/free; external borrowed payload bytes unchanged",
+    "normal_result": "all original coherent nodes disposed once; surviving header0/0/0",
+    "no_postfree_reads": true,
+    "no_fake_nodes_parent_World_provider_guard_or_fallback": true
+  },
+  "fresh_fixture": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01",
+    "five_fresh_TUs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\src\\native_parent_header_clear.cpp",
+        "size": 1842,
+        "sha256": "8755aa1345bb5ad1897f5e6b7f77909a9a3bfd7f55977968e80a17edc1f28c4f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\src\\native_parent_list_header_storage.cpp",
+        "size": 887,
+        "sha256": "e8adeb28a7deeb4b3fbe14c483fc6e0207de3c8347960787eb696a7611c2677d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\src\\native_unit_list_append.cpp",
+        "size": 2447,
+        "sha256": "219c9858a34beeb08759c8c9b05ffc515d683e72c24389be0adb1a89b953d369"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\probe.cpp",
+        "size": 25006,
+        "sha256": "199d815b0ec9a8811e99a099516ef2ec0e645105089370f38ec1c7b2a13c78c7"
+      }
+    ],
+    "BSP_archives": 0,
+    "old_objects": 0,
+    "strict_MSVC": "14.51.36231 /MD /O2 /W4 /WX /fp:strict /permissive- /EHsc; SDK10.0.26100.0 Win32",
+    "manifest": {
+      "level": "asInvoker",
+      "uiAccess": "false"
+    },
+    "whole_code_spans": 31,
+    "whole_code_details": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\static_gate.json",
+      "size": 629363,
+      "sha256": "27022e44abb04a0428f215d455cf527b9bb904428bed71351576437d84b411e3"
+    },
+    "consumed_headers": 186,
+    "resolved_libraries": 7,
+    "launch": {
+      "passed": true,
+      "processes": 1,
+      "canonical_allocations": 10,
+      "root_allocations": 3,
+      "append_entries": 7,
+      "clear_entries": 5,
+      "raw_Source_entries": 2,
+      "raw_Original_entries": 2,
+      "ordinary_Source_entries": 1,
+      "actual_append_nodes": 7,
+      "normal_node_dispositions": 7,
+      "actual_root_base_frees": 3,
+      "interior_header_frees": 0,
+      "postfree_node_reads": 0,
+      "no_global_address_uniqueness_required": true,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\process_stdout.txt",
+        "size": 4795,
+        "sha256": "0db33f49261d17da8f71e097519ce194c453c3473c8cc6da8b0903dc621c5f44"
+      },
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\header_clear_probe.exe",
+        "size": 20992,
+        "sha256": "e7cb29a369dbdde3050131648d8c1c977818b5e0a43711117c73181ded26fca4"
+      },
+      "no_adjacent_heap_guard_claim": true
+    },
+    "cases": [
+      {
+        "root_address": 6238288,
+        "root": [
+          0,
+          0,
+          0
+        ],
+        "allocation44": "a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6000000000000000000000000a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6",
+        "before": [
+          270544960,
+          6238288,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          270544960,
+          6238288,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 514,
+        "flags_after": 582,
+        "stack": [
+          1791548181,
+          2792424083
+        ],
+        "es": [
+          43,
+          43
+        ],
+        "case": "empty_source"
+      },
+      {
+        "root_address": 6238792,
+        "root": [
+          0,
+          0,
+          0
+        ],
+        "allocation44": "b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7000000000000000000000000b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7",
+        "before": [
+          270544960,
+          6238792,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          270544960,
+          6238792,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 514,
+        "flags_after": 582,
+        "stack": [
+          1791548181,
+          2792424083
+        ],
+        "es": [
+          43,
+          43
+        ],
+        "case": "empty_original"
+      },
+      {
+        "root_address": 6238288,
+        "root": [
+          0,
+          0,
+          0
+        ],
+        "allocation44": "a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6000000000000000000000000a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6",
+        "before": [
+          270544960,
+          6238288,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          1,
+          2518907194,
+          0,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 514,
+        "flags_after": 582,
+        "stack": [
+          1791548181,
+          2792424083
+        ],
+        "es": [
+          43,
+          43
+        ],
+        "case": "populated_source"
+      },
+      {
+        "root_address": 6238792,
+        "root": [
+          0,
+          0,
+          0
+        ],
+        "allocation44": "b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7000000000000000000000000b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7",
+        "before": [
+          270544960,
+          6238792,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          1,
+          2518907194,
+          0,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 514,
+        "flags_after": 582,
+        "stack": [
+          1791548181,
+          2792424083
+        ],
+        "es": [
+          43,
+          43
+        ],
+        "case": "populated_original"
+      },
+      {
+        "root_address": 6238624,
+        "root": [
+          0,
+          0,
+          0
+        ],
+        "allocation44": "c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8000000000000000000000000c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8",
+        "before": [
+          270544960,
+          6238624,
+          3608389065,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          1,
+          2518907198,
+          0,
+          287454020,
+          1767836,
+          1767860,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 514,
+        "flags_after": 582,
+        "stack": [
+          1791548181,
+          2792424083
+        ],
+        "es": [
+          43,
+          43
+        ],
+        "case": "ordinary_source_singleton"
+      }
+    ],
+    "genuine_producer_observations": [
+      {
+        "index": 1,
+        "root": 6238288,
+        "returned_payload": 1768912,
+        "actual_node": 6245512,
+        "node_words": [
+          0,
+          0,
+          1768912
+        ]
+      },
+      {
+        "index": 2,
+        "root": 6238792,
+        "returned_payload": 1768944,
+        "actual_node": 6245896,
+        "node_words": [
+          0,
+          0,
+          1768944
+        ]
+      },
+      {
+        "index": 3,
+        "root": 6238288,
+        "returned_payload": 1768944,
+        "actual_node": 6245656,
+        "node_words": [
+          6245512,
+          0,
+          1768944
+        ]
+      },
+      {
+        "index": 4,
+        "root": 6238792,
+        "returned_payload": 1768912,
+        "actual_node": 6245824,
+        "node_words": [
+          6245896,
+          0,
+          1768912
+        ]
+      },
+      {
+        "index": 5,
+        "root": 6238288,
+        "returned_payload": 1768912,
+        "actual_node": 6245584,
+        "node_words": [
+          6245656,
+          0,
+          1768912
+        ]
+      },
+      {
+        "index": 6,
+        "root": 6238792,
+        "returned_payload": 1768944,
+        "actual_node": 6245728,
+        "node_words": [
+          6245824,
+          0,
+          1768944
+        ]
+      },
+      {
+        "index": 7,
+        "root": 6238624,
+        "returned_payload": 1768976,
+        "actual_node": 6245584,
+        "node_words": [
+          0,
+          0,
+          1768976
+        ]
+      }
+    ],
+    "CRT_before_and_after": [
+      {
+        "name": "malloc",
+        "IAT": 1987903776,
+        "export": 1987903776,
+        "module": 1987706880,
+        "logical_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "file_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "fileID": [
+          3906787040,
+          327680,
+          2895862
+        ],
+        "machine": 332,
+        "MEM_IMAGE": true,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "ASLR_normalized_prefix": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "name": "free",
+        "IAT": 1987903648,
+        "export": 1987903648,
+        "module": 1987706880,
+        "logical_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "file_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "fileID": [
+          3906787040,
+          327680,
+          2895862
+        ],
+        "machine": 332,
+        "MEM_IMAGE": true,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "ASLR_normalized_prefix": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc"
+      },
+      {
+        "name": "_callnewh",
+        "IAT": 1988276224,
+        "export": 1988276224,
+        "module": 1987706880,
+        "logical_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "file_nt": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "fileID": [
+          3906787040,
+          327680,
+          2895862
+        ],
+        "machine": 332,
+        "MEM_IMAGE": true,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "ASLR_normalized_prefix": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8"
+      }
+    ],
+    "allocation_guards": "three actual44-byte allocations; actual12-byte header at+16; writable16-byte prefix/suffix inside each allocation, not adjacent heap redzones/metadata",
+    "payloads": "three genuine stack-resident32-byte payloads,96 total bytes preserved including guards; Source A/B/A and Original B/A/B then ordinary singleton C",
+    "dispositions": "seven real append allocations and observed beforecounts3/3/1\u21920 under wholebody realfree-per-decrement establish seven normal node dispositions; no shim/hooked fake counter",
+    "address_reuse": "ordinary singleton legitimately reused an earlier freed Source node address; no global uniqueness or freed-memory inspection",
+    "full_capture_checks": [
+      "all12 header bytes",
+      "all32 writable allocation guard bytes",
+      "every byte of other still-live roots/nodes",
+      "borrowed payload96",
+      "all GPR/ESP, nonvolatile identity, empty volatile identity",
+      "definedCMPflags includingAF0, DF0, ES",
+      "capturebox and two stack canaries"
+    ],
+    "Original_qualification": "complete Original70 RX retains66 bytes, only4 CALL displacement bytes bind same actual Source canonicalfree; target checked before and after",
+    "provider_gate": "whole31 mapped fresh Source/caller/provider/helper spans before0alloc/producer/clear and after; actualI386 UCRT malloc/free/_callnewh IAT/export/MEM_IMAGE/NTmapped-file/fileID/fullSHA/ASLRnormalized32-byte export prefixes before0alloc/targets and after all10frees",
+    "post": {
+      "passed": true,
+      "prior_actual_pins": 16743,
+      "all_consumed_before_after_equal": true,
+      "Source_admission_credit": 0,
+      "current_heap_coherent_node_fixture": true,
+      "owner_parent_iterator_EH_private_heap_class_world_game_admitted": false
+    },
+    "manual_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\manual_review.json",
+      "size": 5654,
+      "sha256": "e498cdf4ab1c06441c247be3cc39ded4b0ea2c7632c9c1a89bae507011c2e287"
+    },
+    "failed_stages": 1,
+    "accepted_processes": 1,
+    "old_accepted_stage_helper_or_process_replays": 0,
+    "retained_failure": "record_build.py expected3 but initial fullbaseline build registered2 without ignored seeds; stopped before metadata writes. New finish_build.py independently verified seeds/built only additional native target/all3checks, without Source70/native family replay"
+  },
+  "preserved_provenance": {
+    "prior_union": {
+      "audit224_plus10190": 10414,
+      "RootHeader134_plus16385": 16519,
+      "deduplicated_actual_pins": 16743,
+      "all_original_associations_unchanged": true
+    },
+    "before_after_actual_pins": 16743,
+    "current_inputs": 37,
+    "frozen_generation_metadata": "original generation bytes retained in context; CMake/bsp archives unconsumed by fresh5TU, no live-main metadata repin"
+  },
+  "worker_baseline_build": {
+    "passed": true,
+    "baseline": "d9cabb5e63da8fdce5cea6a6e845246f17f284e2",
+    "Win32": true,
+    "configuration": "Release",
+    "initial_full_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "CTest_passed": 2,
+      "console": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70_worker_main_build_console.log",
+        "size": 74604,
+        "sha256": "2354f7b06f70c6cb3e19921f73b827a664c6b4f890069ec7e41238fb5c378443"
+      }
+    },
+    "seed_completion": {
+      "helper": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\finish_build.py",
+        "size": 4662,
+        "sha256": "4c341d018a50f93bf3cb906d09dea3082995c2380663c1eed0c04b8487d5f68f"
+      },
+      "seeds": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\seeds\\seed_byte_comparison.json",
+        "size": 3288,
+        "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      "cmake": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "size": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c"
+      },
+      "ctest": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "size": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b"
+      },
+      "only_additional_target": "bsp_native_math_tests",
+      "new_target_build_log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\native_target_build_stdout.txt",
+        "size": 1107,
+        "sha256": "8ac430a5e6916689bf24d9d0e6febb916129a71d390c2cdfd313fc7a258f7a0a"
+      },
+      "all3_ctest_log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\all3_ctest_stdout.txt",
+        "size": 491,
+        "sha256": "b070da83f567ddcacbbe3659694dc788ccdb28632763a52c7a1942cda0a1e285"
+      }
+    },
+    "tests": [
+      "1/3 Test #1: reconstructed_math ...............   Passed    0.17 sec",
+      "2/3 Test #2: native_math_differential .........   Passed    0.03 sec",
+      "3/3 Test #3: tool_tests .......................   Passed    7.73 sec"
+    ],
+    "CTest_passed": 3,
+    "CTest_failed": 0,
+    "actual_build_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\scripts\\build.ps1",
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\build\\win32\\CMakeCache.txt",
+        "size": 19701,
+        "sha256": "1be803caa3458053138dc1ae4366b0db40c288d18bba9090a5b64db4eab51e8e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\build\\win32\\CTestTestfile.cmake",
+        "size": 6920,
+        "sha256": "0926a9aac1688b68a1dbf18a1fa5a68dc0a6ea6465732d7673f5e1cc77d58317"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\build\\win32\\Testing\\Temporary\\LastTest.log",
+        "size": 2493,
+        "sha256": "d5d65b90987e53a8e5266a8279bfa6964abc35e26d350a8a6ddaea59c078b18a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\build\\win32\\Release\\bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "b1dbae55f093fa03fd4f7827ce6455aeb1d6c49c44f3109145e802227ddb9118"
+      }
+    ],
+    "retained_failure": {
+      "helper": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\record_build.py",
+        "size": 1552,
+        "sha256": "9cebebf10fc3ec61ca779820b165531badff99008cbafc0c79557f2ef84210d1"
+      },
+      "reason": "Initial build had2tests because seed header absent; assertion-only stop before metadata writes, Source/native family untouched",
+      "console": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\initial_record_build_failure.log",
+        "size": 317,
+        "sha256": "e109da93338dd686ca0afe2431d98993b6115748277511b336cdcf9757bd044a"
+      }
+    },
+    "new_leaf_compiled_by_CMake_baseline": false,
+    "new_leaf_compiled_in_strict_five_TU_family": true,
+    "qualification": "Full fresh baseline build with2checks, then verified current seeds/new native target/all3checks. No Source70 or accepted strict-family phase/native replay. Root independent integration/fullmainbuild remains required; BSP archives0 in family"
+  },
+  "immutable_handoff": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\receipt.json",
+      "size": 11252,
+      "sha256": "0accf857b8237609280980b01be25c1a2be16f5cde89af979553a87e1aa1fabb"
+    },
+    "artifact_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\artifact_manifest.json",
+      "size": 129970,
+      "sha256": "ccd33ccd8ca959b1fdd2fb3feae764f13464118298d863ecfd17872507b87f16"
+    },
+    "listed": 415,
+    "actual": 417,
+    "exact_actual_inventory_verified": true
+  },
+  "remaining_admission_gaps": [
+    "Root independent complementary fresh family/currentfullmainbuild and3checks/annotation/integration",
+    "callback004C2D30 Source not implemented",
+    "Original00BF65AC private heap and00BF681B allocator identity",
+    "owning parent/category1root and97-header iterator destruction/unwinding",
+    "sentinel004C3080 and owner handler00C65651",
+    "class/vtable/deleting destructor/subject publication/observer/World/game startup/gameplay"
+  ]
+}
