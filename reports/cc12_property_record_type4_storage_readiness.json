@@ -1,0 +1,445 @@
+{
+  "schema": 1,
+  "packet": "cc12_scene_property_record_type4_storage",
+  "status": "Root registered independently audited whole56B16 raw two-DWORD partial storage leaf; Source implementation/admission0",
+  "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_next_storage_readiness\\local\\ns1",
+  "worker_hashes": {
+    "proposal.json": "4261fc7efb141654a04a4739fa651ec50cc7ae341eb3a6f0d30f30c68f30360a",
+    "readiness_receipt.json": "aff1744523600b548484efe4ec2ef236f2bece1e12a06014d0a9ef6a46837ffe",
+    "artifact_manifest.json": "87488949714a6cba6c7b1bf26f70b83197296c5d882f8450bf50409a6a39ed3f"
+  },
+  "all253_artifact_hashes_independently_verified": true,
+  "proposal": {
+    "schema": 1,
+    "audit": "cc12_property_record_next_storage_readiness",
+    "baseline_commit": "115ce5599",
+    "status": "genuinely_ready_independent_raw_leaf_proposal_only",
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "source_files_written": 0,
+    "builds": 0,
+    "fixtures_executed": 0,
+    "native_calls_executed": 0,
+    "Ghidra_mutations": 0,
+    "root_registration_required": true,
+    "candidate": "008EF230",
+    "whole_range": "[008EF230,008EF268)",
+    "bytes": 56,
+    "instructions": 16,
+    "CALLs": 0,
+    "coff_relocations_expected": 0,
+    "native_SHA256": "b6b40a5cbb0a523d345de24f97ac879a4e5a56c8d9a1f121f636fd33ce4dfd98",
+    "classification": "partial raw56-byte tag4 storage initialization carrying two unconverted DWORDs; no provider call, numeric conversion, enum lookup or owning lifetime",
+    "semantic_label_qualification": "Existing documents call tag4 enum and +28 declaration identity; actual body/caller prove raw word transport only. No declaration object or enum parser/lookup provider is admitted.",
+    "physical_API": {
+      "name": "construct_native_scene_property_record_type4_storage_008ef230",
+      "declaration": "void* __fastcall construct_native_scene_property_record_type4_storage_008ef230(void* actual_record_ecx, void* unused_edx, std::uint32_t declaration_identity_bits, std::uint32_t value_bits) noexcept",
+      "original_entry": {
+        "ECX": "actual56-byte storage root",
+        "EDX": "incoming unused, overwritten from first stack word",
+        "ESP_plus_4": "declaration identity bits stored +28",
+        "ESP_plus_8": "value bits stored +0C"
+      },
+      "returns": {
+        "EAX": "actual root",
+        "ECX": 0,
+        "EDX": "exact second value word",
+        "ESP": "entry ESP+12 after RET8"
+      },
+      "nonvolatiles": [
+        "EBX",
+        "ESI",
+        "EDI",
+        "EBP"
+      ],
+      "DF": "unchanged",
+      "flags": {
+        "CF": 0,
+        "OF": 0,
+        "SF": 0,
+        "ZF": 1,
+        "PF": 1,
+        "AF": "undefined; must exclude"
+      },
+      "floating_point": "No SSE/x87/MXCSR or numeric-conversion instruction; this is integer word movement only",
+      "precondition": "fresh unowned writable actual56-byte caller-owned storage disjoint from active call frame; no live owning object reinitialization",
+      "stored_phase": "opaque native literal00CE89D4, never map or dispatch as Source vtable"
+    },
+    "writes": [
+      {
+        "address": "008EF238",
+        "offset": 0,
+        "width": 4,
+        "value": "0xce89d4"
+      },
+      {
+        "address": "008EF23E",
+        "offset": 4,
+        "width": 4,
+        "value": "4"
+      },
+      {
+        "address": "008EF245",
+        "offset": 24,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF248",
+        "offset": 28,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF24B",
+        "offset": 32,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF24E",
+        "offset": 36,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF251",
+        "offset": 40,
+        "width": 4,
+        "value": "edx"
+      },
+      {
+        "address": "008EF258",
+        "offset": 48,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF25B",
+        "offset": 12,
+        "width": 4,
+        "value": "edx"
+      },
+      {
+        "address": "008EF25E",
+        "offset": 52,
+        "width": 4,
+        "value": "ecx"
+      },
+      {
+        "address": "008EF261",
+        "offset": 44,
+        "width": 1,
+        "value": "1"
+      }
+    ],
+    "written_bytes": 41,
+    "preserved_bytes": 15,
+    "preserved_ranges": [
+      "[08,0C)",
+      "[10,18)",
+      "[2D,30)"
+    ],
+    "order_qualification": "first stack word read before any store; second stack word read at008EF254 after+28 store; preserve exact width/order and RET8",
+    "real_caller": {
+      "function": "008F4F60",
+      "bounded_entry": "[008F4F60,008F4F8D)45B13",
+      "bounded_selected_arm": "[008F50B5,008F50ED)56B19",
+      "selected_arm_SHA256": "41b8fa7b1488d9c33d1cb6705b4904d343cdfebb1fe6b9a9b0cb84675db781d8",
+      "switch_cell": "008F52C8 DWORD008F50B5",
+      "allocation": "actual PUSH38/CALL00BF681B then null check; provider remains unexpanded",
+      "argument_flow": [
+        "sourceECX retained inESI at008F4F77",
+        "load source+0C intoECX at008F50C7",
+        "load source+28 intoEDX at008F50CA",
+        "PUSH value ECX at008F50CD",
+        "PUSH identity EDX at008F50CE",
+        "ECX=actual allocation EAX at008F50CF",
+        "CALL008EF230 at008F50D1",
+        "RET8 returns with caller stack before its two pushes",
+        "caller copies source+34 ordinal to new+34 after return"
+      ],
+      "stack_proof": {
+        "outer_entry": "S",
+        "saved_FS_record": "PUSH-1 S-4; handler S-8; oldFS S-12; scratchECX S-16; savedESI S-20; savedEDI S-24",
+        "allocator_entry": "PUSH38 S-28; CALL entryS-32 size at+4; ordinary return+ADD4 restoresS-24",
+        "leaf_entry": "PUSH value S-28; PUSH identity S-32; CALL entryT=S-36;[T+4]=identity,[T+8]=value,[T+12]=savedEDI",
+        "leaf_return": "RET8 restoresS-24",
+        "caller_return": "POPEDI S-20; POPESI S-16; oldFS read[ESP+4]=S-12; ADDESP10 restoresS; RET0 ->S+4"
+      },
+      "caller_post_return_registers": "EAXnew root; EDXsource ordinal after+34 copy; ECXoldFS; do not confuse with leaf outputs",
+      "whole_clone_metadata_only": "existing proto metrics854B274/28CALLs saved; unselected callees listed there were not traversed, inspected or admitted",
+      "string_witness_overlap": false,
+      "lease_coordination": "string worker released shared clone lease; this audit then claimed clone entry, exact selected arm and cells before live queries"
+    },
+    "graph": {
+      "cap": 24,
+      "count_rule": "nodes plus edges, including named incomplete native/provider boundaries",
+      "node_count": 11,
+      "edge_count": 9,
+      "total": 20,
+      "nodes": [
+        {
+          "id": "008EF230",
+          "kind": "candidate",
+          "state": "whole56B16 read-only raw leaf; no Source"
+        },
+        {
+          "id": "008F4F60",
+          "kind": "caller",
+          "state": "one real caller; only entry45B13 and tag4 arm56B19 admitted; whole854B274 remains incomplete"
+        },
+        {
+          "id": "008F52C8",
+          "kind": "data",
+          "state": "exact4-byte tag4 switch cell ->008F50B5"
+        },
+        {
+          "id": "00CE89D4",
+          "kind": "data",
+          "state": "exact4-byte first phase cell identity ->004E6730; never dispatched"
+        },
+        {
+          "id": "004E6730",
+          "kind": "frontier",
+          "state": "phase target not inspected or admitted"
+        },
+        {
+          "id": "00BF681B",
+          "kind": "frontier",
+          "state": "native allocator call in caller only; body/provider/EH not inspected or admitted"
+        },
+        {
+          "id": "008F528A",
+          "kind": "frontier",
+          "state": "selected caller null branch not inspected"
+        },
+        {
+          "id": "008F52A3",
+          "kind": "frontier",
+          "state": "entry unsigned tag default branch not inspected"
+        },
+        {
+          "id": "00CA4B6D",
+          "kind": "frontier",
+          "state": "caller pushed EH handler identity not inspected"
+        },
+        {
+          "id": "Source::singleton_lifetime_allocate",
+          "kind": "future_fixture_provider",
+          "state": "unchanged Source context pinned only; future fresh complete COFF/linked/actual CRT gate required"
+        },
+        {
+          "id": "Source::singleton_lifetime_free",
+          "kind": "future_fixture_provider",
+          "state": "unchanged Source context pinned only; future fresh complete COFF/linked/actual CRT gate required"
+        }
+      ],
+      "edges": [
+        {
+          "from": "008F4F60",
+          "to": "008EF230",
+          "kind": "actual CALL008F50D1 in selected arm"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F52C8",
+          "kind": "unsigned tag4 selects exact jump-table cell"
+        },
+        {
+          "from": "008F52C8",
+          "to": "008F4F60",
+          "kind": "cell target008F50B5 within the same bounded caller"
+        },
+        {
+          "from": "008F4F60",
+          "to": "00BF681B",
+          "kind": "actual CALL008F50B7 with size56"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F528A",
+          "kind": "JZ008F50C1; frontier only"
+        },
+        {
+          "from": "008F4F60",
+          "to": "008F52A3",
+          "kind": "JA008F4F80; frontier only"
+        },
+        {
+          "from": "008F4F60",
+          "to": "00CA4B6D",
+          "kind": "PUSH handler identity at008F4F62; frontier only"
+        },
+        {
+          "from": "008EF230",
+          "to": "00CE89D4",
+          "kind": "store immediate opaque identity; no dereference"
+        },
+        {
+          "from": "00CE89D4",
+          "to": "004E6730",
+          "kind": "first cell raw value only; no dispatch"
+        }
+      ]
+    },
+    "future_packet": {
+      "proposed_id": "cc12_scene_property_record_type4_storage",
+      "owned_files": [
+        "include/bsp/native_scene_property_record_type4_storage.hpp",
+        "src/native_scene_property_record_type4_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE4_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type4_storage_cc12.json"
+      ],
+      "readiness_docs_path": "docs/CC12_PROPERTY_RECORD_NEXT_STORAGE_READINESS.md",
+      "readiness_report_path": "reports/cc12_property_record_next_storage_readiness.json",
+      "root_owns_registration_and_shared_metadata": true,
+      "minimum_new_family": {
+        "TUs": [
+          "new constructor",
+          "unchanged current singleton_lifetime.cpp",
+          "new ignored raw probe"
+        ],
+        "BSP_archives": 0,
+        "old_objects": 0,
+        "tracked_tests": 0,
+        "actual56_allocations": 2,
+        "matching_current_frees": 2,
+        "Source_entries": 1,
+        "unchanged_RX_Original_entries": 1,
+        "sample_words": [
+          {
+            "identity": "D19A42C7",
+            "value": "80000000",
+            "DF": 0,
+            "poison": "A6"
+          },
+          {
+            "identity": "2EB56C38",
+            "value": "7FFFFFFF",
+            "DF": 1,
+            "poison": "59"
+          }
+        ],
+        "sample_words_are_raw_not_dereferenced": true,
+        "static_before_process": [
+          "fresh ctor COFF exactly56B16/noCALL/no relocation=Original=unique linked body",
+          "ordinary two-UInt32 stack caller verifies both complete words and exact push order, ECX root and unused EDX padding",
+          "raw capture caller proves RET8, both dead argument words before capture stack writes, EAX/ECX/EDX/nonvols/DF/defined XOR flags",
+          "complete fresh current allocator/free/provider and actual normal-path helper closure, including any linked security-cookie helper, gated before and after",
+          "actual I386 mapped malloc/free/_callnewh IAT/export/module/file identity/full SHA/prefix before roots and after frees",
+          "all actual consumed headers including extensionless, Source, tools, libraries, native PE, recipe and old immutable families pinned; short frozen names and duplicate mapping checks before compiler"
+        ],
+        "runtime_checks": [
+          "whole56 storage incl41 writes/15 preserved",
+          "other live root unchanged",
+          "declared external capture and stack canaries unchanged",
+          "actual raw identity and value order, EAXroot/ECX0/EDXvalue/RET8",
+          "nonvolatiles/DF/defined XOR flags excludingAF",
+          "exactly2 canonical56 allocations and matching frees",
+          "code/PE/provider/input/prior artifact bookends"
+        ],
+        "numeric_suite": "none needed; no floating operation in target",
+        "excluded": [
+          "native allocator/EH execution",
+          "phase dispatch",
+          "enum lookup/parser/declaration ownership",
+          "whole clone/other arms",
+          "startup/world/gameplay"
+        ]
+      }
+    },
+    "blockers": {
+      "to_raw_leaf_readiness": [],
+      "before_any_Source_work": [
+        "Root independent evidence review and explicit packet registration/authorization"
+      ],
+      "before_admission": [
+        "new Source implementation",
+        "fresh exact COFF/linked ordinary/raw caller and full current provider/helper gates",
+        "one fresh minimal actual-storage fixture and Root independent validation",
+        "required main Win32 build/checks",
+        "Root-only ledger/Ghidra hypothesis annotation/save/export/index"
+      ]
+    },
+    "physical_evidence": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_property_record_next_storage_readiness/local/ns1/physical_evidence.json",
+      "bytes": 11130,
+      "sha256": "ae53220221f34993946be2747035a68ab820075af829d88417a5aba11c7b673f"
+    },
+    "preservation": {
+      "protected_prior_count": 1419,
+      "historical_frozen_Source_associations_preserved": true,
+      "old_families_replayed": false,
+      "moving_main_receipts_repinned": false
+    },
+    "old_analysis": {
+      "name": "FUN_008ef230",
+      "signature": "undefined FUN_008ef230(void)",
+      "comment_record": "candidate_comments_before_stdout.txt",
+      "prototype_record": "candidate_proto_complete_stdout.txt",
+      "mutation_performed": false,
+      "future_annotation": "hypothesis raw tag4 DWORD-pair storage leaf; physicalECX/root+twoDWORD/RET8/EAXroot and41/15 write footprint; no enum ownership provider"
+    },
+    "qualification": "read-only static readiness only; zero reconstructed/new ready Source, compile, fixture, native execution, ABI runtime or game validation"
+  },
+  "requirements": {
+    "TUs": [
+      "new constructor",
+      "unchanged current singleton_lifetime.cpp",
+      "new ignored raw probe"
+    ],
+    "BSP_archives": 0,
+    "old_objects": 0,
+    "tracked_tests": 0,
+    "actual56_allocations": 2,
+    "matching_current_frees": 2,
+    "Source_entries": 1,
+    "unchanged_RX_Original_entries": 1,
+    "sample_words": [
+      {
+        "identity": "D19A42C7",
+        "value": "80000000",
+        "DF": 0,
+        "poison": "A6"
+      },
+      {
+        "identity": "2EB56C38",
+        "value": "7FFFFFFF",
+        "DF": 1,
+        "poison": "59"
+      }
+    ],
+    "sample_words_are_raw_not_dereferenced": true,
+    "static_before_process": [
+      "fresh ctor COFF exactly56B16/noCALL/no relocation=Original=unique linked body",
+      "ordinary two-UInt32 stack caller verifies both complete words and exact push order, ECX root and unused EDX padding",
+      "raw capture caller proves RET8, both dead argument words before capture stack writes, EAX/ECX/EDX/nonvols/DF/defined XOR flags",
+      "complete fresh current allocator/free/provider and actual normal-path helper closure, including any linked security-cookie helper, gated before and after",
+      "actual I386 mapped malloc/free/_callnewh IAT/export/module/file identity/full SHA/prefix before roots and after frees",
+      "all actual consumed headers including extensionless, Source, tools, libraries, native PE, recipe and old immutable families pinned; short frozen names and duplicate mapping checks before compiler"
+    ],
+    "runtime_checks": [
+      "whole56 storage incl41 writes/15 preserved",
+      "other live root unchanged",
+      "declared external capture and stack canaries unchanged",
+      "actual raw identity and value order, EAXroot/ECX0/EDXvalue/RET8",
+      "nonvolatiles/DF/defined XOR flags excludingAF",
+      "exactly2 canonical56 allocations and matching frees",
+      "code/PE/provider/input/prior artifact bookends"
+    ],
+    "numeric_suite": "none needed; no floating operation in target",
+    "excluded": [
+      "native allocator/EH execution",
+      "phase dispatch",
+      "enum lookup/parser/declaration ownership",
+      "whole clone/other arms",
+      "startup/world/gameplay"
+    ]
+  },
+  "Source_whole_bodies_added": 0,
+  "Source_implemented": false,
+  "original_class_ABI_compatible": false,
+  "game_validated": false,
+  "old_families_replayed": false
+}

@@ -33484,6 +33484,80 @@
         "all_existing_CTests": 3,
         "class_Lua_publication_lifetime_game_validated": false
       }
+    },
+    {
+      "id": "cc12_scene_property_record_type4_storage",
+      "done": false,
+      "state": "ready independently audited whole56B16 raw twoDWORD/tag4 storage leaf; zeroCALL, RET8, normal cookie/helper gates required",
+      "function_addresses": [
+        "008ef230"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_record_type4_storage.hpp",
+        "src/native_scene_property_record_type4_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE4_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type4_storage_cc12.json"
+      ],
+      "dependencies": [],
+      "readiness_document": "docs/CC12_PROPERTY_RECORD_TYPE4_STORAGE_READINESS.md",
+      "readiness_report": "reports/cc12_property_record_type4_storage_readiness.json",
+      "fixture_requirements": {
+        "TUs": [
+          "new constructor",
+          "unchanged current singleton_lifetime.cpp",
+          "new ignored raw probe"
+        ],
+        "BSP_archives": 0,
+        "old_objects": 0,
+        "tracked_tests": 0,
+        "actual56_allocations": 2,
+        "matching_current_frees": 2,
+        "Source_entries": 1,
+        "unchanged_RX_Original_entries": 1,
+        "sample_words": [
+          {
+            "identity": "D19A42C7",
+            "value": "80000000",
+            "DF": 0,
+            "poison": "A6"
+          },
+          {
+            "identity": "2EB56C38",
+            "value": "7FFFFFFF",
+            "DF": 1,
+            "poison": "59"
+          }
+        ],
+        "sample_words_are_raw_not_dereferenced": true,
+        "static_before_process": [
+          "fresh ctor COFF exactly56B16/noCALL/no relocation=Original=unique linked body",
+          "ordinary two-UInt32 stack caller verifies both complete words and exact push order, ECX root and unused EDX padding",
+          "raw capture caller proves RET8, both dead argument words before capture stack writes, EAX/ECX/EDX/nonvols/DF/defined XOR flags",
+          "complete fresh current allocator/free/provider and actual normal-path helper closure, including any linked security-cookie helper, gated before and after",
+          "actual I386 mapped malloc/free/_callnewh IAT/export/module/file identity/full SHA/prefix before roots and after frees",
+          "all actual consumed headers including extensionless, Source, tools, libraries, native PE, recipe and old immutable families pinned; short frozen names and duplicate mapping checks before compiler"
+        ],
+        "runtime_checks": [
+          "whole56 storage incl41 writes/15 preserved",
+          "other live root unchanged",
+          "declared external capture and stack canaries unchanged",
+          "actual raw identity and value order, EAXroot/ECX0/EDXvalue/RET8",
+          "nonvolatiles/DF/defined XOR flags excludingAF",
+          "exactly2 canonical56 allocations and matching frees",
+          "code/PE/provider/input/prior artifact bookends"
+        ],
+        "numeric_suite": "none needed; no floating operation in target",
+        "excluded": [
+          "native allocator/EH execution",
+          "phase dispatch",
+          "enum lookup/parser/declaration ownership",
+          "whole clone/other arms",
+          "startup/world/gameplay"
+        ]
+      },
+      "native_class_ABI_admission": false,
+      "original_private_CRT_EH_admission": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
