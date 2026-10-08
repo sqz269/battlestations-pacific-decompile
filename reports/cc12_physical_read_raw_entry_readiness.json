@@ -409,7 +409,7 @@
         "actual_searched_libraries_frozen": 19,
         "unused_library_candidates_not_frozen_by_selector": 531
       },
-      "interpretation": "Prior unused candidates are identity pins only. Current audit rows with frozen paths are physically retained copies. No current link or runtime consumption is claimed."
+      "interpretation": "The retained selector records candidate counts. Unused candidate hash dictionaries were transient and are not retained identity-pin rows or physical copies. Current audit rows with frozen paths are physical copies; no new linking or runtime consumption is claimed."
     },
     "backend_boundary": "Compiler/linker backends, OS DLLs and kernel32 import library are physically retained; none were invoked by this audit. No actual backend execution or runtime compatibility is inferred from these copies."
   },
@@ -452,6 +452,8 @@
     "receipt_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_ready_packet_primary_audits\\physical_read.json",
     "receipt_bytes": 6782,
     "receipt_sha256": "0928daa95e45c1f7e5532a9fba25c96b5f703b1ab3574b7590127ffa6789ce65",
-    "new_Source_or_runtime_execution": false
+    "new_Source_or_runtime_execution": false,
+    "candidate_inventory_wording_correction": "The retained selector records candidate counts. Unused candidate hash dictionaries were transient and are not retained identity-pin rows or physical copies. Current audit rows with frozen paths are physical copies; no new linking or runtime consumption is claimed.",
+    "retained_manifest_is_unchanged": "The immutable manifest retains its original identity-pins label; this qualification corrects that wording without altering evidence."
   }
 }
