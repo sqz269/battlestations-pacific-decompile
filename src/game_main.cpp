@@ -56,6 +56,7 @@
 #include "bsp/game_native_vfs_application.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_physical_failure_entries.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
 #include "bsp/native_vfs_runtime_bindings.hpp"
@@ -538,6 +539,297 @@ int qualify_vfs_failure_owner(bsp::game::GameHostLog& log,
     std::_Exit(3);
 }
 
+int qualify_vfs_physical_read_owner(bsp::game::GameHostLog& log,
+    bsp::game::GameNativeReadOnlyData& data, const std::filesystem::path& original_image) {
+    std::unique_ptr<bsp::game::GameSingletonHost> host;
+    std::unique_ptr<bsp::game::GameNativeVfsApplication> application;
+    const char* phase = "construct";
+    try {
+        const auto require = [](bool condition, const char* reason) {
+            if (!condition) throw std::runtime_error(reason);
+        };
+        const auto word = [](const void* owner, std::size_t offset) {
+            std::uint32_t value;
+            std::memcpy(&value, static_cast<const unsigned char*>(owner) + offset, sizeof value);
+            return value;
+        };
+        const auto record = [&](const char* stage, const char* kind,
+            const void* bytes, std::size_t count) {
+            constexpr char digits[] = "0123456789abcdef";
+            const auto* source = static_cast<const unsigned char*>(bytes);
+            for (std::size_t offset = 0; offset < count; offset += 64) {
+                const auto chunk = (count - offset < 64) ? count - offset : 64;
+                std::string hex(chunk * 2, '0');
+                for (std::size_t index = 0; index < chunk; ++index) {
+                    const auto value = source[offset + index];
+                    hex[index * 2] = digits[value >> 4];
+                    hex[index * 2 + 1] = digits[value & 15];
+                }
+                log.notef("vfs_physical_read record phase=%s kind=%s address=%08X offset=%zu hex=%s",
+                    stage, kind, static_cast<unsigned>(reinterpret_cast<std::uintptr_t>(bytes)),
+                    offset, hex.c_str());
+            }
+        };
+        const auto unimplemented_before = log.unimplemented_count();
+        host = std::make_unique<bsp::game::GameSingletonHost>(log);
+        application = std::make_unique<bsp::game::GameNativeVfsApplication>(
+            log, *host, data, original_image);
+        phase = "initialize_core";
+        application->initialize_core();
+        const auto pool_status = application->physical_pool_registration_status();
+        require(pool_status.has_value() && *pool_status == 0,
+            "actual physical provider pool did not register normal CRT cleanup");
+        log.notef("vfs_physical_read initialized physical_pool_atexit=%d physical_process_bytes=%zu",
+            *pool_status, sizeof(bsp::game::GameNativePhysicalPoolProcess));
+        auto& runtime = application->runtime();
+        auto services = application->borrow_raw_services();
+        auto& owners = application->owners();
+        auto& streams = owners.streams();
+        auto& publication = owners.vfs_publication_0109ceec();
+        void* const manager = runtime.actual_manager();
+        require(manager && publication == manager && services.actual_vfs_publication_0109ceec == manager &&
+            &streams.physical.manager_0109ceec == &publication &&
+            &streams.pool_0109dc28 == &owners.stream_pool_publication_0109dc28(),
+            "genuine application and physical context owner cells disagree");
+        require(word(manager, 0) == 0x00d68d04 && word(manager, 0x90) == 0x00530620 &&
+            word(manager, 0x8c) == 0x00735b30 && word(manager, 0x38) == 3,
+            "genuine VFS core profile, callbacks or factory count differ");
+        require(!owners.stream_pool_publication_0109dc28() && !owners.batch_lock_publication_0109dbbc(),
+            "fresh read diagnostic already has a stream pool or batch lock");
+        const auto graph = [&](const char* stage) {
+            require(publication == manager && services.actual_vfs_publication_0109ceec == manager,
+                "genuine VFS publication changed before the shared drain");
+            void* const singleton = host->manager_publication_01090aa0();
+            require(singleton != nullptr, "shared singleton publication disappeared");
+            const auto begin = word(singleton, 4), end = word(singleton, 8), capacity = word(singleton, 0x0c);
+            require(begin && end >= begin && capacity >= end && (end - begin) % 4 == 0,
+                "actual singleton registration bounds are invalid");
+            const auto count = bsp::count_native_singleton_slots_00bcf910(singleton, nullptr);
+            require(count && count == (end - begin) / 4 && count < 256,
+                "actual singleton registration count is invalid");
+            bool has_manager = false, has_pool = false, has_lock = false;
+            const auto* slots = reinterpret_cast<const void*>(begin);
+            auto* pool = owners.stream_pool_publication_0109dc28();
+            auto* lock = owners.batch_lock_publication_0109dbbc();
+            for (std::uint32_t index = 0; index < count; ++index) {
+                const auto value = word(slots, index * 4u);
+                has_manager = has_manager || value == reinterpret_cast<std::uintptr_t>(manager);
+                has_pool = has_pool || value == reinterpret_cast<std::uintptr_t>(pool);
+                has_lock = has_lock || value == reinterpret_cast<std::uintptr_t>(lock);
+            }
+            require(has_manager && (!pool || has_pool) && (!lock || has_lock),
+                "actual owner, stream pool or lock is absent from shared registration");
+            record(stage, "a0", manager, 0xa0);
+            record(stage, "singleton", singleton, 0x14);
+            record(stage, "registrations", slots, end - begin);
+            if (pool) {
+                require(word(pool, 0) == 0x00d68ec0 && word(pool, 8) <= word(pool, 0x0c) &&
+                    word(pool, 8) <= 1, "actual stream pool profile or bounds differ");
+                record(stage, "stream_pool", pool, 0x10);
+                if (word(pool, 8)) {
+                    require(word(pool, 4) != 0, "nonempty stream pool has no pointer storage");
+                    record(stage, "pool_slots", reinterpret_cast<const void*>(word(pool, 4)), word(pool, 8) * 4u);
+                }
+            }
+            if (lock) record(stage, "batch_lock", lock, 8);
+            log.notef("vfs_physical_read graph phase=%s manager=%p singleton=%p slots=%u pool=%p lock=%p",
+                stage, manager, singleton, count, pool, lock);
+        };
+        graph("initialized");
+
+        phase = "qualify_loaded_code";
+        const auto module = GetModuleHandleW(nullptr);
+        require(module != nullptr, "rebuilt game module is unavailable");
+        const auto base = reinterpret_cast<std::uintptr_t>(module);
+        const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(module);
+        require(dos->e_magic == IMAGE_DOS_SIGNATURE && dos->e_lfanew > 0 && dos->e_lfanew < 0x1000,
+            "rebuilt game DOS header is invalid");
+        const auto* pe = reinterpret_cast<const IMAGE_NT_HEADERS32*>(base + dos->e_lfanew);
+        require(pe->Signature == IMAGE_NT_SIGNATURE && pe->FileHeader.Machine == IMAGE_FILE_MACHINE_I386 &&
+            pe->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC,
+            "rebuilt game is not the expected Win32 module");
+        const auto target = reinterpret_cast<std::uintptr_t>(&bsp::raw_ignore_native_vfs_mount_failure_00530620);
+        HMODULE code_module = nullptr;
+        MEMORY_BASIC_INFORMATION memory{};
+        require(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+            reinterpret_cast<LPCWSTR>(target), &code_module) && code_module == module &&
+            target >= base && target - base < pe->OptionalHeader.SizeOfImage &&
+            VirtualQuery(reinterpret_cast<const void*>(target), &memory, sizeof memory) == sizeof memory &&
+            memory.State == MEM_COMMIT && memory.AllocationBase == module &&
+            memory.Protect == PAGE_EXECUTE_READ && *reinterpret_cast<const volatile unsigned char*>(target) == 0xc3,
+            "named Source C3 is outside the qualified loaded game image");
+        log.notef("vfs_physical_read module=%s base=%08X preferred=%08X image_bytes=%08X timestamp=%08X "
+            "c3=%08X c3_rva=%08X protection=%08X",
+            own_executable().string().c_str(), static_cast<unsigned>(base), pe->OptionalHeader.ImageBase,
+            pe->OptionalHeader.SizeOfImage, pe->FileHeader.TimeDateStamp, static_cast<unsigned>(target),
+            static_cast<unsigned>(target - base), memory.Protect);
+        record(phase, "source_c3", reinterpret_cast<const void*>(target), 1);
+        // Complete unchanged provider extents are pinned by the static gate
+        // before this diagnostic is run. Addresses come only from named Source
+        // symbols; the retained live bytes are compared with that fresh PE.
+        const auto code_record = [&](const char* kind, std::uintptr_t address, std::size_t size) {
+            HMODULE owner = nullptr;
+            MEMORY_BASIC_INFORMATION region{};
+            require(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                reinterpret_cast<LPCWSTR>(address), &owner) && owner == module &&
+                address >= base && size <= pe->OptionalHeader.SizeOfImage &&
+                address - base <= pe->OptionalHeader.SizeOfImage - size &&
+                VirtualQuery(reinterpret_cast<const void*>(address), &region, sizeof region) == sizeof region &&
+                region.State == MEM_COMMIT && region.AllocationBase == module &&
+                region.Protect == PAGE_EXECUTE_READ &&
+                address >= reinterpret_cast<std::uintptr_t>(region.BaseAddress) &&
+                address - reinterpret_cast<std::uintptr_t>(region.BaseAddress) + size <= region.RegionSize,
+                "named Source provider body is outside the retained loaded code image");
+            log.notef("vfs_physical_read code kind=%s address=%08X rva=%08X bytes=%zu protection=%08X",
+                kind, static_cast<unsigned>(address), static_cast<unsigned>(address - base), size, region.Protect);
+            record(phase, kind, reinterpret_cast<const void*>(address), size);
+        };
+        code_record("code_open", reinterpret_cast<std::uintptr_t>(&bsp::open_native_physical_stream_00bf52a0), 480);
+        code_record("code_read", reinterpret_cast<std::uintptr_t>(&bsp::read_native_physical_stream_00bf5030), 103);
+        code_record("code_recycle", reinterpret_cast<std::uintptr_t>(&bsp::recycle_native_physical_stream_00bf55a0), 125);
+        code_record("code_delete", reinterpret_cast<std::uintptr_t>(&bsp::delete_native_physical_stream_00bf5090), 62);
+        code_record("code_pool_delete", reinterpret_cast<std::uintptr_t>(&bsp::delete_native_physical_stream_pool_00bf4370), 167);
+        phase = "publish_callable_owner";
+        require(application->publish_and_borrow_raw_failure_manager() == manager &&
+            word(manager, 0x90) == target && word(manager, 0x8c) == 0x00735b30,
+            "public application publisher did not retain the genuine callable owner");
+        graph("published");
+
+        phase = "mount_physical_directory";
+        const auto canonical_image = std::filesystem::canonical(original_image);
+        const std::string system = canonical_image.parent_path().string() + "\\";
+        constexpr char logical_name[] = "cc12_physical_read/battlestationspacific.exe";
+        require(canonical_image.filename() == "battlestationspacific.exe",
+            "diagnostic input is not the supported installed executable");
+        void* const provider = runtime.mount(system.c_str(), "cc12_physical_read", 0, 1, 0xffffffffu);
+        require(provider && word(provider, 0) == 0x00d69168 && word(provider, 4) == 1 &&
+            word(provider, 8) == system.size() && word(provider, 0x0c) &&
+            std::memcmp(reinterpret_cast<const void*>(word(provider, 0x0c)), system.c_str(), system.size() + 1) == 0 &&
+            (word(provider, 0x28) & 0xffu) == 0 && word(provider, 0x34) == 0,
+            "actual physical directory producer or owned root differs");
+        record("mounted", "provider", provider, 0x3c);
+        record("mounted", "provider_root", reinterpret_cast<const void*>(word(provider, 0x0c)), system.size() + 1);
+        log.notef("vfs_physical_read mounted provider=%p system=%s virtual=cc12_physical_read priority=0 flags=1 device=FFFFFFFF",
+            provider, system.c_str());
+        graph("mounted");
+
+        phase = "open_actual_stream";
+        bsp::NativeString name{};
+        name.assign_0041e870(services.strings, logical_name);
+        void* stream = services.bindings.open(word(manager, 0), manager, name, 2);
+        require(stream && word(stream, 0) == 0x00d691b0 && word(stream, 4) == 1,
+            "real physical open did not return its actual one-reference stream");
+        const auto table = word(stream, 0);
+        const auto handle = reinterpret_cast<HANDLE>(word(stream, 8));
+        require(handle && handle != INVALID_HANDLE_VALUE && word(stream, 0x10) == 0 &&
+            word(stream, 0x14) == 0 && word(stream, 0x18) == 12223752 && word(stream, 0x1c) == 0 &&
+            word(reinterpret_cast<const void*>(table), 0x24) == 0x00bf5030,
+            "actual opened HANDLE, read identity, position or size differs");
+        void* const pool = owners.stream_pool_publication_0109dc28();
+        require(pool && word(pool, 4) == 0 && word(pool, 8) == 0 && word(pool, 0x0c) == 0 &&
+            owners.batch_lock_publication_0109dbbc(), "fresh real stream pool/lock differs after open");
+        BY_HANDLE_FILE_INFORMATION info{};
+        require(GetFileType(handle) == FILE_TYPE_DISK && GetFileInformationByHandle(handle, &info) &&
+            !(info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && info.nFileSizeHigh == 0 &&
+            info.nFileSizeLow == 12223752, "actual opened handle is not the expected regular file");
+        std::wstring final_name(32768, L'\0');
+        const auto final_length = GetFinalPathNameByHandleW(handle, final_name.data(),
+            static_cast<DWORD>(final_name.size()), FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
+        require(final_length && final_length < final_name.size(), "actual HANDLE final path query failed");
+        final_name.resize(final_length);
+        const std::wstring expected_name = L"\\\\?\\" + canonical_image.native();
+        require(_wcsicmp(final_name.c_str(), expected_name.c_str()) == 0,
+            "actual HANDLE does not name the retained installed input");
+        log.notef("vfs_physical_read opened stream=%p handle=%p logical=%s flags=2 final=%s "
+            "volume=%08X file_index=%08X%08X size=%08X%08X attributes=%08X write_time=%08X%08X",
+            stream, handle, logical_name, std::filesystem::path(final_name).string().c_str(),
+            info.dwVolumeSerialNumber, info.nFileIndexHigh, info.nFileIndexLow,
+            info.nFileSizeHigh, info.nFileSizeLow, info.dwFileAttributes,
+            info.ftLastWriteTime.dwHighDateTime, info.ftLastWriteTime.dwLowDateTime);
+        std::array<unsigned char, 0x20> opened{};
+        std::memcpy(opened.data(), stream, opened.size());
+        record("opened", "stream", stream, opened.size());
+        graph("opened");
+
+        phase = "read_once";
+        constexpr std::array<unsigned char, 64> expected{
+            0x4d,0x5a,0x90,0,3,0,0,0,4,0,0,0,0xff,0xff,0,0,
+            0xb8,0,0,0,0,0,0,0,0x40,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0x20,1,0,0};
+        std::array<unsigned char, 64> bytes{};
+        std::uint32_t actual = 0;
+        log.notef("vfs_physical_read read begin stream=%p requested=64", stream);
+        services.bindings.read(table, stream, bytes.data(), static_cast<std::uint32_t>(bytes.size()), &actual);
+        require(actual == bytes.size() && bytes == expected, "one real read returned unexpected count or bytes");
+        auto after_read = opened;
+        const std::uint32_t position = actual;
+        std::memcpy(after_read.data() + 0x10, &position, sizeof position);
+        require(std::memcmp(stream, after_read.data(), after_read.size()) == 0 &&
+            publication == manager && word(manager, 0x90) == target &&
+            owners.stream_pool_publication_0109dc28() == pool && word(pool, 8) == 0,
+            "actual stream or owning context changed outside the read position");
+        record("read", "bytes", bytes.data(), bytes.size());
+        record("read", "stream", stream, after_read.size());
+        graph("read");
+        log.notef("vfs_physical_read read returned calls=1 actual=%u position=%08X%08X refs=%u",
+            actual, word(stream, 0x14), word(stream, 0x10), word(stream, 4));
+
+        phase = "complete_zero_reference_release";
+        const auto stream_address = reinterpret_cast<std::uintptr_t>(stream);
+        const auto remaining = InterlockedDecrement(reinterpret_cast<volatile LONG*>(
+            static_cast<unsigned char*>(stream) + 4));
+        require(remaining == 0, "actual caller release did not reach zero references");
+        services.bindings.zero_reference(table, stream);
+        stream = nullptr; // The live stream borrow ended; only the pool owns its dead backing.
+        require(owners.stream_pool_publication_0109dc28() == pool && word(pool, 8) == 1 &&
+            word(pool, 0x0c) == 1 && word(pool, 4), "actual zero-reference return did not populate its pool");
+        const auto* cells = reinterpret_cast<const void*>(word(pool, 4));
+        require(word(cells, 0) == stream_address, "actual pool did not reacquire the released backing");
+        const auto* dead_backing = reinterpret_cast<const void*>(word(cells, 0));
+        auto retired_bytes = after_read;
+        const std::uint32_t retired_profile = 0x00ceb130, zero = 0, invalid_handle = 0xffffffffu;
+        std::memcpy(retired_bytes.data(), &retired_profile, sizeof retired_profile);
+        std::memcpy(retired_bytes.data() + 4, &zero, sizeof zero);
+        std::memcpy(retired_bytes.data() + 8, &invalid_handle, sizeof invalid_handle);
+        require(std::memcmp(dead_backing, retired_bytes.data(), retired_bytes.size()) == 0,
+            "owner-reacquired dead pool backing differs after complete release");
+        record("released", "dead_pool_backing", dead_backing, retired_bytes.size());
+        graph("released");
+        log.note("vfs_physical_read release returned refs=0 pool_count=1 pool_capacity=1 live_borrow_ended=1");
+        name.release_to(services.strings);
+
+        phase = "shared_drain";
+        log.note("vfs_physical_read shared_drain begin");
+        host->shutdown();
+        require(!publication && !host->manager_publication_01090aa0() &&
+            !owners.stream_pool_publication_0109dc28() && !owners.batch_lock_publication_0109dbbc(),
+            "actual shared drain left a live publication");
+        bool rejected = false;
+        try { (void)application->publish_and_borrow_raw_failure_manager(); }
+        catch (const std::logic_error& error) {
+            rejected = std::strcmp(error.what(),
+                "Native VFS core is not available for a failure-manager borrow") == 0;
+        }
+        require(rejected && log.unimplemented_count() == unimplemented_before,
+            "retired rejection or implemented service boundary differs");
+        log.note("vfs_physical_read shared_drain completed vfs_null=1 singleton_null=1 pool_null=1 lock_null=1 retired_rejected=1");
+        phase = "destroy_drained_owners";
+        application.reset();
+        host.reset();
+        log.note("vfs_physical_read PASS read_calls=1 owners_destroyed=1 normal_CRT_exit=1");
+        return 0;
+    } catch (const std::exception& error) {
+        log.notef("vfs_physical_read FAIL phase=%s reason=%s retention=_Exit", phase, error.what());
+    } catch (...) {
+        log.notef("vfs_physical_read FAIL phase=%s reason=unknown retention=_Exit", phase);
+    }
+    log.close();
+    std::fflush(stdout);
+    std::fflush(stderr);
+    std::_Exit(3);
+}
+
 void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary& summary) {
     log.notef("summary window_created=%d device_created=%d device_hr=0x%08lx "
         "back_buffer=%ux%u frames_presented=%llu presents_skipped=%llu loop_finished=%d exit_code=%d",
@@ -669,7 +961,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
             " [--screenshot-mission-frame N] [--hardware-probe-commit]"
-            " [--qualify-vfs-failure-owner]\n");
+            " [--qualify-vfs-failure-owner] [--qualify-vfs-physical-read-owner]\n");
         return 2;
     }
 
@@ -751,6 +1043,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         return 2;
     }
 
+    if (options.qualify_vfs_physical_read_owner)
+        return qualify_vfs_physical_read_owner(log, *native_data, original_image);
     if (options.qualify_vfs_failure_owner)
         return qualify_vfs_failure_owner(log, *native_data, original_image);
 

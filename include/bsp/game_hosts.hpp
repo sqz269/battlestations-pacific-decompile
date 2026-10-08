@@ -300,6 +300,8 @@ struct GameExecutableOptions {
     // One genuine VFS owner diagnostic after the normal canonical-data handoff.
     // Completes the shared drain before returning, without entering game startup.
     bool qualify_vfs_failure_owner{false};
+    // One read-only physical stream use, release and drain on the genuine owner.
+    bool qualify_vfs_physical_read_owner{false};
     bool parse(int argc, char** argv, std::string& error);
 };
 

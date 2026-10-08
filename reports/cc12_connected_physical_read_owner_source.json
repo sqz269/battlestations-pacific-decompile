@@ -1,0 +1,552 @@
+{
+  "packet": "cc12_connected_physical_read_owner_source",
+  "status": "implemented_build_tested_one_genuine_Source_read_passed_pending_primary_review",
+  "generated_utc": "2026-10-08T18:56:48.288719+00:00",
+  "baseline_commit": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
+  "address": "00BF5030",
+  "evidence_class": "Source diagnostic connected to existing reconstructed finite read binding; no new Original reconstruction or raw ABI credit",
+  "owned_tracked_files": [
+    "src/game_main.cpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "docs/CC12_CONNECTED_PHYSICAL_READ_OWNER_SOURCE.md",
+    "reports/cc12_connected_physical_read_owner_source.json"
+  ],
+  "flag": "--qualify-vfs-physical-read-owner",
+  "previous_failure_owner_flag_retained": true,
+  "flags_mutually_exclusive": true,
+  "implementation": {
+    "owners_declared_outside_try": true,
+    "partial_failure_policy": "Log phase/reason, flush, _Exit(3); retain unknown native objects; no retry or improvised cleanup.",
+    "canonical_data_handoff": "Existing normal parent and canonical-data child before the diagnostic branch.",
+    "owner": "Genuine GameSingletonHost and GameNativeVfsApplication.initialize_core; same existing application/stream-context publication cells.",
+    "callable": "Existing public application publisher installs exact named Source C3; numeric Original profile words are read-only data identifiers.",
+    "mount": "Actual runtime.mount of installed directory with trailing backslash at cc12_physical_read; priority0, flags1, deviceFFFFFFFF.",
+    "string": "Actual pooled NativeString assigned and released through the same borrowed application strings service.",
+    "stream": "Actual finite bindings.open flags2 and bindings.read once, request64; actual OS HANDLE final path/identity queried.",
+    "release": "InterlockedDecrement actual refcount to0; complete existing finite zero_reference/recycle call; end live borrow; reacquire dead bytes from current pool slot.",
+    "drain": "Release pooled logical name before shared host drain; require owner cells null and fresh public publisher rejected; destroy drained application/host; normal process return.",
+    "lifetimes": "Application, runtime, strings, borrowed services and canonical data remain alive through their uses and shared drain. Existing process owner and Source allocator list/code remain alive through registered CRT cleanup.",
+    "no_new_target": true,
+    "no_new_test": true,
+    "no_raw_read_wrapper": true,
+    "no_raw_notifier_call": true,
+    "no_Original_code_call": true,
+    "no_constructor_reset_change": true
+  },
+  "Source_changes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_main.cpp",
+      "before_sha256": "b60deaf71c4c71706898a29d8349be9340f34f0900ddffbb9d9851d477df886a",
+      "after_sha256": "1db0e8df2ebbf650997c96e01dcde182cdc6026816e3c8a39ae3eb5f1bc64798",
+      "intentional_CLI_change": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp",
+      "before_sha256": "d1749a0c44dd3d736105651a097e915381b2927181fc0f6e2823af545d67a4b1",
+      "after_sha256": "79a94372c8eefa87be3292e58ae4ce8816bfda387244e6a69a02ce1d6f67adfd",
+      "intentional_CLI_change": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_hosts.hpp",
+      "before_sha256": "18bb2feb2287416cad5bf9c044026d9a904f9bdd85e3a67288f75073c8e0f4c8",
+      "after_sha256": "dfd4b5d63659db4205ebd476d25a416be90dd5105752bd1a387abac7c6563b64",
+      "intentional_CLI_change": true
+    }
+  ],
+  "evidence_artifacts": {
+    "accepted_primary_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_read_and_type6_readiness_primary_review\\receipt.json",
+      "sha256": "ca1d7af3fb75be1418c524c2aca250fbf9e6709dbde31ff1f4710461378557e3"
+    },
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\proof01\\static_gate.json",
+      "sha256": "152f3a2dd9f9448a1b17488f313773867b6844380929184eb9a397c42ce1125a"
+    },
+    "complete_function_correspondence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\proof01\\whole_function_correspondence.json",
+      "sha256": "f6fb8eb0fccdbfde83513b9f0272dd8df0b51a669e4461280803fd36de8ee934"
+    },
+    "runtime_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\diagnostic01\\execution_receipt.json",
+      "sha256": "b5fd83880eee9889430746a9ce60c77e47d0dbc00efa4a77b647803c5b57ef60"
+    },
+    "runtime_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\audit01\\runtime_audit.json",
+      "sha256": "b33786b03824fa57e74e0bc5840d6aeac8bbf0656029a0604a7029a6176eb671"
+    },
+    "post_run_complete_link_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\postlink05\\additional_link_audit.json",
+      "sha256": "e3d69fb70256ceb9b161d3a8a38bddd90b52b6d063ef52afd9b53911a843e63c"
+    },
+    "build_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\run02\\build_receipt.json",
+      "sha256": "5b5b4a718bca1987c2b593eb5f551e2a0497a8cd031c8f7e400d69e616615e24"
+    },
+    "baseline_build_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\baseline01\\build_receipt.json",
+      "sha256": "4375e55e2faad0e1ada0be96db3f3c1cc02671fa73ee55f2c4e12d9224028ca4"
+    },
+    "failed_build_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\run01\\build_receipt.json",
+      "sha256": "40500d0da8220d859ce4b7a57b119f50e40430d4224e1a37d47c4018b208c20a"
+    },
+    "diagnostic_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\diagnostic01\\diagnostic.log",
+      "sha256": "94a765842bf4dd3220b2223989e848f300991f428fad6fffc868d5455c5c0920"
+    },
+    "normal_executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\after_build\\frozen\\95aa3dc6f61391d4151cbd3e71ac4e6749a63dc1c3fd1f52b0fe8914c79094f0\\bsp_game.exe",
+      "sha256": "873bc74619bc6aead9af786e4aa9a7ce937bfb16bbe5be52e24019b7d4a24d89"
+    },
+    "normal_map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\after_build\\frozen\\8d3692491d955e41ecdf6e92d0cd21717ae997e5c0a30fb1c5b33e63cf62889b\\bsp_game.map",
+      "sha256": "157748716d3d03edf8683c9d3a1669e087a2526fa4804bbfff18e5cb48a19652"
+    },
+    "phase_manifests": {
+      "before_baseline_build02": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_baseline_build02\\manifest.json",
+        "sha256": "d8b7d05f7482de5ae7c1163c77c882465f04fd38c177e6ec74e5f342d410da78",
+        "rows": 4481,
+        "whole_extents": 4982
+      },
+      "before_edit": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_edit\\manifest.json",
+        "sha256": "24e318a1b0bab73e9989356c98dd716f5125526887d6836fd5309cad1d21d07b",
+        "rows": 4481,
+        "whole_extents": 4988
+      },
+      "before_build": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_build\\manifest.json",
+        "sha256": "ab3b6bb3ab35cbabcf35838e789c8280ac38caca874bbfd4fdd5bdd0b2b2f2b0",
+        "rows": 4481,
+        "whole_extents": 4988
+      },
+      "before_build02": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_build02\\manifest.json",
+        "sha256": "12fc93fd34bc364d5b9808a534bac9fd32f079ffcaaf9f37b36ec127d383f861",
+        "rows": 4479,
+        "whole_extents": 4988
+      },
+      "after_build": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\after_build\\manifest.json",
+        "sha256": "b670afab5871704325e40280e1c2a5f395b0df595cdf5f1547c669c4ba9650d6",
+        "rows": 4481,
+        "whole_extents": 5096
+      }
+    },
+    "supplemental_manifests": {
+      "before_build_extra": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_build_extra\\manifest.json",
+        "sha256": "24460cff66476253125d7b03cf1d31187279e6ca9d0081914cb135ed86417d9c",
+        "rows": 85
+      },
+      "before_build_extra02": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\before_build_extra02\\manifest.json",
+        "sha256": "d8e5f397478b902791b2d42d8e997a4832a6784abdc32b49b642f09f70b7e03b",
+        "rows": 85
+      }
+    }
+  },
+  "capture": {
+    "successful_phase_rows": 22403,
+    "supplemental_rows": 170,
+    "selected_Source_and_header_files": 85,
+    "selected_whole_objects": 43,
+    "unique_full_archive_members": 39,
+    "selected_compiler_consumed_unique_prefrozen_inputs": 871,
+    "prefrozen_fallback": "Two SDK inputs absent from failed compiler tracking were already physically frozen in before_build with matching hashes; all selected after-build inputs are prefrozen.",
+    "first_incomplete_capture": "before_baseline_build stopped on optional absent PDB before a manifest; retained and excluded from successful row counts.",
+    "phase_semantics": "Frozen historic phase copies are verified against their own phase; current files are verified against after_build. Historic project libs legitimately changed.",
+    "scope_limit": "Compiler input/recipe/toolchain candidates and actual selected consumption are retained; no exhaustive OS closure claim."
+  },
+  "pre_execution_static_gate": {
+    "finished_utc": "2026-10-08T18:38:36.582475+00:00",
+    "before_extents": 4988,
+    "after_extents": 5096,
+    "protected_complete_extents_exact_bytes_and_ordered_relocations": 1833,
+    "old_failure_diagnostic_complete_body_unchanged": true,
+    "CLI_correspondence": {
+      "unchanged": 3123,
+      "changed": 24,
+      "removed": 8,
+      "added": 116
+    },
+    "production_whole_linked_bodies": 45,
+    "production_ordered_relocations": 282,
+    "diagnostic_whole_body_bytes": 4981,
+    "diagnostic_ordered_relocations": 147,
+    "changed_or_added_CLI_whole_linked_bodies": 75,
+    "explicit_pre_run_limit": "Four mapped EH funclets remained without full replay because local resume labels lie in other same-object function sections; 61 further owned extents lack standalone normal MAP symbols. Complete COFF extents were retained. This first gate was not replaced after execution."
+  },
+  "post_execution_link_audit": {
+    "status": "PASS_post_run_complete_replay_with_four_additional_whole_funclets",
+    "finished_utc": "2026-10-08T18:54:19.172018+00:00",
+    "timing": "Only after the one successful runtime execution; never described as pre-execution proof.",
+    "independently_replayed_whole_bodies": 124,
+    "independently_replayed_ordered_relocations": 1345,
+    "additional_EH_whole_bodies": 4,
+    "additional_EH_ordered_relocations": 190,
+    "all_compiler_local_operands_with_exact_index_anchors": 19,
+    "final_owned_CLI_whole_linked_bodies": 79,
+    "retained_owned_without_standalone_MAP_symbol": 61,
+    "local_identity": "Actual raw COFF relocation symbol-table index plus exact section/value; unique complete containing function and actual same-object MAP anchor. Direct-object identity uses final origin token.",
+    "removed_symbol_correspondence_counts": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1
+    ],
+    "removed_symbol_limit": "Three removed compiler-generated names have one exact byte/ordered-relocation correspondence each; five have none. No unique semantic equivalence is inferred.",
+    "retained_audit_history": [
+      "postlink01/driver_failed.py: duplicate local names rejected",
+      "postlink02/driver_failed.py: direct-object origin prefix rejected",
+      "postlink03/driver_success.py: four additional whole EH bodies",
+      "postlink04/driver_success.py: all124 bodies; one MAP-local subsequently strengthened",
+      "postlink05: all124 bodies with all19 compiler-local operands anchored by exact relocation index"
+    ]
+  },
+  "current_physical_process": {
+    "bytes": 272,
+    "functions": 56,
+    "whole_object": {
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\after_build\\frozen\\128dcd0d737f72b3c3a82cc23f3acd14f718bc3c0f6e6c87ca7a527762e4ec3d\\game_native_physical_pool.obj",
+      "sha256": "912651897065cc90886e0b3e4992476f20f6f7e299dcadf94e78d61c586c3dc2",
+      "machine": "014C",
+      "code_sections": 52,
+      "code_bytes": 3311,
+      "ordered_relocations": 159,
+      "functions": 56,
+      "module": "game_native_physical_pool",
+      "target": "bsp_core",
+      "original_object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\game_native_physical_pool.obj",
+      "unique_whole_archive_member": {
+        "offset": 61579080,
+        "name": "/78438",
+        "bytes": 30096,
+        "sha256": "912651897065cc90886e0b3e4992476f20f6f7e299dcadf94e78d61c586c3dc2"
+      }
+    },
+    "boundary": "Current accepted property additions preserved; no old160-byte/50-function baseline imposed."
+  },
+  "build": {
+    "normal_command": [
+      "C:\\Program Files\\PowerShell\\7\\pwsh.EXE",
+      "-NoLogo",
+      "-NoProfile",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\scripts\\build.ps1",
+      "-Diagnostic"
+    ],
+    "passed_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "baseline": "Normal baseline build after current main merge passed all three existing checks before editing.",
+    "failed_first_build": "run01 C3861 current_executable_path undeclared; corrected one line to existing own_executable. Failed Source/input/log retained; no diagnostic execution from failed build.",
+    "final": "run02 normal Win32 Release build passed all three existing checks before static gate and sole diagnostic run.",
+    "Source_changes_after_successful_build_or_runtime": 0
+  },
+  "runtime": {
+    "status": "PASS_one_genuine_connected_Source_read",
+    "started_utc": "2026-10-08T18:40:45.299209+00:00",
+    "finished_utc": "2026-10-08T18:40:45.467151+00:00",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_game.exe",
+      "--qualify-vfs-physical-read-owner",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_connected_physical_read_owner_source_20261008a\\diagnostic01\\diagnostic.log"
+    ],
+    "parent_pid": 57360,
+    "exit_code": 0,
+    "attempts": 1,
+    "retries": 0,
+    "normal_parent_and_canonical_child": true,
+    "records": 37,
+    "graph_stages": [
+      "initialized",
+      "published",
+      "mounted",
+      "opened",
+      "read",
+      "released"
+    ],
+    "loaded_whole_named_Source_bodies": [
+      {
+        "kind": "source_c3",
+        "address": "1021BDA0",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "identity": {
+          "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+          "map_rows": [
+            {
+              "line": 5681,
+              "segment": 1,
+              "segment_offset": 2207136,
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "va": 270646688,
+              "origin": "f   bsp_core:native_physical_failure_entries.obj"
+            }
+          ],
+          "va": "1021BDA0",
+          "rva": "0021BDA0",
+          "same_va_alias_rows": [
+            {
+              "line": 5681,
+              "segment": 1,
+              "segment_offset": 2207136,
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "va": 270646688,
+              "origin": "f   bsp_core:native_physical_failure_entries.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      },
+      {
+        "kind": "code_open",
+        "address": "1021C520",
+        "bytes": 480,
+        "sha256": "ce2e1396d4dc73a0e843a3983c6d8af5bd6672fba24740675baacd7f30c8d7e2",
+        "identity": {
+          "symbol": "?open_native_physical_stream_00bf52a0@bsp@@YAXPAXPBXIAAVActualNativeStringPoolStorage@1@@Z",
+          "map_rows": [
+            {
+              "line": 5696,
+              "segment": 1,
+              "segment_offset": 2209056,
+              "symbol": "?open_native_physical_stream_00bf52a0@bsp@@YAXPAXPBXIAAVActualNativeStringPoolStorage@1@@Z",
+              "va": 270648608,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "va": "1021C520",
+          "rva": "0021C520",
+          "same_va_alias_rows": [
+            {
+              "line": 5696,
+              "segment": 1,
+              "segment_offset": 2209056,
+              "symbol": "?open_native_physical_stream_00bf52a0@bsp@@YAXPAXPBXIAAVActualNativeStringPoolStorage@1@@Z",
+              "va": 270648608,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      },
+      {
+        "kind": "code_read",
+        "address": "1021C720",
+        "bytes": 103,
+        "sha256": "c733fdd7a92a9bbb57d8ba9e48d321ad58b5d5e1b6f50c80207e8b125189daf0",
+        "identity": {
+          "symbol": "?read_native_physical_stream_00bf5030@bsp@@YAIPAX0IPAIAAUNativePhysicalStreamOpenContext@1@@Z",
+          "map_rows": [
+            {
+              "line": 5698,
+              "segment": 1,
+              "segment_offset": 2209568,
+              "symbol": "?read_native_physical_stream_00bf5030@bsp@@YAIPAX0IPAIAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270649120,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "va": "1021C720",
+          "rva": "0021C720",
+          "same_va_alias_rows": [
+            {
+              "line": 5698,
+              "segment": 1,
+              "segment_offset": 2209568,
+              "symbol": "?read_native_physical_stream_00bf5030@bsp@@YAIPAX0IPAIAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270649120,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      },
+      {
+        "kind": "code_recycle",
+        "address": "1021C790",
+        "bytes": 125,
+        "sha256": "3317f8afc426dc237810c3d1d64db9462711381f06f433b0555700f054e76035",
+        "identity": {
+          "symbol": "?recycle_native_physical_stream_00bf55a0@bsp@@YAXPAXAAUNativePhysicalStreamOpenContext@1@@Z",
+          "map_rows": [
+            {
+              "line": 5699,
+              "segment": 1,
+              "segment_offset": 2209680,
+              "symbol": "?recycle_native_physical_stream_00bf55a0@bsp@@YAXPAXAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270649232,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "va": "1021C790",
+          "rva": "0021C790",
+          "same_va_alias_rows": [
+            {
+              "line": 5699,
+              "segment": 1,
+              "segment_offset": 2209680,
+              "symbol": "?recycle_native_physical_stream_00bf55a0@bsp@@YAXPAXAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270649232,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      },
+      {
+        "kind": "code_delete",
+        "address": "1021C180",
+        "bytes": 62,
+        "sha256": "435723237e9ab9b12f09df5f4d697ac4dfd9ad9db9a0b6002359b4d4051a0d74",
+        "identity": {
+          "symbol": "?delete_native_physical_stream_00bf5090@bsp@@YAPAXPAXI@Z",
+          "map_rows": [
+            {
+              "line": 5692,
+              "segment": 1,
+              "segment_offset": 2208128,
+              "symbol": "?delete_native_physical_stream_00bf5090@bsp@@YAPAXPAXI@Z",
+              "va": 270647680,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "va": "1021C180",
+          "rva": "0021C180",
+          "same_va_alias_rows": [
+            {
+              "line": 5692,
+              "segment": 1,
+              "segment_offset": 2208128,
+              "symbol": "?delete_native_physical_stream_00bf5090@bsp@@YAPAXPAXI@Z",
+              "va": 270647680,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      },
+      {
+        "kind": "code_pool_delete",
+        "address": "1021C1C0",
+        "bytes": 167,
+        "sha256": "d60892eb1ad6279634117a34a8068d4366f3ca1faf3e978ca3f2edb15df46d33",
+        "identity": {
+          "symbol": "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z",
+          "map_rows": [
+            {
+              "line": 5693,
+              "segment": 1,
+              "segment_offset": 2208192,
+              "symbol": "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270647744,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "va": "1021C1C0",
+          "rva": "0021C1C0",
+          "same_va_alias_rows": [
+            {
+              "line": 5693,
+              "segment": 1,
+              "segment_offset": 2208192,
+              "symbol": "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z",
+              "va": 270647744,
+              "origin": "f   bsp_core:native_physical_stream_open.obj"
+            }
+          ],
+          "section": ".text",
+          "section_characteristics": "60000020"
+        }
+      }
+    ],
+    "loaded_module": {
+      "line": 10,
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_game.exe",
+      "base": 268435456,
+      "preferred": 268435456,
+      "image_bytes": 5103616,
+      "timestamp": "6AC7E1BC",
+      "c3": 270646688,
+      "c3_rva": 2211232,
+      "protection": 32
+    },
+    "read_calls": 1,
+    "requested_bytes": 64,
+    "actual_bytes": 64,
+    "initial_cached_position": 0,
+    "final_cached_position": 64,
+    "installed_file": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "file_index": "00030000000345AB",
+      "bytes": 12223752,
+      "handle": "00000358",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "first64_sha256": "c4bfe3c9fa083643c55a84e22d1e46201fc3aba7cf52ccfb25d517cf1b82da05"
+    },
+    "original_input": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256_before": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "bytes": 12223752,
+      "first64_hex": "4d5a90000300000004000000ffff0000b80000000000000040000000000000000000000000000000000000000000000000000000000000000000000020010000",
+      "file_id_before": 844424930346411,
+      "device_before": 8426387330940168550,
+      "mtime_ns_before": 1720895268000000000
+    },
+    "original_whole_hash_unchanged": true,
+    "executable_whole_hash_unchanged": true,
+    "stream": "0069AB38",
+    "handle": "00000358",
+    "manager": "0069EF78",
+    "singleton": "006D50A8",
+    "pool": "0069B090",
+    "batch_lock": "00681950",
+    "initial_registered_slots": 6,
+    "after_open_registered_slots": 8,
+    "pool_count_after_release": 1,
+    "pool_capacity_after_release": 1,
+    "final_dead_profile": "00CEB130",
+    "dead_reference_count": 0,
+    "dead_HANDLE": "FFFFFFFF",
+    "live_borrow_ended_after_complete_release": true,
+    "no_object_records_after_shared_drain": true,
+    "all_live_owner_cells_null": true,
+    "fresh_public_borrow_rejected": true,
+    "normal_CRT_registration_status": 0,
+    "child_reports_normal_CRT_return": true,
+    "parent_exit_zero": true
+  },
+  "limitations": [
+    "No raw-read ABI, Original instruction execution or recovered Original function credit.",
+    "No separately logged internal mount-tree nodes; provider and root, embedded manager mount header, actual mount/open route recorded.",
+    "CloseHandle return BOOL is discarded by existing Source; only completed close path and invalidated field are observed.",
+    "CRT cleanup callback is not separately instrumented; registration and normal exit observed.",
+    "No failure-case execution, concurrency stress, general startup or gameplay validation.",
+    "Diagnostic is intentionally pinned to this supported installed PE size/prefix and current provider code extents; future changed builds require a fresh static gate.",
+    "Borrowed non-owning pointer variables can remain in scope after drain but are not dereferenced; no dead manager/provider/stream inspection after drain.",
+    "This packet does not establish game startup, rendering, gameplay, broad VFS error behavior, concurrent use, raw calling-convention compatibility, or ABI drop-in replacement.",
+    "Workers made no Ghidra, ledger, packet metadata or original-install writes. Primary integration and any separate primary run remain outside this worker receipt."
+  ],
+  "Original_function_credit": 0,
+  "new_tests": 0,
+  "new_targets": 0,
+  "worker_diagnostic_executions": 1
+}
