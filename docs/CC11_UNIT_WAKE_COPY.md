@@ -106,3 +106,9 @@ family's sealed runtime/log files or rerun earlier families. The synchronized
 successor files, its 125 artifacts and all 27 audit files retain their starting
 hashes. Primary integration metadata, CMake registration, Ghidra writes, full
 build and existing CTests are the integrator's separate work.
+
+## Primary integration
+
+Whole456-byte/135-instruction raw copy Source equals PE/live/COFF/linked/executed Original, zero calls/globals/relocations. Actual borrowed pointers: integer head3C8 first,240 ascending x87 pairs8..3C7, untouched vptr/owned handle/flag/residual; no staged/memcpy/typed-ring/default/provider. One208-check/four-case/eight-call family preserves whole3072 guarded backing, RET4/registers/EFLAGS/full x87 state and80-byte payload; disjoint/self/forward4/backward4 alias behavior exact, only normalized FPIP entry+1BB differs. One additional free x87 slot required. Caller row815EAA is structural only; full ring/unit construction, wake/group/type/speed/world/class/game remain external.
+
+Main Source `b92b4710f` passed the full MSVC Win32 build and all three existing CTests. The independent primary receipt uses 2 fresh TUs and is `local/cc11_wake_copy_current_primary/inputs_after.json`. Its source inputs remain unchanged through integration. Saved annotations/exports/snapshot evidence follows in the report.

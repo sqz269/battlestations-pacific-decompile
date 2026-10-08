@@ -75,3 +75,9 @@ or execution; parsing the exact `LIB=` line corrected it. The final strict
 compile and sole connected execution passed. Existing sealed families were not
 replayed. No tracked test, CMake, ledger, Ghidra mutation or full build was made.
 Root owns integration, full Win32 build and independent validation.
+
+## Primary integration
+
+Whole44-byte/15-instruction raw Source equals unchanged/unrelocated Original, zero calls/globals/relocations. Full EAX0/1/RET4; fixed24/2/1/0 before field access, otherwise one fresh actual+C4 comparison. One61-check connected family consumes actual sorted/count/member producer once per fresh setup and changed same live class cell/full guards. D087C0+5C and actual ctor stamps/C4 are DATA/structural only; no InitAll adapter, generic virtual/profile/class/constructor/lifetime/world/game binding.
+
+Main Source `b92b4710f` passed the full MSVC Win32 build and all three existing CTests. The independent primary receipt uses 4 fresh TUs and is `local/cc11_squadron_kind_current_primary/inputs_after.json`. Its source inputs remain unchanged through integration. Saved annotations/exports/snapshot evidence follows in the report.

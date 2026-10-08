@@ -105,3 +105,9 @@ game remain unclaimed. Scalar wrappers `004D2620`/`004D0EB0`, returning-free
 membership gaps and standalone nested-map root allocation admission remain
 separate. `008F4C50` uses `E17540` and is not the `E175E8` table provider.
 The primary owns CMake registration and the integrated full build.
+
+## Primary integration
+
+Two complete normal Source bodies on genuine10C registry/current-CRT unique19C CEnum/null mapped domain, genuine E175E8 table pool, distinct symbol pool/rawstrings. Preserve next-before-delete, post-delete mappedzero, key release before14h slot return, each head after chain/count after64; ordinary CE78BC then clear(owner+4), CE7514 then SECOND empty clear, no root free. One new two-registry installed22/6 plus fresh22 family preservesB, real collision/null/empty keys, clear twice, ordinary once each,131 query-prefix checks,50 symbol/five table slots, trim/unlink/shutdown; explicit fixture root free. Original254/88 execution, original virtual/EH/heap/class ABI, scalar wrappers/global namespace/world/game remain external.
+
+Main Source `b92b4710f` passed the full MSVC Win32 build and all three existing CTests. The independent primary receipt uses 16 fresh TUs and is `local/cc11_registry_lifetime_current_primary/inputs_after.json`. Its source inputs remain unchanged through integration. Saved annotations/exports/snapshot evidence follows in the report.
