@@ -1,0 +1,620 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_string_duplicate_readiness",
+  "base_revision": "920f067ca",
+  "read_only": true,
+  "readiness": "Qualified current-domain raw57 packet is technically proposal-ready for Root registration; no Source exists or is admitted by this audit.",
+  "Source_credit": 0,
+  "ready_Source_credit": 0,
+  "implemented_Source_functions": 0,
+  "Native_credit": 0,
+  "qualified_candidate_count": 1,
+  "scope": "Actual ECX/RET0 raw duplicate with only two CALL operands rebound to genuine current canonical size allocation and standard current memcpy; no original private CRT equivalence claim.",
+  "ABI_and_ownership": {
+    "whole": {
+      "start": "00438E40",
+      "end_exclusive": "00438E79",
+      "bytes": 57,
+      "sha256": "28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4"
+    },
+    "instructions": 30,
+    "live_PE_saved_listing_starts_equal": true,
+    "gaps": 0,
+    "native_call_operands": [
+      {
+        "call": "00438E61",
+        "operand_start": 34,
+        "operand_end_inclusive": 37,
+        "target": "00BF55BE",
+        "thunk_terminal": "00BF681B",
+        "future_target": "genuine fresh CDECL size adapter"
+      },
+      {
+        "call": "00438E6B",
+        "operand_start": 44,
+        "operand_end_inclusive": 47,
+        "target": "00BF7680",
+        "future_target": "fresh actual _memcpy import thunk from x86 vcruntime.lib"
+      }
+    ],
+    "all_other_bytes_preserved": 49,
+    "physical_ABI": {
+      "input": "actual borrowed const char* in ECX; no stack arguments; incoming EDX not an argument",
+      "return": "full EAX: null on null input; actual canonical-owned allocation pointer on nonnull normal return; raw RET, stack cleanup0",
+      "nonvolatiles": "EBX saved on both paths; ESI/EDI saved only on nonnull path; EBP not locally written. CDECL providers must preserve EBX/ESI/EDI/EBP on normal return.",
+      "null": "TEST EBX; null branch XOR EAX,EAX; POP EBX; RET. No source read/allocation/copy/free. ECX remains0; incoming EDX unchanged.",
+      "nonnull": "Inline byte scan includes actual NUL: MOV CL,[EAX]; ADD EAX,1; TEST CL,CL. EDX=start+1, EAX=end+1; SUB EAX,EDX gives length n; LEA ESI,[EAX+1] yields n+1.",
+      "volatile_outputs": "Nonnull ECX/EDX may be clobbered by genuine allocator/copy; no equality or guessed residual value assertion. Full EAX is set from saved EDI after memcpy, independent of memcpy temporary EAX.",
+      "flags_null": "XOR defines CF=OF=SF=0 and ZF=PF=1; AF undefined. Do not compare undefined AF.",
+      "flags_nonnull": "Final arithmetic flags come from ADD ESP,0x10 at00438E70, not length arithmetic or copy internals. Derive from actual captured stack; mask defined CF/PF/AF/ZF/SF/OF only.",
+      "stack_native_entry_S": {
+        "entry": "S points to return address",
+        "allocator_arg": "S-16 after saved EBX/ESI/EDI and size push",
+        "allocator_return": "S-16; size arg deliberately remains",
+        "copy_args": "S-28 dest, S-24 src, S-20 n+1; stale allocation size remains S-16",
+        "copy_entry": "S-32 return, S-28 dest, S-24 src, S-20 n+1",
+        "copy_return": "S-28",
+        "final_ADD": "(S-28)+16 = S-12",
+        "after_nonvolatile_pops": "S",
+        "after_RET": "S+4"
+      },
+      "stack_raw_caller_T": "When raw caller captures ESP=T just before CALL with no arguments, Native entry S=T-4, final ADD is (T-32)+16=T-16, and post-return ESP=T.",
+      "other_machine_state": "Require DF clear for normal current CRT domain. No blanket DF/ES/x87/MXCSR preservation or original EH claim; this pass executes none."
+    },
+    "valid_domain": {
+      "null_input": "Allowed, returns null without any provider call; no release obligation.",
+      "nonnull_input": "Borrowed live readable contiguous byte object with reachable NUL; n+1 fits 32-bit size_t and the object/address range does not wrap. Source remains live and unchanged through copying.",
+      "allocation": "Actual current canonical allocation of n+1 bytes; successful normal return must be nonnull and disjoint from the still-live source object. No forced malloc return, custom heap, callback or substitute result.",
+      "copy": "Actual standard memcpy receives three CDECL DWORDs dest,source,n+1 and sufficient destination storage. Only nonoverlapping buffers admitted. Terminator is copied.",
+      "ownership": "Returned pointer is genuinely owned in the canonical current malloc/free domain. Caller releases each successful result once through unchanged singleton_lifetime_free after observations; no reads after free. Teardown provides no native 00BF9DC8 or property destructor credit.",
+      "excluded": "Unterminated/invalid input, address or size wrap, overlap, allocation failure/new-handler reentry, forced OOM, private heap/EH, original full memcpy, tag2 class/destructor/world integration and gameplay."
+    },
+    "one_caller": {
+      "address": "008EF1B0",
+      "call": "008EF1D6",
+      "bytes": 60,
+      "instructions": 20,
+      "sha256": "be944adca54cbd0702bc89a12e88ab0c8ac84f306bb8c14188266b8f70ae5a04",
+      "evidence": "MOV ECX,[ESP+8] after PUSH ESI passes actual stacked text to duplicate; normal returned EAX is stored at destination+0x0C, ownership flag byte+0x2C becomes1. No caller beyond this one and no clone arms queried. This establishes storage flow, not destructor/owner admission."
+    },
+    "current_Source_mismatch": "Existing bsp::duplicate_00438e40(const char*) remains plain CDECL Source; its null/strlen/malloc/memcpy semantics and historical free note do not supply the physical ECX/RET0 entry. Leave this API unchanged.",
+    "bounded_graph": {
+      "nodes": [
+        {
+          "id": "00438E40",
+          "kind": "native_whole",
+          "status": "57 bytes/30 instructions; candidate; Source0"
+        },
+        {
+          "id": "008EF1B0",
+          "kind": "native_one_caller",
+          "status": "sole whole60 caller read; owns pointer storage only, class/lifetime not admitted"
+        },
+        {
+          "id": "00BF55BE",
+          "kind": "native_whole_thunk",
+          "status": "5-byte JMP00BF681B; no allocator body closure"
+        },
+        {
+          "id": "00BF681B",
+          "kind": "native_boundary",
+          "status": "named original private allocator; incomplete here"
+        },
+        {
+          "id": "00BF7680",
+          "kind": "native_boundary",
+          "status": "entry32 and saved CDECL3 prototype only; private implementation incomplete"
+        },
+        {
+          "id": "00BF9DC8",
+          "kind": "historical_boundary",
+          "status": "historical native_string.hpp release association only; unqueried/unadmitted; no direct edge asserted"
+        },
+        {
+          "id": "proposed_size_adapter",
+          "kind": "future_Source_glue",
+          "status": "new genuine CDECL size-only adapter; zero Native credit; not yet written/compiled"
+        },
+        {
+          "id": "canonical_allocate",
+          "kind": "current_Source",
+          "status": "unchanged singleton_lifetime_allocate; accepted prior family90/34; fresh size must be derived"
+        },
+        {
+          "id": "canonical_free",
+          "kind": "current_Source",
+          "status": "unchanged singleton_lifetime_free; accepted prior family6/1; caller owns teardown"
+        },
+        {
+          "id": "current_malloc",
+          "kind": "current_provider",
+          "status": "expected heap API-set IAT to physical I386 ucrtbase.dll!malloc; future live gate required"
+        },
+        {
+          "id": "current_new_handler",
+          "kind": "current_provider",
+          "status": "expected heap API-set IAT to physical I386 ucrtbase.dll!_callnewh; retry static only"
+        },
+        {
+          "id": "current_free",
+          "kind": "current_provider",
+          "status": "expected heap API-set IAT to same physical I386 ucrtbase.dll!free; future live gate required"
+        },
+        {
+          "id": "current_memcpy_route",
+          "kind": "current_provider",
+          "status": "x86 vcruntime.lib _memcpy import thunk / __imp__memcpy -> physical I386 VCRUNTIME140.dll!memcpy; future full thunk/IAT/mapped-file gate required"
+        }
+      ],
+      "edges": [
+        [
+          "008EF1B0",
+          "00438E40",
+          "actual call008EF1D6"
+        ],
+        [
+          "00438E40",
+          "00BF55BE",
+          "actual call00438E61"
+        ],
+        [
+          "00BF55BE",
+          "00BF681B",
+          "actual JMP"
+        ],
+        [
+          "00438E40",
+          "00BF7680",
+          "actual call00438E6B"
+        ],
+        [
+          "00438E40",
+          "proposed_size_adapter",
+          "future qualified replacement of operand34..37 only"
+        ],
+        [
+          "proposed_size_adapter",
+          "canonical_allocate",
+          "future actual call with {object,n,n}"
+        ],
+        [
+          "canonical_allocate",
+          "current_malloc",
+          "existing canonical Source call; fresh IAT required"
+        ],
+        [
+          "canonical_allocate",
+          "current_new_handler",
+          "existing canonical Source retry dependency; unforced"
+        ],
+        [
+          "canonical_free",
+          "current_free",
+          "existing canonical Source call; fresh IAT required"
+        ],
+        [
+          "00438E40",
+          "current_memcpy_route",
+          "future qualified replacement of operand44..47 only"
+        ]
+      ],
+      "node_count": 13,
+      "edge_count": 10,
+      "total": 23,
+      "cap": 24,
+      "edges_typed": "Future binding edges are proposals, not existing Native or admitted Source edges."
+    }
+  },
+  "physical_current_providers": {
+    "vcruntime140": {
+      "file": {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      "physical_identity": {
+        "volume_serial": 3906787040,
+        "file_index_high": 196608,
+        "file_index_low": 221458,
+        "file_size_high": 0,
+        "file_size_low": 123328,
+        "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+        "read_handle_share": "FILE_SHARE_READ only during read; no module loaded"
+      },
+      "machine": 332,
+      "timestamp": 2650349747,
+      "image_size": 118784,
+      "preferred_image_base": 268435456,
+      "exports": {
+        "memcpy": {
+          "present": true,
+          "rva": 90528,
+          "ordinal": 71,
+          "forwarder": null,
+          "prefix32_hex": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+          "prefix32_sha256": "60cb310b01f32e8923a85c846d0c56328daa66bd7d9cbc761ccf8233dce816d0",
+          "bounded_entry_disasm": [
+            "100161a0: push edi",
+            "100161a1: push esi",
+            "100161a2: mov esi, dword ptr [esp + 0x10]",
+            "100161a6: mov ecx, dword ptr [esp + 0x14]",
+            "100161aa: mov edi, dword ptr [esp + 0xc]",
+            "100161ae: mov eax, ecx",
+            "100161b0: mov edx, ecx",
+            "100161b2: add eax, esi",
+            "100161b4: cmp edi, esi",
+            "100161b6: jbe 0x100161c0",
+            "100161b8: cmp edi, eax",
+            "100161ba: jb 0x10016454"
+          ]
+        }
+      }
+    },
+    "ucrtbase": {
+      "file": {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      "physical_identity": {
+        "volume_serial": 3906787040,
+        "file_index_high": 327680,
+        "file_index_low": 2895862,
+        "file_size_high": 0,
+        "file_size_low": 1114240,
+        "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "read_handle_share": "FILE_SHARE_READ only during read; no module loaded"
+      },
+      "machine": 332,
+      "timestamp": 2161073551,
+      "image_size": 1114112,
+      "preferred_image_base": 268435456,
+      "exports": {
+        "memcpy": {
+          "present": true,
+          "rva": 619440,
+          "ordinal": 2375,
+          "forwarder": null,
+          "prefix32_hex": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+          "prefix32_sha256": "60cb310b01f32e8923a85c846d0c56328daa66bd7d9cbc761ccf8233dce816d0",
+          "bounded_entry_disasm": [
+            "100973b0: push edi",
+            "100973b1: push esi",
+            "100973b2: mov esi, dword ptr [esp + 0x10]",
+            "100973b6: mov ecx, dword ptr [esp + 0x14]",
+            "100973ba: mov edi, dword ptr [esp + 0xc]",
+            "100973be: mov eax, ecx",
+            "100973c0: mov edx, ecx",
+            "100973c2: add eax, esi",
+            "100973c4: cmp edi, esi",
+            "100973c6: jbe 0x100973d0",
+            "100973c8: cmp edi, eax",
+            "100973ca: jb 0x10097664"
+          ]
+        },
+        "malloc": {
+          "present": true,
+          "rva": 196896,
+          "ordinal": 2362,
+          "forwarder": null,
+          "prefix32_hex": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+          "prefix32_sha256": "fc733748693ddc9c685838a6aa01a5209964dfca4ae152e474e3a2c7c3aa8112",
+          "bounded_entry_disasm": [
+            "10030120: mov edi, edi",
+            "10030122: push ebp",
+            "10030123: mov ebp, esp",
+            "10030125: pop ebp",
+            "10030126: jmp 0x1002df30",
+            "1003012b: int3 ",
+            "1003012c: int3 ",
+            "1003012d: int3 ",
+            "1003012e: int3 ",
+            "1003012f: int3 ",
+            "10030130: int3 ",
+            "10030131: int3 ",
+            "10030132: int3 ",
+            "10030133: int3 ",
+            "10030134: int3 ",
+            "10030135: int3 ",
+            "10030136: int3 ",
+            "10030137: int3 ",
+            "10030138: int3 ",
+            "10030139: int3 ",
+            "1003013a: int3 ",
+            "1003013b: int3 ",
+            "1003013c: int3 ",
+            "1003013d: int3 ",
+            "1003013e: int3 ",
+            "1003013f: int3 "
+          ]
+        },
+        "free": {
+          "present": true,
+          "rva": 196768,
+          "ordinal": 2279,
+          "forwarder": null,
+          "prefix32_hex": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+          "prefix32_sha256": "dde4b11a61a089ab15f06412dc90c3dff5774b0fb872e1ad986f81816df26875",
+          "bounded_entry_disasm": [
+            "100300a0: mov edi, edi",
+            "100300a2: push ebp",
+            "100300a3: mov ebp, esp",
+            "100300a5: push ecx",
+            "100300a6: push dword ptr [ebp + 8]",
+            "100300a9: mov dword ptr [ebp - 4], 0",
+            "100300b0: mov eax, dword ptr [ebp - 4]",
+            "100300b3: call 0x100300d0",
+            "100300b8: add esp, 4",
+            "100300bb: mov esp, ebp",
+            "100300bd: pop ebp",
+            "100300be: ret ",
+            "100300bf: int3 "
+          ]
+        },
+        "_callnewh": {
+          "present": true,
+          "rva": 569344,
+          "ordinal": 207,
+          "forwarder": null,
+          "prefix32_hex": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0521010ffd6f7d8",
+          "prefix32_sha256": "d1210183a2d3b8b09cd566cc4adab05caa9438fe4921af4fbb8615211661673f",
+          "bounded_entry_disasm": [
+            "1008b000: mov edi, edi",
+            "1008b002: push ebp",
+            "1008b003: mov ebp, esp",
+            "1008b005: push esi",
+            "1008b006: call 0x1008af60",
+            "1008b00b: mov esi, eax",
+            "1008b00d: test esi, esi",
+            "1008b00f: je 0x1008b027",
+            "1008b011: push dword ptr [ebp + 8]",
+            "1008b014: mov ecx, esi",
+            "1008b016: call dword ptr [0x101052a0]",
+            "1008b01c: call esi",
+            "1008b01e: neg eax"
+          ]
+        }
+      }
+    }
+  },
+  "copy_import_library": {
+    "library": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "bytes": 400312,
+      "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+    },
+    "import_members": [
+      {
+        "archive_offset": 394526,
+        "header_name": "/361",
+        "object_bytes": 45,
+        "object_sha256": "549f0c56069fd47d7b1ee012c4cc5897889c4c183fcbc11d506cf59bf212b0f5",
+        "object_hex": "0000ffff00004c0117829fda19000000460008005f6d656d63707900564352554e54494d453134302e646c6c00",
+        "machine": 332,
+        "version": 0,
+        "timestamp": 3667886615,
+        "hint": 70,
+        "type": 0,
+        "name_type": 2,
+        "strings": [
+          "_memcpy",
+          "VCRUNTIME140.dll"
+        ]
+      }
+    ],
+    "interpretation": "IMPORT_CODE / IMPORT_NAME_NOPREFIX maps CDECL _memcpy to DLL export memcpy; its import thunk and __imp__memcpy IAT resolve through VCRUNTIME140.dll. Fresh future link must prove actual selection."
+  },
+  "copy_provider_finding": "The concrete VC14.51 x86 vcruntime.lib import member maps _memcpy -> VCRUNTIME140.dll!memcpy, not the heap API-set. UCRT also exports memcpy and its first32 bytes currently match VCRuntime exactly; only actual IAT/import/export/module/file identity establishes the provider. Both physical files were read and bookended; no module was newly loaded or provider called.",
+  "current_mapped_provider_status": "Not dynamically attested for a duplicate process in this read-only pass. Installed physical I386 export/import evidence proves a concrete binding candidate; future zero-entry runtime gates below are mandatory before any fixture claim.",
+  "accepted_current_canonical_context": {
+    "source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\src\\native_unit_list_append.cpp",
+        "bytes": 2447,
+        "sha256": "219c9858a34beeb08759c8c9b05ffc515d683e72c24389be0adb1a89b953d369"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\include\\bsp\\native_unit_list_append.hpp",
+        "bytes": 1105,
+        "sha256": "bda5ad0e705a5c0bdc9a9385ae23fb92b13c89d427eee18a61ed35024a0d9983"
+      }
+    ],
+    "prior_accepted_bodies": [
+      {
+        "symbol": "?allocate_native_unit_list_bytes@?A0xcfa1ff25@bsp@@YAPAXI@Z",
+        "size": 61,
+        "instruction_count": 17,
+        "linked_SHA256": "32fc082074fd9018b6df2fa4b23fafbe64dfce11c0fb830c20a7a0692282cd39",
+        "historical_address": 587206736
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "size": 90,
+        "instruction_count": 34,
+        "linked_SHA256": "2f044113020ed7c0b10db255a5bf2f9e68dca53dc4cdc5dd669a390dbbd327ee",
+        "historical_address": 587207152
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "size": 6,
+        "instruction_count": 1,
+        "linked_SHA256": "69a21f000e7aedb0eb9052e41d15e39ee8657dd8eaf4b788ea476ed62d45729c",
+        "historical_address": 587207248
+      }
+    ],
+    "limit": "Prior complete current-domain adapter61/17, allocator90/34 and free6/1 are historical accepted context. Compile fresh three TUs; derive every new body extent/count/relocation and provider identity anew. No old object/library/executable reuse or replay."
+  },
+  "future_packet": {
+    "suggested_id": "cc12_raw_native_string_duplicate_00438e40",
+    "exactly_four_owned_files": [
+      "include/bsp/native_string_duplicate.hpp",
+      "src/native_string_duplicate.cpp",
+      "docs/NATIVE_STRING_DUPLICATE_CC12.md",
+      "reports/native_string_duplicate_cc12.json"
+    ],
+    "public_API": "namespace bsp { char* __fastcall duplicate_native_string_00438e40(const char* actual_text_ecx); }",
+    "API_qualification": "MSVC Win32 only. No noexcept because current canonical allocation can throw; normal successful/null domain only until unwind is separately established. No hidden stack arg, callback, synthetic owner or default output.",
+    "source_body": "Naked exact57-byte/30-instruction body; actual CALL00438E61 operand offsets34..37 only -> genuine private CDECL adapter; actual CALL00438E6B operand offsets44..47 only -> real _memcpy import thunk. Require exactly two REL32 COFF relocations at34 and44 and all other49 bytes literal. Branches, NUL scan, arithmetic widths, stack timing and post-copy EAX=EDI retained.",
+    "new_adapter": "Private noinline void* __cdecl allocate_native_string_bytes(std::size_t actual_bytes) calls unchanged singleton_lifetime_allocate({SingletonAllocationKind::object, actual_bytes, actual_bytes}). Source glue gets zero Native credit. Same real allocator/retry service; no fake/callback/forced return or alternate heap. Derive full new adapter body and all cookie helpers.",
+    "copy_binding": "Use real standard memcpy declaration and literal CALL to its link symbol, with intrinsics disabled for this target as needed. No Source copy wrapper or fake import. Future map/COFF/PE must identify complete generated import thunk (normally JMP DWORD PTR[__imp__memcpy]), actual IAT slot, VCRUNTIME140.dll import and memcpy export; do not assume thunk address/size from this proposal.",
+    "fresh_family": "New named worktree and unique ignored local/cc12_raw_native_string_duplicate_worker<date><suffix> family. Three fresh TUs: new raw duplicate+private adapter, unchanged current singleton_lifetime.cpp, newly written probe. Link actual current CRT import libraries only; no BSP archives, old objects, old probe executions or helper-script imports.",
+    "build_gate": "Strict MSVC Win32 /MD /O2 /W4 /WX /fp:strict /permissive- /EHsc /Gy /GL-, no ICF; embedded asInvoker manifest. Pre-pin exact input/TU/header closure including extensionless headers, all consumed libraries/toolchain, PE, sources and all older sealed artifacts. Preserve every failed stage; never replay accepted native runs.",
+    "static_gate": "Full fresh COFF/linked body and complete relocation targets for raw57, size adapter, canonical allocator/free, ordinary compiler caller, raw capture caller, selected cookie/bad_alloc/cold helpers, copy import thunk/IAT. Verify raw57 normalized only at34..37/44..47, unique linked occurrence and complete extent. Recalculate body counts; Source-only adapter/helper sizes earn no Native credit.",
+    "Original_binding": "Copy the complete installed original57 bytes into private RX fixture storage; rebind only the same two actual CALL operands to the identical fresh allocator adapter and memcpy import thunk. Compare all other49 bytes and bookend full runtime57. Call this current-domain-bound Original; original private providers are not executed or admitted.",
+    "preentry_dynamic_provider_gate": "Before zero target duplicate entries and before target allocation/copy, prove actual malloc/free/_callnewh IATs from the canonical Source and actual memcpy IAT from raw call thunk. Resolve each actual pointer to MEM_IMAGE allocation base with I386 PE; require pointer==GetProcAddress==mapped base+physical export RVA. Match loader DOS path against mapped NT path and opened physical file NT path, full file hash, volume/fileID/size/time/image identity. Hold real read handles denying write/delete and compare ASLR-normalized export entry bytes; do not identify memcpy by prefix alone. Expected heap provider is SysWOW64 ucrtbase.dll; expected copy provider SysWOW64 vcruntime140.dll. If loader chooses another actual module, fail before target entry and preserve evidence; do not silently switch expected files.",
+    "minimal_fixture": "Two actual inputs only: nullptr and one genuine guarded, NUL-terminated nonempty byte array with embedded high-bit bytes and trailing guard beyond the first NUL. Raw Original and Source each see same borrowed array address, real raw caller frame and input registers; null and nonnull routes each once. One ordinary compiler Source nonnull call demonstrates declared ECX/RET0 ABI. Five target entries, three successful returned allocations and three single frees expected from control flow; do not hook providers or invent counters as allocation proof.",
+    "fixture_observations": "Record full EAX, actual stack and EBX/ESI/EDI/EBP. Null returns0/no providers; compare defined XOR flags without AF and unchanged null ECX/EDX. Nonnull result is the actual allocation, exact n+1 bytes including NUL, independent lifetime and unmodified input/guards; never require equal numerical allocation addresses between Original and Source. Record volatile ECX/EDX but do not assert guessed values. Derive final ADD flags from captured stack. Canonical-free each actual result once, then never read it. No fake node/arena/root, provider substitution or post-free observation.",
+    "post_gate": "Recheck actual IAT pointers, provider identities/full files/prefixes, complete linked helper spans, complete bound Original57, original installed PE/native bytes, sources/toolchain/consumed headers/libraries/executable and all prior immutable artifacts. No OOM, forced new handler, reentry, overlap, original EH or game/class claims. Complete exact family inventory including initial/historical metadata and all failed attempts; seal once, keep subsequent logs outside sealed family.",
+    "Root_remaining": "Root alone registers packet/shared metadata, adds actual Source ledger/name admission only after evidence, performs locked Ghidra annotation/export/save, independent fresh validation, shared CMake/full Win32/tests and main integration/push. Tag2 constructor remains separately blocked until duplicate is actually admitted and its later fixture uses real current-owned outputs."
+  },
+  "unresolved_boundaries": [
+    "Original private allocator00BF681B and original native memcpy00BF7680 are not closed by replacing current-domain calls.",
+    "Historical native free00BF9DC8 remains an unqueried association, not a release proof.",
+    "New Source57/body/adapter/copy thunk/ordinary caller ABI are proposed; no compilation/link/runtime occurred.",
+    "Current mapped providers must be freshly attested in the actual future process before target entry; disk/static evidence is not runtime proof.",
+    "Original/private EH and current naked-frame failure unwind, forced failure/reentry, class/phase/owner/destructor/world/gameplay remain unadmitted."
+  ],
+  "preservation": {
+    "older_artifacts": 618,
+    "scalar_family_actual_inventory": 44,
+    "scalar_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_scalar_readiness\\local\\cc12_property_record_scalar_readiness20261008a\\artifact_manifest.json",
+      "bytes": 12840,
+      "sha256": "3b08327763a8dd2b35078fbcaa1052501cfc1cbf7790b272a3033542de00fa1b"
+    },
+    "historical_metadata": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\historical_metadata.json",
+      "bytes": 110570,
+      "sha256": "c9997b3b62e82ffbb9d8944ec4a02811c03e1413c9b065bbbb33ea775f61fa46"
+    },
+    "rule": "Every historical file and its embedded original source/config/tool association preserved, with no refresh of old hashes to changing main. Old successful recipes/executables/objects were not executed/imported."
+  },
+  "evidence": {
+    "ABI": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\abi_and_ownership.json",
+      "bytes": 8642,
+      "sha256": "8415963f8015d917e8c2f275a25d3558c10817cff2f915882a0651250e104aaf"
+    },
+    "native_before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\native_before.json",
+      "bytes": 10220,
+      "sha256": "72e5202293386eb35a055be8eb69e583fefddbf4d4f662d04d7d11ebca7c9be8"
+    },
+    "post": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\post.json",
+      "bytes": 303,
+      "sha256": "ddbeff30fb3bf92e9e768737b6be547427fc4a284efb85fa942593965b9158b4"
+    },
+    "physical_providers": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\current_physical_providers.json",
+      "bytes": 5909,
+      "sha256": "428224f3fecff90cddb3291a73b278c51685759ee13057d6b2c006891a10c5e2"
+    },
+    "memcpy_import_member": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\memcpy_import_library.json",
+      "bytes": 1006,
+      "sha256": "d49ede63a6137dcd4abdf22f45e29bb3d4dcb84bccb630116bb3814f5a14dafc"
+    },
+    "official_contracts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\official_contract_references.json",
+      "bytes": 891,
+      "sha256": "18eb44387588c6d613254f2d574a1c37d9627885040928ca30da281f13d4add1"
+    },
+    "initial_failed_capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\initial_capture_failure.json",
+      "bytes": 428,
+      "sha256": "9b17370fc0428798f02b7b3cdcc00a83cc1f46b82f3c6e19bf653e94dd983612"
+    }
+  },
+  "activity": {
+    "read_only": true,
+    "new_tracked_files": 2,
+    "Source_header_config_ledger_CMake_changes": 0,
+    "compilations": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "sibling_agents": 0,
+    "other_property_leaf_queries": 0
+  },
+  "documentation_correction": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\api_namespace_correction.json",
+    "bytes": 800,
+    "sha256": "29a851b937d7c084fcb4f4441d77350fc1f72ea84061e46f27ebb24c0a7e1f67"
+  },
+  "readiness_receipt": {
+    "schema": 1,
+    "packet": "cc12_native_string_duplicate_readiness",
+    "status": "Qualified current-domain raw57 packet is technically proposal-ready for Root registration; no Source exists or is admitted by this audit.",
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "qualified_candidate_count": 1,
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\proposal_final.json",
+      "bytes": 30726,
+      "sha256": "ab43bd95dfab1e3f0782dd31f973aa7348853978e277fdf6700a0d02d0a6696f"
+    },
+    "whole": {
+      "start": "00438E40",
+      "end_exclusive": "00438E79",
+      "bytes": 57,
+      "sha256": "28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4"
+    },
+    "instructions": 30,
+    "unchanged_non_CALL_operand_bytes": 49,
+    "CALL_operand_offsets": [
+      34,
+      44
+    ],
+    "graph": {
+      "nodes": 13,
+      "edges": 10,
+      "total": 23,
+      "cap": 24
+    },
+    "copy_provider": {
+      "import": "VCRUNTIME140.dll!memcpy",
+      "I386_file": {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      "export_RVA": 90528,
+      "mapped_actual_process_attestation": "mandatory future gate; not executed"
+    },
+    "post": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\post.json",
+      "bytes": 303,
+      "sha256": "ddbeff30fb3bf92e9e768737b6be547427fc4a284efb85fa942593965b9158b4"
+    },
+    "preserved_older_artifacts": 618,
+    "initial_failure_retained": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\initial_capture_failure.json",
+      "bytes": 428,
+      "sha256": "9b17370fc0428798f02b7b3cdcc00a83cc1f46b82f3c6e19bf653e94dd983612"
+    },
+    "native_executions": 0,
+    "compilations": 0,
+    "Ghidra_mutations": 0,
+    "initial_receipt_preserved": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\readiness_receipt.json",
+      "bytes": 2035,
+      "sha256": "4345e48d2e02751ef0659bcf74c0c69d14f82f3b9c7f46d92ea6ee229a54a927"
+    },
+    "documentation_correction": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\api_namespace_correction.json",
+      "bytes": 800,
+      "sha256": "29a851b937d7c084fcb4f4441d77350fc1f72ea84061e46f27ebb24c0a7e1f67"
+    }
+  },
+  "family_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_duplicate_readiness\\local\\cc12_native_string_duplicate_readiness20261008a\\artifact_manifest.json"
+}
