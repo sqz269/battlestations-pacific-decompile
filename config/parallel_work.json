@@ -28473,8 +28473,8 @@
         "reports/native_scene_property_array_block_release_cc11.json"
       ],
       "depends_on": [],
-      "done": false,
-      "state": "ready independently audited whole39B13 currentheap array-header release",
+      "done": true,
+      "state": "complete whole39B Source integrated; independent3TU currentheap/rawABI/header family and full Win32/all3 CTests PASS; historical heap/class/world/game qualified",
       "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_record_release_audit\\proposal.json",
       "audit_receipt_sha256": "53b5d3a4187e00c1a36ac6b062fc80300f3d736f4709bbb51aa4c0d9d4ee6e27",
       "contract": {
@@ -28530,6 +28530,444 @@
           "implementation_assigned": false
         },
         "Root_differential_admission": "One new connected fresh3TU family may execute qualified Original39 with ONLY rel32 CALL operand at original3FA patched to genuine same current linked singleton_lifetime_free, after complete COFF/linked/operand binding and actual malloc/free IAT gate. Preserve every other Original instruction; explicitly historical Original heap unbound. Compare raw ECX/ESP/nonvolatile registers and actual8B header/record guards, never freed data; volatile EAX/ECX/EDX and flags after free are unspecified. No Original constructor/scalar/type dispatcher/world. Two genuine current-CRT owned buffers plus empty/repeated path and explicit storage release after checks. No callback/free adapter, fabricated class/producer/dispatch or BSP archives. Source-only alternative if exact ABI/heap gate cannot be established; no native execution without gate."
+      },
+      "primary_integration": {
+        "source_revision": "d02cf80822c487c2593696d6e1e0cf1b221c56a5",
+        "build_source_revision": "d02cf80822c487c2593696d6e1e0cf1b221c56a5",
+        "worker_revision": "f41e1ff4f086584604501b5f987ff29f110cb0ac",
+        "full_MSVC_Win32_build": "PASS",
+        "existing_CTests": "3/3 PASS",
+        "build_log": "local\\cc11_array_release_integrated_build.log",
+        "build_log_sha256": "3ccbe0ab57a2be493a707156192ebf42a6bc8588e7c46faa5e84d6669474ff04",
+        "current_core_sha256": "9ddd4bc61252b710543e452fec2fb1205260fc4f7f52bd010b02fea0d241163d",
+        "independent_component_manifest": "local\\cc11_array_release_current_primary\\primary_after.json",
+        "independent_component_manifest_sha256": "e51403ad5357200acb7548a8cab029d3ce936570e82cf884bcbe077d0ab59abd",
+        "fresh_translation_units": 3,
+        "actual_production_headers": 8,
+        "actual_host_headers": 166,
+        "actual_searched_libraries": 6,
+        "compiler_backend_files": 4,
+        "stable_worker_paths": 248,
+        "whole_Source_COFF": [
+          {
+            "symbol": "?release_native_scene_property_array_block_008f03f0@bsp@@YIXPAX@Z",
+            "section": 4,
+            "offset": 0,
+            "bytes": 39,
+            "sha256": "84147d0c7f2f82c80f87a4c9085f8d4ad1b5e799d4b6ecb88b22f674882d60b6",
+            "hex": "568bf18b0685c0740f50e80000000083c404c70600000000c7460400000000c706000000005ec3",
+            "relocations": [
+              {
+                "offset": 11,
+                "type": 20,
+                "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "actual_link_target": "20001170",
+                "link_target_symbol_equals_COFF": true
+              }
+            ],
+            "instruction_count": 13,
+            "complete_decode": true,
+            "disassembly": [
+              {
+                "offset": 0,
+                "bytes": "56",
+                "instruction": "push esi"
+              },
+              {
+                "offset": 1,
+                "bytes": "8bf1",
+                "instruction": "mov esi, ecx"
+              },
+              {
+                "offset": 3,
+                "bytes": "8b06",
+                "instruction": "mov eax, dword ptr [esi]"
+              },
+              {
+                "offset": 5,
+                "bytes": "85c0",
+                "instruction": "test eax, eax"
+              },
+              {
+                "offset": 7,
+                "bytes": "740f",
+                "instruction": "je 0x18"
+              },
+              {
+                "offset": 9,
+                "bytes": "50",
+                "instruction": "push eax"
+              },
+              {
+                "offset": 10,
+                "bytes": "e800000000",
+                "instruction": "call 0xf"
+              },
+              {
+                "offset": 15,
+                "bytes": "83c404",
+                "instruction": "add esp, 4"
+              },
+              {
+                "offset": 18,
+                "bytes": "c70600000000",
+                "instruction": "mov dword ptr [esi], 0"
+              },
+              {
+                "offset": 24,
+                "bytes": "c7460400000000",
+                "instruction": "mov dword ptr [esi + 4], 0"
+              },
+              {
+                "offset": 31,
+                "bytes": "c70600000000",
+                "instruction": "mov dword ptr [esi], 0"
+              },
+              {
+                "offset": 37,
+                "bytes": "5e",
+                "instruction": "pop esi"
+              },
+              {
+                "offset": 38,
+                "bytes": "c3",
+                "instruction": "ret"
+              }
+            ],
+            "machine": "014C",
+            "object": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_array_release_current_primary\\fresh01\\native_scene_property_array_block_release.obj",
+            "actual_link": {
+              "image_address": "20001010",
+              "map_origin": "f   native_scene_property_array_block_release.obj",
+              "hex": "568bf18b0685c0740f50e85101000083c404c70600000000c7460400000000c706000000005ec3",
+              "sha256": "6776284d3389ae19a505df9511251e27bd2031f7829d386bd9e01b5fc258a6ac",
+              "whole_body_normalized_COFF_equal": true
+            },
+            "whole_Original_equal_except_actual_CALL_rel32_operand": true,
+            "CALL_instruction_offset_decimal": 10,
+            "CALL_operand_offset_decimal": 11,
+            "sole_direct_canonical_current_free_relocation": true
+          },
+          {
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "section": 108,
+            "offset": 0,
+            "bytes": 90,
+            "sha256": "84bd9cbcc712d9283664090c1b35610db581ef80c3fde7bc888c0f90672f4e4e",
+            "hex": "83ec0c538b1d00000000568b74241857ff7608ffd383c40485c0751e8b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce80000000068000000008d44241050e800000000cc",
+            "relocations": [
+              {
+                "offset": 6,
+                "type": 6,
+                "target": "__imp__malloc",
+                "actual_link_absolute_target": "20006198",
+                "link_absolute_target_symbol_equals_COFF": true,
+                "PE_import": {
+                  "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+                  "name": "malloc",
+                  "address": "20006198"
+                },
+                "actual_IAT_equals_named_import": true
+              },
+              {
+                "offset": 30,
+                "type": 6,
+                "target": "__imp___callnewh",
+                "actual_link_absolute_target": "20006190",
+                "link_absolute_target_symbol_equals_COFF": true
+              },
+              {
+                "offset": 70,
+                "type": 20,
+                "target": "??0bad_alloc@std@@QAE@XZ",
+                "actual_link_target": "20001070",
+                "link_target_symbol_equals_COFF": true
+              },
+              {
+                "offset": 75,
+                "type": 6,
+                "target": "__TI2?AVbad_alloc@std@@",
+                "actual_link_absolute_target": "20007438",
+                "link_absolute_target_symbol_equals_COFF": true
+              },
+              {
+                "offset": 85,
+                "type": 20,
+                "target": "__CxxThrowException@8",
+                "actual_link_target": "200055FA",
+                "link_target_symbol_equals_COFF": true
+              }
+            ],
+            "instruction_count": 34,
+            "complete_decode": true,
+            "disassembly": [
+              {
+                "offset": 0,
+                "bytes": "83ec0c",
+                "instruction": "sub esp, 0xc"
+              },
+              {
+                "offset": 3,
+                "bytes": "53",
+                "instruction": "push ebx"
+              },
+              {
+                "offset": 4,
+                "bytes": "8b1d00000000",
+                "instruction": "mov ebx, dword ptr [0]"
+              },
+              {
+                "offset": 10,
+                "bytes": "56",
+                "instruction": "push esi"
+              },
+              {
+                "offset": 11,
+                "bytes": "8b742418",
+                "instruction": "mov esi, dword ptr [esp + 0x18]"
+              },
+              {
+                "offset": 15,
+                "bytes": "57",
+                "instruction": "push edi"
+              },
+              {
+                "offset": 16,
+                "bytes": "ff7608",
+                "instruction": "push dword ptr [esi + 8]"
+              },
+              {
+                "offset": 19,
+                "bytes": "ffd3",
+                "instruction": "call ebx"
+              },
+              {
+                "offset": 21,
+                "bytes": "83c404",
+                "instruction": "add esp, 4"
+              },
+              {
+                "offset": 24,
+                "bytes": "85c0",
+                "instruction": "test eax, eax"
+              },
+              {
+                "offset": 26,
+                "bytes": "751e",
+                "instruction": "jne 0x3a"
+              },
+              {
+                "offset": 28,
+                "bytes": "8b3d00000000",
+                "instruction": "mov edi, dword ptr [0]"
+              },
+              {
+                "offset": 34,
+                "bytes": "ff7608",
+                "instruction": "push dword ptr [esi + 8]"
+              },
+              {
+                "offset": 37,
+                "bytes": "ffd7",
+                "instruction": "call edi"
+              },
+              {
+                "offset": 39,
+                "bytes": "83c404",
+                "instruction": "add esp, 4"
+              },
+              {
+                "offset": 42,
+                "bytes": "85c0",
+                "instruction": "test eax, eax"
+              },
+              {
+                "offset": 44,
+                "bytes": "7413",
+                "instruction": "je 0x41"
+              },
+              {
+                "offset": 46,
+                "bytes": "ff7608",
+                "instruction": "push dword ptr [esi + 8]"
+              },
+              {
+                "offset": 49,
+                "bytes": "ffd3",
+                "instruction": "call ebx"
+              },
+              {
+                "offset": 51,
+                "bytes": "83c404",
+                "instruction": "add esp, 4"
+              },
+              {
+                "offset": 54,
+                "bytes": "85c0",
+                "instruction": "test eax, eax"
+              },
+              {
+                "offset": 56,
+                "bytes": "74e8",
+                "instruction": "je 0x22"
+              },
+              {
+                "offset": 58,
+                "bytes": "5f",
+                "instruction": "pop edi"
+              },
+              {
+                "offset": 59,
+                "bytes": "5e",
+                "instruction": "pop esi"
+              },
+              {
+                "offset": 60,
+                "bytes": "5b",
+                "instruction": "pop ebx"
+              },
+              {
+                "offset": 61,
+                "bytes": "83c40c",
+                "instruction": "add esp, 0xc"
+              },
+              {
+                "offset": 64,
+                "bytes": "c3",
+                "instruction": "ret"
+              },
+              {
+                "offset": 65,
+                "bytes": "8d4c240c",
+                "instruction": "lea ecx, [esp + 0xc]"
+              },
+              {
+                "offset": 69,
+                "bytes": "e800000000",
+                "instruction": "call 0x4a"
+              },
+              {
+                "offset": 74,
+                "bytes": "6800000000",
+                "instruction": "push 0"
+              },
+              {
+                "offset": 79,
+                "bytes": "8d442410",
+                "instruction": "lea eax, [esp + 0x10]"
+              },
+              {
+                "offset": 83,
+                "bytes": "50",
+                "instruction": "push eax"
+              },
+              {
+                "offset": 84,
+                "bytes": "e800000000",
+                "instruction": "call 0x59"
+              },
+              {
+                "offset": 89,
+                "bytes": "cc",
+                "instruction": "int3"
+              }
+            ],
+            "machine": "014C",
+            "object": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_array_release_current_primary\\fresh01\\singleton_lifetime.obj",
+            "actual_link": {
+              "image_address": "20001110",
+              "map_origin": "f   singleton_lifetime.obj",
+              "hex": "83ec0c538b1d98610020568b74241857ff7608ffd383c40485c0751e8b3d90610020ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce816ffffff68387400208d44241050e891440000cc",
+              "sha256": "2fc90e3292907aa905a3e03c482de3e815a9385793d669bda321616461dfd667",
+              "whole_body_normalized_COFF_equal": true
+            }
+          },
+          {
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "section": 110,
+            "offset": 0,
+            "bytes": 6,
+            "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+            "hex": "ff2500000000",
+            "relocations": [
+              {
+                "offset": 2,
+                "type": 6,
+                "target": "__imp__free",
+                "actual_link_absolute_target": "20006194",
+                "link_absolute_target_symbol_equals_COFF": true,
+                "PE_import": {
+                  "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+                  "name": "free",
+                  "address": "20006194"
+                },
+                "actual_IAT_equals_named_import": true
+              }
+            ],
+            "instruction_count": 1,
+            "complete_decode": true,
+            "disassembly": [
+              {
+                "offset": 0,
+                "bytes": "ff2500000000",
+                "instruction": "jmp dword ptr [0]"
+              }
+            ],
+            "machine": "014C",
+            "object": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_array_release_current_primary\\fresh01\\singleton_lifetime.obj",
+            "actual_link": {
+              "image_address": "20001170",
+              "map_origin": "f   singleton_lifetime.obj",
+              "hex": "ff2594610020",
+              "sha256": "1218bd3af983c6beb9035d09bc1a611ae89f84bde490ae830ead274cabb04e75",
+              "whole_body_normalized_COFF_equal": true
+            }
+          }
+        ],
+        "all_code_totals": {
+          "objects": 3,
+          "code_sections": 354,
+          "code_bytes": 25542,
+          "ordered_relocations": 983,
+          "application_origin_map_symbols": 334,
+          "application_origin_functions": 140,
+          "physical_application_code_spans": 122,
+          "physical_application_code_bytes": 14498,
+          "physical_application_ordered_relocations": 615
+        },
+        "execution_output": "PASS one3TU family/two owned byte buffers/Source+qualifiedOriginal39/empty-repeat/heapIAT+ESP-nonvolatile/header-guards\n",
+        "outcomes": {
+          "genuine_currentheap_38_raw_storage": 2,
+          "owned_byte_buffers": 2,
+          "byteSize": 21,
+          "Source_owned_empty_calls": 2,
+          "qualifiedOriginal_owned_empty_calls": 2,
+          "whole39_onlyCALL_rel32_operand_patched": true,
+          "CALL_instruction_offset_decimal": 10,
+          "CALL_operand_offset_decimal": 11,
+          "actual_same_current_free_address": 536875376,
+          "Original_RX_address": 7012352,
+          "captured_input_pointer_bits_beforefree": [
+            7217464,
+            7218200
+          ],
+          "actual_malloc_free_IAT_runtime_gate": true,
+          "ECX_header_ESP_nonvolatile_ABI": true,
+          "volatile_register_or_fullflags_equality_claimed": false,
+          "full38_live_header_adjacentguards": true,
+          "no_freeddata_or_freedroot_access": true,
+          "rawstorage_explicitly_released_afterchecks": true,
+          "Original_historical_CRT_constructor_recordscalar_typerelease_nested_executed": false
+        },
+        "native_call_verification_log": "local\\cc11_array_release_native_calls.log",
+        "native_call_verification_log_sha256": "70cbd4ce3571784c2c3de77199a21d954191be78f8fdcb503e59c24d500992e9",
+        "source_bookends_stable": true,
+        "old_families_replayed": false,
+        "tracked_tests_added": 0,
+        "qualification": "One distinct complete39B13 raw array-header release at8F03F0: actual ECX eight-byte header at record+20, DWORD ownedpointer/header+0 and DWORD size measured in BYTES/header+4, preserveESI/plainRET, direct canonical currentcdeclfree only whennonzero. Retains original free/ADDESP4/pointerzero/sizezero/pointerzero order, including empty/repeated path. SourceCOFF/unique linked body matches all Original instructions except sole CALL rel32 operand11..14; exact target resolves genuine current singleton_lifetime_free. Independent ONE fresh3TU main family used genuine current-CRT allocations for two raw38h storages/two21byte owned buffers, Source-owned/empty plus qualifiedOriginal-owned/empty, real ECX/ESP/EBX-ESI-EDI-EBP and full liveheader/adjacentguards. Original39 changes ONLY four CALL operand bytes after exact whole Source/allocator90B34/free6B1 linkedCOFF and actualmalloc/free heap-IAT/runtimeGetProcAddress gates. HistoricalOriginalCRT unbound; volatileEAX/ECX/EDX/arithmeticflags unspecified and never compared; no freeddata/root access. Zero BSP archives/oldreplays/newtrackedtests; explicit rawstorage release after allchecks. Source admission does not establish actual record constructor/scalar/whole158B type/nested114h/lifetime/class/EH/factory/world/game. Parent preparation relative-owned-report path failure preceded all directory/build/execution; read-only seal expected scalar compileExit instead of actual three-row list, corrected without rebuild or replay; failed scripts retained.",
+        "raw_entry_ABI_checked": true,
+        "original_class_ABI_compatible": false,
+        "game_validated": false
       }
     },
     {
