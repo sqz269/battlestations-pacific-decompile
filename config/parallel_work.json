@@ -33572,8 +33572,8 @@
     },
     {
       "id": "cc12_scene_property_record_type4_storage",
-      "done": false,
-      "state": "validation_reopened_pending_all_retained_function_and_helper_gates",
+      "done": true,
+      "state": "bounded_current_raw_two_opaque_word_storage_Source_admitted_full_helper_fixture_build_tested",
       "function_addresses": [
         "008ef230"
       ],
@@ -33638,23 +33638,111 @@
           "enum lookup/parser/declaration ownership",
           "whole clone/other arms",
           "startup/world/gameplay"
-        ]
+        ],
+        "Source_admission_credit": 1
       },
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "passed": false,
-        "Source_admission_credit": 0,
-        "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
-        "historical_family": "local/t4p2",
-        "missing_normal_fixture_bodies": 13,
-        "missing_cold_exception_bodies": 6,
-        "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
-        "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
-        "historical_inventory_preserved": true,
-        "old_accepted_helpers_phases_objects_processes_replayed": 0,
-        "qualification": "Reopen the historical Type4 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 13 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+        "passed": true,
+        "Source_admission_credit": 1,
+        "status": "bounded_current_raw_two_opaque_word_storage_Source_admitted_full_helper_fixture_build_tested",
+        "qualification": "Qualified bounded whole008EF230..008EF268 raw two-opaque-DWORD initializer56B16, all56literal bytes/noCALL/no relocations. ECX actual fresh unowned writable56 root, unused EDX, genuine identity/value stackDWORDs atT+4/T+8, RET8/full EAXroot; ECX0/EDXvalue, nonvolatiles/ES/DF preserved, defined XOR8C5=44 excludesAF.41written15preserved, marker2C=1 is not ownership. Fresh Root3TUs/184headers/7libraries,31logical29physical TU bodies,219symbol213physical relocation operands+6alias rechecks and47whole code spans including std imports, cookie14, stack43, colddelete16->5->free6 and ordinaryOriginal EH29. OrdinaryOriginal69 includes provably unreachable5CC afterRET without shrinking its gate. Root reviewed wholeMain2934B791;17dominancepairs/47guard failureedges. Sole SourceDF1/OriginalDF0 entries, two current canonical56 roots/twofree dispositions, complete twoCapture124/full56 arrays independently decoded with GPR/ES/stack guards/dead argument words. Three recorded UCRTbindings decoded only from frozen DLL bytes and original generation NT/FileID/hash pins; exact probe pre/post checks distinguished. CurrentMain Win32/3checks pass with4037 Source/header/CMake inputs unchanged. No private Original CRT/EH/GS-failure execution, enum/declaration semantics, raw clone binding, owning class/vtable, arbitrary root lifecycle, drop-in ABI or game admission.",
+        "independent_family": "local/t4p3",
+        "independent_seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\seal.json",
+          "size": 98544,
+          "sha256": "bd2cefbe278f318b0b6dbe948a021bd7018093bab3153f35358bd00f2e9c3602"
+        },
+        "independent_actual_files": 457,
+        "prior_immutable_files": 24186,
+        "fresh_TUs": 3,
+        "consumed_headers": 184,
+        "consumed_libraries": 7,
+        "logical_retained_symbols": 31,
+        "physical_TU_bodies": 29,
+        "complete_external_helpers": 18,
+        "symbol_relocation_checks": 219,
+        "physical_relocation_operands": 213,
+        "alias_rechecks": 6,
+        "complete_runtime_code_spans": 47,
+        "whole_Main_bytes": 2934,
+        "whole_Main_instructions": 791,
+        "Root_native_processes": 1,
+        "target_entries": 2,
+        "ordinary_dynamic_entries": 0,
+        "actual_root_allocations": 2,
+        "actual_root_frees": 2,
+        "Capture_bytes": 124,
+        "Registers_bytes": 92,
+        "Capture_post_offset": 108,
+        "root_bytes": 56,
+        "raw_caller_bytes": 173,
+        "raw_caller_instructions": 64,
+        "ordinary_Source_bytes": 22,
+        "ordinary_Original_bytes": 69,
+        "ordinary_Original_EH_bytes": 29,
+        "ordinary_Original_retained_trailing_CC_bytes": 5,
+        "Source_DF": 1,
+        "Original_DF": 0,
+        "three_recorded_provider_bindings": 3,
+        "provider_post_does_not_repeat_VirtualQuery_NT_path_GetProcAddress": true,
+        "Root_independent_static": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\Root_independent_static_readout.json",
+          "size": 336016,
+          "sha256": "1aa9912abb4a48c010152548b80eb17d57fdd0ab6175374d6fd031b841709029"
+        },
+        "Root_manual_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\Root_independent_manual_review.json",
+          "size": 16909,
+          "sha256": "0b64ab6ec5c2dc434694e56b15e112072e3d69115ecfbd73175ef7baa8c12c2f"
+        },
+        "Root_main_control_proof": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\Root_Main_control_proof.json",
+          "size": 10766,
+          "sha256": "8fc130e28d2d4945d1b56637c5a7c856fca25abfde0c7ad443ea276f26baaeb2"
+        },
+        "Root_independent_recorded_decode": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\Root_independent_recorded_readout.json",
+          "size": 13313,
+          "sha256": "27b82ee7f2433956e20470bc3a5cc72faa7ef9ad27d7879a22a7567fa31d8a80"
+        },
+        "Root_reader_stop_and_correction": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p3\\Root_trailing_CC_reader_correction.json",
+          "size": 1672,
+          "sha256": "25cadaae818a1c671d7158c02adc1872d2bab6f493f5e53c312fead25e45b1c5"
+        },
+        "complete_linked_cold_code_not_cold_execution": true,
+        "only_named_unexpanded_GS_failure_frontier": true,
+        "full_Main_build": {
+          "passed": true,
+          "checks": 3,
+          "build_start_revision": "cdee01a3a6e6d2974a90ae7a36ffe64df7d4a1f2",
+          "actual_Source_input_count": 4037,
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_current_main_build_v2.receipt.json",
+            "size": 536,
+            "sha256": "bf9f247ae47fd23bdcc348cedb6b7cf0e20695ce1dbc38f28f2ed1d7c8a6be55"
+          },
+          "after": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_current_main_build_v2.after.json",
+            "size": 872599,
+            "sha256": "02b0d5bcf6167a23a5e83b837e831c416a8d44e22fe664dffee852cb57f640d2"
+          },
+          "log": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_current_main_build_v2.log",
+            "size": 2869,
+            "sha256": "e11550fa92386dae51cf145c2b061b45a9ffc8677aaed62e0eec1e3465a7169a"
+          },
+          "Source_inputs_currently_unchanged": true
+        },
+        "Source_header_changes": 0,
+        "new_tests": 0,
+        "immutable_sealed_summary_historical_Source0_preserved": true,
+        "external_Source1_decision_revision": "cdee01a3a6e6d2974a90ae7a36ffe64df7d4a1f2",
+        "game_validated": false,
+        "abi_compatible": false
       },
       "primary_integration_history": [
         {
@@ -33804,7 +33892,9 @@
             "local/t4p1/stopped_inventory.json": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
           }
         }
-      ]
+      ],
+      "Source_admission_credit": 1,
+      "saved_analysis_publication_pending": false
     },
     {
       "id": "cc12_native_wake_decomposition",
