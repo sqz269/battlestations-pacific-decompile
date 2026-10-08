@@ -144,3 +144,5 @@ CRT interior/dispatch/diagnostic/exception-policy equivalence, hardware-fault
 resumption and full FIP/FDP environment identity remain outside this scope.
 The ordinary public interface also makes no Original volatile-register or
 EFLAGS ABI promise. Root owns shared annotation, registration and integration.
+
+Primary acceptance: Root independently hashed14551 physical artifacts and all14552 ZIP members, recomputed all609 Native/Source CFG states and full branch/operand mapping, preserved12 old whole functions and compared all16 current bodies/ordered relocations. Root normal build passes all3checks. Parent own x87 depth peaks at3; the real raw3D helper raises the combined free-slot requirement to4, with CRT interiors excluded. The canonical12B BSS and SDK4B selectany definition are separately verified. Receipt `local\cc12_native_wake_append_primary_review\receipt.json`, SHA256 `3b69b46fb611fbea19d049bb5874fbb28bad4fc2c2d5bd4e2602cc6123627e73`. New API execution, game-owner connection and gameplay remain unvalidated.
