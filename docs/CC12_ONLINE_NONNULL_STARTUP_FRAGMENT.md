@@ -1,0 +1,25 @@
+# Nonnull online startup fragment 0073DC70
+
+`construct_native_online_application_nonnull_arm_0073dc70` reconstructs the complete 30-byte, six-instruction region `0073DC70..0073DC8D` inclusive inside `0073D410`. This is an ordinary C++ fragment entry, not a new whole Original function, application owner or native ABI replacement.
+
+The caller supplies an already allocated actual `3F0h` manager through its matching `NativeOnlinePumpContext` and `NativeOnlineManagerStartupContext`. The entry calls the existing complete `construct_native_online_manager_00a40df0` with callback20 `00735510` and callback24 `00735520`. After normal return it reloads the actual `startup.lifetime.base.current_manager_00f8abe8` cell and writes callback18 `00737D60` at that current owner's `+18h`. It deliberately ignores the constructor's returned/captured owner; a callback can change the publication during construction. The current publication must designate retained writable manager storage when the final store is reached.
+
+The complete constructor Source remains unchanged, including SDK initialization, IPC endpoint creation, sign-in request and initial complete pump. There is no allocation/null branch, context factory, consumer publication or pump wiring in this entry. The Original allocation is passed in ECX after two callback pushes, A40DF0 returns with `RET 8`, and the caller then loads fixed `F8ABE8`; this new C++ interface does not provide that register ABI or the parent function's FH3/unwind behavior.
+
+## Admission and lifetime
+
+All inputs in [the owner-readiness audit](CC12_ONLINE_APPLICATION_OWNER_READINESS.md) must be real and ready before entering the fragment. They include the same allocated manager, canonical manager/renderer/game/string/clock publications, loaded SDK module, permanent IPC services and compatible actual peer, complete pump/notification/UI/storage/achievement contexts, defined raw preimages, matching CRT allocation/free entries and the raw deletion binding established before constructor registration. These objects and contexts must remain valid through constructor callbacks and the later shared scalar drain. This packet supplies no fabricated peer or preimage, copied publication cell, `const_cast`, or partial constructor substitute.
+
+The audit's unresolved application obligations remain: genuine IPC bootstrap, context/preimage producers, notification client/session ownership, faithful locale context selection and a read-only renderer borrowing interface. Missing-peer cleanup can terminate the process. No unconditional startup/menu wiring is admitted by the existence of this fragment.
+
+## Evidence and validation
+
+- Original fragment: all 30 bytes decode to six instructions. Original complete callee: all 567 bytes decode to 129 instructions. Both match pre/post live Ghidra captures and the installed PE (SHA-256 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`). The callee's pre-capture is retained from the preceding read-only audit; the fragment's pre-capture was made immediately before this edit. Each live batch verified project `bsp` and `/battlestationspacific.exe`.
+- Production Win32 COFF: the new wrapper is 47 bytes/18 instructions. Callback pushes occur at `+08/+0D`; its sole `REL32` relocation at `+16` targets the complete existing constructor. Post-call loads at `+1A/+1F/+22` traverse the supplied references, `+24` reads the actual current-manager cell, and `+26` writes current `+18h`. The constructor return register is overwritten by the first post-call load.
+- The complete compiled constructor is retained and decoded as 734 bytes/195 instructions with all relocations. Its complete C++ source is unchanged (normalized UTF-8 SHA-256 `0be66b1766573272a695e3a5788366791988e6ca3e6c4b7b7e547f8350f0bc43`). Removing the added wrapper restores the entire prior `.cpp` text.
+- The exact physical `native_online_manager_lifetime.obj` member in the completed `bsp_core.lib` equals the retained production object byte for byte, SHA-256 `27a8d78acf7993c6cf3442a263c081eea640157209b56460f14f81301b9cc941`. Current Source, build/analysis inputs, Original bytes and output identities are sealed in the report and bounded evidence archive.
+- `./scripts/build.ps1` passed with all three existing CTests: `reconstructed_math`, `native_math_differential`, and `tool_tests`. No new fixtures or tests were added, and no old online-constructor fixture was replayed. The existing math differential test exercises its own math references, not this fragment.
+
+The packet does not execute the Original fragment/constructor, the new online path, the SDK, an account/network/IPC operation or the game. Static/Source/COFF/archive and build evidence do not establish native ABI, live online initialization, menu progression or gameplay. The primary integrator owns interior-label/ledger registration and must not rename parent `0073D410`.
+
+Report: `reports/cc12_online_nonnull_startup_fragment.json`. Retained evidence: `local/cc12_online_nonnull_startup_fragment_evidence/` and its adjacent ZIP.
