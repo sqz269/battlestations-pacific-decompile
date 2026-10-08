@@ -2972,5 +2972,15 @@
     "verification/coff_readers.py",
     "verification/coff_readers_embedded_data.py"
   ],
-  "qualification": "Read-only Native/Source/artifact readiness. No C++/CMake edits, builds, tests, probes, Original/Source entry execution, Ghidra mutations, new ledger/function credit, deployment or game validation. Final tracked files are generated after sealing and intentionally outside the ZIP."
+  "qualification": "Read-only Native/Source/artifact readiness. No C++/CMake edits, builds, tests, probes, Original/Source entry execution, Ghidra mutations, new ledger/function credit, deployment or game validation. Final tracked files are generated after sealing and intentionally outside the ZIP.",
+  "primary_review": {
+    "status": "PRIMARY_ACCEPTED_READONLY_COHESIVE_REGISTRY_OWNER_DESIGN",
+    "receipt": "local/cc12_entity_registry_readiness_primary_review/receipt.json",
+    "sha256": "0172b98199c02111e4c089017f8bb78d07bc9aad9f6a5c9cdbf106aa79ae4617",
+    "ordinary_owner_design_accepted": true,
+    "Source_changes": 0,
+    "builds": 0,
+    "entry_executions": 0,
+    "new_ledger_credit": 0
+  }
 }

@@ -189,3 +189,16 @@ ZIP SHA-256: `e9060a02e1327840cfb69a180bc75b71bcefd77c2de251a55d16577cb75ab30e`.
 Manifest SHA-256: `f253c89a1e47c42e25e50f439023354f877e2652eebaecd61c6624d4b79209ff`.
 The final document/report are produced after sealing and intentionally outside the ZIP.
 No final-link/COMDAT, loaded-target, native ABI compatibility or gameplay proof is claimed.
+
+## Primary review
+
+The integrator rehashed 3,409 artifacts and all 3,410 ZIP entries, checked
+3,251 physical pins and 4,029 Source inventory records, and independently
+decoded all 37 Native spans against the installed PE. It replayed all 21
+ordinary stack/state graphs, checked the complete 1,004-cell CRT table and
+seven FuncInfo/nine unwind entries, and compared 276 historical whole COFF
+extents and their ordered relocations from 19 objects/17 unique Core members.
+Receipt `local/cc12_entity_registry_readiness_primary_review/receipt.json`:
+SHA-256 `0172b98199c02111e4c089017f8bb78d07bc9aad9f6a5c9cdbf106aa79ae4617`.
+The cohesive ordinary owner design is accepted for a later implementation;
+no Source, build, runtime, entity-parent or ledger credit is added here.
