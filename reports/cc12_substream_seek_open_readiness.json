@@ -555,5 +555,29 @@
     "local/cc12_substream_seek_open_readiness_20261008a/target_proto.log": "f48b36c1cf0f40a0d24bc8eb86262168b9257c901232c3f8f2f286e537cf2a1d",
     "local/cc12_substream_seek_open_readiness_20261008a/target_status.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
-  "contract_document_sha256": "f8158135feeeabcd972061a4017f0775a67b4cf05ff39c2c2d76a680739a429c"
+  "contract_document_sha256": "f8158135feeeabcd972061a4017f0775a67b4cf05ff39c2c2d76a680739a429c",
+  "primary_review": {
+    "complete_live_listings_independently_read": [
+      "00BF1090",
+      "00BF10E0",
+      "00BF5020",
+      "00BF4F20"
+    ],
+    "whole_installed_code_bytes_rechecked": 120,
+    "installed_table_and_IAT_bytes_rechecked": 44,
+    "installed_SetFilePointerEx_import_rechecked": true,
+    "current_integration_Source_input_pins_rehashed": 11,
+    "historical_registration_pin_verified_and_update_reviewed": {
+      "path": "cmake/startup.cmake",
+      "audited_sha256": "66ffda1f36027d942044651fce6136d7eeb4250fe76021740c12cb54f535e39a",
+      "current_sha256": "eacc9c6a335208f2d574054735c45bcb5cbc63eef907e52690e582f4c3df5fbb",
+      "difference": "cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_bag_storage.cpp)",
+      "effect_on_audited_stream_providers": "none; only property bag constructor registration added"
+    },
+    "worker_artifacts_rehashed": 28,
+    "worker_contract_document_sha256_rechecked": "f8158135feeeabcd972061a4017f0775a67b4cf05ff39c2c2d76a680739a429c",
+    "accepted_readiness": "Physical raw providers and genuine source/table admission still missing at the audit snapshot. Isolated BF5020 memory-domain raw interface is a separate followup; it cannot promote receiver/class readiness.",
+    "runtime_or_fixture_execution": false,
+    "new_Original_reconstructions": 0
+  }
 }
