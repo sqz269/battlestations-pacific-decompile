@@ -1,4 +1,5 @@
 #include "bsp/native_scene_property_bag_storage.hpp"
+#include "bsp/native_scene_property_record_type6_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
@@ -86,7 +87,9 @@ __declspec(naked) void* __fastcall initialize_native_scene_property_bag_storage_
     }
 }
 
-void* clone_empty_native_scene_property_bag_008f41f0_fragment(
+// Keep the accepted producer as an actual call from the type-6 fragment below.
+// This does not change its own emitted body or any earlier caller.
+__declspec(noinline) void* clone_empty_native_scene_property_bag_008f41f0_fragment(
     const void* actual_source_bag) {
     void* const output = singleton_lifetime_allocate({SingletonAllocationKind::object,
         native_scene_property_bag_storage_bytes, native_scene_property_bag_storage_bytes});
@@ -105,6 +108,64 @@ void* clone_empty_native_scene_property_bag_008f41f0_fragment(
         throw std::invalid_argument("empty property bag clone requires zero source count");
     }
     return output;
+}
+
+static_assert(native_scene_property_record_type6_storage_bytes == 0x38,
+    "The original type-6 record allocation is 38h bytes.");
+
+// Whole [008EF780,008EF7BA), SHA256
+// 6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450.
+// Retain all 16 instructions, including the actual child backlink store before
+// the final record fields. The phase word is data, never a Source dispatch table.
+__declspec(naked) void* __fastcall construct_native_scene_property_record_type6_storage_008ef780(
+    void*, std::uint32_t, void*) noexcept {
+    __asm {
+        mov edx, dword ptr [esp + 4]
+        mov eax, ecx
+        xor ecx, ecx
+        mov dword ptr [eax], 00ce89d4h
+        mov dword ptr [eax + 4], 6
+        mov dword ptr [eax + 0ch], edx
+        mov dword ptr [eax + 18h], ecx
+        mov dword ptr [eax + 1ch], ecx
+        mov dword ptr [eax + 20h], ecx
+        mov dword ptr [eax + 24h], ecx
+        mov dword ptr [eax + 30h], ecx
+        mov dword ptr [edx + 110h], eax
+        mov dword ptr [eax + 34h], ecx
+        mov byte ptr [eax + 2ch], 1
+        mov dword ptr [eax + 8], ecx
+        ret 4
+    }
+}
+
+void* clone_empty_child_native_scene_property_record_type6_008f50ed_fragment(
+    const void* actual_source_record) {
+    void* const output = singleton_lifetime_allocate({SingletonAllocationKind::object,
+        native_scene_property_record_type6_storage_bytes,
+        native_scene_property_record_type6_storage_bytes});
+
+    void* child;
+    try {
+        void* source_child;
+        std::memcpy(&source_child,
+            static_cast<const std::byte*>(actual_source_record) + 0x0C,
+            sizeof(source_child));
+        child = clone_empty_native_scene_property_bag_008f41f0_fragment(source_child);
+    } catch (...) {
+        // Source-only cleanup of our fresh, still-unattached raw allocation.
+        // This does not invent Native CA4B6D cleanup or a record destructor.
+        singleton_lifetime_free(output);
+        throw;
+    }
+
+    void* const record = construct_native_scene_property_record_type6_storage_008ef780(
+        output, 0, child);
+    std::uint32_t ordinal;
+    std::memcpy(&ordinal,
+        static_cast<const std::byte*>(actual_source_record) + 0x34, sizeof(ordinal));
+    std::memcpy(static_cast<std::byte*>(record) + 0x34, &ordinal, sizeof(ordinal));
+    return record;
 }
 
 } // namespace bsp
