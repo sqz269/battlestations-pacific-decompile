@@ -255,4 +255,3 @@ __declspec(naked) std::uint32_t __fastcall native_torpedo_boat_is_kind_00857dc0(
 }
 
 } // namespace bsp
-

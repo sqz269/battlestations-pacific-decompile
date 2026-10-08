@@ -78,6 +78,12 @@ The safe `probe.exe` contains an asInvoker manifest. Its seal records 227 equal
 pre/post inputs, 214 compiler-observed include paths (three project headers),
 three actual tools and all six searched CRT/system libraries. No BSP support
 library is consumed. Twenty-four fresh body/profile/producer/constant PE/live
-spans matched. The first strict build and sole family execution passed; there
-are no failed attempts or old-family replays. No tracked test, Ghidra/CMake/
+spans matched. The first strict build and sole family execution passed. A later
+staged diff check found two redundant terminal newlines: the first successful
+Source snapshots/manifest remain preserved, and a separate whitespace correction
+has a four-TU compile/COFF-only successor receipt. All nine code hashes remain
+equal; no additional execution/cases or old-family replays occurred. Resolve the
+historical manifest's two changed live Source paths through its explicit archived
+snapshot mapping; the other 225 inputs remain at their original paths.
+No tracked test, Ghidra/CMake/
 ledger mutation or full build was made. Root owns integration and full validation.

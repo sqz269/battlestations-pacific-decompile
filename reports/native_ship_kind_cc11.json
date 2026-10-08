@@ -1968,7 +1968,13 @@
     "ghidra_mutations": false,
     "full_build": "root owned;not run by worker"
   },
-  "failed_attempts": [],
+  "failed_attempts": [
+    {
+      "kind": "stageddiffcheck",
+      "outcome": "two extra blanklines atEOF;initial PowerShell sequence didnotstop beforecommit",
+      "fix": "separate ownedwhitespace commit;preservefirstsuccess source snapshots/receipts;freshsuccessorcompileCOFFonly;no newcases/runtime"
+    }
+  ],
   "evidence_corrections": [
     {
       "scope": "existing constructor evidence only;not a reconstructed taskbody",
@@ -1989,5 +1995,95 @@
     "existing_call_verifier": "1structuralrow/0failed;0typebodyCALL",
     "git_diff_check": "PASS on stagedownedfiles",
     "full_build": "root-owned/pending"
+  },
+  "final_source_publication": {
+    "whitespace_delta": [
+      {
+        "path": "include/bsp/native_ship_kind.hpp",
+        "old_source_snapshot": "local\\cc11_ship_kind_leaves\\first_success_source\\native_ship_kind.hpp",
+        "old_sha256": "259563e02ef36b12203ef20acac43d7db9afa5b620b9923667b3f2350da705aa",
+        "new_sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "change": "one redundant terminal newline removed; all other bytes identical"
+      },
+      {
+        "path": "src/native_ship_kind.cpp",
+        "old_source_snapshot": "local\\cc11_ship_kind_leaves\\first_success_source\\native_ship_kind.cpp",
+        "old_sha256": "29cd06fbe7e4e343d2285ac382093a032a334a7248c4a26d12cb109d4926406e",
+        "new_sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "change": "one redundant terminal newline removed; all other bytes identical"
+      }
+    ],
+    "first_success_historical_manifest_unchanged": true,
+    "first_manifest_live_path_resolution": "225unchanged originalpaths +2explicit originalSource snapshots;do not silently repin firstmanifest",
+    "successor_compile_receipt": "local\\cc11_ship_kind_leaves\\final\\manifest.json",
+    "successor_compile_receipt_sha256": "af7a3174d468b8ea6dea24781a0685f93db72a4d562b75475cb642d560aff84b",
+    "fresh_compile_only_TUs": 4,
+    "runtime_replay": false,
+    "all_nine_code_hashes_match": true,
+    "final_linked_code_proof": [
+      {
+        "symbol": "?native_ship_base_is_kind_006dfe50@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001190",
+        "bytes": 54,
+        "sha256": "a0fbb2103e5ea7b91e61c077d2889e4afd6073a60a3108c9f14dc48ae1271f33",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_destroyer_is_kind_006fe530@bsp@@YIIPBXPAXI@Z",
+        "rva": "000010d0",
+        "bytes": 59,
+        "sha256": "81a0471f014f64a6543788a3b5d5d74b365fa8ef534ef93a097b0db3b94c2ec7",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_submarine_is_kind_00853050@bsp@@YIIPBXPAXI@Z",
+        "rva": "000011d0",
+        "bytes": 59,
+        "sha256": "1b5e165285fbf391a2f82c9b55f8eb185b8d61f54f22f313867b3b9f7280e6a4",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_mothership_is_kind_00758510@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001150",
+        "bytes": 59,
+        "sha256": "2cc4b8f1fa7b11fd046f621c1a03c963bfd9f7da194a43f324d972d4ef3084d9",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_cruiser_is_kind_006fb3d0@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001090",
+        "bytes": 59,
+        "sha256": "6f16b8115b665694c959c749d2b0d1497a5a12dba23cc3c83dedea24b94a5d1b",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_cargo_is_kind_006eb230@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001050",
+        "bytes": 59,
+        "sha256": "31f68c55eb48bac0bbad9edd79839f204b096a169f1103f9568e899cb5699e1e",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_landing_ship_is_kind_0074bc60@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001110",
+        "bytes": 59,
+        "sha256": "3c1998113cea115415537b85b9ebfca029d18c6c630ba4b463f6df5a6e8376c3",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_battleship_is_kind_006dfe90@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001010",
+        "bytes": 59,
+        "sha256": "050169d106a796caeab09c8ef0cd3d789e3977cf9ce1b22ae3e5a67f3268985d",
+        "final_linked_bytes_equal_Original": true
+      },
+      {
+        "symbol": "?native_torpedo_boat_is_kind_00857dc0@bsp@@YIIPBXPAXI@Z",
+        "rva": "00001210",
+        "bytes": 59,
+        "sha256": "d67414df8533debd9e9b6e583bf90479fee134bdc640256ff0e52590083a796a",
+        "final_linked_bytes_equal_Original": true
+      }
+    ]
   }
 }

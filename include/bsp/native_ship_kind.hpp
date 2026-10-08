@@ -53,4 +53,3 @@ std::uint32_t __fastcall native_torpedo_boat_is_kind_00857dc0(
     const void* actual_receiver, void* unused_edx, std::uint32_t class_word);
 
 } // namespace bsp
-
