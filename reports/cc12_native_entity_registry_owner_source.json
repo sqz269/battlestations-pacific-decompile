@@ -1,0 +1,892 @@
+{
+  "schema": "bsp.cc12.native_entity_registry_owner_source.v1",
+  "packet": "cc12_native_entity_registry_owner_source",
+  "status": "PRIMARY_ACCEPTED_COMPLETE_ORDINARY_SOURCE_BUILD_AND_STATIC_PRODUCTION_ONLY",
+  "base_head": "7b244d3b8bc3204b1e37759a90842c28a0b78b63",
+  "built_utc": {
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast",
+    "argv": [
+      "powershell",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\scripts\\build.ps1"
+    ],
+    "started_utc": "2026-10-08T21:23:32.054970+00:00",
+    "preimages": "pre_build/pins.json",
+    "returncode": 0,
+    "finished_utc": "2026-10-08T21:24:52.421042+00:00"
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/native_entity_registry_lifetime.hpp",
+      "bytes": 6613,
+      "sha256": "53402350a05919945b977cef21c9db64dc7d605b1de6fe1b5baa9b123c54f10c",
+      "frozen_compiler_input": "post_build/source/include/bsp/native_entity_registry_lifetime.hpp"
+    },
+    {
+      "path": "src/native_entity_registry_lifetime.inc",
+      "bytes": 9885,
+      "sha256": "66fcae058cc4900fc235261258627f022ca763000a01c909e2638388a06c5554",
+      "frozen_compiler_input": "post_build/source/src/native_entity_registry_lifetime.inc"
+    },
+    {
+      "path": "include/bsp/game_native_entity_registry_process.hpp",
+      "bytes": 1366,
+      "sha256": "da9ca3612897db4fbee60abcce54b2c97c901ed86ce1bd5eb5f3fcd3b50084ff",
+      "frozen_compiler_input": "post_build/source/include/bsp/game_native_entity_registry_process.hpp"
+    },
+    {
+      "path": "src/game_native_entity_registry_process.cpp",
+      "bytes": 1459,
+      "sha256": "29d187b3a82b9a415fd3b24fa41fd8545e3436cd18047239f13bbd466d5f2476",
+      "frozen_compiler_input": "post_build/source/src/game_native_entity_registry_process.cpp"
+    },
+    {
+      "path": "src/native_pending_entity_lock.cpp",
+      "bytes": 3613,
+      "sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+      "frozen_compiler_input": "post_build/source/src/native_pending_entity_lock.cpp"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 24745,
+      "sha256": "e41a6f0f9f618c5b6af88e567240ce62781dd66e38a5c405adacfda81aa793a3",
+      "frozen_compiler_input": "post_build/source/src/native_singleton_destruction.cpp"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 17272,
+      "sha256": "a4a03c710aaea8bffef99e9327246692e5065aff0ae1c1120691dc65da58ab94",
+      "frozen_compiler_input": "post_build/source/include/bsp/native_singleton_destruction.hpp"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198354,
+      "sha256": "9b62d329428d9452af8e9eb111291625eb565d2ef80f89ef7df1121386c7a4cc",
+      "frozen_compiler_input": "post_build/source/cmake/startup.cmake"
+    }
+  ],
+  "Native_Original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_archive": {
+    "sealed_utc": "2026-10-08T21:49:55.247381+00:00",
+    "archive_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence.zip",
+    "archive_bytes": 213920409,
+    "archive_sha256": "200a4662168abfb062938004fb0973c4ef258d17794d1538bfc1c58f8666b1fa",
+    "archive_members": 13457,
+    "manifest_sha256": "dc0687550e4efc787ea792ec9e8ffb6517e91d9acc2a4016dbec14750de6e342",
+    "all_member_CRC_and_SHA256_verified": true
+  },
+  "evidence": {
+    "source_lifetime_contract.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\source_lifetime_contract.json",
+      "sha256": "83f37dd82e2ff5ecf33fb23e8ed80fc363c321651b78f2415165ed2c3c722e97"
+    },
+    "complete_provider_objects.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\complete_provider_objects.json",
+      "sha256": "fa25a3d47c267b4e8508633404bd82970dd816626dae402ffce6729580c24822"
+    },
+    "whole_archive_member_proof.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\whole_archive_member_proof.json",
+      "sha256": "23f9c82f85bb1075556d6c80f572dde68bd38f08e1e17d0647c5f72a2fe75a83"
+    },
+    "expanded_archive_origin_proof.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\expanded_archive_origin_proof.json",
+      "sha256": "5d59695611bc43b0e74d89cebea07512d1e2109ac0b734944325145ac4f6e4e6"
+    },
+    "compiler_consumed_input_proof.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\compiler_consumed_input_proof.json",
+      "sha256": "e872b52e311670269906d67e0a93ef13873f2e4f34c9e80a016e6496979ae47d"
+    },
+    "old_extent_comparison.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\old_extent_comparison.json",
+      "sha256": "242263de70874762d6147ab9064cb51a3dd04652926f4c12770c312ec3136824"
+    },
+    "dispatcher_profile_graphs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\dispatcher_profile_graphs.json",
+      "sha256": "e5eff474b93ce52d969cbb56def76a8692c76e9739af531ea28f69c470a76f31"
+    },
+    "normal_application_link_proof.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\normal_application_link_proof.json",
+      "sha256": "2cf27d3e44ff071dd43216f2c0437e4eecb22815f58eb706c989270d6ab4a2be"
+    },
+    "direct_provider_closure.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\direct_provider_closure.json",
+      "sha256": "99f6d25ca04880387bc50a440d4a2ab82720b3be22a3a29ef327eb751ceadc0f"
+    },
+    "final_checks.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\final_checks.json",
+      "sha256": "3f05cbc8fe33e9c66aff7db6e59f2fcb3a33f2e3fcb5362ad69814f1a117e9e6"
+    },
+    "pre_edit/pins.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\pre_edit\\pins.json",
+      "sha256": "1f14a7da1db1c14a7b559ecaf7c4e444d0ca710b334a836db402525d11869257"
+    },
+    "pre_build/pins.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\pre_build\\pins.json",
+      "sha256": "6655f058c636969560ff807e91776b08c84e01916907fc19923f4bac23ab071a"
+    },
+    "post_build/pins.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\post_build\\pins.json",
+      "sha256": "c650a3d12a311328d27995748d1781961ef2c544f5b56d5a78fcdf9c5532a7fd"
+    },
+    "build_invocation.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\build_invocation.json",
+      "sha256": "356759cdab8c4601cd6efc642ecdac5f95d01cb32054f21922defb2b20a40fdc"
+    },
+    "normal_build.log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_registry_owner_source_evidence\\normal_build.log",
+      "sha256": "00485d6e93818b27e7dbe8945325edee22b5d808663419ff58008444ef8518f0"
+    }
+  },
+  "counts": {
+    "whole_objects": 25,
+    "complete_function_extents": 425,
+    "exact_unique_core_members": 23,
+    "core_archive_members": 1908,
+    "actual_compiler_read_dependencies": 3547,
+    "unchanged_existing_complete_extents": 355,
+    "changed_existing_dispatcher_extents": 1,
+    "new_complete_extents": 69,
+    "linked_complete_extents": 230,
+    "linked_ordered_relocations": 745,
+    "distinct_physical_linked_address_length_spans": 154,
+    "distinct_physical_relocation_sites": 568,
+    "compiled_extents_absent_from_map": 195,
+    "unresolved_mapped_extents": 0,
+    "Native_revalidated_whole_spans": 37,
+    "Native_revalidated_bytes": 1678,
+    "Native_revalidated_instructions": 467,
+    "Source_behavior_candidates": 14,
+    "Source_behavior_bytes": 1289,
+    "Source_behavior_instructions": 452,
+    "old_or_default_dispatch_profiles_with_equal_whole_leaf_graph": 75,
+    "new_dispatch_profiles": 2,
+    "direct_Source_closure_roots": 34,
+    "direct_Source_closure_functions": 83,
+    "direct_Source_closure_edges": 169
+  },
+  "fourteen_behavior_candidates": [
+    {
+      "native_address": "00923640",
+      "native_whole_bytes": 17,
+      "native_whole_instructions": 3,
+      "Source_symbol": "?unwind_native_pending_init_lock_00923640@bsp@@YAXAAUNativeObserverLockOwner@1@ACRAU21@@Z",
+      "Source_whole_bytes": 23,
+      "Source_whole_instructions": 8,
+      "Source_full_extent_sha256": "84b6b579c7d13f39a9a193e472df844b3308dd4a66740a1a6817c794416e0c9a",
+      "Source_call_relocations": [],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00924100",
+      "native_whole_bytes": 69,
+      "native_whole_instructions": 19,
+      "Source_symbol": "?construct_native_pending_init_lock_00924100@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z",
+      "Source_whole_bytes": 85,
+      "Source_whole_instructions": 31,
+      "Source_full_extent_sha256": "1f852ce440e181983db7a5e59332fd8469f963d15e4a8e262906011edbf82299",
+      "Source_call_relocations": [
+        {
+          "offset": 58,
+          "symbol": "?create_native_tracked_critical_section_00bd1860@bsp@@YAPAUTrackedCriticalSection@1@XZ"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?construct_native_pending_init_lock_00924100@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z",
+          "bytes": 29,
+          "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__catch$?construct_native_pending_init_lock_00924100@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z$0",
+          "bytes": 29,
+          "sha256": "551254f52f1229927854dc1b2df3638d3995fcff0eec1c88d1357246b769e0d0",
+          "calls": [
+            {
+              "offset": 7,
+              "symbol": "?unwind_native_pending_init_lock_00923640@bsp@@YAXAAUNativeObserverLockOwner@1@ACRAU21@@Z"
+            },
+            {
+              "offset": 19,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00924810",
+      "native_whole_bytes": 189,
+      "native_whole_instructions": 51,
+      "Source_symbol": "?get_native_pending_init_lock_00924810@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z",
+      "Source_whole_bytes": 220,
+      "Source_whole_instructions": 74,
+      "Source_full_extent_sha256": "60e8aad0a505b904b55bbdb465d3dd36ce3d4c4f55dcb745d35fa53eb6fa452c",
+      "Source_call_relocations": [
+        {
+          "offset": 76,
+          "symbol": "??0CapturedSoundLifetimeSection@bsp@@QAE@VSoundLifetimeAccess@1@@Z"
+        },
+        {
+          "offset": 118,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 141,
+          "symbol": "?construct_native_pending_init_lock_00924100@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z"
+        },
+        {
+          "offset": 167,
+          "symbol": "?get_manager_00415350@SoundLifetimeAccess@bsp@@QBE?AVSoundLifetimeManagerView@2@XZ"
+        },
+        {
+          "offset": 178,
+          "symbol": "?register_object@SoundLifetimeManagerView@bsp@@QAEXPAX@Z"
+        },
+        {
+          "offset": 186,
+          "symbol": "??1CapturedSoundLifetimeSection@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 212,
+          "symbol": "@__security_check_cookie@4"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?get_native_pending_init_lock_00924810@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z",
+          "bytes": 39,
+          "sha256": "3b7db10b27777eab1b25421ca94690911c9de1c0d89d37b274f61b26ffdb05fd",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 35,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__catch$?get_native_pending_init_lock_00924810@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z$0",
+          "bytes": 21,
+          "sha256": "2db5a3839cc4d0efe5cac6e118318aeae9c9651c873352c50fb9de71488c561e",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 16,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        },
+        {
+          "symbol": "__unwindfunclet$?get_native_pending_init_lock_00924810@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z$2",
+          "bytes": 13,
+          "sha256": "5ccfbc65ad2aaf663ef0d1c8e2cab5ab32b60d214831ac7c5d1482e998fadb0e",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "??1CapturedSoundLifetimeSection@bsp@@QAE@XZ"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00925660",
+      "native_whole_bytes": 55,
+      "native_whole_instructions": 15,
+      "Source_symbol": "?delete_native_pending_init_lock_00925660@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+      "Source_whole_bytes": 105,
+      "Source_whole_instructions": 37,
+      "Source_full_extent_sha256": "00e462844a400199ae07966c68e94729788917fb917457055cac822a8d3da863",
+      "Source_call_relocations": [
+        {
+          "offset": 48,
+          "symbol": "?release_native_tracked_critical_section_0041cc80@bsp@@YIXPAPAUTrackedCriticalSection@1@@Z"
+        },
+        {
+          "offset": 75,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?delete_native_pending_init_lock_00925660@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+          "bytes": 29,
+          "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": true,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00926be0",
+      "native_whole_bytes": 158,
+      "native_whole_instructions": 49,
+      "Source_symbol": "?enqueue_native_pending_init_00926be0@bsp@@YAXAAVNativeEntityRegistryProcess@1@PAXACRAX@Z",
+      "Source_whole_bytes": 178,
+      "Source_whole_instructions": 65,
+      "Source_full_extent_sha256": "b862eda6ff97540d3fcb6ac8d4dca36311529c875795ccbbfe477a3f36b8a6da",
+      "Source_call_relocations": [
+        {
+          "offset": 54,
+          "symbol": "?get_native_pending_init_lock_00924810@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z"
+        },
+        {
+          "offset": 117,
+          "symbol": "?create_effect_deletion_node_008665f0@bsp@@YAPAUNativeEffectDeletionNode@1@PAU21@0PBX@Z"
+        },
+        {
+          "offset": 129,
+          "symbol": "?grow_effect_deletion_list_count_008675e0@bsp@@YAXAAUNativeEffectDeletionListStorage@1@I@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?enqueue_native_pending_init_00926be0@bsp@@YAXAAVNativeEntityRegistryProcess@1@PAXACRAX@Z",
+          "bytes": 29,
+          "sha256": "652f66c017f6cd8a608db1f2a3af0698610d77c97c3f93234073fb8599c80ae7",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__unwindfunclet$?enqueue_native_pending_init_00926be0@bsp@@YAXAAVNativeEntityRegistryProcess@1@PAXACRAX@Z$0",
+          "bytes": 13,
+          "sha256": "7f8970266993c865e6eb97541524412463ca8caf4f2109dacc31f2d8a1a6aeb1",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "??1CapturedRegistryPendingSection@?A0xcd22b933@bsp@@QAE@XZ"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00927a60",
+      "native_whole_bytes": 17,
+      "native_whole_instructions": 3,
+      "Source_symbol": "?unwind_native_scene_registry_lock_00927a60@bsp@@YAXAAUNativeObserverLockOwner@1@ACRAU21@@Z",
+      "Source_whole_bytes": 23,
+      "Source_whole_instructions": 8,
+      "Source_full_extent_sha256": "84b6b579c7d13f39a9a193e472df844b3308dd4a66740a1a6817c794416e0c9a",
+      "Source_call_relocations": [],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00928080",
+      "native_whole_bytes": 69,
+      "native_whole_instructions": 19,
+      "Source_symbol": "?construct_native_scene_registry_lock_00928080@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z",
+      "Source_whole_bytes": 85,
+      "Source_whole_instructions": 31,
+      "Source_full_extent_sha256": "a8c867c31592697c20546fe292d5cc76041d8e22ff34f8402acfe646045b727b",
+      "Source_call_relocations": [
+        {
+          "offset": 58,
+          "symbol": "?create_native_tracked_critical_section_00bd1860@bsp@@YAPAUTrackedCriticalSection@1@XZ"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?construct_native_scene_registry_lock_00928080@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z",
+          "bytes": 29,
+          "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__catch$?construct_native_scene_registry_lock_00928080@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z$0",
+          "bytes": 29,
+          "sha256": "551254f52f1229927854dc1b2df3638d3995fcff0eec1c88d1357246b769e0d0",
+          "calls": [
+            {
+              "offset": 7,
+              "symbol": "?unwind_native_scene_registry_lock_00927a60@bsp@@YAXAAUNativeObserverLockOwner@1@ACRAU21@@Z"
+            },
+            {
+              "offset": 19,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00928240",
+      "native_whole_bytes": 189,
+      "native_whole_instructions": 51,
+      "Source_symbol": "?get_native_scene_registry_lock_00928240@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z",
+      "Source_whole_bytes": 220,
+      "Source_whole_instructions": 74,
+      "Source_full_extent_sha256": "60e8aad0a505b904b55bbdb465d3dd36ce3d4c4f55dcb745d35fa53eb6fa452c",
+      "Source_call_relocations": [
+        {
+          "offset": 76,
+          "symbol": "??0CapturedSoundLifetimeSection@bsp@@QAE@VSoundLifetimeAccess@1@@Z"
+        },
+        {
+          "offset": 118,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 141,
+          "symbol": "?construct_native_scene_registry_lock_00928080@bsp@@YAPAUNativeObserverLockOwner@1@PAXACRAU21@@Z"
+        },
+        {
+          "offset": 167,
+          "symbol": "?get_manager_00415350@SoundLifetimeAccess@bsp@@QBE?AVSoundLifetimeManagerView@2@XZ"
+        },
+        {
+          "offset": 178,
+          "symbol": "?register_object@SoundLifetimeManagerView@bsp@@QAEXPAX@Z"
+        },
+        {
+          "offset": 186,
+          "symbol": "??1CapturedSoundLifetimeSection@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 212,
+          "symbol": "@__security_check_cookie@4"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?get_native_scene_registry_lock_00928240@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z",
+          "bytes": 39,
+          "sha256": "3b7db10b27777eab1b25421ca94690911c9de1c0d89d37b274f61b26ffdb05fd",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 35,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__catch$?get_native_scene_registry_lock_00928240@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z$0",
+          "bytes": 21,
+          "sha256": "2db5a3839cc4d0efe5cac6e118318aeae9c9651c873352c50fb9de71488c561e",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 16,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        },
+        {
+          "symbol": "__unwindfunclet$?get_native_scene_registry_lock_00928240@bsp@@YAPAUNativeObserverLockOwner@1@ACRAXACRAU21@@Z$2",
+          "bytes": 13,
+          "sha256": "5ccfbc65ad2aaf663ef0d1c8e2cab5ab32b60d214831ac7c5d1482e998fadb0e",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "??1CapturedSoundLifetimeSection@bsp@@QAE@XZ"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "009285f0",
+      "native_whole_bytes": 55,
+      "native_whole_instructions": 15,
+      "Source_symbol": "?delete_native_scene_registry_lock_009285f0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+      "Source_whole_bytes": 105,
+      "Source_whole_instructions": 37,
+      "Source_full_extent_sha256": "e119072d2b2c6851850f0128857f2edf44cd1d13ea72f82ac5ffa23151a8de8d",
+      "Source_call_relocations": [
+        {
+          "offset": 48,
+          "symbol": "?release_native_tracked_critical_section_0041cc80@bsp@@YIXPAPAUTrackedCriticalSection@1@@Z"
+        },
+        {
+          "offset": 75,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?delete_native_scene_registry_lock_009285f0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+          "bytes": 29,
+          "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": true,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "009516b0",
+      "native_whole_bytes": 17,
+      "native_whole_instructions": 6,
+      "Source_symbol": "?destroy_native_entity_id_table_009516b0@bsp@@YAXPAX@Z",
+      "Source_whole_bytes": 31,
+      "Source_whole_instructions": 15,
+      "Source_full_extent_sha256": "b8b952ca9436d8ad02168eec78663b02a7c101c7d2663c57f07cf39ecc85dac2",
+      "Source_call_relocations": [
+        {
+          "offset": 12,
+          "symbol": "?native_entity_id_table_profile_00d19b88@bsp@@YAABUNativeEntityIdTableProfile@1@XZ"
+        },
+        {
+          "offset": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00cd39a0",
+      "native_whole_bytes": 37,
+      "native_whole_instructions": 8,
+      "Source_symbol": "?initialize_native_pending_init_owner_00cd39a0@bsp@@YAHAAVNativeEntityRegistryProcess@1@@Z",
+      "Source_whole_bytes": 34,
+      "Source_whole_instructions": 9,
+      "Source_full_extent_sha256": "c2f627a84f83f946e3818bffde3edd09e682beb7ed7642d81c50e4d698c7b34e",
+      "Source_call_relocations": [
+        {
+          "offset": 4,
+          "symbol": "?create_native_effect_deletion_sentinel_004c3200@bsp@@YAPAUNativeEffectDeletionNode@1@XZ"
+        },
+        {
+          "offset": 30,
+          "symbol": "_atexit"
+        }
+      ],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00cdf4c0",
+      "native_whole_bytes": 10,
+      "native_whole_instructions": 2,
+      "Source_symbol": "?destroy_native_pending_init_owner_00cdf4c0@bsp@@YAXAAVNativeEntityRegistryProcess@1@@Z",
+      "Source_whole_bytes": 5,
+      "Source_whole_instructions": 1,
+      "Source_full_extent_sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "Source_call_relocations": [
+        {
+          "offset": 1,
+          "symbol": "?destroy_native_effect_deletion_list_004c5940@bsp@@YAXAAUNativeEffectDeletionListStorage@1@@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00cd3a70",
+      "native_whole_bytes": 91,
+      "native_whole_instructions": 20,
+      "Source_symbol": "?initialize_native_entity_id_pair_00cd3a70@bsp@@YAHAAVNativeEntityRegistryProcess@1@@Z",
+      "Source_whole_bytes": 123,
+      "Source_whole_instructions": 42,
+      "Source_full_extent_sha256": "37ce652ce498739cdca2cb97ff5a7bd7645d17e96ff0685b035169257675f4ee",
+      "Source_call_relocations": [
+        {
+          "offset": 59,
+          "symbol": "?construct_native_entity_id_table_00951660@bsp@@YAPAXPAXII@Z"
+        },
+        {
+          "offset": 85,
+          "symbol": "?construct_native_entity_id_table_00951660@bsp@@YAPAXPAXII@Z"
+        },
+        {
+          "offset": 98,
+          "symbol": "_atexit"
+        }
+      ],
+      "Source_exception_related_whole_extents": [
+        {
+          "symbol": "__ehhandler$?initialize_native_entity_id_pair_00cd3a70@bsp@@YAHAAVNativeEntityRegistryProcess@1@@Z",
+          "bytes": 29,
+          "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+          "calls": [
+            {
+              "offset": 15,
+              "symbol": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 25,
+              "symbol": "___CxxFrameHandler3"
+            }
+          ]
+        },
+        {
+          "symbol": "__catch$?initialize_native_entity_id_pair_00cd3a70@bsp@@YAHAAVNativeEntityRegistryProcess@1@@Z$0",
+          "bytes": 26,
+          "sha256": "0417dcb8a19512f490b4ef632b941bbee11aca819c217d1e166224d3c8822bd4",
+          "calls": [
+            {
+              "offset": 4,
+              "symbol": "?destroy_native_entity_id_table_009516b0@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 16,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        }
+      ],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    },
+    {
+      "native_address": "00cdf500",
+      "native_whole_bytes": 71,
+      "native_whole_instructions": 15,
+      "Source_symbol": "?destroy_native_entity_id_pair_00cdf500@bsp@@YAXAAVNativeEntityRegistryProcess@1@@Z",
+      "Source_whole_bytes": 52,
+      "Source_whole_instructions": 20,
+      "Source_full_extent_sha256": "fb5ca670244bf5e139bc39230363a64bc328c1130252bf71ad219a7d180534fe",
+      "Source_call_relocations": [
+        {
+          "offset": 15,
+          "symbol": "?native_entity_id_table_profile_00d19b88@bsp@@YAABUNativeEntityIdTableProfile@1@XZ"
+        },
+        {
+          "offset": 24,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "offset": 32,
+          "symbol": "?native_entity_id_table_profile_00d19b88@bsp@@YAABUNativeEntityIdTableProfile@1@XZ"
+        },
+        {
+          "offset": 41,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ],
+      "Source_exception_related_whole_extents": [],
+      "present_as_whole_extent_in_normal_application": false,
+      "Native_ABI_compatible": false,
+      "executed_this_packet": false
+    }
+  ],
+  "canonical_ownership": {
+    "private_process_owner": "NativeEntityRegistryProcess",
+    "permanent_trivially_destructible_storage_bytes": 200,
+    "pending_CC_offset": 0,
+    "adjacent_primary_ID_header_offset": 12,
+    "alternate_ID_header_offset": 96,
+    "distinct_E4_offset": 180,
+    "distinct_FC_offset": 184,
+    "source_only_startup_state_offset": 188,
+    "actual_table_reference_offsets_in_output_order": [
+      16,
+      20,
+      88,
+      100,
+      172
+    ],
+    "manager_authority": "GameNativeStringProcess.manager_01090aa0()",
+    "facade_constructor_complete_bytes": 22,
+    "facade_owns_only_two_references": true,
+    "new_core_to_app_symbol_dependency": false,
+    "independent_manager_or_mirrored_native_fields": false,
+    "implicit_owner_teardown_or_CRT_registration": false
+  },
+  "CRT_contract": {
+    "entry_order": [
+      "00cd39a0",
+      "00cd3a70"
+    ],
+    "real_registration": "std::atexit with two fixed noncapturing callbacks targeting the same permanent owner",
+    "status_behavior": "Both actual statuses are returned/retained; nonzero pending status continues to ID initializer. Failed registration retains allocated state. Source-only once marker prohibits replay after partial exceptions.",
+    "pending_allocation_failure": "No publication/count write/registration; owner+0 and sentinel payload are not initialized by this wrapper.",
+    "ID_initialization": "Primary(first0,count1000h), then alternate(first1000h,count1000h), then CDF500 registration. Exception after primary construction destroys primary only, with no alternate cleanup.",
+    "successful_callback_relative_order": [
+      "ID alternate then primary slots",
+      "pending list nodes then sentinel, never entity payloads"
+    ],
+    "destructor_scope": "No implicit C++ exit destructor, duplicate teardown, ID header free, dangling-field clear or payload deletion. Caller requires quiescent valid owners.",
+    "full_native_CRT_schedule_connected": false
+  },
+  "pending_init_contract": {
+    "root": "Actual borrowed root pointer bits, with no entity-field dereference, flags, deduplication or retain",
+    "required_domain": "Initialized intact finite CC sentinel ring and actual E4 lock; real entity/World producer remains separately required",
+    "sequence": [
+      "capture E4 section",
+      "enter and increment depth",
+      "capture current head and previous",
+      "allocate actual node from root pointer local",
+      "grow actual list count",
+      "store captured head previous",
+      "reload new node previous and store previous next",
+      "decrement then leave captured section"
+    ],
+    "count_exception": "Only captured section cleanup; allocated unlinked node intentionally remains leaked."
+  },
+  "ordinary_exception_scope": "Current Source ctor/getter catches and guard funclets retained completely. Native FH3/SEH transport, mutable native stack aliases and hardware faults are not emulated. Source CDF500 lower destructor/free providers are noexcept, so Original hardware-fault cleanup is not executed or claimed.",
+  "previous_behavior_preservation": {
+    "whole_unchanged_extents": 355,
+    "only_changed_old_extent": "delete_current_profile, adding concrete D190C0/D19284 cases",
+    "old_profiles_plus_defaults_with_identical_reachable_leaf_graphs": 75,
+    "other_Source_changes": "Only declarations, private new owners/facade, included new implementation and profile contract comments; existing E8/destroy/kill/semantic application registries unchanged."
+  },
+  "normal_link_scope": {
+    "whole_mapped_extents_verified": 230,
+    "all_ordered_relocations_verified": 745,
+    "distinct_physical_address_length_spans": 154,
+    "distinct_physical_relocation_sites": 568,
+    "counting_scope": "Complete COFF symbol extents are qualified independently; COMDAT folding shares some actual PE addresses. Physical distinct counts are derived from the frozen normal_application_link_proof.json.",
+    "mapped_unresolved": 0,
+    "new_fourteen_behaviors_retained": [
+      "00925660",
+      "009285f0"
+    ],
+    "compiled_but_unreferenced": "Other new behavior entry COMDATs and the new Game facade are absent from the normal map because no app caller is admitted. Their whole current objects/provider definitions are retained. No forced-link shim is added."
+  },
+  "validation": {
+    "normal_Win32_build": "PASS",
+    "existing_tests": [
+      "math_tests PASS",
+      "native_math_differential PASS",
+      "tool_tests PASS"
+    ],
+    "new_tests": 0,
+    "new_probe_or_selected_entry_execution": 0,
+    "application_startup_or_game_execution": 0,
+    "Ghidra_mutations": 0,
+    "worker_ledger_credit": 0
+  },
+  "integration": {
+    "tracked_file_count": 10,
+    "owned_files": [
+      "include/bsp/native_entity_registry_lifetime.hpp",
+      "src/native_entity_registry_lifetime.inc",
+      "include/bsp/game_native_entity_registry_process.hpp",
+      "src/game_native_entity_registry_process.cpp",
+      "src/native_pending_entity_lock.cpp",
+      "src/native_singleton_destruction.cpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "docs/CC12_NATIVE_ENTITY_REGISTRY_OWNER_SOURCE.md",
+      "reports/cc12_native_entity_registry_owner_source.json"
+    ],
+    "shared_append_only_file": "cmake/startup.cmake",
+    "shared_append": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_entity_registry_process.cpp)",
+    "authority": "Primary accepted nine-file design and coordinated the documented unleased append-only CMake exception before Source edits.",
+    "primary_acceptance": {
+      "receipt": "local\\cc12_entity_registry_owner_source_primary_review\\receipt.json",
+      "sha256": "907f9662c05bfd543877f523134522b8c2bada25714f80b4f59527acd69b8d2a",
+      "worker_report_sha256": "da18564cbe9459d3b9dc9eceeeaac6fe8b618c7538026f6dedbdf320b0fafac5",
+      "whole_current_objects": 25,
+      "whole_current_extents": 427,
+      "actual_core_members": 23,
+      "actual_per_TU_inputs_prefrozen": 3571,
+      "actual_unique_inputs": 557,
+      "normal_PE_extents": 231,
+      "normal_PE_ordered_relocations": 745,
+      "compiled_absent": 196,
+      "whole_ordinary_functions_registered": 14,
+      "Original_ABI_credit": 0,
+      "new_entry_execution": 0,
+      "startup_gameplay": 0
+    }
+  },
+  "remaining_frontier": [
+    "Actual canonical entity/World creation, hierarchy registration and lifetime authority",
+    "Raw Unit/factory/scene-base/full-entity construction and Native profile/descriptor dispatch closure",
+    "Raw InitAll consumption/withdrawal against these same owners",
+    "Full application/CRT startup ordering and entity withdrawal before ID array callbacks",
+    "Original ABI/FH3/SEH compatibility and runtime/gameplay validation"
+  ]
+}
