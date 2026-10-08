@@ -1,6 +1,6 @@
 {
   "packet": "cc12_callable_failure_owner_execution_Source",
-  "status": "implemented_normal_build_passed_one_genuine_Source_owner_diagnostic_passed_pending_primary_acceptance",
+  "status": "primary_accepted_normal_build_and_current_genuine_Source_owner_diagnostic_passed",
   "baseline": "0348b7badac173be2022545e92bb6c086d6f1b9f",
   "readiness_contract": {
     "document": "docs/CC12_CALLABLE_FAILURE_OWNER_EXECUTION_READINESS.md",
@@ -13020,7 +13020,7 @@
     "concurrent_lifetime_guarantee": false,
     "BF5030_or_connected_raw_read": false,
     "gameplay_equivalence": false,
-    "primary_acceptance_pending": true
+    "primary_acceptance_pending": false
   },
   "limitations": [
     "One genuine Source owner, single-threaded exclusive use; no concurrency/lifetime universal guarantee.",
@@ -13029,5 +13029,310 @@
     "This is one successful fresh-process Source owner/use/drain sequence. It does not validate allocation failure, partial-initialization unwinds, concurrency or all later VFS services.",
     "No provider function was changed or newly reconstructed. The packet contributes zero additional Original function credit.",
     "Normal exit was observed with a real successful physical-pool atexit registration; its cleanup callback was not separately instrumented."
-  ]
+  ],
+  "primary_acceptance": {
+    "receipt": {
+      "path": "local\\cc12_callable_failure_owner_execution_primary_review\\receipt.json",
+      "sha256": "aecab03f0ae0cd0b1d344ebc9306f5c7de35f5427c1f04ee20f02535ef345264"
+    },
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_callable_failure_owner_execution_primary_review\\static_gate.json",
+      "bytes": 434679,
+      "sha256": "092fe5473b51e0ef5f463110c04a7f6fe2ab9852c644e660de7143eb967d38b2"
+    },
+    "execution_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_callable_failure_owner_execution_primary_review\\diagnostic01\\execution_receipt.json",
+      "bytes": 2593,
+      "sha256": "596cfdfb41165f7d7e6a0d3903707fed06de07edf174ca33705d46909ce0db15"
+    },
+    "qualification": "One current genuine application-owned Source VFS case. Normal parent and canonical child exit; no Original code, BF5030, mount/read, whole register ABI or gameplay admission.",
+    "current_runtime": {
+      "status": "PASS",
+      "actual_owner": "007DDB78",
+      "singleton": "008132D0",
+      "slot_values": [
+        "007C0E50",
+        "007DDB78",
+        "03043020",
+        "007C0B84",
+        "007C4CF4",
+        "007C0BB4"
+      ],
+      "loaded_base": "10000000",
+      "named_loaded_code": [
+        {
+          "name": "raw_ignore_native_vfs_mount_failure_00530620",
+          "address": "10218ED0",
+          "rva": "00218ED0",
+          "whole_live_hex": "c3",
+          "exact_symbol_identity": {
+            "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+            "map_rows": [
+              {
+                "line": 5659,
+                "segment": 1,
+                "segment_offset": 2195152,
+                "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                "va": 270634704,
+                "origin": "f   bsp_core:native_physical_failure_entries.obj"
+              }
+            ],
+            "va": "10218ED0",
+            "rva": "00218ED0",
+            "same_va_alias_rows": [
+              {
+                "line": 5659,
+                "segment": 1,
+                "segment_offset": 2195152,
+                "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                "va": 270634704,
+                "origin": "f   bsp_core:native_physical_failure_entries.obj"
+              }
+            ],
+            "section": ".text",
+            "section_characteristics": "60000020"
+          }
+        },
+        {
+          "name": "raw_notify_native_vfs_request_failure_00bd9e30",
+          "address": "10218EE0",
+          "rva": "00218EE0",
+          "whole_live_hex": "8b8190000000ffd0c20400",
+          "exact_symbol_identity": {
+            "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+            "map_rows": [
+              {
+                "line": 5660,
+                "segment": 1,
+                "segment_offset": 2195168,
+                "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+                "va": 270634720,
+                "origin": "f   bsp_core:native_physical_failure_entries.obj"
+              }
+            ],
+            "va": "10218EE0",
+            "rva": "00218EE0",
+            "same_va_alias_rows": [
+              {
+                "line": 5660,
+                "segment": 1,
+                "segment_offset": 2195168,
+                "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+                "va": 270634720,
+                "origin": "f   bsp_core:native_physical_failure_entries.obj"
+              }
+            ],
+            "section": ".text",
+            "section_characteristics": "60000020"
+          }
+        }
+      ],
+      "sole_changed_byte_offsets": [
+        144,
+        145,
+        146,
+        147
+      ],
+      "complete_record_snapshots": [
+        {
+          "phase": "original",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b730020065300000000000000000000000000",
+          "sha256": "7e2e82bb5d90c505ac646a8d9c1e66f955cf301625bf7abc0640df617b58986f",
+          "lines": [
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "phase": "original",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            9
+          ]
+        },
+        {
+          "phase": "original",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            10
+          ]
+        },
+        {
+          "phase": "original_finite_dispatch",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b730020065300000000000000000000000000",
+          "sha256": "7e2e82bb5d90c505ac646a8d9c1e66f955cf301625bf7abc0640df617b58986f",
+          "lines": [
+            11,
+            12,
+            13
+          ]
+        },
+        {
+          "phase": "original_finite_dispatch",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            14
+          ]
+        },
+        {
+          "phase": "original_finite_dispatch",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            15
+          ]
+        },
+        {
+          "phase": "loaded_code",
+          "kind": "raw_ignore_native_vfs_mount_failure_00530620",
+          "hex": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "lines": [
+            19
+          ]
+        },
+        {
+          "phase": "loaded_code",
+          "kind": "raw_notify_native_vfs_request_failure_00bd9e30",
+          "hex": "8b8190000000ffd0c20400",
+          "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+          "lines": [
+            21
+          ]
+        },
+        {
+          "phase": "publish",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b7300d08e2110000000000000000000000000",
+          "sha256": "fef27dae254ca0711cdd57f475911c682fdc197de9855c3170a32964f5da96d5",
+          "lines": [
+            22,
+            23,
+            24
+          ]
+        },
+        {
+          "phase": "publish",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            25
+          ]
+        },
+        {
+          "phase": "publish",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            26
+          ]
+        },
+        {
+          "phase": "repeat_publish",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b7300d08e2110000000000000000000000000",
+          "sha256": "fef27dae254ca0711cdd57f475911c682fdc197de9855c3170a32964f5da96d5",
+          "lines": [
+            28,
+            29,
+            30
+          ]
+        },
+        {
+          "phase": "repeat_publish",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "phase": "repeat_publish",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            32
+          ]
+        },
+        {
+          "phase": "published_finite_dispatch",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b7300d08e2110000000000000000000000000",
+          "sha256": "fef27dae254ca0711cdd57f475911c682fdc197de9855c3170a32964f5da96d5",
+          "lines": [
+            34,
+            35,
+            36
+          ]
+        },
+        {
+          "phase": "published_finite_dispatch",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            37
+          ]
+        },
+        {
+          "phase": "published_finite_dispatch",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            38
+          ]
+        },
+        {
+          "phase": "raw_notifier",
+          "kind": "a0",
+          "hex": "048dd6000000000000000000000000000000000000000000ffffffff000000000000000000000000000000000000000000000000a84c7c00030000000000000080097d00000000000000000000000000000000001686c888d8997d000000000000000000000b7d000000000000000000d0318100000000000001000000000000604c7c000000000000000000305b7300d08e2110000000000000000000000000",
+          "sha256": "fef27dae254ca0711cdd57f475911c682fdc197de9855c3170a32964f5da96d5",
+          "lines": [
+            41,
+            42,
+            43
+          ]
+        },
+        {
+          "phase": "raw_notifier",
+          "kind": "singleton",
+          "hex": "49006d0090177d00a8177d00901b7d0008807b00",
+          "sha256": "1244fd52cc41a859ec90d0bbdc388bcb7d64b8a0e1068658ece48925f47103dd",
+          "lines": [
+            44
+          ]
+        },
+        {
+          "phase": "raw_notifier",
+          "kind": "registrations",
+          "hex": "500e7c0078db7d0020300403840b7c00f44c7c00b40b7c00",
+          "sha256": "ae5becdea64bae4e25b858547b4e84f47cd50b65436ef4cbf4f9f81869182eee",
+          "lines": [
+            45
+          ]
+        }
+      ],
+      "all_records_before_drain": true,
+      "normal_exit_code": 0,
+      "physical_pool_callback_separately_instrumented": false
+    },
+    "new_Original_functions": 0,
+    "startup_validated": false,
+    "game_validated": false
+  }
 }

@@ -59,3 +59,11 @@ Independent runtime audit SHA-256: `611450f678ed2ebd8404d8fc84bdc269f3670659d67b
 This qualifies one genuine current Source owner, callable publication, named notifier use and shared drain. It does not establish allocation-failure/partial-state cleanup, concurrency, complete Original register/flag ABI, BF5030/connected raw reads, later VFS services or gameplay equivalence.
 
 The [JSON report](../reports/cc12_callable_failure_owner_execution_source.json) contains the full snapshots, exact changed-body/alias records, complete linked replay and physical evidence references.
+
+## Primary acceptance
+
+The primary review independently rehashed all 13,495 retained phase, proof and runtime/library artifacts. It verified the complete old-body correspondences, all 4,123 current functions through a bijection with exact symbols or constrained compiler path identities, eight unique current core members, ten complete linked bodies and all 122 ordered relocation operands. The primary normal Win32 build passed all three existing checks.
+
+One fresh execution of the primary executable passed through the ordinary parent and canonical child, exit 0. The genuine owner was `007DDB78`; all twenty complete snapshots were independently replayed. Only offsets `90..93` changed; repeated publication, both finite dispatch paths, the one named notifier call and shared drain passed. The primary image's exact named raw entries had RVAs `00218ED0` and `00218EE0`; loaded addresses and whole bytes were correlated to its own map and PE rather than the worker image.
+
+Primary evidence is `local/cc12_callable_failure_owner_execution_primary_review/receipt.json`, SHA-256 `aecab03f0ae0cd0b1d344ebc9306f5c7de35f5427c1f04ee20f02535ef345264`. The preceding static gate is retained separately. This accepts the bounded Source owner/use/drain diagnostic, contributes zero additional Original function credit, and leaves connected reads, complete Original ABI, startup and gameplay validation open.
