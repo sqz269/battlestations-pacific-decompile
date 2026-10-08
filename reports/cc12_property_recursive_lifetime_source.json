@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_recursive_lifetime_source",
   "UTC": "2026-10-08T20:09:10.097916+00:00",
-  "status": "SOURCE_COMPLETE_NORMAL_WIN32_BUILD_AND_EXISTING_CHECKS_PASS_PRIMARY_REVIEW_PENDING",
+  "status": "PRIMARY_ACCEPTED_SIX_COHESIVE_WHOLE_ORDINARY_SOURCE_BODIES_WIN32_AND_STATIC_PRODUCTION",
   "source_baseline": {
     "accepted_main_commit": "840d7367c6f6b9fd78e6c15494b659e519f2a469",
     "accepted_readiness_report": {
@@ -42,12 +42,13 @@
   "credit": {
     "Source_bodies_added": 6,
     "proposed_whole_function_registrations": 6,
-    "new_ledger_functions": 0,
+    "new_ledger_functions": 6,
     "new_ledger_fragments": 0,
-    "new_names_or_tags": 0,
-    "primary_accepted_new_function_credit": 0,
+    "new_names_or_tags": 1,
+    "primary_accepted_new_function_credit": 6,
     "Source_only_context_constructor_credit": 0,
-    "all_six_required_for_acceptance": true
+    "all_six_required_for_acceptance": true,
+    "primary_whole_function_registrations": 6
   },
   "proposed_registrations": [
     {
@@ -96,7 +97,7 @@
         "instruction_bytes": 212
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     },
     {
       "address": "004E6730",
@@ -139,7 +140,7 @@
         "instruction_bytes": 39
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     },
     {
       "address": "008F0DE0",
@@ -177,7 +178,7 @@
         "instruction_bytes": 25
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     },
     {
       "address": "008F0640",
@@ -270,7 +271,7 @@
         "instruction_bytes": 300
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     },
     {
       "address": "008F59E0",
@@ -313,7 +314,7 @@
         "instruction_bytes": 39
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     },
     {
       "address": "008F5410",
@@ -356,7 +357,7 @@
         "instruction_bytes": 72
       },
       "interface": "ordinary Win32 C++ with explicit borrowed canonical lifetime context",
-      "state": "complete cohesive Source body; primary review and registration pending"
+      "state": "primary accepted complete ordinary Source body; registered without Original ABI/runtime claim"
     }
   ],
   "Original": {
@@ -3796,8 +3797,9 @@
     "application_startup": false,
     "populated_recursive_graph_execution": false,
     "gameplay": false,
-    "Ghidra_mutations": 0,
-    "scope": "static complete code/data/provenance and ordinary interface qualification; no new selected entry/API execution or Original class/ABI/FS/SEH/game claim"
+    "Ghidra_mutations": 6,
+    "scope": "static complete code/data/provenance and ordinary interface qualification; no new selected entry/API execution or Original class/ABI/FS/SEH/game claim",
+    "worker_Ghidra_mutations": 0
   },
   "document": {
     "path": "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE.md",
@@ -3822,5 +3824,34 @@
     "sha256": "1ecaa4d97719803f0fdbf1bf457f01d040c3a4bcdfc8a9d4c2d829d3bde61adb",
     "file_count": 5187,
     "total_bytes": 886400881
+  },
+  "primary_review": {
+    "receipt": "local\\cc12_property_recursive_lifetime_source_primary_review\\receipt.json",
+    "sha256": "2c945c13bf9786cf08ddc72612bc5a8b280e019b1bd3eb7a37d6bbbf24566e96",
+    "worker_artifacts_rehashed": 5187,
+    "prefrozen_current_physical_inputs": 339,
+    "actual_current_consumed_inputs": 295,
+    "current_whole_objects": 11,
+    "current_complete_extents": 499,
+    "old_complete_extents_unchanged": 485,
+    "current_unique_Core_members": 10,
+    "six_Source_complete_extent_bytes": 717,
+    "release_code_alignment_data_bytes": [
+      298,
+      2,
+      30
+    ],
+    "all_three_existing_checks_passed": true,
+    "review_driver_prefreeze_corrections": 2,
+    "new_build_attempts": 1,
+    "new_entry_execution": false,
+    "Original_ABI_FS_SEH_binary_replacement": false,
+    "startup_or_gameplay": false,
+    "Ghidra_annotation_entries_applied": 6,
+    "prior_annotations": "local/ghidra-annotations-20261008T202336Z.json",
+    "project_saved": true,
+    "affected_exports_refreshed": 6,
+    "new_ledger_names": 1,
+    "new_tags": 0
   }
 }

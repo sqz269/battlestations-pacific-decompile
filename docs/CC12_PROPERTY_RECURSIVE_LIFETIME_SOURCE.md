@@ -14,8 +14,10 @@ Its independent readiness receipt SHA-256 is
 `152216420124913c5b85c2485b49e8fc3414652e1e4e5e31df5f729679af3a81`.
 The genuine raw58 constructor and real empty-child allocation producer were
 already accepted on main `3649653337d98e9a0203021ba36fb61214592cc5`.
-This packet proposes six whole-function registrations, pending primary review;
-it writes no ledger, Ghidra annotation, CMake entry, new target or test.
+Independent primary review accepted all six complete ordinary Source bodies and
+registered them together. The corresponding Ghidra evidence comments were
+extended while preserving existing names and comments. There is no new CMake
+entry, target or test.
 
 ## Complete bodies and physical production
 
@@ -201,3 +203,11 @@ hashes, whole bodies, positive relocation graphs, recipes and provenance.
 Startup, populated recursive graph execution, Original execution and gameplay
 remain unvalidated. The Source implementation and static production evidence
 are complete for primary review; these are separate from runtime acceptance.
+
+## Independent primary acceptance
+
+The integrator rehashed all 5,187 sealed worker artifacts and froze 339 current physical inputs before its one normal build. All 295 actual consumed inputs match those preimages. Nine worker/current differences are the actual three generated worktree recipes and six historical compiler logs; provider Source and toolchain inputs match. The normal Win32 build and all three existing checks passed.
+
+Eleven whole current objects reproduce the complete 499-extent graph and its ordered relocations. All 485 existing extents are unchanged, including the 19 old bag extents and their positively resolved code/data target graphs. The ten Core objects match unique members of the current archive. The retained qualification method independently ran against the integrator's before/after objects: all six complete schedules pass, the whole 330-byte release partitions into 298 bytes of code, two alignment bytes and thirty bytes of relocated targets/selectors, and both bag clears remain actual calls. The installed Native family and exact selectors still match.
+
+Receipt: `local/cc12_property_recursive_lifetime_source_primary_review/receipt.json`, SHA-256 `2c945c13bf9786cf08ddc72612bc5a8b280e019b1bd3eb7a37d6bbbf24566e96`. Two pre-freeze driver corrections are retained; the Source did not change and no extra build was needed. Six whole ordinary Source function records were added. The guarded six-entry annotation batch saved prior comments, preserved names, saved the project and refreshed all six exports. Context-constructor credit remains zero. Selected lifetime execution, populated recursive graphs, Original binary ABI/FS/SEH/class transport, startup and gameplay are unvalidated.
