@@ -31325,6 +31325,297 @@
           ]
         }
       ]
+    },
+    {
+      "id": "cc12_group_vector_caller_readiness",
+      "done": true,
+      "state": "actual vector caller stack contract audited; whole961B249 remains unready; Source0",
+      "addresses": [
+        "00766fc0"
+      ],
+      "owned_files": [
+        "docs/CC12_GROUP_VECTOR_CALLER_READINESS.md",
+        "reports/cc12_group_vector_caller_readiness.json"
+      ],
+      "new_Source_bodies": 0,
+      "ready_count": 0,
+      "primary_review": {
+        "receipt_hash_verified": true,
+        "all_sealed_artifacts_unchanged": true,
+        "Source_admission": false,
+        "game_validated": false
+      },
+      "worker_receipt_sha256": "6d749c5a1de881d7e4038bbbebdc2672d681b55a709653975210e6c51ee30bae",
+      "worker_manifest_sha256": "58f672e2de7a8fce29695e5871fae3aeee5209a11d6c1709ae63a9b2181f6c66",
+      "unready_contracts": [
+        {
+          "address": "0075B430",
+          "state": "existing typed Source, new context interface",
+          "gap": "Original ECX message/RET4 loads actual current-game cell00E188A8 then dereferences game+18EC and selected slots18CC. Existing Source needs explicit NativeSessionMessageContext and translated profile; native global/class provider is not established."
+        },
+        {
+          "address": "0042D2E0",
+          "state": "existing bounded matrix Source contract",
+          "gap": "Actual caller uses ECX=entity+74,EDX=message+30,stackmessage+34/+38. Existing normalization/asin/CRT math qualifications persist; no whole message admission."
+        },
+        {
+          "address": "00BF7030",
+          "state": "existing raw ST0 kernel needs extra CRT access binding",
+          "gap": "Original receives its operand in ST0. Source forwarding interface additionally needs CameraAxesCrtAccess; actual dispatch global/exception handler policy cannot be fabricated."
+        },
+        {
+          "address": "00438E40",
+          "state": "existing ordinary Source strdup",
+          "gap": "Original ECX text/raw allocator ABI differs from ordinary Source malloc+bad_alloc implementation; string returned from entity virtual+10 and later ownership/EH cleanup unbound."
+        },
+        {
+          "address": "0070D080",
+          "state": "existing genuine actual-storage typed lookup",
+          "gap": "Original ECX group/one stackword member/RET4; ordinary Source is a new interface. Caller kind06h dereferences returned record without null check; membership promise is required."
+        },
+        {
+          "address": "0070D980",
+          "state": "closed conditional whole116 raw component",
+          "gap": "Production still needs actual readable nativeDATA00F87574/78/7C and valid reached native group records. Its accepted fixtures do not establish this caller entity/class/world lifetime."
+        }
+      ]
+    },
+    {
+      "id": "cc12_scene_property_record_type0_storage",
+      "done": false,
+      "state": "ready bounded whole45B14 raw partial-storage primitive;37 written19 untouched; native class/heap/clear remain qualified",
+      "contract": {
+        "hypothesis_name": "BSP_ScenePropertyRecord_ConstructType0",
+        "whole": {
+          "role": "type0_partial_storage_initializer",
+          "kind": "whole",
+          "start": "008EF140",
+          "end_exclusive": "008EF16D",
+          "bytes": 45,
+          "sha256": "55f7af3bf7ae1662a71c0e72fa4ff5e411b43754989762c7b025a63a3e5f814e",
+          "live_disk_equal": true,
+          "linear_instructions": 14,
+          "calls": []
+        },
+        "raw_hex": "8b5424048bc133c9c700d489ce0089480489500c89481889481c894820894824894830894834c6402c01c20400",
+        "declaration": "void* __fastcall initialize_native_scene_property_record_type0_storage_008ef140(void* actual_storage_root, std::uint32_t unused_edx, std::uint32_t value_bits) noexcept;",
+        "suggested_namespace": "bsp",
+        "effective_ABI": "ECX supplied writable root; one entry ESP+4 DWORD value bits; RET4; EAX returns full actual root; ECX=0; EDX=value bits; all nonvolatiles untouched.",
+        "fastcall_padding": "Three explicit formals are required: root in ECX, unused formal in EDX, value bits on stack. A two-formal fastcall would put value in EDX and is wrong.",
+        "register_not_owner": "Stack DWORD is value bits stored at +0x0C. Owner +0x30 is zeroed. No owner argument or owner dereference exists.",
+        "minimum_writable_extent": 56,
+        "writes": [
+          {
+            "range": "[00,04)",
+            "bytes": 4,
+            "value": "literal DATA phase bits 00CE89D4"
+          },
+          {
+            "range": "[04,08)",
+            "bytes": 4,
+            "value": "type tag zero"
+          },
+          {
+            "range": "[0C,10)",
+            "bytes": 4,
+            "value": "stack value_bits"
+          },
+          {
+            "range": "[18,28)",
+            "bytes": 16,
+            "value": "four DWORD zeros"
+          },
+          {
+            "range": "[2C,2D)",
+            "bytes": 1,
+            "value": "1; semantic meaning remains unestablished"
+          },
+          {
+            "range": "[30,38)",
+            "bytes": 8,
+            "value": "owner and ordinal DWORD zeros"
+          }
+        ],
+        "written_bytes": 37,
+        "coalesced_written_ranges": [
+          "[00,08)",
+          "[0C,10)",
+          "[18,28)",
+          "[2C,2D)",
+          "[30,38)"
+        ],
+        "untouched_ranges": [
+          "[08,0C)",
+          "[10,18)",
+          "[28,2C)",
+          "[2D,30)"
+        ],
+        "untouched_bytes": 19,
+        "preconditions": "Actual supplied fresh/unowned writable storage spanning at least 0x38 bytes; correct ECX/stack call. Leaf has no string instruction, no CALL, and no DF or ES use.",
+        "phase_DATA": {
+          "role": "actual_record_profile_slot0_DATA",
+          "kind": "DATA",
+          "start": "00CE89D4",
+          "end_exclusive": "00CE89D8",
+          "bytes": 4,
+          "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+          "live_disk_equal": true
+        },
+        "actual_DATA_slot0": "004E6730",
+        "phase_qualification": "Literal native DATA only. No Source vft, Source dispatch provider, class completion, native heap, or lifetime binding inferred.",
+        "genuine_direct_caller": {
+          "entry": "008F4F60",
+          "entry_witness": {
+            "role": "clone_genuine_entry_and_tag_dispatch",
+            "kind": "witness",
+            "start": "008F4F60",
+            "end_exclusive": "008F4F8D",
+            "bytes": 45,
+            "sha256": "a296709a04da69c1a8995e50e911fed3e5d8909a8759b44d026f81893c88332f",
+            "live_disk_equal": true,
+            "linear_instructions": 13,
+            "calls": []
+          },
+          "tag0_switch_DATA": {
+            "role": "clone_tag0_switch_target_DATA",
+            "kind": "DATA",
+            "start": "008F52B8",
+            "end_exclusive": "008F52BC",
+            "bytes": 4,
+            "sha256": "edb8c83587af7b724111c5a73ecdc2d3f6bfe2045cbfb9322c08e1fff9e8604f",
+            "live_disk_equal": true
+          },
+          "tag0_target": "008F4FF9",
+          "allocation_ctor_arm": {
+            "role": "clone_type0_allocation_and_constructor_arm",
+            "kind": "witness",
+            "start": "008F4FF9",
+            "end_exclusive": "008F502D",
+            "bytes": 52,
+            "sha256": "494ddc43f533a08f1000b42d6571fe4310a8268aefb36e45f789a7c6263b1a9d",
+            "live_disk_equal": true,
+            "linear_instructions": 17,
+            "calls": [
+              {
+                "address": "008F4FFB",
+                "operand": "0xbf681b"
+              },
+              {
+                "address": "008F5011",
+                "operand": "0x8ef140"
+              }
+            ]
+          },
+          "allocation_PUSH": "008F4FF9 PUSH 38h",
+          "allocation_CALL": "008F4FFB CALL 00BF681B",
+          "allocation_CALL_end": "008F5000",
+          "stack_balance": "008F5000 ADD ESP,4",
+          "non_null_gate": "008F5003 TEST EAX,EAX; 008F5005 JZ 008F528A",
+          "stack_value": "008F500B MOV EDX,[ESI+0C]; 008F500E PUSH EDX",
+          "actual_receiver": "008F500F MOV ECX,EAX, same real allocated root",
+          "constructor_CALL": "008F5011 CALL 008EF140",
+          "constructor_CALL_end": "008F5016",
+          "returned_root_use": "008F501A MOV [EAX+34],EDX copies source ordinal after constructor returns",
+          "qualification": "Whole clone [008F4F60,008F52B6), its EH/class ownership and other type arms remain unexpanded. Bounded arm is reached through actual native type0 jump-table target."
+        },
+        "distinct_inline_producer": {
+          "whole": {
+            "role": "genuine_type0_inline_record_setter",
+            "kind": "whole",
+            "start": "008F3710",
+            "end_exclusive": "008F376D",
+            "bytes": 93,
+            "sha256": "fe3de572968212acdd760b30b656bd2cf51d6dcca0334e03d7f7d1d55f307c39",
+            "live_disk_equal": true,
+            "linear_instructions": 34,
+            "calls": [
+              {
+                "address": "008F3715",
+                "operand": "0xbf681b"
+              },
+              {
+                "address": "008F3751",
+                "operand": "0x8f33f0"
+              },
+              {
+                "address": "008F3764",
+                "operand": "0x8f33f0"
+              }
+            ]
+          },
+          "actual_allocation": "008F3711 PUSH38; 008F3715 CALL00BF681B; caller balances4",
+          "ABI": "ECX bag; stack key/value DWORDs; RET8; ESI preserved.",
+          "same_actual_root": "On allocation success, same EAX receives profile CE89D4/type0/value+C and partial field writes, then is pushed as payload for CALL008F33F0@008F3751. Null case passes null to same external wrapper.",
+          "no_initializer_call": "This setter inlines writes; it does not CALL008EF140.",
+          "genuine_parser_call": {
+            "role": "parser_genuine_setter_call_boundary",
+            "kind": "witness",
+            "start": "008F5BCE",
+            "end_exclusive": "008F5BE0",
+            "bytes": 18,
+            "sha256": "0ea663b1572315d147790cb3588a21984f005c357fd44c153479513a4e9f6f99",
+            "live_disk_equal": true,
+            "linear_instructions": 6,
+            "calls": [
+              {
+                "address": "008F5BD6",
+                "operand": "0x8f3710"
+              }
+            ]
+          },
+          "parser_entry": "008F5A00",
+          "parser_call": "008F5BCE PUSH EAX(value); 008F5BCF LEA EDX,[ESP+44]; 008F5BD3 PUSH EDX(key); 008F5BD4 MOV ECX,EDI; CALL008F3710@008F5BD6 ending008F5BDB",
+          "qualification": "Parser body and actual game/world/owner lifetime remain unexpanded. Allocation size alone is not a class compatibility proof."
+        },
+        "proposed_files": [
+          "include/bsp/native_scene_property_record_type0_storage.hpp",
+          "src/native_scene_property_record_type0_storage.cpp",
+          "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE0_STORAGE_CC12.md",
+          "reports/native_scene_property_record_type0_storage_cc12.json"
+        ],
+        "next_Source_admission": [
+          "One bounded whole literal45 body; do not invent profile/provider/class callbacks.",
+          "Actual COFF whole-body and unique-linked 45-byte equality, no CALL/relocations, and fresh caller ECX/unusedEDX/stack value/RET4 assembly gate before any Source/Original call.",
+          "One unique fresh connected3TU family: new CPP + current singleton_lifetime.cpp + ignored probe; zero BSP archives; strict Win32 current compiler/SDK/header/library pins.",
+          "Use current canonical allocator/free with two actual56-byte fresh unowned roots. Compare every written byte and preserve all19 untouched bytes, other live root and external capture/stack canaries. No adjacent allocation red-zone claim or heap metadata read.",
+          "Original unmodified45 RX stub needs no heap-callee patch. Raw supplied-storage fixture only; no native class/heap/lifetime admission.",
+          "Gate real mapped UCRT physical file identity, I386/PE32 and actual malloc/free IAT/export targets before allocations/constructor calls.",
+          "Keep accepted constructor worker run04/primary run01 and all old recipes immutable; seal one new run only, recover postprocessing without native replay."
+        ]
+      },
+      "approved_model": "gpt-6.1-sol",
+      "approved_reasoning_effort": "xhigh",
+      "reuse_existing_worker": "/root/property_bag_storage",
+      "model_rationale": "Straight-line whole45 storage writes; physical ECX/stack contract already independently recovered and reviewed before assignment. Existing6.1 worker shares this property-storage stream.",
+      "worker_readiness_family": "J:/PROG/battlestations-pacific-decompile-cc12_property_bag_storage/local/cc12_property_bag_node_ownership_audit",
+      "worker_seal_hashes": {
+        "proposal.json": "efed3d2a61b76d4a824c538d58104185cf8859dd693d536916dcd521722bf3e9",
+        "receipt.json": "3ca150d53cb2f156a2ac6bfd0068893600e54de8bb7a58c38e0df29a4f5251a4",
+        "artifact_manifest.json": "1e5998c017b2a982d4ded03c37b164bae9e8adf3d3d3b68c5940c76c7839dfc9"
+      },
+      "readiness_document": "docs/CC12_PROPERTY_RECORD_TYPE0_READINESS.md",
+      "readiness_report": "reports/cc12_property_record_type0_readiness.json",
+      "fixture_requirements": [
+        "One bounded whole literal45 body; do not invent profile/provider/class callbacks.",
+        "Actual COFF whole-body and unique-linked 45-byte equality, no CALL/relocations, and fresh caller ECX/unusedEDX/stack value/RET4 assembly gate before any Source/Original call.",
+        "One unique fresh connected3TU family: new CPP + current singleton_lifetime.cpp + ignored probe; zero BSP archives; strict Win32 current compiler/SDK/header/library pins.",
+        "Use current canonical allocator/free with two actual56-byte fresh unowned roots. Compare every written byte and preserve all19 untouched bytes, other live root and external capture/stack canaries. No adjacent allocation red-zone claim or heap metadata read.",
+        "Original unmodified45 RX stub needs no heap-callee patch. Raw supplied-storage fixture only; no native class/heap/lifetime admission.",
+        "Gate real mapped UCRT physical file identity, I386/PE32 and actual malloc/free IAT/export targets before allocations/constructor calls.",
+        "Keep accepted constructor worker run04/primary run01 and all old recipes immutable; seal one new run only, recover postprocessing without native replay."
+      ],
+      "dependencies": [],
+      "native_class_ABI_admission": false,
+      "game_validated": false,
+      "function_addresses": [
+        "008ef140"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_record_type0_storage.hpp",
+        "src/native_scene_property_record_type0_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE0_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type0_storage_cc12.json"
+      ]
     }
   ],
   "snapshot_after_analysis": {
