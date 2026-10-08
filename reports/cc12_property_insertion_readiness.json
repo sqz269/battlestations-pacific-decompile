@@ -1,0 +1,421 @@
+{
+  "packet": "cc12_property_insertion_readiness",
+  "UTC": "2026-10-08T06:10:59.534613+00:00",
+  "status": "Complete Original bodies established: wrapper155B/46instructions and provider172B/65instructions; both NOT_READY for whole current raw Source.",
+  "owned_addresses": [
+    "008F33F0",
+    "008F28F0"
+  ],
+  "refreshed_worker_baseline": "bb4ba05817c19d327d0cc2caa13697ca96c558c6",
+  "current_main": "0fa8ebb1b5e8e0d65b9b2f62df0e1242f197d140",
+  "project_verification": {
+    "project": "bsp",
+    "configured_gpr": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "per_batch": "bsp.py client verifies project/program/language/imagebase before each livequery; no reimport, shared export or mutation."
+  },
+  "native_bodies": [
+    {
+      "entry": "008F33F0",
+      "inclusive_end": "008F348A",
+      "exclusive_end": "008F348B",
+      "bytes": 155,
+      "instructions": 46,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc",
+      "PE_file_offset": 5190640,
+      "section": ".text",
+      "live_PE_image_equal": true,
+      "coverage": "complete",
+      "flow_gaps": 0,
+      "direct_calls": 4,
+      "indirect_calls": 0
+    },
+    {
+      "entry": "008F28F0",
+      "inclusive_end": "008F299B",
+      "exclusive_end": "008F299C",
+      "bytes": 172,
+      "instructions": 65,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878",
+      "PE_file_offset": 5187824,
+      "section": ".text",
+      "live_PE_image_equal": true,
+      "coverage": "complete",
+      "flow_gaps": 0,
+      "direct_calls": 4,
+      "indirect_calls": 1
+    }
+  ],
+  "actual_profile_DATA": {
+    "entry": "00CE89D4",
+    "inclusive_end": "00CE89D7",
+    "exclusive_end": "00CE89D8",
+    "bytes": 4,
+    "instructions": null,
+    "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+    "PE_file_offset": 9341396,
+    "section": ".rdata",
+    "live_PE_image_equal": true
+  },
+  "wrapper_contract": {
+    "native_ABI": "ECX actual114h bag; stackCStringkey,actual38hrecord; EAXoriginalbag; RET8; ESI/EDI preserved,EBX/EBP untouched; EAX/ECX/EDX/flags unspecified beyondreturn; actualx86FH3linkage restored on ordinaryreturn.",
+    "complete_schedule": [
+      "Install nativeFS0/FH3registration and preserveactualbagESI",
+      "CALL0041E870 at008F3415 on fresh8hstackheader with callerCString; it initializes both words",
+      "Take originalrecordpointerEDI; passactualmap=bag+4,tempkeyheader,record to008F28F0 at008F342F; setunwindstate0 beforecall",
+      "SetunwindstateFFFFFFFF; iftemporarydata nonnull preparedata,length+1,unused1; CALLgetter00419CC0(noargs); useitsEAXasECX and CALLactualsizedreturn00BD1510",
+      "Only aftertemporaryrelease setincomingrecord+30=actualbag; ifrecord+34==0 takebag+10C counter,writecounter+1 then writeoldcountertorecord+34",
+      "RestoreFS0 and savedregisters; returnbag withRET8"
+    ],
+    "owner_ordinal": "No recordclone/allocation occurs here. Existing nonzero ordinal is retained. Counter starts0, sofirstrecordgets0 andremainsunstamped sentinel ifreinserted. Ordinal addition is nativeDWORD arithmetic; no stableuniqueID or overflowguard added.",
+    "fields_preserved": "Wrapper doesnot rewrite recordprofile/type/value/key or bagowner110. Underlyingprovider may replace/linknodes; wrapper onlywritesrecord30/34 andconditionalbag10C.",
+    "first_missing_direct_provider": "008F28F0 completewholeCurrentRawSource absent"
+  },
+  "provider_contract": {
+    "native_ABI": "ECX actual108h embeddedmap; stackactual8hqueryheader,incomingmappedrecordDWORD; EAXcurrentcount; RET8; EBX/ESI/EDI preserved; ECX/EDX/flags volatile; noSEHprologue here.",
+    "lookup_binding": "EBXretainsactualqueryheader;outbucketaddress isfirstargumentstackcell afterquerypointer captured;0043B8B0 seesECX=actualmap plusquery/outbucket. Bucket thenreloads fromthatstackcell. It isnotqueryheader mutation.",
+    "hit_schedule": [
+      "Readfoundnode+8 intoECX",
+      "Ifoldrecordnonnull readitsactualprofile andslot0;PUSH1;CALLEAXat008F2917",
+      "Onlyafteractualscalarreturn zeronode+8 at008F2919",
+      "PublishincomingrecordDWORD tonode+8 at008F2924",
+      "Returnactualmapcount unchanged; no newnode/key/bucket/count mutation"
+    ],
+    "miss_schedule": [
+      "MOVECX,E175B0 at008F2930;CALLgenuinegeneric14hallocator004E7C00at008F2935",
+      "Ifslotnonnull zeroonlyitskeyheaderDWORDs+0/+4;retainnullslotpath",
+      "Ifslot!=queryheader CALLrawresize0041DD40(length=querylength,preserve1);ifquerylengthnonzero copyactualdestinationlength bytes fromquerydata tonodedata via00BF7680;terminatorcomesfromresize",
+      "Publishincomingrecord tonode+8",
+      "Reloadgenuinebucketindex;setnode+0C=oldactualbuckethead",
+      "Publishactualbuckethead=node",
+      "Incrementactualmapcount at+4 and returncurrentcount"
+    ],
+    "node_layout": {
+      "bytes": "14h",
+      "+0": "owningkeylengthDWORD",
+      "+4": "owningkeydata pointer",
+      "+8": "actualmappedrecord pointerDWORD",
+      "+0C": "nextnode pointer",
+      "+10": "allocator-ownedpageidentity, untouched by both owned bodies"
+    },
+    "guarantee_on_success": "A genuine missing-keypath publishes a realpoolslot with copiedowningkey,nextpointer,actualbuckethead andcount. Nodepayload/ownership schema matches admitted nativeclone mapinput. This isnativeproductionevidence, not currentwholeSourceclosure.",
+    "failure_and_alias_limits": [
+      "Noaddednullguard: nullallocatorresult stillreachesheader/value writes and canfault",
+      "Noidentityguard onreplacement: oldmappedrecord==incomingrecord stilldestroysoldfirst; iffreed, subsequentnodepublication/wrappermetadata touch isunsafe. Admit onlygenuine disjointreplacement ownership",
+      "No concurrentmapmutation/reentry, invalidbucketout, fabricatedslot/pageidentity or arbitraryquery/nodealias admission",
+      "No rollback or OriginalFH3/CRTfailureparity manufactured"
+    ]
+  },
+  "actual_record_scalar_binding": {
+    "indirect_call_site": "008F2917",
+    "instruction": "CALL EAX",
+    "function": "008F28F0",
+    "receiver": "actualoldrecord=node+8",
+    "flags": 1,
+    "admitted_profile": "Prior complete actualtype6producer008EF780 writesCE89D4 intoactual38hrecord; currentlive/installedCE89D4slot0bytes30674e00 resolve004E6730.",
+    "profile_slot0": "004E6730",
+    "general_dispatch": "Remainsactualdynamicprofile slot0; no globalstaticdispatcher or opaque callback substitute.",
+    "missing_current_Source_chain": [
+      "004E6730 actualrecordscalar",
+      "008F0DE0 actualthunk",
+      "008F0640 wholetype-release, includingrealnestedscalar/recordmaplifetime"
+    ],
+    "qualification": "Otheroldrecordprofiles stayunresolved. Realtype6Source lifetime wasnot closed byarrayleaf orrawbagconstructor."
+  },
+  "actual_caller_binding": {
+    "caller": "008F41F0",
+    "caller_body": "008F41F0..008F4289,154B49instructions",
+    "caller_sha256": "2b8a332ed5807d4499150e6dfd5fd943c7d72c921c6cf3603c51dff2b4347157",
+    "call_site": "008F426C",
+    "setup": "Caller actualnew114hbag retainedEDI;actualclonedrecordEAX pushedat008F4268,actualkeyESI pushedat008F4269,MOVECX,EDIat008F426A;CALL008F33F0at008F426C.",
+    "coverage": "Complete prior sealed clonebody reused; no additionalnativecallerbody expanded.21wrapperxrefs andsinglelowerproviderxref saved.",
+    "caller_and_consumer_admission": "Showsactualnode/string/record provenance andliteralD16504/D162C4 initializedheaproot in nativepath. It doesnot makecurrentrawclone,oldrecordlifetimes,orwholepopulatedSourceprovider ready."
+  },
+  "direct_provider_readiness": [
+    {
+      "entry": "0041E870",
+      "current_raw_Source": "AVAILABLE",
+      "function": "construct_native_string_header_0041e870",
+      "file": "src/native_string.cpp",
+      "contract": "Raw8h fresh-header constructor overload with genuineNativeStringRawPoolContext; zero length/data, scan actual CString, resize, overlap-safe copy. This is not assignment onto an existing owning header.",
+      "ABI": "OriginalECX8hheader,stackCString,RET4,EAXheader; current interface differs."
+    },
+    {
+      "entry": "00419CC0",
+      "current_raw_Source": "AVAILABLE",
+      "function": "native_string_pool_get_or_create_00419cc0",
+      "file": "src/native_string_pool_owner.cpp",
+      "contract": "Actual publication/manager overload constructs genuine raw8AD4A0 pool, registers it in actual raw manager, uses real section/cleanup and reloads publication.",
+      "ABI": "Originalnoargs/plainRET/EAXpool; pending stacked words are not its args."
+    },
+    {
+      "entry": "00BD1510",
+      "current_raw_Source": "AVAILABLE",
+      "function": "return_native_string_pool_00bd1510",
+      "file": "src/native_string_pool_storage.cpp",
+      "contract": "Genuine actual pool sized release, actual disablecell and actualOScriticalsection; >=96h goes to real free, small blocks return through raw rings.",
+      "ABI": "OriginalECXpool,stackblock,size,unused,RET0C."
+    },
+    {
+      "entry": "008F28F0",
+      "current_raw_Source": "NOT_READY",
+      "file": null,
+      "contract": "Owned complete Originalbody; absent whole current raw Source because lookup and replacement lifetime are missing."
+    },
+    {
+      "entry": "0043B8B0",
+      "current_raw_Source": "ABSENT",
+      "file": null,
+      "contract": "Named unexpanded native lookup; caller provides actualmap/query8hheader/outbucketaddress, requires returnednode ornull and actualbucketpublication. No semantic lookup substitute.",
+      "ABI": "Only caller-visible setup established here; original complete calleeABI/body is next separate audit."
+    },
+    {
+      "entry": "004E7C00",
+      "current_raw_Source": "AVAILABLE_CONDITIONAL",
+      "function": "allocate_native_enum_node_004e7c00",
+      "file": "src/native_enum_node_pool.cpp",
+      "contract": "Whole ordinary raw14h allocator on genuine initialized38h siblingpool, same actualAllocatorListDomain, actualOSsection/depth/page-table/584hslab/free-index storage; preserves slot+10 pageidentity. ActualrecordpoolE175B0 is distinct fromenumE175E8 andsymbolE17578.",
+      "ABI": "OriginalECXactualpool,noargs,EAXslot; current interface explicitpointer."
+    },
+    {
+      "entry": "0041DD40",
+      "current_raw_Source": "AVAILABLE",
+      "function": "resize_native_string_header_0041dd40",
+      "file": "src/native_string.cpp",
+      "contract": "Actual8h header/rawpool overload; genuine length+1 storage, preserve flag and terminator, real sized olddata release.",
+      "ABI": "OriginalECXheader,stacklength,preserve,RET8."
+    },
+    {
+      "entry": "00BF7680",
+      "current_raw_Source": "AVAILABLE_HOST_CRT_BOUNDARY",
+      "contract": "Existing genuine raw string and enum-node Source use real memmove for the native overlap-capable copy body; no invented memcpy shim. Not wholeOriginalCRT/ABI/optimizedlargecopy identity.",
+      "ABI": "Originalcdecl(destination,source,count),ADDESP0C atcaller."
+    }
+  ],
+  "current_raw_constructor_refresh": {
+    "entry": "008F41A0",
+    "Source": "PRESENT src/native_scene_property_bag_storage.cpp",
+    "function": "initialize_native_scene_property_bag_storage_008f41a0",
+    "physicalABI": "ECXactualroot;unusedEDXformal;oneownerDWORDstackarg;RET4;EAXroot;DF0required",
+    "scope": "Whole61B15 literalstorageconstructor inspected inSource only; constructsactual114h emptybag with D16504/D162C4,count,64heads,ordinal,owner. No reclaim/Nativebody expansion ofexternallyownedaddress. LiteralprofilesareOriginalDATAphase markers,not Sourcevtable bindings."
+  },
+  "Source_freshness": {
+    "UTC": "2026-10-08T06:14:51.277332+00:00",
+    "live_main_head": "0fa8ebb1b5e8e0d65b9b2f62df0e1242f197d140",
+    "worker_baseline": "bb4ba05817c19d327d0cc2caa13697ca96c558c6",
+    "raw008F41A0_Source": "PRESENT src/native_scene_property_bag_storage.cpp; complete literal61B15 constructor and physicalABI header inspected without any native body/ownership expansion",
+    "available_raw_providers": [
+      "construct_native_string_header_0041e870 rawcontext overload",
+      "resize_native_string_header_0041dd40 rawcontext overload",
+      "native_string_pool_get_or_create_00419cc0 actual raw manager overload",
+      "return_native_string_pool_00bd1510 actual storage",
+      "allocate_native_enum_node_004e7c00 actual initialized sibling rawpool; keep recordpoolE175B0 distinct",
+      "real overlap-safe host memmove CRT boundary"
+    ],
+    "missing_whole_Source": [
+      "0043B8B0 rawlookup",
+      "008F28F0 whole raw insertion/replacement",
+      "008F33F0 whole raw wrapper",
+      "004E6730 actual owned record scalar",
+      "008F0DE0 actual recordthunk",
+      "008F0640 whole type/nested lifetime"
+    ],
+    "files": [
+      {
+        "file": "src/native_scene_property_bag_storage.cpp",
+        "live_main_sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69",
+        "worker_sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69"
+      },
+      {
+        "file": "include/bsp/native_scene_property_bag_storage.hpp",
+        "live_main_sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a",
+        "worker_sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a"
+      },
+      {
+        "file": "src/native_enum_node_pool.cpp",
+        "live_main_sha256": "9117dd514b21f149dafb1628ecc83af896b5dbf061d6e7e89beca9f4500b231c",
+        "worker_sha256": "9117dd514b21f149dafb1628ecc83af896b5dbf061d6e7e89beca9f4500b231c"
+      },
+      {
+        "file": "include/bsp/native_enum_node_pool.hpp",
+        "live_main_sha256": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb",
+        "worker_sha256": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb"
+      },
+      {
+        "file": "src/native_string.cpp",
+        "live_main_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "worker_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      {
+        "file": "include/bsp/native_string.hpp",
+        "live_main_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "worker_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "file": "src/native_string_pool_owner.cpp",
+        "live_main_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "worker_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "file": "src/native_string_pool_storage.cpp",
+        "live_main_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "worker_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      },
+      {
+        "file": "src/native_enum_symbol_insertion.cpp",
+        "live_main_sha256": "be5a3657639bab5063bb1ca13c0c6179a8e94196c95fd3f5a03a50791d21a200",
+        "worker_sha256": "be5a3657639bab5063bb1ca13c0c6179a8e94196c95fd3f5a03a50791d21a200"
+      },
+      {
+        "file": "include/bsp/native_enum_symbol_insertion.hpp",
+        "live_main_sha256": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa",
+        "worker_sha256": "903ee9ed73a97aa15057b3e7e2409e43a02a5c2795a11e8a4f5bf6c0e12994fa"
+      }
+    ],
+    "qualification": "Fresh Source/ledger inspection only; current availability in its existing admitted ordinary domains, not a re-test, staticOriginalglobal publication, class closure or Original ABI."
+  },
+  "readiness": {
+    "008F33F0": "NOT_READY: first missing whole provider is008F28F0.",
+    "008F28F0": "NOT_READY: missing direct lookup0043B8B0 and genuine old-record dynamic scalar lifetime.",
+    "populated_map_production": "NATIVE_ORDER_AND_MEMORY_PROVEN;WHOLE_CURRENT_RAW_SOURCE_NOT_READY"
+  },
+  "host_steps": [
+    {
+      "address": "008F3415",
+      "native": "0041E870",
+      "function": "008F33F0",
+      "contract": "ECX actualfresh8h temporaryheader; PUSH originalCStringkey; originalRET4"
+    },
+    {
+      "address": "008F342F",
+      "native": "008F28F0",
+      "function": "008F33F0",
+      "contract": "ECX actualbag+4; PUSH actualrecord then temporary8hkeyheader; RET8"
+    },
+    {
+      "address": "008F344F",
+      "native": "00419CC0",
+      "function": "008F33F0",
+      "contract": "No arguments; three already-pushed words belong to following00BD1510; plainRET"
+    },
+    {
+      "address": "008F3456",
+      "native": "00BD1510",
+      "function": "008F33F0",
+      "contract": "ECX actualpoolreturnedEAX; pending stack data,length+1,unused1; RET0C"
+    },
+    {
+      "address": "008F28FF",
+      "native": "0043B8B0",
+      "function": "008F28F0",
+      "contract": "ECX actualmap; pushed queryheader and outbucketaddress; originalcallee not newly expanded"
+    },
+    {
+      "address": "008F2935",
+      "native": "004E7C00",
+      "function": "008F28F0",
+      "contract": "ECX actual recordnodepoolE175B0; no stack args; genuine14hslot return"
+    },
+    {
+      "address": "008F295C",
+      "native": "0041DD40",
+      "function": "008F28F0",
+      "contract": "ECX actualnode8hkeyheader; PUSH1 then querylength; originalRET8"
+    },
+    {
+      "address": "008F2971",
+      "native": "00BF7680",
+      "function": "008F28F0",
+      "contract": "PUSH destinationlength,querydata,nodedata; ADD ESP0C at008F2976"
+    },
+    {
+      "address": "008F426C",
+      "native": "008F33F0",
+      "function": "008F41F0",
+      "contract": "ECX actualnew114hbag; PUSH actualcloneEAX then actualnodekeyESI; originalRET8"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "008F2917",
+      "function": "008F28F0",
+      "instruction": "CALL EAX",
+      "resolution": "Actualoldrecordprofile slot0;CE89D4candidate isverified004E6730 onlywhenactualprofile admission holds",
+      "native_target_deliberately_omitted": true
+    }
+  ],
+  "call_verification": {
+    "direct_rows": 9,
+    "indirect_rows": 1,
+    "status": "PASS existing tools/verify_report_calls.py:9checked,0failed",
+    "indirect_qualification": "No inventedstaticnative target row;dynamicinstruction pinnedseparately"
+  },
+  "corrections": [
+    {
+      "was": "Olderiteratoraudit reportedraw008F41A0Source absent atthatoldertimestamp",
+      "is": "Genuinewhole rawstorageconstructor nowpresent onmain0fa8ebb1 andworker refreshedbeforefinalSourceanalysis",
+      "evidence": "fresh10filehashreceipt andactualnative_scene_property_bag_storage Source/header"
+    },
+    {
+      "was": "Pseudocode labels0041E870Assign andshows3arguments to00419CC0",
+      "is": "Actual0041E870 isfresh8hconstructor;getter00419CC0 takesnoargs andthe3pushedwords areforfollowingthiscall00BD1510",
+      "evidence": "currentSourceconstruct_native_string_header and008F3448..008F3456stack/registerlisting"
+    },
+    {
+      "was": "004E7C00 descriptiveEnumNodePool labelcould implyenumtableownerE175E8",
+      "is": "Thisnativecall uses distinctactualrecordnodepoolE175B0;genericraw14hprovider remainsavailablewithgenuine siblingpool admission",
+      "evidence": "MOVECX,E175B0 at008F2930 andcurrentactualrawpoolheader/Source"
+    }
+  ],
+  "bounded_implementation_recommendation": "NONE_READY: keep bothwholeNOT_READY. Nextboundedread-only audit shouldlease0043B8B0 (anddirecthashdependency0043B760 onlyifagreed), establishwholelookup/body/ABI andgenuinecurrentrawkey/map/nodeadmission; keepoldrecordreplacementscalar chain explicit. Do notimplementfresh-key-onlyprojection.",
+  "named_UNEXPANDED_dependencies": [
+    "0043B8B0 wholeactualrawlookup andits0043B760hash/data/CRThelpers",
+    "004E6730 ->008F0DE0 ->008F0640 actualoldrecordscalar/type/nestedlifetime",
+    "OriginalstaticE175B0owner/globalconstructor/publication/privateEH/classidentity",
+    "Otherrecordprofiles/real38hproducersbeyondthepreviousadmittedtype6path",
+    "Wholeclone/mapclear/advance/factory/world/gamebindings"
+  ],
+  "required_Ghidra_repairs": [],
+  "evidence_paths": {
+    "root": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness",
+    "byte_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/byte_receipt.json",
+    "owned_pseudocode": [
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/008f33f0_decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/008f28f0_decompiled.c"
+    ],
+    "owned_listings": [
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/008f33f0_assembly.txt",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/008f28f0_assembly.txt"
+    ],
+    "call_instructions": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/call_instructions.json",
+    "call_site_body_ranges": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/call_site_body_ranges.txt",
+    "flow_report": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/flow_report.txt",
+    "Source_freshness_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/Source_freshness_receipt.json",
+    "current_dependency_lookup": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/current_dependency_lookup.txt",
+    "artifact_manifest": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/artifact_manifest.json",
+    "artifact_manifest_sha256": "079b45d55b4635b968641877a4fbff86dd174591a7b120c846537ad5c7918700",
+    "call_verification_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_insertion_readiness/call_verification_receipt.json"
+  },
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_execution": false,
+  "new_tests": 0,
+  "build_run": false,
+  "old_fixtures_replayed": false,
+  "Ghidra_mutation": false,
+  "shared_metadata_CMake_ledger_export_writes": false,
+  "native_class_ABI_compatible": false,
+  "game_validated": false,
+  "qualification": "Complete Original/source-readiness auditonly. ExistingproviderSourceavailability ischeckedfresh withouttestreplay; installedbytes/callrows arestaticevidence, not runtime/class/ABI/factory/world/gameclosure.",
+  "primary_review": {
+    "complete_live_listings_independently_read": "46 wrapper instructions plus65 insertion provider instructions; full327bytes and every ordinary return",
+    "whole_installed_code_bytes_rechecked": 327,
+    "actual_scalar_profile_slot_bytes_rechecked": 4,
+    "sealed_artifact_manifest_sha256_rechecked": "079b45d55b4635b968641877a4fbff86dd174591a7b120c846537ad5c7918700",
+    "artifact_pins_rehashed": 34,
+    "accepted_scope": "Whole Original/readiness audit only; direct lookup and dynamic old-record destruction remain missing. Raw allocator availability for an initialized sibling pool does not admit the separate property record poolE175B0.",
+    "fresh_key_only_promotion": false,
+    "new_Source_or_native_execution": false,
+    "new_Original_reconstructions": 0
+  }
+}

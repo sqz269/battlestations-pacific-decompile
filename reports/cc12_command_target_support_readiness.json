@@ -1,0 +1,2081 @@
+{
+  "schema": 1,
+  "packet": "cc12_command_target_support_readiness",
+  "status": "audited_unready_no_Source",
+  "ready_count": 0,
+  "new_Source_bodies": 0,
+  "family": "J:/PROG/battlestations-pacific-decompile-cc12_command_target_initialize/local/cc12_command_target_support_audit20261008a",
+  "audit_sha256": "e93cc479c4979cf1de8dd60cce8de6938d51ff3461d114883727aa97c771e1e2",
+  "seal_sha256": "e381bb824510f4a14c3c40ae2caa8914e15ac1a618ae5fd5e78816a19a594cfd",
+  "qualification": "No ready Source packet. Exact wrapper bodies004F1870=22B9 and004F1890=43B19 retained as native-only readiness evidence; actual raw list providers remain missing and typed registration/vector/registry/currentCRT services are not substituted. Wrapper references atD03FB0/4 are DATA-only, not live caller/class/world admission. Erase004837D0 complete physical79B31 differs from saved70-byte span/23 listed instructions: missing9-byte epilogues[4837FF,483808) and[483816,48381F), each ADD ESP4/MOV EAX,ESI/POP ESI/RET4, return actual successor or zero. Supported flow-property query reported script execution disabled; precise override/no-return cause remains unverified. No script enabling, restart, listing repair, Source implementation, build, fixture execution or Ghidra mutation. Audit covers390 raw bytes/eight bodies,15 endpoints plus16 actual edges, with172 prior artifacts and Source/PE/target/data bookends unchanged.",
+  "reviewed_audit": {
+    "schema": 1,
+    "packet": "cc12_command_target_support_readiness_audit",
+    "source_head": "d740a011d9e518eee65bc1d96e970675101d53aa",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "scope": {
+      "root_entries": [
+        "004f1870",
+        "004f1890"
+      ],
+      "whole_raw_byte_spans": 8,
+      "body_bytes_inspected": 390,
+      "body_instructions_linear": 150,
+      "concrete_function_endpoints": 15,
+      "concrete_reachable_CALL_JMP_edges": 16,
+      "combined_endpoints_plus_edges": 31,
+      "bound": 32,
+      "new_Source_bodies": 0,
+      "Ghidra_mutations": 0,
+      "fixtures": 0,
+      "builds": 0,
+      "old_replays": 0
+    },
+    "entry_evidence": {
+      "004f1870": {
+        "exact_saved_entry": true,
+        "complete_span": "[004F1870,004F1886)",
+        "size": 22,
+        "instructions": 9,
+        "xref": "DATA00D03FB0, saved/PE DWORD004F1870"
+      },
+      "004f1890": {
+        "exact_saved_entry": true,
+        "complete_span": "[004F1890,004F18BB)",
+        "size": 43,
+        "instructions": 19,
+        "xref": "DATA00D03FB4, saved/PE DWORD004F1890"
+      },
+      "direct_caller_limit": "Current capped8 xrefs each contain only one DATA row; current index has zero direct callers. Static table pointers support exact entry addresses, not a live virtual caller/class/receiver/world admission."
+    },
+    "bodies": {
+      "004f1870": {
+        "address": "004f1870",
+        "end_exclusive": "004f1886",
+        "size": 22,
+        "hex": "568bf1e8e86c43008b4e305683c130e8bc2cf9ff5ec3",
+        "sha256": "d56c3aa251d0816d206fbd8781e26b722ebdf89eaf1f7189faf6bbb536c83a6d",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 22,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "004f1870",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f1871",
+            "size": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "op_str": "esi, ecx"
+          },
+          {
+            "address": "004f1873",
+            "size": 5,
+            "hex": "e8e86c4300",
+            "mnemonic": "call",
+            "op_str": "0x928560"
+          },
+          {
+            "address": "004f1878",
+            "size": 3,
+            "hex": "8b4e30",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [esi + 0x30]"
+          },
+          {
+            "address": "004f187b",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f187c",
+            "size": 3,
+            "hex": "83c130",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x30"
+          },
+          {
+            "address": "004f187f",
+            "size": 5,
+            "hex": "e8bc2cf9ff",
+            "mnemonic": "call",
+            "op_str": "0x484540"
+          },
+          {
+            "address": "004f1884",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f1885",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 9,
+        "edges": [
+          {
+            "from": "004f1873",
+            "mnemonic": "call",
+            "to": "00928560"
+          },
+          {
+            "from": "004f187f",
+            "mnemonic": "call",
+            "to": "00484540"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "004f1890": {
+        "address": "004f1890",
+        "end_exclusive": "004f18bb",
+        "size": 43,
+        "hex": "568bf1e8d86c43008b4e308b413483c13085c0741439700874098b400485c075f45ec350e8171ff9ff5ec3",
+        "sha256": "7f6f68f8a068193cbd0e04c680a5f99278ec72a8d18d0dac9173f57ad19494c1",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 43,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "004f1890",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f1891",
+            "size": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "op_str": "esi, ecx"
+          },
+          {
+            "address": "004f1893",
+            "size": 5,
+            "hex": "e8d86c4300",
+            "mnemonic": "call",
+            "op_str": "0x928570"
+          },
+          {
+            "address": "004f1898",
+            "size": 3,
+            "hex": "8b4e30",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [esi + 0x30]"
+          },
+          {
+            "address": "004f189b",
+            "size": 3,
+            "hex": "8b4134",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [ecx + 0x34]"
+          },
+          {
+            "address": "004f189e",
+            "size": 3,
+            "hex": "83c130",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x30"
+          },
+          {
+            "address": "004f18a1",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "004f18a3",
+            "size": 2,
+            "hex": "7414",
+            "mnemonic": "je",
+            "op_str": "0x4f18b9"
+          },
+          {
+            "address": "004f18a5",
+            "size": 3,
+            "hex": "397008",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [eax + 8], esi"
+          },
+          {
+            "address": "004f18a8",
+            "size": 2,
+            "hex": "7409",
+            "mnemonic": "je",
+            "op_str": "0x4f18b3"
+          },
+          {
+            "address": "004f18aa",
+            "size": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004f18ad",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "004f18af",
+            "size": 2,
+            "hex": "75f4",
+            "mnemonic": "jne",
+            "op_str": "0x4f18a5"
+          },
+          {
+            "address": "004f18b1",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f18b2",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          },
+          {
+            "address": "004f18b3",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "004f18b4",
+            "size": 5,
+            "hex": "e8171ff9ff",
+            "mnemonic": "call",
+            "op_str": "0x4837d0"
+          },
+          {
+            "address": "004f18b9",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "004f18ba",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 19,
+        "edges": [
+          {
+            "from": "004f1893",
+            "mnemonic": "call",
+            "to": "00928570"
+          },
+          {
+            "from": "004f18b4",
+            "mnemonic": "call",
+            "to": "004837d0"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "00928560": {
+        "address": "00928560",
+        "end_exclusive": "0092856d",
+        "size": 13,
+        "hex": "518b493083c124e8d4bfb5ffc3",
+        "sha256": "c13d778e0525c4ca619b7785767bbd5ce6fbc06215c73b88fcae6c56acb6bce1",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 13,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "00928560",
+            "size": 1,
+            "hex": "51",
+            "mnemonic": "push",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00928561",
+            "size": 3,
+            "hex": "8b4930",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [ecx + 0x30]"
+          },
+          {
+            "address": "00928564",
+            "size": 3,
+            "hex": "83c124",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x24"
+          },
+          {
+            "address": "00928567",
+            "size": 5,
+            "hex": "e8d4bfb5ff",
+            "mnemonic": "call",
+            "op_str": "0x484540"
+          },
+          {
+            "address": "0092856c",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 5,
+        "edges": [
+          {
+            "from": "00928567",
+            "mnemonic": "call",
+            "to": "00484540"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "00928570": {
+        "address": "00928570",
+        "end_exclusive": "00928594",
+        "size": 36,
+        "hex": "8bd18b4a308b412883c12485c074149039500874088b400485c075f4c350e83db2b5ffc3",
+        "sha256": "5e5953808bcedd0d474f116b3a761958693034335fa2d06906821f25d06a4ab2",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 36,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "00928570",
+            "size": 2,
+            "hex": "8bd1",
+            "mnemonic": "mov",
+            "op_str": "edx, ecx"
+          },
+          {
+            "address": "00928572",
+            "size": 3,
+            "hex": "8b4a30",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [edx + 0x30]"
+          },
+          {
+            "address": "00928575",
+            "size": 3,
+            "hex": "8b4128",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [ecx + 0x28]"
+          },
+          {
+            "address": "00928578",
+            "size": 3,
+            "hex": "83c124",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x24"
+          },
+          {
+            "address": "0092857b",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "0092857d",
+            "size": 2,
+            "hex": "7414",
+            "mnemonic": "je",
+            "op_str": "0x928593"
+          },
+          {
+            "address": "0092857f",
+            "size": 1,
+            "hex": "90",
+            "mnemonic": "nop",
+            "op_str": ""
+          },
+          {
+            "address": "00928580",
+            "size": 3,
+            "hex": "395008",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [eax + 8], edx"
+          },
+          {
+            "address": "00928583",
+            "size": 2,
+            "hex": "7408",
+            "mnemonic": "je",
+            "op_str": "0x92858d"
+          },
+          {
+            "address": "00928585",
+            "size": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00928588",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "0092858a",
+            "size": 2,
+            "hex": "75f4",
+            "mnemonic": "jne",
+            "op_str": "0x928580"
+          },
+          {
+            "address": "0092858c",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          },
+          {
+            "address": "0092858d",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "0092858e",
+            "size": 5,
+            "hex": "e83db2b5ff",
+            "mnemonic": "call",
+            "op_str": "0x4837d0"
+          },
+          {
+            "address": "00928593",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 16,
+        "edges": [
+          {
+            "from": "0092858e",
+            "mnemonic": "call",
+            "to": "004837d0"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "00484540": {
+        "address": "00484540",
+        "end_exclusive": "00484597",
+        "size": 87,
+        "hex": "56576a0c8bf1e8d022770033d283c4043bc2740c89108950048950088bc8eb0233c98b44240c8941088b7e088939391674148b7e08894f04894e088951048306015f5ec20400894e04894e088951048306015f5ec20400",
+        "sha256": "4b5cdb5a7a0792b0f0e94b3633502bc1a93a4092d79ee8d44adc733012fbc313",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 87,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "00484540",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484541",
+            "size": 1,
+            "hex": "57",
+            "mnemonic": "push",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484542",
+            "size": 2,
+            "hex": "6a0c",
+            "mnemonic": "push",
+            "op_str": "0xc"
+          },
+          {
+            "address": "00484544",
+            "size": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "op_str": "esi, ecx"
+          },
+          {
+            "address": "00484546",
+            "size": 5,
+            "hex": "e8d0227700",
+            "mnemonic": "call",
+            "op_str": "0xbf681b"
+          },
+          {
+            "address": "0048454b",
+            "size": 2,
+            "hex": "33d2",
+            "mnemonic": "xor",
+            "op_str": "edx, edx"
+          },
+          {
+            "address": "0048454d",
+            "size": 3,
+            "hex": "83c404",
+            "mnemonic": "add",
+            "op_str": "esp, 4"
+          },
+          {
+            "address": "00484550",
+            "size": 2,
+            "hex": "3bc2",
+            "mnemonic": "cmp",
+            "op_str": "eax, edx"
+          },
+          {
+            "address": "00484552",
+            "size": 2,
+            "hex": "740c",
+            "mnemonic": "je",
+            "op_str": "0x484560"
+          },
+          {
+            "address": "00484554",
+            "size": 2,
+            "hex": "8910",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax], edx"
+          },
+          {
+            "address": "00484556",
+            "size": 3,
+            "hex": "895004",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax + 4], edx"
+          },
+          {
+            "address": "00484559",
+            "size": 3,
+            "hex": "895008",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax + 8], edx"
+          },
+          {
+            "address": "0048455c",
+            "size": 2,
+            "hex": "8bc8",
+            "mnemonic": "mov",
+            "op_str": "ecx, eax"
+          },
+          {
+            "address": "0048455e",
+            "size": 2,
+            "hex": "eb02",
+            "mnemonic": "jmp",
+            "op_str": "0x484562"
+          },
+          {
+            "address": "00484560",
+            "size": 2,
+            "hex": "33c9",
+            "mnemonic": "xor",
+            "op_str": "ecx, ecx"
+          },
+          {
+            "address": "00484562",
+            "size": 4,
+            "hex": "8b44240c",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00484566",
+            "size": 3,
+            "hex": "894108",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 8], eax"
+          },
+          {
+            "address": "00484569",
+            "size": 3,
+            "hex": "8b7e08",
+            "mnemonic": "mov",
+            "op_str": "edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "0048456c",
+            "size": 2,
+            "hex": "8939",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx], edi"
+          },
+          {
+            "address": "0048456e",
+            "size": 2,
+            "hex": "3916",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [esi], edx"
+          },
+          {
+            "address": "00484570",
+            "size": 2,
+            "hex": "7414",
+            "mnemonic": "je",
+            "op_str": "0x484586"
+          },
+          {
+            "address": "00484572",
+            "size": 3,
+            "hex": "8b7e08",
+            "mnemonic": "mov",
+            "op_str": "edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00484575",
+            "size": 3,
+            "hex": "894f04",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [edi + 4], ecx"
+          },
+          {
+            "address": "00484578",
+            "size": 3,
+            "hex": "894e08",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 8], ecx"
+          },
+          {
+            "address": "0048457b",
+            "size": 3,
+            "hex": "895104",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "0048457e",
+            "size": 3,
+            "hex": "830601",
+            "mnemonic": "add",
+            "op_str": "dword ptr [esi], 1"
+          },
+          {
+            "address": "00484581",
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484582",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484583",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          },
+          {
+            "address": "00484586",
+            "size": 3,
+            "hex": "894e04",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 4], ecx"
+          },
+          {
+            "address": "00484589",
+            "size": 3,
+            "hex": "894e08",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 8], ecx"
+          },
+          {
+            "address": "0048458c",
+            "size": 3,
+            "hex": "895104",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "0048458f",
+            "size": 3,
+            "hex": "830601",
+            "mnemonic": "add",
+            "op_str": "dword ptr [esi], 1"
+          },
+          {
+            "address": "00484592",
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484593",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484594",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          }
+        ],
+        "instruction_count": 36,
+        "edges": [
+          {
+            "from": "00484546",
+            "mnemonic": "call",
+            "to": "00bf681b"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "004837d0": {
+        "address": "004837d0",
+        "end_exclusive": "0048381f",
+        "size": 79,
+        "hex": "8b4424048b1085d25674088b7004897204eb068b5004895104837804008b1074178b700489168301ff50e8ad2d770083c4048bc65ec204008301ff5033f6895108e8962d770083c4048bc65ec20400",
+        "sha256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 79,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "004837d0",
+            "size": 4,
+            "hex": "8b442404",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [esp + 4]"
+          },
+          {
+            "address": "004837d4",
+            "size": 2,
+            "hex": "8b10",
+            "mnemonic": "mov",
+            "op_str": "edx, dword ptr [eax]"
+          },
+          {
+            "address": "004837d6",
+            "size": 2,
+            "hex": "85d2",
+            "mnemonic": "test",
+            "op_str": "edx, edx"
+          },
+          {
+            "address": "004837d8",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "004837d9",
+            "size": 2,
+            "hex": "7408",
+            "mnemonic": "je",
+            "op_str": "0x4837e3"
+          },
+          {
+            "address": "004837db",
+            "size": 3,
+            "hex": "8b7004",
+            "mnemonic": "mov",
+            "op_str": "esi, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004837de",
+            "size": 3,
+            "hex": "897204",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [edx + 4], esi"
+          },
+          {
+            "address": "004837e1",
+            "size": 2,
+            "hex": "eb06",
+            "mnemonic": "jmp",
+            "op_str": "0x4837e9"
+          },
+          {
+            "address": "004837e3",
+            "size": 3,
+            "hex": "8b5004",
+            "mnemonic": "mov",
+            "op_str": "edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004837e6",
+            "size": 3,
+            "hex": "895104",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "004837e9",
+            "size": 4,
+            "hex": "83780400",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [eax + 4], 0"
+          },
+          {
+            "address": "004837ed",
+            "size": 2,
+            "hex": "8b10",
+            "mnemonic": "mov",
+            "op_str": "edx, dword ptr [eax]"
+          },
+          {
+            "address": "004837ef",
+            "size": 2,
+            "hex": "7417",
+            "mnemonic": "je",
+            "op_str": "0x483808"
+          },
+          {
+            "address": "004837f1",
+            "size": 3,
+            "hex": "8b7004",
+            "mnemonic": "mov",
+            "op_str": "esi, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004837f4",
+            "size": 2,
+            "hex": "8916",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi], edx"
+          },
+          {
+            "address": "004837f6",
+            "size": 3,
+            "hex": "8301ff",
+            "mnemonic": "add",
+            "op_str": "dword ptr [ecx], -1"
+          },
+          {
+            "address": "004837f9",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "004837fa",
+            "size": 5,
+            "hex": "e8ad2d7700",
+            "mnemonic": "call",
+            "op_str": "0xbf65ac"
+          },
+          {
+            "address": "004837ff",
+            "size": 3,
+            "hex": "83c404",
+            "mnemonic": "add",
+            "op_str": "esp, 4"
+          },
+          {
+            "address": "00483802",
+            "size": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "op_str": "eax, esi"
+          },
+          {
+            "address": "00483804",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00483805",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          },
+          {
+            "address": "00483808",
+            "size": 3,
+            "hex": "8301ff",
+            "mnemonic": "add",
+            "op_str": "dword ptr [ecx], -1"
+          },
+          {
+            "address": "0048380b",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "0048380c",
+            "size": 2,
+            "hex": "33f6",
+            "mnemonic": "xor",
+            "op_str": "esi, esi"
+          },
+          {
+            "address": "0048380e",
+            "size": 3,
+            "hex": "895108",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 8], edx"
+          },
+          {
+            "address": "00483811",
+            "size": 5,
+            "hex": "e8962d7700",
+            "mnemonic": "call",
+            "op_str": "0xbf65ac"
+          },
+          {
+            "address": "00483816",
+            "size": 3,
+            "hex": "83c404",
+            "mnemonic": "add",
+            "op_str": "esp, 4"
+          },
+          {
+            "address": "00483819",
+            "size": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "op_str": "eax, esi"
+          },
+          {
+            "address": "0048381b",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "0048381c",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          }
+        ],
+        "instruction_count": 31,
+        "edges": [
+          {
+            "from": "004837fa",
+            "mnemonic": "call",
+            "to": "00bf65ac"
+          },
+          {
+            "from": "00483811",
+            "mnemonic": "call",
+            "to": "00bf65ac"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "00bf681b": {
+        "address": "00bf681b",
+        "end_exclusive": "00bf6884",
+        "size": 105,
+        "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 105,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "00bf681b",
+            "size": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "op_str": "ebp"
+          },
+          {
+            "address": "00bf681c",
+            "size": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "op_str": "ebp, esp"
+          },
+          {
+            "address": "00bf681e",
+            "size": 3,
+            "hex": "83ec0c",
+            "mnemonic": "sub",
+            "op_str": "esp, 0xc"
+          },
+          {
+            "address": "00bf6821",
+            "size": 2,
+            "hex": "eb0d",
+            "mnemonic": "jmp",
+            "op_str": "0xbf6830"
+          },
+          {
+            "address": "00bf6823",
+            "size": 3,
+            "hex": "ff7508",
+            "mnemonic": "push",
+            "op_str": "dword ptr [ebp + 8]"
+          },
+          {
+            "address": "00bf6826",
+            "size": 5,
+            "hex": "e886ed0000",
+            "mnemonic": "call",
+            "op_str": "0xc055b1"
+          },
+          {
+            "address": "00bf682b",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "00bf682d",
+            "size": 1,
+            "hex": "59",
+            "mnemonic": "pop",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00bf682e",
+            "size": 2,
+            "hex": "740f",
+            "mnemonic": "je",
+            "op_str": "0xbf683f"
+          },
+          {
+            "address": "00bf6830",
+            "size": 3,
+            "hex": "ff7508",
+            "mnemonic": "push",
+            "op_str": "dword ptr [ebp + 8]"
+          },
+          {
+            "address": "00bf6833",
+            "size": 5,
+            "hex": "e8e2360000",
+            "mnemonic": "call",
+            "op_str": "0xbf9f1a"
+          },
+          {
+            "address": "00bf6838",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "00bf683a",
+            "size": 1,
+            "hex": "59",
+            "mnemonic": "pop",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00bf683b",
+            "size": 2,
+            "hex": "74e6",
+            "mnemonic": "je",
+            "op_str": "0xbf6823"
+          },
+          {
+            "address": "00bf683d",
+            "size": 1,
+            "hex": "c9",
+            "mnemonic": "leave",
+            "op_str": ""
+          },
+          {
+            "address": "00bf683e",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          },
+          {
+            "address": "00bf683f",
+            "size": 7,
+            "hex": "f60574dd090101",
+            "mnemonic": "test",
+            "op_str": "byte ptr [0x109dd74], 1"
+          },
+          {
+            "address": "00bf6846",
+            "size": 5,
+            "hex": "be68dd0901",
+            "mnemonic": "mov",
+            "op_str": "esi, 0x109dd68"
+          },
+          {
+            "address": "00bf684b",
+            "size": 2,
+            "hex": "7519",
+            "mnemonic": "jne",
+            "op_str": "0xbf6866"
+          },
+          {
+            "address": "00bf684d",
+            "size": 7,
+            "hex": "830d74dd090101",
+            "mnemonic": "or",
+            "op_str": "dword ptr [0x109dd74], 1"
+          },
+          {
+            "address": "00bf6854",
+            "size": 2,
+            "hex": "8bce",
+            "mnemonic": "mov",
+            "op_str": "ecx, esi"
+          },
+          {
+            "address": "00bf6856",
+            "size": 5,
+            "hex": "e8a7ffffff",
+            "mnemonic": "call",
+            "op_str": "0xbf6802"
+          },
+          {
+            "address": "00bf685b",
+            "size": 5,
+            "hex": "682211ce00",
+            "mnemonic": "push",
+            "op_str": "0xce1122"
+          },
+          {
+            "address": "00bf6860",
+            "size": 5,
+            "hex": "e890070000",
+            "mnemonic": "call",
+            "op_str": "0xbf6ff5"
+          },
+          {
+            "address": "00bf6865",
+            "size": 1,
+            "hex": "59",
+            "mnemonic": "pop",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00bf6866",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00bf6867",
+            "size": 3,
+            "hex": "8d4df4",
+            "mnemonic": "lea",
+            "op_str": "ecx, [ebp - 0xc]"
+          },
+          {
+            "address": "00bf686a",
+            "size": 5,
+            "hex": "e837fbffff",
+            "mnemonic": "call",
+            "op_str": "0xbf63a6"
+          },
+          {
+            "address": "00bf686f",
+            "size": 5,
+            "hex": "68c03ce000",
+            "mnemonic": "push",
+            "op_str": "0xe03cc0"
+          },
+          {
+            "address": "00bf6874",
+            "size": 3,
+            "hex": "8d45f4",
+            "mnemonic": "lea",
+            "op_str": "eax, [ebp - 0xc]"
+          },
+          {
+            "address": "00bf6877",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "00bf6878",
+            "size": 7,
+            "hex": "c745f43c92d600",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ebp - 0xc], 0xd6923c"
+          },
+          {
+            "address": "00bf687f",
+            "size": 5,
+            "hex": "e801000000",
+            "mnemonic": "call",
+            "op_str": "0xbf6885"
+          }
+        ],
+        "instruction_count": 33,
+        "edges": [
+          {
+            "from": "00bf6826",
+            "mnemonic": "call",
+            "to": "00c055b1"
+          },
+          {
+            "from": "00bf6833",
+            "mnemonic": "call",
+            "to": "00bf9f1a"
+          },
+          {
+            "from": "00bf6856",
+            "mnemonic": "call",
+            "to": "00bf6802"
+          },
+          {
+            "from": "00bf6860",
+            "mnemonic": "call",
+            "to": "00bf6ff5"
+          },
+          {
+            "from": "00bf686a",
+            "mnemonic": "call",
+            "to": "00bf63a6"
+          },
+          {
+            "from": "00bf687f",
+            "mnemonic": "call",
+            "to": "00bf6885"
+          }
+        ],
+        "PE_code_relocations": []
+      },
+      "00bf65ac": {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "size": 5,
+        "hex": "e917380000",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".text",
+          "characteristics": "60000020",
+          "actual_file_bytes": 5,
+          "loader_zero_bytes": 0
+        },
+        "instructions": [
+          {
+            "address": "00bf65ac",
+            "size": 5,
+            "hex": "e917380000",
+            "mnemonic": "jmp",
+            "op_str": "0xbf9dc8"
+          }
+        ],
+        "instruction_count": 1,
+        "edges": [
+          {
+            "from": "00bf65ac",
+            "mnemonic": "jmp",
+            "to": "00bf9dc8"
+          }
+        ],
+        "PE_code_relocations": []
+      }
+    },
+    "native_DATA": {
+      "00d03fb0": {
+        "address": "00d03fb0",
+        "end_exclusive": "00d03fb8",
+        "size": 8,
+        "hex": "70184f0090184f00",
+        "sha256": "241f95ba66a38468bd9b3964d4dcadb389b0741dc66a47db2a7ae01d3e6b6358",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".rdata",
+          "characteristics": "40000040",
+          "actual_file_bytes": 8,
+          "loader_zero_bytes": 0
+        }
+      },
+      "0109dd68": {
+        "address": "0109dd68",
+        "end_exclusive": "0109dd78",
+        "size": 16,
+        "hex": "00000000000000000000000000000000",
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "PE_loader_equals_saved_program": true,
+        "mapping": {
+          "section": ".data",
+          "characteristics": "c0000040",
+          "actual_file_bytes": 0,
+          "loader_zero_bytes": 16
+        }
+      }
+    },
+    "bounded_graph": {
+      "nodes": [
+        {
+          "address": "004837d0",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00484540",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "004f1870",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "004f1890",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00928560",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00928570",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00bf63a6",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00bf65ac",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00bf6802",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00bf681b",
+          "whole_raw_span_inspected": true
+        },
+        {
+          "address": "00bf6885",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00bf6ff5",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00bf9dc8",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00bf9f1a",
+          "whole_raw_span_inspected": false
+        },
+        {
+          "address": "00c055b1",
+          "whole_raw_span_inspected": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "004f1873",
+          "mnemonic": "call",
+          "to": "00928560",
+          "source_entry": "004f1870"
+        },
+        {
+          "from": "004f187f",
+          "mnemonic": "call",
+          "to": "00484540",
+          "source_entry": "004f1870"
+        },
+        {
+          "from": "004f1893",
+          "mnemonic": "call",
+          "to": "00928570",
+          "source_entry": "004f1890"
+        },
+        {
+          "from": "004f18b4",
+          "mnemonic": "call",
+          "to": "004837d0",
+          "source_entry": "004f1890"
+        },
+        {
+          "from": "00928567",
+          "mnemonic": "call",
+          "to": "00484540",
+          "source_entry": "00928560"
+        },
+        {
+          "from": "0092858e",
+          "mnemonic": "call",
+          "to": "004837d0",
+          "source_entry": "00928570"
+        },
+        {
+          "from": "00484546",
+          "mnemonic": "call",
+          "to": "00bf681b",
+          "source_entry": "00484540"
+        },
+        {
+          "from": "004837fa",
+          "mnemonic": "call",
+          "to": "00bf65ac",
+          "source_entry": "004837d0"
+        },
+        {
+          "from": "00483811",
+          "mnemonic": "call",
+          "to": "00bf65ac",
+          "source_entry": "004837d0"
+        },
+        {
+          "from": "00bf6826",
+          "mnemonic": "call",
+          "to": "00c055b1",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf6833",
+          "mnemonic": "call",
+          "to": "00bf9f1a",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf6856",
+          "mnemonic": "call",
+          "to": "00bf6802",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf6860",
+          "mnemonic": "call",
+          "to": "00bf6ff5",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf686a",
+          "mnemonic": "call",
+          "to": "00bf63a6",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf687f",
+          "mnemonic": "call",
+          "to": "00bf6885",
+          "source_entry": "00bf681b"
+        },
+        {
+          "from": "00bf65ac",
+          "mnemonic": "jmp",
+          "to": "00bf9dc8",
+          "source_entry": "00bf65ac"
+        }
+      ],
+      "frontier_rule": "Six operator-new callees and CRT free target are recorded endpoints only; no recursive code expansion or fabricated bindings."
+    },
+    "physical_ABI_and_Source_ownership": {
+      "004f1870": {
+        "entry": "actual ECX receiver; no consumed stacked operands; PUSH/POP ESI; RET0",
+        "ordered_body": "Save receiver in ESI; call00928560 with original ECX; fresh ECX=[ESI+30]; PUSH ESI; ECX+=30; call00484540; restore ESI; RET. The second parent read occurs after the first registration/allocator call.",
+        "normal_return": "Given ordinary native append return: EAX=identical receiver, ECX=second new node, EDX=0; flags from final second list count ADD1. ESI/EDI/EBX/EBP restored/preserved under allocator normal-return ABI. No full SSE/x87/MXCSR/DF contract promoted across allocator/handler calls.",
+        "owned_memory": "receiver+30 is actual parent pointer; first list is actual first parent+24, second list actual freshly reloaded parent+30; neither native parent nor list is manufactured."
+      },
+      "004f1890": {
+        "entry": "actual ECX receiver; no consumed stacked operands; PUSH/POP ESI; RET0",
+        "ordered_body": "Save receiver; call00928570; fresh parent=[ESI+30]; list=parent+30; head=[parent+34]; follow node+4 while comparing node+8 against exact receiver; erase first matching node with ECX=list and stacked node.",
+        "normal_return": "EAX=0 for no match, otherwise physical successor returned by whole4837D0 (possibly0). ESI restored. ECX/EDX/flags and volatile FP state depend on branch and actual free/provider; no invented whole-class ABI.",
+        "ownership": "Actual parent/list/node storage and allocation lifetime must be admitted. No null-parent, invalid-node or cycle guard in native body."
+      },
+      "00928560": {
+        "entry": "ECX receiver, no consumed stacked operands, RET0",
+        "ordered_body": "PUSH originalECX as payload; ECX=[ECX+30]; ADD ECX,24; CALL00484540; RET.",
+        "normal_return": "Native append makes EAX=receiver, ECX=new node, EDX=0; allocator normal-return constraints inherited.",
+        "current_source": "register_parent_entity_list_00928560(UnitWorldRegistrationHost&,void*) in src/unit_world_registration.cpp:92 calls virtual parent_0030/push_back_00484540. New typed interface; not native raw ECX entry."
+      },
+      "00928570": {
+        "entry": "ECX receiver, no consumed stacked operands, RET0; MOV EDX,ECX first",
+        "ordered_body": "ECX=[receiver+30]; EAX=[parent+28]; ECX+=24; compare node+8 with EDX and walk node+4; push first matching actual node and call4837D0.",
+        "normal_return": "Without match EAX=0, EDX=receiver, ECX=parent+24. Matched branch returns successor/0 through whole erase; actual free clobbers otherwise remain dependency-defined.",
+        "current_source": "No exact standalone raw provider found in current address search/index. Host unlink loop traverses modeled registry lists and uses delete."
+      },
+      "00484540": {
+        "entry": "ECX actual 0Ch list; [entryESP+4] actual payload; RET4; ESI/EDI explicitly saved",
+        "ordered_body": "Call00BF681B cdecl with0Ch; zero new node three words when nonnull; MOV ECX,EAX or ECX=0 on null; EAX=stack payload; write node+8; node.previous=oldtail; if count nonzero oldtail.next=node else head=node; tail=node; node.next=0; ++count.",
+        "normal_return": "EAX=original stacked payload, ECX=actual newly allocated node, EDX=0; arithmetic flags from final count increment; ESI/EDI restored. Other preserved-register behavior and exceptions depend on actual allocator ABI.",
+        "null_path": "Retained native null branch dereferences address8 at00484566. Actual native new normally returns allocated memory or throws; do not inject a fake null allocator to manufacture runtime coverage.",
+        "current_source": "src/local_player_unit_lists.cpp:76 is std::vector<UnitRef>::push_back. src/game_hosts_units.cpp:2855 is a private typed GameUnitWorldLists method: validates offset, uses new GameUnitWorldNode{}, writes host metadata/counters and takes GameUnitSlot&, not a raw ECX/RET4 provider."
+      },
+      "004837d0": {
+        "entry": "ECX actual list, [entryESP+4] actual node, RET4; ESI saved/restored",
+        "ordered_body": "Unlink actual prev/next; choose head/tail updates; decrement actual count; free node through00BF65AC; return captured successor in EAX or zero for last node. Exact raw bytes retain all fresh field reads and branch/order behavior.",
+        "normal_return": "EAX=actual node+4 successor captured in ESI before free, or0. Both epilogues ADD ESP,4; MOV EAX,ESI; POP ESI; RET4. Caller uses actual CDECL free and no payload destructor.",
+        "current_source": "No complete standalone raw entry or callable native list ownership contract found. Private host registry erase loop deletes GameUnitWorldNode and logs counters, not a raw callee.",
+        "listing_closure": "NOT established in saved Ghidra listing; both returning epilogues missing."
+      },
+      "00bf681b": {
+        "entry": "cdecl size at[ESP+4], EAX allocated raw pointer, RET on successful malloc; new-handler retry; throws when handler declines",
+        "normal_body": "105B33 entire saved/PE body; six actual direct CALL edges; normal successful return uses LEAVE;RET. Exhaustion constructs shared bad_alloc, registers atexit, copies exception and invokes CxxThrowException.",
+        "current_source": "singleton_lifetime_allocate(const SingletonAllocationRequest&) in src/singleton_lifetime.cpp:51 is a real current-CRT malloc/_callnewh/bad_alloc service with explicit host_bytes/native_bytes metadata. Not the original size-only callable entry or historical EH/handler/heap identity.",
+        "native_DATA": "0109DD68 bad_alloc and0109DD74 init flag, D6923C vtable, E03CC0 throw descriptor and CE1122 atexit routine. No production mapping/provider manufactured."
+      },
+      "00bf65ac": {
+        "entry": "whole5-byte direct JMP00BF9DC8; cdecl pointer on stack",
+        "normal_body": "Retain correct library name _free. Target CRT free/heap/SEH domain is a frontier, not newly reconstructed.",
+        "current_source": "singleton_lifetime_free(void*) in src/singleton_lifetime.cpp:65 uses matching current std::free; real service, but no historical native heap/runtime global identity claim."
+      }
+    },
+    "erase_listing_gap": {
+      "saved_min_max_span": "[004837D0,00483816)",
+      "span_bytes": 70,
+      "listed_instructions": 23,
+      "listed_instruction_bytes": 61,
+      "complete_raw_span": "[004837D0,0048381F)",
+      "raw_bytes": 79,
+      "raw_instructions": 31,
+      "missing_regions": [
+        {
+          "start": "004837ff",
+          "end_exclusive": "00483808",
+          "bytes": 9
+        },
+        {
+          "start": "00483816",
+          "end_exclusive": "0048381f",
+          "bytes": 9
+        }
+      ],
+      "each_missing_hex": "83c4048bc65ec20400",
+      "each_missing_sha256": "564c53bdd60b7d6d4740795adc9fbfd1611ccf35504a6a901d2ecedc8c8a72e8",
+      "whole79_sha256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+      "meaning": "Returning cleanup/iterator result epilogues, not data. Whole Source not admitted until saved listing repaired/revalidated.",
+      "flow_property_error": {
+        "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+      },
+      "precise_no_return_or_flow_override_cause": "unverified; supported query produced no property rows; no script enabling/restart/mutation fallback"
+    },
+    "library_scope": "The current singleton allocation/free services are genuine existing host-CRT services. A prospective raw list contract could explicitly adopt current CRT, but its exact callable adapter, size12 ownership, exception boundary and full-body validation have not been implemented/admitted. This audit does not promote these services to historical native CRT ABI or invent a provider.",
+    "native_DATA_EH_class_world_limits": [
+      "PE/saved16zero bytes at0109DD68 are mutable .data loader zero fill, not runtime bad_alloc state.",
+      "Original allocation exhaustion references historical shared exception object/guard/vtable/RTTI, atexit and CxxThrowException. Current std::bad_alloc does not establish historical EH identity.",
+      "Free target historical heap/SEH/handler/data ownership unbound.",
+      "Parent+30/read-before-after-call lifetime and same-object storage must be real; table references do not establish live OriginalSpawnPoint or other class membership.",
+      "No native world, startup or gameplay validation."
+    ],
+    "unready_receipts": [
+      {
+        "address": "004f1870",
+        "ready": false,
+        "requires": [
+          "whole raw00484540 with genuine 0Ch allocation and exact ECX/stack/RET4 provider contract",
+          "whole raw00928560 calling that exact provider",
+          "explicit actual receiver+30 parent and both list owners/lifetimes; fresh post-call parent identity preserved"
+        ],
+        "not_substitutes": [
+          "UnitWorldRegistrationHost callbacks",
+          "std::vector<UnitRef>",
+          "GameUnitSlot or GameUnitWorldLists class adaptation",
+          "new fake parent/world/dispatch/global mapping"
+        ]
+      },
+      {
+        "address": "004f1890",
+        "ready": false,
+        "requires": [
+          "Root repair/revalidation of both4837D0 returning gaps and saved extent",
+          "whole raw4837D0 with correct successor return and admitted node/free domain",
+          "whole raw00928570 using that provider",
+          "actual list links/count/parent lifetimes and first-match semantics"
+        ],
+        "not_substitutes": [
+          "private host unlink-all-lists loop",
+          "delete of a fabricated host node",
+          "incomplete saved pseudocode with void return",
+          "replacement class dispatch/provider"
+        ]
+      }
+    ],
+    "ready_next_packet": null,
+    "ready_count": 0,
+    "evidence_artifacts": {
+      "audit_read.py": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\audit_read.py",
+        "size": 8445,
+        "sha256": "5109515f64927cbee36f5f5a126cd2ba07aedba55835e49d270b278d1810210d"
+      },
+      "begin.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\begin.json",
+        "size": 208,
+        "sha256": "9e903f9d158431eb5d27390d35fd16d4ea7074b634207b7060628e3eeb19882c"
+      },
+      "native_before.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before.json",
+        "size": 33081,
+        "sha256": "61d9975a12ee9e2466e33e992905c8441d64f9e02c674e619b374bbe9dfb9fa9"
+      },
+      "native_after.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after.json",
+        "size": 33081,
+        "sha256": "61d9975a12ee9e2466e33e992905c8441d64f9e02c674e619b374bbe9dfb9fa9"
+      },
+      "current_source_ownership_search.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\current_source_ownership_search.json",
+        "size": 6806,
+        "sha256": "a6cd0fb4a38713a082ea5a69cda8a89b50591c719b2f5d4991aa7dca4c6dd90a"
+      },
+      "gap_context.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\gap_context.json",
+        "size": 1573,
+        "sha256": "3abe811805ecd7a3e03c70289dd4acf8c14790f9337312526e628bb91a86c2a8"
+      },
+      "free_flow_properties.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\free_flow_properties.json",
+        "size": 615,
+        "sha256": "85df646493d97a32eba760b4edf130675a6d54365376569d9ef66b9555a8b4e1"
+      },
+      "free_flow_properties_raw.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\free_flow_properties_raw.json",
+        "size": 7950,
+        "sha256": "b4980647e6c020d57d19f69e178c93c17f7e05a869fd59c233827ca5e0da2252"
+      },
+      "read_failures.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\read_failures.json",
+        "size": 1516,
+        "sha256": "0f93f54fdde2dc588bb5a60a032871c8c26a68a30dc719e0e2440988d17c96d3"
+      },
+      "post.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\post.json",
+        "size": 279,
+        "sha256": "cb26150aa63d9680b77791dbbd4581a5ee5538bec98f352f7922194e24cc7431"
+      }
+    },
+    "bookends": {
+      "whole_native_and_data_bookends_equal": true,
+      "source_PE_and_prior_artifacts_equal": true,
+      "protected_prior_artifacts": 172,
+      "Source_mutations": 0,
+      "Ghidra_mutations": 0,
+      "builds": 0,
+      "fixture_executions": 0,
+      "old_recipe_replays": 0,
+      "clean_worktree": true
+    },
+    "protected_prior_artifacts": 172,
+    "tracked_worktree_clean": true
+  },
+  "worker_seal": {
+    "schema": 1,
+    "family": "cc12_command_target_support_audit20261008a",
+    "read_only_audit_complete": true,
+    "ready_next_packet": null,
+    "source_head": "d740a011d9e518eee65bc1d96e970675101d53aa",
+    "clean_worktree": true,
+    "leases_released": [
+      "cc12_command_target_support_audit",
+      "cc12_command_target_support_direct",
+      "cc12_command_target_support_allocator"
+    ],
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\audit.json",
+      "size": 51275,
+      "sha256": "e93cc479c4979cf1de8dd60cce8de6938d51ff3461d114883727aa97c771e1e2"
+    },
+    "all_current_Source_PE_prior_artifact_and_native_data_bookends_equal": true,
+    "protected_prior_artifacts": 172,
+    "builds": 0,
+    "fixture_executions": 0,
+    "Ghidra_mutations": 0,
+    "Source_mutations": 0,
+    "old_family_replays": 0,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\audit.json",
+        "size": 51275,
+        "sha256": "e93cc479c4979cf1de8dd60cce8de6938d51ff3461d114883727aa97c771e1e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\audit_read.py",
+        "size": 8445,
+        "sha256": "5109515f64927cbee36f5f5a126cd2ba07aedba55835e49d270b278d1810210d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\begin.json",
+        "size": 208,
+        "sha256": "9e903f9d158431eb5d27390d35fd16d4ea7074b634207b7060628e3eeb19882c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\current_source_ownership_search.json",
+        "size": 6806,
+        "sha256": "a6cd0fb4a38713a082ea5a69cda8a89b50591c719b2f5d4991aa7dca4c6dd90a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\free_flow_properties.json",
+        "size": 615,
+        "sha256": "85df646493d97a32eba760b4edf130675a6d54365376569d9ef66b9555a8b4e1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\free_flow_properties_raw.json",
+        "size": 7950,
+        "sha256": "b4980647e6c020d57d19f69e178c93c17f7e05a869fd59c233827ca5e0da2252"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\gap_context.json",
+        "size": 1573,
+        "sha256": "3abe811805ecd7a3e03c70289dd4acf8c14790f9337312526e628bb91a86c2a8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_004837d0.json",
+        "size": 989,
+        "sha256": "10a17f7e0c47a318ecb8fe98726e55f54e0e8ce40f0089f51726ea05b7773a85"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_00484540.json",
+        "size": 1368,
+        "sha256": "9d287b5cdd4972d508b7e9f15763578841c55097934c50e17396be2fbf8635ee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_004f1870.json",
+        "size": 422,
+        "sha256": "b3552541991f82d038d34da2348ffbcb45e9b600817472f6fb0872cae7be7319"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_004f1890.json",
+        "size": 734,
+        "sha256": "28be33f88abaf4cd3054741a575cfa57be574a57a88c5213b977a79c781a27e5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_00928560.json",
+        "size": 321,
+        "sha256": "06c91b1f5c6980abda5926c7825b3cd238210408b96b541bc195a507109b8aec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_00928570.json",
+        "size": 655,
+        "sha256": "f4d5b5ab45b061bfe2494ced4d3b96d32455965c9cb4ceb6b94740025ee8b4fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_00bf65ac.json",
+        "size": 207,
+        "sha256": "21627936cae6c7468f283c84eee2b6290882a860fb4286ad705d9e40620d6d52"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_00bf681b.json",
+        "size": 1156,
+        "sha256": "577ee918fce237f114a22b31cdcf0eedb345544b2d6d42f60b6e9baa28d7c450"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_batch_count.json",
+        "size": 187,
+        "sha256": "aeea81103646b8c83074d6e1f4b773fb5449794252ba043d9f8bf2ad1a367491"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\listing_batch_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after.json",
+        "size": 33081,
+        "sha256": "61d9975a12ee9e2466e33e992905c8441d64f9e02c674e619b374bbe9dfb9fa9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_004837d0.json",
+        "size": 569,
+        "sha256": "0e7398c8335ee5053fb7f1d7d0e99dee431ea29df7e227c88749fbf44c829fd6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00484540.json",
+        "size": 617,
+        "sha256": "f4b79beaacdcaf283975e0d49e5293baac598b1ca907bf6933fa699cbf5b8786"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_004f1870.json",
+        "size": 296,
+        "sha256": "4b2b27bc4d7e6b08af3fabfc7965d936d1fceb3a81ae612dae1db98b01f0e6e7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_004f1890.json",
+        "size": 395,
+        "sha256": "3598ffe1685d565b5013dab52ebd9fd6dea8c97a535421418c061f37bebf2645"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00928560.json",
+        "size": 245,
+        "sha256": "5444842c65a1f108d1f9ab1b18edae1c4c642bf96d351d6a223f6dfd082d334e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00928570.json",
+        "size": 367,
+        "sha256": "6aabda31f638610f626491378832d148c3ac91b24067b5bbc713b1762a05196f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00bf65ac.json",
+        "size": 212,
+        "sha256": "581139817b058bea4bdaf3b05e0d3aeaa23e603ced7db17bdcd376e41054a70d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00bf681b.json",
+        "size": 705,
+        "sha256": "fdf89695d1f6feb977539f0a8fe762db5ebce3beef1aeaaf6a64a81994bbb663"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_00d03fb0.json",
+        "size": 224,
+        "sha256": "a9d1f407f5d1eee98777e1e57fa32cd07589336659041e96b73cec374c1def16"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_bytes_0109dd68.json",
+        "size": 257,
+        "sha256": "125a8e465d7b4040b9de52561c6e8ad5cb4877b08e49ee0be07d6e6bae6d3966"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_count.json",
+        "size": 187,
+        "sha256": "9488beb4f82c9876fca563f5fcaeafe760f2f09e6048e37bdc07dab3709a5dca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_after_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before.json",
+        "size": 33081,
+        "sha256": "61d9975a12ee9e2466e33e992905c8441d64f9e02c674e619b374bbe9dfb9fa9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_004837d0.json",
+        "size": 569,
+        "sha256": "08006b546d7cab6aa68803bfcb610c4f429318d985ee70ca1e72821051360a28"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00484540.json",
+        "size": 617,
+        "sha256": "cb2541de3b204fc3f2f9b317a48ff233c30c788ab7c67966c61bc98c285fb217"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_004f1870.json",
+        "size": 296,
+        "sha256": "cefafdc2760e806faf249fa964e1557a5057b53b85f32076296aef5470699777"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_004f1890.json",
+        "size": 395,
+        "sha256": "cbdb38ae83618fde6c85bb0d34738fbdb9545b4e3b99ed0dfab3beabbe60574e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00928560.json",
+        "size": 245,
+        "sha256": "28a37ae415787cf51b01fb60771ab714764fc37a0006b5f2efd924ce35718c1b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00928570.json",
+        "size": 367,
+        "sha256": "a72c68684ed2c4c77f817bed2f07fe623401a7628ea251190232ca4934055abd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00bf65ac.json",
+        "size": 212,
+        "sha256": "3cd87cb5806ac0ffaa6d3dff900c1f4e4640432a82a480a21aa9497ce6c4cd14"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00bf681b.json",
+        "size": 705,
+        "sha256": "920ef836d1f2b23ff1fd3b1997bd5df937367810fceac8dab75f1c80cc8197b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_00d03fb0.json",
+        "size": 224,
+        "sha256": "53efb3b7b90e5fa5bb6d5339ea6f20f2015cd20cf6aed98edc4ecca25df7760c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_bytes_0109dd68.json",
+        "size": 257,
+        "sha256": "c6c9a1f2bb5c3e288de77f84e9e39a98c788179269516139d178d125c2e5cd03"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_count.json",
+        "size": 187,
+        "sha256": "97957523dfe928162ff74ed7c93894374b76d5f2211966fa0c60b5c171a2fd14"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\native_before_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\post.json",
+        "size": 279,
+        "sha256": "cb26150aa63d9680b77791dbbd4581a5ee5538bec98f352f7922194e24cc7431"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\prior_artifacts_after.json",
+        "size": 45044,
+        "sha256": "9f9a629ff619d212b46f8630e5248de0ebc12effae38ebce667fcb97695aa351"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\prior_artifacts_before.json",
+        "size": 45044,
+        "sha256": "9f9a629ff619d212b46f8630e5248de0ebc12effae38ebce667fcb97695aa351"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_004837d0.json",
+        "size": 1302,
+        "sha256": "e5a80d9bf7aa0091f102a3b6a6889fa22c7adcf55139e32b3dc4e247f6487f25"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_00484540.json",
+        "size": 1352,
+        "sha256": "b875c37e2db834ab5187035a42414bc64c2f303e3a0330785e725026b2376720"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_004f1870.json",
+        "size": 994,
+        "sha256": "eaf6900e6e0eb1c4225d0f7f5dc29a752b2d0e4c993566f4f701492fb287b521"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_004f1890.json",
+        "size": 1332,
+        "sha256": "a88feff0ddb92230c6f753f154c0cc7d80805aba0f7c62b42a09a7ad8f0fd00c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_00928560.json",
+        "size": 1029,
+        "sha256": "7975a840ff1cba6c6dcbbde18281ca4a01f47a808b8d03613ea7ff699ed5a02f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_00928570.json",
+        "size": 1384,
+        "sha256": "beeaf7cd51eb5ec2f246f422bdab9e0cbbd11a0195551570becabc77cfe2e812"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_00bf65ac.json",
+        "size": 885,
+        "sha256": "dd73c8ecb837a165da60749b2079c6bc7fad1be63e893f9d9a2f547aa1d106b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\proto_00bf681b.json",
+        "size": 1498,
+        "sha256": "ab8c66a74c39d0f3886376e243c62dd9eae116f856dbe3e611791dd750b0ab1b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\read_failures.json",
+        "size": 1516,
+        "sha256": "0f93f54fdde2dc588bb5a60a032871c8c26a68a30dc719e0e2440988d17c96d3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\source_after.json",
+        "size": 4635,
+        "sha256": "b6b213bd734f7cbb837fb10b1742ba7e0ed284de5771a55bed38bda9b0c318fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\source_before.json",
+        "size": 4635,
+        "sha256": "b6b213bd734f7cbb837fb10b1742ba7e0ed284de5771a55bed38bda9b0c318fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\supplement_inputs_after.json",
+        "size": 471,
+        "sha256": "e9aac7ddc81ca6912b439cd20510a6664dae2dda562841be147b17ea16402b93"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\supplement_inputs_before.json",
+        "size": 471,
+        "sha256": "e9aac7ddc81ca6912b439cd20510a6664dae2dda562841be147b17ea16402b93"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\xrefs_004f1870.json",
+        "size": 200,
+        "sha256": "b2b4ed3a146e4d43ac61960750757e76bea6f631b4f2f05ff79712c39535fa9b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\xrefs_004f1890.json",
+        "size": 200,
+        "sha256": "a30c7b625cffdbcedb62648e70b9d3d1d7059026675fb871d76152c98f3d4a82"
+      }
+    ]
+  },
+  "primary_review": {
+    "receipts_hash_verified": true,
+    "sealed_artifacts_unchanged": true,
+    "Source_admission": false,
+    "game_validated": false,
+    "old_families_replayed": false
+  }
+}

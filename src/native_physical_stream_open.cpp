@@ -204,6 +204,16 @@ bool valid_native_physical_stream_00bf5020(const void* stream) noexcept {
     return word(stream, 8) != 0xffffffffu;
 }
 
+__declspec(naked) std::uint32_t __fastcall raw_valid_native_physical_stream_00bf5020(
+    const void*, std::uint32_t) noexcept {
+    __asm {
+        xor eax, eax
+        cmp dword ptr [ecx + 8], -1
+        setnz al
+        ret
+    }
+}
+
 std::uint64_t size_native_physical_stream_00bf4f90(const void* stream) noexcept {
     const auto low = word(stream, 0x18);
     const auto high = word(stream, 0x1c);

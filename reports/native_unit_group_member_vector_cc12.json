@@ -794,5 +794,204 @@
   "full_project_build_run_by_worker": false,
   "Ghidra_writes": 0,
   "shared_metadata_edits": 0,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+    "component_source_revision": "7ed2ec2002f64d7d90026224e92cbff594c3747f",
+    "build_source_revision": "7479af9fd70b41091bc077e9ea98b84dbc45f0bf",
+    "worker_source_revision": "64b03ee6127c845f11203665b263f1ad25697d3f",
+    "build_context_relation": "Full main build refreshed after another harness integrated observer/file-open C++ changes; component Source and all eight actual fixture inputs remain byte-identical to sealed7ed2 family. No component replay.",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc12_group_member_vector_main_refresh_7479af9.log",
+    "build_log_sha256": "675d332b663f15643ceef1f097c6726742de4e46f9822bc646beb88bc9b7de49",
+    "current_core_sha256": "1bfb1e7dcea045f39286211bc7e6de9d0ccf9f79a7d20b00a476f8e5f155ba0d",
+    "independent_component_family": "local/cc12_group_member_vector_primary20261008a",
+    "independent_seal_sha256": "81dcc457a04dce6347ac83a28ed592ab8e76c0639b2c94828791c02194b9c4d0",
+    "independent_static_gate_sha256": "8b963ecf587b5c64a05caf7a4018cef328fae1fbcba36bc6ae9fac6adb4faade",
+    "independent_post_sha256": "0ab9ca719e2c0bf84ca675bd04d5a28730e29d321e74a787e6b3644621710776",
+    "fresh_translation_units": 4,
+    "actual_project_inputs": 8,
+    "actual_host_headers": 176,
+    "actual_searched_libraries": 6,
+    "checks": 14572,
+    "Original_calls": 4,
+    "Source_vector_calls": 4,
+    "Source_constructor_calls": 8,
+    "Source_lookup_calls": 16,
+    "complementary_cases": [
+      "signed count -1",
+      "positive count3 excludes identity and SNaN in record3",
+      "first duplicate identity with SNaN conversion",
+      "zero identity with output=source+8 alias produces [-0,3,-0]"
+    ],
+    "phases": [
+      {
+        "phase": 0,
+        "count_bits": "ffffffff",
+        "group": "001ab490",
+        "output": "001abb20",
+        "identity": "001abf70",
+        "expected_output_bits": [
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        "Original_address": "006b0000",
+        "Source_address": "21001000",
+        "original_FPIP": "210024cc",
+        "source_FPIP": "210024cc",
+        "full_capture_bytes": 372,
+        "only_FPIP_mapping_on_hit": true
+      },
+      {
+        "phase": 1,
+        "count_bits": "00000003",
+        "group": "001ab490",
+        "output": "001abb20",
+        "identity": "001abf90",
+        "expected_output_bits": [
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        "Original_address": "006b0000",
+        "Source_address": "21001000",
+        "original_FPIP": "210024cc",
+        "source_FPIP": "210024cc",
+        "full_capture_bytes": 372,
+        "only_FPIP_mapping_on_hit": true
+      },
+      {
+        "phase": 2,
+        "count_bits": "00000004",
+        "group": "001ab490",
+        "output": "001abb20",
+        "identity": "001abf70",
+        "expected_output_bits": [
+          "80000000",
+          "7fc12345",
+          "3fc00000"
+        ],
+        "Original_address": "006b0000",
+        "Source_address": "21001000",
+        "original_FPIP": "006b006e",
+        "source_FPIP": "2100106e",
+        "full_capture_bytes": 372,
+        "only_FPIP_mapping_on_hit": true
+      },
+      {
+        "phase": 3,
+        "count_bits": "00000004",
+        "group": "001ab490",
+        "output": "001ab51c",
+        "identity": "00000000",
+        "expected_output_bits": [
+          "80000000",
+          "40400000",
+          "80000000"
+        ],
+        "Original_address": "006b0000",
+        "Source_address": "21001000",
+        "original_FPIP": "006b006e",
+        "source_FPIP": "2100106e",
+        "full_capture_bytes": 372,
+        "only_FPIP_mapping_on_hit": true
+      }
+    ],
+    "prior_pins_preserved": 984,
+    "whole_Source_function": {
+      "symbol": "?copy_native_unit_group_member_vector_0070d980@bsp@@YIPAXPAX00PBX@Z",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 116,
+      "sha256": "5b1bb5bd45da881947218c7b24f695d163b08f9915483c699f147c4c06bb9e59",
+      "relocations": [],
+      "instruction_count": 36,
+      "disassembly": [
+        "00: push esi",
+        "01: mov esi, dword ptr [ecx + 0x4f8]",
+        "07: xor eax, eax",
+        "09: test esi, esi",
+        "0B: push edi",
+        "0C: jle 0x23",
+        "0E: mov edi, dword ptr [esp + 0x10]",
+        "12: lea edx, [ecx + 0x18]",
+        "15: cmp dword ptr [edx], edi",
+        "17: je 0x52",
+        "19: add eax, 1",
+        "1C: add edx, 0x34",
+        "1F: cmp eax, esi",
+        "21: jl 0x15",
+        "23: mov eax, dword ptr [esp + 0xc]",
+        "27: movss xmm0, dword ptr [0xf87574]",
+        "2F: movss dword ptr [eax], xmm0",
+        "33: movss xmm0, dword ptr [0xf87578]",
+        "3B: movss dword ptr [eax + 4], xmm0",
+        "40: movss xmm0, dword ptr [0xf8757c]",
+        "48: pop edi",
+        "49: movss dword ptr [eax + 8], xmm0",
+        "4E: pop esi",
+        "4F: ret 8",
+        "52: imul eax, eax, 0x34",
+        "55: fld dword ptr [eax + ecx + 0x1c]",
+        "59: lea ecx, [eax + ecx + 0x1c]",
+        "5D: mov eax, dword ptr [esp + 0xc]",
+        "61: pop edi",
+        "62: pop esi",
+        "63: fstp dword ptr [eax]",
+        "65: fld dword ptr [ecx + 4]",
+        "68: fstp dword ptr [eax + 4]",
+        "6B: fld dword ptr [ecx + 8]",
+        "6E: fstp dword ptr [eax + 8]",
+        "71: ret 8"
+      ],
+      "linked_address": "21001000",
+      "linked_sha256": "5b1bb5bd45da881947218c7b24f695d163b08f9915483c699f147c4c06bb9e59",
+      "COFF_linked_equal": true,
+      "whole_Original_COFF_linked_equal": true,
+      "call_count": 0,
+      "absolute_native_DATA_reads": [
+        {
+          "instruction": "0070D9A7",
+          "data": "00F87574"
+        },
+        {
+          "instruction": "0070D9B3",
+          "data": "00F87578"
+        },
+        {
+          "instruction": "0070D9C0",
+          "data": "00F8757C"
+        }
+      ],
+      "patched_bytes": 0,
+      "return_contract": "EAX actual output pointer; two stack words; RET8",
+      "x87_copy_schedule": "FLD source0; FSTP output0; FLD source1; FSTP output1; FLD source2; FSTP output2",
+      "last_x87_instruction_offset": "6E"
+    },
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "old_families_replayed": false,
+    "new_tracked_tests": 0,
+    "qualification": "Whole raw116B36 literal Original=SourceCOFF=linked body, zero CALLs/relocations, RET8/EAX actual output. Count4F8 captured once; signed count<=0 fallback, actual34-byte records18, first matching integer identity including zero, member backing never dereferenced. Hit preserves literal interleaved FLD/FSTP copy, ambient x87 CW with one free slot, no ST0 return; ECX source-vector/EDX identity-slot; ESI/EDI/nonvolatiles/ESP/DF and untouched fields preserved. Production requires actual readable mutable F87574/78/7C cells; standalone readonly exact-VA loader-zero snapshot page is a qualified fixture input. Independent fresh4TU current-main constructor/lookup/vector/probe with eight actual frozen inputs; full116 and current132/57/56 bodies plus880/191 adapters fingerprinted before sole native family. Four complementary cases: signed count-1, count3 excludes actual identity/SNaN in record3, first duplicate with masked SNaN, zero identity with output=source+8 alias yielding[-0,3,-0] without invalid exception. Full372 captures differ only in separately asserted/mapped final-FSTP FPIP+6E on hits; complete actual1424-byte group/144-byte output/96-byte identity/physical stack guards/seven80-bit canaries and full pages/protections/code bookends pass. Source ctor/lookup are current ordinary C++ interfaces, not original class ABI. Worker160 artifacts/821prior pins and Root984prior pins preserved; no BSP archives/old family replay/new tracked tests. Native mutable-DATA alias execution, live provider, class/world/startup/game admission remain unbound."
+  },
+  "primary_source_status": "complete whole116B36 raw Source integrated; independent complementary4TU family14572 and full refreshed Win32/all3 CTests PASS; native DATA/class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T064829Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T064829Z.json": "50640505f175cc4ce8179ea19fc7445d9a86aeb55af64d674d2b750c93e1ca35",
+      "local/cc12_group_member_vector_source_annotations.log": "1890d20dcaffdd80f023fc9c10198b215bcf09bce8e5057f6483c3c6165a7af6",
+      "local/cc12_group_member_vector_source_exports.log": "3851dab8025a99b224ffee5e56547252c4817be127f126afd7fd40152c5b4c8b",
+      "local/cc12_group_member_vector_source_snapshot.log": "284b5def665bb951f0d3dd4edc2c24909eccfd2f713510ce1a30efb18be53c4f"
+    }
+  }
 }
