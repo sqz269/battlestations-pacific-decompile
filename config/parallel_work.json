@@ -29282,6 +29282,81 @@
         },
         "scope": "Four new owned files; distinct whole storage initializer only; actual supplied114h storage, owner stack/RET4, no vft/class/lifetime/world substitutes. One fresh3TU constructor/currentSingleton/newprobe family, no BSP archives, no prior replay, no new tracked tests. Root alone owns CMake/full build/independent fixture/shared metadata/saved Ghidra/integration."
       }
+    },
+    {
+      "id": "cc12_group_member_vector",
+      "worker": "group_speed_contract",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0070D980"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_group_member_vector.hpp",
+        "src/native_unit_group_member_vector.cpp",
+        "docs/NATIVE_UNIT_GROUP_MEMBER_VECTOR_CC12.md",
+        "reports/native_unit_group_member_vector_cc12.json"
+      ],
+      "depends_on": [
+        "cc11_health_unit_group_storage",
+        "cc11_health_unit_group_lookup"
+      ],
+      "done": false,
+      "state": "ready conditional whole116B36 raw native-memory member vector copy; actual native DATA remains caller prerequisite",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_group_speed_contract\\local\\cc12_group_midrange_entry_readiness_20261008_a\\readiness_receipt.json",
+      "audit_receipt_sha256": "759a211d8b231b473561efd8f0d13700cbb38e58e8af247aaee31f4dc38e9262",
+      "contract": {
+        "candidate": {
+          "entry": "0070D980",
+          "body_inclusive": [
+            "0070D980",
+            "0070D9F3"
+          ],
+          "bytes": 116,
+          "instructions": 36,
+          "sha256": "5b1bb5bd45da881947218c7b24f695d163b08f9915483c699f147c4c06bb9e59",
+          "direct_calls": [],
+          "provisional_name": "copy_native_unit_group_member_vector_0070d980",
+          "name_qualification": "Descriptive hypothesis; the role of the three record floats is not expanded here.",
+          "conditional_registration_domain_for_primary_decision": "Eligible only as a separate whole raw-memory Source entry requiring ACTUAL readable native DATA at00F87574/78/7C. Production must create no mapping/default/replacement global and must not route through a synthetic provider. Literal116-byte CALL0 body must preserve the actual x87 and alias schedule. Native-world/runtime mutable-global/class admission remains UNBOUND. Root decides and registers before any Source work.",
+          "physical_ABI": "ECX=actual group; entry EDX unused; entry stack+4=actual writable12-byte output, stack+8=32-bit member identity. Both paths return that output pointer in EAX and RET8; ESI/EDI are saved/restored. Decompiler void return is wrong, as proven by caller consumption.",
+          "ordinary_storage": "Actual aligned0x508 group with signed count at+0x4F8; bounded positive count1..24 and reached actual0x34 records at+0x18; identities are DWORDs, never dereferenced. Caller owns writable output. No copied record array, synthesized unit class, callbacks or lifetime provider needed for this raw helper contract.",
+          "count_and_match": "ESI captures count once. Search first matching integer identity in order; zero identity is not skipped. No match or nonpositive count uses native DATA fallback. Positive missing-member scan still reads only actual identity words.",
+          "match_reads_writes": "First FLD from group+0x1C+i*0x34 precedes computing ECX=that address, loading EAX=output and restoring EDI/ESI. Then FSTP[out], FLD[src+4], FSTP[out+4], FLD[src+8], FSTP[out+8]. Preserve exact interleaving and output/source alias effects; never pre-copy vector or replace with memcpy.",
+          "fallback_reads_writes": "Sequential MOVSS from00F87574 to[out],00F87578 to[out+4],00F8757C to[out+8], with native register restore schedule. They are actual native DATA reads, not constants or a default provider.",
+          "x87_and_register_effects": "Match needs one free x87 stack slot and preserves ambient CW. FLD/FSTP float conversions and masked exception/NaN effects are intentional; no ST0 return. Match ECX becomes selected source-vector address; EDX remains selected identity-slot address; XMM0 unchanged. Fallback ECX stays group, XMM0 takes last native DATA scalar; EDX retains entry value for nonpositive count or end-of-scan pointer otherwise. Raw instructions determine flags.",
+          "direct_field_stores": [
+            "output+0",
+            "output+4",
+            "output+8"
+          ],
+          "group_store_qualification": "No independent group store, but output aliasing group storage must preserve native side effects.",
+          "actual_caller": {
+            "function": "00766FC0",
+            "call": "007672E0",
+            "group_provenance": "0076727A MOV ECX,[EBX+284h], checked nonnull; EBX is member identity.",
+            "output_provenance": "007672DA PUSH EBX;007672DB LEA EDX,[ESP+14h];007672DF PUSH EDX; genuine caller stack12-byte output.",
+            "return_consumption": "007672E5..007672F9 loads [EAX],[EAX+4],[EAX+8] through x87 into receiver+CC/D0/D4.",
+            "qualification": "Only bounded call-site/storage ABI inspected. Enclosing caller virtual/class/type18 admission remains unbound and was not reconstructed."
+          },
+          "native_DATA": {
+            "address": "00F87574",
+            "bytes": 12,
+            "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+            "live_before_after_and_PE_loader_image_equal": true,
+            "section": ".data",
+            "section_RVA": "00A08000",
+            "section_virtual_size": 2719452,
+            "section_raw_size": 65536,
+            "section_characteristics": "C0000040",
+            "file_backed": false,
+            "definition": "Actual native DATA address in .data virtual tail, zero-filled by PE loading; not twelve literal on-disk bytes and not runtime immutable/provider proof"
+          },
+          "DATA_runtime_qualification": "Saved-program zero cells and PE loader-zero image agree. Writable .data, capped read-only xref samples and caller-supplied volatile declarations do not establish immutability, absence of writers, actual runtime provider identity or current global/world admission. Copied zero/default vectors cannot satisfy production provider identity.",
+          "possible_fixture_qualification_for_primary_review": "If primary accepts a conditional raw native-memory contract, a future unique ignored standalone fixture may explicitly map qualified PE LOADER-image snapshot DATA at the exact VAs with page/cell/protection bookends. Use current genuine Source group constructor/storage and raw record lookup/view providers, the same actual group/member backing and a real output buffer, with no copied record facade. Snapshot admission belongs solely to that fixture. No fixture is created or run by this audit."
+        },
+        "scope": "Four owned NEW files, literal whole116B36 CALL0/no invented globals/providers; actual508h group/34h records/count/identity and writable12-byte output. ECX+two stackwords/RET8/EAX output, sequential FLD/FSTP alias semantics. Production requires actual readableF87574/78/7C and creates no mapping/default/provider; unique ignored fixture may map exact qualified PE LOADER snapshot at exactVAs with full data/protection bookends. One fresh connected4TU newleaf/currentSourceCtor/currentSourceLookup/probe, zeroBSP archives, wholeCOFF/linked byte gate BEFOREsoleexecution, full physical x87/caller effects. Native mutable globals/class/world/game unbound. No old replay, new tracked tests or shared/Ghidra writes. Root CMake/full build/independent fixture/metadata/analysis/integration."
+      }
     }
   ],
   "snapshot_after_analysis": {
