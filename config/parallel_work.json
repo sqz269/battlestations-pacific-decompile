@@ -35825,6 +35825,47 @@
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
+    },
+    {
+      "id": "cc12_scene_property_record_type9_four_byte_array_storage",
+      "done": false,
+      "state": "ready qualified whole116B36 tag9 opaque4-byte-element rawstorage; Source0",
+      "function_addresses": [
+        "008ef360"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE9_FOUR_BYTE_ARRAY_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type9_four_byte_array_storage_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_document": "docs/CC12_PROPERTY_RECORD_TAG9_READINESS.md",
+      "readiness_report": "reports/cc12_property_record_tag9_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "worker_commit": "e0a65eee3a44b28530272b62ebe2378d8f68c5a6",
+        "exact_actual_files": 252,
+        "manifest_sha256": "c6f70a11050d84ec665e404a3dab905a7613ccceaca90c90e8ae687b86918dd9",
+        "whole116_36_Root_live_listing_reviewed": true,
+        "installed_PE_cell4_arm76_producer116_verified": true,
+        "prior_artifacts": 5765,
+        "Source_admission_credit": 0,
+        "other_clone_helper_008ef7f0_unadmitted": true
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "exactly_four_owned_files": [
+          "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+          "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+          "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE9_FOUR_BYTE_ARRAY_STORAGE_CC12.md",
+          "reports/native_scene_property_record_type9_four_byte_array_storage_cc12.json"
+        ],
+        "public_API": "void* __fastcall construct_native_scene_property_record_type9_four_byte_array_storage_008ef360(void* root_ecx, void* unused_edx, std::uint32_t element_count_stack, const void* data_stack, std::uint32_t full_flag_word_stack);",
+        "contract": "Whole [008EF360,008EF3D4)116B36 MSVCWin32 naked paddedfastcall ECX actualfresh/unowned56 root/unusedEDX/3actualstackDWORDs elementcount,data,fullflag/RET12/EAXroot. Preserve TWO native ADD EDI,EDI andstoreorder: firstADD,phase/tag9stores,secondADD,lowflagBYTECMP, zero18/1C/storecomputedbytecount24,JZ. Count opaquepositive4-byteelements n[1,3FFFFFFF], actualnonwrapping4*n inputbytes/fresh56/input/frame disjoint; no float numeric/x87 semantics, signedC++multiply or newguard inbody. 108literalbytes; onlyCALL operands[51,55)OWN actualCDECL sizeadapter{object,bytes,bytes} to unchangedcanonical/[66,70)actualVCRTmemcpy. No fabricatedexternaltype8privateadapter/refactor/NativeMpkgAllocator. BorrowretainsEXACTinputpointer20/nochildfree,ECXroot/EDXdata, CMP8D5=44 AFdefined0. Copyreads dataafteractualallocation,storesactualchild20BEFOREmemcpy; finalADD16 flags deriveactualTentry-24+16=T-8/all6definedflags8D5. Common29writes/27preservedincl30,byte2C1both NOTownershipindicator. DF0CRT/successfulcurrentrealproviderdomain only; no FP/ES/volatileECXEDX acrossproviders blanket. Source2+boundOriginal2 entries bothbranches,4actual56roots+2actualcopychildren=6alloc/frees childbeforeRoot; rawguardedOPAQUE4-byte-element bytes with zeros/highbits/fullcounts/fullflag high24 ignored onlylowBYTEdecision. Original116RX rebindsonly8operandbytes tosameREALSourceadapter/memcpy. THREEfreshTUs ownwhole116includingOWN adapter,canonical,newprobe/noBSParchives/oldobjects/acceptedhelpers/recipes/stages/process replay. PrecompileprelaunchEXACTbasename/key/structsizes/MASMhex/COFFexactsymbolfirst; Rpreargs/QpreCALL/Tentry separated,3actualdeadargumentDWORDs capturedbeforePUSHFD; allstorage56/livefullchild/guardedinputs/captures/GPR/ESP/definedflags/DFchecked. AllcompleteCOFF/map/main/callers/canonical/adapter/providers/cookie14inclfailuretailJMP/chkstkmapowned/importcodegates before0targets/alloc andafter, actualI386IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/ASLRcorrect32prefix. Preserve audit252+5765prior exact pluscurrentRootType8family381+17427prior, RootReference55family101+18016prior via dedupimmutableunion; metadataContextunconsumedfrozenonly. Exactrecursiveallfilessealsinclfailures/logs/pycache ROOTexclusionsonly. CurrentcombinedMainWin32/3checksPASS and Rootseparatefreshindependentfamily beforeSourcecredit. Actualarm/helper8EF7F0/null/default/EH/privateheap/phase/class/nativeownership/fullclone/World/game remainnamedunadmitted; no furtherlive oldclone/tag8/provider/class queries.",
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {
