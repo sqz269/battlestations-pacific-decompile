@@ -9,6 +9,15 @@ namespace bsp {
 // Retains caller x87 environment; original CRT diagnostic parity is unverified.
 float length_2d_00414c60(const std::array<float, 2>& value);
 
+// Same-TU raw tail entry to the actual 00414C60 kernel: ECX addresses two
+// readable floats, RET consumes no arguments, ST0 holds the float-spilled
+// result and ECX receives its raw float bits. The facade adds only a JMP, with no register,
+// stack, flags or FP-environment operation. The kernel needs three free local
+// x87 slots; genuine CRT entry requirements and private policy stay external.
+// Input lifetime/validity and synchronization belong to the caller. Native
+// arithmetic/status effects remain; no input copy or environment reset is added.
+float __fastcall raw_length_2d_00414c60(const float* actual_values) noexcept;
+
 // Native ECX=destination XYZ, EDX=source XYZ, stack=matrix; RET4; no useful result.
 // Uses the canonical affine point kernel, then copies the three result words.
 // Borrowed destination points to three writable floats and may equal source's
