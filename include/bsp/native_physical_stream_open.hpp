@@ -60,6 +60,15 @@ void* open_native_physical_provider_00bf4ba0(void*, const void*, std::uint32_t,
 
 // Original ECX stream; no stack args; RET. AL Boolean / EDX:EAX cached64 bits.
 bool valid_native_physical_stream_00bf5020(const void*) noexcept;
+
+// Complete raw BF5020 entry, separate from the ordinary C++ helper above.
+// MSVC Win32: ECX actual backing, unused incoming EDX, full EAX 0/1, RET.
+// Requires stable backing with a live aligned HANDLE DWORD at +8h. Compares
+// only against FFFFFFFF; zero and every other word return 1. No OS query.
+// This memory-domain interface admits no source class, vtable or lifetime.
+std::uint32_t __fastcall raw_valid_native_physical_stream_00bf5020(
+    const void* actual_backing, std::uint32_t unused_edx) noexcept;
+
 std::uint64_t size_native_physical_stream_00bf4f90(const void*) noexcept;
 // Original ECX stream; stack unused DWORD; RET4; EAX GetFileSize low DWORD.
 // Performs a fresh OS query, discards high DWORD, and does not update cache.
