@@ -35628,6 +35628,50 @@
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
+    },
+    {
+      "id": "cc12_native_reference_payload_replace",
+      "done": false,
+      "state": "ready qualified whole48B16 reference-payload replace; Rootlistingrepair saved, Source0",
+      "function_addresses": [
+        "008f0310"
+      ],
+      "output_files": [
+        "include/bsp/native_reference_payload_replace.hpp",
+        "src/native_reference_payload_replace.cpp",
+        "docs/NATIVE_REFERENCE_PAYLOAD_REPLACE_CC12.md",
+        "reports/native_reference_payload_replace_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_document": "docs/CC12_NATIVE_STRING_NEXT_CONSUMER_READINESS.md",
+      "readiness_report": "reports/cc12_native_string_next_consumer_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "worker_commit": "c1e7bb83bab351e2f4b8ea8be42ed5e6052edf65",
+        "exact_worker_files": 65,
+        "Source_admission_credit": 0,
+        "repair_family": "local/cc12_reference_replace_flow_root20261008a",
+        "repair_seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_replace_flow_root20261008a\\seal.json",
+          "size": 5037,
+          "sha256": "147bb521452219953ea701a1e21c8a2be0f2d0e52857587a4b396bf368c073f3"
+        },
+        "exact_repair_files": 20,
+        "prior_pins": 1277
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "exactly_four_owned_files": [
+          "include/bsp/native_reference_payload_replace.hpp",
+          "src/native_reference_payload_replace.cpp",
+          "docs/NATIVE_REFERENCE_PAYLOAD_REPLACE_CC12.md",
+          "reports/native_reference_payload_replace_cc12.json"
+        ],
+        "public_API": "std::uint32_t __fastcall replace_native_reference_payload_008f0310(void* destination_ecx, void* unused_edx, const char* borrowed_text_stack, std::uint32_t raw_scalar_stack);",
+        "contract": "Whole [008F0310,008F0340)48B16 MSVC Win32 naked paddedfastcall ECX actual writable8 payload/unusedEDX/two actualstackDWORDs borrowedtext,rawscalar/RET8; EAX is FULLSCALAR allnormalpaths, actualchild observed at+4. Exactly40 literal bytes; CALL operands[12,16) actualcurrentcanonicalfree and[31,35) admittedphysicalfastcallduplicate57. Old+4 NULL or soleownedactualcurrentdupe allocation; free nonnullold andclear+4 first, duplicateborrowedtext thenstoreactualchild+4, reloadscalar intoEAX/store+0. Callerownedpayload/inputtext/frame/oldallocation disjoint; borrowedtext may not alias oldallocation/UAF, no selfalias wrapper. NULL newtext: ECX0, XOR8C5=44 AFundefined, EAXscalar; EDX preserved ONLY oldnull, oldnonnullfreeEDXvolatile. Nonnull nested duplicate finalADD actualfirstargT-40+16 yields8D5 all6definedflags; outerentryT-4 andRET8 yieldsT+8; providerresidualECXEDX/FP/ES unasserted, CRTDF0 only. Original48 RX rebindsonly8operandbytes tosameactualfree+physicaldupe; nofakevtable/provider/callback/force-pointer-inequality. FourfreshTUs consumer48/duplicate57/currentcanonical/newprobe, noBSParchive/oldobject/replayedphase/helper/process. Minimal7entries3rawOriginal/Sourcepairs oldnull/textnull,realold/textnull,realold/nonnull plus ordinarySourceoldnull/nonnull; 4realoldsetupdupes and4insidefrees,3newcopies/3callerfrees. Allowactualoldaddressreuse; neverreadfreedoldmemory. Capturefullpayload8/canaries/liveborrowedNULinclterminator/allcopiedNUL bytes/GPR/realcallerstackarguments/ESP/EAXfullscalar/actual+4child/definedflags; exactcapturestruct/observation sizeof matcheschosenmeaningfulNUL. Whole COFF/map/main/callers/physicalcanonical/duplicate/CRTproviders/helpers/imports/cookie14tailJMP/chkstk ifowned before0target/setupentries/after codegates, actualI386IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/ASLRcorrect32prefix. Freezeunconsumedgenerationmetadata. Preserve readiness65+1212prior andRootrepairsealedfamily/prior immutable, exactrecursiveallfilessealsinclfailures/logs/pycache exactROOTexclusionsonly. Fixed listing16starts/all10gapbytes Rootsupportedlocked repair alreadycomplete, doNOTreplayrepair/settings/privatecalleeNoReturn or oldSource55 phases. CurrentcombinedMainWin32/full3checks and Rootindependentfreshfamily neededbeforeSourcecredit. NoOriginalprivateheap/CRT/EH/failure,class/owner/destructor/World/caller/runtimegame admission; no actualproductioncallerwitness found.",
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {

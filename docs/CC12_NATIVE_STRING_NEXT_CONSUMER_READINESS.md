@@ -165,3 +165,7 @@ list. No live duplicate query was repeated. The final manifest includes all
 helpers, receipts, issues and any pycache, excludes only itself, and is checked
 against exact inventory. Source, registration, native class/caller/private CRT,
 EH, startup and gameplay remain unadmitted.
+
+## Root listing repair and Source registration
+
+Root verified all48 PE bytes/16starts, used the supported locked internal-gap repair once, preserved the old CALL_RETURN response, complete prototype/comments/labels and1277 prior pins, saved and refreshed the export. The current listing now includes ADD ESP4 at0320 and clear+4 at0323; no gaps remain. Family seal `147bb521452219953ea701a1e21c8a2be0f2d0e52857587a4b396bf368c073f3`, exact20 files. Qualified Source packet `cc12_native_reference_payload_replace` registered with EAXscalar/+4actualchild and currentmatchingowned-copy domain; Sourcecredit0 pending worker and independentRoot fixture/mainbuild. No originalprivate CRT/class/caller/game admission.

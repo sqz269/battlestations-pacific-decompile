@@ -771,5 +771,33 @@
     "OOM and EH",
     "World integration",
     "startup and gameplay"
-  ]
+  ],
+  "Root_saved_flow_repair": {
+    "passed": true,
+    "registered_Source_packet": "cc12_native_reference_payload_replace",
+    "Source_admission_credit": 0,
+    "Root_repair_postflight": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_replace_flow_root20261008a\\Root_postflight.json",
+      "size": 932,
+      "sha256": "f1e1f4b431512daa585e2c401d4d975e8587b6156fe1aa7ab1af3fda3e6c2bde"
+    },
+    "whole_native": "[008F0310,008F0340)48B16",
+    "EAX_is_full_scalar_not_child": true,
+    "exactly_four_owned_files": [
+      "include/bsp/native_reference_payload_replace.hpp",
+      "src/native_reference_payload_replace.cpp",
+      "docs/NATIVE_REFERENCE_PAYLOAD_REPLACE_CC12.md",
+      "reports/native_reference_payload_replace_cc12.json"
+    ],
+    "no_target_or_compiler_executed": true,
+    "repair_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_reference_replace_flow_root20261008a\\seal.json",
+      "size": 5037,
+      "sha256": "147bb521452219953ea701a1e21c8a2be0f2d0e52857587a4b396bf368c073f3"
+    },
+    "exact_repair_files": 20,
+    "actual_callsite_override_transition": "CALL_RETURN to NONE",
+    "callee_noReturn_unchanged": true,
+    "Source_credit": 0
+  }
 }
