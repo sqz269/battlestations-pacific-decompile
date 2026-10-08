@@ -78,3 +78,30 @@ indexes the complete archives, compiler inputs, machine receipts and final seal.
 
 Full application context, raw GlobalConfig ownership, canonical sound-string
 binding, lifetime dispatch, unwind behavior, startup and gameplay remain open.
+
+## Independent primary review
+
+Root separately built the unchanged Source and the corrected registrations once;
+all three existing checks passed. Its complete current objects contain 2 raw
+unlink functions, 14 table-owner/compiler functions, 9 authored-unit-table
+functions and 19 gunnery functions. Every executable section, data section and
+ordered physical COFF relocation/symbol index was retained. Both authored
+getter operands resolve to their actual definitions in unique whole current
+core members. The two complete raw bodies again match all 166 Native bytes
+and 58 instruction starts with no relocations.
+
+All 14 raw and 94 table-owner Cpp/header inputs matched physical precompile
+images. Each TU additionally tracked Windows SORTDEFAULT.NLS and TZRES.DLL;
+these four records were captured after compilation, so their precompile
+identity and complete compiler filesystem reproducibility are not claimed.
+The worker and primary object hashes differ where paths or metadata differ.
+The normal game map still excludes the new entries; no new entry, owner or
+Native ABI was executed. No additional tests were added.
+
+Primary receipt: `local/cc12_two_owner_modules_primary_review/receipt.json`,
+SHA256 `3044ee6ed2741ad8afef493248a82084ef1fc9a86c65b51857661c270bf8f991`.
+Root independently rehashed all 8,940 raw and 12,514 table evidence payloads;
+all 8,941 raw ZIP payload hashes and CRCs passed. The table ZIP CRC/member
+checks and historical R114 fixtures remain the separately retained worker
+proofs; they are not a new primary fixture execution. Rehash receipt SHA256
+is `f1b644f8a9430a8f56ddaa438b23c782f017f939e45406631bf1117dd8af1ffe`.

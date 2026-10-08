@@ -7,11 +7,10 @@ existing checks. The complete new object appears exactly once in `bsp_core.lib`.
 This is a raw helper implementation; the actual World/entity owner remains
 **unready**, and no production caller or game link inclusion was added.
 
-The worker awards **zero new Original-function ledger credit**. `00903F30`
-already has the semantic `chain_unlink_00903f30` reconstruction; Root will
-deduplicate/enrich that record and check `00924710` before adding any record.
-Two new raw Source definitions do not imply two newly reconstructed Original
-functions. Existing Ghidra names remain hypotheses and were not edited.
+Root preserved and enriched the existing semantic `chain_unlink_00903f30`
+record. `00924710` had no function record and receives **one** new complete
+Original-function record. The two raw definitions therefore add one function
+to the ledger. Existing Ghidra names remain hypotheses.
 
 ## Source and physical calling contract
 
@@ -119,5 +118,33 @@ Evidence: `local/cc12_native_entity_intrusive_unlink_source_evidence/`. ZIP: `J:
 126217913 bytes, SHA256 `4f48ded34799e0de881d108c34b69883e21e65ae38233f2e260747450e9caae4`. Its manifest covers
 8940 files, with 8941 ZIP entries. Every ZIP
 payload hash and CRC passed. The report and this document are generated outside
-the sealed family to avoid a checksum cycle. Root handles independent Source
-admission, ledger deduplication, Ghidra annotation and main integration.
+the sealed family to avoid a checksum cycle. Root completed independent Source admission and ledger deduplication. Guarded
+Ghidra annotation preserved prior comments, recorded old values, saved the
+existing project and refreshed both exports.
+
+## Independent primary review
+
+Root separately built the unchanged Source and the corrected registrations once;
+all three existing checks passed. Its complete current objects contain 2 raw
+unlink functions, 14 table-owner/compiler functions, 9 authored-unit-table
+functions and 19 gunnery functions. Every executable section, data section and
+ordered physical COFF relocation/symbol index was retained. Both authored
+getter operands resolve to their actual definitions in unique whole current
+core members. The two complete raw bodies again match all 166 Native bytes
+and 58 instruction starts with no relocations.
+
+All 14 raw and 94 table-owner Cpp/header inputs matched physical precompile
+images. Each TU additionally tracked Windows SORTDEFAULT.NLS and TZRES.DLL;
+these four records were captured after compilation, so their precompile
+identity and complete compiler filesystem reproducibility are not claimed.
+The worker and primary object hashes differ where paths or metadata differ.
+The normal game map still excludes the new entries; no new entry, owner or
+Native ABI was executed. No additional tests were added.
+
+Primary receipt: `local/cc12_two_owner_modules_primary_review/receipt.json`,
+SHA256 `3044ee6ed2741ad8afef493248a82084ef1fc9a86c65b51857661c270bf8f991`.
+Root independently rehashed all 8,940 raw and 12,514 table evidence payloads;
+all 8,941 raw ZIP payload hashes and CRCs passed. The table ZIP CRC/member
+checks and historical R114 fixtures remain the separately retained worker
+proofs; they are not a new primary fixture execution. Rehash receipt SHA256
+is `f1b644f8a9430a8f56ddaa438b23c782f017f939e45406631bf1117dd8af1ffe`.

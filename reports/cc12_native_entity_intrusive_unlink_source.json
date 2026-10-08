@@ -8,8 +8,8 @@
   "Root_readiness_receipt_sha256": "9672e0b1f3f80c8f6ac2321e7b6c8b2861c1c4b01e901138997ad8f607283cbd",
   "counts": {
     "new_raw_Source_definitions": 2,
-    "new_original_function_ledger_credit": 0,
-    "Root_deduplication_pending": true,
+    "new_original_function_ledger_credit": 1,
+    "Root_deduplication_pending": false,
     "Native_bytes": 166,
     "Source_bytes": 166,
     "instructions": 58,
@@ -20,7 +20,8 @@
     "packet_entry_execution": 0,
     "game_execution": 0,
     "production_callers_added": 0,
-    "production_World_owner_admission": 0
+    "production_World_owner_admission": 0,
+    "worker_new_original_function_ledger_credit": 0
   },
   "Source": [
     {
@@ -393,5 +394,68 @@
   "seal_inventory_correction": "seal_attempt01_failure.json; failed first ZIP retained separately by path and hash",
   "Source_changed_after_single_build": false,
   "build_retried": false,
-  "limits": "Static byte/ABI-schedule evidence and a unique core member, not a game-linked caller, executed ABI test, class/World construction or runtime integration. All 14 new-TU compiler inputs were prefrozen; this does not claim independently closed inputs for every unrelated target rebuilt by the normal script."
+  "limits": "Static byte/ABI-schedule evidence and a unique core member, not a game-linked caller, executed ABI test, class/World construction or runtime integration. All 14 new-TU compiler inputs were prefrozen; this does not claim independently closed inputs for every unrelated target rebuilt by the normal script.",
+  "Root_primary_review": {
+    "status": "ROOT_ACCEPTED_CURRENT_SOURCE_AND_WHOLE_OBJECT_PROOF",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\receipt.json",
+      "bytes": 60028,
+      "sha256": "3044ee6ed2741ad8afef493248a82084ef1fc9a86c65b51857661c270bf8f991"
+    },
+    "worker_family_rehash": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\worker_artifact_rehash.json",
+      "bytes": 431,
+      "sha256": "f1b644f8a9430a8f56ddaa438b23c782f017f939e45406631bf1117dd8af1ffe"
+    },
+    "normal_build_invocations": 1,
+    "existing_checks_passed": 3,
+    "actual_Cpp_header_input_counts": {
+      "raw_unlink": 14,
+      "table_owner": 94
+    },
+    "all_Cpp_and_header_inputs_prefrozen": true,
+    "all_compiler_filesystem_inputs_prefrozen": false,
+    "late_system_resource_records": 4,
+    "whole_current_object_function_counts": {
+      "native_entity_intrusive_unlink": 2,
+      "game_native_game_tables": 14,
+      "native_game_tables": 9,
+      "gunnery_tables": 19
+    },
+    "whole_current_object_pins": {
+      "native_entity_intrusive_unlink": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\current\\native_entity_intrusive_unlink.obj",
+        "bytes": 1065,
+        "sha256": "4c3b1875f32b3bb75e7af8828c2157fac471564039c89763b804f5c87896a2c6"
+      },
+      "game_native_game_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\current\\game_native_game_tables.obj",
+        "bytes": 8202,
+        "sha256": "a60488bd192edfb221bc3d903dd051bcfeaa5605ffd30a08732ba8382e8f1f2f"
+      },
+      "native_game_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\current\\native_game_tables.obj",
+        "bytes": 12452,
+        "sha256": "dc4c587d07ce5efbdce7fa1ad16b7b097a7b4e975a1b83a77f931e9ae0853910"
+      },
+      "gunnery_tables": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_two_owner_modules_primary_review\\current\\gunnery_tables.obj",
+        "bytes": 9353,
+        "sha256": "8bf31a3cc0ff95ec671c58391d7f581c6687bd20d9f2b2ff63cacd0ed065eb81"
+      }
+    },
+    "new_entries_executed": 0,
+    "normal_map_new_entries_absent": true,
+    "whole_application_World_startup_gameplay_validated": false
+  },
+  "Root_ledger_deduplication": {
+    "00903f30": "Enriched existing semantic function record, preserving it and old evidence; no new Original-function count.",
+    "00924710": "One previously absent complete function record added.",
+    "Ghidra_annotation": "Guarded apply succeeded 2026-10-08T23:23:24Z, prior comments preserved and recorded, saved project, both complete exports refreshed.",
+    "prior_annotation_receipt": {
+      "path": "local\\ghidra-annotations-20261008T232324Z.json",
+      "bytes": 8945,
+      "sha256": "1d08a88b4dda51bf538e47b3bd21f3bf6ea7d3f50e3f4bea555166f47d6c1b42"
+    }
+  }
 }
