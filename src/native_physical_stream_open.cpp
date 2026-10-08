@@ -78,6 +78,23 @@ void* construct_native_physical_stream_00bf50d0(void* stream) noexcept {
     return stream;
 }
 
+__declspec(naked) void* __fastcall raw_construct_native_physical_stream_00bf50d0(
+    void*, std::uint32_t) noexcept {
+    __asm {
+        mov eax, ecx
+        xor ecx, ecx
+        mov dword ptr [eax], 0ceb130h
+        mov dword ptr [eax + 4], 1
+        mov dword ptr [eax], 0d691b0h
+        mov dword ptr [eax + 8], 0ffffffffh
+        mov dword ptr [eax + 10h], ecx
+        mov dword ptr [eax + 14h], ecx
+        mov dword ptr [eax + 18h], ecx
+        mov dword ptr [eax + 1ch], ecx
+        ret
+    }
+}
+
 void* native_physical_stream_pool_00bf42a0(NativePhysicalStreamOpenContext& context) {
     if (auto* current = context.pool_0109dc28) return current;
     // The native EH frame releases the first manager's captured section on
