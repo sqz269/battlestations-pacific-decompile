@@ -27894,8 +27894,8 @@
         "cc11_health_unit_group_storage",
         "cc11_health_unit_group_lookup"
       ],
-      "done": false,
-      "state": "ready audited complete raw Class03 leaf 39 bytes / 13 instructions",
+      "done": true,
+      "state": "complete whole Source bodies integrated; independent current fixture and full Win32/all3 CTests PASS; native class/world/game qualified",
       "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_audit\\audit.json",
       "audit_receipt_sha256": "a260c4450f54f2526d5456e5265ff995f224a635d0c3346382dc62c7a3751075",
       "contract": {
@@ -27929,6 +27929,45 @@
           "profiles": "D11138 and Source groupCFD6F8 remain uncallable DATA; no fake vft/default globals/arena/class route. Group scalar70D260 already complete and not needed/invoked."
         },
         "outside_scope": "No larger class constructor/speed/detach/init/world/observer/arena/lifetime/privateEH/nativevirtual/game admission."
+      },
+      "primary_integration": {
+        "source_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+        "build_source_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+        "build_context_relation": "Exact main Source revision matches the full build.",
+        "worker_revision": "937d554771208427c7c4c312ce857f3d6ae18d66",
+        "component_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+        "full_MSVC_Win32_build": "PASS",
+        "existing_CTests": "3/3 PASS",
+        "build_log": "local/cc11_class03_integrated_build.log",
+        "build_log_sha256": "8347a65488b3240eb0b530497187aedc2b8c778a9d082b23af11d060420510b4",
+        "current_core_sha256": "5af9f2a3c350c75b07f1c998249b236992a6b6ca9bb8946dc402612475fa21f5",
+        "independent_component_manifest": "local/cc11_entity_class03_kind_current_primary/inputs_after.json",
+        "independent_component_manifest_sha256": "47ce948f0e81d42a1d8330a58a084855cb269fdfd1b7224b5a0fdf5ffaf3f1bb",
+        "fresh_translation_units": 4,
+        "actual_headers": 158,
+        "actual_searched_libraries": 6,
+        "selected_tool_backend_files": 4,
+        "stable_worker_paths": 215,
+        "whole_Source_COFF": [
+          {
+            "symbol": "?native_entity_class03_is_kind_00888ea0@bsp@@YIIPBXPAXI@Z",
+            "bytes": 39,
+            "instruction_count": 13,
+            "sha256": "fd9a64f1f2cb9cace4183d7efc8e08f16407644b4d351b16dfc86875650054d1",
+            "relocations": []
+          }
+        ],
+        "execution_output": "identity group=0099F6A0 actual_record=0099F6B8 recovered_receiver=0099F5B8 actual_C4=0099F67C\ntarget 00888ea0 original_bytes=39 fixed=3 PASS\n81 checks, 0 failures; 7 queries, 14 backend observations; 1 Source group construction; 1 target\n",
+        "current_link_inputs": {},
+        "native_call_verification_log": "local/cc11_class03_native_calls.log",
+        "native_call_verification_log_sha256": "815e5bb7d41c73688d88494e41578946523e272d99fac95ee395e8a1027017a8",
+        "source_bookends_stable": true,
+        "old_families_replayed": false,
+        "tracked_tests_added": 0,
+        "qualification": "One distinct whole raw class03 predicate:39 bytes /13 instructions, ordered fixed03/01/00 before one fresh actual aligned receiver+C4 DWORD, full EAX0/1 and RET4. Every original PE/live/Source COFF/unique linked byte equals; whole byte equality is verified before the sole execution. One independent fresh four-TU current group constructor/lookup family passed81 checks, seven queries per backend/fourteen observations, SAME actual published record/receiver/live C4. Genuine Source storage and identity establish only the literal leaf memory domain. D11138/+5C remains DATA; native class/profile/virtual/group membership, original constructor/lifetime/heap/private EH/world/game remain unproved. Post-run grammar check expected plural targets for one target; failed read-only postprocessor is preserved and only the success-line grammar corrected, without compilation or native replay.",
+        "raw_entry_ABI_checked": true,
+        "original_class_ABI_compatible": false,
+        "game_validated": false
       }
     },
     {
@@ -27963,6 +28002,128 @@
           "Any future whole body must retain x87 comparison/exceptions, exact scalarDWORD stores, saved-slot ECX result, fresh count reads and real call ABI. An opaque speed callback, fake dispatcher, copied/projected receiver, profile/class-ID census, or new default would change the contract."
         ],
         "useful_provider_contracts": "Exact ABI/fields/call row and two constant cells are sealed here. Existing actual508 group and direct raw kind predicates can be reused only inside their literal documented admissions. No ready packet is promoted from this audit."
+      }
+    },
+    {
+      "id": "cc11_health_unit_group_member_speed_reducer",
+      "worker": "group_speed_contract",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0070d140"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_group_member_speed_reducer.hpp",
+        "src/native_unit_group_member_speed_reducer.cpp",
+        "docs/NATIVE_UNIT_GROUP_MEMBER_SPEED_REDUCER_CC11.md",
+        "reports/native_unit_group_member_speed_reducer_cc11.json"
+      ],
+      "depends_on": [
+        "cc11_health_unit_group_storage",
+        "cc11_health_unit_group_direct_views"
+      ],
+      "done": false,
+      "state": "ready audited whole raw96B28 member-record speed reducer with two qualified native data cells",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_group_speed_contract\\local\\cc11_group_member_speed_reducer_audit_20261007_a\\proposal.json",
+      "audit_receipt_sha256": "2856016119785e99ea8e34c33345c33f3a85b16c97be0d1e0b791cc0e4b876e2",
+      "contract": {
+        "target": {
+          "address": "0070D140",
+          "name": "BSP_UnitGroup_ReduceMemberSpeeds",
+          "name_qualification": "Descriptive hypothesis, not a recovered original symbol.",
+          "end_exclusive": "0070D1A0",
+          "bytes": 96,
+          "instructions": 28,
+          "sha256": "47b51f3e485a049f57c6a845b2baf5d17ba57214ada864d77b48eaa961c9da42",
+          "live_saved_program_equal_installed_PE": true,
+          "calls": [],
+          "data_reads": [
+            {
+              "instruction": "0070D14B",
+              "address": "00CFD6F4",
+              "bytes": 4,
+              "bits": "4B18967F",
+              "float": 9999999.0,
+              "load_condition": "Always, AFTER the single actual group4F8 count load and TEST.",
+              "sha256": "ce1f8004d38f15d15b70acf91723b16919db9716180c2859ca6abdfd12b259ec",
+              "live_equal_PE": true
+            },
+            {
+              "instruction": "0070D15A",
+              "address": "00CF4888",
+              "bytes": 4,
+              "bits": "4479C000",
+              "float": 999.0,
+              "load_condition": "Exactly once for positive count, even when there are no null members; never for nonpositive count.",
+              "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d",
+              "live_equal_PE": true
+            }
+          ],
+          "receiver_contract": {
+            "input": "ECX is the SAME actual group, not a copied/projected record array or count argument. Ordinary bounded admission is genuine aligned508-byte Win32 group storage with live4F8 count and34-byte records beginning18; a positive count within1..24 supplies valid record backing. This is a caller storage admission, not a new native bounds check.",
+            "count": "Read signed DWORD at actualgroup4F8 once at0070D143, before either constant load. EAX holds this exact word until return. Positive loop counter is EDX decremented to zero. The native routine never reloads4F8 or clamps count.",
+            "record_identity": "Read DWORD actualgroup18+i*34 with INTEGER CMP to zero at0070D167. Nonzero is only an identity test; no member object, profile, class or virtual function is dereferenced. The decompiler's float comparison of this DWORD is wrong, including the0x80000000 bit pattern.",
+            "nonnull_speed": "Read floatDWORD actualgroup48+i*34 once via FLD, round-trip it through local float scratch with FSTP, then compare the reloaded scratch to local minimum. Candidate identity stays untouched.",
+            "null_speed": "Write XMM0's captured CF4888 bits to actualgroup48+i*34 and skip the candidate conversion/comparison. Every null record within the captured count is written.",
+            "unchanged_fields": "No writes to group4F8,4FC,500,504, member identity or other record columns. Live member speeds are read only. All mutable external writes are null record30 cells.",
+            "missing_guard": "Native has no null group guard, no capacity check and no member pointer validity check. Preserve ordinary valid backing rather than adding defaults or clipping native behavior."
+          },
+          "physical_ABI": {
+            "entry": "ECX actualgroup; EDX is not an input dependency; no stacked explicit argument. SUB ESP,8 reserves two floatDWORD locals. Plain RET; result is newly pushed ST0.",
+            "stack_locals": "[entryESP-8] is the local minimum, seeded by MOVSS; [entryESP-4] is candidate float scratch and is written only when a nonnull record is visited. No call or saved integer registers exist. ADD ESP,8 releases locals before RET.",
+            "EAX": "Original signed count word on every ordinary completed path.",
+            "ECX": "For count<=0, original receiver. For count>0, group+48h+count*34h modulo32-bit address arithmetic, after visiting captured count records.",
+            "EDX": "For count<=0, entry EDX unchanged. For count>0, zero after final decrement.",
+            "other_GPRs": "EBX,ESI,EDI,EBP untouched; stack balanced under plainRET. No hidden this-adjustment, allocation or opaque service.",
+            "XMM0": "Nonpositive count: seed bits low32 and zero upper96. Positive count: null-speed999 bits low32 and zero upper96, regardless of member identities.",
+            "XMM1": "Untouched in full128 bits unless a strict decrease is selected. On an update, MOVSS from scratch makes low32 the candidate scratch bits and upper96 zero; last selected candidate remains on return.",
+            "other_XMM_MXCSR": "Other XMM registers and MXCSR untouched. All SSE operations are moves, not floating comparisons or arithmetic.",
+            "flags": "Final EFLAGS arithmetic bits come from ADD ESP,8 at0070D19C, not TEST count, loop decrement or FCOMIP. Compare actual flags with an identical entry-stack address or explicitly qualify adapter differences. RET does not overwrite these flags.",
+            "x87_stack": "Early path needs one free x87 slot for return FLD. Positive nonnull path needs two free slots: FLD candidate/FSTP scratch first balances, then FLD scratch/FLD minimum peaks at+2, FCOMIP pops minimum and FSTP pops candidate. Final FLD minimum gives net+1 ST0 result. Older x87 stack contents remain beneath the result on ordinary masked-exception paths.",
+            "x87_semantics": "Must preserve FLD[F32 speed] -> FSTP[F32 scratch] -> FLD[scratch] -> FLD[minimum] -> FCOMIP ST0,ST1 -> FSTP ST0. FCOMIP compares minimum against candidate; JBE skips current<=candidate and unordered. Only a strict decrease copies scratchDWORD into minimum with MOVSS. Return FLD is at0070D199. Production must not reset control word, status or stack.",
+            "exception_boundary": "The float scratch round-trip can quiet signaling NaNs and sets physical x87 state; replacing it with bit copying or SSE min/comparison would not establish this ABI. Under masked invalid exceptions, unordered candidates do not replace the finite seed/minimum. FLD/FSTP and FCOMIP may signal invalid/denormal/stack exceptions. Unmasked faults, malformed backing, concurrency and lifetime teardown were not executed or admitted.",
+            "ordinary_result": "With exact pinned native constants and ordinary finite speeds, ST0 is min(9999999.0f, live record30 values); null records become999 and are skipped. Ties retain prior minimum bits, including signed-zero identity. This routine never computes or stores group504."
+          },
+          "metadata_discrepancies": [
+            "Indexed lookup lists00695870 BSP_CallbackOwner_Destroy as a callee. Complete live/PE96-byte decode has zero CALLs. Live callee endpoint returns No callees found for function:null, retained without treating its null identity as proof. No fake callee was expanded.",
+            "Ghidra's displayed prototype has no parameters and undefined return; full listing establishes ECX receiver and x87 ST0 result.",
+            "Pseudocode treats member identityDWORD as a float comparison; actual CMP DWORD[ECX-30],0 is authoritative.",
+            "Old Source/header comments locate seed read at0070D148; full bytes place MOVSS at0070D14B. No shared comment was edited by this audit."
+          ]
+        },
+        "readiness": {
+          "independently_ready_full_body": true,
+          "qualification": "Ready to IMPLEMENT and VERIFY, not already reconstructed/build-tested. Full target has no executable callees or virtual/class/world dependency. Genuine actualgroup storage and two explicitly identified native DATA cells suffice under the bounded ordinary contract.",
+          "proposed_primary_interface": "float __fastcall reduce_native_unit_group_member_speeds_0070d140(void* actual_group, void* unused_edx) noexcept;",
+          "implementation_contract": "Implement whole raw MSVC Win32 body with original ECX/unusedEDX/plainRET/ST0 convention and original two absolute data operands, preserving all96 bytes if assembler output confirms that. No production allocation, data mapping helper, fallback, callback, guard, classifier or count/record projection is introduced. Audit strict Source COFF and linked span to verify the full body and any relocations before accepting exact identity.",
+          "native_data_admission": {
+            "required_cells": "Actual stable native data at00CFD6F4 and, on positive count,00CF4888. Bounded verified values are4B18967F and4479C000. The Source header must explicitly require these cells; it must not invent new globals with those values or silently install default providers.",
+            "snapshot_use": "A standalone verification process may provide readonly bytes copied from the hash-pinned PE at their ORIGINAL virtual addresses. These are explicitly qualified frozen native DATA snapshots, not live original game memory, world services or class admission. Source and Original must read those same mapped cells. Verify page/cell hashes before and after and never alter the installed executable or a live game process.",
+            "semantic_copy_boundary": "The only permitted snapshot is the identified native constant DATA. The group/count/records are genuine current Source-constructed storage; no detached/copy array or precomputed count replaces target accesses.",
+            "ABI_boundary": "Raw component ABI can be verified for this one function. This does not establish complete original class ABI, game binding, allocator, membership/observer lifetime or enclosing throttle caller. An alternative interface with stacked constant references would have a different ABI and is unnecessary for this proposal."
+          },
+          "proposed_new_owned_files": [
+            "include/bsp/native_unit_group_member_speed_reducer.hpp",
+            "src/native_unit_group_member_speed_reducer.cpp",
+            "docs/NATIVE_UNIT_GROUP_MEMBER_SPEED_REDUCER_CC11.md",
+            "reports/native_unit_group_member_speed_reducer_cc11.json"
+          ],
+          "file_availability": "All four paths absent at audit; proposed_file_availability.json records the check. No lease or write to these future files was made. Primary alone handles CMake, shared ledgers and saved Ghidra annotations."
+        },
+        "one_new_connected_family": {
+          "status": "Design only; no compilation, fixture implementation or execution in this audit.",
+          "purpose": "One small Original/Source family on real508 group backing verifies full96-byte reducer, producer/view connection, x87 scratch behavior and unchanged retained504. Do not replay or expand old direct-view fixtures.",
+          "actual_setup": "Use current Source constructor on the same guarded aligned508 storage before each Original/Source run. Borrow actual CF4888 snapshot cell for its explicit constructor input. Author live count/identity/retained fields directly through real raw views; clearly label these caller-authored fixture inputs, not original AddMember/class/game admission. Reinitialize with genuine constructor plus same explicit input writes, not a copied/projected record array or count substitute.",
+          "phases": [
+            "Constructor's count0 phase invokes new reducer and captures seed ST0, original EAX0/ECX group/entryEDX, XMM0 seed, XMM1 unchanged, netx87+1 and actual group untouched. The conditional absence of CF4888 read is additionally established by full raw instruction inspection; do not add a separate probing framework.",
+            "One positive phase authors count5 and identities[A,A,null,B,C] in the real first five records. Current Source publisher produces A=-0 exactbits, B=+0 exactbits, C=one signaling-NaN payload and NULL=one finite non999 value. This one row exercises strict decrease, equality preservation, unordered skip, duplicate publishing and observable null reset. Run complete Original96 bytes unchanged against the same native data cells and the whole current Source candidate. Expected ordinary masked-invalid result is retained negative-zero ST0; null record30 becomes999; all other group bytes and member identity-only backing stay unchanged. Exact native NaN scratch bits/status are measured, not invented.",
+            "Use the existing raw record/member views and retained504 getter to check the actual producer outputs, null reset and separate caller-authored retained value. Balance any returned x87 result in the fixture adapter; do not hide a504 speed producer claim."
+          ],
+          "capture_requirements": "Compare guarded receiver bytes, exact body-local minimum/scratch where defined, full raw GPR/XMM/MXCSR/flags and balanced stack, plus x87 CW/SW/tag/register state including80-bit ST0 before compiler spill. Use a controlled masked-exception x87 state with two free slots and preserve older stack entries. Source/raw byte and global identity must be audited separately from adapter behavior. FPU instruction pointer must identify native0070D199 versus corresponding Source final FLD, with any expected code-address difference explicit. Do not erase such physical differences through silent normalization.",
+          "minimality": "One family with constructor-empty and one connected five-record phase, no broad suite or new tracked test framework. Additional cases only if a concrete failure exposes an unresolved behavior.",
+          "acceptance": "Strict current Win32 build, fresh Source COFF+linked full-span inspection and this one new family are future prerequisites. This proposal itself establishes static readiness only; no run/game/class ABI claim."
+        },
+        "scope": "Four new owned files; original ECX/unusedEDX/plainRET/ST0 interface and original data operands only. Current real group storage and raw views/publisher/getter providers, no class calls. One unique fresh fixture family; no BSP archives/old-family replay/new tracked tests/shared edits/Ghidra mutation. Root full build/CMake/independent fixture/ledger/annotations/integration. Native readonly snapshot cells at exact addresses are explicit fixture inputs, never defaults or class/world providers. Does not close70DA00 or a504 producer."
       }
     }
   ],

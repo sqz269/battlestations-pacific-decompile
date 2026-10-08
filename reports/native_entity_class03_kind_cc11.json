@@ -431,5 +431,62 @@
     "worker_full_build": "not run; root-owned",
     "native_class_profile_group_world_game": "unbound",
     "generic_call_checker": "0 call-site rows / 0 failed; separate whole39B CALL0 proof"
+  },
+  "primary_integration": {
+    "source_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+    "build_source_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+    "build_context_relation": "Exact main Source revision matches the full build.",
+    "worker_revision": "937d554771208427c7c4c312ce857f3d6ae18d66",
+    "component_revision": "83b6b359c22fab88333b2e3d4fdb757430770ea8",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_class03_integrated_build.log",
+    "build_log_sha256": "8347a65488b3240eb0b530497187aedc2b8c778a9d082b23af11d060420510b4",
+    "current_core_sha256": "5af9f2a3c350c75b07f1c998249b236992a6b6ca9bb8946dc402612475fa21f5",
+    "independent_component_manifest": "local/cc11_entity_class03_kind_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "47ce948f0e81d42a1d8330a58a084855cb269fdfd1b7224b5a0fdf5ffaf3f1bb",
+    "fresh_translation_units": 4,
+    "actual_headers": 158,
+    "actual_searched_libraries": 6,
+    "selected_tool_backend_files": 4,
+    "stable_worker_paths": 215,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?native_entity_class03_is_kind_00888ea0@bsp@@YIIPBXPAXI@Z",
+        "bytes": 39,
+        "instruction_count": 13,
+        "sha256": "fd9a64f1f2cb9cace4183d7efc8e08f16407644b4d351b16dfc86875650054d1",
+        "relocations": []
+      }
+    ],
+    "execution_output": "identity group=0099F6A0 actual_record=0099F6B8 recovered_receiver=0099F5B8 actual_C4=0099F67C\ntarget 00888ea0 original_bytes=39 fixed=3 PASS\n81 checks, 0 failures; 7 queries, 14 backend observations; 1 Source group construction; 1 target\n",
+    "current_link_inputs": {},
+    "native_call_verification_log": "local/cc11_class03_native_calls.log",
+    "native_call_verification_log_sha256": "815e5bb7d41c73688d88494e41578946523e272d99fac95ee395e8a1027017a8",
+    "source_bookends_stable": true,
+    "old_families_replayed": false,
+    "tracked_tests_added": 0,
+    "qualification": "One distinct whole raw class03 predicate:39 bytes /13 instructions, ordered fixed03/01/00 before one fresh actual aligned receiver+C4 DWORD, full EAX0/1 and RET4. Every original PE/live/Source COFF/unique linked byte equals; whole byte equality is verified before the sole execution. One independent fresh four-TU current group constructor/lookup family passed81 checks, seven queries per backend/fourteen observations, SAME actual published record/receiver/live C4. Genuine Source storage and identity establish only the literal leaf memory domain. D11138/+5C remains DATA; native class/profile/virtual/group membership, original constructor/lifetime/heap/private EH/world/game remain unproved. Post-run grammar check expected plural targets for one target; failed read-only postprocessor is preserved and only the success-line grammar corrected, without compilation or native replay.",
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "primary_source_status": "complete whole Source bodies integrated; independent current fixture and full Win32/all3 CTests PASS; native class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T040557Z.json",
+    "affected_export_refreshed": true,
+    "snapshot_internal_functions": 64280,
+    "snapshot_total_functions": 64722,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T040557Z.json": "9c2bfb17bfb7814c9cf9500d41718ec4d10f01c22c034c8e5c66d29ec98a593a",
+      "local/cc11_class03_annotations.log": "43d33313032c4d354b86dc0957bd6db87848e4ee0a39a15de1150340e35240f4",
+      "local/cc11_class03_exports.log": "d0aea914f621d2b8d6fcb46df7e04751ee71f79c3a4e6ec521528929a3331fbc",
+      "local/cc11_class03_snapshot.log": "86d952cf40194e18b23882185b923307eca9a6411dce79b8b18234d36e5916cb"
+    }
   }
 }
