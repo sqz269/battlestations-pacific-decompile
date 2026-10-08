@@ -1,0 +1,643 @@
+{
+  "schema": 1,
+  "packet": "cc12_type2_string_storage_readiness",
+  "base_revision": "5ced294b1b473410421a529f3e3f67eaf8a42f4d",
+  "status": "CONDITIONAL: Root independent admission of physical duplicate00438E40 and a later fresh constructor fixture remain required.",
+  "Source_credit": 0,
+  "ready_Source_credit": 0,
+  "ready_Source_packets": 0,
+  "Source_whole_bodies_added": 0,
+  "qualified_conditional_candidate_count": 1,
+  "Root_registration_authorized_now": false,
+  "contract": {
+    "whole": {
+      "start": "008EF1B0",
+      "end_exclusive": "008EF1EC",
+      "bytes": 60,
+      "instruction_count": 20,
+      "sha256": "be944adca54cbd0702bc89a12e88ab0c8ac84f306bb8c14188266b8f70ae5a04",
+      "hex": "568bf18b4c2408c706d489ce00c74604020000005733ff897e18897e1c897e20897e24897e30e8659cb4ff897e3489460c5fc6462c018bc65ec20400",
+      "instructions": [
+        {
+          "address": "008EF1B0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF1B1",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "008EF1B3",
+          "bytes": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "008EF1B7",
+          "bytes": "c706d489ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce89d4"
+        },
+        {
+          "address": "008EF1BD",
+          "bytes": "c7460402000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 2"
+        },
+        {
+          "address": "008EF1C4",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF1C5",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "008EF1C7",
+          "bytes": "897e18",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], edi"
+        },
+        {
+          "address": "008EF1CA",
+          "bytes": "897e1c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], edi"
+        },
+        {
+          "address": "008EF1CD",
+          "bytes": "897e20",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], edi"
+        },
+        {
+          "address": "008EF1D0",
+          "bytes": "897e24",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], edi"
+        },
+        {
+          "address": "008EF1D3",
+          "bytes": "897e30",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x30], edi"
+        },
+        {
+          "address": "008EF1D6",
+          "bytes": "e8659cb4ff",
+          "mnemonic": "call",
+          "operands": "0x438e40"
+        },
+        {
+          "address": "008EF1DB",
+          "bytes": "897e34",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], edi"
+        },
+        {
+          "address": "008EF1DE",
+          "bytes": "89460c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], eax"
+        },
+        {
+          "address": "008EF1E1",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "008EF1E2",
+          "bytes": "c6462c01",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": "008EF1E6",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "008EF1E8",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "008EF1E9",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "live_equals_PE": true
+    },
+    "sole_CALL": {
+      "address": "008EF1D6",
+      "native_target": "00438E40",
+      "operand_half_open": [
+        39,
+        43
+      ],
+      "only_relocated_bytes": 4,
+      "other_literal_bytes": 56
+    },
+    "stored_prototype": "undefined FUN_008ef1b0(void) is incomplete; physical ABI derives from complete listing; no mutation performed",
+    "physical_ABI": {
+      "receiver": "Actual fresh/unowned writable minimum56 bytes in ECX; ESI captures receiver before ECX is overwritten. Incoming EDX is not an argument.",
+      "input": "One actual stacked nullable text pointer [entryESP+4]; PUSH ESI then MOV ECX,[ESP+8] loads it once before any receiver store.",
+      "output": "Full EAX is original actual receiver; RET4 consumes the one actual text-pointer DWORD. Returned child pointer/null is separately stored at receiver+0x0C.",
+      "nonvolatiles": "Constructor saves ESI/EDI; EBX/EBP locally untouched. Child57 preserves the caller ESI/EDI (including constructor EDI=0), and real current providers preserve normal nonvolatiles.",
+      "null_child": "No child allocation/copy. Child XOR EAX,EAX supplies CF/OF/SF0 and ZF/PF1, AF undefined; constructor tail preserves these flags while replacing EAX with receiver. ECX=0; incoming EDX unchanged on this complete null route.",
+      "nonnull_child": "Actual current owned duplicate is stored at+0x0C. Nonnull ECX/EDX are provider-volatile and cannot be asserted from a guessed residual value.",
+      "flags_tail": "After CALL, only MOV/POP/RET execute; flag-producing XOR EDI before CALL does not define the final result. Nonnull final arithmetic flags are inherited from child ADD ESP,16. Null final flags are inherited from child XOR, not from receiver EAX.",
+      "nested_stack_with_raw_T": {
+        "definition": "Raw constructor caller ESP=T points to actual text argument immediately before CALL.",
+        "constructor_entry": "T-4 contains return address; text atT",
+        "after_PUSH_ESI": "T-8; MOV ECX,[ESP+8] reads text atT",
+        "after_PUSH_EDI": "T-12",
+        "duplicate_entry": "T-16 after CALL008EF1D6",
+        "duplicate_allocator_argument": "T-32; original allocation size remains until copy cleanup",
+        "duplicate_copy_arguments": "destT-44, sourceT-40, n+1T-36; allocation size remainsT-32",
+        "duplicate_memcpy_entry": "T-48 return address; actual CDECL dest/source/count follow",
+        "duplicate_memcpy_return": "T-44",
+        "final_inner_ADD": "(T-44)+16 = T-28",
+        "duplicate_after_nonvolatile_pops": "T-16",
+        "duplicate_RET0_returns_to_constructor": "T-12",
+        "constructor_after_POP_EDI": "T-8",
+        "constructor_after_POP_ESI": "T-4",
+        "constructor_RET4_returns_to_raw_caller": "T+4"
+      },
+      "flag_masks": "Null defined XOR mask0x8C5 expected0x44, AF excluded; nonnull mask0x8D5 from actual captured(T-44)+16, not the isolated duplicate fixture(T-32)+16.",
+      "machine_state_limits": "Require DF clear for current CRT entry. No blanket FP/MXCSR/segment/DF or private EH preservation claim."
+    },
+    "ordered_partial_storage": {
+      "stores": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": "literal 00CE89D4",
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 2,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 24,
+          "width": 4,
+          "value": 0,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 28,
+          "width": 4,
+          "value": 0,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 32,
+          "width": 4,
+          "value": 0,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 36,
+          "width": 4,
+          "value": 0,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 48,
+          "width": 4,
+          "value": 0,
+          "phase": "before duplicate"
+        },
+        {
+          "offset": 52,
+          "width": 4,
+          "value": 0,
+          "phase": "after normal duplicate return"
+        },
+        {
+          "offset": 12,
+          "width": 4,
+          "value": "actual returned owned duplicate pointer or0",
+          "phase": "after normal duplicate return"
+        },
+        {
+          "offset": 44,
+          "width": 1,
+          "value": 1,
+          "phase": "after normal duplicate return"
+        }
+      ],
+      "written_bytes_normal_return": 37,
+      "preserved_bytes_inside_56": 19,
+      "preserved_ranges_half_open": [
+        [
+          "08",
+          "0C"
+        ],
+        [
+          "10",
+          "18"
+        ],
+        [
+          "28",
+          "2C"
+        ],
+        [
+          "2D",
+          "30"
+        ]
+      ],
+      "no_payload_scalar_write_at_08": true,
+      "post_call_stores_require_normal_return": true
+    },
+    "receiver_and_disposal_contract": {
+      "receiver": "Fresh/unowned actual writable minimum56-byte storage, disjoint from borrowed source and active raw call frame. Caller retains receiver allocation/lifetime ownership. No live owning property can be overwritten.",
+      "text": "nullptr or live readable contiguous NUL-terminated bytes with representable n+1 and no address wrap, remaining valid throughout duplicate/copy.",
+      "literal_phase": "DWORD+00 stays literal00CE89D4. Never substitute a host vtable or dispatch/destruct through it; +04 staysDWORD2.",
+      "normal_result": "On null and nonnull normal returns, +0C receives actual child output; byte+2C is1 even when output is null. All37 written bytes and19 preserved bytes follow native ordering.",
+      "nonnull_cleanup": "Record actual current-owned pointer at+0C while live; free it exactly once through unchanged singleton_lifetime_free before receiver storage is released, reused or goes out of scope. Do not read freed copy. Receiver disposal remains the caller storage mechanism, not a synthesized native destructor.",
+      "null_cleanup": "No owned child output and no child free obligation. Literal ownership flag1 does not create a nonnull allocation.",
+      "future_stack_receiver": "A genuine declared guarded96-byte allocation may expose pre16/receiver56/post24; stack storage can remain live while each copy is observed then freed. No root-free call is fabricated; for a real heap receiver, its actual owner frees storage only after child cleanup.",
+      "failure": "Pre-call28 receiver bytes are already written before duplication. Failure/reentry/unwind/rollback behavior is unadmitted; no strong-exception guarantee, cleanup branch or artificial failure result is introduced."
+    },
+    "one_caller": {
+      "whole_parent_entry": "008F4F60",
+      "bounded_span": {
+        "start": "008F5083",
+        "end_exclusive": "008F50B1",
+        "bytes": 46,
+        "instruction_count": 13,
+        "sha256": "2ff7155d5b1de7707a24cf7bda49ae4c13bef37dedd598d6ef9ac086a36a2978",
+        "hex": "85c0c7442414010000000f84f70100008b560c528bc8e812a1ffff8b56345f8950345e8b4c240464890d00000000",
+        "instructions": [
+          {
+            "address": "008F5083",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "008F5085",
+            "bytes": "c744241401000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x14], 1"
+          },
+          {
+            "address": "008F508D",
+            "bytes": "0f84f7010000",
+            "mnemonic": "je",
+            "operands": "0x8f528a"
+          },
+          {
+            "address": "008F5093",
+            "bytes": "8b560c",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "008F5096",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operands": "edx"
+          },
+          {
+            "address": "008F5097",
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "address": "008F5099",
+            "bytes": "e812a1ffff",
+            "mnemonic": "call",
+            "operands": "0x8ef1b0"
+          },
+          {
+            "address": "008F509E",
+            "bytes": "8b5634",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esi + 0x34]"
+          },
+          {
+            "address": "008F50A1",
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "address": "008F50A2",
+            "bytes": "895034",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x34], edx"
+          },
+          {
+            "address": "008F50A5",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "008F50A6",
+            "bytes": "8b4c2404",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 4]"
+          },
+          {
+            "address": "008F50AA",
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          }
+        ],
+        "live_equals_PE": true
+      },
+      "actual_call": "008F5099",
+      "observed_flow": "MOV EDX,[ESI+0C]; PUSH EDX; MOV ECX,EAX; CALL008EF1B0. After normal return source+34 is copied to returned receiver+34. Bounded tail restores saved state/FS:[0].",
+      "limits": "No numeric conversion in this arm. Earlier destination allocation and source owner, whole clone/other arms, failure target008F528A and EH/destruction are not admitted."
+    },
+    "dependency_delta": {
+      "previous_blocker": "Old scalar readiness correctly rejected the plain-CDECL duplicate API as an ECX/RET0 provider.",
+      "new_evidence": "Frozen worker commit abad4d43a48ac905be66cb02d103ed693c148cb9 supplies genuine raw57/30 with actual current allocation/copy/free gates and sole normal/null fixture. Its Source/header remain frozen and hash-verified.",
+      "remaining_gate": "Root independent duplicate admission is not established by this update; the constructor proposal must remain conditional, Source0 and readySource0. No private CRT/EH or owning class boundary is removed by the new current-domain component."
+    },
+    "bounded_graph": {
+      "nodes": [
+        {
+          "id": "008EF1B0",
+          "status": "whole60/20 candidate; no Source implementation/admission"
+        },
+        {
+          "id": "00438E40",
+          "status": "whole57/30 frozen physical duplicate worker Source/fixture; Root independent admission required; no live query here"
+        },
+        {
+          "id": "008F4F60",
+          "status": "one genuine clone arm [008F5083,008F50B1) only; full clone/allocation/owner/EH incomplete"
+        },
+        {
+          "id": "00BF55BE",
+          "status": "frozen whole5-byte allocator jump thunk; no new query"
+        },
+        {
+          "id": "00BF681B",
+          "status": "named original private allocator; incomplete"
+        },
+        {
+          "id": "00BF7680",
+          "status": "original private memcpy; incomplete; older entry/prototype context only"
+        },
+        {
+          "id": "00CE89D4",
+          "status": "literal phase identity; frozen old cell points004E6730; no live class/vtable established"
+        },
+        {
+          "id": "004E6730",
+          "status": "frozen phase-cell target/destruction boundary; uninspected and unadmitted"
+        },
+        {
+          "id": "00BF9DC8",
+          "status": "historical header release association only; no direct edge or original release proof"
+        },
+        {
+          "id": "current_raw_duplicate_Source",
+          "status": "frozen genuine ECX/RET0 component from abad4d43a; current provider domain only; prerequisite pending independent admission"
+        },
+        {
+          "id": "current_canonical_free",
+          "status": "real unchanged singleton_lifetime_free; complete6/1 in frozen component; caller-owned-copy teardown only"
+        },
+        {
+          "id": "current_provider_domain",
+          "status": "actual canonical UCRT malloc/free/newh plus distinct VCRUNTIME memcpy documented in frozen component; must be freshly gated in future constructor process"
+        },
+        {
+          "id": "native_owning_class_and_EH",
+          "status": "unclosed owner/destruction/private exception boundary; no invented Source owner"
+        }
+      ],
+      "edges": [
+        [
+          "008F4F60",
+          "008EF1B0",
+          "actual bounded caller CALL008F5099"
+        ],
+        [
+          "008EF1B0",
+          "00438E40",
+          "actual CALL008EF1D6"
+        ],
+        [
+          "00438E40",
+          "00BF55BE",
+          "frozen actual native CALL"
+        ],
+        [
+          "00BF55BE",
+          "00BF681B",
+          "frozen actual JMP"
+        ],
+        [
+          "00438E40",
+          "00BF7680",
+          "frozen actual native CALL"
+        ],
+        [
+          "008EF1B0",
+          "00CE89D4",
+          "literal immediate store; not a virtual call"
+        ],
+        [
+          "00CE89D4",
+          "004E6730",
+          "frozen historical DATA cell association only"
+        ],
+        [
+          "008EF1B0",
+          "current_raw_duplicate_Source",
+          "conditional future operand39..42 rebinding; not implemented"
+        ],
+        [
+          "current_raw_duplicate_Source",
+          "current_provider_domain",
+          "frozen qualified current-provider bindings; fresh future gates required"
+        ],
+        [
+          "current_canonical_free",
+          "current_provider_domain",
+          "caller teardown through matching current free; not a constructor/native destructor edge"
+        ]
+      ],
+      "node_count": 13,
+      "edge_count": 10,
+      "total": 23,
+      "cap": 24,
+      "edge_kinds_explicit": true,
+      "named_incomplete_boundaries_retained": true
+    }
+  },
+  "frozen_component": {
+    "worker_commit": "abad4d43a48ac905be66cb02d103ed693c148cb9",
+    "Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\src\\native_string_duplicate.cpp",
+      "size": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\include\\bsp\\native_string_duplicate.hpp",
+      "size": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    "canonical_Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a\\artifact_manifest.json",
+      "bytes": 27429,
+      "sha256": "5cc2b60c8e9291ea0edf1fec7b916031d56e96df55788d56753686971ae100f1"
+    },
+    "worker_fixture_result": "5 entries/3 genuine results/3 current canonical frees; ten full local spans and actual UCRT/VCRUNTIME module/file gates, as historical worker evidence only",
+    "Root_independent_admission": "pending at task assignment; not established by this audit; Root must confirm at registration",
+    "frozen_actual_files": 95,
+    "unchanged_legacy_CDECL_API": "bsp::duplicate_00438e40 is not used as the physical provider"
+  },
+  "future_packet": {
+    "enabled": false,
+    "registration_owner": "Root only, after duplicate is independently admitted",
+    "suggested_id": "cc12_scene_property_record_type2_string_storage",
+    "required_dependency": "cc12_raw_native_string_duplicate_00438e40 actually admitted; no admission inferred from worker report or function name",
+    "exactly_four_owned_files": [
+      "include/bsp/native_scene_property_record_type2_string_storage.hpp",
+      "src/native_scene_property_record_type2_string_storage.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE2_STRING_STORAGE_CC12.md",
+      "reports/native_scene_property_record_type2_string_storage_cc12.json"
+    ],
+    "public_API": "void* __fastcall bsp::construct_native_scene_property_record_type2_string_storage_008ef1b0(void* actual_record_ecx, void* unused_edx, const char* actual_text_stack);",
+    "API_details": "MSVC Win32; second formal occupies unused EDX so the genuine text remains the sole stack DWORD. RET4/full EAX receiver. No noexcept promise. Descriptive raw-storage name is a hypothesis, not a recovered class declaration.",
+    "Source_body": "Complete literal60/20 with exactly one COFF REL32 at operand offset39 targeting the genuine newly linked duplicate_native_string_00438e40. All other56 bytes, including literal00CE89D4, remain unchanged. No legacy CDECL substitution, callback, fake provider, host vtable, root owner or destructor wrapper.",
+    "new_fixture_family": "Fresh named worktree and unique ignored family. Four new TUs: constructor, unchanged admitted raw duplicate+its genuine size adapter, unchanged canonical allocation/free, and a new probe. No old objects/BSP archives/helper imports/native replay. Root independently repeats validation.",
+    "static_gate": "Full complete COFF/linked constructor60/20 and actual one relocation, current duplicate57/30 with its two provider operands, real size adapter, canonical allocation/free, all selected helpers/cookie/import thunks, genuine ordinary constructor caller and raw capture caller. Re-derive every extent/hash and actual call target. Full manifest/header/library/tool/input pins; identical copy prefixes cannot identify a provider.",
+    "Original_binding": "A private RX copy of original ctor60 changes only operand[39,43) to the identical fresh actual physical duplicate Source used by the new constructor. Child duplicate retains its admitted current-domain provider bindings; do not execute original private CRT or claim an original-class binary replacement.",
+    "minimal_cases": "Two inputs only: null and one guarded nonempty NUL-terminated byte array. Raw boundOriginal and Source each receive both inputs using the same real fresh/unowned56-byte receiver and actual stack text slot; one ordinary Source nonnull call confirms declared ECX/EDX/stack/RET4 lowering. Five constructor entries; three genuine owned duplicate outputs to observe and current-free once. Null output zero, flag+2C1 still expected. No extra nullptr result/provider callbacks or forced allocations.",
+    "observations": "Check EAX equals actual receiver, all37 written/19 preserved bytes and surrounding guards, literal phase/tag, actual text source/guards unchanged, exact copied bytes through firstNUL, returned pointer disjoint from live source, and lifetime-safe matched frees. Preserve raw before/after GPR/ESP/defined flags; null AF excluded; nonnull ECX/EDX recorded only. Derive nested finalADD from actual(T-44)+16; RET4 givesT+4. Never require equal numerical allocated addresses across phases.",
+    "cleanup": "After observing each actual nonnull child pointer from receiver+0C, call unchanged singleton_lifetime_free exactly once while receiver remains alive, then release/reinitialize only the caller-owned raw storage. No freed-copy reads or phase-pointer dispatch. Actual heap receiver free, if used, follows its own ownership domain after child free; a genuine stack receiver needs no invented root-free helper.",
+    "preentry_post_gates": "Before zero target constructor/duplicate entries, gate actual child allocation/free/newh IATs to matching physical I386 UCRT and actual memcpy IAT to physical I386 VCRUNTIME140 using export/module/MEM_IMAGE/path/fileID/fullhash/ASLR-normalized bytes and held read handles. Bookend full constructor/duplicate/helper/Original spans and actual IATs/providers, PE, sources/tools/consumed headers/libraries and all older immutable families. Reuse frozen receipts as provenance only, not runtime evidence for the new process.",
+    "exclusions": "Original private CRT/EH, failure/reentry/naked unwind, invalid/unterminated/wrapping/overlapping input, live owning receiver overwrite, full clone/allocation/destruction/class/vtable/world/gameplay. Native cleanup and class lifetime do not follow from manual matched current free."
+  },
+  "preservation": {
+    "older_artifacts": 765,
+    "frozen_duplicate_family_actual_inventory": 95,
+    "historical_metadata": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\historical_metadata.json",
+      "bytes": 181663,
+      "sha256": "08ca10b1bd9983f87cab7a0793e68f69ae2c3d6521d704e0db38fbc3d65e475c"
+    },
+    "original_source_config_associations_unchanged": true,
+    "old_helpers_imported_or_executed": false,
+    "Root_owned_duplicate_address_live_queries": 0,
+    "other_property_leaf_queries": 0
+  },
+  "evidence": {
+    "contract": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\contract_analysis.json",
+      "bytes": 16607,
+      "sha256": "57138e8fd0e17db32bc538187200a9a80b4e4d63f72cc19d69e90e63d6d00999"
+    },
+    "native_before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\native_before.json",
+      "bytes": 5440,
+      "sha256": "2f4e48ae6b44725eef452d257f1ddf7efd79a00808c36bc97b8c3a1b6e8ff102"
+    },
+    "constructor_proto": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\constructor_proto.json",
+      "bytes": 1895,
+      "sha256": "de4eff1b57511aba8a0a19792f4d4050249f1e4d4d878c6113a9f1d7da7567b2"
+    },
+    "constructor_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\constructor_listing.json",
+      "bytes": 1904,
+      "sha256": "603a213367cf6d1e8055715639e227d72ed6b3937236b325e2f0a517066d791a"
+    },
+    "post": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\post.json",
+      "bytes": 293,
+      "sha256": "de504db9b03abb19c99438b7b9bc5e80d72c838b8a23391abb1726ba5c0dc86e"
+    }
+  },
+  "activity": {
+    "new_tracked_files": 2,
+    "Source_header_config_ledger_CMake_changes": 0,
+    "compilations": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "new_agents": 0,
+    "accepted_native_replays": 0
+  },
+  "readiness_receipt": {
+    "packet": "cc12_type2_string_storage_readiness",
+    "status": "CONDITIONAL: Root independent admission of physical duplicate00438E40 and a later fresh constructor fixture remain required.",
+    "Source_credit": 0,
+    "ready_Source_credit": 0,
+    "ready_Source_packets": 0,
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\proposal.json",
+      "bytes": 26892,
+      "sha256": "ffb0965e6d3c50c51a29b3562dbfbf49a4083b93ecc3d23f2fb21581c06bec5d"
+    },
+    "whole": {
+      "start": "008EF1B0",
+      "end_exclusive": "008EF1EC",
+      "bytes": 60,
+      "instructions": 20,
+      "sha256": "be944adca54cbd0702bc89a12e88ab0c8ac84f306bb8c14188266b8f70ae5a04",
+      "only_future_CALL_operand": [
+        39,
+        43
+      ],
+      "other_literal_bytes": 56
+    },
+    "frozen_duplicate_Source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\src\\native_string_duplicate.cpp",
+      "size": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    "frozen_duplicate_header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\include\\bsp\\native_string_duplicate.hpp",
+      "size": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    "graph": {
+      "nodes": 13,
+      "edges": 10,
+      "total": 23,
+      "cap": 24
+    },
+    "post": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\post.json",
+      "bytes": 293,
+      "sha256": "de504db9b03abb19c99438b7b9bc5e80d72c838b8a23391abb1726ba5c0dc86e"
+    },
+    "prior_artifacts_preserved": 765,
+    "native_executions": 0,
+    "compilations": 0,
+    "Ghidra_mutations": 0
+  },
+  "family_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_readiness\\local\\cc12_type2_string_storage_readiness20261008a\\artifact_manifest.json"
+}
