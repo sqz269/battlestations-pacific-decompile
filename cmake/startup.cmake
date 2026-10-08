@@ -1643,3 +1643,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_wake_h
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ship_kind.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_registry_scalar_delete.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_plane_derived_kind.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_set_leader.cpp)
