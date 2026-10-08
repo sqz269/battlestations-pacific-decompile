@@ -1,0 +1,464 @@
+{
+  "schema": 1,
+  "packet": "cc12_raw_unit_list_remove_004845a0",
+  "status": "Root registered whole46B19 raw first-payload-match removal after accepted erase; Source implementation/admission remains0",
+  "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_remove_readiness\\local\\cc12_raw_unit_list_remove_readiness_audit",
+  "worker_hashes": {
+    "proposal.json": "21e8d7ee4f4f175fd841ead340542510f2f8cabfa9d7d6e204d43fe4fe3e716e",
+    "readiness_receipt.complete.json": "44383d6e252d4667739ade4704effbeec7cfd1efec7008b16cf0d55d2417553b",
+    "artifact_manifest.complete.json": "c237ed6969c01cd8f79cb1b044a4c5409ea8b138ddd0131d3c4cfd0265ff7e0d"
+  },
+  "root_verification": "local/cc12_raw_unit_list_remove_primary_audit_verify.json",
+  "inventory_count": 179,
+  "proposal": {
+    "schema": "bsp.cc12.raw_unit_list_remove.proposal.v1",
+    "packet": "cc12_raw_unit_list_remove_readiness",
+    "utc": "2026-10-08T09:51:35.634156+00:00",
+    "baseline": "334aaf09e18bcf1fd712e5a39f245e9a21b96b3f",
+    "kind": "Bounded read-only continuation audit; ordinary raw payload-removal leaf conditional on accepted real erase dependency",
+    "readiness": {
+      "complete_native_raw_leaf_static_evidence": true,
+      "accepted_append_artifacts_and_Source_verified": true,
+      "erase_acceptance_at_assignment": "Worker implementation pending Root acceptance; no live erase query made.",
+      "erase_acceptance_required_before_Source_registration": true,
+      "ready_Source_packets": 0,
+      "Source_bodies": 0,
+      "Source_bytes": 0,
+      "Source_implemented": false,
+      "Root_explicit_registration_required": true
+    },
+    "live_name": "BSP_UnitList_Remove",
+    "descriptive_name_is_hypothesis": true,
+    "whole": {
+      "entry": "004845A0",
+      "exclusive_end": "004845CE",
+      "kind": "whole raw removal candidate",
+      "bytes": 46,
+      "instructions": 19,
+      "sha256": "021c3de90775c6eba0451ba26f707b87d2c72cc853246f4c0b784c2a411303db",
+      "hex": "8b410485c0568b742408741c8d642400397008740d8b400485c075f48bc65ec2040050e808f2ffff8bc65ec20400",
+      "live_PE_equal": true,
+      "disassembly": [
+        {
+          "address": "004845A0",
+          "hex": "8b4104",
+          "instruction": "mov eax, dword ptr [ecx + 4]"
+        },
+        {
+          "address": "004845A3",
+          "hex": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "address": "004845A5",
+          "hex": "56",
+          "instruction": "push esi"
+        },
+        {
+          "address": "004845A6",
+          "hex": "8b742408",
+          "instruction": "mov esi, dword ptr [esp + 8]"
+        },
+        {
+          "address": "004845AA",
+          "hex": "741c",
+          "instruction": "je 0x4845c8"
+        },
+        {
+          "address": "004845AC",
+          "hex": "8d642400",
+          "instruction": "lea esp, [esp]"
+        },
+        {
+          "address": "004845B0",
+          "hex": "397008",
+          "instruction": "cmp dword ptr [eax + 8], esi"
+        },
+        {
+          "address": "004845B3",
+          "hex": "740d",
+          "instruction": "je 0x4845c2"
+        },
+        {
+          "address": "004845B5",
+          "hex": "8b4004",
+          "instruction": "mov eax, dword ptr [eax + 4]"
+        },
+        {
+          "address": "004845B8",
+          "hex": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "address": "004845BA",
+          "hex": "75f4",
+          "instruction": "jne 0x4845b0"
+        },
+        {
+          "address": "004845BC",
+          "hex": "8bc6",
+          "instruction": "mov eax, esi"
+        },
+        {
+          "address": "004845BE",
+          "hex": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "address": "004845BF",
+          "hex": "c20400",
+          "instruction": "ret 4"
+        },
+        {
+          "address": "004845C2",
+          "hex": "50",
+          "instruction": "push eax"
+        },
+        {
+          "address": "004845C3",
+          "hex": "e808f2ffff",
+          "instruction": "call 0x4837d0"
+        },
+        {
+          "address": "004845C8",
+          "hex": "8bc6",
+          "instruction": "mov eax, esi"
+        },
+        {
+          "address": "004845CA",
+          "hex": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "address": "004845CB",
+          "hex": "c20400",
+          "instruction": "ret 4"
+        }
+      ],
+      "sole_CALL": {
+        "instruction_address": "004845C3",
+        "opcode_offset": 35,
+        "operand_offset": 36,
+        "operand_half_open_range": [
+          36,
+          40
+        ],
+        "target": "004837D0",
+        "target_live_expanded": false
+      },
+      "returns": [
+        {
+          "address": "004845BF",
+          "hex": "c20400",
+          "stack_cleanup": "4"
+        },
+        {
+          "address": "004845CB",
+          "hex": "c20400",
+          "stack_cleanup": "4"
+        }
+      ]
+    },
+    "proposed_declaration": "void* __fastcall remove_native_unit_list_payload_004845a0(void* actual_list_ecx, void* unused_edx, void* borrowed_payload) noexcept;",
+    "namespace": "bsp",
+    "physical_ABI": {
+      "receiver": "Entry ECX is the actual stable aligned 12-byte {count,head,tail} root. The wrapper never changes ECX before its sole CALL.",
+      "payload": "One actual DWORD at entry ESP+4 is a borrowed opaque payload identity. Incoming EDX is unused by the wrapper; an explicit unused-EDX formal keeps payload stacked under MSVC fastcall.",
+      "save_and_load": "004845A5 PUSH ESI; 004845A6 loads [ESP+8], exactly the original [entryESP+4]. ESI holds all32 payload bits across the scan and ordinary callee return.",
+      "sole_CALL": "004845C2 PUSH EAX passes the exact first matching actual node; 004845C3 CALL 004837D0 retains the same actual root in ECX. No callback/provider shim is admissible.",
+      "stack_derivation": "For wrapper entry ESP=S: saved ESI is at S-4; matched node is pushed at S-8; erase entry ESP=S-12 and [eraseESP+4] is that found node. Accepted erase RET4 returns wrapper ESP to S-4; POP ESI restores S; wrapper RET4 leaves caller ESP=S+8.",
+      "return": "Every ordinary return yields full entry payload bits in EAX, including empty/absent and the post-free match arm. Both RET4 instructions start at 004845BF and 004845CB.",
+      "ESI": "Explicitly saved and restored; matched path depends on the accepted real erase/free ordinary ABI preserving nonvolatile ESI. No post-free node access occurs.",
+      "other_registers": "EBX/EDI/EBP are untouched locally and preserved through the ordinary callee ABI. On no-call paths ECX remains root and EDX remains incoming bits. Matched paths make no blanket volatile ECX/EDX, x87/SSE/MXCSR or DF preservation claim across CRT.",
+      "flags": "Empty/absent returns preserve the final TEST of zero: CF0/PF1/ZF1/SF0/OF0, AF undefined. Matched return preserves flags left by actual erase, whose saved readiness attributes final arithmetic flags to ADD ESP,4; count-decrement/CMP flags are not claimed to survive CRT.",
+      "DF": "No local DF/ES use or modification. A matched real erase/free call requires its ordinary current-CRT entry contract, including DF0; no blanket DF/FP claim across CRT.",
+      "stale_saved_comment": "Saved comment claims plain RET. Both independently verified physical sites are RET4. Worker records the discrepancy without mutation."
+    },
+    "ordered_behavior": [
+      "Load root.head from ECX+4 into EAX; TEST head; save ESI and load stacked borrowed payload without changing those flags.",
+      "Empty head branches directly to MOV EAX,ESI; POP ESI; RET4, making no erase call or root/node mutation.",
+      "Compare actual node.payload at node+8 against ESI; equality selects the first matching actual node in head-to-next order.",
+      "On inequality load actual node.next at node+4; TEST next and loop while nonzero. Exhaustion returns original payload through the early MOV/POP/RET4 arm.",
+      "For the first match push that exact EAX node and call the real accepted erase with ECX unchanged. Ignore its successor return, set EAX back to ESI, restore ESI and RET4. Stop after one match."
+    ],
+    "storage_and_ownership": {
+      "root": "Actual stable aligned writable 12-byte root {count +0, head +4, tail +8}; coherent finite acyclic live list. Count and tail are not read locally but are mutated by the real erase dependency on a match.",
+      "nodes": "Actual nonnull coherent owned 12-byte {prev +0,next +4,payload +8} allocations produced by accepted append Source in the actual canonical current allocation/free domain. Erase must have accepted compatible root/node ownership and physical ECX/one-node-stack/RET4.",
+      "payload": "Only opaque full32 identity comparison/storage/return; no payload dereference, Boolean conversion, destruction or separate payload free. Owning list node removal is distinct from borrowed external payload lifetime.",
+      "producer_evidence": "Accepted append Source commit ed2b720361a01bf52da0a232cb22989afa217472 and independent Root 78-artifact inventory+seal preserved. No fabricated owning nodes, count census, companion state, callback free or forced pointer reuse.",
+      "validation_limit": "This audit performs no allocation or execution. Actual append-produced ownership is an explicit prerequisite for future connected validation, not inferred from 12-byte sizes, names or arbitrary node images.",
+      "abnormal_paths": "No invalid/cyclic/incoherent storage, OOM, new-handler reentry, faults, historical private-CRT/EH or class-runtime admission."
+    },
+    "parent_provenance_witness": {
+      "whole": {
+        "entry": "00928570",
+        "exclusive_end": "00928594",
+        "kind": "whole bounded parent provenance witness",
+        "bytes": 36,
+        "instructions": 16,
+        "sha256": "5e5953808bcedd0d474f116b3a761958693034335fa2d06906821f25d06a4ab2",
+        "hex": "8bd18b4a308b412883c12485c074149039500874088b400485c075f4c350e83db2b5ffc3",
+        "live_PE_equal": true,
+        "disassembly": [
+          {
+            "address": "00928570",
+            "hex": "8bd1",
+            "instruction": "mov edx, ecx"
+          },
+          {
+            "address": "00928572",
+            "hex": "8b4a30",
+            "instruction": "mov ecx, dword ptr [edx + 0x30]"
+          },
+          {
+            "address": "00928575",
+            "hex": "8b4128",
+            "instruction": "mov eax, dword ptr [ecx + 0x28]"
+          },
+          {
+            "address": "00928578",
+            "hex": "83c124",
+            "instruction": "add ecx, 0x24"
+          },
+          {
+            "address": "0092857B",
+            "hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "address": "0092857D",
+            "hex": "7414",
+            "instruction": "je 0x928593"
+          },
+          {
+            "address": "0092857F",
+            "hex": "90",
+            "instruction": "nop "
+          },
+          {
+            "address": "00928580",
+            "hex": "395008",
+            "instruction": "cmp dword ptr [eax + 8], edx"
+          },
+          {
+            "address": "00928583",
+            "hex": "7408",
+            "instruction": "je 0x92858d"
+          },
+          {
+            "address": "00928585",
+            "hex": "8b4004",
+            "instruction": "mov eax, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00928588",
+            "hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "address": "0092858A",
+            "hex": "75f4",
+            "instruction": "jne 0x928580"
+          },
+          {
+            "address": "0092858C",
+            "hex": "c3",
+            "instruction": "ret "
+          },
+          {
+            "address": "0092858D",
+            "hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "address": "0092858E",
+            "hex": "e83db2b5ff",
+            "instruction": "call 0x4837d0"
+          },
+          {
+            "address": "00928593",
+            "hex": "c3",
+            "instruction": "ret "
+          }
+        ],
+        "sole_CALL": {
+          "instruction_address": "0092858E",
+          "opcode_offset": 30,
+          "operand_offset": 31,
+          "operand_half_open_range": [
+            31,
+            35
+          ],
+          "target": "004837D0",
+          "target_live_expanded": false
+        },
+        "returns": [
+          {
+            "address": "0092858C",
+            "hex": "c3",
+            "stack_cleanup": "0"
+          },
+          {
+            "address": "00928593",
+            "hex": "c3",
+            "stack_cleanup": "0"
+          }
+        ]
+      },
+      "Source_admitted": false,
+      "role": "Separate genuine direct caller of erase, not a caller of 004845A0.",
+      "receiver": "Entry ECX is a subject identity. MOV EDX,ECX preserves it for node.payload comparison; subject+30 supplies an actual parent pointer.",
+      "root_relationship": "Read parent+28 as head, then ADD ECX,24 establishes actual embedded parent+24 12-byte {count,head,tail} root. Scan node+8 payload against subject identity and node+4 next.",
+      "CALL": "PUSH found EAX at 0092858D; CALL 004837D0 at 0092858E. Same actual embedded root stays ECX and one stacked actual node is supplied. Accepted erase RET4 balances it; parent returns with plain RET at 0092858C or 00928593.",
+      "ownership_limit": "Only this complete 36-byte witness is inspected. Parent/subject construction, allocation, owner/class lifetime, all other parent methods and world/game relationship remain unadmitted."
+    },
+    "historical_erase_dependency": {
+      "packet": "cc12_raw_unit_list_erase_004837d0",
+      "entry": "004837D0",
+      "live_read_or_lease": false,
+      "saved_status": "Root repaired and registered one ready bounded raw erase Source packet; Source admission remains0 pending worker and independent Root validation",
+      "saved_native_whole": "79 bytes / 31 instructions, Root repaired readiness only",
+      "saved_physical_ABI": {
+        "entry": "ECX=actual root; incoming EDX unused; [entryESP+4]=actual node. EAX=node before mutation; ESI saved explicitly; EBX/EDI/EBP untouched except inherited CDECL free preservation.",
+        "ordered_body": [
+          "Load node.prev into EDX; save ESI. If previous exists, load node.next into ESI and write previous.next. Otherwise load node.next into EDX and write root.head.",
+          "Compare freshly read node.next against0, then freshly reload node.prev into EDX without changing flags.",
+          "If next exists, freshly load it into ESI, write next.prev=EDX, ADD root.count,-1, PUSH actual node and CALL free at004837FA.",
+          "If next is zero, ADD root.count,-1, PUSH actual node, XOR ESI,ESI, write root.tail=EDX, CALL free at00483811.",
+          "Each normal return executes ADD ESP,4; MOV EAX,ESI; POP ESI; RET4. Captured successor or0 survives free; no post-free node access or payload destructor."
+        ],
+        "stack": "For entryESP=S, saved ESI isS-4, pushed node isS-8, free entryESP=S-12 and its actual pointer is[freeESP+4]. CDECL free returns toS-8; ADD4 restoresS-4, POP ESI restoresS, RET4 leaves callerESP=S+8.",
+        "return": "EAX=actual successor captured in ESI before free, or0 on tail/singleton. ESI restored. No blanket ECX/EDX/x87/SSE/MXCSR/DF preservation across actual CRT; ordinary ABI preconditions apply.",
+        "flags": "Final ADD ESP,4 determines arithmetic flags on normal return; MOV/POP/RET do not alter them. No inference that count-decrement flags survive free/epilogue.",
+        "native_DATA": "No absolute native DATA cell, vtable, class allocator, singleton or hidden context is read by the79-byte body."
+      },
+      "saved_Source_interface": "void* __fastcall erase_native_unit_list_004837d0(void* actual_list_ecx, void* unused_edx, void* actual_node) noexcept. New external API maps ECX receiver/one DWORD node stack/RET4, not a native class ABI. Valid current canonical free contract only; original private CRT/EH unbound.",
+      "Root_repair_flags": {
+        "original_bytes_unchanged": true,
+        "whole79B31": true,
+        "both_CALL_RETURN_overrides_cleared": true,
+        "override_cause_verified_by_actual_clear_responses": true,
+        "body_recreated_bounded": true,
+        "inferred_native_prototype": "void * __thiscall FUN_004837d0(void * this, void * actual_node)",
+        "implicit_ECX_receiver": true,
+        "one_stacked_node": true,
+        "RET4": true,
+        "saved_project": true,
+        "affected_exports_refreshed": true,
+        "first_prototype_attempt": "Two explicit arguments inadvertently duplicated Ghidra implicit this; recorded then corrected to one explicit actual_node. First save was busy; corrected saved retry completed under write lock. First attempt is not accepted prototype evidence.",
+        "original_free_library_name_and_global_attributes_unchanged": true
+      },
+      "Root_implementation_acceptance_is_required": true
+    },
+    "bounded_graph": {
+      "nodes": [
+        {
+          "address": "004845A0",
+          "role": "complete candidate live/PE body"
+        },
+        {
+          "address": "00928570",
+          "role": "complete bounded parent witness live/PE body"
+        },
+        {
+          "address": "004837D0",
+          "role": "unexpanded historical saved repaired erase dependency; externally leased"
+        },
+        {
+          "address": "00484540",
+          "role": "accepted append Source/Root artifact producer only; no live query"
+        }
+      ],
+      "edges": [
+        {
+          "from": "004845A0",
+          "to": "004837D0",
+          "kind": "one actual native CALL at 004845C3"
+        },
+        {
+          "from": "00928570",
+          "to": "004837D0",
+          "kind": "one actual native CALL at 0092858E"
+        },
+        {
+          "from": "00484540",
+          "to": "004845A0",
+          "kind": "required accepted storage-producer relationship; not a native call edge"
+        }
+      ],
+      "live_codeentries_inspected": 2,
+      "historical_dependency_nodes": 2,
+      "actual_native_CALL_edges_inspected": 2,
+      "provenance_edges": 1,
+      "nodes_plus_edges": 7,
+      "cap": 24,
+      "all_other_callees_callers_parent_and_float_expansion": false
+    },
+    "future_Source_and_admission": {
+      "registration": "Root must first accept whole real erase and register a new bounded Source packet. This proposal adds zero Source bodies or ready Source packets.",
+      "whole_body": "Future complete literal 46-byte body must preserve every42 byte outside sole operand [36,40), both RET4 sites, scan/load ordering and exact ESI behavior.",
+      "sole_actual_binding": "Only the genuine E8 CALL operand may bind the real accepted erase Source with compatible ECX/unusedEDX/one actual node DWORD/RET4. No fabricated globals, owner class, callback, shim or substitute provider.",
+      "fresh_connected_family": "One unique fresh five-TU family: new removal Source + accepted unchanged erase Source + accepted unchanged append Source/actual size-only allocator adapter + current unchanged singleton_lifetime.cpp + new ignored probe. Zero BSP archives, old objects and new tracked tests.",
+      "Original_qualification": "A fresh Original46 RX body may alter only its four sole CALL operand bytes to the same actual accepted production erase. Remaining42 bytes must equal native live/PE and Source/COFF/unique linked bytes. This is a bound raw leaf, not original class/private-CRT execution.",
+      "gates_before_any_entry": "Whole46/19 and exact sole Source COFF relocation/unique linked target; actual accepted erase, append/adapter/canonical allocator/free and ordinary/raw caller code/stack/RET4; strict actual consumed tool/header/library/Source/PE/recipe pins; actual mapped I386 UCRT physical file, exports and malloc/free/_callnewh IAT before allocations/calls.",
+      "minimal_genuine_cases": "Two ordinary phases with the same stable actual root and borrowed live external payload identities but fresh actual append-produced nodes. Check empty/absent returns with no mutation; append A,B,A,C, remove B middle, C tail, first A head, then A singleton. Each return is the requested payload, not erase successor. Verify complete root and every still-live link/payload after each; never read freed nodes. One extra ordinary compiler Source call may use a fresh appended singleton to gate the public declaration.",
+      "physical_checks": "Full returned payload EAX, ESI/nonvolatiles, actual ESP/RET4, no-call versus inherited matched flag contract, valid current-CRT DF0, external capture/stack canaries and other live root. No adjacent heap red-zone/metadata or freed-memory proof.",
+      "bookends": "One execution and immutable prepare/build/launch/seal stages; failures retained, postprocessing recovered post-only. No accepted-family replay or old-receipt repinning."
+    },
+    "named_incomplete_dependencies": [
+      "Root acceptance of the externally owned complete real erase 004837D0 implementation and its independent connected current-domain family is the immediate Source-registration blocker.",
+      "Actual append-produced coherent current-canonical owned nodes and actual caller-owned stable root/payload lifetimes are required in a future fresh connected family; this audit executes none.",
+      "Historical native private CRT/free, original allocation/EH and whole original ownership/class behavior remain unbound.",
+      "Subject/parent construction, allocation, parent/class/membership lifetimes and other native callers remain unexpanded. Saved membership/caller comments are provenance hints only.",
+      "World/runtime/game and startup/gameplay behavior remain unvalidated."
+    ],
+    "preservation_counts": {
+      "Root_erase_reports": 3,
+      "Root_erase_repair_artifacts": 15,
+      "prior_erase_audit_metadata": 2,
+      "prior_erase_audit_inventory": 44,
+      "accepted_append_primary_seal": 1,
+      "accepted_append_primary_inventory": 78,
+      "accepted_current_Source": 4,
+      "worktree_Source_context": 4
+    },
+    "prior_context_qualification": {
+      "old_internal_external_config_pins": "Prior-context associations inside old sealed artifacts only; no assertion that their external original paths still match current main metadata.",
+      "old_receipts_repinned": false,
+      "old_families_replayed": false,
+      "live_erase_queries": 0
+    },
+    "execution": {
+      "Source": 0,
+      "Original": 0,
+      "allocations": 0,
+      "compile": 0,
+      "fixtures": 0,
+      "projection_or_fake_nodes": false,
+      "Ghidra_mutations": 0,
+      "tracked_changes": 0,
+      "old_recipes_executed": false
+    }
+  },
+  "requirements": {
+    "registration": "Root accepted erase whole79B31 at main5f2d8d5af with independent four-TU/current-heap fixture and all3 checks. One bounded remove46 Source packet is now registered, implementation/admission remains0.",
+    "whole_body": "Future complete literal 46-byte body must preserve every42 byte outside sole operand [36,40), both RET4 sites, scan/load ordering and exact ESI behavior.",
+    "sole_actual_binding": "Only the genuine E8 CALL operand may bind the real accepted erase Source with compatible ECX/unusedEDX/one actual node DWORD/RET4. No fabricated globals, owner class, callback, shim or substitute provider.",
+    "fresh_connected_family": "One unique fresh five-TU family: new removal Source + accepted unchanged erase Source + accepted unchanged append Source/actual size-only allocator adapter + current unchanged singleton_lifetime.cpp + new ignored probe. Zero BSP archives, old objects and new tracked tests.",
+    "Original_qualification": "A fresh Original46 RX body may alter only its four sole CALL operand bytes to the same actual accepted production erase. Remaining42 bytes must equal native live/PE and Source/COFF/unique linked bytes. This is a bound raw leaf, not original class/private-CRT execution.",
+    "gates_before_any_entry": "Whole46/19 and exact sole Source COFF relocation/unique linked target; actual accepted erase, append/adapter/canonical allocator/free and ordinary/raw caller code/stack/RET4; strict actual consumed tool/header/library/Source/PE/recipe pins; actual mapped I386 UCRT physical file, exports and malloc/free/_callnewh IAT before allocations/calls.",
+    "minimal_genuine_cases": "Two ordinary phases with the same stable actual root and borrowed live external payload identities but fresh actual append-produced nodes. Check empty/absent returns with no mutation; append A,B,A,C, remove B middle, C tail, first A head, then A singleton. Each return is the requested payload, not erase successor. Verify complete root and every still-live link/payload after each; never read freed nodes. One extra ordinary compiler Source call may use a fresh appended singleton to gate the public declaration.",
+    "physical_checks": "Full returned payload EAX, ESI/nonvolatiles, actual ESP/RET4, no-call versus inherited matched flag contract, valid current-CRT DF0, external capture/stack canaries and other live root. No adjacent heap red-zone/metadata or freed-memory proof.",
+    "bookends": "One execution and immutable prepare/build/launch/seal stages; failures retained, postprocessing recovered post-only. No accepted-family replay or old-receipt repinning.",
+    "public_interface": "void* __fastcall remove_native_unit_list_payload_004845a0(void* actual_list_ecx, void* unused_edx, void* borrowed_payload) noexcept;",
+    "flags_and_volatiles": "Empty/absent final TEST zero flags CF0 PF1 ZF1 SF0 OF0; AF undefined. Matching path inherits actual erase final ADD ESP4 flags, derive from nested raw stack rather than assuming the erase-alone offset. ECX/EDX are volatile across actual free and unasserted for matched returns. DF0/current CRT contract; no blanket FP preservation across free.",
+    "root_integration": "Exactly four worker files in named worktree, Ghidra read-only, leases released after commit. Root reviews, fresh independent complementary five-TU fixture, full MSVC Win32/all3 checks, shared CMake/config/ledger and locked Ghidra save/export publication. No new tracked tests."
+  },
+  "accepted_erase_revision": "5f2d8d5af",
+  "accepted_erase_seal": "36af814e5a8d8f9e1c5a88516ea20a85c1daa50a5fa77d974426fd824ab281b3",
+  "Source_whole_bodies_added": 0,
+  "Source_implemented": false,
+  "original_class_ABI_compatible": false,
+  "game_validated": false,
+  "old_families_replayed": false
+}
