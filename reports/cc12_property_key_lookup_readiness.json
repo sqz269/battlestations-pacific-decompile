@@ -1295,5 +1295,47 @@
     "Source_changes": false,
     "Ghidra_mutations": false,
     "full_archive_physical_copy_claim": false
+  },
+  "primary_review": {
+    "status": "PASS",
+    "artifacts_rehashed": 82,
+    "physical_input_copies_rehashed": 36,
+    "current_identity_drift_retained_as_historical": [
+      "reports/cc12_property_key_hash_source.json",
+      "reports/cc12_property_record_pool_static_source.json",
+      "reports/cc12_property_insertion_readiness.json",
+      "build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+      "build/win32/bsp_core.dir/Release/native_lua_script_overrides.obj",
+      "build/win32/bsp_core.dir/Release/entity_identity.obj",
+      "build/win32/bsp_core.dir/Release/native_string.obj",
+      "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_enum_node_pool.obj"
+    ],
+    "installed_Original_regions_rechecked": 10,
+    "Original_transfer_rows_rechecked": 8,
+    "complete_current_COFF_providers": [
+      {
+        "symbol": "?native_property_key_bucket_0043b760@bsp@@YAIPBXPBD@Z",
+        "bytes": 92,
+        "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a",
+        "current_object_sha256": "c1f69e07273caaef334b3c66a1ea75be25ab0ae4e11fc0a36bdea9ec471206fe"
+      },
+      {
+        "symbol": "?native_string_data_or_00419ca0@bsp@@YAPBDABVNativeString@1@PBD@Z",
+        "bytes": 19,
+        "sha256": "7987cbe66bf0db6cede2de2f97005016134ba6879a5a59b609b0aa402d829ee1",
+        "current_object_sha256": "c69987010608837d38be0c9956ddccf672cd2f7b6656e2673603c9829348e463"
+      },
+      {
+        "symbol": "?compare_insensitive_00438e10@bsp@@YAHPBD0@Z",
+        "bytes": 50,
+        "sha256": "528daa15c701db36f19e2f3a536ae52997372e1ef7537a1dfcd001175e54bb43",
+        "current_object_sha256": "ade45b7bdfeaefb737fd758ead2d900d1e6900c609a40def0c94f5eceb3f0c28"
+      }
+    ],
+    "actual_I386_UCRT_stricmp_export_verified": true,
+    "Source_native_game_execution": false,
+    "limit": "Independent borrowed Source reader may proceed. No populated Source producer, Original ABI, publication, replacement lifetime or gameplay qualification."
   }
 }

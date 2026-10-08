@@ -6314,5 +6314,54 @@
     "zip_integrity": true,
     "manifest_sha256": "8321bf0f6595f02c380412614eddda9cc506264e866ddb4d5f245fb29b2d1ce3",
     "all_artifact_hashes_rechecked": true
+  },
+  "primary_review": {
+    "status": "PASS",
+    "retained_zip_artifacts_rehashed": 68,
+    "frozen_Source_pins_rehashed": 22,
+    "current_Source_metadata_drift": [
+      "reports/cc12_group_member_admission_audit.json",
+      "cmake/startup.cmake"
+    ],
+    "Original_whole_bodies": [
+      [
+        "00811180",
+        1683
+      ],
+      [
+        "0042b260",
+        138
+      ]
+    ],
+    "Original_constants_rechecked": 3,
+    "Original_direct_calls_rechecked": 3,
+    "retained_whole_COFF_functions_rechecked": 4,
+    "mutable_capture_paths_now_historical": [],
+    "current_whole_COFF_and_exact_archive_members_frozen": [
+      {
+        "symbol": "?normalize_camera_basis_0042b260@bsp@@YIXAAV?$array@M$02@std@@@Z",
+        "bytes": 138,
+        "sha256": "3c0c4faa02ad9b97cb661a03d7463947e2a386c533de323bb12a275157a5c750",
+        "frozen_whole_object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_readiness_primary\\camera_decomposition.obj",
+        "frozen_whole_object_sha256": "79be1b7f91cb0ee942881a8c2de9793ac3778aaeccdd73f1b8e2bf85350f0db6",
+        "exact_current_archive_member_count": 1
+      },
+      {
+        "symbol": "?ship_ai_wake_decompose_00811180@bsp@@YA?AUShipAiWakeDecomposition@1@ABUShipAiWakeTrail@1@QBM@Z",
+        "bytes": 438,
+        "sha256": "a8f0d08bc5c52d5b84497954ed22cace8ab5cd653a22af306faeebb5763f60df",
+        "frozen_whole_object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_readiness_primary\\ship_ai_wake_trail.obj",
+        "frozen_whole_object_sha256": "e8dacc8673f917fde4021a039201c8e1caf6575e30767f482be983e7f3f21217",
+        "exact_current_archive_member_count": 1
+      }
+    ],
+    "current_real_CIsqrt_import": [
+      {
+        "dll": "api-ms-win-crt-math-l1-1-0.dll",
+        "symbol": "_CIsqrt"
+      }
+    ],
+    "execution": false,
+    "limit": "Whole independent literal wake Source is ready with exact raw ring/read/x87/SSE/store schedule and genuine current normalizer. No game entity producer, Original CRT policy equivalence, public Original ABI or gameplay qualification."
   }
 }
