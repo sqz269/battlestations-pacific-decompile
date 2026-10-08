@@ -31682,6 +31682,40 @@
         "behavior": "Hash always runs and publishes a bucket before head/chain lookup; borrowed node/null return, no mapped-record ownership.",
         "limits": "First missing whole hash provider 0043B760 plus actual populated-map and E177E4 fallback binding. Replacement-record lifetime stays downstream; no fresh-key-only closure."
       }
+    },
+    {
+      "id": "cc12_file_seek_raw_entry",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF4F20"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_FILE_SEEK_RAW_ENTRY.md",
+        "reports/cc12_file_seek_raw_entry.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "additional_raw_entry_whole_COFF_import_real_file_native_pairs_and_caller_ABI_checked",
+      "worker_commit": "9a1e7343a5f84958bb94df4412905f40d0540adb",
+      "coverage": {
+        "additional_raw_entries": 1,
+        "new_Original_functions": 0,
+        "whole_native_bytes": 32,
+        "native_pairs": 6,
+        "instrumented_raw_calls": 12,
+        "typed_Source_calls": 1,
+        "primary_input_pins_rehashed": 461,
+        "primary_artifacts_rehashed": 11,
+        "existing_CTests": 3
+      },
+      "contract": {
+        "behavior": "Complete raw BF4F20 additional entry: all32 Original/current production COFF/unique linked bytes agree except sole genuine SetFilePointerEx IAT operand at+25; ECX actual backing, low/high/origin stack, full BOOL EAX, direct+10h output, RET0Ch. Six real-file Native/Source pairs,12 instrumented calls,one typed Source call; primary rehashed461 input records and11 artifacts, verified real PE import and exact whole-object archive membership, normal Win32 build and all3 CTests PASS. Fixture explicitly consumes3 genuine production archives. Borrowed live HANDLE/output fields only; no class/table/producer/lifetime/raw substream/gameplay admission.",
+        "limits": "No Source class/table/producer/lifetime or raw substream/gameplay admission."
+      }
     }
   ],
   "snapshot_after_analysis": {
