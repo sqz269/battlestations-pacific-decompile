@@ -1,0 +1,438 @@
+{
+  "schema": "bsp-text-only-reader-correction-v1",
+  "packet": "cc12_type7_independent_reader_text_correction",
+  "status": "AST and text review complete; readers remain unexecuted",
+  "Source_credit": 0,
+  "approval_or_prelaunch_receipt": false,
+  "Native_address_context": "008EF270",
+  "selected_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a",
+  "exact_family_files": 31,
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\seal.json",
+    "size": 8632,
+    "sha256": "340ac03d590fe9bde5f00440717ebbc6b6c972d6e132a5953266a53cfbba8f73"
+  },
+  "selected_modules": [
+    {
+      "module": "raw_formats.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\raw_formats.py.txt",
+        "size": 9404,
+        "sha256": "2dd7e322765b8ef9e1a227d7801880b3c15dcb7cf36af5923df9e506897455f7"
+      },
+      "changed_from_original": true
+    },
+    {
+      "module": "register_imports.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\register_imports.py.txt",
+        "size": 3045,
+        "sha256": "8c8f38af5e47df3c0c8ceadf513eb5f3b29eb3504021128f8144cd8e24c919c4"
+      },
+      "changed_from_original": false
+    },
+    {
+      "module": "formal_targets.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\formal_targets.py.txt",
+        "size": 5112,
+        "sha256": "a9fdf5e083d74687a50d1fcf5b8b9c65f56fa2f54266a6dedb45e6ff2b31d7f2"
+      },
+      "changed_from_original": false
+    },
+    {
+      "module": "type7_identity.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\type7_identity.py.txt",
+        "size": 2153,
+        "sha256": "bbcf891f6578f0c78c4161f9822194e9b18f1ae68f68a7b9c0634be95eadeb9c"
+      },
+      "changed_from_original": false
+    },
+    {
+      "module": "type7_code_reader.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\type7_code_reader.py.txt",
+        "size": 32152,
+        "sha256": "d91beba0cb1e6d2d8d416b9284709acf27e934cae6b2eeca237e36ab18cd2f3f"
+      },
+      "changed_from_original": true
+    },
+    {
+      "module": "type7_capture_decoder.py.txt",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\type7_capture_decoder.py.txt",
+        "size": 14796,
+        "sha256": "da8ea9302d843ddb689f3be2e2b0159c46ec95eebac9353d9ead7f43ae6a3fd0"
+      },
+      "changed_from_original": true
+    }
+  ],
+  "identity_schema_unchanged_keys": 18,
+  "public_entry_points_unchanged": [
+    "type7_code_reader.read_static(final_family_path, identity_dict)",
+    "type7_capture_decoder.read_recorded(final_family_path, identity_dict)"
+  ],
+  "findings": [
+    {
+      "id": "existing_valid_contracts",
+      "change": "preserved",
+      "detail": "Original text already preserves BSS declared size with rawptr0/empty bytes, supports weak NOLIBRARY1/ALIAS3 chains and cycles, uses next map f-owner, and reads physical_NT_path from static identity."
+    },
+    {
+      "id": "bounded_COFF",
+      "change": "raw_formats.py.txt and type7_code_reader.py.txt",
+      "detail": "Explicit section/symbol/string/aux/relocation table bounds, primary-symbol references, weak fallback definition checks, and retained executable section file-byte requirements; BSS is not mistaken for object-header bytes."
+    },
+    {
+      "id": "unreachable_trailing_alignment",
+      "change": "type7_code_reader.py.txt",
+      "detail": "Reachable INT3 must be a bound CxxThrow no-return guard. Unreachable INT3 is allowed only within a contiguous trailing NOP/INT3 suffix immediately after a reachable RET/JMP or validated guard. Interior arbitrary INT3, UD2, unknown code/edges and reachable fallthrough still stop. All raw bytes/extents remain gated and listed."
+    },
+    {
+      "id": "wrapper_RET_checks",
+      "change": "type7_code_reader.py.txt",
+      "detail": "Semantic RET checks for ordinary/raw wrappers exclude only that CFG-proven suffix; raw instruction arrays, counts, byte inventories and full wrapper/Main listings are unchanged in scope."
+    },
+    {
+      "id": "MAP_and_counts",
+      "change": "type7_code_reader.py.txt",
+      "detail": "Emit full raw map inventory, explicitly verify cs10 offset20 has no f flag and stack JB22->34, and separate logical symbols/relocations, physical TU bodies/operands, alias checks, gate spans and handler counts. All quantities derive from Root future actual files."
+    },
+    {
+      "id": "recorded_input_provenance",
+      "change": "type7_capture_decoder.py.txt",
+      "detail": "Read and hash static_gate/frozen_inputs/runtime from the same bytes; report explicit pins and recheck them. Cross-check raw saved stdout, exit0 and process arguments, plus actual static gate/exe pins and span address/size coverage."
+    },
+    {
+      "id": "provider_and_serialized_scope",
+      "change": "type7_capture_decoder.py.txt",
+      "detail": "Provider PE reads use only validated frozen paths; physical_NT_path retains its actual static identity field. Address bounds and static-vs-recorded scope are explicit. Live PE headers/file identity are not separately serialized by selected probe; allocations/frees are reported canonical root operations, not total process heap instrumentation."
+    }
+  ],
+  "selected_probe_domain_unchanged": {
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_complete_helper_text_correction\\local\\t7complete_draft20261008a\\probe.cpp.txt",
+      "size": 24422,
+      "sha256": "f81298a5fd0e3c1ef1f3b7e78bbf93bc41b11731ebf316b67036c1cb987c126e"
+    },
+    "recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_complete_helper_text_correction\\local\\t7complete_draft20261008a\\recipe.py.txt",
+      "size": 53675,
+      "sha256": "53cc10fa004029f613281e450847a9dac5c4844832318599b4362dc8ba101e99"
+    },
+    "identity": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\identity_config.template.json",
+      "size": 1389,
+      "sha256": "36325fb17ebc2fa56f0c7da1f804ebe5623162d9ef8b73fb75c561dcd9aba887"
+    },
+    "contract": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\selected_probe_contract.json",
+      "size": 3905,
+      "sha256": "bbd3b6c4fbb27c8c9386bb3ec446ad6ee602a4456033ef5afbee8aa7c132d35d"
+    }
+  },
+  "domain_contract_from_selected_text_not_new_binary_measurement": {
+    "base": "47000000",
+    "exe": "t7_probe.exe",
+    "GateHeader_bytes": 32,
+    "Gate_version": 2,
+    "Gate_magic": "CC128E27",
+    "CRT_specs": 3,
+    "Source_bytes_in_contract": 63,
+    "Source_instructions_in_contract": 19,
+    "Source_relocations_in_contract": 0,
+    "Source_RET_bytes": 4,
+    "Capture_bytes": 116,
+    "Registers_bytes": 84,
+    "root_bytes": 56,
+    "roots": 2,
+    "GuardedInput_bytes": 44,
+    "opaque_payload_bytes": 12,
+    "owned_children": 0,
+    "DF_cases": [
+      1,
+      0
+    ],
+    "EAX": "full root",
+    "ECX": 0,
+    "EDX": "opaque middle DWORD",
+    "defined_flags_mask": "8C5",
+    "defined_flags_value": "44",
+    "AF": "undefined and unasserted",
+    "ES": "full captured equality",
+    "target_entry_T": "derived B-8, not independently captured"
+  },
+  "Root_remaining_work": [
+    "materialize fresh selected readers and unchanged probe/recipe under Root ownership",
+    "pin selected modules/config and actual generation inputs",
+    "run new readers only on Root newly built actual objects/map/PE/gate and saved observations",
+    "review full Main targets, gates, lifetime order, comparisons and failure paths",
+    "preserve any new Root parser stop; this text packet supplies no execution/prelaunch/Source approval"
+  ],
+  "preservation": {
+    "passed": true,
+    "strict_project_local_files": 23379,
+    "all_strict_sizes_hashes_unchanged": true,
+    "selected_family_exact_files": [
+      24,
+      17
+    ],
+    "underlying_exact_families": 25,
+    "exact_family_checks": [
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_draft\\local\\t7readerdraft20261008a",
+        "exact_files": 24
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_complete_helper_text_correction\\local\\t7complete_draft20261008a",
+        "exact_files": 17
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p2",
+        "exact_files": 404
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_complete_helper_peer_review\\local\\t8peer",
+        "exact_files": 40
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_complete_helper_peer_review\\local\\t8peer_public",
+        "exact_files": 6
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_complete_helper_peer_review\\local\\cc12_type8_complete_helper_peer_review20261008a",
+        "exact_files": 24
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_worker_peer_review\\local\\cc12_parent_header_callback_worker_peer_review20261008a",
+        "exact_files": 42
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type4_root_gate_text_draft\\local\\cc12_type4_root_gate_text_draft20261008a",
+        "exact_files": 18
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_root_gate_text_draft\\local\\cc12_type7_root_gate_text_draft20261008a",
+        "exact_files": 16
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_complete_helper_text_draft\\local\\cc12_type8_complete_helper_text_draft20261008a",
+        "exact_files": 19
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_root_text_draft\\local\\t9draft",
+        "exact_files": 16
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9a",
+        "exact_files": 421
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_build",
+        "exact_files": 14
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_four_byte_array_storage_source\\local\\t9_report",
+        "exact_files": 9
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_complete_helper_text_correction\\local\\t9complete_draft20261008a",
+        "exact_files": 19
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p1",
+        "exact_files": 349
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_replace_root_draft\\local\\cc12_reference_replace_root_text_draft20261008a",
+        "exact_files": 17
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_complete_helper_text_correction\\local\\t7complete_draft20261008a",
+        "exact_files": 17
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile\\local\\ref55p3",
+        "exact_files": 101
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile\\local\\h5p1",
+        "exact_files": 419
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_payload_copy_code_gate_audit\\local\\cc12_reference_payload_copy_code_gate_audit20261008a",
+        "exact_files": 13
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_reference_copy55_normal_edge_independent_audit\\local\\ref55edge_audit20261008a",
+        "exact_files": 28
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile\\local\\cl70p5",
+        "exact_files": 407
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_callback_artifact_independent_audit\\local\\h5audit",
+        "exact_files": 48
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type9_independent_reader_text_draft\\local\\t9readerdraft20261008a",
+        "exact_files": 27
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_complete_root_artifact_audit\\local\\cl70audit",
+        "exact_files": 31
+      },
+      {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_draft\\local\\t5read",
+        "exact_files": 37
+      }
+    ],
+    "current_Source4": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type7_storage.cpp",
+        "size": 1354,
+        "sha256": "1c28752683c9015cc8ab757762631ecd9c60995ad47aa3c27afa7f9f005dc94f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type7_storage.hpp",
+        "size": 1882,
+        "sha256": "315e9a12c16bb4b5076a081f33e7cd299f1b3f00fea82a371c957fb401980c34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      }
+    ],
+    "original_embedded_prior_rows": 23556,
+    "external201_historical_records_not_requeried": true,
+    "metadata_context": "seven original family snapshots remain frozen history, no mutable Main metadata pinned",
+    "active_Root_t4p3_reads": 0,
+    "Native_provider_Ghidra_queries": 0,
+    "reader_imports_or_execution": 0,
+    "pin_guard_failure_preserved": true,
+    "initial_new_code_text_revision_preserved": true
+  },
+  "old_reader_family_files": 24,
+  "old_recipe_family_files": 17,
+  "old_prior_inventory_rows": 23556,
+  "strict_project_local_union_files": 23379,
+  "external_historical_rows_not_requeried": 201,
+  "underlying_old_exact_families": 25,
+  "current_Source4": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type7_storage.cpp",
+      "size": 1354,
+      "sha256": "1c28752683c9015cc8ab757762631ecd9c60995ad47aa3c27afa7f9f005dc94f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type7_storage.hpp",
+      "size": 1882,
+      "sha256": "315e9a12c16bb4b5076a081f33e7cd299f1b3f00fea82a371c957fb401980c34"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "failure_and_revision_evidence": {
+    "metadata_pin_failure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\pin_inputs_failure.txt",
+      "size": 641,
+      "sha256": "ad4c50514e9d2bd1ae20784d3443b97b63bbc2026178fb4fe415af4c69e584e1"
+    },
+    "scope_resolution": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\pin_scope_correction.json",
+      "size": 365,
+      "sha256": "adcfbb4a0d0d79b6b8034e9bbdc4d9b06e5f37e2c41cce34c5b39ac6b8af4200"
+    },
+    "reason": "Old inventory embeds201 current external toolchain/provider/Native paths; first external path was rejected before its bytes were read. Their embedded records are retained as historical context while Source4 and old local families are checked strictly.",
+    "first_new_code_text": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\attempts\\type7_code_reader.v1.py.txt",
+      "size": 31613,
+      "sha256": "cf567416d79e9594a6f2fd16dfd175919a277bf002dd2e5f7bf49fd7900dc681"
+    },
+    "wrapper_RET_revision": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\wrapper_alignment_text_revision.json",
+      "size": 700,
+      "sha256": "1ab27934e6be63eb354b7ec1d555696dc5d20f7d98599de897a629c2c8f9bc29"
+    },
+    "reader_import_or_execution_failures": 0,
+    "AST_review_failures": 0
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\input_receipt.json",
+      "size": 1870,
+      "sha256": "d5759b241488b9589513d99952661c10d3166e4a54b7af799a92d6a9984badd9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\family_contract.json",
+      "size": 311857,
+      "sha256": "6f52f4deb39153c51377e6ba660e4fd2cbca8e60a39fd7ae936d685793923967"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\reader_text_derivation.json",
+      "size": 4955,
+      "sha256": "5f410b4f802854aaddc5dc67e3afda0571e91d0013022b9b85b7fd869da01b39"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\wrapper_alignment_text_revision.json",
+      "size": 700,
+      "sha256": "1ab27934e6be63eb354b7ec1d555696dc5d20f7d98599de897a629c2c8f9bc29"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\selected_modules.json",
+      "size": 2903,
+      "sha256": "40692d26d625cc3467d82791ded21e747ee0267c6774818df9cf8fb6c1a34b00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\text_AST_review.json",
+      "size": 14393,
+      "sha256": "b61ed37c9d81ed7013a0d43b12d81f1c370d195dce3b0c2df62101b0ed0f7a50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\preservation_after.json",
+      "size": 5885,
+      "sha256": "a5886bf5c2d38c47c66eb1de40df6ff1ade9cb72605884919fc00eab9f28c4c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\historical_external_inventory_NOT_REQUERIED.json",
+      "size": 45847,
+      "sha256": "811aa9f41ee321378178460fc14b014459837fce7b62b4891377052a24010299"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\HANDOFF.txt",
+      "size": 2868,
+      "sha256": "8f005dddbeeb860c6d76043cd1a449dbe8bfe4407cbba198cb9b2ecbf609ed36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_independent_reader_text_correction\\local\\t7readerfix20261008a\\seal.json",
+      "size": 8632,
+      "sha256": "340ac03d590fe9bde5f00440717ebbc6b6c972d6e132a5953266a53cfbba8f73"
+    }
+  ],
+  "execution_limits": {
+    "reader_imports": 0,
+    "reader_execution": 0,
+    "CXX_compiler_or_target_execution": 0,
+    "Native_provider_Ghidra_queries": 0,
+    "active_Root_t4p3_reads": 0,
+    "Source_CMake_Ghidra_or_shared_metadata_edits": 0,
+    "actual_new_binary_counts_or_runtime_validation": false
+  },
+  "Game_startup_or_gameplay_validation": false
+}

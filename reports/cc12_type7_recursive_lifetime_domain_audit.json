@@ -1,0 +1,528 @@
+{
+  "schema": "cc12-type7-recursive-lifetime-domain-audit-v1",
+  "packet": "cc12_type7_recursive_lifetime_domain_audit",
+  "status": "Source_only_inline_payload_and_root_ownership_compatibility_audit",
+  "new_Source_admission_credit": 0,
+  "new_reconstruction_credit": 0,
+  "Source_changes": 0,
+  "new_tests": 0,
+  "execution": {
+    "Native_Ghidra_or_installed_provider_queries": 0,
+    "compiler_build_or_tests": 0,
+    "Native_or_provider_processes": 0,
+    "old_accepted_helper_stage_or_reader_execution": 0,
+    "active_Root_t4p3_or_other_family_artifacts_read": 0,
+    "new_producer_validation_or_credit_claim": false
+  },
+  "context": {
+    "baseline_revision": "2b766f5188074d1b24f9882c008580cc33935320",
+    "Main_generation_revision": "2b766f5188074d1b24f9882c008580cc33935320",
+    "frozen_context": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\local\\t7domain\\context_snapshot.json",
+    "frozen_context_sha256": "80e80a3a52a979ad26dcd5eff6b572e6111d6716e3e8ff62905e682b239fbb08",
+    "selected_packet": "selected_packet_at_generation.json",
+    "selected_packet_sha256": "e400ada5d9a295068aa46150384b1f459bf8a8e9e0bb9d0c6f3142d13d6343ac",
+    "metadata_and_config_original_generation_only_not_forever_live_pins": true,
+    "Source_Main_worktree_equal_at_generation": true,
+    "Source_header_pins": [
+      {
+        "relative_path": "src/native_scene_property_record_type7_storage.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\native_scene_property_record_type7_storage.cpp",
+        "size": 1354,
+        "generation_sha256": "1c28752683c9015cc8ab757762631ecd9c60995ad47aa3c27afa7f9f005dc94f",
+        "frozen_path": "frozen/Source/src/native_scene_property_record_type7_storage.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_record_type7_storage.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\native_scene_property_record_type7_storage.hpp",
+        "size": 1882,
+        "generation_sha256": "315e9a12c16bb4b5076a081f33e7cd299f1b3f00fea82a371c957fb401980c34",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_record_type7_storage.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "src/native_scene_property_bag_storage.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\native_scene_property_bag_storage.cpp",
+        "size": 12600,
+        "generation_sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f",
+        "frozen_path": "frozen/Source/src/native_scene_property_bag_storage.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_bag_storage.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\native_scene_property_bag_storage.hpp",
+        "size": 2199,
+        "generation_sha256": "ce8f0562a7a39aca690f9b1cbbca924566bca257fcc82bf6ecc85f3a8d93e3a4",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_bag_storage.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\native_scene_property_recursive_lifetime.hpp",
+        "size": 4337,
+        "generation_sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "src/native_scene_property_array_block_release.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\native_scene_property_array_block_release.cpp",
+        "size": 939,
+        "generation_sha256": "9f65c8fe0a18183c2212fba612205da341e2b39cf9c4fe917109a6dc979b340e",
+        "frozen_path": "frozen/Source/src/native_scene_property_array_block_release.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_array_block_release.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\native_scene_property_array_block_release.hpp",
+        "size": 618,
+        "generation_sha256": "33487664e85d48efc22745d5aa2a4340b1636e00f96ed3f70441003eba9d8642",
+        "frozen_path": "frozen/Source/include/bsp/native_scene_property_array_block_release.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "src/singleton_lifetime.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "generation_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "frozen_path": "frozen/Source/src/singleton_lifetime.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/singleton_lifetime.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "generation_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "frozen_path": "frozen/Source/include/bsp/singleton_lifetime.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "src/scene_property_bag.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\scene_property_bag.cpp",
+        "size": 25972,
+        "generation_sha256": "7ce07cd97b31826d12cd2c0e9ba3ba74fc5928af07436613653cd9b5b7ad4759",
+        "frozen_path": "frozen/Source/src/scene_property_bag.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\scene_property_bag.hpp",
+        "size": 12832,
+        "generation_sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88",
+        "frozen_path": "frozen/Source/include/bsp/scene_property_bag.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "src/scene_property_bag_merge.cpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\src\\scene_property_bag_merge.cpp",
+        "size": 12335,
+        "generation_sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+        "frozen_path": "frozen/Source/src/scene_property_bag_merge.cpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag_merge.hpp",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\include\\bsp\\scene_property_bag_merge.hpp",
+        "size": 10363,
+        "generation_sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c",
+        "frozen_path": "frozen/Source/include/bsp/scene_property_bag_merge.hpp",
+        "strict_Source_header_pin": true,
+        "mutable_metadata_generation_only": false
+      }
+    ],
+    "Type7_reported_generation_status": {
+      "status": "worker_implementation_and_bounded_fixture_complete_pending_Root_independent_validation_and_admission",
+      "Source_admission_credit": 0,
+      "primary_source_status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+      "Root_independent_validation_pending": true,
+      "complete_linked_helper_validation_pending": true,
+      "primary_qualification": "Reopen the historical Type7 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 17 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted.",
+      "generation_history_only_no_new_validation_result": true
+    },
+    "recursive_lifetime_reported_generation_status": {
+      "status": "PRIMARY_ACCEPTED_SIX_COHESIVE_WHOLE_ORDINARY_SOURCE_BODIES_WIN32_AND_STATIC_PRODUCTION",
+      "credit": {
+        "Source_bodies_added": 6,
+        "proposed_whole_function_registrations": 6,
+        "new_ledger_functions": 6,
+        "new_ledger_fragments": 0,
+        "new_names_or_tags": 1,
+        "primary_accepted_new_function_credit": 6,
+        "Source_only_context_constructor_credit": 0,
+        "all_six_required_for_acceptance": true,
+        "primary_whole_function_registrations": 6
+      },
+      "primary_review": {
+        "receipt": "local\\cc12_property_recursive_lifetime_source_primary_review\\receipt.json",
+        "sha256": "2c945c13bf9786cf08ddc72612bc5a8b280e019b1bd3eb7a37d6bbbf24566e96",
+        "worker_artifacts_rehashed": 5187,
+        "prefrozen_current_physical_inputs": 339,
+        "actual_current_consumed_inputs": 295,
+        "current_whole_objects": 11,
+        "current_complete_extents": 499,
+        "old_complete_extents_unchanged": 485,
+        "current_unique_Core_members": 10,
+        "six_Source_complete_extent_bytes": 717,
+        "release_code_alignment_data_bytes": [
+          298,
+          2,
+          30
+        ],
+        "all_three_existing_checks_passed": true,
+        "review_driver_prefreeze_corrections": 2,
+        "new_build_attempts": 1,
+        "new_entry_execution": false,
+        "Original_ABI_FS_SEH_binary_replacement": false,
+        "startup_or_gameplay": false,
+        "Ghidra_annotation_entries_applied": 6,
+        "prior_annotations": "local/ghidra-annotations-20261008T202336Z.json",
+        "project_saved": true,
+        "affected_exports_refreshed": 6,
+        "new_ledger_names": 1,
+        "new_tags": 0
+      }
+    },
+    "existing_independent_qualified_Source_domains_unchanged": true
+  },
+  "constructor": {
+    "actual_historical_identifier_no_new_query": "008E F270",
+    "identity_sources": [
+      "src/native_scene_property_record_type7_storage.cpp",
+      "include/bsp/native_scene_property_record_type7_storage.hpp",
+      "selected cc12_scene_property_record_type7_storage packet"
+    ],
+    "initial_task_address_guess_used": false,
+    "symbol": "construct_native_scene_property_record_type7_storage_008ef270",
+    "whole_range_reported": "[008EF270,008EF2AF)",
+    "whole_bytes_reported": 63,
+    "whole_instructions_reported": 19,
+    "whole_Native_SHA256_reported": "9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872",
+    "physical_API": "void* __fastcall (void* actual_record_ecx, void* unused_edx, const void* actual_payload_words) noexcept",
+    "ECX": "actual fresh/unowned writable56-byte root",
+    "incoming_EDX": "unused",
+    "entry_ESP_plus_4": "actual stable readable12-byte input pointer",
+    "RET": 4,
+    "EAX": "actual root",
+    "final_ECX": 0,
+    "final_EDX": "second input DWORD at input+4",
+    "nonvolatiles_and_DF": "preserved",
+    "XOR_flags": {
+      "CF": 0,
+      "OF": 0,
+      "SF": 0,
+      "ZF": 1,
+      "PF": 1,
+      "AF": "undefined"
+    },
+    "storage_domain": "root/input/call frame disjoint; successful ordinary raw bit copying; no overlap or invalid-input fault extension",
+    "input_lifetime": "caller owned and stable through call; pointer not retained or freed",
+    "root_allocation_ownership": "retained by caller; no allocation/free/owning class established",
+    "phase_identity_only": "CE89D4",
+    "tag": 7,
+    "ordering": "phase/tag writes precede first input load, then interleaved word load/store",
+    "inline_word_mapping": {
+      "input+0": "root+0C",
+      "input+4": "root+10",
+      "input+8": "root+14"
+    },
+    "zero_DWORD_fields": [
+      "+18",
+      "+1C",
+      "+20",
+      "+24",
+      "+30",
+      "+34"
+    ],
+    "marker_BYTE_plus_2C": 1,
+    "written_ranges": [
+      "[00,08)",
+      "[0C,28)",
+      "[2C,2D)",
+      "[30,38)"
+    ],
+    "written_bytes": 45,
+    "preserved_ranges": [
+      "[08,0C)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "preserved_bytes": 11,
+    "payload_numeric_float_or_pointer_ownership_semantics": false,
+    "Source_evidence": [
+      {
+        "path": "src/native_scene_property_record_type7_storage.cpp",
+        "line_start": 8,
+        "line_end": 35
+      },
+      {
+        "path": "include/bsp/native_scene_property_record_type7_storage.hpp",
+        "line_start": 11,
+        "line_end": 35
+      }
+    ]
+  },
+  "current_recursive_release": {
+    "actual_implementation": "src/native_scene_property_bag_storage.cpp",
+    "six_body_lines": [
+      218,
+      323
+    ],
+    "declaration": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+    "value_release_symbol": "release_native_scene_property_record_value_008f0640",
+    "exact_Source_function_lines": [
+      262,
+      303
+    ],
+    "historical_identifier": "008F 0640",
+    "explicit_tags": [
+      2,
+      5,
+      6,
+      8,
+      9,
+      10,
+      11
+    ],
+    "tag7_path": "default break followed by ordered common resets",
+    "ordered_DWORD_resets": [
+      "+04=0",
+      "+0C=0",
+      "+28=0",
+      "+08=0"
+    ],
+    "payload_after_release": {
+      "+0C": "zero; first input word discarded",
+      "+10": "second copied word remains untouched",
+      "+14": "third copied word remains untouched",
+      "+20/+24": "remain zero; no array helper entry",
+      "+2C": "remains1, neither read nor cleared",
+      "+08/+28": "constructor-preserved bytes become zero without reading old values",
+      "+30/+34": "remain zero"
+    },
+    "child_or_declaration_free_or_payload_dereference": false,
+    "tag7_provider_call": false,
+    "original_input_span_access_after_constructor": false,
+    "full_payload_erasure": false,
+    "marker_establishes_child_or_class_ownership_or_liveness": false,
+    "Source_evidence": [
+      {
+        "path": "src/native_scene_property_bag_storage.cpp",
+        "line_start": 262,
+        "line_end": 303
+      },
+      {
+        "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "line_start": 70,
+        "line_end": 74
+      }
+    ]
+  },
+  "record_and_root_disposition": {
+    "record_destroy": "destroy_native_scene_property_record_008f0de0 publishes phase identity then performs value release",
+    "scalar_operation": "scalar_delete_native_scene_property_record_004e6730",
+    "destruction_unconditional": true,
+    "flags_low_bit_0": "retains root in existing root domain, still clears first inline word",
+    "flags_low_bit_1": "frees actual exclusive owned current-canonical root allocation base after destruction",
+    "return": "root address bits captured before free; no retired root/payload reads",
+    "child_cleanup_schedule": "none for tag7",
+    "external_resources_identified_by_words": "remain under separately established external ownership; no dereference/free inferred",
+    "actual_free_provider": "singleton_lifetime_free -> std::free",
+    "Source_evidence": [
+      {
+        "path": "src/native_scene_property_bag_storage.cpp",
+        "line_start": 245,
+        "line_end": 258
+      },
+      {
+        "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "line_start": 62,
+        "line_end": 68
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "line_start": 65,
+        "line_end": 66
+      }
+    ]
+  },
+  "structural_compatibility": {
+    "Source_effects_compatible_with_inline_scalar_storage": true,
+    "independently_ready_new_producer_or_lifetime_packet": false,
+    "new_runtime_or_class_proof": false,
+    "predicates": [
+      "genuine successful complete Type7 output, valid actual writable record storage and tag7",
+      "independently accepted producer and applicable existing record/context lifetime domain before admission",
+      "root flags1 require actual owned current allocation base and exactly one disposition; no interior or fabricated storage",
+      "root flags0 retain root without guaranteeing full payload erasure or unchanged first word",
+      "input span need only remain valid through successful constructor call, because no pointer is retained",
+      "ordinary Source/current-provider calling domain, including DF0 where applicable; no DF1 extension from raw constructor preservation"
+    ],
+    "Type7_Source0_at_generation_is_history_not_later_Main_assertion": true
+  },
+  "array_and_bag_boundaries": {
+    "array_helper": "release_native_scene_property_array_block_008f03f0",
+    "array_contract": "actual8-byte header holding owned current-canonical child pointer and byte count; frees nonnull pointer, clears header",
+    "tag7_enters_array_helper": false,
+    "bag_clear": "all64 heads; next saved before scalar flags1/key/node disposition; same initialized property pool",
+    "bag_requires": [
+      "genuine admitted publication and current-owned record allocation bases",
+      "unique live20-byte property pool slots with real pooled-key headers",
+      "finite unshared acyclic graphs, no owner aliases/concurrent trim/reentry/overflow/failure extension",
+      "real canonical string/pool/gate resources and startup generation outlive all borrowers"
+    ],
+    "constructor_marker_or_zero_owner_field_proves_publication_or_class": false,
+    "fake_parent_bag_or_nodes_used": false,
+    "Source_evidence": [
+      {
+        "path": "src/native_scene_property_array_block_release.cpp",
+        "line_start": 14,
+        "line_end": 29
+      },
+      {
+        "path": "include/bsp/native_scene_property_array_block_release.hpp",
+        "line_start": 4,
+        "line_end": 12
+      },
+      {
+        "path": "src/native_scene_property_bag_storage.cpp",
+        "line_start": 212,
+        "line_end": 240
+      },
+      {
+        "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "line_start": 16,
+        "line_end": 20
+      },
+      {
+        "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+        "line_start": 34,
+        "line_end": 54
+      }
+    ]
+  },
+  "clone_frontiers": [
+    {
+      "frontier": "vector3_specification",
+      "behavior": "selects vector3 flag with historical constructor comment, no actual constructor call",
+      "historical_three_floats_comment_is_raw_numeric_admission": false,
+      "Source_evidence": [
+        {
+          "path": "src/scene_property_bag_merge.cpp",
+          "line_start": 78,
+          "line_end": 80
+        },
+        {
+          "path": "src/scene_property_bag_merge.cpp",
+          "line_start": 119,
+          "line_end": 121
+        }
+      ]
+    },
+    {
+      "frontier": "semantic_model_clone_and_assignment",
+      "behavior": "C++ value/container model and typed three-element assignments, distinct from native record layout",
+      "raw_constructor_ABI_allocation_or_publication_binding": false,
+      "Source_evidence": [
+        {
+          "path": "include/bsp/scene_property_bag.hpp",
+          "line_start": 82,
+          "line_end": 113
+        },
+        {
+          "path": "src/scene_property_bag.cpp",
+          "line_start": 363,
+          "line_end": 402
+        },
+        {
+          "path": "src/scene_property_bag_merge.cpp",
+          "line_start": 197,
+          "line_end": 204
+        }
+      ]
+    },
+    {
+      "frontier": "virtual_merge_host_clone_record",
+      "behavior": "pure virtual host dependency; bounded symbol search establishes no concrete direct raw binding",
+      "Source_evidence": [
+        {
+          "path": "src/scene_property_bag_merge.cpp",
+          "line_start": 269,
+          "line_end": 286
+        },
+        {
+          "path": "include/bsp/scene_property_bag_merge.hpp",
+          "line_start": 153,
+          "line_end": 167
+        }
+      ]
+    },
+    {
+      "frontier": "empty_bag_clone",
+      "behavior": "requires count0/all64 heads0; no Type7-containing graph clone",
+      "body_or_Native_requeried": false,
+      "Source_evidence": [
+        {
+          "path": "include/bsp/native_scene_property_bag_storage.hpp",
+          "line_start": 28,
+          "line_end": 39
+        }
+      ]
+    },
+    {
+      "frontier": "historical_genuine_Type7_clone_arm",
+      "tracked_doc_history": "[008F5134,008F5168) allocates38h; source+0C input; ctor CALL008F514C; subsequent ordinal+34 copy",
+      "current_Source_implementation_or_new_Native_proof": false,
+      "old_audit_or_Native_body_consumed": false,
+      "tracked_doc_evidence": {
+        "path": "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE7_STORAGE_CC12.md",
+        "line_start": 49,
+        "line_end": 53
+      }
+    }
+  ],
+  "bounded_symbol_search": {
+    "constructor": [
+      "src/native_scene_property_record_type7_storage.cpp:12",
+      "include/bsp/native_scene_property_record_type7_storage.hpp:33"
+    ],
+    "clone_record": [
+      "src/scene_property_bag_merge.cpp:274",
+      "include/bsp/scene_property_bag_merge.hpp:162"
+    ],
+    "not_an_indirect_dispatch_or_class_closure": true
+  },
+  "next_prerequisites": [
+    "Root independently decides Type7 producer acceptance; this audit supplies no future validation result",
+    "complete actual raw clone caller/provider binding with stable genuine payload and fresh output",
+    "actual ordinal/owner behavior and genuine owning publication/record-root contract",
+    "any integration runtime/class/privateheap/EH/game evidence separately established in its own domain"
+  ],
+  "qualification_limits": {
+    "new_Source_reconstruction_credit": 0,
+    "existing_independent_qualified_domains_unchanged": true,
+    "native_class_virtual_destructor_ownership": "not inferred from raw constructor",
+    "original_register_FS_SEH_or_binary_replacement_ABI": "not acquired by ordinary context-taking Source interfaces",
+    "new_private_CRT_EH_numeric_parser_or_game_admission": false,
+    "global_other_helper_admission_claim": false
+  },
+  "seal": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type7_recursive_lifetime_domain_audit\\local\\t7domain",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "hashes_and_exact_file_count_in_final_handoff": true,
+    "external_post_consoles": "local/output",
+    "root_exclusions_only": true
+  }
+}
