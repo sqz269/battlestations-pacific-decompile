@@ -1,0 +1,1765 @@
+{
+  "packet": "cc11_plane_derived_kind_leaves",
+  "status": "complete raw Source leaf reconstruction; strict Win32 and connected original-body fixture passed; class/profile/world/lifetime/game binding unbound",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "files": [
+    "include/bsp/native_plane_derived_kind.hpp",
+    "src/native_plane_derived_kind.cpp",
+    "docs/NATIVE_PLANE_DERIVED_KIND_CC11.md",
+    "reports/native_plane_derived_kind_cc11.json"
+  ],
+  "source_revision": "92d03f4996802d300a59b49a263d8098940d4d45",
+  "functions": [
+    {
+      "address": "007d77f0",
+      "end_exclusive": "007d782b",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "e171537216cbb4c9d0fc1efd10ebe982dd8287bf5b3343d071acff214ebb3568",
+      "fixed_words": [
+        "10",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d06638",
+      "slot_5c": "00d06694",
+      "source_symbol": "native_plane_derived_is_kind_007d77f0",
+      "body_hex": "8b44240483f810742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "007d7816: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MPlaneBomber_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": false
+    },
+    {
+      "address": "009535c0",
+      "end_exclusive": "009535fb",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "d8aaffa4a01d6ab2e813049c1eda7df48ee7d94423be71ef7cff89935d7b4e71",
+      "fixed_words": [
+        "11",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d1a000",
+      "slot_5c": "00d1a05c",
+      "source_symbol": "native_plane_derived_is_kind_009535c0",
+      "body_hex": "8b44240483f811742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "009535e6: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MPlaneTorpedoBomber_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": true
+    },
+    {
+      "address": "00953530",
+      "end_exclusive": "0095356b",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "ab42ceb58cd09c6a70a01f520b5010447798264cbe2cf9f9b89adf7e9f6040ad",
+      "fixed_words": [
+        "12",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d19d28",
+      "slot_5c": "00d19d84",
+      "source_symbol": "native_plane_derived_is_kind_00953530",
+      "body_hex": "8b44240483f812742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "00953556: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MPlaneDiveBomber_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": true
+    },
+    {
+      "address": "007dda80",
+      "end_exclusive": "007ddabb",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "416922dd90860245349376f409e0aa809bd3f8a8a1190c9f5d1487f9bd548de3",
+      "fixed_words": [
+        "13",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d06920",
+      "slot_5c": "00d0697c",
+      "source_symbol": "native_plane_derived_is_kind_007dda80",
+      "body_hex": "8b44240483f813742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "007ddaa6: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MPlaneFighter_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": false
+    },
+    {
+      "address": "0074e480",
+      "end_exclusive": "0074e4bb",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "a3752a5e142c27781a56a34f0084c00b1ee3e1ad2a9653237c62fb23c96255c5",
+      "fixed_words": [
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d00070",
+      "slot_5c": "00d000cc",
+      "source_symbol": "native_plane_derived_is_kind_0074e480",
+      "body_hex": "8b44240483f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "0074e4a6: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MReconPlane_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": false
+    },
+    {
+      "address": "0084c9f0",
+      "end_exclusive": "0084ca30",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 64,
+      "instructions": 23,
+      "sha256": "33e2e1476898c7e9ac3a581da6336055a771f18a760fbc0496115f147e8ae490",
+      "fixed_words": [
+        "15",
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d0ba80",
+      "slot_5c": "00d0badc",
+      "source_symbol": "native_plane_derived_is_kind_0084c9f0",
+      "body_hex": "8b44240483f815742f83f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "0084ca1b: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MSmallReconPlane_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": false
+    },
+    {
+      "address": "0074e4e0",
+      "end_exclusive": "0074e520",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 64,
+      "instructions": 23,
+      "sha256": "4c50bd948a1b0d3a588f50014728ca61fad13de94e1699bda2856283634d0328",
+      "fixed_words": [
+        "16",
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d00308",
+      "slot_5c": "00d00364",
+      "source_symbol": "native_plane_derived_is_kind_0074e4e0",
+      "body_hex": "8b44240483f816742f83f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "0074e50b: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MLargeReconPlane_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": false
+    },
+    {
+      "address": "009534a0",
+      "end_exclusive": "009534db",
+      "coverage": "complete raw ordinary leaf",
+      "bytes": 59,
+      "instructions": 21,
+      "sha256": "d7cfc3d95ad214b5eee00c9799d631eead7a69c63e03bbd68736319db7699b55",
+      "fixed_words": [
+        "17",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ],
+      "profile": "00d1a2d8",
+      "slot_5c": "00d1a334",
+      "source_symbol": "native_plane_derived_is_kind_009534a0",
+      "body_hex": "8b44240483f817742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0,
+      "native_protocol": "ECX actual receiver, EDX unused, stacked DWORD, full EAX0/1, RET4",
+      "dynamic_read": "009534c6: actual ECX+C4 DWORD; after all fixed checks",
+      "current_native_name_preserved": "BSP_MPlaneKamikaze_IsKindOf",
+      "native_prototype_limit": "Current undefined(void) prototype is not the recovered register/stack contract; worker changed no prototype/name/tag.",
+      "descriptor_assignment_provisional": true
+    }
+  ],
+  "totals": {
+    "bodies": 8,
+    "bytes": 482,
+    "instructions": 172,
+    "native_calls": 0,
+    "globals": 0,
+    "code_relocations": 0
+  },
+  "complete_Source_COFF": [
+    {
+      "symbol": "?native_plane_derived_is_kind_007d77f0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f810742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "007d77f0",
+      "end_exclusive": "007d782b",
+      "sha256": "e171537216cbb4c9d0fc1efd10ebe982dd8287bf5b3343d071acff214ebb3568",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "007d77f0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "007d77f4",
+          "bytes": "83f810",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x10"
+        },
+        {
+          "address": "007d77f7",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d77f9",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "007d77fc",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d77fe",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "007d7801",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d7803",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "007d7806",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d7808",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "007d780b",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d780d",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "007d7810",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d7812",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "007d7814",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d7816",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "007d781c",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x7d7823"
+        },
+        {
+          "address": "007d781e",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "007d7820",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "007d7823",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "007d7828",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "10",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_009535c0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f811742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "009535c0",
+      "end_exclusive": "009535fb",
+      "sha256": "d8aaffa4a01d6ab2e813049c1eda7df48ee7d94423be71ef7cff89935d7b4e71",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "009535c0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "009535c4",
+          "bytes": "83f811",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x11"
+        },
+        {
+          "address": "009535c7",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535c9",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "009535cc",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535ce",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "009535d1",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535d3",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "009535d6",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535d8",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "009535db",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535dd",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "009535e0",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535e2",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "009535e4",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535e6",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "009535ec",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x9535f3"
+        },
+        {
+          "address": "009535ee",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "009535f0",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "009535f3",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "009535f8",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "11",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_00953530@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f812742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "00953530",
+      "end_exclusive": "0095356b",
+      "sha256": "ab42ceb58cd09c6a70a01f520b5010447798264cbe2cf9f9b89adf7e9f6040ad",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "00953530",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00953534",
+          "bytes": "83f812",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x12"
+        },
+        {
+          "address": "00953537",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "00953539",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "0095353c",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "0095353e",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "00953541",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "00953543",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "00953546",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "00953548",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "0095354b",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "0095354d",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00953550",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "00953552",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00953554",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "00953556",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "0095355c",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x953563"
+        },
+        {
+          "address": "0095355e",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00953560",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "00953563",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00953568",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "12",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_007dda80@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f813742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "007dda80",
+      "end_exclusive": "007ddabb",
+      "sha256": "416922dd90860245349376f409e0aa809bd3f8a8a1190c9f5d1487f9bd548de3",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "007dda80",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "007dda84",
+          "bytes": "83f813",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x13"
+        },
+        {
+          "address": "007dda87",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007dda89",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "007dda8c",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007dda8e",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "007dda91",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007dda93",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "007dda96",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007dda98",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "007dda9b",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007dda9d",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "007ddaa0",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007ddaa2",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "007ddaa4",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007ddaa6",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "007ddaac",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x7ddab3"
+        },
+        {
+          "address": "007ddaae",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "007ddab0",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "007ddab3",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "007ddab8",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "13",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_0074e480@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "0074e480",
+      "end_exclusive": "0074e4bb",
+      "sha256": "a3752a5e142c27781a56a34f0084c00b1ee3e1ad2a9653237c62fb23c96255c5",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "0074e480",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0074e484",
+          "bytes": "83f814",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x14"
+        },
+        {
+          "address": "0074e487",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e489",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "0074e48c",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e48e",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "0074e491",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e493",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "0074e496",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e498",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "0074e49b",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e49d",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0074e4a0",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e4a2",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0074e4a4",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e4a6",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "0074e4ac",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x74e4b3"
+        },
+        {
+          "address": "0074e4ae",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0074e4b0",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "0074e4b3",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0074e4b8",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_0084c9f0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 64,
+      "bytes": "8b44240483f815742f83f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "0084c9f0",
+      "end_exclusive": "0084ca30",
+      "sha256": "33e2e1476898c7e9ac3a581da6336055a771f18a760fbc0496115f147e8ae490",
+      "instruction_count": 23,
+      "instructions": [
+        {
+          "address": "0084c9f0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0084c9f4",
+          "bytes": "83f815",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x15"
+        },
+        {
+          "address": "0084c9f7",
+          "bytes": "742f",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084c9f9",
+          "bytes": "83f814",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x14"
+        },
+        {
+          "address": "0084c9fc",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084c9fe",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "0084ca01",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca03",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "0084ca06",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca08",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "0084ca0b",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca0d",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "0084ca10",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca12",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0084ca15",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca17",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0084ca19",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca1b",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "0084ca21",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x84ca28"
+        },
+        {
+          "address": "0084ca23",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0084ca25",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "0084ca28",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0084ca2d",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "15",
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_0074e4e0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 64,
+      "bytes": "8b44240483f816742f83f814742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "0074e4e0",
+      "end_exclusive": "0074e520",
+      "sha256": "4c50bd948a1b0d3a588f50014728ca61fad13de94e1699bda2856283634d0328",
+      "instruction_count": 23,
+      "instructions": [
+        {
+          "address": "0074e4e0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0074e4e4",
+          "bytes": "83f816",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x16"
+        },
+        {
+          "address": "0074e4e7",
+          "bytes": "742f",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e4e9",
+          "bytes": "83f814",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x14"
+        },
+        {
+          "address": "0074e4ec",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e4ee",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "0074e4f1",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e4f3",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "0074e4f6",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e4f8",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "0074e4fb",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e4fd",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "0074e500",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e502",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0074e505",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e507",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0074e509",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e50b",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "0074e511",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x74e518"
+        },
+        {
+          "address": "0074e513",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0074e515",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "0074e518",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0074e51d",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "16",
+        "14",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_plane_derived_is_kind_009534a0@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 59,
+      "bytes": "8b44240483f817742a83f80f742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "009534a0",
+      "end_exclusive": "009534db",
+      "sha256": "d7cfc3d95ad214b5eee00c9799d631eead7a69c63e03bbd68736319db7699b55",
+      "instruction_count": 21,
+      "instructions": [
+        {
+          "address": "009534a0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "009534a4",
+          "bytes": "83f817",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x17"
+        },
+        {
+          "address": "009534a7",
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534a9",
+          "bytes": "83f80f",
+          "mnemonic": "cmp",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "009534ac",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534ae",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "009534b1",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534b3",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "009534b6",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534b8",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "009534bb",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534bd",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "009534c0",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534c2",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "009534c4",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534c6",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "009534cc",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x9534d3"
+        },
+        {
+          "address": "009534ce",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "009534d0",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "009534d3",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "009534d8",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "linked_text_exact_unique_match": true,
+      "fixed_words": [
+        "17",
+        "0f",
+        "05",
+        "04",
+        "02",
+        "01",
+        "00"
+      ]
+    }
+  ],
+  "all_COFF_and_linked_entries_equal_Original": true,
+  "native_live": {
+    "body_and_profile_pe_live_matches": 16,
+    "current_named_full_prototypes": 8,
+    "current_calls_zero": 8,
+    "static_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\static_receipts.json",
+      "sha256": "96db02ad76680e0fb8e880e27282be3135e9a661782c204ad5b402e595e7bdbb",
+      "size": 16165
+    },
+    "callees_query_qualification": "The empty CLI callees output names function:null. This query alone is not entry identity evidence; named complete prototypes and full PE/live/COFF proof establish zeroCALL."
+  },
+  "sealed_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_audit.json",
+    "sha256": "4c353a25541ba899f4e1516d5d64491eca2d622abe5638a8b638222acde79c2a",
+    "size": 55267
+  },
+  "profile_admission": "Eight verified actual +5C DATA cells only, no Source/native callable table or whole constructor/class/lifetime admission. No original constructor witness newly claimed.",
+  "native_call_rows": [],
+  "call_free_body_checks": [
+    {
+      "entry": "007d77f0",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "009535c0",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "00953530",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "007dda80",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "0074e480",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "0084c9f0",
+      "whole_bytes": 64,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "0074e4e0",
+      "whole_bytes": 64,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    },
+    {
+      "entry": "009534a0",
+      "whole_bytes": 59,
+      "live_proto_call_count": 0,
+      "capstone_call_count": 0,
+      "result": "MATCH; no direct or indirect CALL in this leaf"
+    }
+  ],
+  "native_call_verification": {
+    "native_call_sites": 0,
+    "whole_body_rows": 8,
+    "failures": 0,
+    "basis": "Each named full native prototype call_count0 and complete 482B PE/live + Capstone + Source COFF/linked-code proof; no CALL instruction or global/absolute-address operand."
+  },
+  "admission": {
+    "receiver": "stable nonnull actual >=C8h backing with genuinely live DWORD-aligned uint32 cell exactly+C4; common admitted domain even on fixed-word paths",
+    "source_parameter_protocol": "uint32 __fastcall(const void* actual_ECX, void* unused_EDX, uint32 stacked_word)",
+    "write_policy": "none; one final actual field read only after all fixed comparisons",
+    "invalid_paths": "no new guards/defaults/fallbacks; not admitted/tested"
+  },
+  "source_dependencies": {
+    "native_leaves": "none; eight separate complete call-free raw bodies",
+    "existing_completed_base": "src/native_plane_kind.cpp /0074E400; unchanged",
+    "existing_producer": "src/native_plane_squadron_insert.cpp /007ED0D0 complete new Source interface, real checked field views",
+    "existing_reader": "src/native_plane_squadron_first_plane.cpp /007ED010 complete new Source interface, SAME live +3D0 nullable pointer cell",
+    "pure_mapping": "existing checked insert-plane view(actual,backing,squadron9D4,index9D8) then {view.actual_plane,view.index9D8}; no separate leader TU/operation/default"
+  },
+  "fixture": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\manifest.json",
+      "sha256": "32c91a987ef0d691514388112de3d0c9e6765aa7dd0193e09f79ace866b730e2",
+      "size": 125379
+    },
+    "schema": "bsp.focused_fixture_manifest.v1",
+    "fresh_tus": [
+      "src\\native_plane_derived_kind.cpp",
+      "src\\native_plane_squadron_insert.cpp",
+      "src\\native_plane_squadron_first_plane.cpp",
+      "local\\cc11_plane_derived_kind_leaves\\probe.cpp"
+    ],
+    "fresh_tu_count": 4,
+    "family_count": 1,
+    "final_checks": 653,
+    "failures": 0,
+    "queries_per_backend": 90,
+    "backend_observations": 180,
+    "fixed_queries_per_backend": 58,
+    "other_queries_per_backend": 32,
+    "source_insertions": 1,
+    "source_shape_offsets": {
+      "Plane.class_c4": "C4",
+      "Plane.squadron_9d4": "9D4",
+      "Plane.index_9d8": "9D8",
+      "Plane.size": "9DC",
+      "Squadron.count_3cc": "3CC",
+      "Squadron.members_3d0": "3D0",
+      "Squadron.dirty_3ec": "3EC",
+      "Squadron.size": "3F0"
+    },
+    "original_copies": "eight full unchanged/unrelocated RX bodies; no call bridge/table/absolute operand relocation",
+    "observations": [
+      "fixed ordered acceptance",
+      "current C4 match",
+      "ordinary miss",
+      "fresh high-bit C4 match",
+      "previous C4 becomes miss",
+      "full EAX0/1 and RET4 stack balance",
+      "full storage and guards",
+      "same in-pass published first-plane receiver identity"
+    ],
+    "run": "identity squadron=008FED5C published_first=008FF15C selected_receiver=008FF15C actual_C4=008FF220\ntarget 007d77f0 original_bytes=59 fixed=7 PASS\ntarget 009535c0 original_bytes=59 fixed=7 PASS\ntarget 00953530 original_bytes=59 fixed=7 PASS\ntarget 007dda80 original_bytes=59 fixed=7 PASS\ntarget 0074e480 original_bytes=59 fixed=7 PASS\ntarget 0084c9f0 original_bytes=64 fixed=8 PASS\ntarget 0074e4e0 original_bytes=64 fixed=8 PASS\ntarget 009534a0 original_bytes=59 fixed=7 PASS\n653 checks, 0 failures; 90 queries, 180 backend observations; 1 Source insertion; 8 targets",
+    "higher_source_setup_qualification": "Source-shaped borrowed field setup/current Source producer+reader; no Original constructor/producer/class dispatch replay",
+    "first_success": {
+      "manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\manifest.json",
+        "sha256": "3bf558c2f7c09b911d46c8178b127bb8ed2a126b808113b4a24e52506c0e2a72",
+        "size": 118877
+      },
+      "checks": 654,
+      "queries": 90,
+      "backend_observations": 180,
+      "qualification": "Dormant inherited leader mapping had an instrumentation counter; count0 never called it. Its vacuous assertion removed in final pure probe; tracked HPP/CPP/raw bodies unchanged. All first artifacts remain immutable.",
+      "historical_input_mapping": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\historical_input_mapping.json",
+        "sha256": "000a39be2eee188f190645a4178251cf40c6ae211ad6e8707e859041dfb15d20",
+        "size": 1620
+      },
+      "original_probe_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\first_success_source\\probe.cpp",
+        "sha256": "259e3e53f73508d9c7868fc9a339afaf66c95011eae559b9f5561c9e6976d78e",
+        "size": 12010
+      }
+    },
+    "attempts": "attempt01 successful654; attempt02 rejected strict syntax preflight/no link/no execution; attempt03 final successful653; same one new family/scenarios, no earlier family replay"
+  },
+  "compiler": {
+    "flags": "/std:c++17 /EHsc /permissive- /W4 /WX /fp:strict /O2 /MD /Gy /showIncludes",
+    "fresh_compilation": true,
+    "input_count": 239,
+    "inputs_before_equals_after": true,
+    "compiler_observed_include_paths": 215,
+    "project_headers_observed": 29,
+    "toolchain": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe"
+    ],
+    "compiler_backends": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll"
+    ],
+    "system_libraries": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+    ],
+    "bsp_support_libraries": [],
+    "no_BSP_support_freeze_needed": true
+  },
+  "embedded_manifest": {
+    "resource": "RT_MANIFEST #1",
+    "machine": "I386",
+    "level": "asInvoker",
+    "static_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\static_receipts.json",
+      "sha256": "96db02ad76680e0fb8e880e27282be3135e9a661782c204ad5b402e595e7bdbb",
+      "size": 16165
+    }
+  },
+  "artifacts": {
+    "recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\build.cmd",
+      "sha256": "467422dfec031d77de4ebb40cf5384967c182a6b23e6020aba851aaf5c864430",
+      "size": 2315
+    },
+    "seal_script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\seal.py",
+      "sha256": "25172a5c0d9361fc18e2be1b0a8fd96fe898125a407ec5fc6a7c057b38dd7468",
+      "size": 6988
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\manifest.json",
+      "sha256": "32c91a987ef0d691514388112de3d0c9e6765aa7dd0193e09f79ace866b730e2",
+      "size": 125379
+    },
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\probe.exe",
+      "sha256": "49b3a6986b30dbbfb67921bcf9dccc14534ffbf068cd584a88d907c36364fa65",
+      "size": 16384
+    },
+    "coff": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\derived_coff.txt",
+      "sha256": "fcdf1292c6937970b63939f6a2573c58161b512ca59fc9742fd5c7378858ca6c",
+      "size": 16979
+    },
+    "run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\run.txt",
+      "sha256": "58447f42308f624e30d7d72ef17ee4b7e0101413e85fb58440c52db872fe87d1",
+      "size": 576
+    },
+    "compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\compile.txt",
+      "sha256": "10814dc05b29aca5b0dc437dd4f64f4fb22e4f86f65cd5e2779004cc7b7f52dd",
+      "size": 64897
+    },
+    "inputs_before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\inputs_before.json",
+      "sha256": "240d45ffc1f3a69f399c23022006b653b169db53f7da37eceb9365a105166320",
+      "size": 81698
+    },
+    "historical_input_mapping": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\historical_input_mapping.json",
+      "sha256": "000a39be2eee188f190645a4178251cf40c6ae211ad6e8707e859041dfb15d20",
+      "size": 1620
+    }
+  },
+  "failed_attempts": [
+    {
+      "attempt": "attempt02",
+      "stage": "/Zs syntax preflight",
+      "diagnostic": "C4335/C2220 from CRCRLF introduced during fixture-only counter removal",
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\pre_includes.txt",
+        "sha256": "d170a53387a842c2209408e1d327ce0473d0a1c701dc459e81a9fe5bb714e47a",
+        "size": 66240
+      },
+      "source_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\probe_failed.cpp",
+        "sha256": "bce7ef8e09cc8ba511f3b7829593a97bdc95c123f17cbc44a9008fcbbc0926a9",
+        "size": 12203
+      },
+      "preserved": true,
+      "linked_or_executed": false
+    }
+  ],
+  "limits": [
+    "Raw profile words are DATA-only; no synthetic callable Source table or class router. Descriptor names 11/12/17 remain provisional. Numeric function names do not settle those assignments.",
+    "No eight native plane constructor invocation or class/lifetime proof. Constructor/profile/C4 stores were not audited in this packet; +5C DWORD targets only are verified.",
+    "Completed base0074E400 remains separate. No collapse into base or census/copied dynamic class value; no cache, default type service or semantic member-count projection.",
+    "Borrow stable coherent actual storage: aligned genuinely live DWORD+C4; Source fixture uses actual-shaped >=9DCh Plane and >=3EDh Squadron with coherent disjoint fields and full guards. Invalid/fault/overflow/concurrency/lifetime behavior outside the admitted setup was not exercised.",
+    "The fixture executes complete raw leaf bodies with exact ABI and bytes. It does not execute original plane constructors, original sorted producer/first-plane getter, native virtual class/profile dispatch, InitAll, group speed/detach, observer/arena/world/privateEH or game behavior.",
+    "Source producer/provider effects are controlled fixture setup. Pure inherited mapping derives SAME +9D8 reference from the existing checked insert-plane view factory; no values/effects/default/cache/native operation in that mapping. Count0 does not invoke it.",
+    "ONE same in-pass actual receiver is published and observed by both backends; no cross-pass address or enclosing native type claim.",
+    "Root owns CMake, full integration/build/CTest, ledger, annotations and game/runtime validation; worker made no shared writes or Ghidra mutation."
+  ],
+  "validation": {
+    "strict_fresh_four_TU_compile_link": "PASS",
+    "final_source_original_fixture": "653/0",
+    "whole_Source_COFF_and_linked_bytes": "8 complete rows482B172inst equal Original; zero relocations",
+    "PE_live_body_profile_receipt": "16 MATCH",
+    "embedded_manifest": "verified",
+    "diff_check": "PASS required on exact four staged owned files before commit",
+    "full_main_build": "root-owned, not run by worker",
+    "gameplay": "not run",
+    "report_call_verifier": "PASS:0 call rows/0 failed (no call-site rows exist); eight whole-body zero-CALL rows are separately verified."
+  }
+}
