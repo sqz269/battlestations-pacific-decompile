@@ -1,0 +1,591 @@
+{
+  "packet": "cc11_scene_enum_table_insertion",
+  "source_baseline": "a8e2f949037d91a52f313ca177d93c3be83ebd3b",
+  "doc": "docs/NATIVE_ENUM_TABLE_INSERTION_CC11.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "owned_addresses": [
+    "008F17E0",
+    "004D3069"
+  ],
+  "owned_files": [
+    "include/bsp/native_enum_table_insertion.hpp",
+    "src/native_enum_table_insertion.cpp",
+    "docs/NATIVE_ENUM_TABLE_INSERTION_CC11.md",
+    "reports/native_enum_table_insertion_cc11.json"
+  ],
+  "routines": [
+    {
+      "entry": "008F17E0",
+      "inclusive_end": "008F188B",
+      "bytes": 172,
+      "sha256": "9e83aa51d4fea8ac9c75ecdaaaef8cfdd14b956b65af605b47459983af6a0e5a",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 65,
+      "coverage": "complete172B/65instruction normal insertion/replacement, specialized only to proved actual current-CRT19Ch CEnum mapped-payload producer domain",
+      "source_name": "insert_native_cenum_table_008f17e0",
+      "observed_inputs": "ECX nested registry map; stack genuine8h keyheader and new mappedpointer; receiver capturedEDI/keyEBX",
+      "observed_return": "fresh count[EDI+4] EAX; both RET8 at008F181D/008F1889; original formalclassABI unclaimed",
+      "end_exclusive": "008F188C"
+    },
+    {
+      "entry": "004D3069",
+      "inclusive_end": "004D308A",
+      "bytes": 34,
+      "sha256": "609c490761e55a54bb4a29b4af24c128f1bdc5066f76e2607c531812a6f1956b",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "coverage": "partial containing004D3040: ONLY34B/9instruction initializer fragment [004D3069,004D308B), not function/whole startup",
+      "source_name": "initialize_native_scene_enum_registry_storage_004d3069",
+      "observed_inputs": "EDX borrowed actual10Ch root; ES:EDI REP STOSD64 under native ordinaryflat Win32 domain",
+      "observed_return": "fragment has no native standalone return; Source returns borrowed pointer via new interface",
+      "end_exclusive": "004D308B"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "008F17EF",
+      "native": "0048D4E0",
+      "function": "008F17E0",
+      "path": "unconditional actualtable finder; captured bucket output"
+    },
+    {
+      "address": "008F1825",
+      "native": "004E7C00",
+      "function": "008F17E0",
+      "path": "only miss; actual E175E8 table14h pool"
+    },
+    {
+      "address": "008F184C",
+      "native": "0041DD40",
+      "function": "008F17E0",
+      "path": "miss newnode != key: current querylength,preserve1; owningresize"
+    },
+    {
+      "address": "008F1861",
+      "native": "00BF7680",
+      "function": "008F17E0",
+      "path": "only current querylength!=0 afterresize; currentdestinationlength/data/currentquerydata; native ADDESP0C; retain historical_memcpy name"
+    },
+    {
+      "address": "008F2BCE",
+      "native": "008F17E0",
+      "function": "008F2B90",
+      "path": "actual outerowner+4/querytemporary/newpayload; whole wrapper NOT reconstructed"
+    },
+    {
+      "address": "008F6A18",
+      "native": "008F2B90",
+      "function": "008F67B0",
+      "path": "installedlibrary loader fresh CEnum only; genuine E1867C outer owner"
+    },
+    {
+      "address": "008F5F8D",
+      "native": "008F2B90",
+      "function": "008F5A00",
+      "path": "explicit E parser fresh genuine CEnum registration; declarationidentity/storage remainsunbound"
+    },
+    {
+      "address": "008F69AC",
+      "native": "00BF681B",
+      "function": "008F67B0",
+      "path": "PUSH19C at69A7 current native allocationlineage"
+    },
+    {
+      "address": "008F69C9",
+      "native": "008F4DD0",
+      "function": "008F67B0",
+      "path": "actual fresh19Ch CEnum ctor storesD16508"
+    },
+    {
+      "address": "008F5F2E",
+      "native": "00BF681B",
+      "function": "008F5A00",
+      "path": "PUSH19C at5F29 current native allocationlineage"
+    },
+    {
+      "address": "008F5F4B",
+      "native": "008F4DD0",
+      "function": "008F5A00",
+      "path": "actual fresh19Ch CEnum ctor storesD16508"
+    },
+    {
+      "address": "004D305B",
+      "native": "00BF681B",
+      "function": "004D3040",
+      "path": "PUSH10C at004D3056; actual receiver allocation lineage BEFORE owned34B initializer fragment, containingstartup unported"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": "008F1807",
+      "containing_function": "008F17E0",
+      "instruction": "CALL EAX",
+      "selector": "oldmapped+0 virtualslot0; PUSH1",
+      "actual_producer_profile": "00D16508",
+      "verified_profile_target": "008F59C0",
+      "source_binding": "direct genuine complete delete_native_scene_enum_owner_008f59c0 ONLY admitted actual current-CRT19Ch CEnums; explicit producer/heap/lifetime precondition; original profile/slot loads and general virtual dispatch NOT replayed; no fakeprofile/default/classcallback; otherclasses external",
+      "direct_call_verifier_excluded": true
+    }
+  ],
+  "source_contract": {
+    "receiver": "actual10Ch registry root+4; profile0 CE78BC, nestedprofile4 CE7514,count8,64headwords0C..108",
+    "hit": [
+      "load oldnode8; iffnonnull actualCEnum scalarflag1; node8zero ONLY after returning deletion",
+      "publish newpointer includingnull; freshcount receiver4 return; nodekey/header/chain/tablecount unchanged"
+    ],
+    "miss": [
+      "genuine distinct E175E8-compatible14h pool; fresh keyheader0/4 stores; slot10 retained",
+      "realresize current querylength/preserve1, then only nonempty currentheader owningcopy/currentmemcpy",
+      "node8 payload, nodeC current head, buckethead node, DWORDcountincrement, freshcountreturn"
+    ],
+    "initializer": "only actual9 stores/fill in004D3040; no allocation/globalpublication/startup projection",
+    "new_interface": "MSVCWin32 cdecl with explicit genuine pool/rawcontext/empty providers; not original ECX/RET8 classABI",
+    "direct_delete_binding": "Explicit current-CRT19Ch CEnum producer/heap/unique-lifetime precondition; no original profile/slot loads or general virtual dispatch replay. Ordinary deletion is the complete genuine008F59C0 Source target, not an arbitrary callback."
+  },
+  "producer_admission": {
+    "nonnull_payloads": "uniquely owned actual19Ch CEnums from genuine008F4DD0 on current CRT root allocation, physicalD16508 firstslot008F59C0, SAME actualsymbolpool/stringcontext for lifetime",
+    "null_payload": "admitted storednull mapped8; known-found word0 is not missing default; original profile/slot loads and general virtual dispatch NOT replayed",
+    "keys": "genuine owning8h NativeString, closed NUL-free ASCII C-locale; nullptrdata only recognized empty key",
+    "domain": "successful nonoverflowing coherent64bucket owners/tables/currentCRT allocations, valid allocated14h slots and stable disjoint storage; no concurrentmutation/reentry",
+    "excluded": [
+      "foreignclass/profile/heap/deletingABI",
+      "old=new/same-pointer/shared ownership",
+      "malformedbuffers/nullreceivers/missingqueryfaults",
+      "allocatorfailure/overflow/alias/fault/EH/historicalCRT parity",
+      "namespace/declarationtype identity/globalE1867C binding",
+      "native table registry destruction004D0760/008F4F00/004D2620",
+      "whole004D3040 and E175E8 global startup; traffic/game"
+    ]
+  },
+  "providers": {
+    "actual_symbol_owning_ctor": "src/native_enum_symbol_insertion.cpp initialize008F4DD0; D16508/typeD162D4 exactimage bytes pinned",
+    "actual_scalar_lifetime": "src/native_enum_scalar_delete.cpp genuine008F59C0 -> src/native_enum_symbol_lifetime.cpp ordinary008F4E70 ->41DD20/43B0A0; current singleton_lifetime_free",
+    "actual_lookup": "src/native_enum_dictionary_lookup.cpp complete0048D4E0 with genuine DataOrEmpty419CA0/Compare438E10/currentCRTtoupper ASCII-C domain",
+    "actual_pools": "src/native_enum_node_pool.cpp complete14h64slot pool; E175E8 table/E17578 symbol distinct; realCE37A4->completeTrim/AllocatorListDomain E188B4 compatible/actualOSCS",
+    "actual_key_storage": "src/native_string.cpp genuine8h ctor/resize41DD40/destroy41DD20 and current rawpoolBD1480/BD1510/BD14C0; cached actualraw context; nullptrmanager neverinvoked",
+    "historical_memcpy": "native00BF7680 historic library name preserved; Source std::memcpy under admitted disjoint owningcopy domain, historicalCRT parity unclaimed"
+  },
+  "native_pins": [
+    {
+      "entry": "008F17E0",
+      "inclusive_end": "008F188B",
+      "bytes": 172,
+      "sha256": "9e83aa51d4fea8ac9c75ecdaaaef8cfdd14b956b65af605b47459983af6a0e5a",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 65,
+      "end_exclusive": "008F188C"
+    },
+    {
+      "entry": "004D3069",
+      "inclusive_end": "004D308A",
+      "bytes": 34,
+      "sha256": "609c490761e55a54bb4a29b4af24c128f1bdc5066f76e2607c531812a6f1956b",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "end_exclusive": "004D308B"
+    },
+    {
+      "entry": "008F2B90",
+      "inclusive_end": "008F2C0A",
+      "bytes": 123,
+      "sha256": "a6ff77983e2a2ac8e19572e4d5280f51f0a3ecf06846fbfdf934e72be8330788",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 36,
+      "end_exclusive": "008F2C0B"
+    },
+    {
+      "entry": "00CE78BC",
+      "inclusive_end": "00CE78C3",
+      "bytes": 8,
+      "sha256": "8c658994d2fed38e2050140695510defecbdfa3f0b5475616fd6a745db549807",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00CE78C4"
+    },
+    {
+      "entry": "00CE7514",
+      "inclusive_end": "00CE751B",
+      "bytes": 8,
+      "sha256": "96eaab0e550144e65fc938d94612b00a2312a55a49289f6be44116a72a728428",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00CE751C"
+    },
+    {
+      "entry": "008F59C0",
+      "inclusive_end": "008F59DD",
+      "bytes": 30,
+      "sha256": "8143498e9637f10e9b376fd263a4ab56362378c47f2a01ed8d1b092cc0f67fed",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 11,
+      "end_exclusive": "008F59DE"
+    },
+    {
+      "entry": "008F4E70",
+      "inclusive_end": "008F4EF3",
+      "bytes": 132,
+      "sha256": "26fd655fa6a6954eed562a9cbef47c154fa39b6749834a0ae5d7acfaa529715e",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 37,
+      "end_exclusive": "008F4EF4"
+    },
+    {
+      "entry": "008F4B60",
+      "inclusive_end": "008F4C48",
+      "bytes": 233,
+      "sha256": "1079eaa4aead384715ddc2f8e81f2cc70e85614b13be0e567951e3f11d2fc1fd",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 67,
+      "end_exclusive": "008F4C49"
+    },
+    {
+      "entry": "00BF65AC",
+      "inclusive_end": "00BF65B0",
+      "bytes": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 1,
+      "end_exclusive": "00BF65B1"
+    },
+    {
+      "entry": "0041DD20",
+      "inclusive_end": "0041DD3C",
+      "bytes": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 12,
+      "end_exclusive": "0041DD3D"
+    },
+    {
+      "entry": "0043B0A0",
+      "inclusive_end": "0043B104",
+      "bytes": 101,
+      "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 33,
+      "end_exclusive": "0043B105"
+    },
+    {
+      "entry": "008F4DD0",
+      "inclusive_end": "008F4E6C",
+      "bytes": 157,
+      "sha256": "425da24db7c212363e5114792e3e0e5d17424383885322e54698395c0d4a089f",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 48,
+      "end_exclusive": "008F4E6D"
+    },
+    {
+      "entry": "008F69A7",
+      "inclusive_end": "008F69CF",
+      "bytes": 41,
+      "sha256": "f43886641697f9b122627d459c423f7b5a8b36c958dbd053233a0a79ec7afce2",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 10,
+      "end_exclusive": "008F69D0"
+    },
+    {
+      "entry": "008F5F29",
+      "inclusive_end": "008F5F4F",
+      "bytes": 39,
+      "sha256": "d3273ec19b541f5f7729d674d3b546b68609abb81a92e2c501ed469e76454f78",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "decoded_instructions": 9,
+      "end_exclusive": "008F5F50"
+    },
+    {
+      "entry": "00D16508",
+      "inclusive_end": "00D1650F",
+      "bytes": 8,
+      "sha256": "7bb395196f5e5a656ab72239e6d3a29763ec049d06fd4ebc4f8e2774b1e2f660",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00D16510"
+    },
+    {
+      "entry": "00D162D4",
+      "inclusive_end": "00D162D7",
+      "bytes": 4,
+      "sha256": "4fd33dcde4707d09696a8430402a149b74cc4d9d8ecbfb4037ca44ea024c9fa1",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00D162D8"
+    },
+    {
+      "entry": "00E186ED",
+      "inclusive_end": "00E186ED",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 1,
+      "end_exclusive": "00E186EE"
+    },
+    {
+      "entry": "00E17654",
+      "inclusive_end": "00E17654",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_PE_image_equal": true,
+      "image_zero_fill_bytes": 0,
+      "end_exclusive": "00E17655"
+    }
+  ],
+  "additional_caller_pins": [
+    {
+      "entry": "008F6A0C",
+      "end_exclusive": "008F6A1D",
+      "bytes": 17,
+      "sha256": "252d54db552cba9e4298b3ad53df3e0347b764be4bc6206ef13c287f80f65b2a",
+      "live_PE_image_equal": true
+    },
+    {
+      "entry": "008F5F87",
+      "end_exclusive": "008F5F92",
+      "bytes": 11,
+      "sha256": "ae2036691d83e9bce3f21a1224df23dbe4be30b700ef43e0164b114e16b3ddf8",
+      "live_PE_image_equal": true
+    }
+  ],
+  "fixture": {
+    "root": "local/cc11_scene_enum_table_insertion",
+    "recipe": "local/cc11_scene_enum_table_insertion/run_probe.py",
+    "command": "python local/cc11_scene_enum_table_insertion/run_probe.py --out local/cc11_scene_enum_table_insertion/run02",
+    "original_execution": false,
+    "production_TUs": 14,
+    "fixture_TUs": 1,
+    "compile_flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /showIncludes",
+    "compile_all_exit0": true,
+    "link_exit": 0,
+    "probe_exit": 0,
+    "manifested_asInvoker": true,
+    "manifest_sha256": "c8f8c60d48dae1da8bd961c2305b39846d31c914e033402c3a75e5aac5356bef",
+    "exe_sha256": "9e98f7a6375d024d9e41e65960b550b6b3da9623fdee3266438010839aeeff5d",
+    "inputs": {
+      "actual_production_headers": 44,
+      "fresh_production_CPPs": 14,
+      "unique_production_inputs": 58,
+      "fixture_CPP_and_recipe": 2,
+      "unique_fixture_inclusive_inputs": 60
+    },
+    "actual_compiler_headers": 202,
+    "actual_searched_linker_libraries": 16,
+    "historical_immutable_files": 1951,
+    "outcomes": {
+      "actual_CEnum_constructors": 3,
+      "installed_symbols_original": 28,
+      "fresh_installed_replacement_symbols": 22,
+      "symbol_insertions": 50,
+      "actual_registry_initializer_fragment": true,
+      "separate_real_pools": 2,
+      "table_nodes": 4,
+      "table_query_cleanups": 7,
+      "case_variant_disjoint_replacement": true,
+      "nonnull_deletions": 3,
+      "null_hit": true,
+      "empty_key_miss_hit": true,
+      "table_word_reads": 7,
+      "symbol_word_reads": 56,
+      "memberships": 56,
+      "full_temporary_pool_prefix_checks": 119,
+      "symbol_slot_returns": 50,
+      "table_slot_returns": 4,
+      "manual_fixture_cleanup_not_registry_dtor": true,
+      "real_trim_unlink_shutdown": true,
+      "original_body_executed": false
+    },
+    "prior_run01_immutable_files": 411,
+    "prior_run01_all_hashes_equal": true,
+    "attempts": "run01 memmove fixture preserved; active run02 resealed current memcpy in disjoint domain",
+    "cleanup": "explicit fixture payload scalar/keyheader/slot providers and rootfree, NOT native registry destructor; roots deleted once and never accessed/freed again",
+    "image_cells": "checked MEM_FREE exact verifiedE/type and distinct empty bytes at image VAs then PAGE_READONLY; not capturedlivegameglobals or originalcodeexecution",
+    "actual_installed_input": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\library\\global.enums",
+      "sha256_pre": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_copy": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027",
+      "sha256_post": "a9f99c0e8fc650e2ef86e404990d56c7f2e4b518ff65be685acc3c6999ace027"
+    },
+    "full_manifest_path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_table_insertion\\run02\\inputs\\manifest.json"
+  },
+  "support_freeze": {
+    "utc": "2026-10-08T00:00:52.467185+00:00",
+    "worker_baseline": "a8e2f949037d91a52f313ca177d93c3be83ebd3b",
+    "main_baseline": "a8e2f949037d91a52f313ca177d93c3be83ebd3b",
+    "build_provenance": "Primary current complete scalar integration main build; current6e301796 core explicitly authorized by cc11_scene_enum_table_insertion approval; Lua/zlib unchanged",
+    "entries": [
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_table_insertion\\support\\bsp_core.lib",
+        "size": 73438376,
+        "sha256_pre": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+        "sha256_copy": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+        "sha256_post": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+        "sha256_pre_link_run": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383",
+        "sha256_post_link_run": "6e30179692c98be0a495492cf8a9c356c8f7975141742be8d0d2d3dd1642f383"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_table_insertion\\support\\bsp_lua511.lib",
+        "size": 454824,
+        "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "original": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "pinned": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_table_insertion\\support\\bsp_zlib121.lib",
+        "size": 71766,
+        "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_COFF": {
+    "receipt": "local/cc11_scene_enum_table_insertion/coff_provider_details_run02.json",
+    "sha256": "a27c66fa90d4b17b90c8ba1ba1942d121d6e12619ceefdf03c81aa216c1566f1",
+    "initializer_bytes": 104,
+    "initializer_instructions": 29,
+    "insertion_bytes": 389,
+    "insertion_instructions": 113,
+    "relocations": [
+      {
+        "operand_offset": 27,
+        "kind": 20,
+        "target": "?find_native_enum_table_node_0048d4e0@bsp@@YAPBXPBXABVNativeString@1@AAIPBD3@Z"
+      },
+      {
+        "operand_offset": 78,
+        "kind": 20,
+        "target": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z"
+      },
+      {
+        "operand_offset": 150,
+        "kind": 20,
+        "target": "?allocate_native_enum_node_004e7c00@bsp@@YAPAXPAX@Z"
+      },
+      {
+        "operand_offset": 194,
+        "kind": 20,
+        "target": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+      },
+      {
+        "operand_offset": 215,
+        "kind": 20,
+        "target": "_memcpy"
+      }
+    ],
+    "hit_order_offsets": {
+      "lookup": 26,
+      "oldpayloadtest": 62,
+      "conditionalgenuineScalarFlag1call": 77,
+      "postdeleteNode8zero": 99,
+      "newpayloadpublish": 115,
+      "freshcountload": 127,
+      "ret": 142
+    },
+    "miss_order_offsets": {
+      "allocate": 149,
+      "freshheaderstores": [
+        167,
+        173
+      ],
+      "resize": 193,
+      "currentquerylengthtest": 201,
+      "copy": 214,
+      "payload8": 235,
+      "chainC": 289,
+      "bucketpublish": 323,
+      "countincrement": 359,
+      "freshcountreturnload": 371,
+      "ret": 388
+    },
+    "full_COFF_dump": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_director_props\\local\\cc11_scene_enum_table_insertion\\run02\\table.coff.log",
+      "sha256": "5eb39c5f7dec79547edebf32c12901b0be02db40309826d46196d65141960f40",
+      "machine": "014C",
+      "normal_provider_symbols_present": true
+    },
+    "scalar_and_actual_current_free_provider_complete_COFF_in_receipt": true,
+    "supplementary_receipt_only_attempt1": "initial expected COMDAT size assertion was corrected to measured389B; strict fixture itself passed once and was not rerun"
+  },
+  "verification": {
+    "diff_check": "PASS worktree and staged git diff --check; staged exactly four owned new files",
+    "native_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_enum_table_insertion_cc11.json",
+      "checked_direct_rows": 12,
+      "failed": 0,
+      "indirect_rows_excluded": 1,
+      "log": "local/cc11_scene_enum_table_insertion/native_calls_run02.log",
+      "sha256": "e2232638b70d4c3c3809cde6844da473638023b5215d37b7ab13bf88bcd39f69"
+    },
+    "global_build": "pending root integration; worker no fullbuild",
+    "source_fixture": "PASS",
+    "ABI": "original formalABI unclaimed; newinterfaces compiledWin32 only",
+    "game": "not executed",
+    "Ghidra_mutations": false,
+    "final_pinned_inputs_rechecked": true,
+    "prior_run01_immutable_files": 411,
+    "final_input_checks": 2651
+  },
+  "remaining_dependencies": [
+    "actual004D0760 tableclear/008F4F00 ordinaryregistrydtor/004D2620 scalarregistry lifecycle",
+    "foreign mappedpayload virtualclasses and historical nativeheap ownership",
+    "globalstartup/classbinding/privateEH/originalwrapperABI",
+    "E declarationidentity/type namespace/semanticPropertyLibrary binding/traffic providers"
+  ],
+  "actual_owner_producer_pins": {
+    "receipt": "local/cc11_scene_enum_table_insertion/audit_run02/owner_producers/pins.json",
+    "sha256": "b6a5724f5a959a1d4842b481198040ba0d54068db8ea8a249fed23566066a9ac",
+    "spans": [
+      {
+        "entry": "004D3056",
+        "end_exclusive": "004D3069",
+        "bytes": 19,
+        "sha256": "7ee58454a7ade87d6fe9567e421ee1ec953ffcc6ce57ddd587e6387cc89fe4ca",
+        "decoded_instructions": 6,
+        "live_PE_image_equal": true
+      },
+      {
+        "entry": "008F69A7",
+        "end_exclusive": "008F6A1D",
+        "bytes": 118,
+        "sha256": "e6784238ac9c9ca41bf13d8f0ad78e3afb07bdd4fdb91433bb26a0145fdd8a58",
+        "decoded_instructions": 33,
+        "live_PE_image_equal": true
+      },
+      {
+        "entry": "008F5F29",
+        "end_exclusive": "008F5F92",
+        "bytes": 105,
+        "sha256": "5a09b2a330ef539c31174c90090ca020e5061615616dd82061340859f080caa2",
+        "decoded_instructions": 26,
+        "live_PE_image_equal": true
+      }
+    ]
+  }
+}
