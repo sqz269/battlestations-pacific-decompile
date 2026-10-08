@@ -31265,6 +31265,66 @@
         "target_runtime_executed": false,
         "qualification": "Stable actual backing with live aligned DWORD+8; compare onlyFFFFFFFF; whole literal10-byte zero-relocation body; no source class/table/producer/lifetime/tail-dispatch qualification."
       }
+    },
+    {
+      "id": "cc12_command_target_support_readiness",
+      "done": true,
+      "state": "audited unready; raw list providers and79B31 saved-listing gap remain named prerequisites; Source0",
+      "addresses": [
+        "004f1870",
+        "004f1890",
+        "004837d0"
+      ],
+      "owned_files": [
+        "docs/CC12_COMMAND_TARGET_SUPPORT_READINESS.md",
+        "reports/cc12_command_target_support_readiness.json"
+      ],
+      "new_Source_bodies": 0,
+      "primary_review": {
+        "receipts_hash_verified": true,
+        "sealed_artifacts_unchanged": true,
+        "Source_admission": false,
+        "game_validated": false,
+        "old_families_replayed": false
+      },
+      "worker_audit": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_command_target_initialize/local/cc12_command_target_support_audit20261008a",
+        "audit_sha256": "e93cc479c4979cf1de8dd60cce8de6938d51ff3461d114883727aa97c771e1e2",
+        "seal_sha256": "e381bb824510f4a14c3c40ae2caa8914e15ac1a618ae5fd5e78816a19a594cfd"
+      },
+      "unready_receipts": [
+        {
+          "address": "004f1870",
+          "ready": false,
+          "requires": [
+            "whole raw00484540 with genuine 0Ch allocation and exact ECX/stack/RET4 provider contract",
+            "whole raw00928560 calling that exact provider",
+            "explicit actual receiver+30 parent and both list owners/lifetimes; fresh post-call parent identity preserved"
+          ],
+          "not_substitutes": [
+            "UnitWorldRegistrationHost callbacks",
+            "std::vector<UnitRef>",
+            "GameUnitSlot or GameUnitWorldLists class adaptation",
+            "new fake parent/world/dispatch/global mapping"
+          ]
+        },
+        {
+          "address": "004f1890",
+          "ready": false,
+          "requires": [
+            "Root repair/revalidation of both4837D0 returning gaps and saved extent",
+            "whole raw4837D0 with correct successor return and admitted node/free domain",
+            "whole raw00928570 using that provider",
+            "actual list links/count/parent lifetimes and first-match semantics"
+          ],
+          "not_substitutes": [
+            "private host unlink-all-lists loop",
+            "delete of a fabricated host node",
+            "incomplete saved pseudocode with void return",
+            "replacement class dispatch/provider"
+          ]
+        }
+      ]
     }
   ],
   "snapshot_after_analysis": {
