@@ -1,0 +1,359 @@
+{
+  "status": "Bounded ownership audit complete; ordinary bag and owned-record clear Source remain unready",
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_execution": false,
+  "old_families_replayed": false,
+  "Source_implementation_ready": false,
+  "native_bodies": {
+    "ordinary": {
+      "entry": "008F5410",
+      "inclusive_end": "008F5467",
+      "exclusive_end": "008F5468",
+      "bytes": 88,
+      "role": "target whole ordinary property-bag destructor",
+      "sha256": "153d652b2dc1da3279d0fe87e923d49c1a8f1f5c5f6d46e205f9488c3fc30246",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 22
+    },
+    "record_map_clear": {
+      "entry": "008F3F30",
+      "inclusive_end": "008F402D",
+      "exclusive_end": "008F402E",
+      "bytes": 254,
+      "role": "ONLY expanded directly required missing body: whole record-map clear",
+      "sha256": "8a6ac02dc829909455bfda0e784829eb340c8cbf4ec70e9b4b512d9ef8a98ff1",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 75
+    }
+  },
+  "sealed_worker_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_bag_ordinary_record_map_audit",
+    "proposal_sha256": "e64fee09024ab798768ceb627220d10bfce83a3c68baff79af8b628cbbc2fdec",
+    "receipt_sha256": "adefbc1b4326a6b36e7a66220200d0425942414f17a075cf8eebbbfec2d8490c",
+    "ten_exact_native_spans_and_seven_call_rows": true,
+    "historical_files_unchanged": 5868
+  },
+  "native_class_ABI_compatible": false,
+  "game_validated": false,
+  "logical_live_instruction_counts": {
+    "008F5410": 22,
+    "008F3F30": 74
+  },
+  "listing_qualification": {
+    "008F3F30": "PE/raw75 includes unreachable LEA ECX,[ECX] at008F3F5D..5F, skipped by JMP008F3F5B->008F3F60; live logical74. No missing returning-call cleanup in these two audited whole bodies."
+  },
+  "ordinary_contract": {
+    "native_ABI": "Win32 thiscall ECX=actual114h root; plainRET; preserves ESI; local SEH registration through FS:[0], handler00CA4B8B, state0 around first clear then state-1 before second clear.",
+    "phase_order": [
+      "register SEH",
+      "write outer D16504 at root+0",
+      "capture root+4 in ESI",
+      "direct clear008F3F30 at008F543E",
+      "state=-1",
+      "write D162C4 at root+4",
+      "direct clear008F3F30 at008F5453",
+      "restore SEH and stack; plainRET"
+    ],
+    "receiver_storage": "0x114-byte real property bag; borrowed0x108 map at root+4. Constructor008F41A0 remains named but unexpanded; actualloader fragment114h is prior evidence, not a whole current Source constructor.",
+    "untouched_fields": [
+      "root+0x10C ordinal",
+      "root+0x110 owner"
+    ],
+    "no_root_or_interior_free": true,
+    "Source_ABI_EH_admission": "Absent; a semantic host-container facade cannot receive this raw114h root and cannot supply historical SEH/EH behavior."
+  },
+  "record_map_clear_contract": {
+    "native_ABI": "Win32 ECX=actual borrowed108h record map; preserves EBX/EBP/ESI/EDI; plainRET; local map/head traversal state in stack.",
+    "owned_nodes": "64 bucket heads at map+8; count map+4; real14h node key0/4,payload8,nextC,pageindex10.",
+    "per_node_order": [
+      "capture next+C before payload destruction",
+      "if payload8 nonzero load actual profile slot0 and CALL at008F3F6F with flag1",
+      "zero node+8 only after payload return",
+      "if raw key data+4 nonzero call00419CC0 then00BD1510 with data,length+1,unused1",
+      "EnterCriticalSection(actualE175BC); depth E175D4++",
+      "node+10 identifies page in E175D8; signed node/page offset divided by14h is WORD slot",
+      "push slot into page+500 stack at WORD count+580; WORDcount++; min earliest E175E4",
+      "depth--; LeaveCriticalSection; continue captured next"
+    ],
+    "tail_order": [
+      "zero each head after its complete chain",
+      "zero map+4 only after all64 heads"
+    ],
+    "key_and_node_stale_fields": "Does not reset node key0/4, nextC or pageindex10 when returning its pool slot.",
+    "pool": {
+      "actual_global": "00E175B0",
+      "critical_section": "00E175BC",
+      "depth": "00E175D4",
+      "pages": "00E175D8",
+      "page_count": "00E175DC",
+      "page_capacity": "00E175E0",
+      "earliest": "00E175E4",
+      "page_bytes": "0x584",
+      "slot_bytes": "0x14",
+      "independent_of": [
+        "00E17540 property-library group nodes",
+        "00E175E8 enum-table nodes",
+        "00E17578 enum-symbol nodes"
+      ],
+      "actual_shared_provider_evidence": "Bounded original008F2930 MOV ECX,E175B0 followed008F2935 CALL004E7C00; exact same whole generic allocate/return provider addresses are already genuine current Source. Actual static-global pool construction remains unbound."
+    }
+  },
+  "actual_payload_binding": {
+    "profile": "00CE89D4",
+    "slot0": "004E6730",
+    "callsite": "008F3F6F",
+    "producer_witness": "Original008F38B9 PUSH38/008F38BD allocation; same ESI receives CE89D4 at008F38D9. Record producer008F297D stores payload8 before nextC/bucket/count publication.",
+    "chain_named_not_expanded": [
+      "004E6730 scalar ->008F0DE0 and00BF65AC",
+      "008F0DE0 thunk ->008F0640",
+      "008F0640 type dispatch ->008F03F0 and00BF6989; nested lifetime contracts remain unresolved"
+    ],
+    "not_enum_CEnum": "Actual0x38 record and0x114 bag domain; CEnum0x19C destructor/profiles are incompatible."
+  },
+  "historical_type_contract_qualified": {
+    "source": "docs/SCENE_PROPERTY_BAG_MERGE.md:94-107; prior static routing, not newly audited whole handlers or runtime admission",
+    "type2": "historical release record+C string allocation",
+    "type5": "historical free record+1C; zero+8/+18",
+    "type6": "historical subbag deleting destructor flag1",
+    "types8_B": "historical008F03F0 releases array+20 and clears+20/+24",
+    "types0_1_3_4_7": "historical no owned release; tail resets+4/+8/+C/+28",
+    "declaration28": "shared declaration pointer, historically not owned by record",
+    "unresolved": "Exact raw whole scalar/thunk/type/reference/array/nested admission and release order, alloc/free compatibility, actual producer/storage and exceptional paths require separately registered audits; no further bodies expanded here."
+  },
+  "whole_current_Source_prerequisites": {
+    "admitted_primitives": [
+      "allocate_native_enum_node_004e7c00(actual_initialized_pool)",
+      "return_native_enum_node_0043b0a0(actual_initialized_pool,actual_allocated_slot)",
+      "actual raw8B strings/current singleton00419CC0 and sized blockreturn00BD1510"
+    ],
+    "evidence": "Prior sealed property-clear audit verifies whole native providers; their current complete Source/header hashes unchanged here. Actual E175B0 allocator argument establishes same generic pool contract, not an enum-pool substitution.",
+    "missing_raw_Source": [
+      "whole114h constructor008F41A0",
+      "record scalar004E6730",
+      "record thunk008F0DE0",
+      "whole owned record release008F0640",
+      "array block008F03F0 and actual type/reference/nested providers"
+    ],
+    "semantic_models": "scene_property_bag/merge expose std::string/vector/value/copy-spec models. Constants/commented addresses and ownership summaries do not implement raw record destruction or Original thiscall/EH.",
+    "zero_payload_subset": "Does not close whole clear or ordinary destructor; real owned non-null records require the missing provider chain."
+  },
+  "blockers": [
+    "Genuine raw114h constructor and actual root ownership admission remain unexpanded/unimplemented.",
+    "Real38h record scalar/thunk/type dispatcher and string/reference/array/nested lifetime providers have no complete raw current Source closure.",
+    "Historical allocation/free and Original SEH/EH compatibility remain unproved; no class/table/default adapter or opaque callback is admissible."
+  ],
+  "named_unexpanded_producers": [
+    "008F41A0",
+    "008F33F0",
+    "008F38A0",
+    "008F28F0"
+  ],
+  "bounded_producer_witnesses_only": [
+    {
+      "entry": "008F2930",
+      "inclusive_end": "008F2939",
+      "exclusive_end": "008F293A",
+      "bytes": 10,
+      "role": "bounded producer witness: E175B0 argument and direct shared allocator",
+      "sha256": "c1cc778c37dade43fb21b7249d50d2dd88ec1a2641ab2752fba33bc45f3a0aab",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 2,
+      "disassembly": [
+        {
+          "address": "008F2930",
+          "bytes": "b9b075e100",
+          "instruction": "mov ecx, 0xe175b0"
+        },
+        {
+          "address": "008F2935",
+          "bytes": "e8c652bfff",
+          "instruction": "call 0x4e7c00"
+        }
+      ],
+      "whole_calls": [
+        {
+          "address": "008F2935",
+          "bytes": "e8c652bfff",
+          "instruction": "call 0x4e7c00"
+        }
+      ]
+    },
+    {
+      "entry": "008F2979",
+      "inclusive_end": "008F2992",
+      "exclusive_end": "008F2993",
+      "bytes": 26,
+      "role": "bounded producer witness: payload8/nextC/bucket/count publication",
+      "sha256": "5b8dcbd51710ebd8afa78757ffd91800369060e7dbfe0578ca168cb7b32f00f6",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 7,
+      "disassembly": [
+        {
+          "address": "008F2979",
+          "bytes": "8b442414",
+          "instruction": "mov eax, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "008F297D",
+          "bytes": "894608",
+          "instruction": "mov dword ptr [esi + 8], eax"
+        },
+        {
+          "address": "008F2980",
+          "bytes": "8b442410",
+          "instruction": "mov eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "008F2984",
+          "bytes": "8b4c8708",
+          "instruction": "mov ecx, dword ptr [edi + eax*4 + 8]"
+        },
+        {
+          "address": "008F2988",
+          "bytes": "894e0c",
+          "instruction": "mov dword ptr [esi + 0xc], ecx"
+        },
+        {
+          "address": "008F298B",
+          "bytes": "89748708",
+          "instruction": "mov dword ptr [edi + eax*4 + 8], esi"
+        },
+        {
+          "address": "008F298F",
+          "bytes": "83470401",
+          "instruction": "add dword ptr [edi + 4], 1"
+        }
+      ],
+      "whole_calls": []
+    },
+    {
+      "entry": "008F38B9",
+      "inclusive_end": "008F38C1",
+      "exclusive_end": "008F38C2",
+      "bytes": 9,
+      "role": "bounded record producer witness: PUSH38/MOVEBXECX/CALL allocation",
+      "sha256": "8addbfd91619e1c1c38c8a2b425b2d4228483a64f53b7f9708446bca97f41df6",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 3,
+      "disassembly": [
+        {
+          "address": "008F38B9",
+          "bytes": "6a38",
+          "instruction": "push 0x38"
+        },
+        {
+          "address": "008F38BB",
+          "bytes": "8bd9",
+          "instruction": "mov ebx, ecx"
+        },
+        {
+          "address": "008F38BD",
+          "bytes": "e8592f3000",
+          "instruction": "call 0xbf681b"
+        }
+      ],
+      "whole_calls": [
+        {
+          "address": "008F38BD",
+          "bytes": "e8592f3000",
+          "instruction": "call 0xbf681b"
+        }
+      ]
+    },
+    {
+      "entry": "008F38D5",
+      "inclusive_end": "008F38DE",
+      "exclusive_end": "008F38DF",
+      "bytes": 10,
+      "role": "bounded record producer witness: same allocated ESI receives CE89D4",
+      "sha256": "eba296f36f9c15da02ccdaf64699db2962277536808fcfd9f178329fa35dfa93",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 2,
+      "disassembly": [
+        {
+          "address": "008F38D5",
+          "bytes": "8b4c2424",
+          "instruction": "mov ecx, dword ptr [esp + 0x24]"
+        },
+        {
+          "address": "008F38D9",
+          "bytes": "c706d489ce00",
+          "instruction": "mov dword ptr [esi], 0xce89d4"
+        }
+      ],
+      "whole_calls": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008F543E",
+      "native": "008F3F30",
+      "function": "008F5410",
+      "description": "first genuine record-map clear"
+    },
+    {
+      "address": "008F5453",
+      "native": "008F3F30",
+      "function": "008F5410",
+      "description": "second clear after interior phase"
+    },
+    {
+      "address": "008F3F6F",
+      "native": "004E6730",
+      "function": "008F3F30",
+      "description": "Register CALL; resolved by CE89D4 slot0 and actual38h producer. Call verifier only classifies indirect; no scalar execution or ABI admission."
+    },
+    {
+      "address": "008F3F86",
+      "native": "00419CC0",
+      "function": "008F3F30",
+      "description": "raw keystring singleton"
+    },
+    {
+      "address": "008F3F8D",
+      "native": "00BD1510",
+      "function": "008F3F30",
+      "description": "sized raw keyblock return"
+    },
+    {
+      "address": "008F2935",
+      "native": "004E7C00",
+      "function": "008F28F0",
+      "description": "bounded realE175B0 pool allocation witness"
+    },
+    {
+      "address": "008F38BD",
+      "native": "00BF681B",
+      "function": "008F38A0",
+      "description": "bounded actual38h rawrecord allocation witness"
+    }
+  ],
+  "qualification": "Native static/layout/call proof only. Neither ordinary nor clear is Source-closed; no Original88/254 execution, no whole nativeclass/historicCRT/EH/factory/world/game closure. Prior constructor39/map82 bytes and earlier accepted fragments are not counted again.",
+  "saved_analysis_publication": {
+    "annotation_prior_values": "local\\ghidra-annotations-20261008T042741Z.json",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_annotations": true,
+    "refreshed_exports": [
+      "008f5410",
+      "008f3f30"
+    ],
+    "force_snapshot_and_index_completed": true,
+    "Source_added": 0,
+    "receipts": [
+      {
+        "path": "local\\ghidra-annotations-20261008T042741Z.json",
+        "sha256": "5cc8ad196dd4626e4e6cdc827267500ca9ca5ed072d2b7aa38cad6f80b171021"
+      },
+      {
+        "path": "local\\cc11_property_bag_record_clear_exports.log",
+        "sha256": "05f12cadec934da22ad916c8f5ca4bae17db0d12bd17cf3e0a92175752bc2768"
+      },
+      {
+        "path": "local\\cc11_property_bag_record_clear_snapshot.log",
+        "sha256": "86d952cf40194e18b23882185b923307eca9a6411dce79b8b18234d36e5916cb"
+      }
+    ]
+  }
+}
