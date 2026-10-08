@@ -1,0 +1,1299 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_key_lookup_readiness",
+  "UTC": "2026-10-08T10:10:41.793405+00:00",
+  "status": "WHOLE_BORROWED_RAW_SOURCE_SERVICE_READY; POPULATED_SOURCE_PRODUCER_AND_NATIVE_EXECUTION_NOT_ADMITTED",
+  "scope": {
+    "owned_addresses": [
+      "0043B8B0",
+      "00419CA0",
+      "00BF7FBF",
+      "0043B760",
+      "00E177E4",
+      "00E17654",
+      "0109DE1C"
+    ],
+    "owned_files": [
+      "docs/CC12_PROPERTY_KEY_LOOKUP_READINESS.md",
+      "reports/cc12_property_key_lookup_readiness.json"
+    ],
+    "worker_input_HEAD": "406ada8e0bac56828b8405502e98b8a03e81f482",
+    "current_main_input_HEAD": "e5cd605ecc8d9decd0e075c0740a1dd4cfbbc2f6",
+    "Source_changes": false,
+    "Ghidra_shared_metadata_CMake_ledger_export_writes": false,
+    "Source_native_SDK_game_execution": false,
+    "build": false,
+    "existing_fixture_replay": false,
+    "new_tests": false
+  },
+  "project_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mechanism": "bsp.py Ghidra wrappers verify before every live batch; normal call-row verifier invokes Client.verify()"
+  },
+  "installed_PE": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_ranges": [
+    {
+      "entry": "0043B8B0",
+      "inclusive_end": "0043B918",
+      "bytes": 105,
+      "sha256": "be85d862f57d3ffbcd558f9e00282d6aa313ec36b7b069afb9e50a128b465145",
+      "role": "whole property map lookup",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 243888,
+      "live_saved_PE_initial_equal": true,
+      "instructions": 48,
+      "complete_listing": [
+        "0043B8B0: push ebx",
+        "0043B8B1: mov ebx, dword ptr [esp + 8]",
+        "0043B8B5: push esi",
+        "0043B8B6: push edi",
+        "0043B8B7: push ebx",
+        "0043B8B8: mov esi, ecx",
+        "0043B8BA: call 0x43b760",
+        "0043B8BF: mov ecx, dword ptr [esp + 0x14]",
+        "0043B8C3: mov dword ptr [ecx], eax",
+        "0043B8C5: mov edi, dword ptr [esi + eax*4 + 8]",
+        "0043B8C9: test edi, edi",
+        "0043B8CB: je 0x43b911",
+        "0043B8CD: push ebp",
+        "0043B8CE: mov ebp, dword ptr [ebx]",
+        "0043B8D0: cmp dword ptr [edi], ebp",
+        "0043B8D2: jne 0x43b901",
+        "0043B8D4: mov esi, dword ptr [edi + 4]",
+        "0043B8D7: test esi, esi",
+        "0043B8D9: jne 0x43b8e0",
+        "0043B8DB: mov esi, 0xe177e4",
+        "0043B8E0: mov ecx, ebx",
+        "0043B8E2: call 0x419ca0",
+        "0043B8E7: cmp eax, esi",
+        "0043B8E9: je 0x43b908",
+        "0043B8EB: test eax, eax",
+        "0043B8ED: je 0x43b901",
+        "0043B8EF: test esi, esi",
+        "0043B8F1: je 0x43b901",
+        "0043B8F3: push esi",
+        "0043B8F4: push eax",
+        "0043B8F5: call 0xbf7fbf",
+        "0043B8FA: add esp, 8",
+        "0043B8FD: test eax, eax",
+        "0043B8FF: je 0x43b908",
+        "0043B901: mov edi, dword ptr [edi + 0xc]",
+        "0043B904: test edi, edi",
+        "0043B906: jne 0x43b8d0",
+        "0043B908: pop ebp",
+        "0043B909: mov eax, edi",
+        "0043B90B: pop edi",
+        "0043B90C: pop esi",
+        "0043B90D: pop ebx",
+        "0043B90E: ret 8",
+        "0043B911: mov eax, edi",
+        "0043B913: pop edi",
+        "0043B914: pop esi",
+        "0043B915: pop ebx",
+        "0043B916: ret 8"
+      ]
+    },
+    {
+      "entry": "00419CA0",
+      "inclusive_end": "00419CAC",
+      "bytes": 13,
+      "sha256": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f",
+      "role": "whole raw query data accessor",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 105632,
+      "live_saved_PE_initial_equal": true,
+      "instructions": 5,
+      "complete_listing": [
+        "00419CA0: mov eax, dword ptr [ecx + 4]",
+        "00419CA3: test eax, eax",
+        "00419CA5: jne 0x419cac",
+        "00419CA7: mov eax, 0xe17654",
+        "00419CAC: ret "
+      ]
+    },
+    {
+      "entry": "00BF7FBF",
+      "inclusive_end": "00BF800E",
+      "bytes": 80,
+      "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+      "role": "whole Original stricmp dispatch",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 8355775,
+      "live_saved_PE_initial_equal": true,
+      "instructions": 32,
+      "complete_listing": [
+        "00BF7FBF: push ebp",
+        "00BF7FC0: mov ebp, esp",
+        "00BF7FC2: push esi",
+        "00BF7FC3: xor esi, esi",
+        "00BF7FC5: cmp dword ptr [0x109de1c], esi",
+        "00BF7FCB: jne 0xbf7ffd",
+        "00BF7FCD: cmp dword ptr [ebp + 8], esi",
+        "00BF7FD0: jne 0xbf7ff1",
+        "00BF7FD2: call 0xbffb8b",
+        "00BF7FD7: push esi",
+        "00BF7FD8: push esi",
+        "00BF7FD9: push esi",
+        "00BF7FDA: push esi",
+        "00BF7FDB: push esi",
+        "00BF7FDC: mov dword ptr [eax], 0x16",
+        "00BF7FE2: call 0xbf66ef",
+        "00BF7FE7: add esp, 0x14",
+        "00BF7FEA: mov eax, 0x7fffffff",
+        "00BF7FEF: jmp 0xbf800c",
+        "00BF7FF1: cmp dword ptr [ebp + 0xc], esi",
+        "00BF7FF4: je 0xbf7fd2",
+        "00BF7FF6: pop esi",
+        "00BF7FF7: pop ebp",
+        "00BF7FF8: jmp 0xbf7eb7",
+        "00BF7FFD: push esi",
+        "00BF7FFE: push dword ptr [ebp + 0xc]",
+        "00BF8001: push dword ptr [ebp + 8]",
+        "00BF8004: call 0xbf7eec",
+        "00BF8009: add esp, 0xc",
+        "00BF800C: pop esi",
+        "00BF800D: pop ebp",
+        "00BF800E: ret "
+      ]
+    },
+    {
+      "entry": "0043B760",
+      "inclusive_end": "0043B7B8",
+      "bytes": 89,
+      "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f",
+      "role": "current qualified whole property hash",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 243552,
+      "live_saved_PE_initial_equal": true,
+      "instructions": 39,
+      "complete_listing": [
+        "0043B760: mov eax, dword ptr [esp + 4]",
+        "0043B764: push ebx",
+        "0043B765: push ebp",
+        "0043B766: mov ebp, dword ptr [eax + 4]",
+        "0043B769: push esi",
+        "0043B76A: mov esi, dword ptr [eax]",
+        "0043B76C: push edi",
+        "0043B76D: mov edi, esi",
+        "0043B76F: or edi, 0x20",
+        "0043B772: shr edi, 5",
+        "0043B775: test ebp, ebp",
+        "0043B777: jne 0x43b77e",
+        "0043B779: mov ebp, 0xe177e4",
+        "0043B77E: cmp esi, edi",
+        "0043B780: mov ebx, esi",
+        "0043B782: jb 0x43b7ad",
+        "0043B784: movsx eax, byte ptr [ebp]",
+        "0043B788: push eax",
+        "0043B789: call 0xbf924e",
+        "0043B78E: movzx eax, al",
+        "0043B791: mov ecx, esi",
+        "0043B793: shl ecx, 5",
+        "0043B796: mov edx, esi",
+        "0043B798: add eax, ecx",
+        "0043B79A: shr edx, 2",
+        "0043B79D: add eax, edx",
+        "0043B79F: sub ebx, edi",
+        "0043B7A1: add esp, 4",
+        "0043B7A4: xor esi, eax",
+        "0043B7A6: add ebp, 1",
+        "0043B7A9: cmp ebx, edi",
+        "0043B7AB: jae 0x43b784",
+        "0043B7AD: pop edi",
+        "0043B7AE: mov eax, esi",
+        "0043B7B0: pop esi",
+        "0043B7B1: pop ebp",
+        "0043B7B2: and eax, 0x3f",
+        "0043B7B5: pop ebx",
+        "0043B7B6: ret 4"
+      ]
+    },
+    {
+      "entry": "00E177E4",
+      "inclusive_end": "00E177E4",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "role": "distinct property-node/hash CString fallback",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 10581988,
+      "live_saved_PE_initial_equal": true
+    },
+    {
+      "entry": "00E17654",
+      "inclusive_end": "00E17654",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "role": "distinct query CString fallback",
+      "PE_storage": "raw_file_bytes",
+      "PE_offset_or_virtual_offset": 10581588,
+      "live_saved_PE_initial_equal": true
+    },
+    {
+      "entry": "0109DE1C",
+      "inclusive_end": "0109DE1F",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "role": "Original image-initial locale selector, not live game state",
+      "PE_storage": "virtual_zero_fill",
+      "PE_offset_or_virtual_offset": null,
+      "live_saved_PE_initial_equal": true
+    }
+  ],
+  "whole_lookup": {
+    "entry": "0043B8B0",
+    "inclusive_end": "0043B918",
+    "bytes": 105,
+    "instructions": 48,
+    "direct_calls": 3,
+    "indirect_calls": 0,
+    "flow_gaps": 0,
+    "x87": false,
+    "ABI": "ECX actual108h map interior; stackactual8h query header then writablebucketDWORD pointer; EAX borrowed node orNULL, RET8 on both exits. EBX/ESI/EDI preserved; EBP saved/restored only for nonempty head; ECX/EDX/flags volatile. No own allocation/release/EH/frame/class/vtable recovery.",
+    "schedule": [
+      "Hash actual query first unconditionally; qualified hash reads data+4 BEFORE length+0 and uses explicit property fallbackE177E4.",
+      "Store bucketDWORD to caller output BEFORE actualmap head read at+8+4*bucket.",
+      "If headNULL returnNULL; otherwise capture query lengthDWORD once from query+0.",
+      "For each node compare node+0 length with captured length. Mismatch skips data/getter/CRT.",
+      "On length match, read node+4 data; select actualpropertyE177E4 fallback ifNULL. Then reload query data through whole13B accessor, selecting actualqueryE17654 fallback ifNULL.",
+      "Pointer identity returns first node before NULL tests or CRT. Otherwise if both pointersnonnull call real stricmp; zero returns first node.",
+      "Failure follows node+C; NULL returnsNULL, otherwise repeat. Never inspect node+8 mapped record or node+10 allocator identity."
+    ],
+    "reads": {
+      "map": "bucket head only at+8+4*bucket",
+      "query": "actual8h length/data; query length after headnonnull, data per length match",
+      "node": "length+0,data+4,next+C on failed match"
+    },
+    "writes": "Only outputbucketDWORD; no map/header/node/record ownership write.",
+    "ignored": "Map profile+0/count+4, node mappedrecord+8/page identity+10, bag root/profile/ordinal/owner and any record/profile/lifetime body."
+  },
+  "host_steps": [
+    {
+      "function": "0043B8B0",
+      "address": "0043B8BA",
+      "native": "0043B760",
+      "kind": "direct_call",
+      "role": "Unconditional genuine property hash"
+    },
+    {
+      "function": "0043B8B0",
+      "address": "0043B8E2",
+      "native": "00419CA0",
+      "kind": "direct_call",
+      "role": "Actual query data-or-query-fallback"
+    },
+    {
+      "function": "0043B8B0",
+      "address": "0043B8F5",
+      "native": "00BF7FBF",
+      "kind": "direct_call",
+      "role": "Bothnonnull pointer-unequal real CRT comparison"
+    },
+    {
+      "function": "00BF7FBF",
+      "address": "00BF7FD2",
+      "native": "00BFFB8B",
+      "kind": "direct_call",
+      "role": "Original invalid-input errno provider; excluded/unexpanded"
+    },
+    {
+      "function": "00BF7FBF",
+      "address": "00BF7FE2",
+      "native": "00BF66EF",
+      "kind": "direct_call",
+      "role": "Original invalid-parameter handler; excluded/unexpanded"
+    },
+    {
+      "function": "00BF7FBF",
+      "address": "00BF7FF8",
+      "native": "00BF7EB7",
+      "kind": "tail_jump",
+      "role": "Prior qualified53B ASCII provider; reused/PE rehashed, not expanded or executed"
+    },
+    {
+      "function": "00BF7FBF",
+      "address": "00BF8004",
+      "native": "00BF7EEC",
+      "kind": "direct_call",
+      "role": "Original nonzero-locale provider; excluded/unexpanded"
+    },
+    {
+      "function": "0043B760",
+      "address": "0043B789",
+      "native": "00BF924E",
+      "kind": "direct_call",
+      "role": "Prior qualified real toupper39B provider; no new native body expansion"
+    }
+  ],
+  "direct_callee_readiness": [
+    {
+      "Original": "0043B760",
+      "status": "AVAILABLE_QUALIFIED_WHOLE_RAW_SOURCE",
+      "Source": "native_property_key_bucket_0043b760(const void*,const char*)",
+      "domain": "Closed valid ASCII/count-matching actual8h headers and stable currentCRT C locale. Empty, long, unsigned counter, signed-byte toupper/low8, DWORD wrap and3Fmask complete. Exact92B/41 currentCOFF matches qualified Source hash.",
+      "Source_native_qualification": "Accepted998782c250 / current integrated Source; fresh13-case Original/Source family was run in that earlier packet only, not replayed here."
+    },
+    {
+      "Original": "00419CA0",
+      "status": "AVAILABLE_WHOLE13B_GETTER_AND_CURRENT19B9_SOURCE",
+      "Source": "native_string_data_or_00419ca0(const NativeString&,const char* actual_empty_00e17654)",
+      "domain": "ECX actual8h header; data+4 or distinct query fallback; no Native callees. For raw lookup interface, expand this complete read/fallback rather than casting arbitrary raw8h/node storage to a NativeString class."
+    },
+    {
+      "Original": "00BF7FBF",
+      "status": "CURRENT_GENUINE_NORMAL_CRT_BOUNDARY_READY_ON_CLOSED_ASCII_C_LOCALE",
+      "Source": "Direct real _stricmp, with pointer identity/null gates in lookup preserved.",
+      "Original_body_contract": "80B/32 dispatch; image-initial0109DE1C=0 and nonnull inputs select prior qualified53B ASCII tail. Actual live game locale not captured.",
+      "Current_provider_proof": "Current object __imp___stricmp relocation, actual I386 ucrtbase.dll _stricmp export and installed current UCRT stricmp.cpp real ASCII/C-locale semantics. No fabricated case-fold helper or whole nonASCII/nonzero OriginalCRT graph claim."
+    }
+  ],
+  "fallback_roles": {
+    "node_and_hash": "00E177E4 initial raw.data NUL byte",
+    "query": "00E17654 distinct initial raw.data NUL byte",
+    "cells_first_bytes": "00/00; separately pinned live saved/installed PE",
+    "contract": "Pass genuine distinct role bindings, stable nonnull NUL strings for the whole borrow. Keep their pointer identities distinct and allow equality with actual key data only where genuine provenance admits it; no enumE186ED substitution or synthesized default.",
+    "Source_global_owner_publication": "Still not provided by the pure lookup service. Explicit borrowed roles are its inputs; no fallback/header/profile record ownership is inferred."
+  },
+  "actual_memory_preimages": {
+    "map": "Actual108h interior, normally bag+4 after genuine whole61B initialize_native_scene_property_bag_storage_008f41a0. Heads map+8..+104 (64DWORDs), not root+8. Profile+0/count+4 are opaque to lookup.",
+    "query": "Stable genuine raw8h counted header produced by current complete raw0041E870/resize providers against genuine NativeStringRawPoolContext, or another admitted actual raw header. Length matches NUL-free ASCII buffer and termination; NULLdata only empty. Preserve real storage/owner lifetime through lookup.",
+    "nodes": "Genuine actual14h slots allocated from exactE175B0 raw pool; owning key+0/+4, mappedopaqueDWORD+8,next+C,pageidentity+10. Only actual length/data/next are consumed; storage/key buffers must remain alive and stable.",
+    "producer_proof": "Prior whole native008F28F0/008F33F0 producers physically retained/rehashed against installed PE. Native miss path copies real owningkey, setsnode+C=oldrealhead, publishes exactbuckethead and incrementscount; source producer is not claimed.",
+    "pool_owner": "Current distinct borrowed SourceE175B0 binding/bookends use same canonicalE188B4domain and realCE37A4/00410CD0; current complete pool methods available. No sibling owner or semantic map admitted."
+  },
+  "complete_borrowed_domain": {
+    "status": "ESTABLISHED_FOR_A_WHOLE_RAW_READER_INTERFACE_NOT_A_POPULATED_SOURCE_PRODUCER",
+    "required": [
+      "Win32 stable genuine actualmap/query/node storage with correct4-byte pointers and stated offsets; no fabricated packed map/header/profile.",
+      "Coherent finite actual node chains, valid terminated key buffers with matching DWORD lengths, NULL data only for valid emptykeys.",
+      "Every node has real property-hash placement under the same admitted hash/ASCII/C-locale convention; bucket0..63 comes from real hash mask.",
+      "Writable nonaliasing outputDWORD distinct from map/query/node fields subsequently read; genuine native insertion caller uses captured query and a stack outputcell.",
+      "Genuine distinct property/query fallback roles and stable currentCRT C locale held across hash/compare.",
+      "Owner/key/node lifetime and external synchronization across the whole borrow; no mutation/return/free/rebind/localechange/reentry."
+    ],
+    "all_branches_preserved": [
+      "empty map stillhashes/storesbucket",
+      "length mismatch",
+      "pointer-equal first match",
+      "bothnonnull CRT equality/miss",
+      "distinct fallback emptykey comparison",
+      "multi-node first-match/terminalmiss",
+      "long key hash samplesprefix but equality scansfullstring"
+    ],
+    "no_added_guards": "No Original outputNULL/bucket bounds/cycle/lengthguard, semantic map conversion, cached query data, node+8 interpretation, dispatch or ownership mutation.",
+    "outside": "Corrupt/mismatched/dangling/cyclic/alias-mutating storage, arbitrary fabricated domains, nonASCII/other locale/failure/EH/Original classABI/game are not promoted."
+  },
+  "current_production_state": {
+    "empty_actual_map": "AVAILABLE_GENUINE61B_RAW_SOURCE_CONSTRUCTOR",
+    "raw_query_key_storage": "AVAILABLE_GENUINE_CURRENT_RAW_HEADER_BUFFER_PRODUCERS",
+    "whole_lookup_ordinary_Source": "NOT_YET_IMPLEMENTED; READY_NEXT_PACKET_FOR_DEFINED_BORROWED_DOMAIN",
+    "genuine_nonempty_Source_property_map": "NOT_AVAILABLE; whole008F28F0/008F33F0 publication/ownership remains downstream, including full replacement lifetime.",
+    "Native_property_map_execution_or_new_compare_family": "NOT_EXECUTED_NOT_ADMITTED; no Source-built packed/semantic map used as fake genuine producer.",
+    "old_record_lifetime": "Not read/dependent inside this lookup; remains a separate downstream insertion/replacement dependency."
+  },
+  "next_packet": {
+    "Source_ready": true,
+    "scope": "Independent whole ordinary raw borrowed map lookup, no implementation in this audit.",
+    "Source_files": [
+      "include/bsp/native_enum_dictionary_lookup.hpp",
+      "src/native_enum_dictionary_lookup.cpp"
+    ],
+    "new_doc_report_candidate": [
+      "docs/CC12_PROPERTY_KEY_LOOKUP_SOURCE.md",
+      "reports/cc12_property_key_lookup_source.json"
+    ],
+    "interface_provisional": "void* find_native_property_map_node_0043b8b0(const void* actual_map,const void* actual_query_header,std::uint32_t& bucket,const char* actual_empty_00e177e4,const char* actual_empty_00e17654)",
+    "whole_contract": "Independent body: qualified propertyhash -> bucketstore -> actualheadload -> NULLexit -> lengthcapture -> complete length/data/fallback/getter13B/pointerequal/null/real_stricmp/next loop. Reuse current load helper and property hash; expand complete raw getter read/fallback locally without class-casting or touching the existing getter. Direct real CRT equality; do not delegate/refactor enum reader/hash/helper or add CMake/global/storage/profile.",
+    "verification_recommendation": "Normal Win32 build/three existing CTests plus complete static Original/Source scheduling and productionCOFF/imports. Do not fabricate a filled map or replay old enum/native fixtures; a property-specific Native/Source comparison needs a genuine populated producer and separately approved graph/domain.",
+    "limits": "Pure reader ready does not close Source producer/runtime/global fallback publication, oldrecord release, recursive owningkey/record lifetime, OriginalABI/class/world/game."
+  },
+  "unexpanded_original_CRT_dependencies": [
+    "00BFFB8B invalid-input errno",
+    "00BF66EF invalid-parameter handler",
+    "00BF7EEC nonzero-locale_stricmp_l",
+    "Original _toupper_l nonzero-locale graph"
+  ],
+  "current_object_provider_receipt": {
+    "current_providers": [
+      {
+        "provider": "native_property_key_bucket_0043b760",
+        "object": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+        "object_sha256": "23c6930847c6c2b5855c8f07a3b64883283659cd173f18355fb7582193e0b21a",
+        "bytes": 92,
+        "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a",
+        "instructions": 41,
+        "relocations": [
+          {
+            "operand_offset": 41,
+            "kind": "0006",
+            "symbol": "__imp__toupper"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: push ebx",
+          "004: push esi",
+          "005: mov esi, dword ptr [ebp + 8]",
+          "008: push edi",
+          "009: mov edi, dword ptr [esi + 4]",
+          "00C: mov esi, dword ptr [esi]",
+          "00E: mov ebx, esi",
+          "010: or ebx, 0x20",
+          "013: mov dword ptr [ebp + 8], esi",
+          "016: shr ebx, 5",
+          "019: test edi, edi",
+          "01B: cmove edi, dword ptr [ebp + 0xc]",
+          "01F: cmp esi, ebx",
+          "021: jb 0x52",
+          "023: movsx eax, byte ptr [edi]",
+          "026: push eax",
+          "027: call dword ptr [0]",
+          "02D: movzx ecx, al",
+          "030: lea edi, [edi + 1]",
+          "033: mov eax, esi",
+          "035: add esp, 4",
+          "038: shl eax, 5",
+          "03B: add ecx, eax",
+          "03D: mov eax, esi",
+          "03F: shr eax, 2",
+          "042: add ecx, eax",
+          "044: mov eax, dword ptr [ebp + 8]",
+          "047: sub eax, ebx",
+          "049: xor esi, ecx",
+          "04B: mov dword ptr [ebp + 8], eax",
+          "04E: cmp eax, ebx",
+          "050: jae 0x23",
+          "052: and esi, 0x3f",
+          "055: pop edi",
+          "056: mov eax, esi",
+          "058: pop esi",
+          "059: pop ebx",
+          "05A: pop ebp",
+          "05B: ret "
+        ]
+      },
+      {
+        "provider": "native_string_data_or_00419ca0",
+        "object": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_lua_script_overrides.obj",
+        "object_sha256": "5d9c36889548574ddb6eabf4ecf57182c6b62321a4f6067ff9b72b904f42c346",
+        "bytes": 19,
+        "sha256": "7987cbe66bf0db6cede2de2f97005016134ba6879a5a59b609b0aa402d829ee1",
+        "instructions": 9,
+        "relocations": [],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: mov eax, dword ptr [ebp + 8]",
+          "006: mov ecx, dword ptr [eax + 4]",
+          "009: test ecx, ecx",
+          "00B: mov eax, dword ptr [ebp + 0xc]",
+          "00E: cmovne eax, ecx",
+          "011: pop ebp",
+          "012: ret "
+        ]
+      },
+      {
+        "provider": "compare_insensitive_00438e10",
+        "object": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/entity_identity.obj",
+        "object_sha256": "a85a7c0425f578780e665cd5790077249c769be6786c163939d44fe25014726b",
+        "bytes": 50,
+        "sha256": "528daa15c701db36f19e2f3a536ae52997372e1ef7537a1dfcd001175e54bb43",
+        "instructions": 23,
+        "relocations": [
+          {
+            "operand_offset": 46,
+            "kind": "0006",
+            "symbol": "__imp___stricmp"
+          }
+        ],
+        "complete_listing": [
+          "000: push ebp",
+          "001: mov ebp, esp",
+          "003: mov eax, dword ptr [ebp + 8]",
+          "006: mov ecx, dword ptr [ebp + 0xc]",
+          "009: cmp eax, ecx",
+          "00B: jne 0x11",
+          "00D: xor eax, eax",
+          "00F: pop ebp",
+          "010: ret ",
+          "011: test eax, eax",
+          "013: jne 0x1a",
+          "015: or eax, 0xffffffff",
+          "018: pop ebp",
+          "019: ret ",
+          "01A: test ecx, ecx",
+          "01C: jne 0x25",
+          "01E: mov eax, 1",
+          "023: pop ebp",
+          "024: ret ",
+          "025: mov dword ptr [ebp + 0xc], ecx",
+          "028: mov dword ptr [ebp + 8], eax",
+          "02B: pop ebp",
+          "02C: jmp dword ptr [0]"
+        ]
+      }
+    ],
+    "actual_CRT_I386_export_stricmp": true,
+    "qualification": "Frozen current production objects read statically; direct real toupper/stricmp import symbols. No execution or old fixture replay; no enum-reader delegation proposed."
+  },
+  "physical_frozen_input_pins": [
+    {
+      "path": "src/native_enum_dictionary_lookup.cpp",
+      "bytes": 3557,
+      "sha256": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_enum_dictionary_lookup.cpp",
+      "worker_blob": "3c6543336801f259543c891fed1981075dd13e32",
+      "current_main_blob": "3c6543336801f259543c891fed1981075dd13e32",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 2723,
+      "sha256": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_enum_dictionary_lookup.hpp",
+      "worker_blob": "b08cb8b70347e6e855d2bad56ca8373aadcf5d6f",
+      "current_main_blob": "b08cb8b70347e6e855d2bad56ca8373aadcf5d6f",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_lua_script_overrides.cpp",
+      "bytes": 5273,
+      "sha256": "e88f7dce14f48c8cdc7d461938ce2a863e81583f91dc2ce4bef18332d0501cbe",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_lua_script_overrides.cpp",
+      "worker_blob": "3e0331e0ff89b0f095927f953346b08be578528f",
+      "current_main_blob": "3e0331e0ff89b0f095927f953346b08be578528f",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_lua_script_overrides.hpp",
+      "bytes": 1467,
+      "sha256": "5b6ff12e3b560ad2b417eb69e631f9f15e0f5921da3deb5d746447198bf3871e",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_lua_script_overrides.hpp",
+      "worker_blob": "55515de22363e1d8536488631f8b6960e6e79378",
+      "current_main_blob": "55515de22363e1d8536488631f8b6960e6e79378",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/entity_identity.cpp",
+      "bytes": 12455,
+      "sha256": "886aef959411a02bae273bb3dcb541eaded80a3fce27a8184e7882afe6bfd0a9",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/entity_identity.cpp",
+      "worker_blob": "3804a3b325ee66ab914da1feb762378e6f012405",
+      "current_main_blob": "3804a3b325ee66ab914da1feb762378e6f012405",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/entity_identity.hpp",
+      "bytes": 12117,
+      "sha256": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/entity_identity.hpp",
+      "worker_blob": "62b4c8b7a1f62c1cb6530e9cdb0767e8dba0ebe7",
+      "current_main_blob": "62b4c8b7a1f62c1cb6530e9cdb0767e8dba0ebe7",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_string_compare.cpp",
+      "bytes": 2213,
+      "sha256": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string_compare.cpp",
+      "worker_blob": "010bb33259d76124d2cd71ae8b5599409eb281e2",
+      "current_main_blob": "010bb33259d76124d2cd71ae8b5599409eb281e2",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string.cpp",
+      "worker_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "current_main_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_string.hpp",
+      "worker_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "current_main_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string_pool_storage.cpp",
+      "worker_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "current_main_blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_string_pool_storage.hpp",
+      "worker_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "current_main_blob": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 235,
+      "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/game_native_string_process.cpp",
+      "worker_blob": "94b98bfc31ac432ae78393f5c9b1b47cf0f5e250",
+      "current_main_blob": "94b98bfc31ac432ae78393f5c9b1b47cf0f5e250",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 1513,
+      "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/game_native_string_process.hpp",
+      "worker_blob": "cbe3716ba88082d816f1fc6e393a088c3fecf515",
+      "current_main_blob": "cbe3716ba88082d816f1fc6e393a088c3fecf515",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_scene_property_bag_storage.cpp",
+      "bytes": 2117,
+      "sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_scene_property_bag_storage.cpp",
+      "worker_blob": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+      "current_main_blob": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_scene_property_bag_storage.hpp",
+      "bytes": 1308,
+      "sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_scene_property_bag_storage.hpp",
+      "worker_blob": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+      "current_main_blob": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_enum_node_pool.cpp",
+      "bytes": 11048,
+      "sha256": "82e2de5742d4a5a361c02d5280bfa09e06b5ceca13dd1d99def33a3f337c65e6",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/native_enum_node_pool.cpp",
+      "worker_blob": "dca364e21b6796d3bd20ef83d237c19c829765bd",
+      "current_main_blob": "dca364e21b6796d3bd20ef83d237c19c829765bd",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_enum_node_pool.hpp",
+      "bytes": 3553,
+      "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_enum_node_pool.hpp",
+      "worker_blob": "5e7f1ea0e6f44ce8f3b492b3a59b173f2cd56994",
+      "current_main_blob": "5e7f1ea0e6f44ce8f3b492b3a59b173f2cd56994",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/allocator_list.cpp",
+      "worker_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "current_main_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/allocator_list.hpp",
+      "worker_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "current_main_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/singleton_lifetime.cpp",
+      "worker_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "current_main_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/singleton_lifetime.hpp",
+      "worker_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "current_main_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/game_native_physical_pool.cpp",
+      "bytes": 1851,
+      "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/src/game_native_physical_pool.cpp",
+      "worker_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "current_main_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "bytes": 2268,
+      "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/game_native_physical_pool.hpp",
+      "worker_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "current_main_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/cc12_property_key_hash_source.json",
+      "bytes": 16723,
+      "sha256": "3bae46d7e4b6cf146017dea4930c72540b75ede1e5095c1581f313e32cde12df",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_key_hash_source.json",
+      "worker_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "current_main_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/cc12_property_record_pool_static_source.json",
+      "bytes": 126338,
+      "sha256": "285331d6d8311748407389e03206ea4f1b97a9bc97974fe49cbc78c03da8cfc2",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_record_pool_static_source.json",
+      "worker_blob": "c802c8471b4bff254dbb8ff888ef240dcef15da8",
+      "current_main_blob": "7cdcfb7607bbb2474c176f98b4e8784603c910a3",
+      "worker_equal_current_main": false
+    },
+    {
+      "path": "reports/native_enum_dictionary_lookup_cc11.json",
+      "bytes": 38896,
+      "sha256": "92c7ce50f16afbc407550ba1eb80385f3ad39b89dd8a8ac5518af279ca7ac121",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/reports/native_enum_dictionary_lookup_cc11.json",
+      "worker_blob": "b6846fc3e6580e2e73226fa20f7e0bc920085f90",
+      "current_main_blob": "b6846fc3e6580e2e73226fa20f7e0bc920085f90",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/cc12_property_insertion_readiness.json",
+      "bytes": 23390,
+      "sha256": "01d97619ae5fea5d7547065e810036f623e2e9533a7eb746d0da9fd6377ca0e8",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_insertion_readiness.json",
+      "worker_blob": "69d50d565edeefed948fa56796d985428a81335c",
+      "current_main_blob": "69d50d565edeefed948fa56796d985428a81335c",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+      "bytes": 4993,
+      "sha256": "23c6930847c6c2b5855c8f07a3b64883283659cd173f18355fb7582193e0b21a",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_lua_script_overrides.obj",
+      "bytes": 8036,
+      "sha256": "5d9c36889548574ddb6eabf4ecf57182c6b62321a4f6067ff9b72b904f42c346",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_lua_script_overrides.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/entity_identity.obj",
+      "bytes": 40855,
+      "sha256": "a85a7c0425f578780e665cd5790077249c769be6786c163939d44fe25014726b",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/entity_identity.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+      "bytes": 18822,
+      "sha256": "df9f762982d23f39bf6ef4a0851bebfb9e17b5fda4acb077440ad5234bf8c2b2",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_string.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "bytes": 9151,
+      "sha256": "55c6a403bd54a7c56a9c51df05244abf6d6fa01d5953a0120ef2ecd6e4a36e5a",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_string_pool_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+      "bytes": 811,
+      "sha256": "7c0c88296c2e8a75c82b41947e70a9492ec10b64bcd31cfe7b70cfb9e6954daf",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+      "bytes": 9651,
+      "sha256": "7bbdedbd0b675a5bfa709e647d8a610fbd3a09726e9385f61717e6b6773aac91",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/external/actual_Win32_ucrtbase.dll",
+      "kind": "current actual CRT binary/SDK source identity, no SDK execution"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\stricmp.cpp",
+      "bytes": 3787,
+      "sha256": "c305a4ad6c98d98b1458a2af50f955abd314f1ae282c8b1ec0aba534c274f1f2",
+      "frozen_copy_path": "local/cc12_property_key_lookup_readiness/frozen/external/current_UCRT_stricmp.cpp",
+      "kind": "current actual CRT binary/SDK source identity, no SDK execution"
+    }
+  ],
+  "identity_vs_physical_copy": "36 selected relevant Source/report/object/CRT inputs have retained byte copies and explicit frozen_copy_path. Complete code/data bins/exports are retained separately. Full production archives are not claimed physically copied by this audit.",
+  "prior_native_producer_pins": [
+    {
+      "entry": "008F33F0",
+      "bytes": 155,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc",
+      "prior_complete_native_producer_reused_installed_PE_rechecked": true
+    },
+    {
+      "entry": "008F28F0",
+      "bytes": 172,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878",
+      "prior_complete_native_producer_reused_installed_PE_rechecked": true
+    }
+  ],
+  "prior_qualified_ASCII_provider": {
+    "entry": "00BF7EB7",
+    "end_exclusive": "00BF7EEC",
+    "bytes": 53,
+    "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086",
+    "live_disk_equal": true
+  },
+  "checks": {
+    "whole_PE_live_saved_bytes": "PASS_7_RANGES; whole105B48 lookup and bounded direct bodies13B5/80B32/89B39",
+    "current_qualified_hash_COFF_identity": "PASS_92B41_d89cecf9",
+    "physical_input_copies": "PASS_36_IDENTICAL",
+    "Original_call_rows": "PASS_8_CHECKED_0_FAILED",
+    "Source_native_SDK_game_execution": "NOT_EXECUTED",
+    "physical_copies_pre_post": "PASS_36_SOURCE_OBJECT_CRT_COPIES_WITH_PATHS"
+  },
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\local\\cc12_property_key_lookup_readiness",
+  "evidence_artifacts": [
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00419ca0.bin",
+      "bytes": 13,
+      "sha256": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00419ca0_assembly.txt",
+      "bytes": 134,
+      "sha256": "77b08bd20c7c1ca197c2570b5d5f9e057bce3c8f42cca6395fcfc34460fa596b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00419ca0_decompiled.c",
+      "bytes": 543,
+      "sha256": "90316a086d6e904bd28d652f6929faa5be09b8fead2998c3c89914b80fc02c69"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00419ca0_metadata.json",
+      "bytes": 210,
+      "sha256": "02f0e5d7c8fdfc6c9d321aae2ea5fbba199b502fa127915b40b0d54ededd30d9"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00419ca0_saved_bytes.txt",
+      "bytes": 65,
+      "sha256": "518e0ffae14bcb446e84fa745cd7a9b6d4dbc5b03066321833b7c599e0d19d65"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b760.bin",
+      "bytes": 89,
+      "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b760_assembly.txt",
+      "bytes": 943,
+      "sha256": "6e833697f935f4f281d631a7149815bb3c7194ece4b50702fda8550b58ce5af4"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b760_decompiled.c",
+      "bytes": 1208,
+      "sha256": "5fabbdfaba8439fef66121721facb960648d5672c602aed41a519bab4047f584"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b760_metadata.json",
+      "bytes": 311,
+      "sha256": "5ed3f7e2875de80b415f29de3c794be8558606700185793a303aa605e3a8d9b6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b760_saved_bytes.txt",
+      "bytes": 434,
+      "sha256": "8614e775922f8d93a8f80877ac311b2507a5c284518704e047e61bde80fd4d38"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b8b0.bin",
+      "bytes": 105,
+      "sha256": "be85d862f57d3ffbcd558f9e00282d6aa313ec36b7b069afb9e50a128b465145"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b8b0_assembly.txt",
+      "bytes": 1226,
+      "sha256": "2f18faebc9267217d0bc5b071e6e43bb005e81d45d7a5ba070e2fb8eda412a5b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b8b0_decompiled.c",
+      "bytes": 852,
+      "sha256": "86fe70e57a30bae8acb9903c0722cbcb5dc57099103eb65e950a4ba4e5e6252a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b8b0_metadata.json",
+      "bytes": 210,
+      "sha256": "d45cb486c4345cd70f955a0d16ce5687f147165c7676df5e514e6f8a3d983494"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0043b8b0_saved_bytes.txt",
+      "bytes": 511,
+      "sha256": "17f41cae45df11a74f5eefa8e8bc880f2734de691042b99717b1ee30a42c435b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/008f28f0_prior_producer.bin",
+      "bytes": 172,
+      "sha256": "352616a3d3506a800c42a875c8ea4d86ccdeb788250d77a8dcec8abee5520878"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/008f33f0_prior_producer.bin",
+      "bytes": 155,
+      "sha256": "546af6bc24638da2025274f378467e5e8ef4be515a2e80b0892b4ddc653cdffc"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7eb7_prior_qualified_ASCII.bin",
+      "bytes": 53,
+      "sha256": "7e5823046cef634a0ef6fed149abc1c7db3f092b8af301b9397e15696e25c086"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7fbf.bin",
+      "bytes": 80,
+      "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7fbf_assembly.txt",
+      "bytes": 820,
+      "sha256": "df8c9b90fef8916839e94fd5823bff71aed9c8e9ee619c2498d40aaa64751600"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7fbf_decompiled.c",
+      "bytes": 574,
+      "sha256": "5574a54ac107d93987eea93d424b315de60b347a12de6fafae8f2cf7bea63658"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7fbf_metadata.json",
+      "bytes": 207,
+      "sha256": "8a1285b384416341d69d761b31055f11ccc5fa48e05eee9b82a59867643bc2e3"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00bf7fbf_saved_bytes.txt",
+      "bytes": 385,
+      "sha256": "92f8a1cf2f76d4323997c6d146cfec50dc97fe645189c9ecec64618a86493ad6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00e17654.bin",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00e17654_saved_bytes.txt",
+      "bytes": 17,
+      "sha256": "06888dee8d642324d143be4afd6f6a7d3344a4a47ebd5a2201b56c06defcc3e2"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00e177e4.bin",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/00e177e4_saved_bytes.txt",
+      "bytes": 17,
+      "sha256": "a9814a102aec544a4a21f2b27d744c32bdcdc9719461f159fe1939e16588353e"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0109de1c.bin",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/0109de1c_saved_bytes.txt",
+      "bytes": 29,
+      "sha256": "32b5bc730a696e962799429a18cae1e26a7ee2ab3eb22a1f09471eae6609cbc6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/commit_message.txt",
+      "bytes": 495,
+      "sha256": "04aa2d1b2014b7c57169da2d1388a9e1f138527b49d8326643ea04aa4bd76f40"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/compare_insensitive_00438e10_current_coff.bin",
+      "bytes": 50,
+      "sha256": "528daa15c701db36f19e2f3a536ae52997372e1ef7537a1dfcd001175e54bb43"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/current_object_inspection.log",
+      "bytes": 544,
+      "sha256": "45ff603a645a6e99c1333fff8a9d24f2a25004f436bcef5c8bea201dc24b43c6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/current_provider_COFF_receipt.json",
+      "bytes": 4303,
+      "sha256": "effafee33d6bcee80f4eb79f0a85ad5fb6439b4ac24d942d794c6d6aa0447e0b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/final_validation_receipt.json",
+      "bytes": 472,
+      "sha256": "fa89ad989bc605fc99327ecf888a5fa8b1e6a6f4e8ac9855e1e3dd7c9ed9eac6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/finalize_audit.py",
+      "bytes": 2668,
+      "sha256": "11ba3fe9603412801041292cc173bb14c13bc7544d96caa5318a3064a8d71517"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/freeze_evidence.log",
+      "bytes": 203,
+      "sha256": "77f89928a4e9d2f6af40142a2627b7a5a5e7ffd65a4225c3063ceb96fedbb958"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/freeze_evidence.py",
+      "bytes": 8457,
+      "sha256": "e2cf492cdb93e4bc77d9c67c6c556ee2751171c06b13cca15f41dd3e5e37ba1b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/freeze_evidence_failure_1.log",
+      "bytes": 352,
+      "sha256": "6e1b9102de82e790ed89369ffb22c4c0264cf1a7506ed619b3db211adcc1e39c"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/entity_identity.obj",
+      "bytes": 40855,
+      "sha256": "a85a7c0425f578780e665cd5790077249c769be6786c163939d44fe25014726b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_enum_dictionary_lookup.obj",
+      "bytes": 4993,
+      "sha256": "23c6930847c6c2b5855c8f07a3b64883283659cd173f18355fb7582193e0b21a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_enum_node_pool.obj",
+      "bytes": 9651,
+      "sha256": "7bbdedbd0b675a5bfa709e647d8a610fbd3a09726e9385f61717e6b6773aac91"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_lua_script_overrides.obj",
+      "bytes": 8036,
+      "sha256": "5d9c36889548574ddb6eabf4ecf57182c6b62321a4f6067ff9b72b904f42c346"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_scene_property_bag_storage.obj",
+      "bytes": 811,
+      "sha256": "7c0c88296c2e8a75c82b41947e70a9492ec10b64bcd31cfe7b70cfb9e6954daf"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_string.obj",
+      "bytes": 18822,
+      "sha256": "df9f762982d23f39bf6ef4a0851bebfb9e17b5fda4acb077440ad5234bf8c2b2"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "bytes": 9151,
+      "sha256": "55c6a403bd54a7c56a9c51df05244abf6d6fa01d5953a0120ef2ecd6e4a36e5a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/external/actual_Win32_ucrtbase.dll",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/external/current_UCRT_stricmp.cpp",
+      "bytes": 3787,
+      "sha256": "c305a4ad6c98d98b1458a2af50f955abd314f1ae282c8b1ec0aba534c274f1f2"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/entity_identity.hpp",
+      "bytes": 12117,
+      "sha256": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/game_native_physical_pool.hpp",
+      "bytes": 2268,
+      "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/game_native_string_process.hpp",
+      "bytes": 1513,
+      "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 2723,
+      "sha256": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_enum_node_pool.hpp",
+      "bytes": 3553,
+      "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_lua_script_overrides.hpp",
+      "bytes": 1467,
+      "sha256": "5b6ff12e3b560ad2b417eb69e631f9f15e0f5921da3deb5d746447198bf3871e"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_scene_property_bag_storage.hpp",
+      "bytes": 1308,
+      "sha256": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_insertion_readiness.json",
+      "bytes": 23390,
+      "sha256": "01d97619ae5fea5d7547065e810036f623e2e9533a7eb746d0da9fd6377ca0e8"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_key_hash_source.json",
+      "bytes": 16723,
+      "sha256": "3bae46d7e4b6cf146017dea4930c72540b75ede1e5095c1581f313e32cde12df"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/reports/cc12_property_record_pool_static_source.json",
+      "bytes": 126338,
+      "sha256": "285331d6d8311748407389e03206ea4f1b97a9bc97974fe49cbc78c03da8cfc2"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/reports/native_enum_dictionary_lookup_cc11.json",
+      "bytes": 38896,
+      "sha256": "92c7ce50f16afbc407550ba1eb80385f3ad39b89dd8a8ac5518af279ca7ac121"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/entity_identity.cpp",
+      "bytes": 12455,
+      "sha256": "886aef959411a02bae273bb3dcb541eaded80a3fce27a8184e7882afe6bfd0a9"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/game_native_physical_pool.cpp",
+      "bytes": 1851,
+      "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/game_native_string_process.cpp",
+      "bytes": 235,
+      "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_enum_dictionary_lookup.cpp",
+      "bytes": 3557,
+      "sha256": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_enum_node_pool.cpp",
+      "bytes": 11048,
+      "sha256": "82e2de5742d4a5a361c02d5280bfa09e06b5ceca13dd1d99def33a3f337c65e6"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_lua_script_overrides.cpp",
+      "bytes": 5273,
+      "sha256": "e88f7dce14f48c8cdc7d461938ce2a863e81583f91dc2ce4bef18332d0501cbe"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_scene_property_bag_storage.cpp",
+      "bytes": 2117,
+      "sha256": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string_compare.cpp",
+      "bytes": 2213,
+      "sha256": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen/src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/frozen_input_receipt.json",
+      "bytes": 24589,
+      "sha256": "98321d77bb4b1c22a82cbc424ce50f11a73b2b239bd209bf3bcef05dfd4d92a4"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/inspect_current_objects.py",
+      "bytes": 3393,
+      "sha256": "940179b59f51e185c41475261e90bcbdf6ddd5e0b01996db0f67928caee2dd9d"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/live_prototypes.txt",
+      "bytes": 400,
+      "sha256": "19e2051cf6efcd0a01aa6163cab8657033a18b9bc133f5f0b358c6b82f6ae80f"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/native_property_key_bucket_0043b760_current_coff.bin",
+      "bytes": 92,
+      "sha256": "d89cecf96d61a9830c0f28dd63a921e571e4782dd9e29d4a3b4ab15f280b236a"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/native_string_data_or_00419ca0_current_coff.bin",
+      "bytes": 19,
+      "sha256": "7987cbe66bf0db6cede2de2f97005016134ba6879a5a59b609b0aa402d829ee1"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/Original_call_row_validation.txt",
+      "bytes": 80,
+      "sha256": "7e9e8dc331f8d4c474bea632605f9b5e950af19651bf2dcf6391c3216bd82dfe"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/prior_verified_insertion_listing.txt",
+      "bytes": 1874,
+      "sha256": "68a13a021c80d405e2205c77453bd68224ebf9f05b6190dc686b9884fe742d6b"
+    },
+    {
+      "path": "local/cc12_property_key_lookup_readiness/write_audit.py",
+      "bytes": 23060,
+      "sha256": "b754edece9a4cfc026db9dec304fe1e2b92f4e19d7fbf97867a21027e0004b25"
+    }
+  ],
+  "final_validation": {
+    "UTC": "2026-10-08T10:12:44.673162+00:00",
+    "physical_copies_current_bytes_and_worker_blobs_unchanged": 36,
+    "Original_full_PE_and_seven_ranges_unchanged": true,
+    "prior_whole_native_producer_rehash": 2,
+    "Original_transfer_rows": "8 PASS",
+    "current_property_hash_COFF": "qualified92B41_sha_unchanged",
+    "Source_native_SDK_game_execution": false,
+    "Source_changes": false,
+    "Ghidra_mutations": false,
+    "full_archive_physical_copy_claim": false
+  }
+}
