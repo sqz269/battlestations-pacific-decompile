@@ -1,0 +1,417 @@
+{
+  "packet": "cc12_intrusive_chain_unlink_signed_guard",
+  "status": "SOURCE_GUARD_CORRECTED_NORMAL_WIN32_EXISTING_CHECKS_PASS",
+  "Native_whole_bodies": [
+    {
+      "address": "00903f30",
+      "bytes": 83,
+      "instructions": 29,
+      "sha256": "1eb60de632316963b95f9385620d97fe53bb5188cd20ac3cc593f988489e4dc4",
+      "instructions_complete": [
+        {
+          "address": "00903f30",
+          "hex": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00903f34",
+          "hex": "8b5034",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x34]"
+        },
+        {
+          "address": "00903f37",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00903f39",
+          "hex": "750b",
+          "mnemonic": "jne",
+          "operands": "0x903f46"
+        },
+        {
+          "address": "00903f3b",
+          "hex": "395038",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [eax + 0x38], edx"
+        },
+        {
+          "address": "00903f3e",
+          "hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0x903f46"
+        },
+        {
+          "address": "00903f40",
+          "hex": "83790801",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 8], 1"
+        },
+        {
+          "address": "00903f44",
+          "hex": "7f3a",
+          "mnemonic": "jg",
+          "operands": "0x903f80"
+        },
+        {
+          "address": "00903f46",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00903f48",
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00903f49",
+          "hex": "7408",
+          "mnemonic": "je",
+          "operands": "0x903f53"
+        },
+        {
+          "address": "00903f4b",
+          "hex": "8b7838",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax + 0x38]"
+        },
+        {
+          "address": "00903f4e",
+          "hex": "897a38",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 0x38], edi"
+        },
+        {
+          "address": "00903f51",
+          "hex": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x903f58"
+        },
+        {
+          "address": "00903f53",
+          "hex": "8b5038",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x38]"
+        },
+        {
+          "address": "00903f56",
+          "hex": "8911",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], edx"
+        },
+        {
+          "address": "00903f58",
+          "hex": "8b5038",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x38]"
+        },
+        {
+          "address": "00903f5b",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00903f5d",
+          "hex": "7408",
+          "mnemonic": "je",
+          "operands": "0x903f67"
+        },
+        {
+          "address": "00903f5f",
+          "hex": "8b7834",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax + 0x34]"
+        },
+        {
+          "address": "00903f62",
+          "hex": "897a34",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 0x34], edi"
+        },
+        {
+          "address": "00903f65",
+          "hex": "eb06",
+          "mnemonic": "jmp",
+          "operands": "0x903f6d"
+        },
+        {
+          "address": "00903f67",
+          "hex": "8b5034",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x34]"
+        },
+        {
+          "address": "00903f6a",
+          "hex": "895104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], edx"
+        },
+        {
+          "address": "00903f6d",
+          "hex": "c7403800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x38], 0"
+        },
+        {
+          "address": "00903f74",
+          "hex": "c7403400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x34], 0"
+        },
+        {
+          "address": "00903f7b",
+          "hex": "834108ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 8], -1"
+        },
+        {
+          "address": "00903f7f",
+          "hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00903f80",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "address": "00924710",
+      "bytes": 83,
+      "instructions": 29,
+      "sha256": "5662da33dd4d146824cdadff4440b6b95f0c20d14d1293674b9bff17bfbe6d31",
+      "instructions_complete": [
+        {
+          "address": "00924710",
+          "hex": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00924714",
+          "hex": "8b5040",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x40]"
+        },
+        {
+          "address": "00924717",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00924719",
+          "hex": "750b",
+          "mnemonic": "jne",
+          "operands": "0x924726"
+        },
+        {
+          "address": "0092471b",
+          "hex": "395044",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [eax + 0x44], edx"
+        },
+        {
+          "address": "0092471e",
+          "hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0x924726"
+        },
+        {
+          "address": "00924720",
+          "hex": "83790801",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 8], 1"
+        },
+        {
+          "address": "00924724",
+          "hex": "7f3a",
+          "mnemonic": "jg",
+          "operands": "0x924760"
+        },
+        {
+          "address": "00924726",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00924728",
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00924729",
+          "hex": "7408",
+          "mnemonic": "je",
+          "operands": "0x924733"
+        },
+        {
+          "address": "0092472b",
+          "hex": "8b7844",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax + 0x44]"
+        },
+        {
+          "address": "0092472e",
+          "hex": "897a44",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 0x44], edi"
+        },
+        {
+          "address": "00924731",
+          "hex": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x924738"
+        },
+        {
+          "address": "00924733",
+          "hex": "8b5044",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x44]"
+        },
+        {
+          "address": "00924736",
+          "hex": "8911",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], edx"
+        },
+        {
+          "address": "00924738",
+          "hex": "8b5044",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x44]"
+        },
+        {
+          "address": "0092473b",
+          "hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "0092473d",
+          "hex": "7408",
+          "mnemonic": "je",
+          "operands": "0x924747"
+        },
+        {
+          "address": "0092473f",
+          "hex": "8b7840",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax + 0x40]"
+        },
+        {
+          "address": "00924742",
+          "hex": "897a40",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 0x40], edi"
+        },
+        {
+          "address": "00924745",
+          "hex": "eb06",
+          "mnemonic": "jmp",
+          "operands": "0x92474d"
+        },
+        {
+          "address": "00924747",
+          "hex": "8b5040",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x40]"
+        },
+        {
+          "address": "0092474a",
+          "hex": "895104",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 4], edx"
+        },
+        {
+          "address": "0092474d",
+          "hex": "c7404400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x44], 0"
+        },
+        {
+          "address": "00924754",
+          "hex": "c7404000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x40], 0"
+        },
+        {
+          "address": "0092475b",
+          "hex": "834108ff",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 8], -1"
+        },
+        {
+          "address": "0092475f",
+          "hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00924760",
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    }
+  ],
+  "Source": "src/entity_lifecycle_tails.cpp",
+  "Source_interface": "existing vector/handle bounds-admitted ordinary interface",
+  "correction": "Both links0 and signed count>1 skips; count1 still unlinks.",
+  "Source_receipt": {
+    "path": "local/cc12_intrusive_chain_unlink_signed_guard/receipt.json",
+    "bytes": 79283,
+    "sha256": "ccb4043472c2810973c7cfd39352996b5d69df4ae1d5aa5b1dbd4ca31b5d5400"
+  },
+  "validation": {
+    "normal_Win32_build": true,
+    "all_three_existing_checks": true,
+    "new_regression_cases": 1,
+    "actual_consumed_preimages_equal": 469,
+    "current_complete_COFF_extents": 180,
+    "other_old_extents_unchanged": 179,
+    "current_whole_changed_extent_bytes": 113,
+    "unique_Core_members": 1
+  },
+  "credit": {
+    "new_reconstructed_functions": 0,
+    "new_fragments": 0,
+    "new_names": 0,
+    "existing_name_evidence_appends": 2
+  },
+  "qualification": "Corrects already-counted semantic Source guard and stale Native commentary. No raw producer, Original class/RET4 ABI replacement, selected Native unlink execution, startup or gameplay proof.",
+  "artifact_manifest": {
+    "path": "local/cc12_intrusive_chain_unlink_signed_guard/artifact_manifest.json",
+    "bytes": 88275,
+    "sha256": "bd886616e66165d09745580bb1209a9b26e6339d124dfd8b210ba99e25b44cf4",
+    "file_count": 506
+  },
+  "annotation": {
+    "addresses": [
+      "00903F30",
+      "00924710"
+    ],
+    "old_values": "local/ghidra-annotations-20261008T212659Z.json",
+    "saved_project": true,
+    "names_preserved": true,
+    "old_comments_preserved_with_explicit_corrective_evidence": true,
+    "affected_exports_refreshed": true
+  },
+  "mechanical_call_verifier": {
+    "checked_rows": 0,
+    "failed_rows": 0,
+    "qualification": "These two Native bodies have no calls; exact whole bytes/listings and signed branches independently inspected."
+  }
+}

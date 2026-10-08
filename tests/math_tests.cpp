@@ -3047,6 +3047,14 @@ int main() {
     }
 
     {
+        // 00903F44 / 00924724 are signed JG, so a sole live node must be removed
+        // even though its previous and next links are both zero.
+        bsp::IntrusiveChain singleton{1, 1, 1};
+        std::vector<bsp::IntrusiveChainNode> singleton_nodes(2);
+        bsp::chain_unlink_00903f30(singleton, 1, singleton_nodes);
+        check(singleton.first == 0 && singleton.last == 0 && singleton.count == 0,
+            "00903F44: unlinking the sole node empties the chain");
+
         // 00925825: the world+0Ch unit list is only left from the parentless
         // branch of 00925780, so a child entity never reaches 004845A0 however
         // large its +B8h counter is.

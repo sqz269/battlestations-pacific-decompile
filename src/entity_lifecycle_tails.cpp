@@ -97,15 +97,15 @@ std::vector<EntityReleaseStep> entity_release_steps_006fe570(const EntityRelease
 }
 
 // 00903F30 and 00924710 are the same body over two link pairs. The early-out at
-// 00903F40 only fires when the node is already detached on both sides AND the chain
-// holds at most one entry, so it is a guard on the count, not on the node.
+// 00903F40 CMP count,1 followed by signed JG skips a linkless node only when
+// count > 1. A sole live node has both links zero and still must be removed.
 void chain_unlink_00903f30(IntrusiveChain& chain, std::size_t node,
                            std::vector<IntrusiveChainNode>& nodes) noexcept {
     if (node == 0 || node >= nodes.size()) {
         return;
     }
     IntrusiveChainNode& self = nodes[node];
-    if (self.prev == 0 && self.next == 0 && chain.count <= 1) {
+    if (self.prev == 0 && self.next == 0 && chain.count > 1) {
         return;  // 00903F39 / 00903F3E / 00903F44
     }
     if (self.prev != 0) {

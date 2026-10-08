@@ -15,6 +15,11 @@ public:
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
     ActualNativeStringPoolStorage& strings() noexcept { return strings_; }
+    // Distinct permanent Source authorities for the two Original initial-NUL
+    // roles. Only const pointers escape; Original's writable .data is not
+    // claimed universally immutable. Shader E17654 borrowers use this SAME byte.
+    const char* property_empty_00e177e4() const noexcept;
+    const char* query_empty_00e17654() const noexcept;
 private:
     friend GameNativeStringProcess& game_native_string_process();
     GameNativeStringProcess() noexcept = default;
@@ -23,6 +28,9 @@ private:
     volatile std::uint32_t disabled_{};
     NativeStringRawPoolContext raw_{pool_, disabled_, manager_};
     ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};
+    // Append after every established publication/context/storage field.
+    const char property_empty_00e177e4_{};
+    const char query_empty_00e17654_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

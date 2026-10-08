@@ -45,6 +45,14 @@ Step 7's gate is the counter `009245A0` maintains: it adds to `entity+B4h`/`+B8h
 chain and calls `BSP_UnitList_PushBack` on the `0` -> non-zero edge and `004845A0` on the
 non-zero -> `0` edge, so `+B8h` **is** the membership flag for the `world+0Ch` list.
 
+The two intrusive unlink bodies skip a linkless node only when the **signed**
+count is greater than one (`00903F40` CMP1 / `00903F44` JG, mirrored at
+`00924720` / `00924724`). A live singleton has both links zero and count one;
+it still clears first/last and decrements count. The existing handle/vector
+Source guard was reversed and is corrected in the CC12 follow-up. This
+interface preserves its Source handle bounds checks and does not establish
+actual raw entity/world ownership or Native pointer-layout compatibility.
+
 Step 11 is the single step that undoes the objective-set and marker-manager registrations of
 section 4 and the recon-slot pairs of `docs/RECON_SLOT_LISTS.md` (`00805240 BSP_Recon_DestroySlot`
 calls the same `00695760`). No consumer has to unregister itself.
