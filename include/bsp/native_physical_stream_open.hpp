@@ -85,6 +85,16 @@ std::int32_t __fastcall raw_seek_native_physical_stream_00bf4f20(
     void* actual_backing, std::uint32_t unused_edx, std::uint32_t distance_low,
     std::uint32_t distance_high, std::uint32_t origin) noexcept;
 
+// Complete raw cached-value leaves: ECX actual stable backing, unused incoming
+// EDX, EDX:EAX current field bits, plain RET. ECX remains the backing address.
+// BF4F40 reads position +10h/+14h; BF4F90 reads cached size +18h/+1Ch.
+// No writes, HANDLE use, OS query or size refresh. These memory-domain entries
+// admit no Source class, vtable, reference-count lifetime or substream dispatch.
+std::uint64_t __fastcall raw_position_native_physical_stream_00bf4f40(
+    const void* actual_backing, std::uint32_t unused_edx) noexcept;
+std::uint64_t __fastcall raw_size_native_physical_stream_00bf4f90(
+    const void* actual_backing, std::uint32_t unused_edx) noexcept;
+
 std::uint64_t size_native_physical_stream_00bf4f90(const void*) noexcept;
 // Complete raw BF4FA0 provider: ECX actual backing; unused incoming EDX;
 // one unused stack DWORD; RET4. GetFileSize returns low DWORD in EAX and
