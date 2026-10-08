@@ -3245,5 +3245,145 @@
     "rows": 1,
     "log": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_enum_map_lifetime\\run01\\native_call_verification.log",
     "sha256": "61b760b8adba545daebd10ddfc59eee7d16bb4fe955ea7aa3071b2455ffdca2a"
+  },
+  "primary_integration": {
+    "source_revision": "c329ab3850106b34a6895969aecead5754b33e20",
+    "build_source_revision": "dd9061fc549414cdf8d4123087561dc1707e0e79",
+    "build_context_relation": "Later revision registers metadata only; compiled Source is unchanged.",
+    "worker_revision": "aaca7205ef04db1490e5a03fe05702bb2b0c85d5",
+    "component_revision": "dd9061fc549414cdf8d4123087561dc1707e0e79",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_base_map_group_integrated_build.log",
+    "build_log_sha256": "104be54d6e1d12720b918dae7c14d047409d3f4facae6e127aff666fca20b287",
+    "current_core_sha256": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+    "independent_component_manifest": "local/cc11_enum_map_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "6c2835c515c12c805eb1b9c40902a7ed172901a97b79e09701311539ce9c7604",
+    "fresh_translation_units": 17,
+    "actual_headers": 300,
+    "actual_searched_libraries": 19,
+    "selected_tool_backend_files": 4,
+    "stable_worker_paths": 5796,
+    "whole_Source_COFF": [
+      {
+        "symbol": "?initialize_native_cenum_table_map_storage_004ba130@bsp@@YIPAXPAX@Z",
+        "bytes": 32,
+        "instruction_count": 11,
+        "sha256": "6efac5e16e91c5d85e690df8e419911921ae393da2330283029d3800fcad590c",
+        "relocations": []
+      },
+      {
+        "symbol": "?initialize_native_scene_enum_registry_storage_004d25f0@bsp@@YIPAXPAX@Z",
+        "bytes": 39,
+        "instruction_count": 12,
+        "sha256": "ad7488b38a3620ca79f73bf668d48aee90e717b6faf54de8e44ce52768b0552f",
+        "relocations": []
+      },
+      {
+        "symbol": "?destroy_native_cenum_table_map_004d0ea0@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 15,
+        "instruction_count": 3,
+        "sha256": "083d3204b768659fc40d75fd33855a178242be1625b798adba6867702eb0b1e8",
+        "relocations": [
+          {
+            "offset": 11,
+            "type": 20,
+            "target": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?destroy_native_scene_enum_registry_008f4f00@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 90,
+        "instruction_count": 26,
+        "sha256": "f90a5b4129f6ff4547dbd759b07f7578383c8cfba53409215253936799957bb2",
+        "relocations": [
+          {
+            "offset": 43,
+            "type": 20,
+            "target": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 81,
+            "type": 20,
+            "target": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?clear_native_cenum_table_map_004d0760@bsp@@YAXPAX00AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 231,
+        "instruction_count": 71,
+        "sha256": "a154df18edd88461f56cc763fb874f2fda3f5b5fed6956d1b86624c37f2cc40a",
+        "relocations": [
+          {
+            "offset": 117,
+            "type": 20,
+            "target": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 144,
+            "type": 20,
+            "target": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 154,
+            "type": 20,
+            "target": "?return_native_enum_node_0043b0a0@bsp@@YAXPAX0@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?delete_native_scene_enum_owner_008f59c0@bsp@@YAIPAXI0AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 42,
+        "instruction_count": 15,
+        "sha256": "a5ec9ede5993584a892639fe4fd29c80ff82111be43c7dee0a7ba48290dfc615",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "target": "?destroy_native_scene_enum_owner_008f4e70@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 31,
+            "type": 20,
+            "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    ],
+    "execution_output": "PASS two genuine registries/22+6 installed/colliding nonnull-null+empty/whole39 perroot/whole32 cleared interior/clear twice/B intact/fresh reinsert/mapA ordinary/registryB ordinary/real lifecycle\n",
+    "current_link_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    "native_call_verification_log": "local/cc11_base_map_group_native_calls.log",
+    "native_call_verification_log_sha256": "2015d990e8ddc76c74322b140cc445f010aa51729fd4732eab26218be463d0a6",
+    "source_bookends_stable": true,
+    "old_families_replayed": false,
+    "tracked_tests_added": 0,
+    "qualification": "Three complete bodies: Original 82 bytes / 25 instructions, Source 86 bytes / 26 instructions. The 32-byte map and 39-byte outer initializers are literal raw ECX entries with exact full bytes, preserved EDI, full EAX receiver identity, plain RET and DF0 REPSTOSD. One independent fresh 17-TU family executes Original32/39 versus Source on SAME genuine current-CRT 10C roots and the properly cleared interior map. Real installed 22+6 symbols, collision/null/empty keys, clear twice, fresh22 reinsertion, ordinary map A and ordinary registry B destruction, 50 symbol/five table slot returns and real pool shutdown pass. Source map ordinary destructor is complete 15-byte cdecl with a genuine direct tail to current clear; its extra pool/string context means it is not the native 11-byte ECX ABI, and Original11 is NEVER executed. No interior map free, fake phase provider or old-family replay. Native class, original allocation/private EH/historical heap, nested deleting4D0EB0, parent factory, global namespace, world and gameplay remain external.",
+    "raw_entry_ABI_checked": false,
+    "original_class_ABI_compatible": false,
+    "game_validated": false
+  },
+  "primary_source_status": "complete whole Source bodies integrated; independent current fixture and full Win32/all3 CTests PASS; native class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "prior_comments_and_names_preserved_in": "local/ghidra-annotations-20261008T033707Z.json",
+    "saved_project": true,
+    "ten_affected_exports_refreshed": true,
+    "snapshot_internal_functions": 64280,
+    "snapshot_total_functions": 64722,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T033707Z.json": "d4323c73963ff736e4266dd18c12fbd91fc5ae97b8112d2bb2da13472a7b144d",
+      "local/cc11_base_map_group_annotations.log": "21bae49eb1e27cc2a391a83cf3dd62a7e42a37e46d3144adbdb668d3e8e0af77",
+      "local/cc11_base_map_group_exports.log": "00088bf886b82211ce3ccd7132c04d5cdb11f2b4ed2861f445979c97371e85ad",
+      "local/cc11_base_map_group_snapshot.log": "e40d478f64865464936a71df40a863670ed9734968777b4be91c84a9ed93b1de"
+    }
   }
 }
