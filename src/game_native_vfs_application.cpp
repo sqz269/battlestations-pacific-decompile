@@ -70,6 +70,8 @@ struct GameNativeVfsApplication::Impl {
     std::unique_ptr<GameNativeVfsRuntime> vfs_runtime;
     bool initialization_attempted{};
     std::optional<int> pool_registration_status;
+    // Appended so the existing private field offsets remain unchanged.
+    bool core_initialization_completed{};
 
     Impl(GameHostLog& log, GameSingletonHost& host, GameNativeReadOnlyData& mapped,
         const std::filesystem::path& original_executable)
@@ -139,6 +141,7 @@ struct GameNativeVfsApplication::Impl {
         // cell/deletion domain before later procedural/sampler registration.
         auto services = vfs_runtime->borrow_raw_services();
         singleton_host.bind_resource_registry_domain(services.strings, services.invalid_parameters);
+        core_initialization_completed = true;
     }
 };
 
@@ -155,6 +158,13 @@ GameNativeVfsRuntime& GameNativeVfsApplication::runtime() {
     if (!impl_->vfs_runtime)
         throw std::logic_error("native VFS runtime has not been retained");
     return *impl_->vfs_runtime;
+}
+
+void* GameNativeVfsApplication::publish_and_borrow_raw_failure_manager() {
+    if (!impl_->core_initialization_completed) {
+        throw std::logic_error("native VFS application initialization has not completed");
+    }
+    return impl_->vfs_runtime->publish_and_borrow_raw_failure_manager();
 }
 
 NativeStringRawPoolContext& GameNativeVfsApplication::raw_strings() noexcept {

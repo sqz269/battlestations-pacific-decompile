@@ -38,6 +38,15 @@ public:
     // status does not mean that the native pool construction failed.
     void initialize_core();
     GameNativeVfsRuntime& runtime();
+    // Explicit opt-in after successful initialize_core(): publish the qualified
+    // raw C3 symbol only at the retained manager's +90, then borrow that owner.
+    // Normal startup keeps its Original identities. The caller serializes this
+    // operation and all uses against startup, publication/callback mutation and
+    // shutdown; finish every use before singleton_host.shutdown() begins. Keep
+    // this bundle, runtime, host, referenced data/services and code image alive
+    // through uses and the shared drain. The result owns nothing; no notifier,
+    // I/O, +18 store or fixed-address publication is performed by this method.
+    void* publish_and_borrow_raw_failure_manager();
     // Stable views of this application's existing raw string and VFS graph.
     // They create no publication, manager, provider or callback family. Keep
     // this application and GameSingletonHost alive through every consumer and

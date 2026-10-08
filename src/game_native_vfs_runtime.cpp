@@ -409,6 +409,27 @@ GameNativeVfsRuntime::~GameNativeVfsRuntime() = default;
 void* GameNativeVfsRuntime::actual_manager() const noexcept {
     return impl_->inputs.actual_vfs_storage_a0;
 }
+void* GameNativeVfsRuntime::publish_and_borrow_raw_failure_manager() {
+    if (!impl_->core_registered || impl_->retired) {
+        throw std::logic_error("Native VFS core is not available for a failure-manager borrow");
+    }
+    // One publication capture, under the caller's documented exclusive access.
+    // Check against this runtime's real retained allocation before owner reads.
+    void* const manager = impl_->inputs.owners.vfs_publication_0109ceec();
+    if (!manager || manager != impl_->inputs.actual_vfs_storage_a0) {
+        throw std::logic_error("Native VFS publication is not the retained manager");
+    }
+    const auto target = qualified_native_vfs_raw_failure_target();
+    const auto previous = word(manager, 0x90);
+    if ((previous != 0x00530620 && previous != target) ||
+            word(manager, 0x8c) != 0x00735b30) {
+        throw std::logic_error("Native VFS failure callback preimages are not the startup pair");
+    }
+    // The sole owner write. This changes neither the secondary callback nor
+    // +18/publication, and invokes neither callback nor the raw notifier.
+    put_word(manager, 0x90, static_cast<std::uint32_t>(target));
+    return manager;
+}
 GameNativeVfsRawServices GameNativeVfsRuntime::borrow_raw_services() noexcept {
     return {impl_->inputs.owners.vfs_publication_0109ceec(), impl_->bindings,
         impl_->name_resolution_context, impl_->date_context, impl_->open, impl_->conversion,

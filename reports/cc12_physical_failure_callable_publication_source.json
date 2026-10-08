@@ -1,0 +1,3292 @@
+{
+  "packet": "cc12_physical_failure_callable_publication_Source",
+  "status": "guarded_Source_opt_in_implemented_normal_build_three_checks_and_static_whole_body_proof_passed_unexecuted",
+  "baseline": "b70e66e21faaef8dec62c8463faaa287a277377d",
+  "scope": {
+    "owned_Source_and_header_files": [
+      "include/bsp/native_vfs_startup_callbacks.hpp",
+      "src/native_vfs_startup_callbacks.cpp",
+      "include/bsp/native_vfs_runtime_bindings.hpp",
+      "src/native_vfs_runtime_bindings.cpp",
+      "include/bsp/game_native_vfs_application.hpp",
+      "src/game_native_vfs_application.cpp",
+      "include/bsp/game_native_vfs_runtime.hpp",
+      "src/game_native_vfs_runtime.cpp"
+    ],
+    "new_tracked_documentation": [
+      "docs/CC12_PHYSICAL_FAILURE_CALLABLE_PUBLICATION_SOURCE.md",
+      "reports/cc12_physical_failure_callable_publication_source.json"
+    ],
+    "existing_Original_interior_store": "0073D642",
+    "additional_Original_function_credit": 0,
+    "Original_function_records": 0,
+    "new_tests": 0,
+    "new_feature_or_raw_entry_calls": 0,
+    "ad_hoc_probes_or_links": 0,
+    "Ghidra_writes": 0,
+    "CMake_or_ledger_or_packet_registry_edits": 0,
+    "accepted_design_and_owner_reports_edited": false,
+    "raw_entry_Source_and_header_edited": false
+  },
+  "implemented_contract": {
+    "public_application_API": "GameNativeVfsApplication::publish_and_borrow_raw_failure_manager returns only a non-owning manager pointer. It rejects unless new core_initialization_completed is true; that flag is set only after final bind_resource_registry_domain succeeds.",
+    "private_runtime_API": "GameNativeVfsRuntime counterpart is private, with GameNativeVfsApplication friendship. Existing runtime() cannot directly expose this publication API. Existing pre-core borrow_raw_services behavior is retained.",
+    "runtime_guards": "Reject !core_registered or retired before owner touch. Capture existing volatile publication once; reject null or unequal to retained inputs.actual_vfs_storage_a0. Qualify trusted raw symbol byte as C3. Require +90 either Original 00530620 or that exact symbol, and +8C Original 00735B30. Only then store that actual target at +90 and return captured owner.",
+    "idempotence": "Repeating opt-in with the same qualified target and unchanged secondary slot is allowed. No reverse-mode API, fallback, owner allocation, synthetic fixed global, +18 store, or callback/notifier invocation is performed by publication.",
+    "trusted_code_qualification": "qualified_native_vfs_raw_failure_target takes the declared raw_ignore_native_vfs_mount_failure_00530620 address, reads its single volatile byte, rejects non-C3 with logic_error and returns uintptr_t. MSVC Win32/four-byte pointers are required. It never dereferences a caller-supplied address.",
+    "finite_typed_dispatch": "invoke_native_vfs_startup_failure_target accepts literal 00530620 through the existing typed no-op and true. Otherwise only the exact raw symbol is qualified and called DIRECTLY by name, then true. Unknown values return false without dereference. Existing mount-specific invalid_argument and runtime unsupported diagnostics are unchanged.",
+    "default_route": "Normal startup still writes the two Original callback identities through two independent volatile publication reads. The identity helper branch remains a semantic no-op; its inlining does not create a raw register/flag ABI promise for typed C++ dispatch.",
+    "host_layout": "Completion bool appended at private application Impl+524h; host Impl allocation/deallocation size changes 524h->528h. The prior Impl constructor is otherwise byte/relocation-identical after one 7-byte bool-zero insertion. Existing fields retain their offsets; native manager allocation remains A0h.",
+    "lifetime": "Caller must serialize publication and all uses against startup/publication mutation/callback mutation/shutdown. Finish every borrowed use before GameSingletonHost.shutdown begins; retain application/runtime/host/data/services/readable executable code through use and shared drain. No lock, borrow counter, owned lease or new class lifetime is invented.",
+    "raw_ABI_boundary": "Raw C3 and 11-byte BD9E30 body remain exact. BD9E30 forwards independent EDX and discards a separate stack DWORD with RET4; no EDX/discard equality, +18 provenance, fixed 109CEEC or connected BF5030/read qualification is supplied by this Source adaptation."
+  },
+  "build": {
+    "command": [
+      "C:\\Program Files\\PowerShell\\7\\pwsh.EXE",
+      "-NoLogo",
+      "-NoProfile",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\scripts\\build.ps1",
+      "-Diagnostic"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries",
+    "started_utc": "2026-10-08T14:20:01.519005+00:00",
+    "finished_utc": "2026-10-08T14:20:49.577232+00:00",
+    "exit_code": 0,
+    "existing_checks_passed": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "build_receipt": {
+      "path": "local/cc12_physical_failure_callable_publication_source_20261008a/run01/build_receipt.json",
+      "sha256": "7b6868cad20421b7261cc7bcb4fbc8cfa0e52007b856262b56938293079672b7"
+    },
+    "whole_log": {
+      "path": "local/cc12_physical_failure_callable_publication_source_20261008a/run01/normal_build.log",
+      "sha256": "20b220dcff99a66e1746ab86763ce03534b4edf91423e95d44f57f2f2af519d0"
+    },
+    "new_feature_execution": false,
+    "check_scope": "The three existing checks retain their normal established scope; no new feature/API/C3/notifier call or ad hoc fixture was added."
+  },
+  "new_complete_Source_API_bodies": [
+    {
+      "module": "game_native_vfs_runtime",
+      "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ",
+      "bytes": 138,
+      "sha256": "62b3426a0af9f3b2fb5975d2f1ff4386b979ebbc31b691f34a30b3daf4fae7dd",
+      "hex": "558bec8b0183ec0c80b80904000000745680b80b04000000754d8b400c568b40048b3085f674398b013b70307532e8000000008bc88b86900000003d2006530074043bc175288b868c0000003d305b7300751b898e900000008bc65e8be55dc36800000000eb0c6800000000eb0568000000008d4df4e80000000068000000008d45f450e800000000cc",
+      "relocations": [
+        {
+          "offset": 47,
+          "type": 20,
+          "target": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ"
+        },
+        {
+          "offset": 97,
+          "type": 6,
+          "target": "??_C@_0DD@IJNBBCBD@Native?5VFS?5publication?5is?5not?5th@"
+        },
+        {
+          "offset": 104,
+          "type": 6,
+          "target": "??_C@_0DO@PKCHCMHH@Native?5VFS?5core?5is?5not?5available@"
+        },
+        {
+          "offset": 111,
+          "type": 6,
+          "target": "??_C@_0DP@IKCBLNNE@Native?5VFS?5failure?5callback?5prei@"
+        },
+        {
+          "offset": 119,
+          "type": 20,
+          "target": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 124,
+          "type": 6,
+          "target": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 133,
+          "type": 20,
+          "target": "__CxxThrowException@8"
+        }
+      ],
+      "instruction_count": 45,
+      "complete_decode": true
+    },
+    {
+      "module": "native_vfs_startup_callbacks",
+      "symbol": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ",
+      "bytes": 53,
+      "sha256": "f021f6e380f98aef026a9dafef5fc92e3254f659ca1460819ea2c7165272dcc5",
+      "hex": "558becb80000000083ec0c8038c37509b8000000008be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": 6,
+          "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 17,
+          "type": 6,
+          "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 26,
+          "type": 6,
+          "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+        },
+        {
+          "offset": 34,
+          "type": 20,
+          "target": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 39,
+          "type": 6,
+          "target": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 48,
+          "type": 20,
+          "target": "__CxxThrowException@8"
+        }
+      ],
+      "instruction_count": 18,
+      "complete_decode": true
+    },
+    {
+      "module": "native_vfs_startup_callbacks",
+      "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+      "bytes": 78,
+      "sha256": "a45a00351aa57f48f1ce9fa8772773730602b673b57f0185c47ffda779132a2e",
+      "hex": "558bec8b450883ec0c3d20065300741c3d00000000740632c08be55dc3b8000000008038c3750be800000000b0018be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+      "relocations": [
+        {
+          "offset": 17,
+          "type": 6,
+          "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 30,
+          "type": 6,
+          "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 40,
+          "type": 20,
+          "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 51,
+          "type": 6,
+          "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+        },
+        {
+          "offset": 59,
+          "type": 20,
+          "target": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 64,
+          "type": 6,
+          "target": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "target": "__CxxThrowException@8"
+        }
+      ],
+      "instruction_count": 28,
+      "complete_decode": true
+    },
+    {
+      "module": "game_native_vfs_application",
+      "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsApplication@game@bsp@@QAEPAXXZ",
+      "bytes": 60,
+      "sha256": "b112c35a88690d42e6aff3d7b0d64abea2163e8aaa7327c0ccfa5dd55c2cf7f8",
+      "hex": "558bec8b0983ec0c80b92405000000740f8b8914050000e8000000008be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+      "relocations": [
+        {
+          "offset": 24,
+          "type": 20,
+          "target": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ"
+        },
+        {
+          "offset": 33,
+          "type": 6,
+          "target": "??_C@_0DI@DNJHHBEA@native?5VFS?5application?5initializ@"
+        },
+        {
+          "offset": 41,
+          "type": 20,
+          "target": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 46,
+          "type": 6,
+          "target": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 55,
+          "type": 20,
+          "target": "__CxxThrowException@8"
+        }
+      ],
+      "instruction_count": 19,
+      "complete_decode": true
+    }
+  ],
+  "guarded_runtime_static_offsets": {
+    "whole_body": {
+      "module": "game_native_vfs_runtime",
+      "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ",
+      "bytes": 138,
+      "sha256": "62b3426a0af9f3b2fb5975d2f1ff4386b979ebbc31b691f34a30b3daf4fae7dd",
+      "hex": "558bec8b0183ec0c80b80904000000745680b80b04000000754d8b400c568b40048b3085f674398b013b70307532e8000000008bc88b86900000003d2006530074043bc175288b868c0000003d305b7300751b898e900000008bc65e8be55dc36800000000eb0c6800000000eb0568000000008d4df4e80000000068000000008d45f450e800000000cc",
+      "relocations": [
+        {
+          "offset": 47,
+          "type": 20,
+          "target": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ"
+        },
+        {
+          "offset": 97,
+          "type": 6,
+          "target": "??_C@_0DD@IJNBBCBD@Native?5VFS?5publication?5is?5not?5th@"
+        },
+        {
+          "offset": 104,
+          "type": 6,
+          "target": "??_C@_0DO@PKCHCMHH@Native?5VFS?5core?5is?5not?5available@"
+        },
+        {
+          "offset": 111,
+          "type": 6,
+          "target": "??_C@_0DP@IKCBLNNE@Native?5VFS?5failure?5callback?5prei@"
+        },
+        {
+          "offset": 119,
+          "type": 20,
+          "target": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 124,
+          "type": 6,
+          "target": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 133,
+          "type": 20,
+          "target": "__CxxThrowException@8"
+        }
+      ],
+      "complete_decode": true
+    },
+    "publication_capture_instruction_offset": 33,
+    "sole_owner_store_offset": 83,
+    "owner_store_hex": "898e90000000"
+  },
+  "preserved_complete_bodies": [
+    {
+      "module": "native_vfs_startup_callbacks",
+      "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+      "bytes": 32,
+      "sha256": "10693a5d432a3db980c7f6ce0791ce9f6ae60bcf87b07bf304fa8d8d16eb1bf3",
+      "hex": "558bec8b4d088b01c78090000000200653008b01c7808c000000305b73005dc3",
+      "relocations": [],
+      "complete_decode": true
+    },
+    {
+      "module": "native_vfs_startup_callbacks",
+      "symbol": "?ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+      "bytes": 3,
+      "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "hex": "c20000",
+      "relocations": [],
+      "complete_decode": true
+    },
+    {
+      "module": "native_vfs_startup_callbacks",
+      "symbol": "?ignore_native_vfs_callback_00735b30@bsp@@YAXXZ",
+      "bytes": 3,
+      "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "hex": "c20000",
+      "relocations": [],
+      "complete_decode": true
+    },
+    {
+      "module": "native_physical_failure_entries",
+      "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "hex": "c3",
+      "relocations": [],
+      "complete_decode": true
+    },
+    {
+      "module": "native_physical_failure_entries",
+      "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+      "bytes": 11,
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "hex": "8b8190000000ffd0c20400",
+      "relocations": [],
+      "complete_decode": true
+    }
+  ],
+  "pre_post_whole_function_correspondence": {
+    "before_complete_functions": 963,
+    "after_complete_functions": 968,
+    "same_symbol_complete_bytes_and_ordered_relocations_equal": 950,
+    "actual_compiler_path_aliases": [
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z$2",
+          "bytes": 19,
+          "sha256": "71c373203e4de201067a5c5beb6951ff63b2cdff6bccfc0f3228172e25cb938f",
+          "hex": "8b4df081c16c020000e900000000cccccccccc",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 20,
+              "target": "??1NativeVfsOwnerServices@bsp@@QAE@XZ"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "__unwindfunclet$??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z$0",
+          "bytes": 19,
+          "sha256": "71c373203e4de201067a5c5beb6951ff63b2cdff6bccfc0f3228172e25cb938f",
+          "hex": "8b4df081c16c020000e900000000cccccccccc",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 20,
+              "target": "??1NativeVfsOwnerServices@bsp@@QAE@XZ"
+            }
+          ],
+          "complete_decode": true
+        },
+        "unique_complete_body_and_ordered_relocation_candidates": 1,
+        "qualification": "Actual compiler-generated path alias, not a synthetic shortened symbol or byte-window match"
+      }
+    ],
+    "intentional_changed_old_bodies": [
+      {
+        "old": {
+          "module": "native_vfs_startup_callbacks",
+          "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+          "bytes": 49,
+          "sha256": "194e6b8c6e77db4fa0d6338954045d3af499797d4d683a2c564067d2ddc366b5",
+          "hex": "558bec83ec0c817d082006530075068be55dc2080068000000008d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 22,
+              "type": 6,
+              "target": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@"
+            },
+            {
+              "offset": 30,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 35,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 44,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "native_vfs_startup_callbacks",
+          "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+          "bytes": 99,
+          "sha256": "e07417c2ea9df7988f04294700e03f09cf874ed1e305251162e839139e9dcf19",
+          "hex": "558bec8b450883ec0c3d2006530074163d000000007515b8000000008038c37526e8000000008be55dc2080068000000008d4df4e80000000068000000008d45f450e80000000068000000008d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 17,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 34,
+              "type": 20,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 45,
+              "type": 6,
+              "target": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@"
+            },
+            {
+              "offset": 53,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 58,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 67,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 72,
+              "type": 6,
+              "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+            },
+            {
+              "offset": 80,
+              "type": 20,
+              "target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 85,
+              "type": 6,
+              "target": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 94,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Intentional finite dispatcher change; compiler inlines identity/symbol qualification and direct raw leaf call; same mount rejection.",
+        "complete_byte_edits": [
+          {
+            "operation": "insert",
+            "old_offset": 3,
+            "new_offset": 3,
+            "old_hex": "",
+            "new_hex": "8b4508"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 6,
+            "new_offset": 9,
+            "old_hex": "817d08",
+            "new_hex": "3d"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 13,
+            "new_offset": 14,
+            "old_hex": "",
+            "new_hex": "74163d00000000"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 14,
+            "new_offset": 22,
+            "old_hex": "06",
+            "new_hex": "15b8000000008038c37526e800000000"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 48,
+            "new_offset": 71,
+            "old_hex": "",
+            "new_hex": "68000000008d4df4e80000000068000000008d45f450e800000000"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "native_vfs_runtime_bindings",
+          "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+          "bytes": 27,
+          "sha256": "ccb2bb8f9645c7e1ff3dbaaac52d37e9939bd65f4907a81c321e46b35281c0e2",
+          "hex": "558bec817d08200653007509e8000000005dc20800e800000000cc",
+          "relocations": [
+            {
+              "offset": 13,
+              "type": 20,
+              "target": "?ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 22,
+              "type": 20,
+              "target": "?unsupported@?A0x65b333b2@bsp@@YAXXZ"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "native_vfs_runtime_bindings",
+          "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+          "bytes": 28,
+          "sha256": "7850174e0938d5485871abdee3f9453fd51417c43f850797a6fdcb81520dcb7c",
+          "hex": "558becff7508e80000000083c40484c074045dc20800e800000000cc",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "target": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z"
+            },
+            {
+              "offset": 23,
+              "type": 20,
+              "target": "?unsupported@?A0x65b333b2@bsp@@YAXXZ"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Intentional finite dispatcher change to shared exact-symbol helper; same unsupported diagnostic.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 3,
+            "new_offset": 3,
+            "old_hex": "817d",
+            "new_hex": "ff75"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 6,
+            "new_offset": 6,
+            "old_hex": "200653007509",
+            "new_hex": ""
+          },
+          {
+            "operation": "insert",
+            "old_offset": 17,
+            "new_offset": 11,
+            "old_hex": "",
+            "new_hex": "83c40484c07404"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z",
+          "bytes": 40,
+          "sha256": "da1d8950c6c3c425f40643036d6f11cb7c43c06b5bd603830d8c2aa469bc1fef",
+          "hex": "558bec5156ff75148bf1ff75108975fcff750cff750856e80000000083c4148bc65e8be55dc21000",
+          "relocations": [
+            {
+              "offset": 24,
+              "type": 20,
+              "target": "??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z",
+          "bytes": 135,
+          "sha256": "147f5b8ba2dbfaabb8d341d64cf3893b4e9cdff43de92672fa0b057615275b02",
+          "hex": "558bec6aff680000000064a100000000505156a10000000033c5508d45f464a3000000008bf18975f06828050000e80000000083c4048945f0c745fc0000000085c07429ff75148bc8ff7510ff750cff7508e80000000089068bc68b4df464890d00000000595e8be55dc21000c706000000008bc68b4df464890d00000000595e8be55dc21000",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 20,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 47,
+              "type": 20,
+              "target": "??2@YAPAXI@Z"
+            },
+            {
+              "offset": 83,
+              "type": 20,
+              "target": "??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Compiler inlines make_unique allocation wrapper and calls outlined Impl constructor; new host Impl allocation size 528h.",
+        "complete_byte_edits": [
+          {
+            "operation": "insert",
+            "old_offset": 3,
+            "new_offset": 3,
+            "old_hex": "",
+            "new_hex": "6aff680000000064a10000000050"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 5,
+            "new_offset": 19,
+            "old_hex": "ff7514",
+            "new_hex": "a10000000033c5508d45f464a300000000"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 10,
+            "new_offset": 38,
+            "old_hex": "ff7510",
+            "new_hex": ""
+          },
+          {
+            "operation": "replace",
+            "old_offset": 15,
+            "new_offset": 40,
+            "old_hex": "fcff750cff750856",
+            "new_hex": "f06828050000"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 30,
+            "new_offset": 53,
+            "old_hex": "",
+            "new_hex": "048945f0c745fc0000000085c07429ff75"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 32,
+            "new_offset": 72,
+            "old_hex": "",
+            "new_hex": "c8ff7510ff750cff7508e80000000089068b"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 33,
+            "new_offset": 91,
+            "old_hex": "",
+            "new_hex": "8b4df464890d0000000059"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 40,
+            "new_offset": 109,
+            "old_hex": "",
+            "new_hex": "c706000000008bc68b4df464890d00000000595e8be55dc21000"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??1GameNativeVfsApplication@game@bsp@@QAE@XZ",
+          "bytes": 53,
+          "sha256": "1fb916290f5491da0e0a7496f68857f333cf26780ad21beaeab932d767e20833",
+          "hex": "568b3185f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682405000056e80000000083c4085f5ec3",
+          "relocations": [
+            {
+              "offset": 21,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 29,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 43,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??1GameNativeVfsApplication@game@bsp@@QAE@XZ",
+          "bytes": 53,
+          "sha256": "68a9e9a8974e2bdb26211f9347ffdaa17997957560ca04fe892db709f93de46b",
+          "hex": "568b3185f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682805000056e80000000083c4085f5ec3",
+          "relocations": [
+            {
+              "offset": 21,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 29,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 43,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Only sized-delete allocation operand 524h->528h; existing member offsets and ordered relocations unchanged.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 37,
+            "new_offset": 37,
+            "old_hex": "24",
+            "new_hex": "28"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??R?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeVfsApplication@game@bsp@@@Z",
+          "bytes": 60,
+          "sha256": "e250b24b4b83df4fcfcf47e470ac44eb6d4bcf442a0a758c9f2bcf024eacabd3",
+          "hex": "558bec568b750885f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682405000056e80000000083c4085f5e5dc20400",
+          "relocations": [
+            {
+              "offset": 25,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 33,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 47,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??R?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeVfsApplication@game@bsp@@@Z",
+          "bytes": 60,
+          "sha256": "99c4b1b3f304dbbdfeb6e37dbdbc0cbc89b354f3a15ebf2c68d2f9f8ed635e58",
+          "hex": "558bec568b750885f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682805000056e80000000083c4085f5e5dc20400",
+          "relocations": [
+            {
+              "offset": 25,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 33,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 47,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Only sized-delete allocation operand 524h->528h; existing member offsets and ordered relocations unchanged.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 41,
+            "new_offset": 41,
+            "old_hex": "24",
+            "new_hex": "28"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??1?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@std@@QAE@XZ",
+          "bytes": 53,
+          "sha256": "1fb916290f5491da0e0a7496f68857f333cf26780ad21beaeab932d767e20833",
+          "hex": "568b3185f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682405000056e80000000083c4085f5ec3",
+          "relocations": [
+            {
+              "offset": 21,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 29,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 43,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??1?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@std@@QAE@XZ",
+          "bytes": 53,
+          "sha256": "68a9e9a8974e2bdb26211f9347ffdaa17997957560ca04fe892db709f93de46b",
+          "hex": "568b3185f6742c578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408682805000056e80000000083c4085f5ec3",
+          "relocations": [
+            {
+              "offset": 21,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 29,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 43,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Only sized-delete allocation operand 524h->528h; existing member offsets and ordered relocations unchanged.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 37,
+            "new_offset": 37,
+            "old_hex": "24",
+            "new_hex": "28"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z",
+          "bytes": 600,
+          "sha256": "576934c9c03f52ac6ada08f8d9e32fedc4ecb247c23d4e04d3969a8ffe848462",
+          "hex": "558bec6aff680000000064a10000000050515657a10000000033c5508d45f464a3000000008bf18975f08b450c8d4e08ff751489068b4510894604e800000000c78624020000000000008dbe2c020000c786280200000000000081c630020000c70700000000c70600000000e8000000008b4df083c004898134020000e8000000008b55f083c0088d8a3c0200006a0468ace5d5008982380200008b450cc701000000008b40048982400200008d82240200008982440200008d822802000089824802000089ba4c0200008dba6c02000089b2500200008db2600200008b82340200008982540200008b8238020000898a5c0200008b4d10898258020000c70600000000c7826402000000000000c7826802000000000000e800000000568b75f08bcf5083ec208bc40f1086400200000f11000f1086500200000f114010e8000000008b86800200008d8ef40200008986e80200008b86840200008986ec0200008b450cc745fc000000008b40048986f0020000e8000000000f10864004000083ec208d8ec80400008bc40f11000f1086500400000f1140108d86dc02000050e8000000008d96ec040000c702000000008d86f00400008996f40400008986f80400008b75108bce6a0468d85ad100c70000000000e8000000008b4df06a0468c042d6008981fc0400008bcee8000000008b75f08bcf8986000500008b4508898608050000c7860405000000000000c6860c05000000c7861005000000000000c7861405000000000000c6861805000000c68620050000008b0683c03c50e8000000008bc68b4df464890d00000000595f5e8be55dc21000",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 60,
+              "type": 20,
+              "target": "??0GameNativeVfsConstants@game@bsp@@QAE@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 109,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 126,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 276,
+              "type": 6,
+              "target": "?reject_native_vfs_parameter@?A0x01a9c9de@game@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 281,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 319,
+              "type": 20,
+              "target": "??0NativeVfsOwnerServices@bsp@@QAE@UNativeVfsPublicationCells@1@PDIABUSingletonLifetimeCallbacks@1@@Z"
+            },
+            {
+              "offset": 373,
+              "type": 20,
+              "target": "??0GameNativeTypeStorage@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 417,
+              "type": 20,
+              "target": "??0LightTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@ULightTypeBootstrapStorage@1@@Z"
+            },
+            {
+              "offset": 470,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 493,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 523,
+              "type": 6,
+              "target": "??_7DuplicateLog@Impl@GameNativeVfsApplication@game@bsp@@6B@"
+            },
+            {
+              "offset": 575,
+              "type": 20,
+              "target": "?bind_deletion@NativeVfsOwnerServices@bsp@@QAEXAAUNativeSingletonDeletionBindings@2@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z",
+          "bytes": 607,
+          "sha256": "80e89139f6409f53cdb79ed7fcf4c6da358b0a44ca6868901713eae18bc78be2",
+          "hex": "558bec6aff680000000064a10000000050515657a10000000033c5508d45f464a3000000008bf18975f08b450c8d4e08ff751489068b4510894604e800000000c78624020000000000008dbe2c020000c786280200000000000081c630020000c70700000000c70600000000e8000000008b4df083c004898134020000e8000000008b55f083c0088d8a3c0200006a0468ace5d5008982380200008b450cc701000000008b40048982400200008d82240200008982440200008d822802000089824802000089ba4c0200008dba6c02000089b2500200008db2600200008b82340200008982540200008b8238020000898a5c0200008b4d10898258020000c70600000000c7826402000000000000c7826802000000000000e800000000568b75f08bcf5083ec208bc40f1086400200000f11000f1086500200000f114010e8000000008b86800200008d8ef40200008986e80200008b86840200008986ec0200008b450cc745fc000000008b40048986f0020000e8000000000f10864004000083ec208d8ec80400008bc40f11000f1086500400000f1140108d86dc02000050e8000000008d96ec040000c702000000008d86f00400008996f40400008986f80400008b75108bce6a0468d85ad100c70000000000e8000000008b4df06a0468c042d6008981fc0400008bcee8000000008b75f08bcf8986000500008b4508898608050000c7860405000000000000c6860c05000000c7861005000000000000c7861405000000000000c6861805000000c68620050000008b0683c03cc686240500000050e8000000008bc68b4df464890d00000000595f5e8be55dc21000",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 60,
+              "type": 20,
+              "target": "??0GameNativeVfsConstants@game@bsp@@QAE@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 109,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 126,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 276,
+              "type": 6,
+              "target": "?reject_native_vfs_parameter@?A0x01a9c9de@game@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 281,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 319,
+              "type": 20,
+              "target": "??0NativeVfsOwnerServices@bsp@@QAE@UNativeVfsPublicationCells@1@PDIABUSingletonLifetimeCallbacks@1@@Z"
+            },
+            {
+              "offset": 373,
+              "type": 20,
+              "target": "??0GameNativeTypeStorage@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 417,
+              "type": 20,
+              "target": "??0LightTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@ULightTypeBootstrapStorage@1@@Z"
+            },
+            {
+              "offset": 470,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 493,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 523,
+              "type": 6,
+              "target": "??_7DuplicateLog@Impl@GameNativeVfsApplication@game@bsp@@6B@"
+            },
+            {
+              "offset": 582,
+              "type": 20,
+              "target": "?bind_deletion@NativeVfsOwnerServices@bsp@@QAEXAAUNativeSingletonDeletionBindings@2@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Appended completion bool zero-store at +524h; all prior body bytes/relocations retain order with one 7-byte insertion.",
+        "complete_byte_edits": [
+          {
+            "operation": "insert",
+            "old_offset": 573,
+            "new_offset": 573,
+            "old_hex": "",
+            "new_hex": "c6862405000000"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+          "bytes": 535,
+          "sha256": "d5a37f68b11e5193173a62442bf09591f0b463056818061579cbdb85ec78142c",
+          "hex": "558bec6aff680000000064a1000000005081eca4000000a10000000033c58945ec535657508d45f464a3000000008965f08bc18945d880b818050000008945d40f85f50100008b088db8c804000083c13cc68018050000018db0f4020000894ddc8d98dc0200008bce5753e80000000057538bcee800000000e8000000008bf08bcee8000000008b4dd857538bd989811c050000668b45d5668981210500008a45d7c68120050000018881230500008d8bf4020000e8000000008bcee8000000008bf0c745e0030000008d45e0c745e4a000000050c745e8a0000000e8000000008bc883c404898b1005000085c90f84620100008d836c020000c745fc000000008945908b43048945948b036a048b40048945988b45dc89459c8d83f40400008945a48d83680400008945a88d83600200008945aca1000000008945b08d43088945b88d83210200008945bc8d83040500008945c48d830c0500008975a0894db4c745c0000000008945c8c745cc00000000e80000000083c4048945dcc645fc0185c0740d8d4d90518bc8e800000000eb0233c08bb31405000089831405000085f674188bcee8000000006a0456e8000000008b831405000083c4088b0b50c745fcffffffffe8000000008b8b14050000e8000000008b8b140500008d8550ffffff50e800000000ffb574ffffff8b0bffb568ffffffe8000000008b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc3",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 108,
+              "type": 20,
+              "target": "?initialize_resource_types@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 117,
+              "type": 20,
+              "target": "?initialize_memory_00cd8fc0@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 122,
+              "type": 20,
+              "target": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "offset": 131,
+              "type": 20,
+              "target": "?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ"
+            },
+            {
+              "offset": 182,
+              "type": 20,
+              "target": "?initialize_physical_00cd9030@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 189,
+              "type": 20,
+              "target": "?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ"
+            },
+            {
+              "offset": 221,
+              "type": 20,
+              "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 310,
+              "type": 6,
+              "target": "__imp__tolower"
+            },
+            {
+              "offset": 371,
+              "type": 20,
+              "target": "??2@YAPAXI@Z"
+            },
+            {
+              "offset": 396,
+              "type": 20,
+              "target": "??0GameNativeVfsRuntime@game@bsp@@QAE@ABUGameNativeVfsRuntimeInputs@12@@Z"
+            },
+            {
+              "offset": 423,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 431,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 455,
+              "type": 20,
+              "target": "?bind_vfs_runtime@GameSingletonHost@game@bsp@@QAEXPAVGameNativeVfsRuntime@23@@Z"
+            },
+            {
+              "offset": 466,
+              "type": 20,
+              "target": "?construct_and_register_core@GameNativeVfsRuntime@game@bsp@@QAEXXZ"
+            },
+            {
+              "offset": 484,
+              "type": 20,
+              "target": "?borrow_raw_services@GameNativeVfsRuntime@game@bsp@@QAE?AUGameNativeVfsRawServices@23@XZ"
+            },
+            {
+              "offset": 503,
+              "type": 20,
+              "target": "?bind_resource_registry_domain@GameSingletonHost@game@bsp@@QAEXAAVActualNativeStringPoolStorage@3@ABUSingletonLifetimeCallbacks@3@@Z"
+            },
+            {
+              "offset": 527,
+              "type": 20,
+              "target": "@__security_check_cookie@4"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+          "bytes": 542,
+          "sha256": "4bea3c70654c22b006cdd14c5663c4fa8242ba8a47a72c9e63d1a012215d43b2",
+          "hex": "558bec6aff680000000064a1000000005081eca4000000a10000000033c58945ec535657508d45f464a3000000008965f08bc18945d880b818050000008945d40f85fc0100008b088db8c804000083c13cc68018050000018db0f4020000894ddc8d98dc0200008bce5753e80000000057538bcee800000000e8000000008bf08bcee8000000008b4dd857538bd989811c050000668b45d5668981210500008a45d7c68120050000018881230500008d8bf4020000e8000000008bcee8000000008bf0c745e0030000008d45e0c745e4a000000050c745e8a0000000e8000000008bc883c404898b1005000085c90f84690100008d836c020000c745fc000000008945908b43048945948b036a048b40048945988b45dc89459c8d83f40400008945a48d83680400008945a88d83600200008945aca1000000008945b08d43088945b88d83210200008945bc8d83040500008945c48d830c0500008975a0894db4c745c0000000008945c8c745cc00000000e80000000083c4048945dcc645fc0185c0740d8d4d90518bc8e800000000eb0233c08bb31405000089831405000085f674188bcee8000000006a0456e8000000008b831405000083c4088b0b50c745fcffffffffe8000000008b8b14050000e8000000008b8b140500008d8550ffffff50e800000000ffb574ffffff8b0bffb568ffffffe800000000c68324050000018b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc3",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 108,
+              "type": 20,
+              "target": "?initialize_resource_types@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 117,
+              "type": 20,
+              "target": "?initialize_memory_00cd8fc0@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 122,
+              "type": 20,
+              "target": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ"
+            },
+            {
+              "offset": 131,
+              "type": 20,
+              "target": "?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ"
+            },
+            {
+              "offset": 182,
+              "type": 20,
+              "target": "?initialize_physical_00cd9030@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+            },
+            {
+              "offset": 189,
+              "type": 20,
+              "target": "?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ"
+            },
+            {
+              "offset": 221,
+              "type": 20,
+              "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 310,
+              "type": 6,
+              "target": "__imp__tolower"
+            },
+            {
+              "offset": 371,
+              "type": 20,
+              "target": "??2@YAPAXI@Z"
+            },
+            {
+              "offset": 396,
+              "type": 20,
+              "target": "??0GameNativeVfsRuntime@game@bsp@@QAE@ABUGameNativeVfsRuntimeInputs@12@@Z"
+            },
+            {
+              "offset": 423,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 431,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 455,
+              "type": 20,
+              "target": "?bind_vfs_runtime@GameSingletonHost@game@bsp@@QAEXPAVGameNativeVfsRuntime@23@@Z"
+            },
+            {
+              "offset": 466,
+              "type": 20,
+              "target": "?construct_and_register_core@GameNativeVfsRuntime@game@bsp@@QAEXXZ"
+            },
+            {
+              "offset": 484,
+              "type": 20,
+              "target": "?borrow_raw_services@GameNativeVfsRuntime@game@bsp@@QAE?AUGameNativeVfsRawServices@23@XZ"
+            },
+            {
+              "offset": 503,
+              "type": 20,
+              "target": "?bind_resource_registry_domain@GameSingletonHost@game@bsp@@QAEXAAVActualNativeStringPoolStorage@3@ABUSingletonLifetimeCallbacks@3@@Z"
+            },
+            {
+              "offset": 534,
+              "type": 20,
+              "target": "@__security_check_cookie@4"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Completion bool +524h becomes 1 only after bind_resource_registry_domain; one 7-byte insertion and two adjusted existing forward branches.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 66,
+            "new_offset": 66,
+            "old_hex": "f5",
+            "new_hex": "fc"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 240,
+            "new_offset": 240,
+            "old_hex": "62",
+            "new_hex": "69"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 507,
+            "new_offset": 507,
+            "old_hex": "",
+            "new_hex": "c6832405000001"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??_GImpl@GameNativeVfsApplication@game@bsp@@QAEPAXI@Z",
+          "bytes": 63,
+          "sha256": "1ef1ba7c7b8edf5661ceda391ec53dfaccd9e87737205108e1130ee8145fcf15",
+          "hex": "558bec568bf1578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408f6450801740e682405000056e80000000083c4085f8bc65e5dc20400",
+          "relocations": [
+            {
+              "offset": 20,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 28,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 48,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??_GImpl@GameNativeVfsApplication@game@bsp@@QAEPAXI@Z",
+          "bytes": 63,
+          "sha256": "b7179ea4255d09e261983a1d7c96d809c209f883dca8f41664d57183c66eb47b",
+          "hex": "558bec568bf1578bbe1405000085ff74128bcfe8000000006a0457e80000000083c408f6450801740e682805000056e80000000083c4085f8bc65e5dc20400",
+          "relocations": [
+            {
+              "offset": 20,
+              "type": 20,
+              "target": "??1GameNativeVfsRuntime@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 28,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 48,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Only sized-delete allocation operand 524h->528h; existing member offsets and ordered relocations unchanged.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 42,
+            "new_offset": 42,
+            "old_hex": "24",
+            "new_hex": "28"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z",
+          "bytes": 654,
+          "sha256": "ffa8fb4f9563374275fbd19d78165524775c17d12aca0ded60401816eb0a4cf2",
+          "hex": "558bec6aff680000000064a1000000005083ec085657a10000000033c5508d45f464a3000000006824050000e8000000008bf083c4048975f0c745fc0000000085f60f842c0200008b45108d4e08ff751889068b4514894604e800000000c78624020000000000008dbe2c020000c786280200000000000081c630020000c70700000000c70600000000e8000000008b4df083c004898134020000e8000000008b55f083c0088d8a3c0200006a0468ace5d5008982380200008b4510c701000000008b40048982400200008d82240200008982440200008d822802000089824802000089ba4c0200008dba6c02000089b2500200008db2600200008b82340200008982540200008b8238020000898a5c0200008b4d14898258020000c70600000000c7826402000000000000c7826802000000000000e800000000568b75f08bcf5083ec208bc40f1086400200000f11000f1086500200000f114010e8000000008b86800200008d8ef40200008986e80200008b86840200008986ec0200008b4510c645fc018b40048986f0020000e8000000000f10864004000083ec208d8ec80400008bc40f11000f1086500400000f1140108d86dc02000050e8000000008d8eec040000c701000000008d86f0040000898ef40400008986f80400008b75148bce6a0468d85ad100c70000000000e8000000008b4df06a0468c042d6008981fc0400008bcee8000000008b75f08bcf8986000500008b450c898608050000c7860405000000000000c6860c05000000c7861005000000000000c7861405000000000000c6861805000000c68620050000008b0683c03c50e8000000008b450889308b4df464890d00000000595f5e8be55dc38b4508c700000000008b4df464890d00000000595f5e8be55dc3",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z"
+            },
+            {
+              "offset": 23,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 45,
+              "type": 20,
+              "target": "??2@YAPAXI@Z"
+            },
+            {
+              "offset": 90,
+              "type": 20,
+              "target": "??0GameNativeVfsConstants@game@bsp@@QAE@ABVpath@filesystem@std@@@Z"
+            },
+            {
+              "offset": 139,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 156,
+              "type": 20,
+              "target": "?game_native_string_process@game@bsp@@YAAAVGameNativeStringProcess@12@XZ"
+            },
+            {
+              "offset": 306,
+              "type": 6,
+              "target": "?reject_native_vfs_parameter@?A0x01a9c9de@game@bsp@@YAXPAX@Z"
+            },
+            {
+              "offset": 311,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 349,
+              "type": 20,
+              "target": "??0NativeVfsOwnerServices@bsp@@QAE@UNativeVfsPublicationCells@1@PDIABUSingletonLifetimeCallbacks@1@@Z"
+            },
+            {
+              "offset": 400,
+              "type": 20,
+              "target": "??0GameNativeTypeStorage@game@bsp@@QAE@XZ"
+            },
+            {
+              "offset": 444,
+              "type": 20,
+              "target": "??0LightTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@ULightTypeBootstrapStorage@1@@Z"
+            },
+            {
+              "offset": 497,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 520,
+              "type": 20,
+              "target": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+            },
+            {
+              "offset": 550,
+              "type": 6,
+              "target": "??_7DuplicateLog@Impl@GameNativeVfsApplication@game@bsp@@6B@"
+            },
+            {
+              "offset": 602,
+              "type": 20,
+              "target": "?bind_deletion@NativeVfsOwnerServices@bsp@@QAEXAAUNativeSingletonDeletionBindings@2@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z",
+          "bytes": 129,
+          "sha256": "979051cb64a2abe01bada9f5a1387e1dcf5ce01fd2a83b538b63c91516f68838",
+          "hex": "558bec6aff680000000064a1000000005083ec08a10000000033c5508d45f464a3000000006828050000e80000000083c4048945ecc745fc0000000085c07429ff75188bc8ff7514ff7510ff750ce8000000008b4d0889018bc18b4df464890d00000000598be55dc38b4508c700000000008b4df464890d00000000598be55dc3",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "target": "__ehhandler$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z"
+            },
+            {
+              "offset": 21,
+              "type": 6,
+              "target": "___security_cookie"
+            },
+            {
+              "offset": 43,
+              "type": 20,
+              "target": "??2@YAPAXI@Z"
+            },
+            {
+              "offset": 79,
+              "type": 20,
+              "target": "??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Compiler outlines the Impl constructor instead of duplicating it; allocation size 524h->528h.",
+        "complete_byte_edits": [
+          {
+            "operation": "delete",
+            "old_offset": 20,
+            "new_offset": 20,
+            "old_hex": "5657",
+            "new_hex": ""
+          },
+          {
+            "operation": "replace",
+            "old_offset": 40,
+            "new_offset": 38,
+            "old_hex": "24",
+            "new_hex": "28"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 49,
+            "new_offset": 47,
+            "old_hex": "8bf0",
+            "new_hex": ""
+          },
+          {
+            "operation": "replace",
+            "old_offset": 55,
+            "new_offset": 51,
+            "old_hex": "75f0",
+            "new_hex": "45ec"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 65,
+            "new_offset": 61,
+            "old_hex": "f60f842c0200008b45108d4e08",
+            "new_hex": "c07429"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 81,
+            "new_offset": 67,
+            "old_hex": "8906",
+            "new_hex": ""
+          },
+          {
+            "operation": "replace",
+            "old_offset": 84,
+            "new_offset": 68,
+            "old_hex": "45",
+            "new_hex": "c8ff75"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 86,
+            "new_offset": 72,
+            "old_hex": "894604e800000000c78624020000000000008dbe2c020000c786280200000000000081c630020000c70700000000c70600000000",
+            "new_hex": "ff7510ff750c"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 145,
+            "new_offset": 85,
+            "old_hex": "f083c004",
+            "new_hex": "08"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 150,
+            "new_offset": 87,
+            "old_hex": "8134020000e8000000008b55f083c0088d8a3c0200006a0468ace5d5008982380200008b4510c701000000008b40048982400200008d82240200008982440200008d822802000089824802000089ba4c0200008dba6c02000089b2500200008db2600200008b82340200008982540200008b8238020000898a5c0200008b4d14898258020000c70600000000c7826402000000000000c7826802000000000000e800000000568b75f08bcf5083ec208bc40f1086400200000f11000f1086500200000f114010e8000000008b86800200008d8ef40200008986e80200008b86840200008986ec0200008b4510c645fc",
+            "new_hex": ""
+          },
+          {
+            "operation": "replace",
+            "old_offset": 391,
+            "new_offset": 89,
+            "old_hex": "40048986f0020000e8000000000f10864004000083ec208d8ec80400008bc40f11000f1086500400000f1140108d86dc02000050e8000000008d8eec040000c701000000008d86f0040000898ef40400008986f80400008b75148bce6a0468d85ad100c70000000000e8000000008b4df06a0468c042d6008981fc0400008bcee8000000008b75f08bcf8986000500008b450c898608050000c7860405000000000000c6860c05000000c7861005000000000000c7861405000000000000c6861805000000c68620050000008b0683c03c50e8000000008b45088930",
+            "new_hex": "c1"
+          },
+          {
+            "operation": "delete",
+            "old_offset": 622,
+            "new_offset": 101,
+            "old_hex": "5f5e",
+            "new_hex": ""
+          },
+          {
+            "operation": "delete",
+            "old_offset": 648,
+            "new_offset": 125,
+            "old_hex": "5f5e",
+            "new_hex": ""
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "__ehhandler$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z",
+          "bytes": 29,
+          "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+          "hex": "90908b5424088d420c8b4aec33c8e800000000b800000000e900000000",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "target": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 20,
+              "type": 6,
+              "target": "__ehfuncinfo$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z"
+            },
+            {
+              "offset": 25,
+              "type": 20,
+              "target": "___CxxFrameHandler3"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "__ehhandler$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z",
+          "bytes": 29,
+          "sha256": "d8682bc9c2ad6652b2d4b52398ab96ee3828fcc68e16f99f370b9d488ea5b110",
+          "hex": "90908b5424088d420c8b4af433c8e800000000b800000000e900000000",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "target": "@__security_check_cookie@4"
+            },
+            {
+              "offset": 20,
+              "type": 6,
+              "target": "__ehfuncinfo$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z"
+            },
+            {
+              "offset": 25,
+              "type": 20,
+              "target": "___CxxFrameHandler3"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Compiler-generated make_unique EH stack-cookie frame displacement follows the new outlined wrapper; same ordered relocation targets.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 11,
+            "new_offset": 11,
+            "old_hex": "ec",
+            "new_hex": "f4"
+          }
+        ]
+      },
+      {
+        "old": {
+          "module": "game_native_vfs_application",
+          "symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z$0",
+          "bytes": 18,
+          "sha256": "71dfdec6666c4f1fb2129f3fac510241d0a657ca908d83abdcb92f4d2f40fcb5",
+          "hex": "68240500008b45f050e80000000083c408c3",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "new": {
+          "module": "game_native_vfs_application",
+          "symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeVfsApplication@game@bsp@@AAVGameHostLog@34@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@std@@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeVfsApplication@game@bsp@@U?$default_delete@UImpl@GameNativeVfsApplication@game@bsp@@@std@@@0@AAVGameHostLog@game@bsp@@AAVGameSingletonHost@34@AAVGameNativeReadOnlyData@34@ABVpath@filesystem@0@@Z$0",
+          "bytes": 23,
+          "sha256": "5bfbc7f35021a850db8c813f7ab6bd4b493d6dc260e39eb47551c2536a862ff0",
+          "hex": "68280500008b45ec50e80000000083c408c3cccccccccc",
+          "relocations": [
+            {
+              "offset": 10,
+              "type": 20,
+              "target": "??3@YAXPAXI@Z"
+            }
+          ],
+          "complete_decode": true
+        },
+        "reason": "Host Impl deallocation size 524h->528h, compiler frame local displacement change and retained full padding.",
+        "complete_byte_edits": [
+          {
+            "operation": "replace",
+            "old_offset": 1,
+            "new_offset": 1,
+            "old_hex": "24",
+            "new_hex": "28"
+          },
+          {
+            "operation": "replace",
+            "old_offset": 7,
+            "new_offset": 7,
+            "old_hex": "f0",
+            "new_hex": "ec"
+          },
+          {
+            "operation": "insert",
+            "old_offset": 18,
+            "new_offset": 18,
+            "old_hex": "",
+            "new_hex": "cccccccccc"
+          }
+        ]
+      }
+    ],
+    "new_api_and_generated_path_bodies": [
+      {
+        "module": "game_native_vfs_runtime",
+        "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ",
+        "bytes": 138,
+        "sha256": "62b3426a0af9f3b2fb5975d2f1ff4386b979ebbc31b691f34a30b3daf4fae7dd",
+        "hex": "558bec8b0183ec0c80b80904000000745680b80b04000000754d8b400c568b40048b3085f674398b013b70307532e8000000008bc88b86900000003d2006530074043bc175288b868c0000003d305b7300751b898e900000008bc65e8be55dc36800000000eb0c6800000000eb0568000000008d4df4e80000000068000000008d45f450e800000000cc",
+        "relocations": [
+          {
+            "offset": 47,
+            "type": 20,
+            "target": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ"
+          },
+          {
+            "offset": 97,
+            "type": 6,
+            "target": "??_C@_0DD@IJNBBCBD@Native?5VFS?5publication?5is?5not?5th@"
+          },
+          {
+            "offset": 104,
+            "type": 6,
+            "target": "??_C@_0DO@PKCHCMHH@Native?5VFS?5core?5is?5not?5available@"
+          },
+          {
+            "offset": 111,
+            "type": 6,
+            "target": "??_C@_0DP@IKCBLNNE@Native?5VFS?5failure?5callback?5prei@"
+          },
+          {
+            "offset": 119,
+            "type": 20,
+            "target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 124,
+            "type": 6,
+            "target": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 133,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ],
+        "complete_decode": true
+      },
+      {
+        "module": "native_vfs_startup_callbacks",
+        "symbol": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ",
+        "bytes": 53,
+        "sha256": "f021f6e380f98aef026a9dafef5fc92e3254f659ca1460819ea2c7165272dcc5",
+        "hex": "558becb80000000083ec0c8038c37509b8000000008be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+          },
+          {
+            "offset": 17,
+            "type": 6,
+            "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+          },
+          {
+            "offset": 26,
+            "type": 6,
+            "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+          },
+          {
+            "offset": 34,
+            "type": 20,
+            "target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 39,
+            "type": 6,
+            "target": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 48,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ],
+        "complete_decode": true
+      },
+      {
+        "module": "native_vfs_startup_callbacks",
+        "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+        "bytes": 78,
+        "sha256": "a45a00351aa57f48f1ce9fa8772773730602b673b57f0185c47ffda779132a2e",
+        "hex": "558bec8b450883ec0c3d20065300741c3d00000000740632c08be55dc3b8000000008038c3750be800000000b0018be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+        "relocations": [
+          {
+            "offset": 17,
+            "type": 6,
+            "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+          },
+          {
+            "offset": 30,
+            "type": 6,
+            "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+          },
+          {
+            "offset": 40,
+            "type": 20,
+            "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+          },
+          {
+            "offset": 51,
+            "type": 6,
+            "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+          },
+          {
+            "offset": 59,
+            "type": 20,
+            "target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 64,
+            "type": 6,
+            "target": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 73,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ],
+        "complete_decode": true
+      },
+      {
+        "module": "game_native_vfs_application",
+        "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsApplication@game@bsp@@QAEPAXXZ",
+        "bytes": 60,
+        "sha256": "b112c35a88690d42e6aff3d7b0d64abea2163e8aaa7327c0ccfa5dd55c2cf7f8",
+        "hex": "558bec8b0983ec0c80b92405000000740f8b8914050000e8000000008be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+        "relocations": [
+          {
+            "offset": 24,
+            "type": 20,
+            "target": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ"
+          },
+          {
+            "offset": 33,
+            "type": 6,
+            "target": "??_C@_0DI@DNJHHBEA@native?5VFS?5application?5initializ@"
+          },
+          {
+            "offset": 41,
+            "type": 20,
+            "target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 46,
+            "type": 6,
+            "target": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 55,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ],
+        "complete_decode": true
+      },
+      {
+        "module": "game_native_vfs_application",
+        "symbol": "__ehhandler$??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z",
+        "bytes": 29,
+        "sha256": "d8682bc9c2ad6652b2d4b52398ab96ee3828fcc68e16f99f370b9d488ea5b110",
+        "hex": "90908b5424088d420c8b4af433c8e800000000b800000000e900000000",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "target": "__ehfuncinfo$??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "target": "___CxxFrameHandler3"
+          }
+        ],
+        "complete_decode": true
+      },
+      {
+        "module": "game_native_vfs_application",
+        "symbol": "__unwindfunclet$??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z$1",
+        "bytes": 23,
+        "sha256": "ebf0c3ec2989dbaf14f58bed7573be27cf675ecc8ecd97a62c083ee56bc90406",
+        "hex": "68280500008b45f050e80000000083c408c3cccccccccc",
+        "relocations": [
+          {
+            "offset": 10,
+            "type": 20,
+            "target": "??3@YAXPAXI@Z"
+          }
+        ],
+        "complete_decode": true
+      }
+    ],
+    "complete_correspondence": {
+      "path": "local/cc12_physical_failure_callable_publication_source_20261008a/proof01/whole_old_body_correspondence.json",
+      "sha256": "0ecade5d20977aeb9a9e61186f48b1565e6c2a60bfec08397c25467d2a9d3f0c"
+    },
+    "qualification": "No blanket unchanged-object claim. 950 old bodies match by exact symbol/full bytes/ordered relocations. One disappeared make_unique cleanup uniquely matches the complete 19-byte existing Impl-constructor cleanup path. Twelve changes are explicitly listed with complete old/new bytes and relocation records, including generated allocation/EH effects of appended host state."
+  },
+  "whole_object_and_archive_proof": {
+    "whole_objects": [
+      {
+        "module": "game_native_vfs_runtime",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\328f5d3686cd64fb297ad339416395bc39960186cfcf394563108be84e4405e1\\game_native_vfs_runtime.obj",
+          "sha256": "33dd37d5dbb041d26a991f08fb298fa6c48bb81ff2127e6588a405ab53836e9d"
+        },
+        "bytes": 211390,
+        "build_target": "bsp_core",
+        "complete_functions": 506,
+        "unique_whole_archive_member": {
+          "offset": 60980212,
+          "name": "/77526",
+          "bytes": 211390,
+          "sha256": "33dd37d5dbb041d26a991f08fb298fa6c48bb81ff2127e6588a405ab53836e9d"
+        },
+        "whole_object_equal_before": false
+      },
+      {
+        "module": "native_vfs_startup_callbacks",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\f49ae2513e6cbe29348596bd21170e868a1b06e5e730eff9600fbe63aebbaf37\\native_vfs_startup_callbacks.obj",
+          "sha256": "e30a7542d05037b8c8b2d0fef575660ffe067b397db3181f7a346718d8f73ad1"
+        },
+        "bytes": 11233,
+        "build_target": "bsp_core",
+        "complete_functions": 19,
+        "unique_whole_archive_member": {
+          "offset": 25793150,
+          "name": "/12333",
+          "bytes": 11233,
+          "sha256": "e30a7542d05037b8c8b2d0fef575660ffe067b397db3181f7a346718d8f73ad1"
+        },
+        "whole_object_equal_before": false
+      },
+      {
+        "module": "native_vfs_runtime_bindings",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\483c9e25bce783b05325e389d32a5834df8f4e4231494dd0af89d05f26d26168\\native_vfs_runtime_bindings.obj",
+          "sha256": "098e816df2832e695fb2ac4eb34031649198376e11f54acf72e9a19cd2b8367c"
+        },
+        "bytes": 40690,
+        "build_target": "bsp_core",
+        "complete_functions": 68,
+        "unique_whole_archive_member": {
+          "offset": 25811930,
+          "name": "/12441",
+          "bytes": 40690,
+          "sha256": "098e816df2832e695fb2ac4eb34031649198376e11f54acf72e9a19cd2b8367c"
+        },
+        "whole_object_equal_before": false
+      },
+      {
+        "module": "native_physical_failure_entries",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\ebd5e721b0d93ee75f6e7e922df67b2016a784291e6b905d0a7d1d17e403cdea\\native_physical_failure_entries.obj",
+          "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b"
+        },
+        "bytes": 912,
+        "build_target": "bsp_core",
+        "complete_functions": 2,
+        "unique_whole_archive_member": {
+          "offset": 30285808,
+          "name": "/27684",
+          "bytes": 912,
+          "sha256": "e10015963caa24ee220fbe6557482eda4ebfabca35ab5cf8b3d1df21497c242b"
+        },
+        "whole_object_equal_before": true
+      },
+      {
+        "module": "native_physical_stream_open",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\8df716015d2c4947bc3150bdba4821dcfa26fca0a6b20d9ad5b9c3107bcd876e\\native_physical_stream_open.obj",
+          "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+        },
+        "bytes": 22700,
+        "build_target": "bsp_core",
+        "complete_functions": 52,
+        "unique_whole_archive_member": {
+          "offset": 57803144,
+          "name": "/68566",
+          "bytes": 22700,
+          "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+        },
+        "whole_object_equal_before": true
+      },
+      {
+        "module": "native_filestore_request",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\eb598f0acc23f79ef43113c3ea7278e514e24b789bcde70b31def9a765c07e01\\native_filestore_request.obj",
+          "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21"
+        },
+        "bytes": 27268,
+        "build_target": "bsp_core",
+        "complete_functions": 60,
+        "unique_whole_archive_member": {
+          "offset": 35471504,
+          "name": "/41678",
+          "bytes": 27268,
+          "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21"
+        },
+        "whole_object_equal_before": true
+      },
+      {
+        "module": "native_vfs_open_route",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\5eca86e5d97b9b0ae0e5d2d3eb101b024783733994927baadd8f8d4a3a39f6ab\\native_vfs_open_route.obj",
+          "sha256": "cde80455bbae3f665546cbc91bcb037f0a443cbfbcd09d4beed9e506aa65ef13"
+        },
+        "bytes": 18432,
+        "build_target": "bsp_core",
+        "complete_functions": 34,
+        "unique_whole_archive_member": {
+          "offset": 25868738,
+          "name": "/12603",
+          "bytes": 18432,
+          "sha256": "cde80455bbae3f665546cbc91bcb037f0a443cbfbcd09d4beed9e506aa65ef13"
+        },
+        "whole_object_equal_before": false
+      },
+      {
+        "module": "native_vfs_mount_registration",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\5c2d8fb672bf3479f7818635752d5ae64b965b08ecc39fcf9535e7b0438b9d71\\native_vfs_mount_registration.obj",
+          "sha256": "255177e14ccaa270e045883b2050897864105a25e538e4ceb02eb56d1555dc8d"
+        },
+        "bytes": 13126,
+        "build_target": "bsp_core",
+        "complete_functions": 21,
+        "unique_whole_archive_member": {
+          "offset": 25951324,
+          "name": "/12798",
+          "bytes": 13126,
+          "sha256": "255177e14ccaa270e045883b2050897864105a25e538e4ceb02eb56d1555dc8d"
+        },
+        "whole_object_equal_before": true
+      },
+      {
+        "module": "game_native_vfs_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\f218cb6c89ce493fec1032dcc0bf4670318e7945b7cbdd7a9713d45486620909\\game_native_vfs_application.obj",
+          "sha256": "dbd05d31eb842f1dba59b8732f246dc16a2c92c4b256114d5c347227c720248b"
+        },
+        "bytes": 52869,
+        "build_target": "bsp_game",
+        "complete_functions": 113,
+        "direct_game_object_no_archive_claim": true,
+        "whole_object_equal_before": false
+      },
+      {
+        "module": "game_hosts_singletons",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\a57e080d06f94c1fd330e075e00a36f41e945e4d35739fe65611a606ae6456ea\\game_hosts_singletons.obj",
+          "sha256": "9e50dd6017fab6fd879387bacdd3e8787345a81e98fe2105ea5d9168e0b2175d"
+        },
+        "bytes": 36489,
+        "build_target": "bsp_game",
+        "complete_functions": 93,
+        "direct_game_object_no_archive_claim": true,
+        "whole_object_equal_before": false
+      }
+    ],
+    "whole_actual_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\2b2e3f3dd713455bbdb2895a392ecf19992fced8987716e07b29d3f2e58f9b36\\bsp_core.lib",
+      "sha256": "fc49eb9ec47316dd94f932d42d9bab3f9ffe0ff125036a64592cedcfde461909"
+    },
+    "unique_complete_core_members": 8,
+    "direct_game_objects": 2,
+    "whole_object_equality_count": 4
+  },
+  "normal_linked_game_proof": {
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\after_build\\frozen\\95aa3dc6f61391d4151cbd3e71ac4e6749a63dc1c3fd1f52b0fe8914c79094f0\\bsp_game.exe",
+      "sha256": "90b8a89eee93e8cc214b99d17f0dbd00085d36663d456a5f4797b8098fee624f"
+    },
+    "link_map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_failure_callable_publication_source_20261008a\\proof01\\frozen\\72eb4a309e2030052288e891d39cfbe86e9f0fb54fd0ae8d1775fd1f3d760611\\bsp_game.map",
+      "sha256": "e3c2c5611ad3b42cbc08dd9834d094960288b430f14198cabede2b50b1b40ac7"
+    },
+    "PE_timestamp": "6AC7A6B9",
+    "preferred_base": "10000000",
+    "selected_complete_mapped_bodies": [
+      {
+        "source": {
+          "module": "native_vfs_startup_callbacks",
+          "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+          "bytes": 32,
+          "sha256": "10693a5d432a3db980c7f6ce0791ce9f6ae60bcf87b07bf304fa8d8d16eb1bf3",
+          "hex": "558bec8b4d088b01c78090000000200653008b01c7808c000000305b73005dc3",
+          "relocations": [],
+          "complete_decode": true
+        },
+        "identity": {
+          "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+          "map_rows": [
+            {
+              "line": 9106,
+              "segment": 1,
+              "segment_offset": 3251424,
+              "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+              "va": 271690976,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "unique_selected_va": "1031ACE0",
+          "same_va_alias_rows": [
+            {
+              "line": 9106,
+              "segment": 1,
+              "segment_offset": 3251424,
+              "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+              "va": 271690976,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "PE_section": ".text",
+          "section_characteristics": "60000020"
+        },
+        "whole_linked_hex": "558bec8b4d088b01c78090000000200653008b01c7808c000000305b73005dc3",
+        "whole_linked_sha256": "10693a5d432a3db980c7f6ce0791ce9f6ae60bcf87b07bf304fa8d8d16eb1bf3",
+        "all_ordered_relocations_replayed": [],
+        "linked_bytes_complete_match": true
+      },
+      {
+        "source": {
+          "module": "native_vfs_startup_callbacks",
+          "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+          "bytes": 78,
+          "sha256": "a45a00351aa57f48f1ce9fa8772773730602b673b57f0185c47ffda779132a2e",
+          "hex": "558bec8b450883ec0c3d20065300741c3d00000000740632c08be55dc3b8000000008038c3750be800000000b0018be55dc368000000008d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 17,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 40,
+              "type": 20,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 51,
+              "type": 6,
+              "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+            },
+            {
+              "offset": 59,
+              "type": 20,
+              "target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 64,
+              "type": 6,
+              "target": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 73,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "complete_decode": true
+        },
+        "identity": {
+          "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+          "map_rows": [
+            {
+              "line": 9107,
+              "segment": 1,
+              "segment_offset": 3251456,
+              "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+              "va": 271691008,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "unique_selected_va": "1031AD00",
+          "same_va_alias_rows": [
+            {
+              "line": 9107,
+              "segment": 1,
+              "segment_offset": 3251456,
+              "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+              "va": 271691008,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "PE_section": ".text",
+          "section_characteristics": "60000020"
+        },
+        "whole_linked_hex": "558bec8b450883ec0c3d20065300741c3df0763610740632c08be55dc3b8f07636108038c3750be8c4c90400b0018be55dc368146345108d4df4e8618aceff68d0f747108d45f450e819860800cc",
+        "whole_linked_sha256": "b2ca87616159c7c714b6f3856ea1bdd5c2e6f5bf973ade4154630530987dcfc5",
+        "all_ordered_relocations_replayed": [
+          {
+            "relocation": {
+              "offset": 17,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "103676F0",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 30,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "103676F0",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 40,
+              "type": 20,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "0004C9C4",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 51,
+              "type": 6,
+              "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "10456314",
+            "target_identity": {
+              "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+              "map_rows": [
+                {
+                  "line": 23518,
+                  "segment": 2,
+                  "segment_offset": 594708,
+                  "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+                  "va": 272982804,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "unique_selected_va": "10456314",
+              "same_va_alias_rows": [
+                {
+                  "line": 23518,
+                  "segment": 2,
+                  "segment_offset": 594708,
+                  "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+                  "va": 272982804,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 59,
+              "type": 20,
+              "target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            "original_addend": "00000000",
+            "patched_word": "FFCE8A61",
+            "target_identity": {
+              "symbol": "??0logic_error@std@@QAE@PBD@Z",
+              "map_rows": [
+                {
+                  "line": 179,
+                  "segment": 1,
+                  "segment_offset": 10144,
+                  "symbol": "??0logic_error@std@@QAE@PBD@Z",
+                  "va": 268449696,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "unique_selected_va": "100037A0",
+              "same_va_alias_rows": [
+                {
+                  "line": 179,
+                  "segment": 1,
+                  "segment_offset": 10144,
+                  "symbol": "??0logic_error@std@@QAE@PBD@Z",
+                  "va": 268449696,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 64,
+              "type": 6,
+              "target": "__TI2?AVlogic_error@std@@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "1047F7D0",
+            "target_identity": {
+              "symbol": "__TI2?AVlogic_error@std@@",
+              "map_rows": [
+                {
+                  "line": 27095,
+                  "segment": 2,
+                  "segment_offset": 763856,
+                  "symbol": "__TI2?AVlogic_error@std@@",
+                  "va": 273151952,
+                  "origin": "game_hosts.obj"
+                }
+              ],
+              "unique_selected_va": "1047F7D0",
+              "same_va_alias_rows": [
+                {
+                  "line": 27095,
+                  "segment": 2,
+                  "segment_offset": 763856,
+                  "symbol": "__TI2?AVlogic_error@std@@",
+                  "va": 273151952,
+                  "origin": "game_hosts.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 73,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            "original_addend": "00000000",
+            "patched_word": "00088619",
+            "target_identity": {
+              "symbol": "__CxxThrowException@8",
+              "map_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "unique_selected_va": "103A3366",
+              "same_va_alias_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          }
+        ],
+        "linked_bytes_complete_match": true
+      },
+      {
+        "source": {
+          "module": "native_physical_failure_entries",
+          "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+          "bytes": 1,
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "hex": "c3",
+          "relocations": [],
+          "complete_decode": true
+        },
+        "identity": {
+          "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+          "map_rows": [
+            {
+              "line": 10080,
+              "segment": 1,
+              "segment_offset": 3565296,
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "va": 272004848,
+              "origin": "f   bsp_core:native_physical_failure_entries.obj"
+            }
+          ],
+          "unique_selected_va": "103676F0",
+          "same_va_alias_rows": [
+            {
+              "line": 10080,
+              "segment": 1,
+              "segment_offset": 3565296,
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "va": 272004848,
+              "origin": "f   bsp_core:native_physical_failure_entries.obj"
+            }
+          ],
+          "PE_section": ".text",
+          "section_characteristics": "60000020"
+        },
+        "whole_linked_hex": "c3",
+        "whole_linked_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "all_ordered_relocations_replayed": [],
+        "linked_bytes_complete_match": true
+      },
+      {
+        "source": {
+          "module": "native_vfs_startup_callbacks",
+          "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+          "bytes": 99,
+          "sha256": "e07417c2ea9df7988f04294700e03f09cf874ed1e305251162e839139e9dcf19",
+          "hex": "558bec8b450883ec0c3d2006530074163d000000007515b8000000008038c37526e8000000008be55dc2080068000000008d4df4e80000000068000000008d45f450e80000000068000000008d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 17,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 34,
+              "type": 20,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            {
+              "offset": 45,
+              "type": 6,
+              "target": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@"
+            },
+            {
+              "offset": 53,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 58,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 67,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            {
+              "offset": 72,
+              "type": 6,
+              "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+            },
+            {
+              "offset": 80,
+              "type": 20,
+              "target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 85,
+              "type": 6,
+              "target": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 94,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ],
+          "complete_decode": true
+        },
+        "identity": {
+          "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+          "map_rows": [
+            {
+              "line": 9108,
+              "segment": 1,
+              "segment_offset": 3251536,
+              "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+              "va": 271691088,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "unique_selected_va": "1031AD50",
+          "same_va_alias_rows": [
+            {
+              "line": 9108,
+              "segment": 1,
+              "segment_offset": 3251536,
+              "symbol": "?mount_failure_00be18b8@NativeVfsStartupCallbacks@bsp@@UAEXIPAX@Z",
+              "va": 271691088,
+              "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+            }
+          ],
+          "PE_section": ".text",
+          "section_characteristics": "60000020"
+        },
+        "whole_linked_hex": "558bec8b450883ec0c3d2006530074163df07636107515b8f07636108038c37526e87ac904008be55dc2080068546345108d4df4e88789ceff6854eb47108d45f450e8cf85080068146345108d4df4e8fc89ceff68d0f747108d45f450e8b4850800cc",
+        "whole_linked_sha256": "9f5f7e646458b13e9af279cf3560cf77864769981d7c63323cb053f8f0863e9a",
+        "all_ordered_relocations_replayed": [
+          {
+            "relocation": {
+              "offset": 17,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "103676F0",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 24,
+              "type": 6,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "103676F0",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 34,
+              "type": 20,
+              "target": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "0004C97A",
+            "target_identity": {
+              "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "unique_selected_va": "103676F0",
+              "same_va_alias_rows": [
+                {
+                  "line": 10080,
+                  "segment": 1,
+                  "segment_offset": 3565296,
+                  "symbol": "?raw_ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+                  "va": 272004848,
+                  "origin": "f   bsp_core:native_physical_failure_entries.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 45,
+              "type": 6,
+              "target": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "10456354",
+            "target_identity": {
+              "symbol": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@",
+              "map_rows": [
+                {
+                  "line": 23519,
+                  "segment": 2,
+                  "segment_offset": 594772,
+                  "symbol": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@",
+                  "va": 272982868,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "unique_selected_va": "10456354",
+              "same_va_alias_rows": [
+                {
+                  "line": 23519,
+                  "segment": 2,
+                  "segment_offset": 594772,
+                  "symbol": "??_C@_0DA@KGLCINAB@Unimplemented?5native?5VFS?5startup@",
+                  "va": 272982868,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 53,
+              "type": 20,
+              "target": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            "original_addend": "00000000",
+            "patched_word": "FFCE8987",
+            "target_identity": {
+              "symbol": "??0invalid_argument@std@@QAE@PBD@Z",
+              "map_rows": [
+                {
+                  "line": 177,
+                  "segment": 1,
+                  "segment_offset": 10000,
+                  "symbol": "??0invalid_argument@std@@QAE@PBD@Z",
+                  "va": 268449552,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "unique_selected_va": "10003710",
+              "same_va_alias_rows": [
+                {
+                  "line": 177,
+                  "segment": 1,
+                  "segment_offset": 10000,
+                  "symbol": "??0invalid_argument@std@@QAE@PBD@Z",
+                  "va": 268449552,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 58,
+              "type": 6,
+              "target": "__TI3?AVinvalid_argument@std@@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "1047EB54",
+            "target_identity": {
+              "symbol": "__TI3?AVinvalid_argument@std@@",
+              "map_rows": [
+                {
+                  "line": 27091,
+                  "segment": 2,
+                  "segment_offset": 760660,
+                  "symbol": "__TI3?AVinvalid_argument@std@@",
+                  "va": 273148756,
+                  "origin": "game_main.obj"
+                }
+              ],
+              "unique_selected_va": "1047EB54",
+              "same_va_alias_rows": [
+                {
+                  "line": 27091,
+                  "segment": 2,
+                  "segment_offset": 760660,
+                  "symbol": "__TI3?AVinvalid_argument@std@@",
+                  "va": 273148756,
+                  "origin": "game_main.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 67,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            "original_addend": "00000000",
+            "patched_word": "000885CF",
+            "target_identity": {
+              "symbol": "__CxxThrowException@8",
+              "map_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "unique_selected_va": "103A3366",
+              "same_va_alias_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 72,
+              "type": 6,
+              "target": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "10456314",
+            "target_identity": {
+              "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+              "map_rows": [
+                {
+                  "line": 23518,
+                  "segment": 2,
+                  "segment_offset": 594708,
+                  "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+                  "va": 272982804,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "unique_selected_va": "10456314",
+              "same_va_alias_rows": [
+                {
+                  "line": 23518,
+                  "segment": 2,
+                  "segment_offset": 594708,
+                  "symbol": "??_C@_0DO@GOPHDGFP@Native?5VFS?5raw?5failure?5callback?5@",
+                  "va": 272982804,
+                  "origin": "bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 80,
+              "type": 20,
+              "target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            "original_addend": "00000000",
+            "patched_word": "FFCE89FC",
+            "target_identity": {
+              "symbol": "??0logic_error@std@@QAE@PBD@Z",
+              "map_rows": [
+                {
+                  "line": 179,
+                  "segment": 1,
+                  "segment_offset": 10144,
+                  "symbol": "??0logic_error@std@@QAE@PBD@Z",
+                  "va": 268449696,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "unique_selected_va": "100037A0",
+              "same_va_alias_rows": [
+                {
+                  "line": 179,
+                  "segment": 1,
+                  "segment_offset": 10144,
+                  "symbol": "??0logic_error@std@@QAE@PBD@Z",
+                  "va": 268449696,
+                  "origin": "f i game_main.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 85,
+              "type": 6,
+              "target": "__TI2?AVlogic_error@std@@"
+            },
+            "original_addend": "00000000",
+            "patched_word": "1047F7D0",
+            "target_identity": {
+              "symbol": "__TI2?AVlogic_error@std@@",
+              "map_rows": [
+                {
+                  "line": 27095,
+                  "segment": 2,
+                  "segment_offset": 763856,
+                  "symbol": "__TI2?AVlogic_error@std@@",
+                  "va": 273151952,
+                  "origin": "game_hosts.obj"
+                }
+              ],
+              "unique_selected_va": "1047F7D0",
+              "same_va_alias_rows": [
+                {
+                  "line": 27095,
+                  "segment": 2,
+                  "segment_offset": 763856,
+                  "symbol": "__TI2?AVlogic_error@std@@",
+                  "va": 273151952,
+                  "origin": "game_hosts.obj"
+                }
+              ],
+              "PE_section": ".rdata",
+              "section_characteristics": "40000040"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 94,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            },
+            "original_addend": "00000000",
+            "patched_word": "000885B4",
+            "target_identity": {
+              "symbol": "__CxxThrowException@8",
+              "map_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "unique_selected_va": "103A3366",
+              "same_va_alias_rows": [
+                {
+                  "line": 10844,
+                  "segment": 1,
+                  "segment_offset": 3810150,
+                  "symbol": "__CxxThrowException@8",
+                  "va": 272249702,
+                  "origin": "f   vcruntime:VCRUNTIME140.dll"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          }
+        ],
+        "linked_bytes_complete_match": true
+      },
+      {
+        "source": {
+          "module": "native_vfs_runtime_bindings",
+          "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+          "bytes": 28,
+          "sha256": "7850174e0938d5485871abdee3f9453fd51417c43f850797a6fdcb81520dcb7c",
+          "hex": "558becff7508e80000000083c40484c074045dc20800e800000000cc",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "target": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z"
+            },
+            {
+              "offset": 23,
+              "type": 20,
+              "target": "?unsupported@?A0x65b333b2@bsp@@YAXXZ"
+            }
+          ],
+          "complete_decode": true
+        },
+        "identity": {
+          "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+          "map_rows": [
+            {
+              "line": 9091,
+              "segment": 1,
+              "segment_offset": 3235760,
+              "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+              "va": 271675312,
+              "origin": "f   bsp_core:native_vfs_runtime_bindings.obj"
+            }
+          ],
+          "unique_selected_va": "10316FB0",
+          "same_va_alias_rows": [
+            {
+              "line": 9091,
+              "segment": 1,
+              "segment_offset": 3235760,
+              "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+              "va": 271675312,
+              "origin": "f   bsp_core:native_vfs_runtime_bindings.obj"
+            }
+          ],
+          "PE_section": ".text",
+          "section_characteristics": "60000020"
+        },
+        "whole_linked_hex": "558becff7508e8453d000083c40484c074045dc20800e8f5060000cc",
+        "whole_linked_sha256": "3951e74d02f722109e6d2d5b5389f8e876132d9590fc3686df499e6a4a25f43b",
+        "all_ordered_relocations_replayed": [
+          {
+            "relocation": {
+              "offset": 7,
+              "type": 20,
+              "target": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z"
+            },
+            "original_addend": "00000000",
+            "patched_word": "00003D45",
+            "target_identity": {
+              "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+              "map_rows": [
+                {
+                  "line": 9107,
+                  "segment": 1,
+                  "segment_offset": 3251456,
+                  "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+                  "va": 271691008,
+                  "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "unique_selected_va": "1031AD00",
+              "same_va_alias_rows": [
+                {
+                  "line": 9107,
+                  "segment": 1,
+                  "segment_offset": 3251456,
+                  "symbol": "?invoke_native_vfs_startup_failure_target@bsp@@YA_NI@Z",
+                  "va": 271691008,
+                  "origin": "f   bsp_core:native_vfs_startup_callbacks.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          },
+          {
+            "relocation": {
+              "offset": 23,
+              "type": 20,
+              "target": "?unsupported@?A0x65b333b2@bsp@@YAXXZ"
+            },
+            "original_addend": "00000000",
+            "patched_word": "000006F5",
+            "target_identity": {
+              "symbol": "?unsupported@?A0x65b333b2@bsp@@YAXXZ",
+              "map_rows": [
+                {
+                  "line": 32973,
+                  "segment": 1,
+                  "segment_offset": 3237568,
+                  "symbol": "?unsupported@?A0x65b333b2@bsp@@YAXXZ",
+                  "va": 271677120,
+                  "origin": "f   bsp_core:native_vfs_runtime_bindings.obj"
+                }
+              ],
+              "unique_selected_va": "103176C0",
+              "same_va_alias_rows": [
+                {
+                  "line": 32973,
+                  "segment": 1,
+                  "segment_offset": 3237568,
+                  "symbol": "?unsupported@?A0x65b333b2@bsp@@YAXXZ",
+                  "va": 271677120,
+                  "origin": "f   bsp_core:native_vfs_runtime_bindings.obj"
+                }
+              ],
+              "PE_section": ".text",
+              "section_characteristics": "60000020"
+            }
+          }
+        ],
+        "linked_bytes_complete_match": true
+      }
+    ],
+    "unmapped_object_only_functions": [
+      {
+        "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsApplication@game@bsp@@QAEPAXXZ",
+        "scope": "Whole object/archive only; no unique normal-link map identity, no linked/loaded-body claim"
+      },
+      {
+        "symbol": "?publish_and_borrow_raw_failure_manager@GameNativeVfsRuntime@game@bsp@@AAEPAXXZ",
+        "scope": "Whole object/archive only; no unique normal-link map identity, no linked/loaded-body claim"
+      },
+      {
+        "symbol": "?qualified_native_vfs_raw_failure_target@bsp@@YAIXZ",
+        "scope": "Whole object/archive only; no unique normal-link map identity, no linked/loaded-body claim"
+      },
+      {
+        "symbol": "?raw_notify_native_vfs_request_failure_00bd9e30@bsp@@YIXPAXII@Z",
+        "scope": "Whole object/archive only; no unique normal-link map identity, no linked/loaded-body claim"
+      }
+    ],
+    "loaded_or_executed": false,
+    "uniqueness": "Exact symbol map rows and their selected address/section; no global C3 byte-pattern uniqueness assertion"
+  },
+  "retained_inputs": {
+    "phase_manifests": {
+      "before_edit": {
+        "path": "local/cc12_physical_failure_callable_publication_source_20261008a/before_edit/manifest.json",
+        "sha256": "1de1175d5cf3905af28a1e7b076d445ed26c5e135615d0c93e001061f1545c8c"
+      },
+      "before_build": {
+        "path": "local/cc12_physical_failure_callable_publication_source_20261008a/before_build/manifest.json",
+        "sha256": "3706315d49e4362b419b5c2980cb9562a0c9a47e7170e5c1e946978a88f8e551"
+      },
+      "after_build": {
+        "path": "local/cc12_physical_failure_callable_publication_source_20261008a/after_build/manifest.json",
+        "sha256": "d3509c0dc4d7435a9511c1dd8aa115efc8d10eeda021ded74bf3f12263ecaa86"
+      }
+    },
+    "physically_retained_phase_rows": {
+      "before_edit": 629,
+      "before_build": 629,
+      "after_build": 629
+    },
+    "phase_rows_total": 1887,
+    "postbuild_static_proof_rows": 7,
+    "postbuild_link_input_rows": 25,
+    "stable_before_build_input_rows": 614,
+    "expected_changed_build_output_rows": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "764a35ab617b691e870cbf75ffcce3e5e311c149edf30c4fcf38cf24da36a49a",
+        "after_sha256": "ede5627c546c32e6ab9822df89d55b85ef9a89a836164675a6b73c96cebb24e1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "66122ef161d3431498617f40a918c23a6777c0e5cd6ee6c23db950f84580cb87",
+        "after_sha256": "f6d75d3bfb400b0c7dcd241dbc04abf4e584073016f317f171e089381fa62434"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "49ae437a458aba4fe1be8c28114d8ff7c6c0081396ef68327b3ee959b122228e",
+        "after_sha256": "10f05e2fc79fbf5a2e0a0590d1617a606985593097c23f734b2f37f8a982ea05"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\bsp_game.tlog\\CL.command.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "73dd9a9fbeb3e40f54de9d03de184b17c01e3e2584071925b729e0b17db94e2e",
+        "after_sha256": "4e01b6b8d13dca23c02258f1ac5a7c267691d50d21285fe89f8f235663d3b561"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\bsp_game.tlog\\CL.read.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "01ca9d55b508caa2d828db28f3e82bdf496acf623443e706c0127602f13b8920",
+        "after_sha256": "6a2e9b501c1b53b4b4c4a570a9aa673affab7ddda97e76fb6fe0bc7fad424c3f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\bsp_game.tlog\\CL.write.1.tlog",
+        "roles": [
+          "actual_compile_record_at_capture"
+        ],
+        "before_sha256": "a5ae1ff81162107778723fdf220d2e5791901c55cd449ee73746783bf8d3a892",
+        "after_sha256": "ea651880bf31803b137b831ee804baa44a224c6c762fbb614c1f497cd4bfda06"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.vcxproj",
+        "roles": [
+          "actual_MSBuild_project_at_capture"
+        ],
+        "before_sha256": "6c34530eb35097bcb4f08c0e6e3eb94bfd9708bae324ec6bf45a08bdb7bc86b5",
+        "after_sha256": "0d71bdd2f047d64688686f2f74b80b798b86b6408e5369207bc310e75fc071a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+        "roles": [
+          "whole_existing_library_or_game_artifact_at_capture"
+        ],
+        "before_sha256": "6f8cd8b48cb62eb5e8a952b6ba80c5813a0ad1448ae34ce1e7d316df7f997a55",
+        "after_sha256": "fc49eb9ec47316dd94f932d42d9bab3f9ffe0ff125036a64592cedcfde461909"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_game.exe",
+        "roles": [
+          "whole_existing_library_or_game_artifact_at_capture"
+        ],
+        "before_sha256": "8d53cdedab32e808131b6e107778fae1e37b52702dae9d2d9c164f692c20d796",
+        "after_sha256": "90b8a89eee93e8cc214b99d17f0dbd00085d36663d456a5f4797b8098fee624f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\game_native_vfs_runtime.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20",
+        "after_sha256": "33dd37d5dbb041d26a991f08fb298fa6c48bb81ff2127e6588a405ab53836e9d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_vfs_startup_callbacks.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711",
+        "after_sha256": "e30a7542d05037b8c8b2d0fef575660ffe067b397db3181f7a346718d8f73ad1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_vfs_runtime_bindings.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65",
+        "after_sha256": "098e816df2832e695fb2ac4eb34031649198376e11f54acf72e9a19cd2b8367c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_vfs_open_route.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "2c49ffad48ab4cc66c802a7bcc6be1dad8a7a3aa4a07e1916df4d6360163dd5d",
+        "after_sha256": "cde80455bbae3f665546cbc91bcb037f0a443cbfbcd09d4beed9e506aa65ef13"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\game_native_vfs_application.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "e2282e735ae4512b545cadecd15fc35e8b55fa89bdb1279cc4a6cce9311630f9",
+        "after_sha256": "dbd05d31eb842f1dba59b8732f246dc16a2c92c4b256114d5c347227c720248b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_game.dir\\Release\\game_hosts_singletons.obj",
+        "roles": [
+          "whole_selected_provider_object_at_capture"
+        ],
+        "before_sha256": "ca66d703cb63aad93aee6e574c4b2b657cd484adc439ca1253687113b70e0231",
+        "after_sha256": "9e50dd6017fab6fd879387bacdd3e8787345a81e98fe2105ea5d9168e0b2175d"
+      }
+    ],
+    "actual_affected_compiler_read_counts": {
+      "native_vfs_startup_callbacks": 92,
+      "native_vfs_runtime_bindings": 294,
+      "game_native_vfs_runtime": 355,
+      "game_native_vfs_application": 409
+    },
+    "actual_unique_compiler_includes_or_ambient_inputs": 460,
+    "all460_actual_read_inputs_physically_copied_before_build_and_after_equal": true,
+    "input_record_artifact": {
+      "path": "local/cc12_physical_failure_callable_publication_source_20261008a/proof01/whole_proof.json",
+      "sha256": "63db71bab82aea955d4b8b3143b3b67a9b6de5046b1e8fcd352ff0cdac99ee50"
+    },
+    "candidate_scope": "The 629 phase rows are selected actual inputs/artifacts and physically copied include candidates from prior provider records. Unused candidates are not claimed as consumed. Four changed translation-unit CPP files are independently pre-frozen, in addition to actual CL-read includes/ambient records.",
+    "libraries": {
+      "project_library_pre_and_post_artifacts": 3,
+      "actual_link_libraries_retained": 23,
+      "external_import_libraries_post_build_only": 20,
+      "link_tool_was_pre_frozen": true,
+      "manifest": {
+        "path": "local/cc12_physical_failure_callable_publication_source_20261008a/link_inputs_after/manifest.json",
+        "sha256": "3e1a729e528f4fe5648875d5336957b53b8f268f2481ec16202dc9a7316c6700"
+      },
+      "timing_qualification": "The three project libraries have before/after artifact copies; bsp_core is regenerated by this build. The 20 SDK/CRT import libraries are post-build copies only. This does not claim exhaustive linker, runtime DLL or OS closure."
+    },
+    "limitation": "No exhaustive compiler/linker/SDK/runtime-DLL/OS closure. The new core archive is a post-compilation artifact consumed by the normal game link; its pre-build copy is the prior archive, not a pre-copy of regenerated bytes. External import libraries are explicitly post-build copies only."
+  },
+  "readiness": {
+    "Source_feature_implemented": true,
+    "normal_build_and_existing_checks_passed": true,
+    "whole_COFF_archive_qualified": true,
+    "five_selected_linked_bodies_qualified": true,
+    "application_private_API_standalone_qualifier_and_notifier_linked_identity_qualified": false,
+    "loaded_code_or_initialized_callable_owner_observed": false,
+    "new_API_or_raw_entry_executed": false,
+    "whole_Original_ABI_or_class_promotion": false,
+    "connected_raw_read_ready": false,
+    "game_validated": false
+  },
+  "scope_boundaries": [
+    "Public application/private runtime publisher, standalone qualifier and raw notifier lack unique entries in the actual normal link map; their claims remain whole object/archive only.",
+    "Mapped C3/helper uniqueness refers to exact symbol rows and selected VA/section, never global uniqueness of C3 bytes. All five complete linked bodies replay every ordered relocation from the whole COFF using actual map operands and same-VA aliases.",
+    "This is guarded callable Source adaptation at an existing interior store, with zero additional Original function credit. No owner runtime, shutdown concurrency, raw read, factory/lifecycle graph or gameplay admission follows."
+  ]
+}

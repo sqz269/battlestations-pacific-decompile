@@ -79,9 +79,8 @@ void* NativeVfsRuntimeBindings::open_manager_entry(std::uintptr_t entry,void* ma
     return open_native_vfs_resource_00bdf310(manager,name,flags,route_);
 }
 void NativeVfsRuntimeBindings::open_failure_entry(std::uintptr_t entry,void* captured_manager) {
-    (void)captured_manager; // The confirmed one-byte RET body reads no inputs.
-    if(entry!=0x00530620)unsupported();
-    ignore_native_vfs_mount_failure_00530620();
+    (void)captured_manager; // Both admitted no-op bodies read no semantic inputs.
+    if(!invoke_native_vfs_startup_failure_target(entry))unsupported();
 }
 std::uint8_t NativeVfsRuntimeBindings::invoke_submit(std::uintptr_t entry,
     void* provider, const void* first, const void* second,

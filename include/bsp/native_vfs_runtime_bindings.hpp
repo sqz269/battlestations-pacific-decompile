@@ -57,8 +57,9 @@ public:
     // Consume already captured entries without re-reading the owner's table.
     void* open_manager_entry(std::uintptr_t entry,void* manager,
         const void* actual_name,std::uint32_t flags);
-    // BDF432 consumes the captured manager+90 code identity. Only the
-    // reconstructed startup no-op target is admitted; never execute an identity.
+    // BDF432 consumes the captured manager+90 word. Admit only the Original
+    // startup identity or qualified exact raw Source symbol; never execute an
+    // identity or an arbitrary supplied pointer as code.
     void open_failure_entry(std::uintptr_t entry,void* captured_manager);
     std::uint8_t invoke_submit(std::uintptr_t captured_entry, void* actual_provider,
         const void* first_header, const void* second_header,

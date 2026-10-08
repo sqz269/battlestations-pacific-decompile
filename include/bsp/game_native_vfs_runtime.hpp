@@ -156,6 +156,12 @@ public:
     // dispatch bindings and clear its matching VFS publication before teardown.
     void retire_after_shared_drain() noexcept;
 private:
+    friend class GameNativeVfsApplication;
+    // Application-only opt-in: its completed-initialization gate must precede
+    // the runtime/owner/preimage checks. Borrowing extends no lifetime. Callers
+    // exclude concurrent publication/callback changes and finish uses before
+    // shared shutdown starts; keep the existing owners and code through drain.
+    void* publish_and_borrow_raw_failure_manager();
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
