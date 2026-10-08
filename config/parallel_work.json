@@ -35070,6 +35070,67 @@
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
+    },
+    {
+      "id": "cc12_scene_property_record_type8_byte_array_storage",
+      "done": false,
+      "state": "ready independently reviewed whole112B34 tag8 byte-array retain/copy raw storage",
+      "function_addresses": [
+        "008ef2f0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+        "src/native_scene_property_record_type8_byte_array_storage.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type8_byte_array_storage_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_raw_native_string_duplicate_00438e40"
+      ],
+      "readiness_document": "docs/CC12_PROPERTY_RECORD_REMAINING_READINESS.md",
+      "readiness_report": "reports/cc12_property_record_remaining_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "worker_commit": "d16aa28f9b6d6a92f40443ed36d6550c2e0dee88",
+        "manifest_sha256": "6abe2739325b9e347d16c5b050ca6e821e3a23a61f96d73ce3722e4d195097eb",
+        "exact_artifacts": 297,
+        "exact_actual_files": 298,
+        "prior_pins": 4640,
+        "complete_native_bytes": 112,
+        "complete_native_instructions": 34,
+        "Root_live_listing": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_primary_live.log",
+        "Root_live_listing_sha256": "8bd8b2507da5b384d848139043951fe48371ed5027fad05eca2a35d30e813e0b",
+        "installed_PE_and_actual_caller_verified": true,
+        "Source_admission_credit": 0,
+        "private_CRT_EH_class_game_admitted": false
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "public_API": "void* __fastcall construct_native_scene_property_record_type8_byte_array_storage_008ef2f0(void* actual_root_ecx, void* unused_edx, const void* actual_bytes, uint32_t byte_count, uint32_t copy_flag_bits)",
+        "exactly_four_owned_files": [
+          "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+          "src/native_scene_property_record_type8_byte_array_storage.cpp",
+          "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+          "reports/native_scene_property_record_type8_byte_array_storage_cc12.json"
+        ],
+        "contract": "Root reviewed whole112B34 with both branches and two genuine CALL operands [47,51)/[62,66) only;104literalbytes. Actualfreshunowned56root ECX, unusedEDX padding, threeactual stackDWORDpointer/n/fullflag RET12/EAXroot. LowbyteCMP flag0 retains actual caller-managedlivepointer, ECXroot/EDXpointer and8D5=44 includingAF0; high24flagbits ignored. Nonzero lowbyte uses actual Source-only noinline CDECL sizeadapter to unchanged canonical native=host=n and realVCRUNTIME140 memcpy; no virtual-service substitute, adapterNativecredit0. Observe exactpositive byte spans whilelive, all29written27preservedbytes, callerframe/transport/nonvols/fullownedchild/otherliveobjects/guards. Copy finalflags derive actual ADDESP16 using entryT: beforeT-24 afterT-8; actualrawcallframe offsets must independentlyderived, do not inherit another fixture. CopyECXEDX actualvolatileunasserted; DF0 aroundCRT/no blanketFPES. New3TU ctor+realadapter/canonical/probe;4rawentries Original+Source eachbranch,4realroots+2copiedchildren6canonicalalloc/frees, statically gate realordinarycallers. Freeeachactualchildoncebeforeroot, neverfreeborrowedretainedpointer. Fullcode/COFF/link/maps/helper/cookie/import/physicalI386provider IAT/export/NTpath/fileID/fullSHA/ASLRbookends before0targets/after, immutable allconsumedheaders/libs/tool/source/native/4640older+298auditpins. No oldobjects/BSParchives/helpers/acceptedstage/process replay. Freeze mutable unconsumed dispatch/CMake metadata atgeneration with explicitassociation;Root separatelybuildsMain and independent freshfixture. Source0untilRootreview. No zero-size/failure/EH/overlap/invalidspan/nativeprivateCRT/fullclone/phase/vtable/class/World/game admission.",
+        "future_minimal_validation": {
+          "TUs": [
+            "new constructor plus real Source-only allocation size adapter",
+            "unchanged canonical allocation/free TU",
+            "new ignored probe"
+          ],
+          "actual_objects": "Four fresh56 roots + two actual owned copied payloads = six actual allocations/frees. Two real guarded positive-length byte spans may be shared across independent cases; retained pointers are never freed as children.",
+          "entries": "Exactly four raw target entries: Source retained, qualified boundOriginal retained, Source copy, qualified boundOriginal copy. Both branches of whole body; ordinary genuine compiler callers only statically gated.",
+          "flags_and_bits": "Retained copyflag fullDWORD has nonzero highbits but lowbyte0. Copy cases use distinct nonzero lowbytes (e.g1 and80h), proving byte-width predicate and complete three-stack-word transport. Opaque byte payloads may containNUL; exact bytecount copying, no scan/numeric experiment.",
+          "checks": "Observe complete56 roots, both livecopiedchildren and all guarded inputs/captures;29written27preserved; actual pointeridentity inretainedbranch; ownedchilddisjointness incopy; finalbranchspecificflags/RET12/EAX/nonvol/borrowECXEDX; copyECXEDX recorded only. Preserve everyotherliveobject and source bytes. Freeownedchildren oncebefore roots; caller retains original inputs.",
+          "whole_original": "Copy native112 into freshRW thenRX, rebind only real rel32 operands[47,51)/[62,66) to same actual sizeadapter/memcpythunk used bySource. All104 otherbytes literal. Label current-domain-bound Original; no unchanged-privateCRT claim.",
+          "strict_gates": "Fresh wholeCOFF/linked constructors, sizeadapter, canonical allocation/free, genuine compiler callers, rawcaller, whole main, complete map-ownedcookie/stackhelpers/importthunks; actual I386 mapped heap+copy CRT fileID/NTpath/fullhash/export/IAT/MEM_IMAGE/prefix before0entries/afterallfrees. Freeze actual consumed source/headers includingextensionless/libs/tools/proposal/oldpins. NoBSParchive,oldobject,mockcallback,forcedreturn,trackedtestframework,privateEH or oldsuccessful stage/process replay.",
+          "native_CRT_scope": "Normal current-provider successful positive spans only. Source-only bridge carries zero Native credit; native original provider bodies are not admitted by operand retargeting."
+        },
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {
