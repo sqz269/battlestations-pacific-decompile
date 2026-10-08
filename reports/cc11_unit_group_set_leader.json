@@ -4082,5 +4082,262 @@
       "sha256": "4f244a530bd32c1188a17a4d52715377cdad98cf031d0fdb192647368dd5c821"
     }
   ],
-  "worker_scope": "Exactly four registered new owned paths. No shared CMake/ledger/registry/Ghidra mutations or full repository build. Root owns annotation, registration, integration and broader validation."
+  "worker_scope": "Exactly four registered new owned paths. No shared CMake/ledger/registry/Ghidra mutations or full repository build. Root owns annotation, registration, integration and broader validation.",
+  "primary_integration": {
+    "source_revision": "273980cf308d8f2d1b60e175d58c4e5e3a483d74",
+    "worker_revision": "c60768791daae3a778f26d3d5aa43846767600e3",
+    "full_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc11_set_leader_integrated_build.log",
+    "current_core_sha256": "20a5e7feda63309a9c86746e4e248f5fe78c5f270fc215cb627288d8f5e362d4",
+    "independent_component_manifest": "local/cc11_set_leader_current_primary/inputs_after.json",
+    "independent_component_manifest_sha256": "5a1fe6756d99174d9ae015eb3d52f104de15c51ec288be2ede5bbab6fcaca84a",
+    "component_revision": "b76811c0d85834723ad6e470848d09163288b170",
+    "fresh_translation_units": 8,
+    "actual_project_headers": 7,
+    "actual_generated_headers": 1,
+    "actual_host_headers": 266,
+    "actual_searched_libraries": 7,
+    "selected_tools": 4,
+    "stable_worker_paths": 784,
+    "source_bookend_stable": true,
+    "whole_Source_COFF": [
+      {
+        "native_entry": "0070d0c0",
+        "symbol": "?set_native_unit_group_leader_0070d0c0@bsp@@YIXPAX000@Z",
+        "bytes": 36,
+        "instruction_count": 16,
+        "sha256": "b35de2a7f8b9951c4be1b377bb90e2338025bc81326002a854da03821447e161",
+        "relocations": [
+          {
+            "operand_offset": "18",
+            "coff_kind": "0014",
+            "symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z"
+          }
+        ],
+        "linked_map_va": "00401000",
+        "native_non_CALL_operand_bytes_equal": 32,
+        "whole_native_PE_equal": false
+      },
+      {
+        "native_entry": "00815e20",
+        "symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z",
+        "bytes": 182,
+        "instruction_count": 42,
+        "sha256": "40ed41e0fd4e0e122c703a1d6798c05a9af22b4f129f3e1a88c080baae481f00",
+        "relocations": [
+          {
+            "operand_offset": "31",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "41",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "8B",
+            "coff_kind": "0014",
+            "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z"
+          }
+        ],
+        "linked_map_va": "00401030",
+        "native_non_CALL_operand_bytes_equal": 170,
+        "whole_native_PE_equal": false
+      },
+      {
+        "native_entry": "00414db0",
+        "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+        "bytes": 89,
+        "instruction_count": 28,
+        "sha256": "b0b6156c245037d3c8ff7508ddba31f8545509519f0ee5a818d52ad713ad3536",
+        "relocations": [
+          {
+            "operand_offset": "17",
+            "coff_kind": "0014",
+            "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+          },
+          {
+            "operand_offset": "31",
+            "coff_kind": "0014",
+            "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z"
+          },
+          {
+            "operand_offset": "42",
+            "coff_kind": "0014",
+            "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z"
+          }
+        ],
+        "linked_map_va": "004010f0",
+        "native_non_CALL_operand_bytes_equal": 77,
+        "whole_native_PE_equal": false
+      },
+      {
+        "native_entry": "00815680",
+        "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z",
+        "bytes": 456,
+        "instruction_count": 135,
+        "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd",
+        "relocations": [],
+        "linked_map_va": "00401150",
+        "native_non_CALL_operand_bytes_equal": 456,
+        "whole_native_PE_equal": true
+      },
+      {
+        "native_entry": "004134f0",
+        "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+        "bytes": 103,
+        "instruction_count": 35,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "relocations": [],
+        "linked_map_va": "00401320",
+        "native_non_CALL_operand_bytes_equal": 103,
+        "whole_native_PE_equal": true
+      },
+      {
+        "native_entry": "00413920",
+        "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+        "bytes": 874,
+        "instruction_count": 290,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "relocations": [],
+        "linked_map_va": "00401390",
+        "native_non_CALL_operand_bytes_equal": 874,
+        "whole_native_PE_equal": true
+      }
+    ],
+    "seven_canonical_Source_edges": [
+      {
+        "source_native_entry": "0070d0c0",
+        "operand_offset": "18",
+        "target_native_entry": "00815e20",
+        "target_linked_va": "00401030",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00815e20",
+        "operand_offset": "31",
+        "target_native_entry": "00414db0",
+        "target_linked_va": "004010f0",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00815e20",
+        "operand_offset": "41",
+        "target_native_entry": "00414db0",
+        "target_linked_va": "004010f0",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00815e20",
+        "operand_offset": "8B",
+        "target_native_entry": "00815680",
+        "target_linked_va": "00401150",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00414db0",
+        "operand_offset": "17",
+        "target_native_entry": "00414db0",
+        "target_linked_va": "004010f0",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00414db0",
+        "operand_offset": "31",
+        "target_native_entry": "00413920",
+        "target_linked_va": "00401390",
+        "complete_canonical_Source_target": true
+      },
+      {
+        "source_native_entry": "00414db0",
+        "operand_offset": "42",
+        "target_native_entry": "004134f0",
+        "target_linked_va": "00401320",
+        "complete_canonical_Source_target": true
+      }
+    ],
+    "Source_constructor_setup_only": {
+      "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z",
+      "machine": "I386",
+      "section": 3,
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+      "relocations": [],
+      "instruction_count": 39,
+      "linked_map_va": "00401700",
+      "whole_Source_COFF_linked_equal": true,
+      "Original_constructor_executed": false
+    },
+    "native_call_rows": 8,
+    "native_call_failures": 0,
+    "native_call_receipt": "local/cc11_set_leader_native_calls.log",
+    "execution_output": "GRAPH original_bodies=6 original_code_bytes=1740 island_bytes=4205030 original_CALL_patches=0 original_entry=01BD9BD0 source_entry=00D21000 original_wake=01CE2930 source_wake=00D21030 edges=7 constructor_Source_bytes=132 Native_constructor_calls=0\nCASE 0 equal_nonnull_third_stored_leader group=0056F2B0 next=0056CFB0 previous=0056CFB0 stored_before=0056DFB0 stored_after=0056DFB0 CW=037F SW_before=7520 SW_after=7520 TOP=6 TAG=0FFF EAX=0056CFB0 ECX=0056F2B0 EDX=EDED1122 EFLAGS=00000246 ESPdelta=0 entryESP=0055EB18 MXCSR=00001FA0 XMM0=seed_unchanged X=98734E29 Y=2C07E2BD Z=C09B7651 FPIP_original=00D226C5 FPIP_source=00D226C5 backing=10368_exact frame=32_exact\nCASE 1 different_previous_NULL group=0056F2B0 next=0056CFB0 previous=00000000 stored_before=0056DFB0 stored_after=0056CFB0 CW=0A7F SW_before=7520 SW_after=7520 TOP=6 TAG=0FFF EAX=00000000 ECX=0056F2B0 EDX=EDED1122 EFLAGS=00000246 ESPdelta=0 entryESP=0055EB18 MXCSR=00001FA0 XMM0=seed_unchanged X=AB86613C Y=3F1AF5D0 Z=D3AE8964 FPIP_original=00D226C5 FPIP_source=00D226C5 backing=10368_exact frame=32_exact\nCASE 2 real_wake_dirty_roots group=0056F2B0 next=0056CFB0 previous=0056DFB0 stored_before=0056DFB0 stored_after=0056CFB0 CW=027F SW_before=7520 SW_after=7523 TOP=6 TAG=0FFF EAX=0056DF4C ECX=00000000 EDX=0056EF54 EFLAGS=00000202 ESPdelta=0 entryESP=0055EB18 MXCSR=00001FA0 XMM0=zero X=41400000 Y=00000000 Z=40800000 FPIP_original=01CE29D9 FPIP_source=00D210D9 backing=10368_exact frame=32_exact\nCASE 3 real_wake_next_parent_is_previous group=0056F2B0 next=0056CFB0 previous=0056DFB0 stored_before=0056DFB0 stored_after=0056CFB0 CW=0A7F SW_before=5D20 SW_after=5D23 TOP=3 TAG=FFFF EAX=0056DF4C ECX=00000000 EDX=0056EF54 EFLAGS=00000202 ESPdelta=0 entryESP=0055EB18 MXCSR=00001FA0 XMM0=zero X=40000000 Y=00000000 Z=C0400000 FPIP_original=01CE29D9 FPIP_source=00D210D9 backing=10368_exact frame=32_exact\nPASS checks=383 cases=4 comparisons=8 failures=0 families=1 Original_code_bytes=1740 CALL_patches=0 Source_constructor_calls=4 Native_constructor_calls=0\n",
+    "embedded_manifest": {
+      "PE32_I386": true,
+      "asInvoker": true,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "current_link_inputs": {},
+    "root_attempts": [
+      {
+        "stage": "preparation",
+        "path": "local/cc11_set_leader_primary_attempt01",
+        "error": "KeyError published_changes; actual historical_handoff_changes; before compilation/link/execution",
+        "source_changed": false
+      },
+      {
+        "stage": "argument gate",
+        "path": "local/cc11_set_leader_current_primary/execution.log",
+        "error": "Missing inspected constructor byte-size argument; one failed argc check before any native/source body calls",
+        "compile_and_link_passed": true,
+        "native_body_execution_count": 0,
+        "source_changed": false
+      }
+    ],
+    "root_execution_correction": "Preserve original recipe and first argc-only log; reuse unchanged strict8TU compiled/linked artifacts, fully inspect six whole bodies/seven canonical edges and SourceCtor132B39 before first native body execution; pass inspected constructor size132 and fresh runtime directory via exact argv receipt. No repeated native family.",
+    "native_execution_ordinal": 1,
+    "qualification": "Whole70D0C036B16 compares SUPPLIED next/previous arguments, not storedgroup14; equality is inert even if storedleader differs, unequalpreviousNULL publishes next without wake, unequalnonnullprevious invokes genuinewhole815E20182 BEFORE publish. Only natural CALL operand18h relocates;32 otherbytes Original-exact, fullphysical Win32RET8/register/flags contract retained. Independent eight-current-TU383-check/4-case/8-call family uses genuinewhole SourceCtor132B39 on sameactual508group; all six complete raw bodies1740B and seven canonical Sourceedges match original exact-relative4205030-byte island with ALLseven nativeCALL operands unchanged. ActualCF4888bits4479C000 are nativeDATA borrowed into Source; nativeCtor neverexecuted/profileCFD6F8 uncallableDATA. Full10368actual backing/32physicalframeguards/216statebytes match except naturalwakeFPIP. RootEFLAGS246 early/202wake versusworker246/206wake are common-callsite/ESP observations, not intrinsicconstants. Dirtyparentmultiply needs EMPTYtagFFFF (nonzeroemptyTOP valid); otherpaths admitonefreeslot/two80bitcanaries. Original caller77BD70/class6virtualadmission/detach/fullclass/lifetimes/allocator/privateEH/concurrency/world/game remain external.",
+    "raw_leaf_ABI_verified": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "tracked_tests_added": 0,
+    "saved_prior_annotations": "local/ghidra-annotations-20261008T024958Z.json",
+    "annotations_saved": true,
+    "exports_refreshed": true,
+    "forced_snapshot_log": "local/cc11_set_leader_and_map_snapshot.log",
+    "saved_program": "/battlestationspacific.exe",
+    "saved_project": "C:/Users/sqz269/bsp.gpr"
+  },
+  "primary_source_status": "whole36 raw assignment integrated; independent current eight-TU383-check fixture/fullWin32/all3CTests PASS; enclosing caller/class/world/game qualified",
+  "analysis_followups": {
+    "newly_defined_native_initializers": [
+      {
+        "address": "004ba130",
+        "bytes": 32,
+        "instructions": 11,
+        "Source_complete": false
+      },
+      {
+        "address": "004d25f0",
+        "bytes": 39,
+        "instructions": 12,
+        "Source_complete": false
+      }
+    ],
+    "constructor_definition_receipt": "local/cc11_enum_map_constructor_definitions.json",
+    "constructor_definition_receipt_sha256": "aa759572328b7ecd869083f780565281c084b939316994eca1ba4667569f4498",
+    "repaired_nested_listing": {
+      "address": "004d0eb0",
+      "bytes": 36,
+      "instructions": 12,
+      "Source_complete": false,
+      "prior_documentation": "local/cc11_nested_map_listing_before.json",
+      "flow_repair": "local/cc11_nested_map_flow_repair.json",
+      "definition": "local/cc11_nested_map_definition.json",
+      "unresolved": "Standalone108 allocation/deleting lineage remains unproved; proven interior10Croot+4 must never be freed; no flag0 subset completion."
+    },
+    "counts_qualification": "Two new Ghidra functions and one repaired listing are analysis progress, separately from the single reconstructed Source36 leader function in this batch."
+  }
 }
