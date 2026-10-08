@@ -60,6 +60,7 @@ void GameVfsHost::phase2(VfsStartupState& state) {
         hardware_probe_ = std::make_unique<GameHardwareProbe>(log_, hardware_probe_commit_);
         hardware_probe_->run();
         invoke_native([&] { native_->initialize_core(); });
+        invoke_native([&] { (void)native_->publish_and_borrow_raw_failure_manager(); });
         core_ready_ = true;
         factories_registered_ = 3; // physical, FileStore, MPKG completed
         state.factories_registered += 2; // explicit phase-2 registrations
