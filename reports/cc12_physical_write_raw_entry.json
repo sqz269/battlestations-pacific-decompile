@@ -636,5 +636,21 @@
     "EDX and EFLAGS are not general ABI equivalence claims; no universal CPU/OS, startup or gameplay validation.",
     "CMake source, Ghidra and shared ledgers were not edited; primary owns annotation/fragment registration."
   ],
-  "external_API_reference": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile"
+  "external_API_reference": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile",
+  "primary_review": {
+    "status": "accepted_after_independent_whole_provider_and_retained_artifact_review",
+    "current_integrator_review": {
+      "path": "local/cc12_physical_write_primary/review.json",
+      "bytes": 20280,
+      "sha256": "ca94031cff7e08161396191fb1bff914d083da593af75bb9a76911206af29fc3"
+    },
+    "independent_worker_review": "reports/cc12_physical_write_primary_review.json",
+    "current_combined_Win32_build": "local/cc12_wake_property_write_current_build.txt",
+    "all_existing_CTests": 3,
+    "new_execution_by_primary": false,
+    "new_tests": 0,
+    "new_Original_function_records": 0,
+    "additional_raw_interface_records": 1,
+    "coverage_qualification": "Additional literal raw55B/21instruction ECX/RET0C entry atBF4F50. All Original/current production COFF/unique sealed linked bytes equal except sole real WriteFile IAT operand26. Requested argument itself is the API output count cell, not initialized or BOOL-tested by raw code; add/adc actual cursor before optional output, preserving carry over MOV. Primary frozen review479 pin rows/308 physical files, full22700B object/52 code sections, exact sole complete member in retained73558886B archive, genuine raw43B constructor/loaded actual WriteFile provider,3 first-run real OS pairs: null count, low-cursor alias with carry, invalid backingFFFFFFFF actual count0/error6 with files/cache unchanged. Printed invalid-case handles are live control files, not backing handles. EDX differs on success and no EFLAGS identity accepted. Current integrator all52 module functions/relocations equal reviewed worker, whole exact archive member frozen; normal Win32/3 existing checks pass. Additional interface0 new Original functions; no full physical-stream class/table/lifetime/read/substream, broad fault/alias/asynchronous I/O, app startup or gameplay claim."
+  }
 }

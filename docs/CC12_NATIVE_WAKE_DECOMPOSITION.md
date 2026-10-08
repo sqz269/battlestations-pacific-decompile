@@ -106,3 +106,5 @@ drop-in public ABI, startup, or gameplay. Machine-readable details and hashes
 are in [the packet report](../reports/cc12_native_wake_decomposition.json);
 the retained evidence and reproducible probe are in
 `local/cc12_native_wake_evidence` and its sibling ZIP.
+
+Primary acceptance verified the current integration build against the complete retained worker providers and whole archive members. Details: `local/cc12_wake_source_primary/review.json`. The combined MSVC Win32 build passed all three existing checks. No new runtime execution was performed during primary review. Retained historical build recipes remain authoritative for that build; subsequent unrelated recipe additions do not change the frozen provider evidence.

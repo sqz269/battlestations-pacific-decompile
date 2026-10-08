@@ -33558,6 +33558,90 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_wake_decomposition",
+      "worker": "primary_integrator",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00811180"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_wake_decomposition.hpp",
+        "src/native_unit_wake_decomposition.cpp",
+        "docs/CC12_NATIVE_WAKE_DECOMPOSITION.md",
+        "reports/cc12_native_wake_decomposition.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_native_storage_leaf_current_COFF_archive_and_five_retained_Original_Source_pairs_reviewed",
+      "source_commit": "a202f24b0",
+      "contract": {
+        "new_Original_function_records": 1,
+        "additional_raw_interface_records": 0,
+        "whole_original_bytes": 1683,
+        "existing_CTests_passed": 3,
+        "new_tests": 0,
+        "primary_native_execution": false,
+        "game_validated": false
+      }
+    },
+    {
+      "id": "cc12_property_key_lookup_source",
+      "worker": "primary_integrator",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0043b8b0"
+      ],
+      "output_files": [
+        "include/bsp/native_enum_dictionary_lookup.hpp",
+        "src/native_enum_dictionary_lookup.cpp",
+        "docs/CC12_PROPERTY_KEY_LOOKUP_SOURCE.md",
+        "reports/cc12_property_key_lookup_source.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "whole_stable_valid_ASCII_domain_Source_current_COFF_archive_and_primary_review_checked",
+      "source_commit": "90d275dba",
+      "contract": {
+        "new_Original_function_records": 1,
+        "additional_raw_interface_records": 0,
+        "whole_original_bytes": 105,
+        "existing_CTests_passed": 3,
+        "new_tests": 0,
+        "primary_native_execution": false,
+        "game_validated": false
+      }
+    },
+    {
+      "id": "cc12_physical_write_raw_entry",
+      "worker": "primary_integrator",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00bf4f50"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_PHYSICAL_WRITE_RAW_ENTRY.md",
+        "reports/cc12_physical_write_raw_entry.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "additional_raw_entry_complete_COFF_archive_unique_linked_real_WriteFile_three_retained_OS_pairs_reviewed",
+      "source_commit": "776117627",
+      "contract": {
+        "new_Original_function_records": 0,
+        "additional_raw_interface_records": 1,
+        "whole_original_bytes": 55,
+        "existing_CTests_passed": 3,
+        "new_tests": 0,
+        "primary_native_execution": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
