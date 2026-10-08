@@ -6,8 +6,10 @@ Worker implementation for
 including both branches. Only its two CALL operands bind current genuine
 providers; all other 108 bytes match the installed Original.
 
-Worker Source credit remains **0 pending Root's independent fresh validation,
-Main CMake/build registration, metadata/Ghidra publication and integration**.
+Root Source credit is **1 for the qualified current-provider raw-storage
+domain**, following independent fresh validation and the current Main Win32
+build. The provisional storage name and evidence are saved in the configured
+Ghidra project, and the affected export is refreshed.
 This is a qualified successful raw-storage interface. Private Original CRT/EH,
 class ownership, the full clone routine, startup and gameplay remain unproved.
 The name describes observed storage behavior and is a hypothesis.
@@ -171,3 +173,38 @@ unadmitted. No native Source credit is claimed for the new adapter or fixture.
 No zero-size, overflowing, aliased, failed-allocation, reentrant or unwind
 execution was attempted. Root must independently validate a new family and
 complete shared registration/publication before admitting Source credit 1.
+
+## Root complete-helper qualification
+
+Root independently generated `local/t9p1`: three fresh TUs, 184 consumed
+headers and seven actual libraries. Its exact 481-file seal is
+`1086ac44ab534b26118b1bc83a577be8a1a1109a11e1db295f574a9e68d855db`.
+The sealed summary records Source 0 at the point before this external decision;
+its immutable historical status is preserved. All 23,517 prior artifacts and
+all consumed inputs remained unchanged. No old objects, stages or accepted
+processes were replayed.
+
+Independent raw COFF, map, PE and packed-byte readers proved 31 logical symbols,
+29 physical TU bodies, 286 symbol relocation checks, 280 physical operands and
+six alias rechecks. All 47 complete packed spans include every retained and
+mapped TU definition, all actual normal and std import thunks, cookie14,
+stack43, and cold sized-delete16 to unsized-delete5 to free-IAT6. Cookie's named
+GS failure destination remains unexpanded and unadmitted; cold code coverage
+does not admit cold execution. Root reviewed all 6,195 bytes and 1,570
+instructions of the linked Main, including target selection, comparison and
+failure paths, code/provider gates and cleanup.
+
+The sole process made exactly Source-retained, Original-retained, Source-copy
+and Original-copy calls. Independent decoding checked all four Capture140
+records and complete root56 arrays, both complete guarded input48 arrays, and
+the live copied children16 and4. Six real allocations/frees completed with both
+children freed before all four roots. COUNT/DATA/FLAG slots, captured R/Q/T,
+RET12, full EAX, nonvolatiles, DF0, canaries and defined flags passed. ES is
+recorded only, and copied ECX/EDX residuals remain unasserted. Four recorded CRT
+bindings were decoded against frozen physical DLLs; this is recorded binding
+evidence, not a new live-provider attestation.
+
+The current Main build at `882064808e466755abd99639a3c1d0fe3577a10f` passed
+Win32 compilation and all three existing checks with its 4,037 actual Source,
+header and CMake inputs unchanged during the build. That context is a historical
+build snapshot. Startup, gameplay and binary drop-in ABI remain unvalidated.

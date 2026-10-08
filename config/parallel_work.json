@@ -37319,8 +37319,8 @@
     },
     {
       "id": "cc12_scene_property_record_type9_four_byte_array_storage",
-      "done": false,
-      "state": "ready qualified whole116B36 tag9 opaque4-byte-element rawstorage; Source0",
+      "done": true,
+      "state": "bounded_current_owned_raw_four_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
       "function_addresses": [
         "008ef360"
       ],
@@ -37354,9 +37354,84 @@
         ],
         "public_API": "void* __fastcall construct_native_scene_property_record_type9_four_byte_array_storage_008ef360(void* root_ecx, void* unused_edx, std::uint32_t element_count_stack, const void* data_stack, std::uint32_t full_flag_word_stack);",
         "contract": "Whole [008EF360,008EF3D4)116B36 MSVCWin32 naked paddedfastcall ECX actualfresh/unowned56 root/unusedEDX/3actualstackDWORDs elementcount,data,fullflag/RET12/EAXroot. Preserve TWO native ADD EDI,EDI andstoreorder: firstADD,phase/tag9stores,secondADD,lowflagBYTECMP, zero18/1C/storecomputedbytecount24,JZ. Count opaquepositive4-byteelements n[1,3FFFFFFF], actualnonwrapping4*n inputbytes/fresh56/input/frame disjoint; no float numeric/x87 semantics, signedC++multiply or newguard inbody. 108literalbytes; onlyCALL operands[51,55)OWN actualCDECL sizeadapter{object,bytes,bytes} to unchangedcanonical/[66,70)actualVCRTmemcpy. No fabricatedexternaltype8privateadapter/refactor/NativeMpkgAllocator. BorrowretainsEXACTinputpointer20/nochildfree,ECXroot/EDXdata, CMP8D5=44 AFdefined0. Copyreads dataafteractualallocation,storesactualchild20BEFOREmemcpy; finalADD16 flags deriveactualTentry-24+16=T-8/all6definedflags8D5. Common29writes/27preservedincl30,byte2C1both NOTownershipindicator. DF0CRT/successfulcurrentrealproviderdomain only; no FP/ES/volatileECXEDX acrossproviders blanket. Source2+boundOriginal2 entries bothbranches,4actual56roots+2actualcopychildren=6alloc/frees childbeforeRoot; rawguardedOPAQUE4-byte-element bytes with zeros/highbits/fullcounts/fullflag high24 ignored onlylowBYTEdecision. Original116RX rebindsonly8operandbytes tosameREALSourceadapter/memcpy. THREEfreshTUs ownwhole116includingOWN adapter,canonical,newprobe/noBSParchives/oldobjects/acceptedhelpers/recipes/stages/process replay. PrecompileprelaunchEXACTbasename/key/structsizes/MASMhex/COFFexactsymbolfirst; Rpreargs/QpreCALL/Tentry separated,3actualdeadargumentDWORDs capturedbeforePUSHFD; allstorage56/livefullchild/guardedinputs/captures/GPR/ESP/definedflags/DFchecked. AllcompleteCOFF/map/main/callers/canonical/adapter/providers/cookie14inclfailuretailJMP/chkstkmapowned/importcodegates before0targets/alloc andafter, actualI386IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/ASLRcorrect32prefix. Preserve audit252+5765prior exact pluscurrentRootType8family381+17427prior, RootReference55family101+18016prior via dedupimmutableunion; metadataContextunconsumedfrozenonly. Exactrecursiveallfilessealsinclfailures/logs/pycache ROOTexclusionsonly. CurrentcombinedMainWin32/3checksPASS and Rootseparatefreshindependentfamily beforeSourcecredit. Actualarm/helper8EF7F0/null/default/EH/privateheap/phase/class/nativeownership/fullclone/World/game remainnamedunadmitted; no furtherlive oldclone/tag8/provider/class queries.",
-        "Source_admission_credit": 0,
+        "Source_admission_credit": 1,
         "registration_owner": "Root"
-      }
+      },
+      "Source_admission_credit": 1,
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 1,
+        "status": "bounded_current_owned_raw_four_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
+        "qualification": "Qualified normal successful current-provider raw storage for whole008EF360..008EF3D4 constructor116B36,108literal bytes with only CALL operands51..55/66..70 rebound to genuine current private CDECL size adapter and memcpy. ECX fresh unowned writable root56, unused EDX, COUNT/DATA/FLAG three actual stack DWORDs, RET12/full EAX root. Opaque four-byte groups n1..3FFFFFFF and disjoint nonwrapping4*n input/root/frame; low flag byte0 borrows exact input, nonzero allocates/copies owned child.29 written/27 preserved; byte2C=1 in both branches is not ownership. Root fresh3TU/184headers/7libs,31logical29physical bodies/286symbol280physical operands+6alias/47complete spans including normal/std/cookie14/stack43/colddelete16->5->free6; allMain6195B1570 reviewed. Sole4-target process6allocfree child-before-root and independent full4Capture140/4root56/2input48/child16+4/four recorded frozenDLL bindings decoded. Private Original CRT/EH/OOM/GS failure execution, float semantics, phase/class/virtual/destructor ownership, binary drop-in ABI and game validation unadmitted by this constructor qualification.",
+        "independent_family": "local/t9p1",
+        "independent_seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t9p1\\seal.json",
+          "size": 103572,
+          "sha256": "1086ac44ab534b26118b1bc83a577be8a1a1109a11e1db295f574a9e68d855db"
+        },
+        "independent_actual_files": 481,
+        "historical_actual_pins": 23517,
+        "fresh_TUs": 3,
+        "consumed_headers": 184,
+        "consumed_libraries": 7,
+        "logical_symbols": 31,
+        "physical_TU_bodies": 29,
+        "symbol_relocation_checks": 286,
+        "physical_relocation_operands": 280,
+        "alias_rechecks": 6,
+        "complete_runtime_code_spans": 47,
+        "whole_Main_bytes": 6195,
+        "whole_Main_instructions": 1570,
+        "Root_native_processes": 1,
+        "target_entries": 4,
+        "owned_allocfree_pairs": 6,
+        "full_capture_records": 4,
+        "Capture_bytes": 140,
+        "roots": 4,
+        "root_bytes": 56,
+        "guarded_input_arrays": 2,
+        "input_bytes": 48,
+        "owned_child_bytes": [
+          16,
+          4
+        ],
+        "physical_recorded_provider_bindings": 4,
+        "ES_recorded_only": true,
+        "copied_ECX_EDX_unasserted": true,
+        "independent_raw_static": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t9p1\\type9_reader_static_readout.json",
+          "size": 2999,
+          "sha256": "30f075bbe431766061b71a676e1b1f722261a9ccae3c484b4df46b69acc040a5"
+        },
+        "Root_manual_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t9p1\\Root_independent_manual_review.json",
+          "size": 16140,
+          "sha256": "fbef65c237e7e326afd10f87be3729f62858fc1bfb5e73a7b1f5a61a7230c97b"
+        },
+        "independent_recorded_decode": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t9p1\\type9_recorded_capture_readout.json",
+          "size": 16157,
+          "sha256": "821577b8fd8819f67634e019b2c25e6b68600e7a60f09e7204850425c304cc56"
+        },
+        "complete_linked_cold_code_not_cold_execution": true,
+        "only_named_unexpanded_GS_failure_frontier": true,
+        "full_main_build": {
+          "passed": true,
+          "checks": 3,
+          "build_start_revision": "882064808e466755abd99639a3c1d0fe3577a10f",
+          "actual_Source_input_count": 4037,
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type9_current_main_build.after.json",
+            "size": 872929,
+            "sha256": "3863b0e34089794426ea56ff14393a8eae03a66c0bc2fa91b624ed36ed3c2676"
+          },
+          "Source_context_historical_snapshot_not_forever_pin": true
+        },
+        "sealed_summary_Source0_is_historical_external_decision_separate": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      "saved_analysis_publication_pending": false
     },
     {
       "id": "cc12_native_parent_header_destructor_callback",
