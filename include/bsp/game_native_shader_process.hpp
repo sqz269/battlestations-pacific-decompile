@@ -24,7 +24,8 @@ public:
     volatile std::uint32_t& system_register_limit_00e13078() noexcept {return register_limit_;}
     char* format_scratch_0108d6f8() noexcept {return format_scratch_.data();}
     const char* source_empty_0108d6f2() const noexcept {return &source_empty_;}
-    const char* instance_empty_00e17654() const noexcept {return &instance_empty_;}
+    // Captured in private construction; no allocation/getter call here.
+    const char* instance_empty_00e17654() const noexcept {return instance_empty_authority_00e17654_;}
     // B35110 uses an unbounded formatter. Its normal input must fit this
     // region: 0108D6F8 up to the separate texture counter at 0108DAF8.
     static constexpr std::size_t format_scratch_bytes=0x400;
@@ -44,7 +45,10 @@ private:
     volatile std::uint32_t register_limit_{77}; // Original image E13078 = 4D.
     std::array<char,format_scratch_bytes> format_scratch_{};
     char source_empty_{}; // Loader-zero 0108D6F2; distinct from E17654.
-    char instance_empty_{};
+    // Preserve the old byte's offset; it is NOT an E17654 authority or alias.
+    char reserved_non_authoritative_instance_empty_{};
+    // Same permanent byte owned by the canonical GameNativeStringProcess.
+    const char* const instance_empty_authority_00e17654_;
 };
 GameNativeShaderProcess& game_native_shader_process();
 } // namespace bsp::game
