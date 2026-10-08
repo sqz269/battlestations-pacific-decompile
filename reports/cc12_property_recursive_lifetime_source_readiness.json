@@ -1,0 +1,1373 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_recursive_lifetime_source_readiness",
+  "UTC": "2026-10-08T19:25:39.968793+00:00",
+  "status": "SIX_WHOLE_BODY_DESIGN_READY_FOR_INDEPENDENT_PRIMARY_REVIEW_AFTER_ACCEPTED_PRODUCER; ZERO_SOURCE_ADDED",
+  "source_baseline": "3649653337d98e9a0203021ba36fb61214592cc5",
+  "producer_gate": {
+    "main": "3649653337d98e9a0203021ba36fb61214592cc5",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_type6_storage_primary_review\\receipt.json",
+      "frozen_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/primary_producer_acceptance/receipt.json",
+      "bytes": 30910,
+      "sha256": "d234fe672c72e9baec7c175ae82b7edfe144a39175265b36fad2ff72f894bbd6",
+      "role": "current primary acceptance receipt; independently produced before readiness design",
+      "captured_utc": "2026-10-08T19:17:25.434582+00:00",
+      "source_mtime_ns": 1791486348951897700
+    },
+    "old_bodies_preserved": 138,
+    "raw_constructor_bytes": 58,
+    "ordinary_clone_bytes": 146,
+    "actual_inputs_prefrozen": 285,
+    "normal_Win32_three_existing_checks": "PASS (prior primary receipt)",
+    "readiness_added_Source_functions": 0,
+    "six_body_implementation_authorized": false,
+    "status": "producer gate satisfied; six-body design still needs independent primary review/integration"
+  },
+  "owned_versioned_files": [
+    "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE_READINESS.md",
+    "reports/cc12_property_recursive_lifetime_source_readiness.json"
+  ],
+  "proposed_implementation_files": [
+    "src/native_scene_property_bag_storage.cpp",
+    "include/bsp/native_scene_property_recursive_lifetime.hpp",
+    "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE.md",
+    "reports/cc12_property_recursive_lifetime_source.json"
+  ],
+  "authorization": {
+    "packet": "read-only complete design and evidence only",
+    "future_implementation": "requires independent primary review/integration and a subsequent bounded Source assignment",
+    "CMake": "existing bag TU already registered; no new TU; CMake and metadata stay primary-owned"
+  },
+  "credit": {
+    "new_functions": 0,
+    "new_fragments": 0,
+    "new_names": 0,
+    "Source_bodies_added": 0,
+    "proposed_cohesive_whole_functions": 6,
+    "tiny_scalar_deferral": false,
+    "null_only_closure": false
+  },
+  "Original": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "per_query_verification": "tools/bsp.py ghidra -> client() -> Client.verify()",
+    "whole_family_bytes": 571,
+    "spans": [
+      {
+        "address": "008F3F30",
+        "end_exclusive": "008F402E",
+        "bytes": 254,
+        "sha256": "8a6ac02dc829909455bfda0e784829eb340c8cbf4ec70e9b4b512d9ef8a98ff1",
+        "role": "whole owning record-map clear",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f3f30.bin",
+        "linear_instructions": 75,
+        "stored_listing_instructions": 74
+      },
+      {
+        "address": "004E6730",
+        "end_exclusive": "004E674E",
+        "bytes": 30,
+        "sha256": "cef3f0197b3e1855bbc0ab3da9c9914aa7444eb40deec170a5ab41cd7cca3a4b",
+        "role": "whole record scalar, repaired by integrator before this packet",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/004e6730.bin",
+        "linear_instructions": 11,
+        "stored_listing_instructions": 11
+      },
+      {
+        "address": "008F0DE0",
+        "end_exclusive": "008F0DEB",
+        "bytes": 11,
+        "sha256": "4abd74aaaada8f496d594975c578825bfab9804569fe66790cbdd27d80560e5b",
+        "role": "whole record phase publication and tail",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f0de0.bin",
+        "linear_instructions": 2,
+        "stored_listing_instructions": 2
+      },
+      {
+        "address": "008F0640",
+        "end_exclusive": "008F06DE",
+        "bytes": 158,
+        "sha256": "a04fa16e42a48885b025ec9be4ec3683b50db6cac380047a8ae0db44cc590026",
+        "role": "whole per-type release",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f0640.bin",
+        "linear_instructions": 63,
+        "stored_listing_instructions": 63
+      },
+      {
+        "address": "008F59E0",
+        "end_exclusive": "008F59FE",
+        "bytes": 30,
+        "sha256": "7159629f199e9bd44df0f8cf7c56517ecd717d9f8ba0d8f390c043bd97df843d",
+        "role": "whole bag scalar",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f59e0.bin",
+        "linear_instructions": 11,
+        "stored_listing_instructions": 11
+      },
+      {
+        "address": "008F5410",
+        "end_exclusive": "008F5468",
+        "bytes": 88,
+        "sha256": "153d652b2dc1da3279d0fe87e923d49c1a8f1f5c5f6d46e205f9488c3fc30246",
+        "role": "whole ordinary bag destructor including FS/SEH code",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f5410.bin",
+        "linear_instructions": 22,
+        "stored_listing_instructions": 22
+      },
+      {
+        "address": "008F06E0",
+        "end_exclusive": "008F06FE",
+        "bytes": 30,
+        "sha256": "456584beedf03b4858e0c32f2b9019ab62f11af7173e2281be8aca774ead2d0f",
+        "role": "five target DWORDs plus ten tag-minus-two selectors",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f06e0.bin"
+      },
+      {
+        "address": "00CE89D4",
+        "end_exclusive": "00CE89D8",
+        "bytes": 4,
+        "sha256": "3de3efdb8a215744a620e6c6baedd08c74142af5b8d6706af395ff9cdcd754f4",
+        "role": "actual record phase slot zero",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00ce89d4.bin"
+      },
+      {
+        "address": "00D16504",
+        "end_exclusive": "00D16508",
+        "bytes": 4,
+        "sha256": "09be9d3a8e1c44b711c5e579561f83596d03ffbe028233eced23067de9bd7d1c",
+        "role": "actual outer bag phase slot zero",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00d16504.bin"
+      },
+      {
+        "address": "00D162C4",
+        "end_exclusive": "00D162C8",
+        "bytes": 4,
+        "sha256": "7b20fa993ded6a78663497192bdddb339365cd45a26d86578e143d389ab4e3d0",
+        "role": "actual inner map phase slot zero, not called by six-body family",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00d162c4.bin"
+      },
+      {
+        "address": "008EF780",
+        "end_exclusive": "008EF7BA",
+        "bytes": 58,
+        "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450",
+        "role": "whole genuine type6 record/backlink constructor",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008ef780.bin",
+        "linear_instructions": 16
+      },
+      {
+        "address": "008F41A0",
+        "end_exclusive": "008F41DD",
+        "bytes": 61,
+        "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420",
+        "role": "whole genuine raw bag constructor",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f41a0.bin",
+        "linear_instructions": 15
+      },
+      {
+        "address": "008F50ED",
+        "end_exclusive": "008F5134",
+        "bytes": 71,
+        "sha256": "e13774b4eac8a8c1f666445c908ad604d586777101dac0eec941639a0d0d44c6",
+        "role": "type6 arm only, existing empty-child Source fragment",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f50ed.bin",
+        "linear_instructions": 21
+      },
+      {
+        "address": "008F2930",
+        "end_exclusive": "008F299C",
+        "bytes": 108,
+        "sha256": "5b19bd880704f050dcd2db183fa9cbd68baf265eab0e4e573e45ea728bf3a2e9",
+        "role": "genuine new node publication fragment only",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f2930.bin",
+        "linear_instructions": 38
+      },
+      {
+        "address": "008F03F0",
+        "end_exclusive": "008F0417",
+        "bytes": 39,
+        "sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+        "role": "whole array block release provider",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/008f03f0.bin",
+        "linear_instructions": 13
+      },
+      {
+        "address": "0041DD20",
+        "end_exclusive": "0041DD3D",
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "role": "whole actual eight-byte string header release provider",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/0041dd20.bin",
+        "linear_instructions": 12
+      },
+      {
+        "address": "0043B0A0",
+        "end_exclusive": "0043B105",
+        "bytes": 101,
+        "sha256": "86e1061345be02074a12d1a09f35915562ca8bd00d401aa1c152a09e83a23750",
+        "role": "whole generic actual20-byte slot return provider",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/0043b0a0.bin",
+        "linear_instructions": 33
+      },
+      {
+        "address": "00CC8A30",
+        "end_exclusive": "00CC8A46",
+        "bytes": 22,
+        "sha256": "56d28734e8f445ca80ac66f19b480a6feda418430bd63c97f82f2166bbed94a8",
+        "role": "whole distinct property-pool static initializer",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00cc8a30.bin",
+        "linear_instructions": 6
+      },
+      {
+        "address": "00CD9260",
+        "end_exclusive": "00CD926A",
+        "bytes": 10,
+        "sha256": "7bae871d18a24016fe4a25599cc71372c5ed50f287fd8b9653bc9b98c3b3599e",
+        "role": "whole same property-pool static destructor",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00cd9260.bin",
+        "linear_instructions": 2
+      },
+      {
+        "address": "00E175B0",
+        "end_exclusive": "00E175E8",
+        "bytes": 56,
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "role": "actual loader-zero property-pool storage, not a live constructed pool",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00e175b0.bin"
+      },
+      {
+        "address": "00E188B4",
+        "end_exclusive": "00E188B8",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "role": "actual loader-zero allocator-list head, not a fabricated Source list",
+        "live_equals_installed_PE": true,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00e188b4.bin"
+      },
+      {
+        "address": "00BF65AC",
+        "end_exclusive": "00BF65B1",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "role": "whole Native free thunk to BF9DC8",
+        "live_equals_installed_PE": true,
+        "linear_instructions": 1,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00bf65ac.bin"
+      },
+      {
+        "address": "00BF6989",
+        "end_exclusive": "00BF698E",
+        "bytes": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "role": "whole Native free thunk to BF65AC",
+        "live_equals_installed_PE": true,
+        "linear_instructions": 1,
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/Original/00bf6989.bin"
+      }
+    ],
+    "tables": {
+      "targets": [
+        "008F065F",
+        "008F0681",
+        "008F06A6",
+        "008F06C7",
+        "008F06CF"
+      ],
+      "selectors": [
+        0,
+        4,
+        4,
+        1,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "tag_targets": {
+        "2": "008F065F",
+        "3": "008F06CF",
+        "4": "008F06CF",
+        "5": "008F0681",
+        "6": "008F06A6",
+        "7": "008F06CF",
+        "8": "008F06C7",
+        "9": "008F06C7",
+        "10": "008F06C7",
+        "11": "008F06C7"
+      }
+    },
+    "actual_profile_data": {
+      "00CE89D4": "004E6730",
+      "00D16504": "008F59E0",
+      "00D162C4": "008F4170"
+    },
+    "record_scalar_gap": {
+      "repaired_by": "agent/cc12_resume_integrator",
+      "prior_callsite": "004E6740",
+      "bytes": "004E6745..004E6748 = ADD ESP,4",
+      "current_whole_bytes": 30,
+      "current_contiguous_instructions": 11,
+      "stale_profile_instruction_count": 10,
+      "worker_mutation": false,
+      "global_callee_no_return_changed": false,
+      "copied_receipts": "local/cc12_property_recursive_lifetime_source_readiness/frozen/integrator_prior_repair/"
+    },
+    "map_gap": {
+      "start": "008F3F5D",
+      "end_exclusive": "008F3F60",
+      "bytes": 3,
+      "role": "unreachable alignment LEA after JMP; not returning CALL cleanup",
+      "repaired": false
+    },
+    "disabled_flow_properties_capability_used": false
+  },
+  "closed_Code_domain": {
+    "bindings": [
+      {
+        "actual_native_phase": "00CE89D4",
+        "actual_native_slot0": "004E6730",
+        "Source_complete_binding": "scalar_delete_native_scene_property_record_004e6730",
+        "source_of_receivers": "genuine live actual38h records from accepted current-heap producers"
+      },
+      {
+        "actual_native_phase": "00D16504",
+        "actual_native_slot0": "008F59E0",
+        "Source_complete_binding": "scalar_delete_native_scene_property_bag_008f59e0",
+        "source_of_receivers": "distinct mutable actual114h raw61/empty-bag producer output attached by real type6 constructor"
+      }
+    ],
+    "inner_phase": {
+      "data": "00D162C4",
+      "actual_slot0": "008F4170",
+      "invoked_by_six_body_family": false
+    },
+    "method": "direct complete named Source scalar calls on closed provenance-qualified domain; published phase DWORDs remain genuine data",
+    "numeric_phase_match_alone_is_membership": false,
+    "no_original_numeric_call": true,
+    "no_substitute_Source_vtable": true,
+    "no_fake_record_bag_owner": true,
+    "no_opaque_release_callback": true,
+    "no_arbitrary_allocator_or_storage_callback": true
+  },
+  "proposed_context": {
+    "name": "NativeScenePropertyLifetimeContext",
+    "owns_native_storage": false,
+    "constructor_inputs": [
+      "game::GameNativeStringProcess& actual_strings",
+      "game::GameNativePhysicalPoolProcess& actual_physical"
+    ],
+    "actual_canonical_processes_have_private_constructors": true,
+    "private_borrowed_fields": [
+      "NativeStringRawPoolContext& from actual_strings.raw_context()",
+      "actual38h property pool pointer from actual_physical.property_node_pool_storage_00e175b0()"
+    ],
+    "construction_timing": "after completed explicit canonical property-pool startup, before any six-body operation",
+    "same_allocator_list": "actual_physical.allocator_list_domain_00e188b4()",
+    "recursive_getter_mutex_calls_added": false,
+    "arbitrary_raw_pool_constructor_argument": false,
+    "new_native_object_class": false,
+    "Source_only_context_constructor_credit": 0
+  },
+  "interfaces": [
+    {
+      "Original": "008F3F30",
+      "Source_name": "clear_native_scene_property_record_map_008f3f30",
+      "receiver": "actual108h map interior at actual114h bag+4",
+      "result": "void",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    },
+    {
+      "Original": "004E6730",
+      "Source_name": "scalar_delete_native_scene_property_record_004e6730",
+      "receiver": "actual38h record root and DWORD flags",
+      "result": "uint32 original root bits",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    },
+    {
+      "Original": "008F0DE0",
+      "Source_name": "destroy_native_scene_property_record_008f0de0",
+      "receiver": "actual38h record root",
+      "result": "void",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    },
+    {
+      "Original": "008F0640",
+      "Source_name": "release_native_scene_property_record_value_008f0640",
+      "receiver": "actual38h record root",
+      "result": "void",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    },
+    {
+      "Original": "008F59E0",
+      "Source_name": "scalar_delete_native_scene_property_bag_008f59e0",
+      "receiver": "actual114h bag root and DWORD flags",
+      "result": "uint32 original root bits",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    },
+    {
+      "Original": "008F5410",
+      "Source_name": "destroy_native_scene_property_bag_008f5410",
+      "receiver": "actual114h bag root",
+      "result": "void",
+      "context": "NativeScenePropertyLifetimeContext&",
+      "ABI": "proposed ordinary Win32 C++ interface, not native register/RET4 transport",
+      "implemented": false
+    }
+  ],
+  "operation_schedules": {
+    "map_clear": [
+      "visit all64 actual heads at map+8+4*i regardless of count",
+      "load actual mapped record+8 and capture actual next+C before any record scalar",
+      "nonnull mapped: invoke whole bound record scalar flags1, then zero mapped+8 only after return",
+      "destroy_native_string_header_0041dd20(actual_node, borrowed_canonical_raw_context): no temporary header",
+      "return_native_enum_node_0043b0a0(same_actual_E175B0_pool, actual_allocated_slot)",
+      "advance using previously captured next without reading returned slot",
+      "zero current head after its chain; zero count+4 only after all64 heads"
+    ],
+    "record_phase": [
+      "store CE89D4 at actual record+0",
+      "invoke full008F0640 on identical receiver"
+    ],
+    "record_release": [
+      {
+        "tags": [
+          2
+        ],
+        "work": "nonnull+C: canonical current-CRT free then zero+C"
+      },
+      {
+        "tags": [
+          5
+        ],
+        "work": "nonnull+1C: canonical free then zero+1C; always zero+18"
+      },
+      {
+        "tags": [
+          6
+        ],
+        "work": "nonnull+C: whole bound bag scalar(actual_child,1,context) then zero+C after return"
+      },
+      {
+        "tags": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "work": "accepted whole array provider(actual_record+20)"
+      },
+      {
+        "tags": "all others, including7",
+        "work": "default only; no owned free"
+      },
+      {
+        "tags": "all",
+        "work": "ordered common stores +4=0, +C=0, +28=0, +8=0; preserve earlier +C stores"
+      }
+    ],
+    "bag_destroy": [
+      "actual outer+0=D16504",
+      "clear full actual map at bag+4",
+      "same map+0=D162C4",
+      "unconditional second full clear of same map",
+      "no root/map-interior free; leave bag+10C and+110"
+    ],
+    "both_scalars": [
+      "capture actual root bits before destructor",
+      "always invoke complete destructor",
+      "canonical singleton_lifetime_free(root) only when flags&1",
+      "return saved uint32 bits after optional free; no freed-root reread"
+    ]
+  },
+  "providers": {
+    "whole_COFF": [
+      {
+        "module": "native_scene_property_bag_storage",
+        "symbol": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z",
+        "bytes": 61,
+        "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420",
+        "relocations": [],
+        "section": 23,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 61,
+        "section_bytes": 61,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_scene_property_bag_storage/000.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_scene_property_bag_storage.obj",
+        "instructions": 15
+      },
+      {
+        "module": "native_scene_property_bag_storage",
+        "symbol": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z",
+        "bytes": 126,
+        "sha256": "0356311e87488c74210d7be01313f249d79a9102db72e2eb7418422d41a1844e",
+        "relocations": [
+          {
+            "operand_offset": 7,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 43,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "operand_offset": 59,
+            "kind": "0014",
+            "symbol": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z"
+          },
+          {
+            "operand_offset": 81,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "operand_offset": 91,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "operand_offset": 102,
+            "kind": "0006",
+            "symbol": "??_C@_0DE@HMCEBJD@empty?5property?5bag?5clone?5require@"
+          },
+          {
+            "operand_offset": 107,
+            "kind": "0014",
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": 112,
+            "kind": "0006",
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "operand_offset": 121,
+            "kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "section": 21,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 126,
+        "section_bytes": 126,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_scene_property_bag_storage/001.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_scene_property_bag_storage.obj",
+        "instructions": 41
+      },
+      {
+        "module": "native_scene_property_bag_storage",
+        "symbol": "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z",
+        "bytes": 58,
+        "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450",
+        "relocations": [],
+        "section": 22,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 58,
+        "section_bytes": 58,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_scene_property_bag_storage/002.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_scene_property_bag_storage.obj",
+        "instructions": 16
+      },
+      {
+        "module": "native_scene_property_bag_storage",
+        "symbol": "?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z",
+        "bytes": 146,
+        "sha256": "5fe9ee14289db3595f17d29bea94e8d598a9d3d08132a524ac0f661fb62508be",
+        "relocations": [
+          {
+            "operand_offset": 6,
+            "kind": "0006",
+            "symbol": "__ehhandler$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z"
+          },
+          {
+            "operand_offset": 21,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 75,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "operand_offset": 95,
+            "kind": "0014",
+            "symbol": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z"
+          },
+          {
+            "operand_offset": 108,
+            "kind": "0014",
+            "symbol": "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z"
+          },
+          {
+            "operand_offset": 138,
+            "kind": "0014",
+            "symbol": "@__security_check_cookie@4"
+          }
+        ],
+        "section": 19,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 146,
+        "section_bytes": 172,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_scene_property_bag_storage/003.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_scene_property_bag_storage.obj",
+        "instructions": 48
+      },
+      {
+        "module": "native_scene_property_array_block_release",
+        "symbol": "?release_native_scene_property_array_block_008f03f0@bsp@@YIXPAX@Z",
+        "bytes": 39,
+        "sha256": "84147d0c7f2f82c80f87a4c9085f8d4ad1b5e799d4b6ecb88b22f674882d60b6",
+        "relocations": [
+          {
+            "operand_offset": 11,
+            "kind": "0014",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ],
+        "section": 4,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 39,
+        "section_bytes": 39,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_scene_property_array_block_release/000.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_scene_property_array_block_release.obj",
+        "instructions": 13
+      },
+      {
+        "module": "native_enum_node_pool",
+        "symbol": "?return_native_enum_node_0043b0a0@bsp@@YAXPAX0@Z",
+        "bytes": 313,
+        "sha256": "d6f42fc3964668680e15003b944983e4c0a1b8c49f992493ebf761176964715b",
+        "relocations": [
+          {
+            "operand_offset": 17,
+            "kind": "0006",
+            "symbol": "__imp__EnterCriticalSection@4"
+          },
+          {
+            "operand_offset": 303,
+            "kind": "0006",
+            "symbol": "__imp__LeaveCriticalSection@4"
+          }
+        ],
+        "section": 20,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 313,
+        "section_bytes": 313,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_enum_node_pool/005.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_enum_node_pool.obj",
+        "instructions": 97
+      },
+      {
+        "module": "native_enum_dictionary_lookup",
+        "symbol": "?publish_native_property_map_new_node_008f2930_fragment@bsp@@YAIPAXPBXII0AAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 116,
+        "sha256": "921b55c26e1a02c9667cc9bcf0b87875fa052803d706080313268b0102d0734c",
+        "relocations": [
+          {
+            "operand_offset": 10,
+            "kind": "0014",
+            "symbol": "?allocate_native_enum_node_004e7c00@bsp@@YAPAXPAX@Z"
+          },
+          {
+            "operand_offset": 52,
+            "kind": "0014",
+            "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+          },
+          {
+            "operand_offset": 73,
+            "kind": "0014",
+            "symbol": "_memmove"
+          }
+        ],
+        "section": 24,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 116,
+        "section_bytes": 116,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_enum_dictionary_lookup/009.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_enum_dictionary_lookup.obj",
+        "instructions": 45
+      },
+      {
+        "module": "native_string",
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "bytes": 28,
+        "sha256": "97ed14325de3259cc221bfc28e3756028852ca58b9d66a2567cee928108f8f9a",
+        "relocations": [],
+        "section": 57,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 28,
+        "section_bytes": 28,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_string/016.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_string.obj",
+        "instructions": 15
+      },
+      {
+        "module": "native_string",
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 51,
+        "sha256": "281055a229e2b97300811e741f0b40d5e929c07513a58e27f641a8ef6e079c7d",
+        "relocations": [
+          {
+            "operand_offset": 28,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 39,
+            "kind": "0014",
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ],
+        "section": 56,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 51,
+        "section_bytes": 51,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_string/017.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_string.obj",
+        "instructions": 26
+      },
+      {
+        "module": "native_string_pool_storage",
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "bytes": 320,
+        "sha256": "1c4800384336d6c12d6f6566fef3dc1ee0d64664321d1019c0cd3af3fd0080e8",
+        "relocations": [
+          {
+            "operand_offset": 24,
+            "kind": "0006",
+            "symbol": "__imp__free"
+          },
+          {
+            "operand_offset": 57,
+            "kind": "0006",
+            "symbol": "__imp__EnterCriticalSection@4"
+          },
+          {
+            "operand_offset": 312,
+            "kind": "0006",
+            "symbol": "__imp__LeaveCriticalSection@4"
+          }
+        ],
+        "section": 20,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 320,
+        "section_bytes": 320,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_string_pool_storage/005.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_string_pool_storage.obj",
+        "instructions": 87
+      },
+      {
+        "module": "native_string_pool_storage",
+        "symbol": "?release@ActualNativeStringPoolStorage@bsp@@UAEXPADI@Z",
+        "bytes": 420,
+        "sha256": "5f5e84d5098fede230f7fa2670153f7b0d665766c88152269e1df41bcbef61f3",
+        "relocations": [
+          {
+            "operand_offset": 6,
+            "kind": "0006",
+            "symbol": "__ehhandler$?release@ActualNativeStringPoolStorage@bsp@@UAEXPADI@Z"
+          },
+          {
+            "operand_offset": 21,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 51,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "operand_offset": 64,
+            "kind": "0014",
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z"
+          },
+          {
+            "operand_offset": 92,
+            "kind": "0006",
+            "symbol": "__imp__free"
+          },
+          {
+            "operand_offset": 137,
+            "kind": "0006",
+            "symbol": "__imp__EnterCriticalSection@4"
+          },
+          {
+            "operand_offset": 391,
+            "kind": "0006",
+            "symbol": "__imp__LeaveCriticalSection@4"
+          }
+        ],
+        "section": 18,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 420,
+        "section_bytes": 420,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/native_string_pool_storage/009.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/native_string_pool_storage.obj",
+        "instructions": 122
+      },
+      {
+        "module": "singleton_lifetime",
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "bytes": 6,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "relocations": [
+          {
+            "operand_offset": 2,
+            "kind": "0006",
+            "symbol": "__imp__free"
+          }
+        ],
+        "section": 77,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 6,
+        "section_bytes": 6,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/singleton_lifetime/006.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/singleton_lifetime.obj",
+        "instructions": 1
+      },
+      {
+        "module": "game_native_physical_pool",
+        "symbol": "?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ",
+        "bytes": 264,
+        "sha256": "43d90ddf3f7e7ddb8c909c3d9951e0e8470833e9ea29c7240980086ea5212c06",
+        "relocations": [
+          {
+            "operand_offset": 6,
+            "kind": "0006",
+            "symbol": "__ehhandler$?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ"
+          },
+          {
+            "operand_offset": 24,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 53,
+            "kind": "0014",
+            "symbol": "__Mtx_lock"
+          },
+          {
+            "operand_offset": 108,
+            "kind": "0014",
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "operand_offset": 162,
+            "kind": "0014",
+            "symbol": "?bind_static_native_property_record_pool_00e175b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z"
+          },
+          {
+            "operand_offset": 167,
+            "kind": "0014",
+            "symbol": "?initialize_static_native_property_record_pool_00cc8a30@bsp@@YAHXZ"
+          },
+          {
+            "operand_offset": 191,
+            "kind": "0014",
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "operand_offset": 221,
+            "kind": "0014",
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "operand_offset": 232,
+            "kind": "0014",
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "operand_offset": 237,
+            "kind": "0006",
+            "symbol": "??_C@_0CM@JOPJNPLB@property?5node?5pool?5startup?5previ@"
+          },
+          {
+            "operand_offset": 245,
+            "kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": 250,
+            "kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": 259,
+            "kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "section": 72,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 264,
+        "section_bytes": 264,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/game_native_physical_pool/034.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/game_native_physical_pool.obj",
+        "instructions": 83
+      },
+      {
+        "module": "game_native_physical_pool",
+        "symbol": "?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ",
+        "bytes": 167,
+        "sha256": "f83d7c8ac42f381400be504f849fb15780ac2571cef010a30d22ee6d4198e3f9",
+        "relocations": [
+          {
+            "operand_offset": 6,
+            "kind": "0006",
+            "symbol": "__ehhandler$?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ"
+          },
+          {
+            "operand_offset": 23,
+            "kind": "0006",
+            "symbol": "___security_cookie"
+          },
+          {
+            "operand_offset": 52,
+            "kind": "0014",
+            "symbol": "__Mtx_lock"
+          },
+          {
+            "operand_offset": 91,
+            "kind": "0014",
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "operand_offset": 124,
+            "kind": "0014",
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "operand_offset": 135,
+            "kind": "0014",
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "operand_offset": 140,
+            "kind": "0006",
+            "symbol": "??_C@_0DH@OLDPJJGJ@property?5node?5pool?5requires?5comp@"
+          },
+          {
+            "operand_offset": 148,
+            "kind": "0014",
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "operand_offset": 153,
+            "kind": "0006",
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "operand_offset": 162,
+            "kind": "0014",
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "section": 78,
+        "symbol_offset": 0,
+        "exclusive_end_offset": 167,
+        "section_bytes": 167,
+        "extent_method": "next distinct function-symbol offset or section end",
+        "body_path": "local/cc12_property_recursive_lifetime_source_readiness/COFF/game_native_physical_pool/035.bin",
+        "whole_object_path": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/game_native_physical_pool.obj",
+        "instructions": 54
+      }
+    ],
+    "key_release": {
+      "preferred": "destroy_native_string_header_0041dd20(actual8B node header, canonical raw_context())",
+      "concrete_raw_body_bytes": 51,
+      "concrete_raw_instructions": 26,
+      "direct_relocations": [
+        "native_string_pool_get_or_create_00419cc0",
+        "return_native_string_pool_00bd1510"
+      ],
+      "existing_abstract_header_adapter_bytes": 28,
+      "existing_actual_storage_release_bytes": 420,
+      "canonical_strings_accessor_type": "ActualNativeStringPoolStorage& using the same private actual cells",
+      "null_key": "skip current length read and getter/return",
+      "nonnull_key": "capture data then current uint32 length+1; always real getter before return decision; header untouched",
+      "size_at_least_150": "current-CRT free regardless of small-return gate",
+      "size_below_150": "read actual01090AA4; nonzero skips ring and CS with no extra free",
+      "membership": "enabled small return requires same live owner generation and valid actual ring indices/capacity"
+    },
+    "node_return": {
+      "function": "return_native_enum_node_0043b0a0",
+      "whole_COFF_bytes": 313,
+      "actual_slot_bytes": 20,
+      "actual_pool_bytes": 56,
+      "same_actual_owner": "E175B0",
+      "same_list": "E188B4",
+      "fields": [
+        "pool+C real CRITICAL_SECTION",
+        "pool+24 depth",
+        "slot+10 page identity",
+        "pool+28 table",
+        "page+500 free-index WORDs",
+        "page+580 free-count WORD",
+        "pool+34 earliest page"
+      ],
+      "actual_imports": [
+        "EnterCriticalSection",
+        "LeaveCriticalSection"
+      ],
+      "membership": "unique allocated aligned slot in coherent live64-slot584h page; page ID valid; not already free; no concurrent trim",
+      "frees_pages_or_clears_payload": false
+    },
+    "array_release": {
+      "function": "release_native_scene_property_array_block_008f03f0",
+      "actual_header": "record+20",
+      "pointer_field": "+20",
+      "DWORD_byte_count_field": "+24",
+      "whole_bytes": 39,
+      "instructions": 13,
+      "sole_provider": "canonical singleton_lifetime_free",
+      "own_raw_provider_unchanged": true
+    },
+    "root_and_value_free": {
+      "function": "singleton_lifetime_free",
+      "complete_bytes": 6,
+      "instructions": 1,
+      "actual_relocation": "__imp__free",
+      "retained_application_import": "api-ms-win-crt-heap-l1-1-0.dll!free",
+      "retained_I386_runtime_export": "ucrtbase.dll!free",
+      "Native_free_thunks": [
+        "00BF6989 -> 00BF65AC",
+        "00BF65AC -> 00BF9DC8"
+      ],
+      "current_heap_only": true,
+      "historical_or_loaded_runtime_equivalence": false
+    }
+  },
+  "owning_graph_contract": [
+    "actual raw61 bags and accepted58 type6 records/real empty-child clone allocation results; no synthetic object",
+    "real pooled raw CString keys and actual20-byte slots from accepted same-pool new-node publication path",
+    "finite unshared acyclic owning edges; child+110 backlinks are non-owning; sufficient stack for recursion",
+    "exact owning current-CRT heap bases for roots and released value blocks; never free borrowed map interior, pool slots, stack or Original heap",
+    "no duplicate slot/root/key/buffer ownership and no overlap with live siblings/interiors/active frame",
+    "startup returned before borrowing guarded pool; nonzero atexit status retains actual pool without callback; thrown startup unusable",
+    "canonical cells/processes and same E188B4 list remain alive; all payload/key/node lifetimes finish before CD9260 pool page destruction",
+    "same live string owner generation for enabled small returns; preserve real getter/disabled gate behavior rather than cache a pool or directly free small key",
+    "stable valid current storage, successful nonoverflowing operations; no reentry, concurrent graph mutation or trim, invalid-memory fault, allocation failure or exceptional unwind",
+    "no count-zero short circuit and no omission of second bag clear; preserve node/header/owner words not written by Native"
+  ],
+  "ABI": {
+    "original_scalar": "ECX root; stack DWORD flags tested as byte lowbit; preserveESI; EAX originalrootbits; RET4",
+    "original_map": "ECX actualmap; preserveEBX EBP ESI EDI; plainRET",
+    "original_release": "ECX actualrecord; preserveESI EDI; plainRET",
+    "original_phase": "MOV[ECX],CE89D4 then tailJMP8F0640 without receiver adjustment",
+    "original_bag": "ECX actualbag; normal FS/SEH install/restore and ESI preservation; plainRET",
+    "proposed": "ordinary context-bearing C++ with uint32 scalar result, preserving complete successful operation schedules",
+    "native_abi_claim": false,
+    "raw_scalar_proposed": false,
+    "further_raw_transport": "any future naked scalar or hidden-context transport requires complete independent ABI proof",
+    "excluded": [
+      "Original argument/register/flags/RET4 identity",
+      "Original FS/SEH and exceptional cleanup",
+      "historical CRT",
+      "Original class/vtable ABI",
+      "allocation fault/failure parity",
+      "loaded-runtime/startup/world/gameplay parity"
+    ]
+  },
+  "physical_evidence": {
+    "path": "local/cc12_property_recursive_lifetime_source_readiness/physical_evidence.json",
+    "bytes": 1006263,
+    "sha256": "e38182df85fd196b4957d2c1c5cdf3c8c01ded24f8ba0647781c6595fa9ddda4",
+    "physical_input_copies": 378,
+    "actual_dependency_files": 294,
+    "complete_objects": 11,
+    "complete_COFF_extents": 485,
+    "whole_archive": "local/cc12_property_recursive_lifetime_source_readiness/frozen/archive/bsp_core.lib",
+    "exact_unique_archive_members": [
+      {
+        "module": "native_scene_property_bag_storage",
+        "name": "bsp_core.dir\\Release\\native_scene_property_bag_storage.obj",
+        "archive_header_offset": 57454620,
+        "bytes": 11700,
+        "sha256": "2bf81dfd2f333e050fe6749f8e03ca5b94430aba2bcfb023252536869fded192",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_scene_property_bag_storage.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_scene_property_array_block_release",
+        "name": "bsp_core.dir\\Release\\native_scene_property_array_block_release.obj",
+        "archive_header_offset": 57466380,
+        "bytes": 1264,
+        "sha256": "1e8e55427a84ff704222a97fbfb95057f7d973c444ef156e64b10dbd25e7adb5",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_scene_property_array_block_release.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_enum_node_pool",
+        "name": "bsp_core.dir\\Release\\native_enum_node_pool.obj",
+        "archive_header_offset": 59622196,
+        "bytes": 9671,
+        "sha256": "b872a24fb45ea712e2f74f431721ec41fba630a7d9cf3fe4c1751ff33f57d94d",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_enum_node_pool.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_enum_dictionary_lookup",
+        "name": "bsp_core.dir\\Release\\native_enum_dictionary_lookup.obj",
+        "archive_header_offset": 59638586,
+        "bytes": 6314,
+        "sha256": "0dda8118ff120ede92bba514a1958cc2cc2b6f275d64e1461e79c5b3352d28ee",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_enum_dictionary_lookup.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_string",
+        "name": "bsp_core.dir\\Release\\native_string.obj",
+        "archive_header_offset": 26838866,
+        "bytes": 18842,
+        "sha256": "376360cd941ff32fec39b4076027367d34a68b8cfed712a2e46c744cfec5e517",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_string.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_string_pool_owner",
+        "name": "bsp_core.dir\\Release\\native_string_pool_owner.obj",
+        "archive_header_offset": 26818848,
+        "bytes": 15566,
+        "sha256": "d970d237a614ada5c530cc1d1c5f54a1619ea398c2e5577d90c2528e53500614",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_string_pool_owner.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "native_string_pool_storage",
+        "name": "bsp_core.dir\\Release\\native_string_pool_storage.obj",
+        "archive_header_offset": 26809616,
+        "bytes": 9171,
+        "sha256": "9ba3be5eafdf79e7b44d65e9ac6ea973b28dd1f0dde310aae00c055aa0008d95",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/native_string_pool_storage.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "singleton_lifetime",
+        "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "archive_header_offset": 67744388,
+        "bytes": 32983,
+        "sha256": "d7cb5e1b1c747ee900a2ea70f488bff61ceb1d54696aa2dcceb01c4efcb6fc89",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/singleton_lifetime.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "allocator_list",
+        "name": "bsp_core.dir\\Release\\allocator_list.obj",
+        "archive_header_offset": 67443786,
+        "bytes": 109274,
+        "sha256": "1079b00c4c6b7083cb7fdd372d587d86301a07462d4e4a60d1fdc010f0105789",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/allocator_list.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "module": "game_native_physical_pool",
+        "name": "bsp_core.dir\\Release\\game_native_physical_pool.obj",
+        "archive_header_offset": 61609052,
+        "bytes": 30116,
+        "sha256": "b06852ee89565a532217912d6d87e5cc9181010727cc2793fdd9b7e0bbefbd67",
+        "path": "local/cc12_property_recursive_lifetime_source_readiness/archive_members/game_native_physical_pool.obj",
+        "unique": true,
+        "whole_object_equal": true
+      }
+    ],
+    "standalone_application_object": "local/cc12_property_recursive_lifetime_source_readiness/frozen/objects/game_native_string_process.obj",
+    "queries": [
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/target_count.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f3f30.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_004e6730.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f0de0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f0640.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f59e0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f5410.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f06e0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00ce89d4.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00d16504.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00d162c4.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008ef780.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f41a0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f50ed.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f2930.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_008f03f0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_0041dd20.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_0043b0a0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00cc8a30.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00cd9260.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00e175b0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00e188b4.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_008f3f30.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_008f3f30.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_004e6730.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_004e6730.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_008f0de0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_008f0de0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_008f0640.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_008f0640.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_008f59e0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_008f59e0.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/proto_008f5410.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/listing_008f5410.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/whole_six_flow.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00bf65ac.json",
+      "local/cc12_property_recursive_lifetime_source_readiness/queries/bytes_00bf6989.json"
+    ]
+  },
+  "provenance": {
+    "timing": "all current provider/input captures occur AFTER inherited producer build; no new compile and no claim of fresh pre-build capture",
+    "selected_project_compile_inputs": {
+      "earlier_source_commit": "0b55a2df27c215526f293065e90d37a780fa87aa",
+      "current_source_commit": "3649653337d98e9a0203021ba36fb61214592cc5",
+      "selected_project_inputs": [
+        "include/bsp/allocator_list.hpp",
+        "include/bsp/camera_projection.hpp",
+        "include/bsp/camera_transform.hpp",
+        "include/bsp/d3d9_buffers.hpp",
+        "include/bsp/d3d9_startup.hpp",
+        "include/bsp/d3d9_states.hpp",
+        "include/bsp/d3d9_vertex_layout.hpp",
+        "include/bsp/entity_identity.hpp",
+        "include/bsp/frame_clock.hpp",
+        "include/bsp/game_entry.hpp",
+        "include/bsp/game_native_physical_pool.hpp",
+        "include/bsp/game_native_string_process.hpp",
+        "include/bsp/instance_grouping.hpp",
+        "include/bsp/instance_sort.hpp",
+        "include/bsp/instance_upload.hpp",
+        "include/bsp/material_sort_metadata.hpp",
+        "include/bsp/native_enum_dictionary_lookup.hpp",
+        "include/bsp/native_enum_node_pool.hpp",
+        "include/bsp/native_lua_script_overrides.hpp",
+        "include/bsp/native_lua_vfs_dispatch.hpp",
+        "include/bsp/native_mesh_owner.hpp",
+        "include/bsp/native_mesh_pool.hpp",
+        "include/bsp/native_physical_provider_pool.hpp",
+        "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+        "include/bsp/native_render_context.hpp",
+        "include/bsp/native_render_pointer_arrays.hpp",
+        "include/bsp/native_scene_property_array_block_release.hpp",
+        "include/bsp/native_scene_property_bag_storage.hpp",
+        "include/bsp/native_scene_property_record_type6_storage.hpp",
+        "include/bsp/native_singleton_publication.hpp",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "include/bsp/native_string.hpp",
+        "include/bsp/native_string_pool_owner.hpp",
+        "include/bsp/native_string_pool_storage.hpp",
+        "include/bsp/native_string_vector.hpp",
+        "include/bsp/random.hpp",
+        "include/bsp/random_threads.hpp",
+        "include/bsp/render_command_queue.hpp",
+        "include/bsp/render_tail.hpp",
+        "include/bsp/singleton_lifetime.hpp",
+        "include/bsp/storage_pool.hpp",
+        "include/bsp/system_time_constants.hpp",
+        "include/bsp/vertex_declaration.hpp",
+        "src/allocator_list.cpp",
+        "src/game_native_physical_pool.cpp",
+        "src/game_native_string_process.cpp",
+        "src/native_enum_dictionary_lookup.cpp",
+        "src/native_enum_node_pool.cpp",
+        "src/native_scene_property_array_block_release.cpp",
+        "src/native_scene_property_bag_storage.cpp",
+        "src/native_string.cpp",
+        "src/native_string_pool_owner.cpp",
+        "src/native_string_pool_storage.cpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "changed_selected_inputs": [],
+      "statement": "All selected actual project compile inputs are unchanged by the fast-forward; the inherited whole archive is not advertised as a fresh build of unrelated current main code."
+    },
+    "primary_build": "previous actual primary Win32+3checks PASS; copied receipt, not rerun",
+    "current_recipe_vs_inherited_archive": "both recipes retained; no assertion unrelated newer main TUs were rebuilt",
+    "loaded_runtime_claim": false
+  },
+  "checks_performed": [
+    "all retained23 live Native spans equal installed PE",
+    "all six whole current listings and read-only flow audit",
+    "exact target/selector/profile tables",
+    "whole current-provider extents, every ordered relocation, and complete archive-member equality",
+    "canonical process/context Source and pool/key/free membership review",
+    "accepted producer receipt hash and unchanged54 selected project compile inputs",
+    "full local artifact hash validation and exact two-file scoped diff"
+  ],
+  "future_Source_acceptance": [
+    "implement all six complete bodies together under refreshed source/header/address leases",
+    "preserve every existing provider body and ordered relocation",
+    "freeze actual compiler inputs before normal Win32 build; inspect six complete emitted extents and genuine calls",
+    "verify actual whole-object and unique archive member identity, exact array/free providers and all old provider extents",
+    "run existing required checks; no fake profile, opaque destructor, null-only or identity-only substitute"
+  ],
+  "execution": {
+    "readiness_builds": 0,
+    "readiness_tests": 0,
+    "new_Source_entry_executions": 0,
+    "Native_entry_executions": 0,
+    "target_runtime_API_executions": 0,
+    "Ghidra_mutations": 0,
+    "startup_validation": false,
+    "gameplay_validation": false
+  },
+  "document": "docs/CC12_PROPERTY_RECURSIVE_LIFETIME_SOURCE_READINESS.md",
+  "artifact_manifest": {
+    "path": "local/cc12_property_recursive_lifetime_source_readiness/artifact_manifest.json",
+    "bytes": 330603,
+    "sha256": "cd6502b26def8236183c4556a46d940cd8c3dda6dc10a908027fe99c8f5b9cf3",
+    "count": 1445
+  }
+}
