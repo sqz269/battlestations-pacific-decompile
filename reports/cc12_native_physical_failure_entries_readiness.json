@@ -1,0 +1,414 @@
+{
+  "packet": "cc12_native_physical_failure_entries_readiness",
+  "baseline": "8ce20387edb6eecf9c346d99d37b1ec06fabf35d",
+  "audit_finished_utc": "2026-10-08T11:52:46.054340+00:00",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "status": "independent_raw_contracts_ready_for_primary_source_consideration_notifier_input_and_connected_read_execution_unready",
+  "scope": {
+    "whole_functions": [
+      "00BD9E30",
+      "00530620"
+    ],
+    "bounded_producer_fragment": "0073D63C-0073D65B",
+    "tracked_outputs": [
+      "docs/CC12_NATIVE_PHYSICAL_FAILURE_ENTRIES_READINESS.md",
+      "reports/cc12_native_physical_failure_entries_readiness.json"
+    ],
+    "source_edits": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "packet_registry_edits": 0,
+    "Ghidra_mutations": 0,
+    "compiler_calls": 0,
+    "linker_calls": 0,
+    "native_entry_calls": 0,
+    "fixture_replays": 0,
+    "new_tests": 0
+  },
+  "readiness": {
+    "independent_exact_raw_leaf_Source_contract_ready": true,
+    "independent_raw_notifier_Source_contract_ready_with_stated_borrowed_inputs": true,
+    "Source_implementation_authorized_by_this_audit": false,
+    "raw_entries_currently_implemented_or_admitted": false,
+    "leaf_requires_manager_or_global": false,
+    "notifier_requires_global0109CEEC": false,
+    "notifier_requires_genuine_borrowed_actual_manager": true,
+    "genuine_borrowed_callable_domain_owner_available_in_retained_inputs": false,
+    "notifier_execution_ready_with_current_inputs": false,
+    "connected_raw_read_failure_execution_ready": false,
+    "BF5030_Source_authorized": false,
+    "whole_owner_graph_or_production_callback_domain_admitted": false,
+    "game_validated": false
+  },
+  "Original_complete_and_fragment_evidence": [
+    {
+      "address": "00BD9E30",
+      "bytes": 11,
+      "hex": "8b8190000000ffd0c20400",
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "whole_function": true,
+      "prior_live_Ghidra_equal": true,
+      "current_PE_equal": true,
+      "instructions": [
+        {
+          "address": "00BD9E30",
+          "bytes": "8b8190000000",
+          "instruction": "mov eax, dword ptr [ecx + 0x90]"
+        },
+        {
+          "address": "00BD9E36",
+          "bytes": "ffd0",
+          "instruction": "call eax"
+        },
+        {
+          "address": "00BD9E38",
+          "bytes": "c20400",
+          "instruction": "ret 4"
+        }
+      ],
+      "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/e51d8d1073b5b98d6acd77f6ec734a4ce25de8b7e3ea87f6b87efb6fea3cbd3d/00BD9E30.bin"
+    },
+    {
+      "address": "00530620",
+      "bytes": 1,
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "whole_function": true,
+      "prior_live_Ghidra_equal": true,
+      "current_PE_equal": true,
+      "instructions": [
+        {
+          "address": "00530620",
+          "bytes": "c3",
+          "instruction": "ret "
+        }
+      ],
+      "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/3f81dc9ea6d4990e6aa8f762562ef29e72a037b7e7278e117d31822ee11333e7/00530620.bin"
+    },
+    {
+      "address": "0073D63C",
+      "bytes": 32,
+      "hex": "8b0decce0901c78190000000200653008b15ecce0901c7828c000000305b7300",
+      "sha256": "7aa05a94b4e4f9efca5702c5992f6b1710ac091cf77dc2513ad3dcefa0427a84",
+      "whole_function": false,
+      "prior_live_Ghidra_equal": true,
+      "current_PE_equal": true,
+      "instructions": [
+        {
+          "address": "0073D63C",
+          "bytes": "8b0decce0901",
+          "instruction": "mov ecx, dword ptr [0x109ceec]"
+        },
+        {
+          "address": "0073D642",
+          "bytes": "c7819000000020065300",
+          "instruction": "mov dword ptr [ecx + 0x90], 0x530620"
+        },
+        {
+          "address": "0073D64C",
+          "bytes": "8b15ecce0901",
+          "instruction": "mov edx, dword ptr [0x109ceec]"
+        },
+        {
+          "address": "0073D652",
+          "bytes": "c7828c000000305b7300",
+          "instruction": "mov dword ptr [edx + 0x8c], 0x735b30"
+        }
+      ],
+      "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/35804de5884d95434d33b3a76236de860dfd1b4055d61f2f40286634f8d7cdf1/0073D63C.bin"
+    }
+  ],
+  "notifier_00BD9E30": {
+    "whole_body": "8B8190000000 FFD0 C20400",
+    "bytes": 11,
+    "instructions": 3,
+    "operations": [
+      "MOV EAX,[ECX+90h]",
+      "CALL EAX",
+      "RET4"
+    ],
+    "actual_memory_read": "Exactly the DWORD at actual manager+90; no global0109CEEC read and no manager+18 read.",
+    "entry_registers": "ECX actual manager; EDX is forwarded unchanged to callback entry. Incoming EAX is replaced with the actual loaded callback address.",
+    "entry_stack": {
+      "S": "return address to notifier caller",
+      "S+4": "one discarded DWORD"
+    },
+    "callback_entry_stack": {
+      "S-4": "return address00BD9E38 inside notifier",
+      "S": "original notifier caller return address; not a forwarded callback argument",
+      "S+4": "discarded caller DWORD; not an explicitly forwarded callback argument"
+    },
+    "callback_requirement": "Valid directly callable x86 code in this process, compatible with ECX/EDX register entry and returning without popping callback arguments (plain RET/RET0). The bounded admitted target identity is the genuine Original00530620 C3 leaf or its separately qualified exact Source counterpart after genuine publication.",
+    "return_stack": "After balanced callback return, RET4 pops the notifier return address and discards its one caller DWORD. Caller ESP is S+8.",
+    "return_machine_state_known_C3_leaf": "EAX equals the actual +90 target loaded before CALL; ECX still equals the borrowed manager; EDX remains the incoming DWORD; other non-stack general registers and arithmetic flags are unchanged; only normal call/return stack writes and cleanup occur.",
+    "semantic_return": "No recovered semantic C++ return value. EAX is machine-observable target state for the genuine C3 callback, and must not be silently cleared or ignored by a raw-equivalence observer.",
+    "general_callback_boundary": "For an arbitrary other callback, callback effects would propagate; this audit does not claim that other targets preserve registers/flags or unwind safely.",
+    "BF5030_caller_distinction": "BF5030 independently loads actual global0109CEEC, reads manager+18 into EDX, and pushes the same field18 DWORD. The notifier must neither reload field18 nor require the EDX and stack DWORD to be equal as an entry-level rule.",
+    "typed_Source_is_not_raw": "Current Source is 24 bytes/11 instructions, cdecl(manager,discarded,dispatch), then virtual dispatch slot+0C. It does not provide the raw ECX/EDX/RET4 interface."
+  },
+  "leaf_00530620": {
+    "Original_whole_body": "C3",
+    "Original_bytes": 1,
+    "Original_instructions": 1,
+    "genuine_behavior": "Original leaf really is RET, confirmed by exact body and real startup publication. An exact Source C3 counterpart is a reconstruction of that leaf, not an invented success callback.",
+    "entry_requirements": "A valid return address and valid call stack. No owner, publication global, data pointer, semantic arguments, or semantic return value.",
+    "normal_return_state": "Leaves non-stack general registers and arithmetic flags unchanged; consumes exactly the return address; does not pop caller arguments or access manager fields.",
+    "current_Source_whole_body": "C20000",
+    "current_Source_bytes": 3,
+    "current_Source_instructions": 1,
+    "current_Source_equivalence": "RET0 and plain RET have the same normal architectural stack/register/flag effect, but their complete instruction bytes and sizes differ. Current ordinary empty C++ Source is not an exact1-byte entry.",
+    "Source_candidate": "A separate explicit raw entry whose complete emitted body is C3 can satisfy the exact leaf contract. Verify actual full production COFF and linked/loaded body after primary authorization; do not infer it from empty C++ syntax."
+  },
+  "genuine_borrowed_manager_contract": {
+    "ownership": "Caller lends a genuine already-produced initialized actual manager, with documented producer/provenance and lifetime spanning the call. Readable storage through +93 alone is insufficient provenance; a zeroed array or mock manager with a convenient +90 word is excluded.",
+    "callable_domain": "The +90 DWORD must designate the genuine callback code actually executable in the current process. Numeric identity00530620 is callable only when that actual Original image/code is present at that address and its whole body is established.",
+    "Source_domain": "A Source-owned manager can use the exact Source leaf only if a genuine qualified producer publishes its actual callable address. Merely setting a field in a mock owner or reinterpreting an identity as a host pointer is excluded.",
+    "input_words": "EDX and the discarded stack DWORD are borrowed caller inputs, not fabricated callback output or a substitute owner. For a connected BF5030 invocation they originate from the actual manager field18 at its specified load point.",
+    "publication": "The notifier borrows the owner directly and does not publish it. Any global0109CEEC binding for BF5030 belongs to that caller/owner packet and is absent here.",
+    "effects": "Call the actual target from +90. No identity-dispatch adapter, intercepted callback, default/null owner, skipped call, extra +18 fetch, or synthetic global.",
+    "current_satisfaction": "No such actual runtime owner/preimage is retained in this packet. This is an implementation precondition, not evidence that current production Source or a connected fixture satisfies it."
+  },
+  "actual_field90_producer_and_domains": {
+    "Original_producer_fragment": "0073D63C-0073D65B, exact32 bytes/4 instructions: reload actual0109CEEC, store +90=00530620, reload actual0109CEEC, store +8C=00735B30. This is not the whole Application_Initialize function.",
+    "fresh_xref_witness": "Current Ghidra identifies a DATA reference to00530620 at0073D642. BD9E30 callers are00BE7F2A and00BF5065; no caller body expansion was needed.",
+    "Source_producer": "install_native_vfs_startup_callbacks_0073d63c is complete32-byte/9-instruction Source COFF and stores literal Original addresses. The +90 immediate has no COFF relocation to a Source callback symbol.",
+    "Source_runtime_identity_route": "Typed notify -> GameNativeVfsRuntime::Impl callback dispatcher -> NativeVfsRuntimeBindings::open_failure_entry. The latter accepts Original identity00530620 and calls ignore_native_vfs_mount_failure_00530620.",
+    "Source_direct_route": "Typed physical read loads field90 as a directly callable fastcall target. That different route is not proof that the identity installer yields a valid Source function pointer.",
+    "missing_available_input": "A genuine manager plus observed field90 in the callable domain of the selected Original/Source execution image. The zero-filled Original0109CEEC static image is not such an owner.",
+    "scope_limit": "No owner construction, global synthesis, conversion of production callback domains, BF5030 implementation, or whole VFS expansion is authorized or performed."
+  },
+  "current_complete_Source_COFF": [
+    {
+      "symbol": "?notify_native_vfs_request_failure_00bd9e30@bsp@@YAXPAXIAAVNativeFileStoreRequestDispatch@1@@Z",
+      "bytes": 24,
+      "instructions": 11,
+      "complete_decode": true,
+      "hex": "558bec8b4d08518b81900000008b4d10508b01ff500c5dc3",
+      "sha256": "667e2b949f36ca8f3d4842fb4bdd350c3b21eb73d6d1a94746f94d9380a98bbc",
+      "relocations": []
+    },
+    {
+      "symbol": "?ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ",
+      "bytes": 3,
+      "instructions": 1,
+      "complete_decode": true,
+      "hex": "c20000",
+      "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b",
+      "relocations": []
+    },
+    {
+      "symbol": "?install_native_vfs_startup_callbacks_0073d63c@bsp@@YAXACRAX@Z",
+      "bytes": 32,
+      "instructions": 9,
+      "complete_decode": true,
+      "hex": "558bec8b4d088b01c78090000000200653008b01c7808c000000305b73005dc3",
+      "sha256": "10693a5d432a3db980c7f6ce0791ce9f6ae60bcf87b07bf304fa8d8d16eb1bf3",
+      "relocations": []
+    },
+    {
+      "symbol": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z",
+      "bytes": 27,
+      "instructions": 9,
+      "complete_decode": true,
+      "hex": "558bec817d08200653007509e8000000005dc20800e800000000cc",
+      "sha256": "ccb2bb8f9645c7e1ff3dbaaac52d37e9939bd65f4907a81c321e46b35281c0e2",
+      "relocations": [
+        {
+          "offset": 13,
+          "type": 20,
+          "target": "?ignore_native_vfs_mount_failure_00530620@bsp@@YAXXZ"
+        },
+        {
+          "offset": 22,
+          "type": 20,
+          "target": "?unsupported@?A0x65b333b2@bsp@@YAXXZ"
+        }
+      ]
+    },
+    {
+      "symbol": "?invoke_manager_failure_callback@Impl@GameNativeVfsRuntime@game@bsp@@UAEXIPAX@Z",
+      "bytes": 15,
+      "instructions": 5,
+      "complete_decode": true,
+      "hex": "558bec81c1080100005de900000000",
+      "sha256": "6154bf15a289cf21e73c6310bed5a334afb41f8bf6e00be0a30a41be2c49ebd0",
+      "relocations": [
+        {
+          "offset": 11,
+          "type": 20,
+          "target": "?open_failure_entry@NativeVfsRuntimeBindings@bsp@@QAEXIPAX@Z"
+        }
+      ]
+    },
+    {
+      "symbol": "?read_native_physical_stream_00bf5030@bsp@@YAIPAX0IPAIAAUNativePhysicalStreamOpenContext@1@@Z",
+      "bytes": 103,
+      "instructions": 42,
+      "complete_decode": true,
+      "hex": "558bec51568b75088d4dfc6a0051ff75108b4608ff750cc745fc0000000050ff150000000085c075148b45188b008b008b088b51188b8190000000ffd08b56108b45fc03c28946103bc28b4e141bc0f7d803c18b4d148946148b45fc5e85c9740289018be55dc3",
+      "sha256": "f1d54ee77cf9c9ac56473bb78971da69a2ae3531ddacc4a3caaeac1287fc974f",
+      "relocations": [
+        {
+          "offset": 33,
+          "type": 6,
+          "target": "__imp__ReadFile@20"
+        }
+      ]
+    }
+  ],
+  "pinning": {
+    "manifest": {
+      "path": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/manifest.json",
+      "sha256": "124e5fafa76bcaf3ac6f0491b7f04e125092d7924a8d40d4a1a1e0187086c149"
+    },
+    "whole_selected_COFF": {
+      "path": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/whole_current_selected_COFF.json",
+      "sha256": "fff72cf1daf8128a01e81b5effdac691d1c2bd194c8b34b6c865b93708b877ec"
+    },
+    "all_provider_symbols": {
+      "path": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/current_provider_symbols.json",
+      "sha256": "175df220e2fc72c517c5115e07a7ef3a37d8f3b07ea0be822429abec2f9c1ac6"
+    },
+    "retained_rows": 89,
+    "role_counts": {
+      "whole_installed_Original_PE": 1,
+      "complete_original_body": 2,
+      "prior_live_Ghidra_evidence_not_replayed": 8,
+      "bounded_original_publication_fragment": 1,
+      "prior_immutable_manifest_with_candidate_wording_qualification": 1,
+      "current_accepted_readiness_and_candidate_wording_correction": 2,
+      "prior_complete_COFF_evidence": 1,
+      "complete_current_source_provider": 5,
+      "complete_current_provider_header": 5,
+      "complete_current_publication_context_header": 1,
+      "complete_existing_normal_archive_not_linked": 1,
+      "actual_COFF_parser": 1,
+      "complete_current_provider_COFF": 5,
+      "prior_compile_command_evidence_not_executed": 1,
+      "prior_compile_input_evidence_not_executed": 1,
+      "selected_prior_compiler_backend_not_executed": 46,
+      "audit_recipe": 1,
+      "audit_tool": 1,
+      "actual_audit_python_executable": 1,
+      "actual_audit_PE_parser": 1,
+      "actual_audit_decoder_module": 1,
+      "actual_audit_decoder_backend": 1,
+      "actual_audit_python_backend": 1
+    },
+    "important_whole_file_pins": [
+      {
+        "role": "whole_installed_Original_PE",
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/0fff0dd52ae6fa34c5adb9259f04ee64d777ee97673f1a9708ea54a4062865d5/battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      {
+        "role": "complete_current_source_provider",
+        "path": "src/native_filestore_request.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/e4ff28c80e1f51afd33b457189cd5a480e256dc0c06cf15261bfddb9a7e95d06/native_filestore_request.cpp",
+        "bytes": 18470,
+        "sha256": "67decb82627642141abd26b650b21094cf75b35e6f4cb3db5dbce25cc28a1107"
+      },
+      {
+        "role": "complete_current_source_provider",
+        "path": "src/native_vfs_startup_callbacks.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/1f926662c2eb597e8a9dfbbb067ed7f20605b829aa674065e73c329aaa3aa4a7/native_vfs_startup_callbacks.cpp",
+        "bytes": 1010,
+        "sha256": "247020ade9bd4c443cea143db86319a6c8176a81b5895ce6bd429dd1c00dac07"
+      },
+      {
+        "role": "complete_current_source_provider",
+        "path": "src/native_vfs_runtime_bindings.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/685fdc6a489362a76427ad3ea36720aa06b82c6de544e910754467b73896f2a8/native_vfs_runtime_bindings.cpp",
+        "bytes": 14832,
+        "sha256": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b"
+      },
+      {
+        "role": "complete_current_source_provider",
+        "path": "src/game_native_vfs_runtime.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/8afc14ec3528eb2dc7a4513b5366d83210880a8296888d3e555446ae64a658b9/game_native_vfs_runtime.cpp",
+        "bytes": 31796,
+        "sha256": "d07a2753cad40700c6b95591b3d5721337566658638b27a298fd29508a3d3451"
+      },
+      {
+        "role": "complete_current_source_provider",
+        "path": "src/native_physical_stream_open.cpp",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/fcb00677eceb3e4d84ccf3bb7561105e500fbee585df9c5eb2787914df80f4af/native_physical_stream_open.cpp",
+        "bytes": 17088,
+        "sha256": "926a6c3b18b48c9242e52c890dcf8bb2c771779f1480fcd7b84b5f506e8e7ea1"
+      },
+      {
+        "role": "complete_existing_normal_archive_not_linked",
+        "path": "build/win32/Release/bsp_core.lib",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/2b2e3f3dd713455bbdb2895a392ecf19992fced8987716e07b29d3f2e58f9b36/bsp_core.lib",
+        "bytes": 73558886,
+        "sha256": "92884169f7fba7e8f96a9b333556f88ca38259f33fcc6a3872a8b54e013e8dfe"
+      },
+      {
+        "role": "complete_current_provider_COFF",
+        "path": "build/win32/bsp_core.dir/Release/native_filestore_request.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/eb598f0acc23f79ef43113c3ea7278e514e24b789bcde70b31def9a765c07e01/native_filestore_request.obj",
+        "bytes": 27268,
+        "sha256": "88a1d0fea81efa5b6f1112440800b40e4b2098c25a77f15452b3e72d8a0c3d21"
+      },
+      {
+        "role": "complete_current_provider_COFF",
+        "path": "build/win32/bsp_core.dir/Release/native_vfs_startup_callbacks.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/f49ae2513e6cbe29348596bd21170e868a1b06e5e730eff9600fbe63aebbaf37/native_vfs_startup_callbacks.obj",
+        "bytes": 9883,
+        "sha256": "3f30768da8b2f26c0995d001ea4dd6ee93559fbbc4ebd092c5bc0dedc5b53711"
+      },
+      {
+        "role": "complete_current_provider_COFF",
+        "path": "build/win32/bsp_core.dir/Release/native_vfs_runtime_bindings.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/483c9e25bce783b05325e389d32a5834df8f4e4231494dd0af89d05f26d26168/native_vfs_runtime_bindings.obj",
+        "bytes": 40687,
+        "sha256": "2e8deb4d637b08e194c4c6633fa93c1bb10b12d067cc1c70f9c763fb2a965f65"
+      },
+      {
+        "role": "complete_current_provider_COFF",
+        "path": "build/win32/bsp_core.dir/Release/game_native_vfs_runtime.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/328f5d3686cd64fb297ad339416395bc39960186cfcf394563108be84e4405e1/game_native_vfs_runtime.obj",
+        "bytes": 210257,
+        "sha256": "98268e9ca087fc61f130a98c3fd86934ecdc86b331557f10dab732d954b37a20"
+      },
+      {
+        "role": "complete_current_provider_COFF",
+        "path": "build/win32/bsp_core.dir/Release/native_physical_stream_open.obj",
+        "frozen": "local/cc12_native_physical_failure_entries_readiness_20261008a/audit01/inputs/frozen/8df716015d2c4947bc3150bdba4821dcfa26fca0a6b20d9ad5b9c3107bcd876e/native_physical_stream_open.obj",
+        "bytes": 22700,
+        "sha256": "ed8b44dbc8cb8745025414a564aa4854bf120c9278c1d8acefbdc7c95e03ff0c"
+      }
+    ],
+    "pre_copy_post_hashes_equal": true,
+    "selected_provider_hashes_unchanged_from_prior_accepted_audit": true,
+    "complete_provider_objects": 5,
+    "unique_complete_object_membership_in_whole_archive": true,
+    "archive_boundary": "Existing normal-build archive from raw-write work, not a new build of merged main. Exact selected object membership is freshly checked. No linker or backend execution is inferred.",
+    "candidate_qualification": "This audit inventories only copied selected rows. Prior unused header/library candidate hash dictionaries were transient and were not retained; historical counts are not identity pins or copies."
+  },
+  "smallest_next_work": {
+    "Source_candidate_after_primary_authorization": "Two separate raw entries only: complete11-byte00BD9E30 and complete1-byte00530620. Existing typed identity dispatch and callback installation retain their separate interfaces. This audit itself grants no Source authorization.",
+    "leaf_validation_input": "The genuine Original C3 body needs no owner; future direct leaf validation must retain complete Source production/linked bytes and a normal call stack.",
+    "notifier_validation_blocker": "Do not execute either notifier on fabricated manager storage. A genuine borrowed manager with actual callable+90 publication is still missing.",
+    "smallest_missing_provider_packet_if_notifier_execution_is_requested": "Bounded callable-domain publication/owner witness at the existing0073D63C callback installer boundary: identify the actual already-produced manager, its lifetime and +90 preimage, and the genuine executable target. If no such manager can be supplied, stop there and identify its exact producer before expanding further.",
+    "connected_BF5030_boundary": "Raw read failure additionally needs actual global0109CEEC and field18 provenance. Independent leaf/notifier readiness does not supply those prerequisites."
+  },
+  "validation": [
+    "Project/program identity verified",
+    "Previously live-verified whole11/1 and32-byte fragment physically retained and rechecked against unchanged whole installed PE",
+    "Five complete Source provider objects and six complete selected functions retained and decoded",
+    "Each selected whole object occurs uniquely in retained whole archive",
+    "All89 retained rows pass pre/copy/post hash checks",
+    "Source providers remain byte-identical to the prior accepted audit",
+    "No Source edits, build, link, native call, or old fixture replay"
+  ]
+}
