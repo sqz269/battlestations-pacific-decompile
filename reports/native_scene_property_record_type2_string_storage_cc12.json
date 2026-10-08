@@ -1,0 +1,2888 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_scene_property_record_type2_string_storage",
+  "address": "008EF1B0",
+  "name": "construct_native_scene_property_record_type2_string_storage_008ef1b0",
+  "status": "worker_source_complete_qualified_native60_current_owned_copy_fixture_passed_Root_pending",
+  "Source_admission_credit": 0,
+  "worker_implementation_count": 1,
+  "Root_independent_validation_pending": true,
+  "main_build_pending": true,
+  "saved_analysis_publication_pending": true,
+  "branch": "agent/cc12_type2_string_storage_source",
+  "base_commit": "7c79302e7276263fe41dc079c589920336c7a918",
+  "scope": "Entire physical constructor with sole CALL operand rebound to admitted physical duplicate57; normal current CRT ownership only",
+  "source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\native_scene_property_record_type2_string_storage.cpp",
+    "size": 1169,
+    "sha256": "46c3c323f36eb6c6176b546f3cec5c39d02184d1824b6c13dca436f09e6e1d64"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\include\\bsp\\native_scene_property_record_type2_string_storage.hpp",
+    "size": 1458,
+    "sha256": "d61949a84382d9f6e462604de1f2f96e2dbb66172275450d7a51da7db5338550"
+  },
+  "canonical_source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\singleton_lifetime.cpp",
+    "size": 13257,
+    "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "native": {
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "body": {
+      "address": 9367984,
+      "size": 60,
+      "SHA256": "be944adca54cbd0702bc89a12e88ab0c8ac84f306bb8c14188266b8f70ae5a04",
+      "hex": "568bf18b4c2408c706d489ce00c74604020000005733ff897e18897e1c897e20897e24897e30e8659cb4ff897e3489460c5fc6462c018bc65ec20400",
+      "instructions": [
+        {
+          "address": 9367984,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 9367985,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 9367987,
+          "bytes": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": 9367991,
+          "bytes": "c706d489ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce89d4"
+        },
+        {
+          "address": 9367997,
+          "bytes": "c7460402000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 2"
+        },
+        {
+          "address": 9368004,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 9368005,
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": 9368007,
+          "bytes": "897e18",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], edi"
+        },
+        {
+          "address": 9368010,
+          "bytes": "897e1c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], edi"
+        },
+        {
+          "address": 9368013,
+          "bytes": "897e20",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], edi"
+        },
+        {
+          "address": 9368016,
+          "bytes": "897e24",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], edi"
+        },
+        {
+          "address": 9368019,
+          "bytes": "897e30",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x30], edi"
+        },
+        {
+          "address": 9368022,
+          "bytes": "e8659cb4ff",
+          "mnemonic": "call",
+          "operands": "0x438e40"
+        },
+        {
+          "address": 9368027,
+          "bytes": "897e34",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], edi"
+        },
+        {
+          "address": 9368030,
+          "bytes": "89460c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], eax"
+        },
+        {
+          "address": 9368033,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 9368034,
+          "bytes": "c6462c01",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": 9368038,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": 9368040,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 9368041,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    }
+  },
+  "ABI": {
+    "original_actual_ECX": "fresh unowned writable receiver, minimum56 bytes",
+    "original_actual_EDX": "unused incoming; null text preserves EDX",
+    "stack_DWORD": "nullable readable borrowed NUL-terminated text",
+    "Source": "void* __fastcall (void* actual_record_ecx, void* unused_edx, const char* actual_text_stack)",
+    "RET_bytes": 4,
+    "full_EAX": "same receiver",
+    "no_noexcept": true,
+    "saved_prototype": "FUN_008ef1b0 undefined(void) incomplete unchanged by worker",
+    "normal_preserved": [
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "raw_after_ESP": "T+4",
+    "DF_precondition": 0,
+    "arithmetic_null": {
+      "mask": "0x8C5",
+      "value": "0x44",
+      "AF": "undefined excluded",
+      "ECX": 0,
+      "EDX": "incoming preserved",
+      "EAX": "receiver despite ZF1"
+    },
+    "arithmetic_nonnull": {
+      "mask": "0x8D5",
+      "expression": "ADD32(T-44,16)",
+      "AF": "defined",
+      "ECX_EDX": "volatile unasserted"
+    },
+    "stack": {
+      "preCALL_T": "actual text argument slot",
+      "constructor_entry": "T-4",
+      "saved_ESI": "T-8",
+      "text_load": "[T] before any receiver store",
+      "saved_EDI": "T-12",
+      "duplicate_entry": "T-16",
+      "duplicate_saved_EBX": "T-20",
+      "duplicate_saved_ESI": "T-24",
+      "duplicate_saved_EDI": "T-28",
+      "allocation_size": "T-32",
+      "memcpy_dest": "T-44",
+      "memcpy_src": "T-40",
+      "memcpy_length": "T-36",
+      "memcpy_entry": "T-48",
+      "memcpy_return": "T-44",
+      "final_ADD16": "T-28",
+      "duplicate_RET0": "T-12",
+      "constructor_RET4": "T+4"
+    }
+  },
+  "storage": {
+    "minimum_receiver_bytes": 56,
+    "total_written": 37,
+    "total_preserved": 19,
+    "preserved_intervals": [
+      [
+        8,
+        12
+      ],
+      [
+        16,
+        24
+      ],
+      [
+        40,
+        44
+      ],
+      [
+        45,
+        48
+      ]
+    ],
+    "pre_call_writes": [
+      {
+        "offset": 0,
+        "width": 4,
+        "value": "0x00CE89D4"
+      },
+      {
+        "offset": 4,
+        "width": 4,
+        "value": 2
+      },
+      {
+        "offset": 24,
+        "width": 4,
+        "value": 0
+      },
+      {
+        "offset": 28,
+        "width": 4,
+        "value": 0
+      },
+      {
+        "offset": 32,
+        "width": 4,
+        "value": 0
+      },
+      {
+        "offset": 36,
+        "width": 4,
+        "value": 0
+      },
+      {
+        "offset": 48,
+        "width": 4,
+        "value": 0
+      }
+    ],
+    "post_success_order": [
+      {
+        "offset": 52,
+        "width": 4,
+        "value": 0
+      },
+      {
+        "offset": 12,
+        "width": 4,
+        "value": "actual duplicate return or null"
+      },
+      {
+        "offset": 44,
+        "width": 1,
+        "value": 1
+      }
+    ],
+    "phase": "literal identity only, never Source vtable dispatch",
+    "ownership": "inspect actual current owned copy while live; free nonnull once using singleton_lifetime_free before caller-owned receiver disposal/reuse/lifetime end",
+    "fresh_unowned_only": true,
+    "do_not_overwrite_already_owned_copy": true,
+    "receiver_disjoint_from_borrowed_text_and_live_call_frames": true,
+    "borrowed_text_valid_through_NUL_with_representable_length_plus_one": true,
+    "failure_scope": "precall stores already occur; no strong guarantee or thrown/failing path admission",
+    "fixture_receiver": "genuine aligned96 stack object pre16/root56/post24 reset only after copy free",
+    "fixture_text": "genuine aligned48 stack object pre16/text16/post16"
+  },
+  "qualified_comparison": {
+    "original_bytes": 60,
+    "original_instructions": 20,
+    "only_original_rebound_operand": [
+      39,
+      43
+    ],
+    "all_other_original_bytes_literal": 56,
+    "same_actual_linked_duplicate_for_Original_and_Source": true,
+    "duplicate_original_private_allocator_or_copy_executed": false,
+    "ordinary_Source_case": true,
+    "original_RX_after_binding": true,
+    "allocation_pointer_equality_required": false
+  },
+  "dependency": {
+    "Source_cpp": "src/native_string_duplicate.cpp",
+    "Source_cpp_SHA256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+    "Source_hpp_SHA256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+    "independently_admitted": true,
+    "publication_commit": "bb285149e",
+    "primary_integration": {
+      "passed": true,
+      "Source_admission_credit": 1,
+      "worker_commit": "abad4d43a48ac905be66cb02d103ed693c148cb9",
+      "independent_family": "local/dup57p1",
+      "independent_seal_sha256": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
+      "independent_inventory_artifacts": 95,
+      "independent_actual_files": 96,
+      "prior_artifacts_preserved": 13113,
+      "base_prior_artifacts": 12740,
+      "additional_artifacts": 373,
+      "fresh_translation_units": 3,
+      "accepted_processes": 1,
+      "target_entries": 5,
+      "returned_allocations": 3,
+      "canonical_frees": 3,
+      "complete_runtime_code_spans": 10,
+      "native_bytes": 57,
+      "native_instructions": 30,
+      "qualified_operand_bytes": 8,
+      "unchanged_bytes": 49,
+      "decoded_captures": [
+        {
+          "index": 0,
+          "phase": 0,
+          "null": true,
+          "ESP_and_nonvolatiles": true,
+          "defined_flags_independently_derived": true,
+          "volatile_nonnull_ECX_EDX_unasserted": true
+        },
+        {
+          "index": 1,
+          "phase": 0,
+          "null": false,
+          "ESP_and_nonvolatiles": true,
+          "defined_flags_independently_derived": true,
+          "volatile_nonnull_ECX_EDX_unasserted": true
+        },
+        {
+          "index": 2,
+          "phase": 1,
+          "null": true,
+          "ESP_and_nonvolatiles": true,
+          "defined_flags_independently_derived": true,
+          "volatile_nonnull_ECX_EDX_unasserted": true
+        },
+        {
+          "index": 3,
+          "phase": 1,
+          "null": false,
+          "ESP_and_nonvolatiles": true,
+          "defined_flags_independently_derived": true,
+          "volatile_nonnull_ECX_EDX_unasserted": true
+        }
+      ],
+      "fixture_context": {
+        "source_revision": "5aef9a87662331635a33b01598321c53d6bd8532",
+        "worker_commit": "abad4d43a48ac905be66cb02d103ed693c148cb9",
+        "full_main_build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_string_duplicate_integrated_build.log",
+        "build_log_sha256": "bde3f1f353edc06b1b0e2ad4cb65b50a15a10871b7ec490f2f4c4f0f7d8571fb",
+        "existing_checks": "3/3 PASS",
+        "core_context_only": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "sha256_at_capture": "a643a98a4a818a64e83770802ec15173198cb0a9511ae831cf48592aaaf24a65",
+          "consumed": false
+        },
+        "worker_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a",
+        "worker_manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_native_string_duplicate\\local\\cc12_raw_native_string_duplicate_worker20261008a\\artifact_manifest.json",
+          "size": 27429,
+          "sha256": "5cc2b60c8e9291ea0edf1fec7b916031d56e96df55788d56753686971ae100f1"
+        },
+        "new_input_hex": "93fe716da4c28000",
+        "new_input_bytes": 8,
+        "old_input_bytes": 6,
+        "new_incoming_EAX": "D1A2B3C4",
+        "new_unused_EDX": "89ABCDEF",
+        "new_nonvolatiles": [
+          "7531A9BC",
+          "2E4C6A80",
+          "B6D8F193"
+        ],
+        "borrowed_text_poison": "C7",
+        "historical_dispatch_snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p1\\dispatch_context.json",
+          "size": 1696739,
+          "sha256": "979b303637aa3730245e2749d3c4a258b08526af3349433d2e779411f786b96e"
+        },
+        "old_recipes_or_processes_executed": false
+      },
+      "supplemental_current_main_build": {
+        "passed": true,
+        "source_revision": "b1c4e140710d84681710e0865e208ed45e0481ea",
+        "full_main_build_log": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_duplicate57_type7_current_main_build.log",
+          "size": 2952,
+          "sha256": "3bebc45dbf9ad8a581938ef0808ea4848258f9c308dddfa8eb2cb4bcc8e8da26"
+        },
+        "checks": "3/3 PASS",
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_duplicate.cpp",
+          "size": 1554,
+          "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+        },
+        "header": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_duplicate.hpp",
+          "size": 933,
+          "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+        },
+        "canonical": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+          "size": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "CMake": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+          "size": 196888,
+          "sha256": "79e6d8f47cc2b176974f10500664eea376fe3913303497342a3ce097f31a191c"
+        },
+        "core_context_only": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "size": 73527626,
+          "sha256": "da087f1d2d0c5414a3b6ea0a4e83f7b278e12cc44ac30a88c3e390dafb7a8767",
+          "consumed_by_fixture": false
+        },
+        "historical_fixture_context": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p1\\context.json",
+          "size": 1618,
+          "sha256": "c36bf99b94bdb84ba8615aac24a770f3d7bfba85dd3ffb9491d3d7a2e4edea5a"
+        },
+        "older_fixture_seal_unchanged": true,
+        "target_processes_replayed": 0,
+        "reason": "Combined main added another harness initializer and type7 storage after the independent duplicate fixture; current build revalidates combined Source without replaying accepted Native execution."
+      },
+      "old_recipes_replayed": false,
+      "Source_provider_glue_native_credit": 0,
+      "native_class_ABI_admitted": false,
+      "original_private_CRT_EH_admitted": false,
+      "game_validated": false,
+      "qualification": "Whole physical string duplicate[00438E40,00438E79),57B30. ECX borrowed readable nullable NUL-terminated nonwrapping text; no stack arguments, plain RET0, EAX actual owned copy or0. Exactly CALL operands[34,38)/[44,48) bind genuine size adapter/current canonical allocation and actual VCRUNTIME140 memcpy import; all49 other bytes literal. Genuine private adapter61B17 has zero Native credit. Null XOR flags mask8C5=44 excludes undefined AF and preserves EDX; nonnull final ADD16 flags mask8D5 independently derived from copy-returnESP=T-32 and resultT-16; final RET returnsESP=T. Nonnull ECX/EDX volatile/unasserted. Current CRT DF0 only; no blanket FP/ES preservation. Independent fresh3TU strict Win32 process uses new guarded8-byte93fe716da4c28000 input/register sentinels,5 entries/3 real copies/3 current frees,10 complete code spans including full14-byte cookie and actual6-byte imports; complete physical UCRT/VCRUNTIME identity and code/input/Native bookends. Exact95 sealed artifacts plus seal,12740 original prior pins plus373 supplemental immutable pins=13113. Historical prelaunch basename failure stopped before target, separately recorded recovery, no successful phase or old target replay. Supplemental current merged-main Win32 build/all3 checks passed. Legacy CDECL duplicate_00438e40 remains unchanged; it is not the admitted physical interface. Normal current-provider domain only; original private CRT/EH, owning class/destructor/vtable and game ABI/gameplay remain unadmitted.",
+      "artifacts": {
+        "local/dup57p1/seal.json": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
+        "local/dup57p1/runtime.json": "6ec5228d17fda7680753c52021fdb231fd50b59f0c35577c74400998c94f3a16",
+        "local/dup57p1/static_gate.json": "981cc6d7a3170c906f90be1a021167f4c48facd7227b15cd1da07d6a13dbb729",
+        "local/dup57p1/post.json": "130f60c00b7d97f7514bc82a8a4bb72addd04bf35ae123359e3849c60becef17",
+        "local/dup57p1/Root_manual_static_review.json": "f3fc936b682be33d0827f8b700ef16354ffd06f959b0389508cdb5e076a7a6df",
+        "local/dup57p1/Root_preservation_extension_before.json": "be4e14a4a697176b62a826fd20b11d2b427a4d3957d479b15201dd08f89754d4",
+        "local/dup57p1/Root_launch_recovery_inputs.json": "b1e17010f89c8e4f765c3c8283fc0494af993578f6c62795ed9f7b877d0ff95c"
+      }
+    },
+    "saved_analysis_publication": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "supported_locked_annotation_tool": true,
+      "saved_project": true,
+      "prior_values_recorded_in": "local/ghidra-annotations-20261008T124133Z.json",
+      "affected_exports_refreshed": true,
+      "index_rebuilt": true,
+      "artifacts": {
+        "local/ghidra-annotations-20261008T124133Z.json": "bd629eec83675ff30336bfe01338793755a8f6f9756d417b866d8da6449e4442",
+        "local/cc12_duplicate57_source_final_annotations.log": "a650600244315987db505e78a4519e065ade371579d4780d28c30341fbb1f503",
+        "local/cc12_duplicate57_source_final_exports.log": "d4d3b6d7820265225c973c663816a56bd61cd3ffcab84975ba7feefa13943404",
+        "local/cc12_duplicate57_source_final_snapshot.log": "084b9184c00525b8d8ff8c6b1c49603e499813288b3f84e22b1c1e0b7fe03afa"
+      },
+      "name_is_behavior_hypothesis": true
+    },
+    "historical_snapshot_associations_preserved": true
+  },
+  "worker_validation": {
+    "passed": true,
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a",
+    "fresh_TUs": 4,
+    "build": {
+      "TUs": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\native_scene_property_record_type2_string_storage.cpp",
+          "size": 1169,
+          "sha256": "46c3c323f36eb6c6176b546f3cec5c39d02184d1824b6c13dca436f09e6e1d64"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\native_string_duplicate.cpp",
+          "size": 1554,
+          "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\singleton_lifetime.cpp",
+          "size": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\probe.cpp",
+          "size": 27162,
+          "sha256": "1c0d693924d69e51f27371c50e06f61eedcf8a694ff6fc70ffd3820a87cd5fc0"
+        }
+      ],
+      "objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\constructor.obj",
+          "size": 909,
+          "sha256": "fb93ed13d84bc3786ec04e561672aded64a7ef8b08afc25fdb8d94ca384c8c30"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\duplicate.obj",
+          "size": 1743,
+          "sha256": "24b176faa7831c8444ca303b3cb2f34934e69db55c91d9be46b196d9f1fc7d24"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\canonical.obj",
+          "size": 36867,
+          "sha256": "174dfa08ade4c7f91aae599f263358b023300c8979bb20a186a7411ddb840228"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\probe.obj",
+          "size": 29441,
+          "sha256": "9a5a189da12a2120beda72af705c6f1a0476fbfd9dabf1a5d446e38039fe9d1b"
+        }
+      ],
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\type2_storage_probe.exe",
+        "size": 20480,
+        "sha256": "3db24d3a8ec3d915a0dcbfc0fa31a87bc45b793b0bf73b4d8514b84a1dc170ea"
+      },
+      "consumed_headers": 185,
+      "resolved_libraries": 7,
+      "BSP_archives": 0,
+      "old_objects": 0,
+      "old_process_reexecutions": 0
+    },
+    "strict_options": [
+      "MSVC Win32",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/permissive-",
+      "/EHsc",
+      "/Gy",
+      "/GL-",
+      "duplicate /Oi-",
+      "/OPT:NOICF",
+      "/MANIFEST:EMBED"
+    ],
+    "Source_CMake_registration_owned_by_Root": true,
+    "static_gate": {
+      "passed": true,
+      "native_bytes": 60,
+      "native_instructions": 20,
+      "unchanged_non_CALL_operand_bytes": 56,
+      "only_relocated_offsets": [
+        39,
+        40,
+        41,
+        42
+      ],
+      "unique_linked": {
+        "constructor": [
+          654315520
+        ],
+        "duplicate": [
+          654315648
+        ]
+      },
+      "spans": [
+        {
+          "symbol": "?construct_native_scene_property_record_type2_string_storage_008ef1b0@bsp@@YIPAXPAX0PBD@Z",
+          "hex": "568bf18b4c2408c706d489ce00c74604020000005733ff897e18897e1c897e20897e24897e30e800000000897e3489460c5fc6462c018bc65ec20400",
+          "size": 60,
+          "relocations": [
+            {
+              "offset": 39,
+              "type": 20,
+              "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+              "symbol_index": 9
+            }
+          ],
+          "address": 654315520,
+          "linked_hex": "568bf18b4c2408c706d489ce00c74604020000005733ff897e18897e1c897e20897e24897e30e855000000897e3489460c5fc6462c018bc65ec20400",
+          "linked_SHA256": "eef83dd6909971f7efbc6d44c94a079b0e76a5c2b2228197513ad0053454b26c",
+          "instructions": [
+            {
+              "address": 654315520,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654315521,
+              "bytes": "8bf1",
+              "mnemonic": "mov",
+              "operands": "esi, ecx"
+            },
+            {
+              "address": 654315523,
+              "bytes": "8b4c2408",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 8]"
+            },
+            {
+              "address": 654315527,
+              "bytes": "c706d489ce00",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi], 0xce89d4"
+            },
+            {
+              "address": 654315533,
+              "bytes": "c7460402000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 4], 2"
+            },
+            {
+              "address": 654315540,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 654315541,
+              "bytes": "33ff",
+              "mnemonic": "xor",
+              "operands": "edi, edi"
+            },
+            {
+              "address": 654315543,
+              "bytes": "897e18",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x18], edi"
+            },
+            {
+              "address": 654315546,
+              "bytes": "897e1c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x1c], edi"
+            },
+            {
+              "address": 654315549,
+              "bytes": "897e20",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x20], edi"
+            },
+            {
+              "address": 654315552,
+              "bytes": "897e24",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x24], edi"
+            },
+            {
+              "address": 654315555,
+              "bytes": "897e30",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x30], edi"
+            },
+            {
+              "address": 654315558,
+              "bytes": "e855000000",
+              "mnemonic": "call",
+              "operands": "0x27001080"
+            },
+            {
+              "address": 654315563,
+              "bytes": "897e34",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0x34], edi"
+            },
+            {
+              "address": 654315566,
+              "bytes": "89460c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esi + 0xc], eax"
+            },
+            {
+              "address": 654315569,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 654315570,
+              "bytes": "c6462c01",
+              "mnemonic": "mov",
+              "operands": "byte ptr [esi + 0x2c], 1"
+            },
+            {
+              "address": 654315574,
+              "bytes": "8bc6",
+              "mnemonic": "mov",
+              "operands": "eax, esi"
+            },
+            {
+              "address": 654315576,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 654315577,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 39,
+              "type": 20,
+              "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+              "symbol_index": 9,
+              "target": {
+                "address": 654315648,
+                "section": "0001",
+                "offset": 128,
+                "provenance": "f   duplicate.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 85
+            }
+          ],
+          "map": {
+            "address": 654315520,
+            "section": "0001",
+            "offset": 0,
+            "provenance": "f   constructor.obj"
+          }
+        },
+        {
+          "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z",
+          "hex": "538bd985db750433c05bc38bc38d50018a0883c00184c975f7562bc28d70015756e800000000568bf85357e80000000083c4108bc75f5e5bc3",
+          "size": 57,
+          "relocations": [
+            {
+              "offset": 34,
+              "type": 20,
+              "symbol": "?allocate_native_string_bytes@?A0xfd3771c9@bsp@@YAPAXI@Z",
+              "symbol_index": 18
+            },
+            {
+              "offset": 44,
+              "type": 20,
+              "symbol": "_memcpy",
+              "symbol_index": 16
+            }
+          ],
+          "address": 654315648,
+          "linked_hex": "538bd985db750433c05bc38bc38d50018a0883c00184c975f7562bc28d70015756e89affffff568bf85357e8ac2d000083c4108bc75f5e5bc3",
+          "linked_SHA256": "811f277882c38ef823f605c613c5dd86738e0556e2ea09f807b712d3eaa4a668",
+          "instructions": [
+            {
+              "address": 654315648,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315649,
+              "bytes": "8bd9",
+              "mnemonic": "mov",
+              "operands": "ebx, ecx"
+            },
+            {
+              "address": 654315651,
+              "bytes": "85db",
+              "mnemonic": "test",
+              "operands": "ebx, ebx"
+            },
+            {
+              "address": 654315653,
+              "bytes": "7504",
+              "mnemonic": "jne",
+              "operands": "0x2700108b"
+            },
+            {
+              "address": 654315655,
+              "bytes": "33c0",
+              "mnemonic": "xor",
+              "operands": "eax, eax"
+            },
+            {
+              "address": 654315657,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315658,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "address": 654315659,
+              "bytes": "8bc3",
+              "mnemonic": "mov",
+              "operands": "eax, ebx"
+            },
+            {
+              "address": 654315661,
+              "bytes": "8d5001",
+              "mnemonic": "lea",
+              "operands": "edx, [eax + 1]"
+            },
+            {
+              "address": 654315664,
+              "bytes": "8a08",
+              "mnemonic": "mov",
+              "operands": "cl, byte ptr [eax]"
+            },
+            {
+              "address": 654315666,
+              "bytes": "83c001",
+              "mnemonic": "add",
+              "operands": "eax, 1"
+            },
+            {
+              "address": 654315669,
+              "bytes": "84c9",
+              "mnemonic": "test",
+              "operands": "cl, cl"
+            },
+            {
+              "address": 654315671,
+              "bytes": "75f7",
+              "mnemonic": "jne",
+              "operands": "0x27001090"
+            },
+            {
+              "address": 654315673,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654315674,
+              "bytes": "2bc2",
+              "mnemonic": "sub",
+              "operands": "eax, edx"
+            },
+            {
+              "address": 654315676,
+              "bytes": "8d7001",
+              "mnemonic": "lea",
+              "operands": "esi, [eax + 1]"
+            },
+            {
+              "address": 654315679,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 654315680,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654315681,
+              "bytes": "e89affffff",
+              "mnemonic": "call",
+              "operands": "0x27001040"
+            },
+            {
+              "address": 654315686,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654315687,
+              "bytes": "8bf8",
+              "mnemonic": "mov",
+              "operands": "edi, eax"
+            },
+            {
+              "address": 654315689,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315690,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 654315691,
+              "bytes": "e8ac2d0000",
+              "mnemonic": "call",
+              "operands": "0x27003e5c"
+            },
+            {
+              "address": 654315696,
+              "bytes": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": 654315699,
+              "bytes": "8bc7",
+              "mnemonic": "mov",
+              "operands": "eax, edi"
+            },
+            {
+              "address": 654315701,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 654315702,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 654315703,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315704,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 34,
+              "type": 20,
+              "symbol": "?allocate_native_string_bytes@?A0xfd3771c9@bsp@@YAPAXI@Z",
+              "symbol_index": 18,
+              "target": {
+                "address": 654315584,
+                "section": "0001",
+                "offset": 64,
+                "provenance": "f   duplicate.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 4294967194
+            },
+            {
+              "offset": 44,
+              "type": 20,
+              "symbol": "_memcpy",
+              "symbol_index": 16,
+              "target": {
+                "address": 654327388,
+                "section": "0001",
+                "offset": 11868,
+                "provenance": "f   vcruntime:VCRUNTIME140.dll"
+              },
+              "object_addend": 0,
+              "linked_operand": 11692
+            }
+          ],
+          "map": {
+            "address": 654315648,
+            "section": "0001",
+            "offset": 128,
+            "provenance": "f   duplicate.obj"
+          }
+        },
+        {
+          "symbol": "?allocate_native_string_bytes@?A0xfd3771c9@bsp@@YAPAXI@Z",
+          "hex": "83ec10a10000000033c48944240c8b44241489442404894424088d042450c744240403000000e8000000008b4c241083c40433cce80000000083c410c3",
+          "size": 61,
+          "relocations": [
+            {
+              "offset": 4,
+              "type": 6,
+              "symbol": "___security_cookie",
+              "symbol_index": 20
+            },
+            {
+              "offset": 39,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+              "symbol_index": 17
+            },
+            {
+              "offset": 53,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4",
+              "symbol_index": 19
+            }
+          ],
+          "address": 654315584,
+          "linked_hex": "83ec10a10060002733c48944240c8b44241489442404894424088d042450c744240403000000e8550100008b4c241083c40433cce8a720000083c410c3",
+          "linked_SHA256": "a8d7d96274dfbfdb47415da423bd25128e4f0de590fb203a67aebe42e3332656",
+          "instructions": [
+            {
+              "address": 654315584,
+              "bytes": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": 654315587,
+              "bytes": "a100600027",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [0x27006000]"
+            },
+            {
+              "address": 654315592,
+              "bytes": "33c4",
+              "mnemonic": "xor",
+              "operands": "eax, esp"
+            },
+            {
+              "address": 654315594,
+              "bytes": "8944240c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 0xc], eax"
+            },
+            {
+              "address": 654315598,
+              "bytes": "8b442414",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [esp + 0x14]"
+            },
+            {
+              "address": 654315602,
+              "bytes": "89442404",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 4], eax"
+            },
+            {
+              "address": 654315606,
+              "bytes": "89442408",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 8], eax"
+            },
+            {
+              "address": 654315610,
+              "bytes": "8d0424",
+              "mnemonic": "lea",
+              "operands": "eax, [esp]"
+            },
+            {
+              "address": 654315613,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": 654315614,
+              "bytes": "c744240403000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [esp + 4], 3"
+            },
+            {
+              "address": 654315622,
+              "bytes": "e855010000",
+              "mnemonic": "call",
+              "operands": "0x270011c0"
+            },
+            {
+              "address": 654315627,
+              "bytes": "8b4c2410",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 0x10]"
+            },
+            {
+              "address": 654315631,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "address": 654315634,
+              "bytes": "33cc",
+              "mnemonic": "xor",
+              "operands": "ecx, esp"
+            },
+            {
+              "address": 654315636,
+              "bytes": "e8a7200000",
+              "mnemonic": "call",
+              "operands": "0x27003120"
+            },
+            {
+              "address": 654315641,
+              "bytes": "83c410",
+              "mnemonic": "add",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": 654315644,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 4,
+              "type": 6,
+              "symbol": "___security_cookie",
+              "symbol_index": 20,
+              "target": {
+                "address": 654336000,
+                "section": "0003",
+                "offset": 0,
+                "provenance": "MSVCRT:gs_cookie.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 654336000
+            },
+            {
+              "offset": 39,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+              "symbol_index": 17,
+              "target": {
+                "address": 654315968,
+                "section": "0001",
+                "offset": 448,
+                "provenance": "f   canonical.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 341
+            },
+            {
+              "offset": 53,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4",
+              "symbol_index": 19,
+              "target": {
+                "address": 654324000,
+                "section": "0001",
+                "offset": 8480,
+                "provenance": "f   MSVCRT:secchk.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 8359
+            }
+          ],
+          "map": {
+            "address": 654315584,
+            "section": "0001",
+            "offset": 64,
+            "provenance": "f   duplicate.obj"
+          }
+        },
+        {
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "hex": "83ec0c538b1d00000000568b74241857ff7608ffd383c40485c0751e8b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce80000000068000000008d44241050e800000000cc",
+          "size": 90,
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__imp__malloc",
+              "symbol_index": 254
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "symbol": "__imp___callnewh",
+              "symbol_index": 252
+            },
+            {
+              "offset": 70,
+              "type": 20,
+              "symbol": "??0bad_alloc@std@@QAE@XZ",
+              "symbol_index": 295
+            },
+            {
+              "offset": 75,
+              "type": 6,
+              "symbol": "__TI2?AVbad_alloc@std@@",
+              "symbol_index": 417
+            },
+            {
+              "offset": 85,
+              "type": 20,
+              "symbol": "__CxxThrowException@8",
+              "symbol_index": 328
+            }
+          ],
+          "address": 654315968,
+          "linked_hex": "83ec0c538b1d9c400027568b74241857ff7608ffd383c40485c0751e8b3da0400027ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce8e6feffff68b04d00278d44241050e8552c0000cc",
+          "linked_SHA256": "ea0c3fbe0abd392281395d0e80dcab9ac4bf6ee5aaf09f3ebd49d9aaf3614c15",
+          "instructions": [
+            {
+              "address": 654315968,
+              "bytes": "83ec0c",
+              "mnemonic": "sub",
+              "operands": "esp, 0xc"
+            },
+            {
+              "address": 654315971,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315972,
+              "bytes": "8b1d9c400027",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [0x2700409c]"
+            },
+            {
+              "address": 654315978,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654315979,
+              "bytes": "8b742418",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [esp + 0x18]"
+            },
+            {
+              "address": 654315983,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 654315984,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "address": 654315987,
+              "bytes": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "address": 654315989,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "address": 654315992,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "address": 654315994,
+              "bytes": "751e",
+              "mnemonic": "jne",
+              "operands": "0x270011fa"
+            },
+            {
+              "address": 654315996,
+              "bytes": "8b3da0400027",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [0x270040a0]"
+            },
+            {
+              "address": 654316002,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "address": 654316005,
+              "bytes": "ffd7",
+              "mnemonic": "call",
+              "operands": "edi"
+            },
+            {
+              "address": 654316007,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "address": 654316010,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "address": 654316012,
+              "bytes": "7413",
+              "mnemonic": "je",
+              "operands": "0x27001201"
+            },
+            {
+              "address": 654316014,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "address": 654316017,
+              "bytes": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "address": 654316019,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "address": 654316022,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "address": 654316024,
+              "bytes": "74e8",
+              "mnemonic": "je",
+              "operands": "0x270011e2"
+            },
+            {
+              "address": 654316026,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 654316027,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 654316028,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "address": 654316029,
+              "bytes": "83c40c",
+              "mnemonic": "add",
+              "operands": "esp, 0xc"
+            },
+            {
+              "address": 654316032,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "address": 654316033,
+              "bytes": "8d4c240c",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 0xc]"
+            },
+            {
+              "address": 654316037,
+              "bytes": "e8e6feffff",
+              "mnemonic": "call",
+              "operands": "0x270010f0"
+            },
+            {
+              "address": 654316042,
+              "bytes": "68b04d0027",
+              "mnemonic": "push",
+              "operands": "0x27004db0"
+            },
+            {
+              "address": 654316047,
+              "bytes": "8d442410",
+              "mnemonic": "lea",
+              "operands": "eax, [esp + 0x10]"
+            },
+            {
+              "address": 654316051,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": 654316052,
+              "bytes": "e8552c0000",
+              "mnemonic": "call",
+              "operands": "0x27003e6e"
+            },
+            {
+              "address": 654316057,
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__imp__malloc",
+              "symbol_index": 254,
+              "target": {
+                "address": 654327964,
+                "section": "0002",
+                "offset": 156,
+                "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              },
+              "object_addend": 0,
+              "linked_operand": 654327964
+            },
+            {
+              "offset": 30,
+              "type": 6,
+              "symbol": "__imp___callnewh",
+              "symbol_index": 252,
+              "target": {
+                "address": 654327968,
+                "section": "0002",
+                "offset": 160,
+                "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              },
+              "object_addend": 0,
+              "linked_operand": 654327968
+            },
+            {
+              "offset": 70,
+              "type": 20,
+              "symbol": "??0bad_alloc@std@@QAE@XZ",
+              "symbol_index": 295,
+              "target": {
+                "address": 654315760,
+                "section": "0001",
+                "offset": 240,
+                "provenance": "f i canonical.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 4294967014
+            },
+            {
+              "offset": 75,
+              "type": 6,
+              "symbol": "__TI2?AVbad_alloc@std@@",
+              "symbol_index": 417,
+              "target": {
+                "address": 654331312,
+                "section": "0002",
+                "offset": 3504,
+                "provenance": "canonical.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 654331312
+            },
+            {
+              "offset": 85,
+              "type": 20,
+              "symbol": "__CxxThrowException@8",
+              "symbol_index": 328,
+              "target": {
+                "address": 654327406,
+                "section": "0001",
+                "offset": 11886,
+                "provenance": "f   vcruntime:VCRUNTIME140.dll"
+              },
+              "object_addend": 0,
+              "linked_operand": 11349
+            }
+          ],
+          "map": {
+            "address": 654315968,
+            "section": "0001",
+            "offset": 448,
+            "provenance": "f   canonical.obj"
+          }
+        },
+        {
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "hex": "ff2500000000",
+          "size": 6,
+          "relocations": [
+            {
+              "offset": 2,
+              "type": 6,
+              "symbol": "__imp__free",
+              "symbol_index": 253
+            }
+          ],
+          "address": 654316064,
+          "linked_hex": "ff25a4400027",
+          "linked_SHA256": "cb006683b42b5687cb890ddaf23867998cc6d75a7c01f4e2de8df0f584c3c03b",
+          "instructions": [
+            {
+              "address": 654316064,
+              "bytes": "ff25a4400027",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0x270040a4]"
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 2,
+              "type": 6,
+              "symbol": "__imp__free",
+              "symbol_index": 253,
+              "target": {
+                "address": 654327972,
+                "section": "0002",
+                "offset": 164,
+                "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+              },
+              "object_addend": 0,
+              "linked_operand": 654327972
+            }
+          ],
+          "map": {
+            "address": 654316064,
+            "section": "0001",
+            "offset": 544,
+            "provenance": "f   canonical.obj"
+          }
+        },
+        {
+          "symbol": "_ordinary_constructor_call",
+          "hex": "ff74240c8b54240c8b4c2408e800000000c3",
+          "size": 18,
+          "relocations": [
+            {
+              "offset": 13,
+              "type": 20,
+              "symbol": "?construct_native_scene_property_record_type2_string_storage_008ef1b0@bsp@@YIPAXPAX0PBD@Z",
+              "symbol_index": 163
+            }
+          ],
+          "address": 654323728,
+          "linked_hex": "ff74240c8b54240c8b4c2408e8dfdfffffc3",
+          "linked_SHA256": "418c98a27171c05021dec3a691d46149fed2832e837a76aea51591db12553ffa",
+          "instructions": [
+            {
+              "address": 654323728,
+              "bytes": "ff74240c",
+              "mnemonic": "push",
+              "operands": "dword ptr [esp + 0xc]"
+            },
+            {
+              "address": 654323732,
+              "bytes": "8b54240c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": 654323736,
+              "bytes": "8b4c2408",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 8]"
+            },
+            {
+              "address": 654323740,
+              "bytes": "e8dfdfffff",
+              "mnemonic": "call",
+              "operands": "0x27001000"
+            },
+            {
+              "address": 654323745,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 13,
+              "type": 20,
+              "symbol": "?construct_native_scene_property_record_type2_string_storage_008ef1b0@bsp@@YIPAXPAX0PBD@Z",
+              "symbol_index": 163,
+              "target": {
+                "address": 654315520,
+                "section": "0001",
+                "offset": 0,
+                "provenance": "f   constructor.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 4294959071
+            }
+          ],
+          "map": {
+            "address": 654323728,
+            "section": "0001",
+            "offset": 8208,
+            "provenance": "f   probe.obj"
+          }
+        },
+        {
+          "symbol": "_raw_constructor_capture",
+          "hex": "558bec5356579cff75148b45188b4d1489484c8960488b4d0c8b5510bb44332211be88776655bfccbbaa9968d70a00009dc7004030201089480489500889580c89601089681489701889781c9c8f4040b840302010ff55089c508b451889482489502889582c89683489703889783c8b0c248948208d4c24088948308b4c240489484483c4089d5f5e5b5dc3",
+          "size": 140,
+          "relocations": [],
+          "address": 654323808,
+          "linked_hex": "558bec5356579cff75148b45188b4d1489484c8960488b4d0c8b5510bb44332211be88776655bfccbbaa9968d70a00009dc7004030201089480489500889580c89601089681489701889781c9c8f4040b840302010ff55089c508b451889482489502889582c89683489703889783c8b0c248948208d4c24088948308b4c240489484483c4089d5f5e5b5dc3",
+          "linked_SHA256": "86e920356a20346f1a5b7f55134250eb4cf9aea344645196057fe8f797a510d5",
+          "instructions": [
+            {
+              "address": 654323808,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "address": 654323809,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "address": 654323811,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 654323812,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 654323813,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 654323814,
+              "bytes": "9c",
+              "mnemonic": "pushfd",
+              "operands": ""
+            },
+            {
+              "address": 654323815,
+              "bytes": "ff7514",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 654323818,
+              "bytes": "8b4518",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x18]"
+            },
+            {
+              "address": 654323821,
+              "bytes": "8b4d14",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 654323824,
+              "bytes": "89484c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x4c], ecx"
+            },
+            {
+              "address": 654323827,
+              "bytes": "896048",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x48], esp"
+            },
+            {
+              "address": 654323830,
+              "bytes": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 654323833,
+              "bytes": "8b5510",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 0x10]"
+            },
+            {
+              "address": 654323836,
+              "bytes": "bb44332211",
+              "mnemonic": "mov",
+              "operands": "ebx, 0x11223344"
+            },
+            {
+              "address": 654323841,
+              "bytes": "be88776655",
+              "mnemonic": "mov",
+              "operands": "esi, 0x55667788"
+            },
+            {
+              "address": 654323846,
+              "bytes": "bfccbbaa99",
+              "mnemonic": "mov",
+              "operands": "edi, 0x99aabbcc"
+            },
+            {
+              "address": 654323851,
+              "bytes": "68d70a0000",
+              "mnemonic": "push",
+              "operands": "0xad7"
+            },
+            {
+              "address": 654323856,
+              "bytes": "9d",
+              "mnemonic": "popfd",
+              "operands": ""
+            },
+            {
+              "address": 654323857,
+              "bytes": "c70040302010",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax], 0x10203040"
+            },
+            {
+              "address": 654323863,
+              "bytes": "894804",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 4], ecx"
+            },
+            {
+              "address": 654323866,
+              "bytes": "895008",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 8], edx"
+            },
+            {
+              "address": 654323869,
+              "bytes": "89580c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0xc], ebx"
+            },
+            {
+              "address": 654323872,
+              "bytes": "896010",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x10], esp"
+            },
+            {
+              "address": 654323875,
+              "bytes": "896814",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x14], ebp"
+            },
+            {
+              "address": 654323878,
+              "bytes": "897018",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x18], esi"
+            },
+            {
+              "address": 654323881,
+              "bytes": "89781c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x1c], edi"
+            },
+            {
+              "address": 654323884,
+              "bytes": "9c",
+              "mnemonic": "pushfd",
+              "operands": ""
+            },
+            {
+              "address": 654323885,
+              "bytes": "8f4040",
+              "mnemonic": "pop",
+              "operands": "dword ptr [eax + 0x40]"
+            },
+            {
+              "address": 654323888,
+              "bytes": "b840302010",
+              "mnemonic": "mov",
+              "operands": "eax, 0x10203040"
+            },
+            {
+              "address": 654323893,
+              "bytes": "ff5508",
+              "mnemonic": "call",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "address": 654323896,
+              "bytes": "9c",
+              "mnemonic": "pushfd",
+              "operands": ""
+            },
+            {
+              "address": 654323897,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": 654323898,
+              "bytes": "8b4518",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x18]"
+            },
+            {
+              "address": 654323901,
+              "bytes": "894824",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x24], ecx"
+            },
+            {
+              "address": 654323904,
+              "bytes": "895028",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x28], edx"
+            },
+            {
+              "address": 654323907,
+              "bytes": "89582c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x2c], ebx"
+            },
+            {
+              "address": 654323910,
+              "bytes": "896834",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x34], ebp"
+            },
+            {
+              "address": 654323913,
+              "bytes": "897038",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x38], esi"
+            },
+            {
+              "address": 654323916,
+              "bytes": "89783c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x3c], edi"
+            },
+            {
+              "address": 654323919,
+              "bytes": "8b0c24",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp]"
+            },
+            {
+              "address": 654323922,
+              "bytes": "894820",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x20], ecx"
+            },
+            {
+              "address": 654323925,
+              "bytes": "8d4c2408",
+              "mnemonic": "lea",
+              "operands": "ecx, [esp + 8]"
+            },
+            {
+              "address": 654323929,
+              "bytes": "894830",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x30], ecx"
+            },
+            {
+              "address": 654323932,
+              "bytes": "8b4c2404",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [esp + 4]"
+            },
+            {
+              "address": 654323936,
+              "bytes": "894844",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + 0x44], ecx"
+            },
+            {
+              "address": 654323939,
+              "bytes": "83c408",
+              "mnemonic": "add",
+              "operands": "esp, 8"
+            },
+            {
+              "address": 654323942,
+              "bytes": "9d",
+              "mnemonic": "popfd",
+              "operands": ""
+            },
+            {
+              "address": 654323943,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 654323944,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 654323945,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "address": 654323946,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "address": 654323947,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [],
+          "map": {
+            "address": 654323808,
+            "section": "0001",
+            "offset": 8288,
+            "provenance": "f   probe.obj"
+          }
+        },
+        {
+          "symbol": "??0bad_alloc@std@@QAE@XZ",
+          "hex": "0f57c08bc1660fd64104c7410400000000c70100000000c3",
+          "size": 24,
+          "relocations": [
+            {
+              "offset": 13,
+              "type": 6,
+              "symbol": "??_C@_0P@GHFPNOJB@bad?5allocation@",
+              "symbol_index": 392
+            },
+            {
+              "offset": 19,
+              "type": 6,
+              "symbol": "??_7bad_alloc@std@@6B@",
+              "symbol_index": 389
+            }
+          ],
+          "address": 654315760,
+          "linked_hex": "0f57c08bc1660fd64104c74104ac410027c701a4410027c3",
+          "linked_SHA256": "82baa48edb52ade4b37ab04ec00d3f8e66119b03a0f751f5f11fe549d3aae10d",
+          "instructions": [
+            {
+              "address": 654315760,
+              "bytes": "0f57c0",
+              "mnemonic": "xorps",
+              "operands": "xmm0, xmm0"
+            },
+            {
+              "address": 654315763,
+              "bytes": "8bc1",
+              "mnemonic": "mov",
+              "operands": "eax, ecx"
+            },
+            {
+              "address": 654315765,
+              "bytes": "660fd64104",
+              "mnemonic": "movq",
+              "operands": "qword ptr [ecx + 4], xmm0"
+            },
+            {
+              "address": 654315770,
+              "bytes": "c74104ac410027",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx + 4], 0x270041ac"
+            },
+            {
+              "address": 654315777,
+              "bytes": "c701a4410027",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ecx], 0x270041a4"
+            },
+            {
+              "address": 654315783,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ],
+          "resolved_relocations": [
+            {
+              "offset": 13,
+              "type": 6,
+              "symbol": "??_C@_0P@GHFPNOJB@bad?5allocation@",
+              "symbol_index": 392,
+              "target": {
+                "address": 654328236,
+                "section": "0002",
+                "offset": 428,
+                "provenance": "canonical.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 654328236
+            },
+            {
+              "offset": 19,
+              "type": 6,
+              "symbol": "??_7bad_alloc@std@@6B@",
+              "symbol_index": 389,
+              "target": {
+                "address": 654328228,
+                "section": "0002",
+                "offset": 420,
+                "provenance": "canonical.obj"
+              },
+              "object_addend": 0,
+              "linked_operand": 654328228
+            }
+          ],
+          "map": {
+            "address": 654315760,
+            "section": "0001",
+            "offset": 240,
+            "provenance": "f i canonical.obj"
+          }
+        },
+        {
+          "address": 654324000,
+          "size": 14,
+          "linked_hex": "3b0d006000277501c3e952030000",
+          "linked_SHA256": "544fd33ec0ad462e5d19877f9a812d0f83304d19668f43c4a8898cee87753391",
+          "instructions": [
+            {
+              "address": 654324000,
+              "bytes": "3b0d00600027",
+              "mnemonic": "cmp",
+              "operands": "ecx, dword ptr [0x27006000]"
+            },
+            {
+              "address": 654324006,
+              "bytes": "7501",
+              "mnemonic": "jne",
+              "operands": "0x27003129"
+            },
+            {
+              "address": 654324008,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "address": 654324009,
+              "bytes": "e952030000",
+              "mnemonic": "jmp",
+              "operands": "0x27003480"
+            }
+          ],
+          "extent": "Complete reachable CFG including successful RET and failure tail JMP; no alignment bytes",
+          "symbol": "@__security_check_cookie@4",
+          "map": {
+            "address": 654324000,
+            "section": "0001",
+            "offset": 8480,
+            "provenance": "f   MSVCRT:secchk.obj"
+          },
+          "library_origin": "Actual resolved MSVCRT secchk.obj; complete library and EXE pinned"
+        },
+        {
+          "symbol": "_memcpy",
+          "address": 654327388,
+          "size": 6,
+          "linked_hex": "ff2578400027",
+          "linked_SHA256": "7f683ea97c7afa8368177b67137aa2a8f874b787459893f380e2ea210582e53e",
+          "instructions": [
+            {
+              "address": 654327388,
+              "bytes": "ff2578400027",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0x27004078]"
+            }
+          ],
+          "map": {
+            "symbol": "_memcpy",
+            "address": 654327388,
+            "section": "0001",
+            "offset": 11868,
+            "provenance": "f   vcruntime:VCRUNTIME140.dll"
+          },
+          "IAT_slot": 654327928,
+          "extent": "Complete single terminal JMP through actual import IAT; no alignment bytes"
+        },
+        {
+          "symbol": "__CxxThrowException@8",
+          "address": 654327406,
+          "size": 6,
+          "linked_hex": "ff2584400027",
+          "linked_SHA256": "4a05ba91912e207910cd60d8449f0731ca4b914cdb826b39e518cc739d496b49",
+          "instructions": [
+            {
+              "address": 654327406,
+              "bytes": "ff2584400027",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0x27004084]"
+            }
+          ],
+          "map": {
+            "symbol": "__CxxThrowException@8",
+            "address": 654327406,
+            "section": "0001",
+            "offset": 11886,
+            "provenance": "f   vcruntime:VCRUNTIME140.dll"
+          },
+          "IAT_slot": 654327940,
+          "extent": "Complete single terminal JMP through actual import IAT; no alignment bytes",
+          "scope": "Whole local import thunk bookended; no exception path execution/admission or private EH claim"
+        }
+      ],
+      "CRT": [
+        {
+          "name": "malloc",
+          "import_binding": {
+            "IAT": 654327964,
+            "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          "export_RVA": 196896,
+          "machine": 332,
+          "timestamp": 2161073551,
+          "image_size": 1114112,
+          "physical": {
+            "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+            "size": 1114240,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          "identity": {
+            "volume": 3906787040,
+            "index_high": 327680,
+            "index_low": 2895862,
+            "size_high": 0,
+            "size_low": 1114240,
+            "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+          },
+          "physical_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc"
+        },
+        {
+          "name": "free",
+          "import_binding": {
+            "IAT": 654327972,
+            "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          "export_RVA": 196768,
+          "machine": 332,
+          "timestamp": 2161073551,
+          "image_size": 1114112,
+          "physical": {
+            "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+            "size": 1114240,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          "identity": {
+            "volume": 3906787040,
+            "index_high": 327680,
+            "index_low": 2895862,
+            "size_high": 0,
+            "size_low": 1114240,
+            "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+          },
+          "physical_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc"
+        },
+        {
+          "name": "_callnewh",
+          "import_binding": {
+            "IAT": 654327968,
+            "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          "export_RVA": 569344,
+          "machine": 332,
+          "timestamp": 2161073551,
+          "image_size": 1114112,
+          "physical": {
+            "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+            "size": 1114240,
+            "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+          },
+          "identity": {
+            "volume": 3906787040,
+            "index_high": 327680,
+            "index_low": 2895862,
+            "size_high": 0,
+            "size_low": 1114240,
+            "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+          },
+          "physical_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0521010ffd6f7d8"
+        },
+        {
+          "name": "memcpy",
+          "import_binding": {
+            "IAT": 654327928,
+            "DLL": "VCRUNTIME140.dll"
+          },
+          "export_RVA": 90528,
+          "machine": 332,
+          "timestamp": 2650349747,
+          "image_size": 118784,
+          "physical": {
+            "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+            "size": 123328,
+            "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+          },
+          "identity": {
+            "volume": 3906787040,
+            "index_high": 196608,
+            "index_low": 221458,
+            "size_high": 0,
+            "size_low": 123328,
+            "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll"
+          },
+          "physical_export_prefix32": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000"
+        }
+      ],
+      "imports": {
+        "BCryptOpenAlgorithmProvider": {
+          "IAT": 654328104,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptDestroyHash": {
+          "IAT": 654328108,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptFinishHash": {
+          "IAT": 654328112,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptHashData": {
+          "IAT": 654328116,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptCreateHash": {
+          "IAT": 654328120,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptCloseAlgorithmProvider": {
+          "IAT": 654328124,
+          "DLL": "bcrypt.dll"
+        },
+        "BCryptGetProperty": {
+          "IAT": 654328128,
+          "DLL": "bcrypt.dll"
+        },
+        "IsProcessorFeaturePresent": {
+          "IAT": 654327808,
+          "DLL": "KERNEL32.dll"
+        },
+        "SetUnhandledExceptionFilter": {
+          "IAT": 654327812,
+          "DLL": "KERNEL32.dll"
+        },
+        "InitializeSListHead": {
+          "IAT": 654327816,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetSystemTimeAsFileTime": {
+          "IAT": 654327820,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetCurrentThreadId": {
+          "IAT": 654327824,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetCurrentProcessId": {
+          "IAT": 654327828,
+          "DLL": "KERNEL32.dll"
+        },
+        "QueryPerformanceCounter": {
+          "IAT": 654327832,
+          "DLL": "KERNEL32.dll"
+        },
+        "CreateFileW": {
+          "IAT": 654327836,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetFileInformationByHandle": {
+          "IAT": 654327840,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetFinalPathNameByHandleW": {
+          "IAT": 654327844,
+          "DLL": "KERNEL32.dll"
+        },
+        "ReadFile": {
+          "IAT": 654327848,
+          "DLL": "KERNEL32.dll"
+        },
+        "CloseHandle": {
+          "IAT": 654327852,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetLastError": {
+          "IAT": 654327856,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetCurrentProcess": {
+          "IAT": 654327860,
+          "DLL": "KERNEL32.dll"
+        },
+        "FlushInstructionCache": {
+          "IAT": 654327864,
+          "DLL": "KERNEL32.dll"
+        },
+        "VirtualAlloc": {
+          "IAT": 654327868,
+          "DLL": "KERNEL32.dll"
+        },
+        "VirtualProtect": {
+          "IAT": 654327872,
+          "DLL": "KERNEL32.dll"
+        },
+        "VirtualFree": {
+          "IAT": 654327876,
+          "DLL": "KERNEL32.dll"
+        },
+        "VirtualQuery": {
+          "IAT": 654327880,
+          "DLL": "KERNEL32.dll"
+        },
+        "CreateFileMappingW": {
+          "IAT": 654327884,
+          "DLL": "KERNEL32.dll"
+        },
+        "MapViewOfFile": {
+          "IAT": 654327888,
+          "DLL": "KERNEL32.dll"
+        },
+        "UnmapViewOfFile": {
+          "IAT": 654327892,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetModuleFileNameW": {
+          "IAT": 654327896,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetModuleHandleW": {
+          "IAT": 654327900,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetModuleHandleExW": {
+          "IAT": 654327904,
+          "DLL": "KERNEL32.dll"
+        },
+        "GetProcAddress": {
+          "IAT": 654327908,
+          "DLL": "KERNEL32.dll"
+        },
+        "lstrcmpiW": {
+          "IAT": 654327912,
+          "DLL": "KERNEL32.dll"
+        },
+        "WideCharToMultiByte": {
+          "IAT": 654327916,
+          "DLL": "KERNEL32.dll"
+        },
+        "K32GetMappedFileNameW": {
+          "IAT": 654327920,
+          "DLL": "KERNEL32.dll"
+        },
+        "memcpy": {
+          "IAT": 654327928,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "__std_exception_copy": {
+          "IAT": 654327932,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "__std_exception_destroy": {
+          "IAT": 654327936,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "_CxxThrowException": {
+          "IAT": 654327940,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "memset": {
+          "IAT": 654327944,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "__current_exception": {
+          "IAT": 654327948,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "__current_exception_context": {
+          "IAT": 654327952,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "_except_handler4_common": {
+          "IAT": 654327956,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "_set_app_type": {
+          "IAT": 654328000,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_seh_filter_exe": {
+          "IAT": 654328004,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_configure_narrow_argv": {
+          "IAT": 654328008,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_initialize_narrow_environment": {
+          "IAT": 654328012,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_initterm": {
+          "IAT": 654328016,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_initterm_e": {
+          "IAT": 654328020,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "exit": {
+          "IAT": 654328024,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_exit": {
+          "IAT": 654328028,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "terminate": {
+          "IAT": 654328032,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "__p___argc": {
+          "IAT": 654328036,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "__p___argv": {
+          "IAT": 654328040,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_cexit": {
+          "IAT": 654328044,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_c_exit": {
+          "IAT": 654328048,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_register_thread_local_exe_atexit_callback": {
+          "IAT": 654328052,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_get_initial_narrow_environment": {
+          "IAT": 654328056,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_controlfp_s": {
+          "IAT": 654328060,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_initialize_onexit_table": {
+          "IAT": 654328064,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_register_onexit_function": {
+          "IAT": 654328068,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "_crt_atexit": {
+          "IAT": 654328072,
+          "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        "malloc": {
+          "IAT": 654327964,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "_callnewh": {
+          "IAT": 654327968,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "free": {
+          "IAT": 654327972,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "_set_new_mode": {
+          "IAT": 654327976,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "_set_fmode": {
+          "IAT": 654328080,
+          "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        "__stdio_common_vfprintf": {
+          "IAT": 654328084,
+          "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        "__acrt_iob_func": {
+          "IAT": 654328088,
+          "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        "putchar": {
+          "IAT": 654328092,
+          "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        "__p__commode": {
+          "IAT": 654328096,
+          "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        "__setusermatherr": {
+          "IAT": 654327992,
+          "DLL": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        "_configthreadlocale": {
+          "IAT": 654327984,
+          "DLL": "api-ms-win-crt-locale-l1-1-0.dll"
+        }
+      },
+      "manifest": {
+        "level": "asInvoker",
+        "uiAccess": "false"
+      },
+      "gate": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\gate.bin",
+        "size": 1030,
+        "sha256": "bf38ee9b3bb4e8457ebc4d00e38c74858ff4b32ba7a05a6d06e06f55383204c0"
+      },
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\type2_storage_probe.exe",
+        "size": 20480,
+        "sha256": "3db24d3a8ec3d915a0dcbfc0fa31a87bc45b793b0bf73b4d8514b84a1dc170ea"
+      },
+      "runtime_security_cookie_helper": true,
+      "memcpy_actual_import": "VCRUNTIME140.dll!memcpy",
+      "private_CRT_executed": false
+    },
+    "runtime": {
+      "passed": true,
+      "target_entries_before_CRT_gate": 0,
+      "target_entries": 5,
+      "returned_allocations": 3,
+      "canonical_frees": 3,
+      "source_address": 1726800,
+      "source_allocation_address": 1726784,
+      "source_and_guards_unchanged": true,
+      "source_allocation_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a595e24b81631900a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "original_bound_address": 6094848,
+      "original_bound_hex": "568bf18b4c2408c706d489ce00c74604020000005733ff897e18897e1c897e20897e24897e30e85510a326897e3489460c5fc6462c018bc65ec20400",
+      "full_code_bookends_equal": true,
+      "CRT_bookends_equal": true,
+      "same_raw_caller_frame": true,
+      "fresh_result_addresses_not_required_equal": true,
+      "captures": [
+        {
+          "before": [
+            270544960,
+            1726912,
+            3285509622,
+            287454020,
+            1725588,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "after": [
+            1726912,
+            0,
+            3285509622,
+            287454020,
+            1725592,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "actual_argument_slot": 1725588,
+          "actual_argument_value": 0,
+          "flags_before": 2775,
+          "flags_after": 582,
+          "arithmetic_mask": 2245,
+          "expected_arithmetic_flags": 68,
+          "copy_return_ESP": 0,
+          "final_ADD_ESP_result": 0
+        },
+        {
+          "before": [
+            270544960,
+            1726912,
+            3285509622,
+            287454020,
+            1725588,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "after": [
+            1726912,
+            0,
+            2169234069,
+            287454020,
+            1725592,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "actual_argument_slot": 1725588,
+          "actual_argument_value": 1726800,
+          "flags_before": 2775,
+          "flags_after": 518,
+          "arithmetic_mask": 2261,
+          "expected_arithmetic_flags": 4,
+          "copy_return_ESP": 1725544,
+          "final_ADD_ESP_result": 1725560
+        },
+        {
+          "before": [
+            270544960,
+            1726912,
+            3285509622,
+            287454020,
+            1725588,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "after": [
+            1726912,
+            0,
+            3285509622,
+            287454020,
+            1725592,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "actual_argument_slot": 1725588,
+          "actual_argument_value": 0,
+          "flags_before": 2775,
+          "flags_after": 582,
+          "arithmetic_mask": 2245,
+          "expected_arithmetic_flags": 68,
+          "copy_return_ESP": 0,
+          "final_ADD_ESP_result": 0
+        },
+        {
+          "before": [
+            270544960,
+            1726912,
+            3285509622,
+            287454020,
+            1725588,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "after": [
+            1726912,
+            0,
+            2169234069,
+            287454020,
+            1725592,
+            1725608,
+            1432778632,
+            2578103244
+          ],
+          "actual_argument_slot": 1725588,
+          "actual_argument_value": 1726800,
+          "flags_before": 2775,
+          "flags_after": 518,
+          "arithmetic_mask": 2261,
+          "expected_arithmetic_flags": 4,
+          "copy_return_ESP": 1725544,
+          "final_ADD_ESP_result": 1725560
+        }
+      ],
+      "observations": [
+        {
+          "phase": 0,
+          "is_null": 1,
+          "actual_input": 0,
+          "returned_allocation": 0,
+          "copied_hex": "",
+          "returned_root": 1726912,
+          "receiver_image96_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5d489ce0002000000a5a5a5a500000000a5a5a5a5a5a5a5a500000000000000000000000000000000a5a5a5a501a5a5a50000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5"
+        },
+        {
+          "phase": 0,
+          "is_null": 0,
+          "actual_input": 1726800,
+          "returned_allocation": 6257640,
+          "copied_hex": "95e24b81631900",
+          "returned_root": 1726912,
+          "receiver_image96_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5d489ce0002000000a5a5a5a5e87b5f00a5a5a5a5a5a5a5a500000000000000000000000000000000a5a5a5a501a5a5a50000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5"
+        },
+        {
+          "phase": 1,
+          "is_null": 1,
+          "actual_input": 0,
+          "returned_allocation": 0,
+          "copied_hex": "",
+          "returned_root": 1726912,
+          "receiver_image96_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5d489ce0002000000a5a5a5a500000000a5a5a5a5a5a5a5a500000000000000000000000000000000a5a5a5a501a5a5a50000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5"
+        },
+        {
+          "phase": 1,
+          "is_null": 0,
+          "actual_input": 1726800,
+          "returned_allocation": 6257640,
+          "copied_hex": "95e24b81631900",
+          "returned_root": 1726912,
+          "receiver_image96_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5d489ce0002000000a5a5a5a5e87b5f00a5a5a5a5a5a5a5a500000000000000000000000000000000a5a5a5a501a5a5a50000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5"
+        },
+        {
+          "phase": 2,
+          "is_null": 0,
+          "actual_input": 1726800,
+          "returned_allocation": 6257640,
+          "copied_hex": "95e24b81631900",
+          "returned_root": 1726912,
+          "receiver_image96_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5d489ce0002000000a5a5a5a5e87b5f00a5a5a5a5a5a5a5a500000000000000000000000000000000a5a5a5a501a5a5a50000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5"
+        }
+      ],
+      "CRT_modules": [
+        {
+          "name": "malloc",
+          "IAT_slot": 654327964,
+          "actual_IAT": 1987903776,
+          "actual_export": 1987903776,
+          "module_base": 1987706880,
+          "export_RVA": 196896,
+          "machine": 332,
+          "volume": 3906787040,
+          "file_index_high": 327680,
+          "file_index_low": 2895862,
+          "file_size": 1114240,
+          "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "relocated_live_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+          "physical_identity_and_export_prefix_before_after_equal": true
+        },
+        {
+          "name": "free",
+          "IAT_slot": 654327972,
+          "actual_IAT": 1987903648,
+          "actual_export": 1987903648,
+          "module_base": 1987706880,
+          "export_RVA": 196768,
+          "machine": 332,
+          "volume": 3906787040,
+          "file_index_high": 327680,
+          "file_index_low": 2895862,
+          "file_size": 1114240,
+          "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "relocated_live_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+          "physical_identity_and_export_prefix_before_after_equal": true
+        },
+        {
+          "name": "_callnewh",
+          "IAT_slot": 654327968,
+          "actual_IAT": 1988276224,
+          "actual_export": 1988276224,
+          "module_base": 1987706880,
+          "export_RVA": 569344,
+          "machine": 332,
+          "volume": 3906787040,
+          "file_index_high": 327680,
+          "file_index_low": 2895862,
+          "file_size": 1114240,
+          "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "relocated_live_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+          "physical_identity_and_export_prefix_before_after_equal": true
+        },
+        {
+          "name": "memcpy",
+          "IAT_slot": 654327928,
+          "actual_IAT": 1924293024,
+          "actual_export": 1924293024,
+          "module_base": 1924202496,
+          "export_RVA": 90528,
+          "machine": 332,
+          "volume": 3906787040,
+          "file_index_high": 196608,
+          "file_index_low": 221458,
+          "file_size": 123328,
+          "path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+          "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+          "physical_SHA256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "relocated_live_export_prefix32": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+          "physical_identity_and_export_prefix_before_after_equal": true
+        }
+      ]
+    },
+    "post": {
+      "passed": true,
+      "native_before_after_equal": true,
+      "all_sources_tools_headers_libraries_provider_files_exe_objects_prior_unchanged": true,
+      "prior_artifacts": 890,
+      "accepted_processes": 1,
+      "fresh_TUs": 4,
+      "old_process_reexecutions": 0,
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\native_scene_property_record_type2_string_storage.cpp",
+        "size": 1169,
+        "sha256": "46c3c323f36eb6c6176b546f3cec5c39d02184d1824b6c13dca436f09e6e1d64"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\include\\bsp\\native_scene_property_record_type2_string_storage.hpp",
+        "size": 1458,
+        "sha256": "d61949a84382d9f6e462604de1f2f96e2dbb66172275450d7a51da7db5338550"
+      },
+      "canonical_source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "legacy_CDECL_API_unchanged": true
+    },
+    "metadata_decoder_passed": true,
+    "consumed_header_count": 185,
+    "resolved_library_count": 7,
+    "explicit_input_count": 40,
+    "older_artifacts_immutable": 890,
+    "stage_attempts": {
+      "prepare": 1,
+      "build": 1,
+      "static_gate": 1,
+      "native_process": 1,
+      "post": 1
+    },
+    "failed_runtime_or_build_stages": 0,
+    "metadata_only_draft_failure": {
+      "stage": "metadata-only helper generation after successful native post/core seal",
+      "attempt": "inline Python payload with s=r triple-single-quote containing nested doc=f triple-single-quote",
+      "error_type": "SyntaxError",
+      "line": 38,
+      "error": "invalid decimal literal at native address 008EF1B0 in prematurely terminated doc string",
+      "cause": "outer draft delimiter collided with inner documentation delimiter",
+      "files_written_by_failed_attempt": 0,
+      "core_or_successful_recipe_modified": false,
+      "accepted_native_process_replayed": false,
+      "corrective_action": "use outer triple-double-quote wrapper, AST compile generated helper before exclusive write; metadata-only recovery"
+    },
+    "old_helpers_imported": 0,
+    "old_objects": 0,
+    "old_BSP_archives": 0,
+    "successful_stage_reruns": 0,
+    "core_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\seal.json",
+      "size": 26889,
+      "sha256": "2858befb84cd21738535bfdbb1128be6b11282fd58c305e5a4fa3229008c1b1a"
+    },
+    "final_inventory_manifest": "artifact_manifest.json",
+    "post_and_seal_console_outside_family": true
+  },
+  "limits": [
+    "Source admission zero pending Root independent review/integration",
+    "No original private CRT or current failure/EH/OOM path execution",
+    "No native class/vtable dispatch, destructor, original string owner, whole Clone, caller class lifetime or game admission",
+    "No FP/MXCSR/segment or all-EFLAGS equality",
+    "Complete local cold code spans do not establish full cold exception runtime closure"
+  ],
+  "worker_Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "queried_address_only": "008EF1B0",
+    "project_program_checked_every_batch": true,
+    "live_PE_saved_listing_starts_equal": true,
+    "mutation": false,
+    "Root_publication_pending": true
+  },
+  "game_validated": false
+}
