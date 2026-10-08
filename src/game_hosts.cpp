@@ -637,6 +637,8 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             trajectory_csv.resize(length);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
+        } else if (std::strcmp(argument, "--qualify-vfs-failure-owner") == 0) {
+            qualify_vfs_failure_owner = true;
         } else if (std::strcmp(argument, "--instance-tag") == 0) {
             if (index + 1 >= argc) {
                 error = "--instance-tag needs a tag";
