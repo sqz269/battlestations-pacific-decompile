@@ -1,0 +1,172 @@
+{
+  "schema": "cc12_property_element_count_fresh_case_review_v1",
+  "packet": "cc12_property_element_count_fresh_case_review",
+  "Source_credit": 0,
+  "new_Source_or_reconstruction_credit": 0,
+  "status": "four_proposed_Source_only_cases_no_observations",
+  "address_leases": 0,
+  "Source_inputs": [
+    {
+      "path": "src/native_scene_property_record_element_count.cpp",
+      "sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c",
+      "reference_lines": [13, 60]
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_element_count.hpp",
+      "sha256": "3ae755f3044c40fdae17d4565be1d3a53ebea34b19f74060ef91d551a6a15696",
+      "reference_lines": [11, 27]
+    }
+  ],
+  "Source_symbol": "bsp::native_scene_property_record_element_count_008ef7f0",
+  "public_declaration": "std::uint32_t __fastcall native_scene_property_record_element_count_008ef7f0(const void* actual_record_ecx, std::uint32_t unused_edx) noexcept;",
+  "expected_cases": [
+    {
+      "id": "tag9_floor",
+      "proposed_inert_fill_byte_hex": "A7",
+      "tag_DWORD_hex": "00000009",
+      "tag_at_0x04_little_endian_hex": "09000000",
+      "size_DWORD_hex": "00000007",
+      "size_at_0x24_little_endian_hex": "07000000",
+      "size_read": true,
+      "EAX_hex": "00000001",
+      "EDX": "unchanged incoming DWORD",
+      "arithmetic": "uint32(7)>>2 == 1, low two size bits discarded",
+      "defined_flags_mask_hex": "000000C5",
+      "defined_flags_expected_hex": "00000001",
+      "CF": 1,
+      "PF": 0,
+      "ZF": 0,
+      "SF": 0,
+      "AF_OF": "undefined/excluded"
+    },
+    {
+      "id": "tag10_high_unsigned",
+      "proposed_inert_fill_byte_hex": "5C",
+      "tag_DWORD_hex": "0000000A",
+      "tag_at_0x04_little_endian_hex": "0A000000",
+      "size_DWORD_hex": "FFFFFFFC",
+      "size_at_0x24_little_endian_hex": "FCFFFFFF",
+      "size_read": true,
+      "EAX_hex": "3FFFFFFF",
+      "EDX": "unchanged incoming DWORD",
+      "arithmetic": "uint32(FFFFFFFC)>>2 == 3FFFFFFF; no signed-negative interpretation",
+      "defined_flags_mask_hex": "000000C5",
+      "defined_flags_expected_hex": "00000004",
+      "CF": 0,
+      "PF": 1,
+      "ZF": 0,
+      "SF": 0,
+      "AF_OF": "undefined/excluded"
+    },
+    {
+      "id": "tag11_high_unsigned",
+      "proposed_inert_fill_byte_hex": "D2",
+      "tag_DWORD_hex": "0000000B",
+      "tag_at_0x04_little_endian_hex": "0B000000",
+      "size_DWORD_hex": "FFFFFFFF",
+      "size_at_0x24_little_endian_hex": "FFFFFFFF",
+      "size_read": true,
+      "EAX_hex": "15555555",
+      "EDX_hex": "AAAAAAAA",
+      "unsigned_product64_hex": "AAAAAAAA55555555",
+      "arithmetic": "high32(uint64(FFFFFFFF)*AAAAAAAB)>>3 == floor(uint32(FFFFFFFF)/12)",
+      "defined_flags_mask_hex": "000000C5",
+      "defined_flags_expected_hex": "00000004",
+      "CF": 0,
+      "PF": 1,
+      "ZF": 0,
+      "SF": 0,
+      "AF_OF": "undefined/excluded"
+    },
+    {
+      "id": "default_unread_size",
+      "proposed_inert_fill_byte_hex": "69",
+      "tag_DWORD_hex": "FFFFFFFF",
+      "tag_at_0x04_little_endian_hex": "FFFFFFFF",
+      "size_DWORD_hex": "A76CD291",
+      "size_at_0x24_little_endian_hex": "91D26CA7",
+      "size_read": false,
+      "EAX_hex": "00000000",
+      "EDX": "unchanged incoming DWORD",
+      "arithmetic": "default zero, unrelated to inert size word",
+      "defined_flags_mask_hex": "000008C5",
+      "defined_flags_expected_hex": "00000044",
+      "CF": 0,
+      "PF": 1,
+      "ZF": 1,
+      "SF": 0,
+      "OF": 0,
+      "AF": "undefined/excluded"
+    }
+  ],
+  "case_values_are": "Proposed data and expected Source body outputs; no Native/process/provider or recorded observations",
+  "minimal_case_count": 4,
+  "input_storage_contract": {
+    "always_readable_stable_field": "DWORD at root+0x04, bytes[0x04,0x08)",
+    "conditionally_readable_stable_field": "DWORD at root+0x24, bytes[0x24,0x28), for tags9/10/11 only",
+    "all_fields_little_endian": true,
+    "no_fixed_buffer_allocation_capture_or_guard_size_selected": true,
+    "inert_fill_is": "distinct proposed poison for otherwise untouched input bytes, not an observed pointer/owner/GPR seed/guard",
+    "default_size_poison_is_unread": true,
+    "unread_proof_limit": "Unchanged bytes alone do not prove no reads; Root's complete current machine/body/caller review remains required",
+    "writes": 0,
+    "expected_supplied_storage_after_call": "all actual input bytes unchanged",
+    "DATA_child_phase_marker_owner_ordinal_access": false,
+    "huge_size_fields": "unsigned scalar metadata only; no matching huge child allocation/read required by this getter",
+    "owning_record_class_or_constructed_vector_inference": false
+  },
+  "physical_Source_header_contract": {
+    "ECX": "same actual record root",
+    "incoming_EDX": "unused DWORD register formal",
+    "stack_arguments": 0,
+    "RET": "plain, return-address pair only",
+    "EAX": "full unsigned DWORD count per case",
+    "EDX": "case-specific unchanged or tag11 MUL-high residual",
+    "nonvolatiles": "EBX/ESI/EDI/EBP unchanged at leaf boundary",
+    "DF_ES": "unchanged at leaf boundary; no assumed input seed or selector value",
+    "CXX_wrapper_limit": "ECX/EDX are volatile; future ordinary/probe/helper bytes and exact captures must independently establish physical observations",
+    "FP_MXCSR_or_other_wrapper_state_blanket": false,
+    "provider_calls_allocations_or_frees": 0,
+    "computed_future_ESP_frame_address_or_capture_layout": false
+  },
+  "unsigned_rules": {
+    "tags9_10": "floor(uint32 byte_size/4), max3FFFFFFF",
+    "tag11": "floor(uint32 byte_size/12), max15555555, through unsigned MUL-high and SHR3",
+    "default": "zero for all other DWORD tags, including8, without size read",
+    "guards_added": false,
+    "constructor_clone_lifetime_preconditions": "separate from this getter's arithmetic/readability",
+    "algebra_only_not_extra_cases": [
+      "B0 gives0 on recognized tags",
+      "Tag11 B11 gives0 and B12 gives1",
+      "Nonmultiples floor; high-bit sizes remain unsigned"
+    ]
+  },
+  "flags_limit": {
+    "shift_mask": "C5 includes only CF/PF/ZF/SF; AF/OF undefined",
+    "default_mask": "8C5 includes CF/PF/ZF/SF/OF; AF undefined",
+    "no_8D5_blanket": true,
+    "Root_remaining": "Actual emitted whole-body/ABI/caller/helper/capture/flags proof; no compiler or recorded output consumed here"
+  },
+  "Root_future_decisions": [
+    "Assign actual Source/Original/ordinary lanes to the four proposed cases",
+    "Choose genuine readable storage, full-byte capture and actual live guards without adjacent heap claims",
+    "Gate complete fresh Source/Original/callers and retained observer/helpers before a sole future process",
+    "Establish actual register/ESP/DF/ES/defined-flags capture and public-interface behavior"
+  ],
+  "limits": {
+    "canonical_Source_read": false,
+    "old_family_or_helper_access": false,
+    "fixture_generator_or_new_tests": false,
+    "compiler_Native_Ghidra_provider_runtime_operations": 0,
+    "observations_or_new_Source_reconstruction_credit": 0,
+    "existing_qualified_domains_changed": false
+  },
+  "seal": {
+    "family": "J:/PROG/battlestations-pacific-decompile-cc12_property_element_count_fresh_case_review/local/countcases",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_exclusions": ["receipt.json", "artifact_manifest.json"],
+    "all_other_recursive_utilities_logs_stops_Source_and_committed_metadata_snapshots_included": true
+  }
+}
