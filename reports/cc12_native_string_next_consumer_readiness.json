@@ -1,0 +1,775 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_string_next_consumer_readiness",
+  "Source": 0,
+  "ready": 0,
+  "registered": 0,
+  "status": "conditional whole raw payload replacement proposal; Root saved-flow repair and future full fresh fixture required",
+  "base_main": "35a834a227c3e04de082241124e758ec120ada35",
+  "scope": {
+    "selected_consumers": 1,
+    "selected_address": "008f0310",
+    "tracked_files": 2,
+    "Ghidra_mutations": 0,
+    "source_edits": 0,
+    "builds": 0,
+    "probes": 0,
+    "native_entries": 0,
+    "registered_source_packets": 0,
+    "completed_body_or_provider_requeries": 0
+  },
+  "selection": {
+    "indexed_first_twelve": [
+      "00469240",
+      "004693c0",
+      "0046cf40",
+      "0073d410",
+      "00766fc0",
+      "0087ca80",
+      "0088a330",
+      "008ef1b0",
+      "008ef2b0",
+      "008f0310",
+      "008f0340",
+      "008f0420"
+    ],
+    "indexed_total": 29,
+    "chosen_reason": "unleased bounded actual CALL to 00438E40 plus current-free candidate, separate from completed 55-byte copy and leased classes/maps",
+    "scope_correction": {
+      "field": "selection.json:prior_family_does_not_contain_direct_438e40_caller_selection",
+      "replacement": "No dedicated direct 438E40 caller-selection receipt was found among inspected top-level readiness artifacts; nested historical metadata was not exhaustively searched. The whole-family absence assertion is not established.",
+      "effect": "Use the retained fresh bounded indexed first-12 caller list for selection; no repeated live 438E40 query was performed."
+    }
+  },
+  "native": {
+    "address": 9372432,
+    "end_exclusive": 9372480,
+    "size": 48,
+    "sha256": "c4c713091d8c81c8083a9c53eba6d356e55cb459b8c619ac703ead3796b04abf",
+    "hex": "568bf18b460485c0741050e86966300083c404c74604000000008b4c2408e80d8bb4ff8946048b44240c89065ec20800",
+    "instructions": [
+      {
+        "address": 9372432,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": 9372433,
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": 9372435,
+        "bytes": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": 9372438,
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": 9372440,
+        "bytes": "7410",
+        "mnemonic": "je",
+        "operands": "0x8f032a"
+      },
+      {
+        "address": 9372442,
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": 9372443,
+        "bytes": "e869663000",
+        "mnemonic": "call",
+        "operands": "0xbf6989"
+      },
+      {
+        "address": 9372448,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": 9372451,
+        "bytes": "c7460400000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], 0"
+      },
+      {
+        "address": 9372458,
+        "bytes": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]"
+      },
+      {
+        "address": 9372462,
+        "bytes": "e80d8bb4ff",
+        "mnemonic": "call",
+        "operands": "0x438e40"
+      },
+      {
+        "address": 9372467,
+        "bytes": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax"
+      },
+      {
+        "address": 9372470,
+        "bytes": "8b44240c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": 9372474,
+        "bytes": "8906",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], eax"
+      },
+      {
+        "address": 9372476,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": 9372477,
+        "bytes": "c20800",
+        "mnemonic": "ret",
+        "operands": "8"
+      }
+    ],
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    }
+  },
+  "installed_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "physical_contract": {
+    "proposed_descriptive_name": "replace_native_reference_payload_008f0310",
+    "name_is_hypothesis": true,
+    "proposed_interface": "uint32_t __fastcall replace_native_reference_payload_008f0310(void* destination_ecx, void* unused_edx, const char* borrowed_text_stack, uint32_t raw_scalar_stack)",
+    "actual_destination": "ECX actual writable/readable 8-byte payload; +0 scalar bits, +4 sole-owned current allocation or null",
+    "actual_arguments": "native entry [ESP+4] borrowed text, [ESP+8] scalar bits; no source-payload pointer",
+    "argument_read_order": "test and optional free of old +4 first; load borrowed-text argument after optional free; read scalar argument after duplication",
+    "return_value": "full EAX equals the raw scalar stack argument on every successful return, including text-null; actual new allocation is in destination +4",
+    "stack_cleanup": "RET 8; normal EBX/ESI/EDI/EBP preserved",
+    "write_order": [
+      "if old +4 nonnull: actual free then clear +4",
+      "duplicate text and store actual new pointer/null at +4",
+      "load scalar into EAX and store at +0"
+    ],
+    "writes_outside_eight_byte_payload": false,
+    "domain": [
+      "8-byte payload does not overlap arguments, borrowed text or active frames",
+      "borrowed text null or live NUL-terminated storage disjoint from old allocation",
+      "length+1 representable without address wrap",
+      "old +4 null or sole-owned actual matching current duplicate allocation",
+      "DF clear for actual current CRT"
+    ],
+    "ownership": [
+      "consumer frees real old current copy once",
+      "caller reads stored new pointer at destination +4 and frees it once before payload reuse/disposal",
+      "borrowed text is never freed here",
+      "old bytes never read after free; old/new allocation addresses may be reused"
+    ],
+    "unsafe_alias": "borrowed text within old owned allocation would be freed before duplication; excluded even if argument pointer bytes survive",
+    "no_phase_vtable_class_or_provider_fabrication": true,
+    "no_noexcept_promise": true
+  },
+  "whole_source_proposal": {
+    "registration_performed": false,
+    "source_proposed_only_after_root_repair": true,
+    "body_bytes": 48,
+    "body_instructions": 16,
+    "literal_non_operand_bytes": 40,
+    "relocation_operands": [
+      {
+        "range": [
+          12,
+          16
+        ],
+        "original_call": "008f031b",
+        "original_target": "00bf6989",
+        "qualified_target": "unchanged actual current singleton_lifetime_free"
+      },
+      {
+        "range": [
+          31,
+          35
+        ],
+        "original_call": "008f032e",
+        "original_target": "00438e40",
+        "qualified_target": "unchanged admitted physical duplicate57"
+      }
+    ],
+    "whole_body_required": true,
+    "branch_or_prefix_substitution": false,
+    "future_files": [
+      "include/bsp/native_reference_payload_replace.hpp",
+      "src/native_reference_payload_replace.cpp",
+      "docs/NATIVE_REFERENCE_PAYLOAD_REPLACE_CC12.md",
+      "reports/native_reference_payload_replace_cc12.json"
+    ],
+    "class_wrappers_callbacks_provider_adapters_or_virtual_R125_substitution": false,
+    "original_private_CRT_admitted": false
+  },
+  "native_caller": {
+    "indexed_callers": 0,
+    "live_callers_observed": 0,
+    "inbound_xrefs_observed": 0,
+    "direct_caller_witness": null,
+    "additional_caller_windows_or_cells_claimed": 0,
+    "transport_evidence": "complete native callee loads and RET8 only; external caller transport remains unverified",
+    "production_caller_or_World_closure": false
+  },
+  "saved_analysis": {
+    "actual_physical_instructions": 16,
+    "saved_instructions": 14,
+    "missing_starts": [
+      "008f0320",
+      "008f0323"
+    ],
+    "gap": [
+      "008f0320",
+      "008f032a"
+    ],
+    "gap_bytes": "83c404c7460400000000",
+    "gap_SHA256": "cba55c2ca75c5f79e7687fcb36ba5b7be534e1322e47f8d980772255fb436344",
+    "preceding_call": "008f031b CALL 00bf6989",
+    "pseudocode_error": "false early return after old free; omits ADD ESP,4 and clearing destination +4",
+    "exact_callsite_override": "unmeasured",
+    "native_free_NoReturn": "unmeasured",
+    "candidate_NoReturn": "unmeasured",
+    "full_documentation": [
+      {
+        "address": "008f0310",
+        "documentation": {
+          "hash": "6bf33188f1afb68a20f0079982e36e30dbbeed4240efcf326f8ebc8450c43c4c",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "008f0310",
+          "function_name": "FUN_008f0310",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "uVar1",
+              "type": "undefined4",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 26,
+              "name": "LAB_008f032a"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      }
+    ],
+    "before_after_documentation_identical": true,
+    "function_flags_or_script_settings_changed": false,
+    "root_repair_prerequisite": [
+      "Root owns entry, callsite and missing starts in a fresh repair family",
+      "verify fresh original 48 bytes, existing full extent and saved14 plus exact ten-byte gap",
+      "use supported serialized repair for only this internal gap, recording actual old values before changes",
+      "do not change or claim the original private free function",
+      "verify all16 exact starts, native48 unchanged, full RET8 and genuine successful old-free continuation",
+      "preserve complete old name/prototype/comments/labels; retain uncertainty about unmeasurable flags",
+      "save and refresh the affected export under the required write lock; Source credit stays0 until independent implementation verification"
+    ],
+    "root_repair_executed": false
+  },
+  "raw_stack_and_flags": {
+    "T": "actual first argument (borrowed text) slot ESP immediately before outer CALL; scalar at T+4",
+    "outer_entry": "T-4",
+    "saved_ESI": "T-8",
+    "old_free_argument_entry_return": [
+      "T-12",
+      "T-16",
+      "T-12"
+    ],
+    "old_free_ADD4_result": "T-8",
+    "duplicate_entry": "T-12",
+    "duplicate_saved_EBX_ESI_EDI": [
+      "T-16",
+      "T-20",
+      "T-24"
+    ],
+    "size_argument": "T-28",
+    "memcpy_destination_source_count": [
+      "T-40",
+      "T-36",
+      "T-32"
+    ],
+    "memcpy_entry_return": [
+      "T-44",
+      "T-40"
+    ],
+    "duplicate_ADD16_result": "T-24",
+    "duplicate_RET0_result": "T-8",
+    "outer_RET8_result": "T+8",
+    "null_text": {
+      "EAX": "raw scalar, after overwriting duplicate zero",
+      "ECX": 0,
+      "EDX": "incoming only if old pointer was null; free is volatile otherwise",
+      "arithmetic_mask": "0x8c5",
+      "arithmetic_expected": "0x44",
+      "AF": "undefined, excluded"
+    },
+    "nonnull_text": {
+      "EAX": "raw scalar",
+      "ECX_EDX": "volatile",
+      "arithmetic_mask": "0x8d5",
+      "arithmetic_calculation": "ADD32(T-40,16)"
+    },
+    "DF": "clear valid input; no broader segment, FP, MXCSR or full-flags assertion"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "candidate",
+        "kind": "native whole body",
+        "address": "008f0310",
+        "status": "48 bytes/16 physical instructions; Source0; saved14 needs Root repair"
+      },
+      {
+        "id": "duplicate",
+        "kind": "physical native ABI dependency",
+        "address": "00438e40",
+        "status": "admitted whole57 current-provider duplicate; contract reused without query"
+      },
+      {
+        "id": "native_free",
+        "kind": "original native dependency",
+        "address": "00bf6989",
+        "status": "unqueried incomplete private CRT; never authorized for current owned copies"
+      },
+      {
+        "id": "current_free",
+        "kind": "qualified current provider",
+        "name": "bsp::singleton_lifetime_free",
+        "status": "admitted unchanged matching free; actual binding must be independently gated in future fixture"
+      },
+      {
+        "id": "size_adapter",
+        "kind": "existing admitted physical dependency",
+        "name": "allocate_native_string_bytes",
+        "status": "existing duplicate size adapter; no new consumer adapter proposed"
+      },
+      {
+        "id": "current_allocator",
+        "kind": "current provider",
+        "name": "bsp::singleton_lifetime_allocate",
+        "status": "admitted unchanged allocator; OOM/EH outside successful domain"
+      },
+      {
+        "id": "ucrt_malloc",
+        "kind": "current physical provider",
+        "name": "UCRT malloc",
+        "status": "prior physical module/file identity retained; future runtime gate required"
+      },
+      {
+        "id": "ucrt_free",
+        "kind": "current physical provider",
+        "name": "UCRT free",
+        "status": "same matching allocation domain; future runtime gate required"
+      },
+      {
+        "id": "ucrt_callnewh",
+        "kind": "current physical provider",
+        "name": "UCRT _callnewh",
+        "status": "retained allocator dependency; handler/OOM behavior unadmitted"
+      },
+      {
+        "id": "vcruntime_copy",
+        "kind": "current physical provider",
+        "name": "VCRUNTIME140 memcpy",
+        "status": "distinct physical I386 module; future runtime gate required"
+      },
+      {
+        "id": "unknown_caller",
+        "kind": "unclosed production contract",
+        "status": "no indexed callers, live callers or inbound xrefs observed; no witness fabricated"
+      },
+      {
+        "id": "unknown_native_owner",
+        "kind": "unclosed production contract",
+        "status": "native payload producer/class/destructor/private-heap lifetime unknown"
+      },
+      {
+        "id": "unknown_EH",
+        "kind": "unclosed failure contract",
+        "status": "allocation failure and unwind/destructor obligations unresolved"
+      }
+    ],
+    "edges": [
+      {
+        "source": "candidate",
+        "target": "native_free",
+        "relation": "actual original CALL 008f031b"
+      },
+      {
+        "source": "candidate",
+        "target": "duplicate",
+        "relation": "actual original CALL 008f032e; ECX borrowed text"
+      },
+      {
+        "source": "candidate",
+        "target": "current_free",
+        "relation": "qualified future operand rebind only; no execution here"
+      },
+      {
+        "source": "duplicate",
+        "target": "size_adapter",
+        "relation": "admitted physical duplicate size allocation"
+      },
+      {
+        "source": "duplicate",
+        "target": "vcruntime_copy",
+        "relation": "admitted physical memcpy n+1"
+      },
+      {
+        "source": "size_adapter",
+        "target": "current_allocator",
+        "relation": "existing admitted size request"
+      },
+      {
+        "source": "current_allocator",
+        "target": "ucrt_malloc",
+        "relation": "admitted current allocation provider"
+      },
+      {
+        "source": "current_allocator",
+        "target": "ucrt_callnewh",
+        "relation": "retained failure path; no failure claim"
+      },
+      {
+        "source": "current_free",
+        "target": "ucrt_free",
+        "relation": "matching current allocation domain"
+      },
+      {
+        "source": "unknown_caller",
+        "target": "candidate",
+        "relation": "unresolved production requirement, not an observed edge"
+      },
+      {
+        "source": "candidate",
+        "target": "unknown_native_owner",
+        "relation": "unresolved old/new production lifetime obligation, not a call edge"
+      },
+      {
+        "source": "current_allocator",
+        "target": "unknown_EH",
+        "relation": "unresolved failure path, not a recovered call edge"
+      },
+      {
+        "source": "candidate",
+        "target": "unknown_EH",
+        "relation": "old free may precede allocation failure; not a recovered handler edge"
+      }
+    ],
+    "node_count": 13,
+    "edge_count": 13,
+    "production_unknowns_preserved": true
+  },
+  "minimal_future_fixture": {
+    "proposal_only": true,
+    "actually_run": false,
+    "fresh_TUs": [
+      "whole48 consumer",
+      "unchanged admitted physical duplicate and existing size adapter",
+      "unchanged canonical allocation/free",
+      "new actual RET8 caller/probe"
+    ],
+    "entries": 7,
+    "raw_pairs": [
+      "old null / text null",
+      "real old / text null",
+      "real old / nonempty text"
+    ],
+    "ordinary_source": "old null / nonempty text",
+    "old_setups": 4,
+    "inside_old_frees": 4,
+    "new_copies": 3,
+    "caller_result_frees": 3,
+    "raw_scalar": "use distinctive high-bit 32-bit payload; EAX must equal it even when new text is null",
+    "require_actual_two_argument_slots": true,
+    "require_real_payload_and_borrowed_text_storage": true,
+    "full_eight_byte_write_and_surrounding_guards": true,
+    "cleanup": "observe actual nonnull pointer at destination+4 through entire n+1 NUL sequence and free once before payload disposal/reuse; EAX is not an allocation",
+    "require_old_new_address_inequality": false,
+    "read_freed_old_bytes": false,
+    "gates": [
+      "all four fresh TUs and exact whole COFF/map consumer48/16 with only2REL32",
+      "whole admitted duplicate57, existing adapter, actual canonical allocation/free",
+      "genuine ordinary and newly derived RET8 raw caller; whole main and every retained helper including actual cookie/stack/import bodies",
+      "physical I386 UCRT malloc/free/_callnewh and distinct VCRUNTIME memcpy IAT/export/NTpath/fileID/fullSHA/ASLR-prefix before zero old setup/target/free entries and after",
+      "manifested Win32 probe and consumed source/header/tool/library/provider pins",
+      "one sole process, post and exact immutable inventory"
+    ],
+    "no_mock_class_vtable_provider_or_virtual_owner": true,
+    "no_old_probe_or_process_replay": true
+  },
+  "provenance": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a",
+    "prior_source_worker_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_reference_payload_copy_source\\local\\cc12_reference_payload_copy_worker20261008a\\artifact_manifest.json",
+      "size": 32865,
+      "sha256": "336e3813256ab8a47165755b886f9ee9350da1ad83591312a11269a3f0c2e822"
+    },
+    "prior_source_worker_artifacts_including_manifest": 112,
+    "older_prior_artifacts": 1100,
+    "total_unchanged_prior_artifacts": 1212,
+    "old_source_commit": "ef5272ca7d1e082aacdbfb0efb51ee1fe1ed82ad",
+    "old_source_credit": 0,
+    "additional_old_tracked_files_unchanged": 4,
+    "consumed_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\config\\target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\tools\\bsp.py",
+        "size": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\tools\\ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\tools\\coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\tools\\workspace.py",
+        "size": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\src\\native_string_duplicate.cpp",
+        "size": 1554,
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\include\\bsp\\native_string_duplicate.hpp",
+        "size": 933,
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\include\\bsp\\singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\capture.py",
+        "size": 6768,
+        "sha256": "f22511b2fa0a8d8191293fe26c2aa25ab09170344bfc977a63e8be918f02c9fe"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "size": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "size": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\pefile.py",
+        "size": 301767,
+        "sha256": "0d0eb68f0f169182613dc64b3ab50b20855508c1c1d2faafe8fccf23edb6a345"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "size": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      }
+    ],
+    "current_provider_file_hash_checks_are_not_runtime_proof": true,
+    "unconsumed_dispatch_context": "frozen snapshot, not strict live Main pin",
+    "historical_hash_associations_preserved": true,
+    "early_index_failure_preserved": true,
+    "selection_scope_erratum_preserved": true
+  },
+  "post": {
+    "passed": true,
+    "whole_native_PE_live_listing_proto_comments_equal": true,
+    "all_consumed_inputs_unchanged": true,
+    "prior_artifacts_unchanged": 1212,
+    "Ghidra_mutations": 0,
+    "builds": 0,
+    "native_entries": 0,
+    "Source": 0,
+    "registered": 0
+  },
+  "evidence_receipts": {
+    "before_candidate_payload.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\before_candidate_payload.json",
+      "size": 2730,
+      "sha256": "d51d061485aebacbbcf80836a06a25f627a80232a49f1ea3a3bf67b63a800cef"
+    },
+    "after_candidate_payload.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\after_candidate_payload.json",
+      "size": 2730,
+      "sha256": "d51d061485aebacbbcf80836a06a25f627a80232a49f1ea3a3bf67b63a800cef"
+    },
+    "native_listing.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_listing.json",
+      "size": 471,
+      "sha256": "305e0167f807b89b57e74702d6629e48262f710eae72918cc1bb094b27ceb0b6"
+    },
+    "after_listing.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\after_listing.json",
+      "size": 471,
+      "sha256": "305e0167f807b89b57e74702d6629e48262f710eae72918cc1bb094b27ceb0b6"
+    },
+    "native_proto.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_proto.json",
+      "size": 722,
+      "sha256": "7f6de18e7efd99175d962fa61212d76b70617226c5e2c7cd22721f7c1fa27866"
+    },
+    "after_proto.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\after_proto.json",
+      "size": 722,
+      "sha256": "7f6de18e7efd99175d962fa61212d76b70617226c5e2c7cd22721f7c1fa27866"
+    },
+    "native_comments.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_comments.json",
+      "size": 195,
+      "sha256": "5cda988933e22a87c13265fa12eae5410d1c7de6d8fabdb8b4ecfa65b3c49305"
+    },
+    "after_comments.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\after_comments.json",
+      "size": 195,
+      "sha256": "5cda988933e22a87c13265fa12eae5410d1c7de6d8fabdb8b4ecfa65b3c49305"
+    },
+    "native_documentation_payload.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_documentation_payload.json",
+      "size": 700,
+      "sha256": "be1b12ae426b2ae61a2c6882d0501a0a3f867f1325c5e354b56ad91fed34ed16"
+    },
+    "after_documentation_payload.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\after_documentation_payload.json",
+      "size": 700,
+      "sha256": "be1b12ae426b2ae61a2c6882d0501a0a3f867f1325c5e354b56ad91fed34ed16"
+    },
+    "native_decompile.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_decompile.json",
+      "size": 372,
+      "sha256": "fcded71ad3cee8ab8a95f83cf334c0f8c0b7e740fe81f4583c6dfc6f394a8a49"
+    },
+    "native_flow.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_flow.json",
+      "size": 250,
+      "sha256": "fce6b0546e743e0b5a17d106991e6176410f4e74f00604b5feedda4c4035c7fd"
+    },
+    "gap_context_payload.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\gap_context_payload.json",
+      "size": 473,
+      "sha256": "b242d114202f574a7f16ac47d707901ce532e42e9f9fdd470255db750262ce71"
+    },
+    "native_callers.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_callers.json",
+      "size": 91,
+      "sha256": "e9e5654695027386e00c966081aafc796888b27cff43af33ee5ddb3eda499e97"
+    },
+    "native_xrefs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_xrefs.json",
+      "size": 109,
+      "sha256": "522288188c4a44b806b4f1d96a2159acae272d93a8726aa3ac1465ddc9a88453"
+    },
+    "native_callees.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\native_callees.json",
+      "size": 111,
+      "sha256": "ff6d467b5156831d4bc0a6dc489f2e4de07175d15f126558e1237bfd32655a57"
+    },
+    "post.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\post.json",
+      "size": 257,
+      "sha256": "739e3cb111697935ced59b9999874b2d81184a49589390fcd447e34b2c09048e"
+    },
+    "prior_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\prior_before.json",
+      "size": 321409,
+      "sha256": "27cdf2b45c11ac961a8f6c135d1567e0c038fddc6adf3751c155ab52440c4962"
+    },
+    "prior_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\prior_after.json",
+      "size": 321409,
+      "sha256": "27cdf2b45c11ac961a8f6c135d1567e0c038fddc6adf3751c155ab52440c4962"
+    },
+    "inputs_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\inputs_before.json",
+      "size": 3219,
+      "sha256": "8a00b1cb49a6ce821ffbbf213ceb4cc7005ec6e24c099de573422e691ae4b53d"
+    },
+    "inputs_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\inputs_after.json",
+      "size": 3219,
+      "sha256": "8a00b1cb49a6ce821ffbbf213ceb4cc7005ec6e24c099de573422e691ae4b53d"
+    },
+    "unconsumed_metadata_snapshot.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\unconsumed_metadata_snapshot.json",
+      "size": 2085488,
+      "sha256": "86ffe2ad35673d5d622fd8bb2a475f9085d0582cf2d4cd1b834882bdc5465082"
+    },
+    "additional_input_checks.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\additional_input_checks.json",
+      "size": 1602,
+      "sha256": "e37c6bd175142e4f3605dd863506646bf5f582edb59a8ca29a9797f51b7b1ad9"
+    },
+    "selection.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\selection.json",
+      "size": 1015,
+      "sha256": "3ffde883147ecabc0496b27e76f517a7ddceeb677a3f99b4c2816c317e2ebdf5"
+    },
+    "selection_scope_correction.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_string_next_consumer_readiness\\local\\cc12_native_string_next_consumer_readiness20261008a\\selection_scope_correction.json",
+      "size": 470,
+      "sha256": "76b60c7a2ace11d511bc989d214d6ebee2f8b690ad9a3b167bb1c6edc7514795"
+    }
+  },
+  "unadmitted": [
+    "saved listing repair",
+    "new Source implementation/registration/fixture",
+    "external caller ABI witness",
+    "native class producer/destructor ownership",
+    "original private CRT",
+    "OOM and EH",
+    "World integration",
+    "startup and gameplay"
+  ]
+}
