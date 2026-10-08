@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_owning_producers_Source",
   "UTC": "2026-10-08T16:40:24.186460+00:00",
-  "status": "SOURCE_BUILD_STATIC_QUALIFIED_PRIMARY_REVIEW_PENDING",
+  "status": "PRIMARY_ACCEPTED_SOURCE_BUILD_STATIC_QUALIFIED_NO_NEW_API_EXECUTION",
   "baseline": "0348b7badac173be2022545e92bb6c086d6f1b9f",
   "scope": {
     "owned_files": [
@@ -4586,6 +4586,20 @@
     "new_Source_API_execution": "NOT_EXECUTED",
     "Native_property_execution": "NOT_EXECUTED",
     "application_new_COMDAT_link": "NOT_CLAIMED",
-    "primary_acceptance": "PENDING_ROOT"
+    "primary_acceptance": {
+      "status": "PASS",
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_owning_producers_primary_review\\receipt.json",
+        "bytes": 34839,
+        "sha256": "eb1cbd26faaf58194be7cd9decac3876fbd2c65a24515246d6365ef3037f32f0"
+      },
+      "all_481_current_whole_bodies_qualified": true,
+      "ten_unique_current_core_members": true,
+      "all_three_existing_checks": true,
+      "new_Original_function_credit": 0,
+      "new_API_execution": false,
+      "game_validated": false,
+      "qualification": "Distinct canonical Source E175B0 process cell and successful empty-source malloc/raw61/count/return fragment. Static whole-body/archive/CRT/PE qualification only; no new API or property Native execution, application startup wiring, populated cloning, closed recursive profile/lifetime family, Original public ABI or gameplay admission."
+    }
   }
 }
