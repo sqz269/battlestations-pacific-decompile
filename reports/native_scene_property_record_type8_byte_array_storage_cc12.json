@@ -1,0 +1,5333 @@
+{
+  "schema": "bsp.cc12.native-scene-property-record-type8-byte-array-storage.worker.v1",
+  "packet": "cc12_scene_property_record_type8_byte_array_storage",
+  "status": "worker_implementation_and_qualified_fixture_passed_independent_root_admission_pending",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source",
+  "branch": "agent/cc12_type8_byte_array_storage_source",
+  "baseline_commit": "b26d9e9900d20e4a9df4c29683e1275336b5820d",
+  "registered_main_ancestor": "f2dc5f4352e0b5e1905bb097dbd0aaf5b16d773a",
+  "address": "008EF2F0",
+  "files": [
+    "include/bsp/native_scene_property_record_type8_byte_array_storage.hpp",
+    "src/native_scene_property_record_type8_byte_array_storage.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+    "reports/native_scene_property_record_type8_byte_array_storage_cc12.json"
+  ],
+  "source_and_document": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\include\\bsp\\native_scene_property_record_type8_byte_array_storage.hpp",
+      "size": 2584,
+      "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\src\\native_scene_property_record_type8_byte_array_storage.cpp",
+      "size": 2114,
+      "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\docs\\NATIVE_SCENE_PROPERTY_RECORD_TYPE8_BYTE_ARRAY_STORAGE_CC12.md",
+      "size": 9658,
+      "sha256": "912dd96dde678495d1e08e9f7c9d2db33d832803620955f26f947adc06af0ecc"
+    }
+  ],
+  "admission": {
+    "worker_source_credit": 0,
+    "Root_independent_validation": false,
+    "Root_main_build": false,
+    "Root_Ghidra_publication": false,
+    "startup_validated": false,
+    "game_validated": false,
+    "original_private_CRT_EH": false,
+    "whole_clone": false,
+    "phase_vtable_dispatch": false,
+    "class_ownership": false,
+    "World": false,
+    "adapter_native_credit": 0
+  },
+  "native": {
+    "whole_begin": "008EF2F0",
+    "whole_end_exclusive": "008EF360",
+    "size": 112,
+    "instructions": 34,
+    "sha256": "4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_calls": [
+      {
+        "instruction": "008EF31E",
+        "target": "00BF55BE",
+        "operand": [
+          47,
+          51
+        ],
+        "replacement": "New private genuine CDECL size adapter -> unchanged canonical allocation"
+      },
+      {
+        "instruction": "008EF32D",
+        "target": "00BF7680",
+        "operand": [
+          62,
+          66
+        ],
+        "replacement": "Genuine current VCRUNTIME140 memcpy import"
+      }
+    ],
+    "other_literal_bytes": 104,
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\native_before.json",
+      "size": 4938,
+      "sha256": "986585eaa29a26a9313fcaf4a2033f8dc57792d8bbd4d739b7ad7f839f4ef9ae"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\native_after.json",
+      "size": 4938,
+      "sha256": "986585eaa29a26a9313fcaf4a2033f8dc57792d8bbd4d739b7ad7f839f4ef9ae"
+    },
+    "bookends": {
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "size": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "address": "008EF2F0",
+      "bytes": "807c240c00568bf1c706d489ce00c7460408000000578b7c2410c7461800000000c7461c00000000897e24742a57e89b6230008b4c2410575150894620e84e83300083c4105fc7463400000000c6462c018bc65ec20c008b54240c8956205fc7463400000000c6462c018bc65ec20c00",
+      "size": 112,
+      "sha256": "4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928",
+      "instructions": [
+        {
+          "address": 9368304,
+          "bytes": "807c240c00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esp + 0xc], 0"
+        },
+        {
+          "address": 9368309,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": 9368310,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": 9368312,
+          "bytes": "c706d489ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce89d4"
+        },
+        {
+          "address": 9368318,
+          "bytes": "c7460408000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 8"
+        },
+        {
+          "address": 9368325,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 9368326,
+          "bytes": "8b7c2410",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": 9368330,
+          "bytes": "c7461800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], 0"
+        },
+        {
+          "address": 9368337,
+          "bytes": "c7461c00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x1c], 0"
+        },
+        {
+          "address": 9368344,
+          "bytes": "897e24",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x24], edi"
+        },
+        {
+          "address": 9368347,
+          "bytes": "742a",
+          "mnemonic": "je",
+          "operands": "0x8ef347"
+        },
+        {
+          "address": 9368349,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 9368350,
+          "bytes": "e89b623000",
+          "mnemonic": "call",
+          "operands": "0xbf55be"
+        },
+        {
+          "address": 9368355,
+          "bytes": "8b4c2410",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": 9368359,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": 9368360,
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": 9368361,
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": 9368362,
+          "bytes": "894620",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], eax"
+        },
+        {
+          "address": 9368365,
+          "bytes": "e84e833000",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": 9368370,
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": 9368373,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 9368374,
+          "bytes": "c7463400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], 0"
+        },
+        {
+          "address": 9368381,
+          "bytes": "c6462c01",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": 9368385,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": 9368387,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 9368388,
+          "bytes": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        },
+        {
+          "address": 9368391,
+          "bytes": "8b54240c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": 9368395,
+          "bytes": "895620",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x20], edx"
+        },
+        {
+          "address": 9368398,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": 9368399,
+          "bytes": "c7463400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x34], 0"
+        },
+        {
+          "address": 9368406,
+          "bytes": "c6462c01",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x2c], 1"
+        },
+        {
+          "address": 9368410,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": 9368412,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": 9368413,
+          "bytes": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "actual_program": "battlestationspacific.exe",
+      "listing_instruction_starts_exact": true
+    },
+    "Ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "actual_program": "/battlestationspacific.exe",
+    "Ghidra_writes": 0,
+    "read_only_before_after_program_listing_exact": true,
+    "earlier_readiness": "docs/CC12_PROPERTY_RECORD_REMAINING_READINESS.md; exact frozen audit preserved among prior pins; no unrelated body expansion"
+  },
+  "interface": {
+    "name": "bsp::construct_native_scene_property_record_type8_byte_array_storage_008ef2f0",
+    "declaration": "void* __fastcall (void* root_ecx, void* unused_edx, const void* actual_bytes, uint32_t byte_count, uint32_t copy_flag_bits)",
+    "descriptive_name_hypothesis": true,
+    "noexcept": false,
+    "inputs": [
+      "ECX actual fresh unowned writable 56-byte root",
+      "incoming EDX unused",
+      "[T+4] actual positive readable byte span",
+      "[T+8] count",
+      "[T+C] full flag DWORD; only low byte used"
+    ],
+    "domain": "Positive count, stable actual readable input, root/input/active-frame disjoint, nonwrapping ranges, DF clear for current CRT; successful allocation/copy domain only.",
+    "retained": "Low byte zero: exact borrowed input pointer at +20, no provider call/allocation, caller manages retained input lifetime; never free it as a copied child.",
+    "copied": "Low byte nonzero: actual count-byte allocation, pointer stored at +20 before exact count-byte memcpy; observe live child and canonical-free once before separately disposing root.",
+    "storage": {
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "written_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          24,
+          40
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          52,
+          56
+        ]
+      ],
+      "preserved_ranges": [
+        [
+          8,
+          24
+        ],
+        [
+          40,
+          44
+        ],
+        [
+          45,
+          52
+        ]
+      ],
+      "preserved_DWORD_30": true,
+      "byte_2C_one_both_branches": true
+    },
+    "order": "Flag byte read before phase/tag stores; count read after them; zero18/1C and count24 retain CMP flags; copied actual allocation20 precedes memcpy.",
+    "return_abi": "EAX root, RET0C. ESI/EDI locally saved; EBX/EBP normal provider ABI. Retained ECX root and EDX input; copied ECX/EDX provider residuals unasserted.",
+    "retained_flags": "All six arithmetic flags defined by CMP 0,0: mask8D5=44, AF=0.",
+    "copied_stack": "Allocator argument remains T-12; memcpy entry T-28; after RET0 ESP=T-24; ADD16 produces T-8, both paths final RET0C produces T+16.",
+    "copied_flags": "All six defined arithmetic flags derive from actual (T-24)+16, using independently captured entry T, not pre-CALL Q.",
+    "excluded": [
+      "zero count",
+      "invalid/overlapping spans",
+      "allocation/copy failure",
+      "reentry/unwind",
+      "private Original CRT/EH",
+      "phase/vtable dispatch",
+      "class ownership/World",
+      "blanket DF/ES/FPU/MXCSR preservation through providers",
+      "startup/gameplay"
+    ]
+  },
+  "fresh_build": {
+    "prepare": {
+      "inputs": 50,
+      "candidate_headers": 7117,
+      "candidate_libraries": 540,
+      "prior_artifacts": 5239,
+      "readiness_artifacts": 298,
+      "older_artifacts": 4640,
+      "failed_family_artifacts": 301,
+      "provider_Source_admission": 1,
+      "metadata_copies": 10,
+      "unconsumed_dispatch_CMake_core_frozen_as_copies_only": true,
+      "historical_associations_not_rebound": true,
+      "prelaunch_contract": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prelaunch_contract.json",
+        "size": 329,
+        "sha256": "b754fce30a528c1e4065fe81f05274b7c93b70cc1eab16c8b3b6605586604fb3"
+      },
+      "BSP_archives": 0,
+      "old_objects": 0
+    },
+    "build": {
+      "TUs": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\src\\native_scene_property_record_type8_byte_array_storage.cpp",
+          "size": 2114,
+          "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\src\\singleton_lifetime.cpp",
+          "size": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe.cpp",
+          "size": 29740,
+          "sha256": "8a1b48f272b9a1937a50f2730fe22a6599509a560e859e5a6bd8aebd013a92d9"
+        }
+      ],
+      "objects": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source.obj",
+          "size": 1812,
+          "sha256": "c7e6438044f3baae172355bd0a62dd1dc028ace3eb72a23bb9a8bcf80e6ebf34"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\canonical.obj",
+          "size": 36835,
+          "sha256": "9624feb8d45cbf4b8ca1cd0345f638fe9fc9cf822f2b7acc73397765aa0e9ba5"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe.obj",
+          "size": 40895,
+          "sha256": "f7f7be202e635297cd31149553db0d5dec62482a1c86f56a60c70b274b78467a"
+        }
+      ],
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\t8_probe.exe",
+        "size": 23552,
+        "sha256": "83d1125f62bb3e5f9828bf652e886cf086b1dc955edd9ec56788238a9e23cf6e"
+      },
+      "consumed_headers": 184,
+      "libraries": 7,
+      "BSP_archives": 0,
+      "old_objects": 0
+    },
+    "TUs": [
+      "fresh constructor and real size adapter",
+      "unchanged canonical allocator/free",
+      "new raw fixture"
+    ],
+    "toolchain": "MSVC 14.51.36231 x86 and Windows SDK 10.0.26100.0",
+    "flags": [
+      "/O2",
+      "/MD",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/permissive-",
+      "/EHsc",
+      "/Gy",
+      "/GL-",
+      "Source /Oi-",
+      "/MANIFEST:EMBED",
+      "/DYNAMICBASE:NO",
+      "/BASE:0x25000000"
+    ],
+    "libraries": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "size": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "size": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "size": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "size": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "size": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\bcrypt.lib",
+        "size": 15630,
+        "sha256": "6490055fd9f217b46f60d0fb327b86d2f466334b96c954186aab6cbe22595700"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "size": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      }
+    ],
+    "manifest": {
+      "level": "asInvoker",
+      "uiAccess": "false"
+    },
+    "BSP_archives": 0,
+    "old_objects": 0,
+    "full_main_build_deferred_to_Root": true,
+    "no_CMake_mutation": true
+  },
+  "static": {
+    "passed": true,
+    "unique_linked_Source": [
+      620761152
+    ],
+    "complete_spans": [
+      {
+        "symbol": "?construct_native_scene_property_record_type8_byte_array_storage_008ef2f0@bsp@@YIPAXPAX0PBXII@Z",
+        "address": 620761152,
+        "size": 112,
+        "map": {
+          "address": 620761152,
+          "section": "0001",
+          "offset": 64,
+          "provenance": "f   source.obj"
+        },
+        "instruction_count": 34,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_1.asm",
+          "size": 1709,
+          "sha256": "ad992f08e29b2cc2687d5f7d21c599ab662ebcb0f242db9061730399657475b9"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "02bd3343dfe24ccb6135edf99d410f61fd2ec9049d59fd67ce082ddfe88a36e0",
+        "relocations": [
+          {
+            "offset": 47,
+            "type": 20,
+            "symbol": "?allocate_native_byte_array_bytes@?A0x10e780c0@bsp@@YAPAXI@Z",
+            "symbol_index": 18,
+            "target": {
+              "address": 620761088,
+              "section": "0001",
+              "offset": 0,
+              "provenance": "f   source.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294967181
+          },
+          {
+            "offset": 62,
+            "type": 20,
+            "symbol": "_memcpy",
+            "symbol_index": 16,
+            "target": {
+              "address": 620774956,
+              "section": "0001",
+              "offset": 13868,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 13738
+          }
+        ]
+      },
+      {
+        "symbol": "?allocate_native_byte_array_bytes@?A0x10e780c0@bsp@@YAPAXI@Z",
+        "address": 620761088,
+        "size": 61,
+        "map": {
+          "address": 620761088,
+          "section": "0001",
+          "offset": 0,
+          "provenance": "f   source.obj"
+        },
+        "instruction_count": 17,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_2.asm",
+          "size": 865,
+          "sha256": "098f108337205b0767817467c90b9e1927145b99bcafc9c9e45c1ac3e7c9b42c"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "b4911f0b42968a62daec963ea68368410de2954ee2f4f14986b07d9ff591e6b3",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "___security_cookie",
+            "symbol_index": 20,
+            "target": {
+              "address": 620785664,
+              "section": "0003",
+              "offset": 0,
+              "provenance": "MSVCRT:gs_cookie.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620785664
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "symbol_index": 17,
+            "target": {
+              "address": 620761520,
+              "section": "0001",
+              "offset": 432,
+              "provenance": "f   canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 389
+          },
+          {
+            "offset": 53,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 19,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 10423
+          }
+        ]
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": 620761520,
+        "size": 90,
+        "map": {
+          "address": 620761520,
+          "section": "0001",
+          "offset": 432,
+          "provenance": "f   canonical.obj"
+        },
+        "instruction_count": 34,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_3.asm",
+          "size": 1558,
+          "sha256": "a181a95bb06002cab428f1a76348a07c7bdfa42b02749120864856b650cccc46"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "25e42329c5f46343042f0c63608b309ead17209ea13863901a4ae61c22cd6175",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__imp__malloc",
+            "symbol_index": 254,
+            "target": {
+              "address": 620777628,
+              "section": "0002",
+              "offset": 156,
+              "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777628
+          },
+          {
+            "offset": 30,
+            "type": 6,
+            "symbol": "__imp___callnewh",
+            "symbol_index": 252,
+            "target": {
+              "address": 620777632,
+              "section": "0002",
+              "offset": 160,
+              "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777632
+          },
+          {
+            "offset": 70,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ",
+            "symbol_index": 295,
+            "target": {
+              "address": 620761312,
+              "section": "0001",
+              "offset": 224,
+              "provenance": "f i canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294967014
+          },
+          {
+            "offset": 75,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@",
+            "symbol_index": 417,
+            "target": {
+              "address": 620782192,
+              "section": "0002",
+              "offset": 4720,
+              "provenance": "canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620782192
+          },
+          {
+            "offset": 85,
+            "type": 20,
+            "symbol": "__CxxThrowException@8",
+            "symbol_index": 328,
+            "target": {
+              "address": 620774974,
+              "section": "0001",
+              "offset": 13886,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 13365
+          }
+        ]
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 620761616,
+        "size": 6,
+        "map": {
+          "address": 620761616,
+          "section": "0001",
+          "offset": 528,
+          "provenance": "f   canonical.obj"
+        },
+        "instruction_count": 1,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_4.asm",
+          "size": 58,
+          "sha256": "0de8310245c8ed3905df7f3a52a9923106b36762f7bcd47c0af15adab0772edb"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "e377fea496095ec8f37c012f285e3759021b079109c18769eaf47584f0d5aa05",
+        "relocations": [
+          {
+            "offset": 2,
+            "type": 6,
+            "symbol": "__imp__free",
+            "symbol_index": 253,
+            "target": {
+              "address": 620777636,
+              "section": "0002",
+              "offset": 164,
+              "provenance": "ucrt:api-ms-win-crt-heap-l1-1-0.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777636
+          }
+        ]
+      },
+      {
+        "symbol": "_ordinary_source_call",
+        "address": 620771248,
+        "size": 26,
+        "map": {
+          "address": 620771248,
+          "section": "0001",
+          "offset": 10160,
+          "provenance": "f   probe.obj"
+        },
+        "instruction_count": 7,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_5.asm",
+          "size": 384,
+          "sha256": "055314b6e592321bad4544e4f16644ae8bf036b1626b57462484f4a8a6dfa606"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "5fea33196165c383f86fefd9e778e31295213d67bbe391252a8443bf7fc86269",
+        "relocations": [
+          {
+            "offset": 21,
+            "type": 20,
+            "symbol": "?construct_native_scene_property_record_type8_byte_array_storage_008ef2f0@bsp@@YIPAXPAX0PBXII@Z",
+            "symbol_index": 202,
+            "target": {
+              "address": 620761152,
+              "section": "0001",
+              "offset": 64,
+              "provenance": "f   source.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294957175
+          }
+        ]
+      },
+      {
+        "symbol": "_ordinary_original_call",
+        "address": 620771216,
+        "size": 25,
+        "map": {
+          "address": 620771216,
+          "section": "0001",
+          "offset": 10128,
+          "provenance": "f   probe.obj"
+        },
+        "instruction_count": 7,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_6.asm",
+          "size": 398,
+          "sha256": "365dc03fe5e3fde277cd6dd08775c88712c5697b67cbf44d2f3ae6dcc7342751"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "68a7514f86b54bc99f397087d47257b3eae98fbac69ad257f79e6cab9dc63276",
+        "relocations": []
+      },
+      {
+        "symbol": "_raw_capture_call",
+        "address": 620771328,
+        "size": 191,
+        "map": {
+          "address": 620771328,
+          "section": "0001",
+          "offset": 10240,
+          "provenance": "f   probe.obj"
+        },
+        "instruction_count": 68,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_7.asm",
+          "size": 3646,
+          "sha256": "613c4f0916b16e13d84c4155758dbad59113185016259a703f84e1351490378d"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "9091059a23cd1b8a33b7ad95e5b1ac316b15cc700a17f5f974a7e112d21959f6",
+        "relocations": []
+      },
+      {
+        "symbol": "??0bad_alloc@std@@QAE@XZ",
+        "address": 620761312,
+        "size": 24,
+        "map": {
+          "address": 620761312,
+          "section": "0001",
+          "offset": 224,
+          "provenance": "f i canonical.obj"
+        },
+        "instruction_count": 6,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_8.asm",
+          "size": 320,
+          "sha256": "eb687fec66089ff94b2dd6e1aa9bb124888865083c465d0e1531ff6821f8ec27"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "547c9a8578b16553453438f5da6e67636c9ce31dbb107edb21114331fa45f12c",
+        "relocations": [
+          {
+            "offset": 13,
+            "type": 6,
+            "symbol": "??_C@_0P@GHFPNOJB@bad?5allocation@",
+            "symbol_index": 392,
+            "target": {
+              "address": 620777900,
+              "section": "0002",
+              "offset": 428,
+              "provenance": "canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777900
+          },
+          {
+            "offset": 19,
+            "type": 6,
+            "symbol": "??_7bad_alloc@std@@6B@",
+            "symbol_index": 389,
+            "target": {
+              "address": 620777892,
+              "section": "0002",
+              "offset": 420,
+              "provenance": "canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777892
+          }
+        ]
+      },
+      {
+        "symbol": "_main",
+        "address": 620765120,
+        "size": 6083,
+        "map": {
+          "address": 620765120,
+          "section": "0001",
+          "offset": 4032,
+          "provenance": "f   probe.obj"
+        },
+        "instruction_count": 1549,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_9.asm",
+          "size": 77178,
+          "sha256": "1c66f40f074bfedaa7ae4738f8f93d8195ad44ba6bc7bdaaea85630b5942c2f3"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "13c22b65271f21b1b3ae3891320228edb5b4d07c293e113c73873794f8e9b309",
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 20,
+            "symbol": "__chkstk",
+            "symbol_index": 250,
+            "target": {
+              "address": 620771648,
+              "section": "0001",
+              "offset": 10560,
+              "provenance": "f   MSVCRT:chkstk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 6512
+          },
+          {
+            "offset": 17,
+            "type": 6,
+            "symbol": "___security_cookie",
+            "symbol_index": 456,
+            "target": {
+              "address": 620785664,
+              "section": "0003",
+              "offset": 0,
+              "provenance": "MSVCRT:gs_cookie.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620785664
+          },
+          {
+            "offset": 53,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 9803
+          },
+          {
+            "offset": 66,
+            "type": 20,
+            "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+            "symbol_index": 216,
+            "target": {
+              "address": 620763504,
+              "section": "0001",
+              "offset": 2416,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294965610
+          },
+          {
+            "offset": 90,
+            "type": 20,
+            "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+            "symbol_index": 217,
+            "target": {
+              "address": 620763184,
+              "section": "0001",
+              "offset": 2096,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294965266
+          },
+          {
+            "offset": 112,
+            "type": 6,
+            "symbol": "?construct_native_scene_property_record_type8_byte_array_storage_008ef2f0@bsp@@YIPAXPAX0PBXII@Z",
+            "symbol_index": 202,
+            "target": {
+              "address": 620761152,
+              "section": "0001",
+              "offset": 64,
+              "provenance": "f   source.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620761152
+          },
+          {
+            "offset": 129,
+            "type": 6,
+            "symbol": "_ordinary_source_call",
+            "symbol_index": 210,
+            "target": {
+              "address": 620771248,
+              "section": "0001",
+              "offset": 10160,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620771248
+          },
+          {
+            "offset": 155,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 9701
+          },
+          {
+            "offset": 206,
+            "type": 20,
+            "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+            "symbol_index": 223,
+            "target": {
+              "address": 620764128,
+              "section": "0001",
+              "offset": 3040,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294966094
+          },
+          {
+            "offset": 286,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 9570
+          },
+          {
+            "offset": 309,
+            "type": 6,
+            "symbol": "??_C@_1BK@MHIPHMDC@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA?4?$AAb?$AAi?$AAn@",
+            "symbol_index": 290,
+            "target": {
+              "address": 620778148,
+              "section": "0002",
+              "offset": 676,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778148
+          },
+          {
+            "offset": 315,
+            "type": 6,
+            "symbol": "__imp__CreateFileW@28",
+            "symbol_index": 173,
+            "target": {
+              "address": 620777500,
+              "section": "0002",
+              "offset": 28,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777500
+          },
+          {
+            "offset": 342,
+            "type": 20,
+            "symbol": "?read_bytes@@YA_NPAX0K@Z",
+            "symbol_index": 215,
+            "target": {
+              "address": 620763440,
+              "section": "0001",
+              "offset": 2352,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294965270
+          },
+          {
+            "offset": 360,
+            "type": 6,
+            "symbol": "__imp__CloseHandle@4",
+            "symbol_index": 178,
+            "target": {
+              "address": 620777520,
+              "section": "0002",
+              "offset": 48,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777520
+          },
+          {
+            "offset": 513,
+            "type": 6,
+            "symbol": "__imp__VirtualAlloc@16",
+            "symbol_index": 182,
+            "target": {
+              "address": 620777536,
+              "section": "0002",
+              "offset": 64,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777536
+          },
+          {
+            "offset": 529,
+            "type": 6,
+            "symbol": "??_C@_0M@PHIINNNG@Original_RW@",
+            "symbol_index": 305,
+            "target": {
+              "address": 620778276,
+              "section": "0002",
+              "offset": 804,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778276
+          },
+          {
+            "offset": 534,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294964422
+          },
+          {
+            "offset": 553,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 5891
+          },
+          {
+            "offset": 754,
+            "type": 6,
+            "symbol": "__imp__VirtualProtect@16",
+            "symbol_index": 183,
+            "target": {
+              "address": 620777540,
+              "section": "0002",
+              "offset": 68,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777540
+          },
+          {
+            "offset": 789,
+            "type": 6,
+            "symbol": "__imp__GetCurrentProcess@0",
+            "symbol_index": 180,
+            "target": {
+              "address": 620777528,
+              "section": "0002",
+              "offset": 56,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777528
+          },
+          {
+            "offset": 796,
+            "type": 6,
+            "symbol": "__imp__FlushInstructionCache@12",
+            "symbol_index": 181,
+            "target": {
+              "address": 620777532,
+              "section": "0002",
+              "offset": 60,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777532
+          },
+          {
+            "offset": 852,
+            "type": 6,
+            "symbol": "__imp__VirtualQuery@12",
+            "symbol_index": 185,
+            "target": {
+              "address": 620777548,
+              "section": "0002",
+              "offset": 76,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777548
+          },
+          {
+            "offset": 939,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "symbol_index": 208,
+            "target": {
+              "address": 620761520,
+              "section": "0001",
+              "offset": 432,
+              "provenance": "f   canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962753
+          },
+          {
+            "offset": 991,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 8865
+          },
+          {
+            "offset": 998,
+            "type": 6,
+            "symbol": "__xmm@00000003000000020000000100000000",
+            "symbol_index": 459,
+            "target": {
+              "address": 620780800,
+              "section": "0002",
+              "offset": 3328,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780800
+          },
+          {
+            "offset": 1008,
+            "type": 6,
+            "symbol": "__xmm@0046a7000046a7000046a7000046a700",
+            "symbol_index": 462,
+            "target": {
+              "address": 620780816,
+              "section": "0002",
+              "offset": 3344,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780816
+          },
+          {
+            "offset": 1017,
+            "type": 6,
+            "symbol": "__xmm@d9380003d9380002d9380001d9380000",
+            "symbol_index": 465,
+            "target": {
+              "address": 620780832,
+              "section": "0002",
+              "offset": 3360,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780832
+          },
+          {
+            "offset": 1522,
+            "type": 6,
+            "symbol": "?construct_native_scene_property_record_type8_byte_array_storage_008ef2f0@bsp@@YIPAXPAX0PBXII@Z",
+            "symbol_index": 202,
+            "target": {
+              "address": 620761152,
+              "section": "0001",
+              "offset": 64,
+              "provenance": "f   source.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620761152
+          },
+          {
+            "offset": 1530,
+            "type": 6,
+            "symbol": "?construct_native_scene_property_record_type8_byte_array_storage_008ef2f0@bsp@@YIPAXPAX0PBXII@Z",
+            "symbol_index": 202,
+            "target": {
+              "address": 620761152,
+              "section": "0001",
+              "offset": 64,
+              "provenance": "f   source.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620761152
+          },
+          {
+            "offset": 1605,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 8251
+          },
+          {
+            "offset": 1633,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 8223
+          },
+          {
+            "offset": 1669,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 8187
+          },
+          {
+            "offset": 1998,
+            "type": 20,
+            "symbol": "?disjoint@@YA_NIIII@Z",
+            "symbol_index": 228,
+            "target": {
+              "address": 620762096,
+              "section": "0001",
+              "offset": 1008,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962270
+          },
+          {
+            "offset": 2012,
+            "type": 6,
+            "symbol": "??_C@_0BL@FGECIBAJ@input_capture_disjointness@",
+            "symbol_index": 329,
+            "target": {
+              "address": 620778464,
+              "section": "0002",
+              "offset": 992,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778464
+          },
+          {
+            "offset": 2017,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962939
+          },
+          {
+            "offset": 2036,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4408
+          },
+          {
+            "offset": 2047,
+            "type": 6,
+            "symbol": "??_C@_0CA@BCFJACJG@root_input_capture_disjointness@",
+            "symbol_index": 323,
+            "target": {
+              "address": 620778408,
+              "section": "0002",
+              "offset": 936,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778408
+          },
+          {
+            "offset": 2052,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962904
+          },
+          {
+            "offset": 2071,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4373
+          },
+          {
+            "offset": 2082,
+            "type": 6,
+            "symbol": "??_C@_0BG@PFIIAAKN@pairwise_actual_roots@",
+            "symbol_index": 326,
+            "target": {
+              "address": 620778440,
+              "section": "0002",
+              "offset": 968,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778440
+          },
+          {
+            "offset": 2087,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962869
+          },
+          {
+            "offset": 2106,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4338
+          },
+          {
+            "offset": 2250,
+            "type": 20,
+            "symbol": "_raw_capture_call",
+            "symbol_index": 212,
+            "target": {
+              "address": 620771328,
+              "section": "0001",
+              "offset": 10240,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 3954
+          },
+          {
+            "offset": 2313,
+            "type": 6,
+            "symbol": "??_C@_0BI@NINJJLID@actual_retained_pointer@",
+            "symbol_index": 332,
+            "target": {
+              "address": 620778492,
+              "section": "0002",
+              "offset": 1020,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778492
+          },
+          {
+            "offset": 2318,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962638
+          },
+          {
+            "offset": 2337,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4107
+          },
+          {
+            "offset": 3228,
+            "type": 20,
+            "symbol": "?disjoint@@YA_NIIII@Z",
+            "symbol_index": 228,
+            "target": {
+              "address": 620762096,
+              "section": "0001",
+              "offset": 1008,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294961040
+          },
+          {
+            "offset": 3307,
+            "type": 20,
+            "symbol": "?add_flags@@YAIII@Z",
+            "symbol_index": 230,
+            "target": {
+              "address": 620761648,
+              "section": "0001",
+              "offset": 560,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960513
+          },
+          {
+            "offset": 3681,
+            "type": 20,
+            "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+            "symbol_index": 217,
+            "target": {
+              "address": 620763184,
+              "section": "0001",
+              "offset": 2096,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294961675
+          },
+          {
+            "offset": 3749,
+            "type": 6,
+            "symbol": "__imp__VirtualQuery@12",
+            "symbol_index": 185,
+            "target": {
+              "address": 620777548,
+              "section": "0002",
+              "offset": 76,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777548
+          },
+          {
+            "offset": 3783,
+            "type": 6,
+            "symbol": "??_C@_1DI@ODBNOKIH@?$AAs?$AAo?$AAu?$AAr?$AAc?$AAe?$AA_?$AAr?$AAe?$AAt?$AAa?$AAi?$AAn?$AAe?$AAd?$AA_@",
+            "symbol_index": 359,
+            "target": {
+              "address": 620778696,
+              "section": "0002",
+              "offset": 1224,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778696
+          },
+          {
+            "offset": 3791,
+            "type": 6,
+            "symbol": "??_C@_1DM@ODDONJC@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA_?$AAr?$AAe?$AAt?$AAa?$AAi?$AAn?$AAe@",
+            "symbol_index": 362,
+            "target": {
+              "address": 620778752,
+              "section": "0002",
+              "offset": 1280,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778752
+          },
+          {
+            "offset": 3801,
+            "type": 6,
+            "symbol": "??_C@_1DA@ODPGFDCM@?$AAs?$AAo?$AAu?$AAr?$AAc?$AAe?$AA_?$AAc?$AAo?$AAp?$AAy?$AA_?$AAc?$AAa?$AAp?$AAt@",
+            "symbol_index": 365,
+            "target": {
+              "address": 620778812,
+              "section": "0002",
+              "offset": 1340,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778812
+          },
+          {
+            "offset": 3809,
+            "type": 6,
+            "symbol": "??_C@_1DE@MOILHLKN@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA_?$AAc?$AAo?$AAp?$AAy?$AA_?$AAc?$AAa@",
+            "symbol_index": 368,
+            "target": {
+              "address": 620778860,
+              "section": "0002",
+              "offset": 1388,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778860
+          },
+          {
+            "offset": 3820,
+            "type": 6,
+            "symbol": "??_C@_1DI@DMCKGPKC@?$AAs?$AAo?$AAu?$AAr?$AAc?$AAe?$AA_?$AAr?$AAe?$AAt?$AAa?$AAi?$AAn?$AAe?$AAd?$AA_@",
+            "symbol_index": 371,
+            "target": {
+              "address": 620778912,
+              "section": "0002",
+              "offset": 1440,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778912
+          },
+          {
+            "offset": 3831,
+            "type": 6,
+            "symbol": "??_C@_1DM@NBAEGILH@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA_?$AAr?$AAe?$AAt?$AAa?$AAi?$AAn?$AAe@",
+            "symbol_index": 374,
+            "target": {
+              "address": 620778968,
+              "section": "0002",
+              "offset": 1496,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778968
+          },
+          {
+            "offset": 3842,
+            "type": 6,
+            "symbol": "??_C@_1DA@DMMBNGAJ@?$AAs?$AAo?$AAu?$AAr?$AAc?$AAe?$AA_?$AAc?$AAo?$AAp?$AAy?$AA_?$AAs?$AAt?$AAo?$AAr@",
+            "symbol_index": 377,
+            "target": {
+              "address": 620779028,
+              "section": "0002",
+              "offset": 1556,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779028
+          },
+          {
+            "offset": 3853,
+            "type": 6,
+            "symbol": "??_C@_1DE@BBLMPOII@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA_?$AAc?$AAo?$AAp?$AAy?$AA_?$AAs?$AAt@",
+            "symbol_index": 380,
+            "target": {
+              "address": 620779076,
+              "section": "0002",
+              "offset": 1604,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779076
+          },
+          {
+            "offset": 3909,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962263
+          },
+          {
+            "offset": 3935,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962237
+          },
+          {
+            "offset": 3967,
+            "type": 6,
+            "symbol": "??_C@_1DC@FMOEHCPK@?$AAi?$AAn?$AAp?$AAu?$AAt?$AA0?$AA_?$AAg?$AAu?$AAa?$AAr?$AAd?$AAe?$AAd?$AA_?$AAb@",
+            "symbol_index": 386,
+            "target": {
+              "address": 620779156,
+              "section": "0002",
+              "offset": 1684,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779156
+          },
+          {
+            "offset": 3972,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962200
+          },
+          {
+            "offset": 3998,
+            "type": 6,
+            "symbol": "??_C@_1DC@PDKAOALN@?$AAi?$AAn?$AAp?$AAu?$AAt?$AA1?$AA_?$AAg?$AAu?$AAa?$AAr?$AAd?$AAe?$AAd?$AA_?$AAb@",
+            "symbol_index": 389,
+            "target": {
+              "address": 620779208,
+              "section": "0002",
+              "offset": 1736,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779208
+          },
+          {
+            "offset": 4003,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962169
+          },
+          {
+            "offset": 4030,
+            "type": 6,
+            "symbol": "??_C@_1CO@BHGBHOED@?$AAs?$AAo?$AAu?$AAr?$AAc?$AAe?$AA_?$AAo?$AAw?$AAn?$AAe?$AAd?$AA_?$AAc?$AAh?$AAi@",
+            "symbol_index": 392,
+            "target": {
+              "address": 620779260,
+              "section": "0002",
+              "offset": 1788,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779260
+          },
+          {
+            "offset": 4035,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962137
+          },
+          {
+            "offset": 4062,
+            "type": 6,
+            "symbol": "??_C@_1DC@LKGADKAP@?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA_?$AAo?$AAw?$AAn?$AAe?$AAd?$AA_?$AAc@",
+            "symbol_index": 395,
+            "target": {
+              "address": 620779308,
+              "section": "0002",
+              "offset": 1836,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779308
+          },
+          {
+            "offset": 4067,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962105
+          },
+          {
+            "offset": 4090,
+            "type": 6,
+            "symbol": "??_C@_1CG@OBKLMFEK@?$AAb?$AAo?$AAu?$AAn?$AAd?$AA_?$AAo?$AAr?$AAi?$AAg?$AAi?$AAn?$AAa?$AAl?$AA?4?$AAb@",
+            "symbol_index": 398,
+            "target": {
+              "address": 620779360,
+              "section": "0002",
+              "offset": 1888,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779360
+          },
+          {
+            "offset": 4095,
+            "type": 20,
+            "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+            "symbol_index": 226,
+            "target": {
+              "address": 620764000,
+              "section": "0001",
+              "offset": 2912,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294962077
+          },
+          {
+            "offset": 4117,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_index": 209,
+            "target": {
+              "address": 620761616,
+              "section": "0001",
+              "offset": 528,
+              "provenance": "f   canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959671
+          },
+          {
+            "offset": 4147,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_index": 209,
+            "target": {
+              "address": 620761616,
+              "section": "0001",
+              "offset": 528,
+              "provenance": "f   canonical.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959641
+          },
+          {
+            "offset": 4184,
+            "type": 6,
+            "symbol": "__imp__VirtualFree@12",
+            "symbol_index": 184,
+            "target": {
+              "address": 620777544,
+              "section": "0002",
+              "offset": 72,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777544
+          },
+          {
+            "offset": 4199,
+            "type": 6,
+            "symbol": "??_C@_0BE@IKMJMJPC@Original_RX_release@",
+            "symbol_index": 404,
+            "target": {
+              "address": 620779432,
+              "section": "0002",
+              "offset": 1960,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779432
+          },
+          {
+            "offset": 4204,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960752
+          },
+          {
+            "offset": 4223,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 2221
+          },
+          {
+            "offset": 4237,
+            "type": 6,
+            "symbol": "??_C@_0BI@IJHIEKIG@child_root_disjointness@",
+            "symbol_index": 338,
+            "target": {
+              "address": 620778536,
+              "section": "0002",
+              "offset": 1064,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778536
+          },
+          {
+            "offset": 4242,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960714
+          },
+          {
+            "offset": 4261,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 2183
+          },
+          {
+            "offset": 4275,
+            "type": 6,
+            "symbol": "??_C@_0BC@MMLNJLFL@pairwise_children@",
+            "symbol_index": 341,
+            "target": {
+              "address": 620778560,
+              "section": "0002",
+              "offset": 1088,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778560
+          },
+          {
+            "offset": 4280,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960676
+          },
+          {
+            "offset": 4299,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 2145
+          },
+          {
+            "offset": 4313,
+            "type": 6,
+            "symbol": "??_C@_0BE@PFMKIPGG@other_live_captures@",
+            "symbol_index": 350,
+            "target": {
+              "address": 620778628,
+              "section": "0002",
+              "offset": 1156,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778628
+          },
+          {
+            "offset": 4318,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960638
+          },
+          {
+            "offset": 4337,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 2107
+          },
+          {
+            "offset": 4351,
+            "type": 6,
+            "symbol": "??_C@_0BI@HDBFNNGJ@all_live_owned_children@",
+            "symbol_index": 353,
+            "target": {
+              "address": 620778648,
+              "section": "0002",
+              "offset": 1176,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778648
+          },
+          {
+            "offset": 4356,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960600
+          },
+          {
+            "offset": 4375,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 2069
+          },
+          {
+            "offset": 4447,
+            "type": 20,
+            "symbol": "_memset",
+            "symbol_index": 251,
+            "target": {
+              "address": 620774980,
+              "section": "0001",
+              "offset": 13892,
+              "provenance": "f   vcruntime:VCRUNTIME140.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 5409
+          },
+          {
+            "offset": 4488,
+            "type": 6,
+            "symbol": "__imp__GetFileInformationByHandle@8",
+            "symbol_index": 174,
+            "target": {
+              "address": 620777504,
+              "section": "0002",
+              "offset": 32,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777504
+          },
+          {
+            "offset": 4595,
+            "type": 20,
+            "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+            "symbol_index": 218,
+            "target": {
+              "address": 620762832,
+              "section": "0001",
+              "offset": 1744,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960409
+          },
+          {
+            "offset": 4651,
+            "type": 20,
+            "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+            "symbol_index": 222,
+            "target": {
+              "address": 620762160,
+              "section": "0001",
+              "offset": 1072,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959681
+          },
+          {
+            "offset": 4693,
+            "type": 20,
+            "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+            "symbol_index": 217,
+            "target": {
+              "address": 620763184,
+              "section": "0001",
+              "offset": 2096,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960663
+          },
+          {
+            "offset": 4707,
+            "type": 6,
+            "symbol": "??_C@_0BE@PHMMEOEH@all_code_after_free@",
+            "symbol_index": 410,
+            "target": {
+              "address": 620779480,
+              "section": "0002",
+              "offset": 2008,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779480
+          },
+          {
+            "offset": 4712,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294960244
+          },
+          {
+            "offset": 4731,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1713
+          },
+          {
+            "offset": 4765,
+            "type": 6,
+            "symbol": "??_C@_0BAM@MNJOPEMC@?$HL?$CCpassed?$CC?3true?0?$CCSource_calls?$CC?32?0@",
+            "symbol_index": 413,
+            "target": {
+              "address": 620779504,
+              "section": "0002",
+              "offset": 2032,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779504
+          },
+          {
+            "offset": 4770,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1386
+          },
+          {
+            "offset": 4781,
+            "type": 6,
+            "symbol": "??_C@_0BA@PLNAFMMN@Source_retained@",
+            "symbol_index": 416,
+            "target": {
+              "address": 620779772,
+              "section": "0002",
+              "offset": 2300,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779772
+          },
+          {
+            "offset": 4789,
+            "type": 6,
+            "symbol": "??_C@_0BC@LDKEHDFL@Original_retained@",
+            "symbol_index": 419,
+            "target": {
+              "address": 620779788,
+              "section": "0002",
+              "offset": 2316,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779788
+          },
+          {
+            "offset": 4799,
+            "type": 6,
+            "symbol": "??_C@_0M@KPDPEIAC@Source_copy@",
+            "symbol_index": 422,
+            "target": {
+              "address": 620779808,
+              "section": "0002",
+              "offset": 2336,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779808
+          },
+          {
+            "offset": 4807,
+            "type": 6,
+            "symbol": "??_C@_0O@CMNCNAOP@Original_copy@",
+            "symbol_index": 425,
+            "target": {
+              "address": 620779820,
+              "section": "0002",
+              "offset": 2348,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779820
+          },
+          {
+            "offset": 4821,
+            "type": 6,
+            "symbol": "??_C@_01IHBHIGKO@?0@",
+            "symbol_index": 428,
+            "target": {
+              "address": 620779836,
+              "section": "0002",
+              "offset": 2364,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779836
+          },
+          {
+            "offset": 4826,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1330
+          },
+          {
+            "offset": 4887,
+            "type": 20,
+            "symbol": "?add_flags@@YAIII@Z",
+            "symbol_index": 230,
+            "target": {
+              "address": 620761648,
+              "section": "0001",
+              "offset": 560,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294958933
+          },
+          {
+            "offset": 4918,
+            "type": 6,
+            "symbol": "??_C@_05LAPONLG@false@",
+            "symbol_index": 434,
+            "target": {
+              "address": 620779848,
+              "section": "0002",
+              "offset": 2376,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779848
+          },
+          {
+            "offset": 4939,
+            "type": 6,
+            "symbol": "??_C@_04LOAJBDKD@true@",
+            "symbol_index": 431,
+            "target": {
+              "address": 620779840,
+              "section": "0002",
+              "offset": 2368,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779840
+          },
+          {
+            "offset": 4987,
+            "type": 6,
+            "symbol": "??_C@_0PO@LNBKKLHE@?$HL?$CCname?$CC?3?$CC?$CFs?$CC?0?$CCroot?$CC?3?$CFu?0?$CCinput?$CC?3?$CF@",
+            "symbol_index": 437,
+            "target": {
+              "address": 620779856,
+              "section": "0002",
+              "offset": 2384,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779856
+          },
+          {
+            "offset": 4992,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1164
+          },
+          {
+            "offset": 5010,
+            "type": 6,
+            "symbol": "??_C@_0O@ONDNOAAC@?$FN?0?$CCmodules?$CC?3?$FL@",
+            "symbol_index": 440,
+            "target": {
+              "address": 620780112,
+              "section": "0002",
+              "offset": 2640,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780112
+          },
+          {
+            "offset": 5015,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1141
+          },
+          {
+            "offset": 5064,
+            "type": 6,
+            "symbol": "??_C@_01IHBHIGKO@?0@",
+            "symbol_index": 428,
+            "target": {
+              "address": 620779836,
+              "section": "0002",
+              "offset": 2364,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779836
+          },
+          {
+            "offset": 5069,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1087
+          },
+          {
+            "offset": 5101,
+            "type": 6,
+            "symbol": "??_C@_0FK@PHIIBBLG@?$HL?$CCname?$CC?3?$CC?$CFs?$CC?0?$CCIAT_target?$CC?3?$CFu?0?$CCex@",
+            "symbol_index": 443,
+            "target": {
+              "address": 620780128,
+              "section": "0002",
+              "offset": 2656,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780128
+          },
+          {
+            "offset": 5106,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1050
+          },
+          {
+            "offset": 5126,
+            "type": 6,
+            "symbol": "??_C@_06OAIHNJFH@?2u?$CF04x@",
+            "symbol_index": 278,
+            "target": {
+              "address": 620778072,
+              "section": "0002",
+              "offset": 600,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778072
+          },
+          {
+            "offset": 5153,
+            "type": 6,
+            "symbol": "??_C@_02HAOIJKIC@?$CFc@",
+            "symbol_index": 275,
+            "target": {
+              "address": 620778068,
+              "section": "0002",
+              "offset": 596,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778068
+          },
+          {
+            "offset": 5166,
+            "type": 6,
+            "symbol": "??_C@_03CPDGCMJG@?2?$CFc@",
+            "symbol_index": 272,
+            "target": {
+              "address": 620778064,
+              "section": "0002",
+              "offset": 592,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778064
+          },
+          {
+            "offset": 5173,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 983
+          },
+          {
+            "offset": 5194,
+            "type": 6,
+            "symbol": "??_C@_0BG@DIJKBCJI@?$CC?0?$CCphysical_SHA256?$CC?3?$CC@",
+            "symbol_index": 446,
+            "target": {
+              "address": 620780220,
+              "section": "0002",
+              "offset": 2748,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780220
+          },
+          {
+            "offset": 5199,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 957
+          },
+          {
+            "offset": 5226,
+            "type": 6,
+            "symbol": "??_C@_04NOJCDH@?$CF02x@",
+            "symbol_index": 269,
+            "target": {
+              "address": 620778056,
+              "section": "0002",
+              "offset": 584,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778056
+          },
+          {
+            "offset": 5231,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 925
+          },
+          {
+            "offset": 5245,
+            "type": 6,
+            "symbol": "??_C@_0BN@FKFNBNLF@?$CC?0?$CCnormalized_live_prefix?$CC?3?$CC@",
+            "symbol_index": 449,
+            "target": {
+              "address": 620780244,
+              "section": "0002",
+              "offset": 2772,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780244
+          },
+          {
+            "offset": 5250,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 906
+          },
+          {
+            "offset": 5274,
+            "type": 6,
+            "symbol": "??_C@_04NOJCDH@?$CF02x@",
+            "symbol_index": 269,
+            "target": {
+              "address": 620778056,
+              "section": "0002",
+              "offset": 584,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778056
+          },
+          {
+            "offset": 5279,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 877
+          },
+          {
+            "offset": 5293,
+            "type": 6,
+            "symbol": "??_C@_0BN@HNEGFPEF@?$CC?0?$CCbefore_after_equal?$CC?3true?$HN@",
+            "symbol_index": 452,
+            "target": {
+              "address": 620780276,
+              "section": "0002",
+              "offset": 2804,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780276
+          },
+          {
+            "offset": 5298,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 858
+          },
+          {
+            "offset": 5324,
+            "type": 6,
+            "symbol": "??_C@_0BNP@MJEBDHLN@?$FN?0?$CCcode_before_after_equal?$CC?3true@",
+            "symbol_index": 455,
+            "target": {
+              "address": 620780312,
+              "section": "0002",
+              "offset": 2840,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620780312
+          },
+          {
+            "offset": 5329,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 827
+          },
+          {
+            "offset": 5335,
+            "type": 6,
+            "symbol": "__imp__UnmapViewOfFile@4",
+            "symbol_index": 188,
+            "target": {
+              "address": 620777560,
+              "section": "0002",
+              "offset": 88,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777560
+          },
+          {
+            "offset": 5369,
+            "type": 6,
+            "symbol": "__imp__CloseHandle@4",
+            "symbol_index": 178,
+            "target": {
+              "address": 620777520,
+              "section": "0002",
+              "offset": 48,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777520
+          },
+          {
+            "offset": 5388,
+            "type": 6,
+            "symbol": "__imp__CloseHandle@4",
+            "symbol_index": 178,
+            "target": {
+              "address": 620777520,
+              "section": "0002",
+              "offset": 48,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777520
+          },
+          {
+            "offset": 5423,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 1021
+          },
+          {
+            "offset": 5434,
+            "type": 6,
+            "symbol": "??_C@_0BJ@BCMGKKLO@all_providers_after_free@",
+            "symbol_index": 407,
+            "target": {
+              "address": 620779452,
+              "section": "0002",
+              "offset": 1980,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779452
+          },
+          {
+            "offset": 5439,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959517
+          },
+          {
+            "offset": 5458,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 986
+          },
+          {
+            "offset": 5469,
+            "type": 6,
+            "symbol": "??_C@_0BO@HPANCELD@live_input_child_RX_artifacts@",
+            "symbol_index": 401,
+            "target": {
+              "address": 620779400,
+              "section": "0002",
+              "offset": 1928,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779400
+          },
+          {
+            "offset": 5474,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959482
+          },
+          {
+            "offset": 5493,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 951
+          },
+          {
+            "offset": 5504,
+            "type": 6,
+            "symbol": "??_C@_0BM@PNHINOAM@live_root_capture_artifacts@",
+            "symbol_index": 383,
+            "target": {
+              "address": 620779128,
+              "section": "0002",
+              "offset": 1656,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620779128
+          },
+          {
+            "offset": 5509,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959447
+          },
+          {
+            "offset": 5528,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 916
+          },
+          {
+            "offset": 5538,
+            "type": 6,
+            "symbol": "??_C@_0BF@NBGKBHJK@all_code_RX_bookends@",
+            "symbol_index": 356,
+            "target": {
+              "address": 620778672,
+              "section": "0002",
+              "offset": 1200,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778672
+          },
+          {
+            "offset": 5543,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959413
+          },
+          {
+            "offset": 5562,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 882
+          },
+          {
+            "offset": 5576,
+            "type": 6,
+            "symbol": "??_C@_0BD@MCIEANBH@all_complete_roots@",
+            "symbol_index": 347,
+            "target": {
+              "address": 620778608,
+              "section": "0002",
+              "offset": 1136,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778608
+          },
+          {
+            "offset": 5581,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959375
+          },
+          {
+            "offset": 5600,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 844
+          },
+          {
+            "offset": 5614,
+            "type": 6,
+            "symbol": "??_C@_0BJ@IANCIDGB@machine_and_actual_input@",
+            "symbol_index": 344,
+            "target": {
+              "address": 620778580,
+              "section": "0002",
+              "offset": 1108,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778580
+          },
+          {
+            "offset": 5619,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959337
+          },
+          {
+            "offset": 5638,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 806
+          },
+          {
+            "offset": 5652,
+            "type": 6,
+            "symbol": "??_C@_0BC@LBDILLC@actual_owned_copy@",
+            "symbol_index": 335,
+            "target": {
+              "address": 620778516,
+              "section": "0002",
+              "offset": 1044,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778516
+          },
+          {
+            "offset": 5657,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959299
+          },
+          {
+            "offset": 5676,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 768
+          },
+          {
+            "offset": 5687,
+            "type": 6,
+            "symbol": "??_C@_0BH@LNOGICJI@actual_root_allocation@",
+            "symbol_index": 320,
+            "target": {
+              "address": 620778384,
+              "section": "0002",
+              "offset": 912,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778384
+          },
+          {
+            "offset": 5692,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959264
+          },
+          {
+            "offset": 5711,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 733
+          },
+          {
+            "offset": 5722,
+            "type": 6,
+            "symbol": "??_C@_0BC@HFOFPMMC@Original_RX_query@",
+            "symbol_index": 317,
+            "target": {
+              "address": 620778364,
+              "section": "0002",
+              "offset": 892,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778364
+          },
+          {
+            "offset": 5727,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959229
+          },
+          {
+            "offset": 5746,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 698
+          },
+          {
+            "offset": 5757,
+            "type": 6,
+            "symbol": "??_C@_0M@HABAMBBJ@Original_RX@",
+            "symbol_index": 314,
+            "target": {
+              "address": 620778352,
+              "section": "0002",
+              "offset": 880,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778352
+          },
+          {
+            "offset": 5762,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959194
+          },
+          {
+            "offset": 5781,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 663
+          },
+          {
+            "offset": 5792,
+            "type": 6,
+            "symbol": "??_C@_0CC@IOGHDINN@Original_genuine_provider_target@",
+            "symbol_index": 311,
+            "target": {
+              "address": 620778316,
+              "section": "0002",
+              "offset": 844,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778316
+          },
+          {
+            "offset": 5797,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959159
+          },
+          {
+            "offset": 5816,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 628
+          },
+          {
+            "offset": 5827,
+            "type": 6,
+            "symbol": "??_C@_0BL@DGFHJJDB@104_literal_Original_bytes@",
+            "symbol_index": 308,
+            "target": {
+              "address": 620778288,
+              "section": "0002",
+              "offset": 816,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778288
+          },
+          {
+            "offset": 5832,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959124
+          },
+          {
+            "offset": 5851,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 593
+          },
+          {
+            "offset": 5862,
+            "type": 6,
+            "symbol": "??_C@_0CA@KPCMABMI@Source_genuine_provider_targets@",
+            "symbol_index": 302,
+            "target": {
+              "address": 620778244,
+              "section": "0002",
+              "offset": 772,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778244
+          },
+          {
+            "offset": 5867,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959089
+          },
+          {
+            "offset": 5886,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 558
+          },
+          {
+            "offset": 5897,
+            "type": 6,
+            "symbol": "??_C@_0BJ@ICLFMOEC@104_literal_Source_bytes@",
+            "symbol_index": 299,
+            "target": {
+              "address": 620778216,
+              "section": "0002",
+              "offset": 744,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778216
+          },
+          {
+            "offset": 5902,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959054
+          },
+          {
+            "offset": 5921,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 523
+          },
+          {
+            "offset": 5932,
+            "type": 6,
+            "symbol": "??_C@_0BI@GOKNMDOP@two_actual_CALL_opcodes@",
+            "symbol_index": 296,
+            "target": {
+              "address": 620778192,
+              "section": "0002",
+              "offset": 720,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778192
+          },
+          {
+            "offset": 5937,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294959019
+          },
+          {
+            "offset": 5956,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 488
+          },
+          {
+            "offset": 5967,
+            "type": 6,
+            "symbol": "??_C@_0O@DBADFDDK@original_read@",
+            "symbol_index": 293,
+            "target": {
+              "address": 620778176,
+              "section": "0002",
+              "offset": 704,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778176
+          },
+          {
+            "offset": 5972,
+            "type": 20,
+            "symbol": "?fail@@YAHPBDI@Z",
+            "symbol_index": 236,
+            "target": {
+              "address": 620762784,
+              "section": "0001",
+              "offset": 1696,
+              "provenance": "f   probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 4294958984
+          },
+          {
+            "offset": 5991,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 453
+          },
+          {
+            "offset": 6001,
+            "type": 6,
+            "symbol": "__imp__GetLastError@0",
+            "symbol_index": 179,
+            "target": {
+              "address": 620777524,
+              "section": "0002",
+              "offset": 52,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777524
+          },
+          {
+            "offset": 6009,
+            "type": 6,
+            "symbol": "??_C@_0BN@NCJDNBJL@actual_heap_and_copy_modules@",
+            "symbol_index": 287,
+            "target": {
+              "address": 620778116,
+              "section": "0002",
+              "offset": 644,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778116
+          },
+          {
+            "offset": 6017,
+            "type": 6,
+            "symbol": "__imp__GetLastError@0",
+            "symbol_index": 179,
+            "target": {
+              "address": 620777524,
+              "section": "0002",
+              "offset": 52,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777524
+          },
+          {
+            "offset": 6025,
+            "type": 6,
+            "symbol": "??_C@_0BD@NJFFOMBC@prelaunch_provider@",
+            "symbol_index": 284,
+            "target": {
+              "address": 620778096,
+              "section": "0002",
+              "offset": 624,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778096
+          },
+          {
+            "offset": 6033,
+            "type": 6,
+            "symbol": "__imp__GetLastError@0",
+            "symbol_index": 179,
+            "target": {
+              "address": 620777524,
+              "section": "0002",
+              "offset": 52,
+              "provenance": "kernel32:KERNEL32.dll"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777524
+          },
+          {
+            "offset": 6041,
+            "type": 6,
+            "symbol": "??_C@_0P@PPAIENKE@prelaunch_code@",
+            "symbol_index": 281,
+            "target": {
+              "address": 620778080,
+              "section": "0002",
+              "offset": 608,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620778080
+          },
+          {
+            "offset": 6046,
+            "type": 6,
+            "symbol": "??_C@_0EF@FOAOBAOJ@?$HL?$CCpassed?$CC?3false?0?$CCstage?$CC?3?$CC?$CFs?$CC?0?$CCta@",
+            "symbol_index": 266,
+            "target": {
+              "address": 620777984,
+              "section": "0002",
+              "offset": 512,
+              "provenance": "probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 620777984
+          },
+          {
+            "offset": 6051,
+            "type": 20,
+            "symbol": "_printf",
+            "symbol_index": 207,
+            "target": {
+              "address": 620771280,
+              "section": "0001",
+              "offset": 10192,
+              "provenance": "f i probe.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 105
+          },
+          {
+            "offset": 6075,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 249,
+            "target": {
+              "address": 620771568,
+              "section": "0001",
+              "offset": 10480,
+              "provenance": "f   MSVCRT:secchk.obj"
+            },
+            "object_addend": 0,
+            "linked_operand": 369
+          }
+        ]
+      },
+      {
+        "symbol": "@__security_check_cookie@4",
+        "address": 620771568,
+        "size": 14,
+        "map": {
+          "address": 620771568,
+          "section": "0001",
+          "offset": 10480,
+          "provenance": "f   MSVCRT:secchk.obj"
+        },
+        "instruction_count": 4,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_10.asm",
+          "size": 191,
+          "sha256": "3a27d34835ed9ffc5702cde12e054f0b9b0145c6d91561a9f1d2df4574cdb7f3"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "457cdfbc72e51bd295e3aceb5ab4f1292fd8744e042c39744405829dd651ddc4",
+        "relocations": []
+      },
+      {
+        "symbol": "_memcpy",
+        "address": 620774956,
+        "size": 6,
+        "map": {
+          "symbol": "_memcpy",
+          "address": 620774956,
+          "section": "0001",
+          "offset": 13868,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        },
+        "instruction_count": 1,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_11.asm",
+          "size": 58,
+          "sha256": "9969bed61922cb39bc51382bc03569603e0f4b6070a5468558742370c84e81d1"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "b5ca79067324c0c0ea04fa02597b548f35180a100d51890917aa4e8484d3c3b0",
+        "relocations": []
+      },
+      {
+        "symbol": "__CxxThrowException@8",
+        "address": 620774974,
+        "size": 6,
+        "map": {
+          "symbol": "__CxxThrowException@8",
+          "address": 620774974,
+          "section": "0001",
+          "offset": 13886,
+          "provenance": "f   vcruntime:VCRUNTIME140.dll"
+        },
+        "instruction_count": 1,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_12.asm",
+          "size": 58,
+          "sha256": "bb092f412ef3bff976d77c938fa25b2aa8df9a89f47a250aafc76e0e51c8b8ab"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "ebbbdd319762e20e10a56e667a6a47823cf0780c2721e8b58dbc00141f24faf7",
+        "relocations": []
+      },
+      {
+        "symbol": "__chkstk",
+        "address": 620771648,
+        "size": 48,
+        "map": {
+          "symbol": "__alloca_probe",
+          "address": 620771648,
+          "section": "0001",
+          "offset": 10560,
+          "provenance": "f   MSVCRT:chkstk.obj"
+        },
+        "instruction_count": 24,
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_13.asm",
+          "size": 1056,
+          "sha256": "7e2de77733b5e9514236336255d6bfc0a8cc9dafd3a93e11fc72dc3182b823b1"
+        },
+        "whole_bytes_runtime_gated_before_entry_and_after_free": true,
+        "linked_sha256": "d3ab6085747e2656aa1ab20d3a1c4404adeb75be69af9b113b6dc171a9004e43",
+        "relocations": []
+      }
+    ],
+    "imports": {
+      "BCryptGetProperty": {
+        "IAT": 620777764,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptDestroyHash": {
+        "IAT": 620777768,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptFinishHash": {
+        "IAT": 620777772,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptHashData": {
+        "IAT": 620777776,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptCreateHash": {
+        "IAT": 620777780,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptCloseAlgorithmProvider": {
+        "IAT": 620777784,
+        "DLL": "bcrypt.dll"
+      },
+      "BCryptOpenAlgorithmProvider": {
+        "IAT": 620777788,
+        "DLL": "bcrypt.dll"
+      },
+      "IsProcessorFeaturePresent": {
+        "IAT": 620777472,
+        "DLL": "KERNEL32.dll"
+      },
+      "SetUnhandledExceptionFilter": {
+        "IAT": 620777476,
+        "DLL": "KERNEL32.dll"
+      },
+      "InitializeSListHead": {
+        "IAT": 620777480,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetSystemTimeAsFileTime": {
+        "IAT": 620777484,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetCurrentThreadId": {
+        "IAT": 620777488,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetCurrentProcessId": {
+        "IAT": 620777492,
+        "DLL": "KERNEL32.dll"
+      },
+      "QueryPerformanceCounter": {
+        "IAT": 620777496,
+        "DLL": "KERNEL32.dll"
+      },
+      "CreateFileW": {
+        "IAT": 620777500,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetFileInformationByHandle": {
+        "IAT": 620777504,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetFinalPathNameByHandleW": {
+        "IAT": 620777508,
+        "DLL": "KERNEL32.dll"
+      },
+      "ReadFile": {
+        "IAT": 620777512,
+        "DLL": "KERNEL32.dll"
+      },
+      "WriteFile": {
+        "IAT": 620777516,
+        "DLL": "KERNEL32.dll"
+      },
+      "CloseHandle": {
+        "IAT": 620777520,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetLastError": {
+        "IAT": 620777524,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetCurrentProcess": {
+        "IAT": 620777528,
+        "DLL": "KERNEL32.dll"
+      },
+      "FlushInstructionCache": {
+        "IAT": 620777532,
+        "DLL": "KERNEL32.dll"
+      },
+      "VirtualAlloc": {
+        "IAT": 620777536,
+        "DLL": "KERNEL32.dll"
+      },
+      "VirtualProtect": {
+        "IAT": 620777540,
+        "DLL": "KERNEL32.dll"
+      },
+      "VirtualFree": {
+        "IAT": 620777544,
+        "DLL": "KERNEL32.dll"
+      },
+      "VirtualQuery": {
+        "IAT": 620777548,
+        "DLL": "KERNEL32.dll"
+      },
+      "CreateFileMappingW": {
+        "IAT": 620777552,
+        "DLL": "KERNEL32.dll"
+      },
+      "MapViewOfFile": {
+        "IAT": 620777556,
+        "DLL": "KERNEL32.dll"
+      },
+      "UnmapViewOfFile": {
+        "IAT": 620777560,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetModuleFileNameW": {
+        "IAT": 620777564,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetModuleHandleW": {
+        "IAT": 620777568,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetModuleHandleExW": {
+        "IAT": 620777572,
+        "DLL": "KERNEL32.dll"
+      },
+      "GetProcAddress": {
+        "IAT": 620777576,
+        "DLL": "KERNEL32.dll"
+      },
+      "lstrcmpiW": {
+        "IAT": 620777580,
+        "DLL": "KERNEL32.dll"
+      },
+      "K32GetMappedFileNameW": {
+        "IAT": 620777584,
+        "DLL": "KERNEL32.dll"
+      },
+      "memcpy": {
+        "IAT": 620777592,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "__std_exception_copy": {
+        "IAT": 620777596,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "__std_exception_destroy": {
+        "IAT": 620777600,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "_CxxThrowException": {
+        "IAT": 620777604,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "memset": {
+        "IAT": 620777608,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "__current_exception": {
+        "IAT": 620777612,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "__current_exception_context": {
+        "IAT": 620777616,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "_except_handler4_common": {
+        "IAT": 620777620,
+        "DLL": "VCRUNTIME140.dll"
+      },
+      "_configure_narrow_argv": {
+        "IAT": 620777664,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_initialize_narrow_environment": {
+        "IAT": 620777668,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_set_app_type": {
+        "IAT": 620777672,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_seh_filter_exe": {
+        "IAT": 620777676,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_initterm": {
+        "IAT": 620777680,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_initterm_e": {
+        "IAT": 620777684,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "exit": {
+        "IAT": 620777688,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_exit": {
+        "IAT": 620777692,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "__p___argc": {
+        "IAT": 620777696,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "__p___argv": {
+        "IAT": 620777700,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_cexit": {
+        "IAT": 620777704,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_c_exit": {
+        "IAT": 620777708,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_register_thread_local_exe_atexit_callback": {
+        "IAT": 620777712,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_get_initial_narrow_environment": {
+        "IAT": 620777716,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "terminate": {
+        "IAT": 620777720,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_initialize_onexit_table": {
+        "IAT": 620777724,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_register_onexit_function": {
+        "IAT": 620777728,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_crt_atexit": {
+        "IAT": 620777732,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "_controlfp_s": {
+        "IAT": 620777736,
+        "DLL": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      "malloc": {
+        "IAT": 620777628,
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      "_callnewh": {
+        "IAT": 620777632,
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      "free": {
+        "IAT": 620777636,
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      "_set_new_mode": {
+        "IAT": 620777640,
+        "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      "_set_fmode": {
+        "IAT": 620777744,
+        "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+      },
+      "__acrt_iob_func": {
+        "IAT": 620777748,
+        "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+      },
+      "__stdio_common_vfprintf": {
+        "IAT": 620777752,
+        "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+      },
+      "__p__commode": {
+        "IAT": 620777756,
+        "DLL": "api-ms-win-crt-stdio-l1-1-0.dll"
+      },
+      "__setusermatherr": {
+        "IAT": 620777656,
+        "DLL": "api-ms-win-crt-math-l1-1-0.dll"
+      },
+      "_configthreadlocale": {
+        "IAT": 620777648,
+        "DLL": "api-ms-win-crt-locale-l1-1-0.dll"
+      }
+    },
+    "physical_provider_specs": [
+      {
+        "name": "malloc",
+        "import_binding": {
+          "IAT": 620777628,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196896,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "name": "free",
+        "import_binding": {
+          "IAT": 620777636,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196768,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc"
+      },
+      {
+        "name": "_callnewh",
+        "import_binding": {
+          "IAT": 620777632,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 569344,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0521010ffd6f7d8"
+      },
+      {
+        "name": "memcpy",
+        "import_binding": {
+          "IAT": 620777592,
+          "DLL": "VCRUNTIME140.dll"
+        },
+        "export_RVA": 90528,
+        "machine": 332,
+        "timestamp": 2650349747,
+        "image_size": 118784,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+          "size": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 196608,
+          "index_low": 221458,
+          "size_high": 0,
+          "size_low": 123328,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll"
+        },
+        "physical_export_prefix32": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000"
+      }
+    ],
+    "manual_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\manual_static_review.json",
+      "size": 10141,
+      "sha256": "c41ec3312449d0c49456b813b2b362ea15d5c342260d8b8bc4a206cdd6b5681c"
+    },
+    "review": {
+      "passed": true,
+      "scope": "Pre-first-entry static semantic review; 13 complete machine spans mechanically gated, target/provider/callers/helpers read completely, main critical paths read explicitly.",
+      "target_processes_before_review": 0,
+      "static_gate": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\static_gate.json",
+        "bytes": 424958,
+        "SHA256": "30e2d025a8ef97ac29547b3ff437bc5040c4fc6cacc5f8623984a881a2b67923"
+      },
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\src\\native_scene_property_record_type8_byte_array_storage.cpp",
+        "bytes": 2114,
+        "SHA256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\include\\bsp\\native_scene_property_record_type8_byte_array_storage.hpp",
+        "bytes": 2584,
+        "SHA256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91"
+      },
+      "recipe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\recipe.py",
+        "bytes": 23699,
+        "SHA256": "9370938b74a54844627a57f087a81755dd32a9860730f609698c1bffef7af0f6"
+      },
+      "probe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe.cpp",
+        "bytes": 29740,
+        "SHA256": "8a1b48f272b9a1937a50f2730fe22a6599509a560e859e5a6bd8aebd013a92d9"
+      },
+      "listings": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_1.asm",
+          "bytes": 1709,
+          "SHA256": "ad992f08e29b2cc2687d5f7d21c599ab662ebcb0f242db9061730399657475b9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_2.asm",
+          "bytes": 865,
+          "SHA256": "098f108337205b0767817467c90b9e1927145b99bcafc9c9e45c1ac3e7c9b42c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_3.asm",
+          "bytes": 1558,
+          "SHA256": "a181a95bb06002cab428f1a76348a07c7bdfa42b02749120864856b650cccc46"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_4.asm",
+          "bytes": 58,
+          "SHA256": "0de8310245c8ed3905df7f3a52a9923106b36762f7bcd47c0af15adab0772edb"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_5.asm",
+          "bytes": 384,
+          "SHA256": "055314b6e592321bad4544e4f16644ae8bf036b1626b57462484f4a8a6dfa606"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_6.asm",
+          "bytes": 398,
+          "SHA256": "365dc03fe5e3fde277cd6dd08775c88712c5697b67cbf44d2f3ae6dcc7342751"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_7.asm",
+          "bytes": 3646,
+          "SHA256": "613c4f0916b16e13d84c4155758dbad59113185016259a703f84e1351490378d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_8.asm",
+          "bytes": 320,
+          "SHA256": "eb687fec66089ff94b2dd6e1aa9bb124888865083c465d0e1531ff6821f8ec27"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_9.asm",
+          "bytes": 77178,
+          "SHA256": "1c66f40f074bfedaa7ae4738f8f93d8195ad44ba6bc7bdaaea85630b5942c2f3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_10.asm",
+          "bytes": 191,
+          "SHA256": "3a27d34835ed9ffc5702cde12e054f0b9b0145c6d91561a9f1d2df4574cdb7f3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_11.asm",
+          "bytes": 58,
+          "SHA256": "9969bed61922cb39bc51382bc03569603e0f4b6070a5468558742370c84e81d1"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_12.asm",
+          "bytes": 58,
+          "SHA256": "bb092f412ef3bff976d77c938fa25b2aa8df9a89f47a250aafc76e0e51c8b8ab"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_13.asm",
+          "bytes": 1056,
+          "SHA256": "7e2de77733b5e9514236336255d6bfc0a8cc9dafd3a93e11fc72dc3182b823b1"
+        }
+      ],
+      "constructor": {
+        "whole_native": "[008EF2F0,008EF360): 112 bytes, 34 instructions, both branches",
+        "Source_address": "25001040",
+        "only_rebound_operands": [
+          [
+            47,
+            51
+          ],
+          [
+            62,
+            66
+          ]
+        ],
+        "other_literal_bytes": 104,
+        "copy_allocation_CALL": "2500106E -> 25001000 genuine private CDECL size adapter",
+        "copy_memcpy_CALL": "2500107D -> 2500462C genuine VCRUNTIME140 import thunk",
+        "ordering": "CMP byte [T+C],0 precedes phase/tag writes; EDI count load follows them; writes 18/1C/24 do not change CMP flags before JZ. Actual child pointer stored at +20 before memcpy.",
+        "borrow": "No provider call. Exact input pointer at +20; ECX=root, EDX=input; defined arithmetic mask 8D5 equals 44, including AF=0.",
+        "copy": "Allocator old argument stays at T-12; copy arguments enter at T-28. After memcpy RET0, ADD ESP,10h uses (T-24)+16=T-8. Both branches return EAX=root with RET0C.",
+        "storage": "29 written, 27 preserved: [08,18), [28,2C), [2D,34), including +30 DWORD; byte +2C=1 in both branches.",
+        "limits": "Successful positive nonoverlapping actual byte spans, fresh unowned root, DF clear. No noexcept, private CRT/EH, class, phase dispatch, World, game, or blanket FP/ES/DF claim."
+      },
+      "providers": {
+        "adapter": "Whole 61 bytes/17 instructions. Canonical request has object kind and native_bytes=host_bytes=actual n. No mocked allocation or virtual services. Adapter native credit zero.",
+        "canonical": "Whole 90 bytes/34 instructions, exact matched free 6-byte tail thunk. malloc/free/_callnewh resolve actual I386 heap module; separate memcpy is genuine VCRUNTIME140 export.",
+        "cold_edges": "Complete 24-byte bad_alloc constructor and 6-byte CxxThrowException import thunk gated only; no failure/unwind execution admitted.",
+        "helpers": "Whole 14-byte security-cookie normal helper, named excluded failure tail, and map-owned 48-byte __chkstk including terminal padding."
+      },
+      "callers": {
+        "ordinary": "Whole Source 26-byte/7-instruction and Original 25-byte/7-instruction callers have three stack DWORDs, padded fastcall registers, one call, RET0. They are static ABI checks and are not additional native target entries.",
+        "raw": "Whole 191-byte/68-instruction raw caller with no COFF relocations. Six CDECL fixture arguments. Independent R before three pushes, Q after pushes, T=Q-4 captured before CALL. Captures dead data/count/flag words with MOV/LEA before PUSHFD; no helper/FP conversion in return capture.",
+        "capture": "140 bytes = 16-byte preguard + 108-byte 27-DWORD registers + 16-byte postguard. Q at +116, T at +120, postguard +124.",
+        "residuals": "Borrow ECX/EDX exact. Copy ECX/EDX observed without guessed assertions. EAX root, four nonvolatiles, return ESP, stack/capture guards checked. DF-clear fixture only; ES recorded without promise."
+      },
+      "main": {
+        "whole_gate": "6083 bytes, 1549 instructions, 192 individually resolved COFF relocations, whole linked bytes gated at runtime before entries and after frees.",
+        "initial_checks": "Header identity, all 13 code spans, four physical mapped providers including file identity/full SHA256/NT path/MEM_IMAGE/I386/export/IAT/ASLR-normalized 32-byte prefixes verified before zero entries.",
+        "RX": "25002240 loop masks exactly [47,51) and [62,66); targets decoded against same genuine providers; fresh VirtualAlloc RW then VirtualProtect RX, cache flush and VirtualQuery.",
+        "allocations": "2500236A genuine canonical allocation loop creates four 56-byte roots. Two guarded 16-byte actual payloads include embedded NULs; counts 9/13/13/9, flags B931CA00/7C5EE100/D746A501/29BC0080.",
+        "raw_entry": "25002889 unique raw-capture callsite in four-iteration loop: Source retained, Original retained, Source copy, Original copy. Low-byte branch decision visible at 250028AC.",
+        "ownership": "After each entry check retained exact pointer or new disjoint child; verify all 56 bytes of all roots, all other 140-byte captures, whole 96 guarded input bytes and all live child bytes.",
+        "stack_flags": "25002B6B..25002BCD verify R/Q/T, T+4/+8/+C dead slots and full flag DWORD. Borrow mask comparison at 25002C96; copy loads actual T at 25002CA1, subtracts 24 at 25002CA4, adds 16 through add_flags at 25002CAA. AF and all six defined flags compared.",
+        "artifact_capture": "Save four 140-byte captures, four full 56-byte roots, two full 48-byte guarded inputs, actual live 13/9-byte children and exact bound 112-byte RX before frees.",
+        "cleanup": "25002FD4 two-child canonical-free loop, then 25002FF2 four-root free loop; inputs never freed as children. VirtualFree at 25003016. Provider full-file and live bookends loop after frees, final whole-code call at 25003214.",
+        "expected_entries": 4,
+        "expected_allocations": 6,
+        "expected_frees": 6
+      },
+      "prior_preservation": "All 5239 prior artifacts, including failed t8a exact 301 and earlier readiness/type5 families, remain immutable. No old process or successful stage replay.",
+      "failed_attempt": "t8a failed probe compilation C3861 open_module; genuine helper is verify_module. Entire failed attempt sealed. New t8b uses three freshly compiled TUs, no old objects. Initial draft generator SyntaxError is also preserved.",
+      "read_only_review_note": "A shell Get-Content used the mistaken local filename whole9.asm; actual whole_9.asm was then read. No file mutation or target execution occurred."
+    },
+    "qualification": "Complete constructor/providers/callers/helpers and all linked span bytes gated. Main whole bytes/relocations mechanically checked and critical paths manually reviewed. Cold failure tails are named, not executed or admitted."
+  },
+  "fixture": {
+    "accepted_processes": 1,
+    "Source_calls": 2,
+    "bound_Original_calls": 2,
+    "branches_each": 2,
+    "allocations": 6,
+    "frees": 6,
+    "full_root_bytes": 56,
+    "capture_bytes": 140,
+    "register_DWORDs": 27,
+    "root_allocations": 4,
+    "child_allocations": 2,
+    "input_guarded_bytes": 96,
+    "copies_counts": [
+      13,
+      9
+    ],
+    "full_flag_words": [
+      "B931CA00",
+      "7C5EE100",
+      "D746A501",
+      "29BC0080"
+    ],
+    "numeric_experiments": false,
+    "Original_binding": "Fresh 112-byte RW-to-RX; only [47,51) and [62,66) retargeted to same genuine providers as Source; 104 literal bytes unchanged.",
+    "runtime": {
+      "passed": true,
+      "Source_calls": 2,
+      "Original_calls": 2,
+      "branches_each": 2,
+      "families": 1,
+      "allocations": 6,
+      "frees": 6,
+      "root_allocations": 4,
+      "child_allocations": 2,
+      "Original_RX": 5701632,
+      "allocation_entry": 620761088,
+      "copy_entry": 620774956,
+      "written": 29,
+      "preserved": 27,
+      "runtime_code_spans": 13,
+      "cases": [
+        {
+          "name": "Source_retained",
+          "root": 7076160,
+          "input": 1743280,
+          "count": 9,
+          "flag_word": 3107047936,
+          "stored_pointer": 1743280,
+          "owned_copy": false,
+          "ESP_before_arguments": 1610220,
+          "ESP_before_CALL": 1610208,
+          "entry_T": 1610204,
+          "ESP_after": 1610220,
+          "EFLAGS_after": 582,
+          "defined_flags_expected": 68,
+          "ECX_observed": 7076160,
+          "EDX_observed": 1743280
+        },
+        {
+          "name": "Original_retained",
+          "root": 7076480,
+          "input": 1743328,
+          "count": 13,
+          "flag_word": 2086592768,
+          "stored_pointer": 1743328,
+          "owned_copy": false,
+          "ESP_before_arguments": 1610220,
+          "ESP_before_CALL": 1610208,
+          "entry_T": 1610204,
+          "ESP_after": 1610220,
+          "EFLAGS_after": 582,
+          "defined_flags_expected": 68,
+          "ECX_observed": 7076480,
+          "EDX_observed": 1743328
+        },
+        {
+          "name": "Source_copy",
+          "root": 7077696,
+          "input": 1743328,
+          "count": 13,
+          "flag_word": 3611731201,
+          "stored_pointer": 7091544,
+          "owned_copy": true,
+          "ESP_before_arguments": 1610220,
+          "ESP_before_CALL": 1610208,
+          "entry_T": 1610204,
+          "ESP_after": 1610220,
+          "EFLAGS_after": 518,
+          "defined_flags_expected": 4,
+          "ECX_observed": 0,
+          "EDX_observed": 2439839972
+        },
+        {
+          "name": "Original_copy",
+          "root": 7077888,
+          "input": 1743280,
+          "count": 9,
+          "flag_word": 700186752,
+          "stored_pointer": 7091016,
+          "owned_copy": true,
+          "ESP_before_arguments": 1610220,
+          "ESP_before_CALL": 1610208,
+          "entry_T": 1610204,
+          "ESP_after": 1610220,
+          "EFLAGS_after": 518,
+          "defined_flags_expected": 4,
+          "ECX_observed": 0,
+          "EDX_observed": 2840985811
+        }
+      ],
+      "modules": [
+        {
+          "name": "malloc",
+          "IAT_target": 1987903776,
+          "export": 1987903776,
+          "export_RVA": 196896,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+          "before_after_equal": true
+        },
+        {
+          "name": "free",
+          "IAT_target": 1987903648,
+          "export": 1987903648,
+          "export_RVA": 196768,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+          "before_after_equal": true
+        },
+        {
+          "name": "_callnewh",
+          "IAT_target": 1988276224,
+          "export": 1988276224,
+          "export_RVA": 569344,
+          "module_base": 1987706880,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+          "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "normalized_live_prefix": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+          "before_after_equal": true
+        },
+        {
+          "name": "memcpy",
+          "IAT_target": 1924293024,
+          "export": 1924293024,
+          "export_RVA": 90528,
+          "module_base": 1924202496,
+          "mapped_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\vcruntime140.dll",
+          "physical_SHA256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "normalized_live_prefix": "57568b7424108b4c24148b7c240c8bc18bd103c63bfe76083bf80f8294020000",
+          "before_after_equal": true
+        }
+      ],
+      "code_before_after_equal": true,
+      "bound_Original_only_CALL_operands": [
+        [
+          47,
+          51
+        ],
+        [
+          62,
+          66
+        ]
+      ],
+      "literal_constructor_bytes": 104,
+      "copied_ECX_EDX_residuals_unasserted": true,
+      "retained_inputs_never_freed_as_children": true,
+      "owned_children_observed_live_freed_before_roots": true,
+      "all_storage_input_child_capture_stack_checks_passed": true,
+      "three_dead_arguments_captured_before_PUSHFD": true,
+      "entry_ESP_independently_captured": true,
+      "FP_numeric_experiments": false,
+      "private_CRT_EH_executed": false
+    },
+    "offline_observed_captures": {
+      "passed": true,
+      "runtime": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\runtime.json",
+        "size": 4616,
+        "sha256": "d36e9f294cc1ee017357147bc53bb972df9845fd64cff49764a4597be297ca6d"
+      },
+      "independent_offline_decode_no_process_replay": true,
+      "register_DWORDs": 27,
+      "capture_bytes": 140,
+      "input_guarded_bytes": [
+        {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\input0_guarded_bytes.bin",
+            "size": 48,
+            "sha256": "a7a1e7bb2ac98cc744a0d4bc0576afc188c187cefae33f460f7d39067980dfb9"
+          },
+          "full_hex": "0000a7460100a7460200a7460300a74600fe8127d30056a97ce112b465c83d92000038d9010038d9020038d9030038d9"
+        },
+        {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\input1_guarded_bytes.bin",
+            "size": 48,
+            "sha256": "6644172098ccd6207a41e4f781e67756b6cfec175ed46f3efb1a18110d844f82"
+          },
+          "full_hex": "0001a7460101a7460201a7460301a746cd00f7528019a63be4006d9128bc47da000138d9010138d9020138d9030138d9"
+        }
+      ],
+      "cases": [
+        {
+          "name": "source_retained",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_retained_capture.bin",
+            "size": 140,
+            "sha256": "45d34ef599423f2a4898666e0060131b280cb7caaea2920607a7b608a902c5ea"
+          },
+          "registers": {
+            "esp_before": "001891EC",
+            "esp_after": "001891EC",
+            "eax_after": "006BF940",
+            "ecx_after": "006BF940",
+            "edx_after": "001A99B0",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9A00",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00189200",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9A00",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00189200",
+            "flags_before": "00000206",
+            "flags_after": "00000246",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "data_slot": "001891E0",
+            "data_word": "001A99B0",
+            "count_slot": "001891E4",
+            "count_word": "00000009",
+            "flag_slot": "001891E8",
+            "flag_word": "B931CA00",
+            "esp_before_call": "001891E0",
+            "entry_esp": "001891DC"
+          },
+          "preguards": [
+            "91C30100",
+            "91C30101",
+            "91C30102",
+            "91C30103"
+          ],
+          "postguards": [
+            "BC780100",
+            "BC780101",
+            "BC780102",
+            "BC780103"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_retained_storage.bin",
+            "size": 56,
+            "sha256": "8815ccd09fb567e1c025097f352856109bf622dd91c58f504a96a8e25cfd4360"
+          },
+          "full_root_hex": "d489ce0008000000919191919191919191919191919191910000000000000000b0991a000900000091919191019191919191919100000000",
+          "defined_flags": "044",
+          "copy_ADD": null,
+          "child": null
+        },
+        {
+          "name": "original_retained",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_retained_capture.bin",
+            "size": 140,
+            "sha256": "e1bbdd1ee80dd0717370fe87d3f70d82e14ff0dfebcfc5091b50ae969c57ae4f"
+          },
+          "registers": {
+            "esp_before": "001891EC",
+            "esp_after": "001891EC",
+            "eax_after": "006BFA80",
+            "ecx_after": "006BFA80",
+            "edx_after": "001A99E0",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9A8C",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00189200",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9A8C",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00189200",
+            "flags_before": "00000202",
+            "flags_after": "00000246",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "data_slot": "001891E0",
+            "data_word": "001A99E0",
+            "count_slot": "001891E4",
+            "count_word": "0000000D",
+            "flag_slot": "001891E8",
+            "flag_word": "7C5EE100",
+            "esp_before_call": "001891E0",
+            "entry_esp": "001891DC"
+          },
+          "preguards": [
+            "91C30200",
+            "91C30201",
+            "91C30202",
+            "91C30203"
+          ],
+          "postguards": [
+            "BC780200",
+            "BC780201",
+            "BC780202",
+            "BC780203"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_retained_storage.bin",
+            "size": 56,
+            "sha256": "91f9dd72c9a738e727bd8c6a653c0759b2a5fa37da51b4b063534f87a6155d5d"
+          },
+          "full_root_hex": "d489ce00080000004e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e0000000000000000e0991a000d0000004e4e4e4e014e4e4e4e4e4e4e00000000",
+          "defined_flags": "044",
+          "copy_ADD": null,
+          "child": null
+        },
+        {
+          "name": "source_copy",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_copy_capture.bin",
+            "size": 140,
+            "sha256": "2f78c5e84193e93326b80a862dbf166270ff9ce5d03857beb40cc85145545055"
+          },
+          "registers": {
+            "esp_before": "001891EC",
+            "esp_after": "001891EC",
+            "eax_after": "006BFF40",
+            "ecx_after": "00000000",
+            "edx_after": "916D00E4",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9B18",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00189200",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9B18",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00189200",
+            "flags_before": "00000206",
+            "flags_after": "00000206",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "data_slot": "001891E0",
+            "data_word": "001A99E0",
+            "count_slot": "001891E4",
+            "count_word": "0000000D",
+            "flag_slot": "001891E8",
+            "flag_word": "D746A501",
+            "esp_before_call": "001891E0",
+            "entry_esp": "001891DC"
+          },
+          "preguards": [
+            "91C30300",
+            "91C30301",
+            "91C30302",
+            "91C30303"
+          ],
+          "postguards": [
+            "BC780300",
+            "BC780301",
+            "BC780302",
+            "BC780303"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_copy_storage.bin",
+            "size": 56,
+            "sha256": "50fa895d24bf8b626f5ea796df38342317e4aea0a5a04c98df9482a146e3d7d3"
+          },
+          "full_root_hex": "d489ce0008000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7000000000000000058356c000d000000a7a7a7a701a7a7a7a7a7a7a700000000",
+          "defined_flags": "004",
+          "copy_ADD": {
+            "entry_T": 1610204,
+            "left": 1610180,
+            "right": 16,
+            "result": 1610196
+          },
+          "child": {
+            "artifact": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_owned_child.bin",
+              "size": 13,
+              "sha256": "c6ecfa9aed2d15dc5b07d3548871e3b42e41ae6913782f18fc2cf58ac7d5766a"
+            },
+            "full_hex": "cd00f7528019a63be4006d9128",
+            "actual_pointer": 7091544
+          }
+        },
+        {
+          "name": "original_copy",
+          "capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_copy_capture.bin",
+            "size": 140,
+            "sha256": "89bbe30b33e6e22d8b42a9bd578ee2c3550e7ee9cee893ae5eebf1420dd49b3a"
+          },
+          "registers": {
+            "esp_before": "001891EC",
+            "esp_after": "001891EC",
+            "eax_after": "006C0000",
+            "ecx_after": "00000000",
+            "edx_after": "A95600D3",
+            "ebx_before": "5B3E90A7",
+            "esi_before": "001A9BA4",
+            "edi_before": "E1462D8C",
+            "ebp_before": "00189200",
+            "ebx_after": "5B3E90A7",
+            "esi_after": "001A9BA4",
+            "edi_after": "E1462D8C",
+            "ebp_after": "00189200",
+            "flags_before": "00000202",
+            "flags_after": "00000206",
+            "es_before": "0000002B",
+            "es_after": "0000002B",
+            "stack_guard0": "6AC8DB15",
+            "stack_guard1": "A6710293",
+            "data_slot": "001891E0",
+            "data_word": "001A99B0",
+            "count_slot": "001891E4",
+            "count_word": "00000009",
+            "flag_slot": "001891E8",
+            "flag_word": "29BC0080",
+            "esp_before_call": "001891E0",
+            "entry_esp": "001891DC"
+          },
+          "preguards": [
+            "91C30400",
+            "91C30401",
+            "91C30402",
+            "91C30403"
+          ],
+          "postguards": [
+            "BC780400",
+            "BC780401",
+            "BC780402",
+            "BC780403"
+          ],
+          "root": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_copy_storage.bin",
+            "size": 56,
+            "sha256": "7af9c3ad4a91d7566c68c6fe563b97cb648b36c490898aca0ada99c7b6f1d84f"
+          },
+          "full_root_hex": "d489ce00080000005c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c000000000000000048336c00090000005c5c5c5c015c5c5c5c5c5c5c00000000",
+          "defined_flags": "004",
+          "copy_ADD": {
+            "entry_T": 1610204,
+            "left": 1610180,
+            "right": 16,
+            "result": 1610196
+          },
+          "child": {
+            "artifact": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_owned_child.bin",
+              "size": 9,
+              "sha256": "eeec359434899d3fd4c7d1de8661c75580464ea07ded53b833fa5cc71641c3a1"
+            },
+            "full_hex": "00fe8127d30056a97c",
+            "actual_pointer": 7091016
+          }
+        }
+      ],
+      "actual_allocated_objects": [
+        {
+          "address": 7076160,
+          "bytes": 56,
+          "role": "source_retained_root"
+        },
+        {
+          "address": 7076480,
+          "bytes": 56,
+          "role": "original_retained_root"
+        },
+        {
+          "address": 7077696,
+          "bytes": 56,
+          "role": "source_copy_root"
+        },
+        {
+          "address": 7091544,
+          "bytes": 13,
+          "role": "source_copy_child"
+        },
+        {
+          "address": 7077888,
+          "bytes": 56,
+          "role": "original_copy_root"
+        },
+        {
+          "address": 7091016,
+          "bytes": 9,
+          "role": "original_copy_child"
+        }
+      ],
+      "bound_original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\bound_original.bin",
+        "size": 112,
+        "sha256": "8d4279752306911e13b17b506e19802ecd19e8c702570567893df9786dc8fdde"
+      },
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original.bin",
+        "size": 112,
+        "sha256": "4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928"
+      },
+      "masked_CALL_operands": [
+        [
+          47,
+          51
+        ],
+        [
+          62,
+          66
+        ]
+      ],
+      "literal_other_bytes": 104,
+      "copied_provider_ECX_EDX_unasserted": true
+    },
+    "offline_decode_did_not_replay_process": true,
+    "cleanup": "Two copied children observed live and saved then freed exactly once; four separate roots freed; borrowed inputs never passed as new children; RX allocation released.",
+    "physical_attestation": "Actual four IAT/export targets with same heap module and distinct memcpy module. I386 MEM_IMAGE, mapped NT path, physical file identity/size/full SHA256 and ASLR-normalized live32 prefixes before zero entries and after all frees.",
+    "ordinary_callers": "Static ABI checks only; no additional target execution"
+  },
+  "preservation": {
+    "post": {
+      "passed": true,
+      "native_before_after_equal": true,
+      "all_strict_consumed_inputs_and_prior_artifacts_unchanged": true,
+      "unconsumed_metadata_copies_unchanged_originals_not_strict_after_pinned": true,
+      "prior_artifacts": 5239,
+      "accepted_processes": 1,
+      "executed_TUs": 3,
+      "complete_cookie_helper_gate": true,
+      "metadata_copies": 10,
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\src\\native_scene_property_record_type8_byte_array_storage.cpp",
+        "size": 2114,
+        "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab"
+      },
+      "header": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\include\\bsp\\native_scene_property_record_type8_byte_array_storage.hpp",
+        "size": 2584,
+        "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91"
+      }
+    },
+    "strict_inputs": 50,
+    "consumed_headers": 184,
+    "consumed_libraries": 7,
+    "prior_artifacts": 5239,
+    "prior_breakdown": {
+      "older": 4640,
+      "remaining_readiness": 298,
+      "failed_t8a": 301
+    },
+    "metadata_snapshots": 10,
+    "original_unconsumed_mutable_metadata_not_after_pinned": true,
+    "no_old_recipe_or_process_execution": true,
+    "successful_stages_each_once": [
+      "prepare",
+      "build",
+      "static_gate",
+      "launch",
+      "post"
+    ],
+    "accepted_family_artifacts": 382,
+    "accepted_family_including_seal": 383,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\seal.json",
+      "size": 95557,
+      "sha256": "5fe68aab22202b981eb5b30fa3e8bacd229cdba770bdbefb37a3b53782bf1aa5"
+    },
+    "inventory_exact_rehashed_after_seal": true,
+    "historical_associations_not_rebound": true,
+    "failed_family": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\failed_seal.json",
+      "size": 79210,
+      "sha256": "f2705a4d3b5dadf10d9a71ce6ff0f73dd9cb1d4a433947313d8a416426d1abd7"
+    }
+  },
+  "failures_and_corrections": [
+    {
+      "stage": "t8a draft helper generation",
+      "result": "SyntaxError from nested triple quotes, before helper output/compilation/target execution.",
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\failed_generation_01.json",
+        "size": 572,
+        "sha256": "4502a07575db2f5ed40c790663a17aff1f6e79f89be1d348a5c36d5ff37fff2b"
+      }
+    },
+    {
+      "stage": "t8a fresh build",
+      "result": "Source and canonical compiled; probe C3861 open_module undefined, real helper verify_module; no link or target.",
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\failed_build_receipt.json",
+        "size": 851,
+        "sha256": "bc5fde256c40ef52bb2c1417b5c86f69d8bba3b81464c251b6b396fd07a98884"
+      },
+      "compiler_stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\compile_probe_stdout.txt",
+        "size": 21529,
+        "sha256": "63899070b9435f7aa439c741c6d418f975c575e97cc41339e60d6b54a52825f3"
+      },
+      "compiler_exit": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\compile_probe_exit.json",
+        "size": 22,
+        "sha256": "2142d1b55fc95249a3beba00108cf2b67145e9f0a9d536d93b6c5455b007062b"
+      },
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8a\\failed_seal.json",
+        "size": 79210,
+        "sha256": "f2705a4d3b5dadf10d9a71ce6ff0f73dd9cb1d4a433947313d8a416426d1abd7"
+      }
+    },
+    {
+      "stage": "t8b recovery",
+      "result": "New separate family; genuine verify_module spelling; same frozen production Source; all three TUs compiled afresh; no old objects. All accepted stages passed once."
+    },
+    {
+      "stage": "read-only manual review",
+      "result": "Get-Content used whole9.asm instead of whole_9.asm; corrected read only, no artifact mutation or target execution."
+    },
+    {
+      "stage": "Post-seal read-only report verification shell command",
+      "result": "Python IndentationError: unexpected indent at line 2, def_unused=0; verifier draft was incomplete.",
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\type8_postseal_readonly_failure.json",
+        "size": 379,
+        "sha256": "1d227eaf12cfe4e5df4a3db841076a2b6150d7dbd415e4d810af55de2f296e82"
+      },
+      "no_artifact_or_target_change": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prepare.json",
+      "size": 668,
+      "sha256": "ce6532d794c057d22c8a18600217e8e1c1e6400205032611f93d64ea124c397e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\build.json",
+      "size": 1832,
+      "sha256": "1e3b24d08a3ee006c98ca3519d678e0084289a933eff0c215d02120f2a97798c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\static_gate.json",
+      "size": 424958,
+      "sha256": "30e2d025a8ef97ac29547b3ff437bc5040c4fc6cacc5f8623984a881a2b67923"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\manual_static_review.json",
+      "size": 10141,
+      "sha256": "c41ec3312449d0c49456b813b2b362ea15d5c342260d8b8bc4a206cdd6b5681c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\runtime.json",
+      "size": 4616,
+      "sha256": "d36e9f294cc1ee017357147bc53bb972df9845fd64cff49764a4597be297ca6d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\observed_captures.json",
+      "size": 11264,
+      "sha256": "927bb5a5d09155d1b5bdc7685379efd69fb6e6f62b0721d7b74a8b99c9291947"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\post.json",
+      "size": 910,
+      "sha256": "bf4b043a30b437a84ad974f60918d9f466b4d0cec91cde5c219d4f385aae8040"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\seal.json",
+      "size": 95557,
+      "sha256": "5fe68aab22202b981eb5b30fa3e8bacd229cdba770bdbefb37a3b53782bf1aa5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prelaunch_contract.json",
+      "size": 329,
+      "sha256": "b754fce30a528c1e4065fe81f05274b7c93b70cc1eab16c8b3b6605586604fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\family_derivation.json",
+      "size": 1754,
+      "sha256": "6b91e4c633cfec74d0cfd228974dce87dca49e5560c794e2bc635fb787a8ff5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\recipe.py",
+      "size": 23699,
+      "sha256": "9370938b74a54844627a57f087a81755dd32a9860730f609698c1bffef7af0f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\helpers.py",
+      "size": 7636,
+      "sha256": "21cc055e5e0a3ba3106e68adc6571b0ec5280316299890f0f086c1ffbbf790bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\derive_family.py",
+      "size": 18504,
+      "sha256": "7ceb75df71442cd037061adf7d4e4f8da925a88e93a9917602cac45eae79a84a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe.cpp",
+      "size": 29740,
+      "sha256": "8a1b48f272b9a1937a50f2730fe22a6599509a560e859e5a6bd8aebd013a92d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe_tail.inc",
+      "size": 13972,
+      "sha256": "a0c78b9e4e4d4cad61f47d1bf8687ca5e615447a143b2c5d2a2f290c716bdb2b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\decode_captures.py",
+      "size": 6447,
+      "sha256": "ee45038bff3dbced62af6756be455419c0f4fa3dde709d510233d35e9d702d8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\write_manual_review.py",
+      "size": 7082,
+      "sha256": "fdee93775ff7e367415705cca4125386f447f858f79f0ebd9a85824bf3564a87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\commit_message.txt",
+      "size": 581,
+      "sha256": "d0afd3b6161f2b1bf596c004d14e0b4c6d55d350d71fddb08a41786c195741c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\native_before.json",
+      "size": 4938,
+      "sha256": "986585eaa29a26a9313fcaf4a2033f8dc57792d8bbd4d739b7ad7f839f4ef9ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\native_after.json",
+      "size": 4938,
+      "sha256": "986585eaa29a26a9313fcaf4a2033f8dc57792d8bbd4d739b7ad7f839f4ef9ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original.bin",
+      "size": 112,
+      "sha256": "4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\bound_original.bin",
+      "size": 112,
+      "sha256": "8d4279752306911e13b17b506e19802ecd19e8c702570567893df9786dc8fdde"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\gate.bin",
+      "size": 7252,
+      "sha256": "b0777b05872e05569d50bf263f0a8113c0131fb39a19348df9ec4f76b57d572a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\t8_probe.exe",
+      "size": 23552,
+      "sha256": "83d1125f62bb3e5f9828bf652e886cf086b1dc955edd9ec56788238a9e23cf6e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\t8_probe.map",
+      "size": 39156,
+      "sha256": "196cb013bebceefe001e1b355072298fc0aa0f6f5c53c51b97db64211356cdd3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\inputs_before.json",
+      "size": 11757,
+      "sha256": "eb8bde9c9f1528b624e0f5a6f26252fc51eb1f22fb81d315ae38e566cdadfcb7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\inputs_after.json",
+      "size": 11757,
+      "sha256": "eb8bde9c9f1528b624e0f5a6f26252fc51eb1f22fb81d315ae38e566cdadfcb7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\consumed_headers_before.json",
+      "size": 40097,
+      "sha256": "c3e10a20ffce56b58b8d610c54a6e0de4b635a297a75d686cd7e6a0315fd6e57"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\consumed_headers_after.json",
+      "size": 40097,
+      "sha256": "c3e10a20ffce56b58b8d610c54a6e0de4b635a297a75d686cd7e6a0315fd6e57"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\consumed_libraries_before.json",
+      "size": 1573,
+      "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\consumed_libraries_after.json",
+      "size": 1573,
+      "sha256": "e86e22594aec8980ede3ea3c3f0581550e06636b9079dc1fed871c6570b3af0d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prior_before.json",
+      "size": 1232867,
+      "sha256": "e94daa1e8b5d7101cc5e24689961e4445bcc22f54ebf4b458f79f8d5f418684e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prior_after.json",
+      "size": 1232867,
+      "sha256": "e94daa1e8b5d7101cc5e24689961e4445bcc22f54ebf4b458f79f8d5f418684e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\metadata_copies.json",
+      "size": 6163,
+      "sha256": "e48bb95f9d6463df2e19f008f339e09175b8c8c66522be6c5aa67607cc622a78"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\frozen_inputs.json",
+      "size": 32064,
+      "sha256": "8bbfd48bbda62e5655c91beeb26d2963c73b46136e9af3bdddaccff1eccd804f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\frozen_headers.json",
+      "size": 111267,
+      "sha256": "fa3f521dd7dc20535d5645b8fa880ba5e0f2b7d46f51df74b0df8cd36bd624ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\frozen_libraries.json",
+      "size": 4340,
+      "sha256": "470225741d27bb25521e247cec4408a1f28a643c925eadc070ef9a4ba3ab4d22"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_COFF.json",
+      "size": 6506,
+      "sha256": "666c3be3d6dc592bab415cc563a1d04448ce77a83afa81742139cf81c88b75d6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\canonical_COFF.json",
+      "size": 162373,
+      "sha256": "25e1b91d15208ed7a9fdb8d6c54fd195221d29f75a37cadaef4d96480b717375"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe_COFF.json",
+      "size": 160766,
+      "sha256": "94cfe5f36c119d4c91091c4e9bf22bdeb86924a35d5517bddbc70d7257692813"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source.obj",
+      "size": 1812,
+      "sha256": "c7e6438044f3baae172355bd0a62dd1dc028ace3eb72a23bb9a8bcf80e6ebf34"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\canonical.obj",
+      "size": 36835,
+      "sha256": "9624feb8d45cbf4b8ca1cd0345f638fe9fc9cf822f2b7acc73397765aa0e9ba5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\probe.obj",
+      "size": 40895,
+      "sha256": "f7f7be202e635297cd31149553db0d5dec62482a1c86f56a60c70b274b78467a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\prepare_attempt.json",
+      "size": 74,
+      "sha256": "35269db43f114d2d9750d84fe0f9ff468094898d14bfa20ee714ed5c2af17b63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\build_attempt.json",
+      "size": 73,
+      "sha256": "3d46eb84899cd8dcb1a5d0154c61a59bdabb34c2c54f9c475594cb4c64a20a40"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\static_gate_attempt.json",
+      "size": 78,
+      "sha256": "b7a16253de0f20cc83ef9fecfeb48ea070afd3a6283f421b11b6093134929791"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\launch_attempt.json",
+      "size": 73,
+      "sha256": "812c17c40024cddd7c86e600e77db56a4423c569a5a7ff72227d21ddf5257c17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\post_attempt.json",
+      "size": 72,
+      "sha256": "619de9cd3052c5d4ab8fcdecd014a4fedb3b1a3d78e9c67f8027dfa7837b838e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_source_args.json",
+      "size": 5244,
+      "sha256": "45fefec40a0824a9f0c4a3f20fcf1c2bd444b749ad01e036365b4f2828d6b4c9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_source_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_source_stdout.txt",
+      "size": 9867,
+      "sha256": "cf12d3a79abbee900730be76cf75cb822eecec05cb6c6b7467ee48574a7df307"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_source_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_canonical_args.json",
+      "size": 5238,
+      "sha256": "34931f4f8cb0dc0618106e750d5371903094f4c711f115681ba22d130e909257"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_canonical_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_canonical_stdout.txt",
+      "size": 23579,
+      "sha256": "820e43b7e0df1ca22d26bf7acd2f635fa0371563609bc5c0dba50e66b94c9523"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_canonical_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_probe_args.json",
+      "size": 5230,
+      "sha256": "238272fc42c6d515e3fe9b24d67d950920c7c36d02954a56639646391cfd833f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_probe_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_probe_stdout.txt",
+      "size": 21361,
+      "sha256": "991578d3b113fd2a71f93353992782ca0779e8cbe549e1eefcef97997532323a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\compile_probe_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\link_args.json",
+      "size": 5526,
+      "sha256": "fdcbc9a19a4d23b4530f0da034eb10a7b1681b25193b6df5c5fbd8b644548cc7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\link_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\link_stdout.txt",
+      "size": 5091,
+      "sha256": "6ba9b682b81f72248dd7b93dd1dc5b40cc4aec8e592839cfe62100eda08bb9dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\link_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\process_args.json",
+      "size": 4658,
+      "sha256": "901cccb296b4f8d0e57d87737be1e4ae4fb4f018ee966c27f33cee6073e4c12b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\process_exit.json",
+      "size": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\process_stdout.txt",
+      "size": 3599,
+      "sha256": "255951ffb034c9146de2ac010dc3300ab26468d6aa960aac6d024e9cde2f7da3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\process_stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_1.asm",
+      "size": 1709,
+      "sha256": "ad992f08e29b2cc2687d5f7d21c599ab662ebcb0f242db9061730399657475b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_2.asm",
+      "size": 865,
+      "sha256": "098f108337205b0767817467c90b9e1927145b99bcafc9c9e45c1ac3e7c9b42c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_3.asm",
+      "size": 1558,
+      "sha256": "a181a95bb06002cab428f1a76348a07c7bdfa42b02749120864856b650cccc46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_4.asm",
+      "size": 58,
+      "sha256": "0de8310245c8ed3905df7f3a52a9923106b36762f7bcd47c0af15adab0772edb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_5.asm",
+      "size": 384,
+      "sha256": "055314b6e592321bad4544e4f16644ae8bf036b1626b57462484f4a8a6dfa606"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_6.asm",
+      "size": 398,
+      "sha256": "365dc03fe5e3fde277cd6dd08775c88712c5697b67cbf44d2f3ae6dcc7342751"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_7.asm",
+      "size": 3646,
+      "sha256": "613c4f0916b16e13d84c4155758dbad59113185016259a703f84e1351490378d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_8.asm",
+      "size": 320,
+      "sha256": "eb687fec66089ff94b2dd6e1aa9bb124888865083c465d0e1531ff6821f8ec27"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_9.asm",
+      "size": 77178,
+      "sha256": "1c66f40f074bfedaa7ae4738f8f93d8195ad44ba6bc7bdaaea85630b5942c2f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_10.asm",
+      "size": 191,
+      "sha256": "3a27d34835ed9ffc5702cde12e054f0b9b0145c6d91561a9f1d2df4574cdb7f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_11.asm",
+      "size": 58,
+      "sha256": "9969bed61922cb39bc51382bc03569603e0f4b6070a5468558742370c84e81d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_12.asm",
+      "size": 58,
+      "sha256": "bb092f412ef3bff976d77c938fa25b2aa8df9a89f47a250aafc76e0e51c8b8ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\whole_13.asm",
+      "size": 1056,
+      "sha256": "7e2de77733b5e9514236336255d6bfc0a8cc9dafd3a93e11fc72dc3182b823b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_retained_capture.bin",
+      "size": 140,
+      "sha256": "45d34ef599423f2a4898666e0060131b280cb7caaea2920607a7b608a902c5ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_retained_storage.bin",
+      "size": 56,
+      "sha256": "8815ccd09fb567e1c025097f352856109bf622dd91c58f504a96a8e25cfd4360"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_retained_capture.bin",
+      "size": 140,
+      "sha256": "e1bbdd1ee80dd0717370fe87d3f70d82e14ff0dfebcfc5091b50ae969c57ae4f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_retained_storage.bin",
+      "size": 56,
+      "sha256": "91f9dd72c9a738e727bd8c6a653c0759b2a5fa37da51b4b063534f87a6155d5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_copy_capture.bin",
+      "size": 140,
+      "sha256": "2f78c5e84193e93326b80a862dbf166270ff9ce5d03857beb40cc85145545055"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_copy_storage.bin",
+      "size": 56,
+      "sha256": "50fa895d24bf8b626f5ea796df38342317e4aea0a5a04c98df9482a146e3d7d3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_copy_capture.bin",
+      "size": 140,
+      "sha256": "89bbe30b33e6e22d8b42a9bd578ee2c3550e7ee9cee893ae5eebf1420dd49b3a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_copy_storage.bin",
+      "size": 56,
+      "sha256": "7af9c3ad4a91d7566c68c6fe563b97cb648b36c490898aca0ada99c7b6f1d84f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\input0_guarded_bytes.bin",
+      "size": 48,
+      "sha256": "a7a1e7bb2ac98cc744a0d4bc0576afc188c187cefae33f460f7d39067980dfb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\input1_guarded_bytes.bin",
+      "size": 48,
+      "sha256": "6644172098ccd6207a41e4f781e67756b6cfec175ed46f3efb1a18110d844f82"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\source_owned_child.bin",
+      "size": 13,
+      "sha256": "c6ecfa9aed2d15dc5b07d3548871e3b42e41ae6913782f18fc2cf58ac7d5766a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source\\local\\t8b\\original_owned_child.bin",
+      "size": 9,
+      "sha256": "eeec359434899d3fd4c7d1de8661c75580464ea07ded53b833fa5cc71641c3a1"
+    }
+  ],
+  "next_owner": "Root: independently inspect and execute a fresh qualified fixture if admitted, register and run full main build, own ledger/packet/Ghidra annotation/save/exports, integrate and publish. Worker claims no Source credit before that acceptance."
+}
