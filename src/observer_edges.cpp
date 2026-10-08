@@ -91,6 +91,13 @@ void register_observer_pair_00694a60(
     }
 }
 
+bool observer_pair_registered_00694af0(
+    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,
+    NativeObserverLifetime& lifetime) {
+    ObserverEdgeGuard guard(lifetime.lock_owner_00694280()->section_04);
+    return lifetime.find_pair_006949d0(first, callback_owner) != nullptr;
+}
+
 NativeObserverEdgeStorage* delete_observer_edge_00693ca0(
     NativeObserverEdgeStorage* edge, std::uint32_t flags) noexcept {
     edge->native_vtable_00 = kObserverEdgeVtable00cf7e64;

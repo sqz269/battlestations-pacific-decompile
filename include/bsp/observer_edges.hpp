@@ -25,6 +25,19 @@ void register_observer_pair_00694a60(
     NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,
     NativeObserverLifetime&);
 
+// Complete normal-return 00694AF0 query. Native ECX=first, EDX=callback owner,
+// AL=0/1, RET; upper EAX is not a boolean contract. Capture an outer actual
+// section, then use the existing lookup's independent nested lock. Evaluate
+// presence before releasing the captured outer section; do not change edges.
+// Borrow the existing actual endpoint/array/edge and lifetime admissions.
+// A nonnull section must be a real initialized TrackedCriticalSection; the
+// native null-section path is retained. This explicit-lifetime C++ interface
+// does not reproduce the original entry ABI, private FH3/SEH, asynchronous
+// faults, concurrent teardown, enclosing class/world ownership or gameplay.
+bool observer_pair_registered_00694af0(
+    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,
+    NativeObserverLifetime&);
+
 // Native scalar-deleting wrapper: ECX=edge, DWORD flags on stack, RET4,
 // EAX=original edge address even after free. Rewrite CF7E64; free iff flags&1.
 // It does not decrement references or unregister endpoints; callers have

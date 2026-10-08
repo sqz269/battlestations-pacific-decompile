@@ -29517,6 +29517,62 @@
         },
         "scope": "Four new files; whole literal64B15 CALL0/no relocations, actual caller-owned18h storage, exact interleaved MOVSS loads/stores/overlapping header widths, EAX receiver/ECX0/EDX preserved/XMM0 all128zero/RET0. Production requires actual nativeF87574/78/7C and creates no mapping/default/provider. One unique fresh2TU Source plus ignored actual-caller-buffer probe, qualified readonly exact-VA PE LOADER snapshot only, zeroBSP archives. Wholebytes/caller/physical register/SSE gate BEFORE soleexecution; live24-byte output and real adjacent caller guards, no heap/class facade. Alias order proven by whole identical code; mutable global alias runtime remains unbound unless separately admitted. No old replay/new tracked tests/shared metadata/Ghidra writes. Root CMake/fullbuild/independent fixture/metadata/saved analysis/integration."
       }
+    },
+    {
+      "id": "cc12_observer_query_source",
+      "worker": "group_membership",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00694AF0"
+      ],
+      "output_files": [
+        "include/bsp/observer_edges.hpp",
+        "src/observer_edges.cpp",
+        "docs/CC12_OBSERVER_QUERY_SOURCE.md",
+        "reports/cc12_observer_query_source.json"
+      ],
+      "depends_on": [
+        "orch4_observer_lifetime_d",
+        "orch4_observer_edges_e"
+      ],
+      "done": true,
+      "state": "reviewed_complete_normal_return_Source_build_and_connected_actual_storage_fixture_checked",
+      "worker_commit": "6b83aa4b8e2778e9a94a8af69e9db2428a2554ca",
+      "contract": {
+        "coverage": "complete_normal_return_current_Cpp_interface",
+        "ordinary_Source_functions_added": 1,
+        "original_register_ABI": false,
+        "Original_query_executed": false,
+        "game_validated": false,
+        "qualification": "Borrowed actual16h endpoint prefixes; real Source manager/lock/edge providers;12 forwarded real Win32 lock events; no enclosing class/private Original FH3/SEH claim."
+      }
+    },
+    {
+      "id": "cc12_file_open_raw_entry",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF5020"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_FILE_OPEN_RAW_ENTRY.md",
+        "reports/cc12_file_open_raw_entry.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "reviewed_complete_additional_literal10B_raw_entry_production_COFF_and_build_checked_runtime_unexecuted",
+      "worker_commit": "3fc9d7ea624731ad8619252ba7ba8b8d6821896c",
+      "contract": {
+        "coverage": "additional_raw_entry_interface_complete_original_body",
+        "additional_raw_interfaces": 1,
+        "new_Original_functions": 0,
+        "target_runtime_executed": false,
+        "qualification": "Stable actual backing with live aligned DWORD+8; compare onlyFFFFFFFF; whole literal10-byte zero-relocation body; no source class/table/producer/lifetime/tail-dispatch qualification."
+      }
     }
   ],
   "snapshot_after_analysis": {

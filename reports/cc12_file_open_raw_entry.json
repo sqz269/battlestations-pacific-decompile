@@ -1,0 +1,251 @@
+{
+  "packet": "cc12_file_open_raw_entry",
+  "created_utc": "2026-10-08T06:22:40.556011+00:00",
+  "tested_base_commit": "5fbed2c31c3f8425497388ad066b95cf96b4a7c9",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "coverage_accounting": "One additional raw entry interface for existing Original BF5020; zero new Original functions reconstructed.",
+  "functions": [
+    {
+      "address": "00bf5020",
+      "name": "raw_valid_native_physical_stream_00bf5020",
+      "source": "src/native_physical_stream_open.cpp",
+      "header": "include/bsp/native_physical_stream_open.hpp",
+      "coverage": "complete",
+      "name_is_hypothesis": true,
+      "status": "complete_literal_production_COFF_byte_proved_raw_entry_native_runtime_unexecuted",
+      "original_abi": "ECX actual backing; unused incoming EDX; no stack arguments; full EAX 0 or 1; plain RET.",
+      "source_declaration": "std::uint32_t __fastcall raw_valid_native_physical_stream_00bf5020(const void*, std::uint32_t) noexcept",
+      "source_definition": "MSVC Win32 __declspec(naked); four literal assembly instructions.",
+      "span": {
+        "entry": "00bf5020",
+        "inclusive_end": "00bf5029",
+        "exclusive_end": "00bf502a",
+        "bytes": 10,
+        "sha256": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636",
+        "hex": "33c0837908ff0f95c0c3",
+        "live_Ghidra_installed_PE_literal_equal": true
+      },
+      "whole_production_COFF": {
+        "symbol": "?raw_valid_native_physical_stream_00bf5020@bsp@@YIIPBXI@Z",
+        "section": 43,
+        "offset": 0,
+        "bytes": 10,
+        "sha256": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636",
+        "hex": "33c0837908ff0f95c0c3",
+        "relocations": [],
+        "instruction_count": 4,
+        "complete_decode": true,
+        "disassembly": [
+          {
+            "offset": 0,
+            "bytes": "33c0",
+            "instruction": "xor eax, eax"
+          },
+          {
+            "offset": 2,
+            "bytes": "837908ff",
+            "instruction": "cmp dword ptr [ecx + 8], -1"
+          },
+          {
+            "offset": 6,
+            "bytes": "0f95c0",
+            "instruction": "setne al"
+          },
+          {
+            "offset": 9,
+            "bytes": "c3",
+            "instruction": "ret"
+          }
+        ],
+        "machine": "014C",
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj"
+      },
+      "literal_live_Ghidra_installed_PE_production_COFF_equal": true,
+      "no_calls": true,
+      "no_globals": true,
+      "relocations": [],
+      "full_original_body_comparison_not_a_slice": true,
+      "existing_ordinary_helper_preserved": "valid_native_physical_stream_00bf5020(const void*)",
+      "evidence": [
+        "docs/CC12_FILE_OPEN_RAW_ENTRY.md",
+        "local/cc12_file_open_raw_entry_20261008a/sealed_proof.json"
+      ]
+    }
+  ],
+  "host_steps": [],
+  "admission": {
+    "required": "Stable actual backing with genuinely live aligned HANDLE DWORD at +8h.",
+    "predicate": "Only FFFFFFFF returns full EAX zero; every other DWORD including zero returns full EAX one.",
+    "backing_writes": false,
+    "OS_validity_query": false,
+    "class_or_profile_admission": false,
+    "source_vtable_or_taildispatch_admission": false,
+    "producer_or_lifetime_admission": false,
+    "limits": [
+      "No fault equivalence",
+      "No concurrent mutation",
+      "No constructed source class/vtable",
+      "No producer or lifetime qualification",
+      "No BF1090/BF10E0 composition",
+      "No game/world validation"
+    ]
+  },
+  "verification": {
+    "Ghidra_read_only": true,
+    "complete_live_installed_span": true,
+    "complete_production_COFF_match": true,
+    "fastcall_symbol": "?raw_valid_native_physical_stream_00bf5020@bsp@@YIIPBXI@Z",
+    "declaration_and_definition_ABI_checked": true,
+    "production_object": {
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+      "sha256": "af9a460f82ff77fdf6a80f6af57e41575d6eafe256e8e08cb3af07abdb89a601",
+      "machine": "014C",
+      "code_sections": 46,
+      "code_bytes": 3456,
+      "ordered_relocations": 132,
+      "functions": 46
+    },
+    "production_archive_exact_object_membership": [
+      {
+        "member_header_offset": 57932106,
+        "raw_name": "/69438",
+        "member_size": 21433
+      }
+    ],
+    "archive_object_match_count": 1,
+    "current_Source_header_pre_post_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_physical_stream_open.cpp",
+        "sha256_pre": "fcd64c910034e4e27c22b86d040d3386002eebe7fb3441182b24f2d241cf3f22",
+        "sha256_post": "fcd64c910034e4e27c22b86d040d3386002eebe7fb3441182b24f2d241cf3f22"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_physical_stream_open.hpp",
+        "sha256_pre": "bd4b946f598c6e924c064d2822372db177c8220ae692b9cc66b5a236fef5fee9",
+        "sha256_post": "bd4b946f598c6e924c064d2822372db177c8220ae692b9cc66b5a236fef5fee9"
+      }
+    ],
+    "compiler_consumed_input_count": 202,
+    "compiler_consumed_set_unchanged": true,
+    "all_pre_post_input_hashes_equal": true,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "exit_code": 0,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "log": "local/cc12_file_open_raw_entry_20261008a/build.log"
+    },
+    "new_tests": 0,
+    "new_native_fixture_family": false,
+    "historical_fixture_replay": false,
+    "Original_BF5020_executed": false,
+    "raw_Source_BF5020_executed": false,
+    "entry_native_runtime_qualified": false,
+    "existing_CTest_scope": "Normal reconstructed_math, native_math_differential and tool_tests pass; no BF5020 entry execution claim.",
+    "result": "Complete byte-proved entry; native runtime qualification unperformed.",
+    "report_call_check": {
+      "checked": 0,
+      "failed": 0,
+      "reason": "The whole raw body contains no calls.",
+      "log": "local/cc12_file_open_raw_entry_20261008a/report_calls.log"
+    }
+  },
+  "build_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+      "sha256": "af9a460f82ff77fdf6a80f6af57e41575d6eafe256e8e08cb3af07abdb89a601"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "ff96d3fc4fe7309ca70818aa602d89d03d78885a40f44d9a57e74aee148506e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+      "sha256": "c3d61b4d69ffb7db9e0ced34a1aba62ae6e4c9aedb4790b02189d81987540da0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+      "sha256": "a7923d41f4d7666a59b3796264f32f41a781444ac394ae4789f00e369cb792fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.vcxproj",
+      "sha256": "50acd1eb2d8fd4d639aa97b5f8999a1d4003e9fe4b53d831360c866f8909956f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_math_tests.exe",
+      "sha256": "e42d0d3adc1c42d6a2dbac8aaa23090734da8e72645422ef920f3eb12c0e9ecc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_native_math_tests.exe",
+      "sha256": "02b527ffde3117f5f062e509a3ad0fba345a18e35d1b1ecc7e601a92948cdb5b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_game.exe",
+      "sha256": "3024276d2041436da6100e88b50619fad9517d48cc7566c9803a68f99316cb62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_file_open_raw_entry_20261008a\\build.log",
+      "sha256": "68e04ca940fb4bfc836a7e2739f6655e757f1208e9b3ffe786f81df3346d9db7"
+    }
+  ],
+  "owned_tracked_files": [
+    "include/bsp/native_physical_stream_open.hpp",
+    "src/native_physical_stream_open.cpp",
+    "docs/CC12_FILE_OPEN_RAW_ENTRY.md",
+    "reports/cc12_file_open_raw_entry.json"
+  ],
+  "shared_changes": {
+    "CMake": false,
+    "ledgers": false,
+    "Ghidra_mutations": false
+  },
+  "contract_document_sha256": "807703926a8315b84e0866c38c90fc3f93c170e52bcf9b37dfe19467803ff6af",
+  "artifacts_sha256": {
+    "local/cc12_file_open_raw_entry_20261008a/00BF5020.bin": "0a032cb89a32866d6ebcd61d725e5a5cf50356630344759f0d564fd74cd57636",
+    "local/cc12_file_open_raw_entry_20261008a/build.log": "68e04ca940fb4bfc836a7e2739f6655e757f1208e9b3ffe786f81df3346d9db7",
+    "local/cc12_file_open_raw_entry_20261008a/coff_reader.py": "d6dba11d4b6eb96d7fdab4e1ebb0588857ec3c242c7ae23d16cf2a79ead47d49",
+    "local/cc12_file_open_raw_entry_20261008a/commit_message.txt": "26e8efe13a9a7b9999bcb17d22d3846b73a1f421847d46fd83916a2b4a997b37",
+    "local/cc12_file_open_raw_entry_20261008a/inputs_pre.json": "94255590abb8b77acdf0fead2ca378817060cf1bedcd2bcd50ab95a6aaa28b14",
+    "local/cc12_file_open_raw_entry_20261008a/original_assembly.log": "66dc3e941fc6c566c869fab47d76bcdf0d7d6c083fc1e6c4baac698a59f64106",
+    "local/cc12_file_open_raw_entry_20261008a/original_bytes.log": "5d8eeed9b0d792ebda1bd0ff22c1a98232c4cd22c077c38b536cdabc591829cb",
+    "local/cc12_file_open_raw_entry_20261008a/proof.py": "6f7c0b95c7d0905320f3c4a35e890ab645b315ff311ba79cd40d11318d5d5fcc",
+    "local/cc12_file_open_raw_entry_20261008a/report.py": "22181a252d4d92432c3a0b19ecabcbe5c33ead0a05bc68f0dd531c64fc1730de",
+    "local/cc12_file_open_raw_entry_20261008a/report_calls.log": "1e536963716f7d7774faabf93c9df99fed7e721dba116d6a26bcda94a5a53c4e",
+    "local/cc12_file_open_raw_entry_20261008a/sealed_proof.json": "c852b1527c1fbf95067eaecf053b942f1845c698d76b2d55a60818b5f864e62a",
+    "local/cc12_file_open_raw_entry_20261008a/target_proto.log": "41398ff9b788d6cfc66e398a9e55fa4fca31e8cd55a84608bf852c2eb1a8d576",
+    "local/cc12_file_open_raw_entry_20261008a/target_status.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "primary_integration_review": {
+    "complete_live_Original_listing_independently_read": "4 instructions,10bytes",
+    "whole_installed_Original_and_primary_production_COFF_bytes_rechecked": 10,
+    "production_object_sha256": "e929ad34bda65ecde0f192238d30cf195a29b95519cf5056404ac77794ebaebf",
+    "no_calls_globals_or_relocations": true,
+    "worker_current_inputs_rehashed": 212,
+    "worker_artifact_pins_rehashed": 13,
+    "integrated_current_Source_header_pins_equal_worker": true,
+    "existing_CTests_passed": 3,
+    "integration_build_log": "local/cc12_observer_file_open_integration_build.txt",
+    "Original_or_Source_target_runtime_executed": false,
+    "new_Original_reconstructions": 0,
+    "accepted_scope": "Additional raw memory-domain register entry only; stable live aligned DWORD+8 backing. No class/table/producer/lifetime/tail-dispatch claim.",
+    "integration_build_log_sha256": "4efcd36457aa8a4629dd727116430f71f5a35260b1f133da78e9dfa7d2337d0a"
+  }
+}
