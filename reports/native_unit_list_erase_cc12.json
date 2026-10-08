@@ -1615,5 +1615,87 @@
     "Arbitrary binary drop-in compatibility",
     "Root independent fixture/full build/CTest until integration",
     "Startup and gameplay"
-  ]
+  ],
+  "primary_integration": {
+    "source_revision": "e5cd605ecc8d9decd0e075c0740a1dd4cfbbc2f6",
+    "build_source_revision": "e5cd605ecc8d9decd0e075c0740a1dd4cfbbc2f6",
+    "worker_commit": "a8a406e0578b1b032688343443da49ca4cc2806e",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "J:/PROG/battlestations-pacific-decompile/local/cc12_raw_unit_list_erase_integrated_build.log",
+    "build_log_sha256": "d9017e2374af8ab7e0a3c3888331a323416e7cc5c0f3041bee0d745713974c23",
+    "core_context_only": {
+      "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "sha256": "81f6bd3def0dee5e5015a7908bbe6a83513c9fbd2103ea774a7567cc60af52fc"
+    },
+    "independent_family": "local/cc12_raw_unit_list_erase_primary20261008a",
+    "independent_seal_sha256": "36af814e5a8d8f9e1c5a88516ea20a85c1daa50a5fa77d974426fd824ab281b3",
+    "independent_static_gate_sha256": "51088f2415d5aa54919fb5537b495c7dc7c50f2e437878a51f739ec35a8b2c15",
+    "independent_runtime_sha256": "011e6b227dbd6e0569a00b8256a81a8052cea62331e1298d4aaf498fc61139ac",
+    "independent_post_sha256": "8851182b0be09dc735546647e05c8d59a8615ec7c35a7c53c9e544c53e8479f1",
+    "accepted_processes": 1,
+    "fresh_translation_units": 4,
+    "BSP_archives_linked": 0,
+    "old_objects_linked": 0,
+    "new_tracked_tests": 0,
+    "producer_entries": 9,
+    "actual_allocations": 9,
+    "erase_dispositions": 9,
+    "complete_runtime_code_spans": 10,
+    "prior_artifacts_unchanged": 574,
+    "original_append_reexecutions": 0,
+    "old_recipes_replayed": false,
+    "native_bytes": 79,
+    "native_instructions": 31,
+    "qualified_CALL_operand_bytes": 8,
+    "Source_provider_glue_native_credit": 0,
+    "complementary_payload_words": [
+      [
+        4041331395,
+        2309737967,
+        1432778632,
+        4286611201
+      ],
+      [
+        19088743,
+        2774154435,
+        4275878552,
+        2155806975
+      ],
+      [
+        3778378239,
+        610839680,
+        3735928559,
+        3405691582
+      ],
+      [
+        253635900,
+        3066550505,
+        287502079,
+        860146909
+      ]
+    ],
+    "unused_EDX_poison": "89ABCDEF",
+    "caller_guard_byte": "B6",
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "qualification": "Whole raw erase[004837D0,0048381F),79B31,2 genuine free CALLs. Source COFF and unique linked body preserve all71 bytes outside operand ranges43..46 and66..69. Both actual CALLs bind complete fresh current canonical free6B1/JMP actual free import; no adapter/provider callback/substitute heap or companion nodes. Original79 is explicitly canonical-current-CRT-bound only by those same eight CALL operand bytes to the same actual linked free, not private original-CRT execution. Raw entry ECX actual stable aligned12-byte caller root{count,head,tail}; one actual owned coherent append-produced12-byte node{prev,next,payload} at entryESP+4; incoming EDX unused padding; RET4/EAX captured pre-free successor or0. Payload borrowed and never read/destroyed by erase. Fresh prev/next loads, link/count/tail ordering, ESI save/restore and both returning epilogues remain literal. Final arithmetic flags arise from ADD ESP4, not count decrement; for actual raw pre-target argument-top ESP=T, free-return ESP=T-12 and final result=T-8. Nonvolatile GPRs and stack checked; volatile ECX/EDX recorded but unasserted across real free. No blanket FP/DF/ES claim across CRT; valid CRT entry DF0. Independent fresh four-TU main fixture uses newly compiled accepted Source append87/current size adapter61/current allocator90 as genuine producer; old Original append is never reexecuted. One new process, nine actual allocations/nine erase dispositions: Original and Source middle/head/tail/singleton phases plus ordinary Source singleton, same actual root/borrowed payload identities and caller frame, fresh node addresses need not equal. Only live surviving nodes are read after erase; all actual links/count/head/tail/payload identities/successor and declared guards pass. Actual mapped I386 malloc/free/_callnewh IAT/export/module physical-file/full SHA/prefix gates precede all producer/erase entries and match afterward. Ten complete live code spans include the security-cookie helper. Normal valid current-heap ownership only; null/wrong-member/double-free guards are not added, invalid heaps and failure/handler/reentry not tested, no historical CRT/EH or owning parent/class/world/gameplay admission. Full main Win32/all3 existing checks PASS, no BSP archives or old objects or new tracked tests; all prior families unchanged and never replayed."
+  },
+  "primary_source_status": "complete whole79B31 raw erase Source integrated; both canonical current-heap free operands qualified; independent complementary strict4TU fixture and Win32/all3 existing checks PASS",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T100557Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T100557Z.json": "da19cfae23773734b1b46a7e9485fdca021dca00aa4445d89bba68fdbaf79ee0",
+      "local/cc12_raw_unit_list_erase_source_annotations.log": "28aaee6931894a36675147f9965fc25595bd6cd562bcd404a980baa26e4a0213",
+      "local/cc12_raw_unit_list_erase_source_exports.log": "41b9a8d1705263c1d5e808cf9fb46d1978c051b94ff3ae1c17293df597efbdf6",
+      "local/cc12_raw_unit_list_erase_source_snapshot.log": "29e4ec923e33a665ed69a776caedda09a5770d9c86ccfc6278ef16a15e161846"
+    }
+  }
 }
