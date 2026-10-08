@@ -1,0 +1,1619 @@
+{
+  "schema": 1,
+  "packet": "cc12_raw_unit_list_erase_004837d0",
+  "status": "worker_whole_Source_reconstructed_strict_four_TU_build_and_bounded_current_CRT_fixture_passed_pending_Root_integration",
+  "qualification": "Whole79B31 raw erase with two direct canonical free calls; no adapter. Actual nodes produced by fresh unchanged accepted append Source. Current-free normal domain only; no original private-CRT/EH, parent/class/world, startup or gameplay admission.",
+  "frozen_component_base": "2642b8c129ff3a16123fa2b636fa9010f2cf2235",
+  "native": {
+    "address": "004837D0",
+    "end_exclusive": "0048381F",
+    "whole_bytes": 79,
+    "whole_instructions": 31,
+    "SHA256": "0909c4202ea2816202a70c2f3dc821e0512f88069d0377378aa1adb85f3f1fc2",
+    "CALL_sites": [
+      "004837FA",
+      "00483811"
+    ],
+    "native_free_target": "00BF65AC",
+    "relocated_operand_offsets": [
+      43,
+      66
+    ],
+    "changed_operand_bytes": 8,
+    "unchanged_bytes": 71,
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "saved_program_target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "before_after_erase_and_append_bytes_equal": true
+  },
+  "Root_analysis_repair": {
+    "readiness_report": "reports/cc12_raw_unit_list_erase_readiness.json",
+    "both_returning_epilogues_restored": true,
+    "complete_saved_body79B31": true,
+    "two_CALL_RETURN_overrides_cleared": true,
+    "inferred_prototype": "void * __thiscall FUN_004837d0(void * this, void * actual_node)",
+    "implicit_ECX_receiver_and_one_explicit_node": true,
+    "first_duplicate_receiver_attempt_retained_but_not_admitted": true,
+    "original_bytes_and_global_free_metadata_unchanged": true,
+    "worker_Ghidra_mutations": 0
+  },
+  "source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_erase.cpp",
+    "size": 1827,
+    "sha256": "12c11322bb95e3bab5edc823508393fd2801f96e2fa47f8745896eea0f81859d"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\include\\bsp\\native_unit_list_erase.hpp",
+    "size": 1086,
+    "sha256": "b0e6d91de2fc8979f012731a859eee5f6085426278d0578a43010b6496b7fefd"
+  },
+  "accepted_append": {
+    "accepted_commit": "ed2b720361a01bf52da0a232cb22989afa217472",
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_append.cpp",
+      "size": 2447,
+      "sha256": "219c9858a34beeb08759c8c9b05ffc515d683e72c24389be0adb1a89b953d369"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\include\\bsp\\native_unit_list_append.hpp",
+      "size": 1105,
+      "sha256": "bda5ad0e705a5c0bdc9a9385ae23fb92b13c89d427eee18a61ed35024a0d9983"
+    },
+    "freshly_compiled_for_this_family": true,
+    "old_objects_or_Original_append_executions": 0,
+    "additional_native_credit": 0
+  },
+  "canonical": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\include\\bsp\\singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    "new_free_adapter": false,
+    "additional_native_credit": 0
+  },
+  "ABI": {
+    "Source_signature": "void* __fastcall erase_native_unit_list_004837d0(void* actual_list_ecx, void* unused_edx, void* actual_node) noexcept",
+    "entry": "Actual coherent root ECX; unused EDX padding; one actual owned node stack DWORD",
+    "root_offsets": {
+      "count": 0,
+      "head": 4,
+      "tail": 8
+    },
+    "node_offsets": {
+      "previous": 0,
+      "next": 4,
+      "borrowed_payload": 8
+    },
+    "return": "EAX actual pre-free successor or0; RET4; preserve nonvolatile GPRs",
+    "volatile_outputs": [
+      "ECX",
+      "EDX"
+    ],
+    "final_flags": "CF/PF/AF/ZF/SF/OF from final ADD ESP,4 after actual free; never from count decrement",
+    "stack_relation": "Raw caller beforeESP=T; after target CALL/save ESI/push free argument and free return, ESP=T-12; final ADD4 result=T-8; target RET4 returns afterESP=T+4",
+    "no_post_free_node_reads": true,
+    "DF0_entry": true,
+    "blanket_FP_DF_ES_preservation": false,
+    "valid_domain": "Actual coherent live owned node produced by accepted append/current canonical allocation, valid normal canonical free; borrowed root/payload lifetime remains caller owned"
+  },
+  "static_gate": {
+    "passed": true,
+    "erase_exact_relocations": [
+      {
+        "offset": 43,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 12,
+        "target": {
+          "address": 587207248,
+          "section": "0001",
+          "offset": 592,
+          "provenance": "f   canonical.obj"
+        },
+        "object_addend": 0,
+        "linked_operand": 545
+      },
+      {
+        "offset": 66,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 12,
+        "target": {
+          "address": 587207248,
+          "section": "0001",
+          "offset": 592,
+          "provenance": "f   canonical.obj"
+        },
+        "object_addend": 0,
+        "linked_operand": 522
+      }
+    ],
+    "all_71_other_bytes_literal": true,
+    "unique_linked_occurrences": {
+      "erase": [
+        587206656
+      ],
+      "append": [
+        587206800
+      ]
+    },
+    "fresh_counts_derived_from_own_artifacts": true,
+    "complete_runtime_spans": [
+      {
+        "symbol": "?erase_native_unit_list_004837d0@bsp@@YIPAXPAX00@Z",
+        "address": 587206656,
+        "size": 79,
+        "instructions": 31,
+        "linked_SHA256": "5d897cfba8ccfcabcb791bb10cb8661ddaaf1620ca4d485656e45c23e4c33ac5",
+        "COFF_relocations": [
+          {
+            "offset": 43,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_index": 12
+          },
+          {
+            "offset": 66,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_index": 12
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "?append_native_unit_list_00484540@bsp@@YIPAXPAX00@Z",
+        "address": 587206800,
+        "size": 87,
+        "instructions": 36,
+        "linked_SHA256": "bcb038245e1f63748929f9943b7fbaf19388810e7162933bcb5097f97d9111ab",
+        "COFF_relocations": [
+          {
+            "offset": 7,
+            "type": 20,
+            "symbol": "?allocate_native_unit_list_bytes@?A0xcfa1ff25@bsp@@YAPAXI@Z",
+            "symbol_index": 17
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "?allocate_native_unit_list_bytes@?A0xcfa1ff25@bsp@@YAPAXI@Z",
+        "address": 587206736,
+        "size": 61,
+        "instructions": 17,
+        "linked_SHA256": "32fc082074fd9018b6df2fa4b23fafbe64dfce11c0fb830c20a7a0692282cd39",
+        "COFF_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "___security_cookie",
+            "symbol_index": 19
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "symbol_index": 16
+          },
+          {
+            "offset": 53,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_index": 18
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": 587207152,
+        "size": 90,
+        "instructions": 34,
+        "linked_SHA256": "2f044113020ed7c0b10db255a5bf2f9e68dca53dc4cdc5dd669a390dbbd327ee",
+        "COFF_relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__imp__malloc",
+            "symbol_index": 254
+          },
+          {
+            "offset": 30,
+            "type": 6,
+            "symbol": "__imp___callnewh",
+            "symbol_index": 252
+          },
+          {
+            "offset": 70,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ",
+            "symbol_index": 295
+          },
+          {
+            "offset": 75,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@",
+            "symbol_index": 417
+          },
+          {
+            "offset": 85,
+            "type": 20,
+            "symbol": "__CxxThrowException@8",
+            "symbol_index": 328
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 587207248,
+        "size": 6,
+        "instructions": 1,
+        "linked_SHA256": "69a21f000e7aedb0eb9052e41d15e39ee8657dd8eaf4b788ea476ed62d45729c",
+        "COFF_relocations": [
+          {
+            "offset": 2,
+            "type": 6,
+            "symbol": "__imp__free",
+            "symbol_index": 253
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "_ordinary_erase_call",
+        "address": 587216192,
+        "size": 18,
+        "instructions": 5,
+        "linked_SHA256": "851af50e39db847ebf56c164e34479a0b6295f3021cc420c4e58f83d142daadd",
+        "COFF_relocations": [
+          {
+            "offset": 13,
+            "type": 20,
+            "symbol": "?erase_native_unit_list_004837d0@bsp@@YIPAXPAX00@Z",
+            "symbol_index": 160
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "_producer_append_call",
+        "address": 587216272,
+        "size": 16,
+        "instructions": 5,
+        "linked_SHA256": "0e38e5d881d3dc682679bebeef2b8e4d98e8590d93be3b72613540a36195998a",
+        "COFF_relocations": [
+          {
+            "offset": 11,
+            "type": 20,
+            "symbol": "?append_native_unit_list_00484540@bsp@@YIPAXPAX00@Z",
+            "symbol_index": 161
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "_raw_erase_capture",
+        "address": 587216288,
+        "size": 140,
+        "instructions": 52,
+        "linked_SHA256": "308028e94e9dd933f89481398bdda7e59b6ff0301e474a851657371b3e2c3346",
+        "COFF_relocations": [],
+        "library_origin": null
+      },
+      {
+        "symbol": "??0bad_alloc@std@@QAE@XZ",
+        "address": 587206944,
+        "size": 24,
+        "instructions": 6,
+        "linked_SHA256": "b23a5178d4157796191a141efd2a35ab5b574ec32c63c2fbc04afa8c038c0e7c",
+        "COFF_relocations": [
+          {
+            "offset": 13,
+            "type": 6,
+            "symbol": "??_C@_0P@GHFPNOJB@bad?5allocation@",
+            "symbol_index": 392
+          },
+          {
+            "offset": 19,
+            "type": 6,
+            "symbol": "??_7bad_alloc@std@@6B@",
+            "symbol_index": 389
+          }
+        ],
+        "library_origin": null
+      },
+      {
+        "symbol": "@__security_check_cookie@4",
+        "address": 587216480,
+        "size": 14,
+        "instructions": 4,
+        "linked_SHA256": "6122eaeb5b631e7bc2766a56a671fb29a87beeef01bcdfeb94d196d700ebee4c",
+        "COFF_relocations": [],
+        "library_origin": "Actual resolved MSVCRT secchk.obj; library pinned with whole EXE"
+      }
+    ],
+    "COFF_linked_complete_validation": "First nine bodies: all nonrelocated bytes plus all resolved relocations. Tenth cookie helper: complete reachable linked CFG, actual resolved MSVCRT secchk.obj and whole library/EXE pins.",
+    "cookie_helper_in_runtime_bookends": true,
+    "manifest": {
+      "level": "asInvoker",
+      "uiAccess": "false"
+    }
+  },
+  "build": {
+    "TUs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_erase.cpp",
+        "size": 1827,
+        "sha256": "12c11322bb95e3bab5edc823508393fd2801f96e2fa47f8745896eea0f81859d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_append.cpp",
+        "size": 2447,
+        "sha256": "219c9858a34beeb08759c8c9b05ffc515d683e72c24389be0adb1a89b953d369"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\probe.cpp",
+        "size": 30236,
+        "sha256": "a65d70cac817772d525db1fc38918602f71023c93b88aa1e860ee32625d24989"
+      }
+    ],
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\erase.obj",
+        "size": 1259,
+        "sha256": "e87f1d8d3130bab19b1b60e42f5edbb462db09b5b66b9b0137a433342c7a6c8f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\append.obj",
+        "size": 1738,
+        "sha256": "ea086b20a08cb842d19f1a273d2b7acc8b374c889fb54ab3b563a0898e81193a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\canonical.obj",
+        "size": 36859,
+        "sha256": "f4277b5e80a90431e9c631b773e124038c0ca76e300615dcc14e3046db6a8b5f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\probe.obj",
+        "size": 32389,
+        "sha256": "d7536ad0ed37fe7c6b4d2742c21125fce0a8cda94bb98052f1902aa7408032bd"
+      }
+    ],
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\raw_erase_probe.exe",
+      "size": 22016,
+      "sha256": "e28071724a9694433f1356a12407607ad4d29d8c07d0d0ef6febd0795adc793e"
+    },
+    "strict_flags": [
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/permissive-",
+      "/EHsc",
+      "/Gy",
+      "/GL-"
+    ],
+    "accepted_compiles_per_TU": 1,
+    "accepted_link_attempts": 1,
+    "failed_compile_link_stages": 0,
+    "consumed_headers": 185,
+    "resolved_libraries": 7,
+    "candidate_headers_including_extensionless": 7105,
+    "candidate_libraries": 540,
+    "BSP_archives": 0,
+    "old_objects": 0,
+    "new_tracked_tests": 0,
+    "full_project_build_and_CTests": "Root owns after integration"
+  },
+  "fixture": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a",
+    "accepted_processes": 1,
+    "failed_processes": 0,
+    "producer_entries_before_CRT_gate": 0,
+    "erase_entries_before_CRT_gate": 0,
+    "actual_producer_entries": 9,
+    "genuine_allocations": 9,
+    "actual_erase_entries": 9,
+    "erase_dispositions": 9,
+    "phases": [
+      "Fresh Source append4 -> Original erase middle/head/tail/singleton",
+      "Fresh Source append4 -> Source erase middle/head/tail/singleton",
+      "Fresh Source append1 -> ordinary Source erase singleton"
+    ],
+    "same_actual_root": 1731376,
+    "same_actual_borrowed_payloads": [
+      1748336,
+      1748352,
+      1748368,
+      1748384
+    ],
+    "same_actual_root_payloads_and_raw_caller_frame": true,
+    "fresh_node_addresses_not_required_equal": true,
+    "caller_declared_guards_unchanged": true,
+    "payload_bytes_unchanged": true,
+    "producer_observations": [
+      {
+        "root_before": [
+          0,
+          0,
+          0
+        ],
+        "returned_payload": 1748336,
+        "actual_allocation": 7490928,
+        "after": {
+          "root": [
+            1,
+            7490928,
+            7490928
+          ],
+          "surviving_count": 1,
+          "survivors": [
+            {
+              "actual_node": 7490928,
+              "words": [
+                0,
+                0,
+                1748336
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          1,
+          7490928,
+          7490928
+        ],
+        "returned_payload": 1748352,
+        "actual_allocation": 7491168,
+        "after": {
+          "root": [
+            2,
+            7490928,
+            7491168
+          ],
+          "surviving_count": 2,
+          "survivors": [
+            {
+              "actual_node": 7490928,
+              "words": [
+                0,
+                7491168,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491168,
+              "words": [
+                7490928,
+                0,
+                1748352
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          2,
+          7490928,
+          7491168
+        ],
+        "returned_payload": 1748368,
+        "actual_allocation": 7490592,
+        "after": {
+          "root": [
+            3,
+            7490928,
+            7490592
+          ],
+          "surviving_count": 3,
+          "survivors": [
+            {
+              "actual_node": 7490928,
+              "words": [
+                0,
+                7491168,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491168,
+              "words": [
+                7490928,
+                7490592,
+                1748352
+              ]
+            },
+            {
+              "actual_node": 7490592,
+              "words": [
+                7491168,
+                0,
+                1748368
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          3,
+          7490928,
+          7490592
+        ],
+        "returned_payload": 1748384,
+        "actual_allocation": 7490832,
+        "after": {
+          "root": [
+            4,
+            7490928,
+            7490832
+          ],
+          "surviving_count": 4,
+          "survivors": [
+            {
+              "actual_node": 7490928,
+              "words": [
+                0,
+                7491168,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491168,
+              "words": [
+                7490928,
+                7490592,
+                1748352
+              ]
+            },
+            {
+              "actual_node": 7490592,
+              "words": [
+                7491168,
+                7490832,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7490832,
+              "words": [
+                7490592,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          0,
+          0,
+          0
+        ],
+        "returned_payload": 1748336,
+        "actual_allocation": 7491000,
+        "after": {
+          "root": [
+            1,
+            7491000,
+            7491000
+          ],
+          "surviving_count": 1,
+          "survivors": [
+            {
+              "actual_node": 7491000,
+              "words": [
+                0,
+                0,
+                1748336
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          1,
+          7491000,
+          7491000
+        ],
+        "returned_payload": 1748352,
+        "actual_allocation": 7491024,
+        "after": {
+          "root": [
+            2,
+            7491000,
+            7491024
+          ],
+          "surviving_count": 2,
+          "survivors": [
+            {
+              "actual_node": 7491000,
+              "words": [
+                0,
+                7491024,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491024,
+              "words": [
+                7491000,
+                0,
+                1748352
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          2,
+          7491000,
+          7491024
+        ],
+        "returned_payload": 1748368,
+        "actual_allocation": 7490736,
+        "after": {
+          "root": [
+            3,
+            7491000,
+            7490736
+          ],
+          "surviving_count": 3,
+          "survivors": [
+            {
+              "actual_node": 7491000,
+              "words": [
+                0,
+                7491024,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491024,
+              "words": [
+                7491000,
+                7490736,
+                1748352
+              ]
+            },
+            {
+              "actual_node": 7490736,
+              "words": [
+                7491024,
+                0,
+                1748368
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          3,
+          7491000,
+          7490736
+        ],
+        "returned_payload": 1748384,
+        "actual_allocation": 7491048,
+        "after": {
+          "root": [
+            4,
+            7491000,
+            7491048
+          ],
+          "surviving_count": 4,
+          "survivors": [
+            {
+              "actual_node": 7491000,
+              "words": [
+                0,
+                7491024,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7491024,
+              "words": [
+                7491000,
+                7490736,
+                1748352
+              ]
+            },
+            {
+              "actual_node": 7490736,
+              "words": [
+                7491024,
+                7491048,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7491048,
+              "words": [
+                7490736,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          0,
+          0,
+          0
+        ],
+        "returned_payload": 1748336,
+        "actual_allocation": 7490832,
+        "after": {
+          "root": [
+            1,
+            7490832,
+            7490832
+          ],
+          "surviving_count": 1,
+          "survivors": [
+            {
+              "actual_node": 7490832,
+              "words": [
+                0,
+                0,
+                1748336
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "erase_observations_surviving_nodes_only": [
+      {
+        "root_before": [
+          4,
+          7490928,
+          7490832
+        ],
+        "actual_node": 7491168,
+        "expected_successor": 7490592,
+        "returned_successor": 7490592,
+        "after": {
+          "root": [
+            3,
+            7490928,
+            7490832
+          ],
+          "surviving_count": 3,
+          "survivors": [
+            {
+              "actual_node": 7490928,
+              "words": [
+                0,
+                7490592,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7490592,
+              "words": [
+                7490928,
+                7490832,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7490832,
+              "words": [
+                7490592,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          3,
+          7490928,
+          7490832
+        ],
+        "actual_node": 7490928,
+        "expected_successor": 7490592,
+        "returned_successor": 7490592,
+        "after": {
+          "root": [
+            2,
+            7490592,
+            7490832
+          ],
+          "surviving_count": 2,
+          "survivors": [
+            {
+              "actual_node": 7490592,
+              "words": [
+                0,
+                7490832,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7490832,
+              "words": [
+                7490592,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          2,
+          7490592,
+          7490832
+        ],
+        "actual_node": 7490832,
+        "expected_successor": 0,
+        "returned_successor": 0,
+        "after": {
+          "root": [
+            1,
+            7490592,
+            7490592
+          ],
+          "surviving_count": 1,
+          "survivors": [
+            {
+              "actual_node": 7490592,
+              "words": [
+                0,
+                0,
+                1748368
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          1,
+          7490592,
+          7490592
+        ],
+        "actual_node": 7490592,
+        "expected_successor": 0,
+        "returned_successor": 0,
+        "after": {
+          "root": [
+            0,
+            0,
+            0
+          ],
+          "surviving_count": 0,
+          "survivors": []
+        }
+      },
+      {
+        "root_before": [
+          4,
+          7491000,
+          7491048
+        ],
+        "actual_node": 7491024,
+        "expected_successor": 7490736,
+        "returned_successor": 7490736,
+        "after": {
+          "root": [
+            3,
+            7491000,
+            7491048
+          ],
+          "surviving_count": 3,
+          "survivors": [
+            {
+              "actual_node": 7491000,
+              "words": [
+                0,
+                7490736,
+                1748336
+              ]
+            },
+            {
+              "actual_node": 7490736,
+              "words": [
+                7491000,
+                7491048,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7491048,
+              "words": [
+                7490736,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          3,
+          7491000,
+          7491048
+        ],
+        "actual_node": 7491000,
+        "expected_successor": 7490736,
+        "returned_successor": 7490736,
+        "after": {
+          "root": [
+            2,
+            7490736,
+            7491048
+          ],
+          "surviving_count": 2,
+          "survivors": [
+            {
+              "actual_node": 7490736,
+              "words": [
+                0,
+                7491048,
+                1748368
+              ]
+            },
+            {
+              "actual_node": 7491048,
+              "words": [
+                7490736,
+                0,
+                1748384
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          2,
+          7490736,
+          7491048
+        ],
+        "actual_node": 7491048,
+        "expected_successor": 0,
+        "returned_successor": 0,
+        "after": {
+          "root": [
+            1,
+            7490736,
+            7490736
+          ],
+          "surviving_count": 1,
+          "survivors": [
+            {
+              "actual_node": 7490736,
+              "words": [
+                0,
+                0,
+                1748368
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "root_before": [
+          1,
+          7490736,
+          7490736
+        ],
+        "actual_node": 7490736,
+        "expected_successor": 0,
+        "returned_successor": 0,
+        "after": {
+          "root": [
+            0,
+            0,
+            0
+          ],
+          "surviving_count": 0,
+          "survivors": []
+        }
+      },
+      {
+        "root_before": [
+          1,
+          7490832,
+          7490832
+        ],
+        "actual_node": 7490832,
+        "expected_successor": 0,
+        "returned_successor": 0,
+        "after": {
+          "root": [
+            0,
+            0,
+            0
+          ],
+          "surviving_count": 0,
+          "survivors": []
+        }
+      }
+    ],
+    "raw_captures": [
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          7490592,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7491168,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          7490592,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7490928,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          0,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7490832,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          0,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7490592,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          7490736,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7491024,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          7490736,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7491000,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          0,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7491048,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      },
+      {
+        "before": [
+          270544960,
+          1731376,
+          3285509622,
+          287454020,
+          1730368,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "after": [
+          0,
+          4043682357,
+          0,
+          287454020,
+          1730372,
+          1730388,
+          1432778632,
+          2578103244
+        ],
+        "flags_before": 2775,
+        "flags_after": 514,
+        "argument_slot": 1730368,
+        "actual_node": 7490736,
+        "free_return_ESP": 1730356,
+        "final_ADD_ESP_result": 1730360,
+        "expected_arithmetic_flags": 0
+      }
+    ],
+    "raw_GPR_order": [
+      "EAX",
+      "ECX",
+      "EDX",
+      "EBX",
+      "ESP",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "arithmetic_flags_mask": "0x8D5",
+    "final_flags_observed": [
+      "0x202",
+      "0x202",
+      "0x202",
+      "0x202",
+      "0x202",
+      "0x202",
+      "0x202",
+      "0x202"
+    ],
+    "actual_stack_relation": {
+      "T": 1730368,
+      "free_return_ESP": 1730356,
+      "ADD_ESP_result": 1730360,
+      "after_ESP": 1730372,
+      "expected_arithmetic_flags": 0
+    },
+    "volatile_ECX_observed_unasserted": 4043682357,
+    "no_fabricated_node_count_provider_or_forced_pointer_reuse": true,
+    "survivor_arrays": "Observation oracle of actual remaining allocation pointers only; never target storage/provider state",
+    "no_freed_node_reads": true,
+    "extra_teardown_frees": 0,
+    "original_bound_address": 5570560,
+    "original_bound_hex": "8b4424048b1085d25674088b7004897204eb068b5004895104837804008b1074178b700489168301ff50e82112ab2283c4048bc65ec204008301ff5033f6895108e80a12ab2283c4048bc65ec20400",
+    "original_binding": "Only offsets43..46 and66..69 bind both CALLs to same complete freshly linked canonical free; all other71 bytes unchanged. Current-CRT-bound Original erase, not original private free.",
+    "Original_append_reexecutions": 0,
+    "live_spans": 10,
+    "live_code_and_Original_bookends_equal": true
+  },
+  "CRT_providers": {
+    "before_all_producer_and_erase_entries": true,
+    "gate": "Actual IAT == GetProcAddress == mapped I386 module base + physical export RVA; MEM_IMAGE/allocation base, live/physical PE metadata, mapped/opened NT paths, volume/file identity, full physical SHA256, actual ASLR-adjusted export prefixes; read-only file handles deny write/delete sharing through post check",
+    "preflight": [
+      {
+        "name": "malloc",
+        "import_binding": {
+          "IAT": 587223196,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196896,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "name": "free",
+        "import_binding": {
+          "IAT": 587223204,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 196768,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc"
+      },
+      {
+        "name": "_callnewh",
+        "import_binding": {
+          "IAT": 587223200,
+          "DLL": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        "export_RVA": 569344,
+        "machine": 332,
+        "timestamp": 2161073551,
+        "image_size": 1114112,
+        "physical": {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "size": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+        },
+        "identity": {
+          "volume": 3906787040,
+          "index_high": 327680,
+          "index_low": 2895862,
+          "size_high": 0,
+          "size_low": 1114240,
+          "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        "physical_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0521010ffd6f7d8"
+      }
+    ],
+    "observed": [
+      {
+        "name": "malloc",
+        "IAT_slot": 587223196,
+        "actual_IAT": 1987903776,
+        "actual_export": 1987903776,
+        "module_base": 1987706880,
+        "export_RVA": 196896,
+        "machine": 332,
+        "volume": 3906787040,
+        "file_index_high": 327680,
+        "file_index_low": 2895862,
+        "file_size": 1114240,
+        "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "relocated_live_export_prefix32": "8bff558bec5de905deffffcccccccccccccccccccccccccccccccccccccccccc",
+        "physical_identity_and_export_prefix_before_after_equal": true
+      },
+      {
+        "name": "free",
+        "IAT_slot": 587223204,
+        "actual_IAT": 1987903648,
+        "actual_export": 1987903648,
+        "module_base": 1987706880,
+        "export_RVA": 196768,
+        "machine": 332,
+        "volume": 3906787040,
+        "file_index_high": 327680,
+        "file_index_low": 2895862,
+        "file_size": 1114240,
+        "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "relocated_live_export_prefix32": "8bff558bec51ff7508c745fc000000008b45fce81800000083c4048be55dc3cc",
+        "physical_identity_and_export_prefix_before_after_equal": true
+      },
+      {
+        "name": "_callnewh",
+        "IAT_slot": 587223200,
+        "actual_IAT": 1988276224,
+        "actual_export": 1988276224,
+        "module_base": 1987706880,
+        "export_RVA": 569344,
+        "machine": 332,
+        "volume": 3906787040,
+        "file_index_high": 327680,
+        "file_index_low": 2895862,
+        "file_size": 1114240,
+        "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "mapped_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_NT_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_SHA256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "relocated_live_export_prefix32": "8bff558bec56e855ffffff8bf085f67416ff75088bceff15a0528a76ffd6f7d8",
+        "physical_identity_and_export_prefix_before_after_equal": true
+      }
+    ],
+    "post_equal": true,
+    "WOW64_identity": "Loader DOS path System32 resolves to identical mapped/opened physical SysWOW64 NT path; literal DOS path alone is not used as physical proof",
+    "scope": "Zero target entries precede gate; CRT startup/probe API allocations are separate. No forced OOM, new-handler execution or exception/reentry behavior tested."
+  },
+  "bookends": {
+    "passed": true,
+    "native_before_after_equal": true,
+    "all_sources_tools_headers_libraries_CRT_exe_objects_prior_unchanged": true,
+    "prior_artifacts": 476,
+    "accepted_processes": 1,
+    "fresh_TUs": 4,
+    "original_append_reexecutions": 0,
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_erase.cpp",
+      "size": 1827,
+      "sha256": "12c11322bb95e3bab5edc823508393fd2801f96e2fa47f8745896eea0f81859d"
+    },
+    "header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\include\\bsp\\native_unit_list_erase.hpp",
+      "size": 1086,
+      "sha256": "b0e6d91de2fc8979f012731a859eee5f6085426278d0578a43010b6496b7fefd"
+    },
+    "accepted_append_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\native_unit_list_append.cpp",
+      "size": 2447,
+      "sha256": "219c9858a34beeb08759c8c9b05ffc515d683e72c24389be0adb1a89b953d369"
+    },
+    "canonical_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  },
+  "prior_artifacts": {
+    "total_unchanged": 476,
+    "breakdown": {
+      "older_worker_preservation": 271,
+      "worker_append80_plus_final_seal": 81,
+      "Root_append78_plus_seal": 79,
+      "erase_readiness44_plus_manifest": 45
+    },
+    "components": [
+      {
+        "name": "worker_previous_artifacts",
+        "count": 271
+      },
+      {
+        "name": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_append\\local\\cc12_raw_unit_list_append_worker20261008a",
+        "artifacts": 80,
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_append\\local\\cc12_raw_unit_list_append_worker20261008a\\final_seal.json",
+          "size": 21996,
+          "sha256": "6f9d5b9b28044b4c83df95214b0a171f70f825401839d328ac188525e5778b37"
+        }
+      },
+      {
+        "name": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_raw_unit_list_append_primary20261008b",
+        "artifacts": 78,
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_raw_unit_list_append_primary20261008b\\seal.json",
+          "size": 19519,
+          "sha256": "936656ba18d22beb8557ba09bf36d711db3368e62b1b61b156f67fcaa41a6455"
+        }
+      },
+      {
+        "name": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase_readiness\\local\\cc12_raw_unit_list_erase_readiness_20261008_a",
+        "artifacts": 44,
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase_readiness\\local\\cc12_raw_unit_list_erase_readiness_20261008_a\\artifact_manifest.json",
+          "size": 12633,
+          "sha256": "fd79d898d8523f8c1c4c17ec649d63ad474aee6161d3dfb11856a2b85e436ed5"
+        }
+      }
+    ],
+    "historical_external_main_config_associations_not_repinned": true,
+    "old_recipes_executables_Original_append_replayed": false
+  },
+  "receipt": {
+    "core_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\seal.json",
+      "size": 25736,
+      "sha256": "70f7f076f9509d186a26fa93a271811c2678b68c4fa7adf9bdcb80723b140030"
+    },
+    "core_sealed_artifacts": 94,
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\static_gate.json",
+      "size": 54865,
+      "sha256": "e9369dc69f346e3513aa8178fec9bc9ce470925369a43ae151812eea22c18efe"
+    },
+    "prelaunch_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\prelaunch_review.json",
+      "size": 4876,
+      "sha256": "bc5b4fe5279044cf247e0bc0d76f26b1b3b07e07929a831f7ff7cee8bd15c8ae"
+    },
+    "runtime": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\runtime.json",
+      "size": 19275,
+      "sha256": "a6b21b9282635e373a5c03086b6d2acb568fe1330a23fb6b0660d97548b24691"
+    },
+    "post": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\post.json",
+      "size": 1214,
+      "sha256": "9142181cc7e329c1f6c13f358c1791cd17c1289da861124187a11ec5fe7f1338"
+    },
+    "recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_raw_unit_list_erase\\local\\cc12_raw_unit_list_erase_worker20261008a\\recipe.py",
+      "size": 23375,
+      "sha256": "213dfd5482cfa49c989f574ca4502f32f1380085c8cb00256c8b2b4129262efe"
+    }
+  },
+  "new_native_credit_after_Root_acceptance": {
+    "whole_bodies": 1,
+    "bytes": 79,
+    "instructions": 31,
+    "append_and_glue_increment": 0
+  },
+  "explicitly_unestablished": [
+    "Original private free/CRT/EH identity",
+    "Malformed/null/unowned node behavior",
+    "OOM/new-handler/exception/reentry execution",
+    "Blanket FP/DF/segment preservation across real CRT",
+    "Parent/class/world ownership or native class ABI",
+    "Arbitrary binary drop-in compatibility",
+    "Root independent fixture/full build/CTest until integration",
+    "Startup and gameplay"
+  ]
+}
