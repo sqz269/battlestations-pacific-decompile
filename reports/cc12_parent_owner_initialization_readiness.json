@@ -1,0 +1,700 @@
+{
+  "schema": "bsp.cc12.parent_owner_initialization.report.v1",
+  "packet": "cc12_parent_owner_initialization_readiness",
+  "utc": "2026-10-08T13:10:47.937000+00:00",
+  "baseline": "7c79302e7276263fe41dc079c589920336c7a918",
+  "selection": "Exactly one genuine prior owner frontier004CB030, selected from bounded known-parent/publication metadata and constructor docs; one actual direct caller004DE610.",
+  "status": "UNREADY: whole native owner constructor and real storage/publication phase evidenced; raw callback/iterator/sentinel/EH and owning class lifetime Source prerequisites unclosed",
+  "Source_bodies": 0,
+  "Source_bytes": 0,
+  "ready_Source_packets": 0,
+  "existing_semantic_Source": "Ledger has construct_world_object_004cb030 inworld_construct.cpp; it returns a typed WorldObjectLayout value through a newC++ interface. This does not establish the original ECX/raw-root/EAX/FS/callback/sentinel ABI or owning native class lifetime.",
+  "whole": {
+    "entry": "004CB030",
+    "exclusive_end": "004CB0AE",
+    "bytes": 126,
+    "instructions": 39,
+    "SHA256": "2294a34491aee760a23d8f05b80e88bc1cbcab4445b2a85978d1ad7265ac6028",
+    "hex": "6aff685156c60064a10000000050648925000000005155568bf133edc7068477ce00578974240c896e0c896e10896e1468302d4c0068c07e4b006a616a0c8d461850896c242ce856cc72008dbeb00400008bcfc644241801e8f37fffff8b4c2410894704896f085fc686ac040000018bc65e5d64890d0000000083c410c3",
+    "disassembly": [
+      {
+        "address": "004CB030",
+        "bytes": "6aff",
+        "instruction": "push -1"
+      },
+      {
+        "address": "004CB032",
+        "bytes": "685156c600",
+        "instruction": "push 0xc65651"
+      },
+      {
+        "address": "004CB037",
+        "bytes": "64a100000000",
+        "instruction": "mov eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "004CB03D",
+        "bytes": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": "004CB03E",
+        "bytes": "64892500000000",
+        "instruction": "mov dword ptr fs:[0], esp"
+      },
+      {
+        "address": "004CB045",
+        "bytes": "51",
+        "instruction": "push ecx"
+      },
+      {
+        "address": "004CB046",
+        "bytes": "55",
+        "instruction": "push ebp"
+      },
+      {
+        "address": "004CB047",
+        "bytes": "56",
+        "instruction": "push esi"
+      },
+      {
+        "address": "004CB048",
+        "bytes": "8bf1",
+        "instruction": "mov esi, ecx"
+      },
+      {
+        "address": "004CB04A",
+        "bytes": "33ed",
+        "instruction": "xor ebp, ebp"
+      },
+      {
+        "address": "004CB04C",
+        "bytes": "c7068477ce00",
+        "instruction": "mov dword ptr [esi], 0xce7784"
+      },
+      {
+        "address": "004CB052",
+        "bytes": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": "004CB053",
+        "bytes": "8974240c",
+        "instruction": "mov dword ptr [esp + 0xc], esi"
+      },
+      {
+        "address": "004CB057",
+        "bytes": "896e0c",
+        "instruction": "mov dword ptr [esi + 0xc], ebp"
+      },
+      {
+        "address": "004CB05A",
+        "bytes": "896e10",
+        "instruction": "mov dword ptr [esi + 0x10], ebp"
+      },
+      {
+        "address": "004CB05D",
+        "bytes": "896e14",
+        "instruction": "mov dword ptr [esi + 0x14], ebp"
+      },
+      {
+        "address": "004CB060",
+        "bytes": "68302d4c00",
+        "instruction": "push 0x4c2d30"
+      },
+      {
+        "address": "004CB065",
+        "bytes": "68c07e4b00",
+        "instruction": "push 0x4b7ec0"
+      },
+      {
+        "address": "004CB06A",
+        "bytes": "6a61",
+        "instruction": "push 0x61"
+      },
+      {
+        "address": "004CB06C",
+        "bytes": "6a0c",
+        "instruction": "push 0xc"
+      },
+      {
+        "address": "004CB06E",
+        "bytes": "8d4618",
+        "instruction": "lea eax, [esi + 0x18]"
+      },
+      {
+        "address": "004CB071",
+        "bytes": "50",
+        "instruction": "push eax"
+      },
+      {
+        "address": "004CB072",
+        "bytes": "896c242c",
+        "instruction": "mov dword ptr [esp + 0x2c], ebp"
+      },
+      {
+        "address": "004CB076",
+        "bytes": "e856cc7200",
+        "instruction": "call 0xbf7cd1"
+      },
+      {
+        "address": "004CB07B",
+        "bytes": "8dbeb0040000",
+        "instruction": "lea edi, [esi + 0x4b0]"
+      },
+      {
+        "address": "004CB081",
+        "bytes": "8bcf",
+        "instruction": "mov ecx, edi"
+      },
+      {
+        "address": "004CB083",
+        "bytes": "c644241801",
+        "instruction": "mov byte ptr [esp + 0x18], 1"
+      },
+      {
+        "address": "004CB088",
+        "bytes": "e8f37fffff",
+        "instruction": "call 0x4c3080"
+      },
+      {
+        "address": "004CB08D",
+        "bytes": "8b4c2410",
+        "instruction": "mov ecx, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "004CB091",
+        "bytes": "894704",
+        "instruction": "mov dword ptr [edi + 4], eax"
+      },
+      {
+        "address": "004CB094",
+        "bytes": "896f08",
+        "instruction": "mov dword ptr [edi + 8], ebp"
+      },
+      {
+        "address": "004CB097",
+        "bytes": "5f",
+        "instruction": "pop edi"
+      },
+      {
+        "address": "004CB098",
+        "bytes": "c686ac04000001",
+        "instruction": "mov byte ptr [esi + 0x4ac], 1"
+      },
+      {
+        "address": "004CB09F",
+        "bytes": "8bc6",
+        "instruction": "mov eax, esi"
+      },
+      {
+        "address": "004CB0A1",
+        "bytes": "5e",
+        "instruction": "pop esi"
+      },
+      {
+        "address": "004CB0A2",
+        "bytes": "5d",
+        "instruction": "pop ebp"
+      },
+      {
+        "address": "004CB0A3",
+        "bytes": "64890d00000000",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "004CB0AA",
+        "bytes": "83c410",
+        "instruction": "add esp, 0x10"
+      },
+      {
+        "address": "004CB0AD",
+        "bytes": "c3",
+        "instruction": "ret"
+      }
+    ],
+    "CALLs": [
+      {
+        "address": "004CB076",
+        "opcode_offset": 70,
+        "operand_half_open": [
+          71,
+          75
+        ],
+        "target": "00BF7CD1"
+      },
+      {
+        "address": "004CB088",
+        "opcode_offset": 88,
+        "operand_half_open": [
+          89,
+          93
+        ],
+        "target": "004C3080"
+      }
+    ],
+    "live_PE_before_after_equal": true,
+    "Source": 0
+  },
+  "single_direct_caller": {
+    "entry": "004DE651",
+    "exclusive_end": "004DE6A1",
+    "bytes": 80,
+    "instructions": 23,
+    "SHA256": "92dd57a6b97084101200e8f4c912816679252dbc66fbb59f0097e25ee41b2951",
+    "hex": "68bc040000e8636f710068bc0400008bf85357e88793710083c410897c24243bfb899c249c00000074098bcfe8aec9feffeb0233c06a0183cdff6a018bc889ac24a40000008986cc190000e84f514200",
+    "disassembly": [
+      {
+        "address": "004DE651",
+        "bytes": "68bc040000",
+        "instruction": "push 0x4bc"
+      },
+      {
+        "address": "004DE656",
+        "bytes": "e8636f7100",
+        "instruction": "call 0xbf55be"
+      },
+      {
+        "address": "004DE65B",
+        "bytes": "68bc040000",
+        "instruction": "push 0x4bc"
+      },
+      {
+        "address": "004DE660",
+        "bytes": "8bf8",
+        "instruction": "mov edi, eax"
+      },
+      {
+        "address": "004DE662",
+        "bytes": "53",
+        "instruction": "push ebx"
+      },
+      {
+        "address": "004DE663",
+        "bytes": "57",
+        "instruction": "push edi"
+      },
+      {
+        "address": "004DE664",
+        "bytes": "e887937100",
+        "instruction": "call 0xbf79f0"
+      },
+      {
+        "address": "004DE669",
+        "bytes": "83c410",
+        "instruction": "add esp, 0x10"
+      },
+      {
+        "address": "004DE66C",
+        "bytes": "897c2424",
+        "instruction": "mov dword ptr [esp + 0x24], edi"
+      },
+      {
+        "address": "004DE670",
+        "bytes": "3bfb",
+        "instruction": "cmp edi, ebx"
+      },
+      {
+        "address": "004DE672",
+        "bytes": "899c249c000000",
+        "instruction": "mov dword ptr [esp + 0x9c], ebx"
+      },
+      {
+        "address": "004DE679",
+        "bytes": "7409",
+        "instruction": "je 0x4de684"
+      },
+      {
+        "address": "004DE67B",
+        "bytes": "8bcf",
+        "instruction": "mov ecx, edi"
+      },
+      {
+        "address": "004DE67D",
+        "bytes": "e8aec9feff",
+        "instruction": "call 0x4cb030"
+      },
+      {
+        "address": "004DE682",
+        "bytes": "eb02",
+        "instruction": "jmp 0x4de686"
+      },
+      {
+        "address": "004DE684",
+        "bytes": "33c0",
+        "instruction": "xor eax, eax"
+      },
+      {
+        "address": "004DE686",
+        "bytes": "6a01",
+        "instruction": "push 1"
+      },
+      {
+        "address": "004DE688",
+        "bytes": "83cdff",
+        "instruction": "or ebp, 0xffffffff"
+      },
+      {
+        "address": "004DE68B",
+        "bytes": "6a01",
+        "instruction": "push 1"
+      },
+      {
+        "address": "004DE68D",
+        "bytes": "8bc8",
+        "instruction": "mov ecx, eax"
+      },
+      {
+        "address": "004DE68F",
+        "bytes": "89ac24a4000000",
+        "instruction": "mov dword ptr [esp + 0xa4], ebp"
+      },
+      {
+        "address": "004DE696",
+        "bytes": "8986cc190000",
+        "instruction": "mov dword ptr [esi + 0x19cc], eax"
+      },
+      {
+        "address": "004DE69C",
+        "bytes": "e84f514200",
+        "instruction": "call 0x9037f0"
+      }
+    ],
+    "CALLs": [
+      {
+        "address": "004DE656",
+        "opcode_offset": 5,
+        "operand_half_open": [
+          6,
+          10
+        ],
+        "target": "00BF55BE"
+      },
+      {
+        "address": "004DE664",
+        "opcode_offset": 19,
+        "operand_half_open": [
+          20,
+          24
+        ],
+        "target": "00BF79F0"
+      },
+      {
+        "address": "004DE67D",
+        "opcode_offset": 44,
+        "operand_half_open": [
+          45,
+          49
+        ],
+        "target": "004CB030"
+      },
+      {
+        "address": "004DE69C",
+        "opcode_offset": 75,
+        "operand_half_open": [
+          76,
+          80
+        ],
+        "target": "009037F0"
+      }
+    ],
+    "live_PE_before_after_equal": true,
+    "Source": 0
+  },
+  "caller_zero_origin": {
+    "entry": "004DE634",
+    "exclusive_end": "004DE636",
+    "bytes": 2,
+    "instructions": 1,
+    "SHA256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+    "hex": "33db",
+    "disassembly": [
+      {
+        "address": "004DE634",
+        "bytes": "33db",
+        "instruction": "xor ebx, ebx"
+      }
+    ],
+    "CALLs": [],
+    "live_PE_before_after_equal": true,
+    "Source": 0
+  },
+  "literal_phase_DATA": {
+    "address": "00CE7784",
+    "bytes": 4,
+    "SHA256": "a844dc466308c491ccef3dfce8236bae3329f506274a5e8a429123ed832a7a0b",
+    "hex": "b0b04c00",
+    "DWORD": "004CB0B0",
+    "kind": "Actual native DATA phase word, not fake Source vtable/dispatch/class ownership",
+    "live_PE_before_after_equal": true
+  },
+  "physical_ABI": {
+    "entry": "ECX actual live parent/world root; no stack args; incomingEDX unused as a formal",
+    "root_return": "Full EAX returns original entryECX root via savedESI; plain RET004CB0AD gives returnESP=entryESP+4",
+    "nonvolatiles": "EBP/ESI/EDI explicitly saved/restored; EBX not directly changed; ordinary backend preservation required",
+    "outgoing_ECX": "Actual prior FS exception-chain head restored from stack; not a returned receiver contract",
+    "EDX": "callee-defined/volatile",
+    "ordinary_frame": "EntryESP S; saved EH state/handler/oldFS/root plus EBP/ESI/EDI reachesS-28. Iterator five args reachS-48 and must consume20 bytes; sentinel has no stacked args. After POPs, final ADD ESP10 restoresS and RET restoresS+4.",
+    "FS_EH": "PUSH-1/PUSH00C65651/PUSH oldFS0, setFS0; state0 before iterator/state1 before sentinel; restore oldFS0 on ordinary exit. No EH handler/iterator failure closure recovered.",
+    "flags": "Final ADD ESP10 at004CB0AA defines arithmetic mask8D5 fromS-16 toS; no runtime flags tested; no blanket FP/DF/backend guarantees"
+  },
+  "actual_initialization": {
+    "allocation": "Caller PUSH4BC at004DE651; CALL OriginalBF55BE at004DE656; same actualEAX allocation retained inEDI.",
+    "zero_phase": "EBXzero at004DE634; sameEDI/zero/4BC passed toBF79F0 at004DE664 before ctor, then ADD ESP10 cleans original new size plus three zero-fill arguments. Normal non-null fresh storage phase only; memset precedes null branch.",
+    "ctor_call": "004DE67B MOV ECX,EDI;004DE67D CALL004CB030; no stack ctor word; native plainRET.",
+    "direct_writes": "phaseDWORDCE7784 at+0; zeroDWORDs+C/+10/+14; returned real sentinel at+4B4; zero size+4B8; byte+4AC=1 at end.",
+    "array_descriptor": {
+      "destination": "parent+18",
+      "stride": "0C",
+      "count": "61 (97)",
+      "exclusive_end": "parent+4A4",
+      "constructor": "004B7EC0 PUSH004CB065",
+      "destructor": "004C2D30 PUSH004CB060",
+      "CALL": "004CB076 ->00BF7CD1"
+    },
+    "category1_root": "Index1 is parent+18+1*C=parent+24, spanning+24..+2F. Actual pre-zero storage and real97-element construction descriptor establish the genuine phase; callback instructions/invocation/ownership are not independently admitted in this family.",
+    "literal_phase": "CE7784 is the exact constructor-store ID; actual DATA DWORD004CB0B0 verified separately. No Source dispatch or fabricated vtable supplied.",
+    "sentinel": "Actual4C3080 result used; existing semantic layoutlist_head1 is an opaque projection, not this actual owning heap sentinel.",
+    "inherited_zero": "Ctor does not directly write parent+4/+8,+4A4/+4A8,+4B0. Other backend effects unasserted. World-header postconstructor is separately required for physical+4/+8 phase.",
+    "publication": "004DE696 publishes constructorEAX to actual callerownerESI+19CC before004DE69C world/header postconstructor(root,1,1). Byte+4AC1 alone does not prove the later world/header/subject phase is ready.",
+    "not_published": "This constructor does not set any subject+30 or place/register a subject in category1; those prior relationship/registration frontiers remain separate."
+  },
+  "node_ownership": {
+    "constructor_scope": "No direct12-byte owned-node allocation or append/erase/removal in selected126 body. It sets up empty-root construction through actual callback descriptor and a separate interpolator-list sentinel.",
+    "obtain_nodes": "Accepted append Source legitimately allocates coherent12 nodes via current canonical allocator for a supplied coherent12 root. Native category registration/subject ownership reaching this actual parent+24 is outside this constructor audit.",
+    "dispose_nodes": "Accepted erase/removal Source free only their actual append-produced12 nodes and preserve borrowed payload ownership. This does not bind4C2D30 vector/root destruction,4CB0B0 class teardown, private parent allocation or4C3080 sentinel.",
+    "callbacks_not_queried": [
+      "004B7EC0",
+      "004C2D30",
+      "00BF7CD1",
+      "004C3080",
+      "00C65651",
+      "004CB0B0",
+      "009037F0"
+    ],
+    "no_size_based_ownership": "Stride12 and allocation4BC are actual phase/layout evidence, not an assertion that arbitrary buffers/classes/pools/current heap providers are compatible."
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "004CB030",
+        "role": "exact selected native parent/world constructor",
+        "state": "whole126B39 live/PE beforeafter qualified; no raw Source admission"
+      },
+      {
+        "id": "004DE610",
+        "role": "single genuine construction caller",
+        "state": "80B23 allocation/zero/constructor/publication/postconstructor witness plus one2B zero origin; whole caller unadmitted"
+      },
+      {
+        "id": "00BF7CD1",
+        "role": "native EH vector constructor iterator",
+        "state": "actual CALL and five stacked descriptor values; body/callback invocation/EH unexpanded"
+      },
+      {
+        "id": "004B7EC0",
+        "role": "actual category-root constructor callback",
+        "state": "literal descriptor at004CB065; role corrected versus historical table/comment; callback body unqueried"
+      },
+      {
+        "id": "004C2D30",
+        "role": "actual category-root destructor callback",
+        "state": "literal descriptor at004CB060; actual node teardown/EH callback contract unexpanded"
+      },
+      {
+        "id": "004C3080",
+        "role": "actual matrix-interpolator list sentinel constructor",
+        "state": "actual CALL receiver parent+4B0; allocation/ownership/ABI body unexpanded; not a fabricated sentinel1"
+      },
+      {
+        "id": "00BF55BE",
+        "role": "Original parent operator-new frontier",
+        "state": "actual allocation CALL with4BC; private allocation/free/new-handler domain unadmitted"
+      },
+      {
+        "id": "00BF79F0",
+        "role": "Original zero-fill frontier",
+        "state": "actual CALL with root/EBX0/4BC; implementation unexpanded"
+      },
+      {
+        "id": "00C65651",
+        "role": "actual EH handler frontier",
+        "state": "literal PUSH and FS chain in selected ctor; handler/exception lifetime unexpanded; Astra boundary"
+      },
+      {
+        "id": "00CE7784",
+        "role": "literal native constructor DATA phase",
+        "state": "store at004CB04C; four actual DATA bytes verified; no fake Source vtable or dispatch/class admission"
+      },
+      {
+        "id": "004CB0B0",
+        "role": "native deleting destructor frontier",
+        "state": "actual first DWORD at phaseCE7784; full class teardown/private-free domain unexpanded"
+      },
+      {
+        "id": "009037F0",
+        "role": "actual world/header post-construction frontier",
+        "state": "same published root receiver and two1 stackvalues at caller004DE69C; header ownership unexpanded"
+      }
+    ],
+    "edges": [
+      {
+        "origin": "004DE610",
+        "target": "004CB030",
+        "kind": "actual constructor CALL",
+        "evidence": "004DE67D receiver is same allocated/zeroed EDI root; no stacked ctor args"
+      },
+      {
+        "origin": "004DE610",
+        "target": "00BF55BE",
+        "kind": "actual allocation CALL",
+        "evidence": "PUSH4BC at004DE651; CALL004DE656; EAX captured in EDI"
+      },
+      {
+        "origin": "004DE610",
+        "target": "00BF79F0",
+        "kind": "actual zero-fill CALL",
+        "evidence": "004DE664 with stacked sameEDI/EBX0/4BC; leftover new size arg and three zero-fill args cleaned byADD ESP10"
+      },
+      {
+        "origin": "004DE610",
+        "target": "009037F0",
+        "kind": "actual post-constructor CALL",
+        "evidence": "004DE696 publishes ctorEAX game+19CC;004DE69C uses sameEAX as ECX and two stacked1 values"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00BF7CD1",
+        "kind": "actual iterator CALL",
+        "evidence": "004CB076 destinationparent+18,strideC,count61,ctor4B7EC0,dtor4C2D30; no callback body inspected"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "004B7EC0",
+        "kind": "literal constructor descriptor",
+        "evidence": "fourth logical descriptor parameter; PUSH at004CB065; actual invocation ABI remains unexpanded"
+      },
+      {
+        "origin": "00BF7CD1",
+        "target": "004C2D30",
+        "kind": "literal destructor descriptor",
+        "evidence": "fifth logical descriptor parameter; PUSH at004CB060; ordinary/EH teardown remains unexpanded"
+      },
+      {
+        "origin": "004CB030",
+        "target": "004C3080",
+        "kind": "actual sentinel CALL",
+        "evidence": "004CB088 receiver parent+4B0; returnedEAX stored+4B4; size+4B8 zero"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00C65651",
+        "kind": "literal EH registration",
+        "evidence": "PUSH handler004CB032, link savedFS0, state0/1; native handler not replaced or recovered"
+      },
+      {
+        "origin": "004CB030",
+        "target": "00CE7784",
+        "kind": "literal native phase store",
+        "evidence": "004CB04C stores actual bitsCE7784 at parent+0"
+      },
+      {
+        "origin": "00CE7784",
+        "target": "004CB0B0",
+        "kind": "actual DATA DWORD",
+        "evidence": "b0b04c00 actual DATA word; no class/dispatch execution"
+      }
+    ],
+    "node_count": 12,
+    "edge_count": 11,
+    "total": 23,
+    "cap": 24,
+    "whole_native_functions_read": 1,
+    "partial_direct_caller_witnesses": 1,
+    "DATA_words": 1,
+    "other_metadata_references": "Known prior parent/publication and Source-provider references remain frozen context only, not extra live body recovery."
+  },
+  "concrete_blockers": [
+    "The literal root constructor callback004B7EC0 is not independently byte/ABI/invocation qualified here. No readiness inferred from owner layout or historical zero-root comments alone.",
+    "Native iterator00BF7CD1,handler00C65651 and destructor callback004C2D30 require actual compiler/EH/callback/lifetime contracts; no provider or generic Source substitution.",
+    "Actual4C3080 sentinel construction and private parent/class deletion/heap domain remain unbound; semantic WorldObjectLayout and host factories do not supply them.",
+    "Parent+4/+8 header postconstruction009037F0 and actual subject/registration/observer lifetime remain separate even though parent+24 is identified in the genuine array phase."
+  ],
+  "next_exact_boundary": {
+    "address": "004B7EC0",
+    "kind": "Separately authorized READONLY ordinary root-constructor callback audit",
+    "requirements": "Whole actual callback bytes/instructions/ECX/stack/RET/EAX/flags/extent plus one actual iterator-callback invocation witness within a new budget; retain owning class/EH/current-node domain qualifications; no current query or ready claim."
+  },
+  "additional_prerequisites": [
+    "Astra/compiler-EH recovery for actual iterator andhandler if nonordinary register/control-flow/cleanup closure is needed; no guessing.",
+    "Real sentinel allocation/free and deleting-owner phase, then actual world/header postconstruction and subject category-registration relationships.",
+    "Only Root may register any independently ready primitive; current real append/erase/removal bindings support normal coherent-node domain but do not complete owning parent class lifetime."
+  ],
+  "preservation": {
+    "prior_actual_pins": 9410,
+    "frozen_files": 22,
+    "consumed_inputs": 30,
+    "Root_remove_primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\rm46p1\\seal.json",
+      "size": 24533,
+      "sha256": "5a0f371ed1bbf9efd77bd0021ece880ac1b486dd9c0ba69429aba1f8ea130428"
+    },
+    "Root_remove_primary_listed": 114,
+    "Root_remove_primary_actual": 115,
+    "all_before_after_equal": true,
+    "old_Source_and_original_path_metadata": "immutable associations preserved; historical metadata not repinned to current live state",
+    "old_successful_recipe_or_Original_replays": 0
+  },
+  "rejected_read": {
+    "address": "004DE64C",
+    "fact": "Inside real004DE64A MOV; CLI rejected. Actual allocation PUSH starts004DE651. Failed helper/query retained unchanged; new stage performed the first valid caller read. No listing repair, prior candidate query replay or native phase."
+  },
+  "audit_limits": {
+    "Source_changes": 0,
+    "compiles": 0,
+    "fixtures": 0,
+    "new_tests": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "game_writes": 0
+  },
+  "not_admitted": [
+    "raw whole126 Source ABI or class lifetime",
+    "actual callback/iterator/EH/sentinel/private heap bindings",
+    "Original class/root census",
+    "subject+30/category1 registration/world observer phase",
+    "whole construction caller/game/renderer closure",
+    "runtime/startup/gameplay"
+  ],
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_owner_initialization_readiness\\local\\po24",
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_owner_initialization_readiness\\local\\po24\\proposal.json",
+      "size": 23955,
+      "sha256": "568ac6c757f4db3c570c39acb7b9d017945672fa7de1d9581214b9ae3afe6f8d"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_owner_initialization_readiness\\local\\po24\\readiness_receipt.json",
+      "size": 3210,
+      "sha256": "12513e149ee97938b80bc67567c3b9dcb2589907256c394dd85a639ebd1248cd"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_owner_initialization_readiness\\local\\po24\\artifact_manifest.json",
+      "size": 65819,
+      "sha256": "035ab27532440944341ec2659f13b93e7ebc2e26a22c23180b516cfb1729ebe6"
+    },
+    "listed_artifacts": 209,
+    "actual_files_including_seals": 211
+  },
+  "current_audit_credit": {
+    "Source_bodies": 0,
+    "Source_bytes": 0,
+    "ready_Source_packets": 0,
+    "whole_native_functions": 1,
+    "whole_native_bytes": 126,
+    "whole_native_instructions": 39,
+    "bounded_caller_bytes": 80,
+    "bounded_caller_instructions": 23
+  }
+}
