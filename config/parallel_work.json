@@ -34865,6 +34865,31 @@
         "new_execution": false,
         "class_ABI_or_game_validated": false
       }
+    },
+    {
+      "id": "cc12_native_wake_append_raw_dependencies_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "0042b2f0",
+        "00810160"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_wake_append_dependencies.hpp",
+        "src/native_unit_wake_append_dependencies.cpp",
+        "docs/CC12_NATIVE_WAKE_APPEND_RAW_DEPENDENCIES.md",
+        "reports/cc12_native_wake_append_raw_dependencies.json"
+      ],
+      "depends_on": [
+        "cc12_native_wake_append_readiness"
+      ],
+      "done": true,
+      "state": "integrated_primary_reviewed_whole_raw_Source_build_three_checks_no_entry_execution_game_unvalidated",
+      "contract": {
+        "new_Original_function_records": 1,
+        "additional_whole_raw_Source_views_of_existing_address": 1,
+        "new_entry_execution": false,
+        "app_class_game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
