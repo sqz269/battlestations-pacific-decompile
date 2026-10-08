@@ -157,3 +157,11 @@ asset-load success or gameplay parity. Outer frame retention does not repair
 the existing `BDD850` / `BE1740`, string or resolver internal-temporary and
 cleanup limits. Primary review/integration and live title/game validation
 remain separate.
+
+## Independent primary acceptance
+
+The integrator rehashed all 18,084 retained phase rows and 170 tool rows, then froze 4,497 current inputs before its one normal Win32 build. All three existing checks passed. All 976 distinct inputs in the integrator's selected compiler records, including shared compilation records, match the preimages. Seven worker/current differences are three Git line-ending conversions, the separately accepted recursive property Source outside these providers, and three current build archives.
+
+Seventy-six complete current objects reproduce all 8,350 extents and ordered relocations; seventy match unique full Core archive members. All 490 complete linked extents and 3,207 operands replay against the current normal MAP and PE using actual COFF symbol indices. The retained domain method independently passes against this current family: acquired-frame construction and publication precede label/owner work, successful destruction precedes closed/pointer/free operations, actual archive/registry/lock/callback admission is preserved, and all three retention checks precede teardown. The complete 202-byte close wrapper and separate 76-byte cold extent preserve all three actual exceptional branch destinations.
+
+Receipt: `local/cc12_game_vfs_title_fileblock_source_primary_review/receipt.json`, SHA-256 `d463497741d77ef51616c9aff0812ff4216dc7b9ee13bd9f0d6886042a16472d`. One pre-freeze and one static-driver correction are retained; neither changed Source or required a build retry. This accepts the current ordinary Source composition. No title/API/probe/startup execution, Original-function credit, Native ABI/FH3/internal-temporary equivalence or gameplay validation follows from the static acceptance; older execution receipts remain historical.

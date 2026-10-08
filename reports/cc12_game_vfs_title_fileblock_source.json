@@ -1,6 +1,6 @@
 {
   "packet": "cc12_game_vfs_title_fileblock_source",
-  "status": "Source_title_scope_composition_build_tested_complete_current_artifact_proof_passed_pending_primary_review",
+  "status": "PRIMARY_ACCEPTED_CURRENT_SOURCE_COMPOSITION_WIN32_STATIC_NO_EXECUTION",
   "generated_utc": "2026-10-08T20:24:35.206873+00:00",
   "accepted_main_at_start": "5120cc564a24b5f95030bfcbce4cfcc9ef6c7030",
   "owned_tracked_files": [
@@ -2746,5 +2746,26 @@
     "Runtime title/asset behavior and actual game validation remain unperformed.",
     "Other menu/mission/loading-queue FileBlock consumers remain separate work."
   ],
-  "completion_boundary": "Source title-scope composition and normal build/static-artifact evidence only. No new Original function credit, full bootstrap closure, raw ABI/Native EH equivalence, asset-load success or gameplay completion."
+  "completion_boundary": "Source title-scope composition and normal build/static-artifact evidence only. No new Original function credit, full bootstrap closure, raw ABI/Native EH equivalence, asset-load success or gameplay completion.",
+  "primary_review": {
+    "receipt": "local\\cc12_game_vfs_title_fileblock_source_primary_review\\receipt.json",
+    "sha256": "d463497741d77ef51616c9aff0812ff4216dc7b9ee13bd9f0d6886042a16472d",
+    "worker_phase_rows_rehashed": 18084,
+    "worker_tool_rows_rehashed": 170,
+    "current_inputs_prefrozen": 4497,
+    "actual_current_compiler_record_inputs": 976,
+    "current_whole_objects": 76,
+    "current_complete_COFF_extents": 8350,
+    "current_unique_Core_members": 70,
+    "current_linked_extents": 490,
+    "current_ordered_relocations": 3207,
+    "current_close_cold_branches": 3,
+    "complete_close_cold_extent_bytes": 76,
+    "normal_build_attempts": 1,
+    "all_three_existing_checks_passed": true,
+    "prefreeze_driver_corrections": 1,
+    "static_driver_corrections": 1,
+    "new_entry_startup_diagnostic_Original_function_credit": 0,
+    "retention_and_lifetime_order_currently_qualified": true
+  }
 }
