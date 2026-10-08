@@ -1,0 +1,208 @@
+{
+  "schema": "bsp.cc12.native_parent_header_destructor_callback.report.v1",
+  "packet": "cc12_native_parent_header_destructor_callback",
+  "Source_admission_credit": 0,
+  "worker_implementation_complete": true,
+  "remaining_admission": [
+    "Root separate fresh complementary6TU validation",
+    "Root merged-main CMake/fullWin32/all3 checks",
+    "Root name/comment/save/export/index/publication"
+  ],
+  "baseline": "76c5dad781e1bd5b22e022373631692f998106f3",
+  "manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\artifact_manifest.json",
+    "size": 76656,
+    "sha256": "79c45b3ea98fc9f1c2cde671a701d581ea82d280875204f3d06dd6532612eea1"
+  },
+  "listed_files": 422,
+  "actual_files_including_receipt_manifest": 424,
+  "prior_actual_pins": 19593,
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "hex": "e9abcbffff",
+    "SHA256": "fcd4639035646b9e7bc377f6227d569bf4315202717b7b3298d19d59a6ad1f57",
+    "whole_bytes": 5,
+    "instructions": 1,
+    "listing": "004c2d30: JMP 0x004bf8e0 \n",
+    "flow": "004c2d30: 1 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "project_processes": [
+      {
+        "Pid": 33644,
+        "BSPGpr": true,
+        "Ghidra": true
+      }
+    ],
+    "read_only": true
+  },
+  "source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\src\\native_parent_header_destructor_callback.cpp",
+    "size": 694,
+    "sha256": "b4fe5bd5576702321b43911d47205f0af6022c20a018cd74b0deae12df0da23d"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\include\\bsp\\native_parent_header_destructor_callback.hpp",
+    "size": 493,
+    "sha256": "6169d09c5cd644250bda3407eb4c023e081f114ffd8a055c4dcd0afcaadfd600"
+  },
+  "physical_ABI": {
+    "receiver": "ECX actual coherent12-byte header",
+    "unused_padding": "EDX",
+    "stack_arguments": 0,
+    "tail": "E9 directly to physical admitted clear70",
+    "return": "inherited plain RET; no local RET or return-value contract",
+    "empty": "EAX ECX EDX unchanged",
+    "populated": "volatile EAX ECX EDX unpromised",
+    "nonvolatile": "EBX ESI EDI EBP preserved, ESP restored",
+    "flags": "terminal CMP mask8D5=44 including AF0, DF0 required/preserved; no FP promise across CRT"
+  },
+  "machine_gate": {
+    "fresh_TUs": 6,
+    "retained_function_symbols": 35,
+    "unique_TU_bodies": 33,
+    "whole_runtime_spans": 47,
+    "span_breakdown": {
+      "TU": 33,
+      "cookie14": 1,
+      "stack48": 1,
+      "actual_import_thunks": 12
+    },
+    "Native_body": "5B1 E9abcbffff",
+    "Source_COFF": "5B1 E900000000 with one IMAGE_REL_I386_REL32 at1",
+    "only_qualified_operand": [
+      1,
+      5
+    ],
+    "literal_bytes": 1,
+    "CALLs": 0,
+    "Source_linked_address": "40001000",
+    "actual_clear_target": "40001010",
+    "Source_linked_hex": "e90b000000",
+    "unique_linked_full5": [
+      1073745920
+    ],
+    "ordinary_caller": "6B2 direct CALL then RET",
+    "raw_caller": "172B62, ECX root/EDX poison/no pushed target arguments/plain RET",
+    "pre_0alloc_targets_and_post_10frees": true,
+    "all_cold_std_EH_bytes_covered": "Bytes gated; no exceptional-path execution/admission."
+  },
+  "fixture": {
+    "passed": true,
+    "processes": 1,
+    "canonical_allocations": 10,
+    "root_allocations": 3,
+    "append_entries": 7,
+    "callback_entries": 5,
+    "raw_Source_entries": 2,
+    "raw_Original_entries": 2,
+    "ordinary_Source_entries": 1,
+    "actual_append_nodes": 7,
+    "normal_node_dispositions": 7,
+    "actual_root_base_frees": 3,
+    "interior_header_frees": 0,
+    "postfree_node_reads": 0,
+    "no_global_address_uniqueness_required": true,
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\process_stdout.txt",
+      "size": 4812,
+      "sha256": "10c5a9314718cad1eb58b0002491b43096be9a8d3f1851e918fd4e86657bd678"
+    },
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\header_callback_probe.exe",
+      "size": 20992,
+      "sha256": "b7b2efd30f46fbd2fdacf265e498eeeaeda57c54a1883c09652d5f58c8f16789"
+    },
+    "no_adjacent_heap_guard_claim": true
+  },
+  "observations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\decoded_observations.json",
+    "size": 9478,
+    "sha256": "e03e73700a4ea1b70f1593996d1ba4f6117dae1c524b66fb3448eb51b5ca754b"
+  },
+  "strict_toolchain": "MSVC18 Community14.51.36231, SDK10.0.26100.0, x86 /MD /O2 /W4 /WX /fp:strict /permissive- /EHsc /Gy /GL-; /MANIFEST:EMBED asInvoker",
+  "consumed_pins": {
+    "inputs": 39,
+    "headers": 187,
+    "resolved_libraries": 7,
+    "all_before_after_equal": true
+  },
+  "canonical_CRT": "Actual I386 malloc/free/_callnewh IAT/export/MEM_IMAGE, mapped/opened NT path and fileID/fullSHA/ASLR normalized32 verified before0alloc/targets and after10frees.",
+  "worker_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\worker_baseline_build.json",
+    "size": 3536,
+    "sha256": "6fbbb6f89a439e14917b0f1b93e5f574cce1d9f8f41fe0eda14875d67168feaf"
+  },
+  "stopped_attempt": "r01 text selectors mismatched renamed probe caller symbols; zero prepare/compiler/static/process/target/alloc. Preserved, corrected only in newr02.",
+  "qualified_domain": "Current canonical heap nodes from real admitted append; caller-owned header12 interiors in actual44-byte blocks; borrowed disjoint live payloads. Original5 only displacement rebound to same actual Source70.",
+  "unadmitted": [
+    "Original private CRT",
+    "owning parent/97-header array",
+    "owner placement/class lifetime",
+    "iterator/EH",
+    "sentinel",
+    "virtual/profile R125 provider",
+    "World",
+    "game startup/gameplay"
+  ],
+  "post_only_recovery": "First seal helper SyntaxError unmatched parenthesis atline101, before any statement or seal; newv2 fixes delimiter, preserves original helper/console, native replays0.",
+  "old_replay_or_repin": false,
+  "receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\receipt.json",
+    "size": 6730,
+    "sha256": "c1aab370fb75e29f7413fa08d65d8f903aa76d19eab6cec666d7733f8fad25b8"
+  },
+  "artifact_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\artifact_manifest.json",
+    "size": 76656,
+    "sha256": "79c45b3ea98fc9f1c2cde671a701d581ea82d280875204f3d06dd6532612eea1"
+  },
+  "new_tracked_tests": 0,
+  "Source_CPP_lines": "complete whole literal tail wrapper",
+  "recipe": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\recipe.py",
+    "size": 32846,
+    "sha256": "e75c5b820f4d618c47bf81ec5ae343b080f432bf2005db8a70ae67a8cc198643"
+  },
+  "probe": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\probe.cpp",
+    "size": 26599,
+    "sha256": "6e3d019fc9518b241823c43a1c43b99e6f523a36f78a69ed44e87df869fd81cd"
+  },
+  "new_generation_helpers": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\create.py",
+      "size": 15779,
+      "sha256": "76470e6a4d267640673289917b1a83a8de3bb672aaed26ea2a4306c32ffb886c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\recover_generation.py",
+      "size": 2106,
+      "sha256": "20b6c50f03b052c35d9e891252fcc6d989b2e80ebdb2c7a79d973cb47d57d765"
+    }
+  ],
+  "static_gate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\static_gate.json",
+    "size": 666172,
+    "sha256": "66e852b31b3be46ed87da6e02b096c23c066f65ad5f2520d2726d88af0e45844"
+  },
+  "manual_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\manual_review.json",
+    "size": 1909,
+    "sha256": "2f7b7399bcca69a767eec07ca1b68377514b8216cf015d0f756002c1734121ad"
+  },
+  "post": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_destructor_callback\\local\\h5s\\r02\\post.json",
+    "size": 248,
+    "sha256": "49fc0acab77638ba919f659b16b3ba2a734bf4ce21580caad0943a835a88194a"
+  },
+  "complementary_case_change_points": {
+    "probe": "NEW probe text only: expected0/expected1/expected2 payload identities atlines405-406; poisons/GPR/canaries and generation ImageBase may be changed coherently for Root newfamily.",
+    "recipe": "New helper/family paths and exact EXE/map/manual_review.json key/47+new body selector packing must agree before compilation; never invoke this accepted recipe again.",
+    "physical_ABI": "Preserve padded2formal ECX/EDX/noargs tail to real admitted raw70; no virtual threeformal API."
+  }
+}
