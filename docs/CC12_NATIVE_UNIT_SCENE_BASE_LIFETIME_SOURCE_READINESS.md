@@ -173,3 +173,9 @@ Manifest SHA-256: `b6d619f321dee019de9691c3c10455bb8a9daffac51c66791e7db423e1da5
 Final tracked document/report are generated after sealing and intentionally remain
 outside the ZIP to avoid a circular hash dependency. Detailed parent ordering,
 provider qualification, frontier and per-file evidence are in the linked report.
+
+## Independent primary acceptance
+
+The integrator rehashed all 4,070 sealed artifacts and verified all 4,071 ZIP members, 3,990 physical pin records and 4,029 worker Source inventory records. All four complete Native bodies match the installed PE and fresh listing: 1,379 bytes / 344 instructions. Twenty-one retained whole historical objects reproduce all 608 selected extents and ordered relocations; sixteen match unique complete members of the retained 1,905-member Core archive. The five canonical process/lock Source inputs match the integrator. The one current Source inventory difference is the separately accepted phase-two VFS publication, outside these providers.
+
+Receipt: `local/cc12_native_unit_scene_base_lifetime_primary_review/receipt.json`, SHA-256 `986317d5cd7dc88e37f3aa920fd8e6193a840c0b104bb423093852beff4465fb`. Two review-driver corrections are retained. No Source, fresh build, test, entry execution, Ghidra mutation or reconstruction credit follows from this readiness acceptance. Canonical ID and pending-init ownership, world publication, functional profiles and exception closure still prevent parent Source admission; startup and gameplay remain unvalidated.
