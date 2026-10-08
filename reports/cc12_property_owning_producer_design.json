@@ -283,7 +283,7 @@
       "Complete C++ physical-process construction before explicitly binding SAME cell with current property bookends. Bind genuine CE37A4 trim first through existing API. Call current whole CC8A30 init/real atexit, preserve real status/no rollback; publish process accessor only after completed initialization. Source process admission state/once is separate from unchanged zero-guard Native bookend.",
       "Empty bag fragment allocates114 through actual singleton_lifetime_allocate{object,114h,114h}; call current actual raw61 initializer with ownerword0; read actual source count at bag+8 after initialization and take genuine count0 iterator/loop exit. No advance/recursive clone/insertion call or copied container."
     ],
-    "composition_limit": "Raw61 stores ordinal10C before owner110; Native clone inline stores owner110 before ordinal10C. Final fully initialized unpublished fresh preimage is identical for owner0. This proposed ordinary composition requires valid stable unaliased fresh memory and claims no exact fault/store trace; Root must accept this explicitly or implement literal clone-inline ordering.",
+    "composition_limit": "Corrected by complete Native61 and compiled Source review: raw61 writes owner110 at008F41C7 before ordinal10C at008F41CD, matching inline clone008F422A then008F4230. No store-order exception required. Ordinary successful fresh-memory composition only; no fault/store-trace or Original public ABI/EH equivalence.",
     "admitted_domain": "MSVC Win32 stable actual memory; genuine raw61-produced borrowed114h empty source count0/all64heads0; nonoverflowing114h allocation succeeds, fresh output unaliased; conventional DF0 for current raw61; no exception/unwind/null allocation/reentry/mutation. Output alone is allocator-owned, owner110=0/ordinal10C=0. External whole58/type6-arm Source must establish actual38h owning record and child backlink separately.",
     "failure_limit": "Original clone entry has SEH CA4B6D; type6 arm records allocation and sets state2 before child clone. No guessed rollback or plain-C++ exceptional closure. Null record branch jumps528A, and bagclone has a null-root branch; neither is admitted by this success-only fragment.",
     "ownership_handoff": "Return actual mutable canonical-allocator-owned114h empty bag only. Whole58 ctor/38h allocation/type6 arm Source belongs to coordinated external followup, not this packet. Raw61-provided borrowed clone inputs remain unowned/non-freeable. Root must review returned bag/free permission and six-body concrete later lifetime; no callback/RAII manufacture.",
@@ -1909,5 +1909,46 @@
     "artifacts": 151,
     "physical_copy_rows": 54,
     "unique_input_paths": 51
+  },
+  "primary_design_review": {
+    "status": "accepted_design_only",
+    "receipt": {
+      "path": "local\\cc12_owner_execution_and_property_producer_primary_design_review\\receipt.json",
+      "bytes": 53054,
+      "sha256": "9541aa9fe1a9d88633134cf9c80d0f22240d6ee8dbf4543a0ae94a18db61c73d"
+    },
+    "retained_artifacts": 1077,
+    "complete_current_objects": 20,
+    "complete_current_functions": 1428,
+    "unique_current_core_members": 17,
+    "new_Source_or_Original_credit": 0,
+    "new_build_or_entry_execution": false,
+    "startup_gameplay_validated": false,
+    "raw61_order_correction": {
+      "raw61": [
+        [
+          "0x8f41c7",
+          "898210010000",
+          "dword ptr [edx + 0x110], eax"
+        ],
+        [
+          "0x8f41cd",
+          "c7820c01000000000000",
+          "dword ptr [edx + 0x10c], 0"
+        ]
+      ],
+      "clone154": [
+        [
+          "0x8f422a",
+          "898210010000",
+          "dword ptr [edx + 0x110], eax"
+        ],
+        [
+          "0x8f4230",
+          "89820c010000",
+          "dword ptr [edx + 0x10c], eax"
+        ]
+      ]
+    }
   }
 }
