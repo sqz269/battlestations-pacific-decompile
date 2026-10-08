@@ -32932,6 +32932,34 @@
       "state": "reviewed_complete_normal_return_ordinary_Source_build_and_bounded_fixture_checked",
       "depends_on": [],
       "game_validated": false
+    },
+    {
+      "id": "cc12_physical_stream_raw_constructor",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF50D0"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_PHYSICAL_STREAM_RAW_CONSTRUCTOR.md",
+        "reports/cc12_physical_stream_raw_constructor.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_literal_raw_receiver_ABI_entry_build_and_bounded_Original_Source_checked",
+      "worker_commit": "818a7dbcd80ff99f3dbbb0e57355fa0abe664a66",
+      "contract": {
+        "additional_raw_interfaces": 1,
+        "new_Original_functions": 0,
+        "literal_Original_bytes": 43,
+        "fresh_Original_Source_pairs": 1,
+        "Source_class_table_lifetime_admitted": false,
+        "raw_substream_composition_admitted": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {

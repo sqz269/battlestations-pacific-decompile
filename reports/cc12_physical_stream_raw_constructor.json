@@ -484,5 +484,22 @@
       "sha256": "5a767ccb9676f3c3b138024a6b304caf45943e146115e54c22e03ed5eb67150e",
       "bytes": 871
     }
-  ]
+  ],
+  "primary_review": {
+    "status": "PASS",
+    "artifact_hashes_checked": 14,
+    "pre_post_frozen_input_pins_checked": 473,
+    "whole_Original_COFF_unique_linked_bytes_checked": 43,
+    "COFF_calls": 0,
+    "COFF_relocations": 0,
+    "proof_precedes_execution": true,
+    "raw_comparison_pairs": 1,
+    "typed_Source_calls": 1,
+    "primary_production_COFF_43_bytes_equal": true,
+    "primary_object_sha256": "670533df69e3fd47abbf2e082f71473265188f4db2aca719b0ad483f7bd85652",
+    "primary_exact_archive_members": 1,
+    "limits": "Original literal CEB130/D691B0 profiles and whole constructor-only raw ABI; no Source-owned class/table, handle/lifetime or substream-composition proof.",
+    "Win32_build_log": "local/cc12_raw_constructor_primary_build.txt",
+    "existing_CTests_passed": 3
+  }
 }
