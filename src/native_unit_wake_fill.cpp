@@ -1,4 +1,7 @@
 #include "bsp/native_unit_wake_fill.hpp"
+#include "bsp/game_native_geometry_globals.hpp"
+#include "bsp/native_renderer_worker_lifetime.hpp"
+#include "bsp/native_tracked_critical_section_release.hpp"
 
 namespace bsp {
 namespace {
@@ -114,6 +117,68 @@ __declspec(naked) void __fastcall fill_wake_kernel(void*, void*,
 void fill_native_unit_wake_00810020(void* actual_wake,
     const float* position, float heading) {
     fill_wake_kernel(actual_wake, nullptr, position, heading);
+}
+
+namespace {
+// Complete 00815600 operation order. ECX is the borrowed actual wake; EDX
+// supplies the genuine canonical seed address. The additional PUSH/POP save
+// that address across both actual calls. The saved word is above the outgoing
+// fill arguments: PUSH [ESP+4] reads it before the PUSH decrements ESP.
+// Native heading storage, both callee argument positions and the original
+// ESI save/restore are retained. No seed values are snapshotted or substituted.
+__declspec(naked) void* __fastcall construct_wake_kernel_00815600(
+    void*, const std::uint32_t*) {
+    __asm {
+        xorps xmm0, xmm0                            // 00815600
+        push esi                                    // 00815603
+        push edx                                    // Added: save live seed address.
+        mov esi, ecx                                // 00815604
+        mov dword ptr [esi], 0x00d09480              // 00815606
+        mov ecx, 0x27                               // 0081560C
+        lea eax, [esi + 0x18]                       // 00815611
+    wake_construct_00815614:
+        movss dword ptr [eax - 4], xmm0             // 00815614
+        movss dword ptr [eax], xmm0                 // 00815619
+        add eax, 0x18                               // 0081561D
+        sub ecx, 1                                  // 00815620
+        jns wake_construct_00815614                 // 00815623
+        call create_native_tracked_critical_section_00bd1860 // 00815625
+        fldz                                        // 0081562A
+        push ecx                                    // 0081562C
+        fstp dword ptr [esp]                        // 0081562D
+        push dword ptr [esp + 4]                    // 00815630: actual seed pointer.
+        mov ecx, esi                                // 00815635
+        mov dword ptr [esi + 4], eax                // 00815637
+        call fill_wake_kernel                      // 0081563A: actual same-TU raw body.
+        pop edx                                     // Added: reload address and restore ESP.
+        movss xmm0, dword ptr [edx]                 // 0081563F: fresh seed X.
+        movss dword ptr [esi + 0x3d0], xmm0          // 00815647
+        movss xmm0, dword ptr [edx + 4]             // 0081564F: fresh seed Y.
+        movss dword ptr [esi + 0x3d4], xmm0          // 00815657
+        movss xmm0, dword ptr [edx + 8]             // 0081565F: fresh seed Z.
+        movss dword ptr [esi + 0x3d8], xmm0          // 00815667
+        mov eax, esi                                // 0081566F
+        pop esi                                     // 00815671
+        ret                                         // 00815672
+    }
+}
+} // namespace
+
+void* construct_native_unit_wake_00815600(void* actual_wake,
+    game::GameNativeGeometryGlobals& actual_geometry_globals) {
+    return construct_wake_kernel_00815600(actual_wake,
+        actual_geometry_globals.zero_vector_00f87574().data());
+}
+
+// Complete 00818100..0081810D: only the real Source release target relocates.
+// The literal Native vptr word is retained; this creates no Source vtable or
+// C++ owner and grants no permission to release the wake allocation itself.
+__declspec(naked) void __fastcall destroy_native_unit_wake_00818100(void*) {
+    __asm {
+        mov dword ptr [ecx], 0x00d09480              // 00818100
+        add ecx, 4                                  // 00818106
+        jmp release_native_tracked_critical_section_0041cc80 // 00818109
+    }
 }
 
 } // namespace bsp
