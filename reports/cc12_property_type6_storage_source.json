@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_type6_storage_source",
   "UTC": "2026-10-08T18:50:17.786575+00:00",
-  "status": "IMPLEMENTED_NORMAL_WIN32_BUILD_AND_STATIC_PRODUCTION_QUALIFIED_PENDING_PRIMARY_REVIEW",
+  "status": "PRIMARY_ACCEPTED_NORMAL_WIN32_AND_STATIC_PRODUCTION_QUALIFIED_NOT_ENTRY_OR_GAME_EXECUTED",
   "baseline": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
   "readiness_commit": "07a14df5cace343a34ecdf8b3985ab8e506b288f",
   "readiness_primary_main": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
@@ -1153,5 +1153,20 @@
     "functions_proposed_not_credited": 1,
     "fragments_proposed_not_credited": 1,
     "selected_new_entry_execution": false
+  },
+  "primary_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_type6_storage_primary_review\\receipt.json",
+    "sha256": "d234fe672c72e9baec7c175ae82b7edfe144a39175265b36fad2ff72f894bbd6",
+    "worker_artifacts_rehashed": 2097,
+    "pre_frozen_current_inputs": 294,
+    "actual_current_TU_inputs": 285,
+    "current_whole_objects": 3,
+    "current_complete_extents": 142,
+    "old_complete_extents_unchanged": 138,
+    "old_same_TU_extents_unchanged": 15,
+    "whole_function_registered": 1,
+    "fragment_registered": 1,
+    "new_entry_execution": false,
+    "startup_or_gameplay": false
   }
 }
