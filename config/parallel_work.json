@@ -33119,6 +33119,40 @@
         "raw_substream_composition_admitted": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_raw_unit_list_erase_004837d0",
+      "done": false,
+      "state": "ready bounded whole79B31 raw erase implementation; Root repaired listing/ABI and accepted actual append-produced current heap nodes",
+      "function_addresses": [
+        "004837d0"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_list_erase.hpp",
+        "src/native_unit_list_erase.cpp",
+        "docs/NATIVE_UNIT_LIST_ERASE_CC12.md",
+        "reports/native_unit_list_erase_cc12.json"
+      ],
+      "dependencies": [
+        "cc12_raw_unit_list_append_00484540"
+      ],
+      "readiness_document": "docs/CC12_RAW_UNIT_LIST_ERASE_READINESS.md",
+      "readiness_report": "reports/cc12_raw_unit_list_erase_readiness.json",
+      "fixture_requirements": {
+        "native_whole": "[004837D0,0048381F),79 bytes/31 instructions. Preserve all71 bytes outside two genuine CALL operands at offsets43..46 and66..69. Both Source relocations target complete actual canonical singleton_lifetime_free; Original substitutes only those same eight operand bytes to the same fresh linked free.",
+        "storage": "Actual stable aligned12-byte caller root {count,head,tail}; actual nonnull coherent owned12-byte {prev,next,payload} nodes produced by the accepted complete append Source/current-domain bound Original in the same real canonical allocation domain. No manually fabricated nodes/count census, companion state, allocator stubs or forced pointer reuse. Payloads borrowed and never destroyed.",
+        "Source_interface": "void* __fastcall erase_native_unit_list_004837d0(void* actual_list_ecx, void* unused_edx, void* actual_node) noexcept. New external API maps ECX receiver/one DWORD node stack/RET4, not a native class ABI. Valid current canonical free contract only; original private CRT/EH unbound.",
+        "ordered_behavior": "Preserve fresh prev/next loads, link/count/tail writes, both branches, pre-free successor captured in ESI, both CALL sites, ADD ESP4/MOV EAX,ESI/POP ESI/RET4. EAX genuine successor or0, nonvolatiles preserved; volatile ECX/EDX not asserted across free. No post-free node read.",
+        "final_flags": "Final arithmetic flags come from ADD ESP4, not count decrement. For raw caller pre-target argument-top ESP=T, free-return ESP=T-12 and final ADD4 result=T-8. Derive flags from the actual captured stack addresses; valid CRT entry DF0, no blanket FP/DF claim across free.",
+        "fresh_component": "One exclusive fresh4TU family: new erase Source, accepted unchanged append Source with its actual size-only adapter, unchanged current singleton_lifetime.cpp, new ignored actual-caller probe. Zero BSP archives/old objects/new tracked tests. Pin actual consumed headers including extensionless standard headers, libraries/tools/Source/PE/recipe/all older artifacts before and after.",
+        "static_gate": "Before entry, inspect complete erase79/31 Source COFF/unique linked body/exact2 CALL relocation identities, complete append87/36/adapter/allocator/free/imports/security-cookie static helper and ordinary/raw caller code. Derive fresh sizes/counts. Both bound Original operands resolve to the same actual production current free.",
+        "minimal_genuine_family": "Original then Source phases reuse the same actual caller root and borrowed payload identities but create fresh genuine allocated nodes for each phase; do not require address reuse. Append four actual nodes; erase middle, head, tail, then singleton. Check all real surviving links/count/head/tail/payload identities and returned successor after each. Never read freed nodes. One ordinary Source erase of an additional actual appended singleton is sufficient for external compiler caller proof.",
+        "providers": "Gate actual I386 mapped malloc/free/_callnewh IAT=GetProcAddress=physical export, module NT path/file identity/full SHA/prefix before any target entry and afterward. Genuine allocations use current retry/exception behavior; no forced OOM/new-handler callback/reentry or historical private CRT/EH claim.",
+        "root_integration": "Root owns shared ledgers/CMake/config/locked Ghidra/save/export/full Win32 build/all3 existing checks and an independent fresh complementary4TU family. Worker changes only exact four files in named worktree, leases packet/family, and leaves Ghidra read-only."
+      },
+      "native_class_ABI_admission": false,
+      "original_private_CRT_EH_admission": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
