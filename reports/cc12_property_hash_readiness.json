@@ -1,0 +1,401 @@
+{
+  "packet": "cc12_property_hash_readiness",
+  "status": "READY_FOR_SEPARATE_WHOLE_RAW_SOURCE_HASH_SERVICE_ASCII_C_LOCALE; current0043B760 Source absent; general Original CRT locale/native ABI/game admission unclosed",
+  "owned_addresses": [
+    "0043B760"
+  ],
+  "refreshed_worker_baseline": "0f847c24d855edc2f3e86507c12a151f9de3b2e6",
+  "main_at_receipt": "33d1086d39a2f9fb4de98129d7fd187e09fdea42",
+  "project_verification": {
+    "project": "bsp",
+    "configured_gpr": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "per_batch": "Read-only bsp.py client verifies project/program/language/imagebase before live queries; report verifier calls Client.verify"
+  },
+  "native_body": {
+    "entry": "0043B760",
+    "inclusive_end": "0043B7B8",
+    "exclusive_end": "0043B7B9",
+    "bytes": 89,
+    "instructions": 39,
+    "direct_calls": 1,
+    "indirect_calls": 0,
+    "flow_gaps": 0,
+    "coverage": "complete",
+    "live_PE_initial_image_equal": true,
+    "sha256": "3f92060d0b946ebf8440f1edb1b763ea9cc898f2950e34a9a9da297fcb32455f",
+    "PE_file_offset": 243552,
+    "section": ".text",
+    "PE_storage": "raw_file_bytes",
+    "complete_pseudocode_and_listing_inspected": true,
+    "repair_required": false,
+    "stored_prototype_warning": "undefined FUN_0043b760(void) does not encode recovered physical stack argument/RET4"
+  },
+  "native_ABI": {
+    "stack": "One DWORD pointer to actual8h key header; nonnull valid input required",
+    "actual_header": "lengthDWORD+0, dataPointer+4; data is loaded first, then length, each once",
+    "incoming_ECX_EDX": "Not read as argument inputs; no map/class receiver",
+    "return": "EAXbucket0..63; RET4",
+    "preserved": "EBX/EBP/ESI/EDI saved/restored",
+    "volatile": "ECX/EDX/flags have no general preservation promise",
+    "CRT_call": "MOVSX signedbyte -> PUSH integer -> CALL00BF924E at0043B789; MOVZX AL retains low8; ADDESP4 at0043B7A1",
+    "REP_x87_DF": "None; no new DF requirement",
+    "formal_drop_in_ABI_compatibility": false
+  },
+  "whole_schedule": [
+    "Load actual data+4 before length+0, once each",
+    "ESIhash=length; EBXremaining=length; EDIstep=(length|20h)>>5 using logical shift",
+    "If data null select actual00E177E4 even for length0",
+    "While unsignedremaining>=step: sign-extend next byte; real_toupper; retain low8",
+    "HashXOR(low8+(hash<<5)+(hash>>2)), modulo2^32 arithmetic; remaining-=step; cursor+=1",
+    "Returnhash&3Fh; restore saved registers; RET4"
+  ],
+  "loop_properties": {
+    "step_min": 1,
+    "sample_count": "floor(length/step)",
+    "cursor_stride": 1,
+    "length64": "step3; first21 consecutive bytes sampled",
+    "length0": "returns0; selected pointer not dereferenced; no CRT call",
+    "reads": [
+      "actual header data+4 and length+0",
+      "sampled prefix bytes",
+      "genuine CRT provider state"
+    ],
+    "writes": [],
+    "allocation_or_release": false,
+    "ownership": "Borrows header/data; returns integer; no map or record access"
+  },
+  "host_steps": [
+    {
+      "address": "0043B789",
+      "native": "00BF924E",
+      "function": "0043B760",
+      "binding": "Signedbyte integer on stack; current original CRT target; callerADDESP4; onlylow8 return retained"
+    },
+    {
+      "address": "0043B8BA",
+      "native": "0043B760",
+      "function": "0043B8B0",
+      "binding": "Prior complete lookup: PUSHactualquery; ECXstillmap but ignored by hash; hashRET4, EAXbucket subsequentlypublished"
+    }
+  ],
+  "caller_evidence": {
+    "xref_count": 2,
+    "sites": [
+      "0043B8BA",
+      "008F1920"
+    ],
+    "admitted": "0043B8B0 exact query binding from prior whole lookup audit",
+    "not_expanded": "008F18B0 second caller body"
+  },
+  "provider_readiness": {
+    "current0043B760_Source": "ABSENT; no implementation in audit",
+    "existing_algorithm_Source": "src/native_enum_dictionary_lookup.cpp bucket_for independently compared after recovering whole property nativebody; equal unsigned arithmetic/signedCRT promotion/prefixadvance; distinct nativeaddress and fallbackrole retained",
+    "current_genuine_CRT_import": "Existing I386COFF bucket_for helper has __imp__toupper relocation; exact Source/header match productioncompile input hashes; no replacement callback/ASCII table/hook",
+    "existing_COFF_helper": {
+      "bytes": 85,
+      "instructions": 38,
+      "sha256": "53d9d1a05e8114cf559807aee036c6807b924f40abd42d0ec3a8118242795b94"
+    },
+    "original_CRT": {
+      "entry": "00BF924E",
+      "exclusive_end": "00BF9275",
+      "bytes": 39,
+      "sha256": "3158c03a0ab276bb10aad57b86e81c495f0343f5f9feb34720cab39390b07d20",
+      "current_installed_equal_prior_provider_digest": true,
+      "binding": "Internally linked Original function at directCALL, not a PE IAT call",
+      "evidence": "Existing complete nativeenum provider receipts reused without body expansion or execution"
+    },
+    "original_unexpanded_dependency": "__toupper_l00BF9136 and nonzero-locale graph remain unbound in this packet"
+  },
+  "DATA": {
+    "property_fallback": {
+      "entry": "00E177E4",
+      "bytes": 1,
+      "initial_byte": "00",
+      "PE_file_offset": 10581988,
+      "section": ".data",
+      "PE_storage": "raw_file_bytes",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_PE_initial_equal": true
+    },
+    "original_locale_cell": {
+      "entry": "0109DE1C",
+      "bytes": 4,
+      "initial_bytes": "00000000",
+      "PE_file_offset": null,
+      "section": ".data",
+      "PE_storage": "PE_virtual_zero_fill",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_PE_initial_equal": true
+    },
+    "not_live_game_locale_capture": true,
+    "fallback_limits": "No propertySourceglobal manufactured. Explicitrole required. Validnull-empty selects cell but reads no byte and returns0; null-nonemptyexcluded. Propertylookup comparison stillneeds genuinecellbinding separately."
+  },
+  "whole_admitted_Source_domain": {
+    "status": "READY_FOR_SEPARATE_IMPLEMENTATION",
+    "inputs": "Stable actualWin32 8h headers; closedNUL-free ASCII keys whose lengths match genuine current rawbuffers; null data onlylength0",
+    "actual_producer": "Current construct_native_string_header_0041e870 with NativeStringRawPoolContext, real rawresize/copy/pool services; freshactual8h header, successful validbuffer lifetime. No manufacturedmap or semanticcontainer",
+    "allocator": "Hash invokesnone; producer allocationfailure/ownership/EH remain producerlimits",
+    "CRT": "Genuine current MSVC toupper; stable C locale; sampledASCII bytes yield valid nonnegativeCRT integer inputs",
+    "original_qualification": "Existing original complete_toupper admits initialzero0109DE1C only; doesnot establish activegame locale",
+    "nonempty_coverage": "All admitted lengths, unsignedloop, prefixstride, wrap arithmetic, signedpromotion and actual CRT calls; not null-onlyclosure",
+    "excluded": [
+      "NonASCII80h..FEh negativeCRTarguments",
+      "FFh becomesEOF but no nonASCIIparityclaim",
+      "Other/changinglocale",
+      "Invalidheader/buffer/null-nonempty",
+      "Concurrentmutation/reentry/nativeSEH/faultidentity",
+      "OriginalbinaryABI/gamebinding"
+    ]
+  },
+  "next_implementation_packet": {
+    "independently_whole_ready": true,
+    "separate_authorization_required": "Audit doesnot implement; Root may authorize next packet",
+    "address": "0043B760",
+    "files": [
+      "include/bsp/native_property_key_hash.hpp",
+      "src/native_property_key_hash.cpp"
+    ],
+    "interface": "std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,const char* actual_empty_00e177e4);",
+    "contract": "Read actualheader+4 then+0; preserve entire DWORDloop/signedCRTpromotion; genuine imported currenttoupper; explicitfallbackrole; borrowallmemory; no guards/allocation/semanticmap/delegationtoenumaddress",
+    "native_qualification_scope": "New borrowed Sourceinterface differs from OriginaloneargumentRET4. Any Originalqualification preserves complete89Bhash and genuineOriginalCRT under approvedASCII/image-initialzero-locale graph, withoutSourcehooks; no ABI/gameclosure fromSourcecompilation",
+    "shared_integration": "CMake/ledger changes onlybyintegrator in separatelyauthorizedimplementation"
+  },
+  "separate_remaining_closure": [
+    "Whole current0043B8B0 Source implementation",
+    "Genuineproperty fallbackSourcepublication/binding forlookupcomparison",
+    "Currentactualpopulatedpropertymap/hashplacement admission andwhole008F28F0/008F33F0 insertion",
+    "Oldrecord profile/lifetime, admittedtype6chain004E6730->008F0DE0->008F0640 andotherprofiles",
+    "Recursive destruction, class/EH/factory/world, binaryABI andgameplay"
+  ],
+  "verification": {
+    "Source_execution": false,
+    "native_execution": false,
+    "Source_build": false,
+    "fixture_replay": false,
+    "new_tests": 0,
+    "Ghidra_mutations": 0,
+    "Source_added": 0,
+    "CMake_config_ledger_shared_export_writes": 0,
+    "game_validation": false,
+    "other_native_bodies_expanded": 0,
+    "direct_call_rows_checked": 2,
+    "direct_call_row_failures": 0,
+    "direct_call_row_receipt": "local/cc12_property_hash_readiness/call_row_verification.txt"
+  },
+  "evidence_root": "local/cc12_property_hash_readiness",
+  "evidence": {
+    "complete_listing": "local/cc12_property_hash_readiness/0043b760_assembly.txt",
+    "complete_pseudocode": "local/cc12_property_hash_readiness/0043b760_decompiled.c",
+    "bytes": "local/cc12_property_hash_readiness/byte_receipt.json",
+    "flow": "local/cc12_property_hash_readiness/flow_report.txt",
+    "all_xrefs": "local/cc12_property_hash_readiness/all_xrefs.txt",
+    "call_instructions": "local/cc12_property_hash_readiness/call_instructions.json",
+    "prior_lookup_binding": "local/cc12_property_hash_readiness/prior_verified_actual_lookup_listing.txt",
+    "prior_original_CRT": "local/cc12_property_hash_readiness/prior_admitted_original_toupper_receipt.json",
+    "Source_pins": "local/cc12_property_hash_readiness/source_freshness_receipt.json",
+    "actual_CRT_import": "local/cc12_property_hash_readiness/prior_enum_coff_evidence.json",
+    "matching_compile_inputs": "local/cc12_property_hash_readiness/prior_enum_inputs_before_link.json",
+    "artifact_manifest": "local/cc12_property_hash_readiness/artifact_manifest.json",
+    "artifact_manifest_sha256": "679170d5d7fb07d12930c460f80331f6078542d14086fd3311931489cedd99e3",
+    "artifact_count": 33
+  },
+  "UTC": "2026-10-08T07:23:22.426348+00:00",
+  "Source_freshness": {
+    "UTC": "2026-10-08T07:23:22.426348+00:00",
+    "worktree_HEAD": "0f847c24d855edc2f3e86507c12a151f9de3b2e6",
+    "main_HEAD": "33d1086d39a2f9fb4de98129d7fd187e09fdea42",
+    "pins": [
+      {
+        "path": "src/native_enum_dictionary_lookup.cpp",
+        "bytes": 2872,
+        "sha256_checkout": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19",
+        "git_blob_HEAD": "e08ed2ca07cd79fc53caf21cb2427799aab9deff",
+        "git_blob_main": "e08ed2ca07cd79fc53caf21cb2427799aab9deff",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "include/bsp/native_enum_dictionary_lookup.hpp",
+        "bytes": 1805,
+        "sha256_checkout": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4",
+        "git_blob_HEAD": "dd6bb5953ea7f14611af07c47f5b62cb2e3e0c98",
+        "git_blob_main": "dd6bb5953ea7f14611af07c47f5b62cb2e3e0c98",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 9121,
+        "sha256_checkout": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob_HEAD": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "git_blob_main": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256_checkout": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob_HEAD": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "git_blob_main": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 8443,
+        "sha256_checkout": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "git_blob_HEAD": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+        "git_blob_main": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 5103,
+        "sha256_checkout": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "git_blob_HEAD": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+        "git_blob_main": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "src/native_lua_script_overrides.cpp",
+        "bytes": 5273,
+        "sha256_checkout": "e88f7dce14f48c8cdc7d461938ce2a863e81583f91dc2ce4bef18332d0501cbe",
+        "git_blob_HEAD": "3e0331e0ff89b0f095927f953346b08be578528f",
+        "git_blob_main": "3e0331e0ff89b0f095927f953346b08be578528f",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "include/bsp/native_lua_script_overrides.hpp",
+        "bytes": 1467,
+        "sha256_checkout": "5b6ff12e3b560ad2b417eb69e631f9f15e0f5921da3deb5d746447198bf3871e",
+        "git_blob_HEAD": "55515de22363e1d8536488631f8b6960e6e79378",
+        "git_blob_main": "55515de22363e1d8536488631f8b6960e6e79378",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "src/native_scene_property_bag_storage.cpp",
+        "bytes": 2117,
+        "sha256_checkout": "01c29d1ddac79d577cf59dcb21378e022d6913d29ca5486254b86b014b0b3d69",
+        "git_blob_HEAD": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+        "git_blob_main": "f5cc568384e547bd4def29f1cad0f908dbcfc6f9",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "include/bsp/native_scene_property_bag_storage.hpp",
+        "bytes": 1308,
+        "sha256_checkout": "9dd83fb1a5b59717524c5f9e913f3ca6e0dfabbfc39348b41681f6b5beabe91a",
+        "git_blob_HEAD": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+        "git_blob_main": "dbcc8d2112ebf8be1f32bd93a6a163b8f371438c",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "reports/native_enum_dictionary_lookup_cc11.json",
+        "bytes": 38896,
+        "sha256_checkout": "92c7ce50f16afbc407550ba1eb80385f3ad39b89dd8a8ac5518af279ca7ac121",
+        "git_blob_HEAD": "b6846fc3e6580e2e73226fa20f7e0bc920085f90",
+        "git_blob_main": "b6846fc3e6580e2e73226fa20f7e0bc920085f90",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "reports/cc12_property_lookup_readiness.json",
+        "bytes": 19533,
+        "sha256_checkout": "3da21d66ed5c65f253718163a367ff0efad67d03488497845510543d2da788aa",
+        "git_blob_HEAD": "72f266b01e364c7c132dc9578c391d92476ed3b3",
+        "git_blob_main": null,
+        "main_exists": false,
+        "HEAD_equal_main": null,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "reports/cc12_property_insertion_readiness.json",
+        "bytes": 23390,
+        "sha256_checkout": "01d97619ae5fea5d7547065e810036f623e2e9533a7eb746d0da9fd6377ca0e8",
+        "git_blob_HEAD": "69d50d565edeefed948fa56796d985428a81335c",
+        "git_blob_main": "69d50d565edeefed948fa56796d985428a81335c",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      },
+      {
+        "path": "reports/cc12_property_payload_binding_audit.json",
+        "bytes": 18216,
+        "sha256_checkout": "f7083fc89e64d53efa1b5cd0ea90c422dcf28503d799a24690e5ddd3ce26d785",
+        "git_blob_HEAD": "9468e5c3e9c2b24fe669bb01176a70e7eb1e9806",
+        "git_blob_main": "9468e5c3e9c2b24fe669bb01176a70e7eb1e9806",
+        "main_exists": true,
+        "HEAD_equal_main": true,
+        "checkout_equal_HEAD_after_CRLF_normalization": true
+      }
+    ],
+    "Source_execution": false,
+    "Source_build": false,
+    "genuine_current_CRT_binding_evidence": {
+      "Source_matches_prior_compile_inputs": [
+        {
+          "path": "src/native_enum_dictionary_lookup.cpp",
+          "current_equal_prior_compile_input": true,
+          "prior_source_input_sha256": "a7efe4dda7a0918a43419de7ea65d61e0abe2fe469ddcf76f3572bed41340f19"
+        },
+        {
+          "path": "include/bsp/native_enum_dictionary_lookup.hpp",
+          "current_equal_prior_compile_input": true,
+          "prior_source_input_sha256": "768df56f7a93628350130480788d2c76b74f49f58f9f86b42bd33b1dea51f7f4"
+        }
+      ],
+      "current_CRT_symbol": "__imp__toupper",
+      "prior_COFF_bucket": {
+        "symbol": "?bucket_for@?A0xc83ed590@bsp@@YAIABVNativeString@2@PBD@Z",
+        "machine": "I386",
+        "bytes": 85,
+        "sha256": "53d9d1a05e8114cf559807aee036c6807b924f40abd42d0ec3a8118242795b94",
+        "relocations": [
+          {
+            "operand_offset": "28",
+            "coff_kind": "0006",
+            "symbol": "__imp__toupper"
+          }
+        ]
+      },
+      "qualification": "Existing verified Source/COFF inputs reused and byte-pinned, not rebuilt or executed; future0043B760 Source symbol is absent."
+    },
+    "address_search": {
+      "arguments": [
+        "rg",
+        "-n",
+        "-i",
+        "0043b760|00e177e4|toupper",
+        "src",
+        "include"
+      ],
+      "returncode": 0,
+      "saved_complete_output": "source_address_search.txt"
+    },
+    "pending_parent_evidence": "Prior lookup audit8a1476f exists on this worker branch and is under Root review/integration; absent from main at this receipt."
+  },
+  "installed_PE_identity": {
+    "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_PE_bytes": 12223752,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  }
+}

@@ -1,0 +1,1592 @@
+{
+  "schema": 1,
+  "packet": "cc12_raw_unit_list_append_readiness",
+  "status": "one ready conditional raw append Source packet; current CRT only",
+  "new_Source_bodies": 0,
+  "qualification": "Ready complete raw list append [00484540,00484597), 87 bytes/36 instructions, one CALL. Root independently inspected all36 live instructions and matched the whole body to the installed Original. Actual caller-owned12-byte list storage has count/head/tail at0/4/8; payload is the one stack DWORD, borrowed opaque identity stored at fresh node+8 and returned in EAX, never dereferenced or owned. ESI/EDI preserve the root around allocation; ECX returns the genuine allocated node, EDX0, RET4. Empty/nonempty branches, post-allocation tail/count reloads, actual previous/next stores and final ADD flags remain literal. A new production size-only CDECL adapter must call unchanged singleton_lifetime_allocate({object,n,n}) with n=12 from the actual PUSH; it has zero native reconstruction credit. Only the Original CALL operand and corresponding Source relocation may bind to that same exact compiled adapter. Actual current CRT allocation/free/import/module ownership is qualified separately from unbound historical private CRT/EH. No noexcept, fabricated allocation/node, failure callback, default return or typed/vector owner substitute. Fresh complete three-TU family must gate whole bodies, adapter/current allocator/free and ordinary/raw callers before any execution. Same actual caller root/payload operands, real append-produced prefixes, all node/head/tail/count/link/identity/ABI/canary relationships, actual mapped I386 allocator identity and matching explicit ownership cleanup must pass. No forced exhaustion/reentry/old private EH proof is claimed; static null branch and subsequent null dereference are retained. Full-build90B37 allocator is context distinct from earlier strict3TU90B34; fresh provider counts/calls/IAT must be derived anew. Parent wrappers00928560/00928570, native erase004837D0 and class/world/game admission remain excluded. Initial/final seals preserve234 old artifacts; graph21/24. No Source/build/fixture/execution is included here.",
+  "family": "J:/PROG/battlestations-pacific-decompile-cc12_command_list_provider_audit/local/cc12_command_list_provider_audit20261008a",
+  "worker_seal_hashes": {
+    "proposal.json": "aba7b198f6f6358e3f2032c10155bec143fbda03573b517146bc27f286230bd5",
+    "clarification.json": "82a2bfc71aff716359b6b36d06056abbfbdcb9bd609f4bc9b5582d201c7a9850",
+    "seal.json": "1b169645fa5dd0df2cd7063e2e818220e2856cada5b95a15dca2c68190474cc7",
+    "final_seal.json": "d7de1c7351d7308c34340bfd79249fb12ba41a426ef29b5a497cf3b59449a285"
+  },
+  "reviewed_proposal": {
+    "schema": 1,
+    "audit": "cc12_command_list_provider_audit",
+    "head": "ca22b90d3c004ca6f54e25483e66e4329d77651b",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "fresh_native_bodies": {
+      "00484540": {
+        "address": "00484540",
+        "end_exclusive": "00484597",
+        "bytes": 87,
+        "hex": "56576a0c8bf1e8d022770033d283c4043bc2740c89108950048950088bc8eb0233c98b44240c8941088b7e088939391674148b7e08894f04894e088951048306015f5ec20400894e04894e088951048306015f5ec20400",
+        "sha256": "4b5cdb5a7a0792b0f0e94b3633502bc1a93a4092d79ee8d44adc733012fbc313",
+        "instructions": [
+          {
+            "address": "00484540",
+            "size": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484541",
+            "size": 1,
+            "hex": "57",
+            "mnemonic": "push",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484542",
+            "size": 2,
+            "hex": "6a0c",
+            "mnemonic": "push",
+            "op_str": "0xc"
+          },
+          {
+            "address": "00484544",
+            "size": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "op_str": "esi, ecx"
+          },
+          {
+            "address": "00484546",
+            "size": 5,
+            "hex": "e8d0227700",
+            "mnemonic": "call",
+            "op_str": "0xbf681b"
+          },
+          {
+            "address": "0048454b",
+            "size": 2,
+            "hex": "33d2",
+            "mnemonic": "xor",
+            "op_str": "edx, edx"
+          },
+          {
+            "address": "0048454d",
+            "size": 3,
+            "hex": "83c404",
+            "mnemonic": "add",
+            "op_str": "esp, 4"
+          },
+          {
+            "address": "00484550",
+            "size": 2,
+            "hex": "3bc2",
+            "mnemonic": "cmp",
+            "op_str": "eax, edx"
+          },
+          {
+            "address": "00484552",
+            "size": 2,
+            "hex": "740c",
+            "mnemonic": "je",
+            "op_str": "0x484560"
+          },
+          {
+            "address": "00484554",
+            "size": 2,
+            "hex": "8910",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax], edx"
+          },
+          {
+            "address": "00484556",
+            "size": 3,
+            "hex": "895004",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax + 4], edx"
+          },
+          {
+            "address": "00484559",
+            "size": 3,
+            "hex": "895008",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [eax + 8], edx"
+          },
+          {
+            "address": "0048455c",
+            "size": 2,
+            "hex": "8bc8",
+            "mnemonic": "mov",
+            "op_str": "ecx, eax"
+          },
+          {
+            "address": "0048455e",
+            "size": 2,
+            "hex": "eb02",
+            "mnemonic": "jmp",
+            "op_str": "0x484562"
+          },
+          {
+            "address": "00484560",
+            "size": 2,
+            "hex": "33c9",
+            "mnemonic": "xor",
+            "op_str": "ecx, ecx"
+          },
+          {
+            "address": "00484562",
+            "size": 4,
+            "hex": "8b44240c",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00484566",
+            "size": 3,
+            "hex": "894108",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 8], eax"
+          },
+          {
+            "address": "00484569",
+            "size": 3,
+            "hex": "8b7e08",
+            "mnemonic": "mov",
+            "op_str": "edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "0048456c",
+            "size": 2,
+            "hex": "8939",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx], edi"
+          },
+          {
+            "address": "0048456e",
+            "size": 2,
+            "hex": "3916",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [esi], edx"
+          },
+          {
+            "address": "00484570",
+            "size": 2,
+            "hex": "7414",
+            "mnemonic": "je",
+            "op_str": "0x484586"
+          },
+          {
+            "address": "00484572",
+            "size": 3,
+            "hex": "8b7e08",
+            "mnemonic": "mov",
+            "op_str": "edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00484575",
+            "size": 3,
+            "hex": "894f04",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [edi + 4], ecx"
+          },
+          {
+            "address": "00484578",
+            "size": 3,
+            "hex": "894e08",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 8], ecx"
+          },
+          {
+            "address": "0048457b",
+            "size": 3,
+            "hex": "895104",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "0048457e",
+            "size": 3,
+            "hex": "830601",
+            "mnemonic": "add",
+            "op_str": "dword ptr [esi], 1"
+          },
+          {
+            "address": "00484581",
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484582",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484583",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          },
+          {
+            "address": "00484586",
+            "size": 3,
+            "hex": "894e04",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 4], ecx"
+          },
+          {
+            "address": "00484589",
+            "size": 3,
+            "hex": "894e08",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [esi + 8], ecx"
+          },
+          {
+            "address": "0048458c",
+            "size": 3,
+            "hex": "895104",
+            "mnemonic": "mov",
+            "op_str": "dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "0048458f",
+            "size": 3,
+            "hex": "830601",
+            "mnemonic": "add",
+            "op_str": "dword ptr [esi], 1"
+          },
+          {
+            "address": "00484592",
+            "size": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "op_str": "edi"
+          },
+          {
+            "address": "00484593",
+            "size": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "op_str": "esi"
+          },
+          {
+            "address": "00484594",
+            "size": 3,
+            "hex": "c20400",
+            "mnemonic": "ret",
+            "op_str": "4"
+          }
+        ],
+        "instruction_count": 36,
+        "direct_edges": [
+          {
+            "from": "00484546",
+            "to": "00bf681b",
+            "mnemonic": "call"
+          }
+        ],
+        "whole_PE_equals_saved_program": true
+      },
+      "00928560": {
+        "address": "00928560",
+        "end_exclusive": "0092856d",
+        "bytes": 13,
+        "hex": "518b493083c124e8d4bfb5ffc3",
+        "sha256": "c13d778e0525c4ca619b7785767bbd5ce6fbc06215c73b88fcae6c56acb6bce1",
+        "instructions": [
+          {
+            "address": "00928560",
+            "size": 1,
+            "hex": "51",
+            "mnemonic": "push",
+            "op_str": "ecx"
+          },
+          {
+            "address": "00928561",
+            "size": 3,
+            "hex": "8b4930",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [ecx + 0x30]"
+          },
+          {
+            "address": "00928564",
+            "size": 3,
+            "hex": "83c124",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x24"
+          },
+          {
+            "address": "00928567",
+            "size": 5,
+            "hex": "e8d4bfb5ff",
+            "mnemonic": "call",
+            "op_str": "0x484540"
+          },
+          {
+            "address": "0092856c",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 5,
+        "direct_edges": [
+          {
+            "from": "00928567",
+            "to": "00484540",
+            "mnemonic": "call"
+          }
+        ],
+        "whole_PE_equals_saved_program": true
+      },
+      "00928570": {
+        "address": "00928570",
+        "end_exclusive": "00928594",
+        "bytes": 36,
+        "hex": "8bd18b4a308b412883c12485c074149039500874088b400485c075f4c350e83db2b5ffc3",
+        "sha256": "5e5953808bcedd0d474f116b3a761958693034335fa2d06906821f25d06a4ab2",
+        "instructions": [
+          {
+            "address": "00928570",
+            "size": 2,
+            "hex": "8bd1",
+            "mnemonic": "mov",
+            "op_str": "edx, ecx"
+          },
+          {
+            "address": "00928572",
+            "size": 3,
+            "hex": "8b4a30",
+            "mnemonic": "mov",
+            "op_str": "ecx, dword ptr [edx + 0x30]"
+          },
+          {
+            "address": "00928575",
+            "size": 3,
+            "hex": "8b4128",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [ecx + 0x28]"
+          },
+          {
+            "address": "00928578",
+            "size": 3,
+            "hex": "83c124",
+            "mnemonic": "add",
+            "op_str": "ecx, 0x24"
+          },
+          {
+            "address": "0092857b",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "0092857d",
+            "size": 2,
+            "hex": "7414",
+            "mnemonic": "je",
+            "op_str": "0x928593"
+          },
+          {
+            "address": "0092857f",
+            "size": 1,
+            "hex": "90",
+            "mnemonic": "nop",
+            "op_str": ""
+          },
+          {
+            "address": "00928580",
+            "size": 3,
+            "hex": "395008",
+            "mnemonic": "cmp",
+            "op_str": "dword ptr [eax + 8], edx"
+          },
+          {
+            "address": "00928583",
+            "size": 2,
+            "hex": "7408",
+            "mnemonic": "je",
+            "op_str": "0x92858d"
+          },
+          {
+            "address": "00928585",
+            "size": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "op_str": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00928588",
+            "size": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "op_str": "eax, eax"
+          },
+          {
+            "address": "0092858a",
+            "size": 2,
+            "hex": "75f4",
+            "mnemonic": "jne",
+            "op_str": "0x928580"
+          },
+          {
+            "address": "0092858c",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          },
+          {
+            "address": "0092858d",
+            "size": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "op_str": "eax"
+          },
+          {
+            "address": "0092858e",
+            "size": 5,
+            "hex": "e83db2b5ff",
+            "mnemonic": "call",
+            "op_str": "0x4837d0"
+          },
+          {
+            "address": "00928593",
+            "size": 1,
+            "hex": "c3",
+            "mnemonic": "ret",
+            "op_str": ""
+          }
+        ],
+        "instruction_count": 16,
+        "direct_edges": [
+          {
+            "from": "0092858e",
+            "to": "004837d0",
+            "mnemonic": "call"
+          }
+        ],
+        "whole_PE_equals_saved_program": true
+      }
+    },
+    "existing_canonical_provider_COFF": {
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "size": 32943,
+        "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+      },
+      "functions": {
+        "singleton_lifetime_allocate@": {
+          "symbol": {
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "value": 0,
+            "section": 76,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": 90,
+          "hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+          "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+          "instructions": [
+            {
+              "address": "00000000",
+              "size": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "op_str": "ebp"
+            },
+            {
+              "address": "00000001",
+              "size": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "op_str": "ebp, esp"
+            },
+            {
+              "address": "00000003",
+              "size": 3,
+              "hex": "83ec0c",
+              "mnemonic": "sub",
+              "op_str": "esp, 0xc"
+            },
+            {
+              "address": "00000006",
+              "size": 1,
+              "hex": "53",
+              "mnemonic": "push",
+              "op_str": "ebx"
+            },
+            {
+              "address": "00000007",
+              "size": 6,
+              "hex": "8b1d00000000",
+              "mnemonic": "mov",
+              "op_str": "ebx, dword ptr [0]"
+            },
+            {
+              "address": "0000000d",
+              "size": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "op_str": "esi"
+            },
+            {
+              "address": "0000000e",
+              "size": 3,
+              "hex": "8b7508",
+              "mnemonic": "mov",
+              "op_str": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": "00000011",
+              "size": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "op_str": "dword ptr [esi + 8]"
+            },
+            {
+              "address": "00000014",
+              "size": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "op_str": "ebx"
+            },
+            {
+              "address": "00000016",
+              "size": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "op_str": "esp, 4"
+            },
+            {
+              "address": "00000019",
+              "size": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "op_str": "eax, eax"
+            },
+            {
+              "address": "0000001b",
+              "size": 2,
+              "hex": "7520",
+              "mnemonic": "jne",
+              "op_str": "0x3d"
+            },
+            {
+              "address": "0000001d",
+              "size": 1,
+              "hex": "57",
+              "mnemonic": "push",
+              "op_str": "edi"
+            },
+            {
+              "address": "0000001e",
+              "size": 6,
+              "hex": "8b3d00000000",
+              "mnemonic": "mov",
+              "op_str": "edi, dword ptr [0]"
+            },
+            {
+              "address": "00000024",
+              "size": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "op_str": "dword ptr [esi + 8]"
+            },
+            {
+              "address": "00000027",
+              "size": 2,
+              "hex": "ffd7",
+              "mnemonic": "call",
+              "op_str": "edi"
+            },
+            {
+              "address": "00000029",
+              "size": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "op_str": "esp, 4"
+            },
+            {
+              "address": "0000002c",
+              "size": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "op_str": "eax, eax"
+            },
+            {
+              "address": "0000002e",
+              "size": 2,
+              "hex": "7413",
+              "mnemonic": "je",
+              "op_str": "0x43"
+            },
+            {
+              "address": "00000030",
+              "size": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "op_str": "dword ptr [esi + 8]"
+            },
+            {
+              "address": "00000033",
+              "size": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "op_str": "ebx"
+            },
+            {
+              "address": "00000035",
+              "size": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "op_str": "esp, 4"
+            },
+            {
+              "address": "00000038",
+              "size": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "op_str": "eax, eax"
+            },
+            {
+              "address": "0000003a",
+              "size": 2,
+              "hex": "74e8",
+              "mnemonic": "je",
+              "op_str": "0x24"
+            },
+            {
+              "address": "0000003c",
+              "size": 1,
+              "hex": "5f",
+              "mnemonic": "pop",
+              "op_str": "edi"
+            },
+            {
+              "address": "0000003d",
+              "size": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "op_str": "esi"
+            },
+            {
+              "address": "0000003e",
+              "size": 1,
+              "hex": "5b",
+              "mnemonic": "pop",
+              "op_str": "ebx"
+            },
+            {
+              "address": "0000003f",
+              "size": 2,
+              "hex": "8be5",
+              "mnemonic": "mov",
+              "op_str": "esp, ebp"
+            },
+            {
+              "address": "00000041",
+              "size": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "op_str": "ebp"
+            },
+            {
+              "address": "00000042",
+              "size": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "op_str": ""
+            },
+            {
+              "address": "00000043",
+              "size": 3,
+              "hex": "8d4df4",
+              "mnemonic": "lea",
+              "op_str": "ecx, [ebp - 0xc]"
+            },
+            {
+              "address": "00000046",
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "op_str": "0x4b"
+            },
+            {
+              "address": "0000004b",
+              "size": 5,
+              "hex": "6800000000",
+              "mnemonic": "push",
+              "op_str": "0"
+            },
+            {
+              "address": "00000050",
+              "size": 3,
+              "hex": "8d45f4",
+              "mnemonic": "lea",
+              "op_str": "eax, [ebp - 0xc]"
+            },
+            {
+              "address": "00000053",
+              "size": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "op_str": "eax"
+            },
+            {
+              "address": "00000054",
+              "size": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "op_str": "0x59"
+            },
+            {
+              "address": "00000059",
+              "size": 1,
+              "hex": "cc",
+              "mnemonic": "int3",
+              "op_str": ""
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 9,
+              "type": 6,
+              "target": "__imp__malloc"
+            },
+            {
+              "offset": 32,
+              "type": 6,
+              "target": "__imp___callnewh"
+            },
+            {
+              "offset": 71,
+              "type": 20,
+              "target": "??0bad_alloc@std@@QAE@XZ"
+            },
+            {
+              "offset": 76,
+              "type": 6,
+              "target": "__TI2?AVbad_alloc@std@@"
+            },
+            {
+              "offset": 85,
+              "type": 20,
+              "target": "__CxxThrowException@8"
+            }
+          ]
+        },
+        "singleton_lifetime_free@": {
+          "symbol": {
+            "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "value": 0,
+            "section": 77,
+            "type": 32,
+            "storage": 2
+          },
+          "section": ".text$mn",
+          "bytes": 6,
+          "hex": "ff2500000000",
+          "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+          "instructions": [
+            {
+              "address": "00000000",
+              "size": 6,
+              "hex": "ff2500000000",
+              "mnemonic": "jmp",
+              "op_str": "dword ptr [0]"
+            }
+          ],
+          "relocations": [
+            {
+              "offset": 2,
+              "type": 6,
+              "target": "__imp__free"
+            }
+          ]
+        }
+      },
+      "qualification": "Existing main build artifact, read only; no fresh build, no archive linking or execution."
+    },
+    "bounded_fresh_graph": {
+      "nodes": [
+        "004837d0",
+        "00484540",
+        "00928560",
+        "00928570",
+        "00bf681b",
+        "Source:singleton_lifetime_allocate",
+        "Source:singleton_lifetime_free",
+        "currentCRT:_CxxThrowException@8",
+        "currentCRT:_callnewh",
+        "currentCRT:free",
+        "currentCRT:malloc",
+        "currentCRT:std::bad_alloc::bad_alloc"
+      ],
+      "edges": [
+        {
+          "from": "00484546",
+          "to": "00bf681b",
+          "mnemonic": "call",
+          "source_entry": "00484540",
+          "scope": "native"
+        },
+        {
+          "from": "00928567",
+          "to": "00484540",
+          "mnemonic": "call",
+          "source_entry": "00928560",
+          "scope": "native"
+        },
+        {
+          "from": "0092858e",
+          "to": "004837d0",
+          "mnemonic": "call",
+          "source_entry": "00928570",
+          "scope": "native"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_allocate",
+          "offset_hex": "14",
+          "to": "currentCRT:malloc",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "call"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_allocate",
+          "offset_hex": "33",
+          "to": "currentCRT:malloc",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "call"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_allocate",
+          "offset_hex": "27",
+          "to": "currentCRT:_callnewh",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "call"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_allocate",
+          "offset_hex": "46",
+          "to": "currentCRT:std::bad_alloc::bad_alloc",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "call"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_allocate",
+          "offset_hex": "54",
+          "to": "currentCRT:_CxxThrowException@8",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "call"
+        },
+        {
+          "source_entry": "Source:singleton_lifetime_free",
+          "offset_hex": "0",
+          "to": "currentCRT:free",
+          "scope": "existing x86 COFF canonical current CRT",
+          "mnemonic": "jmp"
+        }
+      ],
+      "node_count": 12,
+      "edge_count": 9,
+      "combined_count": 21,
+      "cap": 24,
+      "old_private_allocator_and_erase_graph": "Reused sealed context only; no live expansion or code/listing retrace."
+    },
+    "current_parent_providers": {
+      "00928560": {
+        "bytes": 13,
+        "instructions": 5,
+        "physical_contract": "PUSH actual entryECX payload; fresh ECX=[entryECX+30]; ADD24; CALL00484540; RET0. Same actual parent+24 list root goes to append. No parent provider/default/class is created.",
+        "Source_now": "Typed UnitWorldRegistrationHost parent_0030 and push_back virtual callbacks; not raw native ABI.",
+        "status": "Dependent until proposed raw append is implemented/admitted, and actual caller-owned receiver/parent storage is supplied. Not included in proposed packet."
+      },
+      "00928570": {
+        "bytes": 36,
+        "instructions": 16,
+        "physical_contract": "EDX=entryreceiver; ECX=[receiver+30]; EAX=[parent+28]; ECX+=24; walk node.next+4 comparing payload+8 with actual EDX; erase first match through004837D0, RET0.",
+        "Source_now": "No exact standalone raw provider; host unlink models not adopted.",
+        "status": "Unready: prior sealed004837D0 missing returning epilogues and whole erase/ownership/free-domain admission. Not retraced."
+      }
+    },
+    "why_ready_now": "A narrower supplied-list/current-CRT contract closes allocation ownership through an already concrete canonical service whose full Source and existing37-instruction x86 body were inspected. The new size-only ABI adapter is explicit work inside the one proposed packet with mandatory pre-execution gates. This does not assert an already-existing raw provider or promote typed parent/world hosts.",
+    "ready_proposal": {
+      "id": "cc12_raw_unit_list_append_00484540",
+      "readiness": "ready for bounded whole raw list primitive implementation with explicit canonical current-CRT storage domain; not an existing raw provider and not historical private-CRT compatibility",
+      "native_addresses": [
+        "00484540"
+      ],
+      "native_body_count": 1,
+      "native_bytes": 87,
+      "native_instructions": 36,
+      "native_calls": 1,
+      "end_exclusive": "00484597",
+      "native_sha256": "4b5cdb5a7a0792b0f0e94b3633502bc1a93a4092d79ee8d44adc733012fbc313",
+      "worker_model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "files": [
+        "include/bsp/native_unit_list_append.hpp",
+        "src/native_unit_list_append.cpp",
+        "docs/NATIVE_UNIT_LIST_APPEND_CC12.md",
+        "reports/native_unit_list_append_cc12.json"
+      ],
+      "proposed_raw_interface": "void* __fastcall append_native_unit_list_00484540(void* actual_list_ecx, void* unused_edx, void* actual_payload);",
+      "no_noexcept": "Canonical current allocation can throw; do not add noexcept termination or a fallback.",
+      "actual_ABI": {
+        "ECX": "actual stable supplied 0Ch list root",
+        "EDX": "formal Source padding; original incoming value unused",
+        "stack": "one actual payload DWORD at entryESP+4",
+        "return": "RET4; EAX=identical stacked payload, ECX=actual fresh allocated node, EDX=0",
+        "nonvolatiles": "ESI/EDI explicitly saved/restored; EBX/EBP and caller stack preserved under actual CDECL allocator normal-return contract",
+        "flags": "last 32-bit ADD list.count,1 defines arithmetic flags",
+        "SSE_x87_MXCSR_DF": "No blanket preservation claim across current CRT/new-handler calls; routine contains no own FP/DF operation."
+      },
+      "genuine_storage_contract": {
+        "root": "Actual caller-owned stable aligned12-byte allocation, with count/head/tail at+0/+4/+8. This object itself is passed in ECX and remains the same root throughout the operation.",
+        "initial_empty": "Legal supplied empty list has count/head/tail zero. Caller initializes its own storage; no native constructor/class/global identity is inferred.",
+        "existing_nodes": "Any existing nodes are actual live12-byte allocations from the SAME canonical singleton_lifetime_allocate/free domain, linked to this supplied root with coherent previous/next/count/head/tail. Do not fabricate nodes or translate vector/typed owner storage.",
+        "new_node": "The sole actual allocation requests12 bytes from the concrete canonical service. Its returned pointer is the actual node written/published; no companion object, fixed allocator-return pointer or census proxy.",
+        "payload": "Borrowed opaque actual caller identity, stored unchanged at node+8 and returned unchanged in EAX. Append does not dereference, own, AddRef or free the payload.",
+        "lifetime": "Root and existing nodes remain live across the real allocator/new-handler call. Caller owns the resulting chain; release each actual allocation once through matching canonical free after detachment/ownership teardown. This is not native4837D0 erase reconstruction.",
+        "post_allocator_reads": "Do not pre-capture count/head/tail. Native retains list address in ESI, then reloads tail/count only after the actual allocator returns. Real new-handler side effects can be observed through those fresh reads."
+      },
+      "exact_sequence": [
+        "PUSH ESI; PUSH EDI; PUSH0Ch; ESI=entryECX; CALL allocator",
+        "XOR EDX,EDX; ADD ESP,4; CMP EAX,EDX",
+        "nonnull: zero all3 new-node words; ECX=allocation; null: ECX=0",
+        "EAX=actual stacked payload; [ECX+8]=EAX (retains native null dereference)",
+        "EDI=[ESI+8]; [ECX]=EDI; compare actual [ESI] count with0",
+        "nonempty: reload actual tail; oldtail.next=node; root.tail=node; node.next=0; ++root.count; restoreEDI/ESI; RET4",
+        "empty: root.head=node; root.tail=node; node.next=0; ++root.count; restoreEDI/ESI; RET4"
+      ],
+      "concrete_provider": {
+        "existing_Source": "src/singleton_lifetime.cpp:51 and include/bsp/singleton_lifetime.hpp:19",
+        "whole_current_source_allocator": "malloc(request.host_bytes); if null call real _callnewh(request.host_bytes); retry on nonzero or throw real std::bad_alloc. kind/native_bytes are metadata, not a separate allocator or object initialization.",
+        "current_COFF": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "size": 32943,
+          "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+        },
+        "allocator_COFF_bytes": 90,
+        "allocator_COFF_instructions": 37,
+        "allocator_COFF_ABI": "cdecl request reference at entryESP+4; host_bytes loaded at request+8; actual imports __imp__malloc/__imp___callnewh; EAX allocated pointer and RET0 on success. Actual std::bad_alloc constructor and _CxxThrowException@8 exhaustion calls remain.",
+        "matching_free": "singleton_lifetime_free(void*) is complete6B1 indirect tail JMP to __imp__free, preserving its cdecl stack argument.",
+        "new_adapter_required_inside_new_Source_TU": "A real noinline size-only CDECL Source function taking uint32/size_t n on stack and returning singleton_lifetime_allocate({SingletonAllocationKind::object,n,n}). Native call supplies n=0Ch. This converts only argument layout into the already-concrete canonical service; no callback, fake return, alternate heap, default node or guard.",
+        "adapter_native_credit": 0,
+        "historical_domain": "Original00BF681B private malloc/handler/global bad_alloc/atexit/RTTI/CxxThrow and00BF65AC historical heap identities remain outside this packet. Existing prior sealed evidence is reused without retracing or promotion."
+      },
+      "required_implementation_gates": {
+        "native_body": "Preserve all87 original bytes/36 instructions except the one genuine CALL relocation operand at body offset7..10. No other relocations or instruction rewrites; keep null branch and all store widths/order.",
+        "Source_and_link": "Before any execution, inspect full Source COFF and unique linked body, exact one CALL relocation identity, complete new CDECL adapter/current canonical allocator/free sections and ordinary generated fastcall and raw capture caller ABIs.",
+        "accepted_fixture_shape": "One unique fresh3TU family: new Source with real adapter, unchanged current singleton_lifetime.cpp, new ignored actual-caller probe. Zero BSP archives. No old family/recipe replay or new tracked tests.",
+        "Original_admission": "Relocate only Original CALL00484546 to the SAME exact linked production Source CDECL adapter used by Source. Label this canonical current-CRT-bound Original; it is not unmodified private native-CRT execution. Fully gate both normalized bodies and the actual callable adapter before entry.",
+        "genuine_cases": "Use the SAME actual caller-owned root and payload operands for Original/Source phases. Check ordinary empty append and nonempty append. Prefix nodes must be produced by admitted complete append execution with real canonical allocation, never fabricated or returned by a stub.",
+        "pointer_relations": "Capture actual returned allocation identity, root.head/tail/count, every genuine next/previous link, payload identity, untouched caller guards, RET4/EAX payload/ECX node/EDX0/nonvolatile/stack behavior. Allocator addresses may differ between phases; validate actual identity/link relationships, never force pointer reuse.",
+        "teardown": "After each phase, traverse only actual produced nodes and release matching allocations with canonical free while resetting the genuine caller-owned root for the next admitted phase. This is fixture ownership cleanup, not a provider substitute or native erase proof.",
+        "failure_scope": "Do not fake null/OOM allocators or registered handler callbacks. Preserve cold/null/native instruction behavior statically; historical EH identity and forced allocation failure execution are unbound.",
+        "bookends": "Pin actual Source/project and consumed extensionless standard headers, compiler/linker/runtime libraries, full Original PE/code, generated callers/providers, executable/recipe and all prior artifacts before/after. Root independently builds/runs a separate family and owns CMake/fullbuild/existingtests/Ghidra/integration."
+      },
+      "excluded": [
+        "00928560 parent wrapper implementation",
+        "00928570 unregister implementation",
+        "004837D0 erase listing repair or Source",
+        "004F1870/004F1890 wrapper retrace or new Source",
+        "typed UnitWorldRegistrationHost/vector/GameUnitWorldLists providers",
+        "fabricated world/parent/global/class/dispatch mappings",
+        "historical private CRT/EH identity",
+        "native class/world/startup/gameplay promotion"
+      ]
+    },
+    "ready_proposal_count": 1,
+    "builds": 0,
+    "Source_changes": 0,
+    "fixture_or_native_executions": 0,
+    "Ghidra_mutations": 0,
+    "old_erase_live_queries": 0,
+    "old_recipe_replays": 0,
+    "protected_prior_artifacts": 234,
+    "prior_receipts": {
+      "support_audit": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\audit.json",
+        "size": 51275,
+        "sha256": "e93cc479c4979cf1de8dd60cce8de6938d51ff3461d114883727aa97c771e1e2"
+      },
+      "support_seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_target_initialize\\local\\cc12_command_target_support_audit20261008a\\seal.json",
+        "size": 18231,
+        "sha256": "e381bb824510f4a14c3c40ae2caa8914e15ac1a618ae5fd5e78816a19a594cfd"
+      }
+    }
+  },
+  "reviewed_clarification": {
+    "schema": 1,
+    "type": "append-only clarification; first proposal and seal remain unchanged",
+    "first_proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proposal.json",
+      "size": 34608,
+      "sha256": "aba7b198f6f6358e3f2032c10155bec143fbda03573b517146bc27f286230bd5"
+    },
+    "first_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\seal.json",
+      "size": 11441,
+      "sha256": "1b169645fa5dd0df2cd7063e2e818220e2856cada5b95a15dca2c68190474cc7"
+    },
+    "complete_original_body": {
+      "address": "00484540",
+      "end_exclusive": "00484597",
+      "bytes": 87,
+      "hex": "56576a0c8bf1e8d022770033d283c4043bc2740c89108950048950088bc8eb0233c98b44240c8941088b7e088939391674148b7e08894f04894e088951048306015f5ec20400894e04894e088951048306015f5ec20400",
+      "sha256": "4b5cdb5a7a0792b0f0e94b3633502bc1a93a4092d79ee8d44adc733012fbc313",
+      "instructions": [
+        {
+          "address": "00484540",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "op_str": "esi"
+        },
+        {
+          "address": "00484541",
+          "size": 1,
+          "hex": "57",
+          "mnemonic": "push",
+          "op_str": "edi"
+        },
+        {
+          "address": "00484542",
+          "size": 2,
+          "hex": "6a0c",
+          "mnemonic": "push",
+          "op_str": "0xc"
+        },
+        {
+          "address": "00484544",
+          "size": 2,
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "op_str": "esi, ecx"
+        },
+        {
+          "address": "00484546",
+          "size": 5,
+          "hex": "e8d0227700",
+          "mnemonic": "call",
+          "op_str": "0xbf681b"
+        },
+        {
+          "address": "0048454b",
+          "size": 2,
+          "hex": "33d2",
+          "mnemonic": "xor",
+          "op_str": "edx, edx"
+        },
+        {
+          "address": "0048454d",
+          "size": 3,
+          "hex": "83c404",
+          "mnemonic": "add",
+          "op_str": "esp, 4"
+        },
+        {
+          "address": "00484550",
+          "size": 2,
+          "hex": "3bc2",
+          "mnemonic": "cmp",
+          "op_str": "eax, edx"
+        },
+        {
+          "address": "00484552",
+          "size": 2,
+          "hex": "740c",
+          "mnemonic": "je",
+          "op_str": "0x484560"
+        },
+        {
+          "address": "00484554",
+          "size": 2,
+          "hex": "8910",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [eax], edx"
+        },
+        {
+          "address": "00484556",
+          "size": 3,
+          "hex": "895004",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [eax + 4], edx"
+        },
+        {
+          "address": "00484559",
+          "size": 3,
+          "hex": "895008",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [eax + 8], edx"
+        },
+        {
+          "address": "0048455c",
+          "size": 2,
+          "hex": "8bc8",
+          "mnemonic": "mov",
+          "op_str": "ecx, eax"
+        },
+        {
+          "address": "0048455e",
+          "size": 2,
+          "hex": "eb02",
+          "mnemonic": "jmp",
+          "op_str": "0x484562"
+        },
+        {
+          "address": "00484560",
+          "size": 2,
+          "hex": "33c9",
+          "mnemonic": "xor",
+          "op_str": "ecx, ecx"
+        },
+        {
+          "address": "00484562",
+          "size": 4,
+          "hex": "8b44240c",
+          "mnemonic": "mov",
+          "op_str": "eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00484566",
+          "size": 3,
+          "hex": "894108",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [ecx + 8], eax"
+        },
+        {
+          "address": "00484569",
+          "size": 3,
+          "hex": "8b7e08",
+          "mnemonic": "mov",
+          "op_str": "edi, dword ptr [esi + 8]"
+        },
+        {
+          "address": "0048456c",
+          "size": 2,
+          "hex": "8939",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [ecx], edi"
+        },
+        {
+          "address": "0048456e",
+          "size": 2,
+          "hex": "3916",
+          "mnemonic": "cmp",
+          "op_str": "dword ptr [esi], edx"
+        },
+        {
+          "address": "00484570",
+          "size": 2,
+          "hex": "7414",
+          "mnemonic": "je",
+          "op_str": "0x484586"
+        },
+        {
+          "address": "00484572",
+          "size": 3,
+          "hex": "8b7e08",
+          "mnemonic": "mov",
+          "op_str": "edi, dword ptr [esi + 8]"
+        },
+        {
+          "address": "00484575",
+          "size": 3,
+          "hex": "894f04",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [edi + 4], ecx"
+        },
+        {
+          "address": "00484578",
+          "size": 3,
+          "hex": "894e08",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [esi + 8], ecx"
+        },
+        {
+          "address": "0048457b",
+          "size": 3,
+          "hex": "895104",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [ecx + 4], edx"
+        },
+        {
+          "address": "0048457e",
+          "size": 3,
+          "hex": "830601",
+          "mnemonic": "add",
+          "op_str": "dword ptr [esi], 1"
+        },
+        {
+          "address": "00484581",
+          "size": 1,
+          "hex": "5f",
+          "mnemonic": "pop",
+          "op_str": "edi"
+        },
+        {
+          "address": "00484582",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "op_str": "esi"
+        },
+        {
+          "address": "00484583",
+          "size": 3,
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "op_str": "4"
+        },
+        {
+          "address": "00484586",
+          "size": 3,
+          "hex": "894e04",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [esi + 4], ecx"
+        },
+        {
+          "address": "00484589",
+          "size": 3,
+          "hex": "894e08",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [esi + 8], ecx"
+        },
+        {
+          "address": "0048458c",
+          "size": 3,
+          "hex": "895104",
+          "mnemonic": "mov",
+          "op_str": "dword ptr [ecx + 4], edx"
+        },
+        {
+          "address": "0048458f",
+          "size": 3,
+          "hex": "830601",
+          "mnemonic": "add",
+          "op_str": "dword ptr [esi], 1"
+        },
+        {
+          "address": "00484592",
+          "size": 1,
+          "hex": "5f",
+          "mnemonic": "pop",
+          "op_str": "edi"
+        },
+        {
+          "address": "00484593",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "op_str": "esi"
+        },
+        {
+          "address": "00484594",
+          "size": 3,
+          "hex": "c20400",
+          "mnemonic": "ret",
+          "op_str": "4"
+        }
+      ],
+      "instruction_count": 36,
+      "direct_edges": [
+        {
+          "from": "00484546",
+          "to": "00bf681b",
+          "mnemonic": "call"
+        }
+      ],
+      "whole_PE_equals_saved_program": true
+    },
+    "new_Source_only_adapter": {
+      "suggested_declaration": "__declspec(noinline) void* __cdecl allocate_native_unit_list_bytes(std::size_t actual_bytes);",
+      "placement": "Private function in the new src/native_unit_list_append.cpp translation unit; no new global service registry/callback or public provider factory.",
+      "exact_body_contract": "return bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object, actual_bytes, actual_bytes});",
+      "entry": "One4-byte size_t on x86 caller stack at entryESP+4; native CALL00484546 supplies0Ch; incoming ECX/EDX carry no adapter input contract.",
+      "exit": "EAX actual fresh canonical allocation; RET0; caller native ADD ESP,4 retains size cleanup. CDECL nonvolatile preservation and current-CRT exception behavior must be shown by the actual fresh compiled adapter/caller evidence.",
+      "no_noexcept": true,
+      "guards_defaults_fake_node_callbacks_or_extra_heap": false,
+      "native_address_or_reconstruction_credit": null,
+      "must_exist_before_fixture": "The exact production Source adapter must be compiled/linked and fully gated first; Original CALL relocation targets that same actual code, never a test callback."
+    },
+    "genuine_root_node_parent_provenance": {
+      "caller_initialization": "Caller owns an actual declared aligned12-byte root allocation and initializes its three real count/head/tail DWORDs to0 for an empty list. The same actual root pointer is supplied in ECX to both admitted Original and Source phases. Any adjacent guards belong to the declared allocation.",
+      "nonempty_prefix": "Every prefix node in a nonempty case must have been produced by a complete admitted append call with a genuine canonical allocation. Do not write up artificial node records, adapt vectors/typed hosts, or force allocator addresses.",
+      "coherent_list": "The actual root count equals its actual live chain length; head.previous=0, tail.next=0 and every forward/back link refers to the same real live node allocations owned by this root. Count controls native empty/nonempty selection; preserve literal native loads/stores even outside this admitted coherent domain.",
+      "node_identity": "Actual fresh malloc-domain pointer is the node used at+0/+4/+8 and published to head/tail/previous tail next. EAX return is unchanged actual payload; final ECX is this actual new node and EDX0. Node identity relations are checked using real allocations, not synthesized equal-pointer projections.",
+      "liveness": "Caller maintains root and existing nodes live across allocation/new-handler reentry. Source must not snapshot count/tail before allocation: native reads actual tail at00484569, actual count at0048456E and reloads tail at00484572 after the call.",
+      "borrowed_payload": "Payload is the real caller-supplied opaque identity. Append neither dereferences nor owns its storage; payload liveness/class membership is not manufactured or inferred.",
+      "teardown": "Caller/test owner detaches and releases each actual produced node exactly once through matching singleton_lifetime_free, then resets the same actual caller-owned root for a fresh phase. This cleanup does not claim native004837D0 erase or native world destruction.",
+      "parent_wrappers": "00484540 has no parent field/global/class dependency.00928560 separately requires an actual caller-owned receiver+30 parent pointer and actual parent+24 root, and00928570 traverses that same root. Neither parent storage nor wrapper/class/world admission is fabricated by this append packet; both wrappers remain excluded/dependent."
+    },
+    "exhaustion_and_private_EH_limits": {
+      "real_current_service": "Retain actual current std::malloc/_callnewh retry and std::bad_alloc when the real handler declines. Do not catch, translate, suppress, default-return, mark noexcept or inject a fabricated null/OOM provider.",
+      "before_return": "Append performs no own list/node write before its allocation call returns, but actual registered new-handler side effects can mutate external state/list storage; therefore do not claim the root is unchanged across allocation failure or reentry.",
+      "native_null_path": "Keep native zero-allocator branch and subsequent [ECX+8] store in the complete87-byte body; current canonical allocator returns a genuine allocation or throws, so no synthetic null-return runtime case is admitted.",
+      "historical_domain": "Original private bad_alloc/global init flag, atexit, RTTI/vtable, native heap and historical EH identity remain unbound. Current-CRT operation and its actual generated frame/unwind behavior must be qualified separately; no historical exception equivalence claim.",
+      "dynamic_scope": "No allocation/failure/exception case executed during this audit. Future fresh normal-case evidence cannot be labeled proof of forced exhaustion or historical EH behavior."
+    },
+    "compiler_context_separation": {
+      "inspected_existing_full_build": {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "size": 32943,
+          "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+        },
+        "allocation_bytes": 90,
+        "allocation_instructions": 37,
+        "scope": "Existing current main full-build COFF, corroborating static source/ABI context only. Not a freshly built or executed audit family."
+      },
+      "earlier_fresh_strict_3TU_context": {
+        "allocation_bytes": 90,
+        "allocation_instructions": 34,
+        "source": "Root follow-up message supplies this separate earlier family count. No old family/recipe replay or re-pin of its accepted receipt performed."
+      },
+      "future_gate": "Recover and pin the actual complete fresh canonical provider, new adapter, import/IAT targets, relocation symbols, linked code and both callers from the new family. Derive fresh lengths/instruction counts instead of asserting either90B37 or90B34. Same current Source can compile differently under different recorded contexts.",
+      "new_native_count_limit": "Only original00484540 whole87B36 is proposed as new native reconstruction. No extra credit for canonical service/adapters or old bodies."
+    },
+    "registration_and_assignment": "Readiness proposal only. Root independently reviews and registers the packet after audit leases release before any worker assignment. No Source or fixture is authorized by this audit receipt."
+  },
+  "worker_final_seal": {
+    "schema": 1,
+    "readiness": "One conditional supplied-storage/current-CRT append87B36 proposal; Root independent registration required before Source assignment",
+    "first_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\seal.json",
+      "size": 11441,
+      "sha256": "1b169645fa5dd0df2cd7063e2e818220e2856cada5b95a15dca2c68190474cc7"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proposal.json",
+      "size": 34608,
+      "sha256": "aba7b198f6f6358e3f2032c10155bec143fbda03573b517146bc27f286230bd5"
+    },
+    "clarification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\clarification.json",
+      "size": 13188,
+      "sha256": "82a2bfc71aff716359b6b36d06056abbfbdcb9bd609f4bc9b5582d201c7a9850"
+    },
+    "all_original34_artifacts_and234_prior_pins_unchanged": true,
+    "whole_native_before_after_equal": true,
+    "tracked_worktree_clean": true,
+    "original_address_and_clarification_leases_released": true,
+    "final_seal_lease_to_release_after_write": "cc12_command_list_provider_final_seal",
+    "full_build90B37_not_inherited_as_future_fixture_count": true,
+    "fresh_future_counts_calls_IAT_required": true,
+    "Source_or_fixture_or_native_execution_or_Ghidra_mutation": false,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\audit_provider.py",
+        "size": 8356,
+        "sha256": "20de5085ed711e48b3876150753ec3e06fa554d5e6c3ce22351c495c8cf95415"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\begin.json",
+        "size": 294,
+        "sha256": "6dd4598ebcb5c5c9f79e924ba6edcfcde3b9b82848f521b48809b97c93a43c4e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\clarification.json",
+        "size": 13188,
+        "sha256": "82a2bfc71aff716359b6b36d06056abbfbdcb9bd609f4bc9b5582d201c7a9850"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\current_provider_COFF.json",
+        "size": 8205,
+        "sha256": "e41ce65b5bb30e6839d73816d698e810ddf9f1ac47137d251f6e8f3158dec982"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\current_source_search.json",
+        "size": 2337,
+        "sha256": "e930eed4998acce1bf69a0740b15dcd1192855ccb6f668c4dd2ca87dcc9f997c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\initial_read_limits.json",
+        "size": 524,
+        "sha256": "c25af73580c6516ab81d52e9fdb2742b8c785b4f176cfc96a1048a7c4b0ec3d1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\inputs_after.json",
+        "size": 3917,
+        "sha256": "251ecb695ee1ca618398be408c82205f31cdd56ad8ca8674e32023549621267c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\inputs_before.json",
+        "size": 3917,
+        "sha256": "251ecb695ee1ca618398be408c82205f31cdd56ad8ca8674e32023549621267c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\listing_00484540.json",
+        "size": 1368,
+        "sha256": "cf0fae811eac801f3451b807a3a5692df89871225e2fadaf4bde1d0ad3a7e190"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\listing_00928560.json",
+        "size": 321,
+        "sha256": "261778f1278fc75c244db4cfb6d356daf2b4404e83403dec8598bf745b4197f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\listing_00928570.json",
+        "size": 655,
+        "sha256": "13905fdf64192b02997f2c47e7b9124086cd40b55665519a92b8bd4d5d96a7a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\listing_batch_count.json",
+        "size": 187,
+        "sha256": "18f6de798bea9537067a76225b507183e753abb10cce219bf05a29a77fbf5206"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\listing_batch_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\main_provider_inputs_after.json",
+        "size": 615,
+        "sha256": "f5d0de76cb9ec85bee37851db2f9c07c91698897438fd562ec53f30534b5677d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\main_provider_inputs_before.json",
+        "size": 615,
+        "sha256": "f5d0de76cb9ec85bee37851db2f9c07c91698897438fd562ec53f30534b5677d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after.json",
+        "size": 11794,
+        "sha256": "1fb9eccd2f53f4071f3ea50e6f4b73d2d959f0b5516e2b504c6ce33287a40a94"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after_bytes_00484540.json",
+        "size": 617,
+        "sha256": "6afb6d86478d0d9501fa6fbed94ad86b32b6511869f7cd522729deb9b181e0c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after_bytes_00928560.json",
+        "size": 245,
+        "sha256": "4f05b16a9778f4c19e9450b923e78877e0b3b4c768dcd6dd91d2530105a6c0e5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after_bytes_00928570.json",
+        "size": 367,
+        "sha256": "17b574f0d4fda0a21163601a95e6091ac7154aba7c6a25e6e12ff1e0226f7a9c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after_count.json",
+        "size": 187,
+        "sha256": "74d4cc78fcb3adb2573c30bb4c99d727d72ed675e600f5fcae776b09f0fd45a5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_after_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before.json",
+        "size": 11794,
+        "sha256": "1fb9eccd2f53f4071f3ea50e6f4b73d2d959f0b5516e2b504c6ce33287a40a94"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before_bytes_00484540.json",
+        "size": 617,
+        "sha256": "bed4668584b13f753837ce44bfd3664475c558c2e4c774178da6ecd182ef3f43"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before_bytes_00928560.json",
+        "size": 245,
+        "sha256": "72ee1977e4110359edf3557f8eb795950f09227294bfa7dc749acc5ed8b251ff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before_bytes_00928570.json",
+        "size": 367,
+        "sha256": "59df390d5ee32b2f6a015e9fe07bb3d02a108d7250ad87aa662403b90ce40ae3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before_count.json",
+        "size": 187,
+        "sha256": "73556edf012a91cd3a79dac0b2c64ab354cc7abdad57b397a24c03c94a0444e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\native_before_target.json",
+        "size": 564,
+        "sha256": "8d874c1991b2c0424986307936bf7ca5c3e804c1055a854d256594897586e26a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\post.json",
+        "size": 303,
+        "sha256": "43a2faba91bb38a167c1c9b30edcc54da3080619e7b097a00a90f50b71116ee9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\prior_after.json",
+        "size": 62017,
+        "sha256": "d60105dfa188ec865b4e523a1c04417f12355aed8996e1738bda33d82f38245d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\prior_before.json",
+        "size": 62017,
+        "sha256": "d60105dfa188ec865b4e523a1c04417f12355aed8996e1738bda33d82f38245d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\prior_prerequisites.json",
+        "size": 8485,
+        "sha256": "8eacdfdd5fd528062021b790537d42d877188d2b126257f503d85a72b3e65cbd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proposal.json",
+        "size": 34608,
+        "sha256": "aba7b198f6f6358e3f2032c10155bec143fbda03573b517146bc27f286230bd5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proto_00484540.json",
+        "size": 1352,
+        "sha256": "2808c14de4cdccdbb5e4b5051541467bb463a54ef610b2b9e9d98b5d2e5bfb22"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proto_00928560.json",
+        "size": 1029,
+        "sha256": "a0607e32d047aef6a09e237586269130df1da342b1ab6de57833295424a428b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\proto_00928570.json",
+        "size": 1384,
+        "sha256": "2d5ccde6bafd2559b728f67ce5833f798bdb913f6bc5110215395d4a8dac324c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_command_list_provider_audit\\local\\cc12_command_list_provider_audit20261008a\\seal.json",
+        "size": 11441,
+        "sha256": "1b169645fa5dd0df2cd7063e2e818220e2856cada5b95a15dca2c68190474cc7"
+      }
+    ]
+  },
+  "primary_review": {
+    "all_sealed_artifacts_unchanged": true,
+    "complete_live36_instruction_assembly_inspected": true,
+    "installed_Original_whole_hash_verified": true,
+    "conditional_current_CRT_raw87_ready": true,
+    "new_adapter_must_be_verified_before_execution": true,
+    "original_private_CRT_EH_admission": false,
+    "game_validated": false
+  }
+}
