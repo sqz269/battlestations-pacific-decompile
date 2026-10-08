@@ -33643,6 +33643,67 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_raw_native_string_duplicate_00438e40",
+      "done": false,
+      "state": "ready independently audited qualified whole57B30 physical ECX/RET0 string duplicate; genuine current canonical allocation and mapped VCRUNTIME copy required",
+      "function_addresses": [
+        "00438e40"
+      ],
+      "output_files": [
+        "include/bsp/native_string_duplicate.hpp",
+        "src/native_string_duplicate.cpp",
+        "docs/NATIVE_STRING_DUPLICATE_CC12.md",
+        "reports/native_string_duplicate_cc12.json"
+      ],
+      "dependencies": [],
+      "readiness_document": "docs/CC12_NATIVE_STRING_DUPLICATE_READINESS.md",
+      "readiness_report": "reports/cc12_native_string_duplicate_readiness.json",
+      "fixture_requirements": {
+        "suggested_id": "cc12_raw_native_string_duplicate_00438e40",
+        "exactly_four_owned_files": [
+          "include/bsp/native_string_duplicate.hpp",
+          "src/native_string_duplicate.cpp",
+          "docs/NATIVE_STRING_DUPLICATE_CC12.md",
+          "reports/native_string_duplicate_cc12.json"
+        ],
+        "public_API": "namespace bsp { char* __fastcall duplicate_native_string_00438e40(const char* actual_text_ecx); }",
+        "API_qualification": "MSVC Win32 only. No noexcept because current canonical allocation can throw; normal successful/null domain only until unwind is separately established. No hidden stack arg, callback, synthetic owner or default output.",
+        "source_body": "Naked exact57-byte/30-instruction body; actual CALL00438E61 operand offsets34..37 only -> genuine private CDECL adapter; actual CALL00438E6B operand offsets44..47 only -> real _memcpy import thunk. Require exactly two REL32 COFF relocations at34 and44 and all other49 bytes literal. Branches, NUL scan, arithmetic widths, stack timing and post-copy EAX=EDI retained.",
+        "new_adapter": "Private noinline void* __cdecl allocate_native_string_bytes(std::size_t actual_bytes) calls unchanged singleton_lifetime_allocate({SingletonAllocationKind::object, actual_bytes, actual_bytes}). Source glue gets zero Native credit. Same real allocator/retry service; no fake/callback/forced return or alternate heap. Derive full new adapter body and all cookie helpers.",
+        "copy_binding": "Use real standard memcpy declaration and literal CALL to its link symbol, with intrinsics disabled for this target as needed. No Source copy wrapper or fake import. Future map/COFF/PE must identify complete generated import thunk (normally JMP DWORD PTR[__imp__memcpy]), actual IAT slot, VCRUNTIME140.dll import and memcpy export; do not assume thunk address/size from this proposal.",
+        "fresh_family": "New named worktree and unique ignored local/cc12_raw_native_string_duplicate_worker<date><suffix> family. Three fresh TUs: new raw duplicate+private adapter, unchanged current singleton_lifetime.cpp, newly written probe. Link actual current CRT import libraries only; no BSP archives, old objects, old probe executions or helper-script imports.",
+        "build_gate": "Strict MSVC Win32 /MD /O2 /W4 /WX /fp:strict /permissive- /EHsc /Gy /GL-, no ICF; embedded asInvoker manifest. Pre-pin exact input/TU/header closure including extensionless headers, all consumed libraries/toolchain, PE, sources and all older sealed artifacts. Preserve every failed stage; never replay accepted native runs.",
+        "static_gate": "Full fresh COFF/linked body and complete relocation targets for raw57, size adapter, canonical allocator/free, ordinary compiler caller, raw capture caller, selected cookie/bad_alloc/cold helpers, copy import thunk/IAT. Verify raw57 normalized only at34..37/44..47, unique linked occurrence and complete extent. Recalculate body counts; Source-only adapter/helper sizes earn no Native credit.",
+        "Original_binding": "Copy the complete installed original57 bytes into private RX fixture storage; rebind only the same two actual CALL operands to the identical fresh allocator adapter and memcpy import thunk. Compare all other49 bytes and bookend full runtime57. Call this current-domain-bound Original; original private providers are not executed or admitted.",
+        "preentry_dynamic_provider_gate": "Before zero target duplicate entries and before target allocation/copy, prove actual malloc/free/_callnewh IATs from the canonical Source and actual memcpy IAT from raw call thunk. Resolve each actual pointer to MEM_IMAGE allocation base with I386 PE; require pointer==GetProcAddress==mapped base+physical export RVA. Match loader DOS path against mapped NT path and opened physical file NT path, full file hash, volume/fileID/size/time/image identity. Hold real read handles denying write/delete and compare ASLR-normalized export entry bytes; do not identify memcpy by prefix alone. Expected heap provider is SysWOW64 ucrtbase.dll; expected copy provider SysWOW64 vcruntime140.dll. If loader chooses another actual module, fail before target entry and preserve evidence; do not silently switch expected files.",
+        "minimal_fixture": "Two actual inputs only: nullptr and one genuine guarded, NUL-terminated nonempty byte array with embedded high-bit bytes and trailing guard beyond the first NUL. Raw Original and Source each see same borrowed array address, real raw caller frame and input registers; null and nonnull routes each once. One ordinary compiler Source nonnull call demonstrates declared ECX/RET0 ABI. Five target entries, three successful returned allocations and three single frees expected from control flow; do not hook providers or invent counters as allocation proof.",
+        "fixture_observations": "Record full EAX, actual stack and EBX/ESI/EDI/EBP. Null returns0/no providers; compare defined XOR flags without AF and unchanged null ECX/EDX. Nonnull result is the actual allocation, exact n+1 bytes including NUL, independent lifetime and unmodified input/guards; never require equal numerical allocation addresses between Original and Source. Record volatile ECX/EDX but do not assert guessed values. Derive final ADD flags from captured stack. Canonical-free each actual result once, then never read it. No fake node/arena/root, provider substitution or post-free observation.",
+        "post_gate": "Recheck actual IAT pointers, provider identities/full files/prefixes, complete linked helper spans, complete bound Original57, original installed PE/native bytes, sources/toolchain/consumed headers/libraries/executable and all prior immutable artifacts. No OOM, forced new handler, reentry, overlap, original EH or game/class claims. Complete exact family inventory including initial/historical metadata and all failed attempts; seal once, keep subsequent logs outside sealed family.",
+        "Root_remaining": "Root alone registers packet/shared metadata, adds actual Source ledger/name admission only after evidence, performs locked Ghidra annotation/export/save, independent fresh validation, shared CMake/full Win32/tests and main integration/push. Tag2 constructor remains separately blocked until duplicate is actually admitted and its later fixture uses real current-owned outputs."
+      },
+      "Root_registration": {
+        "verified": {
+          "verified": true,
+          "manifest_sha256": "331e5462e67d282eba3969f8bc02777cb5193d562ddf124fabd089b5881f1e87",
+          "artifacts": 51,
+          "actual_files": 52,
+          "old_recipes_replayed": false
+        },
+        "native_live_listing_reviewed": true,
+        "Source_admission": 0,
+        "qualified_operands": [
+          34,
+          44
+        ],
+        "whole_native_bytes": 57,
+        "whole_native_instructions": 30,
+        "normal_current_domain_only": true
+      },
+      "native_class_ABI_admission": false,
+      "original_private_CRT_EH_admission": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
