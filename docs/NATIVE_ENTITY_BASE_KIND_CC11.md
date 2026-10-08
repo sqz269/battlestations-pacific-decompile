@@ -39,3 +39,9 @@ All 183 consumed inputs are unchanged before/after: 158 compiler includes (3 pro
 - Both backends query the SAME receiver recovered from the SAME record within one in-pass setup. No inferred cross-pass addresses or native class/virtual table dispatch.
 - No Original group/base-class constructor or larger class/virtual speed/detach/allocator/observer/world/lifetime/game replay. Existing group scalar 70D260 is complete; not a missing dependency and not called.
 - Root owns CMake/integration/full main build/CTest/ledger/native annotations and gameplay checks; no worker shared writes/Ghidra mutations or old family execution.
+
+## Primary integration
+
+Three distinct complete raw base predicates: 132 bytes / 45 instructions, fixed 02/04/05 ancestor lists then the fresh actual aligned receiver+C4 DWORD. Every Original, Source COFF and linked byte equals; full EAX 0/1 and RET4. One independent fresh four-TU family passed 183 checks through the genuine current group constructor and lookup on the SAME published actual record and receiver. Raw profile/class pointers remain uncallable DATA witnesses. Source memory-domain identity does not establish original class, constructor, membership, virtual admission, observer, heap, EH, world or game compatibility.
+
+Current main Source build `dd9061fc5` passed MSVC Win32 and all three existing CTests. Independent receipt: `local/cc11_entity_base_kind_current_primary/inputs_after.json`. The new fixture used 4 fresh translation units, 158 actual included headers, 6 searched libraries, four pinned compiler/linker/backend files and 197 stable historical paths. Rebuilt Core `be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4` is consumed only by the enum-map family; the base and group families consume no BSP archives. Raw ABI, current source contracts, native class and gameplay evidence remain separately qualified. Saved Ghidra annotation/export/snapshot receipts follow in the report.

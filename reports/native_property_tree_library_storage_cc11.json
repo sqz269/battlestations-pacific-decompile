@@ -1,0 +1,2021 @@
+{
+  "packet": "cc11_property_tree_library_storage",
+  "worker": "agent/cc11_enum_registry_scalar",
+  "status": "Complete distinct39B12 constructor; byte-exact whole SourceCOFF/linked/native and new strict3TU actual current-heap storage family passed; Root integration/build pending",
+  "Source_revision": "c329ab3850106b34a6895969aecead5754b33e20",
+  "source": "src/native_property_tree_library_storage.cpp",
+  "header": "include/bsp/native_property_tree_library_storage.hpp",
+  "native": {
+    "entry": "008F5670",
+    "inclusive_end": "008F5696",
+    "exclusive_end": "008F5697",
+    "bytes": 39,
+    "sha256": "486d83626dc3930fe1a30a4613d80b8a3ff0ea9cb407046b2ea0b4d64beeb2b5",
+    "live_PE_image_equal": true,
+    "image_zero_fill_bytes": 0,
+    "decoded_instructions": 12
+  },
+  "whole_counts": {
+    "functions": 1,
+    "native_bytes": 39,
+    "native_instructions": 12,
+    "Source_bytes": 39,
+    "Source_instructions": 12,
+    "calls": 0,
+    "relocations": 0
+  },
+  "native_name_at_worker_close": "FUN_008f5670 unmodified; Source property-tree-library name is a descriptive storage hypothesis",
+  "native_ABI": "ECX genuine fresh/unowned10C base copied to EDX; EDI saved/restored; DF0 caller precondition; D1650C/D162C8 DATA phases, countzero, REPSTOSD64heads; fullEAX returns originalbase; plainRET. Volatile registers/EFLAGS follow exact native body. No constructor alloc/free/CALL/EH/dispatch/guard/default.",
+  "layout": {
+    "root_bytes": 268,
+    "root_hex": "0x10C",
+    "map_offset": 4,
+    "borrowed_map_bytes": 264,
+    "borrowed_map_hex": "0x108",
+    "outer_phase_offset": 0,
+    "outer_phase": "00D1650C",
+    "map_phase_offset": 4,
+    "map_phase": "00D162C8",
+    "count_offset": 8,
+    "head_count": 64,
+    "heads_first": 12,
+    "heads_last": 264
+  },
+  "profiles": {
+    "D1650C_slot0": "008F6790",
+    "D162C8_slot0": "008F4DA0",
+    "qualification": "Actual DATA phase words only, no virtual invocation or arity inferred. D16508 adjacent+4 word is separately written D1650C profile base; not proof of a second CEnum method."
+  },
+  "allocation_contract": "Native parentsecondPUSH10C4D308F/CALLoperator_newBF681B4D309A \u2192 EAX same allocation \u2192 ECX4D30B1 \u2192 ctor4D30B3. New family uses freshly compiled current singleton_lifetime_allocate({object,0x10c,0x10c}) and currentfree on still-empty base roots after allchecks. No standalone108 allocation/interiorfree; historical original allocation/exception/class ABI is not executed or bridged.",
+  "host_steps": [
+    {
+      "address": "004D309A",
+      "native": "00BF681B",
+      "function": "004D3040",
+      "description": "Actual second10C native allocation"
+    },
+    {
+      "address": "004D30B3",
+      "native": "008F5670",
+      "function": "004D3040",
+      "description": "Same actualallocationEAX transferred to ECX constructor"
+    },
+    {
+      "address": "004D30D0",
+      "native": "008F7100",
+      "function": "004D3040",
+      "description": "Unclosed loader afterE18678 global publication"
+    }
+  ],
+  "counts": {
+    "actual_production_headers": 8,
+    "fresh_production_CPPs": 2,
+    "unique_production_inputs": 10,
+    "fixture_CPP_and_recipe": 3,
+    "unique_fixture_inclusive_inputs": 13,
+    "actual_host_headers": 166,
+    "actual_searched_libraries": 13,
+    "old_consumed_pins_bookended": 341,
+    "historical_files_bookended": 5560,
+    "prior_attempt_files_bookended": 0,
+    "native_spans": 6,
+    "objects": 3,
+    "code_sections": 330,
+    "code_bytes": 21797,
+    "ordered_relocations": 814,
+    "application_origin_map_symbols": 253,
+    "application_origin_functions": 104,
+    "physical_application_code_spans": 95,
+    "physical_application_code_bytes": 10589,
+    "physical_application_ordered_relocations": 437
+  },
+  "outcomes": {
+    "genuine_currentCRT_10C_allocations": 2,
+    "whole39_same_storage_comparisons": 2,
+    "full_EAX_identity_EDI_ESP_DF0_plain_RET": true,
+    "full268_fields_and_other_root_guards": true,
+    "actual_D1650C_D162C8_DATA_phases": true,
+    "count_and64_heads_zero": true,
+    "Original39_RX_unchanged_after": true,
+    "wholeSource39_executed": true,
+    "wholeOriginal39_executed": true,
+    "explicit_empty_root_current_release_after_allchecks": true,
+    "root_plus4_never_freed": true,
+    "no_freed_root_access_or_secondfree": true,
+    "property_map_or_scalar_destructors_executed": false,
+    "historical_allocator_original_factory_or_loader_executed": false
+  },
+  "whole_Source_COFF": [
+    {
+      "symbol": "?initialize_native_property_tree_library_storage_008f5670@bsp@@YIPAXPAX@Z",
+      "section": 3,
+      "offset": 0,
+      "bytes": 39,
+      "sha256": "486d83626dc3930fe1a30a4613d80b8a3ff0ea9cb407046b2ea0b4d64beeb2b5",
+      "hex": "8bd157c7020c65d10033c08d7a0cb940000000c74204c862d100c7420800000000f3ab8bc25fc3",
+      "relocations": [],
+      "instruction_count": 12,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "8bd1",
+          "instruction": "mov edx, ecx"
+        },
+        {
+          "offset": 2,
+          "bytes": "57",
+          "instruction": "push edi"
+        },
+        {
+          "offset": 3,
+          "bytes": "c7020c65d100",
+          "instruction": "mov dword ptr [edx], 0xd1650c"
+        },
+        {
+          "offset": 9,
+          "bytes": "33c0",
+          "instruction": "xor eax, eax"
+        },
+        {
+          "offset": 11,
+          "bytes": "8d7a0c",
+          "instruction": "lea edi, [edx + 0xc]"
+        },
+        {
+          "offset": 14,
+          "bytes": "b940000000",
+          "instruction": "mov ecx, 0x40"
+        },
+        {
+          "offset": 19,
+          "bytes": "c74204c862d100",
+          "instruction": "mov dword ptr [edx + 4], 0xd162c8"
+        },
+        {
+          "offset": 26,
+          "bytes": "c7420800000000",
+          "instruction": "mov dword ptr [edx + 8], 0"
+        },
+        {
+          "offset": 33,
+          "bytes": "f3ab",
+          "instruction": "rep stosd dword ptr es:[edi], eax"
+        },
+        {
+          "offset": 35,
+          "bytes": "8bc2",
+          "instruction": "mov eax, edx"
+        },
+        {
+          "offset": 37,
+          "bytes": "5f",
+          "instruction": "pop edi"
+        },
+        {
+          "offset": 38,
+          "bytes": "c3",
+          "instruction": "ret"
+        }
+      ],
+      "machine": "014C",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\native_property_tree_library_storage.obj",
+      "actual_link": {
+        "image_address": "20001010",
+        "map_origin": "f   native_property_tree_library_storage.obj",
+        "hex": "8bd157c7020c65d10033c08d7a0cb940000000c74204c862d100c7420800000000f3ab8bc25fc3",
+        "sha256": "486d83626dc3930fe1a30a4613d80b8a3ff0ea9cb407046b2ea0b4d64beeb2b5",
+        "whole_body_normalized_COFF_equal": true
+      },
+      "whole_Original_equal": true,
+      "zero_relocations": true
+    },
+    {
+      "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "section": 108,
+      "offset": 0,
+      "bytes": 90,
+      "sha256": "84bd9cbcc712d9283664090c1b35610db581ef80c3fde7bc888c0f90672f4e4e",
+      "hex": "83ec0c538b1d00000000568b74241857ff7608ffd383c40485c0751e8b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce80000000068000000008d44241050e800000000cc",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "target": "__imp__malloc",
+          "actual_link_absolute_target": "2000515C",
+          "link_absolute_target_symbol_equals_COFF": true,
+          "PE_import": {
+            "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+            "name": "malloc",
+            "address": "2000515C"
+          },
+          "actual_IAT_equals_named_import": true
+        },
+        {
+          "offset": 30,
+          "type": 6,
+          "target": "__imp___callnewh",
+          "actual_link_absolute_target": "20005168",
+          "link_absolute_target_symbol_equals_COFF": true
+        },
+        {
+          "offset": 70,
+          "type": 20,
+          "target": "??0bad_alloc@std@@QAE@XZ",
+          "actual_link_target": "20001070",
+          "link_target_symbol_equals_COFF": true
+        },
+        {
+          "offset": 75,
+          "type": 6,
+          "target": "__TI2?AVbad_alloc@std@@",
+          "actual_link_absolute_target": "20006160",
+          "link_absolute_target_symbol_equals_COFF": true
+        },
+        {
+          "offset": 85,
+          "type": 20,
+          "target": "__CxxThrowException@8",
+          "actual_link_target": "2000472C",
+          "link_target_symbol_equals_COFF": true
+        }
+      ],
+      "instruction_count": 34,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "83ec0c",
+          "instruction": "sub esp, 0xc"
+        },
+        {
+          "offset": 3,
+          "bytes": "53",
+          "instruction": "push ebx"
+        },
+        {
+          "offset": 4,
+          "bytes": "8b1d00000000",
+          "instruction": "mov ebx, dword ptr [0]"
+        },
+        {
+          "offset": 10,
+          "bytes": "56",
+          "instruction": "push esi"
+        },
+        {
+          "offset": 11,
+          "bytes": "8b742418",
+          "instruction": "mov esi, dword ptr [esp + 0x18]"
+        },
+        {
+          "offset": 15,
+          "bytes": "57",
+          "instruction": "push edi"
+        },
+        {
+          "offset": 16,
+          "bytes": "ff7608",
+          "instruction": "push dword ptr [esi + 8]"
+        },
+        {
+          "offset": 19,
+          "bytes": "ffd3",
+          "instruction": "call ebx"
+        },
+        {
+          "offset": 21,
+          "bytes": "83c404",
+          "instruction": "add esp, 4"
+        },
+        {
+          "offset": 24,
+          "bytes": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "offset": 26,
+          "bytes": "751e",
+          "instruction": "jne 0x3a"
+        },
+        {
+          "offset": 28,
+          "bytes": "8b3d00000000",
+          "instruction": "mov edi, dword ptr [0]"
+        },
+        {
+          "offset": 34,
+          "bytes": "ff7608",
+          "instruction": "push dword ptr [esi + 8]"
+        },
+        {
+          "offset": 37,
+          "bytes": "ffd7",
+          "instruction": "call edi"
+        },
+        {
+          "offset": 39,
+          "bytes": "83c404",
+          "instruction": "add esp, 4"
+        },
+        {
+          "offset": 42,
+          "bytes": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "offset": 44,
+          "bytes": "7413",
+          "instruction": "je 0x41"
+        },
+        {
+          "offset": 46,
+          "bytes": "ff7608",
+          "instruction": "push dword ptr [esi + 8]"
+        },
+        {
+          "offset": 49,
+          "bytes": "ffd3",
+          "instruction": "call ebx"
+        },
+        {
+          "offset": 51,
+          "bytes": "83c404",
+          "instruction": "add esp, 4"
+        },
+        {
+          "offset": 54,
+          "bytes": "85c0",
+          "instruction": "test eax, eax"
+        },
+        {
+          "offset": 56,
+          "bytes": "74e8",
+          "instruction": "je 0x22"
+        },
+        {
+          "offset": 58,
+          "bytes": "5f",
+          "instruction": "pop edi"
+        },
+        {
+          "offset": 59,
+          "bytes": "5e",
+          "instruction": "pop esi"
+        },
+        {
+          "offset": 60,
+          "bytes": "5b",
+          "instruction": "pop ebx"
+        },
+        {
+          "offset": 61,
+          "bytes": "83c40c",
+          "instruction": "add esp, 0xc"
+        },
+        {
+          "offset": 64,
+          "bytes": "c3",
+          "instruction": "ret"
+        },
+        {
+          "offset": 65,
+          "bytes": "8d4c240c",
+          "instruction": "lea ecx, [esp + 0xc]"
+        },
+        {
+          "offset": 69,
+          "bytes": "e800000000",
+          "instruction": "call 0x4a"
+        },
+        {
+          "offset": 74,
+          "bytes": "6800000000",
+          "instruction": "push 0"
+        },
+        {
+          "offset": 79,
+          "bytes": "8d442410",
+          "instruction": "lea eax, [esp + 0x10]"
+        },
+        {
+          "offset": 83,
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "offset": 84,
+          "bytes": "e800000000",
+          "instruction": "call 0x59"
+        },
+        {
+          "offset": 89,
+          "bytes": "cc",
+          "instruction": "int3"
+        }
+      ],
+      "machine": "014C",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\singleton_lifetime.obj",
+      "actual_link": {
+        "image_address": "20001110",
+        "map_origin": "f   singleton_lifetime.obj",
+        "hex": "83ec0c538b1d5c510020568b74241857ff7608ffd383c40485c0751e8b3d68510020ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b83c40cc38d4c240ce816ffffff68606100208d44241050e8c3350000cc",
+        "sha256": "06ed18394c80b415c824428581f90364fa5f2c410ca6a0bbadbf424730707b44",
+        "whole_body_normalized_COFF_equal": true
+      }
+    },
+    {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "section": 110,
+      "offset": 0,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "hex": "ff2500000000",
+      "relocations": [
+        {
+          "offset": 2,
+          "type": 6,
+          "target": "__imp__free",
+          "actual_link_absolute_target": "20005160",
+          "link_absolute_target_symbol_equals_COFF": true,
+          "PE_import": {
+            "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+            "name": "free",
+            "address": "20005160"
+          },
+          "actual_IAT_equals_named_import": true
+        }
+      ],
+      "instruction_count": 1,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "ff2500000000",
+          "instruction": "jmp dword ptr [0]"
+        }
+      ],
+      "machine": "014C",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\singleton_lifetime.obj",
+      "actual_link": {
+        "image_address": "20001170",
+        "map_origin": "f   singleton_lifetime.obj",
+        "hex": "ff2560510020",
+        "sha256": "7e8f4c7875a3ce2adcec5b648b39c4cdecd96b121fb175a8d68dcf8478a9c416",
+        "whole_body_normalized_COFF_equal": true
+      }
+    }
+  ],
+  "current_heap_imports": [
+    {
+      "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+      "name": "malloc",
+      "address": "2000515C"
+    },
+    {
+      "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+      "name": "free",
+      "address": "20005160"
+    },
+    {
+      "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+      "name": "_callnewh",
+      "address": "20005168"
+    }
+  ],
+  "actual_Source_files_and_recipes": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\src\\native_property_tree_library_storage.cpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\native_property_tree_library_storage.cpp",
+      "sha256_pre": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965",
+      "sha256_copy": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965",
+      "sha256_post": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965",
+      "sha256_post_execution": "6a62661ed50d7e8b709848d008a06f2898b4b5dd22b4049e81377f5e94fe4965"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\src\\singleton_lifetime.cpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\singleton_lifetime.cpp",
+      "sha256_pre": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "sha256_copy": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "sha256_post": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "sha256_post_execution": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\probe.cpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\probe.cpp",
+      "sha256_pre": "57ff64eec4d603dfa10afff46be303b044635a0f90f3d30c8950c183a780c118",
+      "sha256_copy": "57ff64eec4d603dfa10afff46be303b044635a0f90f3d30c8950c183a780c118",
+      "sha256_post": "57ff64eec4d603dfa10afff46be303b044635a0f90f3d30c8950c183a780c118",
+      "sha256_post_execution": "57ff64eec4d603dfa10afff46be303b044635a0f90f3d30c8950c183a780c118"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\include\\bsp\\native_property_tree_library_storage.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\native_property_tree_library_storage.hpp",
+      "sha256_pre": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8",
+      "sha256_copy": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8",
+      "sha256_post": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8",
+      "sha256_post_execution": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\include\\bsp\\singleton_lifetime.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\singleton_lifetime.hpp",
+      "sha256_pre": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "sha256_copy": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "sha256_post": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "sha256_post_execution": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run_probe.py",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\run_probe.py",
+      "sha256_pre": "1bb02747f4c01626a0cccb2f9876dfe36b89ff60ad191d039392d9c90c28d264",
+      "sha256_copy": "1bb02747f4c01626a0cccb2f9876dfe36b89ff60ad191d039392d9c90c28d264",
+      "sha256_post": "1bb02747f4c01626a0cccb2f9876dfe36b89ff60ad191d039392d9c90c28d264",
+      "sha256_post_execution": "1bb02747f4c01626a0cccb2f9876dfe36b89ff60ad191d039392d9c90c28d264"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\inspect_coff.py",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\inspect_coff.py",
+      "sha256_pre": "03d1dc63d302fe4f1d904ee732c729ad391f3c2f66555753fe230643d24bea9f",
+      "sha256_copy": "03d1dc63d302fe4f1d904ee732c729ad391f3c2f66555753fe230643d24bea9f",
+      "sha256_post": "03d1dc63d302fe4f1d904ee732c729ad391f3c2f66555753fe230643d24bea9f",
+      "sha256_post_execution": "03d1dc63d302fe4f1d904ee732c729ad391f3c2f66555753fe230643d24bea9f"
+    }
+  ],
+  "actual_project_compile_includes": [
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "sha256_post": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "sha256_post": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "sha256_post": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "sha256_post": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/native_property_tree_library_storage.hpp",
+      "sha256": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8",
+      "sha256_post": "f5ebf6841d751b0574eda56db8562e38e888c0aca409eeb143aae2a97b21a1c8"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "sha256_post": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "sha256_post": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "sha256_post": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    }
+  ],
+  "actual_host_compile_includes": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Windows.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\d1addf6a3d09f0fed22b98f867c4e554dc4919e135bb6b60cde5d90e906138b8\\Windows.h",
+      "sha256_pre": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+      "sha256_copy": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+      "sha256_post": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winapifamily.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\e5cad6e2a031850096dc3d35e822589436f285e312a08ff6a62305a750be048e\\winapifamily.h",
+      "sha256_pre": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+      "sha256_copy": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+      "sha256_post": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winpackagefamily.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\fd827b409174a92a23310e2077cf5220622ef7dddb084d68cdd0c451ec2e617b\\winpackagefamily.h",
+      "sha256_pre": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+      "sha256_copy": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+      "sha256_post": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdkddkver.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\99dc59cbc2d9932ada7a6b1ead59743cfd55f8dd2c17fd551a7b6b5fd9761cf1\\sdkddkver.h",
+      "sha256_pre": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+      "sha256_copy": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+      "sha256_post": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\excpt.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\1d69f297aaefa241ae3c28e1bbd730c1431a62c8fd2c1d675987143f7de4347c\\excpt.h",
+      "sha256_pre": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc",
+      "sha256_copy": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc",
+      "sha256_post": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a1ff4e2f91818b852c527f35c2ea60731717e6c3bf2540b4cf1dc6e93ee5dab8\\vcruntime.h",
+      "sha256_pre": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+      "sha256_copy": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+      "sha256_post": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\sal.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\17aac171844f88f4717f9650b121c9bc4648f7e548b25605db308c8f8777bb59\\sal.h",
+      "sha256_pre": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "sha256_copy": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "sha256_post": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\concurrencysal.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\235cc0ea0116f45f82d3ae21f89d058b6fc12f9d26f33e0f4081886768d09dc1\\concurrencysal.h",
+      "sha256_pre": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "sha256_copy": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "sha256_post": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vadefs.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\e94c7c697df4796f6abb2b1a7ef62fb62e885c027c8d0416034032a24deb381a\\vadefs.h",
+      "sha256_pre": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+      "sha256_copy": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+      "sha256_post": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\stdarg.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a04705421187249e69bc58bcee5bc572356ec8e50aab6c342e027b7016d76acc\\stdarg.h",
+      "sha256_pre": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "sha256_copy": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "sha256_post": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\windef.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\74f34c7bf2dc0bbf41677ea87d7b8738a70240d304967aee86474d372ba6465c\\windef.h",
+      "sha256_pre": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+      "sha256_copy": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+      "sha256_post": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\minwindef.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\6b33fb4b1c38f5bda7767920062625bca537629a94e407003391178a534f6154\\minwindef.h",
+      "sha256_pre": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+      "sha256_copy": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+      "sha256_post": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f48e02483aa6feea5dbbe6d800de4ab7446928459147fbac83c6c2d9c853e3a5\\specstrings.h",
+      "sha256_pre": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+      "sha256_copy": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+      "sha256_post": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_strict.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\1dd1100c7e5efeec5f96aeed465c5434d4288983432f2855c0e1a2e0a5470d1a\\specstrings_strict.h",
+      "sha256_pre": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+      "sha256_copy": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+      "sha256_post": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_undef.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\4ec251a174fde3caf427021ea3d643661cb2bbdf1fd00d19789d9b7fd1cf1bcd\\specstrings_undef.h",
+      "sha256_pre": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+      "sha256_copy": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+      "sha256_post": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\driverspecs.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\7b836feae09e8932b59c40c6da58fcf0d18aead240e7edf6825b5c16235f18de\\driverspecs.h",
+      "sha256_pre": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+      "sha256_copy": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+      "sha256_post": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdv_driverspecs.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c29f193658dcd834c5c25b62e7973d45113462a66380831e734fb7f0f7362b63\\sdv_driverspecs.h",
+      "sha256_pre": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+      "sha256_copy": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+      "sha256_post": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f640e380bb59fad159159b2a73ac6ce21b901449c4274537ee31b51783bd2904\\winnt.h",
+      "sha256_pre": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "sha256_copy": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "sha256_post": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\ctype.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\663da2f5e7988169dd2bfe8c7dc8bead29f42a6db909d88f3cadc4d14699691c\\ctype.h",
+      "sha256_pre": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+      "sha256_copy": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+      "sha256_post": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\25ed8d6262ef2df952da4b436fea057e8a6f7a9768f4933fdc5c6687d16519f2\\corecrt.h",
+      "sha256_pre": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+      "sha256_copy": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+      "sha256_post": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wctype.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\4a7dffb2326cb6cd50e75f8279e09a9d87c9800ae9e0f8d953e081cdffd31d1d\\corecrt_wctype.h",
+      "sha256_pre": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+      "sha256_copy": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+      "sha256_post": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\kernelspecs.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\2f775104d87ef07413b1e2e630673f40ff31d7aaa64df0aab00666e66f99c486\\kernelspecs.h",
+      "sha256_pre": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+      "sha256_copy": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+      "sha256_post": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\basetsd.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8cbb4c4caacbcb369eb706eee30addf2d950853484ccef818ef505f7079438db\\basetsd.h",
+      "sha256_pre": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+      "sha256_copy": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+      "sha256_post": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\guiddef.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\d199c8e30bbdf043b35c79c18f261f7c86874b348a5891893f1b1ceab926be04\\guiddef.h",
+      "sha256_pre": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+      "sha256_copy": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+      "sha256_post": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\string.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\31232477f96a0c5f18488ce88d58e779ff915b670776ae1ee968f7fcf08f803b\\string.h",
+      "sha256_pre": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+      "sha256_copy": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+      "sha256_post": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memory.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\fd528140eb0607e8f5f83ac78a95074aea344c3daca7e0f8d06388bc2e173222\\corecrt_memory.h",
+      "sha256_pre": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+      "sha256_copy": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+      "sha256_post": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memcpy_s.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f46a70c20dd4a7fe6bc179715edb2f30b92f0b40e76c2ed90bcc1cdb5db7ae15\\corecrt_memcpy_s.h",
+      "sha256_pre": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+      "sha256_copy": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+      "sha256_post": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\errno.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\fca23bd13cc0bc5250230cad4953e58349c2a5ee1d0602a16c5a98c2131e679d\\errno.h",
+      "sha256_pre": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+      "sha256_copy": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+      "sha256_post": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_string.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\080c099b969f7a83afcc5f7243958c306d277fc709da72d17ae5f6ed302cfed8\\vcruntime_string.h",
+      "sha256_pre": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "sha256_copy": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "sha256_post": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstring.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\16396da311c1d5ed06bf6ad69b32ca08afdad0723aee3800f7cf725832957a3b\\corecrt_wstring.h",
+      "sha256_pre": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+      "sha256_copy": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+      "sha256_post": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack4.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\20358b5def718b6c105f8c39447396af78425690e7d932f9d1c10b818ad3ca78\\pshpack4.h",
+      "sha256_pre": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "sha256_copy": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "sha256_post": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\poppack.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5c45be7e2845f61864d0dd55b14c662241837f89898a3dcecbf6ed42b194d96a\\poppack.h",
+      "sha256_pre": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "sha256_copy": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "sha256_post": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack2.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8a7741e09ba45d357bacb484a3492e78a2d05bc62ebfa5e950eec3904810a3bb\\pshpack2.h",
+      "sha256_pre": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "sha256_copy": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "sha256_post": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack8.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\258618341e972153098eacb5b2d6bc89291656fcc2dc2b262bd1a7a03481a4ab\\pshpack8.h",
+      "sha256_pre": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+      "sha256_copy": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+      "sha256_post": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack1.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\7292946d2becbd25b4beef9213089b27e598ca3234b2fd6cd346409e6edf2486\\pshpack1.h",
+      "sha256_pre": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "sha256_copy": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "sha256_post": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\26262cd240eb44bb49d2a96d7b2ff7ddfc3193256f3c5df23c27cbe00d93fb9f\\apiset.h",
+      "sha256_pre": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+      "sha256_copy": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+      "sha256_post": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ktmtypes.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\1a889030e53ab61dcc2e53d17c5c679719a35aaba4f0bbe2063750bebf5ccb99\\ktmtypes.h",
+      "sha256_pre": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+      "sha256_copy": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+      "sha256_post": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinBase.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\7cc4107bab441a42d244a1eba7b0486a4eeea8d3a3a32d83165d9555c4c011de\\WinBase.h",
+      "sha256_pre": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+      "sha256_copy": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+      "sha256_post": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apisetcconv.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\250b69cc79e799bcd18c7ee000c56bcee60244e6f3cba987d550002a1de577e1\\apisetcconv.h",
+      "sha256_pre": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+      "sha256_copy": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+      "sha256_post": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\minwinbase.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c3ec0a42a6c5b3a7e2ebcfa0657c2a67936616cd37d3232162137b45fc86718c\\minwinbase.h",
+      "sha256_pre": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+      "sha256_copy": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+      "sha256_post": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\apiquery2.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\34c58f4eab1cbc7ef5de6fed35c4e170543948cb4770ad536e38099893808e37\\apiquery2.h",
+      "sha256_pre": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+      "sha256_copy": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+      "sha256_post": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processenv.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\088d53a07281880b5f8b928d4d7ecce1663398d0e92e5c1f24d88c053f1d7e4f\\processenv.h",
+      "sha256_pre": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+      "sha256_copy": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+      "sha256_post": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapifromapp.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9d733e9f95b83aac8fd6e6b8ba31ded1050c543f58c4330a0436499c9d02ac11\\fileapifromapp.h",
+      "sha256_pre": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+      "sha256_copy": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+      "sha256_post": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9a260f4c862b7ad26fd864291cadf1186a16c61a710f3d84b114026f328f7eca\\fileapi.h",
+      "sha256_pre": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+      "sha256_copy": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+      "sha256_post": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\debugapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0e81c2046cd8db762f1632a84ba469007d37db4efa9eb2098daaa7f60b6d521f\\debugapi.h",
+      "sha256_pre": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "sha256_copy": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "sha256_post": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\utilapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c5a01d31207c1b48e164b36268429e0f8d17f41f3631ae00d696a7ad32a020a1\\utilapiset.h",
+      "sha256_pre": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+      "sha256_copy": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+      "sha256_post": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\handleapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\85f833058910faa71c47b088f51ab8cf7bac06d4abc37cb59d83a7eb9578d860\\handleapi.h",
+      "sha256_pre": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+      "sha256_copy": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+      "sha256_post": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\errhandlingapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\de32ab340a4a9a0877ded9c7ee746a6bd783356a040202ba4ba4deb41c30ed91\\errhandlingapi.h",
+      "sha256_pre": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "sha256_copy": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "sha256_post": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fibersapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\e2fd0c7b4a7e501d4d24f111856113cd54d42498424dc439f79aa2121b83fba4\\fibersapi.h",
+      "sha256_pre": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+      "sha256_copy": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+      "sha256_post": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namedpipeapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\553834ad00aa6d4afe30737b441b56c50aef1734c839c8f41a19edc11f2b9d43\\namedpipeapi.h",
+      "sha256_pre": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+      "sha256_copy": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+      "sha256_post": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\profileapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ce90d58060f0b53f3206fa306c07e92cab8826a7cc56fc4029e670fb6476f28b\\profileapi.h",
+      "sha256_pre": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+      "sha256_copy": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+      "sha256_post": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\heapapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ba7fc5a4e53cf680b2c7afd174f21badfcf54847c824710b9ff2cc93a64b3a8a\\heapapi.h",
+      "sha256_pre": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "sha256_copy": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "sha256_post": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ioapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9a50927165a4df380b9939d4adeefd0c0769f9b3bf48ecfa39731dd26b6d1ceb\\ioapiset.h",
+      "sha256_pre": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+      "sha256_copy": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+      "sha256_post": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\synchapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\7d1f15cf086ca02396dd9ccf77223dcdadbfb39546bd1c954efcf375ad97dd05\\synchapi.h",
+      "sha256_pre": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+      "sha256_copy": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+      "sha256_post": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\interlockedapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\3fb533a83e6a2d0adec894017592758a2732134cea6a8745647d1d52a51ab032\\interlockedapi.h",
+      "sha256_pre": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+      "sha256_copy": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+      "sha256_post": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processthreadsapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\1c5423d8cc364bae1a5d65b9bbdf6d3cf4eb472fdd10dfbca179226ff0806543\\processthreadsapi.h",
+      "sha256_pre": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "sha256_copy": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "sha256_post": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\sysinfoapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\843d112facd80d6908bc7e5d5d90fc1146a70c407d1c2cdd0b6f49041ea0ef28\\sysinfoapi.h",
+      "sha256_pre": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+      "sha256_copy": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+      "sha256_post": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\memoryapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c79087b300334d39267f436b4c3e12d6c6fa549d85eec1ead81867d31c19cafa\\memoryapi.h",
+      "sha256_pre": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "sha256_copy": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "sha256_post": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\enclaveapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\fee4feb563cad7e068defbe15db600483124cdcb99f38d4a32ca9a743502191d\\enclaveapi.h",
+      "sha256_pre": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+      "sha256_copy": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+      "sha256_post": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoollegacyapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\75bec09a3528712bb801ba6e2538ae9e67447d43f4b02a055fbae1cd9b7caa3b\\threadpoollegacyapiset.h",
+      "sha256_pre": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+      "sha256_copy": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+      "sha256_post": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoolapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\af07e922177a998e3b0700adc981adac0c18624a681d11f6508d3c523e924644\\threadpoolapiset.h",
+      "sha256_pre": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+      "sha256_copy": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+      "sha256_post": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\54e2ca0215db351642a3afa954f2af6f49f69e3d889d70eebcf7715bf5e2d3c6\\jobapi.h",
+      "sha256_pre": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+      "sha256_copy": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+      "sha256_post": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi2.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a9d0ce099dab3ea6e1d6b4bb0642187ec8c18b9e7c9c21e3c25f663ac654533e\\jobapi2.h",
+      "sha256_pre": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+      "sha256_copy": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+      "sha256_post": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wow64apiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ef21bc88cb546668d613f28fbf58c55038ee0b1fac9001f1111cf517685a2e34\\wow64apiset.h",
+      "sha256_pre": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+      "sha256_copy": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+      "sha256_post": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\libloaderapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\99e06ac3da13a3d7ecfddcc1da8eec357af2aafc99e8670ff014214c1bc3fb0d\\libloaderapi.h",
+      "sha256_pre": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+      "sha256_copy": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+      "sha256_post": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securitybaseapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\51016236697ec9f0864a9b195aaa1578798f60ab6ead801679ad111dd67403d1\\securitybaseapi.h",
+      "sha256_pre": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+      "sha256_copy": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+      "sha256_post": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namespaceapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\29339a069be0dff4e95e7436fb866eefe18f0da81cfc2c04fc28dc8618b783b1\\namespaceapi.h",
+      "sha256_pre": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+      "sha256_copy": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+      "sha256_post": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\systemtopologyapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\b4ad5f0f6db87e7e8ffa94c576f2bf14bc9edeb9637e8e642b94c4a0d54eff37\\systemtopologyapi.h",
+      "sha256_pre": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+      "sha256_copy": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+      "sha256_post": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processtopologyapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\42a8eefc4bc266ffe62d7848be37fb328892971c51b7b23acf6d274b1c87709c\\processtopologyapi.h",
+      "sha256_pre": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+      "sha256_copy": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+      "sha256_post": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securityappcontainer.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\609bf8012add1392f990b07e974ad9a7ba642993a5f3f68d8e3c82accd14415c\\securityappcontainer.h",
+      "sha256_pre": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+      "sha256_copy": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+      "sha256_post": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\realtimeapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\264562af1a0447a0c26150489b22b78ccacece14b7a46c41cbb9bd8b69c98af5\\realtimeapiset.h",
+      "sha256_pre": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+      "sha256_copy": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+      "sha256_post": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winerror.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\4773340b0efa32e395bce6bbc80a351d3d21cdb1d709c619bb7b2e810aafa8c3\\winerror.h",
+      "sha256_pre": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c",
+      "sha256_copy": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c",
+      "sha256_post": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\timezoneapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5bbe5b568dde18fbc15bb67fa81248729e8235ba6a4852e19988490310c10dfe\\timezoneapi.h",
+      "sha256_pre": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+      "sha256_copy": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+      "sha256_post": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wingdi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\009fab161697114144cac0b3bb779eb4a6e5fdf92ad4759be86bf4671b26ebc3\\wingdi.h",
+      "sha256_pre": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+      "sha256_copy": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+      "sha256_post": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinUser.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8871b85b50099a3ffe1ac2e316f1a8f92cddfebb1266ed72811d0f11e95065f4\\WinUser.h",
+      "sha256_pre": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3",
+      "sha256_copy": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3",
+      "sha256_post": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\tvout.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8a6a260afe358b83dfb4475245973da1091d0b3707f83fec8b10f5ca4b36bd72\\tvout.h",
+      "sha256_pre": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+      "sha256_copy": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+      "sha256_post": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinNls.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\1a09cb9ff0802bdac8a4f7ba29d24a27674cf672a96bf68ee4a35aab43e78768\\WinNls.h",
+      "sha256_pre": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "sha256_copy": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "sha256_post": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\datetimeapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\04b05fafb1c898e8ceeb8cff65b0f4c289176d4b7b11c82a6e0f506d62d042cd\\datetimeapi.h",
+      "sha256_pre": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+      "sha256_copy": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+      "sha256_post": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\stringapiset.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8b71a5961fa6fdab02a2fd0e2854e6b344536d958923e17e339dc3bd2959d4ca\\stringapiset.h",
+      "sha256_pre": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+      "sha256_copy": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+      "sha256_post": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincon.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\72c6223b5ccc2dbdcaaa5c2511d923f5894c37863b21ed6454e330b58d5433e5\\wincon.h",
+      "sha256_pre": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+      "sha256_copy": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+      "sha256_post": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincontypes.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\2aaaf92cb3afe1fb685b31bf46d0c4953424512d876d0f72f1efa700fc65f5c4\\wincontypes.h",
+      "sha256_pre": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+      "sha256_copy": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+      "sha256_post": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\2a7e26d2bdbc28fe5dbfc559b136f55666e3a3b1f8b313cf34195fc797b7ada6\\consoleapi.h",
+      "sha256_pre": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+      "sha256_copy": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+      "sha256_post": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi2.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\cbb3e7239b57f8adb5a27873dd4f51d189ddcbff328ab14a49a0bb54e43cc915\\consoleapi2.h",
+      "sha256_pre": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+      "sha256_copy": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+      "sha256_post": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi3.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\cdb37ca3589f4e22c51f92bafb238845099f6252fff78a3786a5531a5bb35b3f\\consoleapi3.h",
+      "sha256_pre": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+      "sha256_copy": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+      "sha256_post": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winver.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8a09fa92373e09f3468dcac7ee18c6e705ca436b936109d94ced2c14cf663ccd\\winver.h",
+      "sha256_pre": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+      "sha256_copy": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+      "sha256_post": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\verrsrc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5515d2f5f62aa4213ddb6b03d37890766c46155b18c748e5240f5d58c645fbe3\\verrsrc.h",
+      "sha256_pre": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+      "sha256_copy": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+      "sha256_post": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winreg.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9beabec18e0238ffaae266c3f8c64d6002282c3eaa9b21b8a1b89a387a8af4f8\\winreg.h",
+      "sha256_pre": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+      "sha256_copy": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+      "sha256_post": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\reason.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\d3aa8653a79e20bde1a4689c5c3376d8fcf83a88e8f610691faaa4f4c7812b2a\\reason.h",
+      "sha256_pre": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+      "sha256_copy": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+      "sha256_post": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnetwk.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a95023170f85cd7e35dc369dbf3ba1ca7369887aba41c75a7c972122aacee8a4\\winnetwk.h",
+      "sha256_pre": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+      "sha256_copy": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+      "sha256_post": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\wnnc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\207f8ef9463eaa55d7810e660fc772b02156a9107d85f544dea9cd3d504d9065\\wnnc.h",
+      "sha256_pre": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+      "sha256_copy": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+      "sha256_post": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\stralign.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0290ba885ea1aefbb54f86cdb9d1eecc3a11eb0da000b91d1091c3735acc36ca\\stralign.h",
+      "sha256_pre": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+      "sha256_copy": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+      "sha256_post": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winsvc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\2efd17007c20dd7e5202c1f4da7c5feafbae83e441bf762b5ac6662c84e1343f\\winsvc.h",
+      "sha256_pre": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+      "sha256_copy": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+      "sha256_post": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mcx.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\6050e9b658d68598e1609e63e859b2dc7c0eb7a62111c46dd17b72d67aec944d\\mcx.h",
+      "sha256_pre": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+      "sha256_copy": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+      "sha256_post": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\imm.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\2f9929860468f99d2911568e89068e48a0c7e7164f7ebe3e41f67f6e32f54ed4\\imm.h",
+      "sha256_pre": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+      "sha256_copy": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+      "sha256_post": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ime_cmodes.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\56754f730442d6ddd31654073332df20548fe338667f425067eb9c275e0c88e9\\ime_cmodes.h",
+      "sha256_pre": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+      "sha256_copy": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+      "sha256_post": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\yvals_core.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\07ebb9ce974ab62f3c313c124aa144f3dbd517485886c17d66075962219e5683\\yvals_core.h",
+      "sha256_pre": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+      "sha256_copy": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+      "sha256_post": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xkeycheck.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a6eb206f1bffedde2566ab46b385713963e747b1dbff6a93c2f423033370ad74\\xkeycheck.h",
+      "sha256_pre": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "sha256_copy": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "sha256_post": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\stdint.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\06e99d75b0ddf1db3e61a20bc97218b8ba24203fcd4c465501678772030ab1e2\\stdint.h",
+      "sha256_pre": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "sha256_copy": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "sha256_post": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\yvals.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\d645ac5afdd97959d5dd162fd57b2de3483ebbdea0cb9cfe0e855a27044e7d58\\yvals.h",
+      "sha256_pre": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6",
+      "sha256_copy": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6",
+      "sha256_post": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_doom_core.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\3fdc5873f4cf7f7bee70920795fd6623ee39d6ef7b1b684aa56d7f8ce785ec78\\__msvc_doom_core.hpp",
+      "sha256_pre": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63",
+      "sha256_copy": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63",
+      "sha256_post": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\crtdbg.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f79c2019c7ea6b92fde9b4c2df0c255a4e4d2124615eff1d7ce5ee6573722e87\\crtdbg.h",
+      "sha256_pre": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+      "sha256_copy": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+      "sha256_post": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_new_debug.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5275c2b3cf1d1752c5c9dc2f867523c10e5e16cae0ba2504bcfbaf4aed0bc5f9\\vcruntime_new_debug.h",
+      "sha256_pre": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "sha256_copy": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "sha256_post": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_new.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\7eb38bfdf130edf83cb29344c09b872989d33a5d19ede4457621da69e4638169\\vcruntime_new.h",
+      "sha256_pre": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d",
+      "sha256_copy": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d",
+      "sha256_post": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\crtdefs.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\95677c58eee2a01a7409740cbd872270c45b9fb1ad621f411dee40c885192e57\\crtdefs.h",
+      "sha256_pre": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "sha256_copy": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "sha256_post": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\use_ansi.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0984c98a8c205a588db83fc633ca276e780c4610a68370118b0e5d93bc00a42f\\use_ansi.h",
+      "sha256_pre": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "sha256_copy": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "sha256_post": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_iter_core.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f5be892c74de9ff966fff1e5a7930f12f705865859936fa59bdfc68972a8e785\\__msvc_iter_core.hpp",
+      "sha256_pre": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331",
+      "sha256_copy": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331",
+      "sha256_post": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stddef.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0ca20fcdda1470d1fc5cd2cb11242967da53d4827856673d1525d147f4bee355\\stddef.h",
+      "sha256_pre": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+      "sha256_copy": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+      "sha256_post": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\limits.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\480b589123da2d11bced8a5156377e7cc21f8652d3bdcb03f7a66a3a6c836b6f\\limits.h",
+      "sha256_pre": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "sha256_copy": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "sha256_post": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\math.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\207088a76e546389380c3838fee71b6c2a7b65f3887c76e097df6cbbca03a0ad\\math.h",
+      "sha256_pre": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+      "sha256_copy": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+      "sha256_post": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_math.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8c00ca097adaa3f72acc67964e89de86ed67677be8c99cd124bcfc0e05aa784f\\corecrt_math.h",
+      "sha256_pre": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+      "sha256_copy": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+      "sha256_post": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdlib.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\77d802bae9f2bbe58a32ed0125c31796dab1d609d40dce5052cc54b7b4da5f17\\stdlib.h",
+      "sha256_pre": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+      "sha256_copy": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+      "sha256_post": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_malloc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5b10e83886e8620e76906122b4602143d0dd9d3d8489a671f6d7baaa8ec57d63\\corecrt_malloc.h",
+      "sha256_pre": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+      "sha256_copy": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+      "sha256_post": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_search.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\42bcff065c8e88b5d986d533790c5e4a74e0118c8b0abdb2592a328a60bbcca9\\corecrt_search.h",
+      "sha256_pre": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+      "sha256_copy": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+      "sha256_post": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdlib.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ffe9792514a797127f5c93f3361f9f1f59a6b7ef5b85f2ca8ed68051072d6424\\corecrt_wstdlib.h",
+      "sha256_pre": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+      "sha256_copy": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+      "sha256_post": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0b2cc44d81db0faee888e850a10b91c5442965c6ac8d1112f806776d7cf2bed9\\stdio.h",
+      "sha256_pre": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+      "sha256_copy": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+      "sha256_post": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdio.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\b95ef5e4073aef484ddb6f0e16e68e9380f6c6ff2b35d1d40c4f32ab3d5111b3\\corecrt_wstdio.h",
+      "sha256_pre": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+      "sha256_copy": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+      "sha256_post": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_stdio_config.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0997463cfab83a55424c691186c793a159bb5810084528484748eee95ef2a15d\\corecrt_stdio_config.h",
+      "sha256_pre": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+      "sha256_copy": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+      "sha256_post": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\wchar.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\aacfd797acebea1b0e442659376132914266bc3ce98602cb88f5a53d93184c82\\wchar.h",
+      "sha256_pre": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+      "sha256_copy": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+      "sha256_post": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wconio.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9c37356e14c5babbfee0fbc3cb23f246ddcf8ab4406a3061a25b0fab1ac1a5e1\\corecrt_wconio.h",
+      "sha256_pre": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+      "sha256_copy": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+      "sha256_post": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wdirect.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\3c33c67442c70ec13da3cf078e9a088b0231e10b63c703a16c6f30e1eaa677d0\\corecrt_wdirect.h",
+      "sha256_pre": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+      "sha256_copy": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+      "sha256_post": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wio.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ef4dcf3e8e40a5793c9484a0a463d2cc7b9c7f1a62398d87d6242cfca5b0a326\\corecrt_wio.h",
+      "sha256_pre": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+      "sha256_copy": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+      "sha256_post": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_share.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\02fa5207af0315db336061d8d0d72765a11f14feb5ab7fe41f1f0e87973dca2b\\corecrt_share.h",
+      "sha256_pre": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+      "sha256_copy": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+      "sha256_post": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wprocess.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\74692f0b5c45908046960c3ad3fe5c6c08863c65eac28fc9790b0184e806e7fe\\corecrt_wprocess.h",
+      "sha256_pre": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+      "sha256_copy": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+      "sha256_post": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wtime.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\87e8a440079cb35bbdd5fed462f3e73e96ef0e96c820596d5ccf76f6477913da\\corecrt_wtime.h",
+      "sha256_pre": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+      "sha256_copy": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+      "sha256_post": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\stat.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\381462af4f66bce889fcb32bd5445faf662efbd236f7b48b1987cf14e6364365\\stat.h",
+      "sha256_pre": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+      "sha256_copy": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+      "sha256_post": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\types.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\6b15cb82ad9f946237149fc83f52db9b6444940350ff447b32251efe377784e2\\types.h",
+      "sha256_pre": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+      "sha256_copy": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+      "sha256_post": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a3db88ba820f07f718571414b8654e155c2738f3b0e259eeaa2d047c6e47644f\\intrin.h",
+      "sha256_pre": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011",
+      "sha256_copy": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011",
+      "sha256_post": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin0.inl.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\37d4e413c57adf076f129b70eb2a074d1956f4c10ecdc119117efcdc008ff7da\\intrin0.inl.h",
+      "sha256_pre": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8",
+      "sha256_copy": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8",
+      "sha256_post": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\setjmp.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\348d81539bdce2a0d6845428f0914f4343b0690477f7139461bb119b77e09441\\setjmp.h",
+      "sha256_pre": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e",
+      "sha256_copy": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e",
+      "sha256_post": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\immintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\554c604b604c4ea2f52979653c8127647628157346df8080f6e9b7d538ff3612\\immintrin.h",
+      "sha256_pre": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466",
+      "sha256_copy": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466",
+      "sha256_post": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\wmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\702e6c47936b4f5643a17b50b23d3c27ac066859e5875388f22dac3566eb5406\\wmmintrin.h",
+      "sha256_pre": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "sha256_copy": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "sha256_post": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\nmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c942f5623f67b3a7ddd3218a931f568c1d5392376c61213dcea4363b871be8b0\\nmmintrin.h",
+      "sha256_pre": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "sha256_copy": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "sha256_post": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\smmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5e429a71fc9808f07c91af46628e77e94b9c0faee64d915dbc7e435bc94aea0d\\smmintrin.h",
+      "sha256_pre": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "sha256_copy": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "sha256_post": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\tmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\bf9d8abccf235283297a73d21c73364ff19aa58eb1d9e93aa4b65c1e348af05e\\tmmintrin.h",
+      "sha256_pre": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "sha256_copy": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "sha256_post": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\pmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8492e3cd7fb69248548d5e30e5bc5695944b469dafb682167a7fb84597c27f35\\pmmintrin.h",
+      "sha256_pre": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "sha256_copy": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "sha256_post": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\emmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\e5f159ae492974c2290fbcd3b1917f1d1c9eff73bea76eaec1c064c78d43d6eb\\emmintrin.h",
+      "sha256_pre": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a",
+      "sha256_copy": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a",
+      "sha256_post": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a4fb64a433899862a719a4a0517c2126204cbda791354cffe946303b906e76a6\\xmmintrin.h",
+      "sha256_pre": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+      "sha256_copy": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+      "sha256_post": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\3a2145701afbf8c4d077e20cbeb4e7df5eeabe5cf6722be8dbe61b0e1b3cd356\\mmintrin.h",
+      "sha256_pre": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "sha256_copy": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "sha256_post": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\malloc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\96508e325dcd230bb9d8c56674c7178125afbc714fa1986663fbb81160d48908\\malloc.h",
+      "sha256_pre": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+      "sha256_copy": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+      "sha256_post": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\zmmintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8c66270c55fdda857a840735239771faa619c8b93c380e07b6b0ec5dfafbefa3\\zmmintrin.h",
+      "sha256_pre": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01",
+      "sha256_copy": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01",
+      "sha256_post": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ammintrin.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5ae404416493f6b4dab15c734b353823807fb8b4f145b626e3428b2c1e439eb2\\ammintrin.h",
+      "sha256_pre": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f",
+      "sha256_copy": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f",
+      "sha256_post": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mm3dnow.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ef34ea41b8a82f9fe777e3e66509fc12f9cf7e9744c2d8af1a26ec12d9ef6e9d\\mm3dnow.h",
+      "sha256_pre": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1",
+      "sha256_copy": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1",
+      "sha256_post": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_filebuf.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\708c45e8f790015800977b4ae648dc25fa5398832cff32c3cec43796e616be10\\__msvc_filebuf.hpp",
+      "sha256_pre": "281fa0b5e253bee79ebcf55c50000ff94614a0764e6b8c3863e92e817eed9a1f",
+      "sha256_copy": "281fa0b5e253bee79ebcf55c50000ff94614a0764e6b8c3863e92e817eed9a1f",
+      "sha256_post": "281fa0b5e253bee79ebcf55c50000ff94614a0764e6b8c3863e92e817eed9a1f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\share.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0a3959a56049c803819b21338c9a62fb25cbc16176c408fddb67bcf61c00cdb8\\share.h",
+      "sha256_pre": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2",
+      "sha256_copy": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2",
+      "sha256_post": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_system_error_abi.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\98e5ad5e4b1bccb81cacfbf8a4693fde43d092169f12571949f3f6406cbdc6e7\\__msvc_system_error_abi.hpp",
+      "sha256_pre": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "sha256_copy": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "sha256_post": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_exception.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c051bd283976dacc32ac2e8b346fda58483aab6c70addb044db9d9a27e88c003\\vcruntime_exception.h",
+      "sha256_pre": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "sha256_copy": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "sha256_post": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\eh.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\cd3d40494176d72e05a7c8cf73c157308eb4f89e76d652625225a7390e9d3177\\eh.h",
+      "sha256_pre": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "sha256_copy": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "sha256_post": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_terminate.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\4ff39dd947d255b9656d968bc282bb493d51fcf3bd43434236a85364a69c0390\\corecrt_terminate.h",
+      "sha256_pre": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+      "sha256_copy": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+      "sha256_post": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_sanitizer_annotate_container.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\6a14af7df5882a006fa8bbbb815f4924d0497147d280c5f2602991e4e25737dd\\__msvc_sanitizer_annotate_container.hpp",
+      "sha256_pre": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6",
+      "sha256_copy": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6",
+      "sha256_post": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_string_view.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\eb23cd6ba432ddfab569972fdccbd35de5363043b06698e274ee1bedc2b9b3ae\\__msvc_string_view.hpp",
+      "sha256_pre": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851",
+      "sha256_copy": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851",
+      "sha256_post": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\float.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\da3fbffd8e509098e5e6e7f37dfb16e26f9a788a91e74b4d499dbf3371bdc66c\\float.h",
+      "sha256_pre": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+      "sha256_copy": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+      "sha256_post": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin0.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\ff55c777bda6722d022895091e78cfddd643b4250415711db48d2c4753ea512f\\intrin0.h",
+      "sha256_pre": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "sha256_copy": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "sha256_post": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xatomic.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\8eea1148bedb8281701f157d829558c62dad9edd16cb73535ff241af7bb81c7e\\xatomic.h",
+      "sha256_pre": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12",
+      "sha256_copy": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12",
+      "sha256_post": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xpolymorphic_allocator.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\321a20d7d9d5118026dca814691698b70c8567328134b0d584a8d1519119be5a\\xpolymorphic_allocator.h",
+      "sha256_pre": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3",
+      "sha256_copy": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3",
+      "sha256_post": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xcall_once.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0b005c988381600824b692d4db9cded852ec8b5381e67d289ee91115b12b10ff\\xcall_once.h",
+      "sha256_pre": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544",
+      "sha256_copy": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544",
+      "sha256_post": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xerrc.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\c848057429db20cc228f5a8a313b594f8b4bcc54aac1750a37f2cd17778ea753\\xerrc.h",
+      "sha256_pre": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "sha256_copy": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "sha256_post": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xthreads.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\b3b3502e29742bc333ace20841476e474723403a0bed43696a7ad6cb5aab7488\\xthreads.h",
+      "sha256_pre": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "sha256_copy": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "sha256_post": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_threads_core.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\96458195072886103f9f540cbe83e9b1ed636ff731ff6854f4576d04a820cab1\\__msvc_threads_core.hpp",
+      "sha256_pre": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af",
+      "sha256_copy": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af",
+      "sha256_post": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xtimec.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0ed56c6570ad2326eeb8bd53f7f431d85f8dee6cfd0cfe9929f4e93249959107\\xtimec.h",
+      "sha256_pre": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "sha256_copy": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "sha256_post": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\time.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\f472be1cd5d087e7df65cb05f01cf9549e00d371fbe1f041c96bcd455f254cf1\\time.h",
+      "sha256_pre": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c",
+      "sha256_copy": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c",
+      "sha256_post": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_typeinfo.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\9c869358ccf990175cc4eb079561e7b229243441217ae63a34c67b569a670cf5\\vcruntime_typeinfo.h",
+      "sha256_pre": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "sha256_copy": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "sha256_post": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_xlocinfo_types.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\0814005b5bfb6c8b60f62ef1e6cd9bcbea5badd58c9665ecf5c9d206329a31ec\\__msvc_xlocinfo_types.hpp",
+      "sha256_pre": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "sha256_copy": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "sha256_post": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\locale.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\faec1f7096c0f802f6f5396cf7ee672e6784396246c5c773c949cc8b0ad318a5\\locale.h",
+      "sha256_pre": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb",
+      "sha256_copy": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb",
+      "sha256_post": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_ostream.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\a13171372d0a693a202aab175a91b832cbe8de5612f793269fbcb904ba14a113\\__msvc_ostream.hpp",
+      "sha256_pre": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e",
+      "sha256_copy": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e",
+      "sha256_post": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_bit_utils.hpp",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\016a4f81612771613b21d21269624765b92760975d5943b1a4173bcaf0e8a067\\__msvc_bit_utils.hpp",
+      "sha256_pre": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a",
+      "sha256_copy": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a",
+      "sha256_post": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\new.h",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\compiler_headers\\5ab255a5f9bda8e85539a2f1602707ba4685a8e95839e4a17969ee1b5f5a9b98\\new.h",
+      "sha256_pre": "248052431b41871aa7a162d73c9dd66dad3ef78497d411df277e3f6367173f35",
+      "sha256_copy": "248052431b41871aa7a162d73c9dd66dad3ef78497d411df277e3f6367173f35",
+      "sha256_post": "248052431b41871aa7a162d73c9dd66dad3ef78497d411df277e3f6367173f35"
+    }
+  ],
+  "actual_searched_libraries": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_core.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\e14126312f0cb15cc25e2d831082434aa424f55b8e1a8cc3c212fe256ec2446f\\bsp_core.lib",
+      "sha256_pre": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+      "sha256_copy": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+      "sha256_post": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_lua511.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\cfdf7d7b2707d94bc446ed88a5798d8846041501f8f2532aeae6ca120b4d7de2\\bsp_lua511.lib",
+      "sha256_pre": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "sha256_post": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_zlib121.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\5ba04d33d6f62342b55bb5ad178bc892009be4a2f57482b3fb88ff80b546a474\\bsp_zlib121.lib",
+      "sha256_pre": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "sha256_post": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\User32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\18bcd851218fbd1e3adbd5189ea83a14bf31f2de4ff40d7ff485a5d6b402cc28\\User32.Lib",
+      "sha256_pre": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "sha256_copy": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "sha256_post": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\565db118870c17b9446318f7d1b7446130e1410e8ea999f77d1ebec7f3c19f88\\d3d9.lib",
+      "sha256_pre": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af",
+      "sha256_copy": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af",
+      "sha256_post": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\AdvAPI32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\c9684146fd526dbfa6f3ade9a36eace76a43d9e87e2f10b22b4bca5c8a5768d6\\AdvAPI32.Lib",
+      "sha256_pre": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "sha256_copy": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "sha256_post": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\shell32.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\26ebafb9962146f9588c8943ff7f22c70af065a5edb975162130455ab3d10862\\shell32.lib",
+      "sha256_pre": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "sha256_copy": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "sha256_post": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\71c082157242c9b1789f6fbd3cc0787f937fc98ba81f05537d4e5c7d7e17feed\\msvcrt.lib",
+      "sha256_pre": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha256_copy": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha256_post": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\ed510415f64da6d3779ccd797422c5dbfd36d96406612f33732f3470e3fe7512\\oldnames.lib",
+      "sha256_pre": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha256_copy": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha256_post": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\0f3ba1729b0b2c05ea8892215a932660ce51a9a9ecfe3f91d558c414841d6f16\\msvcprt.lib",
+      "sha256_pre": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "sha256_copy": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "sha256_post": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\2d6e4d237f81a12e82fa5c5c97f9f02cca41b97837113d2e978aa809f2dd5cc4\\kernel32.Lib",
+      "sha256_pre": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha256_copy": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha256_post": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\4f0a7df0984d4745cf483f5d82c3042da3b34dee9e6328ebcb9c2c248af0fa6d\\vcruntime.lib",
+      "sha256_pre": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha256_copy": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha256_post": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\linker_libraries\\6e3c514fe84548c6e8378783fb35b7d7de682c39beaa956a7bcf1bb3c38ef51e\\ucrt.lib",
+      "sha256_pre": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha256_copy": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha256_post": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+    }
+  ],
+  "actual_tools": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "sha256_pre": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha256_post": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+      "sha256_pre": "9cf613fcbebece019712511eec4b1a32d0a9c94e65249a1aeb326305c2388d6b",
+      "sha256_post": "9cf613fcbebece019712511eec4b1a32d0a9c94e65249a1aeb326305c2388d6b"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "sha256_pre": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "sha256_post": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\link.exe",
+      "sha256_pre": "101461b51a18daaf033cb743690e20b449e9ac8783638e961bb65c5fd36e9cb5",
+      "sha256_post": "101461b51a18daaf033cb743690e20b449e9ac8783638e961bb65c5fd36e9cb5"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+      "sha256_pre": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c",
+      "sha256_post": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\dumpbin.exe",
+      "sha256_pre": "fa56feba5e8c4f81b4be7abf65aa4ff118e0a644169a239a54f59355c701e839",
+      "sha256_post": "fa56feba5e8c4f81b4be7abf65aa4ff118e0a644169a239a54f59355c701e839"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\mt.exe",
+      "sha256_pre": "fb1ab75294b78619bd6ac8cadf30cb95befbc7324703cbe2654ef800ddd2bf4d",
+      "sha256_post": "fb1ab75294b78619bd6ac8cadf30cb95befbc7324703cbe2654ef800ddd2bf4d"
+    }
+  ],
+  "selected_compiler_backends": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "sha256_pre": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha256_post": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "sha256_pre": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "sha256_post": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+      "sha256_pre": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2",
+      "sha256_post": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+      "sha256_pre": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0",
+      "sha256_post": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0"
+    }
+  ],
+  "3_fresh_objects": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\native_property_tree_library_storage.obj",
+      "sha256": "258e1e02133f179833252cb103b720bc1d12ae01574bf071f1958ef66cc75398"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\singleton_lifetime.obj",
+      "sha256": "d63371c595624abb5688268ea06e0d8bca5ed3428bc7a3e9d3207bcdb3b08ba1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\probe.obj",
+      "sha256": "232ff78d0f2250a8ea292e961998836e3c03e1be67e2cc577b92a6188f9ab170"
+    }
+  ],
+  "frozen_supports": {
+    "utc": "2026-10-08T03:30:47.305017+00:00",
+    "Source_revision": "c329ab3850106b34a6895969aecead5754b33e20",
+    "support_build_revision": "dd9061fc5",
+    "association": "Root full integrated Win32 build and all3CTest passed at dd9061fc5; currentc329ab385 only registers metadata. Frozen copies consumed by this new3TU family.",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc11_base_map_group_integrated_build.log",
+    "build_log_sha256": "104be54d6e1d12720b918dae7c14d047409d3f4facae6e127aff666fca20b287",
+    "copies": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_core.lib",
+        "sha256_before_copy": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+        "sha256_copy": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+        "sha256_after_copy": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+        "sha256_pre_link_run": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+        "sha256_post_link_run": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_lua511.lib",
+        "sha256_before_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_after_copy": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_pre_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+        "sha256_post_link_run": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\support\\bsp_zlib121.lib",
+        "sha256_before_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_after_copy": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_pre_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+        "sha256_post_link_run": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f"
+      }
+    ]
+  },
+  "external_main_support_state_after": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "frozen_sha256": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+      "external_current_sha256": "be0bb037e18debf8fbd8e56f2bcfb271480d1d6f663628c1cca69dbe99baddc4",
+      "consumed_frozen_copy_unchanged": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_lua511.lib",
+      "frozen_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "external_current_sha256": "e9786d9484ea0689bf98ce2ce83437e749d60a05859cfe028e356f12442c08de",
+      "consumed_frozen_copy_unchanged": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_zlib121.lib",
+      "frozen_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "external_current_sha256": "c6b5a17d184c45a80e5a9fb6d269a35b85c9732e434396cb31dcc9754a37536f",
+      "consumed_frozen_copy_unchanged": true
+    }
+  ],
+  "input_bookends": "Actual consumed Source/headers/compiler/linker/C1xx/C2/searched libs plus old341pins and historical union unchanged. Prior20a5 support copies and finalmaprun01/audit/failedscript evidence preserved; no oldfixture replay. New family consumes only newly frozenbe0 Core/Lua/zlib.",
+  "attempts": [
+    {
+      "run": "run01",
+      "status": "accepted first3TU compile/link/execution",
+      "reason": "Strict fresh Source/currentallocator/free/probe, pre-execution exactCOFF/linked and namedcurrentCRT-IAT gate passed, two same-root Original/Source comparisons and explicit empty current-root release passed. No failed compile/link/execution attempt here."
+    }
+  ],
+  "prior_audit_failed_attempts": "Two earlier read-only audit script failures remain immutable under audit/attempt01_partial_allocator54 and attempt02_bookend_dict; not native or Source execution attempts.",
+  "neighbors_not_ready": [
+    "008F6790 outer scalar, liveADDESP4 gap67A5..67A7 and genuine ordinary required",
+    "008F56A0 ordinary, needs canonical genuine8F4C50 propertymapclear and actual payload/node/pool/string/heap ownership",
+    "008F4C50 propertymapclear Source contract absent; no enumclear/profile/pool substitution",
+    "008F4DA0 interior scalar allocation/free lineage not admitted"
+  ],
+  "remaining": [
+    "Root independent review/CMake/fullWin32build/all3CTest/integration/Ghidra annotations",
+    "Native parent4D3040 privateEH/global publication/E18678/8F7100 loader",
+    "Actual propertymap lifetime/payload/node/pool contracts",
+    "Original historical allocator/free/failure ABI/class/vft/global startup",
+    "Whole runtime/world/game validation"
+  ],
+  "excluded_counts": "Prior34B4D3069fragment and map32/outer39/ordinary11=82B25 are neither executed nor counted in this new constructor packet.",
+  "Original_executed": "Only complete unchanged39B8F5670 RX bytes on genuine currentfresh10C roots, no Originalallocator/lifetime/loader/class code.",
+  "worker_Ghidra_mutations": false,
+  "new_tracked_tests": false,
+  "old_families_replayed": false,
+  "evidence": {
+    "approved_proposal": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_enum_storage_008f5670_audit\\proposal.json",
+    "approved_proposal_sha256": "4060d661dca783f8ffd3b53280cc384b0fe102848fb5d6108d71703ce6ff4ffc",
+    "approved_audit_receipt_sha256": "1d7b3b29491ef1fc46bb06013da9dedb98e712023cd34b805fa48898de8e28cf",
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\manifest.json",
+    "manifest_sha256": "652d64a57ec9b33ed0aa64da9429b72d72106b24e04bcf86fb45085f4507cb7c",
+    "sealed_pre_execution_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\inputs\\sealed_pre_execution_manifest.json",
+    "sealed_pre_execution_manifest_sha256": "617c10a6d7306f4755a25fdd5b564fc0edd7653d6f0cfba3c9011c086597b78c",
+    "whole_Source_COFF": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\whole_source_coff.json",
+    "whole_Source_COFF_sha256": "dcd1faa07800f8f375c4d8add60e569660e0d99f2c3784ef037d307a71ebf422",
+    "outcomes": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\outcomes.json",
+    "outcomes_sha256": "b4b997918a342418ef022ef74aa03c176887c199190cb7eb9623828a65dcc83b",
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\receipt.json",
+    "receipt_sha256": "800f6bfbb68d03bf2d438c0a811c4c6c4c6bc1086c55c4e47980277ace0833df"
+  },
+  "native_call_verification": {
+    "exit": 0,
+    "rows": 3,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_tree_library_storage\\run01\\native_call_verification.log",
+    "sha256": "fe73f1a9f784aa4734a20e1879a8b1231996fbd49398a6ef6149c9d9cc206366"
+  }
+}

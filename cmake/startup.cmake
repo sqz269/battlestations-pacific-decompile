@@ -1647,3 +1647,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_base_kind.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_enum_map_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_direct_views.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_entity_root_kind.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_property_tree_library_storage.cpp)
