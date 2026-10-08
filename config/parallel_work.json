@@ -33235,6 +33235,36 @@
         "populated_map_record_lifetime": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_physical_cached_raw_queries",
+      "worker": "substream_queries",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00BF4F40",
+        "00BF4F90"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "docs/CC12_PHYSICAL_CACHED_RAW_QUERIES.md",
+        "reports/cc12_physical_cached_raw_queries.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_raw_cached_query_interfaces_build_and_focused_Original_Source_checked",
+      "worker_commit": "1604aa58e3e3795b95f52fe5d640d02bad13707f",
+      "contract": {
+        "new_Original_functions": 0,
+        "additional_raw_interfaces": 2,
+        "Original_query_bytes": 14,
+        "fresh_memory_only_pairs": 4,
+        "Source_constructor_input": true,
+        "position_bytes_globally_unique": false,
+        "class_table_lifetime_substream_refresh_admitted": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
