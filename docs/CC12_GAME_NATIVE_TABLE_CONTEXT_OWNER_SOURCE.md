@@ -44,18 +44,37 @@ established roles represented by these Source cells. They do not mean that this
 new C++ object resides at original executable addresses. Authored literal pointer
 identities continue to belong to the C++ image.
 
-Validation is pending the integrator-owned CMake registration and normal Win32
-build. No new test, probe or game execution is authorized for this packet. The
-existing three CTest checks will be used; the gunnery row-clear/cross-row checks
-in `tests/math_tests.cpp` remain unchanged. Those existing checks do not exercise
-this new owner's borrow method or qualify current Native/application behavior.
+The normal Win32 Release build passed at coordinated commit
+`94e38c65ebfc4bbfffc1e027c2ab96da7742a266` on 2026-10-08. All three existing CTests
+passed: `reconstructed_math`, `native_math_differential` and `tool_tests`. The
+gunnery row-clear/cross-row checks in `tests/math_tests.cpp` remain unchanged.
+These checks do not exercise this new owner's borrow method or qualify current
+Native/application behavior. No new test, probe or game entry execution ran.
+
+The first build attempt at `5ec6014e` stopped during CMake configuration: the
+integrator's registration referenced `bsp_game` before its deferred creation.
+No Source compilation or tests ran in that attempt. The integrator corrected
+only that registration to defer `target_sources`; the unchanged owner Source was
+then built with a separately frozen input set. Both attempt logs and recipes are
+retained. The successful attempt ran from 22:53:21 to 22:54:03 UTC.
+
+Complete new COFF evidence retains the 124-byte constructor, 69-byte borrow method,
+their compiled code/data targets, both unique authored-table/gunnery members of
+the actual `bsp_core.lib`, and 98 actual compiler-read input files. Four runtime
+libraries, three unique CRT members and five linked-PE import tuples are retained
+as build-time bindings. They do not establish a loaded runtime DLL or execution.
+The current PE map has no public entries for this owner or its two authored-data
+getters, consistent with removal of unused COMDATs. This is emitted-object and
+build evidence; it does not qualify a linked or instantiated application owner.
 
 The whole R114 tested archive dated `2026-09-17T23:32:25.572801+00:00` was retained;
 its archive SHA-256 and all 594 member sizes/hashes plus ZIP CRC passed. Those
 historical table fixtures support the existing builders, not a new execution of
-this owner. Current frozen Source and later normal-build artifacts are separated
-under `local/cc12_game_native_table_context_owner_source_20261008a/` and indexed in
-the [packet report](../reports/cc12_game_native_table_context_owner_source.json).
+this owner. Current frozen Source and normal-build artifacts are separated under
+`local/cc12_game_native_table_context_owner_source_20261008a/`. The current build
+archive contains 6,985 whole files; every member size/hash and ZIP CRC passed.
+The [packet report](../reports/cc12_game_native_table_context_owner_source.json)
+indexes the complete archives, compiler inputs, machine receipts and final seal.
 
 Full application context, raw GlobalConfig ownership, canonical sound-string
 binding, lifetime dispatch, unwind behavior, startup and gameplay remain open.
