@@ -1,0 +1,516 @@
+{
+  "status": "Complete read-only AddMember audit; whole native Source remains unready",
+  "utc": "2026-10-08T05:19:20.854773+00:00",
+  "packet": "cc12_group_member_admission",
+  "source_revision": "d02cf80822c487c2593696d6e1e0cf1b221c56a5",
+  "scope": {
+    "owned_addresses": [
+      "0070EF30"
+    ],
+    "owned_tracked_files": [
+      "docs/CC12_GROUP_MEMBER_ADMISSION_AUDIT.md",
+      "reports/cc12_group_member_admission_audit.json"
+    ],
+    "other_native_bodies_expanded": false,
+    "Source_functions_added": 0,
+    "Source_fragments_added": 0,
+    "native_or_Source_fixture_execution": false,
+    "old_families_replayed": false,
+    "Ghidra_mutations": false,
+    "build_or_tests_run": false
+  },
+  "target": {
+    "address": "0070EF30",
+    "name": "BSP_UnitGroup_AddMember",
+    "name_qualification": "Descriptive hypothesis, not recovered symbol",
+    "coverage": "complete",
+    "end_inclusive": "0070EFC0",
+    "end_exclusive": "0070EFC1",
+    "bytes": 145,
+    "instructions": 47,
+    "original_ABI": {
+      "entry": "ECX=actual group; [entryESP+4]=actual entity. ESI=group and EDI=entity after saving both.",
+      "exit_sites": [
+        "0070EFA3 RET4",
+        "0070EFBE RET4"
+      ],
+      "preservation": "Both paths POP EDI then POP ESI. EBX/EBP not directly modified; whole-call nonvolatile behavior requires actual callees.",
+      "return": "No promised EAX value. Last native callee output remains; neither index nor -1 is synthesized.",
+      "volatile": "ECX/EDX/EAX/XMM/flags depend on branch and calls. Preserve original call contracts; no extra full-register preservation claimed.",
+      "stack": "One explicit incoming DWORD consumed by both RET4 exits. One outgoing DWORD pushed at0070EF82 for0070ED30, whose existing ABI says RET4. Observer calls and0070DA00 have no explicit stack arguments here.",
+      "floating_point": "No x87 instruction in caller. MOVSS fromCF4888 toXMM0 then record30 copies exact DWORD without conversion; memory load clears upper96 ofXMM0 before subsequent callees. Transitive slot/ceiling FP requirements remain external."
+    },
+    "control_flow": [
+      {
+        "range": "0070EF30..0070EF48",
+        "effect": "Save ESI/EDI, capture actual arguments, unconditionally write entity284=group atEF38, capture signed count group4F8 inEDX; <=0 skips scan."
+      },
+      {
+        "range": "0070EF4A..0070EF5C",
+        "effect": "Compare raw entity DWORD at group18+i*34 againstEDI; EAX starts0; initial EDX count controls signed scan; no dereference/type/null/capacity check."
+      },
+      {
+        "range": "0070EFA6..0070EFB1",
+        "effect": "Duplicate: query00694AF0 with ECX=entity EDX=group; test AL only; nonzero returns throughEFA1/EFA3."
+      },
+      {
+        "range": "0070EFB3..0070EFC0",
+        "effect": "Duplicate with AL0: register00694A60 using same endpoint identities; restore andRET4. No slot/speed/count refresh."
+      },
+      {
+        "range": "0070EF5E..0070EF76",
+        "effect": "Append only: read nativeCF4888 bits, multiply initially captured count by34 modulo32, store entity at group18+index34. Reload count atEF6D for speed store group48+count34."
+      },
+      {
+        "range": "0070EF7C..0070EF90",
+        "effect": "Reload count again for stacked join index; call0070ED30 withECX=group. Then ADD actualgroup4F8,1 uses current cell and wraps32; not cachedindex+1."
+      },
+      {
+        "range": "0070EF91..0070EFA5",
+        "effect": "Register observer ECX=entity EDX=group without prior query, then call0070DA00 withECX=group, restore andRET4."
+      }
+    ],
+    "direct_memory_publication": [
+      {
+        "at": "0070EF38",
+        "write": "DWORD[actualentity+284]=actualgroup",
+        "meaning": "Backlink publication before any duplicate test; no previous group detach/check."
+      },
+      {
+        "at": "0070EF69",
+        "write": "DWORD[actualgroup+18+captured_count*34]=actualentity",
+        "meaning": "Exact pointer identity, not a class ID or semantic handle."
+      },
+      {
+        "at": "0070EF76",
+        "write": "DWORD[actualgroup+48+fresh_count*34]=captured nativeCF4888",
+        "meaning": "record30 sentinel, initialized only on append."
+      },
+      {
+        "at": "0070EF8A",
+        "write": "DWORD[actualgroup+4F8]+=1",
+        "meaning": "Fresh post-slot-call count, modulo32."
+      }
+    ],
+    "admission": "Same actual writable508 group, writable actualentity+284, genuine valid indexed records. Ordinary bounded count0..23 for append or valid duplicate within count<=24; these are future-provider requirements, NOT original guards. Pointer/class/observer/world lifetime, alias/concurrent mutation and faults remain unbound.",
+    "failure_order": "No local SEH, lock, rollback or fallback. Do not infer compensation for entity284/record stores completed before a dependency fails.",
+    "direct_kind_calls": 0,
+    "direct_tuning_or_profile_writes": 0
+  },
+  "installed_PE": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "machine": "014C",
+    "timestamp": 1245831434,
+    "body_start": "0070EF30",
+    "body_end_inclusive": "0070EFC0",
+    "file_offset": "30EF30",
+    "body_size": 145,
+    "body_sha256": "7b49a52951ba9afae679364e494cd3bf2435fb2eb05b0cabc86dfe03521f10c6",
+    "body_hex": "56578b7c240c8bf189b7840200008b96f804000033c085d27e148d4e188d49003939745283c00183c1343bc27cf2f30f10058848cf006bd234897c32188b86f80400006bc034f30f114430488b8ef8040000518bcee8a6fdffff8386f8040000018bd68bcfe8c65af8ff8bcee85feaffff5f5ec204008bd68bcfe8415bf8ff84c075ee8bd68bcfe8a45af8ff5f5ec20400",
+    "live_ghidra_bytes_match": true,
+    "decoded_instruction_count": 47,
+    "decoded_bytes": 145,
+    "direct_calls": [
+      {
+        "address": "0070EF85",
+        "native": "0070ED30",
+        "function": "0070EF30",
+        "bytes": "e8a6fdffff"
+      },
+      {
+        "address": "0070EF95",
+        "native": "00694A60",
+        "function": "0070EF30",
+        "bytes": "e8c65af8ff"
+      },
+      {
+        "address": "0070EF9C",
+        "native": "0070DA00",
+        "function": "0070EF30",
+        "bytes": "e85feaffff"
+      },
+      {
+        "address": "0070EFAA",
+        "native": "00694AF0",
+        "function": "0070EF30",
+        "bytes": "e8415bf8ff"
+      },
+      {
+        "address": "0070EFB7",
+        "native": "00694A60",
+        "function": "0070EF30",
+        "bytes": "e8a45af8ff"
+      }
+    ],
+    "constant": {
+      "address": "00CF4888",
+      "file_offset": "8F4888",
+      "bits": "4479C000",
+      "live_ghidra_bytes_match": true
+    }
+  },
+  "host_steps": [
+    {
+      "address": "0070EF85",
+      "native": "0070ED30",
+      "function": "0070EF30",
+      "bytes": "e8a6fdffff",
+      "abi": "ECX=actualgroup; stacked currentjoinindex; calleeRET4",
+      "contract": "Existing semantic slot producer only; native callee unexpanded"
+    },
+    {
+      "address": "0070EF95",
+      "native": "00694A60",
+      "function": "0070EF30",
+      "bytes": "e8c65af8ff",
+      "abi": "ECX=actualentity; EDX=actualgroup; no stackedinput",
+      "contract": "Existing concrete registration Source; actual lifetime/endpoint admission required"
+    },
+    {
+      "address": "0070EF9C",
+      "native": "0070DA00",
+      "function": "0070EF30",
+      "bytes": "e85feaffff",
+      "abi": "ECX=actualgroup; no stackedinput",
+      "contract": "Prior complete-read audit unready; no additional native expansion"
+    },
+    {
+      "address": "0070EFAA",
+      "native": "00694AF0",
+      "function": "0070EF30",
+      "bytes": "e8415bf8ff",
+      "abi": "ECX=actualentity; EDX=actualgroup; ALconsumed",
+      "contract": "Existing ledger name only; native contract unread this packet; no complete Source wrapper found"
+    },
+    {
+      "address": "0070EFB7",
+      "native": "00694A60",
+      "function": "0070EF30",
+      "bytes": "e8a45af8ff",
+      "abi": "ECX=actualentity; EDX=actualgroup; no stackedinput",
+      "contract": "Same existing registration contract on duplicate AL0 branch"
+    }
+  ],
+  "transitive_speed_boundary": {
+    "source_of_claim": "Existing reports/native_unit_group_speed_readiness_cc11.json; no re-expansion of native0070DA00 or0070D1B0",
+    "call_site_owner": "0070DA00",
+    "kind_query_site": "0070DA33",
+    "kind_query": "CALL codeDWORD[profile+5C], ECX=same actual member, stackedDWORD6, resultAL, actual RET4 callee required",
+    "true_chain": "actualunit+538 -> class+500 floatDWORD",
+    "false_chain": "actualunit+3D0 -> linkedunit+538 -> class+188 floatDWORD",
+    "none_produced_here": [
+      "actualunit profile+0",
+      "callable actualprofile+5C",
+      "actualunit+538",
+      "actualunit+3D0",
+      "linkedunit+538",
+      "class+500",
+      "class+188"
+    ],
+    "inference_limit": "The caller performs none of those direct writes. Effects inside named-but-unexpanded callees are not newly established or guessed.",
+    "whole_0070DA00_Source_ready": false,
+    "whole_0070D1B0_Source_ready": false
+  },
+  "current_Source": {
+    "inspection": "Current literal Source/header inspection at source_revision plus bounded ledger queries. No compile, prior native-fixture replay or runtime proof added.",
+    "add_member": {
+      "source": "src/ship_ai_formation.cpp:337",
+      "header": "include/bsp/ship_ai_formation.hpp:445",
+      "symbol": "ship_ai_formation_add_member",
+      "coverage": "Existing semantic sequence, not admitted whole actual-object native provider",
+      "differences": [
+        "Separate members/count and host callbacks",
+        "Synthetic index/-1 return",
+        "Fixed Source999 sentinel instead of actualCF4888 load",
+        "count=index+1 after callback versus native ADD currentcount,1"
+      ],
+      "whole_native_ready": false
+    },
+    "constructor": {
+      "address": "0070DAB0",
+      "header": "include/bsp/native_unit_group_storage.hpp",
+      "coverage": "Complete actual508 constructor",
+      "limits": "RawCFD6F8 stamp UNCALLABLE; preserves4FC/504; original publication/formation/classABI/lifetime unbound"
+    },
+    "record_reducer": {
+      "address": "0070D140",
+      "source": "src/native_unit_group_member_speed_reducer.cpp",
+      "header": "include/bsp/native_unit_group_member_speed_reducer.hpp",
+      "coverage": "Complete raw96-byte28-instruction body; currently integrated CMake provider",
+      "symbol": "reduce_native_unit_group_member_speeds_0070d140",
+      "limits": "Actual record30/count reduction toST0; no member dereference, no group504 store; actual nativeconstant cells and ambientx87 admission explicit",
+      "called_from_target": false,
+      "missing_Source_claim_rejected": true
+    },
+    "direct_views": {
+      "header": "include/bsp/native_unit_group_direct_views.hpp",
+      "coverage": "Existing complete raw member/record access, retained504 read and record30 publish",
+      "limits": "Actual backing only; producer and class/lifetime admission external"
+    },
+    "raw_kind_leaves": {
+      "headers_inspected": [
+        "include/bsp/native_ship_kind.hpp",
+        "include/bsp/native_plane_kind.hpp",
+        "include/bsp/native_entity_root_kind.hpp"
+      ],
+      "coverage": "Complete distinct raw entries already exist",
+      "limits": "Literal same actualreceiver/+C4 requirements, no live profile+5C routing/class constructor/lifetime; this audit is not a profile or class census"
+    },
+    "observer_registration": {
+      "address": "00694A60",
+      "source": "src/observer_edges.cpp:83",
+      "header": "include/bsp/observer_edges.hpp:21",
+      "coverage": "Existing complete concrete actual-storage registration",
+      "arguments": "first=actualentity, callback_owner=actualgroup; exact same base addresses, no adjustment",
+      "limits": "NativeObserverLifetime actual lock/global/service dependencies and valid endpoint prefixes required; does not prove enclosing entities/groups or callback dispatch"
+    },
+    "observer_query": {
+      "address": "00694AF0",
+      "coverage": "Named locked query; no complete current Source wrapper found",
+      "native_body_expanded": false,
+      "limit": "Do not replace by bare find_pair without whole wrapper review and existing lock/lifetime contract"
+    }
+  },
+  "slot_producer_followup": {
+    "address": "0070ED30",
+    "name": "BSP_UnitGroup_ProduceMemberSlots",
+    "native_body_expanded": false,
+    "status": "Bounded next audit candidate; NOT independently ready",
+    "current_Source": {
+      "symbol": "ship_ai_formation_produce_member_slots",
+      "source": "src/ship_ai_formation.cpp:241",
+      "header": "include/bsp/ship_ai_formation.hpp:329",
+      "coverage": "Semantic null-member exit, pose/inverse/relative clamp/wake/table-column sequence through ShipAiFormationSlotHost, not whole admitted actual group provider"
+    },
+    "existing_qualified_callees": [
+      {
+        "address": "004142E0",
+        "symbol": "transform_native_point_004142e0",
+        "source": "src/native_traceline_render.cpp",
+        "header": "include/bsp/native_traceline_render.hpp",
+        "coverage": "Complete raw point-transform provider; actual arguments and x87/alias contract still required"
+      },
+      {
+        "address": "00414DB0",
+        "symbol": "refresh_native_entity_pose_00414db0",
+        "source": "src/native_entity_pose.cpp",
+        "header": "include/bsp/native_entity_pose.hpp",
+        "coverage": "Complete actual-pose provider; live stable terminating ancestry, matrix/FP requirements retained"
+      },
+      {
+        "address": "0042B260",
+        "symbol": "normalize_camera_basis_0042b260",
+        "source": "src/camera_decomposition.cpp",
+        "header": "include/bsp/camera_decomposition.hpp",
+        "coverage": "Existing exact-order normalization under documented CRT/FP admission"
+      },
+      {
+        "address": "00B63D50",
+        "symbol": "derive_pose_affine_inverse_00b63d50",
+        "source": "src/pose_derived.cpp",
+        "header": "include/bsp/pose_derived.hpp",
+        "coverage": "Existing complete typed inverse; no partial overlap admitted; x87/order/alias limits retained"
+      }
+    ],
+    "concrete_missing_contracts": [
+      {
+        "address": "00424C40",
+        "name": "BSP_GameSettings_GetSingleton",
+        "Source_found": "src/gameplay_settings.cpp and include/bsp/gameplay_settings.hpp supply own-instance projection/default/loader work",
+        "missing": "Whole actual76C singleton publication, constructor/load/lifetime provider; not a scalar-settings callback or fixed substitute"
+      },
+      {
+        "address": "00811180",
+        "name": "BSP_Unit_DecomposeAgainstWake",
+        "Source_found": "src/ship_ai_wake_trail.cpp:275 and include/bsp/ship_ai_wake_trail.hpp:150",
+        "missing": "Whole native wake decomposition and actualring contract",
+        "explicit_current_Source_gaps": [
+          "x87 sign at00811726..00811760 not transcribed; chosen round-trip sign convention",
+          "across measured from interpolated trail point, not native winning-sample/neighbor line",
+          "host-only trail.written==0 diagnostic return"
+        ]
+      }
+    ],
+    "smallest_independently_ready_body": null,
+    "next_action": "Lease and audit0070ED30 whole if selected by Root, or separately lease concrete missing producer. Do not promote it merely because semantic sequence/math callees exist."
+  },
+  "named_unexpanded_dependencies": [
+    {
+      "address": "0070ED30",
+      "role": "Actual member-slot producer"
+    },
+    {
+      "address": "00694AF0",
+      "role": "Actual observer query wrapper"
+    },
+    {
+      "address": "0070E4C0",
+      "role": "Detach/observer removal/lifetime"
+    },
+    {
+      "address": "0070DB20",
+      "role": "Group allocation/creation/publication"
+    },
+    {
+      "address": "0077F940",
+      "role": "Sole live observed caller; xref0077FA88 only, caller body not expanded"
+    },
+    {
+      "address": "00424C40",
+      "role": "Actual gameplay tuning singleton"
+    },
+    {
+      "address": "00811180",
+      "role": "Native wake decomposition"
+    },
+    {
+      "address": "actualunit profile/class/linked-unit producers",
+      "role": "Own callable profile5C and true538->500 / false3D0->538->188 graphs"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Generic live Ghidra undefined(void) prototype",
+      "is": "Actual ECXgroup and one stacked entityDWORD; RET4 on both exits, no promised EAX semantic return",
+      "evidence": "EF30 PUSHES; EF32 MOVEDI,[ESP+C]; EF36 MOVESI,ECX; EFA3/EFBE RET4"
+    },
+    {
+      "was": "Decompiler hoists CF4888 assignment before count/scan",
+      "is": "Actual MOVSS nativeCF4888 atEF5E runs only for an append, after duplicate scan",
+      "evidence": "Complete47-instruction listing and installed145 bytes"
+    },
+    {
+      "was": "Previous speed-readiness audit only knew semantic0070D140 reducer",
+      "is": "Complete raw reducer now exists and is integrated",
+      "evidence": "Current src/native_unit_group_member_speed_reducer.cpp, matching header and cmake/startup.cmake"
+    },
+    {
+      "was": "Any implied missing observer registration provider",
+      "is": "00694A60 already has a concrete current actual-storage provider; enclosing lifetime admission remains separate",
+      "evidence": "Current observer_edges.cpp and observer_lifetime.hpp"
+    }
+  ],
+  "verification": {
+    "target_project": "C:/Users/sqz269/bsp.gpr",
+    "target_program": "/battlestationspacific.exe",
+    "project_verification": "Existing javaw process command line names bsp.gpr; each bsp.py ghidra query invokes Client.verify for project name, program path, language and imagebase",
+    "export": "Complete existing-target export, metadata UTC2026-10-08T05:11:13.111877+00:00",
+    "listing": "bsp.py ghidra flow0070EF30:47 listed instructions,0 gaps; complete installedPE Capstone decode same47/145",
+    "call_ownership": "bsp.py ghidra proto for all5 direct sites: each belongs to0070EF30..0070EFC0. PE E8 rel32 bytes retained for independent review.",
+    "flow_property_limit": "Read-only query returned Script execution disabled; no property rows. No no-return flags inferred, no permission change/mutation fallback. Listing itself shows all continuations and exits.",
+    "required_listing_repair": null,
+    "prototype_annotation_suggestion": "If integrator elects to update metadata, express ECXgroup plus one stacked entity and RET4; do not invent an EAX return value.",
+    "call_row_verifier": "PASS:10 serialized call rows checked (5 unique sites repeated in byte-proof/contract tables),0 failed",
+    "diff_check": "PASS: staged git diff --check; exactly two owned tracked files added",
+    "native_execution": false,
+    "build": false,
+    "gameplay": false
+  },
+  "decision": {
+    "whole_0070EF30_Source_ready": false,
+    "whole_0070ED30_Source_ready": false,
+    "independently_ready_whole_body_followup": null,
+    "reason": "Actual slot producer, observer query, speed/profile/class ownership dependencies are not closed; caller only publishes identity/backlink/initial speed plus ordered observer and speed-refresh calls.",
+    "forbidden_shortcuts": [
+      "Fake profile dispatcher",
+      "Copied/projected receiver",
+      "Opaque speed callback",
+      "Class/profile census as ownership proof",
+      "Source default replacing actual tuning",
+      "Semantic wake sign convention as native proof"
+    ]
+  },
+  "source_fingerprints": [
+    {
+      "path": "src/ship_ai_formation.cpp",
+      "sha256": "6d41479307e6d7cd77a9ddd9e035ba838bcdde98be56b7115194412446d08981"
+    },
+    {
+      "path": "include/bsp/ship_ai_formation.hpp",
+      "sha256": "e84f26c1fc63cb8e2c5325857bb07effb5e348208768998e18d195edba270f46"
+    },
+    {
+      "path": "src/native_unit_group_member_speed_reducer.cpp",
+      "sha256": "50eec7d677c58a2558f03cd74d2d28a42dcc62385ad3492a4a1996332c5d398f"
+    },
+    {
+      "path": "include/bsp/native_unit_group_member_speed_reducer.hpp",
+      "sha256": "36585ed3de2c6c586f002939ab1663d4dfce60f89ffc3a76fbe006d2fc199429"
+    },
+    {
+      "path": "include/bsp/native_unit_group_storage.hpp",
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "include/bsp/native_unit_group_direct_views.hpp",
+      "sha256": "b65b42275daaab0c4541dbe244830819ed80c35813db5781f7944004cd166171"
+    },
+    {
+      "path": "src/observer_edges.cpp",
+      "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+    },
+    {
+      "path": "include/bsp/observer_edges.hpp",
+      "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "include/bsp/native_ship_kind.hpp",
+      "sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb"
+    },
+    {
+      "path": "include/bsp/native_plane_kind.hpp",
+      "sha256": "7b42db977738f87e44ffe5aca8de5ea41666ee1976b19dd0383cd3c0157f7036"
+    },
+    {
+      "path": "include/bsp/native_entity_root_kind.hpp",
+      "sha256": "3af43f96079f46fcf858787a4afd611ad86d3e45df8c8a4e0535cc3a89040378"
+    },
+    {
+      "path": "src/gameplay_settings.cpp",
+      "sha256": "1ca6a296520b9081ba7d2342e453e4dc48ac174c6da30b2fedd855cd5a09630f"
+    },
+    {
+      "path": "include/bsp/gameplay_settings.hpp",
+      "sha256": "ba856a3545d1a862f463f55a327fe5900940d983107c3f6f49e3dfa5cf24b983"
+    },
+    {
+      "path": "src/ship_ai_wake_trail.cpp",
+      "sha256": "65de4129254391407372227d25b5955c4a1f701440aae8e37a441ab4238c004e"
+    },
+    {
+      "path": "include/bsp/ship_ai_wake_trail.hpp",
+      "sha256": "19303fc2744dc6e37aae49e28576847ef09588c6ffc8cec94107d027108789f4"
+    },
+    {
+      "path": "include/bsp/native_entity_pose.hpp",
+      "sha256": "5454b73171089506531269459093df4c79b64c4aedb3a7f25fd96e2d48560f15"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "include/bsp/pose_derived.hpp",
+      "sha256": "180d78127a3f8af29c53415d48d02154d0e23ef19ca97606405d4b162c32305c"
+    },
+    {
+      "path": "include/bsp/camera_decomposition.hpp",
+      "sha256": "a85da95564ce636ab136729ae442de8e28c2cca2cc63a7414236854fda4437cb"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "361af9b5f0ad96e8980f2678bef945e59a7f2dc5f177d263ad92cc1552734e83"
+    },
+    {
+      "path": "reports/native_unit_group_speed_readiness_cc11.json",
+      "sha256": "b8e9c2699360d984cf1be69e8f465b268794d432ed0dab157feb82fba8851599"
+    }
+  ]
+}
